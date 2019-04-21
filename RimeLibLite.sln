@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.572
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RimeLibLite", "RimeLibLite\RimeLibLite.csproj", "{8C508EE5-C3B7-41BD-B6F1-1F731950F130}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RimeLibLiteTests", "RimeLibLiteTests\RimeLibLiteTests.csproj", "{89009242-8C9F-41B9-8E26-29B7BB702E43}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8C508EE5-C3B7-41BD-B6F1-1F731950F130}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C508EE5-C3B7-41BD-B6F1-1F731950F130}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C508EE5-C3B7-41BD-B6F1-1F731950F130}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C508EE5-C3B7-41BD-B6F1-1F731950F130}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89009242-8C9F-41B9-8E26-29B7BB702E43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89009242-8C9F-41B9-8E26-29B7BB702E43}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89009242-8C9F-41B9-8E26-29B7BB702E43}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89009242-8C9F-41B9-8E26-29B7BB702E43}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9D2A4DE6-648D-4971-AC81-A89F21154CD0}
+	EndGlobalSection
+EndGlobal
