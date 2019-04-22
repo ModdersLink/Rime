@@ -5,8 +5,6 @@ VisualStudioVersion = 15.0.28307.572
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RimeLibLite", "RimeLibLite\RimeLibLite.csproj", "{8C508EE5-C3B7-41BD-B6F1-1F731950F130}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RimeLibLiteTests", "RimeLibLiteTests\RimeLibLiteTests.csproj", "{89009242-8C9F-41B9-8E26-29B7BB702E43}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RimeLib.Texture", "RimeLib.Texture\RimeLib.Texture.csproj", "{5CEB7783-5DED-4515-B1E3-CA076F70D9C7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RimeLib.Mesh", "RimeLib.Mesh\RimeLib.Mesh.csproj", "{D17B9F4C-3664-4947-808A-0E57AC5A9339}"
@@ -31,10 +29,6 @@ Global
 		{8C508EE5-C3B7-41BD-B6F1-1F731950F130}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8C508EE5-C3B7-41BD-B6F1-1F731950F130}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8C508EE5-C3B7-41BD-B6F1-1F731950F130}.Release|Any CPU.Build.0 = Release|Any CPU
-		{89009242-8C9F-41B9-8E26-29B7BB702E43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{89009242-8C9F-41B9-8E26-29B7BB702E43}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{89009242-8C9F-41B9-8E26-29B7BB702E43}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{89009242-8C9F-41B9-8E26-29B7BB702E43}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5CEB7783-5DED-4515-B1E3-CA076F70D9C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5CEB7783-5DED-4515-B1E3-CA076F70D9C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5CEB7783-5DED-4515-B1E3-CA076F70D9C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
