@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Text;
 using RimeLib.IO.Conversion;
 
@@ -30,7 +29,7 @@ namespace RimeLib.IO
             Write(s_Data);
         }
 
-        public void Encode7Bit(UInt32 p_Value)
+        public void Encode7Bit(uint p_Value)
         {
             do
 	        {
@@ -45,7 +44,7 @@ namespace RimeLib.IO
             while (p_Value != 0);
         }
 
-        public void Encode7Bit(UInt64 p_Value)
+        public void Encode7Bit(ulong p_Value)
         {
             do
             {
@@ -60,14 +59,14 @@ namespace RimeLib.IO
             while (p_Value != 0);
         }
 
-        public void EncodeZigZag(Int32 p_Value)
+        public void EncodeZigZag(int p_Value)
         {
-            Encode7Bit((UInt32)((p_Value >> 31) ^ (p_Value << 1)));
+            Encode7Bit((uint) ((p_Value >> 31) ^ (p_Value << 1)));
         }
 
-        public void EncodeZigZag(Int64 p_Value)
+        public void EncodeZigZag(long p_Value)
         {
-            Encode7Bit((UInt64)((p_Value >> 63) ^ (p_Value << 1)));
+            Encode7Bit((ulong) ((p_Value >> 63) ^ (p_Value << 1)));
         }
     }
 }

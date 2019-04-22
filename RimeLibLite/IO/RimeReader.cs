@@ -129,7 +129,7 @@ namespace RimeLib.IO
             }
         }
 
-        public UInt32 Decode7Bit(out int p_BytesRead)
+        public uint Decode7Bit(out int p_BytesRead)
         {
             p_BytesRead = 1;
             var s_Slice = (uint) ReadByte();
@@ -140,14 +140,14 @@ namespace RimeLib.IO
                 return s_Result;
 
             ++p_BytesRead;
-            s_Slice = (uint) ReadByte();
+            s_Slice = ReadByte();
             s_Result |= (s_Slice & 0x7F) << 7;
 
             if ((s_Slice & 0x80) == 0) 
                 return s_Result;
 
             ++p_BytesRead;
-            s_Slice = (uint) ReadByte();
+            s_Slice = ReadByte();
             s_Result |= (s_Slice & 0x7F) << 14;
 
             var s_Shift = 21;
@@ -155,7 +155,7 @@ namespace RimeLib.IO
             while ((s_Slice & 0x80) != 0)
             {
                 ++p_BytesRead;
-                s_Slice = (uint) ReadByte();
+                s_Slice = ReadByte();
                 s_Result |= (s_Slice & 0x7F) << s_Shift;
                 s_Shift += 7;
             }
@@ -163,73 +163,71 @@ namespace RimeLib.IO
             return s_Result;
         }
 
-        public UInt64 Decode7Bit64(out int p_BytesRead)
+        public ulong Decode7Bit64(out int p_BytesRead)
         {
             p_BytesRead = 1;
             var s_Slice = (uint) ReadByte();
 
-            UInt64 s_Result = s_Slice & 0x7F;
+            ulong s_Result = s_Slice & 0x7F;
 
             if ((s_Slice & 0x80) == 0)
                 return s_Result;
 
             ++p_BytesRead;
-            s_Slice = (uint) ReadByte();
-            s_Result |= (UInt64)(s_Slice & 0x7F) << 7;
+            s_Slice = ReadByte();
+            s_Result |= (ulong) (s_Slice & 0x7F) << 7;
 
             if ((s_Slice & 0x80) == 0) 
                 return s_Result;
 
             ++p_BytesRead;
-            s_Slice = (uint) ReadByte();
-            s_Result |= (UInt64)(s_Slice & 0x7F) << 14;
+            s_Slice = ReadByte();
+            s_Result |= (ulong) (s_Slice & 0x7F) << 14;
 
             var s_Shift = 21;
 
             while ((s_Slice & 0x80) != 0)
             {
                 ++p_BytesRead;
-                s_Slice = (uint) ReadByte();
-                s_Result |= (UInt64)(s_Slice & 0x7F) << s_Shift;
+                s_Slice = ReadByte();
+                s_Result |= (ulong) (s_Slice & 0x7F) << s_Shift;
                 s_Shift += 7;
             }
 
             return s_Result;
         }
 
-        public UInt32 Read7Bit()
+        public uint Read7Bit()
         {
-            var s_BRead = 0;
-            return Decode7Bit(out s_BRead);
+            return Decode7Bit(out _);
         }
 
         public int DecodeZigZag(out int p_BytesRead)
         {
-            uint v1 = Decode7Bit(out p_BytesRead);
-            uint v2 = v1 >> 1;
-            int v3 = (int)(v1 << 31);
-            return (int)(v2 ^ (v3 >> 31));
+            var v1 = Decode7Bit(out p_BytesRead);
+            var v2 = v1 >> 1;
+            var v3 = (int) (v1 << 31);
+            return (int) (v2 ^ (v3 >> 31));
         }
 
-        public Int64 DecodeZigZag64(out int p_BytesRead)
+        public long DecodeZigZag64(out int p_BytesRead)
         {
             var v1 = Decode7Bit64(out p_BytesRead);
-            var v2 = (Int64)(v1 >> 1);
-            var v3 = v2 ^ (Int64)(v1 << 63 >> 63);
+            var v2 = (long) (v1 >> 1);
+            var v3 = v2 ^ (long) (v1 << 63 >> 63);
             return v3;
         }
 
         public int ReadZigZag()
         {
-            int s_BRead = 0;
-            return DecodeZigZag(out s_BRead);
+            return DecodeZigZag(out _);
         }
 
         public int Free7Bit()
         {
             int s_Gap = 0;
-            byte x = 0;
-            while ((x = ReadByte()) != 0)
+
+            while (ReadByte() != 0)
                 ++s_Gap;
 
             return s_Gap;

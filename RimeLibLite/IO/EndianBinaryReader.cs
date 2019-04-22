@@ -542,7 +542,7 @@ namespace RimeLib.IO
 			throw new IOException("Invalid 7-bit encoded integer in stream.");*/
 
             byte c;
-		    UInt32 s_Value = 0;
+		    uint s_Value = 0;
 		    int s = 0;
 
 		    do
