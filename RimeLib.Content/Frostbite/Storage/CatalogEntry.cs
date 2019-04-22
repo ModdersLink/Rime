@@ -37,26 +37,35 @@ namespace RimeLib.Content.Frostbite.Storage
             return "/game" + ContainedCatalog.AuthoritativePackage.Path + "/Data/" + s_CatalogName + "_" + FileNumber.ToString("D2") + ".cas";
         }
 
-        public void Serialize(RimeWriter p_Writer)
+        public bool Serialize(RimeWriter p_Writer)
         {
-            p_Writer.Write(Hash.Serialize());
+            if (!Hash.Serialize(p_Writer))
+                return false;
+
             p_Writer.Write(FileOffset);
             p_Writer.Write(FileSize);
             p_Writer.Write(FileNumber);
+
+            return true;
         }
 
-        public byte[] Serialize()
+        public bool Serialize(out byte[] p_Data)
         {
-            byte[] s_Data;
+            p_Data = new byte[0];
+
             using (var s_Writer = new RimeWriter(new MemoryStream()))
             {
-                s_Writer.Write(Hash.Serialize());
+                if (!Hash.Serialize(s_Writer))
+                    return false;
+
                 s_Writer.Write(FileOffset);
                 s_Writer.Write(FileSize);
                 s_Writer.Write(FileNumber);
-                s_Data = ((MemoryStream)s_Writer.BaseStream).ToArray();
+
+                p_Data = ((MemoryStream) s_Writer.BaseStream).ToArray();
             }
-            return s_Data;
+
+            return true;
         }
 
         public void Deserialize(RimeReader p_Reader)

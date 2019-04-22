@@ -239,9 +239,6 @@ namespace RimeLib.Frostbite.Core
 
 	    public void Assign(Vec2 p_Other)
 	    {
-		    if (p_Other == null)
-			    return;
-
 		    X = p_Other.X;
 		    Y = p_Other.Y;
 	    }

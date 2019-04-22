@@ -32,7 +32,7 @@ namespace RimeLib.Content.Frostbite.Bundles
         /// <summary>
         /// The authoritative layout for this superbundle (patched)
         /// </summary>
-        public SuperbundleLayout AuthoritativeLayout { get; set; }
+        public SuperbundleLayout? AuthoritativeLayout { get; set; }
 
         /// <summary>
         /// The base path for this superbundle
@@ -54,7 +54,7 @@ namespace RimeLib.Content.Frostbite.Bundles
         /// </summary>
         /// <param name="p_BaseLayout">The layout for describing this superbundle</param>
         /// <param name="p_AuthoritativeLayout">The authoritative layout for describing the superbundle patch</param>
-        protected SuperbundleBase(SuperbundleLayout p_BaseLayout, SuperbundleLayout p_AuthoritativeLayout = null)
+        protected SuperbundleBase(SuperbundleLayout p_BaseLayout, SuperbundleLayout? p_AuthoritativeLayout = null)
         {
             BaseLayout = p_BaseLayout;
             AuthoritativeLayout = p_AuthoritativeLayout;

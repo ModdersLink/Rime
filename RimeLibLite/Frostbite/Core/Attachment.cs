@@ -32,6 +32,7 @@ namespace RimeLib.Frostbite.Core
         /// <param name="p_Reader">Reader opened to the position of an Attachment</param>
         public Attachment(RimeReader p_Reader)
         {
+            m_Sha = new Sha1();
             Deserialize(p_Reader);
         }
 
@@ -44,12 +45,12 @@ namespace RimeLib.Frostbite.Core
             m_Sha = new Sha1(p_Sha);
         }
 
-        public void Serialize(RimeWriter p_Writer)
+        public bool Serialize(RimeWriter p_Writer)
         {
             throw new System.NotImplementedException();
         }
 
-        public byte[] Serialize()
+        public bool Serialize(out byte[] p_Data)
         {
             throw new System.NotImplementedException();
         }

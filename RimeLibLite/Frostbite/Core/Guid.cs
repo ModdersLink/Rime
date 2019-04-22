@@ -121,9 +121,6 @@ namespace RimeLib.Frostbite.Core
             if (ReferenceEquals(p_G1, p_G2))
                 return true;
 
-            if (p_G1 is null || p_G2 is null)
-                return false;
-
             return p_G1.m_Guid == p_G2.m_Guid;
         }
 
@@ -135,9 +132,6 @@ namespace RimeLib.Frostbite.Core
         /// <returns>True if not equal, false otherwise</returns>
         public static bool operator !=(GUID p_G1, GUID p_G2)
         {
-            if (p_G1 is null || p_G2 is null)
-                return true;
-
             return p_G1.m_Guid != p_G2.m_Guid;
         }
 
@@ -149,9 +143,6 @@ namespace RimeLib.Frostbite.Core
         /// <returns>True if equal, false otherwise</returns>
         public static bool operator ==(GUID p_G1, Guid p_G2)
         {
-            if (p_G1 == null)
-                return false;
-
             return p_G1.m_Guid == p_G2;
         }
 
@@ -163,9 +154,6 @@ namespace RimeLib.Frostbite.Core
         /// <returns>True if not equal, false otherwise</returns>
         public static bool operator !=(GUID p_G1, Guid p_G2)
         {
-            if (p_G1 is null)
-                return true;
-
             return p_G1.m_Guid != p_G2;
         }
 
@@ -176,9 +164,6 @@ namespace RimeLib.Frostbite.Core
         /// <returns>True if equal, false otherwise</returns>
         public override bool Equals(object p_Obj)
         {
-            if (p_Obj is null) 
-                return false;
-
             if (ReferenceEquals(this, p_Obj)) 
                 return true;
 
@@ -226,26 +211,24 @@ namespace RimeLib.Frostbite.Core
             return true;
         }
 
-
-        void IFbSerializable.Serialize(RimeWriter p_Writer)
-        {
-            p_Writer.Write(m_Guid.ToByteArray());
-        }
-
         /// <summary>
         /// Serializes the guid to a byte array
         /// </summary>
         /// <returns>Byte array containing the data of this guid</returns>
-        public byte[] Serialize()
+        public bool Serialize(out byte[] p_Data)
         {
+            p_Data = new byte[0];
+
             using (var s_Writer = new RimeWriter(new MemoryStream()))
             {
                 if (!Serialize(s_Writer))
-                    throw new Exception("GUID serialization failed.");
+                    return false;
 
                 s_Writer.Flush();
-                return ((MemoryStream) s_Writer.BaseStream).ToArray();
+                p_Data = ((MemoryStream) s_Writer.BaseStream).ToArray();
             }
+
+            return true;
         }
 
         public void Deserialize(RimeReader p_Reader)
@@ -264,7 +247,10 @@ namespace RimeLib.Frostbite.Core
         /// <returns>Whether the compression flag is set or not.</returns>
         public bool HasCompressionFlag()
         {
-            return (Serialize()[15] & 0x01) != 0;
+            if (!Serialize(out var s_Data))
+                return false;
+
+            return (s_Data[15] & 0x01) != 0;
         }
 
         /// <summary>
@@ -273,7 +259,8 @@ namespace RimeLib.Frostbite.Core
         /// <param name="p_Compressed">Compression flag</param>
         public void SetCompressionFlag(bool p_Compressed)
         {
-            var s_Data = Serialize();
+            if (!Serialize(out var s_Data))
+                return;
 
             if (p_Compressed)
                 s_Data[15] |= 0x01;

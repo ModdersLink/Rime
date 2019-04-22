@@ -47,21 +47,20 @@ namespace RimeLib.Frostbite.Db
             return true;
         }
 
-        void IFbSerializable.Serialize(RimeWriter p_Writer)
+        public bool Serialize(out byte[] p_Data)
         {
-            throw new NotImplementedException();
-        }
+            p_Data = new byte[0];
 
-        public byte[] Serialize()
-        {
             using (var s_Writer = new RimeWriter(new MemoryStream()))
             {
                 if (!Serialize(s_Writer))
-                    throw new Exception("DbObjectTimespan serialization failed.");
+                    return false;
 
                 s_Writer.Flush();
-                return ((MemoryStream) s_Writer.BaseStream).ToArray();
+                p_Data = ((MemoryStream) s_Writer.BaseStream).ToArray();
             }
+
+            return true;
         }
     }
 }

@@ -31,7 +31,7 @@ namespace RimeLib.Content.Frostbite.Bundles.Venice
                 for (var i = 0; i < s_Bundles.Count; ++i)
                 {
                     var s_BundleEntry = new BundleEntry(s_Bundles[i].Value as DbObject, this);
-                    BundleEntries.TryAdd(s_BundleEntry.ID.ToLowerInvariant(), s_BundleEntry);
+                    BundleEntries.TryAdd(s_BundleEntry.Id.ToLowerInvariant(), s_BundleEntry);
                 }
             }
             

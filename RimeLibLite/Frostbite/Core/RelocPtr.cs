@@ -17,14 +17,7 @@ namespace RimeLib.Frostbite.Core
         /// <summary>
         /// 
         /// </summary>
-        public T Get { get; private set; }
-
-        /// <summary>
-        /// Default constructor
-        /// </summary>
-        public RelocPtr()
-        {
-        }
+        public T Object { get; }
 
         /// <summary>
         /// Constructor that takes an opened reader to read out a RelocPtr
@@ -32,115 +25,110 @@ namespace RimeLib.Frostbite.Core
         /// <param name="p_Reader">Reader opened to the position of RelocPtr</param>
         public RelocPtr(RimeReader p_Reader)
         {
-            Deserialize(p_Reader);
+            Object = DeserializeObject(p_Reader);
         }
 
-        public void Serialize(RimeWriter p_Writer)
+        public bool Serialize(RimeWriter p_Writer)
         {
             throw new NotImplementedException();
         }
 
-        public byte[] Serialize()
+        public bool Serialize(out byte[] p_Data)
         {
             throw new NotImplementedException();
         }
 
         public void Deserialize(RimeReader p_Reader)
         {
+            DeserializeObject(p_Reader);
+        }
+
+        public T DeserializeObject(RimeReader p_Reader)
+        {
             BaseAddress = p_Reader.ReadUInt32();
             p_Reader.ReadUInt32();
 
             if (BaseAddress == 0)
-                return;
+                throw new Exception("Invalid base address found in RelocPtr");
 
             // Save the offset
             var s_CurOffset = p_Reader.BaseStream.Position;
 
-            // We will need to create a new instance of the class we want here, so lets start...
-            // Set the position to where we need to go
-            p_Reader.BaseStream.Position = (long)BaseAddress;
-
-            // Get the current type
-            var s_Type = typeof(T);
-            
-            switch (Type.GetTypeCode(s_Type))
+            try
             {
-                case TypeCode.String:
-                    Get = (T) Convert.ChangeType(p_Reader.ReadNullTerminatedString(), typeof(T)); // This could be problematic later, time will tell
-                    break;
+                // We will need to create a new instance of the class we want here, so lets start...
+                // Set the position to where we need to go
+                p_Reader.BaseStream.Position = (long) BaseAddress;
 
-                case TypeCode.Boolean:
-                    Get = (T) Convert.ChangeType(p_Reader.ReadByte(), typeof(T));
-                    break;
+                // Get the current type
+                var s_Type = typeof(T);
 
-                case TypeCode.Byte:
-                    Get = (T) Convert.ChangeType(p_Reader.ReadByte(), typeof(T));
-                    break;
+                switch (Type.GetTypeCode(s_Type))
+                {
+                    case TypeCode.String:
+                        return (T) Convert.ChangeType(p_Reader.ReadNullTerminatedString(), typeof(T)); // This could be problematic later, time will tell
 
-                case TypeCode.SByte:
-                    Get = (T) Convert.ChangeType(p_Reader.ReadSByte(), typeof(T));
-                    break;
+                    case TypeCode.Boolean:
+                        return (T) Convert.ChangeType(p_Reader.ReadByte(), typeof(T));
 
-                case TypeCode.Char:
-                    Get = (T) Convert.ChangeType(p_Reader.ReadChar(), typeof(T));
-                    break;
+                    case TypeCode.Byte:
+                        return (T) Convert.ChangeType(p_Reader.ReadByte(), typeof(T));
 
-                case TypeCode.Decimal:
-                    Get = (T) Convert.ChangeType(p_Reader.ReadDecimal(), typeof(T));
-                    break;
+                    case TypeCode.SByte:
+                        return (T) Convert.ChangeType(p_Reader.ReadSByte(), typeof(T));
 
-                case TypeCode.Double:
-                    Get = (T) Convert.ChangeType(p_Reader.ReadDouble(), typeof(T));
-                    break;
+                    case TypeCode.Char:
+                        return (T) Convert.ChangeType(p_Reader.ReadChar(), typeof(T));
 
-                case TypeCode.Single:
-                    Get = (T) Convert.ChangeType(p_Reader.ReadSingle(), typeof(T));
-                    break;
+                    case TypeCode.Decimal:
+                        return (T) Convert.ChangeType(p_Reader.ReadDecimal(), typeof(T));
 
-                case TypeCode.Int32:
-                    Get = (T) Convert.ChangeType(p_Reader.ReadInt32(), typeof(T));
-                    break;
+                    case TypeCode.Double:
+                        return (T) Convert.ChangeType(p_Reader.ReadDouble(), typeof(T));
 
-                case TypeCode.UInt32:
-                    Get = (T) Convert.ChangeType(p_Reader.ReadUInt32(), typeof(T));
-                    break;
+                    case TypeCode.Single:
+                        return (T) Convert.ChangeType(p_Reader.ReadSingle(), typeof(T));
 
-                case TypeCode.Int64:
-                    Get = (T) Convert.ChangeType(p_Reader.ReadInt64(), typeof(T));
-                    break;
+                    case TypeCode.Int32:
+                        return (T) Convert.ChangeType(p_Reader.ReadInt32(), typeof(T));
 
-                case TypeCode.UInt64:
-                    Get = (T) Convert.ChangeType(p_Reader.ReadUInt64(), typeof(T));
-                    break;
+                    case TypeCode.UInt32:
+                        return (T) Convert.ChangeType(p_Reader.ReadUInt32(), typeof(T));
 
-                case TypeCode.Int16:
-                    Get = (T) Convert.ChangeType(p_Reader.ReadInt16(), typeof(T));
-                    break;
+                    case TypeCode.Int64:
+                        return (T) Convert.ChangeType(p_Reader.ReadInt64(), typeof(T));
 
-                case TypeCode.UInt16:
-                    Get = (T) Convert.ChangeType(p_Reader.ReadUInt16(), typeof(T));
-                    break;
+                    case TypeCode.UInt64:
+                        return (T) Convert.ChangeType(p_Reader.ReadUInt64(), typeof(T));
 
-                case TypeCode.Object:
-                    // Check if IFbSerializable this is an IFbSerializable.
-                    if (!s_Type.IsSubclassOf(typeof(IFbSerializable)))
-                    {
-                        // TODO: Exception message
+                    case TypeCode.Int16:
+                        return (T) Convert.ChangeType(p_Reader.ReadInt16(), typeof(T));
+
+                    case TypeCode.UInt16:
+                        return (T) Convert.ChangeType(p_Reader.ReadUInt16(), typeof(T));
+
+                    case TypeCode.Object:
+                        // Check if IFbSerializable this is an IFbSerializable.
+                        if (!s_Type.IsSubclassOf(typeof(IFbSerializable)))
+                        {
+                            // TODO: Exception message
+                            throw new NotImplementedException();
+                        }
+
+                        var s_Val = (IFbSerializable) Activator.CreateInstance(typeof(T), new object[] { });
+                        s_Val.Deserialize(p_Reader);
+
+                        return (T) s_Val;
+
+                    default:
                         throw new NotImplementedException();
-                    }
-
-                    Get = (T) Activator.CreateInstance(typeof(T), new object[] { });
-                    ((IFbSerializable) Get).Deserialize(p_Reader);
-
-                    break;
-
-                default:
-                    throw new NotImplementedException();
+                }
             }
-            
-
-            // Reset the position
-            p_Reader.BaseStream.Position = s_CurOffset;
+            finally
+            {
+                // Reset the position
+                p_Reader.BaseStream.Position = s_CurOffset;
+            }
         }
 
         public void Deserialize(byte[] p_Data)

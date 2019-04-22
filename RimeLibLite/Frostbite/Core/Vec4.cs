@@ -304,9 +304,6 @@ namespace RimeLib.Frostbite.Core
         /// <param name="p_Other">Vector</param>
 	    public void Assign(Vec4 p_Other)
 	    {
-		    if (p_Other == null)
-			    return;
-
 		    X = p_Other.X;
 		    Y = p_Other.Y;
 		    Z = p_Other.Z;

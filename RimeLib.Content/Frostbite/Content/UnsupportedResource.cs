@@ -18,7 +18,7 @@
         /// <summary>
         /// Resource metadata
         /// </summary>
-        public byte[] Meta { get; set; }
+        public byte[]? Meta { get; set; }
 
         /// <summary>
         /// Type of resource
@@ -31,7 +31,7 @@
         /// <param name="p_Type">Type of the resource</param>
         /// <param name="p_Data">Data of the resource</param>
         /// <param name="p_Meta">Metadata of the resource</param>
-        public UnsupportedResource(ResourceType p_Type, byte[] p_Data, byte[] p_Meta = null)
+        public UnsupportedResource(ResourceType p_Type, byte[] p_Data, byte[]? p_Meta = null)
         {
             m_Type = p_Type;
             Data = p_Data;
@@ -43,7 +43,7 @@
             return Data;
         }
 
-        public override byte[] SerializeMeta()
+        public override byte[]? SerializeMeta()
         {
             return Meta;
         }

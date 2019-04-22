@@ -86,28 +86,18 @@ namespace RimeLib.IO
 		/// <param name="p_BitConverter">Converter to use when reading data</param>
 		/// <param name="p_Stream">Stream to read data from</param>
 		/// <param name="p_Encoding">Encoding to use when reading character data</param>
-		protected EndianBinaryReader (EndianBitConverter p_BitConverter,	Stream p_Stream, Encoding p_Encoding)
+		protected EndianBinaryReader(EndianBitConverter p_BitConverter, Stream p_Stream, Encoding p_Encoding)
 		{
-			if (p_BitConverter==null)
-			{
-				throw new ArgumentNullException("p_BitConverter");
-			}
-
-			if (p_Encoding==null)
-			{
-				throw new ArgumentNullException("p_Encoding");
-			}
-
-			if (p_Stream != null && !p_Stream.CanRead)
+			if (!p_Stream.CanRead)
 			{
 				throw new ArgumentException("Stream isn't writable", "p_Stream");
 			}
 
-			this.m_Stream = p_Stream;
-			this.m_BitConverter = p_BitConverter;
-			this.m_Encoding = p_Encoding;
-			this.m_Decoder = p_Encoding.GetDecoder();
-			this.m_MinBytesPerChar = 1;
+			m_Stream = p_Stream;
+			m_BitConverter = p_BitConverter;
+			m_Encoding = p_Encoding;
+			m_Decoder = p_Encoding.GetDecoder();
+			m_MinBytesPerChar = 1;
 
 			if (p_Encoding is UnicodeEncoding)
 			{

@@ -25,16 +25,18 @@ namespace RimeLib.Content.IO
         private List<DeltaBundleRun> m_Runs;
 
         public RimeMultiplexedReader(RimeReader p_PatchedReader, RimeReader p_BaseReader, Endianness p_Endianness)
-            : base(null, p_Endianness)
+            : base(new MemoryStream(), p_Endianness)
         {
+            m_Runs = new List<DeltaBundleRun>();
             m_Position = 0;
             m_Buffers = new [] { p_PatchedReader, p_BaseReader };
             ReadRuns();
         }
 
         public RimeMultiplexedReader(RimeReader p_PatchedReader, RimeReader p_BaseReader, Encoding p_Encoding, Endianness p_Endianness)
-            : base(null, p_Encoding, p_Endianness)
+            : base(new MemoryStream(), p_Encoding, p_Endianness)
         {
+            m_Runs = new List<DeltaBundleRun>();
             m_Position = 0;
             m_Buffers = new [] { p_PatchedReader, p_BaseReader };
             ReadRuns();
@@ -44,8 +46,6 @@ namespace RimeLib.Content.IO
         {
             m_Cursor = 0;
             m_Remaining = 0;
-
-            m_Runs = new List<DeltaBundleRun>();
 
             // Do we have enough data for reading the patch header?
             if (m_Buffers[0].BaseStream.Position + 16 > m_Buffers[0].BaseStream.Length)

@@ -165,7 +165,7 @@ namespace RimeLib.Mesh.Frostbite.Fb2
         /// Writes the mesh layout to an opened writer
         /// </summary>
         /// <param name="p_Writer">Writer opened to the position of the mesh layout</param>
-        public void Serialize(RimeWriter p_Writer)
+        public bool Serialize(RimeWriter p_Writer)
         {
             p_Writer.Write((uint) Type);
 
@@ -191,9 +191,11 @@ namespace RimeLib.Mesh.Frostbite.Fb2
             p_Writer.Write(BoneIndexArrayPartBoundingBoxes.BaseAddress);
             p_Writer.Write(BoneShortNameArrayPartTransforms.BaseAddress);
             p_Writer.Write(SubsetPartIndices);
+
+            return true;
         }
 
-        public byte[] Serialize()
+        public bool Serialize(out byte[] p_Data)
         {
             throw new NotImplementedException();
         }

@@ -10,7 +10,7 @@ namespace RimeLib.Frostbite.Db
     /// <summary>
     /// Implementation of fb::DbObject
     /// </summary>
-    [JsonConverter(typeof(DbObjectConverter))]
+    [JsonConverter(typeof(DbObjectJsonConverter))]
     public class DbObject : IFbSerializable
     {
         private readonly List<DbObjectElement> m_Elements = new List<DbObjectElement>();
@@ -21,10 +21,7 @@ namespace RimeLib.Frostbite.Db
         /// </summary>
         /// <param name="p_Index">Integer indexer</param>
         /// <returns>Object element into this object</returns>
-        public DbObjectElement this[int p_Index]
-        {
-            get { return m_Elements[p_Index]; }
-        }
+        public DbObjectElement this[int p_Index] => m_Elements[p_Index];
 
         /// <summary>
         /// Indexer into the dboject by string
@@ -39,18 +36,12 @@ namespace RimeLib.Frostbite.Db
         /// <summary>
         /// Gets the count of elements in this object
         /// </summary>
-        public int Count
-        {
-            get { return m_Elements.Count; }
-        }
+        public int Count => m_Elements.Count;
 
         /// <summary>
         /// Does this object have any elements
         /// </summary>
-        public bool Null
-        {
-            get { return m_Elements?.Any() ?? false; }
-        }
+        public bool Null => m_Elements?.Any() ?? false;
 
         /// <summary>
         /// Default constructor
@@ -114,6 +105,40 @@ namespace RimeLib.Frostbite.Db
         }
 
         /// <summary>
+        /// Get the element for a specific field key.
+        /// </summary>
+        /// <typeparam name="T">The type of the element</typeparam>
+        /// <param name="p_Key">The field key</param>
+        /// <returns>The associated element</returns>
+        public DbObjectElement<T> GetByKey<T>(string p_Key)
+        {
+            var s_Element = m_Elements.First(p_Element => p_Element.FieldName.Equals(p_Key, StringComparison.InvariantCultureIgnoreCase));
+
+            if (!s_Element.TryGetSpecialization<T>(out var s_SpecializedElement))
+                throw new Exception("Could not get element of expected type.");
+
+            return s_SpecializedElement;
+        }
+
+        /// <summary>
+        /// Tries to get the element for a specific field key.
+        /// </summary>
+        /// <typeparam name="T">The type of the element</typeparam>
+        /// <param name="p_Key">The field key</param>
+        /// <param name="p_Value">The associated element</param>
+        /// <returns>True if the element was found and was of the right type, false otherwise.</returns>
+        public bool TryGetByKey<T>(string p_Key, out DbObjectElement<T>? p_Value)
+        {
+            var s_Element = m_Elements.FirstOrDefault(p_Element => p_Element.FieldName.Equals(p_Key, StringComparison.InvariantCultureIgnoreCase));
+            p_Value = null;
+
+            if (s_Element == null)
+                return false;
+
+            return s_Element.TryGetSpecialization(out p_Value);
+        }
+
+        /// <summary>
         /// ToString
         /// </summary>
         /// <returns>DbObject serialized in json format</returns>
@@ -135,10 +160,22 @@ namespace RimeLib.Frostbite.Db
             return true;
         }
 
-        void IFbSerializable.Serialize(RimeWriter p_Writer)
+        public bool Serialize(out byte[] p_Data)
         {
-            foreach (var s_Element in m_Elements)
-                s_Element.Serialize(p_Writer);
+            p_Data = new byte[0];
+
+            var s_Stream = new MemoryStream();
+
+            using (var s_Writer = new RimeWriter(s_Stream))
+            {
+                foreach (var s_Element in m_Elements)
+                    if (!s_Element.Serialize(s_Writer))
+                        return false;
+
+                p_Data = s_Stream.ToArray();
+            }
+
+            return true;
         }
 
         /// <summary>
@@ -170,14 +207,14 @@ namespace RimeLib.Frostbite.Db
         /// <summary>
         /// Adds and element to this dbobject
         /// </summary>
-        /// <param name="p_Element">Filled out DbObjectElement structure</param>
+        /// <param name="p_NewElement">Filled out DbObjectElement structure</param>
         /// <returns>True on success, false otherwise</returns>
-        public bool AddElement(DbObjectElement p_Element)
+        public bool AddElement(DbObjectElement p_NewElement)
         {
-            if (!string.IsNullOrWhiteSpace(p_Element.FieldName) && m_Elements.Any(l_Element => l_Element.FieldName == p_Element.FieldName))
+            if (!string.IsNullOrWhiteSpace(p_NewElement.FieldName) && m_Elements.Any(p_Element => p_Element.FieldName == p_NewElement.FieldName))
                 return false;
 
-            m_Elements.Add(p_Element);
+            m_Elements.Add(p_NewElement);
 
             return true;
         }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using RimeLib.Frostbite;
 using RimeLib.IO;
@@ -42,9 +43,14 @@ namespace RimeLib.Mesh.Frostbite
                 Deserialize(p_Reader);
             }
 
-            public void Serialize(RimeWriter p_Writer)
+            public bool Serialize(RimeWriter p_Writer)
             {
-                throw new System.NotImplementedException();
+                throw new NotImplementedException();
+            }
+
+            public bool Serialize(out byte[] p_Data)
+            {
+                throw new NotImplementedException();
             }
 
             /// <summary>
@@ -55,12 +61,13 @@ namespace RimeLib.Mesh.Frostbite
             {
                 byte[] s_Data;
 
-                using (var s_Writer = new RimeWriter(new MemoryStream()))
+                var s_Stream = new MemoryStream();
+                using (var s_Writer = new RimeWriter(s_Stream))
                 {
                     s_Writer.Write(Stride);
                     s_Writer.Write((byte)Classification);
 
-                    s_Data = (s_Writer.BaseStream as MemoryStream)?.ToArray();
+                    s_Data = s_Stream.ToArray();
                 }
 
                 return s_Data;
@@ -112,30 +119,29 @@ namespace RimeLib.Mesh.Frostbite
                 Deserialize(p_Reader);
             }
 
-            public void Serialize(RimeWriter p_Writer)
+            public bool Serialize(RimeWriter p_Writer)
             {
                 throw new System.NotImplementedException();
             }
-
+            
             /// <summary>
             /// Serializes a element
             /// </summary>
             /// <returns>byte[] containing the data of an element</returns>
-            public byte[] Serialize()
+            public bool Serialize(out byte[] p_Data)
             {
-                byte[] s_Data;
-
+                var s_Stream = new MemoryStream();
                 using (var s_Writer = new RimeWriter(new MemoryStream()))
                 {
-                    s_Writer.Write((byte)Usage);
-                    s_Writer.Write((byte)Format);
+                    s_Writer.Write((byte) Usage);
+                    s_Writer.Write((byte) Format);
                     s_Writer.Write(Offset);
                     s_Writer.Write(StreamIndex);
 
-                    s_Data = (s_Writer.BaseStream as MemoryStream)?.ToArray();
+                    p_Data = s_Stream.ToArray();
                 }
 
-                return s_Data;
+                return true;
             }
 
             public void Deserialize(RimeReader p_Reader)
@@ -156,7 +162,7 @@ namespace RimeLib.Mesh.Frostbite
         private List<Stream> m_Streams = new List<Stream>(); // [4]
         private byte m_ElementCount;
         private byte m_StreamCount;
-        private byte[] m_Padding; // Len2
+        private byte[] m_Padding = new byte[2]; // Len2
 
         /// <summary>
         /// Default constructor
@@ -179,10 +185,11 @@ namespace RimeLib.Mesh.Frostbite
         /// Serializes this geometry declaration descriptor
         /// </summary>
         /// <param name="p_Writer">Writer opened to the position where this descriptor should be written</param>
-        public void Serialize(RimeWriter p_Writer)
+        public bool Serialize(RimeWriter p_Writer)
         {
             foreach (var s_Element in m_Elements)
-                p_Writer.Write(s_Element.Serialize());
+                if (!s_Element.Serialize(p_Writer))
+                    return false;
 
             foreach (var s_Stream in m_Streams)
                 p_Writer.Write(s_Stream.Serialize());
@@ -190,9 +197,11 @@ namespace RimeLib.Mesh.Frostbite
             p_Writer.Write(m_ElementCount);
             p_Writer.Write(m_StreamCount);
             p_Writer.Write(m_Padding);
+
+            return true;
         }
 
-        public byte[] Serialize()
+        public bool Serialize(out byte[] p_Data)
         {
             throw new System.NotImplementedException();
         }

@@ -81,24 +81,28 @@ namespace RimeLib.Mesh.Frostbite.Fb2
         /// Writes a MeshSetLayout to an opened writer
         /// </summary>
         /// <param name="p_Writer">Writer opened to the position of a MeshSetLayout</param>
-        public void Serialize(RimeWriter p_Writer)
+        public bool Serialize(RimeWriter p_Writer)
         {
             p_Writer.Write((uint)MeshType);
             p_Writer.Write((uint)Flags);
             p_Writer.Write(LodCount);
             p_Writer.Write(TotalSubsetCount);
+
             BoundingBox.Serialize(p_Writer);
+
             // This should be 5 iterations
-            foreach (var l_Lod in Lods)
-                p_Writer.Write(l_Lod.BaseAddress);
+            foreach (var s_Lod in Lods)
+                p_Writer.Write(s_Lod.BaseAddress);
 
             p_Writer.Write(Name.BaseAddress);
             p_Writer.Write(ShortName.BaseAddress);
             p_Writer.Write(NameHash);
             p_Writer.Write(Padding);
+
+            return true;
         }
 
-        public byte[] Serialize()
+        public bool Serialize(out byte[] p_Data)
         {
             throw new System.NotImplementedException();
         }

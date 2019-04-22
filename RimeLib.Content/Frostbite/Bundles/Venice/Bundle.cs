@@ -83,7 +83,7 @@ namespace RimeLib.Content.Frostbite.Bundles.Venice
         public Bundle(BundleManifest p_Manifest, RimeReader p_Reader, BundleEntry p_Entry)
         {
             Entry = p_Entry;
-            Path = p_Entry.ID;
+            Path = p_Entry.Id;
 
             if (p_Manifest.RealManifest.EbxMode)
                 ParseEbxBundle(p_Manifest, p_Reader);

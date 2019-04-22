@@ -8,7 +8,7 @@
         /// <summary>
         /// Name of the superbundle
         /// </summary>
-        public string Name { get; set; }
+        public string Name { get; set; } = "";
 
         /// <summary>
         /// Path of the base superbundle
@@ -28,22 +28,15 @@
         /// <summary>
         /// Authoritative (patched) package manifest that this entry is a part of
         /// </summary>
-        public PackageManifest AuthoritativePackage { get; set; }
+        public PackageManifest? AuthoritativePackage { get; set; }
 
         /// <summary>
         /// Default constructor
         /// </summary>
-        public SuperbundleEntry()
-        {
-        }
-
-        /// <summary>
-        /// Default constructor by name
-        /// </summary>
-        /// <param name="p_Name">Name of the superbundle</param>
-        public SuperbundleEntry(string p_Name)
+        public SuperbundleEntry(string p_Name, PackageManifest p_ContainedPackage)
         {
             Name = p_Name;
+            ContainedPackage = p_ContainedPackage;
         }
 
         /// <summary>
@@ -66,7 +59,7 @@
         protected string GetPatchPath()
         {
             if (AuthoritativePackage == null)
-                return null;
+                return "";
 
             return "/game" + AuthoritativePackage.Path + "/Data/" + Name;
         }

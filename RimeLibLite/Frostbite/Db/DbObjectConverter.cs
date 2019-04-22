@@ -1,317 +1,324 @@
-﻿using System;
-using Newtonsoft.Json;
-using RimeLib.Frostbite.Core;
+﻿using RimeLib.Frostbite.Core;
+using System;
+using System.Collections;
 
 namespace RimeLib.Frostbite.Db
 {
-    class DbObjectConverter : JsonConverter
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface, AllowMultiple = false, Inherited = true)]
+    public sealed class DbObjectAttribute : Attribute
     {
-        public override void WriteJson(JsonWriter p_Writer, object p_Value, JsonSerializer p_Serializer)
+        // This attribute does nothing else other than specify that this class is eligible for serialization to/from DbObject.
+    }
+
+    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
+    public sealed class DbObjectFieldAttribute : Attribute
+    {
+        public string FieldName { get; set; }
+
+        /// <summary>
+        /// When a field is of type `long`, this specifies whether it 
+        /// should be encoded as a variable length integer or not.
+        /// </summary>
+        public bool VariableLength { get; set; }
+
+        public DbObjectFieldAttribute(string p_FieldName, bool p_VariableLength = false)
         {
-            switch (p_Value)
+            FieldName = p_FieldName;
+            VariableLength = p_VariableLength;
+        }
+    }
+
+    [DbObject]
+    public interface IDbObjectSerializable
+    {
+    }
+
+    public class DbObjectConverter
+    {
+        /// <summary>
+        /// Converts a managed object to a DbObject.
+        /// </summary>
+        /// <typeparam name="T">The type of the object to convert. Must derive from IDbObjectSerializable.</typeparam>
+        /// <param name="p_Object">The object to convert</param>
+        /// <returns>The converted DbObject</returns>
+        public static DbObject ConvertTo<T>(T p_Object) where T : IDbObjectSerializable
+        {
+            // Check if we have the DbObject attribute.
+            var s_Type = p_Object.GetType();
+            var s_DbObjectAttributes = s_Type.GetCustomAttributes(typeof(DbObjectAttribute), true);
+
+            if (s_DbObjectAttributes.Length == 0)
+                throw new ArgumentException("Provided object does not inherit from IDbObjectSerializable.");
+
+            var s_Object = new DbObject();
+
+            // Map out all the fields that have the DbObjectField attribute.
+            foreach (var s_Property in s_Type.GetProperties())
             {
-                case DbObject s_DbObject:
-                    WriteDbObjectJson(p_Writer, s_DbObject, p_Serializer);
-                    break;
+                var s_PropertyAttributes = s_Property.GetCustomAttributes(typeof(DbObjectFieldAttribute), true);
 
-                case DbObjectElement s_Element:
-                    WriteDbObjectElementJson(p_Writer, s_Element, p_Serializer);
-                    break;
+                if (s_PropertyAttributes.Length == 0)
+                    continue;
 
-                default:
-                    throw new NotImplementedException("Tried to serialize an unsupported type.");
-            }
+                var s_Attribute = (DbObjectFieldAttribute) s_PropertyAttributes[0];
+                s_Object.AddElement(ConvertObject(s_Property.GetValue(p_Object), s_Attribute.FieldName, s_Attribute.VariableLength));
+            }            
+
+            return s_Object;
         }
 
-        protected void WriteDbObjectJson(JsonWriter p_Writer, DbObject p_Object, JsonSerializer p_Serializer)
+        /// <summary>
+        /// Converts a DbObject to a managed object.
+        /// </summary>
+        /// <typeparam name="T">The type of the object to convert. Must derive from IDbObjectSerializable.</typeparam>
+        /// <param name="p_Object">The DbObject to convert</param>
+        /// <returns>The converted managed object</returns>
+        public static T ConvertFrom<T>(DbObject p_Object) where T : IDbObjectSerializable, new()
         {
-            if (p_Object.Count == 0)
-                return;
+            var s_Type = typeof(T);
 
-            if (p_Object.Count > 1 && string.IsNullOrWhiteSpace(p_Object[0].FieldName))
+            var s_DbObjectAttributes = s_Type.GetCustomAttributes(typeof(DbObjectAttribute), true);
+
+            if (s_DbObjectAttributes.Length == 0)
+                throw new ArgumentException("Provided object does not inherit from IDbObjectSerializable.");
+
+            var s_Object = new T();
+
+            foreach (var s_Property in s_Type.GetProperties())
             {
-                p_Writer.WriteStartArray();
+                // Check if we have the DbObjectField attribute.
+                var s_PropertyAttributes = s_Property.GetCustomAttributes(typeof(DbObjectFieldAttribute), true);
 
-                for (var i = 0; i < p_Object.Count; ++i)
+                if (s_PropertyAttributes.Length == 0)
+                    continue;
+
+                var s_Attribute = (DbObjectFieldAttribute) s_PropertyAttributes[0];
+                var s_IsNullable = Nullable.GetUnderlyingType(s_Property.PropertyType) != null;
+                var s_HasKey = p_Object.HasKey(s_Attribute.FieldName);
+
+                // If we don't have this field and the property is not nullable then throw an exception.
+                if (!s_HasKey && !s_IsNullable)
+                    throw new Exception($"Could not find expected field '{s_Attribute.FieldName}' for property '{s_Property.Name}' in DbObject.");
+
+                // If we don't have the key and this is nullable just set to null.
+                if (!s_HasKey && s_IsNullable)
                 {
-                    var s_Element = p_Object[i];
-                    p_Serializer.Serialize(p_Writer, s_Element);
+                    s_Property.SetValue(s_Object, null);
+                    continue;
                 }
 
-                p_Writer.WriteEndArray();
-
-                return;
-            } 
-            
-            if (p_Object.Count == 1 && string.IsNullOrWhiteSpace(p_Object[0].FieldName))
-            {
-                p_Serializer.Serialize(p_Writer, p_Object[0]);
-                return;
+                // Otherwise parse normally.
+                var s_Value = ConvertField(p_Object[s_Attribute.FieldName], s_Property.PropertyType);
+                s_Property.SetValue(s_Object, s_Value);
             }
 
-            p_Writer.WriteStartObject();
+            return s_Object;
+        }
 
-            for (var i = 0; i < p_Object.Count; ++i)
+        private static void EnsureElementType(DbObjectElement p_Element, params DbObjectType[] p_ExpectedTypes)
+        {
+            if (Array.IndexOf(p_ExpectedTypes, p_Element.Type) == -1)
+                throw new Exception($"Tried deserializing DbObject element of type '{p_Element.Type}' when we were expecting '{string.Join(", ", p_ExpectedTypes)}'.");
+        }
+
+        private static object? ConvertField(DbObjectElement p_Element, Type s_FieldType)
+        {
+            // Check if we need to return null.
+            var s_IsNullable = Nullable.GetUnderlyingType(s_FieldType) != null;
+
+            if (s_IsNullable && p_Element.Type == DbObjectType.Null)
+                return null;
+
+            if (!s_IsNullable && p_Element.Type == DbObjectType.Null)
+                throw new Exception("Received null DbObject element for non-nullable field.");
+
+            // If this is an array then we need to handle it separately.
+            if (s_FieldType.IsArray)
             {
-                var s_Element = p_Object[i];
+                // Handle byte arrays separately from all other arrays.
+                if (s_FieldType == typeof(byte[]))
+                {
+                    // Ensure the element is of the right type.
+                    EnsureElementType(p_Element, DbObjectType.Blob);
+                    return p_Element.Value;
+                }
 
-                p_Writer.WritePropertyName(s_Element.FieldName);
-                p_Serializer.Serialize(p_Writer, s_Element);
+                // Ensure the element is of the right type.
+                EnsureElementType(p_Element, DbObjectType.Array);
+
+                var s_ArrayItemType = s_FieldType.GetElementType();
+                var s_DbArray = (DbObject) p_Element.Value;
+
+                // Create our array.
+                var s_Array = Array.CreateInstance(s_ArrayItemType, s_DbArray.Count);
+
+                // Convert every object and assign it to the array.
+                for (var i = 0; i < s_DbArray.Count; ++i)
+                {
+                    var s_Element = s_DbArray[i];
+                    s_Array.SetValue(ConvertField(s_Element, s_ArrayItemType), i);
+                }
+
+                return s_Array;
             }
 
-            p_Writer.WriteEndObject();
-        }
-
-        protected void WriteDbObjectElementJson(JsonWriter p_Writer, DbObjectElement p_Object, JsonSerializer p_Serializer)
-        {
-            switch (p_Object.Type)
+            // If this property derives from IDbObjectSerializable then handle it separately.
+            if (s_FieldType.IsAssignableFrom(typeof(IDbObjectSerializable)))
             {
-                case DbObjectType.Eoo:
-                    break;
+                // Ensure the element is of the right type.
+                EnsureElementType(p_Element, DbObjectType.Object);
 
-                case DbObjectType.Null:
-                    WriteNull(p_Writer, p_Object, p_Serializer);
-                    break;
-
-                case DbObjectType.Array:
-                    WriteArray(p_Writer, p_Object, p_Serializer);
-                    break;
-
-                case DbObjectType.Object:
-                    WriteObject(p_Writer, p_Object, p_Serializer);
-                    break;
-
-                case DbObjectType.HomoArray:
-                    WriteHomoArray(p_Writer, p_Object, p_Serializer);
-                    break;
-
-                case DbObjectType.ObjectId:
-                    WriteObjectId(p_Writer, p_Object, p_Serializer);
-                    break;
-
-                case DbObjectType.Bool:
-                    WriteBool(p_Writer, p_Object, p_Serializer);
-                    break;
-
-                case DbObjectType.String:
-                    WriteString(p_Writer, p_Object, p_Serializer);
-                    break;
-
-                case DbObjectType.Integer:
-                    WriteInteger(p_Writer, p_Object, p_Serializer);
-                    break;
-
-                case DbObjectType.Long:
-                    WriteLong(p_Writer, p_Object, p_Serializer);
-                    break;
-
-                case DbObjectType.VarInt:
-                    WriteVarInt(p_Writer, p_Object, p_Serializer);
-                    break;
-
-                case DbObjectType.Float:
-                    WriteFloat(p_Writer, p_Object, p_Serializer);
-                    break;
-
-                case DbObjectType.Double:
-                    WriteDouble(p_Writer, p_Object, p_Serializer);
-                    break;
-
-                case DbObjectType.Timestamp:
-                    WriteTimestamp(p_Writer, p_Object, p_Serializer);
-                    break;
-
-                case DbObjectType.RecordId:
-                    WriteRecordId(p_Writer, p_Object, p_Serializer);
-                    break;
-
-                case DbObjectType.Guid:
-                    WriteGuid(p_Writer, p_Object, p_Serializer);
-                    break;
-
-                case DbObjectType.Sha1:
-                    WriteSha1(p_Writer, p_Object, p_Serializer);
-                    break;
-
-                case DbObjectType.Blob:
-                    WriteBlob(p_Writer, p_Object, p_Serializer);
-                    break;
-
-                case DbObjectType.Attachment:
-                    WriteAttachment(p_Writer, p_Object, p_Serializer);
-                    break;
-
-                case DbObjectType.Timespan:
-                    WriteTimespan(p_Writer, p_Object, p_Serializer);
-                    break;
-
-                default:
-                    // TODO: Better exception message.
-                    throw new NotImplementedException("");
+                // Call ConvertFrom with the property type as the generic parameter.
+                var s_Method = typeof(DbObjectConverter).GetMethod("ConvertFrom").MakeGenericMethod(s_FieldType);
+                return s_Method.Invoke(null, new[] { p_Element.Value });
             }
+
+            // Handle primitive types.
+            if (s_FieldType == typeof(string))
+            {
+                EnsureElementType(p_Element, DbObjectType.String);
+                return p_Element.Value;
+            }
+
+            if (s_FieldType == typeof(bool))
+            {
+                EnsureElementType(p_Element, DbObjectType.Bool);
+                return p_Element.Value;
+            }
+
+            if (s_FieldType == typeof(int))
+            {
+                EnsureElementType(p_Element, DbObjectType.Integer);
+                return p_Element.Value;
+            }
+
+            if (s_FieldType == typeof(long))
+            {
+                EnsureElementType(p_Element, DbObjectType.Long, DbObjectType.VarInt);
+                return p_Element.Value;
+            }
+
+            if (s_FieldType == typeof(float))
+            {
+                EnsureElementType(p_Element, DbObjectType.Float);
+                return p_Element.Value;
+            }
+
+            if (s_FieldType == typeof(double))
+            {
+                EnsureElementType(p_Element, DbObjectType.Double);
+                return p_Element.Value;
+            }
+
+            // Handle all other core types.
+            if (s_FieldType == typeof(ObjectId))
+            {
+                EnsureElementType(p_Element, DbObjectType.ObjectId);
+                return p_Element.Value;
+            }
+
+            if (s_FieldType == typeof(DbObjectTimestamp))
+            {
+                EnsureElementType(p_Element, DbObjectType.Timestamp);
+                return p_Element.Value;
+            }
+
+            if (s_FieldType == typeof(RecordId))
+            {
+                EnsureElementType(p_Element, DbObjectType.RecordId);
+                return p_Element.Value;
+            }
+
+            if (s_FieldType == typeof(GUID))
+            {
+                EnsureElementType(p_Element, DbObjectType.Guid);
+                return p_Element.Value;
+            }
+
+            if (s_FieldType == typeof(Sha1))
+            {
+                EnsureElementType(p_Element, DbObjectType.Sha1);
+                return p_Element.Value;
+            }
+
+            if (s_FieldType == typeof(DbObjectTimespan))
+            {
+                EnsureElementType(p_Element, DbObjectType.Timespan);
+                return p_Element.Value;
+            }
+
+            throw new Exception("Tried mapping DbObject field into an unsupported property type.");
         }
 
-        protected void WriteNull(JsonWriter p_Writer, DbObjectElement p_Object, JsonSerializer p_Serializer)
+        private static DbObjectElement ConvertObject(object p_Object, string p_FieldName = "", bool p_VariableLength = false)
         {
-            p_Writer.WriteNull();
-        }
-
-        protected void WriteArray(JsonWriter p_Writer, DbObjectElement p_Object, JsonSerializer p_Serializer)
-        {
-            p_Writer.WriteStartArray();
-
-            var s_Array = p_Object.Value as DbObject;
-
-            for (var i = 0; i < s_Array?.Count; ++i)
-                WriteDbObjectElementJson(p_Writer, s_Array[i], p_Serializer);
-
-
-            p_Writer.WriteEndArray();
-        }
-
-        protected void WriteObject(JsonWriter p_Writer, DbObjectElement p_Object, JsonSerializer p_Serializer)
-        {
+            // Handle null values appropriately.
             if (p_Object == null)
+                return new DbObjectElement(p_FieldName);
+
+            var s_Type = p_Object.GetType();
+
+            // TODO: Add support for collection types?
+            // Handle array types.
+            if (s_Type.IsArray)
             {
-                p_Writer.WriteNull();
-                return;
+                // Handle byte arrays separately.
+                if (s_Type == typeof(byte[]))
+                    return new DbObjectElement(p_FieldName, (byte[]) p_Object);
+
+                var s_Object = new DbObject();
+                var s_Items = (IEnumerable) p_Object;
+
+                // Create and add the items of the array.
+                foreach (var s_Item in s_Items)
+                    s_Object.AddElement(ConvertObject(s_Item, "", p_VariableLength));
+
+                return new DbObjectElement(p_FieldName, s_Object, true);
             }
 
-            p_Writer.WriteStartObject();
+            // Handle IDbObjectSerializable types.
+            if (s_Type.IsAssignableFrom(typeof(IDbObjectSerializable)))
+                return new DbObjectElement(p_FieldName, ConvertTo((IDbObjectSerializable)p_Object), false);
 
-            var s_Object = p_Object.Value as DbObject;
+            // Handle primitive types.
+            if (s_Type == typeof(string))
+                return new DbObjectElement(p_FieldName, (string) p_Object);
 
-            for (var i = 0; i < s_Object.Count; ++i)
-            {
-                var s_Element = s_Object[i];
+            if (s_Type == typeof(bool))
+                return new DbObjectElement(p_FieldName, (bool) p_Object);
 
-                p_Writer.WritePropertyName(s_Element.FieldName);
-                p_Serializer.Serialize(p_Writer, s_Element);
-            }
+            if (s_Type == typeof(int))
+                return new DbObjectElement(p_FieldName, (int) p_Object);
 
-            p_Writer.WriteEndObject();
-        }
+            if (s_Type == typeof(long))
+                return new DbObjectElement(p_FieldName, (long) p_Object, p_VariableLength);
 
-        protected void WriteHomoArray(JsonWriter p_Writer, DbObjectElement p_Object, JsonSerializer p_Serializer)
-        {
-            throw new NotImplementedException("We do not support HomoArray serialization.");
-        }
+            if (s_Type == typeof(float))
+                return new DbObjectElement(p_FieldName, (float) p_Object);
 
-        protected void WriteObjectId(JsonWriter p_Writer, DbObjectElement p_Object, JsonSerializer p_Serializer)
-        {
-            var s_ObjectId = p_Object.Value as ObjectId;
+            if (s_Type == typeof(double))
+                return new DbObjectElement(p_FieldName, (double) p_Object);
 
-            p_Writer.WriteValue(s_ObjectId.ToString());
-        }
+            // Handle all other core types.
+            if (s_Type == typeof(ObjectId))
+                return new DbObjectElement(p_FieldName, (ObjectId) p_Object);
 
-        protected void WriteBool(JsonWriter p_Writer, DbObjectElement p_Object, JsonSerializer p_Serializer)
-        {
-            var s_Value = (bool) p_Object.Value;
+            if (s_Type == typeof(DbObjectTimestamp))
+                return new DbObjectElement(p_FieldName, (DbObjectTimestamp) p_Object);
 
-            p_Writer.WriteValue(s_Value);
-        }
+            if (s_Type == typeof(RecordId))
+                return new DbObjectElement(p_FieldName, (RecordId) p_Object);
+            
+            if (s_Type == typeof(GUID))
+                return new DbObjectElement(p_FieldName, (GUID) p_Object);
+            
+            if (s_Type == typeof(Sha1))
+                return new DbObjectElement(p_FieldName, (Sha1) p_Object);
+            
+            if (s_Type == typeof(DbObjectTimespan))
+                return new DbObjectElement(p_FieldName, (DbObjectTimespan) p_Object);
 
-        protected void WriteString(JsonWriter p_Writer, DbObjectElement p_Object, JsonSerializer p_Serializer)
-        {
-            var s_Value = (string) p_Object.Value;
-
-            p_Writer.WriteValue(s_Value);
-        }
-
-        protected void WriteInteger(JsonWriter p_Writer, DbObjectElement p_Object, JsonSerializer p_Serializer)
-        {
-            var s_Value = (int) p_Object.Value;
-
-            p_Writer.WriteValue(s_Value);
-        }
-
-        protected void WriteLong(JsonWriter p_Writer, DbObjectElement p_Object, JsonSerializer p_Serializer)
-        {
-            var s_Value = (long) p_Object.Value;
-
-            p_Writer.WriteValue(s_Value);
-        }
-
-        protected void WriteVarInt(JsonWriter p_Writer, DbObjectElement p_Object, JsonSerializer p_Serializer)
-        {
-            var s_Value = (long) p_Object.Value;
-
-            p_Writer.WriteValue(s_Value);
-        }
-
-        protected void WriteFloat(JsonWriter p_Writer, DbObjectElement p_Object, JsonSerializer p_Serializer)
-        {
-            var s_Value = (float) p_Object.Value;
-
-            p_Writer.WriteValue(s_Value);
-        }
-
-        protected void WriteDouble(JsonWriter p_Writer, DbObjectElement p_Object, JsonSerializer p_Serializer)
-        {
-            var s_Value = (double) p_Object.Value;
-
-            p_Writer.WriteValue(s_Value);
-        }
-
-        protected void WriteTimestamp(JsonWriter p_Writer, DbObjectElement p_Object, JsonSerializer p_Serializer)
-        {
-            var s_Value = p_Object.Value as DbObjectTimestamp;
-
-            p_Writer.WriteValue(s_Value.ToString());
-        }
-
-        protected void WriteRecordId(JsonWriter p_Writer, DbObjectElement p_Object, JsonSerializer p_Serializer)
-        {
-            var s_Value = p_Object.Value as RecordId;
-
-            p_Serializer.Serialize(p_Writer, s_Value);
-        }
-
-        protected void WriteGuid(JsonWriter p_Writer, DbObjectElement p_Object, JsonSerializer p_Serializer)
-        {
-            var s_Value = p_Object.Value as GUID;
-
-            p_Writer.WriteValue(s_Value.ToString());
-        }
-
-        protected void WriteSha1(JsonWriter p_Writer, DbObjectElement p_Object, JsonSerializer p_Serializer)
-        {
-            var s_Value = p_Object.Value as Sha1;
-
-            p_Writer.WriteValue(s_Value.ToString());
-        }
-
-        protected void WriteBlob(JsonWriter p_Writer, DbObjectElement p_Object, JsonSerializer p_Serializer)
-        {
-            var s_Value = (byte[]) p_Object.Value;
-
-            p_Writer.WriteValue(Convert.ToBase64String(s_Value));
-        }
-
-        protected void WriteAttachment(JsonWriter p_Writer, DbObjectElement p_Object, JsonSerializer p_Serializer)
-        {
-            var s_Value = p_Object.Value as Attachment;
-
-            p_Writer.WriteValue(s_Value.ToString());
-        }
-
-        protected void WriteTimespan(JsonWriter p_Writer, DbObjectElement p_Object, JsonSerializer p_Serializer)
-        {
-            var s_Value = p_Object.Value as DbObjectTimespan;
-
-            p_Writer.WriteValue(s_Value.TimeSpan);
-        }
-
-        public override bool CanRead => false;
-
-        public override object ReadJson(JsonReader p_Reader, Type p_ObjectType, object p_ExistingValue, JsonSerializer p_Serializer)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override bool CanConvert(Type p_ObjectType)
-        {
-            return typeof(DbObject).IsAssignableFrom(p_ObjectType) || typeof(DbObjectElement).IsAssignableFrom(p_ObjectType);
+            throw new ArgumentException("Tried converting an unsupported object type.");
         }
     }
 }

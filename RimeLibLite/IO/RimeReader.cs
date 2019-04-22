@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Text;
 using RimeLib.IO.Conversion;
 
@@ -9,7 +8,7 @@ namespace RimeLib.IO
     {
         public bool Obfuscated { get; internal set; }
 
-        public byte[] XorTable { get; set; }
+        public byte[] XorTable { get; set; } = new byte[260];
 		
         protected long m_ObfuscatedDataOffset;
 
@@ -65,7 +64,6 @@ namespace RimeLib.IO
         /// </summary>
         public void DisableDeobfuscation()
         {
-            XorTable = null;
             Obfuscated = false;
             m_ObfuscatedDataOffset = 0;
         }

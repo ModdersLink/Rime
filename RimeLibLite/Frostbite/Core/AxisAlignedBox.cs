@@ -10,12 +10,12 @@ namespace RimeLib.Frostbite.Core
         /// <summary>
         /// Minimum position of the aligned box
         /// </summary>
-        public Vec3 Min { get; set; }
+        public Vec3 Min { get; set; } = new Vec3();
 
         /// <summary>
         /// Maximum position of the aligned box
         /// </summary>
-        public Vec3 Max { get; set; }
+        public Vec3 Max { get; set; } = new Vec3();
 
         /// <summary>
         /// Constructor taking an opened reader
@@ -31,8 +31,6 @@ namespace RimeLib.Frostbite.Core
         /// </summary>
         public AxisAlignedBox()
         {
-	        Min = new Vec3();
-	        Max = new Vec3();
         }
 
         /// <summary>

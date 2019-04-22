@@ -6,19 +6,19 @@ using VeniceBundleManifest = RimeLib.Content.Frostbite.Bundles.Venice.VeniceBund
 namespace RimeLib.Content.Frostbite.Bundles
 {
     /// <summary>
-    /// Bundle Manfiests are the "header" of a bundle, ensuring that they have certain information in them.
+    /// Bundle Manifests are the "header" of a bundle, ensuring that they have certain information in them.
     /// </summary>
     public class BundleManifest
     {
         /// <summary>
         /// Ebx magic constant
         /// </summary>
-        private const uint ManifestEbx = 0xED1CEDB8;
+        private const uint c_ManifestEbx = 0xED1CEDB8;
 
         /// <summary>
         /// Dbx magic constant
         /// </summary>
-        private const uint ManifestDbx = 0xFE1FBEEF;
+        private const uint c_ManifestDbx = 0xFE1FBEEF;
 
         /// <summary>
         /// Xor keys
@@ -98,12 +98,12 @@ namespace RimeLib.Content.Frostbite.Bundles
         public BundleManifestBase RealManifest { get; set; }
 
         /// <summary>
-        /// Size of the manfiest
+        /// Size of the manifest
         /// </summary>
         public uint ManifestSize { get; set; }
 
         /// <summary>
-        /// Manfiest header
+        /// Manifest header
         /// </summary>
         public Header ManifestHeader { get; set; }
 
@@ -114,33 +114,31 @@ namespace RimeLib.Content.Frostbite.Bundles
         /// <param name="p_Entry"></param>
         public BundleManifest(RimeReader p_Reader, BundleEntry p_Entry)
         {
-            RealManifest = null;
-
             ManifestSize = p_Reader.ReadUInt32();
-
             ManifestHeader = new Header(p_Reader);
 
+            RealManifest = Create();
+            
+            if (!RealManifest.Parse(p_Reader, p_Entry))
+                throw new Exception("Failed to parse BundleManifest.");
+        }
+
+        private BundleManifestBase Create()
+        {
             // Determine what type of BundleManifest this is.
             foreach (var s_KeyPair in ManifestXorKeys)
             {
-                if ((s_KeyPair.Key ^ ManifestHeader.Magic) == ManifestEbx)
+                switch (s_KeyPair.Key ^ ManifestHeader.Magic)
                 {
-                    RealManifest = (BundleManifestBase) Activator.CreateInstance(s_KeyPair.Value, this, true);
-                    break;
-                }
+                    case c_ManifestEbx:
+                        return (BundleManifestBase) Activator.CreateInstance(s_KeyPair.Value, this, true);
 
-                if ((s_KeyPair.Key ^ ManifestHeader.Magic) == ManifestDbx)
-                {
-                    RealManifest = (BundleManifestBase) Activator.CreateInstance(s_KeyPair.Value, this, false);
-                    break;
+                    case c_ManifestDbx:
+                        return (BundleManifestBase) Activator.CreateInstance(s_KeyPair.Value, this, false);
                 }
             }
 
-            if (RealManifest == null)
-                throw new Exception($"Tried to load an unsupported BundleManifest ({ManifestHeader.Magic:X8}).");
-
-            if (!RealManifest.Parse(p_Reader, p_Entry))
-                throw new Exception("Failed to parse BundleManifest.");
+            throw new Exception($"Tried to load an unsupported BundleManifest ({ManifestHeader.Magic:X8}).");
         }
     }
 }

@@ -84,10 +84,8 @@ namespace RimeLib.IO
                     return DecodeLZ4(p_Data);
 
                 default:
-                    break;
+                    throw new ArgumentException("Invalid CodingType specified");
             }
-
-            return null;
         }
 
         /// <summary>
@@ -108,7 +106,9 @@ namespace RimeLib.IO
         /// <returns>Zlib decoded data</returns>
         public static byte[] DecodeZlib(byte[] p_Data)
         {
-            using (var s_DecompressedStream = new MemoryStream())
+            throw new NotImplementedException();
+
+            /*using (var s_DecompressedStream = new MemoryStream())
             { 
                 using (var s_CompressedStream = new MemoryStream(p_Data))
                 {
@@ -125,7 +125,7 @@ namespace RimeLib.IO
                         return s_DecompressedStream.ToArray();
                     }
                 }
-            }
+            }*/
         }
 
         /// <summary>

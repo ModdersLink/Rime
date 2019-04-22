@@ -40,12 +40,12 @@ namespace RimeLib.Content.Frostbite.Bundles.Venice
         /// <summary>
         /// Chunk metadata
         /// </summary>
-        public DbObject ChunkMeta { get; set; }
+        public DbObject? ChunkMeta { get; set; }
 
         /// <summary>
         /// Extra text block
         /// </summary>
-        public byte[] TextBlock { get; set; }
+        public byte[]? TextBlock { get; set; }
 
         /// <summary>
         /// Constructor for creating a venice bundle manifest

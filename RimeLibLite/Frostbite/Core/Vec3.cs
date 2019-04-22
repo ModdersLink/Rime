@@ -66,14 +66,6 @@ namespace RimeLib.Frostbite.Core
         /// <param name="p_Other">Other vector to copy</param>
 	    public Vec3(Vec3 p_Other)
 	    {
-		    if (p_Other == null)
-		    {
-			    X = 0;
-			    Y = 0;
-			    Z = 0;
-			    return;
-		    }
-
 		    X = p_Other.X;
 		    Y = p_Other.Y;
 		    Z = p_Other.Z;
@@ -402,9 +394,6 @@ namespace RimeLib.Frostbite.Core
         /// <param name="p_Other">Other vector</param>
 	    public void Assign(Vec3 p_Other)
 	    {
-		    if (p_Other == null)
-			    return;
-
 		    X = p_Other.X;
 		    Y = p_Other.Y;
 		    Z = p_Other.Z;

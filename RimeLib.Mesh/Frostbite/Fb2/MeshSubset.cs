@@ -102,7 +102,7 @@ namespace RimeLib.Mesh.Frostbite.Fb2
         /// Writes a meshsubset to an opened writer
         /// </summary>
         /// <param name="p_Writer">Writer opened to the position of a MeshSubset</param>
-        public void Serialize(RimeWriter p_Writer)
+        public bool Serialize(RimeWriter p_Writer)
         {
             p_Writer.Write(GeometryDeclarations); // 0
             p_Writer.Write(MaterialName.BaseAddress);
@@ -116,13 +116,17 @@ namespace RimeLib.Mesh.Frostbite.Fb2
             p_Writer.Write(BonesPerVertex);
             p_Writer.Write(BoneCount);
             p_Writer.Write(BoneIndices.BaseAddress);
-            GeometryDeclarationDesc.Serialize(p_Writer);
+
+            if (!GeometryDeclarationDesc.Serialize(p_Writer))
+                return false;
 
             for (var i = 0; i < 6; ++i)
                 p_Writer.Write(TexCoordRatios[i]);
+
+            return true;
         }
 
-        public byte[] Serialize()
+        public bool Serialize(out byte[] p_Data)
         {
             throw new System.NotImplementedException();
         }

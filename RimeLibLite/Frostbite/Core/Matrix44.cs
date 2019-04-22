@@ -53,22 +53,22 @@ namespace RimeLib.Frostbite.Core
         /// <summary>
         /// X vector component
         /// </summary>
-        public Vec4 X { get; private set; }
+        public Vec4 X { get; private set; } = new Vec4();
 
         /// <summary>
         /// Y vector component
         /// </summary>
-        public Vec4 Y { get; private set; }
+        public Vec4 Y { get; private set; } = new Vec4();
 
         /// <summary>
         /// Z vector component
         /// </summary>
-        public Vec4 Z { get; private set; }
+        public Vec4 Z { get; private set; } = new Vec4();
 
         /// <summary>
         /// W vector component
         /// </summary>
-        public Vec4 W { get; private set; }
+        public Vec4 W { get; private set; } = new Vec4();
 
         /// <summary>
         /// Returns the matrix 4x4 array as an array of Vec4's
@@ -93,10 +93,6 @@ namespace RimeLib.Frostbite.Core
         /// </summary>
         public Matrix44()
         {
-            X = new Vec4();
-            Y = new Vec4();
-            Z = new Vec4();
-            W = new Vec4();
         }
 
         /// <summary>
@@ -123,12 +119,12 @@ namespace RimeLib.Frostbite.Core
             Deserialize(p_Reader);
         }
 
-        public void Serialize(RimeWriter p_Writer)
+        public bool Serialize(RimeWriter p_Writer)
         {
             throw new NotImplementedException();
         }
 
-        public byte[] Serialize()
+        public bool Serialize(out byte[] p_Data)
         {
             throw new NotImplementedException();
         }

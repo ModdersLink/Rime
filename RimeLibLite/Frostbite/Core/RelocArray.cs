@@ -19,12 +19,12 @@ namespace RimeLib.Frostbite.Core
         /// </summary>
         public ulong BaseAddress { get; set; }
 
-        readonly Array<T> m_Objects;
+        readonly Array<T> m_Objects = new Array<T>();
 
         /// <summary>
         /// Indexer into the array
         /// </summary>
-        public T[] Get => m_Objects?.AsArray;
+        public T[] Get => m_Objects.AsArray;
 
         /// <summary>
         /// Default constructor
@@ -40,8 +40,6 @@ namespace RimeLib.Frostbite.Core
         /// <param name="p_Reader">Reader opened to the position of a reloc array</param>
         public RelocArray(RimeReader p_Reader)
         {
-            m_Objects = new Array<T>();
-            
             Count = p_Reader.ReadUInt32();
             BaseAddress = p_Reader.ReadUInt64();
 
@@ -146,13 +144,15 @@ namespace RimeLib.Frostbite.Core
         /// 
         /// </summary>
         /// <param name="p_Writer"></param>
-        public void Serialize(RimeWriter p_Writer)
+        public bool Serialize(RimeWriter p_Writer)
         {
             p_Writer.Write(Count);
             p_Writer.Write(BaseAddress);
+
+            return true;
         }
 
-        public byte[] Serialize()
+        public bool Serialize(out byte[] p_Data)
         {
             throw new NotImplementedException();
         }

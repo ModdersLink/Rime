@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 using RimeLib.Frostbite;
 using RimeLib.Frostbite.Core;
 using RimeLib.IO;
@@ -69,12 +70,12 @@ namespace RimeLib.Texture.Frostbite.Fb2
         /// <summary>
         /// Chunk guid
         /// </summary>
-        public GUID StreamingChunkId { get; set; }
+        public GUID StreamingChunkId { get; set; } = Guid.Empty;
 
         /// <summary>
         /// Mip map sizes (uint32 * 15)
         /// </summary>
-        public uint[] MipmapSizes { get; set; } // DWORD[15];
+        public uint[] MipmapSizes { get; set; } = new uint[0]; // DWORD[15];
 
         /// <summary>
         /// Mip map chain size
@@ -89,7 +90,7 @@ namespace RimeLib.Texture.Frostbite.Fb2
         /// <summary>
         /// Texture group (char * 16)
         /// </summary>
-        public string TextureGroup { get; set; } // Len16
+        public string TextureGroup { get; set; } = ""; // Len16
 
         /// <summary>
         /// Default constructor
@@ -109,12 +110,12 @@ namespace RimeLib.Texture.Frostbite.Fb2
             Deserialize(p_Reader);
         }
 
-        public void Serialize(RimeWriter p_Writer)
+        public bool Serialize(RimeWriter p_Writer)
         {
             throw new System.NotImplementedException();
         }
 
-        public byte[] Serialize()
+        public bool Serialize(out byte[] p_Data)
         {
             throw new System.NotImplementedException();
         }

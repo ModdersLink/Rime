@@ -16,7 +16,7 @@ namespace RimeLib.Content.Frostbite
 
         public string Name 
         { 
-            get => m_Name;
+            get => m_HasName ? m_Name! : "";
             set { m_Name = value; m_HasName = true; } 
         }
 
@@ -38,7 +38,7 @@ namespace RimeLib.Content.Frostbite
             set { m_RequireVersion = value; m_HasRequireVersion = true; } 
         }
 
-        private string m_Name;
+        private string? m_Name;
         private bool m_HasName;
 
         private int m_Version;
@@ -77,12 +77,12 @@ namespace RimeLib.Content.Frostbite
 
             foreach (var s_Line in s_Lines)
             {
-                // Changed to accomidate Battlefield 4, and DAI (thx dawnless sky)
+                // Changed to accomodate Battlefield 4, and DAI (thx dawnless sky)
                 var s_Index = s_Line.LastIndexOf(" ", StringComparison.Ordinal);
 
                 if (s_Index == -1)
                 {
-                    s_Entries.Add(s_Line, null);
+                    s_Entries.Add(s_Line, "");
                     continue;
                 }
 
@@ -126,15 +126,11 @@ namespace RimeLib.Content.Frostbite
                         break;
                     
                     default:
-                        continue;
+                        throw new Exception($"Tried to load a package with unknown attribute '{s_Key}'.");
                 }
 
                 s_Entries.Remove(s_Key);
             }
-
-            // Ignore unknown attributes, do not error
-            //if (s_Entries.Count > 0)
-            //    throw new Exception("Tried to load a package with unknown attributes: " + String.Join(", ", s_Entries.Keys) + ". This probably means this engine version is not supported yet.");
         }
 
         public string Generate()

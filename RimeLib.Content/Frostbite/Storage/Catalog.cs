@@ -40,7 +40,7 @@ namespace RimeLib.Content.Frostbite.Storage
         /// <summary>
         /// The authoritative package for this storage
         /// </summary>
-        public PackageManifest AuthoritativePackage { get; set; }
+        public PackageManifest? AuthoritativePackage { get; set; }
 
         /// <summary>
         /// Name of this storage catalog

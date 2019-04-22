@@ -151,25 +151,24 @@ namespace RimeLib.Frostbite.Core
             return true;
         }
 
-        void IFbSerializable.Serialize(RimeWriter p_Writer)
-        {
-            throw new NotImplementedException();
-        }
-
         /// <summary>
         /// Serializes the hash to a byte array
         /// </summary>
         /// <returns>Byte array containing the sha1 hash</returns>
-        public byte[] Serialize()
+        public bool Serialize(out byte[] p_Data)
         {
+            p_Data = new byte[0];
+
             using (var s_Writer = new RimeWriter(new MemoryStream()))
             {
                 if (!Serialize(s_Writer))
-                    throw new Exception("SHA1 serialization failed.");
+                    return false;
 
                 s_Writer.Flush();
-                return ((MemoryStream) s_Writer.BaseStream).ToArray();
+                p_Data = ((MemoryStream) s_Writer.BaseStream).ToArray();
             }
+
+            return true;
         }
 
         public void Deserialize(RimeReader p_Reader)
