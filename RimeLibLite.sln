@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RimeLib.Audio", "RimeLib.Au
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RimeLib.Shader", "RimeLib.Shader\RimeLib.Shader.csproj", "{A06C7A0E-7306-4A88-9AC9-D14BF39C6BA5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RimeLib.Content", "RimeLib.Content\RimeLib.Content.csproj", "{F77060AC-0B35-4126-AF64-602C572E375E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{A06C7A0E-7306-4A88-9AC9-D14BF39C6BA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A06C7A0E-7306-4A88-9AC9-D14BF39C6BA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A06C7A0E-7306-4A88-9AC9-D14BF39C6BA5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F77060AC-0B35-4126-AF64-602C572E375E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F77060AC-0B35-4126-AF64-602C572E375E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F77060AC-0B35-4126-AF64-602C572E375E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F77060AC-0B35-4126-AF64-602C572E375E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
