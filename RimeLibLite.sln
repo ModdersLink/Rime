@@ -1,23 +1,25 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.572
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28809.33
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RimeLibLite", "RimeLibLite\RimeLibLite.csproj", "{8C508EE5-C3B7-41BD-B6F1-1F731950F130}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RimeLibLite", "RimeLibLite\RimeLibLite.csproj", "{8C508EE5-C3B7-41BD-B6F1-1F731950F130}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RimeLib.Texture", "RimeLib.Texture\RimeLib.Texture.csproj", "{5CEB7783-5DED-4515-B1E3-CA076F70D9C7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RimeLib.Texture", "RimeLib.Texture\RimeLib.Texture.csproj", "{5CEB7783-5DED-4515-B1E3-CA076F70D9C7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RimeLib.Mesh", "RimeLib.Mesh\RimeLib.Mesh.csproj", "{D17B9F4C-3664-4947-808A-0E57AC5A9339}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RimeLib.Mesh", "RimeLib.Mesh\RimeLib.Mesh.csproj", "{D17B9F4C-3664-4947-808A-0E57AC5A9339}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RimeLib.Terrain", "RimeLib.Terrain\RimeLib.Terrain.csproj", "{4D596497-B3A1-4143-BE4B-D3D9DE3AF340}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RimeLib.Terrain", "RimeLib.Terrain\RimeLib.Terrain.csproj", "{4D596497-B3A1-4143-BE4B-D3D9DE3AF340}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RimeLib.Audio", "RimeLib.Audio\RimeLib.Audio.csproj", "{073FD311-02CA-4F15-BE36-20682C2C818E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RimeLib.Audio", "RimeLib.Audio\RimeLib.Audio.csproj", "{073FD311-02CA-4F15-BE36-20682C2C818E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RimeLib.Shader", "RimeLib.Shader\RimeLib.Shader.csproj", "{A06C7A0E-7306-4A88-9AC9-D14BF39C6BA5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RimeLib.Shader", "RimeLib.Shader\RimeLib.Shader.csproj", "{A06C7A0E-7306-4A88-9AC9-D14BF39C6BA5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RimeLib.Content", "RimeLib.Content\RimeLib.Content.csproj", "{F77060AC-0B35-4126-AF64-602C572E375E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RimeLib.Content", "RimeLib.Content\RimeLib.Content.csproj", "{F77060AC-0B35-4126-AF64-602C572E375E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RimeLib.Serialization", "RimeLib.Serialization\RimeLib.Serialization.csproj", "{03D9E45E-622D-4B89-9C3C-7FBE41199779}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RimeLib.Serialization", "RimeLib.Serialization\RimeLib.Serialization.csproj", "{03D9E45E-622D-4B89-9C3C-7FBE41199779}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RimeLib.Tests", "RimeLib.Tests\RimeLib.Tests.csproj", "{52F62CE8-2F07-4482-A89E-22957CE4D94E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +59,10 @@ Global
 		{03D9E45E-622D-4B89-9C3C-7FBE41199779}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{03D9E45E-622D-4B89-9C3C-7FBE41199779}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{03D9E45E-622D-4B89-9C3C-7FBE41199779}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52F62CE8-2F07-4482-A89E-22957CE4D94E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52F62CE8-2F07-4482-A89E-22957CE4D94E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52F62CE8-2F07-4482-A89E-22957CE4D94E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52F62CE8-2F07-4482-A89E-22957CE4D94E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
