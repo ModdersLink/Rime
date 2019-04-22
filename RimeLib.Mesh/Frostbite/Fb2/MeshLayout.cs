@@ -1,9 +1,10 @@
 ﻿using System;
 using System.IO;
+using RimeLib.Frostbite;
 using RimeLib.Frostbite.Core;
 using RimeLib.IO;
 
-namespace RimeLib.Frostbite.Content.Mesh.Fb2
+namespace RimeLib.Mesh.Frostbite.Fb2
 {
     /// <summary>
     /// Venice (Battlefield 3) Mesh layout

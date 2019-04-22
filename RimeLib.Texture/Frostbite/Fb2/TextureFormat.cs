@@ -1,4 +1,4 @@
-﻿namespace RimeLib.Frostbite.Content.Texture.Fb2
+﻿namespace RimeLib.Texture.Frostbite.Fb2
 {
     /// <summary>
     /// Texture format information

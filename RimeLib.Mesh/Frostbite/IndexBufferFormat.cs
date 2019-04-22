@@ -1,4 +1,4 @@
-﻿namespace RimeLib.Frostbite.Content.Mesh
+﻿namespace RimeLib.Mesh.Frostbite
 {
     /// <summary>
     /// Model index buffer format

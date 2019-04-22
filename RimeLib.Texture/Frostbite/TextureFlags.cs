@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace RimeLib.Frostbite.Content.Texture
+namespace RimeLib.Texture.Frostbite
 {
     /// <summary>
     /// Texture flags

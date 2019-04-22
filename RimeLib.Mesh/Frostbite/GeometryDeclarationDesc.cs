@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using RimeLib.Frostbite;
 using RimeLib.IO;
 
-namespace RimeLib.Frostbite.Content.Mesh
+namespace RimeLib.Mesh.Frostbite
 {
     /// <summary>
     /// Implementation of fb::GeometryDeclarationDesc

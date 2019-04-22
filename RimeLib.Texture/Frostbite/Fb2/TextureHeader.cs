@@ -1,8 +1,9 @@
 ﻿using System.Text;
+using RimeLib.Frostbite;
 using RimeLib.Frostbite.Core;
 using RimeLib.IO;
 
-namespace RimeLib.Frostbite.Content.Texture.Fb2
+namespace RimeLib.Texture.Frostbite.Fb2
 {
     /// <summary>
     /// TextureHeader class

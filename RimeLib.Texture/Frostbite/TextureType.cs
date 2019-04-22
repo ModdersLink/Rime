@@ -7,7 +7,7 @@
  * Source, or any product using this class not to be sold or redistributed without direct written permission
 */
 
-namespace RimeLib.Frostbite.Content.Texture
+namespace RimeLib.Texture.Frostbite
 {
     /// <summary>
     /// Texture type

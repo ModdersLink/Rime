@@ -1,18 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace RimeLib.Frostbite
+﻿namespace RimeLib.Frostbite
 {
     /// <summary>
     /// Frostbite specific utilities
     /// </summary>
     public class Utils
     {
-        private const uint FNV_OFFSET_BASIS = 0x1505;
-        private const uint FNV_PRIME = 0x21;
+        private const uint c_FnvOffsetBasis = 0x1505;
+        private const uint c_FnvPrime = 0x21;
 
         /// <summary>
         /// Implementation of fb::hashQuick
@@ -22,10 +16,10 @@ namespace RimeLib.Frostbite
         /// <returns>unsigned int hash of the string</returns>
         public static uint HashQuick(string p_String)
         {
-            var s_Hash = FNV_OFFSET_BASIS;
+            var s_Hash = c_FnvOffsetBasis;
 
             for (int i = 0; i < p_String.Length; ++i)
-                s_Hash = (s_Hash * FNV_PRIME) ^ p_String[i];
+                s_Hash = (s_Hash * c_FnvPrime) ^ p_String[i];
 
             return s_Hash;
         }
@@ -38,7 +32,7 @@ namespace RimeLib.Frostbite
         /// <returns>unsigned integer hash of the string</returns>
         public static uint HashQuickLowerCase(string p_String)
         {
-            var s_Hash = FNV_OFFSET_BASIS;
+            var s_Hash = c_FnvOffsetBasis;
 
             for (int i = 0; i < p_String.Length; ++i)
             {
@@ -46,7 +40,7 @@ namespace RimeLib.Frostbite
                 var s_ConvertLower = ((p_String[i] - 'A') <= ('Z' - 'A'));
 
                 s_Current = s_Current + 32 * (s_ConvertLower ? 1 : (uint)0);
-                s_Hash = (s_Hash * FNV_PRIME) ^ s_Current;
+                s_Hash = (s_Hash * c_FnvPrime) ^ s_Current;
             }
 
             return s_Hash;
