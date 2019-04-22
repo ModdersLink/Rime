@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace RimeLib.Terrain
+﻿namespace RimeLib.Terrain
 {
     public class Terrain
     {

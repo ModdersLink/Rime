@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace RimeLib.Audio
+﻿namespace RimeLib.Audio
 {
     public class Audio
     {

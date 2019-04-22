@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace RimeLib.Shader
+﻿namespace RimeLib.Shader
 {
     public class Shader
     {
