@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using RimeLib.IO.Conversion;
 
 // lzham
@@ -96,7 +97,7 @@ namespace RimeLib.IO
         /// <returns>Snappy decoded data</returns>
         public static byte[] DecodeSnappy(byte[] p_Data)
         {
-            return null;
+            throw new NotImplementedException();
             //return SnappyCodec.Uncompress(p_Data);
         }
 
@@ -111,6 +112,7 @@ namespace RimeLib.IO
             { 
                 using (var s_CompressedStream = new MemoryStream(p_Data))
                 {
+                    // TODO: Replace dotnetzip with something else.
                     using (var s_Zlib = new Ionic.Zlib.ZlibStream(s_CompressedStream, Ionic.Zlib.CompressionMode.Decompress))
                     {
                         var s_TempBuffer = new byte[short.MaxValue];
@@ -166,7 +168,7 @@ namespace RimeLib.IO
         public static byte[] DecodeLZ4(byte[] p_Data)
         {
             // TODO: See if this is the right implementation
-            return null;
+            throw new NotImplementedException();
             //return LZ4Codec.Decode(p_Data, 0, p_Data.Length, 0);
         }
     }

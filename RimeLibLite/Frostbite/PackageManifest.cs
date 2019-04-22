@@ -8,37 +8,37 @@ namespace RimeLib.Frostbite
 {
     public class PackageManifest
     {
-        public String Path { get; set; }
+        public string Path { get; set; }
 
         public bool Authoritative { get; set; }
 
         public bool HasContent { get; set; }
 
-        public String Name 
+        public string Name 
         { 
-            get { return m_Name; } 
+            get => m_Name;
             set { m_Name = value; m_HasName = true; } 
         }
 
         public int Version 
         {
-            get { return m_Version; }
+            get => m_Version;
             set { m_Version = value; m_HasVersion = true; } 
         }
 
         public int MountOrder 
         {
-            get { return m_MountOrder; }
+            get => m_MountOrder;
             set { m_MountOrder = value; m_HasMountOrder = true; } 
         }
 
         public int RequireVersion 
         {
-            get { return m_RequireVersion; }
+            get => m_RequireVersion;
             set { m_RequireVersion = value; m_HasRequireVersion = true; } 
         }
 
-        private String m_Name;
+        private string m_Name;
         private bool m_HasName;
 
         private int m_Version;
@@ -50,35 +50,35 @@ namespace RimeLib.Frostbite
         private int m_RequireVersion;
         private bool m_HasRequireVersion;
 
-        public PackageManifest(String p_Path)
+        public PackageManifest(string p_Path)
         {
             Path = p_Path;
         }
 
-        public PackageManifest(byte[] p_Data, String p_Path)
+        public PackageManifest(byte[] p_Data, string p_Path)
         {
             Path = p_Path;
             ParseManifest(Encoding.UTF8.GetString(p_Data));   
         }
 
-        public PackageManifest(String p_Data, String p_Path)
+        public PackageManifest(string p_Data, string p_Path)
         {
             Path = p_Path;
             ParseManifest(p_Data);
         }
 
-        private void ParseManifest(String p_Data)
+        private void ParseManifest(string p_Data)
         {
             var s_Lines = p_Data.Split(new[] {'\n'}, StringSplitOptions.RemoveEmptyEntries)
                     .Select(p_Line => p_Line.Replace("\r", "").Trim())
-                    .Where(p_Line => !String.IsNullOrWhiteSpace(p_Line));
+                    .Where(p_Line => !string.IsNullOrWhiteSpace(p_Line));
 
-            var s_Entries = new Dictionary<String, String>();
+            var s_Entries = new Dictionary<string, string>();
 
             foreach (var s_Line in s_Lines)
             {
                 // Changed to accomidate Battlefield 4, and DAI (thx dawnless sky)
-                var s_Index = s_Line.LastIndexOf(" ");
+                var s_Index = s_Line.LastIndexOf(" ", StringComparison.Ordinal);
 
                 if (s_Index == -1)
                 {
@@ -114,15 +114,15 @@ namespace RimeLib.Frostbite
                         break;
 
                     case "Version":
-                        Version = Int32.Parse(s_Value);
+                        Version = int.Parse(s_Value);
                         break;
 
                     case "MountOrder":
-                        MountOrder = Int32.Parse(s_Value);
+                        MountOrder = int.Parse(s_Value);
                         break;
 
                     case "RequireVersion":
-                        RequireVersion = Int32.Parse(s_Value);
+                        RequireVersion = int.Parse(s_Value);
                         break;
                     
                     default:
@@ -137,7 +137,7 @@ namespace RimeLib.Frostbite
             //    throw new Exception("Tried to load a package with unknown attributes: " + String.Join(", ", s_Entries.Keys) + ". This probably means this engine version is not supported yet.");
         }
 
-        public String Generate()
+        public string Generate()
         {
             using (var s_Writer = new StringWriter())
             {
