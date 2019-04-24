@@ -2,7 +2,6 @@ using Newtonsoft.Json;
 using RimeLib.Frostbite.Db;
 using RimeLib.IO;
 using System;
-using System.Diagnostics;
 using System.IO;
 using Xunit;
 
@@ -10,10 +9,9 @@ namespace RimeLib.Tests
 {
     public class DbObjectConverterTest
     {
-        [Fact]
-        public void Test1()
+        private void Test(string p_Path)
         {
-            using var s_Reader = new RimeReader(File.OpenRead(@"B:\Games\Battlefield 3\Data\Win32"));
+            using var s_Reader = new RimeReader(File.OpenRead(p_Path));
 
             var s_Magic = s_Reader.ReadUInt32();
 
@@ -33,9 +31,27 @@ namespace RimeLib.Tests
 
             var s_DbObject = new DbObject(s_Reader);
 
-            var s_Json = JsonConvert.SerializeObject(s_DbObject);
+            var s_Json = JsonConvert.SerializeObject(s_DbObject, Formatting.Indented);
 
-            Debug.WriteLine(s_Json);
+            File.WriteAllText(p_Path + ".json", s_Json);
+        }
+
+        [Fact]
+        public void Test1()
+        {
+            Test(@"B:\Games\Battlefield 3\Data\layout.toc");
+            Test(@"B:\Games\Battlefield 3\Update\Patch\Data\Win32\Chunks0.toc");
+            Test(@"B:\Games\Battlefield 3\Update\Patch\Data\Win32\default_settings_Win32.toc");
+            Test(@"B:\Games\Battlefield 3\Update\Patch\Data\Win32\Xp2Chunks.toc");
+            Test(@"B:\Games\Battlefield 3\Update\Patch\Data\Win32\Loc\en.toc");
+            Test(@"B:\Games\Battlefield 3\Update\Patch\Data\Win32\Levels\MP_Subway\MP_Subway.toc");
+            Test(@"B:\Games\Battlefield 3\Update\Patch\Data\Win32\Levels\XP4_Rubble\XP4_Rubble.toc");
+            Test(@"B:\Games\Battlefield 3\Update\Xpack1\Data\Win32\Xp1Chunks.toc");
+            Test(@"B:\Games\Battlefield 3\Update\Xpack2\Data\Win32\Xp2Chunks.toc");
+            Test(@"B:\Games\Battlefield 3\Update\Xpack5\Data\Win32\Xp5Chunks.toc");
+            Test(@"B:\Games\Battlefield 3\Update\Xpack1\Data\Win32\Levels\XP1_002\XP1_002.toc");
+            Test(@"B:\Games\Battlefield 3\Update\Xpack4\Data\Win32\Levels\XP4_Rubble\XP4_Rubble.toc");
+            Test(@"B:\Games\Battlefield 3\Update\Xpack5\Data\Win32\Levels\XP5_001\XP5_001.toc");
         }
     }
 }
