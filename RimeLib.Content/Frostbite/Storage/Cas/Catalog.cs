@@ -4,7 +4,7 @@ using System.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.IO;
 
-namespace RimeLib.Content.Frostbite.Storage
+namespace RimeLib.Content.Frostbite.Storage.Cas
 {
     /// <summary>
     /// Structure for content addressable storage catalogs
@@ -45,7 +45,7 @@ namespace RimeLib.Content.Frostbite.Storage
         /// <summary>
         /// Name of this storage catalog
         /// </summary>
-        public string Name { get; set; }
+        public string Name { get; set; } = "";
 
         /// <summary>
         /// Base path location for this catalog
@@ -55,12 +55,12 @@ namespace RimeLib.Content.Frostbite.Storage
         /// <summary>
         /// Patched path location for this catalog
         /// </summary>
-        public string PatchPath => GetPatchPath();
+        public string? PatchPath => GetPatchPath();
 
         /// <summary>
         /// Entries by hash within this catalog
         /// </summary>
-        public ConcurrentDictionary<Sha1, CatalogEntry> Entries { get; private set; }
+        public ConcurrentDictionary<Sha1, CatalogEntry> Entries { get; } = new ConcurrentDictionary<Sha1, CatalogEntry>();
 
         /// <summary>
         /// Constructor that parses a catalog from an opened reader
@@ -77,8 +77,8 @@ namespace RimeLib.Content.Frostbite.Storage
         /// <param name="p_Data"></param>
         public Catalog(byte[] p_Data)
         {
-            using (var s_Reader = new RimeReader(new MemoryStream(p_Data)))
-                ParseHeader(s_Reader);
+            using var s_Reader = new RimeReader(new MemoryStream(p_Data));
+            ParseHeader(s_Reader);
         }
 
         /// <summary>
@@ -124,11 +124,9 @@ namespace RimeLib.Content.Frostbite.Storage
         /// <param name="p_Reader">Reader opened to the position of the catalog entries</param>
         protected void ParseEntries(RimeReader p_Reader)
         {
-            Entries = new ConcurrentDictionary<Sha1, CatalogEntry>();
-
             while (p_Reader.BaseStream.Length - p_Reader.BaseStream.Position > 0)
             {
-                var s_Entry = new CatalogEntry(p_Reader) { ContainedCatalog = this };
+                var s_Entry = new CatalogEntry(p_Reader, this) { ContainedCatalog = this };
                 Entries.TryAdd(s_Entry.Hash, s_Entry);
             }
         }
@@ -150,7 +148,13 @@ namespace RimeLib.Content.Frostbite.Storage
         /// <returns>CatalogEntry if hash is found, null otherwise</returns>
         public CatalogEntry this[Sha1 p_Hash]
         {
-            get => !Entries.TryGetValue(p_Hash, out var s_Entry) ? null : s_Entry;
+            get
+            {
+                if (!Entries.TryGetValue(p_Hash, out var s_Entry))
+                    throw new Exception("Tried retrieving a catalog entry with an nonexistent hash.");
+
+                return s_Entry;
+            }
             set
             {
                 value.ContainedCatalog = this;
@@ -171,7 +175,7 @@ namespace RimeLib.Content.Frostbite.Storage
         /// Gets the patched vfs path for this catalog
         /// </summary>
         /// <returns>Patched path of catalog</returns>
-        protected string GetPatchPath()
+        protected string? GetPatchPath()
         {
             if (AuthoritativePackage == null)
                 return null;

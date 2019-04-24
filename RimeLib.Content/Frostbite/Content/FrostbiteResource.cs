@@ -13,9 +13,9 @@
         /// <summary>
         /// Name of the resource
         /// </summary>
-        public virtual string Name { get; set; }
+        public virtual string Name { get; set; } = "";
 
         public abstract byte[] SerializeData();
-        public abstract byte[] SerializeMeta();
+        public abstract byte[]? SerializeMeta();
     }
 }

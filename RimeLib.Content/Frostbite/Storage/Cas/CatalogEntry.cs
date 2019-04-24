@@ -3,7 +3,7 @@ using RimeLib.Frostbite;
 using RimeLib.Frostbite.Core;
 using RimeLib.IO;
 
-namespace RimeLib.Content.Frostbite.Storage
+namespace RimeLib.Content.Frostbite.Storage.Cas
 {
     public class CatalogEntry : IFbSerializable
     {
@@ -14,16 +14,19 @@ namespace RimeLib.Content.Frostbite.Storage
         public Catalog ContainedCatalog { get; set; }
         public string FilePath => GetFilePath();
 
-        public CatalogEntry()
+        public CatalogEntry(Catalog p_ContainedCatalog)
         {
             Hash = new Sha1();
             FileOffset = 0;
             FileSize = 0;
             FileNumber = 0;
+            ContainedCatalog = p_ContainedCatalog;
         }
 
-        public CatalogEntry(RimeReader p_Reader)
+        public CatalogEntry(RimeReader p_Reader, Catalog p_ContainedCatalog)
         {
+            Hash = new Sha1();
+            ContainedCatalog = p_ContainedCatalog;
             Deserialize(p_Reader);
         }
 

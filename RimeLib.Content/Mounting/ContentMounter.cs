@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 using RimeLib.Content.Frostbite.Content;
 using RimeLib.Frostbite;
 using RimeLib.Frostbite.Core;
@@ -14,10 +13,10 @@ namespace RimeLib.Content.Mounting
             throw new NotImplementedException();
         }
 
-        public async Task<bool> Mount(string p_GamePath)
+        /*public async Task<bool> Mount(string p_GamePath)
         {
             return false;
-        }
+        }*/
 
         public RimeReader GetChunk(GUID p_GUID)
         {

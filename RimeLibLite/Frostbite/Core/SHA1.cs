@@ -16,6 +16,11 @@ namespace RimeLib.Frostbite.Core
     public class Sha1 : ISerializable, IFbSerializable
     {
         /// <summary>
+        /// Sha1 hash in byte array
+        /// </summary>
+        public byte[] Hash { get; private set; } = new byte[20];
+
+        /// <summary>
         /// Default constructor
         /// </summary>
         public Sha1()
@@ -66,11 +71,6 @@ namespace RimeLib.Frostbite.Core
         {
             return Regex.Replace(BitConverter.ToString(Hash), @"[\0\-]", "", RegexOptions.None);
         }
-
-        /// <summary>
-        /// Sha1 hash in byte array
-        /// </summary>
-        public byte[] Hash { get; private set; } = new byte[20];
 
         /// <summary>
         /// Sha1 equals

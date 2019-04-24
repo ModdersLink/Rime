@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using RimeLib.Content.Frostbite.Bundles;
 using RimeLib.IO;
 using RimeLib.IO.Conversion;
 
@@ -22,7 +21,7 @@ namespace RimeLib.Content.IO
 
         private readonly RimeReader[] m_Buffers;
 
-        private List<DeltaBundleRun> m_Runs;
+        private readonly List<DeltaBundleRun> m_Runs;
 
         public RimeMultiplexedReader(RimeReader p_PatchedReader, RimeReader p_BaseReader, Endianness p_Endianness)
             : base(new MemoryStream(), p_Endianness)
