@@ -1,16 +1,18 @@
 ﻿using RimeLib.Frostbite.Core;
 using System;
 using System.Collections;
+using RimeLib.Extensions;
+using RimeLib.IO;
 
 namespace RimeLib.Frostbite.Db
 {
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface, AllowMultiple = false, Inherited = true)]
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface)]
     public sealed class DbObjectAttribute : Attribute
     {
         // This attribute does nothing else other than specify that this class is eligible for serialization to/from DbObject.
     }
 
-    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
+    [AttributeUsage(AttributeTargets.Property)]
     public sealed class DbObjectFieldAttribute : Attribute
     {
         public string FieldName { get; set; }
@@ -21,15 +23,19 @@ namespace RimeLib.Frostbite.Db
         /// </summary>
         public bool VariableLength { get; set; }
 
-        public DbObjectFieldAttribute(string p_FieldName, bool p_VariableLength = false)
+        /// <summary>
+        /// The default value of the field, if one is not provided.
+        /// </summary>
+        public object? DefaultValue { get; set; }
+
+        public DbObjectFieldAttribute(string p_FieldName)
         {
             FieldName = p_FieldName;
-            VariableLength = p_VariableLength;
         }
     }
 
     [DbObject]
-    public interface IDbObjectSerializable
+    public abstract class DbObjectSerializable
     {
     }
 
@@ -38,17 +44,17 @@ namespace RimeLib.Frostbite.Db
         /// <summary>
         /// Converts a managed object to a DbObject.
         /// </summary>
-        /// <typeparam name="T">The type of the object to convert. Must derive from IDbObjectSerializable.</typeparam>
+        /// <typeparam name="T">The type of the object to convert. Must derive from DbObjectSerializable.</typeparam>
         /// <param name="p_Object">The object to convert</param>
         /// <returns>The converted DbObject</returns>
-        public static DbObject ConvertTo<T>(T p_Object) where T : IDbObjectSerializable
+        public static DbObject ToDbObject<T>(T p_Object) where T : DbObjectSerializable
         {
             // Check if we have the DbObject attribute.
             var s_Type = p_Object.GetType();
             var s_DbObjectAttributes = s_Type.GetCustomAttributes(typeof(DbObjectAttribute), true);
 
             if (s_DbObjectAttributes.Length == 0)
-                throw new ArgumentException("Provided object does not inherit from IDbObjectSerializable.");
+                throw new ArgumentException("Provided object does not inherit from DbObjectSerializable.");
 
             var s_Object = new DbObject();
 
@@ -62,7 +68,7 @@ namespace RimeLib.Frostbite.Db
 
                 var s_Attribute = (DbObjectFieldAttribute) s_PropertyAttributes[0];
                 s_Object.AddElement(ConvertObject(s_Property.GetValue(p_Object), s_Attribute.FieldName, s_Attribute.VariableLength));
-            }            
+            }
 
             return s_Object;
         }
@@ -70,19 +76,20 @@ namespace RimeLib.Frostbite.Db
         /// <summary>
         /// Converts a DbObject to a managed object.
         /// </summary>
-        /// <typeparam name="T">The type of the object to convert. Must derive from IDbObjectSerializable.</typeparam>
+        /// <typeparam name="T">The type of the object to convert. Must derive from DbObjectSerializable.</typeparam>
         /// <param name="p_Object">The DbObject to convert</param>
         /// <returns>The converted managed object</returns>
-        public static T ConvertFrom<T>(DbObject p_Object) where T : IDbObjectSerializable, new()
+        public static T FromDbObject<T>(DbObject p_Object) where T : DbObjectSerializable, new()
         {
             var s_Type = typeof(T);
 
             var s_DbObjectAttributes = s_Type.GetCustomAttributes(typeof(DbObjectAttribute), true);
 
             if (s_DbObjectAttributes.Length == 0)
-                throw new ArgumentException("Provided object does not inherit from IDbObjectSerializable.");
+                throw new ArgumentException("Provided object does not inherit from DbObjectSerializable.", nameof(T));
 
-            var s_Object = new T();
+            // Create our managed object and map fields to it.
+            var s_ManagedObject = new T();
 
             foreach (var s_Property in s_Type.GetProperties())
             {
@@ -93,26 +100,51 @@ namespace RimeLib.Frostbite.Db
                     continue;
 
                 var s_Attribute = (DbObjectFieldAttribute) s_PropertyAttributes[0];
-                var s_IsNullable = Nullable.GetUnderlyingType(s_Property.PropertyType) != null;
+                var s_IsNullable = s_Property.IsNullable();
                 var s_HasKey = p_Object.HasKey(s_Attribute.FieldName);
 
-                // If we don't have this field and the property is not nullable then throw an exception.
+                // If we don't have this field and the property is not nullable set the default value.
                 if (!s_HasKey && !s_IsNullable)
-                    throw new Exception($"Could not find expected field '{s_Attribute.FieldName}' for property '{s_Property.Name}' in DbObject.");
+                {
+                    // If we don't have a default value then throw an exception.
+                    if (s_Attribute.DefaultValue == null)
+                        throw new Exception($"Could not find expected field '{s_Attribute.FieldName}' for property '{s_Property.Name}' in DbObject.");
+
+                    s_Property.SetValue(s_ManagedObject, s_Attribute.DefaultValue);
+                    continue;
+                }
 
                 // If we don't have the key and this is nullable just set to null.
-                if (!s_HasKey && s_IsNullable)
+                if (!s_HasKey)
                 {
-                    s_Property.SetValue(s_Object, null);
+                    s_Property.SetValue(s_ManagedObject, null);
                     continue;
                 }
 
                 // Otherwise parse normally.
-                var s_Value = ConvertField(p_Object[s_Attribute.FieldName], s_Property.PropertyType);
-                s_Property.SetValue(s_Object, s_Value);
+                var s_Value = ConvertField(p_Object[s_Attribute.FieldName], s_Property.PropertyType, s_IsNullable);
+                s_Property.SetValue(s_ManagedObject, s_Value);
             }
 
-            return s_Object;
+            return s_ManagedObject;
+        }
+
+        public static (T, DbObject) FromDbObjectReader<T>(RimeReader p_Reader) where T : DbObjectSerializable, new()
+        {
+            var s_DbObject = new DbObject(p_Reader);
+
+            if (s_DbObject.Count != 1)
+                throw new Exception("The parsed DbObject has more than one embedded element.");
+
+            // Get the contained object.
+            var s_Element = s_DbObject[0];
+
+            if (s_Element.Type != DbObjectType.Object)
+                throw new Exception("The parsed DbObject has a non-object contained element.");
+
+            var s_Object = (DbObject) s_Element.Value;
+
+            return (FromDbObject<T>(s_Object), s_Object);
         }
 
         private static void EnsureElementType(DbObjectElement p_Element, params DbObjectType[] p_ExpectedTypes)
@@ -121,15 +153,13 @@ namespace RimeLib.Frostbite.Db
                 throw new Exception($"Tried deserializing DbObject element of type '{p_Element.Type}' when we were expecting '{string.Join(", ", p_ExpectedTypes)}'.");
         }
 
-        private static object? ConvertField(DbObjectElement p_Element, Type s_FieldType)
+        private static object? ConvertField(DbObjectElement p_Element, Type s_FieldType, bool p_IsNullable)
         {
             // Check if we need to return null.
-            var s_IsNullable = Nullable.GetUnderlyingType(s_FieldType) != null;
-
-            if (s_IsNullable && p_Element.Type == DbObjectType.Null)
+            if (p_IsNullable && p_Element.Type == DbObjectType.Null)
                 return null;
 
-            if (!s_IsNullable && p_Element.Type == DbObjectType.Null)
+            if (!p_IsNullable && p_Element.Type == DbObjectType.Null)
                 throw new Exception("Received null DbObject element for non-nullable field.");
 
             // If this is an array then we need to handle it separately.
@@ -156,20 +186,20 @@ namespace RimeLib.Frostbite.Db
                 for (var i = 0; i < s_DbArray.Count; ++i)
                 {
                     var s_Element = s_DbArray[i];
-                    s_Array.SetValue(ConvertField(s_Element, s_ArrayItemType), i);
+                    s_Array.SetValue(ConvertField(s_Element, s_ArrayItemType, p_IsNullable), i);
                 }
 
                 return s_Array;
             }
 
-            // If this property derives from IDbObjectSerializable then handle it separately.
-            if (s_FieldType.IsAssignableFrom(typeof(IDbObjectSerializable)))
+            // If this property derives from DbObjectSerializable then handle it separately.
+            if (typeof(DbObjectSerializable).IsAssignableFrom(s_FieldType))
             {
                 // Ensure the element is of the right type.
                 EnsureElementType(p_Element, DbObjectType.Object);
 
                 // Call ConvertFrom with the property type as the generic parameter.
-                var s_Method = typeof(DbObjectConverter).GetMethod("ConvertFrom").MakeGenericMethod(s_FieldType);
+                var s_Method = typeof(DbObjectConverter).GetMethod("FromDbObject").MakeGenericMethod(s_FieldType);
                 return s_Method.Invoke(null, new[] { p_Element.Value });
             }
 
@@ -276,9 +306,9 @@ namespace RimeLib.Frostbite.Db
                 return new DbObjectElement(p_FieldName, s_Object, true);
             }
 
-            // Handle IDbObjectSerializable types.
-            if (s_Type.IsAssignableFrom(typeof(IDbObjectSerializable)))
-                return new DbObjectElement(p_FieldName, ConvertTo((IDbObjectSerializable)p_Object), false);
+            // Handle DbObjectSerializable types.
+            if (typeof(DbObjectSerializable).IsAssignableFrom(s_Type))
+                return new DbObjectElement(p_FieldName, ToDbObject((DbObjectSerializable) p_Object), false);
 
             // Handle primitive types.
             if (s_Type == typeof(string))
