@@ -210,31 +210,31 @@ namespace RimeLib.Frostbite.Db
                 return p_Element.Value;
             }
 
-            if (s_FieldType == typeof(bool))
+            if (s_FieldType == typeof(bool) || s_FieldType == typeof(bool?))
             {
                 EnsureElementType(p_Element, DbObjectType.Bool);
                 return p_Element.Value;
             }
 
-            if (s_FieldType == typeof(int))
+            if (s_FieldType == typeof(int) || s_FieldType == typeof(int?))
             {
                 EnsureElementType(p_Element, DbObjectType.Integer);
                 return p_Element.Value;
             }
 
-            if (s_FieldType == typeof(long))
+            if (s_FieldType == typeof(long) || s_FieldType == typeof(long?))
             {
                 EnsureElementType(p_Element, DbObjectType.Long, DbObjectType.VarInt);
                 return p_Element.Value;
             }
 
-            if (s_FieldType == typeof(float))
+            if (s_FieldType == typeof(float) || s_FieldType == typeof(float?))
             {
                 EnsureElementType(p_Element, DbObjectType.Float);
                 return p_Element.Value;
             }
 
-            if (s_FieldType == typeof(double))
+            if (s_FieldType == typeof(double) || s_FieldType == typeof(double?))
             {
                 EnsureElementType(p_Element, DbObjectType.Double);
                 return p_Element.Value;
@@ -314,19 +314,19 @@ namespace RimeLib.Frostbite.Db
             if (s_Type == typeof(string))
                 return new DbObjectElement(p_FieldName, (string) p_Object);
 
-            if (s_Type == typeof(bool))
+            if (s_Type == typeof(bool) || s_Type == typeof(bool?))
                 return new DbObjectElement(p_FieldName, (bool) p_Object);
 
-            if (s_Type == typeof(int))
+            if (s_Type == typeof(int) || s_Type == typeof(int?))
                 return new DbObjectElement(p_FieldName, (int) p_Object);
 
-            if (s_Type == typeof(long))
+            if (s_Type == typeof(long) || s_Type == typeof(long?))
                 return new DbObjectElement(p_FieldName, (long) p_Object, p_VariableLength);
 
-            if (s_Type == typeof(float))
+            if (s_Type == typeof(float) || s_Type == typeof(float?))
                 return new DbObjectElement(p_FieldName, (float) p_Object);
 
-            if (s_Type == typeof(double))
+            if (s_Type == typeof(double) || s_Type == typeof(double?))
                 return new DbObjectElement(p_FieldName, (double) p_Object);
 
             // Handle all other core types.
