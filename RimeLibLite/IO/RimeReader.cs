@@ -48,9 +48,6 @@ namespace RimeLib.IO
         /// </summary>
         public void EnableDeobfuscation()
         {
-            // Skip the signature data.
-            Seek(292, SeekOrigin.Current);
-
             // Read the XOR Table.
             XorTable = ReadBytes(260);
 
