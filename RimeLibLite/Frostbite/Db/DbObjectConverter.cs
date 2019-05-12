@@ -147,6 +147,21 @@ namespace RimeLib.Frostbite.Db
             return (FromDbObject<T>(s_Object), s_Object);
         }
 
+        public static bool ToDbObjectWriter<T>(T p_Object, RimeWriter p_Writer) where T : DbObjectSerializable
+        {
+            // Create the DbObject.
+            var s_ContainedDbObject = ToDbObject(p_Object);
+
+            // Create a wrapping DbObject because that's how things are I guess.
+            var s_DbObject = new DbObject();
+
+            // Add the actual dbobject to it.
+            s_DbObject.AddElement(new DbObjectElement("", s_ContainedDbObject, false));
+
+            // And now serialize!
+            return s_DbObject.Serialize(p_Writer);
+        }
+
         private static void EnsureElementType(DbObjectElement p_Element, params DbObjectType[] p_ExpectedTypes)
         {
             if (Array.IndexOf(p_ExpectedTypes, p_Element.Type) == -1)
