@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using System.Text;
 using RimeLib.IO.Conversion;
 
 namespace RimeLib.IO
@@ -12,37 +11,11 @@ namespace RimeLib.IO
 		
         protected long m_ObfuscatedDataOffset;
 
-        /// <summary>
-        /// IceReader Default Constructor
-        /// </summary>
-        /// <param name="p_Stream">Opened stream</param>
-        /// <param name="p_Endianness">The endianness of the stream, BigEndian or LittleEndian (default LittleEndian)</param>
-        public RimeReader(Stream p_Stream, Endianness p_Endianness = Endianness.LittleEndian)
-            : base(p_Endianness == Endianness.BigEndian ? (EndianBitConverter)EndianBitConverter.Big : EndianBitConverter.Little, p_Stream)
+        public RimeReader(Stream p_Stream, Endianness p_Endianness = Endianness.LittleEndian) :
+            base(p_Endianness == Endianness.BigEndian ? (EndianBitConverter) EndianBitConverter.Big : EndianBitConverter.Little, p_Stream)
         {
         }
-
-        /// <summary>
-        /// IceReader Custom Encoding Constructor
-        /// </summary>
-        /// <param name="p_Stream">Opened input stream</param>
-        /// <param name="p_Encoding">Type of encoding the stream is suppose to use</param>
-        /// <param name="p_Endianness">The endianness of the stream, BigEndian or LittleEndian (default LittleEndian)</param>
-        public RimeReader(Stream p_Stream, Encoding p_Encoding, Endianness p_Endianness = Endianness.LittleEndian)
-            : base(p_Endianness == Endianness.BigEndian ? (EndianBitConverter)EndianBitConverter.Big : EndianBitConverter.Little, p_Stream, p_Encoding)
-        {
-        }
-
-        public void SetEndianness(Endianness p_Endianness)
-        {
-            m_BitConverter = p_Endianness == Endianness.BigEndian ? (EndianBitConverter) EndianBitConverter.Big : EndianBitConverter.Little;
-        }
-
-        public Endianness GetEndianness()
-        {
-            return (m_BitConverter is BigEndianBitConverter) ? Endianness.BigEndian : Endianness.LittleEndian;
-        }
-
+        
         /// <summary>
         /// Enables data de-obfuscation for the currently read stream.
         /// </summary>
@@ -74,11 +47,9 @@ namespace RimeLib.IO
             char s_TempChar;
             var s_ReturnString = "";
 
-            while ((s_TempChar = (char)ReadByte()) != '\0')
-            {
+            while ((s_TempChar = (char) ReadByte()) != '\0')
                 if (s_TempChar != '\0')
                     s_ReturnString += s_TempChar;
-            }
 
             return s_ReturnString;
         }
@@ -94,8 +65,8 @@ namespace RimeLib.IO
 
             while (p_Length-- > 0)
             {
-                var ch = ReadUInt16();
-                s_ReturnString += (char)ch;
+                var s_Char = ReadUInt16();
+                s_ReturnString += (char) s_Char;
             }
 
             return s_ReturnString.Replace("\0", "");
@@ -104,11 +75,6 @@ namespace RimeLib.IO
         public char ReadChar()
         {
             return (char) ReadByte();
-        }
-
-        public char[] ReadChars(int p_Length)
-        {
-            return Encoding.UTF8.GetString(ReadBytes(p_Length)).ToCharArray();
         }
 
         public int Decode77Number()
@@ -228,50 +194,10 @@ namespace RimeLib.IO
             return s_Gap;
         }
 
-        public override int Read(byte[] p_Data, int p_Index, int p_Count)
+        protected override int ReadInternal(byte[] p_Data, int p_Index, int p_Count)
         {
             var s_CurrentOffset = BaseStream.Position + p_Index - m_ObfuscatedDataOffset;
-            var s_ReadBytes = base.Read(p_Data, p_Index, p_Count);
-
-            if (!Obfuscated)
-                return s_ReadBytes;
-
-            for (var i = 0; i < s_ReadBytes; ++i)
-                p_Data[i] ^= (byte)((XorTable[(s_CurrentOffset + i) % 257]) ^ 123);
-
-            return s_ReadBytes;
-        }
-
-        public override byte[] ReadBytes(int p_Count)
-        {
-            var s_CurrentOffset = BaseStream.Position - m_ObfuscatedDataOffset;
-            var s_ReadBytes = base.ReadBytes(p_Count);
-
-            if (!Obfuscated)
-                return s_ReadBytes;
-
-            for (var i = 0; i < s_ReadBytes.Length; ++i)
-                s_ReadBytes[i] ^= (byte)((XorTable[(s_CurrentOffset + i) % 257]) ^ 123);
-
-            return s_ReadBytes;
-        }
-
-        protected override void ReadInternal(byte[] p_Data, int p_Size)
-        {
-            var s_CurrentOffset = BaseStream.Position - m_ObfuscatedDataOffset;
-            base.ReadInternal(p_Data, p_Size);
-
-            if (!Obfuscated)
-                return;
-
-            for (var i = 0; i < p_Data.Length; ++i)
-                p_Data[i] ^= (byte)((XorTable[(s_CurrentOffset + i) % 257]) ^ 123);
-        }
-
-        protected override int TryReadInternal(byte[] p_Data, int p_Size)
-        {
-            var s_CurrentOffset = BaseStream.Position - m_ObfuscatedDataOffset;
-            var s_ReadBytes = base.TryReadInternal(p_Data, p_Size);
+            var s_ReadBytes = base.ReadInternal(p_Data, p_Index, p_Count);
 
             if (!Obfuscated)
                 return s_ReadBytes;

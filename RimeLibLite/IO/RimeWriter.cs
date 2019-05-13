@@ -18,24 +18,25 @@ namespace RimeLib.IO
         {
         }
 
-        public RimeWriter(Stream p_Stream, Encoding p_Encoding, Endianness p_Endianness = Endianness.LittleEndian)
-            : base(p_Endianness == Endianness.BigEndian ? (EndianBitConverter)EndianBitConverter.Big : EndianBitConverter.Little, p_Stream, p_Encoding)
-        {
-        }
-
-        public void EnableObfuscation(byte[] p_XORTable)
+        public void EnableObfuscation(byte[] p_XorTable)
         {
             // Make sure the XOR Table is the right size.
-            if (p_XORTable.Length != 260)
-                throw new ArgumentException("The obfuscation XOR table must contain exactly 260 bytes.", nameof(p_XORTable));
+            if (p_XorTable.Length != 260)
+                throw new ArgumentException("The obfuscation XOR table must contain exactly 260 bytes.", nameof(p_XorTable));
 
             // Write the XOR Table.
-            XorTable = p_XORTable;
+            XorTable = p_XorTable;
             Write(XorTable);
 
             // Enable de-obfuscation.
             m_ObfuscatedDataOffset = BaseStream.Position;
             Obfuscated = true;
+        }
+
+        public void DisableObfuscation()
+        {
+            Obfuscated = false;
+            m_ObfuscatedDataOffset = 0;
         }
 
         public void WriteNullTerminatedString(string p_Value)
@@ -91,14 +92,14 @@ namespace RimeLib.IO
             Encode7Bit((ulong) ((p_Value >> 63) ^ (p_Value << 1)));
         }
 
-        public override void Write(byte[] p_Value, int p_Offset, int p_Count)
+        protected override void WriteInternal(byte[] p_Value, int p_Offset, int p_Count)
         {
             // If we're writing in obfuscated mode we need to do some trickery.
             if (Obfuscated)
             {
                 var s_CurrentOffset = BaseStream.Position - m_ObfuscatedDataOffset;
 
-                // Copy the data so we don't modify the original data.
+                // Copy the data so we don't modify the original buffer.
                 var s_Data = new byte[p_Count];
                 Buffer.BlockCopy(p_Value, p_Offset, s_Data, 0, p_Count);
 
@@ -106,32 +107,11 @@ namespace RimeLib.IO
                 for (var i = 0; i < p_Value.Length; ++i)
                     s_Data[i] ^= (byte)((XorTable[(s_CurrentOffset + i) % 257]) ^ 123);
 
-                base.WriteInternal(s_Data, p_Count);
+                base.WriteInternal(s_Data, p_Offset, p_Count);
                 return;
             }
 
-            base.Write(p_Value, p_Offset, p_Count);
-        }
-
-        protected override void WriteInternal(byte[] p_Bytes, int p_Length)
-        {
-            var s_Data = p_Bytes;
-
-            // If we're writing in obfuscated mode we need to do some trickery.
-            if (Obfuscated)
-            {
-                var s_CurrentOffset = BaseStream.Position - m_ObfuscatedDataOffset;
-
-                // Copy the data so we don't modify the original data.
-                s_Data = new byte[p_Length];
-                Buffer.BlockCopy(p_Bytes, 0, s_Data, 0, p_Length);
-
-                // XOR the data.
-                for (var i = 0; i < p_Length; ++i)
-                    s_Data[i] ^= (byte)((XorTable[(s_CurrentOffset + i) % 257]) ^ 123);
-            }
-
-            base.WriteInternal(s_Data, p_Length);
+            base.WriteInternal(p_Value, p_Offset, p_Count);
         }
     }
 }

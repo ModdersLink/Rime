@@ -10,7 +10,7 @@ namespace RimeLib.IO.Conversion
 	{
 		#region Endianness of this converter
 		/// <summary>
-		/// Indicates the byte order ("endianess") in which data is converted using this class.
+		/// Indicates the byte order ("endianness") in which data is converted using this class.
 		/// </summary>
 		/// <remarks>
 		/// Different computer architectures store data using different byte orders. "Big-endian"
@@ -21,32 +21,25 @@ namespace RimeLib.IO.Conversion
 		public abstract bool IsLittleEndian();
 
 		/// <summary>
-		/// Indicates the byte order ("endianess") in which data is converted using this class.
+		/// Indicates the byte order ("endianness") in which data is converted using this class.
 		/// </summary>
 		public abstract Endianness Endianness { get; }
 		#endregion
 
 		#region Factory properties
-		static LittleEndianBitConverter _little = new LittleEndianBitConverter();
-		/// <summary>
-		/// Returns a little-endian bit converter instance. The same instance is
-		/// always returned.
-		/// </summary>
-		public static LittleEndianBitConverter Little
-		{
-			get { return _little; }
-		}
+        /// <summary>
+        /// Returns a little-endian bit converter instance. The same instance is
+        /// always returned.
+        /// </summary>
+        public static LittleEndianBitConverter Little { get; } = new LittleEndianBitConverter();
+        
+        /// <summary>
+        /// Returns a big-endian bit converter instance. The same instance is
+        /// always returned.
+        /// </summary>
+        public static BigEndianBitConverter Big { get; } = new BigEndianBitConverter();
 
-		static BigEndianBitConverter _big = new BigEndianBitConverter();
-		/// <summary>
-		/// Returns a big-endian bit converter instance. The same instance is
-		/// always returned.
-		/// </summary>
-		public static BigEndianBitConverter Big
-		{
-			get { return _big; }
-		}
-		#endregion
+        #endregion
 
 		#region Double/primitive conversions
 		/// <summary>
@@ -117,7 +110,7 @@ namespace RimeLib.IO.Conversion
 		/// <param name="p_Value">An array of bytes.</param>
 		/// <param name="p_StartIndex">The starting position within value.</param>
 		/// <returns>A character formed by two bytes beginning at startIndex.</returns>
-		public char ToChar (byte[] p_Value, int p_StartIndex)
+		public char ToChar(byte[] p_Value, int p_StartIndex)
 		{
 			return unchecked((char) (CheckedFromBytes(p_Value, p_StartIndex, 2)));
 		}
@@ -222,16 +215,13 @@ namespace RimeLib.IO.Conversion
 		/// <exception cref="ArgumentOutOfRangeException">
 		/// startIndex is less than zero or greater than the length of value minus bytesRequired.
 		/// </exception>
-		static void CheckByteArgument(byte[] p_Value, int p_StartIndex, int p_BytesRequired)
+        protected static void CheckByteArgument(byte[] p_Value, int p_StartIndex, int p_BytesRequired)
 		{
-			if (p_Value==null)
-			{
-				throw new ArgumentNullException("p_Value");
-			}
-			if (p_StartIndex < 0 || p_StartIndex > p_Value.Length-p_BytesRequired)
-			{
-				throw new ArgumentOutOfRangeException("p_StartIndex");
-			}
+			if (p_Value == null)
+				throw new ArgumentNullException(nameof(p_Value));
+
+			if (p_StartIndex < 0 || p_StartIndex > p_Value.Length - p_BytesRequired)
+				throw new ArgumentOutOfRangeException(nameof(p_StartIndex));
 		}
 
         /// <summary>
@@ -242,7 +232,7 @@ namespace RimeLib.IO.Conversion
         /// <param name="p_StartIndex">The index of the first byte to convert</param>
         /// <param name="p_BytesToConvert">The number of bytes to convert</param>
         /// <returns></returns>
-		long CheckedFromBytes(byte[] p_Value, int p_StartIndex, int p_BytesToConvert)
+		protected long CheckedFromBytes(byte[] p_Value, int p_StartIndex, int p_BytesToConvert)
 		{
 			CheckByteArgument(p_Value, p_StartIndex, p_BytesToConvert);
 			return FromBytes(p_Value, p_StartIndex, p_BytesToConvert);
@@ -315,17 +305,17 @@ namespace RimeLib.IO.Conversion
 		/// <param name="p_Value">An array of bytes.</param>
 		/// <param name="p_StartIndex">The starting position within value.</param>
 		/// <returns>A decimal  formed by sixteen bytes beginning at startIndex.</returns>
-		public decimal ToDecimal (byte[] p_Value, int p_StartIndex)
+		public decimal ToDecimal(byte[] p_Value, int p_StartIndex)
 		{
 			// HACK: This always assumes four parts, each in their own endianness,
 			// starting with the first part at the start of the byte array.
 			// On the other hand, there's no real format specified...
-			int[] parts = new int[4];
-			for (int i=0; i < 4; i++)
-			{
-				parts[i] = ToInt32(p_Value, p_StartIndex+i*4);
-			}
-			return new Decimal(parts);
+			var s_Parts = new int[4];
+
+			for (var i = 0; i < 4; i++)
+                s_Parts[i] = ToInt32(p_Value, p_StartIndex + (i * 4));
+			
+			return new decimal(s_Parts);
 		}
 
 		/// <summary>
@@ -335,13 +325,13 @@ namespace RimeLib.IO.Conversion
 		/// <returns>An array of bytes with length 16.</returns>
 		public byte[] GetBytes(decimal p_Value)
 		{
-			byte[] bytes = new byte[16];
-			int[] parts = decimal.GetBits(p_Value);
-			for (int i=0; i < 4; i++)
-			{
-				CopyBytesImpl(parts[i], 4, bytes, i*4);
-			}
-			return bytes;
+			var s_Bytes = new byte[16];
+			var s_Parts = decimal.GetBits(p_Value);
+			
+            for (var i = 0; i < 4; i++)
+                CopyBytesImpl(s_Parts[i], 4, s_Bytes, i * 4);
+
+			return s_Bytes;
 		}
 
 		/// <summary>
@@ -353,12 +343,11 @@ namespace RimeLib.IO.Conversion
 		/// <param name="p_Index">The first index into the array to copy the bytes into</param>
 		public void CopyBytes(decimal p_Value, byte[] p_Buffer, int p_Index)
 		{
-			int[] parts = decimal.GetBits(p_Value);
-			for (int i=0; i < 4; i++)
-			{
-				CopyBytesImpl(parts[i], 4, p_Buffer, i*4+p_Index);
-			}
-		}
+			var s_Parts = decimal.GetBits(p_Value);
+			
+            for (var i = 0; i < 4; i++)
+                CopyBytesImpl(s_Parts[i], 4, p_Buffer, (i * 4) + p_Index);
+        }
 		#endregion
 
 		#region GetBytes conversions
@@ -369,11 +358,11 @@ namespace RimeLib.IO.Conversion
 		/// </summary>
 		/// <param name="p_Value">The value to get bytes for</param>
 		/// <param name="p_Bytes">The number of significant bytes to return</param>
-		byte[] GetBytes(long p_Value, int p_Bytes)
+        private byte[] GetBytes(long p_Value, int p_Bytes)
 		{
-			byte[] buffer = new byte[p_Bytes];
-			CopyBytes(p_Value, p_Bytes, buffer, 0);
-			return buffer;
+			var s_Buffer = new byte[p_Bytes];
+			CopyBytes(p_Value, p_Bytes, s_Buffer, 0);
+			return s_Buffer;
 		}
 
 		/// <summary>
@@ -489,16 +478,11 @@ namespace RimeLib.IO.Conversion
 		/// <param name="p_Bytes">The number of significant bytes to copy</param>
 		/// <param name="p_Buffer">The byte array to copy the bytes into</param>
 		/// <param name="p_Index">The first index into the array to copy the bytes into</param>
-		void CopyBytes(long p_Value, int p_Bytes, byte[] p_Buffer, int p_Index)
+		private void CopyBytes(long p_Value, int p_Bytes, byte[] p_Buffer, int p_Index)
 		{
-			if (p_Buffer==null)
-			{
-				throw new ArgumentNullException("p_Buffer", "Byte array must not be null");
-			}
-			if (p_Buffer.Length < p_Index+p_Bytes)
-			{
-				throw new ArgumentOutOfRangeException("Buffer not big enough for value");
-			}
+			if (p_Buffer.Length < p_Index + p_Bytes)
+				throw new ArgumentOutOfRangeException(nameof(p_Buffer), "Buffer not big enough for value");
+
 			CopyBytesImpl(p_Value, p_Bytes, p_Buffer, p_Index);
 		}
 
@@ -642,55 +626,50 @@ namespace RimeLib.IO.Conversion
 		/// Union used solely for the equivalent of DoubleToInt64Bits and vice versa.
 		/// </summary>
 		[StructLayout(LayoutKind.Explicit)]
-			struct Int32SingleUnion
+		private struct Int32SingleUnion
 		{
+            /// <summary>
+            /// Returns the value of the instance as an integer.
+            /// </summary>
+            internal int AsInt32 => m_IntValue;
+
+            /// <summary>
+            /// Returns the value of the instance as a floating point number.
+            /// </summary>
+            internal float AsSingle => m_FloatValue;
+
 			/// <summary>
 			/// Int32 version of the value.
 			/// </summary>
 			[FieldOffset(0)]
-			int i;
+			private readonly int m_IntValue;
+
 			/// <summary>
 			/// Single version of the value.
 			/// </summary>
 			[FieldOffset(0)]
-			float f;
+			private readonly float m_FloatValue;
 
 			/// <summary>
 			/// Creates an instance representing the given integer.
 			/// </summary>
-			/// <param name="p_I">The integer value of the new instance.</param>
-			internal Int32SingleUnion(int p_I)
+			/// <param name="p_IntValue">The integer value of the new instance.</param>
+			internal Int32SingleUnion(int p_IntValue)
 			{
-				this.f = 0; // Just to keep the compiler happy
-				this.i = p_I;
+				m_FloatValue = 0; // Just to keep the compiler happy
+				m_IntValue = p_IntValue;
 			}
 
 			/// <summary>
 			/// Creates an instance representing the given floating point number.
 			/// </summary>
-			/// <param name="p_F">The floating point value of the new instance.</param>
-			internal Int32SingleUnion(float p_F)
+			/// <param name="p_FloatValue">The floating point value of the new instance.</param>
+			internal Int32SingleUnion(float p_FloatValue)
 			{
-				this.i = 0; // Just to keep the compiler happy
-				this.f = p_F;
+				m_IntValue = 0; // Just to keep the compiler happy
+				m_FloatValue = p_FloatValue;
 			}
-
-			/// <summary>
-			/// Returns the value of the instance as an integer.
-			/// </summary>
-			internal int AsInt32
-			{
-				get { return i; }
-			}
-
-			/// <summary>
-			/// Returns the value of the instance as a floating point number.
-			/// </summary>
-			internal float AsSingle
-			{
-				get { return f; }
-			}
-		}
+        }
 		#endregion
 	}
 }

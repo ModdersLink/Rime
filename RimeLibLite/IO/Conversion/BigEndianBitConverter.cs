@@ -1,4 +1,3 @@
-
 namespace RimeLib.IO.Conversion
 {
 	/// <summary>
@@ -8,7 +7,7 @@ namespace RimeLib.IO.Conversion
 	public sealed class BigEndianBitConverter : EndianBitConverter
 	{
 		/// <summary>
-		/// Indicates the byte order ("endianess") in which data is converted using this class.
+		/// Indicates the byte order ("endianness") in which data is converted using this class.
 		/// </summary>
 		/// <remarks>
 		/// Different computer architectures store data using different byte orders. "Big-endian"
@@ -16,20 +15,17 @@ namespace RimeLib.IO.Conversion
 		/// most significant byte is on the right end of a word.
 		/// </remarks>
 		/// <returns>true if this converter is little-endian, false otherwise.</returns>
-		public sealed override bool IsLittleEndian()
+		public override bool IsLittleEndian()
 		{
 			return false;
 		}
 
 		/// <summary>
-		/// Indicates the byte order ("endianess") in which data is converted using this class.
+		/// Indicates the byte order ("endianness") in which data is converted using this class.
 		/// </summary>
-		public sealed override Endianness Endianness 
-		{ 
-			get { return Endianness.BigEndian; }
-		}
+		public override Endianness Endianness => Endianness.BigEndian;
 
-		/// <summary>
+        /// <summary>
 		/// Copies the specified number of bytes from value to buffer, starting at index.
 		/// </summary>
 		/// <param name="p_Value">The value to copy</param>
@@ -38,11 +34,12 @@ namespace RimeLib.IO.Conversion
 		/// <param name="p_Index">The index to start at</param>
 		protected override void CopyBytesImpl(long p_Value, int p_Bytes, byte[] p_Buffer, int p_Index)
 		{
-			int endOffset = p_Index+p_Bytes-1;
-			for (int i=0; i < p_Bytes; i++)
+			var s_EndOffset = p_Index + p_Bytes - 1;
+			
+            for (var i = 0; i < p_Bytes; ++i)
 			{
-				p_Buffer[endOffset-i] = unchecked((byte)(p_Value&0xff));
-				p_Value = p_Value >> 8;
+				p_Buffer[s_EndOffset - i] = unchecked((byte) (p_Value & 0xff));
+				p_Value >>= 8;
 			}
 		}
 		
@@ -56,12 +53,12 @@ namespace RimeLib.IO.Conversion
 		/// <returns>The value built from the given bytes</returns>
 		protected override long FromBytes(byte[] p_Buffer, int p_StartIndex, int p_BytesToConvert)
 		{
-			long ret = 0;
-			for (int i=0; i < p_BytesToConvert; i++)
-			{
-				ret = unchecked((ret << 8) | p_Buffer[p_StartIndex+i]);
-			}
-			return ret;
+			long s_Ret = 0;
+			
+            for (var i = 0; i < p_BytesToConvert; ++i)
+			    s_Ret = unchecked((s_Ret << 8) | p_Buffer[p_StartIndex+i]);
+
+            return s_Ret;
 		}
 	}
 }

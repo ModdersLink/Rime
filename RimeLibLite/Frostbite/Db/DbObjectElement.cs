@@ -264,14 +264,10 @@ namespace RimeLib.Frostbite.Db
             var s_ObjectSize = (int) p_Reader.Decode7Bit(out _);
 
             var s_Stream = new MemoryStream(p_Reader.ReadBytes(s_ObjectSize));
-            var s_Reader = new RimeReader(s_Stream);
+            using var s_Reader = new RimeReader(s_Stream);
 
             var s_Object = new DbObject(s_Reader);
-
-            // Cleanup
-            s_Reader.Close();
-            s_Stream.Close();
-
+            
             m_ObjectValue = s_Object;
         }
 
