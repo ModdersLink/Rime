@@ -53,6 +53,7 @@ namespace RimeLib.Content.Frostbite
         public PackageManifest(string p_Path)
         {
             Path = p_Path;
+            ParseManifest(File.ReadAllText(Path));
         }
 
         public PackageManifest(byte[] p_Data, string p_Path)
@@ -133,7 +134,7 @@ namespace RimeLib.Content.Frostbite
             }
         }
 
-        public string Generate()
+        public string Serialize()
         {
             using (var s_Writer = new StringWriter())
             {
