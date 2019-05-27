@@ -144,11 +144,21 @@ namespace RimeLib.Content.Mounting
         protected void ParseCatalogs()
         {
             // Parse the main catalog.
-            m_Catalog = new Catalog(Path.Join(GetMainPackagePath(), "cas.cat"));
+            var s_MainCatalogPath = Path.Join(GetMainPackagePath(), "cas.cat");
+
+            if (!File.Exists(s_MainCatalogPath))
+                return;
+
+            m_Catalog = new Catalog(s_MainCatalogPath);
 
             // If we have an authoritative package then parse that too.
-            if (m_AuthoritativePackage != null)
-                m_Catalog.AuthoritativeCatalog = new Catalog(Path.Join(GetPackagePath(m_AuthoritativePackage), "cas.cat"));
+            if (m_AuthoritativePackage == null) 
+                return;
+
+            var s_PatchCatalogPath = Path.Join(GetPackagePath(m_AuthoritativePackage), "cas.cat");
+
+            if (File.Exists(s_PatchCatalogPath))
+                m_Catalog.AuthoritativeCatalog = new Catalog(s_PatchCatalogPath);
         }
 
         protected void DiscoverSuperbundles()
@@ -217,7 +227,10 @@ namespace RimeLib.Content.Mounting
             // If there's a SHA1 specified then this is a cas-backed chunk.
             if (p_Chunk.Sha1 != null)
             {
-                var s_ChunkEntry = new CasChunkEntry(p_Chunk.Id, p_Chunk.Sha1, m_Catalog!);
+                if (m_Catalog == null)
+                    throw new Exception("Found a cas chunk entry but the game has no catalog!");
+
+                var s_ChunkEntry = new CasChunkEntry(p_Chunk.Id, p_Chunk.Sha1, m_Catalog);
                 m_Chunks.AddOrUpdate(s_ChunkEntry.Id, s_ChunkEntry, (p_Key, p_Old) => s_ChunkEntry);
                 return;
             }
