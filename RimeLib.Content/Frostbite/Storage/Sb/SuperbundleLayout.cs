@@ -16,13 +16,13 @@ namespace RimeLib.Content.Frostbite.Storage.Sb
     public class BundleInfo : DbObjectSerializable
     {
         [DbObjectField("id")]
-        public GUID Id { get; set; } = Guid.Empty;
+        public string Id { get; set; } = "";
 
         [DbObjectField("offset")]
-        public int Offset { get; set; }
+        public long Offset { get; set; }
 
         [DbObjectField("size")]
-        public int Size { get; set; }
+        public long Size { get; set; }
 
         [DbObjectField("checksum")]
         public Sha1 Checksum { get; set; } = new Sha1();
@@ -49,10 +49,10 @@ namespace RimeLib.Content.Frostbite.Storage.Sb
         public Sha1? Sha1 { get; set; }
 
         [DbObjectField("offset")]
-        public int? Offset { get; set; }
+        public long? Offset { get; set; }
 
         [DbObjectField("size")]
-        public int? Size { get; set; }
+        public long? Size { get; set; }
     }
 
     public class SuperbundleLayout<TBundleInfo, TChunkInfo> : DbObjectSerializable
@@ -63,13 +63,13 @@ namespace RimeLib.Content.Frostbite.Storage.Sb
         public GUID? Tag { get; set; }
 
         [DbObjectField("name")]
-        public string Name { get; set; } = "";
+        public string? Name { get; set; }
 
         [DbObjectField("cas", DefaultValue = false)]
         public bool Cas { get; set; }
 
         [DbObjectField("alwaysEmitSuperbundle")]
-        public bool AlwaysEmitSuperbundle { get; set; }
+        public bool? AlwaysEmitSuperbundle { get; set; }
 
         [DbObjectField("bundles")]
         public TBundleInfo[] Bundles { get; set; } = new TBundleInfo[0];
