@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using RimeLib.Content.Frostbite;
 using RimeLib.Content.Frostbite.Content;
+using RimeLib.Content.Frostbite.Storage.Cas;
+using RimeLib.Content.Frostbite.Storage.Chunks;
 using RimeLib.Content.Frostbite.Storage.Sb;
 using RimeLib.Frostbite;
 using RimeLib.Frostbite.Core;
@@ -18,6 +21,8 @@ namespace RimeLib.Content.Mounting
         protected PackageManifest? m_AuthoritativePackage = null;
         protected List<PackageManifest> m_Packages = new List<PackageManifest>();
         protected List<SuperbundleEntry> m_Superbundles = new List<SuperbundleEntry>();
+        protected Catalog? m_Catalog = null;
+        protected ConcurrentDictionary<GUID, ChunkEntry> m_Chunks = new ConcurrentDictionary<GUID, ChunkEntry>();
 
         public ContentMounter(EngineType p_Engine)
         {
@@ -32,6 +37,9 @@ namespace RimeLib.Content.Mounting
 
             // Discover game packages.
             DiscoverPackages();
+
+            // Parse catalogs.
+            ParseCatalogs();
 
             // Discover superbundles.
             DiscoverSuperbundles();
@@ -130,6 +138,16 @@ namespace RimeLib.Content.Mounting
             }
         }
 
+        protected void ParseCatalogs()
+        {
+            // Parse the main catalog.
+            m_Catalog = new Catalog(Path.Join(GetMainPackagePath(), "cas.cat"));
+
+            // If we have an authoritative package then parse that too.
+            if (m_AuthoritativePackage != null)
+                m_Catalog.AuthoritativeCatalog = new Catalog(Path.Join(GetPackagePath(m_AuthoritativePackage), "cas.cat"));
+        }
+
         protected void DiscoverSuperbundles()
         {
             // Parse the content manifest.
@@ -191,9 +209,54 @@ namespace RimeLib.Content.Mounting
             }
         }
 
+        protected void ProcessChunk(ChunkInfo p_Chunk, SuperbundleEntry p_SbEntry)
+        {
+            // If there's a SHA1 specified then this is a cas-backed chunk.
+            if (p_Chunk.Sha1 != null)
+            {
+                var s_ChunkEntry = new CasChunkEntry(p_Chunk.Id, p_Chunk.Sha1, m_Catalog!);
+                m_Chunks.AddOrUpdate(s_ChunkEntry.Id, s_ChunkEntry, (p_Key, p_Old) => s_ChunkEntry);
+                return;
+            }
+
+            // Otherwise, it's an sb-backed chunk.
+            var s_SbChunkEntry = new SbChunkEntry(p_Chunk.Id, p_Chunk.Offset!.Value, p_Chunk.Size!.Value, p_SbEntry);
+            m_Chunks.AddOrUpdate(s_SbChunkEntry.Id, s_SbChunkEntry, (p_Key, p_Old) => s_SbChunkEntry);
+        }
+
         protected void ParseSuperbundles()
         {
+            // TODO: Re-enable parallel processing once we've made sure everything is working as intended.
+            //Parallel.ForEach(m_Superbundles, p_Superbundle =>
+            m_Superbundles.ForEach(p_Superbundle =>
+            {
+                Debug.WriteLine($"Parsing superbundle {p_Superbundle.Name}");
 
+                TableOfContents<SuperbundleLayout> s_Toc;
+                TableOfContents<SuperbundleLayout>? s_PatchToc = null;
+
+                // Parse the superbundle layout.
+                using (var s_Reader = new RimeReader(File.Open(p_Superbundle.Path + ".toc", FileMode.Open, FileAccess.Read, FileShare.Read)))
+                    s_Toc = new TableOfContents<SuperbundleLayout>(s_Reader);
+
+                // Parse the patched layout if we have one.
+                if (p_Superbundle.PatchPath != null)
+                {
+                    using var s_PatchReader = new RimeReader(File.Open(p_Superbundle.PatchPath + ".toc", FileMode.Open, FileAccess.Read, FileShare.Read));
+                    s_PatchToc = new TableOfContents<SuperbundleLayout>(s_PatchReader);
+                }
+
+                // Parse any chunks first.
+                foreach (var s_Chunk in s_Toc.Layout.Chunks)
+                    ProcessChunk(s_Chunk, p_Superbundle);
+                
+                // If we have a patch toc process the chunks for that too.
+                if (s_PatchToc != null)
+                    foreach (var s_Chunk in s_PatchToc.Layout.Chunks)
+                        ProcessChunk(s_Chunk, p_Superbundle);
+
+                // Now it's time to parse bundles, oh boy!
+            });
         }
     }
 }
