@@ -6,22 +6,25 @@ using System.IO;
 using System.Threading.Tasks;
 using RimeLib.Content.Frostbite;
 using RimeLib.Content.Frostbite.Content;
+using RimeLib.Content.Frostbite.Storage.Bundles;
 using RimeLib.Content.Frostbite.Storage.Cas;
 using RimeLib.Content.Frostbite.Storage.Chunks;
 using RimeLib.Content.Frostbite.Storage.Sb;
 using RimeLib.Frostbite;
 using RimeLib.Frostbite.Core;
+using RimeLib.Frostbite.Db;
 using RimeLib.IO;
+using RimeLib.IO.Conversion;
 
 namespace RimeLib.Content.Mounting
 {
     public class ContentMounter
     {
         protected string m_GamePath = "";
-        protected PackageManifest? m_AuthoritativePackage = null;
+        protected PackageManifest? m_AuthoritativePackage;
         protected List<PackageManifest> m_Packages = new List<PackageManifest>();
         protected List<SuperbundleEntry> m_Superbundles = new List<SuperbundleEntry>();
-        protected Catalog? m_Catalog = null;
+        protected Catalog? m_Catalog;
         protected ConcurrentDictionary<GUID, ChunkEntry> m_Chunks = new ConcurrentDictionary<GUID, ChunkEntry>();
 
         public ContentMounter(EngineType p_Engine)
@@ -256,7 +259,83 @@ namespace RimeLib.Content.Mounting
                         ProcessChunk(s_Chunk, p_Superbundle);
 
                 // Now it's time to parse bundles, oh boy!
+                ParseBundles(p_Superbundle, s_Toc.Layout, s_PatchToc?.Layout);
             });
+        }
+        
+        protected void ParseBundle(RimeReader p_Reader, BundleInfo p_BundleInfo, SuperbundleEntry p_Superbundle)
+        {
+
+        }
+
+        protected void ParseDeltaBundle(RimeReader p_BaseReader, RimeReader p_PatchReader, 
+            BundleInfo p_BaseBundle, BundleInfo p_PatchBundle, SuperbundleEntry p_Superbundle)
+        {
+
+        }
+
+        protected void ParseBundles(SuperbundleEntry p_Superbundle, SuperbundleLayout p_Toc, SuperbundleLayout? p_PatchToc)
+        {
+            // Figure out which endianness our readers should have.
+            var s_Endianness = p_Toc.Cas ? Endianness.LittleEndian : Endianness.BigEndian;
+
+            // Open up our superbundle readers.
+            using var s_Reader = new RimeReader(File.Open(p_Superbundle.Path + ".sb", FileMode.Open, FileAccess.Read, FileShare.Read), s_Endianness);
+            RimeReader? s_PatchReader = null;
+
+            if (p_Superbundle.PatchPath != null)
+                s_PatchReader = new RimeReader(File.Open(p_Superbundle.PatchPath + ".sb", FileMode.Open, FileAccess.Read, FileShare.Read), s_Endianness);
+
+            var s_ParsedBundles = new HashSet<string>();
+
+            // Go through the base bundles first.
+            // NOTE: There's special logic for handling CAS bundles, but BF3 seems to have none of them.
+            foreach (var s_Bundle in p_Toc.Bundles)
+            {
+                s_ParsedBundles.Add(s_Bundle.Id.ToLowerInvariant());
+
+                // If we don't have a patched toc or if we do but don't have
+                // a corresponding bundle entry then parse straight away!
+                if (p_PatchToc == null || !p_PatchToc.TryGetBundle(s_Bundle.Id, out var s_PatchBundle))
+                {
+                    ParseBundle(s_Reader, s_Bundle, p_Superbundle);
+                    continue;
+                }
+
+                // If we do have a corresponding bundle entry, then figure out what to do with it.
+                // If it's a delta entry then we have special handling for it.
+                if (s_PatchBundle!.Delta.HasValue && s_PatchBundle!.Delta.Value)
+                {
+                    ParseDeltaBundle(s_Reader, s_PatchReader!, s_Bundle, s_PatchBundle, p_Superbundle);
+                    continue;
+                }
+
+                // If this wasn't a delta entry then parse as we normally would.
+                ParseBundle(s_PatchReader!, s_PatchBundle, p_Superbundle);
+            }
+            
+            // Now that we're done with the base bundles it's time to go over the patched ones.
+            if (p_PatchToc != null)
+            {
+                foreach (var s_Bundle in p_PatchToc.Bundles)
+                {
+                    // We only care about bundles we haven't seen before.
+                    if (s_ParsedBundles.Contains(s_Bundle.Id.ToLowerInvariant()))
+                        continue;
+
+                    // If this is a delta entry for a bundle we've never seen before
+                    // there's something wrong (usually missing content).
+                    // TODO: We might not want to throw an error here.
+                    if (s_Bundle.Delta.HasValue && s_Bundle.Delta.Value)
+                        throw new Exception($"Found a delta bundle ({s_Bundle.Id}) without a base bundle entry. This probably means you're missing some content.");
+
+                    // If all is good, parse as we normally would.
+                    ParseSbBundle(s_PatchReader!, s_Bundle, p_Superbundle);
+                }
+            }
+
+            // Dispose of the patch reader.
+            s_PatchReader?.Dispose();
         }
     }
 }

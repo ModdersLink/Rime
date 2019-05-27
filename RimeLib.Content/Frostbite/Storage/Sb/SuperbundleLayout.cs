@@ -76,6 +76,22 @@ namespace RimeLib.Content.Frostbite.Storage.Sb
 
         [DbObjectField("chunks")]
         public TChunkInfo[] Chunks { get; set; } = new TChunkInfo[0];
+
+        public bool TryGetBundle(string p_Id, out TBundleInfo? p_Bundle)
+        {
+            p_Bundle = null;
+
+            foreach (var s_Bundle in Bundles)
+            {
+                if (!s_Bundle.Id.Equals(p_Id, StringComparison.OrdinalIgnoreCase)) 
+                    continue;
+                
+                p_Bundle = s_Bundle;
+                return true;
+            }
+
+            return false;
+        }
     }
 
     /// <summary>
