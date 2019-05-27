@@ -1,8 +1,6 @@
-﻿/*
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using RimeLib.IO;
 using RimeLib.IO.Conversion;
 
@@ -26,15 +24,6 @@ namespace RimeLib.Content.IO
 
         public RimeMultiplexedReader(RimeReader p_PatchedReader, RimeReader p_BaseReader, Endianness p_Endianness)
             : base(new MemoryStream(), p_Endianness)
-        {
-            m_Runs = new List<DeltaBundleRun>();
-            m_Position = 0;
-            m_Buffers = new [] { p_PatchedReader, p_BaseReader };
-            ReadRuns();
-        }
-
-        public RimeMultiplexedReader(RimeReader p_PatchedReader, RimeReader p_BaseReader, Encoding p_Encoding, Endianness p_Endianness)
-            : base(new MemoryStream(), p_Encoding, p_Endianness)
         {
             m_Runs = new List<DeltaBundleRun>();
             m_Position = 0;
@@ -86,82 +75,21 @@ namespace RimeLib.Content.IO
         {
             throw new Exception("Cannot seek in a Multiplexed Reader.");
         }
-
-        public override int Read(byte[] p_Data, int p_Index, int p_Count)
-        {
-            if (p_Index == 0)
-                return TryReadInternal(p_Data, p_Count);
-
-            throw new Exception("Reading is only supported from the current position in Multiplexed Readers.");
-        }
-
-        public override byte[] ReadBytes(int p_Count)
-        {
-            var s_Data = new byte[p_Count];
-            ReadInternal(s_Data, p_Count);
-            return s_Data;
-        }
-
-        protected override void ReadInternal(byte[] p_Data, int p_Length)
+        
+        protected override int ReadInternal(byte[] p_Data, int p_Index, int p_Count)
         {
             CheckDisposed();
 
-            if (p_Length == 0)
-                return;
-
-	        var s_ToRead = p_Length;
-	        var s_Remaining = p_Length;
-
-	        var s_CurrentPos = 0;
-
-	        while (s_Remaining > 0)
-	        {
-		        if (m_Remaining < s_ToRead)
-                    throw new EndOfStreamException("End of stream reached with " + s_Remaining + " bytes left to read.");
-
-		        // We don't have enough bytes in the current run.
-		        if (s_Remaining > m_Runs[m_Cursor].CopyBytes)
-                    s_ToRead = m_Runs[m_Cursor].CopyBytes;
-		        else
-			        s_ToRead = s_Remaining;
-
-		        var s_TempData = m_Buffers[m_Runs[m_Cursor].FileId].ReadBytes(s_ToRead);
-		        Buffer.BlockCopy(s_TempData, 0, p_Data, s_CurrentPos, s_ToRead);
-		        s_CurrentPos += s_ToRead;
-
-		        m_Runs[m_Cursor].CopyBytes -= s_ToRead;
-		        s_Remaining -= s_ToRead;
-
-	            if (m_Runs[m_Cursor].CopyBytes != 0) 
-                    continue;
-
-	            ++m_Cursor;
-
-	            if (m_Cursor < m_Runs.Count && m_Runs[m_Cursor].FileId == 1)
-	                m_Buffers[1].Seek((int) m_Runs[m_Cursor].Offset, SeekOrigin.Begin);
-            }
-
-            m_Position += p_Length;
-        }
-
-        protected override int TryReadInternal(byte[] p_Data, int p_Length)
-        {
-            CheckDisposed();
-
-            if (p_Length == 0)
+            if (p_Count == 0)
                 return 0;
 
-            if (m_Remaining < p_Length)
-                p_Length = (int) m_Remaining;
+            var s_ToRead = p_Count;
+            var s_Remaining = p_Count;
 
-            var s_ToRead = p_Length;
-            var s_Remaining = p_Length;
-
-            var s_CurrentPos = 0;
+            var s_CurrentPos = p_Index;
 
             while (s_Remaining > 0)
             {
-                // This shouldn't happen in this method.
                 if (m_Remaining < s_ToRead)
                     throw new EndOfStreamException("End of stream reached with " + s_Remaining + " bytes left to read.");
 
@@ -178,19 +106,17 @@ namespace RimeLib.Content.IO
                 m_Runs[m_Cursor].CopyBytes -= s_ToRead;
                 s_Remaining -= s_ToRead;
 
-                if (m_Runs[m_Cursor].CopyBytes != 0)
+                if (m_Runs[m_Cursor].CopyBytes != 0) 
                     continue;
 
                 ++m_Cursor;
 
                 if (m_Cursor < m_Runs.Count && m_Runs[m_Cursor].FileId == 1)
-                    m_Buffers[1].Seek((int)m_Runs[m_Cursor].Offset, SeekOrigin.Begin);
+                    m_Buffers[1].Seek((int) m_Runs[m_Cursor].Offset, SeekOrigin.Begin);
             }
 
-            m_Position += p_Length;
-
-            return p_Length;
+            m_Position += p_Count;
+            return p_Count;
         }
     }
 }
-*/
