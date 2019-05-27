@@ -57,15 +57,15 @@ namespace RimeLib.Frostbite.Db
         /// <param name="p_Reader">Reader opened to the position of a dbobject</param>
         public DbObject(RimeReader p_Reader)
         {
-            if (p_Reader.BaseStream.Length - p_Reader.BaseStream.Position == 0)
+            if (p_Reader.Length - p_Reader.Position == 0)
                 throw new IndexOutOfRangeException();
 
-            while (p_Reader.BaseStream.Length - p_Reader.BaseStream.Position > 0)
+            while (p_Reader.Length - p_Reader.Position > 0)
             {
                 var s_Element = new DbObjectElement(p_Reader);
 
                 if (s_Element.Type == DbObjectType.Eoo)
-                    continue;
+                    break;
 
                 m_Elements.Add(s_Element);
             }
@@ -78,12 +78,12 @@ namespace RimeLib.Frostbite.Db
         /// <param name="p_Length">Length of the data to read</param>
         public DbObject(RimeReader p_Reader, long p_Length)
         {
-            var s_EndOffset = p_Reader.BaseStream.Position + p_Length;
+            var s_EndOffset = p_Reader.Position + p_Length;
 
-            if (s_EndOffset - p_Reader.BaseStream.Position == 0)
+            if (s_EndOffset - p_Reader.Position == 0)
                 throw new IndexOutOfRangeException();
 
-            while (s_EndOffset - p_Reader.BaseStream.Position > 0)
+            while (s_EndOffset - p_Reader.Position > 0)
             {
                 var s_Element = new DbObjectElement(p_Reader);
 
@@ -190,7 +190,7 @@ namespace RimeLib.Frostbite.Db
                     throw new Exception("DbObject serialization failed.");
 
                 s_Writer.Flush();
-                return ((MemoryStream)s_Writer.BaseStream).ToArray();
+                return ((MemoryStream) s_Writer.BaseStream).ToArray();
             }
         }
 

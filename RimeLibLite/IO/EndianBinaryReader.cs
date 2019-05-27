@@ -15,6 +15,11 @@ namespace RimeLib.IO
         /// Current position of the stream.
         /// </summary>
 		public virtual long Position => BaseStream.Position;
+
+        /// <summary>
+        /// Length of the underlying stream.
+        /// </summary>
+		public virtual long Length => BaseStream.Length;
         
         /// <summary>
         /// The bit converter used to read values from the stream

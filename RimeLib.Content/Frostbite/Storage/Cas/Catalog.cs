@@ -75,7 +75,7 @@ namespace RimeLib.Content.Frostbite.Storage.Cas
         /// <param name="p_Reader">Reader opened to the position of the catalog entries</param>
         protected void ParseEntries(RimeReader p_Reader)
         {
-            while (p_Reader.BaseStream.Length - p_Reader.BaseStream.Position > 0)
+            while (p_Reader.Length - p_Reader.Position > 0)
             {
                 var s_Entry = new CatalogEntry(p_Reader, this) { ContainedCatalog = this };
                 Entries.TryAdd(s_Entry.Hash, s_Entry);

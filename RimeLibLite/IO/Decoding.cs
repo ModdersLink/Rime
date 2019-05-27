@@ -139,7 +139,7 @@ namespace RimeLib.IO
             {
                 using (var s_OutStream = new MemoryStream())
                 {
-                    while (s_Reader.BaseStream.Length - s_Reader.BaseStream.Position > 1)
+                    while (s_Reader.Length - s_Reader.Position > 1)
                     {
                         var s_DecompressedLen = s_Reader.ReadInt32();
                         var s_CompressedLen = s_Reader.ReadInt32();
