@@ -73,7 +73,47 @@ namespace RimeLib.Content.IO
 
         public override void Seek(long p_Offset, SeekOrigin p_Origin)
         {
-            throw new Exception("Cannot seek in a Multiplexed Reader.");
+            CheckDisposed();
+
+            if (p_Origin != SeekOrigin.Current)
+                throw new Exception("Can only seek from current position in a Multiplexed Reader.");
+
+            if (p_Offset < 0)
+                throw new Exception("Multiplexed Reader can only seek forwards.");
+
+            if (p_Offset >= int.MaxValue)
+                throw new Exception($"Multiplexed Reader can only seek forwards up to {int.MaxValue} bytes at a time.");
+
+            if (p_Offset == 0)
+                return;
+
+            var s_ToRead = (int) p_Offset;
+            var s_Remaining = (int) p_Offset;
+
+            while (s_Remaining > 0)
+            {
+                if (m_Remaining < s_ToRead)
+                    throw new EndOfStreamException("End of stream reached with " + s_Remaining + " bytes left to skip.");
+
+                // We don't have enough bytes in the current run.
+                if (s_Remaining > m_Runs[m_Cursor].CopyBytes)
+                    s_ToRead = m_Runs[m_Cursor].CopyBytes;
+                else
+                    s_ToRead = s_Remaining;
+
+                m_Runs[m_Cursor].CopyBytes -= s_ToRead;
+                s_Remaining -= s_ToRead;
+
+                if (m_Runs[m_Cursor].CopyBytes != 0) 
+                    continue;
+
+                ++m_Cursor;
+
+                if (m_Cursor < m_Runs.Count && m_Runs[m_Cursor].FileId == 1)
+                    m_Buffers[1].Seek((int) m_Runs[m_Cursor].Offset, SeekOrigin.Begin);
+            }
+
+            m_Position += p_Offset;
         }
         
         protected override int ReadInternal(byte[] p_Data, int p_Index, int p_Count)
