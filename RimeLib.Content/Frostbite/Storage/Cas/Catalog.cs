@@ -12,72 +12,28 @@ namespace RimeLib.Content.Frostbite.Storage.Cas
     public class Catalog
     {
         /// <summary>
-        /// The type of storage
-        /// </summary>
-        public enum StorageType
-        {
-            /// <summary>
-            /// Plain storage, no signature nor obfuscation
-            /// </summary>
-            Bare,
-
-            /// <summary>
-            /// Obfuscated storage
-            /// </summary>
-            Obfuscated,
-
-            /// <summary>
-            /// RSA signature over the storage to prevent modifications
-            /// </summary>
-            Signed01
-        }
-
-        /// <summary>
-        /// Type of storage that this catalog holds
-        /// </summary>
-        public StorageType Storage { get; set; }
-
-        /// <summary>
-        /// The authoritative package for this storage
-        /// </summary>
-        public PackageManifest? AuthoritativePackage { get; set; }
-
-        /// <summary>
-        /// Name of this storage catalog
-        /// </summary>
-        public string Name { get; set; } = "";
-
-        /// <summary>
-        /// Base path location for this catalog
-        /// </summary>
-        public string BasePath => GetBasePath();
-
-        /// <summary>
-        /// Patched path location for this catalog
-        /// </summary>
-        public string? PatchPath => GetPatchPath();
-
-        /// <summary>
         /// Entries by hash within this catalog
         /// </summary>
         public ConcurrentDictionary<Sha1, CatalogEntry> Entries { get; } = new ConcurrentDictionary<Sha1, CatalogEntry>();
 
         /// <summary>
-        /// Constructor that parses a catalog from an opened reader
+        /// Authoritative catalog
         /// </summary>
-        /// <param name="p_Reader">Reader opened to the position of the catalog</param>
-        public Catalog(RimeReader p_Reader)
-        {
-            ParseHeader(p_Reader);
-        }
+        public Catalog? AuthoritativeCatalog { get; set; }
 
         /// <summary>
-        /// Constructor that parses a catalog from data
+        /// Path to this catalog
         /// </summary>
-        /// <param name="p_Data"></param>
-        public Catalog(byte[] p_Data)
+        public string Path { get; set; }
+
+        /// <summary>
+        /// Constructor that parses a catalog from an opened reader
+        /// </summary>
+        /// <param name="p_Path">Path to the catalog file</param>
+        public Catalog(string p_Path)
         {
-            using var s_Reader = new RimeReader(new MemoryStream(p_Data));
+            Path = p_Path;
+            using var s_Reader = new RimeReader(File.Open(Path, FileMode.Open, FileAccess.Read));
             ParseHeader(s_Reader);
         }
 
@@ -92,18 +48,13 @@ namespace RimeLib.Content.Frostbite.Storage.Cas
             switch (s_Magic)
             {
                 case 0x01CED100:
-                    Storage = StorageType.Signed01;
-                    p_Reader.EnableDeobfuscation();
-                    break;
-
                 case 0x00CED100:
-                    Storage = StorageType.Obfuscated;
+                    var s_Signature = p_Reader.ReadBytes(292);
                     p_Reader.EnableDeobfuscation();
                     break;
 
                 default:
                     p_Reader.Seek(-4, SeekOrigin.Current);
-                    Storage = StorageType.Bare;
                     break;
             }
 
@@ -142,6 +93,28 @@ namespace RimeLib.Content.Frostbite.Storage.Cas
         }
 
         /// <summary>
+        /// Opens a reader for a specific entry.
+        /// </summary>
+        /// <param name="p_Hash">Hash of the entry</param>
+        /// <returns>A reader that can be used to read the contents of the entry</returns>
+        public RimeReader ReadEntry(Sha1 p_Hash)
+        {
+            // If we have an authoritative catalog check that first.
+            if (AuthoritativeCatalog != null && AuthoritativeCatalog.ContainsEntry(p_Hash))
+                return AuthoritativeCatalog.ReadEntry(p_Hash);
+
+            // Otherwise check if we have this entry.
+            if (!ContainsEntry(p_Hash))
+                throw new Exception("Tried opening a reader for a catalog entry with a nonexistent hash.");
+
+            // Get the entry.
+            var s_Entry = this[p_Hash];
+
+            // Open a reader
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
         /// Indexer via hash
         /// </summary>
         /// <param name="p_Hash">Hash</param>
@@ -160,27 +133,6 @@ namespace RimeLib.Content.Frostbite.Storage.Cas
                 value.ContainedCatalog = this;
                 Entries.AddOrUpdate(p_Hash, value, (p_K, p_V) => value);
             }
-        }
-
-        /// <summary>
-        /// Gets the base vfs path for this catalog
-        /// </summary>
-        /// <returns>Base path of catalog</returns>
-        protected string GetBasePath()
-        {
-            return "/game/Data/" + (string.IsNullOrWhiteSpace(Name) ? "cas" : Name) + ".cat";
-        }
-
-        /// <summary>
-        /// Gets the patched vfs path for this catalog
-        /// </summary>
-        /// <returns>Patched path of catalog</returns>
-        protected string? GetPatchPath()
-        {
-            if (AuthoritativePackage == null)
-                return null;
-
-            return "/game" + AuthoritativePackage.Path + "/Data/" + (string.IsNullOrWhiteSpace(Name) ? "cas" : Name) + ".cat";
         }
     }
 }

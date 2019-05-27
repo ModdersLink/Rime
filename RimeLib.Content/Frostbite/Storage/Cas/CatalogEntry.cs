@@ -12,7 +12,6 @@ namespace RimeLib.Content.Frostbite.Storage.Cas
         public uint FileSize { get; set; }
         public uint FileNumber { get; set; }
         public Catalog ContainedCatalog { get; set; }
-        public string FilePath => GetFilePath();
 
         public CatalogEntry(Catalog p_ContainedCatalog)
         {
@@ -28,16 +27,6 @@ namespace RimeLib.Content.Frostbite.Storage.Cas
             Hash = new Sha1();
             ContainedCatalog = p_ContainedCatalog;
             Deserialize(p_Reader);
-        }
-
-        protected string GetFilePath()
-        {
-            var s_CatalogName = (string.IsNullOrWhiteSpace(ContainedCatalog.Name) ? "cas" : ContainedCatalog.Name);
-
-            if (ContainedCatalog.AuthoritativePackage == null)
-                return "/game/Data/" + s_CatalogName + "_" + FileNumber.ToString("D2") + ".cas";
-
-            return "/game" + ContainedCatalog.AuthoritativePackage.Path + "/Data/" + s_CatalogName + "_" + FileNumber.ToString("D2") + ".cas";
         }
 
         public bool Serialize(RimeWriter p_Writer)
