@@ -71,35 +71,7 @@ namespace RimeLib.Frostbite.Core
         {
             return Regex.Replace(BitConverter.ToString(Hash), @"[\0\-]", "", RegexOptions.None);
         }
-
-        /// <summary>
-        /// Sha1 equals
-        /// </summary>
-        /// <param name="p_G1">First hash</param>
-        /// <param name="p_G2">Second hash</param>
-        /// <returns>True if equal, false otherwise</returns>
-        public static bool operator ==(Sha1 p_G1, Sha1 p_G2)
-        {
-            if (ReferenceEquals(p_G1, p_G2))
-                return true;
-
-            if (p_G1 is null || p_G2 is null)
-                return false;
-
-            return p_G1.Hash.SequenceEqual(p_G2.Hash);
-        }
-
-        /// <summary>
-        /// Sha1 not equals
-        /// </summary>
-        /// <param name="p_G1">First hash</param>
-        /// <param name="p_G2">Second hash</param>
-        /// <returns>True if hashes arent equals, false otherwise</returns>
-        public static bool operator !=(Sha1 p_G1, Sha1 p_G2)
-        {
-            return !(p_G1 == p_G2);
-        }
-
+        
         /// <summary>
         /// Sha1 equals
         /// </summary>
@@ -108,7 +80,7 @@ namespace RimeLib.Frostbite.Core
         public override bool Equals(object p_Obj)
         {
             if (p_Obj is Sha1 s_Sha1)
-                return s_Sha1 == this;
+                return Hash.SequenceEqual(s_Sha1.Hash);
             
             return false;
         }
@@ -119,9 +91,7 @@ namespace RimeLib.Frostbite.Core
         /// <returns>Hash code</returns>
         public override int GetHashCode()
         {
-            if (Hash == null)
-                return base.GetHashCode();
-
+            // TODO: Optimize this. It's not very efficient.
             var s_HashCode = Hash.Aggregate(0, (p_Current, p_Byte) => p_Current + p_Byte);
             s_HashCode = (s_HashCode % int.MaxValue);
             return s_HashCode;
