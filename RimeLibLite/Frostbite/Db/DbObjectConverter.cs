@@ -239,8 +239,12 @@ namespace RimeLib.Frostbite.Db
 
             if (s_FieldType == typeof(long) || s_FieldType == typeof(long?))
             {
-                EnsureElementType(p_Element, DbObjectType.Long, DbObjectType.VarInt);
-                return p_Element.Value;
+                EnsureElementType(p_Element, DbObjectType.Integer, DbObjectType.Long, DbObjectType.VarInt);
+
+                if (p_Element.Value == null)
+                    return null;
+
+                return Convert.ToInt64(p_Element.Value);
             }
 
             if (s_FieldType == typeof(float) || s_FieldType == typeof(float?))
