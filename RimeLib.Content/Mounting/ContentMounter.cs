@@ -26,6 +26,7 @@ namespace RimeLib.Content.Mounting
         protected List<SuperbundleEntry> m_Superbundles = new List<SuperbundleEntry>();
         protected Catalog? m_Catalog;
         protected ConcurrentDictionary<GUID, ChunkEntry> m_Chunks = new ConcurrentDictionary<GUID, ChunkEntry>();
+        protected ConcurrentDictionary<string, BundleManifest> m_Bundles = new ConcurrentDictionary<string, BundleManifest>();
 
         public ContentMounter(EngineType p_Engine)
         {
@@ -172,8 +173,8 @@ namespace RimeLib.Content.Mounting
                 throw new Exception("Could not find content manifest (layout.toc).");
 
             using var s_ContentManifestReader = new RimeReader(File.Open(s_ContentManifestPath, FileMode.Open, FileAccess.Read, FileShare.Read));
-            var s_Toc = new TableOfContents<ContentManifest>(s_ContentManifestReader);
-            var s_ContentManifest = s_Toc.Layout;
+            var s_ManifestToc = new TableOfContents<ContentManifest>(s_ContentManifestReader);
+            var s_ContentManifest = s_ManifestToc.Layout;
 
             foreach (var s_Sb in s_ContentManifest.Superbundles)
             {
@@ -207,15 +208,27 @@ namespace RimeLib.Content.Mounting
                     continue;
                 }
 
+                TableOfContents<SuperbundleLayout> s_Toc;
+                
+                // Parse the superbundle layout.
+                using (var s_Reader = new RimeReader(File.Open(s_SbPath + ".toc", FileMode.Open, FileAccess.Read, FileShare.Read)))
+                    s_Toc = new TableOfContents<SuperbundleLayout>(s_Reader);
+
                 // Create a superbundle entry for this superbundle.
-                var s_SbEntry = new SuperbundleEntry(s_Sb.Name, s_SbPath)
+                var s_SbEntry = new SuperbundleEntry(s_Sb.Name, s_SbPath, s_Toc)
                 {
                     ContainedPackage = s_ContainedPackage,
                 };
 
                 // If we have an authoritative package then check if there's a patched sb.
                 if (m_AuthoritativePackage != null && File.Exists(Path.Join(GetPackagePath(m_AuthoritativePackage), s_Sb.Name + ".toc")))
+                {
                     s_SbEntry.PatchPath = Path.Join(GetPackagePath(m_AuthoritativePackage), s_Sb.Name);
+
+                    // Parse the patched superbundle layout.
+                    using var s_Reader = new RimeReader(File.Open(s_SbEntry.PatchPath + ".toc", FileMode.Open, FileAccess.Read, FileShare.Read));
+                    s_SbEntry.PatchToc = new TableOfContents<SuperbundleLayout>(s_Reader);
+                }
 
                 // Add to the list of discovered superbundles.
                 m_Superbundles.Add(s_SbEntry);
@@ -248,43 +261,44 @@ namespace RimeLib.Content.Mounting
             {
                 Debug.WriteLine($"Parsing superbundle {p_Superbundle.Name}");
 
-                TableOfContents<SuperbundleLayout> s_Toc;
-                TableOfContents<SuperbundleLayout>? s_PatchToc = null;
-
-                // Parse the superbundle layout.
-                using (var s_Reader = new RimeReader(File.Open(p_Superbundle.Path + ".toc", FileMode.Open, FileAccess.Read, FileShare.Read)))
-                    s_Toc = new TableOfContents<SuperbundleLayout>(s_Reader);
-
-                // Parse the patched layout if we have one.
-                if (p_Superbundle.PatchPath != null)
-                {
-                    using var s_PatchReader = new RimeReader(File.Open(p_Superbundle.PatchPath + ".toc", FileMode.Open, FileAccess.Read, FileShare.Read));
-                    s_PatchToc = new TableOfContents<SuperbundleLayout>(s_PatchReader);
-                }
-
                 // Parse any chunks first.
-                foreach (var s_Chunk in s_Toc.Layout.Chunks)
+                foreach (var s_Chunk in p_Superbundle.Toc.Layout.Chunks)
                     ProcessChunk(s_Chunk, p_Superbundle);
                 
                 // If we have a patch toc process the chunks for that too.
-                if (s_PatchToc != null)
-                    foreach (var s_Chunk in s_PatchToc.Layout.Chunks)
+                if (p_Superbundle.PatchToc != null)
+                    foreach (var s_Chunk in p_Superbundle.PatchToc.Layout.Chunks)
                         ProcessChunk(s_Chunk, p_Superbundle);
 
                 // Now it's time to parse bundles, oh boy!
-                ParseBundles(p_Superbundle, s_Toc.Layout, s_PatchToc?.Layout);
+                ParseBundles(p_Superbundle, p_Superbundle.Toc.Layout, p_Superbundle.PatchToc?.Layout);
             });
+        }
+
+        protected void ParseCasBundle(RimeReader p_Reader, BundleInfo p_BundleInfo, SuperbundleEntry p_Superbundle)
+        {
+            p_Reader.Seek(p_BundleInfo.Offset, SeekOrigin.Begin);
+
+            var s_Object = new DbObject(p_Reader, p_BundleInfo.Size);
         }
         
         protected void ParseBundle(RimeReader p_Reader, BundleInfo p_BundleInfo, SuperbundleEntry p_Superbundle)
         {
+            // TODO: Use a limited reader.
+            p_Reader.Seek(p_BundleInfo.Offset, SeekOrigin.Begin);
+            var s_Manifest = new BundleManifest(p_Reader, p_Superbundle, p_BundleInfo);
 
+            m_Bundles.AddOrUpdate(p_BundleInfo.Id.ToLowerInvariant(), s_Manifest, (p_Key, p_Prev) => s_Manifest);
         }
 
         protected void ParseDeltaBundle(RimeReader p_BaseReader, RimeReader p_PatchReader, 
             BundleInfo p_BaseBundle, BundleInfo p_PatchBundle, SuperbundleEntry p_Superbundle)
         {
+            // TODO: Use multiplexed reader.
+            p_BaseReader.Seek(p_BaseBundle.Offset, SeekOrigin.Begin);
+            var s_Manifest = new BundleManifest(p_BaseReader, p_Superbundle, p_BaseBundle);
 
+            m_Bundles.AddOrUpdate(p_BaseBundle.Id.ToLowerInvariant(), s_Manifest, (p_Key, p_Prev) => s_Manifest);
         }
 
         protected void ParseBundles(SuperbundleEntry p_Superbundle, SuperbundleLayout p_Toc, SuperbundleLayout? p_PatchToc)
@@ -302,15 +316,21 @@ namespace RimeLib.Content.Mounting
             var s_ParsedBundles = new HashSet<string>();
 
             // Go through the base bundles first.
-            // NOTE: There's special logic for handling CAS bundles, but BF3 seems to have none of them.
             foreach (var s_Bundle in p_Toc.Bundles)
             {
                 s_ParsedBundles.Add(s_Bundle.Id.ToLowerInvariant());
 
                 // If we don't have a patched toc or if we do but don't have
-                // a corresponding bundle entry then parse straight away!
-                if (p_PatchToc == null || !p_PatchToc.TryGetBundle(s_Bundle.Id, out var s_PatchBundle))
+                // a corresponding bundle entry, or if the base flag is set
+                // then parse straight away!
+                if (p_PatchToc == null || !p_PatchToc.TryGetBundle(s_Bundle.Id, out var s_PatchBundle) || (s_PatchBundle!.Base.HasValue && s_PatchBundle.Base.Value))
                 {
+                    if (p_Toc.Cas)
+                    {
+                        ParseCasBundle(s_Reader, s_Bundle, p_Superbundle);
+                        continue;
+                    }
+
                     ParseBundle(s_Reader, s_Bundle, p_Superbundle);
                     continue;
                 }
@@ -324,6 +344,12 @@ namespace RimeLib.Content.Mounting
                 }
 
                 // If this wasn't a delta entry then parse as we normally would.
+                if (p_Toc.Cas)
+                {
+                    ParseCasBundle(s_PatchReader!, s_PatchBundle, p_Superbundle);
+                    continue;
+                }
+
                 ParseBundle(s_PatchReader!, s_PatchBundle, p_Superbundle);
             }
             
@@ -341,9 +367,15 @@ namespace RimeLib.Content.Mounting
                     // TODO: We might not want to throw an error here.
                     if (s_Bundle.Delta.HasValue && s_Bundle.Delta.Value)
                         throw new Exception($"Found a delta bundle ({s_Bundle.Id}) without a base bundle entry. This probably means you're missing some content.");
+                    
+                    if (p_PatchToc.Cas)
+                    {
+                        ParseCasBundle(s_PatchReader!, s_Bundle, p_Superbundle);
+                        continue;
+                    }
 
                     // If all is good, parse as we normally would.
-                    ParseSbBundle(s_PatchReader!, s_Bundle, p_Superbundle);
+                    ParseBundle(s_PatchReader!, s_Bundle, p_Superbundle);
                 }
             }
 

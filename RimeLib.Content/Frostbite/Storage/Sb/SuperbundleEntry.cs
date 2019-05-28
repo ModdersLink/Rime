@@ -10,10 +10,15 @@
 
         public PackageManifest? ContainedPackage { get; set; }
 
-        public SuperbundleEntry(string p_Name, string p_Path)
+        public TableOfContents<SuperbundleLayout> Toc { get; set; }
+
+        public TableOfContents<SuperbundleLayout>? PatchToc { get; set; }
+
+        public SuperbundleEntry(string p_Name, string p_Path, TableOfContents<SuperbundleLayout> p_Toc)
         {
             Name = p_Name;
             Path = p_Path;
+            Toc = p_Toc;
         }
     }
 }
