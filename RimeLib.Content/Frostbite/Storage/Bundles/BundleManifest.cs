@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using RimeLib.Content.Frostbite.Storage.Chunks;
 using RimeLib.Content.Frostbite.Storage.Sb;
@@ -174,13 +173,13 @@ namespace RimeLib.Content.Frostbite.Storage.Bundles
 
         private readonly Header m_Header;
         private readonly uint m_ManifestSize;
-        private List<Sha1> m_Hashes = new List<Sha1>();
-        private List<EntryRecord> m_Records = new List<EntryRecord>();
-        private List<uint> m_ResourceTypeHashes = new List<uint>();
+        private readonly List<Sha1> m_Hashes = new List<Sha1>();
+        private readonly List<EntryRecord> m_Records = new List<EntryRecord>();
+        private readonly List<uint> m_ResourceTypeHashes = new List<uint>();
         private readonly List<byte[]> m_ResourceMeta = new List<byte[]>();
-        private List<ChunkEntry> m_Chunks = new List<ChunkEntry>();
+        private readonly List<ChunkEntry> m_Chunks = new List<ChunkEntry>();
         private readonly DbObject? m_ChunkMeta;
-        private byte[] m_TextBlock;
+        private readonly byte[] m_TextBlock;
         private readonly long m_StartPosition;
 
         public List<EbxEntry> Ebx { get; set; } = new List<EbxEntry>();
@@ -243,6 +242,14 @@ namespace RimeLib.Content.Frostbite.Storage.Bundles
 
             // Prepare entries for reading.
             ParseEntries(p_Reader);
+
+            // Clean up.
+            m_TextBlock = new byte[0];
+            m_Hashes.Clear();
+            m_Records.Clear();
+            m_ResourceTypeHashes.Clear();
+            m_ResourceMeta.Clear();
+            m_Chunks.Clear();
         }
 
         private void ParseEntries(RimeReader p_Reader)
