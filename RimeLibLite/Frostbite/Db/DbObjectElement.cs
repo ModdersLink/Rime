@@ -68,7 +68,7 @@ namespace RimeLib.Frostbite.Db
                         return 0;
 
                     case DbObjectType.Bool:
-                        return m_Int8Value != 1;
+                        return m_Int8Value != 0;
 
                     case DbObjectType.String:
                         return m_StringValue;

@@ -88,7 +88,7 @@ namespace RimeLib.Frostbite.Db
                 var s_Element = new DbObjectElement(p_Reader);
 
                 if (s_Element.Type == DbObjectType.Eoo)
-                    continue;
+                    break;
 
                 m_Elements.Add(s_Element);
             }
