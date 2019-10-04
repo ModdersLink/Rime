@@ -101,7 +101,12 @@ namespace RimeLib.Frostbite.Db
 
                 var s_Attribute = (DbObjectFieldAttribute) s_PropertyAttributes[0];
                 var s_IsNullable = s_Property.IsNullable();
+                var s_IsArray = s_Property.PropertyType.IsArray;
                 var s_HasKey = p_Object.HasKey(s_Attribute.FieldName);
+                
+                // If we don't have this field and the property is an array we can just ignore it.
+                if (!s_HasKey && s_IsArray)
+                    continue;
 
                 // If we don't have this field and the property is not nullable set the default value.
                 if (!s_HasKey && !s_IsNullable)
@@ -132,6 +137,24 @@ namespace RimeLib.Frostbite.Db
         public static (T, DbObject) FromDbObjectReader<T>(RimeReader p_Reader) where T : DbObjectSerializable, new()
         {
             var s_DbObject = new DbObject(p_Reader);
+
+            if (s_DbObject.Count != 1)
+                throw new Exception("The parsed DbObject has more than one embedded element.");
+
+            // Get the contained object.
+            var s_Element = s_DbObject[0];
+
+            if (s_Element.Type != DbObjectType.Object)
+                throw new Exception("The parsed DbObject has a non-object contained element.");
+
+            var s_Object = (DbObject) s_Element.Value;
+
+            return (FromDbObject<T>(s_Object), s_Object);
+        }
+
+        public static (T, DbObject) FromDbObjectReader<T>(RimeReader p_Reader, long p_Length) where T : DbObjectSerializable, new()
+        {
+            var s_DbObject = new DbObject(p_Reader, p_Length);
 
             if (s_DbObject.Count != 1)
                 throw new Exception("The parsed DbObject has more than one embedded element.");
@@ -293,6 +316,12 @@ namespace RimeLib.Frostbite.Db
             if (s_FieldType == typeof(DbObjectTimespan))
             {
                 EnsureElementType(p_Element, DbObjectType.Timespan);
+                return p_Element.Value;
+            }
+
+            if (s_FieldType == typeof(DbObject))
+            {
+                EnsureElementType(p_Element, DbObjectType.Object, DbObjectType.Array);
                 return p_Element.Value;
             }
 

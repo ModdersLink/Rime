@@ -194,6 +194,15 @@ namespace RimeLib.IO
             return s_Gap;
         }
 
+        public void Align(int p_Alignment)
+        {
+            if (Position % p_Alignment == 0)
+                return;
+
+            var s_Number = p_Alignment - (Position % p_Alignment);
+            ReadBytes((int) s_Number);
+        }
+
         protected override int ReadInternal(byte[] p_Data, int p_Index, int p_Count)
         {
             var s_CurrentOffset = BaseStream.Position + p_Index - m_ObfuscatedDataOffset;

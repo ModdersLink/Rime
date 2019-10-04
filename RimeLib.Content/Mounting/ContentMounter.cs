@@ -27,6 +27,7 @@ namespace RimeLib.Content.Mounting
         protected Catalog? m_Catalog;
         protected ConcurrentDictionary<GUID, ChunkEntry> m_Chunks = new ConcurrentDictionary<GUID, ChunkEntry>();
         protected ConcurrentDictionary<string, BundleManifest> m_Bundles = new ConcurrentDictionary<string, BundleManifest>();
+        protected ConcurrentDictionary<string, CasBundle> m_CasBundles = new ConcurrentDictionary<string, CasBundle>();
 
         public ContentMounter(EngineType p_Engine)
         {
@@ -279,7 +280,8 @@ namespace RimeLib.Content.Mounting
         {
             p_Reader.Seek(p_BundleInfo.Offset, SeekOrigin.Begin);
 
-            var s_Object = new DbObject(p_Reader, p_BundleInfo.Size);
+            var (s_Bundle, _) = DbObjectConverter.FromDbObjectReader<CasBundle>(p_Reader, p_BundleInfo.Size);
+            m_CasBundles.AddOrUpdate(p_BundleInfo.Id.ToLowerInvariant(), s_Bundle, (p_Key, p_Prev) => s_Bundle);
         }
         
         protected void ParseBundle(RimeReader p_Reader, BundleInfo p_BundleInfo, SuperbundleEntry p_Superbundle)
