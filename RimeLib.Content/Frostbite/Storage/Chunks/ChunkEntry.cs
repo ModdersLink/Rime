@@ -1,10 +1,26 @@
 ﻿using RimeLib.Frostbite.Core;
+using RimeLib.Frostbite.Db;
 using RimeLib.IO;
 
 namespace RimeLib.Content.Frostbite.Storage.Chunks
 {
     public abstract class ChunkEntry
     {
+        public class ChunkMetaPayload : DbObjectSerializable
+        {
+            [DbObjectField("firstMip")]
+            public int? FirstMip { get; set; }
+        }
+
+        public class ChunkMeta : DbObjectSerializable
+        {
+            [DbObjectField("h32")]
+            public int AssetNameHash { get; set; }
+            
+            [DbObjectField("meta")]
+            public ChunkMetaPayload Payload { get; set; } = new ChunkMetaPayload();
+        }
+
         public GUID Id { get; set; }
 
         protected ChunkEntry(GUID p_Id)

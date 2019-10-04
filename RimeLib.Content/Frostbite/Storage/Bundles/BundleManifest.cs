@@ -178,7 +178,7 @@ namespace RimeLib.Content.Frostbite.Storage.Bundles
         private readonly List<uint> m_ResourceTypeHashes = new List<uint>();
         private readonly List<byte[]> m_ResourceMeta = new List<byte[]>();
         private readonly List<ChunkEntry> m_Chunks = new List<ChunkEntry>();
-        private readonly DbObject? m_ChunkMeta;
+        private readonly Chunks.ChunkEntry.ChunkMeta[] m_ChunkMeta = new Chunks.ChunkEntry.ChunkMeta[0];
         private readonly byte[] m_TextBlock;
         private readonly long m_StartPosition;
 
@@ -233,8 +233,15 @@ namespace RimeLib.Content.Frostbite.Storage.Bundles
 
                 // Create a new reader and get a DbObject from it
                 var s_ObjectReader = new RimeReader(s_Stream);
-                m_ChunkMeta = new DbObject(s_ObjectReader);
+                var s_Object = new DbObject(s_ObjectReader);
+                var s_RealObject = s_Object[0].Value as DbObject;
                 s_ObjectReader.Dispose();
+
+                // Parse the chunk meta.
+                m_ChunkMeta = new Chunks.ChunkEntry.ChunkMeta[m_Header.ChunkCount];
+
+                for (var i = 0; i < m_Header.ChunkCount; ++i)
+                    m_ChunkMeta[i] = DbObjectConverter.FromDbObject<Chunks.ChunkEntry.ChunkMeta>((s_RealObject![i].Value as DbObject)!);
             }
 
             // Read the text block (can be used later to associate EntryRecords).
