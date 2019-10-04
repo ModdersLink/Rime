@@ -1,4 +1,6 @@
-﻿namespace RimeLib.Content.Frostbite.Storage.Sb
+﻿using RimeLib.Content.Frostbite;
+
+namespace RimeLib.Content.Venice.Frostbite.Sb
 {
     public class SuperbundleEntry
     {

@@ -21,11 +21,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RimeLib.Serialization", "Ri
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RimeLib.Tests", "RimeLib.Tests\RimeLib.Tests.csproj", "{52F62CE8-2F07-4482-A89E-22957CE4D94E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RimeLib.Content.Tests", "RimeLib.Content.Tests\RimeLib.Content.Tests.csproj", "{C5B93F46-23B8-4661-94A9-BF00F6824906}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Utils", "Utils", "{42E38905-976C-4506-98AE-DC35CA1A9925}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContentExtractor", "Utils\ContentExtractor\ContentExtractor.csproj", "{5686AEEE-E8E7-4AC8-8B86-80485F90D69A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContentExtractor", "Utils\ContentExtractor\ContentExtractor.csproj", "{5686AEEE-E8E7-4AC8-8B86-80485F90D69A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RimeLib.Content.Venice", "RimeLib.Content.Venice\RimeLib.Content.Venice.csproj", "{C915B4F0-D809-4C29-B115-D519EA1F60BC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -69,14 +69,14 @@ Global
 		{52F62CE8-2F07-4482-A89E-22957CE4D94E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{52F62CE8-2F07-4482-A89E-22957CE4D94E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{52F62CE8-2F07-4482-A89E-22957CE4D94E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C5B93F46-23B8-4661-94A9-BF00F6824906}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C5B93F46-23B8-4661-94A9-BF00F6824906}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C5B93F46-23B8-4661-94A9-BF00F6824906}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C5B93F46-23B8-4661-94A9-BF00F6824906}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5686AEEE-E8E7-4AC8-8B86-80485F90D69A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5686AEEE-E8E7-4AC8-8B86-80485F90D69A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5686AEEE-E8E7-4AC8-8B86-80485F90D69A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5686AEEE-E8E7-4AC8-8B86-80485F90D69A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C915B4F0-D809-4C29-B115-D519EA1F60BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C915B4F0-D809-4C29-B115-D519EA1F60BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C915B4F0-D809-4C29-B115-D519EA1F60BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C915B4F0-D809-4C29-B115-D519EA1F60BC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

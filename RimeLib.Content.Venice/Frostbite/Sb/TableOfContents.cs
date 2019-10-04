@@ -3,7 +3,7 @@ using System.IO;
 using RimeLib.Frostbite.Db;
 using RimeLib.IO;
 
-namespace RimeLib.Content.Frostbite.Storage.Sb
+namespace RimeLib.Content.Venice.Frostbite.Sb
 {
     public class TableOfContents<T> where T : DbObjectSerializable, new()
     {

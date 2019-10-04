@@ -1,10 +1,11 @@
-﻿using RimeLib.Frostbite.Core;
+﻿using RimeLib.Frostbite;
+using RimeLib.Frostbite.Core;
 using RimeLib.Frostbite.Db;
 using RimeLib.IO;
 
-namespace RimeLib.Content.Frostbite.Storage.Chunks
+namespace RimeLib.Content.Venice.Frostbite.Chunks
 {
-    public abstract class ChunkEntry
+    public abstract class ChunkEntry : IReadableObject
     {
         public class ChunkMetaPayload : DbObjectSerializable
         {

@@ -1,6 +1,6 @@
 ﻿using RimeLib.Frostbite.Db;
 
-namespace RimeLib.Content.Frostbite.Storage.Sb
+namespace RimeLib.Content.Venice.Frostbite.Sb
 {
     public class ContentManifest : DbObjectSerializable
     {

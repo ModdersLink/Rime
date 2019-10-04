@@ -5,20 +5,20 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using RimeLib.Content.Frostbite;
-using RimeLib.Content.Frostbite.Content;
-using RimeLib.Content.Frostbite.Storage.Bundles;
-using RimeLib.Content.Frostbite.Storage.Cas;
-using RimeLib.Content.Frostbite.Storage.Chunks;
-using RimeLib.Content.Frostbite.Storage.Sb;
+using RimeLib.Content.Mounting;
+using RimeLib.Content.Venice.Frostbite.Bundles;
+using RimeLib.Content.Venice.Frostbite.Cas;
+using RimeLib.Content.Venice.Frostbite.Chunks;
+using RimeLib.Content.Venice.Frostbite.Sb;
 using RimeLib.Frostbite;
 using RimeLib.Frostbite.Core;
 using RimeLib.Frostbite.Db;
 using RimeLib.IO;
 using RimeLib.IO.Conversion;
 
-namespace RimeLib.Content.Mounting
+namespace RimeLib.Content.Venice
 {
-    public class ContentMounter
+    public class EngineMounter : IEngineMounter
     {
         protected string m_GamePath = "";
         protected PackageManifest? m_AuthoritativePackage;
@@ -29,11 +29,12 @@ namespace RimeLib.Content.Mounting
         protected ConcurrentDictionary<string, BundleManifest> m_Bundles = new ConcurrentDictionary<string, BundleManifest>();
         protected ConcurrentDictionary<string, CasBundle> m_CasBundles = new ConcurrentDictionary<string, CasBundle>();
 
-        public ContentMounter(EngineType p_Engine)
+        public EngineType GetSupportedEngine()
         {
+            return EngineType.Frostbite2_0;
         }
 
-        public async Task<bool> Mount(string p_GamePath)
+        public async Task Mount(string p_GamePath, bool p_AutoMount)
         {
             // TODO: Remove this. It's just here to get rid of compiler errors.
             await Task.Delay(0);
@@ -50,37 +51,90 @@ namespace RimeLib.Content.Mounting
             DiscoverSuperbundles();
 
             // Parse superbundles.
-            ParseSuperbundles();
-
-            return true;
+            // Do this only when in "automount" mode.
+            if (p_AutoMount)
+                ParseSuperbundles();
         }
 
-        public async Task<bool> MountBundle(string p_Bundle)
+        public IEnumerable<string> GetAvailableSuperbundles()
         {
-            // TODO: Remove this. It's just here to get rid of compiler errors.
-            await Task.Delay(0);
+            foreach (var s_Superbundle in m_Superbundles)
+                yield return s_Superbundle.Name;
+        }
 
-            return false;
+        public Task MountSuperbundle(string p_Superbundle, bool p_AutoMount)
+        {
+            throw new NotImplementedException();
         }
 
         public IEnumerable<string> GetAvailableBundles()
         {
-            throw new NotImplementedException();
+            var s_Keys = new HashSet<string>();
+
+            s_Keys.UnionWith(m_CasBundles.Keys);
+            s_Keys.UnionWith(m_Bundles.Keys);
+
+            return s_Keys;
         }
 
-        public RimeReader GetChunk(GUID p_GUID)
+        public async Task MountBundle(string p_Bundle)
+        {
+            // TODO: Remove this. It's just here to get rid of compiler errors.
+            await Task.Delay(0);
+
+            // Check to see if this is a CAS bundle or an embedded bundle and mount it accordingly.
+            if (m_CasBundles.TryGetValue(p_Bundle.ToLowerInvariant(), out var s_CasBundle))
+            {
+                MountCasBundle(s_CasBundle);
+                return;
+            }
+
+            if (m_Bundles.TryGetValue(p_Bundle.ToLowerInvariant(), out var s_EmbeddedBundle))
+            {
+                MountEmbeddedBundle(s_EmbeddedBundle);
+                return;
+            }
+        }
+
+        public IEnumerable<string> GetResourcesInBundle(string p_Bundle)
         {
             throw new NotImplementedException();
         }
 
-        public FrostbiteResource GetResource(string p_Path)
+        public IEnumerable<GUID> GetChunksInBundle(string p_Bundle)
         {
             throw new NotImplementedException();
         }
 
-        public RimeReader GetPartition(string p_Path)
+        public IEnumerable<string> GetPartitionsInBundle(string p_Bundle)
         {
             throw new NotImplementedException();
+        }
+
+        public bool TryGetResource(string p_Path, out IMountedResource p_Resource)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool TryGetChunk(GUID p_GUID, out IMountedChunk p_Chunk)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool TryGetPartition(string p_Path, out IMountedObject p_Partition)
+        {
+            throw new NotImplementedException();
+        }
+
+        
+        protected bool MountCasBundle(CasBundle p_Bundle)
+        {
+            return true;
+        }
+
+        protected bool MountEmbeddedBundle(BundleManifest p_Bundle)
+        {
+            return true;
         }
 
         protected string GetMainPackagePath()
@@ -282,6 +336,10 @@ namespace RimeLib.Content.Mounting
 
             var (s_Bundle, _) = DbObjectConverter.FromDbObjectReader<CasBundle>(p_Reader, p_BundleInfo.Size);
             m_CasBundles.AddOrUpdate(p_BundleInfo.Id.ToLowerInvariant(), s_Bundle, (p_Key, p_Prev) => s_Bundle);
+
+            // TODO: Don't do if automount isn't on.
+            if (!MountCasBundle(s_Bundle)) 
+                throw new Exception($"Failed to mount bundle '{s_Bundle.Path}'.");
         }
         
         protected void ParseBundle(RimeReader p_Reader, BundleInfo p_BundleInfo, SuperbundleEntry p_Superbundle)
@@ -291,6 +349,10 @@ namespace RimeLib.Content.Mounting
             var s_Manifest = new BundleManifest(p_Reader, p_Superbundle, p_BundleInfo);
 
             m_Bundles.AddOrUpdate(p_BundleInfo.Id.ToLowerInvariant(), s_Manifest, (p_Key, p_Prev) => s_Manifest);
+
+            // TODO: Don't do if automount isn't on.
+            if (!MountEmbeddedBundle(s_Manifest)) 
+                throw new Exception($"Failed to mount embedded bundle '{p_BundleInfo.Id}'.");
         }
 
         protected void ParseDeltaBundle(RimeReader p_BaseReader, RimeReader p_PatchReader, 
@@ -301,6 +363,10 @@ namespace RimeLib.Content.Mounting
             var s_Manifest = new BundleManifest(p_BaseReader, p_Superbundle, p_BaseBundle);
 
             m_Bundles.AddOrUpdate(p_BaseBundle.Id.ToLowerInvariant(), s_Manifest, (p_Key, p_Prev) => s_Manifest);
+
+            // TODO: Don't do if automount isn't on.
+            if (!MountEmbeddedBundle(s_Manifest)) 
+                throw new Exception($"Failed to mount embedded delta bundle '{p_BaseBundle.Id}'.");
         }
 
         protected void ParseBundles(SuperbundleEntry p_Superbundle, SuperbundleLayout p_Toc, SuperbundleLayout? p_PatchToc)

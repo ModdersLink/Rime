@@ -2,10 +2,8 @@
 using RimeLib.Frostbite.Core;
 using RimeLib.Frostbite.Db;
 
-namespace RimeLib.Content.Frostbite.Storage.Sb
+namespace RimeLib.Content.Venice.Frostbite.Sb
 {
-    // TODO: Separate these into a Venice-specific module.
-
     /// <summary>
     /// Bundle information object.
     /// There are currently 3 different layouts for Venice:

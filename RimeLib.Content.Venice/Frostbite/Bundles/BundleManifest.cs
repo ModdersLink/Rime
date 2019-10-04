@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using RimeLib.Content.Frostbite.Storage.Chunks;
-using RimeLib.Content.Frostbite.Storage.Sb;
+using RimeLib.Content.Venice.Frostbite.Chunks;
+using RimeLib.Content.Venice.Frostbite.Sb;
 using RimeLib.Frostbite.Core;
 using RimeLib.Frostbite.Db;
 using RimeLib.IO;
 using RimeLib.IO.Conversion;
 
-namespace RimeLib.Content.Frostbite.Storage.Bundles
+namespace RimeLib.Content.Venice.Frostbite.Bundles
 {
     public class EbxEntry
     {
@@ -84,18 +84,20 @@ namespace RimeLib.Content.Frostbite.Storage.Bundles
 
         public BundleInfo ContainedBundle { get; set; }
 
-        // TODO: Meta
+        public ChunkMeta Meta { get; set; }
 
         private long m_SeekOffset;
 
         private long m_Size;
         private bool m_Compressed;
 
-        internal BundleChunkEntry(BundleManifest.ChunkEntry p_Entry, long p_SeekOffset, SuperbundleEntry p_Superbundle, BundleInfo p_Bundle) :
+        internal BundleChunkEntry(BundleManifest.ChunkEntry p_Entry, long p_SeekOffset, SuperbundleEntry p_Superbundle, BundleInfo p_Bundle, ChunkMeta p_Meta) :
             base(p_Entry.Id)
         {
             ContainedSuperbundle = p_Superbundle;
             ContainedBundle = p_Bundle;
+
+            Meta = p_Meta;
 
             m_SeekOffset = p_SeekOffset;
             m_Size = p_Entry.RangeEnd - p_Entry.RangeStart;
@@ -327,13 +329,13 @@ namespace RimeLib.Content.Frostbite.Storage.Bundles
                 // Get the chunk info.
                 var s_ChunkEntry = m_Chunks[i];
                 
-                // Get the chunk meta.
-                // TODO
+                // Get the chunk meta. 
+                var s_ChunkMeta = m_ChunkMeta[i];
 
                 // Get the data offset for this entry.
                 var s_Offset = p_Reader.Position;
 
-                var s_RealEntry = new BundleChunkEntry(s_ChunkEntry, s_Offset - m_StartPosition, ContainedSuperbundle, ContainedBundle);
+                var s_RealEntry = new BundleChunkEntry(s_ChunkEntry, s_Offset - m_StartPosition, ContainedSuperbundle, ContainedBundle, s_ChunkMeta);
                 Chunks.Add(s_RealEntry);
 
                 // Skip the data, we don't need to read it right now.

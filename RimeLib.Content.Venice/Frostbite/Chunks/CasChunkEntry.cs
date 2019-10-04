@@ -1,9 +1,9 @@
 ﻿using System;
-using RimeLib.Content.Frostbite.Storage.Cas;
+using RimeLib.Content.Venice.Frostbite.Cas;
 using RimeLib.Frostbite.Core;
 using RimeLib.IO;
 
-namespace RimeLib.Content.Frostbite.Storage.Chunks
+namespace RimeLib.Content.Venice.Frostbite.Chunks
 {
     class CasChunkEntry : ChunkEntry
     {

@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\RimeLib.Content.Venice\RimeLib.Content.Venice.csproj" />
     <ProjectReference Include="..\..\RimeLib.Content\RimeLib.Content.csproj" />
   </ItemGroup>
 

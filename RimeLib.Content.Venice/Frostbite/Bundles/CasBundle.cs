@@ -1,8 +1,8 @@
-﻿using RimeLib.Content.Frostbite.Storage.Chunks;
+﻿using RimeLib.Content.Venice.Frostbite.Chunks;
 using RimeLib.Frostbite.Core;
 using RimeLib.Frostbite.Db;
 
-namespace RimeLib.Content.Frostbite.Storage.Bundles
+namespace RimeLib.Content.Venice.Frostbite.Bundles
 {
     public class CasBundle : DbObjectSerializable
     {
