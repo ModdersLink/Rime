@@ -7,22 +7,36 @@ using RimeLib.Frostbite.Db;
 
 namespace RimeLib.Content.Mounting
 {
-    public interface IMountedObject : IReadableObject
+    public interface IObjectVariant : IReadableObject
     {
-        IEnumerable<string> GetContainedBundles();
-        IEnumerable<string> GetContainedSuperbundles();
+        string GetContainedSuperbundle();
+        string? GetContainedBundle();
     }
 
-    public interface IMountedResource : IReadableObject
+    public interface IResourceVariant : IObjectVariant
     {
         ResourceType GetResourceType();
-        bool TryGetResourceMeta(out DbObject? p_Meta);
+        bool TryGetMeta(out DbObject? p_Meta);
     }
 
-    public interface IMountedChunk : IReadableObject
+    public interface IChunkVariant : IObjectVariant
     {
-        bool TryGetChunkMeta(out DbObject? p_Meta);
+        bool TryGetMeta(out DbObject? p_Meta);
     }
+
+    /// <summary>
+    /// Represents a mounted game object (eg. a resource or chunk) and holds
+    /// a collection of all the different mounted variants of this object,
+    /// contained in different bundles or superbundles.
+    /// </summary>
+    /// <typeparam name="T">The variant type.</typeparam>
+    public interface IMountedObject<T> where T : IObjectVariant
+    {
+        IEnumerable<T> Variants { get; }
+        T FirstVariant { get; }
+    }
+
+    public interface IMountedObject : IMountedObject<IObjectVariant> {}
 
     public interface IEngineMounter
     {
@@ -91,7 +105,7 @@ namespace RimeLib.Content.Mounting
         /// <param name="p_Path">The path to the resource.</param>
         /// <param name="p_Resource">The output resource object.</param>
         /// <returns>When the return value is `true` then the output will **not** be `null`. When it's `false` it **will** be `null`.</returns>
-        bool TryGetResource(string p_Path, out IMountedResource? p_Resource);
+        bool TryGetResource(string p_Path, out IMountedObject<IResourceVariant>? p_Resource);
 
         /// <summary>
         /// Try to get a mounted chunk. The chunk will be provided in an output parameter.
@@ -99,7 +113,7 @@ namespace RimeLib.Content.Mounting
         /// <param name="p_GUID">The id of the chunk.</param>
         /// <param name="p_Chunk">The output chunk object.</param>
         /// <returns>When the return value is `true` then the output will **not** be `null`. When it's `false` it **will** be `null`.</returns>
-        bool TryGetChunk(GUID p_GUID, out IMountedChunk? p_Chunk);
+        bool TryGetChunk(GUID p_GUID, out IMountedObject<IChunkVariant>? p_Chunk);
 
         /// <summary>
         /// Try to get a mounted partition. The partition will be provided in an output parameter.

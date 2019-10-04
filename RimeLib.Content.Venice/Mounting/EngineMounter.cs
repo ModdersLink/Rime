@@ -33,8 +33,8 @@ namespace RimeLib.Content.Venice.Mounting
         protected ConcurrentDictionary<string, BundleManifest> m_Bundles = new ConcurrentDictionary<string, BundleManifest>();
         protected ConcurrentDictionary<string, CasBundle> m_CasBundles = new ConcurrentDictionary<string, CasBundle>();
 
-        private ConcurrentDictionary<string, MountedResource> m_MountedResources = new ConcurrentDictionary<string, MountedResource>();
-        private ConcurrentDictionary<GUID, MountedChunk> m_MountedChunks = new ConcurrentDictionary<GUID, MountedChunk>();
+        private ConcurrentDictionary<string, MountedObject<IResourceVariant>> m_MountedResources = new ConcurrentDictionary<string, MountedObject<IResourceVariant>>();
+        private ConcurrentDictionary<GUID, MountedObject<IChunkVariant>> m_MountedChunks = new ConcurrentDictionary<GUID, MountedObject<IChunkVariant>>();
         private ConcurrentDictionary<string, MountedObject> m_MountedPartitions = new ConcurrentDictionary<string, MountedObject>();
 
         public EngineType GetSupportedEngine()
@@ -157,7 +157,7 @@ namespace RimeLib.Content.Venice.Mounting
             }
         }
 
-        public bool TryGetResource(string p_Path, out IMountedResource? p_Resource)
+        public bool TryGetResource(string p_Path, out IMountedObject<IResourceVariant>? p_Resource)
         {
             if (m_MountedResources.TryGetValue(p_Path.ToLowerInvariant(), out var s_Resource))
             {
@@ -169,7 +169,7 @@ namespace RimeLib.Content.Venice.Mounting
             return false;
         }
 
-        public bool TryGetChunk(GUID p_GUID, out IMountedChunk? p_Chunk)
+        public bool TryGetChunk(GUID p_GUID, out IMountedObject<IChunkVariant>? p_Chunk)
         {
             if (m_MountedChunks.TryGetValue(p_GUID, out var s_Chunk))
             {
@@ -348,20 +348,38 @@ namespace RimeLib.Content.Venice.Mounting
 
         protected void ProcessChunk(ChunkInfo p_Chunk, SuperbundleEntry p_SbEntry)
         {
-            // If there's a SHA1 specified then this is a cas-backed chunk.
+            ChunkEntry s_ChunkEntry;
+
             if (p_Chunk.Sha1 != null)
             {
+                // If there's a SHA1 specified then this is a cas-backed chunk.
                 if (m_Catalog == null)
                     throw new Exception("Found a cas chunk entry but the game has no catalog!");
 
-                var s_ChunkEntry = new CasChunkEntry(p_Chunk.Id, p_Chunk.Sha1, m_Catalog);
-                m_Chunks.AddOrUpdate(s_ChunkEntry.Id, s_ChunkEntry, (p_Key, p_Old) => s_ChunkEntry);
+                s_ChunkEntry = new CasChunkEntry(p_Chunk.Id, p_Chunk.Sha1, m_Catalog);
+
                 return;
             }
+            else
+            {
+                // Otherwise, it's an sb-backed chunk.
+                s_ChunkEntry = new SbChunkEntry(p_Chunk.Id, p_Chunk.Offset!.Value, p_Chunk.Size!.Value, p_SbEntry);
+            }
 
-            // Otherwise, it's an sb-backed chunk.
-            var s_SbChunkEntry = new SbChunkEntry(p_Chunk.Id, p_Chunk.Offset!.Value, p_Chunk.Size!.Value, p_SbEntry);
-            m_Chunks.AddOrUpdate(s_SbChunkEntry.Id, s_SbChunkEntry, (p_Key, p_Old) => s_SbChunkEntry);
+            // Add to list of chunks.
+            // TODO: Remove this.
+            m_Chunks.AddOrUpdate(s_ChunkEntry.Id, s_ChunkEntry, (p_Key, p_Old) => s_ChunkEntry);
+
+            // Mount.
+            var s_Variant = new ChunkVariant(s_ChunkEntry, null, p_SbEntry.Name, null);
+            var s_MountedObject = new MountedObject<IChunkVariant>(s_Variant);
+
+            m_MountedChunks.AddOrUpdate(s_ChunkEntry.Id, s_MountedObject, (p_GUID, p_MountedChunk) =>
+            {
+                // If this was already mounted, just add the variant.
+                p_MountedChunk.AddVariant(s_Variant);
+                return p_MountedChunk;
+            });
         }
 
         protected void ParseSuperbundles()

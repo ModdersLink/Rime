@@ -1,54 +1,52 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using RimeLib.Content.Mounting;
-using RimeLib.Frostbite;
-using RimeLib.IO;
 
 namespace RimeLib.Content.Venice.Mounting
 {
+    internal class MountedObject<T> : IMountedObject<T> where T : IObjectVariant
+    {
+        public IEnumerable<T> Variants => m_Variants;
+        public T FirstVariant => m_Variants.First();
+
+        protected List<T> m_Variants = new List<T>();
+
+        internal MountedObject(T p_Variant)
+        {
+            m_Variants.Add(p_Variant);
+        }
+
+        internal void AddVariant(T p_Variant)
+        {
+            m_Variants.Add(p_Variant);
+        }
+
+        internal void RemoveVariant(T p_Variant)
+        {
+            m_Variants.RemoveAll(p_OtherVariant => p_OtherVariant.Equals(p_Variant));
+        }
+    }
+
     internal class MountedObject : IMountedObject
     {
-        protected readonly IReadableObject m_Readable;
-        protected readonly HashSet<string> m_ContainedBundles = new HashSet<string>();
-        protected readonly HashSet<string> m_ContainedSuperbundles = new HashSet<string>();
+        public IEnumerable<IObjectVariant> Variants => m_Variants;
+        public IObjectVariant FirstVariant => m_Variants.First();
 
-        public MountedObject(IReadableObject p_Readable)
+        protected List<IObjectVariant> m_Variants = new List<IObjectVariant>();
+
+        internal MountedObject(IObjectVariant p_Variant)
         {
-            m_Readable = p_Readable;
+            m_Variants.Add(p_Variant);
         }
 
-        public RimeReader GetReader()
+        internal void AddVariant(IObjectVariant p_Variant)
         {
-            return m_Readable.GetReader();
+            m_Variants.Add(p_Variant);
         }
 
-        public IEnumerable<string> GetContainedBundles()
+        internal void RemoveVariant(IObjectVariant p_Variant)
         {
-            return m_ContainedBundles;
-        }
-
-        public IEnumerable<string> GetContainedSuperbundles()
-        {
-            return m_ContainedSuperbundles;
-        }
-
-        public void AddToBundle(string p_Bundle)
-        {
-            m_ContainedBundles.Add(p_Bundle.ToLowerInvariant());
-        }
-
-        public void RemoveFromBundle(string p_Bundle)
-        {
-            m_ContainedBundles.Remove(p_Bundle);
-        }
-
-        public void AddToSuperbundle(string p_Superbundle)
-        {
-            m_ContainedSuperbundles.Add(p_Superbundle.ToLowerInvariant());
-        }
-
-        public void RemoveFromSuperbundle(string p_Superbundle)
-        {
-            m_ContainedSuperbundles.Remove(p_Superbundle);
+            m_Variants.RemoveAll(p_OtherVariant => p_OtherVariant.Equals(p_Variant));
         }
     }
 }
