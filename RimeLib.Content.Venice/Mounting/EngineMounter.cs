@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using RimeLib.Content.Frostbite;
 using RimeLib.Content.Mounting;
@@ -62,9 +63,20 @@ namespace RimeLib.Content.Venice
                 yield return s_Superbundle.Name;
         }
 
-        public Task MountSuperbundle(string p_Superbundle, bool p_AutoMount)
+        public async Task MountSuperbundle(string p_Superbundle, bool p_AutoMount)
         {
-            throw new NotImplementedException();
+            // TODO: Remove this. It's just here to get rid of compiler errors.
+            await Task.Delay(0);
+
+            // Check if we have this superbundle.
+            var s_Superbundle = m_Superbundles.FirstOrDefault(p_Sb =>
+                p_Sb.Name.Equals(p_Superbundle, StringComparison.InvariantCultureIgnoreCase));
+
+            if (s_Superbundle == null)
+                throw new ArgumentException($"Could not find a superbundle to mount with the provided name '{p_Superbundle}'.", nameof(p_Superbundle));
+
+            // Now that we know that we do, let's mount it.
+            ParseSuperbundle(s_Superbundle, p_AutoMount);
         }
 
         public IEnumerable<string> GetAvailableBundles()
@@ -98,17 +110,44 @@ namespace RimeLib.Content.Venice
 
         public IEnumerable<string> GetResourcesInBundle(string p_Bundle)
         {
-            throw new NotImplementedException();
+            if (m_CasBundles.TryGetValue(p_Bundle.ToLowerInvariant(), out var s_CasBundle))
+            {
+                foreach (var s_Resource in s_CasBundle.ResourceEntries)
+                    yield return s_Resource.Name;
+            }
+            else if (m_Bundles.TryGetValue(p_Bundle.ToLowerInvariant(), out var s_Bundle))
+            {
+                foreach (var s_Resource in s_Bundle.Resources)
+                    yield return s_Resource.Name;
+            }
         }
 
         public IEnumerable<GUID> GetChunksInBundle(string p_Bundle)
         {
-            throw new NotImplementedException();
+            if (m_CasBundles.TryGetValue(p_Bundle.ToLowerInvariant(), out var s_CasBundle))
+            {
+                foreach (var s_Chunk in s_CasBundle.ChunkEntries)
+                    yield return s_Chunk.Id;
+            }
+            else if (m_Bundles.TryGetValue(p_Bundle.ToLowerInvariant(), out var s_Bundle))
+            {
+                foreach (var s_Chunk in s_Bundle.Chunks)
+                    yield return s_Chunk.Id;
+            }
         }
 
         public IEnumerable<string> GetPartitionsInBundle(string p_Bundle)
         {
-            throw new NotImplementedException();
+            if (m_CasBundles.TryGetValue(p_Bundle.ToLowerInvariant(), out var s_CasBundle))
+            {
+                foreach (var s_Partition in s_CasBundle.EbxEntries)
+                    yield return s_Partition.Name;
+            }
+            else if (m_Bundles.TryGetValue(p_Bundle.ToLowerInvariant(), out var s_Bundle))
+            {
+                foreach (var s_Partition in s_Bundle.Ebx)
+                    yield return s_Partition.Name;
+            }
         }
 
         public bool TryGetResource(string p_Path, out IMountedResource p_Resource)
@@ -126,7 +165,6 @@ namespace RimeLib.Content.Venice
             throw new NotImplementedException();
         }
 
-        
         protected bool MountCasBundle(CasBundle p_Bundle)
         {
             return true;
@@ -311,38 +349,40 @@ namespace RimeLib.Content.Venice
         protected void ParseSuperbundles()
         {
             // TODO: Re-enable parallel processing once we've made sure everything is working as intended.
-            //Parallel.ForEach(m_Superbundles, p_Superbundle =>
-            m_Superbundles.ForEach(p_Superbundle =>
-            {
-                Debug.WriteLine($"Parsing superbundle {p_Superbundle.Name}");
-
-                // Parse any chunks first.
-                foreach (var s_Chunk in p_Superbundle.Toc.Layout.Chunks)
-                    ProcessChunk(s_Chunk, p_Superbundle);
-                
-                // If we have a patch toc process the chunks for that too.
-                if (p_Superbundle.PatchToc != null)
-                    foreach (var s_Chunk in p_Superbundle.PatchToc.Layout.Chunks)
-                        ProcessChunk(s_Chunk, p_Superbundle);
-
-                // Now it's time to parse bundles, oh boy!
-                ParseBundles(p_Superbundle, p_Superbundle.Toc.Layout, p_Superbundle.PatchToc?.Layout);
-            });
+            //Parallel.ForEach(m_Superbundles, p_SuperBundle => ParseSuperbundle(p_Superbundle, p_AutoMount));
+            m_Superbundles.ForEach(p_Superbundle => ParseSuperbundle(p_Superbundle, true));
         }
 
-        protected void ParseCasBundle(RimeReader p_Reader, BundleInfo p_BundleInfo, SuperbundleEntry p_Superbundle)
+        protected void ParseSuperbundle(SuperbundleEntry p_Superbundle, bool p_AutoMount)
+        {
+            Debug.WriteLine($"Parsing superbundle {p_Superbundle.Name}");
+
+            // Parse any chunks first.
+            foreach (var s_Chunk in p_Superbundle.Toc.Layout.Chunks)
+                ProcessChunk(s_Chunk, p_Superbundle);
+                
+            // If we have a patch toc process the chunks for that too.
+            if (p_Superbundle.PatchToc != null)
+                foreach (var s_Chunk in p_Superbundle.PatchToc.Layout.Chunks)
+                    ProcessChunk(s_Chunk, p_Superbundle);
+
+            // Now it's time to parse bundles, oh boy!
+            ParseBundles(p_Superbundle, p_Superbundle.Toc.Layout, p_Superbundle.PatchToc?.Layout, p_AutoMount);
+        }
+
+        protected void ParseCasBundle(RimeReader p_Reader, BundleInfo p_BundleInfo, SuperbundleEntry p_Superbundle, bool p_AutoMount)
         {
             p_Reader.Seek(p_BundleInfo.Offset, SeekOrigin.Begin);
 
             var (s_Bundle, _) = DbObjectConverter.FromDbObjectReader<CasBundle>(p_Reader, p_BundleInfo.Size);
             m_CasBundles.AddOrUpdate(p_BundleInfo.Id.ToLowerInvariant(), s_Bundle, (p_Key, p_Prev) => s_Bundle);
 
-            // TODO: Don't do if automount isn't on.
-            if (!MountCasBundle(s_Bundle)) 
+            // Don't do if automount isn't on.
+            if (p_AutoMount && !MountCasBundle(s_Bundle)) 
                 throw new Exception($"Failed to mount bundle '{s_Bundle.Path}'.");
         }
         
-        protected void ParseBundle(RimeReader p_Reader, BundleInfo p_BundleInfo, SuperbundleEntry p_Superbundle)
+        protected void ParseBundle(RimeReader p_Reader, BundleInfo p_BundleInfo, SuperbundleEntry p_Superbundle, bool p_AutoMount)
         {
             // TODO: Use a limited reader.
             p_Reader.Seek(p_BundleInfo.Offset, SeekOrigin.Begin);
@@ -350,13 +390,13 @@ namespace RimeLib.Content.Venice
 
             m_Bundles.AddOrUpdate(p_BundleInfo.Id.ToLowerInvariant(), s_Manifest, (p_Key, p_Prev) => s_Manifest);
 
-            // TODO: Don't do if automount isn't on.
-            if (!MountEmbeddedBundle(s_Manifest)) 
+            // Don't do if automount isn't on.
+            if (p_AutoMount && !MountEmbeddedBundle(s_Manifest)) 
                 throw new Exception($"Failed to mount embedded bundle '{p_BundleInfo.Id}'.");
         }
 
         protected void ParseDeltaBundle(RimeReader p_BaseReader, RimeReader p_PatchReader, 
-            BundleInfo p_BaseBundle, BundleInfo p_PatchBundle, SuperbundleEntry p_Superbundle)
+            BundleInfo p_BaseBundle, BundleInfo p_PatchBundle, SuperbundleEntry p_Superbundle, bool p_AutoMount)
         {
             // TODO: Use multiplexed reader.
             p_BaseReader.Seek(p_BaseBundle.Offset, SeekOrigin.Begin);
@@ -364,12 +404,12 @@ namespace RimeLib.Content.Venice
 
             m_Bundles.AddOrUpdate(p_BaseBundle.Id.ToLowerInvariant(), s_Manifest, (p_Key, p_Prev) => s_Manifest);
 
-            // TODO: Don't do if automount isn't on.
-            if (!MountEmbeddedBundle(s_Manifest)) 
+            // Don't do if automount isn't on.
+            if (p_AutoMount && !MountEmbeddedBundle(s_Manifest)) 
                 throw new Exception($"Failed to mount embedded delta bundle '{p_BaseBundle.Id}'.");
         }
 
-        protected void ParseBundles(SuperbundleEntry p_Superbundle, SuperbundleLayout p_Toc, SuperbundleLayout? p_PatchToc)
+        protected void ParseBundles(SuperbundleEntry p_Superbundle, SuperbundleLayout p_Toc, SuperbundleLayout? p_PatchToc, bool p_AutoMount)
         {
             // Figure out which endianness our readers should have.
             var s_Endianness = p_Toc.Cas ? Endianness.LittleEndian : Endianness.BigEndian;
@@ -395,11 +435,11 @@ namespace RimeLib.Content.Venice
                 {
                     if (p_Toc.Cas)
                     {
-                        ParseCasBundle(s_Reader, s_Bundle, p_Superbundle);
+                        ParseCasBundle(s_Reader, s_Bundle, p_Superbundle, p_AutoMount);
                         continue;
                     }
 
-                    ParseBundle(s_Reader, s_Bundle, p_Superbundle);
+                    ParseBundle(s_Reader, s_Bundle, p_Superbundle, p_AutoMount);
                     continue;
                 }
 
@@ -407,18 +447,18 @@ namespace RimeLib.Content.Venice
                 // If it's a delta entry then we have special handling for it.
                 if (s_PatchBundle!.Delta.HasValue && s_PatchBundle!.Delta.Value)
                 {
-                    ParseDeltaBundle(s_Reader, s_PatchReader!, s_Bundle, s_PatchBundle, p_Superbundle);
+                    ParseDeltaBundle(s_Reader, s_PatchReader!, s_Bundle, s_PatchBundle, p_Superbundle, p_AutoMount);
                     continue;
                 }
 
                 // If this wasn't a delta entry then parse as we normally would.
                 if (p_Toc.Cas)
                 {
-                    ParseCasBundle(s_PatchReader!, s_PatchBundle, p_Superbundle);
+                    ParseCasBundle(s_PatchReader!, s_PatchBundle, p_Superbundle, p_AutoMount);
                     continue;
                 }
 
-                ParseBundle(s_PatchReader!, s_PatchBundle, p_Superbundle);
+                ParseBundle(s_PatchReader!, s_PatchBundle, p_Superbundle, p_AutoMount);
             }
             
             // Now that we're done with the base bundles it's time to go over the patched ones.
@@ -438,12 +478,12 @@ namespace RimeLib.Content.Venice
                     
                     if (p_PatchToc.Cas)
                     {
-                        ParseCasBundle(s_PatchReader!, s_Bundle, p_Superbundle);
+                        ParseCasBundle(s_PatchReader!, s_Bundle, p_Superbundle, p_AutoMount);
                         continue;
                     }
 
                     // If all is good, parse as we normally would.
-                    ParseBundle(s_PatchReader!, s_Bundle, p_Superbundle);
+                    ParseBundle(s_PatchReader!, s_Bundle, p_Superbundle, p_AutoMount);
                 }
             }
 
