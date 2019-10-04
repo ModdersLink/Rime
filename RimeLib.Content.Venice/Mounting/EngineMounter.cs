@@ -17,18 +17,25 @@ using RimeLib.Frostbite.Db;
 using RimeLib.IO;
 using RimeLib.IO.Conversion;
 
-namespace RimeLib.Content.Venice
+namespace RimeLib.Content.Venice.Mounting
 {
     public class EngineMounter : IEngineMounter
     {
         protected string m_GamePath = "";
+        
         protected PackageManifest? m_AuthoritativePackage;
         protected List<PackageManifest> m_Packages = new List<PackageManifest>();
+        
         protected List<SuperbundleEntry> m_Superbundles = new List<SuperbundleEntry>();
         protected Catalog? m_Catalog;
+
         protected ConcurrentDictionary<GUID, ChunkEntry> m_Chunks = new ConcurrentDictionary<GUID, ChunkEntry>();
         protected ConcurrentDictionary<string, BundleManifest> m_Bundles = new ConcurrentDictionary<string, BundleManifest>();
         protected ConcurrentDictionary<string, CasBundle> m_CasBundles = new ConcurrentDictionary<string, CasBundle>();
+
+        private ConcurrentDictionary<string, MountedResource> m_MountedResources = new ConcurrentDictionary<string, MountedResource>();
+        private ConcurrentDictionary<GUID, MountedChunk> m_MountedChunks = new ConcurrentDictionary<GUID, MountedChunk>();
+        private ConcurrentDictionary<string, MountedObject> m_MountedPartitions = new ConcurrentDictionary<string, MountedObject>();
 
         public EngineType GetSupportedEngine()
         {
@@ -150,29 +157,40 @@ namespace RimeLib.Content.Venice
             }
         }
 
-        public bool TryGetResource(string p_Path, out IMountedResource p_Resource)
+        public bool TryGetResource(string p_Path, out IMountedResource? p_Resource)
         {
-            throw new NotImplementedException();
+            if (m_MountedResources.TryGetValue(p_Path.ToLowerInvariant(), out var s_Resource))
+            {
+                p_Resource = s_Resource;
+                return true;
+            }
+            
+            p_Resource = null;
+            return false;
         }
 
-        public bool TryGetChunk(GUID p_GUID, out IMountedChunk p_Chunk)
+        public bool TryGetChunk(GUID p_GUID, out IMountedChunk? p_Chunk)
         {
-            throw new NotImplementedException();
+            if (m_MountedChunks.TryGetValue(p_GUID, out var s_Chunk))
+            {
+                p_Chunk = s_Chunk;
+                return true;
+            }
+            
+            p_Chunk = null;
+            return false;
         }
 
-        public bool TryGetPartition(string p_Path, out IMountedObject p_Partition)
+        public bool TryGetPartition(string p_Path, out IMountedObject? p_Partition)
         {
-            throw new NotImplementedException();
-        }
-
-        protected bool MountCasBundle(CasBundle p_Bundle)
-        {
-            return true;
-        }
-
-        protected bool MountEmbeddedBundle(BundleManifest p_Bundle)
-        {
-            return true;
+            if (m_MountedPartitions.TryGetValue(p_Path.ToLowerInvariant(), out var s_Partition))
+            {
+                p_Partition = s_Partition;
+                return true;
+            }
+            
+            p_Partition = null;
+            return false;
         }
 
         protected string GetMainPackagePath()
@@ -349,8 +367,8 @@ namespace RimeLib.Content.Venice
         protected void ParseSuperbundles()
         {
             // TODO: Re-enable parallel processing once we've made sure everything is working as intended.
-            //Parallel.ForEach(m_Superbundles, p_SuperBundle => ParseSuperbundle(p_Superbundle, p_AutoMount));
-            m_Superbundles.ForEach(p_Superbundle => ParseSuperbundle(p_Superbundle, true));
+            Parallel.ForEach(m_Superbundles, p_Superbundle => ParseSuperbundle(p_Superbundle, true));
+            //m_Superbundles.ForEach(p_Superbundle => ParseSuperbundle(p_Superbundle, true));
         }
 
         protected void ParseSuperbundle(SuperbundleEntry p_Superbundle, bool p_AutoMount)
@@ -375,7 +393,12 @@ namespace RimeLib.Content.Venice
             p_Reader.Seek(p_BundleInfo.Offset, SeekOrigin.Begin);
 
             var (s_Bundle, _) = DbObjectConverter.FromDbObjectReader<CasBundle>(p_Reader, p_BundleInfo.Size);
-            m_CasBundles.AddOrUpdate(p_BundleInfo.Id.ToLowerInvariant(), s_Bundle, (p_Key, p_Prev) => s_Bundle);
+            m_CasBundles.AddOrUpdate(p_BundleInfo.Id.ToLowerInvariant(), s_Bundle, (p_Key, p_Prev) =>
+            {
+                // TODO: Exception?
+                Debug.WriteLine($"Replacing previous cas bundle {p_BundleInfo.Id}");
+                return s_Bundle;
+            });
 
             // Don't do if automount isn't on.
             if (p_AutoMount && !MountCasBundle(s_Bundle)) 
@@ -388,7 +411,12 @@ namespace RimeLib.Content.Venice
             p_Reader.Seek(p_BundleInfo.Offset, SeekOrigin.Begin);
             var s_Manifest = new BundleManifest(p_Reader, p_Superbundle, p_BundleInfo);
 
-            m_Bundles.AddOrUpdate(p_BundleInfo.Id.ToLowerInvariant(), s_Manifest, (p_Key, p_Prev) => s_Manifest);
+            m_Bundles.AddOrUpdate(p_BundleInfo.Id.ToLowerInvariant(), s_Manifest, (p_Key, p_Prev) =>
+            {
+                // TODO: Exception?
+                Debug.WriteLine($"Replacing previous embedded bundle {p_BundleInfo.Id}");
+                return s_Manifest;
+            });
 
             // Don't do if automount isn't on.
             if (p_AutoMount && !MountEmbeddedBundle(s_Manifest)) 
@@ -402,7 +430,12 @@ namespace RimeLib.Content.Venice
             p_BaseReader.Seek(p_BaseBundle.Offset, SeekOrigin.Begin);
             var s_Manifest = new BundleManifest(p_BaseReader, p_Superbundle, p_BaseBundle);
 
-            m_Bundles.AddOrUpdate(p_BaseBundle.Id.ToLowerInvariant(), s_Manifest, (p_Key, p_Prev) => s_Manifest);
+            m_Bundles.AddOrUpdate(p_BaseBundle.Id.ToLowerInvariant(), s_Manifest, (p_Key, p_Prev) =>
+            {
+                // TODO: Exception?
+                Debug.WriteLine($"Replacing previous embedded bundle {p_BaseBundle.Id}");
+                return s_Manifest;
+            });
 
             // Don't do if automount isn't on.
             if (p_AutoMount && !MountEmbeddedBundle(s_Manifest)) 
@@ -489,6 +522,16 @@ namespace RimeLib.Content.Venice
 
             // Dispose of the patch reader.
             s_PatchReader?.Dispose();
+        }
+
+        protected bool MountCasBundle(CasBundle p_Bundle)
+        {
+            return true;
+        }
+
+        protected bool MountEmbeddedBundle(BundleManifest p_Bundle)
+        {
+            return true;
         }
     }
 }

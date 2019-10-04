@@ -9,8 +9,8 @@ namespace RimeLib.Content.Mounting
 {
     public interface IMountedObject : IReadableObject
     {
-        IEnumerable<string> ContainedBundles();
-        IEnumerable<string> ContainedSuperbundles();
+        IEnumerable<string> GetContainedBundles();
+        IEnumerable<string> GetContainedSuperbundles();
     }
 
     public interface IMountedResource : IReadableObject
@@ -21,7 +21,7 @@ namespace RimeLib.Content.Mounting
 
     public interface IMountedChunk : IReadableObject
     {
-        bool TryGetResourceMeta(out DbObject? p_Meta);
+        bool TryGetChunkMeta(out DbObject? p_Meta);
     }
 
     public interface IEngineMounter
