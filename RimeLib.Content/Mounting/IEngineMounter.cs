@@ -16,7 +16,7 @@ namespace RimeLib.Content.Mounting
     public interface IResourceVariant : IObjectVariant
     {
         ResourceType GetResourceType();
-        bool TryGetMeta(out DbObject? p_Meta);
+        bool TryGetMeta(out byte[]? p_Meta);
     }
 
     public interface IChunkVariant : IObjectVariant
@@ -122,5 +122,23 @@ namespace RimeLib.Content.Mounting
         /// <param name="p_Partition">The output partition object.</param>
         /// <returns>When the return value is `true` then the output will **not** be `null`. When it's `false` it **will** be `null`.</returns>
         bool TryGetPartition(string p_Path, out IMountedObject? p_Partition);
+
+        /// <summary>
+        /// Get all mounted resources and their different variants.
+        /// </summary>
+        /// <returns>A dictionary of resource name keys and mounted object values.</returns>
+        Dictionary<string, IMountedObject<IResourceVariant>> GetResources();
+
+        /// <summary>
+        /// Get all mounted chunks and their different variants.
+        /// </summary>
+        /// <returns>A dictionary of chunk id keys and mounted object values.</returns>
+        Dictionary<GUID, IMountedObject<IChunkVariant>> GetChunks();
+
+        /// <summary>
+        /// Get all mounted partitions and their different variants.
+        /// </summary>
+        /// <returns>A dictionary of partition name keys and mounted object values.</returns>
+        Dictionary<string, IMountedObject> GetPartitions();
     }
 }

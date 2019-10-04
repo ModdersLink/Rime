@@ -31,11 +31,11 @@ namespace RimeLib.Content.Venice.Mounting
 
         protected ConcurrentDictionary<GUID, ChunkEntry> m_Chunks = new ConcurrentDictionary<GUID, ChunkEntry>();
         protected ConcurrentDictionary<string, BundleManifest> m_Bundles = new ConcurrentDictionary<string, BundleManifest>();
-        protected ConcurrentDictionary<string, CasBundle> m_CasBundles = new ConcurrentDictionary<string, CasBundle>();
+        protected ConcurrentDictionary<string, CasBundleEntry> m_CasBundles = new ConcurrentDictionary<string, CasBundleEntry>();
 
-        private ConcurrentDictionary<string, MountedObject<IResourceVariant>> m_MountedResources = new ConcurrentDictionary<string, MountedObject<IResourceVariant>>();
-        private ConcurrentDictionary<GUID, MountedObject<IChunkVariant>> m_MountedChunks = new ConcurrentDictionary<GUID, MountedObject<IChunkVariant>>();
-        private ConcurrentDictionary<string, MountedObject> m_MountedPartitions = new ConcurrentDictionary<string, MountedObject>();
+        private readonly ConcurrentDictionary<string, MountedObject<IResourceVariant>> m_MountedResources = new ConcurrentDictionary<string, MountedObject<IResourceVariant>>();
+        private readonly ConcurrentDictionary<GUID, MountedObject<IChunkVariant>> m_MountedChunks = new ConcurrentDictionary<GUID, MountedObject<IChunkVariant>>();
+        private readonly ConcurrentDictionary<string, MountedObject> m_MountedPartitions = new ConcurrentDictionary<string, MountedObject>();
 
         public EngineType GetSupportedEngine()
         {
@@ -119,7 +119,7 @@ namespace RimeLib.Content.Venice.Mounting
         {
             if (m_CasBundles.TryGetValue(p_Bundle.ToLowerInvariant(), out var s_CasBundle))
             {
-                foreach (var s_Resource in s_CasBundle.ResourceEntries)
+                foreach (var s_Resource in s_CasBundle.Bundle.ResourceEntries)
                     yield return s_Resource.Name;
             }
             else if (m_Bundles.TryGetValue(p_Bundle.ToLowerInvariant(), out var s_Bundle))
@@ -133,7 +133,7 @@ namespace RimeLib.Content.Venice.Mounting
         {
             if (m_CasBundles.TryGetValue(p_Bundle.ToLowerInvariant(), out var s_CasBundle))
             {
-                foreach (var s_Chunk in s_CasBundle.ChunkEntries)
+                foreach (var s_Chunk in s_CasBundle.Bundle.ChunkEntries)
                     yield return s_Chunk.Id;
             }
             else if (m_Bundles.TryGetValue(p_Bundle.ToLowerInvariant(), out var s_Bundle))
@@ -147,7 +147,7 @@ namespace RimeLib.Content.Venice.Mounting
         {
             if (m_CasBundles.TryGetValue(p_Bundle.ToLowerInvariant(), out var s_CasBundle))
             {
-                foreach (var s_Partition in s_CasBundle.EbxEntries)
+                foreach (var s_Partition in s_CasBundle.Bundle.EbxEntries)
                     yield return s_Partition.Name;
             }
             else if (m_Bundles.TryGetValue(p_Bundle.ToLowerInvariant(), out var s_Bundle))
@@ -191,6 +191,21 @@ namespace RimeLib.Content.Venice.Mounting
             
             p_Partition = null;
             return false;
+        }
+
+        public Dictionary<string, IMountedObject<IResourceVariant>> GetResources()
+        {
+            return m_MountedResources.ToDictionary(p_Pair => p_Pair.Key, p_Pair => p_Pair.Value as IMountedObject<IResourceVariant>);
+        }
+
+        public Dictionary<GUID, IMountedObject<IChunkVariant>> GetChunks()
+        {
+            return m_MountedChunks.ToDictionary(p_Pair => p_Pair.Key, p_Pair => p_Pair.Value as IMountedObject<IChunkVariant>);
+        }
+
+        public Dictionary<string, IMountedObject> GetPartitions()
+        {
+            return m_MountedPartitions.ToDictionary(p_Pair => p_Pair.Key, p_Pair => p_Pair.Value as IMountedObject);
         }
 
         protected string GetMainPackagePath()
@@ -326,7 +341,7 @@ namespace RimeLib.Content.Venice.Mounting
                     s_Toc = new TableOfContents<SuperbundleLayout>(s_Reader);
 
                 // Create a superbundle entry for this superbundle.
-                var s_SbEntry = new SuperbundleEntry(s_Sb.Name, s_SbPath, s_Toc)
+                var s_SbEntry = new SuperbundleEntry(s_Sb.Name.ToLowerInvariant(), s_SbPath, s_Toc)
                 {
                     ContainedPackage = s_ContainedPackage,
                 };
@@ -374,11 +389,11 @@ namespace RimeLib.Content.Venice.Mounting
             var s_Variant = new ChunkVariant(s_ChunkEntry, null, p_SbEntry.Name, null);
             var s_MountedObject = new MountedObject<IChunkVariant>(s_Variant);
 
-            m_MountedChunks.AddOrUpdate(s_ChunkEntry.Id, s_MountedObject, (p_GUID, p_MountedChunk) =>
+            m_MountedChunks.AddOrUpdate(s_ChunkEntry.Id, s_MountedObject, (p_GUID, p_MountedObject) =>
             {
                 // If this was already mounted, just add the variant.
-                p_MountedChunk.AddVariant(s_Variant);
-                return p_MountedChunk;
+                p_MountedObject.AddVariant(s_Variant);
+                return p_MountedObject;
             });
         }
 
@@ -411,15 +426,17 @@ namespace RimeLib.Content.Venice.Mounting
             p_Reader.Seek(p_BundleInfo.Offset, SeekOrigin.Begin);
 
             var (s_Bundle, _) = DbObjectConverter.FromDbObjectReader<CasBundle>(p_Reader, p_BundleInfo.Size);
-            m_CasBundles.AddOrUpdate(p_BundleInfo.Id.ToLowerInvariant(), s_Bundle, (p_Key, p_Prev) =>
+            var s_BundleEntry = new CasBundleEntry(s_Bundle, p_Superbundle);
+
+            m_CasBundles.AddOrUpdate(p_BundleInfo.Id.ToLowerInvariant(), s_BundleEntry, (p_Key, p_Prev) =>
             {
                 // TODO: Exception?
                 Debug.WriteLine($"Replacing previous cas bundle {p_BundleInfo.Id}");
-                return s_Bundle;
+                return s_BundleEntry;
             });
 
             // Don't do if automount isn't on.
-            if (p_AutoMount && !MountCasBundle(s_Bundle)) 
+            if (p_AutoMount && !MountCasBundle(s_BundleEntry)) 
                 throw new Exception($"Failed to mount bundle '{s_Bundle.Path}'.");
         }
         
@@ -542,13 +559,129 @@ namespace RimeLib.Content.Venice.Mounting
             s_PatchReader?.Dispose();
         }
 
-        protected bool MountCasBundle(CasBundle p_Bundle)
+        protected bool MountCasBundle(CasBundleEntry p_Bundle)
         {
+            // Mount all resources.
+            foreach (var s_Resource in p_Bundle.Bundle.ResourceEntries)
+            {
+                // Create variant.
+                var s_Readable = new CatalogReadable(m_Catalog!, s_Resource.Hash);
+                var s_Variant = new ResourceVariant(s_Readable, (ResourceType) s_Resource.ResourceType, s_Resource.Meta,
+                    p_Bundle.ContainedSuperbundle.Name, p_Bundle.Bundle.Path);
+
+                // Mount.
+                var s_MountedObject = new MountedObject<IResourceVariant>(s_Variant);
+
+                m_MountedResources.AddOrUpdate(s_Resource.Name.ToLowerInvariant(), s_MountedObject, (p_GUID, p_MountedObject) =>
+                {
+                    // If this was already mounted, just add the variant.
+                    p_MountedObject.AddVariant(s_Variant);
+                    return p_MountedObject;
+                });
+            }
+
+            // Mount all chunks.
+            for (var i = 0; i < p_Bundle.Bundle.ChunkEntries.Length; i++)
+            {
+                var s_Chunk = p_Bundle.Bundle.ChunkEntries[i];
+                DbObject? s_Meta = null;
+
+                // If we have any meta, set it.
+                if (p_Bundle.Bundle.ChunkMeta.Length > i)
+                    s_Meta = DbObjectConverter.ToDbObject(p_Bundle.Bundle.ChunkMeta[i]);
+
+                // Create variant.
+                var s_Readable = new CatalogReadable(m_Catalog!, s_Chunk.Hash);
+                var s_Variant = new ChunkVariant(s_Readable, s_Meta, p_Bundle.ContainedSuperbundle.Name,
+                    p_Bundle.Bundle.Path);
+
+                // Mount.
+                var s_MountedObject = new MountedObject<IChunkVariant>(s_Variant);
+
+                m_MountedChunks.AddOrUpdate(s_Chunk.Id, s_MountedObject, (p_GUID, p_MountedObject) =>
+                {
+                    // If this was already mounted, just add the variant.
+                    p_MountedObject.AddVariant(s_Variant);
+                    return p_MountedObject;
+                });
+            }
+
+            // Mount all partitions.
+            foreach (var s_Partition in p_Bundle.Bundle.EbxEntries)
+            {
+                // Create variant.
+                var s_Readable = new CatalogReadable(m_Catalog!, s_Partition.Hash);
+                var s_Variant = new ObjectVariant(s_Readable, p_Bundle.ContainedSuperbundle.Name, p_Bundle.Bundle.Path);
+
+                // Mount.
+                var s_MountedObject = new MountedObject(s_Variant);
+
+                m_MountedPartitions.AddOrUpdate(s_Partition.Name.ToLowerInvariant(), s_MountedObject, (p_GUID, p_MountedObject) =>
+                {
+                    // If this was already mounted, just add the variant.
+                    p_MountedObject.AddVariant(s_Variant);
+                    return p_MountedObject;
+                });
+            }
+
             return true;
         }
 
         protected bool MountEmbeddedBundle(BundleManifest p_Bundle)
         {
+            // Mount all resources.
+            foreach (var s_Resource in p_Bundle.Resources)
+            {
+                // Create variant.
+                var s_Variant = new ResourceVariant(s_Resource, (ResourceType) s_Resource.ResourceType, s_Resource.ResourceMeta,
+                    p_Bundle.ContainedSuperbundle.Name, p_Bundle.ContainedBundle.Id);
+
+                // Mount.
+                var s_MountedObject = new MountedObject<IResourceVariant>(s_Variant);
+
+                m_MountedResources.AddOrUpdate(s_Resource.Name.ToLowerInvariant(), s_MountedObject, (p_GUID, p_MountedObject) =>
+                {
+                    // If this was already mounted, just add the variant.
+                    p_MountedObject.AddVariant(s_Variant);
+                    return p_MountedObject;
+                });
+            }
+
+            // Mount all chunks.
+            foreach (var s_Chunk in p_Bundle.Chunks)
+            {
+                // Create variant.
+                var s_Variant = new ChunkVariant(s_Chunk, DbObjectConverter.ToDbObject(s_Chunk.Meta),
+                    p_Bundle.ContainedSuperbundle.Name, p_Bundle.ContainedBundle.Id);
+
+                // Mount.
+                var s_MountedObject = new MountedObject<IChunkVariant>(s_Variant);
+
+                m_MountedChunks.AddOrUpdate(s_Chunk.Id, s_MountedObject, (p_GUID, p_MountedObject) =>
+                {
+                    // If this was already mounted, just add the variant.
+                    p_MountedObject.AddVariant(s_Variant);
+                    return p_MountedObject;
+                });
+            }
+
+            // Mount all partitions.
+            foreach (var s_Partition in p_Bundle.Ebx)
+            {
+                // Create variant.
+                var s_Variant = new ObjectVariant(s_Partition, p_Bundle.ContainedSuperbundle.Name, p_Bundle.ContainedBundle.Id);
+
+                // Mount.
+                var s_MountedObject = new MountedObject(s_Variant);
+
+                m_MountedPartitions.AddOrUpdate(s_Partition.Name.ToLowerInvariant(), s_MountedObject, (p_GUID, p_MountedObject) =>
+                {
+                    // If this was already mounted, just add the variant.
+                    p_MountedObject.AddVariant(s_Variant);
+                    return p_MountedObject;
+                });
+            }
+
             return true;
         }
     }

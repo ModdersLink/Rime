@@ -1,4 +1,5 @@
 ﻿using RimeLib.Content.Venice.Frostbite.Chunks;
+using RimeLib.Content.Venice.Frostbite.Sb;
 using RimeLib.Frostbite.Core;
 using RimeLib.Frostbite.Db;
 
@@ -92,5 +93,17 @@ namespace RimeLib.Content.Venice.Frostbite.Bundles
 
         [DbObjectField("chunkMeta")]
         public ChunkEntry.ChunkMeta[] ChunkMeta { get; set; } = new ChunkEntry.ChunkMeta[0];
+    }
+
+    public class CasBundleEntry
+    {
+        public CasBundle Bundle { get; }
+        public SuperbundleEntry ContainedSuperbundle { get; }
+
+        public CasBundleEntry(CasBundle p_Bundle, SuperbundleEntry p_Sb)
+        {
+            Bundle = p_Bundle;
+            ContainedSuperbundle = p_Sb;
+        }
     }
 }

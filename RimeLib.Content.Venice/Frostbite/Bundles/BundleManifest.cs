@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using RimeLib.Content.Venice.Frostbite.Chunks;
 using RimeLib.Content.Venice.Frostbite.Sb;
+using RimeLib.Frostbite;
 using RimeLib.Frostbite.Core;
 using RimeLib.Frostbite.Db;
 using RimeLib.IO;
@@ -10,7 +11,7 @@ using RimeLib.IO.Conversion;
 
 namespace RimeLib.Content.Venice.Frostbite.Bundles
 {
-    public class EbxEntry
+    public class EbxEntry : IReadableObject
     {
         public string Name { get; set; }
 
@@ -41,7 +42,7 @@ namespace RimeLib.Content.Venice.Frostbite.Bundles
         }
     }
 
-    public class ResourceEntry
+    public class ResourceEntry : IReadableObject
     {
         public string Name { get; set; }
 
