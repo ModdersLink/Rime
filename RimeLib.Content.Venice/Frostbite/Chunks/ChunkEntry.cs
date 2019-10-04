@@ -30,5 +30,6 @@ namespace RimeLib.Content.Venice.Frostbite.Chunks
         }
 
         public abstract RimeReader GetReader();
+        public abstract long GetSize();
     }
 }

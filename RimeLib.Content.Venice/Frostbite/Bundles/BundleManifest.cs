@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using RimeLib.Content.IO;
 using RimeLib.Content.Venice.Frostbite.Chunks;
 using RimeLib.Content.Venice.Frostbite.Sb;
 using RimeLib.Frostbite;
@@ -16,8 +17,7 @@ namespace RimeLib.Content.Venice.Frostbite.Bundles
         public string Name { get; set; }
 
         public SuperbundleEntry ContainedSuperbundle { get; set; }
-
-        public BundleInfo ContainedBundle { get; set; }
+        public BundleManifest ContainedBundle { get; set; }
 
         private long m_SeekOffset;
 
@@ -25,7 +25,7 @@ namespace RimeLib.Content.Venice.Frostbite.Bundles
         private long m_OriginalSize;
 
         internal EbxEntry(string p_Name, BundleManifest.EntryRecord p_Record, long p_SeekOffset,
-            SuperbundleEntry p_Superbundle, BundleInfo p_Bundle)
+            SuperbundleEntry p_Superbundle, BundleManifest p_Bundle)
         {
             Name = p_Name;
             ContainedSuperbundle = p_Superbundle;
@@ -38,7 +38,34 @@ namespace RimeLib.Content.Venice.Frostbite.Bundles
 
         public RimeReader GetReader()
         {
-            throw new NotImplementedException();
+            // Figure out which endianness our readers should have.
+            var s_Endianness = ContainedSuperbundle.Toc.Layout.Cas ? Endianness.LittleEndian : Endianness.BigEndian;
+
+            var s_Reader = new RimeReader(File.Open(ContainedSuperbundle.Path + ".sb", FileMode.Open, FileAccess.Read, FileShare.Read), s_Endianness);
+            s_Reader.Seek(ContainedBundle.ContainedBundle.Offset, SeekOrigin.Begin);
+
+            // If this is patched we'll need to make a multiplexed reader.
+            if (ContainedBundle.PatchBundle != null)
+            {
+                var s_PatchReader = new RimeReader(File.Open(ContainedSuperbundle.PatchPath + ".sb", FileMode.Open, FileAccess.Read, FileShare.Read), s_Endianness);
+                s_PatchReader.Seek(ContainedBundle.PatchBundle.Offset, SeekOrigin.Begin);
+
+                var s_MultiReader = new RimeMultiplexedReader(s_PatchReader, s_Reader, Endianness.BigEndian, true);
+                s_Reader = s_MultiReader;
+            }
+
+            // Seek to this entry.
+            s_Reader.Seek(m_SeekOffset, SeekOrigin.Current);
+            
+            // TODO: Compression.
+            // TODO: Use a limited reader.
+
+            return s_Reader;
+        }
+
+        public long GetSize()
+        {
+            return m_Size;
         }
     }
 
@@ -51,8 +78,8 @@ namespace RimeLib.Content.Venice.Frostbite.Bundles
         public byte[] ResourceMeta { get; set; }
 
         public SuperbundleEntry ContainedSuperbundle { get; set; }
-
-        public BundleInfo ContainedBundle { get; set; }
+        
+        public BundleManifest ContainedBundle { get; set; }
 
         private long m_SeekOffset;
 
@@ -60,7 +87,7 @@ namespace RimeLib.Content.Venice.Frostbite.Bundles
         private long m_OriginalSize;
 
         internal ResourceEntry(string p_Name, uint p_Type, byte[] p_Meta, BundleManifest.EntryRecord p_Record,
-            long p_SeekOffset, SuperbundleEntry p_Superbundle, BundleInfo p_Bundle)
+            long p_SeekOffset, SuperbundleEntry p_Superbundle, BundleManifest p_Bundle)
         {
             Name = p_Name;
             ResourceType = p_Type;
@@ -75,15 +102,42 @@ namespace RimeLib.Content.Venice.Frostbite.Bundles
 
         public RimeReader GetReader()
         {
-            throw new NotImplementedException();
+            // Figure out which endianness our readers should have.
+            var s_Endianness = ContainedSuperbundle.Toc.Layout.Cas ? Endianness.LittleEndian : Endianness.BigEndian;
+
+            var s_Reader = new RimeReader(File.Open(ContainedSuperbundle.Path + ".sb", FileMode.Open, FileAccess.Read, FileShare.Read), s_Endianness);
+            s_Reader.Seek(ContainedBundle.ContainedBundle.Offset, SeekOrigin.Begin);
+
+            // If this is patched we'll need to make a multiplexed reader.
+            if (ContainedBundle.PatchBundle != null)
+            {
+                var s_PatchReader = new RimeReader(File.Open(ContainedSuperbundle.PatchPath + ".sb", FileMode.Open, FileAccess.Read, FileShare.Read), s_Endianness);
+                s_PatchReader.Seek(ContainedBundle.PatchBundle.Offset, SeekOrigin.Begin);
+
+                var s_MultiReader = new RimeMultiplexedReader(s_PatchReader, s_Reader, Endianness.BigEndian, true);
+                s_Reader = s_MultiReader;
+            }
+
+            // Seek to this entry.
+            s_Reader.Seek(m_SeekOffset, SeekOrigin.Current);
+
+            // TODO: Compression.
+            // TODO: Use a limited reader.
+
+            return s_Reader;
+        }
+
+        public long GetSize()
+        {
+            return m_Size;
         }
     }
 
     public class BundleChunkEntry : ChunkEntry
     {
         public SuperbundleEntry ContainedSuperbundle { get; set; }
-
-        public BundleInfo ContainedBundle { get; set; }
+        
+        public BundleManifest ContainedBundle { get; set; }
 
         public ChunkMeta Meta { get; set; }
 
@@ -92,7 +146,7 @@ namespace RimeLib.Content.Venice.Frostbite.Bundles
         private long m_Size;
         private bool m_Compressed;
 
-        internal BundleChunkEntry(BundleManifest.ChunkEntry p_Entry, long p_SeekOffset, SuperbundleEntry p_Superbundle, BundleInfo p_Bundle, ChunkMeta p_Meta) :
+        internal BundleChunkEntry(BundleManifest.ChunkEntry p_Entry, long p_SeekOffset, SuperbundleEntry p_Superbundle, BundleManifest p_Bundle, ChunkMeta p_Meta) :
             base(p_Entry.Id)
         {
             ContainedSuperbundle = p_Superbundle;
@@ -107,7 +161,34 @@ namespace RimeLib.Content.Venice.Frostbite.Bundles
 
         public override RimeReader GetReader()
         {
-            throw new NotImplementedException();
+            // Figure out which endianness our readers should have.
+            var s_Endianness = ContainedSuperbundle.Toc.Layout.Cas ? Endianness.LittleEndian : Endianness.BigEndian;
+
+            var s_Reader = new RimeReader(File.Open(ContainedSuperbundle.Path + ".sb", FileMode.Open, FileAccess.Read, FileShare.Read), s_Endianness);
+            s_Reader.Seek(ContainedBundle.ContainedBundle.Offset, SeekOrigin.Begin);
+
+            // If this is patched we'll need to make a multiplexed reader.
+            if (ContainedBundle.PatchBundle != null)
+            {
+                var s_PatchReader = new RimeReader(File.Open(ContainedSuperbundle.PatchPath + ".sb", FileMode.Open, FileAccess.Read, FileShare.Read), s_Endianness);
+                s_PatchReader.Seek(ContainedBundle.PatchBundle.Offset, SeekOrigin.Begin);
+
+                var s_MultiReader = new RimeMultiplexedReader(s_PatchReader, s_Reader, Endianness.BigEndian, true);
+                s_Reader = s_MultiReader;
+            }
+
+            // Seek to this entry.
+            s_Reader.Seek(m_SeekOffset, SeekOrigin.Current);
+            
+            // TODO: Compression.
+            // TODO: Use a limited reader.
+
+            return s_Reader;
+        }
+
+        public override long GetSize()
+        {
+            return m_Size;
         }
     }
 
@@ -191,11 +272,13 @@ namespace RimeLib.Content.Venice.Frostbite.Bundles
 
         public SuperbundleEntry ContainedSuperbundle { get; set; }
         public BundleInfo ContainedBundle { get; set; }
+        public BundleInfo? PatchBundle { get; set; }
 
-        public BundleManifest(RimeReader p_Reader, SuperbundleEntry p_Superbundle, BundleInfo p_Bundle)
+        public BundleManifest(RimeReader p_Reader, SuperbundleEntry p_Superbundle, BundleInfo p_Bundle, BundleInfo? p_PatchBundle = null)
         {
             ContainedSuperbundle = p_Superbundle;
             ContainedBundle = p_Bundle;
+            PatchBundle = p_PatchBundle;
 
             m_StartPosition = p_Reader.Position;
 
@@ -283,7 +366,7 @@ namespace RimeLib.Content.Venice.Frostbite.Bundles
                 var s_Offset = p_Reader.Position;
 
                 // Create the entry.
-                var s_RealEntry = new EbxEntry(s_Name, s_Entry, s_Offset - m_StartPosition, ContainedSuperbundle, ContainedBundle);
+                var s_RealEntry = new EbxEntry(s_Name, s_Entry, s_Offset - m_StartPosition, ContainedSuperbundle, this);
                 Ebx.Add(s_RealEntry);
 
                 // Skip the data, we don't need to read it right now.
@@ -312,7 +395,7 @@ namespace RimeLib.Content.Venice.Frostbite.Bundles
                 
                 // Create the entry.
                 var s_RealEntry = new ResourceEntry(s_Name, s_ResourceType, s_ResourceMeta, s_Entry,
-                    s_Offset - m_StartPosition, ContainedSuperbundle, ContainedBundle);
+                    s_Offset - m_StartPosition, ContainedSuperbundle, this);
                 Resources.Add(s_RealEntry);
 
                 // Skip the data, we don't need to read it right now.
@@ -336,7 +419,7 @@ namespace RimeLib.Content.Venice.Frostbite.Bundles
                 // Get the data offset for this entry.
                 var s_Offset = p_Reader.Position;
 
-                var s_RealEntry = new BundleChunkEntry(s_ChunkEntry, s_Offset - m_StartPosition, ContainedSuperbundle, ContainedBundle, s_ChunkMeta);
+                var s_RealEntry = new BundleChunkEntry(s_ChunkEntry, s_Offset - m_StartPosition, ContainedSuperbundle, this, s_ChunkMeta);
                 Chunks.Add(s_RealEntry);
 
                 // Skip the data, we don't need to read it right now.

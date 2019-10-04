@@ -20,5 +20,10 @@ namespace RimeLib.Content.Venice.Mounting
         {
             return m_Catalog.ReadEntry(m_Hash);
         }
+
+        public long GetSize()
+        {
+            return m_Catalog[m_Hash].FileSize;
+        }
     }
 }

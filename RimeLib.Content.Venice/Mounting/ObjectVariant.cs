@@ -22,6 +22,11 @@ namespace RimeLib.Content.Venice.Mounting
             return m_Readable.GetReader();
         }
 
+        public long GetSize()
+        {
+            return m_Readable.GetSize();
+        }
+
         public string GetContainedSuperbundle()
         {
             return m_ContainedSuperbundle;

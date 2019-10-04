@@ -1,5 +1,4 @@
-﻿using System;
-using RimeLib.Content.Venice.Frostbite.Cas;
+﻿using RimeLib.Content.Venice.Frostbite.Cas;
 using RimeLib.Frostbite.Core;
 using RimeLib.IO;
 
@@ -20,7 +19,12 @@ namespace RimeLib.Content.Venice.Frostbite.Chunks
 
         public override RimeReader GetReader()
         {
-            throw new NotImplementedException();
+            return ContainedCatalog.ReadEntry(Hash);
+        }
+
+        public override long GetSize()
+        {
+            return ContainedCatalog[Hash].FileSize;
         }
     }
 }

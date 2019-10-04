@@ -277,7 +277,7 @@ namespace RimeLib.IO
 		/// <summary>
 		/// Disposes of the underlying stream.
 		/// </summary>
-		public void Dispose()
+		public virtual void Dispose()
 		{
             CheckDisposed();
 

@@ -110,8 +110,16 @@ namespace RimeLib.Content.Venice.Frostbite.Cas
             // Get the entry.
             var s_Entry = this[p_Hash];
 
-            // Open a reader
-            throw new NotImplementedException();
+            // Construct the path to the cas file.
+            var s_Path = System.IO.Path.Join(System.IO.Path.GetDirectoryName(Path), $"cas_{s_Entry.FileNumber:D2}.cas");
+
+            // Open a reader.
+            var s_Reader = new RimeReader(File.Open(s_Path, FileMode.Open, FileAccess.Read, FileShare.Read));
+            s_Reader.Seek(s_Entry.FileOffset, SeekOrigin.Begin);
+
+            // TODO: Limited reader.
+
+            return s_Reader;
         }
 
         /// <summary>

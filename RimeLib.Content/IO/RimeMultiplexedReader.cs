@@ -17,18 +17,32 @@ namespace RimeLib.Content.IO
         private long m_Position;
         private int m_Cursor;
         private long m_Remaining;
+        private bool m_Dispose;
 
         private readonly RimeReader[] m_Buffers;
 
         private readonly List<DeltaBundleRun> m_Runs;
 
-        public RimeMultiplexedReader(RimeReader p_PatchedReader, RimeReader p_BaseReader, Endianness p_Endianness)
+        public RimeMultiplexedReader(RimeReader p_PatchedReader, RimeReader p_BaseReader, Endianness p_Endianness, bool p_Dispose = false)
             : base(new MemoryStream(), p_Endianness)
         {
             m_Runs = new List<DeltaBundleRun>();
             m_Position = 0;
             m_Buffers = new [] { p_PatchedReader, p_BaseReader };
+            m_Dispose = p_Dispose;
+
             ReadRuns();
+        }
+
+        public override void Dispose()
+        {
+            base.Dispose();
+
+            if (!m_Dispose) 
+                return;
+
+            foreach (var s_Reader in m_Buffers)
+                s_Reader.Dispose();
         }
 
         private void ReadRuns()
@@ -100,6 +114,8 @@ namespace RimeLib.Content.IO
                     s_ToRead = m_Runs[m_Cursor].CopyBytes;
                 else
                     s_ToRead = s_Remaining;
+
+                m_Buffers[m_Runs[m_Cursor].FileId].Seek(s_ToRead, SeekOrigin.Current);
 
                 m_Runs[m_Cursor].CopyBytes -= s_ToRead;
                 s_Remaining -= s_ToRead;

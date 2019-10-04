@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using RimeLib.Content.Frostbite;
+using RimeLib.Content.IO;
 using RimeLib.Content.Mounting;
 using RimeLib.Content.Venice.Frostbite.Bundles;
 using RimeLib.Content.Venice.Frostbite.Cas;
@@ -361,7 +362,7 @@ namespace RimeLib.Content.Venice.Mounting
             }
         }
 
-        protected void ProcessChunk(ChunkInfo p_Chunk, SuperbundleEntry p_SbEntry)
+        protected void ProcessChunk(ChunkInfo p_Chunk, SuperbundleEntry p_SbEntry, bool p_Patch)
         {
             ChunkEntry s_ChunkEntry;
 
@@ -372,13 +373,11 @@ namespace RimeLib.Content.Venice.Mounting
                     throw new Exception("Found a cas chunk entry but the game has no catalog!");
 
                 s_ChunkEntry = new CasChunkEntry(p_Chunk.Id, p_Chunk.Sha1, m_Catalog);
-
-                return;
             }
             else
             {
                 // Otherwise, it's an sb-backed chunk.
-                s_ChunkEntry = new SbChunkEntry(p_Chunk.Id, p_Chunk.Offset!.Value, p_Chunk.Size!.Value, p_SbEntry);
+                s_ChunkEntry = new SbChunkEntry(p_Chunk.Id, p_Chunk.Offset!.Value, p_Chunk.Size!.Value, p_SbEntry, p_Patch);
             }
 
             // Add to list of chunks.
@@ -389,12 +388,8 @@ namespace RimeLib.Content.Venice.Mounting
             var s_Variant = new ChunkVariant(s_ChunkEntry, null, p_SbEntry.Name, null);
             var s_MountedObject = new MountedObject<IChunkVariant>(s_Variant);
 
-            m_MountedChunks.AddOrUpdate(s_ChunkEntry.Id, s_MountedObject, (p_GUID, p_MountedObject) =>
-            {
-                // If this was already mounted, just add the variant.
-                p_MountedObject.AddVariant(s_Variant);
-                return p_MountedObject;
-            });
+            // Here we always replace because patched chunks get registered after and they override old ones.
+            m_MountedChunks.AddOrUpdate(s_ChunkEntry.Id, s_MountedObject, (p_GUID, p_MountedObject) => s_MountedObject);
         }
 
         protected void ParseSuperbundles()
@@ -410,12 +405,12 @@ namespace RimeLib.Content.Venice.Mounting
 
             // Parse any chunks first.
             foreach (var s_Chunk in p_Superbundle.Toc.Layout.Chunks)
-                ProcessChunk(s_Chunk, p_Superbundle);
+                ProcessChunk(s_Chunk, p_Superbundle, false);
                 
             // If we have a patch toc process the chunks for that too.
             if (p_Superbundle.PatchToc != null)
                 foreach (var s_Chunk in p_Superbundle.PatchToc.Layout.Chunks)
-                    ProcessChunk(s_Chunk, p_Superbundle);
+                    ProcessChunk(s_Chunk, p_Superbundle, true);
 
             // Now it's time to parse bundles, oh boy!
             ParseBundles(p_Superbundle, p_Superbundle.Toc.Layout, p_Superbundle.PatchToc?.Layout, p_AutoMount);
@@ -461,9 +456,13 @@ namespace RimeLib.Content.Venice.Mounting
         protected void ParseDeltaBundle(RimeReader p_BaseReader, RimeReader p_PatchReader, 
             BundleInfo p_BaseBundle, BundleInfo p_PatchBundle, SuperbundleEntry p_Superbundle, bool p_AutoMount)
         {
-            // TODO: Use multiplexed reader.
             p_BaseReader.Seek(p_BaseBundle.Offset, SeekOrigin.Begin);
-            var s_Manifest = new BundleManifest(p_BaseReader, p_Superbundle, p_BaseBundle);
+            p_PatchReader.Seek(p_PatchBundle.Offset, SeekOrigin.Begin);
+
+            // Use a multiplexed reader to parse this manifest.
+            using var s_MultiplexedReader = new RimeMultiplexedReader(p_PatchReader, p_BaseReader, Endianness.BigEndian);
+
+            var s_Manifest = new BundleManifest(s_MultiplexedReader, p_Superbundle, p_BaseBundle, p_PatchBundle);
 
             m_Bundles.AddOrUpdate(p_BaseBundle.Id.ToLowerInvariant(), s_Manifest, (p_Key, p_Prev) =>
             {
@@ -496,9 +495,10 @@ namespace RimeLib.Content.Venice.Mounting
             {
                 s_ParsedBundles.Add(s_Bundle.Id.ToLowerInvariant());
 
-                // If we don't have a patched toc or if we do but don't have
-                // a corresponding bundle entry, or if the base flag is set
-                // then parse straight away!
+                // If we don't have a patched toc, or
+                // if we do but don't have a corresponding bundle entry, or
+                // if the base flag is set, then
+                // parse straight away!
                 if (p_PatchToc == null || !p_PatchToc.TryGetBundle(s_Bundle.Id, out var s_PatchBundle) || (s_PatchBundle!.Base.HasValue && s_PatchBundle.Base.Value))
                 {
                     if (p_Toc.Cas)

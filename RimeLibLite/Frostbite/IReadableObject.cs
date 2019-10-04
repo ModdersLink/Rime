@@ -13,5 +13,11 @@ namespace RimeLib.Frostbite
         /// </summary>
         /// <returns></returns>
         RimeReader GetReader();
+
+        /// <summary>
+        /// Gets the object size in bytes.
+        /// </summary>
+        /// <returns></returns>
+        long GetSize();
     }
 }
