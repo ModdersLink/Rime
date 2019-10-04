@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
@@ -27,7 +29,13 @@ namespace RimeLib.Extensions
             if (s_Attribute.ConstructorArguments.Count != 1)
                 throw new NotImplementedException("Nullability checks are currently not supported on complex nullable types.");
 
-            return (byte) s_Attribute.ConstructorArguments[0].Value == 2;
+            // Simple type!
+            if (s_Attribute.ConstructorArguments[0].Value is byte)
+                return (byte) s_Attribute.ConstructorArguments[0].Value == 2;
+
+            // Primitive array type.
+            var s_Args = (IList<CustomAttributeTypedArgument>) s_Attribute.ConstructorArguments[0].Value;
+            return (byte) s_Args[0].Value == 2;
         }
     }
 }
