@@ -1,46 +1,66 @@
-﻿/*
+﻿using System;
 using System.IO;
-using RimeLib.IO.Conversion;
 
 namespace RimeLib.IO
 {
     public class LimitedRimeReader : RimeReader
     {
-        protected RimeReader? m_BaseReader;
+        public override long Position => m_CurrentOffset;
+        public override long Length => m_Limit;
 
-        protected int m_Limit;
-
+        protected long m_Limit;
+        protected long m_CurrentOffset;
         protected long m_StartOffset;
 
-        public LimitedRimeReader(Stream p_Stream, int p_Limit, Endianness p_Endianness = Endianness.LittleEndian) : 
-            base(p_Stream, p_Endianness)
+        public LimitedRimeReader(RimeReader p_Stream, long p_Limit, bool p_ShouldDispose = true) : 
+            base(p_Stream, p_Stream.Endianness, p_ShouldDispose)
         {
             m_Limit = p_Limit;
+            m_CurrentOffset = 0;
             m_StartOffset = p_Stream.Position;
         }
-        
-        public LimitedRimeReader(RimeReader p_BaseReader, int p_Limit) : 
-            base(new MemoryStream(), p_BaseReader.Endianness)
+
+        public override long Seek(long p_Offset, SeekOrigin p_Origin)
         {
-            m_BaseReader = p_BaseReader;
-            m_Limit = p_Limit;
+            CheckDisposed();
+
+            // Find the requested target offset.
+            var s_TargetOffset = p_Offset;
+
+            if (p_Origin == SeekOrigin.End)
+                s_TargetOffset = m_Limit - p_Offset;
+            else if (p_Origin == SeekOrigin.Current)
+                s_TargetOffset = m_CurrentOffset + p_Offset;
+
+            if (s_TargetOffset < 0 || s_TargetOffset > m_Limit)
+                throw new ArgumentException("The provided offset is out of bounds for this stream.", nameof(p_Offset));
+
+            // Set the position.
+            m_CurrentOffset = s_TargetOffset;
+
+            // Seek internally.
+            base.Seek(m_StartOffset + m_CurrentOffset, SeekOrigin.Begin);
+
+            return m_CurrentOffset;
         }
 
         protected override int ReadInternal(byte[] p_Data, int p_Index, int p_Count)
         {
-            // Get the number of bytes to read.
-            var s_RemainingBytes = m_Limit - m_Read;
-            var s_BytesToRead = System.Math.Min(s_RemainingBytes, p_Count);
+            CheckDisposed();
+
+            // Check if we have enough bytes to read.
+            var s_ToRead = p_Count;
+
+            if (m_CurrentOffset + p_Count > m_Limit)
+                s_ToRead = (int) m_Limit - (int) m_CurrentOffset;
+
+            if (s_ToRead == 0)
+                return 0;
 
             // Read the data.
-            var s_BytesRead = m_BaseReader?.Read(p_Data, p_Index, s_BytesToRead) 
-                              ?? base.Read(p_Data, p_Index, s_BytesToRead);
-
-            // Increment our read bytes.
-            m_Read += s_BytesRead;
-
-            return s_BytesRead;
+            var s_Read = base.ReadInternal(p_Data, p_Index, p_Count);
+            m_CurrentOffset += s_Read;
+            return s_Read;
         }
     }
 }
-*/
