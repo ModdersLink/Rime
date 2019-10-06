@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using RimeLib.Content.IO;
 using RimeLib.Content.Venice.Frostbite.Chunks;
@@ -55,16 +56,26 @@ namespace RimeLib.Content.Venice.Frostbite.Bundles
 
             // Seek to this entry.
             s_Reader.Seek(m_SeekOffset, SeekOrigin.Current);
-            
-            // TODO: Compression.
-            // TODO: Use a limited reader.
+
+            // Wrap inside a limited reader.
+            s_Reader = new LimitedRimeReader(s_Reader, m_Size);
+
+            // Wrap into a zlib reader if this is compressed.
+            if (m_OriginalSize != m_Size)
+            {
+                Debug.WriteLine($"Creating zlib reader for data with size {m_Size}.");
+                s_Reader = new ZlibRimeReader(s_Reader, true);
+
+                // Wrap this inside a limited reader as well.
+                s_Reader = new LimitedRimeReader(s_Reader, m_OriginalSize);
+            }
 
             return s_Reader;
         }
 
         public long GetSize()
         {
-            return m_Size;
+            return m_OriginalSize;
         }
     }
 
@@ -113,21 +124,31 @@ namespace RimeLib.Content.Venice.Frostbite.Bundles
                 var s_PatchReader = new RimeReader(File.Open(ContainedSuperbundle.PatchPath + ".sb", FileMode.Open, FileAccess.Read, FileShare.Read), s_Endianness);
                 s_PatchReader.Seek(ContainedBundle.PatchBundle.Offset, SeekOrigin.Begin);
 
-                s_Reader = new RimeMultiplexedReader(s_PatchReader, s_Reader, Endianness.BigEndian);;
+                s_Reader = new RimeMultiplexedReader(s_PatchReader, s_Reader, Endianness.BigEndian);
             }
 
             // Seek to this entry.
             s_Reader.Seek(m_SeekOffset, SeekOrigin.Current);
 
-            // TODO: Compression.
-            // TODO: Use a limited reader.
+            // Wrap inside a limited reader.
+            s_Reader = new LimitedRimeReader(s_Reader, m_Size);
+
+            // Wrap into a zlib reader if this is compressed.
+            if (m_OriginalSize != m_Size)
+            {
+                Debug.WriteLine($"Creating zlib reader for data with size {m_Size}.");
+                s_Reader = new ZlibRimeReader(s_Reader, true);
+
+                // Wrap this inside a limited reader as well.
+                s_Reader = new LimitedRimeReader(s_Reader, m_OriginalSize);
+            }
 
             return s_Reader;
         }
 
         public long GetSize()
         {
-            return m_Size;
+            return m_OriginalSize;
         }
     }
 
@@ -176,12 +197,19 @@ namespace RimeLib.Content.Venice.Frostbite.Bundles
 
             // Seek to this entry.
             s_Reader.Seek(m_SeekOffset, SeekOrigin.Current);
+            
+            // Wrap inside a limited reader.
+            s_Reader = new LimitedRimeReader(s_Reader, m_Size);
 
             // Wrap into a zlib reader if this is compressed.
             if (m_Compressed)
+            {
+                Debug.WriteLine($"Creating zlib reader for data with size {m_Size}.");
                 s_Reader = new ZlibRimeReader(s_Reader, true);
-            // TODO: Compression.
-            // TODO: Use a limited reader.
+
+                // Wrap this inside a limited reader as well.
+                s_Reader = new LimitedRimeReader(s_Reader, ((ZlibRimeReader) s_Reader).OriginalSize!.Value);
+            }
 
             return s_Reader;
         }
@@ -191,8 +219,8 @@ namespace RimeLib.Content.Venice.Frostbite.Bundles
             if (!m_Compressed)
                 return m_Size;
 
-            using var s_Reader = GetReader() as ZlibRimeReader;
-            return s_Reader!.OriginalSize!.Value;
+            using var s_Reader = GetReader();
+            return s_Reader.Length;
         }
     }
 
