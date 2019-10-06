@@ -12,25 +12,32 @@ namespace RimeLib.Content.IO
     /// </summary>
     public class RimeMultiplexedReader : RimeReader
     {
-        public override long Position => m_Position;
+        public override long Position => m_CurrentPosition;
+        public override long Length => m_Length;
 
-        private long m_Position;
-        private int m_Cursor;
-        private long m_Remaining;
+        private long m_CurrentPosition;
+        private long m_Length;
+        private long m_BasePatchedOffset;
 
-        private readonly RimeReader[] m_Buffers;
+        private readonly RimeReader m_BaseReader;
+        private readonly RimeReader m_PatchReader;
 
         private readonly List<DeltaBundleRun> m_Runs;
 
         private readonly bool m_InternalDispose;
 
-        public RimeMultiplexedReader(RimeReader p_PatchedReader, RimeReader p_BaseReader, Endianness p_Endianness, bool p_ShouldDispose = true)
+        public RimeMultiplexedReader(RimeReader p_PatchReader, RimeReader p_BaseReader, Endianness p_Endianness, bool p_ShouldDispose = true)
             : base(new MemoryStream(), p_Endianness)
         {
             m_Runs = new List<DeltaBundleRun>();
-            m_Position = 0;
-            m_Buffers = new [] { p_PatchedReader, p_BaseReader };
             m_InternalDispose = p_ShouldDispose;
+
+            m_BaseReader = p_BaseReader;
+            m_PatchReader = p_PatchReader;
+
+            m_CurrentPosition = 0;
+            m_Length = 0;
+            m_BasePatchedOffset = 0;
 
             ReadRuns();
         }
@@ -42,26 +49,23 @@ namespace RimeLib.Content.IO
             if (!m_InternalDispose) 
                 return;
 
-            foreach (var s_Reader in m_Buffers)
-                s_Reader.Dispose();
+            m_BaseReader.Dispose();
+            m_PatchReader.Dispose();
         }
 
         private void ReadRuns()
         {
-            m_Cursor = 0;
-            m_Remaining = 0;
-
             // Do we have enough data for reading the patch header?
-            if (m_Buffers[0].BaseStream.Position + 16 > m_Buffers[0].BaseStream.Length)
+            if (m_PatchReader.BaseStream.Position + 16 > m_PatchReader.BaseStream.Length)
                 throw new Exception("Not enough data found to read patch header. This is probably caused because we tried to parse a non-patch file.");
 
             // Read the patch header.
-            var s_RunsSize = m_Buffers[0].ReadInt32();
-            var s_Magic = m_Buffers[0].ReadUInt32();
-            m_Buffers[0].ReadUInt64(); // Padding
+            var s_RunsSize = m_PatchReader.ReadInt32();
+            var s_Magic = m_PatchReader.ReadUInt32();
+            m_PatchReader.ReadUInt64(); // Padding
 
             // Perform some validation.
-            if (m_Buffers[0].BaseStream.Position + s_RunsSize > m_Buffers[0].BaseStream.Length)
+            if (m_PatchReader.BaseStream.Position + s_RunsSize > m_PatchReader.BaseStream.Length)
                 throw new Exception("Not enough data found to read patch runs. This is probably caused because we tried to parse a non-patch file.");
 
             if (s_Magic != 0xDE17AAAA)
@@ -74,64 +78,36 @@ namespace RimeLib.Content.IO
             var s_RunCount = s_RunsSize / 16;
 
             // Read out all the runs from the patch header.
-            for (int i = 0; i < s_RunCount; ++i)
+            for (var i = 0; i < s_RunCount; ++i)
             {
-                var s_Run = new DeltaBundleRun(m_Buffers[0]);
+                var s_Run = new DeltaBundleRun(m_PatchReader);
                 m_Runs.Add(s_Run);
-
-                m_Remaining += s_Run.CopyBytes;
+                m_Length += s_Run.CopyBytes;
             }
 
-            if (s_RunCount > 0 && m_Runs[0].FileId == 1)
-                m_Buffers[1].Seek((int)m_Runs[0].Offset, SeekOrigin.Begin);
+            // Store the offset where the patched data begins.
+            m_BasePatchedOffset = m_PatchReader.Position;
         }
 
         public override long Seek(long p_Offset, SeekOrigin p_Origin)
         {
             CheckDisposed();
 
-            if (p_Origin != SeekOrigin.Current)
-                throw new Exception("Can only seek from current position in a Multiplexed Reader.");
+            // Find the requested target offset.
+            var s_TargetOffset = p_Offset;
 
-            if (p_Offset < 0)
-                throw new Exception("Multiplexed Reader can only seek forwards.");
+            if (p_Origin == SeekOrigin.End)
+                s_TargetOffset = m_Length - p_Offset;
+            else if (p_Origin == SeekOrigin.Current)
+                s_TargetOffset = m_CurrentPosition + p_Offset;
 
-            if (p_Offset >= int.MaxValue)
-                throw new Exception($"Multiplexed Reader can only seek forwards up to {int.MaxValue} bytes at a time.");
+            if (s_TargetOffset < 0 || s_TargetOffset > m_Length)
+                throw new ArgumentException("The provided offset is out of bounds for this stream.", nameof(p_Offset));
 
-            if (p_Offset == 0)
-                return m_Position;
+            // Set the position.
+            m_CurrentPosition = s_TargetOffset;
 
-            var s_ToRead = (int) p_Offset;
-            var s_Remaining = (int) p_Offset;
-
-            while (s_Remaining > 0)
-            {
-                if (m_Remaining < s_ToRead)
-                    throw new EndOfStreamException("End of stream reached with " + s_Remaining + " bytes left to skip.");
-
-                // We don't have enough bytes in the current run.
-                if (s_Remaining > m_Runs[m_Cursor].CopyBytes)
-                    s_ToRead = m_Runs[m_Cursor].CopyBytes;
-                else
-                    s_ToRead = s_Remaining;
-
-                m_Buffers[m_Runs[m_Cursor].FileId].Seek(s_ToRead, SeekOrigin.Current);
-
-                m_Runs[m_Cursor].CopyBytes -= s_ToRead;
-                s_Remaining -= s_ToRead;
-
-                if (m_Runs[m_Cursor].CopyBytes != 0) 
-                    continue;
-
-                ++m_Cursor;
-
-                if (m_Cursor < m_Runs.Count && m_Runs[m_Cursor].FileId == 1)
-                    m_Buffers[1].Seek((int) m_Runs[m_Cursor].Offset, SeekOrigin.Begin);
-            }
-
-            m_Position += p_Offset;
-            return m_Position;
+            return m_CurrentPosition;
         }
         
         protected override int ReadInternal(byte[] p_Data, int p_Index, int p_Count)
@@ -141,39 +117,67 @@ namespace RimeLib.Content.IO
             if (p_Count == 0)
                 return 0;
 
-            var s_ToRead = p_Count;
             var s_Remaining = p_Count;
+            
+            if (m_CurrentPosition + p_Count > m_Length)
+                throw new EndOfStreamException("End of stream reached with " + p_Count + " bytes left to read.");
 
-            var s_CurrentPos = p_Index;
+            //Debug.WriteLine($"Multiplexed reader reading {p_Count} bytes.");
 
             while (s_Remaining > 0)
             {
-                if (m_Remaining < s_ToRead)
-                    throw new EndOfStreamException("End of stream reached with " + s_Remaining + " bytes left to read.");
+                // Find the run we're currently in.
+                var s_RunIndex = 0;
+                var s_Run = m_Runs[0];
+                var s_CopyBytes = s_Run.CopyBytes;
 
-                // We don't have enough bytes in the current run.
-                if (s_Remaining > m_Runs[m_Cursor].CopyBytes)
-                    s_ToRead = m_Runs[m_Cursor].CopyBytes;
+                var s_Offset = (int) m_CurrentPosition + (p_Count - s_Remaining);
+                
+                // Find the relative offset of this patched data run.
+                var s_PatchRunOffset = s_Run.FileId == 0 ? s_Run.CopyBytes : 0;
+
+                while (s_Offset >= s_CopyBytes)
+                {
+                    s_Run = m_Runs[++s_RunIndex];
+                    s_CopyBytes += s_Run.CopyBytes;
+
+                    if (s_Run.FileId == 0)
+                        s_PatchRunOffset += s_Run.CopyBytes;
+                }
+
+                // Find the relative offset in this run.
+                var s_RelativeOffset = s_Offset - (s_CopyBytes - s_Run.CopyBytes);
+
+                // See how many data we can read from this run.
+                var s_ToRead = s_Remaining;
+
+                if (s_RelativeOffset + s_Remaining > s_Run.CopyBytes)
+                    s_ToRead = s_Run.CopyBytes - s_RelativeOffset;
+
+                // Seek to the appropriate offset.
+                if (s_Run.FileId == 0)
+                {
+                    // Seek to the relevant offset based on the relative patch run offset and the rest.
+                    var s_ReadOffset = m_BasePatchedOffset + (s_PatchRunOffset - s_Run.CopyBytes) + s_RelativeOffset;
+                    m_PatchReader.Seek(s_ReadOffset, SeekOrigin.Begin);
+                    
+                    // Read the data.
+                    var s_BytesRead = m_PatchReader.ReadBytes(p_Data, p_Index + (p_Count - s_Remaining), s_ToRead);
+                    s_Remaining -= s_BytesRead;
+                    m_CurrentPosition += s_BytesRead;
+                }
                 else
-                    s_ToRead = s_Remaining;
-
-                var s_TempData = m_Buffers[m_Runs[m_Cursor].FileId].ReadBytes(s_ToRead);
-                Buffer.BlockCopy(s_TempData, 0, p_Data, s_CurrentPos, s_ToRead);
-                s_CurrentPos += s_ToRead;
-
-                m_Runs[m_Cursor].CopyBytes -= s_ToRead;
-                s_Remaining -= s_ToRead;
-
-                if (m_Runs[m_Cursor].CopyBytes != 0) 
-                    continue;
-
-                ++m_Cursor;
-
-                if (m_Cursor < m_Runs.Count && m_Runs[m_Cursor].FileId == 1)
-                    m_Buffers[1].Seek((int) m_Runs[m_Cursor].Offset, SeekOrigin.Begin);
+                {
+                    // Seek to the provided run offset + relative offset.
+                    m_BaseReader.Seek((long) s_Run.Offset + s_RelativeOffset, SeekOrigin.Begin);
+                    
+                    // Read the data.
+                    var s_BytesRead = m_BaseReader.ReadBytes(p_Data, p_Index + (p_Count - s_Remaining), s_ToRead);
+                    s_Remaining -= s_BytesRead;
+                    m_CurrentPosition += s_BytesRead;
+                }
             }
 
-            m_Position += p_Count;
             return p_Count;
         }
     }
