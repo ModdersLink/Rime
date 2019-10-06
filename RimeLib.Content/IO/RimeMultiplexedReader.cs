@@ -116,12 +116,13 @@ namespace RimeLib.Content.IO
 
             if (p_Count == 0)
                 return 0;
+            
+            // Cap the number of bytes to read.
+            if (m_CurrentPosition + p_Count > m_Length)
+                p_Count = (int) (m_Length - m_CurrentPosition);
 
             var s_Remaining = p_Count;
             
-            if (m_CurrentPosition + p_Count > m_Length)
-                throw new EndOfStreamException("End of stream reached with " + p_Count + " bytes left to read.");
-
             //Debug.WriteLine($"Multiplexed reader reading {p_Count} bytes.");
 
             while (s_Remaining > 0)
