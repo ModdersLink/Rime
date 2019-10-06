@@ -566,7 +566,7 @@ namespace RimeLib.Content.Venice.Mounting
             foreach (var s_Resource in p_Bundle.Bundle.ResourceEntries)
             {
                 // Create variant.
-                var s_Readable = new CatalogReadable(m_Catalog!, s_Resource.Hash);
+                var s_Readable = new CatalogReadable(m_Catalog!, s_Resource.Hash, s_Resource.OriginalSize != s_Resource.Size);
                 var s_Variant = new ResourceVariant(s_Readable, (ResourceType) s_Resource.ResourceType, s_Resource.Meta,
                     p_Bundle.ContainedSuperbundle.Name, p_Bundle.Bundle.Path);
 
@@ -592,7 +592,7 @@ namespace RimeLib.Content.Venice.Mounting
                     s_Meta = DbObjectConverter.ToDbObject(p_Bundle.Bundle.ChunkMeta[i]);
 
                 // Create variant.
-                var s_Readable = new CatalogReadable(m_Catalog!, s_Chunk.Hash);
+                var s_Readable = new CatalogReadable(m_Catalog!, s_Chunk.Hash, s_Chunk.Id.HasCompressionFlag());
                 var s_Variant = new ChunkVariant(s_Readable, s_Meta, p_Bundle.ContainedSuperbundle.Name,
                     p_Bundle.Bundle.Path);
 
@@ -611,7 +611,7 @@ namespace RimeLib.Content.Venice.Mounting
             foreach (var s_Partition in p_Bundle.Bundle.EbxEntries)
             {
                 // Create variant.
-                var s_Readable = new CatalogReadable(m_Catalog!, s_Partition.Hash);
+                var s_Readable = new CatalogReadable(m_Catalog!, s_Partition.Hash, s_Partition.OriginalSize != s_Partition.Size);
                 var s_Variant = new ObjectVariant(s_Readable, p_Bundle.ContainedSuperbundle.Name, p_Bundle.Bundle.Path);
 
                 // Mount.
