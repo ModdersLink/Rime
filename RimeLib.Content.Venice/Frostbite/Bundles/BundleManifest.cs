@@ -4,6 +4,7 @@ using System.IO;
 using RimeLib.Content.IO;
 using RimeLib.Content.Venice.Frostbite.Chunks;
 using RimeLib.Content.Venice.Frostbite.Sb;
+using RimeLib.Content.Venice.Mounting;
 using RimeLib.Frostbite;
 using RimeLib.Frostbite.Core;
 using RimeLib.Frostbite.Db;
@@ -12,22 +13,25 @@ using RimeLib.IO.Conversion;
 
 namespace RimeLib.Content.Venice.Frostbite.Bundles
 {
-    public class EbxEntry : IReadableObject
+    public class EbxEntry : IReadableObjectWithHash
     {
         public string Name { get; set; }
 
         public SuperbundleEntry ContainedSuperbundle { get; set; }
         public BundleManifest ContainedBundle { get; set; }
 
+        public Sha1 Hash { get; set; }
+
         private long m_SeekOffset;
 
         private long m_Size;
         private long m_OriginalSize;
 
-        internal EbxEntry(string p_Name, BundleManifest.EntryRecord p_Record, long p_SeekOffset,
+        internal EbxEntry(string p_Name, Sha1 p_Hash, BundleManifest.EntryRecord p_Record, long p_SeekOffset,
             SuperbundleEntry p_Superbundle, BundleManifest p_Bundle)
         {
             Name = p_Name;
+            Hash = p_Hash;
             ContainedSuperbundle = p_Superbundle;
             ContainedBundle = p_Bundle;
 
@@ -80,11 +84,21 @@ namespace RimeLib.Content.Venice.Frostbite.Bundles
         {
             return m_OriginalSize;
         }
+
+        public Sha1? GetSha1()
+        {
+            if (m_OriginalSize != m_Size)
+                return null;
+
+            return Hash;
+        }
     }
 
-    public class ResourceEntry : IReadableObject
+    public class ResourceEntry : IReadableObjectWithHash
     {
         public string Name { get; set; }
+
+        public Sha1 Hash { get; set; }
 
         public uint ResourceType { get; set; }
 
@@ -99,10 +113,11 @@ namespace RimeLib.Content.Venice.Frostbite.Bundles
         private long m_Size;
         private long m_OriginalSize;
 
-        internal ResourceEntry(string p_Name, uint p_Type, byte[] p_Meta, BundleManifest.EntryRecord p_Record,
+        internal ResourceEntry(string p_Name, Sha1 p_Hash, uint p_Type, byte[] p_Meta, BundleManifest.EntryRecord p_Record,
             long p_SeekOffset, SuperbundleEntry p_Superbundle, BundleManifest p_Bundle)
         {
             Name = p_Name;
+            Hash = p_Hash;
             ResourceType = p_Type;
             ResourceMeta = p_Meta;
             ContainedSuperbundle = p_Superbundle;
@@ -157,10 +172,20 @@ namespace RimeLib.Content.Venice.Frostbite.Bundles
         {
             return m_OriginalSize;
         }
+
+        public Sha1? GetSha1()
+        {
+            if (m_OriginalSize != m_Size)
+                return null;
+
+            return Hash;
+        }
     }
 
     public class BundleChunkEntry : ChunkEntry
     {
+        public Sha1 Hash { get; set; }
+
         public SuperbundleEntry ContainedSuperbundle { get; set; }
         
         public BundleManifest ContainedBundle { get; set; }
@@ -170,9 +195,11 @@ namespace RimeLib.Content.Venice.Frostbite.Bundles
         private long m_SeekOffset;
         private long m_Size;
 
-        internal BundleChunkEntry(BundleManifest.ChunkEntry p_Entry, long p_SeekOffset, SuperbundleEntry p_Superbundle, BundleManifest p_Bundle, ChunkMeta p_Meta) :
+        internal BundleChunkEntry(Sha1 p_Hash, BundleManifest.ChunkEntry p_Entry, long p_SeekOffset, SuperbundleEntry p_Superbundle, BundleManifest p_Bundle, ChunkMeta p_Meta) :
             base(p_Entry.Id)
         {
+            Hash = p_Hash;
+
             ContainedSuperbundle = p_Superbundle;
             ContainedBundle = p_Bundle;
             
@@ -229,6 +256,14 @@ namespace RimeLib.Content.Venice.Frostbite.Bundles
 
             using var s_Reader = GetReader();
             return s_Reader.Length;
+        }
+
+        public override Sha1? GetSha1()
+        {
+            if (Compressed)
+                return null;
+
+            return Hash;
         }
     }
 
@@ -399,6 +434,7 @@ namespace RimeLib.Content.Venice.Frostbite.Bundles
             for (var i = 0; i < m_Header.EbxCount; ++i)
             {
                 var s_Entry = m_Records[i];
+                var s_Hash = m_Hashes[i];
 
                 // Read the name of the entry.
                 s_TextBlockReader.Seek(s_Entry.NameOffset, SeekOrigin.Begin);
@@ -408,7 +444,8 @@ namespace RimeLib.Content.Venice.Frostbite.Bundles
                 var s_Offset = p_Reader.Position;
 
                 // Create the entry.
-                var s_RealEntry = new EbxEntry(s_Name, s_Entry, s_Offset - m_StartPosition, ContainedSuperbundle, this);
+                var s_RealEntry = new EbxEntry(s_Name, s_Hash, s_Entry, s_Offset - m_StartPosition,
+                    ContainedSuperbundle, this);
                 Ebx.Add(s_RealEntry);
 
                 // Skip the data, we don't need to read it right now.
@@ -423,6 +460,7 @@ namespace RimeLib.Content.Venice.Frostbite.Bundles
             {
                 var s_EntryIndex = i + m_Header.EbxCount;
                 var s_Entry = m_Records[s_EntryIndex];
+                var s_Hash = m_Hashes[s_EntryIndex];
 
                 // Read the name of the entry.
                 s_TextBlockReader.Seek(s_Entry.NameOffset, SeekOrigin.Begin);
@@ -436,7 +474,7 @@ namespace RimeLib.Content.Venice.Frostbite.Bundles
                 var s_Offset = p_Reader.Position;
                 
                 // Create the entry.
-                var s_RealEntry = new ResourceEntry(s_Name, s_ResourceType, s_ResourceMeta, s_Entry,
+                var s_RealEntry = new ResourceEntry(s_Name, s_Hash, s_ResourceType, s_ResourceMeta, s_Entry,
                     s_Offset - m_StartPosition, ContainedSuperbundle, this);
                 Resources.Add(s_RealEntry);
 
@@ -451,6 +489,7 @@ namespace RimeLib.Content.Venice.Frostbite.Bundles
             for (var i = 0; i < m_Header.ChunkCount; ++i)
             {
                 var s_EntryIndex = i + m_Header.EbxCount + m_Header.ResourceCount;
+                var s_Hash = m_Hashes[s_EntryIndex];
 
                 // Get the chunk info.
                 var s_ChunkEntry = m_Chunks[i];
@@ -461,7 +500,8 @@ namespace RimeLib.Content.Venice.Frostbite.Bundles
                 // Get the data offset for this entry.
                 var s_Offset = p_Reader.Position;
 
-                var s_RealEntry = new BundleChunkEntry(s_ChunkEntry, s_Offset - m_StartPosition, ContainedSuperbundle, this, s_ChunkMeta);
+                var s_RealEntry = new BundleChunkEntry(s_Hash, s_ChunkEntry, s_Offset - m_StartPosition,
+                    ContainedSuperbundle, this, s_ChunkMeta);
                 Chunks.Add(s_RealEntry);
 
                 // Skip the data, we don't need to read it right now.

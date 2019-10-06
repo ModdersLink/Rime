@@ -1,6 +1,5 @@
 ﻿using RimeLib.Content.Frostbite;
 using RimeLib.Content.Mounting;
-using RimeLib.Frostbite;
 
 namespace RimeLib.Content.Venice.Mounting
 {
@@ -9,7 +8,7 @@ namespace RimeLib.Content.Venice.Mounting
         protected ResourceType m_Type;
         protected byte[]? m_Meta;
 
-        public ResourceVariant(IReadableObject p_Readable, ResourceType p_Type, byte[]? p_Meta, string p_ContainedSuperbundle, string? p_ContainedBundle) :
+        public ResourceVariant(IReadableObjectWithHash p_Readable, ResourceType p_Type, byte[]? p_Meta, string p_ContainedSuperbundle, string? p_ContainedBundle) :
             base(p_Readable, p_ContainedSuperbundle, p_ContainedBundle)
         {
             m_Type = p_Type;

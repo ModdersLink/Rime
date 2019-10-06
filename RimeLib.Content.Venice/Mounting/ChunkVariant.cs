@@ -1,5 +1,4 @@
 ﻿using RimeLib.Content.Mounting;
-using RimeLib.Frostbite;
 using RimeLib.Frostbite.Db;
 
 namespace RimeLib.Content.Venice.Mounting
@@ -8,7 +7,7 @@ namespace RimeLib.Content.Venice.Mounting
     {
         protected DbObject? m_Meta;
 
-        public ChunkVariant(IReadableObject p_Readable, DbObject? p_Meta, string p_ContainedSuperbundle, string? p_ContainedBundle) :
+        public ChunkVariant(IReadableObjectWithHash p_Readable, DbObject? p_Meta, string p_ContainedSuperbundle, string? p_ContainedBundle) :
             base(p_Readable, p_ContainedSuperbundle, p_ContainedBundle)
         {
             m_Meta = p_Meta;

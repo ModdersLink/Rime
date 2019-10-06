@@ -1,11 +1,11 @@
-﻿using RimeLib.Frostbite;
+﻿using RimeLib.Content.Venice.Mounting;
 using RimeLib.Frostbite.Core;
 using RimeLib.Frostbite.Db;
 using RimeLib.IO;
 
 namespace RimeLib.Content.Venice.Frostbite.Chunks
 {
-    public abstract class ChunkEntry : IReadableObject
+    public abstract class ChunkEntry : IReadableObjectWithHash
     {
         public class ChunkMetaPayload : DbObjectSerializable
         {
@@ -33,5 +33,6 @@ namespace RimeLib.Content.Venice.Frostbite.Chunks
 
         public abstract RimeReader GetReader();
         public abstract long GetSize();
+        public abstract Sha1? GetSha1();
     }
 }

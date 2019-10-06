@@ -1,16 +1,19 @@
 ﻿using RimeLib.Content.Mounting;
 using RimeLib.Frostbite;
+using RimeLib.Frostbite.Core;
 using RimeLib.IO;
 
 namespace RimeLib.Content.Venice.Mounting
 {
+    internal interface IReadableObjectWithHash : IReadableObject, IObjectWithHash {}
+
     internal class ObjectVariant : IObjectVariant
     {
-        protected IReadableObject m_Readable;
+        protected IReadableObjectWithHash m_Readable;
         protected string m_ContainedSuperbundle;
         protected string? m_ContainedBundle;
 
-        public ObjectVariant(IReadableObject p_Readable, string p_ContainedSuperbundle, string? p_ContainedBundle)
+        public ObjectVariant(IReadableObjectWithHash p_Readable, string p_ContainedSuperbundle, string? p_ContainedBundle)
         {
             m_Readable = p_Readable;
             m_ContainedSuperbundle = p_ContainedSuperbundle;
@@ -35,6 +38,11 @@ namespace RimeLib.Content.Venice.Mounting
         public string? GetContainedBundle()
         {
             return m_ContainedBundle;
+        }
+
+        public Sha1? GetSha1()
+        {
+            return m_Readable.GetSha1();
         }
     }
 }

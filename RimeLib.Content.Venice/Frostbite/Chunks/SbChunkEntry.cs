@@ -66,5 +66,10 @@ namespace RimeLib.Content.Venice.Frostbite.Chunks
             using var s_Reader = GetReader();
             return s_Reader.Length;
         }
+
+        public override Sha1? GetSha1()
+        {
+            return null;
+        }
     }
 }

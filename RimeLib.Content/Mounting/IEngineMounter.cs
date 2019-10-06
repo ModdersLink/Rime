@@ -7,7 +7,7 @@ using RimeLib.Frostbite.Db;
 
 namespace RimeLib.Content.Mounting
 {
-    public interface IObjectVariant : IReadableObject
+    public interface IObjectVariant : IReadableObject, IObjectWithHash
     {
         string GetContainedSuperbundle();
         string? GetContainedBundle();

@@ -1,11 +1,10 @@
 ﻿using RimeLib.Content.Venice.Frostbite.Cas;
-using RimeLib.Frostbite;
 using RimeLib.Frostbite.Core;
 using RimeLib.IO;
 
 namespace RimeLib.Content.Venice.Mounting
 {
-    internal class CatalogReadable : IReadableObject
+    internal class CatalogReadable : IReadableObjectWithHash
     {
         protected Catalog m_Catalog;
         protected Sha1 m_Hash;
@@ -42,6 +41,13 @@ namespace RimeLib.Content.Venice.Mounting
             using var s_Reader = GetReader();
             return s_Reader.Length;
         }
+
+        public Sha1? GetSha1()
+        {
+            if (m_Compressed)
+                return null;
+
+            return m_Hash;
         }
     }
 }
