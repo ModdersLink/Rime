@@ -50,8 +50,7 @@ namespace RimeLib.Content.Venice.Frostbite.Bundles
                 var s_PatchReader = new RimeReader(File.Open(ContainedSuperbundle.PatchPath + ".sb", FileMode.Open, FileAccess.Read, FileShare.Read), s_Endianness);
                 s_PatchReader.Seek(ContainedBundle.PatchBundle.Offset, SeekOrigin.Begin);
 
-                var s_MultiReader = new RimeMultiplexedReader(s_PatchReader, s_Reader, Endianness.BigEndian, true);
-                s_Reader = s_MultiReader;
+                s_Reader = new RimeMultiplexedReader(s_PatchReader, s_Reader, Endianness.BigEndian);
             }
 
             // Seek to this entry.
@@ -114,8 +113,7 @@ namespace RimeLib.Content.Venice.Frostbite.Bundles
                 var s_PatchReader = new RimeReader(File.Open(ContainedSuperbundle.PatchPath + ".sb", FileMode.Open, FileAccess.Read, FileShare.Read), s_Endianness);
                 s_PatchReader.Seek(ContainedBundle.PatchBundle.Offset, SeekOrigin.Begin);
 
-                var s_MultiReader = new RimeMultiplexedReader(s_PatchReader, s_Reader, Endianness.BigEndian, true);
-                s_Reader = s_MultiReader;
+                s_Reader = new RimeMultiplexedReader(s_PatchReader, s_Reader, Endianness.BigEndian);;
             }
 
             // Seek to this entry.
@@ -173,13 +171,15 @@ namespace RimeLib.Content.Venice.Frostbite.Bundles
                 var s_PatchReader = new RimeReader(File.Open(ContainedSuperbundle.PatchPath + ".sb", FileMode.Open, FileAccess.Read, FileShare.Read), s_Endianness);
                 s_PatchReader.Seek(ContainedBundle.PatchBundle.Offset, SeekOrigin.Begin);
 
-                var s_MultiReader = new RimeMultiplexedReader(s_PatchReader, s_Reader, Endianness.BigEndian, true);
-                s_Reader = s_MultiReader;
+                s_Reader = new RimeMultiplexedReader(s_PatchReader, s_Reader, Endianness.BigEndian);
             }
 
             // Seek to this entry.
             s_Reader.Seek(m_SeekOffset, SeekOrigin.Current);
-            
+
+            // Wrap into a zlib reader if this is compressed.
+            if (m_Compressed)
+                s_Reader = new ZlibRimeReader(s_Reader, true);
             // TODO: Compression.
             // TODO: Use a limited reader.
 
@@ -188,7 +188,11 @@ namespace RimeLib.Content.Venice.Frostbite.Bundles
 
         public override long GetSize()
         {
-            return m_Size;
+            if (!m_Compressed)
+                return m_Size;
+
+            using var s_Reader = GetReader() as ZlibRimeReader;
+            return s_Reader!.OriginalSize!.Value;
         }
     }
 
