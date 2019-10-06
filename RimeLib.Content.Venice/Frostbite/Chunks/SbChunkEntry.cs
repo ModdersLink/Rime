@@ -26,21 +26,45 @@ namespace RimeLib.Content.Venice.Frostbite.Chunks
         {
             var s_Endianness = ContainedSuperbundle.Toc.Layout.Cas ? Endianness.LittleEndian : Endianness.BigEndian;
 
+            RimeReader s_Reader;
+
             if (!InPatch)
             {
-                var s_Reader = new RimeReader(File.Open(ContainedSuperbundle.Path + ".sb", FileMode.Open, FileAccess.Read, FileShare.Read), s_Endianness);
+                s_Reader = new RimeReader(File.Open(ContainedSuperbundle.Path + ".sb", FileMode.Open, FileAccess.Read, FileShare.Read), s_Endianness);
                 s_Reader.Seek(Offset, SeekOrigin.Begin);
-                return s_Reader;
+            }
+            else
+            {
+                s_Reader = new RimeReader(
+                    File.Open(ContainedSuperbundle.PatchPath + ".sb", FileMode.Open, FileAccess.Read, FileShare.Read), 
+                    s_Endianness
+                );
+
+                s_Reader.Seek(Offset, SeekOrigin.Begin);
             }
 
-            var s_PatchReader = new RimeReader(File.Open(ContainedSuperbundle.PatchPath + ".sb", FileMode.Open, FileAccess.Read, FileShare.Read), s_Endianness);
-            s_PatchReader.Seek(Offset, SeekOrigin.Begin);
-            return s_PatchReader;
+            // Wrap in a limited reader.
+            s_Reader = new LimitedRimeReader(s_Reader, Size);
+
+            // If we're compressed, wrap in a Zlib reader.
+            if (Compressed)
+            {
+                s_Reader = new ZlibRimeReader(s_Reader);
+
+                // Wrap this inside a limited reader as well.
+                s_Reader = new LimitedRimeReader(s_Reader, s_Reader.Length);;
+            }
+
+            return s_Reader;
         }
 
         public override long GetSize()
         {
-            return Size;
+            if (!Compressed)
+                return Size;
+
+            using var s_Reader = GetReader();
+            return s_Reader.Length;
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using RimeLib.Content.IO;
 using RimeLib.Content.Venice.Frostbite.Chunks;
@@ -42,11 +41,16 @@ namespace RimeLib.Content.Venice.Frostbite.Bundles
             // Figure out which endianness our readers should have.
             var s_Endianness = ContainedSuperbundle.Toc.Layout.Cas ? Endianness.LittleEndian : Endianness.BigEndian;
 
-            var s_Reader = new RimeReader(File.Open(ContainedSuperbundle.Path + ".sb", FileMode.Open, FileAccess.Read, FileShare.Read), s_Endianness);
+            var s_SbPath = ContainedSuperbundle.Path + ".sb";
+
+            if (ContainedBundle.InUpdate)
+                s_SbPath = ContainedSuperbundle.PatchPath + ".sb";
+
+            var s_Reader = new RimeReader(File.Open(s_SbPath, FileMode.Open, FileAccess.Read, FileShare.Read), s_Endianness);
             s_Reader.Seek(ContainedBundle.ContainedBundle.Offset, SeekOrigin.Begin);
 
             // If this is patched we'll need to make a multiplexed reader.
-            if (ContainedBundle.PatchBundle != null)
+            if (ContainedBundle.PatchBundle != null && !ContainedBundle.InUpdate)
             {
                 var s_PatchReader = new RimeReader(File.Open(ContainedSuperbundle.PatchPath + ".sb", FileMode.Open, FileAccess.Read, FileShare.Read), s_Endianness);
                 s_PatchReader.Seek(ContainedBundle.PatchBundle.Offset, SeekOrigin.Begin);
@@ -63,8 +67,7 @@ namespace RimeLib.Content.Venice.Frostbite.Bundles
             // Wrap into a zlib reader if this is compressed.
             if (m_OriginalSize != m_Size)
             {
-                Debug.WriteLine($"Creating zlib reader for data with size {m_Size}.");
-                s_Reader = new ZlibRimeReader(s_Reader, true);
+                s_Reader = new ZlibRimeReader(s_Reader);
 
                 // Wrap this inside a limited reader as well.
                 s_Reader = new LimitedRimeReader(s_Reader, m_OriginalSize);
@@ -114,12 +117,17 @@ namespace RimeLib.Content.Venice.Frostbite.Bundles
         {
             // Figure out which endianness our readers should have.
             var s_Endianness = ContainedSuperbundle.Toc.Layout.Cas ? Endianness.LittleEndian : Endianness.BigEndian;
+            
+            var s_SbPath = ContainedSuperbundle.Path + ".sb";
 
-            var s_Reader = new RimeReader(File.Open(ContainedSuperbundle.Path + ".sb", FileMode.Open, FileAccess.Read, FileShare.Read), s_Endianness);
+            if (ContainedBundle.InUpdate)
+                s_SbPath = ContainedSuperbundle.PatchPath + ".sb";
+
+            var s_Reader = new RimeReader(File.Open(s_SbPath, FileMode.Open, FileAccess.Read, FileShare.Read), s_Endianness);
             s_Reader.Seek(ContainedBundle.ContainedBundle.Offset, SeekOrigin.Begin);
 
             // If this is patched we'll need to make a multiplexed reader.
-            if (ContainedBundle.PatchBundle != null)
+            if (ContainedBundle.PatchBundle != null && !ContainedBundle.InUpdate)
             {
                 var s_PatchReader = new RimeReader(File.Open(ContainedSuperbundle.PatchPath + ".sb", FileMode.Open, FileAccess.Read, FileShare.Read), s_Endianness);
                 s_PatchReader.Seek(ContainedBundle.PatchBundle.Offset, SeekOrigin.Begin);
@@ -136,8 +144,7 @@ namespace RimeLib.Content.Venice.Frostbite.Bundles
             // Wrap into a zlib reader if this is compressed.
             if (m_OriginalSize != m_Size)
             {
-                Debug.WriteLine($"Creating zlib reader for data with size {m_Size}.");
-                s_Reader = new ZlibRimeReader(s_Reader, true);
+                s_Reader = new ZlibRimeReader(s_Reader);
 
                 // Wrap this inside a limited reader as well.
                 s_Reader = new LimitedRimeReader(s_Reader, m_OriginalSize);
@@ -161,21 +168,18 @@ namespace RimeLib.Content.Venice.Frostbite.Bundles
         public ChunkMeta Meta { get; set; }
 
         private long m_SeekOffset;
-
         private long m_Size;
-        private bool m_Compressed;
 
         internal BundleChunkEntry(BundleManifest.ChunkEntry p_Entry, long p_SeekOffset, SuperbundleEntry p_Superbundle, BundleManifest p_Bundle, ChunkMeta p_Meta) :
             base(p_Entry.Id)
         {
             ContainedSuperbundle = p_Superbundle;
             ContainedBundle = p_Bundle;
-
+            
             Meta = p_Meta;
 
             m_SeekOffset = p_SeekOffset;
             m_Size = p_Entry.RangeEnd - p_Entry.RangeStart;
-            m_Compressed = Id.HasCompressionFlag();
         }
 
         public override RimeReader GetReader()
@@ -183,11 +187,16 @@ namespace RimeLib.Content.Venice.Frostbite.Bundles
             // Figure out which endianness our readers should have.
             var s_Endianness = ContainedSuperbundle.Toc.Layout.Cas ? Endianness.LittleEndian : Endianness.BigEndian;
 
-            var s_Reader = new RimeReader(File.Open(ContainedSuperbundle.Path + ".sb", FileMode.Open, FileAccess.Read, FileShare.Read), s_Endianness);
+            var s_SbPath = ContainedSuperbundle.Path + ".sb";
+
+            if (ContainedBundle.InUpdate)
+                s_SbPath = ContainedSuperbundle.PatchPath + ".sb";
+
+            var s_Reader = new RimeReader(File.Open(s_SbPath, FileMode.Open, FileAccess.Read, FileShare.Read), s_Endianness);
             s_Reader.Seek(ContainedBundle.ContainedBundle.Offset, SeekOrigin.Begin);
 
             // If this is patched we'll need to make a multiplexed reader.
-            if (ContainedBundle.PatchBundle != null)
+            if (ContainedBundle.PatchBundle != null && !ContainedBundle.InUpdate)
             {
                 var s_PatchReader = new RimeReader(File.Open(ContainedSuperbundle.PatchPath + ".sb", FileMode.Open, FileAccess.Read, FileShare.Read), s_Endianness);
                 s_PatchReader.Seek(ContainedBundle.PatchBundle.Offset, SeekOrigin.Begin);
@@ -202,13 +211,12 @@ namespace RimeLib.Content.Venice.Frostbite.Bundles
             s_Reader = new LimitedRimeReader(s_Reader, m_Size);
 
             // Wrap into a zlib reader if this is compressed.
-            if (m_Compressed)
+            if (Compressed)
             {
-                Debug.WriteLine($"Creating zlib reader for data with size {m_Size}.");
-                s_Reader = new ZlibRimeReader(s_Reader, true);
+                s_Reader = new ZlibRimeReader(s_Reader);
 
                 // Wrap this inside a limited reader as well.
-                s_Reader = new LimitedRimeReader(s_Reader, ((ZlibRimeReader) s_Reader).OriginalSize!.Value);
+                s_Reader = new LimitedRimeReader(s_Reader, s_Reader.Length);
             }
 
             return s_Reader;
@@ -216,7 +224,7 @@ namespace RimeLib.Content.Venice.Frostbite.Bundles
 
         public override long GetSize()
         {
-            if (!m_Compressed)
+            if (!Compressed)
                 return m_Size;
 
             using var s_Reader = GetReader();
@@ -305,12 +313,14 @@ namespace RimeLib.Content.Venice.Frostbite.Bundles
         public SuperbundleEntry ContainedSuperbundle { get; set; }
         public BundleInfo ContainedBundle { get; set; }
         public BundleInfo? PatchBundle { get; set; }
+        public bool InUpdate { get; set; }
 
-        public BundleManifest(RimeReader p_Reader, SuperbundleEntry p_Superbundle, BundleInfo p_Bundle, BundleInfo? p_PatchBundle = null)
+        public BundleManifest(RimeReader p_Reader, SuperbundleEntry p_Superbundle, BundleInfo p_Bundle, bool p_InUpdate, BundleInfo? p_PatchBundle = null)
         {
             ContainedSuperbundle = p_Superbundle;
             ContainedBundle = p_Bundle;
             PatchBundle = p_PatchBundle;
+            InUpdate = p_InUpdate;
 
             m_StartPosition = p_Reader.Position;
 

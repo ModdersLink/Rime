@@ -418,6 +418,7 @@ namespace RimeLib.Content.Venice.Mounting
 
         protected void ParseCasBundle(RimeReader p_Reader, BundleInfo p_BundleInfo, SuperbundleEntry p_Superbundle, bool p_AutoMount)
         {
+            // TODO: Use a limited reader.
             p_Reader.Seek(p_BundleInfo.Offset, SeekOrigin.Begin);
 
             var (s_Bundle, _) = DbObjectConverter.FromDbObjectReader<CasBundle>(p_Reader, p_BundleInfo.Size);
@@ -435,11 +436,11 @@ namespace RimeLib.Content.Venice.Mounting
                 throw new Exception($"Failed to mount bundle '{s_Bundle.Path}'.");
         }
         
-        protected void ParseBundle(RimeReader p_Reader, BundleInfo p_BundleInfo, SuperbundleEntry p_Superbundle, bool p_AutoMount)
+        protected void ParseBundle(RimeReader p_Reader, BundleInfo p_BundleInfo, SuperbundleEntry p_Superbundle, bool p_InUpdate, bool p_AutoMount)
         {
             // TODO: Use a limited reader.
             p_Reader.Seek(p_BundleInfo.Offset, SeekOrigin.Begin);
-            var s_Manifest = new BundleManifest(p_Reader, p_Superbundle, p_BundleInfo);
+            var s_Manifest = new BundleManifest(p_Reader, p_Superbundle, p_BundleInfo, p_InUpdate);
 
             m_Bundles.AddOrUpdate(p_BundleInfo.Id.ToLowerInvariant(), s_Manifest, (p_Key, p_Prev) =>
             {
@@ -462,7 +463,7 @@ namespace RimeLib.Content.Venice.Mounting
             // Use a multiplexed reader to parse this manifest.
             using var s_MultiplexedReader = new RimeMultiplexedReader(p_PatchReader, p_BaseReader, Endianness.BigEndian, false);
 
-            var s_Manifest = new BundleManifest(s_MultiplexedReader, p_Superbundle, p_BaseBundle, p_PatchBundle);
+            var s_Manifest = new BundleManifest(s_MultiplexedReader, p_Superbundle, p_BaseBundle, false, p_PatchBundle);
 
             m_Bundles.AddOrUpdate(p_BaseBundle.Id.ToLowerInvariant(), s_Manifest, (p_Key, p_Prev) =>
             {
@@ -507,7 +508,7 @@ namespace RimeLib.Content.Venice.Mounting
                         continue;
                     }
 
-                    ParseBundle(s_Reader, s_Bundle, p_Superbundle, p_AutoMount);
+                    ParseBundle(s_Reader, s_Bundle, p_Superbundle, p_AutoMount, false);
                     continue;
                 }
 
@@ -526,7 +527,7 @@ namespace RimeLib.Content.Venice.Mounting
                     continue;
                 }
 
-                ParseBundle(s_PatchReader!, s_PatchBundle, p_Superbundle, p_AutoMount);
+                ParseBundle(s_PatchReader!, s_PatchBundle, p_Superbundle, p_AutoMount, true);
             }
             
             // Now that we're done with the base bundles it's time to go over the patched ones.
@@ -551,7 +552,7 @@ namespace RimeLib.Content.Venice.Mounting
                     }
 
                     // If all is good, parse as we normally would.
-                    ParseBundle(s_PatchReader!, s_Bundle, p_Superbundle, p_AutoMount);
+                    ParseBundle(s_PatchReader!, s_Bundle, p_Superbundle, p_AutoMount, true);
                 }
             }
 

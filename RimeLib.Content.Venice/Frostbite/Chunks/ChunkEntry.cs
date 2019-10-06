@@ -23,10 +23,12 @@ namespace RimeLib.Content.Venice.Frostbite.Chunks
         }
 
         public GUID Id { get; set; }
+        public bool Compressed { get; }
 
         protected ChunkEntry(GUID p_Id)
         {
             Id = p_Id;
+            Compressed = Id.HasCompressionFlag();
         }
 
         public abstract RimeReader GetReader();

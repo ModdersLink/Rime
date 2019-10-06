@@ -117,7 +117,8 @@ namespace RimeLib.Content.Venice.Frostbite.Cas
             var s_Reader = new RimeReader(File.Open(s_Path, FileMode.Open, FileAccess.Read, FileShare.Read));
             s_Reader.Seek(s_Entry.FileOffset, SeekOrigin.Begin);
 
-            // TODO: Limited reader.
+            // Wrap in a limited reader.
+            s_Reader = new LimitedRimeReader(s_Reader, s_Entry.FileSize);
 
             return s_Reader;
         }
@@ -131,6 +132,9 @@ namespace RimeLib.Content.Venice.Frostbite.Cas
         {
             get
             {
+                if (AuthoritativeCatalog != null && AuthoritativeCatalog.ContainsEntry(p_Hash))
+                    return AuthoritativeCatalog[p_Hash];
+
                 if (!Entries.TryGetValue(p_Hash, out var s_Entry))
                     throw new Exception("Tried retrieving a catalog entry with an nonexistent hash.");
 

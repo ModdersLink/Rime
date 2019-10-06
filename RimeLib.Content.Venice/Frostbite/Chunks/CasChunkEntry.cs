@@ -19,12 +19,27 @@ namespace RimeLib.Content.Venice.Frostbite.Chunks
 
         public override RimeReader GetReader()
         {
-            return ContainedCatalog.ReadEntry(Hash);
+            var s_Reader = ContainedCatalog.ReadEntry(Hash);
+
+            // If we're compressed, wrap in a Zlib reader.
+            if (Compressed)
+            {
+                s_Reader = new ZlibRimeReader(s_Reader);
+
+                // Wrap this inside a limited reader as well.
+                s_Reader = new LimitedRimeReader(s_Reader, s_Reader.Length);;
+            }
+
+            return s_Reader;
         }
 
         public override long GetSize()
         {
-            return ContainedCatalog[Hash].FileSize;
+            if (!Compressed)
+                return ContainedCatalog[Hash].FileSize;
+
+            using var s_Reader = GetReader();
+            return s_Reader.Length;
         }
     }
 }
