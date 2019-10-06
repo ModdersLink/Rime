@@ -39,7 +39,7 @@ namespace RimeLib.IO
             m_CurrentOffset = s_TargetOffset;
 
             // Seek internally.
-            base.Seek(m_StartOffset + m_CurrentOffset, SeekOrigin.Begin);
+            BaseStream.Seek(m_StartOffset + m_CurrentOffset, SeekOrigin.Begin);
 
             return m_CurrentOffset;
         }
@@ -54,11 +54,11 @@ namespace RimeLib.IO
             if (m_CurrentOffset + p_Count > m_Limit)
                 s_ToRead = (int) m_Limit - (int) m_CurrentOffset;
 
-            if (s_ToRead == 0)
+            if (s_ToRead <= 0)
                 return 0;
 
             // Read the data.
-            var s_Read = base.ReadInternal(p_Data, p_Index, p_Count);
+            var s_Read = BaseStream.Read(p_Data, p_Index, s_ToRead);
             m_CurrentOffset += s_Read;
             return s_Read;
         }
