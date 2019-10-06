@@ -1,8 +1,8 @@
-﻿using RimeLib.Content.Venice.Frostbite.Cas;
+﻿using RimeLib.Content.Frostbite2_0.Frostbite.Cas;
 using RimeLib.Frostbite.Core;
 using RimeLib.IO;
 
-namespace RimeLib.Content.Venice.Frostbite.Chunks
+namespace RimeLib.Content.Frostbite2_0.Frostbite.Chunks
 {
     class CasChunkEntry : ChunkEntry
     {

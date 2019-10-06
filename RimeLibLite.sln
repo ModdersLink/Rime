@@ -25,7 +25,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Utils", "Utils", "{42E38905
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContentExtractor", "Utils\ContentExtractor\ContentExtractor.csproj", "{5686AEEE-E8E7-4AC8-8B86-80485F90D69A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RimeLib.Content.Venice", "RimeLib.Content.Venice\RimeLib.Content.Venice.csproj", "{C915B4F0-D809-4C29-B115-D519EA1F60BC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RimeLib.Content.Frostbite2_0", "RimeLib.Content.Frostbite2_0\RimeLib.Content.Frostbite2_0.csproj", "{C915B4F0-D809-4C29-B115-D519EA1F60BC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -8,17 +8,17 @@ using System.Threading.Tasks;
 using RimeLib.Content.Frostbite;
 using RimeLib.Content.IO;
 using RimeLib.Content.Mounting;
-using RimeLib.Content.Venice.Frostbite.Bundles;
-using RimeLib.Content.Venice.Frostbite.Cas;
-using RimeLib.Content.Venice.Frostbite.Chunks;
-using RimeLib.Content.Venice.Frostbite.Sb;
+using RimeLib.Content.Frostbite2_0.Frostbite.Bundles;
+using RimeLib.Content.Frostbite2_0.Frostbite.Cas;
+using RimeLib.Content.Frostbite2_0.Frostbite.Chunks;
+using RimeLib.Content.Frostbite2_0.Frostbite.Sb;
 using RimeLib.Frostbite;
 using RimeLib.Frostbite.Core;
 using RimeLib.Frostbite.Db;
 using RimeLib.IO;
 using RimeLib.IO.Conversion;
 
-namespace RimeLib.Content.Venice.Mounting
+namespace RimeLib.Content.Frostbite2_0.Mounting
 {
     public class EngineMounter : IEngineMounter
     {

@@ -1,7 +1,7 @@
 ﻿using RimeLib.Content.Mounting;
 using RimeLib.Frostbite.Db;
 
-namespace RimeLib.Content.Venice.Mounting
+namespace RimeLib.Content.Frostbite2_0.Mounting
 {
     internal class ChunkVariant : ObjectVariant, IChunkVariant
     {

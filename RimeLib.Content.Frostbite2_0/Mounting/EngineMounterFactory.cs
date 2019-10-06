@@ -1,7 +1,7 @@
 ﻿using RimeLib.Content.Mounting;
 using RimeLib.Frostbite;
 
-namespace RimeLib.Content.Venice.Mounting
+namespace RimeLib.Content.Frostbite2_0.Mounting
 {
     public class EngineMounterFactory : IEngineMounterFactory
     {

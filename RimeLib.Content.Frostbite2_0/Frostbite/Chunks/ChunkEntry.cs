@@ -1,9 +1,9 @@
-﻿using RimeLib.Content.Venice.Mounting;
+﻿using RimeLib.Content.Frostbite2_0.Mounting;
 using RimeLib.Frostbite.Core;
 using RimeLib.Frostbite.Db;
 using RimeLib.IO;
 
-namespace RimeLib.Content.Venice.Frostbite.Chunks
+namespace RimeLib.Content.Frostbite2_0.Frostbite.Chunks
 {
     public abstract class ChunkEntry : IReadableObjectWithHash
     {

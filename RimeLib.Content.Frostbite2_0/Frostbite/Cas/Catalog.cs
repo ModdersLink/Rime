@@ -4,7 +4,7 @@ using System.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.IO;
 
-namespace RimeLib.Content.Venice.Frostbite.Cas
+namespace RimeLib.Content.Frostbite2_0.Frostbite.Cas
 {
     /// <summary>
     /// Structure for content addressable storage catalogs
