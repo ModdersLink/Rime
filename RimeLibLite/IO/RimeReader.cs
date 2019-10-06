@@ -11,8 +11,8 @@ namespace RimeLib.IO
 		
         protected long m_ObfuscatedDataOffset;
 
-        public RimeReader(Stream p_Stream, Endianness p_Endianness = Endianness.LittleEndian) :
-            base(p_Endianness == Endianness.BigEndian ? (EndianBitConverter) EndianBitConverter.Big : EndianBitConverter.Little, p_Stream)
+        public RimeReader(Stream p_Stream, Endianness p_Endianness = Endianness.LittleEndian, bool p_ShouldDispose = true) :
+            base(p_Endianness == Endianness.BigEndian ? (EndianBitConverter) EndianBitConverter.Big : EndianBitConverter.Little, p_Stream, p_ShouldDispose)
         {
         }
         
@@ -47,7 +47,7 @@ namespace RimeLib.IO
             char s_TempChar;
             var s_ReturnString = "";
 
-            while ((s_TempChar = (char) ReadByte()) != '\0')
+            while ((s_TempChar = (char) ReadUByte()) != '\0')
                 if (s_TempChar != '\0')
                     s_ReturnString += s_TempChar;
 
@@ -74,7 +74,7 @@ namespace RimeLib.IO
 
         public char ReadChar()
         {
-            return (char) ReadByte();
+            return (char) ReadUByte();
         }
 
         public int Decode77Number()
@@ -83,7 +83,7 @@ namespace RimeLib.IO
 
             while (true)
             {
-                var s_Byte = ReadByte();
+                var s_Byte = ReadUByte();
                 s_Total += s_Byte;
                 if (s_Byte != 0xFF)
                     return s_Total;
@@ -93,7 +93,7 @@ namespace RimeLib.IO
         public uint Decode7Bit(out int p_BytesRead)
         {
             p_BytesRead = 1;
-            var s_Slice = (uint) ReadByte();
+            var s_Slice = (uint) ReadUByte();
 
             var s_Result = s_Slice & 0x7F;
 
@@ -101,14 +101,14 @@ namespace RimeLib.IO
                 return s_Result;
 
             ++p_BytesRead;
-            s_Slice = ReadByte();
+            s_Slice = ReadUByte();
             s_Result |= (s_Slice & 0x7F) << 7;
 
             if ((s_Slice & 0x80) == 0) 
                 return s_Result;
 
             ++p_BytesRead;
-            s_Slice = ReadByte();
+            s_Slice = ReadUByte();
             s_Result |= (s_Slice & 0x7F) << 14;
 
             var s_Shift = 21;
@@ -116,7 +116,7 @@ namespace RimeLib.IO
             while ((s_Slice & 0x80) != 0)
             {
                 ++p_BytesRead;
-                s_Slice = ReadByte();
+                s_Slice = ReadUByte();
                 s_Result |= (s_Slice & 0x7F) << s_Shift;
                 s_Shift += 7;
             }
@@ -127,7 +127,7 @@ namespace RimeLib.IO
         public ulong Decode7Bit64(out int p_BytesRead)
         {
             p_BytesRead = 1;
-            var s_Slice = (uint) ReadByte();
+            var s_Slice = (uint) ReadUByte();
 
             ulong s_Result = s_Slice & 0x7F;
 
@@ -135,14 +135,14 @@ namespace RimeLib.IO
                 return s_Result;
 
             ++p_BytesRead;
-            s_Slice = ReadByte();
+            s_Slice = ReadUByte();
             s_Result |= (ulong) (s_Slice & 0x7F) << 7;
 
             if ((s_Slice & 0x80) == 0) 
                 return s_Result;
 
             ++p_BytesRead;
-            s_Slice = ReadByte();
+            s_Slice = ReadUByte();
             s_Result |= (ulong) (s_Slice & 0x7F) << 14;
 
             var s_Shift = 21;
@@ -150,7 +150,7 @@ namespace RimeLib.IO
             while ((s_Slice & 0x80) != 0)
             {
                 ++p_BytesRead;
-                s_Slice = ReadByte();
+                s_Slice = ReadUByte();
                 s_Result |= (ulong) (s_Slice & 0x7F) << s_Shift;
                 s_Shift += 7;
             }
@@ -188,7 +188,7 @@ namespace RimeLib.IO
         {
             int s_Gap = 0;
 
-            while (ReadByte() != 0)
+            while (ReadUByte() != 0)
                 ++s_Gap;
 
             return s_Gap;

@@ -69,10 +69,10 @@ namespace RimeLib.Frostbite.Core
                         return (T) Convert.ChangeType(p_Reader.ReadNullTerminatedString(), typeof(T)); // This could be problematic later, time will tell
 
                     case TypeCode.Boolean:
-                        return (T) Convert.ChangeType(p_Reader.ReadByte(), typeof(T));
+                        return (T) Convert.ChangeType(p_Reader.ReadUByte(), typeof(T));
 
                     case TypeCode.Byte:
-                        return (T) Convert.ChangeType(p_Reader.ReadByte(), typeof(T));
+                        return (T) Convert.ChangeType(p_Reader.ReadUByte(), typeof(T));
 
                     case TypeCode.SByte:
                         return (T) Convert.ChangeType(p_Reader.ReadSByte(), typeof(T));

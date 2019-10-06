@@ -460,7 +460,7 @@ namespace RimeLib.Content.Venice.Mounting
             p_PatchReader.Seek(p_PatchBundle.Offset, SeekOrigin.Begin);
 
             // Use a multiplexed reader to parse this manifest.
-            using var s_MultiplexedReader = new RimeMultiplexedReader(p_PatchReader, p_BaseReader, Endianness.BigEndian);
+            using var s_MultiplexedReader = new RimeMultiplexedReader(p_PatchReader, p_BaseReader, Endianness.BigEndian, false);
 
             var s_Manifest = new BundleManifest(s_MultiplexedReader, p_Superbundle, p_BaseBundle, p_PatchBundle);
 

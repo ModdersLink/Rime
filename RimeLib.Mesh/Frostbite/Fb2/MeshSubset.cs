@@ -140,10 +140,10 @@ namespace RimeLib.Mesh.Frostbite.Fb2
             StartIndex = p_Reader.ReadUInt32();
             VertexOffset = p_Reader.ReadUInt32();
             VertexCount = p_Reader.ReadUInt32();
-            VertexStride = p_Reader.ReadByte();
-            PrimitiveType = (PrimitiveType)p_Reader.ReadByte();
-            BonesPerVertex = p_Reader.ReadByte();
-            BoneCount = p_Reader.ReadByte();
+            VertexStride = p_Reader.ReadUByte();
+            PrimitiveType = (PrimitiveType) p_Reader.ReadUByte();
+            BonesPerVertex = p_Reader.ReadUByte();
+            BoneCount = p_Reader.ReadUByte();
             BoneIndices = new RelocPtr<ushort>(p_Reader);
             GeometryDeclarationDesc = new GeometryDeclarationDesc(p_Reader);
 

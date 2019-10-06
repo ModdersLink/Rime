@@ -64,11 +64,11 @@ namespace RimeLib.Frostbite.Core
                         break;
 
                     case TypeCode.Boolean:
-                        s_Object = (T) Convert.ChangeType(p_Reader.ReadByte(), typeof(T));
+                        s_Object = (T) Convert.ChangeType(p_Reader.ReadUByte(), typeof(T));
                         break;
 
                     case TypeCode.Byte:
-                        s_Object = (T) Convert.ChangeType(p_Reader.ReadByte(), typeof(T));
+                        s_Object = (T) Convert.ChangeType(p_Reader.ReadUByte(), typeof(T));
                         break;
 
                     case TypeCode.SByte:

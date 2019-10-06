@@ -131,8 +131,8 @@ namespace RimeLib.Texture.Frostbite.Fb2
             Depth = p_Reader.ReadInt16();
             SliceCount = p_Reader.ReadInt16();
             Unused0 = p_Reader.ReadInt16();
-            MipmapCount = p_Reader.ReadByte();
-            MipmapBaseIndex = p_Reader.ReadByte();
+            MipmapCount = p_Reader.ReadUByte();
+            MipmapBaseIndex = p_Reader.ReadUByte();
             StreamingChunkId = new GUID(p_Reader);
 
             MipmapSizes = new uint[15];

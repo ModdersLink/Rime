@@ -75,8 +75,8 @@ namespace RimeLib.Mesh.Frostbite
 
             public void Deserialize(RimeReader p_Reader)
             {
-                Stride = p_Reader.ReadByte();
-                Classification = (VertexElementClassification)p_Reader.ReadByte();
+                Stride = p_Reader.ReadUByte();
+                Classification = (VertexElementClassification) p_Reader.ReadUByte();
             }
 
             public void Deserialize(byte[] p_Data)
@@ -146,10 +146,10 @@ namespace RimeLib.Mesh.Frostbite
 
             public void Deserialize(RimeReader p_Reader)
             {
-                Usage = (VertexElementUsage) p_Reader.ReadByte();
-                Format = (VertexElementFormat) p_Reader.ReadByte();
-                Offset = p_Reader.ReadByte();
-                StreamIndex = p_Reader.ReadByte();
+                Usage = (VertexElementUsage) p_Reader.ReadUByte();
+                Format = (VertexElementFormat) p_Reader.ReadUByte();
+                Offset = p_Reader.ReadUByte();
+                StreamIndex = p_Reader.ReadUByte();
             }
 
             public void Deserialize(byte[] p_Data)
@@ -214,8 +214,8 @@ namespace RimeLib.Mesh.Frostbite
             for (var i = 0; i < 4; ++i)
                 m_Streams.Add(new Stream(p_Reader));
 
-            m_ElementCount = p_Reader.ReadByte();
-            m_StreamCount = p_Reader.ReadByte();
+            m_ElementCount = p_Reader.ReadUByte();
+            m_StreamCount = p_Reader.ReadUByte();
             m_Padding = p_Reader.ReadBytes(2);
         }
 

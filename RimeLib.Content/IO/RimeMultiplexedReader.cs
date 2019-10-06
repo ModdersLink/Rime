@@ -17,19 +17,20 @@ namespace RimeLib.Content.IO
         private long m_Position;
         private int m_Cursor;
         private long m_Remaining;
-        private bool m_Dispose;
 
         private readonly RimeReader[] m_Buffers;
 
         private readonly List<DeltaBundleRun> m_Runs;
 
-        public RimeMultiplexedReader(RimeReader p_PatchedReader, RimeReader p_BaseReader, Endianness p_Endianness, bool p_Dispose = false)
+        private readonly bool m_InternalDispose;
+
+        public RimeMultiplexedReader(RimeReader p_PatchedReader, RimeReader p_BaseReader, Endianness p_Endianness, bool p_ShouldDispose = true)
             : base(new MemoryStream(), p_Endianness)
         {
             m_Runs = new List<DeltaBundleRun>();
             m_Position = 0;
             m_Buffers = new [] { p_PatchedReader, p_BaseReader };
-            m_Dispose = p_Dispose;
+            m_InternalDispose = p_ShouldDispose;
 
             ReadRuns();
         }
@@ -38,7 +39,7 @@ namespace RimeLib.Content.IO
         {
             base.Dispose();
 
-            if (!m_Dispose) 
+            if (!m_InternalDispose) 
                 return;
 
             foreach (var s_Reader in m_Buffers)
@@ -85,7 +86,7 @@ namespace RimeLib.Content.IO
                 m_Buffers[1].Seek((int)m_Runs[0].Offset, SeekOrigin.Begin);
         }
 
-        public override void Seek(long p_Offset, SeekOrigin p_Origin)
+        public override long Seek(long p_Offset, SeekOrigin p_Origin)
         {
             CheckDisposed();
 
@@ -99,7 +100,7 @@ namespace RimeLib.Content.IO
                 throw new Exception($"Multiplexed Reader can only seek forwards up to {int.MaxValue} bytes at a time.");
 
             if (p_Offset == 0)
-                return;
+                return m_Position;
 
             var s_ToRead = (int) p_Offset;
             var s_Remaining = (int) p_Offset;
@@ -130,6 +131,7 @@ namespace RimeLib.Content.IO
             }
 
             m_Position += p_Offset;
+            return m_Position;
         }
         
         protected override int ReadInternal(byte[] p_Data, int p_Index, int p_Count)

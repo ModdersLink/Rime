@@ -9,17 +9,21 @@ namespace RimeLib.IO
 	/// the EndianBitConverter it is constructed with. No data is buffered in the
 	/// reader; the client may seek within the stream at will.
 	/// </summary>
-	public abstract class EndianBinaryReader : IDisposable
+	public abstract class EndianBinaryReader : Stream, IDisposable
 	{
         /// <summary>
         /// Current position of the stream.
         /// </summary>
-		public virtual long Position => BaseStream.Position;
+        public override long Position
+        {
+            get => BaseStream.Position;
+            set => throw new NotSupportedException();
+        }
 
         /// <summary>
         /// Length of the underlying stream.
         /// </summary>
-		public virtual long Length => BaseStream.Length;
+		public override long Length => BaseStream.Length;
         
         /// <summary>
         /// The bit converter used to read values from the stream
@@ -35,6 +39,11 @@ namespace RimeLib.IO
         /// The endianness of the endian converter.
         /// </summary>
         public Endianness Endianness => BitConverter.Endianness;
+        
+        // Declare our capabilities.
+        public override bool CanRead => true;
+        public override bool CanSeek => true;
+        public override bool CanWrite => false;
 
         /// <summary>
 		/// Whether or not this reader has been disposed yet.
@@ -46,16 +55,24 @@ namespace RimeLib.IO
 		/// </summary>
         protected readonly byte[] m_Buffer = new byte[16];
 
-		/// <summary>
-		/// Constructs a new binary reader with the given bit converter, reading
-		/// to the given stream.
-		/// </summary>
-		/// <param name="p_BitConverter">Converter to use when reading data</param>
-		/// <param name="p_Stream">Stream to read data from</param>
-		protected EndianBinaryReader(EndianBitConverter p_BitConverter, Stream p_Stream)
+        /// <summary>
+        /// Whether to dispose the input stream when disposing the reader.
+        /// </summary>
+        protected bool m_ShouldDispose;
+
+        /// <summary>
+        /// Constructs a new binary reader with the given bit converter, reading
+        /// to the given stream.
+        /// </summary>
+        /// <param name="p_BitConverter">Converter to use when reading data</param>
+        /// <param name="p_Stream">Stream to read data from</param>
+        /// <param name="p_ShouldDispose">Whether to dispose the input stream when disposing the reader or not.</param>
+        protected EndianBinaryReader(EndianBitConverter p_BitConverter, Stream p_Stream, bool p_ShouldDispose)
 		{
 			if (!p_Stream.CanRead)
 				throw new ArgumentException("Stream isn't readable", nameof(p_Stream));
+
+            m_ShouldDispose = p_ShouldDispose;
 
             BaseStream = p_Stream;
 			BitConverter = p_BitConverter;
@@ -66,17 +83,27 @@ namespace RimeLib.IO
 	    /// </summary>
 	    /// <param name="p_Offset">Offset to seek to.</param>
 	    /// <param name="p_Origin">Origin of seek operation.</param>
-	    public virtual void Seek(long p_Offset, SeekOrigin p_Origin)
+	    public override long Seek(long p_Offset, SeekOrigin p_Origin)
 		{
 			CheckDisposed();
-			BaseStream.Seek(p_Offset, p_Origin);
+			return BaseStream.Seek(p_Offset, p_Origin);
 		}
 
 		/// <summary>
 		/// Reads a single byte from the stream.
 		/// </summary>
 		/// <returns>The byte read</returns>
-        public byte ReadByte()
+        public override int ReadByte()
+		{
+			ReadInternal(m_Buffer, 0, 1);
+			return m_Buffer[0];
+		}
+
+		/// <summary>
+		/// Reads a single byte from the stream.
+		/// </summary>
+		/// <returns>The byte read</returns>
+        public byte ReadUByte()
 		{
 			ReadInternal(m_Buffer, 0, 1);
 			return m_Buffer[0];
@@ -277,12 +304,35 @@ namespace RimeLib.IO
 		/// <summary>
 		/// Disposes of the underlying stream.
 		/// </summary>
-		public virtual void Dispose()
+		public new virtual void Dispose()
 		{
             CheckDisposed();
 
             m_Disposed = true;
-            BaseStream.Dispose();
+
+            if (m_ShouldDispose)
+                BaseStream.Dispose();
+        }
+
+        public override void Flush()
+        {
+            BaseStream.Flush();
+        }
+
+        public override int Read(byte[] p_Buffer, int p_Offset, int p_Count)
+        {
+            CheckDisposed();
+            return ReadInternal(p_Buffer, p_Offset, p_Count);
+        }
+
+        public override void SetLength(long value)
+        {
+            throw new NotSupportedException();
+        }
+
+        public override void Write(byte[] p_Buffer, int p_Offset, int p_Count)
+        {
+            throw new NotSupportedException();
         }
 
         /// <summary>
@@ -307,5 +357,5 @@ namespace RimeLib.IO
             CheckDisposed();
             return BaseStream.Read(p_Buffer, p_Offset, p_Count);
         }
-	}
+    }
 }

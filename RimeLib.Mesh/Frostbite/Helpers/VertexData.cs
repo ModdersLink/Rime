@@ -32,10 +32,10 @@ namespace RimeLib.Mesh.Frostbite.Helpers
             BlendWeights = p_Reader.ReadBytes(4);
 
             for (int i = 0; i < VertexNormals.Length; ++i)
-                VertexNormals[i] = p_Reader.ReadByte();
+                VertexNormals[i] = p_Reader.ReadUByte();
 
             for (int i = 0; i < VertexTangents.Length; ++i)
-                VertexTangents[i] = p_Reader.ReadByte();
+                VertexTangents[i] = p_Reader.ReadUByte();
 
             for (int i = 0; i < UV.Length; ++i)
                 UV[i] = RimeMath.HalfToFloat(p_Reader.ReadUInt16());

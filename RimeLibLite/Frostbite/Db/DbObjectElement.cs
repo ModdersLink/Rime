@@ -283,7 +283,7 @@ namespace RimeLib.Frostbite.Db
 
         private void ParseBool(RimeReader p_Reader)
         {
-            m_Int8Value = p_Reader.ReadByte();
+            m_Int8Value = p_Reader.ReadUByte();
         }
 
         private void ParseInteger(RimeReader p_Reader)
@@ -475,7 +475,7 @@ namespace RimeLib.Frostbite.Db
 
         public void Deserialize(RimeReader p_Reader)
         {
-            var s_Type = (DbObjectType) p_Reader.ReadByte();
+            var s_Type = (DbObjectType) p_Reader.ReadUByte();
 
             // Get Type
             Type = s_Type & DbObjectType.Mask;
