@@ -9,17 +9,17 @@ using RimeLib.Content.Mounting;
 using RimeLib.Frostbite;
 using Environment = System.Environment;
 
-namespace ContentExtractor
+namespace Rime.Utils.ContentLister
 {
     class Program
     {
         public class Options
         {
-            [Option("sb", Required = false, HelpText = "When specified, only the indicated superbundles will be mounted. By default, all available superbundles are mounted.")]
-            public IEnumerable<string> MountSuperbundles { get; set; }
+            [Option("sb", Required = false, HelpText = "The superbundles to be mounted. When not specified, all available superbundles are mounted.")]
+            public IEnumerable<string> MountSuperbundles { get; set; } = new string[0];
 
-            [Option("bundles", Required = false, HelpText = "When specified, only the indicated bundles will be mounted. By default, all available bundles are mounted.")]
-            public IEnumerable<string> MountBundles { get; set; }
+            [Option("bundles", Required = false, HelpText = "The bundles to be mounted. When not specified, all available bundles are mounted.")]
+            public IEnumerable<string> MountBundles { get; set; } = new string[0];
 
             [Option('q', "quiet", Required = false, Default = false, HelpText = "Suppress console output.")]
             public bool Quiet { get; set; } = false;
@@ -28,13 +28,13 @@ namespace ContentExtractor
             public bool Verify { get; set; } = false;*/
 
             [Value(0, MetaName = "gamePath", Required = true, HelpText = "The path of the game to be whose content you want to extract.")]
-            public string GamePath { get; set; }
+            public string GamePath { get; set; } = "";
 
             [Value(1, MetaName = "engineType", Required = true, HelpText = "The engine type of the game.")]
             public EngineType EngineType { get; set; }
 
             [Value(2, MetaName = "outPath", Required = true, HelpText = "The output directory where the extracted files will be put into.")]
-            public string OutputPath { get; set; }
+            public string OutputPath { get; set; } = "";
         }
 
         static void Main(string[] p_Args)
@@ -133,7 +133,7 @@ namespace ContentExtractor
             Directory.CreateDirectory(s_Directory);
             
             if (!p_Options.Quiet)
-                Console.WriteLine(p_FilePath + "." + p_Type);
+                Console.WriteLine("/" + p_FilePath + "." + p_Type);
 
             // Get a reader to the object.
             var s_Variant = p_Object.FirstVariant;
