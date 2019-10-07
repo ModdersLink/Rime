@@ -1,7 +1,7 @@
 ﻿using RimeLib.Content.Frostbite;
 using RimeLib.Content.Mounting;
 
-namespace RimeLib.Content.Venice.Mounting
+namespace RimeLib.Content.Frostbite2_0.Mounting
 {
     internal class ResourceVariant : ObjectVariant, IResourceVariant
     {

@@ -2,7 +2,7 @@
 using RimeLib.Frostbite.Core;
 using RimeLib.Frostbite.Db;
 
-namespace RimeLib.Content.Venice.Frostbite.Sb
+namespace RimeLib.Content.Frostbite2_0.Frostbite.Sb
 {
     /// <summary>
     /// Bundle information object.

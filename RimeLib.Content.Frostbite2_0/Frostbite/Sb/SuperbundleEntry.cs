@@ -1,6 +1,6 @@
 ﻿using RimeLib.Content.Frostbite;
 
-namespace RimeLib.Content.Venice.Frostbite.Sb
+namespace RimeLib.Content.Frostbite2_0.Frostbite.Sb
 {
     public class SuperbundleEntry
     {

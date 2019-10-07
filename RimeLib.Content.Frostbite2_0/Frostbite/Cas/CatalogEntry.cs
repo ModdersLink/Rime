@@ -3,7 +3,7 @@ using RimeLib.Frostbite;
 using RimeLib.Frostbite.Core;
 using RimeLib.IO;
 
-namespace RimeLib.Content.Venice.Frostbite.Cas
+namespace RimeLib.Content.Frostbite2_0.Frostbite.Cas
 {
     public class CatalogEntry : IFbSerializable
     {

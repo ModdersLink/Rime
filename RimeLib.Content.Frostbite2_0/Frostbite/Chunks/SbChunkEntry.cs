@@ -1,10 +1,10 @@
 ﻿using System.IO;
-using RimeLib.Content.Venice.Frostbite.Sb;
+using RimeLib.Content.Frostbite2_0.Frostbite.Sb;
 using RimeLib.Frostbite.Core;
 using RimeLib.IO;
 using RimeLib.IO.Conversion;
 
-namespace RimeLib.Content.Venice.Frostbite.Chunks
+namespace RimeLib.Content.Frostbite2_0.Frostbite.Chunks
 {
     class SbChunkEntry : ChunkEntry
     {
