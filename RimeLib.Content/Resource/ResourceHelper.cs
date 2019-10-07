@@ -1,4 +1,5 @@
 ﻿using RimeLib.Content.Mounting;
+using RimeLib.IO;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -18,8 +19,9 @@ namespace RimeLib.Content.Resource
                 p_OutResource = null;
                 return false;
             }
-            
-            return s_Loader.Load( p_Mounter, p_ResourceRefrence.GetReader( ), out p_OutResource );
+
+            using ( var s_Reader = new RimeReader( p_ResourceRefrence.GetReader( ) ) )
+                return s_Loader.Load( p_Mounter, s_Reader, p_ResourceRefrence.GetSize( ), out p_OutResource );
         }
     }
 }

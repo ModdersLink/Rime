@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -6,9 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\RimeLib.Content.Venice\RimeLib.Content.Venice.csproj" />
+    <PackageReference Include="DirectXTexNet" Version="1.0.0-rc4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\RimeLib.Content.Frostbite2_0\RimeLib.Content.Frostbite2_0.csproj" />
     <ProjectReference Include="..\..\RimeLib.Content\RimeLib.Content.csproj" />
-    <ProjectReference Include="..\..\RimeLib.Texture.Venice\RimeLib.Texture.Venice.csproj" />
+    <ProjectReference Include="..\..\RimeLib.Texture.Frostbite2_0\RimeLib.Texture.Frostbite2_0.csproj" />
   </ItemGroup>
 
 </Project>

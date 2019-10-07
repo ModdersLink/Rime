@@ -27,11 +27,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContentExtractor", "Utils\C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RimeLib.Content.Frostbite2_0", "RimeLib.Content.Frostbite2_0\RimeLib.Content.Frostbite2_0.csproj", "{C915B4F0-D809-4C29-B115-D519EA1F60BC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContentLister", "Utils\ContentLister\ContentLister.csproj", "{0FA1472E-B14C-4675-B770-F386F952E746}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContentLister", "Utils\ContentLister\ContentLister.csproj", "{0FA1472E-B14C-4675-B770-F386F952E746}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextureExtractor", "Utils\TextureExtractor\TextureExtractor.csproj", "{E986DA08-C00F-4C67-9F7A-CBAC0812C6D0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RimeLib.Texture.Venice", "RimeLib.Texture.Venice\RimeLib.Texture.Venice.csproj", "{2BB173C1-A0F4-4AC5-908D-1761418AF24F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RimeLib.Texture.Frostbite2_0", "RimeLib.Texture.Frostbite2_0\RimeLib.Texture.Frostbite2_0.csproj", "{4C2C1C61-6FD4-47A4-8C2D-D934FF3122F3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextureExtractor", "Utils\TextureExtractor\TextureExtractor.csproj", "{E986DA08-C00F-4C67-9F7A-CBAC0812C6D0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -83,26 +83,32 @@ Global
 		{C915B4F0-D809-4C29-B115-D519EA1F60BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C915B4F0-D809-4C29-B115-D519EA1F60BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C915B4F0-D809-4C29-B115-D519EA1F60BC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0FA1472E-B14C-4675-B770-F386F952E746}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0FA1472E-B14C-4675-B770-F386F952E746}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0FA1472E-B14C-4675-B770-F386F952E746}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0FA1472E-B14C-4675-B770-F386F952E746}.Release|Any CPU.Build.0 = Release|Any CPU
+<<<<<<< HEAD
+		{2BB173C1-A0F4-4AC5-908D-1761418AF24F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2BB173C1-A0F4-4AC5-908D-1761418AF24F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2BB173C1-A0F4-4AC5-908D-1761418AF24F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2BB173C1-A0F4-4AC5-908D-1761418AF24F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E986DA08-C00F-4C67-9F7A-CBAC0812C6D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E986DA08-C00F-4C67-9F7A-CBAC0812C6D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E986DA08-C00F-4C67-9F7A-CBAC0812C6D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E986DA08-C00F-4C67-9F7A-CBAC0812C6D0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4C2C1C61-6FD4-47A4-8C2D-D934FF3122F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4C2C1C61-6FD4-47A4-8C2D-D934FF3122F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4C2C1C61-6FD4-47A4-8C2D-D934FF3122F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4C2C1C61-6FD4-47A4-8C2D-D934FF3122F3}.Release|Any CPU.Build.0 = Release|Any CPU
+=======
+		{0FA1472E-B14C-4675-B770-F386F952E746}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0FA1472E-B14C-4675-B770-F386F952E746}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0FA1472E-B14C-4675-B770-F386F952E746}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0FA1472E-B14C-4675-B770-F386F952E746}.Release|Any CPU.Build.0 = Release|Any CPU
+>>>>>>> 7f21fabada0ba42a75a8db21e2dcd11c3593e9cf
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{5686AEEE-E8E7-4AC8-8B86-80485F90D69A} = {42E38905-976C-4506-98AE-DC35CA1A9925}
-		{0FA1472E-B14C-4675-B770-F386F952E746} = {42E38905-976C-4506-98AE-DC35CA1A9925}
+<<<<<<< HEAD
 		{E986DA08-C00F-4C67-9F7A-CBAC0812C6D0} = {42E38905-976C-4506-98AE-DC35CA1A9925}
+=======
+		{0FA1472E-B14C-4675-B770-F386F952E746} = {42E38905-976C-4506-98AE-DC35CA1A9925}
+>>>>>>> 7f21fabada0ba42a75a8db21e2dcd11c3593e9cf
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9D2A4DE6-648D-4971-AC81-A89F21154CD0}

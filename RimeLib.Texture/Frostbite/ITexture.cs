@@ -13,10 +13,23 @@ namespace RimeLib.Texture.Frostbite
 
         TextureFormat GetTextureFormat( );
 
-        RimeReader GetRawTextureData( );
+        RimeReader? GetRawTextureData( );
+
+        //Return -1 if invalid or not avalible
+        int GetRawTextureSize( );
 
 
+        //Return -1 if invalid or not avalible
 
-        //Maybe a list of mipmap stuff
+        int GetFlags( );
+
+        int GetWidth( );
+
+        int GetHeight( );
+
+        
+        int GetDepth( );
+
+        int GetMipmapCount( );
     }
 }
