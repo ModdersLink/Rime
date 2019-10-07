@@ -7,6 +7,10 @@ namespace RimeLib.Content.Frostbite
     /// </summary>
     public enum ResourceType : uint
     {
+        None = 0xFFFFFFFF,
+
+
+
         // Venice Resource Types
         AnimatedPointCloud = 0xC6DBEE07,
         AnimTrackData = 0xD070EED1,

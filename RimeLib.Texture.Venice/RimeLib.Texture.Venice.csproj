@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RimeLib.Content\RimeLib.Content.csproj" />
+    <ProjectReference Include="..\RimeLib.Texture\RimeLib.Texture.csproj" />
+    <ProjectReference Include="..\RimeLibLite\RimeLibLite.csproj" />
+  </ItemGroup>
+
+</Project>
