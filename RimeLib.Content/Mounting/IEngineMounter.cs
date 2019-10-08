@@ -7,22 +7,26 @@ using RimeLib.Frostbite.Db;
 
 namespace RimeLib.Content.Mounting
 {
+    public interface IResourceObject : IReadableObject
+    {
+        ResourceType GetResourceType();
+        bool TryGetMeta(out byte[]? p_Meta);
+    }
+
+    public interface IChunkObject : IReadableObject
+    {
+        bool TryGetMeta(out DbObject? p_Meta);
+    }
+
     public interface IObjectVariant : IReadableObject, IObjectWithHash
     {
         string GetContainedSuperbundle();
         string? GetContainedBundle();
     }
 
-    public interface IResourceVariant : IObjectVariant
-    {
-        ResourceType GetResourceType();
-        bool TryGetMeta(out byte[]? p_Meta);
-    }
+    public interface IResourceVariant : IResourceObject, IObjectVariant {}
 
-    public interface IChunkVariant : IObjectVariant
-    {
-        bool TryGetMeta(out DbObject? p_Meta);
-    }
+    public interface IChunkVariant : IChunkObject, IObjectVariant {}
 
     /// <summary>
     /// Represents a mounted game object (eg. a resource or chunk) and holds
