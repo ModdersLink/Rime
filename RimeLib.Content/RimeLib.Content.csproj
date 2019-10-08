@@ -22,9 +22,4 @@
     <ProjectReference Include="..\RimeLibLite\RimeLibLite.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Frostbite\Bundles\" />
-    <Folder Include="Frostbite\Storage\" />
-  </ItemGroup>
-
 </Project>
