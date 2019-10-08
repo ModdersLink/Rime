@@ -6,32 +6,32 @@
     public enum TextureFormat : uint
     {
         /// <summary>
-        /// DXT1
+        /// DXT1 = BC1
         /// </summary>
         TextureFormat_Dxt1 = 0,
 
         /// <summary>
-        /// DXT1A
+        /// DXT1A 
         /// </summary>
         TextureFormat_Dxt1A = 1,
 
         /// <summary>
-        /// DXT3
+        /// DXT3 = BC2
         /// </summary>
         TextureFormat_Dxt3 = 2,
 
         /// <summary>
-        /// DXT5
+        /// DXT5 = BC3
         /// </summary>
         TextureFormat_Dxt5 = 3,
 
         /// <summary>
-        /// DXT5A
+        /// DXT5A = BC4
         /// </summary>
         TextureFormat_Dxt5A = 4,
 
         /// <summary>
-        /// DXN
+        /// DXN = BC5
         /// </summary>
         TextureFormat_Dxn = 5,
 
@@ -111,7 +111,7 @@
         TextureFormat_NormalDxt1 = 20,
 
         /// <summary>
-        /// Normal DXT5
+        /// Normal DXT5 | BC3
         /// </summary>
         TextureFormat_NormalDxt5 = 21,
 
@@ -233,4 +233,8 @@
         /// </summary>
         TextureFormat_Unknown = 43
     }
+
+
+
+    
 }

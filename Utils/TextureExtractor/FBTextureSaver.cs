@@ -131,6 +131,14 @@ namespace TextureExtractor
                 else
                     return DXTex.DXGI_FORMAT.BC4_UNORM;
 
+            case TextureFormat.TextureFormat_Bc7:
+                if ( p_Typeless )
+                    return DXTex.DXGI_FORMAT.BC7_TYPELESS;
+                else if ( p_Srgb )
+                    return DXTex.DXGI_FORMAT.BC7_UNORM_SRGB;
+                else
+                    return DXTex.DXGI_FORMAT.BC7_UNORM;
+
             case TextureFormat.TextureFormat_Argb8888:
                 if ( p_Typeless )
                     return DXTex.DXGI_FORMAT.R8G8B8A8_TYPELESS;
