@@ -3,13 +3,13 @@ using RimeLib.Frostbite;
 using RimeLib.Frostbite.Core;
 using RimeLib.IO;
 
-namespace RimeLib.Mesh.Frostbite.Fb2
+namespace RimeLib.Mesh.Frostbite
 {
     /// <summary>
     /// Implementation of fb::MeshSubset
     /// Sizeof MeshSubset = 148 or 0x94
     /// </summary>
-    public class MeshSubset : IFbSerializable
+    public class MeshSubset
     {
         /// <summary>
         /// Geometry declarations
@@ -19,7 +19,7 @@ namespace RimeLib.Mesh.Frostbite.Fb2
         /// <summary>
         /// Material name
         /// </summary>
-        public RelocPtr<string> MaterialName { get; set; } // RelocPtr
+        public RelocPtr<string> MaterialName { get; set; } = new RelocPtr<string>(); // RelocPtr
 
         /// <summary>
         /// Material index
@@ -69,12 +69,12 @@ namespace RimeLib.Mesh.Frostbite.Fb2
         /// <summary>
         /// Bone indicies
         /// </summary>
-        public RelocPtr<ushort> BoneIndices { get; set; } // RelocPtr
+        public RelocPtr<ushort> BoneIndices { get; set; } = new RelocPtr<ushort>(); // RelocPtr
 
         /// <summary>
         /// Geometry declaration descriptor
         /// </summary>
-        public GeometryDeclarationDesc GeometryDeclarationDesc { get; set; }
+        public GeometryDeclarationDesc GeometryDeclarationDesc { get; set; } = new GeometryDeclarationDesc();
 
         /// <summary>
         /// Texture coordinate ratios
@@ -141,7 +141,7 @@ namespace RimeLib.Mesh.Frostbite.Fb2
             VertexOffset = p_Reader.ReadUInt32();
             VertexCount = p_Reader.ReadUInt32();
             VertexStride = p_Reader.ReadUByte();
-            PrimitiveType = (PrimitiveType) p_Reader.ReadUByte();
+            PrimitiveType = (PrimitiveType)p_Reader.ReadUByte();
             BonesPerVertex = p_Reader.ReadUByte();
             BoneCount = p_Reader.ReadUByte();
             BoneIndices = new RelocPtr<ushort>(p_Reader);

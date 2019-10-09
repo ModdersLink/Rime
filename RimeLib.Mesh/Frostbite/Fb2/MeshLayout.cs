@@ -4,12 +4,12 @@ using RimeLib.Frostbite;
 using RimeLib.Frostbite.Core;
 using RimeLib.IO;
 
-namespace RimeLib.Mesh.Frostbite.Fb2
+namespace RimeLib.Mesh.Frostbite
 {
     /// <summary>
     /// Venice (Battlefield 3) Mesh layout
     /// </summary>
-    public class MeshLayout : IFbSerializable
+    public class MeshLayout
     {
         /// <summary>
         /// Flags for the mesh layout
@@ -52,12 +52,12 @@ namespace RimeLib.Mesh.Frostbite.Fb2
         /// <summary>
         /// Subsets within this layout
         /// </summary>
-        public RelocArray<MeshSubset> Subsets { get; set; } // RelocPtr
+        public RelocArray<MeshSubset> Subsets { get; set; } = new RelocArray<MeshSubset>() // RelocPtr
 
         /// <summary>
         /// Category subset indices
         /// </summary>
-        public RelocArray<byte>[] CategorySubsetIndices { get; set; } // Len4
+        public RelocArray<byte>[] CategorySubsetIndices { get; set; } = new RelocArray<byte>[4]; // Len4
 
         /// <summary>
         /// Mesh layout flags
@@ -87,7 +87,7 @@ namespace RimeLib.Mesh.Frostbite.Fb2
         /// <summary>
         /// Guid that contains the chunk data
         /// </summary>
-        public GUID DataChunkId { get; set; }
+        public GUID DataChunkId { get; set; } = Guid.Empty;
 
         /// <summary>
         /// Vertex index data offset
@@ -97,22 +97,22 @@ namespace RimeLib.Mesh.Frostbite.Fb2
         /// <summary>
         /// Unknown what this really does
         /// </summary>
-        public RelocPtr<byte> EmbeddedEdgeData { get; set; } // RelocPtr
+        public RelocPtr<byte> EmbeddedEdgeData { get; set; } = new RelocPtr<byte>(); // RelocPtr
 
         /// <summary>
         /// Shader debug name
         /// </summary>
-        public RelocPtr<string> ShaderDebugName { get; set; } // RelocPtr
+        public RelocPtr<string> ShaderDebugName { get; set; } = new RelocPtr<string>(); // RelocPtr
 
         /// <summary>
         /// Full name of the mesh
         /// </summary>
-        public RelocPtr<string> Name { get; set; } // RelocPtr
+        public RelocPtr<string> Name { get; set; } = new RelocPtr<string>(); // RelocPtr
 
         /// <summary>
         /// Short name of the mesh
         /// </summary>
-        public RelocPtr<string> ShortName { get; set; } // RelocPtr
+        public RelocPtr<string> ShortName { get; set; } = new RelocPtr<string>(); // RelocPtr
 
         /// <summary>
         /// Name hash
@@ -132,12 +132,12 @@ namespace RimeLib.Mesh.Frostbite.Fb2
         /// <summary>
         /// This could be the bone index array or the parts bounding boxes, who knows
         /// </summary>
-        public RelocPtr<uint> BoneIndexArrayPartBoundingBoxes { get; set; } // RelocPtr
+        public RelocPtr<uint> BoneIndexArrayPartBoundingBoxes { get; set; } = new RelocPtr<uint>(); // RelocPtr
 
         /// <summary>
         /// This could be the bones short name or the part transforms, who knows
         /// </summary>
-        public RelocPtr<uint> BoneShortNameArrayPartTransforms { get; set; } // RelocPtr
+        public RelocPtr<uint> BoneShortNameArrayPartTransforms { get; set; } = new RelocPtr<uint>(); // RelocPtr
 
         /// <summary>
         /// Subset's parts indices
@@ -167,15 +167,15 @@ namespace RimeLib.Mesh.Frostbite.Fb2
         /// <param name="p_Writer">Writer opened to the position of the mesh layout</param>
         public bool Serialize(RimeWriter p_Writer)
         {
-            p_Writer.Write((uint) Type);
+            p_Writer.Write((uint)Type);
 
             Subsets.Serialize(p_Writer);
 
             foreach (var s_Indices in CategorySubsetIndices)
                 s_Indices.Serialize(p_Writer);
 
-            p_Writer.Write((uint) Flags);
-            p_Writer.Write((uint) IndexBufferFormat);
+            p_Writer.Write((uint)Flags);
+            p_Writer.Write((uint)IndexBufferFormat);
             p_Writer.Write(IndexDataSize);
             p_Writer.Write(VertexDataSize);
             p_Writer.Write(EdgePartitionBufferSize);
@@ -212,8 +212,8 @@ namespace RimeLib.Mesh.Frostbite.Fb2
             for (var i = 0; i < 4; ++i)
                 CategorySubsetIndices[i] = new RelocArray<byte>(p_Reader);
 
-            Flags = (MeshLayoutFlags) p_Reader.ReadUInt32();
-            IndexBufferFormat = (IndexBufferFormat) p_Reader.ReadUInt32();
+            Flags = (MeshLayoutFlags)p_Reader.ReadUInt32();
+            IndexBufferFormat = (IndexBufferFormat)p_Reader.ReadUInt32();
             IndexDataSize = p_Reader.ReadUInt32();
             VertexDataSize = p_Reader.ReadUInt32();
             EdgePartitionBufferSize = p_Reader.ReadUInt32();

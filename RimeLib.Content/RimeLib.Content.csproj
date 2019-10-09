@@ -19,12 +19,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\RimeLibLite\RimeLibLite.csproj" />
+    <Compile Remove="Frostbite\Bundles\**" />
+    <Compile Remove="Frostbite\Storage\**" />
+    <EmbeddedResource Remove="Frostbite\Bundles\**" />
+    <EmbeddedResource Remove="Frostbite\Storage\**" />
+    <None Remove="Frostbite\Bundles\**" />
+    <None Remove="Frostbite\Storage\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Frostbite\Bundles\" />
-    <Folder Include="Frostbite\Storage\" />
+    <ProjectReference Include="..\RimeLibLite\RimeLibLite.csproj" />
   </ItemGroup>
 
 </Project>

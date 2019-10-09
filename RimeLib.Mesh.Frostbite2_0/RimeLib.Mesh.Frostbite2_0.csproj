@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RimeLib.Content\RimeLib.Content.csproj" />
+    <ProjectReference Include="..\RimeLib.Mesh\RimeLib.Mesh.csproj" />
+  </ItemGroup>
+
+</Project>

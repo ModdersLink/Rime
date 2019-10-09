@@ -27,7 +27,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContentExtractor", "Utils\C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RimeLib.Content.Frostbite2_0", "RimeLib.Content.Frostbite2_0\RimeLib.Content.Frostbite2_0.csproj", "{C915B4F0-D809-4C29-B115-D519EA1F60BC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContentLister", "Utils\ContentLister\ContentLister.csproj", "{0FA1472E-B14C-4675-B770-F386F952E746}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContentLister", "Utils\ContentLister\ContentLister.csproj", "{0FA1472E-B14C-4675-B770-F386F952E746}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeshExtractor", "Utils\MeshExtractor\MeshExtractor.csproj", "{7ECC05E2-9F9C-44A2-8648-5306FA72670D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RimeLib.Mesh.Frostbite2_0", "RimeLib.Mesh.Frostbite2_0\RimeLib.Mesh.Frostbite2_0.csproj", "{17A0AD07-E18D-4CD2-97B9-4A77E1958BEF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -83,6 +87,14 @@ Global
 		{0FA1472E-B14C-4675-B770-F386F952E746}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0FA1472E-B14C-4675-B770-F386F952E746}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0FA1472E-B14C-4675-B770-F386F952E746}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7ECC05E2-9F9C-44A2-8648-5306FA72670D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7ECC05E2-9F9C-44A2-8648-5306FA72670D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7ECC05E2-9F9C-44A2-8648-5306FA72670D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7ECC05E2-9F9C-44A2-8648-5306FA72670D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17A0AD07-E18D-4CD2-97B9-4A77E1958BEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17A0AD07-E18D-4CD2-97B9-4A77E1958BEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17A0AD07-E18D-4CD2-97B9-4A77E1958BEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17A0AD07-E18D-4CD2-97B9-4A77E1958BEF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -90,6 +102,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{5686AEEE-E8E7-4AC8-8B86-80485F90D69A} = {42E38905-976C-4506-98AE-DC35CA1A9925}
 		{0FA1472E-B14C-4675-B770-F386F952E746} = {42E38905-976C-4506-98AE-DC35CA1A9925}
+		{7ECC05E2-9F9C-44A2-8648-5306FA72670D} = {42E38905-976C-4506-98AE-DC35CA1A9925}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9D2A4DE6-648D-4971-AC81-A89F21154CD0}
