@@ -6,113 +6,69 @@ namespace RimeLib.Texture.Frostbite
 {
     public static class TextureUtils
     {
+
+        public static readonly Dictionary<TextureFormat, uint> s_FormatBits = new Dictionary<TextureFormat, uint>( )
+        {
+            { TextureFormat.TextureFormat_Dxt1,       4},
+            { TextureFormat.TextureFormat_Dxt1A,       4},
+            { TextureFormat.TextureFormat_Dxt3,       8},
+            { TextureFormat.TextureFormat_Dxt5,       8},
+            { TextureFormat.TextureFormat_Dxt5A,       4},
+
+            { TextureFormat.TextureFormat_Dxn,       8},
+            { TextureFormat.TextureFormat_Bc7,       8},
+
+            { TextureFormat.TextureFormat_Rgb565,       5 + 6 + 5 }, //Check
+            { TextureFormat.TextureFormat_Rgb888,       8 + 8 + 8 },
+            { TextureFormat.TextureFormat_Argb1555,     1 + 5 + 5 + 5 + 5 }, //Check
+            { TextureFormat.TextureFormat_Argb4444,     4 + 4 + 4 + 4 },  //Check
+
+            { TextureFormat.TextureFormat_Argb8888,     8 + 8 + 8 + 8 }, //32
+
+            { TextureFormat.TextureFormat_L8,           8 }, 
+            { TextureFormat.TextureFormat_L16,          16 }, //check?
+
+            { TextureFormat.TextureFormat_Abgr16,       16 * 4 },
+            { TextureFormat.TextureFormat_Abgr16F,      16 * 4 },
+
+            { TextureFormat.TextureFormat_Abgr32F,      32 * 4 },
+            { TextureFormat.TextureFormat_R16F,         16 },
+            { TextureFormat.TextureFormat_R32F,         32 },
+            { TextureFormat.TextureFormat_Rg8,          8 * 2 },
+            { TextureFormat.TextureFormat_Gr16,         16 * 2 },
+            { TextureFormat.TextureFormat_Gr16F,        16 * 2 }, // not sure
+            { TextureFormat.TextureFormat_D16,          16 }, // not sure
+            { TextureFormat.TextureFormat_D24S8,        24 + 8 },
+            { TextureFormat.TextureFormat_D24Fs8,       24 + 8 }, // not sure
+            { TextureFormat.TextureFormat_D32F,         32 },
+            { TextureFormat.TextureFormat_D32Fs8,       32 + 8 },
+            { TextureFormat.TextureFormat_S8,           8 },
+            { TextureFormat.TextureFormat_Abgr32,       32 * 4 },
+            { TextureFormat.TextureFormat_Gr32F,        32 * 2 },
+            { TextureFormat.TextureFormat_A2R10G10B10,   2 + 10 + 10 + 10 },
+            { TextureFormat.TextureFormat_R11G11B10F,   11 + 11 + 10 },
+            { TextureFormat.TextureFormat_Abgr16_Snorm, 16 * 4 },
+            { TextureFormat.TextureFormat_Abgr16_Uint,  16 * 4 },
+            { TextureFormat.TextureFormat_L16_Uint,     16 }, // not sure
+            { TextureFormat.TextureFormat_L32,          32 },
+            { TextureFormat.TextureFormat_GR16_Uint,    16 * 2 },
+            { TextureFormat.TextureFormat_GR32_Uint,    32 * 2 },
+            { TextureFormat.TextureFormat_R9G9B9E5F,    9 + 9 + 9 + 5  },
+        };
+
         public static uint BitsPerPixel( TextureFormat p_Format )
         {
-            switch ( p_Format )
-            {
-            case TextureFormat.TextureFormat_Rgb565:
-                return 5 + 6 + 5;
+            if ( !s_FormatBits.TryGetValue( p_Format, out var s_OutBits ) )
+                return 0;
 
-            case TextureFormat.TextureFormat_Rgb888:
-                return 8 + 8 + 8;
-
-            case TextureFormat.TextureFormat_Argb1555:
-                return 1 + 5 + 5 + 5 + 5;
-
-            case TextureFormat.TextureFormat_Argb4444:
-                return 4 + 4 + 4 + 4;
-
-            case TextureFormat.TextureFormat_Argb8888:
-                return 8 + 8 + 8 + 8;
-
-
-
-            case TextureFormat.TextureFormat_L8:
-                return 8; // not sure
-
-            case TextureFormat.TextureFormat_L16:
-                return 16; // not sure
-
-            case TextureFormat.TextureFormat_Abgr16:
-            case TextureFormat.TextureFormat_Abgr16F:
-                return 16 * 4;
-
-            case TextureFormat.TextureFormat_Abgr32F:
-                return 32 * 4;
-
-            case TextureFormat.TextureFormat_R16F:
-                return 16;
-
-            case TextureFormat.TextureFormat_R32F:
-                return 32;
-
-            case TextureFormat.TextureFormat_Rg8:
-                return 8 * 2;
-
-            case TextureFormat.TextureFormat_Gr16:
-            case TextureFormat.TextureFormat_Gr16F: // not sure
-                return 16 * 2;
-
-
-            case TextureFormat.TextureFormat_D16:
-                return 16; // not sure
-
-            case TextureFormat.TextureFormat_D24S8:
-            case TextureFormat.TextureFormat_D24Fs8: // not sure
-                return 24 + 8;
-
-
-            case TextureFormat.TextureFormat_D32F:
-                return 32;
-
-            case TextureFormat.TextureFormat_D32Fs8:
-                return 32 + 8;
-
-            case TextureFormat.TextureFormat_S8:
-                return 8;
-
-            case TextureFormat.TextureFormat_Abgr32:
-                return 32 * 4;
-
-            case TextureFormat.TextureFormat_Gr32F:
-                return 32 * 2;
-
-            case TextureFormat.TextureFormat_A2R10G10B10:
-
-                return 2 + 10 + 10 + 10;
-
-            case TextureFormat.TextureFormat_R11G11B10F:
-                return 11 + 11 + 10;
-
-            case TextureFormat.TextureFormat_Abgr16_Snorm:
-            case TextureFormat.TextureFormat_Abgr16_Uint:
-                return 16 * 4;
-
-            case TextureFormat.TextureFormat_L16_Uint:
-                return 16; // not sure
-
-            case TextureFormat.TextureFormat_L32:
-                return 32;
-
-            case TextureFormat.TextureFormat_GR16_Uint:
-                return 16 * 2;
-
-            case TextureFormat.TextureFormat_GR32_Uint:
-                return 32 * 2;
-
-            case TextureFormat.TextureFormat_R9G9B9E5F:
-                return 9 + 9 + 9 + 5;
-
-            }
-
-            return 0;
+            return s_OutBits;
         }
 
         public static bool IsCompressed( TextureFormat p_Format )
         {
             switch ( p_Format )
             {
-            
+
 
             case TextureFormat.TextureFormat_Dxt1:
             case TextureFormat.TextureFormat_NormalDxt1:
@@ -185,7 +141,7 @@ namespace RimeLib.Texture.Frostbite
             case TextureFormat.TextureFormat_Dxn:
             case TextureFormat.TextureFormat_NormalDxn:
             case TextureFormat.TextureFormat_Bc7:
-            
+
             {
 
                 //aligns to nearest 4 bits

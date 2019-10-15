@@ -2,7 +2,9 @@
 using RimeLib.Content.Mounting;
 using RimeLib.Content.Resource;
 using RimeLib.Frostbite;
+using RimeLib.IO;
 using RimeLib.Texture.Frostbite;
+using RimeLib.Texture.Frostbite.DDS;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -172,7 +174,10 @@ namespace TextureExtractor
             if ( !p_Options.Quiet )
                 Console.WriteLine( $"Dumping texture {p_Path} to {s_SavePath}" );
 
-            FBTextureSaver.SaveTexture( s_Texture, s_SavePath );
+
+            using ( var s_FileStream = new FileStream( s_SavePath, FileMode.OpenOrCreate))
+                using ( var s_RimeWriter = new RimeWriter( s_FileStream ) )
+                    DDSExporter.WriteTextureToStream( s_RimeWriter, s_Texture );
         }
 
 

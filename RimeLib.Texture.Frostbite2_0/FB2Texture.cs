@@ -32,35 +32,39 @@ namespace RimeLib.Texture.Venice
             //throw new NotImplementedException( "I havent done textures yet..." );
         }
 
-        public int GetRawTextureSize( )
+        public int TextureSize
         {
-            if ( !m_Engine.TryGetChunk( m_Texture.StreamingChunkId, out var s_Chunk ) )
-                return -1;
+            get
+            {
 
-            return ( int )s_Chunk.FirstVariant.GetSize( );
+                if ( !m_Engine.TryGetChunk( m_Texture.StreamingChunkId, out var s_Chunk ) )
+                    return -1;
+
+                return ( int )s_Chunk.FirstVariant.GetSize( );
+            }
             //throw new NotImplementedException( "I havent done textures yet..." );
         }
 
 
-        public TextureType GetTextureType( ) => m_Texture.Type;
+        public TextureType Type => m_Texture.Type;
 
-        public TextureFormat GetTextureFormat( ) => m_Texture.Format;
+        public TextureFormat Format => m_Texture.Format;
 
 
 
 
         //Return -1 if invalid or not avalible
 
-        public int GetFlags( ) => ( int )m_Texture.Flags;
+        public int Flags => ( int )m_Texture.Flags;
 
-        public int GetWidth( ) => ( int )m_Texture.Width;
+        public uint Width => ( uint )m_Texture.Width;
 
-        public int GetHeight( ) => ( int )m_Texture.Height;
+        public uint Height => ( uint )m_Texture.Height;
 
 
-        public int GetDepth( ) => ( int )m_Texture.Depth;
+        public uint Depth => ( uint )m_Texture.Depth;
 
-        public int GetMipmapCount( ) => ( int )m_Texture.MipmapCount;
+        public uint MipmapCount => m_Texture.MipmapCount;
 
 
 

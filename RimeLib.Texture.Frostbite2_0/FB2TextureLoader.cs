@@ -25,18 +25,19 @@ namespace RimeLib.Texture.Venice
 
             Debug.WriteLine( p_Reader.Endianness );
 
+            p_Resource = null;
+
             try
             {
 
                 p_Resource = new FB2Texture( p_Mounter, p_Reader );
                 return true;
             }
-            catch ( Exception e )
+            catch
             {
             }
-
-            p_Resource = null;
-            return false;
+            
+            return p_Resource != null;
         }
     }
 }

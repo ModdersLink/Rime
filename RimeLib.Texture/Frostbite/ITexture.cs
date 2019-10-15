@@ -9,27 +9,51 @@ namespace RimeLib.Texture.Frostbite
 {
     public interface ITexture : IResource
     {
-        TextureType GetTextureType( );
+        TextureType Type
+        {
+            get;
+        }
 
-        TextureFormat GetTextureFormat( );
+        TextureFormat Format
+        {
+            get;
+        }
 
         RimeReader? GetRawTextureData( );
 
         //Return -1 if invalid or not avalible
-        int GetRawTextureSize( );
+        int TextureSize
+        {
+            get;
+        }
 
 
         //Return -1 if invalid or not avalible
 
-        int GetFlags( );
+        int Flags
+        {
+            get;
+        }
 
-        int GetWidth( );
+        uint Width
+        {
+            get;
+        }
 
-        int GetHeight( );
+        uint Height
+        {
+            get;
+        }
 
-        
-        int GetDepth( );
 
-        int GetMipmapCount( );
+        uint Depth
+        {
+            get;
+        }
+
+        uint MipmapCount
+        {
+            get;
+        }
     }
 }

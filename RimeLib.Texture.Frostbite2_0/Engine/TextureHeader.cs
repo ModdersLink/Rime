@@ -165,8 +165,16 @@ namespace RimeLib.Texture.Venice.Engine
         public void Deserialize( RimeReader p_Reader )
         {
             Version = p_Reader.ReadUInt32( );
+
+            if ( Version != 10 )
+                return;
+
             Type = ( TextureType )p_Reader.ReadUInt32( );
             Format = ( TextureFormat )p_Reader.ReadUInt32( );
+
+            if ( Format >= TextureFormat.TextureFormat_FB2_Unknown )
+                return;
+
             Flags = p_Reader.ReadUInt32( );
             Width = p_Reader.ReadInt16( );
             Height = p_Reader.ReadInt16( );

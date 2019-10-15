@@ -7,8 +7,8 @@ using System.Text;
 
 namespace RimeLib.Texture.DDS
 {
-
-    enum DDSFlags : uint
+    [Flags]
+    public enum DDSFlags : uint
     {
         Caps    = 0x01,
         Height  = 0x02,
@@ -18,18 +18,26 @@ namespace RimeLib.Texture.DDS
         PixelFormat = 0x001000,
         MipmapCount = 0x020000,
         LinearSize  = 0x080000,
-        Depth       = 0x800000
+        Depth       = 0x800000,
+
+
+        Texture = Caps | Height | Width | PixelFormat,
     };
 
 
-    enum DDSCaps : uint
+    [Flags]
+    public enum DDSCaps : uint
     {
         Complex = 0x0008,
         Texture = 0x1000,
-        Mipmap  = 0x400000
+        Mipmap  = 0x400000,
+
+
+        MipmapFlags = Complex | Mipmap
     };
 
-    enum DDSCaps2 : uint
+    [Flags]
+    public enum DDSCaps2 : uint
     {
         Cubemap             = 0x0200,
 
@@ -43,7 +51,7 @@ namespace RimeLib.Texture.DDS
         Cubemap_Face_NegativeZ = 0x8000,
 
 
-        Cubemap_Volume      = 0x4000, //3d texture
+        Volume      = 0x200000, //3d texture
 
 
         Cubemap_PositiveX = Cubemap | Cubemap_Face_PositiveX,
@@ -67,22 +75,23 @@ namespace RimeLib.Texture.DDS
     public class DDSHeader : IFbSerializable
     {
         public const uint c_DDSMagic = 0x20534444; // "DDS "
+        public const uint c_DDSHeaderSize = 0x7C; //TODO
 
 
-        public uint m_Size;
-        public uint m_Flags;
-        public uint m_Height;
-        public uint m_Width;
-        public uint m_PitchOrLinearSize;
-        public uint m_Depth; // only if DDS_HEADER_FLAGS_VOLUME is set in flags
-        public uint m_MipMapCount;
+        public uint m_Size = c_DDSHeaderSize;
+        public DDSFlags m_Flags = 0;
+        public uint m_Height = 0;
+        public uint m_Width = 0;
+        public uint m_PitchOrLinearSize = 0;
+        public uint m_Depth = 0; // only if DDS_HEADER_FLAGS_VOLUME is set in flags
+        public uint m_MipmapCount = 0;
         public uint[] m_Reserved1 = new uint[11];
         public DDSPixelFormat m_PixelFormat = new DDSPixelFormat( );
-        public uint m_Caps;
-        public uint m_Caps2;
-        public uint m_Caps3;
-        public uint m_Caps4;
-        public uint m_Reserved2;
+        public DDSCaps m_Caps = 0;
+        public DDSCaps2 m_Caps2 = 0;
+        public uint m_Caps3 = 0;
+        public uint m_Caps4 = 0;
+        public uint m_Reserved2 = 0;
 
 
         /// <summary>
@@ -100,20 +109,24 @@ namespace RimeLib.Texture.DDS
             }
 
             m_Size = p_Reader.ReadUInt32( );
-            m_Flags = p_Reader.ReadUInt32( );
+
+            if ( m_Size < c_DDSHeaderSize )
+                throw new Exception( "Something is wrong with this dds" );
+
+            m_Flags = ( DDSFlags)p_Reader.ReadUInt32( );
             m_Height = p_Reader.ReadUInt32( );
             m_Width = p_Reader.ReadUInt32( );
             m_PitchOrLinearSize = p_Reader.ReadUInt32( );
             m_Depth = p_Reader.ReadUInt32( );
-            m_MipMapCount = p_Reader.ReadUInt32( );
+            m_MipmapCount = p_Reader.ReadUInt32( );
 
             for ( var i = 0; i < m_Reserved1.Length; i++ )
                 m_Reserved1[i] = p_Reader.ReadUInt32( );
 
             m_PixelFormat.Deserialize( p_Reader );
 
-            m_Caps = p_Reader.ReadUInt32( );
-            m_Caps2 = p_Reader.ReadUInt32( );
+            m_Caps = (DDSCaps)p_Reader.ReadUInt32( );
+            m_Caps2 = (DDSCaps2)p_Reader.ReadUInt32( );
             m_Caps3 = p_Reader.ReadUInt32( );
             m_Caps4 = p_Reader.ReadUInt32( );
             m_Reserved2 = p_Reader.ReadUInt32( );
@@ -132,20 +145,20 @@ namespace RimeLib.Texture.DDS
 
 
             p_Writer.Write( m_Size );
-            p_Writer.Write( m_Flags );
+            p_Writer.Write( (uint)m_Flags );
             p_Writer.Write( m_Height );
             p_Writer.Write( m_Width );
             p_Writer.Write( m_PitchOrLinearSize );
             p_Writer.Write( m_Depth );
-            p_Writer.Write( m_MipMapCount );
+            p_Writer.Write( m_MipmapCount );
 
             for ( var i = 0; i < m_Reserved1.Length; i++ )
                 p_Writer.Write( m_Reserved1[i] );
 
             m_PixelFormat.Serialize( p_Writer );
 
-            p_Writer.Write( m_Caps );
-            p_Writer.Write( m_Caps2 );
+            p_Writer.Write( ( uint )m_Caps );
+            p_Writer.Write( ( uint )m_Caps2 );
             p_Writer.Write( m_Caps3 );
             p_Writer.Write( m_Caps4 );
             p_Writer.Write( m_Reserved2 );
