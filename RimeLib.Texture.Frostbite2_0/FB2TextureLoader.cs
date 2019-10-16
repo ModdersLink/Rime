@@ -11,7 +11,7 @@ using RimeLib.IO;
 using RimeLib.Content.Mounting;
 using System.Diagnostics;
 
-namespace RimeLib.Texture.Venice
+namespace RimeLib.Texture.Frostbite2_0
 {
     [ResourceLoader( ResourceType.DxTexture, EngineType.Frostbite2_0 )]
     public class FB2TextureLoader : IResourceLoader

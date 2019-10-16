@@ -7,7 +7,7 @@ using RimeLib.Frostbite.Core;
 using RimeLib.IO;
 using RimeLib.Texture.Frostbite;
 
-namespace RimeLib.Texture.Venice.Engine
+namespace RimeLib.Texture.Frostbite2_0.Engine
 {
     /// <summary>
     /// TextureHeader class

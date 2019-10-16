@@ -5,7 +5,7 @@ using RimeLib.Content.Mounting;
 using RimeLib.IO;
 using RimeLib.Texture.Frostbite;
 
-namespace RimeLib.Texture.Venice
+namespace RimeLib.Texture.Frostbite2_0
 {
     public class FB2Texture : ITexture
     {

@@ -41,6 +41,11 @@ namespace RimeLib.Texture.DDS
             m_MiscFlags2 = p_Misc2;
         }
 
+        public DDSDX10Header( RimeReader p_Reader )
+        {
+            Deserialize( p_Reader );
+        }
+
         public DXGIFormat m_DxgiFormat = 0;
         public DDSResoruceDimension m_ResourceDimension = 0;
         public DDSMiscFlag1 m_MiscFlag = 0;

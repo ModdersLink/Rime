@@ -74,6 +74,15 @@ namespace RimeLib.Texture.DDS
 
     public class DDSHeader : IFbSerializable
     {
+        public DDSHeader()
+        {
+        }
+        public DDSHeader( RimeReader p_Reader )
+        {
+            Deserialize( p_Reader );
+        }
+
+
         public const uint c_DDSMagic = 0x20534444; // "DDS "
         public const uint c_DDSHeaderSize = 0x7C; //TODO
 
