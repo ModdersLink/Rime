@@ -7,7 +7,7 @@ namespace RimeLib.Texture.Frostbite.DDS
 {
     public static class DDSUtils
     {
-        public static readonly Dictionary<TextureFormat, DDSPixelFormat> s_DDSFormatMap = new Dictionary<TextureFormat, DDSPixelFormat>( )
+        public static readonly Dictionary<TextureFormat, DDSPixelFormat> c_DDSFormatMap = new Dictionary<TextureFormat, DDSPixelFormat>( )
         {
             { TextureFormat.TextureFormat_Dxt1, new DDSPixelFormat("DXT1") },
             { TextureFormat.TextureFormat_Dxt1A, new DDSPixelFormat("BC1") },
@@ -15,7 +15,7 @@ namespace RimeLib.Texture.Frostbite.DDS
             { TextureFormat.TextureFormat_Dxt5, new DDSPixelFormat("DXT5") },
             { TextureFormat.TextureFormat_Dxt5A, new DDSPixelFormat("BC4") },
             { TextureFormat.TextureFormat_Dxn, new DDSPixelFormat("BC5") },
-            
+
             { TextureFormat.TextureFormat_Bc7, new DDSPixelFormat("BC7") },
 
             { TextureFormat.TextureFormat_Rgb565, new DDSPixelFormat(DDSFormatFlags.Rgb, 0, 0x0000f800, 0x000007e0, 0x0000001f) },
@@ -24,7 +24,7 @@ namespace RimeLib.Texture.Frostbite.DDS
             { TextureFormat.TextureFormat_Argb4444, new DDSPixelFormat(DDSFormatFlags.Rgba, 0, 0xF000, 0x0F00, 0x00F0, 0x000F) },
             { TextureFormat.TextureFormat_Argb8888, new DDSPixelFormat(DDSFormatFlags.Rgba, 0, 0xFF0000, 0xFF00, 0xFF, 0xFF000000 ) },
 
-            { TextureFormat.TextureFormat_L8, new DDSPixelFormat(DDSFormatFlags.Luminance, 0, 0xFF) }, 
+            { TextureFormat.TextureFormat_L8, new DDSPixelFormat(DDSFormatFlags.Luminance, 0, 0xFF) },
             { TextureFormat.TextureFormat_L16, new DDSPixelFormat(DDSFormatFlags.Luminance, 0, 0xFFFF) },
             { TextureFormat.TextureFormat_L16_Uint, new DDSPixelFormat(DDSFormatFlags.Luminance, 16,  0xFFFF) }, //not sure about this one
             { TextureFormat.TextureFormat_L32, new DDSPixelFormat(DDSFormatFlags.Luminance, 32, 0xFFFFFFFF) },
@@ -41,7 +41,7 @@ namespace RimeLib.Texture.Frostbite.DDS
             { TextureFormat.TextureFormat_Gr16, new DDSPixelFormat(DDSFormatFlags.Rgb, 32, 0xFF, 0xFF00) },
 
 
-            
+
             { TextureFormat.TextureFormat_A2R10G10B10, new DDSPixelFormat( DDSFormatFlags.Rgba, 0, 0xFF0000, 0xFF00, 0xFF, 0xFF000000 ) }, //TODO
             
 
@@ -49,7 +49,7 @@ namespace RimeLib.Texture.Frostbite.DDS
         };
 
 
-        public static readonly Dictionary<TextureFormat, DXGIFormat> s_DDSDXFormatMap = new Dictionary<TextureFormat, DXGIFormat>( )
+        public static readonly Dictionary<TextureFormat, DXGIFormat> c_DDSDXFormatMap = new Dictionary<TextureFormat, DXGIFormat>( )
         {
             // Formats that is imported
 
@@ -88,17 +88,17 @@ namespace RimeLib.Texture.Frostbite.DDS
             { TextureFormat.TextureFormat_R32F, DXGIFormat.R32_FLOAT },
 
 
-            { TextureFormat.TextureFormat_Gr16F, DXGIFormat.R16G16_FLOAT }, 
+            { TextureFormat.TextureFormat_Gr16F, DXGIFormat.R16G16_FLOAT },
 
 
-            { TextureFormat.TextureFormat_R11G11B10F, DXGIFormat.R11G11B10_FLOAT }, 
+            { TextureFormat.TextureFormat_R11G11B10F, DXGIFormat.R11G11B10_FLOAT },
             { TextureFormat.TextureFormat_R9G9B9E5F,  DXGIFormat.R9G9B9E5_SHAREDEXP }, //strange, should be float? not sure what sharedexp is
 
             { TextureFormat.TextureFormat_Abgr16_Snorm, DXGIFormat.R16G16B16A16_SNORM },
             { TextureFormat.TextureFormat_Abgr16_Uint, DXGIFormat.R16G16B16A16_UINT },
 
 
-            { TextureFormat.TextureFormat_GR16_Uint, DXGIFormat.R16G16_UINT }, 
+            { TextureFormat.TextureFormat_GR16_Uint, DXGIFormat.R16G16_UINT },
             { TextureFormat.TextureFormat_GR32_Uint, DXGIFormat.R32G32_UINT},
 
 

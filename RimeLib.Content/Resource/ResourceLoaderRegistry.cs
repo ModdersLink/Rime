@@ -16,21 +16,21 @@ namespace RimeLib.Content.Resource
         private static Dictionary<ResourceType, Dictionary<EngineType, IResourceLoader>> m_Factories = new Dictionary<ResourceType, Dictionary<EngineType, IResourceLoader>>( );
 
 
-        public static IResourceLoader? FindLoader( ResourceType p_Type, EngineType p_Engine )
+        public static IResourceLoader? FindLoader(ResourceType p_Type, EngineType p_Engine)
         {
-            if ( m_Factories.TryGetValue( p_Type, out var s_EngineDictionary ) )
-                if ( s_EngineDictionary.TryGetValue( p_Engine, out var s_Loader ) )
+            if (m_Factories.TryGetValue(p_Type, out var s_EngineDictionary))
+                if (s_EngineDictionary.TryGetValue(p_Engine, out var s_Loader))
                     return s_Loader;
 
 
-            return RefreshLoaders( p_Type, p_Engine );
+            return RefreshLoaders(p_Type, p_Engine);
         }
 
         /// <summary>
         /// Refresh all the available mounter factories from the loaded assemblies.
         /// </summary>
         /// <returns>A mounter factory of the specific type, if found.</returns>
-        private static IResourceLoader? RefreshLoaders( ResourceType p_Type = ResourceType.None, EngineType p_Engine = EngineType.Unknown )
+        private static IResourceLoader? RefreshLoaders(ResourceType p_Type = ResourceType.None, EngineType p_Engine = EngineType.Unknown)
         {
             // Get all factory types from all loaded assemblies.
             var s_FactoryTypes = AppDomain.CurrentDomain.GetAssemblies( )
@@ -38,17 +38,17 @@ namespace RimeLib.Content.Resource
                 .Where( t => typeof( IResourceLoader ).IsAssignableFrom( t ) && t.IsClass );
 
             // Clear the list of currently registered factories.
-            m_Factories.Clear( );
+            m_Factories.Clear();
 
 
             IResourceLoader? s_FoundLoader = null;
 
             // From the above types, instantiate the ones that have a 0-arg constructor and add them to the list.
-            foreach ( var s_FactoryType in s_FactoryTypes )
+            foreach (var s_FactoryType in s_FactoryTypes)
             {
                 var s_Constructor = s_FactoryType.GetConstructor( Type.EmptyTypes );
 
-                if ( s_Constructor == null )
+                if (s_Constructor == null)
                     continue;
 
                 // Instantiate the loader.
@@ -58,30 +58,30 @@ namespace RimeLib.Content.Resource
                 // Get class attribute
                 var s_Attributes = s_FactoryType.GetCustomAttributes( typeof( ResourceLoaderAttribute ), true ) as ResourceLoaderAttribute[];
 
-                if ( s_Attributes == null )
+                if (s_Attributes == null)
                     continue;
 
-                foreach ( var s_Attribute in s_Attributes )
+                foreach (var s_Attribute in s_Attributes)
                 {
                     // Save loader if we find a matching one
-                    if ( s_Attribute.ResourceType == p_Type && s_Attribute.EngineVersion == p_Engine )
+                    if (s_Attribute.ResourceType == p_Type && s_Attribute.EngineVersion == p_Engine)
                         s_FoundLoader = s_Loader;
 
 
                     // If we already have an instance of it, then overwrite it.
-                    if ( !m_Factories.ContainsKey( s_Attribute.ResourceType ) )
+                    if (!m_Factories.ContainsKey(s_Attribute.ResourceType))
                     {
-                        m_Factories.Add( s_Attribute.ResourceType, new Dictionary<EngineType, IResourceLoader>( ) );
+                        m_Factories.Add(s_Attribute.ResourceType, new Dictionary<EngineType, IResourceLoader>());
                     }
 
 
-                    if ( m_Factories[s_Attribute.ResourceType].ContainsKey( s_Attribute.EngineVersion ) )
+                    if (m_Factories[s_Attribute.ResourceType].ContainsKey(s_Attribute.EngineVersion))
                     {
                         m_Factories[s_Attribute.ResourceType][s_Attribute.EngineVersion] = s_Loader;
                         continue;
                     }
                     // Otherwise just add it.
-                    m_Factories[s_Attribute.ResourceType].Add( s_Attribute.EngineVersion, s_Loader );
+                    m_Factories[s_Attribute.ResourceType].Add(s_Attribute.EngineVersion, s_Loader);
                 }
             }
 

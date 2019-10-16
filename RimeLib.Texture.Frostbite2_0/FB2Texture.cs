@@ -9,11 +9,11 @@ namespace RimeLib.Texture.Frostbite2_0
 {
     public class FB2Texture : ITexture
     {
-        public FB2Texture( IEngineMounter p_Engine,
-                            RimeReader p_Reader )
+        public FB2Texture(IEngineMounter p_Engine,
+                            RimeReader p_Reader)
         {
             m_Engine = p_Engine;
-            m_Texture = new Engine.TextureHeader( p_Reader );
+            m_Texture = new Engine.TextureHeader(p_Reader);
 
         }
 
@@ -23,12 +23,12 @@ namespace RimeLib.Texture.Frostbite2_0
         Engine.TextureHeader m_Texture;
 
 
-        public RimeReader? GetRawTextureData( )
+        public RimeReader? GetRawTextureData()
         {
-            if ( !m_Engine.TryGetChunk( m_Texture.StreamingChunkId, out var s_Chunk ) )
+            if (!m_Engine.TryGetChunk(m_Texture.StreamingChunkId, out var s_Chunk))
                 return null;
 
-            return s_Chunk.FirstVariant.GetReader( );
+            return s_Chunk.FirstVariant.GetReader();
             //throw new NotImplementedException( "I havent done textures yet..." );
         }
 
@@ -37,10 +37,10 @@ namespace RimeLib.Texture.Frostbite2_0
             get
             {
 
-                if ( !m_Engine.TryGetChunk( m_Texture.StreamingChunkId, out var s_Chunk ) )
+                if (!m_Engine.TryGetChunk(m_Texture.StreamingChunkId, out var s_Chunk))
                     return -1;
 
-                return ( int )s_Chunk.FirstVariant.GetSize( );
+                return (int) s_Chunk.FirstVariant.GetSize();
             }
             //throw new NotImplementedException( "I havent done textures yet..." );
         }
@@ -55,19 +55,16 @@ namespace RimeLib.Texture.Frostbite2_0
 
         //Return -1 if invalid or not avalible
 
-        public int Flags => ( int )m_Texture.Flags;
+        public int Flags => (int) m_Texture.Flags;
 
-        public uint Width => ( uint )m_Texture.Width;
+        public uint Width => (uint) m_Texture.Width;
 
-        public uint Height => ( uint )m_Texture.Height;
+        public uint Height => (uint) m_Texture.Height;
 
 
-        public uint Depth => ( uint )m_Texture.Depth;
+        public uint Depth => (uint) m_Texture.Depth;
 
         public uint MipmapCount => m_Texture.MipmapCount;
-
-
-
 
     }
 }

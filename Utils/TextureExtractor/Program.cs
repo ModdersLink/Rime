@@ -19,51 +19,51 @@ namespace TextureExtractor
     {
         public class Options
         {
-            [Option( "sb", Required = false, Separator = ',', HelpText = "The superbundles to be mounted. When not specified, all available superbundles are mounted." )]
+            [Option("sb", Required = false, Separator = ',', HelpText = "The superbundles to be mounted. When not specified, all available superbundles are mounted.")]
             public IEnumerable<string> MountSuperbundles { get; set; } = new string[0];
 
-            [Option( "bundles", Required = false, Separator = ',', HelpText = "The bundles to be mounted. When not specified, all available bundles are mounted." )]
+            [Option("bundles", Required = false, Separator = ',', HelpText = "The bundles to be mounted. When not specified, all available bundles are mounted.")]
             public IEnumerable<string> MountBundles { get; set; } = new string[0];
 
-            [Option( 'q', "quiet", Required = false, Default = false, HelpText = "Suppress console output." )]
+            [Option('q', "quiet", Required = false, Default = false, HelpText = "Suppress console output.")]
             public bool Quiet { get; set; } = false;
 
             /*[Option("verify", Required = false, Default = false, HelpText = "Verify hashes of content while extracting, where available.")]
             public bool Verify { get; set; } = false;*/
 
-            [Value( 0, MetaName = "gamePath", Required = true, HelpText = "The path of the game to be whose content you want to extract." )]
+            [Value(0, MetaName = "gamePath", Required = true, HelpText = "The path of the game to be whose content you want to extract.")]
             public string GamePath { get; set; } = "";
 
-            [Value( 1, MetaName = "engineType", Required = true, HelpText = "The engine type of the game." )]
+            [Value(1, MetaName = "engineType", Required = true, HelpText = "The engine type of the game.")]
             public EngineType EngineType
             {
                 get; set;
             }
 
-            [Option( 't', "textures", Separator = ',', Required = true, HelpText = "The game texture paths you want to dump. !!This is required!!" )]
+            [Option('t', "textures", Separator = ',', Required = true, HelpText = "The game texture paths you want to dump. !!This is required!!")]
             public IEnumerable<string> TexturePaths { get; set; } = new string[0];
 
 
-            [Value( 2, MetaName = "outPath", Required = false, HelpText = "The output directory where the extracted files will be put into. When not specified, files are dumped into current directory" )]
+            [Value(2, MetaName = "outPath", Required = false, HelpText = "The output directory where the extracted files will be put into. When not specified, files are dumped into current directory")]
             public string OutputPath { get; set; } = ".";
         }
 
 
-        static void Main( string[] p_Args )
+        static void Main(string[] p_Args)
         {
 
-            Parser.Default.ParseArguments<Options>( p_Args ).WithParsed( p_Options =>
-            {
-                LoadEngineAssemblies( p_Options );
-                ExportTextures( p_Options );
+            Parser.Default.ParseArguments<Options>(p_Args).WithParsed(p_Options =>
+         {
+             LoadEngineAssemblies(p_Options);
+             ExportTextures(p_Options);
 
-                Console.WriteLine( "Textures successfully extracted. Press any key to exit..." );
-                Console.ReadKey( );
-            } ).WithNotParsed( p_Err => { Environment.Exit( 1 ); } );
+             Console.WriteLine("Textures successfully extracted. Press any key to exit...");
+             Console.ReadKey();
+         }).WithNotParsed(p_Err => { Environment.Exit(1); });
         }
 
 
-        private static void LoadEngineAssemblies( Options p_Options )
+        private static void LoadEngineAssemblies(Options p_Options)
         {
             Func<string, bool> s_Load = ( p_Assembly ) =>
             {
@@ -83,15 +83,15 @@ namespace TextureExtractor
             };
 
 
-            if ( !p_Options.Quiet )
-                Console.WriteLine( "Loading engine support assemblies." );
+            if (!p_Options.Quiet)
+                Console.WriteLine("Loading engine support assemblies.");
 
-            s_Load( "RimeLib.Content." + p_Options.EngineType );
-            s_Load( "RimeLib.Texture." + p_Options.EngineType );
+            s_Load("RimeLib.Content." + p_Options.EngineType);
+            s_Load("RimeLib.Texture." + p_Options.EngineType);
         }
 
 
-        private static async void ExportTextures( Options p_Options )
+        private static async void ExportTextures(Options p_Options)
         {
             var s_Mounter = EngineMounterRegistry.Create( p_Options.EngineType );
 
@@ -99,85 +99,85 @@ namespace TextureExtractor
             var s_MountBundles = p_Options.MountBundles.ToList( );
 
             // Only auto-mount when a user has not specified any specific superbundles or bundles.
-            if ( !p_Options.Quiet )
-                Console.WriteLine( $"Mounting game with engine '{p_Options.EngineType}' at path '{p_Options.GamePath}'. Please wait, this could take a while." );
+            if (!p_Options.Quiet)
+                Console.WriteLine($"Mounting game with engine '{p_Options.EngineType}' at path '{p_Options.GamePath}'. Please wait, this could take a while.");
 
-            await s_Mounter.Mount( p_Options.GamePath, s_MountSuperbundles.Count == 0 && s_MountBundles.Count == 0 );
+            await s_Mounter.Mount(p_Options.GamePath, s_MountSuperbundles.Count == 0 && s_MountBundles.Count == 0);
 
             // Mount the requested superbundles.
-            if ( s_MountSuperbundles.Count > 0 )
+            if (s_MountSuperbundles.Count > 0)
             {
-                if ( !p_Options.Quiet )
-                    Console.WriteLine( $"Mounting requested superbundles. Please wait, this could take a while." );
+                if (!p_Options.Quiet)
+                    Console.WriteLine($"Mounting requested superbundles. Please wait, this could take a while.");
 
                 var s_AutoMountBundles = s_MountBundles.Count == 0;
                 var s_SbTasks = s_MountSuperbundles.Select( p_Sb => s_Mounter.MountSuperbundle( p_Sb, s_AutoMountBundles ) );
-                await Task.WhenAll( s_SbTasks );
+                await Task.WhenAll(s_SbTasks);
             }
 
 
             // Mount all the requested bundles.
-            if ( s_MountBundles.Count > 0 )
+            if (s_MountBundles.Count > 0)
             {
-                if ( !p_Options.Quiet )
-                    Console.WriteLine( $"Mounting requested bundles. Please wait, this could take a while." );
+                if (!p_Options.Quiet)
+                    Console.WriteLine($"Mounting requested bundles. Please wait, this could take a while.");
 
                 var s_BundleTasks = s_MountBundles.Select( s_Mounter.MountBundle );
-                await Task.WhenAll( s_BundleTasks );
+                await Task.WhenAll(s_BundleTasks);
             }
 
             // Dump everything!
-            if ( !p_Options.Quiet )
-                Console.WriteLine( $"Everything is now mounted! Starting content extraction." );
+            if (!p_Options.Quiet)
+                Console.WriteLine($"Everything is now mounted! Starting content extraction.");
 
 
-            Parallel.ForEach( p_Options.TexturePaths, p_Path =>
-            {
-                DumpTexture( s_Mounter, p_Path, p_Options );
-            } );
+            Parallel.ForEach(p_Options.TexturePaths, p_Path =>
+           {
+               DumpTexture(s_Mounter, p_Path, p_Options);
+           });
         }
 
-        private static void DumpTexture(IEngineMounter p_Mounter, string p_Path, Options p_Options )
+        private static void DumpTexture(IEngineMounter p_Mounter, string p_Path, Options p_Options)
         {
 
             IMountedObject<IResourceVariant> s_TextureObject = null;
 
-            if ( !p_Mounter.TryGetResource( p_Path, out s_TextureObject ) )
+            if (!p_Mounter.TryGetResource(p_Path, out s_TextureObject))
             {
-                if ( !p_Options.Quiet )
-                    Console.WriteLine( $"Error finding texture resoruce {p_Path}!" );
+                if (!p_Options.Quiet)
+                    Console.WriteLine($"Error finding texture resoruce {p_Path}!");
                 return;
             }
 
 
             IResource s_TextureResoruce = null;
 
-            if ( !ResourceHelper.LoadResource( p_Mounter, s_TextureObject.FirstVariant, out s_TextureResoruce ) )
+            if (!ResourceHelper.LoadResource(p_Mounter, s_TextureObject.FirstVariant, out s_TextureResoruce))
             {
-                if ( !p_Options.Quiet )
-                    Console.WriteLine( $"Error loading texture {p_Path}!" );
+                if (!p_Options.Quiet)
+                    Console.WriteLine($"Error loading texture {p_Path}!");
                 return;
             }
 
 
             var s_Texture = s_TextureResoruce as ITexture;
 
-            if ( s_Texture == null )
+            if (s_Texture == null)
             {
-                if ( !p_Options.Quiet )
-                    Console.WriteLine( $"Resource {p_Path} is not a texture" );
+                if (!p_Options.Quiet)
+                    Console.WriteLine($"Resource {p_Path} is not a texture");
                 return;
             }
 
             var s_SavePath = $"{p_Options.OutputPath}/{Path.GetFileName( p_Path )}.dds";
 
-            if ( !p_Options.Quiet )
-                Console.WriteLine( $"Dumping texture {p_Path} to {s_SavePath}" );
+            if (!p_Options.Quiet)
+                Console.WriteLine($"Dumping texture {p_Path} to {s_SavePath}");
 
 
-            using ( var s_FileStream = new FileStream( s_SavePath, FileMode.OpenOrCreate))
-                using ( var s_RimeWriter = new RimeWriter( s_FileStream ) )
-                    DDSExporter.WriteTextureToStream( s_RimeWriter, s_Texture );
+            using (var s_FileStream = new FileStream(s_SavePath, FileMode.OpenOrCreate))
+            using (var s_RimeWriter = new RimeWriter(s_FileStream))
+                DDSExporter.WriteTextureToStream(s_RimeWriter, s_Texture);
         }
 
 

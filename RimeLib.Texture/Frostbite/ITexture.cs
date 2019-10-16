@@ -19,7 +19,7 @@ namespace RimeLib.Texture.Frostbite
             get;
         }
 
-        RimeReader? GetRawTextureData( );
+        RimeReader? GetRawTextureData();
 
         //Return -1 if invalid or not avalible
         int TextureSize

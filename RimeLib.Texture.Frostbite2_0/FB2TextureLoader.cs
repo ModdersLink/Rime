@@ -13,30 +13,26 @@ using System.Diagnostics;
 
 namespace RimeLib.Texture.Frostbite2_0
 {
-    [ResourceLoader( ResourceType.DxTexture, EngineType.Frostbite2_0 )]
+    [ResourceLoader(ResourceType.DxTexture, EngineType.Frostbite2_0)]
     public class FB2TextureLoader : IResourceLoader
     {
-        public FB2TextureLoader( )
+        public FB2TextureLoader()
         {
         }
 
-        public bool Load( IEngineMounter p_Mounter, RimeReader p_Reader, long p_Size, out IResource p_Resource )
+        public bool Load(IEngineMounter p_Mounter, RimeReader p_Reader, long p_Size, out IResource p_Resource)
         {
-
-            Debug.WriteLine( p_Reader.Endianness );
-
             p_Resource = null;
 
             try
             {
-
-                p_Resource = new FB2Texture( p_Mounter, p_Reader );
+                p_Resource = new FB2Texture(p_Mounter, p_Reader);
                 return true;
             }
             catch
             {
             }
-            
+
             return p_Resource != null;
         }
     }

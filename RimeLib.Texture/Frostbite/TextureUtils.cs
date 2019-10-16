@@ -25,7 +25,7 @@ namespace RimeLib.Texture.Frostbite
 
             { TextureFormat.TextureFormat_Argb8888,     8 + 8 + 8 + 8 }, //32
 
-            { TextureFormat.TextureFormat_L8,           8 }, 
+            { TextureFormat.TextureFormat_L8,           8 },
             { TextureFormat.TextureFormat_L16,          16 }, //check?
 
             { TextureFormat.TextureFormat_Abgr16,       16 * 4 },
@@ -56,20 +56,18 @@ namespace RimeLib.Texture.Frostbite
             { TextureFormat.TextureFormat_R9G9B9E5F,    9 + 9 + 9 + 5  },
         };
 
-        public static uint BitsPerPixel( TextureFormat p_Format )
+        public static uint BitsPerPixel(TextureFormat p_Format)
         {
-            if ( !s_FormatBits.TryGetValue( p_Format, out var s_OutBits ) )
+            if (!s_FormatBits.TryGetValue(p_Format, out var s_OutBits))
                 return 0;
 
             return s_OutBits;
         }
 
-        public static bool IsCompressed( TextureFormat p_Format )
+        public static bool IsCompressed(TextureFormat p_Format)
         {
-            switch ( p_Format )
+            switch (p_Format)
             {
-
-
             case TextureFormat.TextureFormat_Dxt1:
             case TextureFormat.TextureFormat_NormalDxt1:
 
@@ -96,29 +94,29 @@ namespace RimeLib.Texture.Frostbite
 
 
 
-        public static bool IsPalettized( TextureFormat p_Format )
+        public static bool IsPalettized(TextureFormat p_Format)
         {
             return false;
         }
 
-        public static bool IsPacked( TextureFormat p_Format )
+        public static bool IsPacked(TextureFormat p_Format)
         {
             return false;
         }
 
-        public static bool IsPlanar( TextureFormat p_Format )
+        public static bool IsPlanar(TextureFormat p_Format)
         {
             return false;
         }
 
 
 
-        public static bool ComputePitch( TextureFormat p_Format, uint p_Width, uint p_Height, out uint p_RowPitch, out uint p_SlicePitch )
+        public static bool ComputePitch(TextureFormat p_Format, uint p_Width, uint p_Height, out uint p_RowPitch, out uint p_SlicePitch)
         {
             uint s_Pitch = 0;
             uint s_Slice = 0;
 
-            switch ( p_Format )
+            switch (p_Format)
             {
 
             //TODO: Find what dxt1a is
@@ -159,7 +157,7 @@ namespace RimeLib.Texture.Frostbite
                 var s_BitsPerPixel = BitsPerPixel( p_Format );
 
                 //aligns to nearest 8 bits
-                s_Pitch = ( p_Width * s_BitsPerPixel + 7u ) / 8u;
+                s_Pitch = (p_Width * s_BitsPerPixel + 7u) / 8u;
                 s_Slice = s_Pitch * p_Height;
                 break;
             }

@@ -9,6 +9,6 @@ namespace RimeLib.Content.Resource
 {
     public interface IResourceLoader
     {
-        bool Load( IEngineMounter p_Mounter, RimeReader p_Reader, long p_Size, out IResource p_Resource );
+        bool Load(IEngineMounter p_Mounter, RimeReader p_Reader, long p_Size, out IResource p_Resource);
     }
 }
