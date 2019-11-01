@@ -5,6 +5,7 @@ using RimeLib.Frostbite;
 using RimeLib.IO;
 using RimeLib.Texture.Frostbite;
 using RimeLib.Texture.Frostbite.DDS;
+using RimeLib.Texture.Frostbite2_0;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -28,9 +29,6 @@ namespace TextureExtractor
             [Option('q', "quiet", Required = false, Default = false, HelpText = "Suppress console output.")]
             public bool Quiet { get; set; } = false;
 
-            /*[Option("verify", Required = false, Default = false, HelpText = "Verify hashes of content while extracting, where available.")]
-            public bool Verify { get; set; } = false;*/
-
             [Value(0, MetaName = "gamePath", Required = true, HelpText = "The path of the game to be whose content you want to extract.")]
             public string GamePath { get; set; } = "";
 
@@ -51,33 +49,40 @@ namespace TextureExtractor
 
         static void Main(string[] p_Args)
         {
+            /*
+            {
+                using var s_Reader = new RimeReader(new FileStream(@"F:\Program Files (x86)\Ubisoft\Tom Clancy's The Division Beta\rogue\sdfout\rogue\baked\art\[cinematic]\[_dev]\textures\burnt_wood_n.dds",FileMode.Open, FileAccess.Read, FileShare.Read));
+
+                FB2DDSImporter.LoadDDS(s_Reader, out var s_Header, out var s_Stream);
+            }
+            */
 
             Parser.Default.ParseArguments<Options>(p_Args).WithParsed(p_Options =>
-         {
-             LoadEngineAssemblies(p_Options);
-             ExportTextures(p_Options);
+            {
+                LoadEngineAssemblies(p_Options);
+                ExportTextures(p_Options);
 
-             Console.WriteLine("Textures successfully extracted. Press any key to exit...");
-             Console.ReadKey();
-         }).WithNotParsed(p_Err => { Environment.Exit(1); });
+                Console.WriteLine("Textures successfully extracted. Press any key to exit...");
+                Console.ReadKey();
+            }).WithNotParsed(p_Err => { Environment.Exit(1); });
         }
 
 
         private static void LoadEngineAssemblies(Options p_Options)
         {
-            Func<string, bool> s_Load = ( p_Assembly ) =>
+            Func<string, bool> s_Load = (p_Assembly) =>
             {
                 try
                 {
-                    Assembly.Load( p_Assembly );
+                    Assembly.Load(p_Assembly);
                     return true;
                 }
                 catch
                 {
-                    if ( !p_Options.Quiet )
-                        Console.WriteLine( $"Failed to load supporting engine assembly ({p_Assembly}.dll). This means that the engine is not supported or that you are missing required files." );
+                    if (!p_Options.Quiet)
+                        Console.WriteLine($"Failed to load supporting engine assembly ({p_Assembly}.dll). This means that the engine is not supported or that you are missing required files.");
 
-                    Environment.Exit( 1 );
+                    Environment.Exit(1);
                 }
                 return false;
             };
@@ -130,12 +135,66 @@ namespace TextureExtractor
             if (!p_Options.Quiet)
                 Console.WriteLine($"Everything is now mounted! Starting content extraction.");
 
-
+            /*
+              Parallel.ForEach(p_Options.TexturePaths, p_Path =>
+            {
+                TestImportTexture(s_Mounter, p_Path, p_Options);
+            });
+             */
             Parallel.ForEach(p_Options.TexturePaths, p_Path =>
-           {
-               DumpTexture(s_Mounter, p_Path, p_Options);
-           });
+            {
+                DumpTexture(s_Mounter, p_Path, p_Options);
+            });
         }
+
+
+        private static void TestImportTexture(IEngineMounter p_Mounter, string p_Path, Options p_Options)
+        {
+
+            IMountedObject<IResourceVariant> s_TextureObject = null;
+
+            if (!p_Mounter.TryGetResource(p_Path, out s_TextureObject))
+            {
+                if (!p_Options.Quiet)
+                    Console.WriteLine($"Error finding texture resoruce {p_Path}!");
+                return;
+            }
+
+
+            IResource s_TextureResoruce = null;
+
+            if (!ResourceHelper.LoadResource(p_Mounter, s_TextureObject.FirstVariant, out s_TextureResoruce))
+            {
+                if (!p_Options.Quiet)
+                    Console.WriteLine($"Error loading texture {p_Path}!");
+                return;
+            }
+
+
+            var s_Texture = s_TextureResoruce as ITexture;
+
+            if (s_Texture == null)
+            {
+                if (!p_Options.Quiet)
+                    Console.WriteLine($"Resource {p_Path} is not a texture");
+                return;
+            }
+
+            using (var s_MemoryStream = new MemoryStream())
+            {
+                using var s_RimeWriter = new RimeWriter(s_MemoryStream);
+
+                DDSExporter.WriteTextureToStream(s_RimeWriter, s_Texture);
+
+                s_MemoryStream.Seek(0, SeekOrigin.Begin);
+
+                using var s_Reader = new RimeReader(s_MemoryStream);
+
+                FB2DDSImporter.LoadDDS(s_Reader, out var s_Header, out var s_Stream);
+            }
+
+        }
+
 
         private static void DumpTexture(IEngineMounter p_Mounter, string p_Path, Options p_Options)
         {

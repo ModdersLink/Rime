@@ -65,7 +65,7 @@ namespace RimeLib.Texture.DDS
         public uint m_ABitMask = 0;
 
 
-        static uint MakeFourCC(string p_Input)
+        public static uint MakeFourCC(string p_Input)
         {
             uint s_Result = 0;
 

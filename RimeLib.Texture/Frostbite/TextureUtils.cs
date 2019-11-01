@@ -9,14 +9,14 @@ namespace RimeLib.Texture.Frostbite
 
         public static readonly Dictionary<TextureFormat, uint> s_FormatBits = new Dictionary<TextureFormat, uint>( )
         {
-            { TextureFormat.TextureFormat_Dxt1,       4},
-            { TextureFormat.TextureFormat_Dxt1A,       4},
-            { TextureFormat.TextureFormat_Dxt3,       8},
-            { TextureFormat.TextureFormat_Dxt5,       8},
-            { TextureFormat.TextureFormat_Dxt5A,       4},
+            { TextureFormat.TextureFormat_Dxt1,         4 },
+            { TextureFormat.TextureFormat_Dxt1A,        4 },
+            { TextureFormat.TextureFormat_Dxt3,         8 },
+            { TextureFormat.TextureFormat_Dxt5,         8 },
+            { TextureFormat.TextureFormat_Dxt5A,        4 },
 
-            { TextureFormat.TextureFormat_Dxn,       8},
-            { TextureFormat.TextureFormat_Bc7,       8},
+            { TextureFormat.TextureFormat_Dxn,          8 },
+            { TextureFormat.TextureFormat_Bc7,          8 },
 
             { TextureFormat.TextureFormat_Rgb565,       5 + 6 + 5 }, //Check
             { TextureFormat.TextureFormat_Rgb888,       8 + 8 + 8 },
@@ -45,7 +45,7 @@ namespace RimeLib.Texture.Frostbite
             { TextureFormat.TextureFormat_S8,           8 },
             { TextureFormat.TextureFormat_Abgr32,       32 * 4 },
             { TextureFormat.TextureFormat_Gr32F,        32 * 2 },
-            { TextureFormat.TextureFormat_A2R10G10B10,   2 + 10 + 10 + 10 },
+            { TextureFormat.TextureFormat_A2R10G10B10,  2 + 10 + 10 + 10 },
             { TextureFormat.TextureFormat_R11G11B10F,   11 + 11 + 10 },
             { TextureFormat.TextureFormat_Abgr16_Snorm, 16 * 4 },
             { TextureFormat.TextureFormat_Abgr16_Uint,  16 * 4 },
@@ -64,50 +64,43 @@ namespace RimeLib.Texture.Frostbite
             return s_OutBits;
         }
 
-        public static bool IsCompressed(TextureFormat p_Format)
-        {
-            switch (p_Format)
+        public static bool IsCompressed(TextureFormat p_Format) =>
+            p_Format switch
             {
-            case TextureFormat.TextureFormat_Dxt1:
-            case TextureFormat.TextureFormat_NormalDxt1:
+                TextureFormat.TextureFormat_Dxt1 => true,
+                TextureFormat.TextureFormat_NormalDxt1 => true,
+                TextureFormat.TextureFormat_Dxt1A => true,
+                TextureFormat.TextureFormat_Dxt3 => true,
+                TextureFormat.TextureFormat_Dxn => true,
+                TextureFormat.TextureFormat_NormalDxn => true,
+                TextureFormat.TextureFormat_Dxt5 => true,
+                TextureFormat.TextureFormat_NormalDxt5 => true,
+                TextureFormat.TextureFormat_NormalDxt5Rga => true,
+                TextureFormat.TextureFormat_Dxt5A => true,
+                TextureFormat.TextureFormat_Bc7 => true,
 
-            case TextureFormat.TextureFormat_Dxt1A:
-
-            case TextureFormat.TextureFormat_Dxt3:
-
-            case TextureFormat.TextureFormat_Dxn:
-            case TextureFormat.TextureFormat_NormalDxn:
-            case TextureFormat.TextureFormat_Dxt5:
-            case TextureFormat.TextureFormat_NormalDxt5:
-            case TextureFormat.TextureFormat_NormalDxt5Rga:
-
-            case TextureFormat.TextureFormat_Dxt5A:
-
-            case TextureFormat.TextureFormat_Bc7:
-
-                return true;
-            }
-
-
-            return false;
-        }
+                _ => false
+            };
 
 
 
-        public static bool IsPalettized(TextureFormat p_Format)
-        {
-            return false;
-        }
+        public static bool IsPalettized(TextureFormat p_Format) =>
+            p_Format switch
+            {
+                _ => false,
+            };
 
-        public static bool IsPacked(TextureFormat p_Format)
-        {
-            return false;
-        }
+        public static bool IsPacked(TextureFormat p_Format) =>
+            p_Format switch
+            {
+                _ => false,
+            };
 
-        public static bool IsPlanar(TextureFormat p_Format)
-        {
-            return false;
-        }
+        public static bool IsPlanar(TextureFormat p_Format) =>
+            p_Format switch
+            {
+                _ => false,
+            };
 
 
 
@@ -118,8 +111,6 @@ namespace RimeLib.Texture.Frostbite
 
             switch (p_Format)
             {
-
-            //TODO: Find what dxt1a is
             case TextureFormat.TextureFormat_Dxt1:
             case TextureFormat.TextureFormat_NormalDxt1:
             case TextureFormat.TextureFormat_Dxt5A:
@@ -139,7 +130,6 @@ namespace RimeLib.Texture.Frostbite
             case TextureFormat.TextureFormat_Dxn:
             case TextureFormat.TextureFormat_NormalDxn:
             case TextureFormat.TextureFormat_Bc7:
-
             {
 
                 //aligns to nearest 4 bits
@@ -168,5 +158,8 @@ namespace RimeLib.Texture.Frostbite
 
             return s_Pitch != 0;
         }
+
+
+  
     }
 }

@@ -13,6 +13,9 @@ namespace RimeLib.Texture.Frostbite.DDS
         {
             var s_Header = new DDSHeader( );
 
+            //Signature, not needed
+            s_Header.m_Reserved1[9] = DDSPixelFormat.MakeFourCC("RIME");
+
             s_Header.m_Flags = DDSFlags.Texture;
 
             s_Header.m_Caps = DDSCaps.Texture;
@@ -46,6 +49,15 @@ namespace RimeLib.Texture.Frostbite.DDS
                 s_Header.m_Flags |= DDSFlags.Depth;
 
                 s_Header.m_Caps2 |= DDSCaps2.Volume;
+            }
+
+
+            if ((p_Texture.Flags & (int) TextureFlags.SrgbGamma) != 0)
+            {
+                //NVIDIA format | some loaders might require this? (DirectXTex)
+
+                //
+                s_Header.m_Flags |= DDSFlags.Srgb;
             }
 
             if (!TextureUtils.ComputePitch(p_Texture.Format, (uint) p_Texture.Width, (uint) p_Texture.Height, out var s_RowPitch, out var s_SlicePitch))
@@ -112,8 +124,14 @@ namespace RimeLib.Texture.Frostbite.DDS
 
             s_Header.Serialize(p_Stream);
 
-            if ( s_ExtendedHeader != null )
+            if (s_ExtendedHeader != null)
+            {
+                //Align
+                if (p_Stream.Position % 0x10 != 0)
+                    p_Stream.Seek(0x10 - (p_Stream.Position % 0x10), SeekOrigin.Current);
+
                 s_ExtendedHeader.Serialize(p_Stream);
+            }
 
 
             var s_TextureData = p_Texture.GetRawTextureData( );

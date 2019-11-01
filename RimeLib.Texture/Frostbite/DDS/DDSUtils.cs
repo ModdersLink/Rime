@@ -18,31 +18,33 @@ namespace RimeLib.Texture.Frostbite.DDS
 
             { TextureFormat.TextureFormat_Bc7, new DDSPixelFormat("BC7") },
 
-            { TextureFormat.TextureFormat_Rgb565, new DDSPixelFormat(DDSFormatFlags.Rgb, 0, 0x0000f800, 0x000007e0, 0x0000001f) },
-            { TextureFormat.TextureFormat_Rgb888, new DDSPixelFormat(DDSFormatFlags.Rgb, 0, 0x00ff0000, 0x0000ff00, 0x000000ff) },
-            { TextureFormat.TextureFormat_Argb1555, new DDSPixelFormat(DDSFormatFlags.Rgba, 0, 0x00007c00, 0x000003e0, 0x0000001f, 0x00008000) },
-            { TextureFormat.TextureFormat_Argb4444, new DDSPixelFormat(DDSFormatFlags.Rgba, 0, 0xF000, 0x0F00, 0x00F0, 0x000F) },
-            { TextureFormat.TextureFormat_Argb8888, new DDSPixelFormat(DDSFormatFlags.Rgba, 0, 0xFF0000, 0xFF00, 0xFF, 0xFF000000 ) },
-
-            { TextureFormat.TextureFormat_L8, new DDSPixelFormat(DDSFormatFlags.Luminance, 0, 0xFF) },
-            { TextureFormat.TextureFormat_L16, new DDSPixelFormat(DDSFormatFlags.Luminance, 0, 0xFFFF) },
-            { TextureFormat.TextureFormat_L16_Uint, new DDSPixelFormat(DDSFormatFlags.Luminance, 16,  0xFFFF) }, //not sure about this one
-            { TextureFormat.TextureFormat_L32, new DDSPixelFormat(DDSFormatFlags.Luminance, 32, 0xFFFFFFFF) },
-
-
             { TextureFormat.TextureFormat_NormalDxn, new DDSPixelFormat("BC5") },
 
             { TextureFormat.TextureFormat_NormalDxt1,   new DDSPixelFormat("DXT1") },
             { TextureFormat.TextureFormat_NormalDxt5, new DDSPixelFormat("DXT5") },
             { TextureFormat.TextureFormat_NormalDxt5Rga, new DDSPixelFormat("DXT5") }, //Not sure about this one
 
+            { TextureFormat.TextureFormat_Rgb565, new DDSPixelFormat(DDSFormatFlags.Rgb, 0, 0x0000f800, 0x000007e0, 0x0000001f) },
+            { TextureFormat.TextureFormat_Rgb888, new DDSPixelFormat(DDSFormatFlags.Rgb, 0, 0x00ff0000, 0x0000ff00, 0x000000ff) },
+            { TextureFormat.TextureFormat_Argb1555, new DDSPixelFormat(DDSFormatFlags.Rgba, 0, 0x00007c00, 0x000003e0, 0x0000001f, 0x00008000) },
+            { TextureFormat.TextureFormat_Argb4444, new DDSPixelFormat(DDSFormatFlags.Rgba, 0, 0xF000, 0x0F00, 0x00F0, 0x000F) },
+            { TextureFormat.TextureFormat_Argb8888, new DDSPixelFormat(DDSFormatFlags.Rgba, 0, 0xFF0000, 0xFF00, 0xFF, 0xFF000000 ) },
+
+            { TextureFormat.TextureFormat_L8, new DDSPixelFormat(DDSFormatFlags.Luminance, 8, 0xFF) },
+            { TextureFormat.TextureFormat_L16, new DDSPixelFormat(DDSFormatFlags.Luminance, 16, 0xFFFF) },
+            { TextureFormat.TextureFormat_L16_Uint, new DDSPixelFormat(DDSFormatFlags.Luminance, 16,  0xFFFF) }, //not sure about this one
+            { TextureFormat.TextureFormat_L32, new DDSPixelFormat(DDSFormatFlags.Luminance, 32, 0xFFFFFFFF) },
+
+
+
+
             { TextureFormat.TextureFormat_Rg8, new DDSPixelFormat(DDSFormatFlags.Rgb, 0, 0xFF00, 0xFF) },
 
-            { TextureFormat.TextureFormat_Gr16, new DDSPixelFormat(DDSFormatFlags.Rgb, 32, 0xFF, 0xFF00) },
+            { TextureFormat.TextureFormat_Gr16, new DDSPixelFormat(DDSFormatFlags.Rgb, 16, 0xFFFF, 0xFFFF0000) },
 
 
 
-            { TextureFormat.TextureFormat_A2R10G10B10, new DDSPixelFormat( DDSFormatFlags.Rgba, 0, 0xFF0000, 0xFF00, 0xFF, 0xFF000000 ) }, //TODO
+            { TextureFormat.TextureFormat_A2R10G10B10, new DDSPixelFormat( DDSFormatFlags.Rgba, 0, 0x3FF00000, 0xFFC00, 0x3FF, 0xC0000000 ) },
             
 
             
@@ -56,6 +58,7 @@ namespace RimeLib.Texture.Frostbite.DDS
             { TextureFormat.TextureFormat_Dxt1A, DXGIFormat.BC1_UNORM },
             { TextureFormat.TextureFormat_Dxt5A, DXGIFormat.BC4_UNORM },
             { TextureFormat.TextureFormat_Dxn, DXGIFormat.BC5_UNORM },
+            { TextureFormat.TextureFormat_NormalDxn, DXGIFormat.BC5_UNORM},
 
             { TextureFormat.TextureFormat_Bc7, DXGIFormat.BC7_UNORM },
 
@@ -66,13 +69,11 @@ namespace RimeLib.Texture.Frostbite.DDS
             { TextureFormat.TextureFormat_Argb8888, DXGIFormat.R8G8B8A8_UNORM },
 
 
-            { TextureFormat.TextureFormat_NormalDxn, DXGIFormat.BC5_UNORM},
-
             { TextureFormat.TextureFormat_Rg8, DXGIFormat.R8G8_UNORM },
             { TextureFormat.TextureFormat_Gr16, DXGIFormat.R16G16_UNORM }, //Not sure
 
 
-            { TextureFormat.TextureFormat_A2R10G10B10, DXGIFormat.R10G10B10A2_UINT }, //TODO
+            { TextureFormat.TextureFormat_A2R10G10B10, DXGIFormat.R10G10B10A2_UINT },
 
 
 

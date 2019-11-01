@@ -35,7 +35,7 @@ namespace RimeLib.Content.Resource
             // Get all factory types from all loaded assemblies.
             var s_FactoryTypes = AppDomain.CurrentDomain.GetAssemblies( )
                 .SelectMany( a => a.GetTypes( ) )
-                .Where( t => typeof( IResourceLoader ).IsAssignableFrom( t ) && t.IsClass );
+                .Where( t => typeof( IResourceLoader ).IsAssignableFrom(t) && t.IsClass );
 
             // Clear the list of currently registered factories.
             m_Factories.Clear();
@@ -46,17 +46,17 @@ namespace RimeLib.Content.Resource
             // From the above types, instantiate the ones that have a 0-arg constructor and add them to the list.
             foreach (var s_FactoryType in s_FactoryTypes)
             {
-                var s_Constructor = s_FactoryType.GetConstructor( Type.EmptyTypes );
+                var s_Constructor = s_FactoryType.GetConstructor(Type.EmptyTypes);
 
                 if (s_Constructor == null)
                     continue;
 
                 // Instantiate the loader.
-                var s_Loader = ( IResourceLoader )Activator.CreateInstance( s_FactoryType );
+                var s_Loader = ( IResourceLoader )Activator.CreateInstance(s_FactoryType);
 
 
                 // Get class attribute
-                var s_Attributes = s_FactoryType.GetCustomAttributes( typeof( ResourceLoaderAttribute ), true ) as ResourceLoaderAttribute[];
+                var s_Attributes = s_FactoryType.GetCustomAttributes(typeof(ResourceLoaderAttribute), true) as ResourceLoaderAttribute[];
 
                 if (s_Attributes == null)
                     continue;

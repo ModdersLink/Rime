@@ -20,6 +20,7 @@ namespace RimeLib.Texture.DDS
         LinearSize = 0x080000,
         Depth = 0x800000,
 
+        Srgb = 0x40000000,
 
         Texture = Caps | Height | Width | PixelFormat,
     };
@@ -39,6 +40,8 @@ namespace RimeLib.Texture.DDS
     [Flags]
     public enum DDSCaps2 : uint
     {
+        
+
         Cubemap = 0x0200,
 
         Cubemap_Face_PositiveX = 0x0400,
