@@ -56,16 +56,22 @@ namespace RimeLib.Frostbite.Core
             p_Reader.ReadUInt32();
 
             if (BaseAddress == 0)
-                throw new Exception("Invalid base address found in RelocPtr");
+            {
+                //throw new Exception("Invalid base address found in RelocPtr");
+#pragma warning disable CS8653 // A default expression introduces a null value for a type parameter.
+                return default;
+#pragma warning restore CS8653 // A default expression introduces a null value for a type parameter.
+            }
+                
 
             // Save the offset
-            var s_CurOffset = p_Reader.BaseStream.Position;
+            var s_CurOffset = p_Reader.Position;
 
             try
             {
                 // We will need to create a new instance of the class we want here, so lets start...
                 // Set the position to where we need to go
-                p_Reader.BaseStream.Position = (long) BaseAddress;
+                p_Reader.Seek((long) BaseAddress, System.IO.SeekOrigin.Begin);
 
                 // Get the current type
                 var s_Type = typeof(T);
@@ -116,7 +122,7 @@ namespace RimeLib.Frostbite.Core
 
                     case TypeCode.Object:
                         // Check if IFbSerializable this is an IFbSerializable.
-                        if (!s_Type.IsSubclassOf(typeof(IFbSerializable)))
+                        if (!typeof(IFbSerializable).IsAssignableFrom(typeof(T)))
                         {
                             // TODO: Exception message
                             throw new NotImplementedException();
@@ -134,7 +140,7 @@ namespace RimeLib.Frostbite.Core
             finally
             {
                 // Reset the position
-                p_Reader.BaseStream.Position = s_CurOffset;
+                p_Reader.Seek(s_CurOffset, System.IO.SeekOrigin.Begin);
             }
         }
 

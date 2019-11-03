@@ -10,7 +10,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\RimeLib.Content.Frostbite2_0\RimeLib.Content.Frostbite2_0.csproj" />
     <ProjectReference Include="..\..\RimeLib.Content\RimeLib.Content.csproj" />
+    <ProjectReference Include="..\..\RimeLib.Mesh\RimeLib.Mesh.csproj" />
     <ProjectReference Include="..\..\RimeLibLite\RimeLibLite.csproj" />
   </ItemGroup>
 

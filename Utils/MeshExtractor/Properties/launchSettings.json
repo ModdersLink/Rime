@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "MeshExtractor": {
+      "commandName": "Project",
+      "commandLineArgs": "\"D:\\Program Files\\Origin Games\\Battlefield 3\" Frostbite2_0 \"D:\\Data\\Rime\""
+    }
+  }
+}

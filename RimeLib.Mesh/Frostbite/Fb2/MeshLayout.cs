@@ -9,7 +9,7 @@ namespace RimeLib.Mesh.Frostbite
     /// <summary>
     /// Venice (Battlefield 3) Mesh layout
     /// </summary>
-    public class MeshLayout
+    public class MeshLayout : IFbSerializable
     {
         /// <summary>
         /// Flags for the mesh layout
@@ -52,7 +52,7 @@ namespace RimeLib.Mesh.Frostbite
         /// <summary>
         /// Subsets within this layout
         /// </summary>
-        public RelocArray<MeshSubset> Subsets { get; set; } = new RelocArray<MeshSubset>() // RelocPtr
+        public RelocArray<MeshSubset> Subsets { get; set; } = new RelocArray<MeshSubset>(); // RelocPtr
 
         /// <summary>
         /// Category subset indices

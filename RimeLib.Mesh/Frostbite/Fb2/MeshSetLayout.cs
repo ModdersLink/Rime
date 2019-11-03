@@ -8,7 +8,7 @@ namespace RimeLib.Mesh.Frostbite
     /// <summary>
     /// Implementation for fb::MeshSetLayout
     /// </summary>
-    public class MeshSetLayout
+    public class MeshSetLayout : IFbSerializable
     {
         /// <summary>
         /// Mesh type

@@ -9,7 +9,7 @@ namespace RimeLib.Mesh.Frostbite
     /// Implementation of fb::MeshSubset
     /// Sizeof MeshSubset = 148 or 0x94
     /// </summary>
-    public class MeshSubset
+    public class MeshSubset : IFbSerializable
     {
         /// <summary>
         /// Geometry declarations
