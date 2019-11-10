@@ -158,11 +158,11 @@ namespace RimeLib.Mesh.Frostbite
             }
         }
 
-        private List<Element> m_Elements = new List<Element>(); // [16]
-        private List<Stream> m_Streams = new List<Stream>(); // [4]
-        private byte m_ElementCount;
-        private byte m_StreamCount;
-        private byte[] m_Padding = new byte[2]; // Len2
+        public List<Element> Elements { get; set; } = new List<Element>(); // [16]
+        public List<Stream> Streams { get; set; } = new List<Stream>(); // [4]
+        public byte ElementCount { get; set; }
+        public byte StreamCount { get; set; }
+        public byte[] Padding { get; set; } = new byte[2]; // Len2
 
         /// <summary>
         /// Default constructor
@@ -187,16 +187,16 @@ namespace RimeLib.Mesh.Frostbite
         /// <param name="p_Writer">Writer opened to the position where this descriptor should be written</param>
         public bool Serialize(RimeWriter p_Writer)
         {
-            foreach (var s_Element in m_Elements)
+            foreach (var s_Element in Elements)
                 if (!s_Element.Serialize(p_Writer))
                     return false;
 
-            foreach (var s_Stream in m_Streams)
+            foreach (var s_Stream in Streams)
                 p_Writer.Write(s_Stream.Serialize());
 
-            p_Writer.Write(m_ElementCount);
-            p_Writer.Write(m_StreamCount);
-            p_Writer.Write(m_Padding);
+            p_Writer.Write(ElementCount);
+            p_Writer.Write(StreamCount);
+            p_Writer.Write(Padding);
 
             return true;
         }
@@ -209,14 +209,14 @@ namespace RimeLib.Mesh.Frostbite
         public void Deserialize(RimeReader p_Reader)
         {
             for (var i = 0; i < 16; ++i)
-                m_Elements.Add(new Element(p_Reader));
+                Elements.Add(new Element(p_Reader));
 
             for (var i = 0; i < 4; ++i)
-                m_Streams.Add(new Stream(p_Reader));
+                Streams.Add(new Stream(p_Reader));
 
-            m_ElementCount = p_Reader.ReadUByte();
-            m_StreamCount = p_Reader.ReadUByte();
-            m_Padding = p_Reader.ReadBytes(2);
+            ElementCount = p_Reader.ReadUByte();
+            StreamCount = p_Reader.ReadUByte();
+            Padding = p_Reader.ReadBytes(2);
         }
 
         public void Deserialize(byte[] p_Data)

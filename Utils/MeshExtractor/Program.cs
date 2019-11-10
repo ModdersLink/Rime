@@ -2,6 +2,7 @@
 using RimeLib.Content.Mounting;
 using RimeLib.Frostbite;
 using RimeLib.IO;
+using RimeLib.Math;
 using RimeLib.Mesh.Frostbite;
 using RimeLib.Mesh.Frostbite.Helpers;
 using System;
@@ -73,7 +74,7 @@ namespace MeshExtractor
             if (!p_Options.Quiet)
                 Console.WriteLine($"Everythingis now mounted! Starting model conversion.");
 
-            foreach (var p_Pair in s_Mounter.GetResources())
+            /*foreach (var p_Pair in s_Mounter.GetResources())
             {
                 var l_Name = p_Pair.Key;
                 var l_MountedObject = p_Pair.Value;
@@ -86,11 +87,11 @@ namespace MeshExtractor
                     // Dump the mesh
                     DumpMesh(s_Mounter, p_Options, l_Name, l_MountedObject);
                 }
-            }
+            }*/
 
             // TODO: Speed this up
             // Uncomment below once debugging is done
-            /*Parallel.ForEach(s_Mounter.GetResources(), p_Pair =>
+            Parallel.ForEach(s_Mounter.GetResources(), p_Pair =>
             {
                 var l_Name = p_Pair.Key;
                 var l_MountedObject = p_Pair.Value;
@@ -101,18 +102,20 @@ namespace MeshExtractor
                         continue;
 
                     // Dump the mesh
-                    DumpMesh(p_Options, l_Name, l_MountedObject);
+                    DumpMesh(s_Mounter, p_Options, l_Name, l_MountedObject);
                 }
-            });*/
+            });
         }
 
         private static void DumpMesh<T>(IEngineMounter p_Mounter, Options p_Options, string p_FilePath, IMountedObject<T> p_Object) where T : IObjectVariant
         {
             // Construct a full path to this object and make sure its directory exists.
-            var s_Path = Path.Join(p_Options.OutputPath, p_FilePath + ".obj").Normalize();
+            var s_Path = Path.Join(p_Options.OutputPath, p_FilePath + ".bin").Normalize();
 
             var s_Directory = Path.GetDirectoryName(s_Path);
-            Directory.CreateDirectory(s_Directory);
+            
+            if (!Directory.Exists(s_Directory))
+                Directory.CreateDirectory(s_Directory);
 
             if (!p_Options.Quiet)
                 Console.WriteLine("/" + p_FilePath + ".obj");
@@ -123,16 +126,20 @@ namespace MeshExtractor
 
             var s_Data = s_Reader.ReadBytes((int)s_Reader.Length);
 
-            File.WriteAllBytes(s_Path + ".bin", s_Data);
+            File.WriteAllBytes(s_Path, s_Data);
 
             using var s_Reader2 = new RimeReader(new MemoryStream(s_Data), RimeLib.IO.Conversion.Endianness.LittleEndian);
             var s_MeshSetLayout = new MeshSetLayout(s_Reader2);
 
             var s_CurrentLod = 0;
-            using var s_Writer = new StringWriter();
+            
 
-            foreach (var l_Lod in s_MeshSetLayout.Lods)
+            for (var l_LodIndex = 0; l_LodIndex < s_MeshSetLayout.LodCount; ++l_LodIndex)
             {
+                var l_Lod = s_MeshSetLayout.Lods[l_LodIndex];
+
+                using var s_Writer = new StringWriter();
+
                 var l_MeshLayout = l_Lod.Object;
                 if (l_MeshLayout == null)
                 {
@@ -150,54 +157,203 @@ namespace MeshExtractor
                 if (!p_Mounter.TryGetChunk(l_DataChunkId, out IMountedObject<IChunkVariant> p_Chunk))
                     continue;
 
-                // TODO: Determine wtf this reader is open to
-                using var l_Reader = new RimeReader(p_Chunk.FirstVariant.GetReader(), RimeLib.IO.Conversion.Endianness.LittleEndian);
 
                 // Each of the subsets can be one part
-                foreach (var l_Subset in l_MeshLayout.Subsets.Get)
-                {                    
-                    var l_Verts = new List<(float, float, float)>();
-                    var l_Normals = new List<(float, float, float)>();
-                    var l_Indicies = new List<(ushort, ushort, ushort)>();
+                var s_Subsets = l_MeshLayout.Subsets.Get;
+                for (var l_SubsetIndex = 0; l_SubsetIndex < s_Subsets.Length; ++l_SubsetIndex)
+                {
+                    var l_Subset = s_Subsets[l_SubsetIndex];
 
+                    var l_GeometryDesc = l_Subset.GeometryDeclarationDesc;
+
+                    // This holds how large 1 entry is in the array
+                    var l_VertexStride = l_Subset.VertexStride;
+
+                    // This is a primitive type
+                    var l_PrimitiveType = l_Subset.PrimitiveType;
+
+                    // TODO: Determine wtf this reader is open to
+                    using var l_IncomingDataReader = p_Chunk.FirstVariant.GetReader();
+                    var l_ReaderData = l_IncomingDataReader.ReadBytes((int)l_IncomingDataReader.Length);
+                    var l_Reader = new BinaryReader(new MemoryStream(l_ReaderData));
+
+#if DEBUG
+                    // If we are debugging, dump the raw format out to file
+                    File.WriteAllBytes($"{l_MeshLayout.ShortName.Object}_subset{l_SubsetIndex}.bin", l_ReaderData);
+#endif
+
+                    // Read out all of the vertex data, it will be described by the GeometryDesc
+                    var l_VertexDataList = new List<byte[]>();
                     for (var l_VertexIndex = 0; l_VertexIndex < l_Subset.VertexCount; ++l_VertexIndex)
-                    {
-                        var l_VertexBlock = new VertexData(l_Reader);
+                        l_VertexDataList.Add(l_Reader.ReadBytes(l_VertexStride));
 
-                        l_Verts.Add((l_VertexBlock.X, l_VertexBlock.Y, l_VertexBlock.Z));
-                        l_Normals.Add((l_VertexBlock.VertexNormals[0], l_VertexBlock.VertexNormals[1], l_VertexBlock.VertexNormals[2]));
+                    // Hold all of the vertex information
+                    var l_VertexList = new List<Dictionary<VertexElementUsage, dynamic>>();
+                    var l_PrimitiveList = new List<(ushort, ushort, ushort)>();
+
+                    // Iterate through each vertex data (sizeof(VertexData) == Stride)
+                    foreach (var l_VertexData in l_VertexDataList)
+                    {
+                        // Create a new reader to the vertex data specifically
+                        using var l_VertexReader = new BinaryReader(new MemoryStream(l_VertexData));
+
+                        // This dictionary is how we will parse each element from the vertex data
+                        var l_Dict = new Dictionary<VertexElementUsage, dynamic>();
+                        foreach (var l_Element in l_GeometryDesc.Elements)
+                        {
+                            // Iterate each element and check the format and set to the usage
+                            // There should not be more than one of the same kind of usage here
+                            switch (l_Element.Format)
+                            {
+                                case VertexElementFormat.VertexElementFormat_None:
+                                    break;
+
+                                    // Halfs
+                                case VertexElementFormat.VertexElementFormat_Half:
+                                    l_VertexReader.BaseStream.Seek(l_Element.Offset, SeekOrigin.Begin);
+                                    l_Dict[l_Element.Usage] = RimeMath.HalfToFloat(l_VertexReader.ReadUInt16());
+                                    break;
+                                case VertexElementFormat.VertexElementFormat_Half2:
+                                    l_VertexReader.BaseStream.Seek(l_Element.Offset, SeekOrigin.Begin);
+                                    l_Dict[l_Element.Usage] = (RimeMath.HalfToFloat(l_VertexReader.ReadUInt16()), RimeMath.HalfToFloat(l_VertexReader.ReadUInt16()));
+                                    break;
+                                case VertexElementFormat.VertexElementFormat_Half3:
+                                    l_VertexReader.BaseStream.Seek(l_Element.Offset, SeekOrigin.Begin);
+                                    l_Dict[l_Element.Usage] = (RimeMath.HalfToFloat(l_VertexReader.ReadUInt16()), RimeMath.HalfToFloat(l_VertexReader.ReadUInt16()), RimeMath.HalfToFloat(l_VertexReader.ReadUInt16()));
+                                    break;
+                                case VertexElementFormat.VertexElementFormat_Half4:
+                                    l_VertexReader.BaseStream.Seek(l_Element.Offset, SeekOrigin.Begin);
+                                    l_Dict[l_Element.Usage] = (RimeMath.HalfToFloat(l_VertexReader.ReadUInt16()), RimeMath.HalfToFloat(l_VertexReader.ReadUInt16()), RimeMath.HalfToFloat(l_VertexReader.ReadUInt16()), RimeMath.HalfToFloat(l_VertexReader.ReadUInt16()));
+                                    break;
+                                case VertexElementFormat.VertexElementFormat_UByte4:
+                                case VertexElementFormat.VertexElementFormat_UByte4N:
+                                    l_VertexReader.BaseStream.Seek(l_Element.Offset, SeekOrigin.Begin);
+                                    l_Dict[l_Element.Usage] = l_VertexReader.ReadBytes(4);
+                                    break;
+
+                                    // Floats
+                                case VertexElementFormat.VertexElementFormat_Float:
+                                    l_VertexReader.BaseStream.Seek(l_Element.Offset, SeekOrigin.Begin);
+                                    l_Dict[l_Element.Usage] = l_VertexReader.ReadSingle();
+                                    break;
+                                case VertexElementFormat.VertexElementFormat_Float2:
+                                    l_VertexReader.BaseStream.Seek(l_Element.Offset, SeekOrigin.Begin);
+                                    l_Dict[l_Element.Usage] = (l_VertexReader.ReadSingle(), l_VertexReader.ReadSingle());
+                                    break;
+                                case VertexElementFormat.VertexElementFormat_Float3:
+                                    l_VertexReader.BaseStream.Seek(l_Element.Offset, SeekOrigin.Begin);
+                                    l_Dict[l_Element.Usage] = (l_VertexReader.ReadSingle(), l_VertexReader.ReadSingle(), l_VertexReader.ReadSingle());
+                                    break;
+                                case VertexElementFormat.VertexElementFormat_Float4:
+                                    l_VertexReader.BaseStream.Seek(l_Element.Offset, SeekOrigin.Begin);
+                                    l_Dict[l_Element.Usage] = (l_VertexReader.ReadSingle(), l_VertexReader.ReadSingle(), l_VertexReader.ReadSingle(), l_VertexReader.ReadSingle());
+                                    break;
+                                default:
+                                    Console.WriteLine($"Unknown Format usage {l_Element.Format}");
+                                    throw new Exception($"Unknown format usage {l_Element.Format}");
+                            }
+                        }
+
+                        l_VertexList.Add(l_Dict);
                     }
 
                     // Read out all of the primitives
-                    for (var l_PrimitiveIndex = 0; l_PrimitiveIndex < l_Subset.PrimitiveCount; ++l_PrimitiveIndex)
+                    l_Reader.BaseStream.Seek(l_MeshLayout.VertexDataSize, SeekOrigin.Begin);
+
+                    switch (l_PrimitiveType)
                     {
-                        l_Indicies.Add((l_Reader.ReadUInt16(), l_Reader.ReadUInt16(), l_Reader.ReadUInt16()));
+                        case PrimitiveType.PrimitiveType_TriangleList:
+                            for (var l_PrimitiveIndex = 0; l_PrimitiveIndex < l_Subset.PrimitiveCount; ++l_PrimitiveIndex)
+                                l_PrimitiveList.Add((l_Reader.ReadUInt16(), l_Reader.ReadUInt16(), l_Reader.ReadUInt16()));
+                            break;
+                        default:
+                            Console.WriteLine($"primitive type {l_PrimitiveType} not implemented");
+                            throw new NotImplementedException($"primitive type {l_PrimitiveType} not implemented");
                     }
+
+                    
 
                     // Write out all of the information we have gathered so far
                     s_Writer.WriteLine($"# Subset Primitve Type: {l_Subset.PrimitiveType}");
                     s_Writer.WriteLine($"# Subset Primitive Count: {l_Subset.PrimitiveCount}");
                     s_Writer.WriteLine($"# Subset Vertex Count: {l_Subset.VertexCount}");
 
-                    foreach (var l_Vert in l_Verts)
-                        s_Writer.WriteLine($"v {l_Vert.Item1} {l_Vert.Item2} {l_Vert.Item3}");
+                    s_Writer.WriteLine($"g {l_MeshLayout.Name.Object}");
+                    s_Writer.WriteLine($"usemtl {l_Subset.MaterialName.Object}");
 
-                    foreach (var l_Normal in l_Normals)
-                        s_Writer.WriteLine($"vn {l_Normal.Item1} {l_Normal.Item2} {l_Normal.Item3}");
+                    foreach (var l_Vertex in l_VertexList)
+                    {
+                        foreach (VertexElementUsage l_Usage in Enum.GetValues(typeof(VertexElementUsage)))
+                        {
+                            if (!l_Vertex.TryGetValue(l_Usage, out dynamic l_OutData))
+                                continue;
 
-                    s_Writer.WriteLine($"g {l_MeshLayout.Name}");
-                    s_Writer.WriteLine($"usemtl {l_Subset.MaterialName}");
+                            switch (l_Usage)
+                            {
+                                case VertexElementUsage.VertexElementUsage_Pos:
+                                    s_Writer.WriteLine($"v {l_OutData.Item1} {l_OutData.Item2} {l_OutData.Item3}");
+                                    break;
+                                case VertexElementUsage.VertexElementUsage_Normal:
+                                    s_Writer.WriteLine($"vn {l_OutData.Item1} {l_OutData.Item2} {l_OutData.Item3}");
+                                    break;
+                                case VertexElementUsage.VertexElementUsage_Tangent:
+                                    s_Writer.WriteLine($"# Tangent: {l_OutData.Item1} {l_OutData.Item2} {l_OutData.Item3} {l_OutData.Item4}");
+                                    break;
+                                case VertexElementUsage.VertexElementUsage_BoneIndices:
+                                    s_Writer.WriteLine($"# bone indicies: {BitConverter.ToString(l_OutData)}");
+                                    break;
+                                case VertexElementUsage.VertexElementUsage_Binormal:
+                                    s_Writer.WriteLine($"# binormal: {l_OutData.Item1} {l_OutData.Item2} {l_OutData.Item3} {l_OutData.Item4}");
+                                    break;
+                                case VertexElementUsage.VertexElementUsage_BinormalSign:
+                                    s_Writer.WriteLine($"# binormal sign: {l_OutData}");
+                                    break;
+                                case VertexElementUsage.VertexElementUsage_TexCoord0:
+                                case VertexElementUsage.VertexElementUsage_TexCoord1:
+                                case VertexElementUsage.VertexElementUsage_TexCoord2:
+                                case VertexElementUsage.VertexElementUsage_TexCoord3:
+                                case VertexElementUsage.VertexElementUsage_TexCoord4:
+                                case VertexElementUsage.VertexElementUsage_TexCoord5:
+                                case VertexElementUsage.VertexElementUsage_TexCoord6:
+                                case VertexElementUsage.VertexElementUsage_TexCoord7:
+                                    s_Writer.WriteLine($"vn {l_OutData.Item1} {l_OutData.Item2}");
+                                    break;
+                                case VertexElementUsage.VertexElementUsage_Color0:
+                                case VertexElementUsage.VertexElementUsage_Color1:
+                                    s_Writer.WriteLine($"# color {BitConverter.ToString(l_OutData)}");
+                                    break;
+                                case VertexElementUsage.VertexElementUsage_BoneWeights:
+                                    s_Writer.WriteLine($"# bone weights {BitConverter.ToString(l_OutData)}");
+                                    break;
+                                case VertexElementUsage.VertexElementUsage_RadiosityTexCoord:
+                                    s_Writer.WriteLine($"vn {l_OutData.Item1} {l_OutData.Item2}");
+                                    break;
+                                case VertexElementUsage.VertexElementUsage_SubMaterialIndex:
+                                    s_Writer.WriteLine($"# sub-material index {BitConverter.ToString(l_OutData)}");
+                                    break;
+                                default:
+                                    Console.WriteLine($"usage type {l_Usage} not implemented");
+                                    throw new NotImplementedException($"usage type {l_Usage} not implemented");
 
-                    foreach (var l_Index in l_Indicies)
-                        s_Writer.WriteLine($"f {l_Index.Item1} {l_Index.Item2} {l_Index.Item3}");
+                            }
+                        }
+                    }
+
+                    foreach (var l_Index in l_PrimitiveList)
+                        s_Writer.WriteLine($"f {l_Index.Item1 + 1} {l_Index.Item2 + 1} {l_Index.Item3 + 1}");
+
+                    l_Reader.Close();
                 }
+
+                var s_ObjData = s_Writer.ToString();
+
+                var s_OutputPath = Path.Join(p_Options.OutputPath, p_FilePath + $"lod{l_LodIndex}.obj").Normalize();
+                File.WriteAllText(s_OutputPath, s_ObjData);
 
                 s_CurrentLod++;
             }
 
-            var s_ObjData = s_Writer.ToString();
-
-            File.WriteAllText(s_Path, s_ObjData);
+            
         }
     }
 }
