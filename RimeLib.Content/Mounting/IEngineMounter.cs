@@ -16,6 +16,8 @@ namespace RimeLib.Content.Mounting
     public interface IChunkObject : IReadableObject
     {
         bool TryGetMeta(out DbObject? p_Meta);
+        uint GetRangeStart();
+        uint GetLogicalOffset();
     }
 
     public interface IObjectVariant : IReadableObject, IObjectWithHash

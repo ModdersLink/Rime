@@ -92,6 +92,17 @@ namespace RimeLib.IO
             Encode7Bit((ulong) ((p_Value >> 63) ^ (p_Value << 1)));
         }
 
+        public void Align(int p_Alignment, byte p_Padding = 0x00)
+        {
+            if (Position % p_Alignment == 0)
+                return;
+
+            var s_Number = p_Alignment - (Position % p_Alignment);
+
+            for (var i = 0; i < s_Number; ++i)
+                WriteByte(p_Padding);
+        }
+
         protected override void WriteInternal(byte[] p_Value, int p_Offset, int p_Count)
         {
             // If we're writing in obfuscated mode we need to do some trickery.

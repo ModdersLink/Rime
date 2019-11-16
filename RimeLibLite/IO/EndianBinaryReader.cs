@@ -41,9 +41,9 @@ namespace RimeLib.IO
         public Endianness Endianness => BitConverter.Endianness;
         
         // Declare our capabilities.
-        public override bool CanRead => true;
-        public override bool CanSeek => true;
-        public override bool CanWrite => false;
+        public override bool CanRead => BaseStream.CanRead;
+        public override bool CanSeek => BaseStream.CanSeek;
+        public override bool CanWrite => BaseStream.CanWrite;
 
         /// <summary>
 		/// Whether or not this reader has been disposed yet.
@@ -76,17 +76,6 @@ namespace RimeLib.IO
 
             BaseStream = p_Stream;
 			BitConverter = p_BitConverter;
-		}
-
-	    /// <summary>
-	    /// Seeks within the stream.
-	    /// </summary>
-	    /// <param name="p_Offset">Offset to seek to.</param>
-	    /// <param name="p_Origin">Origin of seek operation.</param>
-	    public override long Seek(long p_Offset, SeekOrigin p_Origin)
-		{
-			CheckDisposed();
-			return BaseStream.Seek(p_Offset, p_Origin);
 		}
 
 		/// <summary>
@@ -279,29 +268,6 @@ namespace RimeLib.IO
         }
 
         /// <summary>
-        /// Reads the specified number of bytes, returning them in a new byte array.
-        /// If not enough bytes are available before the end of the stream, this
-        /// method will return only the bytes that were successfully read. Keep in
-        /// mind that the returned buffer might be bigger than the number of bytes
-        /// read.
-        /// </summary>
-        /// <param name="p_Buffer">A buffer containing the read data</param>
-        /// <param name="p_Count">The number of bytes to read</param>
-        /// <returns>The number of bytes read</returns>
-        public virtual int TryReadBytes(out byte[] p_Buffer, int p_Count)
-        {
-            CheckDisposed();
-
-            if (p_Count < 0)
-                throw new ArgumentOutOfRangeException(nameof(p_Count));
-
-            p_Buffer = new byte[p_Count];
-            var s_BytesRead = ReadInternal(p_Buffer, 0, p_Count);
-
-            return s_BytesRead;
-        }
-
-		/// <summary>
 		/// Disposes of the underlying stream.
 		/// </summary>
 		public new virtual void Dispose()
@@ -318,23 +284,31 @@ namespace RimeLib.IO
 
         public override void Flush()
         {
+            CheckDisposed();
             BaseStream.Flush();
+        }
+
+        public override long Seek(long p_Offset, SeekOrigin p_Origin)
+        {
+            CheckDisposed();
+            return BaseStream.Seek(p_Offset, p_Origin);
         }
 
         public override int Read(byte[] p_Buffer, int p_Offset, int p_Count)
         {
-            CheckDisposed();
             return ReadInternal(p_Buffer, p_Offset, p_Count);
         }
 
-        public override void SetLength(long value)
+        public override void SetLength(long p_Value)
         {
-            throw new NotSupportedException();
+            CheckDisposed();
+            BaseStream.SetLength(p_Value);
         }
 
         public override void Write(byte[] p_Buffer, int p_Offset, int p_Count)
         {
-            throw new NotSupportedException();
+            CheckDisposed();
+            BaseStream.Write(p_Buffer, p_Offset, p_Count);
         }
 
         /// <summary>

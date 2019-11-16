@@ -25,14 +25,19 @@ namespace RimeLib.IO
         public override long Length => BaseStream.Length;
 
         // Declare our capabilities.
-        public override bool CanRead => false;
-        public override bool CanSeek => true;
-        public override bool CanWrite => true;
+        public override bool CanRead => BaseStream.CanRead;
+        public override bool CanSeek => BaseStream.CanSeek;
+        public override bool CanWrite => BaseStream.CanWrite;
 
         /// <summary>
         /// The bit converter used to write values to the stream
         /// </summary>
         public EndianBitConverter BitConverter { get; }
+
+        /// <summary>
+        /// The endianness of the endian converter.
+        /// </summary>
+        public Endianness Endianness => BitConverter.Endianness;
 
         /// <summary>
         /// Gets the underlying stream of the EndianBinaryWriter.
@@ -254,12 +259,14 @@ namespace RimeLib.IO
 
         public override int Read(byte[] p_Buffer, int p_Offset, int p_Count)
         {
-            throw new NotSupportedException();
+            CheckDisposed();
+            return BaseStream.Read(p_Buffer, p_Offset, p_Count);
         }
 
-        public override void SetLength(long value)
+        public override void SetLength(long p_Value)
         {
-            throw new NotSupportedException();
+            CheckDisposed();
+            BaseStream.SetLength(p_Value);
         }
 
         /// <summary>

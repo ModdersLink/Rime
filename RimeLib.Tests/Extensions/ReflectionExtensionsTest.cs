@@ -23,12 +23,12 @@ namespace RimeLib.Tests.Extensions
         [Fact]
         public void TestIsNullable()
         {
-            Assert.True(typeof(NullabilityTest).GetProperty("NullableInt").IsNullable());
-            Assert.True(typeof(NullabilityTest).GetProperty("NullableString").IsNullable());
-            Assert.True(typeof(NullabilityTest).GetProperty("NullableObject").IsNullable());
-            Assert.False(typeof(NullabilityTest).GetProperty("NonNullableInt").IsNullable());
-            Assert.False(typeof(NullabilityTest).GetProperty("NonNullableString").IsNullable());
-            Assert.False(typeof(NullabilityTest).GetProperty("NonNullableObject").IsNullable());
+            Assert.True(typeof(NullabilityTest).GetProperty("NullableInt")!.IsNullable());
+            Assert.True(typeof(NullabilityTest).GetProperty("NullableString")!.IsNullable());
+            Assert.True(typeof(NullabilityTest).GetProperty("NullableObject")!.IsNullable());
+            Assert.False(typeof(NullabilityTest).GetProperty("NonNullableInt")!.IsNullable());
+            Assert.False(typeof(NullabilityTest).GetProperty("NonNullableString")!.IsNullable());
+            Assert.False(typeof(NullabilityTest).GetProperty("NonNullableObject")!.IsNullable());
         }
     }
 }

@@ -5,7 +5,6 @@ using RimeLib.Content.Frostbite2_0.Frostbite.Chunks;
 using RimeLib.Content.Frostbite2_0.Frostbite.Sb;
 using RimeLib.Content.Frostbite2_0.IO;
 using RimeLib.Content.Frostbite2_0.Mounting;
-using RimeLib.Frostbite;
 using RimeLib.Frostbite.Core;
 using RimeLib.Frostbite.Db;
 using RimeLib.IO;
@@ -192,6 +191,10 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
 
         public ChunkMeta Meta { get; set; }
 
+        public uint RangeStart { get; set; }
+
+        public uint LogicalOffset { get; set; }
+
         private long m_SeekOffset;
         private long m_Size;
 
@@ -207,6 +210,12 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
 
             m_SeekOffset = p_SeekOffset;
             m_Size = p_Entry.RangeEnd - p_Entry.RangeStart;
+
+            // TODO: Range and logical range have something to do with textures and mip-maps.
+            // I still have no idea what, need to investigate. We also need to pull firstMip
+            // info from meta as that's somehow relevant.
+            RangeStart = p_Entry.RangeStart;
+            LogicalOffset = p_Entry.LogicalOffset;
         }
 
         public override RimeReader GetReader()
@@ -292,6 +301,10 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
                 ChunkMetaSize = p_Reader.ReadInt32();
             }
 
+            public Header()
+            {
+            }
+
             public void Serialize(RimeWriter p_Writer)
             {
                 p_Writer.Write(Magic);
@@ -320,6 +333,10 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
                 OriginalSize = p_Reader.ReadUInt32();
             }
 
+            public EntryRecord()
+            {
+            }
+
             public void Serialize(RimeWriter p_Writer)
             {
                 p_Writer.Write(NameOffset);
@@ -344,6 +361,11 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
                 RangeStart = p_Reader.ReadUInt32();
                 RangeEnd = p_Reader.ReadUInt32();
                 LogicalOffset = p_Reader.ReadUInt32();
+            }
+
+            public ChunkEntry(GUID p_Id)
+            {
+                Id = p_Id;
             }
 
             public void Serialize(RimeWriter p_Writer)

@@ -9,6 +9,7 @@ using RimeLib.Frostbite;
 using RimeLib.Frostbite.Core;
 using RimeLib.IO;
 using RimeLib.IO.Conversion;
+using RimeLib.Utils;
 
 namespace RimeLib.Content.Frostbite2_0.Building
 {
@@ -73,7 +74,26 @@ namespace RimeLib.Content.Frostbite2_0.Building
 
         private void SerializeBundle(string p_Path, BundleDescriptor p_Descriptor, RimeWriter p_SbWriter)
         {
-            // TODO
+            var s_BundleInfo = new BundleInfo
+            {
+                Id = p_Path,
+                Offset = p_SbWriter.Position,
+                Size = 0,
+                Checksum = new Sha1(),
+            };
+
+            var s_Builder = new BundleManifestBuilder(p_Descriptor);
+            s_Builder.Serialize(p_SbWriter);
+
+            // Calculate size.
+            s_BundleInfo.Size = p_SbWriter.Position - s_BundleInfo.Offset;
+
+            // Calculate hash.
+            p_SbWriter.Seek(p_SbWriter.Position, SeekOrigin.Begin);
+            s_BundleInfo.Checksum = HashingUtils.HashFromStream(p_SbWriter, (int) s_BundleInfo.Size);
+
+            // Add bundle to layout.
+            m_Bundles.Add(s_BundleInfo);
         }
     }
 }
