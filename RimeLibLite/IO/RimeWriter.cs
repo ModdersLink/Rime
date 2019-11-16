@@ -13,8 +13,8 @@ namespace RimeLib.IO
 		
         protected long m_ObfuscatedDataOffset;
 
-        public RimeWriter(Stream p_Stream, Endianness p_Endianness = Endianness.LittleEndian)
-            : base(p_Endianness == Endianness.BigEndian ? (EndianBitConverter) EndianBitConverter.Big : EndianBitConverter.Little, p_Stream)
+        public RimeWriter(Stream p_Stream, Endianness p_Endianness = Endianness.LittleEndian, bool p_ShouldDispose = true)
+            : base(p_Endianness == Endianness.BigEndian ? (EndianBitConverter) EndianBitConverter.Big : EndianBitConverter.Little, p_Stream, p_ShouldDispose)
         {
         }
 

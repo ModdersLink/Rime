@@ -305,7 +305,9 @@ namespace RimeLib.IO
 		/// Disposes of the underlying stream.
 		/// </summary>
 		public new virtual void Dispose()
-		{
+        {
+            base.Dispose();
+
             CheckDisposed();
 
             m_Disposed = true;
