@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using RimeLib.Attributes;
 using RimeLib.Frostbite;
 
 namespace RimeLib.Content.Building
@@ -17,7 +19,7 @@ namespace RimeLib.Content.Building
         /// <returns>A superbundle serializer instance.</returns>
         public static ISuperbundleSerializer Create(EngineType p_Type)
         {
-            Type? s_SerializerType = null;
+            Type? s_SerializerType;
 
             // Try to get a type from the currently registered serializers.
             if (!m_Serializers.TryGetValue(p_Type, out s_SerializerType))
@@ -49,23 +51,32 @@ namespace RimeLib.Content.Building
 
             Type? s_FoundSerializer = null;
 
-            // From the above types, instantiate the ones that have a 0-arg constructor and add them to the list.
+            // From the above types, check the engine support attribute for each and register accordingly.
             foreach (var s_SerializerType in s_SerializerTypes)
             {
+                // We only want types with 0-arg constructors.
                 var s_Constructor = s_SerializerType.GetConstructor(Type.EmptyTypes);
 
                 if (s_Constructor == null)
                     continue;
 
-                // Instantiate the serializer.
-                // TODO: This is silly. Replace with an attribute.
-                var s_Serializer = (ISuperbundleSerializer) Activator.CreateInstance(s_SerializerType);
+                try
+                {
+                    var s_Attribute = s_SerializerType.GetCustomAttribute<EngineSupportAttribute>(true);
 
-                // If this is the requested serializer type then store it so we can return it later.
-                if (s_Serializer.GetSupportedEngine() == p_Type)
-                    s_FoundSerializer = s_SerializerType;
+                    foreach (var s_SupportedEngine in s_Attribute.SupportedEngines)
+                    {
+                        m_Serializers[s_SupportedEngine] = s_SerializerType;
 
-                m_Serializers[s_Serializer.GetSupportedEngine()] = s_SerializerType;
+                        // If this is the requested serializer type then store it so we can return it later.
+                        if (s_SupportedEngine == p_Type)
+                            s_FoundSerializer = s_SerializerType;
+                    }
+                }
+                catch
+                {
+                    // Ignored.
+                }
             }
 
             return s_FoundSerializer;

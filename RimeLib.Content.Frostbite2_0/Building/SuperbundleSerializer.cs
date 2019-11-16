@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using RimeLib.Attributes;
 using RimeLib.Content.Building;
 using RimeLib.Content.Frostbite2_0.Frostbite.Sb;
 using RimeLib.Content.Mounting;
@@ -11,13 +12,9 @@ using RimeLib.IO.Conversion;
 
 namespace RimeLib.Content.Frostbite2_0.Building
 {
+    [EngineSupport(EngineType.Frostbite2_0)]
     public class SuperbundleSerializer : ISuperbundleSerializer
     {
-        public EngineType GetSupportedEngine()
-        {
-            return EngineType.Frostbite2_0;
-        }
-
         private TableOfContents<SuperbundleLayout> m_Toc = new TableOfContents<SuperbundleLayout>(new SuperbundleLayout());
 
         private List<ChunkInfo> m_Chunks = new List<ChunkInfo>();

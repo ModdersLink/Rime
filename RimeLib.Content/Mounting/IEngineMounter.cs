@@ -45,12 +45,6 @@ namespace RimeLib.Content.Mounting
     public interface IEngineMounter
     {
         /// <summary>
-        /// Get the engine type this mounter supports.
-        /// </summary>
-        /// <returns>The engine type.</returns>
-        EngineType GetSupportedEngine();
-
-        /// <summary>
         /// Mount the game at the specified path.
         /// </summary>
         /// <param name="p_GamePath">The path of the game.</param>

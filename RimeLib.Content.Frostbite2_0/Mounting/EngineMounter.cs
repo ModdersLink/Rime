@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using RimeLib.Attributes;
 using RimeLib.Content.Frostbite;
 using RimeLib.Content.Mounting;
 using RimeLib.Content.Frostbite2_0.Frostbite.Bundles;
@@ -21,6 +22,7 @@ using PackageManifest = RimeLib.Content.Frostbite2_0.Frostbite.PackageManifest;
 
 namespace RimeLib.Content.Frostbite2_0.Mounting
 {
+    [EngineSupport(EngineType.Frostbite2_0)]
     public class EngineMounter : IEngineMounter
     {
         protected string m_GamePath = "";
@@ -38,11 +40,6 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
         private readonly ConcurrentDictionary<string, MountedObject<IResourceVariant>> m_MountedResources = new ConcurrentDictionary<string, MountedObject<IResourceVariant>>();
         private readonly ConcurrentDictionary<GUID, MountedObject<IChunkVariant>> m_MountedChunks = new ConcurrentDictionary<GUID, MountedObject<IChunkVariant>>();
         private readonly ConcurrentDictionary<string, MountedObject> m_MountedPartitions = new ConcurrentDictionary<string, MountedObject>();
-
-        public EngineType GetSupportedEngine()
-        {
-            return EngineType.Frostbite2_0;
-        }
 
         public async Task Mount(string p_GamePath, bool p_AutoMount)
         {
