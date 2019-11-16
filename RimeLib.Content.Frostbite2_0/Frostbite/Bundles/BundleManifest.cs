@@ -269,7 +269,7 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
 
     public class BundleManifest
     {
-        private class Header
+        public class Header
         {
             public uint Magic { get; set; }
             public int EntryCount { get; set; }
@@ -291,9 +291,21 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
                 ChunkMetaOffset = p_Reader.ReadInt32();
                 ChunkMetaSize = p_Reader.ReadInt32();
             }
+
+            public void Serialize(RimeWriter p_Writer)
+            {
+                p_Writer.Write(Magic);
+                p_Writer.Write(EntryCount);
+                p_Writer.Write(EbxCount);
+                p_Writer.Write(ResourceCount);
+                p_Writer.Write(ChunkCount);
+                p_Writer.Write(StringBlockOffset);
+                p_Writer.Write(ChunkMetaOffset);
+                p_Writer.Write(ChunkMetaSize);
+            }
         }
 
-        internal class EntryRecord
+        public class EntryRecord
         {
             public uint NameOffset { get; set; }
 
@@ -307,9 +319,16 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
                 PayloadSize = p_Reader.ReadUInt32();
                 OriginalSize = p_Reader.ReadUInt32();
             }
+
+            public void Serialize(RimeWriter p_Writer)
+            {
+                p_Writer.Write(NameOffset);
+                p_Writer.Write(PayloadSize);
+                p_Writer.Write(OriginalSize);
+            }
         }
 
-        internal class ChunkEntry
+        public class ChunkEntry
         {
             public GUID Id { get; set; }
 
@@ -326,9 +345,17 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
                 RangeEnd = p_Reader.ReadUInt32();
                 LogicalOffset = p_Reader.ReadUInt32();
             }
+
+            public void Serialize(RimeWriter p_Writer)
+            {
+                Id.Serialize(p_Writer);
+                p_Writer.Write(RangeStart);
+                p_Writer.Write(RangeEnd);
+                p_Writer.Write(LogicalOffset);
+            }
         }
 
-        private const uint c_ManifestEbx = 0xED1CEDB8;
+        public const uint c_ManifestEbx = 0xED1CEDB8;
 
         private readonly Header m_Header;
         private readonly uint m_ManifestSize;

@@ -41,9 +41,9 @@ namespace RimeLib.Content.Building
             return this;
         }
 
-        public void Build(Stream p_OutputStream)
+        public void Build(Stream p_OutputSbStream, Stream p_OutputTocStream)
         {
-            m_Serializer.Serialize(m_Descriptor, p_OutputStream);
+            m_Serializer.Serialize(m_Descriptor, p_OutputSbStream, p_OutputTocStream);
         }
     }
 }
