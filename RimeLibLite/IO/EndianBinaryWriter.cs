@@ -8,12 +8,26 @@ namespace RimeLib.IO
 	/// Equivalent of System.IO.BinaryWriter, but with either endianness, depending on
 	/// the EndianBitConverter it is constructed with.
 	/// </summary>
-	public abstract class EndianBinaryWriter : IDisposable
+	public abstract class EndianBinaryWriter : Stream, IDisposable
 	{
         /// <summary>
         /// Current position of the stream.
         /// </summary>
-        public virtual long Position => BaseStream.Position;
+        public override long Position
+        {
+            get => BaseStream.Position;
+            set => throw new NotSupportedException();
+        }
+
+        /// <summary>
+        /// Length of the underlying stream.
+        /// </summary>
+        public override long Length => BaseStream.Length;
+
+        // Declare our capabilities.
+        public override bool CanRead => false;
+        public override bool CanSeek => true;
+        public override bool CanWrite => true;
 
         /// <summary>
         /// The bit converter used to write values to the stream
@@ -34,6 +48,8 @@ namespace RimeLib.IO
 		/// Buffer used for temporary storage during conversion from primitives
 		/// </summary>
         protected readonly byte[] m_Buffer = new byte[16];
+
+        protected bool m_ShouldDispose;
         
         /// <summary>
         /// Constructs a new binary writer with the given bit converter, writing
@@ -41,11 +57,12 @@ namespace RimeLib.IO
         /// </summary>
         /// <param name="p_BitConverter">Converter to use when writing data</param>
         /// <param name="p_Stream">Stream to write data to</param>
-		protected EndianBinaryWriter(EndianBitConverter p_BitConverter, Stream p_Stream)
+		protected EndianBinaryWriter(EndianBitConverter p_BitConverter, Stream p_Stream, bool p_ShouldDispose)
 		{
 			if (!p_Stream.CanWrite)
                 throw new ArgumentException("Stream isn't writable", nameof(p_Stream));
-			
+
+            m_ShouldDispose = p_ShouldDispose;
 			BaseStream = p_Stream;
 			BitConverter = p_BitConverter;
 		}
@@ -53,7 +70,7 @@ namespace RimeLib.IO
 		/// <summary>
 		/// Flushes the underlying stream.
 		/// </summary>
-        public virtual void Flush()
+        public override void Flush()
 		{
 			CheckDisposed();
 			BaseStream.Flush();
@@ -64,10 +81,10 @@ namespace RimeLib.IO
 		/// </summary>
 		/// <param name="p_Offset">Offset to seek to.</param>
 		/// <param name="p_Origin">Origin of seek operation.</param>
-        public virtual void Seek(long p_Offset, SeekOrigin p_Origin)
+        public override long Seek(long p_Offset, SeekOrigin p_Origin)
 		{
 			CheckDisposed();
-            BaseStream.Seek(p_Offset, p_Origin);
+            return BaseStream.Seek(p_Offset, p_Origin);
 		}
 
 		/// <summary>
@@ -214,7 +231,7 @@ namespace RimeLib.IO
 		/// <param name="p_Value">An array containing the bytes to write</param>
 		/// <param name="p_Offset">The index of the first byte to write within the array</param>
 		/// <param name="p_Count">The number of bytes to write</param>
-        public void Write(byte[] p_Value, int p_Offset, int p_Count)
+        public override void Write(byte[] p_Value, int p_Offset, int p_Count)
 		{
 			WriteInternal(p_Value, p_Offset, p_Count);
 		}
@@ -222,19 +239,33 @@ namespace RimeLib.IO
         /// <summary>
         /// Disposes of the underlying stream.
         /// </summary>
-        public void Dispose()
+        public new void Dispose()
         {
+            base.Dispose();
+
             CheckDisposed();
 
             Flush();
             m_Disposed = true;
-            BaseStream.Dispose();
+
+            if (m_ShouldDispose)
+                BaseStream.Dispose();
         }
 
-		/// <summary>
-		/// Checks whether or not the writer has been disposed, throwing an exception if so.
-		/// </summary>
-		protected void CheckDisposed()
+        public override int Read(byte[] p_Buffer, int p_Offset, int p_Count)
+        {
+            throw new NotSupportedException();
+        }
+
+        public override void SetLength(long value)
+        {
+            throw new NotSupportedException();
+        }
+
+        /// <summary>
+        /// Checks whether or not the writer has been disposed, throwing an exception if so.
+        /// </summary>
+        protected void CheckDisposed()
 		{
 			if (m_Disposed)
 				throw new ObjectDisposedException("EndianBinaryWriter");
