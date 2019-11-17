@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "ShaderInfo": {
+      "commandName": "Project",
+      "commandLineArgs": "\"F:\\Program Files (x86)\\Origin Games\\Battlefield 3\" Frostbite2_0"
+    }
+  }
+}
