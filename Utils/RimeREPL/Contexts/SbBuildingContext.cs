@@ -153,7 +153,7 @@ namespace Rime.Utils.RimeREPL.Contexts
                 Console.WriteLine($"Output Sb: {s_OutPath}.sb");
                 Console.WriteLine($"Output Toc: {s_OutPath}.toc");
 
-                Directory.CreateDirectory(s_OutPath);
+                Directory.CreateDirectory(Path.GetDirectoryName(s_OutPath));
 
                 using var s_TocStream = File.Open(s_OutPath + ".toc", FileMode.Create, FileAccess.ReadWrite);
                 using var s_SbStream = File.Open(s_OutPath + ".sb", FileMode.Create, FileAccess.ReadWrite);
