@@ -46,7 +46,12 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Sb
             p_Writer.Write(new byte[292]);
 
             // Enable obfuscation.
-            p_Writer.EnableObfuscation(new byte[260]);
+            var s_XorTable = new byte[260];
+            
+            for (var i = 0; i < s_XorTable.Length; ++i)
+                s_XorTable[i] = 123;
+            
+            p_Writer.EnableObfuscation(s_XorTable);
 
             // Serialize the DbObject.
             return DbObjectConverter.ToDbObjectWriter(Layout, p_Writer);
