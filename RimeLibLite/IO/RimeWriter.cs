@@ -115,7 +115,7 @@ namespace RimeLib.IO
                 Buffer.BlockCopy(p_Value, p_Offset, s_Data, 0, p_Count);
 
                 // XOR the data.
-                for (var i = 0; i < p_Value.Length; ++i)
+                for (var i = 0; i < s_Data.Length; ++i)
                     s_Data[i] ^= (byte)((XorTable[(s_CurrentOffset + i) % 257]) ^ 123);
 
                 base.WriteInternal(s_Data, p_Offset, p_Count);
