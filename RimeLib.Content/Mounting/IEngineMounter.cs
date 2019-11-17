@@ -51,7 +51,19 @@ namespace RimeLib.Content.Mounting
         /// </summary>
         /// <param name="p_GamePath">The path of the game.</param>
         /// <param name="p_AutoMount">Whether to automatically mount superbundles and their contained bundles.</param>
-        Task Mount(string p_GamePath, bool p_AutoMount);
+        Task Mount(string p_GamePath, bool p_AutoMount, EngineType p_Type);
+
+        /// <summary>
+        /// Get the path of the mounted game.
+        /// </summary>
+        /// <returns></returns>
+        string GetGamePath();
+
+        /// <summary>
+        /// Get the engine type of the mounted game.
+        /// </summary>
+        /// <returns></returns>
+        EngineType GetEngineType();
 
         /// <summary>
         /// List all the available superbundles in the currently mounted game.

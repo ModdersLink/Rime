@@ -41,7 +41,7 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
         private readonly ConcurrentDictionary<GUID, MountedObject<IChunkVariant>> m_MountedChunks = new ConcurrentDictionary<GUID, MountedObject<IChunkVariant>>();
         private readonly ConcurrentDictionary<string, MountedObject> m_MountedPartitions = new ConcurrentDictionary<string, MountedObject>();
 
-        public async Task Mount(string p_GamePath, bool p_AutoMount)
+        public async Task Mount(string p_GamePath, bool p_AutoMount, EngineType p_Type)
         {
             // TODO: Remove this. It's just here to get rid of compiler errors.
             await Task.Delay(0);
@@ -61,6 +61,16 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
             // Do this only when in "automount" mode.
             if (p_AutoMount)
                 ParseSuperbundles();
+        }
+
+        public string GetGamePath()
+        {
+            return m_GamePath;
+        }
+
+        public EngineType GetEngineType()
+        {
+            return EngineType.Frostbite2_0;
         }
 
         public IEnumerable<string> GetAvailableSuperbundles()

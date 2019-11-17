@@ -77,15 +77,36 @@ namespace Rime.Utils.RimeREPL
             for (var i = 0; i < Console.WindowHeight - 2; ++i)
                 Console.WriteLine();
 
-            Console.WriteLine("[" + m_Context.GetDescription() + "]");
+            WriteDescription();
+
+            Console.ForegroundColor = ConsoleColor.Green;
             Console.Write("> ");
+            Console.ResetColor();
+        }
+
+        private void WriteDescription()
+        { 
+            var s_Description = m_Context.GetDescription();
+
+            if (s_Description.Length + 2 > Console.WindowWidth)
+                s_Description = s_Description.Substring(0, Console.WindowWidth - 3) + "…";
+
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.Write("[");
+
+            Console.ResetColor();
+            Console.Write(s_Description);
+
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine("]");
         }
 
         private void RenderCommandLine()
         {
             Console.CursorLeft = 0;
-            Console.ResetColor();
+            Console.ForegroundColor = ConsoleColor.Green;
             Console.Write("> ");
+            Console.ResetColor();
 
             var s_DescriptionLength = Console.CursorLeft;
 
@@ -316,6 +337,7 @@ namespace Rime.Utils.RimeREPL
 
             // Otherwise process the command.
             Console.WriteLine();
+            Console.WriteLine();
 
             var s_Input = m_CurrentBuffer.Trim();
 
@@ -333,7 +355,7 @@ namespace Rime.Utils.RimeREPL
                     return false;
 
                 Console.WriteLine();
-                Console.WriteLine("[" + m_Context.GetDescription() + "]");
+                WriteDescription();
                 RenderCommandLine();
 
                 return true;
@@ -344,7 +366,7 @@ namespace Rime.Utils.RimeREPL
 
                 m_Context.PrintHelp();
                 Console.WriteLine();
-                Console.WriteLine("[" + m_Context.GetDescription() + "]");
+                WriteDescription();
                 RenderCommandLine();
 
                 return true;
@@ -355,7 +377,7 @@ namespace Rime.Utils.RimeREPL
                 Console.WriteLine("Your input was not recognized. You can use the 'help' command to see all available options.");
 
             Console.WriteLine();
-            Console.WriteLine("[" + m_Context.GetDescription() + "]");
+            WriteDescription();
             RenderCommandLine();
 
             return true;
