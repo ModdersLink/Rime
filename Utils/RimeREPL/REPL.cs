@@ -12,6 +12,8 @@ namespace Rime.Utils.RimeREPL
         private int m_HistoryOffset;
         private string m_PendingCommand = "";
         private List<string> m_History = new List<string>();
+        private List<string> m_Suggestions = new List<string>();
+        private int m_SuggestionIndex = -1;
 
         public REPL()
         {
@@ -72,38 +74,86 @@ namespace Rime.Utils.RimeREPL
 
         private void StartWriteLine()
         {
-            for (var i = 0; i < Console.WindowHeight - 1; ++i)
+            for (var i = 0; i < Console.WindowHeight - 2; ++i)
                 Console.WriteLine();
 
-            Console.Write(m_Context.GetDescription() + "> ");
+            Console.WriteLine("[" + m_Context.GetDescription() + "]");
+            Console.Write("> ");
         }
 
         private void RenderCommandLine()
         {
             Console.CursorLeft = 0;
-            Console.Write(m_Context.GetDescription() + "> ");
+            Console.ResetColor();
+            Console.Write("> ");
 
             var s_DescriptionLength = Console.CursorLeft;
 
             // Write buffer.
             var s_AvailableLength = Console.WindowWidth - s_DescriptionLength - 1;
 
-            if (m_CurrentBuffer.Length > s_AvailableLength)
+            if (m_SuggestionIndex == -1)
             {
-                // Decide how to render this based on where the cursor is.
-                string s_StringToPrint;
+                if (m_CurrentBuffer.Length > s_AvailableLength)
+                {
+                    // Decide how to render this based on where the cursor is.
+                    string s_StringToPrint;
 
-                if (m_Offset >= s_AvailableLength)
-                    s_StringToPrint = "…" + m_CurrentBuffer.Substring((m_Offset - s_AvailableLength) + 1, s_AvailableLength - 1);
-                else 
-                    s_StringToPrint = m_CurrentBuffer.Substring(0, s_AvailableLength - 1) + "…";
+                    if (m_Offset >= s_AvailableLength)
+                        s_StringToPrint = "…" + m_CurrentBuffer.Substring((m_Offset - s_AvailableLength) + 1, s_AvailableLength - 1);
+                    else
+                        s_StringToPrint = m_CurrentBuffer.Substring(0, s_AvailableLength - 1) + "…";
 
-                Console.Write(s_StringToPrint);
+                    Console.Write(s_StringToPrint);
+                }
+                else
+                {
+                    Console.Write(m_CurrentBuffer);
+                }
             }
             else
             {
-                Console.Write(m_CurrentBuffer);
+                // Render suggestion.
+                var s_CurrentBuffer = m_Suggestions[m_SuggestionIndex];
+                var s_SuggestionLength = s_CurrentBuffer.Length - m_CurrentBuffer.Length;
+
+                if (s_CurrentBuffer.Length > s_AvailableLength)
+                {
+                    // Decide how to render this based on where the cursor is.
+                    if (m_Offset >= s_AvailableLength)
+                    {
+                        var s_StringToPrint = "…";
+                        s_StringToPrint += s_CurrentBuffer.Substring((m_Offset - s_AvailableLength) + 1, Math.Min(s_AvailableLength - 1, m_CurrentBuffer.Length));
+
+                        Console.Write(s_StringToPrint);
+
+                        Console.ForegroundColor = ConsoleColor.DarkGray;
+
+                        if (s_StringToPrint.Length < s_AvailableLength)
+                            Console.Write(s_CurrentBuffer.Substring(m_CurrentBuffer.Length, Math.Min(s_AvailableLength - s_StringToPrint.Length, s_SuggestionLength)));
+                    }
+                    else
+                    {
+                        var s_StringToPrint = s_CurrentBuffer.Substring(0, Math.Min(s_AvailableLength - 1, m_CurrentBuffer.Length));
+                        Console.Write(s_StringToPrint);
+
+                        Console.ForegroundColor = ConsoleColor.DarkGray;
+
+                        if (s_StringToPrint.Length < s_AvailableLength - 1)
+                            Console.Write(s_CurrentBuffer.Substring(s_StringToPrint.Length, Math.Min(s_AvailableLength - s_StringToPrint.Length - 1, s_SuggestionLength)));
+
+                        Console.Write("…");
+                    }
+                }
+                else
+                {
+                    Console.Write(m_CurrentBuffer);
+                    Console.ForegroundColor = ConsoleColor.DarkGray;
+                    Console.Write(s_CurrentBuffer.Substring(m_CurrentBuffer.Length));
+                }
             }
+
+            Console.ResetColor();
 
             // Clear the rest of the cells.
             for (var i = 0; i < Console.WindowWidth - Console.CursorLeft; ++i)
@@ -117,6 +167,9 @@ namespace Rime.Utils.RimeREPL
         {
             if (m_HistoryOffset + 1 > m_History.Count)
                 return;
+
+            m_SuggestionIndex = -1;
+            m_Suggestions.Clear();
 
             if (m_HistoryOffset == 0)
                 m_PendingCommand = m_CurrentBuffer;
@@ -135,6 +188,9 @@ namespace Rime.Utils.RimeREPL
         {
             if (m_HistoryOffset <= 0)
                 return;
+
+            m_SuggestionIndex = -1;
+            m_Suggestions.Clear();
 
             --m_HistoryOffset;
 
@@ -161,6 +217,9 @@ namespace Rime.Utils.RimeREPL
             if (!p_Backwards && m_Offset >= m_CurrentBuffer.Length)
                 return;
 
+            m_SuggestionIndex = -1;
+            m_Suggestions.Clear();
+
             if (p_Backwards)
                 --m_Offset;
 
@@ -171,7 +230,23 @@ namespace Rime.Utils.RimeREPL
 
         private void OnSuggest()
         {
+            if (m_CurrentBuffer.Length == 0)
+                return;
 
+            if (m_SuggestionIndex == -1)
+            {
+                m_Suggestions = m_Context.GetSuggestions(m_CurrentBuffer);
+
+                if (m_Suggestions.Count == 0)
+                    return;
+            }
+
+            ++m_SuggestionIndex;
+
+            if (m_SuggestionIndex >= m_Suggestions.Count)
+                m_SuggestionIndex = 0;
+
+            RenderCommandLine();
         }
 
         private void OnCursorLeft()
@@ -181,11 +256,27 @@ namespace Rime.Utils.RimeREPL
 
             --m_Offset;
 
+            m_SuggestionIndex = -1;
+            m_Suggestions.Clear();
+
             RenderCommandLine();
         }
 
         private void OnCursorRight()
         {
+            // Auto-fill selected suggestion.
+            if (m_SuggestionIndex != -1)
+            {
+                m_CurrentBuffer = m_Suggestions[m_SuggestionIndex];
+                m_Offset = m_CurrentBuffer.Length;
+                m_SuggestionIndex = -1;
+                m_Suggestions.Clear();
+
+                RenderCommandLine();
+
+                return;
+            }
+
             if (m_Offset >= m_CurrentBuffer.Length)
                 return;
 
@@ -202,11 +293,28 @@ namespace Rime.Utils.RimeREPL
             m_CurrentBuffer = m_CurrentBuffer.Insert(m_Offset, p_Char.ToString());
             m_Offset++;
 
+            m_SuggestionIndex = -1;
+            m_Suggestions.Clear();
+
             RenderCommandLine();
         }
 
         private bool OnConfirmInput()
         {
+            // Auto-complete suggestion if we have selected one.
+            if (m_SuggestionIndex != -1)
+            {
+                m_CurrentBuffer = m_Suggestions[m_SuggestionIndex];
+                m_Offset = m_CurrentBuffer.Length;
+                m_SuggestionIndex = -1;
+                m_Suggestions.Clear();
+                
+                RenderCommandLine();
+
+                return true;
+            }
+
+            // Otherwise process the command.
             Console.WriteLine();
 
             var s_Input = m_CurrentBuffer.Trim();
@@ -225,6 +333,7 @@ namespace Rime.Utils.RimeREPL
                     return false;
 
                 Console.WriteLine();
+                Console.WriteLine("[" + m_Context.GetDescription() + "]");
                 RenderCommandLine();
 
                 return true;
@@ -235,6 +344,7 @@ namespace Rime.Utils.RimeREPL
 
                 m_Context.PrintHelp();
                 Console.WriteLine();
+                Console.WriteLine("[" + m_Context.GetDescription() + "]");
                 RenderCommandLine();
 
                 return true;
@@ -245,6 +355,7 @@ namespace Rime.Utils.RimeREPL
                 Console.WriteLine("Your input was not recognized. You can use the 'help' command to see all available options.");
 
             Console.WriteLine();
+            Console.WriteLine("[" + m_Context.GetDescription() + "]");
             RenderCommandLine();
 
             return true;

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 using RimeLib.Frostbite;
 
@@ -16,6 +17,19 @@ namespace Rime.Utils.RimeREPL.Contexts
         {
             p_NewContext = this;
             return false;
+        }
+
+        public override List<string> GetSuggestions(string p_Input)
+        {
+            return new List<string>()
+            {
+                p_Input + "test 123",
+                p_Input + "test 124",
+                p_Input + "test 125",
+                p_Input + "test 126",
+                p_Input + "test 127773 34 34 ",
+                p_Input + "test 127773",
+            };
         }
 
         public override void PrintHelp()
