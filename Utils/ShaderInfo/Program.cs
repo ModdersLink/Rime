@@ -173,9 +173,7 @@ namespace ShaderInfo
 
                     Console.WriteLine("\t\tTextures: ");
                     foreach (var s_Texture in s_ShaderInfo.Value.m_StreamableTextures)
-                    {
                         Console.WriteLine($"\t\t\t[{s_Texture.m_VertexUsage}] = {s_Texture.m_Name}");
-                    }
 
                     Console.WriteLine("\t\tExternalTextures: ");
                     foreach (var s_Texture in s_ShaderInfo.Value.m_StreamableExternalTextures)
