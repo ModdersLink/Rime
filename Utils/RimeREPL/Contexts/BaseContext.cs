@@ -35,6 +35,9 @@ namespace Rime.Utils.RimeREPL.Contexts
             if (p_Input.StartsWith("dismount_game "))
                 return OnDismountGame(p_Input);
 
+            if (p_Input.StartsWith("build_sb "))
+                return OnBuildSb(p_Input, out p_NewContext);
+
             return false;
         }
 
@@ -47,6 +50,7 @@ namespace Rime.Utils.RimeREPL.Contexts
                 "list_games",
                 "select_game",
                 "dismount_game",
+                "build_sb",
                 "exit",
             };
 
@@ -68,6 +72,7 @@ namespace Rime.Utils.RimeREPL.Contexts
             Console.WriteLine("list_games - Lists all the currently mounted games.");
             Console.WriteLine("select_game <id> - Selects a mounted game by its ID.");
             Console.WriteLine("dismount_game <id> - Dismounts a mounted game by its ID.");
+            Console.WriteLine("build_sb <engine> <path> <name> - Start building a superbundle.");
             Console.WriteLine("exit - Closes this app.");
         }
 
@@ -174,6 +179,33 @@ namespace Rime.Utils.RimeREPL.Contexts
             }
 
             m_Mounters.Remove(s_Id);
+            return true;
+        }
+
+        private bool OnBuildSb(string p_Input, out REPLContext p_NewContext)
+        {
+            p_NewContext = this;
+            var s_Parts = p_Input.Split(" ");
+
+            if (s_Parts.Length != 4)
+                return false;
+
+            if (!Enum.TryParse<EngineType>(s_Parts[1], out var s_EngineType) || s_EngineType == EngineType.None || s_EngineType == EngineType.Unknown)
+            {
+                Console.WriteLine("Invalid engine type specified. Available types:");
+
+                foreach (var s_Type in Enum.GetNames(typeof(EngineType)).Except(new[] { EngineType.None.ToString(), EngineType.Unknown.ToString() }))
+                    Console.WriteLine("- " + s_Type);
+
+                return true;
+            }
+
+            var s_OutPath = s_Parts[2];
+            var s_SbName = s_Parts[3];
+
+            LoadContentAssembly(s_EngineType);
+            p_NewContext = new SbBuildingContext(this, s_EngineType, s_OutPath, s_SbName);
+
             return true;
         }
 
