@@ -1,4 +1,5 @@
-﻿using RimeLib.Content.Mounting;
+﻿using System.Collections.Generic;
+using RimeLib.Content.Mounting;
 using RimeLib.Frostbite;
 using RimeLib.Frostbite.Core;
 
@@ -29,7 +30,7 @@ namespace RimeLib.Content.Building
             return this;
         }
 
-        public BundleBuilder WithChunk(GUID p_Guid, IChunkVariant p_Chunk)
+        public BundleBuilder WithChunk(GUID p_Guid, IChunkObject p_Chunk)
         {
             m_Descriptor.Chunks[p_Guid] = p_Chunk;
             return this;
@@ -39,6 +40,36 @@ namespace RimeLib.Content.Building
         {
             m_Descriptor.Partitions[p_Path.ToLowerInvariant()] = p_Partition;
             return this;
+        }
+
+        public Dictionary<string, IResourceObject> GetResources()
+        {
+            return m_Descriptor.Resources;
+        }
+
+        public Dictionary<GUID, IChunkObject> GetChunks()
+        {
+            return m_Descriptor.Chunks;
+        }
+
+        public Dictionary<string, IReadableObject> GetPartitions()
+        {
+            return m_Descriptor.Partitions;
+        }
+
+        public void RemoveResource(string p_Path)
+        {
+            m_Descriptor.Resources.Remove(p_Path.ToLowerInvariant());
+        }
+
+        public void RemoveChunk(GUID p_Guid)
+        {
+            m_Descriptor.Chunks.Remove(p_Guid);
+        }
+
+        public void RemovePartition(string p_Path)
+        {
+            m_Descriptor.Partitions.Remove(p_Path.ToLowerInvariant());
         }
     }
 }
