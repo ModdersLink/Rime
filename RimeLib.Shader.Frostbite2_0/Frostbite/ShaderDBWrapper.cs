@@ -12,19 +12,10 @@ namespace RimeLib.Shader.Frostbite2_0.Frostbite
     {
         public Dictionary<ShaderRenderPath, ShaderDB> m_Shaders = new Dictionary<ShaderRenderPath, ShaderDB>();
 
-        /// <summary>
-        /// Default constructor
-        /// </summary>
         public ShaderDBWrapper()
         {
-
         }
 
-        /// <summary>
-        /// ShaderDBWrapper Constructor
-        /// This will read out the ShaderDBWrapper structure at an opened stream where the position is at a ShaderDBWrapper structure in the data
-        /// </summary>
-        /// <param name="p_Reader">Reference to an IceReader class</param>
         public ShaderDBWrapper(RimeReader p_Reader)
         {
             Deserialize(p_Reader);
@@ -35,11 +26,7 @@ namespace RimeLib.Shader.Frostbite2_0.Frostbite
             throw new System.NotImplementedException();
         }
 
-        public bool Serialize(out byte[] p_Data)
-        {
-            throw new System.NotImplementedException();
-        }
-
+      
         public void Deserialize(RimeReader p_Reader)
         {
             var s_ShaderRenderPaths = p_Reader.ReadUInt32();
@@ -60,6 +47,12 @@ namespace RimeLib.Shader.Frostbite2_0.Frostbite
                 p_Reader.Seek(s_CurrentPosition + s_ShaderDbSize, SeekOrigin.Begin);
             }
         }
+
+        public bool Serialize(out byte[] p_Data)
+        {
+            throw new System.NotImplementedException();
+        }
+
 
         public void Deserialize(byte[] p_Data)
         {

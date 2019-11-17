@@ -94,7 +94,6 @@ namespace Rimelib.Shader.Frostbite2_0.Frostbite.Functions
 
             for (var i = 0; i < s_TextureCount; i++)
                 m_Textures[i] = new Texture(p_Reader);
-
         }
 
         public bool Serialize(out byte[] p_Data)

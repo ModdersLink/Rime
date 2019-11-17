@@ -61,19 +61,10 @@ namespace RimeLib.Shader.Frostbite2_0.Frostbite.Shaders
         public Element[] m_NamedElements = new Element[0];
         public string[] m_SemanticNames = new string[0];
 
-        /// <summary>
-        /// Default constructor
-        /// </summary>
         public VertexShaderPermutation()
         {
-
         }
 
-        /// <summary>
-        /// TextureHeader Constructor
-        /// This will read out the ITexture structure at an opened stream where the position is at a ITexture structure in the data
-        /// </summary>
-        /// <param name="p_Reader">Reference to an IceReader class</param>
         public VertexShaderPermutation(RimeReader p_Reader)
         {
             Deserialize(p_Reader);

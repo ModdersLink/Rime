@@ -19,7 +19,6 @@ namespace RimeLib.Shader.Frostbite2_0.Frostbite
 
         public ShaderConstantBlock()
         {
-
         }
 
         public ShaderConstantBlock(RimeReader p_Reader)

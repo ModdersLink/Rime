@@ -20,19 +20,10 @@ namespace RimeLib.Shader.Frostbite2_0.Frostbite.ShaderConstants
 
         public Vec4 m_DefaultValue = new Vec4();
 
-        /// <summary>
-        /// Default constructor
-        /// </summary>
         public ExternalValueConstant()
         {
-
         }
 
-        /// <summary>
-        /// TextureHeader Constructor
-        /// This will read out the ITexture structure at an opened stream where the position is at a ITexture structure in the data
-        /// </summary>
-        /// <param name="p_Reader">Reference to an IceReader class</param>
         public ExternalValueConstant(RimeReader p_Reader)
         {
             Deserialize(p_Reader);

@@ -124,9 +124,6 @@ namespace RimeLib.Shader.Frostbite2_0.Frostbite
         {
             throw new System.NotImplementedException();
         }
-
-       
-
         public void Deserialize(RimeReader p_Reader)
         {
             m_SurfaceShaderType = p_Reader.ReadUInt32();

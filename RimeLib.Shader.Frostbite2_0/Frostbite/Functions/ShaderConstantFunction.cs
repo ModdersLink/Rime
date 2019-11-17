@@ -18,7 +18,6 @@ namespace Rimelib.Shader.Frostbite2_0.Frostbite.Functions
 
             public Constant()
             {
-
             }
 
             public Constant(RimeReader p_Reader)
@@ -103,7 +102,6 @@ namespace Rimelib.Shader.Frostbite2_0.Frostbite.Functions
 
             for (var i = 0; i < s_ContantsCount; i++)
                 m_Constants[i] = new Constant(p_Reader);
-
         }
 
         public void Deserialize(byte[] p_Data)

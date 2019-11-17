@@ -14,19 +14,10 @@ namespace RimeLib.Shader.Frostbite2_0.Frostbite.Shaders
         public uint m_ConstantFunctionIndex = 0;
         public uint m_TextureFunctionIndex = 0;
 
-        /// <summary>
-        /// Default constructor
-        /// </summary>
         public PixelShaderPermutation()
         {
-
         }
 
-        /// <summary>
-        /// TextureHeader Constructor
-        /// This will read out the ITexture structure at an opened stream where the position is at a ITexture structure in the data
-        /// </summary>
-        /// <param name="p_Reader">Reference to an IceReader class</param>
         public PixelShaderPermutation(RimeReader p_Reader)
         {
             Deserialize(p_Reader);
@@ -57,7 +48,6 @@ namespace RimeLib.Shader.Frostbite2_0.Frostbite.Shaders
         {
             throw new System.NotImplementedException();
         }
-
         public void Deserialize(byte[] p_Data)
         {
             throw new System.NotImplementedException();
