@@ -352,6 +352,8 @@ namespace Rime.Utils.RimeREPL
 
             m_Context!.ProcessCommand(s_Input, Console.Out, out m_Context);
 
+            // Context is null. This means that the user has requested an exit from the base context.
+            // Return false to stop the REPL.
             if (m_Context == null)
                 return false;
 

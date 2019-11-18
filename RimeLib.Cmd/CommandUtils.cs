@@ -19,10 +19,8 @@ namespace RimeLib.Cmd
             var s_CurrentArg = "";
             var s_InQuotedArg = false;
 
-            for (var i = 0; i < s_Input.Length; ++i)
+            foreach (var s_Char in s_Input)
             {
-                var s_Char = s_Input[i];
-
                 // We found a space.
                 if (s_Char == ' ')
                 {
