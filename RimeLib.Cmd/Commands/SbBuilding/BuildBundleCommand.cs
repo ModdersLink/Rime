@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using RimeLib.Cmd.Attributes;
+using RimeLib.Cmd.Contexts;
 
 namespace RimeLib.Cmd.Commands.SbBuilding
 {
@@ -12,7 +13,10 @@ namespace RimeLib.Cmd.Commands.SbBuilding
 
         public override bool Execute(ref ExecutionContext p_Context, TextWriter p_Writer)
         {
-            throw new NotImplementedException();
+            // TODO: Validate bundle name.
+
+            p_Context = new BundleBuildingContext((SbBuildingContext) p_Context, Bundle!);
+            return true;
         }
     }
 }

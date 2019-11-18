@@ -12,6 +12,12 @@ namespace RimeLib.Cmd.Commands.SbBuilding
         {
             var s_Bundles = ((SbBuildingContext) p_Context).GetBundles();
 
+            if (s_Bundles.Count == 0)
+            {
+                p_Writer.WriteLine("No bundles have been added.");
+                return true;
+            }
+
             p_Writer.WriteLine("Bundles to include:");
             p_Writer.WriteLine();
 

@@ -9,14 +9,14 @@ namespace RimeLib.Cmd.Commands.Base
     [CommandDescription("Enters the superbundle building context.")]
     public class BuildSbCommand : Command
     {
+        [CommandArgument(Description = "The name of the superbundle to build.")]
+        public string? Name { get; set; }
+
         [CommandArgument(Description = "The target engine type for the built superbundle.")]
         public EngineType Engine { get; set; }
 
         [CommandArgument(Description = "The folder to put the built superbundle in. Will be created if it doesn't exist.")]
         public DirectoryInfo? OutputPath { get; set; }
-
-        [CommandArgument(Description = "The name of the superbundle to build.")]
-        public string? Name { get; set; }
 
         public override bool Execute(ref ExecutionContext p_Context, TextWriter p_Writer)
         {

@@ -95,7 +95,14 @@ namespace RimeLib.Cmd.Contexts
             var s_Chunks = m_Builder.GetChunks().Count;
             var s_Bundles = m_Builder.GetBundles().Count;
 
-            var s_Text = "Superbundle Builder\n";
+            var s_OutPath = Path.Join(m_OutPath, m_SbName);
+            s_OutPath = s_OutPath.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar);
+
+            var s_Text = "Superbundle Builder\n\n";
+
+            s_Text += $"Superbundle name: {m_SbName}\n";
+            s_Text += $"Output sb: {s_OutPath}.sb\n";
+            s_Text += $"Output toc: {s_OutPath}.toc\n";
             s_Text += $"Chunks added: {s_Chunks}\n";
             s_Text += $"Bundles added: {s_Bundles}";
 
@@ -135,6 +142,8 @@ namespace RimeLib.Cmd.Contexts
         internal void Build()
         {
             var s_OutPath = Path.Join(m_OutPath, m_SbName);
+
+            Directory.CreateDirectory(Path.GetDirectoryName(s_OutPath));
 
             using var s_TocStream = File.Open(s_OutPath + ".toc", FileMode.Create, FileAccess.ReadWrite);
             using var s_SbStream = File.Open(s_OutPath + ".sb", FileMode.Create, FileAccess.ReadWrite);
