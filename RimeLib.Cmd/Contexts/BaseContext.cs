@@ -6,7 +6,7 @@ namespace RimeLib.Cmd.Contexts
 {
     public class BaseContext : ExecutionContext
     {
-        private int m_LastMounterId = 0;
+        private int m_LastMounterId;
         private readonly Dictionary<int, IEngineMounter> m_Mounters = new Dictionary<int, IEngineMounter>();
 
         public BaseContext()
@@ -28,24 +28,24 @@ namespace RimeLib.Cmd.Contexts
             return $"Rime - {m_Mounters.Count} game{(m_Mounters.Count == 1 ? "" : "s")} currently mounted";
         }
 
-        public IReadOnlyCollection<KeyValuePair<int, IEngineMounter>> GetMounters()
+        internal IReadOnlyDictionary<int, IEngineMounter> GetMounters()
         {
             return m_Mounters;
         }
 
-        public int RegisterMounter(IEngineMounter p_Mounter)
+        internal int RegisterMounter(IEngineMounter p_Mounter)
         {
             var s_Id = ++m_LastMounterId;
             m_Mounters[s_Id] = p_Mounter;
             return s_Id;
         }
 
-        public void DeregisterMounter(int p_Id)
+        internal void DeregisterMounter(int p_Id)
         {
             m_Mounters.Remove(p_Id);
         }
 
-        public bool TryGetMounterById(int p_Id, out IEngineMounter? p_Mounter)
+        internal bool TryGetMounterById(int p_Id, out IEngineMounter? p_Mounter)
         {
             return m_Mounters.TryGetValue(p_Id, out p_Mounter);
         }

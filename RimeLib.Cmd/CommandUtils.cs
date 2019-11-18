@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using RimeLib.Cmd.Attributes;
+using RimeLib.Frostbite.Core;
 
 namespace RimeLib.Cmd
 {
@@ -147,9 +148,6 @@ namespace RimeLib.Cmd
 
         public static void PopulateCommandArguments(Command p_Command, string[] p_Arguments)
         {
-            if (p_Arguments.Length == 1)
-                return;
-
             var s_Properties = GetCommandArguments(p_Command.GetType()).ToArray();
 
             for (var i = 0; i < s_Properties.Length; ++i)
@@ -178,7 +176,7 @@ namespace RimeLib.Cmd
             if (p_Property.PropertyType.IsArray)
                 return false;
             
-            // For class types we only support FileInfo, DirectoryInfo, and String.
+            // For class types we only support FileInfo, DirectoryInfo, GUID and String.
             if (p_Property.PropertyType.IsClass)
             {
                 if (p_Property.PropertyType == typeof(DirectoryInfo))
@@ -188,6 +186,9 @@ namespace RimeLib.Cmd
                     return true;
 
                 if (p_Property.PropertyType == typeof(string))
+                    return true;
+
+                if (p_Property.PropertyType == typeof(GUID))
                     return true;
 
                 return false;
@@ -206,7 +207,7 @@ namespace RimeLib.Cmd
             if (p_Property.PropertyType.IsArray)
                 throw new Exception("Array properties are not supported.");
 
-            // For class types we only support FileInfo, DirectoryInfo, and String.
+            // For class types we only support FileInfo, DirectoryInfo, GUID, and String.
             if (p_Property.PropertyType.IsClass)
             {
                 if (p_Property.PropertyType == typeof(DirectoryInfo))
@@ -217,6 +218,9 @@ namespace RimeLib.Cmd
 
                 if (p_Property.PropertyType == typeof(string))
                     return p_Value;
+
+                if (p_Property.PropertyType == typeof(GUID))
+                    return new GUID(p_Value);
 
                 throw new Exception($"Tried parsing command argument '{PascalCaseToSnakeCase(p_Property.Name)}' of unsupported type '{p_Property.PropertyType.Name}'.");
             }
