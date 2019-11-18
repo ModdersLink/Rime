@@ -7,6 +7,8 @@
     <Nullable>enable</Nullable>
     <AssemblyName>ContentLister</AssemblyName>
     <RootNamespace>Rime.Utils.ContentLister</RootNamespace>
+    <OutputPath>$(SolutionDir)\bin\$(Configuration)</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
   </PropertyGroup>
 
   <ItemGroup>
