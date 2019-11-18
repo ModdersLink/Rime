@@ -6,16 +6,6 @@
     public enum EngineType
     {
         /// <summary>
-        /// Used for non-frostbite related plugins
-        /// </summary>
-        None,
-
-        /// <summary>
-        /// Unknown engine version
-        /// </summary>
-        Unknown,
-
-        /// <summary>
         /// Battlefield: Bad Company
         /// </summary>
         Frostbite1_0,

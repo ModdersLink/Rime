@@ -1,4 +1,5 @@
-﻿using System;
+﻿/*
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -92,11 +93,11 @@ namespace Rime.Utils.RimeREPL.Contexts
             if (s_Parts.Length == 4 && s_Parts[3] != "false" && s_Parts[3] != "true")
                 return false;
 
-            if (!Enum.TryParse<EngineType>(s_Parts[2], out var s_EngineType) || s_EngineType == EngineType.None || s_EngineType == EngineType.Unknown)
+            if (!Enum.TryParse<EngineType>(s_Parts[2], out var s_EngineType))
             {
                 Console.WriteLine("Invalid engine type specified. Available types:");
 
-                foreach (var s_Type in Enum.GetNames(typeof(EngineType)).Except(new[] { EngineType.None.ToString(), EngineType.Unknown.ToString() }))
+                foreach (var s_Type in Enum.GetNames(typeof(EngineType)))
                     Console.WriteLine("- " + s_Type);
 
                 return true;
@@ -190,11 +191,11 @@ namespace Rime.Utils.RimeREPL.Contexts
             if (s_Parts.Length != 4)
                 return false;
 
-            if (!Enum.TryParse<EngineType>(s_Parts[1], out var s_EngineType) || s_EngineType == EngineType.None || s_EngineType == EngineType.Unknown)
+            if (!Enum.TryParse<EngineType>(s_Parts[1], out var s_EngineType))
             {
                 Console.WriteLine("Invalid engine type specified. Available types:");
 
-                foreach (var s_Type in Enum.GetNames(typeof(EngineType)).Except(new[] { EngineType.None.ToString(), EngineType.Unknown.ToString() }))
+                foreach (var s_Type in Enum.GetNames(typeof(EngineType)))
                     Console.WriteLine("- " + s_Type);
 
                 return true;
@@ -228,3 +229,4 @@ namespace Rime.Utils.RimeREPL.Contexts
         }
     }
 }
+*/

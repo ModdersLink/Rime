@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using Rime.Utils.RimeREPL.Contexts;
+using RimeLib.Cmd;
+using RimeLib.Cmd.Contexts;
 
 namespace Rime.Utils.RimeREPL
 {
     internal class REPL
     {
-        private REPLContext m_Context;
+        private ExecutionContext? m_Context;
         private string m_CurrentBuffer = "";
         private int m_Offset;
         private int m_HistoryOffset;
         private string m_PendingCommand = "";
-        private List<string> m_History = new List<string>();
+        private readonly List<string> m_History = new List<string>();
         private List<string> m_Suggestions = new List<string>();
         private int m_SuggestionIndex = -1;
 
@@ -86,7 +87,7 @@ namespace Rime.Utils.RimeREPL
 
         private void WriteDescription()
         { 
-            var s_Description = m_Context.GetDescription();
+            var s_Description = m_Context!.GetShortDescription();
 
             if (s_Description.Length + 2 > Console.WindowWidth)
                 s_Description = s_Description.Substring(0, Console.WindowWidth - 3) + "…";
@@ -256,7 +257,8 @@ namespace Rime.Utils.RimeREPL
 
             if (m_SuggestionIndex == -1)
             {
-                m_Suggestions = m_Context.GetSuggestions(m_CurrentBuffer);
+                m_Suggestions = new List<string>();
+                // TODO m_Context.GetSuggestions(m_CurrentBuffer);
 
                 if (m_Suggestions.Count == 0)
                     return;
@@ -348,45 +350,16 @@ namespace Rime.Utils.RimeREPL
             m_History.Add(s_Input);
             m_HistoryOffset = 0;
 
-            // Handle some built-in commands.
-            if (s_Input == "exit")
-            {
-                if (!PopContext())
-                    return false;
+            m_Context!.ProcessCommand(s_Input, Console.Out, out m_Context);
 
-                Console.WriteLine();
-                WriteDescription();
-                RenderCommandLine();
-
-                return true;
-            }
-
-            if (s_Input == "help")
-            {
-
-                m_Context.PrintHelp();
-                Console.WriteLine();
-                WriteDescription();
-                RenderCommandLine();
-
-                return true;
-            }
-
-            // For anything else, pass to our context.
-            if (!m_Context.ProcessCommand(s_Input, out m_Context))
-                Console.WriteLine("Your input was not recognized. You can use the 'help' command to see all available options.");
+            if (m_Context == null)
+                return false;
 
             Console.WriteLine();
             WriteDescription();
             RenderCommandLine();
 
             return true;
-        }
-
-        private bool PopContext()
-        {
-            m_Context.TryGetParent(out m_Context);
-            return m_Context != null;
         }
     }
 }
