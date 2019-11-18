@@ -76,7 +76,7 @@ namespace Rime.Utils.ContentLister
             if (p_Options.Verbose)
                 Console.WriteLine($"Mounting game with engine '{p_Options.EngineType}' at path '{p_Options.GamePath}'. Please wait, this could take a while.");
 
-            await s_Mounter.Mount(p_Options.GamePath, s_MountSuperbundles.Count == 0 && s_MountBundles.Count == 0);
+            await s_Mounter.Mount(p_Options.GamePath, s_MountSuperbundles.Count == 0 && s_MountBundles.Count == 0, p_Options.EngineType);
            
             // Mount the requested superbundles.
             if (s_MountSuperbundles.Count > 0)

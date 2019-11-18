@@ -5,21 +5,24 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using RimeLib.Attributes;
 using RimeLib.Content.Frostbite;
-using RimeLib.Content.IO;
 using RimeLib.Content.Mounting;
 using RimeLib.Content.Frostbite2_0.Frostbite.Bundles;
 using RimeLib.Content.Frostbite2_0.Frostbite.Cas;
 using RimeLib.Content.Frostbite2_0.Frostbite.Chunks;
 using RimeLib.Content.Frostbite2_0.Frostbite.Sb;
+using RimeLib.Content.Frostbite2_0.IO;
 using RimeLib.Frostbite;
 using RimeLib.Frostbite.Core;
 using RimeLib.Frostbite.Db;
 using RimeLib.IO;
 using RimeLib.IO.Conversion;
+using PackageManifest = RimeLib.Content.Frostbite2_0.Frostbite.PackageManifest;
 
 namespace RimeLib.Content.Frostbite2_0.Mounting
 {
+    [EngineSupport(EngineType.Frostbite2_0)]
     public class EngineMounter : IEngineMounter
     {
         protected string m_GamePath = "";
@@ -38,12 +41,7 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
         private readonly ConcurrentDictionary<GUID, MountedObject<IChunkVariant>> m_MountedChunks = new ConcurrentDictionary<GUID, MountedObject<IChunkVariant>>();
         private readonly ConcurrentDictionary<string, MountedObject> m_MountedPartitions = new ConcurrentDictionary<string, MountedObject>();
 
-        public EngineType GetSupportedEngine()
-        {
-            return EngineType.Frostbite2_0;
-        }
-
-        public async Task Mount(string p_GamePath, bool p_AutoMount)
+        public async Task Mount(string p_GamePath, bool p_AutoMount, EngineType p_Type)
         {
             // TODO: Remove this. It's just here to get rid of compiler errors.
             await Task.Delay(0);
@@ -63,6 +61,16 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
             // Do this only when in "automount" mode.
             if (p_AutoMount)
                 ParseSuperbundles();
+        }
+
+        public string GetGamePath()
+        {
+            return m_GamePath;
+        }
+
+        public EngineType GetEngineType()
+        {
+            return EngineType.Frostbite2_0;
         }
 
         public IEnumerable<string> GetAvailableSuperbundles()
@@ -385,7 +393,7 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
             m_Chunks.AddOrUpdate(s_ChunkEntry.Id, s_ChunkEntry, (p_Key, p_Old) => s_ChunkEntry);
 
             // Mount.
-            var s_Variant = new ChunkVariant(s_ChunkEntry, null, p_SbEntry.Name, null);
+            var s_Variant = new ChunkVariant(s_ChunkEntry, 0, 0, null, p_SbEntry.Name, null);
             var s_MountedObject = new MountedObject<IChunkVariant>(s_Variant);
 
             // Here we always replace because patched chunks get registered after and they override old ones.
@@ -593,7 +601,7 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
 
                 // Create variant.
                 var s_Readable = new CatalogReadable(m_Catalog!, s_Chunk.Hash, s_Chunk.Id.HasCompressionFlag());
-                var s_Variant = new ChunkVariant(s_Readable, s_Meta, p_Bundle.ContainedSuperbundle.Name,
+                var s_Variant = new ChunkVariant(s_Readable, 0, 0, s_Meta, p_Bundle.ContainedSuperbundle.Name,
                     p_Bundle.Bundle.Path);
 
                 // Mount.
@@ -652,7 +660,7 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
             foreach (var s_Chunk in p_Bundle.Chunks)
             {
                 // Create variant.
-                var s_Variant = new ChunkVariant(s_Chunk, DbObjectConverter.ToDbObject(s_Chunk.Meta),
+                var s_Variant = new ChunkVariant(s_Chunk, s_Chunk.RangeStart, s_Chunk.LogicalOffset, DbObjectConverter.ToDbObject(s_Chunk.Meta),
                     p_Bundle.ContainedSuperbundle.Name, p_Bundle.ContainedBundle.Id);
 
                 // Mount.

@@ -13,8 +13,8 @@ namespace RimeLib.IO
 		
         protected long m_ObfuscatedDataOffset;
 
-        public RimeWriter(Stream p_Stream, Endianness p_Endianness = Endianness.LittleEndian)
-            : base(p_Endianness == Endianness.BigEndian ? (EndianBitConverter) EndianBitConverter.Big : EndianBitConverter.Little, p_Stream)
+        public RimeWriter(Stream p_Stream, Endianness p_Endianness = Endianness.LittleEndian, bool p_ShouldDispose = true)
+            : base(p_Endianness == Endianness.BigEndian ? (EndianBitConverter) EndianBitConverter.Big : EndianBitConverter.Little, p_Stream, p_ShouldDispose)
         {
         }
 
@@ -92,6 +92,17 @@ namespace RimeLib.IO
             Encode7Bit((ulong) ((p_Value >> 63) ^ (p_Value << 1)));
         }
 
+        public void Align(int p_Alignment, byte p_Padding = 0x00)
+        {
+            if (Position % p_Alignment == 0)
+                return;
+
+            var s_Number = p_Alignment - (Position % p_Alignment);
+
+            for (var i = 0; i < s_Number; ++i)
+                WriteByte(p_Padding);
+        }
+
         protected override void WriteInternal(byte[] p_Value, int p_Offset, int p_Count)
         {
             // If we're writing in obfuscated mode we need to do some trickery.
@@ -104,7 +115,7 @@ namespace RimeLib.IO
                 Buffer.BlockCopy(p_Value, p_Offset, s_Data, 0, p_Count);
 
                 // XOR the data.
-                for (var i = 0; i < p_Value.Length; ++i)
+                for (var i = 0; i < s_Data.Length; ++i)
                     s_Data[i] ^= (byte)((XorTable[(s_CurrentOffset + i) % 257]) ^ 123);
 
                 base.WriteInternal(s_Data, p_Offset, p_Count);

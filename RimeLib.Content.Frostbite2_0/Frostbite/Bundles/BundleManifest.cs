@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using RimeLib.Content.IO;
 using RimeLib.Content.Frostbite2_0.Frostbite.Chunks;
 using RimeLib.Content.Frostbite2_0.Frostbite.Sb;
+using RimeLib.Content.Frostbite2_0.IO;
 using RimeLib.Content.Frostbite2_0.Mounting;
-using RimeLib.Frostbite;
 using RimeLib.Frostbite.Core;
 using RimeLib.Frostbite.Db;
 using RimeLib.IO;
@@ -192,6 +191,10 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
 
         public ChunkMeta Meta { get; set; }
 
+        public uint RangeStart { get; set; }
+
+        public uint LogicalOffset { get; set; }
+
         private long m_SeekOffset;
         private long m_Size;
 
@@ -207,6 +210,12 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
 
             m_SeekOffset = p_SeekOffset;
             m_Size = p_Entry.RangeEnd - p_Entry.RangeStart;
+
+            // TODO: Range and logical range have something to do with textures and mip-maps.
+            // I still have no idea what, need to investigate. We also need to pull firstMip
+            // info from meta as that's somehow relevant.
+            RangeStart = p_Entry.RangeStart;
+            LogicalOffset = p_Entry.LogicalOffset;
         }
 
         public override RimeReader GetReader()
@@ -269,7 +278,7 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
 
     public class BundleManifest
     {
-        private class Header
+        public class Header
         {
             public uint Magic { get; set; }
             public int EntryCount { get; set; }
@@ -291,9 +300,25 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
                 ChunkMetaOffset = p_Reader.ReadInt32();
                 ChunkMetaSize = p_Reader.ReadInt32();
             }
+
+            public Header()
+            {
+            }
+
+            public void Serialize(RimeWriter p_Writer)
+            {
+                p_Writer.Write(Magic);
+                p_Writer.Write(EntryCount);
+                p_Writer.Write(EbxCount);
+                p_Writer.Write(ResourceCount);
+                p_Writer.Write(ChunkCount);
+                p_Writer.Write(StringBlockOffset);
+                p_Writer.Write(ChunkMetaOffset);
+                p_Writer.Write(ChunkMetaSize);
+            }
         }
 
-        internal class EntryRecord
+        public class EntryRecord
         {
             public uint NameOffset { get; set; }
 
@@ -307,9 +332,20 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
                 PayloadSize = p_Reader.ReadUInt32();
                 OriginalSize = p_Reader.ReadUInt32();
             }
+
+            public EntryRecord()
+            {
+            }
+
+            public void Serialize(RimeWriter p_Writer)
+            {
+                p_Writer.Write(NameOffset);
+                p_Writer.Write(PayloadSize);
+                p_Writer.Write(OriginalSize);
+            }
         }
 
-        internal class ChunkEntry
+        public class ChunkEntry
         {
             public GUID Id { get; set; }
 
@@ -326,9 +362,22 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
                 RangeEnd = p_Reader.ReadUInt32();
                 LogicalOffset = p_Reader.ReadUInt32();
             }
+
+            public ChunkEntry(GUID p_Id)
+            {
+                Id = p_Id;
+            }
+
+            public void Serialize(RimeWriter p_Writer)
+            {
+                Id.Serialize(p_Writer);
+                p_Writer.Write(RangeStart);
+                p_Writer.Write(RangeEnd);
+                p_Writer.Write(LogicalOffset);
+            }
         }
 
-        private const uint c_ManifestEbx = 0xED1CEDB8;
+        public const uint c_ManifestEbx = 0xED1CEDB8;
 
         private readonly Header m_Header;
         private readonly uint m_ManifestSize;

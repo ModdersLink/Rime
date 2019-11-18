@@ -4,7 +4,7 @@ using System.IO;
 using RimeLib.IO;
 using RimeLib.IO.Conversion;
 
-namespace RimeLib.Content.IO
+namespace RimeLib.Content.Frostbite2_0.IO
 {
     /// <summary>
     /// The Multiplexed Reader is designed specifically for providing

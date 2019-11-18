@@ -53,9 +53,7 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Sb
         public long? Size { get; set; }
     }
 
-    public class SuperbundleLayout<TBundleInfo, TChunkInfo> : DbObjectSerializable
-        where TBundleInfo : BundleInfo
-        where TChunkInfo : ChunkInfo
+    public class SuperbundleLayout : DbObjectSerializable
     {
         [DbObjectField("tag")]
         public GUID? Tag { get; set; }
@@ -70,12 +68,12 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Sb
         public bool? AlwaysEmitSuperbundle { get; set; }
 
         [DbObjectField("bundles")]
-        public TBundleInfo[] Bundles { get; set; } = new TBundleInfo[0];
+        public BundleInfo[] Bundles { get; set; } = new BundleInfo[0];
 
         [DbObjectField("chunks")]
-        public TChunkInfo[] Chunks { get; set; } = new TChunkInfo[0];
+        public ChunkInfo[] Chunks { get; set; } = new ChunkInfo[0];
 
-        public bool TryGetBundle(string p_Id, out TBundleInfo? p_Bundle)
+        public bool TryGetBundle(string p_Id, out BundleInfo? p_Bundle)
         {
             p_Bundle = null;
 
@@ -91,9 +89,4 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Sb
             return false;
         }
     }
-
-    /// <summary>
-    /// Generic superbundle layout specialization.
-    /// </summary>
-    public class SuperbundleLayout : SuperbundleLayout<BundleInfo, ChunkInfo> {}
 }

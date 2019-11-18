@@ -7,22 +7,28 @@ using RimeLib.Frostbite.Db;
 
 namespace RimeLib.Content.Mounting
 {
+    public interface IResourceObject : IReadableObject
+    {
+        ResourceType GetResourceType();
+        bool TryGetMeta(out byte[]? p_Meta);
+    }
+
+    public interface IChunkObject : IReadableObject
+    {
+        bool TryGetMeta(out DbObject? p_Meta);
+        uint GetRangeStart();
+        uint GetLogicalOffset();
+    }
+
     public interface IObjectVariant : IReadableObject, IObjectWithHash
     {
         string GetContainedSuperbundle();
         string? GetContainedBundle();
     }
 
-    public interface IResourceVariant : IObjectVariant
-    {
-        ResourceType GetResourceType();
-        bool TryGetMeta(out byte[]? p_Meta);
-    }
+    public interface IResourceVariant : IResourceObject, IObjectVariant {}
 
-    public interface IChunkVariant : IObjectVariant
-    {
-        bool TryGetMeta(out DbObject? p_Meta);
-    }
+    public interface IChunkVariant : IChunkObject, IObjectVariant {}
 
     /// <summary>
     /// Represents a mounted game object (eg. a resource or chunk) and holds
@@ -41,17 +47,23 @@ namespace RimeLib.Content.Mounting
     public interface IEngineMounter
     {
         /// <summary>
-        /// Get the engine type this mounter supports.
-        /// </summary>
-        /// <returns>The engine type.</returns>
-        EngineType GetSupportedEngine();
-
-        /// <summary>
         /// Mount the game at the specified path.
         /// </summary>
         /// <param name="p_GamePath">The path of the game.</param>
         /// <param name="p_AutoMount">Whether to automatically mount superbundles and their contained bundles.</param>
-        Task Mount(string p_GamePath, bool p_AutoMount);
+        Task Mount(string p_GamePath, bool p_AutoMount, EngineType p_Type);
+
+        /// <summary>
+        /// Get the path of the mounted game.
+        /// </summary>
+        /// <returns></returns>
+        string GetGamePath();
+
+        /// <summary>
+        /// Get the engine type of the mounted game.
+        /// </summary>
+        /// <returns></returns>
+        EngineType GetEngineType();
 
         /// <summary>
         /// List all the available superbundles in the currently mounted game.
