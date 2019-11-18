@@ -21,6 +21,81 @@ namespace RimeLib.Cmd
             { "exit", typeof(ExitCommand) },
         };
 
+        public List<string> GetSuggestions(string p_Input)
+        {
+            var s_Suggestions = new List<string>();
+
+            // First handle command auto-completion.
+            if (!p_Input.Contains(" "))
+            {
+                var s_Input = p_Input.ToLowerInvariant();
+
+                foreach (var s_Command in m_RegisteredCommands)
+                {
+                    if (s_Command.Key.StartsWith(s_Input))
+                        s_Suggestions.Add(s_Command.Key.Substring(s_Input.Length));
+                }
+
+                return s_Suggestions;
+            }
+
+            // First check that the command the user has entered exists.
+            var s_InputArguments = CommandUtils.ParseArguments(p_Input).ToArray();
+            var s_CommandName = s_InputArguments[0].ToLowerInvariant();
+
+            if (!m_RegisteredCommands.TryGetValue(s_CommandName, out var s_CommandType))
+                return s_Suggestions;
+
+            // Special handling for the "help" command.
+            if (s_CommandName == "help" && s_InputArguments.Length == 2)
+            {
+                var s_Input = s_InputArguments[1].ToLowerInvariant();
+
+                foreach (var s_Command in m_RegisteredCommands)
+                {
+                    if (s_Command.Key.StartsWith(s_Input))
+                        s_Suggestions.Add(s_Command.Key.Substring(s_Input.Length));
+                }
+
+                return s_Suggestions;
+            }
+
+            // Now we're entering tricky territory. We need to handle argument-specific auto-completion.
+            // Currently, this is only supported for paths and enums.
+
+            // Get the command arguments.
+            var s_CommandArguments = CommandUtils.GetCommandArguments(s_CommandType).ToArray();
+
+            // Make sure we're within bounds.
+            if (s_InputArguments.Length - 1 > s_CommandArguments.Length)
+                return s_Suggestions;
+
+            // Get the argument that we're trying to get auto-completion data for.
+            var s_Argument = s_CommandArguments[s_InputArguments.Length - 2];
+            var s_ArgumentValue = s_InputArguments[^1];
+
+            // Check if it's something we can autocomplete for.
+            var s_PropertyType = s_Argument.Item1.PropertyType;
+
+            try
+            {
+                if (s_PropertyType.IsEnum)
+                    return CommandUtils.AutoCompleteEnum(s_PropertyType, s_ArgumentValue);
+
+                if (s_PropertyType.IsClass && s_PropertyType == typeof(DirectoryInfo))
+                    return CommandUtils.AutoCompleteDirectory(s_ArgumentValue);
+
+                if (s_PropertyType.IsClass && s_PropertyType == typeof(FileInfo))
+                    return CommandUtils.AutoCompleteFile(s_ArgumentValue);
+            }
+            catch
+            {
+                // Ignored.
+            }
+
+            return s_Suggestions;
+        }
+
         public bool ProcessCommand(string p_Input, TextWriter p_Writer, out ExecutionContext? p_Context)
         {
             p_Context = this;
@@ -132,7 +207,14 @@ namespace RimeLib.Cmd
                 if (!string.IsNullOrWhiteSpace(s_Argument.Item2.Description))
                     s_ArgumentText += ": " + s_Argument.Item2.Description;
 
-                // TODO: For enum properties print accepted values.
+                if (s_Argument.Item1.PropertyType.IsEnum)
+                {
+                    if (string.IsNullOrWhiteSpace(s_Argument.Item2.Description))
+                        s_ArgumentText += ":";
+
+                    s_ArgumentText += " Accepted values: ";
+                    s_ArgumentText += string.Join(", ", Enum.GetNames(s_Argument.Item1.PropertyType));
+                }
             }
 
             try
