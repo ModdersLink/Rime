@@ -67,7 +67,7 @@ namespace RimeLib.Cmd
             var s_CommandArguments = CommandUtils.GetCommandArguments(s_CommandType).ToArray();
 
             // Make sure we're within bounds.
-            if (s_InputArguments.Length - 1 > s_CommandArguments.Length)
+            if (s_InputArguments.Length - 2 >= s_CommandArguments.Length || s_InputArguments.Length == 1)
                 return s_Suggestions;
 
             // Get the argument that we're trying to get auto-completion data for.
