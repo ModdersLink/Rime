@@ -7,22 +7,28 @@ using RimeLib.Frostbite.Db;
 
 namespace RimeLib.Content.Mounting
 {
+    public interface IResourceObject : IReadableObject
+    {
+        ResourceType GetResourceType();
+        bool TryGetMeta(out byte[]? p_Meta);
+    }
+
+    public interface IChunkObject : IReadableObject
+    {
+        bool TryGetMeta(out DbObject? p_Meta);
+        uint GetRangeStart();
+        uint GetLogicalOffset();
+    }
+
     public interface IObjectVariant : IReadableObject, IObjectWithHash
     {
         string GetContainedSuperbundle();
         string? GetContainedBundle();
     }
 
-    public interface IResourceVariant : IObjectVariant
-    {
-        ResourceType GetResourceType();
-        bool TryGetMeta(out byte[]? p_Meta);
-    }
+    public interface IResourceVariant : IResourceObject, IObjectVariant {}
 
-    public interface IChunkVariant : IObjectVariant
-    {
-        bool TryGetMeta(out DbObject? p_Meta);
-    }
+    public interface IChunkVariant : IChunkObject, IObjectVariant {}
 
     /// <summary>
     /// Represents a mounted game object (eg. a resource or chunk) and holds
@@ -41,17 +47,23 @@ namespace RimeLib.Content.Mounting
     public interface IEngineMounter
     {
         /// <summary>
-        /// Get the engine type this mounter supports.
-        /// </summary>
-        /// <returns>The engine type.</returns>
-        EngineType GetSupportedEngine();
-
-        /// <summary>
         /// Mount the game at the specified path.
         /// </summary>
         /// <param name="p_GamePath">The path of the game.</param>
         /// <param name="p_AutoMount">Whether to automatically mount superbundles and their contained bundles.</param>
-        Task Mount(string p_GamePath, bool p_AutoMount);
+        Task Mount(string p_GamePath, bool p_AutoMount, EngineType p_Type);
+
+        /// <summary>
+        /// Get the path of the mounted game.
+        /// </summary>
+        /// <returns></returns>
+        string GetGamePath();
+
+        /// <summary>
+        /// Get the engine type of the mounted game.
+        /// </summary>
+        /// <returns></returns>
+        EngineType GetEngineType();
 
         /// <summary>
         /// List all the available superbundles in the currently mounted game.
@@ -67,6 +79,12 @@ namespace RimeLib.Content.Mounting
         Task MountSuperbundle(string p_Superbundle, bool p_AutoMount);
 
         /// <summary>
+        /// Lists all mounted superbundles.
+        /// </summary>
+        /// <returns>A list of superbundle names.</returns>
+        IEnumerable<string> GetMountedSuperbundles();
+
+        /// <summary>
         /// List all the available bundles in the currently mounted superbundles.
         /// </summary>
         /// <returns>A list of bundle names.</returns>
@@ -77,6 +95,12 @@ namespace RimeLib.Content.Mounting
         /// </summary>
         /// <param name="p_Bundle">The name of the bundle.</param>
         Task MountBundle(string p_Bundle);
+
+        /// <summary>
+        /// Lists all mounted bundles.
+        /// </summary>
+        /// <returns>A list of bundle names.</returns>
+        IEnumerable<string> GetMountedBundles();
 
         /// <summary>
         /// List all the resources contained in a specific mounted bundle.
@@ -127,18 +151,18 @@ namespace RimeLib.Content.Mounting
         /// Get all mounted resources and their different variants.
         /// </summary>
         /// <returns>A dictionary of resource name keys and mounted object values.</returns>
-        Dictionary<string, IMountedObject<IResourceVariant>> GetResources();
+        IReadOnlyDictionary<string, IMountedObject<IResourceVariant>> GetResources();
 
         /// <summary>
         /// Get all mounted chunks and their different variants.
         /// </summary>
         /// <returns>A dictionary of chunk id keys and mounted object values.</returns>
-        Dictionary<GUID, IMountedObject<IChunkVariant>> GetChunks();
+        IReadOnlyDictionary<GUID, IMountedObject<IChunkVariant>> GetChunks();
 
         /// <summary>
         /// Get all mounted partitions and their different variants.
         /// </summary>
         /// <returns>A dictionary of partition name keys and mounted object values.</returns>
-        Dictionary<string, IMountedObject> GetPartitions();
+        IReadOnlyDictionary<string, IMountedObject> GetPartitions();
     }
 }

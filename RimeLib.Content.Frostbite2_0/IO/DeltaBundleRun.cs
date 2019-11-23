@@ -1,6 +1,6 @@
 ﻿using RimeLib.IO;
 
-namespace RimeLib.Content.IO
+namespace RimeLib.Content.Frostbite2_0.IO
 {
     /// <summary>
     /// Frostbite Delta Bundle Run class for patching
