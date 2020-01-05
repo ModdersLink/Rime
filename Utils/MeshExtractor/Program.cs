@@ -69,7 +69,7 @@ namespace MeshExtractor
             if (!p_Options.Quiet)
                 Console.WriteLine($"Mounting game with engine '{p_Options.EngineType}' at path '{p_Options.GamePath}'. Please wait, this could take a while.");
 
-            await s_Mounter.Mount(p_Options.GamePath, true);
+            await s_Mounter.Mount(p_Options.GamePath, true, EngineType.Frostbite2_0);
 
             if (!p_Options.Quiet)
                 Console.WriteLine($"Everythingis now mounted! Starting model conversion.");
