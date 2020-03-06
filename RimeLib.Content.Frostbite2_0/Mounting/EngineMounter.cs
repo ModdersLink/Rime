@@ -41,6 +41,9 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
         private readonly ConcurrentDictionary<GUID, MountedObject<IChunkVariant>> m_MountedChunks = new ConcurrentDictionary<GUID, MountedObject<IChunkVariant>>();
         private readonly ConcurrentDictionary<string, MountedObject> m_MountedPartitions = new ConcurrentDictionary<string, MountedObject>();
 
+        private readonly HashSet<string> m_MountedSuperbundles = new HashSet<string>();
+        private readonly HashSet<string> m_MountedBundles = new HashSet<string>();
+
         public async Task Mount(string p_GamePath, bool p_AutoMount, EngineType p_Type)
         {
             // TODO: Remove this. It's just here to get rid of compiler errors.
@@ -93,6 +96,14 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
 
             // Now that we know that we do, let's mount it.
             ParseSuperbundle(s_Superbundle, p_AutoMount);
+
+            lock (m_MountedSuperbundles)
+                m_MountedSuperbundles.Add(p_Superbundle.ToLowerInvariant());
+        }
+
+        public IEnumerable<string> GetMountedSuperbundles()
+        {
+            return m_MountedSuperbundles;
         }
 
         public IEnumerable<string> GetAvailableBundles()
@@ -114,14 +125,29 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
             if (m_CasBundles.TryGetValue(p_Bundle.ToLowerInvariant(), out var s_CasBundle))
             {
                 MountCasBundle(s_CasBundle);
+
+                lock (m_MountedBundles)
+                    m_MountedBundles.Add(p_Bundle.ToLowerInvariant());
+
                 return;
             }
 
             if (m_Bundles.TryGetValue(p_Bundle.ToLowerInvariant(), out var s_EmbeddedBundle))
             {
                 MountEmbeddedBundle(s_EmbeddedBundle);
+
+                lock (m_MountedBundles)
+                    m_MountedBundles.Add(p_Bundle.ToLowerInvariant());
+
                 return;
             }
+
+            throw new ArgumentException($"Could not find a bundle to mount with the provided name '{p_Bundle}'.", nameof(p_Bundle));
+        }
+
+        public IEnumerable<string> GetMountedBundles()
+        {
+            return m_MountedBundles;
         }
 
         public IEnumerable<string> GetResourcesInBundle(string p_Bundle)
@@ -202,17 +228,17 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
             return false;
         }
 
-        public Dictionary<string, IMountedObject<IResourceVariant>> GetResources()
+        public IReadOnlyDictionary<string, IMountedObject<IResourceVariant>> GetResources()
         {
             return m_MountedResources.ToDictionary(p_Pair => p_Pair.Key, p_Pair => p_Pair.Value as IMountedObject<IResourceVariant>);
         }
 
-        public Dictionary<GUID, IMountedObject<IChunkVariant>> GetChunks()
+        public IReadOnlyDictionary<GUID, IMountedObject<IChunkVariant>> GetChunks()
         {
             return m_MountedChunks.ToDictionary(p_Pair => p_Pair.Key, p_Pair => p_Pair.Value as IMountedObject<IChunkVariant>);
         }
 
-        public Dictionary<string, IMountedObject> GetPartitions()
+        public IReadOnlyDictionary<string, IMountedObject> GetPartitions()
         {
             return m_MountedPartitions.ToDictionary(p_Pair => p_Pair.Key, p_Pair => p_Pair.Value as IMountedObject);
         }

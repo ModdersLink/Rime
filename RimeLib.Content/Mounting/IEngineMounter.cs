@@ -79,6 +79,12 @@ namespace RimeLib.Content.Mounting
         Task MountSuperbundle(string p_Superbundle, bool p_AutoMount);
 
         /// <summary>
+        /// Lists all mounted superbundles.
+        /// </summary>
+        /// <returns>A list of superbundle names.</returns>
+        IEnumerable<string> GetMountedSuperbundles();
+
+        /// <summary>
         /// List all the available bundles in the currently mounted superbundles.
         /// </summary>
         /// <returns>A list of bundle names.</returns>
@@ -89,6 +95,12 @@ namespace RimeLib.Content.Mounting
         /// </summary>
         /// <param name="p_Bundle">The name of the bundle.</param>
         Task MountBundle(string p_Bundle);
+
+        /// <summary>
+        /// Lists all mounted bundles.
+        /// </summary>
+        /// <returns>A list of bundle names.</returns>
+        IEnumerable<string> GetMountedBundles();
 
         /// <summary>
         /// List all the resources contained in a specific mounted bundle.
@@ -139,18 +151,18 @@ namespace RimeLib.Content.Mounting
         /// Get all mounted resources and their different variants.
         /// </summary>
         /// <returns>A dictionary of resource name keys and mounted object values.</returns>
-        Dictionary<string, IMountedObject<IResourceVariant>> GetResources();
+        IReadOnlyDictionary<string, IMountedObject<IResourceVariant>> GetResources();
 
         /// <summary>
         /// Get all mounted chunks and their different variants.
         /// </summary>
         /// <returns>A dictionary of chunk id keys and mounted object values.</returns>
-        Dictionary<GUID, IMountedObject<IChunkVariant>> GetChunks();
+        IReadOnlyDictionary<GUID, IMountedObject<IChunkVariant>> GetChunks();
 
         /// <summary>
         /// Get all mounted partitions and their different variants.
         /// </summary>
         /// <returns>A dictionary of partition name keys and mounted object values.</returns>
-        Dictionary<string, IMountedObject> GetPartitions();
+        IReadOnlyDictionary<string, IMountedObject> GetPartitions();
     }
 }

@@ -202,6 +202,86 @@ namespace RimeLib.Cmd
             return p_Property.PropertyType.IsPrimitive;
         }
 
+        public static List<string> AutoCompleteEnum(Type p_EnumType, string p_Value)
+        {
+            var s_Suggestions = new List<string>();
+
+            foreach (var s_Name in Enum.GetNames(p_EnumType))
+                if (s_Name.StartsWith(p_Value))
+                    s_Suggestions.Add(s_Name.Substring(p_Value.Length));
+
+            return s_Suggestions;
+        }
+
+        public static List<string> AutoCompleteDirectory(string p_Value)
+        {
+            var s_Suggestions = new List<string>();
+
+            // See if the current value is pointing to some valid directory and that there's at least one character entered.
+            var s_Directory = Path.GetDirectoryName(p_Value);
+
+            if (s_Directory == null)
+                return s_Suggestions;
+
+            if (!Directory.Exists(s_Directory))
+                return s_Suggestions;
+
+            if (s_Directory == p_Value ||
+                s_Directory + Path.DirectorySeparatorChar == p_Value ||
+                s_Directory + Path.AltDirectorySeparatorChar == p_Value)
+                return s_Suggestions;
+
+            var s_NormalizedPath = p_Value.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar).ToLowerInvariant();
+
+            foreach (var s_Entry in Directory.GetDirectories(s_Directory))
+            {
+                // Normalize entry for comparison.
+                var s_NormalizedEntry = s_Entry.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar).ToLowerInvariant();
+
+                if (s_NormalizedEntry.StartsWith(s_NormalizedPath))
+                    s_Suggestions.Add(s_Entry.Substring(p_Value.Length));
+            }
+
+            return s_Suggestions;
+        }
+
+        public static List<string> AutoCompleteFile(string p_Value)
+        {
+            var s_Suggestions = new List<string>();
+
+            // See if the current value is pointing to some valid directory and that there's at least one character entered.
+            var s_Directory = Path.GetDirectoryName(p_Value);
+
+            if (s_Directory == null)
+                return s_Suggestions;
+
+            if (!Directory.Exists(s_Directory))
+                return s_Suggestions;
+
+            if (s_Directory == p_Value ||
+                s_Directory + Path.DirectorySeparatorChar == p_Value ||
+                s_Directory + Path.AltDirectorySeparatorChar == p_Value)
+                return s_Suggestions;
+
+            var s_NormalizedPath = p_Value.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar).ToLowerInvariant();
+
+            foreach (var s_Entry in Directory.GetFileSystemEntries(s_Directory))
+            {
+                // Normalize entry for comparison.
+                var s_NormalizedEntry = s_Entry.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar).ToLowerInvariant();
+
+                if (!s_NormalizedEntry.StartsWith(s_NormalizedPath))
+                    continue;
+
+                if (Directory.Exists(s_Entry))
+                    s_Suggestions.Add(s_Entry.Substring(p_Value.Length) + Path.DirectorySeparatorChar);
+                else
+                    s_Suggestions.Add(s_Entry.Substring(p_Value.Length));
+            }
+
+            return s_Suggestions;
+        }
+
         private static object ParseArgument(string p_Value, PropertyInfo p_Property)
         {
             if (p_Property.PropertyType.IsArray)

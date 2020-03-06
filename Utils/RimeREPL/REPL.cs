@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using RimeLib.Cmd;
 using RimeLib.Cmd.Contexts;
 
@@ -136,7 +137,7 @@ namespace Rime.Utils.RimeREPL
             else
             {
                 // Render suggestion.
-                var s_CurrentBuffer = m_Suggestions[m_SuggestionIndex];
+                var s_CurrentBuffer = m_CurrentBuffer + m_Suggestions[m_SuggestionIndex];
                 var s_SuggestionLength = s_CurrentBuffer.Length - m_CurrentBuffer.Length;
 
                 if (s_CurrentBuffer.Length > s_AvailableLength)
@@ -255,10 +256,13 @@ namespace Rime.Utils.RimeREPL
             if (m_CurrentBuffer.Length == 0)
                 return;
 
+            // Only offer suggestions if we're on the last offset.
+            if (m_Offset < m_CurrentBuffer.Length)
+                return;
+
             if (m_SuggestionIndex == -1)
             {
-                m_Suggestions = new List<string>();
-                // TODO m_Context.GetSuggestions(m_CurrentBuffer);
+                m_Suggestions = m_Context!.GetSuggestions(m_CurrentBuffer);
 
                 if (m_Suggestions.Count == 0)
                     return;
@@ -290,7 +294,7 @@ namespace Rime.Utils.RimeREPL
             // Auto-fill selected suggestion.
             if (m_SuggestionIndex != -1)
             {
-                m_CurrentBuffer = m_Suggestions[m_SuggestionIndex];
+                m_CurrentBuffer += m_Suggestions[m_SuggestionIndex];
                 m_Offset = m_CurrentBuffer.Length;
                 m_SuggestionIndex = -1;
                 m_Suggestions.Clear();
@@ -327,7 +331,7 @@ namespace Rime.Utils.RimeREPL
             // Auto-complete suggestion if we have selected one.
             if (m_SuggestionIndex != -1)
             {
-                m_CurrentBuffer = m_Suggestions[m_SuggestionIndex];
+                m_CurrentBuffer += m_Suggestions[m_SuggestionIndex];
                 m_Offset = m_CurrentBuffer.Length;
                 m_SuggestionIndex = -1;
                 m_Suggestions.Clear();
