@@ -238,63 +238,59 @@ namespace MeshExtractor
 
                     // Hold all of the vertex information
                     var l_VertexList = new List<Dictionary<VertexElementUsage, dynamic>>();
+#if _BUSTED
                     var l_PrimitiveList = new List<(ushort, ushort, ushort)>();
+#else
+                    var l_PrimitiveList = new List<ushort>();
+#endif
 
                     // Iterate through each vertex data (sizeof(VertexData) == Stride)
                     foreach (var l_VertexData in l_VertexDataList)
                     {
                         // Create a new reader to the vertex data specifically
-                        using var l_VertexReader = new BinaryReader(new MemoryStream(l_VertexData));
+                        using var l_VertexReader = new RimeReader(new MemoryStream(l_VertexData));
 
                         // This dictionary is how we will parse each element from the vertex data
                         var l_Dict = new Dictionary<VertexElementUsage, dynamic>();
                         foreach (var l_Element in l_GeometryDesc.Elements)
                         {
+                            l_VertexReader.Seek(l_Element.Offset, SeekOrigin.Begin);
+
                             // Iterate each element and check the format and set to the usage
                             // There should not be more than one of the same kind of usage here
                             switch (l_Element.Format)
                             {
                                 case VertexElementFormat.VertexElementFormat_None:
                                     break;
-
                                 // Halfs
                                 case VertexElementFormat.VertexElementFormat_Half:
-                                    l_VertexReader.BaseStream.Seek(l_Element.Offset, SeekOrigin.Begin);
                                     l_Dict[l_Element.Usage] = RimeMath.HalfToFloat(l_VertexReader.ReadUInt16());
                                     break;
                                 case VertexElementFormat.VertexElementFormat_Half2:
-                                    l_VertexReader.BaseStream.Seek(l_Element.Offset, SeekOrigin.Begin);
                                     l_Dict[l_Element.Usage] = (RimeMath.HalfToFloat(l_VertexReader.ReadUInt16()), RimeMath.HalfToFloat(l_VertexReader.ReadUInt16()));
                                     break;
                                 case VertexElementFormat.VertexElementFormat_Half3:
-                                    l_VertexReader.BaseStream.Seek(l_Element.Offset, SeekOrigin.Begin);
                                     l_Dict[l_Element.Usage] = (RimeMath.HalfToFloat(l_VertexReader.ReadUInt16()), RimeMath.HalfToFloat(l_VertexReader.ReadUInt16()), RimeMath.HalfToFloat(l_VertexReader.ReadUInt16()));
                                     break;
                                 case VertexElementFormat.VertexElementFormat_Half4:
-                                    l_VertexReader.BaseStream.Seek(l_Element.Offset, SeekOrigin.Begin);
                                     l_Dict[l_Element.Usage] = (RimeMath.HalfToFloat(l_VertexReader.ReadUInt16()), RimeMath.HalfToFloat(l_VertexReader.ReadUInt16()), RimeMath.HalfToFloat(l_VertexReader.ReadUInt16()), RimeMath.HalfToFloat(l_VertexReader.ReadUInt16()));
                                     break;
                                 case VertexElementFormat.VertexElementFormat_UByte4:
                                 case VertexElementFormat.VertexElementFormat_UByte4N:
-                                    l_VertexReader.BaseStream.Seek(l_Element.Offset, SeekOrigin.Begin);
                                     l_Dict[l_Element.Usage] = l_VertexReader.ReadBytes(4);
                                     break;
 
                                 // Floats
                                 case VertexElementFormat.VertexElementFormat_Float:
-                                    l_VertexReader.BaseStream.Seek(l_Element.Offset, SeekOrigin.Begin);
                                     l_Dict[l_Element.Usage] = l_VertexReader.ReadSingle();
                                     break;
                                 case VertexElementFormat.VertexElementFormat_Float2:
-                                    l_VertexReader.BaseStream.Seek(l_Element.Offset, SeekOrigin.Begin);
                                     l_Dict[l_Element.Usage] = (l_VertexReader.ReadSingle(), l_VertexReader.ReadSingle());
                                     break;
                                 case VertexElementFormat.VertexElementFormat_Float3:
-                                    l_VertexReader.BaseStream.Seek(l_Element.Offset, SeekOrigin.Begin);
                                     l_Dict[l_Element.Usage] = (l_VertexReader.ReadSingle(), l_VertexReader.ReadSingle(), l_VertexReader.ReadSingle());
                                     break;
                                 case VertexElementFormat.VertexElementFormat_Float4:
-                                    l_VertexReader.BaseStream.Seek(l_Element.Offset, SeekOrigin.Begin);
                                     l_Dict[l_Element.Usage] = (l_VertexReader.ReadSingle(), l_VertexReader.ReadSingle(), l_VertexReader.ReadSingle(), l_VertexReader.ReadSingle());
                                     break;
                                 default:
@@ -313,7 +309,16 @@ namespace MeshExtractor
                     {
                         case RimeLib.Mesh.Frostbite.PrimitiveType.PrimitiveType_TriangleList:
                             for (var l_PrimitiveIndex = 0; l_PrimitiveIndex < l_Subset.PrimitiveCount; ++l_PrimitiveIndex)
+                            {
+#if _BUSTED
                                 l_PrimitiveList.Add((l_Reader.ReadUInt16(), l_Reader.ReadUInt16(), l_Reader.ReadUInt16()));
+#else
+                                l_PrimitiveList.Add(l_Reader.ReadUInt16());
+                                l_PrimitiveList.Add(l_Reader.ReadUInt16());
+                                l_PrimitiveList.Add(l_Reader.ReadUInt16());
+#endif
+                            }
+
                             break;
                         default:
                             Console.WriteLine($"primitive type {l_PrimitiveType} not implemented");
@@ -327,12 +332,14 @@ namespace MeshExtractor
 
                     var s_Primitive = s_Mesh.UsePrimitive(s_DebugMaterial);
 
+#if _BUSTED
+
                     for (var i = 0; i < l_PrimitiveList.Count; ++i)
                     {
                         var l_PrimitiveIndices = l_PrimitiveList[i];
 
                         var l_FirstIndex = l_PrimitiveIndices.Item1;
-                        if (l_FirstIndex >= l_VertexList.Count)
+                        if (l_FirstIndex > l_VertexList.Count)
                             continue;
 
                         var l_FirstVertex = l_VertexList[l_FirstIndex];
@@ -343,7 +350,7 @@ namespace MeshExtractor
                             continue;
 
                         var l_SecondIndex = l_PrimitiveIndices.Item2;
-                        if (l_SecondIndex >= l_VertexList.Count)
+                        if (l_SecondIndex > l_VertexList.Count)
                             continue;
 
                         var l_SecondVertex = l_VertexList[l_SecondIndex];
@@ -354,7 +361,7 @@ namespace MeshExtractor
                             continue;
 
                         var l_ThirdIndex = l_PrimitiveIndices.Item3;
-                        if (l_ThirdIndex >= l_VertexList.Count)
+                        if (l_ThirdIndex > l_VertexList.Count)
                             continue;
 
                         var l_ThirdVertex = l_VertexList[l_ThirdIndex];
@@ -375,6 +382,8 @@ namespace MeshExtractor
 
                         s_Primitive.AddTriangle((l_FirstPosition, l_FirstTexture), (l_SecondPosition, l_SecondTexture), (l_ThirdPosition, l_ThirdTexture));
                     }
+#else
+#endif
 
                     //foreach (var l_Vertex in l_VertexList)
                     //{
