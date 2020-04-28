@@ -30,9 +30,9 @@ namespace RimeLib.Frostbite.Core
 
         public RelocPtr()
         {
-#pragma warning disable CS8653 // A default expression introduces a null value for a type parameter.
-            Object = default;
-#pragma warning restore CS8653 // A default expression introduces a null value for a type parameter.
+#pragma warning disable CS8601
+            Object = default(T);
+#pragma warning restore CS8601
         }
 
         public bool Serialize(RimeWriter p_Writer)
@@ -57,12 +57,10 @@ namespace RimeLib.Frostbite.Core
 
             if (BaseAddress == 0)
             {
-                //throw new Exception("Invalid base address found in RelocPtr");
-#pragma warning disable CS8653 // A default expression introduces a null value for a type parameter.
-                return default;
-#pragma warning restore CS8653 // A default expression introduces a null value for a type parameter.
+#pragma warning disable CS8603
+                return default(T);
+#pragma warning restore CS8603
             }
-                
 
             // Save the offset
             var s_CurOffset = p_Reader.Position;
