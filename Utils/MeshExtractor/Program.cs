@@ -128,7 +128,7 @@ namespace MeshExtractor
 
         private static void ParseRigidMesh(IEngineMounter p_Mounter, MeshSetLayout p_Layout, Options p_Options = null)
         {
-            if (p_Layout.Name.Object != "objects/highwaysign_02/highwaysign_02_l_Mesh")
+            if (p_Layout.Name.Object != "xp2/objects/officegarage/garage_shell_pt3_Mesh")
                 return;
 
             var s_BoundingBox = p_Layout.BoundingBox;
@@ -203,8 +203,6 @@ namespace MeshExtractor
                             var s_VertexDataList = new List<byte[]>();
                             for (var s_VertexIndex = 0; s_VertexIndex < s_Subset.VertexCount; ++s_VertexIndex)
                                 s_VertexDataList.Add(s_ChunkReader.ReadBytes(s_VertexStride));
-
-
 
                             // Iterate through each vertex data (sizeof(VertexData) == Stride)
                             foreach (var s_VertexData in s_VertexDataList)
