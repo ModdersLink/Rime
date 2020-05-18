@@ -141,9 +141,7 @@ namespace MeshExtractor
             // Create a default scene
             var s_Scene = s_Model.UseScene("default");
 
-            var s_CurrentSubsetCount = 0;
-
-
+            // Iterate through each of the level of details objects
             for (var s_LodIndex = 0; s_LodIndex < p_Layout.LodCount; ++s_LodIndex)
             {
 
@@ -171,24 +169,25 @@ namespace MeshExtractor
                     continue;
                 }
 
-                // Hold all of the vertex information
-                var s_VertexList = new List<Dictionary<VertexElementUsage, dynamic>>();
-                var s_PrimitiveList = new List<(ushort, ushort, ushort)>();
-
+                // Hold all of our data
                 byte[] s_VertexChunkData = null;
                 byte[] s_PrimitiveChunkData = null;
 
+                // Read out all vertex and primitive chunk data
                 using (var s_DataChunkReader = p_Chunk.FirstVariant.GetReader())
                 {
+                    // Read out all vertitices
                     s_VertexChunkData = s_DataChunkReader.ReadBytes((int)s_Lod.VertexDataSize);
 
                     if (s_Lod.IndexDataSize != (s_DataChunkReader.Length - s_DataChunkReader.Position))
-                        throw new Exception("sadadas");
+                        throw new Exception("read more data than expected");
 
+                    // Read out all of the primitive data
                     s_PrimitiveChunkData = s_DataChunkReader.ReadBytes((int)s_Lod.IndexDataSize);
 
+                    // Verify that we are at the end of *all* chunk data
                     if (s_DataChunkReader.Position != s_DataChunkReader.Length)
-                        throw new Exception("check here");
+                        throw new Exception("there is leftover data in the chunk reader");
                 }
 
                 var s_SubsetsDict = new Dictionary<MeshSubset, List<byte[]>>();
@@ -197,20 +196,29 @@ namespace MeshExtractor
                 var s_VertexDataList = new List<byte[]>();
                 var s_CurrentVertexCount = 0;
                 var s_CurrentVertexSize = 0;
+
+                // Parse out all of the verticies
                 using (var s_VertexReader = new RimeReader(new MemoryStream(s_VertexChunkData)))
                 {
+                    // Iterate through each of the subsets in the lod
                     for (var s_SubsetIndex = 0; s_SubsetIndex < s_Lod.Subsets.Count; ++s_SubsetIndex)
                     {
+                        // Get the subset
                         var s_Subset = s_Lod.Subsets.Get[s_SubsetIndex];
 
+                        // Get the vertex stride, this should be the same as the current stream (elements per vertex) size
                         var s_VertexStride = s_Subset.VertexStride;
 
+                        // Hold a list for all of our vertex data
                         var s_Set = new List<byte[]>();
 
+                        // Iterate through each of the verticies
                         for (var s_VertexIndex = 0; s_VertexIndex < s_Subset.VertexCount; ++s_VertexIndex)
                         {
+                            // Read out the vertex information
                             var s_Bytes = s_VertexReader.ReadBytes(s_VertexStride);
 
+                            // Add this array of bytes (of size vertex stride)
                             s_VertexDataList.Add(s_Bytes);
                             s_Set.Add(s_Bytes);
 
@@ -222,27 +230,33 @@ namespace MeshExtractor
                         s_SubsetsList.Add(s_Subset);
                     }
 
+                    // Validate that we have read all of the data
                     if (s_VertexReader.Position != s_VertexReader.Length)
-                        throw new Exception("sada");
+                        throw new Exception("there is leftover unread vertex data");
 
+                    // Verify that we have read all of the vertex data
                     if (s_VertexReader.Position != s_CurrentVertexSize)
-                        throw new Exception("vertex stride change");
+                        throw new Exception("vertex stride left leftover data");
                 }
 
+                // Hold the subset + parsed vertex information
                 var s_ParsedSubsets = new Dictionary<MeshSubset, List<Dictionary<VertexElementUsage, dynamic>>>();
 
+                // Iterate through each of the subsets + the raw data
                 for (var s_SubsetIndex = 0; s_SubsetIndex < s_SubsetsDict.Count; s_SubsetIndex++)
                 {
+                    // Get the subset and data pair
                     var s_SubsetsPair = s_SubsetsDict.ElementAt(s_SubsetIndex);
 
                     var s_SubsetKey = s_SubsetsPair.Key;
                     var s_SubsetValue = s_SubsetsPair.Value;
 
+                    // Get the geometry descriptor
                     var s_GeometryDesc = s_SubsetKey.GeometryDeclarationDesc;
 
                     // Iterate all vertices that are for this model
                     if (s_SubsetValue.Count != s_SubsetKey.VertexCount)
-                        throw new Exception("asdasd");
+                        throw new Exception("vertex count does not match number of verts read");
 
                     // Parse all of the data
                     var s_VerticiesNiceList = new List<Dictionary<VertexElementUsage, dynamic>>();
@@ -314,57 +328,72 @@ namespace MeshExtractor
                         s_VerticiesNiceList.Add(s_Dict);
                     }
 
+                    // Verify that we have parsed all of the verticies
                     if (s_VerticiesNiceList.Count != s_SubsetKey.VertexCount)
                         throw new Exception("asdasdas");
 
+                    // Add to the new map of subset + parsed vertitices
                     s_ParsedSubsets.Add(s_SubsetKey, s_VerticiesNiceList);
                 }
 
+                // Now order the mesh subset category + (subset + parsed vert data)
                 var s_Categories = new Dictionary<MeshSubsetCategory, List<KeyValuePair<MeshSubset, List<Dictionary<VertexElementUsage, dynamic>>>>>();
                 for (var s_CategoryIndex = 0; s_CategoryIndex < s_Lod.CategorySubsetIndices.Length; ++s_CategoryIndex)
                 {
+                    // Get the list of subsets per-category
                     var s_SubsetIndicies = s_Lod.CategorySubsetIndices[s_CategoryIndex].Get;
 
+                    // Hold a list of subsets + parsed verts
                     var s_SubsetPairList = new List<KeyValuePair<MeshSubset, List<Dictionary<VertexElementUsage, dynamic>>>>();
                     foreach (var s_SubsetIndex in s_SubsetIndicies)
                     {
+                        // Example: Opaque = 0x1, 0x2 (subset index)
                         var s_SubsetPair = s_ParsedSubsets.ElementAt(s_SubsetIndex);
 
                         s_SubsetPairList.Add(s_SubsetPair);
                     }
 
+                    // Add to the dictionary for subset category, (subsets + vertex data)[]
                     s_Categories.Add((MeshSubsetCategory)s_CategoryIndex, s_SubsetPairList);
                 }
 
+                // We only want to get the opaque meshes, TODO: Iterate through everything
                 var s_Ret = s_Categories[MeshSubsetCategory.Opaque];
 
                 // Open up a reader for our primitives
                 using (var s_IndexReader = new RimeReader(new MemoryStream(s_PrimitiveChunkData)))
                 {
-                    // Iterate each
+                    // Iterate each subset pair
                     foreach (var s_SubsetPair in s_Ret)
                     {
+                        // Get the subset
                         var s_SubsetKey = s_SubsetPair.Key;
 
+                        // Calculate the start offset in the index buffer
                         var s_SubsetStartIndex = s_SubsetKey.StartIndex;
-                        var s_SubsetStartOffset = System.Runtime.InteropServices.Marshal.SizeOf<ushort>() * s_SubsetStartIndex;
+
+                        // Validate the start offset
+                        var s_SubsetStartOffset = Marshal.SizeOf<ushort>() * s_SubsetStartIndex;
                         if (s_SubsetStartOffset >= s_IndexReader.Length)
                             throw new Exception("subset start offset");
 
-                        var s_SubsetEndOffset = (Marshal.SizeOf<ushort>() * 3) * s_SubsetKey.PrimitiveCount;
+                        // Calculate and verify the end offset (that it's in-bounds)
+                        var s_SubsetEndOffset = (Marshal.SizeOf<ushort>() * 3) * s_SubsetKey.PrimitiveCount; // * 3 for X, Y, Z
                         if (s_SubsetEndOffset >= s_IndexReader.Length)
                             throw new Exception("subset end offset");
-
+                        
+                        // Hold our index list
                         var s_IndexList = new List<(ushort, ushort, ushort)>();
                         switch (s_SubsetKey.PrimitiveType)
                         {
+                            // If we are parsing a triangle list, then read out the X, Y, Z indices
                             case RimeLib.Mesh.Frostbite.PrimitiveType.PrimitiveType_TriangleList:
                                 s_IndexReader.Seek(s_SubsetStartOffset, SeekOrigin.Begin);
                                 for (var s_PrimitiveIndex = 0; s_PrimitiveIndex < s_SubsetKey.PrimitiveCount; ++s_PrimitiveIndex)
                                     s_IndexList.Add((s_IndexReader.ReadUInt16(), s_IndexReader.ReadUInt16(), s_IndexReader.ReadUInt16()));
                                     break;
                             default:
-                                throw new Exception("asdasd");
+                                throw new Exception("unimplemented primitive type");
                         }
                     }
                 }
