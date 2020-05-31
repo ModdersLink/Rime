@@ -21,6 +21,8 @@ namespace RimeLib.Frostbite.Core
         /// </summary>
         public Guid InternalGUID => m_Guid;
 
+        public static GUID Empty = new GUID();
+
         private Guid m_Guid;
 
         /// <summary>
