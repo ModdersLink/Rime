@@ -1,4 +1,5 @@
 ﻿using CommandLine;
+using fb;
 using RimeLib.Content.Mounting;
 using RimeLib.Frostbite;
 using RimeLib.Serialization;
@@ -6,7 +7,9 @@ using RimeLib.Serialization.Containers;
 using RimeLib.Serialization.Ebx;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
 using System;
+using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace EbxExtractor
 {
@@ -114,11 +117,26 @@ namespace EbxExtractor
                 Console.WriteLine($"Everything is now mounted! Starting audio conversion.");
 
             var s_Partitions = s_Mounter.GetPartitions();
+
+            //var s_Ret = Parallel.ForEach(s_Partitions, p_Pair =>
+            //{
+            //    var s_PartitionName = p_Pair.Key;
+
+            //    var s_PartitionObject = p_Pair.Value;
+
+            //    using var s_PartitionReader = s_PartitionObject.FirstVariant.GetReader();
+
+            //    var s_Reader = new Fb2EbxReader();
+
+            //    var s_Partition = s_Reader.ParsePartition(s_PartitionName, s_PartitionReader);
+            //    if (s_Partition != null)
+            //        PartitionRegistry.RegisterPartition(s_Partition);
+            //});
+
+#if !_SLOW_CODE
             foreach (var s_PartitionPair in s_Partitions)
             {
                 var s_PartitionName = s_PartitionPair.Key;
-                if (s_PartitionName != "weapons/gadgets/mav/jammerfiring")
-                    continue;
 
                 var s_PartitionObject = s_PartitionPair.Value;
 
@@ -127,8 +145,14 @@ namespace EbxExtractor
                 var s_Reader = new Fb2EbxReader();
 
                 var s_Partition = s_Reader.ParsePartition(s_PartitionName, s_PartitionReader);
+                if (s_Partition == null)
+                    continue;
 
+                PartitionRegistry.RegisterPartition(s_Partition);
             }
+#endif
+            
+            var s_Results = PartitionRegistry.Partitions.Where(p_Partition => p_Partition.PrimaryInstance.ContainerTypeName == "SoundWaveAsset");
         }
     }
 }
