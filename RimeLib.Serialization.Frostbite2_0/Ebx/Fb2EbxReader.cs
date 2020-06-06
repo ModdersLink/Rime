@@ -702,7 +702,9 @@ namespace RimeLib.Serialization.Frostbite2_0.Ebx
                         };
 
                         var s_EnumType = ContainerRegistry.GetContainerType(s_Descriptor.NameHash);
-
+                        if (s_EnumType == null)
+                            break;
+                        
                         if ((!s_EnumType?.IsEnum ?? false) && p_ArrayType != null)
                             s_EnumType = p_ArrayType.GetGenericArguments()[0];
 
