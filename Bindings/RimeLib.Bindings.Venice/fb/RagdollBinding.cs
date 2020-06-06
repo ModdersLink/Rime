@@ -1,0 +1,108 @@
+///////////////////////////////////////////////////////////////
+//                                                           //
+// This is an automatically generated file.                  //
+// Do *NOT* modify unless you really know what you're doing. //
+//                                                           //
+///////////////////////////////////////////////////////////////
+
+using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+
+namespace fb
+{
+    [ContainerType(4)]
+	public class RagdollBinding : FrostbiteContainer
+	{
+		[ContainerField(0)]
+		public AntRef RagdollOnBack { get; set; } = new AntRef(); // 0x0 (0)
+		
+		[ContainerField(4)]
+		public AntRef RagdollBlend { get; set; } = new AntRef(); // 0x4 (4)
+		
+		[ContainerField(8)]
+		public AntRef RagdollForceBlendDisabled { get; set; } = new AntRef(); // 0x8 (8)
+		
+		[ContainerField(12)]
+		public AntRef RagdollActiveTime { get; set; } = new AntRef(); // 0xC (12)
+		
+		[ContainerField(16)]
+		public AntRef RagdollFullyBlendedIn { get; set; } = new AntRef(); // 0x10 (16)
+		
+		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		{
+			switch (p_Descriptor.NameHash)
+			{
+				case 2489942928:
+					RagdollOnBack = (AntRef) p_Value;
+					break;
+
+				case 4115440603:
+					RagdollBlend = (AntRef) p_Value;
+					break;
+
+				case 1434101654:
+					RagdollForceBlendDisabled = (AntRef) p_Value;
+					break;
+
+				case 3250948099:
+					RagdollActiveTime = (AntRef) p_Value;
+					break;
+
+				case 2375624599:
+					RagdollFullyBlendedIn = (AntRef) p_Value;
+					break;
+
+				default:
+					base.Bind(p_Descriptor, p_Value);
+					break;
+			}
+		}
+
+		public override object GetFieldValueByHash(uint p_Hash)
+		{
+			switch (p_Hash)
+			{
+				case 2489942928:
+					return RagdollOnBack;
+
+				case 4115440603:
+					return RagdollBlend;
+
+				case 1434101654:
+					return RagdollForceBlendDisabled;
+
+				case 3250948099:
+					return RagdollActiveTime;
+
+				case 2375624599:
+					return RagdollFullyBlendedIn;
+
+				default:
+					return base.GetFieldValueByHash(p_Hash);
+			}
+		}
+
+		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
+		{
+			switch (p_Hash)
+			{
+				case 2489942928:
+					return typeof(RagdollBinding).GetProperty(nameof(RagdollOnBack));
+
+				case 4115440603:
+					return typeof(RagdollBinding).GetProperty(nameof(RagdollBlend));
+
+				case 1434101654:
+					return typeof(RagdollBinding).GetProperty(nameof(RagdollForceBlendDisabled));
+
+				case 3250948099:
+					return typeof(RagdollBinding).GetProperty(nameof(RagdollActiveTime));
+
+				case 2375624599:
+					return typeof(RagdollBinding).GetProperty(nameof(RagdollFullyBlendedIn));
+
+				default:
+					return base.GetFieldInfoByHash(p_Hash);
+			}
+		}
+	}
+}

@@ -1,0 +1,95 @@
+///////////////////////////////////////////////////////////////
+//                                                           //
+// This is an automatically generated file.                  //
+// Do *NOT* modify unless you really know what you're doing. //
+//                                                           //
+///////////////////////////////////////////////////////////////
+
+using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+
+namespace fb
+{
+    [ContainerType(4)]
+	public class MessageInfo : FrostbiteContainer
+	{
+		[ContainerField(0), LayoutImmutable]
+		public string RowTypeName { get; set; } // 0x0 (0)
+		
+		[ContainerField(4), LayoutImmutable, Blittable]
+		public uint MessageQueueSize { get; set; } // 0x4 (4)
+		
+		[ContainerField(8), LayoutImmutable, Blittable]
+		public float NormalMessageTime { get; set; } // 0x8 (8)
+		
+		[ContainerField(12), LayoutImmutable, Blittable]
+		public float ShortMessageTime { get; set; } // 0xC (12)
+		
+		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		{
+			switch (p_Descriptor.NameHash)
+			{
+				case 3765661552:
+					RowTypeName = (string) p_Value;
+					break;
+
+				case 1715514970:
+					MessageQueueSize = (uint) p_Value;
+					break;
+
+				case 3672669416:
+					NormalMessageTime = (float) p_Value;
+					break;
+
+				case 4257687913:
+					ShortMessageTime = (float) p_Value;
+					break;
+
+				default:
+					base.Bind(p_Descriptor, p_Value);
+					break;
+			}
+		}
+
+		public override object GetFieldValueByHash(uint p_Hash)
+		{
+			switch (p_Hash)
+			{
+				case 3765661552:
+					return RowTypeName;
+
+				case 1715514970:
+					return MessageQueueSize;
+
+				case 3672669416:
+					return NormalMessageTime;
+
+				case 4257687913:
+					return ShortMessageTime;
+
+				default:
+					return base.GetFieldValueByHash(p_Hash);
+			}
+		}
+
+		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
+		{
+			switch (p_Hash)
+			{
+				case 3765661552:
+					return typeof(MessageInfo).GetProperty(nameof(RowTypeName));
+
+				case 1715514970:
+					return typeof(MessageInfo).GetProperty(nameof(MessageQueueSize));
+
+				case 3672669416:
+					return typeof(MessageInfo).GetProperty(nameof(NormalMessageTime));
+
+				case 4257687913:
+					return typeof(MessageInfo).GetProperty(nameof(ShortMessageTime));
+
+				default:
+					return base.GetFieldInfoByHash(p_Hash);
+			}
+		}
+	}
+}

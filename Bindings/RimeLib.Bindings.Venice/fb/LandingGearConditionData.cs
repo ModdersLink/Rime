@@ -1,0 +1,82 @@
+///////////////////////////////////////////////////////////////
+//                                                           //
+// This is an automatically generated file.                  //
+// Do *NOT* modify unless you really know what you're doing. //
+//                                                           //
+///////////////////////////////////////////////////////////////
+
+using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+
+namespace fb
+{
+    [ContainerType(4)]
+	public class LandingGearConditionData : FrostbiteContainer
+	{
+		[ContainerField(0), LayoutImmutable, Blittable]
+		public float Height { get; set; } // 0x0 (0)
+		
+		[ContainerField(4), LayoutImmutable, Blittable]
+		public float Velocity { get; set; } // 0x4 (4)
+		
+		[ContainerField(8), LayoutImmutable, Blittable]
+		public float Angle { get; set; } // 0x8 (8)
+		
+		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		{
+			switch (p_Descriptor.NameHash)
+			{
+				case 3054065626:
+					Height = (float) p_Value;
+					break;
+
+				case 3860766482:
+					Velocity = (float) p_Value;
+					break;
+
+				case 205597860:
+					Angle = (float) p_Value;
+					break;
+
+				default:
+					base.Bind(p_Descriptor, p_Value);
+					break;
+			}
+		}
+
+		public override object GetFieldValueByHash(uint p_Hash)
+		{
+			switch (p_Hash)
+			{
+				case 3054065626:
+					return Height;
+
+				case 3860766482:
+					return Velocity;
+
+				case 205597860:
+					return Angle;
+
+				default:
+					return base.GetFieldValueByHash(p_Hash);
+			}
+		}
+
+		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
+		{
+			switch (p_Hash)
+			{
+				case 3054065626:
+					return typeof(LandingGearConditionData).GetProperty(nameof(Height));
+
+				case 3860766482:
+					return typeof(LandingGearConditionData).GetProperty(nameof(Velocity));
+
+				case 205597860:
+					return typeof(LandingGearConditionData).GetProperty(nameof(Angle));
+
+				default:
+					return base.GetFieldInfoByHash(p_Hash);
+			}
+		}
+	}
+}

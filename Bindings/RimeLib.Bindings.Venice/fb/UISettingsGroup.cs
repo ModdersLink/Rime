@@ -1,0 +1,83 @@
+///////////////////////////////////////////////////////////////
+//                                                           //
+// This is an automatically generated file.                  //
+// Do *NOT* modify unless you really know what you're doing. //
+//                                                           //
+///////////////////////////////////////////////////////////////
+
+using System.Collections.Generic;
+using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+
+namespace fb
+{
+    [ContainerType(4)]
+	public class UISettingsGroup : FrostbiteContainer
+	{
+		[ContainerField(0), LayoutImmutable]
+		public string NameSid { get; set; } // 0x0 (0)
+		
+		[ContainerField(4), LayoutImmutable, Blittable]
+		public int ScreenColumn { get; set; } // 0x4 (4)
+		
+		[ContainerField(8)]
+		public List<UISettingsItem> SettingsItems { get; set; } = new List<UISettingsItem>(); // 0x8 (8)
+		
+		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		{
+			switch (p_Descriptor.NameHash)
+			{
+				case 3153745340:
+					NameSid = (string) p_Value;
+					break;
+
+				case 1968887775:
+					ScreenColumn = (int) p_Value;
+					break;
+
+				case 3468004518:
+					SettingsItems = (List<UISettingsItem>) p_Value;
+					break;
+
+				default:
+					base.Bind(p_Descriptor, p_Value);
+					break;
+			}
+		}
+
+		public override object GetFieldValueByHash(uint p_Hash)
+		{
+			switch (p_Hash)
+			{
+				case 3153745340:
+					return NameSid;
+
+				case 1968887775:
+					return ScreenColumn;
+
+				case 3468004518:
+					return SettingsItems;
+
+				default:
+					return base.GetFieldValueByHash(p_Hash);
+			}
+		}
+
+		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
+		{
+			switch (p_Hash)
+			{
+				case 3153745340:
+					return typeof(UISettingsGroup).GetProperty(nameof(NameSid));
+
+				case 1968887775:
+					return typeof(UISettingsGroup).GetProperty(nameof(ScreenColumn));
+
+				case 3468004518:
+					return typeof(UISettingsGroup).GetProperty(nameof(SettingsItems));
+
+				default:
+					return base.GetFieldInfoByHash(p_Hash);
+			}
+		}
+	}
+}

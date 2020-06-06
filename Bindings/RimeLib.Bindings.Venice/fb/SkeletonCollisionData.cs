@@ -1,0 +1,71 @@
+///////////////////////////////////////////////////////////////
+//                                                           //
+// This is an automatically generated file.                  //
+// Do *NOT* modify unless you really know what you're doing. //
+//                                                           //
+///////////////////////////////////////////////////////////////
+
+using System.Collections.Generic;
+using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+
+namespace fb
+{
+    [ContainerType(4)]
+	public class SkeletonCollisionData : 
+		DataContainer
+	{
+		[ContainerField(8)]
+		public CtrRef<SkeletonAsset> SkeletonAsset { get; set; } = new CtrRef<SkeletonAsset>(); // 0x8 (8)
+		
+		[ContainerField(12)]
+		public List<BoneCollisionData> BoneCollisionData { get; set; } = new List<BoneCollisionData>(); // 0xC (12)
+		
+		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		{
+			switch (p_Descriptor.NameHash)
+			{
+				case 2375870068:
+					SkeletonAsset = (CtrRef<SkeletonAsset>) p_Value;
+					break;
+
+				case 3073290765:
+					BoneCollisionData = (List<BoneCollisionData>) p_Value;
+					break;
+
+				default:
+					base.Bind(p_Descriptor, p_Value);
+					break;
+			}
+		}
+
+		public override object GetFieldValueByHash(uint p_Hash)
+		{
+			switch (p_Hash)
+			{
+				case 2375870068:
+					return SkeletonAsset;
+
+				case 3073290765:
+					return BoneCollisionData;
+
+				default:
+					return base.GetFieldValueByHash(p_Hash);
+			}
+		}
+
+		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
+		{
+			switch (p_Hash)
+			{
+				case 2375870068:
+					return typeof(SkeletonCollisionData).GetProperty(nameof(SkeletonAsset));
+
+				case 3073290765:
+					return typeof(SkeletonCollisionData).GetProperty(nameof(BoneCollisionData));
+
+				default:
+					return base.GetFieldInfoByHash(p_Hash);
+			}
+		}
+	}
+}

@@ -41,6 +41,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RimeLib.Mesh.Frostbite2_0",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AudioExtractor", "Utils\AudioExtractor\AudioExtractor.csproj", "{6C00EAF2-CD94-40B2-B60E-B2E921C36F16}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EbxExtractor", "Utils\EbxExtractor\EbxExtractor.csproj", "{2F3DB5DC-0F2D-4729-AB49-805CA1612B75}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Bindings", "Bindings", "{A347138D-A422-46F7-BBC1-AC93AD056C01}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RimeLib.Bindings.Venice", "Bindings\RimeLib.Bindings.Venice\RimeLib.Bindings.Venice.csproj", "{58C54B99-1A5F-432B-BAB7-96139C230DDE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RimeLib.Serialization.Frostbite2_0", "RimeLib.Serialization.Frostbite2_0\RimeLib.Serialization.Frostbite2_0.csproj", "{185B27FF-F9A8-4882-A984-08CC4397E60A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -119,6 +127,18 @@ Global
 		{6C00EAF2-CD94-40B2-B60E-B2E921C36F16}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6C00EAF2-CD94-40B2-B60E-B2E921C36F16}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6C00EAF2-CD94-40B2-B60E-B2E921C36F16}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F3DB5DC-0F2D-4729-AB49-805CA1612B75}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F3DB5DC-0F2D-4729-AB49-805CA1612B75}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F3DB5DC-0F2D-4729-AB49-805CA1612B75}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F3DB5DC-0F2D-4729-AB49-805CA1612B75}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58C54B99-1A5F-432B-BAB7-96139C230DDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58C54B99-1A5F-432B-BAB7-96139C230DDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58C54B99-1A5F-432B-BAB7-96139C230DDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58C54B99-1A5F-432B-BAB7-96139C230DDE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{185B27FF-F9A8-4882-A984-08CC4397E60A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{185B27FF-F9A8-4882-A984-08CC4397E60A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{185B27FF-F9A8-4882-A984-08CC4397E60A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{185B27FF-F9A8-4882-A984-08CC4397E60A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -129,6 +149,8 @@ Global
 		{425A4256-28A7-4A4D-A536-09A7FDEBB73D} = {42E38905-976C-4506-98AE-DC35CA1A9925}
 		{7ECC05E2-9F9C-44A2-8648-5306FA72670D} = {42E38905-976C-4506-98AE-DC35CA1A9925}
 		{6C00EAF2-CD94-40B2-B60E-B2E921C36F16} = {42E38905-976C-4506-98AE-DC35CA1A9925}
+		{2F3DB5DC-0F2D-4729-AB49-805CA1612B75} = {42E38905-976C-4506-98AE-DC35CA1A9925}
+		{58C54B99-1A5F-432B-BAB7-96139C230DDE} = {A347138D-A422-46F7-BBC1-AC93AD056C01}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9D2A4DE6-648D-4971-AC81-A89F21154CD0}

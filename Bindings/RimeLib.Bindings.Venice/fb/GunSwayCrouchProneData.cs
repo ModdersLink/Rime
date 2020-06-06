@@ -1,0 +1,69 @@
+///////////////////////////////////////////////////////////////
+//                                                           //
+// This is an automatically generated file.                  //
+// Do *NOT* modify unless you really know what you're doing. //
+//                                                           //
+///////////////////////////////////////////////////////////////
+
+using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+
+namespace fb
+{
+    [ContainerType(4)]
+	public class GunSwayCrouchProneData : FrostbiteContainer
+	{
+		[ContainerField(0)]
+		public GunSwayBaseMoveData NoZoom { get; set; } = new GunSwayBaseMoveData(); // 0x0 (0)
+		
+		[ContainerField(76)]
+		public GunSwayBaseMoveData Zoom { get; set; } = new GunSwayBaseMoveData(); // 0x4C (76)
+		
+		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		{
+			switch (p_Descriptor.NameHash)
+			{
+				case 2828535091:
+					NoZoom = (GunSwayBaseMoveData) p_Value;
+					break;
+
+				case 2089658322:
+					Zoom = (GunSwayBaseMoveData) p_Value;
+					break;
+
+				default:
+					base.Bind(p_Descriptor, p_Value);
+					break;
+			}
+		}
+
+		public override object GetFieldValueByHash(uint p_Hash)
+		{
+			switch (p_Hash)
+			{
+				case 2828535091:
+					return NoZoom;
+
+				case 2089658322:
+					return Zoom;
+
+				default:
+					return base.GetFieldValueByHash(p_Hash);
+			}
+		}
+
+		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
+		{
+			switch (p_Hash)
+			{
+				case 2828535091:
+					return typeof(GunSwayCrouchProneData).GetProperty(nameof(NoZoom));
+
+				case 2089658322:
+					return typeof(GunSwayCrouchProneData).GetProperty(nameof(Zoom));
+
+				default:
+					return base.GetFieldInfoByHash(p_Hash);
+			}
+		}
+	}
+}

@@ -1,5 +1,6 @@
 ﻿using System;
 using RimeLib.IO;
+using RimeLib.Serialization.Containers;
 
 namespace RimeLib.Frostbite.Core
 {

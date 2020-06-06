@@ -1,0 +1,82 @@
+///////////////////////////////////////////////////////////////
+//                                                           //
+// This is an automatically generated file.                  //
+// Do *NOT* modify unless you really know what you're doing. //
+//                                                           //
+///////////////////////////////////////////////////////////////
+
+using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+
+namespace fb
+{
+    [ContainerType(16)]
+	public class PitchModifier : FrostbiteContainer
+	{
+		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable]
+		public Vec3 Offset { get; set; } = new Vec3(); // 0x0 (0)
+		
+		[ContainerField(16), LayoutImmutable, Blittable]
+		public float PitchVal { get; set; } // 0x10 (16)
+		
+		[ContainerField(20), LayoutImmutable, Blittable]
+		public float PitchAngle { get; set; } // 0x14 (20)
+		
+		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		{
+			switch (p_Descriptor.NameHash)
+			{
+				case 2871410728:
+					Offset = (Vec3) p_Value;
+					break;
+
+				case 1095283832:
+					PitchVal = (float) p_Value;
+					break;
+
+				case 3042696834:
+					PitchAngle = (float) p_Value;
+					break;
+
+				default:
+					base.Bind(p_Descriptor, p_Value);
+					break;
+			}
+		}
+
+		public override object GetFieldValueByHash(uint p_Hash)
+		{
+			switch (p_Hash)
+			{
+				case 2871410728:
+					return Offset;
+
+				case 1095283832:
+					return PitchVal;
+
+				case 3042696834:
+					return PitchAngle;
+
+				default:
+					return base.GetFieldValueByHash(p_Hash);
+			}
+		}
+
+		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
+		{
+			switch (p_Hash)
+			{
+				case 2871410728:
+					return typeof(PitchModifier).GetProperty(nameof(Offset));
+
+				case 1095283832:
+					return typeof(PitchModifier).GetProperty(nameof(PitchVal));
+
+				case 3042696834:
+					return typeof(PitchModifier).GetProperty(nameof(PitchAngle));
+
+				default:
+					return base.GetFieldInfoByHash(p_Hash);
+			}
+		}
+	}
+}
