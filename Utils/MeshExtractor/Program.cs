@@ -23,6 +23,10 @@ using RimeLib.Mesh.Frostbite.Fb2;
 using SharpGLTF.Runtime;
 using RimeLib.Frostbite.Core;
 using System.Runtime.InteropServices;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
+using RimeLib.Serialization;
+using RimeLib.Serialization.Ebx;
 
 namespace MeshExtractor
 {
@@ -47,8 +51,20 @@ namespace MeshExtractor
         {
             Parser.Default.ParseArguments<Options>(p_Args).WithParsed(p_Options =>
             {
+                // Load Frostbite2_0 assemblies
                 LoadContentAssembly(p_Options);
-                DumpFiles(p_Options);
+
+                // Load the Venice bindings
+                LoadBindingsAssembly(p_Options);
+
+                // Mount the entire game
+                Mount(p_Options, out IEngineMounter s_Mounter);
+
+                // Load all of the ebx files
+                LoadEbx(p_Options, s_Mounter);
+
+                // Dump all of the files + skels
+                DumpFiles(p_Options, s_Mounter);
 
                 Console.WriteLine("Content successfully extracted. Press any key to exit...");
                 Console.ReadKey();
@@ -75,20 +91,129 @@ namespace MeshExtractor
             }
         }
 
-        private static async void DumpFiles(Options p_Options)
+        private static void LoadBindingsAssembly(Options p_Options)
         {
-            var s_Mounter = EngineMounterRegistry.Create(p_Options.EngineType);
+            var s_AssemblyName = "RimeLib.Bindings.Venice";
+
+            try
+            {
+                if (!p_Options.Quiet)
+                    Console.WriteLine("Loading engine bindings support assembly.");
+
+                var s_Bindings = Assembly.Load(s_AssemblyName);
+
+                var s_ExportedTypes = s_Bindings.GetExportedTypes();
+
+                foreach (var s_Type in s_ExportedTypes)
+                {
+                    if (!typeof(FrostbiteContainer).IsAssignableFrom(s_Type) &&
+                        !s_Type.IsEnum)
+                        continue;
+
+                    ContainerRegistry.RegisterType(s_Type);
+                }
+            }
+            catch
+            {
+                if (!p_Options.Quiet)
+                    Console.WriteLine($"Failed to load supporting engine assembly ({s_AssemblyName}.dll). This means that the engine is not supported or that you are missing required files.");
+
+                System.Environment.Exit(1);
+            }
+        }
+
+        private static void Mount(Options p_Options, out IEngineMounter p_Mounter)
+        {
+            p_Mounter = EngineMounterRegistry.Create(p_Options.EngineType);
 
             if (!p_Options.Quiet)
                 Console.WriteLine($"Mounting game with engine '{p_Options.EngineType}' at path '{p_Options.GamePath}'. Please wait, this could take a while.");
 
-            await s_Mounter.Mount(p_Options.GamePath, true, EngineType.Frostbite2_0);
-            //await s_Mounter.MountSuperbundle("Win32/Chunks0", true);
-            //await s_Mounter.MountSuperbundle("Win32/Chunks1", true);
-            //await s_Mounter.MountSuperbundle("Win32/Chunks2", true);
-            //await s_Mounter.MountSuperbundle("Win32/MpChunks", true);
-            //await s_Mounter.MountSuperbundle("Win32/Xp2Chunks", true);
-            //await s_Mounter.MountSuperbundle("Win32/Levels/XP2_Factory/XP2_Factory", true);
+            p_Mounter.Mount(p_Options.GamePath, false, EngineType.Frostbite2_0).Wait();
+            p_Mounter.MountSuperbundle("Win32/Chunks0", true).Wait();
+            p_Mounter.MountSuperbundle("Win32/Chunks1", true).Wait();
+            p_Mounter.MountSuperbundle("Win32/Chunks2", true).Wait();
+            p_Mounter.MountSuperbundle("Win32/MpChunks", true).Wait();
+            p_Mounter.MountSuperbundle("Win32/Xp2Chunks", true).Wait();
+            p_Mounter.MountSuperbundle("Win32/Levels/XP2_Factory/XP2_Factory", true).Wait();
+
+            if (!p_Options.Quiet)
+                Console.WriteLine($"Everythingis now mounted! Starting model conversion.");
+        }
+
+        private static List<FrostbitePartition> m_SkeletonPartitions = new List<FrostbitePartition>();
+        private static void LoadEbx(Options p_Options, IEngineMounter p_Mounter)
+        {
+            var s_Partitions = p_Mounter.GetPartitions();
+
+            Parallel.ForEach(s_Partitions, p_PartitionPair =>
+            {
+                var s_PartitionName = p_PartitionPair.Key;
+
+                var s_PartitionObject = p_PartitionPair.Value;
+
+                using var s_PartitionReader = s_PartitionObject.FirstVariant.GetReader();
+
+                var s_Reader = new Fb2EbxReader();
+
+                var s_Partition = s_Reader.ParsePartition(s_PartitionName, s_PartitionReader);
+                if (s_Partition == null)
+                    return;
+
+                PartitionRegistry.RegisterPartition(s_Partition);
+
+                if (s_Partition.PrimaryInstance.ContainerTypeName == "SkeletonAsset")
+                {
+                    if (!p_Options.Quiet)
+                        Console.WriteLine($"Found SkeletonAsset {s_PartitionName}.");
+
+                    lock (m_SkeletonPartitions)
+                        m_SkeletonPartitions.Add(s_Partition);
+
+                    // SpatialPrefabBlueprint 79F80F0B-6991-7DFD-D824-47B945670B5A #primary instance
+                    // ReferenceObjectData 10073372-4B09-4113-8333-52AC228733A4
+                    // SpatialPrefabBlueprint 079B28B4-38F8-C4AF-41CA-BFDDBD3974B4 #primary instance
+                    // ModelAnimationEntityData 60918322-4B59-4645-BFD5-3C332474EA21
+                    // AntAnimationSetAsset 7A4FD994-D1A3-6B47-7EAB-B587E6962714 #primary instance
+                    // SkeletonAsset 45F06B70-19A9-7A8E-CE22-B6408DF92DE8 #primary instance
+
+                    // ObjectBlueprint 11CADBE5-146C-7A74-F54D-83CF8782EEE3 #primary instance
+                    // StaticModelEntityData 1A8767FE-BF3A-11E0-A8C3-D9944A861423
+                    // 
+
+
+
+                    // SoldierEntityData A9FFE6B4-257F-4FE8-A950-B323B50D2112
+                    // SoldierBodyComponentData 1C721510-AD42-4AFD-B613-04DC37D0FC1F
+                    // AntAnimatableComponentData 83CB9E70-3D9A-4C34-B8D6-787CEADBD8A3
+                    // MasterSkeletonAsset 7B0E0D54-7382-D1BA-7E73-2C418DA0D7F3 #primary instance
+                    // MasterSkeleton animations/skeletons/venice1pske01/34256E97-1049-FC24-90D8-4D551517E3AC
+
+                }
+            });
+        }
+
+        private static async void DumpSkeletons(Options p_Options, IEngineMounter p_Mounter)
+        {
+            var s_Model = ModelRoot.CreateModel();
+
+            var s_Node = s_Model.CreateLogicalNode();
+            s_Node.Name = "Skinned mesh node";
+            //s_Node.Skin = new Skin();
+        }
+
+        private static async void DumpFiles(Options p_Options, IEngineMounter p_Mounter)
+        {
+            if (!p_Options.Quiet)
+                Console.WriteLine($"Mounting game with engine '{p_Options.EngineType}' at path '{p_Options.GamePath}'. Please wait, this could take a while.");
+
+            await p_Mounter.Mount(p_Options.GamePath, false, EngineType.Frostbite2_0);
+            await p_Mounter.MountSuperbundle("Win32/Chunks0", true);
+            await p_Mounter.MountSuperbundle("Win32/Chunks1", true);
+            await p_Mounter.MountSuperbundle("Win32/Chunks2", true);
+            await p_Mounter.MountSuperbundle("Win32/MpChunks", true);
+            await p_Mounter.MountSuperbundle("Win32/Xp2Chunks", true);
+            await p_Mounter.MountSuperbundle("Win32/Levels/XP2_Factory/XP2_Factory", true);
 
             if (!p_Options.Quiet)
                 Console.WriteLine($"Everythingis now mounted! Starting model conversion.");
@@ -110,7 +235,7 @@ namespace MeshExtractor
                 }
             });
 #else
-            var s_Resources = s_Mounter.GetResources();
+            var s_Resources = p_Mounter.GetResources();
             foreach (var s_Resource in s_Resources)
             {
                 var s_Name = s_Resource.Key;
@@ -121,7 +246,7 @@ namespace MeshExtractor
                     if (s_Variant.GetResourceType() != RimeLib.Content.Frostbite.ResourceType.MeshSet)
                         continue;
 
-                    DumpMesh(s_Mounter, p_Options, s_Name, s_MountedObject);
+                    DumpMesh(p_Mounter, p_Options, s_Name, s_MountedObject);
                 }
             }
 #endif

@@ -370,7 +370,7 @@ namespace RimeLib.Serialization.Frostbite2_0.Ebx
             var s_ContainerType = ContainerRegistry.GetContainerType(p_TypeInstance.Descriptor.NameHash);
 
             var s_StartOffsetField = m_Reader.BaseStream.Position;
-            Debug.WriteLine("Parsing field '{0}' of type '{1:X04}' at offset {2} ({3}).", s_Field.Descriptor.Name, s_Field.Descriptor.Flags.FlagBits, s_Field.Descriptor.Offset, m_Reader.BaseStream.Position);
+            //Debug.WriteLine("Parsing field '{0}' of type '{1:X04}' at offset {2} ({3}).", s_Field.Descriptor.Name, s_Field.Descriptor.Flags.FlagBits, s_Field.Descriptor.Offset, m_Reader.BaseStream.Position);
 
             if (s_Field.Descriptor.Flags.GetFieldType() >= FieldType.FieldTypeCount)
                 throw new Exception($"Tried to parse field with unknown type '{(int)s_Field.Descriptor.Flags.GetFieldType()}'.");
