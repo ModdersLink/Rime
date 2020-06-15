@@ -27,6 +27,11 @@ using RimeLib.Serialization.Containers;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using fb;
+using VertexElementUsage = RimeLib.Mesh.Frostbite.VertexElementUsage;
+using VertexElementFormat = RimeLib.Mesh.Frostbite.VertexElementFormat;
+using MeshSubsetCategory = RimeLib.Mesh.Frostbite.Fb2.MeshSubsetCategory;
+using MeshType = RimeLib.Mesh.Frostbite.MeshType;
 
 namespace MeshExtractor
 {
@@ -62,6 +67,9 @@ namespace MeshExtractor
 
                 // Load all of the ebx files
                 LoadEbx(p_Options, s_Mounter);
+
+                // Skeletoms
+                DumpSkeletons(p_Options, s_Mounter);
 
                 // Dump all of the files + skels
                 DumpFiles(p_Options, s_Mounter);
@@ -141,7 +149,7 @@ namespace MeshExtractor
                 Console.WriteLine($"Everythingis now mounted! Starting model conversion.");
         }
 
-        private static List<FrostbitePartition> m_SkeletonPartitions = new List<FrostbitePartition>();
+        private static List<FrostbitePartition> m_FoundPartitions = new List<FrostbitePartition>();
         private static void LoadEbx(Options p_Options, IEngineMounter p_Mounter)
         {
             var s_Partitions = p_Mounter.GetPartitions();
@@ -162,13 +170,13 @@ namespace MeshExtractor
 
                 PartitionRegistry.RegisterPartition(s_Partition);
 
-                if (s_Partition.PrimaryInstance.ContainerTypeName == "SkeletonAsset")
+                if (s_Partition.PrimaryInstance.ContainerTypeName == "SoldierWeaponBlueprint")
                 {
                     if (!p_Options.Quiet)
                         Console.WriteLine($"Found SkeletonAsset {s_PartitionName}.");
 
-                    lock (m_SkeletonPartitions)
-                        m_SkeletonPartitions.Add(s_Partition);
+                    lock (m_FoundPartitions)
+                        m_FoundPartitions.Add(s_Partition);
 
                     // SpatialPrefabBlueprint 79F80F0B-6991-7DFD-D824-47B945670B5A #primary instance
                     // ReferenceObjectData 10073372-4B09-4113-8333-52AC228733A4
@@ -200,20 +208,59 @@ namespace MeshExtractor
             var s_Node = s_Model.CreateLogicalNode();
             s_Node.Name = "Skinned mesh node";
             //s_Node.Skin = new Skin();
+
+            // B3A18B07-B794-4C3F-98C6-3A0C13E0EC47
+            //var s_StaticModelEntityData = PartitionRegistry.LookupPartition(new GUID("B3A18B07-B794-4C3F-98C6-3A0C13E0EC47"));
+            var s_WeaponBluerint = m_FoundPartitions.FirstOrDefault(p_Partition => p_Partition.Name.Contains("AN94")).PrimaryInstance as SoldierWeaponBlueprint;
+
+            var s_SoldierWeaponDataPartition = PartitionRegistry.LookupPartition(s_WeaponBluerint.Object.PartitionGuid);
+
+            var s_SoldierWeaponData = s_SoldierWeaponDataPartition.Instances.FirstOrDefault(p_Instance => p_Instance.InstanceGuid == s_WeaponBluerint.Object.InstanceGuid) as SoldierWeaponData;
+
+            var s_WeaponStates = s_SoldierWeaponData.WeaponStates;
+
+            var s_AnimationData = PartitionRegistry.GetPartitionContainer(s_SoldierWeaponData.AnimationData) as AntPackageAsset;
+
+            if (!p_Mounter.TryGetChunk(s_AnimationData.StreamingGuid, out IMountedObject<IChunkVariant> p_Chunk))
+            {
+                Debug.WriteLine("could not get chunk");
+                return; 
+            }
+
+            // WorldPartData 15E8F838-BD58-4515-89CE-970BC57C33ED #primary instance
+            //  member D0FA1E68-9BF4-495D-92B3-8856F30EDCB0
+            // AnimationSet animations/characters/coop/d2_buildings/coopsign_rig_animset/09D8973D-8BF3-E39E-8022-209D364753FD
+            // SkeletonAsset animations/characters/coop/d2_buildings/coopsign_skeleton/4A18D3F3-EC16-CAB3-E2EF-B048F9126B80
+
+            using var s_Reader = p_Chunk.FirstVariant.GetReader();
+            var s_ReaderData = s_Reader.ReadBytes((int)s_Reader.Length);
+
+            for (var s_WeaponStateIndex = 0; s_WeaponStateIndex < s_WeaponStates.Count; ++s_WeaponStateIndex)
+            {
+                var s_WeaponState = s_WeaponStates[s_WeaponStateIndex];
+
+                var s_SkinnedMeshAsset = PartitionRegistry.GetPartitionContainer(s_WeaponState.Mesh1p) as SkinnedMeshAsset;
+
+                var s_SkinnedMeshAssetName = s_SkinnedMeshAsset.Name;
+
+                var s_AnimationConfiguration = s_WeaponState.AnimationConfiguration;
+
+            }
+            //s_SoldierWeaponData.PrimaryInstance;
         }
 
         private static async void DumpFiles(Options p_Options, IEngineMounter p_Mounter)
         {
-            if (!p_Options.Quiet)
-                Console.WriteLine($"Mounting game with engine '{p_Options.EngineType}' at path '{p_Options.GamePath}'. Please wait, this could take a while.");
+            //if (!p_Options.Quiet)
+            //    Console.WriteLine($"Mounting game with engine '{p_Options.EngineType}' at path '{p_Options.GamePath}'. Please wait, this could take a while.");
 
-            await p_Mounter.Mount(p_Options.GamePath, false, EngineType.Frostbite2_0);
-            await p_Mounter.MountSuperbundle("Win32/Chunks0", true);
-            await p_Mounter.MountSuperbundle("Win32/Chunks1", true);
-            await p_Mounter.MountSuperbundle("Win32/Chunks2", true);
-            await p_Mounter.MountSuperbundle("Win32/MpChunks", true);
-            await p_Mounter.MountSuperbundle("Win32/Xp2Chunks", true);
-            await p_Mounter.MountSuperbundle("Win32/Levels/XP2_Factory/XP2_Factory", true);
+            //await p_Mounter.Mount(p_Options.GamePath, false, EngineType.Frostbite2_0);
+            //await p_Mounter.MountSuperbundle("Win32/Chunks0", true);
+            //await p_Mounter.MountSuperbundle("Win32/Chunks1", true);
+            //await p_Mounter.MountSuperbundle("Win32/Chunks2", true);
+            //await p_Mounter.MountSuperbundle("Win32/MpChunks", true);
+            //await p_Mounter.MountSuperbundle("Win32/Xp2Chunks", true);
+            //await p_Mounter.MountSuperbundle("Win32/Levels/XP2_Factory/XP2_Factory", true);
 
             if (!p_Options.Quiet)
                 Console.WriteLine($"Everythingis now mounted! Starting model conversion.");
@@ -306,6 +353,7 @@ namespace MeshExtractor
                 using (var s_ChunkReader = p_Chunk.FirstVariant.GetReader())
                     s_ChunkData = s_ChunkReader.ReadBytes((int)s_ChunkReader.Length);
 
+                long s_TotalVertexCount = 0;
                 // Read out all vertex and primitive chunk data
                 using (var s_DataChunkReader = new RimeReader(new MemoryStream(s_ChunkData)))
                 {
@@ -339,6 +387,8 @@ namespace MeshExtractor
                 // Parse out all of the verticies
                 using (var s_VertexReader = new RimeReader(new MemoryStream(s_VertexChunkData)))
                 {
+                    var s_VertexBitmask = new bool[s_VertexChunkData.Length];
+
                     // Iterate through each of the subsets in the lod
                     for (var s_SubsetIndex = 0; s_SubsetIndex < s_Lod.Subsets.Count; ++s_SubsetIndex)
                     {
@@ -356,6 +406,9 @@ namespace MeshExtractor
                         // Iterate through each of the verticies
                         for (var s_VertexIndex = 0; s_VertexIndex < s_Subset.VertexCount; ++s_VertexIndex)
                         {
+                            for (var i = 0; i < s_VertexStride; ++i)
+                                s_VertexBitmask[s_VertexReader.Position + i] = true;
+
                             // Read out the vertex information
                             var s_Bytes = s_VertexReader.ReadBytes(s_VertexStride);
 
@@ -381,6 +434,7 @@ namespace MeshExtractor
                     if (s_VertexReader.Position != s_CurrentVertexSize)
                         throw new Exception("vertex stride left leftover data");
 #endif
+                    var s_Any = s_VertexBitmask.Any(p_Bit => p_Bit == false);
                 }
 
                 // Hold the subset + parsed vertex information
