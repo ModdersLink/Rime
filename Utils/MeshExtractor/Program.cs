@@ -4,7 +4,6 @@ using RimeLib.Frostbite;
 using RimeLib.IO;
 using RimeLib.Math;
 using RimeLib.Mesh.Frostbite;
-using RimeLib.Mesh.Frostbite.Helpers;
 using SharpGLTF.Geometry;
 using SharpGLTF.Materials;
 using SharpGLTF.Schema2;
@@ -15,13 +14,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
-using SharpGLTF.Scenes;
 using System.Linq;
 using System.Numerics;
-using System.Text.Json;
-using RimeLib.Mesh.Frostbite.Fb2;
-using SharpGLTF.Runtime;
-using RimeLib.Frostbite.Core;
 using System.Runtime.InteropServices;
 using RimeLib.Serialization.Containers;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
@@ -32,6 +26,9 @@ using VertexElementUsage = RimeLib.Mesh.Frostbite.VertexElementUsage;
 using VertexElementFormat = RimeLib.Mesh.Frostbite.VertexElementFormat;
 using MeshSubsetCategory = RimeLib.Mesh.Frostbite.Fb2.MeshSubsetCategory;
 using MeshType = RimeLib.Mesh.Frostbite.MeshType;
+using SharpGLTF.Scenes;
+using SharpGLTF.Transforms;
+using System.Data.SqlTypes;
 
 namespace MeshExtractor
 {
@@ -69,10 +66,10 @@ namespace MeshExtractor
                 LoadEbx(p_Options, s_Mounter);
 
                 // Skeletoms
-                DumpSkeletons(p_Options, s_Mounter);
+                //DumpSkeletons(p_Options, s_Mounter);
 
                 // Dump all of the files + skels
-                DumpFiles(p_Options, s_Mounter);
+                //DumpFiles(p_Options, s_Mounter);
 
                 Console.WriteLine("Content successfully extracted. Press any key to exit...");
                 Console.ReadKey();
@@ -176,14 +173,16 @@ namespace MeshExtractor
                 //    s_PartitionReader.Seek(0, SeekOrigin.Begin);
                 //    File.WriteAllBytes(s_PartitionName.Replace('/', '-'), s_PartitionReader.ReadBytes((int)s_PartitionReader.Length));
                 //}
+                if (s_Partition.PrimaryInstance.ContainerTypeName == "SkeletonAsset")
 
-                if (s_Partition.PrimaryInstance.ContainerTypeName == "SoldierWeaponBlueprint")
                 {
                     if (!p_Options.Quiet)
                         Console.WriteLine($"Found SkeletonAsset {s_PartitionName}.");
 
                     lock (m_FoundPartitions)
                         m_FoundPartitions.Add(s_Partition);
+
+                    DumpSkeleton(p_Options, p_Mounter, s_Partition.PrimaryInstance as SkeletonAsset);
 
                     // SpatialPrefabBlueprint 79F80F0B-6991-7DFD-D824-47B945670B5A #primary instance
                     // ReferenceObjectData 10073372-4B09-4113-8333-52AC228733A4
@@ -205,6 +204,101 @@ namespace MeshExtractor
                     // MasterSkeleton animations/skeletons/venice1pske01/34256E97-1049-FC24-90D8-4D551517E3AC
 
                 }
+            });
+        }
+
+        internal struct Skeleton
+        {
+            public string WeaponBoneName;
+            public string HeadBoneName;
+            public string HipBoneName;
+            public string CameraBoneName;
+
+            public List<Bone> Bones;
+        }
+        internal struct Bone
+        {
+            public int Index;
+            public string Name;
+            public LinearTransform LocalPose;
+            public LinearTransform ModelPose;
+        }
+        private static async void DumpSkeleton(Options p_Options, IEngineMounter p_Mounter, SkeletonAsset p_Asset)
+        {
+            if (p_Asset.Name != "Animations/Skeletons/VeniceAntSke01")
+                return;
+
+            if (!p_Options.Quiet)
+            {
+                Console.WriteLine($"Dumping skeleton: {p_Asset.Name}.");
+            }
+
+            var s_IndexMap = new Dictionary<string, long>();
+
+            
+            var s_LocalPoses = p_Asset.LocalPose;
+            var s_ModelPoses = p_Asset.ModelPose;
+            var s_Hierachy = p_Asset.Hierarchy;
+            var s_BoneNames = p_Asset.BoneNames;
+            // Check an assumptions that we have
+            if (s_LocalPoses.Count != s_ModelPoses.Count)
+                throw new Exception();
+
+            if (s_ModelPoses.Count != s_Hierachy.Count)
+                throw new Exception();
+
+            if (s_BoneNames.Count != s_LocalPoses.Count)
+                throw new Exception();
+
+            var s_Bones = new List<Bone>();
+            for (var s_Index = 0; s_Index < s_Hierachy.Count; ++s_Index)
+            {
+                var s_BoneName = s_BoneNames[s_Index];
+                var s_ModelPose = s_ModelPoses[s_Index];
+                var s_LocalPose = s_LocalPoses[s_Index];
+
+                var s_BoneIndex = s_Hierachy[s_Index];
+
+                s_Bones.Add(new Bone
+                {
+                    Index = s_BoneIndex,
+                    LocalPose = s_LocalPose,
+                    ModelPose = s_ModelPose,
+                    Name = s_BoneName
+                });
+            }
+
+            // Create a new GLTF model
+            var s_Model = ModelRoot.CreateModel();
+            s_Model.Asset.Generator = "Generated by RimeLib (c) 2020";
+            s_Model.Asset.Copyright = "Exported by Rime (c) kiwidoggie productions 2017-2020, models copyright respective ip owners, not for redistribution";
+
+            var s_RootNode = s_Model.CreateLogicalNode();
+            // Create a default scene
+            var s_Scene = s_Model.UseScene("default");
+
+            for (var s_Index = 0; s_Index < s_Hierachy.Count; ++s_Index)
+            {
+                var s_BoneIndex = s_Hierachy[s_Index];
+                var s_Bone = s_Bones.FirstOrDefault(p_Bone => p_Bone.Index == s_BoneIndex);
+
+                if (s_Bone.Index == -1)
+                {
+                    // Set the main skeleton bone name
+                    s_RootNode.Name = s_Bone.Name;
+                    continue;
+                }
+
+                // Otherwise we continue on creating the skeleton
+                var s_BoneNode = s_RootNode.CreateNode(s_Bone.Name);
+                s_BoneNode.LocalTransform = AffineTransform.Create(s_Bone.ModelPose.ToMatrix4x4() * 39);
+
+                Console.WriteLine($"Parsing {s_Bone.Name} at model: {s_Bone.ModelPose.Trans} local: {s_Bone.LocalPose.Trans}.\n");
+            }
+
+            s_Model.SaveGLTF("./out.bin", new WriteSettings
+            {
+                JsonIndented = true
             });
         }
 
@@ -323,6 +417,8 @@ namespace MeshExtractor
 
             // Create a default scene
             var s_Scene = s_Model.UseScene("default");
+
+            
 
             // Hold a new random for randomized colors
             var s_Random = new Random();
