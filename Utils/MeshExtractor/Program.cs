@@ -161,6 +161,7 @@ namespace MeshExtractor
                 var s_PartitionObject = p_PartitionPair.Value;
 
                 using var s_PartitionReader = s_PartitionObject.FirstVariant.GetReader();
+                
 
                 var s_Reader = new Fb2EbxReader();
 
@@ -169,6 +170,12 @@ namespace MeshExtractor
                     return;
 
                 PartitionRegistry.RegisterPartition(s_Partition);
+
+                //if (s_Partition.PrimaryInstance.ContainerTypeName == "LevelData")
+                //{
+                //    s_PartitionReader.Seek(0, SeekOrigin.Begin);
+                //    File.WriteAllBytes(s_PartitionName.Replace('/', '-'), s_PartitionReader.ReadBytes((int)s_PartitionReader.Length));
+                //}
 
                 if (s_Partition.PrimaryInstance.ContainerTypeName == "SoldierWeaponBlueprint")
                 {
@@ -217,10 +224,12 @@ namespace MeshExtractor
 
             var s_SoldierWeaponData = s_SoldierWeaponDataPartition.Instances.FirstOrDefault(p_Instance => p_Instance.InstanceGuid == s_WeaponBluerint.Object.InstanceGuid) as SoldierWeaponData;
 
+            
             var s_WeaponStates = s_SoldierWeaponData.WeaponStates;
 
             var s_AnimationData = PartitionRegistry.GetPartitionContainer(s_SoldierWeaponData.AnimationData) as AntPackageAsset;
 
+            
             if (!p_Mounter.TryGetChunk(s_AnimationData.StreamingGuid, out IMountedObject<IChunkVariant> p_Chunk))
             {
                 Debug.WriteLine("could not get chunk");
@@ -242,6 +251,7 @@ namespace MeshExtractor
                 var s_SkinnedMeshAsset = PartitionRegistry.GetPartitionContainer(s_WeaponState.Mesh1p) as SkinnedMeshAsset;
 
                 var s_SkinnedMeshAssetName = s_SkinnedMeshAsset.Name;
+
 
                 var s_AnimationConfiguration = s_WeaponState.AnimationConfiguration;
 
