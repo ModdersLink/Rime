@@ -21,7 +21,8 @@ namespace FBCC
             var s_Args = new List<string>()
             {
                 "--gen-rime",
-
+                @"--in=D:\fbcgen",
+                @"--out=D:\fbcgen_rime",
                 //"--gen-bindings",
                 //"--gen-native",
                 //"--gen-vext-docs",
@@ -34,8 +35,8 @@ namespace FBCC
             //var s_Files = Directory.GetFiles(@"B:\Games\Battlefield 4\fbc\all\");
             //s_Args.AddRange(s_Files.Where(p_File => p_File.EndsWith("Settings.fbc")));
 
-            var s_FBCFiles = Directory.GetFiles(@"B:\Games\Battlefield 3\__fbc__\classes");
-            s_Args.AddRange(s_FBCFiles.Where(p_File => p_File.EndsWith(".fbc")));
+            //var s_FBCFiles = Directory.GetFiles(@"B:\Games\Battlefield 3\__fbc__\classes");
+            //s_Args.AddRange(s_FBCFiles.Where(p_File => p_File.EndsWith(".fbc")));
 
             p_Args = s_Args.ToArray();
 #endif
@@ -94,6 +95,8 @@ namespace FBCC
                         break;
                 }
             }
+
+
 
             if ((!s_GenerateRime && !s_GenerateBindings && !s_GenerateNative && !s_GenerateVextDocs) || s_ContainerFiles.Count == 0)
             {

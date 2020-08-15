@@ -26,6 +26,25 @@ namespace RimeLib.Serialization.Attributes
     }
 
     /// <summary>
+    /// Attributes for name hash
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Property)]
+    public class ContainerFieldNameHash : Attribute
+    {
+        public uint NameHash { get; set; }
+
+        public ContainerFieldNameHash(uint p_NameHash = 0)
+        {
+            NameHash = 0;
+        }
+
+        public ContainerFieldNameHash(string p_Name)
+        {
+            NameHash = Frostbite.Utils.HashQuick(p_Name);
+        }
+    }
+
+    /// <summary>
     /// Attributes for container fields
     /// </summary>
     [AttributeUsage(AttributeTargets.Property)]

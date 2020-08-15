@@ -2,6 +2,7 @@
 using FBCC.Containers;
 using System.IO;
 using FBCC.Managers;
+using Antlr4.Runtime.Misc;
 
 namespace FBCC.Generators
 {
@@ -54,18 +55,17 @@ namespace FBCC.Generators
         {
             m_Indent = "";
 
-            m_Writer.WriteLine("using RimeLib.Frostbite.Ebx.Fb2;");
             m_Writer.WriteLine("using RimeLib.IO;");
-            m_Writer.WriteLine("using RimeLib.Frostbite.Containers;");
             m_Writer.WriteLine("using RimeLib.Frostbite.Core;");
             m_Writer.WriteLine("using System;");
-            m_Writer.WriteLine("using RimeLib.Frostbite.Ebx;");
             m_Writer.WriteLine("using System.Collections.Generic;");
             m_Writer.WriteLine("using System.Linq;");
 			//m_Writer.WriteLine("using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;");
 			m_Writer.WriteLine("using System.ComponentModel;");
 			m_Writer.WriteLine("using System.Reflection;");
-
+            m_Writer.WriteLine("using RimeLib.Serialization.Attributes;");
+            m_Writer.WriteLine("using RimeLib.Serialization.Containers;");
+            m_Writer.WriteLine("using RimeLib.Serialization.Ebx;");
 
             m_Writer.WriteLine(m_Indent);
 
@@ -165,38 +165,70 @@ namespace FBCC.Generators
                 if (string.IsNullOrWhiteSpace(s_Type))
                     continue;
 
-				var s_FieldAttributes = string.Join(", ", s_Member.Attributes);
+                var s_Attribute = new ContainerAttribute("ContainerFieldNameHash");
+                s_Attribute.Parameters.Add(new ContainerIntegerAttributeParam(fb_hashQuick(s_Member.Name)));
 
-				m_Writer.Write(m_Indent + "[ContainerField({0})", s_Member.Offset);
+                s_Member.Attributes.Add(s_Attribute);
 
-				/*if (s_Member.MemberType == ContainerMemberType.Container && ContainerManager.HasStruct(s_Member.ContainerType) && !s_Member.Array)
-					m_Writer.Write(", ExpandableObject");*/
-
-				m_Writer.Write(s_FieldAttributes.Length > 0 ? ", " + s_FieldAttributes : "");
-				m_Writer.WriteLine("]");
+                var s_FieldAttributes = string.Join(", ", s_Member.Attributes);
+                
 
                 if (s_Pointer && s_Member.Array)
                 {
-                    m_Writer.WriteLine(m_Indent + "public RefArray<{2}> {0} {{ get; set; }} = new RefArray<{2}>(); // 0x{1:X} ({1})", s_Member.Name, s_Member.Offset, s_Type);
+                    m_Writer.WriteLine($"{m_Indent}protected RefArray<{s_Type}> m_{s_Member.Name} = new RefArray<{s_Type}>();");
+
+                    m_Writer.Write(m_Indent + "[ContainerField({0})", s_Member.Offset);
+                    m_Writer.Write(s_FieldAttributes.Length > 0 ? ", " + s_FieldAttributes : "");
+                    m_Writer.WriteLine("]");
+
+                    m_Writer.WriteLine(m_Indent + "public RefArray<{2}> {0} {{ get {{ return m_{0}; }} set {{ if (OnPropertyChanging(\"{3}.\" + nameof({0}), this, m_{0}, value)) m_{0} = value; }} }} // 0x{1:X} ({1})", s_Member.Name, s_Member.Offset, s_Type, p_Class.Name);
                 }
                 else if (s_Pointer && !s_Member.Array)
                 {
-                    m_Writer.WriteLine(m_Indent + "public CtrRef<{2}> {0} {{ get; set; }} = new CtrRef<{2}>(); // 0x{1:X} ({1})", s_Member.Name, s_Member.Offset, s_Type);
+                    m_Writer.WriteLine($"{m_Indent}protected CtrRef<{s_Type}> m_{s_Member.Name} = new CtrRef<{s_Type}>();");
+
+                    m_Writer.Write(m_Indent + "[ContainerField({0})", s_Member.Offset);
+                    m_Writer.Write(s_FieldAttributes.Length > 0 ? ", " + s_FieldAttributes : "");
+                    m_Writer.WriteLine("]");
+                    m_Writer.WriteLine(m_Indent + "public CtrRef<{2}> {0} {{ get {{ return m_{0}; }} set {{ if (OnPropertyChanging(\"{3}.\" + nameof({0}), this, m_{0}, value)) m_{0} = value; }} }} // 0x{1:X} ({1})", s_Member.Name, s_Member.Offset, s_Type, p_Class.Name);
                 }
                 else if (!s_Pointer && !s_Member.Array)
                 {
                     if (IsPrimitive(s_Member))
-                        m_Writer.WriteLine(m_Indent + "public {0} {1} {{ get; set; }} // 0x{2:X} ({2})", s_Type, s_Member.Name, s_Member.Offset);
+                    {
+                        m_Writer.WriteLine($"{m_Indent}protected {s_Type} m_{s_Member.Name} = new {s_Type}();");
+                        
+
+                        m_Writer.Write(m_Indent + "[ContainerField({0})", s_Member.Offset);
+                        m_Writer.Write(s_FieldAttributes.Length > 0 ? ", " + s_FieldAttributes : "");
+                        m_Writer.WriteLine("]");
+                        m_Writer.WriteLine(m_Indent + "public {0} {1} {{ get {{ return m_{1}; }} set {{ if (OnPropertyChanging(\"{3}.\" + nameof({1}), this, m_{1}, value)) m_{1} = value; }} }} // 0x{2:X} ({2})", s_Type, s_Member.Name, s_Member.Offset, p_Class.Name);
+                    }
                     else
-                        m_Writer.WriteLine(m_Indent + "public {0} {1} {{ get; set; }} = new {0}(); // 0x{2:X} ({2})", s_Type, s_Member.Name, s_Member.Offset);
+                    {
+                        m_Writer.WriteLine($"{m_Indent}protected {s_Type} m_{s_Member.Name} = new {s_Type}();");
+
+                        m_Writer.Write(m_Indent + "[ContainerField({0})", s_Member.Offset);
+                        m_Writer.Write(s_FieldAttributes.Length > 0 ? ", " + s_FieldAttributes : "");
+                        m_Writer.WriteLine("]");
+
+                        m_Writer.WriteLine(m_Indent + "public {0} {1} {{ get {{ return m_{1}; }} set {{ if (OnPropertyChanging(\"{3}.\" + nameof({1}), this, m_{1}, value)) m_{1} = value; }} }} // 0x{2:X} ({2})", s_Type, s_Member.Name, s_Member.Offset, p_Class.Name);
+                    }
                 }
                 else if (!s_Pointer && s_Member.Array)
                 {
-                    m_Writer.WriteLine(m_Indent + "public List<{0}> {1} {{ get; set; }} = new List<{0}>(); // 0x{2:X} ({2})", s_Type, s_Member.Name, s_Member.Offset);
+                    m_Writer.WriteLine($"{m_Indent}protected List<{s_Type}> m_{s_Member.Name} = new List<{s_Type}>();");
+
+                    m_Writer.Write(m_Indent + "[ContainerField({0})", s_Member.Offset);
+                    m_Writer.Write(s_FieldAttributes.Length > 0 ? ", " + s_FieldAttributes : "");
+                    m_Writer.WriteLine("]");
+
+                    m_Writer.WriteLine(m_Indent + "public List<{0}> {1} {{ get {{ return m_{1}; }} set {{ if (OnPropertyChanging(\"{3}.\" + nameof({1}), this, m_{1}, value)) m_{1} = value; }} }} // 0x{2:X} ({2})", s_Type, s_Member.Name, s_Member.Offset, p_Class.Name);
                 }
 
                 m_Writer.WriteLine(m_Indent);
             }
+            
 
             // Write Bind
             m_Writer.WriteLine(m_Indent + "public override void Bind(FieldDescriptor p_Descriptor, object p_Value)");
