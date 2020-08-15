@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class UnlockableTextureSliceCollection : 
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable, Blittable]
-		public int DefaultValue { get; set; } // 0x8 (8)
+		protected int m_DefaultValue = new int();
+		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(2066049125)]
+		public int DefaultValue { get { return m_DefaultValue; } set { if (OnPropertyChanging("UnlockableTextureSliceCollection." + nameof(DefaultValue), this, m_DefaultValue, value)) m_DefaultValue = value; } } // 0x8 (8)
 		
-		[ContainerField(12)]
-		public RefArray<TextureSliceUnlockPartData> PossibleValues { get; set; } = new RefArray<TextureSliceUnlockPartData>(); // 0xC (12)
+		protected RefArray<TextureSliceUnlockPartData> m_PossibleValues = new RefArray<TextureSliceUnlockPartData>();
+		[ContainerField(12), ContainerFieldNameHash(349877344)]
+		public RefArray<TextureSliceUnlockPartData> PossibleValues { get { return m_PossibleValues; } set { if (OnPropertyChanging("UnlockableTextureSliceCollection." + nameof(PossibleValues), this, m_PossibleValues, value)) m_PossibleValues = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

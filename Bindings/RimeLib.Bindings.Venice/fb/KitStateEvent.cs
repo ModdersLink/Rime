@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(8)]
+	[ContainerType(8)]
 	public class KitStateEvent : 
 		MetricEvent
 	{
-		[ContainerField(16), LayoutImmutable]
-		public string Kit { get; set; } // 0x10 (16)
+		protected string m_Kit = new string();
+		[ContainerField(16), LayoutImmutable, ContainerFieldNameHash(193457363)]
+		public string Kit { get { return m_Kit; } set { if (OnPropertyChanging("KitStateEvent." + nameof(Kit), this, m_Kit, value)) m_Kit = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
-		public float SecondsAsKit { get; set; } // 0x14 (20)
+		protected float m_SecondsAsKit = new float();
+		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(711562626)]
+		public float SecondsAsKit { get { return m_SecondsAsKit; } set { if (OnPropertyChanging("KitStateEvent." + nameof(SecondsAsKit), this, m_SecondsAsKit, value)) m_SecondsAsKit = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,72 +5,98 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class UINestedListDataBinding : 
 		UIDataBinding
 	{
-		[ContainerField(8), LayoutImmutable, Blittable]
-		public int ListIndex { get; set; } // 0x8 (8)
+		protected int m_ListIndex = new int();
+		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(102126553)]
+		public int ListIndex { get { return m_ListIndex; } set { if (OnPropertyChanging("UINestedListDataBinding." + nameof(ListIndex), this, m_ListIndex, value)) m_ListIndex = value; } } // 0x8 (8)
 		
-		[ContainerField(12)]
-		public List<NestedList> NestedLists { get; set; } = new List<NestedList>(); // 0xC (12)
+		protected List<NestedList> m_NestedLists = new List<NestedList>();
+		[ContainerField(12), ContainerFieldNameHash(4213273)]
+		public List<NestedList> NestedLists { get { return m_NestedLists; } set { if (OnPropertyChanging("UINestedListDataBinding." + nameof(NestedLists), this, m_NestedLists, value)) m_NestedLists = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public int RowSpacing { get; set; } // 0x10 (16)
+		protected int m_RowSpacing = new int();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(3371971726)]
+		public int RowSpacing { get { return m_RowSpacing; } set { if (OnPropertyChanging("UINestedListDataBinding." + nameof(RowSpacing), this, m_RowSpacing, value)) m_RowSpacing = value; } } // 0x10 (16)
 		
-		[ContainerField(20)]
-		public DefaultSelectionItem DefaultHighlightedRow { get; set; } = new DefaultSelectionItem(); // 0x14 (20)
+		protected DefaultSelectionItem m_DefaultHighlightedRow = new DefaultSelectionItem();
+		[ContainerField(20), ContainerFieldNameHash(3059833365)]
+		public DefaultSelectionItem DefaultHighlightedRow { get { return m_DefaultHighlightedRow; } set { if (OnPropertyChanging("UINestedListDataBinding." + nameof(DefaultHighlightedRow), this, m_DefaultHighlightedRow, value)) m_DefaultHighlightedRow = value; } } // 0x14 (20)
 		
-		[ContainerField(40)]
-		public UIListNavigationType NavigationType { get; set; } = new UIListNavigationType(); // 0x28 (40)
+		protected UIListNavigationType m_NavigationType = new UIListNavigationType();
+		[ContainerField(40), ContainerFieldNameHash(3962792471)]
+		public UIListNavigationType NavigationType { get { return m_NavigationType; } set { if (OnPropertyChanging("UINestedListDataBinding." + nameof(NavigationType), this, m_NavigationType, value)) m_NavigationType = value; } } // 0x28 (40)
 		
-		[ContainerField(44)]
-		public UIListRowType RowType { get; set; } = new UIListRowType(); // 0x2C (44)
+		protected UIListRowType m_RowType = new UIListRowType();
+		[ContainerField(44), ContainerFieldNameHash(1700793143)]
+		public UIListRowType RowType { get { return m_RowType; } set { if (OnPropertyChanging("UINestedListDataBinding." + nameof(RowType), this, m_RowType, value)) m_RowType = value; } } // 0x2C (44)
 		
-		[ContainerField(48)]
-		public UIListEmptyRowType EmptyRowType { get; set; } = new UIListEmptyRowType(); // 0x30 (48)
+		protected UIListEmptyRowType m_EmptyRowType = new UIListEmptyRowType();
+		[ContainerField(48), ContainerFieldNameHash(3029081730)]
+		public UIListEmptyRowType EmptyRowType { get { return m_EmptyRowType; } set { if (OnPropertyChanging("UINestedListDataBinding." + nameof(EmptyRowType), this, m_EmptyRowType, value)) m_EmptyRowType = value; } } // 0x30 (48)
 		
-		[ContainerField(52), LayoutImmutable, Blittable]
-		public int SelectorWidth { get; set; } // 0x34 (52)
+		protected int m_SelectorWidth = new int();
+		[ContainerField(52), LayoutImmutable, Blittable, ContainerFieldNameHash(595342646)]
+		public int SelectorWidth { get { return m_SelectorWidth; } set { if (OnPropertyChanging("UINestedListDataBinding." + nameof(SelectorWidth), this, m_SelectorWidth, value)) m_SelectorWidth = value; } } // 0x34 (52)
 		
-		[ContainerField(56)]
-		public UIDataSourceInfo Visibility { get; set; } = new UIDataSourceInfo(); // 0x38 (56)
+		protected UIDataSourceInfo m_Visibility = new UIDataSourceInfo();
+		[ContainerField(56), ContainerFieldNameHash(1708270083)]
+		public UIDataSourceInfo Visibility { get { return m_Visibility; } set { if (OnPropertyChanging("UINestedListDataBinding." + nameof(Visibility), this, m_Visibility, value)) m_Visibility = value; } } // 0x38 (56)
 		
-		[ContainerField(72), LayoutImmutable, Blittable]
-		public bool SendIndexWithEvent { get; set; } // 0x48 (72)
+		protected bool m_SendIndexWithEvent = new bool();
+		[ContainerField(72), LayoutImmutable, Blittable, ContainerFieldNameHash(936991273)]
+		public bool SendIndexWithEvent { get { return m_SendIndexWithEvent; } set { if (OnPropertyChanging("UINestedListDataBinding." + nameof(SendIndexWithEvent), this, m_SendIndexWithEvent, value)) m_SendIndexWithEvent = value; } } // 0x48 (72)
 		
-		[ContainerField(73), LayoutImmutable, Blittable]
-		public bool UseScrollBar { get; set; } // 0x49 (73)
+		protected bool m_UseScrollBar = new bool();
+		[ContainerField(73), LayoutImmutable, Blittable, ContainerFieldNameHash(900221658)]
+		public bool UseScrollBar { get { return m_UseScrollBar; } set { if (OnPropertyChanging("UINestedListDataBinding." + nameof(UseScrollBar), this, m_UseScrollBar, value)) m_UseScrollBar = value; } } // 0x49 (73)
 		
-		[ContainerField(74), LayoutImmutable, Blittable]
-		public bool DataIncludesButtonLayout { get; set; } // 0x4A (74)
+		protected bool m_DataIncludesButtonLayout = new bool();
+		[ContainerField(74), LayoutImmutable, Blittable, ContainerFieldNameHash(4158288630)]
+		public bool DataIncludesButtonLayout { get { return m_DataIncludesButtonLayout; } set { if (OnPropertyChanging("UINestedListDataBinding." + nameof(DataIncludesButtonLayout), this, m_DataIncludesButtonLayout, value)) m_DataIncludesButtonLayout = value; } } // 0x4A (74)
 		
-		[ContainerField(75), LayoutImmutable, Blittable]
-		public bool ClearListAtNavigationEvent { get; set; } // 0x4B (75)
+		protected bool m_ClearListAtNavigationEvent = new bool();
+		[ContainerField(75), LayoutImmutable, Blittable, ContainerFieldNameHash(1717286605)]
+		public bool ClearListAtNavigationEvent { get { return m_ClearListAtNavigationEvent; } set { if (OnPropertyChanging("UINestedListDataBinding." + nameof(ClearListAtNavigationEvent), this, m_ClearListAtNavigationEvent, value)) m_ClearListAtNavigationEvent = value; } } // 0x4B (75)
 		
-		[ContainerField(76), LayoutImmutable, Blittable]
-		public bool Use3DSelection { get; set; } // 0x4C (76)
+		protected bool m_Use3DSelection = new bool();
+		[ContainerField(76), LayoutImmutable, Blittable, ContainerFieldNameHash(3486139089)]
+		public bool Use3DSelection { get { return m_Use3DSelection; } set { if (OnPropertyChanging("UINestedListDataBinding." + nameof(Use3DSelection), this, m_Use3DSelection, value)) m_Use3DSelection = value; } } // 0x4C (76)
 		
-		[ContainerField(77), LayoutImmutable, Blittable]
-		public bool InvertVisible { get; set; } // 0x4D (77)
+		protected bool m_InvertVisible = new bool();
+		[ContainerField(77), LayoutImmutable, Blittable, ContainerFieldNameHash(301381369)]
+		public bool InvertVisible { get { return m_InvertVisible; } set { if (OnPropertyChanging("UINestedListDataBinding." + nameof(InvertVisible), this, m_InvertVisible, value)) m_InvertVisible = value; } } // 0x4D (77)
 		
-		[ContainerField(78), LayoutImmutable, Blittable]
-		public bool Visible { get; set; } // 0x4E (78)
+		protected bool m_Visible = new bool();
+		[ContainerField(78), LayoutImmutable, Blittable, ContainerFieldNameHash(901540267)]
+		public bool Visible { get { return m_Visible; } set { if (OnPropertyChanging("UINestedListDataBinding." + nameof(Visible), this, m_Visible, value)) m_Visible = value; } } // 0x4E (78)
 		
-		[ContainerField(79), LayoutImmutable, Blittable]
-		public bool ScreenRotationEnabled { get; set; } // 0x4F (79)
+		protected bool m_ScreenRotationEnabled = new bool();
+		[ContainerField(79), LayoutImmutable, Blittable, ContainerFieldNameHash(3744685560)]
+		public bool ScreenRotationEnabled { get { return m_ScreenRotationEnabled; } set { if (OnPropertyChanging("UINestedListDataBinding." + nameof(ScreenRotationEnabled), this, m_ScreenRotationEnabled, value)) m_ScreenRotationEnabled = value; } } // 0x4F (79)
 		
-		[ContainerField(80), LayoutImmutable, Blittable]
-		public bool HighLightOnUpdate { get; set; } // 0x50 (80)
+		protected bool m_HighLightOnUpdate = new bool();
+		[ContainerField(80), LayoutImmutable, Blittable, ContainerFieldNameHash(2774529029)]
+		public bool HighLightOnUpdate { get { return m_HighLightOnUpdate; } set { if (OnPropertyChanging("UINestedListDataBinding." + nameof(HighLightOnUpdate), this, m_HighLightOnUpdate, value)) m_HighLightOnUpdate = value; } } // 0x50 (80)
 		
-		[ContainerField(81), LayoutImmutable, Blittable]
-		public bool KeepScrollOffset { get; set; } // 0x51 (81)
+		protected bool m_KeepScrollOffset = new bool();
+		[ContainerField(81), LayoutImmutable, Blittable, ContainerFieldNameHash(983569566)]
+		public bool KeepScrollOffset { get { return m_KeepScrollOffset; } set { if (OnPropertyChanging("UINestedListDataBinding." + nameof(KeepScrollOffset), this, m_KeepScrollOffset, value)) m_KeepScrollOffset = value; } } // 0x51 (81)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

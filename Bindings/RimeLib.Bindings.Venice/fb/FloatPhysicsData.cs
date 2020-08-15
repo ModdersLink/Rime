@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class FloatPhysicsData : 
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable, Blittable]
-		public float Density { get; set; } // 0x8 (8)
+		protected float m_Density = new float();
+		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(4008572221)]
+		public float Density { get { return m_Density; } set { if (OnPropertyChanging("FloatPhysicsData." + nameof(Density), this, m_Density, value)) m_Density = value; } } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public float FilledDensity { get; set; } // 0xC (12)
+		protected float m_FilledDensity = new float();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(1851378675)]
+		public float FilledDensity { get { return m_FilledDensity; } set { if (OnPropertyChanging("FloatPhysicsData." + nameof(FilledDensity), this, m_FilledDensity, value)) m_FilledDensity = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

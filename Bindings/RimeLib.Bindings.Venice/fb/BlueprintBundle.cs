@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class BlueprintBundle : 
 		Asset
 	{
-		[ContainerField(12)]
-		public CtrRef<Blueprint> Blueprint { get; set; } = new CtrRef<Blueprint>(); // 0xC (12)
+		protected CtrRef<Blueprint> m_Blueprint = new CtrRef<Blueprint>();
+		[ContainerField(12), ContainerFieldNameHash(4232469066)]
+		public CtrRef<Blueprint> Blueprint { get { return m_Blueprint; } set { if (OnPropertyChanging("BlueprintBundle." + nameof(Blueprint), this, m_Blueprint, value)) m_Blueprint = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public CtrRef<RegistryContainer> RegistryContainer { get; set; } = new CtrRef<RegistryContainer>(); // 0x10 (16)
+		protected CtrRef<RegistryContainer> m_RegistryContainer = new CtrRef<RegistryContainer>();
+		[ContainerField(16), ContainerFieldNameHash(1535522391)]
+		public CtrRef<RegistryContainer> RegistryContainer { get { return m_RegistryContainer; } set { if (OnPropertyChanging("BlueprintBundle." + nameof(RegistryContainer), this, m_RegistryContainer, value)) m_RegistryContainer = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

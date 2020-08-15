@@ -5,28 +5,42 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class UINodeConnection : 
 		DataContainer
 	{
-		[ContainerField(8)]
-		public CtrRef<UINodeData> SourceNode { get; set; } = new CtrRef<UINodeData>(); // 0x8 (8)
+		protected CtrRef<UINodeData> m_SourceNode = new CtrRef<UINodeData>();
+		[ContainerField(8), ContainerFieldNameHash(1522571896)]
+		public CtrRef<UINodeData> SourceNode { get { return m_SourceNode; } set { if (OnPropertyChanging("UINodeConnection." + nameof(SourceNode), this, m_SourceNode, value)) m_SourceNode = value; } } // 0x8 (8)
 		
-		[ContainerField(12)]
-		public CtrRef<UINodeData> TargetNode { get; set; } = new CtrRef<UINodeData>(); // 0xC (12)
+		protected CtrRef<UINodeData> m_TargetNode = new CtrRef<UINodeData>();
+		[ContainerField(12), ContainerFieldNameHash(328873140)]
+		public CtrRef<UINodeData> TargetNode { get { return m_TargetNode; } set { if (OnPropertyChanging("UINodeConnection." + nameof(TargetNode), this, m_TargetNode, value)) m_TargetNode = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public CtrRef<UINodePort> SourcePort { get; set; } = new CtrRef<UINodePort>(); // 0x10 (16)
+		protected CtrRef<UINodePort> m_SourcePort = new CtrRef<UINodePort>();
+		[ContainerField(16), ContainerFieldNameHash(1521925345)]
+		public CtrRef<UINodePort> SourcePort { get { return m_SourcePort; } set { if (OnPropertyChanging("UINodeConnection." + nameof(SourcePort), this, m_SourcePort, value)) m_SourcePort = value; } } // 0x10 (16)
 		
-		[ContainerField(20)]
-		public CtrRef<UINodePort> TargetPort { get; set; } = new CtrRef<UINodePort>(); // 0x14 (20)
+		protected CtrRef<UINodePort> m_TargetPort = new CtrRef<UINodePort>();
+		[ContainerField(20), ContainerFieldNameHash(328235565)]
+		public CtrRef<UINodePort> TargetPort { get { return m_TargetPort; } set { if (OnPropertyChanging("UINodeConnection." + nameof(TargetPort), this, m_TargetPort, value)) m_TargetPort = value; } } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable]
-		public int NumScreensToPop { get; set; } // 0x18 (24)
+		protected int m_NumScreensToPop = new int();
+		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(1254751512)]
+		public int NumScreensToPop { get { return m_NumScreensToPop; } set { if (OnPropertyChanging("UINodeConnection." + nameof(NumScreensToPop), this, m_NumScreensToPop, value)) m_NumScreensToPop = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

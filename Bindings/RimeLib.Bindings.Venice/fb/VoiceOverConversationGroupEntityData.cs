@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class VoiceOverConversationGroupEntityData : 
 		EntityData
 	{
-		[ContainerField(12)]
-		public CtrRef<VoiceOverConversationQueueGroup> QueueGroup { get; set; } = new CtrRef<VoiceOverConversationQueueGroup>(); // 0xC (12)
+		protected CtrRef<VoiceOverConversationQueueGroup> m_QueueGroup = new CtrRef<VoiceOverConversationQueueGroup>();
+		[ContainerField(12), ContainerFieldNameHash(2016027659)]
+		public CtrRef<VoiceOverConversationQueueGroup> QueueGroup { get { return m_QueueGroup; } set { if (OnPropertyChanging("VoiceOverConversationGroupEntityData." + nameof(QueueGroup), this, m_QueueGroup, value)) m_QueueGroup = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

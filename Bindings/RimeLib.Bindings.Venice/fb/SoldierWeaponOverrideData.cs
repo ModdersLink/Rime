@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class SoldierWeaponOverrideData : 
 		DataContainer
 	{
-		[ContainerField(8)]
-		public RefArray<WeaponOverrideData> Overrides { get; set; } = new RefArray<WeaponOverrideData>(); // 0x8 (8)
+		protected RefArray<WeaponOverrideData> m_Overrides = new RefArray<WeaponOverrideData>();
+		[ContainerField(8), ContainerFieldNameHash(2465446370)]
+		public RefArray<WeaponOverrideData> Overrides { get { return m_Overrides; } set { if (OnPropertyChanging("SoldierWeaponOverrideData." + nameof(Overrides), this, m_Overrides, value)) m_Overrides = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

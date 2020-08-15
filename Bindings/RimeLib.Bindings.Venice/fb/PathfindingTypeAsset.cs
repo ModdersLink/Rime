@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class PathfindingTypeAsset : 
 		Asset
 	{
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public uint Index { get; set; } // 0xC (12)
+		protected uint m_Index = new uint();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(214509467)]
+		public uint Index { get { return m_Index; } set { if (OnPropertyChanging("PathfindingTypeAsset." + nameof(Index), this, m_Index, value)) m_Index = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

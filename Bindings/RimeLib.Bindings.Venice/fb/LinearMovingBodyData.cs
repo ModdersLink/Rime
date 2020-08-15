@@ -5,22 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class LinearMovingBodyData : 
 		MovingBodyData
 	{
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 Axis { get; set; } = new Vec3(); // 0x10 (16)
+		protected Vec3 m_Axis = new Vec3();
+		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(2088662246)]
+		public Vec3 Axis { get { return m_Axis; } set { if (OnPropertyChanging("LinearMovingBodyData." + nameof(Axis), this, m_Axis, value)) m_Axis = value; } } // 0x10 (16)
 		
-		[ContainerField(32)]
-		public EndPointData Start { get; set; } = new EndPointData(); // 0x20 (32)
+		protected EndPointData m_Start = new EndPointData();
+		[ContainerField(32), ContainerFieldNameHash(230748069)]
+		public EndPointData Start { get { return m_Start; } set { if (OnPropertyChanging("LinearMovingBodyData." + nameof(Start), this, m_Start, value)) m_Start = value; } } // 0x20 (32)
 		
-		[ContainerField(52)]
-		public EndPointData End { get; set; } = new EndPointData(); // 0x34 (52)
+		protected EndPointData m_End = new EndPointData();
+		[ContainerField(52), ContainerFieldNameHash(193438506)]
+		public EndPointData End { get { return m_End; } set { if (OnPropertyChanging("LinearMovingBodyData." + nameof(End), this, m_End, value)) m_End = value; } } // 0x34 (52)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

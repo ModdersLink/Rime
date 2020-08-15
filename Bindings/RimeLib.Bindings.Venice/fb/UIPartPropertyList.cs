@@ -5,17 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class UIPartPropertyList : 
 		DataContainer
 	{
-		[ContainerField(8)]
-		public List<UIPartProperties> HudPropertyList { get; set; } = new List<UIPartProperties>(); // 0x8 (8)
+		protected List<UIPartProperties> m_HudPropertyList = new List<UIPartProperties>();
+		[ContainerField(8), ContainerFieldNameHash(3433890873)]
+		public List<UIPartProperties> HudPropertyList { get { return m_HudPropertyList; } set { if (OnPropertyChanging("UIPartPropertyList." + nameof(HudPropertyList), this, m_HudPropertyList, value)) m_HudPropertyList = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,22 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class MaterialRelationSoundData : 
 		PhysicsMaterialRelationPropertyData
 	{
-		[ContainerField(8)]
-		public CtrRef<SoundAsset> ImpactSound { get; set; } = new CtrRef<SoundAsset>(); // 0x8 (8)
+		protected CtrRef<SoundAsset> m_ImpactSound = new CtrRef<SoundAsset>();
+		[ContainerField(8), ContainerFieldNameHash(3986717348)]
+		public CtrRef<SoundAsset> ImpactSound { get { return m_ImpactSound; } set { if (OnPropertyChanging("MaterialRelationSoundData." + nameof(ImpactSound), this, m_ImpactSound, value)) m_ImpactSound = value; } } // 0x8 (8)
 		
-		[ContainerField(12)]
-		public CtrRef<SoundAsset> ScrapeSound { get; set; } = new CtrRef<SoundAsset>(); // 0xC (12)
+		protected CtrRef<SoundAsset> m_ScrapeSound = new CtrRef<SoundAsset>();
+		[ContainerField(12), ContainerFieldNameHash(1279692944)]
+		public CtrRef<SoundAsset> ScrapeSound { get { return m_ScrapeSound; } set { if (OnPropertyChanging("MaterialRelationSoundData." + nameof(ScrapeSound), this, m_ScrapeSound, value)) m_ScrapeSound = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public float ScrapeLength { get; set; } // 0x10 (16)
+		protected float m_ScrapeLength = new float();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(544833071)]
+		public float ScrapeLength { get { return m_ScrapeLength; } set { if (OnPropertyChanging("MaterialRelationSoundData." + nameof(ScrapeLength), this, m_ScrapeLength, value)) m_ScrapeLength = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,20 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class AdvertisementLevelDescriptionComponent : 
 		LevelDescriptionComponent
 	{
-		[ContainerField(8), LayoutImmutable]
-		public string Identifier { get; set; } // 0x8 (8)
+		protected string m_Identifier = new string();
+		[ContainerField(8), LayoutImmutable, ContainerFieldNameHash(3512790342)]
+		public string Identifier { get { return m_Identifier; } set { if (OnPropertyChanging("AdvertisementLevelDescriptionComponent." + nameof(Identifier), this, m_Identifier, value)) m_Identifier = value; } } // 0x8 (8)
 		
-		[ContainerField(12)]
-		public List<AdvertisementZoneMember> Members { get; set; } = new List<AdvertisementZoneMember>(); // 0xC (12)
+		protected List<AdvertisementZoneMember> m_Members = new List<AdvertisementZoneMember>();
+		[ContainerField(12), ContainerFieldNameHash(1446896454)]
+		public List<AdvertisementZoneMember> Members { get { return m_Members; } set { if (OnPropertyChanging("AdvertisementLevelDescriptionComponent." + nameof(Members), this, m_Members, value)) m_Members = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

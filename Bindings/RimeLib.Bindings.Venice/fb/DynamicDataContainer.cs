@@ -5,17 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class DynamicDataContainer : 
 		DataContainer
 	{
-		[ContainerField(8)]
-		public List<DataField> Fields { get; set; } = new List<DataField>(); // 0x8 (8)
+		protected List<DataField> m_Fields = new List<DataField>();
+		[ContainerField(8), ContainerFieldNameHash(2525411604)]
+		public List<DataField> Fields { get { return m_Fields; } set { if (OnPropertyChanging("DynamicDataContainer." + nameof(Fields), this, m_Fields, value)) m_Fields = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

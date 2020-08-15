@@ -5,71 +5,98 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class HudVehicleTrackerData : 
 		UIPartData
 	{
-		[ContainerField(8)]
-		public EdgePointerData EdgePointer { get; set; } = new EdgePointerData(); // 0x8 (8)
+		protected EdgePointerData m_EdgePointer = new EdgePointerData();
+		[ContainerField(8), ContainerFieldNameHash(1684895101)]
+		public EdgePointerData EdgePointer { get { return m_EdgePointer; } set { if (OnPropertyChanging("HudVehicleTrackerData." + nameof(EdgePointer), this, m_EdgePointer, value)) m_EdgePointer = value; } } // 0x8 (8)
 		
-		[ContainerField(24)]
-		public UIHudIcon EnemyTrackerIcon { get; set; } = new UIHudIcon(); // 0x18 (24)
+		protected UIHudIcon m_EnemyTrackerIcon = new UIHudIcon();
+		[ContainerField(24), ContainerFieldNameHash(1056223948)]
+		public UIHudIcon EnemyTrackerIcon { get { return m_EnemyTrackerIcon; } set { if (OnPropertyChanging("HudVehicleTrackerData." + nameof(EnemyTrackerIcon), this, m_EnemyTrackerIcon, value)) m_EnemyTrackerIcon = value; } } // 0x18 (24)
 		
-		[ContainerField(28)]
-		public UIHudIcon OutsideScreenTrackerIcon { get; set; } = new UIHudIcon(); // 0x1C (28)
+		protected UIHudIcon m_OutsideScreenTrackerIcon = new UIHudIcon();
+		[ContainerField(28), ContainerFieldNameHash(1957344303)]
+		public UIHudIcon OutsideScreenTrackerIcon { get { return m_OutsideScreenTrackerIcon; } set { if (OnPropertyChanging("HudVehicleTrackerData." + nameof(OutsideScreenTrackerIcon), this, m_OutsideScreenTrackerIcon, value)) m_OutsideScreenTrackerIcon = value; } } // 0x1C (28)
 		
-		[ContainerField(32)]
-		public VehicleTrackerRenderTargetData RenderTargetData { get; set; } = new VehicleTrackerRenderTargetData(); // 0x20 (32)
+		protected VehicleTrackerRenderTargetData m_RenderTargetData = new VehicleTrackerRenderTargetData();
+		[ContainerField(32), ContainerFieldNameHash(1018667310)]
+		public VehicleTrackerRenderTargetData RenderTargetData { get { return m_RenderTargetData; } set { if (OnPropertyChanging("HudVehicleTrackerData." + nameof(RenderTargetData), this, m_RenderTargetData, value)) m_RenderTargetData = value; } } // 0x20 (32)
 		
-		[ContainerField(56)]
-		public UIHudIcon MissileTrackerIcon { get; set; } = new UIHudIcon(); // 0x38 (56)
+		protected UIHudIcon m_MissileTrackerIcon = new UIHudIcon();
+		[ContainerField(56), ContainerFieldNameHash(2269397234)]
+		public UIHudIcon MissileTrackerIcon { get { return m_MissileTrackerIcon; } set { if (OnPropertyChanging("HudVehicleTrackerData." + nameof(MissileTrackerIcon), this, m_MissileTrackerIcon, value)) m_MissileTrackerIcon = value; } } // 0x38 (56)
 		
-		[ContainerField(60), LayoutImmutable, Blittable]
-		public float IconSize { get; set; } // 0x3C (60)
+		protected float m_IconSize = new float();
+		[ContainerField(60), LayoutImmutable, Blittable, ContainerFieldNameHash(269738667)]
+		public float IconSize { get { return m_IconSize; } set { if (OnPropertyChanging("HudVehicleTrackerData." + nameof(IconSize), this, m_IconSize, value)) m_IconSize = value; } } // 0x3C (60)
 		
-		[ContainerField(64), LayoutImmutable, Blittable]
-		public float RadarSensitivity { get; set; } // 0x40 (64)
+		protected float m_RadarSensitivity = new float();
+		[ContainerField(64), LayoutImmutable, Blittable, ContainerFieldNameHash(3600894796)]
+		public float RadarSensitivity { get { return m_RadarSensitivity; } set { if (OnPropertyChanging("HudVehicleTrackerData." + nameof(RadarSensitivity), this, m_RadarSensitivity, value)) m_RadarSensitivity = value; } } // 0x40 (64)
 		
-		[ContainerField(68), LayoutImmutable, Blittable]
-		public float HeatSensitivity { get; set; } // 0x44 (68)
+		protected float m_HeatSensitivity = new float();
+		[ContainerField(68), LayoutImmutable, Blittable, ContainerFieldNameHash(1227204656)]
+		public float HeatSensitivity { get { return m_HeatSensitivity; } set { if (OnPropertyChanging("HudVehicleTrackerData." + nameof(HeatSensitivity), this, m_HeatSensitivity, value)) m_HeatSensitivity = value; } } // 0x44 (68)
 		
-		[ContainerField(72)]
-		public UIHudIcon FriendlyTrackerIcon { get; set; } = new UIHudIcon(); // 0x48 (72)
+		protected UIHudIcon m_FriendlyTrackerIcon = new UIHudIcon();
+		[ContainerField(72), ContainerFieldNameHash(4060067057)]
+		public UIHudIcon FriendlyTrackerIcon { get { return m_FriendlyTrackerIcon; } set { if (OnPropertyChanging("HudVehicleTrackerData." + nameof(FriendlyTrackerIcon), this, m_FriendlyTrackerIcon, value)) m_FriendlyTrackerIcon = value; } } // 0x48 (72)
 		
-		[ContainerField(76)]
-		public UIHudIcon LaserPaintedVehicleTrackerIcon { get; set; } = new UIHudIcon(); // 0x4C (76)
+		protected UIHudIcon m_LaserPaintedVehicleTrackerIcon = new UIHudIcon();
+		[ContainerField(76), ContainerFieldNameHash(743317508)]
+		public UIHudIcon LaserPaintedVehicleTrackerIcon { get { return m_LaserPaintedVehicleTrackerIcon; } set { if (OnPropertyChanging("HudVehicleTrackerData." + nameof(LaserPaintedVehicleTrackerIcon), this, m_LaserPaintedVehicleTrackerIcon, value)) m_LaserPaintedVehicleTrackerIcon = value; } } // 0x4C (76)
 		
-		[ContainerField(80), LayoutImmutable, Blittable]
-		public float MaxDistance { get; set; } // 0x50 (80)
+		protected float m_MaxDistance = new float();
+		[ContainerField(80), LayoutImmutable, Blittable, ContainerFieldNameHash(3520454034)]
+		public float MaxDistance { get { return m_MaxDistance; } set { if (OnPropertyChanging("HudVehicleTrackerData." + nameof(MaxDistance), this, m_MaxDistance, value)) m_MaxDistance = value; } } // 0x50 (80)
 		
-		[ContainerField(84), LayoutImmutable, Blittable]
-		public float DistanceIconShrinkFactor { get; set; } // 0x54 (84)
+		protected float m_DistanceIconShrinkFactor = new float();
+		[ContainerField(84), LayoutImmutable, Blittable, ContainerFieldNameHash(3041637637)]
+		public float DistanceIconShrinkFactor { get { return m_DistanceIconShrinkFactor; } set { if (OnPropertyChanging("HudVehicleTrackerData." + nameof(DistanceIconShrinkFactor), this, m_DistanceIconShrinkFactor, value)) m_DistanceIconShrinkFactor = value; } } // 0x54 (84)
 		
-		[ContainerField(88)]
-		public UIHudIcon MissileLockTrackerIcon { get; set; } = new UIHudIcon(); // 0x58 (88)
+		protected UIHudIcon m_MissileLockTrackerIcon = new UIHudIcon();
+		[ContainerField(88), ContainerFieldNameHash(1153217497)]
+		public UIHudIcon MissileLockTrackerIcon { get { return m_MissileLockTrackerIcon; } set { if (OnPropertyChanging("HudVehicleTrackerData." + nameof(MissileLockTrackerIcon), this, m_MissileLockTrackerIcon, value)) m_MissileLockTrackerIcon = value; } } // 0x58 (88)
 		
-		[ContainerField(92), LayoutImmutable, Blittable]
-		public bool TrackOnlyUsedVehicles { get; set; } // 0x5C (92)
+		protected bool m_TrackOnlyUsedVehicles = new bool();
+		[ContainerField(92), LayoutImmutable, Blittable, ContainerFieldNameHash(362954258)]
+		public bool TrackOnlyUsedVehicles { get { return m_TrackOnlyUsedVehicles; } set { if (OnPropertyChanging("HudVehicleTrackerData." + nameof(TrackOnlyUsedVehicles), this, m_TrackOnlyUsedVehicles, value)) m_TrackOnlyUsedVehicles = value; } } // 0x5C (92)
 		
-		[ContainerField(93), LayoutImmutable, Blittable]
-		public bool UseTrackerSignatures { get; set; } // 0x5D (93)
+		protected bool m_UseTrackerSignatures = new bool();
+		[ContainerField(93), LayoutImmutable, Blittable, ContainerFieldNameHash(4280009289)]
+		public bool UseTrackerSignatures { get { return m_UseTrackerSignatures; } set { if (OnPropertyChanging("HudVehicleTrackerData." + nameof(UseTrackerSignatures), this, m_UseTrackerSignatures, value)) m_UseTrackerSignatures = value; } } // 0x5D (93)
 		
-		[ContainerField(94), LayoutImmutable, Blittable]
-		public bool EnableEdgePointers { get; set; } // 0x5E (94)
+		protected bool m_EnableEdgePointers = new bool();
+		[ContainerField(94), LayoutImmutable, Blittable, ContainerFieldNameHash(1720661007)]
+		public bool EnableEdgePointers { get { return m_EnableEdgePointers; } set { if (OnPropertyChanging("HudVehicleTrackerData." + nameof(EnableEdgePointers), this, m_EnableEdgePointers, value)) m_EnableEdgePointers = value; } } // 0x5E (94)
 		
-		[ContainerField(95), LayoutImmutable, Blittable]
-		public bool TrackLaserPaintedObjects { get; set; } // 0x5F (95)
+		protected bool m_TrackLaserPaintedObjects = new bool();
+		[ContainerField(95), LayoutImmutable, Blittable, ContainerFieldNameHash(598207430)]
+		public bool TrackLaserPaintedObjects { get { return m_TrackLaserPaintedObjects; } set { if (OnPropertyChanging("HudVehicleTrackerData." + nameof(TrackLaserPaintedObjects), this, m_TrackLaserPaintedObjects, value)) m_TrackLaserPaintedObjects = value; } } // 0x5F (95)
 		
-		[ContainerField(96), LayoutImmutable, Blittable]
-		public bool UseCameraComponentTransform { get; set; } // 0x60 (96)
+		protected bool m_UseCameraComponentTransform = new bool();
+		[ContainerField(96), LayoutImmutable, Blittable, ContainerFieldNameHash(3622581372)]
+		public bool UseCameraComponentTransform { get { return m_UseCameraComponentTransform; } set { if (OnPropertyChanging("HudVehicleTrackerData." + nameof(UseCameraComponentTransform), this, m_UseCameraComponentTransform, value)) m_UseCameraComponentTransform = value; } } // 0x60 (96)
 		
-		[ContainerField(97), LayoutImmutable, Blittable]
-		public bool ShowTracker { get; set; } // 0x61 (97)
+		protected bool m_ShowTracker = new bool();
+		[ContainerField(97), LayoutImmutable, Blittable, ContainerFieldNameHash(3997758782)]
+		public bool ShowTracker { get { return m_ShowTracker; } set { if (OnPropertyChanging("HudVehicleTrackerData." + nameof(ShowTracker), this, m_ShowTracker, value)) m_ShowTracker = value; } } // 0x61 (97)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

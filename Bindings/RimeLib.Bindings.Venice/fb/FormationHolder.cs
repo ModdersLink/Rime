@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class FormationHolder : 
 		Asset
 	{
-		[ContainerField(12)]
-		public RefArray<FormationData> Formations { get; set; } = new RefArray<FormationData>(); // 0xC (12)
+		protected RefArray<FormationData> m_Formations = new RefArray<FormationData>();
+		[ContainerField(12), ContainerFieldNameHash(408468541)]
+		public RefArray<FormationData> Formations { get { return m_Formations; } set { if (OnPropertyChanging("FormationHolder." + nameof(Formations), this, m_Formations, value)) m_Formations = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

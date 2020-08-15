@@ -5,17 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class UICreditsAsset : 
 		Asset
 	{
-		[ContainerField(12)]
-		public List<UICreditsPage> Pages { get; set; } = new List<UICreditsPage>(); // 0xC (12)
+		protected List<UICreditsPage> m_Pages = new List<UICreditsPage>();
+		[ContainerField(12), ContainerFieldNameHash(232331173)]
+		public List<UICreditsPage> Pages { get { return m_Pages; } set { if (OnPropertyChanging("UICreditsAsset." + nameof(Pages), this, m_Pages, value)) m_Pages = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,26 +5,38 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class InputModifierEntityData : 
 		EntityData
 	{
-		[ContainerField(12)]
-		public EntryInputActionEnum Action { get; set; } = new EntryInputActionEnum(); // 0xC (12)
+		protected EntryInputActionEnum m_Action = new EntryInputActionEnum();
+		[ContainerField(12), ContainerFieldNameHash(2484178491)]
+		public EntryInputActionEnum Action { get { return m_Action; } set { if (OnPropertyChanging("InputModifierEntityData." + nameof(Action), this, m_Action, value)) m_Action = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public float Scale { get; set; } // 0x10 (16)
+		protected float m_Scale = new float();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(231223453)]
+		public float Scale { get { return m_Scale; } set { if (OnPropertyChanging("InputModifierEntityData." + nameof(Scale), this, m_Scale, value)) m_Scale = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
-		public float Offset { get; set; } // 0x14 (20)
+		protected float m_Offset = new float();
+		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(2871410728)]
+		public float Offset { get { return m_Offset; } set { if (OnPropertyChanging("InputModifierEntityData." + nameof(Offset), this, m_Offset, value)) m_Offset = value; } } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable]
-		public bool Enabled { get; set; } // 0x18 (24)
+		protected bool m_Enabled = new bool();
+		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(2662400)]
+		public bool Enabled { get { return m_Enabled; } set { if (OnPropertyChanging("InputModifierEntityData." + nameof(Enabled), this, m_Enabled, value)) m_Enabled = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

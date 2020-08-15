@@ -5,62 +5,86 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class WeaponComponentData : 
 		PartComponentData
 	{
-		[ContainerField(112), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 ProjectileSpawnOffset { get; set; } = new Vec3(); // 0x70 (112)
+		protected Vec3 m_ProjectileSpawnOffset = new Vec3();
+		[ContainerField(112), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(36316966)]
+		public Vec3 ProjectileSpawnOffset { get { return m_ProjectileSpawnOffset; } set { if (OnPropertyChanging("WeaponComponentData." + nameof(ProjectileSpawnOffset), this, m_ProjectileSpawnOffset, value)) m_ProjectileSpawnOffset = value; } } // 0x70 (112)
 		
-		[ContainerField(128), LayoutImmutable, Blittable]
-		public float ImpulseStrength { get; set; } // 0x80 (128)
+		protected float m_ImpulseStrength = new float();
+		[ContainerField(128), LayoutImmutable, Blittable, ContainerFieldNameHash(722393051)]
+		public float ImpulseStrength { get { return m_ImpulseStrength; } set { if (OnPropertyChanging("WeaponComponentData." + nameof(ImpulseStrength), this, m_ImpulseStrength, value)) m_ImpulseStrength = value; } } // 0x80 (128)
 		
-		[ContainerField(132)]
-		public CtrRef<MeshAsset> WeaponMesh { get; set; } = new CtrRef<MeshAsset>(); // 0x84 (132)
+		protected CtrRef<MeshAsset> m_WeaponMesh = new CtrRef<MeshAsset>();
+		[ContainerField(132), ContainerFieldNameHash(932694772)]
+		public CtrRef<MeshAsset> WeaponMesh { get { return m_WeaponMesh; } set { if (OnPropertyChanging("WeaponComponentData." + nameof(WeaponMesh), this, m_WeaponMesh, value)) m_WeaponMesh = value; } } // 0x84 (132)
 		
-		[ContainerField(136)]
-		public CtrRef<WeaponFiringData> WeaponFiring { get; set; } = new CtrRef<WeaponFiringData>(); // 0x88 (136)
+		protected CtrRef<WeaponFiringData> m_WeaponFiring = new CtrRef<WeaponFiringData>();
+		[ContainerField(136), ContainerFieldNameHash(1823157050)]
+		public CtrRef<WeaponFiringData> WeaponFiring { get { return m_WeaponFiring; } set { if (OnPropertyChanging("WeaponComponentData." + nameof(WeaponFiring), this, m_WeaponFiring, value)) m_WeaponFiring = value; } } // 0x88 (136)
 		
-		[ContainerField(140), LayoutImmutable]
-		public string DamageGiverName { get; set; } // 0x8C (140)
+		protected string m_DamageGiverName = new string();
+		[ContainerField(140), LayoutImmutable, ContainerFieldNameHash(38100006)]
+		public string DamageGiverName { get { return m_DamageGiverName; } set { if (OnPropertyChanging("WeaponComponentData." + nameof(DamageGiverName), this, m_DamageGiverName, value)) m_DamageGiverName = value; } } // 0x8C (140)
 		
-		[ContainerField(144)]
-		public CtrRef<GameAIWeaponData> AIData { get; set; } = new CtrRef<GameAIWeaponData>(); // 0x90 (144)
+		protected CtrRef<GameAIWeaponData> m_AIData = new CtrRef<GameAIWeaponData>();
+		[ContainerField(144), ContainerFieldNameHash(2529950045)]
+		public CtrRef<GameAIWeaponData> AIData { get { return m_AIData; } set { if (OnPropertyChanging("WeaponComponentData." + nameof(AIData), this, m_AIData, value)) m_AIData = value; } } // 0x90 (144)
 		
-		[ContainerField(148)]
-		public CtrRef<WeaponData> CustomWeaponType { get; set; } = new CtrRef<WeaponData>(); // 0x94 (148)
+		protected CtrRef<WeaponData> m_CustomWeaponType = new CtrRef<WeaponData>();
+		[ContainerField(148), ContainerFieldNameHash(3603058156)]
+		public CtrRef<WeaponData> CustomWeaponType { get { return m_CustomWeaponType; } set { if (OnPropertyChanging("WeaponComponentData." + nameof(CustomWeaponType), this, m_CustomWeaponType, value)) m_CustomWeaponType = value; } } // 0x94 (148)
 		
-		[ContainerField(152)]
-		public WeaponClassification Classification { get; set; } = new WeaponClassification(); // 0x98 (152)
+		protected WeaponClassification m_Classification = new WeaponClassification();
+		[ContainerField(152), ContainerFieldNameHash(1196599827)]
+		public WeaponClassification Classification { get { return m_Classification; } set { if (OnPropertyChanging("WeaponComponentData." + nameof(Classification), this, m_Classification, value)) m_Classification = value; } } // 0x98 (152)
 		
-		[ContainerField(156), LayoutImmutable, Blittable]
-		public float ExplosionDamageMultiplier { get; set; } // 0x9C (156)
+		protected float m_ExplosionDamageMultiplier = new float();
+		[ContainerField(156), LayoutImmutable, Blittable, ContainerFieldNameHash(1685883856)]
+		public float ExplosionDamageMultiplier { get { return m_ExplosionDamageMultiplier; } set { if (OnPropertyChanging("WeaponComponentData." + nameof(ExplosionDamageMultiplier), this, m_ExplosionDamageMultiplier, value)) m_ExplosionDamageMultiplier = value; } } // 0x9C (156)
 		
-		[ContainerField(160), LayoutImmutable, Blittable]
-		public float ReloadTimeMultiplier { get; set; } // 0xA0 (160)
+		protected float m_ReloadTimeMultiplier = new float();
+		[ContainerField(160), LayoutImmutable, Blittable, ContainerFieldNameHash(2574353098)]
+		public float ReloadTimeMultiplier { get { return m_ReloadTimeMultiplier; } set { if (OnPropertyChanging("WeaponComponentData." + nameof(ReloadTimeMultiplier), this, m_ReloadTimeMultiplier, value)) m_ReloadTimeMultiplier = value; } } // 0xA0 (160)
 		
-		[ContainerField(164), LayoutImmutable, Blittable]
-		public float DamageMultiplier { get; set; } // 0xA4 (164)
+		protected float m_DamageMultiplier = new float();
+		[ContainerField(164), LayoutImmutable, Blittable, ContainerFieldNameHash(2936063845)]
+		public float DamageMultiplier { get { return m_DamageMultiplier; } set { if (OnPropertyChanging("WeaponComponentData." + nameof(DamageMultiplier), this, m_DamageMultiplier, value)) m_DamageMultiplier = value; } } // 0xA4 (164)
 		
-		[ContainerField(168), LayoutImmutable, Blittable]
-		public uint WeaponItemHash { get; set; } // 0xA8 (168)
+		protected uint m_WeaponItemHash = new uint();
+		[ContainerField(168), LayoutImmutable, Blittable, ContainerFieldNameHash(3522794400)]
+		public uint WeaponItemHash { get { return m_WeaponItemHash; } set { if (OnPropertyChanging("WeaponComponentData." + nameof(WeaponItemHash), this, m_WeaponItemHash, value)) m_WeaponItemHash = value; } } // 0xA8 (168)
 		
-		[ContainerField(172), LayoutImmutable, Blittable]
-		public float OverheatDropPerSecondMultiplier { get; set; } // 0xAC (172)
+		protected float m_OverheatDropPerSecondMultiplier = new float();
+		[ContainerField(172), LayoutImmutable, Blittable, ContainerFieldNameHash(273863558)]
+		public float OverheatDropPerSecondMultiplier { get { return m_OverheatDropPerSecondMultiplier; } set { if (OnPropertyChanging("WeaponComponentData." + nameof(OverheatDropPerSecondMultiplier), this, m_OverheatDropPerSecondMultiplier, value)) m_OverheatDropPerSecondMultiplier = value; } } // 0xAC (172)
 		
-		[ContainerField(176), LayoutImmutable, Blittable]
-		public float LockTimeMultiplier { get; set; } // 0xB0 (176)
+		protected float m_LockTimeMultiplier = new float();
+		[ContainerField(176), LayoutImmutable, Blittable, ContainerFieldNameHash(1309101584)]
+		public float LockTimeMultiplier { get { return m_LockTimeMultiplier; } set { if (OnPropertyChanging("WeaponComponentData." + nameof(LockTimeMultiplier), this, m_LockTimeMultiplier, value)) m_LockTimeMultiplier = value; } } // 0xB0 (176)
 		
-		[ContainerField(180), LayoutImmutable, Blittable]
-		public float LockingAcceptanceAngleMultiplier { get; set; } // 0xB4 (180)
+		protected float m_LockingAcceptanceAngleMultiplier = new float();
+		[ContainerField(180), LayoutImmutable, Blittable, ContainerFieldNameHash(4054344813)]
+		public float LockingAcceptanceAngleMultiplier { get { return m_LockingAcceptanceAngleMultiplier; } set { if (OnPropertyChanging("WeaponComponentData." + nameof(LockingAcceptanceAngleMultiplier), this, m_LockingAcceptanceAngleMultiplier, value)) m_LockingAcceptanceAngleMultiplier = value; } } // 0xB4 (180)
 		
-		[ContainerField(184), LayoutImmutable, Blittable]
-		public bool SequentialFiring { get; set; } // 0xB8 (184)
+		protected bool m_SequentialFiring = new bool();
+		[ContainerField(184), LayoutImmutable, Blittable, ContainerFieldNameHash(2022632657)]
+		public bool SequentialFiring { get { return m_SequentialFiring; } set { if (OnPropertyChanging("WeaponComponentData." + nameof(SequentialFiring), this, m_SequentialFiring, value)) m_SequentialFiring = value; } } // 0xB8 (184)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

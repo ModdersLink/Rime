@@ -5,28 +5,42 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class TestCaseEntityData : 
 		EntityData
 	{
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public float TimeOut { get; set; } // 0xC (12)
+		protected float m_TimeOut = new float();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(3344659518)]
+		public float TimeOut { get { return m_TimeOut; } set { if (OnPropertyChanging("TestCaseEntityData." + nameof(TimeOut), this, m_TimeOut, value)) m_TimeOut = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable]
-		public string TestGroup { get; set; } // 0x10 (16)
+		protected string m_TestGroup = new string();
+		[ContainerField(16), LayoutImmutable, ContainerFieldNameHash(1436402060)]
+		public string TestGroup { get { return m_TestGroup; } set { if (OnPropertyChanging("TestCaseEntityData." + nameof(TestGroup), this, m_TestGroup, value)) m_TestGroup = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable]
-		public string TestCaseName { get; set; } // 0x14 (20)
+		protected string m_TestCaseName = new string();
+		[ContainerField(20), LayoutImmutable, ContainerFieldNameHash(2495365472)]
+		public string TestCaseName { get { return m_TestCaseName; } set { if (OnPropertyChanging("TestCaseEntityData." + nameof(TestCaseName), this, m_TestCaseName, value)) m_TestCaseName = value; } } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable]
-		public bool Stable { get; set; } // 0x18 (24)
+		protected bool m_Stable = new bool();
+		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(3319702312)]
+		public bool Stable { get { return m_Stable; } set { if (OnPropertyChanging("TestCaseEntityData." + nameof(Stable), this, m_Stable, value)) m_Stable = value; } } // 0x18 (24)
 		
-		[ContainerField(25), LayoutImmutable, Blittable]
-		public bool Enabled { get; set; } // 0x19 (25)
+		protected bool m_Enabled = new bool();
+		[ContainerField(25), LayoutImmutable, Blittable, ContainerFieldNameHash(2662400)]
+		public bool Enabled { get { return m_Enabled; } set { if (OnPropertyChanging("TestCaseEntityData." + nameof(Enabled), this, m_Enabled, value)) m_Enabled = value; } } // 0x19 (25)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

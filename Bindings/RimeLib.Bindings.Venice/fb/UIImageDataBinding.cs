@@ -5,25 +5,38 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class UIImageDataBinding : 
 		UIDataBinding
 	{
-		[ContainerField(8), LayoutImmutable]
-		public string StaticImageUrl { get; set; } // 0x8 (8)
+		protected string m_StaticImageUrl = new string();
+		[ContainerField(8), LayoutImmutable, ContainerFieldNameHash(1907338737)]
+		public string StaticImageUrl { get { return m_StaticImageUrl; } set { if (OnPropertyChanging("UIImageDataBinding." + nameof(StaticImageUrl), this, m_StaticImageUrl, value)) m_StaticImageUrl = value; } } // 0x8 (8)
 		
-		[ContainerField(12)]
-		public UIDataSourceInfo ImageData { get; set; } = new UIDataSourceInfo(); // 0xC (12)
+		protected UIDataSourceInfo m_ImageData = new UIDataSourceInfo();
+		[ContainerField(12), ContainerFieldNameHash(2678906194)]
+		public UIDataSourceInfo ImageData { get { return m_ImageData; } set { if (OnPropertyChanging("UIImageDataBinding." + nameof(ImageData), this, m_ImageData, value)) m_ImageData = value; } } // 0xC (12)
 		
-		[ContainerField(28)]
-		public UIDataSourceInfo Visibility { get; set; } = new UIDataSourceInfo(); // 0x1C (28)
+		protected UIDataSourceInfo m_Visibility = new UIDataSourceInfo();
+		[ContainerField(28), ContainerFieldNameHash(1708270083)]
+		public UIDataSourceInfo Visibility { get { return m_Visibility; } set { if (OnPropertyChanging("UIImageDataBinding." + nameof(Visibility), this, m_Visibility, value)) m_Visibility = value; } } // 0x1C (28)
 		
-		[ContainerField(44), LayoutImmutable, Blittable]
-		public bool Visible { get; set; } // 0x2C (44)
+		protected bool m_Visible = new bool();
+		[ContainerField(44), LayoutImmutable, Blittable, ContainerFieldNameHash(901540267)]
+		public bool Visible { get { return m_Visible; } set { if (OnPropertyChanging("UIImageDataBinding." + nameof(Visible), this, m_Visible, value)) m_Visible = value; } } // 0x2C (44)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

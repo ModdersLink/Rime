@@ -5,26 +5,38 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class EulerTransformEntityData : 
 		EntityData
 	{
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 In1 { get; set; } = new Vec3(); // 0x10 (16)
+		protected Vec3 m_In1 = new Vec3();
+		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(193450867)]
+		public Vec3 In1 { get { return m_In1; } set { if (OnPropertyChanging("EulerTransformEntityData." + nameof(In1), this, m_In1, value)) m_In1 = value; } } // 0x10 (16)
 		
-		[ContainerField(32)]
-		public Realm Realm { get; set; } = new Realm(); // 0x20 (32)
+		protected Realm m_Realm = new Realm();
+		[ContainerField(32), ContainerFieldNameHash(229961746)]
+		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("EulerTransformEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0x20 (32)
 		
-		[ContainerField(36), LayoutImmutable, Blittable]
-		public float In { get; set; } // 0x24 (36)
+		protected float m_In = new float();
+		[ContainerField(36), LayoutImmutable, Blittable, ContainerFieldNameHash(5862146)]
+		public float In { get { return m_In; } set { if (OnPropertyChanging("EulerTransformEntityData." + nameof(In), this, m_In, value)) m_In = value; } } // 0x24 (36)
 		
-		[ContainerField(40)]
-		public ModifierEuler Euler { get; set; } = new ModifierEuler(); // 0x28 (40)
+		protected ModifierEuler m_Euler = new ModifierEuler();
+		[ContainerField(40), ContainerFieldNameHash(201462510)]
+		public ModifierEuler Euler { get { return m_Euler; } set { if (OnPropertyChanging("EulerTransformEntityData." + nameof(Euler), this, m_Euler, value)) m_Euler = value; } } // 0x28 (40)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

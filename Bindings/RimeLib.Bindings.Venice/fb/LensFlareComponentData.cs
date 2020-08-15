@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class LensFlareComponentData : 
 		ComponentData
 	{
-		[ContainerField(96)]
-		public CtrRef<LensFlareEntityData> LensFlare { get; set; } = new CtrRef<LensFlareEntityData>(); // 0x60 (96)
+		protected CtrRef<LensFlareEntityData> m_LensFlare = new CtrRef<LensFlareEntityData>();
+		[ContainerField(96), ContainerFieldNameHash(890070093)]
+		public CtrRef<LensFlareEntityData> LensFlare { get { return m_LensFlare; } set { if (OnPropertyChanging("LensFlareComponentData." + nameof(LensFlare), this, m_LensFlare, value)) m_LensFlare = value; } } // 0x60 (96)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

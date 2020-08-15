@@ -5,20 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class ClientPlayerInputPlaybackEntityData : 
 		EntityData
 	{
-		[ContainerField(12)]
-		public Realm Realm { get; set; } = new Realm(); // 0xC (12)
+		protected Realm m_Realm = new Realm();
+		[ContainerField(12), ContainerFieldNameHash(229961746)]
+		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("ClientPlayerInputPlaybackEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable]
-		public string FileName { get; set; } // 0x10 (16)
+		protected string m_FileName = new string();
+		[ContainerField(16), LayoutImmutable, ContainerFieldNameHash(1134474212)]
+		public string FileName { get { return m_FileName; } set { if (OnPropertyChanging("ClientPlayerInputPlaybackEntityData." + nameof(FileName), this, m_FileName, value)) m_FileName = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class MeleeEntityData : 
 		EntityData
 	{
-		[ContainerField(12)]
-		public CtrRef<MeleeEntityCommonData> CommonData { get; set; } = new CtrRef<MeleeEntityCommonData>(); // 0xC (12)
+		protected CtrRef<MeleeEntityCommonData> m_CommonData = new CtrRef<MeleeEntityCommonData>();
+		[ContainerField(12), ContainerFieldNameHash(760803064)]
+		public CtrRef<MeleeEntityCommonData> CommonData { get { return m_CommonData; } set { if (OnPropertyChanging("MeleeEntityData." + nameof(CommonData), this, m_CommonData, value)) m_CommonData = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,32 +5,46 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class OrderEntityData : 
 		EntityData
 	{
-		[ContainerField(12), LayoutImmutable]
-		public string DebugName { get; set; } // 0xC (12)
+		protected string m_DebugName = new string();
+		[ContainerField(12), LayoutImmutable, ContainerFieldNameHash(859955379)]
+		public string DebugName { get { return m_DebugName; } set { if (OnPropertyChanging("OrderEntityData." + nameof(DebugName), this, m_DebugName, value)) m_DebugName = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public float IssueOrderDelay { get; set; } // 0x10 (16)
+		protected float m_IssueOrderDelay = new float();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(364586375)]
+		public float IssueOrderDelay { get { return m_IssueOrderDelay; } set { if (OnPropertyChanging("OrderEntityData." + nameof(IssueOrderDelay), this, m_IssueOrderDelay, value)) m_IssueOrderDelay = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
-		public float OnCompleteTimeOut { get; set; } // 0x14 (20)
+		protected float m_OnCompleteTimeOut = new float();
+		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(2812561110)]
+		public float OnCompleteTimeOut { get { return m_OnCompleteTimeOut; } set { if (OnPropertyChanging("OrderEntityData." + nameof(OnCompleteTimeOut), this, m_OnCompleteTimeOut, value)) m_OnCompleteTimeOut = value; } } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable]
-		public float OnFailedTimeOut { get; set; } // 0x18 (24)
+		protected float m_OnFailedTimeOut = new float();
+		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(187326428)]
+		public float OnFailedTimeOut { get { return m_OnFailedTimeOut; } set { if (OnPropertyChanging("OrderEntityData." + nameof(OnFailedTimeOut), this, m_OnFailedTimeOut, value)) m_OnFailedTimeOut = value; } } // 0x18 (24)
 		
-		[ContainerField(28)]
-		public ReadinessLevel ReadinessOnStart { get; set; } = new ReadinessLevel(); // 0x1C (28)
+		protected ReadinessLevel m_ReadinessOnStart = new ReadinessLevel();
+		[ContainerField(28), ContainerFieldNameHash(3753000372)]
+		public ReadinessLevel ReadinessOnStart { get { return m_ReadinessOnStart; } set { if (OnPropertyChanging("OrderEntityData." + nameof(ReadinessOnStart), this, m_ReadinessOnStart, value)) m_ReadinessOnStart = value; } } // 0x1C (28)
 		
-		[ContainerField(32), LayoutImmutable, Blittable]
-		public bool Enabled { get; set; } // 0x20 (32)
+		protected bool m_Enabled = new bool();
+		[ContainerField(32), LayoutImmutable, Blittable, ContainerFieldNameHash(2662400)]
+		public bool Enabled { get { return m_Enabled; } set { if (OnPropertyChanging("OrderEntityData." + nameof(Enabled), this, m_Enabled, value)) m_Enabled = value; } } // 0x20 (32)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,20 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class ScriptEntityData : 
 		EntityData
 	{
-		[ContainerField(12), LayoutImmutable]
-		public string Code { get; set; } // 0xC (12)
+		protected string m_Code = new string();
+		[ContainerField(12), LayoutImmutable, ContainerFieldNameHash(2088844616)]
+		public string Code { get { return m_Code; } set { if (OnPropertyChanging("ScriptEntityData." + nameof(Code), this, m_Code, value)) m_Code = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public Realm Realm { get; set; } = new Realm(); // 0x10 (16)
+		protected Realm m_Realm = new Realm();
+		[ContainerField(16), ContainerFieldNameHash(229961746)]
+		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("ScriptEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

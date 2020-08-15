@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class VisualEnvironmentReferenceObjectData : 
 		ReferenceObjectData
 	{
-		[ContainerField(96), LayoutImmutable, Blittable]
-		public int Priority { get; set; } // 0x60 (96)
+		protected int m_Priority = new int();
+		[ContainerField(96), LayoutImmutable, Blittable, ContainerFieldNameHash(3062102871)]
+		public int Priority { get { return m_Priority; } set { if (OnPropertyChanging("VisualEnvironmentReferenceObjectData." + nameof(Priority), this, m_Priority, value)) m_Priority = value; } } // 0x60 (96)
 		
-		[ContainerField(100), LayoutImmutable, Blittable]
-		public bool OverrideVisibility { get; set; } // 0x64 (100)
+		protected bool m_OverrideVisibility = new bool();
+		[ContainerField(100), LayoutImmutable, Blittable, ContainerFieldNameHash(3611184311)]
+		public bool OverrideVisibility { get { return m_OverrideVisibility; } set { if (OnPropertyChanging("VisualEnvironmentReferenceObjectData." + nameof(OverrideVisibility), this, m_OverrideVisibility, value)) m_OverrideVisibility = value; } } // 0x64 (100)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

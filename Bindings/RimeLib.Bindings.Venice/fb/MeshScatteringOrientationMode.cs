@@ -5,9 +5,20 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
+
 namespace fb
 {
-    public enum MeshScatteringOrientationMode : int
+	public enum MeshScatteringOrientationMode : int
 	{
 		MeshScatteringOrientationMode_Horizontal = 0,
 		MeshScatteringOrientationMode_LeanToTerrain = 1,

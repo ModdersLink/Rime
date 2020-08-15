@@ -5,22 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class ArmamentData : 
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable, Blittable]
-		public int ThreatLength { get; set; } // 0x8 (8)
+		protected int m_ThreatLength = new int();
+		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(2704429479)]
+		public int ThreatLength { get { return m_ThreatLength; } set { if (OnPropertyChanging("ArmamentData." + nameof(ThreatLength), this, m_ThreatLength, value)) m_ThreatLength = value; } } // 0x8 (8)
 		
-		[ContainerField(12)]
-		public CtrRef<TurretData> TurretData { get; set; } = new CtrRef<TurretData>(); // 0xC (12)
+		protected CtrRef<TurretData> m_TurretData = new CtrRef<TurretData>();
+		[ContainerField(12), ContainerFieldNameHash(1721999205)]
+		public CtrRef<TurretData> TurretData { get { return m_TurretData; } set { if (OnPropertyChanging("ArmamentData." + nameof(TurretData), this, m_TurretData, value)) m_TurretData = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public bool IsAntiAircraft { get; set; } // 0x10 (16)
+		protected bool m_IsAntiAircraft = new bool();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(1061521109)]
+		public bool IsAntiAircraft { get { return m_IsAntiAircraft; } set { if (OnPropertyChanging("ArmamentData." + nameof(IsAntiAircraft), this, m_IsAntiAircraft, value)) m_IsAntiAircraft = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

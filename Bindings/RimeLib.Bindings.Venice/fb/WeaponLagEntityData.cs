@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class WeaponLagEntityData : 
 		EntityData
 	{
-		[ContainerField(12)]
-		public WeaponLagBinding Binding { get; set; } = new WeaponLagBinding(); // 0xC (12)
+		protected WeaponLagBinding m_Binding = new WeaponLagBinding();
+		[ContainerField(12), ContainerFieldNameHash(2590060228)]
+		public WeaponLagBinding Binding { get { return m_Binding; } set { if (OnPropertyChanging("WeaponLagEntityData." + nameof(Binding), this, m_Binding, value)) m_Binding = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

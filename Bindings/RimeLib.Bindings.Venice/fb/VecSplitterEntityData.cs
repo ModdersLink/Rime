@@ -5,23 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class VecSplitterEntityData : 
 		EntityData
 	{
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 Vec3 { get; set; } = new Vec3(); // 0x10 (16)
+		protected Vec3 m_Vec3 = new Vec3();
+		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(2089241862)]
+		public Vec3 Vec3 { get { return m_Vec3; } set { if (OnPropertyChanging("VecSplitterEntityData." + nameof(Vec3), this, m_Vec3, value)) m_Vec3 = value; } } // 0x10 (16)
 		
-		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable]
-		public Vec4 Vec4 { get; set; } = new Vec4(); // 0x20 (32)
+		protected Vec4 m_Vec4 = new Vec4();
+		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(2089241857)]
+		public Vec4 Vec4 { get { return m_Vec4; } set { if (OnPropertyChanging("VecSplitterEntityData." + nameof(Vec4), this, m_Vec4, value)) m_Vec4 = value; } } // 0x20 (32)
 		
-		[ContainerField(48)]
-		public Realm Realm { get; set; } = new Realm(); // 0x30 (48)
+		protected Realm m_Realm = new Realm();
+		[ContainerField(48), ContainerFieldNameHash(229961746)]
+		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("VecSplitterEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0x30 (48)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

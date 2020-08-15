@@ -5,52 +5,74 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class RotationBodyData : 
 		MovingBodyData
 	{
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public float AngularMomentumMultiplier { get; set; } // 0x10 (16)
+		protected float m_AngularMomentumMultiplier = new float();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(2539978340)]
+		public float AngularMomentumMultiplier { get { return m_AngularMomentumMultiplier; } set { if (OnPropertyChanging("RotationBodyData." + nameof(AngularMomentumMultiplier), this, m_AngularMomentumMultiplier, value)) m_AngularMomentumMultiplier = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
-		public float AngularMomentumThreshold { get; set; } // 0x14 (20)
+		protected float m_AngularMomentumThreshold = new float();
+		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(3648174776)]
+		public float AngularMomentumThreshold { get { return m_AngularMomentumThreshold; } set { if (OnPropertyChanging("RotationBodyData." + nameof(AngularMomentumThreshold), this, m_AngularMomentumThreshold, value)) m_AngularMomentumThreshold = value; } } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable]
-		public float AngularMomentumDamping { get; set; } // 0x18 (24)
+		protected float m_AngularMomentumDamping = new float();
+		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(408122487)]
+		public float AngularMomentumDamping { get { return m_AngularMomentumDamping; } set { if (OnPropertyChanging("RotationBodyData." + nameof(AngularMomentumDamping), this, m_AngularMomentumDamping, value)) m_AngularMomentumDamping = value; } } // 0x18 (24)
 		
-		[ContainerField(28), LayoutImmutable, Blittable]
-		public float AngularMomentumDampingAcc { get; set; } // 0x1C (28)
+		protected float m_AngularMomentumDampingAcc = new float();
+		[ContainerField(28), LayoutImmutable, Blittable, ContainerFieldNameHash(3679394870)]
+		public float AngularMomentumDampingAcc { get { return m_AngularMomentumDampingAcc; } set { if (OnPropertyChanging("RotationBodyData." + nameof(AngularMomentumDampingAcc), this, m_AngularMomentumDampingAcc, value)) m_AngularMomentumDampingAcc = value; } } // 0x1C (28)
 		
-		[ContainerField(32), LayoutImmutable, Blittable]
-		public float AngularMomentumDampingDeacc { get; set; } // 0x20 (32)
+		protected float m_AngularMomentumDampingDeacc = new float();
+		[ContainerField(32), LayoutImmutable, Blittable, ContainerFieldNameHash(3945782551)]
+		public float AngularMomentumDampingDeacc { get { return m_AngularMomentumDampingDeacc; } set { if (OnPropertyChanging("RotationBodyData." + nameof(AngularMomentumDampingDeacc), this, m_AngularMomentumDampingDeacc, value)) m_AngularMomentumDampingDeacc = value; } } // 0x20 (32)
 		
-		[ContainerField(36), LayoutImmutable, Blittable]
-		public float AngularConstraintMin { get; set; } // 0x24 (36)
+		protected float m_AngularConstraintMin = new float();
+		[ContainerField(36), LayoutImmutable, Blittable, ContainerFieldNameHash(731814824)]
+		public float AngularConstraintMin { get { return m_AngularConstraintMin; } set { if (OnPropertyChanging("RotationBodyData." + nameof(AngularConstraintMin), this, m_AngularConstraintMin, value)) m_AngularConstraintMin = value; } } // 0x24 (36)
 		
-		[ContainerField(40)]
-		public CtrRef<ExtendedConstraintsData> ExtendedConstraints { get; set; } = new CtrRef<ExtendedConstraintsData>(); // 0x28 (40)
+		protected CtrRef<ExtendedConstraintsData> m_ExtendedConstraints = new CtrRef<ExtendedConstraintsData>();
+		[ContainerField(40), ContainerFieldNameHash(1460566804)]
+		public CtrRef<ExtendedConstraintsData> ExtendedConstraints { get { return m_ExtendedConstraints; } set { if (OnPropertyChanging("RotationBodyData." + nameof(ExtendedConstraints), this, m_ExtendedConstraints, value)) m_ExtendedConstraints = value; } } // 0x28 (40)
 		
-		[ContainerField(44), LayoutImmutable, Blittable]
-		public float AngularConstraintMax { get; set; } // 0x2C (44)
+		protected float m_AngularConstraintMax = new float();
+		[ContainerField(44), LayoutImmutable, Blittable, ContainerFieldNameHash(731815094)]
+		public float AngularConstraintMax { get { return m_AngularConstraintMax; } set { if (OnPropertyChanging("RotationBodyData." + nameof(AngularConstraintMax), this, m_AngularConstraintMax, value)) m_AngularConstraintMax = value; } } // 0x2C (44)
 		
-		[ContainerField(48), LayoutImmutable, Blittable]
-		public int RotationAxis { get; set; } // 0x30 (48)
+		protected int m_RotationAxis = new int();
+		[ContainerField(48), LayoutImmutable, Blittable, ContainerFieldNameHash(3148542130)]
+		public int RotationAxis { get { return m_RotationAxis; } set { if (OnPropertyChanging("RotationBodyData." + nameof(RotationAxis), this, m_RotationAxis, value)) m_RotationAxis = value; } } // 0x30 (48)
 		
-		[ContainerField(52), LayoutImmutable, Blittable]
-		public bool UsePostSatisfyConstraints { get; set; } // 0x34 (52)
+		protected bool m_UsePostSatisfyConstraints = new bool();
+		[ContainerField(52), LayoutImmutable, Blittable, ContainerFieldNameHash(2580431755)]
+		public bool UsePostSatisfyConstraints { get { return m_UsePostSatisfyConstraints; } set { if (OnPropertyChanging("RotationBodyData." + nameof(UsePostSatisfyConstraints), this, m_UsePostSatisfyConstraints, value)) m_UsePostSatisfyConstraints = value; } } // 0x34 (52)
 		
-		[ContainerField(53), LayoutImmutable, Blittable]
-		public bool UseAngularMomentumThreshold { get; set; } // 0x35 (53)
+		protected bool m_UseAngularMomentumThreshold = new bool();
+		[ContainerField(53), LayoutImmutable, Blittable, ContainerFieldNameHash(1737105787)]
+		public bool UseAngularMomentumThreshold { get { return m_UseAngularMomentumThreshold; } set { if (OnPropertyChanging("RotationBodyData." + nameof(UseAngularMomentumThreshold), this, m_UseAngularMomentumThreshold, value)) m_UseAngularMomentumThreshold = value; } } // 0x35 (53)
 		
-		[ContainerField(54), LayoutImmutable, Blittable]
-		public bool UseAngularMomentumDamping { get; set; } // 0x36 (54)
+		protected bool m_UseAngularMomentumDamping = new bool();
+		[ContainerField(54), LayoutImmutable, Blittable, ContainerFieldNameHash(246050484)]
+		public bool UseAngularMomentumDamping { get { return m_UseAngularMomentumDamping; } set { if (OnPropertyChanging("RotationBodyData." + nameof(UseAngularMomentumDamping), this, m_UseAngularMomentumDamping, value)) m_UseAngularMomentumDamping = value; } } // 0x36 (54)
 		
-		[ContainerField(55), LayoutImmutable, Blittable]
-		public bool UseAngularConstraint { get; set; } // 0x37 (55)
+		protected bool m_UseAngularConstraint = new bool();
+		[ContainerField(55), LayoutImmutable, Blittable, ContainerFieldNameHash(3510444449)]
+		public bool UseAngularConstraint { get { return m_UseAngularConstraint; } set { if (OnPropertyChanging("RotationBodyData." + nameof(UseAngularConstraint), this, m_UseAngularConstraint, value)) m_UseAngularConstraint = value; } } // 0x37 (55)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

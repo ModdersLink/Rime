@@ -5,20 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class UIFontMappingCollection : 
 		Asset
 	{
-		[ContainerField(12)]
-		public List<UIFontMapping> Fonts { get; set; } = new List<UIFontMapping>(); // 0xC (12)
+		protected List<UIFontMapping> m_Fonts = new List<UIFontMapping>();
+		[ContainerField(12), ContainerFieldNameHash(206880581)]
+		public List<UIFontMapping> Fonts { get { return m_Fonts; } set { if (OnPropertyChanging("UIFontMappingCollection." + nameof(Fonts), this, m_Fonts, value)) m_Fonts = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public RefArray<UITextDatabase> TextDatabase { get; set; } = new RefArray<UITextDatabase>(); // 0x10 (16)
+		protected RefArray<UITextDatabase> m_TextDatabase = new RefArray<UITextDatabase>();
+		[ContainerField(16), ContainerFieldNameHash(1951250813)]
+		public RefArray<UITextDatabase> TextDatabase { get { return m_TextDatabase; } set { if (OnPropertyChanging("UIFontMappingCollection." + nameof(TextDatabase), this, m_TextDatabase, value)) m_TextDatabase = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

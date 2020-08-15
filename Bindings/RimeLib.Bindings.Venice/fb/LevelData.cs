@@ -5,91 +5,126 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class LevelData : 
 		WorldData
 	{
-		[ContainerField(48)]
-		public CtrRef<ReferenceObjectData> LevelReference { get; set; } = new CtrRef<ReferenceObjectData>(); // 0x30 (48)
+		protected CtrRef<ReferenceObjectData> m_LevelReference = new CtrRef<ReferenceObjectData>();
+		[ContainerField(48), ContainerFieldNameHash(4191653592)]
+		public CtrRef<ReferenceObjectData> LevelReference { get { return m_LevelReference; } set { if (OnPropertyChanging("LevelData." + nameof(LevelReference), this, m_LevelReference, value)) m_LevelReference = value; } } // 0x30 (48)
 		
-		[ContainerField(52)]
-		public PathfindingBlob PathfindingBlobInfo { get; set; } = new PathfindingBlob(); // 0x34 (52)
+		protected PathfindingBlob m_PathfindingBlobInfo = new PathfindingBlob();
+		[ContainerField(52), ContainerFieldNameHash(2411470432)]
+		public PathfindingBlob PathfindingBlobInfo { get { return m_PathfindingBlobInfo; } set { if (OnPropertyChanging("LevelData." + nameof(PathfindingBlobInfo), this, m_PathfindingBlobInfo, value)) m_PathfindingBlobInfo = value; } } // 0x34 (52)
 		
-		[ContainerField(76)]
-		public CtrRef<GameAISystem> AISystem { get; set; } = new CtrRef<GameAISystem>(); // 0x4C (76)
+		protected CtrRef<GameAISystem> m_AISystem = new CtrRef<GameAISystem>();
+		[ContainerField(76), ContainerFieldNameHash(2765605864)]
+		public CtrRef<GameAISystem> AISystem { get { return m_AISystem; } set { if (OnPropertyChanging("LevelData." + nameof(AISystem), this, m_AISystem, value)) m_AISystem = value; } } // 0x4C (76)
 		
-		[ContainerField(80), LayoutImmutable, Blittable]
-		public float WorldSizeXZ { get; set; } // 0x50 (80)
+		protected float m_WorldSizeXZ = new float();
+		[ContainerField(80), LayoutImmutable, Blittable, ContainerFieldNameHash(3734169344)]
+		public float WorldSizeXZ { get { return m_WorldSizeXZ; } set { if (OnPropertyChanging("LevelData." + nameof(WorldSizeXZ), this, m_WorldSizeXZ, value)) m_WorldSizeXZ = value; } } // 0x50 (80)
 		
-		[ContainerField(84)]
-		public LevelDescription LevelDescription { get; set; } = new LevelDescription(); // 0x54 (84)
+		protected LevelDescription m_LevelDescription = new LevelDescription();
+		[ContainerField(84), ContainerFieldNameHash(1741285141)]
+		public LevelDescription LevelDescription { get { return m_LevelDescription; } set { if (OnPropertyChanging("LevelData." + nameof(LevelDescription), this, m_LevelDescription, value)) m_LevelDescription = value; } } // 0x54 (84)
 		
-		[ContainerField(100), LayoutImmutable]
-		public string GameConfigurationName { get; set; } // 0x64 (100)
+		protected string m_GameConfigurationName = new string();
+		[ContainerField(100), LayoutImmutable, ContainerFieldNameHash(2876236092)]
+		public string GameConfigurationName { get { return m_GameConfigurationName; } set { if (OnPropertyChanging("LevelData." + nameof(GameConfigurationName), this, m_GameConfigurationName, value)) m_GameConfigurationName = value; } } // 0x64 (100)
 		
-		[ContainerField(104)]
-		public CtrRef<EmitterSystemAsset> EmitterSystemAsset { get; set; } = new CtrRef<EmitterSystemAsset>(); // 0x68 (104)
+		protected CtrRef<EmitterSystemAsset> m_EmitterSystemAsset = new CtrRef<EmitterSystemAsset>();
+		[ContainerField(104), ContainerFieldNameHash(858786790)]
+		public CtrRef<EmitterSystemAsset> EmitterSystemAsset { get { return m_EmitterSystemAsset; } set { if (OnPropertyChanging("LevelData." + nameof(EmitterSystemAsset), this, m_EmitterSystemAsset, value)) m_EmitterSystemAsset = value; } } // 0x68 (104)
 		
-		[ContainerField(108)]
-		public RefArray<EmitterExclusionVolumeData> EmitterExclusionVolumes { get; set; } = new RefArray<EmitterExclusionVolumeData>(); // 0x6C (108)
+		protected RefArray<EmitterExclusionVolumeData> m_EmitterExclusionVolumes = new RefArray<EmitterExclusionVolumeData>();
+		[ContainerField(108), ContainerFieldNameHash(247503444)]
+		public RefArray<EmitterExclusionVolumeData> EmitterExclusionVolumes { get { return m_EmitterExclusionVolumes; } set { if (OnPropertyChanging("LevelData." + nameof(EmitterExclusionVolumes), this, m_EmitterExclusionVolumes, value)) m_EmitterExclusionVolumes = value; } } // 0x6C (108)
 		
-		[ContainerField(112), LayoutImmutable, Blittable]
-		public float DefaultFOV { get; set; } // 0x70 (112)
+		protected float m_DefaultFOV = new float();
+		[ContainerField(112), LayoutImmutable, Blittable, ContainerFieldNameHash(2143448529)]
+		public float DefaultFOV { get { return m_DefaultFOV; } set { if (OnPropertyChanging("LevelData." + nameof(DefaultFOV), this, m_DefaultFOV, value)) m_DefaultFOV = value; } } // 0x70 (112)
 		
-		[ContainerField(116), LayoutImmutable, Blittable]
-		public float InfantryFOVMultiplier { get; set; } // 0x74 (116)
+		protected float m_InfantryFOVMultiplier = new float();
+		[ContainerField(116), LayoutImmutable, Blittable, ContainerFieldNameHash(3538640096)]
+		public float InfantryFOVMultiplier { get { return m_InfantryFOVMultiplier; } set { if (OnPropertyChanging("LevelData." + nameof(InfantryFOVMultiplier), this, m_InfantryFOVMultiplier, value)) m_InfantryFOVMultiplier = value; } } // 0x74 (116)
 		
-		[ContainerField(120), LayoutImmutable, Blittable]
-		public uint MaxEntityBusNetworkCount { get; set; } // 0x78 (120)
+		protected uint m_MaxEntityBusNetworkCount = new uint();
+		[ContainerField(120), LayoutImmutable, Blittable, ContainerFieldNameHash(109652627)]
+		public uint MaxEntityBusNetworkCount { get { return m_MaxEntityBusNetworkCount; } set { if (OnPropertyChanging("LevelData." + nameof(MaxEntityBusNetworkCount), this, m_MaxEntityBusNetworkCount, value)) m_MaxEntityBusNetworkCount = value; } } // 0x78 (120)
 		
-		[ContainerField(124)]
-		public CtrRef<SoundStateSettingsAsset> SoundStates { get; set; } = new CtrRef<SoundStateSettingsAsset>(); // 0x7C (124)
+		protected CtrRef<SoundStateSettingsAsset> m_SoundStates = new CtrRef<SoundStateSettingsAsset>();
+		[ContainerField(124), ContainerFieldNameHash(4087884162)]
+		public CtrRef<SoundStateSettingsAsset> SoundStates { get { return m_SoundStates; } set { if (OnPropertyChanging("LevelData." + nameof(SoundStates), this, m_SoundStates, value)) m_SoundStates = value; } } // 0x7C (124)
 		
-		[ContainerField(128)]
-		public CtrRef<VoiceOverSystemAsset> VoiceOverSystem { get; set; } = new CtrRef<VoiceOverSystemAsset>(); // 0x80 (128)
+		protected CtrRef<VoiceOverSystemAsset> m_VoiceOverSystem = new CtrRef<VoiceOverSystemAsset>();
+		[ContainerField(128), ContainerFieldNameHash(2563745432)]
+		public CtrRef<VoiceOverSystemAsset> VoiceOverSystem { get { return m_VoiceOverSystem; } set { if (OnPropertyChanging("LevelData." + nameof(VoiceOverSystem), this, m_VoiceOverSystem, value)) m_VoiceOverSystem = value; } } // 0x80 (128)
 		
-		[ContainerField(132)]
-		public RefArray<VoiceOverLogicAsset> VoiceOverLogic { get; set; } = new RefArray<VoiceOverLogicAsset>(); // 0x84 (132)
+		protected RefArray<VoiceOverLogicAsset> m_VoiceOverLogic = new RefArray<VoiceOverLogicAsset>();
+		[ContainerField(132), ContainerFieldNameHash(2947014771)]
+		public RefArray<VoiceOverLogicAsset> VoiceOverLogic { get { return m_VoiceOverLogic; } set { if (OnPropertyChanging("LevelData." + nameof(VoiceOverLogic), this, m_VoiceOverLogic, value)) m_VoiceOverLogic = value; } } // 0x84 (132)
 		
-		[ContainerField(136), LayoutImmutable, Blittable]
-		public float MaxVehicleHeight { get; set; } // 0x88 (136)
+		protected float m_MaxVehicleHeight = new float();
+		[ContainerField(136), LayoutImmutable, Blittable, ContainerFieldNameHash(3489491638)]
+		public float MaxVehicleHeight { get { return m_MaxVehicleHeight; } set { if (OnPropertyChanging("LevelData." + nameof(MaxVehicleHeight), this, m_MaxVehicleHeight, value)) m_MaxVehicleHeight = value; } } // 0x88 (136)
 		
-		[ContainerField(140)]
-		public CtrRef<AnimatedSkeletonDatabase> AnimatedSkeletonDatabase { get; set; } = new CtrRef<AnimatedSkeletonDatabase>(); // 0x8C (140)
+		protected CtrRef<AnimatedSkeletonDatabase> m_AnimatedSkeletonDatabase = new CtrRef<AnimatedSkeletonDatabase>();
+		[ContainerField(140), ContainerFieldNameHash(3542888158)]
+		public CtrRef<AnimatedSkeletonDatabase> AnimatedSkeletonDatabase { get { return m_AnimatedSkeletonDatabase; } set { if (OnPropertyChanging("LevelData." + nameof(AnimatedSkeletonDatabase), this, m_AnimatedSkeletonDatabase, value)) m_AnimatedSkeletonDatabase = value; } } // 0x8C (140)
 		
-		[ContainerField(144)]
-		public CtrRef<EnlightenShaderDatabaseAsset> EnlightenShaderDatabase { get; set; } = new CtrRef<EnlightenShaderDatabaseAsset>(); // 0x90 (144)
+		protected CtrRef<EnlightenShaderDatabaseAsset> m_EnlightenShaderDatabase = new CtrRef<EnlightenShaderDatabaseAsset>();
+		[ContainerField(144), ContainerFieldNameHash(3999247479)]
+		public CtrRef<EnlightenShaderDatabaseAsset> EnlightenShaderDatabase { get { return m_EnlightenShaderDatabase; } set { if (OnPropertyChanging("LevelData." + nameof(EnlightenShaderDatabase), this, m_EnlightenShaderDatabase, value)) m_EnlightenShaderDatabase = value; } } // 0x90 (144)
 		
-		[ContainerField(148)]
-		public RefArray<AntProjectAsset> AntProjectAssets { get; set; } = new RefArray<AntProjectAsset>(); // 0x94 (148)
+		protected RefArray<AntProjectAsset> m_AntProjectAssets = new RefArray<AntProjectAsset>();
+		[ContainerField(148), ContainerFieldNameHash(1261757736)]
+		public RefArray<AntProjectAsset> AntProjectAssets { get { return m_AntProjectAssets; } set { if (OnPropertyChanging("LevelData." + nameof(AntProjectAssets), this, m_AntProjectAssets, value)) m_AntProjectAssets = value; } } // 0x94 (148)
 		
-		[ContainerField(152), LayoutImmutable]
-		public string AerialHeightmapData { get; set; } // 0x98 (152)
+		protected string m_AerialHeightmapData = new string();
+		[ContainerField(152), LayoutImmutable, ContainerFieldNameHash(716637124)]
+		public string AerialHeightmapData { get { return m_AerialHeightmapData; } set { if (OnPropertyChanging("LevelData." + nameof(AerialHeightmapData), this, m_AerialHeightmapData, value)) m_AerialHeightmapData = value; } } // 0x98 (152)
 		
-		[ContainerField(156)]
-		public CtrRef<LevelAudioObstructionAsset> AudioObstructionInfo { get; set; } = new CtrRef<LevelAudioObstructionAsset>(); // 0x9C (156)
+		protected CtrRef<LevelAudioObstructionAsset> m_AudioObstructionInfo = new CtrRef<LevelAudioObstructionAsset>();
+		[ContainerField(156), ContainerFieldNameHash(1104450255)]
+		public CtrRef<LevelAudioObstructionAsset> AudioObstructionInfo { get { return m_AudioObstructionInfo; } set { if (OnPropertyChanging("LevelData." + nameof(AudioObstructionInfo), this, m_AudioObstructionInfo, value)) m_AudioObstructionInfo = value; } } // 0x9C (156)
 		
-		[ContainerField(160)]
-		public RefArray<CameraTransition> CameraTransitions { get; set; } = new RefArray<CameraTransition>(); // 0xA0 (160)
+		protected RefArray<CameraTransition> m_CameraTransitions = new RefArray<CameraTransition>();
+		[ContainerField(160), ContainerFieldNameHash(2235180064)]
+		public RefArray<CameraTransition> CameraTransitions { get { return m_CameraTransitions; } set { if (OnPropertyChanging("LevelData." + nameof(CameraTransitions), this, m_CameraTransitions, value)) m_CameraTransitions = value; } } // 0xA0 (160)
 		
-		[ContainerField(164)]
-		public RefArray<CameraModeAsset> CameraModes { get; set; } = new RefArray<CameraModeAsset>(); // 0xA4 (164)
+		protected RefArray<CameraModeAsset> m_CameraModes = new RefArray<CameraModeAsset>();
+		[ContainerField(164), ContainerFieldNameHash(3182808108)]
+		public RefArray<CameraModeAsset> CameraModes { get { return m_CameraModes; } set { if (OnPropertyChanging("LevelData." + nameof(CameraModes), this, m_CameraModes, value)) m_CameraModes = value; } } // 0xA4 (164)
 		
-		[ContainerField(168)]
-		public CtrRef<FaceAnimationWaveMappings> FaceAnimationsWaveMappings { get; set; } = new CtrRef<FaceAnimationWaveMappings>(); // 0xA8 (168)
+		protected CtrRef<FaceAnimationWaveMappings> m_FaceAnimationsWaveMappings = new CtrRef<FaceAnimationWaveMappings>();
+		[ContainerField(168), ContainerFieldNameHash(1607015163)]
+		public CtrRef<FaceAnimationWaveMappings> FaceAnimationsWaveMappings { get { return m_FaceAnimationsWaveMappings; } set { if (OnPropertyChanging("LevelData." + nameof(FaceAnimationsWaveMappings), this, m_FaceAnimationsWaveMappings, value)) m_FaceAnimationsWaveMappings = value; } } // 0xA8 (168)
 		
-		[ContainerField(172)]
-		public CtrRef<Asset> HackForceBuild { get; set; } = new CtrRef<Asset>(); // 0xAC (172)
+		protected CtrRef<Asset> m_HackForceBuild = new CtrRef<Asset>();
+		[ContainerField(172), ContainerFieldNameHash(1034978383)]
+		public CtrRef<Asset> HackForceBuild { get { return m_HackForceBuild; } set { if (OnPropertyChanging("LevelData." + nameof(HackForceBuild), this, m_HackForceBuild, value)) m_HackForceBuild = value; } } // 0xAC (172)
 		
-		[ContainerField(176), LayoutImmutable, Blittable]
-		public bool HugeBroadPhase { get; set; } // 0xB0 (176)
+		protected bool m_HugeBroadPhase = new bool();
+		[ContainerField(176), LayoutImmutable, Blittable, ContainerFieldNameHash(428788623)]
+		public bool HugeBroadPhase { get { return m_HugeBroadPhase; } set { if (OnPropertyChanging("LevelData." + nameof(HugeBroadPhase), this, m_HugeBroadPhase, value)) m_HugeBroadPhase = value; } } // 0xB0 (176)
 		
-		[ContainerField(177), LayoutImmutable, Blittable]
-		public bool FreeStreamingEnable { get; set; } // 0xB1 (177)
+		protected bool m_FreeStreamingEnable = new bool();
+		[ContainerField(177), LayoutImmutable, Blittable, ContainerFieldNameHash(2148797772)]
+		public bool FreeStreamingEnable { get { return m_FreeStreamingEnable; } set { if (OnPropertyChanging("LevelData." + nameof(FreeStreamingEnable), this, m_FreeStreamingEnable, value)) m_FreeStreamingEnable = value; } } // 0xB1 (177)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,31 +5,46 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class UIButtonDataBinding : 
 		UIDataBinding
 	{
-		[ContainerField(8)]
-		public UIDataSourceInfo ButtonsDatasource { get; set; } = new UIDataSourceInfo(); // 0x8 (8)
+		protected UIDataSourceInfo m_ButtonsDatasource = new UIDataSourceInfo();
+		[ContainerField(8), ContainerFieldNameHash(3642323661)]
+		public UIDataSourceInfo ButtonsDatasource { get { return m_ButtonsDatasource; } set { if (OnPropertyChanging("UIButtonDataBinding." + nameof(ButtonsDatasource), this, m_ButtonsDatasource, value)) m_ButtonsDatasource = value; } } // 0x8 (8)
 		
-		[ContainerField(24)]
-		public UIButtonSet DefaultButtonSet { get; set; } = new UIButtonSet(); // 0x18 (24)
+		protected UIButtonSet m_DefaultButtonSet = new UIButtonSet();
+		[ContainerField(24), ContainerFieldNameHash(1682159194)]
+		public UIButtonSet DefaultButtonSet { get { return m_DefaultButtonSet; } set { if (OnPropertyChanging("UIButtonDataBinding." + nameof(DefaultButtonSet), this, m_DefaultButtonSet, value)) m_DefaultButtonSet = value; } } // 0x18 (24)
 		
-		[ContainerField(28)]
-		public UIDataSourceInfo Visibility { get; set; } = new UIDataSourceInfo(); // 0x1C (28)
+		protected UIDataSourceInfo m_Visibility = new UIDataSourceInfo();
+		[ContainerField(28), ContainerFieldNameHash(1708270083)]
+		public UIDataSourceInfo Visibility { get { return m_Visibility; } set { if (OnPropertyChanging("UIButtonDataBinding." + nameof(Visibility), this, m_Visibility, value)) m_Visibility = value; } } // 0x1C (28)
 		
-		[ContainerField(44), LayoutImmutable, Blittable]
-		public bool InvertVisible { get; set; } // 0x2C (44)
+		protected bool m_InvertVisible = new bool();
+		[ContainerField(44), LayoutImmutable, Blittable, ContainerFieldNameHash(301381369)]
+		public bool InvertVisible { get { return m_InvertVisible; } set { if (OnPropertyChanging("UIButtonDataBinding." + nameof(InvertVisible), this, m_InvertVisible, value)) m_InvertVisible = value; } } // 0x2C (44)
 		
-		[ContainerField(45), LayoutImmutable, Blittable]
-		public bool Visible { get; set; } // 0x2D (45)
+		protected bool m_Visible = new bool();
+		[ContainerField(45), LayoutImmutable, Blittable, ContainerFieldNameHash(901540267)]
+		public bool Visible { get { return m_Visible; } set { if (OnPropertyChanging("UIButtonDataBinding." + nameof(Visible), this, m_Visible, value)) m_Visible = value; } } // 0x2D (45)
 		
-		[ContainerField(46), LayoutImmutable, Blittable]
-		public bool InputOnRelease { get; set; } // 0x2E (46)
+		protected bool m_InputOnRelease = new bool();
+		[ContainerField(46), LayoutImmutable, Blittable, ContainerFieldNameHash(1481400763)]
+		public bool InputOnRelease { get { return m_InputOnRelease; } set { if (OnPropertyChanging("UIButtonDataBinding." + nameof(InputOnRelease), this, m_InputOnRelease, value)) m_InputOnRelease = value; } } // 0x2E (46)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

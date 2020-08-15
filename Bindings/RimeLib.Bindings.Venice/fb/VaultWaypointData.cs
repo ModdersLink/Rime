@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class VaultWaypointData : 
 		AbstractLocoWaypointData
 	{
-		[ContainerField(48)]
-		public AILocoVaultTaskData VaultTask { get; set; } = new AILocoVaultTaskData(); // 0x30 (48)
+		protected AILocoVaultTaskData m_VaultTask = new AILocoVaultTaskData();
+		[ContainerField(48), ContainerFieldNameHash(4073508114)]
+		public AILocoVaultTaskData VaultTask { get { return m_VaultTask; } set { if (OnPropertyChanging("VaultWaypointData." + nameof(VaultTask), this, m_VaultTask, value)) m_VaultTask = value; } } // 0x30 (48)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

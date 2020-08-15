@@ -5,26 +5,38 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class TeamData : 
 		TeamAsset
 	{
-		[ContainerField(12)]
-		public CtrRef<SoldierBlueprint> Soldier { get; set; } = new CtrRef<SoldierBlueprint>(); // 0xC (12)
+		protected CtrRef<SoldierBlueprint> m_Soldier = new CtrRef<SoldierBlueprint>();
+		[ContainerField(12), ContainerFieldNameHash(2844639087)]
+		public CtrRef<SoldierBlueprint> Soldier { get { return m_Soldier; } set { if (OnPropertyChanging("TeamData." + nameof(Soldier), this, m_Soldier, value)) m_Soldier = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public FactionId Faction { get; set; } = new FactionId(); // 0x10 (16)
+		protected FactionId m_Faction = new FactionId();
+		[ContainerField(16), ContainerFieldNameHash(1419764413)]
+		public FactionId Faction { get { return m_Faction; } set { if (OnPropertyChanging("TeamData." + nameof(Faction), this, m_Faction, value)) m_Faction = value; } } // 0x10 (16)
 		
-		[ContainerField(20)]
-		public RefArray<SoldierCustomizationAsset> SoldierCustomization { get; set; } = new RefArray<SoldierCustomizationAsset>(); // 0x14 (20)
+		protected RefArray<SoldierCustomizationAsset> m_SoldierCustomization = new RefArray<SoldierCustomizationAsset>();
+		[ContainerField(20), ContainerFieldNameHash(2197823922)]
+		public RefArray<SoldierCustomizationAsset> SoldierCustomization { get { return m_SoldierCustomization; } set { if (OnPropertyChanging("TeamData." + nameof(SoldierCustomization), this, m_SoldierCustomization, value)) m_SoldierCustomization = value; } } // 0x14 (20)
 		
-		[ContainerField(24)]
-		public RefArray<VehicleCustomizationAsset> VehicleCustomization { get; set; } = new RefArray<VehicleCustomizationAsset>(); // 0x18 (24)
+		protected RefArray<VehicleCustomizationAsset> m_VehicleCustomization = new RefArray<VehicleCustomizationAsset>();
+		[ContainerField(24), ContainerFieldNameHash(448553568)]
+		public RefArray<VehicleCustomizationAsset> VehicleCustomization { get { return m_VehicleCustomization; } set { if (OnPropertyChanging("TeamData." + nameof(VehicleCustomization), this, m_VehicleCustomization, value)) m_VehicleCustomization = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

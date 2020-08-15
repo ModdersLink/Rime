@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class MaterialRelationDecalData : 
 		PhysicsMaterialRelationPropertyData
 	{
-		[ContainerField(8)]
-		public CtrRef<DecalTemplateData> Decal { get; set; } = new CtrRef<DecalTemplateData>(); // 0x8 (8)
+		protected CtrRef<DecalTemplateData> m_Decal = new CtrRef<DecalTemplateData>();
+		[ContainerField(8), ContainerFieldNameHash(208760746)]
+		public CtrRef<DecalTemplateData> Decal { get { return m_Decal; } set { if (OnPropertyChanging("MaterialRelationDecalData." + nameof(Decal), this, m_Decal, value)) m_Decal = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

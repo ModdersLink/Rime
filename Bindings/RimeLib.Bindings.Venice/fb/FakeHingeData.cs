@@ -5,40 +5,58 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class FakeHingeData : 
 		FakePhysicsData
 	{
-		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 Pivot { get; set; } = new Vec3(); // 0x30 (48)
+		protected Vec3 m_Pivot = new Vec3();
+		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(232602033)]
+		public Vec3 Pivot { get { return m_Pivot; } set { if (OnPropertyChanging("FakeHingeData." + nameof(Pivot), this, m_Pivot, value)) m_Pivot = value; } } // 0x30 (48)
 		
-		[ContainerField(64), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 RotationAxis { get; set; } = new Vec3(); // 0x40 (64)
+		protected Vec3 m_RotationAxis = new Vec3();
+		[ContainerField(64), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(3148542130)]
+		public Vec3 RotationAxis { get { return m_RotationAxis; } set { if (OnPropertyChanging("FakeHingeData." + nameof(RotationAxis), this, m_RotationAxis, value)) m_RotationAxis = value; } } // 0x40 (64)
 		
-		[ContainerField(80), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 ExtensionAxis { get; set; } = new Vec3(); // 0x50 (80)
+		protected Vec3 m_ExtensionAxis = new Vec3();
+		[ContainerField(80), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(4281429311)]
+		public Vec3 ExtensionAxis { get { return m_ExtensionAxis; } set { if (OnPropertyChanging("FakeHingeData." + nameof(ExtensionAxis), this, m_ExtensionAxis, value)) m_ExtensionAxis = value; } } // 0x50 (80)
 		
-		[ContainerField(96), LayoutImmutable, Blittable]
-		public float MinAngle { get; set; } // 0x60 (96)
+		protected float m_MinAngle = new float();
+		[ContainerField(96), LayoutImmutable, Blittable, ContainerFieldNameHash(3356124462)]
+		public float MinAngle { get { return m_MinAngle; } set { if (OnPropertyChanging("FakeHingeData." + nameof(MinAngle), this, m_MinAngle, value)) m_MinAngle = value; } } // 0x60 (96)
 		
-		[ContainerField(100), LayoutImmutable, Blittable]
-		public float MaxAngle { get; set; } // 0x64 (100)
+		protected float m_MaxAngle = new float();
+		[ContainerField(100), LayoutImmutable, Blittable, ContainerFieldNameHash(417488496)]
+		public float MaxAngle { get { return m_MaxAngle; } set { if (OnPropertyChanging("FakeHingeData." + nameof(MaxAngle), this, m_MaxAngle, value)) m_MaxAngle = value; } } // 0x64 (100)
 		
-		[ContainerField(104), LayoutImmutable, Blittable]
-		public float AngularDampening { get; set; } // 0x68 (104)
+		protected float m_AngularDampening = new float();
+		[ContainerField(104), LayoutImmutable, Blittable, ContainerFieldNameHash(705185012)]
+		public float AngularDampening { get { return m_AngularDampening; } set { if (OnPropertyChanging("FakeHingeData." + nameof(AngularDampening), this, m_AngularDampening, value)) m_AngularDampening = value; } } // 0x68 (104)
 		
-		[ContainerField(108), LayoutImmutable, Blittable]
-		public float PullbackAcceleration { get; set; } // 0x6C (108)
+		protected float m_PullbackAcceleration = new float();
+		[ContainerField(108), LayoutImmutable, Blittable, ContainerFieldNameHash(1407037897)]
+		public float PullbackAcceleration { get { return m_PullbackAcceleration; } set { if (OnPropertyChanging("FakeHingeData." + nameof(PullbackAcceleration), this, m_PullbackAcceleration, value)) m_PullbackAcceleration = value; } } // 0x6C (108)
 		
-		[ContainerField(112), LayoutImmutable, Blittable]
-		public float ProgressiveExponent { get; set; } // 0x70 (112)
+		protected float m_ProgressiveExponent = new float();
+		[ContainerField(112), LayoutImmutable, Blittable, ContainerFieldNameHash(487101329)]
+		public float ProgressiveExponent { get { return m_ProgressiveExponent; } set { if (OnPropertyChanging("FakeHingeData." + nameof(ProgressiveExponent), this, m_ProgressiveExponent, value)) m_ProgressiveExponent = value; } } // 0x70 (112)
 		
-		[ContainerField(116), LayoutImmutable, Blittable]
-		public float InertiaModifier { get; set; } // 0x74 (116)
+		protected float m_InertiaModifier = new float();
+		[ContainerField(116), LayoutImmutable, Blittable, ContainerFieldNameHash(3532865534)]
+		public float InertiaModifier { get { return m_InertiaModifier; } set { if (OnPropertyChanging("FakeHingeData." + nameof(InertiaModifier), this, m_InertiaModifier, value)) m_InertiaModifier = value; } } // 0x74 (116)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

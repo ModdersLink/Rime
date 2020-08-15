@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class RandomEvaluatorData : 
 		EvaluatorData
 	{
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public float Max { get; set; } // 0xC (12)
+		protected float m_Max = new float();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(193446865)]
+		public float Max { get { return m_Max; } set { if (OnPropertyChanging("RandomEvaluatorData." + nameof(Max), this, m_Max, value)) m_Max = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public float Min { get; set; } // 0x10 (16)
+		protected float m_Min = new float();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(193446607)]
+		public float Min { get { return m_Min; } set { if (OnPropertyChanging("RandomEvaluatorData." + nameof(Min), this, m_Min, value)) m_Min = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

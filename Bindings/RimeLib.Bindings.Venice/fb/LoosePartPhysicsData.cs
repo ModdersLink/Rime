@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class LoosePartPhysicsData : 
 		DataContainer
 	{
-		[ContainerField(8)]
-		public CtrRef<FakePhysicsData> FakePhysics { get; set; } = new CtrRef<FakePhysicsData>(); // 0x8 (8)
+		protected CtrRef<FakePhysicsData> m_FakePhysics = new CtrRef<FakePhysicsData>();
+		[ContainerField(8), ContainerFieldNameHash(3614234055)]
+		public CtrRef<FakePhysicsData> FakePhysics { get { return m_FakePhysics; } set { if (OnPropertyChanging("LoosePartPhysicsData." + nameof(FakePhysics), this, m_FakePhysics, value)) m_FakePhysics = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

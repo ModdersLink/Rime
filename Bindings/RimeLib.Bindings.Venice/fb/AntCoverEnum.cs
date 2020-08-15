@@ -5,9 +5,20 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
+
 namespace fb
 {
-    public enum AntCoverEnum : int
+	public enum AntCoverEnum : int
 	{
 		AntCoverEnum_RightCover = 0,
 		AntCoverEnum_LeftCover = 1,

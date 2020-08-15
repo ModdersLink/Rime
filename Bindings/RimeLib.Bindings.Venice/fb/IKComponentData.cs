@@ -5,20 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class IKComponentData : 
 		ComponentData
 	{
-		[ContainerField(96)]
-		public IKEffectorEnum IKEffector { get; set; } = new IKEffectorEnum(); // 0x60 (96)
+		protected IKEffectorEnum m_IKEffector = new IKEffectorEnum();
+		[ContainerField(96), ContainerFieldNameHash(4088955053)]
+		public IKEffectorEnum IKEffector { get { return m_IKEffector; } set { if (OnPropertyChanging("IKComponentData." + nameof(IKEffector), this, m_IKEffector, value)) m_IKEffector = value; } } // 0x60 (96)
 		
-		[ContainerField(100)]
-		public HIKData IKData { get; set; } = new HIKData(); // 0x64 (100)
+		protected HIKData m_IKData = new HIKData();
+		[ContainerField(100), ContainerFieldNameHash(2831034455)]
+		public HIKData IKData { get { return m_IKData; } set { if (OnPropertyChanging("IKComponentData." + nameof(IKData), this, m_IKData, value)) m_IKData = value; } } // 0x64 (100)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

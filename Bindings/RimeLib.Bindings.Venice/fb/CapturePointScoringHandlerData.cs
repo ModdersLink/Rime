@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class CapturePointScoringHandlerData : 
 		ScoringHandlerData
 	{
-		[ContainerField(8), LayoutImmutable, Blittable]
-		public float SquadCappingBonus { get; set; } // 0x8 (8)
+		protected float m_SquadCappingBonus = new float();
+		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(3764557584)]
+		public float SquadCappingBonus { get { return m_SquadCappingBonus; } set { if (OnPropertyChanging("CapturePointScoringHandlerData." + nameof(SquadCappingBonus), this, m_SquadCappingBonus, value)) m_SquadCappingBonus = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

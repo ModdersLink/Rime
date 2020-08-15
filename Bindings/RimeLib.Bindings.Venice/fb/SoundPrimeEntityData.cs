@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class SoundPrimeEntityData : 
 		EntityData
 	{
-		[ContainerField(12)]
-		public RefArray<SoundDataAsset> DataAssets { get; set; } = new RefArray<SoundDataAsset>(); // 0xC (12)
+		protected RefArray<SoundDataAsset> m_DataAssets = new RefArray<SoundDataAsset>();
+		[ContainerField(12), ContainerFieldNameHash(4187781142)]
+		public RefArray<SoundDataAsset> DataAssets { get { return m_DataAssets; } set { if (OnPropertyChanging("SoundPrimeEntityData." + nameof(DataAssets), this, m_DataAssets, value)) m_DataAssets = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,20 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class StatsCategoryData : 
 		StatsCategoryBaseData
 	{
-		[ContainerField(20)]
-		public RefArray<StatsCategoryData> Categories { get; set; } = new RefArray<StatsCategoryData>(); // 0x14 (20)
+		protected RefArray<StatsCategoryData> m_Categories = new RefArray<StatsCategoryData>();
+		[ContainerField(20), ContainerFieldNameHash(1039077843)]
+		public RefArray<StatsCategoryData> Categories { get { return m_Categories; } set { if (OnPropertyChanging("StatsCategoryData." + nameof(Categories), this, m_Categories, value)) m_Categories = value; } } // 0x14 (20)
 		
-		[ContainerField(24)]
-		public List<string> Members { get; set; } = new List<string>(); // 0x18 (24)
+		protected List<string> m_Members = new List<string>();
+		[ContainerField(24), ContainerFieldNameHash(1446896454)]
+		public List<string> Members { get { return m_Members; } set { if (OnPropertyChanging("StatsCategoryData." + nameof(Members), this, m_Members, value)) m_Members = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

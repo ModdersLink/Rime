@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class ValueDebugNodeData : 
 		AudioGraphNodeData
 	{
-		[ContainerField(8)]
-		public RefArray<DebugValueInput> Values { get; set; } = new RefArray<DebugValueInput>(); // 0x8 (8)
+		protected RefArray<DebugValueInput> m_Values = new RefArray<DebugValueInput>();
+		[ContainerField(8), ContainerFieldNameHash(3142410589)]
+		public RefArray<DebugValueInput> Values { get { return m_Values; } set { if (OnPropertyChanging("ValueDebugNodeData." + nameof(Values), this, m_Values, value)) m_Values = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

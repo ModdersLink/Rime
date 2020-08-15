@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class SendEntry : 
 		AudioGraphNodePortGroup
 	{
-		[ContainerField(8)]
-		public AudioGraphNodePort In { get; set; } = new AudioGraphNodePort(); // 0x8 (8)
+		protected AudioGraphNodePort m_In = new AudioGraphNodePort();
+		[ContainerField(8), ContainerFieldNameHash(5862146)]
+		public AudioGraphNodePort In { get { return m_In; } set { if (OnPropertyChanging("SendEntry." + nameof(In), this, m_In, value)) m_In = value; } } // 0x8 (8)
 		
-		[ContainerField(16)]
-		public CtrRef<AudioGraphParameter> Target { get; set; } = new CtrRef<AudioGraphParameter>(); // 0x10 (16)
+		protected CtrRef<AudioGraphParameter> m_Target = new CtrRef<AudioGraphParameter>();
+		[ContainerField(16), ContainerFieldNameHash(3215022804)]
+		public CtrRef<AudioGraphParameter> Target { get { return m_Target; } set { if (OnPropertyChanging("SendEntry." + nameof(Target), this, m_Target, value)) m_Target = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

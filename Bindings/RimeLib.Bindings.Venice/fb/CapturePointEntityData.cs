@@ -5,114 +5,154 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class CapturePointEntityData : 
 		GameEntityData
 	{
-		[ContainerField(96), LayoutImmutable, Blittable]
-		public int EnemyTicketLossWhenCaptured { get; set; } // 0x60 (96)
+		protected int m_EnemyTicketLossWhenCaptured = new int();
+		[ContainerField(96), LayoutImmutable, Blittable, ContainerFieldNameHash(564231500)]
+		public int EnemyTicketLossWhenCaptured { get { return m_EnemyTicketLossWhenCaptured; } set { if (OnPropertyChanging("CapturePointEntityData." + nameof(EnemyTicketLossWhenCaptured), this, m_EnemyTicketLossWhenCaptured, value)) m_EnemyTicketLossWhenCaptured = value; } } // 0x60 (96)
 		
-		[ContainerField(100), LayoutImmutable, Blittable]
-		public int MinNrToTakeControl { get; set; } // 0x64 (100)
+		protected int m_MinNrToTakeControl = new int();
+		[ContainerField(100), LayoutImmutable, Blittable, ContainerFieldNameHash(3359967028)]
+		public int MinNrToTakeControl { get { return m_MinNrToTakeControl; } set { if (OnPropertyChanging("CapturePointEntityData." + nameof(MinNrToTakeControl), this, m_MinNrToTakeControl, value)) m_MinNrToTakeControl = value; } } // 0x64 (100)
 		
-		[ContainerField(104)]
-		public RefArray<ObjectBlueprint> FlagTemplates { get; set; } = new RefArray<ObjectBlueprint>(); // 0x68 (104)
+		protected RefArray<ObjectBlueprint> m_FlagTemplates = new RefArray<ObjectBlueprint>();
+		[ContainerField(104), ContainerFieldNameHash(1208546634)]
+		public RefArray<ObjectBlueprint> FlagTemplates { get { return m_FlagTemplates; } set { if (OnPropertyChanging("CapturePointEntityData." + nameof(FlagTemplates), this, m_FlagTemplates, value)) m_FlagTemplates = value; } } // 0x68 (104)
 		
-		[ContainerField(108)]
-		public CtrRef<ObjectBlueprint> CapturePoint { get; set; } = new CtrRef<ObjectBlueprint>(); // 0x6C (108)
+		protected CtrRef<ObjectBlueprint> m_CapturePoint = new CtrRef<ObjectBlueprint>();
+		[ContainerField(108), ContainerFieldNameHash(3548539661)]
+		public CtrRef<ObjectBlueprint> CapturePoint { get { return m_CapturePoint; } set { if (OnPropertyChanging("CapturePointEntityData." + nameof(CapturePoint), this, m_CapturePoint, value)) m_CapturePoint = value; } } // 0x6C (108)
 		
-		[ContainerField(112)]
-		public TeamId InitialOwnerTeam { get; set; } = new TeamId(); // 0x70 (112)
+		protected TeamId m_InitialOwnerTeam = new TeamId();
+		[ContainerField(112), ContainerFieldNameHash(2819378919)]
+		public TeamId InitialOwnerTeam { get { return m_InitialOwnerTeam; } set { if (OnPropertyChanging("CapturePointEntityData." + nameof(InitialOwnerTeam), this, m_InitialOwnerTeam, value)) m_InitialOwnerTeam = value; } } // 0x70 (112)
 		
-		[ContainerField(116), LayoutImmutable, Blittable]
-		public float CaptureRadius { get; set; } // 0x74 (116)
+		protected float m_CaptureRadius = new float();
+		[ContainerField(116), LayoutImmutable, Blittable, ContainerFieldNameHash(1043301209)]
+		public float CaptureRadius { get { return m_CaptureRadius; } set { if (OnPropertyChanging("CapturePointEntityData." + nameof(CaptureRadius), this, m_CaptureRadius, value)) m_CaptureRadius = value; } } // 0x74 (116)
 		
-		[ContainerField(120), LayoutImmutable, Blittable]
-		public int MaxCaptureMultiplier { get; set; } // 0x78 (120)
+		protected int m_MaxCaptureMultiplier = new int();
+		[ContainerField(120), LayoutImmutable, Blittable, ContainerFieldNameHash(1211879326)]
+		public int MaxCaptureMultiplier { get { return m_MaxCaptureMultiplier; } set { if (OnPropertyChanging("CapturePointEntityData." + nameof(MaxCaptureMultiplier), this, m_MaxCaptureMultiplier, value)) m_MaxCaptureMultiplier = value; } } // 0x78 (120)
 		
-		[ContainerField(124), LayoutImmutable, Blittable]
-		public int AreaValue { get; set; } // 0x7C (124)
+		protected int m_AreaValue = new int();
+		[ContainerField(124), LayoutImmutable, Blittable, ContainerFieldNameHash(4217799545)]
+		public int AreaValue { get { return m_AreaValue; } set { if (OnPropertyChanging("CapturePointEntityData." + nameof(AreaValue), this, m_AreaValue, value)) m_AreaValue = value; } } // 0x7C (124)
 		
-		[ContainerField(128), LayoutImmutable, Blittable]
-		public uint SpawnMenuListOrdinal { get; set; } // 0x80 (128)
+		protected uint m_SpawnMenuListOrdinal = new uint();
+		[ContainerField(128), LayoutImmutable, Blittable, ContainerFieldNameHash(316937852)]
+		public uint SpawnMenuListOrdinal { get { return m_SpawnMenuListOrdinal; } set { if (OnPropertyChanging("CapturePointEntityData." + nameof(SpawnMenuListOrdinal), this, m_SpawnMenuListOrdinal, value)) m_SpawnMenuListOrdinal = value; } } // 0x80 (128)
 		
-		[ContainerField(132)]
-		public List<AreaValueTeam> AreaValues { get; set; } = new List<AreaValueTeam>(); // 0x84 (132)
+		protected List<AreaValueTeam> m_AreaValues = new List<AreaValueTeam>();
+		[ContainerField(132), ContainerFieldNameHash(1748431594)]
+		public List<AreaValueTeam> AreaValues { get { return m_AreaValues; } set { if (OnPropertyChanging("CapturePointEntityData." + nameof(AreaValues), this, m_AreaValues, value)) m_AreaValues = value; } } // 0x84 (132)
 		
-		[ContainerField(136), LayoutImmutable, Blittable]
-		public int TimeToGetControl { get; set; } // 0x88 (136)
+		protected int m_TimeToGetControl = new int();
+		[ContainerField(136), LayoutImmutable, Blittable, ContainerFieldNameHash(1506679642)]
+		public int TimeToGetControl { get { return m_TimeToGetControl; } set { if (OnPropertyChanging("CapturePointEntityData." + nameof(TimeToGetControl), this, m_TimeToGetControl, value)) m_TimeToGetControl = value; } } // 0x88 (136)
 		
-		[ContainerField(140), LayoutImmutable, Blittable]
-		public int TimeToLoseControl { get; set; } // 0x8C (140)
+		protected int m_TimeToLoseControl = new int();
+		[ContainerField(140), LayoutImmutable, Blittable, ContainerFieldNameHash(3830029753)]
+		public int TimeToLoseControl { get { return m_TimeToLoseControl; } set { if (OnPropertyChanging("CapturePointEntityData." + nameof(TimeToLoseControl), this, m_TimeToLoseControl, value)) m_TimeToLoseControl = value; } } // 0x8C (140)
 		
-		[ContainerField(144), LayoutImmutable, Blittable]
-		public float ReturnMultiplier { get; set; } // 0x90 (144)
+		protected float m_ReturnMultiplier = new float();
+		[ContainerField(144), LayoutImmutable, Blittable, ContainerFieldNameHash(118486500)]
+		public float ReturnMultiplier { get { return m_ReturnMultiplier; } set { if (OnPropertyChanging("CapturePointEntityData." + nameof(ReturnMultiplier), this, m_ReturnMultiplier, value)) m_ReturnMultiplier = value; } } // 0x90 (144)
 		
-		[ContainerField(148), LayoutImmutable, Blittable]
-		public int OnlyTakeableByTeam { get; set; } // 0x94 (148)
+		protected int m_OnlyTakeableByTeam = new int();
+		[ContainerField(148), LayoutImmutable, Blittable, ContainerFieldNameHash(282816006)]
+		public int OnlyTakeableByTeam { get { return m_OnlyTakeableByTeam; } set { if (OnPropertyChanging("CapturePointEntityData." + nameof(OnlyTakeableByTeam), this, m_OnlyTakeableByTeam, value)) m_OnlyTakeableByTeam = value; } } // 0x94 (148)
 		
-		[ContainerField(152), LayoutImmutable, Blittable]
-		public float ShowRadius { get; set; } // 0x98 (152)
+		protected float m_ShowRadius = new float();
+		[ContainerField(152), LayoutImmutable, Blittable, ContainerFieldNameHash(2284771454)]
+		public float ShowRadius { get { return m_ShowRadius; } set { if (OnPropertyChanging("CapturePointEntityData." + nameof(ShowRadius), this, m_ShowRadius, value)) m_ShowRadius = value; } } // 0x98 (152)
 		
-		[ContainerField(156), LayoutImmutable, Blittable]
-		public float HideRadius { get; set; } // 0x9C (156)
+		protected float m_HideRadius = new float();
+		[ContainerField(156), LayoutImmutable, Blittable, ContainerFieldNameHash(3315533693)]
+		public float HideRadius { get { return m_HideRadius; } set { if (OnPropertyChanging("CapturePointEntityData." + nameof(HideRadius), this, m_HideRadius, value)) m_HideRadius = value; } } // 0x9C (156)
 		
-		[ContainerField(160), LayoutImmutable, Blittable]
-		public float AddedMultiplierPerPlayer { get; set; } // 0xA0 (160)
+		protected float m_AddedMultiplierPerPlayer = new float();
+		[ContainerField(160), LayoutImmutable, Blittable, ContainerFieldNameHash(4214083802)]
+		public float AddedMultiplierPerPlayer { get { return m_AddedMultiplierPerPlayer; } set { if (OnPropertyChanging("CapturePointEntityData." + nameof(AddedMultiplierPerPlayer), this, m_AddedMultiplierPerPlayer, value)) m_AddedMultiplierPerPlayer = value; } } // 0xA0 (160)
 		
-		[ContainerField(164), LayoutImmutable, Blittable]
-		public float Modify3DIconVerticalOffset { get; set; } // 0xA4 (164)
+		protected float m_Modify3DIconVerticalOffset = new float();
+		[ContainerField(164), LayoutImmutable, Blittable, ContainerFieldNameHash(3848122358)]
+		public float Modify3DIconVerticalOffset { get { return m_Modify3DIconVerticalOffset; } set { if (OnPropertyChanging("CapturePointEntityData." + nameof(Modify3DIconVerticalOffset), this, m_Modify3DIconVerticalOffset, value)) m_Modify3DIconVerticalOffset = value; } } // 0xA4 (164)
 		
-		[ContainerField(168)]
-		public CapturableType CapturableType { get; set; } = new CapturableType(); // 0xA8 (168)
+		protected CapturableType m_CapturableType = new CapturableType();
+		[ContainerField(168), ContainerFieldNameHash(4032836214)]
+		public CapturableType CapturableType { get { return m_CapturableType; } set { if (OnPropertyChanging("CapturePointEntityData." + nameof(CapturableType), this, m_CapturableType, value)) m_CapturableType = value; } } // 0xA8 (168)
 		
-		[ContainerField(172), LayoutImmutable]
-		public string IntruderWarningSID { get; set; } // 0xAC (172)
+		protected string m_IntruderWarningSID = new string();
+		[ContainerField(172), LayoutImmutable, ContainerFieldNameHash(691558678)]
+		public string IntruderWarningSID { get { return m_IntruderWarningSID; } set { if (OnPropertyChanging("CapturePointEntityData." + nameof(IntruderWarningSID), this, m_IntruderWarningSID, value)) m_IntruderWarningSID = value; } } // 0xAC (172)
 		
-		[ContainerField(176), LayoutImmutable, Blittable]
-		public bool IsCapturedInUpperSphere { get; set; } // 0xB0 (176)
+		protected bool m_IsCapturedInUpperSphere = new bool();
+		[ContainerField(176), LayoutImmutable, Blittable, ContainerFieldNameHash(3699411299)]
+		public bool IsCapturedInUpperSphere { get { return m_IsCapturedInUpperSphere; } set { if (OnPropertyChanging("CapturePointEntityData." + nameof(IsCapturedInUpperSphere), this, m_IsCapturedInUpperSphere, value)) m_IsCapturedInUpperSphere = value; } } // 0xB0 (176)
 		
-		[ContainerField(177), LayoutImmutable, Blittable]
-		public bool DisableWhenLosingControl { get; set; } // 0xB1 (177)
+		protected bool m_DisableWhenLosingControl = new bool();
+		[ContainerField(177), LayoutImmutable, Blittable, ContainerFieldNameHash(2397507634)]
+		public bool DisableWhenLosingControl { get { return m_DisableWhenLosingControl; } set { if (OnPropertyChanging("CapturePointEntityData." + nameof(DisableWhenLosingControl), this, m_DisableWhenLosingControl, value)) m_DisableWhenLosingControl = value; } } // 0xB1 (177)
 		
-		[ContainerField(178), LayoutImmutable, Blittable]
-		public bool LoseControlWhenNotClose { get; set; } // 0xB2 (178)
+		protected bool m_LoseControlWhenNotClose = new bool();
+		[ContainerField(178), LayoutImmutable, Blittable, ContainerFieldNameHash(197053568)]
+		public bool LoseControlWhenNotClose { get { return m_LoseControlWhenNotClose; } set { if (OnPropertyChanging("CapturePointEntityData." + nameof(LoseControlWhenNotClose), this, m_LoseControlWhenNotClose, value)) m_LoseControlWhenNotClose = value; } } // 0xB2 (178)
 		
-		[ContainerField(179), LayoutImmutable, Blittable]
-		public bool DisableIfEnemyInside { get; set; } // 0xB3 (179)
+		protected bool m_DisableIfEnemyInside = new bool();
+		[ContainerField(179), LayoutImmutable, Blittable, ContainerFieldNameHash(2095022840)]
+		public bool DisableIfEnemyInside { get { return m_DisableIfEnemyInside; } set { if (OnPropertyChanging("CapturePointEntityData." + nameof(DisableIfEnemyInside), this, m_DisableIfEnemyInside, value)) m_DisableIfEnemyInside = value; } } // 0xB3 (179)
 		
-		[ContainerField(180), LayoutImmutable, Blittable]
-		public bool IsVisible { get; set; } // 0xB4 (180)
+		protected bool m_IsVisible = new bool();
+		[ContainerField(180), LayoutImmutable, Blittable, ContainerFieldNameHash(4174428017)]
+		public bool IsVisible { get { return m_IsVisible; } set { if (OnPropertyChanging("CapturePointEntityData." + nameof(IsVisible), this, m_IsVisible, value)) m_IsVisible = value; } } // 0xB4 (180)
 		
-		[ContainerField(181), LayoutImmutable, Blittable]
-		public bool ForceSnap { get; set; } // 0xB5 (181)
+		protected bool m_ForceSnap = new bool();
+		[ContainerField(181), LayoutImmutable, Blittable, ContainerFieldNameHash(3675636116)]
+		public bool ForceSnap { get { return m_ForceSnap; } set { if (OnPropertyChanging("CapturePointEntityData." + nameof(ForceSnap), this, m_ForceSnap, value)) m_ForceSnap = value; } } // 0xB5 (181)
 		
-		[ContainerField(182), LayoutImmutable, Blittable]
-		public bool UseAreaValuesPerTeam { get; set; } // 0xB6 (182)
+		protected bool m_UseAreaValuesPerTeam = new bool();
+		[ContainerField(182), LayoutImmutable, Blittable, ContainerFieldNameHash(404347571)]
+		public bool UseAreaValuesPerTeam { get { return m_UseAreaValuesPerTeam; } set { if (OnPropertyChanging("CapturePointEntityData." + nameof(UseAreaValuesPerTeam), this, m_UseAreaValuesPerTeam, value)) m_UseAreaValuesPerTeam = value; } } // 0xB6 (182)
 		
-		[ContainerField(183), LayoutImmutable, Blittable]
-		public bool IntruderWarning { get; set; } // 0xB7 (183)
+		protected bool m_IntruderWarning = new bool();
+		[ContainerField(183), LayoutImmutable, Blittable, ContainerFieldNameHash(3522568872)]
+		public bool IntruderWarning { get { return m_IntruderWarning; } set { if (OnPropertyChanging("CapturePointEntityData." + nameof(IntruderWarning), this, m_IntruderWarning, value)) m_IntruderWarning = value; } } // 0xB7 (183)
 		
-		[ContainerField(184), LayoutImmutable, Blittable]
-		public bool ShowOnMinimap { get; set; } // 0xB8 (184)
+		protected bool m_ShowOnMinimap = new bool();
+		[ContainerField(184), LayoutImmutable, Blittable, ContainerFieldNameHash(1450528952)]
+		public bool ShowOnMinimap { get { return m_ShowOnMinimap; } set { if (OnPropertyChanging("CapturePointEntityData." + nameof(ShowOnMinimap), this, m_ShowOnMinimap, value)) m_ShowOnMinimap = value; } } // 0xB8 (184)
 		
-		[ContainerField(185), LayoutImmutable, Blittable]
-		public bool HoistFlag { get; set; } // 0xB9 (185)
+		protected bool m_HoistFlag = new bool();
+		[ContainerField(185), LayoutImmutable, Blittable, ContainerFieldNameHash(3775540640)]
+		public bool HoistFlag { get { return m_HoistFlag; } set { if (OnPropertyChanging("CapturePointEntityData." + nameof(HoistFlag), this, m_HoistFlag, value)) m_HoistFlag = value; } } // 0xB9 (185)
 		
-		[ContainerField(186), LayoutImmutable, Blittable]
-		public bool StartAtBottom { get; set; } // 0xBA (186)
+		protected bool m_StartAtBottom = new bool();
+		[ContainerField(186), LayoutImmutable, Blittable, ContainerFieldNameHash(4122129279)]
+		public bool StartAtBottom { get { return m_StartAtBottom; } set { if (OnPropertyChanging("CapturePointEntityData." + nameof(StartAtBottom), this, m_StartAtBottom, value)) m_StartAtBottom = value; } } // 0xBA (186)
 		
-		[ContainerField(187), LayoutImmutable, Blittable]
-		public bool RemoveWhenCaptured { get; set; } // 0xBB (187)
+		protected bool m_RemoveWhenCaptured = new bool();
+		[ContainerField(187), LayoutImmutable, Blittable, ContainerFieldNameHash(2265983223)]
+		public bool RemoveWhenCaptured { get { return m_RemoveWhenCaptured; } set { if (OnPropertyChanging("CapturePointEntityData." + nameof(RemoveWhenCaptured), this, m_RemoveWhenCaptured, value)) m_RemoveWhenCaptured = value; } } // 0xBB (187)
 		
-		[ContainerField(188), LayoutImmutable, Blittable]
-		public bool SeesawCapturing { get; set; } // 0xBC (188)
+		protected bool m_SeesawCapturing = new bool();
+		[ContainerField(188), LayoutImmutable, Blittable, ContainerFieldNameHash(3756225682)]
+		public bool SeesawCapturing { get { return m_SeesawCapturing; } set { if (OnPropertyChanging("CapturePointEntityData." + nameof(SeesawCapturing), this, m_SeesawCapturing, value)) m_SeesawCapturing = value; } } // 0xBC (188)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

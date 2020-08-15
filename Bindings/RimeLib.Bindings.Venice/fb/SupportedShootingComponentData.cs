@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class SupportedShootingComponentData : 
 		ComponentData
 	{
-		[ContainerField(96)]
-		public CtrRef<SupportedShootingCommonData> CommonData { get; set; } = new CtrRef<SupportedShootingCommonData>(); // 0x60 (96)
+		protected CtrRef<SupportedShootingCommonData> m_CommonData = new CtrRef<SupportedShootingCommonData>();
+		[ContainerField(96), ContainerFieldNameHash(760803064)]
+		public CtrRef<SupportedShootingCommonData> CommonData { get { return m_CommonData; } set { if (OnPropertyChanging("SupportedShootingComponentData." + nameof(CommonData), this, m_CommonData, value)) m_CommonData = value; } } // 0x60 (96)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

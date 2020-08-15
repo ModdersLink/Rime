@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class PresenceServerBrowserServiceData : 
 		PresenceServiceData
 	{
-		[ContainerField(12)]
-		public MatchmakingCriteria FilterCriterias { get; set; } = new MatchmakingCriteria(); // 0xC (12)
+		protected MatchmakingCriteria m_FilterCriterias = new MatchmakingCriteria();
+		[ContainerField(12), ContainerFieldNameHash(4095044485)]
+		public MatchmakingCriteria FilterCriterias { get { return m_FilterCriterias; } set { if (OnPropertyChanging("PresenceServerBrowserServiceData." + nameof(FilterCriterias), this, m_FilterCriterias, value)) m_FilterCriterias = value; } } // 0xC (12)
 		
-		[ContainerField(44), LayoutImmutable, Blittable]
-		public uint ListCapacity { get; set; } // 0x2C (44)
+		protected uint m_ListCapacity = new uint();
+		[ContainerField(44), LayoutImmutable, Blittable, ContainerFieldNameHash(2930314355)]
+		public uint ListCapacity { get { return m_ListCapacity; } set { if (OnPropertyChanging("PresenceServerBrowserServiceData." + nameof(ListCapacity), this, m_ListCapacity, value)) m_ListCapacity = value; } } // 0x2C (44)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

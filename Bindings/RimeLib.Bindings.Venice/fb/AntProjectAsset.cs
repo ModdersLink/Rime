@@ -5,25 +5,38 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class AntProjectAsset : 
 		Asset
 	{
-		[ContainerField(12)]
-		public RefArray<AntPackageAsset> PackageAssets { get; set; } = new RefArray<AntPackageAsset>(); // 0xC (12)
+		protected RefArray<AntPackageAsset> m_PackageAssets = new RefArray<AntPackageAsset>();
+		[ContainerField(12), ContainerFieldNameHash(765658940)]
+		public RefArray<AntPackageAsset> PackageAssets { get { return m_PackageAssets; } set { if (OnPropertyChanging("AntProjectAsset." + nameof(PackageAssets), this, m_PackageAssets, value)) m_PackageAssets = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable]
-		public string AntNativeProjectName { get; set; } // 0x10 (16)
+		protected string m_AntNativeProjectName = new string();
+		[ContainerField(16), LayoutImmutable, ContainerFieldNameHash(3945376013)]
+		public string AntNativeProjectName { get { return m_AntNativeProjectName; } set { if (OnPropertyChanging("AntProjectAsset." + nameof(AntNativeProjectName), this, m_AntNativeProjectName, value)) m_AntNativeProjectName = value; } } // 0x10 (16)
 		
-		[ContainerField(20)]
-		public AntRef SceneOp { get; set; } = new AntRef(); // 0x14 (20)
+		protected AntRef m_SceneOp = new AntRef();
+		[ContainerField(20), ContainerFieldNameHash(2689985284)]
+		public AntRef SceneOp { get { return m_SceneOp; } set { if (OnPropertyChanging("AntProjectAsset." + nameof(SceneOp), this, m_SceneOp, value)) m_SceneOp = value; } } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable]
-		public int ProjectId { get; set; } // 0x18 (24)
+		protected int m_ProjectId = new int();
+		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(4152360413)]
+		public int ProjectId { get { return m_ProjectId; } set { if (OnPropertyChanging("AntProjectAsset." + nameof(ProjectId), this, m_ProjectId, value)) m_ProjectId = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

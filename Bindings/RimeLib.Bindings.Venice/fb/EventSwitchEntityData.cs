@@ -5,23 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class EventSwitchEntityData : 
 		EntityData
 	{
-		[ContainerField(12)]
-		public Realm Realm { get; set; } = new Realm(); // 0xC (12)
+		protected Realm m_Realm = new Realm();
+		[ContainerField(12), ContainerFieldNameHash(229961746)]
+		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("EventSwitchEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public uint OutEvents { get; set; } // 0x10 (16)
+		protected uint m_OutEvents = new uint();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(2083855540)]
+		public uint OutEvents { get { return m_OutEvents; } set { if (OnPropertyChanging("EventSwitchEntityData." + nameof(OutEvents), this, m_OutEvents, value)) m_OutEvents = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
-		public bool AutoIncrement { get; set; } // 0x14 (20)
+		protected bool m_AutoIncrement = new bool();
+		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(1262167147)]
+		public bool AutoIncrement { get { return m_AutoIncrement; } set { if (OnPropertyChanging("EventSwitchEntityData." + nameof(AutoIncrement), this, m_AutoIncrement, value)) m_AutoIncrement = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

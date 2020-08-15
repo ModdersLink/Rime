@@ -5,25 +5,38 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class MaterialPropertyPhysicsData : 
 		PhysicsMaterialRelationPropertyData
 	{
-		[ContainerField(8), LayoutImmutable, Blittable]
-		public float DynamicFrictionModifier { get; set; } // 0x8 (8)
+		protected float m_DynamicFrictionModifier = new float();
+		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(3684693189)]
+		public float DynamicFrictionModifier { get { return m_DynamicFrictionModifier; } set { if (OnPropertyChanging("MaterialPropertyPhysicsData." + nameof(DynamicFrictionModifier), this, m_DynamicFrictionModifier, value)) m_DynamicFrictionModifier = value; } } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public float StaticFrictionModifier { get; set; } // 0xC (12)
+		protected float m_StaticFrictionModifier = new float();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(1034015560)]
+		public float StaticFrictionModifier { get { return m_StaticFrictionModifier; } set { if (OnPropertyChanging("MaterialPropertyPhysicsData." + nameof(StaticFrictionModifier), this, m_StaticFrictionModifier, value)) m_StaticFrictionModifier = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public float RestitutionModifier { get; set; } // 0x10 (16)
+		protected float m_RestitutionModifier = new float();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(459278038)]
+		public float RestitutionModifier { get { return m_RestitutionModifier; } set { if (OnPropertyChanging("MaterialPropertyPhysicsData." + nameof(RestitutionModifier), this, m_RestitutionModifier, value)) m_RestitutionModifier = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
-		public float Resistance { get; set; } // 0x14 (20)
+		protected float m_Resistance = new float();
+		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(61696806)]
+		public float Resistance { get { return m_Resistance; } set { if (OnPropertyChanging("MaterialPropertyPhysicsData." + nameof(Resistance), this, m_Resistance, value)) m_Resistance = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

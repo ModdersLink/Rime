@@ -5,22 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class OcclusionSettings : 
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable, Blittable]
-		public bool Enable { get; set; } // 0x8 (8)
+		protected bool m_Enable = new bool();
+		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(2342790116)]
+		public bool Enable { get { return m_Enable; } set { if (OnPropertyChanging("OcclusionSettings." + nameof(Enable), this, m_Enable, value)) m_Enable = value; } } // 0x8 (8)
 		
-		[ContainerField(9), LayoutImmutable, Blittable]
-		public bool DrawZbuffer { get; set; } // 0x9 (9)
+		protected bool m_DrawZbuffer = new bool();
+		[ContainerField(9), LayoutImmutable, Blittable, ContainerFieldNameHash(449305695)]
+		public bool DrawZbuffer { get { return m_DrawZbuffer; } set { if (OnPropertyChanging("OcclusionSettings." + nameof(DrawZbuffer), this, m_DrawZbuffer, value)) m_DrawZbuffer = value; } } // 0x9 (9)
 		
-		[ContainerField(10), LayoutImmutable, Blittable]
-		public bool DrawBinaryBuffer { get; set; } // 0xA (10)
+		protected bool m_DrawBinaryBuffer = new bool();
+		[ContainerField(10), LayoutImmutable, Blittable, ContainerFieldNameHash(728628138)]
+		public bool DrawBinaryBuffer { get { return m_DrawBinaryBuffer; } set { if (OnPropertyChanging("OcclusionSettings." + nameof(DrawBinaryBuffer), this, m_DrawBinaryBuffer, value)) m_DrawBinaryBuffer = value; } } // 0xA (10)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

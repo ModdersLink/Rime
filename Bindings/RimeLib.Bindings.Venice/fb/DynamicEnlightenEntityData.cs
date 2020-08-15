@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class DynamicEnlightenEntityData : 
 		EnlightenEntityData
 	{
-		[ContainerField(24)]
-		public CtrRef<EnlightenDataAsset> EnlightenData { get; set; } = new CtrRef<EnlightenDataAsset>(); // 0x18 (24)
+		protected CtrRef<EnlightenDataAsset> m_EnlightenData = new CtrRef<EnlightenDataAsset>();
+		[ContainerField(24), ContainerFieldNameHash(1802220171)]
+		public CtrRef<EnlightenDataAsset> EnlightenData { get { return m_EnlightenData; } set { if (OnPropertyChanging("DynamicEnlightenEntityData." + nameof(EnlightenData), this, m_EnlightenData, value)) m_EnlightenData = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

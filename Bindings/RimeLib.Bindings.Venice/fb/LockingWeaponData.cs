@@ -5,35 +5,50 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class LockingWeaponData : 
 		WeaponData
 	{
-		[ContainerField(16)]
-		public CtrRef<LockingControllerData> LockingController { get; set; } = new CtrRef<LockingControllerData>(); // 0x10 (16)
+		protected CtrRef<LockingControllerData> m_LockingController = new CtrRef<LockingControllerData>();
+		[ContainerField(16), ContainerFieldNameHash(1783566994)]
+		public CtrRef<LockingControllerData> LockingController { get { return m_LockingController; } set { if (OnPropertyChanging("LockingWeaponData." + nameof(LockingController), this, m_LockingController, value)) m_LockingController = value; } } // 0x10 (16)
 		
-		[ContainerField(20)]
-		public CtrRef<LockingControllerData> SecondaryLockingController { get; set; } = new CtrRef<LockingControllerData>(); // 0x14 (20)
+		protected CtrRef<LockingControllerData> m_SecondaryLockingController = new CtrRef<LockingControllerData>();
+		[ContainerField(20), ContainerFieldNameHash(212156840)]
+		public CtrRef<LockingControllerData> SecondaryLockingController { get { return m_SecondaryLockingController; } set { if (OnPropertyChanging("LockingWeaponData." + nameof(SecondaryLockingController), this, m_SecondaryLockingController, value)) m_SecondaryLockingController = value; } } // 0x14 (20)
 		
-		[ContainerField(24)]
-		public WarnTarget WarnLock { get; set; } = new WarnTarget(); // 0x18 (24)
+		protected WarnTarget m_WarnLock = new WarnTarget();
+		[ContainerField(24), ContainerFieldNameHash(2457242500)]
+		public WarnTarget WarnLock { get { return m_WarnLock; } set { if (OnPropertyChanging("LockingWeaponData." + nameof(WarnLock), this, m_WarnLock, value)) m_WarnLock = value; } } // 0x18 (24)
 		
-		[ContainerField(28), LayoutImmutable, Blittable]
-		public bool IsHoming { get; set; } // 0x1C (28)
+		protected bool m_IsHoming = new bool();
+		[ContainerField(28), LayoutImmutable, Blittable, ContainerFieldNameHash(962805909)]
+		public bool IsHoming { get { return m_IsHoming; } set { if (OnPropertyChanging("LockingWeaponData." + nameof(IsHoming), this, m_IsHoming, value)) m_IsHoming = value; } } // 0x1C (28)
 		
-		[ContainerField(29), LayoutImmutable, Blittable]
-		public bool IsGuidedWhenZoomed { get; set; } // 0x1D (29)
+		protected bool m_IsGuidedWhenZoomed = new bool();
+		[ContainerField(29), LayoutImmutable, Blittable, ContainerFieldNameHash(951364163)]
+		public bool IsGuidedWhenZoomed { get { return m_IsGuidedWhenZoomed; } set { if (OnPropertyChanging("LockingWeaponData." + nameof(IsGuidedWhenZoomed), this, m_IsGuidedWhenZoomed, value)) m_IsGuidedWhenZoomed = value; } } // 0x1D (29)
 		
-		[ContainerField(30), LayoutImmutable, Blittable]
-		public bool FireOnlyWhenLockedOn { get; set; } // 0x1E (30)
+		protected bool m_FireOnlyWhenLockedOn = new bool();
+		[ContainerField(30), LayoutImmutable, Blittable, ContainerFieldNameHash(708469046)]
+		public bool FireOnlyWhenLockedOn { get { return m_FireOnlyWhenLockedOn; } set { if (OnPropertyChanging("LockingWeaponData." + nameof(FireOnlyWhenLockedOn), this, m_FireOnlyWhenLockedOn, value)) m_FireOnlyWhenLockedOn = value; } } // 0x1E (30)
 		
-		[ContainerField(31), LayoutImmutable, Blittable]
-		public bool IsGuided { get; set; } // 0x1F (31)
+		protected bool m_IsGuided = new bool();
+		[ContainerField(31), LayoutImmutable, Blittable, ContainerFieldNameHash(911651905)]
+		public bool IsGuided { get { return m_IsGuided; } set { if (OnPropertyChanging("LockingWeaponData." + nameof(IsGuided), this, m_IsGuided, value)) m_IsGuided = value; } } // 0x1F (31)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

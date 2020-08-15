@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class PersistentAwardDataStatRef : 
 		AbstractPersistentStatRef
 	{
-		[ContainerField(8)]
-		public CtrRef<AwardData> Definition { get; set; } = new CtrRef<AwardData>(); // 0x8 (8)
+		protected CtrRef<AwardData> m_Definition = new CtrRef<AwardData>();
+		[ContainerField(8), ContainerFieldNameHash(2980331600)]
+		public CtrRef<AwardData> Definition { get { return m_Definition; } set { if (OnPropertyChanging("PersistentAwardDataStatRef." + nameof(Definition), this, m_Definition, value)) m_Definition = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

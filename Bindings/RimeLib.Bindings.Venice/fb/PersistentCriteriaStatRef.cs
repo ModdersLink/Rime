@@ -5,25 +5,38 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class PersistentCriteriaStatRef : 
 		AbstractPersistentStatRef
 	{
-		[ContainerField(8)]
-		public CtrRef<CriteriaData> Criteria { get; set; } = new CtrRef<CriteriaData>(); // 0x8 (8)
+		protected CtrRef<CriteriaData> m_Criteria = new CtrRef<CriteriaData>();
+		[ContainerField(8), ContainerFieldNameHash(335452726)]
+		public CtrRef<CriteriaData> Criteria { get { return m_Criteria; } set { if (OnPropertyChanging("PersistentCriteriaStatRef." + nameof(Criteria), this, m_Criteria, value)) m_Criteria = value; } } // 0x8 (8)
 		
-		[ContainerField(12)]
-		public CtrRef<StatsCategoryBaseData> ParamX { get; set; } = new CtrRef<StatsCategoryBaseData>(); // 0xC (12)
+		protected CtrRef<StatsCategoryBaseData> m_ParamX = new CtrRef<StatsCategoryBaseData>();
+		[ContainerField(12), ContainerFieldNameHash(3371566706)]
+		public CtrRef<StatsCategoryBaseData> ParamX { get { return m_ParamX; } set { if (OnPropertyChanging("PersistentCriteriaStatRef." + nameof(ParamX), this, m_ParamX, value)) m_ParamX = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public CtrRef<StatsCategoryBaseData> ParamY { get; set; } = new CtrRef<StatsCategoryBaseData>(); // 0x10 (16)
+		protected CtrRef<StatsCategoryBaseData> m_ParamY = new CtrRef<StatsCategoryBaseData>();
+		[ContainerField(16), ContainerFieldNameHash(3371566707)]
+		public CtrRef<StatsCategoryBaseData> ParamY { get { return m_ParamY; } set { if (OnPropertyChanging("PersistentCriteriaStatRef." + nameof(ParamY), this, m_ParamY, value)) m_ParamY = value; } } // 0x10 (16)
 		
-		[ContainerField(20)]
-		public CtrRef<AwardData> CriteriaOwner { get; set; } = new CtrRef<AwardData>(); // 0x14 (20)
+		protected CtrRef<AwardData> m_CriteriaOwner = new CtrRef<AwardData>();
+		[ContainerField(20), ContainerFieldNameHash(4139530871)]
+		public CtrRef<AwardData> CriteriaOwner { get { return m_CriteriaOwner; } set { if (OnPropertyChanging("PersistentCriteriaStatRef." + nameof(CriteriaOwner), this, m_CriteriaOwner, value)) m_CriteriaOwner = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

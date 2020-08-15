@@ -5,25 +5,38 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class PhysicsEntry : 
 		AudioGraphNodePortGroup
 	{
-		[ContainerField(8)]
-		public AudioGraphNodePort Distance { get; set; } = new AudioGraphNodePort(); // 0x8 (8)
+		protected AudioGraphNodePort m_Distance = new AudioGraphNodePort();
+		[ContainerField(8), ContainerFieldNameHash(408560070)]
+		public AudioGraphNodePort Distance { get { return m_Distance; } set { if (OnPropertyChanging("PhysicsEntry." + nameof(Distance), this, m_Distance, value)) m_Distance = value; } } // 0x8 (8)
 		
-		[ContainerField(16)]
-		public AudioGraphNodePort Azimuth { get; set; } = new AudioGraphNodePort(); // 0x10 (16)
+		protected AudioGraphNodePort m_Azimuth = new AudioGraphNodePort();
+		[ContainerField(16), ContainerFieldNameHash(1333813715)]
+		public AudioGraphNodePort Azimuth { get { return m_Azimuth; } set { if (OnPropertyChanging("PhysicsEntry." + nameof(Azimuth), this, m_Azimuth, value)) m_Azimuth = value; } } // 0x10 (16)
 		
-		[ContainerField(24)]
-		public AudioGraphNodePort ElevationAngle { get; set; } = new AudioGraphNodePort(); // 0x18 (24)
+		protected AudioGraphNodePort m_ElevationAngle = new AudioGraphNodePort();
+		[ContainerField(24), ContainerFieldNameHash(891204419)]
+		public AudioGraphNodePort ElevationAngle { get { return m_ElevationAngle; } set { if (OnPropertyChanging("PhysicsEntry." + nameof(ElevationAngle), this, m_ElevationAngle, value)) m_ElevationAngle = value; } } // 0x18 (24)
 		
-		[ContainerField(32)]
-		public CtrRef<OutputNodeData> Output { get; set; } = new CtrRef<OutputNodeData>(); // 0x20 (32)
+		protected CtrRef<OutputNodeData> m_Output = new CtrRef<OutputNodeData>();
+		[ContainerField(32), ContainerFieldNameHash(2895736442)]
+		public CtrRef<OutputNodeData> Output { get { return m_Output; } set { if (OnPropertyChanging("PhysicsEntry." + nameof(Output), this, m_Output, value)) m_Output = value; } } // 0x20 (32)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

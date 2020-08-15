@@ -5,17 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class IntRecordingData : 
 		PropertyRecordingData
 	{
-		[ContainerField(12)]
-		public List<int> Values { get; set; } = new List<int>(); // 0xC (12)
+		protected List<int> m_Values = new List<int>();
+		[ContainerField(12), ContainerFieldNameHash(3142410589)]
+		public List<int> Values { get { return m_Values; } set { if (OnPropertyChanging("IntRecordingData." + nameof(Values), this, m_Values, value)) m_Values = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

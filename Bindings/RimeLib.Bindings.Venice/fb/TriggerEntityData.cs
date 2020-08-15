@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class TriggerEntityData : 
 		GameEntityData
 	{
-		[ContainerField(96), LayoutImmutable, Blittable]
-		public float Delay { get; set; } // 0x60 (96)
+		protected float m_Delay = new float();
+		[ContainerField(96), LayoutImmutable, Blittable, ContainerFieldNameHash(208768368)]
+		public float Delay { get { return m_Delay; } set { if (OnPropertyChanging("TriggerEntityData." + nameof(Delay), this, m_Delay, value)) m_Delay = value; } } // 0x60 (96)
 		
-		[ContainerField(100), LayoutImmutable, Blittable]
-		public bool RunOnce { get; set; } // 0x64 (100)
+		protected bool m_RunOnce = new bool();
+		[ContainerField(100), LayoutImmutable, Blittable, ContainerFieldNameHash(709901739)]
+		public bool RunOnce { get { return m_RunOnce; } set { if (OnPropertyChanging("TriggerEntityData." + nameof(RunOnce), this, m_RunOnce, value)) m_RunOnce = value; } } // 0x64 (100)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

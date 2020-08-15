@@ -5,67 +5,94 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class AlternateCameraViewData : 
 		DataContainer
 	{
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 MeshOffset { get; set; } = new Vec3(); // 0x10 (16)
+		protected Vec3 m_MeshOffset = new Vec3();
+		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(775818267)]
+		public Vec3 MeshOffset { get { return m_MeshOffset; } set { if (OnPropertyChanging("AlternateCameraViewData." + nameof(MeshOffset), this, m_MeshOffset, value)) m_MeshOffset = value; } } // 0x10 (16)
 		
-		[ContainerField(32)]
-		public HudData Hud { get; set; } = new HudData(); // 0x20 (32)
+		protected HudData m_Hud = new HudData();
+		[ContainerField(32), ContainerFieldNameHash(193458844)]
+		public HudData Hud { get { return m_Hud; } set { if (OnPropertyChanging("AlternateCameraViewData." + nameof(Hud), this, m_Hud, value)) m_Hud = value; } } // 0x20 (32)
 		
-		[ContainerField(100), LayoutImmutable, Blittable]
-		public float FieldOfView { get; set; } // 0x64 (100)
+		protected float m_FieldOfView = new float();
+		[ContainerField(100), LayoutImmutable, Blittable, ContainerFieldNameHash(2227716035)]
+		public float FieldOfView { get { return m_FieldOfView; } set { if (OnPropertyChanging("AlternateCameraViewData." + nameof(FieldOfView), this, m_FieldOfView, value)) m_FieldOfView = value; } } // 0x64 (100)
 		
-		[ContainerField(104), LayoutImmutable, Blittable]
-		public float WorldSpaceLockEfficiency { get; set; } // 0x68 (104)
+		protected float m_WorldSpaceLockEfficiency = new float();
+		[ContainerField(104), LayoutImmutable, Blittable, ContainerFieldNameHash(4063999679)]
+		public float WorldSpaceLockEfficiency { get { return m_WorldSpaceLockEfficiency; } set { if (OnPropertyChanging("AlternateCameraViewData." + nameof(WorldSpaceLockEfficiency), this, m_WorldSpaceLockEfficiency, value)) m_WorldSpaceLockEfficiency = value; } } // 0x68 (104)
 		
-		[ContainerField(108)]
-		public CtrRef<RigidMeshAsset> Mesh { get; set; } = new CtrRef<RigidMeshAsset>(); // 0x6C (108)
+		protected CtrRef<RigidMeshAsset> m_Mesh = new CtrRef<RigidMeshAsset>();
+		[ContainerField(108), ContainerFieldNameHash(2088783990)]
+		public CtrRef<RigidMeshAsset> Mesh { get { return m_Mesh; } set { if (OnPropertyChanging("AlternateCameraViewData." + nameof(Mesh), this, m_Mesh, value)) m_Mesh = value; } } // 0x6C (108)
 		
-		[ContainerField(112)]
-		public CtrRef<ObjectBlueprint> MaskMeshBlueprint { get; set; } = new CtrRef<ObjectBlueprint>(); // 0x70 (112)
+		protected CtrRef<ObjectBlueprint> m_MaskMeshBlueprint = new CtrRef<ObjectBlueprint>();
+		[ContainerField(112), ContainerFieldNameHash(775268525)]
+		public CtrRef<ObjectBlueprint> MaskMeshBlueprint { get { return m_MaskMeshBlueprint; } set { if (OnPropertyChanging("AlternateCameraViewData." + nameof(MaskMeshBlueprint), this, m_MaskMeshBlueprint, value)) m_MaskMeshBlueprint = value; } } // 0x70 (112)
 		
-		[ContainerField(116), LayoutImmutable, Blittable]
-		public float FadeInDuration { get; set; } // 0x74 (116)
+		protected float m_FadeInDuration = new float();
+		[ContainerField(116), LayoutImmutable, Blittable, ContainerFieldNameHash(2433887354)]
+		public float FadeInDuration { get { return m_FadeInDuration; } set { if (OnPropertyChanging("AlternateCameraViewData." + nameof(FadeInDuration), this, m_FadeInDuration, value)) m_FadeInDuration = value; } } // 0x74 (116)
 		
-		[ContainerField(120), LayoutImmutable, Blittable]
-		public float FovTransitionTime { get; set; } // 0x78 (120)
+		protected float m_FovTransitionTime = new float();
+		[ContainerField(120), LayoutImmutable, Blittable, ContainerFieldNameHash(1751899392)]
+		public float FovTransitionTime { get { return m_FovTransitionTime; } set { if (OnPropertyChanging("AlternateCameraViewData." + nameof(FovTransitionTime), this, m_FovTransitionTime, value)) m_FovTransitionTime = value; } } // 0x78 (120)
 		
-		[ContainerField(124), LayoutImmutable, Blittable]
-		public float BlackDuration { get; set; } // 0x7C (124)
+		protected float m_BlackDuration = new float();
+		[ContainerField(124), LayoutImmutable, Blittable, ContainerFieldNameHash(1274814300)]
+		public float BlackDuration { get { return m_BlackDuration; } set { if (OnPropertyChanging("AlternateCameraViewData." + nameof(BlackDuration), this, m_BlackDuration, value)) m_BlackDuration = value; } } // 0x7C (124)
 		
-		[ContainerField(128)]
-		public InputSuppressionData InputSuppression { get; set; } = new InputSuppressionData(); // 0x80 (128)
+		protected InputSuppressionData m_InputSuppression = new InputSuppressionData();
+		[ContainerField(128), ContainerFieldNameHash(2197295466)]
+		public InputSuppressionData InputSuppression { get { return m_InputSuppression; } set { if (OnPropertyChanging("AlternateCameraViewData." + nameof(InputSuppression), this, m_InputSuppression, value)) m_InputSuppression = value; } } // 0x80 (128)
 		
-		[ContainerField(132), LayoutImmutable, Blittable]
-		public float ScreenExposureAreaScale { get; set; } // 0x84 (132)
+		protected float m_ScreenExposureAreaScale = new float();
+		[ContainerField(132), LayoutImmutable, Blittable, ContainerFieldNameHash(2151479797)]
+		public float ScreenExposureAreaScale { get { return m_ScreenExposureAreaScale; } set { if (OnPropertyChanging("AlternateCameraViewData." + nameof(ScreenExposureAreaScale), this, m_ScreenExposureAreaScale, value)) m_ScreenExposureAreaScale = value; } } // 0x84 (132)
 		
-		[ContainerField(136), LayoutImmutable, Blittable]
-		public float FadeOutDuration { get; set; } // 0x88 (136)
+		protected float m_FadeOutDuration = new float();
+		[ContainerField(136), LayoutImmutable, Blittable, ContainerFieldNameHash(556400947)]
+		public float FadeOutDuration { get { return m_FadeOutDuration; } set { if (OnPropertyChanging("AlternateCameraViewData." + nameof(FadeOutDuration), this, m_FadeOutDuration, value)) m_FadeOutDuration = value; } } // 0x88 (136)
 		
-		[ContainerField(140), LayoutImmutable, Blittable]
-		public bool AllowFieldOfViewScaling { get; set; } // 0x8C (140)
+		protected bool m_AllowFieldOfViewScaling = new bool();
+		[ContainerField(140), LayoutImmutable, Blittable, ContainerFieldNameHash(899159559)]
+		public bool AllowFieldOfViewScaling { get { return m_AllowFieldOfViewScaling; } set { if (OnPropertyChanging("AlternateCameraViewData." + nameof(AllowFieldOfViewScaling), this, m_AllowFieldOfViewScaling, value)) m_AllowFieldOfViewScaling = value; } } // 0x8C (140)
 		
-		[ContainerField(141), LayoutImmutable, Blittable]
-		public bool LockMeshToRenderView { get; set; } // 0x8D (141)
+		protected bool m_LockMeshToRenderView = new bool();
+		[ContainerField(141), LayoutImmutable, Blittable, ContainerFieldNameHash(3810317313)]
+		public bool LockMeshToRenderView { get { return m_LockMeshToRenderView; } set { if (OnPropertyChanging("AlternateCameraViewData." + nameof(LockMeshToRenderView), this, m_LockMeshToRenderView, value)) m_LockMeshToRenderView = value; } } // 0x8D (141)
 		
-		[ContainerField(142), LayoutImmutable, Blittable]
-		public bool ToggleViewChange { get; set; } // 0x8E (142)
+		protected bool m_ToggleViewChange = new bool();
+		[ContainerField(142), LayoutImmutable, Blittable, ContainerFieldNameHash(4173306524)]
+		public bool ToggleViewChange { get { return m_ToggleViewChange; } set { if (OnPropertyChanging("AlternateCameraViewData." + nameof(ToggleViewChange), this, m_ToggleViewChange, value)) m_ToggleViewChange = value; } } // 0x8E (142)
 		
-		[ContainerField(143), LayoutImmutable, Blittable]
-		public bool UseProfileOptionForToggleViewChange { get; set; } // 0x8F (143)
+		protected bool m_UseProfileOptionForToggleViewChange = new bool();
+		[ContainerField(143), LayoutImmutable, Blittable, ContainerFieldNameHash(731278668)]
+		public bool UseProfileOptionForToggleViewChange { get { return m_UseProfileOptionForToggleViewChange; } set { if (OnPropertyChanging("AlternateCameraViewData." + nameof(UseProfileOptionForToggleViewChange), this, m_UseProfileOptionForToggleViewChange, value)) m_UseProfileOptionForToggleViewChange = value; } } // 0x8F (143)
 		
-		[ContainerField(144), LayoutImmutable, Blittable]
-		public bool FLIREnabled { get; set; } // 0x90 (144)
+		protected bool m_FLIREnabled = new bool();
+		[ContainerField(144), LayoutImmutable, Blittable, ContainerFieldNameHash(1594804433)]
+		public bool FLIREnabled { get { return m_FLIREnabled; } set { if (OnPropertyChanging("AlternateCameraViewData." + nameof(FLIREnabled), this, m_FLIREnabled, value)) m_FLIREnabled = value; } } // 0x90 (144)
 		
-		[ContainerField(145), LayoutImmutable, Blittable]
-		public bool FadeToBlack { get; set; } // 0x91 (145)
+		protected bool m_FadeToBlack = new bool();
+		[ContainerField(145), LayoutImmutable, Blittable, ContainerFieldNameHash(325525503)]
+		public bool FadeToBlack { get { return m_FadeToBlack; } set { if (OnPropertyChanging("AlternateCameraViewData." + nameof(FadeToBlack), this, m_FadeToBlack, value)) m_FadeToBlack = value; } } // 0x91 (145)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,41 +5,58 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class CombatAreaTriggerEntityData : 
 		GameEntityData
 	{
-		[ContainerField(96), LayoutImmutable, Blittable]
-		public float MaxRandomSpawnHeight { get; set; } // 0x60 (96)
+		protected float m_MaxRandomSpawnHeight = new float();
+		[ContainerField(96), LayoutImmutable, Blittable, ContainerFieldNameHash(2881356526)]
+		public float MaxRandomSpawnHeight { get { return m_MaxRandomSpawnHeight; } set { if (OnPropertyChanging("CombatAreaTriggerEntityData." + nameof(MaxRandomSpawnHeight), this, m_MaxRandomSpawnHeight, value)) m_MaxRandomSpawnHeight = value; } } // 0x60 (96)
 		
-		[ContainerField(100), LayoutImmutable, Blittable]
-		public float SpawnHeight { get; set; } // 0x64 (100)
+		protected float m_SpawnHeight = new float();
+		[ContainerField(100), LayoutImmutable, Blittable, ContainerFieldNameHash(2780846849)]
+		public float SpawnHeight { get { return m_SpawnHeight; } set { if (OnPropertyChanging("CombatAreaTriggerEntityData." + nameof(SpawnHeight), this, m_SpawnHeight, value)) m_SpawnHeight = value; } } // 0x64 (100)
 		
-		[ContainerField(104), LayoutImmutable, Blittable]
-		public uint TimeToReturn { get; set; } // 0x68 (104)
+		protected uint m_TimeToReturn = new uint();
+		[ContainerField(104), LayoutImmutable, Blittable, ContainerFieldNameHash(2769825281)]
+		public uint TimeToReturn { get { return m_TimeToReturn; } set { if (OnPropertyChanging("CombatAreaTriggerEntityData." + nameof(TimeToReturn), this, m_TimeToReturn, value)) m_TimeToReturn = value; } } // 0x68 (104)
 		
-		[ContainerField(108)]
-		public CtrRef<BulletEntityData> DeserterProjectile { get; set; } = new CtrRef<BulletEntityData>(); // 0x6C (108)
+		protected CtrRef<BulletEntityData> m_DeserterProjectile = new CtrRef<BulletEntityData>();
+		[ContainerField(108), ContainerFieldNameHash(1751079062)]
+		public CtrRef<BulletEntityData> DeserterProjectile { get { return m_DeserterProjectile; } set { if (OnPropertyChanging("CombatAreaTriggerEntityData." + nameof(DeserterProjectile), this, m_DeserterProjectile, value)) m_DeserterProjectile = value; } } // 0x6C (108)
 		
-		[ContainerField(112)]
-		public TeamId Team { get; set; } = new TeamId(); // 0x70 (112)
+		protected TeamId m_Team = new TeamId();
+		[ContainerField(112), ContainerFieldNameHash(2089309528)]
+		public TeamId Team { get { return m_Team; } set { if (OnPropertyChanging("CombatAreaTriggerEntityData." + nameof(Team), this, m_Team, value)) m_Team = value; } } // 0x70 (112)
 		
-		[ContainerField(116), LayoutImmutable, Blittable]
-		public float StrikeRadius { get; set; } // 0x74 (116)
+		protected float m_StrikeRadius = new float();
+		[ContainerField(116), LayoutImmutable, Blittable, ContainerFieldNameHash(4030357871)]
+		public float StrikeRadius { get { return m_StrikeRadius; } set { if (OnPropertyChanging("CombatAreaTriggerEntityData." + nameof(StrikeRadius), this, m_StrikeRadius, value)) m_StrikeRadius = value; } } // 0x74 (116)
 		
-		[ContainerField(120), LayoutImmutable, Blittable]
-		public float InitalSpeed { get; set; } // 0x78 (120)
+		protected float m_InitalSpeed = new float();
+		[ContainerField(120), LayoutImmutable, Blittable, ContainerFieldNameHash(3835059573)]
+		public float InitalSpeed { get { return m_InitalSpeed; } set { if (OnPropertyChanging("CombatAreaTriggerEntityData." + nameof(InitalSpeed), this, m_InitalSpeed, value)) m_InitalSpeed = value; } } // 0x78 (120)
 		
-		[ContainerField(124), LayoutImmutable, Blittable]
-		public bool IsAiAllowedOutside { get; set; } // 0x7C (124)
+		protected bool m_IsAiAllowedOutside = new bool();
+		[ContainerField(124), LayoutImmutable, Blittable, ContainerFieldNameHash(4144947226)]
+		public bool IsAiAllowedOutside { get { return m_IsAiAllowedOutside; } set { if (OnPropertyChanging("CombatAreaTriggerEntityData." + nameof(IsAiAllowedOutside), this, m_IsAiAllowedOutside, value)) m_IsAiAllowedOutside = value; } } // 0x7C (124)
 		
-		[ContainerField(125), LayoutImmutable, Blittable]
-		public bool IsTeamSpecific { get; set; } // 0x7D (125)
+		protected bool m_IsTeamSpecific = new bool();
+		[ContainerField(125), LayoutImmutable, Blittable, ContainerFieldNameHash(3554635554)]
+		public bool IsTeamSpecific { get { return m_IsTeamSpecific; } set { if (OnPropertyChanging("CombatAreaTriggerEntityData." + nameof(IsTeamSpecific), this, m_IsTeamSpecific, value)) m_IsTeamSpecific = value; } } // 0x7D (125)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

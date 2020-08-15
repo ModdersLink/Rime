@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class CameraEntityData : 
 		CameraEntityBaseData
 	{
-		[ContainerField(96), LayoutImmutable, Blittable]
-		public float Fov { get; set; } // 0x60 (96)
+		protected float m_Fov = new float();
+		[ContainerField(96), LayoutImmutable, Blittable, ContainerFieldNameHash(193443802)]
+		public float Fov { get { return m_Fov; } set { if (OnPropertyChanging("CameraEntityData." + nameof(Fov), this, m_Fov, value)) m_Fov = value; } } // 0x60 (96)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

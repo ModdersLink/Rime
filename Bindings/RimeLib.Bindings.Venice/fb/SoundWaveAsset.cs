@@ -5,51 +5,70 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class SoundWaveAsset : 
 		SoundDataAsset
 	{
-		[ContainerField(20)]
-		public RefArray<SoundWaveVariation> Variations { get; set; } = new RefArray<SoundWaveVariation>(); // 0x14 (20)
+		protected RefArray<SoundWaveVariation> m_Variations = new RefArray<SoundWaveVariation>();
+		[ContainerField(20), ContainerFieldNameHash(2728063271)]
+		public RefArray<SoundWaveVariation> Variations { get { return m_Variations; } set { if (OnPropertyChanging("SoundWaveAsset." + nameof(Variations), this, m_Variations, value)) m_Variations = value; } } // 0x14 (20)
 		
-		[ContainerField(24)]
-		public List<SoundWaveLocalizationInfo> Localization { get; set; } = new List<SoundWaveLocalizationInfo>(); // 0x18 (24)
+		protected List<SoundWaveLocalizationInfo> m_Localization = new List<SoundWaveLocalizationInfo>();
+		[ContainerField(24), ContainerFieldNameHash(13208870)]
+		public List<SoundWaveLocalizationInfo> Localization { get { return m_Localization; } set { if (OnPropertyChanging("SoundWaveAsset." + nameof(Localization), this, m_Localization, value)) m_Localization = value; } } // 0x18 (24)
 		
-		[ContainerField(28)]
-		public List<string> SubtitleStringIds { get; set; } = new List<string>(); // 0x1C (28)
+		protected List<string> m_SubtitleStringIds = new List<string>();
+		[ContainerField(28), ContainerFieldNameHash(2609603178)]
+		public List<string> SubtitleStringIds { get { return m_SubtitleStringIds; } set { if (OnPropertyChanging("SoundWaveAsset." + nameof(SubtitleStringIds), this, m_SubtitleStringIds, value)) m_SubtitleStringIds = value; } } // 0x1C (28)
 		
-		[ContainerField(32)]
-		public SoundWaveVariationSelection Selection { get; set; } = new SoundWaveVariationSelection(); // 0x20 (32)
+		protected SoundWaveVariationSelection m_Selection = new SoundWaveVariationSelection();
+		[ContainerField(32), ContainerFieldNameHash(299217285)]
+		public SoundWaveVariationSelection Selection { get { return m_Selection; } set { if (OnPropertyChanging("SoundWaveAsset." + nameof(Selection), this, m_Selection, value)) m_Selection = value; } } // 0x20 (32)
 		
-		[ContainerField(36)]
-		public CtrRef<StreamPoolAsset> StreamPool { get; set; } = new CtrRef<StreamPoolAsset>(); // 0x24 (36)
+		protected CtrRef<StreamPoolAsset> m_StreamPool = new CtrRef<StreamPoolAsset>();
+		[ContainerField(36), ContainerFieldNameHash(1617753829)]
+		public CtrRef<StreamPoolAsset> StreamPool { get { return m_StreamPool; } set { if (OnPropertyChanging("SoundWaveAsset." + nameof(StreamPool), this, m_StreamPool, value)) m_StreamPool = value; } } // 0x24 (36)
 		
-		[ContainerField(40), LayoutImmutable, Blittable]
-		public bool Seekable { get; set; } // 0x28 (40)
+		protected bool m_Seekable = new bool();
+		[ContainerField(40), LayoutImmutable, Blittable, ContainerFieldNameHash(1308586775)]
+		public bool Seekable { get { return m_Seekable; } set { if (OnPropertyChanging("SoundWaveAsset." + nameof(Seekable), this, m_Seekable, value)) m_Seekable = value; } } // 0x28 (40)
 		
-		[ContainerField(41), LayoutImmutable, Blittable]
-		public bool PreferAvailableVariations { get; set; } // 0x29 (41)
+		protected bool m_PreferAvailableVariations = new bool();
+		[ContainerField(41), LayoutImmutable, Blittable, ContainerFieldNameHash(4104064296)]
+		public bool PreferAvailableVariations { get { return m_PreferAvailableVariations; } set { if (OnPropertyChanging("SoundWaveAsset." + nameof(PreferAvailableVariations), this, m_PreferAvailableVariations, value)) m_PreferAvailableVariations = value; } } // 0x29 (41)
 		
-		[ContainerField(42), LayoutImmutable, Blittable]
-		public sbyte PersistentVariationCount { get; set; } // 0x2A (42)
+		protected sbyte m_PersistentVariationCount = new sbyte();
+		[ContainerField(42), LayoutImmutable, Blittable, ContainerFieldNameHash(1921308722)]
+		public sbyte PersistentVariationCount { get { return m_PersistentVariationCount; } set { if (OnPropertyChanging("SoundWaveAsset." + nameof(PersistentVariationCount), this, m_PersistentVariationCount, value)) m_PersistentVariationCount = value; } } // 0x2A (42)
 		
-		[ContainerField(43), LayoutImmutable, Blittable]
-		public sbyte ChannelCount { get; set; } // 0x2B (43)
+		protected sbyte m_ChannelCount = new sbyte();
+		[ContainerField(43), LayoutImmutable, Blittable, ContainerFieldNameHash(1014205285)]
+		public sbyte ChannelCount { get { return m_ChannelCount; } set { if (OnPropertyChanging("SoundWaveAsset." + nameof(ChannelCount), this, m_ChannelCount, value)) m_ChannelCount = value; } } // 0x2B (43)
 		
-		[ContainerField(44), LayoutImmutable, Blittable]
-		public sbyte VoicePriority { get; set; } // 0x2C (44)
+		protected sbyte m_VoicePriority = new sbyte();
+		[ContainerField(44), LayoutImmutable, Blittable, ContainerFieldNameHash(662714529)]
+		public sbyte VoicePriority { get { return m_VoicePriority; } set { if (OnPropertyChanging("SoundWaveAsset." + nameof(VoicePriority), this, m_VoicePriority, value)) m_VoicePriority = value; } } // 0x2C (44)
 		
-		[ContainerField(45), LayoutImmutable, Blittable]
-		public sbyte PrimePriority { get; set; } // 0x2D (45)
+		protected sbyte m_PrimePriority = new sbyte();
+		[ContainerField(45), LayoutImmutable, Blittable, ContainerFieldNameHash(3821472468)]
+		public sbyte PrimePriority { get { return m_PrimePriority; } set { if (OnPropertyChanging("SoundWaveAsset." + nameof(PrimePriority), this, m_PrimePriority, value)) m_PrimePriority = value; } } // 0x2D (45)
 		
-		[ContainerField(46), LayoutImmutable, Blittable]
-		public sbyte RequestPriority { get; set; } // 0x2E (46)
+		protected sbyte m_RequestPriority = new sbyte();
+		[ContainerField(46), LayoutImmutable, Blittable, ContainerFieldNameHash(3706845382)]
+		public sbyte RequestPriority { get { return m_RequestPriority; } set { if (OnPropertyChanging("SoundWaveAsset." + nameof(RequestPriority), this, m_RequestPriority, value)) m_RequestPriority = value; } } // 0x2E (46)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

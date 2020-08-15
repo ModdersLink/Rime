@@ -5,26 +5,38 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class AnimationTurretRotationComponentData : 
 		ComponentData
 	{
-		[ContainerField(96)]
-		public List<TurretRotationInfo> Rotations { get; set; } = new List<TurretRotationInfo>(); // 0x60 (96)
+		protected List<TurretRotationInfo> m_Rotations = new List<TurretRotationInfo>();
+		[ContainerField(96), ContainerFieldNameHash(1606233474)]
+		public List<TurretRotationInfo> Rotations { get { return m_Rotations; } set { if (OnPropertyChanging("AnimationTurretRotationComponentData." + nameof(Rotations), this, m_Rotations, value)) m_Rotations = value; } } // 0x60 (96)
 		
-		[ContainerField(100), LayoutImmutable, Blittable]
-		public int SoldierBaseIndex { get; set; } // 0x64 (100)
+		protected int m_SoldierBaseIndex = new int();
+		[ContainerField(100), LayoutImmutable, Blittable, ContainerFieldNameHash(3732427844)]
+		public int SoldierBaseIndex { get { return m_SoldierBaseIndex; } set { if (OnPropertyChanging("AnimationTurretRotationComponentData." + nameof(SoldierBaseIndex), this, m_SoldierBaseIndex, value)) m_SoldierBaseIndex = value; } } // 0x64 (100)
 		
-		[ContainerField(104), LayoutImmutable, Blittable]
-		public bool UseVehicleWorldTransform { get; set; } // 0x68 (104)
+		protected bool m_UseVehicleWorldTransform = new bool();
+		[ContainerField(104), LayoutImmutable, Blittable, ContainerFieldNameHash(4119091248)]
+		public bool UseVehicleWorldTransform { get { return m_UseVehicleWorldTransform; } set { if (OnPropertyChanging("AnimationTurretRotationComponentData." + nameof(UseVehicleWorldTransform), this, m_UseVehicleWorldTransform, value)) m_UseVehicleWorldTransform = value; } } // 0x68 (104)
 		
-		[ContainerField(105), LayoutImmutable, Blittable]
-		public bool OutputWorldTransform { get; set; } // 0x69 (105)
+		protected bool m_OutputWorldTransform = new bool();
+		[ContainerField(105), LayoutImmutable, Blittable, ContainerFieldNameHash(1849681172)]
+		public bool OutputWorldTransform { get { return m_OutputWorldTransform; } set { if (OnPropertyChanging("AnimationTurretRotationComponentData." + nameof(OutputWorldTransform), this, m_OutputWorldTransform, value)) m_OutputWorldTransform = value; } } // 0x69 (105)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

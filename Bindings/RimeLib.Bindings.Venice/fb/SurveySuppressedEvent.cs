@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(8)]
+	[ContainerType(8)]
 	public class SurveySuppressedEvent : 
 		MetricEvent
 	{
-		[ContainerField(16), LayoutImmutable]
-		public string SuppressReason { get; set; } // 0x10 (16)
+		protected string m_SuppressReason = new string();
+		[ContainerField(16), LayoutImmutable, ContainerFieldNameHash(422620368)]
+		public string SuppressReason { get { return m_SuppressReason; } set { if (OnPropertyChanging("SurveySuppressedEvent." + nameof(SuppressReason), this, m_SuppressReason, value)) m_SuppressReason = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

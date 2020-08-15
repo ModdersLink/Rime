@@ -5,29 +5,42 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class PolynomialOperatorData : 
 		EvaluatorData
 	{
-		[ContainerField(16)]
-		public PolynomialTempData FirstOperand { get; set; } = new PolynomialTempData(); // 0x10 (16)
+		protected PolynomialTempData m_FirstOperand = new PolynomialTempData();
+		[ContainerField(16), ContainerFieldNameHash(3787784796)]
+		public PolynomialTempData FirstOperand { get { return m_FirstOperand; } set { if (OnPropertyChanging("PolynomialOperatorData." + nameof(FirstOperand), this, m_FirstOperand, value)) m_FirstOperand = value; } } // 0x10 (16)
 		
-		[ContainerField(48)]
-		public PolynomialTempData SecondOperand { get; set; } = new PolynomialTempData(); // 0x30 (48)
+		protected PolynomialTempData m_SecondOperand = new PolynomialTempData();
+		[ContainerField(48), ContainerFieldNameHash(46362454)]
+		public PolynomialTempData SecondOperand { get { return m_SecondOperand; } set { if (OnPropertyChanging("PolynomialOperatorData." + nameof(SecondOperand), this, m_SecondOperand, value)) m_SecondOperand = value; } } // 0x30 (48)
 		
-		[ContainerField(80)]
-		public PolynomialOperation Operation { get; set; } = new PolynomialOperation(); // 0x50 (80)
+		protected PolynomialOperation m_Operation = new PolynomialOperation();
+		[ContainerField(80), ContainerFieldNameHash(2346271248)]
+		public PolynomialOperation Operation { get { return m_Operation; } set { if (OnPropertyChanging("PolynomialOperatorData." + nameof(Operation), this, m_Operation, value)) m_Operation = value; } } // 0x50 (80)
 		
-		[ContainerField(84), LayoutImmutable, Blittable]
-		public float MinClampResult { get; set; } // 0x54 (84)
+		protected float m_MinClampResult = new float();
+		[ContainerField(84), LayoutImmutable, Blittable, ContainerFieldNameHash(3438772181)]
+		public float MinClampResult { get { return m_MinClampResult; } set { if (OnPropertyChanging("PolynomialOperatorData." + nameof(MinClampResult), this, m_MinClampResult, value)) m_MinClampResult = value; } } // 0x54 (84)
 		
-		[ContainerField(88), LayoutImmutable, Blittable]
-		public float MaxClampResult { get; set; } // 0x58 (88)
+		protected float m_MaxClampResult = new float();
+		[ContainerField(88), LayoutImmutable, Blittable, ContainerFieldNameHash(2626134155)]
+		public float MaxClampResult { get { return m_MaxClampResult; } set { if (OnPropertyChanging("PolynomialOperatorData." + nameof(MaxClampResult), this, m_MaxClampResult, value)) m_MaxClampResult = value; } } // 0x58 (88)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

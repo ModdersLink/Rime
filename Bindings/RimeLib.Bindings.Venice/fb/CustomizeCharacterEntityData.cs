@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class CustomizeCharacterEntityData : 
 		CustomizeBaseEntityData
 	{
-		[ContainerField(16)]
-		public CtrRef<CustomizeCharacterData> CustomizeCharacterData { get; set; } = new CtrRef<CustomizeCharacterData>(); // 0x10 (16)
+		protected CtrRef<CustomizeCharacterData> m_CustomizeCharacterData = new CtrRef<CustomizeCharacterData>();
+		[ContainerField(16), ContainerFieldNameHash(3784213897)]
+		public CtrRef<CustomizeCharacterData> CustomizeCharacterData { get { return m_CustomizeCharacterData; } set { if (OnPropertyChanging("CustomizeCharacterEntityData." + nameof(CustomizeCharacterData), this, m_CustomizeCharacterData, value)) m_CustomizeCharacterData = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

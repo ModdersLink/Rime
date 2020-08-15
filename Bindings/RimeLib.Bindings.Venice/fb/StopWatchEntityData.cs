@@ -5,26 +5,38 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class StopWatchEntityData : 
 		EntityData
 	{
-		[ContainerField(12)]
-		public Realm Realm { get; set; } = new Realm(); // 0xC (12)
+		protected Realm m_Realm = new Realm();
+		[ContainerField(12), ContainerFieldNameHash(229961746)]
+		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("StopWatchEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public UpdatePass UpdatePass { get; set; } = new UpdatePass(); // 0x10 (16)
+		protected UpdatePass m_UpdatePass = new UpdatePass();
+		[ContainerField(16), ContainerFieldNameHash(2270785669)]
+		public UpdatePass UpdatePass { get { return m_UpdatePass; } set { if (OnPropertyChanging("StopWatchEntityData." + nameof(UpdatePass), this, m_UpdatePass, value)) m_UpdatePass = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
-		public float Multiplier { get; set; } // 0x14 (20)
+		protected float m_Multiplier = new float();
+		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(2037512782)]
+		public float Multiplier { get { return m_Multiplier; } set { if (OnPropertyChanging("StopWatchEntityData." + nameof(Multiplier), this, m_Multiplier, value)) m_Multiplier = value; } } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable]
-		public float TriggerOnTime { get; set; } // 0x18 (24)
+		protected float m_TriggerOnTime = new float();
+		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(2068878889)]
+		public float TriggerOnTime { get { return m_TriggerOnTime; } set { if (OnPropertyChanging("StopWatchEntityData." + nameof(TriggerOnTime), this, m_TriggerOnTime, value)) m_TriggerOnTime = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

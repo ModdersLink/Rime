@@ -5,25 +5,38 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class ReceiveEntry : 
 		AudioGraphNodePortGroup
 	{
-		[ContainerField(8)]
-		public AudioGraphNodePort Out { get; set; } = new AudioGraphNodePort(); // 0x8 (8)
+		protected AudioGraphNodePort m_Out = new AudioGraphNodePort();
+		[ContainerField(8), ContainerFieldNameHash(193453899)]
+		public AudioGraphNodePort Out { get { return m_Out; } set { if (OnPropertyChanging("ReceiveEntry." + nameof(Out), this, m_Out, value)) m_Out = value; } } // 0x8 (8)
 		
-		[ContainerField(16)]
-		public CtrRef<AudioGraphParameter> Source { get; set; } = new CtrRef<AudioGraphParameter>(); // 0x10 (16)
+		protected CtrRef<AudioGraphParameter> m_Source = new CtrRef<AudioGraphParameter>();
+		[ContainerField(16), ContainerFieldNameHash(3339738264)]
+		public CtrRef<AudioGraphParameter> Source { get { return m_Source; } set { if (OnPropertyChanging("ReceiveEntry." + nameof(Source), this, m_Source, value)) m_Source = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
-		public float Parameter { get; set; } // 0x14 (20)
+		protected float m_Parameter = new float();
+		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(2964084716)]
+		public float Parameter { get { return m_Parameter; } set { if (OnPropertyChanging("ReceiveEntry." + nameof(Parameter), this, m_Parameter, value)) m_Parameter = value; } } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable]
-		public float SavedValue { get; set; } // 0x18 (24)
+		protected float m_SavedValue = new float();
+		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(2552725931)]
+		public float SavedValue { get { return m_SavedValue; } set { if (OnPropertyChanging("ReceiveEntry." + nameof(SavedValue), this, m_SavedValue, value)) m_SavedValue = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

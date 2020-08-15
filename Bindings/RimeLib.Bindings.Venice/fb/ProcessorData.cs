@@ -5,29 +5,42 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class ProcessorData : 
 		EmitterComponentData
 	{
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable]
-		public Vec4 DefaultValues { get; set; } = new Vec4(); // 0x10 (16)
+		protected Vec4 m_DefaultValues = new Vec4();
+		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(3755111798)]
+		public Vec4 DefaultValues { get { return m_DefaultValues; } set { if (OnPropertyChanging("ProcessorData." + nameof(DefaultValues), this, m_DefaultValues, value)) m_DefaultValues = value; } } // 0x10 (16)
 		
-		[ContainerField(32)]
-		public CtrRef<ProcessorData> NextProcessor { get; set; } = new CtrRef<ProcessorData>(); // 0x20 (32)
+		protected CtrRef<ProcessorData> m_NextProcessor = new CtrRef<ProcessorData>();
+		[ContainerField(32), ContainerFieldNameHash(4017683988)]
+		public CtrRef<ProcessorData> NextProcessor { get { return m_NextProcessor; } set { if (OnPropertyChanging("ProcessorData." + nameof(NextProcessor), this, m_NextProcessor, value)) m_NextProcessor = value; } } // 0x20 (32)
 		
-		[ContainerField(36)]
-		public CtrRef<EmitterComponentData> Pre { get; set; } = new CtrRef<EmitterComponentData>(); // 0x24 (36)
+		protected CtrRef<EmitterComponentData> m_Pre = new CtrRef<EmitterComponentData>();
+		[ContainerField(36), ContainerFieldNameHash(193466786)]
+		public CtrRef<EmitterComponentData> Pre { get { return m_Pre; } set { if (OnPropertyChanging("ProcessorData." + nameof(Pre), this, m_Pre, value)) m_Pre = value; } } // 0x24 (36)
 		
-		[ContainerField(40)]
-		public EmittableField EvaluatorInput { get; set; } = new EmittableField(); // 0x28 (40)
+		protected EmittableField m_EvaluatorInput = new EmittableField();
+		[ContainerField(40), ContainerFieldNameHash(1132314832)]
+		public EmittableField EvaluatorInput { get { return m_EvaluatorInput; } set { if (OnPropertyChanging("ProcessorData." + nameof(EvaluatorInput), this, m_EvaluatorInput, value)) m_EvaluatorInput = value; } } // 0x28 (40)
 		
-		[ContainerField(44), LayoutImmutable, Blittable]
-		public bool Enable { get; set; } // 0x2C (44)
+		protected bool m_Enable = new bool();
+		[ContainerField(44), LayoutImmutable, Blittable, ContainerFieldNameHash(2342790116)]
+		public bool Enable { get { return m_Enable; } set { if (OnPropertyChanging("ProcessorData." + nameof(Enable), this, m_Enable, value)) m_Enable = value; } } // 0x2C (44)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,30 +5,42 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class UIGraphEntityData : 
 		EntityData
 	{
-		[ContainerField(12)]
-		public List<EventSpec> Events { get; set; } = new List<EventSpec>(); // 0xC (12)
+		protected List<EventSpec> m_Events = new List<EventSpec>();
+		[ContainerField(12), ContainerFieldNameHash(2352146554)]
+		public List<EventSpec> Events { get { return m_Events; } set { if (OnPropertyChanging("UIGraphEntityData." + nameof(Events), this, m_Events, value)) m_Events = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public CtrRef<UIGraphAsset> GraphAsset { get; set; } = new CtrRef<UIGraphAsset>(); // 0x10 (16)
+		protected CtrRef<UIGraphAsset> m_GraphAsset = new CtrRef<UIGraphAsset>();
+		[ContainerField(16), ContainerFieldNameHash(3545549337)]
+		public CtrRef<UIGraphAsset> GraphAsset { get { return m_GraphAsset; } set { if (OnPropertyChanging("UIGraphEntityData." + nameof(GraphAsset), this, m_GraphAsset, value)) m_GraphAsset = value; } } // 0x10 (16)
 		
-		[ContainerField(20)]
-		public UIGraphPriority GraphPriority { get; set; } = new UIGraphPriority(); // 0x14 (20)
+		protected UIGraphPriority m_GraphPriority = new UIGraphPriority();
+		[ContainerField(20), ContainerFieldNameHash(2838537403)]
+		public UIGraphPriority GraphPriority { get { return m_GraphPriority; } set { if (OnPropertyChanging("UIGraphEntityData." + nameof(GraphPriority), this, m_GraphPriority, value)) m_GraphPriority = value; } } // 0x14 (20)
 		
-		[ContainerField(24)]
-		public UIState State { get; set; } = new UIState(); // 0x18 (24)
+		protected UIState m_State = new UIState();
+		[ContainerField(24), ContainerFieldNameHash(230748402)]
+		public UIState State { get { return m_State; } set { if (OnPropertyChanging("UIGraphEntityData." + nameof(State), this, m_State, value)) m_State = value; } } // 0x18 (24)
 		
-		[ContainerField(28), LayoutImmutable, Blittable]
-		public bool PopPreviousGraph { get; set; } // 0x1C (28)
+		protected bool m_PopPreviousGraph = new bool();
+		[ContainerField(28), LayoutImmutable, Blittable, ContainerFieldNameHash(3277878647)]
+		public bool PopPreviousGraph { get { return m_PopPreviousGraph; } set { if (OnPropertyChanging("UIGraphEntityData." + nameof(PopPreviousGraph), this, m_PopPreviousGraph, value)) m_PopPreviousGraph = value; } } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

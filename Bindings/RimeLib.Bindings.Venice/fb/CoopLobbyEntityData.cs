@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class CoopLobbyEntityData : 
 		GameEntityData
 	{
-		[ContainerField(96), LayoutImmutable, Blittable]
-		public float ClientConnectionTimeout { get; set; } // 0x60 (96)
+		protected float m_ClientConnectionTimeout = new float();
+		[ContainerField(96), LayoutImmutable, Blittable, ContainerFieldNameHash(2916205073)]
+		public float ClientConnectionTimeout { get { return m_ClientConnectionTimeout; } set { if (OnPropertyChanging("CoopLobbyEntityData." + nameof(ClientConnectionTimeout), this, m_ClientConnectionTimeout, value)) m_ClientConnectionTimeout = value; } } // 0x60 (96)
 		
-		[ContainerField(100), LayoutImmutable, Blittable]
-		public bool IsInGame { get; set; } // 0x64 (100)
+		protected bool m_IsInGame = new bool();
+		[ContainerField(100), LayoutImmutable, Blittable, ContainerFieldNameHash(703264438)]
+		public bool IsInGame { get { return m_IsInGame; } set { if (OnPropertyChanging("CoopLobbyEntityData." + nameof(IsInGame), this, m_IsInGame, value)) m_IsInGame = value; } } // 0x64 (100)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

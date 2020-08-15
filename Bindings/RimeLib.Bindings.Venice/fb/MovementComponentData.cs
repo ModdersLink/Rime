@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class MovementComponentData : 
 		ComponentData
 	{
-		[ContainerField(96)]
-		public MovementComponentBinding MovementBinding { get; set; } = new MovementComponentBinding(); // 0x60 (96)
+		protected MovementComponentBinding m_MovementBinding = new MovementComponentBinding();
+		[ContainerField(96), ContainerFieldNameHash(3329760007)]
+		public MovementComponentBinding MovementBinding { get { return m_MovementBinding; } set { if (OnPropertyChanging("MovementComponentData." + nameof(MovementBinding), this, m_MovementBinding, value)) m_MovementBinding = value; } } // 0x60 (96)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

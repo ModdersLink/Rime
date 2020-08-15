@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class UIEndOfRoundEntityData : 
 		GameEntityData
 	{
-		[ContainerField(96), LayoutImmutable, Blittable]
-		public float PreEorTime { get; set; } // 0x60 (96)
+		protected float m_PreEorTime = new float();
+		[ContainerField(96), LayoutImmutable, Blittable, ContainerFieldNameHash(3258863311)]
+		public float PreEorTime { get { return m_PreEorTime; } set { if (OnPropertyChanging("UIEndOfRoundEntityData." + nameof(PreEorTime), this, m_PreEorTime, value)) m_PreEorTime = value; } } // 0x60 (96)
 		
-		[ContainerField(100), LayoutImmutable, Blittable]
-		public float EorTime { get; set; } // 0x64 (100)
+		protected float m_EorTime = new float();
+		[ContainerField(100), LayoutImmutable, Blittable, ContainerFieldNameHash(4274483656)]
+		public float EorTime { get { return m_EorTime; } set { if (OnPropertyChanging("UIEndOfRoundEntityData." + nameof(EorTime), this, m_EorTime, value)) m_EorTime = value; } } // 0x64 (100)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

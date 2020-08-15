@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class MovementActionRandomizerData : 
 		MovementActionData
 	{
-		[ContainerField(8)]
-		public RefArray<MovementActionData> Actions { get; set; } = new RefArray<MovementActionData>(); // 0x8 (8)
+		protected RefArray<MovementActionData> m_Actions = new RefArray<MovementActionData>();
+		[ContainerField(8), ContainerFieldNameHash(373511656)]
+		public RefArray<MovementActionData> Actions { get { return m_Actions; } set { if (OnPropertyChanging("MovementActionRandomizerData." + nameof(Actions), this, m_Actions, value)) m_Actions = value; } } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public bool ReinsertIntoRandomizedListAfterUse { get; set; } // 0xC (12)
+		protected bool m_ReinsertIntoRandomizedListAfterUse = new bool();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(201056821)]
+		public bool ReinsertIntoRandomizedListAfterUse { get { return m_ReinsertIntoRandomizedListAfterUse; } set { if (OnPropertyChanging("MovementActionRandomizerData." + nameof(ReinsertIntoRandomizedListAfterUse), this, m_ReinsertIntoRandomizedListAfterUse, value)) m_ReinsertIntoRandomizedListAfterUse = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

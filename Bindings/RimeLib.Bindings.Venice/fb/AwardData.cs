@@ -5,84 +5,114 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class AwardData : 
 		AbstractAwardData
 	{
-		[ContainerField(12)]
-		public RefArray<AwardData> FilteredChildAwards { get; set; } = new RefArray<AwardData>(); // 0xC (12)
+		protected RefArray<AwardData> m_FilteredChildAwards = new RefArray<AwardData>();
+		[ContainerField(12), ContainerFieldNameHash(202729244)]
+		public RefArray<AwardData> FilteredChildAwards { get { return m_FilteredChildAwards; } set { if (OnPropertyChanging("AwardData." + nameof(FilteredChildAwards), this, m_FilteredChildAwards, value)) m_FilteredChildAwards = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public RefArray<CriteriaData> Criteria { get; set; } = new RefArray<CriteriaData>(); // 0x10 (16)
+		protected RefArray<CriteriaData> m_Criteria = new RefArray<CriteriaData>();
+		[ContainerField(16), ContainerFieldNameHash(335452726)]
+		public RefArray<CriteriaData> Criteria { get { return m_Criteria; } set { if (OnPropertyChanging("AwardData." + nameof(Criteria), this, m_Criteria, value)) m_Criteria = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable]
-		public string Code { get; set; } // 0x14 (20)
+		protected string m_Code = new string();
+		[ContainerField(20), LayoutImmutable, ContainerFieldNameHash(2088844616)]
+		public string Code { get { return m_Code; } set { if (OnPropertyChanging("AwardData." + nameof(Code), this, m_Code, value)) m_Code = value; } } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable]
-		public string Description { get; set; } // 0x18 (24)
+		protected string m_Description = new string();
+		[ContainerField(24), LayoutImmutable, ContainerFieldNameHash(1636673251)]
+		public string Description { get { return m_Description; } set { if (OnPropertyChanging("AwardData." + nameof(Description), this, m_Description, value)) m_Description = value; } } // 0x18 (24)
 		
-		[ContainerField(28), LayoutImmutable]
-		public string NameSid { get; set; } // 0x1C (28)
+		protected string m_NameSid = new string();
+		[ContainerField(28), LayoutImmutable, ContainerFieldNameHash(3153745340)]
+		public string NameSid { get { return m_NameSid; } set { if (OnPropertyChanging("AwardData." + nameof(NameSid), this, m_NameSid, value)) m_NameSid = value; } } // 0x1C (28)
 		
-		[ContainerField(32)]
-		public AwardKitAssociation KitAssociation { get; set; } = new AwardKitAssociation(); // 0x20 (32)
+		protected AwardKitAssociation m_KitAssociation = new AwardKitAssociation();
+		[ContainerField(32), ContainerFieldNameHash(2364156266)]
+		public AwardKitAssociation KitAssociation { get { return m_KitAssociation; } set { if (OnPropertyChanging("AwardData." + nameof(KitAssociation), this, m_KitAssociation, value)) m_KitAssociation = value; } } // 0x20 (32)
 		
-		[ContainerField(36), LayoutImmutable]
-		public string ImageName { get; set; } // 0x24 (36)
+		protected string m_ImageName = new string();
+		[ContainerField(36), LayoutImmutable, ContainerFieldNameHash(2678981541)]
+		public string ImageName { get { return m_ImageName; } set { if (OnPropertyChanging("AwardData." + nameof(ImageName), this, m_ImageName, value)) m_ImageName = value; } } // 0x24 (36)
 		
-		[ContainerField(40), LayoutImmutable]
-		public string ImageSmallName { get; set; } // 0x28 (40)
+		protected string m_ImageSmallName = new string();
+		[ContainerField(40), LayoutImmutable, ContainerFieldNameHash(4018906010)]
+		public string ImageSmallName { get { return m_ImageSmallName; } set { if (OnPropertyChanging("AwardData." + nameof(ImageSmallName), this, m_ImageSmallName, value)) m_ImageSmallName = value; } } // 0x28 (40)
 		
-		[ContainerField(44), LayoutImmutable]
-		public string ImageFancyName { get; set; } // 0x2C (44)
+		protected string m_ImageFancyName = new string();
+		[ContainerField(44), LayoutImmutable, ContainerFieldNameHash(2958929910)]
+		public string ImageFancyName { get { return m_ImageFancyName; } set { if (OnPropertyChanging("AwardData." + nameof(ImageFancyName), this, m_ImageFancyName, value)) m_ImageFancyName = value; } } // 0x2C (44)
 		
-		[ContainerField(48), LayoutImmutable]
-		public string SoundName { get; set; } // 0x30 (48)
+		protected string m_SoundName = new string();
+		[ContainerField(48), LayoutImmutable, ContainerFieldNameHash(523979073)]
+		public string SoundName { get { return m_SoundName; } set { if (OnPropertyChanging("AwardData." + nameof(SoundName), this, m_SoundName, value)) m_SoundName = value; } } // 0x30 (48)
 		
-		[ContainerField(52)]
-		public AwardType Repeat { get; set; } = new AwardType(); // 0x34 (52)
+		protected AwardType m_Repeat = new AwardType();
+		[ContainerField(52), ContainerFieldNameHash(3293228242)]
+		public AwardType Repeat { get { return m_Repeat; } set { if (OnPropertyChanging("AwardData." + nameof(Repeat), this, m_Repeat, value)) m_Repeat = value; } } // 0x34 (52)
 		
-		[ContainerField(56)]
-		public List<string> Licenses { get; set; } = new List<string>(); // 0x38 (56)
+		protected List<string> m_Licenses = new List<string>();
+		[ContainerField(56), ContainerFieldNameHash(2259172461)]
+		public List<string> Licenses { get { return m_Licenses; } set { if (OnPropertyChanging("AwardData." + nameof(Licenses), this, m_Licenses, value)) m_Licenses = value; } } // 0x38 (56)
 		
-		[ContainerField(60), LayoutImmutable, Blittable]
-		public uint MaxRepetitions { get; set; } // 0x3C (60)
+		protected uint m_MaxRepetitions = new uint();
+		[ContainerField(60), LayoutImmutable, Blittable, ContainerFieldNameHash(295376865)]
+		public uint MaxRepetitions { get { return m_MaxRepetitions; } set { if (OnPropertyChanging("AwardData." + nameof(MaxRepetitions), this, m_MaxRepetitions, value)) m_MaxRepetitions = value; } } // 0x3C (60)
 		
-		[ContainerField(64)]
-		public List<CriteriaAward> Dependencies { get; set; } = new List<CriteriaAward>(); // 0x40 (64)
+		protected List<CriteriaAward> m_Dependencies = new List<CriteriaAward>();
+		[ContainerField(64), ContainerFieldNameHash(195928908)]
+		public List<CriteriaAward> Dependencies { get { return m_Dependencies; } set { if (OnPropertyChanging("AwardData." + nameof(Dependencies), this, m_Dependencies, value)) m_Dependencies = value; } } // 0x40 (64)
 		
-		[ContainerField(68)]
-		public AwardGroup Group { get; set; } = new AwardGroup(); // 0x44 (68)
+		protected AwardGroup m_Group = new AwardGroup();
+		[ContainerField(68), ContainerFieldNameHash(208130522)]
+		public AwardGroup Group { get { return m_Group; } set { if (OnPropertyChanging("AwardData." + nameof(Group), this, m_Group, value)) m_Group = value; } } // 0x44 (68)
 		
-		[ContainerField(72)]
-		public StatsMultiplicity Multiplicity { get; set; } = new StatsMultiplicity(); // 0x48 (72)
+		protected StatsMultiplicity m_Multiplicity = new StatsMultiplicity();
+		[ContainerField(72), ContainerFieldNameHash(2648087582)]
+		public StatsMultiplicity Multiplicity { get { return m_Multiplicity; } set { if (OnPropertyChanging("AwardData." + nameof(Multiplicity), this, m_Multiplicity, value)) m_Multiplicity = value; } } // 0x48 (72)
 		
-		[ContainerField(76)]
-		public CtrRef<CriteriaGateList> UnlockGates { get; set; } = new CtrRef<CriteriaGateList>(); // 0x4C (76)
+		protected CtrRef<CriteriaGateList> m_UnlockGates = new CtrRef<CriteriaGateList>();
+		[ContainerField(76), ContainerFieldNameHash(4138223185)]
+		public CtrRef<CriteriaGateList> UnlockGates { get { return m_UnlockGates; } set { if (OnPropertyChanging("AwardData." + nameof(UnlockGates), this, m_UnlockGates, value)) m_UnlockGates = value; } } // 0x4C (76)
 		
-		[ContainerField(80)]
-		public CtrRef<AwardData> ParentAward { get; set; } = new CtrRef<AwardData>(); // 0x50 (80)
+		protected CtrRef<AwardData> m_ParentAward = new CtrRef<AwardData>();
+		[ContainerField(80), ContainerFieldNameHash(2646544440)]
+		public CtrRef<AwardData> ParentAward { get { return m_ParentAward; } set { if (OnPropertyChanging("AwardData." + nameof(ParentAward), this, m_ParentAward, value)) m_ParentAward = value; } } // 0x50 (80)
 		
-		[ContainerField(84), LayoutImmutable, Blittable]
-		public float Score { get; set; } // 0x54 (84)
+		protected float m_Score = new float();
+		[ContainerField(84), LayoutImmutable, Blittable, ContainerFieldNameHash(231225165)]
+		public float Score { get { return m_Score; } set { if (OnPropertyChanging("AwardData." + nameof(Score), this, m_Score, value)) m_Score = value; } } // 0x54 (84)
 		
-		[ContainerField(88)]
-		public ScoringBucket Bucket { get; set; } = new ScoringBucket(); // 0x58 (88)
+		protected ScoringBucket m_Bucket = new ScoringBucket();
+		[ContainerField(88), ContainerFieldNameHash(2686649899)]
+		public ScoringBucket Bucket { get { return m_Bucket; } set { if (OnPropertyChanging("AwardData." + nameof(Bucket), this, m_Bucket, value)) m_Bucket = value; } } // 0x58 (88)
 		
-		[ContainerField(92)]
-		public List<BasicUnlockInfo> UnlockInfos { get; set; } = new List<BasicUnlockInfo>(); // 0x5C (92)
+		protected List<BasicUnlockInfo> m_UnlockInfos = new List<BasicUnlockInfo>();
+		[ContainerField(92), ContainerFieldNameHash(4145033000)]
+		public List<BasicUnlockInfo> UnlockInfos { get { return m_UnlockInfos; } set { if (OnPropertyChanging("AwardData." + nameof(UnlockInfos), this, m_UnlockInfos, value)) m_UnlockInfos = value; } } // 0x5C (92)
 		
-		[ContainerField(96), LayoutImmutable, Blittable]
-		public bool ActiveOnCreation { get; set; } // 0x60 (96)
+		protected bool m_ActiveOnCreation = new bool();
+		[ContainerField(96), LayoutImmutable, Blittable, ContainerFieldNameHash(3093839489)]
+		public bool ActiveOnCreation { get { return m_ActiveOnCreation; } set { if (OnPropertyChanging("AwardData." + nameof(ActiveOnCreation), this, m_ActiveOnCreation, value)) m_ActiveOnCreation = value; } } // 0x60 (96)
 		
-		[ContainerField(97), LayoutImmutable, Blittable]
-		public bool Visible { get; set; } // 0x61 (97)
+		protected bool m_Visible = new bool();
+		[ContainerField(97), LayoutImmutable, Blittable, ContainerFieldNameHash(901540267)]
+		public bool Visible { get { return m_Visible; } set { if (OnPropertyChanging("AwardData." + nameof(Visible), this, m_Visible, value)) m_Visible = value; } } // 0x61 (97)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

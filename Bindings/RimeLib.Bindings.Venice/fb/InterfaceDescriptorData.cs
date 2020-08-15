@@ -5,26 +5,38 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class InterfaceDescriptorData : 
 		DynamicDataContainer
 	{
-		[ContainerField(12)]
-		public List<DynamicEvent> InputEvents { get; set; } = new List<DynamicEvent>(); // 0xC (12)
+		protected List<DynamicEvent> m_InputEvents = new List<DynamicEvent>();
+		[ContainerField(12), ContainerFieldNameHash(1542460652)]
+		public List<DynamicEvent> InputEvents { get { return m_InputEvents; } set { if (OnPropertyChanging("InterfaceDescriptorData." + nameof(InputEvents), this, m_InputEvents, value)) m_InputEvents = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public List<DynamicEvent> OutputEvents { get; set; } = new List<DynamicEvent>(); // 0x10 (16)
+		protected List<DynamicEvent> m_OutputEvents = new List<DynamicEvent>();
+		[ContainerField(16), ContainerFieldNameHash(3452448709)]
+		public List<DynamicEvent> OutputEvents { get { return m_OutputEvents; } set { if (OnPropertyChanging("InterfaceDescriptorData." + nameof(OutputEvents), this, m_OutputEvents, value)) m_OutputEvents = value; } } // 0x10 (16)
 		
-		[ContainerField(20)]
-		public List<DynamicLink> InputLinks { get; set; } = new List<DynamicLink>(); // 0x14 (20)
+		protected List<DynamicLink> m_InputLinks = new List<DynamicLink>();
+		[ContainerField(20), ContainerFieldNameHash(1626510432)]
+		public List<DynamicLink> InputLinks { get { return m_InputLinks; } set { if (OnPropertyChanging("InterfaceDescriptorData." + nameof(InputLinks), this, m_InputLinks, value)) m_InputLinks = value; } } // 0x14 (20)
 		
-		[ContainerField(24)]
-		public List<DynamicLink> OutputLinks { get; set; } = new List<DynamicLink>(); // 0x18 (24)
+		protected List<DynamicLink> m_OutputLinks = new List<DynamicLink>();
+		[ContainerField(24), ContainerFieldNameHash(748160425)]
+		public List<DynamicLink> OutputLinks { get { return m_OutputLinks; } set { if (OnPropertyChanging("InterfaceDescriptorData." + nameof(OutputLinks), this, m_OutputLinks, value)) m_OutputLinks = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

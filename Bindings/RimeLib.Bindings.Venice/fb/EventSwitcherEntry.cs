@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class EventSwitcherEntry : 
 		AudioGraphNodePortGroup
 	{
-		[ContainerField(8)]
-		public AudioGraphNodePort CaseTrigger { get; set; } = new AudioGraphNodePort(); // 0x8 (8)
+		protected AudioGraphNodePort m_CaseTrigger = new AudioGraphNodePort();
+		[ContainerField(8), ContainerFieldNameHash(394100425)]
+		public AudioGraphNodePort CaseTrigger { get { return m_CaseTrigger; } set { if (OnPropertyChanging("EventSwitcherEntry." + nameof(CaseTrigger), this, m_CaseTrigger, value)) m_CaseTrigger = value; } } // 0x8 (8)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public float Value { get; set; } // 0x10 (16)
+		protected float m_Value = new float();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(225375086)]
+		public float Value { get { return m_Value; } set { if (OnPropertyChanging("EventSwitcherEntry." + nameof(Value), this, m_Value, value)) m_Value = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

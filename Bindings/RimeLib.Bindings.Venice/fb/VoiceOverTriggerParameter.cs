@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class VoiceOverTriggerParameter : 
 		DataContainer
 	{
-		[ContainerField(8)]
-		public CtrRef<VoiceOverValueConnection> Source { get; set; } = new CtrRef<VoiceOverValueConnection>(); // 0x8 (8)
+		protected CtrRef<VoiceOverValueConnection> m_Source = new CtrRef<VoiceOverValueConnection>();
+		[ContainerField(8), ContainerFieldNameHash(3339738264)]
+		public CtrRef<VoiceOverValueConnection> Source { get { return m_Source; } set { if (OnPropertyChanging("VoiceOverTriggerParameter." + nameof(Source), this, m_Source, value)) m_Source = value; } } // 0x8 (8)
 		
-		[ContainerField(12)]
-		public CtrRef<VoiceOverNamedValue> EventParameter { get; set; } = new CtrRef<VoiceOverNamedValue>(); // 0xC (12)
+		protected CtrRef<VoiceOverNamedValue> m_EventParameter = new CtrRef<VoiceOverNamedValue>();
+		[ContainerField(12), ContainerFieldNameHash(1445570624)]
+		public CtrRef<VoiceOverNamedValue> EventParameter { get { return m_EventParameter; } set { if (OnPropertyChanging("VoiceOverTriggerParameter." + nameof(EventParameter), this, m_EventParameter, value)) m_EventParameter = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

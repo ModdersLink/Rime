@@ -5,24 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class WeaponAnimationConfigurationModifier : 
 		WeaponModifierBase
 	{
-		[ContainerField(8)]
-		public List<float> ZoomInOutMeshTransitionFactors { get; set; } = new List<float>(); // 0x8 (8)
+		protected List<float> m_ZoomInOutMeshTransitionFactors = new List<float>();
+		[ContainerField(8), ContainerFieldNameHash(1322171705)]
+		public List<float> ZoomInOutMeshTransitionFactors { get { return m_ZoomInOutMeshTransitionFactors; } set { if (OnPropertyChanging("WeaponAnimationConfigurationModifier." + nameof(ZoomInOutMeshTransitionFactors), this, m_ZoomInOutMeshTransitionFactors, value)) m_ZoomInOutMeshTransitionFactors = value; } } // 0x8 (8)
 		
-		[ContainerField(12)]
-		public AnimationConfigurationData AnimationConfiguration { get; set; } = new AnimationConfigurationData(); // 0xC (12)
+		protected AnimationConfigurationData m_AnimationConfiguration = new AnimationConfigurationData();
+		[ContainerField(12), ContainerFieldNameHash(711248867)]
+		public AnimationConfigurationData AnimationConfiguration { get { return m_AnimationConfiguration; } set { if (OnPropertyChanging("WeaponAnimationConfigurationModifier." + nameof(AnimationConfiguration), this, m_AnimationConfiguration, value)) m_AnimationConfiguration = value; } } // 0xC (12)
 		
-		[ContainerField(24)]
-		public AnimatedFireEnum AnimatedFireType { get; set; } = new AnimatedFireEnum(); // 0x18 (24)
+		protected AnimatedFireEnum m_AnimatedFireType = new AnimatedFireEnum();
+		[ContainerField(24), ContainerFieldNameHash(1066105722)]
+		public AnimatedFireEnum AnimatedFireType { get { return m_AnimatedFireType; } set { if (OnPropertyChanging("WeaponAnimationConfigurationModifier." + nameof(AnimatedFireType), this, m_AnimatedFireType, value)) m_AnimatedFireType = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

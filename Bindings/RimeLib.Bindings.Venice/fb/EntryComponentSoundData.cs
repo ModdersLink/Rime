@@ -5,20 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class EntryComponentSoundData : 
 		DataContainer
 	{
-		[ContainerField(8)]
-		public List<StanceSwitchSoundData> StanceSounds { get; set; } = new List<StanceSwitchSoundData>(); // 0x8 (8)
+		protected List<StanceSwitchSoundData> m_StanceSounds = new List<StanceSwitchSoundData>();
+		[ContainerField(8), ContainerFieldNameHash(3318640379)]
+		public List<StanceSwitchSoundData> StanceSounds { get { return m_StanceSounds; } set { if (OnPropertyChanging("EntryComponentSoundData." + nameof(StanceSounds), this, m_StanceSounds, value)) m_StanceSounds = value; } } // 0x8 (8)
 		
-		[ContainerField(12)]
-		public CtrRef<SoundAsset> StanceSwitchSound { get; set; } = new CtrRef<SoundAsset>(); // 0xC (12)
+		protected CtrRef<SoundAsset> m_StanceSwitchSound = new CtrRef<SoundAsset>();
+		[ContainerField(12), ContainerFieldNameHash(865104730)]
+		public CtrRef<SoundAsset> StanceSwitchSound { get { return m_StanceSwitchSound; } set { if (OnPropertyChanging("EntryComponentSoundData." + nameof(StanceSwitchSound), this, m_StanceSwitchSound, value)) m_StanceSwitchSound = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

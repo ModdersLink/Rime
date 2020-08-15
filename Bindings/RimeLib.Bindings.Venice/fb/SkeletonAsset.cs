@@ -5,38 +5,54 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class SkeletonAsset : 
 		BaseSkeletonAsset
 	{
-		[ContainerField(12)]
-		public List<string> BoneNames { get; set; } = new List<string>(); // 0xC (12)
+		protected List<string> m_BoneNames = new List<string>();
+		[ContainerField(12), ContainerFieldNameHash(951771351)]
+		public List<string> BoneNames { get { return m_BoneNames; } set { if (OnPropertyChanging("SkeletonAsset." + nameof(BoneNames), this, m_BoneNames, value)) m_BoneNames = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public List<int> Hierarchy { get; set; } = new List<int>(); // 0x10 (16)
+		protected List<int> m_Hierarchy = new List<int>();
+		[ContainerField(16), ContainerFieldNameHash(2981249554)]
+		public List<int> Hierarchy { get { return m_Hierarchy; } set { if (OnPropertyChanging("SkeletonAsset." + nameof(Hierarchy), this, m_Hierarchy, value)) m_Hierarchy = value; } } // 0x10 (16)
 		
-		[ContainerField(20)]
-		public List<LinearTransform> LocalPose { get; set; } = new List<LinearTransform>(); // 0x14 (20)
+		protected List<LinearTransform> m_LocalPose = new List<LinearTransform>();
+		[ContainerField(20), ContainerFieldNameHash(773169313)]
+		public List<LinearTransform> LocalPose { get { return m_LocalPose; } set { if (OnPropertyChanging("SkeletonAsset." + nameof(LocalPose), this, m_LocalPose, value)) m_LocalPose = value; } } // 0x14 (20)
 		
-		[ContainerField(24)]
-		public List<LinearTransform> ModelPose { get; set; } = new List<LinearTransform>(); // 0x18 (24)
+		protected List<LinearTransform> m_ModelPose = new List<LinearTransform>();
+		[ContainerField(24), ContainerFieldNameHash(4243999587)]
+		public List<LinearTransform> ModelPose { get { return m_ModelPose; } set { if (OnPropertyChanging("SkeletonAsset." + nameof(ModelPose), this, m_ModelPose, value)) m_ModelPose = value; } } // 0x18 (24)
 		
-		[ContainerField(28), LayoutImmutable]
-		public string WeaponBoneName { get; set; } // 0x1C (28)
+		protected string m_WeaponBoneName = new string();
+		[ContainerField(28), LayoutImmutable, ContainerFieldNameHash(4180015014)]
+		public string WeaponBoneName { get { return m_WeaponBoneName; } set { if (OnPropertyChanging("SkeletonAsset." + nameof(WeaponBoneName), this, m_WeaponBoneName, value)) m_WeaponBoneName = value; } } // 0x1C (28)
 		
-		[ContainerField(32), LayoutImmutable]
-		public string HeadBoneName { get; set; } // 0x20 (32)
+		protected string m_HeadBoneName = new string();
+		[ContainerField(32), LayoutImmutable, ContainerFieldNameHash(3359050476)]
+		public string HeadBoneName { get { return m_HeadBoneName; } set { if (OnPropertyChanging("SkeletonAsset." + nameof(HeadBoneName), this, m_HeadBoneName, value)) m_HeadBoneName = value; } } // 0x20 (32)
 		
-		[ContainerField(36), LayoutImmutable]
-		public string HipBoneName { get; set; } // 0x24 (36)
+		protected string m_HipBoneName = new string();
+		[ContainerField(36), LayoutImmutable, ContainerFieldNameHash(3967379317)]
+		public string HipBoneName { get { return m_HipBoneName; } set { if (OnPropertyChanging("SkeletonAsset." + nameof(HipBoneName), this, m_HipBoneName, value)) m_HipBoneName = value; } } // 0x24 (36)
 		
-		[ContainerField(40), LayoutImmutable]
-		public string CameraBoneName { get; set; } // 0x28 (40)
+		protected string m_CameraBoneName = new string();
+		[ContainerField(40), LayoutImmutable, ContainerFieldNameHash(771838749)]
+		public string CameraBoneName { get { return m_CameraBoneName; } set { if (OnPropertyChanging("SkeletonAsset." + nameof(CameraBoneName), this, m_CameraBoneName, value)) m_CameraBoneName = value; } } // 0x28 (40)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,41 +5,58 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class PlayerTypeProfile : 
 		Asset
 	{
-		[ContainerField(12)]
-		public CtrRef<PersistenceData> Values { get; set; } = new CtrRef<PersistenceData>(); // 0xC (12)
+		protected CtrRef<PersistenceData> m_Values = new CtrRef<PersistenceData>();
+		[ContainerField(12), ContainerFieldNameHash(3142410589)]
+		public CtrRef<PersistenceData> Values { get { return m_Values; } set { if (OnPropertyChanging("PlayerTypeProfile." + nameof(Values), this, m_Values, value)) m_Values = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public CtrRef<AwardDataTree> Awards { get; set; } = new CtrRef<AwardDataTree>(); // 0x10 (16)
+		protected CtrRef<AwardDataTree> m_Awards = new CtrRef<AwardDataTree>();
+		[ContainerField(16), ContainerFieldNameHash(2497987255)]
+		public CtrRef<AwardDataTree> Awards { get { return m_Awards; } set { if (OnPropertyChanging("PlayerTypeProfile." + nameof(Awards), this, m_Awards, value)) m_Awards = value; } } // 0x10 (16)
 		
-		[ContainerField(20)]
-		public CtrRef<RankParamsAsset> RankParams { get; set; } = new CtrRef<RankParamsAsset>(); // 0x14 (20)
+		protected CtrRef<RankParamsAsset> m_RankParams = new CtrRef<RankParamsAsset>();
+		[ContainerField(20), ContainerFieldNameHash(1481367663)]
+		public CtrRef<RankParamsAsset> RankParams { get { return m_RankParams; } set { if (OnPropertyChanging("PlayerTypeProfile." + nameof(RankParams), this, m_RankParams, value)) m_RankParams = value; } } // 0x14 (20)
 		
-		[ContainerField(24)]
-		public CtrRef<ScoringData> Scoring { get; set; } = new CtrRef<ScoringData>(); // 0x18 (24)
+		protected CtrRef<ScoringData> m_Scoring = new CtrRef<ScoringData>();
+		[ContainerField(24), ContainerFieldNameHash(2696085640)]
+		public CtrRef<ScoringData> Scoring { get { return m_Scoring; } set { if (OnPropertyChanging("PlayerTypeProfile." + nameof(Scoring), this, m_Scoring, value)) m_Scoring = value; } } // 0x18 (24)
 		
-		[ContainerField(28)]
-		public CtrRef<DogTagsAsset> DogTags { get; set; } = new CtrRef<DogTagsAsset>(); // 0x1C (28)
+		protected CtrRef<DogTagsAsset> m_DogTags = new CtrRef<DogTagsAsset>();
+		[ContainerField(28), ContainerFieldNameHash(242750408)]
+		public CtrRef<DogTagsAsset> DogTags { get { return m_DogTags; } set { if (OnPropertyChanging("PlayerTypeProfile." + nameof(DogTags), this, m_DogTags, value)) m_DogTags = value; } } // 0x1C (28)
 		
-		[ContainerField(32)]
-		public EloParameters EloParams { get; set; } = new EloParameters(); // 0x20 (32)
+		protected EloParameters m_EloParams = new EloParameters();
+		[ContainerField(32), ContainerFieldNameHash(4149055871)]
+		public EloParameters EloParams { get { return m_EloParams; } set { if (OnPropertyChanging("PlayerTypeProfile." + nameof(EloParams), this, m_EloParams, value)) m_EloParams = value; } } // 0x20 (32)
 		
-		[ContainerField(52)]
-		public CtrRef<StaticUnlockList> StaticUnlocks { get; set; } = new CtrRef<StaticUnlockList>(); // 0x34 (52)
+		protected CtrRef<StaticUnlockList> m_StaticUnlocks = new CtrRef<StaticUnlockList>();
+		[ContainerField(52), ContainerFieldNameHash(1696937534)]
+		public CtrRef<StaticUnlockList> StaticUnlocks { get { return m_StaticUnlocks; } set { if (OnPropertyChanging("PlayerTypeProfile." + nameof(StaticUnlocks), this, m_StaticUnlocks, value)) m_StaticUnlocks = value; } } // 0x34 (52)
 		
-		[ContainerField(56)]
-		public CtrRef<StatSpamSettings> SpamSettings { get; set; } = new CtrRef<StatSpamSettings>(); // 0x38 (56)
+		protected CtrRef<StatSpamSettings> m_SpamSettings = new CtrRef<StatSpamSettings>();
+		[ContainerField(56), ContainerFieldNameHash(2878676975)]
+		public CtrRef<StatSpamSettings> SpamSettings { get { return m_SpamSettings; } set { if (OnPropertyChanging("PlayerTypeProfile." + nameof(SpamSettings), this, m_SpamSettings, value)) m_SpamSettings = value; } } // 0x38 (56)
 		
-		[ContainerField(60)]
-		public List<string> OrderedUnlockNames { get; set; } = new List<string>(); // 0x3C (60)
+		protected List<string> m_OrderedUnlockNames = new List<string>();
+		[ContainerField(60), ContainerFieldNameHash(3883933262)]
+		public List<string> OrderedUnlockNames { get { return m_OrderedUnlockNames; } set { if (OnPropertyChanging("PlayerTypeProfile." + nameof(OrderedUnlockNames), this, m_OrderedUnlockNames, value)) m_OrderedUnlockNames = value; } } // 0x3C (60)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

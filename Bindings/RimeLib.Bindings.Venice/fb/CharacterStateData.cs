@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class CharacterStateData : 
 		DataContainer
 	{
-		[ContainerField(8)]
-		public RefArray<CharacterStatePoseInfo> PoseInfo { get; set; } = new RefArray<CharacterStatePoseInfo>(); // 0x8 (8)
+		protected RefArray<CharacterStatePoseInfo> m_PoseInfo = new RefArray<CharacterStatePoseInfo>();
+		[ContainerField(8), ContainerFieldNameHash(3414686146)]
+		public RefArray<CharacterStatePoseInfo> PoseInfo { get { return m_PoseInfo; } set { if (OnPropertyChanging("CharacterStateData." + nameof(PoseInfo), this, m_PoseInfo, value)) m_PoseInfo = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

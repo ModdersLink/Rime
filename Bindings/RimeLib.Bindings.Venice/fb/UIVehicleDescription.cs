@@ -5,22 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class UIVehicleDescription : 
 		UIItemDescription
 	{
-		[ContainerField(16), LayoutImmutable]
-		public string Name { get; set; } // 0x10 (16)
+		protected string m_Name = new string();
+		[ContainerField(16), LayoutImmutable, ContainerFieldNameHash(2088949890)]
+		public string Name { get { return m_Name; } set { if (OnPropertyChanging("UIVehicleDescription." + nameof(Name), this, m_Name, value)) m_Name = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable]
-		public string Description { get; set; } // 0x14 (20)
+		protected string m_Description = new string();
+		[ContainerField(20), LayoutImmutable, ContainerFieldNameHash(1636673251)]
+		public string Description { get { return m_Description; } set { if (OnPropertyChanging("UIVehicleDescription." + nameof(Description), this, m_Description, value)) m_Description = value; } } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable]
-		public string TexturePath { get; set; } // 0x18 (24)
+		protected string m_TexturePath = new string();
+		[ContainerField(24), LayoutImmutable, ContainerFieldNameHash(3058477943)]
+		public string TexturePath { get { return m_TexturePath; } set { if (OnPropertyChanging("UIVehicleDescription." + nameof(TexturePath), this, m_TexturePath, value)) m_TexturePath = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,25 +5,38 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class VoiceOverLogicAsset : 
 		Asset
 	{
-		[ContainerField(12)]
-		public RefArray<VoiceOverEvent> Events { get; set; } = new RefArray<VoiceOverEvent>(); // 0xC (12)
+		protected RefArray<VoiceOverEvent> m_Events = new RefArray<VoiceOverEvent>();
+		[ContainerField(12), ContainerFieldNameHash(2352146554)]
+		public RefArray<VoiceOverEvent> Events { get { return m_Events; } set { if (OnPropertyChanging("VoiceOverLogicAsset." + nameof(Events), this, m_Events, value)) m_Events = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public RefArray<VoiceOverGroup> Groups { get; set; } = new RefArray<VoiceOverGroup>(); // 0x10 (16)
+		protected RefArray<VoiceOverGroup> m_Groups = new RefArray<VoiceOverGroup>();
+		[ContainerField(16), ContainerFieldNameHash(2573340009)]
+		public RefArray<VoiceOverGroup> Groups { get { return m_Groups; } set { if (OnPropertyChanging("VoiceOverLogicAsset." + nameof(Groups), this, m_Groups, value)) m_Groups = value; } } // 0x10 (16)
 		
-		[ContainerField(20)]
-		public RefArray<VoiceOverLogicFlow> Flows { get; set; } = new RefArray<VoiceOverLogicFlow>(); // 0x14 (20)
+		protected RefArray<VoiceOverLogicFlow> m_Flows = new RefArray<VoiceOverLogicFlow>();
+		[ContainerField(20), ContainerFieldNameHash(207046276)]
+		public RefArray<VoiceOverLogicFlow> Flows { get { return m_Flows; } set { if (OnPropertyChanging("VoiceOverLogicAsset." + nameof(Flows), this, m_Flows, value)) m_Flows = value; } } // 0x14 (20)
 		
-		[ContainerField(24)]
-		public CtrRef<VoiceOverSystemAsset> System { get; set; } = new CtrRef<VoiceOverSystemAsset>(); // 0x18 (24)
+		protected CtrRef<VoiceOverSystemAsset> m_System = new CtrRef<VoiceOverSystemAsset>();
+		[ContainerField(24), ContainerFieldNameHash(3333232768)]
+		public CtrRef<VoiceOverSystemAsset> System { get { return m_System; } set { if (OnPropertyChanging("VoiceOverLogicAsset." + nameof(System), this, m_System, value)) m_System = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class LevelControlEntityData : 
 		GameEntityData
 	{
-		[ContainerField(96), LayoutImmutable]
-		public string LevelToLoad { get; set; } // 0x60 (96)
+		protected string m_LevelToLoad = new string();
+		[ContainerField(96), LayoutImmutable, ContainerFieldNameHash(932165454)]
+		public string LevelToLoad { get { return m_LevelToLoad; } set { if (OnPropertyChanging("LevelControlEntityData." + nameof(LevelToLoad), this, m_LevelToLoad, value)) m_LevelToLoad = value; } } // 0x60 (96)
 		
-		[ContainerField(100), LayoutImmutable, Blittable]
-		public bool RollCredits { get; set; } // 0x64 (100)
+		protected bool m_RollCredits = new bool();
+		[ContainerField(100), LayoutImmutable, Blittable, ContainerFieldNameHash(3139123878)]
+		public bool RollCredits { get { return m_RollCredits; } set { if (OnPropertyChanging("LevelControlEntityData." + nameof(RollCredits), this, m_RollCredits, value)) m_RollCredits = value; } } // 0x64 (100)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

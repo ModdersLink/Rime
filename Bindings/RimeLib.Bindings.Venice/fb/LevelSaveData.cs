@@ -5,20 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class LevelSaveData : 
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable, Blittable]
-		public uint SaveSize { get; set; } // 0x8 (8)
+		protected uint m_SaveSize = new uint();
+		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(968383361)]
+		public uint SaveSize { get { return m_SaveSize; } set { if (OnPropertyChanging("LevelSaveData." + nameof(SaveSize), this, m_SaveSize, value)) m_SaveSize = value; } } // 0x8 (8)
 		
-		[ContainerField(12)]
-		public List<string> SaveNames { get; set; } = new List<string>(); // 0xC (12)
+		protected List<string> m_SaveNames = new List<string>();
+		[ContainerField(12), ContainerFieldNameHash(1878430608)]
+		public List<string> SaveNames { get { return m_SaveNames; } set { if (OnPropertyChanging("LevelSaveData." + nameof(SaveNames), this, m_SaveNames, value)) m_SaveNames = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

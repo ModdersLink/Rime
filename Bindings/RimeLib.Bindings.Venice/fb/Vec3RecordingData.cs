@@ -5,17 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class Vec3RecordingData : 
 		PropertyRecordingData
 	{
-		[ContainerField(12)]
-		public List<Vec3> Values { get; set; } = new List<Vec3>(); // 0xC (12)
+		protected List<Vec3> m_Values = new List<Vec3>();
+		[ContainerField(12), ContainerFieldNameHash(3142410589)]
+		public List<Vec3> Values { get { return m_Values; } set { if (OnPropertyChanging("Vec3RecordingData." + nameof(Values), this, m_Values, value)) m_Values = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

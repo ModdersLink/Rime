@@ -5,29 +5,42 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class PatrolOrderEntityData : 
 		BFOrderEntityData
 	{
-		[ContainerField(40)]
-		public RouteType TypeOfRoute { get; set; } = new RouteType(); // 0x28 (40)
+		protected RouteType m_TypeOfRoute = new RouteType();
+		[ContainerField(40), ContainerFieldNameHash(2152665933)]
+		public RouteType TypeOfRoute { get { return m_TypeOfRoute; } set { if (OnPropertyChanging("PatrolOrderEntityData." + nameof(TypeOfRoute), this, m_TypeOfRoute, value)) m_TypeOfRoute = value; } } // 0x28 (40)
 		
-		[ContainerField(44)]
-		public CombatPatrolMode CombatMode { get; set; } = new CombatPatrolMode(); // 0x2C (44)
+		protected CombatPatrolMode m_CombatMode = new CombatPatrolMode();
+		[ContainerField(44), ContainerFieldNameHash(3144829264)]
+		public CombatPatrolMode CombatMode { get { return m_CombatMode; } set { if (OnPropertyChanging("PatrolOrderEntityData." + nameof(CombatMode), this, m_CombatMode, value)) m_CombatMode = value; } } // 0x2C (44)
 		
-		[ContainerField(48)]
-		public CtrRef<WaypointData> StartingWaypoint { get; set; } = new CtrRef<WaypointData>(); // 0x30 (48)
+		protected CtrRef<WaypointData> m_StartingWaypoint = new CtrRef<WaypointData>();
+		[ContainerField(48), ContainerFieldNameHash(3942738150)]
+		public CtrRef<WaypointData> StartingWaypoint { get { return m_StartingWaypoint; } set { if (OnPropertyChanging("PatrolOrderEntityData." + nameof(StartingWaypoint), this, m_StartingWaypoint, value)) m_StartingWaypoint = value; } } // 0x30 (48)
 		
-		[ContainerField(52), LayoutImmutable, Blittable]
-		public bool StartAtGeometricallyClosestWaypoint { get; set; } // 0x34 (52)
+		protected bool m_StartAtGeometricallyClosestWaypoint = new bool();
+		[ContainerField(52), LayoutImmutable, Blittable, ContainerFieldNameHash(4268018707)]
+		public bool StartAtGeometricallyClosestWaypoint { get { return m_StartAtGeometricallyClosestWaypoint; } set { if (OnPropertyChanging("PatrolOrderEntityData." + nameof(StartAtGeometricallyClosestWaypoint), this, m_StartAtGeometricallyClosestWaypoint, value)) m_StartAtGeometricallyClosestWaypoint = value; } } // 0x34 (52)
 		
-		[ContainerField(53), LayoutImmutable, Blittable]
-		public bool UsePathFinding { get; set; } // 0x35 (53)
+		protected bool m_UsePathFinding = new bool();
+		[ContainerField(53), LayoutImmutable, Blittable, ContainerFieldNameHash(2941510446)]
+		public bool UsePathFinding { get { return m_UsePathFinding; } set { if (OnPropertyChanging("PatrolOrderEntityData." + nameof(UsePathFinding), this, m_UsePathFinding, value)) m_UsePathFinding = value; } } // 0x35 (53)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

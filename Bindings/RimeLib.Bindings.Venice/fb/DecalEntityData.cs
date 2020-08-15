@@ -5,28 +5,42 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class DecalEntityData : 
 		GameEntityData
 	{
-		[ContainerField(96)]
-		public CtrRef<SurfaceShaderBaseAsset> Shader { get; set; } = new CtrRef<SurfaceShaderBaseAsset>(); // 0x60 (96)
+		protected CtrRef<SurfaceShaderBaseAsset> m_Shader = new CtrRef<SurfaceShaderBaseAsset>();
+		[ContainerField(96), ContainerFieldNameHash(3352909900)]
+		public CtrRef<SurfaceShaderBaseAsset> Shader { get { return m_Shader; } set { if (OnPropertyChanging("DecalEntityData." + nameof(Shader), this, m_Shader, value)) m_Shader = value; } } // 0x60 (96)
 		
-		[ContainerField(100)]
-		public DecalAtlasTile AtlasTile { get; set; } = new DecalAtlasTile(); // 0x64 (100)
+		protected DecalAtlasTile m_AtlasTile = new DecalAtlasTile();
+		[ContainerField(100), ContainerFieldNameHash(3027817338)]
+		public DecalAtlasTile AtlasTile { get { return m_AtlasTile; } set { if (OnPropertyChanging("DecalEntityData." + nameof(AtlasTile), this, m_AtlasTile, value)) m_AtlasTile = value; } } // 0x64 (100)
 		
-		[ContainerField(120), LayoutImmutable, Blittable]
-		public sbyte MaterialIndex { get; set; } // 0x78 (120)
+		protected sbyte m_MaterialIndex = new sbyte();
+		[ContainerField(120), LayoutImmutable, Blittable, ContainerFieldNameHash(1001372496)]
+		public sbyte MaterialIndex { get { return m_MaterialIndex; } set { if (OnPropertyChanging("DecalEntityData." + nameof(MaterialIndex), this, m_MaterialIndex, value)) m_MaterialIndex = value; } } // 0x78 (120)
 		
-		[ContainerField(121), LayoutImmutable, Blittable]
-		public sbyte SortingPriority { get; set; } // 0x79 (121)
+		protected sbyte m_SortingPriority = new sbyte();
+		[ContainerField(121), LayoutImmutable, Blittable, ContainerFieldNameHash(3523655821)]
+		public sbyte SortingPriority { get { return m_SortingPriority; } set { if (OnPropertyChanging("DecalEntityData." + nameof(SortingPriority), this, m_SortingPriority, value)) m_SortingPriority = value; } } // 0x79 (121)
 		
-		[ContainerField(122), LayoutImmutable, Blittable]
-		public bool Projected { get; set; } // 0x7A (122)
+		protected bool m_Projected = new bool();
+		[ContainerField(122), LayoutImmutable, Blittable, ContainerFieldNameHash(4152361265)]
+		public bool Projected { get { return m_Projected; } set { if (OnPropertyChanging("DecalEntityData." + nameof(Projected), this, m_Projected, value)) m_Projected = value; } } // 0x7A (122)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

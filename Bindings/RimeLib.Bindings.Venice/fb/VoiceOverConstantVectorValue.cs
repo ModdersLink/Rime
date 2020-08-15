@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class VoiceOverConstantVectorValue : 
 		VoiceOverConstantValue
 	{
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable]
-		public Vec4 Value { get; set; } = new Vec4(); // 0x10 (16)
+		protected Vec4 m_Value = new Vec4();
+		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(225375086)]
+		public Vec4 Value { get { return m_Value; } set { if (OnPropertyChanging("VoiceOverConstantVectorValue." + nameof(Value), this, m_Value, value)) m_Value = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

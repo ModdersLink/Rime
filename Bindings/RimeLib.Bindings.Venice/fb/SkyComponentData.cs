@@ -5,143 +5,194 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class SkyComponentData : 
 		ComponentData
 	{
-		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 CloudLayerSunColor { get; set; } = new Vec3(); // 0x60 (96)
+		protected Vec3 m_CloudLayerSunColor = new Vec3();
+		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(2080466082)]
+		public Vec3 CloudLayerSunColor { get { return m_CloudLayerSunColor; } set { if (OnPropertyChanging("SkyComponentData." + nameof(CloudLayerSunColor), this, m_CloudLayerSunColor, value)) m_CloudLayerSunColor = value; } } // 0x60 (96)
 		
-		[ContainerField(112), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 CloudLayer2Color { get; set; } = new Vec3(); // 0x70 (112)
+		protected Vec3 m_CloudLayer2Color = new Vec3();
+		[ContainerField(112), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(2853016120)]
+		public Vec3 CloudLayer2Color { get { return m_CloudLayer2Color; } set { if (OnPropertyChanging("SkyComponentData." + nameof(CloudLayer2Color), this, m_CloudLayer2Color, value)) m_CloudLayer2Color = value; } } // 0x70 (112)
 		
-		[ContainerField(128), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 CloudLayer1Color { get; set; } = new Vec3(); // 0x80 (128)
+		protected Vec3 m_CloudLayer1Color = new Vec3();
+		[ContainerField(128), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(3041579739)]
+		public Vec3 CloudLayer1Color { get { return m_CloudLayer1Color; } set { if (OnPropertyChanging("SkyComponentData." + nameof(CloudLayer1Color), this, m_CloudLayer1Color, value)) m_CloudLayer1Color = value; } } // 0x80 (128)
 		
-		[ContainerField(144)]
-		public CtrRef<TextureAsset> SkyGradientTexture { get; set; } = new CtrRef<TextureAsset>(); // 0x90 (144)
+		protected CtrRef<TextureAsset> m_SkyGradientTexture = new CtrRef<TextureAsset>();
+		[ContainerField(144), ContainerFieldNameHash(1001603005)]
+		public CtrRef<TextureAsset> SkyGradientTexture { get { return m_SkyGradientTexture; } set { if (OnPropertyChanging("SkyComponentData." + nameof(SkyGradientTexture), this, m_SkyGradientTexture, value)) m_SkyGradientTexture = value; } } // 0x90 (144)
 		
-		[ContainerField(148), LayoutImmutable, Blittable]
-		public float SunSize { get; set; } // 0x94 (148)
+		protected float m_SunSize = new float();
+		[ContainerField(148), LayoutImmutable, Blittable, ContainerFieldNameHash(2149343816)]
+		public float SunSize { get { return m_SunSize; } set { if (OnPropertyChanging("SkyComponentData." + nameof(SunSize), this, m_SunSize, value)) m_SunSize = value; } } // 0x94 (148)
 		
-		[ContainerField(152), LayoutImmutable, Blittable]
-		public float BrightnessScale { get; set; } // 0x98 (152)
+		protected float m_BrightnessScale = new float();
+		[ContainerField(152), LayoutImmutable, Blittable, ContainerFieldNameHash(1301955796)]
+		public float BrightnessScale { get { return m_BrightnessScale; } set { if (OnPropertyChanging("SkyComponentData." + nameof(BrightnessScale), this, m_BrightnessScale, value)) m_BrightnessScale = value; } } // 0x98 (152)
 		
-		[ContainerField(156), LayoutImmutable, Blittable]
-		public float SunScale { get; set; } // 0x9C (156)
+		protected float m_SunScale = new float();
+		[ContainerField(156), LayoutImmutable, Blittable, ContainerFieldNameHash(2209231701)]
+		public float SunScale { get { return m_SunScale; } set { if (OnPropertyChanging("SkyComponentData." + nameof(SunScale), this, m_SunScale, value)) m_SunScale = value; } } // 0x9C (156)
 		
-		[ContainerField(160), LayoutImmutable, Blittable]
-		public float PanoramicUVMaxX { get; set; } // 0xA0 (160)
+		protected float m_PanoramicUVMaxX = new float();
+		[ContainerField(160), LayoutImmutable, Blittable, ContainerFieldNameHash(2272268590)]
+		public float PanoramicUVMaxX { get { return m_PanoramicUVMaxX; } set { if (OnPropertyChanging("SkyComponentData." + nameof(PanoramicUVMaxX), this, m_PanoramicUVMaxX, value)) m_PanoramicUVMaxX = value; } } // 0xA0 (160)
 		
-		[ContainerField(164), LayoutImmutable, Blittable]
-		public float PanoramicUVMinY { get; set; } // 0xA4 (164)
+		protected float m_PanoramicUVMinY = new float();
+		[ContainerField(164), LayoutImmutable, Blittable, ContainerFieldNameHash(2272259825)]
+		public float PanoramicUVMinY { get { return m_PanoramicUVMinY; } set { if (OnPropertyChanging("SkyComponentData." + nameof(PanoramicUVMinY), this, m_PanoramicUVMinY, value)) m_PanoramicUVMinY = value; } } // 0xA4 (164)
 		
-		[ContainerField(168), LayoutImmutable, Blittable]
-		public float PanoramicUVMaxY { get; set; } // 0xA8 (168)
+		protected float m_PanoramicUVMaxY = new float();
+		[ContainerField(168), LayoutImmutable, Blittable, ContainerFieldNameHash(2272268591)]
+		public float PanoramicUVMaxY { get { return m_PanoramicUVMaxY; } set { if (OnPropertyChanging("SkyComponentData." + nameof(PanoramicUVMaxY), this, m_PanoramicUVMaxY, value)) m_PanoramicUVMaxY = value; } } // 0xA8 (168)
 		
-		[ContainerField(172)]
-		public Realm Realm { get; set; } = new Realm(); // 0xAC (172)
+		protected Realm m_Realm = new Realm();
+		[ContainerField(172), ContainerFieldNameHash(229961746)]
+		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("SkyComponentData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0xAC (172)
 		
-		[ContainerField(176), LayoutImmutable, Blittable]
-		public float PanoramicUVMinX { get; set; } // 0xB0 (176)
+		protected float m_PanoramicUVMinX = new float();
+		[ContainerField(176), LayoutImmutable, Blittable, ContainerFieldNameHash(2272259824)]
+		public float PanoramicUVMinX { get { return m_PanoramicUVMinX; } set { if (OnPropertyChanging("SkyComponentData." + nameof(PanoramicUVMinX), this, m_PanoramicUVMinX, value)) m_PanoramicUVMinX = value; } } // 0xB0 (176)
 		
-		[ContainerField(180)]
-		public CtrRef<TextureAsset> PanoramicTexture { get; set; } = new CtrRef<TextureAsset>(); // 0xB4 (180)
+		protected CtrRef<TextureAsset> m_PanoramicTexture = new CtrRef<TextureAsset>();
+		[ContainerField(180), ContainerFieldNameHash(2684028734)]
+		public CtrRef<TextureAsset> PanoramicTexture { get { return m_PanoramicTexture; } set { if (OnPropertyChanging("SkyComponentData." + nameof(PanoramicTexture), this, m_PanoramicTexture, value)) m_PanoramicTexture = value; } } // 0xB4 (180)
 		
-		[ContainerField(184)]
-		public CtrRef<TextureAsset> PanoramicAlphaTexture { get; set; } = new CtrRef<TextureAsset>(); // 0xB8 (184)
+		protected CtrRef<TextureAsset> m_PanoramicAlphaTexture = new CtrRef<TextureAsset>();
+		[ContainerField(184), ContainerFieldNameHash(2261597450)]
+		public CtrRef<TextureAsset> PanoramicAlphaTexture { get { return m_PanoramicAlphaTexture; } set { if (OnPropertyChanging("SkyComponentData." + nameof(PanoramicAlphaTexture), this, m_PanoramicAlphaTexture, value)) m_PanoramicAlphaTexture = value; } } // 0xB8 (184)
 		
-		[ContainerField(188), LayoutImmutable, Blittable]
-		public float PanoramicTileFactor { get; set; } // 0xBC (188)
+		protected float m_PanoramicTileFactor = new float();
+		[ContainerField(188), LayoutImmutable, Blittable, ContainerFieldNameHash(4205943736)]
+		public float PanoramicTileFactor { get { return m_PanoramicTileFactor; } set { if (OnPropertyChanging("SkyComponentData." + nameof(PanoramicTileFactor), this, m_PanoramicTileFactor, value)) m_PanoramicTileFactor = value; } } // 0xBC (188)
 		
-		[ContainerField(192)]
-		public CtrRef<TextureAsset> CloudLayerMaskTexture { get; set; } = new CtrRef<TextureAsset>(); // 0xC0 (192)
+		protected CtrRef<TextureAsset> m_CloudLayerMaskTexture = new CtrRef<TextureAsset>();
+		[ContainerField(192), ContainerFieldNameHash(1350837372)]
+		public CtrRef<TextureAsset> CloudLayerMaskTexture { get { return m_CloudLayerMaskTexture; } set { if (OnPropertyChanging("SkyComponentData." + nameof(CloudLayerMaskTexture), this, m_CloudLayerMaskTexture, value)) m_CloudLayerMaskTexture = value; } } // 0xC0 (192)
 		
-		[ContainerField(196), LayoutImmutable, Blittable]
-		public float CloudLayer1Altitude { get; set; } // 0xC4 (196)
+		protected float m_CloudLayer1Altitude = new float();
+		[ContainerField(196), LayoutImmutable, Blittable, ContainerFieldNameHash(2061086550)]
+		public float CloudLayer1Altitude { get { return m_CloudLayer1Altitude; } set { if (OnPropertyChanging("SkyComponentData." + nameof(CloudLayer1Altitude), this, m_CloudLayer1Altitude, value)) m_CloudLayer1Altitude = value; } } // 0xC4 (196)
 		
-		[ContainerField(200), LayoutImmutable, Blittable]
-		public float CloudLayer1TileFactor { get; set; } // 0xC8 (200)
+		protected float m_CloudLayer1TileFactor = new float();
+		[ContainerField(200), LayoutImmutable, Blittable, ContainerFieldNameHash(1142043935)]
+		public float CloudLayer1TileFactor { get { return m_CloudLayer1TileFactor; } set { if (OnPropertyChanging("SkyComponentData." + nameof(CloudLayer1TileFactor), this, m_CloudLayer1TileFactor, value)) m_CloudLayer1TileFactor = value; } } // 0xC8 (200)
 		
-		[ContainerField(204), LayoutImmutable, Blittable]
-		public float CloudLayer1Rotation { get; set; } // 0xCC (204)
+		protected float m_CloudLayer1Rotation = new float();
+		[ContainerField(204), LayoutImmutable, Blittable, ContainerFieldNameHash(1760002578)]
+		public float CloudLayer1Rotation { get { return m_CloudLayer1Rotation; } set { if (OnPropertyChanging("SkyComponentData." + nameof(CloudLayer1Rotation), this, m_CloudLayer1Rotation, value)) m_CloudLayer1Rotation = value; } } // 0xCC (204)
 		
-		[ContainerField(208), LayoutImmutable, Blittable]
-		public float CloudLayer1Speed { get; set; } // 0xD0 (208)
+		protected float m_CloudLayer1Speed = new float();
+		[ContainerField(208), LayoutImmutable, Blittable, ContainerFieldNameHash(3059870497)]
+		public float CloudLayer1Speed { get { return m_CloudLayer1Speed; } set { if (OnPropertyChanging("SkyComponentData." + nameof(CloudLayer1Speed), this, m_CloudLayer1Speed, value)) m_CloudLayer1Speed = value; } } // 0xD0 (208)
 		
-		[ContainerField(212), LayoutImmutable, Blittable]
-		public float CloudLayer1SunLightIntensity { get; set; } // 0xD4 (212)
+		protected float m_CloudLayer1SunLightIntensity = new float();
+		[ContainerField(212), LayoutImmutable, Blittable, ContainerFieldNameHash(1815101471)]
+		public float CloudLayer1SunLightIntensity { get { return m_CloudLayer1SunLightIntensity; } set { if (OnPropertyChanging("SkyComponentData." + nameof(CloudLayer1SunLightIntensity), this, m_CloudLayer1SunLightIntensity, value)) m_CloudLayer1SunLightIntensity = value; } } // 0xD4 (212)
 		
-		[ContainerField(216), LayoutImmutable, Blittable]
-		public float PanoramicRotation { get; set; } // 0xD8 (216)
+		protected float m_PanoramicRotation = new float();
+		[ContainerField(216), LayoutImmutable, Blittable, ContainerFieldNameHash(980600565)]
+		public float PanoramicRotation { get { return m_PanoramicRotation; } set { if (OnPropertyChanging("SkyComponentData." + nameof(PanoramicRotation), this, m_PanoramicRotation, value)) m_PanoramicRotation = value; } } // 0xD8 (216)
 		
-		[ContainerField(220), LayoutImmutable, Blittable]
-		public float CloudLayer1AmbientLightIntensity { get; set; } // 0xDC (220)
+		protected float m_CloudLayer1AmbientLightIntensity = new float();
+		[ContainerField(220), LayoutImmutable, Blittable, ContainerFieldNameHash(1412432303)]
+		public float CloudLayer1AmbientLightIntensity { get { return m_CloudLayer1AmbientLightIntensity; } set { if (OnPropertyChanging("SkyComponentData." + nameof(CloudLayer1AmbientLightIntensity), this, m_CloudLayer1AmbientLightIntensity, value)) m_CloudLayer1AmbientLightIntensity = value; } } // 0xDC (220)
 		
-		[ContainerField(224), LayoutImmutable, Blittable]
-		public float CloudLayer1SunLightPower { get; set; } // 0xE0 (224)
+		protected float m_CloudLayer1SunLightPower = new float();
+		[ContainerField(224), LayoutImmutable, Blittable, ContainerFieldNameHash(650181263)]
+		public float CloudLayer1SunLightPower { get { return m_CloudLayer1SunLightPower; } set { if (OnPropertyChanging("SkyComponentData." + nameof(CloudLayer1SunLightPower), this, m_CloudLayer1SunLightPower, value)) m_CloudLayer1SunLightPower = value; } } // 0xE0 (224)
 		
-		[ContainerField(228), LayoutImmutable, Blittable]
-		public float CloudLayer1AlphaMul { get; set; } // 0xE4 (228)
+		protected float m_CloudLayer1AlphaMul = new float();
+		[ContainerField(228), LayoutImmutable, Blittable, ContainerFieldNameHash(1904139366)]
+		public float CloudLayer1AlphaMul { get { return m_CloudLayer1AlphaMul; } set { if (OnPropertyChanging("SkyComponentData." + nameof(CloudLayer1AlphaMul), this, m_CloudLayer1AlphaMul, value)) m_CloudLayer1AlphaMul = value; } } // 0xE4 (228)
 		
-		[ContainerField(232)]
-		public CtrRef<TextureAsset> CloudLayer1Texture { get; set; } = new CtrRef<TextureAsset>(); // 0xE8 (232)
+		protected CtrRef<TextureAsset> m_CloudLayer1Texture = new CtrRef<TextureAsset>();
+		[ContainerField(232), ContainerFieldNameHash(3691166713)]
+		public CtrRef<TextureAsset> CloudLayer1Texture { get { return m_CloudLayer1Texture; } set { if (OnPropertyChanging("SkyComponentData." + nameof(CloudLayer1Texture), this, m_CloudLayer1Texture, value)) m_CloudLayer1Texture = value; } } // 0xE8 (232)
 		
-		[ContainerField(236), LayoutImmutable, Blittable]
-		public float CloudLayer2Altitude { get; set; } // 0xEC (236)
+		protected float m_CloudLayer2Altitude = new float();
+		[ContainerField(236), LayoutImmutable, Blittable, ContainerFieldNameHash(2002768725)]
+		public float CloudLayer2Altitude { get { return m_CloudLayer2Altitude; } set { if (OnPropertyChanging("SkyComponentData." + nameof(CloudLayer2Altitude), this, m_CloudLayer2Altitude, value)) m_CloudLayer2Altitude = value; } } // 0xEC (236)
 		
-		[ContainerField(240), LayoutImmutable, Blittable]
-		public float CloudLayer2TileFactor { get; set; } // 0xF0 (240)
+		protected float m_CloudLayer2TileFactor = new float();
+		[ContainerField(240), LayoutImmutable, Blittable, ContainerFieldNameHash(2650580380)]
+		public float CloudLayer2TileFactor { get { return m_CloudLayer2TileFactor; } set { if (OnPropertyChanging("SkyComponentData." + nameof(CloudLayer2TileFactor), this, m_CloudLayer2TileFactor, value)) m_CloudLayer2TileFactor = value; } } // 0xF0 (240)
 		
-		[ContainerField(244), LayoutImmutable, Blittable]
-		public float CloudLayer2Rotation { get; set; } // 0xF4 (244)
+		protected float m_CloudLayer2Rotation = new float();
+		[ContainerField(244), LayoutImmutable, Blittable, ContainerFieldNameHash(2105944465)]
+		public float CloudLayer2Rotation { get { return m_CloudLayer2Rotation; } set { if (OnPropertyChanging("SkyComponentData." + nameof(CloudLayer2Rotation), this, m_CloudLayer2Rotation, value)) m_CloudLayer2Rotation = value; } } // 0xF4 (244)
 		
-		[ContainerField(248), LayoutImmutable, Blittable]
-		public float CloudLayer2Speed { get; set; } // 0xF8 (248)
+		protected float m_CloudLayer2Speed = new float();
+		[ContainerField(248), LayoutImmutable, Blittable, ContainerFieldNameHash(2871245762)]
+		public float CloudLayer2Speed { get { return m_CloudLayer2Speed; } set { if (OnPropertyChanging("SkyComponentData." + nameof(CloudLayer2Speed), this, m_CloudLayer2Speed, value)) m_CloudLayer2Speed = value; } } // 0xF8 (248)
 		
-		[ContainerField(252), LayoutImmutable, Blittable]
-		public float CloudLayer2SunLightIntensity { get; set; } // 0xFC (252)
+		protected float m_CloudLayer2SunLightIntensity = new float();
+		[ContainerField(252), LayoutImmutable, Blittable, ContainerFieldNameHash(787209660)]
+		public float CloudLayer2SunLightIntensity { get { return m_CloudLayer2SunLightIntensity; } set { if (OnPropertyChanging("SkyComponentData." + nameof(CloudLayer2SunLightIntensity), this, m_CloudLayer2SunLightIntensity, value)) m_CloudLayer2SunLightIntensity = value; } } // 0xFC (252)
 		
-		[ContainerField(256), LayoutImmutable, Blittable]
-		public float CloudLayer2SunLightPower { get; set; } // 0x100 (256)
+		protected float m_CloudLayer2SunLightPower = new float();
+		[ContainerField(256), LayoutImmutable, Blittable, ContainerFieldNameHash(1463951660)]
+		public float CloudLayer2SunLightPower { get { return m_CloudLayer2SunLightPower; } set { if (OnPropertyChanging("SkyComponentData." + nameof(CloudLayer2SunLightPower), this, m_CloudLayer2SunLightPower, value)) m_CloudLayer2SunLightPower = value; } } // 0x100 (256)
 		
-		[ContainerField(260), LayoutImmutable, Blittable]
-		public float CloudLayer2AmbientLightIntensity { get; set; } // 0x104 (260)
+		protected float m_CloudLayer2AmbientLightIntensity = new float();
+		[ContainerField(260), LayoutImmutable, Blittable, ContainerFieldNameHash(983202188)]
+		public float CloudLayer2AmbientLightIntensity { get { return m_CloudLayer2AmbientLightIntensity; } set { if (OnPropertyChanging("SkyComponentData." + nameof(CloudLayer2AmbientLightIntensity), this, m_CloudLayer2AmbientLightIntensity, value)) m_CloudLayer2AmbientLightIntensity = value; } } // 0x104 (260)
 		
-		[ContainerField(264), LayoutImmutable, Blittable]
-		public float StaticEnvmapScale { get; set; } // 0x108 (264)
+		protected float m_StaticEnvmapScale = new float();
+		[ContainerField(264), LayoutImmutable, Blittable, ContainerFieldNameHash(1053850052)]
+		public float StaticEnvmapScale { get { return m_StaticEnvmapScale; } set { if (OnPropertyChanging("SkyComponentData." + nameof(StaticEnvmapScale), this, m_StaticEnvmapScale, value)) m_StaticEnvmapScale = value; } } // 0x108 (264)
 		
-		[ContainerField(268), LayoutImmutable, Blittable]
-		public float CloudLayer2AlphaMul { get; set; } // 0x10C (268)
+		protected float m_CloudLayer2AlphaMul = new float();
+		[ContainerField(268), LayoutImmutable, Blittable, ContainerFieldNameHash(1847986405)]
+		public float CloudLayer2AlphaMul { get { return m_CloudLayer2AlphaMul; } set { if (OnPropertyChanging("SkyComponentData." + nameof(CloudLayer2AlphaMul), this, m_CloudLayer2AlphaMul, value)) m_CloudLayer2AlphaMul = value; } } // 0x10C (268)
 		
-		[ContainerField(272)]
-		public CtrRef<TextureAsset> CloudLayer2Texture { get; set; } = new CtrRef<TextureAsset>(); // 0x110 (272)
+		protected CtrRef<TextureAsset> m_CloudLayer2Texture = new CtrRef<TextureAsset>();
+		[ContainerField(272), ContainerFieldNameHash(1201990938)]
+		public CtrRef<TextureAsset> CloudLayer2Texture { get { return m_CloudLayer2Texture; } set { if (OnPropertyChanging("SkyComponentData." + nameof(CloudLayer2Texture), this, m_CloudLayer2Texture, value)) m_CloudLayer2Texture = value; } } // 0x110 (272)
 		
-		[ContainerField(276)]
-		public CtrRef<TextureAsset> StaticEnvmapTexture { get; set; } = new CtrRef<TextureAsset>(); // 0x114 (276)
+		protected CtrRef<TextureAsset> m_StaticEnvmapTexture = new CtrRef<TextureAsset>();
+		[ContainerField(276), ContainerFieldNameHash(2547512451)]
+		public CtrRef<TextureAsset> StaticEnvmapTexture { get { return m_StaticEnvmapTexture; } set { if (OnPropertyChanging("SkyComponentData." + nameof(StaticEnvmapTexture), this, m_StaticEnvmapTexture, value)) m_StaticEnvmapTexture = value; } } // 0x114 (276)
 		
-		[ContainerField(280), LayoutImmutable, Blittable]
-		public float SkyVisibilityExponent { get; set; } // 0x118 (280)
+		protected float m_SkyVisibilityExponent = new float();
+		[ContainerField(280), LayoutImmutable, Blittable, ContainerFieldNameHash(3116824337)]
+		public float SkyVisibilityExponent { get { return m_SkyVisibilityExponent; } set { if (OnPropertyChanging("SkyComponentData." + nameof(SkyVisibilityExponent), this, m_SkyVisibilityExponent, value)) m_SkyVisibilityExponent = value; } } // 0x118 (280)
 		
-		[ContainerField(284), LayoutImmutable, Blittable]
-		public float SkyEnvmap8BitTexScale { get; set; } // 0x11C (284)
+		protected float m_SkyEnvmap8BitTexScale = new float();
+		[ContainerField(284), LayoutImmutable, Blittable, ContainerFieldNameHash(3441001619)]
+		public float SkyEnvmap8BitTexScale { get { return m_SkyEnvmap8BitTexScale; } set { if (OnPropertyChanging("SkyComponentData." + nameof(SkyEnvmap8BitTexScale), this, m_SkyEnvmap8BitTexScale, value)) m_SkyEnvmap8BitTexScale = value; } } // 0x11C (284)
 		
-		[ContainerField(288)]
-		public CtrRef<TextureAsset> CustomEnvmapTexture { get; set; } = new CtrRef<TextureAsset>(); // 0x120 (288)
+		protected CtrRef<TextureAsset> m_CustomEnvmapTexture = new CtrRef<TextureAsset>();
+		[ContainerField(288), ContainerFieldNameHash(321006824)]
+		public CtrRef<TextureAsset> CustomEnvmapTexture { get { return m_CustomEnvmapTexture; } set { if (OnPropertyChanging("SkyComponentData." + nameof(CustomEnvmapTexture), this, m_CustomEnvmapTexture, value)) m_CustomEnvmapTexture = value; } } // 0x120 (288)
 		
-		[ContainerField(292), LayoutImmutable, Blittable]
-		public float CustomEnvmapScale { get; set; } // 0x124 (292)
+		protected float m_CustomEnvmapScale = new float();
+		[ContainerField(292), LayoutImmutable, Blittable, ContainerFieldNameHash(3009704111)]
+		public float CustomEnvmapScale { get { return m_CustomEnvmapScale; } set { if (OnPropertyChanging("SkyComponentData." + nameof(CustomEnvmapScale), this, m_CustomEnvmapScale, value)) m_CustomEnvmapScale = value; } } // 0x124 (292)
 		
-		[ContainerField(296), LayoutImmutable, Blittable]
-		public float CustomEnvmapAmbient { get; set; } // 0x128 (296)
+		protected float m_CustomEnvmapAmbient = new float();
+		[ContainerField(296), LayoutImmutable, Blittable, ContainerFieldNameHash(1800201039)]
+		public float CustomEnvmapAmbient { get { return m_CustomEnvmapAmbient; } set { if (OnPropertyChanging("SkyComponentData." + nameof(CustomEnvmapAmbient), this, m_CustomEnvmapAmbient, value)) m_CustomEnvmapAmbient = value; } } // 0x128 (296)
 		
-		[ContainerField(300), LayoutImmutable, Blittable]
-		public bool Enable { get; set; } // 0x12C (300)
+		protected bool m_Enable = new bool();
+		[ContainerField(300), LayoutImmutable, Blittable, ContainerFieldNameHash(2342790116)]
+		public bool Enable { get { return m_Enable; } set { if (OnPropertyChanging("SkyComponentData." + nameof(Enable), this, m_Enable, value)) m_Enable = value; } } // 0x12C (300)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

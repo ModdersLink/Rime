@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class ShaderDatabaseAsset : 
 		Asset
 	{
-		[ContainerField(12), LayoutImmutable]
-		public string LevelName { get; set; } // 0xC (12)
+		protected string m_LevelName = new string();
+		[ContainerField(12), LayoutImmutable, ContainerFieldNameHash(1599082292)]
+		public string LevelName { get { return m_LevelName; } set { if (OnPropertyChanging("ShaderDatabaseAsset." + nameof(LevelName), this, m_LevelName, value)) m_LevelName = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

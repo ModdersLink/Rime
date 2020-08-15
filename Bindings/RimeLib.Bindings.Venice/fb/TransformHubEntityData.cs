@@ -5,41 +5,58 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class TransformHubEntityData : 
 		EntityData
 	{
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable]
-		public LinearTransform In4 { get; set; } = new LinearTransform(); // 0x10 (16)
+		protected LinearTransform m_In4 = new LinearTransform();
+		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(193450870)]
+		public LinearTransform In4 { get { return m_In4; } set { if (OnPropertyChanging("TransformHubEntityData." + nameof(In4), this, m_In4, value)) m_In4 = value; } } // 0x10 (16)
 		
-		[ContainerField(80), Homogeneous, LayoutImmutable, Blittable]
-		public LinearTransform In1 { get; set; } = new LinearTransform(); // 0x50 (80)
+		protected LinearTransform m_In1 = new LinearTransform();
+		[ContainerField(80), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(193450867)]
+		public LinearTransform In1 { get { return m_In1; } set { if (OnPropertyChanging("TransformHubEntityData." + nameof(In1), this, m_In1, value)) m_In1 = value; } } // 0x50 (80)
 		
-		[ContainerField(144), Homogeneous, LayoutImmutable, Blittable]
-		public LinearTransform In2 { get; set; } = new LinearTransform(); // 0x90 (144)
+		protected LinearTransform m_In2 = new LinearTransform();
+		[ContainerField(144), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(193450864)]
+		public LinearTransform In2 { get { return m_In2; } set { if (OnPropertyChanging("TransformHubEntityData." + nameof(In2), this, m_In2, value)) m_In2 = value; } } // 0x90 (144)
 		
-		[ContainerField(208), Homogeneous, LayoutImmutable, Blittable]
-		public LinearTransform In3 { get; set; } = new LinearTransform(); // 0xD0 (208)
+		protected LinearTransform m_In3 = new LinearTransform();
+		[ContainerField(208), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(193450865)]
+		public LinearTransform In3 { get { return m_In3; } set { if (OnPropertyChanging("TransformHubEntityData." + nameof(In3), this, m_In3, value)) m_In3 = value; } } // 0xD0 (208)
 		
-		[ContainerField(272), Homogeneous, LayoutImmutable, Blittable]
-		public LinearTransform In8 { get; set; } = new LinearTransform(); // 0x110 (272)
+		protected LinearTransform m_In8 = new LinearTransform();
+		[ContainerField(272), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(193450874)]
+		public LinearTransform In8 { get { return m_In8; } set { if (OnPropertyChanging("TransformHubEntityData." + nameof(In8), this, m_In8, value)) m_In8 = value; } } // 0x110 (272)
 		
-		[ContainerField(336), Homogeneous, LayoutImmutable, Blittable]
-		public LinearTransform In5 { get; set; } = new LinearTransform(); // 0x150 (336)
+		protected LinearTransform m_In5 = new LinearTransform();
+		[ContainerField(336), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(193450871)]
+		public LinearTransform In5 { get { return m_In5; } set { if (OnPropertyChanging("TransformHubEntityData." + nameof(In5), this, m_In5, value)) m_In5 = value; } } // 0x150 (336)
 		
-		[ContainerField(400), Homogeneous, LayoutImmutable, Blittable]
-		public LinearTransform In6 { get; set; } = new LinearTransform(); // 0x190 (400)
+		protected LinearTransform m_In6 = new LinearTransform();
+		[ContainerField(400), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(193450868)]
+		public LinearTransform In6 { get { return m_In6; } set { if (OnPropertyChanging("TransformHubEntityData." + nameof(In6), this, m_In6, value)) m_In6 = value; } } // 0x190 (400)
 		
-		[ContainerField(464), Homogeneous, LayoutImmutable, Blittable]
-		public LinearTransform In7 { get; set; } = new LinearTransform(); // 0x1D0 (464)
+		protected LinearTransform m_In7 = new LinearTransform();
+		[ContainerField(464), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(193450869)]
+		public LinearTransform In7 { get { return m_In7; } set { if (OnPropertyChanging("TransformHubEntityData." + nameof(In7), this, m_In7, value)) m_In7 = value; } } // 0x1D0 (464)
 		
-		[ContainerField(528)]
-		public Realm Realm { get; set; } = new Realm(); // 0x210 (528)
+		protected Realm m_Realm = new Realm();
+		[ContainerField(528), ContainerFieldNameHash(229961746)]
+		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("TransformHubEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0x210 (528)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

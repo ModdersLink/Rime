@@ -5,28 +5,42 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class SoldierDecalComponentData : 
 		ComponentData
 	{
-		[ContainerField(96)]
-		public CtrRef<DecalTemplateData> SplashDecal { get; set; } = new CtrRef<DecalTemplateData>(); // 0x60 (96)
+		protected CtrRef<DecalTemplateData> m_SplashDecal = new CtrRef<DecalTemplateData>();
+		[ContainerField(96), ContainerFieldNameHash(2194140991)]
+		public CtrRef<DecalTemplateData> SplashDecal { get { return m_SplashDecal; } set { if (OnPropertyChanging("SoldierDecalComponentData." + nameof(SplashDecal), this, m_SplashDecal, value)) m_SplashDecal = value; } } // 0x60 (96)
 		
-		[ContainerField(100), LayoutImmutable, Blittable]
-		public float SplashRayLength { get; set; } // 0x64 (100)
+		protected float m_SplashRayLength = new float();
+		[ContainerField(100), LayoutImmutable, Blittable, ContainerFieldNameHash(1743765414)]
+		public float SplashRayLength { get { return m_SplashRayLength; } set { if (OnPropertyChanging("SoldierDecalComponentData." + nameof(SplashRayLength), this, m_SplashRayLength, value)) m_SplashRayLength = value; } } // 0x64 (100)
 		
-		[ContainerField(104)]
-		public CtrRef<DecalTemplateData> PoolDecal { get; set; } = new CtrRef<DecalTemplateData>(); // 0x68 (104)
+		protected CtrRef<DecalTemplateData> m_PoolDecal = new CtrRef<DecalTemplateData>();
+		[ContainerField(104), ContainerFieldNameHash(3686889142)]
+		public CtrRef<DecalTemplateData> PoolDecal { get { return m_PoolDecal; } set { if (OnPropertyChanging("SoldierDecalComponentData." + nameof(PoolDecal), this, m_PoolDecal, value)) m_PoolDecal = value; } } // 0x68 (104)
 		
-		[ContainerField(108), LayoutImmutable, Blittable]
-		public float PoolRayYOffset { get; set; } // 0x6C (108)
+		protected float m_PoolRayYOffset = new float();
+		[ContainerField(108), LayoutImmutable, Blittable, ContainerFieldNameHash(41417415)]
+		public float PoolRayYOffset { get { return m_PoolRayYOffset; } set { if (OnPropertyChanging("SoldierDecalComponentData." + nameof(PoolRayYOffset), this, m_PoolRayYOffset, value)) m_PoolRayYOffset = value; } } // 0x6C (108)
 		
-		[ContainerField(112), LayoutImmutable, Blittable]
-		public float PoolRayLength { get; set; } // 0x70 (112)
+		protected float m_PoolRayLength = new float();
+		[ContainerField(112), LayoutImmutable, Blittable, ContainerFieldNameHash(3617868719)]
+		public float PoolRayLength { get { return m_PoolRayLength; } set { if (OnPropertyChanging("SoldierDecalComponentData." + nameof(PoolRayLength), this, m_PoolRayLength, value)) m_PoolRayLength = value; } } // 0x70 (112)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

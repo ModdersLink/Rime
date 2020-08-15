@@ -5,23 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class EventCompareGateEntityData : 
 		EntityData
 	{
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public int Value { get; set; } // 0xC (12)
+		protected int m_Value = new int();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(225375086)]
+		public int Value { get { return m_Value; } set { if (OnPropertyChanging("EventCompareGateEntityData." + nameof(Value), this, m_Value, value)) m_Value = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public EventCompareGateType CompareType { get; set; } = new EventCompareGateType(); // 0x10 (16)
+		protected EventCompareGateType m_CompareType = new EventCompareGateType();
+		[ContainerField(16), ContainerFieldNameHash(1481809914)]
+		public EventCompareGateType CompareType { get { return m_CompareType; } set { if (OnPropertyChanging("EventCompareGateEntityData." + nameof(CompareType), this, m_CompareType, value)) m_CompareType = value; } } // 0x10 (16)
 		
-		[ContainerField(20)]
-		public Realm Realm { get; set; } = new Realm(); // 0x14 (20)
+		protected Realm m_Realm = new Realm();
+		[ContainerField(20), ContainerFieldNameHash(229961746)]
+		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("EventCompareGateEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

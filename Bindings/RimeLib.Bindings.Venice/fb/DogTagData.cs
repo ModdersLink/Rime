@@ -5,44 +5,62 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class DogTagData : 
 		UnlockAssetBase
 	{
-		[ContainerField(40), LayoutImmutable]
-		public string NameSID { get; set; } // 0x28 (40)
+		protected string m_NameSID = new string();
+		[ContainerField(40), LayoutImmutable, ContainerFieldNameHash(3153746364)]
+		public string NameSID { get { return m_NameSID; } set { if (OnPropertyChanging("DogTagData." + nameof(NameSID), this, m_NameSID, value)) m_NameSID = value; } } // 0x28 (40)
 		
-		[ContainerField(44), LayoutImmutable]
-		public string DescriptionSID { get; set; } // 0x2C (44)
+		protected string m_DescriptionSID = new string();
+		[ContainerField(44), LayoutImmutable, ContainerFieldNameHash(1844416573)]
+		public string DescriptionSID { get { return m_DescriptionSID; } set { if (OnPropertyChanging("DogTagData." + nameof(DescriptionSID), this, m_DescriptionSID, value)) m_DescriptionSID = value; } } // 0x2C (44)
 		
-		[ContainerField(48), LayoutImmutable]
-		public string ImageName { get; set; } // 0x30 (48)
+		protected string m_ImageName = new string();
+		[ContainerField(48), LayoutImmutable, ContainerFieldNameHash(2678981541)]
+		public string ImageName { get { return m_ImageName; } set { if (OnPropertyChanging("DogTagData." + nameof(ImageName), this, m_ImageName, value)) m_ImageName = value; } } // 0x30 (48)
 		
-		[ContainerField(52), LayoutImmutable]
-		public string SmallImageName { get; set; } // 0x34 (52)
+		protected string m_SmallImageName = new string();
+		[ContainerField(52), LayoutImmutable, ContainerFieldNameHash(567066714)]
+		public string SmallImageName { get { return m_SmallImageName; } set { if (OnPropertyChanging("DogTagData." + nameof(SmallImageName), this, m_SmallImageName, value)) m_SmallImageName = value; } } // 0x34 (52)
 		
-		[ContainerField(56)]
-		public DogTagCategory Category { get; set; } = new DogTagCategory(); // 0x38 (56)
+		protected DogTagCategory m_Category = new DogTagCategory();
+		[ContainerField(56), ContainerFieldNameHash(3455858997)]
+		public DogTagCategory Category { get { return m_Category; } set { if (OnPropertyChanging("DogTagData." + nameof(Category), this, m_Category, value)) m_Category = value; } } // 0x38 (56)
 		
-		[ContainerField(60), LayoutImmutable, Blittable]
-		public bool InvertText { get; set; } // 0x3C (60)
+		protected bool m_InvertText = new bool();
+		[ContainerField(60), LayoutImmutable, Blittable, ContainerFieldNameHash(3752948714)]
+		public bool InvertText { get { return m_InvertText; } set { if (OnPropertyChanging("DogTagData." + nameof(InvertText), this, m_InvertText, value)) m_InvertText = value; } } // 0x3C (60)
 		
-		[ContainerField(61), LayoutImmutable, Blittable]
-		public bool IsAlwaysAvailable { get; set; } // 0x3D (61)
+		protected bool m_IsAlwaysAvailable = new bool();
+		[ContainerField(61), LayoutImmutable, Blittable, ContainerFieldNameHash(2894636375)]
+		public bool IsAlwaysAvailable { get { return m_IsAlwaysAvailable; } set { if (OnPropertyChanging("DogTagData." + nameof(IsAlwaysAvailable), this, m_IsAlwaysAvailable, value)) m_IsAlwaysAvailable = value; } } // 0x3D (61)
 		
-		[ContainerField(62), LayoutImmutable, Blittable]
-		public bool ExcludedOnXenon { get; set; } // 0x3E (62)
+		protected bool m_ExcludedOnXenon = new bool();
+		[ContainerField(62), LayoutImmutable, Blittable, ContainerFieldNameHash(3068680308)]
+		public bool ExcludedOnXenon { get { return m_ExcludedOnXenon; } set { if (OnPropertyChanging("DogTagData." + nameof(ExcludedOnXenon), this, m_ExcludedOnXenon, value)) m_ExcludedOnXenon = value; } } // 0x3E (62)
 		
-		[ContainerField(63), LayoutImmutable, Blittable]
-		public bool ExcludedOnPs3 { get; set; } // 0x3F (63)
+		protected bool m_ExcludedOnPs3 = new bool();
+		[ContainerField(63), LayoutImmutable, Blittable, ContainerFieldNameHash(144791190)]
+		public bool ExcludedOnPs3 { get { return m_ExcludedOnPs3; } set { if (OnPropertyChanging("DogTagData." + nameof(ExcludedOnPs3), this, m_ExcludedOnPs3, value)) m_ExcludedOnPs3 = value; } } // 0x3F (63)
 		
-		[ContainerField(64), LayoutImmutable, Blittable]
-		public bool ExcludedOnWin32 { get; set; } // 0x40 (64)
+		protected bool m_ExcludedOnWin32 = new bool();
+		[ContainerField(64), LayoutImmutable, Blittable, ContainerFieldNameHash(3056065655)]
+		public bool ExcludedOnWin32 { get { return m_ExcludedOnWin32; } set { if (OnPropertyChanging("DogTagData." + nameof(ExcludedOnWin32), this, m_ExcludedOnWin32, value)) m_ExcludedOnWin32 = value; } } // 0x40 (64)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

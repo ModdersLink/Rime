@@ -5,22 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class SoldierEmoteNetworkedMessageMapping : 
 		DataContainer
 	{
-		[ContainerField(8)]
-		public SoldierEmote Emote { get; set; } = new SoldierEmote(); // 0x8 (8)
+		protected SoldierEmote m_Emote = new SoldierEmote();
+		[ContainerField(8), ContainerFieldNameHash(201165523)]
+		public SoldierEmote Emote { get { return m_Emote; } set { if (OnPropertyChanging("SoldierEmoteNetworkedMessageMapping." + nameof(Emote), this, m_Emote, value)) m_Emote = value; } } // 0x8 (8)
 		
-		[ContainerField(12)]
-		public List<UIMessageType> Messages { get; set; } = new List<UIMessageType>(); // 0xC (12)
+		protected List<UIMessageType> m_Messages = new List<UIMessageType>();
+		[ContainerField(12), ContainerFieldNameHash(1812934205)]
+		public List<UIMessageType> Messages { get { return m_Messages; } set { if (OnPropertyChanging("SoldierEmoteNetworkedMessageMapping." + nameof(Messages), this, m_Messages, value)) m_Messages = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

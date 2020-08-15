@@ -5,25 +5,38 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class RoadData : 
 		RibbonData
 	{
-		[ContainerField(48)]
-		public CtrRef<SurfaceShaderBaseAsset> Shader2d { get; set; } = new CtrRef<SurfaceShaderBaseAsset>(); // 0x30 (48)
+		protected CtrRef<SurfaceShaderBaseAsset> m_Shader2d = new CtrRef<SurfaceShaderBaseAsset>();
+		[ContainerField(48), ContainerFieldNameHash(596681178)]
+		public CtrRef<SurfaceShaderBaseAsset> Shader2d { get { return m_Shader2d; } set { if (OnPropertyChanging("RoadData." + nameof(Shader2d), this, m_Shader2d, value)) m_Shader2d = value; } } // 0x30 (48)
 		
-		[ContainerField(52)]
-		public CtrRef<SurfaceShaderBaseAsset> Shader3dZOnly { get; set; } = new CtrRef<SurfaceShaderBaseAsset>(); // 0x34 (52)
+		protected CtrRef<SurfaceShaderBaseAsset> m_Shader3dZOnly = new CtrRef<SurfaceShaderBaseAsset>();
+		[ContainerField(52), ContainerFieldNameHash(585356309)]
+		public CtrRef<SurfaceShaderBaseAsset> Shader3dZOnly { get { return m_Shader3dZOnly; } set { if (OnPropertyChanging("RoadData." + nameof(Shader3dZOnly), this, m_Shader3dZOnly, value)) m_Shader3dZOnly = value; } } // 0x34 (52)
 		
-		[ContainerField(56), LayoutImmutable, Blittable]
-		public float UvTileFactor { get; set; } // 0x38 (56)
+		protected float m_UvTileFactor = new float();
+		[ContainerField(56), LayoutImmutable, Blittable, ContainerFieldNameHash(1731623903)]
+		public float UvTileFactor { get { return m_UvTileFactor; } set { if (OnPropertyChanging("RoadData." + nameof(UvTileFactor), this, m_UvTileFactor, value)) m_UvTileFactor = value; } } // 0x38 (56)
 		
-		[ContainerField(60), LayoutImmutable, Blittable]
-		public bool StickToTerrain { get; set; } // 0x3C (60)
+		protected bool m_StickToTerrain = new bool();
+		[ContainerField(60), LayoutImmutable, Blittable, ContainerFieldNameHash(633294575)]
+		public bool StickToTerrain { get { return m_StickToTerrain; } set { if (OnPropertyChanging("RoadData." + nameof(StickToTerrain), this, m_StickToTerrain, value)) m_StickToTerrain = value; } } // 0x3C (60)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

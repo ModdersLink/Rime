@@ -5,17 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class StateEventGateEntityData : 
 		GameEntityData
 	{
-		[ContainerField(96)]
-		public EventGateState CheckedState { get; set; } = new EventGateState(); // 0x60 (96)
+		protected EventGateState m_CheckedState = new EventGateState();
+		[ContainerField(96), ContainerFieldNameHash(1967429493)]
+		public EventGateState CheckedState { get { return m_CheckedState; } set { if (OnPropertyChanging("StateEventGateEntityData." + nameof(CheckedState), this, m_CheckedState, value)) m_CheckedState = value; } } // 0x60 (96)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

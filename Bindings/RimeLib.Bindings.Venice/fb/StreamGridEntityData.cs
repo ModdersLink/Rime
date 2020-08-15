@@ -5,29 +5,42 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class StreamGridEntityData : 
 		SpatialEntityData
 	{
-		[ContainerField(80), LayoutImmutable, Blittable]
-		public float CellSize { get; set; } // 0x50 (80)
+		protected float m_CellSize = new float();
+		[ContainerField(80), LayoutImmutable, Blittable, ContainerFieldNameHash(2566448966)]
+		public float CellSize { get { return m_CellSize; } set { if (OnPropertyChanging("StreamGridEntityData." + nameof(CellSize), this, m_CellSize, value)) m_CellSize = value; } } // 0x50 (80)
 		
-		[ContainerField(84), LayoutImmutable, Blittable]
-		public float ViewDistance { get; set; } // 0x54 (84)
+		protected float m_ViewDistance = new float();
+		[ContainerField(84), LayoutImmutable, Blittable, ContainerFieldNameHash(2201945291)]
+		public float ViewDistance { get { return m_ViewDistance; } set { if (OnPropertyChanging("StreamGridEntityData." + nameof(ViewDistance), this, m_ViewDistance, value)) m_ViewDistance = value; } } // 0x54 (84)
 		
-		[ContainerField(88), LayoutImmutable, Blittable]
-		public int MaxStreamInCountPerFrame { get; set; } // 0x58 (88)
+		protected int m_MaxStreamInCountPerFrame = new int();
+		[ContainerField(88), LayoutImmutable, Blittable, ContainerFieldNameHash(3165880883)]
+		public int MaxStreamInCountPerFrame { get { return m_MaxStreamInCountPerFrame; } set { if (OnPropertyChanging("StreamGridEntityData." + nameof(MaxStreamInCountPerFrame), this, m_MaxStreamInCountPerFrame, value)) m_MaxStreamInCountPerFrame = value; } } // 0x58 (88)
 		
-		[ContainerField(92), LayoutImmutable, Blittable]
-		public int MaxStreamOutCountPerFrame { get; set; } // 0x5C (92)
+		protected int m_MaxStreamOutCountPerFrame = new int();
+		[ContainerField(92), LayoutImmutable, Blittable, ContainerFieldNameHash(1065563290)]
+		public int MaxStreamOutCountPerFrame { get { return m_MaxStreamOutCountPerFrame; } set { if (OnPropertyChanging("StreamGridEntityData." + nameof(MaxStreamOutCountPerFrame), this, m_MaxStreamOutCountPerFrame, value)) m_MaxStreamOutCountPerFrame = value; } } // 0x5C (92)
 		
-		[ContainerField(96)]
-		public List<StreamGridCell> Cells { get; set; } = new List<StreamGridCell>(); // 0x60 (96)
+		protected List<StreamGridCell> m_Cells = new List<StreamGridCell>();
+		[ContainerField(96), ContainerFieldNameHash(212327888)]
+		public List<StreamGridCell> Cells { get { return m_Cells; } set { if (OnPropertyChanging("StreamGridEntityData." + nameof(Cells), this, m_Cells, value)) m_Cells = value; } } // 0x60 (96)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

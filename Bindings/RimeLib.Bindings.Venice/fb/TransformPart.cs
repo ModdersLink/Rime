@@ -5,9 +5,20 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
+
 namespace fb
 {
-    public enum TransformPart : int
+	public enum TransformPart : int
 	{
 		TransformPart_TranslationX = 0,
 		TransformPart_TranslationY = 1,

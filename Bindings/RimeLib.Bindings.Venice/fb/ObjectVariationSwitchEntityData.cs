@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class ObjectVariationSwitchEntityData : 
 		EntityData
 	{
-		[ContainerField(12)]
-		public CtrRef<ObjectVariation> Variation1 { get; set; } = new CtrRef<ObjectVariation>(); // 0xC (12)
+		protected CtrRef<ObjectVariation> m_Variation1 = new CtrRef<ObjectVariation>();
+		[ContainerField(12), ContainerFieldNameHash(2728063333)]
+		public CtrRef<ObjectVariation> Variation1 { get { return m_Variation1; } set { if (OnPropertyChanging("ObjectVariationSwitchEntityData." + nameof(Variation1), this, m_Variation1, value)) m_Variation1 = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public CtrRef<ObjectVariation> Variation2 { get; set; } = new CtrRef<ObjectVariation>(); // 0x10 (16)
+		protected CtrRef<ObjectVariation> m_Variation2 = new CtrRef<ObjectVariation>();
+		[ContainerField(16), ContainerFieldNameHash(2728063334)]
+		public CtrRef<ObjectVariation> Variation2 { get { return m_Variation2; } set { if (OnPropertyChanging("ObjectVariationSwitchEntityData." + nameof(Variation2), this, m_Variation2, value)) m_Variation2 = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

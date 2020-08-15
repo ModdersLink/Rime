@@ -5,25 +5,38 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class VoiceOverInfoNode : 
 		VoiceOverExpressionNode
 	{
-		[ContainerField(8)]
-		public CtrRef<VoiceOverValueConnection> Object { get; set; } = new CtrRef<VoiceOverValueConnection>(); // 0x8 (8)
+		protected CtrRef<VoiceOverValueConnection> m_Object = new CtrRef<VoiceOverValueConnection>();
+		[ContainerField(8), ContainerFieldNameHash(2866508144)]
+		public CtrRef<VoiceOverValueConnection> Object { get { return m_Object; } set { if (OnPropertyChanging("VoiceOverInfoNode." + nameof(Object), this, m_Object, value)) m_Object = value; } } // 0x8 (8)
 		
-		[ContainerField(12)]
-		public CtrRef<VoiceOverValue> Value { get; set; } = new CtrRef<VoiceOverValue>(); // 0xC (12)
+		protected CtrRef<VoiceOverValue> m_Value = new CtrRef<VoiceOverValue>();
+		[ContainerField(12), ContainerFieldNameHash(225375086)]
+		public CtrRef<VoiceOverValue> Value { get { return m_Value; } set { if (OnPropertyChanging("VoiceOverInfoNode." + nameof(Value), this, m_Value, value)) m_Value = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public CtrRef<VoiceOverNamedValue> Field { get; set; } = new CtrRef<VoiceOverNamedValue>(); // 0x10 (16)
+		protected CtrRef<VoiceOverNamedValue> m_Field = new CtrRef<VoiceOverNamedValue>();
+		[ContainerField(16), ContainerFieldNameHash(206678151)]
+		public CtrRef<VoiceOverNamedValue> Field { get { return m_Field; } set { if (OnPropertyChanging("VoiceOverInfoNode." + nameof(Field), this, m_Field, value)) m_Field = value; } } // 0x10 (16)
 		
-		[ContainerField(20)]
-		public CtrRef<VoiceOverObject> ExpectedType { get; set; } = new CtrRef<VoiceOverObject>(); // 0x14 (20)
+		protected CtrRef<VoiceOverObject> m_ExpectedType = new CtrRef<VoiceOverObject>();
+		[ContainerField(20), ContainerFieldNameHash(1076570403)]
+		public CtrRef<VoiceOverObject> ExpectedType { get { return m_ExpectedType; } set { if (OnPropertyChanging("VoiceOverInfoNode." + nameof(ExpectedType), this, m_ExpectedType, value)) m_ExpectedType = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

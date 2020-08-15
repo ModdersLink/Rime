@@ -5,25 +5,38 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class VisualVectorShapeData : 
 		VectorShapeData
 	{
-		[ContainerField(28), LayoutImmutable, Blittable]
-		public float ErrorTolerance { get; set; } // 0x1C (28)
+		protected float m_ErrorTolerance = new float();
+		[ContainerField(28), LayoutImmutable, Blittable, ContainerFieldNameHash(3302753588)]
+		public float ErrorTolerance { get { return m_ErrorTolerance; } set { if (OnPropertyChanging("VisualVectorShapeData." + nameof(ErrorTolerance), this, m_ErrorTolerance, value)) m_ErrorTolerance = value; } } // 0x1C (28)
 		
-		[ContainerField(32)]
-		public CtrRef<SurfaceShaderBaseAsset> Shader3d { get; set; } = new CtrRef<SurfaceShaderBaseAsset>(); // 0x20 (32)
+		protected CtrRef<SurfaceShaderBaseAsset> m_Shader3d = new CtrRef<SurfaceShaderBaseAsset>();
+		[ContainerField(32), ContainerFieldNameHash(596681147)]
+		public CtrRef<SurfaceShaderBaseAsset> Shader3d { get { return m_Shader3d; } set { if (OnPropertyChanging("VisualVectorShapeData." + nameof(Shader3d), this, m_Shader3d, value)) m_Shader3d = value; } } // 0x20 (32)
 		
-		[ContainerField(36), LayoutImmutable, Blittable]
-		public uint DrawOrderIndex { get; set; } // 0x24 (36)
+		protected uint m_DrawOrderIndex = new uint();
+		[ContainerField(36), LayoutImmutable, Blittable, ContainerFieldNameHash(274360149)]
+		public uint DrawOrderIndex { get { return m_DrawOrderIndex; } set { if (OnPropertyChanging("VisualVectorShapeData." + nameof(DrawOrderIndex), this, m_DrawOrderIndex, value)) m_DrawOrderIndex = value; } } // 0x24 (36)
 		
-		[ContainerField(40), LayoutImmutable, Blittable]
-		public float TessellationTriangleSize { get; set; } // 0x28 (40)
+		protected float m_TessellationTriangleSize = new float();
+		[ContainerField(40), LayoutImmutable, Blittable, ContainerFieldNameHash(22509191)]
+		public float TessellationTriangleSize { get { return m_TessellationTriangleSize; } set { if (OnPropertyChanging("VisualVectorShapeData." + nameof(TessellationTriangleSize), this, m_TessellationTriangleSize, value)) m_TessellationTriangleSize = value; } } // 0x28 (40)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

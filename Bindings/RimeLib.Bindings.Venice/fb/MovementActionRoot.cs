@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class MovementActionRoot : 
 		Asset
 	{
-		[ContainerField(12)]
-		public CtrRef<MovementActionData> StartSequence { get; set; } = new CtrRef<MovementActionData>(); // 0xC (12)
+		protected CtrRef<MovementActionData> m_StartSequence = new CtrRef<MovementActionData>();
+		[ContainerField(12), ContainerFieldNameHash(3846144538)]
+		public CtrRef<MovementActionData> StartSequence { get { return m_StartSequence; } set { if (OnPropertyChanging("MovementActionRoot." + nameof(StartSequence), this, m_StartSequence, value)) m_StartSequence = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

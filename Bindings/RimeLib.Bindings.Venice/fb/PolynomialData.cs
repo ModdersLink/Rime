@@ -5,25 +5,38 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class PolynomialData : 
 		EvaluatorData
 	{
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable]
-		public Vec4 Coefficients { get; set; } = new Vec4(); // 0x10 (16)
+		protected Vec4 m_Coefficients = new Vec4();
+		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(2816855587)]
+		public Vec4 Coefficients { get { return m_Coefficients; } set { if (OnPropertyChanging("PolynomialData." + nameof(Coefficients), this, m_Coefficients, value)) m_Coefficients = value; } } // 0x10 (16)
 		
-		[ContainerField(32), LayoutImmutable, Blittable]
-		public float ScaleValue { get; set; } // 0x20 (32)
+		protected float m_ScaleValue = new float();
+		[ContainerField(32), LayoutImmutable, Blittable, ContainerFieldNameHash(1405926902)]
+		public float ScaleValue { get { return m_ScaleValue; } set { if (OnPropertyChanging("PolynomialData." + nameof(ScaleValue), this, m_ScaleValue, value)) m_ScaleValue = value; } } // 0x20 (32)
 		
-		[ContainerField(36), LayoutImmutable, Blittable]
-		public float MinClamp { get; set; } // 0x24 (36)
+		protected float m_MinClamp = new float();
+		[ContainerField(36), LayoutImmutable, Blittable, ContainerFieldNameHash(3349357596)]
+		public float MinClamp { get { return m_MinClamp; } set { if (OnPropertyChanging("PolynomialData." + nameof(MinClamp), this, m_MinClamp, value)) m_MinClamp = value; } } // 0x24 (36)
 		
-		[ContainerField(40), LayoutImmutable, Blittable]
-		public float MaxClamp { get; set; } // 0x28 (40)
+		protected float m_MaxClamp = new float();
+		[ContainerField(40), LayoutImmutable, Blittable, ContainerFieldNameHash(415055298)]
+		public float MaxClamp { get { return m_MaxClamp; } set { if (OnPropertyChanging("PolynomialData." + nameof(MaxClamp), this, m_MaxClamp, value)) m_MaxClamp = value; } } // 0x28 (40)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

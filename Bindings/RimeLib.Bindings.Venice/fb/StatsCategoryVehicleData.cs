@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class StatsCategoryVehicleData : 
 		StatsCategoryGuidData
 	{
-		[ContainerField(24), LayoutImmutable, Blittable]
-		public uint FirstVehicleId { get; set; } // 0x18 (24)
+		protected uint m_FirstVehicleId = new uint();
+		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(4200609226)]
+		public uint FirstVehicleId { get { return m_FirstVehicleId; } set { if (OnPropertyChanging("StatsCategoryVehicleData." + nameof(FirstVehicleId), this, m_FirstVehicleId, value)) m_FirstVehicleId = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

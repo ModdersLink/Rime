@@ -5,25 +5,38 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class UINodeData : 
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable]
-		public string Name { get; set; } // 0x8 (8)
+		protected string m_Name = new string();
+		[ContainerField(8), LayoutImmutable, ContainerFieldNameHash(2088949890)]
+		public string Name { get { return m_Name; } set { if (OnPropertyChanging("UINodeData." + nameof(Name), this, m_Name, value)) m_Name = value; } } // 0x8 (8)
 		
-		[ContainerField(12)]
-		public CtrRef<UIGraphAsset> ParentGraph { get; set; } = new CtrRef<UIGraphAsset>(); // 0xC (12)
+		protected CtrRef<UIGraphAsset> m_ParentGraph = new CtrRef<UIGraphAsset>();
+		[ContainerField(12), ContainerFieldNameHash(2657729557)]
+		public CtrRef<UIGraphAsset> ParentGraph { get { return m_ParentGraph; } set { if (OnPropertyChanging("UINodeData." + nameof(ParentGraph), this, m_ParentGraph, value)) m_ParentGraph = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public bool IsRootNode { get; set; } // 0x10 (16)
+		protected bool m_IsRootNode = new bool();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(3972191865)]
+		public bool IsRootNode { get { return m_IsRootNode; } set { if (OnPropertyChanging("UINodeData." + nameof(IsRootNode), this, m_IsRootNode, value)) m_IsRootNode = value; } } // 0x10 (16)
 		
-		[ContainerField(17), LayoutImmutable, Blittable]
-		public bool ParentIsScreen { get; set; } // 0x11 (17)
+		protected bool m_ParentIsScreen = new bool();
+		[ContainerField(17), LayoutImmutable, Blittable, ContainerFieldNameHash(2101493199)]
+		public bool ParentIsScreen { get { return m_ParentIsScreen; } set { if (OnPropertyChanging("UINodeData." + nameof(ParentIsScreen), this, m_ParentIsScreen, value)) m_ParentIsScreen = value; } } // 0x11 (17)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

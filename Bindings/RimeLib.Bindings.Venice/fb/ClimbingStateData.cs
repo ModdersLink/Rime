@@ -5,43 +5,62 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class ClimbingStateData : 
 		CharacterStateData
 	{
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public float LateralInputScale { get; set; } // 0xC (12)
+		protected float m_LateralInputScale = new float();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(2743831048)]
+		public float LateralInputScale { get { return m_LateralInputScale; } set { if (OnPropertyChanging("ClimbingStateData." + nameof(LateralInputScale), this, m_LateralInputScale, value)) m_LateralInputScale = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public float DownAngleLimit { get; set; } // 0x10 (16)
+		protected float m_DownAngleLimit = new float();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(3644023203)]
+		public float DownAngleLimit { get { return m_DownAngleLimit; } set { if (OnPropertyChanging("ClimbingStateData." + nameof(DownAngleLimit), this, m_DownAngleLimit, value)) m_DownAngleLimit = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
-		public float DropOffAngle { get; set; } // 0x14 (20)
+		protected float m_DropOffAngle = new float();
+		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(3349590818)]
+		public float DropOffAngle { get { return m_DropOffAngle; } set { if (OnPropertyChanging("ClimbingStateData." + nameof(DropOffAngle), this, m_DropOffAngle, value)) m_DropOffAngle = value; } } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable]
-		public float AttractionVelocity { get; set; } // 0x18 (24)
+		protected float m_AttractionVelocity = new float();
+		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(2980040799)]
+		public float AttractionVelocity { get { return m_AttractionVelocity; } set { if (OnPropertyChanging("ClimbingStateData." + nameof(AttractionVelocity), this, m_AttractionVelocity, value)) m_AttractionVelocity = value; } } // 0x18 (24)
 		
-		[ContainerField(28), LayoutImmutable, Blittable]
-		public float PushAwayVelocity { get; set; } // 0x1C (28)
+		protected float m_PushAwayVelocity = new float();
+		[ContainerField(28), LayoutImmutable, Blittable, ContainerFieldNameHash(751756002)]
+		public float PushAwayVelocity { get { return m_PushAwayVelocity; } set { if (OnPropertyChanging("ClimbingStateData." + nameof(PushAwayVelocity), this, m_PushAwayVelocity, value)) m_PushAwayVelocity = value; } } // 0x1C (28)
 		
-		[ContainerField(32), LayoutImmutable, Blittable]
-		public float ClimbHeightOffset { get; set; } // 0x20 (32)
+		protected float m_ClimbHeightOffset = new float();
+		[ContainerField(32), LayoutImmutable, Blittable, ContainerFieldNameHash(3576433790)]
+		public float ClimbHeightOffset { get { return m_ClimbHeightOffset; } set { if (OnPropertyChanging("ClimbingStateData." + nameof(ClimbHeightOffset), this, m_ClimbHeightOffset, value)) m_ClimbHeightOffset = value; } } // 0x20 (32)
 		
-		[ContainerField(36), LayoutImmutable, Blittable]
-		public float ClimbOffVerticalDistance { get; set; } // 0x24 (36)
+		protected float m_ClimbOffVerticalDistance = new float();
+		[ContainerField(36), LayoutImmutable, Blittable, ContainerFieldNameHash(1127208370)]
+		public float ClimbOffVerticalDistance { get { return m_ClimbOffVerticalDistance; } set { if (OnPropertyChanging("ClimbingStateData." + nameof(ClimbOffVerticalDistance), this, m_ClimbOffVerticalDistance, value)) m_ClimbOffVerticalDistance = value; } } // 0x24 (36)
 		
-		[ContainerField(40), LayoutImmutable, Blittable]
-		public float ClimbOffVerticalTime { get; set; } // 0x28 (40)
+		protected float m_ClimbOffVerticalTime = new float();
+		[ContainerField(40), LayoutImmutable, Blittable, ContainerFieldNameHash(985548708)]
+		public float ClimbOffVerticalTime { get { return m_ClimbOffVerticalTime; } set { if (OnPropertyChanging("ClimbingStateData." + nameof(ClimbOffVerticalTime), this, m_ClimbOffVerticalTime, value)) m_ClimbOffVerticalTime = value; } } // 0x28 (40)
 		
-		[ContainerField(44), LayoutImmutable, Blittable]
-		public float ClimbOffHorizontalDistance { get; set; } // 0x2C (44)
+		protected float m_ClimbOffHorizontalDistance = new float();
+		[ContainerField(44), LayoutImmutable, Blittable, ContainerFieldNameHash(1672476894)]
+		public float ClimbOffHorizontalDistance { get { return m_ClimbOffHorizontalDistance; } set { if (OnPropertyChanging("ClimbingStateData." + nameof(ClimbOffHorizontalDistance), this, m_ClimbOffHorizontalDistance, value)) m_ClimbOffHorizontalDistance = value; } } // 0x2C (44)
 		
-		[ContainerField(48), LayoutImmutable, Blittable]
-		public float ClimbOffHorizontalTime { get; set; } // 0x30 (48)
+		protected float m_ClimbOffHorizontalTime = new float();
+		[ContainerField(48), LayoutImmutable, Blittable, ContainerFieldNameHash(3744214728)]
+		public float ClimbOffHorizontalTime { get { return m_ClimbOffHorizontalTime; } set { if (OnPropertyChanging("ClimbingStateData." + nameof(ClimbOffHorizontalTime), this, m_ClimbOffHorizontalTime, value)) m_ClimbOffHorizontalTime = value; } } // 0x30 (48)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

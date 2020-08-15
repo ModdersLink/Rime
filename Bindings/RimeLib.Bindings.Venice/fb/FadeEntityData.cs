@@ -5,37 +5,54 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class FadeEntityData : 
 		EntityData
 	{
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public float FadeTime { get; set; } // 0xC (12)
+		protected float m_FadeTime = new float();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(4001222838)]
+		public float FadeTime { get { return m_FadeTime; } set { if (OnPropertyChanging("FadeEntityData." + nameof(FadeTime), this, m_FadeTime, value)) m_FadeTime = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public float MaxWaitFadedWhileStreamingTime { get; set; } // 0x10 (16)
+		protected float m_MaxWaitFadedWhileStreamingTime = new float();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(3945633230)]
+		public float MaxWaitFadedWhileStreamingTime { get { return m_MaxWaitFadedWhileStreamingTime; } set { if (OnPropertyChanging("FadeEntityData." + nameof(MaxWaitFadedWhileStreamingTime), this, m_MaxWaitFadedWhileStreamingTime, value)) m_MaxWaitFadedWhileStreamingTime = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
-		public bool FadeScreen { get; set; } // 0x14 (20)
+		protected bool m_FadeScreen = new bool();
+		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(1880126671)]
+		public bool FadeScreen { get { return m_FadeScreen; } set { if (OnPropertyChanging("FadeEntityData." + nameof(FadeScreen), this, m_FadeScreen, value)) m_FadeScreen = value; } } // 0x14 (20)
 		
-		[ContainerField(21), LayoutImmutable, Blittable]
-		public bool FadeUI { get; set; } // 0x15 (21)
+		protected bool m_FadeUI = new bool();
+		[ContainerField(21), LayoutImmutable, Blittable, ContainerFieldNameHash(2515973727)]
+		public bool FadeUI { get { return m_FadeUI; } set { if (OnPropertyChanging("FadeEntityData." + nameof(FadeUI), this, m_FadeUI, value)) m_FadeUI = value; } } // 0x15 (21)
 		
-		[ContainerField(22), LayoutImmutable, Blittable]
-		public bool FadeRumble { get; set; } // 0x16 (22)
+		protected bool m_FadeRumble = new bool();
+		[ContainerField(22), LayoutImmutable, Blittable, ContainerFieldNameHash(1825215970)]
+		public bool FadeRumble { get { return m_FadeRumble; } set { if (OnPropertyChanging("FadeEntityData." + nameof(FadeRumble), this, m_FadeRumble, value)) m_FadeRumble = value; } } // 0x16 (22)
 		
-		[ContainerField(23), LayoutImmutable, Blittable]
-		public bool FadeAudio { get; set; } // 0x17 (23)
+		protected bool m_FadeAudio = new bool();
+		[ContainerField(23), LayoutImmutable, Blittable, ContainerFieldNameHash(3169106133)]
+		public bool FadeAudio { get { return m_FadeAudio; } set { if (OnPropertyChanging("FadeEntityData." + nameof(FadeAudio), this, m_FadeAudio, value)) m_FadeAudio = value; } } // 0x17 (23)
 		
-		[ContainerField(24), LayoutImmutable, Blittable]
-		public bool FadeMovie { get; set; } // 0x18 (24)
+		protected bool m_FadeMovie = new bool();
+		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(3182278683)]
+		public bool FadeMovie { get { return m_FadeMovie; } set { if (OnPropertyChanging("FadeEntityData." + nameof(FadeMovie), this, m_FadeMovie, value)) m_FadeMovie = value; } } // 0x18 (24)
 		
-		[ContainerField(25), LayoutImmutable, Blittable]
-		public bool StartFaded { get; set; } // 0x19 (25)
+		protected bool m_StartFaded = new bool();
+		[ContainerField(25), LayoutImmutable, Blittable, ContainerFieldNameHash(2729539719)]
+		public bool StartFaded { get { return m_StartFaded; } set { if (OnPropertyChanging("FadeEntityData." + nameof(StartFaded), this, m_StartFaded, value)) m_StartFaded = value; } } // 0x19 (25)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

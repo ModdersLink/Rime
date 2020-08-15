@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class MaterialPropertyImpulseData : 
 		PhysicsPropertyRelationPropertyData
 	{
-		[ContainerField(8), LayoutImmutable, Blittable]
-		public float ImpulseAbsorptionMultiplier { get; set; } // 0x8 (8)
+		protected float m_ImpulseAbsorptionMultiplier = new float();
+		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(1970095508)]
+		public float ImpulseAbsorptionMultiplier { get { return m_ImpulseAbsorptionMultiplier; } set { if (OnPropertyChanging("MaterialPropertyImpulseData." + nameof(ImpulseAbsorptionMultiplier), this, m_ImpulseAbsorptionMultiplier, value)) m_ImpulseAbsorptionMultiplier = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

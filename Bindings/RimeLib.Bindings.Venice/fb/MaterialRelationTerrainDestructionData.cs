@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class MaterialRelationTerrainDestructionData : 
 		PhysicsPropertyRelationPropertyData
 	{
-		[ContainerField(8), LayoutImmutable, Blittable]
-		public float Width { get; set; } // 0x8 (8)
+		protected float m_Width = new float();
+		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(226981187)]
+		public float Width { get { return m_Width; } set { if (OnPropertyChanging("MaterialRelationTerrainDestructionData." + nameof(Width), this, m_Width, value)) m_Width = value; } } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public float Depth { get; set; } // 0xC (12)
+		protected float m_Depth = new float();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(208780552)]
+		public float Depth { get { return m_Depth; } set { if (OnPropertyChanging("MaterialRelationTerrainDestructionData." + nameof(Depth), this, m_Depth, value)) m_Depth = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

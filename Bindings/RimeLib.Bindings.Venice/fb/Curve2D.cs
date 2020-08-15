@@ -5,17 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class Curve2D : 
 		DataContainer
 	{
-		[ContainerField(8)]
-		public List<Vec2> Curve { get; set; } = new List<Vec2>(); // 0x8 (8)
+		protected List<Vec2> m_Curve = new List<Vec2>();
+		[ContainerField(8), ContainerFieldNameHash(212866962)]
+		public List<Vec2> Curve { get { return m_Curve; } set { if (OnPropertyChanging("Curve2D." + nameof(Curve), this, m_Curve, value)) m_Curve = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

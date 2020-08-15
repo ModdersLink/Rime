@@ -5,44 +5,62 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class ScoringTypeData : 
 		DataContainer
 	{
-		[ContainerField(8)]
-		public StatEvent Measuring { get; set; } = new StatEvent(); // 0x8 (8)
+		protected StatEvent m_Measuring = new StatEvent();
+		[ContainerField(8), ContainerFieldNameHash(2896657528)]
+		public StatEvent Measuring { get { return m_Measuring; } set { if (OnPropertyChanging("ScoringTypeData." + nameof(Measuring), this, m_Measuring, value)) m_Measuring = value; } } // 0x8 (8)
 		
-		[ContainerField(12)]
-		public CtrRef<StatsCategoryBaseData> ParamX { get; set; } = new CtrRef<StatsCategoryBaseData>(); // 0xC (12)
+		protected CtrRef<StatsCategoryBaseData> m_ParamX = new CtrRef<StatsCategoryBaseData>();
+		[ContainerField(12), ContainerFieldNameHash(3371566706)]
+		public CtrRef<StatsCategoryBaseData> ParamX { get { return m_ParamX; } set { if (OnPropertyChanging("ScoringTypeData." + nameof(ParamX), this, m_ParamX, value)) m_ParamX = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public CtrRef<StatsCategoryBaseData> ParamY { get; set; } = new CtrRef<StatsCategoryBaseData>(); // 0x10 (16)
+		protected CtrRef<StatsCategoryBaseData> m_ParamY = new CtrRef<StatsCategoryBaseData>();
+		[ContainerField(16), ContainerFieldNameHash(3371566707)]
+		public CtrRef<StatsCategoryBaseData> ParamY { get { return m_ParamY; } set { if (OnPropertyChanging("ScoringTypeData." + nameof(ParamY), this, m_ParamY, value)) m_ParamY = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
-		public float Limit { get; set; } // 0x14 (20)
+		protected float m_Limit = new float();
+		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(217831728)]
+		public float Limit { get { return m_Limit; } set { if (OnPropertyChanging("ScoringTypeData." + nameof(Limit), this, m_Limit, value)) m_Limit = value; } } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable]
-		public string DescriptionSid { get; set; } // 0x18 (24)
+		protected string m_DescriptionSid = new string();
+		[ContainerField(24), LayoutImmutable, ContainerFieldNameHash(1844417789)]
+		public string DescriptionSid { get { return m_DescriptionSid; } set { if (OnPropertyChanging("ScoringTypeData." + nameof(DescriptionSid), this, m_DescriptionSid, value)) m_DescriptionSid = value; } } // 0x18 (24)
 		
-		[ContainerField(28)]
-		public ScoringVisibilityType VisibilityType { get; set; } = new ScoringVisibilityType(); // 0x1C (28)
+		protected ScoringVisibilityType m_VisibilityType = new ScoringVisibilityType();
+		[ContainerField(28), ContainerFieldNameHash(1714602875)]
+		public ScoringVisibilityType VisibilityType { get { return m_VisibilityType; } set { if (OnPropertyChanging("ScoringTypeData." + nameof(VisibilityType), this, m_VisibilityType, value)) m_VisibilityType = value; } } // 0x1C (28)
 		
-		[ContainerField(32)]
-		public ScoringBucket Bucket { get; set; } = new ScoringBucket(); // 0x20 (32)
+		protected ScoringBucket m_Bucket = new ScoringBucket();
+		[ContainerField(32), ContainerFieldNameHash(2686649899)]
+		public ScoringBucket Bucket { get { return m_Bucket; } set { if (OnPropertyChanging("ScoringTypeData." + nameof(Bucket), this, m_Bucket, value)) m_Bucket = value; } } // 0x20 (32)
 		
-		[ContainerField(36), LayoutImmutable, Blittable]
-		public float Score { get; set; } // 0x24 (36)
+		protected float m_Score = new float();
+		[ContainerField(36), LayoutImmutable, Blittable, ContainerFieldNameHash(231225165)]
+		public float Score { get { return m_Score; } set { if (OnPropertyChanging("ScoringTypeData." + nameof(Score), this, m_Score, value)) m_Score = value; } } // 0x24 (36)
 		
-		[ContainerField(40), LayoutImmutable, Blittable]
-		public float AdditionalValueMultiplier { get; set; } // 0x28 (40)
+		protected float m_AdditionalValueMultiplier = new float();
+		[ContainerField(40), LayoutImmutable, Blittable, ContainerFieldNameHash(1815918684)]
+		public float AdditionalValueMultiplier { get { return m_AdditionalValueMultiplier; } set { if (OnPropertyChanging("ScoringTypeData." + nameof(AdditionalValueMultiplier), this, m_AdditionalValueMultiplier, value)) m_AdditionalValueMultiplier = value; } } // 0x28 (40)
 		
-		[ContainerField(44), LayoutImmutable, Blittable]
-		public bool ShowForTeam { get; set; } // 0x2C (44)
+		protected bool m_ShowForTeam = new bool();
+		[ContainerField(44), LayoutImmutable, Blittable, ContainerFieldNameHash(2745690560)]
+		public bool ShowForTeam { get { return m_ShowForTeam; } set { if (OnPropertyChanging("ScoringTypeData." + nameof(ShowForTeam), this, m_ShowForTeam, value)) m_ShowForTeam = value; } } // 0x2C (44)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

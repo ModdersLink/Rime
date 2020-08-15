@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class SettingsBundleAsset : 
 		Asset
 	{
-		[ContainerField(12)]
-		public RefArray<SystemSettings> Settings { get; set; } = new RefArray<SystemSettings>(); // 0xC (12)
+		protected RefArray<SystemSettings> m_Settings = new RefArray<SystemSettings>();
+		[ContainerField(12), ContainerFieldNameHash(649772672)]
+		public RefArray<SystemSettings> Settings { get { return m_Settings; } set { if (OnPropertyChanging("SettingsBundleAsset." + nameof(Settings), this, m_Settings, value)) m_Settings = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

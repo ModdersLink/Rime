@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class SyncedBoolEntityData : 
 		EntityData
 	{
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public bool In { get; set; } // 0xC (12)
+		protected bool m_In = new bool();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(5862146)]
+		public bool In { get { return m_In; } set { if (OnPropertyChanging("SyncedBoolEntityData." + nameof(In), this, m_In, value)) m_In = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

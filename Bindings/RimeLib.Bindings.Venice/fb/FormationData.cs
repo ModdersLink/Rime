@@ -5,20 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class FormationData : 
 		GameDataContainer
 	{
-		[ContainerField(8)]
-		public List<Vec3> Positions { get; set; } = new List<Vec3>(); // 0x8 (8)
+		protected List<Vec3> m_Positions = new List<Vec3>();
+		[ContainerField(8), ContainerFieldNameHash(616073487)]
+		public List<Vec3> Positions { get { return m_Positions; } set { if (OnPropertyChanging("FormationData." + nameof(Positions), this, m_Positions, value)) m_Positions = value; } } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable]
-		public string Name { get; set; } // 0xC (12)
+		protected string m_Name = new string();
+		[ContainerField(12), LayoutImmutable, ContainerFieldNameHash(2088949890)]
+		public string Name { get { return m_Name; } set { if (OnPropertyChanging("FormationData." + nameof(Name), this, m_Name, value)) m_Name = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

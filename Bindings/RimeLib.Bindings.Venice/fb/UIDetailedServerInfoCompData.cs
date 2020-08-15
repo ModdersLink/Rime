@@ -5,17 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class UIDetailedServerInfoCompData : 
 		UIComponentData
 	{
-		[ContainerField(28)]
-		public List<ServerInfoSetting> Settings { get; set; } = new List<ServerInfoSetting>(); // 0x1C (28)
+		protected List<ServerInfoSetting> m_Settings = new List<ServerInfoSetting>();
+		[ContainerField(28), ContainerFieldNameHash(649772672)]
+		public List<ServerInfoSetting> Settings { get { return m_Settings; } set { if (OnPropertyChanging("UIDetailedServerInfoCompData." + nameof(Settings), this, m_Settings, value)) m_Settings = value; } } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

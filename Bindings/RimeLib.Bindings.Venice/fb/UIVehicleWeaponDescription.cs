@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class UIVehicleWeaponDescription : 
 		UIItemDescription
 	{
-		[ContainerField(16), LayoutImmutable]
-		public string Name { get; set; } // 0x10 (16)
+		protected string m_Name = new string();
+		[ContainerField(16), LayoutImmutable, ContainerFieldNameHash(2088949890)]
+		public string Name { get { return m_Name; } set { if (OnPropertyChanging("UIVehicleWeaponDescription." + nameof(Name), this, m_Name, value)) m_Name = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

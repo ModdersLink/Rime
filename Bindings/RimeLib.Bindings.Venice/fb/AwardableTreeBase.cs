@@ -5,22 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class AwardableTreeBase : 
 		TreeBase
 	{
-		[ContainerField(12)]
-		public CtrRef<StatCategoryTreeCollection> StatCategoryTreeCollection { get; set; } = new CtrRef<StatCategoryTreeCollection>(); // 0xC (12)
+		protected CtrRef<StatCategoryTreeCollection> m_StatCategoryTreeCollection = new CtrRef<StatCategoryTreeCollection>();
+		[ContainerField(12), ContainerFieldNameHash(3707151255)]
+		public CtrRef<StatCategoryTreeCollection> StatCategoryTreeCollection { get { return m_StatCategoryTreeCollection; } set { if (OnPropertyChanging("AwardableTreeBase." + nameof(StatCategoryTreeCollection), this, m_StatCategoryTreeCollection, value)) m_StatCategoryTreeCollection = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public RefArray<CriteriaData> GeneralCriteria { get; set; } = new RefArray<CriteriaData>(); // 0x10 (16)
+		protected RefArray<CriteriaData> m_GeneralCriteria = new RefArray<CriteriaData>();
+		[ContainerField(16), ContainerFieldNameHash(3769054304)]
+		public RefArray<CriteriaData> GeneralCriteria { get { return m_GeneralCriteria; } set { if (OnPropertyChanging("AwardableTreeBase." + nameof(GeneralCriteria), this, m_GeneralCriteria, value)) m_GeneralCriteria = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
-		public bool GeneralStatistics { get; set; } // 0x14 (20)
+		protected bool m_GeneralStatistics = new bool();
+		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(3752225974)]
+		public bool GeneralStatistics { get { return m_GeneralStatistics; } set { if (OnPropertyChanging("AwardableTreeBase." + nameof(GeneralStatistics), this, m_GeneralStatistics, value)) m_GeneralStatistics = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

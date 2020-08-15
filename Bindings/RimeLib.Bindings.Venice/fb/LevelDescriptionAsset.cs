@@ -5,26 +5,38 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class LevelDescriptionAsset : 
 		Asset
 	{
-		[ContainerField(12), LayoutImmutable]
-		public string LevelName { get; set; } // 0xC (12)
+		protected string m_LevelName = new string();
+		[ContainerField(12), LayoutImmutable, ContainerFieldNameHash(1599082292)]
+		public string LevelName { get { return m_LevelName; } set { if (OnPropertyChanging("LevelDescriptionAsset." + nameof(LevelName), this, m_LevelName, value)) m_LevelName = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public List<LevelDescriptionInclusionCategory> Categories { get; set; } = new List<LevelDescriptionInclusionCategory>(); // 0x10 (16)
+		protected List<LevelDescriptionInclusionCategory> m_Categories = new List<LevelDescriptionInclusionCategory>();
+		[ContainerField(16), ContainerFieldNameHash(1039077843)]
+		public List<LevelDescriptionInclusionCategory> Categories { get { return m_Categories; } set { if (OnPropertyChanging("LevelDescriptionAsset." + nameof(Categories), this, m_Categories, value)) m_Categories = value; } } // 0x10 (16)
 		
-		[ContainerField(20)]
-		public LevelDescription Description { get; set; } = new LevelDescription(); // 0x14 (20)
+		protected LevelDescription m_Description = new LevelDescription();
+		[ContainerField(20), ContainerFieldNameHash(1636673251)]
+		public LevelDescription Description { get { return m_Description; } set { if (OnPropertyChanging("LevelDescriptionAsset." + nameof(Description), this, m_Description, value)) m_Description = value; } } // 0x14 (20)
 		
-		[ContainerField(36)]
-		public List<string> StartPoints { get; set; } = new List<string>(); // 0x24 (36)
+		protected List<string> m_StartPoints = new List<string>();
+		[ContainerField(36), ContainerFieldNameHash(748137786)]
+		public List<string> StartPoints { get { return m_StartPoints; } set { if (OnPropertyChanging("LevelDescriptionAsset." + nameof(StartPoints), this, m_StartPoints, value)) m_StartPoints = value; } } // 0x24 (36)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,25 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class InputCurveData : 
 		DataContainer
 	{
-		[ContainerField(8)]
-		public List<EntryInputActionEnum> AffectedInputs { get; set; } = new List<EntryInputActionEnum>(); // 0x8 (8)
+		protected List<EntryInputActionEnum> m_AffectedInputs = new List<EntryInputActionEnum>();
+		[ContainerField(8), ContainerFieldNameHash(337107346)]
+		public List<EntryInputActionEnum> AffectedInputs { get { return m_AffectedInputs; } set { if (OnPropertyChanging("InputCurveData." + nameof(AffectedInputs), this, m_AffectedInputs, value)) m_AffectedInputs = value; } } // 0x8 (8)
 		
-		[ContainerField(12)]
-		public List<Vec2> InputModifierCurve { get; set; } = new List<Vec2>(); // 0xC (12)
+		protected List<Vec2> m_InputModifierCurve = new List<Vec2>();
+		[ContainerField(12), ContainerFieldNameHash(1217881747)]
+		public List<Vec2> InputModifierCurve { get { return m_InputModifierCurve; } set { if (OnPropertyChanging("InputCurveData." + nameof(InputModifierCurve), this, m_InputModifierCurve, value)) m_InputModifierCurve = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public bool HandleMultipleInputsAsSquare { get; set; } // 0x10 (16)
+		protected bool m_HandleMultipleInputsAsSquare = new bool();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(1190597481)]
+		public bool HandleMultipleInputsAsSquare { get { return m_HandleMultipleInputsAsSquare; } set { if (OnPropertyChanging("InputCurveData." + nameof(HandleMultipleInputsAsSquare), this, m_HandleMultipleInputsAsSquare, value)) m_HandleMultipleInputsAsSquare = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,20 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class SubtitleMainDataNode : 
 		TreeNodeBase
 	{
-		[ContainerField(12)]
-		public LanguageFormat Language { get; set; } = new LanguageFormat(); // 0xC (12)
+		protected LanguageFormat m_Language = new LanguageFormat();
+		[ContainerField(12), ContainerFieldNameHash(3872303031)]
+		public LanguageFormat Language { get { return m_Language; } set { if (OnPropertyChanging("SubtitleMainDataNode." + nameof(Language), this, m_Language, value)) m_Language = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public RefArray<SubtitleDataNode> Subtitles { get; set; } = new RefArray<SubtitleDataNode>(); // 0x10 (16)
+		protected RefArray<SubtitleDataNode> m_Subtitles = new RefArray<SubtitleDataNode>();
+		[ContainerField(16), ContainerFieldNameHash(595907762)]
+		public RefArray<SubtitleDataNode> Subtitles { get { return m_Subtitles; } set { if (OnPropertyChanging("SubtitleMainDataNode." + nameof(Subtitles), this, m_Subtitles, value)) m_Subtitles = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,29 +5,42 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class DebugValueInput : 
 		AudioGraphNodePortGroup
 	{
-		[ContainerField(8)]
-		public AudioGraphNodePort V { get; set; } = new AudioGraphNodePort(); // 0x8 (8)
+		protected AudioGraphNodePort m_V = new AudioGraphNodePort();
+		[ContainerField(8), ContainerFieldNameHash(177651)]
+		public AudioGraphNodePort V { get { return m_V; } set { if (OnPropertyChanging("DebugValueInput." + nameof(V), this, m_V, value)) m_V = value; } } // 0x8 (8)
 		
-		[ContainerField(16), LayoutImmutable]
-		public string Name { get; set; } // 0x10 (16)
+		protected string m_Name = new string();
+		[ContainerField(16), LayoutImmutable, ContainerFieldNameHash(2088949890)]
+		public string Name { get { return m_Name; } set { if (OnPropertyChanging("DebugValueInput." + nameof(Name), this, m_Name, value)) m_Name = value; } } // 0x10 (16)
 		
-		[ContainerField(20)]
-		public DebugRenderType RenderType { get; set; } = new DebugRenderType(); // 0x14 (20)
+		protected DebugRenderType m_RenderType = new DebugRenderType();
+		[ContainerField(20), ContainerFieldNameHash(604852279)]
+		public DebugRenderType RenderType { get { return m_RenderType; } set { if (OnPropertyChanging("DebugValueInput." + nameof(RenderType), this, m_RenderType, value)) m_RenderType = value; } } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable]
-		public float Min { get; set; } // 0x18 (24)
+		protected float m_Min = new float();
+		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(193446607)]
+		public float Min { get { return m_Min; } set { if (OnPropertyChanging("DebugValueInput." + nameof(Min), this, m_Min, value)) m_Min = value; } } // 0x18 (24)
 		
-		[ContainerField(28), LayoutImmutable, Blittable]
-		public float Max { get; set; } // 0x1C (28)
+		protected float m_Max = new float();
+		[ContainerField(28), LayoutImmutable, Blittable, ContainerFieldNameHash(193446865)]
+		public float Max { get { return m_Max; } set { if (OnPropertyChanging("DebugValueInput." + nameof(Max), this, m_Max, value)) m_Max = value; } } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

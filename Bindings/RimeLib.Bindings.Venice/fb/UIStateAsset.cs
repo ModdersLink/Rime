@@ -5,29 +5,42 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class UIStateAsset : 
 		Asset
 	{
-		[ContainerField(12)]
-		public RefArray<UIComponentData> UIComponents { get; set; } = new RefArray<UIComponentData>(); // 0xC (12)
+		protected RefArray<UIComponentData> m_UIComponents = new RefArray<UIComponentData>();
+		[ContainerField(12), ContainerFieldNameHash(4207180421)]
+		public RefArray<UIComponentData> UIComponents { get { return m_UIComponents; } set { if (OnPropertyChanging("UIStateAsset." + nameof(UIComponents), this, m_UIComponents, value)) m_UIComponents = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public RefArray<UIAsset> ActionscriptLibraries { get; set; } = new RefArray<UIAsset>(); // 0x10 (16)
+		protected RefArray<UIAsset> m_ActionscriptLibraries = new RefArray<UIAsset>();
+		[ContainerField(16), ContainerFieldNameHash(439634061)]
+		public RefArray<UIAsset> ActionscriptLibraries { get { return m_ActionscriptLibraries; } set { if (OnPropertyChanging("UIStateAsset." + nameof(ActionscriptLibraries), this, m_ActionscriptLibraries, value)) m_ActionscriptLibraries = value; } } // 0x10 (16)
 		
-		[ContainerField(20)]
-		public List<string> ActionscriptNames { get; set; } = new List<string>(); // 0x14 (20)
+		protected List<string> m_ActionscriptNames = new List<string>();
+		[ContainerField(20), ContainerFieldNameHash(581231424)]
+		public List<string> ActionscriptNames { get { return m_ActionscriptNames; } set { if (OnPropertyChanging("UIStateAsset." + nameof(ActionscriptNames), this, m_ActionscriptNames, value)) m_ActionscriptNames = value; } } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable]
-		public string StateName { get; set; } // 0x18 (24)
+		protected string m_StateName = new string();
+		[ContainerField(24), LayoutImmutable, ContainerFieldNameHash(4126874677)]
+		public string StateName { get { return m_StateName; } set { if (OnPropertyChanging("UIStateAsset." + nameof(StateName), this, m_StateName, value)) m_StateName = value; } } // 0x18 (24)
 		
-		[ContainerField(28), LayoutImmutable]
-		public string StatePath { get; set; } // 0x1C (28)
+		protected string m_StatePath = new string();
+		[ContainerField(28), LayoutImmutable, ContainerFieldNameHash(4126080863)]
+		public string StatePath { get { return m_StatePath; } set { if (OnPropertyChanging("UIStateAsset." + nameof(StatePath), this, m_StatePath, value)) m_StatePath = value; } } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

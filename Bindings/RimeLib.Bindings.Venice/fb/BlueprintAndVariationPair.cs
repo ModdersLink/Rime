@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class BlueprintAndVariationPair : 
 		Asset
 	{
-		[ContainerField(12)]
-		public CtrRef<Asset> BaseAsset { get; set; } = new CtrRef<Asset>(); // 0xC (12)
+		protected CtrRef<Asset> m_BaseAsset = new CtrRef<Asset>();
+		[ContainerField(12), ContainerFieldNameHash(1696234240)]
+		public CtrRef<Asset> BaseAsset { get { return m_BaseAsset; } set { if (OnPropertyChanging("BlueprintAndVariationPair." + nameof(BaseAsset), this, m_BaseAsset, value)) m_BaseAsset = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public CtrRef<ObjectVariation> Variation { get; set; } = new CtrRef<ObjectVariation>(); // 0x10 (16)
+		protected CtrRef<ObjectVariation> m_Variation = new CtrRef<ObjectVariation>();
+		[ContainerField(16), ContainerFieldNameHash(2945980116)]
+		public CtrRef<ObjectVariation> Variation { get { return m_Variation; } set { if (OnPropertyChanging("BlueprintAndVariationPair." + nameof(Variation), this, m_Variation, value)) m_Variation = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

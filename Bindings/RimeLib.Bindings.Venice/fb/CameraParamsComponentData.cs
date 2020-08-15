@@ -5,22 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class CameraParamsComponentData : 
 		ComponentData
 	{
-		[ContainerField(96), LayoutImmutable, Blittable]
-		public float ViewDistance { get; set; } // 0x60 (96)
+		protected float m_ViewDistance = new float();
+		[ContainerField(96), LayoutImmutable, Blittable, ContainerFieldNameHash(2201945291)]
+		public float ViewDistance { get { return m_ViewDistance; } set { if (OnPropertyChanging("CameraParamsComponentData." + nameof(ViewDistance), this, m_ViewDistance, value)) m_ViewDistance = value; } } // 0x60 (96)
 		
-		[ContainerField(100), LayoutImmutable, Blittable]
-		public float NearPlane { get; set; } // 0x64 (100)
+		protected float m_NearPlane = new float();
+		[ContainerField(100), LayoutImmutable, Blittable, ContainerFieldNameHash(3156145579)]
+		public float NearPlane { get { return m_NearPlane; } set { if (OnPropertyChanging("CameraParamsComponentData." + nameof(NearPlane), this, m_NearPlane, value)) m_NearPlane = value; } } // 0x64 (100)
 		
-		[ContainerField(104), LayoutImmutable, Blittable]
-		public float SunShadowmapViewDistance { get; set; } // 0x68 (104)
+		protected float m_SunShadowmapViewDistance = new float();
+		[ContainerField(104), LayoutImmutable, Blittable, ContainerFieldNameHash(2626774393)]
+		public float SunShadowmapViewDistance { get { return m_SunShadowmapViewDistance; } set { if (OnPropertyChanging("CameraParamsComponentData." + nameof(SunShadowmapViewDistance), this, m_SunShadowmapViewDistance, value)) m_SunShadowmapViewDistance = value; } } // 0x68 (104)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

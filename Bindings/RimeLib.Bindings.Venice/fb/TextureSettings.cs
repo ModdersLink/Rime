@@ -5,22 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class TextureSettings : 
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable, Blittable]
-		public uint SkipMipmapCount { get; set; } // 0x8 (8)
+		protected uint m_SkipMipmapCount = new uint();
+		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(679697071)]
+		public uint SkipMipmapCount { get { return m_SkipMipmapCount; } set { if (OnPropertyChanging("TextureSettings." + nameof(SkipMipmapCount), this, m_SkipMipmapCount, value)) m_SkipMipmapCount = value; } } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public bool LoadingEnabled { get; set; } // 0xC (12)
+		protected bool m_LoadingEnabled = new bool();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(1695799750)]
+		public bool LoadingEnabled { get { return m_LoadingEnabled; } set { if (OnPropertyChanging("TextureSettings." + nameof(LoadingEnabled), this, m_LoadingEnabled, value)) m_LoadingEnabled = value; } } // 0xC (12)
 		
-		[ContainerField(13), LayoutImmutable, Blittable]
-		public bool RenderTexturesEnabled { get; set; } // 0xD (13)
+		protected bool m_RenderTexturesEnabled = new bool();
+		[ContainerField(13), LayoutImmutable, Blittable, ContainerFieldNameHash(437746662)]
+		public bool RenderTexturesEnabled { get { return m_RenderTexturesEnabled; } set { if (OnPropertyChanging("TextureSettings." + nameof(RenderTexturesEnabled), this, m_RenderTexturesEnabled, value)) m_RenderTexturesEnabled = value; } } // 0xD (13)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

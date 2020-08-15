@@ -5,20 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class SoundDataAsset : 
 		Asset
 	{
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public uint NameHash { get; set; } // 0xC (12)
+		protected uint m_NameHash = new uint();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(994057744)]
+		public uint NameHash { get { return m_NameHash; } set { if (OnPropertyChanging("SoundDataAsset." + nameof(NameHash), this, m_NameHash, value)) m_NameHash = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public List<SoundDataChunk> Chunks { get; set; } = new List<SoundDataChunk>(); // 0x10 (16)
+		protected List<SoundDataChunk> m_Chunks = new List<SoundDataChunk>();
+		[ContainerField(16), ContainerFieldNameHash(2727168525)]
+		public List<SoundDataChunk> Chunks { get { return m_Chunks; } set { if (OnPropertyChanging("SoundDataAsset." + nameof(Chunks), this, m_Chunks, value)) m_Chunks = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

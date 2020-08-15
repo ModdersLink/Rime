@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class UIItemDescriptionAsset : 
 		Asset
 	{
-		[ContainerField(12)]
-		public RefArray<UIItemDescriptionAsset> Children { get; set; } = new RefArray<UIItemDescriptionAsset>(); // 0xC (12)
+		protected RefArray<UIItemDescriptionAsset> m_Children = new RefArray<UIItemDescriptionAsset>();
+		[ContainerField(12), ContainerFieldNameHash(1297796054)]
+		public RefArray<UIItemDescriptionAsset> Children { get { return m_Children; } set { if (OnPropertyChanging("UIItemDescriptionAsset." + nameof(Children), this, m_Children, value)) m_Children = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public RefArray<UIItemDescription> Items { get; set; } = new RefArray<UIItemDescription>(); // 0x10 (16)
+		protected RefArray<UIItemDescription> m_Items = new RefArray<UIItemDescription>();
+		[ContainerField(16), ContainerFieldNameHash(215446531)]
+		public RefArray<UIItemDescription> Items { get { return m_Items; } set { if (OnPropertyChanging("UIItemDescriptionAsset." + nameof(Items), this, m_Items, value)) m_Items = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

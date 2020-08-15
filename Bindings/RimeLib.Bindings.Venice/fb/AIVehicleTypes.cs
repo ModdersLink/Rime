@@ -5,22 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class AIVehicleTypes : 
 		Asset
 	{
-		[ContainerField(12)]
-		public RefArray<AIVehicleBehaviourData> VehicleTypes { get; set; } = new RefArray<AIVehicleBehaviourData>(); // 0xC (12)
+		protected RefArray<AIVehicleBehaviourData> m_VehicleTypes = new RefArray<AIVehicleBehaviourData>();
+		[ContainerField(12), ContainerFieldNameHash(489934422)]
+		public RefArray<AIVehicleBehaviourData> VehicleTypes { get { return m_VehicleTypes; } set { if (OnPropertyChanging("AIVehicleTypes." + nameof(VehicleTypes), this, m_VehicleTypes, value)) m_VehicleTypes = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public RefArray<BehaviourData> Goals { get; set; } = new RefArray<BehaviourData>(); // 0x10 (16)
+		protected RefArray<BehaviourData> m_Goals = new RefArray<BehaviourData>();
+		[ContainerField(16), ContainerFieldNameHash(207935763)]
+		public RefArray<BehaviourData> Goals { get { return m_Goals; } set { if (OnPropertyChanging("AIVehicleTypes." + nameof(Goals), this, m_Goals, value)) m_Goals = value; } } // 0x10 (16)
 		
-		[ContainerField(20)]
-		public RefArray<BehaviourData> Intents { get; set; } = new RefArray<BehaviourData>(); // 0x14 (20)
+		protected RefArray<BehaviourData> m_Intents = new RefArray<BehaviourData>();
+		[ContainerField(20), ContainerFieldNameHash(1691535386)]
+		public RefArray<BehaviourData> Intents { get { return m_Intents; } set { if (OnPropertyChanging("AIVehicleTypes." + nameof(Intents), this, m_Intents, value)) m_Intents = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

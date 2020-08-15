@@ -5,17 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class KeyboardInputActionData : 
 		InputActionData
 	{
-		[ContainerField(12)]
-		public InputDeviceKeys Key { get; set; } = new InputDeviceKeys(); // 0xC (12)
+		protected InputDeviceKeys m_Key = new InputDeviceKeys();
+		[ContainerField(12), ContainerFieldNameHash(193457490)]
+		public InputDeviceKeys Key { get { return m_Key; } set { if (OnPropertyChanging("KeyboardInputActionData." + nameof(Key), this, m_Key, value)) m_Key = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

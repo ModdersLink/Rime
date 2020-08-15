@@ -5,22 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class ProceduralAwarenessAntRefs : 
 		DataContainer
 	{
-		[ContainerField(8)]
-		public AntRef ProceduralAwarenessActive { get; set; } = new AntRef(); // 0x8 (8)
+		protected AntRef m_ProceduralAwarenessActive = new AntRef();
+		[ContainerField(8), ContainerFieldNameHash(917996519)]
+		public AntRef ProceduralAwarenessActive { get { return m_ProceduralAwarenessActive; } set { if (OnPropertyChanging("ProceduralAwarenessAntRefs." + nameof(ProceduralAwarenessActive), this, m_ProceduralAwarenessActive, value)) m_ProceduralAwarenessActive = value; } } // 0x8 (8)
 		
-		[ContainerField(12)]
-		public AntRef ProceduralAwarenessHumanIKActive { get; set; } = new AntRef(); // 0xC (12)
+		protected AntRef m_ProceduralAwarenessHumanIKActive = new AntRef();
+		[ContainerField(12), ContainerFieldNameHash(2022287482)]
+		public AntRef ProceduralAwarenessHumanIKActive { get { return m_ProceduralAwarenessHumanIKActive; } set { if (OnPropertyChanging("ProceduralAwarenessAntRefs." + nameof(ProceduralAwarenessHumanIKActive), this, m_ProceduralAwarenessHumanIKActive, value)) m_ProceduralAwarenessHumanIKActive = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public AntRef ProceduralAwarenessData { get; set; } = new AntRef(); // 0x10 (16)
+		protected AntRef m_ProceduralAwarenessData = new AntRef();
+		[ContainerField(16), ContainerFieldNameHash(935670043)]
+		public AntRef ProceduralAwarenessData { get { return m_ProceduralAwarenessData; } set { if (OnPropertyChanging("ProceduralAwarenessAntRefs." + nameof(ProceduralAwarenessData), this, m_ProceduralAwarenessData, value)) m_ProceduralAwarenessData = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

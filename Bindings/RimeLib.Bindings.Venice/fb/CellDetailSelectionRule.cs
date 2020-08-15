@@ -5,17 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class CellDetailSelectionRule : 
 		PackagingRule
 	{
-		[ContainerField(48)]
-		public PackagingDetailLevel Detail { get; set; } = new PackagingDetailLevel(); // 0x30 (48)
+		protected PackagingDetailLevel m_Detail = new PackagingDetailLevel();
+		[ContainerField(48), ContainerFieldNameHash(2594676244)]
+		public PackagingDetailLevel Detail { get { return m_Detail; } set { if (OnPropertyChanging("CellDetailSelectionRule." + nameof(Detail), this, m_Detail, value)) m_Detail = value; } } // 0x30 (48)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

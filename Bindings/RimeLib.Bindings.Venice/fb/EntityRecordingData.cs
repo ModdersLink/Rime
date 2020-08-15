@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class EntityRecordingData : 
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable, Blittable]
-		public GUID EntityGuid { get; set; } // 0x8 (8)
+		protected GUID m_EntityGuid = new GUID();
+		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(1697800481)]
+		public GUID EntityGuid { get { return m_EntityGuid; } set { if (OnPropertyChanging("EntityRecordingData." + nameof(EntityGuid), this, m_EntityGuid, value)) m_EntityGuid = value; } } // 0x8 (8)
 		
-		[ContainerField(24)]
-		public RefArray<PropertyRecordingData> Data { get; set; } = new RefArray<PropertyRecordingData>(); // 0x18 (24)
+		protected RefArray<PropertyRecordingData> m_Data = new RefArray<PropertyRecordingData>();
+		[ContainerField(24), ContainerFieldNameHash(2088730869)]
+		public RefArray<PropertyRecordingData> Data { get { return m_Data; } set { if (OnPropertyChanging("EntityRecordingData." + nameof(Data), this, m_Data, value)) m_Data = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,35 +5,50 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class FaceposerComponentData : 
 		ComponentData
 	{
-		[ContainerField(96)]
-		public AntRef FacePoserEnabled { get; set; } = new AntRef(); // 0x60 (96)
+		protected AntRef m_FacePoserEnabled = new AntRef();
+		[ContainerField(96), ContainerFieldNameHash(3981181402)]
+		public AntRef FacePoserEnabled { get { return m_FacePoserEnabled; } set { if (OnPropertyChanging("FaceposerComponentData." + nameof(FacePoserEnabled), this, m_FacePoserEnabled, value)) m_FacePoserEnabled = value; } } // 0x60 (96)
 		
-		[ContainerField(100), LayoutImmutable, Blittable]
-		public float LodDistance { get; set; } // 0x64 (100)
+		protected float m_LodDistance = new float();
+		[ContainerField(100), LayoutImmutable, Blittable, ContainerFieldNameHash(3054638721)]
+		public float LodDistance { get { return m_LodDistance; } set { if (OnPropertyChanging("FaceposerComponentData." + nameof(LodDistance), this, m_LodDistance, value)) m_LodDistance = value; } } // 0x64 (100)
 		
-		[ContainerField(104)]
-		public AntRef FacePoseLibraryReference { get; set; } = new AntRef(); // 0x68 (104)
+		protected AntRef m_FacePoseLibraryReference = new AntRef();
+		[ContainerField(104), ContainerFieldNameHash(3854286233)]
+		public AntRef FacePoseLibraryReference { get { return m_FacePoseLibraryReference; } set { if (OnPropertyChanging("FaceposerComponentData." + nameof(FacePoseLibraryReference), this, m_FacePoseLibraryReference, value)) m_FacePoseLibraryReference = value; } } // 0x68 (104)
 		
-		[ContainerField(108)]
-		public List<AntRef> FacePoseLibrary { get; set; } = new List<AntRef>(); // 0x6C (108)
+		protected List<AntRef> m_FacePoseLibrary = new List<AntRef>();
+		[ContainerField(108), ContainerFieldNameHash(2634820946)]
+		public List<AntRef> FacePoseLibrary { get { return m_FacePoseLibrary; } set { if (OnPropertyChanging("FaceposerComponentData." + nameof(FacePoseLibrary), this, m_FacePoseLibrary, value)) m_FacePoseLibrary = value; } } // 0x6C (108)
 		
-		[ContainerField(112), LayoutImmutable]
-		public string FacePoserDofSetName { get; set; } // 0x70 (112)
+		protected string m_FacePoserDofSetName = new string();
+		[ContainerField(112), LayoutImmutable, ContainerFieldNameHash(691847159)]
+		public string FacePoserDofSetName { get { return m_FacePoserDofSetName; } set { if (OnPropertyChanging("FaceposerComponentData." + nameof(FacePoserDofSetName), this, m_FacePoserDofSetName, value)) m_FacePoserDofSetName = value; } } // 0x70 (112)
 		
-		[ContainerField(116)]
-		public List<string> ShaderExposedValues { get; set; } = new List<string>(); // 0x74 (116)
+		protected List<string> m_ShaderExposedValues = new List<string>();
+		[ContainerField(116), ContainerFieldNameHash(777076420)]
+		public List<string> ShaderExposedValues { get { return m_ShaderExposedValues; } set { if (OnPropertyChanging("FaceposerComponentData." + nameof(ShaderExposedValues), this, m_ShaderExposedValues, value)) m_ShaderExposedValues = value; } } // 0x74 (116)
 		
-		[ContainerField(120), LayoutImmutable, Blittable]
-		public int FacePoseLibraryIndex { get; set; } // 0x78 (120)
+		protected int m_FacePoseLibraryIndex = new int();
+		[ContainerField(120), LayoutImmutable, Blittable, ContainerFieldNameHash(1630333484)]
+		public int FacePoseLibraryIndex { get { return m_FacePoseLibraryIndex; } set { if (OnPropertyChanging("FaceposerComponentData." + nameof(FacePoseLibraryIndex), this, m_FacePoseLibraryIndex, value)) m_FacePoseLibraryIndex = value; } } // 0x78 (120)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

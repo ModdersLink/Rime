@@ -5,20 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class MaterialContainerAsset : 
 		Asset
 	{
-		[ContainerField(12)]
-		public RefArray<MaterialContainerPair> MaterialPairs { get; set; } = new RefArray<MaterialContainerPair>(); // 0xC (12)
+		protected RefArray<MaterialContainerPair> m_MaterialPairs = new RefArray<MaterialContainerPair>();
+		[ContainerField(12), ContainerFieldNameHash(1030971927)]
+		public RefArray<MaterialContainerPair> MaterialPairs { get { return m_MaterialPairs; } set { if (OnPropertyChanging("MaterialContainerAsset." + nameof(MaterialPairs), this, m_MaterialPairs, value)) m_MaterialPairs = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public List<string> MaterialNames { get; set; } = new List<string>(); // 0x10 (16)
+		protected List<string> m_MaterialNames = new List<string>();
+		[ContainerField(16), ContainerFieldNameHash(990812474)]
+		public List<string> MaterialNames { get { return m_MaterialNames; } set { if (OnPropertyChanging("MaterialContainerAsset." + nameof(MaterialNames), this, m_MaterialNames, value)) m_MaterialNames = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

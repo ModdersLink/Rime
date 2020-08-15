@@ -5,25 +5,38 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class SoundStateSettingsAsset : 
 		Asset
 	{
-		[ContainerField(12)]
-		public RefArray<SoundState> SoundStates { get; set; } = new RefArray<SoundState>(); // 0xC (12)
+		protected RefArray<SoundState> m_SoundStates = new RefArray<SoundState>();
+		[ContainerField(12), ContainerFieldNameHash(4087884162)]
+		public RefArray<SoundState> SoundStates { get { return m_SoundStates; } set { if (OnPropertyChanging("SoundStateSettingsAsset." + nameof(SoundStates), this, m_SoundStates, value)) m_SoundStates = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public float ImpairedHearingImpulseThreshold { get; set; } // 0x10 (16)
+		protected float m_ImpairedHearingImpulseThreshold = new float();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(3350088792)]
+		public float ImpairedHearingImpulseThreshold { get { return m_ImpairedHearingImpulseThreshold; } set { if (OnPropertyChanging("SoundStateSettingsAsset." + nameof(ImpairedHearingImpulseThreshold), this, m_ImpairedHearingImpulseThreshold, value)) m_ImpairedHearingImpulseThreshold = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
-		public float ScreamThreshold { get; set; } // 0x14 (20)
+		protected float m_ScreamThreshold = new float();
+		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(3986899289)]
+		public float ScreamThreshold { get { return m_ScreamThreshold; } set { if (OnPropertyChanging("SoundStateSettingsAsset." + nameof(ScreamThreshold), this, m_ScreamThreshold, value)) m_ScreamThreshold = value; } } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable]
-		public float SupressionThreshold { get; set; } // 0x18 (24)
+		protected float m_SupressionThreshold = new float();
+		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(1285763547)]
+		public float SupressionThreshold { get { return m_SupressionThreshold; } set { if (OnPropertyChanging("SoundStateSettingsAsset." + nameof(SupressionThreshold), this, m_SupressionThreshold, value)) m_SupressionThreshold = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,20 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class EventGateEntityData : 
 		EntityData
 	{
-		[ContainerField(12)]
-		public Realm Realm { get; set; } = new Realm(); // 0xC (12)
+		protected Realm m_Realm = new Realm();
+		[ContainerField(12), ContainerFieldNameHash(229961746)]
+		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("EventGateEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public bool Default { get; set; } // 0x10 (16)
+		protected bool m_Default = new bool();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(3998752238)]
+		public bool Default { get { return m_Default; } set { if (OnPropertyChanging("EventGateEntityData." + nameof(Default), this, m_Default, value)) m_Default = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

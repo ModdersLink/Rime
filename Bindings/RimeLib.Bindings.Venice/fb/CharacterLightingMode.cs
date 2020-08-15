@@ -5,9 +5,20 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
+
 namespace fb
 {
-    public enum CharacterLightingMode : int
+	public enum CharacterLightingMode : int
 	{
 		CharacterLightingMode_Add = 0,
 		CharacterLightingMode_Blend = 1

@@ -5,25 +5,38 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class LandingFlapData : 
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable, Blittable]
-		public float ActivationHeight { get; set; } // 0x8 (8)
+		protected float m_ActivationHeight = new float();
+		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(2266632686)]
+		public float ActivationHeight { get { return m_ActivationHeight; } set { if (OnPropertyChanging("LandingFlapData." + nameof(ActivationHeight), this, m_ActivationHeight, value)) m_ActivationHeight = value; } } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public float HeightTolerance { get; set; } // 0xC (12)
+		protected float m_HeightTolerance = new float();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(593358163)]
+		public float HeightTolerance { get { return m_HeightTolerance; } set { if (OnPropertyChanging("LandingFlapData." + nameof(HeightTolerance), this, m_HeightTolerance, value)) m_HeightTolerance = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public float ActivationVelocity { get; set; } // 0x10 (16)
+		protected float m_ActivationVelocity = new float();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(1432155942)]
+		public float ActivationVelocity { get { return m_ActivationVelocity; } set { if (OnPropertyChanging("LandingFlapData." + nameof(ActivationVelocity), this, m_ActivationVelocity, value)) m_ActivationVelocity = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
-		public float VelocityTolerance { get; set; } // 0x14 (20)
+		protected float m_VelocityTolerance = new float();
+		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(43464475)]
+		public float VelocityTolerance { get { return m_VelocityTolerance; } set { if (OnPropertyChanging("LandingFlapData." + nameof(VelocityTolerance), this, m_VelocityTolerance, value)) m_VelocityTolerance = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

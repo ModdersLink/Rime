@@ -5,38 +5,54 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class TransformModifierEntityData : 
 		EntityData
 	{
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable]
-		public LinearTransform In { get; set; } = new LinearTransform(); // 0x10 (16)
+		protected LinearTransform m_In = new LinearTransform();
+		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(5862146)]
+		public LinearTransform In { get { return m_In; } set { if (OnPropertyChanging("TransformModifierEntityData." + nameof(In), this, m_In, value)) m_In = value; } } // 0x10 (16)
 		
-		[ContainerField(80)]
-		public Realm Realm { get; set; } = new Realm(); // 0x50 (80)
+		protected Realm m_Realm = new Realm();
+		[ContainerField(80), ContainerFieldNameHash(229961746)]
+		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("TransformModifierEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0x50 (80)
 		
-		[ContainerField(84)]
-		public ModifierAxis Left { get; set; } = new ModifierAxis(); // 0x54 (84)
+		protected ModifierAxis m_Left = new ModifierAxis();
+		[ContainerField(84), ContainerFieldNameHash(2089021886)]
+		public ModifierAxis Left { get { return m_Left; } set { if (OnPropertyChanging("TransformModifierEntityData." + nameof(Left), this, m_Left, value)) m_Left = value; } } // 0x54 (84)
 		
-		[ContainerField(88)]
-		public ModifierAxis Up { get; set; } = new ModifierAxis(); // 0x58 (88)
+		protected ModifierAxis m_Up = new ModifierAxis();
+		[ContainerField(88), ContainerFieldNameHash(5862272)]
+		public ModifierAxis Up { get { return m_Up; } set { if (OnPropertyChanging("TransformModifierEntityData." + nameof(Up), this, m_Up, value)) m_Up = value; } } // 0x58 (88)
 		
-		[ContainerField(92)]
-		public ModifierAxis Forward { get; set; } = new ModifierAxis(); // 0x5C (92)
+		protected ModifierAxis m_Forward = new ModifierAxis();
+		[ContainerField(92), ContainerFieldNameHash(1986470206)]
+		public ModifierAxis Forward { get { return m_Forward; } set { if (OnPropertyChanging("TransformModifierEntityData." + nameof(Forward), this, m_Forward, value)) m_Forward = value; } } // 0x5C (92)
 		
-		[ContainerField(96), LayoutImmutable, Blittable]
-		public bool InvertLeft { get; set; } // 0x60 (96)
+		protected bool m_InvertLeft = new bool();
+		[ContainerField(96), LayoutImmutable, Blittable, ContainerFieldNameHash(3753810092)]
+		public bool InvertLeft { get { return m_InvertLeft; } set { if (OnPropertyChanging("TransformModifierEntityData." + nameof(InvertLeft), this, m_InvertLeft, value)) m_InvertLeft = value; } } // 0x60 (96)
 		
-		[ContainerField(97), LayoutImmutable, Blittable]
-		public bool InvertUp { get; set; } // 0x61 (97)
+		protected bool m_InvertUp = new bool();
+		[ContainerField(97), LayoutImmutable, Blittable, ContainerFieldNameHash(58661394)]
+		public bool InvertUp { get { return m_InvertUp; } set { if (OnPropertyChanging("TransformModifierEntityData." + nameof(InvertUp), this, m_InvertUp, value)) m_InvertUp = value; } } // 0x61 (97)
 		
-		[ContainerField(98), LayoutImmutable, Blittable]
-		public bool InvertForward { get; set; } // 0x62 (98)
+		protected bool m_InvertForward = new bool();
+		[ContainerField(98), LayoutImmutable, Blittable, ContainerFieldNameHash(3827158252)]
+		public bool InvertForward { get { return m_InvertForward; } set { if (OnPropertyChanging("TransformModifierEntityData." + nameof(InvertForward), this, m_InvertForward, value)) m_InvertForward = value; } } // 0x62 (98)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

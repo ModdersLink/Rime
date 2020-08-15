@@ -5,22 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class EffectManagerSettings : 
 		SystemSettings
 	{
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public uint MaxNewEffectsPerFrameCount { get; set; } // 0xC (12)
+		protected uint m_MaxNewEffectsPerFrameCount = new uint();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(2561526576)]
+		public uint MaxNewEffectsPerFrameCount { get { return m_MaxNewEffectsPerFrameCount; } set { if (OnPropertyChanging("EffectManagerSettings." + nameof(MaxNewEffectsPerFrameCount), this, m_MaxNewEffectsPerFrameCount, value)) m_MaxNewEffectsPerFrameCount = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public uint SizeToGrowNewEffectsContainer { get; set; } // 0x10 (16)
+		protected uint m_SizeToGrowNewEffectsContainer = new uint();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(146515561)]
+		public uint SizeToGrowNewEffectsContainer { get { return m_SizeToGrowNewEffectsContainer; } set { if (OnPropertyChanging("EffectManagerSettings." + nameof(SizeToGrowNewEffectsContainer), this, m_SizeToGrowNewEffectsContainer, value)) m_SizeToGrowNewEffectsContainer = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
-		public uint EffectQuality { get; set; } // 0x14 (20)
+		protected uint m_EffectQuality = new uint();
+		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(3929474783)]
+		public uint EffectQuality { get { return m_EffectQuality; } set { if (OnPropertyChanging("EffectManagerSettings." + nameof(EffectQuality), this, m_EffectQuality, value)) m_EffectQuality = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,31 +5,46 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class Minimap2DEntityData : 
 		GameEntityData
 	{
-		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 CameraTransform { get; set; } = new Vec3(); // 0x60 (96)
+		protected Vec3 m_CameraTransform = new Vec3();
+		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(2221896688)]
+		public Vec3 CameraTransform { get { return m_CameraTransform; } set { if (OnPropertyChanging("Minimap2DEntityData." + nameof(CameraTransform), this, m_CameraTransform, value)) m_CameraTransform = value; } } // 0x60 (96)
 		
-		[ContainerField(112), LayoutImmutable, Blittable]
-		public uint ImageHeight { get; set; } // 0x70 (112)
+		protected uint m_ImageHeight = new uint();
+		[ContainerField(112), LayoutImmutable, Blittable, ContainerFieldNameHash(1206650749)]
+		public uint ImageHeight { get { return m_ImageHeight; } set { if (OnPropertyChanging("Minimap2DEntityData." + nameof(ImageHeight), this, m_ImageHeight, value)) m_ImageHeight = value; } } // 0x70 (112)
 		
-		[ContainerField(116), LayoutImmutable, Blittable]
-		public uint ImageWidth { get; set; } // 0x74 (116)
+		protected uint m_ImageWidth = new uint();
+		[ContainerField(116), LayoutImmutable, Blittable, ContainerFieldNameHash(2524707716)]
+		public uint ImageWidth { get { return m_ImageWidth; } set { if (OnPropertyChanging("Minimap2DEntityData." + nameof(ImageWidth), this, m_ImageWidth, value)) m_ImageWidth = value; } } // 0x74 (116)
 		
-		[ContainerField(120), LayoutImmutable, Blittable]
-		public uint AntialiasMultiplier { get; set; } // 0x78 (120)
+		protected uint m_AntialiasMultiplier = new uint();
+		[ContainerField(120), LayoutImmutable, Blittable, ContainerFieldNameHash(1311946794)]
+		public uint AntialiasMultiplier { get { return m_AntialiasMultiplier; } set { if (OnPropertyChanging("Minimap2DEntityData." + nameof(AntialiasMultiplier), this, m_AntialiasMultiplier, value)) m_AntialiasMultiplier = value; } } // 0x78 (120)
 		
-		[ContainerField(124), LayoutImmutable, Blittable]
-		public uint TerrainHeight { get; set; } // 0x7C (124)
+		protected uint m_TerrainHeight = new uint();
+		[ContainerField(124), LayoutImmutable, Blittable, ContainerFieldNameHash(3163704045)]
+		public uint TerrainHeight { get { return m_TerrainHeight; } set { if (OnPropertyChanging("Minimap2DEntityData." + nameof(TerrainHeight), this, m_TerrainHeight, value)) m_TerrainHeight = value; } } // 0x7C (124)
 		
-		[ContainerField(128), LayoutImmutable, Blittable]
-		public uint Fov { get; set; } // 0x80 (128)
+		protected uint m_Fov = new uint();
+		[ContainerField(128), LayoutImmutable, Blittable, ContainerFieldNameHash(193443802)]
+		public uint Fov { get { return m_Fov; } set { if (OnPropertyChanging("Minimap2DEntityData." + nameof(Fov), this, m_Fov, value)) m_Fov = value; } } // 0x80 (128)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

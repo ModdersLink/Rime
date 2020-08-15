@@ -5,26 +5,38 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class OnlineConfiguration : 
 		Asset
 	{
-		[ContainerField(12)]
-		public BackendType Backend { get; set; } = new BackendType(); // 0xC (12)
+		protected BackendType m_Backend = new BackendType();
+		[ContainerField(12), ContainerFieldNameHash(2290467745)]
+		public BackendType Backend { get { return m_Backend; } set { if (OnPropertyChanging("OnlineConfiguration." + nameof(Backend), this, m_Backend, value)) m_Backend = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public CtrRef<OnlineProviderAsset> Provider { get; set; } = new CtrRef<OnlineProviderAsset>(); // 0x10 (16)
+		protected CtrRef<OnlineProviderAsset> m_Provider = new CtrRef<OnlineProviderAsset>();
+		[ContainerField(16), ContainerFieldNameHash(3021915972)]
+		public CtrRef<OnlineProviderAsset> Provider { get { return m_Provider; } set { if (OnPropertyChanging("OnlineConfiguration." + nameof(Provider), this, m_Provider, value)) m_Provider = value; } } // 0x10 (16)
 		
-		[ContainerField(20)]
-		public CtrRef<RichPresenceData> RichPresence { get; set; } = new CtrRef<RichPresenceData>(); // 0x14 (20)
+		protected CtrRef<RichPresenceData> m_RichPresence = new CtrRef<RichPresenceData>();
+		[ContainerField(20), ContainerFieldNameHash(789861132)]
+		public CtrRef<RichPresenceData> RichPresence { get { return m_RichPresence; } set { if (OnPropertyChanging("OnlineConfiguration." + nameof(RichPresence), this, m_RichPresence, value)) m_RichPresence = value; } } // 0x14 (20)
 		
-		[ContainerField(24)]
-		public CtrRef<ChatSettings> Chat { get; set; } = new CtrRef<ChatSettings>(); // 0x18 (24)
+		protected CtrRef<ChatSettings> m_Chat = new CtrRef<ChatSettings>();
+		[ContainerField(24), ContainerFieldNameHash(2088856251)]
+		public CtrRef<ChatSettings> Chat { get { return m_Chat; } set { if (OnPropertyChanging("OnlineConfiguration." + nameof(Chat), this, m_Chat, value)) m_Chat = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

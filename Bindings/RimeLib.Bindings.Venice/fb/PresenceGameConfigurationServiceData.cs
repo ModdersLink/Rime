@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class PresenceGameConfigurationServiceData : 
 		PresenceServiceData
 	{
-		[ContainerField(12)]
-		public OnlineEnvironmentConsoleUrl ConfigUrl { get; set; } = new OnlineEnvironmentConsoleUrl(); // 0xC (12)
+		protected OnlineEnvironmentConsoleUrl m_ConfigUrl = new OnlineEnvironmentConsoleUrl();
+		[ContainerField(12), ContainerFieldNameHash(1873884036)]
+		public OnlineEnvironmentConsoleUrl ConfigUrl { get { return m_ConfigUrl; } set { if (OnPropertyChanging("PresenceGameConfigurationServiceData." + nameof(ConfigUrl), this, m_ConfigUrl, value)) m_ConfigUrl = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

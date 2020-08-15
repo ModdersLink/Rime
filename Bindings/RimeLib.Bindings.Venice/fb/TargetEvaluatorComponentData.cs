@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class TargetEvaluatorComponentData : 
 		ComponentData
 	{
-		[ContainerField(96), LayoutImmutable, Blittable]
-		public float UpdateInterval { get; set; } // 0x60 (96)
+		protected float m_UpdateInterval = new float();
+		[ContainerField(96), LayoutImmutable, Blittable, ContainerFieldNameHash(754325291)]
+		public float UpdateInterval { get { return m_UpdateInterval; } set { if (OnPropertyChanging("TargetEvaluatorComponentData." + nameof(UpdateInterval), this, m_UpdateInterval, value)) m_UpdateInterval = value; } } // 0x60 (96)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,26 +5,38 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class TransformSelectorEntityData : 
 		EntityData
 	{
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable]
-		public LinearTransform In1 { get; set; } = new LinearTransform(); // 0x10 (16)
+		protected LinearTransform m_In1 = new LinearTransform();
+		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(193450867)]
+		public LinearTransform In1 { get { return m_In1; } set { if (OnPropertyChanging("TransformSelectorEntityData." + nameof(In1), this, m_In1, value)) m_In1 = value; } } // 0x10 (16)
 		
-		[ContainerField(80), Homogeneous, LayoutImmutable, Blittable]
-		public LinearTransform In2 { get; set; } = new LinearTransform(); // 0x50 (80)
+		protected LinearTransform m_In2 = new LinearTransform();
+		[ContainerField(80), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(193450864)]
+		public LinearTransform In2 { get { return m_In2; } set { if (OnPropertyChanging("TransformSelectorEntityData." + nameof(In2), this, m_In2, value)) m_In2 = value; } } // 0x50 (80)
 		
-		[ContainerField(144)]
-		public Realm Realm { get; set; } = new Realm(); // 0x90 (144)
+		protected Realm m_Realm = new Realm();
+		[ContainerField(144), ContainerFieldNameHash(229961746)]
+		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("TransformSelectorEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0x90 (144)
 		
-		[ContainerField(148), LayoutImmutable, Blittable]
-		public bool Selection { get; set; } // 0x94 (148)
+		protected bool m_Selection = new bool();
+		[ContainerField(148), LayoutImmutable, Blittable, ContainerFieldNameHash(299217285)]
+		public bool Selection { get { return m_Selection; } set { if (OnPropertyChanging("TransformSelectorEntityData." + nameof(Selection), this, m_Selection, value)) m_Selection = value; } } // 0x94 (148)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

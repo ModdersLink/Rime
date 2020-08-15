@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class PackagingRule : 
 		Asset
 	{
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 DebugColor { get; set; } = new Vec3(); // 0x10 (16)
+		protected Vec3 m_DebugColor = new Vec3();
+		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(2612071465)]
+		public Vec3 DebugColor { get { return m_DebugColor; } set { if (OnPropertyChanging("PackagingRule." + nameof(DebugColor), this, m_DebugColor, value)) m_DebugColor = value; } } // 0x10 (16)
 		
-		[ContainerField(32), LayoutImmutable, Blittable]
-		public bool CanTargetSelf { get; set; } // 0x20 (32)
+		protected bool m_CanTargetSelf = new bool();
+		[ContainerField(32), LayoutImmutable, Blittable, ContainerFieldNameHash(3198168004)]
+		public bool CanTargetSelf { get { return m_CanTargetSelf; } set { if (OnPropertyChanging("PackagingRule." + nameof(CanTargetSelf), this, m_CanTargetSelf, value)) m_CanTargetSelf = value; } } // 0x20 (32)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

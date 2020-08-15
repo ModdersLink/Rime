@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class PadRumbleNodeData : 
 		AudioGraphNodeData
 	{
-		[ContainerField(8)]
-		public AudioGraphNodePort RumbleHigh { get; set; } = new AudioGraphNodePort(); // 0x8 (8)
+		protected AudioGraphNodePort m_RumbleHigh = new AudioGraphNodePort();
+		[ContainerField(8), ContainerFieldNameHash(2053424650)]
+		public AudioGraphNodePort RumbleHigh { get { return m_RumbleHigh; } set { if (OnPropertyChanging("PadRumbleNodeData." + nameof(RumbleHigh), this, m_RumbleHigh, value)) m_RumbleHigh = value; } } // 0x8 (8)
 		
-		[ContainerField(16)]
-		public AudioGraphNodePort RumbleLow { get; set; } = new AudioGraphNodePort(); // 0x10 (16)
+		protected AudioGraphNodePort m_RumbleLow = new AudioGraphNodePort();
+		[ContainerField(16), ContainerFieldNameHash(2144629360)]
+		public AudioGraphNodePort RumbleLow { get { return m_RumbleLow; } set { if (OnPropertyChanging("PadRumbleNodeData." + nameof(RumbleLow), this, m_RumbleLow, value)) m_RumbleLow = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

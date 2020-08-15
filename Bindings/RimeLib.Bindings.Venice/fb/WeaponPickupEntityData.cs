@@ -5,20 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class WeaponPickupEntityData : 
 		PickupEntityData
 	{
-		[ContainerField(176)]
-		public List<WeaponPickupData> Weapons { get; set; } = new List<WeaponPickupData>(); // 0xB0 (176)
+		protected List<WeaponPickupData> m_Weapons = new List<WeaponPickupData>();
+		[ContainerField(176), ContainerFieldNameHash(2209357972)]
+		public List<WeaponPickupData> Weapons { get { return m_Weapons; } set { if (OnPropertyChanging("WeaponPickupEntityData." + nameof(Weapons), this, m_Weapons, value)) m_Weapons = value; } } // 0xB0 (176)
 		
-		[ContainerField(180), LayoutImmutable, Blittable]
-		public bool UseForPersistence { get; set; } // 0xB4 (180)
+		protected bool m_UseForPersistence = new bool();
+		[ContainerField(180), LayoutImmutable, Blittable, ContainerFieldNameHash(2840570666)]
+		public bool UseForPersistence { get { return m_UseForPersistence; } set { if (OnPropertyChanging("WeaponPickupEntityData." + nameof(UseForPersistence), this, m_UseForPersistence, value)) m_UseForPersistence = value; } } // 0xB4 (180)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

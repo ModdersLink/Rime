@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class MixerEntityData : 
 		EntityData
 	{
-		[ContainerField(12)]
-		public CtrRef<MixerAsset> Mixer { get; set; } = new CtrRef<MixerAsset>(); // 0xC (12)
+		protected CtrRef<MixerAsset> m_Mixer = new CtrRef<MixerAsset>();
+		[ContainerField(12), ContainerFieldNameHash(209965422)]
+		public CtrRef<MixerAsset> Mixer { get { return m_Mixer; } set { if (OnPropertyChanging("MixerEntityData." + nameof(Mixer), this, m_Mixer, value)) m_Mixer = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public bool ActivateOnCreation { get; set; } // 0x10 (16)
+		protected bool m_ActivateOnCreation = new bool();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(787232532)]
+		public bool ActivateOnCreation { get { return m_ActivateOnCreation; } set { if (OnPropertyChanging("MixerEntityData." + nameof(ActivateOnCreation), this, m_ActivateOnCreation, value)) m_ActivateOnCreation = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

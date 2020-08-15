@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class BreakableRuinComponentData : 
 		ComponentData
 	{
-		[ContainerField(96)]
-		public CtrRef<ObjectBlueprint> RuinModel { get; set; } = new CtrRef<ObjectBlueprint>(); // 0x60 (96)
+		protected CtrRef<ObjectBlueprint> m_RuinModel = new CtrRef<ObjectBlueprint>();
+		[ContainerField(96), ContainerFieldNameHash(1172592682)]
+		public CtrRef<ObjectBlueprint> RuinModel { get { return m_RuinModel; } set { if (OnPropertyChanging("BreakableRuinComponentData." + nameof(RuinModel), this, m_RuinModel, value)) m_RuinModel = value; } } // 0x60 (96)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

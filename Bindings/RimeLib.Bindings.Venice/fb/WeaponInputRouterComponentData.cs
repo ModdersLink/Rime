@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class WeaponInputRouterComponentData : 
 		ComponentData
 	{
-		[ContainerField(96), LayoutImmutable, Blittable]
-		public float MaxFireRate { get; set; } // 0x60 (96)
+		protected float m_MaxFireRate = new float();
+		[ContainerField(96), LayoutImmutable, Blittable, ContainerFieldNameHash(369835659)]
+		public float MaxFireRate { get { return m_MaxFireRate; } set { if (OnPropertyChanging("WeaponInputRouterComponentData." + nameof(MaxFireRate), this, m_MaxFireRate, value)) m_MaxFireRate = value; } } // 0x60 (96)
 		
-		[ContainerField(100), LayoutImmutable, Blittable]
-		public uint RotationCount { get; set; } // 0x64 (100)
+		protected uint m_RotationCount = new uint();
+		[ContainerField(100), LayoutImmutable, Blittable, ContainerFieldNameHash(821183634)]
+		public uint RotationCount { get { return m_RotationCount; } set { if (OnPropertyChanging("WeaponInputRouterComponentData." + nameof(RotationCount), this, m_RotationCount, value)) m_RotationCount = value; } } // 0x64 (100)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

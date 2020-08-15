@@ -5,44 +5,62 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class AreaTriggerEntityData : 
 		TriggerEntityData
 	{
-		[ContainerField(112), Homogeneous, LayoutImmutable, Blittable]
-		public LinearTransform GeometryTransform { get; set; } = new LinearTransform(); // 0x70 (112)
+		protected LinearTransform m_GeometryTransform = new LinearTransform();
+		[ContainerField(112), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(2190311347)]
+		public LinearTransform GeometryTransform { get { return m_GeometryTransform; } set { if (OnPropertyChanging("AreaTriggerEntityData." + nameof(GeometryTransform), this, m_GeometryTransform, value)) m_GeometryTransform = value; } } // 0x70 (112)
 		
-		[ContainerField(176)]
-		public AreaTriggerInclude Include { get; set; } = new AreaTriggerInclude(); // 0xB0 (176)
+		protected AreaTriggerInclude m_Include = new AreaTriggerInclude();
+		[ContainerField(176), ContainerFieldNameHash(1669541689)]
+		public AreaTriggerInclude Include { get { return m_Include; } set { if (OnPropertyChanging("AreaTriggerEntityData." + nameof(Include), this, m_Include, value)) m_Include = value; } } // 0xB0 (176)
 		
-		[ContainerField(180), LayoutImmutable, Blittable]
-		public float InsideAreaEventRepeatTime { get; set; } // 0xB4 (180)
+		protected float m_InsideAreaEventRepeatTime = new float();
+		[ContainerField(180), LayoutImmutable, Blittable, ContainerFieldNameHash(287904832)]
+		public float InsideAreaEventRepeatTime { get { return m_InsideAreaEventRepeatTime; } set { if (OnPropertyChanging("AreaTriggerEntityData." + nameof(InsideAreaEventRepeatTime), this, m_InsideAreaEventRepeatTime, value)) m_InsideAreaEventRepeatTime = value; } } // 0xB4 (180)
 		
-		[ContainerField(184), LayoutImmutable, Blittable]
-		public float Radius { get; set; } // 0xB8 (184)
+		protected float m_Radius = new float();
+		[ContainerField(184), LayoutImmutable, Blittable, ContainerFieldNameHash(3298407133)]
+		public float Radius { get { return m_Radius; } set { if (OnPropertyChanging("AreaTriggerEntityData." + nameof(Radius), this, m_Radius, value)) m_Radius = value; } } // 0xB8 (184)
 		
-		[ContainerField(188), LayoutImmutable, Blittable]
-		public bool UseCharacterEntity { get; set; } // 0xBC (188)
+		protected bool m_UseCharacterEntity = new bool();
+		[ContainerField(188), LayoutImmutable, Blittable, ContainerFieldNameHash(3044350724)]
+		public bool UseCharacterEntity { get { return m_UseCharacterEntity; } set { if (OnPropertyChanging("AreaTriggerEntityData." + nameof(UseCharacterEntity), this, m_UseCharacterEntity, value)) m_UseCharacterEntity = value; } } // 0xBC (188)
 		
-		[ContainerField(189), LayoutImmutable, Blittable]
-		public bool OneInsideAreaEventPerSoldier { get; set; } // 0xBD (189)
+		protected bool m_OneInsideAreaEventPerSoldier = new bool();
+		[ContainerField(189), LayoutImmutable, Blittable, ContainerFieldNameHash(1525530667)]
+		public bool OneInsideAreaEventPerSoldier { get { return m_OneInsideAreaEventPerSoldier; } set { if (OnPropertyChanging("AreaTriggerEntityData." + nameof(OneInsideAreaEventPerSoldier), this, m_OneInsideAreaEventPerSoldier, value)) m_OneInsideAreaEventPerSoldier = value; } } // 0xBD (189)
 		
-		[ContainerField(190), LayoutImmutable, Blittable]
-		public bool TriggerOnlyOnLeave { get; set; } // 0xBE (190)
+		protected bool m_TriggerOnlyOnLeave = new bool();
+		[ContainerField(190), LayoutImmutable, Blittable, ContainerFieldNameHash(1941446419)]
+		public bool TriggerOnlyOnLeave { get { return m_TriggerOnlyOnLeave; } set { if (OnPropertyChanging("AreaTriggerEntityData." + nameof(TriggerOnlyOnLeave), this, m_TriggerOnlyOnLeave, value)) m_TriggerOnlyOnLeave = value; } } // 0xBE (190)
 		
-		[ContainerField(191), LayoutImmutable, Blittable]
-		public bool ResetOnEnable { get; set; } // 0xBF (191)
+		protected bool m_ResetOnEnable = new bool();
+		[ContainerField(191), LayoutImmutable, Blittable, ContainerFieldNameHash(3898886736)]
+		public bool ResetOnEnable { get { return m_ResetOnEnable; } set { if (OnPropertyChanging("AreaTriggerEntityData." + nameof(ResetOnEnable), this, m_ResetOnEnable, value)) m_ResetOnEnable = value; } } // 0xBF (191)
 		
-		[ContainerField(192), LayoutImmutable, Blittable]
-		public bool TriggerOnLeaveOnDeath { get; set; } // 0xC0 (192)
+		protected bool m_TriggerOnLeaveOnDeath = new bool();
+		[ContainerField(192), LayoutImmutable, Blittable, ContainerFieldNameHash(2131908922)]
+		public bool TriggerOnLeaveOnDeath { get { return m_TriggerOnLeaveOnDeath; } set { if (OnPropertyChanging("AreaTriggerEntityData." + nameof(TriggerOnLeaveOnDeath), this, m_TriggerOnLeaveOnDeath, value)) m_TriggerOnLeaveOnDeath = value; } } // 0xC0 (192)
 		
-		[ContainerField(193), LayoutImmutable, Blittable]
-		public bool TriggerOnLeaveOnDisable { get; set; } // 0xC1 (193)
+		protected bool m_TriggerOnLeaveOnDisable = new bool();
+		[ContainerField(193), LayoutImmutable, Blittable, ContainerFieldNameHash(2543745682)]
+		public bool TriggerOnLeaveOnDisable { get { return m_TriggerOnLeaveOnDisable; } set { if (OnPropertyChanging("AreaTriggerEntityData." + nameof(TriggerOnLeaveOnDisable), this, m_TriggerOnLeaveOnDisable, value)) m_TriggerOnLeaveOnDisable = value; } } // 0xC1 (193)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

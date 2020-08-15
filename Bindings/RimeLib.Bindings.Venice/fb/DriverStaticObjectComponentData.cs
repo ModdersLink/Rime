@@ -5,28 +5,42 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class DriverStaticObjectComponentData : 
 		DriverComponentData
 	{
-		[ContainerField(112), LayoutImmutable, Blittable]
-		public float Acceleration { get; set; } // 0x70 (112)
+		protected float m_Acceleration = new float();
+		[ContainerField(112), LayoutImmutable, Blittable, ContainerFieldNameHash(62601415)]
+		public float Acceleration { get { return m_Acceleration; } set { if (OnPropertyChanging("DriverStaticObjectComponentData." + nameof(Acceleration), this, m_Acceleration, value)) m_Acceleration = value; } } // 0x70 (112)
 		
-		[ContainerField(116), LayoutImmutable, Blittable]
-		public float Deceleration { get; set; } // 0x74 (116)
+		protected float m_Deceleration = new float();
+		[ContainerField(116), LayoutImmutable, Blittable, ContainerFieldNameHash(8356516)]
+		public float Deceleration { get { return m_Deceleration; } set { if (OnPropertyChanging("DriverStaticObjectComponentData." + nameof(Deceleration), this, m_Deceleration, value)) m_Deceleration = value; } } // 0x74 (116)
 		
-		[ContainerField(120), LayoutImmutable, Blittable]
-		public float TurningRadius { get; set; } // 0x78 (120)
+		protected float m_TurningRadius = new float();
+		[ContainerField(120), LayoutImmutable, Blittable, ContainerFieldNameHash(4134465344)]
+		public float TurningRadius { get { return m_TurningRadius; } set { if (OnPropertyChanging("DriverStaticObjectComponentData." + nameof(TurningRadius), this, m_TurningRadius, value)) m_TurningRadius = value; } } // 0x78 (120)
 		
-		[ContainerField(124), LayoutImmutable, Blittable]
-		public bool TurnWhileStill { get; set; } // 0x7C (124)
+		protected bool m_TurnWhileStill = new bool();
+		[ContainerField(124), LayoutImmutable, Blittable, ContainerFieldNameHash(2034681993)]
+		public bool TurnWhileStill { get { return m_TurnWhileStill; } set { if (OnPropertyChanging("DriverStaticObjectComponentData." + nameof(TurnWhileStill), this, m_TurnWhileStill, value)) m_TurnWhileStill = value; } } // 0x7C (124)
 		
-		[ContainerField(125), LayoutImmutable, Blittable]
-		public bool AlignWithGroundNormal { get; set; } // 0x7D (125)
+		protected bool m_AlignWithGroundNormal = new bool();
+		[ContainerField(125), LayoutImmutable, Blittable, ContainerFieldNameHash(387843516)]
+		public bool AlignWithGroundNormal { get { return m_AlignWithGroundNormal; } set { if (OnPropertyChanging("DriverStaticObjectComponentData." + nameof(AlignWithGroundNormal), this, m_AlignWithGroundNormal, value)) m_AlignWithGroundNormal = value; } } // 0x7D (125)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

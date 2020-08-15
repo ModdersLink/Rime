@@ -5,31 +5,46 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class TerrainSettings : 
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable, Blittable]
-		public uint HeightQueryCacheSize { get; set; } // 0x8 (8)
+		protected uint m_HeightQueryCacheSize = new uint();
+		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(360991385)]
+		public uint HeightQueryCacheSize { get { return m_HeightQueryCacheSize; } set { if (OnPropertyChanging("TerrainSettings." + nameof(HeightQueryCacheSize), this, m_HeightQueryCacheSize, value)) m_HeightQueryCacheSize = value; } } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public uint ModifiersCapacity { get; set; } // 0xC (12)
+		protected uint m_ModifiersCapacity = new uint();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(3948255029)]
+		public uint ModifiersCapacity { get { return m_ModifiersCapacity; } set { if (OnPropertyChanging("TerrainSettings." + nameof(ModifiersCapacity), this, m_ModifiersCapacity, value)) m_ModifiersCapacity = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public uint IntersectingModifiersMax { get; set; } // 0x10 (16)
+		protected uint m_IntersectingModifiersMax = new uint();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(3775873328)]
+		public uint IntersectingModifiersMax { get { return m_IntersectingModifiersMax; } set { if (OnPropertyChanging("TerrainSettings." + nameof(IntersectingModifiersMax), this, m_IntersectingModifiersMax, value)) m_IntersectingModifiersMax = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
-		public float ModifierDepthFactor { get; set; } // 0x14 (20)
+		protected float m_ModifierDepthFactor = new float();
+		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(2305338610)]
+		public float ModifierDepthFactor { get { return m_ModifierDepthFactor; } set { if (OnPropertyChanging("TerrainSettings." + nameof(ModifierDepthFactor), this, m_ModifierDepthFactor, value)) m_ModifierDepthFactor = value; } } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable]
-		public float ModifierSlopeMax { get; set; } // 0x18 (24)
+		protected float m_ModifierSlopeMax = new float();
+		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(2295593955)]
+		public float ModifierSlopeMax { get { return m_ModifierSlopeMax; } set { if (OnPropertyChanging("TerrainSettings." + nameof(ModifierSlopeMax), this, m_ModifierSlopeMax, value)) m_ModifierSlopeMax = value; } } // 0x18 (24)
 		
-		[ContainerField(28), LayoutImmutable, Blittable]
-		public bool ModifiersEnable { get; set; } // 0x1C (28)
+		protected bool m_ModifiersEnable = new bool();
+		[ContainerField(28), LayoutImmutable, Blittable, ContainerFieldNameHash(3614191008)]
+		public bool ModifiersEnable { get { return m_ModifiersEnable; } set { if (OnPropertyChanging("TerrainSettings." + nameof(ModifiersEnable), this, m_ModifiersEnable, value)) m_ModifiersEnable = value; } } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

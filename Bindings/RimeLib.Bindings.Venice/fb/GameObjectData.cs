@@ -5,22 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class GameObjectData : 
 		GameDataContainer
 	{
-		[ContainerField(8), LayoutImmutable, Blittable]
-		public ushort IndexInBlueprint { get; set; } // 0x8 (8)
+		protected ushort m_IndexInBlueprint = new ushort();
+		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(1440948467)]
+		public ushort IndexInBlueprint { get { return m_IndexInBlueprint; } set { if (OnPropertyChanging("GameObjectData." + nameof(IndexInBlueprint), this, m_IndexInBlueprint, value)) m_IndexInBlueprint = value; } } // 0x8 (8)
 		
-		[ContainerField(10), LayoutImmutable, Blittable]
-		public sbyte IsEventConnectionTarget { get; set; } // 0xA (10)
+		protected sbyte m_IsEventConnectionTarget = new sbyte();
+		[ContainerField(10), LayoutImmutable, Blittable, ContainerFieldNameHash(443195188)]
+		public sbyte IsEventConnectionTarget { get { return m_IsEventConnectionTarget; } set { if (OnPropertyChanging("GameObjectData." + nameof(IsEventConnectionTarget), this, m_IsEventConnectionTarget, value)) m_IsEventConnectionTarget = value; } } // 0xA (10)
 		
-		[ContainerField(11), LayoutImmutable, Blittable]
-		public sbyte IsPropertyConnectionTarget { get; set; } // 0xB (11)
+		protected sbyte m_IsPropertyConnectionTarget = new sbyte();
+		[ContainerField(11), LayoutImmutable, Blittable, ContainerFieldNameHash(3243963839)]
+		public sbyte IsPropertyConnectionTarget { get { return m_IsPropertyConnectionTarget; } set { if (OnPropertyChanging("GameObjectData." + nameof(IsPropertyConnectionTarget), this, m_IsPropertyConnectionTarget, value)) m_IsPropertyConnectionTarget = value; } } // 0xB (11)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

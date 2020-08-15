@@ -5,31 +5,46 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class MeshProjectileEntityData : 
 		ProjectileEntityData
 	{
-		[ContainerField(160), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 InitialAngularVelocity { get; set; } = new Vec3(); // 0xA0 (160)
+		protected Vec3 m_InitialAngularVelocity = new Vec3();
+		[ContainerField(160), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(2385892654)]
+		public Vec3 InitialAngularVelocity { get { return m_InitialAngularVelocity; } set { if (OnPropertyChanging("MeshProjectileEntityData." + nameof(InitialAngularVelocity), this, m_InitialAngularVelocity, value)) m_InitialAngularVelocity = value; } } // 0xA0 (160)
 		
-		[ContainerField(176)]
-		public CtrRef<EffectBlueprint> TrailEffect { get; set; } = new CtrRef<EffectBlueprint>(); // 0xB0 (176)
+		protected CtrRef<EffectBlueprint> m_TrailEffect = new CtrRef<EffectBlueprint>();
+		[ContainerField(176), ContainerFieldNameHash(3334711472)]
+		public CtrRef<EffectBlueprint> TrailEffect { get { return m_TrailEffect; } set { if (OnPropertyChanging("MeshProjectileEntityData." + nameof(TrailEffect), this, m_TrailEffect, value)) m_TrailEffect = value; } } // 0xB0 (176)
 		
-		[ContainerField(180)]
-		public CtrRef<MeshAsset> Mesh { get; set; } = new CtrRef<MeshAsset>(); // 0xB4 (180)
+		protected CtrRef<MeshAsset> m_Mesh = new CtrRef<MeshAsset>();
+		[ContainerField(180), ContainerFieldNameHash(2088783990)]
+		public CtrRef<MeshAsset> Mesh { get { return m_Mesh; } set { if (OnPropertyChanging("MeshProjectileEntityData." + nameof(Mesh), this, m_Mesh, value)) m_Mesh = value; } } // 0xB4 (180)
 		
-		[ContainerField(184), LayoutImmutable, Blittable]
-		public float MaxAttachableInclination { get; set; } // 0xB8 (184)
+		protected float m_MaxAttachableInclination = new float();
+		[ContainerField(184), LayoutImmutable, Blittable, ContainerFieldNameHash(39813154)]
+		public float MaxAttachableInclination { get { return m_MaxAttachableInclination; } set { if (OnPropertyChanging("MeshProjectileEntityData." + nameof(MaxAttachableInclination), this, m_MaxAttachableInclination, value)) m_MaxAttachableInclination = value; } } // 0xB8 (184)
 		
-		[ContainerField(188), LayoutImmutable, Blittable]
-		public bool ExtraDamping { get; set; } // 0xBC (188)
+		protected bool m_ExtraDamping = new bool();
+		[ContainerField(188), LayoutImmutable, Blittable, ContainerFieldNameHash(2980785831)]
+		public bool ExtraDamping { get { return m_ExtraDamping; } set { if (OnPropertyChanging("MeshProjectileEntityData." + nameof(ExtraDamping), this, m_ExtraDamping, value)) m_ExtraDamping = value; } } // 0xBC (188)
 		
-		[ContainerField(189), LayoutImmutable, Blittable]
-		public bool IsAttachable { get; set; } // 0xBD (189)
+		protected bool m_IsAttachable = new bool();
+		[ContainerField(189), LayoutImmutable, Blittable, ContainerFieldNameHash(2068890974)]
+		public bool IsAttachable { get { return m_IsAttachable; } set { if (OnPropertyChanging("MeshProjectileEntityData." + nameof(IsAttachable), this, m_IsAttachable, value)) m_IsAttachable = value; } } // 0xBD (189)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

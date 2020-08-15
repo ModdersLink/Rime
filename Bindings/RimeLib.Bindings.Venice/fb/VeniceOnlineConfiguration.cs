@@ -5,23 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class VeniceOnlineConfiguration : 
 		OnlineConfiguration
 	{
-		[ContainerField(28)]
-		public List<OnlinePlatformConfiguration> Platforms { get; set; } = new List<OnlinePlatformConfiguration>(); // 0x1C (28)
+		protected List<OnlinePlatformConfiguration> m_Platforms = new List<OnlinePlatformConfiguration>();
+		[ContainerField(28), ContainerFieldNameHash(1046011945)]
+		public List<OnlinePlatformConfiguration> Platforms { get { return m_Platforms; } set { if (OnPropertyChanging("VeniceOnlineConfiguration." + nameof(Platforms), this, m_Platforms, value)) m_Platforms = value; } } // 0x1C (28)
 		
-		[ContainerField(32)]
-		public RefArray<EntitlementQuery> EntitlementQueries { get; set; } = new RefArray<EntitlementQuery>(); // 0x20 (32)
+		protected RefArray<EntitlementQuery> m_EntitlementQueries = new RefArray<EntitlementQuery>();
+		[ContainerField(32), ContainerFieldNameHash(2121789744)]
+		public RefArray<EntitlementQuery> EntitlementQueries { get { return m_EntitlementQueries; } set { if (OnPropertyChanging("VeniceOnlineConfiguration." + nameof(EntitlementQueries), this, m_EntitlementQueries, value)) m_EntitlementQueries = value; } } // 0x20 (32)
 		
-		[ContainerField(36), LayoutImmutable, Blittable]
-		public bool UseFallback { get; set; } // 0x24 (36)
+		protected bool m_UseFallback = new bool();
+		[ContainerField(36), LayoutImmutable, Blittable, ContainerFieldNameHash(2260806602)]
+		public bool UseFallback { get { return m_UseFallback; } set { if (OnPropertyChanging("VeniceOnlineConfiguration." + nameof(UseFallback), this, m_UseFallback, value)) m_UseFallback = value; } } // 0x24 (36)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

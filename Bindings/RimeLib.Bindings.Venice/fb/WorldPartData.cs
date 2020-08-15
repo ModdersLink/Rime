@@ -5,22 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class WorldPartData : 
 		SpatialPrefabBlueprint
 	{
-		[ContainerField(36), LayoutImmutable, Blittable]
-		public GUID HackToSolveRealTimeTweakingIssue { get; set; } // 0x24 (36)
+		protected GUID m_HackToSolveRealTimeTweakingIssue = new GUID();
+		[ContainerField(36), LayoutImmutable, Blittable, ContainerFieldNameHash(1452521702)]
+		public GUID HackToSolveRealTimeTweakingIssue { get { return m_HackToSolveRealTimeTweakingIssue; } set { if (OnPropertyChanging("WorldPartData." + nameof(HackToSolveRealTimeTweakingIssue), this, m_HackToSolveRealTimeTweakingIssue, value)) m_HackToSolveRealTimeTweakingIssue = value; } } // 0x24 (36)
 		
-		[ContainerField(52), LayoutImmutable, Blittable]
-		public bool UseDeferredEntityCreation { get; set; } // 0x34 (52)
+		protected bool m_UseDeferredEntityCreation = new bool();
+		[ContainerField(52), LayoutImmutable, Blittable, ContainerFieldNameHash(2224120471)]
+		public bool UseDeferredEntityCreation { get { return m_UseDeferredEntityCreation; } set { if (OnPropertyChanging("WorldPartData." + nameof(UseDeferredEntityCreation), this, m_UseDeferredEntityCreation, value)) m_UseDeferredEntityCreation = value; } } // 0x34 (52)
 		
-		[ContainerField(53), LayoutImmutable, Blittable]
-		public bool Enabled { get; set; } // 0x35 (53)
+		protected bool m_Enabled = new bool();
+		[ContainerField(53), LayoutImmutable, Blittable, ContainerFieldNameHash(2662400)]
+		public bool Enabled { get { return m_Enabled; } set { if (OnPropertyChanging("WorldPartData." + nameof(Enabled), this, m_Enabled, value)) m_Enabled = value; } } // 0x35 (53)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

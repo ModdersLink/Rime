@@ -5,23 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class StatsCategoryWeaponData : 
 		StatsCategoryGuidData
 	{
-		[ContainerField(24), LayoutImmutable, Blittable]
-		public uint SoldierWeaponId { get; set; } // 0x18 (24)
+		protected uint m_SoldierWeaponId = new uint();
+		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(3007685600)]
+		public uint SoldierWeaponId { get { return m_SoldierWeaponId; } set { if (OnPropertyChanging("StatsCategoryWeaponData." + nameof(SoldierWeaponId), this, m_SoldierWeaponId, value)) m_SoldierWeaponId = value; } } // 0x18 (24)
 		
-		[ContainerField(28)]
-		public CtrRef<CriteriaGateList> AccessoryUnlockGates { get; set; } = new CtrRef<CriteriaGateList>(); // 0x1C (28)
+		protected CtrRef<CriteriaGateList> m_AccessoryUnlockGates = new CtrRef<CriteriaGateList>();
+		[ContainerField(28), ContainerFieldNameHash(3719366417)]
+		public CtrRef<CriteriaGateList> AccessoryUnlockGates { get { return m_AccessoryUnlockGates; } set { if (OnPropertyChanging("StatsCategoryWeaponData." + nameof(AccessoryUnlockGates), this, m_AccessoryUnlockGates, value)) m_AccessoryUnlockGates = value; } } // 0x1C (28)
 		
-		[ContainerField(32)]
-		public List<BasicUnlockInfo> UnlocksInfo { get; set; } = new List<BasicUnlockInfo>(); // 0x20 (32)
+		protected List<BasicUnlockInfo> m_UnlocksInfo = new List<BasicUnlockInfo>();
+		[ContainerField(32), ContainerFieldNameHash(4161073128)]
+		public List<BasicUnlockInfo> UnlocksInfo { get { return m_UnlocksInfo; } set { if (OnPropertyChanging("StatsCategoryWeaponData." + nameof(UnlocksInfo), this, m_UnlocksInfo, value)) m_UnlocksInfo = value; } } // 0x20 (32)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

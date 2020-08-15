@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class MedicBagHealingSphereEntityData : 
 		ExplosionPackEntityData
 	{
-		[ContainerField(256)]
-		public HealingSphereData Healer { get; set; } = new HealingSphereData(); // 0x100 (256)
+		protected HealingSphereData m_Healer = new HealingSphereData();
+		[ContainerField(256), ContainerFieldNameHash(3054336626)]
+		public HealingSphereData Healer { get { return m_Healer; } set { if (OnPropertyChanging("MedicBagHealingSphereEntityData." + nameof(Healer), this, m_Healer, value)) m_Healer = value; } } // 0x100 (256)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

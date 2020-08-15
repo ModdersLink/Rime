@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class SoundTestEventTask : 
 		SoundTestTaskSpec
 	{
-		[ContainerField(16), LayoutImmutable]
-		public string EventName { get; set; } // 0x10 (16)
+		protected string m_EventName = new string();
+		[ContainerField(16), LayoutImmutable, ContainerFieldNameHash(4132530094)]
+		public string EventName { get { return m_EventName; } set { if (OnPropertyChanging("SoundTestEventTask." + nameof(EventName), this, m_EventName, value)) m_EventName = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

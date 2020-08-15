@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class BusNodeData : 
 		SoundBusData
 	{
-		[ContainerField(16)]
-		public AudioGraphNodePort Out { get; set; } = new AudioGraphNodePort(); // 0x10 (16)
+		protected AudioGraphNodePort m_Out = new AudioGraphNodePort();
+		[ContainerField(16), ContainerFieldNameHash(193453899)]
+		public AudioGraphNodePort Out { get { return m_Out; } set { if (OnPropertyChanging("BusNodeData." + nameof(Out), this, m_Out, value)) m_Out = value; } } // 0x10 (16)
 		
-		[ContainerField(24)]
-		public SoundGraphPluginRef VuPlugin { get; set; } = new SoundGraphPluginRef(); // 0x18 (24)
+		protected SoundGraphPluginRef m_VuPlugin = new SoundGraphPluginRef();
+		[ContainerField(24), ContainerFieldNameHash(2033640783)]
+		public SoundGraphPluginRef VuPlugin { get { return m_VuPlugin; } set { if (OnPropertyChanging("BusNodeData." + nameof(VuPlugin), this, m_VuPlugin, value)) m_VuPlugin = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

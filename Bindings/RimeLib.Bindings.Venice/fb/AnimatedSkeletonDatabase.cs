@@ -5,20 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class AnimatedSkeletonDatabase : 
 		DataContainer
 	{
-		[ContainerField(8)]
-		public RefArray<RagdollAsset> Ragdolls { get; set; } = new RefArray<RagdollAsset>(); // 0x8 (8)
+		protected RefArray<RagdollAsset> m_Ragdolls = new RefArray<RagdollAsset>();
+		[ContainerField(8), ContainerFieldNameHash(1397195817)]
+		public RefArray<RagdollAsset> Ragdolls { get { return m_Ragdolls; } set { if (OnPropertyChanging("AnimatedSkeletonDatabase." + nameof(Ragdolls), this, m_Ragdolls, value)) m_Ragdolls = value; } } // 0x8 (8)
 		
-		[ContainerField(12)]
-		public List<AnimatedSkeletonDatabaseItem> Items { get; set; } = new List<AnimatedSkeletonDatabaseItem>(); // 0xC (12)
+		protected List<AnimatedSkeletonDatabaseItem> m_Items = new List<AnimatedSkeletonDatabaseItem>();
+		[ContainerField(12), ContainerFieldNameHash(215446531)]
+		public List<AnimatedSkeletonDatabaseItem> Items { get { return m_Items; } set { if (OnPropertyChanging("AnimatedSkeletonDatabase." + nameof(Items), this, m_Items, value)) m_Items = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class SupplySphereEntityData : 
 		ExplosionPackEntityData
 	{
-		[ContainerField(256)]
-		public SupplyData SupplyData { get; set; } = new SupplyData(); // 0x100 (256)
+		protected SupplyData m_SupplyData = new SupplyData();
+		[ContainerField(256), ContainerFieldNameHash(3973739366)]
+		public SupplyData SupplyData { get { return m_SupplyData; } set { if (OnPropertyChanging("SupplySphereEntityData." + nameof(SupplyData), this, m_SupplyData, value)) m_SupplyData = value; } } // 0x100 (256)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

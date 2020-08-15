@@ -5,17 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class LicenseConfiguration : 
 		Asset
 	{
-		[ContainerField(12)]
-		public List<LicenseInfo> Licenses { get; set; } = new List<LicenseInfo>(); // 0xC (12)
+		protected List<LicenseInfo> m_Licenses = new List<LicenseInfo>();
+		[ContainerField(12), ContainerFieldNameHash(2259172461)]
+		public List<LicenseInfo> Licenses { get { return m_Licenses; } set { if (OnPropertyChanging("LicenseConfiguration." + nameof(Licenses), this, m_Licenses, value)) m_Licenses = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

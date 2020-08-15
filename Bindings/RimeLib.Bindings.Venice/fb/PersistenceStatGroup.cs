@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class PersistenceStatGroup : 
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable]
-		public string GroupName { get; set; } // 0x8 (8)
+		protected string m_GroupName = new string();
+		[ContainerField(8), LayoutImmutable, ContainerFieldNameHash(3178263901)]
+		public string GroupName { get { return m_GroupName; } set { if (OnPropertyChanging("PersistenceStatGroup." + nameof(GroupName), this, m_GroupName, value)) m_GroupName = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

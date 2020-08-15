@@ -5,38 +5,54 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class AnimationSignalEntityData : 
 		EntityData
 	{
-		[ContainerField(12)]
-		public Realm Realm { get; set; } = new Realm(); // 0xC (12)
+		protected Realm m_Realm = new Realm();
+		[ContainerField(12), ContainerFieldNameHash(229961746)]
+		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("AnimationSignalEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public AntRef Signal { get; set; } = new AntRef(); // 0x10 (16)
+		protected AntRef m_Signal = new AntRef();
+		[ContainerField(16), ContainerFieldNameHash(3351504027)]
+		public AntRef Signal { get { return m_Signal; } set { if (OnPropertyChanging("AnimationSignalEntityData." + nameof(Signal), this, m_Signal, value)) m_Signal = value; } } // 0x10 (16)
 		
-		[ContainerField(20)]
-		public AntRef IntGameState { get; set; } = new AntRef(); // 0x14 (20)
+		protected AntRef m_IntGameState = new AntRef();
+		[ContainerField(20), ContainerFieldNameHash(1230275407)]
+		public AntRef IntGameState { get { return m_IntGameState; } set { if (OnPropertyChanging("AnimationSignalEntityData." + nameof(IntGameState), this, m_IntGameState, value)) m_IntGameState = value; } } // 0x14 (20)
 		
-		[ContainerField(24)]
-		public AntRef FloatGameState { get; set; } = new AntRef(); // 0x18 (24)
+		protected AntRef m_FloatGameState = new AntRef();
+		[ContainerField(24), ContainerFieldNameHash(4256423628)]
+		public AntRef FloatGameState { get { return m_FloatGameState; } set { if (OnPropertyChanging("AnimationSignalEntityData." + nameof(FloatGameState), this, m_FloatGameState, value)) m_FloatGameState = value; } } // 0x18 (24)
 		
-		[ContainerField(28), LayoutImmutable, Blittable]
-		public int ValueInt { get; set; } // 0x1C (28)
+		protected int m_ValueInt = new int();
+		[ContainerField(28), LayoutImmutable, Blittable, ContainerFieldNameHash(3291173693)]
+		public int ValueInt { get { return m_ValueInt; } set { if (OnPropertyChanging("AnimationSignalEntityData." + nameof(ValueInt), this, m_ValueInt, value)) m_ValueInt = value; } } // 0x1C (28)
 		
-		[ContainerField(32), LayoutImmutable, Blittable]
-		public float ValueFloat { get; set; } // 0x20 (32)
+		protected float m_ValueFloat = new float();
+		[ContainerField(32), LayoutImmutable, Blittable, ContainerFieldNameHash(2084221214)]
+		public float ValueFloat { get { return m_ValueFloat; } set { if (OnPropertyChanging("AnimationSignalEntityData." + nameof(ValueFloat), this, m_ValueFloat, value)) m_ValueFloat = value; } } // 0x20 (32)
 		
-		[ContainerField(36), LayoutImmutable, Blittable]
-		public bool Reset { get; set; } // 0x24 (36)
+		protected bool m_Reset = new bool();
+		[ContainerField(36), LayoutImmutable, Blittable, ContainerFieldNameHash(229946160)]
+		public bool Reset { get { return m_Reset; } set { if (OnPropertyChanging("AnimationSignalEntityData." + nameof(Reset), this, m_Reset, value)) m_Reset = value; } } // 0x24 (36)
 		
-		[ContainerField(37), LayoutImmutable, Blittable]
-		public bool Continuous { get; set; } // 0x25 (37)
+		protected bool m_Continuous = new bool();
+		[ContainerField(37), LayoutImmutable, Blittable, ContainerFieldNameHash(2748037352)]
+		public bool Continuous { get { return m_Continuous; } set { if (OnPropertyChanging("AnimationSignalEntityData." + nameof(Continuous), this, m_Continuous, value)) m_Continuous = value; } } // 0x25 (37)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

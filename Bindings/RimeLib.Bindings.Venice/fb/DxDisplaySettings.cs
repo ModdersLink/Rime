@@ -5,119 +5,162 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class DxDisplaySettings : 
 		SystemSettings
 	{
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public uint FullscreenWidth { get; set; } // 0xC (12)
+		protected uint m_FullscreenWidth = new uint();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(1430980188)]
+		public uint FullscreenWidth { get { return m_FullscreenWidth; } set { if (OnPropertyChanging("DxDisplaySettings." + nameof(FullscreenWidth), this, m_FullscreenWidth, value)) m_FullscreenWidth = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public uint FullscreenHeight { get; set; } // 0x10 (16)
+		protected uint m_FullscreenHeight = new uint();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(109852325)]
+		public uint FullscreenHeight { get { return m_FullscreenHeight; } set { if (OnPropertyChanging("DxDisplaySettings." + nameof(FullscreenHeight), this, m_FullscreenHeight, value)) m_FullscreenHeight = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable]
-		public string AmdMinDriverVersion { get; set; } // 0x14 (20)
+		protected string m_AmdMinDriverVersion = new string();
+		[ContainerField(20), LayoutImmutable, ContainerFieldNameHash(2479381411)]
+		public string AmdMinDriverVersion { get { return m_AmdMinDriverVersion; } set { if (OnPropertyChanging("DxDisplaySettings." + nameof(AmdMinDriverVersion), this, m_AmdMinDriverVersion, value)) m_AmdMinDriverVersion = value; } } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable]
-		public uint NvidiaMinDriverVersion { get; set; } // 0x18 (24)
+		protected uint m_NvidiaMinDriverVersion = new uint();
+		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(3704079510)]
+		public uint NvidiaMinDriverVersion { get { return m_NvidiaMinDriverVersion; } set { if (OnPropertyChanging("DxDisplaySettings." + nameof(NvidiaMinDriverVersion), this, m_NvidiaMinDriverVersion, value)) m_NvidiaMinDriverVersion = value; } } // 0x18 (24)
 		
-		[ContainerField(28), LayoutImmutable, Blittable]
-		public float FullscreenRefreshRate { get; set; } // 0x1C (28)
+		protected float m_FullscreenRefreshRate = new float();
+		[ContainerField(28), LayoutImmutable, Blittable, ContainerFieldNameHash(911237061)]
+		public float FullscreenRefreshRate { get { return m_FullscreenRefreshRate; } set { if (OnPropertyChanging("DxDisplaySettings." + nameof(FullscreenRefreshRate), this, m_FullscreenRefreshRate, value)) m_FullscreenRefreshRate = value; } } // 0x1C (28)
 		
-		[ContainerField(32), LayoutImmutable, Blittable]
-		public float StereoSeparationScale { get; set; } // 0x20 (32)
+		protected float m_StereoSeparationScale = new float();
+		[ContainerField(32), LayoutImmutable, Blittable, ContainerFieldNameHash(2101591727)]
+		public float StereoSeparationScale { get { return m_StereoSeparationScale; } set { if (OnPropertyChanging("DxDisplaySettings." + nameof(StereoSeparationScale), this, m_StereoSeparationScale, value)) m_StereoSeparationScale = value; } } // 0x20 (32)
 		
-		[ContainerField(36), LayoutImmutable, Blittable]
-		public float StereoDepth { get; set; } // 0x24 (36)
+		protected float m_StereoDepth = new float();
+		[ContainerField(36), LayoutImmutable, Blittable, ContainerFieldNameHash(4166595090)]
+		public float StereoDepth { get { return m_StereoDepth; } set { if (OnPropertyChanging("DxDisplaySettings." + nameof(StereoDepth), this, m_StereoDepth, value)) m_StereoDepth = value; } } // 0x24 (36)
 		
-		[ContainerField(40), LayoutImmutable, Blittable]
-		public int FullscreenOutputIndex { get; set; } // 0x28 (40)
+		protected int m_FullscreenOutputIndex = new int();
+		[ContainerField(40), LayoutImmutable, Blittable, ContainerFieldNameHash(2675250075)]
+		public int FullscreenOutputIndex { get { return m_FullscreenOutputIndex; } set { if (OnPropertyChanging("DxDisplaySettings." + nameof(FullscreenOutputIndex), this, m_FullscreenOutputIndex, value)) m_FullscreenOutputIndex = value; } } // 0x28 (40)
 		
-		[ContainerField(44)]
-		public List<int> DebugBreakIgnoredIDs { get; set; } = new List<int>(); // 0x2C (44)
+		protected List<int> m_DebugBreakIgnoredIDs = new List<int>();
+		[ContainerField(44), ContainerFieldNameHash(4052915337)]
+		public List<int> DebugBreakIgnoredIDs { get { return m_DebugBreakIgnoredIDs; } set { if (OnPropertyChanging("DxDisplaySettings." + nameof(DebugBreakIgnoredIDs), this, m_DebugBreakIgnoredIDs, value)) m_DebugBreakIgnoredIDs = value; } } // 0x2C (44)
 		
-		[ContainerField(48), LayoutImmutable, Blittable]
-		public float StereoConvergenceScale { get; set; } // 0x30 (48)
+		protected float m_StereoConvergenceScale = new float();
+		[ContainerField(48), LayoutImmutable, Blittable, ContainerFieldNameHash(4196419630)]
+		public float StereoConvergenceScale { get { return m_StereoConvergenceScale; } set { if (OnPropertyChanging("DxDisplaySettings." + nameof(StereoConvergenceScale), this, m_StereoConvergenceScale, value)) m_StereoConvergenceScale = value; } } // 0x30 (48)
 		
-		[ContainerField(52), LayoutImmutable, Blittable]
-		public float StereoSoldierZoomConvergenceScale { get; set; } // 0x34 (52)
+		protected float m_StereoSoldierZoomConvergenceScale = new float();
+		[ContainerField(52), LayoutImmutable, Blittable, ContainerFieldNameHash(522462419)]
+		public float StereoSoldierZoomConvergenceScale { get { return m_StereoSoldierZoomConvergenceScale; } set { if (OnPropertyChanging("DxDisplaySettings." + nameof(StereoSoldierZoomConvergenceScale), this, m_StereoSoldierZoomConvergenceScale, value)) m_StereoSoldierZoomConvergenceScale = value; } } // 0x34 (52)
 		
-		[ContainerField(56), LayoutImmutable, Blittable]
-		public int ForceRenderAheadLimit { get; set; } // 0x38 (56)
+		protected int m_ForceRenderAheadLimit = new int();
+		[ContainerField(56), LayoutImmutable, Blittable, ContainerFieldNameHash(1880889646)]
+		public int ForceRenderAheadLimit { get { return m_ForceRenderAheadLimit; } set { if (OnPropertyChanging("DxDisplaySettings." + nameof(ForceRenderAheadLimit), this, m_ForceRenderAheadLimit, value)) m_ForceRenderAheadLimit = value; } } // 0x38 (56)
 		
-		[ContainerField(60), LayoutImmutable, Blittable]
-		public int PresentInterval { get; set; } // 0x3C (60)
+		protected int m_PresentInterval = new int();
+		[ContainerField(60), LayoutImmutable, Blittable, ContainerFieldNameHash(4204358449)]
+		public int PresentInterval { get { return m_PresentInterval; } set { if (OnPropertyChanging("DxDisplaySettings." + nameof(PresentInterval), this, m_PresentInterval, value)) m_PresentInterval = value; } } // 0x3C (60)
 		
-		[ContainerField(64), LayoutImmutable, Blittable]
-		public bool DebugBreakOnWarningEnable { get; set; } // 0x40 (64)
+		protected bool m_DebugBreakOnWarningEnable = new bool();
+		[ContainerField(64), LayoutImmutable, Blittable, ContainerFieldNameHash(2632000193)]
+		public bool DebugBreakOnWarningEnable { get { return m_DebugBreakOnWarningEnable; } set { if (OnPropertyChanging("DxDisplaySettings." + nameof(DebugBreakOnWarningEnable), this, m_DebugBreakOnWarningEnable, value)) m_DebugBreakOnWarningEnable = value; } } // 0x40 (64)
 		
-		[ContainerField(65), LayoutImmutable, Blittable]
-		public bool DebugInfoEnable { get; set; } // 0x41 (65)
+		protected bool m_DebugInfoEnable = new bool();
+		[ContainerField(65), LayoutImmutable, Blittable, ContainerFieldNameHash(4223944539)]
+		public bool DebugInfoEnable { get { return m_DebugInfoEnable; } set { if (OnPropertyChanging("DxDisplaySettings." + nameof(DebugInfoEnable), this, m_DebugInfoEnable, value)) m_DebugInfoEnable = value; } } // 0x41 (65)
 		
-		[ContainerField(66), LayoutImmutable, Blittable]
-		public bool Fullscreen { get; set; } // 0x42 (66)
+		protected bool m_Fullscreen = new bool();
+		[ContainerField(66), LayoutImmutable, Blittable, ContainerFieldNameHash(2248877754)]
+		public bool Fullscreen { get { return m_Fullscreen; } set { if (OnPropertyChanging("DxDisplaySettings." + nameof(Fullscreen), this, m_Fullscreen, value)) m_Fullscreen = value; } } // 0x42 (66)
 		
-		[ContainerField(67), LayoutImmutable, Blittable]
-		public bool DebugBreakOnErrorEnable { get; set; } // 0x43 (67)
+		protected bool m_DebugBreakOnErrorEnable = new bool();
+		[ContainerField(67), LayoutImmutable, Blittable, ContainerFieldNameHash(814125011)]
+		public bool DebugBreakOnErrorEnable { get { return m_DebugBreakOnErrorEnable; } set { if (OnPropertyChanging("DxDisplaySettings." + nameof(DebugBreakOnErrorEnable), this, m_DebugBreakOnErrorEnable, value)) m_DebugBreakOnErrorEnable = value; } } // 0x43 (67)
 		
-		[ContainerField(68), LayoutImmutable, Blittable]
-		public bool CreateMinimalWindow { get; set; } // 0x44 (68)
+		protected bool m_CreateMinimalWindow = new bool();
+		[ContainerField(68), LayoutImmutable, Blittable, ContainerFieldNameHash(140168974)]
+		public bool CreateMinimalWindow { get { return m_CreateMinimalWindow; } set { if (OnPropertyChanging("DxDisplaySettings." + nameof(CreateMinimalWindow), this, m_CreateMinimalWindow, value)) m_CreateMinimalWindow = value; } } // 0x44 (68)
 		
-		[ContainerField(69), LayoutImmutable, Blittable]
-		public bool DriverInternalThreadingEnable { get; set; } // 0x45 (69)
+		protected bool m_DriverInternalThreadingEnable = new bool();
+		[ContainerField(69), LayoutImmutable, Blittable, ContainerFieldNameHash(3689386451)]
+		public bool DriverInternalThreadingEnable { get { return m_DriverInternalThreadingEnable; } set { if (OnPropertyChanging("DxDisplaySettings." + nameof(DriverInternalThreadingEnable), this, m_DriverInternalThreadingEnable, value)) m_DriverInternalThreadingEnable = value; } } // 0x45 (69)
 		
-		[ContainerField(70), LayoutImmutable, Blittable]
-		public bool DebugBreakOnInfoEnable { get; set; } // 0x46 (70)
+		protected bool m_DebugBreakOnInfoEnable = new bool();
+		[ContainerField(70), LayoutImmutable, Blittable, ContainerFieldNameHash(4085063333)]
+		public bool DebugBreakOnInfoEnable { get { return m_DebugBreakOnInfoEnable; } set { if (OnPropertyChanging("DxDisplaySettings." + nameof(DebugBreakOnInfoEnable), this, m_DebugBreakOnInfoEnable, value)) m_DebugBreakOnInfoEnable = value; } } // 0x46 (70)
 		
-		[ContainerField(71), LayoutImmutable, Blittable]
-		public bool FullscreenModeEnable { get; set; } // 0x47 (71)
+		protected bool m_FullscreenModeEnable = new bool();
+		[ContainerField(71), LayoutImmutable, Blittable, ContainerFieldNameHash(885827480)]
+		public bool FullscreenModeEnable { get { return m_FullscreenModeEnable; } set { if (OnPropertyChanging("DxDisplaySettings." + nameof(FullscreenModeEnable), this, m_FullscreenModeEnable, value)) m_FullscreenModeEnable = value; } } // 0x47 (71)
 		
-		[ContainerField(72), LayoutImmutable, Blittable]
-		public bool VSyncEnable { get; set; } // 0x48 (72)
+		protected bool m_VSyncEnable = new bool();
+		[ContainerField(72), LayoutImmutable, Blittable, ContainerFieldNameHash(486588565)]
+		public bool VSyncEnable { get { return m_VSyncEnable; } set { if (OnPropertyChanging("DxDisplaySettings." + nameof(VSyncEnable), this, m_VSyncEnable, value)) m_VSyncEnable = value; } } // 0x48 (72)
 		
-		[ContainerField(73), LayoutImmutable, Blittable]
-		public bool TripleBufferingEnable { get; set; } // 0x49 (73)
+		protected bool m_TripleBufferingEnable = new bool();
+		[ContainerField(73), LayoutImmutable, Blittable, ContainerFieldNameHash(2513610482)]
+		public bool TripleBufferingEnable { get { return m_TripleBufferingEnable; } set { if (OnPropertyChanging("DxDisplaySettings." + nameof(TripleBufferingEnable), this, m_TripleBufferingEnable, value)) m_TripleBufferingEnable = value; } } // 0x49 (73)
 		
-		[ContainerField(74), LayoutImmutable, Blittable]
-		public bool Dx10PlusEnable { get; set; } // 0x4A (74)
+		protected bool m_Dx10PlusEnable = new bool();
+		[ContainerField(74), LayoutImmutable, Blittable, ContainerFieldNameHash(2748289315)]
+		public bool Dx10PlusEnable { get { return m_Dx10PlusEnable; } set { if (OnPropertyChanging("DxDisplaySettings." + nameof(Dx10PlusEnable), this, m_Dx10PlusEnable, value)) m_Dx10PlusEnable = value; } } // 0x4A (74)
 		
-		[ContainerField(75), LayoutImmutable, Blittable]
-		public bool NvApiEnable { get; set; } // 0x4B (75)
+		protected bool m_NvApiEnable = new bool();
+		[ContainerField(75), LayoutImmutable, Blittable, ContainerFieldNameHash(4131383908)]
+		public bool NvApiEnable { get { return m_NvApiEnable; } set { if (OnPropertyChanging("DxDisplaySettings." + nameof(NvApiEnable), this, m_NvApiEnable, value)) m_NvApiEnable = value; } } // 0x4B (75)
 		
-		[ContainerField(76), LayoutImmutable, Blittable]
-		public bool NvPerfHudEnable { get; set; } // 0x4C (76)
+		protected bool m_NvPerfHudEnable = new bool();
+		[ContainerField(76), LayoutImmutable, Blittable, ContainerFieldNameHash(4224746564)]
+		public bool NvPerfHudEnable { get { return m_NvPerfHudEnable; } set { if (OnPropertyChanging("DxDisplaySettings." + nameof(NvPerfHudEnable), this, m_NvPerfHudEnable, value)) m_NvPerfHudEnable = value; } } // 0x4C (76)
 		
-		[ContainerField(77), LayoutImmutable, Blittable]
-		public bool StereoEnable { get; set; } // 0x4D (77)
+		protected bool m_StereoEnable = new bool();
+		[ContainerField(77), LayoutImmutable, Blittable, ContainerFieldNameHash(87681470)]
+		public bool StereoEnable { get { return m_StereoEnable; } set { if (OnPropertyChanging("DxDisplaySettings." + nameof(StereoEnable), this, m_StereoEnable, value)) m_StereoEnable = value; } } // 0x4D (77)
 		
-		[ContainerField(78), LayoutImmutable, Blittable]
-		public bool Dx11Enable { get; set; } // 0x4E (78)
+		protected bool m_Dx11Enable = new bool();
+		[ContainerField(78), LayoutImmutable, Blittable, ContainerFieldNameHash(2892685432)]
+		public bool Dx11Enable { get { return m_Dx11Enable; } set { if (OnPropertyChanging("DxDisplaySettings." + nameof(Dx11Enable), this, m_Dx11Enable, value)) m_Dx11Enable = value; } } // 0x4E (78)
 		
-		[ContainerField(79), LayoutImmutable, Blittable]
-		public bool Dx10Dot0Enable { get; set; } // 0x4F (79)
+		protected bool m_Dx10Dot0Enable = new bool();
+		[ContainerField(79), LayoutImmutable, Blittable, ContainerFieldNameHash(1768632854)]
+		public bool Dx10Dot0Enable { get { return m_Dx10Dot0Enable; } set { if (OnPropertyChanging("DxDisplaySettings." + nameof(Dx10Dot0Enable), this, m_Dx10Dot0Enable, value)) m_Dx10Dot0Enable = value; } } // 0x4F (79)
 		
-		[ContainerField(80), LayoutImmutable, Blittable]
-		public bool RefDriverEnable { get; set; } // 0x50 (80)
+		protected bool m_RefDriverEnable = new bool();
+		[ContainerField(80), LayoutImmutable, Blittable, ContainerFieldNameHash(1745920907)]
+		public bool RefDriverEnable { get { return m_RefDriverEnable; } set { if (OnPropertyChanging("DxDisplaySettings." + nameof(RefDriverEnable), this, m_RefDriverEnable, value)) m_RefDriverEnable = value; } } // 0x50 (80)
 		
-		[ContainerField(81), LayoutImmutable, Blittable]
-		public bool Dx10Dot1Enable { get; set; } // 0x51 (81)
+		protected bool m_Dx10Dot1Enable = new bool();
+		[ContainerField(81), LayoutImmutable, Blittable, ContainerFieldNameHash(1267572695)]
+		public bool Dx10Dot1Enable { get { return m_Dx10Dot1Enable; } set { if (OnPropertyChanging("DxDisplaySettings." + nameof(Dx10Dot1Enable), this, m_Dx10Dot1Enable, value)) m_Dx10Dot1Enable = value; } } // 0x51 (81)
 		
-		[ContainerField(82), LayoutImmutable, Blittable]
-		public bool MinDriverRequired { get; set; } // 0x52 (82)
+		protected bool m_MinDriverRequired = new bool();
+		[ContainerField(82), LayoutImmutable, Blittable, ContainerFieldNameHash(2006470392)]
+		public bool MinDriverRequired { get { return m_MinDriverRequired; } set { if (OnPropertyChanging("DxDisplaySettings." + nameof(MinDriverRequired), this, m_MinDriverRequired, value)) m_MinDriverRequired = value; } } // 0x52 (82)
 		
-		[ContainerField(83), LayoutImmutable, Blittable]
-		public bool WarpDriverEnable { get; set; } // 0x53 (83)
+		protected bool m_WarpDriverEnable = new bool();
+		[ContainerField(83), LayoutImmutable, Blittable, ContainerFieldNameHash(1373325966)]
+		public bool WarpDriverEnable { get { return m_WarpDriverEnable; } set { if (OnPropertyChanging("DxDisplaySettings." + nameof(WarpDriverEnable), this, m_WarpDriverEnable, value)) m_WarpDriverEnable = value; } } // 0x53 (83)
 		
-		[ContainerField(84), LayoutImmutable, Blittable]
-		public bool NullDriverEnable { get; set; } // 0x54 (84)
+		protected bool m_NullDriverEnable = new bool();
+		[ContainerField(84), LayoutImmutable, Blittable, ContainerFieldNameHash(2042103201)]
+		public bool NullDriverEnable { get { return m_NullDriverEnable; } set { if (OnPropertyChanging("DxDisplaySettings." + nameof(NullDriverEnable), this, m_NullDriverEnable, value)) m_NullDriverEnable = value; } } // 0x54 (84)
 		
-		[ContainerField(85), LayoutImmutable, Blittable]
-		public bool MultiGpuValidationEnable { get; set; } // 0x55 (85)
+		protected bool m_MultiGpuValidationEnable = new bool();
+		[ContainerField(85), LayoutImmutable, Blittable, ContainerFieldNameHash(1890184548)]
+		public bool MultiGpuValidationEnable { get { return m_MultiGpuValidationEnable; } set { if (OnPropertyChanging("DxDisplaySettings." + nameof(MultiGpuValidationEnable), this, m_MultiGpuValidationEnable, value)) m_MultiGpuValidationEnable = value; } } // 0x55 (85)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

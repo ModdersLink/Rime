@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class CustomizationTable : 
 		DataContainer
 	{
-		[ContainerField(8)]
-		public RefArray<CustomizationUnlockParts> UnlockParts { get; set; } = new RefArray<CustomizationUnlockParts>(); // 0x8 (8)
+		protected RefArray<CustomizationUnlockParts> m_UnlockParts = new RefArray<CustomizationUnlockParts>();
+		[ContainerField(8), ContainerFieldNameHash(4116003953)]
+		public RefArray<CustomizationUnlockParts> UnlockParts { get { return m_UnlockParts; } set { if (OnPropertyChanging("CustomizationTable." + nameof(UnlockParts), this, m_UnlockParts, value)) m_UnlockParts = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

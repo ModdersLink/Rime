@@ -5,52 +5,74 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class MeleeEntityCommonData : 
 		Asset
 	{
-		[ContainerField(12)]
-		public CharacterMeleeBinding MeleeBinding { get; set; } = new CharacterMeleeBinding(); // 0xC (12)
+		protected CharacterMeleeBinding m_MeleeBinding = new CharacterMeleeBinding();
+		[ContainerField(12), ContainerFieldNameHash(3448558112)]
+		public CharacterMeleeBinding MeleeBinding { get { return m_MeleeBinding; } set { if (OnPropertyChanging("MeleeEntityCommonData." + nameof(MeleeBinding), this, m_MeleeBinding, value)) m_MeleeBinding = value; } } // 0xC (12)
 		
-		[ContainerField(28)]
-		public CharacterMeleeCommonBinding MeleeCommonBinding { get; set; } = new CharacterMeleeCommonBinding(); // 0x1C (28)
+		protected CharacterMeleeCommonBinding m_MeleeCommonBinding = new CharacterMeleeCommonBinding();
+		[ContainerField(28), ContainerFieldNameHash(4111040973)]
+		public CharacterMeleeCommonBinding MeleeCommonBinding { get { return m_MeleeCommonBinding; } set { if (OnPropertyChanging("MeleeEntityCommonData." + nameof(MeleeCommonBinding), this, m_MeleeCommonBinding, value)) m_MeleeCommonBinding = value; } } // 0x1C (28)
 		
-		[ContainerField(56), LayoutImmutable, Blittable]
-		public float TriggerDelay { get; set; } // 0x38 (56)
+		protected float m_TriggerDelay = new float();
+		[ContainerField(56), LayoutImmutable, Blittable, ContainerFieldNameHash(3587015816)]
+		public float TriggerDelay { get { return m_TriggerDelay; } set { if (OnPropertyChanging("MeleeEntityCommonData." + nameof(TriggerDelay), this, m_TriggerDelay, value)) m_TriggerDelay = value; } } // 0x38 (56)
 		
-		[ContainerField(60), LayoutImmutable, Blittable]
-		public float DefendWindow { get; set; } // 0x3C (60)
+		protected float m_DefendWindow = new float();
+		[ContainerField(60), LayoutImmutable, Blittable, ContainerFieldNameHash(3425275393)]
+		public float DefendWindow { get { return m_DefendWindow; } set { if (OnPropertyChanging("MeleeEntityCommonData." + nameof(DefendWindow), this, m_DefendWindow, value)) m_DefendWindow = value; } } // 0x3C (60)
 		
-		[ContainerField(64), LayoutImmutable, Blittable]
-		public float KillDelay { get; set; } // 0x40 (64)
+		protected float m_KillDelay = new float();
+		[ContainerField(64), LayoutImmutable, Blittable, ContainerFieldNameHash(1421072114)]
+		public float KillDelay { get { return m_KillDelay; } set { if (OnPropertyChanging("MeleeEntityCommonData." + nameof(KillDelay), this, m_KillDelay, value)) m_KillDelay = value; } } // 0x40 (64)
 		
-		[ContainerField(68), LayoutImmutable, Blittable]
-		public float MeleeEndDelay { get; set; } // 0x44 (68)
+		protected float m_MeleeEndDelay = new float();
+		[ContainerField(68), LayoutImmutable, Blittable, ContainerFieldNameHash(961486747)]
+		public float MeleeEndDelay { get { return m_MeleeEndDelay; } set { if (OnPropertyChanging("MeleeEntityCommonData." + nameof(MeleeEndDelay), this, m_MeleeEndDelay, value)) m_MeleeEndDelay = value; } } // 0x44 (68)
 		
-		[ContainerField(72), LayoutImmutable, Blittable]
-		public float InvalidMeleeAttackZone { get; set; } // 0x48 (72)
+		protected float m_InvalidMeleeAttackZone = new float();
+		[ContainerField(72), LayoutImmutable, Blittable, ContainerFieldNameHash(2448591846)]
+		public float InvalidMeleeAttackZone { get { return m_InvalidMeleeAttackZone; } set { if (OnPropertyChanging("MeleeEntityCommonData." + nameof(InvalidMeleeAttackZone), this, m_InvalidMeleeAttackZone, value)) m_InvalidMeleeAttackZone = value; } } // 0x48 (72)
 		
-		[ContainerField(76), LayoutImmutable, Blittable]
-		public float MeleeAttackDistance { get; set; } // 0x4C (76)
+		protected float m_MeleeAttackDistance = new float();
+		[ContainerField(76), LayoutImmutable, Blittable, ContainerFieldNameHash(1761928522)]
+		public float MeleeAttackDistance { get { return m_MeleeAttackDistance; } set { if (OnPropertyChanging("MeleeEntityCommonData." + nameof(MeleeAttackDistance), this, m_MeleeAttackDistance, value)) m_MeleeAttackDistance = value; } } // 0x4C (76)
 		
-		[ContainerField(80), LayoutImmutable, Blittable]
-		public float MaxAttackHeightDifference { get; set; } // 0x50 (80)
+		protected float m_MaxAttackHeightDifference = new float();
+		[ContainerField(80), LayoutImmutable, Blittable, ContainerFieldNameHash(2329749681)]
+		public float MaxAttackHeightDifference { get { return m_MaxAttackHeightDifference; } set { if (OnPropertyChanging("MeleeEntityCommonData." + nameof(MaxAttackHeightDifference), this, m_MaxAttackHeightDifference, value)) m_MaxAttackHeightDifference = value; } } // 0x50 (80)
 		
-		[ContainerField(84), LayoutImmutable, Blittable]
-		public float KillDamage { get; set; } // 0x54 (84)
+		protected float m_KillDamage = new float();
+		[ContainerField(84), LayoutImmutable, Blittable, ContainerFieldNameHash(3941210028)]
+		public float KillDamage { get { return m_KillDamage; } set { if (OnPropertyChanging("MeleeEntityCommonData." + nameof(KillDamage), this, m_KillDamage, value)) m_KillDamage = value; } } // 0x54 (84)
 		
-		[ContainerField(88)]
-		public CtrRef<AntEnumeration> ProneAttackType { get; set; } = new CtrRef<AntEnumeration>(); // 0x58 (88)
+		protected CtrRef<AntEnumeration> m_ProneAttackType = new CtrRef<AntEnumeration>();
+		[ContainerField(88), ContainerFieldNameHash(585847923)]
+		public CtrRef<AntEnumeration> ProneAttackType { get { return m_ProneAttackType; } set { if (OnPropertyChanging("MeleeEntityCommonData." + nameof(ProneAttackType), this, m_ProneAttackType, value)) m_ProneAttackType = value; } } // 0x58 (88)
 		
-		[ContainerField(92)]
-		public CtrRef<AntEnumeration> CrouchAttackType { get; set; } = new CtrRef<AntEnumeration>(); // 0x5C (92)
+		protected CtrRef<AntEnumeration> m_CrouchAttackType = new CtrRef<AntEnumeration>();
+		[ContainerField(92), ContainerFieldNameHash(4016355349)]
+		public CtrRef<AntEnumeration> CrouchAttackType { get { return m_CrouchAttackType; } set { if (OnPropertyChanging("MeleeEntityCommonData." + nameof(CrouchAttackType), this, m_CrouchAttackType, value)) m_CrouchAttackType = value; } } // 0x5C (92)
 		
-		[ContainerField(96), LayoutImmutable, Blittable]
-		public bool EnableAbortPossibility { get; set; } // 0x60 (96)
+		protected bool m_EnableAbortPossibility = new bool();
+		[ContainerField(96), LayoutImmutable, Blittable, ContainerFieldNameHash(746614459)]
+		public bool EnableAbortPossibility { get { return m_EnableAbortPossibility; } set { if (OnPropertyChanging("MeleeEntityCommonData." + nameof(EnableAbortPossibility), this, m_EnableAbortPossibility, value)) m_EnableAbortPossibility = value; } } // 0x60 (96)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

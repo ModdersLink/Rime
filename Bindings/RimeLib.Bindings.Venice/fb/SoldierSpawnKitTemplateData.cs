@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class SoldierSpawnKitTemplateData : 
 		Asset
 	{
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public uint Kit { get; set; } // 0xC (12)
+		protected uint m_Kit = new uint();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(193457363)]
+		public uint Kit { get { return m_Kit; } set { if (OnPropertyChanging("SoldierSpawnKitTemplateData." + nameof(Kit), this, m_Kit, value)) m_Kit = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public uint MainGun { get; set; } // 0x10 (16)
+		protected uint m_MainGun = new uint();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(1295556050)]
+		public uint MainGun { get { return m_MainGun; } set { if (OnPropertyChanging("SoldierSpawnKitTemplateData." + nameof(MainGun), this, m_MainGun, value)) m_MainGun = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

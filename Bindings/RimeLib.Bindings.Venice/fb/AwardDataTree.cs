@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class AwardDataTree : 
 		AwardableTreeBase
 	{
-		[ContainerField(24)]
-		public RefArray<AwardData> FilteredAwards { get; set; } = new RefArray<AwardData>(); // 0x18 (24)
+		protected RefArray<AwardData> m_FilteredAwards = new RefArray<AwardData>();
+		[ContainerField(24), ContainerFieldNameHash(3945417686)]
+		public RefArray<AwardData> FilteredAwards { get { return m_FilteredAwards; } set { if (OnPropertyChanging("AwardDataTree." + nameof(FilteredAwards), this, m_FilteredAwards, value)) m_FilteredAwards = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

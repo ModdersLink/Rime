@@ -5,22 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class SoundBusData : 
 		AudioGraphNodeData
 	{
-		[ContainerField(8), LayoutImmutable]
-		public string BusName { get; set; } // 0x8 (8)
+		protected string m_BusName = new string();
+		[ContainerField(8), LayoutImmutable, ContainerFieldNameHash(2742307846)]
+		public string BusName { get { return m_BusName; } set { if (OnPropertyChanging("SoundBusData." + nameof(BusName), this, m_BusName, value)) m_BusName = value; } } // 0x8 (8)
 		
-		[ContainerField(12)]
-		public SoundGraphPluginRef SubmixPlugin { get; set; } = new SoundGraphPluginRef(); // 0xC (12)
+		protected SoundGraphPluginRef m_SubmixPlugin = new SoundGraphPluginRef();
+		[ContainerField(12), ContainerFieldNameHash(132398548)]
+		public SoundGraphPluginRef SubmixPlugin { get { return m_SubmixPlugin; } set { if (OnPropertyChanging("SoundBusData." + nameof(SubmixPlugin), this, m_SubmixPlugin, value)) m_SubmixPlugin = value; } } // 0xC (12)
 		
-		[ContainerField(15), LayoutImmutable, Blittable]
-		public sbyte ChannelCount { get; set; } // 0xF (15)
+		protected sbyte m_ChannelCount = new sbyte();
+		[ContainerField(15), LayoutImmutable, Blittable, ContainerFieldNameHash(1014205285)]
+		public sbyte ChannelCount { get { return m_ChannelCount; } set { if (OnPropertyChanging("SoundBusData." + nameof(ChannelCount), this, m_ChannelCount, value)) m_ChannelCount = value; } } // 0xF (15)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class EmitterEntityData : 
 		EffectEntityData
 	{
-		[ContainerField(112)]
-		public CtrRef<EmitterAsset> Emitter { get; set; } = new CtrRef<EmitterAsset>(); // 0x70 (112)
+		protected CtrRef<EmitterAsset> m_Emitter = new CtrRef<EmitterAsset>();
+		[ContainerField(112), ContainerFieldNameHash(23395891)]
+		public CtrRef<EmitterAsset> Emitter { get { return m_Emitter; } set { if (OnPropertyChanging("EmitterEntityData." + nameof(Emitter), this, m_Emitter, value)) m_Emitter = value; } } // 0x70 (112)
 		
-		[ContainerField(116), LayoutImmutable, Blittable]
-		public float SpawnProbability { get; set; } // 0x74 (116)
+		protected float m_SpawnProbability = new float();
+		[ContainerField(116), LayoutImmutable, Blittable, ContainerFieldNameHash(2017232915)]
+		public float SpawnProbability { get { return m_SpawnProbability; } set { if (OnPropertyChanging("EmitterEntityData." + nameof(SpawnProbability), this, m_SpawnProbability, value)) m_SpawnProbability = value; } } // 0x74 (116)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

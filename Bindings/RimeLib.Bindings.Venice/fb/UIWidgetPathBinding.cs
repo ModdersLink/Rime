@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class UIWidgetPathBinding : 
 		UIDataBinding
 	{
-		[ContainerField(8)]
-		public UIDataSourceInfo WidgetPathQuery { get; set; } = new UIDataSourceInfo(); // 0x8 (8)
+		protected UIDataSourceInfo m_WidgetPathQuery = new UIDataSourceInfo();
+		[ContainerField(8), ContainerFieldNameHash(4285486446)]
+		public UIDataSourceInfo WidgetPathQuery { get { return m_WidgetPathQuery; } set { if (OnPropertyChanging("UIWidgetPathBinding." + nameof(WidgetPathQuery), this, m_WidgetPathQuery, value)) m_WidgetPathQuery = value; } } // 0x8 (8)
 		
-		[ContainerField(24)]
-		public UIDataSourceInfo Visibility { get; set; } = new UIDataSourceInfo(); // 0x18 (24)
+		protected UIDataSourceInfo m_Visibility = new UIDataSourceInfo();
+		[ContainerField(24), ContainerFieldNameHash(1708270083)]
+		public UIDataSourceInfo Visibility { get { return m_Visibility; } set { if (OnPropertyChanging("UIWidgetPathBinding." + nameof(Visibility), this, m_Visibility, value)) m_Visibility = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

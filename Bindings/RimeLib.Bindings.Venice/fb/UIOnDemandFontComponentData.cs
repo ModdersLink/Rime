@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class UIOnDemandFontComponentData : 
 		UIComponentData
 	{
-		[ContainerField(28)]
-		public RefArray<UIFontCollection> FontCollections { get; set; } = new RefArray<UIFontCollection>(); // 0x1C (28)
+		protected RefArray<UIFontCollection> m_FontCollections = new RefArray<UIFontCollection>();
+		[ContainerField(28), ContainerFieldNameHash(2744963667)]
+		public RefArray<UIFontCollection> FontCollections { get { return m_FontCollections; } set { if (OnPropertyChanging("UIOnDemandFontComponentData." + nameof(FontCollections), this, m_FontCollections, value)) m_FontCollections = value; } } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

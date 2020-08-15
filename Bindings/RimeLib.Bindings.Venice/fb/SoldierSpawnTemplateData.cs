@@ -5,28 +5,42 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class SoldierSpawnTemplateData : 
 		Asset
 	{
-		[ContainerField(12)]
-		public CtrRef<CustomizeSoldierData> CustomizeSoldierData { get; set; } = new CtrRef<CustomizeSoldierData>(); // 0xC (12)
+		protected CtrRef<CustomizeSoldierData> m_CustomizeSoldierData = new CtrRef<CustomizeSoldierData>();
+		[ContainerField(12), ContainerFieldNameHash(2875154650)]
+		public CtrRef<CustomizeSoldierData> CustomizeSoldierData { get { return m_CustomizeSoldierData; } set { if (OnPropertyChanging("SoldierSpawnTemplateData." + nameof(CustomizeSoldierData), this, m_CustomizeSoldierData, value)) m_CustomizeSoldierData = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public CtrRef<GameSensingTemplateData> Sensing { get; set; } = new CtrRef<GameSensingTemplateData>(); // 0x10 (16)
+		protected CtrRef<GameSensingTemplateData> m_Sensing = new CtrRef<GameSensingTemplateData>();
+		[ContainerField(16), ContainerFieldNameHash(2773286638)]
+		public CtrRef<GameSensingTemplateData> Sensing { get { return m_Sensing; } set { if (OnPropertyChanging("SoldierSpawnTemplateData." + nameof(Sensing), this, m_Sensing, value)) m_Sensing = value; } } // 0x10 (16)
 		
-		[ContainerField(20)]
-		public CtrRef<GameBehaviourTemplateData> Behaviour { get; set; } = new CtrRef<GameBehaviourTemplateData>(); // 0x14 (20)
+		protected CtrRef<GameBehaviourTemplateData> m_Behaviour = new CtrRef<GameBehaviourTemplateData>();
+		[ContainerField(20), ContainerFieldNameHash(513159228)]
+		public CtrRef<GameBehaviourTemplateData> Behaviour { get { return m_Behaviour; } set { if (OnPropertyChanging("SoldierSpawnTemplateData." + nameof(Behaviour), this, m_Behaviour, value)) m_Behaviour = value; } } // 0x14 (20)
 		
-		[ContainerField(24)]
-		public CtrRef<AnimationSpawnTemplate> AnimationTemplate { get; set; } = new CtrRef<AnimationSpawnTemplate>(); // 0x18 (24)
+		protected CtrRef<AnimationSpawnTemplate> m_AnimationTemplate = new CtrRef<AnimationSpawnTemplate>();
+		[ContainerField(24), ContainerFieldNameHash(4294916323)]
+		public CtrRef<AnimationSpawnTemplate> AnimationTemplate { get { return m_AnimationTemplate; } set { if (OnPropertyChanging("SoldierSpawnTemplateData." + nameof(AnimationTemplate), this, m_AnimationTemplate, value)) m_AnimationTemplate = value; } } // 0x18 (24)
 		
-		[ContainerField(28)]
-		public RefArray<VoiceOverLabel> VoiceOverLabels { get; set; } = new RefArray<VoiceOverLabel>(); // 0x1C (28)
+		protected RefArray<VoiceOverLabel> m_VoiceOverLabels = new RefArray<VoiceOverLabel>();
+		[ContainerField(28), ContainerFieldNameHash(2741340584)]
+		public RefArray<VoiceOverLabel> VoiceOverLabels { get { return m_VoiceOverLabels; } set { if (OnPropertyChanging("SoldierSpawnTemplateData." + nameof(VoiceOverLabels), this, m_VoiceOverLabels, value)) m_VoiceOverLabels = value; } } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

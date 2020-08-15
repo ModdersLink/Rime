@@ -5,40 +5,58 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class DecalSettings : 
 		SystemSettings
 	{
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public uint StaticBufferMaxVertexCount { get; set; } // 0xC (12)
+		protected uint m_StaticBufferMaxVertexCount = new uint();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(2343369026)]
+		public uint StaticBufferMaxVertexCount { get { return m_StaticBufferMaxVertexCount; } set { if (OnPropertyChanging("DecalSettings." + nameof(StaticBufferMaxVertexCount), this, m_StaticBufferMaxVertexCount, value)) m_StaticBufferMaxVertexCount = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public uint RingBufferMaxVertexCount { get; set; } // 0x10 (16)
+		protected uint m_RingBufferMaxVertexCount = new uint();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(3904589288)]
+		public uint RingBufferMaxVertexCount { get { return m_RingBufferMaxVertexCount; } set { if (OnPropertyChanging("DecalSettings." + nameof(RingBufferMaxVertexCount), this, m_RingBufferMaxVertexCount, value)) m_RingBufferMaxVertexCount = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
-		public bool DrawEnable { get; set; } // 0x14 (20)
+		protected bool m_DrawEnable = new bool();
+		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(1347356004)]
+		public bool DrawEnable { get { return m_DrawEnable; } set { if (OnPropertyChanging("DecalSettings." + nameof(DrawEnable), this, m_DrawEnable, value)) m_DrawEnable = value; } } // 0x14 (20)
 		
-		[ContainerField(21), LayoutImmutable, Blittable]
-		public bool SystemEnable2 { get; set; } // 0x15 (21)
+		protected bool m_SystemEnable2 = new bool();
+		[ContainerField(21), LayoutImmutable, Blittable, ContainerFieldNameHash(360785139)]
+		public bool SystemEnable2 { get { return m_SystemEnable2; } set { if (OnPropertyChanging("DecalSettings." + nameof(SystemEnable2), this, m_SystemEnable2, value)) m_SystemEnable2 = value; } } // 0x15 (21)
 		
-		[ContainerField(22), LayoutImmutable, Blittable]
-		public bool SystemEnable { get; set; } // 0x16 (22)
+		protected bool m_SystemEnable = new bool();
+		[ContainerField(22), LayoutImmutable, Blittable, ContainerFieldNameHash(3785298081)]
+		public bool SystemEnable { get { return m_SystemEnable; } set { if (OnPropertyChanging("DecalSettings." + nameof(SystemEnable), this, m_SystemEnable, value)) m_SystemEnable = value; } } // 0x16 (22)
 		
-		[ContainerField(23), LayoutImmutable, Blittable]
-		public bool Enable { get; set; } // 0x17 (23)
+		protected bool m_Enable = new bool();
+		[ContainerField(23), LayoutImmutable, Blittable, ContainerFieldNameHash(2342790116)]
+		public bool Enable { get { return m_Enable; } set { if (OnPropertyChanging("DecalSettings." + nameof(Enable), this, m_Enable, value)) m_Enable = value; } } // 0x17 (23)
 		
-		[ContainerField(24), LayoutImmutable, Blittable]
-		public bool DebugMemUsageEnable { get; set; } // 0x18 (24)
+		protected bool m_DebugMemUsageEnable = new bool();
+		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(284136405)]
+		public bool DebugMemUsageEnable { get { return m_DebugMemUsageEnable; } set { if (OnPropertyChanging("DecalSettings." + nameof(DebugMemUsageEnable), this, m_DebugMemUsageEnable, value)) m_DebugMemUsageEnable = value; } } // 0x18 (24)
 		
-		[ContainerField(25), LayoutImmutable, Blittable]
-		public bool DebugWarningsEnable { get; set; } // 0x19 (25)
+		protected bool m_DebugWarningsEnable = new bool();
+		[ContainerField(25), LayoutImmutable, Blittable, ContainerFieldNameHash(3949276556)]
+		public bool DebugWarningsEnable { get { return m_DebugWarningsEnable; } set { if (OnPropertyChanging("DecalSettings." + nameof(DebugWarningsEnable), this, m_DebugWarningsEnable, value)) m_DebugWarningsEnable = value; } } // 0x19 (25)
 		
-		[ContainerField(26), LayoutImmutable, Blittable]
-		public bool NvidiaStreamOutputWorkaroundEnable { get; set; } // 0x1A (26)
+		protected bool m_NvidiaStreamOutputWorkaroundEnable = new bool();
+		[ContainerField(26), LayoutImmutable, Blittable, ContainerFieldNameHash(2641376344)]
+		public bool NvidiaStreamOutputWorkaroundEnable { get { return m_NvidiaStreamOutputWorkaroundEnable; } set { if (OnPropertyChanging("DecalSettings." + nameof(NvidiaStreamOutputWorkaroundEnable), this, m_NvidiaStreamOutputWorkaroundEnable, value)) m_NvidiaStreamOutputWorkaroundEnable = value; } } // 0x1A (26)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

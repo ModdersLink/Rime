@@ -5,58 +5,82 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class DebrisSystemSettings : 
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable, Blittable]
-		public uint MeshDrawCountLimit { get; set; } // 0x8 (8)
+		protected uint m_MeshDrawCountLimit = new uint();
+		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(3584341216)]
+		public uint MeshDrawCountLimit { get { return m_MeshDrawCountLimit; } set { if (OnPropertyChanging("DebrisSystemSettings." + nameof(MeshDrawCountLimit), this, m_MeshDrawCountLimit, value)) m_MeshDrawCountLimit = value; } } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public float TimeScale { get; set; } // 0xC (12)
+		protected float m_TimeScale = new float();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(169511528)]
+		public float TimeScale { get { return m_TimeScale; } set { if (OnPropertyChanging("DebrisSystemSettings." + nameof(TimeScale), this, m_TimeScale, value)) m_TimeScale = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public float MeshCullingDistance { get; set; } // 0x10 (16)
+		protected float m_MeshCullingDistance = new float();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(2057455619)]
+		public float MeshCullingDistance { get { return m_MeshCullingDistance; } set { if (OnPropertyChanging("DebrisSystemSettings." + nameof(MeshCullingDistance), this, m_MeshCullingDistance, value)) m_MeshCullingDistance = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
-		public uint DrawStats { get; set; } // 0x14 (20)
+		protected uint m_DrawStats = new uint();
+		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(2413142628)]
+		public uint DrawStats { get { return m_DrawStats; } set { if (OnPropertyChanging("DebrisSystemSettings." + nameof(DrawStats), this, m_DrawStats, value)) m_DrawStats = value; } } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable]
-		public uint MeshBatchCountLimit { get; set; } // 0x18 (24)
+		protected uint m_MeshBatchCountLimit = new uint();
+		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(1925711996)]
+		public uint MeshBatchCountLimit { get { return m_MeshBatchCountLimit; } set { if (OnPropertyChanging("DebrisSystemSettings." + nameof(MeshBatchCountLimit), this, m_MeshBatchCountLimit, value)) m_MeshBatchCountLimit = value; } } // 0x18 (24)
 		
-		[ContainerField(28), LayoutImmutable, Blittable]
-		public float MeshStreamingPriorityMultiplier { get; set; } // 0x1C (28)
+		protected float m_MeshStreamingPriorityMultiplier = new float();
+		[ContainerField(28), LayoutImmutable, Blittable, ContainerFieldNameHash(1971206387)]
+		public float MeshStreamingPriorityMultiplier { get { return m_MeshStreamingPriorityMultiplier; } set { if (OnPropertyChanging("DebrisSystemSettings." + nameof(MeshStreamingPriorityMultiplier), this, m_MeshStreamingPriorityMultiplier, value)) m_MeshStreamingPriorityMultiplier = value; } } // 0x1C (28)
 		
-		[ContainerField(32), LayoutImmutable, Blittable]
-		public bool MeshRenderingEnable { get; set; } // 0x20 (32)
+		protected bool m_MeshRenderingEnable = new bool();
+		[ContainerField(32), LayoutImmutable, Blittable, ContainerFieldNameHash(2979790077)]
+		public bool MeshRenderingEnable { get { return m_MeshRenderingEnable; } set { if (OnPropertyChanging("DebrisSystemSettings." + nameof(MeshRenderingEnable), this, m_MeshRenderingEnable, value)) m_MeshRenderingEnable = value; } } // 0x20 (32)
 		
-		[ContainerField(33), LayoutImmutable, Blittable]
-		public bool EnableJobs { get; set; } // 0x21 (33)
+		protected bool m_EnableJobs = new bool();
+		[ContainerField(33), LayoutImmutable, Blittable, ContainerFieldNameHash(1190923856)]
+		public bool EnableJobs { get { return m_EnableJobs; } set { if (OnPropertyChanging("DebrisSystemSettings." + nameof(EnableJobs), this, m_EnableJobs, value)) m_EnableJobs = value; } } // 0x21 (33)
 		
-		[ContainerField(34), LayoutImmutable, Blittable]
-		public bool MeshShadowEnable { get; set; } // 0x22 (34)
+		protected bool m_MeshShadowEnable = new bool();
+		[ContainerField(34), LayoutImmutable, Blittable, ContainerFieldNameHash(418824849)]
+		public bool MeshShadowEnable { get { return m_MeshShadowEnable; } set { if (OnPropertyChanging("DebrisSystemSettings." + nameof(MeshShadowEnable), this, m_MeshShadowEnable, value)) m_MeshShadowEnable = value; } } // 0x22 (34)
 		
-		[ContainerField(35), LayoutImmutable, Blittable]
-		public bool MeshViewCullingEnable { get; set; } // 0x23 (35)
+		protected bool m_MeshViewCullingEnable = new bool();
+		[ContainerField(35), LayoutImmutable, Blittable, ContainerFieldNameHash(875555468)]
+		public bool MeshViewCullingEnable { get { return m_MeshViewCullingEnable; } set { if (OnPropertyChanging("DebrisSystemSettings." + nameof(MeshViewCullingEnable), this, m_MeshViewCullingEnable, value)) m_MeshViewCullingEnable = value; } } // 0x23 (35)
 		
-		[ContainerField(36), LayoutImmutable, Blittable]
-		public bool MeshHavokRenderingEnable { get; set; } // 0x24 (36)
+		protected bool m_MeshHavokRenderingEnable = new bool();
+		[ContainerField(36), LayoutImmutable, Blittable, ContainerFieldNameHash(1194385862)]
+		public bool MeshHavokRenderingEnable { get { return m_MeshHavokRenderingEnable; } set { if (OnPropertyChanging("DebrisSystemSettings." + nameof(MeshHavokRenderingEnable), this, m_MeshHavokRenderingEnable, value)) m_MeshHavokRenderingEnable = value; } } // 0x24 (36)
 		
-		[ContainerField(37), LayoutImmutable, Blittable]
-		public bool MeshDrawTransforms { get; set; } // 0x25 (37)
+		protected bool m_MeshDrawTransforms = new bool();
+		[ContainerField(37), LayoutImmutable, Blittable, ContainerFieldNameHash(67393161)]
+		public bool MeshDrawTransforms { get { return m_MeshDrawTransforms; } set { if (OnPropertyChanging("DebrisSystemSettings." + nameof(MeshDrawTransforms), this, m_MeshDrawTransforms, value)) m_MeshDrawTransforms = value; } } // 0x25 (37)
 		
-		[ContainerField(38), LayoutImmutable, Blittable]
-		public bool Enable { get; set; } // 0x26 (38)
+		protected bool m_Enable = new bool();
+		[ContainerField(38), LayoutImmutable, Blittable, ContainerFieldNameHash(2342790116)]
+		public bool Enable { get { return m_Enable; } set { if (OnPropertyChanging("DebrisSystemSettings." + nameof(Enable), this, m_Enable, value)) m_Enable = value; } } // 0x26 (38)
 		
-		[ContainerField(39), LayoutImmutable, Blittable]
-		public bool MeshDrawBoundingBoxes { get; set; } // 0x27 (39)
+		protected bool m_MeshDrawBoundingBoxes = new bool();
+		[ContainerField(39), LayoutImmutable, Blittable, ContainerFieldNameHash(1284065831)]
+		public bool MeshDrawBoundingBoxes { get { return m_MeshDrawBoundingBoxes; } set { if (OnPropertyChanging("DebrisSystemSettings." + nameof(MeshDrawBoundingBoxes), this, m_MeshDrawBoundingBoxes, value)) m_MeshDrawBoundingBoxes = value; } } // 0x27 (39)
 		
-		[ContainerField(40), LayoutImmutable, Blittable]
-		public bool MeshDrawCullStats { get; set; } // 0x28 (40)
+		protected bool m_MeshDrawCullStats = new bool();
+		[ContainerField(40), LayoutImmutable, Blittable, ContainerFieldNameHash(2146509665)]
+		public bool MeshDrawCullStats { get { return m_MeshDrawCullStats; } set { if (OnPropertyChanging("DebrisSystemSettings." + nameof(MeshDrawCullStats), this, m_MeshDrawCullStats, value)) m_MeshDrawCullStats = value; } } // 0x28 (40)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

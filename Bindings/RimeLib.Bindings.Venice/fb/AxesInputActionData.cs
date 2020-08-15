@@ -5,20 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class AxesInputActionData : 
 		InputActionData
 	{
-		[ContainerField(12)]
-		public InputDeviceAxes Axis { get; set; } = new InputDeviceAxes(); // 0xC (12)
+		protected InputDeviceAxes m_Axis = new InputDeviceAxes();
+		[ContainerField(12), ContainerFieldNameHash(2088662246)]
+		public InputDeviceAxes Axis { get { return m_Axis; } set { if (OnPropertyChanging("AxesInputActionData." + nameof(Axis), this, m_Axis, value)) m_Axis = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public bool NormalizeInput { get; set; } // 0x10 (16)
+		protected bool m_NormalizeInput = new bool();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(4067559830)]
+		public bool NormalizeInput { get { return m_NormalizeInput; } set { if (OnPropertyChanging("AxesInputActionData." + nameof(NormalizeInput), this, m_NormalizeInput, value)) m_NormalizeInput = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

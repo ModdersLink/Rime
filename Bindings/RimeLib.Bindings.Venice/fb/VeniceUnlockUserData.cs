@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class VeniceUnlockUserData : 
 		UnlockUserDataBase
 	{
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public bool CheckSquad { get; set; } // 0xC (12)
+		protected bool m_CheckSquad = new bool();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(28509873)]
+		public bool CheckSquad { get { return m_CheckSquad; } set { if (OnPropertyChanging("VeniceUnlockUserData." + nameof(CheckSquad), this, m_CheckSquad, value)) m_CheckSquad = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

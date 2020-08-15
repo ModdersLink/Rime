@@ -5,22 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class SoldierEntryComponentData : 
 		EntryComponentData
 	{
-		[ContainerField(192)]
-		public AimingConstraintsData AimingConstraints { get; set; } = new AimingConstraintsData(); // 0xC0 (192)
+		protected AimingConstraintsData m_AimingConstraints = new AimingConstraintsData();
+		[ContainerField(192), ContainerFieldNameHash(1523178198)]
+		public AimingConstraintsData AimingConstraints { get { return m_AimingConstraints; } set { if (OnPropertyChanging("SoldierEntryComponentData." + nameof(AimingConstraints), this, m_AimingConstraints, value)) m_AimingConstraints = value; } } // 0xC0 (192)
 		
-		[ContainerField(208)]
-		public CtrRef<AntEnumeration> AntEntryEnumeration { get; set; } = new CtrRef<AntEnumeration>(); // 0xD0 (208)
+		protected CtrRef<AntEnumeration> m_AntEntryEnumeration = new CtrRef<AntEnumeration>();
+		[ContainerField(208), ContainerFieldNameHash(1819698227)]
+		public CtrRef<AntEnumeration> AntEntryEnumeration { get { return m_AntEntryEnumeration; } set { if (OnPropertyChanging("SoldierEntryComponentData." + nameof(AntEntryEnumeration), this, m_AntEntryEnumeration, value)) m_AntEntryEnumeration = value; } } // 0xD0 (208)
 		
-		[ContainerField(212), LayoutImmutable, Blittable]
-		public bool AlignConstraintsToEntity { get; set; } // 0xD4 (212)
+		protected bool m_AlignConstraintsToEntity = new bool();
+		[ContainerField(212), LayoutImmutable, Blittable, ContainerFieldNameHash(3847387294)]
+		public bool AlignConstraintsToEntity { get { return m_AlignConstraintsToEntity; } set { if (OnPropertyChanging("SoldierEntryComponentData." + nameof(AlignConstraintsToEntity), this, m_AlignConstraintsToEntity, value)) m_AlignConstraintsToEntity = value; } } // 0xD4 (212)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

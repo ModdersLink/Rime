@@ -5,22 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class SoundTestAsset : 
 		Asset
 	{
-		[ContainerField(12)]
-		public RefArray<SoundTestTaskSpec> TaskSpecs { get; set; } = new RefArray<SoundTestTaskSpec>(); // 0xC (12)
+		protected RefArray<SoundTestTaskSpec> m_TaskSpecs = new RefArray<SoundTestTaskSpec>();
+		[ContainerField(12), ContainerFieldNameHash(2660376702)]
+		public RefArray<SoundTestTaskSpec> TaskSpecs { get { return m_TaskSpecs; } set { if (OnPropertyChanging("SoundTestAsset." + nameof(TaskSpecs), this, m_TaskSpecs, value)) m_TaskSpecs = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public RefArray<SoundTestSpec> TestSpecs { get; set; } = new RefArray<SoundTestSpec>(); // 0x10 (16)
+		protected RefArray<SoundTestSpec> m_TestSpecs = new RefArray<SoundTestSpec>();
+		[ContainerField(16), ContainerFieldNameHash(1413619717)]
+		public RefArray<SoundTestSpec> TestSpecs { get { return m_TestSpecs; } set { if (OnPropertyChanging("SoundTestAsset." + nameof(TestSpecs), this, m_TestSpecs, value)) m_TestSpecs = value; } } // 0x10 (16)
 		
-		[ContainerField(20)]
-		public RefArray<SoundTestSuite> Suites { get; set; } = new RefArray<SoundTestSuite>(); // 0x14 (20)
+		protected RefArray<SoundTestSuite> m_Suites = new RefArray<SoundTestSuite>();
+		[ContainerField(20), ContainerFieldNameHash(3318968904)]
+		public RefArray<SoundTestSuite> Suites { get { return m_Suites; } set { if (OnPropertyChanging("SoundTestAsset." + nameof(Suites), this, m_Suites, value)) m_Suites = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

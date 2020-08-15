@@ -5,26 +5,38 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class PathFollowingComponentData : 
 		ComponentData
 	{
-		[ContainerField(96), LayoutImmutable, Blittable]
-		public float UpdatePathAtDistancePercent { get; set; } // 0x60 (96)
+		protected float m_UpdatePathAtDistancePercent = new float();
+		[ContainerField(96), LayoutImmutable, Blittable, ContainerFieldNameHash(324611860)]
+		public float UpdatePathAtDistancePercent { get { return m_UpdatePathAtDistancePercent; } set { if (OnPropertyChanging("PathFollowingComponentData." + nameof(UpdatePathAtDistancePercent), this, m_UpdatePathAtDistancePercent, value)) m_UpdatePathAtDistancePercent = value; } } // 0x60 (96)
 		
-		[ContainerField(100), LayoutImmutable, Blittable]
-		public uint PreferredPathfindingIndex { get; set; } // 0x64 (100)
+		protected uint m_PreferredPathfindingIndex = new uint();
+		[ContainerField(100), LayoutImmutable, Blittable, ContainerFieldNameHash(233434614)]
+		public uint PreferredPathfindingIndex { get { return m_PreferredPathfindingIndex; } set { if (OnPropertyChanging("PathFollowingComponentData." + nameof(PreferredPathfindingIndex), this, m_PreferredPathfindingIndex, value)) m_PreferredPathfindingIndex = value; } } // 0x64 (100)
 		
-		[ContainerField(104)]
-		public List<uint> AlternatePathfindingIndices { get; set; } = new List<uint>(); // 0x68 (104)
+		protected List<uint> m_AlternatePathfindingIndices = new List<uint>();
+		[ContainerField(104), ContainerFieldNameHash(1978090370)]
+		public List<uint> AlternatePathfindingIndices { get { return m_AlternatePathfindingIndices; } set { if (OnPropertyChanging("PathFollowingComponentData." + nameof(AlternatePathfindingIndices), this, m_AlternatePathfindingIndices, value)) m_AlternatePathfindingIndices = value; } } // 0x68 (104)
 		
-		[ContainerField(108), LayoutImmutable, Blittable]
-		public float MovementCorridorRadius { get; set; } // 0x6C (108)
+		protected float m_MovementCorridorRadius = new float();
+		[ContainerField(108), LayoutImmutable, Blittable, ContainerFieldNameHash(1392343010)]
+		public float MovementCorridorRadius { get { return m_MovementCorridorRadius; } set { if (OnPropertyChanging("PathFollowingComponentData." + nameof(MovementCorridorRadius), this, m_MovementCorridorRadius, value)) m_MovementCorridorRadius = value; } } // 0x6C (108)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

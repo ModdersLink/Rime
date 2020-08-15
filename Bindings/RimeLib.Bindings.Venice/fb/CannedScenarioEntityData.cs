@@ -5,22 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class CannedScenarioEntityData : 
 		EntityData
 	{
-		[ContainerField(12)]
-		public CannedAnimationBinding CannedAnimBinding { get; set; } = new CannedAnimationBinding(); // 0xC (12)
+		protected CannedAnimationBinding m_CannedAnimBinding = new CannedAnimationBinding();
+		[ContainerField(12), ContainerFieldNameHash(3536770252)]
+		public CannedAnimationBinding CannedAnimBinding { get { return m_CannedAnimBinding; } set { if (OnPropertyChanging("CannedScenarioEntityData." + nameof(CannedAnimBinding), this, m_CannedAnimBinding, value)) m_CannedAnimBinding = value; } } // 0xC (12)
 		
-		[ContainerField(52), LayoutImmutable, Blittable]
-		public int AnimationEntitySpacePriority { get; set; } // 0x34 (52)
+		protected int m_AnimationEntitySpacePriority = new int();
+		[ContainerField(52), LayoutImmutable, Blittable, ContainerFieldNameHash(4041607518)]
+		public int AnimationEntitySpacePriority { get { return m_AnimationEntitySpacePriority; } set { if (OnPropertyChanging("CannedScenarioEntityData." + nameof(AnimationEntitySpacePriority), this, m_AnimationEntitySpacePriority, value)) m_AnimationEntitySpacePriority = value; } } // 0x34 (52)
 		
-		[ContainerField(56), LayoutImmutable, Blittable]
-		public bool AlwaysClearEntitySpaceWhenInScenario { get; set; } // 0x38 (56)
+		protected bool m_AlwaysClearEntitySpaceWhenInScenario = new bool();
+		[ContainerField(56), LayoutImmutable, Blittable, ContainerFieldNameHash(4447823)]
+		public bool AlwaysClearEntitySpaceWhenInScenario { get { return m_AlwaysClearEntitySpaceWhenInScenario; } set { if (OnPropertyChanging("CannedScenarioEntityData." + nameof(AlwaysClearEntitySpaceWhenInScenario), this, m_AlwaysClearEntitySpaceWhenInScenario, value)) m_AlwaysClearEntitySpaceWhenInScenario = value; } } // 0x38 (56)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

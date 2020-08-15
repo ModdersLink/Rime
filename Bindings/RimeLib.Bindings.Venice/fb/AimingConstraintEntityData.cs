@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class AimingConstraintEntityData : 
 		EntityData
 	{
-		[ContainerField(12)]
-		public CtrRef<AimingConstraintEntityCommonData> CommonData { get; set; } = new CtrRef<AimingConstraintEntityCommonData>(); // 0xC (12)
+		protected CtrRef<AimingConstraintEntityCommonData> m_CommonData = new CtrRef<AimingConstraintEntityCommonData>();
+		[ContainerField(12), ContainerFieldNameHash(760803064)]
+		public CtrRef<AimingConstraintEntityCommonData> CommonData { get { return m_CommonData; } set { if (OnPropertyChanging("AimingConstraintEntityData." + nameof(CommonData), this, m_CommonData, value)) m_CommonData = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public bool EnabledInProne { get; set; } // 0x10 (16)
+		protected bool m_EnabledInProne = new bool();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(1941848993)]
+		public bool EnabledInProne { get { return m_EnabledInProne; } set { if (OnPropertyChanging("AimingConstraintEntityData." + nameof(EnabledInProne), this, m_EnabledInProne, value)) m_EnabledInProne = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

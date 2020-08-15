@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(8)]
+	[ContainerType(8)]
 	public class RoundOverEvent : 
 		MetricEvent
 	{
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public int WinningTeam { get; set; } // 0x10 (16)
+		protected int m_WinningTeam = new int();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(2949944838)]
+		public int WinningTeam { get { return m_WinningTeam; } set { if (OnPropertyChanging("RoundOverEvent." + nameof(WinningTeam), this, m_WinningTeam, value)) m_WinningTeam = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
-		public int TicketsLeft { get; set; } // 0x14 (20)
+		protected int m_TicketsLeft = new int();
+		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(715127049)]
+		public int TicketsLeft { get { return m_TicketsLeft; } set { if (OnPropertyChanging("RoundOverEvent." + nameof(TicketsLeft), this, m_TicketsLeft, value)) m_TicketsLeft = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

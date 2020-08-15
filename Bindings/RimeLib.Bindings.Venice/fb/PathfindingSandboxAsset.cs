@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class PathfindingSandboxAsset : 
 		Asset
 	{
-		[ContainerField(12)]
-		public CtrRef<PathfindingSystemEntityData> System { get; set; } = new CtrRef<PathfindingSystemEntityData>(); // 0xC (12)
+		protected CtrRef<PathfindingSystemEntityData> m_System = new CtrRef<PathfindingSystemEntityData>();
+		[ContainerField(12), ContainerFieldNameHash(3333232768)]
+		public CtrRef<PathfindingSystemEntityData> System { get { return m_System; } set { if (OnPropertyChanging("PathfindingSandboxAsset." + nameof(System), this, m_System, value)) m_System = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

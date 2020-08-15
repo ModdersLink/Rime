@@ -5,103 +5,142 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class AntSettings : 
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable, Blittable]
-		public float DetailedCollisionSpeedLimit { get; set; } // 0x8 (8)
+		protected float m_DetailedCollisionSpeedLimit = new float();
+		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(2710356985)]
+		public float DetailedCollisionSpeedLimit { get { return m_DetailedCollisionSpeedLimit; } set { if (OnPropertyChanging("AntSettings." + nameof(DetailedCollisionSpeedLimit), this, m_DetailedCollisionSpeedLimit, value)) m_DetailedCollisionSpeedLimit = value; } } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public float LeanSignalScale { get; set; } // 0xC (12)
+		protected float m_LeanSignalScale = new float();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(3002337221)]
+		public float LeanSignalScale { get { return m_LeanSignalScale; } set { if (OnPropertyChanging("AntSettings." + nameof(LeanSignalScale), this, m_LeanSignalScale, value)) m_LeanSignalScale = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public float LeanSignalClamp { get; set; } // 0x10 (16)
+		protected float m_LeanSignalClamp = new float();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(3020854094)]
+		public float LeanSignalClamp { get { return m_LeanSignalClamp; } set { if (OnPropertyChanging("AntSettings." + nameof(LeanSignalClamp), this, m_LeanSignalClamp, value)) m_LeanSignalClamp = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
-		public int MaxInterpolationSlots { get; set; } // 0x14 (20)
+		protected int m_MaxInterpolationSlots = new int();
+		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(2610767372)]
+		public int MaxInterpolationSlots { get { return m_MaxInterpolationSlots; } set { if (OnPropertyChanging("AntSettings." + nameof(MaxInterpolationSlots), this, m_MaxInterpolationSlots, value)) m_MaxInterpolationSlots = value; } } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable]
-		public int MaxSingleBoneInterpolationSlots { get; set; } // 0x18 (24)
+		protected int m_MaxSingleBoneInterpolationSlots = new int();
+		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(3129484400)]
+		public int MaxSingleBoneInterpolationSlots { get { return m_MaxSingleBoneInterpolationSlots; } set { if (OnPropertyChanging("AntSettings." + nameof(MaxSingleBoneInterpolationSlots), this, m_MaxSingleBoneInterpolationSlots, value)) m_MaxSingleBoneInterpolationSlots = value; } } // 0x18 (24)
 		
-		[ContainerField(28), LayoutImmutable, Blittable]
-		public float ReducedInterpolationDistance { get; set; } // 0x1C (28)
+		protected float m_ReducedInterpolationDistance = new float();
+		[ContainerField(28), LayoutImmutable, Blittable, ContainerFieldNameHash(1694794600)]
+		public float ReducedInterpolationDistance { get { return m_ReducedInterpolationDistance; } set { if (OnPropertyChanging("AntSettings." + nameof(ReducedInterpolationDistance), this, m_ReducedInterpolationDistance, value)) m_ReducedInterpolationDistance = value; } } // 0x1C (28)
 		
-		[ContainerField(32), LayoutImmutable, Blittable]
-		public float TrajectoryInterpolationDistance { get; set; } // 0x20 (32)
+		protected float m_TrajectoryInterpolationDistance = new float();
+		[ContainerField(32), LayoutImmutable, Blittable, ContainerFieldNameHash(3252148855)]
+		public float TrajectoryInterpolationDistance { get { return m_TrajectoryInterpolationDistance; } set { if (OnPropertyChanging("AntSettings." + nameof(TrajectoryInterpolationDistance), this, m_TrajectoryInterpolationDistance, value)) m_TrajectoryInterpolationDistance = value; } } // 0x20 (32)
 		
-		[ContainerField(36), LayoutImmutable, Blittable]
-		public float ForceLodDistance { get; set; } // 0x24 (36)
+		protected float m_ForceLodDistance = new float();
+		[ContainerField(36), LayoutImmutable, Blittable, ContainerFieldNameHash(239754652)]
+		public float ForceLodDistance { get { return m_ForceLodDistance; } set { if (OnPropertyChanging("AntSettings." + nameof(ForceLodDistance), this, m_ForceLodDistance, value)) m_ForceLodDistance = value; } } // 0x24 (36)
 		
-		[ContainerField(40), LayoutImmutable, Blittable]
-		public int MaxAnimatablesPerPoseJob { get; set; } // 0x28 (40)
+		protected int m_MaxAnimatablesPerPoseJob = new int();
+		[ContainerField(40), LayoutImmutable, Blittable, ContainerFieldNameHash(181255807)]
+		public int MaxAnimatablesPerPoseJob { get { return m_MaxAnimatablesPerPoseJob; } set { if (OnPropertyChanging("AntSettings." + nameof(MaxAnimatablesPerPoseJob), this, m_MaxAnimatablesPerPoseJob, value)) m_MaxAnimatablesPerPoseJob = value; } } // 0x28 (40)
 		
-		[ContainerField(44), LayoutImmutable, Blittable]
-		public float CheckGiantSoldiers { get; set; } // 0x2C (44)
+		protected float m_CheckGiantSoldiers = new float();
+		[ContainerField(44), LayoutImmutable, Blittable, ContainerFieldNameHash(3300928495)]
+		public float CheckGiantSoldiers { get { return m_CheckGiantSoldiers; } set { if (OnPropertyChanging("AntSettings." + nameof(CheckGiantSoldiers), this, m_CheckGiantSoldiers, value)) m_CheckGiantSoldiers = value; } } // 0x2C (44)
 		
-		[ContainerField(48), LayoutImmutable, Blittable]
-		public bool ClientEmulatesServer { get; set; } // 0x30 (48)
+		protected bool m_ClientEmulatesServer = new bool();
+		[ContainerField(48), LayoutImmutable, Blittable, ContainerFieldNameHash(1976305899)]
+		public bool ClientEmulatesServer { get { return m_ClientEmulatesServer; } set { if (OnPropertyChanging("AntSettings." + nameof(ClientEmulatesServer), this, m_ClientEmulatesServer, value)) m_ClientEmulatesServer = value; } } // 0x30 (48)
 		
-		[ContainerField(49), LayoutImmutable, Blittable]
-		public bool UseCameraFov { get; set; } // 0x31 (49)
+		protected bool m_UseCameraFov = new bool();
+		[ContainerField(49), LayoutImmutable, Blittable, ContainerFieldNameHash(431104480)]
+		public bool UseCameraFov { get { return m_UseCameraFov; } set { if (OnPropertyChanging("AntSettings." + nameof(UseCameraFov), this, m_UseCameraFov, value)) m_UseCameraFov = value; } } // 0x31 (49)
 		
-		[ContainerField(50), LayoutImmutable, Blittable]
-		public bool UpdateEnable { get; set; } // 0x32 (50)
+		protected bool m_UpdateEnable = new bool();
+		[ContainerField(50), LayoutImmutable, Blittable, ContainerFieldNameHash(3724816309)]
+		public bool UpdateEnable { get { return m_UpdateEnable; } set { if (OnPropertyChanging("AntSettings." + nameof(UpdateEnable), this, m_UpdateEnable, value)) m_UpdateEnable = value; } } // 0x32 (50)
 		
-		[ContainerField(51), LayoutImmutable, Blittable]
-		public bool EnablePA { get; set; } // 0x33 (51)
+		protected bool m_EnablePA = new bool();
+		[ContainerField(51), LayoutImmutable, Blittable, ContainerFieldNameHash(87860981)]
+		public bool EnablePA { get { return m_EnablePA; } set { if (OnPropertyChanging("AntSettings." + nameof(EnablePA), this, m_EnablePA, value)) m_EnablePA = value; } } // 0x33 (51)
 		
-		[ContainerField(52), LayoutImmutable, Blittable]
-		public bool UseWeaponFov { get; set; } // 0x34 (52)
+		protected bool m_UseWeaponFov = new bool();
+		[ContainerField(52), LayoutImmutable, Blittable, ContainerFieldNameHash(3665266683)]
+		public bool UseWeaponFov { get { return m_UseWeaponFov; } set { if (OnPropertyChanging("AntSettings." + nameof(UseWeaponFov), this, m_UseWeaponFov, value)) m_UseWeaponFov = value; } } // 0x34 (52)
 		
-		[ContainerField(53), LayoutImmutable, Blittable]
-		public bool DisableAnimManagerSceneOps { get; set; } // 0x35 (53)
+		protected bool m_DisableAnimManagerSceneOps = new bool();
+		[ContainerField(53), LayoutImmutable, Blittable, ContainerFieldNameHash(1610827931)]
+		public bool DisableAnimManagerSceneOps { get { return m_DisableAnimManagerSceneOps; } set { if (OnPropertyChanging("AntSettings." + nameof(DisableAnimManagerSceneOps), this, m_DisableAnimManagerSceneOps, value)) m_DisableAnimManagerSceneOps = value; } } // 0x35 (53)
 		
-		[ContainerField(54), LayoutImmutable, Blittable]
-		public bool DisableAILodFeature { get; set; } // 0x36 (54)
+		protected bool m_DisableAILodFeature = new bool();
+		[ContainerField(54), LayoutImmutable, Blittable, ContainerFieldNameHash(3543960618)]
+		public bool DisableAILodFeature { get { return m_DisableAILodFeature; } set { if (OnPropertyChanging("AntSettings." + nameof(DisableAILodFeature), this, m_DisableAILodFeature, value)) m_DisableAILodFeature = value; } } // 0x36 (54)
 		
-		[ContainerField(55), LayoutImmutable, Blittable]
-		public bool DisableModelAnimationCulling { get; set; } // 0x37 (55)
+		protected bool m_DisableModelAnimationCulling = new bool();
+		[ContainerField(55), LayoutImmutable, Blittable, ContainerFieldNameHash(1067364094)]
+		public bool DisableModelAnimationCulling { get { return m_DisableModelAnimationCulling; } set { if (OnPropertyChanging("AntSettings." + nameof(DisableModelAnimationCulling), this, m_DisableModelAnimationCulling, value)) m_DisableModelAnimationCulling = value; } } // 0x37 (55)
 		
-		[ContainerField(56), LayoutImmutable, Blittable]
-		public bool EnableJobs { get; set; } // 0x38 (56)
+		protected bool m_EnableJobs = new bool();
+		[ContainerField(56), LayoutImmutable, Blittable, ContainerFieldNameHash(1190923856)]
+		public bool EnableJobs { get { return m_EnableJobs; } set { if (OnPropertyChanging("AntSettings." + nameof(EnableJobs), this, m_EnableJobs, value)) m_EnableJobs = value; } } // 0x38 (56)
 		
-		[ContainerField(57), LayoutImmutable, Blittable]
-		public bool ForcePoseUpdate { get; set; } // 0x39 (57)
+		protected bool m_ForcePoseUpdate = new bool();
+		[ContainerField(57), LayoutImmutable, Blittable, ContainerFieldNameHash(297356768)]
+		public bool ForcePoseUpdate { get { return m_ForcePoseUpdate; } set { if (OnPropertyChanging("AntSettings." + nameof(ForcePoseUpdate), this, m_ForcePoseUpdate, value)) m_ForcePoseUpdate = value; } } // 0x39 (57)
 		
-		[ContainerField(58), LayoutImmutable, Blittable]
-		public bool RunAsHighPriority { get; set; } // 0x3A (58)
+		protected bool m_RunAsHighPriority = new bool();
+		[ContainerField(58), LayoutImmutable, Blittable, ContainerFieldNameHash(1190549698)]
+		public bool RunAsHighPriority { get { return m_RunAsHighPriority; } set { if (OnPropertyChanging("AntSettings." + nameof(RunAsHighPriority), this, m_RunAsHighPriority, value)) m_RunAsHighPriority = value; } } // 0x3A (58)
 		
-		[ContainerField(59), LayoutImmutable, Blittable]
-		public bool InterpolatePoses { get; set; } // 0x3B (59)
+		protected bool m_InterpolatePoses = new bool();
+		[ContainerField(59), LayoutImmutable, Blittable, ContainerFieldNameHash(3613032856)]
+		public bool InterpolatePoses { get { return m_InterpolatePoses; } set { if (OnPropertyChanging("AntSettings." + nameof(InterpolatePoses), this, m_InterpolatePoses, value)) m_InterpolatePoses = value; } } // 0x3B (59)
 		
-		[ContainerField(60), LayoutImmutable, Blittable]
-		public bool AllowVariableTickLength { get; set; } // 0x3C (60)
+		protected bool m_AllowVariableTickLength = new bool();
+		[ContainerField(60), LayoutImmutable, Blittable, ContainerFieldNameHash(3088138035)]
+		public bool AllowVariableTickLength { get { return m_AllowVariableTickLength; } set { if (OnPropertyChanging("AntSettings." + nameof(AllowVariableTickLength), this, m_AllowVariableTickLength, value)) m_AllowVariableTickLength = value; } } // 0x3C (60)
 		
-		[ContainerField(61), LayoutImmutable, Blittable]
-		public bool EnablePackageCache { get; set; } // 0x3D (61)
+		protected bool m_EnablePackageCache = new bool();
+		[ContainerField(61), LayoutImmutable, Blittable, ContainerFieldNameHash(663355506)]
+		public bool EnablePackageCache { get { return m_EnablePackageCache; } set { if (OnPropertyChanging("AntSettings." + nameof(EnablePackageCache), this, m_EnablePackageCache, value)) m_EnablePackageCache = value; } } // 0x3D (61)
 		
-		[ContainerField(62), LayoutImmutable, Blittable]
-		public bool UseHIK { get; set; } // 0x3E (62)
+		protected bool m_UseHIK = new bool();
+		[ContainerField(62), LayoutImmutable, Blittable, ContainerFieldNameHash(2934539820)]
+		public bool UseHIK { get { return m_UseHIK; } set { if (OnPropertyChanging("AntSettings." + nameof(UseHIK), this, m_UseHIK, value)) m_UseHIK = value; } } // 0x3E (62)
 		
-		[ContainerField(63), LayoutImmutable, Blittable]
-		public bool UpdateLoddingEnable { get; set; } // 0x3F (63)
+		protected bool m_UpdateLoddingEnable = new bool();
+		[ContainerField(63), LayoutImmutable, Blittable, ContainerFieldNameHash(40520150)]
+		public bool UpdateLoddingEnable { get { return m_UpdateLoddingEnable; } set { if (OnPropertyChanging("AntSettings." + nameof(UpdateLoddingEnable), this, m_UpdateLoddingEnable, value)) m_UpdateLoddingEnable = value; } } // 0x3F (63)
 		
-		[ContainerField(64), LayoutImmutable, Blittable]
-		public bool BlockOnJobs { get; set; } // 0x40 (64)
+		protected bool m_BlockOnJobs = new bool();
+		[ContainerField(64), LayoutImmutable, Blittable, ContainerFieldNameHash(2913790905)]
+		public bool BlockOnJobs { get { return m_BlockOnJobs; } set { if (OnPropertyChanging("AntSettings." + nameof(BlockOnJobs), this, m_BlockOnJobs, value)) m_BlockOnJobs = value; } } // 0x40 (64)
 		
-		[ContainerField(65), LayoutImmutable, Blittable]
-		public bool EnableDebugLogFile { get; set; } // 0x41 (65)
+		protected bool m_EnableDebugLogFile = new bool();
+		[ContainerField(65), LayoutImmutable, Blittable, ContainerFieldNameHash(1766045655)]
+		public bool EnableDebugLogFile { get { return m_EnableDebugLogFile; } set { if (OnPropertyChanging("AntSettings." + nameof(EnableDebugLogFile), this, m_EnableDebugLogFile, value)) m_EnableDebugLogFile = value; } } // 0x41 (65)
 		
-		[ContainerField(66), LayoutImmutable, Blittable]
-		public bool EnablePoseJobs { get; set; } // 0x42 (66)
+		protected bool m_EnablePoseJobs = new bool();
+		[ContainerField(66), LayoutImmutable, Blittable, ContainerFieldNameHash(1005957081)]
+		public bool EnablePoseJobs { get { return m_EnablePoseJobs; } set { if (OnPropertyChanging("AntSettings." + nameof(EnablePoseJobs), this, m_EnablePoseJobs, value)) m_EnablePoseJobs = value; } } // 0x42 (66)
 		
-		[ContainerField(67), LayoutImmutable, Blittable]
-		public bool UsePA { get; set; } // 0x43 (67)
+		protected bool m_UsePA = new bool();
+		[ContainerField(67), LayoutImmutable, Blittable, ContainerFieldNameHash(219076247)]
+		public bool UsePA { get { return m_UsePA; } set { if (OnPropertyChanging("AntSettings." + nameof(UsePA), this, m_UsePA, value)) m_UsePA = value; } } // 0x43 (67)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

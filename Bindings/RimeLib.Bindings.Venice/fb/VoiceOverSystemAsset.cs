@@ -5,46 +5,66 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class VoiceOverSystemAsset : 
 		Asset
 	{
-		[ContainerField(12)]
-		public RefArray<VoiceOverInterval> Intervals { get; set; } = new RefArray<VoiceOverInterval>(); // 0xC (12)
+		protected RefArray<VoiceOverInterval> m_Intervals = new RefArray<VoiceOverInterval>();
+		[ContainerField(12), ContainerFieldNameHash(3804459337)]
+		public RefArray<VoiceOverInterval> Intervals { get { return m_Intervals; } set { if (OnPropertyChanging("VoiceOverSystemAsset." + nameof(Intervals), this, m_Intervals, value)) m_Intervals = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public RefArray<VoiceOverLabel> Labels { get; set; } = new RefArray<VoiceOverLabel>(); // 0x10 (16)
+		protected RefArray<VoiceOverLabel> m_Labels = new RefArray<VoiceOverLabel>();
+		[ContainerField(16), ContainerFieldNameHash(2902520752)]
+		public RefArray<VoiceOverLabel> Labels { get { return m_Labels; } set { if (OnPropertyChanging("VoiceOverSystemAsset." + nameof(Labels), this, m_Labels, value)) m_Labels = value; } } // 0x10 (16)
 		
-		[ContainerField(20)]
-		public RefArray<VoiceOverObject> Types { get; set; } = new RefArray<VoiceOverObject>(); // 0x14 (20)
+		protected RefArray<VoiceOverObject> m_Types = new RefArray<VoiceOverObject>();
+		[ContainerField(20), ContainerFieldNameHash(227325038)]
+		public RefArray<VoiceOverObject> Types { get { return m_Types; } set { if (OnPropertyChanging("VoiceOverSystemAsset." + nameof(Types), this, m_Types, value)) m_Types = value; } } // 0x14 (20)
 		
-		[ContainerField(24)]
-		public RefArray<VoiceOverObject> Objects { get; set; } = new RefArray<VoiceOverObject>(); // 0x18 (24)
+		protected RefArray<VoiceOverObject> m_Objects = new RefArray<VoiceOverObject>();
+		[ContainerField(24), ContainerFieldNameHash(105488131)]
+		public RefArray<VoiceOverObject> Objects { get { return m_Objects; } set { if (OnPropertyChanging("VoiceOverSystemAsset." + nameof(Objects), this, m_Objects, value)) m_Objects = value; } } // 0x18 (24)
 		
-		[ContainerField(28)]
-		public RefArray<VoiceOverGlobalConstantValue> Constants { get; set; } = new RefArray<VoiceOverGlobalConstantValue>(); // 0x1C (28)
+		protected RefArray<VoiceOverGlobalConstantValue> m_Constants = new RefArray<VoiceOverGlobalConstantValue>();
+		[ContainerField(28), ContainerFieldNameHash(2658787400)]
+		public RefArray<VoiceOverGlobalConstantValue> Constants { get { return m_Constants; } set { if (OnPropertyChanging("VoiceOverSystemAsset." + nameof(Constants), this, m_Constants, value)) m_Constants = value; } } // 0x1C (28)
 		
-		[ContainerField(32)]
-		public CtrRef<AudioLanguage> MasterLanguage { get; set; } = new CtrRef<AudioLanguage>(); // 0x20 (32)
+		protected CtrRef<AudioLanguage> m_MasterLanguage = new CtrRef<AudioLanguage>();
+		[ContainerField(32), ContainerFieldNameHash(1351373419)]
+		public CtrRef<AudioLanguage> MasterLanguage { get { return m_MasterLanguage; } set { if (OnPropertyChanging("VoiceOverSystemAsset." + nameof(MasterLanguage), this, m_MasterLanguage, value)) m_MasterLanguage = value; } } // 0x20 (32)
 		
-		[ContainerField(36)]
-		public CtrRef<VoiceOverPronunciation> DefaultPronunciation { get; set; } = new CtrRef<VoiceOverPronunciation>(); // 0x24 (36)
+		protected CtrRef<VoiceOverPronunciation> m_DefaultPronunciation = new CtrRef<VoiceOverPronunciation>();
+		[ContainerField(36), ContainerFieldNameHash(3211842017)]
+		public CtrRef<VoiceOverPronunciation> DefaultPronunciation { get { return m_DefaultPronunciation; } set { if (OnPropertyChanging("VoiceOverSystemAsset." + nameof(DefaultPronunciation), this, m_DefaultPronunciation, value)) m_DefaultPronunciation = value; } } // 0x24 (36)
 		
-		[ContainerField(40)]
-		public RefArray<VoiceOverPronunciation> Pronunciations { get; set; } = new RefArray<VoiceOverPronunciation>(); // 0x28 (40)
+		protected RefArray<VoiceOverPronunciation> m_Pronunciations = new RefArray<VoiceOverPronunciation>();
+		[ContainerField(40), ContainerFieldNameHash(3948025177)]
+		public RefArray<VoiceOverPronunciation> Pronunciations { get { return m_Pronunciations; } set { if (OnPropertyChanging("VoiceOverSystemAsset." + nameof(Pronunciations), this, m_Pronunciations, value)) m_Pronunciations = value; } } // 0x28 (40)
 		
-		[ContainerField(44)]
-		public RefArray<VoiceOverConversationQueueGroup> QueueGroups { get; set; } = new RefArray<VoiceOverConversationQueueGroup>(); // 0x2C (44)
+		protected RefArray<VoiceOverConversationQueueGroup> m_QueueGroups = new RefArray<VoiceOverConversationQueueGroup>();
+		[ContainerField(44), ContainerFieldNameHash(2104403224)]
+		public RefArray<VoiceOverConversationQueueGroup> QueueGroups { get { return m_QueueGroups; } set { if (OnPropertyChanging("VoiceOverSystemAsset." + nameof(QueueGroups), this, m_QueueGroups, value)) m_QueueGroups = value; } } // 0x2C (44)
 		
-		[ContainerField(48)]
-		public CtrRef<VoiceOverConversationQueueGroup> DefaultPositionedQueueGroup { get; set; } = new CtrRef<VoiceOverConversationQueueGroup>(); // 0x30 (48)
+		protected CtrRef<VoiceOverConversationQueueGroup> m_DefaultPositionedQueueGroup = new CtrRef<VoiceOverConversationQueueGroup>();
+		[ContainerField(48), ContainerFieldNameHash(2574585400)]
+		public CtrRef<VoiceOverConversationQueueGroup> DefaultPositionedQueueGroup { get { return m_DefaultPositionedQueueGroup; } set { if (OnPropertyChanging("VoiceOverSystemAsset." + nameof(DefaultPositionedQueueGroup), this, m_DefaultPositionedQueueGroup, value)) m_DefaultPositionedQueueGroup = value; } } // 0x30 (48)
 		
-		[ContainerField(52)]
-		public CtrRef<VoiceOverConversationQueueGroup> DefaultUnpositionedQueueGroup { get; set; } = new CtrRef<VoiceOverConversationQueueGroup>(); // 0x34 (52)
+		protected CtrRef<VoiceOverConversationQueueGroup> m_DefaultUnpositionedQueueGroup = new CtrRef<VoiceOverConversationQueueGroup>();
+		[ContainerField(52), ContainerFieldNameHash(4048247171)]
+		public CtrRef<VoiceOverConversationQueueGroup> DefaultUnpositionedQueueGroup { get { return m_DefaultUnpositionedQueueGroup; } set { if (OnPropertyChanging("VoiceOverSystemAsset." + nameof(DefaultUnpositionedQueueGroup), this, m_DefaultUnpositionedQueueGroup, value)) m_DefaultUnpositionedQueueGroup = value; } } // 0x34 (52)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

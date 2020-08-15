@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class DriverComponentData : 
 		ComponentData
 	{
-		[ContainerField(96), LayoutImmutable, Blittable]
-		public float WantedSpeed { get; set; } // 0x60 (96)
+		protected float m_WantedSpeed = new float();
+		[ContainerField(96), LayoutImmutable, Blittable, ContainerFieldNameHash(3561027151)]
+		public float WantedSpeed { get { return m_WantedSpeed; } set { if (OnPropertyChanging("DriverComponentData." + nameof(WantedSpeed), this, m_WantedSpeed, value)) m_WantedSpeed = value; } } // 0x60 (96)
 		
-		[ContainerField(100)]
-		public CtrRef<DriverSettings> Settings { get; set; } = new CtrRef<DriverSettings>(); // 0x64 (100)
+		protected CtrRef<DriverSettings> m_Settings = new CtrRef<DriverSettings>();
+		[ContainerField(100), ContainerFieldNameHash(649772672)]
+		public CtrRef<DriverSettings> Settings { get { return m_Settings; } set { if (OnPropertyChanging("DriverComponentData." + nameof(Settings), this, m_Settings, value)) m_Settings = value; } } // 0x64 (100)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

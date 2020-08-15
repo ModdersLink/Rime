@@ -5,29 +5,42 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class PlayerEntryComponentData : 
 		EntryComponentData
 	{
-		[ContainerField(192), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 AnimationAccelerationMultiplier { get; set; } = new Vec3(); // 0xC0 (192)
+		protected Vec3 m_AnimationAccelerationMultiplier = new Vec3();
+		[ContainerField(192), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(893003770)]
+		public Vec3 AnimationAccelerationMultiplier { get { return m_AnimationAccelerationMultiplier; } set { if (OnPropertyChanging("PlayerEntryComponentData." + nameof(AnimationAccelerationMultiplier), this, m_AnimationAccelerationMultiplier, value)) m_AnimationAccelerationMultiplier = value; } } // 0xC0 (192)
 		
-		[ContainerField(208)]
-		public AntEntryIdEnum AntEntryId { get; set; } = new AntEntryIdEnum(); // 0xD0 (208)
+		protected AntEntryIdEnum m_AntEntryId = new AntEntryIdEnum();
+		[ContainerField(208), ContainerFieldNameHash(3749795303)]
+		public AntEntryIdEnum AntEntryId { get { return m_AntEntryId; } set { if (OnPropertyChanging("PlayerEntryComponentData." + nameof(AntEntryId), this, m_AntEntryId, value)) m_AntEntryId = value; } } // 0xD0 (208)
 		
-		[ContainerField(212), LayoutImmutable]
-		public string AntEntryID { get; set; } // 0xD4 (212)
+		protected string m_AntEntryID = new string();
+		[ContainerField(212), LayoutImmutable, ContainerFieldNameHash(3749795271)]
+		public string AntEntryID { get { return m_AntEntryID; } set { if (OnPropertyChanging("PlayerEntryComponentData." + nameof(AntEntryID), this, m_AntEntryID, value)) m_AntEntryID = value; } } // 0xD4 (212)
 		
-		[ContainerField(216)]
-		public CtrRef<AntEnumeration> AntEntryEnumeration { get; set; } = new CtrRef<AntEnumeration>(); // 0xD8 (216)
+		protected CtrRef<AntEnumeration> m_AntEntryEnumeration = new CtrRef<AntEnumeration>();
+		[ContainerField(216), ContainerFieldNameHash(1819698227)]
+		public CtrRef<AntEnumeration> AntEntryEnumeration { get { return m_AntEntryEnumeration; } set { if (OnPropertyChanging("PlayerEntryComponentData." + nameof(AntEntryEnumeration), this, m_AntEntryEnumeration, value)) m_AntEntryEnumeration = value; } } // 0xD8 (216)
 		
-		[ContainerField(220), LayoutImmutable, Blittable]
-		public float ShieldedTransitionExitTime { get; set; } // 0xDC (220)
+		protected float m_ShieldedTransitionExitTime = new float();
+		[ContainerField(220), LayoutImmutable, Blittable, ContainerFieldNameHash(3020329377)]
+		public float ShieldedTransitionExitTime { get { return m_ShieldedTransitionExitTime; } set { if (OnPropertyChanging("PlayerEntryComponentData." + nameof(ShieldedTransitionExitTime), this, m_ShieldedTransitionExitTime, value)) m_ShieldedTransitionExitTime = value; } } // 0xDC (220)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,55 +5,78 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class DecalTemplateData : 
 		Asset
 	{
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public float Size { get; set; } // 0xC (12)
+		protected float m_Size = new float();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(2089429248)]
+		public float Size { get { return m_Size; } set { if (OnPropertyChanging("DecalTemplateData." + nameof(Size), this, m_Size, value)) m_Size = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public float RandomSize { get; set; } // 0x10 (16)
+		protected float m_RandomSize = new float();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(3548218523)]
+		public float RandomSize { get { return m_RandomSize; } set { if (OnPropertyChanging("DecalTemplateData." + nameof(RandomSize), this, m_RandomSize, value)) m_RandomSize = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
-		public float Rotation { get; set; } // 0x14 (20)
+		protected float m_Rotation = new float();
+		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(48673745)]
+		public float Rotation { get { return m_Rotation; } set { if (OnPropertyChanging("DecalTemplateData." + nameof(Rotation), this, m_Rotation, value)) m_Rotation = value; } } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable]
-		public float RandomRotation { get; set; } // 0x18 (24)
+		protected float m_RandomRotation = new float();
+		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(4221673930)]
+		public float RandomRotation { get { return m_RandomRotation; } set { if (OnPropertyChanging("DecalTemplateData." + nameof(RandomRotation), this, m_RandomRotation, value)) m_RandomRotation = value; } } // 0x18 (24)
 		
-		[ContainerField(28), LayoutImmutable, Blittable]
-		public float ClipAngle { get; set; } // 0x1C (28)
+		protected float m_ClipAngle = new float();
+		[ContainerField(28), LayoutImmutable, Blittable, ContainerFieldNameHash(1632648850)]
+		public float ClipAngle { get { return m_ClipAngle; } set { if (OnPropertyChanging("DecalTemplateData." + nameof(ClipAngle), this, m_ClipAngle, value)) m_ClipAngle = value; } } // 0x1C (28)
 		
-		[ContainerField(32), LayoutImmutable, Blittable]
-		public float ProximityRadiusFactor { get; set; } // 0x20 (32)
+		protected float m_ProximityRadiusFactor = new float();
+		[ContainerField(32), LayoutImmutable, Blittable, ContainerFieldNameHash(4036214629)]
+		public float ProximityRadiusFactor { get { return m_ProximityRadiusFactor; } set { if (OnPropertyChanging("DecalTemplateData." + nameof(ProximityRadiusFactor), this, m_ProximityRadiusFactor, value)) m_ProximityRadiusFactor = value; } } // 0x20 (32)
 		
-		[ContainerField(36), LayoutImmutable, Blittable]
-		public float NormalOffset { get; set; } // 0x24 (36)
+		protected float m_NormalOffset = new float();
+		[ContainerField(36), LayoutImmutable, Blittable, ContainerFieldNameHash(393006331)]
+		public float NormalOffset { get { return m_NormalOffset; } set { if (OnPropertyChanging("DecalTemplateData." + nameof(NormalOffset), this, m_NormalOffset, value)) m_NormalOffset = value; } } // 0x24 (36)
 		
-		[ContainerField(40)]
-		public CtrRef<SurfaceShaderBaseAsset> Shader { get; set; } = new CtrRef<SurfaceShaderBaseAsset>(); // 0x28 (40)
+		protected CtrRef<SurfaceShaderBaseAsset> m_Shader = new CtrRef<SurfaceShaderBaseAsset>();
+		[ContainerField(40), ContainerFieldNameHash(3352909900)]
+		public CtrRef<SurfaceShaderBaseAsset> Shader { get { return m_Shader; } set { if (OnPropertyChanging("DecalTemplateData." + nameof(Shader), this, m_Shader, value)) m_Shader = value; } } // 0x28 (40)
 		
-		[ContainerField(44), LayoutImmutable, Blittable]
-		public int MeshUVIndex { get; set; } // 0x2C (44)
+		protected int m_MeshUVIndex = new int();
+		[ContainerField(44), LayoutImmutable, Blittable, ContainerFieldNameHash(114817035)]
+		public int MeshUVIndex { get { return m_MeshUVIndex; } set { if (OnPropertyChanging("DecalTemplateData." + nameof(MeshUVIndex), this, m_MeshUVIndex, value)) m_MeshUVIndex = value; } } // 0x2C (44)
 		
-		[ContainerField(48)]
-		public DecalAtlasTile AtlasTile { get; set; } = new DecalAtlasTile(); // 0x30 (48)
+		protected DecalAtlasTile m_AtlasTile = new DecalAtlasTile();
+		[ContainerField(48), ContainerFieldNameHash(3027817338)]
+		public DecalAtlasTile AtlasTile { get { return m_AtlasTile; } set { if (OnPropertyChanging("DecalTemplateData." + nameof(AtlasTile), this, m_AtlasTile, value)) m_AtlasTile = value; } } // 0x30 (48)
 		
-		[ContainerField(68), LayoutImmutable, Blittable]
-		public sbyte SortingPriority { get; set; } // 0x44 (68)
+		protected sbyte m_SortingPriority = new sbyte();
+		[ContainerField(68), LayoutImmutable, Blittable, ContainerFieldNameHash(3523655821)]
+		public sbyte SortingPriority { get { return m_SortingPriority; } set { if (OnPropertyChanging("DecalTemplateData." + nameof(SortingPriority), this, m_SortingPriority, value)) m_SortingPriority = value; } } // 0x44 (68)
 		
-		[ContainerField(69), LayoutImmutable, Blittable]
-		public bool Projected { get; set; } // 0x45 (69)
+		protected bool m_Projected = new bool();
+		[ContainerField(69), LayoutImmutable, Blittable, ContainerFieldNameHash(4152361265)]
+		public bool Projected { get { return m_Projected; } set { if (OnPropertyChanging("DecalTemplateData." + nameof(Projected), this, m_Projected, value)) m_Projected = value; } } // 0x45 (69)
 		
-		[ContainerField(70), LayoutImmutable, Blittable]
-		public bool ProjectMultiple { get; set; } // 0x46 (70)
+		protected bool m_ProjectMultiple = new bool();
+		[ContainerField(70), LayoutImmutable, Blittable, ContainerFieldNameHash(4168918560)]
+		public bool ProjectMultiple { get { return m_ProjectMultiple; } set { if (OnPropertyChanging("DecalTemplateData." + nameof(ProjectMultiple), this, m_ProjectMultiple, value)) m_ProjectMultiple = value; } } // 0x46 (70)
 		
-		[ContainerField(71), LayoutImmutable, Blittable]
-		public sbyte MaterialIndex { get; set; } // 0x47 (71)
+		protected sbyte m_MaterialIndex = new sbyte();
+		[ContainerField(71), LayoutImmutable, Blittable, ContainerFieldNameHash(1001372496)]
+		public sbyte MaterialIndex { get { return m_MaterialIndex; } set { if (OnPropertyChanging("DecalTemplateData." + nameof(MaterialIndex), this, m_MaterialIndex, value)) m_MaterialIndex = value; } } // 0x47 (71)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

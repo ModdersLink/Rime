@@ -5,25 +5,38 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class PhantomComponentData : 
 		ComponentData
 	{
-		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 BoxSize { get; set; } = new Vec3(); // 0x60 (96)
+		protected Vec3 m_BoxSize = new Vec3();
+		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(2526771413)]
+		public Vec3 BoxSize { get { return m_BoxSize; } set { if (OnPropertyChanging("PhantomComponentData." + nameof(BoxSize), this, m_BoxSize, value)) m_BoxSize = value; } } // 0x60 (96)
 		
-		[ContainerField(112)]
-		public AntRef AsyncQueryPointerAsset { get; set; } = new AntRef(); // 0x70 (112)
+		protected AntRef m_AsyncQueryPointerAsset = new AntRef();
+		[ContainerField(112), ContainerFieldNameHash(597429154)]
+		public AntRef AsyncQueryPointerAsset { get { return m_AsyncQueryPointerAsset; } set { if (OnPropertyChanging("PhantomComponentData." + nameof(AsyncQueryPointerAsset), this, m_AsyncQueryPointerAsset, value)) m_AsyncQueryPointerAsset = value; } } // 0x70 (112)
 		
-		[ContainerField(116)]
-		public AntRef EnableTrajectoryOverride { get; set; } = new AntRef(); // 0x74 (116)
+		protected AntRef m_EnableTrajectoryOverride = new AntRef();
+		[ContainerField(116), ContainerFieldNameHash(1154108267)]
+		public AntRef EnableTrajectoryOverride { get { return m_EnableTrajectoryOverride; } set { if (OnPropertyChanging("PhantomComponentData." + nameof(EnableTrajectoryOverride), this, m_EnableTrajectoryOverride, value)) m_EnableTrajectoryOverride = value; } } // 0x74 (116)
 		
-		[ContainerField(120)]
-		public AntRef TrajectoryOverride { get; set; } = new AntRef(); // 0x78 (120)
+		protected AntRef m_TrajectoryOverride = new AntRef();
+		[ContainerField(120), ContainerFieldNameHash(3150043274)]
+		public AntRef TrajectoryOverride { get { return m_TrajectoryOverride; } set { if (OnPropertyChanging("PhantomComponentData." + nameof(TrajectoryOverride), this, m_TrajectoryOverride, value)) m_TrajectoryOverride = value; } } // 0x78 (120)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

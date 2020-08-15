@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class AnimationControlledStateData : 
 		CharacterStateData
 	{
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public float UpNormalTolerance { get; set; } // 0xC (12)
+		protected float m_UpNormalTolerance = new float();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(4245736634)]
+		public float UpNormalTolerance { get { return m_UpNormalTolerance; } set { if (OnPropertyChanging("AnimationControlledStateData." + nameof(UpNormalTolerance), this, m_UpNormalTolerance, value)) m_UpNormalTolerance = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

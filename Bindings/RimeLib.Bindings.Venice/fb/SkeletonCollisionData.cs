@@ -5,20 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class SkeletonCollisionData : 
 		DataContainer
 	{
-		[ContainerField(8)]
-		public CtrRef<SkeletonAsset> SkeletonAsset { get; set; } = new CtrRef<SkeletonAsset>(); // 0x8 (8)
+		protected CtrRef<SkeletonAsset> m_SkeletonAsset = new CtrRef<SkeletonAsset>();
+		[ContainerField(8), ContainerFieldNameHash(2375870068)]
+		public CtrRef<SkeletonAsset> SkeletonAsset { get { return m_SkeletonAsset; } set { if (OnPropertyChanging("SkeletonCollisionData." + nameof(SkeletonAsset), this, m_SkeletonAsset, value)) m_SkeletonAsset = value; } } // 0x8 (8)
 		
-		[ContainerField(12)]
-		public List<BoneCollisionData> BoneCollisionData { get; set; } = new List<BoneCollisionData>(); // 0xC (12)
+		protected List<BoneCollisionData> m_BoneCollisionData = new List<BoneCollisionData>();
+		[ContainerField(12), ContainerFieldNameHash(3073290765)]
+		public List<BoneCollisionData> BoneCollisionData { get { return m_BoneCollisionData; } set { if (OnPropertyChanging("SkeletonCollisionData." + nameof(BoneCollisionData), this, m_BoneCollisionData, value)) m_BoneCollisionData = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

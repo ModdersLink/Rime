@@ -5,22 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class ComponentData : 
 		GameObjectData
 	{
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable]
-		public LinearTransform Transform { get; set; } = new LinearTransform(); // 0x10 (16)
+		protected LinearTransform m_Transform = new LinearTransform();
+		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(2270319721)]
+		public LinearTransform Transform { get { return m_Transform; } set { if (OnPropertyChanging("ComponentData." + nameof(Transform), this, m_Transform, value)) m_Transform = value; } } // 0x10 (16)
 		
-		[ContainerField(80)]
-		public RefArray<GameObjectData> Components { get; set; } = new RefArray<GameObjectData>(); // 0x50 (80)
+		protected RefArray<GameObjectData> m_Components = new RefArray<GameObjectData>();
+		[ContainerField(80), ContainerFieldNameHash(3391050425)]
+		public RefArray<GameObjectData> Components { get { return m_Components; } set { if (OnPropertyChanging("ComponentData." + nameof(Components), this, m_Components, value)) m_Components = value; } } // 0x50 (80)
 		
-		[ContainerField(84), LayoutImmutable, Blittable]
-		public bool Excluded { get; set; } // 0x54 (84)
+		protected bool m_Excluded = new bool();
+		[ContainerField(84), LayoutImmutable, Blittable, ContainerFieldNameHash(755715367)]
+		public bool Excluded { get { return m_Excluded; } set { if (OnPropertyChanging("ComponentData." + nameof(Excluded), this, m_Excluded, value)) m_Excluded = value; } } // 0x54 (84)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

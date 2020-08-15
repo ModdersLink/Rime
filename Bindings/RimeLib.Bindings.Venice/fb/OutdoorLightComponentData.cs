@@ -5,77 +5,106 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class OutdoorLightComponentData : 
 		ComponentData
 	{
-		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 SunColor { get; set; } = new Vec3(); // 0x60 (96)
+		protected Vec3 m_SunColor = new Vec3();
+		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(2189837744)]
+		public Vec3 SunColor { get { return m_SunColor; } set { if (OnPropertyChanging("OutdoorLightComponentData." + nameof(SunColor), this, m_SunColor, value)) m_SunColor = value; } } // 0x60 (96)
 		
-		[ContainerField(112), Homogeneous, LayoutImmutable, Blittable]
-		public Vec2 CloudShadowSpeed { get; set; } = new Vec2(); // 0x70 (112)
+		protected Vec2 m_CloudShadowSpeed = new Vec2();
+		[ContainerField(112), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(4285381109)]
+		public Vec2 CloudShadowSpeed { get { return m_CloudShadowSpeed; } set { if (OnPropertyChanging("OutdoorLightComponentData." + nameof(CloudShadowSpeed), this, m_CloudShadowSpeed, value)) m_CloudShadowSpeed = value; } } // 0x70 (112)
 		
-		[ContainerField(128), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 SkyColor { get; set; } = new Vec3(); // 0x80 (128)
+		protected Vec3 m_SkyColor = new Vec3();
+		[ContainerField(128), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(3778322649)]
+		public Vec3 SkyColor { get { return m_SkyColor; } set { if (OnPropertyChanging("OutdoorLightComponentData." + nameof(SkyColor), this, m_SkyColor, value)) m_SkyColor = value; } } // 0x80 (128)
 		
-		[ContainerField(144), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 GroundColor { get; set; } = new Vec3(); // 0x90 (144)
+		protected Vec3 m_GroundColor = new Vec3();
+		[ContainerField(144), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(1770880637)]
+		public Vec3 GroundColor { get { return m_GroundColor; } set { if (OnPropertyChanging("OutdoorLightComponentData." + nameof(GroundColor), this, m_GroundColor, value)) m_GroundColor = value; } } // 0x90 (144)
 		
-		[ContainerField(160), LayoutImmutable, Blittable]
-		public float SunRotationY { get; set; } // 0xA0 (160)
+		protected float m_SunRotationY = new float();
+		[ContainerField(160), LayoutImmutable, Blittable, ContainerFieldNameHash(2283294048)]
+		public float SunRotationY { get { return m_SunRotationY; } set { if (OnPropertyChanging("OutdoorLightComponentData." + nameof(SunRotationY), this, m_SunRotationY, value)) m_SunRotationY = value; } } // 0xA0 (160)
 		
-		[ContainerField(164), LayoutImmutable, Blittable]
-		public float SunRotationX { get; set; } // 0xA4 (164)
+		protected float m_SunRotationX = new float();
+		[ContainerField(164), LayoutImmutable, Blittable, ContainerFieldNameHash(2283294049)]
+		public float SunRotationX { get { return m_SunRotationX; } set { if (OnPropertyChanging("OutdoorLightComponentData." + nameof(SunRotationX), this, m_SunRotationX, value)) m_SunRotationX = value; } } // 0xA4 (164)
 		
-		[ContainerField(168)]
-		public Realm Realm { get; set; } = new Realm(); // 0xA8 (168)
+		protected Realm m_Realm = new Realm();
+		[ContainerField(168), ContainerFieldNameHash(229961746)]
+		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("OutdoorLightComponentData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0xA8 (168)
 		
-		[ContainerField(172), LayoutImmutable, Blittable]
-		public float SkyLightAngleFactor { get; set; } // 0xAC (172)
+		protected float m_SkyLightAngleFactor = new float();
+		[ContainerField(172), LayoutImmutable, Blittable, ContainerFieldNameHash(4138591318)]
+		public float SkyLightAngleFactor { get { return m_SkyLightAngleFactor; } set { if (OnPropertyChanging("OutdoorLightComponentData." + nameof(SkyLightAngleFactor), this, m_SkyLightAngleFactor, value)) m_SkyLightAngleFactor = value; } } // 0xAC (172)
 		
-		[ContainerField(176), LayoutImmutable, Blittable]
-		public float SunSpecularScale { get; set; } // 0xB0 (176)
+		protected float m_SunSpecularScale = new float();
+		[ContainerField(176), LayoutImmutable, Blittable, ContainerFieldNameHash(3421876698)]
+		public float SunSpecularScale { get { return m_SunSpecularScale; } set { if (OnPropertyChanging("OutdoorLightComponentData." + nameof(SunSpecularScale), this, m_SunSpecularScale, value)) m_SunSpecularScale = value; } } // 0xB0 (176)
 		
-		[ContainerField(180), LayoutImmutable, Blittable]
-		public float SkyEnvmapShadowScale { get; set; } // 0xB4 (180)
+		protected float m_SkyEnvmapShadowScale = new float();
+		[ContainerField(180), LayoutImmutable, Blittable, ContainerFieldNameHash(3000421435)]
+		public float SkyEnvmapShadowScale { get { return m_SkyEnvmapShadowScale; } set { if (OnPropertyChanging("OutdoorLightComponentData." + nameof(SkyEnvmapShadowScale), this, m_SkyEnvmapShadowScale, value)) m_SkyEnvmapShadowScale = value; } } // 0xB4 (180)
 		
-		[ContainerField(184), LayoutImmutable, Blittable]
-		public float SunShadowHeightScale { get; set; } // 0xB8 (184)
+		protected float m_SunShadowHeightScale = new float();
+		[ContainerField(184), LayoutImmutable, Blittable, ContainerFieldNameHash(2049987628)]
+		public float SunShadowHeightScale { get { return m_SunShadowHeightScale; } set { if (OnPropertyChanging("OutdoorLightComponentData." + nameof(SunShadowHeightScale), this, m_SunShadowHeightScale, value)) m_SunShadowHeightScale = value; } } // 0xB8 (184)
 		
-		[ContainerField(188), LayoutImmutable, Blittable]
-		public float CloudShadowCoverage { get; set; } // 0xBC (188)
+		protected float m_CloudShadowCoverage = new float();
+		[ContainerField(188), LayoutImmutable, Blittable, ContainerFieldNameHash(535106300)]
+		public float CloudShadowCoverage { get { return m_CloudShadowCoverage; } set { if (OnPropertyChanging("OutdoorLightComponentData." + nameof(CloudShadowCoverage), this, m_CloudShadowCoverage, value)) m_CloudShadowCoverage = value; } } // 0xBC (188)
 		
-		[ContainerField(192)]
-		public CtrRef<TextureAsset> CloudShadowTexture { get; set; } = new CtrRef<TextureAsset>(); // 0xC0 (192)
+		protected CtrRef<TextureAsset> m_CloudShadowTexture = new CtrRef<TextureAsset>();
+		[ContainerField(192), ContainerFieldNameHash(1607365037)]
+		public CtrRef<TextureAsset> CloudShadowTexture { get { return m_CloudShadowTexture; } set { if (OnPropertyChanging("OutdoorLightComponentData." + nameof(CloudShadowTexture), this, m_CloudShadowTexture, value)) m_CloudShadowTexture = value; } } // 0xC0 (192)
 		
-		[ContainerField(196), LayoutImmutable, Blittable]
-		public float TranslucencyDistortion { get; set; } // 0xC4 (196)
+		protected float m_TranslucencyDistortion = new float();
+		[ContainerField(196), LayoutImmutable, Blittable, ContainerFieldNameHash(654575839)]
+		public float TranslucencyDistortion { get { return m_TranslucencyDistortion; } set { if (OnPropertyChanging("OutdoorLightComponentData." + nameof(TranslucencyDistortion), this, m_TranslucencyDistortion, value)) m_TranslucencyDistortion = value; } } // 0xC4 (196)
 		
-		[ContainerField(200), LayoutImmutable, Blittable]
-		public float CloudShadowSize { get; set; } // 0xC8 (200)
+		protected float m_CloudShadowSize = new float();
+		[ContainerField(200), LayoutImmutable, Blittable, ContainerFieldNameHash(2732862871)]
+		public float CloudShadowSize { get { return m_CloudShadowSize; } set { if (OnPropertyChanging("OutdoorLightComponentData." + nameof(CloudShadowSize), this, m_CloudShadowSize, value)) m_CloudShadowSize = value; } } // 0xC8 (200)
 		
-		[ContainerField(204), LayoutImmutable, Blittable]
-		public float TranslucencyAmbient { get; set; } // 0xCC (204)
+		protected float m_TranslucencyAmbient = new float();
+		[ContainerField(204), LayoutImmutable, Blittable, ContainerFieldNameHash(2476604812)]
+		public float TranslucencyAmbient { get { return m_TranslucencyAmbient; } set { if (OnPropertyChanging("OutdoorLightComponentData." + nameof(TranslucencyAmbient), this, m_TranslucencyAmbient, value)) m_TranslucencyAmbient = value; } } // 0xCC (204)
 		
-		[ContainerField(208), LayoutImmutable, Blittable]
-		public float CloudShadowExponent { get; set; } // 0xD0 (208)
+		protected float m_CloudShadowExponent = new float();
+		[ContainerField(208), LayoutImmutable, Blittable, ContainerFieldNameHash(1934044673)]
+		public float CloudShadowExponent { get { return m_CloudShadowExponent; } set { if (OnPropertyChanging("OutdoorLightComponentData." + nameof(CloudShadowExponent), this, m_CloudShadowExponent, value)) m_CloudShadowExponent = value; } } // 0xD0 (208)
 		
-		[ContainerField(212), LayoutImmutable, Blittable]
-		public float TranslucencyScale { get; set; } // 0xD4 (212)
+		protected float m_TranslucencyScale = new float();
+		[ContainerField(212), LayoutImmutable, Blittable, ContainerFieldNameHash(317261612)]
+		public float TranslucencyScale { get { return m_TranslucencyScale; } set { if (OnPropertyChanging("OutdoorLightComponentData." + nameof(TranslucencyScale), this, m_TranslucencyScale, value)) m_TranslucencyScale = value; } } // 0xD4 (212)
 		
-		[ContainerField(216), LayoutImmutable, Blittable]
-		public float TranslucencyPower { get; set; } // 0xD8 (216)
+		protected float m_TranslucencyPower = new float();
+		[ContainerField(216), LayoutImmutable, Blittable, ContainerFieldNameHash(311917771)]
+		public float TranslucencyPower { get { return m_TranslucencyPower; } set { if (OnPropertyChanging("OutdoorLightComponentData." + nameof(TranslucencyPower), this, m_TranslucencyPower, value)) m_TranslucencyPower = value; } } // 0xD8 (216)
 		
-		[ContainerField(220), LayoutImmutable, Blittable]
-		public bool Enable { get; set; } // 0xDC (220)
+		protected bool m_Enable = new bool();
+		[ContainerField(220), LayoutImmutable, Blittable, ContainerFieldNameHash(2342790116)]
+		public bool Enable { get { return m_Enable; } set { if (OnPropertyChanging("OutdoorLightComponentData." + nameof(Enable), this, m_Enable, value)) m_Enable = value; } } // 0xDC (220)
 		
-		[ContainerField(221), LayoutImmutable, Blittable]
-		public bool CloudShadowEnable { get; set; } // 0xDD (221)
+		protected bool m_CloudShadowEnable = new bool();
+		[ContainerField(221), LayoutImmutable, Blittable, ContainerFieldNameHash(380549299)]
+		public bool CloudShadowEnable { get { return m_CloudShadowEnable; } set { if (OnPropertyChanging("OutdoorLightComponentData." + nameof(CloudShadowEnable), this, m_CloudShadowEnable, value)) m_CloudShadowEnable = value; } } // 0xDD (221)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

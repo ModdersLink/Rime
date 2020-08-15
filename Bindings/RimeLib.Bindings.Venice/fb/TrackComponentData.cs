@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class TrackComponentData : 
 		MeshComponentData
 	{
-		[ContainerField(112), LayoutImmutable, Blittable]
-		public float ScrollFactor { get; set; } // 0x70 (112)
+		protected float m_ScrollFactor = new float();
+		[ContainerField(112), LayoutImmutable, Blittable, ContainerFieldNameHash(3975253477)]
+		public float ScrollFactor { get { return m_ScrollFactor; } set { if (OnPropertyChanging("TrackComponentData." + nameof(ScrollFactor), this, m_ScrollFactor, value)) m_ScrollFactor = value; } } // 0x70 (112)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

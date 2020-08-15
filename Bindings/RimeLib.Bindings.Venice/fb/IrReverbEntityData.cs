@@ -5,26 +5,38 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class IrReverbEntityData : 
 		EntityData
 	{
-		[ContainerField(12)]
-		public CtrRef<ImpulseResponseAsset> ImpulseResponse { get; set; } = new CtrRef<ImpulseResponseAsset>(); // 0xC (12)
+		protected CtrRef<ImpulseResponseAsset> m_ImpulseResponse = new CtrRef<ImpulseResponseAsset>();
+		[ContainerField(12), ContainerFieldNameHash(182557405)]
+		public CtrRef<ImpulseResponseAsset> ImpulseResponse { get { return m_ImpulseResponse; } set { if (OnPropertyChanging("IrReverbEntityData." + nameof(ImpulseResponse), this, m_ImpulseResponse, value)) m_ImpulseResponse = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public float Gain { get; set; } // 0x10 (16)
+		protected float m_Gain = new float();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(2088703076)]
+		public float Gain { get { return m_Gain; } set { if (OnPropertyChanging("IrReverbEntityData." + nameof(Gain), this, m_Gain, value)) m_Gain = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
-		public float Volume { get; set; } // 0x14 (20)
+		protected float m_Volume = new float();
+		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(3158011725)]
+		public float Volume { get { return m_Volume; } set { if (OnPropertyChanging("IrReverbEntityData." + nameof(Volume), this, m_Volume, value)) m_Volume = value; } } // 0x14 (20)
 		
-		[ContainerField(24)]
-		public FadeCurveType FadeCurve { get; set; } = new FadeCurveType(); // 0x18 (24)
+		protected FadeCurveType m_FadeCurve = new FadeCurveType();
+		[ContainerField(24), ContainerFieldNameHash(3162123636)]
+		public FadeCurveType FadeCurve { get { return m_FadeCurve; } set { if (OnPropertyChanging("IrReverbEntityData." + nameof(FadeCurve), this, m_FadeCurve, value)) m_FadeCurve = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

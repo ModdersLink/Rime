@@ -5,31 +5,46 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class VehicleExitPointComponentData : 
 		ComponentData
 	{
-		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 Impulse { get; set; } = new Vec3(); // 0x60 (96)
+		protected Vec3 m_Impulse = new Vec3();
+		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(1723395486)]
+		public Vec3 Impulse { get { return m_Impulse; } set { if (OnPropertyChanging("VehicleExitPointComponentData." + nameof(Impulse), this, m_Impulse, value)) m_Impulse = value; } } // 0x60 (96)
 		
-		[ContainerField(112), LayoutImmutable, Blittable]
-		public float TerrainHeight { get; set; } // 0x70 (112)
+		protected float m_TerrainHeight = new float();
+		[ContainerField(112), LayoutImmutable, Blittable, ContainerFieldNameHash(3163704045)]
+		public float TerrainHeight { get { return m_TerrainHeight; } set { if (OnPropertyChanging("VehicleExitPointComponentData." + nameof(TerrainHeight), this, m_TerrainHeight, value)) m_TerrainHeight = value; } } // 0x70 (112)
 		
-		[ContainerField(116), LayoutImmutable, Blittable]
-		public int Ordinal { get; set; } // 0x74 (116)
+		protected int m_Ordinal = new int();
+		[ContainerField(116), LayoutImmutable, Blittable, ContainerFieldNameHash(747685430)]
+		public int Ordinal { get { return m_Ordinal; } set { if (OnPropertyChanging("VehicleExitPointComponentData." + nameof(Ordinal), this, m_Ordinal, value)) m_Ordinal = value; } } // 0x74 (116)
 		
-		[ContainerField(120), LayoutImmutable, Blittable]
-		public float Velocity { get; set; } // 0x78 (120)
+		protected float m_Velocity = new float();
+		[ContainerField(120), LayoutImmutable, Blittable, ContainerFieldNameHash(3860766482)]
+		public float Velocity { get { return m_Velocity; } set { if (OnPropertyChanging("VehicleExitPointComponentData." + nameof(Velocity), this, m_Velocity, value)) m_Velocity = value; } } // 0x78 (120)
 		
-		[ContainerField(124), LayoutImmutable, Blittable]
-		public bool InheritCameraDirection { get; set; } // 0x7C (124)
+		protected bool m_InheritCameraDirection = new bool();
+		[ContainerField(124), LayoutImmutable, Blittable, ContainerFieldNameHash(1304457244)]
+		public bool InheritCameraDirection { get { return m_InheritCameraDirection; } set { if (OnPropertyChanging("VehicleExitPointComponentData." + nameof(InheritCameraDirection), this, m_InheritCameraDirection, value)) m_InheritCameraDirection = value; } } // 0x7C (124)
 		
-		[ContainerField(125), LayoutImmutable, Blittable]
-		public bool CheckForVehicleOverrun { get; set; } // 0x7D (125)
+		protected bool m_CheckForVehicleOverrun = new bool();
+		[ContainerField(125), LayoutImmutable, Blittable, ContainerFieldNameHash(587298343)]
+		public bool CheckForVehicleOverrun { get { return m_CheckForVehicleOverrun; } set { if (OnPropertyChanging("VehicleExitPointComponentData." + nameof(CheckForVehicleOverrun), this, m_CheckForVehicleOverrun, value)) m_CheckForVehicleOverrun = value; } } // 0x7D (125)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

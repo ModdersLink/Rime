@@ -5,17 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class BlueprintBundleStateLogicEntityData : 
 		GameEntityData
 	{
-		[ContainerField(96)]
-		public List<string> BundleNames { get; set; } = new List<string>(); // 0x60 (96)
+		protected List<string> m_BundleNames = new List<string>();
+		[ContainerField(96), ContainerFieldNameHash(2333280517)]
+		public List<string> BundleNames { get { return m_BundleNames; } set { if (OnPropertyChanging("BlueprintBundleStateLogicEntityData." + nameof(BundleNames), this, m_BundleNames, value)) m_BundleNames = value; } } // 0x60 (96)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

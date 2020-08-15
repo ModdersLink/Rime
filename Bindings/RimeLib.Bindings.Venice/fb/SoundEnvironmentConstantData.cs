@@ -5,22 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class SoundEnvironmentConstantData : 
 		Asset
 	{
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public float HumanPlayerSoldierMovementVolumeOverride { get; set; } // 0xC (12)
+		protected float m_HumanPlayerSoldierMovementVolumeOverride = new float();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(2922581308)]
+		public float HumanPlayerSoldierMovementVolumeOverride { get { return m_HumanPlayerSoldierMovementVolumeOverride; } set { if (OnPropertyChanging("SoundEnvironmentConstantData." + nameof(HumanPlayerSoldierMovementVolumeOverride), this, m_HumanPlayerSoldierMovementVolumeOverride, value)) m_HumanPlayerSoldierMovementVolumeOverride = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public float MemoryTime { get; set; } // 0x10 (16)
+		protected float m_MemoryTime = new float();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(1308283505)]
+		public float MemoryTime { get { return m_MemoryTime; } set { if (OnPropertyChanging("SoundEnvironmentConstantData." + nameof(MemoryTime), this, m_MemoryTime, value)) m_MemoryTime = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
-		public float MinimumLoudness { get; set; } // 0x14 (20)
+		protected float m_MinimumLoudness = new float();
+		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(1173996714)]
+		public float MinimumLoudness { get { return m_MinimumLoudness; } set { if (OnPropertyChanging("SoundEnvironmentConstantData." + nameof(MinimumLoudness), this, m_MinimumLoudness, value)) m_MinimumLoudness = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

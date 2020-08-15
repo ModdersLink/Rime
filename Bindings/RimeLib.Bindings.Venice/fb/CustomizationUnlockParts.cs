@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class CustomizationUnlockParts : 
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable]
-		public string UICategorySid { get; set; } // 0x8 (8)
+		protected string m_UICategorySid = new string();
+		[ContainerField(8), LayoutImmutable, ContainerFieldNameHash(795269975)]
+		public string UICategorySid { get { return m_UICategorySid; } set { if (OnPropertyChanging("CustomizationUnlockParts." + nameof(UICategorySid), this, m_UICategorySid, value)) m_UICategorySid = value; } } // 0x8 (8)
 		
-		[ContainerField(12)]
-		public RefArray<UnlockAssetBase> SelectableUnlocks { get; set; } = new RefArray<UnlockAssetBase>(); // 0xC (12)
+		protected RefArray<UnlockAssetBase> m_SelectableUnlocks = new RefArray<UnlockAssetBase>();
+		[ContainerField(12), ContainerFieldNameHash(1920005412)]
+		public RefArray<UnlockAssetBase> SelectableUnlocks { get { return m_SelectableUnlocks; } set { if (OnPropertyChanging("CustomizationUnlockParts." + nameof(SelectableUnlocks), this, m_SelectableUnlocks, value)) m_SelectableUnlocks = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

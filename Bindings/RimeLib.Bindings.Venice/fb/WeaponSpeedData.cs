@@ -5,25 +5,38 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class WeaponSpeedData : 
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable, Blittable]
-		public float ZoomOutSpeed { get; set; } // 0x8 (8)
+		protected float m_ZoomOutSpeed = new float();
+		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(2275851931)]
+		public float ZoomOutSpeed { get { return m_ZoomOutSpeed; } set { if (OnPropertyChanging("WeaponSpeedData." + nameof(ZoomOutSpeed), this, m_ZoomOutSpeed, value)) m_ZoomOutSpeed = value; } } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public float ZoomInSpeed { get; set; } // 0xC (12)
+		protected float m_ZoomInSpeed = new float();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(638313682)]
+		public float ZoomInSpeed { get { return m_ZoomInSpeed; } set { if (OnPropertyChanging("WeaponSpeedData." + nameof(ZoomInSpeed), this, m_ZoomInSpeed, value)) m_ZoomInSpeed = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public float UnDeploySpeed { get; set; } // 0x10 (16)
+		protected float m_UnDeploySpeed = new float();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(3170443666)]
+		public float UnDeploySpeed { get { return m_UnDeploySpeed; } set { if (OnPropertyChanging("WeaponSpeedData." + nameof(UnDeploySpeed), this, m_UnDeploySpeed, value)) m_UnDeploySpeed = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
-		public float DeploySpeed { get; set; } // 0x14 (20)
+		protected float m_DeploySpeed = new float();
+		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(2095054953)]
+		public float DeploySpeed { get { return m_DeploySpeed; } set { if (OnPropertyChanging("WeaponSpeedData." + nameof(DeploySpeed), this, m_DeploySpeed, value)) m_DeploySpeed = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

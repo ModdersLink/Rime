@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class ObjectBlueprint : 
 		Blueprint
 	{
-		[ContainerField(32)]
-		public CtrRef<GameObjectData> Object { get; set; } = new CtrRef<GameObjectData>(); // 0x20 (32)
+		protected CtrRef<GameObjectData> m_Object = new CtrRef<GameObjectData>();
+		[ContainerField(32), ContainerFieldNameHash(2866508144)]
+		public CtrRef<GameObjectData> Object { get { return m_Object; } set { if (OnPropertyChanging("ObjectBlueprint." + nameof(Object), this, m_Object, value)) m_Object = value; } } // 0x20 (32)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class TrackWheelComponentData : 
 		WheelComponentData
 	{
-		[ContainerField(128), LayoutImmutable]
-		public string BoneName { get; set; } // 0x80 (128)
+		protected string m_BoneName = new string();
+		[ContainerField(128), LayoutImmutable, ContainerFieldNameHash(1590647844)]
+		public string BoneName { get { return m_BoneName; } set { if (OnPropertyChanging("TrackWheelComponentData." + nameof(BoneName), this, m_BoneName, value)) m_BoneName = value; } } // 0x80 (128)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

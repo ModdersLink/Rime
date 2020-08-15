@@ -5,17 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class WeaponClassModifier : 
 		WeaponModifierBase
 	{
-		[ContainerField(8)]
-		public WeaponClassEnum WeaponClass { get; set; } = new WeaponClassEnum(); // 0x8 (8)
+		protected WeaponClassEnum m_WeaponClass = new WeaponClassEnum();
+		[ContainerField(8), ContainerFieldNameHash(711657993)]
+		public WeaponClassEnum WeaponClass { get { return m_WeaponClass; } set { if (OnPropertyChanging("WeaponClassModifier." + nameof(WeaponClass), this, m_WeaponClass, value)) m_WeaponClass = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

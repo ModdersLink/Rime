@@ -5,20 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class UIDynamicDataBinding : 
 		UIDataBinding
 	{
-		[ContainerField(8)]
-		public List<UIDataSourceInfo> Bindings { get; set; } = new List<UIDataSourceInfo>(); // 0x8 (8)
+		protected List<UIDataSourceInfo> m_Bindings = new List<UIDataSourceInfo>();
+		[ContainerField(8), ContainerFieldNameHash(3867608887)]
+		public List<UIDataSourceInfo> Bindings { get { return m_Bindings; } set { if (OnPropertyChanging("UIDynamicDataBinding." + nameof(Bindings), this, m_Bindings, value)) m_Bindings = value; } } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public bool Refresh { get; set; } // 0xC (12)
+		protected bool m_Refresh = new bool();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(1327541432)]
+		public bool Refresh { get { return m_Refresh; } set { if (OnPropertyChanging("UIDynamicDataBinding." + nameof(Refresh), this, m_Refresh, value)) m_Refresh = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

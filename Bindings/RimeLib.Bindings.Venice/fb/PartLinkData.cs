@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class PartLinkData : 
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable, Blittable]
-		public uint PartComponentIndex1 { get; set; } // 0x8 (8)
+		protected uint m_PartComponentIndex1 = new uint();
+		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(830683346)]
+		public uint PartComponentIndex1 { get { return m_PartComponentIndex1; } set { if (OnPropertyChanging("PartLinkData." + nameof(PartComponentIndex1), this, m_PartComponentIndex1, value)) m_PartComponentIndex1 = value; } } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public uint PartComponentIndex2 { get; set; } // 0xC (12)
+		protected uint m_PartComponentIndex2 = new uint();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(830683345)]
+		public uint PartComponentIndex2 { get { return m_PartComponentIndex2; } set { if (OnPropertyChanging("PartLinkData." + nameof(PartComponentIndex2), this, m_PartComponentIndex2, value)) m_PartComponentIndex2 = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,67 +5,94 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class CameraComponentData : 
 		ComponentData
 	{
-		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 CameraTransitionPos { get; set; } = new Vec3(); // 0x60 (96)
+		protected Vec3 m_CameraTransitionPos = new Vec3();
+		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(3159565823)]
+		public Vec3 CameraTransitionPos { get { return m_CameraTransitionPos; } set { if (OnPropertyChanging("CameraComponentData." + nameof(CameraTransitionPos), this, m_CameraTransitionPos, value)) m_CameraTransitionPos = value; } } // 0x60 (96)
 		
-		[ContainerField(112), LayoutImmutable, Blittable]
-		public float FieldOfView { get; set; } // 0x70 (112)
+		protected float m_FieldOfView = new float();
+		[ContainerField(112), LayoutImmutable, Blittable, ContainerFieldNameHash(2227716035)]
+		public float FieldOfView { get { return m_FieldOfView; } set { if (OnPropertyChanging("CameraComponentData." + nameof(FieldOfView), this, m_FieldOfView, value)) m_FieldOfView = value; } } // 0x70 (112)
 		
-		[ContainerField(116), LayoutImmutable, Blittable]
-		public float ForceFieldOfView { get; set; } // 0x74 (116)
+		protected float m_ForceFieldOfView = new float();
+		[ContainerField(116), LayoutImmutable, Blittable, ContainerFieldNameHash(2191221214)]
+		public float ForceFieldOfView { get { return m_ForceFieldOfView; } set { if (OnPropertyChanging("CameraComponentData." + nameof(ForceFieldOfView), this, m_ForceFieldOfView, value)) m_ForceFieldOfView = value; } } // 0x74 (116)
 		
-		[ContainerField(120)]
-		public CtrRef<TargetCameraData> Camera { get; set; } = new CtrRef<TargetCameraData>(); // 0x78 (120)
+		protected CtrRef<TargetCameraData> m_Camera = new CtrRef<TargetCameraData>();
+		[ContainerField(120), ContainerFieldNameHash(2716359356)]
+		public CtrRef<TargetCameraData> Camera { get { return m_Camera; } set { if (OnPropertyChanging("CameraComponentData." + nameof(Camera), this, m_Camera, value)) m_Camera = value; } } // 0x78 (120)
 		
-		[ContainerField(124)]
-		public CtrRef<AlternateCameraViewData> AlternateView { get; set; } = new CtrRef<AlternateCameraViewData>(); // 0x7C (124)
+		protected CtrRef<AlternateCameraViewData> m_AlternateView = new CtrRef<AlternateCameraViewData>();
+		[ContainerField(124), ContainerFieldNameHash(906681240)]
+		public CtrRef<AlternateCameraViewData> AlternateView { get { return m_AlternateView; } set { if (OnPropertyChanging("CameraComponentData." + nameof(AlternateView), this, m_AlternateView, value)) m_AlternateView = value; } } // 0x7C (124)
 		
-		[ContainerField(128)]
-		public RegularCameraViewData RegularView { get; set; } = new RegularCameraViewData(); // 0x80 (128)
+		protected RegularCameraViewData m_RegularView = new RegularCameraViewData();
+		[ContainerField(128), ContainerFieldNameHash(653142290)]
+		public RegularCameraViewData RegularView { get { return m_RegularView; } set { if (OnPropertyChanging("CameraComponentData." + nameof(RegularView), this, m_RegularView, value)) m_RegularView = value; } } // 0x80 (128)
 		
-		[ContainerField(176), LayoutImmutable, Blittable]
-		public float FreezeHeight { get; set; } // 0xB0 (176)
+		protected float m_FreezeHeight = new float();
+		[ContainerField(176), LayoutImmutable, Blittable, ContainerFieldNameHash(3432929233)]
+		public float FreezeHeight { get { return m_FreezeHeight; } set { if (OnPropertyChanging("CameraComponentData." + nameof(FreezeHeight), this, m_FreezeHeight, value)) m_FreezeHeight = value; } } // 0xB0 (176)
 		
-		[ContainerField(180)]
-		public StanceCameraData StanceData { get; set; } = new StanceCameraData(); // 0xB4 (180)
+		protected StanceCameraData m_StanceData = new StanceCameraData();
+		[ContainerField(180), ContainerFieldNameHash(2329728379)]
+		public StanceCameraData StanceData { get { return m_StanceData; } set { if (OnPropertyChanging("CameraComponentData." + nameof(StanceData), this, m_StanceData, value)) m_StanceData = value; } } // 0xB4 (180)
 		
-		[ContainerField(188)]
-		public CtrRef<CameraComponentSoundData> CameraSoundData { get; set; } = new CtrRef<CameraComponentSoundData>(); // 0xBC (188)
+		protected CtrRef<CameraComponentSoundData> m_CameraSoundData = new CtrRef<CameraComponentSoundData>();
+		[ContainerField(188), ContainerFieldNameHash(3785254511)]
+		public CtrRef<CameraComponentSoundData> CameraSoundData { get { return m_CameraSoundData; } set { if (OnPropertyChanging("CameraComponentData." + nameof(CameraSoundData), this, m_CameraSoundData, value)) m_CameraSoundData = value; } } // 0xBC (188)
 		
-		[ContainerField(192)]
-		public SoldierAnimatedCameraData SoldierAnimatedCamera { get; set; } = new SoldierAnimatedCameraData(); // 0xC0 (192)
+		protected SoldierAnimatedCameraData m_SoldierAnimatedCamera = new SoldierAnimatedCameraData();
+		[ContainerField(192), ContainerFieldNameHash(1964549481)]
+		public SoldierAnimatedCameraData SoldierAnimatedCamera { get { return m_SoldierAnimatedCamera; } set { if (OnPropertyChanging("CameraComponentData." + nameof(SoldierAnimatedCamera), this, m_SoldierAnimatedCamera, value)) m_SoldierAnimatedCamera = value; } } // 0xC0 (192)
 		
-		[ContainerField(200), LayoutImmutable, Blittable]
-		public float CameraTransitionTime { get; set; } // 0xC8 (200)
+		protected float m_CameraTransitionTime = new float();
+		[ContainerField(200), LayoutImmutable, Blittable, ContainerFieldNameHash(1186593510)]
+		public float CameraTransitionTime { get { return m_CameraTransitionTime; } set { if (OnPropertyChanging("CameraComponentData." + nameof(CameraTransitionTime), this, m_CameraTransitionTime, value)) m_CameraTransitionTime = value; } } // 0xC8 (200)
 		
-		[ContainerField(204), LayoutImmutable, Blittable]
-		public uint MeshParentComponentNumber { get; set; } // 0xCC (204)
+		protected uint m_MeshParentComponentNumber = new uint();
+		[ContainerField(204), LayoutImmutable, Blittable, ContainerFieldNameHash(1500139014)]
+		public uint MeshParentComponentNumber { get { return m_MeshParentComponentNumber; } set { if (OnPropertyChanging("CameraComponentData." + nameof(MeshParentComponentNumber), this, m_MeshParentComponentNumber, value)) m_MeshParentComponentNumber = value; } } // 0xCC (204)
 		
-		[ContainerField(208), LayoutImmutable, Blittable]
-		public bool EnableCameraMesh { get; set; } // 0xD0 (208)
+		protected bool m_EnableCameraMesh = new bool();
+		[ContainerField(208), LayoutImmutable, Blittable, ContainerFieldNameHash(3311112814)]
+		public bool EnableCameraMesh { get { return m_EnableCameraMesh; } set { if (OnPropertyChanging("CameraComponentData." + nameof(EnableCameraMesh), this, m_EnableCameraMesh, value)) m_EnableCameraMesh = value; } } // 0xD0 (208)
 		
-		[ContainerField(209), LayoutImmutable, Blittable]
-		public bool ReceiveImpulsesAsThirdPerson { get; set; } // 0xD1 (209)
+		protected bool m_ReceiveImpulsesAsThirdPerson = new bool();
+		[ContainerField(209), LayoutImmutable, Blittable, ContainerFieldNameHash(3555599490)]
+		public bool ReceiveImpulsesAsThirdPerson { get { return m_ReceiveImpulsesAsThirdPerson; } set { if (OnPropertyChanging("CameraComponentData." + nameof(ReceiveImpulsesAsThirdPerson), this, m_ReceiveImpulsesAsThirdPerson, value)) m_ReceiveImpulsesAsThirdPerson = value; } } // 0xD1 (209)
 		
-		[ContainerField(210), LayoutImmutable, Blittable]
-		public bool UseCameraTransition { get; set; } // 0xD2 (210)
+		protected bool m_UseCameraTransition = new bool();
+		[ContainerField(210), LayoutImmutable, Blittable, ContainerFieldNameHash(2345252784)]
+		public bool UseCameraTransition { get { return m_UseCameraTransition; } set { if (OnPropertyChanging("CameraComponentData." + nameof(UseCameraTransition), this, m_UseCameraTransition, value)) m_UseCameraTransition = value; } } // 0xD2 (210)
 		
-		[ContainerField(211), LayoutImmutable, Blittable]
-		public bool AlternateViewEnabled { get; set; } // 0xD3 (211)
+		protected bool m_AlternateViewEnabled = new bool();
+		[ContainerField(211), LayoutImmutable, Blittable, ContainerFieldNameHash(541013693)]
+		public bool AlternateViewEnabled { get { return m_AlternateViewEnabled; } set { if (OnPropertyChanging("CameraComponentData." + nameof(AlternateViewEnabled), this, m_AlternateViewEnabled, value)) m_AlternateViewEnabled = value; } } // 0xD3 (211)
 		
-		[ContainerField(212), LayoutImmutable, Blittable]
-		public bool IsFirstPerson { get; set; } // 0xD4 (212)
+		protected bool m_IsFirstPerson = new bool();
+		[ContainerField(212), LayoutImmutable, Blittable, ContainerFieldNameHash(824639024)]
+		public bool IsFirstPerson { get { return m_IsFirstPerson; } set { if (OnPropertyChanging("CameraComponentData." + nameof(IsFirstPerson), this, m_IsFirstPerson, value)) m_IsFirstPerson = value; } } // 0xD4 (212)
 		
-		[ContainerField(213), LayoutImmutable, Blittable]
-		public bool IgnoreOwnerOrientation { get; set; } // 0xD5 (213)
+		protected bool m_IgnoreOwnerOrientation = new bool();
+		[ContainerField(213), LayoutImmutable, Blittable, ContainerFieldNameHash(1298324842)]
+		public bool IgnoreOwnerOrientation { get { return m_IgnoreOwnerOrientation; } set { if (OnPropertyChanging("CameraComponentData." + nameof(IgnoreOwnerOrientation), this, m_IgnoreOwnerOrientation, value)) m_IgnoreOwnerOrientation = value; } } // 0xD5 (213)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

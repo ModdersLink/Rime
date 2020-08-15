@@ -5,33 +5,46 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class EntitlementQuery : 
 		Asset
 	{
-		[ContainerField(12)]
-		public List<EntitlementData> EntitlementsData { get; set; } = new List<EntitlementData>(); // 0xC (12)
+		protected List<EntitlementData> m_EntitlementsData = new List<EntitlementData>();
+		[ContainerField(12), ContainerFieldNameHash(2421825855)]
+		public List<EntitlementData> EntitlementsData { get { return m_EntitlementsData; } set { if (OnPropertyChanging("EntitlementQuery." + nameof(EntitlementsData), this, m_EntitlementsData, value)) m_EntitlementsData = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public List<string> GroupNames { get; set; } = new List<string>(); // 0x10 (16)
+		protected List<string> m_GroupNames = new List<string>();
+		[ContainerField(16), ContainerFieldNameHash(1803493518)]
+		public List<string> GroupNames { get { return m_GroupNames; } set { if (OnPropertyChanging("EntitlementQuery." + nameof(GroupNames), this, m_GroupNames, value)) m_GroupNames = value; } } // 0x10 (16)
 		
-		[ContainerField(20)]
-		public GamePlatform Platform { get; set; } = new GamePlatform(); // 0x14 (20)
+		protected GamePlatform m_Platform = new GamePlatform();
+		[ContainerField(20), ContainerFieldNameHash(942751002)]
+		public GamePlatform Platform { get { return m_Platform; } set { if (OnPropertyChanging("EntitlementQuery." + nameof(Platform), this, m_Platform, value)) m_Platform = value; } } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable]
-		public string EntitlementTag { get; set; } // 0x18 (24)
+		protected string m_EntitlementTag = new string();
+		[ContainerField(24), LayoutImmutable, ContainerFieldNameHash(1654763342)]
+		public string EntitlementTag { get { return m_EntitlementTag; } set { if (OnPropertyChanging("EntitlementQuery." + nameof(EntitlementTag), this, m_EntitlementTag, value)) m_EntitlementTag = value; } } // 0x18 (24)
 		
-		[ContainerField(28), LayoutImmutable]
-		public string ProductId { get; set; } // 0x1C (28)
+		protected string m_ProductId = new string();
+		[ContainerField(28), LayoutImmutable, ContainerFieldNameHash(106414083)]
+		public string ProductId { get { return m_ProductId; } set { if (OnPropertyChanging("EntitlementQuery." + nameof(ProductId), this, m_ProductId, value)) m_ProductId = value; } } // 0x1C (28)
 		
-		[ContainerField(32), LayoutImmutable]
-		public string ProjectId { get; set; } // 0x20 (32)
+		protected string m_ProjectId = new string();
+		[ContainerField(32), LayoutImmutable, ContainerFieldNameHash(4152360413)]
+		public string ProjectId { get { return m_ProjectId; } set { if (OnPropertyChanging("EntitlementQuery." + nameof(ProjectId), this, m_ProjectId, value)) m_ProjectId = value; } } // 0x20 (32)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

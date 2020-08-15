@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class CompositeMeshEntityData : 
 		SpatialEntityData
 	{
-		[ContainerField(80)]
-		public CtrRef<CompositeMeshAsset> Mesh { get; set; } = new CtrRef<CompositeMeshAsset>(); // 0x50 (80)
+		protected CtrRef<CompositeMeshAsset> m_Mesh = new CtrRef<CompositeMeshAsset>();
+		[ContainerField(80), ContainerFieldNameHash(2088783990)]
+		public CtrRef<CompositeMeshAsset> Mesh { get { return m_Mesh; } set { if (OnPropertyChanging("CompositeMeshEntityData." + nameof(Mesh), this, m_Mesh, value)) m_Mesh = value; } } // 0x50 (80)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

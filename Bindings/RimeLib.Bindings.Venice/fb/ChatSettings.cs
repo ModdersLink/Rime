@@ -5,22 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class ChatSettings : 
 		Asset
 	{
-		[ContainerField(12)]
-		public List<ChatChannelType> Channels { get; set; } = new List<ChatChannelType>(); // 0xC (12)
+		protected List<ChatChannelType> m_Channels = new List<ChatChannelType>();
+		[ContainerField(12), ContainerFieldNameHash(1585412981)]
+		public List<ChatChannelType> Channels { get { return m_Channels; } set { if (OnPropertyChanging("ChatSettings." + nameof(Channels), this, m_Channels, value)) m_Channels = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public AntiSpamConfig AntiSpam { get; set; } = new AntiSpamConfig(); // 0x10 (16)
+		protected AntiSpamConfig m_AntiSpam = new AntiSpamConfig();
+		[ContainerField(16), ContainerFieldNameHash(1819988664)]
+		public AntiSpamConfig AntiSpam { get { return m_AntiSpam; } set { if (OnPropertyChanging("ChatSettings." + nameof(AntiSpam), this, m_AntiSpam, value)) m_AntiSpam = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

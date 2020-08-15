@@ -5,31 +5,46 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class StabilizerData : 
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable, Blittable]
-		public float PitchStrength { get; set; } // 0x8 (8)
+		protected float m_PitchStrength = new float();
+		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(724430630)]
+		public float PitchStrength { get { return m_PitchStrength; } set { if (OnPropertyChanging("StabilizerData." + nameof(PitchStrength), this, m_PitchStrength, value)) m_PitchStrength = value; } } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public float RollStrength { get; set; } // 0xC (12)
+		protected float m_RollStrength = new float();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(3312814269)]
+		public float RollStrength { get { return m_RollStrength; } set { if (OnPropertyChanging("StabilizerData." + nameof(RollStrength), this, m_RollStrength, value)) m_RollStrength = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public float VerticalVelocityStrength { get; set; } // 0x10 (16)
+		protected float m_VerticalVelocityStrength = new float();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(3950176229)]
+		public float VerticalVelocityStrength { get { return m_VerticalVelocityStrength; } set { if (OnPropertyChanging("StabilizerData." + nameof(VerticalVelocityStrength), this, m_VerticalVelocityStrength, value)) m_VerticalVelocityStrength = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
-		public float YawStrength { get; set; } // 0x14 (20)
+		protected float m_YawStrength = new float();
+		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(2378860303)]
+		public float YawStrength { get { return m_YawStrength; } set { if (OnPropertyChanging("StabilizerData." + nameof(YawStrength), this, m_YawStrength, value)) m_YawStrength = value; } } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable]
-		public bool AdvancedYaw { get; set; } // 0x18 (24)
+		protected bool m_AdvancedYaw = new bool();
+		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(2833028724)]
+		public bool AdvancedYaw { get { return m_AdvancedYaw; } set { if (OnPropertyChanging("StabilizerData." + nameof(AdvancedYaw), this, m_AdvancedYaw, value)) m_AdvancedYaw = value; } } // 0x18 (24)
 		
-		[ContainerField(25), LayoutImmutable, Blittable]
-		public bool Advanced { get; set; } // 0x19 (25)
+		protected bool m_Advanced = new bool();
+		[ContainerField(25), LayoutImmutable, Blittable, ContainerFieldNameHash(2748179067)]
+		public bool Advanced { get { return m_Advanced; } set { if (OnPropertyChanging("StabilizerData." + nameof(Advanced), this, m_Advanced, value)) m_Advanced = value; } } // 0x19 (25)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

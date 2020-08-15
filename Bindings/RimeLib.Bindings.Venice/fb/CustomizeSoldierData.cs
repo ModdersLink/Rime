@@ -5,30 +5,42 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class CustomizeSoldierData : 
 		CustomizeCharacterData
 	{
-		[ContainerField(32)]
-		public List<UnlockWeaponAndSlot> Weapons { get; set; } = new List<UnlockWeaponAndSlot>(); // 0x20 (32)
+		protected List<UnlockWeaponAndSlot> m_Weapons = new List<UnlockWeaponAndSlot>();
+		[ContainerField(32), ContainerFieldNameHash(2209357972)]
+		public List<UnlockWeaponAndSlot> Weapons { get { return m_Weapons; } set { if (OnPropertyChanging("CustomizeSoldierData." + nameof(Weapons), this, m_Weapons, value)) m_Weapons = value; } } // 0x20 (32)
 		
-		[ContainerField(36)]
-		public WeaponSlot ActiveSlot { get; set; } = new WeaponSlot(); // 0x24 (36)
+		protected WeaponSlot m_ActiveSlot = new WeaponSlot();
+		[ContainerField(36), ContainerFieldNameHash(824022701)]
+		public WeaponSlot ActiveSlot { get { return m_ActiveSlot; } set { if (OnPropertyChanging("CustomizeSoldierData." + nameof(ActiveSlot), this, m_ActiveSlot, value)) m_ActiveSlot = value; } } // 0x24 (36)
 		
-		[ContainerField(40)]
-		public CtrRef<PickupEntityAsset> DeathPickup { get; set; } = new CtrRef<PickupEntityAsset>(); // 0x28 (40)
+		protected CtrRef<PickupEntityAsset> m_DeathPickup = new CtrRef<PickupEntityAsset>();
+		[ContainerField(40), ContainerFieldNameHash(507619053)]
+		public CtrRef<PickupEntityAsset> DeathPickup { get { return m_DeathPickup; } set { if (OnPropertyChanging("CustomizeSoldierData." + nameof(DeathPickup), this, m_DeathPickup, value)) m_DeathPickup = value; } } // 0x28 (40)
 		
-		[ContainerField(44), LayoutImmutable, Blittable]
-		public bool RemoveAllExistingWeapons { get; set; } // 0x2C (44)
+		protected bool m_RemoveAllExistingWeapons = new bool();
+		[ContainerField(44), LayoutImmutable, Blittable, ContainerFieldNameHash(913454208)]
+		public bool RemoveAllExistingWeapons { get { return m_RemoveAllExistingWeapons; } set { if (OnPropertyChanging("CustomizeSoldierData." + nameof(RemoveAllExistingWeapons), this, m_RemoveAllExistingWeapons, value)) m_RemoveAllExistingWeapons = value; } } // 0x2C (44)
 		
-		[ContainerField(45), LayoutImmutable, Blittable]
-		public bool DisableDeathPickup { get; set; } // 0x2D (45)
+		protected bool m_DisableDeathPickup = new bool();
+		[ContainerField(45), LayoutImmutable, Blittable, ContainerFieldNameHash(2771455705)]
+		public bool DisableDeathPickup { get { return m_DisableDeathPickup; } set { if (OnPropertyChanging("CustomizeSoldierData." + nameof(DisableDeathPickup), this, m_DisableDeathPickup, value)) m_DisableDeathPickup = value; } } // 0x2D (45)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class EmitterDocument : 
 		EmitterAsset
 	{
-		[ContainerField(12)]
-		public CtrRef<ProcessorData> RootProcessor { get; set; } = new CtrRef<ProcessorData>(); // 0xC (12)
+		protected CtrRef<ProcessorData> m_RootProcessor = new CtrRef<ProcessorData>();
+		[ContainerField(12), ContainerFieldNameHash(3988805269)]
+		public CtrRef<ProcessorData> RootProcessor { get { return m_RootProcessor; } set { if (OnPropertyChanging("EmitterDocument." + nameof(RootProcessor), this, m_RootProcessor, value)) m_RootProcessor = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public CtrRef<EmitterTemplateData> TemplateData { get; set; } = new CtrRef<EmitterTemplateData>(); // 0x10 (16)
+		protected CtrRef<EmitterTemplateData> m_TemplateData = new CtrRef<EmitterTemplateData>();
+		[ContainerField(16), ContainerFieldNameHash(673762469)]
+		public CtrRef<EmitterTemplateData> TemplateData { get { return m_TemplateData; } set { if (OnPropertyChanging("EmitterDocument." + nameof(TemplateData), this, m_TemplateData, value)) m_TemplateData = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

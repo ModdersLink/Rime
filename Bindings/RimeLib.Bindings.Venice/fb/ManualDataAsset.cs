@@ -5,17 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class ManualDataAsset : 
 		Asset
 	{
-		[ContainerField(12)]
-		public List<ManualDataEntry> Entries { get; set; } = new List<ManualDataEntry>(); // 0xC (12)
+		protected List<ManualDataEntry> m_Entries = new List<ManualDataEntry>();
+		[ContainerField(12), ContainerFieldNameHash(8238103)]
+		public List<ManualDataEntry> Entries { get { return m_Entries; } set { if (OnPropertyChanging("ManualDataAsset." + nameof(Entries), this, m_Entries, value)) m_Entries = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

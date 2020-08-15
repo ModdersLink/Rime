@@ -5,9 +5,20 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
+
 namespace fb
 {
-    public enum ShaderShadowmapQuality : int
+	public enum ShaderShadowmapQuality : int
 	{
 		ShaderShadowmapQuality_Pcf2x2 = 0,
 		ShaderShadowmapQuality_Pcf4x4 = 1,

@@ -5,31 +5,46 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class VisualEnvironmentEffectEntityData : 
 		EffectEntityData
 	{
-		[ContainerField(112), Homogeneous, LayoutImmutable, Blittable]
-		public Vec4 LifetimeCurve { get; set; } = new Vec4(); // 0x70 (112)
+		protected Vec4 m_LifetimeCurve = new Vec4();
+		[ContainerField(112), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(1623248993)]
+		public Vec4 LifetimeCurve { get { return m_LifetimeCurve; } set { if (OnPropertyChanging("VisualEnvironmentEffectEntityData." + nameof(LifetimeCurve), this, m_LifetimeCurve, value)) m_LifetimeCurve = value; } } // 0x70 (112)
 		
-		[ContainerField(128), Homogeneous, LayoutImmutable, Blittable]
-		public Vec4 CullDistanceCurve { get; set; } = new Vec4(); // 0x80 (128)
+		protected Vec4 m_CullDistanceCurve = new Vec4();
+		[ContainerField(128), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(3239208743)]
+		public Vec4 CullDistanceCurve { get { return m_CullDistanceCurve; } set { if (OnPropertyChanging("VisualEnvironmentEffectEntityData." + nameof(CullDistanceCurve), this, m_CullDistanceCurve, value)) m_CullDistanceCurve = value; } } // 0x80 (128)
 		
-		[ContainerField(144), Homogeneous, LayoutImmutable, Blittable]
-		public Vec4 CullAngleCurve { get; set; } = new Vec4(); // 0x90 (144)
+		protected Vec4 m_CullAngleCurve = new Vec4();
+		[ContainerField(144), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(3589421957)]
+		public Vec4 CullAngleCurve { get { return m_CullAngleCurve; } set { if (OnPropertyChanging("VisualEnvironmentEffectEntityData." + nameof(CullAngleCurve), this, m_CullAngleCurve, value)) m_CullAngleCurve = value; } } // 0x90 (144)
 		
-		[ContainerField(160), LayoutImmutable, Blittable]
-		public float Lifetime { get; set; } // 0xA0 (160)
+		protected float m_Lifetime = new float();
+		[ContainerField(160), LayoutImmutable, Blittable, ContainerFieldNameHash(2450521238)]
+		public float Lifetime { get { return m_Lifetime; } set { if (OnPropertyChanging("VisualEnvironmentEffectEntityData." + nameof(Lifetime), this, m_Lifetime, value)) m_Lifetime = value; } } // 0xA0 (160)
 		
-		[ContainerField(164)]
-		public CtrRef<VisualEnvironmentBlueprint> VisualEnvironment { get; set; } = new CtrRef<VisualEnvironmentBlueprint>(); // 0xA4 (164)
+		protected CtrRef<VisualEnvironmentBlueprint> m_VisualEnvironment = new CtrRef<VisualEnvironmentBlueprint>();
+		[ContainerField(164), ContainerFieldNameHash(1724714788)]
+		public CtrRef<VisualEnvironmentBlueprint> VisualEnvironment { get { return m_VisualEnvironment; } set { if (OnPropertyChanging("VisualEnvironmentEffectEntityData." + nameof(VisualEnvironment), this, m_VisualEnvironment, value)) m_VisualEnvironment = value; } } // 0xA4 (164)
 		
-		[ContainerField(168), LayoutImmutable, Blittable]
-		public bool SampleOnStartOnly { get; set; } // 0xA8 (168)
+		protected bool m_SampleOnStartOnly = new bool();
+		[ContainerField(168), LayoutImmutable, Blittable, ContainerFieldNameHash(3530277558)]
+		public bool SampleOnStartOnly { get { return m_SampleOnStartOnly; } set { if (OnPropertyChanging("VisualEnvironmentEffectEntityData." + nameof(SampleOnStartOnly), this, m_SampleOnStartOnly, value)) m_SampleOnStartOnly = value; } } // 0xA8 (168)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

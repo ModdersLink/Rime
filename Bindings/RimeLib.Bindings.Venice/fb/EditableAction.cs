@@ -5,17 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class EditableAction : 
 		DataContainer
 	{
-		[ContainerField(8)]
-		public InputConceptIdentifiers Concept { get; set; } = new InputConceptIdentifiers(); // 0x8 (8)
+		protected InputConceptIdentifiers m_Concept = new InputConceptIdentifiers();
+		[ContainerField(8), ContainerFieldNameHash(3653994469)]
+		public InputConceptIdentifiers Concept { get { return m_Concept; } set { if (OnPropertyChanging("EditableAction." + nameof(Concept), this, m_Concept, value)) m_Concept = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

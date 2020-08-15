@@ -5,25 +5,38 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class ValueSelectorNodeData : 
 		AudioGraphNodeData
 	{
-		[ContainerField(8)]
-		public RefArray<ValueSelectorEntry> Inputs { get; set; } = new RefArray<ValueSelectorEntry>(); // 0x8 (8)
+		protected RefArray<ValueSelectorEntry> m_Inputs = new RefArray<ValueSelectorEntry>();
+		[ContainerField(8), ContainerFieldNameHash(2784267136)]
+		public RefArray<ValueSelectorEntry> Inputs { get { return m_Inputs; } set { if (OnPropertyChanging("ValueSelectorNodeData." + nameof(Inputs), this, m_Inputs, value)) m_Inputs = value; } } // 0x8 (8)
 		
-		[ContainerField(12)]
-		public AudioGraphNodePort Value { get; set; } = new AudioGraphNodePort(); // 0xC (12)
+		protected AudioGraphNodePort m_Value = new AudioGraphNodePort();
+		[ContainerField(12), ContainerFieldNameHash(225375086)]
+		public AudioGraphNodePort Value { get { return m_Value; } set { if (OnPropertyChanging("ValueSelectorNodeData." + nameof(Value), this, m_Value, value)) m_Value = value; } } // 0xC (12)
 		
-		[ContainerField(20)]
-		public AudioGraphNodePort Out { get; set; } = new AudioGraphNodePort(); // 0x14 (20)
+		protected AudioGraphNodePort m_Out = new AudioGraphNodePort();
+		[ContainerField(20), ContainerFieldNameHash(193453899)]
+		public AudioGraphNodePort Out { get { return m_Out; } set { if (OnPropertyChanging("ValueSelectorNodeData." + nameof(Out), this, m_Out, value)) m_Out = value; } } // 0x14 (20)
 		
-		[ContainerField(28), LayoutImmutable, Blittable]
-		public float DefaultCaseValue { get; set; } // 0x1C (28)
+		protected float m_DefaultCaseValue = new float();
+		[ContainerField(28), LayoutImmutable, Blittable, ContainerFieldNameHash(3296679953)]
+		public float DefaultCaseValue { get { return m_DefaultCaseValue; } set { if (OnPropertyChanging("ValueSelectorNodeData." + nameof(DefaultCaseValue), this, m_DefaultCaseValue, value)) m_DefaultCaseValue = value; } } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

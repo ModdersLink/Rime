@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class SoundGraphAsset : 
 		SoundAsset
 	{
-		[ContainerField(16)]
-		public CtrRef<SoundGraphData> Graph { get; set; } = new CtrRef<SoundGraphData>(); // 0x10 (16)
+		protected CtrRef<SoundGraphData> m_Graph = new CtrRef<SoundGraphData>();
+		[ContainerField(16), ContainerFieldNameHash(208111145)]
+		public CtrRef<SoundGraphData> Graph { get { return m_Graph; } set { if (OnPropertyChanging("SoundGraphAsset." + nameof(Graph), this, m_Graph, value)) m_Graph = value; } } // 0x10 (16)
 		
-		[ContainerField(20)]
-		public CtrRef<MixerAsset> Mixer { get; set; } = new CtrRef<MixerAsset>(); // 0x14 (20)
+		protected CtrRef<MixerAsset> m_Mixer = new CtrRef<MixerAsset>();
+		[ContainerField(20), ContainerFieldNameHash(209965422)]
+		public CtrRef<MixerAsset> Mixer { get { return m_Mixer; } set { if (OnPropertyChanging("SoundGraphAsset." + nameof(Mixer), this, m_Mixer, value)) m_Mixer = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

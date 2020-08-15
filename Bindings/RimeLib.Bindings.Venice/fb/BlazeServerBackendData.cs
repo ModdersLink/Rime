@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class BlazeServerBackendData : 
 		ServerBackendData
 	{
-		[ContainerField(16)]
-		public BlazeCreateGameParameters CreateParameters { get; set; } = new BlazeCreateGameParameters(); // 0x10 (16)
+		protected BlazeCreateGameParameters m_CreateParameters = new BlazeCreateGameParameters();
+		[ContainerField(16), ContainerFieldNameHash(4233299195)]
+		public BlazeCreateGameParameters CreateParameters { get { return m_CreateParameters; } set { if (OnPropertyChanging("BlazeServerBackendData." + nameof(CreateParameters), this, m_CreateParameters, value)) m_CreateParameters = value; } } // 0x10 (16)
 		
-		[ContainerField(48)]
-		public OnlineEnvironmentConsoleUrl ConfigUrl { get; set; } = new OnlineEnvironmentConsoleUrl(); // 0x30 (48)
+		protected OnlineEnvironmentConsoleUrl m_ConfigUrl = new OnlineEnvironmentConsoleUrl();
+		[ContainerField(48), ContainerFieldNameHash(1873884036)]
+		public OnlineEnvironmentConsoleUrl ConfigUrl { get { return m_ConfigUrl; } set { if (OnPropertyChanging("BlazeServerBackendData." + nameof(ConfigUrl), this, m_ConfigUrl, value)) m_ConfigUrl = value; } } // 0x30 (48)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

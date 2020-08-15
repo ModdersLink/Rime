@@ -5,26 +5,38 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class TextureCompressSettings : 
 		DataContainer
 	{
-		[ContainerField(8)]
-		public TextureCompressQualityMode ViewMode { get; set; } = new TextureCompressQualityMode(); // 0x8 (8)
+		protected TextureCompressQualityMode m_ViewMode = new TextureCompressQualityMode();
+		[ContainerField(8), ContainerFieldNameHash(381898379)]
+		public TextureCompressQualityMode ViewMode { get { return m_ViewMode; } set { if (OnPropertyChanging("TextureCompressSettings." + nameof(ViewMode), this, m_ViewMode, value)) m_ViewMode = value; } } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public uint TextureCompressJobPoolSize { get; set; } // 0xC (12)
+		protected uint m_TextureCompressJobPoolSize = new uint();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(3498014626)]
+		public uint TextureCompressJobPoolSize { get { return m_TextureCompressJobPoolSize; } set { if (OnPropertyChanging("TextureCompressSettings." + nameof(TextureCompressJobPoolSize), this, m_TextureCompressJobPoolSize, value)) m_TextureCompressJobPoolSize = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public float DebugDrawAlphaOverlayScale { get; set; } // 0x10 (16)
+		protected float m_DebugDrawAlphaOverlayScale = new float();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(3510039778)]
+		public float DebugDrawAlphaOverlayScale { get { return m_DebugDrawAlphaOverlayScale; } set { if (OnPropertyChanging("TextureCompressSettings." + nameof(DebugDrawAlphaOverlayScale), this, m_DebugDrawAlphaOverlayScale, value)) m_DebugDrawAlphaOverlayScale = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
-		public bool DebugDrawEnable { get; set; } // 0x14 (20)
+		protected bool m_DebugDrawEnable = new bool();
+		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(1058766101)]
+		public bool DebugDrawEnable { get { return m_DebugDrawEnable; } set { if (OnPropertyChanging("TextureCompressSettings." + nameof(DebugDrawEnable), this, m_DebugDrawEnable, value)) m_DebugDrawEnable = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

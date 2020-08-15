@@ -5,20 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class NFSUIListDataBinding : 
 		UIDataBinding
 	{
-		[ContainerField(8)]
-		public UIDataSourceInfo Refresh { get; set; } = new UIDataSourceInfo(); // 0x8 (8)
+		protected UIDataSourceInfo m_Refresh = new UIDataSourceInfo();
+		[ContainerField(8), ContainerFieldNameHash(1327541432)]
+		public UIDataSourceInfo Refresh { get { return m_Refresh; } set { if (OnPropertyChanging("NFSUIListDataBinding." + nameof(Refresh), this, m_Refresh, value)) m_Refresh = value; } } // 0x8 (8)
 		
-		[ContainerField(24)]
-		public List<UIListItem> Items { get; set; } = new List<UIListItem>(); // 0x18 (24)
+		protected List<UIListItem> m_Items = new List<UIListItem>();
+		[ContainerField(24), ContainerFieldNameHash(215446531)]
+		public List<UIListItem> Items { get { return m_Items; } set { if (OnPropertyChanging("NFSUIListDataBinding." + nameof(Items), this, m_Items, value)) m_Items = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

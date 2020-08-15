@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class ShaderParamsComponentData : 
 		ComponentData
 	{
-		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable]
-		public Vec4 Value { get; set; } = new Vec4(); // 0x60 (96)
+		protected Vec4 m_Value = new Vec4();
+		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(225375086)]
+		public Vec4 Value { get { return m_Value; } set { if (OnPropertyChanging("ShaderParamsComponentData." + nameof(Value), this, m_Value, value)) m_Value = value; } } // 0x60 (96)
 		
-		[ContainerField(112), LayoutImmutable]
-		public string ParameterName { get; set; } // 0x70 (112)
+		protected string m_ParameterName = new string();
+		[ContainerField(112), LayoutImmutable, ContainerFieldNameHash(1568946859)]
+		public string ParameterName { get { return m_ParameterName; } set { if (OnPropertyChanging("ShaderParamsComponentData." + nameof(ParameterName), this, m_ParameterName, value)) m_ParameterName = value; } } // 0x70 (112)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

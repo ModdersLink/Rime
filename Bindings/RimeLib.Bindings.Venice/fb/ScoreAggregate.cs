@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(8)]
+	[ContainerType(8)]
 	public class ScoreAggregate : 
 		MetricAggregate
 	{
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public float TotalScore { get; set; } // 0x10 (16)
+		protected float m_TotalScore = new float();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(4045234607)]
+		public float TotalScore { get { return m_TotalScore; } set { if (OnPropertyChanging("ScoreAggregate." + nameof(TotalScore), this, m_TotalScore, value)) m_TotalScore = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

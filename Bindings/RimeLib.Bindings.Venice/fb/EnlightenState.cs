@@ -5,49 +5,70 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class EnlightenState : 
 		DataContainer
 	{
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 SkyBoxGroundColor { get; set; } = new Vec3(); // 0x10 (16)
+		protected Vec3 m_SkyBoxGroundColor = new Vec3();
+		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(2438224137)]
+		public Vec3 SkyBoxGroundColor { get { return m_SkyBoxGroundColor; } set { if (OnPropertyChanging("EnlightenState." + nameof(SkyBoxGroundColor), this, m_SkyBoxGroundColor, value)) m_SkyBoxGroundColor = value; } } // 0x10 (16)
 		
-		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 SkyBoxSunLightColor { get; set; } = new Vec3(); // 0x20 (32)
+		protected Vec3 m_SkyBoxSunLightColor = new Vec3();
+		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(2622963034)]
+		public Vec3 SkyBoxSunLightColor { get { return m_SkyBoxSunLightColor; } set { if (OnPropertyChanging("EnlightenState." + nameof(SkyBoxSunLightColor), this, m_SkyBoxSunLightColor, value)) m_SkyBoxSunLightColor = value; } } // 0x20 (32)
 		
-		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 SkyBoxBackLightColor { get; set; } = new Vec3(); // 0x30 (48)
+		protected Vec3 m_SkyBoxBackLightColor = new Vec3();
+		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(554253337)]
+		public Vec3 SkyBoxBackLightColor { get { return m_SkyBoxBackLightColor; } set { if (OnPropertyChanging("EnlightenState." + nameof(SkyBoxBackLightColor), this, m_SkyBoxBackLightColor, value)) m_SkyBoxBackLightColor = value; } } // 0x30 (48)
 		
-		[ContainerField(64), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 SkyBoxSkyColor { get; set; } = new Vec3(); // 0x40 (64)
+		protected Vec3 m_SkyBoxSkyColor = new Vec3();
+		[ContainerField(64), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(573165997)]
+		public Vec3 SkyBoxSkyColor { get { return m_SkyBoxSkyColor; } set { if (OnPropertyChanging("EnlightenState." + nameof(SkyBoxSkyColor), this, m_SkyBoxSkyColor, value)) m_SkyBoxSkyColor = value; } } // 0x40 (64)
 		
-		[ContainerField(80), LayoutImmutable, Blittable]
-		public float SunScale { get; set; } // 0x50 (80)
+		protected float m_SunScale = new float();
+		[ContainerField(80), LayoutImmutable, Blittable, ContainerFieldNameHash(2209231701)]
+		public float SunScale { get { return m_SunScale; } set { if (OnPropertyChanging("EnlightenState." + nameof(SunScale), this, m_SunScale, value)) m_SunScale = value; } } // 0x50 (80)
 		
-		[ContainerField(84), LayoutImmutable, Blittable]
-		public float OutputScale { get; set; } // 0x54 (84)
+		protected float m_OutputScale = new float();
+		[ContainerField(84), LayoutImmutable, Blittable, ContainerFieldNameHash(734776130)]
+		public float OutputScale { get { return m_OutputScale; } set { if (OnPropertyChanging("EnlightenState." + nameof(OutputScale), this, m_OutputScale, value)) m_OutputScale = value; } } // 0x54 (84)
 		
-		[ContainerField(88), LayoutImmutable, Blittable]
-		public float BounceScale { get; set; } // 0x58 (88)
+		protected float m_BounceScale = new float();
+		[ContainerField(88), LayoutImmutable, Blittable, ContainerFieldNameHash(1158285805)]
+		public float BounceScale { get { return m_BounceScale; } set { if (OnPropertyChanging("EnlightenState." + nameof(BounceScale), this, m_BounceScale, value)) m_BounceScale = value; } } // 0x58 (88)
 		
-		[ContainerField(92), LayoutImmutable, Blittable]
-		public float SkyBoxSunLightColorSize { get; set; } // 0x5C (92)
+		protected float m_SkyBoxSunLightColorSize = new float();
+		[ContainerField(92), LayoutImmutable, Blittable, ContainerFieldNameHash(1176662367)]
+		public float SkyBoxSunLightColorSize { get { return m_SkyBoxSunLightColorSize; } set { if (OnPropertyChanging("EnlightenState." + nameof(SkyBoxSunLightColorSize), this, m_SkyBoxSunLightColorSize, value)) m_SkyBoxSunLightColorSize = value; } } // 0x5C (92)
 		
-		[ContainerField(96), LayoutImmutable, Blittable]
-		public float SkyBoxBackLightRotationY { get; set; } // 0x60 (96)
+		protected float m_SkyBoxBackLightRotationY = new float();
+		[ContainerField(96), LayoutImmutable, Blittable, ContainerFieldNameHash(533859401)]
+		public float SkyBoxBackLightRotationY { get { return m_SkyBoxBackLightRotationY; } set { if (OnPropertyChanging("EnlightenState." + nameof(SkyBoxBackLightRotationY), this, m_SkyBoxBackLightRotationY, value)) m_SkyBoxBackLightRotationY = value; } } // 0x60 (96)
 		
-		[ContainerField(100), LayoutImmutable, Blittable]
-		public float SkyBoxBackLightColorSize { get; set; } // 0x64 (100)
+		protected float m_SkyBoxBackLightColorSize = new float();
+		[ContainerField(100), LayoutImmutable, Blittable, ContainerFieldNameHash(3173445660)]
+		public float SkyBoxBackLightColorSize { get { return m_SkyBoxBackLightColorSize; } set { if (OnPropertyChanging("EnlightenState." + nameof(SkyBoxBackLightColorSize), this, m_SkyBoxBackLightColorSize, value)) m_SkyBoxBackLightColorSize = value; } } // 0x64 (100)
 		
-		[ContainerField(104), LayoutImmutable, Blittable]
-		public float SkyBoxBackLightRotationX { get; set; } // 0x68 (104)
+		protected float m_SkyBoxBackLightRotationX = new float();
+		[ContainerField(104), LayoutImmutable, Blittable, ContainerFieldNameHash(533859400)]
+		public float SkyBoxBackLightRotationX { get { return m_SkyBoxBackLightRotationX; } set { if (OnPropertyChanging("EnlightenState." + nameof(SkyBoxBackLightRotationX), this, m_SkyBoxBackLightRotationX, value)) m_SkyBoxBackLightRotationX = value; } } // 0x68 (104)
 		
-		[ContainerField(108), LayoutImmutable, Blittable]
-		public bool SkyBoxEnable { get; set; } // 0x6C (108)
+		protected bool m_SkyBoxEnable = new bool();
+		[ContainerField(108), LayoutImmutable, Blittable, ContainerFieldNameHash(2201282448)]
+		public bool SkyBoxEnable { get { return m_SkyBoxEnable; } set { if (OnPropertyChanging("EnlightenState." + nameof(SkyBoxEnable), this, m_SkyBoxEnable, value)) m_SkyBoxEnable = value; } } // 0x6C (108)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

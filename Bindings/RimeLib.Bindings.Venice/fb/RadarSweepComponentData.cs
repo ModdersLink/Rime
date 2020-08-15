@@ -5,34 +5,50 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class RadarSweepComponentData : 
 		ComponentData
 	{
-		[ContainerField(96), LayoutImmutable, Blittable]
-		public float ControllableSpeedThreshold { get; set; } // 0x60 (96)
+		protected float m_ControllableSpeedThreshold = new float();
+		[ContainerField(96), LayoutImmutable, Blittable, ContainerFieldNameHash(1580205332)]
+		public float ControllableSpeedThreshold { get { return m_ControllableSpeedThreshold; } set { if (OnPropertyChanging("RadarSweepComponentData." + nameof(ControllableSpeedThreshold), this, m_ControllableSpeedThreshold, value)) m_ControllableSpeedThreshold = value; } } // 0x60 (96)
 		
-		[ContainerField(100), LayoutImmutable, Blittable]
-		public float ControllableSweepRadius { get; set; } // 0x64 (100)
+		protected float m_ControllableSweepRadius = new float();
+		[ContainerField(100), LayoutImmutable, Blittable, ContainerFieldNameHash(3505857000)]
+		public float ControllableSweepRadius { get { return m_ControllableSweepRadius; } set { if (OnPropertyChanging("RadarSweepComponentData." + nameof(ControllableSweepRadius), this, m_ControllableSweepRadius, value)) m_ControllableSweepRadius = value; } } // 0x64 (100)
 		
-		[ContainerField(104), LayoutImmutable, Blittable]
-		public float ControllableSweepInterval { get; set; } // 0x68 (104)
+		protected float m_ControllableSweepInterval = new float();
+		[ContainerField(104), LayoutImmutable, Blittable, ContainerFieldNameHash(147831503)]
+		public float ControllableSweepInterval { get { return m_ControllableSweepInterval; } set { if (OnPropertyChanging("RadarSweepComponentData." + nameof(ControllableSweepInterval), this, m_ControllableSweepInterval, value)) m_ControllableSweepInterval = value; } } // 0x68 (104)
 		
-		[ContainerField(108), LayoutImmutable, Blittable]
-		public float MineSweepInterval { get; set; } // 0x6C (108)
+		protected float m_MineSweepInterval = new float();
+		[ContainerField(108), LayoutImmutable, Blittable, ContainerFieldNameHash(2712402273)]
+		public float MineSweepInterval { get { return m_MineSweepInterval; } set { if (OnPropertyChanging("RadarSweepComponentData." + nameof(MineSweepInterval), this, m_MineSweepInterval, value)) m_MineSweepInterval = value; } } // 0x6C (108)
 		
-		[ContainerField(112), LayoutImmutable, Blittable]
-		public float MineSweepRadius { get; set; } // 0x70 (112)
+		protected float m_MineSweepRadius = new float();
+		[ContainerField(112), LayoutImmutable, Blittable, ContainerFieldNameHash(2857682054)]
+		public float MineSweepRadius { get { return m_MineSweepRadius; } set { if (OnPropertyChanging("RadarSweepComponentData." + nameof(MineSweepRadius), this, m_MineSweepRadius, value)) m_MineSweepRadius = value; } } // 0x70 (112)
 		
-		[ContainerField(116), LayoutImmutable, Blittable]
-		public bool SweepForMines { get; set; } // 0x74 (116)
+		protected bool m_SweepForMines = new bool();
+		[ContainerField(116), LayoutImmutable, Blittable, ContainerFieldNameHash(3062743734)]
+		public bool SweepForMines { get { return m_SweepForMines; } set { if (OnPropertyChanging("RadarSweepComponentData." + nameof(SweepForMines), this, m_SweepForMines, value)) m_SweepForMines = value; } } // 0x74 (116)
 		
-		[ContainerField(117), LayoutImmutable, Blittable]
-		public bool SweepForControllables { get; set; } // 0x75 (117)
+		protected bool m_SweepForControllables = new bool();
+		[ContainerField(117), LayoutImmutable, Blittable, ContainerFieldNameHash(140300376)]
+		public bool SweepForControllables { get { return m_SweepForControllables; } set { if (OnPropertyChanging("RadarSweepComponentData." + nameof(SweepForControllables), this, m_SweepForControllables, value)) m_SweepForControllables = value; } } // 0x75 (117)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

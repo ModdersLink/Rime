@@ -5,29 +5,42 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class SimpleMovementActionData : 
 		SimpleMovementActionBaseData
 	{
-		[ContainerField(24), LayoutImmutable, Blittable]
-		public float Level { get; set; } // 0x18 (24)
+		protected float m_Level = new float();
+		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(218262515)]
+		public float Level { get { return m_Level; } set { if (OnPropertyChanging("SimpleMovementActionData." + nameof(Level), this, m_Level, value)) m_Level = value; } } // 0x18 (24)
 		
-		[ContainerField(28)]
-		public EntryInputActionEnum Action { get; set; } = new EntryInputActionEnum(); // 0x1C (28)
+		protected EntryInputActionEnum m_Action = new EntryInputActionEnum();
+		[ContainerField(28), ContainerFieldNameHash(2484178491)]
+		public EntryInputActionEnum Action { get { return m_Action; } set { if (OnPropertyChanging("SimpleMovementActionData." + nameof(Action), this, m_Action, value)) m_Action = value; } } // 0x1C (28)
 		
-		[ContainerField(32), LayoutImmutable, Blittable]
-		public int SpecialAnimationIndex { get; set; } // 0x20 (32)
+		protected int m_SpecialAnimationIndex = new int();
+		[ContainerField(32), LayoutImmutable, Blittable, ContainerFieldNameHash(502517260)]
+		public int SpecialAnimationIndex { get { return m_SpecialAnimationIndex; } set { if (OnPropertyChanging("SimpleMovementActionData." + nameof(SpecialAnimationIndex), this, m_SpecialAnimationIndex, value)) m_SpecialAnimationIndex = value; } } // 0x20 (32)
 		
-		[ContainerField(36), LayoutImmutable, Blittable]
-		public bool Respawn { get; set; } // 0x24 (36)
+		protected bool m_Respawn = new bool();
+		[ContainerField(36), LayoutImmutable, Blittable, ContainerFieldNameHash(1303651241)]
+		public bool Respawn { get { return m_Respawn; } set { if (OnPropertyChanging("SimpleMovementActionData." + nameof(Respawn), this, m_Respawn, value)) m_Respawn = value; } } // 0x24 (36)
 		
-		[ContainerField(37), LayoutImmutable, Blittable]
-		public bool Teleport { get; set; } // 0x25 (37)
+		protected bool m_Teleport = new bool();
+		[ContainerField(37), LayoutImmutable, Blittable, ContainerFieldNameHash(2495240740)]
+		public bool Teleport { get { return m_Teleport; } set { if (OnPropertyChanging("SimpleMovementActionData." + nameof(Teleport), this, m_Teleport, value)) m_Teleport = value; } } // 0x25 (37)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

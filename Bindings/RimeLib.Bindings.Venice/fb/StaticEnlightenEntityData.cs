@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class StaticEnlightenEntityData : 
 		EnlightenEntityData
 	{
-		[ContainerField(24)]
-		public CtrRef<StaticEnlightenData> EnlightenData { get; set; } = new CtrRef<StaticEnlightenData>(); // 0x18 (24)
+		protected CtrRef<StaticEnlightenData> m_EnlightenData = new CtrRef<StaticEnlightenData>();
+		[ContainerField(24), ContainerFieldNameHash(1802220171)]
+		public CtrRef<StaticEnlightenData> EnlightenData { get { return m_EnlightenData; } set { if (OnPropertyChanging("StaticEnlightenEntityData." + nameof(EnlightenData), this, m_EnlightenData, value)) m_EnlightenData = value; } } // 0x18 (24)
 		
-		[ContainerField(28)]
-		public CtrRef<EnlightenDataAsset> DynamicEnlightenData { get; set; } = new CtrRef<EnlightenDataAsset>(); // 0x1C (28)
+		protected CtrRef<EnlightenDataAsset> m_DynamicEnlightenData = new CtrRef<EnlightenDataAsset>();
+		[ContainerField(28), ContainerFieldNameHash(79303358)]
+		public CtrRef<EnlightenDataAsset> DynamicEnlightenData { get { return m_DynamicEnlightenData; } set { if (OnPropertyChanging("StaticEnlightenEntityData." + nameof(DynamicEnlightenData), this, m_DynamicEnlightenData, value)) m_DynamicEnlightenData = value; } } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

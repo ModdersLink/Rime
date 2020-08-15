@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class RepairToolWeaponData : 
 		PowerToolWeaponData
 	{
-		[ContainerField(36), LayoutImmutable, Blittable]
-		public float RechargeSpeed { get; set; } // 0x24 (36)
+		protected float m_RechargeSpeed = new float();
+		[ContainerField(36), LayoutImmutable, Blittable, ContainerFieldNameHash(171564847)]
+		public float RechargeSpeed { get { return m_RechargeSpeed; } set { if (OnPropertyChanging("RepairToolWeaponData." + nameof(RechargeSpeed), this, m_RechargeSpeed, value)) m_RechargeSpeed = value; } } // 0x24 (36)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

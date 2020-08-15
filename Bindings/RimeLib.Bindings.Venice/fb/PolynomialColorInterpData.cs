@@ -5,22 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class PolynomialColorInterpData : 
 		EvaluatorData
 	{
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 Color0 { get; set; } = new Vec3(); // 0x10 (16)
+		protected Vec3 m_Color0 = new Vec3();
+		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(2713814216)]
+		public Vec3 Color0 { get { return m_Color0; } set { if (OnPropertyChanging("PolynomialColorInterpData." + nameof(Color0), this, m_Color0, value)) m_Color0 = value; } } // 0x10 (16)
 		
-		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 Color1 { get; set; } = new Vec3(); // 0x20 (32)
+		protected Vec3 m_Color1 = new Vec3();
+		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(2713814217)]
+		public Vec3 Color1 { get { return m_Color1; } set { if (OnPropertyChanging("PolynomialColorInterpData." + nameof(Color1), this, m_Color1, value)) m_Color1 = value; } } // 0x20 (32)
 		
-		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable]
-		public Vec4 Coefficients { get; set; } = new Vec4(); // 0x30 (48)
+		protected Vec4 m_Coefficients = new Vec4();
+		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(2816855587)]
+		public Vec4 Coefficients { get { return m_Coefficients; } set { if (OnPropertyChanging("PolynomialColorInterpData." + nameof(Coefficients), this, m_Coefficients, value)) m_Coefficients = value; } } // 0x30 (48)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

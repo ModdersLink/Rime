@@ -5,17 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class ChunkStreamerEntityData : 
 		EntityData
 	{
-		[ContainerField(12)]
-		public List<ChunkStreamerCell> Cells { get; set; } = new List<ChunkStreamerCell>(); // 0xC (12)
+		protected List<ChunkStreamerCell> m_Cells = new List<ChunkStreamerCell>();
+		[ContainerField(12), ContainerFieldNameHash(212327888)]
+		public List<ChunkStreamerCell> Cells { get { return m_Cells; } set { if (OnPropertyChanging("ChunkStreamerEntityData." + nameof(Cells), this, m_Cells, value)) m_Cells = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

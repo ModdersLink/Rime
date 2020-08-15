@@ -5,17 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class VeniceMapMarkerHudData : 
 		DataContainer
 	{
-		[ContainerField(8)]
-		public UIHudIcon Icon { get; set; } = new UIHudIcon(); // 0x8 (8)
+		protected UIHudIcon m_Icon = new UIHudIcon();
+		[ContainerField(8), ContainerFieldNameHash(2088920302)]
+		public UIHudIcon Icon { get { return m_Icon; } set { if (OnPropertyChanging("VeniceMapMarkerHudData." + nameof(Icon), this, m_Icon, value)) m_Icon = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

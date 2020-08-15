@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class VisualEnvironmentEntityData : 
 		GameEntityData
 	{
-		[ContainerField(96), LayoutImmutable, Blittable]
-		public float Visibility { get; set; } // 0x60 (96)
+		protected float m_Visibility = new float();
+		[ContainerField(96), LayoutImmutable, Blittable, ContainerFieldNameHash(1708270083)]
+		public float Visibility { get { return m_Visibility; } set { if (OnPropertyChanging("VisualEnvironmentEntityData." + nameof(Visibility), this, m_Visibility, value)) m_Visibility = value; } } // 0x60 (96)
 		
-		[ContainerField(100), LayoutImmutable, Blittable]
-		public int Priority { get; set; } // 0x64 (100)
+		protected int m_Priority = new int();
+		[ContainerField(100), LayoutImmutable, Blittable, ContainerFieldNameHash(3062102871)]
+		public int Priority { get { return m_Priority; } set { if (OnPropertyChanging("VisualEnvironmentEntityData." + nameof(Priority), this, m_Priority, value)) m_Priority = value; } } // 0x64 (100)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class IntUnlockValuePair : 
 		UnlockValuePair
 	{
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public int DefaultValue { get; set; } // 0xC (12)
+		protected int m_DefaultValue = new int();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(2066049125)]
+		public int DefaultValue { get { return m_DefaultValue; } set { if (OnPropertyChanging("IntUnlockValuePair." + nameof(DefaultValue), this, m_DefaultValue, value)) m_DefaultValue = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public int UnlockedValue { get; set; } // 0x10 (16)
+		protected int m_UnlockedValue = new int();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(2493912799)]
+		public int UnlockedValue { get { return m_UnlockedValue; } set { if (OnPropertyChanging("IntUnlockValuePair." + nameof(UnlockedValue), this, m_UnlockedValue, value)) m_UnlockedValue = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

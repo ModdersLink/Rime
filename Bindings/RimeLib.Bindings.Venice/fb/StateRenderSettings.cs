@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class StateRenderSettings : 
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable, Blittable]
-		public bool Ps3PixelShaderConstantsEnable { get; set; } // 0x8 (8)
+		protected bool m_Ps3PixelShaderConstantsEnable = new bool();
+		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(4042857272)]
+		public bool Ps3PixelShaderConstantsEnable { get { return m_Ps3PixelShaderConstantsEnable; } set { if (OnPropertyChanging("StateRenderSettings." + nameof(Ps3PixelShaderConstantsEnable), this, m_Ps3PixelShaderConstantsEnable, value)) m_Ps3PixelShaderConstantsEnable = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

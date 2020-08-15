@@ -5,17 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class EdgeModelLightMapData : 
 		DataContainer
 	{
-		[ContainerField(8)]
-		public List<Vec4> LightMapUvs { get; set; } = new List<Vec4>(); // 0x8 (8)
+		protected List<Vec4> m_LightMapUvs = new List<Vec4>();
+		[ContainerField(8), ContainerFieldNameHash(397898871)]
+		public List<Vec4> LightMapUvs { get { return m_LightMapUvs; } set { if (OnPropertyChanging("EdgeModelLightMapData." + nameof(LightMapUvs), this, m_LightMapUvs, value)) m_LightMapUvs = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,32 +5,46 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class EntityBusData : 
 		DataBusData
 	{
-		[ContainerField(20)]
-		public List<EventConnection> EventConnections { get; set; } = new List<EventConnection>(); // 0x14 (20)
+		protected List<EventConnection> m_EventConnections = new List<EventConnection>();
+		[ContainerField(20), ContainerFieldNameHash(2156913324)]
+		public List<EventConnection> EventConnections { get { return m_EventConnections; } set { if (OnPropertyChanging("EntityBusData." + nameof(EventConnections), this, m_EventConnections, value)) m_EventConnections = value; } } // 0x14 (20)
 		
-		[ContainerField(24)]
-		public CtrRef<InterfaceDescriptorData> Descriptor { get; set; } = new CtrRef<InterfaceDescriptorData>(); // 0x18 (24)
+		protected CtrRef<InterfaceDescriptorData> m_Descriptor = new CtrRef<InterfaceDescriptorData>();
+		[ContainerField(24), ContainerFieldNameHash(570198198)]
+		public CtrRef<InterfaceDescriptorData> Descriptor { get { return m_Descriptor; } set { if (OnPropertyChanging("EntityBusData." + nameof(Descriptor), this, m_Descriptor, value)) m_Descriptor = value; } } // 0x18 (24)
 		
-		[ContainerField(28), LayoutImmutable, Blittable]
-		public bool NeedNetworkId { get; set; } // 0x1C (28)
+		protected bool m_NeedNetworkId = new bool();
+		[ContainerField(28), LayoutImmutable, Blittable, ContainerFieldNameHash(795823100)]
+		public bool NeedNetworkId { get { return m_NeedNetworkId; } set { if (OnPropertyChanging("EntityBusData." + nameof(NeedNetworkId), this, m_NeedNetworkId, value)) m_NeedNetworkId = value; } } // 0x1C (28)
 		
-		[ContainerField(29), LayoutImmutable, Blittable]
-		public bool InterfaceHasConnections { get; set; } // 0x1D (29)
+		protected bool m_InterfaceHasConnections = new bool();
+		[ContainerField(29), LayoutImmutable, Blittable, ContainerFieldNameHash(2720026687)]
+		public bool InterfaceHasConnections { get { return m_InterfaceHasConnections; } set { if (OnPropertyChanging("EntityBusData." + nameof(InterfaceHasConnections), this, m_InterfaceHasConnections, value)) m_InterfaceHasConnections = value; } } // 0x1D (29)
 		
-		[ContainerField(30), LayoutImmutable, Blittable]
-		public bool AlwaysCreateEntityBusClient { get; set; } // 0x1E (30)
+		protected bool m_AlwaysCreateEntityBusClient = new bool();
+		[ContainerField(30), LayoutImmutable, Blittable, ContainerFieldNameHash(2906839318)]
+		public bool AlwaysCreateEntityBusClient { get { return m_AlwaysCreateEntityBusClient; } set { if (OnPropertyChanging("EntityBusData." + nameof(AlwaysCreateEntityBusClient), this, m_AlwaysCreateEntityBusClient, value)) m_AlwaysCreateEntityBusClient = value; } } // 0x1E (30)
 		
-		[ContainerField(31), LayoutImmutable, Blittable]
-		public bool AlwaysCreateEntityBusServer { get; set; } // 0x1F (31)
+		protected bool m_AlwaysCreateEntityBusServer = new bool();
+		[ContainerField(31), LayoutImmutable, Blittable, ContainerFieldNameHash(3549699146)]
+		public bool AlwaysCreateEntityBusServer { get { return m_AlwaysCreateEntityBusServer; } set { if (OnPropertyChanging("EntityBusData." + nameof(AlwaysCreateEntityBusServer), this, m_AlwaysCreateEntityBusServer, value)) m_AlwaysCreateEntityBusServer = value; } } // 0x1F (31)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

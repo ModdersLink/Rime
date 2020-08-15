@@ -5,69 +5,94 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class VoiceOverManuscriptAsset : 
 		Asset
 	{
-		[ContainerField(12)]
-		public CtrRef<AudioLanguage> MasterLanguage { get; set; } = new CtrRef<AudioLanguage>(); // 0xC (12)
+		protected CtrRef<AudioLanguage> m_MasterLanguage = new CtrRef<AudioLanguage>();
+		[ContainerField(12), ContainerFieldNameHash(1351373419)]
+		public CtrRef<AudioLanguage> MasterLanguage { get { return m_MasterLanguage; } set { if (OnPropertyChanging("VoiceOverManuscriptAsset." + nameof(MasterLanguage), this, m_MasterLanguage, value)) m_MasterLanguage = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public RefArray<VoiceOverLanguageRoot> Languages { get; set; } = new RefArray<VoiceOverLanguageRoot>(); // 0x10 (16)
+		protected RefArray<VoiceOverLanguageRoot> m_Languages = new RefArray<VoiceOverLanguageRoot>();
+		[ContainerField(16), ContainerFieldNameHash(3231948516)]
+		public RefArray<VoiceOverLanguageRoot> Languages { get { return m_Languages; } set { if (OnPropertyChanging("VoiceOverManuscriptAsset." + nameof(Languages), this, m_Languages, value)) m_Languages = value; } } // 0x10 (16)
 		
-		[ContainerField(20)]
-		public VoiceOverWaveNameTranslation NameTranslation { get; set; } = new VoiceOverWaveNameTranslation(); // 0x14 (20)
+		protected VoiceOverWaveNameTranslation m_NameTranslation = new VoiceOverWaveNameTranslation();
+		[ContainerField(20), ContainerFieldNameHash(3008262953)]
+		public VoiceOverWaveNameTranslation NameTranslation { get { return m_NameTranslation; } set { if (OnPropertyChanging("VoiceOverManuscriptAsset." + nameof(NameTranslation), this, m_NameTranslation, value)) m_NameTranslation = value; } } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable]
-		public string SheetName { get; set; } // 0x18 (24)
+		protected string m_SheetName = new string();
+		[ContainerField(24), LayoutImmutable, ContainerFieldNameHash(1655714573)]
+		public string SheetName { get { return m_SheetName; } set { if (OnPropertyChanging("VoiceOverManuscriptAsset." + nameof(SheetName), this, m_SheetName, value)) m_SheetName = value; } } // 0x18 (24)
 		
-		[ContainerField(28), LayoutImmutable]
-		public string StringIdColumn { get; set; } // 0x1C (28)
+		protected string m_StringIdColumn = new string();
+		[ContainerField(28), LayoutImmutable, ContainerFieldNameHash(2316948715)]
+		public string StringIdColumn { get { return m_StringIdColumn; } set { if (OnPropertyChanging("VoiceOverManuscriptAsset." + nameof(StringIdColumn), this, m_StringIdColumn, value)) m_StringIdColumn = value; } } // 0x1C (28)
 		
-		[ContainerField(32), LayoutImmutable]
-		public string FileNameColumn { get; set; } // 0x20 (32)
+		protected string m_FileNameColumn = new string();
+		[ContainerField(32), LayoutImmutable, ContainerFieldNameHash(30584978)]
+		public string FileNameColumn { get { return m_FileNameColumn; } set { if (OnPropertyChanging("VoiceOverManuscriptAsset." + nameof(FileNameColumn), this, m_FileNameColumn, value)) m_FileNameColumn = value; } } // 0x20 (32)
 		
-		[ContainerField(36), LayoutImmutable]
-		public string PathColumn { get; set; } // 0x24 (36)
+		protected string m_PathColumn = new string();
+		[ContainerField(36), LayoutImmutable, ContainerFieldNameHash(1657585950)]
+		public string PathColumn { get { return m_PathColumn; } set { if (OnPropertyChanging("VoiceOverManuscriptAsset." + nameof(PathColumn), this, m_PathColumn, value)) m_PathColumn = value; } } // 0x24 (36)
 		
-		[ContainerField(40), LayoutImmutable]
-		public string WaveAssetStatusColumn { get; set; } // 0x28 (40)
+		protected string m_WaveAssetStatusColumn = new string();
+		[ContainerField(40), LayoutImmutable, ContainerFieldNameHash(355976178)]
+		public string WaveAssetStatusColumn { get { return m_WaveAssetStatusColumn; } set { if (OnPropertyChanging("VoiceOverManuscriptAsset." + nameof(WaveAssetStatusColumn), this, m_WaveAssetStatusColumn, value)) m_WaveAssetStatusColumn = value; } } // 0x28 (40)
 		
-		[ContainerField(44), LayoutImmutable]
-		public string CharacterColumn { get; set; } // 0x2C (44)
+		protected string m_CharacterColumn = new string();
+		[ContainerField(44), LayoutImmutable, ContainerFieldNameHash(2622712842)]
+		public string CharacterColumn { get { return m_CharacterColumn; } set { if (OnPropertyChanging("VoiceOverManuscriptAsset." + nameof(CharacterColumn), this, m_CharacterColumn, value)) m_CharacterColumn = value; } } // 0x2C (44)
 		
-		[ContainerField(48), LayoutImmutable]
-		public string VoiceColumn { get; set; } // 0x30 (48)
+		protected string m_VoiceColumn = new string();
+		[ContainerField(48), LayoutImmutable, ContainerFieldNameHash(3950839045)]
+		public string VoiceColumn { get { return m_VoiceColumn; } set { if (OnPropertyChanging("VoiceOverManuscriptAsset." + nameof(VoiceColumn), this, m_VoiceColumn, value)) m_VoiceColumn = value; } } // 0x30 (48)
 		
-		[ContainerField(52), LayoutImmutable]
-		public string StringIdPrefix { get; set; } // 0x34 (52)
+		protected string m_StringIdPrefix = new string();
+		[ContainerField(52), LayoutImmutable, ContainerFieldNameHash(1766158509)]
+		public string StringIdPrefix { get { return m_StringIdPrefix; } set { if (OnPropertyChanging("VoiceOverManuscriptAsset." + nameof(StringIdPrefix), this, m_StringIdPrefix, value)) m_StringIdPrefix = value; } } // 0x34 (52)
 		
-		[ContainerField(56)]
-		public List<VoiceOverManuscriptLanguageColumns> LanguageColumns { get; set; } = new List<VoiceOverManuscriptLanguageColumns>(); // 0x38 (56)
+		protected List<VoiceOverManuscriptLanguageColumns> m_LanguageColumns = new List<VoiceOverManuscriptLanguageColumns>();
+		[ContainerField(56), ContainerFieldNameHash(1806550354)]
+		public List<VoiceOverManuscriptLanguageColumns> LanguageColumns { get { return m_LanguageColumns; } set { if (OnPropertyChanging("VoiceOverManuscriptAsset." + nameof(LanguageColumns), this, m_LanguageColumns, value)) m_LanguageColumns = value; } } // 0x38 (56)
 		
-		[ContainerField(60), LayoutImmutable, Blittable]
-		public int FirstContentRow { get; set; } // 0x3C (60)
+		protected int m_FirstContentRow = new int();
+		[ContainerField(60), LayoutImmutable, Blittable, ContainerFieldNameHash(1758802268)]
+		public int FirstContentRow { get { return m_FirstContentRow; } set { if (OnPropertyChanging("VoiceOverManuscriptAsset." + nameof(FirstContentRow), this, m_FirstContentRow, value)) m_FirstContentRow = value; } } // 0x3C (60)
 		
-		[ContainerField(64), LayoutImmutable]
-		public string OutputPath { get; set; } // 0x40 (64)
+		protected string m_OutputPath = new string();
+		[ContainerField(64), LayoutImmutable, ContainerFieldNameHash(542834903)]
+		public string OutputPath { get { return m_OutputPath; } set { if (OnPropertyChanging("VoiceOverManuscriptAsset." + nameof(OutputPath), this, m_OutputPath, value)) m_OutputPath = value; } } // 0x40 (64)
 		
-		[ContainerField(68)]
-		public CtrRef<StreamPoolAsset> StreamPool { get; set; } = new CtrRef<StreamPoolAsset>(); // 0x44 (68)
+		protected CtrRef<StreamPoolAsset> m_StreamPool = new CtrRef<StreamPoolAsset>();
+		[ContainerField(68), ContainerFieldNameHash(1617753829)]
+		public CtrRef<StreamPoolAsset> StreamPool { get { return m_StreamPool; } set { if (OnPropertyChanging("VoiceOverManuscriptAsset." + nameof(StreamPool), this, m_StreamPool, value)) m_StreamPool = value; } } // 0x44 (68)
 		
-		[ContainerField(72), LayoutImmutable, Blittable]
-		public bool KeepPath { get; set; } // 0x48 (72)
+		protected bool m_KeepPath = new bool();
+		[ContainerField(72), LayoutImmutable, Blittable, ContainerFieldNameHash(3967552211)]
+		public bool KeepPath { get { return m_KeepPath; } set { if (OnPropertyChanging("VoiceOverManuscriptAsset." + nameof(KeepPath), this, m_KeepPath, value)) m_KeepPath = value; } } // 0x48 (72)
 		
-		[ContainerField(73), LayoutImmutable, Blittable]
-		public bool StringIdUpperCase { get; set; } // 0x49 (73)
+		protected bool m_StringIdUpperCase = new bool();
+		[ContainerField(73), LayoutImmutable, Blittable, ContainerFieldNameHash(113383467)]
+		public bool StringIdUpperCase { get { return m_StringIdUpperCase; } set { if (OnPropertyChanging("VoiceOverManuscriptAsset." + nameof(StringIdUpperCase), this, m_StringIdUpperCase, value)) m_StringIdUpperCase = value; } } // 0x49 (73)
 		
-		[ContainerField(74), LayoutImmutable, Blittable]
-		public bool AllowDelete { get; set; } // 0x4A (74)
+		protected bool m_AllowDelete = new bool();
+		[ContainerField(74), LayoutImmutable, Blittable, ContainerFieldNameHash(3422513957)]
+		public bool AllowDelete { get { return m_AllowDelete; } set { if (OnPropertyChanging("VoiceOverManuscriptAsset." + nameof(AllowDelete), this, m_AllowDelete, value)) m_AllowDelete = value; } } // 0x4A (74)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class CharacterCameraComponentData : 
 		ComponentData
 	{
-		[ContainerField(96)]
-		public RefArray<TargetCameraData> Cameras { get; set; } = new RefArray<TargetCameraData>(); // 0x60 (96)
+		protected RefArray<TargetCameraData> m_Cameras = new RefArray<TargetCameraData>();
+		[ContainerField(96), ContainerFieldNameHash(3740512847)]
+		public RefArray<TargetCameraData> Cameras { get { return m_Cameras; } set { if (OnPropertyChanging("CharacterCameraComponentData." + nameof(Cameras), this, m_Cameras, value)) m_Cameras = value; } } // 0x60 (96)
 		
-		[ContainerField(100), LayoutImmutable]
-		public string CameraBoneName { get; set; } // 0x64 (100)
+		protected string m_CameraBoneName = new string();
+		[ContainerField(100), LayoutImmutable, ContainerFieldNameHash(771838749)]
+		public string CameraBoneName { get { return m_CameraBoneName; } set { if (OnPropertyChanging("CharacterCameraComponentData." + nameof(CameraBoneName), this, m_CameraBoneName, value)) m_CameraBoneName = value; } } // 0x64 (100)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,53 +5,74 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class PersistenceData : 
 		AbstractPersistenceData
 	{
-		[ContainerField(12), LayoutImmutable]
-		public string PersistenceName { get; set; } // 0xC (12)
+		protected string m_PersistenceName = new string();
+		[ContainerField(12), LayoutImmutable, ContainerFieldNameHash(1594500373)]
+		public string PersistenceName { get { return m_PersistenceName; } set { if (OnPropertyChanging("PersistenceData." + nameof(PersistenceName), this, m_PersistenceName, value)) m_PersistenceName = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable]
-		public string ClubPersistenceName { get; set; } // 0x10 (16)
+		protected string m_ClubPersistenceName = new string();
+		[ContainerField(16), LayoutImmutable, ContainerFieldNameHash(1035208813)]
+		public string ClubPersistenceName { get { return m_ClubPersistenceName; } set { if (OnPropertyChanging("PersistenceData." + nameof(ClubPersistenceName), this, m_ClubPersistenceName, value)) m_ClubPersistenceName = value; } } // 0x10 (16)
 		
-		[ContainerField(20)]
-		public CtrRef<PersistenceStatGroup> ClientDefaultGroup { get; set; } = new CtrRef<PersistenceStatGroup>(); // 0x14 (20)
+		protected CtrRef<PersistenceStatGroup> m_ClientDefaultGroup = new CtrRef<PersistenceStatGroup>();
+		[ContainerField(20), ContainerFieldNameHash(2136132136)]
+		public CtrRef<PersistenceStatGroup> ClientDefaultGroup { get { return m_ClientDefaultGroup; } set { if (OnPropertyChanging("PersistenceData." + nameof(ClientDefaultGroup), this, m_ClientDefaultGroup, value)) m_ClientDefaultGroup = value; } } // 0x14 (20)
 		
-		[ContainerField(24)]
-		public List<PersistentValueTemplateData> Values { get; set; } = new List<PersistentValueTemplateData>(); // 0x18 (24)
+		protected List<PersistentValueTemplateData> m_Values = new List<PersistentValueTemplateData>();
+		[ContainerField(24), ContainerFieldNameHash(3142410589)]
+		public List<PersistentValueTemplateData> Values { get { return m_Values; } set { if (OnPropertyChanging("PersistenceData." + nameof(Values), this, m_Values, value)) m_Values = value; } } // 0x18 (24)
 		
-		[ContainerField(28)]
-		public List<CustomReportValueData> CustomReportValues { get; set; } = new List<CustomReportValueData>(); // 0x1C (28)
+		protected List<CustomReportValueData> m_CustomReportValues = new List<CustomReportValueData>();
+		[ContainerField(28), ContainerFieldNameHash(982732000)]
+		public List<CustomReportValueData> CustomReportValues { get { return m_CustomReportValues; } set { if (OnPropertyChanging("PersistenceData." + nameof(CustomReportValues), this, m_CustomReportValues, value)) m_CustomReportValues = value; } } // 0x1C (28)
 		
-		[ContainerField(32)]
-		public CtrRef<PersistenceStatGroup> ServerDefaultGroup { get; set; } = new CtrRef<PersistenceStatGroup>(); // 0x20 (32)
+		protected CtrRef<PersistenceStatGroup> m_ServerDefaultGroup = new CtrRef<PersistenceStatGroup>();
+		[ContainerField(32), ContainerFieldNameHash(1370365556)]
+		public CtrRef<PersistenceStatGroup> ServerDefaultGroup { get { return m_ServerDefaultGroup; } set { if (OnPropertyChanging("PersistenceData." + nameof(ServerDefaultGroup), this, m_ServerDefaultGroup, value)) m_ServerDefaultGroup = value; } } // 0x20 (32)
 		
-		[ContainerField(36)]
-		public CtrRef<PersistenceRetentionPolicy> RetentionPolicy { get; set; } = new CtrRef<PersistenceRetentionPolicy>(); // 0x24 (36)
+		protected CtrRef<PersistenceRetentionPolicy> m_RetentionPolicy = new CtrRef<PersistenceRetentionPolicy>();
+		[ContainerField(36), ContainerFieldNameHash(1323382353)]
+		public CtrRef<PersistenceRetentionPolicy> RetentionPolicy { get { return m_RetentionPolicy; } set { if (OnPropertyChanging("PersistenceData." + nameof(RetentionPolicy), this, m_RetentionPolicy, value)) m_RetentionPolicy = value; } } // 0x24 (36)
 		
-		[ContainerField(40)]
-		public List<PersistenceConsumableMapping> ConsumableMappings { get; set; } = new List<PersistenceConsumableMapping>(); // 0x28 (40)
+		protected List<PersistenceConsumableMapping> m_ConsumableMappings = new List<PersistenceConsumableMapping>();
+		[ContainerField(40), ContainerFieldNameHash(420464793)]
+		public List<PersistenceConsumableMapping> ConsumableMappings { get { return m_ConsumableMappings; } set { if (OnPropertyChanging("PersistenceData." + nameof(ConsumableMappings), this, m_ConsumableMappings, value)) m_ConsumableMappings = value; } } // 0x28 (40)
 		
-		[ContainerField(44), LayoutImmutable, Blittable]
-		public bool HistoryDaily { get; set; } // 0x2C (44)
+		protected bool m_HistoryDaily = new bool();
+		[ContainerField(44), LayoutImmutable, Blittable, ContainerFieldNameHash(2252214046)]
+		public bool HistoryDaily { get { return m_HistoryDaily; } set { if (OnPropertyChanging("PersistenceData." + nameof(HistoryDaily), this, m_HistoryDaily, value)) m_HistoryDaily = value; } } // 0x2C (44)
 		
-		[ContainerField(45), LayoutImmutable, Blittable]
-		public bool HistoryWeekly { get; set; } // 0x2D (45)
+		protected bool m_HistoryWeekly = new bool();
+		[ContainerField(45), LayoutImmutable, Blittable, ContainerFieldNameHash(1752784430)]
+		public bool HistoryWeekly { get { return m_HistoryWeekly; } set { if (OnPropertyChanging("PersistenceData." + nameof(HistoryWeekly), this, m_HistoryWeekly, value)) m_HistoryWeekly = value; } } // 0x2D (45)
 		
-		[ContainerField(46), LayoutImmutable, Blittable]
-		public bool HistoryMonthly { get; set; } // 0x2E (46)
+		protected bool m_HistoryMonthly = new bool();
+		[ContainerField(46), LayoutImmutable, Blittable, ContainerFieldNameHash(3030502658)]
+		public bool HistoryMonthly { get { return m_HistoryMonthly; } set { if (OnPropertyChanging("PersistenceData." + nameof(HistoryMonthly), this, m_HistoryMonthly, value)) m_HistoryMonthly = value; } } // 0x2E (46)
 		
-		[ContainerField(47), LayoutImmutable, Blittable]
-		public bool OutputProperties { get; set; } // 0x2F (47)
+		protected bool m_OutputProperties = new bool();
+		[ContainerField(47), LayoutImmutable, Blittable, ContainerFieldNameHash(1376339771)]
+		public bool OutputProperties { get { return m_OutputProperties; } set { if (OnPropertyChanging("PersistenceData." + nameof(OutputProperties), this, m_OutputProperties, value)) m_OutputProperties = value; } } // 0x2F (47)
 		
-		[ContainerField(48), LayoutImmutable, Blittable]
-		public bool DeltaGameReports { get; set; } // 0x30 (48)
+		protected bool m_DeltaGameReports = new bool();
+		[ContainerField(48), LayoutImmutable, Blittable, ContainerFieldNameHash(1383796302)]
+		public bool DeltaGameReports { get { return m_DeltaGameReports; } set { if (OnPropertyChanging("PersistenceData." + nameof(DeltaGameReports), this, m_DeltaGameReports, value)) m_DeltaGameReports = value; } } // 0x30 (48)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class BreakableControllerComponentData : 
 		DestructionControllerComponentData
 	{
-		[ContainerField(112), LayoutImmutable, Blittable]
-		public uint BreakablePartCount { get; set; } // 0x70 (112)
+		protected uint m_BreakablePartCount = new uint();
+		[ContainerField(112), LayoutImmutable, Blittable, ContainerFieldNameHash(3849422468)]
+		public uint BreakablePartCount { get { return m_BreakablePartCount; } set { if (OnPropertyChanging("BreakableControllerComponentData." + nameof(BreakablePartCount), this, m_BreakablePartCount, value)) m_BreakablePartCount = value; } } // 0x70 (112)
 		
-		[ContainerField(116), LayoutImmutable, Blittable]
-		public uint NetworkIdCount { get; set; } // 0x74 (116)
+		protected uint m_NetworkIdCount = new uint();
+		[ContainerField(116), LayoutImmutable, Blittable, ContainerFieldNameHash(1234693717)]
+		public uint NetworkIdCount { get { return m_NetworkIdCount; } set { if (OnPropertyChanging("BreakableControllerComponentData." + nameof(NetworkIdCount), this, m_NetworkIdCount, value)) m_NetworkIdCount = value; } } // 0x74 (116)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

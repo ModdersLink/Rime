@@ -5,17 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class EnlightenPipelineTerrain : 
 		Asset
 	{
-		[ContainerField(12)]
-		public List<EnlightenPipelineTerrainMesh> Meshes { get; set; } = new List<EnlightenPipelineTerrainMesh>(); // 0xC (12)
+		protected List<EnlightenPipelineTerrainMesh> m_Meshes = new List<EnlightenPipelineTerrainMesh>();
+		[ContainerField(12), ContainerFieldNameHash(2648066496)]
+		public List<EnlightenPipelineTerrainMesh> Meshes { get { return m_Meshes; } set { if (OnPropertyChanging("EnlightenPipelineTerrain." + nameof(Meshes), this, m_Meshes, value)) m_Meshes = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

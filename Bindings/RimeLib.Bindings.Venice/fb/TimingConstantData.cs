@@ -5,22 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class TimingConstantData : 
 		Asset
 	{
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public float UpdateTimePerFrame { get; set; } // 0xC (12)
+		protected float m_UpdateTimePerFrame = new float();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(2600656827)]
+		public float UpdateTimePerFrame { get { return m_UpdateTimePerFrame; } set { if (OnPropertyChanging("TimingConstantData." + nameof(UpdateTimePerFrame), this, m_UpdateTimePerFrame, value)) m_UpdateTimePerFrame = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public SubsystemTimingConfigData SubsystemTimeParts { get; set; } = new SubsystemTimingConfigData(); // 0x10 (16)
+		protected SubsystemTimingConfigData m_SubsystemTimeParts = new SubsystemTimingConfigData();
+		[ContainerField(16), ContainerFieldNameHash(3741694197)]
+		public SubsystemTimingConfigData SubsystemTimeParts { get { return m_SubsystemTimeParts; } set { if (OnPropertyChanging("TimingConstantData." + nameof(SubsystemTimeParts), this, m_SubsystemTimeParts, value)) m_SubsystemTimeParts = value; } } // 0x10 (16)
 		
-		[ContainerField(40)]
-		public RefArray<BotPriorityConfigData> PriorityClasses { get; set; } = new RefArray<BotPriorityConfigData>(); // 0x28 (40)
+		protected RefArray<BotPriorityConfigData> m_PriorityClasses = new RefArray<BotPriorityConfigData>();
+		[ContainerField(40), ContainerFieldNameHash(1128874863)]
+		public RefArray<BotPriorityConfigData> PriorityClasses { get { return m_PriorityClasses; } set { if (OnPropertyChanging("TimingConstantData." + nameof(PriorityClasses), this, m_PriorityClasses, value)) m_PriorityClasses = value; } } // 0x28 (40)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

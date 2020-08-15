@@ -5,17 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class RecordedInputData : 
 		Asset
 	{
-		[ContainerField(12)]
-		public List<InputRecorderTrackData> TrackData { get; set; } = new List<InputRecorderTrackData>(); // 0xC (12)
+		protected List<InputRecorderTrackData> m_TrackData = new List<InputRecorderTrackData>();
+		[ContainerField(12), ContainerFieldNameHash(1756028410)]
+		public List<InputRecorderTrackData> TrackData { get { return m_TrackData; } set { if (OnPropertyChanging("RecordedInputData." + nameof(TrackData), this, m_TrackData, value)) m_TrackData = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

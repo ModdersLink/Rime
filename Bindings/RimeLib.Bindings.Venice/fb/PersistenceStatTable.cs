@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class PersistenceStatTable : 
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable]
-		public string TableName { get; set; } // 0x8 (8)
+		protected string m_TableName = new string();
+		[ContainerField(8), LayoutImmutable, ContainerFieldNameHash(3117168284)]
+		public string TableName { get { return m_TableName; } set { if (OnPropertyChanging("PersistenceStatTable." + nameof(TableName), this, m_TableName, value)) m_TableName = value; } } // 0x8 (8)
 		
-		[ContainerField(12)]
-		public CtrRef<AbstractPersistenceData> OwnerPersistenceData { get; set; } = new CtrRef<AbstractPersistenceData>(); // 0xC (12)
+		protected CtrRef<AbstractPersistenceData> m_OwnerPersistenceData = new CtrRef<AbstractPersistenceData>();
+		[ContainerField(12), ContainerFieldNameHash(1012363171)]
+		public CtrRef<AbstractPersistenceData> OwnerPersistenceData { get { return m_OwnerPersistenceData; } set { if (OnPropertyChanging("PersistenceStatTable." + nameof(OwnerPersistenceData), this, m_OwnerPersistenceData, value)) m_OwnerPersistenceData = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

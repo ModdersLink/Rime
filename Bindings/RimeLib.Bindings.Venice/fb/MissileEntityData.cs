@@ -5,86 +5,118 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class MissileEntityData : 
 		MeshProjectileEntityData
 	{
-		[ContainerField(192), LayoutImmutable, Blittable]
-		public float Gravity { get; set; } // 0xC0 (192)
+		protected float m_Gravity = new float();
+		[ContainerField(192), LayoutImmutable, Blittable, ContainerFieldNameHash(3295092963)]
+		public float Gravity { get { return m_Gravity; } set { if (OnPropertyChanging("MissileEntityData." + nameof(Gravity), this, m_Gravity, value)) m_Gravity = value; } } // 0xC0 (192)
 		
-		[ContainerField(196)]
-		public CtrRef<EffectBlueprint> EngineEffect { get; set; } = new CtrRef<EffectBlueprint>(); // 0xC4 (196)
+		protected CtrRef<EffectBlueprint> m_EngineEffect = new CtrRef<EffectBlueprint>();
+		[ContainerField(196), ContainerFieldNameHash(2238351068)]
+		public CtrRef<EffectBlueprint> EngineEffect { get { return m_EngineEffect; } set { if (OnPropertyChanging("MissileEntityData." + nameof(EngineEffect), this, m_EngineEffect, value)) m_EngineEffect = value; } } // 0xC4 (196)
 		
-		[ContainerField(200)]
-		public CtrRef<ExplosionEntityData> DudExplosion { get; set; } = new CtrRef<ExplosionEntityData>(); // 0xC8 (200)
+		protected CtrRef<ExplosionEntityData> m_DudExplosion = new CtrRef<ExplosionEntityData>();
+		[ContainerField(200), ContainerFieldNameHash(123118469)]
+		public CtrRef<ExplosionEntityData> DudExplosion { get { return m_DudExplosion; } set { if (OnPropertyChanging("MissileEntityData." + nameof(DudExplosion), this, m_DudExplosion, value)) m_DudExplosion = value; } } // 0xC8 (200)
 		
-		[ContainerField(204)]
-		public CtrRef<SoundAsset> FlyBySound { get; set; } = new CtrRef<SoundAsset>(); // 0xCC (204)
+		protected CtrRef<SoundAsset> m_FlyBySound = new CtrRef<SoundAsset>();
+		[ContainerField(204), ContainerFieldNameHash(3743063886)]
+		public CtrRef<SoundAsset> FlyBySound { get { return m_FlyBySound; } set { if (OnPropertyChanging("MissileEntityData." + nameof(FlyBySound), this, m_FlyBySound, value)) m_FlyBySound = value; } } // 0xCC (204)
 		
-		[ContainerField(208), LayoutImmutable, Blittable]
-		public float EngineStrength { get; set; } // 0xD0 (208)
+		protected float m_EngineStrength = new float();
+		[ContainerField(208), LayoutImmutable, Blittable, ContainerFieldNameHash(1553827310)]
+		public float EngineStrength { get { return m_EngineStrength; } set { if (OnPropertyChanging("MissileEntityData." + nameof(EngineStrength), this, m_EngineStrength, value)) m_EngineStrength = value; } } // 0xD0 (208)
 		
-		[ContainerField(212), LayoutImmutable, Blittable]
-		public float MaxSpeed { get; set; } // 0xD4 (212)
+		protected float m_MaxSpeed = new float();
+		[ContainerField(212), LayoutImmutable, Blittable, ContainerFieldNameHash(396228950)]
+		public float MaxSpeed { get { return m_MaxSpeed; } set { if (OnPropertyChanging("MissileEntityData." + nameof(MaxSpeed), this, m_MaxSpeed, value)) m_MaxSpeed = value; } } // 0xD4 (212)
 		
-		[ContainerField(216), LayoutImmutable, Blittable]
-		public float EngineTimeToIgnition { get; set; } // 0xD8 (216)
+		protected float m_EngineTimeToIgnition = new float();
+		[ContainerField(216), LayoutImmutable, Blittable, ContainerFieldNameHash(916282736)]
+		public float EngineTimeToIgnition { get { return m_EngineTimeToIgnition; } set { if (OnPropertyChanging("MissileEntityData." + nameof(EngineTimeToIgnition), this, m_EngineTimeToIgnition, value)) m_EngineTimeToIgnition = value; } } // 0xD8 (216)
 		
-		[ContainerField(220), LayoutImmutable, Blittable]
-		public float EngineTimeToLive { get; set; } // 0xDC (220)
+		protected float m_EngineTimeToLive = new float();
+		[ContainerField(220), LayoutImmutable, Blittable, ContainerFieldNameHash(41196403)]
+		public float EngineTimeToLive { get { return m_EngineTimeToLive; } set { if (OnPropertyChanging("MissileEntityData." + nameof(EngineTimeToLive), this, m_EngineTimeToLive, value)) m_EngineTimeToLive = value; } } // 0xDC (220)
 		
-		[ContainerField(224), LayoutImmutable, Blittable]
-		public float TimeToActivateGuidingSystem { get; set; } // 0xE0 (224)
+		protected float m_TimeToActivateGuidingSystem = new float();
+		[ContainerField(224), LayoutImmutable, Blittable, ContainerFieldNameHash(2537799752)]
+		public float TimeToActivateGuidingSystem { get { return m_TimeToActivateGuidingSystem; } set { if (OnPropertyChanging("MissileEntityData." + nameof(TimeToActivateGuidingSystem), this, m_TimeToActivateGuidingSystem, value)) m_TimeToActivateGuidingSystem = value; } } // 0xE0 (224)
 		
-		[ContainerField(228), LayoutImmutable, Blittable]
-		public float TimeToArm { get; set; } // 0xE4 (228)
+		protected float m_TimeToArm = new float();
+		[ContainerField(228), LayoutImmutable, Blittable, ContainerFieldNameHash(177776085)]
+		public float TimeToArm { get { return m_TimeToArm; } set { if (OnPropertyChanging("MissileEntityData." + nameof(TimeToArm), this, m_TimeToArm, value)) m_TimeToArm = value; } } // 0xE4 (228)
 		
-		[ContainerField(232), LayoutImmutable, Blittable]
-		public float MaxTurnAngle { get; set; } // 0xE8 (232)
+		protected float m_MaxTurnAngle = new float();
+		[ContainerField(232), LayoutImmutable, Blittable, ContainerFieldNameHash(2995598829)]
+		public float MaxTurnAngle { get { return m_MaxTurnAngle; } set { if (OnPropertyChanging("MissileEntityData." + nameof(MaxTurnAngle), this, m_MaxTurnAngle, value)) m_MaxTurnAngle = value; } } // 0xE8 (232)
 		
-		[ContainerField(236), LayoutImmutable, Blittable]
-		public float Drag { get; set; } // 0xEC (236)
+		protected float m_Drag = new float();
+		[ContainerField(236), LayoutImmutable, Blittable, ContainerFieldNameHash(2088752789)]
+		public float Drag { get { return m_Drag; } set { if (OnPropertyChanging("MissileEntityData." + nameof(Drag), this, m_Drag, value)) m_Drag = value; } } // 0xEC (236)
 		
-		[ContainerField(240)]
-		public NearTargetDetonationData NearTargetDetonation { get; set; } = new NearTargetDetonationData(); // 0xF0 (240)
+		protected NearTargetDetonationData m_NearTargetDetonation = new NearTargetDetonationData();
+		[ContainerField(240), ContainerFieldNameHash(3676526149)]
+		public NearTargetDetonationData NearTargetDetonation { get { return m_NearTargetDetonation; } set { if (OnPropertyChanging("MissileEntityData." + nameof(NearTargetDetonation), this, m_NearTargetDetonation, value)) m_NearTargetDetonation = value; } } // 0xF0 (240)
 		
-		[ContainerField(256)]
-		public TeamId DefaultTeam { get; set; } = new TeamId(); // 0x100 (256)
+		protected TeamId m_DefaultTeam = new TeamId();
+		[ContainerField(256), ContainerFieldNameHash(2015081331)]
+		public TeamId DefaultTeam { get { return m_DefaultTeam; } set { if (OnPropertyChanging("MissileEntityData." + nameof(DefaultTeam), this, m_DefaultTeam, value)) m_DefaultTeam = value; } } // 0x100 (256)
 		
-		[ContainerField(260), LayoutImmutable, Blittable]
-		public float FlyBySoundRadius { get; set; } // 0x104 (260)
+		protected float m_FlyBySoundRadius = new float();
+		[ContainerField(260), LayoutImmutable, Blittable, ContainerFieldNameHash(3728826774)]
+		public float FlyBySoundRadius { get { return m_FlyBySoundRadius; } set { if (OnPropertyChanging("MissileEntityData." + nameof(FlyBySoundRadius), this, m_FlyBySoundRadius, value)) m_FlyBySoundRadius = value; } } // 0x104 (260)
 		
-		[ContainerField(264), LayoutImmutable, Blittable]
-		public float FlyBySoundSpeed { get; set; } // 0x108 (264)
+		protected float m_FlyBySoundSpeed = new float();
+		[ContainerField(264), LayoutImmutable, Blittable, ContainerFieldNameHash(4276155561)]
+		public float FlyBySoundSpeed { get { return m_FlyBySoundSpeed; } set { if (OnPropertyChanging("MissileEntityData." + nameof(FlyBySoundSpeed), this, m_FlyBySoundSpeed, value)) m_FlyBySoundSpeed = value; } } // 0x108 (264)
 		
-		[ContainerField(268), LayoutImmutable, Blittable]
-		public float ImpactImpulse { get; set; } // 0x10C (268)
+		protected float m_ImpactImpulse = new float();
+		[ContainerField(268), LayoutImmutable, Blittable, ContainerFieldNameHash(59311612)]
+		public float ImpactImpulse { get { return m_ImpactImpulse; } set { if (OnPropertyChanging("MissileEntityData." + nameof(ImpactImpulse), this, m_ImpactImpulse, value)) m_ImpactImpulse = value; } } // 0x10C (268)
 		
-		[ContainerField(272), LayoutImmutable, Blittable]
-		public float Damage { get; set; } // 0x110 (272)
+		protected float m_Damage = new float();
+		[ContainerField(272), LayoutImmutable, Blittable, ContainerFieldNameHash(2589892334)]
+		public float Damage { get { return m_Damage; } set { if (OnPropertyChanging("MissileEntityData." + nameof(Damage), this, m_Damage, value)) m_Damage = value; } } // 0x110 (272)
 		
-		[ContainerField(276)]
-		public MissileUnguidedData UnguidedData { get; set; } = new MissileUnguidedData(); // 0x114 (276)
+		protected MissileUnguidedData m_UnguidedData = new MissileUnguidedData();
+		[ContainerField(276), ContainerFieldNameHash(952180624)]
+		public MissileUnguidedData UnguidedData { get { return m_UnguidedData; } set { if (OnPropertyChanging("MissileEntityData." + nameof(UnguidedData), this, m_UnguidedData, value)) m_UnguidedData = value; } } // 0x114 (276)
 		
-		[ContainerField(296)]
-		public WarnTarget WarnTarget { get; set; } = new WarnTarget(); // 0x128 (296)
+		protected WarnTarget m_WarnTarget = new WarnTarget();
+		[ContainerField(296), ContainerFieldNameHash(1103784926)]
+		public WarnTarget WarnTarget { get { return m_WarnTarget; } set { if (OnPropertyChanging("MissileEntityData." + nameof(WarnTarget), this, m_WarnTarget, value)) m_WarnTarget = value; } } // 0x128 (296)
 		
-		[ContainerField(300)]
-		public MissileLockableInfoData LockableInfo { get; set; } = new MissileLockableInfoData(); // 0x12C (300)
+		protected MissileLockableInfoData m_LockableInfo = new MissileLockableInfoData();
+		[ContainerField(300), ContainerFieldNameHash(632168042)]
+		public MissileLockableInfoData LockableInfo { get { return m_LockableInfo; } set { if (OnPropertyChanging("MissileEntityData." + nameof(LockableInfo), this, m_LockableInfo, value)) m_LockableInfo = value; } } // 0x12C (300)
 		
-		[ContainerField(308)]
-		public CtrRef<LockingControllerData> LockingController { get; set; } = new CtrRef<LockingControllerData>(); // 0x134 (308)
+		protected CtrRef<LockingControllerData> m_LockingController = new CtrRef<LockingControllerData>();
+		[ContainerField(308), ContainerFieldNameHash(1783566994)]
+		public CtrRef<LockingControllerData> LockingController { get { return m_LockingController; } set { if (OnPropertyChanging("MissileEntityData." + nameof(LockingController), this, m_LockingController, value)) m_LockingController = value; } } // 0x134 (308)
 		
-		[ContainerField(312), LayoutImmutable, Blittable]
-		public bool WarnOnPointingMissile { get; set; } // 0x138 (312)
+		protected bool m_WarnOnPointingMissile = new bool();
+		[ContainerField(312), LayoutImmutable, Blittable, ContainerFieldNameHash(288907718)]
+		public bool WarnOnPointingMissile { get { return m_WarnOnPointingMissile; } set { if (OnPropertyChanging("MissileEntityData." + nameof(WarnOnPointingMissile), this, m_WarnOnPointingMissile, value)) m_WarnOnPointingMissile = value; } } // 0x138 (312)
 		
-		[ContainerField(313), LayoutImmutable, Blittable]
-		public bool ApplyGravityWhenGuided { get; set; } // 0x139 (313)
+		protected bool m_ApplyGravityWhenGuided = new bool();
+		[ContainerField(313), LayoutImmutable, Blittable, ContainerFieldNameHash(407646333)]
+		public bool ApplyGravityWhenGuided { get { return m_ApplyGravityWhenGuided; } set { if (OnPropertyChanging("MissileEntityData." + nameof(ApplyGravityWhenGuided), this, m_ApplyGravityWhenGuided, value)) m_ApplyGravityWhenGuided = value; } } // 0x139 (313)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

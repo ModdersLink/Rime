@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class HavokAsset : 
 		Asset
 	{
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public float Scale { get; set; } // 0xC (12)
+		protected float m_Scale = new float();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(231223453)]
+		public float Scale { get { return m_Scale; } set { if (OnPropertyChanging("HavokAsset." + nameof(Scale), this, m_Scale, value)) m_Scale = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public RefArray<DataContainer> ExternalAssets { get; set; } = new RefArray<DataContainer>(); // 0x10 (16)
+		protected RefArray<DataContainer> m_ExternalAssets = new RefArray<DataContainer>();
+		[ContainerField(16), ContainerFieldNameHash(1938270811)]
+		public RefArray<DataContainer> ExternalAssets { get { return m_ExternalAssets; } set { if (OnPropertyChanging("HavokAsset." + nameof(ExternalAssets), this, m_ExternalAssets, value)) m_ExternalAssets = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

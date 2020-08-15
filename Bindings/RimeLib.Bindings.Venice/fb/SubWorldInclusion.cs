@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class SubWorldInclusion : 
 		Asset
 	{
-		[ContainerField(12)]
-		public RefArray<SubWorldInclusionCriterion> Criteria { get; set; } = new RefArray<SubWorldInclusionCriterion>(); // 0xC (12)
+		protected RefArray<SubWorldInclusionCriterion> m_Criteria = new RefArray<SubWorldInclusionCriterion>();
+		[ContainerField(12), ContainerFieldNameHash(335452726)]
+		public RefArray<SubWorldInclusionCriterion> Criteria { get { return m_Criteria; } set { if (OnPropertyChanging("SubWorldInclusion." + nameof(Criteria), this, m_Criteria, value)) m_Criteria = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

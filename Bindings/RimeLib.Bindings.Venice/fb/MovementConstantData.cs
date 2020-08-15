@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class MovementConstantData : 
 		Asset
 	{
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public float MaxCrouchWalkDistance { get; set; } // 0xC (12)
+		protected float m_MaxCrouchWalkDistance = new float();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(268407235)]
+		public float MaxCrouchWalkDistance { get { return m_MaxCrouchWalkDistance; } set { if (OnPropertyChanging("MovementConstantData." + nameof(MaxCrouchWalkDistance), this, m_MaxCrouchWalkDistance, value)) m_MaxCrouchWalkDistance = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class UpdateAlphaLevelMaxData : 
 		ProcessorData
 	{
-		[ContainerField(48), LayoutImmutable, Blittable]
-		public float MaxLevel { get; set; } // 0x30 (48)
+		protected float m_MaxLevel = new float();
+		[ContainerField(48), LayoutImmutable, Blittable, ContainerFieldNameHash(429847463)]
+		public float MaxLevel { get { return m_MaxLevel; } set { if (OnPropertyChanging("UpdateAlphaLevelMaxData." + nameof(MaxLevel), this, m_MaxLevel, value)) m_MaxLevel = value; } } // 0x30 (48)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

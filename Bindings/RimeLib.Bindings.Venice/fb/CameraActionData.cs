@@ -5,17 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class CameraActionData : 
 		SimpleMovementActionBaseData
 	{
-		[ContainerField(24)]
-		public CameraMovementActionMode ActionMode { get; set; } = new CameraMovementActionMode(); // 0x18 (24)
+		protected CameraMovementActionMode m_ActionMode = new CameraMovementActionMode();
+		[ContainerField(24), ContainerFieldNameHash(1115046008)]
+		public CameraMovementActionMode ActionMode { get { return m_ActionMode; } set { if (OnPropertyChanging("CameraActionData." + nameof(ActionMode), this, m_ActionMode, value)) m_ActionMode = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

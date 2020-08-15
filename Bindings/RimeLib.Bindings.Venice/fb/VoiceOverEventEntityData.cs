@@ -5,31 +5,46 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class VoiceOverEventEntityData : 
 		EntityData
 	{
-		[ContainerField(12)]
-		public CtrRef<VoiceOverNamedValue> EventPlayer { get; set; } = new CtrRef<VoiceOverNamedValue>(); // 0xC (12)
+		protected CtrRef<VoiceOverNamedValue> m_EventPlayer = new CtrRef<VoiceOverNamedValue>();
+		[ContainerField(12), ContainerFieldNameHash(4041067226)]
+		public CtrRef<VoiceOverNamedValue> EventPlayer { get { return m_EventPlayer; } set { if (OnPropertyChanging("VoiceOverEventEntityData." + nameof(EventPlayer), this, m_EventPlayer, value)) m_EventPlayer = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public CtrRef<VoiceOverEvent> VoEvent { get; set; } = new CtrRef<VoiceOverEvent>(); // 0x10 (16)
+		protected CtrRef<VoiceOverEvent> m_VoEvent = new CtrRef<VoiceOverEvent>();
+		[ContainerField(16), ContainerFieldNameHash(1188417264)]
+		public CtrRef<VoiceOverEvent> VoEvent { get { return m_VoEvent; } set { if (OnPropertyChanging("VoiceOverEventEntityData." + nameof(VoEvent), this, m_VoEvent, value)) m_VoEvent = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
-		public float FinishedDelay { get; set; } // 0x14 (20)
+		protected float m_FinishedDelay = new float();
+		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(2930042562)]
+		public float FinishedDelay { get { return m_FinishedDelay; } set { if (OnPropertyChanging("VoiceOverEventEntityData." + nameof(FinishedDelay), this, m_FinishedDelay, value)) m_FinishedDelay = value; } } // 0x14 (20)
 		
-		[ContainerField(24)]
-		public CtrRef<VoiceOverNamedValue> ExtraEventPlayer { get; set; } = new CtrRef<VoiceOverNamedValue>(); // 0x18 (24)
+		protected CtrRef<VoiceOverNamedValue> m_ExtraEventPlayer = new CtrRef<VoiceOverNamedValue>();
+		[ContainerField(24), ContainerFieldNameHash(1270251872)]
+		public CtrRef<VoiceOverNamedValue> ExtraEventPlayer { get { return m_ExtraEventPlayer; } set { if (OnPropertyChanging("VoiceOverEventEntityData." + nameof(ExtraEventPlayer), this, m_ExtraEventPlayer, value)) m_ExtraEventPlayer = value; } } // 0x18 (24)
 		
-		[ContainerField(28), LayoutImmutable, Blittable]
-		public float TriggerDelay { get; set; } // 0x1C (28)
+		protected float m_TriggerDelay = new float();
+		[ContainerField(28), LayoutImmutable, Blittable, ContainerFieldNameHash(3587015816)]
+		public float TriggerDelay { get { return m_TriggerDelay; } set { if (OnPropertyChanging("VoiceOverEventEntityData." + nameof(TriggerDelay), this, m_TriggerDelay, value)) m_TriggerDelay = value; } } // 0x1C (28)
 		
-		[ContainerField(32), LayoutImmutable, Blittable]
-		public bool RunOnce { get; set; } // 0x20 (32)
+		protected bool m_RunOnce = new bool();
+		[ContainerField(32), LayoutImmutable, Blittable, ContainerFieldNameHash(709901739)]
+		public bool RunOnce { get { return m_RunOnce; } set { if (OnPropertyChanging("VoiceOverEventEntityData." + nameof(RunOnce), this, m_RunOnce, value)) m_RunOnce = value; } } // 0x20 (32)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class EnlightenRuntimeConfig : 
 		Asset
 	{
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public uint JobCount { get; set; } // 0xC (12)
+		protected uint m_JobCount = new uint();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(4166996065)]
+		public uint JobCount { get { return m_JobCount; } set { if (OnPropertyChanging("EnlightenRuntimeConfig." + nameof(JobCount), this, m_JobCount, value)) m_JobCount = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

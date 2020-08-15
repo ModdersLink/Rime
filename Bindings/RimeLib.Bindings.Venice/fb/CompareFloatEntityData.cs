@@ -5,29 +5,42 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class CompareFloatEntityData : 
 		EntityData
 	{
-		[ContainerField(12)]
-		public Realm Realm { get; set; } = new Realm(); // 0xC (12)
+		protected Realm m_Realm = new Realm();
+		[ContainerField(12), ContainerFieldNameHash(229961746)]
+		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("CompareFloatEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public float A { get; set; } // 0x10 (16)
+		protected float m_A = new float();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(177636)]
+		public float A { get { return m_A; } set { if (OnPropertyChanging("CompareFloatEntityData." + nameof(A), this, m_A, value)) m_A = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
-		public float B { get; set; } // 0x14 (20)
+		protected float m_B = new float();
+		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(177639)]
+		public float B { get { return m_B; } set { if (OnPropertyChanging("CompareFloatEntityData." + nameof(B), this, m_B, value)) m_B = value; } } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable]
-		public bool TriggerOnPropertyChange { get; set; } // 0x18 (24)
+		protected bool m_TriggerOnPropertyChange = new bool();
+		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(3134109917)]
+		public bool TriggerOnPropertyChange { get { return m_TriggerOnPropertyChange; } set { if (OnPropertyChanging("CompareFloatEntityData." + nameof(TriggerOnPropertyChange), this, m_TriggerOnPropertyChange, value)) m_TriggerOnPropertyChange = value; } } // 0x18 (24)
 		
-		[ContainerField(25), LayoutImmutable, Blittable]
-		public bool TriggerOnStart { get; set; } // 0x19 (25)
+		protected bool m_TriggerOnStart = new bool();
+		[ContainerField(25), LayoutImmutable, Blittable, ContainerFieldNameHash(3859836348)]
+		public bool TriggerOnStart { get { return m_TriggerOnStart; } set { if (OnPropertyChanging("CompareFloatEntityData." + nameof(TriggerOnStart), this, m_TriggerOnStart, value)) m_TriggerOnStart = value; } } // 0x19 (25)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

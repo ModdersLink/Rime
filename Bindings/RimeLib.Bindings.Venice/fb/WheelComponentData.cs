@@ -5,23 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class WheelComponentData : 
 		PartComponentData
 	{
-		[ContainerField(112)]
-		public CtrRef<WheelConfigData> Config { get; set; } = new CtrRef<WheelConfigData>(); // 0x70 (112)
+		protected CtrRef<WheelConfigData> m_Config = new CtrRef<WheelConfigData>();
+		[ContainerField(112), ContainerFieldNameHash(2713732399)]
+		public CtrRef<WheelConfigData> Config { get { return m_Config; } set { if (OnPropertyChanging("WheelComponentData." + nameof(Config), this, m_Config, value)) m_Config = value; } } // 0x70 (112)
 		
-		[ContainerField(116)]
-		public WheelPhysicsType PhysicsType { get; set; } = new WheelPhysicsType(); // 0x74 (116)
+		protected WheelPhysicsType m_PhysicsType = new WheelPhysicsType();
+		[ContainerField(116), ContainerFieldNameHash(1744391446)]
+		public WheelPhysicsType PhysicsType { get { return m_PhysicsType; } set { if (OnPropertyChanging("WheelComponentData." + nameof(PhysicsType), this, m_PhysicsType, value)) m_PhysicsType = value; } } // 0x74 (116)
 		
-		[ContainerField(120), LayoutImmutable, Blittable]
-		public float EffectClampVelocity { get; set; } // 0x78 (120)
+		protected float m_EffectClampVelocity = new float();
+		[ContainerField(120), LayoutImmutable, Blittable, ContainerFieldNameHash(2869239062)]
+		public float EffectClampVelocity { get { return m_EffectClampVelocity; } set { if (OnPropertyChanging("WheelComponentData." + nameof(EffectClampVelocity), this, m_EffectClampVelocity, value)) m_EffectClampVelocity = value; } } // 0x78 (120)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

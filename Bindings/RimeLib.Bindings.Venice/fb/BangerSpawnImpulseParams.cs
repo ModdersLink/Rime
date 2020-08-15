@@ -5,40 +5,58 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class BangerSpawnImpulseParams : 
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable, Blittable]
-		public float MinHorizontalAngle { get; set; } // 0x8 (8)
+		protected float m_MinHorizontalAngle = new float();
+		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(1294078192)]
+		public float MinHorizontalAngle { get { return m_MinHorizontalAngle; } set { if (OnPropertyChanging("BangerSpawnImpulseParams." + nameof(MinHorizontalAngle), this, m_MinHorizontalAngle, value)) m_MinHorizontalAngle = value; } } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public float MaxHorizontalAngle { get; set; } // 0xC (12)
+		protected float m_MaxHorizontalAngle = new float();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(3734684206)]
+		public float MaxHorizontalAngle { get { return m_MaxHorizontalAngle; } set { if (OnPropertyChanging("BangerSpawnImpulseParams." + nameof(MaxHorizontalAngle), this, m_MaxHorizontalAngle, value)) m_MaxHorizontalAngle = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public float MinVerticalAngle { get; set; } // 0x10 (16)
+		protected float m_MinVerticalAngle = new float();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(335615388)]
+		public float MinVerticalAngle { get { return m_MinVerticalAngle; } set { if (OnPropertyChanging("BangerSpawnImpulseParams." + nameof(MinVerticalAngle), this, m_MinVerticalAngle, value)) m_MinVerticalAngle = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
-		public float MaxVerticalAngle { get; set; } // 0x14 (20)
+		protected float m_MaxVerticalAngle = new float();
+		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(3164410690)]
+		public float MaxVerticalAngle { get { return m_MaxVerticalAngle; } set { if (OnPropertyChanging("BangerSpawnImpulseParams." + nameof(MaxVerticalAngle), this, m_MaxVerticalAngle, value)) m_MaxVerticalAngle = value; } } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable]
-		public float MinStrength { get; set; } // 0x18 (24)
+		protected float m_MinStrength = new float();
+		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(1539610890)]
+		public float MinStrength { get { return m_MinStrength; } set { if (OnPropertyChanging("BangerSpawnImpulseParams." + nameof(MinStrength), this, m_MinStrength, value)) m_MinStrength = value; } } // 0x18 (24)
 		
-		[ContainerField(28), LayoutImmutable, Blittable]
-		public float MaxStrength { get; set; } // 0x1C (28)
+		protected float m_MaxStrength = new float();
+		[ContainerField(28), LayoutImmutable, Blittable, ContainerFieldNameHash(1356104340)]
+		public float MaxStrength { get { return m_MaxStrength; } set { if (OnPropertyChanging("BangerSpawnImpulseParams." + nameof(MaxStrength), this, m_MaxStrength, value)) m_MaxStrength = value; } } // 0x1C (28)
 		
-		[ContainerField(32), LayoutImmutable, Blittable]
-		public float WaterStrengthModifier { get; set; } // 0x20 (32)
+		protected float m_WaterStrengthModifier = new float();
+		[ContainerField(32), LayoutImmutable, Blittable, ContainerFieldNameHash(778848386)]
+		public float WaterStrengthModifier { get { return m_WaterStrengthModifier; } set { if (OnPropertyChanging("BangerSpawnImpulseParams." + nameof(WaterStrengthModifier), this, m_WaterStrengthModifier, value)) m_WaterStrengthModifier = value; } } // 0x20 (32)
 		
-		[ContainerField(36), LayoutImmutable, Blittable]
-		public float LinearDamping { get; set; } // 0x24 (36)
+		protected float m_LinearDamping = new float();
+		[ContainerField(36), LayoutImmutable, Blittable, ContainerFieldNameHash(1796037280)]
+		public float LinearDamping { get { return m_LinearDamping; } set { if (OnPropertyChanging("BangerSpawnImpulseParams." + nameof(LinearDamping), this, m_LinearDamping, value)) m_LinearDamping = value; } } // 0x24 (36)
 		
-		[ContainerField(40), LayoutImmutable, Blittable]
-		public float AngularDamping { get; set; } // 0x28 (40)
+		protected float m_AngularDamping = new float();
+		[ContainerField(40), LayoutImmutable, Blittable, ContainerFieldNameHash(2055444159)]
+		public float AngularDamping { get { return m_AngularDamping; } set { if (OnPropertyChanging("BangerSpawnImpulseParams." + nameof(AngularDamping), this, m_AngularDamping, value)) m_AngularDamping = value; } } // 0x28 (40)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

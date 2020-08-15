@@ -5,31 +5,46 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class PhysicsNodeData : 
 		AudioGraphNodeData
 	{
-		[ContainerField(8)]
-		public AudioGraphNodePort Distance { get; set; } = new AudioGraphNodePort(); // 0x8 (8)
+		protected AudioGraphNodePort m_Distance = new AudioGraphNodePort();
+		[ContainerField(8), ContainerFieldNameHash(408560070)]
+		public AudioGraphNodePort Distance { get { return m_Distance; } set { if (OnPropertyChanging("PhysicsNodeData." + nameof(Distance), this, m_Distance, value)) m_Distance = value; } } // 0x8 (8)
 		
-		[ContainerField(16)]
-		public AudioGraphNodePort Velocity { get; set; } = new AudioGraphNodePort(); // 0x10 (16)
+		protected AudioGraphNodePort m_Velocity = new AudioGraphNodePort();
+		[ContainerField(16), ContainerFieldNameHash(3860766482)]
+		public AudioGraphNodePort Velocity { get { return m_Velocity; } set { if (OnPropertyChanging("PhysicsNodeData." + nameof(Velocity), this, m_Velocity, value)) m_Velocity = value; } } // 0x10 (16)
 		
-		[ContainerField(24)]
-		public AudioGraphNodePort RelativeVelocity { get; set; } = new AudioGraphNodePort(); // 0x18 (24)
+		protected AudioGraphNodePort m_RelativeVelocity = new AudioGraphNodePort();
+		[ContainerField(24), ContainerFieldNameHash(866456998)]
+		public AudioGraphNodePort RelativeVelocity { get { return m_RelativeVelocity; } set { if (OnPropertyChanging("PhysicsNodeData." + nameof(RelativeVelocity), this, m_RelativeVelocity, value)) m_RelativeVelocity = value; } } // 0x18 (24)
 		
-		[ContainerField(32)]
-		public AudioGraphNodePort Azimuth { get; set; } = new AudioGraphNodePort(); // 0x20 (32)
+		protected AudioGraphNodePort m_Azimuth = new AudioGraphNodePort();
+		[ContainerField(32), ContainerFieldNameHash(1333813715)]
+		public AudioGraphNodePort Azimuth { get { return m_Azimuth; } set { if (OnPropertyChanging("PhysicsNodeData." + nameof(Azimuth), this, m_Azimuth, value)) m_Azimuth = value; } } // 0x20 (32)
 		
-		[ContainerField(40)]
-		public AudioGraphNodePort ElevationAngle { get; set; } = new AudioGraphNodePort(); // 0x28 (40)
+		protected AudioGraphNodePort m_ElevationAngle = new AudioGraphNodePort();
+		[ContainerField(40), ContainerFieldNameHash(891204419)]
+		public AudioGraphNodePort ElevationAngle { get { return m_ElevationAngle; } set { if (OnPropertyChanging("PhysicsNodeData." + nameof(ElevationAngle), this, m_ElevationAngle, value)) m_ElevationAngle = value; } } // 0x28 (40)
 		
-		[ContainerField(48)]
-		public RefArray<PhysicsEntry> Entries { get; set; } = new RefArray<PhysicsEntry>(); // 0x30 (48)
+		protected RefArray<PhysicsEntry> m_Entries = new RefArray<PhysicsEntry>();
+		[ContainerField(48), ContainerFieldNameHash(8238103)]
+		public RefArray<PhysicsEntry> Entries { get { return m_Entries; } set { if (OnPropertyChanging("PhysicsNodeData." + nameof(Entries), this, m_Entries, value)) m_Entries = value; } } // 0x30 (48)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

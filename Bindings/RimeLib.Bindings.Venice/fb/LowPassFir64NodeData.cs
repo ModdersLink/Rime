@@ -5,25 +5,38 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class LowPassFir64NodeData : 
 		AudioGraphNodeData
 	{
-		[ContainerField(8)]
-		public AudioGraphNodePort In { get; set; } = new AudioGraphNodePort(); // 0x8 (8)
+		protected AudioGraphNodePort m_In = new AudioGraphNodePort();
+		[ContainerField(8), ContainerFieldNameHash(5862146)]
+		public AudioGraphNodePort In { get { return m_In; } set { if (OnPropertyChanging("LowPassFir64NodeData." + nameof(In), this, m_In, value)) m_In = value; } } // 0x8 (8)
 		
-		[ContainerField(16)]
-		public AudioGraphNodePort Frequency { get; set; } = new AudioGraphNodePort(); // 0x10 (16)
+		protected AudioGraphNodePort m_Frequency = new AudioGraphNodePort();
+		[ContainerField(16), ContainerFieldNameHash(4112821953)]
+		public AudioGraphNodePort Frequency { get { return m_Frequency; } set { if (OnPropertyChanging("LowPassFir64NodeData." + nameof(Frequency), this, m_Frequency, value)) m_Frequency = value; } } // 0x10 (16)
 		
-		[ContainerField(24)]
-		public AudioGraphNodePort Out { get; set; } = new AudioGraphNodePort(); // 0x18 (24)
+		protected AudioGraphNodePort m_Out = new AudioGraphNodePort();
+		[ContainerField(24), ContainerFieldNameHash(193453899)]
+		public AudioGraphNodePort Out { get { return m_Out; } set { if (OnPropertyChanging("LowPassFir64NodeData." + nameof(Out), this, m_Out, value)) m_Out = value; } } // 0x18 (24)
 		
-		[ContainerField(32)]
-		public SoundGraphPluginRef Plugin { get; set; } = new SoundGraphPluginRef(); // 0x20 (32)
+		protected SoundGraphPluginRef m_Plugin = new SoundGraphPluginRef();
+		[ContainerField(32), ContainerFieldNameHash(3384353452)]
+		public SoundGraphPluginRef Plugin { get { return m_Plugin; } set { if (OnPropertyChanging("LowPassFir64NodeData." + nameof(Plugin), this, m_Plugin, value)) m_Plugin = value; } } // 0x20 (32)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,64 +5,90 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class AudioSettings : 
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable, Blittable]
-		public uint WaveCacheSize { get; set; } // 0x8 (8)
+		protected uint m_WaveCacheSize = new uint();
+		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(120676393)]
+		public uint WaveCacheSize { get { return m_WaveCacheSize; } set { if (OnPropertyChanging("AudioSettings." + nameof(WaveCacheSize), this, m_WaveCacheSize, value)) m_WaveCacheSize = value; } } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public uint WaveCacheHeadroom { get; set; } // 0xC (12)
+		protected uint m_WaveCacheHeadroom = new uint();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(2616055963)]
+		public uint WaveCacheHeadroom { get { return m_WaveCacheHeadroom; } set { if (OnPropertyChanging("AudioSettings." + nameof(WaveCacheHeadroom), this, m_WaveCacheHeadroom, value)) m_WaveCacheHeadroom = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public float WaveCachePruneTimeLimit { get; set; } // 0x10 (16)
+		protected float m_WaveCachePruneTimeLimit = new float();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(3511233232)]
+		public float WaveCachePruneTimeLimit { get { return m_WaveCachePruneTimeLimit; } set { if (OnPropertyChanging("AudioSettings." + nameof(WaveCachePruneTimeLimit), this, m_WaveCachePruneTimeLimit, value)) m_WaveCachePruneTimeLimit = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
-		public uint WaveCacheRsxSize { get; set; } // 0x14 (20)
+		protected uint m_WaveCacheRsxSize = new uint();
+		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(2616589264)]
+		public uint WaveCacheRsxSize { get { return m_WaveCacheRsxSize; } set { if (OnPropertyChanging("AudioSettings." + nameof(WaveCacheRsxSize), this, m_WaveCacheRsxSize, value)) m_WaveCacheRsxSize = value; } } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable]
-		public float WaveCacheRsxPruneTimeLimit { get; set; } // 0x18 (24)
+		protected float m_WaveCacheRsxPruneTimeLimit = new float();
+		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(535484713)]
+		public float WaveCacheRsxPruneTimeLimit { get { return m_WaveCacheRsxPruneTimeLimit; } set { if (OnPropertyChanging("AudioSettings." + nameof(WaveCacheRsxPruneTimeLimit), this, m_WaveCacheRsxPruneTimeLimit, value)) m_WaveCacheRsxPruneTimeLimit = value; } } // 0x18 (24)
 		
-		[ContainerField(28), LayoutImmutable, Blittable]
-		public uint WaveCacheMaxReadIssueCount { get; set; } // 0x1C (28)
+		protected uint m_WaveCacheMaxReadIssueCount = new uint();
+		[ContainerField(28), LayoutImmutable, Blittable, ContainerFieldNameHash(3845970128)]
+		public uint WaveCacheMaxReadIssueCount { get { return m_WaveCacheMaxReadIssueCount; } set { if (OnPropertyChanging("AudioSettings." + nameof(WaveCacheMaxReadIssueCount), this, m_WaveCacheMaxReadIssueCount, value)) m_WaveCacheMaxReadIssueCount = value; } } // 0x1C (28)
 		
-		[ContainerField(32), LayoutImmutable, Blittable]
-		public uint WaveCacheMaxReadActiveCount { get; set; } // 0x20 (32)
+		protected uint m_WaveCacheMaxReadActiveCount = new uint();
+		[ContainerField(32), LayoutImmutable, Blittable, ContainerFieldNameHash(108029477)]
+		public uint WaveCacheMaxReadActiveCount { get { return m_WaveCacheMaxReadActiveCount; } set { if (OnPropertyChanging("AudioSettings." + nameof(WaveCacheMaxReadActiveCount), this, m_WaveCacheMaxReadActiveCount, value)) m_WaveCacheMaxReadActiveCount = value; } } // 0x20 (32)
 		
-		[ContainerField(36), LayoutImmutable, Blittable]
-		public float AudioCoreCpuLoadLimit { get; set; } // 0x24 (36)
+		protected float m_AudioCoreCpuLoadLimit = new float();
+		[ContainerField(36), LayoutImmutable, Blittable, ContainerFieldNameHash(2039173245)]
+		public float AudioCoreCpuLoadLimit { get { return m_AudioCoreCpuLoadLimit; } set { if (OnPropertyChanging("AudioSettings." + nameof(AudioCoreCpuLoadLimit), this, m_AudioCoreCpuLoadLimit, value)) m_AudioCoreCpuLoadLimit = value; } } // 0x24 (36)
 		
-		[ContainerField(40), LayoutImmutable, Blittable]
-		public float AudioCoreCpuLoadRecovery { get; set; } // 0x28 (40)
+		protected float m_AudioCoreCpuLoadRecovery = new float();
+		[ContainerField(40), LayoutImmutable, Blittable, ContainerFieldNameHash(4028843115)]
+		public float AudioCoreCpuLoadRecovery { get { return m_AudioCoreCpuLoadRecovery; } set { if (OnPropertyChanging("AudioSettings." + nameof(AudioCoreCpuLoadRecovery), this, m_AudioCoreCpuLoadRecovery, value)) m_AudioCoreCpuLoadRecovery = value; } } // 0x28 (40)
 		
-		[ContainerField(44), LayoutImmutable, Blittable]
-		public int AudioCoreThread { get; set; } // 0x2C (44)
+		protected int m_AudioCoreThread = new int();
+		[ContainerField(44), LayoutImmutable, Blittable, ContainerFieldNameHash(4095311206)]
+		public int AudioCoreThread { get { return m_AudioCoreThread; } set { if (OnPropertyChanging("AudioSettings." + nameof(AudioCoreThread), this, m_AudioCoreThread, value)) m_AudioCoreThread = value; } } // 0x2C (44)
 		
-		[ContainerField(48), LayoutImmutable, Blittable]
-		public int AudioCoreMixJobThreadCount { get; set; } // 0x30 (48)
+		protected int m_AudioCoreMixJobThreadCount = new int();
+		[ContainerField(48), LayoutImmutable, Blittable, ContainerFieldNameHash(1467197950)]
+		public int AudioCoreMixJobThreadCount { get { return m_AudioCoreMixJobThreadCount; } set { if (OnPropertyChanging("AudioSettings." + nameof(AudioCoreMixJobThreadCount), this, m_AudioCoreMixJobThreadCount, value)) m_AudioCoreMixJobThreadCount = value; } } // 0x30 (48)
 		
-		[ContainerField(52), LayoutImmutable, Blittable]
-		public int AudioCoreMaxMixJobThreadCount { get; set; } // 0x34 (52)
+		protected int m_AudioCoreMaxMixJobThreadCount = new int();
+		[ContainerField(52), LayoutImmutable, Blittable, ContainerFieldNameHash(562156554)]
+		public int AudioCoreMaxMixJobThreadCount { get { return m_AudioCoreMaxMixJobThreadCount; } set { if (OnPropertyChanging("AudioSettings." + nameof(AudioCoreMaxMixJobThreadCount), this, m_AudioCoreMaxMixJobThreadCount, value)) m_AudioCoreMaxMixJobThreadCount = value; } } // 0x34 (52)
 		
-		[ContainerField(56), LayoutImmutable, Blittable]
-		public uint MaxAudibleSoundCount { get; set; } // 0x38 (56)
+		protected uint m_MaxAudibleSoundCount = new uint();
+		[ContainerField(56), LayoutImmutable, Blittable, ContainerFieldNameHash(685226627)]
+		public uint MaxAudibleSoundCount { get { return m_MaxAudibleSoundCount; } set { if (OnPropertyChanging("AudioSettings." + nameof(MaxAudibleSoundCount), this, m_MaxAudibleSoundCount, value)) m_MaxAudibleSoundCount = value; } } // 0x38 (56)
 		
-		[ContainerField(60), LayoutImmutable, Blittable]
-		public int AudioCoreMinProcStageVoicesToGoWide { get; set; } // 0x3C (60)
+		protected int m_AudioCoreMinProcStageVoicesToGoWide = new int();
+		[ContainerField(60), LayoutImmutable, Blittable, ContainerFieldNameHash(1771683297)]
+		public int AudioCoreMinProcStageVoicesToGoWide { get { return m_AudioCoreMinProcStageVoicesToGoWide; } set { if (OnPropertyChanging("AudioSettings." + nameof(AudioCoreMinProcStageVoicesToGoWide), this, m_AudioCoreMinProcStageVoicesToGoWide, value)) m_AudioCoreMinProcStageVoicesToGoWide = value; } } // 0x3C (60)
 		
-		[ContainerField(64), LayoutImmutable, Blittable]
-		public uint DelayLineAllocSize { get; set; } // 0x40 (64)
+		protected uint m_DelayLineAllocSize = new uint();
+		[ContainerField(64), LayoutImmutable, Blittable, ContainerFieldNameHash(22362422)]
+		public uint DelayLineAllocSize { get { return m_DelayLineAllocSize; } set { if (OnPropertyChanging("AudioSettings." + nameof(DelayLineAllocSize), this, m_DelayLineAllocSize, value)) m_DelayLineAllocSize = value; } } // 0x40 (64)
 		
-		[ContainerField(68), LayoutImmutable, Blittable]
-		public uint ReverbAllocSize { get; set; } // 0x44 (68)
+		protected uint m_ReverbAllocSize = new uint();
+		[ContainerField(68), LayoutImmutable, Blittable, ContainerFieldNameHash(2086423929)]
+		public uint ReverbAllocSize { get { return m_ReverbAllocSize; } set { if (OnPropertyChanging("AudioSettings." + nameof(ReverbAllocSize), this, m_ReverbAllocSize, value)) m_ReverbAllocSize = value; } } // 0x44 (68)
 		
-		[ContainerField(72), LayoutImmutable, Blittable]
-		public bool AudioCoreMultipleMixJobsEnabled { get; set; } // 0x48 (72)
+		protected bool m_AudioCoreMultipleMixJobsEnabled = new bool();
+		[ContainerField(72), LayoutImmutable, Blittable, ContainerFieldNameHash(2281411509)]
+		public bool AudioCoreMultipleMixJobsEnabled { get { return m_AudioCoreMultipleMixJobsEnabled; } set { if (OnPropertyChanging("AudioSettings." + nameof(AudioCoreMultipleMixJobsEnabled), this, m_AudioCoreMultipleMixJobsEnabled, value)) m_AudioCoreMultipleMixJobsEnabled = value; } } // 0x48 (72)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

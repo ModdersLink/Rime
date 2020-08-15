@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class VeniceFPSCameraData : 
 		FPSCameraData
 	{
-		[ContainerField(224), LayoutImmutable, Blittable]
-		public float SuppressionBlurAmountMultiplier { get; set; } // 0xE0 (224)
+		protected float m_SuppressionBlurAmountMultiplier = new float();
+		[ContainerField(224), LayoutImmutable, Blittable, ContainerFieldNameHash(471397458)]
+		public float SuppressionBlurAmountMultiplier { get { return m_SuppressionBlurAmountMultiplier; } set { if (OnPropertyChanging("VeniceFPSCameraData." + nameof(SuppressionBlurAmountMultiplier), this, m_SuppressionBlurAmountMultiplier, value)) m_SuppressionBlurAmountMultiplier = value; } } // 0xE0 (224)
 		
-		[ContainerField(228), LayoutImmutable, Blittable]
-		public float SuppressionBlurSizeMultiplier { get; set; } // 0xE4 (228)
+		protected float m_SuppressionBlurSizeMultiplier = new float();
+		[ContainerField(228), LayoutImmutable, Blittable, ContainerFieldNameHash(1437853051)]
+		public float SuppressionBlurSizeMultiplier { get { return m_SuppressionBlurSizeMultiplier; } set { if (OnPropertyChanging("VeniceFPSCameraData." + nameof(SuppressionBlurSizeMultiplier), this, m_SuppressionBlurSizeMultiplier, value)) m_SuppressionBlurSizeMultiplier = value; } } // 0xE4 (228)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

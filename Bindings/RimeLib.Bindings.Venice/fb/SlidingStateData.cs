@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class SlidingStateData : 
 		CharacterStateData
 	{
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public float HorizontalInputScale { get; set; } // 0xC (12)
+		protected float m_HorizontalInputScale = new float();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(770027349)]
+		public float HorizontalInputScale { get { return m_HorizontalInputScale; } set { if (OnPropertyChanging("SlidingStateData." + nameof(HorizontalInputScale), this, m_HorizontalInputScale, value)) m_HorizontalInputScale = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public float GravityScale { get; set; } // 0x10 (16)
+		protected float m_GravityScale = new float();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(1341716283)]
+		public float GravityScale { get { return m_GravityScale; } set { if (OnPropertyChanging("SlidingStateData." + nameof(GravityScale), this, m_GravityScale, value)) m_GravityScale = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

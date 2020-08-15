@@ -5,25 +5,38 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class VoiceOverEventNode : 
 		VoiceOverStructureNode
 	{
-		[ContainerField(12)]
-		public CtrRef<VoiceOverIntervalNode> Interval { get; set; } = new CtrRef<VoiceOverIntervalNode>(); // 0xC (12)
+		protected CtrRef<VoiceOverIntervalNode> m_Interval = new CtrRef<VoiceOverIntervalNode>();
+		[ContainerField(12), ContainerFieldNameHash(4280103418)]
+		public CtrRef<VoiceOverIntervalNode> Interval { get { return m_Interval; } set { if (OnPropertyChanging("VoiceOverEventNode." + nameof(Interval), this, m_Interval, value)) m_Interval = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public RefArray<VoiceOverStructureNode> Relationship { get; set; } = new RefArray<VoiceOverStructureNode>(); // 0x10 (16)
+		protected RefArray<VoiceOverStructureNode> m_Relationship = new RefArray<VoiceOverStructureNode>();
+		[ContainerField(16), ContainerFieldNameHash(1551797377)]
+		public RefArray<VoiceOverStructureNode> Relationship { get { return m_Relationship; } set { if (OnPropertyChanging("VoiceOverEventNode." + nameof(Relationship), this, m_Relationship, value)) m_Relationship = value; } } // 0x10 (16)
 		
-		[ContainerField(20)]
-		public RefArray<VoiceOverValueRedirect> Redirects { get; set; } = new RefArray<VoiceOverValueRedirect>(); // 0x14 (20)
+		protected RefArray<VoiceOverValueRedirect> m_Redirects = new RefArray<VoiceOverValueRedirect>();
+		[ContainerField(20), ContainerFieldNameHash(1117013132)]
+		public RefArray<VoiceOverValueRedirect> Redirects { get { return m_Redirects; } set { if (OnPropertyChanging("VoiceOverEventNode." + nameof(Redirects), this, m_Redirects, value)) m_Redirects = value; } } // 0x14 (20)
 		
-		[ContainerField(24)]
-		public CtrRef<VoiceOverEvent> Event { get; set; } = new CtrRef<VoiceOverEvent>(); // 0x18 (24)
+		protected CtrRef<VoiceOverEvent> m_Event = new CtrRef<VoiceOverEvent>();
+		[ContainerField(24), ContainerFieldNameHash(201427689)]
+		public CtrRef<VoiceOverEvent> Event { get { return m_Event; } set { if (OnPropertyChanging("VoiceOverEventNode." + nameof(Event), this, m_Event, value)) m_Event = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

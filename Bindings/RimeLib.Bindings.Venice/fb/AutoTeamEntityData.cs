@@ -5,32 +5,46 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class AutoTeamEntityData : 
 		GameEntityData
 	{
-		[ContainerField(96), LayoutImmutable, Blittable]
-		public uint TeamDifferenceToAutoBalance { get; set; } // 0x60 (96)
+		protected uint m_TeamDifferenceToAutoBalance = new uint();
+		[ContainerField(96), LayoutImmutable, Blittable, ContainerFieldNameHash(113977021)]
+		public uint TeamDifferenceToAutoBalance { get { return m_TeamDifferenceToAutoBalance; } set { if (OnPropertyChanging("AutoTeamEntityData." + nameof(TeamDifferenceToAutoBalance), this, m_TeamDifferenceToAutoBalance, value)) m_TeamDifferenceToAutoBalance = value; } } // 0x60 (96)
 		
-		[ContainerField(100)]
-		public TeamAssignMode TeamAssignMode { get; set; } = new TeamAssignMode(); // 0x64 (100)
+		protected TeamAssignMode m_TeamAssignMode = new TeamAssignMode();
+		[ContainerField(100), ContainerFieldNameHash(3887289498)]
+		public TeamAssignMode TeamAssignMode { get { return m_TeamAssignMode; } set { if (OnPropertyChanging("AutoTeamEntityData." + nameof(TeamAssignMode), this, m_TeamAssignMode, value)) m_TeamAssignMode = value; } } // 0x64 (100)
 		
-		[ContainerField(104), LayoutImmutable, Blittable]
-		public uint PlayerCountNeededToAutoBalance { get; set; } // 0x68 (104)
+		protected uint m_PlayerCountNeededToAutoBalance = new uint();
+		[ContainerField(104), LayoutImmutable, Blittable, ContainerFieldNameHash(84550380)]
+		public uint PlayerCountNeededToAutoBalance { get { return m_PlayerCountNeededToAutoBalance; } set { if (OnPropertyChanging("AutoTeamEntityData." + nameof(PlayerCountNeededToAutoBalance), this, m_PlayerCountNeededToAutoBalance, value)) m_PlayerCountNeededToAutoBalance = value; } } // 0x68 (104)
 		
-		[ContainerField(108), LayoutImmutable, Blittable]
-		public bool ForceIntoSquad { get; set; } // 0x6C (108)
+		protected bool m_ForceIntoSquad = new bool();
+		[ContainerField(108), LayoutImmutable, Blittable, ContainerFieldNameHash(1527339574)]
+		public bool ForceIntoSquad { get { return m_ForceIntoSquad; } set { if (OnPropertyChanging("AutoTeamEntityData." + nameof(ForceIntoSquad), this, m_ForceIntoSquad, value)) m_ForceIntoSquad = value; } } // 0x6C (108)
 		
-		[ContainerField(109), LayoutImmutable, Blittable]
-		public bool RotateTeamOnNewRound { get; set; } // 0x6D (109)
+		protected bool m_RotateTeamOnNewRound = new bool();
+		[ContainerField(109), LayoutImmutable, Blittable, ContainerFieldNameHash(3788125566)]
+		public bool RotateTeamOnNewRound { get { return m_RotateTeamOnNewRound; } set { if (OnPropertyChanging("AutoTeamEntityData." + nameof(RotateTeamOnNewRound), this, m_RotateTeamOnNewRound, value)) m_RotateTeamOnNewRound = value; } } // 0x6D (109)
 		
-		[ContainerField(110), LayoutImmutable, Blittable]
-		public bool AutoBalance { get; set; } // 0x6E (110)
+		protected bool m_AutoBalance = new bool();
+		[ContainerField(110), LayoutImmutable, Blittable, ContainerFieldNameHash(2626919340)]
+		public bool AutoBalance { get { return m_AutoBalance; } set { if (OnPropertyChanging("AutoTeamEntityData." + nameof(AutoBalance), this, m_AutoBalance, value)) m_AutoBalance = value; } } // 0x6E (110)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

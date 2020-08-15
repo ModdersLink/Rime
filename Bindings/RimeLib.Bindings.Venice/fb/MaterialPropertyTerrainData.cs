@@ -5,22 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class MaterialPropertyTerrainData : 
 		PhysicsMaterialRelationPropertyData
 	{
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 DirtTriggerColor { get; set; } = new Vec3(); // 0x10 (16)
+		protected Vec3 m_DirtTriggerColor = new Vec3();
+		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(2764380651)]
+		public Vec3 DirtTriggerColor { get { return m_DirtTriggerColor; } set { if (OnPropertyChanging("MaterialPropertyTerrainData." + nameof(DirtTriggerColor), this, m_DirtTriggerColor, value)) m_DirtTriggerColor = value; } } // 0x10 (16)
 		
-		[ContainerField(32)]
-		public CtrRef<EffectBlueprint> DestructionEffect { get; set; } = new CtrRef<EffectBlueprint>(); // 0x20 (32)
+		protected CtrRef<EffectBlueprint> m_DestructionEffect = new CtrRef<EffectBlueprint>();
+		[ContainerField(32), ContainerFieldNameHash(3907820780)]
+		public CtrRef<EffectBlueprint> DestructionEffect { get { return m_DestructionEffect; } set { if (OnPropertyChanging("MaterialPropertyTerrainData." + nameof(DestructionEffect), this, m_DestructionEffect, value)) m_DestructionEffect = value; } } // 0x20 (32)
 		
-		[ContainerField(36), LayoutImmutable, Blittable]
-		public float DirtTriggerFactor { get; set; } // 0x24 (36)
+		protected float m_DirtTriggerFactor = new float();
+		[ContainerField(36), LayoutImmutable, Blittable, ContainerFieldNameHash(602292507)]
+		public float DirtTriggerFactor { get { return m_DirtTriggerFactor; } set { if (OnPropertyChanging("MaterialPropertyTerrainData." + nameof(DirtTriggerFactor), this, m_DirtTriggerFactor, value)) m_DirtTriggerFactor = value; } } // 0x24 (36)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

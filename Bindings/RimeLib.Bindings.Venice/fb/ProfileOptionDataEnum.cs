@@ -5,17 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class ProfileOptionDataEnum : 
 		ProfileOptionData
 	{
-		[ContainerField(20)]
-		public List<ProfileOptionDataEnumItem> Items { get; set; } = new List<ProfileOptionDataEnumItem>(); // 0x14 (20)
+		protected List<ProfileOptionDataEnumItem> m_Items = new List<ProfileOptionDataEnumItem>();
+		[ContainerField(20), ContainerFieldNameHash(215446531)]
+		public List<ProfileOptionDataEnumItem> Items { get { return m_Items; } set { if (OnPropertyChanging("ProfileOptionDataEnum." + nameof(Items), this, m_Items, value)) m_Items = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

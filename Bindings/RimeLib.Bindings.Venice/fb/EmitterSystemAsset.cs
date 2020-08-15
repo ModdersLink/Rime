@@ -5,23 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class EmitterSystemAsset : 
 		Asset
 	{
-		[ContainerField(12)]
-		public List<EmitterTextureAtlasInfo> TextureInfos { get; set; } = new List<EmitterTextureAtlasInfo>(); // 0xC (12)
+		protected List<EmitterTextureAtlasInfo> m_TextureInfos = new List<EmitterTextureAtlasInfo>();
+		[ContainerField(12), ContainerFieldNameHash(2154121191)]
+		public List<EmitterTextureAtlasInfo> TextureInfos { get { return m_TextureInfos; } set { if (OnPropertyChanging("EmitterSystemAsset." + nameof(TextureInfos), this, m_TextureInfos, value)) m_TextureInfos = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public CtrRef<TextureAsset> BaseAtlasTexture { get; set; } = new CtrRef<TextureAsset>(); // 0x10 (16)
+		protected CtrRef<TextureAsset> m_BaseAtlasTexture = new CtrRef<TextureAsset>();
+		[ContainerField(16), ContainerFieldNameHash(1736187172)]
+		public CtrRef<TextureAsset> BaseAtlasTexture { get { return m_BaseAtlasTexture; } set { if (OnPropertyChanging("EmitterSystemAsset." + nameof(BaseAtlasTexture), this, m_BaseAtlasTexture, value)) m_BaseAtlasTexture = value; } } // 0x10 (16)
 		
-		[ContainerField(20)]
-		public CtrRef<TextureAsset> NormalAtlasTexture { get; set; } = new CtrRef<TextureAsset>(); // 0x14 (20)
+		protected CtrRef<TextureAsset> m_NormalAtlasTexture = new CtrRef<TextureAsset>();
+		[ContainerField(20), ContainerFieldNameHash(2946813282)]
+		public CtrRef<TextureAsset> NormalAtlasTexture { get { return m_NormalAtlasTexture; } set { if (OnPropertyChanging("EmitterSystemAsset." + nameof(NormalAtlasTexture), this, m_NormalAtlasTexture, value)) m_NormalAtlasTexture = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

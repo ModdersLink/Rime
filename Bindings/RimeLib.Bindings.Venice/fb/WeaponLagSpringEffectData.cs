@@ -5,34 +5,50 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class WeaponLagSpringEffectData : 
 		DataContainer
 	{
-		[ContainerField(8)]
-		public WeaponLagEffectSpringVector OffsetSprings { get; set; } = new WeaponLagEffectSpringVector(); // 0x8 (8)
+		protected WeaponLagEffectSpringVector m_OffsetSprings = new WeaponLagEffectSpringVector();
+		[ContainerField(8), ContainerFieldNameHash(3506860586)]
+		public WeaponLagEffectSpringVector OffsetSprings { get { return m_OffsetSprings; } set { if (OnPropertyChanging("WeaponLagSpringEffectData." + nameof(OffsetSprings), this, m_OffsetSprings, value)) m_OffsetSprings = value; } } // 0x8 (8)
 		
-		[ContainerField(32)]
-		public WeaponLagEffectSpringVector RotationSprings { get; set; } = new WeaponLagEffectSpringVector(); // 0x20 (32)
+		protected WeaponLagEffectSpringVector m_RotationSprings = new WeaponLagEffectSpringVector();
+		[ContainerField(32), ContainerFieldNameHash(1853141363)]
+		public WeaponLagEffectSpringVector RotationSprings { get { return m_RotationSprings; } set { if (OnPropertyChanging("WeaponLagSpringEffectData." + nameof(RotationSprings), this, m_RotationSprings, value)) m_RotationSprings = value; } } // 0x20 (32)
 		
-		[ContainerField(64)]
-		public WeaponLagEffectForceData JumpForces { get; set; } = new WeaponLagEffectForceData(); // 0x40 (64)
+		protected WeaponLagEffectForceData m_JumpForces = new WeaponLagEffectForceData();
+		[ContainerField(64), ContainerFieldNameHash(583688585)]
+		public WeaponLagEffectForceData JumpForces { get { return m_JumpForces; } set { if (OnPropertyChanging("WeaponLagSpringEffectData." + nameof(JumpForces), this, m_JumpForces, value)) m_JumpForces = value; } } // 0x40 (64)
 		
-		[ContainerField(96)]
-		public WeaponLagEffectForceData LandForces { get; set; } = new WeaponLagEffectForceData(); // 0x60 (96)
+		protected WeaponLagEffectForceData m_LandForces = new WeaponLagEffectForceData();
+		[ContainerField(96), ContainerFieldNameHash(2961168620)]
+		public WeaponLagEffectForceData LandForces { get { return m_LandForces; } set { if (OnPropertyChanging("WeaponLagSpringEffectData." + nameof(LandForces), this, m_LandForces, value)) m_LandForces = value; } } // 0x60 (96)
 		
-		[ContainerField(128)]
-		public WeaponLagEffectForceData PoseUpForces { get; set; } = new WeaponLagEffectForceData(); // 0x80 (128)
+		protected WeaponLagEffectForceData m_PoseUpForces = new WeaponLagEffectForceData();
+		[ContainerField(128), ContainerFieldNameHash(806552583)]
+		public WeaponLagEffectForceData PoseUpForces { get { return m_PoseUpForces; } set { if (OnPropertyChanging("WeaponLagSpringEffectData." + nameof(PoseUpForces), this, m_PoseUpForces, value)) m_PoseUpForces = value; } } // 0x80 (128)
 		
-		[ContainerField(160)]
-		public WeaponLagEffectForceData PoseDownForces { get; set; } = new WeaponLagEffectForceData(); // 0xA0 (160)
+		protected WeaponLagEffectForceData m_PoseDownForces = new WeaponLagEffectForceData();
+		[ContainerField(160), ContainerFieldNameHash(3710232848)]
+		public WeaponLagEffectForceData PoseDownForces { get { return m_PoseDownForces; } set { if (OnPropertyChanging("WeaponLagSpringEffectData." + nameof(PoseDownForces), this, m_PoseDownForces, value)) m_PoseDownForces = value; } } // 0xA0 (160)
 		
-		[ContainerField(192), LayoutImmutable, Blittable]
-		public float ZoomForceModifier { get; set; } // 0xC0 (192)
+		protected float m_ZoomForceModifier = new float();
+		[ContainerField(192), LayoutImmutable, Blittable, ContainerFieldNameHash(6250296)]
+		public float ZoomForceModifier { get { return m_ZoomForceModifier; } set { if (OnPropertyChanging("WeaponLagSpringEffectData." + nameof(ZoomForceModifier), this, m_ZoomForceModifier, value)) m_ZoomForceModifier = value; } } // 0xC0 (192)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

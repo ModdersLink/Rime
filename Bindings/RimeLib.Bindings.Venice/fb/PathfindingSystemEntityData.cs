@@ -5,17 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class PathfindingSystemEntityData : 
 		EntityData
 	{
-		[ContainerField(12)]
-		public List<uint> PathfindingTypesOnLevel { get; set; } = new List<uint>(); // 0xC (12)
+		protected List<uint> m_PathfindingTypesOnLevel = new List<uint>();
+		[ContainerField(12), ContainerFieldNameHash(2264269169)]
+		public List<uint> PathfindingTypesOnLevel { get { return m_PathfindingTypesOnLevel; } set { if (OnPropertyChanging("PathfindingSystemEntityData." + nameof(PathfindingTypesOnLevel), this, m_PathfindingTypesOnLevel, value)) m_PathfindingTypesOnLevel = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

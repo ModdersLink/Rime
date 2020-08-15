@@ -5,22 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class MovementActionGroupData : 
 		MovementActionData
 	{
-		[ContainerField(8)]
-		public RefArray<MovementActionData> Actions { get; set; } = new RefArray<MovementActionData>(); // 0x8 (8)
+		protected RefArray<MovementActionData> m_Actions = new RefArray<MovementActionData>();
+		[ContainerField(8), ContainerFieldNameHash(373511656)]
+		public RefArray<MovementActionData> Actions { get { return m_Actions; } set { if (OnPropertyChanging("MovementActionGroupData." + nameof(Actions), this, m_Actions, value)) m_Actions = value; } } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public bool RunSimultaneously { get; set; } // 0xC (12)
+		protected bool m_RunSimultaneously = new bool();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(2322374336)]
+		public bool RunSimultaneously { get { return m_RunSimultaneously; } set { if (OnPropertyChanging("MovementActionGroupData." + nameof(RunSimultaneously), this, m_RunSimultaneously, value)) m_RunSimultaneously = value; } } // 0xC (12)
 		
-		[ContainerField(13), LayoutImmutable, Blittable]
-		public bool RestartChildren { get; set; } // 0xD (13)
+		protected bool m_RestartChildren = new bool();
+		[ContainerField(13), LayoutImmutable, Blittable, ContainerFieldNameHash(3914911489)]
+		public bool RestartChildren { get { return m_RestartChildren; } set { if (OnPropertyChanging("MovementActionGroupData." + nameof(RestartChildren), this, m_RestartChildren, value)) m_RestartChildren = value; } } // 0xD (13)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

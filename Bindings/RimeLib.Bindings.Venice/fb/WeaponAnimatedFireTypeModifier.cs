@@ -5,17 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class WeaponAnimatedFireTypeModifier : 
 		WeaponModifierBase
 	{
-		[ContainerField(8)]
-		public AnimatedFireEnum AnimatedFireType { get; set; } = new AnimatedFireEnum(); // 0x8 (8)
+		protected AnimatedFireEnum m_AnimatedFireType = new AnimatedFireEnum();
+		[ContainerField(8), ContainerFieldNameHash(1066105722)]
+		public AnimatedFireEnum AnimatedFireType { get { return m_AnimatedFireType; } set { if (OnPropertyChanging("WeaponAnimatedFireTypeModifier." + nameof(AnimatedFireType), this, m_AnimatedFireType, value)) m_AnimatedFireType = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

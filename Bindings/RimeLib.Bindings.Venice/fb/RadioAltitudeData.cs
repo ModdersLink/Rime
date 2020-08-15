@@ -5,23 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class RadioAltitudeData : 
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable, Blittable]
-		public float Range { get; set; } // 0x8 (8)
+		protected float m_Range = new float();
+		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(230112826)]
+		public float Range { get { return m_Range; } set { if (OnPropertyChanging("RadioAltitudeData." + nameof(Range), this, m_Range, value)) m_Range = value; } } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public float UpdateFrequency { get; set; } // 0xC (12)
+		protected float m_UpdateFrequency = new float();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(219717232)]
+		public float UpdateFrequency { get { return m_UpdateFrequency; } set { if (OnPropertyChanging("RadioAltitudeData." + nameof(UpdateFrequency), this, m_UpdateFrequency, value)) m_UpdateFrequency = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public CollisionMethodEnum CollisionMethod { get; set; } = new CollisionMethodEnum(); // 0x10 (16)
+		protected CollisionMethodEnum m_CollisionMethod = new CollisionMethodEnum();
+		[ContainerField(16), ContainerFieldNameHash(2308963620)]
+		public CollisionMethodEnum CollisionMethod { get { return m_CollisionMethod; } set { if (OnPropertyChanging("RadioAltitudeData." + nameof(CollisionMethod), this, m_CollisionMethod, value)) m_CollisionMethod = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

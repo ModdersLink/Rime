@@ -5,37 +5,54 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class EffectEntityData : 
 		SpatialEntityData
 	{
-		[ContainerField(80)]
-		public RefArray<GameObjectData> Components { get; set; } = new RefArray<GameObjectData>(); // 0x50 (80)
+		protected RefArray<GameObjectData> m_Components = new RefArray<GameObjectData>();
+		[ContainerField(80), ContainerFieldNameHash(3391050425)]
+		public RefArray<GameObjectData> Components { get { return m_Components; } set { if (OnPropertyChanging("EffectEntityData." + nameof(Components), this, m_Components, value)) m_Components = value; } } // 0x50 (80)
 		
-		[ContainerField(84), LayoutImmutable, Blittable]
-		public uint MaxInstanceCount { get; set; } // 0x54 (84)
+		protected uint m_MaxInstanceCount = new uint();
+		[ContainerField(84), LayoutImmutable, Blittable, ContainerFieldNameHash(3587631771)]
+		public uint MaxInstanceCount { get { return m_MaxInstanceCount; } set { if (OnPropertyChanging("EffectEntityData." + nameof(MaxInstanceCount), this, m_MaxInstanceCount, value)) m_MaxInstanceCount = value; } } // 0x54 (84)
 		
-		[ContainerField(88), LayoutImmutable, Blittable]
-		public float CullDistance { get; set; } // 0x58 (88)
+		protected float m_CullDistance = new float();
+		[ContainerField(88), LayoutImmutable, Blittable, ContainerFieldNameHash(1000432400)]
+		public float CullDistance { get { return m_CullDistance; } set { if (OnPropertyChanging("EffectEntityData." + nameof(CullDistance), this, m_CullDistance, value)) m_CullDistance = value; } } // 0x58 (88)
 		
-		[ContainerField(92), LayoutImmutable, Blittable]
-		public float StartDelay { get; set; } // 0x5C (92)
+		protected float m_StartDelay = new float();
+		[ContainerField(92), LayoutImmutable, Blittable, ContainerFieldNameHash(2731915920)]
+		public float StartDelay { get { return m_StartDelay; } set { if (OnPropertyChanging("EffectEntityData." + nameof(StartDelay), this, m_StartDelay, value)) m_StartDelay = value; } } // 0x5C (92)
 		
-		[ContainerField(96), LayoutImmutable, Blittable]
-		public bool HighEndPc { get; set; } // 0x60 (96)
+		protected bool m_HighEndPc = new bool();
+		[ContainerField(96), LayoutImmutable, Blittable, ContainerFieldNameHash(47851991)]
+		public bool HighEndPc { get { return m_HighEndPc; } set { if (OnPropertyChanging("EffectEntityData." + nameof(HighEndPc), this, m_HighEndPc, value)) m_HighEndPc = value; } } // 0x60 (96)
 		
-		[ContainerField(97), LayoutImmutable, Blittable]
-		public bool MediumPc { get; set; } // 0x61 (97)
+		protected bool m_MediumPc = new bool();
+		[ContainerField(97), LayoutImmutable, Blittable, ContainerFieldNameHash(773886027)]
+		public bool MediumPc { get { return m_MediumPc; } set { if (OnPropertyChanging("EffectEntityData." + nameof(MediumPc), this, m_MediumPc, value)) m_MediumPc = value; } } // 0x61 (97)
 		
-		[ContainerField(98), LayoutImmutable, Blittable]
-		public bool LowEndPc { get; set; } // 0x62 (98)
+		protected bool m_LowEndPc = new bool();
+		[ContainerField(98), LayoutImmutable, Blittable, ContainerFieldNameHash(2485938765)]
+		public bool LowEndPc { get { return m_LowEndPc; } set { if (OnPropertyChanging("EffectEntityData." + nameof(LowEndPc), this, m_LowEndPc, value)) m_LowEndPc = value; } } // 0x62 (98)
 		
-		[ContainerField(99), LayoutImmutable, Blittable]
-		public bool ResetInstanceWhenStarted { get; set; } // 0x63 (99)
+		protected bool m_ResetInstanceWhenStarted = new bool();
+		[ContainerField(99), LayoutImmutable, Blittable, ContainerFieldNameHash(1039558380)]
+		public bool ResetInstanceWhenStarted { get { return m_ResetInstanceWhenStarted; } set { if (OnPropertyChanging("EffectEntityData." + nameof(ResetInstanceWhenStarted), this, m_ResetInstanceWhenStarted, value)) m_ResetInstanceWhenStarted = value; } } // 0x63 (99)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

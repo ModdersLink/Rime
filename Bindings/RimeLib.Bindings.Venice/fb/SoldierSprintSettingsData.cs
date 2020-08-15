@@ -5,40 +5,54 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class SoldierSprintSettingsData : 
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable, Blittable]
-		public float Fov { get; set; } // 0x8 (8)
+		protected float m_Fov = new float();
+		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(193443802)]
+		public float Fov { get { return m_Fov; } set { if (OnPropertyChanging("SoldierSprintSettingsData." + nameof(Fov), this, m_Fov, value)) m_Fov = value; } } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public float FovInDelay { get; set; } // 0xC (12)
+		protected float m_FovInDelay = new float();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(2914334632)]
+		public float FovInDelay { get { return m_FovInDelay; } set { if (OnPropertyChanging("SoldierSprintSettingsData." + nameof(FovInDelay), this, m_FovInDelay, value)) m_FovInDelay = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public float FovInTime { get; set; } // 0x10 (16)
+		protected float m_FovInTime = new float();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(1259080584)]
+		public float FovInTime { get { return m_FovInTime; } set { if (OnPropertyChanging("SoldierSprintSettingsData." + nameof(FovInTime), this, m_FovInTime, value)) m_FovInTime = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
-		public float FovOutDelay { get; set; } // 0x14 (20)
+		protected float m_FovOutDelay = new float();
+		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(401599137)]
+		public float FovOutDelay { get { return m_FovOutDelay; } set { if (OnPropertyChanging("SoldierSprintSettingsData." + nameof(FovOutDelay), this, m_FovOutDelay, value)) m_FovOutDelay = value; } } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable]
-		public float FovOutTime { get; set; } // 0x18 (24)
+		protected float m_FovOutTime = new float();
+		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(3785964001)]
+		public float FovOutTime { get { return m_FovOutTime; } set { if (OnPropertyChanging("SoldierSprintSettingsData." + nameof(FovOutTime), this, m_FovOutTime, value)) m_FovOutTime = value; } } // 0x18 (24)
 		
-		[ContainerField(28), LayoutImmutable, Blittable]
-		public float RecoverTime { get; set; } // 0x1C (28)
+		protected float m_RecoverTime = new float();
+		[ContainerField(28), LayoutImmutable, Blittable, ContainerFieldNameHash(3786458634)]
+		public float RecoverTime { get { return m_RecoverTime; } set { if (OnPropertyChanging("SoldierSprintSettingsData." + nameof(RecoverTime), this, m_RecoverTime, value)) m_RecoverTime = value; } } // 0x1C (28)
 		
-		[ContainerField(32), LayoutImmutable, Blittable]
-		public float SprintToProneRecoverTime { get; set; } // 0x20 (32)
+		protected float m_SprintToProneRecoverTime = new float();
+		[ContainerField(32), LayoutImmutable, Blittable, ContainerFieldNameHash(498825685)]
+		public float SprintToProneRecoverTime { get { return m_SprintToProneRecoverTime; } set { if (OnPropertyChanging("SoldierSprintSettingsData." + nameof(SprintToProneRecoverTime), this, m_SprintToProneRecoverTime, value)) m_SprintToProneRecoverTime = value; } } // 0x20 (32)
 		
-		[ContainerField(36)]
-		public List<EntryInputActionEnum> InterruptingActions { get; set; } = new List<EntryInputActionEnum>(); // 0x24 (36)
+		protected List<EntryInputActionEnum> m_InterruptingActions = new List<EntryInputActionEnum>();
+		[ContainerField(36), ContainerFieldNameHash(1860467119)]
+		public List<EntryInputActionEnum> InterruptingActions { get { return m_InterruptingActions; } set { if (OnPropertyChanging("SoldierSprintSettingsData." + nameof(InterruptingActions), this, m_InterruptingActions, value)) m_InterruptingActions = value; } } // 0x24 (36)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

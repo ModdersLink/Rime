@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class KillAllEntityData : 
 		GameEntityData
 	{
-		[ContainerField(96), LayoutImmutable, Blittable]
-		public bool KillAllHumanSoldiers { get; set; } // 0x60 (96)
+		protected bool m_KillAllHumanSoldiers = new bool();
+		[ContainerField(96), LayoutImmutable, Blittable, ContainerFieldNameHash(2202794880)]
+		public bool KillAllHumanSoldiers { get { return m_KillAllHumanSoldiers; } set { if (OnPropertyChanging("KillAllEntityData." + nameof(KillAllHumanSoldiers), this, m_KillAllHumanSoldiers, value)) m_KillAllHumanSoldiers = value; } } // 0x60 (96)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

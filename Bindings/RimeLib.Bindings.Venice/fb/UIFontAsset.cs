@@ -5,35 +5,50 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class UIFontAsset : 
 		Asset
 	{
-		[ContainerField(12), LayoutImmutable]
-		public string SourceFile { get; set; } // 0xC (12)
+		protected string m_SourceFile = new string();
+		[ContainerField(12), LayoutImmutable, ContainerFieldNameHash(1522844286)]
+		public string SourceFile { get { return m_SourceFile; } set { if (OnPropertyChanging("UIFontAsset." + nameof(SourceFile), this, m_SourceFile, value)) m_SourceFile = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public CtrRef<UITextDatabase> TextDatabase { get; set; } = new CtrRef<UITextDatabase>(); // 0x10 (16)
+		protected CtrRef<UITextDatabase> m_TextDatabase = new CtrRef<UITextDatabase>();
+		[ContainerField(16), ContainerFieldNameHash(1951250813)]
+		public CtrRef<UITextDatabase> TextDatabase { get { return m_TextDatabase; } set { if (OnPropertyChanging("UIFontAsset." + nameof(TextDatabase), this, m_TextDatabase, value)) m_TextDatabase = value; } } // 0x10 (16)
 		
-		[ContainerField(20)]
-		public List<string> ScaleformFontName { get; set; } = new List<string>(); // 0x14 (20)
+		protected List<string> m_ScaleformFontName = new List<string>();
+		[ContainerField(20), ContainerFieldNameHash(842040767)]
+		public List<string> ScaleformFontName { get { return m_ScaleformFontName; } set { if (OnPropertyChanging("UIFontAsset." + nameof(ScaleformFontName), this, m_ScaleformFontName, value)) m_ScaleformFontName = value; } } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable]
-		public bool NumericsOnly { get; set; } // 0x18 (24)
+		protected bool m_NumericsOnly = new bool();
+		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(1142577577)]
+		public bool NumericsOnly { get { return m_NumericsOnly; } set { if (OnPropertyChanging("UIFontAsset." + nameof(NumericsOnly), this, m_NumericsOnly, value)) m_NumericsOnly = value; } } // 0x18 (24)
 		
-		[ContainerField(25), LayoutImmutable, Blittable]
-		public bool CompleteKorean { get; set; } // 0x19 (25)
+		protected bool m_CompleteKorean = new bool();
+		[ContainerField(25), LayoutImmutable, Blittable, ContainerFieldNameHash(3382158800)]
+		public bool CompleteKorean { get { return m_CompleteKorean; } set { if (OnPropertyChanging("UIFontAsset." + nameof(CompleteKorean), this, m_CompleteKorean, value)) m_CompleteKorean = value; } } // 0x19 (25)
 		
-		[ContainerField(26), LayoutImmutable, Blittable]
-		public bool CompleteJapanese { get; set; } // 0x1A (26)
+		protected bool m_CompleteJapanese = new bool();
+		[ContainerField(26), LayoutImmutable, Blittable, ContainerFieldNameHash(3695683243)]
+		public bool CompleteJapanese { get { return m_CompleteJapanese; } set { if (OnPropertyChanging("UIFontAsset." + nameof(CompleteJapanese), this, m_CompleteJapanese, value)) m_CompleteJapanese = value; } } // 0x1A (26)
 		
-		[ContainerField(27), LayoutImmutable, Blittable]
-		public bool CompleteTraditionalChinese { get; set; } // 0x1B (27)
+		protected bool m_CompleteTraditionalChinese = new bool();
+		[ContainerField(27), LayoutImmutable, Blittable, ContainerFieldNameHash(1924875432)]
+		public bool CompleteTraditionalChinese { get { return m_CompleteTraditionalChinese; } set { if (OnPropertyChanging("UIFontAsset." + nameof(CompleteTraditionalChinese), this, m_CompleteTraditionalChinese, value)) m_CompleteTraditionalChinese = value; } } // 0x1B (27)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

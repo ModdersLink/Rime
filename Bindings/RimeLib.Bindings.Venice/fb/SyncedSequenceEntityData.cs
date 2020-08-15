@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class SyncedSequenceEntityData : 
 		SequenceEntityData
 	{
-		[ContainerField(52), LayoutImmutable, Blittable]
-		public bool InterpolateTime { get; set; } // 0x34 (52)
+		protected bool m_InterpolateTime = new bool();
+		[ContainerField(52), LayoutImmutable, Blittable, ContainerFieldNameHash(500083415)]
+		public bool InterpolateTime { get { return m_InterpolateTime; } set { if (OnPropertyChanging("SyncedSequenceEntityData." + nameof(InterpolateTime), this, m_InterpolateTime, value)) m_InterpolateTime = value; } } // 0x34 (52)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

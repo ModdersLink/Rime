@@ -5,17 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class UIMapmarkerCompData : 
 		UIComponentData
 	{
-		[ContainerField(28)]
-		public List<int> ProximityIntervals { get; set; } = new List<int>(); // 0x1C (28)
+		protected List<int> m_ProximityIntervals = new List<int>();
+		[ContainerField(28), ContainerFieldNameHash(2970219836)]
+		public List<int> ProximityIntervals { get { return m_ProximityIntervals; } set { if (OnPropertyChanging("UIMapmarkerCompData." + nameof(ProximityIntervals), this, m_ProximityIntervals, value)) m_ProximityIntervals = value; } } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

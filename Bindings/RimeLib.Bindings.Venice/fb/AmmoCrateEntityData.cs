@@ -5,28 +5,42 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class AmmoCrateEntityData : 
 		GameEntityData
 	{
-		[ContainerField(96)]
-		public CtrRef<MapMarkerEntityData> Marker { get; set; } = new CtrRef<MapMarkerEntityData>(); // 0x60 (96)
+		protected CtrRef<MapMarkerEntityData> m_Marker = new CtrRef<MapMarkerEntityData>();
+		[ContainerField(96), ContainerFieldNameHash(2643283879)]
+		public CtrRef<MapMarkerEntityData> Marker { get { return m_Marker; } set { if (OnPropertyChanging("AmmoCrateEntityData." + nameof(Marker), this, m_Marker, value)) m_Marker = value; } } // 0x60 (96)
 		
-		[ContainerField(100)]
-		public CtrRef<StaticModelEntityData> Model { get; set; } = new CtrRef<StaticModelEntityData>(); // 0x64 (100)
+		protected CtrRef<StaticModelEntityData> m_Model = new CtrRef<StaticModelEntityData>();
+		[ContainerField(100), ContainerFieldNameHash(210011050)]
+		public CtrRef<StaticModelEntityData> Model { get { return m_Model; } set { if (OnPropertyChanging("AmmoCrateEntityData." + nameof(Model), this, m_Model, value)) m_Model = value; } } // 0x64 (100)
 		
-		[ContainerField(104), LayoutImmutable, Blittable]
-		public float RefillDelay { get; set; } // 0x68 (104)
+		protected float m_RefillDelay = new float();
+		[ContainerField(104), LayoutImmutable, Blittable, ContainerFieldNameHash(1895357000)]
+		public float RefillDelay { get { return m_RefillDelay; } set { if (OnPropertyChanging("AmmoCrateEntityData." + nameof(RefillDelay), this, m_RefillDelay, value)) m_RefillDelay = value; } } // 0x68 (104)
 		
-		[ContainerField(108), LayoutImmutable, Blittable]
-		public float Radius { get; set; } // 0x6C (108)
+		protected float m_Radius = new float();
+		[ContainerField(108), LayoutImmutable, Blittable, ContainerFieldNameHash(3298407133)]
+		public float Radius { get { return m_Radius; } set { if (OnPropertyChanging("AmmoCrateEntityData." + nameof(Radius), this, m_Radius, value)) m_Radius = value; } } // 0x6C (108)
 		
-		[ContainerField(112), LayoutImmutable, Blittable]
-		public bool EnableReplenish { get; set; } // 0x70 (112)
+		protected bool m_EnableReplenish = new bool();
+		[ContainerField(112), LayoutImmutable, Blittable, ContainerFieldNameHash(720329910)]
+		public bool EnableReplenish { get { return m_EnableReplenish; } set { if (OnPropertyChanging("AmmoCrateEntityData." + nameof(EnableReplenish), this, m_EnableReplenish, value)) m_EnableReplenish = value; } } // 0x70 (112)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

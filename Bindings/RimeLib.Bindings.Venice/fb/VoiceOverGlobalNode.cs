@@ -5,22 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class VoiceOverGlobalNode : 
 		VoiceOverExpressionNode
 	{
-		[ContainerField(8)]
-		public CtrRef<VoiceOverValue> Value { get; set; } = new CtrRef<VoiceOverValue>(); // 0x8 (8)
+		protected CtrRef<VoiceOverValue> m_Value = new CtrRef<VoiceOverValue>();
+		[ContainerField(8), ContainerFieldNameHash(225375086)]
+		public CtrRef<VoiceOverValue> Value { get { return m_Value; } set { if (OnPropertyChanging("VoiceOverGlobalNode." + nameof(Value), this, m_Value, value)) m_Value = value; } } // 0x8 (8)
 		
-		[ContainerField(12)]
-		public CtrRef<VoiceOverNamedValue> Field { get; set; } = new CtrRef<VoiceOverNamedValue>(); // 0xC (12)
+		protected CtrRef<VoiceOverNamedValue> m_Field = new CtrRef<VoiceOverNamedValue>();
+		[ContainerField(12), ContainerFieldNameHash(206678151)]
+		public CtrRef<VoiceOverNamedValue> Field { get { return m_Field; } set { if (OnPropertyChanging("VoiceOverGlobalNode." + nameof(Field), this, m_Field, value)) m_Field = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public CtrRef<VoiceOverObject> Object { get; set; } = new CtrRef<VoiceOverObject>(); // 0x10 (16)
+		protected CtrRef<VoiceOverObject> m_Object = new CtrRef<VoiceOverObject>();
+		[ContainerField(16), ContainerFieldNameHash(2866508144)]
+		public CtrRef<VoiceOverObject> Object { get { return m_Object; } set { if (OnPropertyChanging("VoiceOverGlobalNode." + nameof(Object), this, m_Object, value)) m_Object = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(8)]
+	[ContainerType(8)]
 	public class VehicleState : 
 		MetricState
 	{
-		[ContainerField(24), LayoutImmutable]
-		public string VehicleName { get; set; } // 0x18 (24)
+		protected string m_VehicleName = new string();
+		[ContainerField(24), LayoutImmutable, ContainerFieldNameHash(926391226)]
+		public string VehicleName { get { return m_VehicleName; } set { if (OnPropertyChanging("VehicleState." + nameof(VehicleName), this, m_VehicleName, value)) m_VehicleName = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

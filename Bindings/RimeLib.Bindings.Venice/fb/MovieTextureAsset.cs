@@ -5,31 +5,46 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class MovieTextureAsset : 
 		Asset
 	{
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public GUID ChunkGuid { get; set; } // 0xC (12)
+		protected GUID m_ChunkGuid = new GUID();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(3693055745)]
+		public GUID ChunkGuid { get { return m_ChunkGuid; } set { if (OnPropertyChanging("MovieTextureAsset." + nameof(ChunkGuid), this, m_ChunkGuid, value)) m_ChunkGuid = value; } } // 0xC (12)
 		
-		[ContainerField(28), LayoutImmutable, Blittable]
-		public uint ChunkSize { get; set; } // 0x1C (28)
+		protected uint m_ChunkSize = new uint();
+		[ContainerField(28), LayoutImmutable, Blittable, ContainerFieldNameHash(3692630139)]
+		public uint ChunkSize { get { return m_ChunkSize; } set { if (OnPropertyChanging("MovieTextureAsset." + nameof(ChunkSize), this, m_ChunkSize, value)) m_ChunkSize = value; } } // 0x1C (28)
 		
-		[ContainerField(32), LayoutImmutable, Blittable]
-		public GUID SubtitleChunkGuid { get; set; } // 0x20 (32)
+		protected GUID m_SubtitleChunkGuid = new GUID();
+		[ContainerField(32), LayoutImmutable, Blittable, ContainerFieldNameHash(3946824677)]
+		public GUID SubtitleChunkGuid { get { return m_SubtitleChunkGuid; } set { if (OnPropertyChanging("MovieTextureAsset." + nameof(SubtitleChunkGuid), this, m_SubtitleChunkGuid, value)) m_SubtitleChunkGuid = value; } } // 0x20 (32)
 		
-		[ContainerField(48), LayoutImmutable, Blittable]
-		public uint SubtitleChunkSize { get; set; } // 0x30 (48)
+		protected uint m_SubtitleChunkSize = new uint();
+		[ContainerField(48), LayoutImmutable, Blittable, ContainerFieldNameHash(3946120031)]
+		public uint SubtitleChunkSize { get { return m_SubtitleChunkSize; } set { if (OnPropertyChanging("MovieTextureAsset." + nameof(SubtitleChunkSize), this, m_SubtitleChunkSize, value)) m_SubtitleChunkSize = value; } } // 0x30 (48)
 		
-		[ContainerField(52), LayoutImmutable, Blittable]
-		public bool HasLocalizedAudioTracks { get; set; } // 0x34 (52)
+		protected bool m_HasLocalizedAudioTracks = new bool();
+		[ContainerField(52), LayoutImmutable, Blittable, ContainerFieldNameHash(300816458)]
+		public bool HasLocalizedAudioTracks { get { return m_HasLocalizedAudioTracks; } set { if (OnPropertyChanging("MovieTextureAsset." + nameof(HasLocalizedAudioTracks), this, m_HasLocalizedAudioTracks, value)) m_HasLocalizedAudioTracks = value; } } // 0x34 (52)
 		
-		[ContainerField(53), LayoutImmutable, Blittable]
-		public bool OverrideBackgroundMusic { get; set; } // 0x35 (53)
+		protected bool m_OverrideBackgroundMusic = new bool();
+		[ContainerField(53), LayoutImmutable, Blittable, ContainerFieldNameHash(2360371614)]
+		public bool OverrideBackgroundMusic { get { return m_OverrideBackgroundMusic; } set { if (OnPropertyChanging("MovieTextureAsset." + nameof(OverrideBackgroundMusic), this, m_OverrideBackgroundMusic, value)) m_OverrideBackgroundMusic = value; } } // 0x35 (53)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

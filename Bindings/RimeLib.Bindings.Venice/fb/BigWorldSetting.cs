@@ -5,28 +5,42 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class BigWorldSetting : 
 		DataContainer
 	{
-		[ContainerField(8)]
-		public CtrRef<SoundAsset> Sound { get; set; } = new CtrRef<SoundAsset>(); // 0x8 (8)
+		protected CtrRef<SoundAsset> m_Sound = new CtrRef<SoundAsset>();
+		[ContainerField(8), ContainerFieldNameHash(231353798)]
+		public CtrRef<SoundAsset> Sound { get { return m_Sound; } set { if (OnPropertyChanging("BigWorldSetting." + nameof(Sound), this, m_Sound, value)) m_Sound = value; } } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public int MinDistance { get; set; } // 0xC (12)
+		protected int m_MinDistance = new int();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(1885855628)]
+		public int MinDistance { get { return m_MinDistance; } set { if (OnPropertyChanging("BigWorldSetting." + nameof(MinDistance), this, m_MinDistance, value)) m_MinDistance = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public int MaxDistance { get; set; } // 0x10 (16)
+		protected int m_MaxDistance = new int();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(3520454034)]
+		public int MaxDistance { get { return m_MaxDistance; } set { if (OnPropertyChanging("BigWorldSetting." + nameof(MaxDistance), this, m_MaxDistance, value)) m_MaxDistance = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
-		public float MinDelayTimeInMinutes { get; set; } // 0x14 (20)
+		protected float m_MinDelayTimeInMinutes = new float();
+		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(381594133)]
+		public float MinDelayTimeInMinutes { get { return m_MinDelayTimeInMinutes; } set { if (OnPropertyChanging("BigWorldSetting." + nameof(MinDelayTimeInMinutes), this, m_MinDelayTimeInMinutes, value)) m_MinDelayTimeInMinutes = value; } } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable]
-		public float MaxDelayTimeInMinutes { get; set; } // 0x18 (24)
+		protected float m_MaxDelayTimeInMinutes = new float();
+		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(741272203)]
+		public float MaxDelayTimeInMinutes { get { return m_MaxDelayTimeInMinutes; } set { if (OnPropertyChanging("BigWorldSetting." + nameof(MaxDelayTimeInMinutes), this, m_MaxDelayTimeInMinutes, value)) m_MaxDelayTimeInMinutes = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

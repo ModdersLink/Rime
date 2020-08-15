@@ -5,32 +5,46 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class BangerEntityData : 
 		DynamicGamePhysicsEntityData
 	{
-		[ContainerField(112)]
-		public List<float> Scales { get; set; } = new List<float>(); // 0x70 (112)
+		protected List<float> m_Scales = new List<float>();
+		[ContainerField(112), ContainerFieldNameHash(3335406670)]
+		public List<float> Scales { get { return m_Scales; } set { if (OnPropertyChanging("BangerEntityData." + nameof(Scales), this, m_Scales, value)) m_Scales = value; } } // 0x70 (112)
 		
-		[ContainerField(116)]
-		public CtrRef<MeshAsset> Mesh { get; set; } = new CtrRef<MeshAsset>(); // 0x74 (116)
+		protected CtrRef<MeshAsset> m_Mesh = new CtrRef<MeshAsset>();
+		[ContainerField(116), ContainerFieldNameHash(2088783990)]
+		public CtrRef<MeshAsset> Mesh { get { return m_Mesh; } set { if (OnPropertyChanging("BangerEntityData." + nameof(Mesh), this, m_Mesh, value)) m_Mesh = value; } } // 0x74 (116)
 		
-		[ContainerField(120)]
-		public CtrRef<ExplosionEntityData> Explosion { get; set; } = new CtrRef<ExplosionEntityData>(); // 0x78 (120)
+		protected CtrRef<ExplosionEntityData> m_Explosion = new CtrRef<ExplosionEntityData>();
+		[ContainerField(120), ContainerFieldNameHash(2222171184)]
+		public CtrRef<ExplosionEntityData> Explosion { get { return m_Explosion; } set { if (OnPropertyChanging("BangerEntityData." + nameof(Explosion), this, m_Explosion, value)) m_Explosion = value; } } // 0x78 (120)
 		
-		[ContainerField(124), LayoutImmutable, Blittable]
-		public float TimeToLive { get; set; } // 0x7C (124)
+		protected float m_TimeToLive = new float();
+		[ContainerField(124), LayoutImmutable, Blittable, ContainerFieldNameHash(1571456733)]
+		public float TimeToLive { get { return m_TimeToLive; } set { if (OnPropertyChanging("BangerEntityData." + nameof(TimeToLive), this, m_TimeToLive, value)) m_TimeToLive = value; } } // 0x7C (124)
 		
-		[ContainerField(128), LayoutImmutable, Blittable]
-		public uint DestructiblePartCount { get; set; } // 0x80 (128)
+		protected uint m_DestructiblePartCount = new uint();
+		[ContainerField(128), LayoutImmutable, Blittable, ContainerFieldNameHash(539039685)]
+		public uint DestructiblePartCount { get { return m_DestructiblePartCount; } set { if (OnPropertyChanging("BangerEntityData." + nameof(DestructiblePartCount), this, m_DestructiblePartCount, value)) m_DestructiblePartCount = value; } } // 0x80 (128)
 		
-		[ContainerField(132), LayoutImmutable, Blittable]
-		public bool UseVariableNetworkFrequency { get; set; } // 0x84 (132)
+		protected bool m_UseVariableNetworkFrequency = new bool();
+		[ContainerField(132), LayoutImmutable, Blittable, ContainerFieldNameHash(1010950522)]
+		public bool UseVariableNetworkFrequency { get { return m_UseVariableNetworkFrequency; } set { if (OnPropertyChanging("BangerEntityData." + nameof(UseVariableNetworkFrequency), this, m_UseVariableNetworkFrequency, value)) m_UseVariableNetworkFrequency = value; } } // 0x84 (132)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

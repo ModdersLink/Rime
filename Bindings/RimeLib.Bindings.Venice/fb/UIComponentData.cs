@@ -5,27 +5,38 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class UIComponentData : 
 		Asset
 	{
-		[ContainerField(12), LayoutImmutable]
-		public string ShortName { get; set; } // 0xC (12)
+		protected string m_ShortName = new string();
+		[ContainerField(12), LayoutImmutable, ContainerFieldNameHash(1803010032)]
+		public string ShortName { get { return m_ShortName; } set { if (OnPropertyChanging("UIComponentData." + nameof(ShortName), this, m_ShortName, value)) m_ShortName = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public List<string> DataSources { get; set; } = new List<string>(); // 0x10 (16)
+		protected List<string> m_DataSources = new List<string>();
+		[ContainerField(16), ContainerFieldNameHash(1204335067)]
+		public List<string> DataSources { get { return m_DataSources; } set { if (OnPropertyChanging("UIComponentData." + nameof(DataSources), this, m_DataSources, value)) m_DataSources = value; } } // 0x10 (16)
 		
-		[ContainerField(20)]
-		public UIUpdateType UpdateType { get; set; } = new UIUpdateType(); // 0x14 (20)
+		protected UIUpdateType m_UpdateType = new UIUpdateType();
+		[ContainerField(20), ContainerFieldNameHash(2270667052)]
+		public UIUpdateType UpdateType { get { return m_UpdateType; } set { if (OnPropertyChanging("UIComponentData." + nameof(UpdateType), this, m_UpdateType, value)) m_UpdateType = value; } } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable]
-		public int UpdatesPerSecond { get; set; } // 0x18 (24)
+		protected int m_UpdatesPerSecond = new int();
+		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(2192548880)]
+		public int UpdatesPerSecond { get { return m_UpdatesPerSecond; } set { if (OnPropertyChanging("UIComponentData." + nameof(UpdatesPerSecond), this, m_UpdatesPerSecond, value)) m_UpdatesPerSecond = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class SpawnAnimationData : 
 		ProcessorData
 	{
-		[ContainerField(48), LayoutImmutable, Blittable]
-		public float AnimationSpeed { get; set; } // 0x30 (48)
+		protected float m_AnimationSpeed = new float();
+		[ContainerField(48), LayoutImmutable, Blittable, ContainerFieldNameHash(3065159348)]
+		public float AnimationSpeed { get { return m_AnimationSpeed; } set { if (OnPropertyChanging("SpawnAnimationData." + nameof(AnimationSpeed), this, m_AnimationSpeed, value)) m_AnimationSpeed = value; } } // 0x30 (48)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

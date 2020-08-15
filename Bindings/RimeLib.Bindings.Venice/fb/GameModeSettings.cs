@@ -5,17 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class GameModeSettings : 
 		SystemSettings
 	{
-		[ContainerField(12)]
-		public List<GameModeInformation> Information { get; set; } = new List<GameModeInformation>(); // 0xC (12)
+		protected List<GameModeInformation> m_Information = new List<GameModeInformation>();
+		[ContainerField(12), ContainerFieldNameHash(2207688585)]
+		public List<GameModeInformation> Information { get { return m_Information; } set { if (OnPropertyChanging("GameModeSettings." + nameof(Information), this, m_Information, value)) m_Information = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

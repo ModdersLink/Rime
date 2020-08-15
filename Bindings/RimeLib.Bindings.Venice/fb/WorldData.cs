@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class WorldData : 
 		SubWorldData
 	{
-		[ContainerField(44)]
-		public CtrRef<MaterialGridData> RuntimeMaterialGrid { get; set; } = new CtrRef<MaterialGridData>(); // 0x2C (44)
+		protected CtrRef<MaterialGridData> m_RuntimeMaterialGrid = new CtrRef<MaterialGridData>();
+		[ContainerField(44), ContainerFieldNameHash(1453435306)]
+		public CtrRef<MaterialGridData> RuntimeMaterialGrid { get { return m_RuntimeMaterialGrid; } set { if (OnPropertyChanging("WorldData." + nameof(RuntimeMaterialGrid), this, m_RuntimeMaterialGrid, value)) m_RuntimeMaterialGrid = value; } } // 0x2C (44)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

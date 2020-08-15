@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class SoundPatchConfigurationAssetEntry : 
 		SoundPatchConfigurationEntry
 	{
-		[ContainerField(8), LayoutImmutable, Blittable]
-		public uint NameHash { get; set; } // 0x8 (8)
+		protected uint m_NameHash = new uint();
+		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(994057744)]
+		public uint NameHash { get { return m_NameHash; } set { if (OnPropertyChanging("SoundPatchConfigurationAssetEntry." + nameof(NameHash), this, m_NameHash, value)) m_NameHash = value; } } // 0x8 (8)
 		
-		[ContainerField(12)]
-		public CtrRef<Asset> Value { get; set; } = new CtrRef<Asset>(); // 0xC (12)
+		protected CtrRef<Asset> m_Value = new CtrRef<Asset>();
+		[ContainerField(12), ContainerFieldNameHash(225375086)]
+		public CtrRef<Asset> Value { get { return m_Value; } set { if (OnPropertyChanging("SoundPatchConfigurationAssetEntry." + nameof(Value), this, m_Value, value)) m_Value = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,22 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class VoiceOverProbabilityNode : 
 		VoiceOverExpressionNode
 	{
-		[ContainerField(8)]
-		public CtrRef<VoiceOverValue> False { get; set; } = new CtrRef<VoiceOverValue>(); // 0x8 (8)
+		protected CtrRef<VoiceOverValue> m_False = new CtrRef<VoiceOverValue>();
+		[ContainerField(8), ContainerFieldNameHash(206401336)]
+		public CtrRef<VoiceOverValue> False { get { return m_False; } set { if (OnPropertyChanging("VoiceOverProbabilityNode." + nameof(False), this, m_False, value)) m_False = value; } } // 0x8 (8)
 		
-		[ContainerField(12)]
-		public CtrRef<VoiceOverValue> True { get; set; } = new CtrRef<VoiceOverValue>(); // 0xC (12)
+		protected CtrRef<VoiceOverValue> m_True = new CtrRef<VoiceOverValue>();
+		[ContainerField(12), ContainerFieldNameHash(2089293587)]
+		public CtrRef<VoiceOverValue> True { get { return m_True; } set { if (OnPropertyChanging("VoiceOverProbabilityNode." + nameof(True), this, m_True, value)) m_True = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public float Probability { get; set; } // 0x10 (16)
+		protected float m_Probability = new float();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(35957416)]
+		public float Probability { get { return m_Probability; } set { if (OnPropertyChanging("VoiceOverProbabilityNode." + nameof(Probability), this, m_Probability, value)) m_Probability = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

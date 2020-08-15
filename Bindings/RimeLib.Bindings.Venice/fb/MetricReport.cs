@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class MetricReport : 
 		DataContainer
 	{
-		[ContainerField(8)]
-		public RefArray<MetricEvent> Events { get; set; } = new RefArray<MetricEvent>(); // 0x8 (8)
+		protected RefArray<MetricEvent> m_Events = new RefArray<MetricEvent>();
+		[ContainerField(8), ContainerFieldNameHash(2352146554)]
+		public RefArray<MetricEvent> Events { get { return m_Events; } set { if (OnPropertyChanging("MetricReport." + nameof(Events), this, m_Events, value)) m_Events = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

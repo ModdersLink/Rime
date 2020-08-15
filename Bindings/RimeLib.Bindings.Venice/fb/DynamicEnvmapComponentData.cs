@@ -5,25 +5,38 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class DynamicEnvmapComponentData : 
 		ComponentData
 	{
-		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 KeyColorEnvmap { get; set; } = new Vec3(); // 0x60 (96)
+		protected Vec3 m_KeyColorEnvmap = new Vec3();
+		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(1689648046)]
+		public Vec3 KeyColorEnvmap { get { return m_KeyColorEnvmap; } set { if (OnPropertyChanging("DynamicEnvmapComponentData." + nameof(KeyColorEnvmap), this, m_KeyColorEnvmap, value)) m_KeyColorEnvmap = value; } } // 0x60 (96)
 		
-		[ContainerField(112), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 GroundColorEnvmap { get; set; } = new Vec3(); // 0x70 (112)
+		protected Vec3 m_GroundColorEnvmap = new Vec3();
+		[ContainerField(112), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(3864914716)]
+		public Vec3 GroundColorEnvmap { get { return m_GroundColorEnvmap; } set { if (OnPropertyChanging("DynamicEnvmapComponentData." + nameof(GroundColorEnvmap), this, m_GroundColorEnvmap, value)) m_GroundColorEnvmap = value; } } // 0x70 (112)
 		
-		[ContainerField(128), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 SkyColorEnvmap { get; set; } = new Vec3(); // 0x80 (128)
+		protected Vec3 m_SkyColorEnvmap = new Vec3();
+		[ContainerField(128), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(297337912)]
+		public Vec3 SkyColorEnvmap { get { return m_SkyColorEnvmap; } set { if (OnPropertyChanging("DynamicEnvmapComponentData." + nameof(SkyColorEnvmap), this, m_SkyColorEnvmap, value)) m_SkyColorEnvmap = value; } } // 0x80 (128)
 		
-		[ContainerField(144), LayoutImmutable, Blittable]
-		public bool Enable { get; set; } // 0x90 (144)
+		protected bool m_Enable = new bool();
+		[ContainerField(144), LayoutImmutable, Blittable, ContainerFieldNameHash(2342790116)]
+		public bool Enable { get { return m_Enable; } set { if (OnPropertyChanging("DynamicEnvmapComponentData." + nameof(Enable), this, m_Enable, value)) m_Enable = value; } } // 0x90 (144)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

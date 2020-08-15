@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class MultipleTriggerEntityData : 
 		TriggerEventEntityData
 	{
-		[ContainerField(112), LayoutImmutable, Blittable]
-		public int TriggerAmount { get; set; } // 0x70 (112)
+		protected int m_TriggerAmount = new int();
+		[ContainerField(112), LayoutImmutable, Blittable, ContainerFieldNameHash(2589587985)]
+		public int TriggerAmount { get { return m_TriggerAmount; } set { if (OnPropertyChanging("MultipleTriggerEntityData." + nameof(TriggerAmount), this, m_TriggerAmount, value)) m_TriggerAmount = value; } } // 0x70 (112)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

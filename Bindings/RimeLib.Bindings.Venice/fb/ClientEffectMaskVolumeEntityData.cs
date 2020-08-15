@@ -5,25 +5,38 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class ClientEffectMaskVolumeEntityData : 
 		GameEntityData
 	{
-		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable]
-		public Vec4 ApplyEffectCurve { get; set; } = new Vec4(); // 0x60 (96)
+		protected Vec4 m_ApplyEffectCurve = new Vec4();
+		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(2484955953)]
+		public Vec4 ApplyEffectCurve { get { return m_ApplyEffectCurve; } set { if (OnPropertyChanging("ClientEffectMaskVolumeEntityData." + nameof(ApplyEffectCurve), this, m_ApplyEffectCurve, value)) m_ApplyEffectCurve = value; } } // 0x60 (96)
 		
-		[ContainerField(112), LayoutImmutable, Blittable]
-		public float LifeTimeInSeconds { get; set; } // 0x70 (112)
+		protected float m_LifeTimeInSeconds = new float();
+		[ContainerField(112), LayoutImmutable, Blittable, ContainerFieldNameHash(3163808466)]
+		public float LifeTimeInSeconds { get { return m_LifeTimeInSeconds; } set { if (OnPropertyChanging("ClientEffectMaskVolumeEntityData." + nameof(LifeTimeInSeconds), this, m_LifeTimeInSeconds, value)) m_LifeTimeInSeconds = value; } } // 0x70 (112)
 		
-		[ContainerField(116), LayoutImmutable, Blittable]
-		public float UpdatePeriodInSeconds { get; set; } // 0x74 (116)
+		protected float m_UpdatePeriodInSeconds = new float();
+		[ContainerField(116), LayoutImmutable, Blittable, ContainerFieldNameHash(1890008213)]
+		public float UpdatePeriodInSeconds { get { return m_UpdatePeriodInSeconds; } set { if (OnPropertyChanging("ClientEffectMaskVolumeEntityData." + nameof(UpdatePeriodInSeconds), this, m_UpdatePeriodInSeconds, value)) m_UpdatePeriodInSeconds = value; } } // 0x74 (116)
 		
-		[ContainerField(120), LayoutImmutable, Blittable]
-		public float Radius { get; set; } // 0x78 (120)
+		protected float m_Radius = new float();
+		[ContainerField(120), LayoutImmutable, Blittable, ContainerFieldNameHash(3298407133)]
+		public float Radius { get { return m_Radius; } set { if (OnPropertyChanging("ClientEffectMaskVolumeEntityData." + nameof(Radius), this, m_Radius, value)) m_Radius = value; } } // 0x78 (120)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class DebugMenuSubMenuEntityData : 
 		GameEntityData
 	{
-		[ContainerField(96), LayoutImmutable]
-		public string Text { get; set; } // 0x60 (96)
+		protected string m_Text = new string();
+		[ContainerField(96), LayoutImmutable, ContainerFieldNameHash(2089309304)]
+		public string Text { get { return m_Text; } set { if (OnPropertyChanging("DebugMenuSubMenuEntityData." + nameof(Text), this, m_Text, value)) m_Text = value; } } // 0x60 (96)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

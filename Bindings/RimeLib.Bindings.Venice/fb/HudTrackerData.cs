@@ -5,43 +5,62 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class HudTrackerData : 
 		UIPartData
 	{
-		[ContainerField(8), LayoutImmutable, Blittable]
-		public float MaxDistance { get; set; } // 0x8 (8)
+		protected float m_MaxDistance = new float();
+		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(3520454034)]
+		public float MaxDistance { get { return m_MaxDistance; } set { if (OnPropertyChanging("HudTrackerData." + nameof(MaxDistance), this, m_MaxDistance, value)) m_MaxDistance = value; } } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public float StartFadeDistance { get; set; } // 0xC (12)
+		protected float m_StartFadeDistance = new float();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(3933898304)]
+		public float StartFadeDistance { get { return m_StartFadeDistance; } set { if (OnPropertyChanging("HudTrackerData." + nameof(StartFadeDistance), this, m_StartFadeDistance, value)) m_StartFadeDistance = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public float SecondFadeDistance { get; set; } // 0x10 (16)
+		protected float m_SecondFadeDistance = new float();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(3692182672)]
+		public float SecondFadeDistance { get { return m_SecondFadeDistance; } set { if (OnPropertyChanging("HudTrackerData." + nameof(SecondFadeDistance), this, m_SecondFadeDistance, value)) m_SecondFadeDistance = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
-		public float FadeMinAlpha { get; set; } // 0x14 (20)
+		protected float m_FadeMinAlpha = new float();
+		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(1370953373)]
+		public float FadeMinAlpha { get { return m_FadeMinAlpha; } set { if (OnPropertyChanging("HudTrackerData." + nameof(FadeMinAlpha), this, m_FadeMinAlpha, value)) m_FadeMinAlpha = value; } } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable]
-		public float IconSize { get; set; } // 0x18 (24)
+		protected float m_IconSize = new float();
+		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(269738667)]
+		public float IconSize { get { return m_IconSize; } set { if (OnPropertyChanging("HudTrackerData." + nameof(IconSize), this, m_IconSize, value)) m_IconSize = value; } } // 0x18 (24)
 		
-		[ContainerField(28), LayoutImmutable, Blittable]
-		public float TrackerHudRadiusX { get; set; } // 0x1C (28)
+		protected float m_TrackerHudRadiusX = new float();
+		[ContainerField(28), LayoutImmutable, Blittable, ContainerFieldNameHash(494741604)]
+		public float TrackerHudRadiusX { get { return m_TrackerHudRadiusX; } set { if (OnPropertyChanging("HudTrackerData." + nameof(TrackerHudRadiusX), this, m_TrackerHudRadiusX, value)) m_TrackerHudRadiusX = value; } } // 0x1C (28)
 		
-		[ContainerField(32), LayoutImmutable, Blittable]
-		public float TrackerHudRadiusY { get; set; } // 0x20 (32)
+		protected float m_TrackerHudRadiusY = new float();
+		[ContainerField(32), LayoutImmutable, Blittable, ContainerFieldNameHash(494741605)]
+		public float TrackerHudRadiusY { get { return m_TrackerHudRadiusY; } set { if (OnPropertyChanging("HudTrackerData." + nameof(TrackerHudRadiusY), this, m_TrackerHudRadiusY, value)) m_TrackerHudRadiusY = value; } } // 0x20 (32)
 		
-		[ContainerField(36), LayoutImmutable, Blittable]
-		public float DistanceTextOffsetY { get; set; } // 0x24 (36)
+		protected float m_DistanceTextOffsetY = new float();
+		[ContainerField(36), LayoutImmutable, Blittable, ContainerFieldNameHash(1402020303)]
+		public float DistanceTextOffsetY { get { return m_DistanceTextOffsetY; } set { if (OnPropertyChanging("HudTrackerData." + nameof(DistanceTextOffsetY), this, m_DistanceTextOffsetY, value)) m_DistanceTextOffsetY = value; } } // 0x24 (36)
 		
-		[ContainerField(40), LayoutImmutable, Blittable]
-		public bool ShowDistance { get; set; } // 0x28 (40)
+		protected bool m_ShowDistance = new bool();
+		[ContainerField(40), LayoutImmutable, Blittable, ContainerFieldNameHash(3259763813)]
+		public bool ShowDistance { get { return m_ShowDistance; } set { if (OnPropertyChanging("HudTrackerData." + nameof(ShowDistance), this, m_ShowDistance, value)) m_ShowDistance = value; } } // 0x28 (40)
 		
-		[ContainerField(41), LayoutImmutable, Blittable]
-		public bool DisplayExtraInfo { get; set; } // 0x29 (41)
+		protected bool m_DisplayExtraInfo = new bool();
+		[ContainerField(41), LayoutImmutable, Blittable, ContainerFieldNameHash(2583928395)]
+		public bool DisplayExtraInfo { get { return m_DisplayExtraInfo; } set { if (OnPropertyChanging("HudTrackerData." + nameof(DisplayExtraInfo), this, m_DisplayExtraInfo, value)) m_DisplayExtraInfo = value; } } // 0x29 (41)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

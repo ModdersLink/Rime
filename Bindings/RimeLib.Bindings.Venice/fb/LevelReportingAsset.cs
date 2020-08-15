@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class LevelReportingAsset : 
 		Asset
 	{
-		[ContainerField(12)]
-		public RefArray<LevelDescriptionAsset> BuiltLevels { get; set; } = new RefArray<LevelDescriptionAsset>(); // 0xC (12)
+		protected RefArray<LevelDescriptionAsset> m_BuiltLevels = new RefArray<LevelDescriptionAsset>();
+		[ContainerField(12), ContainerFieldNameHash(3293235878)]
+		public RefArray<LevelDescriptionAsset> BuiltLevels { get { return m_BuiltLevels; } set { if (OnPropertyChanging("LevelReportingAsset." + nameof(BuiltLevels), this, m_BuiltLevels, value)) m_BuiltLevels = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

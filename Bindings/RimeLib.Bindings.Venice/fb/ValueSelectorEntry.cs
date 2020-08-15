@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class ValueSelectorEntry : 
 		AudioGraphNodePortGroup
 	{
-		[ContainerField(8)]
-		public AudioGraphNodePort Input { get; set; } = new AudioGraphNodePort(); // 0x8 (8)
+		protected AudioGraphNodePort m_Input = new AudioGraphNodePort();
+		[ContainerField(8), ContainerFieldNameHash(214522259)]
+		public AudioGraphNodePort Input { get { return m_Input; } set { if (OnPropertyChanging("ValueSelectorEntry." + nameof(Input), this, m_Input, value)) m_Input = value; } } // 0x8 (8)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public float CaseValue { get; set; } // 0x10 (16)
+		protected float m_CaseValue = new float();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(723060122)]
+		public float CaseValue { get { return m_CaseValue; } set { if (OnPropertyChanging("ValueSelectorEntry." + nameof(CaseValue), this, m_CaseValue, value)) m_CaseValue = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

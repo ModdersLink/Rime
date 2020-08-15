@@ -5,25 +5,38 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class WeaponDeployTimeModifier : 
 		WeaponModifierBase
 	{
-		[ContainerField(8), LayoutImmutable, Blittable]
-		public float DeployTime { get; set; } // 0x8 (8)
+		protected float m_DeployTime = new float();
+		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(2275884507)]
+		public float DeployTime { get { return m_DeployTime; } set { if (OnPropertyChanging("WeaponDeployTimeModifier." + nameof(DeployTime), this, m_DeployTime, value)) m_DeployTime = value; } } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public float DisableZoomOnDeployTime { get; set; } // 0xC (12)
+		protected float m_DisableZoomOnDeployTime = new float();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(3731232633)]
+		public float DisableZoomOnDeployTime { get { return m_DisableZoomOnDeployTime; } set { if (OnPropertyChanging("WeaponDeployTimeModifier." + nameof(DisableZoomOnDeployTime), this, m_DisableZoomOnDeployTime, value)) m_DisableZoomOnDeployTime = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public float AltDeployTime { get; set; } // 0x10 (16)
+		protected float m_AltDeployTime = new float();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(1924470306)]
+		public float AltDeployTime { get { return m_AltDeployTime; } set { if (OnPropertyChanging("WeaponDeployTimeModifier." + nameof(AltDeployTime), this, m_AltDeployTime, value)) m_AltDeployTime = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
-		public int AltDeployId { get; set; } // 0x14 (20)
+		protected int m_AltDeployId = new int();
+		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(1819931514)]
+		public int AltDeployId { get { return m_AltDeployId; } set { if (OnPropertyChanging("WeaponDeployTimeModifier." + nameof(AltDeployId), this, m_AltDeployId, value)) m_AltDeployId = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

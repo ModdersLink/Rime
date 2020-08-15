@@ -5,23 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class StaticModelGroupEntityData : 
 		GamePhysicsEntityData
 	{
-		[ContainerField(112)]
-		public List<StaticModelGroupMemberData> MemberDatas { get; set; } = new List<StaticModelGroupMemberData>(); // 0x70 (112)
+		protected List<StaticModelGroupMemberData> m_MemberDatas = new List<StaticModelGroupMemberData>();
+		[ContainerField(112), ContainerFieldNameHash(1084657014)]
+		public List<StaticModelGroupMemberData> MemberDatas { get { return m_MemberDatas; } set { if (OnPropertyChanging("StaticModelGroupEntityData." + nameof(MemberDatas), this, m_MemberDatas, value)) m_MemberDatas = value; } } // 0x70 (112)
 		
-		[ContainerField(116), LayoutImmutable, Blittable]
-		public GUID HackToSolveRealTimeTweakingIssue { get; set; } // 0x74 (116)
+		protected GUID m_HackToSolveRealTimeTweakingIssue = new GUID();
+		[ContainerField(116), LayoutImmutable, Blittable, ContainerFieldNameHash(1452521702)]
+		public GUID HackToSolveRealTimeTweakingIssue { get { return m_HackToSolveRealTimeTweakingIssue; } set { if (OnPropertyChanging("StaticModelGroupEntityData." + nameof(HackToSolveRealTimeTweakingIssue), this, m_HackToSolveRealTimeTweakingIssue, value)) m_HackToSolveRealTimeTweakingIssue = value; } } // 0x74 (116)
 		
-		[ContainerField(132), LayoutImmutable, Blittable]
-		public uint NetworkIdCount { get; set; } // 0x84 (132)
+		protected uint m_NetworkIdCount = new uint();
+		[ContainerField(132), LayoutImmutable, Blittable, ContainerFieldNameHash(1234693717)]
+		public uint NetworkIdCount { get { return m_NetworkIdCount; } set { if (OnPropertyChanging("StaticModelGroupEntityData." + nameof(NetworkIdCount), this, m_NetworkIdCount, value)) m_NetworkIdCount = value; } } // 0x84 (132)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,22 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class PersistenceRetentionPolicy : 
 		Asset
 	{
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public int DailyHistoryCount { get; set; } // 0xC (12)
+		protected int m_DailyHistoryCount = new int();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(2827768221)]
+		public int DailyHistoryCount { get { return m_DailyHistoryCount; } set { if (OnPropertyChanging("PersistenceRetentionPolicy." + nameof(DailyHistoryCount), this, m_DailyHistoryCount, value)) m_DailyHistoryCount = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public int WeeklyHistoryCount { get; set; } // 0x10 (16)
+		protected int m_WeeklyHistoryCount = new int();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(808067565)]
+		public int WeeklyHistoryCount { get { return m_WeeklyHistoryCount; } set { if (OnPropertyChanging("PersistenceRetentionPolicy." + nameof(WeeklyHistoryCount), this, m_WeeklyHistoryCount, value)) m_WeeklyHistoryCount = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
-		public int MonthlyHistoryCount { get; set; } // 0x14 (20)
+		protected int m_MonthlyHistoryCount = new int();
+		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(345590273)]
+		public int MonthlyHistoryCount { get { return m_MonthlyHistoryCount; } set { if (OnPropertyChanging("PersistenceRetentionPolicy." + nameof(MonthlyHistoryCount), this, m_MonthlyHistoryCount, value)) m_MonthlyHistoryCount = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

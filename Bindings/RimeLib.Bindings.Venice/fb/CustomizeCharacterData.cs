@@ -5,32 +5,46 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class CustomizeCharacterData : 
 		Asset
 	{
-		[ContainerField(12)]
-		public List<CustomizeVisual> VisualGroups { get; set; } = new List<CustomizeVisual>(); // 0xC (12)
+		protected List<CustomizeVisual> m_VisualGroups = new List<CustomizeVisual>();
+		[ContainerField(12), ContainerFieldNameHash(1154342877)]
+		public List<CustomizeVisual> VisualGroups { get { return m_VisualGroups; } set { if (OnPropertyChanging("CustomizeCharacterData." + nameof(VisualGroups), this, m_VisualGroups, value)) m_VisualGroups = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public float OverrideCriticalHealthThreshold { get; set; } // 0x10 (16)
+		protected float m_OverrideCriticalHealthThreshold = new float();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(2799968817)]
+		public float OverrideCriticalHealthThreshold { get { return m_OverrideCriticalHealthThreshold; } set { if (OnPropertyChanging("CustomizeCharacterData." + nameof(OverrideCriticalHealthThreshold), this, m_OverrideCriticalHealthThreshold, value)) m_OverrideCriticalHealthThreshold = value; } } // 0x10 (16)
 		
-		[ContainerField(20)]
-		public RefArray<UnlockAssetBase> Unlocks { get; set; } = new RefArray<UnlockAssetBase>(); // 0x14 (20)
+		protected RefArray<UnlockAssetBase> m_Unlocks = new RefArray<UnlockAssetBase>();
+		[ContainerField(20), ContainerFieldNameHash(3464375270)]
+		public RefArray<UnlockAssetBase> Unlocks { get { return m_Unlocks; } set { if (OnPropertyChanging("CustomizeCharacterData." + nameof(Unlocks), this, m_Unlocks, value)) m_Unlocks = value; } } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable]
-		public float OverrideMaxHealth { get; set; } // 0x18 (24)
+		protected float m_OverrideMaxHealth = new float();
+		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(3943553849)]
+		public float OverrideMaxHealth { get { return m_OverrideMaxHealth; } set { if (OnPropertyChanging("CustomizeCharacterData." + nameof(OverrideMaxHealth), this, m_OverrideMaxHealth, value)) m_OverrideMaxHealth = value; } } // 0x18 (24)
 		
-		[ContainerField(28), LayoutImmutable, Blittable]
-		public bool ClearVisualState { get; set; } // 0x1C (28)
+		protected bool m_ClearVisualState = new bool();
+		[ContainerField(28), LayoutImmutable, Blittable, ContainerFieldNameHash(443106111)]
+		public bool ClearVisualState { get { return m_ClearVisualState; } set { if (OnPropertyChanging("CustomizeCharacterData." + nameof(ClearVisualState), this, m_ClearVisualState, value)) m_ClearVisualState = value; } } // 0x1C (28)
 		
-		[ContainerField(29), LayoutImmutable, Blittable]
-		public bool RestoreToOriginalVisualState { get; set; } // 0x1D (29)
+		protected bool m_RestoreToOriginalVisualState = new bool();
+		[ContainerField(29), LayoutImmutable, Blittable, ContainerFieldNameHash(1970657676)]
+		public bool RestoreToOriginalVisualState { get { return m_RestoreToOriginalVisualState; } set { if (OnPropertyChanging("CustomizeCharacterData." + nameof(RestoreToOriginalVisualState), this, m_RestoreToOriginalVisualState, value)) m_RestoreToOriginalVisualState = value; } } // 0x1D (29)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

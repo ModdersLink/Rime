@@ -5,20 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class DataBusData : 
 		Asset
 	{
-		[ContainerField(12)]
-		public List<PropertyConnection> PropertyConnections { get; set; } = new List<PropertyConnection>(); // 0xC (12)
+		protected List<PropertyConnection> m_PropertyConnections = new List<PropertyConnection>();
+		[ContainerField(12), ContainerFieldNameHash(1023567943)]
+		public List<PropertyConnection> PropertyConnections { get { return m_PropertyConnections; } set { if (OnPropertyChanging("DataBusData." + nameof(PropertyConnections), this, m_PropertyConnections, value)) m_PropertyConnections = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public List<LinkConnection> LinkConnections { get; set; } = new List<LinkConnection>(); // 0x10 (16)
+		protected List<LinkConnection> m_LinkConnections = new List<LinkConnection>();
+		[ContainerField(16), ContainerFieldNameHash(1859919712)]
+		public List<LinkConnection> LinkConnections { get { return m_LinkConnections; } set { if (OnPropertyChanging("DataBusData." + nameof(LinkConnections), this, m_LinkConnections, value)) m_LinkConnections = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

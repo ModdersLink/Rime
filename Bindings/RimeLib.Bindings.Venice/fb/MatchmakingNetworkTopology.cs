@@ -5,9 +5,20 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
+
 namespace fb
 {
-    public enum MatchmakingNetworkTopology : int
+	public enum MatchmakingNetworkTopology : int
 	{
 		MatchmakingNetworkTopology_Disabled = 0,
 		MatchmakingNetworkTopology_Peer2Peer = 1,

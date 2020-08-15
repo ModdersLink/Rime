@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class DestructionVolumeComponentData : 
 		ComponentData
 	{
-		[ContainerField(96)]
-		public CtrRef<DestructionVolumeData> DestructionVolumeData { get; set; } = new CtrRef<DestructionVolumeData>(); // 0x60 (96)
+		protected CtrRef<DestructionVolumeData> m_DestructionVolumeData = new CtrRef<DestructionVolumeData>();
+		[ContainerField(96), ContainerFieldNameHash(3546689379)]
+		public CtrRef<DestructionVolumeData> DestructionVolumeData { get { return m_DestructionVolumeData; } set { if (OnPropertyChanging("DestructionVolumeComponentData." + nameof(DestructionVolumeData), this, m_DestructionVolumeData, value)) m_DestructionVolumeData = value; } } // 0x60 (96)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

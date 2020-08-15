@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class BFTargetEvaluatorComponentData : 
 		TargetEvaluatorComponentData
 	{
-		[ContainerField(112)]
-		public CtrRef<TargetEvaluationConstantData> Settings { get; set; } = new CtrRef<TargetEvaluationConstantData>(); // 0x70 (112)
+		protected CtrRef<TargetEvaluationConstantData> m_Settings = new CtrRef<TargetEvaluationConstantData>();
+		[ContainerField(112), ContainerFieldNameHash(649772672)]
+		public CtrRef<TargetEvaluationConstantData> Settings { get { return m_Settings; } set { if (OnPropertyChanging("BFTargetEvaluatorComponentData." + nameof(Settings), this, m_Settings, value)) m_Settings = value; } } // 0x70 (112)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

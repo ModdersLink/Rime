@@ -5,25 +5,38 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class WeaponSuppressionData : 
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable, Blittable]
-		public float MaxMultiplier { get; set; } // 0x8 (8)
+		protected float m_MaxMultiplier = new float();
+		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(441185306)]
+		public float MaxMultiplier { get { return m_MaxMultiplier; } set { if (OnPropertyChanging("WeaponSuppressionData." + nameof(MaxMultiplier), this, m_MaxMultiplier, value)) m_MaxMultiplier = value; } } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public float MinMultiplier { get; set; } // 0xC (12)
+		protected float m_MinMultiplier = new float();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(3723256324)]
+		public float MinMultiplier { get { return m_MinMultiplier; } set { if (OnPropertyChanging("WeaponSuppressionData." + nameof(MinMultiplier), this, m_MinMultiplier, value)) m_MinMultiplier = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public float MinDistance { get; set; } // 0x10 (16)
+		protected float m_MinDistance = new float();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(1885855628)]
+		public float MinDistance { get { return m_MinDistance; } set { if (OnPropertyChanging("WeaponSuppressionData." + nameof(MinDistance), this, m_MinDistance, value)) m_MinDistance = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
-		public float MaxDistance { get; set; } // 0x14 (20)
+		protected float m_MaxDistance = new float();
+		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(3520454034)]
+		public float MaxDistance { get { return m_MaxDistance; } set { if (OnPropertyChanging("WeaponSuppressionData." + nameof(MaxDistance), this, m_MaxDistance, value)) m_MaxDistance = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

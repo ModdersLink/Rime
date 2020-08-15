@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class MeshVariationDatabase : 
 		Asset
 	{
-		[ContainerField(12)]
-		public RefArray<MeshVariationDatabaseEntry> Entries { get; set; } = new RefArray<MeshVariationDatabaseEntry>(); // 0xC (12)
+		protected RefArray<MeshVariationDatabaseEntry> m_Entries = new RefArray<MeshVariationDatabaseEntry>();
+		[ContainerField(12), ContainerFieldNameHash(8238103)]
+		public RefArray<MeshVariationDatabaseEntry> Entries { get { return m_Entries; } set { if (OnPropertyChanging("MeshVariationDatabase." + nameof(Entries), this, m_Entries, value)) m_Entries = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public RefArray<MeshVariationDatabaseEntry> RedirectEntries { get; set; } = new RefArray<MeshVariationDatabaseEntry>(); // 0x10 (16)
+		protected RefArray<MeshVariationDatabaseEntry> m_RedirectEntries = new RefArray<MeshVariationDatabaseEntry>();
+		[ContainerField(16), ContainerFieldNameHash(1590518733)]
+		public RefArray<MeshVariationDatabaseEntry> RedirectEntries { get { return m_RedirectEntries; } set { if (OnPropertyChanging("MeshVariationDatabase." + nameof(RedirectEntries), this, m_RedirectEntries, value)) m_RedirectEntries = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

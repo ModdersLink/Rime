@@ -5,35 +5,50 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class ShootOrderEntityData : 
 		BFOrderEntityData
 	{
-		[ContainerField(40)]
-		public StrengthType StrengthType { get; set; } = new StrengthType(); // 0x28 (40)
+		protected StrengthType m_StrengthType = new StrengthType();
+		[ContainerField(40), ContainerFieldNameHash(4037075576)]
+		public StrengthType StrengthType { get { return m_StrengthType; } set { if (OnPropertyChanging("ShootOrderEntityData." + nameof(StrengthType), this, m_StrengthType, value)) m_StrengthType = value; } } // 0x28 (40)
 		
-		[ContainerField(44)]
-		public PoseType Pose { get; set; } = new PoseType(); // 0x2C (44)
+		protected PoseType m_Pose = new PoseType();
+		[ContainerField(44), ContainerFieldNameHash(2089458956)]
+		public PoseType Pose { get { return m_Pose; } set { if (OnPropertyChanging("ShootOrderEntityData." + nameof(Pose), this, m_Pose, value)) m_Pose = value; } } // 0x2C (44)
 		
-		[ContainerField(48)]
-		public ShootType ShootType { get; set; } = new ShootType(); // 0x30 (48)
+		protected ShootType m_ShootType = new ShootType();
+		[ContainerField(48), ContainerFieldNameHash(2888956146)]
+		public ShootType ShootType { get { return m_ShootType; } set { if (OnPropertyChanging("ShootOrderEntityData." + nameof(ShootType), this, m_ShootType, value)) m_ShootType = value; } } // 0x30 (48)
 		
-		[ContainerField(52), LayoutImmutable, Blittable]
-		public bool PreferAlternativeWeapon { get; set; } // 0x34 (52)
+		protected bool m_PreferAlternativeWeapon = new bool();
+		[ContainerField(52), LayoutImmutable, Blittable, ContainerFieldNameHash(2914787134)]
+		public bool PreferAlternativeWeapon { get { return m_PreferAlternativeWeapon; } set { if (OnPropertyChanging("ShootOrderEntityData." + nameof(PreferAlternativeWeapon), this, m_PreferAlternativeWeapon, value)) m_PreferAlternativeWeapon = value; } } // 0x34 (52)
 		
-		[ContainerField(53), LayoutImmutable, Blittable]
-		public bool CompleteWhenHumanIsSensed { get; set; } // 0x35 (53)
+		protected bool m_CompleteWhenHumanIsSensed = new bool();
+		[ContainerField(53), LayoutImmutable, Blittable, ContainerFieldNameHash(930658167)]
+		public bool CompleteWhenHumanIsSensed { get { return m_CompleteWhenHumanIsSensed; } set { if (OnPropertyChanging("ShootOrderEntityData." + nameof(CompleteWhenHumanIsSensed), this, m_CompleteWhenHumanIsSensed, value)) m_CompleteWhenHumanIsSensed = value; } } // 0x35 (53)
 		
-		[ContainerField(54), LayoutImmutable, Blittable]
-		public bool CycleTargets { get; set; } // 0x36 (54)
+		protected bool m_CycleTargets = new bool();
+		[ContainerField(54), LayoutImmutable, Blittable, ContainerFieldNameHash(2182019831)]
+		public bool CycleTargets { get { return m_CycleTargets; } set { if (OnPropertyChanging("ShootOrderEntityData." + nameof(CycleTargets), this, m_CycleTargets, value)) m_CycleTargets = value; } } // 0x36 (54)
 		
-		[ContainerField(55), LayoutImmutable, Blittable]
-		public bool RandomTargetOrder { get; set; } // 0x37 (55)
+		protected bool m_RandomTargetOrder = new bool();
+		[ContainerField(55), LayoutImmutable, Blittable, ContainerFieldNameHash(1044980993)]
+		public bool RandomTargetOrder { get { return m_RandomTargetOrder; } set { if (OnPropertyChanging("ShootOrderEntityData." + nameof(RandomTargetOrder), this, m_RandomTargetOrder, value)) m_RandomTargetOrder = value; } } // 0x37 (55)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

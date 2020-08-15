@@ -5,26 +5,38 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class UIFontCollection : 
 		Asset
 	{
-		[ContainerField(12)]
-		public LanguageFormat Language { get; set; } = new LanguageFormat(); // 0xC (12)
+		protected LanguageFormat m_Language = new LanguageFormat();
+		[ContainerField(12), ContainerFieldNameHash(3872303031)]
+		public LanguageFormat Language { get { return m_Language; } set { if (OnPropertyChanging("UIFontCollection." + nameof(Language), this, m_Language, value)) m_Language = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public CtrRef<UITextDatabase> TextDatabase { get; set; } = new CtrRef<UITextDatabase>(); // 0x10 (16)
+		protected CtrRef<UITextDatabase> m_TextDatabase = new CtrRef<UITextDatabase>();
+		[ContainerField(16), ContainerFieldNameHash(1951250813)]
+		public CtrRef<UITextDatabase> TextDatabase { get { return m_TextDatabase; } set { if (OnPropertyChanging("UIFontCollection." + nameof(TextDatabase), this, m_TextDatabase, value)) m_TextDatabase = value; } } // 0x10 (16)
 		
-		[ContainerField(20)]
-		public RefArray<UIFontAsset> Fonts { get; set; } = new RefArray<UIFontAsset>(); // 0x14 (20)
+		protected RefArray<UIFontAsset> m_Fonts = new RefArray<UIFontAsset>();
+		[ContainerField(20), ContainerFieldNameHash(206880581)]
+		public RefArray<UIFontAsset> Fonts { get { return m_Fonts; } set { if (OnPropertyChanging("UIFontCollection." + nameof(Fonts), this, m_Fonts, value)) m_Fonts = value; } } // 0x14 (20)
 		
-		[ContainerField(24)]
-		public ResourceBundleKind BundleKind { get; set; } = new ResourceBundleKind(); // 0x18 (24)
+		protected ResourceBundleKind m_BundleKind = new ResourceBundleKind();
+		[ContainerField(24), ContainerFieldNameHash(461036985)]
+		public ResourceBundleKind BundleKind { get { return m_BundleKind; } set { if (OnPropertyChanging("UIFontCollection." + nameof(BundleKind), this, m_BundleKind, value)) m_BundleKind = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

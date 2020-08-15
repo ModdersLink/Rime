@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class MovingBodyData : 
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable, Blittable]
-		public float Mass { get; set; } // 0x8 (8)
+		protected float m_Mass = new float();
+		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(2088779625)]
+		public float Mass { get { return m_Mass; } set { if (OnPropertyChanging("MovingBodyData." + nameof(Mass), this, m_Mass, value)) m_Mass = value; } } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public float Inertia { get; set; } // 0xC (12)
+		protected float m_Inertia = new float();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(1681436809)]
+		public float Inertia { get { return m_Inertia; } set { if (OnPropertyChanging("MovingBodyData." + nameof(Inertia), this, m_Inertia, value)) m_Inertia = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

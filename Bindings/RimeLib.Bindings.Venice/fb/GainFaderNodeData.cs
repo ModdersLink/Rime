@@ -5,38 +5,54 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class GainFaderNodeData : 
 		AudioGraphNodeData
 	{
-		[ContainerField(8)]
-		public AudioGraphNodePort In { get; set; } = new AudioGraphNodePort(); // 0x8 (8)
+		protected AudioGraphNodePort m_In = new AudioGraphNodePort();
+		[ContainerField(8), ContainerFieldNameHash(5862146)]
+		public AudioGraphNodePort In { get { return m_In; } set { if (OnPropertyChanging("GainFaderNodeData." + nameof(In), this, m_In, value)) m_In = value; } } // 0x8 (8)
 		
-		[ContainerField(16)]
-		public AudioGraphNodePort Start { get; set; } = new AudioGraphNodePort(); // 0x10 (16)
+		protected AudioGraphNodePort m_Start = new AudioGraphNodePort();
+		[ContainerField(16), ContainerFieldNameHash(230748069)]
+		public AudioGraphNodePort Start { get { return m_Start; } set { if (OnPropertyChanging("GainFaderNodeData." + nameof(Start), this, m_Start, value)) m_Start = value; } } // 0x10 (16)
 		
-		[ContainerField(24)]
-		public AudioGraphNodePort StartTime { get; set; } = new AudioGraphNodePort(); // 0x18 (24)
+		protected AudioGraphNodePort m_StartTime = new AudioGraphNodePort();
+		[ContainerField(24), ContainerFieldNameHash(3727579056)]
+		public AudioGraphNodePort StartTime { get { return m_StartTime; } set { if (OnPropertyChanging("GainFaderNodeData." + nameof(StartTime), this, m_StartTime, value)) m_StartTime = value; } } // 0x18 (24)
 		
-		[ContainerField(32)]
-		public AudioGraphNodePort FadeTime { get; set; } = new AudioGraphNodePort(); // 0x20 (32)
+		protected AudioGraphNodePort m_FadeTime = new AudioGraphNodePort();
+		[ContainerField(32), ContainerFieldNameHash(4001222838)]
+		public AudioGraphNodePort FadeTime { get { return m_FadeTime; } set { if (OnPropertyChanging("GainFaderNodeData." + nameof(FadeTime), this, m_FadeTime, value)) m_FadeTime = value; } } // 0x20 (32)
 		
-		[ContainerField(40)]
-		public AudioGraphNodePort Amplitude { get; set; } = new AudioGraphNodePort(); // 0x28 (40)
+		protected AudioGraphNodePort m_Amplitude = new AudioGraphNodePort();
+		[ContainerField(40), ContainerFieldNameHash(698564572)]
+		public AudioGraphNodePort Amplitude { get { return m_Amplitude; } set { if (OnPropertyChanging("GainFaderNodeData." + nameof(Amplitude), this, m_Amplitude, value)) m_Amplitude = value; } } // 0x28 (40)
 		
-		[ContainerField(48)]
-		public AudioGraphNodePort Out { get; set; } = new AudioGraphNodePort(); // 0x30 (48)
+		protected AudioGraphNodePort m_Out = new AudioGraphNodePort();
+		[ContainerField(48), ContainerFieldNameHash(193453899)]
+		public AudioGraphNodePort Out { get { return m_Out; } set { if (OnPropertyChanging("GainFaderNodeData." + nameof(Out), this, m_Out, value)) m_Out = value; } } // 0x30 (48)
 		
-		[ContainerField(56)]
-		public GainFaderFadeType FadeType { get; set; } = new GainFaderFadeType(); // 0x38 (56)
+		protected GainFaderFadeType m_FadeType = new GainFaderFadeType();
+		[ContainerField(56), ContainerFieldNameHash(4001206363)]
+		public GainFaderFadeType FadeType { get { return m_FadeType; } set { if (OnPropertyChanging("GainFaderNodeData." + nameof(FadeType), this, m_FadeType, value)) m_FadeType = value; } } // 0x38 (56)
 		
-		[ContainerField(60)]
-		public SoundGraphPluginRef Plugin { get; set; } = new SoundGraphPluginRef(); // 0x3C (60)
+		protected SoundGraphPluginRef m_Plugin = new SoundGraphPluginRef();
+		[ContainerField(60), ContainerFieldNameHash(3384353452)]
+		public SoundGraphPluginRef Plugin { get { return m_Plugin; } set { if (OnPropertyChanging("GainFaderNodeData." + nameof(Plugin), this, m_Plugin, value)) m_Plugin = value; } } // 0x3C (60)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

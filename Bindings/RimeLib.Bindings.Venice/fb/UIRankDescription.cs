@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class UIRankDescription : 
 		UIItemDescription
 	{
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public new bool IgnoreBuild { get; set; } // 0x10 (16)
+		protected bool m_IgnoreBuild = new bool();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(1608120075)]
+		public bool IgnoreBuild { get { return m_IgnoreBuild; } set { if (OnPropertyChanging("UIRankDescription." + nameof(IgnoreBuild), this, m_IgnoreBuild, value)) m_IgnoreBuild = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

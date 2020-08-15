@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class DifficultyDatas : 
 		Asset
 	{
-		[ContainerField(12)]
-		public RefArray<DifficultyData> Difficulties { get; set; } = new RefArray<DifficultyData>(); // 0xC (12)
+		protected RefArray<DifficultyData> m_Difficulties = new RefArray<DifficultyData>();
+		[ContainerField(12), ContainerFieldNameHash(850210768)]
+		public RefArray<DifficultyData> Difficulties { get { return m_Difficulties; } set { if (OnPropertyChanging("DifficultyDatas." + nameof(Difficulties), this, m_Difficulties, value)) m_Difficulties = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

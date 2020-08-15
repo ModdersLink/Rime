@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class UpdateTransparencyData : 
 		ProcessorData
 	{
-		[ContainerField(48), LayoutImmutable, Blittable]
-		public float CullThreshold { get; set; } // 0x30 (48)
+		protected float m_CullThreshold = new float();
+		[ContainerField(48), LayoutImmutable, Blittable, ContainerFieldNameHash(3466482692)]
+		public float CullThreshold { get { return m_CullThreshold; } set { if (OnPropertyChanging("UpdateTransparencyData." + nameof(CullThreshold), this, m_CullThreshold, value)) m_CullThreshold = value; } } // 0x30 (48)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

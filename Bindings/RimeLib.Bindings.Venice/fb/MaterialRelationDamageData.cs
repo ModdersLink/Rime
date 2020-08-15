@@ -5,34 +5,50 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class MaterialRelationDamageData : 
 		PhysicsPropertyRelationPropertyData
 	{
-		[ContainerField(8), LayoutImmutable, Blittable]
-		public float CollisionDamageMultiplier { get; set; } // 0x8 (8)
+		protected float m_CollisionDamageMultiplier = new float();
+		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(31287099)]
+		public float CollisionDamageMultiplier { get { return m_CollisionDamageMultiplier; } set { if (OnPropertyChanging("MaterialRelationDamageData." + nameof(CollisionDamageMultiplier), this, m_CollisionDamageMultiplier, value)) m_CollisionDamageMultiplier = value; } } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public float CollisionDamageThreshold { get; set; } // 0xC (12)
+		protected float m_CollisionDamageThreshold = new float();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(2223249863)]
+		public float CollisionDamageThreshold { get { return m_CollisionDamageThreshold; } set { if (OnPropertyChanging("MaterialRelationDamageData." + nameof(CollisionDamageThreshold), this, m_CollisionDamageThreshold, value)) m_CollisionDamageThreshold = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public float DamageProtectionMultiplier { get; set; } // 0x10 (16)
+		protected float m_DamageProtectionMultiplier = new float();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(3194303654)]
+		public float DamageProtectionMultiplier { get { return m_DamageProtectionMultiplier; } set { if (OnPropertyChanging("MaterialRelationDamageData." + nameof(DamageProtectionMultiplier), this, m_DamageProtectionMultiplier, value)) m_DamageProtectionMultiplier = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
-		public float DamagePenetrationMultiplier { get; set; } // 0x14 (20)
+		protected float m_DamagePenetrationMultiplier = new float();
+		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(2424339200)]
+		public float DamagePenetrationMultiplier { get { return m_DamagePenetrationMultiplier; } set { if (OnPropertyChanging("MaterialRelationDamageData." + nameof(DamagePenetrationMultiplier), this, m_DamagePenetrationMultiplier, value)) m_DamagePenetrationMultiplier = value; } } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable]
-		public float DamageProtectionThreshold { get; set; } // 0x18 (24)
+		protected float m_DamageProtectionThreshold = new float();
+		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(1413485242)]
+		public float DamageProtectionThreshold { get { return m_DamageProtectionThreshold; } set { if (OnPropertyChanging("MaterialRelationDamageData." + nameof(DamageProtectionThreshold), this, m_DamageProtectionThreshold, value)) m_DamageProtectionThreshold = value; } } // 0x18 (24)
 		
-		[ContainerField(28), LayoutImmutable, Blittable]
-		public float ExplosionCoverDamageModifier { get; set; } // 0x1C (28)
+		protected float m_ExplosionCoverDamageModifier = new float();
+		[ContainerField(28), LayoutImmutable, Blittable, ContainerFieldNameHash(3323347809)]
+		public float ExplosionCoverDamageModifier { get { return m_ExplosionCoverDamageModifier; } set { if (OnPropertyChanging("MaterialRelationDamageData." + nameof(ExplosionCoverDamageModifier), this, m_ExplosionCoverDamageModifier, value)) m_ExplosionCoverDamageModifier = value; } } // 0x1C (28)
 		
-		[ContainerField(32), LayoutImmutable, Blittable]
-		public bool InflictsDemolitionDamage { get; set; } // 0x20 (32)
+		protected bool m_InflictsDemolitionDamage = new bool();
+		[ContainerField(32), LayoutImmutable, Blittable, ContainerFieldNameHash(3423431988)]
+		public bool InflictsDemolitionDamage { get { return m_InflictsDemolitionDamage; } set { if (OnPropertyChanging("MaterialRelationDamageData." + nameof(InflictsDemolitionDamage), this, m_InflictsDemolitionDamage, value)) m_InflictsDemolitionDamage = value; } } // 0x20 (32)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

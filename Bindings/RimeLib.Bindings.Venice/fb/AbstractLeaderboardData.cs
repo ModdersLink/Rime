@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class AbstractLeaderboardData : 
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable]
-		public string LeaderboardName { get; set; } // 0x8 (8)
+		protected string m_LeaderboardName = new string();
+		[ContainerField(8), LayoutImmutable, ContainerFieldNameHash(2718976483)]
+		public string LeaderboardName { get { return m_LeaderboardName; } set { if (OnPropertyChanging("AbstractLeaderboardData." + nameof(LeaderboardName), this, m_LeaderboardName, value)) m_LeaderboardName = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

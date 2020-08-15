@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class WaypointsShapeData : 
 		VectorShapeData
 	{
-		[ContainerField(28)]
-		public RefArray<WaypointData> Waypoints { get; set; } = new RefArray<WaypointData>(); // 0x1C (28)
+		protected RefArray<WaypointData> m_Waypoints = new RefArray<WaypointData>();
+		[ContainerField(28), ContainerFieldNameHash(1635609973)]
+		public RefArray<WaypointData> Waypoints { get { return m_Waypoints; } set { if (OnPropertyChanging("WaypointsShapeData." + nameof(Waypoints), this, m_Waypoints, value)) m_Waypoints = value; } } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

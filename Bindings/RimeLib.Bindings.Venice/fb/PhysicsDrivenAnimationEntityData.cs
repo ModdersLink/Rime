@@ -5,23 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class PhysicsDrivenAnimationEntityData : 
 		EntityData
 	{
-		[ContainerField(12)]
-		public Realm Realm { get; set; } = new Realm(); // 0xC (12)
+		protected Realm m_Realm = new Realm();
+		[ContainerField(12), ContainerFieldNameHash(229961746)]
+		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("PhysicsDrivenAnimationEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public PhysicsDrivenAnimationEntityBinding Binding { get; set; } = new PhysicsDrivenAnimationEntityBinding(); // 0x10 (16)
+		protected PhysicsDrivenAnimationEntityBinding m_Binding = new PhysicsDrivenAnimationEntityBinding();
+		[ContainerField(16), ContainerFieldNameHash(2590060228)]
+		public PhysicsDrivenAnimationEntityBinding Binding { get { return m_Binding; } set { if (OnPropertyChanging("PhysicsDrivenAnimationEntityData." + nameof(Binding), this, m_Binding, value)) m_Binding = value; } } // 0x10 (16)
 		
-		[ContainerField(132), LayoutImmutable, Blittable]
-		public int AnimationEntitySpacePriority { get; set; } // 0x84 (132)
+		protected int m_AnimationEntitySpacePriority = new int();
+		[ContainerField(132), LayoutImmutable, Blittable, ContainerFieldNameHash(4041607518)]
+		public int AnimationEntitySpacePriority { get { return m_AnimationEntitySpacePriority; } set { if (OnPropertyChanging("PhysicsDrivenAnimationEntityData." + nameof(AnimationEntitySpacePriority), this, m_AnimationEntitySpacePriority, value)) m_AnimationEntitySpacePriority = value; } } // 0x84 (132)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

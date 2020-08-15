@@ -5,28 +5,42 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class SensingComponentData : 
 		ComponentData
 	{
-		[ContainerField(96)]
-		public CtrRef<SensingTemplateData> Template { get; set; } = new CtrRef<SensingTemplateData>(); // 0x60 (96)
+		protected CtrRef<SensingTemplateData> m_Template = new CtrRef<SensingTemplateData>();
+		[ContainerField(96), ContainerFieldNameHash(2427043285)]
+		public CtrRef<SensingTemplateData> Template { get { return m_Template; } set { if (OnPropertyChanging("SensingComponentData." + nameof(Template), this, m_Template, value)) m_Template = value; } } // 0x60 (96)
 		
-		[ContainerField(100)]
-		public CtrRef<SensingSettings> Settings { get; set; } = new CtrRef<SensingSettings>(); // 0x64 (100)
+		protected CtrRef<SensingSettings> m_Settings = new CtrRef<SensingSettings>();
+		[ContainerField(100), ContainerFieldNameHash(649772672)]
+		public CtrRef<SensingSettings> Settings { get { return m_Settings; } set { if (OnPropertyChanging("SensingComponentData." + nameof(Settings), this, m_Settings, value)) m_Settings = value; } } // 0x64 (100)
 		
-		[ContainerField(104), LayoutImmutable, Blittable]
-		public bool Enabled { get; set; } // 0x68 (104)
+		protected bool m_Enabled = new bool();
+		[ContainerField(104), LayoutImmutable, Blittable, ContainerFieldNameHash(2662400)]
+		public bool Enabled { get { return m_Enabled; } set { if (OnPropertyChanging("SensingComponentData." + nameof(Enabled), this, m_Enabled, value)) m_Enabled = value; } } // 0x68 (104)
 		
-		[ContainerField(105), LayoutImmutable, Blittable]
-		public bool SharedPlayerMemory { get; set; } // 0x69 (105)
+		protected bool m_SharedPlayerMemory = new bool();
+		[ContainerField(105), LayoutImmutable, Blittable, ContainerFieldNameHash(3832351454)]
+		public bool SharedPlayerMemory { get { return m_SharedPlayerMemory; } set { if (OnPropertyChanging("SensingComponentData." + nameof(SharedPlayerMemory), this, m_SharedPlayerMemory, value)) m_SharedPlayerMemory = value; } } // 0x69 (105)
 		
-		[ContainerField(106), LayoutImmutable, Blittable]
-		public bool UseWeaponTransform { get; set; } // 0x6A (106)
+		protected bool m_UseWeaponTransform = new bool();
+		[ContainerField(106), LayoutImmutable, Blittable, ContainerFieldNameHash(3375914696)]
+		public bool UseWeaponTransform { get { return m_UseWeaponTransform; } set { if (OnPropertyChanging("SensingComponentData." + nameof(UseWeaponTransform), this, m_UseWeaponTransform, value)) m_UseWeaponTransform = value; } } // 0x6A (106)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

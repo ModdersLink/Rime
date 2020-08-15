@@ -5,29 +5,42 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class CharacterCustomizationAsset : 
 		Asset
 	{
-		[ContainerField(12), LayoutImmutable]
-		public string LabelSid { get; set; } // 0xC (12)
+		protected string m_LabelSid = new string();
+		[ContainerField(12), LayoutImmutable, ContainerFieldNameHash(4044105085)]
+		public string LabelSid { get { return m_LabelSid; } set { if (OnPropertyChanging("CharacterCustomizationAsset." + nameof(LabelSid), this, m_LabelSid, value)) m_LabelSid = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public UIHudIcon UIHudIcon { get; set; } = new UIHudIcon(); // 0x10 (16)
+		protected UIHudIcon m_UIHudIcon = new UIHudIcon();
+		[ContainerField(16), ContainerFieldNameHash(3556510859)]
+		public UIHudIcon UIHudIcon { get { return m_UIHudIcon; } set { if (OnPropertyChanging("CharacterCustomizationAsset." + nameof(UIHudIcon), this, m_UIHudIcon, value)) m_UIHudIcon = value; } } // 0x10 (16)
 		
-		[ContainerField(20)]
-		public RefArray<VoiceOverLabel> VoiceOverLabels { get; set; } = new RefArray<VoiceOverLabel>(); // 0x14 (20)
+		protected RefArray<VoiceOverLabel> m_VoiceOverLabels = new RefArray<VoiceOverLabel>();
+		[ContainerField(20), ContainerFieldNameHash(2741340584)]
+		public RefArray<VoiceOverLabel> VoiceOverLabels { get { return m_VoiceOverLabels; } set { if (OnPropertyChanging("CharacterCustomizationAsset." + nameof(VoiceOverLabels), this, m_VoiceOverLabels, value)) m_VoiceOverLabels = value; } } // 0x14 (20)
 		
-		[ContainerField(24)]
-		public CtrRef<CustomizationTable> VisualTable { get; set; } = new CtrRef<CustomizationTable>(); // 0x18 (24)
+		protected CtrRef<CustomizationTable> m_VisualTable = new CtrRef<CustomizationTable>();
+		[ContainerField(24), ContainerFieldNameHash(277951407)]
+		public CtrRef<CustomizationTable> VisualTable { get { return m_VisualTable; } set { if (OnPropertyChanging("CharacterCustomizationAsset." + nameof(VisualTable), this, m_VisualTable, value)) m_VisualTable = value; } } // 0x18 (24)
 		
-		[ContainerField(28)]
-		public CtrRef<CustomizationTable> SpecializationTable { get; set; } = new CtrRef<CustomizationTable>(); // 0x1C (28)
+		protected CtrRef<CustomizationTable> m_SpecializationTable = new CtrRef<CustomizationTable>();
+		[ContainerField(28), ContainerFieldNameHash(1559267348)]
+		public CtrRef<CustomizationTable> SpecializationTable { get { return m_SpecializationTable; } set { if (OnPropertyChanging("CharacterCustomizationAsset." + nameof(SpecializationTable), this, m_SpecializationTable, value)) m_SpecializationTable = value; } } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

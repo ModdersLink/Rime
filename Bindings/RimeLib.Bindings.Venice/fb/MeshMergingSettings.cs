@@ -5,40 +5,58 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class MeshMergingSettings : 
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable, Blittable]
-		public int StatsSeedIndex { get; set; } // 0x8 (8)
+		protected int m_StatsSeedIndex = new int();
+		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(4014781069)]
+		public int StatsSeedIndex { get { return m_StatsSeedIndex; } set { if (OnPropertyChanging("MeshMergingSettings." + nameof(StatsSeedIndex), this, m_StatsSeedIndex, value)) m_StatsSeedIndex = value; } } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public int StatsLodIndex { get; set; } // 0xC (12)
+		protected int m_StatsLodIndex = new int();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(1875375645)]
+		public int StatsLodIndex { get { return m_StatsLodIndex; } set { if (OnPropertyChanging("MeshMergingSettings." + nameof(StatsLodIndex), this, m_StatsLodIndex, value)) m_StatsLodIndex = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public uint TextureAtlasWidth { get; set; } // 0x10 (16)
+		protected uint m_TextureAtlasWidth = new uint();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(3571490231)]
+		public uint TextureAtlasWidth { get { return m_TextureAtlasWidth; } set { if (OnPropertyChanging("MeshMergingSettings." + nameof(TextureAtlasWidth), this, m_TextureAtlasWidth, value)) m_TextureAtlasWidth = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
-		public bool DrawStatsEnable { get; set; } // 0x14 (20)
+		protected bool m_DrawStatsEnable = new bool();
+		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(711726149)]
+		public bool DrawStatsEnable { get { return m_DrawStatsEnable; } set { if (OnPropertyChanging("MeshMergingSettings." + nameof(DrawStatsEnable), this, m_DrawStatsEnable, value)) m_DrawStatsEnable = value; } } // 0x14 (20)
 		
-		[ContainerField(21), LayoutImmutable, Blittable]
-		public bool DrawDebugTexturesEnable { get; set; } // 0x15 (21)
+		protected bool m_DrawDebugTexturesEnable = new bool();
+		[ContainerField(21), LayoutImmutable, Blittable, ContainerFieldNameHash(3201068793)]
+		public bool DrawDebugTexturesEnable { get { return m_DrawDebugTexturesEnable; } set { if (OnPropertyChanging("MeshMergingSettings." + nameof(DrawDebugTexturesEnable), this, m_DrawDebugTexturesEnable, value)) m_DrawDebugTexturesEnable = value; } } // 0x15 (21)
 		
-		[ContainerField(22), LayoutImmutable, Blittable]
-		public bool VirtualTextureArrayStreamingEnable { get; set; } // 0x16 (22)
+		protected bool m_VirtualTextureArrayStreamingEnable = new bool();
+		[ContainerField(22), LayoutImmutable, Blittable, ContainerFieldNameHash(211951999)]
+		public bool VirtualTextureArrayStreamingEnable { get { return m_VirtualTextureArrayStreamingEnable; } set { if (OnPropertyChanging("MeshMergingSettings." + nameof(VirtualTextureArrayStreamingEnable), this, m_VirtualTextureArrayStreamingEnable, value)) m_VirtualTextureArrayStreamingEnable = value; } } // 0x16 (22)
 		
-		[ContainerField(23), LayoutImmutable, Blittable]
-		public bool Enable { get; set; } // 0x17 (23)
+		protected bool m_Enable = new bool();
+		[ContainerField(23), LayoutImmutable, Blittable, ContainerFieldNameHash(2342790116)]
+		public bool Enable { get { return m_Enable; } set { if (OnPropertyChanging("MeshMergingSettings." + nameof(Enable), this, m_Enable, value)) m_Enable = value; } } // 0x17 (23)
 		
-		[ContainerField(24), LayoutImmutable, Blittable]
-		public bool TextureAtlasMergeEnable { get; set; } // 0x18 (24)
+		protected bool m_TextureAtlasMergeEnable = new bool();
+		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(2089084008)]
+		public bool TextureAtlasMergeEnable { get { return m_TextureAtlasMergeEnable; } set { if (OnPropertyChanging("MeshMergingSettings." + nameof(TextureAtlasMergeEnable), this, m_TextureAtlasMergeEnable, value)) m_TextureAtlasMergeEnable = value; } } // 0x18 (24)
 		
-		[ContainerField(25), LayoutImmutable, Blittable]
-		public bool ClearMergeReport { get; set; } // 0x19 (25)
+		protected bool m_ClearMergeReport = new bool();
+		[ContainerField(25), LayoutImmutable, Blittable, ContainerFieldNameHash(1920586794)]
+		public bool ClearMergeReport { get { return m_ClearMergeReport; } set { if (OnPropertyChanging("MeshMergingSettings." + nameof(ClearMergeReport), this, m_ClearMergeReport, value)) m_ClearMergeReport = value; } } // 0x19 (25)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

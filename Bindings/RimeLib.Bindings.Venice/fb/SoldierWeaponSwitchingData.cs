@@ -5,23 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class SoldierWeaponSwitchingData : 
 		Asset
 	{
-		[ContainerField(12)]
-		public List<WeaponSwitchingMapData> SwitchMap { get; set; } = new List<WeaponSwitchingMapData>(); // 0xC (12)
+		protected List<WeaponSwitchingMapData> m_SwitchMap = new List<WeaponSwitchingMapData>();
+		[ContainerField(12), ContainerFieldNameHash(958053643)]
+		public List<WeaponSwitchingMapData> SwitchMap { get { return m_SwitchMap; } set { if (OnPropertyChanging("SoldierWeaponSwitchingData." + nameof(SwitchMap), this, m_SwitchMap, value)) m_SwitchMap = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public List<DirectWeaponSwitchingMapData> DirectSwitchMap { get; set; } = new List<DirectWeaponSwitchingMapData>(); // 0x10 (16)
+		protected List<DirectWeaponSwitchingMapData> m_DirectSwitchMap = new List<DirectWeaponSwitchingMapData>();
+		[ContainerField(16), ContainerFieldNameHash(2207082534)]
+		public List<DirectWeaponSwitchingMapData> DirectSwitchMap { get { return m_DirectSwitchMap; } set { if (OnPropertyChanging("SoldierWeaponSwitchingData." + nameof(DirectSwitchMap), this, m_DirectSwitchMap, value)) m_DirectSwitchMap = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
-		public float SwitchToGadgetCooldownTime { get; set; } // 0x14 (20)
+		protected float m_SwitchToGadgetCooldownTime = new float();
+		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(2738447440)]
+		public float SwitchToGadgetCooldownTime { get { return m_SwitchToGadgetCooldownTime; } set { if (OnPropertyChanging("SoldierWeaponSwitchingData." + nameof(SwitchToGadgetCooldownTime), this, m_SwitchToGadgetCooldownTime, value)) m_SwitchToGadgetCooldownTime = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

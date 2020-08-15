@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class KitPickupEntityData : 
 		PickupEntityData
 	{
-		[ContainerField(176), LayoutImmutable, Blittable]
-		public bool KeepAdditionalWeapons { get; set; } // 0xB0 (176)
+		protected bool m_KeepAdditionalWeapons = new bool();
+		[ContainerField(176), LayoutImmutable, Blittable, ContainerFieldNameHash(2585816246)]
+		public bool KeepAdditionalWeapons { get { return m_KeepAdditionalWeapons; } set { if (OnPropertyChanging("KitPickupEntityData." + nameof(KeepAdditionalWeapons), this, m_KeepAdditionalWeapons, value)) m_KeepAdditionalWeapons = value; } } // 0xB0 (176)
 		
-		[ContainerField(177), LayoutImmutable, Blittable]
-		public bool KeepAmmoState { get; set; } // 0xB1 (177)
+		protected bool m_KeepAmmoState = new bool();
+		[ContainerField(177), LayoutImmutable, Blittable, ContainerFieldNameHash(2997013959)]
+		public bool KeepAmmoState { get { return m_KeepAmmoState; } set { if (OnPropertyChanging("KitPickupEntityData." + nameof(KeepAmmoState), this, m_KeepAmmoState, value)) m_KeepAmmoState = value; } } // 0xB1 (177)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

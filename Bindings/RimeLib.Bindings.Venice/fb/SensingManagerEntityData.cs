@@ -5,17 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class SensingManagerEntityData : 
 		EntityData
 	{
-		[ContainerField(12)]
-		public List<SensingSphere> SenseTerrainAreas { get; set; } = new List<SensingSphere>(); // 0xC (12)
+		protected List<SensingSphere> m_SenseTerrainAreas = new List<SensingSphere>();
+		[ContainerField(12), ContainerFieldNameHash(1470254904)]
+		public List<SensingSphere> SenseTerrainAreas { get { return m_SenseTerrainAreas; } set { if (OnPropertyChanging("SensingManagerEntityData." + nameof(SenseTerrainAreas), this, m_SenseTerrainAreas, value)) m_SenseTerrainAreas = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

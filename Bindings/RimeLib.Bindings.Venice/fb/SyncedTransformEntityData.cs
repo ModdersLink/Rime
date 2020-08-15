@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class SyncedTransformEntityData : 
 		EntityData
 	{
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable]
-		public LinearTransform In { get; set; } = new LinearTransform(); // 0x10 (16)
+		protected LinearTransform m_In = new LinearTransform();
+		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(5862146)]
+		public LinearTransform In { get { return m_In; } set { if (OnPropertyChanging("SyncedTransformEntityData." + nameof(In), this, m_In, value)) m_In = value; } } // 0x10 (16)
 		
-		[ContainerField(80), LayoutImmutable, Blittable]
-		public bool Interpolate { get; set; } // 0x50 (80)
+		protected bool m_Interpolate = new bool();
+		[ContainerField(80), LayoutImmutable, Blittable, ContainerFieldNameHash(2332438914)]
+		public bool Interpolate { get { return m_Interpolate; } set { if (OnPropertyChanging("SyncedTransformEntityData." + nameof(Interpolate), this, m_Interpolate, value)) m_Interpolate = value; } } // 0x50 (80)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

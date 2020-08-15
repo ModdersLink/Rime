@@ -5,115 +5,158 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class UI3dIconCompData : 
 		UIComponentData
 	{
-		[ContainerField(28), Homogeneous, LayoutImmutable, Blittable]
-		public Vec2 PixelOffset { get; set; } = new Vec2(); // 0x1C (28)
+		protected Vec2 m_PixelOffset = new Vec2();
+		[ContainerField(28), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(1847759040)]
+		public Vec2 PixelOffset { get { return m_PixelOffset; } set { if (OnPropertyChanging("UI3dIconCompData." + nameof(PixelOffset), this, m_PixelOffset, value)) m_PixelOffset = value; } } // 0x1C (28)
 		
-		[ContainerField(36), LayoutImmutable, Blittable]
-		public float IconSize { get; set; } // 0x24 (36)
+		protected float m_IconSize = new float();
+		[ContainerField(36), LayoutImmutable, Blittable, ContainerFieldNameHash(269738667)]
+		public float IconSize { get { return m_IconSize; } set { if (OnPropertyChanging("UI3dIconCompData." + nameof(IconSize), this, m_IconSize, value)) m_IconSize = value; } } // 0x24 (36)
 		
-		[ContainerField(40), LayoutImmutable, Blittable]
-		public float MaxFarFade { get; set; } // 0x28 (40)
+		protected float m_MaxFarFade = new float();
+		[ContainerField(40), LayoutImmutable, Blittable, ContainerFieldNameHash(1649290658)]
+		public float MaxFarFade { get { return m_MaxFarFade; } set { if (OnPropertyChanging("UI3dIconCompData." + nameof(MaxFarFade), this, m_MaxFarFade, value)) m_MaxFarFade = value; } } // 0x28 (40)
 		
-		[ContainerField(44), LayoutImmutable, Blittable]
-		public float MaxCloseFade { get; set; } // 0x2C (44)
+		protected float m_MaxCloseFade = new float();
+		[ContainerField(44), LayoutImmutable, Blittable, ContainerFieldNameHash(539308577)]
+		public float MaxCloseFade { get { return m_MaxCloseFade; } set { if (OnPropertyChanging("UI3dIconCompData." + nameof(MaxCloseFade), this, m_MaxCloseFade, value)) m_MaxCloseFade = value; } } // 0x2C (44)
 		
-		[ContainerField(48), LayoutImmutable, Blittable]
-		public float SnapSafeZone { get; set; } // 0x30 (48)
+		protected float m_SnapSafeZone = new float();
+		[ContainerField(48), LayoutImmutable, Blittable, ContainerFieldNameHash(1875567430)]
+		public float SnapSafeZone { get { return m_SnapSafeZone; } set { if (OnPropertyChanging("UI3dIconCompData." + nameof(SnapSafeZone), this, m_SnapSafeZone, value)) m_SnapSafeZone = value; } } // 0x30 (48)
 		
-		[ContainerField(52), LayoutImmutable, Blittable]
-		public float SnapCenterYOffset { get; set; } // 0x34 (52)
+		protected float m_SnapCenterYOffset = new float();
+		[ContainerField(52), LayoutImmutable, Blittable, ContainerFieldNameHash(209674038)]
+		public float SnapCenterYOffset { get { return m_SnapCenterYOffset; } set { if (OnPropertyChanging("UI3dIconCompData." + nameof(SnapCenterYOffset), this, m_SnapCenterYOffset, value)) m_SnapCenterYOffset = value; } } // 0x34 (52)
 		
-		[ContainerField(56), LayoutImmutable, Blittable]
-		public float ShrinkSnapAnimationTime { get; set; } // 0x38 (56)
+		protected float m_ShrinkSnapAnimationTime = new float();
+		[ContainerField(56), LayoutImmutable, Blittable, ContainerFieldNameHash(3817575151)]
+		public float ShrinkSnapAnimationTime { get { return m_ShrinkSnapAnimationTime; } set { if (OnPropertyChanging("UI3dIconCompData." + nameof(ShrinkSnapAnimationTime), this, m_ShrinkSnapAnimationTime, value)) m_ShrinkSnapAnimationTime = value; } } // 0x38 (56)
 		
-		[ContainerField(60), LayoutImmutable, Blittable]
-		public float TrackerHudRadiusX { get; set; } // 0x3C (60)
+		protected float m_TrackerHudRadiusX = new float();
+		[ContainerField(60), LayoutImmutable, Blittable, ContainerFieldNameHash(494741604)]
+		public float TrackerHudRadiusX { get { return m_TrackerHudRadiusX; } set { if (OnPropertyChanging("UI3dIconCompData." + nameof(TrackerHudRadiusX), this, m_TrackerHudRadiusX, value)) m_TrackerHudRadiusX = value; } } // 0x3C (60)
 		
-		[ContainerField(64), LayoutImmutable, Blittable]
-		public float TrackerHudRadiusY { get; set; } // 0x40 (64)
+		protected float m_TrackerHudRadiusY = new float();
+		[ContainerField(64), LayoutImmutable, Blittable, ContainerFieldNameHash(494741605)]
+		public float TrackerHudRadiusY { get { return m_TrackerHudRadiusY; } set { if (OnPropertyChanging("UI3dIconCompData." + nameof(TrackerHudRadiusY), this, m_TrackerHudRadiusY, value)) m_TrackerHudRadiusY = value; } } // 0x40 (64)
 		
-		[ContainerField(68), LayoutImmutable, Blittable]
-		public float MaxLookAtThreshold { get; set; } // 0x44 (68)
+		protected float m_MaxLookAtThreshold = new float();
+		[ContainerField(68), LayoutImmutable, Blittable, ContainerFieldNameHash(3378079124)]
+		public float MaxLookAtThreshold { get { return m_MaxLookAtThreshold; } set { if (OnPropertyChanging("UI3dIconCompData." + nameof(MaxLookAtThreshold), this, m_MaxLookAtThreshold, value)) m_MaxLookAtThreshold = value; } } // 0x44 (68)
 		
-		[ContainerField(72), LayoutImmutable, Blittable]
-		public float MinLookAtThreshold { get; set; } // 0x48 (72)
+		protected float m_MinLookAtThreshold = new float();
+		[ContainerField(72), LayoutImmutable, Blittable, ContainerFieldNameHash(1713249226)]
+		public float MinLookAtThreshold { get { return m_MinLookAtThreshold; } set { if (OnPropertyChanging("UI3dIconCompData." + nameof(MinLookAtThreshold), this, m_MinLookAtThreshold, value)) m_MinLookAtThreshold = value; } } // 0x48 (72)
 		
-		[ContainerField(76), LayoutImmutable, Blittable]
-		public float MinLookAtThresholdDistance { get; set; } // 0x4C (76)
+		protected float m_MinLookAtThresholdDistance = new float();
+		[ContainerField(76), LayoutImmutable, Blittable, ContainerFieldNameHash(120312329)]
+		public float MinLookAtThresholdDistance { get { return m_MinLookAtThresholdDistance; } set { if (OnPropertyChanging("UI3dIconCompData." + nameof(MinLookAtThresholdDistance), this, m_MinLookAtThresholdDistance, value)) m_MinLookAtThresholdDistance = value; } } // 0x4C (76)
 		
-		[ContainerField(80), LayoutImmutable, Blittable]
-		public float DrawDistance { get; set; } // 0x50 (80)
+		protected float m_DrawDistance = new float();
+		[ContainerField(80), LayoutImmutable, Blittable, ContainerFieldNameHash(3007537990)]
+		public float DrawDistance { get { return m_DrawDistance; } set { if (OnPropertyChanging("UI3dIconCompData." + nameof(DrawDistance), this, m_DrawDistance, value)) m_DrawDistance = value; } } // 0x50 (80)
 		
-		[ContainerField(84), LayoutImmutable, Blittable]
-		public float FadeDistance { get; set; } // 0x54 (84)
+		protected float m_FadeDistance = new float();
+		[ContainerField(84), LayoutImmutable, Blittable, ContainerFieldNameHash(636128672)]
+		public float FadeDistance { get { return m_FadeDistance; } set { if (OnPropertyChanging("UI3dIconCompData." + nameof(FadeDistance), this, m_FadeDistance, value)) m_FadeDistance = value; } } // 0x54 (84)
 		
-		[ContainerField(88), LayoutImmutable, Blittable]
-		public float FadeEndDistance { get; set; } // 0x58 (88)
+		protected float m_FadeEndDistance = new float();
+		[ContainerField(88), LayoutImmutable, Blittable, ContainerFieldNameHash(1525884495)]
+		public float FadeEndDistance { get { return m_FadeEndDistance; } set { if (OnPropertyChanging("UI3dIconCompData." + nameof(FadeEndDistance), this, m_FadeEndDistance, value)) m_FadeEndDistance = value; } } // 0x58 (88)
 		
-		[ContainerField(92), LayoutImmutable, Blittable]
-		public float MinimumDrawDistance { get; set; } // 0x5C (92)
+		protected float m_MinimumDrawDistance = new float();
+		[ContainerField(92), LayoutImmutable, Blittable, ContainerFieldNameHash(3994158800)]
+		public float MinimumDrawDistance { get { return m_MinimumDrawDistance; } set { if (OnPropertyChanging("UI3dIconCompData." + nameof(MinimumDrawDistance), this, m_MinimumDrawDistance, value)) m_MinimumDrawDistance = value; } } // 0x5C (92)
 		
-		[ContainerField(96), LayoutImmutable, Blittable]
-		public float MinimumFadeDistance { get; set; } // 0x60 (96)
+		protected float m_MinimumFadeDistance = new float();
+		[ContainerField(96), LayoutImmutable, Blittable, ContainerFieldNameHash(501224630)]
+		public float MinimumFadeDistance { get { return m_MinimumFadeDistance; } set { if (OnPropertyChanging("UI3dIconCompData." + nameof(MinimumFadeDistance), this, m_MinimumFadeDistance, value)) m_MinimumFadeDistance = value; } } // 0x60 (96)
 		
-		[ContainerField(100), LayoutImmutable, Blittable]
-		public int MaxTagUpdatesPerFrame { get; set; } // 0x64 (100)
+		protected int m_MaxTagUpdatesPerFrame = new int();
+		[ContainerField(100), LayoutImmutable, Blittable, ContainerFieldNameHash(3828005979)]
+		public int MaxTagUpdatesPerFrame { get { return m_MaxTagUpdatesPerFrame; } set { if (OnPropertyChanging("UI3dIconCompData." + nameof(MaxTagUpdatesPerFrame), this, m_MaxTagUpdatesPerFrame, value)) m_MaxTagUpdatesPerFrame = value; } } // 0x64 (100)
 		
-		[ContainerField(104), LayoutImmutable, Blittable]
-		public float VerticalOffset { get; set; } // 0x68 (104)
+		protected float m_VerticalOffset = new float();
+		[ContainerField(104), LayoutImmutable, Blittable, ContainerFieldNameHash(2125919898)]
+		public float VerticalOffset { get { return m_VerticalOffset; } set { if (OnPropertyChanging("UI3dIconCompData." + nameof(VerticalOffset), this, m_VerticalOffset, value)) m_VerticalOffset = value; } } // 0x68 (104)
 		
-		[ContainerField(108), LayoutImmutable, Blittable]
-		public float ShowLabelRange { get; set; } // 0x6C (108)
+		protected float m_ShowLabelRange = new float();
+		[ContainerField(108), LayoutImmutable, Blittable, ContainerFieldNameHash(3915682047)]
+		public float ShowLabelRange { get { return m_ShowLabelRange; } set { if (OnPropertyChanging("UI3dIconCompData." + nameof(ShowLabelRange), this, m_ShowLabelRange, value)) m_ShowLabelRange = value; } } // 0x6C (108)
 		
-		[ContainerField(112), LayoutImmutable, Blittable]
-		public float TeamRadioDistance { get; set; } // 0x70 (112)
+		protected float m_TeamRadioDistance = new float();
+		[ContainerField(112), LayoutImmutable, Blittable, ContainerFieldNameHash(2116216522)]
+		public float TeamRadioDistance { get { return m_TeamRadioDistance; } set { if (OnPropertyChanging("UI3dIconCompData." + nameof(TeamRadioDistance), this, m_TeamRadioDistance, value)) m_TeamRadioDistance = value; } } // 0x70 (112)
 		
-		[ContainerField(116), LayoutImmutable, Blittable]
-		public float ScaleDistance { get; set; } // 0x74 (116)
+		protected float m_ScaleDistance = new float();
+		[ContainerField(116), LayoutImmutable, Blittable, ContainerFieldNameHash(2682964318)]
+		public float ScaleDistance { get { return m_ScaleDistance; } set { if (OnPropertyChanging("UI3dIconCompData." + nameof(ScaleDistance), this, m_ScaleDistance, value)) m_ScaleDistance = value; } } // 0x74 (116)
 		
-		[ContainerField(120), LayoutImmutable, Blittable]
-		public float MaxScaleMod { get; set; } // 0x78 (120)
+		protected float m_MaxScaleMod = new float();
+		[ContainerField(120), LayoutImmutable, Blittable, ContainerFieldNameHash(3120961103)]
+		public float MaxScaleMod { get { return m_MaxScaleMod; } set { if (OnPropertyChanging("UI3dIconCompData." + nameof(MaxScaleMod), this, m_MaxScaleMod, value)) m_MaxScaleMod = value; } } // 0x78 (120)
 		
-		[ContainerField(124), LayoutImmutable, Blittable]
-		public float MaxXRotation { get; set; } // 0x7C (124)
+		protected float m_MaxXRotation = new float();
+		[ContainerField(124), LayoutImmutable, Blittable, ContainerFieldNameHash(3351064765)]
+		public float MaxXRotation { get { return m_MaxXRotation; } set { if (OnPropertyChanging("UI3dIconCompData." + nameof(MaxXRotation), this, m_MaxXRotation, value)) m_MaxXRotation = value; } } // 0x7C (124)
 		
-		[ContainerField(128), LayoutImmutable, Blittable]
-		public float MaxYRotation { get; set; } // 0x80 (128)
+		protected float m_MaxYRotation = new float();
+		[ContainerField(128), LayoutImmutable, Blittable, ContainerFieldNameHash(3559299260)]
+		public float MaxYRotation { get { return m_MaxYRotation; } set { if (OnPropertyChanging("UI3dIconCompData." + nameof(MaxYRotation), this, m_MaxYRotation, value)) m_MaxYRotation = value; } } // 0x80 (128)
 		
-		[ContainerField(132), LayoutImmutable, Blittable]
-		public float HorisontalOffset { get; set; } // 0x84 (132)
+		protected float m_HorisontalOffset = new float();
+		[ContainerField(132), LayoutImmutable, Blittable, ContainerFieldNameHash(598230047)]
+		public float HorisontalOffset { get { return m_HorisontalOffset; } set { if (OnPropertyChanging("UI3dIconCompData." + nameof(HorisontalOffset), this, m_HorisontalOffset, value)) m_HorisontalOffset = value; } } // 0x84 (132)
 		
-		[ContainerField(136), LayoutImmutable, Blittable]
-		public float ShowSupportAmmoThreshold { get; set; } // 0x88 (136)
+		protected float m_ShowSupportAmmoThreshold = new float();
+		[ContainerField(136), LayoutImmutable, Blittable, ContainerFieldNameHash(3095615152)]
+		public float ShowSupportAmmoThreshold { get { return m_ShowSupportAmmoThreshold; } set { if (OnPropertyChanging("UI3dIconCompData." + nameof(ShowSupportAmmoThreshold), this, m_ShowSupportAmmoThreshold, value)) m_ShowSupportAmmoThreshold = value; } } // 0x88 (136)
 		
-		[ContainerField(140), LayoutImmutable, Blittable]
-		public float VerticalOffsetMaxOffset { get; set; } // 0x8C (140)
+		protected float m_VerticalOffsetMaxOffset = new float();
+		[ContainerField(140), LayoutImmutable, Blittable, ContainerFieldNameHash(1131008835)]
+		public float VerticalOffsetMaxOffset { get { return m_VerticalOffsetMaxOffset; } set { if (OnPropertyChanging("UI3dIconCompData." + nameof(VerticalOffsetMaxOffset), this, m_VerticalOffsetMaxOffset, value)) m_VerticalOffsetMaxOffset = value; } } // 0x8C (140)
 		
-		[ContainerField(144), LayoutImmutable, Blittable]
-		public float VerticalOffsetScaleFactor { get; set; } // 0x90 (144)
+		protected float m_VerticalOffsetScaleFactor = new float();
+		[ContainerField(144), LayoutImmutable, Blittable, ContainerFieldNameHash(2621997839)]
+		public float VerticalOffsetScaleFactor { get { return m_VerticalOffsetScaleFactor; } set { if (OnPropertyChanging("UI3dIconCompData." + nameof(VerticalOffsetScaleFactor), this, m_VerticalOffsetScaleFactor, value)) m_VerticalOffsetScaleFactor = value; } } // 0x90 (144)
 		
-		[ContainerField(148), LayoutImmutable, Blittable]
-		public float ShowEngineerArmorThreshold { get; set; } // 0x94 (148)
+		protected float m_ShowEngineerArmorThreshold = new float();
+		[ContainerField(148), LayoutImmutable, Blittable, ContainerFieldNameHash(2577691403)]
+		public float ShowEngineerArmorThreshold { get { return m_ShowEngineerArmorThreshold; } set { if (OnPropertyChanging("UI3dIconCompData." + nameof(ShowEngineerArmorThreshold), this, m_ShowEngineerArmorThreshold, value)) m_ShowEngineerArmorThreshold = value; } } // 0x94 (148)
 		
-		[ContainerField(152), LayoutImmutable, Blittable]
-		public float ShowMedicHealthThreshold { get; set; } // 0x98 (152)
+		protected float m_ShowMedicHealthThreshold = new float();
+		[ContainerField(152), LayoutImmutable, Blittable, ContainerFieldNameHash(4256908171)]
+		public float ShowMedicHealthThreshold { get { return m_ShowMedicHealthThreshold; } set { if (OnPropertyChanging("UI3dIconCompData." + nameof(ShowMedicHealthThreshold), this, m_ShowMedicHealthThreshold, value)) m_ShowMedicHealthThreshold = value; } } // 0x98 (152)
 		
-		[ContainerField(156), LayoutImmutable, Blittable]
-		public bool SnapIcons { get; set; } // 0x9C (156)
+		protected bool m_SnapIcons = new bool();
+		[ContainerField(156), LayoutImmutable, Blittable, ContainerFieldNameHash(1728218737)]
+		public bool SnapIcons { get { return m_SnapIcons; } set { if (OnPropertyChanging("UI3dIconCompData." + nameof(SnapIcons), this, m_SnapIcons, value)) m_SnapIcons = value; } } // 0x9C (156)
 		
-		[ContainerField(157), LayoutImmutable, Blittable]
-		public bool CircularSnap { get; set; } // 0x9D (157)
+		protected bool m_CircularSnap = new bool();
+		[ContainerField(157), LayoutImmutable, Blittable, ContainerFieldNameHash(3894769784)]
+		public bool CircularSnap { get { return m_CircularSnap; } set { if (OnPropertyChanging("UI3dIconCompData." + nameof(CircularSnap), this, m_CircularSnap, value)) m_CircularSnap = value; } } // 0x9D (157)
 		
-		[ContainerField(158), LayoutImmutable, Blittable]
-		public bool OnlyShowSnapped { get; set; } // 0x9E (158)
+		protected bool m_OnlyShowSnapped = new bool();
+		[ContainerField(158), LayoutImmutable, Blittable, ContainerFieldNameHash(1611417039)]
+		public bool OnlyShowSnapped { get { return m_OnlyShowSnapped; } set { if (OnPropertyChanging("UI3dIconCompData." + nameof(OnlyShowSnapped), this, m_OnlyShowSnapped, value)) m_OnlyShowSnapped = value; } } // 0x9E (158)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,23 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class OrEntityData : 
 		EntityData
 	{
-		[ContainerField(12)]
-		public Realm Realm { get; set; } = new Realm(); // 0xC (12)
+		protected Realm m_Realm = new Realm();
+		[ContainerField(12), ContainerFieldNameHash(229961746)]
+		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("OrEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public bool In1 { get; set; } // 0x10 (16)
+		protected bool m_In1 = new bool();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(193450867)]
+		public bool In1 { get { return m_In1; } set { if (OnPropertyChanging("OrEntityData." + nameof(In1), this, m_In1, value)) m_In1 = value; } } // 0x10 (16)
 		
-		[ContainerField(17), LayoutImmutable, Blittable]
-		public bool In2 { get; set; } // 0x11 (17)
+		protected bool m_In2 = new bool();
+		[ContainerField(17), LayoutImmutable, Blittable, ContainerFieldNameHash(193450864)]
+		public bool In2 { get { return m_In2; } set { if (OnPropertyChanging("OrEntityData." + nameof(In2), this, m_In2, value)) m_In2 = value; } } // 0x11 (17)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

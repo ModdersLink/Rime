@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class VoiceOverValueConnection : 
 		DataContainer
 	{
-		[ContainerField(8)]
-		public CtrRef<VoiceOverExpressionNode> TargetNode { get; set; } = new CtrRef<VoiceOverExpressionNode>(); // 0x8 (8)
+		protected CtrRef<VoiceOverExpressionNode> m_TargetNode = new CtrRef<VoiceOverExpressionNode>();
+		[ContainerField(8), ContainerFieldNameHash(328873140)]
+		public CtrRef<VoiceOverExpressionNode> TargetNode { get { return m_TargetNode; } set { if (OnPropertyChanging("VoiceOverValueConnection." + nameof(TargetNode), this, m_TargetNode, value)) m_TargetNode = value; } } // 0x8 (8)
 		
-		[ContainerField(12)]
-		public CtrRef<VoiceOverValue> TargetValue { get; set; } = new CtrRef<VoiceOverValue>(); // 0xC (12)
+		protected CtrRef<VoiceOverValue> m_TargetValue = new CtrRef<VoiceOverValue>();
+		[ContainerField(12), ContainerFieldNameHash(2234789535)]
+		public CtrRef<VoiceOverValue> TargetValue { get { return m_TargetValue; } set { if (OnPropertyChanging("VoiceOverValueConnection." + nameof(TargetValue), this, m_TargetValue, value)) m_TargetValue = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

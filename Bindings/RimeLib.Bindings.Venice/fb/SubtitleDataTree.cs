@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class SubtitleDataTree : 
 		TreeBase
 	{
-		[ContainerField(12)]
-		public RefArray<SubtitleMainDataNode> Subtitles { get; set; } = new RefArray<SubtitleMainDataNode>(); // 0xC (12)
+		protected RefArray<SubtitleMainDataNode> m_Subtitles = new RefArray<SubtitleMainDataNode>();
+		[ContainerField(12), ContainerFieldNameHash(595907762)]
+		public RefArray<SubtitleMainDataNode> Subtitles { get { return m_Subtitles; } set { if (OnPropertyChanging("SubtitleDataTree." + nameof(Subtitles), this, m_Subtitles, value)) m_Subtitles = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

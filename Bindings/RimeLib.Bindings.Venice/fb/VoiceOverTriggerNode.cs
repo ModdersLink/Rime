@@ -5,22 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class VoiceOverTriggerNode : 
 		VoiceOverStructureNode
 	{
-		[ContainerField(12)]
-		public RefArray<VoiceOverTriggerParameter> Parameters { get; set; } = new RefArray<VoiceOverTriggerParameter>(); // 0xC (12)
+		protected RefArray<VoiceOverTriggerParameter> m_Parameters = new RefArray<VoiceOverTriggerParameter>();
+		[ContainerField(12), ContainerFieldNameHash(3325515039)]
+		public RefArray<VoiceOverTriggerParameter> Parameters { get { return m_Parameters; } set { if (OnPropertyChanging("VoiceOverTriggerNode." + nameof(Parameters), this, m_Parameters, value)) m_Parameters = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public float Delay { get; set; } // 0x10 (16)
+		protected float m_Delay = new float();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(208768368)]
+		public float Delay { get { return m_Delay; } set { if (OnPropertyChanging("VoiceOverTriggerNode." + nameof(Delay), this, m_Delay, value)) m_Delay = value; } } // 0x10 (16)
 		
-		[ContainerField(20)]
-		public CtrRef<VoiceOverEvent> Event { get; set; } = new CtrRef<VoiceOverEvent>(); // 0x14 (20)
+		protected CtrRef<VoiceOverEvent> m_Event = new CtrRef<VoiceOverEvent>();
+		[ContainerField(20), ContainerFieldNameHash(201427689)]
+		public CtrRef<VoiceOverEvent> Event { get { return m_Event; } set { if (OnPropertyChanging("VoiceOverTriggerNode." + nameof(Event), this, m_Event, value)) m_Event = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

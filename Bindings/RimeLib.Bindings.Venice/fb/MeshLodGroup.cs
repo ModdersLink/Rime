@@ -5,34 +5,50 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class MeshLodGroup : 
 		Asset
 	{
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public float Lod1Distance { get; set; } // 0xC (12)
+		protected float m_Lod1Distance = new float();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(3299281840)]
+		public float Lod1Distance { get { return m_Lod1Distance; } set { if (OnPropertyChanging("MeshLodGroup." + nameof(Lod1Distance), this, m_Lod1Distance, value)) m_Lod1Distance = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public float Lod2Distance { get; set; } // 0x10 (16)
+		protected float m_Lod2Distance = new float();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(4081582771)]
+		public float Lod2Distance { get { return m_Lod2Distance; } set { if (OnPropertyChanging("MeshLodGroup." + nameof(Lod2Distance), this, m_Lod2Distance, value)) m_Lod2Distance = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
-		public float Lod3Distance { get; set; } // 0x14 (20)
+		protected float m_Lod3Distance = new float();
+		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(2570967730)]
+		public float Lod3Distance { get { return m_Lod3Distance; } set { if (OnPropertyChanging("MeshLodGroup." + nameof(Lod3Distance), this, m_Lod3Distance, value)) m_Lod3Distance = value; } } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable]
-		public float Lod4Distance { get; set; } // 0x18 (24)
+		protected float m_Lod4Distance = new float();
+		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(4154142901)]
+		public float Lod4Distance { get { return m_Lod4Distance; } set { if (OnPropertyChanging("MeshLodGroup." + nameof(Lod4Distance), this, m_Lod4Distance, value)) m_Lod4Distance = value; } } // 0x18 (24)
 		
-		[ContainerField(28), LayoutImmutable, Blittable]
-		public float Lod5Distance { get; set; } // 0x1C (28)
+		protected float m_Lod5Distance = new float();
+		[ContainerField(28), LayoutImmutable, Blittable, ContainerFieldNameHash(890948276)]
+		public float Lod5Distance { get { return m_Lod5Distance; } set { if (OnPropertyChanging("MeshLodGroup." + nameof(Lod5Distance), this, m_Lod5Distance, value)) m_Lod5Distance = value; } } // 0x1C (28)
 		
-		[ContainerField(32), LayoutImmutable, Blittable]
-		public float ShadowDistance { get; set; } // 0x20 (32)
+		protected float m_ShadowDistance = new float();
+		[ContainerField(32), LayoutImmutable, Blittable, ContainerFieldNameHash(4181554240)]
+		public float ShadowDistance { get { return m_ShadowDistance; } set { if (OnPropertyChanging("MeshLodGroup." + nameof(ShadowDistance), this, m_ShadowDistance, value)) m_ShadowDistance = value; } } // 0x20 (32)
 		
-		[ContainerField(36), LayoutImmutable, Blittable]
-		public float CullScreenArea { get; set; } // 0x24 (36)
+		protected float m_CullScreenArea = new float();
+		[ContainerField(36), LayoutImmutable, Blittable, ContainerFieldNameHash(3413873864)]
+		public float CullScreenArea { get { return m_CullScreenArea; } set { if (OnPropertyChanging("MeshLodGroup." + nameof(CullScreenArea), this, m_CullScreenArea, value)) m_CullScreenArea = value; } } // 0x24 (36)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

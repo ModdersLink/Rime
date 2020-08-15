@@ -5,29 +5,42 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class StanceFilterComponentData : 
 		ComponentData
 	{
-		[ContainerField(96)]
-		public List<int> ValidStances { get; set; } = new List<int>(); // 0x60 (96)
+		protected List<int> m_ValidStances = new List<int>();
+		[ContainerField(96), ContainerFieldNameHash(4192498222)]
+		public List<int> ValidStances { get { return m_ValidStances; } set { if (OnPropertyChanging("StanceFilterComponentData." + nameof(ValidStances), this, m_ValidStances, value)) m_ValidStances = value; } } // 0x60 (96)
 		
-		[ContainerField(100), LayoutImmutable, Blittable]
-		public float StanceChangeTime { get; set; } // 0x64 (100)
+		protected float m_StanceChangeTime = new float();
+		[ContainerField(100), LayoutImmutable, Blittable, ContainerFieldNameHash(58412120)]
+		public float StanceChangeTime { get { return m_StanceChangeTime; } set { if (OnPropertyChanging("StanceFilterComponentData." + nameof(StanceChangeTime), this, m_StanceChangeTime, value)) m_StanceChangeTime = value; } } // 0x64 (100)
 		
-		[ContainerField(104)]
-		public List<ActionSuppressor> ActionsToFilter { get; set; } = new List<ActionSuppressor>(); // 0x68 (104)
+		protected List<ActionSuppressor> m_ActionsToFilter = new List<ActionSuppressor>();
+		[ContainerField(104), ContainerFieldNameHash(2075922899)]
+		public List<ActionSuppressor> ActionsToFilter { get { return m_ActionsToFilter; } set { if (OnPropertyChanging("StanceFilterComponentData." + nameof(ActionsToFilter), this, m_ActionsToFilter, value)) m_ActionsToFilter = value; } } // 0x68 (104)
 		
-		[ContainerField(108), LayoutImmutable, Blittable]
-		public bool FilterSpecificActions { get; set; } // 0x6C (108)
+		protected bool m_FilterSpecificActions = new bool();
+		[ContainerField(108), LayoutImmutable, Blittable, ContainerFieldNameHash(1330805128)]
+		public bool FilterSpecificActions { get { return m_FilterSpecificActions; } set { if (OnPropertyChanging("StanceFilterComponentData." + nameof(FilterSpecificActions), this, m_FilterSpecificActions, value)) m_FilterSpecificActions = value; } } // 0x6C (108)
 		
-		[ContainerField(109), LayoutImmutable, Blittable]
-		public bool UndoParentStanceFilter { get; set; } // 0x6D (109)
+		protected bool m_UndoParentStanceFilter = new bool();
+		[ContainerField(109), LayoutImmutable, Blittable, ContainerFieldNameHash(1383671783)]
+		public bool UndoParentStanceFilter { get { return m_UndoParentStanceFilter; } set { if (OnPropertyChanging("StanceFilterComponentData." + nameof(UndoParentStanceFilter), this, m_UndoParentStanceFilter, value)) m_UndoParentStanceFilter = value; } } // 0x6D (109)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

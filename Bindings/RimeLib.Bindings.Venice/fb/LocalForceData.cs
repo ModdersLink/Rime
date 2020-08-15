@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class LocalForceData : 
 		ProcessorData
 	{
-		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 LocalForce { get; set; } = new Vec3(); // 0x30 (48)
+		protected Vec3 m_LocalForce = new Vec3();
+		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(4022902837)]
+		public Vec3 LocalForce { get { return m_LocalForce; } set { if (OnPropertyChanging("LocalForceData." + nameof(LocalForce), this, m_LocalForce, value)) m_LocalForce = value; } } // 0x30 (48)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

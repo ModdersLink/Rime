@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class DestructionCommandEntityData : 
 		GameEntityData
 	{
-		[ContainerField(96), LayoutImmutable, Blittable]
-		public uint InstanceCountDestroyedPerFrame { get; set; } // 0x60 (96)
+		protected uint m_InstanceCountDestroyedPerFrame = new uint();
+		[ContainerField(96), LayoutImmutable, Blittable, ContainerFieldNameHash(961630582)]
+		public uint InstanceCountDestroyedPerFrame { get { return m_InstanceCountDestroyedPerFrame; } set { if (OnPropertyChanging("DestructionCommandEntityData." + nameof(InstanceCountDestroyedPerFrame), this, m_InstanceCountDestroyedPerFrame, value)) m_InstanceCountDestroyedPerFrame = value; } } // 0x60 (96)
 		
-		[ContainerField(100), LayoutImmutable, Blittable]
-		public uint InstanceCountDestroyedPerType { get; set; } // 0x64 (100)
+		protected uint m_InstanceCountDestroyedPerType = new uint();
+		[ContainerField(100), LayoutImmutable, Blittable, ContainerFieldNameHash(1461542483)]
+		public uint InstanceCountDestroyedPerType { get { return m_InstanceCountDestroyedPerType; } set { if (OnPropertyChanging("DestructionCommandEntityData." + nameof(InstanceCountDestroyedPerType), this, m_InstanceCountDestroyedPerType, value)) m_InstanceCountDestroyedPerType = value; } } // 0x64 (100)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

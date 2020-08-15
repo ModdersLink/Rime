@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class EventIfSwitchEntityData : 
 		GameEntityData
 	{
-		[ContainerField(96), LayoutImmutable, Blittable]
-		public bool RunOnce { get; set; } // 0x60 (96)
+		protected bool m_RunOnce = new bool();
+		[ContainerField(96), LayoutImmutable, Blittable, ContainerFieldNameHash(709901739)]
+		public bool RunOnce { get { return m_RunOnce; } set { if (OnPropertyChanging("EventIfSwitchEntityData." + nameof(RunOnce), this, m_RunOnce, value)) m_RunOnce = value; } } // 0x60 (96)
 		
-		[ContainerField(97), LayoutImmutable, Blittable]
-		public bool StartState { get; set; } // 0x61 (97)
+		protected bool m_StartState = new bool();
+		[ContainerField(97), LayoutImmutable, Blittable, ContainerFieldNameHash(2753617170)]
+		public bool StartState { get { return m_StartState; } set { if (OnPropertyChanging("EventIfSwitchEntityData." + nameof(StartState), this, m_StartState, value)) m_StartState = value; } } // 0x61 (97)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

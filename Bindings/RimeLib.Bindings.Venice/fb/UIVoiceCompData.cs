@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class UIVoiceCompData : 
 		UIComponentData
 	{
-		[ContainerField(28), LayoutImmutable, Blittable]
-		public uint HudMaxSpeakers { get; set; } // 0x1C (28)
+		protected uint m_HudMaxSpeakers = new uint();
+		[ContainerField(28), LayoutImmutable, Blittable, ContainerFieldNameHash(2797323936)]
+		public uint HudMaxSpeakers { get { return m_HudMaxSpeakers; } set { if (OnPropertyChanging("UIVoiceCompData." + nameof(HudMaxSpeakers), this, m_HudMaxSpeakers, value)) m_HudMaxSpeakers = value; } } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

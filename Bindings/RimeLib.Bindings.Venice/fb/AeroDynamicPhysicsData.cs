@@ -5,25 +5,38 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class AeroDynamicPhysicsData : 
 		DataContainer
 	{
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 BodyDrag { get; set; } = new Vec3(); // 0x10 (16)
+		protected Vec3 m_BodyDrag = new Vec3();
+		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(1687378661)]
+		public Vec3 BodyDrag { get { return m_BodyDrag; } set { if (OnPropertyChanging("AeroDynamicPhysicsData." + nameof(BodyDrag), this, m_BodyDrag, value)) m_BodyDrag = value; } } // 0x10 (16)
 		
-		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 BodyDragOffsetYZ { get; set; } = new Vec3(); // 0x20 (32)
+		protected Vec3 m_BodyDragOffsetYZ = new Vec3();
+		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(2051746155)]
+		public Vec3 BodyDragOffsetYZ { get { return m_BodyDragOffsetYZ; } set { if (OnPropertyChanging("AeroDynamicPhysicsData." + nameof(BodyDragOffsetYZ), this, m_BodyDragOffsetYZ, value)) m_BodyDragOffsetYZ = value; } } // 0x20 (32)
 		
-		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 BodyDragOffsetXZ { get; set; } = new Vec3(); // 0x30 (48)
+		protected Vec3 m_BodyDragOffsetXZ = new Vec3();
+		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(2051746122)]
+		public Vec3 BodyDragOffsetXZ { get { return m_BodyDragOffsetXZ; } set { if (OnPropertyChanging("AeroDynamicPhysicsData." + nameof(BodyDragOffsetXZ), this, m_BodyDragOffsetXZ, value)) m_BodyDragOffsetXZ = value; } } // 0x30 (48)
 		
-		[ContainerField(64), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 BodyDragOffsetXY { get; set; } = new Vec3(); // 0x40 (64)
+		protected Vec3 m_BodyDragOffsetXY = new Vec3();
+		[ContainerField(64), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(2051746121)]
+		public Vec3 BodyDragOffsetXY { get { return m_BodyDragOffsetXY; } set { if (OnPropertyChanging("AeroDynamicPhysicsData." + nameof(BodyDragOffsetXY), this, m_BodyDragOffsetXY, value)) m_BodyDragOffsetXY = value; } } // 0x40 (64)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

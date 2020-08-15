@@ -5,28 +5,42 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class SaveEntityData : 
 		EntityData
 	{
-		[ContainerField(12)]
-		public CtrRef<TextureAsset> SaveScreenTexture { get; set; } = new CtrRef<TextureAsset>(); // 0xC (12)
+		protected CtrRef<TextureAsset> m_SaveScreenTexture = new CtrRef<TextureAsset>();
+		[ContainerField(12), ContainerFieldNameHash(1992725143)]
+		public CtrRef<TextureAsset> SaveScreenTexture { get { return m_SaveScreenTexture; } set { if (OnPropertyChanging("SaveEntityData." + nameof(SaveScreenTexture), this, m_SaveScreenTexture, value)) m_SaveScreenTexture = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable]
-		public string LevelName { get; set; } // 0x10 (16)
+		protected string m_LevelName = new string();
+		[ContainerField(16), LayoutImmutable, ContainerFieldNameHash(1599082292)]
+		public string LevelName { get { return m_LevelName; } set { if (OnPropertyChanging("SaveEntityData." + nameof(LevelName), this, m_LevelName, value)) m_LevelName = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable]
-		public string SaveFileName { get; set; } // 0x14 (20)
+		protected string m_SaveFileName = new string();
+		[ContainerField(20), LayoutImmutable, ContainerFieldNameHash(1526449829)]
+		public string SaveFileName { get { return m_SaveFileName; } set { if (OnPropertyChanging("SaveEntityData." + nameof(SaveFileName), this, m_SaveFileName, value)) m_SaveFileName = value; } } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable]
-		public string SaveNameSID { get; set; } // 0x18 (24)
+		protected string m_SaveNameSID = new string();
+		[ContainerField(24), LayoutImmutable, ContainerFieldNameHash(1206536541)]
+		public string SaveNameSID { get { return m_SaveNameSID; } set { if (OnPropertyChanging("SaveEntityData." + nameof(SaveNameSID), this, m_SaveNameSID, value)) m_SaveNameSID = value; } } // 0x18 (24)
 		
-		[ContainerField(28), LayoutImmutable, Blittable]
-		public bool CheckForHumanPlayer { get; set; } // 0x1C (28)
+		protected bool m_CheckForHumanPlayer = new bool();
+		[ContainerField(28), LayoutImmutable, Blittable, ContainerFieldNameHash(2331597556)]
+		public bool CheckForHumanPlayer { get { return m_CheckForHumanPlayer; } set { if (OnPropertyChanging("SaveEntityData." + nameof(CheckForHumanPlayer), this, m_CheckForHumanPlayer, value)) m_CheckForHumanPlayer = value; } } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

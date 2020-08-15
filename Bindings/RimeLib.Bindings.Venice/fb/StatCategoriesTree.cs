@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class StatCategoriesTree : 
 		StatCategoriesBaseTree
 	{
-		[ContainerField(28)]
-		public RefArray<StatsCategoryData> Categories { get; set; } = new RefArray<StatsCategoryData>(); // 0x1C (28)
+		protected RefArray<StatsCategoryData> m_Categories = new RefArray<StatsCategoryData>();
+		[ContainerField(28), ContainerFieldNameHash(1039077843)]
+		public RefArray<StatsCategoryData> Categories { get { return m_Categories; } set { if (OnPropertyChanging("StatCategoriesTree." + nameof(Categories), this, m_Categories, value)) m_Categories = value; } } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

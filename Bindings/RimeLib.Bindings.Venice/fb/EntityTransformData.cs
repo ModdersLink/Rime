@@ -5,17 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class EntityTransformData : 
 		DataContainer
 	{
-		[ContainerField(8)]
-		public List<LinearTransform> EntityTransforms { get; set; } = new List<LinearTransform>(); // 0x8 (8)
+		protected List<LinearTransform> m_EntityTransforms = new List<LinearTransform>();
+		[ContainerField(8), ContainerFieldNameHash(1975599521)]
+		public List<LinearTransform> EntityTransforms { get { return m_EntityTransforms; } set { if (OnPropertyChanging("EntityTransformData." + nameof(EntityTransforms), this, m_EntityTransforms, value)) m_EntityTransforms = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

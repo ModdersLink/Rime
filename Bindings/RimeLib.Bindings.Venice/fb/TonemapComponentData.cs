@@ -5,44 +5,62 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class TonemapComponentData : 
 		ComponentData
 	{
-		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 BloomScale { get; set; } = new Vec3(); // 0x60 (96)
+		protected Vec3 m_BloomScale = new Vec3();
+		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(4088580734)]
+		public Vec3 BloomScale { get { return m_BloomScale; } set { if (OnPropertyChanging("TonemapComponentData." + nameof(BloomScale), this, m_BloomScale, value)) m_BloomScale = value; } } // 0x60 (96)
 		
-		[ContainerField(112)]
-		public Realm Realm { get; set; } = new Realm(); // 0x70 (112)
+		protected Realm m_Realm = new Realm();
+		[ContainerField(112), ContainerFieldNameHash(229961746)]
+		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("TonemapComponentData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0x70 (112)
 		
-		[ContainerField(116)]
-		public TonemapMethod TonemapMethod { get; set; } = new TonemapMethod(); // 0x74 (116)
+		protected TonemapMethod m_TonemapMethod = new TonemapMethod();
+		[ContainerField(116), ContainerFieldNameHash(3755826422)]
+		public TonemapMethod TonemapMethod { get { return m_TonemapMethod; } set { if (OnPropertyChanging("TonemapComponentData." + nameof(TonemapMethod), this, m_TonemapMethod, value)) m_TonemapMethod = value; } } // 0x74 (116)
 		
-		[ContainerField(120), LayoutImmutable, Blittable]
-		public float MinExposure { get; set; } // 0x78 (120)
+		protected float m_MinExposure = new float();
+		[ContainerField(120), LayoutImmutable, Blittable, ContainerFieldNameHash(1485398908)]
+		public float MinExposure { get { return m_MinExposure; } set { if (OnPropertyChanging("TonemapComponentData." + nameof(MinExposure), this, m_MinExposure, value)) m_MinExposure = value; } } // 0x78 (120)
 		
-		[ContainerField(124), LayoutImmutable, Blittable]
-		public float MiddleGray { get; set; } // 0x7C (124)
+		protected float m_MiddleGray = new float();
+		[ContainerField(124), LayoutImmutable, Blittable, ContainerFieldNameHash(3985215205)]
+		public float MiddleGray { get { return m_MiddleGray; } set { if (OnPropertyChanging("TonemapComponentData." + nameof(MiddleGray), this, m_MiddleGray, value)) m_MiddleGray = value; } } // 0x7C (124)
 		
-		[ContainerField(128), LayoutImmutable, Blittable]
-		public float ExposureAdjustTime { get; set; } // 0x80 (128)
+		protected float m_ExposureAdjustTime = new float();
+		[ContainerField(128), LayoutImmutable, Blittable, ContainerFieldNameHash(219629342)]
+		public float ExposureAdjustTime { get { return m_ExposureAdjustTime; } set { if (OnPropertyChanging("TonemapComponentData." + nameof(ExposureAdjustTime), this, m_ExposureAdjustTime, value)) m_ExposureAdjustTime = value; } } // 0x80 (128)
 		
-		[ContainerField(132), LayoutImmutable, Blittable]
-		public float MaxExposure { get; set; } // 0x84 (132)
+		protected float m_MaxExposure = new float();
+		[ContainerField(132), LayoutImmutable, Blittable, ContainerFieldNameHash(1313706850)]
+		public float MaxExposure { get { return m_MaxExposure; } set { if (OnPropertyChanging("TonemapComponentData." + nameof(MaxExposure), this, m_MaxExposure, value)) m_MaxExposure = value; } } // 0x84 (132)
 		
-		[ContainerField(136), LayoutImmutable, Blittable]
-		public float ChromostereopsisOffset { get; set; } // 0x88 (136)
+		protected float m_ChromostereopsisOffset = new float();
+		[ContainerField(136), LayoutImmutable, Blittable, ContainerFieldNameHash(2469845791)]
+		public float ChromostereopsisOffset { get { return m_ChromostereopsisOffset; } set { if (OnPropertyChanging("TonemapComponentData." + nameof(ChromostereopsisOffset), this, m_ChromostereopsisOffset, value)) m_ChromostereopsisOffset = value; } } // 0x88 (136)
 		
-		[ContainerField(140), LayoutImmutable, Blittable]
-		public float ChromostereopsisScale { get; set; } // 0x8C (140)
+		protected float m_ChromostereopsisScale = new float();
+		[ContainerField(140), LayoutImmutable, Blittable, ContainerFieldNameHash(952871242)]
+		public float ChromostereopsisScale { get { return m_ChromostereopsisScale; } set { if (OnPropertyChanging("TonemapComponentData." + nameof(ChromostereopsisScale), this, m_ChromostereopsisScale, value)) m_ChromostereopsisScale = value; } } // 0x8C (140)
 		
-		[ContainerField(144), LayoutImmutable, Blittable]
-		public bool ChromostereopsisEnable { get; set; } // 0x90 (144)
+		protected bool m_ChromostereopsisEnable = new bool();
+		[ContainerField(144), LayoutImmutable, Blittable, ContainerFieldNameHash(2087966035)]
+		public bool ChromostereopsisEnable { get { return m_ChromostereopsisEnable; } set { if (OnPropertyChanging("TonemapComponentData." + nameof(ChromostereopsisEnable), this, m_ChromostereopsisEnable, value)) m_ChromostereopsisEnable = value; } } // 0x90 (144)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

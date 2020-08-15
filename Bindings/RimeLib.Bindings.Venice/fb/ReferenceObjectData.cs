@@ -5,32 +5,46 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class ReferenceObjectData : 
 		GameObjectData
 	{
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable]
-		public LinearTransform BlueprintTransform { get; set; } = new LinearTransform(); // 0x10 (16)
+		protected LinearTransform m_BlueprintTransform = new LinearTransform();
+		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(3885036614)]
+		public LinearTransform BlueprintTransform { get { return m_BlueprintTransform; } set { if (OnPropertyChanging("ReferenceObjectData." + nameof(BlueprintTransform), this, m_BlueprintTransform, value)) m_BlueprintTransform = value; } } // 0x10 (16)
 		
-		[ContainerField(80)]
-		public CtrRef<Blueprint> Blueprint { get; set; } = new CtrRef<Blueprint>(); // 0x50 (80)
+		protected CtrRef<Blueprint> m_Blueprint = new CtrRef<Blueprint>();
+		[ContainerField(80), ContainerFieldNameHash(4232469066)]
+		public CtrRef<Blueprint> Blueprint { get { return m_Blueprint; } set { if (OnPropertyChanging("ReferenceObjectData." + nameof(Blueprint), this, m_Blueprint, value)) m_Blueprint = value; } } // 0x50 (80)
 		
-		[ContainerField(84)]
-		public CtrRef<ObjectVariation> ObjectVariation { get; set; } = new CtrRef<ObjectVariation>(); // 0x54 (84)
+		protected CtrRef<ObjectVariation> m_ObjectVariation = new CtrRef<ObjectVariation>();
+		[ContainerField(84), ContainerFieldNameHash(3624336577)]
+		public CtrRef<ObjectVariation> ObjectVariation { get { return m_ObjectVariation; } set { if (OnPropertyChanging("ReferenceObjectData." + nameof(ObjectVariation), this, m_ObjectVariation, value)) m_ObjectVariation = value; } } // 0x54 (84)
 		
-		[ContainerField(88)]
-		public StreamRealm StreamRealm { get; set; } = new StreamRealm(); // 0x58 (88)
+		protected StreamRealm m_StreamRealm = new StreamRealm();
+		[ContainerField(88), ContainerFieldNameHash(1844114478)]
+		public StreamRealm StreamRealm { get { return m_StreamRealm; } set { if (OnPropertyChanging("ReferenceObjectData." + nameof(StreamRealm), this, m_StreamRealm, value)) m_StreamRealm = value; } } // 0x58 (88)
 		
-		[ContainerField(92), LayoutImmutable, Blittable]
-		public bool CastSunShadowEnable { get; set; } // 0x5C (92)
+		protected bool m_CastSunShadowEnable = new bool();
+		[ContainerField(92), LayoutImmutable, Blittable, ContainerFieldNameHash(1557133743)]
+		public bool CastSunShadowEnable { get { return m_CastSunShadowEnable; } set { if (OnPropertyChanging("ReferenceObjectData." + nameof(CastSunShadowEnable), this, m_CastSunShadowEnable, value)) m_CastSunShadowEnable = value; } } // 0x5C (92)
 		
-		[ContainerField(93), LayoutImmutable, Blittable]
-		public bool Excluded { get; set; } // 0x5D (93)
+		protected bool m_Excluded = new bool();
+		[ContainerField(93), LayoutImmutable, Blittable, ContainerFieldNameHash(755715367)]
+		public bool Excluded { get { return m_Excluded; } set { if (OnPropertyChanging("ReferenceObjectData." + nameof(Excluded), this, m_Excluded, value)) m_Excluded = value; } } // 0x5D (93)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

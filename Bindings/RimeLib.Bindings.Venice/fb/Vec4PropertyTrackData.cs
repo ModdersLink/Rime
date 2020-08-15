@@ -5,17 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class Vec4PropertyTrackData : 
 		SimplePropertyTrackData
 	{
-		[ContainerField(20)]
-		public List<Vec4> Values { get; set; } = new List<Vec4>(); // 0x14 (20)
+		protected List<Vec4> m_Values = new List<Vec4>();
+		[ContainerField(20), ContainerFieldNameHash(3142410589)]
+		public List<Vec4> Values { get { return m_Values; } set { if (OnPropertyChanging("Vec4PropertyTrackData." + nameof(Values), this, m_Values, value)) m_Values = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

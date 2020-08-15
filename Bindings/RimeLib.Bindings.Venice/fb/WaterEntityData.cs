@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class WaterEntityData : 
 		GamePhysicsEntityData
 	{
-		[ContainerField(112)]
-		public CtrRef<WaterAsset> Asset { get; set; } = new CtrRef<WaterAsset>(); // 0x70 (112)
+		protected CtrRef<WaterAsset> m_Asset = new CtrRef<WaterAsset>();
+		[ContainerField(112), ContainerFieldNameHash(205976053)]
+		public CtrRef<WaterAsset> Asset { get { return m_Asset; } set { if (OnPropertyChanging("WaterEntityData." + nameof(Asset), this, m_Asset, value)) m_Asset = value; } } // 0x70 (112)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

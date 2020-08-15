@@ -5,34 +5,50 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class VehicleDeployWeaponData : 
 		WeaponData
 	{
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public float DeployAreaRadius { get; set; } // 0x10 (16)
+		protected float m_DeployAreaRadius = new float();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(2315269409)]
+		public float DeployAreaRadius { get { return m_DeployAreaRadius; } set { if (OnPropertyChanging("VehicleDeployWeaponData." + nameof(DeployAreaRadius), this, m_DeployAreaRadius, value)) m_DeployAreaRadius = value; } } // 0x10 (16)
 		
-		[ContainerField(20)]
-		public CtrRef<ObjectBlueprint> PreviewObject { get; set; } = new CtrRef<ObjectBlueprint>(); // 0x14 (20)
+		protected CtrRef<ObjectBlueprint> m_PreviewObject = new CtrRef<ObjectBlueprint>();
+		[ContainerField(20), ContainerFieldNameHash(3777498618)]
+		public CtrRef<ObjectBlueprint> PreviewObject { get { return m_PreviewObject; } set { if (OnPropertyChanging("VehicleDeployWeaponData." + nameof(PreviewObject), this, m_PreviewObject, value)) m_PreviewObject = value; } } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable]
-		public float DeployAreaGroundRayLength { get; set; } // 0x18 (24)
+		protected float m_DeployAreaGroundRayLength = new float();
+		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(2525261002)]
+		public float DeployAreaGroundRayLength { get { return m_DeployAreaGroundRayLength; } set { if (OnPropertyChanging("VehicleDeployWeaponData." + nameof(DeployAreaGroundRayLength), this, m_DeployAreaGroundRayLength, value)) m_DeployAreaGroundRayLength = value; } } // 0x18 (24)
 		
-		[ContainerField(28), LayoutImmutable, Blittable]
-		public float DeployAreaGroundFlatness { get; set; } // 0x1C (28)
+		protected float m_DeployAreaGroundFlatness = new float();
+		[ContainerField(28), LayoutImmutable, Blittable, ContainerFieldNameHash(3327549992)]
+		public float DeployAreaGroundFlatness { get { return m_DeployAreaGroundFlatness; } set { if (OnPropertyChanging("VehicleDeployWeaponData." + nameof(DeployAreaGroundFlatness), this, m_DeployAreaGroundFlatness, value)) m_DeployAreaGroundFlatness = value; } } // 0x1C (28)
 		
-		[ContainerField(32), LayoutImmutable, Blittable]
-		public bool UsePreview { get; set; } // 0x20 (32)
+		protected bool m_UsePreview = new bool();
+		[ContainerField(32), LayoutImmutable, Blittable, ContainerFieldNameHash(372592876)]
+		public bool UsePreview { get { return m_UsePreview; } set { if (OnPropertyChanging("VehicleDeployWeaponData." + nameof(UsePreview), this, m_UsePreview, value)) m_UsePreview = value; } } // 0x20 (32)
 		
-		[ContainerField(33), LayoutImmutable, Blittable]
-		public bool CheckClearSky { get; set; } // 0x21 (33)
+		protected bool m_CheckClearSky = new bool();
+		[ContainerField(33), LayoutImmutable, Blittable, ContainerFieldNameHash(1368247419)]
+		public bool CheckClearSky { get { return m_CheckClearSky; } set { if (OnPropertyChanging("VehicleDeployWeaponData." + nameof(CheckClearSky), this, m_CheckClearSky, value)) m_CheckClearSky = value; } } // 0x21 (33)
 		
-		[ContainerField(34), LayoutImmutable, Blittable]
-		public bool CanRemoteEnterVehicle { get; set; } // 0x22 (34)
+		protected bool m_CanRemoteEnterVehicle = new bool();
+		[ContainerField(34), LayoutImmutable, Blittable, ContainerFieldNameHash(553624253)]
+		public bool CanRemoteEnterVehicle { get { return m_CanRemoteEnterVehicle; } set { if (OnPropertyChanging("VehicleDeployWeaponData." + nameof(CanRemoteEnterVehicle), this, m_CanRemoteEnterVehicle, value)) m_CanRemoteEnterVehicle = value; } } // 0x22 (34)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

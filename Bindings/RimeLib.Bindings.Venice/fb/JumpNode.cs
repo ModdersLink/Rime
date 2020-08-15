@@ -5,22 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class JumpNode : 
 		UINodeData
 	{
-		[ContainerField(20)]
-		public CtrRef<UINodePort> In { get; set; } = new CtrRef<UINodePort>(); // 0x14 (20)
+		protected CtrRef<UINodePort> m_In = new CtrRef<UINodePort>();
+		[ContainerField(20), ContainerFieldNameHash(5862146)]
+		public CtrRef<UINodePort> In { get { return m_In; } set { if (OnPropertyChanging("JumpNode." + nameof(In), this, m_In, value)) m_In = value; } } // 0x14 (20)
 		
-		[ContainerField(24)]
-		public CtrRef<UINodeData> TargetNode { get; set; } = new CtrRef<UINodeData>(); // 0x18 (24)
+		protected CtrRef<UINodeData> m_TargetNode = new CtrRef<UINodeData>();
+		[ContainerField(24), ContainerFieldNameHash(328873140)]
+		public CtrRef<UINodeData> TargetNode { get { return m_TargetNode; } set { if (OnPropertyChanging("JumpNode." + nameof(TargetNode), this, m_TargetNode, value)) m_TargetNode = value; } } // 0x18 (24)
 		
-		[ContainerField(28)]
-		public CtrRef<UINodePort> TargetPort { get; set; } = new CtrRef<UINodePort>(); // 0x1C (28)
+		protected CtrRef<UINodePort> m_TargetPort = new CtrRef<UINodePort>();
+		[ContainerField(28), ContainerFieldNameHash(328235565)]
+		public CtrRef<UINodePort> TargetPort { get { return m_TargetPort; } set { if (OnPropertyChanging("JumpNode." + nameof(TargetPort), this, m_TargetPort, value)) m_TargetPort = value; } } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

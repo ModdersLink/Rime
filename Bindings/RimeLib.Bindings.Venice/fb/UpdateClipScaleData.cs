@@ -5,17 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class UpdateClipScaleData : 
 		ProcessorData
 	{
-		[ContainerField(48)]
-		public List<short> Lookup { get; set; } = new List<short>(); // 0x30 (48)
+		protected List<short> m_Lookup = new List<short>();
+		[ContainerField(48), ContainerFieldNameHash(2904698983)]
+		public List<short> Lookup { get { return m_Lookup; } set { if (OnPropertyChanging("UpdateClipScaleData." + nameof(Lookup), this, m_Lookup, value)) m_Lookup = value; } } // 0x30 (48)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

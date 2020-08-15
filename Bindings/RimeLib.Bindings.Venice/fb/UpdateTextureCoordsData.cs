@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class UpdateTextureCoordsData : 
 		ProcessorData
 	{
-		[ContainerField(48)]
-		public EmitterTextureInfo TextureInfo1 { get; set; } = new EmitterTextureInfo(); // 0x30 (48)
+		protected EmitterTextureInfo m_TextureInfo1 = new EmitterTextureInfo();
+		[ContainerField(48), ContainerFieldNameHash(2154121125)]
+		public EmitterTextureInfo TextureInfo1 { get { return m_TextureInfo1; } set { if (OnPropertyChanging("UpdateTextureCoordsData." + nameof(TextureInfo1), this, m_TextureInfo1, value)) m_TextureInfo1 = value; } } // 0x30 (48)
 		
-		[ContainerField(68), LayoutImmutable, Blittable]
-		public float TextureBlendValue { get; set; } // 0x44 (68)
+		protected float m_TextureBlendValue = new float();
+		[ContainerField(68), LayoutImmutable, Blittable, ContainerFieldNameHash(2879784880)]
+		public float TextureBlendValue { get { return m_TextureBlendValue; } set { if (OnPropertyChanging("UpdateTextureCoordsData." + nameof(TextureBlendValue), this, m_TextureBlendValue, value)) m_TextureBlendValue = value; } } // 0x44 (68)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

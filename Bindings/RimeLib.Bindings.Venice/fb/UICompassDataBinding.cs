@@ -5,28 +5,42 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class UICompassDataBinding : 
 		UIDataBinding
 	{
-		[ContainerField(8)]
-		public UIDataSourceInfo Heading { get; set; } = new UIDataSourceInfo(); // 0x8 (8)
+		protected UIDataSourceInfo m_Heading = new UIDataSourceInfo();
+		[ContainerField(8), ContainerFieldNameHash(2009143629)]
+		public UIDataSourceInfo Heading { get { return m_Heading; } set { if (OnPropertyChanging("UICompassDataBinding." + nameof(Heading), this, m_Heading, value)) m_Heading = value; } } // 0x8 (8)
 		
-		[ContainerField(24)]
-		public UIDataSourceInfo Objectives { get; set; } = new UIDataSourceInfo(); // 0x18 (24)
+		protected UIDataSourceInfo m_Objectives = new UIDataSourceInfo();
+		[ContainerField(24), ContainerFieldNameHash(2766624249)]
+		public UIDataSourceInfo Objectives { get { return m_Objectives; } set { if (OnPropertyChanging("UICompassDataBinding." + nameof(Objectives), this, m_Objectives, value)) m_Objectives = value; } } // 0x18 (24)
 		
-		[ContainerField(40)]
-		public UIDataSourceInfo Visibility { get; set; } = new UIDataSourceInfo(); // 0x28 (40)
+		protected UIDataSourceInfo m_Visibility = new UIDataSourceInfo();
+		[ContainerField(40), ContainerFieldNameHash(1708270083)]
+		public UIDataSourceInfo Visibility { get { return m_Visibility; } set { if (OnPropertyChanging("UICompassDataBinding." + nameof(Visibility), this, m_Visibility, value)) m_Visibility = value; } } // 0x28 (40)
 		
-		[ContainerField(56)]
-		public UIDataSourceInfo ShowAirRadar { get; set; } = new UIDataSourceInfo(); // 0x38 (56)
+		protected UIDataSourceInfo m_ShowAirRadar = new UIDataSourceInfo();
+		[ContainerField(56), ContainerFieldNameHash(1704705368)]
+		public UIDataSourceInfo ShowAirRadar { get { return m_ShowAirRadar; } set { if (OnPropertyChanging("UICompassDataBinding." + nameof(ShowAirRadar), this, m_ShowAirRadar, value)) m_ShowAirRadar = value; } } // 0x38 (56)
 		
-		[ContainerField(72)]
-		public UIDataSourceInfo RadarSweepDegree { get; set; } = new UIDataSourceInfo(); // 0x48 (72)
+		protected UIDataSourceInfo m_RadarSweepDegree = new UIDataSourceInfo();
+		[ContainerField(72), ContainerFieldNameHash(2148740705)]
+		public UIDataSourceInfo RadarSweepDegree { get { return m_RadarSweepDegree; } set { if (OnPropertyChanging("UICompassDataBinding." + nameof(RadarSweepDegree), this, m_RadarSweepDegree, value)) m_RadarSweepDegree = value; } } // 0x48 (72)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

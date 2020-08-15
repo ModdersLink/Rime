@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class EventSwitcherNodeData : 
 		AudioGraphNodeData
 	{
-		[ContainerField(8)]
-		public RefArray<EventSwitcherEntry> Inputs { get; set; } = new RefArray<EventSwitcherEntry>(); // 0x8 (8)
+		protected RefArray<EventSwitcherEntry> m_Inputs = new RefArray<EventSwitcherEntry>();
+		[ContainerField(8), ContainerFieldNameHash(2784267136)]
+		public RefArray<EventSwitcherEntry> Inputs { get { return m_Inputs; } set { if (OnPropertyChanging("EventSwitcherNodeData." + nameof(Inputs), this, m_Inputs, value)) m_Inputs = value; } } // 0x8 (8)
 		
-		[ContainerField(12)]
-		public AudioGraphNodePort Value { get; set; } = new AudioGraphNodePort(); // 0xC (12)
+		protected AudioGraphNodePort m_Value = new AudioGraphNodePort();
+		[ContainerField(12), ContainerFieldNameHash(225375086)]
+		public AudioGraphNodePort Value { get { return m_Value; } set { if (OnPropertyChanging("EventSwitcherNodeData." + nameof(Value), this, m_Value, value)) m_Value = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

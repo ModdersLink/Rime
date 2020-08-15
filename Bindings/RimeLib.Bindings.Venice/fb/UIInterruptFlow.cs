@@ -5,17 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class UIInterruptFlow : 
 		Asset
 	{
-		[ContainerField(12)]
-		public List<InterruptFlow> interruptFlow { get; set; } = new List<InterruptFlow>(); // 0xC (12)
+		protected List<InterruptFlow> m_interruptFlow = new List<InterruptFlow>();
+		[ContainerField(12), ContainerFieldNameHash(3294905584)]
+		public List<InterruptFlow> interruptFlow { get { return m_interruptFlow; } set { if (OnPropertyChanging("UIInterruptFlow." + nameof(interruptFlow), this, m_interruptFlow, value)) m_interruptFlow = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

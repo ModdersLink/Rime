@@ -5,23 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class UICoopLevelDescription : 
 		LevelDescriptionComponent
 	{
-		[ContainerField(8), LayoutImmutable]
-		public string Debriefing { get; set; } // 0x8 (8)
+		protected string m_Debriefing = new string();
+		[ContainerField(8), LayoutImmutable, ContainerFieldNameHash(1664834078)]
+		public string Debriefing { get { return m_Debriefing; } set { if (OnPropertyChanging("UICoopLevelDescription." + nameof(Debriefing), this, m_Debriefing, value)) m_Debriefing = value; } } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public int DevTime { get; set; } // 0xC (12)
+		protected int m_DevTime = new int();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(4015961031)]
+		public int DevTime { get { return m_DevTime; } set { if (OnPropertyChanging("UICoopLevelDescription." + nameof(DevTime), this, m_DevTime, value)) m_DevTime = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public List<string> UnlockedByLevels { get; set; } = new List<string>(); // 0x10 (16)
+		protected List<string> m_UnlockedByLevels = new List<string>();
+		[ContainerField(16), ContainerFieldNameHash(2749335882)]
+		public List<string> UnlockedByLevels { get { return m_UnlockedByLevels; } set { if (OnPropertyChanging("UICoopLevelDescription." + nameof(UnlockedByLevels), this, m_UnlockedByLevels, value)) m_UnlockedByLevels = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

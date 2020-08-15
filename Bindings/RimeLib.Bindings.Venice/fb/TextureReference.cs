@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class TextureReference : 
 		Asset
 	{
-		[ContainerField(12)]
-		public CtrRef<TextureAsset> Texture { get; set; } = new CtrRef<TextureAsset>(); // 0xC (12)
+		protected CtrRef<TextureAsset> m_Texture = new CtrRef<TextureAsset>();
+		[ContainerField(12), ContainerFieldNameHash(3185041626)]
+		public CtrRef<TextureAsset> Texture { get { return m_Texture; } set { if (OnPropertyChanging("TextureReference." + nameof(Texture), this, m_Texture, value)) m_Texture = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

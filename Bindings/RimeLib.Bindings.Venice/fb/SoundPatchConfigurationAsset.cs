@@ -5,22 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class SoundPatchConfigurationAsset : 
 		SoundAsset
 	{
-		[ContainerField(16)]
-		public CtrRef<SoundPatchAsset> Sound { get; set; } = new CtrRef<SoundPatchAsset>(); // 0x10 (16)
+		protected CtrRef<SoundPatchAsset> m_Sound = new CtrRef<SoundPatchAsset>();
+		[ContainerField(16), ContainerFieldNameHash(231353798)]
+		public CtrRef<SoundPatchAsset> Sound { get { return m_Sound; } set { if (OnPropertyChanging("SoundPatchConfigurationAsset." + nameof(Sound), this, m_Sound, value)) m_Sound = value; } } // 0x10 (16)
 		
-		[ContainerField(20)]
-		public RefArray<SoundPatchConfigurationEntry> Entries { get; set; } = new RefArray<SoundPatchConfigurationEntry>(); // 0x14 (20)
+		protected RefArray<SoundPatchConfigurationEntry> m_Entries = new RefArray<SoundPatchConfigurationEntry>();
+		[ContainerField(20), ContainerFieldNameHash(8238103)]
+		public RefArray<SoundPatchConfigurationEntry> Entries { get { return m_Entries; } set { if (OnPropertyChanging("SoundPatchConfigurationAsset." + nameof(Entries), this, m_Entries, value)) m_Entries = value; } } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable]
-		public float Loudness { get; set; } // 0x18 (24)
+		protected float m_Loudness = new float();
+		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(2678891068)]
+		public float Loudness { get { return m_Loudness; } set { if (OnPropertyChanging("SoundPatchConfigurationAsset." + nameof(Loudness), this, m_Loudness, value)) m_Loudness = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

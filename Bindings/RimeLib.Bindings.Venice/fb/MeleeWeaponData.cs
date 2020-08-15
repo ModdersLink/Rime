@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class MeleeWeaponData : 
 		WeaponData
 	{
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public bool UseCannedAnimation { get; set; } // 0x10 (16)
+		protected bool m_UseCannedAnimation = new bool();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(1105762899)]
+		public bool UseCannedAnimation { get { return m_UseCannedAnimation; } set { if (OnPropertyChanging("MeleeWeaponData." + nameof(UseCannedAnimation), this, m_UseCannedAnimation, value)) m_UseCannedAnimation = value; } } // 0x10 (16)
 		
-		[ContainerField(17), LayoutImmutable, Blittable]
-		public bool UseSphereDamage { get; set; } // 0x11 (17)
+		protected bool m_UseSphereDamage = new bool();
+		[ContainerField(17), LayoutImmutable, Blittable, ContainerFieldNameHash(1535336436)]
+		public bool UseSphereDamage { get { return m_UseSphereDamage; } set { if (OnPropertyChanging("MeleeWeaponData." + nameof(UseSphereDamage), this, m_UseSphereDamage, value)) m_UseSphereDamage = value; } } // 0x11 (17)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

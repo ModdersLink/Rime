@@ -5,22 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class DynamicModelEntityData : 
 		DynamicGamePhysicsEntityData
 	{
-		[ContainerField(112)]
-		public CtrRef<PartComponentData> Part { get; set; } = new CtrRef<PartComponentData>(); // 0x70 (112)
+		protected CtrRef<PartComponentData> m_Part = new CtrRef<PartComponentData>();
+		[ContainerField(112), ContainerFieldNameHash(2089448370)]
+		public CtrRef<PartComponentData> Part { get { return m_Part; } set { if (OnPropertyChanging("DynamicModelEntityData." + nameof(Part), this, m_Part, value)) m_Part = value; } } // 0x70 (112)
 		
-		[ContainerField(116)]
-		public CtrRef<MeshAsset> Mesh { get; set; } = new CtrRef<MeshAsset>(); // 0x74 (116)
+		protected CtrRef<MeshAsset> m_Mesh = new CtrRef<MeshAsset>();
+		[ContainerField(116), ContainerFieldNameHash(2088783990)]
+		public CtrRef<MeshAsset> Mesh { get { return m_Mesh; } set { if (OnPropertyChanging("DynamicModelEntityData." + nameof(Mesh), this, m_Mesh, value)) m_Mesh = value; } } // 0x74 (116)
 		
-		[ContainerField(120), LayoutImmutable, Blittable]
-		public bool NoCollision { get; set; } // 0x78 (120)
+		protected bool m_NoCollision = new bool();
+		[ContainerField(120), LayoutImmutable, Blittable, ContainerFieldNameHash(3513186074)]
+		public bool NoCollision { get { return m_NoCollision; } set { if (OnPropertyChanging("DynamicModelEntityData." + nameof(NoCollision), this, m_NoCollision, value)) m_NoCollision = value; } } // 0x78 (120)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

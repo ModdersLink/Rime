@@ -5,29 +5,42 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class LensFlareEntityData : 
 		SpatialEntityData
 	{
-		[ContainerField(80)]
-		public List<LensFlareElement> Elements { get; set; } = new List<LensFlareElement>(); // 0x50 (80)
+		protected List<LensFlareElement> m_Elements = new List<LensFlareElement>();
+		[ContainerField(80), ContainerFieldNameHash(2347524808)]
+		public List<LensFlareElement> Elements { get { return m_Elements; } set { if (OnPropertyChanging("LensFlareEntityData." + nameof(Elements), this, m_Elements, value)) m_Elements = value; } } // 0x50 (80)
 		
-		[ContainerField(84), LayoutImmutable, Blittable]
-		public float OccluderSize { get; set; } // 0x54 (84)
+		protected float m_OccluderSize = new float();
+		[ContainerField(84), LayoutImmutable, Blittable, ContainerFieldNameHash(2630779365)]
+		public float OccluderSize { get { return m_OccluderSize; } set { if (OnPropertyChanging("LensFlareEntityData." + nameof(OccluderSize), this, m_OccluderSize, value)) m_OccluderSize = value; } } // 0x54 (84)
 		
-		[ContainerField(88), LayoutImmutable, Blittable]
-		public bool Visible { get; set; } // 0x58 (88)
+		protected bool m_Visible = new bool();
+		[ContainerField(88), LayoutImmutable, Blittable, ContainerFieldNameHash(901540267)]
+		public bool Visible { get { return m_Visible; } set { if (OnPropertyChanging("LensFlareEntityData." + nameof(Visible), this, m_Visible, value)) m_Visible = value; } } // 0x58 (88)
 		
-		[ContainerField(89), LayoutImmutable, Blittable]
-		public bool HalfRes { get; set; } // 0x59 (89)
+		protected bool m_HalfRes = new bool();
+		[ContainerField(89), LayoutImmutable, Blittable, ContainerFieldNameHash(2152832706)]
+		public bool HalfRes { get { return m_HalfRes; } set { if (OnPropertyChanging("LensFlareEntityData." + nameof(HalfRes), this, m_HalfRes, value)) m_HalfRes = value; } } // 0x59 (89)
 		
-		[ContainerField(90), LayoutImmutable, Blittable]
-		public bool DebugDrawOccluder { get; set; } // 0x5A (90)
+		protected bool m_DebugDrawOccluder = new bool();
+		[ContainerField(90), LayoutImmutable, Blittable, ContainerFieldNameHash(3156672721)]
+		public bool DebugDrawOccluder { get { return m_DebugDrawOccluder; } set { if (OnPropertyChanging("LensFlareEntityData." + nameof(DebugDrawOccluder), this, m_DebugDrawOccluder, value)) m_DebugDrawOccluder = value; } } // 0x5A (90)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,22 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class AnimatedCameraData : 
 		CameraData
 	{
-		[ContainerField(80)]
-		public CtrRef<SkeletonAsset> Skeleton { get; set; } = new CtrRef<SkeletonAsset>(); // 0x50 (80)
+		protected CtrRef<SkeletonAsset> m_Skeleton = new CtrRef<SkeletonAsset>();
+		[ContainerField(80), ContainerFieldNameHash(291024164)]
+		public CtrRef<SkeletonAsset> Skeleton { get { return m_Skeleton; } set { if (OnPropertyChanging("AnimatedCameraData." + nameof(Skeleton), this, m_Skeleton, value)) m_Skeleton = value; } } // 0x50 (80)
 		
-		[ContainerField(84), LayoutImmutable]
-		public string CameraBone { get; set; } // 0x54 (84)
+		protected string m_CameraBone = new string();
+		[ContainerField(84), LayoutImmutable, ContainerFieldNameHash(3220426650)]
+		public string CameraBone { get { return m_CameraBone; } set { if (OnPropertyChanging("AnimatedCameraData." + nameof(CameraBone), this, m_CameraBone, value)) m_CameraBone = value; } } // 0x54 (84)
 		
-		[ContainerField(88), LayoutImmutable]
-		public string FovBone { get; set; } // 0x58 (88)
+		protected string m_FovBone = new string();
+		[ContainerField(88), LayoutImmutable, ContainerFieldNameHash(1981125884)]
+		public string FovBone { get { return m_FovBone; } set { if (OnPropertyChanging("AnimatedCameraData." + nameof(FovBone), this, m_FovBone, value)) m_FovBone = value; } } // 0x58 (88)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

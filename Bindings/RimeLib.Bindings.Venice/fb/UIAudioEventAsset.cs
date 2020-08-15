@@ -5,17 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class UIAudioEventAsset : 
 		Asset
 	{
-		[ContainerField(12)]
-		public List<UIAudioEventMapping> AudioEventMappings { get; set; } = new List<UIAudioEventMapping>(); // 0xC (12)
+		protected List<UIAudioEventMapping> m_AudioEventMappings = new List<UIAudioEventMapping>();
+		[ContainerField(12), ContainerFieldNameHash(3437982272)]
+		public List<UIAudioEventMapping> AudioEventMappings { get { return m_AudioEventMappings; } set { if (OnPropertyChanging("UIAudioEventAsset." + nameof(AudioEventMappings), this, m_AudioEventMappings, value)) m_AudioEventMappings = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

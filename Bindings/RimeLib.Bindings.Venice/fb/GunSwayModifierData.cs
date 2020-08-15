@@ -5,40 +5,58 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class GunSwayModifierData : 
 		Asset
 	{
-		[ContainerField(12)]
-		public CtrRef<UnlockAssetBase> UnlockAsset { get; set; } = new CtrRef<UnlockAssetBase>(); // 0xC (12)
+		protected CtrRef<UnlockAssetBase> m_UnlockAsset = new CtrRef<UnlockAssetBase>();
+		[ContainerField(12), ContainerFieldNameHash(4135652293)]
+		public CtrRef<UnlockAssetBase> UnlockAsset { get { return m_UnlockAsset; } set { if (OnPropertyChanging("GunSwayModifierData." + nameof(UnlockAsset), this, m_UnlockAsset, value)) m_UnlockAsset = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public GunSwayStanceZoomModifierData StandZoomModifier { get; set; } = new GunSwayStanceZoomModifierData(); // 0x10 (16)
+		protected GunSwayStanceZoomModifierData m_StandZoomModifier = new GunSwayStanceZoomModifierData();
+		[ContainerField(16), ContainerFieldNameHash(3254411401)]
+		public GunSwayStanceZoomModifierData StandZoomModifier { get { return m_StandZoomModifier; } set { if (OnPropertyChanging("GunSwayModifierData." + nameof(StandZoomModifier), this, m_StandZoomModifier, value)) m_StandZoomModifier = value; } } // 0x10 (16)
 		
-		[ContainerField(48)]
-		public GunSwayStanceZoomModifierData StandNoZoomModifier { get; set; } = new GunSwayStanceZoomModifierData(); // 0x30 (48)
+		protected GunSwayStanceZoomModifierData m_StandNoZoomModifier = new GunSwayStanceZoomModifierData();
+		[ContainerField(48), ContainerFieldNameHash(96558760)]
+		public GunSwayStanceZoomModifierData StandNoZoomModifier { get { return m_StandNoZoomModifier; } set { if (OnPropertyChanging("GunSwayModifierData." + nameof(StandNoZoomModifier), this, m_StandNoZoomModifier, value)) m_StandNoZoomModifier = value; } } // 0x30 (48)
 		
-		[ContainerField(80)]
-		public GunSwayStanceZoomModifierData CrouchZoomModifier { get; set; } = new GunSwayStanceZoomModifierData(); // 0x50 (80)
+		protected GunSwayStanceZoomModifierData m_CrouchZoomModifier = new GunSwayStanceZoomModifierData();
+		[ContainerField(80), ContainerFieldNameHash(3977198949)]
+		public GunSwayStanceZoomModifierData CrouchZoomModifier { get { return m_CrouchZoomModifier; } set { if (OnPropertyChanging("GunSwayModifierData." + nameof(CrouchZoomModifier), this, m_CrouchZoomModifier, value)) m_CrouchZoomModifier = value; } } // 0x50 (80)
 		
-		[ContainerField(112)]
-		public GunSwayStanceZoomModifierData CrouchNoZoomModifier { get; set; } = new GunSwayStanceZoomModifierData(); // 0x70 (112)
+		protected GunSwayStanceZoomModifierData m_CrouchNoZoomModifier = new GunSwayStanceZoomModifierData();
+		[ContainerField(112), ContainerFieldNameHash(953586756)]
+		public GunSwayStanceZoomModifierData CrouchNoZoomModifier { get { return m_CrouchNoZoomModifier; } set { if (OnPropertyChanging("GunSwayModifierData." + nameof(CrouchNoZoomModifier), this, m_CrouchNoZoomModifier, value)) m_CrouchNoZoomModifier = value; } } // 0x70 (112)
 		
-		[ContainerField(144)]
-		public GunSwayStanceZoomModifierData ProneZoomModifier { get; set; } = new GunSwayStanceZoomModifierData(); // 0x90 (144)
+		protected GunSwayStanceZoomModifierData m_ProneZoomModifier = new GunSwayStanceZoomModifierData();
+		[ContainerField(144), ContainerFieldNameHash(1838497731)]
+		public GunSwayStanceZoomModifierData ProneZoomModifier { get { return m_ProneZoomModifier; } set { if (OnPropertyChanging("GunSwayModifierData." + nameof(ProneZoomModifier), this, m_ProneZoomModifier, value)) m_ProneZoomModifier = value; } } // 0x90 (144)
 		
-		[ContainerField(176)]
-		public GunSwayStanceZoomModifierData ProneNoZoomModifier { get; set; } = new GunSwayStanceZoomModifierData(); // 0xB0 (176)
+		protected GunSwayStanceZoomModifierData m_ProneNoZoomModifier = new GunSwayStanceZoomModifierData();
+		[ContainerField(176), ContainerFieldNameHash(745395298)]
+		public GunSwayStanceZoomModifierData ProneNoZoomModifier { get { return m_ProneNoZoomModifier; } set { if (OnPropertyChanging("GunSwayModifierData." + nameof(ProneNoZoomModifier), this, m_ProneNoZoomModifier, value)) m_ProneNoZoomModifier = value; } } // 0xB0 (176)
 		
-		[ContainerField(208), LayoutImmutable, Blittable]
-		public bool OnlyInSupportedShooting { get; set; } // 0xD0 (208)
+		protected bool m_OnlyInSupportedShooting = new bool();
+		[ContainerField(208), LayoutImmutable, Blittable, ContainerFieldNameHash(809776183)]
+		public bool OnlyInSupportedShooting { get { return m_OnlyInSupportedShooting; } set { if (OnPropertyChanging("GunSwayModifierData." + nameof(OnlyInSupportedShooting), this, m_OnlyInSupportedShooting, value)) m_OnlyInSupportedShooting = value; } } // 0xD0 (208)
 		
-		[ContainerField(209), LayoutImmutable, Blittable]
-		public bool OnlyOnWeaponLightEnabled { get; set; } // 0xD1 (209)
+		protected bool m_OnlyOnWeaponLightEnabled = new bool();
+		[ContainerField(209), LayoutImmutable, Blittable, ContainerFieldNameHash(3985551625)]
+		public bool OnlyOnWeaponLightEnabled { get { return m_OnlyOnWeaponLightEnabled; } set { if (OnPropertyChanging("GunSwayModifierData." + nameof(OnlyOnWeaponLightEnabled), this, m_OnlyOnWeaponLightEnabled, value)) m_OnlyOnWeaponLightEnabled = value; } } // 0xD1 (209)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

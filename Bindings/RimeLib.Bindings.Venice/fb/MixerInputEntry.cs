@@ -5,23 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class MixerInputEntry : 
 		AudioGraphNodePortGroup
 	{
-		[ContainerField(8)]
-		public AudioGraphNodePort Out { get; set; } = new AudioGraphNodePort(); // 0x8 (8)
+		protected AudioGraphNodePort m_Out = new AudioGraphNodePort();
+		[ContainerField(8), ContainerFieldNameHash(193453899)]
+		public AudioGraphNodePort Out { get { return m_Out; } set { if (OnPropertyChanging("MixerInputEntry." + nameof(Out), this, m_Out, value)) m_Out = value; } } // 0x8 (8)
 		
-		[ContainerField(16)]
-		public CtrRef<AudioGraphParameter> Source { get; set; } = new CtrRef<AudioGraphParameter>(); // 0x10 (16)
+		protected CtrRef<AudioGraphParameter> m_Source = new CtrRef<AudioGraphParameter>();
+		[ContainerField(16), ContainerFieldNameHash(3339738264)]
+		public CtrRef<AudioGraphParameter> Source { get { return m_Source; } set { if (OnPropertyChanging("MixerInputEntry." + nameof(Source), this, m_Source, value)) m_Source = value; } } // 0x10 (16)
 		
-		[ContainerField(20)]
-		public MixerValueAccumulateMode AccumulateMode { get; set; } = new MixerValueAccumulateMode(); // 0x14 (20)
+		protected MixerValueAccumulateMode m_AccumulateMode = new MixerValueAccumulateMode();
+		[ContainerField(20), ContainerFieldNameHash(2760994582)]
+		public MixerValueAccumulateMode AccumulateMode { get { return m_AccumulateMode; } set { if (OnPropertyChanging("MixerInputEntry." + nameof(AccumulateMode), this, m_AccumulateMode, value)) m_AccumulateMode = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

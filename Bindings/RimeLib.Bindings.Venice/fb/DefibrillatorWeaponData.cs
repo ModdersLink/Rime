@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class DefibrillatorWeaponData : 
 		WeaponData
 	{
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public float ReviveTime { get; set; } // 0x10 (16)
+		protected float m_ReviveTime = new float();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(3083359915)]
+		public float ReviveTime { get { return m_ReviveTime; } set { if (OnPropertyChanging("DefibrillatorWeaponData." + nameof(ReviveTime), this, m_ReviveTime, value)) m_ReviveTime = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
-		public float AttackTime { get; set; } // 0x14 (20)
+		protected float m_AttackTime = new float();
+		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(1150936440)]
+		public float AttackTime { get { return m_AttackTime; } set { if (OnPropertyChanging("DefibrillatorWeaponData." + nameof(AttackTime), this, m_AttackTime, value)) m_AttackTime = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

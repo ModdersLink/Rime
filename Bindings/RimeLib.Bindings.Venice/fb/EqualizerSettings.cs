@@ -5,28 +5,42 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class EqualizerSettings : 
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable, Blittable]
-		public float LowShelfFrequency { get; set; } // 0x8 (8)
+		protected float m_LowShelfFrequency = new float();
+		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(1164930529)]
+		public float LowShelfFrequency { get { return m_LowShelfFrequency; } set { if (OnPropertyChanging("EqualizerSettings." + nameof(LowShelfFrequency), this, m_LowShelfFrequency, value)) m_LowShelfFrequency = value; } } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public float LowShelfGain { get; set; } // 0xC (12)
+		protected float m_LowShelfGain = new float();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(4093417540)]
+		public float LowShelfGain { get { return m_LowShelfGain; } set { if (OnPropertyChanging("EqualizerSettings." + nameof(LowShelfGain), this, m_LowShelfGain, value)) m_LowShelfGain = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public float HighShelfFrequency { get; set; } // 0x10 (16)
+		protected float m_HighShelfFrequency = new float();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(3252423867)]
+		public float HighShelfFrequency { get { return m_HighShelfFrequency; } set { if (OnPropertyChanging("EqualizerSettings." + nameof(HighShelfFrequency), this, m_HighShelfFrequency, value)) m_HighShelfFrequency = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
-		public float HighShelfGain { get; set; } // 0x14 (20)
+		protected float m_HighShelfGain = new float();
+		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(110952414)]
+		public float HighShelfGain { get { return m_HighShelfGain; } set { if (OnPropertyChanging("EqualizerSettings." + nameof(HighShelfGain), this, m_HighShelfGain, value)) m_HighShelfGain = value; } } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable]
-		public float HpCutoffFrequency { get; set; } // 0x18 (24)
+		protected float m_HpCutoffFrequency = new float();
+		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(3299052820)]
+		public float HpCutoffFrequency { get { return m_HpCutoffFrequency; } set { if (OnPropertyChanging("EqualizerSettings." + nameof(HpCutoffFrequency), this, m_HpCutoffFrequency, value)) m_HpCutoffFrequency = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

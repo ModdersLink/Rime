@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class GameSoundEntityData : 
 		GameEntityData
 	{
-		[ContainerField(96)]
-		public CtrRef<SoundAsset> Sound { get; set; } = new CtrRef<SoundAsset>(); // 0x60 (96)
+		protected CtrRef<SoundAsset> m_Sound = new CtrRef<SoundAsset>();
+		[ContainerField(96), ContainerFieldNameHash(231353798)]
+		public CtrRef<SoundAsset> Sound { get { return m_Sound; } set { if (OnPropertyChanging("GameSoundEntityData." + nameof(Sound), this, m_Sound, value)) m_Sound = value; } } // 0x60 (96)
 		
-		[ContainerField(100), LayoutImmutable, Blittable]
-		public bool PlayOnCreation { get; set; } // 0x64 (100)
+		protected bool m_PlayOnCreation = new bool();
+		[ContainerField(100), LayoutImmutable, Blittable, ContainerFieldNameHash(2168204873)]
+		public bool PlayOnCreation { get { return m_PlayOnCreation; } set { if (OnPropertyChanging("GameSoundEntityData." + nameof(PlayOnCreation), this, m_PlayOnCreation, value)) m_PlayOnCreation = value; } } // 0x64 (100)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

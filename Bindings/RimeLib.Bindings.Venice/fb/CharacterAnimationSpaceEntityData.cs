@@ -5,26 +5,38 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class CharacterAnimationSpaceEntityData : 
 		EntityData
 	{
-		[ContainerField(12)]
-		public Realm Realm { get; set; } = new Realm(); // 0xC (12)
+		protected Realm m_Realm = new Realm();
+		[ContainerField(12), ContainerFieldNameHash(229961746)]
+		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("CharacterAnimationSpaceEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public AntRef SpacePositionGS { get; set; } = new AntRef(); // 0x10 (16)
+		protected AntRef m_SpacePositionGS = new AntRef();
+		[ContainerField(16), ContainerFieldNameHash(2185021708)]
+		public AntRef SpacePositionGS { get { return m_SpacePositionGS; } set { if (OnPropertyChanging("CharacterAnimationSpaceEntityData." + nameof(SpacePositionGS), this, m_SpacePositionGS, value)) m_SpacePositionGS = value; } } // 0x10 (16)
 		
-		[ContainerField(20)]
-		public AntRef SpaceRotationGS { get; set; } = new AntRef(); // 0x14 (20)
+		protected AntRef m_SpaceRotationGS = new AntRef();
+		[ContainerField(20), ContainerFieldNameHash(2997550689)]
+		public AntRef SpaceRotationGS { get { return m_SpaceRotationGS; } set { if (OnPropertyChanging("CharacterAnimationSpaceEntityData." + nameof(SpaceRotationGS), this, m_SpaceRotationGS, value)) m_SpaceRotationGS = value; } } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable]
-		public float WarpAnimationBlendTime { get; set; } // 0x18 (24)
+		protected float m_WarpAnimationBlendTime = new float();
+		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(1283988115)]
+		public float WarpAnimationBlendTime { get { return m_WarpAnimationBlendTime; } set { if (OnPropertyChanging("CharacterAnimationSpaceEntityData." + nameof(WarpAnimationBlendTime), this, m_WarpAnimationBlendTime, value)) m_WarpAnimationBlendTime = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

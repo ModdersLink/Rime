@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class PositionEvaluationConstantData : 
 		Asset
 	{
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public float OwnRandomPositionsRadius { get; set; } // 0xC (12)
+		protected float m_OwnRandomPositionsRadius = new float();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(40735674)]
+		public float OwnRandomPositionsRadius { get { return m_OwnRandomPositionsRadius; } set { if (OnPropertyChanging("PositionEvaluationConstantData." + nameof(OwnRandomPositionsRadius), this, m_OwnRandomPositionsRadius, value)) m_OwnRandomPositionsRadius = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public float LeaderRandomPositionsRadius { get; set; } // 0x10 (16)
+		protected float m_LeaderRandomPositionsRadius = new float();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(1408843063)]
+		public float LeaderRandomPositionsRadius { get { return m_LeaderRandomPositionsRadius; } set { if (OnPropertyChanging("PositionEvaluationConstantData." + nameof(LeaderRandomPositionsRadius), this, m_LeaderRandomPositionsRadius, value)) m_LeaderRandomPositionsRadius = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

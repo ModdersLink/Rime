@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class AdvertisementComponentData : 
 		PartComponentData
 	{
-		[ContainerField(112), LayoutImmutable]
-		public string Identifier { get; set; } // 0x70 (112)
+		protected string m_Identifier = new string();
+		[ContainerField(112), LayoutImmutable, ContainerFieldNameHash(3512790342)]
+		public string Identifier { get { return m_Identifier; } set { if (OnPropertyChanging("AdvertisementComponentData." + nameof(Identifier), this, m_Identifier, value)) m_Identifier = value; } } // 0x70 (112)
 		
-		[ContainerField(116), LayoutImmutable]
-		public string AdTexture { get; set; } // 0x74 (116)
+		protected string m_AdTexture = new string();
+		[ContainerField(116), LayoutImmutable, ContainerFieldNameHash(1084313599)]
+		public string AdTexture { get { return m_AdTexture; } set { if (OnPropertyChanging("AdvertisementComponentData." + nameof(AdTexture), this, m_AdTexture, value)) m_AdTexture = value; } } // 0x74 (116)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

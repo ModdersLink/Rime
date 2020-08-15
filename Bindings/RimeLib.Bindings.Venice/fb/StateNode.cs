@@ -5,34 +5,50 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class StateNode : 
 		UINodeData
 	{
-		[ContainerField(20)]
-		public CtrRef<UIScreenAsset> Screen { get; set; } = new CtrRef<UIScreenAsset>(); // 0x14 (20)
+		protected CtrRef<UIScreenAsset> m_Screen = new CtrRef<UIScreenAsset>();
+		[ContainerField(20), ContainerFieldNameHash(3334722793)]
+		public CtrRef<UIScreenAsset> Screen { get { return m_Screen; } set { if (OnPropertyChanging("StateNode." + nameof(Screen), this, m_Screen, value)) m_Screen = value; } } // 0x14 (20)
 		
-		[ContainerField(24)]
-		public CtrRef<UINodePort> In { get; set; } = new CtrRef<UINodePort>(); // 0x18 (24)
+		protected CtrRef<UINodePort> m_In = new CtrRef<UINodePort>();
+		[ContainerField(24), ContainerFieldNameHash(5862146)]
+		public CtrRef<UINodePort> In { get { return m_In; } set { if (OnPropertyChanging("StateNode." + nameof(In), this, m_In, value)) m_In = value; } } // 0x18 (24)
 		
-		[ContainerField(28)]
-		public CtrRef<UINodePort> Show { get; set; } = new CtrRef<UINodePort>(); // 0x1C (28)
+		protected CtrRef<UINodePort> m_Show = new CtrRef<UINodePort>();
+		[ContainerField(28), ContainerFieldNameHash(2089430886)]
+		public CtrRef<UINodePort> Show { get { return m_Show; } set { if (OnPropertyChanging("StateNode." + nameof(Show), this, m_Show, value)) m_Show = value; } } // 0x1C (28)
 		
-		[ContainerField(32)]
-		public CtrRef<UINodePort> Hide { get; set; } = new CtrRef<UINodePort>(); // 0x20 (32)
+		protected CtrRef<UINodePort> m_Hide = new CtrRef<UINodePort>();
+		[ContainerField(32), ContainerFieldNameHash(2089152613)]
+		public CtrRef<UINodePort> Hide { get { return m_Hide; } set { if (OnPropertyChanging("StateNode." + nameof(Hide), this, m_Hide, value)) m_Hide = value; } } // 0x20 (32)
 		
-		[ContainerField(36)]
-		public RefArray<UINodePort> Inputs { get; set; } = new RefArray<UINodePort>(); // 0x24 (36)
+		protected RefArray<UINodePort> m_Inputs = new RefArray<UINodePort>();
+		[ContainerField(36), ContainerFieldNameHash(2784267136)]
+		public RefArray<UINodePort> Inputs { get { return m_Inputs; } set { if (OnPropertyChanging("StateNode." + nameof(Inputs), this, m_Inputs, value)) m_Inputs = value; } } // 0x24 (36)
 		
-		[ContainerField(40)]
-		public RefArray<UINodePort> Outputs { get; set; } = new RefArray<UINodePort>(); // 0x28 (40)
+		protected RefArray<UINodePort> m_Outputs = new RefArray<UINodePort>();
+		[ContainerField(40), ContainerFieldNameHash(1070022089)]
+		public RefArray<UINodePort> Outputs { get { return m_Outputs; } set { if (OnPropertyChanging("StateNode." + nameof(Outputs), this, m_Outputs, value)) m_Outputs = value; } } // 0x28 (40)
 		
-		[ContainerField(44), LayoutImmutable, Blittable]
-		public bool RenderToTexture { get; set; } // 0x2C (44)
+		protected bool m_RenderToTexture = new bool();
+		[ContainerField(44), LayoutImmutable, Blittable, ContainerFieldNameHash(627956363)]
+		public bool RenderToTexture { get { return m_RenderToTexture; } set { if (OnPropertyChanging("StateNode." + nameof(RenderToTexture), this, m_RenderToTexture, value)) m_RenderToTexture = value; } } // 0x2C (44)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

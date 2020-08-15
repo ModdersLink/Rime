@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class LaserPainterData : 
 		LockingWeaponData
 	{
-		[ContainerField(32), LayoutImmutable, Blittable]
-		public float TimeObjectIsPainted { get; set; } // 0x20 (32)
+		protected float m_TimeObjectIsPainted = new float();
+		[ContainerField(32), LayoutImmutable, Blittable, ContainerFieldNameHash(641195484)]
+		public float TimeObjectIsPainted { get { return m_TimeObjectIsPainted; } set { if (OnPropertyChanging("LaserPainterData." + nameof(TimeObjectIsPainted), this, m_TimeObjectIsPainted, value)) m_TimeObjectIsPainted = value; } } // 0x20 (32)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

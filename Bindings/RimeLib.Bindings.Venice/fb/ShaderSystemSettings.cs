@@ -5,433 +5,582 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class ShaderSystemSettings : 
 		DataContainer
 	{
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 DebugNonFiniteColor { get; set; } = new Vec3(); // 0x10 (16)
-		
-		[ContainerField(32), LayoutImmutable, Blittable]
-		public uint DxInstancingBufferHandlingMethod { get; set; } // 0x20 (32)
-		
-		[ContainerField(36), LayoutImmutable, Blittable]
-		public uint FrameMemoryBufferSize { get; set; } // 0x24 (36)
-		
-		[ContainerField(40), LayoutImmutable, Blittable]
-		public uint XenonDispatchCmdBufferSize { get; set; } // 0x28 (40)
-		
-		[ContainerField(44), LayoutImmutable, Blittable]
-		public uint XenonDispatchCmdBufferSegmentSize { get; set; } // 0x2C (44)
-		
-		[ContainerField(48), LayoutImmutable, Blittable]
-		public uint DxDispatchJobBlocksPerCommandList { get; set; } // 0x30 (48)
-		
-		[ContainerField(52), LayoutImmutable, Blittable]
-		public uint DxDispatchJobMinBlockCount { get; set; } // 0x34 (52)
-		
-		[ContainerField(56), LayoutImmutable, Blittable]
-		public uint DxFrameVertexBufferPoolSize { get; set; } // 0x38 (56)
-		
-		[ContainerField(60), LayoutImmutable, Blittable]
-		public int XenonDispatchOnlyJob { get; set; } // 0x3C (60)
-		
-		[ContainerField(64), LayoutImmutable, Blittable]
-		public uint DxVsExternalConstantBufferSize { get; set; } // 0x40 (64)
-		
-		[ContainerField(68), LayoutImmutable, Blittable]
-		public uint DxVsFunctionConstantBufferSize { get; set; } // 0x44 (68)
-		
-		[ContainerField(72), LayoutImmutable, Blittable]
-		public uint DxPsFunctionConstantBufferSize { get; set; } // 0x48 (72)
-		
-		[ContainerField(76), LayoutImmutable, Blittable]
-		public float Ps3GeometryYieldGranularity { get; set; } // 0x4C (76)
-		
-		[ContainerField(80), LayoutImmutable, Blittable]
-		public uint XenonDispatchJobCount { get; set; } // 0x50 (80)
-		
-		[ContainerField(84), LayoutImmutable, Blittable]
-		public int DispatchPrepareJobCount { get; set; } // 0x54 (84)
-		
-		[ContainerField(88), LayoutImmutable, Blittable]
-		public uint Ps3MinMipmap { get; set; } // 0x58 (88)
-		
-		[ContainerField(92), LayoutImmutable, Blittable]
-		public uint Ps3ZCullInFrontLimit { get; set; } // 0x5C (92)
-		
-		[ContainerField(96), LayoutImmutable, Blittable]
-		public uint Ps3ZCullBehindLimit { get; set; } // 0x60 (96)
-		
-		[ContainerField(100), LayoutImmutable, Blittable]
-		public int Ps3DispatchOnlyJob { get; set; } // 0x64 (100)
-		
-		[ContainerField(104), LayoutImmutable, Blittable]
-		public uint Ps3DispatchJobSpuCount { get; set; } // 0x68 (104)
-		
-		[ContainerField(108), LayoutImmutable, Blittable]
-		public uint DxMaxInstructionCount { get; set; } // 0x6C (108)
-		
-		[ContainerField(112), LayoutImmutable, Blittable]
-		public uint OverdrawMaxLayerCount { get; set; } // 0x70 (112)
-		
-		[ContainerField(116), LayoutImmutable, Blittable]
-		public uint Ps3GeometryJobCount { get; set; } // 0x74 (116)
-		
-		[ContainerField(120), LayoutImmutable, Blittable]
-		public uint DxMaxInstanceCount { get; set; } // 0x78 (120)
-		
-		[ContainerField(124), LayoutImmutable, Blittable]
-		public float Ps3DispatchYieldGranularity { get; set; } // 0x7C (124)
-		
-		[ContainerField(128), LayoutImmutable, Blittable]
-		public uint DxPsExternalConstantBufferSize { get; set; } // 0x80 (128)
-		
-		[ContainerField(132), LayoutImmutable, Blittable]
-		public uint XenonDispatchBlocksPerJob { get; set; } // 0x84 (132)
-		
-		[ContainerField(136), LayoutImmutable, Blittable]
-		public uint Ps3DispatchJobCount { get; set; } // 0x88 (136)
-		
-		[ContainerField(140), LayoutImmutable, Blittable]
-		public int DxDispatchJobCount { get; set; } // 0x8C (140)
-		
-		[ContainerField(144), LayoutImmutable, Blittable]
-		public uint DrawCallMultiplier { get; set; } // 0x90 (144)
-		
-		[ContainerField(148), LayoutImmutable, Blittable]
-		public uint Ps3MaxMipmap { get; set; } // 0x94 (148)
-		
-		[ContainerField(152), LayoutImmutable, Blittable]
-		public float MipmapBias { get; set; } // 0x98 (152)
-		
-		[ContainerField(156), LayoutImmutable, Blittable]
-		public uint MaxAnisotropy { get; set; } // 0x9C (156)
-		
-		[ContainerField(160), LayoutImmutable, Blittable]
-		public uint ZOnlyMaxAnisotropy { get; set; } // 0xA0 (160)
-		
-		[ContainerField(164), LayoutImmutable, Blittable]
-		public uint XenonTrilinearThreshold { get; set; } // 0xA4 (164)
-		
-		[ContainerField(168), LayoutImmutable, Blittable]
-		public uint Ps3DispatchJobPriority { get; set; } // 0xA8 (168)
-		
-		[ContainerField(172), LayoutImmutable, Blittable]
-		public uint XenonDispatchMinJobBlockCount { get; set; } // 0xAC (172)
-		
-		[ContainerField(176), LayoutImmutable, Blittable]
-		public uint Ps3GeometryJobSpuCount { get; set; } // 0xB0 (176)
-		
-		[ContainerField(180), LayoutImmutable, Blittable]
-		public uint Ps3DispatchBlocksPerJob { get; set; } // 0xB4 (180)
-		
-		[ContainerField(184), LayoutImmutable, Blittable]
-		public uint Ps3GeometryJobPriority { get; set; } // 0xB8 (184)
-		
-		[ContainerField(188), LayoutImmutable, Blittable]
-		public bool SinglePrimitiveEnable { get; set; } // 0xBC (188)
-		
-		[ContainerField(189), LayoutImmutable, Blittable]
-		public bool SortBlocksEnable { get; set; } // 0xBD (189)
-		
-		[ContainerField(190), LayoutImmutable, Blittable]
-		public bool DrawCallEnable { get; set; } // 0xBE (190)
-		
-		[ContainerField(191), LayoutImmutable, Blittable]
-		public bool GcmReplayMarkersEnable { get; set; } // 0xBF (191)
-		
-		[ContainerField(192), LayoutImmutable, Blittable]
-		public bool ClipPlanesEnable { get; set; } // 0xC0 (192)
-		
-		[ContainerField(193), LayoutImmutable, Blittable]
-		public bool DepthTestEnable { get; set; } // 0xC1 (193)
-		
-		[ContainerField(194), LayoutImmutable, Blittable]
-		public bool StencilEnable { get; set; } // 0xC2 (194)
-		
-		[ContainerField(195), LayoutImmutable, Blittable]
-		public bool ShaderPixScopeEnable { get; set; } // 0xC3 (195)
-		
-		[ContainerField(196), LayoutImmutable, Blittable]
-		public bool SingleFrameBlockLogEnable { get; set; } // 0xC4 (196)
-		
-		[ContainerField(197), LayoutImmutable, Blittable]
-		public bool AlphaBlendEnable { get; set; } // 0xC5 (197)
-		
-		[ContainerField(198), LayoutImmutable, Blittable]
-		public bool PixBlockEventsEnable { get; set; } // 0xC6 (198)
-		
-		[ContainerField(199), LayoutImmutable, Blittable]
-		public bool SimpleTexturesEnable { get; set; } // 0xC7 (199)
-		
-		[ContainerField(200), LayoutImmutable, Blittable]
-		public bool SimpleVertexShaderEnable { get; set; } // 0xC8 (200)
-		
-		[ContainerField(201), LayoutImmutable, Blittable]
-		public bool PseudoInstancingEnable { get; set; } // 0xC9 (201)
-		
-		[ContainerField(202), LayoutImmutable, Blittable]
-		public bool StatesEnable { get; set; } // 0xCA (202)
-		
-		[ContainerField(203), LayoutImmutable, Blittable]
-		public bool PixelConstantsEnable { get; set; } // 0xCB (203)
-		
-		[ContainerField(204), LayoutImmutable, Blittable]
-		public bool VertexConstantsEnable { get; set; } // 0xCC (204)
-		
-		[ContainerField(205), LayoutImmutable, Blittable]
-		public bool PixelConstantRedundancyCheckingEnable { get; set; } // 0xCD (205)
-		
-		[ContainerField(206), LayoutImmutable, Blittable]
-		public bool VertexConstantRedundancyCheckingEnable { get; set; } // 0xCE (206)
-		
-		[ContainerField(207), LayoutImmutable, Blittable]
-		public bool SimpleTextureFilteringEnable { get; set; } // 0xCF (207)
-		
-		[ContainerField(208), LayoutImmutable, Blittable]
-		public bool DepthWriteEnable { get; set; } // 0xD0 (208)
-		
-		[ContainerField(209), LayoutImmutable, Blittable]
-		public bool DispatchDirectEnable { get; set; } // 0xD1 (209)
-		
-		[ContainerField(210), LayoutImmutable, Blittable]
-		public bool DrawTileClassifiedBlocks { get; set; } // 0xD2 (210)
-		
-		[ContainerField(211), LayoutImmutable, Blittable]
-		public bool DepthEnable { get; set; } // 0xD3 (211)
-		
-		[ContainerField(212), LayoutImmutable, Blittable]
-		public bool DrawStreamedTextureBlocks { get; set; } // 0xD4 (212)
-		
-		[ContainerField(213), LayoutImmutable, Blittable]
-		public bool ForcePointFiltering { get; set; } // 0xD5 (213)
-		
-		[ContainerField(214), LayoutImmutable, Blittable]
-		public bool LogEnable { get; set; } // 0xD6 (214)
-		
-		[ContainerField(215), LayoutImmutable, Blittable]
-		public bool ZeroViewportEnable { get; set; } // 0xD7 (215)
-		
-		[ContainerField(216), LayoutImmutable, Blittable]
-		public bool DrawTransparentDecal { get; set; } // 0xD8 (216)
-		
-		[ContainerField(217), LayoutImmutable, Blittable]
-		public bool SingleFrameLogEnable { get; set; } // 0xD9 (217)
-		
-		[ContainerField(218), LayoutImmutable, Blittable]
-		public bool SingleFrameLogOverwrite { get; set; } // 0xDA (218)
-		
-		[ContainerField(219), LayoutImmutable, Blittable]
-		public bool ForceDoubleSided { get; set; } // 0xDB (219)
-		
-		[ContainerField(220), LayoutImmutable, Blittable]
-		public bool OnDemandMonitoringEnable { get; set; } // 0xDC (220)
-		
-		[ContainerField(221), LayoutImmutable, Blittable]
-		public bool Ps3PixelShaderRedundancyCheckingEnable { get; set; } // 0xDD (221)
-		
-		[ContainerField(222), LayoutImmutable, Blittable]
-		public bool Ps3PixelShaderHashStoreEnable { get; set; } // 0xDE (222)
-		
-		[ContainerField(223), LayoutImmutable, Blittable]
-		public bool Ps3DispatchPrepareSpuJobEnable { get; set; } // 0xDF (223)
-		
-		[ContainerField(224), LayoutImmutable, Blittable]
-		public bool Ps3DispatchSetupSpuJobEnable { get; set; } // 0xE0 (224)
-		
-		[ContainerField(225), LayoutImmutable, Blittable]
-		public bool Ps3GeometryJobEnable { get; set; } // 0xE1 (225)
-		
-		[ContainerField(226), LayoutImmutable, Blittable]
-		public bool DatabaseLoadingEnable { get; set; } // 0xE2 (226)
-		
-		[ContainerField(227), LayoutImmutable, Blittable]
-		public bool SimplePixelShaderEnable { get; set; } // 0xE3 (227)
-		
-		[ContainerField(228), LayoutImmutable, Blittable]
-		public bool Ps3GeometryJobWithoutDispatchJobEnable { get; set; } // 0xE4 (228)
-		
-		[ContainerField(229), LayoutImmutable, Blittable]
-		public bool Ps3GeometryDebugRenderEnable { get; set; } // 0xE5 (229)
-		
-		[ContainerField(230), LayoutImmutable, Blittable]
-		public bool BoneConstantOptimizationEnable { get; set; } // 0xE6 (230)
-		
-		[ContainerField(231), LayoutImmutable, Blittable]
-		public bool Ps3DrawEdgeGeometryEnable { get; set; } // 0xE7 (231)
-		
-		[ContainerField(232), LayoutImmutable, Blittable]
-		public bool Ps3DrawNonEdgeGeometryEnable { get; set; } // 0xE8 (232)
-		
-		[ContainerField(233), LayoutImmutable, Blittable]
-		public bool Ps3TriangleCullEnable { get; set; } // 0xE9 (233)
-		
-		[ContainerField(234), LayoutImmutable, Blittable]
-		public bool Ps3TriangleFrustumCullEnable { get; set; } // 0xEA (234)
-		
-		[ContainerField(235), LayoutImmutable, Blittable]
-		public bool Ps3TriangleBackfaceCullEnable { get; set; } // 0xEB (235)
-		
-		[ContainerField(236), LayoutImmutable, Blittable]
-		public bool Ps3TriangleCullZPassEnable { get; set; } // 0xEC (236)
-		
-		[ContainerField(237), LayoutImmutable, Blittable]
-		public bool Ps3TriangleCullDoubleSidedEnable { get; set; } // 0xED (237)
-		
-		[ContainerField(238), LayoutImmutable, Blittable]
-		public bool Ps3TriangleCull1BoneSkinningEnable { get; set; } // 0xEE (238)
-		
-		[ContainerField(239), LayoutImmutable, Blittable]
-		public bool Ps3TriangleCull4BoneSkinningEnable { get; set; } // 0xEF (239)
-		
-		[ContainerField(240), LayoutImmutable, Blittable]
-		public bool Ps3TrianglePartCullEnable { get; set; } // 0xF0 (240)
-		
-		[ContainerField(241), LayoutImmutable, Blittable]
-		public bool Ps3DrawBlockCullEnable { get; set; } // 0xF1 (241)
-		
-		[ContainerField(242), LayoutImmutable, Blittable]
-		public bool Ps3PartitionFrustumCullEnable { get; set; } // 0xF2 (242)
-		
-		[ContainerField(243), LayoutImmutable, Blittable]
-		public bool Ps3PartitionClipPlaneCullEnable { get; set; } // 0xF3 (243)
-		
-		[ContainerField(244), LayoutImmutable, Blittable]
-		public bool Ps3PartitionVolumeCullEnable { get; set; } // 0xF4 (244)
-		
-		[ContainerField(245), LayoutImmutable, Blittable]
-		public bool Ps3SpuInstancingEnable { get; set; } // 0xF5 (245)
-		
-		[ContainerField(246), LayoutImmutable, Blittable]
-		public bool Ps3SpuClipPlaneRejectEnable { get; set; } // 0xF6 (246)
-		
-		[ContainerField(247), LayoutImmutable, Blittable]
-		public bool Ps3SpuCullVolumesEnable { get; set; } // 0xF7 (247)
-		
-		[ContainerField(248), LayoutImmutable, Blittable]
-		public bool Ps3DispatchJobEnable { get; set; } // 0xF8 (248)
-		
-		[ContainerField(249), LayoutImmutable, Blittable]
-		public bool OnDemandBuildingEnable { get; set; } // 0xF9 (249)
-		
-		[ContainerField(250), LayoutImmutable, Blittable]
-		public bool OnDemandPrimingEnable { get; set; } // 0xFA (250)
-		
-		[ContainerField(251), LayoutImmutable, Blittable]
-		public bool DispatchExecuteEnable { get; set; } // 0xFB (251)
-		
-		[ContainerField(252), LayoutImmutable, Blittable]
-		public bool TextureGammaCorrectionEnable { get; set; } // 0xFC (252)
-		
-		[ContainerField(253), LayoutImmutable, Blittable]
-		public bool TileClassificationEnable { get; set; } // 0xFD (253)
-		
-		[ContainerField(254), LayoutImmutable, Blittable]
-		public bool Ps3DispatchSpuBufferLinkingEnable { get; set; } // 0xFE (254)
-		
-		[ContainerField(255), LayoutImmutable, Blittable]
-		public bool Ps3DispatchFrameBlockEnable { get; set; } // 0xFF (255)
-		
-		[ContainerField(256), LayoutImmutable, Blittable]
-		public bool Ps3SCullEnable { get; set; } // 0x100 (256)
-		
-		[ContainerField(257), LayoutImmutable, Blittable]
-		public bool Ps3ZCullEnable { get; set; } // 0x101 (257)
-		
-		[ContainerField(258), LayoutImmutable, Blittable]
-		public bool DrawInstancedBlocks { get; set; } // 0x102 (258)
-		
-		[ContainerField(259), LayoutImmutable, Blittable]
-		public bool DispatchPrepareBlockEnable { get; set; } // 0x103 (259)
-		
-		[ContainerField(260), LayoutImmutable, Blittable]
-		public bool DrawNonInstancedBlocks { get; set; } // 0x104 (260)
-		
-		[ContainerField(261), LayoutImmutable, Blittable]
-		public bool DrawNonStreamedTextureBlocks { get; set; } // 0x105 (261)
-		
-		[ContainerField(262), LayoutImmutable, Blittable]
-		public bool Ps3TxpDemotionEnable { get; set; } // 0x106 (262)
-		
-		[ContainerField(263), LayoutImmutable, Blittable]
-		public bool Ps3CmdBufVertexShaderInlineEnable { get; set; } // 0x107 (263)
-		
-		[ContainerField(264), LayoutImmutable, Blittable]
-		public bool Ps3CmdBufClearEnable { get; set; } // 0x108 (264)
-		
-		[ContainerField(265), LayoutImmutable, Blittable]
-		public bool Ps3SpuYieldingEnable { get; set; } // 0x109 (265)
-		
-		[ContainerField(266), LayoutImmutable, Blittable]
-		public bool XenonDispatchJobEnable { get; set; } // 0x10A (266)
-		
-		[ContainerField(267), LayoutImmutable, Blittable]
-		public bool DrawInlineBlocks { get; set; } // 0x10B (267)
-		
-		[ContainerField(268), LayoutImmutable, Blittable]
-		public bool Ps3FlushEnable { get; set; } // 0x10C (268)
-		
-		[ContainerField(269), LayoutImmutable, Blittable]
-		public bool Ps3FinishEnable { get; set; } // 0x10D (269)
-		
-		[ContainerField(270), LayoutImmutable, Blittable]
-		public bool DxMultisampleEnable { get; set; } // 0x10E (270)
-		
-		[ContainerField(271), LayoutImmutable, Blittable]
-		public bool DxTransparencySupersamplingEnable { get; set; } // 0x10F (271)
-		
-		[ContainerField(272), LayoutImmutable, Blittable]
-		public bool DxSamplerStatesEnable { get; set; } // 0x110 (272)
-		
-		[ContainerField(273), LayoutImmutable, Blittable]
-		public bool DxBatchedSamplerStatesEnable { get; set; } // 0x111 (273)
-		
-		[ContainerField(274), LayoutImmutable, Blittable]
-		public bool DxBatchedTexturesEnable { get; set; } // 0x112 (274)
-		
-		[ContainerField(275), LayoutImmutable, Blittable]
-		public bool DxStatesEnable { get; set; } // 0x113 (275)
-		
-		[ContainerField(276), LayoutImmutable, Blittable]
-		public bool DrawOpaqueAlphaTestSimple { get; set; } // 0x114 (276)
-		
-		[ContainerField(277), LayoutImmutable, Blittable]
-		public bool FlushEnable { get; set; } // 0x115 (277)
-		
-		[ContainerField(278), LayoutImmutable, Blittable]
-		public bool DrawTransparent { get; set; } // 0x116 (278)
-		
-		[ContainerField(279), LayoutImmutable, Blittable]
-		public bool DrawAdvancedStats { get; set; } // 0x117 (279)
-		
-		[ContainerField(280), LayoutImmutable, Blittable]
-		public bool DxParallelShaderLoadingEnable { get; set; } // 0x118 (280)
-		
-		[ContainerField(281), LayoutImmutable, Blittable]
-		public bool DxDelayedShaderLoadingEnable { get; set; } // 0x119 (281)
-		
-		[ContainerField(282), LayoutImmutable, Blittable]
-		public bool DrawOpaque { get; set; } // 0x11A (282)
-		
-		[ContainerField(283), LayoutImmutable, Blittable]
-		public bool DrawOpaqueAlphaTest { get; set; } // 0x11B (283)
-		
-		[ContainerField(284), LayoutImmutable, Blittable]
-		public bool XenonHiZEnable { get; set; } // 0x11C (284)
-		
-		[ContainerField(285), LayoutImmutable, Blittable]
-		public bool DrawZOnly { get; set; } // 0x11D (285)
-		
-		[ContainerField(286), LayoutImmutable, Blittable]
-		public bool DrawStats { get; set; } // 0x11E (286)
-		
-		[ContainerField(287), LayoutImmutable, Blittable]
-		public bool XenonDispatchBlockOnCmdBufEnable { get; set; } // 0x11F (287)
+		protected Vec3 m_DebugNonFiniteColor = new Vec3();
+		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(23224639)]
+		public Vec3 DebugNonFiniteColor { get { return m_DebugNonFiniteColor; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(DebugNonFiniteColor), this, m_DebugNonFiniteColor, value)) m_DebugNonFiniteColor = value; } } // 0x10 (16)
+		
+		protected uint m_DxInstancingBufferHandlingMethod = new uint();
+		[ContainerField(32), LayoutImmutable, Blittable, ContainerFieldNameHash(3987003333)]
+		public uint DxInstancingBufferHandlingMethod { get { return m_DxInstancingBufferHandlingMethod; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(DxInstancingBufferHandlingMethod), this, m_DxInstancingBufferHandlingMethod, value)) m_DxInstancingBufferHandlingMethod = value; } } // 0x20 (32)
+		
+		protected uint m_FrameMemoryBufferSize = new uint();
+		[ContainerField(36), LayoutImmutable, Blittable, ContainerFieldNameHash(2099352572)]
+		public uint FrameMemoryBufferSize { get { return m_FrameMemoryBufferSize; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(FrameMemoryBufferSize), this, m_FrameMemoryBufferSize, value)) m_FrameMemoryBufferSize = value; } } // 0x24 (36)
+		
+		protected uint m_XenonDispatchCmdBufferSize = new uint();
+		[ContainerField(40), LayoutImmutable, Blittable, ContainerFieldNameHash(1663632488)]
+		public uint XenonDispatchCmdBufferSize { get { return m_XenonDispatchCmdBufferSize; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(XenonDispatchCmdBufferSize), this, m_XenonDispatchCmdBufferSize, value)) m_XenonDispatchCmdBufferSize = value; } } // 0x28 (40)
+		
+		protected uint m_XenonDispatchCmdBufferSegmentSize = new uint();
+		[ContainerField(44), LayoutImmutable, Blittable, ContainerFieldNameHash(3045510795)]
+		public uint XenonDispatchCmdBufferSegmentSize { get { return m_XenonDispatchCmdBufferSegmentSize; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(XenonDispatchCmdBufferSegmentSize), this, m_XenonDispatchCmdBufferSegmentSize, value)) m_XenonDispatchCmdBufferSegmentSize = value; } } // 0x2C (44)
+		
+		protected uint m_DxDispatchJobBlocksPerCommandList = new uint();
+		[ContainerField(48), LayoutImmutable, Blittable, ContainerFieldNameHash(1025892758)]
+		public uint DxDispatchJobBlocksPerCommandList { get { return m_DxDispatchJobBlocksPerCommandList; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(DxDispatchJobBlocksPerCommandList), this, m_DxDispatchJobBlocksPerCommandList, value)) m_DxDispatchJobBlocksPerCommandList = value; } } // 0x30 (48)
+		
+		protected uint m_DxDispatchJobMinBlockCount = new uint();
+		[ContainerField(52), LayoutImmutable, Blittable, ContainerFieldNameHash(4110158894)]
+		public uint DxDispatchJobMinBlockCount { get { return m_DxDispatchJobMinBlockCount; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(DxDispatchJobMinBlockCount), this, m_DxDispatchJobMinBlockCount, value)) m_DxDispatchJobMinBlockCount = value; } } // 0x34 (52)
+		
+		protected uint m_DxFrameVertexBufferPoolSize = new uint();
+		[ContainerField(56), LayoutImmutable, Blittable, ContainerFieldNameHash(3016412405)]
+		public uint DxFrameVertexBufferPoolSize { get { return m_DxFrameVertexBufferPoolSize; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(DxFrameVertexBufferPoolSize), this, m_DxFrameVertexBufferPoolSize, value)) m_DxFrameVertexBufferPoolSize = value; } } // 0x38 (56)
+		
+		protected int m_XenonDispatchOnlyJob = new int();
+		[ContainerField(60), LayoutImmutable, Blittable, ContainerFieldNameHash(2675609140)]
+		public int XenonDispatchOnlyJob { get { return m_XenonDispatchOnlyJob; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(XenonDispatchOnlyJob), this, m_XenonDispatchOnlyJob, value)) m_XenonDispatchOnlyJob = value; } } // 0x3C (60)
+		
+		protected uint m_DxVsExternalConstantBufferSize = new uint();
+		[ContainerField(64), LayoutImmutable, Blittable, ContainerFieldNameHash(1293203898)]
+		public uint DxVsExternalConstantBufferSize { get { return m_DxVsExternalConstantBufferSize; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(DxVsExternalConstantBufferSize), this, m_DxVsExternalConstantBufferSize, value)) m_DxVsExternalConstantBufferSize = value; } } // 0x40 (64)
+		
+		protected uint m_DxVsFunctionConstantBufferSize = new uint();
+		[ContainerField(68), LayoutImmutable, Blittable, ContainerFieldNameHash(2035486405)]
+		public uint DxVsFunctionConstantBufferSize { get { return m_DxVsFunctionConstantBufferSize; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(DxVsFunctionConstantBufferSize), this, m_DxVsFunctionConstantBufferSize, value)) m_DxVsFunctionConstantBufferSize = value; } } // 0x44 (68)
+		
+		protected uint m_DxPsFunctionConstantBufferSize = new uint();
+		[ContainerField(72), LayoutImmutable, Blittable, ContainerFieldNameHash(4091032707)]
+		public uint DxPsFunctionConstantBufferSize { get { return m_DxPsFunctionConstantBufferSize; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(DxPsFunctionConstantBufferSize), this, m_DxPsFunctionConstantBufferSize, value)) m_DxPsFunctionConstantBufferSize = value; } } // 0x48 (72)
+		
+		protected float m_Ps3GeometryYieldGranularity = new float();
+		[ContainerField(76), LayoutImmutable, Blittable, ContainerFieldNameHash(3678416454)]
+		public float Ps3GeometryYieldGranularity { get { return m_Ps3GeometryYieldGranularity; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(Ps3GeometryYieldGranularity), this, m_Ps3GeometryYieldGranularity, value)) m_Ps3GeometryYieldGranularity = value; } } // 0x4C (76)
+		
+		protected uint m_XenonDispatchJobCount = new uint();
+		[ContainerField(80), LayoutImmutable, Blittable, ContainerFieldNameHash(3325122691)]
+		public uint XenonDispatchJobCount { get { return m_XenonDispatchJobCount; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(XenonDispatchJobCount), this, m_XenonDispatchJobCount, value)) m_XenonDispatchJobCount = value; } } // 0x50 (80)
+		
+		protected int m_DispatchPrepareJobCount = new int();
+		[ContainerField(84), LayoutImmutable, Blittable, ContainerFieldNameHash(351213840)]
+		public int DispatchPrepareJobCount { get { return m_DispatchPrepareJobCount; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(DispatchPrepareJobCount), this, m_DispatchPrepareJobCount, value)) m_DispatchPrepareJobCount = value; } } // 0x54 (84)
+		
+		protected uint m_Ps3MinMipmap = new uint();
+		[ContainerField(88), LayoutImmutable, Blittable, ContainerFieldNameHash(1329842871)]
+		public uint Ps3MinMipmap { get { return m_Ps3MinMipmap; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(Ps3MinMipmap), this, m_Ps3MinMipmap, value)) m_Ps3MinMipmap = value; } } // 0x58 (88)
+		
+		protected uint m_Ps3ZCullInFrontLimit = new uint();
+		[ContainerField(92), LayoutImmutable, Blittable, ContainerFieldNameHash(1161949834)]
+		public uint Ps3ZCullInFrontLimit { get { return m_Ps3ZCullInFrontLimit; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(Ps3ZCullInFrontLimit), this, m_Ps3ZCullInFrontLimit, value)) m_Ps3ZCullInFrontLimit = value; } } // 0x5C (92)
+		
+		protected uint m_Ps3ZCullBehindLimit = new uint();
+		[ContainerField(96), LayoutImmutable, Blittable, ContainerFieldNameHash(1558768672)]
+		public uint Ps3ZCullBehindLimit { get { return m_Ps3ZCullBehindLimit; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(Ps3ZCullBehindLimit), this, m_Ps3ZCullBehindLimit, value)) m_Ps3ZCullBehindLimit = value; } } // 0x60 (96)
+		
+		protected int m_Ps3DispatchOnlyJob = new int();
+		[ContainerField(100), LayoutImmutable, Blittable, ContainerFieldNameHash(2506625750)]
+		public int Ps3DispatchOnlyJob { get { return m_Ps3DispatchOnlyJob; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(Ps3DispatchOnlyJob), this, m_Ps3DispatchOnlyJob, value)) m_Ps3DispatchOnlyJob = value; } } // 0x64 (100)
+		
+		protected uint m_Ps3DispatchJobSpuCount = new uint();
+		[ContainerField(104), LayoutImmutable, Blittable, ContainerFieldNameHash(3777464055)]
+		public uint Ps3DispatchJobSpuCount { get { return m_Ps3DispatchJobSpuCount; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(Ps3DispatchJobSpuCount), this, m_Ps3DispatchJobSpuCount, value)) m_Ps3DispatchJobSpuCount = value; } } // 0x68 (104)
+		
+		protected uint m_DxMaxInstructionCount = new uint();
+		[ContainerField(108), LayoutImmutable, Blittable, ContainerFieldNameHash(896565718)]
+		public uint DxMaxInstructionCount { get { return m_DxMaxInstructionCount; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(DxMaxInstructionCount), this, m_DxMaxInstructionCount, value)) m_DxMaxInstructionCount = value; } } // 0x6C (108)
+		
+		protected uint m_OverdrawMaxLayerCount = new uint();
+		[ContainerField(112), LayoutImmutable, Blittable, ContainerFieldNameHash(2040865183)]
+		public uint OverdrawMaxLayerCount { get { return m_OverdrawMaxLayerCount; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(OverdrawMaxLayerCount), this, m_OverdrawMaxLayerCount, value)) m_OverdrawMaxLayerCount = value; } } // 0x70 (112)
+		
+		protected uint m_Ps3GeometryJobCount = new uint();
+		[ContainerField(116), LayoutImmutable, Blittable, ContainerFieldNameHash(1339109483)]
+		public uint Ps3GeometryJobCount { get { return m_Ps3GeometryJobCount; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(Ps3GeometryJobCount), this, m_Ps3GeometryJobCount, value)) m_Ps3GeometryJobCount = value; } } // 0x74 (116)
+		
+		protected uint m_DxMaxInstanceCount = new uint();
+		[ContainerField(120), LayoutImmutable, Blittable, ContainerFieldNameHash(3951925415)]
+		public uint DxMaxInstanceCount { get { return m_DxMaxInstanceCount; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(DxMaxInstanceCount), this, m_DxMaxInstanceCount, value)) m_DxMaxInstanceCount = value; } } // 0x78 (120)
+		
+		protected float m_Ps3DispatchYieldGranularity = new float();
+		[ContainerField(124), LayoutImmutable, Blittable, ContainerFieldNameHash(1313266572)]
+		public float Ps3DispatchYieldGranularity { get { return m_Ps3DispatchYieldGranularity; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(Ps3DispatchYieldGranularity), this, m_Ps3DispatchYieldGranularity, value)) m_Ps3DispatchYieldGranularity = value; } } // 0x7C (124)
+		
+		protected uint m_DxPsExternalConstantBufferSize = new uint();
+		[ContainerField(128), LayoutImmutable, Blittable, ContainerFieldNameHash(2367594364)]
+		public uint DxPsExternalConstantBufferSize { get { return m_DxPsExternalConstantBufferSize; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(DxPsExternalConstantBufferSize), this, m_DxPsExternalConstantBufferSize, value)) m_DxPsExternalConstantBufferSize = value; } } // 0x80 (128)
+		
+		protected uint m_XenonDispatchBlocksPerJob = new uint();
+		[ContainerField(132), LayoutImmutable, Blittable, ContainerFieldNameHash(2818002173)]
+		public uint XenonDispatchBlocksPerJob { get { return m_XenonDispatchBlocksPerJob; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(XenonDispatchBlocksPerJob), this, m_XenonDispatchBlocksPerJob, value)) m_XenonDispatchBlocksPerJob = value; } } // 0x84 (132)
+		
+		protected uint m_Ps3DispatchJobCount = new uint();
+		[ContainerField(136), LayoutImmutable, Blittable, ContainerFieldNameHash(596433441)]
+		public uint Ps3DispatchJobCount { get { return m_Ps3DispatchJobCount; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(Ps3DispatchJobCount), this, m_Ps3DispatchJobCount, value)) m_Ps3DispatchJobCount = value; } } // 0x88 (136)
+		
+		protected int m_DxDispatchJobCount = new int();
+		[ContainerField(140), LayoutImmutable, Blittable, ContainerFieldNameHash(1428253645)]
+		public int DxDispatchJobCount { get { return m_DxDispatchJobCount; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(DxDispatchJobCount), this, m_DxDispatchJobCount, value)) m_DxDispatchJobCount = value; } } // 0x8C (140)
+		
+		protected uint m_DrawCallMultiplier = new uint();
+		[ContainerField(144), LayoutImmutable, Blittable, ContainerFieldNameHash(1068468236)]
+		public uint DrawCallMultiplier { get { return m_DrawCallMultiplier; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(DrawCallMultiplier), this, m_DrawCallMultiplier, value)) m_DrawCallMultiplier = value; } } // 0x90 (144)
+		
+		protected uint m_Ps3MaxMipmap = new uint();
+		[ContainerField(148), LayoutImmutable, Blittable, ContainerFieldNameHash(1346293929)]
+		public uint Ps3MaxMipmap { get { return m_Ps3MaxMipmap; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(Ps3MaxMipmap), this, m_Ps3MaxMipmap, value)) m_Ps3MaxMipmap = value; } } // 0x94 (148)
+		
+		protected float m_MipmapBias = new float();
+		[ContainerField(152), LayoutImmutable, Blittable, ContainerFieldNameHash(196267572)]
+		public float MipmapBias { get { return m_MipmapBias; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(MipmapBias), this, m_MipmapBias, value)) m_MipmapBias = value; } } // 0x98 (152)
+		
+		protected uint m_MaxAnisotropy = new uint();
+		[ContainerField(156), LayoutImmutable, Blittable, ContainerFieldNameHash(4067026955)]
+		public uint MaxAnisotropy { get { return m_MaxAnisotropy; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(MaxAnisotropy), this, m_MaxAnisotropy, value)) m_MaxAnisotropy = value; } } // 0x9C (156)
+		
+		protected uint m_ZOnlyMaxAnisotropy = new uint();
+		[ContainerField(160), LayoutImmutable, Blittable, ContainerFieldNameHash(3045055205)]
+		public uint ZOnlyMaxAnisotropy { get { return m_ZOnlyMaxAnisotropy; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(ZOnlyMaxAnisotropy), this, m_ZOnlyMaxAnisotropy, value)) m_ZOnlyMaxAnisotropy = value; } } // 0xA0 (160)
+		
+		protected uint m_XenonTrilinearThreshold = new uint();
+		[ContainerField(164), LayoutImmutable, Blittable, ContainerFieldNameHash(1386781874)]
+		public uint XenonTrilinearThreshold { get { return m_XenonTrilinearThreshold; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(XenonTrilinearThreshold), this, m_XenonTrilinearThreshold, value)) m_XenonTrilinearThreshold = value; } } // 0xA4 (164)
+		
+		protected uint m_Ps3DispatchJobPriority = new uint();
+		[ContainerField(168), LayoutImmutable, Blittable, ContainerFieldNameHash(4233096400)]
+		public uint Ps3DispatchJobPriority { get { return m_Ps3DispatchJobPriority; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(Ps3DispatchJobPriority), this, m_Ps3DispatchJobPriority, value)) m_Ps3DispatchJobPriority = value; } } // 0xA8 (168)
+		
+		protected uint m_XenonDispatchMinJobBlockCount = new uint();
+		[ContainerField(172), LayoutImmutable, Blittable, ContainerFieldNameHash(1718814144)]
+		public uint XenonDispatchMinJobBlockCount { get { return m_XenonDispatchMinJobBlockCount; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(XenonDispatchMinJobBlockCount), this, m_XenonDispatchMinJobBlockCount, value)) m_XenonDispatchMinJobBlockCount = value; } } // 0xAC (172)
+		
+		protected uint m_Ps3GeometryJobSpuCount = new uint();
+		[ContainerField(176), LayoutImmutable, Blittable, ContainerFieldNameHash(1554833789)]
+		public uint Ps3GeometryJobSpuCount { get { return m_Ps3GeometryJobSpuCount; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(Ps3GeometryJobSpuCount), this, m_Ps3GeometryJobSpuCount, value)) m_Ps3GeometryJobSpuCount = value; } } // 0xB0 (176)
+		
+		protected uint m_Ps3DispatchBlocksPerJob = new uint();
+		[ContainerField(180), LayoutImmutable, Blittable, ContainerFieldNameHash(4009989599)]
+		public uint Ps3DispatchBlocksPerJob { get { return m_Ps3DispatchBlocksPerJob; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(Ps3DispatchBlocksPerJob), this, m_Ps3DispatchBlocksPerJob, value)) m_Ps3DispatchBlocksPerJob = value; } } // 0xB4 (180)
+		
+		protected uint m_Ps3GeometryJobPriority = new uint();
+		[ContainerField(184), LayoutImmutable, Blittable, ContainerFieldNameHash(2180130138)]
+		public uint Ps3GeometryJobPriority { get { return m_Ps3GeometryJobPriority; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(Ps3GeometryJobPriority), this, m_Ps3GeometryJobPriority, value)) m_Ps3GeometryJobPriority = value; } } // 0xB8 (184)
+		
+		protected bool m_SinglePrimitiveEnable = new bool();
+		[ContainerField(188), LayoutImmutable, Blittable, ContainerFieldNameHash(3384211263)]
+		public bool SinglePrimitiveEnable { get { return m_SinglePrimitiveEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(SinglePrimitiveEnable), this, m_SinglePrimitiveEnable, value)) m_SinglePrimitiveEnable = value; } } // 0xBC (188)
+		
+		protected bool m_SortBlocksEnable = new bool();
+		[ContainerField(189), LayoutImmutable, Blittable, ContainerFieldNameHash(1220513028)]
+		public bool SortBlocksEnable { get { return m_SortBlocksEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(SortBlocksEnable), this, m_SortBlocksEnable, value)) m_SortBlocksEnable = value; } } // 0xBD (189)
+		
+		protected bool m_DrawCallEnable = new bool();
+		[ContainerField(190), LayoutImmutable, Blittable, ContainerFieldNameHash(1808690598)]
+		public bool DrawCallEnable { get { return m_DrawCallEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(DrawCallEnable), this, m_DrawCallEnable, value)) m_DrawCallEnable = value; } } // 0xBE (190)
+		
+		protected bool m_GcmReplayMarkersEnable = new bool();
+		[ContainerField(191), LayoutImmutable, Blittable, ContainerFieldNameHash(104325775)]
+		public bool GcmReplayMarkersEnable { get { return m_GcmReplayMarkersEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(GcmReplayMarkersEnable), this, m_GcmReplayMarkersEnable, value)) m_GcmReplayMarkersEnable = value; } } // 0xBF (191)
+		
+		protected bool m_ClipPlanesEnable = new bool();
+		[ContainerField(192), LayoutImmutable, Blittable, ContainerFieldNameHash(2835056503)]
+		public bool ClipPlanesEnable { get { return m_ClipPlanesEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(ClipPlanesEnable), this, m_ClipPlanesEnable, value)) m_ClipPlanesEnable = value; } } // 0xC0 (192)
+		
+		protected bool m_DepthTestEnable = new bool();
+		[ContainerField(193), LayoutImmutable, Blittable, ContainerFieldNameHash(856474303)]
+		public bool DepthTestEnable { get { return m_DepthTestEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(DepthTestEnable), this, m_DepthTestEnable, value)) m_DepthTestEnable = value; } } // 0xC1 (193)
+		
+		protected bool m_StencilEnable = new bool();
+		[ContainerField(194), LayoutImmutable, Blittable, ContainerFieldNameHash(3861842670)]
+		public bool StencilEnable { get { return m_StencilEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(StencilEnable), this, m_StencilEnable, value)) m_StencilEnable = value; } } // 0xC2 (194)
+		
+		protected bool m_ShaderPixScopeEnable = new bool();
+		[ContainerField(195), LayoutImmutable, Blittable, ContainerFieldNameHash(1177023110)]
+		public bool ShaderPixScopeEnable { get { return m_ShaderPixScopeEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(ShaderPixScopeEnable), this, m_ShaderPixScopeEnable, value)) m_ShaderPixScopeEnable = value; } } // 0xC3 (195)
+		
+		protected bool m_SingleFrameBlockLogEnable = new bool();
+		[ContainerField(196), LayoutImmutable, Blittable, ContainerFieldNameHash(1375442894)]
+		public bool SingleFrameBlockLogEnable { get { return m_SingleFrameBlockLogEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(SingleFrameBlockLogEnable), this, m_SingleFrameBlockLogEnable, value)) m_SingleFrameBlockLogEnable = value; } } // 0xC4 (196)
+		
+		protected bool m_AlphaBlendEnable = new bool();
+		[ContainerField(197), LayoutImmutable, Blittable, ContainerFieldNameHash(1065772849)]
+		public bool AlphaBlendEnable { get { return m_AlphaBlendEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(AlphaBlendEnable), this, m_AlphaBlendEnable, value)) m_AlphaBlendEnable = value; } } // 0xC5 (197)
+		
+		protected bool m_PixBlockEventsEnable = new bool();
+		[ContainerField(198), LayoutImmutable, Blittable, ContainerFieldNameHash(4262956787)]
+		public bool PixBlockEventsEnable { get { return m_PixBlockEventsEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(PixBlockEventsEnable), this, m_PixBlockEventsEnable, value)) m_PixBlockEventsEnable = value; } } // 0xC6 (198)
+		
+		protected bool m_SimpleTexturesEnable = new bool();
+		[ContainerField(199), LayoutImmutable, Blittable, ContainerFieldNameHash(3995657318)]
+		public bool SimpleTexturesEnable { get { return m_SimpleTexturesEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(SimpleTexturesEnable), this, m_SimpleTexturesEnable, value)) m_SimpleTexturesEnable = value; } } // 0xC7 (199)
+		
+		protected bool m_SimpleVertexShaderEnable = new bool();
+		[ContainerField(200), LayoutImmutable, Blittable, ContainerFieldNameHash(2993514187)]
+		public bool SimpleVertexShaderEnable { get { return m_SimpleVertexShaderEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(SimpleVertexShaderEnable), this, m_SimpleVertexShaderEnable, value)) m_SimpleVertexShaderEnable = value; } } // 0xC8 (200)
+		
+		protected bool m_PseudoInstancingEnable = new bool();
+		[ContainerField(201), LayoutImmutable, Blittable, ContainerFieldNameHash(355059856)]
+		public bool PseudoInstancingEnable { get { return m_PseudoInstancingEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(PseudoInstancingEnable), this, m_PseudoInstancingEnable, value)) m_PseudoInstancingEnable = value; } } // 0xC9 (201)
+		
+		protected bool m_StatesEnable = new bool();
+		[ContainerField(202), LayoutImmutable, Blittable, ContainerFieldNameHash(449924128)]
+		public bool StatesEnable { get { return m_StatesEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(StatesEnable), this, m_StatesEnable, value)) m_StatesEnable = value; } } // 0xCA (202)
+		
+		protected bool m_PixelConstantsEnable = new bool();
+		[ContainerField(203), LayoutImmutable, Blittable, ContainerFieldNameHash(3949301121)]
+		public bool PixelConstantsEnable { get { return m_PixelConstantsEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(PixelConstantsEnable), this, m_PixelConstantsEnable, value)) m_PixelConstantsEnable = value; } } // 0xCB (203)
+		
+		protected bool m_VertexConstantsEnable = new bool();
+		[ContainerField(204), LayoutImmutable, Blittable, ContainerFieldNameHash(1590655137)]
+		public bool VertexConstantsEnable { get { return m_VertexConstantsEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(VertexConstantsEnable), this, m_VertexConstantsEnable, value)) m_VertexConstantsEnable = value; } } // 0xCC (204)
+		
+		protected bool m_PixelConstantRedundancyCheckingEnable = new bool();
+		[ContainerField(205), LayoutImmutable, Blittable, ContainerFieldNameHash(3456434157)]
+		public bool PixelConstantRedundancyCheckingEnable { get { return m_PixelConstantRedundancyCheckingEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(PixelConstantRedundancyCheckingEnable), this, m_PixelConstantRedundancyCheckingEnable, value)) m_PixelConstantRedundancyCheckingEnable = value; } } // 0xCD (205)
+		
+		protected bool m_VertexConstantRedundancyCheckingEnable = new bool();
+		[ContainerField(206), LayoutImmutable, Blittable, ContainerFieldNameHash(90990669)]
+		public bool VertexConstantRedundancyCheckingEnable { get { return m_VertexConstantRedundancyCheckingEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(VertexConstantRedundancyCheckingEnable), this, m_VertexConstantRedundancyCheckingEnable, value)) m_VertexConstantRedundancyCheckingEnable = value; } } // 0xCE (206)
+		
+		protected bool m_SimpleTextureFilteringEnable = new bool();
+		[ContainerField(207), LayoutImmutable, Blittable, ContainerFieldNameHash(2920178357)]
+		public bool SimpleTextureFilteringEnable { get { return m_SimpleTextureFilteringEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(SimpleTextureFilteringEnable), this, m_SimpleTextureFilteringEnable, value)) m_SimpleTextureFilteringEnable = value; } } // 0xCF (207)
+		
+		protected bool m_DepthWriteEnable = new bool();
+		[ContainerField(208), LayoutImmutable, Blittable, ContainerFieldNameHash(2382302452)]
+		public bool DepthWriteEnable { get { return m_DepthWriteEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(DepthWriteEnable), this, m_DepthWriteEnable, value)) m_DepthWriteEnable = value; } } // 0xD0 (208)
+		
+		protected bool m_DispatchDirectEnable = new bool();
+		[ContainerField(209), LayoutImmutable, Blittable, ContainerFieldNameHash(505268473)]
+		public bool DispatchDirectEnable { get { return m_DispatchDirectEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(DispatchDirectEnable), this, m_DispatchDirectEnable, value)) m_DispatchDirectEnable = value; } } // 0xD1 (209)
+		
+		protected bool m_DrawTileClassifiedBlocks = new bool();
+		[ContainerField(210), LayoutImmutable, Blittable, ContainerFieldNameHash(1450821346)]
+		public bool DrawTileClassifiedBlocks { get { return m_DrawTileClassifiedBlocks; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(DrawTileClassifiedBlocks), this, m_DrawTileClassifiedBlocks, value)) m_DrawTileClassifiedBlocks = value; } } // 0xD2 (210)
+		
+		protected bool m_DepthEnable = new bool();
+		[ContainerField(211), LayoutImmutable, Blittable, ContainerFieldNameHash(2635953449)]
+		public bool DepthEnable { get { return m_DepthEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(DepthEnable), this, m_DepthEnable, value)) m_DepthEnable = value; } } // 0xD3 (211)
+		
+		protected bool m_DrawStreamedTextureBlocks = new bool();
+		[ContainerField(212), LayoutImmutable, Blittable, ContainerFieldNameHash(4198440541)]
+		public bool DrawStreamedTextureBlocks { get { return m_DrawStreamedTextureBlocks; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(DrawStreamedTextureBlocks), this, m_DrawStreamedTextureBlocks, value)) m_DrawStreamedTextureBlocks = value; } } // 0xD4 (212)
+		
+		protected bool m_ForcePointFiltering = new bool();
+		[ContainerField(213), LayoutImmutable, Blittable, ContainerFieldNameHash(4030356532)]
+		public bool ForcePointFiltering { get { return m_ForcePointFiltering; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(ForcePointFiltering), this, m_ForcePointFiltering, value)) m_ForcePointFiltering = value; } } // 0xD5 (213)
+		
+		protected bool m_LogEnable = new bool();
+		[ContainerField(214), LayoutImmutable, Blittable, ContainerFieldNameHash(1242750240)]
+		public bool LogEnable { get { return m_LogEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(LogEnable), this, m_LogEnable, value)) m_LogEnable = value; } } // 0xD6 (214)
+		
+		protected bool m_ZeroViewportEnable = new bool();
+		[ContainerField(215), LayoutImmutable, Blittable, ContainerFieldNameHash(967736082)]
+		public bool ZeroViewportEnable { get { return m_ZeroViewportEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(ZeroViewportEnable), this, m_ZeroViewportEnable, value)) m_ZeroViewportEnable = value; } } // 0xD7 (215)
+		
+		protected bool m_DrawTransparentDecal = new bool();
+		[ContainerField(216), LayoutImmutable, Blittable, ContainerFieldNameHash(954292812)]
+		public bool DrawTransparentDecal { get { return m_DrawTransparentDecal; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(DrawTransparentDecal), this, m_DrawTransparentDecal, value)) m_DrawTransparentDecal = value; } } // 0xD8 (216)
+		
+		protected bool m_SingleFrameLogEnable = new bool();
+		[ContainerField(217), LayoutImmutable, Blittable, ContainerFieldNameHash(286069959)]
+		public bool SingleFrameLogEnable { get { return m_SingleFrameLogEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(SingleFrameLogEnable), this, m_SingleFrameLogEnable, value)) m_SingleFrameLogEnable = value; } } // 0xD9 (217)
+		
+		protected bool m_SingleFrameLogOverwrite = new bool();
+		[ContainerField(218), LayoutImmutable, Blittable, ContainerFieldNameHash(23154741)]
+		public bool SingleFrameLogOverwrite { get { return m_SingleFrameLogOverwrite; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(SingleFrameLogOverwrite), this, m_SingleFrameLogOverwrite, value)) m_SingleFrameLogOverwrite = value; } } // 0xDA (218)
+		
+		protected bool m_ForceDoubleSided = new bool();
+		[ContainerField(219), LayoutImmutable, Blittable, ContainerFieldNameHash(1019746770)]
+		public bool ForceDoubleSided { get { return m_ForceDoubleSided; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(ForceDoubleSided), this, m_ForceDoubleSided, value)) m_ForceDoubleSided = value; } } // 0xDB (219)
+		
+		protected bool m_OnDemandMonitoringEnable = new bool();
+		[ContainerField(220), LayoutImmutable, Blittable, ContainerFieldNameHash(389992558)]
+		public bool OnDemandMonitoringEnable { get { return m_OnDemandMonitoringEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(OnDemandMonitoringEnable), this, m_OnDemandMonitoringEnable, value)) m_OnDemandMonitoringEnable = value; } } // 0xDC (220)
+		
+		protected bool m_Ps3PixelShaderRedundancyCheckingEnable = new bool();
+		[ContainerField(221), LayoutImmutable, Blittable, ContainerFieldNameHash(817341418)]
+		public bool Ps3PixelShaderRedundancyCheckingEnable { get { return m_Ps3PixelShaderRedundancyCheckingEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(Ps3PixelShaderRedundancyCheckingEnable), this, m_Ps3PixelShaderRedundancyCheckingEnable, value)) m_Ps3PixelShaderRedundancyCheckingEnable = value; } } // 0xDD (221)
+		
+		protected bool m_Ps3PixelShaderHashStoreEnable = new bool();
+		[ContainerField(222), LayoutImmutable, Blittable, ContainerFieldNameHash(807537816)]
+		public bool Ps3PixelShaderHashStoreEnable { get { return m_Ps3PixelShaderHashStoreEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(Ps3PixelShaderHashStoreEnable), this, m_Ps3PixelShaderHashStoreEnable, value)) m_Ps3PixelShaderHashStoreEnable = value; } } // 0xDE (222)
+		
+		protected bool m_Ps3DispatchPrepareSpuJobEnable = new bool();
+		[ContainerField(223), LayoutImmutable, Blittable, ContainerFieldNameHash(1952514164)]
+		public bool Ps3DispatchPrepareSpuJobEnable { get { return m_Ps3DispatchPrepareSpuJobEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(Ps3DispatchPrepareSpuJobEnable), this, m_Ps3DispatchPrepareSpuJobEnable, value)) m_Ps3DispatchPrepareSpuJobEnable = value; } } // 0xDF (223)
+		
+		protected bool m_Ps3DispatchSetupSpuJobEnable = new bool();
+		[ContainerField(224), LayoutImmutable, Blittable, ContainerFieldNameHash(4264301426)]
+		public bool Ps3DispatchSetupSpuJobEnable { get { return m_Ps3DispatchSetupSpuJobEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(Ps3DispatchSetupSpuJobEnable), this, m_Ps3DispatchSetupSpuJobEnable, value)) m_Ps3DispatchSetupSpuJobEnable = value; } } // 0xE0 (224)
+		
+		protected bool m_Ps3GeometryJobEnable = new bool();
+		[ContainerField(225), LayoutImmutable, Blittable, ContainerFieldNameHash(1161033513)]
+		public bool Ps3GeometryJobEnable { get { return m_Ps3GeometryJobEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(Ps3GeometryJobEnable), this, m_Ps3GeometryJobEnable, value)) m_Ps3GeometryJobEnable = value; } } // 0xE1 (225)
+		
+		protected bool m_DatabaseLoadingEnable = new bool();
+		[ContainerField(226), LayoutImmutable, Blittable, ContainerFieldNameHash(2824850887)]
+		public bool DatabaseLoadingEnable { get { return m_DatabaseLoadingEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(DatabaseLoadingEnable), this, m_DatabaseLoadingEnable, value)) m_DatabaseLoadingEnable = value; } } // 0xE2 (226)
+		
+		protected bool m_SimplePixelShaderEnable = new bool();
+		[ContainerField(227), LayoutImmutable, Blittable, ContainerFieldNameHash(3273843563)]
+		public bool SimplePixelShaderEnable { get { return m_SimplePixelShaderEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(SimplePixelShaderEnable), this, m_SimplePixelShaderEnable, value)) m_SimplePixelShaderEnable = value; } } // 0xE3 (227)
+		
+		protected bool m_Ps3GeometryJobWithoutDispatchJobEnable = new bool();
+		[ContainerField(228), LayoutImmutable, Blittable, ContainerFieldNameHash(2116626642)]
+		public bool Ps3GeometryJobWithoutDispatchJobEnable { get { return m_Ps3GeometryJobWithoutDispatchJobEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(Ps3GeometryJobWithoutDispatchJobEnable), this, m_Ps3GeometryJobWithoutDispatchJobEnable, value)) m_Ps3GeometryJobWithoutDispatchJobEnable = value; } } // 0xE4 (228)
+		
+		protected bool m_Ps3GeometryDebugRenderEnable = new bool();
+		[ContainerField(229), LayoutImmutable, Blittable, ContainerFieldNameHash(4017933973)]
+		public bool Ps3GeometryDebugRenderEnable { get { return m_Ps3GeometryDebugRenderEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(Ps3GeometryDebugRenderEnable), this, m_Ps3GeometryDebugRenderEnable, value)) m_Ps3GeometryDebugRenderEnable = value; } } // 0xE5 (229)
+		
+		protected bool m_BoneConstantOptimizationEnable = new bool();
+		[ContainerField(230), LayoutImmutable, Blittable, ContainerFieldNameHash(1779871005)]
+		public bool BoneConstantOptimizationEnable { get { return m_BoneConstantOptimizationEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(BoneConstantOptimizationEnable), this, m_BoneConstantOptimizationEnable, value)) m_BoneConstantOptimizationEnable = value; } } // 0xE6 (230)
+		
+		protected bool m_Ps3DrawEdgeGeometryEnable = new bool();
+		[ContainerField(231), LayoutImmutable, Blittable, ContainerFieldNameHash(1049907917)]
+		public bool Ps3DrawEdgeGeometryEnable { get { return m_Ps3DrawEdgeGeometryEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(Ps3DrawEdgeGeometryEnable), this, m_Ps3DrawEdgeGeometryEnable, value)) m_Ps3DrawEdgeGeometryEnable = value; } } // 0xE7 (231)
+		
+		protected bool m_Ps3DrawNonEdgeGeometryEnable = new bool();
+		[ContainerField(232), LayoutImmutable, Blittable, ContainerFieldNameHash(4096042498)]
+		public bool Ps3DrawNonEdgeGeometryEnable { get { return m_Ps3DrawNonEdgeGeometryEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(Ps3DrawNonEdgeGeometryEnable), this, m_Ps3DrawNonEdgeGeometryEnable, value)) m_Ps3DrawNonEdgeGeometryEnable = value; } } // 0xE8 (232)
+		
+		protected bool m_Ps3TriangleCullEnable = new bool();
+		[ContainerField(233), LayoutImmutable, Blittable, ContainerFieldNameHash(907581676)]
+		public bool Ps3TriangleCullEnable { get { return m_Ps3TriangleCullEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(Ps3TriangleCullEnable), this, m_Ps3TriangleCullEnable, value)) m_Ps3TriangleCullEnable = value; } } // 0xE9 (233)
+		
+		protected bool m_Ps3TriangleFrustumCullEnable = new bool();
+		[ContainerField(234), LayoutImmutable, Blittable, ContainerFieldNameHash(2693409042)]
+		public bool Ps3TriangleFrustumCullEnable { get { return m_Ps3TriangleFrustumCullEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(Ps3TriangleFrustumCullEnable), this, m_Ps3TriangleFrustumCullEnable, value)) m_Ps3TriangleFrustumCullEnable = value; } } // 0xEA (234)
+		
+		protected bool m_Ps3TriangleBackfaceCullEnable = new bool();
+		[ContainerField(235), LayoutImmutable, Blittable, ContainerFieldNameHash(2172207942)]
+		public bool Ps3TriangleBackfaceCullEnable { get { return m_Ps3TriangleBackfaceCullEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(Ps3TriangleBackfaceCullEnable), this, m_Ps3TriangleBackfaceCullEnable, value)) m_Ps3TriangleBackfaceCullEnable = value; } } // 0xEB (235)
+		
+		protected bool m_Ps3TriangleCullZPassEnable = new bool();
+		[ContainerField(236), LayoutImmutable, Blittable, ContainerFieldNameHash(1829559303)]
+		public bool Ps3TriangleCullZPassEnable { get { return m_Ps3TriangleCullZPassEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(Ps3TriangleCullZPassEnable), this, m_Ps3TriangleCullZPassEnable, value)) m_Ps3TriangleCullZPassEnable = value; } } // 0xEC (236)
+		
+		protected bool m_Ps3TriangleCullDoubleSidedEnable = new bool();
+		[ContainerField(237), LayoutImmutable, Blittable, ContainerFieldNameHash(750843238)]
+		public bool Ps3TriangleCullDoubleSidedEnable { get { return m_Ps3TriangleCullDoubleSidedEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(Ps3TriangleCullDoubleSidedEnable), this, m_Ps3TriangleCullDoubleSidedEnable, value)) m_Ps3TriangleCullDoubleSidedEnable = value; } } // 0xED (237)
+		
+		protected bool m_Ps3TriangleCull1BoneSkinningEnable = new bool();
+		[ContainerField(238), LayoutImmutable, Blittable, ContainerFieldNameHash(2282356842)]
+		public bool Ps3TriangleCull1BoneSkinningEnable { get { return m_Ps3TriangleCull1BoneSkinningEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(Ps3TriangleCull1BoneSkinningEnable), this, m_Ps3TriangleCull1BoneSkinningEnable, value)) m_Ps3TriangleCull1BoneSkinningEnable = value; } } // 0xEE (238)
+		
+		protected bool m_Ps3TriangleCull4BoneSkinningEnable = new bool();
+		[ContainerField(239), LayoutImmutable, Blittable, ContainerFieldNameHash(4038567215)]
+		public bool Ps3TriangleCull4BoneSkinningEnable { get { return m_Ps3TriangleCull4BoneSkinningEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(Ps3TriangleCull4BoneSkinningEnable), this, m_Ps3TriangleCull4BoneSkinningEnable, value)) m_Ps3TriangleCull4BoneSkinningEnable = value; } } // 0xEF (239)
+		
+		protected bool m_Ps3TrianglePartCullEnable = new bool();
+		[ContainerField(240), LayoutImmutable, Blittable, ContainerFieldNameHash(2508417883)]
+		public bool Ps3TrianglePartCullEnable { get { return m_Ps3TrianglePartCullEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(Ps3TrianglePartCullEnable), this, m_Ps3TrianglePartCullEnable, value)) m_Ps3TrianglePartCullEnable = value; } } // 0xF0 (240)
+		
+		protected bool m_Ps3DrawBlockCullEnable = new bool();
+		[ContainerField(241), LayoutImmutable, Blittable, ContainerFieldNameHash(3383477611)]
+		public bool Ps3DrawBlockCullEnable { get { return m_Ps3DrawBlockCullEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(Ps3DrawBlockCullEnable), this, m_Ps3DrawBlockCullEnable, value)) m_Ps3DrawBlockCullEnable = value; } } // 0xF1 (241)
+		
+		protected bool m_Ps3PartitionFrustumCullEnable = new bool();
+		[ContainerField(242), LayoutImmutable, Blittable, ContainerFieldNameHash(1828084478)]
+		public bool Ps3PartitionFrustumCullEnable { get { return m_Ps3PartitionFrustumCullEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(Ps3PartitionFrustumCullEnable), this, m_Ps3PartitionFrustumCullEnable, value)) m_Ps3PartitionFrustumCullEnable = value; } } // 0xF2 (242)
+		
+		protected bool m_Ps3PartitionClipPlaneCullEnable = new bool();
+		[ContainerField(243), LayoutImmutable, Blittable, ContainerFieldNameHash(953623744)]
+		public bool Ps3PartitionClipPlaneCullEnable { get { return m_Ps3PartitionClipPlaneCullEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(Ps3PartitionClipPlaneCullEnable), this, m_Ps3PartitionClipPlaneCullEnable, value)) m_Ps3PartitionClipPlaneCullEnable = value; } } // 0xF3 (243)
+		
+		protected bool m_Ps3PartitionVolumeCullEnable = new bool();
+		[ContainerField(244), LayoutImmutable, Blittable, ContainerFieldNameHash(1172266568)]
+		public bool Ps3PartitionVolumeCullEnable { get { return m_Ps3PartitionVolumeCullEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(Ps3PartitionVolumeCullEnable), this, m_Ps3PartitionVolumeCullEnable, value)) m_Ps3PartitionVolumeCullEnable = value; } } // 0xF4 (244)
+		
+		protected bool m_Ps3SpuInstancingEnable = new bool();
+		[ContainerField(245), LayoutImmutable, Blittable, ContainerFieldNameHash(4085224878)]
+		public bool Ps3SpuInstancingEnable { get { return m_Ps3SpuInstancingEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(Ps3SpuInstancingEnable), this, m_Ps3SpuInstancingEnable, value)) m_Ps3SpuInstancingEnable = value; } } // 0xF5 (245)
+		
+		protected bool m_Ps3SpuClipPlaneRejectEnable = new bool();
+		[ContainerField(246), LayoutImmutable, Blittable, ContainerFieldNameHash(40145229)]
+		public bool Ps3SpuClipPlaneRejectEnable { get { return m_Ps3SpuClipPlaneRejectEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(Ps3SpuClipPlaneRejectEnable), this, m_Ps3SpuClipPlaneRejectEnable, value)) m_Ps3SpuClipPlaneRejectEnable = value; } } // 0xF6 (246)
+		
+		protected bool m_Ps3SpuCullVolumesEnable = new bool();
+		[ContainerField(247), LayoutImmutable, Blittable, ContainerFieldNameHash(2312942799)]
+		public bool Ps3SpuCullVolumesEnable { get { return m_Ps3SpuCullVolumesEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(Ps3SpuCullVolumesEnable), this, m_Ps3SpuCullVolumesEnable, value)) m_Ps3SpuCullVolumesEnable = value; } } // 0xF7 (247)
+		
+		protected bool m_Ps3DispatchJobEnable = new bool();
+		[ContainerField(248), LayoutImmutable, Blittable, ContainerFieldNameHash(2569607715)]
+		public bool Ps3DispatchJobEnable { get { return m_Ps3DispatchJobEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(Ps3DispatchJobEnable), this, m_Ps3DispatchJobEnable, value)) m_Ps3DispatchJobEnable = value; } } // 0xF8 (248)
+		
+		protected bool m_OnDemandBuildingEnable = new bool();
+		[ContainerField(249), LayoutImmutable, Blittable, ContainerFieldNameHash(3142983540)]
+		public bool OnDemandBuildingEnable { get { return m_OnDemandBuildingEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(OnDemandBuildingEnable), this, m_OnDemandBuildingEnable, value)) m_OnDemandBuildingEnable = value; } } // 0xF9 (249)
+		
+		protected bool m_OnDemandPrimingEnable = new bool();
+		[ContainerField(250), LayoutImmutable, Blittable, ContainerFieldNameHash(1031717924)]
+		public bool OnDemandPrimingEnable { get { return m_OnDemandPrimingEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(OnDemandPrimingEnable), this, m_OnDemandPrimingEnable, value)) m_OnDemandPrimingEnable = value; } } // 0xFA (250)
+		
+		protected bool m_DispatchExecuteEnable = new bool();
+		[ContainerField(251), LayoutImmutable, Blittable, ContainerFieldNameHash(3821627435)]
+		public bool DispatchExecuteEnable { get { return m_DispatchExecuteEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(DispatchExecuteEnable), this, m_DispatchExecuteEnable, value)) m_DispatchExecuteEnable = value; } } // 0xFB (251)
+		
+		protected bool m_TextureGammaCorrectionEnable = new bool();
+		[ContainerField(252), LayoutImmutable, Blittable, ContainerFieldNameHash(501150250)]
+		public bool TextureGammaCorrectionEnable { get { return m_TextureGammaCorrectionEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(TextureGammaCorrectionEnable), this, m_TextureGammaCorrectionEnable, value)) m_TextureGammaCorrectionEnable = value; } } // 0xFC (252)
+		
+		protected bool m_TileClassificationEnable = new bool();
+		[ContainerField(253), LayoutImmutable, Blittable, ContainerFieldNameHash(67079238)]
+		public bool TileClassificationEnable { get { return m_TileClassificationEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(TileClassificationEnable), this, m_TileClassificationEnable, value)) m_TileClassificationEnable = value; } } // 0xFD (253)
+		
+		protected bool m_Ps3DispatchSpuBufferLinkingEnable = new bool();
+		[ContainerField(254), LayoutImmutable, Blittable, ContainerFieldNameHash(3696968498)]
+		public bool Ps3DispatchSpuBufferLinkingEnable { get { return m_Ps3DispatchSpuBufferLinkingEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(Ps3DispatchSpuBufferLinkingEnable), this, m_Ps3DispatchSpuBufferLinkingEnable, value)) m_Ps3DispatchSpuBufferLinkingEnable = value; } } // 0xFE (254)
+		
+		protected bool m_Ps3DispatchFrameBlockEnable = new bool();
+		[ContainerField(255), LayoutImmutable, Blittable, ContainerFieldNameHash(336125968)]
+		public bool Ps3DispatchFrameBlockEnable { get { return m_Ps3DispatchFrameBlockEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(Ps3DispatchFrameBlockEnable), this, m_Ps3DispatchFrameBlockEnable, value)) m_Ps3DispatchFrameBlockEnable = value; } } // 0xFF (255)
+		
+		protected bool m_Ps3SCullEnable = new bool();
+		[ContainerField(256), LayoutImmutable, Blittable, ContainerFieldNameHash(3556523217)]
+		public bool Ps3SCullEnable { get { return m_Ps3SCullEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(Ps3SCullEnable), this, m_Ps3SCullEnable, value)) m_Ps3SCullEnable = value; } } // 0x100 (256)
+		
+		protected bool m_Ps3ZCullEnable = new bool();
+		[ContainerField(257), LayoutImmutable, Blittable, ContainerFieldNameHash(3239977624)]
+		public bool Ps3ZCullEnable { get { return m_Ps3ZCullEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(Ps3ZCullEnable), this, m_Ps3ZCullEnable, value)) m_Ps3ZCullEnable = value; } } // 0x101 (257)
+		
+		protected bool m_DrawInstancedBlocks = new bool();
+		[ContainerField(258), LayoutImmutable, Blittable, ContainerFieldNameHash(738344370)]
+		public bool DrawInstancedBlocks { get { return m_DrawInstancedBlocks; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(DrawInstancedBlocks), this, m_DrawInstancedBlocks, value)) m_DrawInstancedBlocks = value; } } // 0x102 (258)
+		
+		protected bool m_DispatchPrepareBlockEnable = new bool();
+		[ContainerField(259), LayoutImmutable, Blittable, ContainerFieldNameHash(736860092)]
+		public bool DispatchPrepareBlockEnable { get { return m_DispatchPrepareBlockEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(DispatchPrepareBlockEnable), this, m_DispatchPrepareBlockEnable, value)) m_DispatchPrepareBlockEnable = value; } } // 0x103 (259)
+		
+		protected bool m_DrawNonInstancedBlocks = new bool();
+		[ContainerField(260), LayoutImmutable, Blittable, ContainerFieldNameHash(3032987357)]
+		public bool DrawNonInstancedBlocks { get { return m_DrawNonInstancedBlocks; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(DrawNonInstancedBlocks), this, m_DrawNonInstancedBlocks, value)) m_DrawNonInstancedBlocks = value; } } // 0x104 (260)
+		
+		protected bool m_DrawNonStreamedTextureBlocks = new bool();
+		[ContainerField(261), LayoutImmutable, Blittable, ContainerFieldNameHash(149509938)]
+		public bool DrawNonStreamedTextureBlocks { get { return m_DrawNonStreamedTextureBlocks; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(DrawNonStreamedTextureBlocks), this, m_DrawNonStreamedTextureBlocks, value)) m_DrawNonStreamedTextureBlocks = value; } } // 0x105 (261)
+		
+		protected bool m_Ps3TxpDemotionEnable = new bool();
+		[ContainerField(262), LayoutImmutable, Blittable, ContainerFieldNameHash(2998678519)]
+		public bool Ps3TxpDemotionEnable { get { return m_Ps3TxpDemotionEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(Ps3TxpDemotionEnable), this, m_Ps3TxpDemotionEnable, value)) m_Ps3TxpDemotionEnable = value; } } // 0x106 (262)
+		
+		protected bool m_Ps3CmdBufVertexShaderInlineEnable = new bool();
+		[ContainerField(263), LayoutImmutable, Blittable, ContainerFieldNameHash(3297671015)]
+		public bool Ps3CmdBufVertexShaderInlineEnable { get { return m_Ps3CmdBufVertexShaderInlineEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(Ps3CmdBufVertexShaderInlineEnable), this, m_Ps3CmdBufVertexShaderInlineEnable, value)) m_Ps3CmdBufVertexShaderInlineEnable = value; } } // 0x107 (263)
+		
+		protected bool m_Ps3CmdBufClearEnable = new bool();
+		[ContainerField(264), LayoutImmutable, Blittable, ContainerFieldNameHash(1284811158)]
+		public bool Ps3CmdBufClearEnable { get { return m_Ps3CmdBufClearEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(Ps3CmdBufClearEnable), this, m_Ps3CmdBufClearEnable, value)) m_Ps3CmdBufClearEnable = value; } } // 0x108 (264)
+		
+		protected bool m_Ps3SpuYieldingEnable = new bool();
+		[ContainerField(265), LayoutImmutable, Blittable, ContainerFieldNameHash(2296106943)]
+		public bool Ps3SpuYieldingEnable { get { return m_Ps3SpuYieldingEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(Ps3SpuYieldingEnable), this, m_Ps3SpuYieldingEnable, value)) m_Ps3SpuYieldingEnable = value; } } // 0x109 (265)
+		
+		protected bool m_XenonDispatchJobEnable = new bool();
+		[ContainerField(266), LayoutImmutable, Blittable, ContainerFieldNameHash(2578580993)]
+		public bool XenonDispatchJobEnable { get { return m_XenonDispatchJobEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(XenonDispatchJobEnable), this, m_XenonDispatchJobEnable, value)) m_XenonDispatchJobEnable = value; } } // 0x10A (266)
+		
+		protected bool m_DrawInlineBlocks = new bool();
+		[ContainerField(267), LayoutImmutable, Blittable, ContainerFieldNameHash(1067967350)]
+		public bool DrawInlineBlocks { get { return m_DrawInlineBlocks; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(DrawInlineBlocks), this, m_DrawInlineBlocks, value)) m_DrawInlineBlocks = value; } } // 0x10B (267)
+		
+		protected bool m_Ps3FlushEnable = new bool();
+		[ContainerField(268), LayoutImmutable, Blittable, ContainerFieldNameHash(968981744)]
+		public bool Ps3FlushEnable { get { return m_Ps3FlushEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(Ps3FlushEnable), this, m_Ps3FlushEnable, value)) m_Ps3FlushEnable = value; } } // 0x10C (268)
+		
+		protected bool m_Ps3FinishEnable = new bool();
+		[ContainerField(269), LayoutImmutable, Blittable, ContainerFieldNameHash(2727001447)]
+		public bool Ps3FinishEnable { get { return m_Ps3FinishEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(Ps3FinishEnable), this, m_Ps3FinishEnable, value)) m_Ps3FinishEnable = value; } } // 0x10D (269)
+		
+		protected bool m_DxMultisampleEnable = new bool();
+		[ContainerField(270), LayoutImmutable, Blittable, ContainerFieldNameHash(60513815)]
+		public bool DxMultisampleEnable { get { return m_DxMultisampleEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(DxMultisampleEnable), this, m_DxMultisampleEnable, value)) m_DxMultisampleEnable = value; } } // 0x10E (270)
+		
+		protected bool m_DxTransparencySupersamplingEnable = new bool();
+		[ContainerField(271), LayoutImmutable, Blittable, ContainerFieldNameHash(3389290418)]
+		public bool DxTransparencySupersamplingEnable { get { return m_DxTransparencySupersamplingEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(DxTransparencySupersamplingEnable), this, m_DxTransparencySupersamplingEnable, value)) m_DxTransparencySupersamplingEnable = value; } } // 0x10F (271)
+		
+		protected bool m_DxSamplerStatesEnable = new bool();
+		[ContainerField(272), LayoutImmutable, Blittable, ContainerFieldNameHash(2484234024)]
+		public bool DxSamplerStatesEnable { get { return m_DxSamplerStatesEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(DxSamplerStatesEnable), this, m_DxSamplerStatesEnable, value)) m_DxSamplerStatesEnable = value; } } // 0x110 (272)
+		
+		protected bool m_DxBatchedSamplerStatesEnable = new bool();
+		[ContainerField(273), LayoutImmutable, Blittable, ContainerFieldNameHash(3806413589)]
+		public bool DxBatchedSamplerStatesEnable { get { return m_DxBatchedSamplerStatesEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(DxBatchedSamplerStatesEnable), this, m_DxBatchedSamplerStatesEnable, value)) m_DxBatchedSamplerStatesEnable = value; } } // 0x111 (273)
+		
+		protected bool m_DxBatchedTexturesEnable = new bool();
+		[ContainerField(274), LayoutImmutable, Blittable, ContainerFieldNameHash(3898873385)]
+		public bool DxBatchedTexturesEnable { get { return m_DxBatchedTexturesEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(DxBatchedTexturesEnable), this, m_DxBatchedTexturesEnable, value)) m_DxBatchedTexturesEnable = value; } } // 0x112 (274)
+		
+		protected bool m_DxStatesEnable = new bool();
+		[ContainerField(275), LayoutImmutable, Blittable, ContainerFieldNameHash(541903900)]
+		public bool DxStatesEnable { get { return m_DxStatesEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(DxStatesEnable), this, m_DxStatesEnable, value)) m_DxStatesEnable = value; } } // 0x113 (275)
+		
+		protected bool m_DrawOpaqueAlphaTestSimple = new bool();
+		[ContainerField(276), LayoutImmutable, Blittable, ContainerFieldNameHash(394966582)]
+		public bool DrawOpaqueAlphaTestSimple { get { return m_DrawOpaqueAlphaTestSimple; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(DrawOpaqueAlphaTestSimple), this, m_DrawOpaqueAlphaTestSimple, value)) m_DrawOpaqueAlphaTestSimple = value; } } // 0x114 (276)
+		
+		protected bool m_FlushEnable = new bool();
+		[ContainerField(277), LayoutImmutable, Blittable, ContainerFieldNameHash(3206413920)]
+		public bool FlushEnable { get { return m_FlushEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(FlushEnable), this, m_FlushEnable, value)) m_FlushEnable = value; } } // 0x115 (277)
+		
+		protected bool m_DrawTransparent = new bool();
+		[ContainerField(278), LayoutImmutable, Blittable, ContainerFieldNameHash(3651089763)]
+		public bool DrawTransparent { get { return m_DrawTransparent; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(DrawTransparent), this, m_DrawTransparent, value)) m_DrawTransparent = value; } } // 0x116 (278)
+		
+		protected bool m_DrawAdvancedStats = new bool();
+		[ContainerField(279), LayoutImmutable, Blittable, ContainerFieldNameHash(4051955738)]
+		public bool DrawAdvancedStats { get { return m_DrawAdvancedStats; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(DrawAdvancedStats), this, m_DrawAdvancedStats, value)) m_DrawAdvancedStats = value; } } // 0x117 (279)
+		
+		protected bool m_DxParallelShaderLoadingEnable = new bool();
+		[ContainerField(280), LayoutImmutable, Blittable, ContainerFieldNameHash(1057678812)]
+		public bool DxParallelShaderLoadingEnable { get { return m_DxParallelShaderLoadingEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(DxParallelShaderLoadingEnable), this, m_DxParallelShaderLoadingEnable, value)) m_DxParallelShaderLoadingEnable = value; } } // 0x118 (280)
+		
+		protected bool m_DxDelayedShaderLoadingEnable = new bool();
+		[ContainerField(281), LayoutImmutable, Blittable, ContainerFieldNameHash(167211107)]
+		public bool DxDelayedShaderLoadingEnable { get { return m_DxDelayedShaderLoadingEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(DxDelayedShaderLoadingEnable), this, m_DxDelayedShaderLoadingEnable, value)) m_DxDelayedShaderLoadingEnable = value; } } // 0x119 (281)
+		
+		protected bool m_DrawOpaque = new bool();
+		[ContainerField(282), LayoutImmutable, Blittable, ContainerFieldNameHash(1897318426)]
+		public bool DrawOpaque { get { return m_DrawOpaque; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(DrawOpaque), this, m_DrawOpaque, value)) m_DrawOpaque = value; } } // 0x11A (282)
+		
+		protected bool m_DrawOpaqueAlphaTest = new bool();
+		[ContainerField(283), LayoutImmutable, Blittable, ContainerFieldNameHash(1044040856)]
+		public bool DrawOpaqueAlphaTest { get { return m_DrawOpaqueAlphaTest; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(DrawOpaqueAlphaTest), this, m_DrawOpaqueAlphaTest, value)) m_DrawOpaqueAlphaTest = value; } } // 0x11B (283)
+		
+		protected bool m_XenonHiZEnable = new bool();
+		[ContainerField(284), LayoutImmutable, Blittable, ContainerFieldNameHash(3737851501)]
+		public bool XenonHiZEnable { get { return m_XenonHiZEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(XenonHiZEnable), this, m_XenonHiZEnable, value)) m_XenonHiZEnable = value; } } // 0x11C (284)
+		
+		protected bool m_DrawZOnly = new bool();
+		[ContainerField(285), LayoutImmutable, Blittable, ContainerFieldNameHash(2420560875)]
+		public bool DrawZOnly { get { return m_DrawZOnly; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(DrawZOnly), this, m_DrawZOnly, value)) m_DrawZOnly = value; } } // 0x11D (285)
+		
+		protected bool m_DrawStats = new bool();
+		[ContainerField(286), LayoutImmutable, Blittable, ContainerFieldNameHash(2413142628)]
+		public bool DrawStats { get { return m_DrawStats; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(DrawStats), this, m_DrawStats, value)) m_DrawStats = value; } } // 0x11E (286)
+		
+		protected bool m_XenonDispatchBlockOnCmdBufEnable = new bool();
+		[ContainerField(287), LayoutImmutable, Blittable, ContainerFieldNameHash(3499933781)]
+		public bool XenonDispatchBlockOnCmdBufEnable { get { return m_XenonDispatchBlockOnCmdBufEnable; } set { if (OnPropertyChanging("ShaderSystemSettings." + nameof(XenonDispatchBlockOnCmdBufEnable), this, m_XenonDispatchBlockOnCmdBufEnable, value)) m_XenonDispatchBlockOnCmdBufEnable = value; } } // 0x11F (287)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

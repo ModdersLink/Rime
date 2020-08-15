@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class PickupEntityAsset : 
 		Asset
 	{
-		[ContainerField(12)]
-		public CtrRef<PickupEntityData> Data { get; set; } = new CtrRef<PickupEntityData>(); // 0xC (12)
+		protected CtrRef<PickupEntityData> m_Data = new CtrRef<PickupEntityData>();
+		[ContainerField(12), ContainerFieldNameHash(2088730869)]
+		public CtrRef<PickupEntityData> Data { get { return m_Data; } set { if (OnPropertyChanging("PickupEntityAsset." + nameof(Data), this, m_Data, value)) m_Data = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

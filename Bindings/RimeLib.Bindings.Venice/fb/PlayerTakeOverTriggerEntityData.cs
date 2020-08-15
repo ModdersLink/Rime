@@ -5,20 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class PlayerTakeOverTriggerEntityData : 
 		GameEntityData
 	{
-		[ContainerField(96)]
-		public TeamId TeamId { get; set; } = new TeamId(); // 0x60 (96)
+		protected TeamId m_TeamId = new TeamId();
+		[ContainerField(96), ContainerFieldNameHash(3220374101)]
+		public TeamId TeamId { get { return m_TeamId; } set { if (OnPropertyChanging("PlayerTakeOverTriggerEntityData." + nameof(TeamId), this, m_TeamId, value)) m_TeamId = value; } } // 0x60 (96)
 		
-		[ContainerField(100), LayoutImmutable, Blittable]
-		public float TimeToLoseControl { get; set; } // 0x64 (100)
+		protected float m_TimeToLoseControl = new float();
+		[ContainerField(100), LayoutImmutable, Blittable, ContainerFieldNameHash(3830029753)]
+		public float TimeToLoseControl { get { return m_TimeToLoseControl; } set { if (OnPropertyChanging("PlayerTakeOverTriggerEntityData." + nameof(TimeToLoseControl), this, m_TimeToLoseControl, value)) m_TimeToLoseControl = value; } } // 0x64 (100)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

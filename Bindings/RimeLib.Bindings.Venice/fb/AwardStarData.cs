@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class AwardStarData : 
 		AwardData
 	{
-		[ContainerField(100)]
-		public CtrRef<AwardStarNameData> StarTemplate { get; set; } = new CtrRef<AwardStarNameData>(); // 0x64 (100)
+		protected CtrRef<AwardStarNameData> m_StarTemplate = new CtrRef<AwardStarNameData>();
+		[ContainerField(100), ContainerFieldNameHash(982112673)]
+		public CtrRef<AwardStarNameData> StarTemplate { get { return m_StarTemplate; } set { if (OnPropertyChanging("AwardStarData." + nameof(StarTemplate), this, m_StarTemplate, value)) m_StarTemplate = value; } } // 0x64 (100)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

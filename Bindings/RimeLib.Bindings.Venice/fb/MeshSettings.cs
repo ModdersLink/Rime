@@ -5,31 +5,46 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class MeshSettings : 
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable]
-		public string OverrideShadersShaderName { get; set; } // 0x8 (8)
+		protected string m_OverrideShadersShaderName = new string();
+		[ContainerField(8), LayoutImmutable, ContainerFieldNameHash(2376973253)]
+		public string OverrideShadersShaderName { get { return m_OverrideShadersShaderName; } set { if (OnPropertyChanging("MeshSettings." + nameof(OverrideShadersShaderName), this, m_OverrideShadersShaderName, value)) m_OverrideShadersShaderName = value; } } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable]
-		public string OverrideShadersMeshName { get; set; } // 0xC (12)
+		protected string m_OverrideShadersMeshName = new string();
+		[ContainerField(12), LayoutImmutable, ContainerFieldNameHash(3516849727)]
+		public string OverrideShadersMeshName { get { return m_OverrideShadersMeshName; } set { if (OnPropertyChanging("MeshSettings." + nameof(OverrideShadersMeshName), this, m_OverrideShadersMeshName, value)) m_OverrideShadersMeshName = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public int ForceLod { get; set; } // 0x10 (16)
+		protected int m_ForceLod = new int();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(1152595167)]
+		public int ForceLod { get { return m_ForceLod; } set { if (OnPropertyChanging("MeshSettings." + nameof(ForceLod), this, m_ForceLod, value)) m_ForceLod = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
-		public float GlobalLodScale { get; set; } // 0x14 (20)
+		protected float m_GlobalLodScale = new float();
+		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(835399857)]
+		public float GlobalLodScale { get { return m_GlobalLodScale; } set { if (OnPropertyChanging("MeshSettings." + nameof(GlobalLodScale), this, m_GlobalLodScale, value)) m_GlobalLodScale = value; } } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable]
-		public float ShadowDistanceScale { get; set; } // 0x18 (24)
+		protected float m_ShadowDistanceScale = new float();
+		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(1873620728)]
+		public float ShadowDistanceScale { get { return m_ShadowDistanceScale; } set { if (OnPropertyChanging("MeshSettings." + nameof(ShadowDistanceScale), this, m_ShadowDistanceScale, value)) m_ShadowDistanceScale = value; } } // 0x18 (24)
 		
-		[ContainerField(28), LayoutImmutable, Blittable]
-		public bool LoadingEnabled { get; set; } // 0x1C (28)
+		protected bool m_LoadingEnabled = new bool();
+		[ContainerField(28), LayoutImmutable, Blittable, ContainerFieldNameHash(1695799750)]
+		public bool LoadingEnabled { get { return m_LoadingEnabled; } set { if (OnPropertyChanging("MeshSettings." + nameof(LoadingEnabled), this, m_LoadingEnabled, value)) m_LoadingEnabled = value; } } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

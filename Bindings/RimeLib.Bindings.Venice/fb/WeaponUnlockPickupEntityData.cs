@@ -5,23 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class WeaponUnlockPickupEntityData : 
 		PickupEntityData
 	{
-		[ContainerField(176)]
-		public List<WeaponUnlockPickupData> Weapons { get; set; } = new List<WeaponUnlockPickupData>(); // 0xB0 (176)
+		protected List<WeaponUnlockPickupData> m_Weapons = new List<WeaponUnlockPickupData>();
+		[ContainerField(176), ContainerFieldNameHash(2209357972)]
+		public List<WeaponUnlockPickupData> Weapons { get { return m_Weapons; } set { if (OnPropertyChanging("WeaponUnlockPickupEntityData." + nameof(Weapons), this, m_Weapons, value)) m_Weapons = value; } } // 0xB0 (176)
 		
-		[ContainerField(180), LayoutImmutable, Blittable]
-		public bool UseForPersistence { get; set; } // 0xB4 (180)
+		protected bool m_UseForPersistence = new bool();
+		[ContainerField(180), LayoutImmutable, Blittable, ContainerFieldNameHash(2840570666)]
+		public bool UseForPersistence { get { return m_UseForPersistence; } set { if (OnPropertyChanging("WeaponUnlockPickupEntityData." + nameof(UseForPersistence), this, m_UseForPersistence, value)) m_UseForPersistence = value; } } // 0xB4 (180)
 		
-		[ContainerField(181), LayoutImmutable, Blittable]
-		public bool RandomlySelectOneWeapon { get; set; } // 0xB5 (181)
+		protected bool m_RandomlySelectOneWeapon = new bool();
+		[ContainerField(181), LayoutImmutable, Blittable, ContainerFieldNameHash(979545285)]
+		public bool RandomlySelectOneWeapon { get { return m_RandomlySelectOneWeapon; } set { if (OnPropertyChanging("WeaponUnlockPickupEntityData." + nameof(RandomlySelectOneWeapon), this, m_RandomlySelectOneWeapon, value)) m_RandomlySelectOneWeapon = value; } } // 0xB5 (181)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

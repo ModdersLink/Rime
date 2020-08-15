@@ -5,35 +5,50 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class PlayerInputTriggerEntityData : 
 		EntityData
 	{
-		[ContainerField(12)]
-		public Realm Realm { get; set; } = new Realm(); // 0xC (12)
+		protected Realm m_Realm = new Realm();
+		[ContainerField(12), ContainerFieldNameHash(229961746)]
+		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("PlayerInputTriggerEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public EntryInputActionEnum EntryInputActions { get; set; } = new EntryInputActionEnum(); // 0x10 (16)
+		protected EntryInputActionEnum m_EntryInputActions = new EntryInputActionEnum();
+		[ContainerField(16), ContainerFieldNameHash(4012574474)]
+		public EntryInputActionEnum EntryInputActions { get { return m_EntryInputActions; } set { if (OnPropertyChanging("PlayerInputTriggerEntityData." + nameof(EntryInputActions), this, m_EntryInputActions, value)) m_EntryInputActions = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
-		public float ValueModifier { get; set; } // 0x14 (20)
+		protected float m_ValueModifier = new float();
+		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(97668313)]
+		public float ValueModifier { get { return m_ValueModifier; } set { if (OnPropertyChanging("PlayerInputTriggerEntityData." + nameof(ValueModifier), this, m_ValueModifier, value)) m_ValueModifier = value; } } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable]
-		public float TrailingValueAtStart { get; set; } // 0x18 (24)
+		protected float m_TrailingValueAtStart = new float();
+		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(3374840281)]
+		public float TrailingValueAtStart { get { return m_TrailingValueAtStart; } set { if (OnPropertyChanging("PlayerInputTriggerEntityData." + nameof(TrailingValueAtStart), this, m_TrailingValueAtStart, value)) m_TrailingValueAtStart = value; } } // 0x18 (24)
 		
-		[ContainerField(28), LayoutImmutable, Blittable]
-		public float AccumulatedValueAtStart { get; set; } // 0x1C (28)
+		protected float m_AccumulatedValueAtStart = new float();
+		[ContainerField(28), LayoutImmutable, Blittable, ContainerFieldNameHash(421554895)]
+		public float AccumulatedValueAtStart { get { return m_AccumulatedValueAtStart; } set { if (OnPropertyChanging("PlayerInputTriggerEntityData." + nameof(AccumulatedValueAtStart), this, m_AccumulatedValueAtStart, value)) m_AccumulatedValueAtStart = value; } } // 0x1C (28)
 		
-		[ContainerField(32), LayoutImmutable, Blittable]
-		public bool SendTriggerEvents { get; set; } // 0x20 (32)
+		protected bool m_SendTriggerEvents = new bool();
+		[ContainerField(32), LayoutImmutable, Blittable, ContainerFieldNameHash(118708318)]
+		public bool SendTriggerEvents { get { return m_SendTriggerEvents; } set { if (OnPropertyChanging("PlayerInputTriggerEntityData." + nameof(SendTriggerEvents), this, m_SendTriggerEvents, value)) m_SendTriggerEvents = value; } } // 0x20 (32)
 		
-		[ContainerField(33), LayoutImmutable, Blittable]
-		public bool EnabledFromStart { get; set; } // 0x21 (33)
+		protected bool m_EnabledFromStart = new bool();
+		[ContainerField(33), LayoutImmutable, Blittable, ContainerFieldNameHash(4059145814)]
+		public bool EnabledFromStart { get { return m_EnabledFromStart; } set { if (OnPropertyChanging("PlayerInputTriggerEntityData." + nameof(EnabledFromStart), this, m_EnabledFromStart, value)) m_EnabledFromStart = value; } } // 0x21 (33)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

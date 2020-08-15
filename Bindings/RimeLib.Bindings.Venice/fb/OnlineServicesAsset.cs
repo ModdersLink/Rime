@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class OnlineServicesAsset : 
 		Asset
 	{
-		[ContainerField(12)]
-		public RefArray<PresenceServiceData> OnlineServices { get; set; } = new RefArray<PresenceServiceData>(); // 0xC (12)
+		protected RefArray<PresenceServiceData> m_OnlineServices = new RefArray<PresenceServiceData>();
+		[ContainerField(12), ContainerFieldNameHash(1539201604)]
+		public RefArray<PresenceServiceData> OnlineServices { get { return m_OnlineServices; } set { if (OnPropertyChanging("OnlineServicesAsset." + nameof(OnlineServices), this, m_OnlineServices, value)) m_OnlineServices = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

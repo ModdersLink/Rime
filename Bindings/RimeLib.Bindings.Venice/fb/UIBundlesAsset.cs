@@ -5,17 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class UIBundlesAsset : 
 		Asset
 	{
-		[ContainerField(12)]
-		public List<UIBundleAssetState> UIBundleAssetStateList { get; set; } = new List<UIBundleAssetState>(); // 0xC (12)
+		protected List<UIBundleAssetState> m_UIBundleAssetStateList = new List<UIBundleAssetState>();
+		[ContainerField(12), ContainerFieldNameHash(3131409800)]
+		public List<UIBundleAssetState> UIBundleAssetStateList { get { return m_UIBundleAssetStateList; } set { if (OnPropertyChanging("UIBundlesAsset." + nameof(UIBundleAssetStateList), this, m_UIBundleAssetStateList, value)) m_UIBundleAssetStateList = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,17 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class ServerBackendData : 
 		Asset
 	{
-		[ContainerField(12)]
-		public List<ServerBackendAttributeMapping> Mappings { get; set; } = new List<ServerBackendAttributeMapping>(); // 0xC (12)
+		protected List<ServerBackendAttributeMapping> m_Mappings = new List<ServerBackendAttributeMapping>();
+		[ContainerField(12), ContainerFieldNameHash(673881690)]
+		public List<ServerBackendAttributeMapping> Mappings { get { return m_Mappings; } set { if (OnPropertyChanging("ServerBackendData." + nameof(Mappings), this, m_Mappings, value)) m_Mappings = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

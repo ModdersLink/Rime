@@ -5,22 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class MedicBagWeaponData : 
 		WeaponData
 	{
-		[ContainerField(16)]
-		public HealerData Healer { get; set; } = new HealerData(); // 0x10 (16)
+		protected HealerData m_Healer = new HealerData();
+		[ContainerField(16), ContainerFieldNameHash(3054336626)]
+		public HealerData Healer { get { return m_Healer; } set { if (OnPropertyChanging("MedicBagWeaponData." + nameof(Healer), this, m_Healer, value)) m_Healer = value; } } // 0x10 (16)
 		
-		[ContainerField(32), LayoutImmutable, Blittable]
-		public float HealthPointsRefillSpeed { get; set; } // 0x20 (32)
+		protected float m_HealthPointsRefillSpeed = new float();
+		[ContainerField(32), LayoutImmutable, Blittable, ContainerFieldNameHash(677121433)]
+		public float HealthPointsRefillSpeed { get { return m_HealthPointsRefillSpeed; } set { if (OnPropertyChanging("MedicBagWeaponData." + nameof(HealthPointsRefillSpeed), this, m_HealthPointsRefillSpeed, value)) m_HealthPointsRefillSpeed = value; } } // 0x20 (32)
 		
-		[ContainerField(36), LayoutImmutable, Blittable]
-		public float HealthPointsPerBag { get; set; } // 0x24 (36)
+		protected float m_HealthPointsPerBag = new float();
+		[ContainerField(36), LayoutImmutable, Blittable, ContainerFieldNameHash(134333413)]
+		public float HealthPointsPerBag { get { return m_HealthPointsPerBag; } set { if (OnPropertyChanging("MedicBagWeaponData." + nameof(HealthPointsPerBag), this, m_HealthPointsPerBag, value)) m_HealthPointsPerBag = value; } } // 0x24 (36)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,22 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class MixerSendEntry : 
 		AudioGraphNodePortGroup
 	{
-		[ContainerField(8)]
-		public AudioGraphNodePort In { get; set; } = new AudioGraphNodePort(); // 0x8 (8)
+		protected AudioGraphNodePort m_In = new AudioGraphNodePort();
+		[ContainerField(8), ContainerFieldNameHash(5862146)]
+		public AudioGraphNodePort In { get { return m_In; } set { if (OnPropertyChanging("MixerSendEntry." + nameof(In), this, m_In, value)) m_In = value; } } // 0x8 (8)
 		
-		[ContainerField(16)]
-		public CtrRef<AudioGraphParameter> Target { get; set; } = new CtrRef<AudioGraphParameter>(); // 0x10 (16)
+		protected CtrRef<AudioGraphParameter> m_Target = new CtrRef<AudioGraphParameter>();
+		[ContainerField(16), ContainerFieldNameHash(3215022804)]
+		public CtrRef<AudioGraphParameter> Target { get { return m_Target; } set { if (OnPropertyChanging("MixerSendEntry." + nameof(Target), this, m_Target, value)) m_Target = value; } } // 0x10 (16)
 		
-		[ContainerField(20)]
-		public CtrRef<MixerAsset> Mixer { get; set; } = new CtrRef<MixerAsset>(); // 0x14 (20)
+		protected CtrRef<MixerAsset> m_Mixer = new CtrRef<MixerAsset>();
+		[ContainerField(20), ContainerFieldNameHash(209965422)]
+		public CtrRef<MixerAsset> Mixer { get { return m_Mixer; } set { if (OnPropertyChanging("MixerSendEntry." + nameof(Mixer), this, m_Mixer, value)) m_Mixer = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

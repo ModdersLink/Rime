@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class FollowPlayerOrderEntityData : 
 		BFOrderEntityData
 	{
-		[ContainerField(40)]
-		public CtrRef<FormationData> Formation { get; set; } = new CtrRef<FormationData>(); // 0x28 (40)
+		protected CtrRef<FormationData> m_Formation = new CtrRef<FormationData>();
+		[ContainerField(40), ContainerFieldNameHash(3135990414)]
+		public CtrRef<FormationData> Formation { get { return m_Formation; } set { if (OnPropertyChanging("FollowPlayerOrderEntityData." + nameof(Formation), this, m_Formation, value)) m_Formation = value; } } // 0x28 (40)
 		
-		[ContainerField(44), LayoutImmutable, Blittable]
-		public bool CombatForbidden { get; set; } // 0x2C (44)
+		protected bool m_CombatForbidden = new bool();
+		[ContainerField(44), LayoutImmutable, Blittable, ContainerFieldNameHash(2646993448)]
+		public bool CombatForbidden { get { return m_CombatForbidden; } set { if (OnPropertyChanging("FollowPlayerOrderEntityData." + nameof(CombatForbidden), this, m_CombatForbidden, value)) m_CombatForbidden = value; } } // 0x2C (44)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

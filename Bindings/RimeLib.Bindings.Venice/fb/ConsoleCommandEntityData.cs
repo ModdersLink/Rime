@@ -5,21 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class ConsoleCommandEntityData : 
 		EntityData
 	{
-		[ContainerField(12)]
-		public List<string> Commands { get; set; } = new List<string>(); // 0xC (12)
+		protected List<string> m_Commands = new List<string>();
+		[ContainerField(12), ContainerFieldNameHash(442350353)]
+		public List<string> Commands { get { return m_Commands; } set { if (OnPropertyChanging("ConsoleCommandEntityData." + nameof(Commands), this, m_Commands, value)) m_Commands = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public Realm Realm { get; set; } = new Realm(); // 0x10 (16)
+		protected Realm m_Realm = new Realm();
+		[ContainerField(16), ContainerFieldNameHash(229961746)]
+		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("ConsoleCommandEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,20 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class UIColor : 
 		DataContainer
 	{
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable]
-		public Vec4 Color { get; set; } = new Vec4(); // 0x10 (16)
+		protected Vec4 m_Color = new Vec4();
+		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(212387320)]
+		public Vec4 Color { get { return m_Color; } set { if (OnPropertyChanging("UIColor." + nameof(Color), this, m_Color, value)) m_Color = value; } } // 0x10 (16)
 		
-		[ContainerField(32)]
-		public UIColorType ColorType { get; set; } = new UIColorType(); // 0x20 (32)
+		protected UIColorType m_ColorType = new UIColorType();
+		[ContainerField(32), ContainerFieldNameHash(518124864)]
+		public UIColorType ColorType { get { return m_ColorType; } set { if (OnPropertyChanging("UIColor." + nameof(ColorType), this, m_ColorType, value)) m_ColorType = value; } } // 0x20 (32)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

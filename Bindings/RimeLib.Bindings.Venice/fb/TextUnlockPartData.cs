@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class TextUnlockPartData : 
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable]
-		public string ShaderNodeName { get; set; } // 0x8 (8)
+		protected string m_ShaderNodeName = new string();
+		[ContainerField(8), LayoutImmutable, ContainerFieldNameHash(4213969131)]
+		public string ShaderNodeName { get { return m_ShaderNodeName; } set { if (OnPropertyChanging("TextUnlockPartData." + nameof(ShaderNodeName), this, m_ShaderNodeName, value)) m_ShaderNodeName = value; } } // 0x8 (8)
 		
-		[ContainerField(12)]
-		public CtrRef<ObjectBlueprint> MeshBlueprint { get; set; } = new CtrRef<ObjectBlueprint>(); // 0xC (12)
+		protected CtrRef<ObjectBlueprint> m_MeshBlueprint = new CtrRef<ObjectBlueprint>();
+		[ContainerField(12), ContainerFieldNameHash(1662348825)]
+		public CtrRef<ObjectBlueprint> MeshBlueprint { get { return m_MeshBlueprint; } set { if (OnPropertyChanging("TextUnlockPartData." + nameof(MeshBlueprint), this, m_MeshBlueprint, value)) m_MeshBlueprint = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

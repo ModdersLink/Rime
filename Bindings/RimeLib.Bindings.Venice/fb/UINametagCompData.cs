@@ -5,37 +5,54 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class UINametagCompData : 
 		UI3dIconCompData
 	{
-		[ContainerField(160), Homogeneous, LayoutImmutable, Blittable]
-		public Vec4 SquadTint { get; set; } = new Vec4(); // 0xA0 (160)
+		protected Vec4 m_SquadTint = new Vec4();
+		[ContainerField(160), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(1279667216)]
+		public Vec4 SquadTint { get { return m_SquadTint; } set { if (OnPropertyChanging("UINametagCompData." + nameof(SquadTint), this, m_SquadTint, value)) m_SquadTint = value; } } // 0xA0 (160)
 		
-		[ContainerField(176), Homogeneous, LayoutImmutable, Blittable]
-		public Vec4 EnemyTint { get; set; } = new Vec4(); // 0xB0 (176)
+		protected Vec4 m_EnemyTint = new Vec4();
+		[ContainerField(176), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(1877107960)]
+		public Vec4 EnemyTint { get { return m_EnemyTint; } set { if (OnPropertyChanging("UINametagCompData." + nameof(EnemyTint), this, m_EnemyTint, value)) m_EnemyTint = value; } } // 0xB0 (176)
 		
-		[ContainerField(192), Homogeneous, LayoutImmutable, Blittable]
-		public Vec4 FriendlyTint { get; set; } = new Vec4(); // 0xC0 (192)
+		protected Vec4 m_FriendlyTint = new Vec4();
+		[ContainerField(192), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(3885116261)]
+		public Vec4 FriendlyTint { get { return m_FriendlyTint; } set { if (OnPropertyChanging("UINametagCompData." + nameof(FriendlyTint), this, m_FriendlyTint, value)) m_FriendlyTint = value; } } // 0xC0 (192)
 		
-		[ContainerField(208), LayoutImmutable, Blittable]
-		public int OrderCooldown { get; set; } // 0xD0 (208)
+		protected int m_OrderCooldown = new int();
+		[ContainerField(208), LayoutImmutable, Blittable, ContainerFieldNameHash(913984022)]
+		public int OrderCooldown { get { return m_OrderCooldown; } set { if (OnPropertyChanging("UINametagCompData." + nameof(OrderCooldown), this, m_OrderCooldown, value)) m_OrderCooldown = value; } } // 0xD0 (208)
 		
-		[ContainerField(212), LayoutImmutable, Blittable]
-		public int TooltipCooldown { get; set; } // 0xD4 (212)
+		protected int m_TooltipCooldown = new int();
+		[ContainerField(212), LayoutImmutable, Blittable, ContainerFieldNameHash(4214670893)]
+		public int TooltipCooldown { get { return m_TooltipCooldown; } set { if (OnPropertyChanging("UINametagCompData." + nameof(TooltipCooldown), this, m_TooltipCooldown, value)) m_TooltipCooldown = value; } } // 0xD4 (212)
 		
-		[ContainerField(216), LayoutImmutable, Blittable]
-		public float HealthBarSize { get; set; } // 0xD8 (216)
+		protected float m_HealthBarSize = new float();
+		[ContainerField(216), LayoutImmutable, Blittable, ContainerFieldNameHash(89080141)]
+		public float HealthBarSize { get { return m_HealthBarSize; } set { if (OnPropertyChanging("UINametagCompData." + nameof(HealthBarSize), this, m_HealthBarSize, value)) m_HealthBarSize = value; } } // 0xD8 (216)
 		
-		[ContainerField(220), LayoutImmutable, Blittable]
-		public float NameFontSize { get; set; } // 0xDC (220)
+		protected float m_NameFontSize = new float();
+		[ContainerField(220), LayoutImmutable, Blittable, ContainerFieldNameHash(1804567924)]
+		public float NameFontSize { get { return m_NameFontSize; } set { if (OnPropertyChanging("UINametagCompData." + nameof(NameFontSize), this, m_NameFontSize, value)) m_NameFontSize = value; } } // 0xDC (220)
 		
-		[ContainerField(224), LayoutImmutable, Blittable]
-		public float NameGlowSize { get; set; } // 0xE0 (224)
+		protected float m_NameGlowSize = new float();
+		[ContainerField(224), LayoutImmutable, Blittable, ContainerFieldNameHash(2750852340)]
+		public float NameGlowSize { get { return m_NameGlowSize; } set { if (OnPropertyChanging("UINametagCompData." + nameof(NameGlowSize), this, m_NameGlowSize, value)) m_NameGlowSize = value; } } // 0xE0 (224)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,22 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class CharacterWeaponComponentData : 
 		ComponentData
 	{
-		[ContainerField(96)]
-		public CtrRef<SoldierWeaponBlueprint> DefaultWeaponBlueprint { get; set; } = new CtrRef<SoldierWeaponBlueprint>(); // 0x60 (96)
+		protected CtrRef<SoldierWeaponBlueprint> m_DefaultWeaponBlueprint = new CtrRef<SoldierWeaponBlueprint>();
+		[ContainerField(96), ContainerFieldNameHash(594340867)]
+		public CtrRef<SoldierWeaponBlueprint> DefaultWeaponBlueprint { get { return m_DefaultWeaponBlueprint; } set { if (OnPropertyChanging("CharacterWeaponComponentData." + nameof(DefaultWeaponBlueprint), this, m_DefaultWeaponBlueprint, value)) m_DefaultWeaponBlueprint = value; } } // 0x60 (96)
 		
-		[ContainerField(100), LayoutImmutable]
-		public string AimBoneName { get; set; } // 0x64 (100)
+		protected string m_AimBoneName = new string();
+		[ContainerField(100), LayoutImmutable, ContainerFieldNameHash(529553697)]
+		public string AimBoneName { get { return m_AimBoneName; } set { if (OnPropertyChanging("CharacterWeaponComponentData." + nameof(AimBoneName), this, m_AimBoneName, value)) m_AimBoneName = value; } } // 0x64 (100)
 		
-		[ContainerField(104)]
-		public CtrRef<SkeletonAsset> WeaponSkeleton { get; set; } = new CtrRef<SkeletonAsset>(); // 0x68 (104)
+		protected CtrRef<SkeletonAsset> m_WeaponSkeleton = new CtrRef<SkeletonAsset>();
+		[ContainerField(104), ContainerFieldNameHash(170547750)]
+		public CtrRef<SkeletonAsset> WeaponSkeleton { get { return m_WeaponSkeleton; } set { if (OnPropertyChanging("CharacterWeaponComponentData." + nameof(WeaponSkeleton), this, m_WeaponSkeleton, value)) m_WeaponSkeleton = value; } } // 0x68 (104)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

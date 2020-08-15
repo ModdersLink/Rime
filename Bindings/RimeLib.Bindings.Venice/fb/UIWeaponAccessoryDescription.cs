@@ -5,40 +5,58 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class UIWeaponAccessoryDescription : 
 		UIItemDescription
 	{
-		[ContainerField(16), LayoutImmutable]
-		public string Name { get; set; } // 0x10 (16)
+		protected string m_Name = new string();
+		[ContainerField(16), LayoutImmutable, ContainerFieldNameHash(2088949890)]
+		public string Name { get { return m_Name; } set { if (OnPropertyChanging("UIWeaponAccessoryDescription." + nameof(Name), this, m_Name, value)) m_Name = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable]
-		public string Description { get; set; } // 0x14 (20)
+		protected string m_Description = new string();
+		[ContainerField(20), LayoutImmutable, ContainerFieldNameHash(1636673251)]
+		public string Description { get { return m_Description; } set { if (OnPropertyChanging("UIWeaponAccessoryDescription." + nameof(Description), this, m_Description, value)) m_Description = value; } } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable]
-		public string Category { get; set; } // 0x18 (24)
+		protected string m_Category = new string();
+		[ContainerField(24), LayoutImmutable, ContainerFieldNameHash(3455858997)]
+		public string Category { get { return m_Category; } set { if (OnPropertyChanging("UIWeaponAccessoryDescription." + nameof(Category), this, m_Category, value)) m_Category = value; } } // 0x18 (24)
 		
-		[ContainerField(28), LayoutImmutable]
-		public string TexturePath { get; set; } // 0x1C (28)
+		protected string m_TexturePath = new string();
+		[ContainerField(28), LayoutImmutable, ContainerFieldNameHash(3058477943)]
+		public string TexturePath { get { return m_TexturePath; } set { if (OnPropertyChanging("UIWeaponAccessoryDescription." + nameof(TexturePath), this, m_TexturePath, value)) m_TexturePath = value; } } // 0x1C (28)
 		
-		[ContainerField(32), LayoutImmutable]
-		public string IconTexturePath { get; set; } // 0x20 (32)
+		protected string m_IconTexturePath = new string();
+		[ContainerField(32), LayoutImmutable, ContainerFieldNameHash(377747068)]
+		public string IconTexturePath { get { return m_IconTexturePath; } set { if (OnPropertyChanging("UIWeaponAccessoryDescription." + nameof(IconTexturePath), this, m_IconTexturePath, value)) m_IconTexturePath = value; } } // 0x20 (32)
 		
-		[ContainerField(36), LayoutImmutable]
-		public string UnlockTexturePath { get; set; } // 0x24 (36)
+		protected string m_UnlockTexturePath = new string();
+		[ContainerField(36), LayoutImmutable, ContainerFieldNameHash(2699666183)]
+		public string UnlockTexturePath { get { return m_UnlockTexturePath; } set { if (OnPropertyChanging("UIWeaponAccessoryDescription." + nameof(UnlockTexturePath), this, m_UnlockTexturePath, value)) m_UnlockTexturePath = value; } } // 0x24 (36)
 		
-		[ContainerField(40), LayoutImmutable]
-		public string MiscTexturePath { get; set; } // 0x28 (40)
+		protected string m_MiscTexturePath = new string();
+		[ContainerField(40), LayoutImmutable, ContainerFieldNameHash(3395490563)]
+		public string MiscTexturePath { get { return m_MiscTexturePath; } set { if (OnPropertyChanging("UIWeaponAccessoryDescription." + nameof(MiscTexturePath), this, m_MiscTexturePath, value)) m_MiscTexturePath = value; } } // 0x28 (40)
 		
-		[ContainerField(44), LayoutImmutable, Blittable]
-		public bool CoreAccessory { get; set; } // 0x2C (44)
+		protected bool m_CoreAccessory = new bool();
+		[ContainerField(44), LayoutImmutable, Blittable, ContainerFieldNameHash(2311956670)]
+		public bool CoreAccessory { get { return m_CoreAccessory; } set { if (OnPropertyChanging("UIWeaponAccessoryDescription." + nameof(CoreAccessory), this, m_CoreAccessory, value)) m_CoreAccessory = value; } } // 0x2C (44)
 		
-		[ContainerField(45), LayoutImmutable, Blittable]
-		public bool HiddenInProgression { get; set; } // 0x2D (45)
+		protected bool m_HiddenInProgression = new bool();
+		[ContainerField(45), LayoutImmutable, Blittable, ContainerFieldNameHash(1800564573)]
+		public bool HiddenInProgression { get { return m_HiddenInProgression; } set { if (OnPropertyChanging("UIWeaponAccessoryDescription." + nameof(HiddenInProgression), this, m_HiddenInProgression, value)) m_HiddenInProgression = value; } } // 0x2D (45)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

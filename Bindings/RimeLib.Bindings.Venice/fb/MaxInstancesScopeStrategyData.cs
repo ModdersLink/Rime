@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class MaxInstancesScopeStrategyData : 
 		SoundScopeStrategyData
 	{
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public uint Count { get; set; } // 0xC (12)
+		protected uint m_Count = new uint();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(212413894)]
+		public uint Count { get { return m_Count; } set { if (OnPropertyChanging("MaxInstancesScopeStrategyData." + nameof(Count), this, m_Count, value)) m_Count = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public bool KeepOldest { get; set; } // 0x10 (16)
+		protected bool m_KeepOldest = new bool();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(135411227)]
+		public bool KeepOldest { get { return m_KeepOldest; } set { if (OnPropertyChanging("MaxInstancesScopeStrategyData." + nameof(KeepOldest), this, m_KeepOldest, value)) m_KeepOldest = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

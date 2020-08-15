@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class AntTrackData : 
 		CustomSequenceTrackData
 	{
-		[ContainerField(40)]
-		public RefArray<AntTrackItemData> AntTrackItemDatas { get; set; } = new RefArray<AntTrackItemData>(); // 0x28 (40)
+		protected RefArray<AntTrackItemData> m_AntTrackItemDatas = new RefArray<AntTrackItemData>();
+		[ContainerField(40), ContainerFieldNameHash(3918294759)]
+		public RefArray<AntTrackItemData> AntTrackItemDatas { get { return m_AntTrackItemDatas; } set { if (OnPropertyChanging("AntTrackData." + nameof(AntTrackItemDatas), this, m_AntTrackItemDatas, value)) m_AntTrackItemDatas = value; } } // 0x28 (40)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

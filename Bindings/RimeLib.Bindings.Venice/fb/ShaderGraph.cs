@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class ShaderGraph : 
 		SurfaceShaderBaseAsset
 	{
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public uint MaxSubMaterialCount { get; set; } // 0xC (12)
+		protected uint m_MaxSubMaterialCount = new uint();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(2130556957)]
+		public uint MaxSubMaterialCount { get { return m_MaxSubMaterialCount; } set { if (OnPropertyChanging("ShaderGraph." + nameof(MaxSubMaterialCount), this, m_MaxSubMaterialCount, value)) m_MaxSubMaterialCount = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public bool GammaCorrectionEnable { get; set; } // 0x10 (16)
+		protected bool m_GammaCorrectionEnable = new bool();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(315798933)]
+		public bool GammaCorrectionEnable { get { return m_GammaCorrectionEnable; } set { if (OnPropertyChanging("ShaderGraph." + nameof(GammaCorrectionEnable), this, m_GammaCorrectionEnable, value)) m_GammaCorrectionEnable = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

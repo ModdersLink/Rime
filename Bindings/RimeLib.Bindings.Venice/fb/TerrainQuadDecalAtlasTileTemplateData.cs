@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class TerrainQuadDecalAtlasTileTemplateData : 
 		Asset
 	{
-		[ContainerField(12)]
-		public TerrainQuadDecalAtlasTile AtlasTile { get; set; } = new TerrainQuadDecalAtlasTile(); // 0xC (12)
+		protected TerrainQuadDecalAtlasTile m_AtlasTile = new TerrainQuadDecalAtlasTile();
+		[ContainerField(12), ContainerFieldNameHash(3027817338)]
+		public TerrainQuadDecalAtlasTile AtlasTile { get { return m_AtlasTile; } set { if (OnPropertyChanging("TerrainQuadDecalAtlasTileTemplateData." + nameof(AtlasTile), this, m_AtlasTile, value)) m_AtlasTile = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

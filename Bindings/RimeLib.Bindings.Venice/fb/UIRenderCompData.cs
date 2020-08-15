@@ -5,37 +5,54 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class UIRenderCompData : 
 		UIComponentData
 	{
-		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable]
-		public Vec4 BackgroundRect1 { get; set; } = new Vec4(); // 0x20 (32)
+		protected Vec4 m_BackgroundRect1 = new Vec4();
+		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(2991039386)]
+		public Vec4 BackgroundRect1 { get { return m_BackgroundRect1; } set { if (OnPropertyChanging("UIRenderCompData." + nameof(BackgroundRect1), this, m_BackgroundRect1, value)) m_BackgroundRect1 = value; } } // 0x20 (32)
 		
-		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable]
-		public Vec4 BackgroundRect0 { get; set; } = new Vec4(); // 0x30 (48)
+		protected Vec4 m_BackgroundRect0 = new Vec4();
+		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(2991039387)]
+		public Vec4 BackgroundRect0 { get { return m_BackgroundRect0; } set { if (OnPropertyChanging("UIRenderCompData." + nameof(BackgroundRect0), this, m_BackgroundRect0, value)) m_BackgroundRect0 = value; } } // 0x30 (48)
 		
-		[ContainerField(64)]
-		public CtrRef<TextureAsset> BgTexture2 { get; set; } = new CtrRef<TextureAsset>(); // 0x40 (64)
+		protected CtrRef<TextureAsset> m_BgTexture2 = new CtrRef<TextureAsset>();
+		[ContainerField(64), ContainerFieldNameHash(1961408333)]
+		public CtrRef<TextureAsset> BgTexture2 { get { return m_BgTexture2; } set { if (OnPropertyChanging("UIRenderCompData." + nameof(BgTexture2), this, m_BgTexture2, value)) m_BgTexture2 = value; } } // 0x40 (64)
 		
-		[ContainerField(68)]
-		public CtrRef<TextureAsset> BgTexture1 { get; set; } = new CtrRef<TextureAsset>(); // 0x44 (68)
+		protected CtrRef<TextureAsset> m_BgTexture1 = new CtrRef<TextureAsset>();
+		[ContainerField(68), ContainerFieldNameHash(1961408334)]
+		public CtrRef<TextureAsset> BgTexture1 { get { return m_BgTexture1; } set { if (OnPropertyChanging("UIRenderCompData." + nameof(BgTexture1), this, m_BgTexture1, value)) m_BgTexture1 = value; } } // 0x44 (68)
 		
-		[ContainerField(72), LayoutImmutable, Blittable]
-		public float AlphaMin { get; set; } // 0x48 (72)
+		protected float m_AlphaMin = new float();
+		[ContainerField(72), LayoutImmutable, Blittable, ContainerFieldNameHash(4095153339)]
+		public float AlphaMin { get { return m_AlphaMin; } set { if (OnPropertyChanging("UIRenderCompData." + nameof(AlphaMin), this, m_AlphaMin, value)) m_AlphaMin = value; } } // 0x48 (72)
 		
-		[ContainerField(76), LayoutImmutable, Blittable]
-		public float AlphaAnimationSpeed { get; set; } // 0x4C (76)
+		protected float m_AlphaAnimationSpeed = new float();
+		[ContainerField(76), LayoutImmutable, Blittable, ContainerFieldNameHash(1710921088)]
+		public float AlphaAnimationSpeed { get { return m_AlphaAnimationSpeed; } set { if (OnPropertyChanging("UIRenderCompData." + nameof(AlphaAnimationSpeed), this, m_AlphaAnimationSpeed, value)) m_AlphaAnimationSpeed = value; } } // 0x4C (76)
 		
-		[ContainerField(80), LayoutImmutable, Blittable]
-		public float AlphaOffset { get; set; } // 0x50 (80)
+		protected float m_AlphaOffset = new float();
+		[ContainerField(80), LayoutImmutable, Blittable, ContainerFieldNameHash(700046300)]
+		public float AlphaOffset { get { return m_AlphaOffset; } set { if (OnPropertyChanging("UIRenderCompData." + nameof(AlphaOffset), this, m_AlphaOffset, value)) m_AlphaOffset = value; } } // 0x50 (80)
 		
-		[ContainerField(84), LayoutImmutable, Blittable]
-		public float AlphaMax { get; set; } // 0x54 (84)
+		protected float m_AlphaMax = new float();
+		[ContainerField(84), LayoutImmutable, Blittable, ContainerFieldNameHash(4095153573)]
+		public float AlphaMax { get { return m_AlphaMax; } set { if (OnPropertyChanging("UIRenderCompData." + nameof(AlphaMax), this, m_AlphaMax, value)) m_AlphaMax = value; } } // 0x54 (84)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

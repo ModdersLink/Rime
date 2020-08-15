@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class WeaponMagazineModifier : 
 		WeaponModifierBase
 	{
-		[ContainerField(8), LayoutImmutable, Blittable]
-		public int MagazineCapacity { get; set; } // 0x8 (8)
+		protected int m_MagazineCapacity = new int();
+		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(1634670339)]
+		public int MagazineCapacity { get { return m_MagazineCapacity; } set { if (OnPropertyChanging("WeaponMagazineModifier." + nameof(MagazineCapacity), this, m_MagazineCapacity, value)) m_MagazineCapacity = value; } } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public int NumberOfMagazines { get; set; } // 0xC (12)
+		protected int m_NumberOfMagazines = new int();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(2684433166)]
+		public int NumberOfMagazines { get { return m_NumberOfMagazines; } set { if (OnPropertyChanging("WeaponMagazineModifier." + nameof(NumberOfMagazines), this, m_NumberOfMagazines, value)) m_NumberOfMagazines = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

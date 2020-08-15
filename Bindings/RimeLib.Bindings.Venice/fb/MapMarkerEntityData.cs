@@ -5,101 +5,138 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class MapMarkerEntityData : 
 		GameEntityData
 	{
-		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 BaseTransform { get; set; } = new Vec3(); // 0x60 (96)
+		protected Vec3 m_BaseTransform = new Vec3();
+		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(2733408796)]
+		public Vec3 BaseTransform { get { return m_BaseTransform; } set { if (OnPropertyChanging("MapMarkerEntityData." + nameof(BaseTransform), this, m_BaseTransform, value)) m_BaseTransform = value; } } // 0x60 (96)
 		
-		[ContainerField(112), LayoutImmutable, Blittable]
-		public float ProgressMinTime { get; set; } // 0x70 (112)
+		protected float m_ProgressMinTime = new float();
+		[ContainerField(112), LayoutImmutable, Blittable, ContainerFieldNameHash(1288296263)]
+		public float ProgressMinTime { get { return m_ProgressMinTime; } set { if (OnPropertyChanging("MapMarkerEntityData." + nameof(ProgressMinTime), this, m_ProgressMinTime, value)) m_ProgressMinTime = value; } } // 0x70 (112)
 		
-		[ContainerField(116), LayoutImmutable]
-		public string Sid { get; set; } // 0x74 (116)
+		protected string m_Sid = new string();
+		[ContainerField(116), LayoutImmutable, ContainerFieldNameHash(193466587)]
+		public string Sid { get { return m_Sid; } set { if (OnPropertyChanging("MapMarkerEntityData." + nameof(Sid), this, m_Sid, value)) m_Sid = value; } } // 0x74 (116)
 		
-		[ContainerField(120), LayoutImmutable, Blittable]
-		public int NrOfPassengers { get; set; } // 0x78 (120)
+		protected int m_NrOfPassengers = new int();
+		[ContainerField(120), LayoutImmutable, Blittable, ContainerFieldNameHash(1911822697)]
+		public int NrOfPassengers { get { return m_NrOfPassengers; } set { if (OnPropertyChanging("MapMarkerEntityData." + nameof(NrOfPassengers), this, m_NrOfPassengers, value)) m_NrOfPassengers = value; } } // 0x78 (120)
 		
-		[ContainerField(124), LayoutImmutable, Blittable]
-		public int NrOfEntries { get; set; } // 0x7C (124)
+		protected int m_NrOfEntries = new int();
+		[ContainerField(124), LayoutImmutable, Blittable, ContainerFieldNameHash(909117378)]
+		public int NrOfEntries { get { return m_NrOfEntries; } set { if (OnPropertyChanging("MapMarkerEntityData." + nameof(NrOfEntries), this, m_NrOfEntries, value)) m_NrOfEntries = value; } } // 0x7C (124)
 		
-		[ContainerField(128), LayoutImmutable, Blittable]
-		public float ProgressTime1Player { get; set; } // 0x80 (128)
+		protected float m_ProgressTime1Player = new float();
+		[ContainerField(128), LayoutImmutable, Blittable, ContainerFieldNameHash(3224499087)]
+		public float ProgressTime1Player { get { return m_ProgressTime1Player; } set { if (OnPropertyChanging("MapMarkerEntityData." + nameof(ProgressTime1Player), this, m_ProgressTime1Player, value)) m_ProgressTime1Player = value; } } // 0x80 (128)
 		
-		[ContainerField(132), LayoutImmutable, Blittable]
-		public float ShowRadius { get; set; } // 0x84 (132)
+		protected float m_ShowRadius = new float();
+		[ContainerField(132), LayoutImmutable, Blittable, ContainerFieldNameHash(2284771454)]
+		public float ShowRadius { get { return m_ShowRadius; } set { if (OnPropertyChanging("MapMarkerEntityData." + nameof(ShowRadius), this, m_ShowRadius, value)) m_ShowRadius = value; } } // 0x84 (132)
 		
-		[ContainerField(136), LayoutImmutable, Blittable]
-		public float HideRadius { get; set; } // 0x88 (136)
+		protected float m_HideRadius = new float();
+		[ContainerField(136), LayoutImmutable, Blittable, ContainerFieldNameHash(3315533693)]
+		public float HideRadius { get { return m_HideRadius; } set { if (OnPropertyChanging("MapMarkerEntityData." + nameof(HideRadius), this, m_HideRadius, value)) m_HideRadius = value; } } // 0x88 (136)
 		
-		[ContainerField(140), LayoutImmutable, Blittable]
-		public float BlinkTime { get; set; } // 0x8C (140)
+		protected float m_BlinkTime = new float();
+		[ContainerField(140), LayoutImmutable, Blittable, ContainerFieldNameHash(2878244914)]
+		public float BlinkTime { get { return m_BlinkTime; } set { if (OnPropertyChanging("MapMarkerEntityData." + nameof(BlinkTime), this, m_BlinkTime, value)) m_BlinkTime = value; } } // 0x8C (140)
 		
-		[ContainerField(144)]
-		public MapMarkerType MarkerType { get; set; } = new MapMarkerType(); // 0x90 (144)
+		protected MapMarkerType m_MarkerType = new MapMarkerType();
+		[ContainerField(144), ContainerFieldNameHash(1033168991)]
+		public MapMarkerType MarkerType { get { return m_MarkerType; } set { if (OnPropertyChanging("MapMarkerEntityData." + nameof(MarkerType), this, m_MarkerType, value)) m_MarkerType = value; } } // 0x90 (144)
 		
-		[ContainerField(148)]
-		public TeamId VisibleForTeam { get; set; } = new TeamId(); // 0x94 (148)
+		protected TeamId m_VisibleForTeam = new TeamId();
+		[ContainerField(148), ContainerFieldNameHash(2554745645)]
+		public TeamId VisibleForTeam { get { return m_VisibleForTeam; } set { if (OnPropertyChanging("MapMarkerEntityData." + nameof(VisibleForTeam), this, m_VisibleForTeam, value)) m_VisibleForTeam = value; } } // 0x94 (148)
 		
-		[ContainerField(152)]
-		public TeamId OwnerTeam { get; set; } = new TeamId(); // 0x98 (152)
+		protected TeamId m_OwnerTeam = new TeamId();
+		[ContainerField(152), ContainerFieldNameHash(2899763897)]
+		public TeamId OwnerTeam { get { return m_OwnerTeam; } set { if (OnPropertyChanging("MapMarkerEntityData." + nameof(OwnerTeam), this, m_OwnerTeam, value)) m_OwnerTeam = value; } } // 0x98 (152)
 		
-		[ContainerField(156)]
-		public UIHudIcon HudIcon { get; set; } = new UIHudIcon(); // 0x9C (156)
+		protected UIHudIcon m_HudIcon = new UIHudIcon();
+		[ContainerField(156), ContainerFieldNameHash(2639628855)]
+		public UIHudIcon HudIcon { get { return m_HudIcon; } set { if (OnPropertyChanging("MapMarkerEntityData." + nameof(HudIcon), this, m_HudIcon, value)) m_HudIcon = value; } } // 0x9C (156)
 		
-		[ContainerField(160), LayoutImmutable, Blittable]
-		public float VerticalOffset { get; set; } // 0xA0 (160)
+		protected float m_VerticalOffset = new float();
+		[ContainerField(160), LayoutImmutable, Blittable, ContainerFieldNameHash(2125919898)]
+		public float VerticalOffset { get { return m_VerticalOffset; } set { if (OnPropertyChanging("MapMarkerEntityData." + nameof(VerticalOffset), this, m_VerticalOffset, value)) m_VerticalOffset = value; } } // 0xA0 (160)
 		
-		[ContainerField(164), LayoutImmutable, Blittable]
-		public float FocusPointRadius { get; set; } // 0xA4 (164)
+		protected float m_FocusPointRadius = new float();
+		[ContainerField(164), LayoutImmutable, Blittable, ContainerFieldNameHash(3886659069)]
+		public float FocusPointRadius { get { return m_FocusPointRadius; } set { if (OnPropertyChanging("MapMarkerEntityData." + nameof(FocusPointRadius), this, m_FocusPointRadius, value)) m_FocusPointRadius = value; } } // 0xA4 (164)
 		
-		[ContainerField(168), LayoutImmutable, Blittable]
-		public float InstantFlagReturnRadius { get; set; } // 0xA8 (168)
+		protected float m_InstantFlagReturnRadius = new float();
+		[ContainerField(168), LayoutImmutable, Blittable, ContainerFieldNameHash(1381394048)]
+		public float InstantFlagReturnRadius { get { return m_InstantFlagReturnRadius; } set { if (OnPropertyChanging("MapMarkerEntityData." + nameof(InstantFlagReturnRadius), this, m_InstantFlagReturnRadius, value)) m_InstantFlagReturnRadius = value; } } // 0xA8 (168)
 		
-		[ContainerField(172), LayoutImmutable, Blittable]
-		public float Progress { get; set; } // 0xAC (172)
+		protected float m_Progress = new float();
+		[ContainerField(172), LayoutImmutable, Blittable, ContainerFieldNameHash(3002510520)]
+		public float Progress { get { return m_Progress; } set { if (OnPropertyChanging("MapMarkerEntityData." + nameof(Progress), this, m_Progress, value)) m_Progress = value; } } // 0xAC (172)
 		
-		[ContainerField(176), LayoutImmutable, Blittable]
-		public float ProgressPlayerSpeedUpPercentage { get; set; } // 0xB0 (176)
+		protected float m_ProgressPlayerSpeedUpPercentage = new float();
+		[ContainerField(176), LayoutImmutable, Blittable, ContainerFieldNameHash(2861738545)]
+		public float ProgressPlayerSpeedUpPercentage { get { return m_ProgressPlayerSpeedUpPercentage; } set { if (OnPropertyChanging("MapMarkerEntityData." + nameof(ProgressPlayerSpeedUpPercentage), this, m_ProgressPlayerSpeedUpPercentage, value)) m_ProgressPlayerSpeedUpPercentage = value; } } // 0xB0 (176)
 		
-		[ContainerField(180), LayoutImmutable, Blittable]
-		public uint TrackedPlayersInRange { get; set; } // 0xB4 (180)
+		protected uint m_TrackedPlayersInRange = new uint();
+		[ContainerField(180), LayoutImmutable, Blittable, ContainerFieldNameHash(1098650803)]
+		public uint TrackedPlayersInRange { get { return m_TrackedPlayersInRange; } set { if (OnPropertyChanging("MapMarkerEntityData." + nameof(TrackedPlayersInRange), this, m_TrackedPlayersInRange, value)) m_TrackedPlayersInRange = value; } } // 0xB4 (180)
 		
-		[ContainerField(184), LayoutImmutable, Blittable]
-		public float TrackingPlayerRange { get; set; } // 0xB8 (184)
+		protected float m_TrackingPlayerRange = new float();
+		[ContainerField(184), LayoutImmutable, Blittable, ContainerFieldNameHash(1572595814)]
+		public float TrackingPlayerRange { get { return m_TrackingPlayerRange; } set { if (OnPropertyChanging("MapMarkerEntityData." + nameof(TrackingPlayerRange), this, m_TrackingPlayerRange, value)) m_TrackingPlayerRange = value; } } // 0xB8 (184)
 		
-		[ContainerField(188), LayoutImmutable, Blittable]
-		public float ProgressTime { get; set; } // 0xBC (188)
+		protected float m_ProgressTime = new float();
+		[ContainerField(188), LayoutImmutable, Blittable, ContainerFieldNameHash(1938365101)]
+		public float ProgressTime { get { return m_ProgressTime; } set { if (OnPropertyChanging("MapMarkerEntityData." + nameof(ProgressTime), this, m_ProgressTime, value)) m_ProgressTime = value; } } // 0xBC (188)
 		
-		[ContainerField(192), LayoutImmutable, Blittable]
-		public bool OnlyShowSnapped { get; set; } // 0xC0 (192)
+		protected bool m_OnlyShowSnapped = new bool();
+		[ContainerField(192), LayoutImmutable, Blittable, ContainerFieldNameHash(1611417039)]
+		public bool OnlyShowSnapped { get { return m_OnlyShowSnapped; } set { if (OnPropertyChanging("MapMarkerEntityData." + nameof(OnlyShowSnapped), this, m_OnlyShowSnapped, value)) m_OnlyShowSnapped = value; } } // 0xC0 (192)
 		
-		[ContainerField(193), LayoutImmutable, Blittable]
-		public bool FlagControlMarker { get; set; } // 0xC1 (193)
+		protected bool m_FlagControlMarker = new bool();
+		[ContainerField(193), LayoutImmutable, Blittable, ContainerFieldNameHash(2755443660)]
+		public bool FlagControlMarker { get { return m_FlagControlMarker; } set { if (OnPropertyChanging("MapMarkerEntityData." + nameof(FlagControlMarker), this, m_FlagControlMarker, value)) m_FlagControlMarker = value; } } // 0xC1 (193)
 		
-		[ContainerField(194), LayoutImmutable, Blittable]
-		public bool ShowProgress { get; set; } // 0xC2 (194)
+		protected bool m_ShowProgress = new bool();
+		[ContainerField(194), LayoutImmutable, Blittable, ContainerFieldNameHash(2139033243)]
+		public bool ShowProgress { get { return m_ShowProgress; } set { if (OnPropertyChanging("MapMarkerEntityData." + nameof(ShowProgress), this, m_ShowProgress, value)) m_ShowProgress = value; } } // 0xC2 (194)
 		
-		[ContainerField(195), LayoutImmutable, Blittable]
-		public bool UseMarkerTransform { get; set; } // 0xC3 (195)
+		protected bool m_UseMarkerTransform = new bool();
+		[ContainerField(195), LayoutImmutable, Blittable, ContainerFieldNameHash(163061160)]
+		public bool UseMarkerTransform { get { return m_UseMarkerTransform; } set { if (OnPropertyChanging("MapMarkerEntityData." + nameof(UseMarkerTransform), this, m_UseMarkerTransform, value)) m_UseMarkerTransform = value; } } // 0xC3 (195)
 		
-		[ContainerField(196), LayoutImmutable, Blittable]
-		public bool IsVisible { get; set; } // 0xC4 (196)
+		protected bool m_IsVisible = new bool();
+		[ContainerField(196), LayoutImmutable, Blittable, ContainerFieldNameHash(4174428017)]
+		public bool IsVisible { get { return m_IsVisible; } set { if (OnPropertyChanging("MapMarkerEntityData." + nameof(IsVisible), this, m_IsVisible, value)) m_IsVisible = value; } } // 0xC4 (196)
 		
-		[ContainerField(197), LayoutImmutable, Blittable]
-		public bool Snap { get; set; } // 0xC5 (197)
+		protected bool m_Snap = new bool();
+		[ContainerField(197), LayoutImmutable, Blittable, ContainerFieldNameHash(2089420457)]
+		public bool Snap { get { return m_Snap; } set { if (OnPropertyChanging("MapMarkerEntityData." + nameof(Snap), this, m_Snap, value)) m_Snap = value; } } // 0xC5 (197)
 		
-		[ContainerField(198), LayoutImmutable, Blittable]
-		public bool ShowAirTargetBox { get; set; } // 0xC6 (198)
+		protected bool m_ShowAirTargetBox = new bool();
+		[ContainerField(198), LayoutImmutable, Blittable, ContainerFieldNameHash(3649779096)]
+		public bool ShowAirTargetBox { get { return m_ShowAirTargetBox; } set { if (OnPropertyChanging("MapMarkerEntityData." + nameof(ShowAirTargetBox), this, m_ShowAirTargetBox, value)) m_ShowAirTargetBox = value; } } // 0xC6 (198)
 		
-		[ContainerField(199), LayoutImmutable, Blittable]
-		public bool IsFocusPoint { get; set; } // 0xC7 (199)
+		protected bool m_IsFocusPoint = new bool();
+		[ContainerField(199), LayoutImmutable, Blittable, ContainerFieldNameHash(1984844159)]
+		public bool IsFocusPoint { get { return m_IsFocusPoint; } set { if (OnPropertyChanging("MapMarkerEntityData." + nameof(IsFocusPoint), this, m_IsFocusPoint, value)) m_IsFocusPoint = value; } } // 0xC7 (199)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,34 +5,50 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class VehicleWaypointData : 
 		WaypointData
 	{
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public float Speed { get; set; } // 0x10 (16)
+		protected float m_Speed = new float();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(230887042)]
+		public float Speed { get { return m_Speed; } set { if (OnPropertyChanging("VehicleWaypointData." + nameof(Speed), this, m_Speed, value)) m_Speed = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
-		public float SpeedOverrideMovingTowards { get; set; } // 0x14 (20)
+		protected float m_SpeedOverrideMovingTowards = new float();
+		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(4149709546)]
+		public float SpeedOverrideMovingTowards { get { return m_SpeedOverrideMovingTowards; } set { if (OnPropertyChanging("VehicleWaypointData." + nameof(SpeedOverrideMovingTowards), this, m_SpeedOverrideMovingTowards, value)) m_SpeedOverrideMovingTowards = value; } } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable]
-		public float Angleoffset { get; set; } // 0x18 (24)
+		protected float m_Angleoffset = new float();
+		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(686454889)]
+		public float Angleoffset { get { return m_Angleoffset; } set { if (OnPropertyChanging("VehicleWaypointData." + nameof(Angleoffset), this, m_Angleoffset, value)) m_Angleoffset = value; } } // 0x18 (24)
 		
-		[ContainerField(28), LayoutImmutable, Blittable]
-		public float StopHereRadius { get; set; } // 0x1C (28)
+		protected float m_StopHereRadius = new float();
+		[ContainerField(28), LayoutImmutable, Blittable, ContainerFieldNameHash(3378547103)]
+		public float StopHereRadius { get { return m_StopHereRadius; } set { if (OnPropertyChanging("VehicleWaypointData." + nameof(StopHereRadius), this, m_StopHereRadius, value)) m_StopHereRadius = value; } } // 0x1C (28)
 		
-		[ContainerField(32), LayoutImmutable, Blittable]
-		public float StoppingDeceleration { get; set; } // 0x20 (32)
+		protected float m_StoppingDeceleration = new float();
+		[ContainerField(32), LayoutImmutable, Blittable, ContainerFieldNameHash(2524085644)]
+		public float StoppingDeceleration { get { return m_StoppingDeceleration; } set { if (OnPropertyChanging("VehicleWaypointData." + nameof(StoppingDeceleration), this, m_StoppingDeceleration, value)) m_StoppingDeceleration = value; } } // 0x20 (32)
 		
-		[ContainerField(36), LayoutImmutable, Blittable]
-		public float MinSlowdownSpeed { get; set; } // 0x24 (36)
+		protected float m_MinSlowdownSpeed = new float();
+		[ContainerField(36), LayoutImmutable, Blittable, ContainerFieldNameHash(3207717373)]
+		public float MinSlowdownSpeed { get { return m_MinSlowdownSpeed; } set { if (OnPropertyChanging("VehicleWaypointData." + nameof(MinSlowdownSpeed), this, m_MinSlowdownSpeed, value)) m_MinSlowdownSpeed = value; } } // 0x24 (36)
 		
-		[ContainerField(40), LayoutImmutable, Blittable]
-		public bool StopHere { get; set; } // 0x28 (40)
+		protected bool m_StopHere = new bool();
+		[ContainerField(40), LayoutImmutable, Blittable, ContainerFieldNameHash(3655484487)]
+		public bool StopHere { get { return m_StopHere; } set { if (OnPropertyChanging("VehicleWaypointData." + nameof(StopHere), this, m_StopHere, value)) m_StopHere = value; } } // 0x28 (40)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

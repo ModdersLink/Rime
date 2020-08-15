@@ -5,17 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class Ps3ParentalLockAgeSettingsOverrides : 
 		DataContainer
 	{
-		[ContainerField(8)]
-		public List<Ps3ParentalLockAgeSettingsForCountry> Overrides { get; set; } = new List<Ps3ParentalLockAgeSettingsForCountry>(); // 0x8 (8)
+		protected List<Ps3ParentalLockAgeSettingsForCountry> m_Overrides = new List<Ps3ParentalLockAgeSettingsForCountry>();
+		[ContainerField(8), ContainerFieldNameHash(2465446370)]
+		public List<Ps3ParentalLockAgeSettingsForCountry> Overrides { get { return m_Overrides; } set { if (OnPropertyChanging("Ps3ParentalLockAgeSettingsOverrides." + nameof(Overrides), this, m_Overrides, value)) m_Overrides = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

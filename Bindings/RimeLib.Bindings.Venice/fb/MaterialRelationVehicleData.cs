@@ -5,25 +5,38 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class MaterialRelationVehicleData : 
 		PhysicsMaterialRelationPropertyData
 	{
-		[ContainerField(8)]
-		public CtrRef<EffectBlueprint> ChassiEffect { get; set; } = new CtrRef<EffectBlueprint>(); // 0x8 (8)
+		protected CtrRef<EffectBlueprint> m_ChassiEffect = new CtrRef<EffectBlueprint>();
+		[ContainerField(8), ContainerFieldNameHash(2206681905)]
+		public CtrRef<EffectBlueprint> ChassiEffect { get { return m_ChassiEffect; } set { if (OnPropertyChanging("MaterialRelationVehicleData." + nameof(ChassiEffect), this, m_ChassiEffect, value)) m_ChassiEffect = value; } } // 0x8 (8)
 		
-		[ContainerField(12)]
-		public CtrRef<EffectBlueprint> TrackEffect { get; set; } = new CtrRef<EffectBlueprint>(); // 0xC (12)
+		protected CtrRef<EffectBlueprint> m_TrackEffect = new CtrRef<EffectBlueprint>();
+		[ContainerField(12), ContainerFieldNameHash(1006696637)]
+		public CtrRef<EffectBlueprint> TrackEffect { get { return m_TrackEffect; } set { if (OnPropertyChanging("MaterialRelationVehicleData." + nameof(TrackEffect), this, m_TrackEffect, value)) m_TrackEffect = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public CtrRef<EffectBlueprint> WheelEffect { get; set; } = new CtrRef<EffectBlueprint>(); // 0x10 (16)
+		protected CtrRef<EffectBlueprint> m_WheelEffect = new CtrRef<EffectBlueprint>();
+		[ContainerField(16), ContainerFieldNameHash(3303703137)]
+		public CtrRef<EffectBlueprint> WheelEffect { get { return m_WheelEffect; } set { if (OnPropertyChanging("MaterialRelationVehicleData." + nameof(WheelEffect), this, m_WheelEffect, value)) m_WheelEffect = value; } } // 0x10 (16)
 		
-		[ContainerField(20)]
-		public CtrRef<EffectBlueprint> GroundEffect { get; set; } = new CtrRef<EffectBlueprint>(); // 0x14 (20)
+		protected CtrRef<EffectBlueprint> m_GroundEffect = new CtrRef<EffectBlueprint>();
+		[ContainerField(20), ContainerFieldNameHash(2819688663)]
+		public CtrRef<EffectBlueprint> GroundEffect { get { return m_GroundEffect; } set { if (OnPropertyChanging("MaterialRelationVehicleData." + nameof(GroundEffect), this, m_GroundEffect, value)) m_GroundEffect = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

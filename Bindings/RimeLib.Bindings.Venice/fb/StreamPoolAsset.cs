@@ -5,47 +5,66 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class StreamPoolAsset : 
 		Asset
 	{
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public uint StreamPoolId { get; set; } // 0xC (12)
+		protected uint m_StreamPoolId = new uint();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(797330728)]
+		public uint StreamPoolId { get { return m_StreamPoolId; } set { if (OnPropertyChanging("StreamPoolAsset." + nameof(StreamPoolId), this, m_StreamPoolId, value)) m_StreamPoolId = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public uint StreamBufferSizeXenon { get; set; } // 0x10 (16)
+		protected uint m_StreamBufferSizeXenon = new uint();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(3173825006)]
+		public uint StreamBufferSizeXenon { get { return m_StreamBufferSizeXenon; } set { if (OnPropertyChanging("StreamPoolAsset." + nameof(StreamBufferSizeXenon), this, m_StreamBufferSizeXenon, value)) m_StreamBufferSizeXenon = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
-		public uint StreamBufferSizePs3 { get; set; } // 0x14 (20)
+		protected uint m_StreamBufferSizePs3 = new uint();
+		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(4167740684)]
+		public uint StreamBufferSizePs3 { get { return m_StreamBufferSizePs3; } set { if (OnPropertyChanging("StreamPoolAsset." + nameof(StreamBufferSizePs3), this, m_StreamBufferSizePs3, value)) m_StreamBufferSizePs3 = value; } } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable]
-		public uint StreamBufferSizeWin32 { get; set; } // 0x18 (24)
+		protected uint m_StreamBufferSizeWin32 = new uint();
+		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(3184351085)]
+		public uint StreamBufferSizeWin32 { get { return m_StreamBufferSizeWin32; } set { if (OnPropertyChanging("StreamPoolAsset." + nameof(StreamBufferSizeWin32), this, m_StreamBufferSizeWin32, value)) m_StreamBufferSizeWin32 = value; } } // 0x18 (24)
 		
-		[ContainerField(28), LayoutImmutable, Blittable]
-		public uint StreamCountXenon { get; set; } // 0x1C (28)
+		protected uint m_StreamCountXenon = new uint();
+		[ContainerField(28), LayoutImmutable, Blittable, ContainerFieldNameHash(1930216744)]
+		public uint StreamCountXenon { get { return m_StreamCountXenon; } set { if (OnPropertyChanging("StreamPoolAsset." + nameof(StreamCountXenon), this, m_StreamCountXenon, value)) m_StreamCountXenon = value; } } // 0x1C (28)
 		
-		[ContainerField(32), LayoutImmutable, Blittable]
-		public uint StreamCountPs3 { get; set; } // 0x20 (32)
+		protected uint m_StreamCountPs3 = new uint();
+		[ContainerField(32), LayoutImmutable, Blittable, ContainerFieldNameHash(2624511690)]
+		public uint StreamCountPs3 { get { return m_StreamCountPs3; } set { if (OnPropertyChanging("StreamPoolAsset." + nameof(StreamCountPs3), this, m_StreamCountPs3, value)) m_StreamCountPs3 = value; } } // 0x20 (32)
 		
-		[ContainerField(36), LayoutImmutable, Blittable]
-		public uint StreamCountWin32 { get; set; } // 0x24 (36)
+		protected uint m_StreamCountWin32 = new uint();
+		[ContainerField(36), LayoutImmutable, Blittable, ContainerFieldNameHash(1944928555)]
+		public uint StreamCountWin32 { get { return m_StreamCountWin32; } set { if (OnPropertyChanging("StreamPoolAsset." + nameof(StreamCountWin32), this, m_StreamCountWin32, value)) m_StreamCountWin32 = value; } } // 0x24 (36)
 		
-		[ContainerField(40), LayoutImmutable, Blittable]
-		public uint StreamReadBlockSizeXenon { get; set; } // 0x28 (40)
+		protected uint m_StreamReadBlockSizeXenon = new uint();
+		[ContainerField(40), LayoutImmutable, Blittable, ContainerFieldNameHash(3422200789)]
+		public uint StreamReadBlockSizeXenon { get { return m_StreamReadBlockSizeXenon; } set { if (OnPropertyChanging("StreamPoolAsset." + nameof(StreamReadBlockSizeXenon), this, m_StreamReadBlockSizeXenon, value)) m_StreamReadBlockSizeXenon = value; } } // 0x28 (40)
 		
-		[ContainerField(44), LayoutImmutable, Blittable]
-		public uint StreamReadBlockSizePs3 { get; set; } // 0x2C (44)
+		protected uint m_StreamReadBlockSizePs3 = new uint();
+		[ContainerField(44), LayoutImmutable, Blittable, ContainerFieldNameHash(2006662711)]
+		public uint StreamReadBlockSizePs3 { get { return m_StreamReadBlockSizePs3; } set { if (OnPropertyChanging("StreamPoolAsset." + nameof(StreamReadBlockSizePs3), this, m_StreamReadBlockSizePs3, value)) m_StreamReadBlockSizePs3 = value; } } // 0x2C (44)
 		
-		[ContainerField(48), LayoutImmutable, Blittable]
-		public uint StreamReadBlockSizeWin32 { get; set; } // 0x30 (48)
+		protected uint m_StreamReadBlockSizeWin32 = new uint();
+		[ContainerField(48), LayoutImmutable, Blittable, ContainerFieldNameHash(3411957846)]
+		public uint StreamReadBlockSizeWin32 { get { return m_StreamReadBlockSizeWin32; } set { if (OnPropertyChanging("StreamPoolAsset." + nameof(StreamReadBlockSizeWin32), this, m_StreamReadBlockSizeWin32, value)) m_StreamReadBlockSizeWin32 = value; } } // 0x30 (48)
 		
-		[ContainerField(52)]
-		public StreamStarveMode StreamStarveMode { get; set; } = new StreamStarveMode(); // 0x34 (52)
+		protected StreamStarveMode m_StreamStarveMode = new StreamStarveMode();
+		[ContainerField(52), ContainerFieldNameHash(577139037)]
+		public StreamStarveMode StreamStarveMode { get { return m_StreamStarveMode; } set { if (OnPropertyChanging("StreamPoolAsset." + nameof(StreamStarveMode), this, m_StreamStarveMode, value)) m_StreamStarveMode = value; } } // 0x34 (52)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

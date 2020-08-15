@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(8)]
+	[ContainerType(8)]
 	public class SpawnState : 
 		MetricState
 	{
-		[ContainerField(24), LayoutImmutable, Blittable]
-		public int Team { get; set; } // 0x18 (24)
+		protected int m_Team = new int();
+		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(2089309528)]
+		public int Team { get { return m_Team; } set { if (OnPropertyChanging("SpawnState." + nameof(Team), this, m_Team, value)) m_Team = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

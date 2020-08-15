@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class MeshMaterial : 
 		DataContainer
 	{
-		[ContainerField(8)]
-		public CtrRef<SurfaceShaderInstanceData> ShaderInstance { get; set; } = new CtrRef<SurfaceShaderInstanceData>(); // 0x8 (8)
+		protected CtrRef<SurfaceShaderInstanceData> m_ShaderInstance = new CtrRef<SurfaceShaderInstanceData>();
+		[ContainerField(8), ContainerFieldNameHash(963778021)]
+		public CtrRef<SurfaceShaderInstanceData> ShaderInstance { get { return m_ShaderInstance; } set { if (OnPropertyChanging("MeshMaterial." + nameof(ShaderInstance), this, m_ShaderInstance, value)) m_ShaderInstance = value; } } // 0x8 (8)
 		
-		[ContainerField(12)]
-		public SurfaceShaderInstanceDataStruct Shader { get; set; } = new SurfaceShaderInstanceDataStruct(); // 0xC (12)
+		protected SurfaceShaderInstanceDataStruct m_Shader = new SurfaceShaderInstanceDataStruct();
+		[ContainerField(12), ContainerFieldNameHash(3352909900)]
+		public SurfaceShaderInstanceDataStruct Shader { get { return m_Shader; } set { if (OnPropertyChanging("MeshMaterial." + nameof(Shader), this, m_Shader, value)) m_Shader = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

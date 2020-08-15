@@ -5,17 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class GunMasterKillCounterEntityData : 
 		EntityData
 	{
-		[ContainerField(12)]
-		public List<GunMasterWeaponsPreset> WeaponsPreset { get; set; } = new List<GunMasterWeaponsPreset>(); // 0xC (12)
+		protected List<GunMasterWeaponsPreset> m_WeaponsPreset = new List<GunMasterWeaponsPreset>();
+		[ContainerField(12), ContainerFieldNameHash(3199558001)]
+		public List<GunMasterWeaponsPreset> WeaponsPreset { get { return m_WeaponsPreset; } set { if (OnPropertyChanging("GunMasterKillCounterEntityData." + nameof(WeaponsPreset), this, m_WeaponsPreset, value)) m_WeaponsPreset = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

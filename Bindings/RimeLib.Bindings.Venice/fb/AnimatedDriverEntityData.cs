@@ -5,46 +5,66 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class AnimatedDriverEntityData : 
 		GameEntityData
 	{
-		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable]
-		public LinearTransform InputTransform { get; set; } = new LinearTransform(); // 0x60 (96)
+		protected LinearTransform m_InputTransform = new LinearTransform();
+		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(674191935)]
+		public LinearTransform InputTransform { get { return m_InputTransform; } set { if (OnPropertyChanging("AnimatedDriverEntityData." + nameof(InputTransform), this, m_InputTransform, value)) m_InputTransform = value; } } // 0x60 (96)
 		
-		[ContainerField(160)]
-		public AntRef VehicleBoost { get; set; } = new AntRef(); // 0xA0 (160)
+		protected AntRef m_VehicleBoost = new AntRef();
+		[ContainerField(160), ContainerFieldNameHash(519733784)]
+		public AntRef VehicleBoost { get { return m_VehicleBoost; } set { if (OnPropertyChanging("AnimatedDriverEntityData." + nameof(VehicleBoost), this, m_VehicleBoost, value)) m_VehicleBoost = value; } } // 0xA0 (160)
 		
-		[ContainerField(164)]
-		public AntRef VehicleSpeed { get; set; } = new AntRef(); // 0xA4 (164)
+		protected AntRef m_VehicleSpeed = new AntRef();
+		[ContainerField(164), ContainerFieldNameHash(503036026)]
+		public AntRef VehicleSpeed { get { return m_VehicleSpeed; } set { if (OnPropertyChanging("AnimatedDriverEntityData." + nameof(VehicleSpeed), this, m_VehicleSpeed, value)) m_VehicleSpeed = value; } } // 0xA4 (164)
 		
-		[ContainerField(168)]
-		public AntRef VehicleMovementState { get; set; } = new AntRef(); // 0xA8 (168)
+		protected AntRef m_VehicleMovementState = new AntRef();
+		[ContainerField(168), ContainerFieldNameHash(2105315721)]
+		public AntRef VehicleMovementState { get { return m_VehicleMovementState; } set { if (OnPropertyChanging("AnimatedDriverEntityData." + nameof(VehicleMovementState), this, m_VehicleMovementState, value)) m_VehicleMovementState = value; } } // 0xA8 (168)
 		
-		[ContainerField(172)]
-		public AntRef VehicleClutch { get; set; } = new AntRef(); // 0xAC (172)
+		protected AntRef m_VehicleClutch = new AntRef();
+		[ContainerField(172), ContainerFieldNameHash(13000376)]
+		public AntRef VehicleClutch { get { return m_VehicleClutch; } set { if (OnPropertyChanging("AnimatedDriverEntityData." + nameof(VehicleClutch), this, m_VehicleClutch, value)) m_VehicleClutch = value; } } // 0xAC (172)
 		
-		[ContainerField(176)]
-		public AntRef VehicleBrake { get; set; } = new AntRef(); // 0xB0 (176)
+		protected AntRef m_VehicleBrake = new AntRef();
+		[ContainerField(176), ContainerFieldNameHash(519539362)]
+		public AntRef VehicleBrake { get { return m_VehicleBrake; } set { if (OnPropertyChanging("AnimatedDriverEntityData." + nameof(VehicleBrake), this, m_VehicleBrake, value)) m_VehicleBrake = value; } } // 0xB0 (176)
 		
-		[ContainerField(180), LayoutImmutable, Blittable]
-		public float MovementStateStandThreshold { get; set; } // 0xB4 (180)
+		protected float m_MovementStateStandThreshold = new float();
+		[ContainerField(180), LayoutImmutable, Blittable, ContainerFieldNameHash(1916267914)]
+		public float MovementStateStandThreshold { get { return m_MovementStateStandThreshold; } set { if (OnPropertyChanging("AnimatedDriverEntityData." + nameof(MovementStateStandThreshold), this, m_MovementStateStandThreshold, value)) m_MovementStateStandThreshold = value; } } // 0xB4 (180)
 		
-		[ContainerField(184)]
-		public NormalizeSettings Yaw { get; set; } = new NormalizeSettings(); // 0xB8 (184)
+		protected NormalizeSettings m_Yaw = new NormalizeSettings();
+		[ContainerField(184), ContainerFieldNameHash(193468618)]
+		public NormalizeSettings Yaw { get { return m_Yaw; } set { if (OnPropertyChanging("AnimatedDriverEntityData." + nameof(Yaw), this, m_Yaw, value)) m_Yaw = value; } } // 0xB8 (184)
 		
-		[ContainerField(208)]
-		public NormalizeSettings Roll { get; set; } = new NormalizeSettings(); // 0xD0 (208)
+		protected NormalizeSettings m_Roll = new NormalizeSettings();
+		[ContainerField(208), ContainerFieldNameHash(2089387576)]
+		public NormalizeSettings Roll { get { return m_Roll; } set { if (OnPropertyChanging("AnimatedDriverEntityData." + nameof(Roll), this, m_Roll, value)) m_Roll = value; } } // 0xD0 (208)
 		
-		[ContainerField(232)]
-		public NormalizeSettings Pitch { get; set; } = new NormalizeSettings(); // 0xE8 (232)
+		protected NormalizeSettings m_Pitch = new NormalizeSettings();
+		[ContainerField(232), ContainerFieldNameHash(232604323)]
+		public NormalizeSettings Pitch { get { return m_Pitch; } set { if (OnPropertyChanging("AnimatedDriverEntityData." + nameof(Pitch), this, m_Pitch, value)) m_Pitch = value; } } // 0xE8 (232)
 		
-		[ContainerField(256), LayoutImmutable, Blittable]
-		public bool DelayAnimationWheelTransform { get; set; } // 0x100 (256)
+		protected bool m_DelayAnimationWheelTransform = new bool();
+		[ContainerField(256), LayoutImmutable, Blittable, ContainerFieldNameHash(1883575417)]
+		public bool DelayAnimationWheelTransform { get { return m_DelayAnimationWheelTransform; } set { if (OnPropertyChanging("AnimatedDriverEntityData." + nameof(DelayAnimationWheelTransform), this, m_DelayAnimationWheelTransform, value)) m_DelayAnimationWheelTransform = value; } } // 0x100 (256)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

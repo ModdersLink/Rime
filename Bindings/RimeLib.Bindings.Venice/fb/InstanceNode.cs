@@ -5,22 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class InstanceNode : 
 		UINodeData
 	{
-		[ContainerField(20)]
-		public CtrRef<UIGraphAsset> UIGraph { get; set; } = new CtrRef<UIGraphAsset>(); // 0x14 (20)
+		protected CtrRef<UIGraphAsset> m_UIGraph = new CtrRef<UIGraphAsset>();
+		[ContainerField(20), ContainerFieldNameHash(209526997)]
+		public CtrRef<UIGraphAsset> UIGraph { get { return m_UIGraph; } set { if (OnPropertyChanging("InstanceNode." + nameof(UIGraph), this, m_UIGraph, value)) m_UIGraph = value; } } // 0x14 (20)
 		
-		[ContainerField(24)]
-		public RefArray<UINodePort> Inputs { get; set; } = new RefArray<UINodePort>(); // 0x18 (24)
+		protected RefArray<UINodePort> m_Inputs = new RefArray<UINodePort>();
+		[ContainerField(24), ContainerFieldNameHash(2784267136)]
+		public RefArray<UINodePort> Inputs { get { return m_Inputs; } set { if (OnPropertyChanging("InstanceNode." + nameof(Inputs), this, m_Inputs, value)) m_Inputs = value; } } // 0x18 (24)
 		
-		[ContainerField(28)]
-		public RefArray<UINodePort> Outputs { get; set; } = new RefArray<UINodePort>(); // 0x1C (28)
+		protected RefArray<UINodePort> m_Outputs = new RefArray<UINodePort>();
+		[ContainerField(28), ContainerFieldNameHash(1070022089)]
+		public RefArray<UINodePort> Outputs { get { return m_Outputs; } set { if (OnPropertyChanging("InstanceNode." + nameof(Outputs), this, m_Outputs, value)) m_Outputs = value; } } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

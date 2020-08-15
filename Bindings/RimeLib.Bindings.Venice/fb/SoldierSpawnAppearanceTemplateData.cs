@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class SoldierSpawnAppearanceTemplateData : 
 		Asset
 	{
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public uint Body { get; set; } // 0xC (12)
+		protected uint m_Body = new uint();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(2088812853)]
+		public uint Body { get { return m_Body; } set { if (OnPropertyChanging("SoldierSpawnAppearanceTemplateData." + nameof(Body), this, m_Body, value)) m_Body = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

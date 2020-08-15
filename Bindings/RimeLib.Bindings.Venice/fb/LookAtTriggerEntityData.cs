@@ -5,34 +5,50 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class LookAtTriggerEntityData : 
 		TriggerEventEntityData
 	{
-		[ContainerField(112), LayoutImmutable, Blittable]
-		public float FOV { get; set; } // 0x70 (112)
+		protected float m_FOV = new float();
+		[ContainerField(112), LayoutImmutable, Blittable, ContainerFieldNameHash(193442778)]
+		public float FOV { get { return m_FOV; } set { if (OnPropertyChanging("LookAtTriggerEntityData." + nameof(FOV), this, m_FOV, value)) m_FOV = value; } } // 0x70 (112)
 		
-		[ContainerField(116)]
-		public CtrRef<SoldierWeaponBlueprint> Weapon { get; set; } = new CtrRef<SoldierWeaponBlueprint>(); // 0x74 (116)
+		protected CtrRef<SoldierWeaponBlueprint> m_Weapon = new CtrRef<SoldierWeaponBlueprint>();
+		[ContainerField(116), ContainerFieldNameHash(3190562823)]
+		public CtrRef<SoldierWeaponBlueprint> Weapon { get { return m_Weapon; } set { if (OnPropertyChanging("LookAtTriggerEntityData." + nameof(Weapon), this, m_Weapon, value)) m_Weapon = value; } } // 0x74 (116)
 		
-		[ContainerField(120), LayoutImmutable, Blittable]
-		public uint ZoomLevel { get; set; } // 0x78 (120)
+		protected uint m_ZoomLevel = new uint();
+		[ContainerField(120), LayoutImmutable, Blittable, ContainerFieldNameHash(3650803780)]
+		public uint ZoomLevel { get { return m_ZoomLevel; } set { if (OnPropertyChanging("LookAtTriggerEntityData." + nameof(ZoomLevel), this, m_ZoomLevel, value)) m_ZoomLevel = value; } } // 0x78 (120)
 		
-		[ContainerField(124), LayoutImmutable, Blittable]
-		public float MinDistanceToObject { get; set; } // 0x7C (124)
+		protected float m_MinDistanceToObject = new float();
+		[ContainerField(124), LayoutImmutable, Blittable, ContainerFieldNameHash(3463845186)]
+		public float MinDistanceToObject { get { return m_MinDistanceToObject; } set { if (OnPropertyChanging("LookAtTriggerEntityData." + nameof(MinDistanceToObject), this, m_MinDistanceToObject, value)) m_MinDistanceToObject = value; } } // 0x7C (124)
 		
-		[ContainerField(128), LayoutImmutable, Blittable]
-		public float MaxDistanceToObject { get; set; } // 0x80 (128)
+		protected float m_MaxDistanceToObject = new float();
+		[ContainerField(128), LayoutImmutable, Blittable, ContainerFieldNameHash(954132188)]
+		public float MaxDistanceToObject { get { return m_MaxDistanceToObject; } set { if (OnPropertyChanging("LookAtTriggerEntityData." + nameof(MaxDistanceToObject), this, m_MaxDistanceToObject, value)) m_MaxDistanceToObject = value; } } // 0x80 (128)
 		
-		[ContainerField(132), LayoutImmutable, Blittable]
-		public bool StartTriggerLookingAt { get; set; } // 0x84 (132)
+		protected bool m_StartTriggerLookingAt = new bool();
+		[ContainerField(132), LayoutImmutable, Blittable, ContainerFieldNameHash(2703714543)]
+		public bool StartTriggerLookingAt { get { return m_StartTriggerLookingAt; } set { if (OnPropertyChanging("LookAtTriggerEntityData." + nameof(StartTriggerLookingAt), this, m_StartTriggerLookingAt, value)) m_StartTriggerLookingAt = value; } } // 0x84 (132)
 		
-		[ContainerField(133), LayoutImmutable, Blittable]
-		public bool CheckOcclusion { get; set; } // 0x85 (133)
+		protected bool m_CheckOcclusion = new bool();
+		[ContainerField(133), LayoutImmutable, Blittable, ContainerFieldNameHash(3588432334)]
+		public bool CheckOcclusion { get { return m_CheckOcclusion; } set { if (OnPropertyChanging("LookAtTriggerEntityData." + nameof(CheckOcclusion), this, m_CheckOcclusion, value)) m_CheckOcclusion = value; } } // 0x85 (133)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

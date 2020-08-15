@@ -5,22 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class PreRoundEntityData : 
 		GameEntityData
 	{
-		[ContainerField(96), LayoutImmutable, Blittable]
-		public int RoundMaxPlayerCount { get; set; } // 0x60 (96)
+		protected int m_RoundMaxPlayerCount = new int();
+		[ContainerField(96), LayoutImmutable, Blittable, ContainerFieldNameHash(3644312963)]
+		public int RoundMaxPlayerCount { get { return m_RoundMaxPlayerCount; } set { if (OnPropertyChanging("PreRoundEntityData." + nameof(RoundMaxPlayerCount), this, m_RoundMaxPlayerCount, value)) m_RoundMaxPlayerCount = value; } } // 0x60 (96)
 		
-		[ContainerField(100), LayoutImmutable, Blittable]
-		public uint RoundRestartCountdown { get; set; } // 0x64 (100)
+		protected uint m_RoundRestartCountdown = new uint();
+		[ContainerField(100), LayoutImmutable, Blittable, ContainerFieldNameHash(1048503553)]
+		public uint RoundRestartCountdown { get { return m_RoundRestartCountdown; } set { if (OnPropertyChanging("PreRoundEntityData." + nameof(RoundRestartCountdown), this, m_RoundRestartCountdown, value)) m_RoundRestartCountdown = value; } } // 0x64 (100)
 		
-		[ContainerField(104), LayoutImmutable, Blittable]
-		public int RoundMinPlayerCount { get; set; } // 0x68 (104)
+		protected int m_RoundMinPlayerCount = new int();
+		[ContainerField(104), LayoutImmutable, Blittable, ContainerFieldNameHash(1656551901)]
+		public int RoundMinPlayerCount { get { return m_RoundMinPlayerCount; } set { if (OnPropertyChanging("PreRoundEntityData." + nameof(RoundMinPlayerCount), this, m_RoundMinPlayerCount, value)) m_RoundMinPlayerCount = value; } } // 0x68 (104)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,26 +5,38 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class TeamFilterEntityData : 
 		GameEntityData
 	{
-		[ContainerField(96)]
-		public Realm Realm { get; set; } = new Realm(); // 0x60 (96)
+		protected Realm m_Realm = new Realm();
+		[ContainerField(96), ContainerFieldNameHash(229961746)]
+		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("TeamFilterEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0x60 (96)
 		
-		[ContainerField(100)]
-		public TeamId Team { get; set; } = new TeamId(); // 0x64 (100)
+		protected TeamId m_Team = new TeamId();
+		[ContainerField(100), ContainerFieldNameHash(2089309528)]
+		public TeamId Team { get { return m_Team; } set { if (OnPropertyChanging("TeamFilterEntityData." + nameof(Team), this, m_Team, value)) m_Team = value; } } // 0x64 (100)
 		
-		[ContainerField(104), LayoutImmutable, Blittable]
-		public bool InvertFilter { get; set; } // 0x68 (104)
+		protected bool m_InvertFilter = new bool();
+		[ContainerField(104), LayoutImmutable, Blittable, ContainerFieldNameHash(2846947863)]
+		public bool InvertFilter { get { return m_InvertFilter; } set { if (OnPropertyChanging("TeamFilterEntityData." + nameof(InvertFilter), this, m_InvertFilter, value)) m_InvertFilter = value; } } // 0x68 (104)
 		
-		[ContainerField(105), LayoutImmutable, Blittable]
-		public bool GenerateEventForEveryMatchingTeamMember { get; set; } // 0x69 (105)
+		protected bool m_GenerateEventForEveryMatchingTeamMember = new bool();
+		[ContainerField(105), LayoutImmutable, Blittable, ContainerFieldNameHash(2999321434)]
+		public bool GenerateEventForEveryMatchingTeamMember { get { return m_GenerateEventForEveryMatchingTeamMember; } set { if (OnPropertyChanging("TeamFilterEntityData." + nameof(GenerateEventForEveryMatchingTeamMember), this, m_GenerateEventForEveryMatchingTeamMember, value)) m_GenerateEventForEveryMatchingTeamMember = value; } } // 0x69 (105)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

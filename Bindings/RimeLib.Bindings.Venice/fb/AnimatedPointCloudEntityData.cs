@@ -5,26 +5,38 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class AnimatedPointCloudEntityData : 
 		EntityData
 	{
-		[ContainerField(12)]
-		public Realm Realm { get; set; } = new Realm(); // 0xC (12)
+		protected Realm m_Realm = new Realm();
+		[ContainerField(12), ContainerFieldNameHash(229961746)]
+		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("AnimatedPointCloudEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public CtrRef<AnimatedPointCloudAsset> PointCloud { get; set; } = new CtrRef<AnimatedPointCloudAsset>(); // 0x10 (16)
+		protected CtrRef<AnimatedPointCloudAsset> m_PointCloud = new CtrRef<AnimatedPointCloudAsset>();
+		[ContainerField(16), ContainerFieldNameHash(396521112)]
+		public CtrRef<AnimatedPointCloudAsset> PointCloud { get { return m_PointCloud; } set { if (OnPropertyChanging("AnimatedPointCloudEntityData." + nameof(PointCloud), this, m_PointCloud, value)) m_PointCloud = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
-		public float ExternalTime { get; set; } // 0x14 (20)
+		protected float m_ExternalTime = new float();
+		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(2162678253)]
+		public float ExternalTime { get { return m_ExternalTime; } set { if (OnPropertyChanging("AnimatedPointCloudEntityData." + nameof(ExternalTime), this, m_ExternalTime, value)) m_ExternalTime = value; } } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable]
-		public bool StartPaused { get; set; } // 0x18 (24)
+		protected bool m_StartPaused = new bool();
+		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(735997331)]
+		public bool StartPaused { get { return m_StartPaused; } set { if (OnPropertyChanging("AnimatedPointCloudEntityData." + nameof(StartPaused), this, m_StartPaused, value)) m_StartPaused = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

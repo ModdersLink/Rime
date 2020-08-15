@@ -5,22 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class MeleeTriggerEntityData : 
 		EntityData
 	{
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable]
-		public LinearTransform ConnectTransform { get; set; } = new LinearTransform(); // 0x10 (16)
+		protected LinearTransform m_ConnectTransform = new LinearTransform();
+		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(1194494871)]
+		public LinearTransform ConnectTransform { get { return m_ConnectTransform; } set { if (OnPropertyChanging("MeleeTriggerEntityData." + nameof(ConnectTransform), this, m_ConnectTransform, value)) m_ConnectTransform = value; } } // 0x10 (16)
 		
-		[ContainerField(80)]
-		public CtrRef<AntEnumeration> MeleeType { get; set; } = new CtrRef<AntEnumeration>(); // 0x50 (80)
+		protected CtrRef<AntEnumeration> m_MeleeType = new CtrRef<AntEnumeration>();
+		[ContainerField(80), ContainerFieldNameHash(2762192025)]
+		public CtrRef<AntEnumeration> MeleeType { get { return m_MeleeType; } set { if (OnPropertyChanging("MeleeTriggerEntityData." + nameof(MeleeType), this, m_MeleeType, value)) m_MeleeType = value; } } // 0x50 (80)
 		
-		[ContainerField(84), LayoutImmutable, Blittable]
-		public bool MeleeEnabled { get; set; } // 0x54 (84)
+		protected bool m_MeleeEnabled = new bool();
+		[ContainerField(84), LayoutImmutable, Blittable, ContainerFieldNameHash(1976811876)]
+		public bool MeleeEnabled { get { return m_MeleeEnabled; } set { if (OnPropertyChanging("MeleeTriggerEntityData." + nameof(MeleeEnabled), this, m_MeleeEnabled, value)) m_MeleeEnabled = value; } } // 0x54 (84)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

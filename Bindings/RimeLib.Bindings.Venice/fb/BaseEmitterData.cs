@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class BaseEmitterData : 
 		ProcessorData
 	{
-		[ContainerField(48)]
-		public CtrRef<EmitterDocument> EmitterAsset { get; set; } = new CtrRef<EmitterDocument>(); // 0x30 (48)
+		protected CtrRef<EmitterDocument> m_EmitterAsset = new CtrRef<EmitterDocument>();
+		[ContainerField(48), ContainerFieldNameHash(2043417923)]
+		public CtrRef<EmitterDocument> EmitterAsset { get { return m_EmitterAsset; } set { if (OnPropertyChanging("BaseEmitterData." + nameof(EmitterAsset), this, m_EmitterAsset, value)) m_EmitterAsset = value; } } // 0x30 (48)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

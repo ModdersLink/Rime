@@ -5,28 +5,42 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class SubWorldData : 
 		SpatialPrefabBlueprint
 	{
-		[ContainerField(36)]
-		public CtrRef<RegistryContainer> RegistryContainer { get; set; } = new CtrRef<RegistryContainer>(); // 0x24 (36)
+		protected CtrRef<RegistryContainer> m_RegistryContainer = new CtrRef<RegistryContainer>();
+		[ContainerField(36), ContainerFieldNameHash(1535522391)]
+		public CtrRef<RegistryContainer> RegistryContainer { get { return m_RegistryContainer; } set { if (OnPropertyChanging("SubWorldData." + nameof(RegistryContainer), this, m_RegistryContainer, value)) m_RegistryContainer = value; } } // 0x24 (36)
 		
-		[ContainerField(40), LayoutImmutable, Blittable]
-		public bool IsWin32SubLevel { get; set; } // 0x28 (40)
+		protected bool m_IsWin32SubLevel = new bool();
+		[ContainerField(40), LayoutImmutable, Blittable, ContainerFieldNameHash(2682003100)]
+		public bool IsWin32SubLevel { get { return m_IsWin32SubLevel; } set { if (OnPropertyChanging("SubWorldData." + nameof(IsWin32SubLevel), this, m_IsWin32SubLevel, value)) m_IsWin32SubLevel = value; } } // 0x28 (40)
 		
-		[ContainerField(41), LayoutImmutable, Blittable]
-		public bool IsXenonSubLevel { get; set; } // 0x29 (41)
+		protected bool m_IsXenonSubLevel = new bool();
+		[ContainerField(41), LayoutImmutable, Blittable, ContainerFieldNameHash(948884383)]
+		public bool IsXenonSubLevel { get { return m_IsXenonSubLevel; } set { if (OnPropertyChanging("SubWorldData." + nameof(IsXenonSubLevel), this, m_IsXenonSubLevel, value)) m_IsXenonSubLevel = value; } } // 0x29 (41)
 		
-		[ContainerField(42), LayoutImmutable, Blittable]
-		public bool IsPs3SubLevel { get; set; } // 0x2A (42)
+		protected bool m_IsPs3SubLevel = new bool();
+		[ContainerField(42), LayoutImmutable, Blittable, ContainerFieldNameHash(396788349)]
+		public bool IsPs3SubLevel { get { return m_IsPs3SubLevel; } set { if (OnPropertyChanging("SubWorldData." + nameof(IsPs3SubLevel), this, m_IsPs3SubLevel, value)) m_IsPs3SubLevel = value; } } // 0x2A (42)
 		
-		[ContainerField(43), LayoutImmutable, Blittable]
-		public bool RememberStateOnStreamOut { get; set; } // 0x2B (43)
+		protected bool m_RememberStateOnStreamOut = new bool();
+		[ContainerField(43), LayoutImmutable, Blittable, ContainerFieldNameHash(4212179462)]
+		public bool RememberStateOnStreamOut { get { return m_RememberStateOnStreamOut; } set { if (OnPropertyChanging("SubWorldData." + nameof(RememberStateOnStreamOut), this, m_RememberStateOnStreamOut, value)) m_RememberStateOnStreamOut = value; } } // 0x2B (43)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

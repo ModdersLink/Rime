@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class WeaponData : 
 		ToolData
 	{
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public bool ShowLaserPaintedVehicles { get; set; } // 0xC (12)
+		protected bool m_ShowLaserPaintedVehicles = new bool();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(3679743847)]
+		public bool ShowLaserPaintedVehicles { get { return m_ShowLaserPaintedVehicles; } set { if (OnPropertyChanging("WeaponData." + nameof(ShowLaserPaintedVehicles), this, m_ShowLaserPaintedVehicles, value)) m_ShowLaserPaintedVehicles = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class CustomSequenceTrackEventMapping : 
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable, Blittable]
-		public int TrackEventID { get; set; } // 0x8 (8)
+		protected int m_TrackEventID = new int();
+		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(3785607275)]
+		public int TrackEventID { get { return m_TrackEventID; } set { if (OnPropertyChanging("CustomSequenceTrackEventMapping." + nameof(TrackEventID), this, m_TrackEventID, value)) m_TrackEventID = value; } } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public int SequenceEventID { get; set; } // 0xC (12)
+		protected int m_SequenceEventID = new int();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(959482075)]
+		public int SequenceEventID { get { return m_SequenceEventID; } set { if (OnPropertyChanging("CustomSequenceTrackEventMapping." + nameof(SequenceEventID), this, m_SequenceEventID, value)) m_SequenceEventID = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

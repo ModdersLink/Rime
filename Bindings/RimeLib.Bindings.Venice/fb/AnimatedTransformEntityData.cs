@@ -5,25 +5,38 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class AnimatedTransformEntityData : 
 		EntityData
 	{
-		[ContainerField(12)]
-		public AntRef Animatable { get; set; } = new AntRef(); // 0xC (12)
+		protected AntRef m_Animatable = new AntRef();
+		[ContainerField(12), ContainerFieldNameHash(3208693873)]
+		public AntRef Animatable { get { return m_Animatable; } set { if (OnPropertyChanging("AnimatedTransformEntityData." + nameof(Animatable), this, m_Animatable, value)) m_Animatable = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public float ExternalTime { get; set; } // 0x10 (16)
+		protected float m_ExternalTime = new float();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(2162678253)]
+		public float ExternalTime { get { return m_ExternalTime; } set { if (OnPropertyChanging("AnimatedTransformEntityData." + nameof(ExternalTime), this, m_ExternalTime, value)) m_ExternalTime = value; } } // 0x10 (16)
 		
-		[ContainerField(20)]
-		public AntRef Controller { get; set; } = new AntRef(); // 0x14 (20)
+		protected AntRef m_Controller = new AntRef();
+		[ContainerField(20), ContainerFieldNameHash(1870777401)]
+		public AntRef Controller { get { return m_Controller; } set { if (OnPropertyChanging("AnimatedTransformEntityData." + nameof(Controller), this, m_Controller, value)) m_Controller = value; } } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable]
-		public string BoneName { get; set; } // 0x18 (24)
+		protected string m_BoneName = new string();
+		[ContainerField(24), LayoutImmutable, ContainerFieldNameHash(1590647844)]
+		public string BoneName { get { return m_BoneName; } set { if (OnPropertyChanging("AnimatedTransformEntityData." + nameof(BoneName), this, m_BoneName, value)) m_BoneName = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

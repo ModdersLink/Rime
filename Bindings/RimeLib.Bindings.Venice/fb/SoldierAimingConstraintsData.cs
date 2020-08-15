@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class SoldierAimingConstraintsData : 
 		DataContainer
 	{
-		[ContainerField(8)]
-		public AimingConstraintsData SwimmingConstraints { get; set; } = new AimingConstraintsData(); // 0x8 (8)
+		protected AimingConstraintsData m_SwimmingConstraints = new AimingConstraintsData();
+		[ContainerField(8), ContainerFieldNameHash(2106853822)]
+		public AimingConstraintsData SwimmingConstraints { get { return m_SwimmingConstraints; } set { if (OnPropertyChanging("SoldierAimingConstraintsData." + nameof(SwimmingConstraints), this, m_SwimmingConstraints, value)) m_SwimmingConstraints = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

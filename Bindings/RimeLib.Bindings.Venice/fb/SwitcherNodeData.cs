@@ -5,25 +5,38 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class SwitcherNodeData : 
 		AudioGraphNodeData
 	{
-		[ContainerField(8)]
-		public RefArray<SwitcherEntry> Outputs { get; set; } = new RefArray<SwitcherEntry>(); // 0x8 (8)
+		protected RefArray<SwitcherEntry> m_Outputs = new RefArray<SwitcherEntry>();
+		[ContainerField(8), ContainerFieldNameHash(1070022089)]
+		public RefArray<SwitcherEntry> Outputs { get { return m_Outputs; } set { if (OnPropertyChanging("SwitcherNodeData." + nameof(Outputs), this, m_Outputs, value)) m_Outputs = value; } } // 0x8 (8)
 		
-		[ContainerField(12)]
-		public AudioGraphNodePort Trigger { get; set; } = new AudioGraphNodePort(); // 0xC (12)
+		protected AudioGraphNodePort m_Trigger = new AudioGraphNodePort();
+		[ContainerField(12), ContainerFieldNameHash(2606354109)]
+		public AudioGraphNodePort Trigger { get { return m_Trigger; } set { if (OnPropertyChanging("SwitcherNodeData." + nameof(Trigger), this, m_Trigger, value)) m_Trigger = value; } } // 0xC (12)
 		
-		[ContainerField(20)]
-		public AudioGraphNodePort Value { get; set; } = new AudioGraphNodePort(); // 0x14 (20)
+		protected AudioGraphNodePort m_Value = new AudioGraphNodePort();
+		[ContainerField(20), ContainerFieldNameHash(225375086)]
+		public AudioGraphNodePort Value { get { return m_Value; } set { if (OnPropertyChanging("SwitcherNodeData." + nameof(Value), this, m_Value, value)) m_Value = value; } } // 0x14 (20)
 		
-		[ContainerField(28), LayoutImmutable, Blittable]
-		public float DefaultCaseValue { get; set; } // 0x1C (28)
+		protected float m_DefaultCaseValue = new float();
+		[ContainerField(28), LayoutImmutable, Blittable, ContainerFieldNameHash(3296679953)]
+		public float DefaultCaseValue { get { return m_DefaultCaseValue; } set { if (OnPropertyChanging("SwitcherNodeData." + nameof(DefaultCaseValue), this, m_DefaultCaseValue, value)) m_DefaultCaseValue = value; } } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

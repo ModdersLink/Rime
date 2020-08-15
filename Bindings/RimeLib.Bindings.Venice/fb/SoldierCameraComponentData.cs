@@ -5,37 +5,54 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class SoldierCameraComponentData : 
 		ComponentData
 	{
-		[ContainerField(96), LayoutImmutable, Blittable]
-		public float ExplosionImpulseMultiplier { get; set; } // 0x60 (96)
+		protected float m_ExplosionImpulseMultiplier = new float();
+		[ContainerField(96), LayoutImmutable, Blittable, ContainerFieldNameHash(513000320)]
+		public float ExplosionImpulseMultiplier { get { return m_ExplosionImpulseMultiplier; } set { if (OnPropertyChanging("SoldierCameraComponentData." + nameof(ExplosionImpulseMultiplier), this, m_ExplosionImpulseMultiplier, value)) m_ExplosionImpulseMultiplier = value; } } // 0x60 (96)
 		
-		[ContainerField(100), LayoutImmutable, Blittable]
-		public float StrafeTiltStrength { get; set; } // 0x64 (100)
+		protected float m_StrafeTiltStrength = new float();
+		[ContainerField(100), LayoutImmutable, Blittable, ContainerFieldNameHash(12216306)]
+		public float StrafeTiltStrength { get { return m_StrafeTiltStrength; } set { if (OnPropertyChanging("SoldierCameraComponentData." + nameof(StrafeTiltStrength), this, m_StrafeTiltStrength, value)) m_StrafeTiltStrength = value; } } // 0x64 (100)
 		
-		[ContainerField(104), LayoutImmutable, Blittable]
-		public float PitchTiltStrength { get; set; } // 0x68 (104)
+		protected float m_PitchTiltStrength = new float();
+		[ContainerField(104), LayoutImmutable, Blittable, ContainerFieldNameHash(398108931)]
+		public float PitchTiltStrength { get { return m_PitchTiltStrength; } set { if (OnPropertyChanging("SoldierCameraComponentData." + nameof(PitchTiltStrength), this, m_PitchTiltStrength, value)) m_PitchTiltStrength = value; } } // 0x68 (104)
 		
-		[ContainerField(108)]
-		public RefArray<TargetCameraData> Cameras { get; set; } = new RefArray<TargetCameraData>(); // 0x6C (108)
+		protected RefArray<TargetCameraData> m_Cameras = new RefArray<TargetCameraData>();
+		[ContainerField(108), ContainerFieldNameHash(3740512847)]
+		public RefArray<TargetCameraData> Cameras { get { return m_Cameras; } set { if (OnPropertyChanging("SoldierCameraComponentData." + nameof(Cameras), this, m_Cameras, value)) m_Cameras = value; } } // 0x6C (108)
 		
-		[ContainerField(112)]
-		public CameraBinding CameraBinding { get; set; } = new CameraBinding(); // 0x70 (112)
+		protected CameraBinding m_CameraBinding = new CameraBinding();
+		[ContainerField(112), ContainerFieldNameHash(656489757)]
+		public CameraBinding CameraBinding { get { return m_CameraBinding; } set { if (OnPropertyChanging("SoldierCameraComponentData." + nameof(CameraBinding), this, m_CameraBinding, value)) m_CameraBinding = value; } } // 0x70 (112)
 		
-		[ContainerField(120), LayoutImmutable, Blittable]
-		public float ForceFieldOfView { get; set; } // 0x78 (120)
+		protected float m_ForceFieldOfView = new float();
+		[ContainerField(120), LayoutImmutable, Blittable, ContainerFieldNameHash(2191221214)]
+		public float ForceFieldOfView { get { return m_ForceFieldOfView; } set { if (OnPropertyChanging("SoldierCameraComponentData." + nameof(ForceFieldOfView), this, m_ForceFieldOfView, value)) m_ForceFieldOfView = value; } } // 0x78 (120)
 		
-		[ContainerField(124), LayoutImmutable, Blittable]
-		public bool AuthoritativeEyePosition { get; set; } // 0x7C (124)
+		protected bool m_AuthoritativeEyePosition = new bool();
+		[ContainerField(124), LayoutImmutable, Blittable, ContainerFieldNameHash(2287547522)]
+		public bool AuthoritativeEyePosition { get { return m_AuthoritativeEyePosition; } set { if (OnPropertyChanging("SoldierCameraComponentData." + nameof(AuthoritativeEyePosition), this, m_AuthoritativeEyePosition, value)) m_AuthoritativeEyePosition = value; } } // 0x7C (124)
 		
-		[ContainerField(125), LayoutImmutable, Blittable]
-		public bool DisableAiming { get; set; } // 0x7D (125)
+		protected bool m_DisableAiming = new bool();
+		[ContainerField(125), LayoutImmutable, Blittable, ContainerFieldNameHash(1555811028)]
+		public bool DisableAiming { get { return m_DisableAiming; } set { if (OnPropertyChanging("SoldierCameraComponentData." + nameof(DisableAiming), this, m_DisableAiming, value)) m_DisableAiming = value; } } // 0x7D (125)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

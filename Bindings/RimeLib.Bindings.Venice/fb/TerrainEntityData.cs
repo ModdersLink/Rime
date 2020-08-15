@@ -5,22 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class TerrainEntityData : 
 		GamePhysicsEntityData
 	{
-		[ContainerField(112)]
-		public CtrRef<TerrainData> TerrainAsset { get; set; } = new CtrRef<TerrainData>(); // 0x70 (112)
+		protected CtrRef<TerrainData> m_TerrainAsset = new CtrRef<TerrainData>();
+		[ContainerField(112), ContainerFieldNameHash(84434530)]
+		public CtrRef<TerrainData> TerrainAsset { get { return m_TerrainAsset; } set { if (OnPropertyChanging("TerrainEntityData." + nameof(TerrainAsset), this, m_TerrainAsset, value)) m_TerrainAsset = value; } } // 0x70 (112)
 		
-		[ContainerField(116)]
-		public CtrRef<MaterialContainerPair> WaterMaterial { get; set; } = new CtrRef<MaterialContainerPair>(); // 0x74 (116)
+		protected CtrRef<MaterialContainerPair> m_WaterMaterial = new CtrRef<MaterialContainerPair>();
+		[ContainerField(116), ContainerFieldNameHash(2658409947)]
+		public CtrRef<MaterialContainerPair> WaterMaterial { get { return m_WaterMaterial; } set { if (OnPropertyChanging("TerrainEntityData." + nameof(WaterMaterial), this, m_WaterMaterial, value)) m_WaterMaterial = value; } } // 0x74 (116)
 		
-		[ContainerField(120), LayoutImmutable, Blittable]
-		public bool Visible { get; set; } // 0x78 (120)
+		protected bool m_Visible = new bool();
+		[ContainerField(120), LayoutImmutable, Blittable, ContainerFieldNameHash(901540267)]
+		public bool Visible { get { return m_Visible; } set { if (OnPropertyChanging("TerrainEntityData." + nameof(Visible), this, m_Visible, value)) m_Visible = value; } } // 0x78 (120)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

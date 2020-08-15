@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class AntiRollBar : 
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable, Blittable]
-		public float Stiffness { get; set; } // 0x8 (8)
+		protected float m_Stiffness = new float();
+		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(721813632)]
+		public float Stiffness { get { return m_Stiffness; } set { if (OnPropertyChanging("AntiRollBar." + nameof(Stiffness), this, m_Stiffness, value)) m_Stiffness = value; } } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public float TorqueActivationLimit { get; set; } // 0xC (12)
+		protected float m_TorqueActivationLimit = new float();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(2156176460)]
+		public float TorqueActivationLimit { get { return m_TorqueActivationLimit; } set { if (OnPropertyChanging("AntiRollBar." + nameof(TorqueActivationLimit), this, m_TorqueActivationLimit, value)) m_TorqueActivationLimit = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

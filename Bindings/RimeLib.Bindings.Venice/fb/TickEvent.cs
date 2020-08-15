@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class TickEvent : 
 		MetricEvent
 	{
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 Position { get; set; } = new Vec3(); // 0x10 (16)
+		protected Vec3 m_Position = new Vec3();
+		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(3402582524)]
+		public Vec3 Position { get { return m_Position; } set { if (OnPropertyChanging("TickEvent." + nameof(Position), this, m_Position, value)) m_Position = value; } } // 0x10 (16)
 		
-		[ContainerField(32), LayoutImmutable, Blittable]
-		public float Time { get; set; } // 0x20 (32)
+		protected float m_Time = new float();
+		[ContainerField(32), LayoutImmutable, Blittable, ContainerFieldNameHash(2089313744)]
+		public float Time { get { return m_Time; } set { if (OnPropertyChanging("TickEvent." + nameof(Time), this, m_Time, value)) m_Time = value; } } // 0x20 (32)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

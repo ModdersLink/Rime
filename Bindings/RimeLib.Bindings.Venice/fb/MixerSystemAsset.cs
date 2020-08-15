@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class MixerSystemAsset : 
 		Asset
 	{
-		[ContainerField(12)]
-		public RefArray<MixGroup> Groups { get; set; } = new RefArray<MixGroup>(); // 0xC (12)
+		protected RefArray<MixGroup> m_Groups = new RefArray<MixGroup>();
+		[ContainerField(12), ContainerFieldNameHash(2573340009)]
+		public RefArray<MixGroup> Groups { get { return m_Groups; } set { if (OnPropertyChanging("MixerSystemAsset." + nameof(Groups), this, m_Groups, value)) m_Groups = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

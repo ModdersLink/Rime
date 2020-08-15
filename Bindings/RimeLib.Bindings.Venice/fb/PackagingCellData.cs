@@ -5,23 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class PackagingCellData : 
 		EntityData
 	{
-		[ContainerField(12)]
-		public RefArray<PackagingRule> Rules { get; set; } = new RefArray<PackagingRule>(); // 0xC (12)
+		protected RefArray<PackagingRule> m_Rules = new RefArray<PackagingRule>();
+		[ContainerField(12), ContainerFieldNameHash(229400568)]
+		public RefArray<PackagingRule> Rules { get { return m_Rules; } set { if (OnPropertyChanging("PackagingCellData." + nameof(Rules), this, m_Rules, value)) m_Rules = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public RefArray<PackagingCellData> Targets { get; set; } = new RefArray<PackagingCellData>(); // 0x10 (16)
+		protected RefArray<PackagingCellData> m_Targets = new RefArray<PackagingCellData>();
+		[ContainerField(16), ContainerFieldNameHash(3016537383)]
+		public RefArray<PackagingCellData> Targets { get { return m_Targets; } set { if (OnPropertyChanging("PackagingCellData." + nameof(Targets), this, m_Targets, value)) m_Targets = value; } } // 0x10 (16)
 		
-		[ContainerField(20)]
-		public List<Vec2> Shape { get; set; } = new List<Vec2>(); // 0x14 (20)
+		protected List<Vec2> m_Shape = new List<Vec2>();
+		[ContainerField(20), ContainerFieldNameHash(231753450)]
+		public List<Vec2> Shape { get { return m_Shape; } set { if (OnPropertyChanging("PackagingCellData." + nameof(Shape), this, m_Shape, value)) m_Shape = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

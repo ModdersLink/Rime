@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class MenuIdAsset : 
 		Asset
 	{
-		[ContainerField(12), LayoutImmutable]
-		public string ShortName { get; set; } // 0xC (12)
+		protected string m_ShortName = new string();
+		[ContainerField(12), LayoutImmutable, ContainerFieldNameHash(1803010032)]
+		public string ShortName { get { return m_ShortName; } set { if (OnPropertyChanging("MenuIdAsset." + nameof(ShortName), this, m_ShortName, value)) m_ShortName = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

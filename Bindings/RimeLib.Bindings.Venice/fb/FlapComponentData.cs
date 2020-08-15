@@ -5,20 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class FlapComponentData : 
 		PartComponentData
 	{
-		[ContainerField(112)]
-		public RotationAxisEnum RotationAxis { get; set; } = new RotationAxisEnum(); // 0x70 (112)
+		protected RotationAxisEnum m_RotationAxis = new RotationAxisEnum();
+		[ContainerField(112), ContainerFieldNameHash(3148542130)]
+		public RotationAxisEnum RotationAxis { get { return m_RotationAxis; } set { if (OnPropertyChanging("FlapComponentData." + nameof(RotationAxis), this, m_RotationAxis, value)) m_RotationAxis = value; } } // 0x70 (112)
 		
-		[ContainerField(116), LayoutImmutable, Blittable]
-		public float RotationScale { get; set; } // 0x74 (116)
+		protected float m_RotationScale = new float();
+		[ContainerField(116), LayoutImmutable, Blittable, ContainerFieldNameHash(801800009)]
+		public float RotationScale { get { return m_RotationScale; } set { if (OnPropertyChanging("FlapComponentData." + nameof(RotationScale), this, m_RotationScale, value)) m_RotationScale = value; } } // 0x74 (116)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

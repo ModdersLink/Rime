@@ -5,20 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class SoldierHeadCollisionData : 
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable, Blittable]
-		public float HeadRadius { get; set; } // 0x8 (8)
+		protected float m_HeadRadius = new float();
+		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(2199912853)]
+		public float HeadRadius { get { return m_HeadRadius; } set { if (OnPropertyChanging("SoldierHeadCollisionData." + nameof(HeadRadius), this, m_HeadRadius, value)) m_HeadRadius = value; } } // 0x8 (8)
 		
-		[ContainerField(12)]
-		public List<SoldierHeadCollisionPoseData> PoseStates { get; set; } = new List<SoldierHeadCollisionPoseData>(); // 0xC (12)
+		protected List<SoldierHeadCollisionPoseData> m_PoseStates = new List<SoldierHeadCollisionPoseData>();
+		[ContainerField(12), ContainerFieldNameHash(294615368)]
+		public List<SoldierHeadCollisionPoseData> PoseStates { get { return m_PoseStates; } set { if (OnPropertyChanging("SoldierHeadCollisionData." + nameof(PoseStates), this, m_PoseStates, value)) m_PoseStates = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

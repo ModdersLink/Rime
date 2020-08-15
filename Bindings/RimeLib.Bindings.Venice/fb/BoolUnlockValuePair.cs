@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class BoolUnlockValuePair : 
 		UnlockValuePair
 	{
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public bool DefaultValue { get; set; } // 0xC (12)
+		protected bool m_DefaultValue = new bool();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(2066049125)]
+		public bool DefaultValue { get { return m_DefaultValue; } set { if (OnPropertyChanging("BoolUnlockValuePair." + nameof(DefaultValue), this, m_DefaultValue, value)) m_DefaultValue = value; } } // 0xC (12)
 		
-		[ContainerField(13), LayoutImmutable, Blittable]
-		public bool UnlockedValue { get; set; } // 0xD (13)
+		protected bool m_UnlockedValue = new bool();
+		[ContainerField(13), LayoutImmutable, Blittable, ContainerFieldNameHash(2493912799)]
+		public bool UnlockedValue { get { return m_UnlockedValue; } set { if (OnPropertyChanging("BoolUnlockValuePair." + nameof(UnlockedValue), this, m_UnlockedValue, value)) m_UnlockedValue = value; } } // 0xD (13)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

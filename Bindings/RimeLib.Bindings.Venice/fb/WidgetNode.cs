@@ -5,48 +5,66 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class WidgetNode : 
 		UINodeData
 	{
-		[ContainerField(20)]
-		public CtrRef<UIWidgetAsset> WidgetAsset { get; set; } = new CtrRef<UIWidgetAsset>(); // 0x14 (20)
+		protected CtrRef<UIWidgetAsset> m_WidgetAsset = new CtrRef<UIWidgetAsset>();
+		[ContainerField(20), ContainerFieldNameHash(2246087193)]
+		public CtrRef<UIWidgetAsset> WidgetAsset { get { return m_WidgetAsset; } set { if (OnPropertyChanging("WidgetNode." + nameof(WidgetAsset), this, m_WidgetAsset, value)) m_WidgetAsset = value; } } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable]
-		public int FocusIndex { get; set; } // 0x18 (24)
+		protected int m_FocusIndex = new int();
+		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(2956357495)]
+		public int FocusIndex { get { return m_FocusIndex; } set { if (OnPropertyChanging("WidgetNode." + nameof(FocusIndex), this, m_FocusIndex, value)) m_FocusIndex = value; } } // 0x18 (24)
 		
-		[ContainerField(28), LayoutImmutable, Blittable]
-		public int ZDepthLevel { get; set; } // 0x1C (28)
+		protected int m_ZDepthLevel = new int();
+		[ContainerField(28), LayoutImmutable, Blittable, ContainerFieldNameHash(2052497316)]
+		public int ZDepthLevel { get { return m_ZDepthLevel; } set { if (OnPropertyChanging("WidgetNode." + nameof(ZDepthLevel), this, m_ZDepthLevel, value)) m_ZDepthLevel = value; } } // 0x1C (28)
 		
-		[ContainerField(32)]
-		public WidgetVerticalAlignment VerticalAlign { get; set; } = new WidgetVerticalAlignment(); // 0x20 (32)
+		protected WidgetVerticalAlignment m_VerticalAlign = new WidgetVerticalAlignment();
+		[ContainerField(32), ContainerFieldNameHash(457166266)]
+		public WidgetVerticalAlignment VerticalAlign { get { return m_VerticalAlign; } set { if (OnPropertyChanging("WidgetNode." + nameof(VerticalAlign), this, m_VerticalAlign, value)) m_VerticalAlign = value; } } // 0x20 (32)
 		
-		[ContainerField(36)]
-		public WidgetHorisontalAlignment HorisontalAlign { get; set; } = new WidgetHorisontalAlignment(); // 0x24 (36)
+		protected WidgetHorisontalAlignment m_HorisontalAlign = new WidgetHorisontalAlignment();
+		[ContainerField(36), ContainerFieldNameHash(1564108319)]
+		public WidgetHorisontalAlignment HorisontalAlign { get { return m_HorisontalAlign; } set { if (OnPropertyChanging("WidgetNode." + nameof(HorisontalAlign), this, m_HorisontalAlign, value)) m_HorisontalAlign = value; } } // 0x24 (36)
 		
-		[ContainerField(40)]
-		public CtrRef<UIDataBinding> DataBinding { get; set; } = new CtrRef<UIDataBinding>(); // 0x28 (40)
+		protected CtrRef<UIDataBinding> m_DataBinding = new CtrRef<UIDataBinding>();
+		[ContainerField(40), ContainerFieldNameHash(3592963508)]
+		public CtrRef<UIDataBinding> DataBinding { get { return m_DataBinding; } set { if (OnPropertyChanging("WidgetNode." + nameof(DataBinding), this, m_DataBinding, value)) m_DataBinding = value; } } // 0x28 (40)
 		
-		[ContainerField(44)]
-		public List<UIWidgetProperty> WidgetProperties { get; set; } = new List<UIWidgetProperty>(); // 0x2C (44)
+		protected List<UIWidgetProperty> m_WidgetProperties = new List<UIWidgetProperty>();
+		[ContainerField(44), ContainerFieldNameHash(1380677224)]
+		public List<UIWidgetProperty> WidgetProperties { get { return m_WidgetProperties; } set { if (OnPropertyChanging("WidgetNode." + nameof(WidgetProperties), this, m_WidgetProperties, value)) m_WidgetProperties = value; } } // 0x2C (44)
 		
-		[ContainerField(48), LayoutImmutable]
-		public string InstanceName { get; set; } // 0x30 (48)
+		protected string m_InstanceName = new string();
+		[ContainerField(48), LayoutImmutable, ContainerFieldNameHash(1186954283)]
+		public string InstanceName { get { return m_InstanceName; } set { if (OnPropertyChanging("WidgetNode." + nameof(InstanceName), this, m_InstanceName, value)) m_InstanceName = value; } } // 0x30 (48)
 		
-		[ContainerField(52)]
-		public RefArray<UINodePort> Inputs { get; set; } = new RefArray<UINodePort>(); // 0x34 (52)
+		protected RefArray<UINodePort> m_Inputs = new RefArray<UINodePort>();
+		[ContainerField(52), ContainerFieldNameHash(2784267136)]
+		public RefArray<UINodePort> Inputs { get { return m_Inputs; } set { if (OnPropertyChanging("WidgetNode." + nameof(Inputs), this, m_Inputs, value)) m_Inputs = value; } } // 0x34 (52)
 		
-		[ContainerField(56)]
-		public RefArray<UINodePort> Outputs { get; set; } = new RefArray<UINodePort>(); // 0x38 (56)
+		protected RefArray<UINodePort> m_Outputs = new RefArray<UINodePort>();
+		[ContainerField(56), ContainerFieldNameHash(1070022089)]
+		public RefArray<UINodePort> Outputs { get { return m_Outputs; } set { if (OnPropertyChanging("WidgetNode." + nameof(Outputs), this, m_Outputs, value)) m_Outputs = value; } } // 0x38 (56)
 		
-		[ContainerField(60), LayoutImmutable, Blittable]
-		public bool AlwaysInFocus { get; set; } // 0x3C (60)
+		protected bool m_AlwaysInFocus = new bool();
+		[ContainerField(60), LayoutImmutable, Blittable, ContainerFieldNameHash(253379903)]
+		public bool AlwaysInFocus { get { return m_AlwaysInFocus; } set { if (OnPropertyChanging("WidgetNode." + nameof(AlwaysInFocus), this, m_AlwaysInFocus, value)) m_AlwaysInFocus = value; } } // 0x3C (60)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

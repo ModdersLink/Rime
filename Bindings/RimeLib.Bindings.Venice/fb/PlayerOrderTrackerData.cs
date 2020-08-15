@@ -5,23 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class PlayerOrderTrackerData : 
 		HudTrackerData
 	{
-		[ContainerField(44)]
-		public UIHudIcon AttackIcon { get; set; } = new UIHudIcon(); // 0x2C (44)
+		protected UIHudIcon m_AttackIcon = new UIHudIcon();
+		[ContainerField(44), ContainerFieldNameHash(1150263942)]
+		public UIHudIcon AttackIcon { get { return m_AttackIcon; } set { if (OnPropertyChanging("PlayerOrderTrackerData." + nameof(AttackIcon), this, m_AttackIcon, value)) m_AttackIcon = value; } } // 0x2C (44)
 		
-		[ContainerField(48)]
-		public UIHudIcon DefendIcon { get; set; } = new UIHudIcon(); // 0x30 (48)
+		protected UIHudIcon m_DefendIcon = new UIHudIcon();
+		[ContainerField(48), ContainerFieldNameHash(2423818630)]
+		public UIHudIcon DefendIcon { get { return m_DefendIcon; } set { if (OnPropertyChanging("PlayerOrderTrackerData." + nameof(DefendIcon), this, m_DefendIcon, value)) m_DefendIcon = value; } } // 0x30 (48)
 		
-		[ContainerField(52)]
-		public UIHudIcon MoveToIcon { get; set; } = new UIHudIcon(); // 0x34 (52)
+		protected UIHudIcon m_MoveToIcon = new UIHudIcon();
+		[ContainerField(52), ContainerFieldNameHash(2367850372)]
+		public UIHudIcon MoveToIcon { get { return m_MoveToIcon; } set { if (OnPropertyChanging("PlayerOrderTrackerData." + nameof(MoveToIcon), this, m_MoveToIcon, value)) m_MoveToIcon = value; } } // 0x34 (52)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

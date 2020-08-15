@@ -5,20 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class UIItemDescription : 
 		DataContainer
 	{
-		[ContainerField(8)]
-		public List<uint> ItemIds { get; set; } = new List<uint>(); // 0x8 (8)
+		protected List<uint> m_ItemIds = new List<uint>();
+		[ContainerField(8), ContainerFieldNameHash(2693096110)]
+		public List<uint> ItemIds { get { return m_ItemIds; } set { if (OnPropertyChanging("UIItemDescription." + nameof(ItemIds), this, m_ItemIds, value)) m_ItemIds = value; } } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public bool IgnoreBuild { get; set; } // 0xC (12)
+		protected bool m_IgnoreBuild = new bool();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(1608120075)]
+		public bool IgnoreBuild { get { return m_IgnoreBuild; } set { if (OnPropertyChanging("UIItemDescription." + nameof(IgnoreBuild), this, m_IgnoreBuild, value)) m_IgnoreBuild = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

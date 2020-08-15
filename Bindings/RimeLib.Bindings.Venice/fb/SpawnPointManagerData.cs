@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class SpawnPointManagerData : 
 		Asset
 	{
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public bool UseAiLodSystem { get; set; } // 0xC (12)
+		protected bool m_UseAiLodSystem = new bool();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(1610978156)]
+		public bool UseAiLodSystem { get { return m_UseAiLodSystem; } set { if (OnPropertyChanging("SpawnPointManagerData." + nameof(UseAiLodSystem), this, m_UseAiLodSystem, value)) m_UseAiLodSystem = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

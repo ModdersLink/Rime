@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class BoatFloatPhysicsData : 
 		HullFloatPhysicsData
 	{
-		[ContainerField(128), LayoutImmutable, Blittable]
-		public float FrontRatio { get; set; } // 0x80 (128)
+		protected float m_FrontRatio = new float();
+		[ContainerField(128), LayoutImmutable, Blittable, ContainerFieldNameHash(596576293)]
+		public float FrontRatio { get { return m_FrontRatio; } set { if (OnPropertyChanging("BoatFloatPhysicsData." + nameof(FrontRatio), this, m_FrontRatio, value)) m_FrontRatio = value; } } // 0x80 (128)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,20 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class OrderReadiness : 
 		UrgencyUserData
 	{
-		[ContainerField(20), LayoutImmutable]
-		public string OrderType { get; set; } // 0x14 (20)
+		protected string m_OrderType = new string();
+		[ContainerField(20), LayoutImmutable, ContainerFieldNameHash(2615460339)]
+		public string OrderType { get { return m_OrderType; } set { if (OnPropertyChanging("OrderReadiness." + nameof(OrderType), this, m_OrderType, value)) m_OrderType = value; } } // 0x14 (20)
 		
-		[ContainerField(24)]
-		public ReadinessState MinimumReadiness { get; set; } = new ReadinessState(); // 0x18 (24)
+		protected ReadinessState m_MinimumReadiness = new ReadinessState();
+		[ContainerField(24), ContainerFieldNameHash(3511254371)]
+		public ReadinessState MinimumReadiness { get { return m_MinimumReadiness; } set { if (OnPropertyChanging("OrderReadiness." + nameof(MinimumReadiness), this, m_MinimumReadiness, value)) m_MinimumReadiness = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

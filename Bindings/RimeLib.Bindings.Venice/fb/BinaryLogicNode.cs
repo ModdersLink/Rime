@@ -5,25 +5,38 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class BinaryLogicNode : 
 		UINodeData
 	{
-		[ContainerField(20)]
-		public CtrRef<UINodePort> In { get; set; } = new CtrRef<UINodePort>(); // 0x14 (20)
+		protected CtrRef<UINodePort> m_In = new CtrRef<UINodePort>();
+		[ContainerField(20), ContainerFieldNameHash(5862146)]
+		public CtrRef<UINodePort> In { get { return m_In; } set { if (OnPropertyChanging("BinaryLogicNode." + nameof(In), this, m_In, value)) m_In = value; } } // 0x14 (20)
 		
-		[ContainerField(24)]
-		public CtrRef<UINodePort> True { get; set; } = new CtrRef<UINodePort>(); // 0x18 (24)
+		protected CtrRef<UINodePort> m_True = new CtrRef<UINodePort>();
+		[ContainerField(24), ContainerFieldNameHash(2089293587)]
+		public CtrRef<UINodePort> True { get { return m_True; } set { if (OnPropertyChanging("BinaryLogicNode." + nameof(True), this, m_True, value)) m_True = value; } } // 0x18 (24)
 		
-		[ContainerField(28)]
-		public CtrRef<UINodePort> False { get; set; } = new CtrRef<UINodePort>(); // 0x1C (28)
+		protected CtrRef<UINodePort> m_False = new CtrRef<UINodePort>();
+		[ContainerField(28), ContainerFieldNameHash(206401336)]
+		public CtrRef<UINodePort> False { get { return m_False; } set { if (OnPropertyChanging("BinaryLogicNode." + nameof(False), this, m_False, value)) m_False = value; } } // 0x1C (28)
 		
-		[ContainerField(32)]
-		public UIDataSourceInfo DataSourceInfo { get; set; } = new UIDataSourceInfo(); // 0x20 (32)
+		protected UIDataSourceInfo m_DataSourceInfo = new UIDataSourceInfo();
+		[ContainerField(32), ContainerFieldNameHash(4099162406)]
+		public UIDataSourceInfo DataSourceInfo { get { return m_DataSourceInfo; } set { if (OnPropertyChanging("BinaryLogicNode." + nameof(DataSourceInfo), this, m_DataSourceInfo, value)) m_DataSourceInfo = value; } } // 0x20 (32)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

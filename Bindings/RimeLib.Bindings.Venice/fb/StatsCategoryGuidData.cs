@@ -5,17 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class StatsCategoryGuidData : 
 		StatsCategoryBaseData
 	{
-		[ContainerField(20)]
-		public List<GUID> ObjectInstanceGuids { get; set; } = new List<GUID>(); // 0x14 (20)
+		protected List<GUID> m_ObjectInstanceGuids = new List<GUID>();
+		[ContainerField(20), ContainerFieldNameHash(409262485)]
+		public List<GUID> ObjectInstanceGuids { get { return m_ObjectInstanceGuids; } set { if (OnPropertyChanging("StatsCategoryGuidData." + nameof(ObjectInstanceGuids), this, m_ObjectInstanceGuids, value)) m_ObjectInstanceGuids = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

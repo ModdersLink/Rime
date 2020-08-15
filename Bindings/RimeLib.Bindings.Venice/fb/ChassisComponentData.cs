@@ -5,40 +5,58 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class ChassisComponentData : 
 		PartComponentData
 	{
-		[ContainerField(112)]
-		public CtrRef<VehicleConfigData> VehicleConfig { get; set; } = new CtrRef<VehicleConfigData>(); // 0x70 (112)
+		protected CtrRef<VehicleConfigData> m_VehicleConfig = new CtrRef<VehicleConfigData>();
+		[ContainerField(112), ContainerFieldNameHash(14921303)]
+		public CtrRef<VehicleConfigData> VehicleConfig { get { return m_VehicleConfig; } set { if (OnPropertyChanging("ChassisComponentData." + nameof(VehicleConfig), this, m_VehicleConfig, value)) m_VehicleConfig = value; } } // 0x70 (112)
 		
-		[ContainerField(116)]
-		public CtrRef<GearboxConfigData> GearboxConfig { get; set; } = new CtrRef<GearboxConfigData>(); // 0x74 (116)
+		protected CtrRef<GearboxConfigData> m_GearboxConfig = new CtrRef<GearboxConfigData>();
+		[ContainerField(116), ContainerFieldNameHash(1478960267)]
+		public CtrRef<GearboxConfigData> GearboxConfig { get { return m_GearboxConfig; } set { if (OnPropertyChanging("ChassisComponentData." + nameof(GearboxConfig), this, m_GearboxConfig, value)) m_GearboxConfig = value; } } // 0x74 (116)
 		
-		[ContainerField(120)]
-		public RefArray<VehicleWaterEffectData> WaterStreakEffects { get; set; } = new RefArray<VehicleWaterEffectData>(); // 0x78 (120)
+		protected RefArray<VehicleWaterEffectData> m_WaterStreakEffects = new RefArray<VehicleWaterEffectData>();
+		[ContainerField(120), ContainerFieldNameHash(1233991406)]
+		public RefArray<VehicleWaterEffectData> WaterStreakEffects { get { return m_WaterStreakEffects; } set { if (OnPropertyChanging("ChassisComponentData." + nameof(WaterStreakEffects), this, m_WaterStreakEffects, value)) m_WaterStreakEffects = value; } } // 0x78 (120)
 		
-		[ContainerField(124)]
-		public RefArray<VehicleWaterEffectData> WaterEffects { get; set; } = new RefArray<VehicleWaterEffectData>(); // 0x7C (124)
+		protected RefArray<VehicleWaterEffectData> m_WaterEffects = new RefArray<VehicleWaterEffectData>();
+		[ContainerField(124), ContainerFieldNameHash(1529363092)]
+		public RefArray<VehicleWaterEffectData> WaterEffects { get { return m_WaterEffects; } set { if (OnPropertyChanging("ChassisComponentData." + nameof(WaterEffects), this, m_WaterEffects, value)) m_WaterEffects = value; } } // 0x7C (124)
 		
-		[ContainerField(128), LayoutImmutable, Blittable]
-		public float TriggerGroundEffectImpulse { get; set; } // 0x80 (128)
+		protected float m_TriggerGroundEffectImpulse = new float();
+		[ContainerField(128), LayoutImmutable, Blittable, ContainerFieldNameHash(3804940212)]
+		public float TriggerGroundEffectImpulse { get { return m_TriggerGroundEffectImpulse; } set { if (OnPropertyChanging("ChassisComponentData." + nameof(TriggerGroundEffectImpulse), this, m_TriggerGroundEffectImpulse, value)) m_TriggerGroundEffectImpulse = value; } } // 0x80 (128)
 		
-		[ContainerField(132)]
-		public CtrRef<LandingGearLogicData> LandingGearLogic { get; set; } = new CtrRef<LandingGearLogicData>(); // 0x84 (132)
+		protected CtrRef<LandingGearLogicData> m_LandingGearLogic = new CtrRef<LandingGearLogicData>();
+		[ContainerField(132), ContainerFieldNameHash(3799182877)]
+		public CtrRef<LandingGearLogicData> LandingGearLogic { get { return m_LandingGearLogic; } set { if (OnPropertyChanging("ChassisComponentData." + nameof(LandingGearLogic), this, m_LandingGearLogic, value)) m_LandingGearLogic = value; } } // 0x84 (132)
 		
-		[ContainerField(136), LayoutImmutable, Blittable]
-		public bool AlwaysFullThrottle { get; set; } // 0x88 (136)
+		protected bool m_AlwaysFullThrottle = new bool();
+		[ContainerField(136), LayoutImmutable, Blittable, ContainerFieldNameHash(2632109007)]
+		public bool AlwaysFullThrottle { get { return m_AlwaysFullThrottle; } set { if (OnPropertyChanging("ChassisComponentData." + nameof(AlwaysFullThrottle), this, m_AlwaysFullThrottle, value)) m_AlwaysFullThrottle = value; } } // 0x88 (136)
 		
-		[ContainerField(137), LayoutImmutable, Blittable]
-		public bool ForceLandingGearsRetract { get; set; } // 0x89 (137)
+		protected bool m_ForceLandingGearsRetract = new bool();
+		[ContainerField(137), LayoutImmutable, Blittable, ContainerFieldNameHash(1620848058)]
+		public bool ForceLandingGearsRetract { get { return m_ForceLandingGearsRetract; } set { if (OnPropertyChanging("ChassisComponentData." + nameof(ForceLandingGearsRetract), this, m_ForceLandingGearsRetract, value)) m_ForceLandingGearsRetract = value; } } // 0x89 (137)
 		
-		[ContainerField(138), LayoutImmutable, Blittable]
-		public bool AllowNegativeThrottle { get; set; } // 0x8A (138)
+		protected bool m_AllowNegativeThrottle = new bool();
+		[ContainerField(138), LayoutImmutable, Blittable, ContainerFieldNameHash(1548999735)]
+		public bool AllowNegativeThrottle { get { return m_AllowNegativeThrottle; } set { if (OnPropertyChanging("ChassisComponentData." + nameof(AllowNegativeThrottle), this, m_AllowNegativeThrottle, value)) m_AllowNegativeThrottle = value; } } // 0x8A (138)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

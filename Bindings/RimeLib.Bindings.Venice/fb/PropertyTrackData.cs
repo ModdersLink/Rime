@@ -5,20 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class PropertyTrackData : 
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable, Blittable]
-		public int Id { get; set; } // 0x8 (8)
+		protected int m_Id = new int();
+		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(5862152)]
+		public int Id { get { return m_Id; } set { if (OnPropertyChanging("PropertyTrackData." + nameof(Id), this, m_Id, value)) m_Id = value; } } // 0x8 (8)
 		
-		[ContainerField(12)]
-		public List<int> Times { get; set; } = new List<int>(); // 0xC (12)
+		protected List<int> m_Times = new List<int>();
+		[ContainerField(12), ContainerFieldNameHash(227876771)]
+		public List<int> Times { get { return m_Times; } set { if (OnPropertyChanging("PropertyTrackData." + nameof(Times), this, m_Times, value)) m_Times = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

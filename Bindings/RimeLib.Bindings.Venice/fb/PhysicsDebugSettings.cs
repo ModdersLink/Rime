@@ -5,22 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class PhysicsDebugSettings : 
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable, Blittable]
-		public uint TimingRecursionDepth { get; set; } // 0x8 (8)
+		protected uint m_TimingRecursionDepth = new uint();
+		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(2471681392)]
+		public uint TimingRecursionDepth { get { return m_TimingRecursionDepth; } set { if (OnPropertyChanging("PhysicsDebugSettings." + nameof(TimingRecursionDepth), this, m_TimingRecursionDepth, value)) m_TimingRecursionDepth = value; } } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public bool UsePhysicsCpuTimers { get; set; } // 0xC (12)
+		protected bool m_UsePhysicsCpuTimers = new bool();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(888297727)]
+		public bool UsePhysicsCpuTimers { get { return m_UsePhysicsCpuTimers; } set { if (OnPropertyChanging("PhysicsDebugSettings." + nameof(UsePhysicsCpuTimers), this, m_UsePhysicsCpuTimers, value)) m_UsePhysicsCpuTimers = value; } } // 0xC (12)
 		
-		[ContainerField(13), LayoutImmutable, Blittable]
-		public bool DebugHingeConstraints { get; set; } // 0xD (13)
+		protected bool m_DebugHingeConstraints = new bool();
+		[ContainerField(13), LayoutImmutable, Blittable, ContainerFieldNameHash(4121530031)]
+		public bool DebugHingeConstraints { get { return m_DebugHingeConstraints; } set { if (OnPropertyChanging("PhysicsDebugSettings." + nameof(DebugHingeConstraints), this, m_DebugHingeConstraints, value)) m_DebugHingeConstraints = value; } } // 0xD (13)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

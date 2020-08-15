@@ -5,22 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class StartEntityData : 
 		EntityData
 	{
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public float SortIndex { get; set; } // 0xC (12)
+		protected float m_SortIndex = new float();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(1347637313)]
+		public float SortIndex { get { return m_SortIndex; } set { if (OnPropertyChanging("StartEntityData." + nameof(SortIndex), this, m_SortIndex, value)) m_SortIndex = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable]
-		public string StartName { get; set; } // 0x10 (16)
+		protected string m_StartName = new string();
+		[ContainerField(16), LayoutImmutable, ContainerFieldNameHash(3727215458)]
+		public string StartName { get { return m_StartName; } set { if (OnPropertyChanging("StartEntityData." + nameof(StartName), this, m_StartName, value)) m_StartName = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
-		public bool IsDefault { get; set; } // 0x14 (20)
+		protected bool m_IsDefault = new bool();
+		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(2802724276)]
+		public bool IsDefault { get { return m_IsDefault; } set { if (OnPropertyChanging("StartEntityData." + nameof(IsDefault), this, m_IsDefault, value)) m_IsDefault = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

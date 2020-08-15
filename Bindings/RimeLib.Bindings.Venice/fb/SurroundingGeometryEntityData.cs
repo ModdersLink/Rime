@@ -5,22 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class SurroundingGeometryEntityData : 
 		GameEntityData
 	{
-		[ContainerField(96)]
-		public CtrRef<AllowedVehiclesData> AllowedVehicleList { get; set; } = new CtrRef<AllowedVehiclesData>(); // 0x60 (96)
+		protected CtrRef<AllowedVehiclesData> m_AllowedVehicleList = new CtrRef<AllowedVehiclesData>();
+		[ContainerField(96), ContainerFieldNameHash(880039879)]
+		public CtrRef<AllowedVehiclesData> AllowedVehicleList { get { return m_AllowedVehicleList; } set { if (OnPropertyChanging("SurroundingGeometryEntityData." + nameof(AllowedVehicleList), this, m_AllowedVehicleList, value)) m_AllowedVehicleList = value; } } // 0x60 (96)
 		
-		[ContainerField(100)]
-		public CtrRef<CombatAreaTriggerEntityData> CombatArea { get; set; } = new CtrRef<CombatAreaTriggerEntityData>(); // 0x64 (100)
+		protected CtrRef<CombatAreaTriggerEntityData> m_CombatArea = new CtrRef<CombatAreaTriggerEntityData>();
+		[ContainerField(100), ContainerFieldNameHash(3144394660)]
+		public CtrRef<CombatAreaTriggerEntityData> CombatArea { get { return m_CombatArea; } set { if (OnPropertyChanging("SurroundingGeometryEntityData." + nameof(CombatArea), this, m_CombatArea, value)) m_CombatArea = value; } } // 0x64 (100)
 		
-		[ContainerField(104), LayoutImmutable, Blittable]
-		public uint CombatAreaIndex { get; set; } // 0x68 (104)
+		protected uint m_CombatAreaIndex = new uint();
+		[ContainerField(104), LayoutImmutable, Blittable, ContainerFieldNameHash(2813446234)]
+		public uint CombatAreaIndex { get { return m_CombatAreaIndex; } set { if (OnPropertyChanging("SurroundingGeometryEntityData." + nameof(CombatAreaIndex), this, m_CombatAreaIndex, value)) m_CombatAreaIndex = value; } } // 0x68 (104)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

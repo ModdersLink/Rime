@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class FenceModelEntityData : 
 		StaticModelEntityData
 	{
-		[ContainerField(160), LayoutImmutable, Blittable]
-		public float Width { get; set; } // 0xA0 (160)
+		protected float m_Width = new float();
+		[ContainerField(160), LayoutImmutable, Blittable, ContainerFieldNameHash(226981187)]
+		public float Width { get { return m_Width; } set { if (OnPropertyChanging("FenceModelEntityData." + nameof(Width), this, m_Width, value)) m_Width = value; } } // 0xA0 (160)
 		
-		[ContainerField(164), LayoutImmutable, Blittable]
-		public float Angle { get; set; } // 0xA4 (164)
+		protected float m_Angle = new float();
+		[ContainerField(164), LayoutImmutable, Blittable, ContainerFieldNameHash(205597860)]
+		public float Angle { get { return m_Angle; } set { if (OnPropertyChanging("FenceModelEntityData." + nameof(Angle), this, m_Angle, value)) m_Angle = value; } } // 0xA4 (164)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

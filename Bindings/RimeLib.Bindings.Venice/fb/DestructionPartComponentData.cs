@@ -5,29 +5,42 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class DestructionPartComponentData : 
 		ComponentData
 	{
-		[ContainerField(96)]
-		public RefArray<GameObjectData> Objects { get; set; } = new RefArray<GameObjectData>(); // 0x60 (96)
+		protected RefArray<GameObjectData> m_Objects = new RefArray<GameObjectData>();
+		[ContainerField(96), ContainerFieldNameHash(105488131)]
+		public RefArray<GameObjectData> Objects { get { return m_Objects; } set { if (OnPropertyChanging("DestructionPartComponentData." + nameof(Objects), this, m_Objects, value)) m_Objects = value; } } // 0x60 (96)
 		
-		[ContainerField(100), LayoutImmutable, Blittable]
-		public uint PartIndex { get; set; } // 0x64 (100)
+		protected uint m_PartIndex = new uint();
+		[ContainerField(100), LayoutImmutable, Blittable, ContainerFieldNameHash(3213901068)]
+		public uint PartIndex { get { return m_PartIndex; } set { if (OnPropertyChanging("DestructionPartComponentData." + nameof(PartIndex), this, m_PartIndex, value)) m_PartIndex = value; } } // 0x64 (100)
 		
-		[ContainerField(104)]
-		public DestructionConnectivityType ConnectivityType { get; set; } = new DestructionConnectivityType(); // 0x68 (104)
+		protected DestructionConnectivityType m_ConnectivityType = new DestructionConnectivityType();
+		[ContainerField(104), ContainerFieldNameHash(135434200)]
+		public DestructionConnectivityType ConnectivityType { get { return m_ConnectivityType; } set { if (OnPropertyChanging("DestructionPartComponentData." + nameof(ConnectivityType), this, m_ConnectivityType, value)) m_ConnectivityType = value; } } // 0x68 (104)
 		
-		[ContainerField(108), LayoutImmutable, Blittable]
-		public bool Fixed { get; set; } // 0x6C (108)
+		protected bool m_Fixed = new bool();
+		[ContainerField(108), LayoutImmutable, Blittable, ContainerFieldNameHash(206684275)]
+		public bool Fixed { get { return m_Fixed; } set { if (OnPropertyChanging("DestructionPartComponentData." + nameof(Fixed), this, m_Fixed, value)) m_Fixed = value; } } // 0x6C (108)
 		
-		[ContainerField(109), LayoutImmutable, Blittable]
-		public bool Fragile { get; set; } // 0x6D (109)
+		protected bool m_Fragile = new bool();
+		[ContainerField(109), LayoutImmutable, Blittable, ContainerFieldNameHash(2082366423)]
+		public bool Fragile { get { return m_Fragile; } set { if (OnPropertyChanging("DestructionPartComponentData." + nameof(Fragile), this, m_Fragile, value)) m_Fragile = value; } } // 0x6D (109)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,26 +5,38 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class DestructionVolumeData : 
 		DataContainer
 	{
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable]
-		public AxisAlignedBox BoundingBox { get; set; } = new AxisAlignedBox(); // 0x10 (16)
+		protected AxisAlignedBox m_BoundingBox = new AxisAlignedBox();
+		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(2648132290)]
+		public AxisAlignedBox BoundingBox { get { return m_BoundingBox; } set { if (OnPropertyChanging("DestructionVolumeData." + nameof(BoundingBox), this, m_BoundingBox, value)) m_BoundingBox = value; } } // 0x10 (16)
 		
-		[ContainerField(48)]
-		public CtrRef<DestructionVolumeAsset> Asset { get; set; } = new CtrRef<DestructionVolumeAsset>(); // 0x30 (48)
+		protected CtrRef<DestructionVolumeAsset> m_Asset = new CtrRef<DestructionVolumeAsset>();
+		[ContainerField(48), ContainerFieldNameHash(205976053)]
+		public CtrRef<DestructionVolumeAsset> Asset { get { return m_Asset; } set { if (OnPropertyChanging("DestructionVolumeData." + nameof(Asset), this, m_Asset, value)) m_Asset = value; } } // 0x30 (48)
 		
-		[ContainerField(52)]
-		public List<Vec4> Impacts { get; set; } = new List<Vec4>(); // 0x34 (52)
+		protected List<Vec4> m_Impacts = new List<Vec4>();
+		[ContainerField(52), ContainerFieldNameHash(1723826932)]
+		public List<Vec4> Impacts { get { return m_Impacts; } set { if (OnPropertyChanging("DestructionVolumeData." + nameof(Impacts), this, m_Impacts, value)) m_Impacts = value; } } // 0x34 (52)
 		
-		[ContainerField(56)]
-		public List<uint> PartToImpactIndices { get; set; } = new List<uint>(); // 0x38 (56)
+		protected List<uint> m_PartToImpactIndices = new List<uint>();
+		[ContainerField(56), ContainerFieldNameHash(4119124564)]
+		public List<uint> PartToImpactIndices { get { return m_PartToImpactIndices; } set { if (OnPropertyChanging("DestructionVolumeData." + nameof(PartToImpactIndices), this, m_PartToImpactIndices, value)) m_PartToImpactIndices = value; } } // 0x38 (56)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

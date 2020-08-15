@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class EnlightenPipelineParams : 
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable, Blittable]
-		public bool DynamicEnable { get; set; } // 0x8 (8)
+		protected bool m_DynamicEnable = new bool();
+		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(2376411633)]
+		public bool DynamicEnable { get { return m_DynamicEnable; } set { if (OnPropertyChanging("EnlightenPipelineParams." + nameof(DynamicEnable), this, m_DynamicEnable, value)) m_DynamicEnable = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

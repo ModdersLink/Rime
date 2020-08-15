@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class GroundHeightEntityData : 
 		SpatialEntityData
 	{
-		[ContainerField(80)]
-		public GroundHeightData Data { get; set; } = new GroundHeightData(); // 0x50 (80)
+		protected GroundHeightData m_Data = new GroundHeightData();
+		[ContainerField(80), ContainerFieldNameHash(2088730869)]
+		public GroundHeightData Data { get { return m_Data; } set { if (OnPropertyChanging("GroundHeightEntityData." + nameof(Data), this, m_Data, value)) m_Data = value; } } // 0x50 (80)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

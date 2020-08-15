@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class SoldierCustomizationAsset : 
 		CharacterCustomizationAsset
 	{
-		[ContainerField(32)]
-		public CtrRef<CustomizationTable> WeaponTable { get; set; } = new CtrRef<CustomizationTable>(); // 0x20 (32)
+		protected CtrRef<CustomizationTable> m_WeaponTable = new CtrRef<CustomizationTable>();
+		[ContainerField(32), ContainerFieldNameHash(731633497)]
+		public CtrRef<CustomizationTable> WeaponTable { get { return m_WeaponTable; } set { if (OnPropertyChanging("SoldierCustomizationAsset." + nameof(WeaponTable), this, m_WeaponTable, value)) m_WeaponTable = value; } } // 0x20 (32)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

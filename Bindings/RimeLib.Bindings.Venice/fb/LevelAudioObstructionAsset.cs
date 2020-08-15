@@ -5,26 +5,38 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class LevelAudioObstructionAsset : 
 		Asset
 	{
-		[ContainerField(12)]
-		public List<AudioObstructionMaterialInfo> MaterialMap { get; set; } = new List<AudioObstructionMaterialInfo>(); // 0xC (12)
+		protected List<AudioObstructionMaterialInfo> m_MaterialMap = new List<AudioObstructionMaterialInfo>();
+		[ContainerField(12), ContainerFieldNameHash(2868170514)]
+		public List<AudioObstructionMaterialInfo> MaterialMap { get { return m_MaterialMap; } set { if (OnPropertyChanging("LevelAudioObstructionAsset." + nameof(MaterialMap), this, m_MaterialMap, value)) m_MaterialMap = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public float FrequencySlewRate { get; set; } // 0x10 (16)
+		protected float m_FrequencySlewRate = new float();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(1368142094)]
+		public float FrequencySlewRate { get { return m_FrequencySlewRate; } set { if (OnPropertyChanging("LevelAudioObstructionAsset." + nameof(FrequencySlewRate), this, m_FrequencySlewRate, value)) m_FrequencySlewRate = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
-		public float GainSlewRate { get; set; } // 0x14 (20)
+		protected float m_GainSlewRate = new float();
+		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(56498091)]
+		public float GainSlewRate { get { return m_GainSlewRate; } set { if (OnPropertyChanging("LevelAudioObstructionAsset." + nameof(GainSlewRate), this, m_GainSlewRate, value)) m_GainSlewRate = value; } } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable]
-		public float MaxRaycastDistanceSquared { get; set; } // 0x18 (24)
+		protected float m_MaxRaycastDistanceSquared = new float();
+		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(1365527576)]
+		public float MaxRaycastDistanceSquared { get { return m_MaxRaycastDistanceSquared; } set { if (OnPropertyChanging("LevelAudioObstructionAsset." + nameof(MaxRaycastDistanceSquared), this, m_MaxRaycastDistanceSquared, value)) m_MaxRaycastDistanceSquared = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

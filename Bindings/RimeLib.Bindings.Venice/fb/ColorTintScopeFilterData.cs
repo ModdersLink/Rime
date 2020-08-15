@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class ColorTintScopeFilterData : 
 		ScopeFilterData
 	{
-		[ContainerField(16)]
-		public ColorTintData ColorTintData { get; set; } = new ColorTintData(); // 0x10 (16)
+		protected ColorTintData m_ColorTintData = new ColorTintData();
+		[ContainerField(16), ContainerFieldNameHash(1503443055)]
+		public ColorTintData ColorTintData { get { return m_ColorTintData; } set { if (OnPropertyChanging("ColorTintScopeFilterData." + nameof(ColorTintData), this, m_ColorTintData, value)) m_ColorTintData = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

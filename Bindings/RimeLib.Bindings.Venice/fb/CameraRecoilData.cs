@@ -5,22 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class CameraRecoilData : 
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable, Blittable]
-		public float SpringConstant { get; set; } // 0x8 (8)
+		protected float m_SpringConstant = new float();
+		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(3561415946)]
+		public float SpringConstant { get { return m_SpringConstant; } set { if (OnPropertyChanging("CameraRecoilData." + nameof(SpringConstant), this, m_SpringConstant, value)) m_SpringConstant = value; } } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public float SpringDamping { get; set; } // 0xC (12)
+		protected float m_SpringDamping = new float();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(1976598700)]
+		public float SpringDamping { get { return m_SpringDamping; } set { if (OnPropertyChanging("CameraRecoilData." + nameof(SpringDamping), this, m_SpringDamping, value)) m_SpringDamping = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public float SpringMinThresholdAngle { get; set; } // 0x10 (16)
+		protected float m_SpringMinThresholdAngle = new float();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(130500136)]
+		public float SpringMinThresholdAngle { get { return m_SpringMinThresholdAngle; } set { if (OnPropertyChanging("CameraRecoilData." + nameof(SpringMinThresholdAngle), this, m_SpringMinThresholdAngle, value)) m_SpringMinThresholdAngle = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

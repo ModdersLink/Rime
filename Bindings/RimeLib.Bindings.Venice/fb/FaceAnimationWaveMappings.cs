@@ -5,23 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class FaceAnimationWaveMappings : 
 		DataContainer
 	{
-		[ContainerField(8)]
-		public AntRef AntAsset { get; set; } = new AntRef(); // 0x8 (8)
+		protected AntRef m_AntAsset = new AntRef();
+		[ContainerField(8), ContainerFieldNameHash(1873036974)]
+		public AntRef AntAsset { get { return m_AntAsset; } set { if (OnPropertyChanging("FaceAnimationWaveMappings." + nameof(AntAsset), this, m_AntAsset, value)) m_AntAsset = value; } } // 0x8 (8)
 		
-		[ContainerField(12)]
-		public AntRef OnStartedTalking { get; set; } = new AntRef(); // 0xC (12)
+		protected AntRef m_OnStartedTalking = new AntRef();
+		[ContainerField(12), ContainerFieldNameHash(2148011415)]
+		public AntRef OnStartedTalking { get { return m_OnStartedTalking; } set { if (OnPropertyChanging("FaceAnimationWaveMappings." + nameof(OnStartedTalking), this, m_OnStartedTalking, value)) m_OnStartedTalking = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public List<FaceAnimationWaveMapping> Mappings { get; set; } = new List<FaceAnimationWaveMapping>(); // 0x10 (16)
+		protected List<FaceAnimationWaveMapping> m_Mappings = new List<FaceAnimationWaveMapping>();
+		[ContainerField(16), ContainerFieldNameHash(673881690)]
+		public List<FaceAnimationWaveMapping> Mappings { get { return m_Mappings; } set { if (OnPropertyChanging("FaceAnimationWaveMappings." + nameof(Mappings), this, m_Mappings, value)) m_Mappings = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

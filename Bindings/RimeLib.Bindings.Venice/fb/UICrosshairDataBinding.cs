@@ -5,25 +5,38 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class UICrosshairDataBinding : 
 		UIDataBinding
 	{
-		[ContainerField(8)]
-		public UIDataSourceInfo Dispersion { get; set; } = new UIDataSourceInfo(); // 0x8 (8)
+		protected UIDataSourceInfo m_Dispersion = new UIDataSourceInfo();
+		[ContainerField(8), ContainerFieldNameHash(1858542823)]
+		public UIDataSourceInfo Dispersion { get { return m_Dispersion; } set { if (OnPropertyChanging("UICrosshairDataBinding." + nameof(Dispersion), this, m_Dispersion, value)) m_Dispersion = value; } } // 0x8 (8)
 		
-		[ContainerField(24)]
-		public UIDataSourceInfo Zoomed { get; set; } = new UIDataSourceInfo(); // 0x18 (24)
+		protected UIDataSourceInfo m_Zoomed = new UIDataSourceInfo();
+		[ContainerField(24), ContainerFieldNameHash(3600216371)]
+		public UIDataSourceInfo Zoomed { get { return m_Zoomed; } set { if (OnPropertyChanging("UICrosshairDataBinding." + nameof(Zoomed), this, m_Zoomed, value)) m_Zoomed = value; } } // 0x18 (24)
 		
-		[ContainerField(40)]
-		public UIDataSourceInfo Visibility { get; set; } = new UIDataSourceInfo(); // 0x28 (40)
+		protected UIDataSourceInfo m_Visibility = new UIDataSourceInfo();
+		[ContainerField(40), ContainerFieldNameHash(1708270083)]
+		public UIDataSourceInfo Visibility { get { return m_Visibility; } set { if (OnPropertyChanging("UICrosshairDataBinding." + nameof(Visibility), this, m_Visibility, value)) m_Visibility = value; } } // 0x28 (40)
 		
-		[ContainerField(56), LayoutImmutable, Blittable]
-		public float DispersionBaseOffset { get; set; } // 0x38 (56)
+		protected float m_DispersionBaseOffset = new float();
+		[ContainerField(56), LayoutImmutable, Blittable, ContainerFieldNameHash(1903973791)]
+		public float DispersionBaseOffset { get { return m_DispersionBaseOffset; } set { if (OnPropertyChanging("UICrosshairDataBinding." + nameof(DispersionBaseOffset), this, m_DispersionBaseOffset, value)) m_DispersionBaseOffset = value; } } // 0x38 (56)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

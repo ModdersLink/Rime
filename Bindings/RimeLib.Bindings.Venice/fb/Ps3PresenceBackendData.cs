@@ -5,26 +5,38 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class Ps3PresenceBackendData : 
 		PresenceBackendData
 	{
-		[ContainerField(16), LayoutImmutable]
-		public string CommunicationId { get; set; } // 0x10 (16)
+		protected string m_CommunicationId = new string();
+		[ContainerField(16), LayoutImmutable, ContainerFieldNameHash(1462563432)]
+		public string CommunicationId { get { return m_CommunicationId; } set { if (OnPropertyChanging("Ps3PresenceBackendData." + nameof(CommunicationId), this, m_CommunicationId, value)) m_CommunicationId = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable]
-		public string CommunicationSignature { get; set; } // 0x14 (20)
+		protected string m_CommunicationSignature = new string();
+		[ContainerField(20), LayoutImmutable, ContainerFieldNameHash(2337208161)]
+		public string CommunicationSignature { get { return m_CommunicationSignature; } set { if (OnPropertyChanging("Ps3PresenceBackendData." + nameof(CommunicationSignature), this, m_CommunicationSignature, value)) m_CommunicationSignature = value; } } // 0x14 (20)
 		
-		[ContainerField(24)]
-		public List<Ps3SkuSettings> SkuSettings { get; set; } = new List<Ps3SkuSettings>(); // 0x18 (24)
+		protected List<Ps3SkuSettings> m_SkuSettings = new List<Ps3SkuSettings>();
+		[ContainerField(24), ContainerFieldNameHash(1395605389)]
+		public List<Ps3SkuSettings> SkuSettings { get { return m_SkuSettings; } set { if (OnPropertyChanging("Ps3PresenceBackendData." + nameof(SkuSettings), this, m_SkuSettings, value)) m_SkuSettings = value; } } // 0x18 (24)
 		
-		[ContainerField(28)]
-		public List<Ps3ParentalLockAgeSettings> ParentalLockAgeSettings { get; set; } = new List<Ps3ParentalLockAgeSettings>(); // 0x1C (28)
+		protected List<Ps3ParentalLockAgeSettings> m_ParentalLockAgeSettings = new List<Ps3ParentalLockAgeSettings>();
+		[ContainerField(28), ContainerFieldNameHash(786148441)]
+		public List<Ps3ParentalLockAgeSettings> ParentalLockAgeSettings { get { return m_ParentalLockAgeSettings; } set { if (OnPropertyChanging("Ps3PresenceBackendData." + nameof(ParentalLockAgeSettings), this, m_ParentalLockAgeSettings, value)) m_ParentalLockAgeSettings = value; } } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

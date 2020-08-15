@@ -5,238 +5,322 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class ServerSettings : 
 		SystemSettings
 	{
-		[ContainerField(12), LayoutImmutable]
-		public string InstancePath { get; set; } // 0xC (12)
-		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public uint RemoteControlPort { get; set; } // 0x10 (16)
-		
-		[ContainerField(20), LayoutImmutable, Blittable]
-		public float DuplicationChance { get; set; } // 0x14 (20)
-		
-		[ContainerField(24), LayoutImmutable, Blittable]
-		public uint MaxQueriesPerSecond { get; set; } // 0x18 (24)
-		
-		[ContainerField(28), LayoutImmutable, Blittable]
-		public float CorruptionChance { get; set; } // 0x1C (28)
-		
-		[ContainerField(32), LayoutImmutable]
-		public string RemoteAdministrationPort { get; set; } // 0x20 (32)
-		
-		[ContainerField(36), LayoutImmutable, Blittable]
-		public float MaxDropDuration { get; set; } // 0x24 (36)
-		
-		[ContainerField(40), LayoutImmutable, Blittable]
-		public float ReorderingChance { get; set; } // 0x28 (40)
-		
-		[ContainerField(44), LayoutImmutable, Blittable]
-		public float HumanHealthMultiplier { get; set; } // 0x2C (44)
-		
-		[ContainerField(48), LayoutImmutable]
-		public string ServerName { get; set; } // 0x30 (48)
-		
-		[ContainerField(52), LayoutImmutable, Blittable]
-		public float MinDropDuration { get; set; } // 0x34 (52)
-		
-		[ContainerField(56), LayoutImmutable, Blittable]
-		public uint SaveGameVersion { get; set; } // 0x38 (56)
-		
-		[ContainerField(60), LayoutImmutable, Blittable]
-		public float PacketDrops { get; set; } // 0x3C (60)
-		
-		[ContainerField(64), LayoutImmutable, Blittable]
-		public float DropSpikeChance { get; set; } // 0x40 (64)
-		
-		[ContainerField(68), LayoutImmutable, Blittable]
-		public float MaxLatency { get; set; } // 0x44 (68)
-		
-		[ContainerField(72), LayoutImmutable, Blittable]
-		public uint OutgoingRate { get; set; } // 0x48 (72)
-		
-		[ContainerField(76), LayoutImmutable, Blittable]
-		public uint IncomingRate { get; set; } // 0x4C (76)
-		
-		[ContainerField(80), LayoutImmutable]
-		public string Playlist { get; set; } // 0x50 (80)
-		
-		[ContainerField(84), LayoutImmutable]
-		public string SavePoint { get; set; } // 0x54 (84)
-		
-		[ContainerField(88), LayoutImmutable, Blittable]
-		public float IngameTimeout { get; set; } // 0x58 (88)
-		
-		[ContainerField(92), LayoutImmutable, Blittable]
-		public float OutgoingFrequency { get; set; } // 0x5C (92)
-		
-		[ContainerField(96), LayoutImmutable, Blittable]
-		public float RespawnTimeModifier { get; set; } // 0x60 (96)
-		
-		[ContainerField(100), LayoutImmutable, Blittable]
-		public float MinLatency { get; set; } // 0x64 (100)
-		
-		[ContainerField(104), LayoutImmutable]
-		public string ServerPassword { get; set; } // 0x68 (104)
-		
-		[ContainerField(108), LayoutImmutable, Blittable]
-		public float TimeoutTime { get; set; } // 0x6C (108)
-		
-		[ContainerField(112), LayoutImmutable, Blittable]
-		public uint PlayerCountNeededForMultiplayer { get; set; } // 0x70 (112)
-		
-		[ContainerField(116), LayoutImmutable, Blittable]
-		public float VehicleSpawnDelayModifier { get; set; } // 0x74 (116)
-		
-		[ContainerField(120), LayoutImmutable]
-		public string DebugMenuClick { get; set; } // 0x78 (120)
-		
-		[ContainerField(124), LayoutImmutable]
-		public string AdministrationPassword { get; set; } // 0x7C (124)
-		
-		[ContainerField(128), LayoutImmutable, Blittable]
-		public float LoadingTimeout { get; set; } // 0x80 (128)
-		
-		[ContainerField(132), LayoutImmutable, Blittable]
-		public int DedicatedServerCpu { get; set; } // 0x84 (132)
-		
-		[ContainerField(136), LayoutImmutable, Blittable]
-		public bool DeathmatchDebugInfo { get; set; } // 0x88 (136)
-		
-		[ContainerField(137), LayoutImmutable, Blittable]
-		public bool TimeoutGame { get; set; } // 0x89 (137)
-		
-		[ContainerField(138), LayoutImmutable, Blittable]
-		public bool AILooksIntoCamera { get; set; } // 0x8A (138)
-		
-		[ContainerField(139), LayoutImmutable, Blittable]
-		public bool IsStatsEnabled { get; set; } // 0x8B (139)
-		
-		[ContainerField(140), LayoutImmutable, Blittable]
-		public bool IsTreeDestructionEnabled { get; set; } // 0x8C (140)
-		
-		[ContainerField(141), LayoutImmutable, Blittable]
-		public bool HavokCaptureToFile { get; set; } // 0x8D (141)
-		
-		[ContainerField(142), LayoutImmutable, Blittable]
-		public bool ShowTriggerDebugText { get; set; } // 0x8E (142)
-		
-		[ContainerField(143), LayoutImmutable, Blittable]
-		public bool IsInternetSimulationEnabled { get; set; } // 0x8F (143)
-		
-		[ContainerField(144), LayoutImmutable, Blittable]
-		public bool DisableCutscenes { get; set; } // 0x90 (144)
-		
-		[ContainerField(145), LayoutImmutable, Blittable]
-		public bool JobEnable { get; set; } // 0x91 (145)
-		
-		[ContainerField(146), LayoutImmutable, Blittable]
-		public bool ThreadingEnable { get; set; } // 0x92 (146)
-		
-		[ContainerField(147), LayoutImmutable, Blittable]
-		public bool DrawActivePhysicsObjects { get; set; } // 0x93 (147)
-		
-		[ContainerField(148), LayoutImmutable, Blittable]
-		public bool IsRanked { get; set; } // 0x94 (148)
-		
-		[ContainerField(149), LayoutImmutable, Blittable]
-		public bool UnlockResolver { get; set; } // 0x95 (149)
-		
-		[ContainerField(150), LayoutImmutable, Blittable]
-		public bool ScoringLogEnabled { get; set; } // 0x96 (150)
-		
-		[ContainerField(151), LayoutImmutable, Blittable]
-		public bool HavokVisualDebugger { get; set; } // 0x97 (151)
-		
-		[ContainerField(152), LayoutImmutable, Blittable]
-		public bool IsSoldierDetailedCollisionEnabled { get; set; } // 0x98 (152)
-		
-		[ContainerField(153), LayoutImmutable, Blittable]
-		public bool LoadSavePoint { get; set; } // 0x99 (153)
-		
-		[ContainerField(154), LayoutImmutable, Blittable]
-		public bool IsSoldierAnimationEnabled { get; set; } // 0x9A (154)
-		
-		[ContainerField(155), LayoutImmutable, Blittable]
-		public bool IsAiEnabled { get; set; } // 0x9B (155)
-		
-		[ContainerField(156), LayoutImmutable, Blittable]
-		public bool IsReconfigurable { get; set; } // 0x9C (156)
-		
-		[ContainerField(157), LayoutImmutable, Blittable]
-		public bool IsDestructionEnabled { get; set; } // 0x9D (157)
-		
-		[ContainerField(158), LayoutImmutable, Blittable]
-		public bool ForcePlaylist { get; set; } // 0x9E (158)
-		
-		[ContainerField(159), LayoutImmutable, Blittable]
-		public bool IsNetworkStatsEnabled { get; set; } // 0x9F (159)
-		
-		[ContainerField(160), LayoutImmutable, Blittable]
-		public bool AutoUnspawnBangers { get; set; } // 0xA0 (160)
-		
-		[ContainerField(161), LayoutImmutable, Blittable]
-		public bool RegulatedAIThrottle { get; set; } // 0xA1 (161)
-		
-		[ContainerField(162), LayoutImmutable, Blittable]
-		public bool EnableAnimationCulling { get; set; } // 0xA2 (162)
-		
-		[ContainerField(163), LayoutImmutable, Blittable]
-		public bool FallBackToSquadSpawn { get; set; } // 0xA3 (163)
-		
-		[ContainerField(164), LayoutImmutable, Blittable]
-		public bool AllowIndestructibleParts { get; set; } // 0xA4 (164)
-		
-		[ContainerField(165), LayoutImmutable, Blittable]
-		public bool IsPresenceEnabled { get; set; } // 0xA5 (165)
-		
-		[ContainerField(166), LayoutImmutable, Blittable]
-		public bool WaterPhysicsEnabled { get; set; } // 0xA6 (166)
-		
-		[ContainerField(167), LayoutImmutable, Blittable]
-		public bool RespawnOnDeathPosition { get; set; } // 0xA7 (167)
-		
-		[ContainerField(168), LayoutImmutable, Blittable]
-		public bool IsRenderDamageEvents { get; set; } // 0xA8 (168)
-		
-		[ContainerField(169), LayoutImmutable, Blittable]
-		public bool VehicleSpawnAllowed { get; set; } // 0xA9 (169)
-		
-		[ContainerField(170), LayoutImmutable, Blittable]
-		public bool QueryProviderEnabled { get; set; } // 0xAA (170)
-		
-		[ContainerField(171), LayoutImmutable, Blittable]
-		public bool IsDesertingAllowed { get; set; } // 0xAB (171)
-		
-		[ContainerField(172), LayoutImmutable, Blittable]
-		public bool DebrisClusterEnabled { get; set; } // 0xAC (172)
-		
-		[ContainerField(173), LayoutImmutable, Blittable]
-		public bool AdministrationEnabled { get; set; } // 0xAD (173)
-		
-		[ContainerField(174), LayoutImmutable, Blittable]
-		public bool AdministrationLogEnabled { get; set; } // 0xAE (174)
-		
-		[ContainerField(175), LayoutImmutable, Blittable]
-		public bool AdministrationTimeStampLogNames { get; set; } // 0xAF (175)
-		
-		[ContainerField(176), LayoutImmutable, Blittable]
-		public bool AdministrationEventsEnabled { get; set; } // 0xB0 (176)
-		
-		[ContainerField(177), LayoutImmutable, Blittable]
-		public bool AdministrationServerNameRestricted { get; set; } // 0xB1 (177)
-		
-		[ContainerField(178), LayoutImmutable, Blittable]
-		public bool ThreadedLoadingEnable { get; set; } // 0xB2 (178)
-		
-		[ContainerField(179), LayoutImmutable, Blittable]
-		public bool VegetationEnabled { get; set; } // 0xB3 (179)
+		protected string m_InstancePath = new string();
+		[ContainerField(12), LayoutImmutable, ContainerFieldNameHash(1188027073)]
+		public string InstancePath { get { return m_InstancePath; } set { if (OnPropertyChanging("ServerSettings." + nameof(InstancePath), this, m_InstancePath, value)) m_InstancePath = value; } } // 0xC (12)
+		
+		protected uint m_RemoteControlPort = new uint();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(2050172703)]
+		public uint RemoteControlPort { get { return m_RemoteControlPort; } set { if (OnPropertyChanging("ServerSettings." + nameof(RemoteControlPort), this, m_RemoteControlPort, value)) m_RemoteControlPort = value; } } // 0x10 (16)
+		
+		protected float m_DuplicationChance = new float();
+		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(4025157277)]
+		public float DuplicationChance { get { return m_DuplicationChance; } set { if (OnPropertyChanging("ServerSettings." + nameof(DuplicationChance), this, m_DuplicationChance, value)) m_DuplicationChance = value; } } // 0x14 (20)
+		
+		protected uint m_MaxQueriesPerSecond = new uint();
+		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(1108763338)]
+		public uint MaxQueriesPerSecond { get { return m_MaxQueriesPerSecond; } set { if (OnPropertyChanging("ServerSettings." + nameof(MaxQueriesPerSecond), this, m_MaxQueriesPerSecond, value)) m_MaxQueriesPerSecond = value; } } // 0x18 (24)
+		
+		protected float m_CorruptionChance = new float();
+		[ContainerField(28), LayoutImmutable, Blittable, ContainerFieldNameHash(2028383634)]
+		public float CorruptionChance { get { return m_CorruptionChance; } set { if (OnPropertyChanging("ServerSettings." + nameof(CorruptionChance), this, m_CorruptionChance, value)) m_CorruptionChance = value; } } // 0x1C (28)
+		
+		protected string m_RemoteAdministrationPort = new string();
+		[ContainerField(32), LayoutImmutable, ContainerFieldNameHash(947290198)]
+		public string RemoteAdministrationPort { get { return m_RemoteAdministrationPort; } set { if (OnPropertyChanging("ServerSettings." + nameof(RemoteAdministrationPort), this, m_RemoteAdministrationPort, value)) m_RemoteAdministrationPort = value; } } // 0x20 (32)
+		
+		protected float m_MaxDropDuration = new float();
+		[ContainerField(36), LayoutImmutable, Blittable, ContainerFieldNameHash(3255041222)]
+		public float MaxDropDuration { get { return m_MaxDropDuration; } set { if (OnPropertyChanging("ServerSettings." + nameof(MaxDropDuration), this, m_MaxDropDuration, value)) m_MaxDropDuration = value; } } // 0x24 (36)
+		
+		protected float m_ReorderingChance = new float();
+		[ContainerField(40), LayoutImmutable, Blittable, ContainerFieldNameHash(3536539614)]
+		public float ReorderingChance { get { return m_ReorderingChance; } set { if (OnPropertyChanging("ServerSettings." + nameof(ReorderingChance), this, m_ReorderingChance, value)) m_ReorderingChance = value; } } // 0x28 (40)
+		
+		protected float m_HumanHealthMultiplier = new float();
+		[ContainerField(44), LayoutImmutable, Blittable, ContainerFieldNameHash(1831700397)]
+		public float HumanHealthMultiplier { get { return m_HumanHealthMultiplier; } set { if (OnPropertyChanging("ServerSettings." + nameof(HumanHealthMultiplier), this, m_HumanHealthMultiplier, value)) m_HumanHealthMultiplier = value; } } // 0x2C (44)
+		
+		protected string m_ServerName = new string();
+		[ContainerField(48), LayoutImmutable, ContainerFieldNameHash(1802252391)]
+		public string ServerName { get { return m_ServerName; } set { if (OnPropertyChanging("ServerSettings." + nameof(ServerName), this, m_ServerName, value)) m_ServerName = value; } } // 0x30 (48)
+		
+		protected float m_MinDropDuration = new float();
+		[ContainerField(52), LayoutImmutable, Blittable, ContainerFieldNameHash(32856408)]
+		public float MinDropDuration { get { return m_MinDropDuration; } set { if (OnPropertyChanging("ServerSettings." + nameof(MinDropDuration), this, m_MinDropDuration, value)) m_MinDropDuration = value; } } // 0x34 (52)
+		
+		protected uint m_SaveGameVersion = new uint();
+		[ContainerField(56), LayoutImmutable, Blittable, ContainerFieldNameHash(1621131600)]
+		public uint SaveGameVersion { get { return m_SaveGameVersion; } set { if (OnPropertyChanging("ServerSettings." + nameof(SaveGameVersion), this, m_SaveGameVersion, value)) m_SaveGameVersion = value; } } // 0x38 (56)
+		
+		protected float m_PacketDrops = new float();
+		[ContainerField(60), LayoutImmutable, Blittable, ContainerFieldNameHash(2325561751)]
+		public float PacketDrops { get { return m_PacketDrops; } set { if (OnPropertyChanging("ServerSettings." + nameof(PacketDrops), this, m_PacketDrops, value)) m_PacketDrops = value; } } // 0x3C (60)
+		
+		protected float m_DropSpikeChance = new float();
+		[ContainerField(64), LayoutImmutable, Blittable, ContainerFieldNameHash(2554650602)]
+		public float DropSpikeChance { get { return m_DropSpikeChance; } set { if (OnPropertyChanging("ServerSettings." + nameof(DropSpikeChance), this, m_DropSpikeChance, value)) m_DropSpikeChance = value; } } // 0x40 (64)
+		
+		protected float m_MaxLatency = new float();
+		[ContainerField(68), LayoutImmutable, Blittable, ContainerFieldNameHash(92818329)]
+		public float MaxLatency { get { return m_MaxLatency; } set { if (OnPropertyChanging("ServerSettings." + nameof(MaxLatency), this, m_MaxLatency, value)) m_MaxLatency = value; } } // 0x44 (68)
+		
+		protected uint m_OutgoingRate = new uint();
+		[ContainerField(72), LayoutImmutable, Blittable, ContainerFieldNameHash(3079887233)]
+		public uint OutgoingRate { get { return m_OutgoingRate; } set { if (OnPropertyChanging("ServerSettings." + nameof(OutgoingRate), this, m_OutgoingRate, value)) m_OutgoingRate = value; } } // 0x48 (72)
+		
+		protected uint m_IncomingRate = new uint();
+		[ContainerField(76), LayoutImmutable, Blittable, ContainerFieldNameHash(2958796769)]
+		public uint IncomingRate { get { return m_IncomingRate; } set { if (OnPropertyChanging("ServerSettings." + nameof(IncomingRate), this, m_IncomingRate, value)) m_IncomingRate = value; } } // 0x4C (76)
+		
+		protected string m_Playlist = new string();
+		[ContainerField(80), LayoutImmutable, ContainerFieldNameHash(927771683)]
+		public string Playlist { get { return m_Playlist; } set { if (OnPropertyChanging("ServerSettings." + nameof(Playlist), this, m_Playlist, value)) m_Playlist = value; } } // 0x50 (80)
+		
+		protected string m_SavePoint = new string();
+		[ContainerField(84), LayoutImmutable, ContainerFieldNameHash(1886045224)]
+		public string SavePoint { get { return m_SavePoint; } set { if (OnPropertyChanging("ServerSettings." + nameof(SavePoint), this, m_SavePoint, value)) m_SavePoint = value; } } // 0x54 (84)
+		
+		protected float m_IngameTimeout = new float();
+		[ContainerField(88), LayoutImmutable, Blittable, ContainerFieldNameHash(178921847)]
+		public float IngameTimeout { get { return m_IngameTimeout; } set { if (OnPropertyChanging("ServerSettings." + nameof(IngameTimeout), this, m_IngameTimeout, value)) m_IngameTimeout = value; } } // 0x58 (88)
+		
+		protected float m_OutgoingFrequency = new float();
+		[ContainerField(92), LayoutImmutable, Blittable, ContainerFieldNameHash(657578791)]
+		public float OutgoingFrequency { get { return m_OutgoingFrequency; } set { if (OnPropertyChanging("ServerSettings." + nameof(OutgoingFrequency), this, m_OutgoingFrequency, value)) m_OutgoingFrequency = value; } } // 0x5C (92)
+		
+		protected float m_RespawnTimeModifier = new float();
+		[ContainerField(96), LayoutImmutable, Blittable, ContainerFieldNameHash(3384743563)]
+		public float RespawnTimeModifier { get { return m_RespawnTimeModifier; } set { if (OnPropertyChanging("ServerSettings." + nameof(RespawnTimeModifier), this, m_RespawnTimeModifier, value)) m_RespawnTimeModifier = value; } } // 0x60 (96)
+		
+		protected float m_MinLatency = new float();
+		[ContainerField(100), LayoutImmutable, Blittable, ContainerFieldNameHash(715003463)]
+		public float MinLatency { get { return m_MinLatency; } set { if (OnPropertyChanging("ServerSettings." + nameof(MinLatency), this, m_MinLatency, value)) m_MinLatency = value; } } // 0x64 (100)
+		
+		protected string m_ServerPassword = new string();
+		[ContainerField(104), LayoutImmutable, ContainerFieldNameHash(82517919)]
+		public string ServerPassword { get { return m_ServerPassword; } set { if (OnPropertyChanging("ServerSettings." + nameof(ServerPassword), this, m_ServerPassword, value)) m_ServerPassword = value; } } // 0x68 (104)
+		
+		protected float m_TimeoutTime = new float();
+		[ContainerField(108), LayoutImmutable, Blittable, ContainerFieldNameHash(2552048779)]
+		public float TimeoutTime { get { return m_TimeoutTime; } set { if (OnPropertyChanging("ServerSettings." + nameof(TimeoutTime), this, m_TimeoutTime, value)) m_TimeoutTime = value; } } // 0x6C (108)
+		
+		protected uint m_PlayerCountNeededForMultiplayer = new uint();
+		[ContainerField(112), LayoutImmutable, Blittable, ContainerFieldNameHash(2906149535)]
+		public uint PlayerCountNeededForMultiplayer { get { return m_PlayerCountNeededForMultiplayer; } set { if (OnPropertyChanging("ServerSettings." + nameof(PlayerCountNeededForMultiplayer), this, m_PlayerCountNeededForMultiplayer, value)) m_PlayerCountNeededForMultiplayer = value; } } // 0x70 (112)
+		
+		protected float m_VehicleSpawnDelayModifier = new float();
+		[ContainerField(116), LayoutImmutable, Blittable, ContainerFieldNameHash(1247328452)]
+		public float VehicleSpawnDelayModifier { get { return m_VehicleSpawnDelayModifier; } set { if (OnPropertyChanging("ServerSettings." + nameof(VehicleSpawnDelayModifier), this, m_VehicleSpawnDelayModifier, value)) m_VehicleSpawnDelayModifier = value; } } // 0x74 (116)
+		
+		protected string m_DebugMenuClick = new string();
+		[ContainerField(120), LayoutImmutable, ContainerFieldNameHash(219459689)]
+		public string DebugMenuClick { get { return m_DebugMenuClick; } set { if (OnPropertyChanging("ServerSettings." + nameof(DebugMenuClick), this, m_DebugMenuClick, value)) m_DebugMenuClick = value; } } // 0x78 (120)
+		
+		protected string m_AdministrationPassword = new string();
+		[ContainerField(124), LayoutImmutable, ContainerFieldNameHash(1271615764)]
+		public string AdministrationPassword { get { return m_AdministrationPassword; } set { if (OnPropertyChanging("ServerSettings." + nameof(AdministrationPassword), this, m_AdministrationPassword, value)) m_AdministrationPassword = value; } } // 0x7C (124)
+		
+		protected float m_LoadingTimeout = new float();
+		[ContainerField(128), LayoutImmutable, Blittable, ContainerFieldNameHash(1203409176)]
+		public float LoadingTimeout { get { return m_LoadingTimeout; } set { if (OnPropertyChanging("ServerSettings." + nameof(LoadingTimeout), this, m_LoadingTimeout, value)) m_LoadingTimeout = value; } } // 0x80 (128)
+		
+		protected int m_DedicatedServerCpu = new int();
+		[ContainerField(132), LayoutImmutable, Blittable, ContainerFieldNameHash(4012132925)]
+		public int DedicatedServerCpu { get { return m_DedicatedServerCpu; } set { if (OnPropertyChanging("ServerSettings." + nameof(DedicatedServerCpu), this, m_DedicatedServerCpu, value)) m_DedicatedServerCpu = value; } } // 0x84 (132)
+		
+		protected bool m_DeathmatchDebugInfo = new bool();
+		[ContainerField(136), LayoutImmutable, Blittable, ContainerFieldNameHash(167269973)]
+		public bool DeathmatchDebugInfo { get { return m_DeathmatchDebugInfo; } set { if (OnPropertyChanging("ServerSettings." + nameof(DeathmatchDebugInfo), this, m_DeathmatchDebugInfo, value)) m_DeathmatchDebugInfo = value; } } // 0x88 (136)
+		
+		protected bool m_TimeoutGame = new bool();
+		[ContainerField(137), LayoutImmutable, Blittable, ContainerFieldNameHash(2552389232)]
+		public bool TimeoutGame { get { return m_TimeoutGame; } set { if (OnPropertyChanging("ServerSettings." + nameof(TimeoutGame), this, m_TimeoutGame, value)) m_TimeoutGame = value; } } // 0x89 (137)
+		
+		protected bool m_AILooksIntoCamera = new bool();
+		[ContainerField(138), LayoutImmutable, Blittable, ContainerFieldNameHash(2811501308)]
+		public bool AILooksIntoCamera { get { return m_AILooksIntoCamera; } set { if (OnPropertyChanging("ServerSettings." + nameof(AILooksIntoCamera), this, m_AILooksIntoCamera, value)) m_AILooksIntoCamera = value; } } // 0x8A (138)
+		
+		protected bool m_IsStatsEnabled = new bool();
+		[ContainerField(139), LayoutImmutable, Blittable, ContainerFieldNameHash(18279707)]
+		public bool IsStatsEnabled { get { return m_IsStatsEnabled; } set { if (OnPropertyChanging("ServerSettings." + nameof(IsStatsEnabled), this, m_IsStatsEnabled, value)) m_IsStatsEnabled = value; } } // 0x8B (139)
+		
+		protected bool m_IsTreeDestructionEnabled = new bool();
+		[ContainerField(140), LayoutImmutable, Blittable, ContainerFieldNameHash(210715778)]
+		public bool IsTreeDestructionEnabled { get { return m_IsTreeDestructionEnabled; } set { if (OnPropertyChanging("ServerSettings." + nameof(IsTreeDestructionEnabled), this, m_IsTreeDestructionEnabled, value)) m_IsTreeDestructionEnabled = value; } } // 0x8C (140)
+		
+		protected bool m_HavokCaptureToFile = new bool();
+		[ContainerField(141), LayoutImmutable, Blittable, ContainerFieldNameHash(199879943)]
+		public bool HavokCaptureToFile { get { return m_HavokCaptureToFile; } set { if (OnPropertyChanging("ServerSettings." + nameof(HavokCaptureToFile), this, m_HavokCaptureToFile, value)) m_HavokCaptureToFile = value; } } // 0x8D (141)
+		
+		protected bool m_ShowTriggerDebugText = new bool();
+		[ContainerField(142), LayoutImmutable, Blittable, ContainerFieldNameHash(379584722)]
+		public bool ShowTriggerDebugText { get { return m_ShowTriggerDebugText; } set { if (OnPropertyChanging("ServerSettings." + nameof(ShowTriggerDebugText), this, m_ShowTriggerDebugText, value)) m_ShowTriggerDebugText = value; } } // 0x8E (142)
+		
+		protected bool m_IsInternetSimulationEnabled = new bool();
+		[ContainerField(143), LayoutImmutable, Blittable, ContainerFieldNameHash(1270028082)]
+		public bool IsInternetSimulationEnabled { get { return m_IsInternetSimulationEnabled; } set { if (OnPropertyChanging("ServerSettings." + nameof(IsInternetSimulationEnabled), this, m_IsInternetSimulationEnabled, value)) m_IsInternetSimulationEnabled = value; } } // 0x8F (143)
+		
+		protected bool m_DisableCutscenes = new bool();
+		[ContainerField(144), LayoutImmutable, Blittable, ContainerFieldNameHash(2592294494)]
+		public bool DisableCutscenes { get { return m_DisableCutscenes; } set { if (OnPropertyChanging("ServerSettings." + nameof(DisableCutscenes), this, m_DisableCutscenes, value)) m_DisableCutscenes = value; } } // 0x90 (144)
+		
+		protected bool m_JobEnable = new bool();
+		[ContainerField(145), LayoutImmutable, Blittable, ContainerFieldNameHash(442685923)]
+		public bool JobEnable { get { return m_JobEnable; } set { if (OnPropertyChanging("ServerSettings." + nameof(JobEnable), this, m_JobEnable, value)) m_JobEnable = value; } } // 0x91 (145)
+		
+		protected bool m_ThreadingEnable = new bool();
+		[ContainerField(146), LayoutImmutable, Blittable, ContainerFieldNameHash(3470873770)]
+		public bool ThreadingEnable { get { return m_ThreadingEnable; } set { if (OnPropertyChanging("ServerSettings." + nameof(ThreadingEnable), this, m_ThreadingEnable, value)) m_ThreadingEnable = value; } } // 0x92 (146)
+		
+		protected bool m_DrawActivePhysicsObjects = new bool();
+		[ContainerField(147), LayoutImmutable, Blittable, ContainerFieldNameHash(3563516612)]
+		public bool DrawActivePhysicsObjects { get { return m_DrawActivePhysicsObjects; } set { if (OnPropertyChanging("ServerSettings." + nameof(DrawActivePhysicsObjects), this, m_DrawActivePhysicsObjects, value)) m_DrawActivePhysicsObjects = value; } } // 0x93 (147)
+		
+		protected bool m_IsRanked = new bool();
+		[ContainerField(148), LayoutImmutable, Blittable, ContainerFieldNameHash(421704968)]
+		public bool IsRanked { get { return m_IsRanked; } set { if (OnPropertyChanging("ServerSettings." + nameof(IsRanked), this, m_IsRanked, value)) m_IsRanked = value; } } // 0x94 (148)
+		
+		protected bool m_UnlockResolver = new bool();
+		[ContainerField(149), LayoutImmutable, Blittable, ContainerFieldNameHash(3015574227)]
+		public bool UnlockResolver { get { return m_UnlockResolver; } set { if (OnPropertyChanging("ServerSettings." + nameof(UnlockResolver), this, m_UnlockResolver, value)) m_UnlockResolver = value; } } // 0x95 (149)
+		
+		protected bool m_ScoringLogEnabled = new bool();
+		[ContainerField(150), LayoutImmutable, Blittable, ContainerFieldNameHash(3740384009)]
+		public bool ScoringLogEnabled { get { return m_ScoringLogEnabled; } set { if (OnPropertyChanging("ServerSettings." + nameof(ScoringLogEnabled), this, m_ScoringLogEnabled, value)) m_ScoringLogEnabled = value; } } // 0x96 (150)
+		
+		protected bool m_HavokVisualDebugger = new bool();
+		[ContainerField(151), LayoutImmutable, Blittable, ContainerFieldNameHash(1929453227)]
+		public bool HavokVisualDebugger { get { return m_HavokVisualDebugger; } set { if (OnPropertyChanging("ServerSettings." + nameof(HavokVisualDebugger), this, m_HavokVisualDebugger, value)) m_HavokVisualDebugger = value; } } // 0x97 (151)
+		
+		protected bool m_IsSoldierDetailedCollisionEnabled = new bool();
+		[ContainerField(152), LayoutImmutable, Blittable, ContainerFieldNameHash(2603752286)]
+		public bool IsSoldierDetailedCollisionEnabled { get { return m_IsSoldierDetailedCollisionEnabled; } set { if (OnPropertyChanging("ServerSettings." + nameof(IsSoldierDetailedCollisionEnabled), this, m_IsSoldierDetailedCollisionEnabled, value)) m_IsSoldierDetailedCollisionEnabled = value; } } // 0x98 (152)
+		
+		protected bool m_LoadSavePoint = new bool();
+		[ContainerField(153), LayoutImmutable, Blittable, ContainerFieldNameHash(740179758)]
+		public bool LoadSavePoint { get { return m_LoadSavePoint; } set { if (OnPropertyChanging("ServerSettings." + nameof(LoadSavePoint), this, m_LoadSavePoint, value)) m_LoadSavePoint = value; } } // 0x99 (153)
+		
+		protected bool m_IsSoldierAnimationEnabled = new bool();
+		[ContainerField(154), LayoutImmutable, Blittable, ContainerFieldNameHash(3800480326)]
+		public bool IsSoldierAnimationEnabled { get { return m_IsSoldierAnimationEnabled; } set { if (OnPropertyChanging("ServerSettings." + nameof(IsSoldierAnimationEnabled), this, m_IsSoldierAnimationEnabled, value)) m_IsSoldierAnimationEnabled = value; } } // 0x9A (154)
+		
+		protected bool m_IsAiEnabled = new bool();
+		[ContainerField(155), LayoutImmutable, Blittable, ContainerFieldNameHash(2380226514)]
+		public bool IsAiEnabled { get { return m_IsAiEnabled; } set { if (OnPropertyChanging("ServerSettings." + nameof(IsAiEnabled), this, m_IsAiEnabled, value)) m_IsAiEnabled = value; } } // 0x9B (155)
+		
+		protected bool m_IsReconfigurable = new bool();
+		[ContainerField(156), LayoutImmutable, Blittable, ContainerFieldNameHash(2944642543)]
+		public bool IsReconfigurable { get { return m_IsReconfigurable; } set { if (OnPropertyChanging("ServerSettings." + nameof(IsReconfigurable), this, m_IsReconfigurable, value)) m_IsReconfigurable = value; } } // 0x9C (156)
+		
+		protected bool m_IsDestructionEnabled = new bool();
+		[ContainerField(157), LayoutImmutable, Blittable, ContainerFieldNameHash(3503383684)]
+		public bool IsDestructionEnabled { get { return m_IsDestructionEnabled; } set { if (OnPropertyChanging("ServerSettings." + nameof(IsDestructionEnabled), this, m_IsDestructionEnabled, value)) m_IsDestructionEnabled = value; } } // 0x9D (157)
+		
+		protected bool m_ForcePlaylist = new bool();
+		[ContainerField(158), LayoutImmutable, Blittable, ContainerFieldNameHash(2185859614)]
+		public bool ForcePlaylist { get { return m_ForcePlaylist; } set { if (OnPropertyChanging("ServerSettings." + nameof(ForcePlaylist), this, m_ForcePlaylist, value)) m_ForcePlaylist = value; } } // 0x9E (158)
+		
+		protected bool m_IsNetworkStatsEnabled = new bool();
+		[ContainerField(159), LayoutImmutable, Blittable, ContainerFieldNameHash(3782966053)]
+		public bool IsNetworkStatsEnabled { get { return m_IsNetworkStatsEnabled; } set { if (OnPropertyChanging("ServerSettings." + nameof(IsNetworkStatsEnabled), this, m_IsNetworkStatsEnabled, value)) m_IsNetworkStatsEnabled = value; } } // 0x9F (159)
+		
+		protected bool m_AutoUnspawnBangers = new bool();
+		[ContainerField(160), LayoutImmutable, Blittable, ContainerFieldNameHash(2106862756)]
+		public bool AutoUnspawnBangers { get { return m_AutoUnspawnBangers; } set { if (OnPropertyChanging("ServerSettings." + nameof(AutoUnspawnBangers), this, m_AutoUnspawnBangers, value)) m_AutoUnspawnBangers = value; } } // 0xA0 (160)
+		
+		protected bool m_RegulatedAIThrottle = new bool();
+		[ContainerField(161), LayoutImmutable, Blittable, ContainerFieldNameHash(3666128056)]
+		public bool RegulatedAIThrottle { get { return m_RegulatedAIThrottle; } set { if (OnPropertyChanging("ServerSettings." + nameof(RegulatedAIThrottle), this, m_RegulatedAIThrottle, value)) m_RegulatedAIThrottle = value; } } // 0xA1 (161)
+		
+		protected bool m_EnableAnimationCulling = new bool();
+		[ContainerField(162), LayoutImmutable, Blittable, ContainerFieldNameHash(4034860932)]
+		public bool EnableAnimationCulling { get { return m_EnableAnimationCulling; } set { if (OnPropertyChanging("ServerSettings." + nameof(EnableAnimationCulling), this, m_EnableAnimationCulling, value)) m_EnableAnimationCulling = value; } } // 0xA2 (162)
+		
+		protected bool m_FallBackToSquadSpawn = new bool();
+		[ContainerField(163), LayoutImmutable, Blittable, ContainerFieldNameHash(2693064955)]
+		public bool FallBackToSquadSpawn { get { return m_FallBackToSquadSpawn; } set { if (OnPropertyChanging("ServerSettings." + nameof(FallBackToSquadSpawn), this, m_FallBackToSquadSpawn, value)) m_FallBackToSquadSpawn = value; } } // 0xA3 (163)
+		
+		protected bool m_AllowIndestructibleParts = new bool();
+		[ContainerField(164), LayoutImmutable, Blittable, ContainerFieldNameHash(4066263915)]
+		public bool AllowIndestructibleParts { get { return m_AllowIndestructibleParts; } set { if (OnPropertyChanging("ServerSettings." + nameof(AllowIndestructibleParts), this, m_AllowIndestructibleParts, value)) m_AllowIndestructibleParts = value; } } // 0xA4 (164)
+		
+		protected bool m_IsPresenceEnabled = new bool();
+		[ContainerField(165), LayoutImmutable, Blittable, ContainerFieldNameHash(343956131)]
+		public bool IsPresenceEnabled { get { return m_IsPresenceEnabled; } set { if (OnPropertyChanging("ServerSettings." + nameof(IsPresenceEnabled), this, m_IsPresenceEnabled, value)) m_IsPresenceEnabled = value; } } // 0xA5 (165)
+		
+		protected bool m_WaterPhysicsEnabled = new bool();
+		[ContainerField(166), LayoutImmutable, Blittable, ContainerFieldNameHash(4150371006)]
+		public bool WaterPhysicsEnabled { get { return m_WaterPhysicsEnabled; } set { if (OnPropertyChanging("ServerSettings." + nameof(WaterPhysicsEnabled), this, m_WaterPhysicsEnabled, value)) m_WaterPhysicsEnabled = value; } } // 0xA6 (166)
+		
+		protected bool m_RespawnOnDeathPosition = new bool();
+		[ContainerField(167), LayoutImmutable, Blittable, ContainerFieldNameHash(4145685869)]
+		public bool RespawnOnDeathPosition { get { return m_RespawnOnDeathPosition; } set { if (OnPropertyChanging("ServerSettings." + nameof(RespawnOnDeathPosition), this, m_RespawnOnDeathPosition, value)) m_RespawnOnDeathPosition = value; } } // 0xA7 (167)
+		
+		protected bool m_IsRenderDamageEvents = new bool();
+		[ContainerField(168), LayoutImmutable, Blittable, ContainerFieldNameHash(1150027009)]
+		public bool IsRenderDamageEvents { get { return m_IsRenderDamageEvents; } set { if (OnPropertyChanging("ServerSettings." + nameof(IsRenderDamageEvents), this, m_IsRenderDamageEvents, value)) m_IsRenderDamageEvents = value; } } // 0xA8 (168)
+		
+		protected bool m_VehicleSpawnAllowed = new bool();
+		[ContainerField(169), LayoutImmutable, Blittable, ContainerFieldNameHash(108238142)]
+		public bool VehicleSpawnAllowed { get { return m_VehicleSpawnAllowed; } set { if (OnPropertyChanging("ServerSettings." + nameof(VehicleSpawnAllowed), this, m_VehicleSpawnAllowed, value)) m_VehicleSpawnAllowed = value; } } // 0xA9 (169)
+		
+		protected bool m_QueryProviderEnabled = new bool();
+		[ContainerField(170), LayoutImmutable, Blittable, ContainerFieldNameHash(2501867691)]
+		public bool QueryProviderEnabled { get { return m_QueryProviderEnabled; } set { if (OnPropertyChanging("ServerSettings." + nameof(QueryProviderEnabled), this, m_QueryProviderEnabled, value)) m_QueryProviderEnabled = value; } } // 0xAA (170)
+		
+		protected bool m_IsDesertingAllowed = new bool();
+		[ContainerField(171), LayoutImmutable, Blittable, ContainerFieldNameHash(686355126)]
+		public bool IsDesertingAllowed { get { return m_IsDesertingAllowed; } set { if (OnPropertyChanging("ServerSettings." + nameof(IsDesertingAllowed), this, m_IsDesertingAllowed, value)) m_IsDesertingAllowed = value; } } // 0xAB (171)
+		
+		protected bool m_DebrisClusterEnabled = new bool();
+		[ContainerField(172), LayoutImmutable, Blittable, ContainerFieldNameHash(3885754465)]
+		public bool DebrisClusterEnabled { get { return m_DebrisClusterEnabled; } set { if (OnPropertyChanging("ServerSettings." + nameof(DebrisClusterEnabled), this, m_DebrisClusterEnabled, value)) m_DebrisClusterEnabled = value; } } // 0xAC (172)
+		
+		protected bool m_AdministrationEnabled = new bool();
+		[ContainerField(173), LayoutImmutable, Blittable, ContainerFieldNameHash(567396142)]
+		public bool AdministrationEnabled { get { return m_AdministrationEnabled; } set { if (OnPropertyChanging("ServerSettings." + nameof(AdministrationEnabled), this, m_AdministrationEnabled, value)) m_AdministrationEnabled = value; } } // 0xAD (173)
+		
+		protected bool m_AdministrationLogEnabled = new bool();
+		[ContainerField(174), LayoutImmutable, Blittable, ContainerFieldNameHash(3026093994)]
+		public bool AdministrationLogEnabled { get { return m_AdministrationLogEnabled; } set { if (OnPropertyChanging("ServerSettings." + nameof(AdministrationLogEnabled), this, m_AdministrationLogEnabled, value)) m_AdministrationLogEnabled = value; } } // 0xAE (174)
+		
+		protected bool m_AdministrationTimeStampLogNames = new bool();
+		[ContainerField(175), LayoutImmutable, Blittable, ContainerFieldNameHash(1296337333)]
+		public bool AdministrationTimeStampLogNames { get { return m_AdministrationTimeStampLogNames; } set { if (OnPropertyChanging("ServerSettings." + nameof(AdministrationTimeStampLogNames), this, m_AdministrationTimeStampLogNames, value)) m_AdministrationTimeStampLogNames = value; } } // 0xAF (175)
+		
+		protected bool m_AdministrationEventsEnabled = new bool();
+		[ContainerField(176), LayoutImmutable, Blittable, ContainerFieldNameHash(4266105137)]
+		public bool AdministrationEventsEnabled { get { return m_AdministrationEventsEnabled; } set { if (OnPropertyChanging("ServerSettings." + nameof(AdministrationEventsEnabled), this, m_AdministrationEventsEnabled, value)) m_AdministrationEventsEnabled = value; } } // 0xB0 (176)
+		
+		protected bool m_AdministrationServerNameRestricted = new bool();
+		[ContainerField(177), LayoutImmutable, Blittable, ContainerFieldNameHash(3896564372)]
+		public bool AdministrationServerNameRestricted { get { return m_AdministrationServerNameRestricted; } set { if (OnPropertyChanging("ServerSettings." + nameof(AdministrationServerNameRestricted), this, m_AdministrationServerNameRestricted, value)) m_AdministrationServerNameRestricted = value; } } // 0xB1 (177)
+		
+		protected bool m_ThreadedLoadingEnable = new bool();
+		[ContainerField(178), LayoutImmutable, Blittable, ContainerFieldNameHash(1104410157)]
+		public bool ThreadedLoadingEnable { get { return m_ThreadedLoadingEnable; } set { if (OnPropertyChanging("ServerSettings." + nameof(ThreadedLoadingEnable), this, m_ThreadedLoadingEnable, value)) m_ThreadedLoadingEnable = value; } } // 0xB2 (178)
+		
+		protected bool m_VegetationEnabled = new bool();
+		[ContainerField(179), LayoutImmutable, Blittable, ContainerFieldNameHash(1260276984)]
+		public bool VegetationEnabled { get { return m_VegetationEnabled; } set { if (OnPropertyChanging("ServerSettings." + nameof(VegetationEnabled), this, m_VegetationEnabled, value)) m_VegetationEnabled = value; } } // 0xB3 (179)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

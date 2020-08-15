@@ -5,40 +5,58 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class AISettingsData : 
 		Asset
 	{
-		[ContainerField(12)]
-		public CtrRef<SoundEnvironmentConstantData> SoundEnvironmentConstants { get; set; } = new CtrRef<SoundEnvironmentConstantData>(); // 0xC (12)
+		protected CtrRef<SoundEnvironmentConstantData> m_SoundEnvironmentConstants = new CtrRef<SoundEnvironmentConstantData>();
+		[ContainerField(12), ContainerFieldNameHash(2871470526)]
+		public CtrRef<SoundEnvironmentConstantData> SoundEnvironmentConstants { get { return m_SoundEnvironmentConstants; } set { if (OnPropertyChanging("AISettingsData." + nameof(SoundEnvironmentConstants), this, m_SoundEnvironmentConstants, value)) m_SoundEnvironmentConstants = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public CtrRef<CoverConstantData> CoverConstants { get; set; } = new CtrRef<CoverConstantData>(); // 0x10 (16)
+		protected CtrRef<CoverConstantData> m_CoverConstants = new CtrRef<CoverConstantData>();
+		[ContainerField(16), ContainerFieldNameHash(1484010501)]
+		public CtrRef<CoverConstantData> CoverConstants { get { return m_CoverConstants; } set { if (OnPropertyChanging("AISettingsData." + nameof(CoverConstants), this, m_CoverConstants, value)) m_CoverConstants = value; } } // 0x10 (16)
 		
-		[ContainerField(20)]
-		public CtrRef<DecisionConstantData> DecisionConstants { get; set; } = new CtrRef<DecisionConstantData>(); // 0x14 (20)
+		protected CtrRef<DecisionConstantData> m_DecisionConstants = new CtrRef<DecisionConstantData>();
+		[ContainerField(20), ContainerFieldNameHash(4064192024)]
+		public CtrRef<DecisionConstantData> DecisionConstants { get { return m_DecisionConstants; } set { if (OnPropertyChanging("AISettingsData." + nameof(DecisionConstants), this, m_DecisionConstants, value)) m_DecisionConstants = value; } } // 0x14 (20)
 		
-		[ContainerField(24)]
-		public CtrRef<PositionEvaluationConstantData> PositionEvaluationConstants { get; set; } = new CtrRef<PositionEvaluationConstantData>(); // 0x18 (24)
+		protected CtrRef<PositionEvaluationConstantData> m_PositionEvaluationConstants = new CtrRef<PositionEvaluationConstantData>();
+		[ContainerField(24), ContainerFieldNameHash(3298295975)]
+		public CtrRef<PositionEvaluationConstantData> PositionEvaluationConstants { get { return m_PositionEvaluationConstants; } set { if (OnPropertyChanging("AISettingsData." + nameof(PositionEvaluationConstants), this, m_PositionEvaluationConstants, value)) m_PositionEvaluationConstants = value; } } // 0x18 (24)
 		
-		[ContainerField(28)]
-		public CtrRef<TimingConstantData> TimingConstants { get; set; } = new CtrRef<TimingConstantData>(); // 0x1C (28)
+		protected CtrRef<TimingConstantData> m_TimingConstants = new CtrRef<TimingConstantData>();
+		[ContainerField(28), ContainerFieldNameHash(3077725272)]
+		public CtrRef<TimingConstantData> TimingConstants { get { return m_TimingConstants; } set { if (OnPropertyChanging("AISettingsData." + nameof(TimingConstants), this, m_TimingConstants, value)) m_TimingConstants = value; } } // 0x1C (28)
 		
-		[ContainerField(32)]
-		public CtrRef<DebugConstantData> DebugConstants { get; set; } = new CtrRef<DebugConstantData>(); // 0x20 (32)
+		protected CtrRef<DebugConstantData> m_DebugConstants = new CtrRef<DebugConstantData>();
+		[ContainerField(32), ContainerFieldNameHash(565110489)]
+		public CtrRef<DebugConstantData> DebugConstants { get { return m_DebugConstants; } set { if (OnPropertyChanging("AISettingsData." + nameof(DebugConstants), this, m_DebugConstants, value)) m_DebugConstants = value; } } // 0x20 (32)
 		
-		[ContainerField(36)]
-		public ReadinessLevels ReadinessLevels { get; set; } = new ReadinessLevels(); // 0x24 (36)
+		protected ReadinessLevels m_ReadinessLevels = new ReadinessLevels();
+		[ContainerField(36), ContainerFieldNameHash(4061966096)]
+		public ReadinessLevels ReadinessLevels { get { return m_ReadinessLevels; } set { if (OnPropertyChanging("AISettingsData." + nameof(ReadinessLevels), this, m_ReadinessLevels, value)) m_ReadinessLevels = value; } } // 0x24 (36)
 		
-		[ContainerField(72)]
-		public CtrRef<BehaviourTemplateData> DefaultBehaviourTemplate { get; set; } = new CtrRef<BehaviourTemplateData>(); // 0x48 (72)
+		protected CtrRef<BehaviourTemplateData> m_DefaultBehaviourTemplate = new CtrRef<BehaviourTemplateData>();
+		[ContainerField(72), ContainerFieldNameHash(1055461031)]
+		public CtrRef<BehaviourTemplateData> DefaultBehaviourTemplate { get { return m_DefaultBehaviourTemplate; } set { if (OnPropertyChanging("AISettingsData." + nameof(DefaultBehaviourTemplate), this, m_DefaultBehaviourTemplate, value)) m_DefaultBehaviourTemplate = value; } } // 0x48 (72)
 		
-		[ContainerField(76)]
-		public CtrRef<AIVehicleBehaviourData> DefaultVehicleType { get; set; } = new CtrRef<AIVehicleBehaviourData>(); // 0x4C (76)
+		protected CtrRef<AIVehicleBehaviourData> m_DefaultVehicleType = new CtrRef<AIVehicleBehaviourData>();
+		[ContainerField(76), ContainerFieldNameHash(2788836174)]
+		public CtrRef<AIVehicleBehaviourData> DefaultVehicleType { get { return m_DefaultVehicleType; } set { if (OnPropertyChanging("AISettingsData." + nameof(DefaultVehicleType), this, m_DefaultVehicleType, value)) m_DefaultVehicleType = value; } } // 0x4C (76)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

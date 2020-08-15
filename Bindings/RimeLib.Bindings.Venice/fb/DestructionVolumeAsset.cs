@@ -5,22 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class DestructionVolumeAsset : 
 		Asset
 	{
-		[ContainerField(12)]
-		public CtrRef<TextureAsset> DiffuseAtlas { get; set; } = new CtrRef<TextureAsset>(); // 0xC (12)
+		protected CtrRef<TextureAsset> m_DiffuseAtlas = new CtrRef<TextureAsset>();
+		[ContainerField(12), ContainerFieldNameHash(4294572704)]
+		public CtrRef<TextureAsset> DiffuseAtlas { get { return m_DiffuseAtlas; } set { if (OnPropertyChanging("DestructionVolumeAsset." + nameof(DiffuseAtlas), this, m_DiffuseAtlas, value)) m_DiffuseAtlas = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public CtrRef<TextureAsset> NormalmapAtlas { get; set; } = new CtrRef<TextureAsset>(); // 0x10 (16)
+		protected CtrRef<TextureAsset> m_NormalmapAtlas = new CtrRef<TextureAsset>();
+		[ContainerField(16), ContainerFieldNameHash(529589985)]
+		public CtrRef<TextureAsset> NormalmapAtlas { get { return m_NormalmapAtlas; } set { if (OnPropertyChanging("DestructionVolumeAsset." + nameof(NormalmapAtlas), this, m_NormalmapAtlas, value)) m_NormalmapAtlas = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
-		public float AtlasTextureScale { get; set; } // 0x14 (20)
+		protected float m_AtlasTextureScale = new float();
+		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(3639310441)]
+		public float AtlasTextureScale { get { return m_AtlasTextureScale; } set { if (OnPropertyChanging("DestructionVolumeAsset." + nameof(AtlasTextureScale), this, m_AtlasTextureScale, value)) m_AtlasTextureScale = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

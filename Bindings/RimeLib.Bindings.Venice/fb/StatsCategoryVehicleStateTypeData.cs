@@ -5,19 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class StatsCategoryVehicleStateTypeData : 
 		StatsCategoryBaseData
 	{
-		[ContainerField(20)]
-		public List<VehicleStateType> States { get; set; } = new List<VehicleStateType>(); // 0x14 (20)
+		protected List<VehicleStateType> m_States = new List<VehicleStateType>();
+		[ContainerField(20), ContainerFieldNameHash(3319729985)]
+		public List<VehicleStateType> States { get { return m_States; } set { if (OnPropertyChanging("StatsCategoryVehicleStateTypeData." + nameof(States), this, m_States, value)) m_States = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

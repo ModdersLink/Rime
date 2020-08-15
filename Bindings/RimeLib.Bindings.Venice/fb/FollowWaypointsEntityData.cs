@@ -5,23 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class FollowWaypointsEntityData : 
 		EntityData
 	{
-		[ContainerField(12)]
-		public RouteType TypeOfRoute { get; set; } = new RouteType(); // 0xC (12)
+		protected RouteType m_TypeOfRoute = new RouteType();
+		[ContainerField(12), ContainerFieldNameHash(2152665933)]
+		public RouteType TypeOfRoute { get { return m_TypeOfRoute; } set { if (OnPropertyChanging("FollowWaypointsEntityData." + nameof(TypeOfRoute), this, m_TypeOfRoute, value)) m_TypeOfRoute = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public bool UsePathFinding { get; set; } // 0x10 (16)
+		protected bool m_UsePathFinding = new bool();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(2941510446)]
+		public bool UsePathFinding { get { return m_UsePathFinding; } set { if (OnPropertyChanging("FollowWaypointsEntityData." + nameof(UsePathFinding), this, m_UsePathFinding, value)) m_UsePathFinding = value; } } // 0x10 (16)
 		
-		[ContainerField(17), LayoutImmutable, Blittable]
-		public bool StartAtGeometricallyClosestWaypoint { get; set; } // 0x11 (17)
+		protected bool m_StartAtGeometricallyClosestWaypoint = new bool();
+		[ContainerField(17), LayoutImmutable, Blittable, ContainerFieldNameHash(4268018707)]
+		public bool StartAtGeometricallyClosestWaypoint { get { return m_StartAtGeometricallyClosestWaypoint; } set { if (OnPropertyChanging("FollowWaypointsEntityData." + nameof(StartAtGeometricallyClosestWaypoint), this, m_StartAtGeometricallyClosestWaypoint, value)) m_StartAtGeometricallyClosestWaypoint = value; } } // 0x11 (17)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

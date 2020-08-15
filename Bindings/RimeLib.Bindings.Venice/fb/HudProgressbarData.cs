@@ -5,17 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class HudProgressbarData : 
 		UIPartData
 	{
-		[ContainerField(8)]
-		public ProgressType ProgressType { get; set; } = new ProgressType(); // 0x8 (8)
+		protected ProgressType m_ProgressType = new ProgressType();
+		[ContainerField(8), ContainerFieldNameHash(1938381824)]
+		public ProgressType ProgressType { get { return m_ProgressType; } set { if (OnPropertyChanging("HudProgressbarData." + nameof(ProgressType), this, m_ProgressType, value)) m_ProgressType = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

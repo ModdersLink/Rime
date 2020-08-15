@@ -5,22 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class VoiceOverEvent : 
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable]
-		public string Name { get; set; } // 0x8 (8)
+		protected string m_Name = new string();
+		[ContainerField(8), LayoutImmutable, ContainerFieldNameHash(2088949890)]
+		public string Name { get { return m_Name; } set { if (OnPropertyChanging("VoiceOverEvent." + nameof(Name), this, m_Name, value)) m_Name = value; } } // 0x8 (8)
 		
-		[ContainerField(12)]
-		public RefArray<VoiceOverNamedValue> Parameters { get; set; } = new RefArray<VoiceOverNamedValue>(); // 0xC (12)
+		protected RefArray<VoiceOverNamedValue> m_Parameters = new RefArray<VoiceOverNamedValue>();
+		[ContainerField(12), ContainerFieldNameHash(3325515039)]
+		public RefArray<VoiceOverNamedValue> Parameters { get { return m_Parameters; } set { if (OnPropertyChanging("VoiceOverEvent." + nameof(Parameters), this, m_Parameters, value)) m_Parameters = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public CtrRef<VoiceOverLogicAsset> Owner { get; set; } = new CtrRef<VoiceOverLogicAsset>(); // 0x10 (16)
+		protected CtrRef<VoiceOverLogicAsset> m_Owner = new CtrRef<VoiceOverLogicAsset>();
+		[ContainerField(16), ContainerFieldNameHash(217695012)]
+		public CtrRef<VoiceOverLogicAsset> Owner { get { return m_Owner; } set { if (OnPropertyChanging("VoiceOverEvent." + nameof(Owner), this, m_Owner, value)) m_Owner = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,28 +5,42 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class BFAISettingsData : 
 		AISettingsData
 	{
-		[ContainerField(80)]
-		public CtrRef<MovementConstantData> MovementConstants { get; set; } = new CtrRef<MovementConstantData>(); // 0x50 (80)
+		protected CtrRef<MovementConstantData> m_MovementConstants = new CtrRef<MovementConstantData>();
+		[ContainerField(80), ContainerFieldNameHash(4256858251)]
+		public CtrRef<MovementConstantData> MovementConstants { get { return m_MovementConstants; } set { if (OnPropertyChanging("BFAISettingsData." + nameof(MovementConstants), this, m_MovementConstants, value)) m_MovementConstants = value; } } // 0x50 (80)
 		
-		[ContainerField(84)]
-		public CtrRef<TurretControlConstantData> TurretControlConstants { get; set; } = new CtrRef<TurretControlConstantData>(); // 0x54 (84)
+		protected CtrRef<TurretControlConstantData> m_TurretControlConstants = new CtrRef<TurretControlConstantData>();
+		[ContainerField(84), ContainerFieldNameHash(1803214367)]
+		public CtrRef<TurretControlConstantData> TurretControlConstants { get { return m_TurretControlConstants; } set { if (OnPropertyChanging("BFAISettingsData." + nameof(TurretControlConstants), this, m_TurretControlConstants, value)) m_TurretControlConstants = value; } } // 0x54 (84)
 		
-		[ContainerField(88)]
-		public CtrRef<SearchAndDestroyConstantData> SearchAndDestroyConstants { get; set; } = new CtrRef<SearchAndDestroyConstantData>(); // 0x58 (88)
+		protected CtrRef<SearchAndDestroyConstantData> m_SearchAndDestroyConstants = new CtrRef<SearchAndDestroyConstantData>();
+		[ContainerField(88), ContainerFieldNameHash(3710618575)]
+		public CtrRef<SearchAndDestroyConstantData> SearchAndDestroyConstants { get { return m_SearchAndDestroyConstants; } set { if (OnPropertyChanging("BFAISettingsData." + nameof(SearchAndDestroyConstants), this, m_SearchAndDestroyConstants, value)) m_SearchAndDestroyConstants = value; } } // 0x58 (88)
 		
-		[ContainerField(92)]
-		public CtrRef<FollowConstantData> FollowConstants { get; set; } = new CtrRef<FollowConstantData>(); // 0x5C (92)
+		protected CtrRef<FollowConstantData> m_FollowConstants = new CtrRef<FollowConstantData>();
+		[ContainerField(92), ContainerFieldNameHash(3864754617)]
+		public CtrRef<FollowConstantData> FollowConstants { get { return m_FollowConstants; } set { if (OnPropertyChanging("BFAISettingsData." + nameof(FollowConstants), this, m_FollowConstants, value)) m_FollowConstants = value; } } // 0x5C (92)
 		
-		[ContainerField(96)]
-		public CtrRef<CombatConstantData> CombatConstants { get; set; } = new CtrRef<CombatConstantData>(); // 0x60 (96)
+		protected CtrRef<CombatConstantData> m_CombatConstants = new CtrRef<CombatConstantData>();
+		[ContainerField(96), ContainerFieldNameHash(2495160158)]
+		public CtrRef<CombatConstantData> CombatConstants { get { return m_CombatConstants; } set { if (OnPropertyChanging("BFAISettingsData." + nameof(CombatConstants), this, m_CombatConstants, value)) m_CombatConstants = value; } } // 0x60 (96)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

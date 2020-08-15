@@ -5,26 +5,38 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class RenderVolumeEntityData : 
 		SpatialEntityData
 	{
-		[ContainerField(80), Homogeneous, LayoutImmutable, Blittable]
-		public Vec4 UserMasks { get; set; } = new Vec4(); // 0x50 (80)
+		protected Vec4 m_UserMasks = new Vec4();
+		[ContainerField(80), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(1589111411)]
+		public Vec4 UserMasks { get { return m_UserMasks; } set { if (OnPropertyChanging("RenderVolumeEntityData." + nameof(UserMasks), this, m_UserMasks, value)) m_UserMasks = value; } } // 0x50 (80)
 		
-		[ContainerField(96)]
-		public SurfaceShaderInstanceDataStruct Shader { get; set; } = new SurfaceShaderInstanceDataStruct(); // 0x60 (96)
+		protected SurfaceShaderInstanceDataStruct m_Shader = new SurfaceShaderInstanceDataStruct();
+		[ContainerField(96), ContainerFieldNameHash(3352909900)]
+		public SurfaceShaderInstanceDataStruct Shader { get { return m_Shader; } set { if (OnPropertyChanging("RenderVolumeEntityData." + nameof(Shader), this, m_Shader, value)) m_Shader = value; } } // 0x60 (96)
 		
-		[ContainerField(116)]
-		public RenderVolumeTransformType TransformType { get; set; } = new RenderVolumeTransformType(); // 0x74 (116)
+		protected RenderVolumeTransformType m_TransformType = new RenderVolumeTransformType();
+		[ContainerField(116), ContainerFieldNameHash(3623123985)]
+		public RenderVolumeTransformType TransformType { get { return m_TransformType; } set { if (OnPropertyChanging("RenderVolumeEntityData." + nameof(TransformType), this, m_TransformType, value)) m_TransformType = value; } } // 0x74 (116)
 		
-		[ContainerField(120), LayoutImmutable, Blittable]
-		public bool Enabled { get; set; } // 0x78 (120)
+		protected bool m_Enabled = new bool();
+		[ContainerField(120), LayoutImmutable, Blittable, ContainerFieldNameHash(2662400)]
+		public bool Enabled { get { return m_Enabled; } set { if (OnPropertyChanging("RenderVolumeEntityData." + nameof(Enabled), this, m_Enabled, value)) m_Enabled = value; } } // 0x78 (120)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

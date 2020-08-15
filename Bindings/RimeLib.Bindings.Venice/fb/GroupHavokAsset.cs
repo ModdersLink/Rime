@@ -5,20 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class GroupHavokAsset : 
 		HavokAsset
 	{
-		[ContainerField(20)]
-		public List<AssetAabbs> Aabb { get; set; } = new List<AssetAabbs>(); // 0x14 (20)
+		protected List<AssetAabbs> m_Aabb = new List<AssetAabbs>();
+		[ContainerField(20), ContainerFieldNameHash(2088635333)]
+		public List<AssetAabbs> Aabb { get { return m_Aabb; } set { if (OnPropertyChanging("GroupHavokAsset." + nameof(Aabb), this, m_Aabb, value)) m_Aabb = value; } } // 0x14 (20)
 		
-		[ContainerField(24)]
-		public List<ushort> ExternalAssetScaleIndex { get; set; } = new List<ushort>(); // 0x18 (24)
+		protected List<ushort> m_ExternalAssetScaleIndex = new List<ushort>();
+		[ContainerField(24), ContainerFieldNameHash(29154286)]
+		public List<ushort> ExternalAssetScaleIndex { get { return m_ExternalAssetScaleIndex; } set { if (OnPropertyChanging("GroupHavokAsset." + nameof(ExternalAssetScaleIndex), this, m_ExternalAssetScaleIndex, value)) m_ExternalAssetScaleIndex = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

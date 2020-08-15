@@ -5,40 +5,58 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class SoundState : 
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable]
-		public string Name { get; set; } // 0x8 (8)
+		protected string m_Name = new string();
+		[ContainerField(8), LayoutImmutable, ContainerFieldNameHash(2088949890)]
+		public string Name { get { return m_Name; } set { if (OnPropertyChanging("SoundState." + nameof(Name), this, m_Name, value)) m_Name = value; } } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public float LpCutoffFrequency { get; set; } // 0xC (12)
+		protected float m_LpCutoffFrequency = new float();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(414264080)]
+		public float LpCutoffFrequency { get { return m_LpCutoffFrequency; } set { if (OnPropertyChanging("SoundState." + nameof(LpCutoffFrequency), this, m_LpCutoffFrequency, value)) m_LpCutoffFrequency = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public float Duration { get; set; } // 0x10 (16)
+		protected float m_Duration = new float();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(1828507227)]
+		public float Duration { get { return m_Duration; } set { if (OnPropertyChanging("SoundState." + nameof(Duration), this, m_Duration, value)) m_Duration = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
-		public float FadeInTime { get; set; } // 0x14 (20)
+		protected float m_FadeInTime = new float();
+		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(1781703921)]
+		public float FadeInTime { get { return m_FadeInTime; } set { if (OnPropertyChanging("SoundState." + nameof(FadeInTime), this, m_FadeInTime, value)) m_FadeInTime = value; } } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable]
-		public float FadeOutTime { get; set; } // 0x18 (24)
+		protected float m_FadeOutTime = new float();
+		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(1285109176)]
+		public float FadeOutTime { get { return m_FadeOutTime; } set { if (OnPropertyChanging("SoundState." + nameof(FadeOutTime), this, m_FadeOutTime, value)) m_FadeOutTime = value; } } // 0x18 (24)
 		
-		[ContainerField(28)]
-		public CtrRef<SoundAsset> BypassSound { get; set; } = new CtrRef<SoundAsset>(); // 0x1C (28)
+		protected CtrRef<SoundAsset> m_BypassSound = new CtrRef<SoundAsset>();
+		[ContainerField(28), ContainerFieldNameHash(1531107980)]
+		public CtrRef<SoundAsset> BypassSound { get { return m_BypassSound; } set { if (OnPropertyChanging("SoundState." + nameof(BypassSound), this, m_BypassSound, value)) m_BypassSound = value; } } // 0x1C (28)
 		
-		[ContainerField(32)]
-		public CtrRef<HdrSetting> HdrSetting { get; set; } = new CtrRef<HdrSetting>(); // 0x20 (32)
+		protected CtrRef<HdrSetting> m_HdrSetting = new CtrRef<HdrSetting>();
+		[ContainerField(32), ContainerFieldNameHash(1761163949)]
+		public CtrRef<HdrSetting> HdrSetting { get { return m_HdrSetting; } set { if (OnPropertyChanging("SoundState." + nameof(HdrSetting), this, m_HdrSetting, value)) m_HdrSetting = value; } } // 0x20 (32)
 		
-		[ContainerField(36)]
-		public CtrRef<MixerAsset> Mixer { get; set; } = new CtrRef<MixerAsset>(); // 0x24 (36)
+		protected CtrRef<MixerAsset> m_Mixer = new CtrRef<MixerAsset>();
+		[ContainerField(36), ContainerFieldNameHash(209965422)]
+		public CtrRef<MixerAsset> Mixer { get { return m_Mixer; } set { if (OnPropertyChanging("SoundState." + nameof(Mixer), this, m_Mixer, value)) m_Mixer = value; } } // 0x24 (36)
 		
-		[ContainerField(40), LayoutImmutable, Blittable]
-		public bool FadeSound { get; set; } // 0x28 (40)
+		protected bool m_FadeSound = new bool();
+		[ContainerField(40), LayoutImmutable, Blittable, ContainerFieldNameHash(3181011744)]
+		public bool FadeSound { get { return m_FadeSound; } set { if (OnPropertyChanging("SoundState." + nameof(FadeSound), this, m_FadeSound, value)) m_FadeSound = value; } } // 0x28 (40)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

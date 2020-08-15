@@ -5,23 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class UIAnimatedTextureAsset : 
 		Asset
 	{
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public float FrameRate { get; set; } // 0xC (12)
+		protected float m_FrameRate = new float();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(21928954)]
+		public float FrameRate { get { return m_FrameRate; } set { if (OnPropertyChanging("UIAnimatedTextureAsset." + nameof(FrameRate), this, m_FrameRate, value)) m_FrameRate = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public CtrRef<TextureAsset> TextureAtlas { get; set; } = new CtrRef<TextureAsset>(); // 0x10 (16)
+		protected CtrRef<TextureAsset> m_TextureAtlas = new CtrRef<TextureAsset>();
+		[ContainerField(16), ContainerFieldNameHash(2162950897)]
+		public CtrRef<TextureAsset> TextureAtlas { get { return m_TextureAtlas; } set { if (OnPropertyChanging("UIAnimatedTextureAsset." + nameof(TextureAtlas), this, m_TextureAtlas, value)) m_TextureAtlas = value; } } // 0x10 (16)
 		
-		[ContainerField(20)]
-		public List<UITextureAtlasInfo> TextureInfos { get; set; } = new List<UITextureAtlasInfo>(); // 0x14 (20)
+		protected List<UITextureAtlasInfo> m_TextureInfos = new List<UITextureAtlasInfo>();
+		[ContainerField(20), ContainerFieldNameHash(2154121191)]
+		public List<UITextureAtlasInfo> TextureInfos { get { return m_TextureInfos; } set { if (OnPropertyChanging("UIAnimatedTextureAsset." + nameof(TextureInfos), this, m_TextureInfos, value)) m_TextureInfos = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

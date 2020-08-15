@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class EntityVoiceOverInfo : 
 		DataContainer
 	{
-		[ContainerField(8)]
-		public CtrRef<VoiceOverObject> VoiceOverType { get; set; } = new CtrRef<VoiceOverObject>(); // 0x8 (8)
+		protected CtrRef<VoiceOverObject> m_VoiceOverType = new CtrRef<VoiceOverObject>();
+		[ContainerField(8), ContainerFieldNameHash(1260359781)]
+		public CtrRef<VoiceOverObject> VoiceOverType { get { return m_VoiceOverType; } set { if (OnPropertyChanging("EntityVoiceOverInfo." + nameof(VoiceOverType), this, m_VoiceOverType, value)) m_VoiceOverType = value; } } // 0x8 (8)
 		
-		[ContainerField(12)]
-		public RefArray<VoiceOverLabel> Labels { get; set; } = new RefArray<VoiceOverLabel>(); // 0xC (12)
+		protected RefArray<VoiceOverLabel> m_Labels = new RefArray<VoiceOverLabel>();
+		[ContainerField(12), ContainerFieldNameHash(2902520752)]
+		public RefArray<VoiceOverLabel> Labels { get { return m_Labels; } set { if (OnPropertyChanging("EntityVoiceOverInfo." + nameof(Labels), this, m_Labels, value)) m_Labels = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

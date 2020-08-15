@@ -5,22 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class MaterialSoldierSoundSettings : 
 		DataContainer
 	{
-		[ContainerField(8)]
-		public CtrRef<SoundAsset> FootStepSound { get; set; } = new CtrRef<SoundAsset>(); // 0x8 (8)
+		protected CtrRef<SoundAsset> m_FootStepSound = new CtrRef<SoundAsset>();
+		[ContainerField(8), ContainerFieldNameHash(556404134)]
+		public CtrRef<SoundAsset> FootStepSound { get { return m_FootStepSound; } set { if (OnPropertyChanging("MaterialSoldierSoundSettings." + nameof(FootStepSound), this, m_FootStepSound, value)) m_FootStepSound = value; } } // 0x8 (8)
 		
-		[ContainerField(12)]
-		public CtrRef<SoundAsset> ProneSound { get; set; } = new CtrRef<SoundAsset>(); // 0xC (12)
+		protected CtrRef<SoundAsset> m_ProneSound = new CtrRef<SoundAsset>();
+		[ContainerField(12), ContainerFieldNameHash(130192352)]
+		public CtrRef<SoundAsset> ProneSound { get { return m_ProneSound; } set { if (OnPropertyChanging("MaterialSoldierSoundSettings." + nameof(ProneSound), this, m_ProneSound, value)) m_ProneSound = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public CtrRef<SoundAsset> LandSound { get; set; } = new CtrRef<SoundAsset>(); // 0x10 (16)
+		protected CtrRef<SoundAsset> m_LandSound = new CtrRef<SoundAsset>();
+		[ContainerField(16), ContainerFieldNameHash(3226502081)]
+		public CtrRef<SoundAsset> LandSound { get { return m_LandSound; } set { if (OnPropertyChanging("MaterialSoldierSoundSettings." + nameof(LandSound), this, m_LandSound, value)) m_LandSound = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

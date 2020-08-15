@@ -5,28 +5,42 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class AIProximityReactionsComponentData : 
 		ComponentData
 	{
-		[ContainerField(96)]
-		public AIProximityReactionsBinding Binding { get; set; } = new AIProximityReactionsBinding(); // 0x60 (96)
+		protected AIProximityReactionsBinding m_Binding = new AIProximityReactionsBinding();
+		[ContainerField(96), ContainerFieldNameHash(2590060228)]
+		public AIProximityReactionsBinding Binding { get { return m_Binding; } set { if (OnPropertyChanging("AIProximityReactionsComponentData." + nameof(Binding), this, m_Binding, value)) m_Binding = value; } } // 0x60 (96)
 		
-		[ContainerField(152), LayoutImmutable, Blittable]
-		public float MinExplosionImpulseForce { get; set; } // 0x98 (152)
+		protected float m_MinExplosionImpulseForce = new float();
+		[ContainerField(152), LayoutImmutable, Blittable, ContainerFieldNameHash(1140171772)]
+		public float MinExplosionImpulseForce { get { return m_MinExplosionImpulseForce; } set { if (OnPropertyChanging("AIProximityReactionsComponentData." + nameof(MinExplosionImpulseForce), this, m_MinExplosionImpulseForce, value)) m_MinExplosionImpulseForce = value; } } // 0x98 (152)
 		
-		[ContainerField(156), LayoutImmutable, Blittable]
-		public float MaxExplosionLookDistance { get; set; } // 0x9C (156)
+		protected float m_MaxExplosionLookDistance = new float();
+		[ContainerField(156), LayoutImmutable, Blittable, ContainerFieldNameHash(322238752)]
+		public float MaxExplosionLookDistance { get { return m_MaxExplosionLookDistance; } set { if (OnPropertyChanging("AIProximityReactionsComponentData." + nameof(MaxExplosionLookDistance), this, m_MaxExplosionLookDistance, value)) m_MaxExplosionLookDistance = value; } } // 0x9C (156)
 		
-		[ContainerField(160), LayoutImmutable, Blittable]
-		public float FireReactionDistance { get; set; } // 0xA0 (160)
+		protected float m_FireReactionDistance = new float();
+		[ContainerField(160), LayoutImmutable, Blittable, ContainerFieldNameHash(2123733591)]
+		public float FireReactionDistance { get { return m_FireReactionDistance; } set { if (OnPropertyChanging("AIProximityReactionsComponentData." + nameof(FireReactionDistance), this, m_FireReactionDistance, value)) m_FireReactionDistance = value; } } // 0xA0 (160)
 		
-		[ContainerField(164), LayoutImmutable, Blittable]
-		public bool Enabled { get; set; } // 0xA4 (164)
+		protected bool m_Enabled = new bool();
+		[ContainerField(164), LayoutImmutable, Blittable, ContainerFieldNameHash(2662400)]
+		public bool Enabled { get { return m_Enabled; } set { if (OnPropertyChanging("AIProximityReactionsComponentData." + nameof(Enabled), this, m_Enabled, value)) m_Enabled = value; } } // 0xA4 (164)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

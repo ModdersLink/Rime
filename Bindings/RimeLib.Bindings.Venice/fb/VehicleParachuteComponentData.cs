@@ -5,28 +5,42 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class VehicleParachuteComponentData : 
 		ComponentData
 	{
-		[ContainerField(96)]
-		public VehicleParachuteBinding Binding { get; set; } = new VehicleParachuteBinding(); // 0x60 (96)
+		protected VehicleParachuteBinding m_Binding = new VehicleParachuteBinding();
+		[ContainerField(96), ContainerFieldNameHash(2590060228)]
+		public VehicleParachuteBinding Binding { get { return m_Binding; } set { if (OnPropertyChanging("VehicleParachuteComponentData." + nameof(Binding), this, m_Binding, value)) m_Binding = value; } } // 0x60 (96)
 		
-		[ContainerField(104), LayoutImmutable, Blittable]
-		public float UndeployTime { get; set; } // 0x68 (104)
+		protected float m_UndeployTime = new float();
+		[ContainerField(104), LayoutImmutable, Blittable, ContainerFieldNameHash(1689758176)]
+		public float UndeployTime { get { return m_UndeployTime; } set { if (OnPropertyChanging("VehicleParachuteComponentData." + nameof(UndeployTime), this, m_UndeployTime, value)) m_UndeployTime = value; } } // 0x68 (104)
 		
-		[ContainerField(108), LayoutImmutable, Blittable]
-		public float TimeInvisibleAfterSpawn { get; set; } // 0x6C (108)
+		protected float m_TimeInvisibleAfterSpawn = new float();
+		[ContainerField(108), LayoutImmutable, Blittable, ContainerFieldNameHash(3698203718)]
+		public float TimeInvisibleAfterSpawn { get { return m_TimeInvisibleAfterSpawn; } set { if (OnPropertyChanging("VehicleParachuteComponentData." + nameof(TimeInvisibleAfterSpawn), this, m_TimeInvisibleAfterSpawn, value)) m_TimeInvisibleAfterSpawn = value; } } // 0x6C (108)
 		
-		[ContainerField(112), LayoutImmutable, Blittable]
-		public int VehicleType { get; set; } // 0x70 (112)
+		protected int m_VehicleType = new int();
+		[ContainerField(112), LayoutImmutable, Blittable, ContainerFieldNameHash(925900165)]
+		public int VehicleType { get { return m_VehicleType; } set { if (OnPropertyChanging("VehicleParachuteComponentData." + nameof(VehicleType), this, m_VehicleType, value)) m_VehicleType = value; } } // 0x70 (112)
 		
-		[ContainerField(116), LayoutImmutable, Blittable]
-		public bool DropParachuteOnUndeploy { get; set; } // 0x74 (116)
+		protected bool m_DropParachuteOnUndeploy = new bool();
+		[ContainerField(116), LayoutImmutable, Blittable, ContainerFieldNameHash(2075959536)]
+		public bool DropParachuteOnUndeploy { get { return m_DropParachuteOnUndeploy; } set { if (OnPropertyChanging("VehicleParachuteComponentData." + nameof(DropParachuteOnUndeploy), this, m_DropParachuteOnUndeploy, value)) m_DropParachuteOnUndeploy = value; } } // 0x74 (116)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class SkinnedSocketObjectData : 
 		SocketObjectData
 	{
-		[ContainerField(72), LayoutImmutable, Blittable]
-		public int FaceposerLibraryIndex { get; set; } // 0x48 (72)
+		protected int m_FaceposerLibraryIndex = new int();
+		[ContainerField(72), LayoutImmutable, Blittable, ContainerFieldNameHash(1714120990)]
+		public int FaceposerLibraryIndex { get { return m_FaceposerLibraryIndex; } set { if (OnPropertyChanging("SkinnedSocketObjectData." + nameof(FaceposerLibraryIndex), this, m_FaceposerLibraryIndex, value)) m_FaceposerLibraryIndex = value; } } // 0x48 (72)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

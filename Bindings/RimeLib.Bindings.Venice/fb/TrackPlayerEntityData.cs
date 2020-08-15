@@ -5,37 +5,54 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class TrackPlayerEntityData : 
 		GameEntityData
 	{
-		[ContainerField(96), LayoutImmutable, Blittable]
-		public float SnapHeightOffsetY { get; set; } // 0x60 (96)
+		protected float m_SnapHeightOffsetY = new float();
+		[ContainerField(96), LayoutImmutable, Blittable, ContainerFieldNameHash(2381182690)]
+		public float SnapHeightOffsetY { get { return m_SnapHeightOffsetY; } set { if (OnPropertyChanging("TrackPlayerEntityData." + nameof(SnapHeightOffsetY), this, m_SnapHeightOffsetY, value)) m_SnapHeightOffsetY = value; } } // 0x60 (96)
 		
-		[ContainerField(100), LayoutImmutable, Blittable]
-		public bool RandomizeTracker { get; set; } // 0x64 (100)
+		protected bool m_RandomizeTracker = new bool();
+		[ContainerField(100), LayoutImmutable, Blittable, ContainerFieldNameHash(4092136432)]
+		public bool RandomizeTracker { get { return m_RandomizeTracker; } set { if (OnPropertyChanging("TrackPlayerEntityData." + nameof(RandomizeTracker), this, m_RandomizeTracker, value)) m_RandomizeTracker = value; } } // 0x64 (100)
 		
-		[ContainerField(101), LayoutImmutable, Blittable]
-		public bool SnapHeightOnKilledDestroyed { get; set; } // 0x65 (101)
+		protected bool m_SnapHeightOnKilledDestroyed = new bool();
+		[ContainerField(101), LayoutImmutable, Blittable, ContainerFieldNameHash(1919550071)]
+		public bool SnapHeightOnKilledDestroyed { get { return m_SnapHeightOnKilledDestroyed; } set { if (OnPropertyChanging("TrackPlayerEntityData." + nameof(SnapHeightOnKilledDestroyed), this, m_SnapHeightOnKilledDestroyed, value)) m_SnapHeightOnKilledDestroyed = value; } } // 0x65 (101)
 		
-		[ContainerField(102), LayoutImmutable, Blittable]
-		public bool CheckPlayerAlive { get; set; } // 0x66 (102)
+		protected bool m_CheckPlayerAlive = new bool();
+		[ContainerField(102), LayoutImmutable, Blittable, ContainerFieldNameHash(798272103)]
+		public bool CheckPlayerAlive { get { return m_CheckPlayerAlive; } set { if (OnPropertyChanging("TrackPlayerEntityData." + nameof(CheckPlayerAlive), this, m_CheckPlayerAlive, value)) m_CheckPlayerAlive = value; } } // 0x66 (102)
 		
-		[ContainerField(103), LayoutImmutable, Blittable]
-		public bool EnforceSharedCombatArea { get; set; } // 0x67 (103)
+		protected bool m_EnforceSharedCombatArea = new bool();
+		[ContainerField(103), LayoutImmutable, Blittable, ContainerFieldNameHash(1149579547)]
+		public bool EnforceSharedCombatArea { get { return m_EnforceSharedCombatArea; } set { if (OnPropertyChanging("TrackPlayerEntityData." + nameof(EnforceSharedCombatArea), this, m_EnforceSharedCombatArea, value)) m_EnforceSharedCombatArea = value; } } // 0x67 (103)
 		
-		[ContainerField(104), LayoutImmutable, Blittable]
-		public bool UpdateFlagComponent { get; set; } // 0x68 (104)
+		protected bool m_UpdateFlagComponent = new bool();
+		[ContainerField(104), LayoutImmutable, Blittable, ContainerFieldNameHash(4273434999)]
+		public bool UpdateFlagComponent { get { return m_UpdateFlagComponent; } set { if (OnPropertyChanging("TrackPlayerEntityData." + nameof(UpdateFlagComponent), this, m_UpdateFlagComponent, value)) m_UpdateFlagComponent = value; } } // 0x68 (104)
 		
-		[ContainerField(105), LayoutImmutable, Blittable]
-		public bool TrackMultiplePlayers { get; set; } // 0x69 (105)
+		protected bool m_TrackMultiplePlayers = new bool();
+		[ContainerField(105), LayoutImmutable, Blittable, ContainerFieldNameHash(1274348570)]
+		public bool TrackMultiplePlayers { get { return m_TrackMultiplePlayers; } set { if (OnPropertyChanging("TrackPlayerEntityData." + nameof(TrackMultiplePlayers), this, m_TrackMultiplePlayers, value)) m_TrackMultiplePlayers = value; } } // 0x69 (105)
 		
-		[ContainerField(106), LayoutImmutable, Blittable]
-		public bool Reseted { get; set; } // 0x6A (106)
+		protected bool m_Reseted = new bool();
+		[ContainerField(106), LayoutImmutable, Blittable, ContainerFieldNameHash(1303266193)]
+		public bool Reseted { get { return m_Reseted; } set { if (OnPropertyChanging("TrackPlayerEntityData." + nameof(Reseted), this, m_Reseted, value)) m_Reseted = value; } } // 0x6A (106)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

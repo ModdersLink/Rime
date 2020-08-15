@@ -5,76 +5,106 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class MasterUnitNodeData : 
 		AudioGraphNodeData
 	{
-		[ContainerField(8)]
-		public AudioGraphNodePort SettingsIndex { get; set; } = new AudioGraphNodePort(); // 0x8 (8)
+		protected AudioGraphNodePort m_SettingsIndex = new AudioGraphNodePort();
+		[ContainerField(8), ContainerFieldNameHash(3467073726)]
+		public AudioGraphNodePort SettingsIndex { get { return m_SettingsIndex; } set { if (OnPropertyChanging("MasterUnitNodeData." + nameof(SettingsIndex), this, m_SettingsIndex, value)) m_SettingsIndex = value; } } // 0x8 (8)
 		
-		[ContainerField(16)]
-		public AudioGraphNodePort Amplitude { get; set; } = new AudioGraphNodePort(); // 0x10 (16)
+		protected AudioGraphNodePort m_Amplitude = new AudioGraphNodePort();
+		[ContainerField(16), ContainerFieldNameHash(698564572)]
+		public AudioGraphNodePort Amplitude { get { return m_Amplitude; } set { if (OnPropertyChanging("MasterUnitNodeData." + nameof(Amplitude), this, m_Amplitude, value)) m_Amplitude = value; } } // 0x10 (16)
 		
-		[ContainerField(24)]
-		public AudioGraphNodePort MasterGain { get; set; } = new AudioGraphNodePort(); // 0x18 (24)
+		protected AudioGraphNodePort m_MasterGain = new AudioGraphNodePort();
+		[ContainerField(24), ContainerFieldNameHash(3418201912)]
+		public AudioGraphNodePort MasterGain { get { return m_MasterGain; } set { if (OnPropertyChanging("MasterUnitNodeData." + nameof(MasterGain), this, m_MasterGain, value)) m_MasterGain = value; } } // 0x18 (24)
 		
-		[ContainerField(32)]
-		public AudioGraphNodePort MasterLfeGain { get; set; } = new AudioGraphNodePort(); // 0x20 (32)
+		protected AudioGraphNodePort m_MasterLfeGain = new AudioGraphNodePort();
+		[ContainerField(32), ContainerFieldNameHash(3456654679)]
+		public AudioGraphNodePort MasterLfeGain { get { return m_MasterLfeGain; } set { if (OnPropertyChanging("MasterUnitNodeData." + nameof(MasterLfeGain), this, m_MasterLfeGain, value)) m_MasterLfeGain = value; } } // 0x20 (32)
 		
-		[ContainerField(40)]
-		public AudioGraphNodePort MasterDialogGain { get; set; } = new AudioGraphNodePort(); // 0x28 (40)
+		protected AudioGraphNodePort m_MasterDialogGain = new AudioGraphNodePort();
+		[ContainerField(40), ContainerFieldNameHash(3075029008)]
+		public AudioGraphNodePort MasterDialogGain { get { return m_MasterDialogGain; } set { if (OnPropertyChanging("MasterUnitNodeData." + nameof(MasterDialogGain), this, m_MasterDialogGain, value)) m_MasterDialogGain = value; } } // 0x28 (40)
 		
-		[ContainerField(48)]
-		public AudioGraphNodePort MainMixGain { get; set; } = new AudioGraphNodePort(); // 0x30 (48)
+		protected AudioGraphNodePort m_MainMixGain = new AudioGraphNodePort();
+		[ContainerField(48), ContainerFieldNameHash(2469993203)]
+		public AudioGraphNodePort MainMixGain { get { return m_MainMixGain; } set { if (OnPropertyChanging("MasterUnitNodeData." + nameof(MainMixGain), this, m_MainMixGain, value)) m_MainMixGain = value; } } // 0x30 (48)
 		
-		[ContainerField(56)]
-		public AudioGraphNodePort PostEffectsGain { get; set; } = new AudioGraphNodePort(); // 0x38 (56)
+		protected AudioGraphNodePort m_PostEffectsGain = new AudioGraphNodePort();
+		[ContainerField(56), ContainerFieldNameHash(974497912)]
+		public AudioGraphNodePort PostEffectsGain { get { return m_PostEffectsGain; } set { if (OnPropertyChanging("MasterUnitNodeData." + nameof(PostEffectsGain), this, m_PostEffectsGain, value)) m_PostEffectsGain = value; } } // 0x38 (56)
 		
-		[ContainerField(64)]
-		public AudioGraphNodePort ReverbGain { get; set; } = new AudioGraphNodePort(); // 0x40 (64)
+		protected AudioGraphNodePort m_ReverbGain = new AudioGraphNodePort();
+		[ContainerField(64), ContainerFieldNameHash(622241232)]
+		public AudioGraphNodePort ReverbGain { get { return m_ReverbGain; } set { if (OnPropertyChanging("MasterUnitNodeData." + nameof(ReverbGain), this, m_ReverbGain, value)) m_ReverbGain = value; } } // 0x40 (64)
 		
-		[ContainerField(72)]
-		public AudioGraphNodePort FadeTime { get; set; } = new AudioGraphNodePort(); // 0x48 (72)
+		protected AudioGraphNodePort m_FadeTime = new AudioGraphNodePort();
+		[ContainerField(72), ContainerFieldNameHash(4001222838)]
+		public AudioGraphNodePort FadeTime { get { return m_FadeTime; } set { if (OnPropertyChanging("MasterUnitNodeData." + nameof(FadeTime), this, m_FadeTime, value)) m_FadeTime = value; } } // 0x48 (72)
 		
-		[ContainerField(80)]
-		public AudioGraphNodePort HighPassFreq { get; set; } = new AudioGraphNodePort(); // 0x50 (80)
+		protected AudioGraphNodePort m_HighPassFreq = new AudioGraphNodePort();
+		[ContainerField(80), ContainerFieldNameHash(1050320730)]
+		public AudioGraphNodePort HighPassFreq { get { return m_HighPassFreq; } set { if (OnPropertyChanging("MasterUnitNodeData." + nameof(HighPassFreq), this, m_HighPassFreq, value)) m_HighPassFreq = value; } } // 0x50 (80)
 		
-		[ContainerField(88)]
-		public AudioGraphNodePort LowShelfFreq { get; set; } = new AudioGraphNodePort(); // 0x58 (88)
+		protected AudioGraphNodePort m_LowShelfFreq = new AudioGraphNodePort();
+		[ContainerField(88), ContainerFieldNameHash(4093395621)]
+		public AudioGraphNodePort LowShelfFreq { get { return m_LowShelfFreq; } set { if (OnPropertyChanging("MasterUnitNodeData." + nameof(LowShelfFreq), this, m_LowShelfFreq, value)) m_LowShelfFreq = value; } } // 0x58 (88)
 		
-		[ContainerField(96)]
-		public AudioGraphNodePort LowShelfGain { get; set; } = new AudioGraphNodePort(); // 0x60 (96)
+		protected AudioGraphNodePort m_LowShelfGain = new AudioGraphNodePort();
+		[ContainerField(96), ContainerFieldNameHash(4093417540)]
+		public AudioGraphNodePort LowShelfGain { get { return m_LowShelfGain; } set { if (OnPropertyChanging("MasterUnitNodeData." + nameof(LowShelfGain), this, m_LowShelfGain, value)) m_LowShelfGain = value; } } // 0x60 (96)
 		
-		[ContainerField(104)]
-		public AudioGraphNodePort HighShelfFreq { get; set; } = new AudioGraphNodePort(); // 0x68 (104)
+		protected AudioGraphNodePort m_HighShelfFreq = new AudioGraphNodePort();
+		[ContainerField(104), ContainerFieldNameHash(110900543)]
+		public AudioGraphNodePort HighShelfFreq { get { return m_HighShelfFreq; } set { if (OnPropertyChanging("MasterUnitNodeData." + nameof(HighShelfFreq), this, m_HighShelfFreq, value)) m_HighShelfFreq = value; } } // 0x68 (104)
 		
-		[ContainerField(112)]
-		public AudioGraphNodePort HighShelfGain { get; set; } = new AudioGraphNodePort(); // 0x70 (112)
+		protected AudioGraphNodePort m_HighShelfGain = new AudioGraphNodePort();
+		[ContainerField(112), ContainerFieldNameHash(110952414)]
+		public AudioGraphNodePort HighShelfGain { get { return m_HighShelfGain; } set { if (OnPropertyChanging("MasterUnitNodeData." + nameof(HighShelfGain), this, m_HighShelfGain, value)) m_HighShelfGain = value; } } // 0x70 (112)
 		
-		[ContainerField(120)]
-		public AudioGraphNodePort CompThreshold { get; set; } = new AudioGraphNodePort(); // 0x78 (120)
+		protected AudioGraphNodePort m_CompThreshold = new AudioGraphNodePort();
+		[ContainerField(120), ContainerFieldNameHash(201040259)]
+		public AudioGraphNodePort CompThreshold { get { return m_CompThreshold; } set { if (OnPropertyChanging("MasterUnitNodeData." + nameof(CompThreshold), this, m_CompThreshold, value)) m_CompThreshold = value; } } // 0x78 (120)
 		
-		[ContainerField(128)]
-		public AudioGraphNodePort CompRatio { get; set; } = new AudioGraphNodePort(); // 0x80 (128)
+		protected AudioGraphNodePort m_CompRatio = new AudioGraphNodePort();
+		[ContainerField(128), ContainerFieldNameHash(1938039989)]
+		public AudioGraphNodePort CompRatio { get { return m_CompRatio; } set { if (OnPropertyChanging("MasterUnitNodeData." + nameof(CompRatio), this, m_CompRatio, value)) m_CompRatio = value; } } // 0x80 (128)
 		
-		[ContainerField(136)]
-		public AudioGraphNodePort CompAttack { get; set; } = new AudioGraphNodePort(); // 0x88 (136)
+		protected AudioGraphNodePort m_CompAttack = new AudioGraphNodePort();
+		[ContainerField(136), ContainerFieldNameHash(171486556)]
+		public AudioGraphNodePort CompAttack { get { return m_CompAttack; } set { if (OnPropertyChanging("MasterUnitNodeData." + nameof(CompAttack), this, m_CompAttack, value)) m_CompAttack = value; } } // 0x88 (136)
 		
-		[ContainerField(144)]
-		public AudioGraphNodePort CompRelease { get; set; } = new AudioGraphNodePort(); // 0x90 (144)
+		protected AudioGraphNodePort m_CompRelease = new AudioGraphNodePort();
+		[ContainerField(144), ContainerFieldNameHash(1539642909)]
+		public AudioGraphNodePort CompRelease { get { return m_CompRelease; } set { if (OnPropertyChanging("MasterUnitNodeData." + nameof(CompRelease), this, m_CompRelease, value)) m_CompRelease = value; } } // 0x90 (144)
 		
-		[ContainerField(152)]
-		public AudioGraphNodePort DistClipLevel { get; set; } = new AudioGraphNodePort(); // 0x98 (152)
+		protected AudioGraphNodePort m_DistClipLevel = new AudioGraphNodePort();
+		[ContainerField(152), ContainerFieldNameHash(3419995663)]
+		public AudioGraphNodePort DistClipLevel { get { return m_DistClipLevel; } set { if (OnPropertyChanging("MasterUnitNodeData." + nameof(DistClipLevel), this, m_DistClipLevel, value)) m_DistClipLevel = value; } } // 0x98 (152)
 		
-		[ContainerField(160)]
-		public AudioGraphNodePort ParallelDistortionGain { get; set; } = new AudioGraphNodePort(); // 0xA0 (160)
+		protected AudioGraphNodePort m_ParallelDistortionGain = new AudioGraphNodePort();
+		[ContainerField(160), ContainerFieldNameHash(2605372900)]
+		public AudioGraphNodePort ParallelDistortionGain { get { return m_ParallelDistortionGain; } set { if (OnPropertyChanging("MasterUnitNodeData." + nameof(ParallelDistortionGain), this, m_ParallelDistortionGain, value)) m_ParallelDistortionGain = value; } } // 0xA0 (160)
 		
-		[ContainerField(168)]
-		public RefArray<MasterUnitSettings> Settings { get; set; } = new RefArray<MasterUnitSettings>(); // 0xA8 (168)
+		protected RefArray<MasterUnitSettings> m_Settings = new RefArray<MasterUnitSettings>();
+		[ContainerField(168), ContainerFieldNameHash(649772672)]
+		public RefArray<MasterUnitSettings> Settings { get { return m_Settings; } set { if (OnPropertyChanging("MasterUnitNodeData." + nameof(Settings), this, m_Settings, value)) m_Settings = value; } } // 0xA8 (168)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

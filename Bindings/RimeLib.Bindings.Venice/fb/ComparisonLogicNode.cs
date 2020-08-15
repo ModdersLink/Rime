@@ -5,25 +5,38 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class ComparisonLogicNode : 
 		UINodeData
 	{
-		[ContainerField(20)]
-		public CtrRef<UINodePort> In { get; set; } = new CtrRef<UINodePort>(); // 0x14 (20)
+		protected CtrRef<UINodePort> m_In = new CtrRef<UINodePort>();
+		[ContainerField(20), ContainerFieldNameHash(5862146)]
+		public CtrRef<UINodePort> In { get { return m_In; } set { if (OnPropertyChanging("ComparisonLogicNode." + nameof(In), this, m_In, value)) m_In = value; } } // 0x14 (20)
 		
-		[ContainerField(24)]
-		public RefArray<UINodePort> Outputs { get; set; } = new RefArray<UINodePort>(); // 0x18 (24)
+		protected RefArray<UINodePort> m_Outputs = new RefArray<UINodePort>();
+		[ContainerField(24), ContainerFieldNameHash(1070022089)]
+		public RefArray<UINodePort> Outputs { get { return m_Outputs; } set { if (OnPropertyChanging("ComparisonLogicNode." + nameof(Outputs), this, m_Outputs, value)) m_Outputs = value; } } // 0x18 (24)
 		
-		[ContainerField(28)]
-		public UIDataSourceInfo DataSourceInfo { get; set; } = new UIDataSourceInfo(); // 0x1C (28)
+		protected UIDataSourceInfo m_DataSourceInfo = new UIDataSourceInfo();
+		[ContainerField(28), ContainerFieldNameHash(4099162406)]
+		public UIDataSourceInfo DataSourceInfo { get { return m_DataSourceInfo; } set { if (OnPropertyChanging("ComparisonLogicNode." + nameof(DataSourceInfo), this, m_DataSourceInfo, value)) m_DataSourceInfo = value; } } // 0x1C (28)
 		
-		[ContainerField(44), LayoutImmutable, Blittable]
-		public bool SkipFractionals { get; set; } // 0x2C (44)
+		protected bool m_SkipFractionals = new bool();
+		[ContainerField(44), LayoutImmutable, Blittable, ContainerFieldNameHash(4155242992)]
+		public bool SkipFractionals { get { return m_SkipFractionals; } set { if (OnPropertyChanging("ComparisonLogicNode." + nameof(SkipFractionals), this, m_SkipFractionals, value)) m_SkipFractionals = value; } } // 0x2C (44)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

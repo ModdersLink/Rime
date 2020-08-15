@@ -5,22 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class UIWeaponCompData : 
 		UIComponentData
 	{
-		[ContainerField(28), LayoutImmutable, Blittable]
-		public float MinHitIndicatorLimit { get; set; } // 0x1C (28)
+		protected float m_MinHitIndicatorLimit = new float();
+		[ContainerField(28), LayoutImmutable, Blittable, ContainerFieldNameHash(2846241422)]
+		public float MinHitIndicatorLimit { get { return m_MinHitIndicatorLimit; } set { if (OnPropertyChanging("UIWeaponCompData." + nameof(MinHitIndicatorLimit), this, m_MinHitIndicatorLimit, value)) m_MinHitIndicatorLimit = value; } } // 0x1C (28)
 		
-		[ContainerField(32), LayoutImmutable, Blittable]
-		public float MaxHitIndicatorLimit { get; set; } // 0x20 (32)
+		protected float m_MaxHitIndicatorLimit = new float();
+		[ContainerField(32), LayoutImmutable, Blittable, ContainerFieldNameHash(3944764752)]
+		public float MaxHitIndicatorLimit { get { return m_MaxHitIndicatorLimit; } set { if (OnPropertyChanging("UIWeaponCompData." + nameof(MaxHitIndicatorLimit), this, m_MaxHitIndicatorLimit, value)) m_MaxHitIndicatorLimit = value; } } // 0x20 (32)
 		
-		[ContainerField(36), LayoutImmutable, Blittable]
-		public float NormalHitIndicatorLimit { get; set; } // 0x24 (36)
+		protected float m_NormalHitIndicatorLimit = new float();
+		[ContainerField(36), LayoutImmutable, Blittable, ContainerFieldNameHash(2004036151)]
+		public float NormalHitIndicatorLimit { get { return m_NormalHitIndicatorLimit; } set { if (OnPropertyChanging("UIWeaponCompData." + nameof(NormalHitIndicatorLimit), this, m_NormalHitIndicatorLimit, value)) m_NormalHitIndicatorLimit = value; } } // 0x24 (36)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

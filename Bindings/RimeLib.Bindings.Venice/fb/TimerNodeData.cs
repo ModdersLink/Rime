@@ -5,32 +5,46 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class TimerNodeData : 
 		AudioGraphNodeData
 	{
-		[ContainerField(8)]
-		public AudioGraphNodePort Start { get; set; } = new AudioGraphNodePort(); // 0x8 (8)
+		protected AudioGraphNodePort m_Start = new AudioGraphNodePort();
+		[ContainerField(8), ContainerFieldNameHash(230748069)]
+		public AudioGraphNodePort Start { get { return m_Start; } set { if (OnPropertyChanging("TimerNodeData." + nameof(Start), this, m_Start, value)) m_Start = value; } } // 0x8 (8)
 		
-		[ContainerField(16)]
-		public AudioGraphNodePort Stop { get; set; } = new AudioGraphNodePort(); // 0x10 (16)
+		protected AudioGraphNodePort m_Stop = new AudioGraphNodePort();
+		[ContainerField(16), ContainerFieldNameHash(2089401213)]
+		public AudioGraphNodePort Stop { get { return m_Stop; } set { if (OnPropertyChanging("TimerNodeData." + nameof(Stop), this, m_Stop, value)) m_Stop = value; } } // 0x10 (16)
 		
-		[ContainerField(24)]
-		public AudioGraphNodePort Period { get; set; } = new AudioGraphNodePort(); // 0x18 (24)
+		protected AudioGraphNodePort m_Period = new AudioGraphNodePort();
+		[ContainerField(24), ContainerFieldNameHash(3366831232)]
+		public AudioGraphNodePort Period { get { return m_Period; } set { if (OnPropertyChanging("TimerNodeData." + nameof(Period), this, m_Period, value)) m_Period = value; } } // 0x18 (24)
 		
-		[ContainerField(32)]
-		public AudioGraphNodePort Tick { get; set; } = new AudioGraphNodePort(); // 0x20 (32)
+		protected AudioGraphNodePort m_Tick = new AudioGraphNodePort();
+		[ContainerField(32), ContainerFieldNameHash(2089313808)]
+		public AudioGraphNodePort Tick { get { return m_Tick; } set { if (OnPropertyChanging("TimerNodeData." + nameof(Tick), this, m_Tick, value)) m_Tick = value; } } // 0x20 (32)
 		
-		[ContainerField(40)]
-		public AudioGraphNodePort Progress { get; set; } = new AudioGraphNodePort(); // 0x28 (40)
+		protected AudioGraphNodePort m_Progress = new AudioGraphNodePort();
+		[ContainerField(40), ContainerFieldNameHash(3002510520)]
+		public AudioGraphNodePort Progress { get { return m_Progress; } set { if (OnPropertyChanging("TimerNodeData." + nameof(Progress), this, m_Progress, value)) m_Progress = value; } } // 0x28 (40)
 		
-		[ContainerField(48)]
-		public TimerMode Mode { get; set; } = new TimerMode(); // 0x30 (48)
+		protected TimerMode m_Mode = new TimerMode();
+		[ContainerField(48), ContainerFieldNameHash(2088772358)]
+		public TimerMode Mode { get { return m_Mode; } set { if (OnPropertyChanging("TimerNodeData." + nameof(Mode), this, m_Mode, value)) m_Mode = value; } } // 0x30 (48)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

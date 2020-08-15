@@ -5,20 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class GunnerSpottingTrackerData : 
 		HudTrackerData
 	{
-		[ContainerField(44)]
-		public UIHudIcon SpottedInfantryIcon { get; set; } = new UIHudIcon(); // 0x2C (44)
+		protected UIHudIcon m_SpottedInfantryIcon = new UIHudIcon();
+		[ContainerField(44), ContainerFieldNameHash(1477348402)]
+		public UIHudIcon SpottedInfantryIcon { get { return m_SpottedInfantryIcon; } set { if (OnPropertyChanging("GunnerSpottingTrackerData." + nameof(SpottedInfantryIcon), this, m_SpottedInfantryIcon, value)) m_SpottedInfantryIcon = value; } } // 0x2C (44)
 		
-		[ContainerField(48)]
-		public UIHudIcon SpottedVehicleIcon { get; set; } = new UIHudIcon(); // 0x30 (48)
+		protected UIHudIcon m_SpottedVehicleIcon = new UIHudIcon();
+		[ContainerField(48), ContainerFieldNameHash(1255017979)]
+		public UIHudIcon SpottedVehicleIcon { get { return m_SpottedVehicleIcon; } set { if (OnPropertyChanging("GunnerSpottingTrackerData." + nameof(SpottedVehicleIcon), this, m_SpottedVehicleIcon, value)) m_SpottedVehicleIcon = value; } } // 0x30 (48)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

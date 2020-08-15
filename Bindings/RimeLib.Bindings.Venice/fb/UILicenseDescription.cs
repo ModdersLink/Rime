@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class UILicenseDescription : 
 		UIItemDescription
 	{
-		[ContainerField(16), LayoutImmutable]
-		public string LicenseId { get; set; } // 0x10 (16)
+		protected string m_LicenseId = new string();
+		[ContainerField(16), LayoutImmutable, ContainerFieldNameHash(1538246483)]
+		public string LicenseId { get { return m_LicenseId; } set { if (OnPropertyChanging("UILicenseDescription." + nameof(LicenseId), this, m_LicenseId, value)) m_LicenseId = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable]
-		public string PopupText { get; set; } // 0x14 (20)
+		protected string m_PopupText = new string();
+		[ContainerField(20), LayoutImmutable, ContainerFieldNameHash(1817045074)]
+		public string PopupText { get { return m_PopupText; } set { if (OnPropertyChanging("UILicenseDescription." + nameof(PopupText), this, m_PopupText, value)) m_PopupText = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,23 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class CountDownEntityData : 
 		EntityData
 	{
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public int StartValue { get; set; } // 0xC (12)
+		protected int m_StartValue = new int();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(2748522638)]
+		public int StartValue { get { return m_StartValue; } set { if (OnPropertyChanging("CountDownEntityData." + nameof(StartValue), this, m_StartValue, value)) m_StartValue = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public Realm Realm { get; set; } = new Realm(); // 0x10 (16)
+		protected Realm m_Realm = new Realm();
+		[ContainerField(16), ContainerFieldNameHash(229961746)]
+		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("CountDownEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
-		public bool RunOnce { get; set; } // 0x14 (20)
+		protected bool m_RunOnce = new bool();
+		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(709901739)]
+		public bool RunOnce { get { return m_RunOnce; } set { if (OnPropertyChanging("CountDownEntityData." + nameof(RunOnce), this, m_RunOnce, value)) m_RunOnce = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

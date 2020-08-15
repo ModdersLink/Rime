@@ -5,62 +5,86 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class AirRadarData : 
 		UIPartData
 	{
-		[ContainerField(8), LayoutImmutable, Blittable]
-		public float RadarRange { get; set; } // 0x8 (8)
+		protected float m_RadarRange = new float();
+		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(2631022494)]
+		public float RadarRange { get { return m_RadarRange; } set { if (OnPropertyChanging("AirRadarData." + nameof(RadarRange), this, m_RadarRange, value)) m_RadarRange = value; } } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public float RadarSensitivity { get; set; } // 0xC (12)
+		protected float m_RadarSensitivity = new float();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(3600894796)]
+		public float RadarSensitivity { get { return m_RadarSensitivity; } set { if (OnPropertyChanging("AirRadarData." + nameof(RadarSensitivity), this, m_RadarSensitivity, value)) m_RadarSensitivity = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public float HeatSensitivity { get; set; } // 0x10 (16)
+		protected float m_HeatSensitivity = new float();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(1227204656)]
+		public float HeatSensitivity { get { return m_HeatSensitivity; } set { if (OnPropertyChanging("AirRadarData." + nameof(HeatSensitivity), this, m_HeatSensitivity, value)) m_HeatSensitivity = value; } } // 0x10 (16)
 		
-		[ContainerField(20)]
-		public UIHudIcon MissileIcon { get; set; } = new UIHudIcon(); // 0x14 (20)
+		protected UIHudIcon m_MissileIcon = new UIHudIcon();
+		[ContainerField(20), ContainerFieldNameHash(2092113546)]
+		public UIHudIcon MissileIcon { get { return m_MissileIcon; } set { if (OnPropertyChanging("AirRadarData." + nameof(MissileIcon), this, m_MissileIcon, value)) m_MissileIcon = value; } } // 0x14 (20)
 		
-		[ContainerField(24)]
-		public UIHudIcon CenterIcon { get; set; } = new UIHudIcon(); // 0x18 (24)
+		protected UIHudIcon m_CenterIcon = new UIHudIcon();
+		[ContainerField(24), ContainerFieldNameHash(1030044421)]
+		public UIHudIcon CenterIcon { get { return m_CenterIcon; } set { if (OnPropertyChanging("AirRadarData." + nameof(CenterIcon), this, m_CenterIcon, value)) m_CenterIcon = value; } } // 0x18 (24)
 		
-		[ContainerField(28)]
-		public UIHudIcon FriendlyIcon { get; set; } = new UIHudIcon(); // 0x1C (28)
+		protected UIHudIcon m_FriendlyIcon = new UIHudIcon();
+		[ContainerField(28), ContainerFieldNameHash(3884638505)]
+		public UIHudIcon FriendlyIcon { get { return m_FriendlyIcon; } set { if (OnPropertyChanging("AirRadarData." + nameof(FriendlyIcon), this, m_FriendlyIcon, value)) m_FriendlyIcon = value; } } // 0x1C (28)
 		
-		[ContainerField(32)]
-		public UIHudIcon EnemyIcon { get; set; } = new UIHudIcon(); // 0x20 (32)
+		protected UIHudIcon m_EnemyIcon = new UIHudIcon();
+		[ContainerField(32), ContainerFieldNameHash(1877581364)]
+		public UIHudIcon EnemyIcon { get { return m_EnemyIcon; } set { if (OnPropertyChanging("AirRadarData." + nameof(EnemyIcon), this, m_EnemyIcon, value)) m_EnemyIcon = value; } } // 0x20 (32)
 		
-		[ContainerField(36)]
-		public UIHudIcon LaserPaintedIcon { get; set; } = new UIHudIcon(); // 0x24 (36)
+		protected UIHudIcon m_LaserPaintedIcon = new UIHudIcon();
+		[ContainerField(36), ContainerFieldNameHash(1028218756)]
+		public UIHudIcon LaserPaintedIcon { get { return m_LaserPaintedIcon; } set { if (OnPropertyChanging("AirRadarData." + nameof(LaserPaintedIcon), this, m_LaserPaintedIcon, value)) m_LaserPaintedIcon = value; } } // 0x24 (36)
 		
-		[ContainerField(40)]
-		public UIHudIcon NorthIcon { get; set; } = new UIHudIcon(); // 0x28 (40)
+		protected UIHudIcon m_NorthIcon = new UIHudIcon();
+		[ContainerField(40), ContainerFieldNameHash(2335670113)]
+		public UIHudIcon NorthIcon { get { return m_NorthIcon; } set { if (OnPropertyChanging("AirRadarData." + nameof(NorthIcon), this, m_NorthIcon, value)) m_NorthIcon = value; } } // 0x28 (40)
 		
-		[ContainerField(48)]
-		public SubScreenData SubScreen { get; set; } = new SubScreenData(); // 0x30 (48)
+		protected SubScreenData m_SubScreen = new SubScreenData();
+		[ContainerField(48), ContainerFieldNameHash(1572076333)]
+		public SubScreenData SubScreen { get { return m_SubScreen; } set { if (OnPropertyChanging("AirRadarData." + nameof(SubScreen), this, m_SubScreen, value)) m_SubScreen = value; } } // 0x30 (48)
 		
-		[ContainerField(112)]
-		public UIHudIcon WestIcon { get; set; } = new UIHudIcon(); // 0x70 (112)
+		protected UIHudIcon m_WestIcon = new UIHudIcon();
+		[ContainerField(112), ContainerFieldNameHash(3367888667)]
+		public UIHudIcon WestIcon { get { return m_WestIcon; } set { if (OnPropertyChanging("AirRadarData." + nameof(WestIcon), this, m_WestIcon, value)) m_WestIcon = value; } } // 0x70 (112)
 		
-		[ContainerField(116)]
-		public UIHudIcon SouthIcon { get; set; } = new UIHudIcon(); // 0x74 (116)
+		protected UIHudIcon m_SouthIcon = new UIHudIcon();
+		[ContainerField(116), ContainerFieldNameHash(1219110587)]
+		public UIHudIcon SouthIcon { get { return m_SouthIcon; } set { if (OnPropertyChanging("AirRadarData." + nameof(SouthIcon), this, m_SouthIcon, value)) m_SouthIcon = value; } } // 0x74 (116)
 		
-		[ContainerField(120)]
-		public UIHudIcon EastIcon { get; set; } = new UIHudIcon(); // 0x78 (120)
+		protected UIHudIcon m_EastIcon = new UIHudIcon();
+		[ContainerField(120), ContainerFieldNameHash(3597079885)]
+		public UIHudIcon EastIcon { get { return m_EastIcon; } set { if (OnPropertyChanging("AirRadarData." + nameof(EastIcon), this, m_EastIcon, value)) m_EastIcon = value; } } // 0x78 (120)
 		
-		[ContainerField(124), LayoutImmutable, Blittable]
-		public bool TrackLaserPaintedObjects { get; set; } // 0x7C (124)
+		protected bool m_TrackLaserPaintedObjects = new bool();
+		[ContainerField(124), LayoutImmutable, Blittable, ContainerFieldNameHash(598207430)]
+		public bool TrackLaserPaintedObjects { get { return m_TrackLaserPaintedObjects; } set { if (OnPropertyChanging("AirRadarData." + nameof(TrackLaserPaintedObjects), this, m_TrackLaserPaintedObjects, value)) m_TrackLaserPaintedObjects = value; } } // 0x7C (124)
 		
-		[ContainerField(125), LayoutImmutable, Blittable]
-		public bool TrackOnlyUsedVehicles { get; set; } // 0x7D (125)
+		protected bool m_TrackOnlyUsedVehicles = new bool();
+		[ContainerField(125), LayoutImmutable, Blittable, ContainerFieldNameHash(362954258)]
+		public bool TrackOnlyUsedVehicles { get { return m_TrackOnlyUsedVehicles; } set { if (OnPropertyChanging("AirRadarData." + nameof(TrackOnlyUsedVehicles), this, m_TrackOnlyUsedVehicles, value)) m_TrackOnlyUsedVehicles = value; } } // 0x7D (125)
 		
-		[ContainerField(126), LayoutImmutable, Blittable]
-		public bool UseCameraComponentTransform { get; set; } // 0x7E (126)
+		protected bool m_UseCameraComponentTransform = new bool();
+		[ContainerField(126), LayoutImmutable, Blittable, ContainerFieldNameHash(3622581372)]
+		public bool UseCameraComponentTransform { get { return m_UseCameraComponentTransform; } set { if (OnPropertyChanging("AirRadarData." + nameof(UseCameraComponentTransform), this, m_UseCameraComponentTransform, value)) m_UseCameraComponentTransform = value; } } // 0x7E (126)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

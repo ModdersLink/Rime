@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class TargetCameraEntityData : 
 		CameraEntityBaseData
 	{
-		[ContainerField(96)]
-		public CtrRef<TargetCameraData> Camera { get; set; } = new CtrRef<TargetCameraData>(); // 0x60 (96)
+		protected CtrRef<TargetCameraData> m_Camera = new CtrRef<TargetCameraData>();
+		[ContainerField(96), ContainerFieldNameHash(2716359356)]
+		public CtrRef<TargetCameraData> Camera { get { return m_Camera; } set { if (OnPropertyChanging("TargetCameraEntityData." + nameof(Camera), this, m_Camera, value)) m_Camera = value; } } // 0x60 (96)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

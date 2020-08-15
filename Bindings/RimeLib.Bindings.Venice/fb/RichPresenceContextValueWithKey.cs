@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class RichPresenceContextValueWithKey : 
 		RichPresenceContextValue
 	{
-		[ContainerField(16), LayoutImmutable]
-		public string Key { get; set; } // 0x10 (16)
+		protected string m_Key = new string();
+		[ContainerField(16), LayoutImmutable, ContainerFieldNameHash(193457490)]
+		public string Key { get { return m_Key; } set { if (OnPropertyChanging("RichPresenceContextValueWithKey." + nameof(Key), this, m_Key, value)) m_Key = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

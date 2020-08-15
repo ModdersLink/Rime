@@ -5,25 +5,38 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class IrReverbControllerNodeData : 
 		AudioGraphNodeData
 	{
-		[ContainerField(8)]
-		public AudioGraphNodePort Reverb0 { get; set; } = new AudioGraphNodePort(); // 0x8 (8)
+		protected AudioGraphNodePort m_Reverb0 = new AudioGraphNodePort();
+		[ContainerField(8), ContainerFieldNameHash(1309052001)]
+		public AudioGraphNodePort Reverb0 { get { return m_Reverb0; } set { if (OnPropertyChanging("IrReverbControllerNodeData." + nameof(Reverb0), this, m_Reverb0, value)) m_Reverb0 = value; } } // 0x8 (8)
 		
-		[ContainerField(16)]
-		public AudioGraphNodePort Amplitude0 { get; set; } = new AudioGraphNodePort(); // 0x10 (16)
+		protected AudioGraphNodePort m_Amplitude0 = new AudioGraphNodePort();
+		[ContainerField(16), ContainerFieldNameHash(1577794412)]
+		public AudioGraphNodePort Amplitude0 { get { return m_Amplitude0; } set { if (OnPropertyChanging("IrReverbControllerNodeData." + nameof(Amplitude0), this, m_Amplitude0, value)) m_Amplitude0 = value; } } // 0x10 (16)
 		
-		[ContainerField(24)]
-		public AudioGraphNodePort Reverb1 { get; set; } = new AudioGraphNodePort(); // 0x18 (24)
+		protected AudioGraphNodePort m_Reverb1 = new AudioGraphNodePort();
+		[ContainerField(24), ContainerFieldNameHash(1309052000)]
+		public AudioGraphNodePort Reverb1 { get { return m_Reverb1; } set { if (OnPropertyChanging("IrReverbControllerNodeData." + nameof(Reverb1), this, m_Reverb1, value)) m_Reverb1 = value; } } // 0x18 (24)
 		
-		[ContainerField(32)]
-		public AudioGraphNodePort Amplitude1 { get; set; } = new AudioGraphNodePort(); // 0x20 (32)
+		protected AudioGraphNodePort m_Amplitude1 = new AudioGraphNodePort();
+		[ContainerField(32), ContainerFieldNameHash(1577794413)]
+		public AudioGraphNodePort Amplitude1 { get { return m_Amplitude1; } set { if (OnPropertyChanging("IrReverbControllerNodeData." + nameof(Amplitude1), this, m_Amplitude1, value)) m_Amplitude1 = value; } } // 0x20 (32)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,20 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class TeamEntityData : 
 		GameEntityData
 	{
-		[ContainerField(96)]
-		public CtrRef<TeamData> Team { get; set; } = new CtrRef<TeamData>(); // 0x60 (96)
+		protected CtrRef<TeamData> m_Team = new CtrRef<TeamData>();
+		[ContainerField(96), ContainerFieldNameHash(2089309528)]
+		public CtrRef<TeamData> Team { get { return m_Team; } set { if (OnPropertyChanging("TeamEntityData." + nameof(Team), this, m_Team, value)) m_Team = value; } } // 0x60 (96)
 		
-		[ContainerField(100)]
-		public TeamId Id { get; set; } = new TeamId(); // 0x64 (100)
+		protected TeamId m_Id = new TeamId();
+		[ContainerField(100), ContainerFieldNameHash(5862152)]
+		public TeamId Id { get { return m_Id; } set { if (OnPropertyChanging("TeamEntityData." + nameof(Id), this, m_Id, value)) m_Id = value; } } // 0x64 (100)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

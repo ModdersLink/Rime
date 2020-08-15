@@ -5,23 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class WindComponentData : 
 		ComponentData
 	{
-		[ContainerField(96)]
-		public Realm Realm { get; set; } = new Realm(); // 0x60 (96)
+		protected Realm m_Realm = new Realm();
+		[ContainerField(96), ContainerFieldNameHash(229961746)]
+		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("WindComponentData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0x60 (96)
 		
-		[ContainerField(100), LayoutImmutable, Blittable]
-		public float WindDirection { get; set; } // 0x64 (100)
+		protected float m_WindDirection = new float();
+		[ContainerField(100), LayoutImmutable, Blittable, ContainerFieldNameHash(3147800788)]
+		public float WindDirection { get { return m_WindDirection; } set { if (OnPropertyChanging("WindComponentData." + nameof(WindDirection), this, m_WindDirection, value)) m_WindDirection = value; } } // 0x64 (100)
 		
-		[ContainerField(104), LayoutImmutable, Blittable]
-		public float WindStrength { get; set; } // 0x68 (104)
+		protected float m_WindStrength = new float();
+		[ContainerField(104), LayoutImmutable, Blittable, ContainerFieldNameHash(3768589012)]
+		public float WindStrength { get { return m_WindStrength; } set { if (OnPropertyChanging("WindComponentData." + nameof(WindStrength), this, m_WindStrength, value)) m_WindStrength = value; } } // 0x68 (104)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

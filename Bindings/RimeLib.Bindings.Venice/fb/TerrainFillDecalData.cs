@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class TerrainFillDecalData : 
 		VisualVectorShapeData
 	{
-		[ContainerField(44)]
-		public CtrRef<SurfaceShaderBaseAsset> Shader2d { get; set; } = new CtrRef<SurfaceShaderBaseAsset>(); // 0x2C (44)
+		protected CtrRef<SurfaceShaderBaseAsset> m_Shader2d = new CtrRef<SurfaceShaderBaseAsset>();
+		[ContainerField(44), ContainerFieldNameHash(596681178)]
+		public CtrRef<SurfaceShaderBaseAsset> Shader2d { get { return m_Shader2d; } set { if (OnPropertyChanging("TerrainFillDecalData." + nameof(Shader2d), this, m_Shader2d, value)) m_Shader2d = value; } } // 0x2C (44)
 		
-		[ContainerField(48)]
-		public CtrRef<SurfaceShaderBaseAsset> Shader3dZOnly { get; set; } = new CtrRef<SurfaceShaderBaseAsset>(); // 0x30 (48)
+		protected CtrRef<SurfaceShaderBaseAsset> m_Shader3dZOnly = new CtrRef<SurfaceShaderBaseAsset>();
+		[ContainerField(48), ContainerFieldNameHash(585356309)]
+		public CtrRef<SurfaceShaderBaseAsset> Shader3dZOnly { get { return m_Shader3dZOnly; } set { if (OnPropertyChanging("TerrainFillDecalData." + nameof(Shader3dZOnly), this, m_Shader3dZOnly, value)) m_Shader3dZOnly = value; } } // 0x30 (48)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

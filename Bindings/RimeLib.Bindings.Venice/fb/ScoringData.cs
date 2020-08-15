@@ -5,22 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class ScoringData : 
 		Asset
 	{
-		[ContainerField(12)]
-		public RefArray<ScoringTypeData> ScoringTypes { get; set; } = new RefArray<ScoringTypeData>(); // 0xC (12)
+		protected RefArray<ScoringTypeData> m_ScoringTypes = new RefArray<ScoringTypeData>();
+		[ContainerField(12), ContainerFieldNameHash(1268919875)]
+		public RefArray<ScoringTypeData> ScoringTypes { get { return m_ScoringTypes; } set { if (OnPropertyChanging("ScoringData." + nameof(ScoringTypes), this, m_ScoringTypes, value)) m_ScoringTypes = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public RefArray<ScoringHandlerData> ScoringHandlers { get; set; } = new RefArray<ScoringHandlerData>(); // 0x10 (16)
+		protected RefArray<ScoringHandlerData> m_ScoringHandlers = new RefArray<ScoringHandlerData>();
+		[ContainerField(16), ContainerFieldNameHash(3193568419)]
+		public RefArray<ScoringHandlerData> ScoringHandlers { get { return m_ScoringHandlers; } set { if (OnPropertyChanging("ScoringData." + nameof(ScoringHandlers), this, m_ScoringHandlers, value)) m_ScoringHandlers = value; } } // 0x10 (16)
 		
-		[ContainerField(20)]
-		public RefArray<ScoringBucketData> Buckets { get; set; } = new RefArray<ScoringBucketData>(); // 0x14 (20)
+		protected RefArray<ScoringBucketData> m_Buckets = new RefArray<ScoringBucketData>();
+		[ContainerField(20), ContainerFieldNameHash(2760100856)]
+		public RefArray<ScoringBucketData> Buckets { get { return m_Buckets; } set { if (OnPropertyChanging("ScoringData." + nameof(Buckets), this, m_Buckets, value)) m_Buckets = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

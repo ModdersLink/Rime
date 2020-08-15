@@ -5,44 +5,62 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class LensScopeComponentData : 
 		ComponentData
 	{
-		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 ChromaticAberrationColor1 { get; set; } = new Vec3(); // 0x60 (96)
+		protected Vec3 m_ChromaticAberrationColor1 = new Vec3();
+		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(4192735318)]
+		public Vec3 ChromaticAberrationColor1 { get { return m_ChromaticAberrationColor1; } set { if (OnPropertyChanging("LensScopeComponentData." + nameof(ChromaticAberrationColor1), this, m_ChromaticAberrationColor1, value)) m_ChromaticAberrationColor1 = value; } } // 0x60 (96)
 		
-		[ContainerField(112), Homogeneous, LayoutImmutable, Blittable]
-		public Vec2 RadialBlendDistanceCoefficients { get; set; } = new Vec2(); // 0x70 (112)
+		protected Vec2 m_RadialBlendDistanceCoefficients = new Vec2();
+		[ContainerField(112), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(3576198450)]
+		public Vec2 RadialBlendDistanceCoefficients { get { return m_RadialBlendDistanceCoefficients; } set { if (OnPropertyChanging("LensScopeComponentData." + nameof(RadialBlendDistanceCoefficients), this, m_RadialBlendDistanceCoefficients, value)) m_RadialBlendDistanceCoefficients = value; } } // 0x70 (112)
 		
-		[ContainerField(128), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 ChromaticAberrationColor2 { get; set; } = new Vec3(); // 0x80 (128)
+		protected Vec3 m_ChromaticAberrationColor2 = new Vec3();
+		[ContainerField(128), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(4192735317)]
+		public Vec3 ChromaticAberrationColor2 { get { return m_ChromaticAberrationColor2; } set { if (OnPropertyChanging("LensScopeComponentData." + nameof(ChromaticAberrationColor2), this, m_ChromaticAberrationColor2, value)) m_ChromaticAberrationColor2 = value; } } // 0x80 (128)
 		
-		[ContainerField(144), Homogeneous, LayoutImmutable, Blittable]
-		public Vec2 BlurCenter { get; set; } = new Vec2(); // 0x90 (144)
+		protected Vec2 m_BlurCenter = new Vec2();
+		[ContainerField(144), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(1149921575)]
+		public Vec2 BlurCenter { get { return m_BlurCenter; } set { if (OnPropertyChanging("LensScopeComponentData." + nameof(BlurCenter), this, m_BlurCenter, value)) m_BlurCenter = value; } } // 0x90 (144)
 		
-		[ContainerField(152), Homogeneous, LayoutImmutable, Blittable]
-		public Vec2 ChromaticAberrationDisplacement2 { get; set; } = new Vec2(); // 0x98 (152)
+		protected Vec2 m_ChromaticAberrationDisplacement2 = new Vec2();
+		[ContainerField(152), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(2269770719)]
+		public Vec2 ChromaticAberrationDisplacement2 { get { return m_ChromaticAberrationDisplacement2; } set { if (OnPropertyChanging("LensScopeComponentData." + nameof(ChromaticAberrationDisplacement2), this, m_ChromaticAberrationDisplacement2, value)) m_ChromaticAberrationDisplacement2 = value; } } // 0x98 (152)
 		
-		[ContainerField(160), Homogeneous, LayoutImmutable, Blittable]
-		public Vec2 ChromaticAberrationDisplacement1 { get; set; } = new Vec2(); // 0xA0 (160)
+		protected Vec2 m_ChromaticAberrationDisplacement1 = new Vec2();
+		[ContainerField(160), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(2269770716)]
+		public Vec2 ChromaticAberrationDisplacement1 { get { return m_ChromaticAberrationDisplacement1; } set { if (OnPropertyChanging("LensScopeComponentData." + nameof(ChromaticAberrationDisplacement1), this, m_ChromaticAberrationDisplacement1, value)) m_ChromaticAberrationDisplacement1 = value; } } // 0xA0 (160)
 		
-		[ContainerField(168), Homogeneous, LayoutImmutable, Blittable]
-		public Vec2 ChromaticAberrationStrengths { get; set; } = new Vec2(); // 0xA8 (168)
+		protected Vec2 m_ChromaticAberrationStrengths = new Vec2();
+		[ContainerField(168), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(1096301260)]
+		public Vec2 ChromaticAberrationStrengths { get { return m_ChromaticAberrationStrengths; } set { if (OnPropertyChanging("LensScopeComponentData." + nameof(ChromaticAberrationStrengths), this, m_ChromaticAberrationStrengths, value)) m_ChromaticAberrationStrengths = value; } } // 0xA8 (168)
 		
-		[ContainerField(176), LayoutImmutable, Blittable]
-		public float BlurScale { get; set; } // 0xB0 (176)
+		protected float m_BlurScale = new float();
+		[ContainerField(176), LayoutImmutable, Blittable, ContainerFieldNameHash(3568105332)]
+		public float BlurScale { get { return m_BlurScale; } set { if (OnPropertyChanging("LensScopeComponentData." + nameof(BlurScale), this, m_BlurScale, value)) m_BlurScale = value; } } // 0xB0 (176)
 		
-		[ContainerField(180)]
-		public Realm Realm { get; set; } = new Realm(); // 0xB4 (180)
+		protected Realm m_Realm = new Realm();
+		[ContainerField(180), ContainerFieldNameHash(229961746)]
+		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("LensScopeComponentData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0xB4 (180)
 		
-		[ContainerField(184), LayoutImmutable, Blittable]
-		public bool Enable { get; set; } // 0xB8 (184)
+		protected bool m_Enable = new bool();
+		[ContainerField(184), LayoutImmutable, Blittable, ContainerFieldNameHash(2342790116)]
+		public bool Enable { get { return m_Enable; } set { if (OnPropertyChanging("LensScopeComponentData." + nameof(Enable), this, m_Enable, value)) m_Enable = value; } } // 0xB8 (184)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

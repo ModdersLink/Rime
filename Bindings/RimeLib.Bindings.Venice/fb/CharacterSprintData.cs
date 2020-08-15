@@ -5,25 +5,38 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class CharacterSprintData : 
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable, Blittable]
-		public float SprintPowerDecreasePerSecond { get; set; } // 0x8 (8)
+		protected float m_SprintPowerDecreasePerSecond = new float();
+		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(4236817773)]
+		public float SprintPowerDecreasePerSecond { get { return m_SprintPowerDecreasePerSecond; } set { if (OnPropertyChanging("CharacterSprintData." + nameof(SprintPowerDecreasePerSecond), this, m_SprintPowerDecreasePerSecond, value)) m_SprintPowerDecreasePerSecond = value; } } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public float SprintPowerIncreasePerSecond { get; set; } // 0xC (12)
+		protected float m_SprintPowerIncreasePerSecond = new float();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(3679952971)]
+		public float SprintPowerIncreasePerSecond { get { return m_SprintPowerIncreasePerSecond; } set { if (OnPropertyChanging("CharacterSprintData." + nameof(SprintPowerIncreasePerSecond), this, m_SprintPowerIncreasePerSecond, value)) m_SprintPowerIncreasePerSecond = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public float SprintMinimumPower { get; set; } // 0x10 (16)
+		protected float m_SprintMinimumPower = new float();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(2057558894)]
+		public float SprintMinimumPower { get { return m_SprintMinimumPower; } set { if (OnPropertyChanging("CharacterSprintData." + nameof(SprintMinimumPower), this, m_SprintMinimumPower, value)) m_SprintMinimumPower = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
-		public bool AllowContinousSprinting { get; set; } // 0x14 (20)
+		protected bool m_AllowContinousSprinting = new bool();
+		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(3446677350)]
+		public bool AllowContinousSprinting { get { return m_AllowContinousSprinting; } set { if (OnPropertyChanging("CharacterSprintData." + nameof(AllowContinousSprinting), this, m_AllowContinousSprinting, value)) m_AllowContinousSprinting = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

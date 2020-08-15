@@ -5,20 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class MeshProxyEntityData : 
 		SpatialEntityData
 	{
-		[ContainerField(80)]
-		public CtrRef<MeshAsset> Mesh { get; set; } = new CtrRef<MeshAsset>(); // 0x50 (80)
+		protected CtrRef<MeshAsset> m_Mesh = new CtrRef<MeshAsset>();
+		[ContainerField(80), ContainerFieldNameHash(2088783990)]
+		public CtrRef<MeshAsset> Mesh { get { return m_Mesh; } set { if (OnPropertyChanging("MeshProxyEntityData." + nameof(Mesh), this, m_Mesh, value)) m_Mesh = value; } } // 0x50 (80)
 		
-		[ContainerField(84)]
-		public List<LinearTransform> BasePoseTransforms { get; set; } = new List<LinearTransform>(); // 0x54 (84)
+		protected List<LinearTransform> m_BasePoseTransforms = new List<LinearTransform>();
+		[ContainerField(84), ContainerFieldNameHash(2949884966)]
+		public List<LinearTransform> BasePoseTransforms { get { return m_BasePoseTransforms; } set { if (OnPropertyChanging("MeshProxyEntityData." + nameof(BasePoseTransforms), this, m_BasePoseTransforms, value)) m_BasePoseTransforms = value; } } // 0x54 (84)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,41 +5,58 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class StaticModelEntityData : 
 		GamePhysicsEntityData
 	{
-		[ContainerField(112)]
-		public RefArray<PartLinkData> PartLinks { get; set; } = new RefArray<PartLinkData>(); // 0x70 (112)
+		protected RefArray<PartLinkData> m_PartLinks = new RefArray<PartLinkData>();
+		[ContainerField(112), ContainerFieldNameHash(3210318177)]
+		public RefArray<PartLinkData> PartLinks { get { return m_PartLinks; } set { if (OnPropertyChanging("StaticModelEntityData." + nameof(PartLinks), this, m_PartLinks, value)) m_PartLinks = value; } } // 0x70 (112)
 		
-		[ContainerField(116)]
-		public CtrRef<MeshAsset> Mesh { get; set; } = new CtrRef<MeshAsset>(); // 0x74 (116)
+		protected CtrRef<MeshAsset> m_Mesh = new CtrRef<MeshAsset>();
+		[ContainerField(116), ContainerFieldNameHash(2088783990)]
+		public CtrRef<MeshAsset> Mesh { get { return m_Mesh; } set { if (OnPropertyChanging("StaticModelEntityData." + nameof(Mesh), this, m_Mesh, value)) m_Mesh = value; } } // 0x74 (116)
 		
-		[ContainerField(120), LayoutImmutable, Blittable]
-		public uint BoneCount { get; set; } // 0x78 (120)
+		protected uint m_BoneCount = new uint();
+		[ContainerField(120), LayoutImmutable, Blittable, ContainerFieldNameHash(939250912)]
+		public uint BoneCount { get { return m_BoneCount; } set { if (OnPropertyChanging("StaticModelEntityData." + nameof(BoneCount), this, m_BoneCount, value)) m_BoneCount = value; } } // 0x78 (120)
 		
-		[ContainerField(124)]
-		public List<LinearTransform> BasePoseTransforms { get; set; } = new List<LinearTransform>(); // 0x7C (124)
+		protected List<LinearTransform> m_BasePoseTransforms = new List<LinearTransform>();
+		[ContainerField(124), ContainerFieldNameHash(2949884966)]
+		public List<LinearTransform> BasePoseTransforms { get { return m_BasePoseTransforms; } set { if (OnPropertyChanging("StaticModelEntityData." + nameof(BasePoseTransforms), this, m_BasePoseTransforms, value)) m_BasePoseTransforms = value; } } // 0x7C (124)
 		
-		[ContainerField(128)]
-		public StaticModelNetworkInfo NetworkInfo { get; set; } = new StaticModelNetworkInfo(); // 0x80 (128)
+		protected StaticModelNetworkInfo m_NetworkInfo = new StaticModelNetworkInfo();
+		[ContainerField(128), ContainerFieldNameHash(2269252597)]
+		public StaticModelNetworkInfo NetworkInfo { get { return m_NetworkInfo; } set { if (OnPropertyChanging("StaticModelEntityData." + nameof(NetworkInfo), this, m_NetworkInfo, value)) m_NetworkInfo = value; } } // 0x80 (128)
 		
-		[ContainerField(144)]
-		public List<PhysicsPartInfo> PhysicsPartInfos { get; set; } = new List<PhysicsPartInfo>(); // 0x90 (144)
+		protected List<PhysicsPartInfo> m_PhysicsPartInfos = new List<PhysicsPartInfo>();
+		[ContainerField(144), ContainerFieldNameHash(361299716)]
+		public List<PhysicsPartInfo> PhysicsPartInfos { get { return m_PhysicsPartInfos; } set { if (OnPropertyChanging("StaticModelEntityData." + nameof(PhysicsPartInfos), this, m_PhysicsPartInfos, value)) m_PhysicsPartInfos = value; } } // 0x90 (144)
 		
-		[ContainerField(148), LayoutImmutable, Blittable]
-		public bool ExcludeFromNearbyObjectDestruction { get; set; } // 0x94 (148)
+		protected bool m_ExcludeFromNearbyObjectDestruction = new bool();
+		[ContainerField(148), LayoutImmutable, Blittable, ContainerFieldNameHash(2293634461)]
+		public bool ExcludeFromNearbyObjectDestruction { get { return m_ExcludeFromNearbyObjectDestruction; } set { if (OnPropertyChanging("StaticModelEntityData." + nameof(ExcludeFromNearbyObjectDestruction), this, m_ExcludeFromNearbyObjectDestruction, value)) m_ExcludeFromNearbyObjectDestruction = value; } } // 0x94 (148)
 		
-		[ContainerField(149), LayoutImmutable, Blittable]
-		public bool AnimatePhysics { get; set; } // 0x95 (149)
+		protected bool m_AnimatePhysics = new bool();
+		[ContainerField(149), LayoutImmutable, Blittable, ContainerFieldNameHash(443997333)]
+		public bool AnimatePhysics { get { return m_AnimatePhysics; } set { if (OnPropertyChanging("StaticModelEntityData." + nameof(AnimatePhysics), this, m_AnimatePhysics, value)) m_AnimatePhysics = value; } } // 0x95 (149)
 		
-		[ContainerField(150), LayoutImmutable, Blittable]
-		public bool Visible { get; set; } // 0x96 (150)
+		protected bool m_Visible = new bool();
+		[ContainerField(150), LayoutImmutable, Blittable, ContainerFieldNameHash(901540267)]
+		public bool Visible { get { return m_Visible; } set { if (OnPropertyChanging("StaticModelEntityData." + nameof(Visible), this, m_Visible, value)) m_Visible = value; } } // 0x96 (150)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

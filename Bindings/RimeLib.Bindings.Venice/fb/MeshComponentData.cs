@@ -5,22 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class MeshComponentData : 
 		ComponentData
 	{
-		[ContainerField(96)]
-		public RefArray<BoneFakePhysicsData> BoneFakePhysics { get; set; } = new RefArray<BoneFakePhysicsData>(); // 0x60 (96)
+		protected RefArray<BoneFakePhysicsData> m_BoneFakePhysics = new RefArray<BoneFakePhysicsData>();
+		[ContainerField(96), ContainerFieldNameHash(2227758113)]
+		public RefArray<BoneFakePhysicsData> BoneFakePhysics { get { return m_BoneFakePhysics; } set { if (OnPropertyChanging("MeshComponentData." + nameof(BoneFakePhysics), this, m_BoneFakePhysics, value)) m_BoneFakePhysics = value; } } // 0x60 (96)
 		
-		[ContainerField(100)]
-		public CtrRef<MeshAsset> Mesh { get; set; } = new CtrRef<MeshAsset>(); // 0x64 (100)
+		protected CtrRef<MeshAsset> m_Mesh = new CtrRef<MeshAsset>();
+		[ContainerField(100), ContainerFieldNameHash(2088783990)]
+		public CtrRef<MeshAsset> Mesh { get { return m_Mesh; } set { if (OnPropertyChanging("MeshComponentData." + nameof(Mesh), this, m_Mesh, value)) m_Mesh = value; } } // 0x64 (100)
 		
-		[ContainerField(104)]
-		public CtrRef<SkeletonAsset> Skeleton { get; set; } = new CtrRef<SkeletonAsset>(); // 0x68 (104)
+		protected CtrRef<SkeletonAsset> m_Skeleton = new CtrRef<SkeletonAsset>();
+		[ContainerField(104), ContainerFieldNameHash(291024164)]
+		public CtrRef<SkeletonAsset> Skeleton { get { return m_Skeleton; } set { if (OnPropertyChanging("MeshComponentData." + nameof(Skeleton), this, m_Skeleton, value)) m_Skeleton = value; } } // 0x68 (104)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

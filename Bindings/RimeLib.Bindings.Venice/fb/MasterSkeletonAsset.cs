@@ -5,20 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class MasterSkeletonAsset : 
 		Asset
 	{
-		[ContainerField(12)]
-		public CtrRef<SkeletonAsset> MasterSkeleton { get; set; } = new CtrRef<SkeletonAsset>(); // 0xC (12)
+		protected CtrRef<SkeletonAsset> m_MasterSkeleton = new CtrRef<SkeletonAsset>();
+		[ContainerField(12), ContainerFieldNameHash(1934150648)]
+		public CtrRef<SkeletonAsset> MasterSkeleton { get { return m_MasterSkeleton; } set { if (OnPropertyChanging("MasterSkeletonAsset." + nameof(MasterSkeleton), this, m_MasterSkeleton, value)) m_MasterSkeleton = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public List<SubSkeleton> SubSkeletons { get; set; } = new List<SubSkeleton>(); // 0x10 (16)
+		protected List<SubSkeleton> m_SubSkeletons = new List<SubSkeleton>();
+		[ContainerField(16), ContainerFieldNameHash(2966147091)]
+		public List<SubSkeleton> SubSkeletons { get { return m_SubSkeletons; } set { if (OnPropertyChanging("MasterSkeletonAsset." + nameof(SubSkeletons), this, m_SubSkeletons, value)) m_SubSkeletons = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

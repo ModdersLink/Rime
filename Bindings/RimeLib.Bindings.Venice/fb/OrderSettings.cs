@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class OrderSettings : 
 		Asset
 	{
-		[ContainerField(12)]
-		public RefArray<OrderReadiness> Orders { get; set; } = new RefArray<OrderReadiness>(); // 0xC (12)
+		protected RefArray<OrderReadiness> m_Orders = new RefArray<OrderReadiness>();
+		[ContainerField(12), ContainerFieldNameHash(2885972376)]
+		public RefArray<OrderReadiness> Orders { get { return m_Orders; } set { if (OnPropertyChanging("OrderSettings." + nameof(Orders), this, m_Orders, value)) m_Orders = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

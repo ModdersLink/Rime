@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class CameraLoosePartPhysicsData : 
 		LoosePartPhysicsData
 	{
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public float Scale { get; set; } // 0xC (12)
+		protected float m_Scale = new float();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(231223453)]
+		public float Scale { get { return m_Scale; } set { if (OnPropertyChanging("CameraLoosePartPhysicsData." + nameof(Scale), this, m_Scale, value)) m_Scale = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

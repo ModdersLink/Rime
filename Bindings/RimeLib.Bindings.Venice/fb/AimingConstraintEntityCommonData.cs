@@ -5,31 +5,46 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class AimingConstraintEntityCommonData : 
 		Asset
 	{
-		[ContainerField(12)]
-		public AimingConstraintEntityBinding AimingConstraintsBinding { get; set; } = new AimingConstraintEntityBinding(); // 0xC (12)
+		protected AimingConstraintEntityBinding m_AimingConstraintsBinding = new AimingConstraintEntityBinding();
+		[ContainerField(12), ContainerFieldNameHash(959117047)]
+		public AimingConstraintEntityBinding AimingConstraintsBinding { get { return m_AimingConstraintsBinding; } set { if (OnPropertyChanging("AimingConstraintEntityCommonData." + nameof(AimingConstraintsBinding), this, m_AimingConstraintsBinding, value)) m_AimingConstraintsBinding = value; } } // 0xC (12)
 		
-		[ContainerField(20)]
-		public AimingConstraintsData AimingConstraints { get; set; } = new AimingConstraintsData(); // 0x14 (20)
+		protected AimingConstraintsData m_AimingConstraints = new AimingConstraintsData();
+		[ContainerField(20), ContainerFieldNameHash(1523178198)]
+		public AimingConstraintsData AimingConstraints { get { return m_AimingConstraints; } set { if (OnPropertyChanging("AimingConstraintEntityCommonData." + nameof(AimingConstraints), this, m_AimingConstraints, value)) m_AimingConstraints = value; } } // 0x14 (20)
 		
-		[ContainerField(36), LayoutImmutable, Blittable]
-		public float DisableAimingConstraintsDelay { get; set; } // 0x24 (36)
+		protected float m_DisableAimingConstraintsDelay = new float();
+		[ContainerField(36), LayoutImmutable, Blittable, ContainerFieldNameHash(4044073143)]
+		public float DisableAimingConstraintsDelay { get { return m_DisableAimingConstraintsDelay; } set { if (OnPropertyChanging("AimingConstraintEntityCommonData." + nameof(DisableAimingConstraintsDelay), this, m_DisableAimingConstraintsDelay, value)) m_DisableAimingConstraintsDelay = value; } } // 0x24 (36)
 		
-		[ContainerField(40), LayoutImmutable, Blittable]
-		public float ConstraintMoveSpeedMultiplier { get; set; } // 0x28 (40)
+		protected float m_ConstraintMoveSpeedMultiplier = new float();
+		[ContainerField(40), LayoutImmutable, Blittable, ContainerFieldNameHash(1613795389)]
+		public float ConstraintMoveSpeedMultiplier { get { return m_ConstraintMoveSpeedMultiplier; } set { if (OnPropertyChanging("AimingConstraintEntityCommonData." + nameof(ConstraintMoveSpeedMultiplier), this, m_ConstraintMoveSpeedMultiplier, value)) m_ConstraintMoveSpeedMultiplier = value; } } // 0x28 (40)
 		
-		[ContainerField(44), LayoutImmutable, Blittable]
-		public float ShuffleAnimationThreshold { get; set; } // 0x2C (44)
+		protected float m_ShuffleAnimationThreshold = new float();
+		[ContainerField(44), LayoutImmutable, Blittable, ContainerFieldNameHash(1503561667)]
+		public float ShuffleAnimationThreshold { get { return m_ShuffleAnimationThreshold; } set { if (OnPropertyChanging("AimingConstraintEntityCommonData." + nameof(ShuffleAnimationThreshold), this, m_ShuffleAnimationThreshold, value)) m_ShuffleAnimationThreshold = value; } } // 0x2C (44)
 		
-		[ContainerField(48), LayoutImmutable, Blittable]
-		public float ShuffleAnimationDelay { get; set; } // 0x30 (48)
+		protected float m_ShuffleAnimationDelay = new float();
+		[ContainerField(48), LayoutImmutable, Blittable, ContainerFieldNameHash(1783074145)]
+		public float ShuffleAnimationDelay { get { return m_ShuffleAnimationDelay; } set { if (OnPropertyChanging("AimingConstraintEntityCommonData." + nameof(ShuffleAnimationDelay), this, m_ShuffleAnimationDelay, value)) m_ShuffleAnimationDelay = value; } } // 0x30 (48)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

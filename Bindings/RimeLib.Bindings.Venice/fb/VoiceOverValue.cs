@@ -5,17 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class VoiceOverValue : 
 		DataContainer
 	{
-		[ContainerField(8)]
-		public VoiceOverValueType ValueType { get; set; } = new VoiceOverValueType(); // 0x8 (8)
+		protected VoiceOverValueType m_ValueType = new VoiceOverValueType();
+		[ContainerField(8), ContainerFieldNameHash(1235276758)]
+		public VoiceOverValueType ValueType { get { return m_ValueType; } set { if (OnPropertyChanging("VoiceOverValue." + nameof(ValueType), this, m_ValueType, value)) m_ValueType = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

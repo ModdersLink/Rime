@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class WeaponAimingSimulationModifier : 
 		WeaponModifierBase
 	{
-		[ContainerField(8)]
-		public CtrRef<SoldierAimingSimulationData> AimingController { get; set; } = new CtrRef<SoldierAimingSimulationData>(); // 0x8 (8)
+		protected CtrRef<SoldierAimingSimulationData> m_AimingController = new CtrRef<SoldierAimingSimulationData>();
+		[ContainerField(8), ContainerFieldNameHash(3247374364)]
+		public CtrRef<SoldierAimingSimulationData> AimingController { get { return m_AimingController; } set { if (OnPropertyChanging("WeaponAimingSimulationModifier." + nameof(AimingController), this, m_AimingController, value)) m_AimingController = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

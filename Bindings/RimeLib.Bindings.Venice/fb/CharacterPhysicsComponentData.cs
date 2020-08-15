@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class CharacterPhysicsComponentData : 
 		ComponentData
 	{
-		[ContainerField(96)]
-		public CtrRef<CharacterPhysicsData> CharacterPhysics { get; set; } = new CtrRef<CharacterPhysicsData>(); // 0x60 (96)
+		protected CtrRef<CharacterPhysicsData> m_CharacterPhysics = new CtrRef<CharacterPhysicsData>();
+		[ContainerField(96), ContainerFieldNameHash(4032988407)]
+		public CtrRef<CharacterPhysicsData> CharacterPhysics { get { return m_CharacterPhysics; } set { if (OnPropertyChanging("CharacterPhysicsComponentData." + nameof(CharacterPhysics), this, m_CharacterPhysics, value)) m_CharacterPhysics = value; } } // 0x60 (96)
 		
-		[ContainerField(100), LayoutImmutable, Blittable]
-		public bool EnableCollisionOnSpawn { get; set; } // 0x64 (100)
+		protected bool m_EnableCollisionOnSpawn = new bool();
+		[ContainerField(100), LayoutImmutable, Blittable, ContainerFieldNameHash(1861797248)]
+		public bool EnableCollisionOnSpawn { get { return m_EnableCollisionOnSpawn; } set { if (OnPropertyChanging("CharacterPhysicsComponentData." + nameof(EnableCollisionOnSpawn), this, m_EnableCollisionOnSpawn, value)) m_EnableCollisionOnSpawn = value; } } // 0x64 (100)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

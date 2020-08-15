@@ -5,25 +5,38 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class MortarStrikeWeaponData : 
 		WeaponData
 	{
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public float HoldingTolerance { get; set; } // 0x10 (16)
+		protected float m_HoldingTolerance = new float();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(1278440067)]
+		public float HoldingTolerance { get { return m_HoldingTolerance; } set { if (OnPropertyChanging("MortarStrikeWeaponData." + nameof(HoldingTolerance), this, m_HoldingTolerance, value)) m_HoldingTolerance = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
-		public float MaxStrikeDistance { get; set; } // 0x14 (20)
+		protected float m_MaxStrikeDistance = new float();
+		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(3419412896)]
+		public float MaxStrikeDistance { get { return m_MaxStrikeDistance; } set { if (OnPropertyChanging("MortarStrikeWeaponData." + nameof(MaxStrikeDistance), this, m_MaxStrikeDistance, value)) m_MaxStrikeDistance = value; } } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable]
-		public float StrikeRadius { get; set; } // 0x18 (24)
+		protected float m_StrikeRadius = new float();
+		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(4030357871)]
+		public float StrikeRadius { get { return m_StrikeRadius; } set { if (OnPropertyChanging("MortarStrikeWeaponData." + nameof(StrikeRadius), this, m_StrikeRadius, value)) m_StrikeRadius = value; } } // 0x18 (24)
 		
-		[ContainerField(28), LayoutImmutable, Blittable]
-		public float MaxRandomSpawnHeight { get; set; } // 0x1C (28)
+		protected float m_MaxRandomSpawnHeight = new float();
+		[ContainerField(28), LayoutImmutable, Blittable, ContainerFieldNameHash(2881356526)]
+		public float MaxRandomSpawnHeight { get { return m_MaxRandomSpawnHeight; } set { if (OnPropertyChanging("MortarStrikeWeaponData." + nameof(MaxRandomSpawnHeight), this, m_MaxRandomSpawnHeight, value)) m_MaxRandomSpawnHeight = value; } } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

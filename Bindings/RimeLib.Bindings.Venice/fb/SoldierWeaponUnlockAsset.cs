@@ -5,22 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class SoldierWeaponUnlockAsset : 
 		UnlockAssetBase
 	{
-		[ContainerField(40)]
-		public CtrRef<SoldierWeaponBlueprint> Weapon { get; set; } = new CtrRef<SoldierWeaponBlueprint>(); // 0x28 (40)
+		protected CtrRef<SoldierWeaponBlueprint> m_Weapon = new CtrRef<SoldierWeaponBlueprint>();
+		[ContainerField(40), ContainerFieldNameHash(3190562823)]
+		public CtrRef<SoldierWeaponBlueprint> Weapon { get { return m_Weapon; } set { if (OnPropertyChanging("SoldierWeaponUnlockAsset." + nameof(Weapon), this, m_Weapon, value)) m_Weapon = value; } } // 0x28 (40)
 		
-		[ContainerField(44)]
-		public CtrRef<UnlockAssetBase> Extra { get; set; } = new CtrRef<UnlockAssetBase>(); // 0x2C (44)
+		protected CtrRef<UnlockAssetBase> m_Extra = new CtrRef<UnlockAssetBase>();
+		[ContainerField(44), ContainerFieldNameHash(201622975)]
+		public CtrRef<UnlockAssetBase> Extra { get { return m_Extra; } set { if (OnPropertyChanging("SoldierWeaponUnlockAsset." + nameof(Extra), this, m_Extra, value)) m_Extra = value; } } // 0x2C (44)
 		
-		[ContainerField(48), LayoutImmutable, Blittable]
-		public uint WeaponIdentifier { get; set; } // 0x30 (48)
+		protected uint m_WeaponIdentifier = new uint();
+		[ContainerField(48), LayoutImmutable, Blittable, ContainerFieldNameHash(222597316)]
+		public uint WeaponIdentifier { get { return m_WeaponIdentifier; } set { if (OnPropertyChanging("SoldierWeaponUnlockAsset." + nameof(WeaponIdentifier), this, m_WeaponIdentifier, value)) m_WeaponIdentifier = value; } } // 0x30 (48)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

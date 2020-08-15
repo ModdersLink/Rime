@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class GeographicalLevelDescriptionComponent : 
 		LevelDescriptionComponent
 	{
-		[ContainerField(8)]
-		public CtrRef<GeographicalData> GeographicalData { get; set; } = new CtrRef<GeographicalData>(); // 0x8 (8)
+		protected CtrRef<GeographicalData> m_GeographicalData = new CtrRef<GeographicalData>();
+		[ContainerField(8), ContainerFieldNameHash(1880696403)]
+		public CtrRef<GeographicalData> GeographicalData { get { return m_GeographicalData; } set { if (OnPropertyChanging("GeographicalLevelDescriptionComponent." + nameof(GeographicalData), this, m_GeographicalData, value)) m_GeographicalData = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

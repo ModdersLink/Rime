@@ -5,22 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class BoneFakePhysicsData : 
 		DataContainer
 	{
-		[ContainerField(8)]
-		public CtrRef<FakePhysicsData> FakePhysics { get; set; } = new CtrRef<FakePhysicsData>(); // 0x8 (8)
+		protected CtrRef<FakePhysicsData> m_FakePhysics = new CtrRef<FakePhysicsData>();
+		[ContainerField(8), ContainerFieldNameHash(3614234055)]
+		public CtrRef<FakePhysicsData> FakePhysics { get { return m_FakePhysics; } set { if (OnPropertyChanging("BoneFakePhysicsData." + nameof(FakePhysics), this, m_FakePhysics, value)) m_FakePhysics = value; } } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable]
-		public string BoneName { get; set; } // 0xC (12)
+		protected string m_BoneName = new string();
+		[ContainerField(12), LayoutImmutable, ContainerFieldNameHash(1590647844)]
+		public string BoneName { get { return m_BoneName; } set { if (OnPropertyChanging("BoneFakePhysicsData." + nameof(BoneName), this, m_BoneName, value)) m_BoneName = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public int BoneId { get; set; } // 0x10 (16)
+		protected int m_BoneId = new int();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(2679406126)]
+		public int BoneId { get { return m_BoneId; } set { if (OnPropertyChanging("BoneFakePhysicsData." + nameof(BoneId), this, m_BoneId, value)) m_BoneId = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

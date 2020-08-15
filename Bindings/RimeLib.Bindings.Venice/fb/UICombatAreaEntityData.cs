@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class UICombatAreaEntityData : 
 		GameObjectData
 	{
-		[ContainerField(12)]
-		public CtrRef<UICombatAreaAsset> Asset { get; set; } = new CtrRef<UICombatAreaAsset>(); // 0xC (12)
+		protected CtrRef<UICombatAreaAsset> m_Asset = new CtrRef<UICombatAreaAsset>();
+		[ContainerField(12), ContainerFieldNameHash(205976053)]
+		public CtrRef<UICombatAreaAsset> Asset { get { return m_Asset; } set { if (OnPropertyChanging("UICombatAreaEntityData." + nameof(Asset), this, m_Asset, value)) m_Asset = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

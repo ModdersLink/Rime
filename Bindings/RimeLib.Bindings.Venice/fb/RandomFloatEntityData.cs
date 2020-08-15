@@ -5,23 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class RandomFloatEntityData : 
 		EntityData
 	{
-		[ContainerField(12)]
-		public Realm Realm { get; set; } = new Realm(); // 0xC (12)
+		protected Realm m_Realm = new Realm();
+		[ContainerField(12), ContainerFieldNameHash(229961746)]
+		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("RandomFloatEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public float Min { get; set; } // 0x10 (16)
+		protected float m_Min = new float();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(193446607)]
+		public float Min { get { return m_Min; } set { if (OnPropertyChanging("RandomFloatEntityData." + nameof(Min), this, m_Min, value)) m_Min = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
-		public float Max { get; set; } // 0x14 (20)
+		protected float m_Max = new float();
+		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(193446865)]
+		public float Max { get { return m_Max; } set { if (OnPropertyChanging("RandomFloatEntityData." + nameof(Max), this, m_Max, value)) m_Max = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

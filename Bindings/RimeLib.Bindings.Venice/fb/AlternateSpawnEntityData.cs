@@ -5,23 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class AlternateSpawnEntityData : 
 		SpatialEntityData
 	{
-		[ContainerField(80)]
-		public TeamId Team { get; set; } = new TeamId(); // 0x50 (80)
+		protected TeamId m_Team = new TeamId();
+		[ContainerField(80), ContainerFieldNameHash(2089309528)]
+		public TeamId Team { get { return m_Team; } set { if (OnPropertyChanging("AlternateSpawnEntityData." + nameof(Team), this, m_Team, value)) m_Team = value; } } // 0x50 (80)
 		
-		[ContainerField(84), LayoutImmutable, Blittable]
-		public float Priority { get; set; } // 0x54 (84)
+		protected float m_Priority = new float();
+		[ContainerField(84), LayoutImmutable, Blittable, ContainerFieldNameHash(3062102871)]
+		public float Priority { get { return m_Priority; } set { if (OnPropertyChanging("AlternateSpawnEntityData." + nameof(Priority), this, m_Priority, value)) m_Priority = value; } } // 0x54 (84)
 		
-		[ContainerField(88), LayoutImmutable, Blittable]
-		public bool Enabled { get; set; } // 0x58 (88)
+		protected bool m_Enabled = new bool();
+		[ContainerField(88), LayoutImmutable, Blittable, ContainerFieldNameHash(2662400)]
+		public bool Enabled { get { return m_Enabled; } set { if (OnPropertyChanging("AlternateSpawnEntityData." + nameof(Enabled), this, m_Enabled, value)) m_Enabled = value; } } // 0x58 (88)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

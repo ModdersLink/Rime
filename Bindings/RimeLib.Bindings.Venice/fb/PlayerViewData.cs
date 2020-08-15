@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class PlayerViewData : 
 		DataContainer
 	{
-		[ContainerField(8)]
-		public RefArray<SubViewData> SubViews { get; set; } = new RefArray<SubViewData>(); // 0x8 (8)
+		protected RefArray<SubViewData> m_SubViews = new RefArray<SubViewData>();
+		[ContainerField(8), ContainerFieldNameHash(1752723775)]
+		public RefArray<SubViewData> SubViews { get { return m_SubViews; } set { if (OnPropertyChanging("PlayerViewData." + nameof(SubViews), this, m_SubViews, value)) m_SubViews = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

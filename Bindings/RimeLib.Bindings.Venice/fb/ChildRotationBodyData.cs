@@ -5,32 +5,46 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class ChildRotationBodyData : 
 		RotationBodyData
 	{
-		[ContainerField(56), LayoutImmutable, Blittable]
-		public float ForceModifier { get; set; } // 0x38 (56)
+		protected float m_ForceModifier = new float();
+		[ContainerField(56), LayoutImmutable, Blittable, ContainerFieldNameHash(1738357711)]
+		public float ForceModifier { get { return m_ForceModifier; } set { if (OnPropertyChanging("ChildRotationBodyData." + nameof(ForceModifier), this, m_ForceModifier, value)) m_ForceModifier = value; } } // 0x38 (56)
 		
-		[ContainerField(60), LayoutImmutable, Blittable]
-		public float ResetForceModifier { get; set; } // 0x3C (60)
+		protected float m_ResetForceModifier = new float();
+		[ContainerField(60), LayoutImmutable, Blittable, ContainerFieldNameHash(4210794010)]
+		public float ResetForceModifier { get { return m_ResetForceModifier; } set { if (OnPropertyChanging("ChildRotationBodyData." + nameof(ResetForceModifier), this, m_ResetForceModifier, value)) m_ResetForceModifier = value; } } // 0x3C (60)
 		
-		[ContainerField(64), LayoutImmutable, Blittable]
-		public float ResetForceInputThreshold { get; set; } // 0x40 (64)
+		protected float m_ResetForceInputThreshold = new float();
+		[ContainerField(64), LayoutImmutable, Blittable, ContainerFieldNameHash(1759745836)]
+		public float ResetForceInputThreshold { get { return m_ResetForceInputThreshold; } set { if (OnPropertyChanging("ChildRotationBodyData." + nameof(ResetForceInputThreshold), this, m_ResetForceInputThreshold, value)) m_ResetForceInputThreshold = value; } } // 0x40 (64)
 		
-		[ContainerField(68)]
-		public EntryInputActionEnum RotationInput { get; set; } = new EntryInputActionEnum(); // 0x44 (68)
+		protected EntryInputActionEnum m_RotationInput = new EntryInputActionEnum();
+		[ContainerField(68), ContainerFieldNameHash(832509767)]
+		public EntryInputActionEnum RotationInput { get { return m_RotationInput; } set { if (OnPropertyChanging("ChildRotationBodyData." + nameof(RotationInput), this, m_RotationInput, value)) m_RotationInput = value; } } // 0x44 (68)
 		
-		[ContainerField(72), LayoutImmutable, Blittable]
-		public float WorldSpaceLockEfficiency { get; set; } // 0x48 (72)
+		protected float m_WorldSpaceLockEfficiency = new float();
+		[ContainerField(72), LayoutImmutable, Blittable, ContainerFieldNameHash(4063999679)]
+		public float WorldSpaceLockEfficiency { get { return m_WorldSpaceLockEfficiency; } set { if (OnPropertyChanging("ChildRotationBodyData." + nameof(WorldSpaceLockEfficiency), this, m_WorldSpaceLockEfficiency, value)) m_WorldSpaceLockEfficiency = value; } } // 0x48 (72)
 		
-		[ContainerField(76), LayoutImmutable, Blittable]
-		public bool UseLinearInput { get; set; } // 0x4C (76)
+		protected bool m_UseLinearInput = new bool();
+		[ContainerField(76), LayoutImmutable, Blittable, ContainerFieldNameHash(330083213)]
+		public bool UseLinearInput { get { return m_UseLinearInput; } set { if (OnPropertyChanging("ChildRotationBodyData." + nameof(UseLinearInput), this, m_UseLinearInput, value)) m_UseLinearInput = value; } } // 0x4C (76)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

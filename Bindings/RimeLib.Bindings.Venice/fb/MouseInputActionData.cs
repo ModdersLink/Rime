@@ -5,26 +5,38 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class MouseInputActionData : 
 		AxesInputActionData
 	{
-		[ContainerField(20)]
-		public InputDeviceMouseButtons Button { get; set; } = new InputDeviceMouseButtons(); // 0x14 (20)
+		protected InputDeviceMouseButtons m_Button = new InputDeviceMouseButtons();
+		[ContainerField(20), ContainerFieldNameHash(2686182099)]
+		public InputDeviceMouseButtons Button { get { return m_Button; } set { if (OnPropertyChanging("MouseInputActionData." + nameof(Button), this, m_Button, value)) m_Button = value; } } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable]
-		public bool SimulateJoystickAxis { get; set; } // 0x18 (24)
+		protected bool m_SimulateJoystickAxis = new bool();
+		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(3307710434)]
+		public bool SimulateJoystickAxis { get { return m_SimulateJoystickAxis; } set { if (OnPropertyChanging("MouseInputActionData." + nameof(SimulateJoystickAxis), this, m_SimulateJoystickAxis, value)) m_SimulateJoystickAxis = value; } } // 0x18 (24)
 		
-		[ContainerField(25), LayoutImmutable, Blittable]
-		public bool RememberExcessInput { get; set; } // 0x19 (25)
+		protected bool m_RememberExcessInput = new bool();
+		[ContainerField(25), LayoutImmutable, Blittable, ContainerFieldNameHash(1274294351)]
+		public bool RememberExcessInput { get { return m_RememberExcessInput; } set { if (OnPropertyChanging("MouseInputActionData." + nameof(RememberExcessInput), this, m_RememberExcessInput, value)) m_RememberExcessInput = value; } } // 0x19 (25)
 		
-		[ContainerField(26), LayoutImmutable, Blittable]
-		public bool ScaleScrollWheelAxisInput { get; set; } // 0x1A (26)
+		protected bool m_ScaleScrollWheelAxisInput = new bool();
+		[ContainerField(26), LayoutImmutable, Blittable, ContainerFieldNameHash(809122294)]
+		public bool ScaleScrollWheelAxisInput { get { return m_ScaleScrollWheelAxisInput; } set { if (OnPropertyChanging("MouseInputActionData." + nameof(ScaleScrollWheelAxisInput), this, m_ScaleScrollWheelAxisInput, value)) m_ScaleScrollWheelAxisInput = value; } } // 0x1A (26)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

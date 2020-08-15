@@ -5,30 +5,42 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class RandomMultiEventEntityData : 
 		EntityData
 	{
-		[ContainerField(12)]
-		public Realm Realm { get; set; } = new Realm(); // 0xC (12)
+		protected Realm m_Realm = new Realm();
+		[ContainerField(12), ContainerFieldNameHash(229961746)]
+		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("RandomMultiEventEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public List<float> RandomEventWeight { get; set; } = new List<float>(); // 0x10 (16)
+		protected List<float> m_RandomEventWeight = new List<float>();
+		[ContainerField(16), ContainerFieldNameHash(2700434098)]
+		public List<float> RandomEventWeight { get { return m_RandomEventWeight; } set { if (OnPropertyChanging("RandomMultiEventEntityData." + nameof(RandomEventWeight), this, m_RandomEventWeight, value)) m_RandomEventWeight = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
-		public bool UniformDistribution { get; set; } // 0x14 (20)
+		protected bool m_UniformDistribution = new bool();
+		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(3070004891)]
+		public bool UniformDistribution { get { return m_UniformDistribution; } set { if (OnPropertyChanging("RandomMultiEventEntityData." + nameof(UniformDistribution), this, m_UniformDistribution, value)) m_UniformDistribution = value; } } // 0x14 (20)
 		
-		[ContainerField(21), LayoutImmutable, Blittable]
-		public bool ResetOutputsWhenAllHasTriggered { get; set; } // 0x15 (21)
+		protected bool m_ResetOutputsWhenAllHasTriggered = new bool();
+		[ContainerField(21), LayoutImmutable, Blittable, ContainerFieldNameHash(386838442)]
+		public bool ResetOutputsWhenAllHasTriggered { get { return m_ResetOutputsWhenAllHasTriggered; } set { if (OnPropertyChanging("RandomMultiEventEntityData." + nameof(ResetOutputsWhenAllHasTriggered), this, m_ResetOutputsWhenAllHasTriggered, value)) m_ResetOutputsWhenAllHasTriggered = value; } } // 0x15 (21)
 		
-		[ContainerField(22), LayoutImmutable, Blittable]
-		public bool DisableOutputOnTrigger { get; set; } // 0x16 (22)
+		protected bool m_DisableOutputOnTrigger = new bool();
+		[ContainerField(22), LayoutImmutable, Blittable, ContainerFieldNameHash(1250184567)]
+		public bool DisableOutputOnTrigger { get { return m_DisableOutputOnTrigger; } set { if (OnPropertyChanging("RandomMultiEventEntityData." + nameof(DisableOutputOnTrigger), this, m_DisableOutputOnTrigger, value)) m_DisableOutputOnTrigger = value; } } // 0x16 (22)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

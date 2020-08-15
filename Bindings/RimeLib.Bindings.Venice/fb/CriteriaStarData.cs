@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class CriteriaStarData : 
 		CriteriaData
 	{
-		[ContainerField(52)]
-		public CtrRef<CriteriaStarCategoryData> StarTemplate { get; set; } = new CtrRef<CriteriaStarCategoryData>(); // 0x34 (52)
+		protected CtrRef<CriteriaStarCategoryData> m_StarTemplate = new CtrRef<CriteriaStarCategoryData>();
+		[ContainerField(52), ContainerFieldNameHash(982112673)]
+		public CtrRef<CriteriaStarCategoryData> StarTemplate { get { return m_StarTemplate; } set { if (OnPropertyChanging("CriteriaStarData." + nameof(StarTemplate), this, m_StarTemplate, value)) m_StarTemplate = value; } } // 0x34 (52)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

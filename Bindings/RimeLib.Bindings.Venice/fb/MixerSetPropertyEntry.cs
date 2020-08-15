@@ -5,28 +5,42 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class MixerSetPropertyEntry : 
 		AudioGraphNodePortGroup
 	{
-		[ContainerField(8)]
-		public AudioGraphNodePort In { get; set; } = new AudioGraphNodePort(); // 0x8 (8)
+		protected AudioGraphNodePort m_In = new AudioGraphNodePort();
+		[ContainerField(8), ContainerFieldNameHash(5862146)]
+		public AudioGraphNodePort In { get { return m_In; } set { if (OnPropertyChanging("MixerSetPropertyEntry." + nameof(In), this, m_In, value)) m_In = value; } } // 0x8 (8)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public uint Target { get; set; } // 0x10 (16)
+		protected uint m_Target = new uint();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(3215022804)]
+		public uint Target { get { return m_Target; } set { if (OnPropertyChanging("MixerSetPropertyEntry." + nameof(Target), this, m_Target, value)) m_Target = value; } } // 0x10 (16)
 		
-		[ContainerField(20)]
-		public CtrRef<MixGroup> Group { get; set; } = new CtrRef<MixGroup>(); // 0x14 (20)
+		protected CtrRef<MixGroup> m_Group = new CtrRef<MixGroup>();
+		[ContainerField(20), ContainerFieldNameHash(208130522)]
+		public CtrRef<MixGroup> Group { get { return m_Group; } set { if (OnPropertyChanging("MixerSetPropertyEntry." + nameof(Group), this, m_Group, value)) m_Group = value; } } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable]
-		public float AttackTime { get; set; } // 0x18 (24)
+		protected float m_AttackTime = new float();
+		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(1150936440)]
+		public float AttackTime { get { return m_AttackTime; } set { if (OnPropertyChanging("MixerSetPropertyEntry." + nameof(AttackTime), this, m_AttackTime, value)) m_AttackTime = value; } } // 0x18 (24)
 		
-		[ContainerField(28), LayoutImmutable, Blittable]
-		public float ReleaseTime { get; set; } // 0x1C (28)
+		protected float m_ReleaseTime = new float();
+		[ContainerField(28), LayoutImmutable, Blittable, ContainerFieldNameHash(892319833)]
+		public float ReleaseTime { get { return m_ReleaseTime; } set { if (OnPropertyChanging("MixerSetPropertyEntry." + nameof(ReleaseTime), this, m_ReleaseTime, value)) m_ReleaseTime = value; } } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

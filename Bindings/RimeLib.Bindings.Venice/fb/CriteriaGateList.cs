@@ -5,17 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class CriteriaGateList : 
 		Asset
 	{
-		[ContainerField(12)]
-		public List<float> CriteriaGates { get; set; } = new List<float>(); // 0xC (12)
+		protected List<float> m_CriteriaGates = new List<float>();
+		[ContainerField(12), ContainerFieldNameHash(4130539826)]
+		public List<float> CriteriaGates { get { return m_CriteriaGates; } set { if (OnPropertyChanging("CriteriaGateList." + nameof(CriteriaGates), this, m_CriteriaGates, value)) m_CriteriaGates = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

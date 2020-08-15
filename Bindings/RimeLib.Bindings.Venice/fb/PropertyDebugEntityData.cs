@@ -5,56 +5,78 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class PropertyDebugEntityData : 
 		EntityData
 	{
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 Vec3Value { get; set; } = new Vec3(); // 0x10 (16)
+		protected Vec3 m_Vec3Value = new Vec3();
+		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(277101325)]
+		public Vec3 Vec3Value { get { return m_Vec3Value; } set { if (OnPropertyChanging("PropertyDebugEntityData." + nameof(Vec3Value), this, m_Vec3Value, value)) m_Vec3Value = value; } } // 0x10 (16)
 		
-		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 TextColor { get; set; } = new Vec3(); // 0x20 (32)
+		protected Vec3 m_TextColor = new Vec3();
+		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(2527550245)]
+		public Vec3 TextColor { get { return m_TextColor; } set { if (OnPropertyChanging("PropertyDebugEntityData." + nameof(TextColor), this, m_TextColor, value)) m_TextColor = value; } } // 0x20 (32)
 		
-		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable]
-		public Vec2 ScreenPosition { get; set; } = new Vec2(); // 0x30 (48)
+		protected Vec2 m_ScreenPosition = new Vec2();
+		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(2288910864)]
+		public Vec2 ScreenPosition { get { return m_ScreenPosition; } set { if (OnPropertyChanging("PropertyDebugEntityData." + nameof(ScreenPosition), this, m_ScreenPosition, value)) m_ScreenPosition = value; } } // 0x30 (48)
 		
-		[ContainerField(64), Homogeneous, LayoutImmutable, Blittable]
-		public LinearTransform TransformValue { get; set; } = new LinearTransform(); // 0x40 (64)
+		protected LinearTransform m_TransformValue = new LinearTransform();
+		[ContainerField(64), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(3606782274)]
+		public LinearTransform TransformValue { get { return m_TransformValue; } set { if (OnPropertyChanging("PropertyDebugEntityData." + nameof(TransformValue), this, m_TransformValue, value)) m_TransformValue = value; } } // 0x40 (64)
 		
-		[ContainerField(128), Homogeneous, LayoutImmutable, Blittable]
-		public Vec2 Vec2Value { get; set; } = new Vec2(); // 0x80 (128)
+		protected Vec2 m_Vec2Value = new Vec2();
+		[ContainerField(128), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(311491116)]
+		public Vec2 Vec2Value { get { return m_Vec2Value; } set { if (OnPropertyChanging("PropertyDebugEntityData." + nameof(Vec2Value), this, m_Vec2Value, value)) m_Vec2Value = value; } } // 0x80 (128)
 		
-		[ContainerField(136), LayoutImmutable]
-		public string ValuePrefix { get; set; } // 0x88 (136)
+		protected string m_ValuePrefix = new string();
+		[ContainerField(136), LayoutImmutable, ContainerFieldNameHash(1051050718)]
+		public string ValuePrefix { get { return m_ValuePrefix; } set { if (OnPropertyChanging("PropertyDebugEntityData." + nameof(ValuePrefix), this, m_ValuePrefix, value)) m_ValuePrefix = value; } } // 0x88 (136)
 		
-		[ContainerField(140)]
-		public Realm Realm { get; set; } = new Realm(); // 0x8C (140)
+		protected Realm m_Realm = new Realm();
+		[ContainerField(140), ContainerFieldNameHash(229961746)]
+		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("PropertyDebugEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0x8C (140)
 		
-		[ContainerField(144), LayoutImmutable, Blittable]
-		public float FloatValue { get; set; } // 0x90 (144)
+		protected float m_FloatValue = new float();
+		[ContainerField(144), LayoutImmutable, Blittable, ContainerFieldNameHash(3123792190)]
+		public float FloatValue { get { return m_FloatValue; } set { if (OnPropertyChanging("PropertyDebugEntityData." + nameof(FloatValue), this, m_FloatValue, value)) m_FloatValue = value; } } // 0x90 (144)
 		
-		[ContainerField(148), LayoutImmutable, Blittable]
-		public int IntValue { get; set; } // 0x94 (148)
+		protected int m_IntValue = new int();
+		[ContainerField(148), LayoutImmutable, Blittable, ContainerFieldNameHash(5685821)]
+		public int IntValue { get { return m_IntValue; } set { if (OnPropertyChanging("PropertyDebugEntityData." + nameof(IntValue), this, m_IntValue, value)) m_IntValue = value; } } // 0x94 (148)
 		
-		[ContainerField(152), LayoutImmutable, Blittable]
-		public float TextScale { get; set; } // 0x98 (152)
+		protected float m_TextScale = new float();
+		[ContainerField(152), LayoutImmutable, Blittable, ContainerFieldNameHash(2508713728)]
+		public float TextScale { get { return m_TextScale; } set { if (OnPropertyChanging("PropertyDebugEntityData." + nameof(TextScale), this, m_TextScale, value)) m_TextScale = value; } } // 0x98 (152)
 		
-		[ContainerField(156), LayoutImmutable]
-		public string StringValue { get; set; } // 0x9C (156)
+		protected string m_StringValue = new string();
+		[ContainerField(156), LayoutImmutable, ContainerFieldNameHash(1269878171)]
+		public string StringValue { get { return m_StringValue; } set { if (OnPropertyChanging("PropertyDebugEntityData." + nameof(StringValue), this, m_StringValue, value)) m_StringValue = value; } } // 0x9C (156)
 		
-		[ContainerField(160), LayoutImmutable, Blittable]
-		public bool DefaultVisible { get; set; } // 0xA0 (160)
+		protected bool m_DefaultVisible = new bool();
+		[ContainerField(160), LayoutImmutable, Blittable, ContainerFieldNameHash(3341302816)]
+		public bool DefaultVisible { get { return m_DefaultVisible; } set { if (OnPropertyChanging("PropertyDebugEntityData." + nameof(DefaultVisible), this, m_DefaultVisible, value)) m_DefaultVisible = value; } } // 0xA0 (160)
 		
-		[ContainerField(161), LayoutImmutable, Blittable]
-		public bool BoolValue { get; set; } // 0xA1 (161)
+		protected bool m_BoolValue = new bool();
+		[ContainerField(161), LayoutImmutable, Blittable, ContainerFieldNameHash(176040160)]
+		public bool BoolValue { get { return m_BoolValue; } set { if (OnPropertyChanging("PropertyDebugEntityData." + nameof(BoolValue), this, m_BoolValue, value)) m_BoolValue = value; } } // 0xA1 (161)
 		
-		[ContainerField(162), LayoutImmutable, Blittable]
-		public bool Multiline { get; set; } // 0xA2 (162)
+		protected bool m_Multiline = new bool();
+		[ContainerField(162), LayoutImmutable, Blittable, ContainerFieldNameHash(1101961090)]
+		public bool Multiline { get { return m_Multiline; } set { if (OnPropertyChanging("PropertyDebugEntityData." + nameof(Multiline), this, m_Multiline, value)) m_Multiline = value; } } // 0xA2 (162)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

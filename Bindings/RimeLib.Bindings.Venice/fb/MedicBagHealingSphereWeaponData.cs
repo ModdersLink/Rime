@@ -5,22 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class MedicBagHealingSphereWeaponData : 
 		WeaponData
 	{
-		[ContainerField(16)]
-		public HealingSphereData Healer { get; set; } = new HealingSphereData(); // 0x10 (16)
+		protected HealingSphereData m_Healer = new HealingSphereData();
+		[ContainerField(16), ContainerFieldNameHash(3054336626)]
+		public HealingSphereData Healer { get { return m_Healer; } set { if (OnPropertyChanging("MedicBagHealingSphereWeaponData." + nameof(Healer), this, m_Healer, value)) m_Healer = value; } } // 0x10 (16)
 		
-		[ContainerField(24), LayoutImmutable, Blittable]
-		public float HealthPointsRefillSpeed { get; set; } // 0x18 (24)
+		protected float m_HealthPointsRefillSpeed = new float();
+		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(677121433)]
+		public float HealthPointsRefillSpeed { get { return m_HealthPointsRefillSpeed; } set { if (OnPropertyChanging("MedicBagHealingSphereWeaponData." + nameof(HealthPointsRefillSpeed), this, m_HealthPointsRefillSpeed, value)) m_HealthPointsRefillSpeed = value; } } // 0x18 (24)
 		
-		[ContainerField(28), LayoutImmutable, Blittable]
-		public float HealthPointsPerBag { get; set; } // 0x1C (28)
+		protected float m_HealthPointsPerBag = new float();
+		[ContainerField(28), LayoutImmutable, Blittable, ContainerFieldNameHash(134333413)]
+		public float HealthPointsPerBag { get { return m_HealthPointsPerBag; } set { if (OnPropertyChanging("MedicBagHealingSphereWeaponData." + nameof(HealthPointsPerBag), this, m_HealthPointsPerBag, value)) m_HealthPointsPerBag = value; } } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,22 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class GameAnimationConfig : 
 		Asset
 	{
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public bool ServerEnable { get; set; } // 0xC (12)
+		protected bool m_ServerEnable = new bool();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(3875294337)]
+		public bool ServerEnable { get { return m_ServerEnable; } set { if (OnPropertyChanging("GameAnimationConfig." + nameof(ServerEnable), this, m_ServerEnable, value)) m_ServerEnable = value; } } // 0xC (12)
 		
-		[ContainerField(13), LayoutImmutable, Blittable]
-		public bool ClientEnable { get; set; } // 0xD (13)
+		protected bool m_ClientEnable = new bool();
+		[ContainerField(13), LayoutImmutable, Blittable, ContainerFieldNameHash(1069919325)]
+		public bool ClientEnable { get { return m_ClientEnable; } set { if (OnPropertyChanging("GameAnimationConfig." + nameof(ClientEnable), this, m_ClientEnable, value)) m_ClientEnable = value; } } // 0xD (13)
 		
-		[ContainerField(14), LayoutImmutable, Blittable]
-		public bool UseRawGamepadInput { get; set; } // 0xE (14)
+		protected bool m_UseRawGamepadInput = new bool();
+		[ContainerField(14), LayoutImmutable, Blittable, ContainerFieldNameHash(2767734287)]
+		public bool UseRawGamepadInput { get { return m_UseRawGamepadInput; } set { if (OnPropertyChanging("GameAnimationConfig." + nameof(UseRawGamepadInput), this, m_UseRawGamepadInput, value)) m_UseRawGamepadInput = value; } } // 0xE (14)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class MaterialRelationPenetrationData : 
 		PhysicsPropertyRelationPropertyData
 	{
-		[ContainerField(8), LayoutImmutable, Blittable]
-		public bool NeverPenetrate { get; set; } // 0x8 (8)
+		protected bool m_NeverPenetrate = new bool();
+		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(2064798663)]
+		public bool NeverPenetrate { get { return m_NeverPenetrate; } set { if (OnPropertyChanging("MaterialRelationPenetrationData." + nameof(NeverPenetrate), this, m_NeverPenetrate, value)) m_NeverPenetrate = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

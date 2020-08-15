@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class LandingGearLogicData : 
 		DataContainer
 	{
-		[ContainerField(8)]
-		public LandingGearConditionData RetractCondition { get; set; } = new LandingGearConditionData(); // 0x8 (8)
+		protected LandingGearConditionData m_RetractCondition = new LandingGearConditionData();
+		[ContainerField(8), ContainerFieldNameHash(750548785)]
+		public LandingGearConditionData RetractCondition { get { return m_RetractCondition; } set { if (OnPropertyChanging("LandingGearLogicData." + nameof(RetractCondition), this, m_RetractCondition, value)) m_RetractCondition = value; } } // 0x8 (8)
 		
-		[ContainerField(20)]
-		public LandingGearConditionData DeployCondition { get; set; } = new LandingGearConditionData(); // 0x14 (20)
+		protected LandingGearConditionData m_DeployCondition = new LandingGearConditionData();
+		[ContainerField(20), ContainerFieldNameHash(3008584093)]
+		public LandingGearConditionData DeployCondition { get { return m_DeployCondition; } set { if (OnPropertyChanging("LandingGearLogicData." + nameof(DeployCondition), this, m_DeployCondition, value)) m_DeployCondition = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,29 +5,42 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class RichPresenceData : 
 		Asset
 	{
-		[ContainerField(12)]
-		public RefArray<RichPresencePresenceString> PresenceModes { get; set; } = new RefArray<RichPresencePresenceString>(); // 0xC (12)
+		protected RefArray<RichPresencePresenceString> m_PresenceModes = new RefArray<RichPresencePresenceString>();
+		[ContainerField(12), ContainerFieldNameHash(1792573772)]
+		public RefArray<RichPresencePresenceString> PresenceModes { get { return m_PresenceModes; } set { if (OnPropertyChanging("RichPresenceData." + nameof(PresenceModes), this, m_PresenceModes, value)) m_PresenceModes = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public CtrRef<RichPresencePresenceString> DefaultMode { get; set; } = new CtrRef<RichPresencePresenceString>(); // 0x10 (16)
+		protected CtrRef<RichPresencePresenceString> m_DefaultMode = new CtrRef<RichPresencePresenceString>();
+		[ContainerField(16), ContainerFieldNameHash(2014189229)]
+		public CtrRef<RichPresencePresenceString> DefaultMode { get { return m_DefaultMode; } set { if (OnPropertyChanging("RichPresenceData." + nameof(DefaultMode), this, m_DefaultMode, value)) m_DefaultMode = value; } } // 0x10 (16)
 		
-		[ContainerField(20)]
-		public CtrRef<RichPresencePresenceString> InactiveMode { get; set; } = new CtrRef<RichPresencePresenceString>(); // 0x14 (20)
+		protected CtrRef<RichPresencePresenceString> m_InactiveMode = new CtrRef<RichPresencePresenceString>();
+		[ContainerField(20), ContainerFieldNameHash(2860645485)]
+		public CtrRef<RichPresencePresenceString> InactiveMode { get { return m_InactiveMode; } set { if (OnPropertyChanging("RichPresenceData." + nameof(InactiveMode), this, m_InactiveMode, value)) m_InactiveMode = value; } } // 0x14 (20)
 		
-		[ContainerField(24)]
-		public RefArray<RichPresenceContext> Contexts { get; set; } = new RefArray<RichPresenceContext>(); // 0x18 (24)
+		protected RefArray<RichPresenceContext> m_Contexts = new RefArray<RichPresenceContext>();
+		[ContainerField(24), ContainerFieldNameHash(333666601)]
+		public RefArray<RichPresenceContext> Contexts { get { return m_Contexts; } set { if (OnPropertyChanging("RichPresenceData." + nameof(Contexts), this, m_Contexts, value)) m_Contexts = value; } } // 0x18 (24)
 		
-		[ContainerField(28)]
-		public List<RichPresenceProperty> Properties { get; set; } = new List<RichPresenceProperty>(); // 0x1C (28)
+		protected List<RichPresenceProperty> m_Properties = new List<RichPresenceProperty>();
+		[ContainerField(28), ContainerFieldNameHash(1506334468)]
+		public List<RichPresenceProperty> Properties { get { return m_Properties; } set { if (OnPropertyChanging("RichPresenceData." + nameof(Properties), this, m_Properties, value)) m_Properties = value; } } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

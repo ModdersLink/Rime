@@ -5,17 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class EvaluatorData : 
 		EmitterComponentData
 	{
-		[ContainerField(8)]
-		public EmitterParameter EmitterParameter { get; set; } = new EmitterParameter(); // 0x8 (8)
+		protected EmitterParameter m_EmitterParameter = new EmitterParameter();
+		[ContainerField(8), ContainerFieldNameHash(3358446298)]
+		public EmitterParameter EmitterParameter { get { return m_EmitterParameter; } set { if (OnPropertyChanging("EvaluatorData." + nameof(EmitterParameter), this, m_EmitterParameter, value)) m_EmitterParameter = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class PrefabBlueprint : 
 		Blueprint
 	{
-		[ContainerField(32)]
-		public RefArray<GameObjectData> Objects { get; set; } = new RefArray<GameObjectData>(); // 0x20 (32)
+		protected RefArray<GameObjectData> m_Objects = new RefArray<GameObjectData>();
+		[ContainerField(32), ContainerFieldNameHash(105488131)]
+		public RefArray<GameObjectData> Objects { get { return m_Objects; } set { if (OnPropertyChanging("PrefabBlueprint." + nameof(Objects), this, m_Objects, value)) m_Objects = value; } } // 0x20 (32)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

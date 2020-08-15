@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class UIAwardsScreenCompData : 
 		UIComponentData
 	{
-		[ContainerField(28)]
-		public RefArray<StatsCategoryBaseData> TrackableAwardRow { get; set; } = new RefArray<StatsCategoryBaseData>(); // 0x1C (28)
+		protected RefArray<StatsCategoryBaseData> m_TrackableAwardRow = new RefArray<StatsCategoryBaseData>();
+		[ContainerField(28), ContainerFieldNameHash(383950411)]
+		public RefArray<StatsCategoryBaseData> TrackableAwardRow { get { return m_TrackableAwardRow; } set { if (OnPropertyChanging("UIAwardsScreenCompData." + nameof(TrackableAwardRow), this, m_TrackableAwardRow, value)) m_TrackableAwardRow = value; } } // 0x1C (28)
 		
-		[ContainerField(32)]
-		public RefArray<StatsCategoryBaseData> TrackableAwardCol { get; set; } = new RefArray<StatsCategoryBaseData>(); // 0x20 (32)
+		protected RefArray<StatsCategoryBaseData> m_TrackableAwardCol = new RefArray<StatsCategoryBaseData>();
+		[ContainerField(32), ContainerFieldNameHash(383933953)]
+		public RefArray<StatsCategoryBaseData> TrackableAwardCol { get { return m_TrackableAwardCol; } set { if (OnPropertyChanging("UIAwardsScreenCompData." + nameof(TrackableAwardCol), this, m_TrackableAwardCol, value)) m_TrackableAwardCol = value; } } // 0x20 (32)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

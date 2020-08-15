@@ -5,17 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class UIActionData : 
 		Asset
 	{
-		[ContainerField(12)]
-		public List<string> ActionKeys { get; set; } = new List<string>(); // 0xC (12)
+		protected List<string> m_ActionKeys = new List<string>();
+		[ContainerField(12), ContainerFieldNameHash(1114688479)]
+		public List<string> ActionKeys { get { return m_ActionKeys; } set { if (OnPropertyChanging("UIActionData." + nameof(ActionKeys), this, m_ActionKeys, value)) m_ActionKeys = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

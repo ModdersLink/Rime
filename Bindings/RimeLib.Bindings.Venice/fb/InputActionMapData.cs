@@ -5,26 +5,38 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class InputActionMapData : 
 		DataContainer
 	{
-		[ContainerField(8)]
-		public RefArray<InputActionsData> Actions { get; set; } = new RefArray<InputActionsData>(); // 0x8 (8)
+		protected RefArray<InputActionsData> m_Actions = new RefArray<InputActionsData>();
+		[ContainerField(8), ContainerFieldNameHash(373511656)]
+		public RefArray<InputActionsData> Actions { get { return m_Actions; } set { if (OnPropertyChanging("InputActionMapData." + nameof(Actions), this, m_Actions, value)) m_Actions = value; } } // 0x8 (8)
 		
-		[ContainerField(12)]
-		public InputActionMapPlatform PlatformSpecific { get; set; } = new InputActionMapPlatform(); // 0xC (12)
+		protected InputActionMapPlatform m_PlatformSpecific = new InputActionMapPlatform();
+		[ContainerField(12), ContainerFieldNameHash(818960378)]
+		public InputActionMapPlatform PlatformSpecific { get { return m_PlatformSpecific; } set { if (OnPropertyChanging("InputActionMapData." + nameof(PlatformSpecific), this, m_PlatformSpecific, value)) m_PlatformSpecific = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public InputActionMapSlot Slot { get; set; } = new InputActionMapSlot(); // 0x10 (16)
+		protected InputActionMapSlot m_Slot = new InputActionMapSlot();
+		[ContainerField(16), ContainerFieldNameHash(2089426785)]
+		public InputActionMapSlot Slot { get { return m_Slot; } set { if (OnPropertyChanging("InputActionMapData." + nameof(Slot), this, m_Slot, value)) m_Slot = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable]
-		public string CopyKeyBindingsFrom { get; set; } // 0x14 (20)
+		protected string m_CopyKeyBindingsFrom = new string();
+		[ContainerField(20), LayoutImmutable, ContainerFieldNameHash(2847317651)]
+		public string CopyKeyBindingsFrom { get { return m_CopyKeyBindingsFrom; } set { if (OnPropertyChanging("InputActionMapData." + nameof(CopyKeyBindingsFrom), this, m_CopyKeyBindingsFrom, value)) m_CopyKeyBindingsFrom = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

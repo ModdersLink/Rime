@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class MixerSetPropertyNodeData : 
 		AudioGraphNodeData
 	{
-		[ContainerField(8)]
-		public RefArray<MixerSetPropertyEntry> Entries { get; set; } = new RefArray<MixerSetPropertyEntry>(); // 0x8 (8)
+		protected RefArray<MixerSetPropertyEntry> m_Entries = new RefArray<MixerSetPropertyEntry>();
+		[ContainerField(8), ContainerFieldNameHash(8238103)]
+		public RefArray<MixerSetPropertyEntry> Entries { get { return m_Entries; } set { if (OnPropertyChanging("MixerSetPropertyNodeData." + nameof(Entries), this, m_Entries, value)) m_Entries = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

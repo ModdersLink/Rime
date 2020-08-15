@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class LogicVisualEnvironmentEntityData : 
 		EntityData
 	{
-		[ContainerField(12)]
-		public CtrRef<VisualEnvironmentBlueprint> VisualEnvironment { get; set; } = new CtrRef<VisualEnvironmentBlueprint>(); // 0xC (12)
+		protected CtrRef<VisualEnvironmentBlueprint> m_VisualEnvironment = new CtrRef<VisualEnvironmentBlueprint>();
+		[ContainerField(12), ContainerFieldNameHash(1724714788)]
+		public CtrRef<VisualEnvironmentBlueprint> VisualEnvironment { get { return m_VisualEnvironment; } set { if (OnPropertyChanging("LogicVisualEnvironmentEntityData." + nameof(VisualEnvironment), this, m_VisualEnvironment, value)) m_VisualEnvironment = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public float Visibility { get; set; } // 0x10 (16)
+		protected float m_Visibility = new float();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(1708270083)]
+		public float Visibility { get { return m_Visibility; } set { if (OnPropertyChanging("LogicVisualEnvironmentEntityData." + nameof(Visibility), this, m_Visibility, value)) m_Visibility = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,35 +5,50 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class UIPageHeaderBinding : 
 		UIDataBinding
 	{
-		[ContainerField(8)]
-		public UIDataSourceInfo Header { get; set; } = new UIDataSourceInfo(); // 0x8 (8)
+		protected UIDataSourceInfo m_Header = new UIDataSourceInfo();
+		[ContainerField(8), ContainerFieldNameHash(3054345338)]
+		public UIDataSourceInfo Header { get { return m_Header; } set { if (OnPropertyChanging("UIPageHeaderBinding." + nameof(Header), this, m_Header, value)) m_Header = value; } } // 0x8 (8)
 		
-		[ContainerField(24)]
-		public UIDataSourceInfo SubHeader { get; set; } = new UIDataSourceInfo(); // 0x18 (24)
+		protected UIDataSourceInfo m_SubHeader = new UIDataSourceInfo();
+		[ContainerField(24), ContainerFieldNameHash(1300890558)]
+		public UIDataSourceInfo SubHeader { get { return m_SubHeader; } set { if (OnPropertyChanging("UIPageHeaderBinding." + nameof(SubHeader), this, m_SubHeader, value)) m_SubHeader = value; } } // 0x18 (24)
 		
-		[ContainerField(40)]
-		public UIDataSourceInfo Icon { get; set; } = new UIDataSourceInfo(); // 0x28 (40)
+		protected UIDataSourceInfo m_Icon = new UIDataSourceInfo();
+		[ContainerField(40), ContainerFieldNameHash(2088920302)]
+		public UIDataSourceInfo Icon { get { return m_Icon; } set { if (OnPropertyChanging("UIPageHeaderBinding." + nameof(Icon), this, m_Icon, value)) m_Icon = value; } } // 0x28 (40)
 		
-		[ContainerField(56), LayoutImmutable]
-		public string StaticHeader { get; set; } // 0x38 (56)
+		protected string m_StaticHeader = new string();
+		[ContainerField(56), LayoutImmutable, ContainerFieldNameHash(3731955490)]
+		public string StaticHeader { get { return m_StaticHeader; } set { if (OnPropertyChanging("UIPageHeaderBinding." + nameof(StaticHeader), this, m_StaticHeader, value)) m_StaticHeader = value; } } // 0x38 (56)
 		
-		[ContainerField(60), LayoutImmutable]
-		public string StaticSubHeader { get; set; } // 0x3C (60)
+		protected string m_StaticSubHeader = new string();
+		[ContainerField(60), LayoutImmutable, ContainerFieldNameHash(2094195686)]
+		public string StaticSubHeader { get { return m_StaticSubHeader; } set { if (OnPropertyChanging("UIPageHeaderBinding." + nameof(StaticSubHeader), this, m_StaticSubHeader, value)) m_StaticSubHeader = value; } } // 0x3C (60)
 		
-		[ContainerField(64), LayoutImmutable]
-		public string StaticIcon { get; set; } // 0x40 (64)
+		protected string m_StaticIcon = new string();
+		[ContainerField(64), LayoutImmutable, ContainerFieldNameHash(3462318262)]
+		public string StaticIcon { get { return m_StaticIcon; } set { if (OnPropertyChanging("UIPageHeaderBinding." + nameof(StaticIcon), this, m_StaticIcon, value)) m_StaticIcon = value; } } // 0x40 (64)
 		
-		[ContainerField(68)]
-		public List<UILevelSpecificPageHeader> LevelSpecificHeaders { get; set; } = new List<UILevelSpecificPageHeader>(); // 0x44 (68)
+		protected List<UILevelSpecificPageHeader> m_LevelSpecificHeaders = new List<UILevelSpecificPageHeader>();
+		[ContainerField(68), ContainerFieldNameHash(3034846175)]
+		public List<UILevelSpecificPageHeader> LevelSpecificHeaders { get { return m_LevelSpecificHeaders; } set { if (OnPropertyChanging("UIPageHeaderBinding." + nameof(LevelSpecificHeaders), this, m_LevelSpecificHeaders, value)) m_LevelSpecificHeaders = value; } } // 0x44 (68)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

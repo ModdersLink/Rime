@@ -5,25 +5,38 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class RegistryContainer : 
 		DataContainer
 	{
-		[ContainerField(8)]
-		public RefArray<DataContainer> EntityRegistry { get; set; } = new RefArray<DataContainer>(); // 0x8 (8)
+		protected RefArray<DataContainer> m_EntityRegistry = new RefArray<DataContainer>();
+		[ContainerField(8), ContainerFieldNameHash(398962539)]
+		public RefArray<DataContainer> EntityRegistry { get { return m_EntityRegistry; } set { if (OnPropertyChanging("RegistryContainer." + nameof(EntityRegistry), this, m_EntityRegistry, value)) m_EntityRegistry = value; } } // 0x8 (8)
 		
-		[ContainerField(12)]
-		public RefArray<DataContainer> AssetRegistry { get; set; } = new RefArray<DataContainer>(); // 0xC (12)
+		protected RefArray<DataContainer> m_AssetRegistry = new RefArray<DataContainer>();
+		[ContainerField(12), ContainerFieldNameHash(3305796672)]
+		public RefArray<DataContainer> AssetRegistry { get { return m_AssetRegistry; } set { if (OnPropertyChanging("RegistryContainer." + nameof(AssetRegistry), this, m_AssetRegistry, value)) m_AssetRegistry = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public RefArray<DataContainer> BlueprintRegistry { get; set; } = new RefArray<DataContainer>(); // 0x10 (16)
+		protected RefArray<DataContainer> m_BlueprintRegistry = new RefArray<DataContainer>();
+		[ContainerField(16), ContainerFieldNameHash(3531202111)]
+		public RefArray<DataContainer> BlueprintRegistry { get { return m_BlueprintRegistry; } set { if (OnPropertyChanging("RegistryContainer." + nameof(BlueprintRegistry), this, m_BlueprintRegistry, value)) m_BlueprintRegistry = value; } } // 0x10 (16)
 		
-		[ContainerField(20)]
-		public RefArray<DataContainer> ReferenceObjectRegistry { get; set; } = new RefArray<DataContainer>(); // 0x14 (20)
+		protected RefArray<DataContainer> m_ReferenceObjectRegistry = new RefArray<DataContainer>();
+		[ContainerField(20), ContainerFieldNameHash(1248214958)]
+		public RefArray<DataContainer> ReferenceObjectRegistry { get { return m_ReferenceObjectRegistry; } set { if (OnPropertyChanging("RegistryContainer." + nameof(ReferenceObjectRegistry), this, m_ReferenceObjectRegistry, value)) m_ReferenceObjectRegistry = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

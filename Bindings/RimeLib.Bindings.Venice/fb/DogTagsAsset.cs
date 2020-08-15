@@ -5,22 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class DogTagsAsset : 
 		Asset
 	{
-		[ContainerField(12)]
-		public CtrRef<StatsCategoryWeaponData> MeleeKillWeapon { get; set; } = new CtrRef<StatsCategoryWeaponData>(); // 0xC (12)
+		protected CtrRef<StatsCategoryWeaponData> m_MeleeKillWeapon = new CtrRef<StatsCategoryWeaponData>();
+		[ContainerField(12), ContainerFieldNameHash(789892769)]
+		public CtrRef<StatsCategoryWeaponData> MeleeKillWeapon { get { return m_MeleeKillWeapon; } set { if (OnPropertyChanging("DogTagsAsset." + nameof(MeleeKillWeapon), this, m_MeleeKillWeapon, value)) m_MeleeKillWeapon = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public RefArray<BasicDogTagData> BasicDogTags { get; set; } = new RefArray<BasicDogTagData>(); // 0x10 (16)
+		protected RefArray<BasicDogTagData> m_BasicDogTags = new RefArray<BasicDogTagData>();
+		[ContainerField(16), ContainerFieldNameHash(3176450162)]
+		public RefArray<BasicDogTagData> BasicDogTags { get { return m_BasicDogTags; } set { if (OnPropertyChanging("DogTagsAsset." + nameof(BasicDogTags), this, m_BasicDogTags, value)) m_BasicDogTags = value; } } // 0x10 (16)
 		
-		[ContainerField(20)]
-		public RefArray<AdvancedDogTagData> AdvancedDogTags { get; set; } = new RefArray<AdvancedDogTagData>(); // 0x14 (20)
+		protected RefArray<AdvancedDogTagData> m_AdvancedDogTags = new RefArray<AdvancedDogTagData>();
+		[ContainerField(20), ContainerFieldNameHash(1447180982)]
+		public RefArray<AdvancedDogTagData> AdvancedDogTags { get { return m_AdvancedDogTags; } set { if (OnPropertyChanging("DogTagsAsset." + nameof(AdvancedDogTags), this, m_AdvancedDogTags, value)) m_AdvancedDogTags = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

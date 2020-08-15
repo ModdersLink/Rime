@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class UnlockableTextureCollection : 
 		DataContainer
 	{
-		[ContainerField(8)]
-		public CtrRef<TextureAsset> DefaultValue { get; set; } = new CtrRef<TextureAsset>(); // 0x8 (8)
+		protected CtrRef<TextureAsset> m_DefaultValue = new CtrRef<TextureAsset>();
+		[ContainerField(8), ContainerFieldNameHash(2066049125)]
+		public CtrRef<TextureAsset> DefaultValue { get { return m_DefaultValue; } set { if (OnPropertyChanging("UnlockableTextureCollection." + nameof(DefaultValue), this, m_DefaultValue, value)) m_DefaultValue = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

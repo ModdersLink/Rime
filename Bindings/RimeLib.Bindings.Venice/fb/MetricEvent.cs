@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(8)]
+	[ContainerType(8)]
 	public class MetricEvent : 
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable, Blittable]
-		public ulong Owner { get; set; } // 0x8 (8)
+		protected ulong m_Owner = new ulong();
+		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(217695012)]
+		public ulong Owner { get { return m_Owner; } set { if (OnPropertyChanging("MetricEvent." + nameof(Owner), this, m_Owner, value)) m_Owner = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

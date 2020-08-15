@@ -5,26 +5,38 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class SettingEntityData : 
 		EntityData
 	{
-		[ContainerField(12)]
-		public Realm Realm { get; set; } = new Realm(); // 0xC (12)
+		protected Realm m_Realm = new Realm();
+		[ContainerField(12), ContainerFieldNameHash(229961746)]
+		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("SettingEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable]
-		public string BoolSettingName { get; set; } // 0x10 (16)
+		protected string m_BoolSettingName = new string();
+		[ContainerField(16), LayoutImmutable, ContainerFieldNameHash(2857256474)]
+		public string BoolSettingName { get { return m_BoolSettingName; } set { if (OnPropertyChanging("SettingEntityData." + nameof(BoolSettingName), this, m_BoolSettingName, value)) m_BoolSettingName = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable]
-		public string IntSettingName { get; set; } // 0x14 (20)
+		protected string m_IntSettingName = new string();
+		[ContainerField(20), LayoutImmutable, ContainerFieldNameHash(2665330183)]
+		public string IntSettingName { get { return m_IntSettingName; } set { if (OnPropertyChanging("SettingEntityData." + nameof(IntSettingName), this, m_IntSettingName, value)) m_IntSettingName = value; } } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable]
-		public string FloatSettingName { get; set; } // 0x18 (24)
+		protected string m_FloatSettingName = new string();
+		[ContainerField(24), LayoutImmutable, ContainerFieldNameHash(3117588292)]
+		public string FloatSettingName { get { return m_FloatSettingName; } set { if (OnPropertyChanging("SettingEntityData." + nameof(FloatSettingName), this, m_FloatSettingName, value)) m_FloatSettingName = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

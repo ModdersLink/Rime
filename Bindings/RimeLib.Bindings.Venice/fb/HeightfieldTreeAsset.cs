@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class HeightfieldTreeAsset : 
 		RasterTreeAsset
 	{
-		[ContainerField(8), LayoutImmutable, Blittable]
-		public float MinHeightWidth { get; set; } // 0x8 (8)
+		protected float m_MinHeightWidth = new float();
+		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(1959332726)]
+		public float MinHeightWidth { get { return m_MinHeightWidth; } set { if (OnPropertyChanging("HeightfieldTreeAsset." + nameof(MinHeightWidth), this, m_MinHeightWidth, value)) m_MinHeightWidth = value; } } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public int MinHeightSamplesPerSide { get; set; } // 0xC (12)
+		protected int m_MinHeightSamplesPerSide = new int();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(4074360025)]
+		public int MinHeightSamplesPerSide { get { return m_MinHeightSamplesPerSide; } set { if (OnPropertyChanging("HeightfieldTreeAsset." + nameof(MinHeightSamplesPerSide), this, m_MinHeightSamplesPerSide, value)) m_MinHeightSamplesPerSide = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

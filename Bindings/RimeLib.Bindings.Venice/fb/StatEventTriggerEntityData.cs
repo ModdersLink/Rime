@@ -5,26 +5,38 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class StatEventTriggerEntityData : 
 		GameEntityData
 	{
-		[ContainerField(96)]
-		public StatEvent StatEvent { get; set; } = new StatEvent(); // 0x60 (96)
+		protected StatEvent m_StatEvent = new StatEvent();
+		[ContainerField(96), ContainerFieldNameHash(4089209307)]
+		public StatEvent StatEvent { get { return m_StatEvent; } set { if (OnPropertyChanging("StatEventTriggerEntityData." + nameof(StatEvent), this, m_StatEvent, value)) m_StatEvent = value; } } // 0x60 (96)
 		
-		[ContainerField(100), LayoutImmutable]
-		public string MiscParamX { get; set; } // 0x64 (100)
+		protected string m_MiscParamX = new string();
+		[ContainerField(100), LayoutImmutable, ContainerFieldNameHash(2570197190)]
+		public string MiscParamX { get { return m_MiscParamX; } set { if (OnPropertyChanging("StatEventTriggerEntityData." + nameof(MiscParamX), this, m_MiscParamX, value)) m_MiscParamX = value; } } // 0x64 (100)
 		
-		[ContainerField(104), LayoutImmutable]
-		public string MiscParamY { get; set; } // 0x68 (104)
+		protected string m_MiscParamY = new string();
+		[ContainerField(104), LayoutImmutable, ContainerFieldNameHash(2570197191)]
+		public string MiscParamY { get { return m_MiscParamY; } set { if (OnPropertyChanging("StatEventTriggerEntityData." + nameof(MiscParamY), this, m_MiscParamY, value)) m_MiscParamY = value; } } // 0x68 (104)
 		
-		[ContainerField(108), LayoutImmutable, Blittable]
-		public bool SendToAll { get; set; } // 0x6C (108)
+		protected bool m_SendToAll = new bool();
+		[ContainerField(108), LayoutImmutable, Blittable, ContainerFieldNameHash(1285040867)]
+		public bool SendToAll { get { return m_SendToAll; } set { if (OnPropertyChanging("StatEventTriggerEntityData." + nameof(SendToAll), this, m_SendToAll, value)) m_SendToAll = value; } } // 0x6C (108)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

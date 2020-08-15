@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class SwimmingStateData : 
 		CharacterStateData
 	{
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public float BodyUnderWater { get; set; } // 0xC (12)
+		protected float m_BodyUnderWater = new float();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(1498497544)]
+		public float BodyUnderWater { get { return m_BodyUnderWater; } set { if (OnPropertyChanging("SwimmingStateData." + nameof(BodyUnderWater), this, m_BodyUnderWater, value)) m_BodyUnderWater = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,29 +5,42 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class InputActionsData : 
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable]
-		public string NameSid { get; set; } // 0x8 (8)
+		protected string m_NameSid = new string();
+		[ContainerField(8), LayoutImmutable, ContainerFieldNameHash(3153745340)]
+		public string NameSid { get { return m_NameSid; } set { if (OnPropertyChanging("InputActionsData." + nameof(NameSid), this, m_NameSid, value)) m_NameSid = value; } } // 0x8 (8)
 		
-		[ContainerField(12)]
-		public InputConceptIdentifiers ConceptIdentifier { get; set; } = new InputConceptIdentifiers(); // 0xC (12)
+		protected InputConceptIdentifiers m_ConceptIdentifier = new InputConceptIdentifiers();
+		[ContainerField(12), ContainerFieldNameHash(1320965734)]
+		public InputConceptIdentifiers ConceptIdentifier { get { return m_ConceptIdentifier; } set { if (OnPropertyChanging("InputActionsData." + nameof(ConceptIdentifier), this, m_ConceptIdentifier, value)) m_ConceptIdentifier = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public InputConceptIdentifiers CopyKeyBindingFrom { get; set; } = new InputConceptIdentifiers(); // 0x10 (16)
+		protected InputConceptIdentifiers m_CopyKeyBindingFrom = new InputConceptIdentifiers();
+		[ContainerField(16), ContainerFieldNameHash(1909891296)]
+		public InputConceptIdentifiers CopyKeyBindingFrom { get { return m_CopyKeyBindingFrom; } set { if (OnPropertyChanging("InputActionsData." + nameof(CopyKeyBindingFrom), this, m_CopyKeyBindingFrom, value)) m_CopyKeyBindingFrom = value; } } // 0x10 (16)
 		
-		[ContainerField(20)]
-		public RefArray<InputActionData> InputActions { get; set; } = new RefArray<InputActionData>(); // 0x14 (20)
+		protected RefArray<InputActionData> m_InputActions = new RefArray<InputActionData>();
+		[ContainerField(20), ContainerFieldNameHash(3504680894)]
+		public RefArray<InputActionData> InputActions { get { return m_InputActions; } set { if (OnPropertyChanging("InputActionsData." + nameof(InputActions), this, m_InputActions, value)) m_InputActions = value; } } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable]
-		public bool HideInKeyBindings { get; set; } // 0x18 (24)
+		protected bool m_HideInKeyBindings = new bool();
+		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(3898345319)]
+		public bool HideInKeyBindings { get { return m_HideInKeyBindings; } set { if (OnPropertyChanging("InputActionsData." + nameof(HideInKeyBindings), this, m_HideInKeyBindings, value)) m_HideInKeyBindings = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

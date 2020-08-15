@@ -5,37 +5,54 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class WaveSwitcherNodeData : 
 		AudioGraphNodeData
 	{
-		[ContainerField(8)]
-		public AudioGraphNodePort Index { get; set; } = new AudioGraphNodePort(); // 0x8 (8)
+		protected AudioGraphNodePort m_Index = new AudioGraphNodePort();
+		[ContainerField(8), ContainerFieldNameHash(214509467)]
+		public AudioGraphNodePort Index { get { return m_Index; } set { if (OnPropertyChanging("WaveSwitcherNodeData." + nameof(Index), this, m_Index, value)) m_Index = value; } } // 0x8 (8)
 		
-		[ContainerField(16)]
-		public AudioGraphNodePort Advance { get; set; } = new AudioGraphNodePort(); // 0x10 (16)
+		protected AudioGraphNodePort m_Advance = new AudioGraphNodePort();
+		[ContainerField(16), ContainerFieldNameHash(343579199)]
+		public AudioGraphNodePort Advance { get { return m_Advance; } set { if (OnPropertyChanging("WaveSwitcherNodeData." + nameof(Advance), this, m_Advance, value)) m_Advance = value; } } // 0x10 (16)
 		
-		[ContainerField(24)]
-		public AudioGraphNodePort Wave { get; set; } = new AudioGraphNodePort(); // 0x18 (24)
+		protected AudioGraphNodePort m_Wave = new AudioGraphNodePort();
+		[ContainerField(24), ContainerFieldNameHash(2089277184)]
+		public AudioGraphNodePort Wave { get { return m_Wave; } set { if (OnPropertyChanging("WaveSwitcherNodeData." + nameof(Wave), this, m_Wave, value)) m_Wave = value; } } // 0x18 (24)
 		
-		[ContainerField(32)]
-		public AudioGraphNodePort IndexChanged { get; set; } = new AudioGraphNodePort(); // 0x20 (32)
+		protected AudioGraphNodePort m_IndexChanged = new AudioGraphNodePort();
+		[ContainerField(32), ContainerFieldNameHash(3560418393)]
+		public AudioGraphNodePort IndexChanged { get { return m_IndexChanged; } set { if (OnPropertyChanging("WaveSwitcherNodeData." + nameof(IndexChanged), this, m_IndexChanged, value)) m_IndexChanged = value; } } // 0x20 (32)
 		
-		[ContainerField(40)]
-		public RefArray<SoundWaveAsset> Waves { get; set; } = new RefArray<SoundWaveAsset>(); // 0x28 (40)
+		protected RefArray<SoundWaveAsset> m_Waves = new RefArray<SoundWaveAsset>();
+		[ContainerField(40), ContainerFieldNameHash(226670451)]
+		public RefArray<SoundWaveAsset> Waves { get { return m_Waves; } set { if (OnPropertyChanging("WaveSwitcherNodeData." + nameof(Waves), this, m_Waves, value)) m_Waves = value; } } // 0x28 (40)
 		
-		[ContainerField(44), LayoutImmutable, Blittable]
-		public float DefaultIndex { get; set; } // 0x2C (44)
+		protected float m_DefaultIndex = new float();
+		[ContainerField(44), LayoutImmutable, Blittable, ContainerFieldNameHash(2048165968)]
+		public float DefaultIndex { get { return m_DefaultIndex; } set { if (OnPropertyChanging("WaveSwitcherNodeData." + nameof(DefaultIndex), this, m_DefaultIndex, value)) m_DefaultIndex = value; } } // 0x2C (44)
 		
-		[ContainerField(48), LayoutImmutable, Blittable]
-		public bool IsRandom { get; set; } // 0x30 (48)
+		protected bool m_IsRandom = new bool();
+		[ContainerField(48), LayoutImmutable, Blittable, ContainerFieldNameHash(421699588)]
+		public bool IsRandom { get { return m_IsRandom; } set { if (OnPropertyChanging("WaveSwitcherNodeData." + nameof(IsRandom), this, m_IsRandom, value)) m_IsRandom = value; } } // 0x30 (48)
 		
-		[ContainerField(49), LayoutImmutable, Blittable]
-		public bool RandomStartIndex { get; set; } // 0x31 (49)
+		protected bool m_RandomStartIndex = new bool();
+		[ContainerField(49), LayoutImmutable, Blittable, ContainerFieldNameHash(3711152288)]
+		public bool RandomStartIndex { get { return m_RandomStartIndex; } set { if (OnPropertyChanging("WaveSwitcherNodeData." + nameof(RandomStartIndex), this, m_RandomStartIndex, value)) m_RandomStartIndex = value; } } // 0x31 (49)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

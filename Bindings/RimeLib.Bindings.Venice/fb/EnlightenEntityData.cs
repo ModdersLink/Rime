@@ -5,23 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class EnlightenEntityData : 
 		EntityData
 	{
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public int Priority { get; set; } // 0xC (12)
+		protected int m_Priority = new int();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(3062102871)]
+		public int Priority { get { return m_Priority; } set { if (OnPropertyChanging("EnlightenEntityData." + nameof(Priority), this, m_Priority, value)) m_Priority = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public Realm Realm { get; set; } = new Realm(); // 0x10 (16)
+		protected Realm m_Realm = new Realm();
+		[ContainerField(16), ContainerFieldNameHash(229961746)]
+		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("EnlightenEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
-		public bool Enable { get; set; } // 0x14 (20)
+		protected bool m_Enable = new bool();
+		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(2342790116)]
+		public bool Enable { get { return m_Enable; } set { if (OnPropertyChanging("EnlightenEntityData." + nameof(Enable), this, m_Enable, value)) m_Enable = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

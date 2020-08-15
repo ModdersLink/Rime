@@ -5,25 +5,38 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class RigidBodyHingeConstraintData : 
 		RigidBodyConstraintData
 	{
-		[ContainerField(96), LayoutImmutable, Blittable]
-		public float MinAngle { get; set; } // 0x60 (96)
+		protected float m_MinAngle = new float();
+		[ContainerField(96), LayoutImmutable, Blittable, ContainerFieldNameHash(3356124462)]
+		public float MinAngle { get { return m_MinAngle; } set { if (OnPropertyChanging("RigidBodyHingeConstraintData." + nameof(MinAngle), this, m_MinAngle, value)) m_MinAngle = value; } } // 0x60 (96)
 		
-		[ContainerField(100), LayoutImmutable, Blittable]
-		public float AngularFriction { get; set; } // 0x64 (100)
+		protected float m_AngularFriction = new float();
+		[ContainerField(100), LayoutImmutable, Blittable, ContainerFieldNameHash(1552731461)]
+		public float AngularFriction { get { return m_AngularFriction; } set { if (OnPropertyChanging("RigidBodyHingeConstraintData." + nameof(AngularFriction), this, m_AngularFriction, value)) m_AngularFriction = value; } } // 0x64 (100)
 		
-		[ContainerField(104), LayoutImmutable, Blittable]
-		public float MaxAngle { get; set; } // 0x68 (104)
+		protected float m_MaxAngle = new float();
+		[ContainerField(104), LayoutImmutable, Blittable, ContainerFieldNameHash(417488496)]
+		public float MaxAngle { get { return m_MaxAngle; } set { if (OnPropertyChanging("RigidBodyHingeConstraintData." + nameof(MaxAngle), this, m_MaxAngle, value)) m_MaxAngle = value; } } // 0x68 (104)
 		
-		[ContainerField(108), LayoutImmutable, Blittable]
-		public bool HasLimits { get; set; } // 0x6C (108)
+		protected bool m_HasLimits = new bool();
+		[ContainerField(108), LayoutImmutable, Blittable, ContainerFieldNameHash(2421583705)]
+		public bool HasLimits { get { return m_HasLimits; } set { if (OnPropertyChanging("RigidBodyHingeConstraintData." + nameof(HasLimits), this, m_HasLimits, value)) m_HasLimits = value; } } // 0x6C (108)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

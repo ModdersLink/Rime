@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class ScenarioWaypointData : 
 		AbstractLocoWaypointData
 	{
-		[ContainerField(48)]
-		public AntRef ScenarioAntRef { get; set; } = new AntRef(); // 0x30 (48)
+		protected AntRef m_ScenarioAntRef = new AntRef();
+		[ContainerField(48), ContainerFieldNameHash(3249359201)]
+		public AntRef ScenarioAntRef { get { return m_ScenarioAntRef; } set { if (OnPropertyChanging("ScenarioWaypointData." + nameof(ScenarioAntRef), this, m_ScenarioAntRef, value)) m_ScenarioAntRef = value; } } // 0x30 (48)
 		
-		[ContainerField(64)]
-		public ScenarioTaskData ScenarioTask { get; set; } = new ScenarioTaskData(); // 0x40 (64)
+		protected ScenarioTaskData m_ScenarioTask = new ScenarioTaskData();
+		[ContainerField(64), ContainerFieldNameHash(764854566)]
+		public ScenarioTaskData ScenarioTask { get { return m_ScenarioTask; } set { if (OnPropertyChanging("ScenarioWaypointData." + nameof(ScenarioTask), this, m_ScenarioTask, value)) m_ScenarioTask = value; } } // 0x40 (64)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

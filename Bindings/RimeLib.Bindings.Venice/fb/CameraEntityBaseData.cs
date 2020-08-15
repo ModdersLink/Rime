@@ -5,22 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class CameraEntityBaseData : 
 		SpatialEntityData
 	{
-		[ContainerField(80), LayoutImmutable]
-		public string NameId { get; set; } // 0x50 (80)
+		protected string m_NameId = new string();
+		[ContainerField(80), LayoutImmutable, ContainerFieldNameHash(2828728719)]
+		public string NameId { get { return m_NameId; } set { if (OnPropertyChanging("CameraEntityBaseData." + nameof(NameId), this, m_NameId, value)) m_NameId = value; } } // 0x50 (80)
 		
-		[ContainerField(84), LayoutImmutable, Blittable]
-		public int Priority { get; set; } // 0x54 (84)
+		protected int m_Priority = new int();
+		[ContainerField(84), LayoutImmutable, Blittable, ContainerFieldNameHash(3062102871)]
+		public int Priority { get { return m_Priority; } set { if (OnPropertyChanging("CameraEntityBaseData." + nameof(Priority), this, m_Priority, value)) m_Priority = value; } } // 0x54 (84)
 		
-		[ContainerField(88), LayoutImmutable, Blittable]
-		public bool Enabled { get; set; } // 0x58 (88)
+		protected bool m_Enabled = new bool();
+		[ContainerField(88), LayoutImmutable, Blittable, ContainerFieldNameHash(2662400)]
+		public bool Enabled { get { return m_Enabled; } set { if (OnPropertyChanging("CameraEntityBaseData." + nameof(Enabled), this, m_Enabled, value)) m_Enabled = value; } } // 0x58 (88)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

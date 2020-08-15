@@ -5,28 +5,42 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class MotionDampingData : 
 		DataContainer
 	{
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 LinearModifier { get; set; } = new Vec3(); // 0x10 (16)
+		protected Vec3 m_LinearModifier = new Vec3();
+		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(2104370415)]
+		public Vec3 LinearModifier { get { return m_LinearModifier; } set { if (OnPropertyChanging("MotionDampingData." + nameof(LinearModifier), this, m_LinearModifier, value)) m_LinearModifier = value; } } // 0x10 (16)
 		
-		[ContainerField(32), LayoutImmutable, Blittable]
-		public float Pitch { get; set; } // 0x20 (32)
+		protected float m_Pitch = new float();
+		[ContainerField(32), LayoutImmutable, Blittable, ContainerFieldNameHash(232604323)]
+		public float Pitch { get { return m_Pitch; } set { if (OnPropertyChanging("MotionDampingData." + nameof(Pitch), this, m_Pitch, value)) m_Pitch = value; } } // 0x20 (32)
 		
-		[ContainerField(36), LayoutImmutable, Blittable]
-		public float Yaw { get; set; } // 0x24 (36)
+		protected float m_Yaw = new float();
+		[ContainerField(36), LayoutImmutable, Blittable, ContainerFieldNameHash(193468618)]
+		public float Yaw { get { return m_Yaw; } set { if (OnPropertyChanging("MotionDampingData." + nameof(Yaw), this, m_Yaw, value)) m_Yaw = value; } } // 0x24 (36)
 		
-		[ContainerField(40), LayoutImmutable, Blittable]
-		public float Roll { get; set; } // 0x28 (40)
+		protected float m_Roll = new float();
+		[ContainerField(40), LayoutImmutable, Blittable, ContainerFieldNameHash(2089387576)]
+		public float Roll { get { return m_Roll; } set { if (OnPropertyChanging("MotionDampingData." + nameof(Roll), this, m_Roll, value)) m_Roll = value; } } // 0x28 (40)
 		
-		[ContainerField(44), LayoutImmutable, Blittable]
-		public float Linear { get; set; } // 0x2C (44)
+		protected float m_Linear = new float();
+		[ContainerField(44), LayoutImmutable, Blittable, ContainerFieldNameHash(2893456344)]
+		public float Linear { get { return m_Linear; } set { if (OnPropertyChanging("MotionDampingData." + nameof(Linear), this, m_Linear, value)) m_Linear = value; } } // 0x2C (44)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

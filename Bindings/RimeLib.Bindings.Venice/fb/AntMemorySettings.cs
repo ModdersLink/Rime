@@ -5,37 +5,54 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class AntMemorySettings : 
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable, Blittable]
-		public int RTPoolLayersControllers { get; set; } // 0x8 (8)
+		protected int m_RTPoolLayersControllers = new int();
+		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(2134937184)]
+		public int RTPoolLayersControllers { get { return m_RTPoolLayersControllers; } set { if (OnPropertyChanging("AntMemorySettings." + nameof(RTPoolLayersControllers), this, m_RTPoolLayersControllers, value)) m_RTPoolLayersControllers = value; } } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public int RTPoolStateflowControllers { get; set; } // 0xC (12)
+		protected int m_RTPoolStateflowControllers = new int();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(399895253)]
+		public int RTPoolStateflowControllers { get { return m_RTPoolStateflowControllers; } set { if (OnPropertyChanging("AntMemorySettings." + nameof(RTPoolStateflowControllers), this, m_RTPoolStateflowControllers, value)) m_RTPoolStateflowControllers = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public int RTPoolStateflowNodeControllers { get; set; } // 0x10 (16)
+		protected int m_RTPoolStateflowNodeControllers = new int();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(3245671861)]
+		public int RTPoolStateflowNodeControllers { get { return m_RTPoolStateflowNodeControllers; } set { if (OnPropertyChanging("AntMemorySettings." + nameof(RTPoolStateflowNodeControllers), this, m_RTPoolStateflowNodeControllers, value)) m_RTPoolStateflowNodeControllers = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
-		public int RTPoolTransitionControllers { get; set; } // 0x14 (20)
+		protected int m_RTPoolTransitionControllers = new int();
+		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(509962655)]
+		public int RTPoolTransitionControllers { get { return m_RTPoolTransitionControllers; } set { if (OnPropertyChanging("AntMemorySettings." + nameof(RTPoolTransitionControllers), this, m_RTPoolTransitionControllers, value)) m_RTPoolTransitionControllers = value; } } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable]
-		public int RTPoolClipControllers { get; set; } // 0x18 (24)
+		protected int m_RTPoolClipControllers = new int();
+		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(2397424326)]
+		public int RTPoolClipControllers { get { return m_RTPoolClipControllers; } set { if (OnPropertyChanging("AntMemorySettings." + nameof(RTPoolClipControllers), this, m_RTPoolClipControllers, value)) m_RTPoolClipControllers = value; } } // 0x18 (24)
 		
-		[ContainerField(28), LayoutImmutable, Blittable]
-		public int RTPoolChooserControllers { get; set; } // 0x1C (28)
+		protected int m_RTPoolChooserControllers = new int();
+		[ContainerField(28), LayoutImmutable, Blittable, ContainerFieldNameHash(2848570943)]
+		public int RTPoolChooserControllers { get { return m_RTPoolChooserControllers; } set { if (OnPropertyChanging("AntMemorySettings." + nameof(RTPoolChooserControllers), this, m_RTPoolChooserControllers, value)) m_RTPoolChooserControllers = value; } } // 0x1C (28)
 		
-		[ContainerField(32), LayoutImmutable, Blittable]
-		public int RTPoolLoopingControllers { get; set; } // 0x20 (32)
+		protected int m_RTPoolLoopingControllers = new int();
+		[ContainerField(32), LayoutImmutable, Blittable, ContainerFieldNameHash(392141612)]
+		public int RTPoolLoopingControllers { get { return m_RTPoolLoopingControllers; } set { if (OnPropertyChanging("AntMemorySettings." + nameof(RTPoolLoopingControllers), this, m_RTPoolLoopingControllers, value)) m_RTPoolLoopingControllers = value; } } // 0x20 (32)
 		
-		[ContainerField(36), LayoutImmutable, Blittable]
-		public int RTPoolTransparentControllers { get; set; } // 0x24 (36)
+		protected int m_RTPoolTransparentControllers = new int();
+		[ContainerField(36), LayoutImmutable, Blittable, ContainerFieldNameHash(3696829270)]
+		public int RTPoolTransparentControllers { get { return m_RTPoolTransparentControllers; } set { if (OnPropertyChanging("AntMemorySettings." + nameof(RTPoolTransparentControllers), this, m_RTPoolTransparentControllers, value)) m_RTPoolTransparentControllers = value; } } // 0x24 (36)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

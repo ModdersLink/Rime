@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class UnlockableColorCollection : 
 		DataContainer
 	{
-		[ContainerField(8)]
-		public CtrRef<ColorReference> DefaultValue { get; set; } = new CtrRef<ColorReference>(); // 0x8 (8)
+		protected CtrRef<ColorReference> m_DefaultValue = new CtrRef<ColorReference>();
+		[ContainerField(8), ContainerFieldNameHash(2066049125)]
+		public CtrRef<ColorReference> DefaultValue { get { return m_DefaultValue; } set { if (OnPropertyChanging("UnlockableColorCollection." + nameof(DefaultValue), this, m_DefaultValue, value)) m_DefaultValue = value; } } // 0x8 (8)
 		
-		[ContainerField(12)]
-		public RefArray<ColorUnlockPartData> PossibleValues { get; set; } = new RefArray<ColorUnlockPartData>(); // 0xC (12)
+		protected RefArray<ColorUnlockPartData> m_PossibleValues = new RefArray<ColorUnlockPartData>();
+		[ContainerField(12), ContainerFieldNameHash(349877344)]
+		public RefArray<ColorUnlockPartData> PossibleValues { get { return m_PossibleValues; } set { if (OnPropertyChanging("UnlockableColorCollection." + nameof(PossibleValues), this, m_PossibleValues, value)) m_PossibleValues = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

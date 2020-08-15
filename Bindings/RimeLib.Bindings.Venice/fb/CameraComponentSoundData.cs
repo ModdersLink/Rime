@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class CameraComponentSoundData : 
 		DataContainer
 	{
-		[ContainerField(8)]
-		public CtrRef<SoundAsset> SwitchToAlternateViewSound { get; set; } = new CtrRef<SoundAsset>(); // 0x8 (8)
+		protected CtrRef<SoundAsset> m_SwitchToAlternateViewSound = new CtrRef<SoundAsset>();
+		[ContainerField(8), ContainerFieldNameHash(1181169106)]
+		public CtrRef<SoundAsset> SwitchToAlternateViewSound { get { return m_SwitchToAlternateViewSound; } set { if (OnPropertyChanging("CameraComponentSoundData." + nameof(SwitchToAlternateViewSound), this, m_SwitchToAlternateViewSound, value)) m_SwitchToAlternateViewSound = value; } } // 0x8 (8)
 		
-		[ContainerField(12)]
-		public CtrRef<SoundAsset> SwitchToNormalViewSound { get; set; } = new CtrRef<SoundAsset>(); // 0xC (12)
+		protected CtrRef<SoundAsset> m_SwitchToNormalViewSound = new CtrRef<SoundAsset>();
+		[ContainerField(12), ContainerFieldNameHash(3067038865)]
+		public CtrRef<SoundAsset> SwitchToNormalViewSound { get { return m_SwitchToNormalViewSound; } set { if (OnPropertyChanging("CameraComponentSoundData." + nameof(SwitchToNormalViewSound), this, m_SwitchToNormalViewSound, value)) m_SwitchToNormalViewSound = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

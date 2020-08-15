@@ -5,17 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class StatSpamSettings : 
 		Asset
 	{
-		[ContainerField(12)]
-		public List<StatSpamSetting> SpamList { get; set; } = new List<StatSpamSetting>(); // 0xC (12)
+		protected List<StatSpamSetting> m_SpamList = new List<StatSpamSetting>();
+		[ContainerField(12), ContainerFieldNameHash(3963373928)]
+		public List<StatSpamSetting> SpamList { get { return m_SpamList; } set { if (OnPropertyChanging("StatSpamSettings." + nameof(SpamList), this, m_SpamList, value)) m_SpamList = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

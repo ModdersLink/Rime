@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class RandomWalkOrderEntityData : 
 		BFOrderEntityData
 	{
-		[ContainerField(40), LayoutImmutable, Blittable]
-		public bool CombatForbidden { get; set; } // 0x28 (40)
+		protected bool m_CombatForbidden = new bool();
+		[ContainerField(40), LayoutImmutable, Blittable, ContainerFieldNameHash(2646993448)]
+		public bool CombatForbidden { get { return m_CombatForbidden; } set { if (OnPropertyChanging("RandomWalkOrderEntityData." + nameof(CombatForbidden), this, m_CombatForbidden, value)) m_CombatForbidden = value; } } // 0x28 (40)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,26 +5,38 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class PrintDebugTextEntityData : 
 		EntityData
 	{
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 TextColor { get; set; } = new Vec3(); // 0x10 (16)
+		protected Vec3 m_TextColor = new Vec3();
+		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(2527550245)]
+		public Vec3 TextColor { get { return m_TextColor; } set { if (OnPropertyChanging("PrintDebugTextEntityData." + nameof(TextColor), this, m_TextColor, value)) m_TextColor = value; } } // 0x10 (16)
 		
-		[ContainerField(32)]
-		public Realm Realm { get; set; } = new Realm(); // 0x20 (32)
+		protected Realm m_Realm = new Realm();
+		[ContainerField(32), ContainerFieldNameHash(229961746)]
+		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("PrintDebugTextEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0x20 (32)
 		
-		[ContainerField(36), LayoutImmutable]
-		public string Text { get; set; } // 0x24 (36)
+		protected string m_Text = new string();
+		[ContainerField(36), LayoutImmutable, ContainerFieldNameHash(2089309304)]
+		public string Text { get { return m_Text; } set { if (OnPropertyChanging("PrintDebugTextEntityData." + nameof(Text), this, m_Text, value)) m_Text = value; } } // 0x24 (36)
 		
-		[ContainerField(40), LayoutImmutable, Blittable]
-		public bool Enabled { get; set; } // 0x28 (40)
+		protected bool m_Enabled = new bool();
+		[ContainerField(40), LayoutImmutable, Blittable, ContainerFieldNameHash(2662400)]
+		public bool Enabled { get { return m_Enabled; } set { if (OnPropertyChanging("PrintDebugTextEntityData." + nameof(Enabled), this, m_Enabled, value)) m_Enabled = value; } } // 0x28 (40)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,20 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class UIEventAsset : 
 		Asset
 	{
-		[ContainerField(12), LayoutImmutable]
-		public string Category { get; set; } // 0xC (12)
+		protected string m_Category = new string();
+		[ContainerField(12), LayoutImmutable, ContainerFieldNameHash(3455858997)]
+		public string Category { get { return m_Category; } set { if (OnPropertyChanging("UIEventAsset." + nameof(Category), this, m_Category, value)) m_Category = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public List<string> EventList { get; set; } = new List<string>(); // 0x10 (16)
+		protected List<string> m_EventList = new List<string>();
+		[ContainerField(16), ContainerFieldNameHash(4132327979)]
+		public List<string> EventList { get { return m_EventList; } set { if (OnPropertyChanging("UIEventAsset." + nameof(EventList), this, m_EventList, value)) m_EventList = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

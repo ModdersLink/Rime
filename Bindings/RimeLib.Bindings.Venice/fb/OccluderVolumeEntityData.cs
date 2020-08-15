@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class OccluderVolumeEntityData : 
 		SpatialEntityData
 	{
-		[ContainerField(80), LayoutImmutable, Blittable]
-		public bool OccluderHighPriority { get; set; } // 0x50 (80)
+		protected bool m_OccluderHighPriority = new bool();
+		[ContainerField(80), LayoutImmutable, Blittable, ContainerFieldNameHash(1133933052)]
+		public bool OccluderHighPriority { get { return m_OccluderHighPriority; } set { if (OnPropertyChanging("OccluderVolumeEntityData." + nameof(OccluderHighPriority), this, m_OccluderHighPriority, value)) m_OccluderHighPriority = value; } } // 0x50 (80)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

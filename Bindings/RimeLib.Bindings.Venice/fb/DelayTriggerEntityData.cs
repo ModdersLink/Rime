@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class DelayTriggerEntityData : 
 		TriggerEventEntityData
 	{
-		[ContainerField(112), LayoutImmutable, Blittable]
-		public bool AutoTriggerEvent { get; set; } // 0x70 (112)
+		protected bool m_AutoTriggerEvent = new bool();
+		[ContainerField(112), LayoutImmutable, Blittable, ContainerFieldNameHash(2983396190)]
+		public bool AutoTriggerEvent { get { return m_AutoTriggerEvent; } set { if (OnPropertyChanging("DelayTriggerEntityData." + nameof(AutoTriggerEvent), this, m_AutoTriggerEvent, value)) m_AutoTriggerEvent = value; } } // 0x70 (112)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

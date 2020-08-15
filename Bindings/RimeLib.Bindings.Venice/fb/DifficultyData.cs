@@ -5,80 +5,110 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class DifficultyData : 
 		DataContainer
 	{
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 StickyBoxModifier { get; set; } = new Vec3(); // 0x10 (16)
+		protected Vec3 m_StickyBoxModifier = new Vec3();
+		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(1564331544)]
+		public Vec3 StickyBoxModifier { get { return m_StickyBoxModifier; } set { if (OnPropertyChanging("DifficultyData." + nameof(StickyBoxModifier), this, m_StickyBoxModifier, value)) m_StickyBoxModifier = value; } } // 0x10 (16)
 		
-		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 SnapBoxModifier { get; set; } = new Vec3(); // 0x20 (32)
+		protected Vec3 m_SnapBoxModifier = new Vec3();
+		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(723092811)]
+		public Vec3 SnapBoxModifier { get { return m_SnapBoxModifier; } set { if (OnPropertyChanging("DifficultyData." + nameof(SnapBoxModifier), this, m_SnapBoxModifier, value)) m_SnapBoxModifier = value; } } // 0x20 (32)
 		
-		[ContainerField(48), LayoutImmutable, Blittable]
-		public float HumanHealthModifier { get; set; } // 0x30 (48)
+		protected float m_HumanHealthModifier = new float();
+		[ContainerField(48), LayoutImmutable, Blittable, ContainerFieldNameHash(306426001)]
+		public float HumanHealthModifier { get { return m_HumanHealthModifier; } set { if (OnPropertyChanging("DifficultyData." + nameof(HumanHealthModifier), this, m_HumanHealthModifier, value)) m_HumanHealthModifier = value; } } // 0x30 (48)
 		
-		[ContainerField(52)]
-		public PersistenceGameType GameType { get; set; } = new PersistenceGameType(); // 0x34 (52)
+		protected PersistenceGameType m_GameType = new PersistenceGameType();
+		[ContainerField(52), ContainerFieldNameHash(510356627)]
+		public PersistenceGameType GameType { get { return m_GameType; } set { if (OnPropertyChanging("DifficultyData." + nameof(GameType), this, m_GameType, value)) m_GameType = value; } } // 0x34 (52)
 		
-		[ContainerField(56), LayoutImmutable, Blittable]
-		public float FriendsHealthModifier { get; set; } // 0x38 (56)
+		protected float m_FriendsHealthModifier = new float();
+		[ContainerField(56), LayoutImmutable, Blittable, ContainerFieldNameHash(1859236591)]
+		public float FriendsHealthModifier { get { return m_FriendsHealthModifier; } set { if (OnPropertyChanging("DifficultyData." + nameof(FriendsHealthModifier), this, m_FriendsHealthModifier, value)) m_FriendsHealthModifier = value; } } // 0x38 (56)
 		
-		[ContainerField(60), LayoutImmutable, Blittable]
-		public float FriendlyDamageModifier { get; set; } // 0x3C (60)
+		protected float m_FriendlyDamageModifier = new float();
+		[ContainerField(60), LayoutImmutable, Blittable, ContainerFieldNameHash(1576644830)]
+		public float FriendlyDamageModifier { get { return m_FriendlyDamageModifier; } set { if (OnPropertyChanging("DifficultyData." + nameof(FriendlyDamageModifier), this, m_FriendlyDamageModifier, value)) m_FriendlyDamageModifier = value; } } // 0x3C (60)
 		
-		[ContainerField(64), LayoutImmutable, Blittable]
-		public float VehicleDamageModifier { get; set; } // 0x40 (64)
+		protected float m_VehicleDamageModifier = new float();
+		[ContainerField(64), LayoutImmutable, Blittable, ContainerFieldNameHash(3810411169)]
+		public float VehicleDamageModifier { get { return m_VehicleDamageModifier; } set { if (OnPropertyChanging("DifficultyData." + nameof(VehicleDamageModifier), this, m_VehicleDamageModifier, value)) m_VehicleDamageModifier = value; } } // 0x40 (64)
 		
-		[ContainerField(68), LayoutImmutable, Blittable]
-		public float HumanInCriticalHealth { get; set; } // 0x44 (68)
+		protected float m_HumanInCriticalHealth = new float();
+		[ContainerField(68), LayoutImmutable, Blittable, ContainerFieldNameHash(1275764554)]
+		public float HumanInCriticalHealth { get { return m_HumanInCriticalHealth; } set { if (OnPropertyChanging("DifficultyData." + nameof(HumanInCriticalHealth), this, m_HumanInCriticalHealth, value)) m_HumanInCriticalHealth = value; } } // 0x44 (68)
 		
-		[ContainerField(72), LayoutImmutable, Blittable]
-		public float EnemiesHealthModifier { get; set; } // 0x48 (72)
+		protected float m_EnemiesHealthModifier = new float();
+		[ContainerField(72), LayoutImmutable, Blittable, ContainerFieldNameHash(2553763986)]
+		public float EnemiesHealthModifier { get { return m_EnemiesHealthModifier; } set { if (OnPropertyChanging("DifficultyData." + nameof(EnemiesHealthModifier), this, m_EnemiesHealthModifier, value)) m_EnemiesHealthModifier = value; } } // 0x48 (72)
 		
-		[ContainerField(76), LayoutImmutable, Blittable]
-		public float HumanRegenerationRateModifier { get; set; } // 0x4C (76)
+		protected float m_HumanRegenerationRateModifier = new float();
+		[ContainerField(76), LayoutImmutable, Blittable, ContainerFieldNameHash(1058415390)]
+		public float HumanRegenerationRateModifier { get { return m_HumanRegenerationRateModifier; } set { if (OnPropertyChanging("DifficultyData." + nameof(HumanRegenerationRateModifier), this, m_HumanRegenerationRateModifier, value)) m_HumanRegenerationRateModifier = value; } } // 0x4C (76)
 		
-		[ContainerField(80), LayoutImmutable, Blittable]
-		public float HumanInCriticalHealthDamageModifier { get; set; } // 0x50 (80)
+		protected float m_HumanInCriticalHealthDamageModifier = new float();
+		[ContainerField(80), LayoutImmutable, Blittable, ContainerFieldNameHash(2030418966)]
+		public float HumanInCriticalHealthDamageModifier { get { return m_HumanInCriticalHealthDamageModifier; } set { if (OnPropertyChanging("DifficultyData." + nameof(HumanInCriticalHealthDamageModifier), this, m_HumanInCriticalHealthDamageModifier, value)) m_HumanInCriticalHealthDamageModifier = value; } } // 0x50 (80)
 		
-		[ContainerField(84), LayoutImmutable, Blittable]
-		public float InteractiveManDownDamageModifier { get; set; } // 0x54 (84)
+		protected float m_InteractiveManDownDamageModifier = new float();
+		[ContainerField(84), LayoutImmutable, Blittable, ContainerFieldNameHash(1661744161)]
+		public float InteractiveManDownDamageModifier { get { return m_InteractiveManDownDamageModifier; } set { if (OnPropertyChanging("DifficultyData." + nameof(InteractiveManDownDamageModifier), this, m_InteractiveManDownDamageModifier, value)) m_InteractiveManDownDamageModifier = value; } } // 0x54 (84)
 		
-		[ContainerField(88), LayoutImmutable, Blittable]
-		public float InteractiveManDownTimeMultiplier { get; set; } // 0x58 (88)
+		protected float m_InteractiveManDownTimeMultiplier = new float();
+		[ContainerField(88), LayoutImmutable, Blittable, ContainerFieldNameHash(849153507)]
+		public float InteractiveManDownTimeMultiplier { get { return m_InteractiveManDownTimeMultiplier; } set { if (OnPropertyChanging("DifficultyData." + nameof(InteractiveManDownTimeMultiplier), this, m_InteractiveManDownTimeMultiplier, value)) m_InteractiveManDownTimeMultiplier = value; } } // 0x58 (88)
 		
-		[ContainerField(92), LayoutImmutable, Blittable]
-		public float InteractiveManDownReviveTime { get; set; } // 0x5C (92)
+		protected float m_InteractiveManDownReviveTime = new float();
+		[ContainerField(92), LayoutImmutable, Blittable, ContainerFieldNameHash(2327289747)]
+		public float InteractiveManDownReviveTime { get { return m_InteractiveManDownReviveTime; } set { if (OnPropertyChanging("DifficultyData." + nameof(InteractiveManDownReviveTime), this, m_InteractiveManDownReviveTime, value)) m_InteractiveManDownReviveTime = value; } } // 0x5C (92)
 		
-		[ContainerField(96), LayoutImmutable, Blittable]
-		public int AdrenalineKillLimit { get; set; } // 0x60 (96)
+		protected int m_AdrenalineKillLimit = new int();
+		[ContainerField(96), LayoutImmutable, Blittable, ContainerFieldNameHash(2568704897)]
+		public int AdrenalineKillLimit { get { return m_AdrenalineKillLimit; } set { if (OnPropertyChanging("DifficultyData." + nameof(AdrenalineKillLimit), this, m_AdrenalineKillLimit, value)) m_AdrenalineKillLimit = value; } } // 0x60 (96)
 		
-		[ContainerField(100), LayoutImmutable, Blittable]
-		public float CriticalHealthJesusModeTimeModifier { get; set; } // 0x64 (100)
+		protected float m_CriticalHealthJesusModeTimeModifier = new float();
+		[ContainerField(100), LayoutImmutable, Blittable, ContainerFieldNameHash(265284809)]
+		public float CriticalHealthJesusModeTimeModifier { get { return m_CriticalHealthJesusModeTimeModifier; } set { if (OnPropertyChanging("DifficultyData." + nameof(CriticalHealthJesusModeTimeModifier), this, m_CriticalHealthJesusModeTimeModifier, value)) m_CriticalHealthJesusModeTimeModifier = value; } } // 0x64 (100)
 		
-		[ContainerField(104)]
-		public Difficulty Difficulty { get; set; } = new Difficulty(); // 0x68 (104)
+		protected Difficulty m_Difficulty = new Difficulty();
+		[ContainerField(104), ContainerFieldNameHash(3179608694)]
+		public Difficulty Difficulty { get { return m_Difficulty; } set { if (OnPropertyChanging("DifficultyData." + nameof(Difficulty), this, m_Difficulty, value)) m_Difficulty = value; } } // 0x68 (104)
 		
-		[ContainerField(108), LayoutImmutable, Blittable]
-		public float CriticalFakeImmortalModifier { get; set; } // 0x6C (108)
+		protected float m_CriticalFakeImmortalModifier = new float();
+		[ContainerField(108), LayoutImmutable, Blittable, ContainerFieldNameHash(2802952093)]
+		public float CriticalFakeImmortalModifier { get { return m_CriticalFakeImmortalModifier; } set { if (OnPropertyChanging("DifficultyData." + nameof(CriticalFakeImmortalModifier), this, m_CriticalFakeImmortalModifier, value)) m_CriticalFakeImmortalModifier = value; } } // 0x6C (108)
 		
-		[ContainerField(112), LayoutImmutable, Blittable]
-		public float SuckZoomModifier { get; set; } // 0x70 (112)
+		protected float m_SuckZoomModifier = new float();
+		[ContainerField(112), LayoutImmutable, Blittable, ContainerFieldNameHash(4057650955)]
+		public float SuckZoomModifier { get { return m_SuckZoomModifier; } set { if (OnPropertyChanging("DifficultyData." + nameof(SuckZoomModifier), this, m_SuckZoomModifier, value)) m_SuckZoomModifier = value; } } // 0x70 (112)
 		
-		[ContainerField(116)]
-		public CtrRef<GameAIDifficultyData> AIData { get; set; } = new CtrRef<GameAIDifficultyData>(); // 0x74 (116)
+		protected CtrRef<GameAIDifficultyData> m_AIData = new CtrRef<GameAIDifficultyData>();
+		[ContainerField(116), ContainerFieldNameHash(2529950045)]
+		public CtrRef<GameAIDifficultyData> AIData { get { return m_AIData; } set { if (OnPropertyChanging("DifficultyData." + nameof(AIData), this, m_AIData, value)) m_AIData = value; } } // 0x74 (116)
 		
-		[ContainerField(120), LayoutImmutable, Blittable]
-		public float AiBulletDamageHumanCooldown { get; set; } // 0x78 (120)
+		protected float m_AiBulletDamageHumanCooldown = new float();
+		[ContainerField(120), LayoutImmutable, Blittable, ContainerFieldNameHash(3336443042)]
+		public float AiBulletDamageHumanCooldown { get { return m_AiBulletDamageHumanCooldown; } set { if (OnPropertyChanging("DifficultyData." + nameof(AiBulletDamageHumanCooldown), this, m_AiBulletDamageHumanCooldown, value)) m_AiBulletDamageHumanCooldown = value; } } // 0x78 (120)
 		
-		[ContainerField(124), LayoutImmutable, Blittable]
-		public bool UsePitchZoomSnap { get; set; } // 0x7C (124)
+		protected bool m_UsePitchZoomSnap = new bool();
+		[ContainerField(124), LayoutImmutable, Blittable, ContainerFieldNameHash(2073450427)]
+		public bool UsePitchZoomSnap { get { return m_UsePitchZoomSnap; } set { if (OnPropertyChanging("DifficultyData." + nameof(UsePitchZoomSnap), this, m_UsePitchZoomSnap, value)) m_UsePitchZoomSnap = value; } } // 0x7C (124)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

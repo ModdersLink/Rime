@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class EdgeModelComponentData : 
 		DestructionEdgeModelComponentData
 	{
-		[ContainerField(96)]
-		public RefArray<RigidMeshAsset> RigidMeshes { get; set; } = new RefArray<RigidMeshAsset>(); // 0x60 (96)
+		protected RefArray<RigidMeshAsset> m_RigidMeshes = new RefArray<RigidMeshAsset>();
+		[ContainerField(96), ContainerFieldNameHash(3208409265)]
+		public RefArray<RigidMeshAsset> RigidMeshes { get { return m_RigidMeshes; } set { if (OnPropertyChanging("EdgeModelComponentData." + nameof(RigidMeshes), this, m_RigidMeshes, value)) m_RigidMeshes = value; } } // 0x60 (96)
 		
-		[ContainerField(100), LayoutImmutable, Blittable]
-		public uint MaxInstanceCount { get; set; } // 0x64 (100)
+		protected uint m_MaxInstanceCount = new uint();
+		[ContainerField(100), LayoutImmutable, Blittable, ContainerFieldNameHash(3587631771)]
+		public uint MaxInstanceCount { get { return m_MaxInstanceCount; } set { if (OnPropertyChanging("EdgeModelComponentData." + nameof(MaxInstanceCount), this, m_MaxInstanceCount, value)) m_MaxInstanceCount = value; } } // 0x64 (100)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

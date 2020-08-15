@@ -5,23 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class FlagComponentData : 
 		ComponentData
 	{
-		[ContainerField(96)]
-		public Realm Realm { get; set; } = new Realm(); // 0x60 (96)
+		protected Realm m_Realm = new Realm();
+		[ContainerField(96), ContainerFieldNameHash(229961746)]
+		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("FlagComponentData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0x60 (96)
 		
-		[ContainerField(100)]
-		public CtrRef<ObjectBlueprint> Flag_Team1 { get; set; } = new CtrRef<ObjectBlueprint>(); // 0x64 (100)
+		protected CtrRef<ObjectBlueprint> m_Flag_Team1 = new CtrRef<ObjectBlueprint>();
+		[ContainerField(100), ContainerFieldNameHash(1681649722)]
+		public CtrRef<ObjectBlueprint> Flag_Team1 { get { return m_Flag_Team1; } set { if (OnPropertyChanging("FlagComponentData." + nameof(Flag_Team1), this, m_Flag_Team1, value)) m_Flag_Team1 = value; } } // 0x64 (100)
 		
-		[ContainerField(104)]
-		public CtrRef<ObjectBlueprint> Flag_Team2 { get; set; } = new CtrRef<ObjectBlueprint>(); // 0x68 (104)
+		protected CtrRef<ObjectBlueprint> m_Flag_Team2 = new CtrRef<ObjectBlueprint>();
+		[ContainerField(104), ContainerFieldNameHash(1681649721)]
+		public CtrRef<ObjectBlueprint> Flag_Team2 { get { return m_Flag_Team2; } set { if (OnPropertyChanging("FlagComponentData." + nameof(Flag_Team2), this, m_Flag_Team2, value)) m_Flag_Team2 = value; } } // 0x68 (104)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class RankParamsAsset : 
 		Asset
 	{
-		[ContainerField(12)]
-		public RefArray<RankLevelData> Ranks { get; set; } = new RefArray<RankLevelData>(); // 0xC (12)
+		protected RefArray<RankLevelData> m_Ranks = new RefArray<RankLevelData>();
+		[ContainerField(12), ContainerFieldNameHash(230112416)]
+		public RefArray<RankLevelData> Ranks { get { return m_Ranks; } set { if (OnPropertyChanging("RankParamsAsset." + nameof(Ranks), this, m_Ranks, value)) m_Ranks = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

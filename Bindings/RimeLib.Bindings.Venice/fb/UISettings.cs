@@ -5,35 +5,50 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class UISettings : 
 		SystemSettings
 	{
-		[ContainerField(12)]
-		public UISystemType System { get; set; } = new UISystemType(); // 0xC (12)
+		protected UISystemType m_System = new UISystemType();
+		[ContainerField(12), ContainerFieldNameHash(3333232768)]
+		public UISystemType System { get { return m_System; } set { if (OnPropertyChanging("UISettings." + nameof(System), this, m_System, value)) m_System = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public CtrRef<UIBundlesAsset> Bundles { get; set; } = new CtrRef<UIBundlesAsset>(); // 0x10 (16)
+		protected CtrRef<UIBundlesAsset> m_Bundles = new CtrRef<UIBundlesAsset>();
+		[ContainerField(16), ContainerFieldNameHash(2774764642)]
+		public CtrRef<UIBundlesAsset> Bundles { get { return m_Bundles; } set { if (OnPropertyChanging("UISettings." + nameof(Bundles), this, m_Bundles, value)) m_Bundles = value; } } // 0x10 (16)
 		
-		[ContainerField(20)]
-		public CtrRef<ProfileOptionsAsset> ProfileOptions { get; set; } = new CtrRef<ProfileOptionsAsset>(); // 0x14 (20)
+		protected CtrRef<ProfileOptionsAsset> m_ProfileOptions = new CtrRef<ProfileOptionsAsset>();
+		[ContainerField(20), ContainerFieldNameHash(1140566110)]
+		public CtrRef<ProfileOptionsAsset> ProfileOptions { get { return m_ProfileOptions; } set { if (OnPropertyChanging("UISettings." + nameof(ProfileOptions), this, m_ProfileOptions, value)) m_ProfileOptions = value; } } // 0x14 (20)
 		
-		[ContainerField(24)]
-		public LanguageFormat Language { get; set; } = new LanguageFormat(); // 0x18 (24)
+		protected LanguageFormat m_Language = new LanguageFormat();
+		[ContainerField(24), ContainerFieldNameHash(3872303031)]
+		public LanguageFormat Language { get { return m_Language; } set { if (OnPropertyChanging("UISettings." + nameof(Language), this, m_Language, value)) m_Language = value; } } // 0x18 (24)
 		
-		[ContainerField(28)]
-		public DataCopSettings DataCop { get; set; } = new DataCopSettings(); // 0x1C (28)
+		protected DataCopSettings m_DataCop = new DataCopSettings();
+		[ContainerField(28), ContainerFieldNameHash(3872848489)]
+		public DataCopSettings DataCop { get { return m_DataCop; } set { if (OnPropertyChanging("UISettings." + nameof(DataCop), this, m_DataCop, value)) m_DataCop = value; } } // 0x1C (28)
 		
-		[ContainerField(32), LayoutImmutable, Blittable]
-		public bool OneBundlePerGraph { get; set; } // 0x20 (32)
+		protected bool m_OneBundlePerGraph = new bool();
+		[ContainerField(32), LayoutImmutable, Blittable, ContainerFieldNameHash(1787189790)]
+		public bool OneBundlePerGraph { get { return m_OneBundlePerGraph; } set { if (OnPropertyChanging("UISettings." + nameof(OneBundlePerGraph), this, m_OneBundlePerGraph, value)) m_OneBundlePerGraph = value; } } // 0x20 (32)
 		
-		[ContainerField(33), LayoutImmutable, Blittable]
-		public bool DrawEnable { get; set; } // 0x21 (33)
+		protected bool m_DrawEnable = new bool();
+		[ContainerField(33), LayoutImmutable, Blittable, ContainerFieldNameHash(1347356004)]
+		public bool DrawEnable { get { return m_DrawEnable; } set { if (OnPropertyChanging("UISettings." + nameof(DrawEnable), this, m_DrawEnable, value)) m_DrawEnable = value; } } // 0x21 (33)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class ValueUnlockAsset : 
 		UnlockAssetBase
 	{
-		[ContainerField(40)]
-		public RefArray<UnlockValuePair> UnlockValues { get; set; } = new RefArray<UnlockValuePair>(); // 0x28 (40)
+		protected RefArray<UnlockValuePair> m_UnlockValues = new RefArray<UnlockValuePair>();
+		[ContainerField(40), ContainerFieldNameHash(2757489261)]
+		public RefArray<UnlockValuePair> UnlockValues { get { return m_UnlockValues; } set { if (OnPropertyChanging("ValueUnlockAsset." + nameof(UnlockValues), this, m_UnlockValues, value)) m_UnlockValues = value; } } // 0x28 (40)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

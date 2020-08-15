@@ -5,22 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class GeographicalData : 
 		DataContainer
 	{
-		[ContainerField(8)]
-		public UIGeoLatitude Latitude { get; set; } = new UIGeoLatitude(); // 0x8 (8)
+		protected UIGeoLatitude m_Latitude = new UIGeoLatitude();
+		[ContainerField(8), ContainerFieldNameHash(591028213)]
+		public UIGeoLatitude Latitude { get { return m_Latitude; } set { if (OnPropertyChanging("GeographicalData." + nameof(Latitude), this, m_Latitude, value)) m_Latitude = value; } } // 0x8 (8)
 		
-		[ContainerField(20)]
-		public UIGeoLongitude Longitude { get; set; } = new UIGeoLongitude(); // 0x14 (20)
+		protected UIGeoLongitude m_Longitude = new UIGeoLongitude();
+		[ContainerField(20), ContainerFieldNameHash(3158300774)]
+		public UIGeoLongitude Longitude { get { return m_Longitude; } set { if (OnPropertyChanging("GeographicalData." + nameof(Longitude), this, m_Longitude, value)) m_Longitude = value; } } // 0x14 (20)
 		
-		[ContainerField(32), LayoutImmutable, Blittable]
-		public float SeaLevelOffset { get; set; } // 0x20 (32)
+		protected float m_SeaLevelOffset = new float();
+		[ContainerField(32), LayoutImmutable, Blittable, ContainerFieldNameHash(2454050473)]
+		public float SeaLevelOffset { get { return m_SeaLevelOffset; } set { if (OnPropertyChanging("GeographicalData." + nameof(SeaLevelOffset), this, m_SeaLevelOffset, value)) m_SeaLevelOffset = value; } } // 0x20 (32)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

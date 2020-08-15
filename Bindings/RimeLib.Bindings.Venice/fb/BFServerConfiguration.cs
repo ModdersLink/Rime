@@ -5,17 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class BFServerConfiguration : 
 		DataContainer
 	{
-		[ContainerField(8)]
-		public List<BFServerConfigurationSchedule> Schedules { get; set; } = new List<BFServerConfigurationSchedule>(); // 0x8 (8)
+		protected List<BFServerConfigurationSchedule> m_Schedules = new List<BFServerConfigurationSchedule>();
+		[ContainerField(8), ContainerFieldNameHash(813057715)]
+		public List<BFServerConfigurationSchedule> Schedules { get { return m_Schedules; } set { if (OnPropertyChanging("BFServerConfiguration." + nameof(Schedules), this, m_Schedules, value)) m_Schedules = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

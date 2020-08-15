@@ -5,25 +5,38 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class StatCategoriesBaseTree : 
 		TreeBase
 	{
-		[ContainerField(12)]
-		public RefArray<StatsCategoryBaseData> RootBaseCategories { get; set; } = new RefArray<StatsCategoryBaseData>(); // 0xC (12)
+		protected RefArray<StatsCategoryBaseData> m_RootBaseCategories = new RefArray<StatsCategoryBaseData>();
+		[ContainerField(12), ContainerFieldNameHash(3956513984)]
+		public RefArray<StatsCategoryBaseData> RootBaseCategories { get { return m_RootBaseCategories; } set { if (OnPropertyChanging("StatCategoriesBaseTree." + nameof(RootBaseCategories), this, m_RootBaseCategories, value)) m_RootBaseCategories = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public RefArray<CriteriaData> ParamX { get; set; } = new RefArray<CriteriaData>(); // 0x10 (16)
+		protected RefArray<CriteriaData> m_ParamX = new RefArray<CriteriaData>();
+		[ContainerField(16), ContainerFieldNameHash(3371566706)]
+		public RefArray<CriteriaData> ParamX { get { return m_ParamX; } set { if (OnPropertyChanging("StatCategoriesBaseTree." + nameof(ParamX), this, m_ParamX, value)) m_ParamX = value; } } // 0x10 (16)
 		
-		[ContainerField(20)]
-		public RefArray<CriteriaData> ParamY { get; set; } = new RefArray<CriteriaData>(); // 0x14 (20)
+		protected RefArray<CriteriaData> m_ParamY = new RefArray<CriteriaData>();
+		[ContainerField(20), ContainerFieldNameHash(3371566707)]
+		public RefArray<CriteriaData> ParamY { get { return m_ParamY; } set { if (OnPropertyChanging("StatCategoriesBaseTree." + nameof(ParamY), this, m_ParamY, value)) m_ParamY = value; } } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable]
-		public bool ProcessAllLevelsInTree { get; set; } // 0x18 (24)
+		protected bool m_ProcessAllLevelsInTree = new bool();
+		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(2812093131)]
+		public bool ProcessAllLevelsInTree { get { return m_ProcessAllLevelsInTree; } set { if (OnPropertyChanging("StatCategoriesBaseTree." + nameof(ProcessAllLevelsInTree), this, m_ProcessAllLevelsInTree, value)) m_ProcessAllLevelsInTree = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

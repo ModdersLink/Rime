@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class MixerSimplePresetNodeData : 
 		AudioGraphNodeData
 	{
-		[ContainerField(8)]
-		public AudioGraphNodePort Index { get; set; } = new AudioGraphNodePort(); // 0x8 (8)
+		protected AudioGraphNodePort m_Index = new AudioGraphNodePort();
+		[ContainerField(8), ContainerFieldNameHash(214509467)]
+		public AudioGraphNodePort Index { get { return m_Index; } set { if (OnPropertyChanging("MixerSimplePresetNodeData." + nameof(Index), this, m_Index, value)) m_Index = value; } } // 0x8 (8)
 		
-		[ContainerField(16)]
-		public RefArray<MixerPreset> Presets { get; set; } = new RefArray<MixerPreset>(); // 0x10 (16)
+		protected RefArray<MixerPreset> m_Presets = new RefArray<MixerPreset>();
+		[ContainerField(16), ContainerFieldNameHash(3463460435)]
+		public RefArray<MixerPreset> Presets { get { return m_Presets; } set { if (OnPropertyChanging("MixerSimplePresetNodeData." + nameof(Presets), this, m_Presets, value)) m_Presets = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

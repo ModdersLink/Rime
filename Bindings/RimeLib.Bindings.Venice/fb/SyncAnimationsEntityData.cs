@@ -5,22 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class SyncAnimationsEntityData : 
 		EntityData
 	{
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public float ExternalTime { get; set; } // 0xC (12)
+		protected float m_ExternalTime = new float();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(2162678253)]
+		public float ExternalTime { get { return m_ExternalTime; } set { if (OnPropertyChanging("SyncAnimationsEntityData." + nameof(ExternalTime), this, m_ExternalTime, value)) m_ExternalTime = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public float NearEndEventTime { get; set; } // 0x10 (16)
+		protected float m_NearEndEventTime = new float();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(960001067)]
+		public float NearEndEventTime { get { return m_NearEndEventTime; } set { if (OnPropertyChanging("SyncAnimationsEntityData." + nameof(NearEndEventTime), this, m_NearEndEventTime, value)) m_NearEndEventTime = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
-		public bool StartServerPaused { get; set; } // 0x14 (20)
+		protected bool m_StartServerPaused = new bool();
+		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(2407205110)]
+		public bool StartServerPaused { get { return m_StartServerPaused; } set { if (OnPropertyChanging("SyncAnimationsEntityData." + nameof(StartServerPaused), this, m_StartServerPaused, value)) m_StartServerPaused = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

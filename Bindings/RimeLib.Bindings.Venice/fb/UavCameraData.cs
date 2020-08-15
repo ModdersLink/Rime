@@ -5,53 +5,74 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class UavCameraData : 
 		TargetCameraData
 	{
-		[ContainerField(160), LayoutImmutable, Blittable]
-		public float ViewDistance { get; set; } // 0xA0 (160)
+		protected float m_ViewDistance = new float();
+		[ContainerField(160), LayoutImmutable, Blittable, ContainerFieldNameHash(2201945291)]
+		public float ViewDistance { get { return m_ViewDistance; } set { if (OnPropertyChanging("UavCameraData." + nameof(ViewDistance), this, m_ViewDistance, value)) m_ViewDistance = value; } } // 0xA0 (160)
 		
-		[ContainerField(164)]
-		public List<CameraSineCurveData> ViewDistanceCurve { get; set; } = new List<CameraSineCurveData>(); // 0xA4 (164)
+		protected List<CameraSineCurveData> m_ViewDistanceCurve = new List<CameraSineCurveData>();
+		[ContainerField(164), ContainerFieldNameHash(2498741148)]
+		public List<CameraSineCurveData> ViewDistanceCurve { get { return m_ViewDistanceCurve; } set { if (OnPropertyChanging("UavCameraData." + nameof(ViewDistanceCurve), this, m_ViewDistanceCurve, value)) m_ViewDistanceCurve = value; } } // 0xA4 (164)
 		
-		[ContainerField(168), LayoutImmutable, Blittable]
-		public float ViewAngle { get; set; } // 0xA8 (168)
+		protected float m_ViewAngle = new float();
+		[ContainerField(168), LayoutImmutable, Blittable, ContainerFieldNameHash(4017129097)]
+		public float ViewAngle { get { return m_ViewAngle; } set { if (OnPropertyChanging("UavCameraData." + nameof(ViewAngle), this, m_ViewAngle, value)) m_ViewAngle = value; } } // 0xA8 (168)
 		
-		[ContainerField(172)]
-		public List<CameraSineCurveData> ViewAngleCurve { get; set; } = new List<CameraSineCurveData>(); // 0xAC (172)
+		protected List<CameraSineCurveData> m_ViewAngleCurve = new List<CameraSineCurveData>();
+		[ContainerField(172), ContainerFieldNameHash(3975970206)]
+		public List<CameraSineCurveData> ViewAngleCurve { get { return m_ViewAngleCurve; } set { if (OnPropertyChanging("UavCameraData." + nameof(ViewAngleCurve), this, m_ViewAngleCurve, value)) m_ViewAngleCurve = value; } } // 0xAC (172)
 		
-		[ContainerField(176), LayoutImmutable, Blittable]
-		public float RotationSpeed { get; set; } // 0xB0 (176)
+		protected float m_RotationSpeed = new float();
+		[ContainerField(176), LayoutImmutable, Blittable, ContainerFieldNameHash(802351446)]
+		public float RotationSpeed { get { return m_RotationSpeed; } set { if (OnPropertyChanging("UavCameraData." + nameof(RotationSpeed), this, m_RotationSpeed, value)) m_RotationSpeed = value; } } // 0xB0 (176)
 		
-		[ContainerField(180)]
-		public List<CameraSineCurveData> RotationSpeedCurve { get; set; } = new List<CameraSineCurveData>(); // 0xB4 (180)
+		protected List<CameraSineCurveData> m_RotationSpeedCurve = new List<CameraSineCurveData>();
+		[ContainerField(180), ContainerFieldNameHash(836629921)]
+		public List<CameraSineCurveData> RotationSpeedCurve { get { return m_RotationSpeedCurve; } set { if (OnPropertyChanging("UavCameraData." + nameof(RotationSpeedCurve), this, m_RotationSpeedCurve, value)) m_RotationSpeedCurve = value; } } // 0xB4 (180)
 		
-		[ContainerField(184), LayoutImmutable, Blittable]
-		public float ZoomFov { get; set; } // 0xB8 (184)
+		protected float m_ZoomFov = new float();
+		[ContainerField(184), LayoutImmutable, Blittable, ContainerFieldNameHash(2842985581)]
+		public float ZoomFov { get { return m_ZoomFov; } set { if (OnPropertyChanging("UavCameraData." + nameof(ZoomFov), this, m_ZoomFov, value)) m_ZoomFov = value; } } // 0xB8 (184)
 		
-		[ContainerField(188), LayoutImmutable, Blittable]
-		public float ZoomDelay { get; set; } // 0xBC (188)
+		protected float m_ZoomDelay = new float();
+		[ContainerField(188), LayoutImmutable, Blittable, ContainerFieldNameHash(3641349063)]
+		public float ZoomDelay { get { return m_ZoomDelay; } set { if (OnPropertyChanging("UavCameraData." + nameof(ZoomDelay), this, m_ZoomDelay, value)) m_ZoomDelay = value; } } // 0xBC (188)
 		
-		[ContainerField(192), LayoutImmutable, Blittable]
-		public float ZoomTransitionTime { get; set; } // 0xC0 (192)
+		protected float m_ZoomTransitionTime = new float();
+		[ContainerField(192), LayoutImmutable, Blittable, ContainerFieldNameHash(1414605576)]
+		public float ZoomTransitionTime { get { return m_ZoomTransitionTime; } set { if (OnPropertyChanging("UavCameraData." + nameof(ZoomTransitionTime), this, m_ZoomTransitionTime, value)) m_ZoomTransitionTime = value; } } // 0xC0 (192)
 		
-		[ContainerField(196), LayoutImmutable, Blittable]
-		public float Fov { get; set; } // 0xC4 (196)
+		protected float m_Fov = new float();
+		[ContainerField(196), LayoutImmutable, Blittable, ContainerFieldNameHash(193443802)]
+		public float Fov { get { return m_Fov; } set { if (OnPropertyChanging("UavCameraData." + nameof(Fov), this, m_Fov, value)) m_Fov = value; } } // 0xC4 (196)
 		
-		[ContainerField(200)]
-		public UavCameraPointData FocusPoint { get; set; } = new UavCameraPointData(); // 0xC8 (200)
+		protected UavCameraPointData m_FocusPoint = new UavCameraPointData();
+		[ContainerField(200), ContainerFieldNameHash(2983182053)]
+		public UavCameraPointData FocusPoint { get { return m_FocusPoint; } set { if (OnPropertyChanging("UavCameraData." + nameof(FocusPoint), this, m_FocusPoint, value)) m_FocusPoint = value; } } // 0xC8 (200)
 		
-		[ContainerField(216)]
-		public UavCameraPointData CenterPoint { get; set; } = new UavCameraPointData(); // 0xD8 (216)
+		protected UavCameraPointData m_CenterPoint = new UavCameraPointData();
+		[ContainerField(216), ContainerFieldNameHash(3946853250)]
+		public UavCameraPointData CenterPoint { get { return m_CenterPoint; } set { if (OnPropertyChanging("UavCameraData." + nameof(CenterPoint), this, m_CenterPoint, value)) m_CenterPoint = value; } } // 0xD8 (216)
 		
-		[ContainerField(232), LayoutImmutable, Blittable]
-		public float UpWeightDistance { get; set; } // 0xE8 (232)
+		protected float m_UpWeightDistance = new float();
+		[ContainerField(232), LayoutImmutable, Blittable, ContainerFieldNameHash(427137187)]
+		public float UpWeightDistance { get { return m_UpWeightDistance; } set { if (OnPropertyChanging("UavCameraData." + nameof(UpWeightDistance), this, m_UpWeightDistance, value)) m_UpWeightDistance = value; } } // 0xE8 (232)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

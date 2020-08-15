@@ -5,17 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class RibbonData : 
 		VisualVectorShapeData
 	{
-		[ContainerField(44)]
-		public List<RibbonPointData> RibbonPoints { get; set; } = new List<RibbonPointData>(); // 0x2C (44)
+		protected List<RibbonPointData> m_RibbonPoints = new List<RibbonPointData>();
+		[ContainerField(44), ContainerFieldNameHash(935977920)]
+		public List<RibbonPointData> RibbonPoints { get { return m_RibbonPoints; } set { if (OnPropertyChanging("RibbonData." + nameof(RibbonPoints), this, m_RibbonPoints, value)) m_RibbonPoints = value; } } // 0x2C (44)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

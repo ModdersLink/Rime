@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class SplitterNode : 
 		UINodeData
 	{
-		[ContainerField(20)]
-		public CtrRef<UINodePort> In { get; set; } = new CtrRef<UINodePort>(); // 0x14 (20)
+		protected CtrRef<UINodePort> m_In = new CtrRef<UINodePort>();
+		[ContainerField(20), ContainerFieldNameHash(5862146)]
+		public CtrRef<UINodePort> In { get { return m_In; } set { if (OnPropertyChanging("SplitterNode." + nameof(In), this, m_In, value)) m_In = value; } } // 0x14 (20)
 		
-		[ContainerField(24)]
-		public RefArray<UINodePort> Outputs { get; set; } = new RefArray<UINodePort>(); // 0x18 (24)
+		protected RefArray<UINodePort> m_Outputs = new RefArray<UINodePort>();
+		[ContainerField(24), ContainerFieldNameHash(1070022089)]
+		public RefArray<UINodePort> Outputs { get { return m_Outputs; } set { if (OnPropertyChanging("SplitterNode." + nameof(Outputs), this, m_Outputs, value)) m_Outputs = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

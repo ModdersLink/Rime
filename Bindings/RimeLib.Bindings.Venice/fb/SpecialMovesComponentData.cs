@@ -5,50 +5,70 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class SpecialMovesComponentData : 
 		ComponentData
 	{
-		[ContainerField(96)]
-		public SpecialMoveStateData VaultOverHighState { get; set; } = new SpecialMoveStateData(); // 0x60 (96)
+		protected SpecialMoveStateData m_VaultOverHighState = new SpecialMoveStateData();
+		[ContainerField(96), ContainerFieldNameHash(2753012104)]
+		public SpecialMoveStateData VaultOverHighState { get { return m_VaultOverHighState; } set { if (OnPropertyChanging("SpecialMovesComponentData." + nameof(VaultOverHighState), this, m_VaultOverHighState, value)) m_VaultOverHighState = value; } } // 0x60 (96)
 		
-		[ContainerField(156)]
-		public SpecialMoveStateData VaultUpHighState { get; set; } = new SpecialMoveStateData(); // 0x9C (156)
+		protected SpecialMoveStateData m_VaultUpHighState = new SpecialMoveStateData();
+		[ContainerField(156), ContainerFieldNameHash(1265978819)]
+		public SpecialMoveStateData VaultUpHighState { get { return m_VaultUpHighState; } set { if (OnPropertyChanging("SpecialMovesComponentData." + nameof(VaultUpHighState), this, m_VaultUpHighState, value)) m_VaultUpHighState = value; } } // 0x9C (156)
 		
-		[ContainerField(216)]
-		public SpecialMoveStateData VaultOverLowState { get; set; } = new SpecialMoveStateData(); // 0xD8 (216)
+		protected SpecialMoveStateData m_VaultOverLowState = new SpecialMoveStateData();
+		[ContainerField(216), ContainerFieldNameHash(1161455314)]
+		public SpecialMoveStateData VaultOverLowState { get { return m_VaultOverLowState; } set { if (OnPropertyChanging("SpecialMovesComponentData." + nameof(VaultOverLowState), this, m_VaultOverLowState, value)) m_VaultOverLowState = value; } } // 0xD8 (216)
 		
-		[ContainerField(276)]
-		public SpecialMoveStateData SprintToProneState { get; set; } = new SpecialMoveStateData(); // 0x114 (276)
+		protected SpecialMoveStateData m_SprintToProneState = new SpecialMoveStateData();
+		[ContainerField(276), ContainerFieldNameHash(2775746029)]
+		public SpecialMoveStateData SprintToProneState { get { return m_SprintToProneState; } set { if (OnPropertyChanging("SpecialMovesComponentData." + nameof(SprintToProneState), this, m_SprintToProneState, value)) m_SprintToProneState = value; } } // 0x114 (276)
 		
-		[ContainerField(336)]
-		public SpecialMoveStateData DeathState { get; set; } = new SpecialMoveStateData(); // 0x150 (336)
+		protected SpecialMoveStateData m_DeathState = new SpecialMoveStateData();
+		[ContainerField(336), ContainerFieldNameHash(4180335470)]
+		public SpecialMoveStateData DeathState { get { return m_DeathState; } set { if (OnPropertyChanging("SpecialMovesComponentData." + nameof(DeathState), this, m_DeathState, value)) m_DeathState = value; } } // 0x150 (336)
 		
-		[ContainerField(396)]
-		public SpecialMoveStateData SpecialAnimationState { get; set; } = new SpecialMoveStateData(); // 0x18C (396)
+		protected SpecialMoveStateData m_SpecialAnimationState = new SpecialMoveStateData();
+		[ContainerField(396), ContainerFieldNameHash(467878821)]
+		public SpecialMoveStateData SpecialAnimationState { get { return m_SpecialAnimationState; } set { if (OnPropertyChanging("SpecialMovesComponentData." + nameof(SpecialAnimationState), this, m_SpecialAnimationState, value)) m_SpecialAnimationState = value; } } // 0x18C (396)
 		
-		[ContainerField(456)]
-		public List<SpecialMoveStateData> IndexedDeathStates { get; set; } = new List<SpecialMoveStateData>(); // 0x1C8 (456)
+		protected List<SpecialMoveStateData> m_IndexedDeathStates = new List<SpecialMoveStateData>();
+		[ContainerField(456), ContainerFieldNameHash(1958491074)]
+		public List<SpecialMoveStateData> IndexedDeathStates { get { return m_IndexedDeathStates; } set { if (OnPropertyChanging("SpecialMovesComponentData." + nameof(IndexedDeathStates), this, m_IndexedDeathStates, value)) m_IndexedDeathStates = value; } } // 0x1C8 (456)
 		
-		[ContainerField(460)]
-		public List<SpecialMoveStateData> IndexedSpecialAnimationStates { get; set; } = new List<SpecialMoveStateData>(); // 0x1CC (460)
+		protected List<SpecialMoveStateData> m_IndexedSpecialAnimationStates = new List<SpecialMoveStateData>();
+		[ContainerField(460), ContainerFieldNameHash(208626825)]
+		public List<SpecialMoveStateData> IndexedSpecialAnimationStates { get { return m_IndexedSpecialAnimationStates; } set { if (OnPropertyChanging("SpecialMovesComponentData." + nameof(IndexedSpecialAnimationStates), this, m_IndexedSpecialAnimationStates, value)) m_IndexedSpecialAnimationStates = value; } } // 0x1CC (460)
 		
-		[ContainerField(464)]
-		public List<SpecialMoveVaultStateCriteria> IndexedVaultOverHighStates { get; set; } = new List<SpecialMoveVaultStateCriteria>(); // 0x1D0 (464)
+		protected List<SpecialMoveVaultStateCriteria> m_IndexedVaultOverHighStates = new List<SpecialMoveVaultStateCriteria>();
+		[ContainerField(464), ContainerFieldNameHash(2945169956)]
+		public List<SpecialMoveVaultStateCriteria> IndexedVaultOverHighStates { get { return m_IndexedVaultOverHighStates; } set { if (OnPropertyChanging("SpecialMovesComponentData." + nameof(IndexedVaultOverHighStates), this, m_IndexedVaultOverHighStates, value)) m_IndexedVaultOverHighStates = value; } } // 0x1D0 (464)
 		
-		[ContainerField(468)]
-		public List<SpecialMoveVaultStateCriteria> IndexedVaultUpStates { get; set; } = new List<SpecialMoveVaultStateCriteria>(); // 0x1D4 (468)
+		protected List<SpecialMoveVaultStateCriteria> m_IndexedVaultUpStates = new List<SpecialMoveVaultStateCriteria>();
+		[ContainerField(468), ContainerFieldNameHash(655182401)]
+		public List<SpecialMoveVaultStateCriteria> IndexedVaultUpStates { get { return m_IndexedVaultUpStates; } set { if (OnPropertyChanging("SpecialMovesComponentData." + nameof(IndexedVaultUpStates), this, m_IndexedVaultUpStates, value)) m_IndexedVaultUpStates = value; } } // 0x1D4 (468)
 		
-		[ContainerField(472)]
-		public List<SpecialMoveVaultStateCriteria> IndexedVaultOverLowStates { get; set; } = new List<SpecialMoveVaultStateCriteria>(); // 0x1D8 (472)
+		protected List<SpecialMoveVaultStateCriteria> m_IndexedVaultOverLowStates = new List<SpecialMoveVaultStateCriteria>();
+		[ContainerField(472), ContainerFieldNameHash(4065371102)]
+		public List<SpecialMoveVaultStateCriteria> IndexedVaultOverLowStates { get { return m_IndexedVaultOverLowStates; } set { if (OnPropertyChanging("SpecialMovesComponentData." + nameof(IndexedVaultOverLowStates), this, m_IndexedVaultOverLowStates, value)) m_IndexedVaultOverLowStates = value; } } // 0x1D8 (472)
 		
-		[ContainerField(476)]
-		public SpecialMovesBinding Binding { get; set; } = new SpecialMovesBinding(); // 0x1DC (476)
+		protected SpecialMovesBinding m_Binding = new SpecialMovesBinding();
+		[ContainerField(476), ContainerFieldNameHash(2590060228)]
+		public SpecialMovesBinding Binding { get { return m_Binding; } set { if (OnPropertyChanging("SpecialMovesComponentData." + nameof(Binding), this, m_Binding, value)) m_Binding = value; } } // 0x1DC (476)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

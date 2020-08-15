@@ -5,25 +5,38 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class LaserDesignatorData : 
 		LockingWeaponData
 	{
-		[ContainerField(32), LayoutImmutable, Blittable]
-		public float PostLockTime { get; set; } // 0x20 (32)
+		protected float m_PostLockTime = new float();
+		[ContainerField(32), LayoutImmutable, Blittable, ContainerFieldNameHash(4004851651)]
+		public float PostLockTime { get { return m_PostLockTime; } set { if (OnPropertyChanging("LaserDesignatorData." + nameof(PostLockTime), this, m_PostLockTime, value)) m_PostLockTime = value; } } // 0x20 (32)
 		
-		[ContainerField(36), LayoutImmutable, Blittable]
-		public float BomberTime { get; set; } // 0x24 (36)
+		protected float m_BomberTime = new float();
+		[ContainerField(36), LayoutImmutable, Blittable, ContainerFieldNameHash(3089415333)]
+		public float BomberTime { get { return m_BomberTime; } set { if (OnPropertyChanging("LaserDesignatorData." + nameof(BomberTime), this, m_BomberTime, value)) m_BomberTime = value; } } // 0x24 (36)
 		
-		[ContainerField(40), LayoutImmutable, Blittable]
-		public float BombWarnTime { get; set; } // 0x28 (40)
+		protected float m_BombWarnTime = new float();
+		[ContainerField(40), LayoutImmutable, Blittable, ContainerFieldNameHash(2755941208)]
+		public float BombWarnTime { get { return m_BombWarnTime; } set { if (OnPropertyChanging("LaserDesignatorData." + nameof(BombWarnTime), this, m_BombWarnTime, value)) m_BombWarnTime = value; } } // 0x28 (40)
 		
-		[ContainerField(44)]
-		public CtrRef<SoundAsset> BomberSound { get; set; } = new CtrRef<SoundAsset>(); // 0x2C (44)
+		protected CtrRef<SoundAsset> m_BomberSound = new CtrRef<SoundAsset>();
+		[ContainerField(44), ContainerFieldNameHash(3167598099)]
+		public CtrRef<SoundAsset> BomberSound { get { return m_BomberSound; } set { if (OnPropertyChanging("LaserDesignatorData." + nameof(BomberSound), this, m_BomberSound, value)) m_BomberSound = value; } } // 0x2C (44)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

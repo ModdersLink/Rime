@@ -5,20 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class AwardHeaderData : 
 		AbstractAwardData
 	{
-		[ContainerField(12)]
-		public AwardGroup Group { get; set; } = new AwardGroup(); // 0xC (12)
+		protected AwardGroup m_Group = new AwardGroup();
+		[ContainerField(12), ContainerFieldNameHash(208130522)]
+		public AwardGroup Group { get { return m_Group; } set { if (OnPropertyChanging("AwardHeaderData." + nameof(Group), this, m_Group, value)) m_Group = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public StatsMultiplicity Multiplicity { get; set; } = new StatsMultiplicity(); // 0x10 (16)
+		protected StatsMultiplicity m_Multiplicity = new StatsMultiplicity();
+		[ContainerField(16), ContainerFieldNameHash(2648087582)]
+		public StatsMultiplicity Multiplicity { get { return m_Multiplicity; } set { if (OnPropertyChanging("AwardHeaderData." + nameof(Multiplicity), this, m_Multiplicity, value)) m_Multiplicity = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

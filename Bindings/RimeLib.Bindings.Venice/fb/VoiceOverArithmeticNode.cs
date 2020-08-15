@@ -5,26 +5,38 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class VoiceOverArithmeticNode : 
 		VoiceOverExpressionNode
 	{
-		[ContainerField(8)]
-		public CtrRef<VoiceOverValueConnection> A { get; set; } = new CtrRef<VoiceOverValueConnection>(); // 0x8 (8)
+		protected CtrRef<VoiceOverValueConnection> m_A = new CtrRef<VoiceOverValueConnection>();
+		[ContainerField(8), ContainerFieldNameHash(177636)]
+		public CtrRef<VoiceOverValueConnection> A { get { return m_A; } set { if (OnPropertyChanging("VoiceOverArithmeticNode." + nameof(A), this, m_A, value)) m_A = value; } } // 0x8 (8)
 		
-		[ContainerField(12)]
-		public CtrRef<VoiceOverValueConnection> B { get; set; } = new CtrRef<VoiceOverValueConnection>(); // 0xC (12)
+		protected CtrRef<VoiceOverValueConnection> m_B = new CtrRef<VoiceOverValueConnection>();
+		[ContainerField(12), ContainerFieldNameHash(177639)]
+		public CtrRef<VoiceOverValueConnection> B { get { return m_B; } set { if (OnPropertyChanging("VoiceOverArithmeticNode." + nameof(B), this, m_B, value)) m_B = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public CtrRef<VoiceOverValue> Result { get; set; } = new CtrRef<VoiceOverValue>(); // 0x10 (16)
+		protected CtrRef<VoiceOverValue> m_Result = new CtrRef<VoiceOverValue>();
+		[ContainerField(16), ContainerFieldNameHash(3293273164)]
+		public CtrRef<VoiceOverValue> Result { get { return m_Result; } set { if (OnPropertyChanging("VoiceOverArithmeticNode." + nameof(Result), this, m_Result, value)) m_Result = value; } } // 0x10 (16)
 		
-		[ContainerField(20)]
-		public VoiceOverArithmeticExpressionType Operation { get; set; } = new VoiceOverArithmeticExpressionType(); // 0x14 (20)
+		protected VoiceOverArithmeticExpressionType m_Operation = new VoiceOverArithmeticExpressionType();
+		[ContainerField(20), ContainerFieldNameHash(2346271248)]
+		public VoiceOverArithmeticExpressionType Operation { get { return m_Operation; } set { if (OnPropertyChanging("VoiceOverArithmeticNode." + nameof(Operation), this, m_Operation, value)) m_Operation = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

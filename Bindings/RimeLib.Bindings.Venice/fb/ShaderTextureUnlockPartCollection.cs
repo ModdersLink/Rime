@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class ShaderTextureUnlockPartCollection : 
 		ShaderCustomizationUnlockPartCollection
 	{
-		[ContainerField(20)]
-		public CtrRef<TextureReference> DefaultTextureReference { get; set; } = new CtrRef<TextureReference>(); // 0x14 (20)
+		protected CtrRef<TextureReference> m_DefaultTextureReference = new CtrRef<TextureReference>();
+		[ContainerField(20), ContainerFieldNameHash(796555962)]
+		public CtrRef<TextureReference> DefaultTextureReference { get { return m_DefaultTextureReference; } set { if (OnPropertyChanging("ShaderTextureUnlockPartCollection." + nameof(DefaultTextureReference), this, m_DefaultTextureReference, value)) m_DefaultTextureReference = value; } } // 0x14 (20)
 		
-		[ContainerField(24)]
-		public RefArray<TextureUnlockPartData> UnlockParts { get; set; } = new RefArray<TextureUnlockPartData>(); // 0x18 (24)
+		protected RefArray<TextureUnlockPartData> m_UnlockParts = new RefArray<TextureUnlockPartData>();
+		[ContainerField(24), ContainerFieldNameHash(4116003953)]
+		public RefArray<TextureUnlockPartData> UnlockParts { get { return m_UnlockParts; } set { if (OnPropertyChanging("ShaderTextureUnlockPartCollection." + nameof(UnlockParts), this, m_UnlockParts, value)) m_UnlockParts = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class NetworkableLoosePartPhysicsData : 
 		LoosePartPhysicsData
 	{
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public bool Networked { get; set; } // 0xC (12)
+		protected bool m_Networked = new bool();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(1516563994)]
+		public bool Networked { get { return m_Networked; } set { if (OnPropertyChanging("NetworkableLoosePartPhysicsData." + nameof(Networked), this, m_Networked, value)) m_Networked = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,66 +5,90 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class LifeCounterEntityData : 
 		GameEntityData
 	{
-		[ContainerField(96), LayoutImmutable, Blittable]
-		public int StartingLifeCount { get; set; } // 0x60 (96)
+		protected int m_StartingLifeCount = new int();
+		[ContainerField(96), LayoutImmutable, Blittable, ContainerFieldNameHash(3417547968)]
+		public int StartingLifeCount { get { return m_StartingLifeCount; } set { if (OnPropertyChanging("LifeCounterEntityData." + nameof(StartingLifeCount), this, m_StartingLifeCount, value)) m_StartingLifeCount = value; } } // 0x60 (96)
 		
-		[ContainerField(100), LayoutImmutable, Blittable]
-		public float DisplayTime { get; set; } // 0x64 (100)
+		protected float m_DisplayTime = new float();
+		[ContainerField(100), LayoutImmutable, Blittable, ContainerFieldNameHash(1925139498)]
+		public float DisplayTime { get { return m_DisplayTime; } set { if (OnPropertyChanging("LifeCounterEntityData." + nameof(DisplayTime), this, m_DisplayTime, value)) m_DisplayTime = value; } } // 0x64 (100)
 		
-		[ContainerField(104)]
-		public TeamId TeamId { get; set; } = new TeamId(); // 0x68 (104)
+		protected TeamId m_TeamId = new TeamId();
+		[ContainerField(104), ContainerFieldNameHash(3220374101)]
+		public TeamId TeamId { get { return m_TeamId; } set { if (OnPropertyChanging("LifeCounterEntityData." + nameof(TeamId), this, m_TeamId, value)) m_TeamId = value; } } // 0x68 (104)
 		
-		[ContainerField(108)]
-		public List<int> LifeTresholdValues { get; set; } = new List<int>(); // 0x6C (108)
+		protected List<int> m_LifeTresholdValues = new List<int>();
+		[ContainerField(108), ContainerFieldNameHash(3392040548)]
+		public List<int> LifeTresholdValues { get { return m_LifeTresholdValues; } set { if (OnPropertyChanging("LifeCounterEntityData." + nameof(LifeTresholdValues), this, m_LifeTresholdValues, value)) m_LifeTresholdValues = value; } } // 0x6C (108)
 		
-		[ContainerField(112), LayoutImmutable, Blittable]
-		public int UiShowCountLowerThreshold { get; set; } // 0x70 (112)
+		protected int m_UiShowCountLowerThreshold = new int();
+		[ContainerField(112), LayoutImmutable, Blittable, ContainerFieldNameHash(2785336653)]
+		public int UiShowCountLowerThreshold { get { return m_UiShowCountLowerThreshold; } set { if (OnPropertyChanging("LifeCounterEntityData." + nameof(UiShowCountLowerThreshold), this, m_UiShowCountLowerThreshold, value)) m_UiShowCountLowerThreshold = value; } } // 0x70 (112)
 		
-		[ContainerField(116), LayoutImmutable, Blittable]
-		public int UiShowCountUpperThreshold { get; set; } // 0x74 (116)
+		protected int m_UiShowCountUpperThreshold = new int();
+		[ContainerField(116), LayoutImmutable, Blittable, ContainerFieldNameHash(3322873612)]
+		public int UiShowCountUpperThreshold { get { return m_UiShowCountUpperThreshold; } set { if (OnPropertyChanging("LifeCounterEntityData." + nameof(UiShowCountUpperThreshold), this, m_UiShowCountUpperThreshold, value)) m_UiShowCountUpperThreshold = value; } } // 0x74 (116)
 		
-		[ContainerField(120), LayoutImmutable, Blittable]
-		public int BaseCount { get; set; } // 0x78 (120)
+		protected int m_BaseCount = new int();
+		[ContainerField(120), LayoutImmutable, Blittable, ContainerFieldNameHash(1694831539)]
+		public int BaseCount { get { return m_BaseCount; } set { if (OnPropertyChanging("LifeCounterEntityData." + nameof(BaseCount), this, m_BaseCount, value)) m_BaseCount = value; } } // 0x78 (120)
 		
-		[ContainerField(124)]
-		public List<float> ReinforceTable { get; set; } = new List<float>(); // 0x7C (124)
+		protected List<float> m_ReinforceTable = new List<float>();
+		[ContainerField(124), ContainerFieldNameHash(2268254326)]
+		public List<float> ReinforceTable { get { return m_ReinforceTable; } set { if (OnPropertyChanging("LifeCounterEntityData." + nameof(ReinforceTable), this, m_ReinforceTable, value)) m_ReinforceTable = value; } } // 0x7C (124)
 		
-		[ContainerField(128), LayoutImmutable, Blittable]
-		public int ReinforceThreshold { get; set; } // 0x80 (128)
+		protected int m_ReinforceThreshold = new int();
+		[ContainerField(128), LayoutImmutable, Blittable, ContainerFieldNameHash(3361010943)]
+		public int ReinforceThreshold { get { return m_ReinforceThreshold; } set { if (OnPropertyChanging("LifeCounterEntityData." + nameof(ReinforceThreshold), this, m_ReinforceThreshold, value)) m_ReinforceThreshold = value; } } // 0x80 (128)
 		
-		[ContainerField(132), LayoutImmutable]
-		public string ReinforceMessageSid { get; set; } // 0x84 (132)
+		protected string m_ReinforceMessageSid = new string();
+		[ContainerField(132), LayoutImmutable, ContainerFieldNameHash(331217021)]
+		public string ReinforceMessageSid { get { return m_ReinforceMessageSid; } set { if (OnPropertyChanging("LifeCounterEntityData." + nameof(ReinforceMessageSid), this, m_ReinforceMessageSid, value)) m_ReinforceMessageSid = value; } } // 0x84 (132)
 		
-		[ContainerField(136), LayoutImmutable, Blittable]
-		public float FightHarderTreshold { get; set; } // 0x88 (136)
+		protected float m_FightHarderTreshold = new float();
+		[ContainerField(136), LayoutImmutable, Blittable, ContainerFieldNameHash(2263650182)]
+		public float FightHarderTreshold { get { return m_FightHarderTreshold; } set { if (OnPropertyChanging("LifeCounterEntityData." + nameof(FightHarderTreshold), this, m_FightHarderTreshold, value)) m_FightHarderTreshold = value; } } // 0x88 (136)
 		
-		[ContainerField(140), LayoutImmutable, Blittable]
-		public float DefensiveKillRadius { get; set; } // 0x8C (140)
+		protected float m_DefensiveKillRadius = new float();
+		[ContainerField(140), LayoutImmutable, Blittable, ContainerFieldNameHash(2115687194)]
+		public float DefensiveKillRadius { get { return m_DefensiveKillRadius; } set { if (OnPropertyChanging("LifeCounterEntityData." + nameof(DefensiveKillRadius), this, m_DefensiveKillRadius, value)) m_DefensiveKillRadius = value; } } // 0x8C (140)
 		
-		[ContainerField(144), LayoutImmutable, Blittable]
-		public float FallbackTime { get; set; } // 0x90 (144)
+		protected float m_FallbackTime = new float();
+		[ContainerField(144), LayoutImmutable, Blittable, ContainerFieldNameHash(1213191836)]
+		public float FallbackTime { get { return m_FallbackTime; } set { if (OnPropertyChanging("LifeCounterEntityData." + nameof(FallbackTime), this, m_FallbackTime, value)) m_FallbackTime = value; } } // 0x90 (144)
 		
-		[ContainerField(148), LayoutImmutable]
-		public string FightHarderMessageSid { get; set; } // 0x94 (148)
+		protected string m_FightHarderMessageSid = new string();
+		[ContainerField(148), LayoutImmutable, ContainerFieldNameHash(4210634540)]
+		public string FightHarderMessageSid { get { return m_FightHarderMessageSid; } set { if (OnPropertyChanging("LifeCounterEntityData." + nameof(FightHarderMessageSid), this, m_FightHarderMessageSid, value)) m_FightHarderMessageSid = value; } } // 0x94 (148)
 		
-		[ContainerField(152), LayoutImmutable, Blittable]
-		public bool Attacker { get; set; } // 0x98 (152)
+		protected bool m_Attacker = new bool();
+		[ContainerField(152), LayoutImmutable, Blittable, ContainerFieldNameHash(454612250)]
+		public bool Attacker { get { return m_Attacker; } set { if (OnPropertyChanging("LifeCounterEntityData." + nameof(Attacker), this, m_Attacker, value)) m_Attacker = value; } } // 0x98 (152)
 		
-		[ContainerField(153), LayoutImmutable, Blittable]
-		public bool SetBestSquadSpawner { get; set; } // 0x99 (153)
+		protected bool m_SetBestSquadSpawner = new bool();
+		[ContainerField(153), LayoutImmutable, Blittable, ContainerFieldNameHash(1050080153)]
+		public bool SetBestSquadSpawner { get { return m_SetBestSquadSpawner; } set { if (OnPropertyChanging("LifeCounterEntityData." + nameof(SetBestSquadSpawner), this, m_SetBestSquadSpawner, value)) m_SetBestSquadSpawner = value; } } // 0x99 (153)
 		
-		[ContainerField(154), LayoutImmutable, Blittable]
-		public bool SimpleReinforce { get; set; } // 0x9A (154)
+		protected bool m_SimpleReinforce = new bool();
+		[ContainerField(154), LayoutImmutable, Blittable, ContainerFieldNameHash(4042376934)]
+		public bool SimpleReinforce { get { return m_SimpleReinforce; } set { if (OnPropertyChanging("LifeCounterEntityData." + nameof(SimpleReinforce), this, m_SimpleReinforce, value)) m_SimpleReinforce = value; } } // 0x9A (154)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,29 +5,42 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class VectorShapeData : 
 		BaseShapeData
 	{
-		[ContainerField(12)]
-		public List<Vec3> Points { get; set; } = new List<Vec3>(); // 0xC (12)
+		protected List<Vec3> m_Points = new List<Vec3>();
+		[ContainerField(12), ContainerFieldNameHash(3383606106)]
+		public List<Vec3> Points { get { return m_Points; } set { if (OnPropertyChanging("VectorShapeData." + nameof(Points), this, m_Points, value)) m_Points = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public List<Vec3> Normals { get; set; } = new List<Vec3>(); // 0x10 (16)
+		protected List<Vec3> m_Normals = new List<Vec3>();
+		[ContainerField(16), ContainerFieldNameHash(3102907301)]
+		public List<Vec3> Normals { get { return m_Normals; } set { if (OnPropertyChanging("VectorShapeData." + nameof(Normals), this, m_Normals, value)) m_Normals = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
-		public float Tension { get; set; } // 0x14 (20)
+		protected float m_Tension = new float();
+		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(3196074177)]
+		public float Tension { get { return m_Tension; } set { if (OnPropertyChanging("VectorShapeData." + nameof(Tension), this, m_Tension, value)) m_Tension = value; } } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable]
-		public bool IsClosed { get; set; } // 0x18 (24)
+		protected bool m_IsClosed = new bool();
+		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(1070153421)]
+		public bool IsClosed { get { return m_IsClosed; } set { if (OnPropertyChanging("VectorShapeData." + nameof(IsClosed), this, m_IsClosed, value)) m_IsClosed = value; } } // 0x18 (24)
 		
-		[ContainerField(25), LayoutImmutable, Blittable]
-		public bool AllowRoll { get; set; } // 0x19 (25)
+		protected bool m_AllowRoll = new bool();
+		[ContainerField(25), LayoutImmutable, Blittable, ContainerFieldNameHash(2314066145)]
+		public bool AllowRoll { get { return m_AllowRoll; } set { if (OnPropertyChanging("VectorShapeData." + nameof(AllowRoll), this, m_AllowRoll, value)) m_AllowRoll = value; } } // 0x19 (25)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

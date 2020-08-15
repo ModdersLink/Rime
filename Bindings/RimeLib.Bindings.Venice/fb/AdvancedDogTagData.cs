@@ -5,22 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class AdvancedDogTagData : 
 		DogTagData
 	{
-		[ContainerField(68), LayoutImmutable]
-		public string StatCode { get; set; } // 0x44 (68)
+		protected string m_StatCode = new string();
+		[ContainerField(68), LayoutImmutable, ContainerFieldNameHash(3117339322)]
+		public string StatCode { get { return m_StatCode; } set { if (OnPropertyChanging("AdvancedDogTagData." + nameof(StatCode), this, m_StatCode, value)) m_StatCode = value; } } // 0x44 (68)
 		
-		[ContainerField(72), LayoutImmutable]
-		public string StatSID { get; set; } // 0x48 (72)
+		protected string m_StatSID = new string();
+		[ContainerField(72), LayoutImmutable, ContainerFieldNameHash(2176854761)]
+		public string StatSID { get { return m_StatSID; } set { if (OnPropertyChanging("AdvancedDogTagData." + nameof(StatSID), this, m_StatSID, value)) m_StatSID = value; } } // 0x48 (72)
 		
-		[ContainerField(76), LayoutImmutable, Blittable]
-		public bool IsStatMeasuredInTime { get; set; } // 0x4C (76)
+		protected bool m_IsStatMeasuredInTime = new bool();
+		[ContainerField(76), LayoutImmutable, Blittable, ContainerFieldNameHash(3369514563)]
+		public bool IsStatMeasuredInTime { get { return m_IsStatMeasuredInTime; } set { if (OnPropertyChanging("AdvancedDogTagData." + nameof(IsStatMeasuredInTime), this, m_IsStatMeasuredInTime, value)) m_IsStatMeasuredInTime = value; } } // 0x4C (76)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

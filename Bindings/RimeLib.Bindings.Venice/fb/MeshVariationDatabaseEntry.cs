@@ -5,23 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class MeshVariationDatabaseEntry : 
 		DataContainer
 	{
-		[ContainerField(8)]
-		public CtrRef<MeshAsset> Mesh { get; set; } = new CtrRef<MeshAsset>(); // 0x8 (8)
+		protected CtrRef<MeshAsset> m_Mesh = new CtrRef<MeshAsset>();
+		[ContainerField(8), ContainerFieldNameHash(2088783990)]
+		public CtrRef<MeshAsset> Mesh { get { return m_Mesh; } set { if (OnPropertyChanging("MeshVariationDatabaseEntry." + nameof(Mesh), this, m_Mesh, value)) m_Mesh = value; } } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public uint VariationAssetNameHash { get; set; } // 0xC (12)
+		protected uint m_VariationAssetNameHash = new uint();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(442217361)]
+		public uint VariationAssetNameHash { get { return m_VariationAssetNameHash; } set { if (OnPropertyChanging("MeshVariationDatabaseEntry." + nameof(VariationAssetNameHash), this, m_VariationAssetNameHash, value)) m_VariationAssetNameHash = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public List<MeshVariationDatabaseMaterial> Materials { get; set; } = new List<MeshVariationDatabaseMaterial>(); // 0x10 (16)
+		protected List<MeshVariationDatabaseMaterial> m_Materials = new List<MeshVariationDatabaseMaterial>();
+		[ContainerField(16), ContainerFieldNameHash(2136313565)]
+		public List<MeshVariationDatabaseMaterial> Materials { get { return m_Materials; } set { if (OnPropertyChanging("MeshVariationDatabaseEntry." + nameof(Materials), this, m_Materials, value)) m_Materials = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

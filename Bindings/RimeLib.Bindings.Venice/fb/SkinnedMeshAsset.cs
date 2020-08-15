@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class SkinnedMeshAsset : 
 		MeshAsset
 	{
-		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 BoundingBoxPositionOffset { get; set; } = new Vec3(); // 0x30 (48)
+		protected Vec3 m_BoundingBoxPositionOffset = new Vec3();
+		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(2563040854)]
+		public Vec3 BoundingBoxPositionOffset { get { return m_BoundingBoxPositionOffset; } set { if (OnPropertyChanging("SkinnedMeshAsset." + nameof(BoundingBoxPositionOffset), this, m_BoundingBoxPositionOffset, value)) m_BoundingBoxPositionOffset = value; } } // 0x30 (48)
 		
-		[ContainerField(64), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 BoundingBoxSizeOffset { get; set; } = new Vec3(); // 0x40 (64)
+		protected Vec3 m_BoundingBoxSizeOffset = new Vec3();
+		[ContainerField(64), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(2946347242)]
+		public Vec3 BoundingBoxSizeOffset { get { return m_BoundingBoxSizeOffset; } set { if (OnPropertyChanging("SkinnedMeshAsset." + nameof(BoundingBoxSizeOffset), this, m_BoundingBoxSizeOffset, value)) m_BoundingBoxSizeOffset = value; } } // 0x40 (64)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

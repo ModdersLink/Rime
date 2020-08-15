@@ -5,22 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class MaterialContainerPair : 
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable, Blittable]
-		public uint FlagsAndIndex { get; set; } // 0x8 (8)
+		protected uint m_FlagsAndIndex = new uint();
+		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(948792655)]
+		public uint FlagsAndIndex { get { return m_FlagsAndIndex; } set { if (OnPropertyChanging("MaterialContainerPair." + nameof(FlagsAndIndex), this, m_FlagsAndIndex, value)) m_FlagsAndIndex = value; } } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public sbyte PhysicsPropertyIndex { get; set; } // 0xC (12)
+		protected sbyte m_PhysicsPropertyIndex = new sbyte();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(2298256471)]
+		public sbyte PhysicsPropertyIndex { get { return m_PhysicsPropertyIndex; } set { if (OnPropertyChanging("MaterialContainerPair." + nameof(PhysicsPropertyIndex), this, m_PhysicsPropertyIndex, value)) m_PhysicsPropertyIndex = value; } } // 0xC (12)
 		
-		[ContainerField(13), LayoutImmutable, Blittable]
-		public sbyte PhysicsMaterialIndex { get; set; } // 0xD (13)
+		protected sbyte m_PhysicsMaterialIndex = new sbyte();
+		[ContainerField(13), LayoutImmutable, Blittable, ContainerFieldNameHash(2836775707)]
+		public sbyte PhysicsMaterialIndex { get { return m_PhysicsMaterialIndex; } set { if (OnPropertyChanging("MaterialContainerPair." + nameof(PhysicsMaterialIndex), this, m_PhysicsMaterialIndex, value)) m_PhysicsMaterialIndex = value; } } // 0xD (13)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

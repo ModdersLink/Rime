@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class HitReactionComponentData : 
 		ComponentData
 	{
-		[ContainerField(96)]
-		public HitReactionComponentBinding HitReactionBinding { get; set; } = new HitReactionComponentBinding(); // 0x60 (96)
+		protected HitReactionComponentBinding m_HitReactionBinding = new HitReactionComponentBinding();
+		[ContainerField(96), ContainerFieldNameHash(738313592)]
+		public HitReactionComponentBinding HitReactionBinding { get { return m_HitReactionBinding; } set { if (OnPropertyChanging("HitReactionComponentData." + nameof(HitReactionBinding), this, m_HitReactionBinding, value)) m_HitReactionBinding = value; } } // 0x60 (96)
 		
-		[ContainerField(128), LayoutImmutable, Blittable]
-		public bool Enabled { get; set; } // 0x80 (128)
+		protected bool m_Enabled = new bool();
+		[ContainerField(128), LayoutImmutable, Blittable, ContainerFieldNameHash(2662400)]
+		public bool Enabled { get { return m_Enabled; } set { if (OnPropertyChanging("HitReactionComponentData." + nameof(Enabled), this, m_Enabled, value)) m_Enabled = value; } } // 0x80 (128)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

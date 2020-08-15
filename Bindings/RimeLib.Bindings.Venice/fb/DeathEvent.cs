@@ -5,28 +5,42 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class DeathEvent : 
 		MetricEvent
 	{
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 Position { get; set; } = new Vec3(); // 0x10 (16)
+		protected Vec3 m_Position = new Vec3();
+		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(3402582524)]
+		public Vec3 Position { get { return m_Position; } set { if (OnPropertyChanging("DeathEvent." + nameof(Position), this, m_Position, value)) m_Position = value; } } // 0x10 (16)
 		
-		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 KillerPosition { get; set; } = new Vec3(); // 0x20 (32)
+		protected Vec3 m_KillerPosition = new Vec3();
+		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(1483294665)]
+		public Vec3 KillerPosition { get { return m_KillerPosition; } set { if (OnPropertyChanging("DeathEvent." + nameof(KillerPosition), this, m_KillerPosition, value)) m_KillerPosition = value; } } // 0x20 (32)
 		
-		[ContainerField(48), LayoutImmutable, Blittable]
-		public ulong KillerId { get; set; } // 0x30 (48)
+		protected ulong m_KillerId = new ulong();
+		[ContainerField(48), LayoutImmutable, Blittable, ContainerFieldNameHash(3035491517)]
+		public ulong KillerId { get { return m_KillerId; } set { if (OnPropertyChanging("DeathEvent." + nameof(KillerId), this, m_KillerId, value)) m_KillerId = value; } } // 0x30 (48)
 		
-		[ContainerField(56), LayoutImmutable, Blittable]
-		public float Time { get; set; } // 0x38 (56)
+		protected float m_Time = new float();
+		[ContainerField(56), LayoutImmutable, Blittable, ContainerFieldNameHash(2089313744)]
+		public float Time { get { return m_Time; } set { if (OnPropertyChanging("DeathEvent." + nameof(Time), this, m_Time, value)) m_Time = value; } } // 0x38 (56)
 		
-		[ContainerField(60), LayoutImmutable]
-		public string Weapon { get; set; } // 0x3C (60)
+		protected string m_Weapon = new string();
+		[ContainerField(60), LayoutImmutable, ContainerFieldNameHash(3190562823)]
+		public string Weapon { get { return m_Weapon; } set { if (OnPropertyChanging("DeathEvent." + nameof(Weapon), this, m_Weapon, value)) m_Weapon = value; } } // 0x3C (60)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

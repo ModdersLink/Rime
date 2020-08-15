@@ -5,20 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class RawFileDataAsset : 
 		RawFileAsset
 	{
-		[ContainerField(12)]
-		public List<byte> RawData { get; set; } = new List<byte>(); // 0xC (12)
+		protected List<byte> m_RawData = new List<byte>();
+		[ContainerField(12), ContainerFieldNameHash(1456371441)]
+		public List<byte> RawData { get { return m_RawData; } set { if (OnPropertyChanging("RawFileDataAsset." + nameof(RawData), this, m_RawData, value)) m_RawData = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public uint Size { get; set; } // 0x10 (16)
+		protected uint m_Size = new uint();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(2089429248)]
+		public uint Size { get { return m_Size; } set { if (OnPropertyChanging("RawFileDataAsset." + nameof(Size), this, m_Size, value)) m_Size = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

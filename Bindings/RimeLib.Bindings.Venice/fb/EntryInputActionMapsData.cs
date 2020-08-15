@@ -5,23 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class EntryInputActionMapsData : 
 		Asset
 	{
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public int ActionMapSettingsScheme { get; set; } // 0xC (12)
+		protected int m_ActionMapSettingsScheme = new int();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(3553311511)]
+		public int ActionMapSettingsScheme { get { return m_ActionMapSettingsScheme; } set { if (OnPropertyChanging("EntryInputActionMapsData." + nameof(ActionMapSettingsScheme), this, m_ActionMapSettingsScheme, value)) m_ActionMapSettingsScheme = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public InputActionMapSlot DefaultInputActionMap { get; set; } = new InputActionMapSlot(); // 0x10 (16)
+		protected InputActionMapSlot m_DefaultInputActionMap = new InputActionMapSlot();
+		[ContainerField(16), ContainerFieldNameHash(1781726042)]
+		public InputActionMapSlot DefaultInputActionMap { get { return m_DefaultInputActionMap; } set { if (OnPropertyChanging("EntryInputActionMapsData." + nameof(DefaultInputActionMap), this, m_DefaultInputActionMap, value)) m_DefaultInputActionMap = value; } } // 0x10 (16)
 		
-		[ContainerField(20)]
-		public RefArray<EntryInputActionMapData> InputActionMaps { get; set; } = new RefArray<EntryInputActionMapData>(); // 0x14 (20)
+		protected RefArray<EntryInputActionMapData> m_InputActionMaps = new RefArray<EntryInputActionMapData>();
+		[ContainerField(20), ContainerFieldNameHash(2094181090)]
+		public RefArray<EntryInputActionMapData> InputActionMaps { get { return m_InputActionMaps; } set { if (OnPropertyChanging("EntryInputActionMapsData." + nameof(InputActionMaps), this, m_InputActionMaps, value)) m_InputActionMaps = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

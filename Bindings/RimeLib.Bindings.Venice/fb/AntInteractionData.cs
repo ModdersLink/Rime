@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class AntInteractionData : 
 		GameEntityData
 	{
-		[ContainerField(96)]
-		public AntInteractionBinding AntBindings { get; set; } = new AntInteractionBinding(); // 0x60 (96)
+		protected AntInteractionBinding m_AntBindings = new AntInteractionBinding();
+		[ContainerField(96), ContainerFieldNameHash(2658793676)]
+		public AntInteractionBinding AntBindings { get { return m_AntBindings; } set { if (OnPropertyChanging("AntInteractionData." + nameof(AntBindings), this, m_AntBindings, value)) m_AntBindings = value; } } // 0x60 (96)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

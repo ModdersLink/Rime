@@ -5,29 +5,42 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class DelayEntityData : 
 		EntityData
 	{
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public float Delay { get; set; } // 0xC (12)
+		protected float m_Delay = new float();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(208768368)]
+		public float Delay { get { return m_Delay; } set { if (OnPropertyChanging("DelayEntityData." + nameof(Delay), this, m_Delay, value)) m_Delay = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public Realm Realm { get; set; } = new Realm(); // 0x10 (16)
+		protected Realm m_Realm = new Realm();
+		[ContainerField(16), ContainerFieldNameHash(229961746)]
+		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("DelayEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
-		public bool AutoStart { get; set; } // 0x14 (20)
+		protected bool m_AutoStart = new bool();
+		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(792615882)]
+		public bool AutoStart { get { return m_AutoStart; } set { if (OnPropertyChanging("DelayEntityData." + nameof(AutoStart), this, m_AutoStart, value)) m_AutoStart = value; } } // 0x14 (20)
 		
-		[ContainerField(21), LayoutImmutable, Blittable]
-		public bool RunOnce { get; set; } // 0x15 (21)
+		protected bool m_RunOnce = new bool();
+		[ContainerField(21), LayoutImmutable, Blittable, ContainerFieldNameHash(709901739)]
+		public bool RunOnce { get { return m_RunOnce; } set { if (OnPropertyChanging("DelayEntityData." + nameof(RunOnce), this, m_RunOnce, value)) m_RunOnce = value; } } // 0x15 (21)
 		
-		[ContainerField(22), LayoutImmutable, Blittable]
-		public bool RemoveDuplicateEvents { get; set; } // 0x16 (22)
+		protected bool m_RemoveDuplicateEvents = new bool();
+		[ContainerField(22), LayoutImmutable, Blittable, ContainerFieldNameHash(2871488843)]
+		public bool RemoveDuplicateEvents { get { return m_RemoveDuplicateEvents; } set { if (OnPropertyChanging("DelayEntityData." + nameof(RemoveDuplicateEvents), this, m_RemoveDuplicateEvents, value)) m_RemoveDuplicateEvents = value; } } // 0x16 (22)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

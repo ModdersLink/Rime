@@ -5,43 +5,62 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class DamageScoringHandlerData : 
 		ScoringHandlerData
 	{
-		[ContainerField(8), LayoutImmutable, Blittable]
-		public float RepairVehicleLimit { get; set; } // 0x8 (8)
+		protected float m_RepairVehicleLimit = new float();
+		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(114758805)]
+		public float RepairVehicleLimit { get { return m_RepairVehicleLimit; } set { if (OnPropertyChanging("DamageScoringHandlerData." + nameof(RepairVehicleLimit), this, m_RepairVehicleLimit, value)) m_RepairVehicleLimit = value; } } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public float DamageTeamVehicleLimit { get; set; } // 0xC (12)
+		protected float m_DamageTeamVehicleLimit = new float();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(3777295358)]
+		public float DamageTeamVehicleLimit { get { return m_DamageTeamVehicleLimit; } set { if (OnPropertyChanging("DamageScoringHandlerData." + nameof(DamageTeamVehicleLimit), this, m_DamageTeamVehicleLimit, value)) m_DamageTeamVehicleLimit = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public float TeamHealingLimit { get; set; } // 0x10 (16)
+		protected float m_TeamHealingLimit = new float();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(3140344621)]
+		public float TeamHealingLimit { get { return m_TeamHealingLimit; } set { if (OnPropertyChanging("DamageScoringHandlerData." + nameof(TeamHealingLimit), this, m_TeamHealingLimit, value)) m_TeamHealingLimit = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
-		public float TeamDamageLimit { get; set; } // 0x14 (20)
+		protected float m_TeamDamageLimit = new float();
+		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(2358643014)]
+		public float TeamDamageLimit { get { return m_TeamDamageLimit; } set { if (OnPropertyChanging("DamageScoringHandlerData." + nameof(TeamDamageLimit), this, m_TeamDamageLimit, value)) m_TeamDamageLimit = value; } } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable]
-		public float KillAssistLimit { get; set; } // 0x18 (24)
+		protected float m_KillAssistLimit = new float();
+		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(97298589)]
+		public float KillAssistLimit { get { return m_KillAssistLimit; } set { if (OnPropertyChanging("DamageScoringHandlerData." + nameof(KillAssistLimit), this, m_KillAssistLimit, value)) m_KillAssistLimit = value; } } // 0x18 (24)
 		
-		[ContainerField(28), LayoutImmutable, Blittable]
-		public float KillAssistTimeout { get; set; } // 0x1C (28)
+		protected float m_KillAssistTimeout = new float();
+		[ContainerField(28), LayoutImmutable, Blittable, ContainerFieldNameHash(3202038131)]
+		public float KillAssistTimeout { get { return m_KillAssistTimeout; } set { if (OnPropertyChanging("DamageScoringHandlerData." + nameof(KillAssistTimeout), this, m_KillAssistTimeout, value)) m_KillAssistTimeout = value; } } // 0x1C (28)
 		
-		[ContainerField(32), LayoutImmutable, Blittable]
-		public float VehicleDestroyAssistLimit { get; set; } // 0x20 (32)
+		protected float m_VehicleDestroyAssistLimit = new float();
+		[ContainerField(32), LayoutImmutable, Blittable, ContainerFieldNameHash(1242125957)]
+		public float VehicleDestroyAssistLimit { get { return m_VehicleDestroyAssistLimit; } set { if (OnPropertyChanging("DamageScoringHandlerData." + nameof(VehicleDestroyAssistLimit), this, m_VehicleDestroyAssistLimit, value)) m_VehicleDestroyAssistLimit = value; } } // 0x20 (32)
 		
-		[ContainerField(36), LayoutImmutable, Blittable]
-		public float SaviorKillTimeout { get; set; } // 0x24 (36)
+		protected float m_SaviorKillTimeout = new float();
+		[ContainerField(36), LayoutImmutable, Blittable, ContainerFieldNameHash(3941596332)]
+		public float SaviorKillTimeout { get { return m_SaviorKillTimeout; } set { if (OnPropertyChanging("DamageScoringHandlerData." + nameof(SaviorKillTimeout), this, m_SaviorKillTimeout, value)) m_SaviorKillTimeout = value; } } // 0x24 (36)
 		
-		[ContainerField(40), LayoutImmutable, Blittable]
-		public float SaviorDamageLimit { get; set; } // 0x28 (40)
+		protected float m_SaviorDamageLimit = new float();
+		[ContainerField(40), LayoutImmutable, Blittable, ContainerFieldNameHash(3932840587)]
+		public float SaviorDamageLimit { get { return m_SaviorDamageLimit; } set { if (OnPropertyChanging("DamageScoringHandlerData." + nameof(SaviorDamageLimit), this, m_SaviorDamageLimit, value)) m_SaviorDamageLimit = value; } } // 0x28 (40)
 		
-		[ContainerField(44), LayoutImmutable, Blittable]
-		public float HotVehicleTimeout { get; set; } // 0x2C (44)
+		protected float m_HotVehicleTimeout = new float();
+		[ContainerField(44), LayoutImmutable, Blittable, ContainerFieldNameHash(1202160117)]
+		public float HotVehicleTimeout { get { return m_HotVehicleTimeout; } set { if (OnPropertyChanging("DamageScoringHandlerData." + nameof(HotVehicleTimeout), this, m_HotVehicleTimeout, value)) m_HotVehicleTimeout = value; } } // 0x2C (44)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

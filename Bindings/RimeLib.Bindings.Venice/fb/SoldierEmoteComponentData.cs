@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class SoldierEmoteComponentData : 
 		ComponentData
 	{
-		[ContainerField(96)]
-		public SoldierEmoteBinding Binding { get; set; } = new SoldierEmoteBinding(); // 0x60 (96)
+		protected SoldierEmoteBinding m_Binding = new SoldierEmoteBinding();
+		[ContainerField(96), ContainerFieldNameHash(2590060228)]
+		public SoldierEmoteBinding Binding { get { return m_Binding; } set { if (OnPropertyChanging("SoldierEmoteComponentData." + nameof(Binding), this, m_Binding, value)) m_Binding = value; } } // 0x60 (96)
 		
-		[ContainerField(160)]
-		public RefArray<SoldierEmoteNetworkedMessageMapping> NetworkedMessageMappings { get; set; } = new RefArray<SoldierEmoteNetworkedMessageMapping>(); // 0xA0 (160)
+		protected RefArray<SoldierEmoteNetworkedMessageMapping> m_NetworkedMessageMappings = new RefArray<SoldierEmoteNetworkedMessageMapping>();
+		[ContainerField(160), ContainerFieldNameHash(682902766)]
+		public RefArray<SoldierEmoteNetworkedMessageMapping> NetworkedMessageMappings { get { return m_NetworkedMessageMappings; } set { if (OnPropertyChanging("SoldierEmoteComponentData." + nameof(NetworkedMessageMappings), this, m_NetworkedMessageMappings, value)) m_NetworkedMessageMappings = value; } } // 0xA0 (160)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

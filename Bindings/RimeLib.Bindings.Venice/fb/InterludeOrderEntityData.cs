@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class InterludeOrderEntityData : 
 		BFOrderEntityData
 	{
-		[ContainerField(40), LayoutImmutable, Blittable]
-		public bool IsCutscene { get; set; } // 0x28 (40)
+		protected bool m_IsCutscene = new bool();
+		[ContainerField(40), LayoutImmutable, Blittable, ContainerFieldNameHash(2932449315)]
+		public bool IsCutscene { get { return m_IsCutscene; } set { if (OnPropertyChanging("InterludeOrderEntityData." + nameof(IsCutscene), this, m_IsCutscene, value)) m_IsCutscene = value; } } // 0x28 (40)
 		
-		[ContainerField(41), LayoutImmutable, Blittable]
-		public bool Crouch { get; set; } // 0x29 (41)
+		protected bool m_Crouch = new bool();
+		[ContainerField(41), LayoutImmutable, Blittable, ContainerFieldNameHash(2729602053)]
+		public bool Crouch { get { return m_Crouch; } set { if (OnPropertyChanging("InterludeOrderEntityData." + nameof(Crouch), this, m_Crouch, value)) m_Crouch = value; } } // 0x29 (41)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

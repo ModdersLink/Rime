@@ -5,29 +5,42 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class SimpleTransformNodeData : 
 		AudioGraphNodeData
 	{
-		[ContainerField(8)]
-		public AudioGraphNodePort X { get; set; } = new AudioGraphNodePort(); // 0x8 (8)
+		protected AudioGraphNodePort m_X = new AudioGraphNodePort();
+		[ContainerField(8), ContainerFieldNameHash(177661)]
+		public AudioGraphNodePort X { get { return m_X; } set { if (OnPropertyChanging("SimpleTransformNodeData." + nameof(X), this, m_X, value)) m_X = value; } } // 0x8 (8)
 		
-		[ContainerField(16)]
-		public AudioGraphNodePort Y { get; set; } = new AudioGraphNodePort(); // 0x10 (16)
+		protected AudioGraphNodePort m_Y = new AudioGraphNodePort();
+		[ContainerField(16), ContainerFieldNameHash(177660)]
+		public AudioGraphNodePort Y { get { return m_Y; } set { if (OnPropertyChanging("SimpleTransformNodeData." + nameof(Y), this, m_Y, value)) m_Y = value; } } // 0x10 (16)
 		
-		[ContainerField(24)]
-		public AudioGraphNodePort Z { get; set; } = new AudioGraphNodePort(); // 0x18 (24)
+		protected AudioGraphNodePort m_Z = new AudioGraphNodePort();
+		[ContainerField(24), ContainerFieldNameHash(177663)]
+		public AudioGraphNodePort Z { get { return m_Z; } set { if (OnPropertyChanging("SimpleTransformNodeData." + nameof(Z), this, m_Z, value)) m_Z = value; } } // 0x18 (24)
 		
-		[ContainerField(32)]
-		public SimpleTransformOperation Operation { get; set; } = new SimpleTransformOperation(); // 0x20 (32)
+		protected SimpleTransformOperation m_Operation = new SimpleTransformOperation();
+		[ContainerField(32), ContainerFieldNameHash(2346271248)]
+		public SimpleTransformOperation Operation { get { return m_Operation; } set { if (OnPropertyChanging("SimpleTransformNodeData." + nameof(Operation), this, m_Operation, value)) m_Operation = value; } } // 0x20 (32)
 		
-		[ContainerField(36)]
-		public AngleUnit AngleUnit { get; set; } = new AngleUnit(); // 0x24 (36)
+		protected AngleUnit m_AngleUnit = new AngleUnit();
+		[ContainerField(36), ContainerFieldNameHash(1824187906)]
+		public AngleUnit AngleUnit { get { return m_AngleUnit; } set { if (OnPropertyChanging("SimpleTransformNodeData." + nameof(AngleUnit), this, m_AngleUnit, value)) m_AngleUnit = value; } } // 0x24 (36)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

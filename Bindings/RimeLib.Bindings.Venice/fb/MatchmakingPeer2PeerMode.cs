@@ -5,9 +5,20 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
+
 namespace fb
 {
-    public enum MatchmakingPeer2PeerMode : int
+	public enum MatchmakingPeer2PeerMode : int
 	{
 		MatchmakingPeer2PeerMode_FullMesh = 0,
 		MatchmakingPeer2PeerMode_PartialMesh = 1,

@@ -5,28 +5,42 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class AntTrackItemData : 
 		DataContainer
 	{
-		[ContainerField(8)]
-		public AntRef Controller { get; set; } = new AntRef(); // 0x8 (8)
+		protected AntRef m_Controller = new AntRef();
+		[ContainerField(8), ContainerFieldNameHash(1870777401)]
+		public AntRef Controller { get { return m_Controller; } set { if (OnPropertyChanging("AntTrackItemData." + nameof(Controller), this, m_Controller, value)) m_Controller = value; } } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public int SequenceTrackIndex { get; set; } // 0xC (12)
+		protected int m_SequenceTrackIndex = new int();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(2030753355)]
+		public int SequenceTrackIndex { get { return m_SequenceTrackIndex; } set { if (OnPropertyChanging("AntTrackItemData." + nameof(SequenceTrackIndex), this, m_SequenceTrackIndex, value)) m_SequenceTrackIndex = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public int StartTime { get; set; } // 0x10 (16)
+		protected int m_StartTime = new int();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(3727579056)]
+		public int StartTime { get { return m_StartTime; } set { if (OnPropertyChanging("AntTrackItemData." + nameof(StartTime), this, m_StartTime, value)) m_StartTime = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
-		public uint NumTicks { get; set; } // 0x14 (20)
+		protected uint m_NumTicks = new uint();
+		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(775952821)]
+		public uint NumTicks { get { return m_NumTicks; } set { if (OnPropertyChanging("AntTrackItemData." + nameof(NumTicks), this, m_NumTicks, value)) m_NumTicks = value; } } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable]
-		public bool ResumeAtEnd { get; set; } // 0x18 (24)
+		protected bool m_ResumeAtEnd = new bool();
+		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(1451056774)]
+		public bool ResumeAtEnd { get { return m_ResumeAtEnd; } set { if (OnPropertyChanging("AntTrackItemData." + nameof(ResumeAtEnd), this, m_ResumeAtEnd, value)) m_ResumeAtEnd = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

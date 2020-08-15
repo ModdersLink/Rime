@@ -5,50 +5,70 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class EnlightenBuildRadiositySceneDesc : 
 		DataContainer
 	{
-		[ContainerField(8)]
-		public List<EnlightenLightProbeSet> LightProbeSets { get; set; } = new List<EnlightenLightProbeSet>(); // 0x8 (8)
+		protected List<EnlightenLightProbeSet> m_LightProbeSets = new List<EnlightenLightProbeSet>();
+		[ContainerField(8), ContainerFieldNameHash(3933473824)]
+		public List<EnlightenLightProbeSet> LightProbeSets { get { return m_LightProbeSets; } set { if (OnPropertyChanging("EnlightenBuildRadiositySceneDesc." + nameof(LightProbeSets), this, m_LightProbeSets, value)) m_LightProbeSets = value; } } // 0x8 (8)
 		
-		[ContainerField(12)]
-		public List<EnlightenInputInstance> Instances { get; set; } = new List<EnlightenInputInstance>(); // 0xC (12)
+		protected List<EnlightenInputInstance> m_Instances = new List<EnlightenInputInstance>();
+		[ContainerField(12), ContainerFieldNameHash(3890087583)]
+		public List<EnlightenInputInstance> Instances { get { return m_Instances; } set { if (OnPropertyChanging("EnlightenBuildRadiositySceneDesc." + nameof(Instances), this, m_Instances, value)) m_Instances = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public List<Vec3> StaticLightProbes { get; set; } = new List<Vec3>(); // 0x10 (16)
+		protected List<Vec3> m_StaticLightProbes = new List<Vec3>();
+		[ContainerField(16), ContainerFieldNameHash(2948767738)]
+		public List<Vec3> StaticLightProbes { get { return m_StaticLightProbes; } set { if (OnPropertyChanging("EnlightenBuildRadiositySceneDesc." + nameof(StaticLightProbes), this, m_StaticLightProbes, value)) m_StaticLightProbes = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable]
-		public string Terrain { get; set; } // 0x14 (20)
+		protected string m_Terrain = new string();
+		[ContainerField(20), LayoutImmutable, ContainerFieldNameHash(3173545970)]
+		public string Terrain { get { return m_Terrain; } set { if (OnPropertyChanging("EnlightenBuildRadiositySceneDesc." + nameof(Terrain), this, m_Terrain, value)) m_Terrain = value; } } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable]
-		public uint SamplesPerCluster { get; set; } // 0x18 (24)
+		protected uint m_SamplesPerCluster = new uint();
+		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(4004061885)]
+		public uint SamplesPerCluster { get { return m_SamplesPerCluster; } set { if (OnPropertyChanging("EnlightenBuildRadiositySceneDesc." + nameof(SamplesPerCluster), this, m_SamplesPerCluster, value)) m_SamplesPerCluster = value; } } // 0x18 (24)
 		
-		[ContainerField(28), LayoutImmutable, Blittable]
-		public float SystemInfluenceRadius { get; set; } // 0x1C (28)
+		protected float m_SystemInfluenceRadius = new float();
+		[ContainerField(28), LayoutImmutable, Blittable, ContainerFieldNameHash(4129099021)]
+		public float SystemInfluenceRadius { get { return m_SystemInfluenceRadius; } set { if (OnPropertyChanging("EnlightenBuildRadiositySceneDesc." + nameof(SystemInfluenceRadius), this, m_SystemInfluenceRadius, value)) m_SystemInfluenceRadius = value; } } // 0x1C (28)
 		
-		[ContainerField(32), LayoutImmutable, Blittable]
-		public uint SystemSize { get; set; } // 0x20 (32)
+		protected uint m_SystemSize = new uint();
+		[ContainerField(32), LayoutImmutable, Blittable, ContainerFieldNameHash(280201861)]
+		public uint SystemSize { get { return m_SystemSize; } set { if (OnPropertyChanging("EnlightenBuildRadiositySceneDesc." + nameof(SystemSize), this, m_SystemSize, value)) m_SystemSize = value; } } // 0x20 (32)
 		
-		[ContainerField(36), LayoutImmutable, Blittable]
-		public uint IrBudget { get; set; } // 0x24 (36)
+		protected uint m_IrBudget = new uint();
+		[ContainerField(36), LayoutImmutable, Blittable, ContainerFieldNameHash(4184612187)]
+		public uint IrBudget { get { return m_IrBudget; } set { if (OnPropertyChanging("EnlightenBuildRadiositySceneDesc." + nameof(IrBudget), this, m_IrBudget, value)) m_IrBudget = value; } } // 0x24 (36)
 		
-		[ContainerField(40), LayoutImmutable, Blittable]
-		public float ClusterSize { get; set; } // 0x28 (40)
+		protected float m_ClusterSize = new float();
+		[ContainerField(40), LayoutImmutable, Blittable, ContainerFieldNameHash(2116207210)]
+		public float ClusterSize { get { return m_ClusterSize; } set { if (OnPropertyChanging("EnlightenBuildRadiositySceneDesc." + nameof(ClusterSize), this, m_ClusterSize, value)) m_ClusterSize = value; } } // 0x28 (40)
 		
-		[ContainerField(44), LayoutImmutable, Blittable]
-		public bool SaveDebugData { get; set; } // 0x2C (44)
+		protected bool m_SaveDebugData = new bool();
+		[ContainerField(44), LayoutImmutable, Blittable, ContainerFieldNameHash(4026935077)]
+		public bool SaveDebugData { get { return m_SaveDebugData; } set { if (OnPropertyChanging("EnlightenBuildRadiositySceneDesc." + nameof(SaveDebugData), this, m_SaveDebugData, value)) m_SaveDebugData = value; } } // 0x2C (44)
 		
-		[ContainerField(45), LayoutImmutable, Blittable]
-		public bool DistributedBuild { get; set; } // 0x2D (45)
+		protected bool m_DistributedBuild = new bool();
+		[ContainerField(45), LayoutImmutable, Blittable, ContainerFieldNameHash(3046543104)]
+		public bool DistributedBuild { get { return m_DistributedBuild; } set { if (OnPropertyChanging("EnlightenBuildRadiositySceneDesc." + nameof(DistributedBuild), this, m_DistributedBuild, value)) m_DistributedBuild = value; } } // 0x2D (45)
 		
-		[ContainerField(46), LayoutImmutable, Blittable]
-		public bool CacheEnable { get; set; } // 0x2E (46)
+		protected bool m_CacheEnable = new bool();
+		[ContainerField(46), LayoutImmutable, Blittable, ContainerFieldNameHash(2232305320)]
+		public bool CacheEnable { get { return m_CacheEnable; } set { if (OnPropertyChanging("EnlightenBuildRadiositySceneDesc." + nameof(CacheEnable), this, m_CacheEnable, value)) m_CacheEnable = value; } } // 0x2E (46)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

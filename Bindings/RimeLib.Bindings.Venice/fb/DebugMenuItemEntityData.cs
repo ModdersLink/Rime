@@ -5,20 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class DebugMenuItemEntityData : 
 		GameEntityData
 	{
-		[ContainerField(96)]
-		public DebugMenuItemType ItemType { get; set; } = new DebugMenuItemType(); // 0x60 (96)
+		protected DebugMenuItemType m_ItemType = new DebugMenuItemType();
+		[ContainerField(96), ContainerFieldNameHash(2972161480)]
+		public DebugMenuItemType ItemType { get { return m_ItemType; } set { if (OnPropertyChanging("DebugMenuItemEntityData." + nameof(ItemType), this, m_ItemType, value)) m_ItemType = value; } } // 0x60 (96)
 		
-		[ContainerField(100), LayoutImmutable]
-		public string Text { get; set; } // 0x64 (100)
+		protected string m_Text = new string();
+		[ContainerField(100), LayoutImmutable, ContainerFieldNameHash(2089309304)]
+		public string Text { get { return m_Text; } set { if (OnPropertyChanging("DebugMenuItemEntityData." + nameof(Text), this, m_Text, value)) m_Text = value; } } // 0x64 (100)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

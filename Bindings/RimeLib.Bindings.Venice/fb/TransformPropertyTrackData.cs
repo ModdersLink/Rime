@@ -5,17 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class TransformPropertyTrackData : 
 		SimplePropertyTrackData
 	{
-		[ContainerField(20)]
-		public List<LinearTransform> Values { get; set; } = new List<LinearTransform>(); // 0x14 (20)
+		protected List<LinearTransform> m_Values = new List<LinearTransform>();
+		[ContainerField(20), ContainerFieldNameHash(3142410589)]
+		public List<LinearTransform> Values { get { return m_Values; } set { if (OnPropertyChanging("TransformPropertyTrackData." + nameof(Values), this, m_Values, value)) m_Values = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

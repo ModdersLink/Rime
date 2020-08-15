@@ -5,28 +5,42 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class ViewFxData : 
 		DataContainer
 	{
-		[ContainerField(8)]
-		public PoissonRadialBlurData PoissonRadialBlur { get; set; } = new PoissonRadialBlurData(); // 0x8 (8)
+		protected PoissonRadialBlurData m_PoissonRadialBlur = new PoissonRadialBlurData();
+		[ContainerField(8), ContainerFieldNameHash(838527112)]
+		public PoissonRadialBlurData PoissonRadialBlur { get { return m_PoissonRadialBlur; } set { if (OnPropertyChanging("ViewFxData." + nameof(PoissonRadialBlur), this, m_PoissonRadialBlur, value)) m_PoissonRadialBlur = value; } } // 0x8 (8)
 		
-		[ContainerField(32)]
-		public ColorTintData ColorTint { get; set; } = new ColorTintData(); // 0x20 (32)
+		protected ColorTintData m_ColorTint = new ColorTintData();
+		[ContainerField(32), ContainerFieldNameHash(518108063)]
+		public ColorTintData ColorTint { get { return m_ColorTint; } set { if (OnPropertyChanging("ViewFxData." + nameof(ColorTint), this, m_ColorTint, value)) m_ColorTint = value; } } // 0x20 (32)
 		
-		[ContainerField(96), LayoutImmutable, Blittable]
-		public float BlurAdd { get; set; } // 0x60 (96)
+		protected float m_BlurAdd = new float();
+		[ContainerField(96), LayoutImmutable, Blittable, ContainerFieldNameHash(2736421901)]
+		public float BlurAdd { get { return m_BlurAdd; } set { if (OnPropertyChanging("ViewFxData." + nameof(BlurAdd), this, m_BlurAdd, value)) m_BlurAdd = value; } } // 0x60 (96)
 		
-		[ContainerField(100), LayoutImmutable, Blittable]
-		public bool ColorTintEnable { get; set; } // 0x64 (100)
+		protected bool m_ColorTintEnable = new bool();
+		[ContainerField(100), LayoutImmutable, Blittable, ContainerFieldNameHash(596952702)]
+		public bool ColorTintEnable { get { return m_ColorTintEnable; } set { if (OnPropertyChanging("ViewFxData." + nameof(ColorTintEnable), this, m_ColorTintEnable, value)) m_ColorTintEnable = value; } } // 0x64 (100)
 		
-		[ContainerField(101), LayoutImmutable, Blittable]
-		public bool PoissonRadialBlurEnable { get; set; } // 0x65 (101)
+		protected bool m_PoissonRadialBlurEnable = new bool();
+		[ContainerField(101), LayoutImmutable, Blittable, ContainerFieldNameHash(2327396521)]
+		public bool PoissonRadialBlurEnable { get { return m_PoissonRadialBlurEnable; } set { if (OnPropertyChanging("ViewFxData." + nameof(PoissonRadialBlurEnable), this, m_PoissonRadialBlurEnable, value)) m_PoissonRadialBlurEnable = value; } } // 0x65 (101)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

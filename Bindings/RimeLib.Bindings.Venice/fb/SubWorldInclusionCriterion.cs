@@ -5,20 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class SubWorldInclusionCriterion : 
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable]
-		public string Name { get; set; } // 0x8 (8)
+		protected string m_Name = new string();
+		[ContainerField(8), LayoutImmutable, ContainerFieldNameHash(2088949890)]
+		public string Name { get { return m_Name; } set { if (OnPropertyChanging("SubWorldInclusionCriterion." + nameof(Name), this, m_Name, value)) m_Name = value; } } // 0x8 (8)
 		
-		[ContainerField(12)]
-		public List<string> Options { get; set; } = new List<string>(); // 0xC (12)
+		protected List<string> m_Options = new List<string>();
+		[ContainerField(12), ContainerFieldNameHash(958915349)]
+		public List<string> Options { get { return m_Options; } set { if (OnPropertyChanging("SubWorldInclusionCriterion." + nameof(Options), this, m_Options, value)) m_Options = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

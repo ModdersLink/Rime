@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(8)]
+	[ContainerType(8)]
 	public class EnterVehicleSurveyEvent : 
 		MetricEvent
 	{
-		[ContainerField(16), LayoutImmutable]
-		public string VehicleName { get; set; } // 0x10 (16)
+		protected string m_VehicleName = new string();
+		[ContainerField(16), LayoutImmutable, ContainerFieldNameHash(926391226)]
+		public string VehicleName { get { return m_VehicleName; } set { if (OnPropertyChanging("EnterVehicleSurveyEvent." + nameof(VehicleName), this, m_VehicleName, value)) m_VehicleName = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
-		public GUID SurveyMetricLink { get; set; } // 0x14 (20)
+		protected GUID m_SurveyMetricLink = new GUID();
+		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(1497575487)]
+		public GUID SurveyMetricLink { get { return m_SurveyMetricLink; } set { if (OnPropertyChanging("EnterVehicleSurveyEvent." + nameof(SurveyMetricLink), this, m_SurveyMetricLink, value)) m_SurveyMetricLink = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

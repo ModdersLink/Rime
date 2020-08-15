@@ -5,23 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class SoundTestTransformTask : 
 		SoundTestTaskSpec
 	{
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 InitialPosition { get; set; } = new Vec3(); // 0x10 (16)
+		protected Vec3 m_InitialPosition = new Vec3();
+		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(3791803234)]
+		public Vec3 InitialPosition { get { return m_InitialPosition; } set { if (OnPropertyChanging("SoundTestTransformTask." + nameof(InitialPosition), this, m_InitialPosition, value)) m_InitialPosition = value; } } // 0x10 (16)
 		
-		[ContainerField(32)]
-		public SoundTestTransformBehavior Behavior { get; set; } = new SoundTestTransformBehavior(); // 0x20 (32)
+		protected SoundTestTransformBehavior m_Behavior = new SoundTestTransformBehavior();
+		[ContainerField(32), ContainerFieldNameHash(1967808137)]
+		public SoundTestTransformBehavior Behavior { get { return m_Behavior; } set { if (OnPropertyChanging("SoundTestTransformTask." + nameof(Behavior), this, m_Behavior, value)) m_Behavior = value; } } // 0x20 (32)
 		
-		[ContainerField(36), LayoutImmutable, Blittable]
-		public bool RelativeListener { get; set; } // 0x24 (36)
+		protected bool m_RelativeListener = new bool();
+		[ContainerField(36), LayoutImmutable, Blittable, ContainerFieldNameHash(2476645295)]
+		public bool RelativeListener { get { return m_RelativeListener; } set { if (OnPropertyChanging("SoundTestTransformTask." + nameof(RelativeListener), this, m_RelativeListener, value)) m_RelativeListener = value; } } // 0x24 (36)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

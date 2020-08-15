@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(8)]
+	[ContainerType(8)]
 	public class PlayerState : 
 		MetricState
 	{
-		[ContainerField(24), LayoutImmutable, Blittable]
-		public ulong OnlineId { get; set; } // 0x18 (24)
+		protected ulong m_OnlineId = new ulong();
+		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(3139508999)]
+		public ulong OnlineId { get { return m_OnlineId; } set { if (OnPropertyChanging("PlayerState." + nameof(OnlineId), this, m_OnlineId, value)) m_OnlineId = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

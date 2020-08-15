@@ -5,20 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class AABBData : 
 		BaseShapeData
 	{
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 Position { get; set; } = new Vec3(); // 0x10 (16)
+		protected Vec3 m_Position = new Vec3();
+		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(3402582524)]
+		public Vec3 Position { get { return m_Position; } set { if (OnPropertyChanging("AABBData." + nameof(Position), this, m_Position, value)) m_Position = value; } } // 0x10 (16)
 		
-		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 HalfExtents { get; set; } = new Vec3(); // 0x20 (32)
+		protected Vec3 m_HalfExtents = new Vec3();
+		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(905253763)]
+		public Vec3 HalfExtents { get { return m_HalfExtents; } set { if (OnPropertyChanging("AABBData." + nameof(HalfExtents), this, m_HalfExtents, value)) m_HalfExtents = value; } } // 0x20 (32)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(8)]
+	[ContainerType(8)]
 	public class ClientJuiceState : 
 		MetricState
 	{
-		[ContainerField(24), LayoutImmutable, Blittable]
-		public int SessionId { get; set; } // 0x18 (24)
+		protected int m_SessionId = new int();
+		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(1655214230)]
+		public int SessionId { get { return m_SessionId; } set { if (OnPropertyChanging("ClientJuiceState." + nameof(SessionId), this, m_SessionId, value)) m_SessionId = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

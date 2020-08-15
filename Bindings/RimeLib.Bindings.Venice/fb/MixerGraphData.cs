@@ -5,25 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class MixerGraphData : 
 		AudioGraphData
 	{
-		[ContainerField(28)]
-		public RefArray<AudioGraphParameter> Inputs { get; set; } = new RefArray<AudioGraphParameter>(); // 0x1C (28)
+		protected RefArray<AudioGraphParameter> m_Inputs = new RefArray<AudioGraphParameter>();
+		[ContainerField(28), ContainerFieldNameHash(2784267136)]
+		public RefArray<AudioGraphParameter> Inputs { get { return m_Inputs; } set { if (OnPropertyChanging("MixerGraphData." + nameof(Inputs), this, m_Inputs, value)) m_Inputs = value; } } // 0x1C (28)
 		
-		[ContainerField(32)]
-		public List<MixerValueAccumulateMode> AccumulateModes { get; set; } = new List<MixerValueAccumulateMode>(); // 0x20 (32)
+		protected List<MixerValueAccumulateMode> m_AccumulateModes = new List<MixerValueAccumulateMode>();
+		[ContainerField(32), ContainerFieldNameHash(918507941)]
+		public List<MixerValueAccumulateMode> AccumulateModes { get { return m_AccumulateModes; } set { if (OnPropertyChanging("MixerGraphData." + nameof(AccumulateModes), this, m_AccumulateModes, value)) m_AccumulateModes = value; } } // 0x20 (32)
 		
-		[ContainerField(36)]
-		public RefArray<AudioGraphParameter> Outputs { get; set; } = new RefArray<AudioGraphParameter>(); // 0x24 (36)
+		protected RefArray<AudioGraphParameter> m_Outputs = new RefArray<AudioGraphParameter>();
+		[ContainerField(36), ContainerFieldNameHash(1070022089)]
+		public RefArray<AudioGraphParameter> Outputs { get { return m_Outputs; } set { if (OnPropertyChanging("MixerGraphData." + nameof(Outputs), this, m_Outputs, value)) m_Outputs = value; } } // 0x24 (36)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

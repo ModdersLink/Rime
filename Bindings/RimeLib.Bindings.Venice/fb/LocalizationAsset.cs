@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class LocalizationAsset : 
 		Asset
 	{
-		[ContainerField(12)]
-		public RefArray<UITextDatabase> LocalizedTexts { get; set; } = new RefArray<UITextDatabase>(); // 0xC (12)
+		protected RefArray<UITextDatabase> m_LocalizedTexts = new RefArray<UITextDatabase>();
+		[ContainerField(12), ContainerFieldNameHash(2715502676)]
+		public RefArray<UITextDatabase> LocalizedTexts { get { return m_LocalizedTexts; } set { if (OnPropertyChanging("LocalizationAsset." + nameof(LocalizedTexts), this, m_LocalizedTexts, value)) m_LocalizedTexts = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

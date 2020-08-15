@@ -5,22 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class RadiosityMaterial : 
 		DataContainer
 	{
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 Color { get; set; } = new Vec3(); // 0x10 (16)
+		protected Vec3 m_Color = new Vec3();
+		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(212387320)]
+		public Vec3 Color { get { return m_Color; } set { if (OnPropertyChanging("RadiosityMaterial." + nameof(Color), this, m_Color, value)) m_Color = value; } } // 0x10 (16)
 		
-		[ContainerField(32), LayoutImmutable]
-		public string Name { get; set; } // 0x20 (32)
+		protected string m_Name = new string();
+		[ContainerField(32), LayoutImmutable, ContainerFieldNameHash(2088949890)]
+		public string Name { get { return m_Name; } set { if (OnPropertyChanging("RadiosityMaterial." + nameof(Name), this, m_Name, value)) m_Name = value; } } // 0x20 (32)
 		
-		[ContainerField(36), LayoutImmutable, Blittable]
-		public bool Emissive { get; set; } // 0x24 (36)
+		protected bool m_Emissive = new bool();
+		[ContainerField(36), LayoutImmutable, Blittable, ContainerFieldNameHash(782359646)]
+		public bool Emissive { get { return m_Emissive; } set { if (OnPropertyChanging("RadiosityMaterial." + nameof(Emissive), this, m_Emissive, value)) m_Emissive = value; } } // 0x24 (36)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

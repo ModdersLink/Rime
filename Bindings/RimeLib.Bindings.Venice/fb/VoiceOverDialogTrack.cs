@@ -5,45 +5,62 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class VoiceOverDialogTrack : 
 		DataContainer
 	{
-		[ContainerField(8)]
-		public CtrRef<VoiceOverValueConnection> Source { get; set; } = new CtrRef<VoiceOverValueConnection>(); // 0x8 (8)
+		protected CtrRef<VoiceOverValueConnection> m_Source = new CtrRef<VoiceOverValueConnection>();
+		[ContainerField(8), ContainerFieldNameHash(3339738264)]
+		public CtrRef<VoiceOverValueConnection> Source { get { return m_Source; } set { if (OnPropertyChanging("VoiceOverDialogTrack." + nameof(Source), this, m_Source, value)) m_Source = value; } } // 0x8 (8)
 		
-		[ContainerField(12)]
-		public CtrRef<VoiceOverValueConnection> TakeControl { get; set; } = new CtrRef<VoiceOverValueConnection>(); // 0xC (12)
+		protected CtrRef<VoiceOverValueConnection> m_TakeControl = new CtrRef<VoiceOverValueConnection>();
+		[ContainerField(12), ContainerFieldNameHash(777187609)]
+		public CtrRef<VoiceOverValueConnection> TakeControl { get { return m_TakeControl; } set { if (OnPropertyChanging("VoiceOverDialogTrack." + nameof(TakeControl), this, m_TakeControl, value)) m_TakeControl = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public List<VoiceOverDialogTakeMapping> TakeIndexMapping { get; set; } = new List<VoiceOverDialogTakeMapping>(); // 0x10 (16)
+		protected List<VoiceOverDialogTakeMapping> m_TakeIndexMapping = new List<VoiceOverDialogTakeMapping>();
+		[ContainerField(16), ContainerFieldNameHash(1460629004)]
+		public List<VoiceOverDialogTakeMapping> TakeIndexMapping { get { return m_TakeIndexMapping; } set { if (OnPropertyChanging("VoiceOverDialogTrack." + nameof(TakeIndexMapping), this, m_TakeIndexMapping, value)) m_TakeIndexMapping = value; } } // 0x10 (16)
 		
-		[ContainerField(20)]
-		public VoiceOverDialogTakeBehavior TakeSwitching { get; set; } = new VoiceOverDialogTakeBehavior(); // 0x14 (20)
+		protected VoiceOverDialogTakeBehavior m_TakeSwitching = new VoiceOverDialogTakeBehavior();
+		[ContainerField(20), ContainerFieldNameHash(1993728428)]
+		public VoiceOverDialogTakeBehavior TakeSwitching { get { return m_TakeSwitching; } set { if (OnPropertyChanging("VoiceOverDialogTrack." + nameof(TakeSwitching), this, m_TakeSwitching, value)) m_TakeSwitching = value; } } // 0x14 (20)
 		
-		[ContainerField(24)]
-		public RefArray<VoiceOverDialogClip> Clips { get; set; } = new RefArray<VoiceOverDialogClip>(); // 0x18 (24)
+		protected RefArray<VoiceOverDialogClip> m_Clips = new RefArray<VoiceOverDialogClip>();
+		[ContainerField(24), ContainerFieldNameHash(212627296)]
+		public RefArray<VoiceOverDialogClip> Clips { get { return m_Clips; } set { if (OnPropertyChanging("VoiceOverDialogTrack." + nameof(Clips), this, m_Clips, value)) m_Clips = value; } } // 0x18 (24)
 		
-		[ContainerField(28)]
-		public CtrRef<AudioGraphNodeData> SamplerNode { get; set; } = new CtrRef<AudioGraphNodeData>(); // 0x1C (28)
+		protected CtrRef<AudioGraphNodeData> m_SamplerNode = new CtrRef<AudioGraphNodeData>();
+		[ContainerField(28), ContainerFieldNameHash(2812102673)]
+		public CtrRef<AudioGraphNodeData> SamplerNode { get { return m_SamplerNode; } set { if (OnPropertyChanging("VoiceOverDialogTrack." + nameof(SamplerNode), this, m_SamplerNode, value)) m_SamplerNode = value; } } // 0x1C (28)
 		
-		[ContainerField(32)]
-		public CtrRef<AudioGraphNodeData> Output { get; set; } = new CtrRef<AudioGraphNodeData>(); // 0x20 (32)
+		protected CtrRef<AudioGraphNodeData> m_Output = new CtrRef<AudioGraphNodeData>();
+		[ContainerField(32), ContainerFieldNameHash(2895736442)]
+		public CtrRef<AudioGraphNodeData> Output { get { return m_Output; } set { if (OnPropertyChanging("VoiceOverDialogTrack." + nameof(Output), this, m_Output, value)) m_Output = value; } } // 0x20 (32)
 		
-		[ContainerField(36)]
-		public CtrRef<VoiceOverConversationQueueGroup> QueueGroup { get; set; } = new CtrRef<VoiceOverConversationQueueGroup>(); // 0x24 (36)
+		protected CtrRef<VoiceOverConversationQueueGroup> m_QueueGroup = new CtrRef<VoiceOverConversationQueueGroup>();
+		[ContainerField(36), ContainerFieldNameHash(2016027659)]
+		public CtrRef<VoiceOverConversationQueueGroup> QueueGroup { get { return m_QueueGroup; } set { if (OnPropertyChanging("VoiceOverDialogTrack." + nameof(QueueGroup), this, m_QueueGroup, value)) m_QueueGroup = value; } } // 0x24 (36)
 		
-		[ContainerField(40), LayoutImmutable, Blittable]
-		public sbyte ParentTrackIndex { get; set; } // 0x28 (40)
+		protected sbyte m_ParentTrackIndex = new sbyte();
+		[ContainerField(40), LayoutImmutable, Blittable, ContainerFieldNameHash(3800885128)]
+		public sbyte ParentTrackIndex { get { return m_ParentTrackIndex; } set { if (OnPropertyChanging("VoiceOverDialogTrack." + nameof(ParentTrackIndex), this, m_ParentTrackIndex, value)) m_ParentTrackIndex = value; } } // 0x28 (40)
 		
-		[ContainerField(41), LayoutImmutable, Blittable]
-		public bool TakeSwitchingOnResume { get; set; } // 0x29 (41)
+		protected bool m_TakeSwitchingOnResume = new bool();
+		[ContainerField(41), LayoutImmutable, Blittable, ContainerFieldNameHash(3503965716)]
+		public bool TakeSwitchingOnResume { get { return m_TakeSwitchingOnResume; } set { if (OnPropertyChanging("VoiceOverDialogTrack." + nameof(TakeSwitchingOnResume), this, m_TakeSwitchingOnResume, value)) m_TakeSwitchingOnResume = value; } } // 0x29 (41)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

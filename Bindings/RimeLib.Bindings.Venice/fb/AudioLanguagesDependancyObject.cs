@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class AudioLanguagesDependancyObject : 
 		DataContainer
 	{
-		[ContainerField(8)]
-		public RefArray<AudioLanguage> AudioLanguages { get; set; } = new RefArray<AudioLanguage>(); // 0x8 (8)
+		protected RefArray<AudioLanguage> m_AudioLanguages = new RefArray<AudioLanguage>();
+		[ContainerField(8), ContainerFieldNameHash(582937106)]
+		public RefArray<AudioLanguage> AudioLanguages { get { return m_AudioLanguages; } set { if (OnPropertyChanging("AudioLanguagesDependancyObject." + nameof(AudioLanguages), this, m_AudioLanguages, value)) m_AudioLanguages = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

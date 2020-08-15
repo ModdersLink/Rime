@@ -5,26 +5,38 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class WeaponSocketObjectData : 
 		SocketObjectDataBase
 	{
-		[ContainerField(8)]
-		public List<uint> ReferencedAssetHashes { get; set; } = new List<uint>(); // 0x8 (8)
+		protected List<uint> m_ReferencedAssetHashes = new List<uint>();
+		[ContainerField(8), ContainerFieldNameHash(3589205886)]
+		public List<uint> ReferencedAssetHashes { get { return m_ReferencedAssetHashes; } set { if (OnPropertyChanging("WeaponSocketObjectData." + nameof(ReferencedAssetHashes), this, m_ReferencedAssetHashes, value)) m_ReferencedAssetHashes = value; } } // 0x8 (8)
 		
-		[ContainerField(12)]
-		public CtrRef<Asset> Asset1p { get; set; } = new CtrRef<Asset>(); // 0xC (12)
+		protected CtrRef<Asset> m_Asset1p = new CtrRef<Asset>();
+		[ContainerField(12), ContainerFieldNameHash(969622868)]
+		public CtrRef<Asset> Asset1p { get { return m_Asset1p; } set { if (OnPropertyChanging("WeaponSocketObjectData." + nameof(Asset1p), this, m_Asset1p, value)) m_Asset1p = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public CtrRef<Asset> Asset1pzoom { get; set; } = new CtrRef<Asset>(); // 0x10 (16)
+		protected CtrRef<Asset> m_Asset1pzoom = new CtrRef<Asset>();
+		[ContainerField(16), ContainerFieldNameHash(230633315)]
+		public CtrRef<Asset> Asset1pzoom { get { return m_Asset1pzoom; } set { if (OnPropertyChanging("WeaponSocketObjectData." + nameof(Asset1pzoom), this, m_Asset1pzoom, value)) m_Asset1pzoom = value; } } // 0x10 (16)
 		
-		[ContainerField(20)]
-		public CtrRef<Asset> Asset3p { get; set; } = new CtrRef<Asset>(); // 0x14 (20)
+		protected CtrRef<Asset> m_Asset3p = new CtrRef<Asset>();
+		[ContainerField(20), ContainerFieldNameHash(969622806)]
+		public CtrRef<Asset> Asset3p { get { return m_Asset3p; } set { if (OnPropertyChanging("WeaponSocketObjectData." + nameof(Asset3p), this, m_Asset3p, value)) m_Asset3p = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

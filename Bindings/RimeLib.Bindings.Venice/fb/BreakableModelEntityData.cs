@@ -5,28 +5,42 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class BreakableModelEntityData : 
 		GamePhysicsEntityData
 	{
-		[ContainerField(112)]
-		public CtrRef<SurfaceShaderBaseAsset> DecalVolumeShader { get; set; } = new CtrRef<SurfaceShaderBaseAsset>(); // 0x70 (112)
+		protected CtrRef<SurfaceShaderBaseAsset> m_DecalVolumeShader = new CtrRef<SurfaceShaderBaseAsset>();
+		[ContainerField(112), ContainerFieldNameHash(1251902379)]
+		public CtrRef<SurfaceShaderBaseAsset> DecalVolumeShader { get { return m_DecalVolumeShader; } set { if (OnPropertyChanging("BreakableModelEntityData." + nameof(DecalVolumeShader), this, m_DecalVolumeShader, value)) m_DecalVolumeShader = value; } } // 0x70 (112)
 		
-		[ContainerField(116), LayoutImmutable, Blittable]
-		public float DecalVolumeScaleFactor { get; set; } // 0x74 (116)
+		protected float m_DecalVolumeScaleFactor = new float();
+		[ContainerField(116), LayoutImmutable, Blittable, ContainerFieldNameHash(3086740471)]
+		public float DecalVolumeScaleFactor { get { return m_DecalVolumeScaleFactor; } set { if (OnPropertyChanging("BreakableModelEntityData." + nameof(DecalVolumeScaleFactor), this, m_DecalVolumeScaleFactor, value)) m_DecalVolumeScaleFactor = value; } } // 0x74 (116)
 		
-		[ContainerField(120)]
-		public CtrRef<MeshAsset> Mesh { get; set; } = new CtrRef<MeshAsset>(); // 0x78 (120)
+		protected CtrRef<MeshAsset> m_Mesh = new CtrRef<MeshAsset>();
+		[ContainerField(120), ContainerFieldNameHash(2088783990)]
+		public CtrRef<MeshAsset> Mesh { get { return m_Mesh; } set { if (OnPropertyChanging("BreakableModelEntityData." + nameof(Mesh), this, m_Mesh, value)) m_Mesh = value; } } // 0x78 (120)
 		
-		[ContainerField(124), LayoutImmutable, Blittable]
-		public uint BoneCount { get; set; } // 0x7C (124)
+		protected uint m_BoneCount = new uint();
+		[ContainerField(124), LayoutImmutable, Blittable, ContainerFieldNameHash(939250912)]
+		public uint BoneCount { get { return m_BoneCount; } set { if (OnPropertyChanging("BreakableModelEntityData." + nameof(BoneCount), this, m_BoneCount, value)) m_BoneCount = value; } } // 0x7C (124)
 		
-		[ContainerField(128)]
-		public CtrRef<EdgeModelLightMapData> EdgeModelLightMapData { get; set; } = new CtrRef<EdgeModelLightMapData>(); // 0x80 (128)
+		protected CtrRef<EdgeModelLightMapData> m_EdgeModelLightMapData = new CtrRef<EdgeModelLightMapData>();
+		[ContainerField(128), ContainerFieldNameHash(863288475)]
+		public CtrRef<EdgeModelLightMapData> EdgeModelLightMapData { get { return m_EdgeModelLightMapData; } set { if (OnPropertyChanging("BreakableModelEntityData." + nameof(EdgeModelLightMapData), this, m_EdgeModelLightMapData, value)) m_EdgeModelLightMapData = value; } } // 0x80 (128)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

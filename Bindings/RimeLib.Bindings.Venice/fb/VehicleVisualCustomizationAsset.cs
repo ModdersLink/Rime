@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class VehicleVisualCustomizationAsset : 
 		Asset
 	{
-		[ContainerField(12)]
-		public RefArray<ShaderTextureUnlockPartCollection> TextureUnlockPartCollections { get; set; } = new RefArray<ShaderTextureUnlockPartCollection>(); // 0xC (12)
+		protected RefArray<ShaderTextureUnlockPartCollection> m_TextureUnlockPartCollections = new RefArray<ShaderTextureUnlockPartCollection>();
+		[ContainerField(12), ContainerFieldNameHash(3762069016)]
+		public RefArray<ShaderTextureUnlockPartCollection> TextureUnlockPartCollections { get { return m_TextureUnlockPartCollections; } set { if (OnPropertyChanging("VehicleVisualCustomizationAsset." + nameof(TextureUnlockPartCollections), this, m_TextureUnlockPartCollections, value)) m_TextureUnlockPartCollections = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public RefArray<TextUnlockPartData> TextUnlockParts { get; set; } = new RefArray<TextUnlockPartData>(); // 0x10 (16)
+		protected RefArray<TextUnlockPartData> m_TextUnlockParts = new RefArray<TextUnlockPartData>();
+		[ContainerField(16), ContainerFieldNameHash(1176201452)]
+		public RefArray<TextUnlockPartData> TextUnlockParts { get { return m_TextUnlockParts; } set { if (OnPropertyChanging("VehicleVisualCustomizationAsset." + nameof(TextUnlockParts), this, m_TextUnlockParts, value)) m_TextUnlockParts = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

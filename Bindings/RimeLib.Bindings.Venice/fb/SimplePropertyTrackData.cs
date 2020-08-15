@@ -5,17 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class SimplePropertyTrackData : 
 		PropertyTrackData
 	{
-		[ContainerField(16)]
-		public InterpolationType InterpolationType { get; set; } = new InterpolationType(); // 0x10 (16)
+		protected InterpolationType m_InterpolationType = new InterpolationType();
+		[ContainerField(16), ContainerFieldNameHash(1709219799)]
+		public InterpolationType InterpolationType { get { return m_InterpolationType; } set { if (OnPropertyChanging("SimplePropertyTrackData." + nameof(InterpolationType), this, m_InterpolationType, value)) m_InterpolationType = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

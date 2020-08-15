@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class ProfileOptionDataString : 
 		ProfileOptionData
 	{
-		[ContainerField(20), LayoutImmutable, Blittable]
-		public int MaxLength { get; set; } // 0x14 (20)
+		protected int m_MaxLength = new int();
+		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(1300353773)]
+		public int MaxLength { get { return m_MaxLength; } set { if (OnPropertyChanging("ProfileOptionDataString." + nameof(MaxLength), this, m_MaxLength, value)) m_MaxLength = value; } } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable]
-		public string Value { get; set; } // 0x18 (24)
+		protected string m_Value = new string();
+		[ContainerField(24), LayoutImmutable, ContainerFieldNameHash(225375086)]
+		public string Value { get { return m_Value; } set { if (OnPropertyChanging("ProfileOptionDataString." + nameof(Value), this, m_Value, value)) m_Value = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

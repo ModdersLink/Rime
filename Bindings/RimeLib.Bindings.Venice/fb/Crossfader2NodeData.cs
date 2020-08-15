@@ -5,22 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class Crossfader2NodeData : 
 		AudioGraphNodeData
 	{
-		[ContainerField(8)]
-		public AudioGraphNodePort Ctrl { get; set; } = new AudioGraphNodePort(); // 0x8 (8)
+		protected AudioGraphNodePort m_Ctrl = new AudioGraphNodePort();
+		[ContainerField(8), ContainerFieldNameHash(2088859916)]
+		public AudioGraphNodePort Ctrl { get { return m_Ctrl; } set { if (OnPropertyChanging("Crossfader2NodeData." + nameof(Ctrl), this, m_Ctrl, value)) m_Ctrl = value; } } // 0x8 (8)
 		
-		[ContainerField(16)]
-		public AudioGraphNodePort CtrlOut1 { get; set; } = new AudioGraphNodePort(); // 0x10 (16)
+		protected AudioGraphNodePort m_CtrlOut1 = new AudioGraphNodePort();
+		[ContainerField(16), ContainerFieldNameHash(1670261395)]
+		public AudioGraphNodePort CtrlOut1 { get { return m_CtrlOut1; } set { if (OnPropertyChanging("Crossfader2NodeData." + nameof(CtrlOut1), this, m_CtrlOut1, value)) m_CtrlOut1 = value; } } // 0x10 (16)
 		
-		[ContainerField(24)]
-		public AudioGraphNodePort CtrlOut2 { get; set; } = new AudioGraphNodePort(); // 0x18 (24)
+		protected AudioGraphNodePort m_CtrlOut2 = new AudioGraphNodePort();
+		[ContainerField(24), ContainerFieldNameHash(1670261392)]
+		public AudioGraphNodePort CtrlOut2 { get { return m_CtrlOut2; } set { if (OnPropertyChanging("Crossfader2NodeData." + nameof(CtrlOut2), this, m_CtrlOut2, value)) m_CtrlOut2 = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

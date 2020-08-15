@@ -5,17 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class LogicReferenceObjectData : 
 		ReferenceObjectData
 	{
-		[ContainerField(96)]
-		public SubRealm SubRealm { get; set; } = new SubRealm(); // 0x60 (96)
+		protected SubRealm m_SubRealm = new SubRealm();
+		[ContainerField(96), ContainerFieldNameHash(1747841366)]
+		public SubRealm SubRealm { get { return m_SubRealm; } set { if (OnPropertyChanging("LogicReferenceObjectData." + nameof(SubRealm), this, m_SubRealm, value)) m_SubRealm = value; } } // 0x60 (96)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

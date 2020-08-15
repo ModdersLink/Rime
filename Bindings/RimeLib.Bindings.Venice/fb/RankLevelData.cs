@@ -5,35 +5,50 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class RankLevelData : 
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable]
-		public string RankName { get; set; } // 0x8 (8)
+		protected string m_RankName = new string();
+		[ContainerField(8), LayoutImmutable, ContainerFieldNameHash(1737773492)]
+		public string RankName { get { return m_RankName; } set { if (OnPropertyChanging("RankLevelData." + nameof(RankName), this, m_RankName, value)) m_RankName = value; } } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public uint PointsNeeded { get; set; } // 0xC (12)
+		protected uint m_PointsNeeded = new uint();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(4136222257)]
+		public uint PointsNeeded { get { return m_PointsNeeded; } set { if (OnPropertyChanging("RankLevelData." + nameof(PointsNeeded), this, m_PointsNeeded, value)) m_PointsNeeded = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable]
-		public string ImageName { get; set; } // 0x10 (16)
+		protected string m_ImageName = new string();
+		[ContainerField(16), LayoutImmutable, ContainerFieldNameHash(2678981541)]
+		public string ImageName { get { return m_ImageName; } set { if (OnPropertyChanging("RankLevelData." + nameof(ImageName), this, m_ImageName, value)) m_ImageName = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable]
-		public string IconName { get; set; } // 0x14 (20)
+		protected string m_IconName = new string();
+		[ContainerField(20), LayoutImmutable, ContainerFieldNameHash(268503081)]
+		public string IconName { get { return m_IconName; } set { if (OnPropertyChanging("RankLevelData." + nameof(IconName), this, m_IconName, value)) m_IconName = value; } } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable]
-		public string SoundName { get; set; } // 0x18 (24)
+		protected string m_SoundName = new string();
+		[ContainerField(24), LayoutImmutable, ContainerFieldNameHash(523979073)]
+		public string SoundName { get { return m_SoundName; } set { if (OnPropertyChanging("RankLevelData." + nameof(SoundName), this, m_SoundName, value)) m_SoundName = value; } } // 0x18 (24)
 		
-		[ContainerField(28)]
-		public List<BasicUnlockInfo> UnlockInfos { get; set; } = new List<BasicUnlockInfo>(); // 0x1C (28)
+		protected List<BasicUnlockInfo> m_UnlockInfos = new List<BasicUnlockInfo>();
+		[ContainerField(28), ContainerFieldNameHash(4145033000)]
+		public List<BasicUnlockInfo> UnlockInfos { get { return m_UnlockInfos; } set { if (OnPropertyChanging("RankLevelData." + nameof(UnlockInfos), this, m_UnlockInfos, value)) m_UnlockInfos = value; } } // 0x1C (28)
 		
-		[ContainerField(32), LayoutImmutable, Blittable]
-		public int RankNumber { get; set; } // 0x20 (32)
+		protected int m_RankNumber = new int();
+		[ContainerField(32), LayoutImmutable, Blittable, ContainerFieldNameHash(2626293584)]
+		public int RankNumber { get { return m_RankNumber; } set { if (OnPropertyChanging("RankLevelData." + nameof(RankNumber), this, m_RankNumber, value)) m_RankNumber = value; } } // 0x20 (32)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

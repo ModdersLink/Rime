@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class BlueprintContainerItem : 
 		DataContainer
 	{
-		[ContainerField(8)]
-		public CtrRef<BlueprintBundleMetadata> Metadata { get; set; } = new CtrRef<BlueprintBundleMetadata>(); // 0x8 (8)
+		protected CtrRef<BlueprintBundleMetadata> m_Metadata = new CtrRef<BlueprintBundleMetadata>();
+		[ContainerField(8), ContainerFieldNameHash(1408720392)]
+		public CtrRef<BlueprintBundleMetadata> Metadata { get { return m_Metadata; } set { if (OnPropertyChanging("BlueprintContainerItem." + nameof(Metadata), this, m_Metadata, value)) m_Metadata = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

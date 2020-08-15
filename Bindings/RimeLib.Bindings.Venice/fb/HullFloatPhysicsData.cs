@@ -5,64 +5,90 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class HullFloatPhysicsData : 
 		FloatPhysicsData
 	{
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 WaterResistanceAxisMod { get; set; } = new Vec3(); // 0x10 (16)
+		protected Vec3 m_WaterResistanceAxisMod = new Vec3();
+		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(3948471318)]
+		public Vec3 WaterResistanceAxisMod { get { return m_WaterResistanceAxisMod; } set { if (OnPropertyChanging("HullFloatPhysicsData." + nameof(WaterResistanceAxisMod), this, m_WaterResistanceAxisMod, value)) m_WaterResistanceAxisMod = value; } } // 0x10 (16)
 		
-		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 WaterFrictionAxisMod { get; set; } = new Vec3(); // 0x20 (32)
+		protected Vec3 m_WaterFrictionAxisMod = new Vec3();
+		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(3626723959)]
+		public Vec3 WaterFrictionAxisMod { get { return m_WaterFrictionAxisMod; } set { if (OnPropertyChanging("HullFloatPhysicsData." + nameof(WaterFrictionAxisMod), this, m_WaterFrictionAxisMod, value)) m_WaterFrictionAxisMod = value; } } // 0x20 (32)
 		
-		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 Offset { get; set; } = new Vec3(); // 0x30 (48)
+		protected Vec3 m_Offset = new Vec3();
+		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(2871410728)]
+		public Vec3 Offset { get { return m_Offset; } set { if (OnPropertyChanging("HullFloatPhysicsData." + nameof(Offset), this, m_Offset, value)) m_Offset = value; } } // 0x30 (48)
 		
-		[ContainerField(64), LayoutImmutable, Blittable]
-		public int SubSurfaceSplits { get; set; } // 0x40 (64)
+		protected int m_SubSurfaceSplits = new int();
+		[ContainerField(64), LayoutImmutable, Blittable, ContainerFieldNameHash(1890108277)]
+		public int SubSurfaceSplits { get { return m_SubSurfaceSplits; } set { if (OnPropertyChanging("HullFloatPhysicsData." + nameof(SubSurfaceSplits), this, m_SubSurfaceSplits, value)) m_SubSurfaceSplits = value; } } // 0x40 (64)
 		
-		[ContainerField(68), LayoutImmutable, Blittable]
-		public float Depth { get; set; } // 0x44 (68)
+		protected float m_Depth = new float();
+		[ContainerField(68), LayoutImmutable, Blittable, ContainerFieldNameHash(208780552)]
+		public float Depth { get { return m_Depth; } set { if (OnPropertyChanging("HullFloatPhysicsData." + nameof(Depth), this, m_Depth, value)) m_Depth = value; } } // 0x44 (68)
 		
-		[ContainerField(72), LayoutImmutable, Blittable]
-		public float Width { get; set; } // 0x48 (72)
+		protected float m_Width = new float();
+		[ContainerField(72), LayoutImmutable, Blittable, ContainerFieldNameHash(226981187)]
+		public float Width { get { return m_Width; } set { if (OnPropertyChanging("HullFloatPhysicsData." + nameof(Width), this, m_Width, value)) m_Width = value; } } // 0x48 (72)
 		
-		[ContainerField(76), LayoutImmutable, Blittable]
-		public float Length { get; set; } // 0x4C (76)
+		protected float m_Length = new float();
+		[ContainerField(76), LayoutImmutable, Blittable, ContainerFieldNameHash(2906827577)]
+		public float Length { get { return m_Length; } set { if (OnPropertyChanging("HullFloatPhysicsData." + nameof(Length), this, m_Length, value)) m_Length = value; } } // 0x4C (76)
 		
-		[ContainerField(80), LayoutImmutable, Blittable]
-		public float FrontCurveDegree { get; set; } // 0x50 (80)
+		protected float m_FrontCurveDegree = new float();
+		[ContainerField(80), LayoutImmutable, Blittable, ContainerFieldNameHash(2319028903)]
+		public float FrontCurveDegree { get { return m_FrontCurveDegree; } set { if (OnPropertyChanging("HullFloatPhysicsData." + nameof(FrontCurveDegree), this, m_FrontCurveDegree, value)) m_FrontCurveDegree = value; } } // 0x50 (80)
 		
-		[ContainerField(84), LayoutImmutable, Blittable]
-		public float SideCurveDegree { get; set; } // 0x54 (84)
+		protected float m_SideCurveDegree = new float();
+		[ContainerField(84), LayoutImmutable, Blittable, ContainerFieldNameHash(2221634077)]
+		public float SideCurveDegree { get { return m_SideCurveDegree; } set { if (OnPropertyChanging("HullFloatPhysicsData." + nameof(SideCurveDegree), this, m_SideCurveDegree, value)) m_SideCurveDegree = value; } } // 0x54 (84)
 		
-		[ContainerField(88), LayoutImmutable, Blittable]
-		public float NonEngineSteer { get; set; } // 0x58 (88)
+		protected float m_NonEngineSteer = new float();
+		[ContainerField(88), LayoutImmutable, Blittable, ContainerFieldNameHash(2436950673)]
+		public float NonEngineSteer { get { return m_NonEngineSteer; } set { if (OnPropertyChanging("HullFloatPhysicsData." + nameof(NonEngineSteer), this, m_NonEngineSteer, value)) m_NonEngineSteer = value; } } // 0x58 (88)
 		
-		[ContainerField(92), LayoutImmutable, Blittable]
-		public float NonEngineSteerMinSpeed { get; set; } // 0x5C (92)
+		protected float m_NonEngineSteerMinSpeed = new float();
+		[ContainerField(92), LayoutImmutable, Blittable, ContainerFieldNameHash(625608988)]
+		public float NonEngineSteerMinSpeed { get { return m_NonEngineSteerMinSpeed; } set { if (OnPropertyChanging("HullFloatPhysicsData." + nameof(NonEngineSteerMinSpeed), this, m_NonEngineSteerMinSpeed, value)) m_NonEngineSteerMinSpeed = value; } } // 0x5C (92)
 		
-		[ContainerField(96), LayoutImmutable, Blittable]
-		public float NonEngineSteerMaxSpeed { get; set; } // 0x60 (96)
+		protected float m_NonEngineSteerMaxSpeed = new float();
+		[ContainerField(96), LayoutImmutable, Blittable, ContainerFieldNameHash(1082953922)]
+		public float NonEngineSteerMaxSpeed { get { return m_NonEngineSteerMaxSpeed; } set { if (OnPropertyChanging("HullFloatPhysicsData." + nameof(NonEngineSteerMaxSpeed), this, m_NonEngineSteerMaxSpeed, value)) m_NonEngineSteerMaxSpeed = value; } } // 0x60 (96)
 		
-		[ContainerField(100), LayoutImmutable, Blittable]
-		public float WaterDampeningMod { get; set; } // 0x64 (100)
+		protected float m_WaterDampeningMod = new float();
+		[ContainerField(100), LayoutImmutable, Blittable, ContainerFieldNameHash(4227810501)]
+		public float WaterDampeningMod { get { return m_WaterDampeningMod; } set { if (OnPropertyChanging("HullFloatPhysicsData." + nameof(WaterDampeningMod), this, m_WaterDampeningMod, value)) m_WaterDampeningMod = value; } } // 0x64 (100)
 		
-		[ContainerField(104), LayoutImmutable, Blittable]
-		public float LiftModifier { get; set; } // 0x68 (104)
+		protected float m_LiftModifier = new float();
+		[ContainerField(104), LayoutImmutable, Blittable, ContainerFieldNameHash(2708301317)]
+		public float LiftModifier { get { return m_LiftModifier; } set { if (OnPropertyChanging("HullFloatPhysicsData." + nameof(LiftModifier), this, m_LiftModifier, value)) m_LiftModifier = value; } } // 0x68 (104)
 		
-		[ContainerField(108), LayoutImmutable, Blittable]
-		public float SupportSizeMod { get; set; } // 0x6C (108)
+		protected float m_SupportSizeMod = new float();
+		[ContainerField(108), LayoutImmutable, Blittable, ContainerFieldNameHash(115690313)]
+		public float SupportSizeMod { get { return m_SupportSizeMod; } set { if (OnPropertyChanging("HullFloatPhysicsData." + nameof(SupportSizeMod), this, m_SupportSizeMod, value)) m_SupportSizeMod = value; } } // 0x6C (108)
 		
-		[ContainerField(112), LayoutImmutable, Blittable]
-		public float AngularDampening { get; set; } // 0x70 (112)
+		protected float m_AngularDampening = new float();
+		[ContainerField(112), LayoutImmutable, Blittable, ContainerFieldNameHash(705185012)]
+		public float AngularDampening { get { return m_AngularDampening; } set { if (OnPropertyChanging("HullFloatPhysicsData." + nameof(AngularDampening), this, m_AngularDampening, value)) m_AngularDampening = value; } } // 0x70 (112)
 		
-		[ContainerField(116), LayoutImmutable, Blittable]
-		public float FrictionThrottleModifier { get; set; } // 0x74 (116)
+		protected float m_FrictionThrottleModifier = new float();
+		[ContainerField(116), LayoutImmutable, Blittable, ContainerFieldNameHash(2928282680)]
+		public float FrictionThrottleModifier { get { return m_FrictionThrottleModifier; } set { if (OnPropertyChanging("HullFloatPhysicsData." + nameof(FrictionThrottleModifier), this, m_FrictionThrottleModifier, value)) m_FrictionThrottleModifier = value; } } // 0x74 (116)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

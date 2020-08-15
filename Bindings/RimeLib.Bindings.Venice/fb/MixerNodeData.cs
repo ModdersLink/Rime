@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class MixerNodeData : 
 		AudioGraphNodeData
 	{
-		[ContainerField(8)]
-		public RefArray<MixerEntry> Entries { get; set; } = new RefArray<MixerEntry>(); // 0x8 (8)
+		protected RefArray<MixerEntry> m_Entries = new RefArray<MixerEntry>();
+		[ContainerField(8), ContainerFieldNameHash(8238103)]
+		public RefArray<MixerEntry> Entries { get { return m_Entries; } set { if (OnPropertyChanging("MixerNodeData." + nameof(Entries), this, m_Entries, value)) m_Entries = value; } } // 0x8 (8)
 		
-		[ContainerField(12)]
-		public AudioGraphNodePort Out { get; set; } = new AudioGraphNodePort(); // 0xC (12)
+		protected AudioGraphNodePort m_Out = new AudioGraphNodePort();
+		[ContainerField(12), ContainerFieldNameHash(193453899)]
+		public AudioGraphNodePort Out { get { return m_Out; } set { if (OnPropertyChanging("MixerNodeData." + nameof(Out), this, m_Out, value)) m_Out = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

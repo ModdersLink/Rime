@@ -5,17 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class CriteriaStarCategoryData : 
 		DataContainer
 	{
-		[ContainerField(8)]
-		public List<CriteriaStarCategoryInstance> CriteriaInstances { get; set; } = new List<CriteriaStarCategoryInstance>(); // 0x8 (8)
+		protected List<CriteriaStarCategoryInstance> m_CriteriaInstances = new List<CriteriaStarCategoryInstance>();
+		[ContainerField(8), ContainerFieldNameHash(686038796)]
+		public List<CriteriaStarCategoryInstance> CriteriaInstances { get { return m_CriteriaInstances; } set { if (OnPropertyChanging("CriteriaStarCategoryData." + nameof(CriteriaInstances), this, m_CriteriaInstances, value)) m_CriteriaInstances = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

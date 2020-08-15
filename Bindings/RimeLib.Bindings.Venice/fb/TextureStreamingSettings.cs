@@ -5,142 +5,194 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class TextureStreamingSettings : 
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable, Blittable]
-		public float FadeMipmapTime { get; set; } // 0x8 (8)
+		protected float m_FadeMipmapTime = new float();
+		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(1423865630)]
+		public float FadeMipmapTime { get { return m_FadeMipmapTime; } set { if (OnPropertyChanging("TextureStreamingSettings." + nameof(FadeMipmapTime), this, m_FadeMipmapTime, value)) m_FadeMipmapTime = value; } } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public float MipmapBias { get; set; } // 0xC (12)
+		protected float m_MipmapBias = new float();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(196267572)]
+		public float MipmapBias { get { return m_MipmapBias; } set { if (OnPropertyChanging("TextureStreamingSettings." + nameof(MipmapBias), this, m_MipmapBias, value)) m_MipmapBias = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public uint MaxTextureSizeKb { get; set; } // 0x10 (16)
+		protected uint m_MaxTextureSizeKb = new uint();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(4282010818)]
+		public uint MaxTextureSizeKb { get { return m_MaxTextureSizeKb; } set { if (OnPropertyChanging("TextureStreamingSettings." + nameof(MaxTextureSizeKb), this, m_MaxTextureSizeKb, value)) m_MaxTextureSizeKb = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
-		public uint MaxFrameTextureCreateCount { get; set; } // 0x14 (20)
+		protected uint m_MaxFrameTextureCreateCount = new uint();
+		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(3751103508)]
+		public uint MaxFrameTextureCreateCount { get { return m_MaxFrameTextureCreateCount; } set { if (OnPropertyChanging("TextureStreamingSettings." + nameof(MaxFrameTextureCreateCount), this, m_MaxFrameTextureCreateCount, value)) m_MaxFrameTextureCreateCount = value; } } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable]
-		public uint MaxPendingLoadCount { get; set; } // 0x18 (24)
+		protected uint m_MaxPendingLoadCount = new uint();
+		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(4194764075)]
+		public uint MaxPendingLoadCount { get { return m_MaxPendingLoadCount; } set { if (OnPropertyChanging("TextureStreamingSettings." + nameof(MaxPendingLoadCount), this, m_MaxPendingLoadCount, value)) m_MaxPendingLoadCount = value; } } // 0x18 (24)
 		
-		[ContainerField(28), LayoutImmutable, Blittable]
-		public uint MinMipmapCount { get; set; } // 0x1C (28)
+		protected uint m_MinMipmapCount = new uint();
+		[ContainerField(28), LayoutImmutable, Blittable, ContainerFieldNameHash(591426852)]
+		public uint MinMipmapCount { get { return m_MinMipmapCount; } set { if (OnPropertyChanging("TextureStreamingSettings." + nameof(MinMipmapCount), this, m_MinMipmapCount, value)) m_MinMipmapCount = value; } } // 0x1C (28)
 		
-		[ContainerField(32), LayoutImmutable, Blittable]
-		public uint MaxMipmapCount { get; set; } // 0x20 (32)
+		protected uint m_MaxMipmapCount = new uint();
+		[ContainerField(32), LayoutImmutable, Blittable, ContainerFieldNameHash(1664310522)]
+		public uint MaxMipmapCount { get { return m_MaxMipmapCount; } set { if (OnPropertyChanging("TextureStreamingSettings." + nameof(MaxMipmapCount), this, m_MaxMipmapCount, value)) m_MaxMipmapCount = value; } } // 0x20 (32)
 		
-		[ContainerField(36), LayoutImmutable, Blittable]
-		public uint XenonFinalPoolSizeAdjustment { get; set; } // 0x24 (36)
+		protected uint m_XenonFinalPoolSizeAdjustment = new uint();
+		[ContainerField(36), LayoutImmutable, Blittable, ContainerFieldNameHash(842975117)]
+		public uint XenonFinalPoolSizeAdjustment { get { return m_XenonFinalPoolSizeAdjustment; } set { if (OnPropertyChanging("TextureStreamingSettings." + nameof(XenonFinalPoolSizeAdjustment), this, m_XenonFinalPoolSizeAdjustment, value)) m_XenonFinalPoolSizeAdjustment = value; } } // 0x24 (36)
 		
-		[ContainerField(40), LayoutImmutable, Blittable]
-		public uint XenonRetailPoolSizeAdjustment { get; set; } // 0x28 (40)
+		protected uint m_XenonRetailPoolSizeAdjustment = new uint();
+		[ContainerField(40), LayoutImmutable, Blittable, ContainerFieldNameHash(1487508902)]
+		public uint XenonRetailPoolSizeAdjustment { get { return m_XenonRetailPoolSizeAdjustment; } set { if (OnPropertyChanging("TextureStreamingSettings." + nameof(XenonRetailPoolSizeAdjustment), this, m_XenonRetailPoolSizeAdjustment, value)) m_XenonRetailPoolSizeAdjustment = value; } } // 0x28 (40)
 		
-		[ContainerField(44), LayoutImmutable, Blittable]
-		public uint PoolHeadroomSize { get; set; } // 0x2C (44)
+		protected uint m_PoolHeadroomSize = new uint();
+		[ContainerField(44), LayoutImmutable, Blittable, ContainerFieldNameHash(1426093803)]
+		public uint PoolHeadroomSize { get { return m_PoolHeadroomSize; } set { if (OnPropertyChanging("TextureStreamingSettings." + nameof(PoolHeadroomSize), this, m_PoolHeadroomSize, value)) m_PoolHeadroomSize = value; } } // 0x2C (44)
 		
-		[ContainerField(48), LayoutImmutable, Blittable]
-		public uint OnDemandPoolSize { get; set; } // 0x30 (48)
+		protected uint m_OnDemandPoolSize = new uint();
+		[ContainerField(48), LayoutImmutable, Blittable, ContainerFieldNameHash(4216286938)]
+		public uint OnDemandPoolSize { get { return m_OnDemandPoolSize; } set { if (OnPropertyChanging("TextureStreamingSettings." + nameof(OnDemandPoolSize), this, m_OnDemandPoolSize, value)) m_OnDemandPoolSize = value; } } // 0x30 (48)
 		
-		[ContainerField(52), LayoutImmutable, Blittable]
-		public uint ListViewPageIndex { get; set; } // 0x34 (52)
+		protected uint m_ListViewPageIndex = new uint();
+		[ContainerField(52), LayoutImmutable, Blittable, ContainerFieldNameHash(1203229703)]
+		public uint ListViewPageIndex { get { return m_ListViewPageIndex; } set { if (OnPropertyChanging("TextureStreamingSettings." + nameof(ListViewPageIndex), this, m_ListViewPageIndex, value)) m_ListViewPageIndex = value; } } // 0x34 (52)
 		
-		[ContainerField(56), LayoutImmutable, Blittable]
-		public uint PoolSize { get; set; } // 0x38 (56)
+		protected uint m_PoolSize = new uint();
+		[ContainerField(56), LayoutImmutable, Blittable, ContainerFieldNameHash(3885339292)]
+		public uint PoolSize { get { return m_PoolSize; } set { if (OnPropertyChanging("TextureStreamingSettings." + nameof(PoolSize), this, m_PoolSize, value)) m_PoolSize = value; } } // 0x38 (56)
 		
-		[ContainerField(60), LayoutImmutable, Blittable]
-		public int ForceMipmap { get; set; } // 0x3C (60)
+		protected int m_ForceMipmap = new int();
+		[ContainerField(60), LayoutImmutable, Blittable, ContainerFieldNameHash(110383696)]
+		public int ForceMipmap { get { return m_ForceMipmap; } set { if (OnPropertyChanging("TextureStreamingSettings." + nameof(ForceMipmap), this, m_ForceMipmap, value)) m_ForceMipmap = value; } } // 0x3C (60)
 		
-		[ContainerField(64), LayoutImmutable, Blittable]
-		public float PriorityThreshold { get; set; } // 0x40 (64)
+		protected float m_PriorityThreshold = new float();
+		[ContainerField(64), LayoutImmutable, Blittable, ContainerFieldNameHash(1199765120)]
+		public float PriorityThreshold { get { return m_PriorityThreshold; } set { if (OnPropertyChanging("TextureStreamingSettings." + nameof(PriorityThreshold), this, m_PriorityThreshold, value)) m_PriorityThreshold = value; } } // 0x40 (64)
 		
-		[ContainerField(68), LayoutImmutable, Blittable]
-		public uint DefragFrameTransferLimit { get; set; } // 0x44 (68)
+		protected uint m_DefragFrameTransferLimit = new uint();
+		[ContainerField(68), LayoutImmutable, Blittable, ContainerFieldNameHash(2853798261)]
+		public uint DefragFrameTransferLimit { get { return m_DefragFrameTransferLimit; } set { if (OnPropertyChanging("TextureStreamingSettings." + nameof(DefragFrameTransferLimit), this, m_DefragFrameTransferLimit, value)) m_DefragFrameTransferLimit = value; } } // 0x44 (68)
 		
-		[ContainerField(72), LayoutImmutable, Blittable]
-		public uint MinTextureSize { get; set; } // 0x48 (72)
+		protected uint m_MinTextureSize = new uint();
+		[ContainerField(72), LayoutImmutable, Blittable, ContainerFieldNameHash(2473279061)]
+		public uint MinTextureSize { get { return m_MinTextureSize; } set { if (OnPropertyChanging("TextureStreamingSettings." + nameof(MinTextureSize), this, m_MinTextureSize, value)) m_MinTextureSize = value; } } // 0x48 (72)
 		
-		[ContainerField(76), LayoutImmutable, Blittable]
-		public uint MaxFrameTextureCreateSize { get; set; } // 0x4C (76)
+		protected uint m_MaxFrameTextureCreateSize = new uint();
+		[ContainerField(76), LayoutImmutable, Blittable, ContainerFieldNameHash(2716103826)]
+		public uint MaxFrameTextureCreateSize { get { return m_MaxFrameTextureCreateSize; } set { if (OnPropertyChanging("TextureStreamingSettings." + nameof(MaxFrameTextureCreateSize), this, m_MaxFrameTextureCreateSize, value)) m_MaxFrameTextureCreateSize = value; } } // 0x4C (76)
 		
-		[ContainerField(80), LayoutImmutable, Blittable]
-		public bool OnlyWantedInPool { get; set; } // 0x50 (80)
+		protected bool m_OnlyWantedInPool = new bool();
+		[ContainerField(80), LayoutImmutable, Blittable, ContainerFieldNameHash(1706087527)]
+		public bool OnlyWantedInPool { get { return m_OnlyWantedInPool; } set { if (OnPropertyChanging("TextureStreamingSettings." + nameof(OnlyWantedInPool), this, m_OnlyWantedInPool, value)) m_OnlyWantedInPool = value; } } // 0x50 (80)
 		
-		[ContainerField(81), LayoutImmutable, Blittable]
-		public bool DxImmutableUsageEnable { get; set; } // 0x51 (81)
+		protected bool m_DxImmutableUsageEnable = new bool();
+		[ContainerField(81), LayoutImmutable, Blittable, ContainerFieldNameHash(2665891903)]
+		public bool DxImmutableUsageEnable { get { return m_DxImmutableUsageEnable; } set { if (OnPropertyChanging("TextureStreamingSettings." + nameof(DxImmutableUsageEnable), this, m_DxImmutableUsageEnable, value)) m_DxImmutableUsageEnable = value; } } // 0x51 (81)
 		
-		[ContainerField(82), LayoutImmutable, Blittable]
-		public bool MipmapsEnable { get; set; } // 0x52 (82)
+		protected bool m_MipmapsEnable = new bool();
+		[ContainerField(82), LayoutImmutable, Blittable, ContainerFieldNameHash(2827470175)]
+		public bool MipmapsEnable { get { return m_MipmapsEnable; } set { if (OnPropertyChanging("TextureStreamingSettings." + nameof(MipmapsEnable), this, m_MipmapsEnable, value)) m_MipmapsEnable = value; } } // 0x52 (82)
 		
-		[ContainerField(83), LayoutImmutable, Blittable]
-		public bool UploadMipmapsEnable { get; set; } // 0x53 (83)
+		protected bool m_UploadMipmapsEnable = new bool();
+		[ContainerField(83), LayoutImmutable, Blittable, ContainerFieldNameHash(1826880860)]
+		public bool UploadMipmapsEnable { get { return m_UploadMipmapsEnable; } set { if (OnPropertyChanging("TextureStreamingSettings." + nameof(UploadMipmapsEnable), this, m_UploadMipmapsEnable, value)) m_UploadMipmapsEnable = value; } } // 0x53 (83)
 		
-		[ContainerField(84), LayoutImmutable, Blittable]
-		public bool TextureUpdateEnable { get; set; } // 0x54 (84)
+		protected bool m_TextureUpdateEnable = new bool();
+		[ContainerField(84), LayoutImmutable, Blittable, ContainerFieldNameHash(2198109482)]
+		public bool TextureUpdateEnable { get { return m_TextureUpdateEnable; } set { if (OnPropertyChanging("TextureStreamingSettings." + nameof(TextureUpdateEnable), this, m_TextureUpdateEnable, value)) m_TextureUpdateEnable = value; } } // 0x54 (84)
 		
-		[ContainerField(85), LayoutImmutable, Blittable]
-		public bool AsyncCreatesEnable { get; set; } // 0x55 (85)
+		protected bool m_AsyncCreatesEnable = new bool();
+		[ContainerField(85), LayoutImmutable, Blittable, ContainerFieldNameHash(2241018389)]
+		public bool AsyncCreatesEnable { get { return m_AsyncCreatesEnable; } set { if (OnPropertyChanging("TextureStreamingSettings." + nameof(AsyncCreatesEnable), this, m_AsyncCreatesEnable, value)) m_AsyncCreatesEnable = value; } } // 0x55 (85)
 		
-		[ContainerField(86), LayoutImmutable, Blittable]
-		public bool LoadMipmapsEnable { get; set; } // 0x56 (86)
+		protected bool m_LoadMipmapsEnable = new bool();
+		[ContainerField(86), LayoutImmutable, Blittable, ContainerFieldNameHash(403460441)]
+		public bool LoadMipmapsEnable { get { return m_LoadMipmapsEnable; } set { if (OnPropertyChanging("TextureStreamingSettings." + nameof(LoadMipmapsEnable), this, m_LoadMipmapsEnable, value)) m_LoadMipmapsEnable = value; } } // 0x56 (86)
 		
-		[ContainerField(87), LayoutImmutable, Blittable]
-		public bool ForceWantedEnable { get; set; } // 0x57 (87)
+		protected bool m_ForceWantedEnable = new bool();
+		[ContainerField(87), LayoutImmutable, Blittable, ContainerFieldNameHash(4278311412)]
+		public bool ForceWantedEnable { get { return m_ForceWantedEnable; } set { if (OnPropertyChanging("TextureStreamingSettings." + nameof(ForceWantedEnable), this, m_ForceWantedEnable, value)) m_ForceWantedEnable = value; } } // 0x57 (87)
 		
-		[ContainerField(88), LayoutImmutable, Blittable]
-		public bool UpdateEnable { get; set; } // 0x58 (88)
+		protected bool m_UpdateEnable = new bool();
+		[ContainerField(88), LayoutImmutable, Blittable, ContainerFieldNameHash(3724816309)]
+		public bool UpdateEnable { get { return m_UpdateEnable; } set { if (OnPropertyChanging("TextureStreamingSettings." + nameof(UpdateEnable), this, m_UpdateEnable, value)) m_UpdateEnable = value; } } // 0x58 (88)
 		
-		[ContainerField(89), LayoutImmutable, Blittable]
-		public bool PoolEnable { get; set; } // 0x59 (89)
+		protected bool m_PoolEnable = new bool();
+		[ContainerField(89), LayoutImmutable, Blittable, ContainerFieldNameHash(1137936504)]
+		public bool PoolEnable { get { return m_PoolEnable; } set { if (OnPropertyChanging("TextureStreamingSettings." + nameof(PoolEnable), this, m_PoolEnable, value)) m_PoolEnable = value; } } // 0x59 (89)
 		
-		[ContainerField(90), LayoutImmutable, Blittable]
-		public bool DefragEnable { get; set; } // 0x5A (90)
+		protected bool m_DefragEnable = new bool();
+		[ContainerField(90), LayoutImmutable, Blittable, ContainerFieldNameHash(485927863)]
+		public bool DefragEnable { get { return m_DefragEnable; } set { if (OnPropertyChanging("TextureStreamingSettings." + nameof(DefragEnable), this, m_DefragEnable, value)) m_DefragEnable = value; } } // 0x5A (90)
 		
-		[ContainerField(91), LayoutImmutable, Blittable]
-		public bool DefragTransfersEnable { get; set; } // 0x5B (91)
+		protected bool m_DefragTransfersEnable = new bool();
+		[ContainerField(91), LayoutImmutable, Blittable, ContainerFieldNameHash(539744815)]
+		public bool DefragTransfersEnable { get { return m_DefragTransfersEnable; } set { if (OnPropertyChanging("TextureStreamingSettings." + nameof(DefragTransfersEnable), this, m_DefragTransfersEnable, value)) m_DefragTransfersEnable = value; } } // 0x5B (91)
 		
-		[ContainerField(92), LayoutImmutable, Blittable]
-		public bool ChunkLoadEnable { get; set; } // 0x5C (92)
+		protected bool m_ChunkLoadEnable = new bool();
+		[ContainerField(92), LayoutImmutable, Blittable, ContainerFieldNameHash(1805392921)]
+		public bool ChunkLoadEnable { get { return m_ChunkLoadEnable; } set { if (OnPropertyChanging("TextureStreamingSettings." + nameof(ChunkLoadEnable), this, m_ChunkLoadEnable, value)) m_ChunkLoadEnable = value; } } // 0x5C (92)
 		
-		[ContainerField(93), LayoutImmutable, Blittable]
-		public bool InstantUnloadingEnable { get; set; } // 0x5D (93)
+		protected bool m_InstantUnloadingEnable = new bool();
+		[ContainerField(93), LayoutImmutable, Blittable, ContainerFieldNameHash(329282338)]
+		public bool InstantUnloadingEnable { get { return m_InstantUnloadingEnable; } set { if (OnPropertyChanging("TextureStreamingSettings." + nameof(InstantUnloadingEnable), this, m_InstantUnloadingEnable, value)) m_InstantUnloadingEnable = value; } } // 0x5D (93)
 		
-		[ContainerField(94), LayoutImmutable, Blittable]
-		public bool FadeMipmapsEnable { get; set; } // 0x5E (94)
+		protected bool m_FadeMipmapsEnable = new bool();
+		[ContainerField(94), LayoutImmutable, Blittable, ContainerFieldNameHash(4120232697)]
+		public bool FadeMipmapsEnable { get { return m_FadeMipmapsEnable; } set { if (OnPropertyChanging("TextureStreamingSettings." + nameof(FadeMipmapsEnable), this, m_FadeMipmapsEnable, value)) m_FadeMipmapsEnable = value; } } // 0x5E (94)
 		
-		[ContainerField(95), LayoutImmutable, Blittable]
-		public bool DynamicLoadingEnable { get; set; } // 0x5F (95)
+		protected bool m_DynamicLoadingEnable = new bool();
+		[ContainerField(95), LayoutImmutable, Blittable, ContainerFieldNameHash(677951191)]
+		public bool DynamicLoadingEnable { get { return m_DynamicLoadingEnable; } set { if (OnPropertyChanging("TextureStreamingSettings." + nameof(DynamicLoadingEnable), this, m_DynamicLoadingEnable, value)) m_DynamicLoadingEnable = value; } } // 0x5F (95)
 		
-		[ContainerField(96), LayoutImmutable, Blittable]
-		public bool Enable { get; set; } // 0x60 (96)
+		protected bool m_Enable = new bool();
+		[ContainerField(96), LayoutImmutable, Blittable, ContainerFieldNameHash(2342790116)]
+		public bool Enable { get { return m_Enable; } set { if (OnPropertyChanging("TextureStreamingSettings." + nameof(Enable), this, m_Enable, value)) m_Enable = value; } } // 0x60 (96)
 		
-		[ContainerField(97), LayoutImmutable, Blittable]
-		public bool DrawStatsEnable { get; set; } // 0x61 (97)
+		protected bool m_DrawStatsEnable = new bool();
+		[ContainerField(97), LayoutImmutable, Blittable, ContainerFieldNameHash(711726149)]
+		public bool DrawStatsEnable { get { return m_DrawStatsEnable; } set { if (OnPropertyChanging("TextureStreamingSettings." + nameof(DrawStatsEnable), this, m_DrawStatsEnable, value)) m_DrawStatsEnable = value; } } // 0x61 (97)
 		
-		[ContainerField(98), LayoutImmutable, Blittable]
-		public bool DrawTextureGroupStatsEnable { get; set; } // 0x62 (98)
+		protected bool m_DrawTextureGroupStatsEnable = new bool();
+		[ContainerField(98), LayoutImmutable, Blittable, ContainerFieldNameHash(1301826533)]
+		public bool DrawTextureGroupStatsEnable { get { return m_DrawTextureGroupStatsEnable; } set { if (OnPropertyChanging("TextureStreamingSettings." + nameof(DrawTextureGroupStatsEnable), this, m_DrawTextureGroupStatsEnable, value)) m_DrawTextureGroupStatsEnable = value; } } // 0x62 (98)
 		
-		[ContainerField(99), LayoutImmutable, Blittable]
-		public bool DrawTextureFormatStatsEnable { get; set; } // 0x63 (99)
+		protected bool m_DrawTextureFormatStatsEnable = new bool();
+		[ContainerField(99), LayoutImmutable, Blittable, ContainerFieldNameHash(781840665)]
+		public bool DrawTextureFormatStatsEnable { get { return m_DrawTextureFormatStatsEnable; } set { if (OnPropertyChanging("TextureStreamingSettings." + nameof(DrawTextureFormatStatsEnable), this, m_DrawTextureFormatStatsEnable, value)) m_DrawTextureFormatStatsEnable = value; } } // 0x63 (99)
 		
-		[ContainerField(100), LayoutImmutable, Blittable]
-		public bool DrawLoadingListEnable { get; set; } // 0x64 (100)
+		protected bool m_DrawLoadingListEnable = new bool();
+		[ContainerField(100), LayoutImmutable, Blittable, ContainerFieldNameHash(2993570912)]
+		public bool DrawLoadingListEnable { get { return m_DrawLoadingListEnable; } set { if (OnPropertyChanging("TextureStreamingSettings." + nameof(DrawLoadingListEnable), this, m_DrawLoadingListEnable, value)) m_DrawLoadingListEnable = value; } } // 0x64 (100)
 		
-		[ContainerField(101), LayoutImmutable, Blittable]
-		public bool DrawPriorityListEnable { get; set; } // 0x65 (101)
+		protected bool m_DrawPriorityListEnable = new bool();
+		[ContainerField(101), LayoutImmutable, Blittable, ContainerFieldNameHash(2687194932)]
+		public bool DrawPriorityListEnable { get { return m_DrawPriorityListEnable; } set { if (OnPropertyChanging("TextureStreamingSettings." + nameof(DrawPriorityListEnable), this, m_DrawPriorityListEnable, value)) m_DrawPriorityListEnable = value; } } // 0x65 (101)
 		
-		[ContainerField(102), LayoutImmutable, Blittable]
-		public bool OverridePoolSize { get; set; } // 0x66 (102)
+		protected bool m_OverridePoolSize = new bool();
+		[ContainerField(102), LayoutImmutable, Blittable, ContainerFieldNameHash(3027039592)]
+		public bool OverridePoolSize { get { return m_OverridePoolSize; } set { if (OnPropertyChanging("TextureStreamingSettings." + nameof(OverridePoolSize), this, m_OverridePoolSize, value)) m_OverridePoolSize = value; } } // 0x66 (102)
 		
-		[ContainerField(103), LayoutImmutable, Blittable]
-		public bool DumpLoadedList { get; set; } // 0x67 (103)
+		protected bool m_DumpLoadedList = new bool();
+		[ContainerField(103), LayoutImmutable, Blittable, ContainerFieldNameHash(3865360236)]
+		public bool DumpLoadedList { get { return m_DumpLoadedList; } set { if (OnPropertyChanging("TextureStreamingSettings." + nameof(DumpLoadedList), this, m_DumpLoadedList, value)) m_DumpLoadedList = value; } } // 0x67 (103)
 		
-		[ContainerField(104), LayoutImmutable, Blittable]
-		public bool UseConditionalStreaming { get; set; } // 0x68 (104)
+		protected bool m_UseConditionalStreaming = new bool();
+		[ContainerField(104), LayoutImmutable, Blittable, ContainerFieldNameHash(3302650340)]
+		public bool UseConditionalStreaming { get { return m_UseConditionalStreaming; } set { if (OnPropertyChanging("TextureStreamingSettings." + nameof(UseConditionalStreaming), this, m_UseConditionalStreaming, value)) m_UseConditionalStreaming = value; } } // 0x68 (104)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

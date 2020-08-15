@@ -5,34 +5,50 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(8)]
+	[ContainerType(8)]
 	public class PerformanceProfileState : 
 		MetricState
 	{
-		[ContainerField(24), LayoutImmutable, Blittable]
-		public uint ProcessorCount { get; set; } // 0x18 (24)
+		protected uint m_ProcessorCount = new uint();
+		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(391539216)]
+		public uint ProcessorCount { get { return m_ProcessorCount; } set { if (OnPropertyChanging("PerformanceProfileState." + nameof(ProcessorCount), this, m_ProcessorCount, value)) m_ProcessorCount = value; } } // 0x18 (24)
 		
-		[ContainerField(28), LayoutImmutable, Blittable]
-		public uint ProcessorCoreCount { get; set; } // 0x1C (28)
+		protected uint m_ProcessorCoreCount = new uint();
+		[ContainerField(28), LayoutImmutable, Blittable, ContainerFieldNameHash(2243702507)]
+		public uint ProcessorCoreCount { get { return m_ProcessorCoreCount; } set { if (OnPropertyChanging("PerformanceProfileState." + nameof(ProcessorCoreCount), this, m_ProcessorCoreCount, value)) m_ProcessorCoreCount = value; } } // 0x1C (28)
 		
-		[ContainerField(32), LayoutImmutable, Blittable]
-		public uint ProcessorClock { get; set; } // 0x20 (32)
+		protected uint m_ProcessorClock = new uint();
+		[ContainerField(32), LayoutImmutable, Blittable, ContainerFieldNameHash(391374875)]
+		public uint ProcessorClock { get { return m_ProcessorClock; } set { if (OnPropertyChanging("PerformanceProfileState." + nameof(ProcessorClock), this, m_ProcessorClock, value)) m_ProcessorClock = value; } } // 0x20 (32)
 		
-		[ContainerField(36), LayoutImmutable, Blittable]
-		public uint TotalMemMB { get; set; } // 0x24 (36)
+		protected uint m_TotalMemMB = new uint();
+		[ContainerField(36), LayoutImmutable, Blittable, ContainerFieldNameHash(4037894605)]
+		public uint TotalMemMB { get { return m_TotalMemMB; } set { if (OnPropertyChanging("PerformanceProfileState." + nameof(TotalMemMB), this, m_TotalMemMB, value)) m_TotalMemMB = value; } } // 0x24 (36)
 		
-		[ContainerField(40), LayoutImmutable, Blittable]
-		public uint GpuMemMB { get; set; } // 0x28 (40)
+		protected uint m_GpuMemMB = new uint();
+		[ContainerField(40), LayoutImmutable, Blittable, ContainerFieldNameHash(4164397837)]
+		public uint GpuMemMB { get { return m_GpuMemMB; } set { if (OnPropertyChanging("PerformanceProfileState." + nameof(GpuMemMB), this, m_GpuMemMB, value)) m_GpuMemMB = value; } } // 0x28 (40)
 		
-		[ContainerField(44), LayoutImmutable]
-		public string GraphicAdapterName { get; set; } // 0x2C (44)
+		protected string m_GraphicAdapterName = new string();
+		[ContainerField(44), LayoutImmutable, ContainerFieldNameHash(631166483)]
+		public string GraphicAdapterName { get { return m_GraphicAdapterName; } set { if (OnPropertyChanging("PerformanceProfileState." + nameof(GraphicAdapterName), this, m_GraphicAdapterName, value)) m_GraphicAdapterName = value; } } // 0x2C (44)
 		
-		[ContainerField(48), LayoutImmutable]
-		public string Platform { get; set; } // 0x30 (48)
+		protected string m_Platform = new string();
+		[ContainerField(48), LayoutImmutable, ContainerFieldNameHash(942751002)]
+		public string Platform { get { return m_Platform; } set { if (OnPropertyChanging("PerformanceProfileState." + nameof(Platform), this, m_Platform, value)) m_Platform = value; } } // 0x30 (48)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

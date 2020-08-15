@@ -5,38 +5,54 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class DebugTextEntityData : 
 		SpatialEntityData
 	{
-		[ContainerField(80), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 TextColor { get; set; } = new Vec3(); // 0x50 (80)
+		protected Vec3 m_TextColor = new Vec3();
+		[ContainerField(80), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(2527550245)]
+		public Vec3 TextColor { get { return m_TextColor; } set { if (OnPropertyChanging("DebugTextEntityData." + nameof(TextColor), this, m_TextColor, value)) m_TextColor = value; } } // 0x50 (80)
 		
-		[ContainerField(96), LayoutImmutable]
-		public string DebugText { get; set; } // 0x60 (96)
+		protected string m_DebugText = new string();
+		[ContainerField(96), LayoutImmutable, ContainerFieldNameHash(859165769)]
+		public string DebugText { get { return m_DebugText; } set { if (OnPropertyChanging("DebugTextEntityData." + nameof(DebugText), this, m_DebugText, value)) m_DebugText = value; } } // 0x60 (96)
 		
-		[ContainerField(100)]
-		public Realm Realm { get; set; } = new Realm(); // 0x64 (100)
+		protected Realm m_Realm = new Realm();
+		[ContainerField(100), ContainerFieldNameHash(229961746)]
+		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("DebugTextEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0x64 (100)
 		
-		[ContainerField(104), LayoutImmutable, Blittable]
-		public float Scale { get; set; } // 0x68 (104)
+		protected float m_Scale = new float();
+		[ContainerField(104), LayoutImmutable, Blittable, ContainerFieldNameHash(231223453)]
+		public float Scale { get { return m_Scale; } set { if (OnPropertyChanging("DebugTextEntityData." + nameof(Scale), this, m_Scale, value)) m_Scale = value; } } // 0x68 (104)
 		
-		[ContainerField(108), LayoutImmutable, Blittable]
-		public bool Visible { get; set; } // 0x6C (108)
+		protected bool m_Visible = new bool();
+		[ContainerField(108), LayoutImmutable, Blittable, ContainerFieldNameHash(901540267)]
+		public bool Visible { get { return m_Visible; } set { if (OnPropertyChanging("DebugTextEntityData." + nameof(Visible), this, m_Visible, value)) m_Visible = value; } } // 0x6C (108)
 		
-		[ContainerField(109), LayoutImmutable, Blittable]
-		public bool Centered { get; set; } // 0x6D (109)
+		protected bool m_Centered = new bool();
+		[ContainerField(109), LayoutImmutable, Blittable, ContainerFieldNameHash(2363373967)]
+		public bool Centered { get { return m_Centered; } set { if (OnPropertyChanging("DebugTextEntityData." + nameof(Centered), this, m_Centered, value)) m_Centered = value; } } // 0x6D (109)
 		
-		[ContainerField(110), LayoutImmutable, Blittable]
-		public bool DepthTest { get; set; } // 0x6E (110)
+		protected bool m_DepthTest = new bool();
+		[ContainerField(110), LayoutImmutable, Blittable, ContainerFieldNameHash(969307550)]
+		public bool DepthTest { get { return m_DepthTest; } set { if (OnPropertyChanging("DebugTextEntityData." + nameof(DepthTest), this, m_DepthTest, value)) m_DepthTest = value; } } // 0x6E (110)
 		
-		[ContainerField(111), LayoutImmutable, Blittable]
-		public bool ScaleWithDistance { get; set; } // 0x6F (111)
+		protected bool m_ScaleWithDistance = new bool();
+		[ContainerField(111), LayoutImmutable, Blittable, ContainerFieldNameHash(646053404)]
+		public bool ScaleWithDistance { get { return m_ScaleWithDistance; } set { if (OnPropertyChanging("DebugTextEntityData." + nameof(ScaleWithDistance), this, m_ScaleWithDistance, value)) m_ScaleWithDistance = value; } } // 0x6F (111)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

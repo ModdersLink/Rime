@@ -5,22 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class RichPresencePresenceString : 
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable]
-		public string SID { get; set; } // 0x8 (8)
+		protected string m_SID = new string();
+		[ContainerField(8), LayoutImmutable, ContainerFieldNameHash(193467547)]
+		public string SID { get { return m_SID; } set { if (OnPropertyChanging("RichPresencePresenceString." + nameof(SID), this, m_SID, value)) m_SID = value; } } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public bool Interpolated { get; set; } // 0xC (12)
+		protected bool m_Interpolated = new bool();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(3956040102)]
+		public bool Interpolated { get { return m_Interpolated; } set { if (OnPropertyChanging("RichPresencePresenceString." + nameof(Interpolated), this, m_Interpolated, value)) m_Interpolated = value; } } // 0xC (12)
 		
-		[ContainerField(13), LayoutImmutable, Blittable]
-		public sbyte Index { get; set; } // 0xD (13)
+		protected sbyte m_Index = new sbyte();
+		[ContainerField(13), LayoutImmutable, Blittable, ContainerFieldNameHash(214509467)]
+		public sbyte Index { get { return m_Index; } set { if (OnPropertyChanging("RichPresencePresenceString." + nameof(Index), this, m_Index, value)) m_Index = value; } } // 0xD (13)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

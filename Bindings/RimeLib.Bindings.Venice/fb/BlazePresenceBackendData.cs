@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class BlazePresenceBackendData : 
 		PresenceBackendData
 	{
-		[ContainerField(16)]
-		public RefArray<MatchmakingSession> MatchmakingSessions { get; set; } = new RefArray<MatchmakingSession>(); // 0x10 (16)
+		protected RefArray<MatchmakingSession> m_MatchmakingSessions = new RefArray<MatchmakingSession>();
+		[ContainerField(16), ContainerFieldNameHash(971927356)]
+		public RefArray<MatchmakingSession> MatchmakingSessions { get { return m_MatchmakingSessions; } set { if (OnPropertyChanging("BlazePresenceBackendData." + nameof(MatchmakingSessions), this, m_MatchmakingSessions, value)) m_MatchmakingSessions = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
-		public bool UseDemanglerService { get; set; } // 0x14 (20)
+		protected bool m_UseDemanglerService = new bool();
+		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(1785911844)]
+		public bool UseDemanglerService { get { return m_UseDemanglerService; } set { if (OnPropertyChanging("BlazePresenceBackendData." + nameof(UseDemanglerService), this, m_UseDemanglerService, value)) m_UseDemanglerService = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

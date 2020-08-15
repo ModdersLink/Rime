@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class VehicleSoundData : 
 		DataContainer
 	{
-		[ContainerField(8)]
-		public CtrRef<SoundAsset> BulletImpact { get; set; } = new CtrRef<SoundAsset>(); // 0x8 (8)
+		protected CtrRef<SoundAsset> m_BulletImpact = new CtrRef<SoundAsset>();
+		[ContainerField(8), ContainerFieldNameHash(1157477793)]
+		public CtrRef<SoundAsset> BulletImpact { get { return m_BulletImpact; } set { if (OnPropertyChanging("VehicleSoundData." + nameof(BulletImpact), this, m_BulletImpact, value)) m_BulletImpact = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

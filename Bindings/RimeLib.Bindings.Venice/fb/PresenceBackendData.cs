@@ -5,19 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class PresenceBackendData : 
 		Asset
 	{
-		[ContainerField(12)]
-		public List<PresenceRequest> Requests { get; set; } = new List<PresenceRequest>(); // 0xC (12)
+		protected List<PresenceRequest> m_Requests = new List<PresenceRequest>();
+		[ContainerField(12), ContainerFieldNameHash(3064423)]
+		public List<PresenceRequest> Requests { get { return m_Requests; } set { if (OnPropertyChanging("PresenceBackendData." + nameof(Requests), this, m_Requests, value)) m_Requests = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

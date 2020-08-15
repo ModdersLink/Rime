@@ -5,42 +5,58 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class ScoringBucketData : 
 		DataContainer
 	{
-		[ContainerField(8)]
-		public ScoringBucket DestinationBucket { get; set; } = new ScoringBucket(); // 0x8 (8)
+		protected ScoringBucket m_DestinationBucket = new ScoringBucket();
+		[ContainerField(8), ContainerFieldNameHash(73096151)]
+		public ScoringBucket DestinationBucket { get { return m_DestinationBucket; } set { if (OnPropertyChanging("ScoringBucketData." + nameof(DestinationBucket), this, m_DestinationBucket, value)) m_DestinationBucket = value; } } // 0x8 (8)
 		
-		[ContainerField(12)]
-		public ScoringBucketType BucketType { get; set; } = new ScoringBucketType(); // 0xC (12)
+		protected ScoringBucketType m_BucketType = new ScoringBucketType();
+		[ContainerField(12), ContainerFieldNameHash(1768841171)]
+		public ScoringBucketType BucketType { get { return m_BucketType; } set { if (OnPropertyChanging("ScoringBucketData." + nameof(BucketType), this, m_BucketType, value)) m_BucketType = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable]
-		public string Name { get; set; } // 0x10 (16)
+		protected string m_Name = new string();
+		[ContainerField(16), LayoutImmutable, ContainerFieldNameHash(2088949890)]
+		public string Name { get { return m_Name; } set { if (OnPropertyChanging("ScoringBucketData." + nameof(Name), this, m_Name, value)) m_Name = value; } } // 0x10 (16)
 		
-		[ContainerField(20)]
-		public CtrRef<ScoringBucketData> TeamTotalBucket { get; set; } = new CtrRef<ScoringBucketData>(); // 0x14 (20)
+		protected CtrRef<ScoringBucketData> m_TeamTotalBucket = new CtrRef<ScoringBucketData>();
+		[ContainerField(20), ContainerFieldNameHash(2559512116)]
+		public CtrRef<ScoringBucketData> TeamTotalBucket { get { return m_TeamTotalBucket; } set { if (OnPropertyChanging("ScoringBucketData." + nameof(TeamTotalBucket), this, m_TeamTotalBucket, value)) m_TeamTotalBucket = value; } } // 0x14 (20)
 		
-		[ContainerField(24)]
-		public List<ScoringBucketUnlockData> Unlocks { get; set; } = new List<ScoringBucketUnlockData>(); // 0x18 (24)
+		protected List<ScoringBucketUnlockData> m_Unlocks = new List<ScoringBucketUnlockData>();
+		[ContainerField(24), ContainerFieldNameHash(3464375270)]
+		public List<ScoringBucketUnlockData> Unlocks { get { return m_Unlocks; } set { if (OnPropertyChanging("ScoringBucketData." + nameof(Unlocks), this, m_Unlocks, value)) m_Unlocks = value; } } // 0x18 (24)
 		
-		[ContainerField(28)]
-		public RefArray<StatsCategoryBaseData> ConnectedCategories { get; set; } = new RefArray<StatsCategoryBaseData>(); // 0x1C (28)
+		protected RefArray<StatsCategoryBaseData> m_ConnectedCategories = new RefArray<StatsCategoryBaseData>();
+		[ContainerField(28), ContainerFieldNameHash(3286145740)]
+		public RefArray<StatsCategoryBaseData> ConnectedCategories { get { return m_ConnectedCategories; } set { if (OnPropertyChanging("ScoringBucketData." + nameof(ConnectedCategories), this, m_ConnectedCategories, value)) m_ConnectedCategories = value; } } // 0x1C (28)
 		
-		[ContainerField(32), LayoutImmutable, Blittable]
-		public bool AddToEntry { get; set; } // 0x20 (32)
+		protected bool m_AddToEntry = new bool();
+		[ContainerField(32), LayoutImmutable, Blittable, ContainerFieldNameHash(3429484907)]
+		public bool AddToEntry { get { return m_AddToEntry; } set { if (OnPropertyChanging("ScoringBucketData." + nameof(AddToEntry), this, m_AddToEntry, value)) m_AddToEntry = value; } } // 0x20 (32)
 		
-		[ContainerField(33), LayoutImmutable, Blittable]
-		public bool RoundScore { get; set; } // 0x21 (33)
+		protected bool m_RoundScore = new bool();
+		[ContainerField(33), LayoutImmutable, Blittable, ContainerFieldNameHash(228996879)]
+		public bool RoundScore { get { return m_RoundScore; } set { if (OnPropertyChanging("ScoringBucketData." + nameof(RoundScore), this, m_RoundScore, value)) m_RoundScore = value; } } // 0x21 (33)
 		
-		[ContainerField(34), LayoutImmutable, Blittable]
-		public bool GlobalScore { get; set; } // 0x22 (34)
+		protected bool m_GlobalScore = new bool();
+		[ContainerField(34), LayoutImmutable, Blittable, ContainerFieldNameHash(3863459110)]
+		public bool GlobalScore { get { return m_GlobalScore; } set { if (OnPropertyChanging("ScoringBucketData." + nameof(GlobalScore), this, m_GlobalScore, value)) m_GlobalScore = value; } } // 0x22 (34)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

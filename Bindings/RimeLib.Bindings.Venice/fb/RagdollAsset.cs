@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class RagdollAsset : 
 		Asset
 	{
-		[ContainerField(12)]
-		public CtrRef<MaterialContainerPair> MaterialPair { get; set; } = new CtrRef<MaterialContainerPair>(); // 0xC (12)
+		protected CtrRef<MaterialContainerPair> m_MaterialPair = new CtrRef<MaterialContainerPair>();
+		[ContainerField(12), ContainerFieldNameHash(161392100)]
+		public CtrRef<MaterialContainerPair> MaterialPair { get { return m_MaterialPair; } set { if (OnPropertyChanging("RagdollAsset." + nameof(MaterialPair), this, m_MaterialPair, value)) m_MaterialPair = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public bool UseServerRagdoll { get; set; } // 0x10 (16)
+		protected bool m_UseServerRagdoll = new bool();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(1214326076)]
+		public bool UseServerRagdoll { get { return m_UseServerRagdoll; } set { if (OnPropertyChanging("RagdollAsset." + nameof(UseServerRagdoll), this, m_UseServerRagdoll, value)) m_UseServerRagdoll = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

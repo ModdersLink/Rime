@@ -5,22 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class PlayFromHereAsset : 
 		Asset
 	{
-		[ContainerField(12)]
-		public CtrRef<Blueprint> Soldier { get; set; } = new CtrRef<Blueprint>(); // 0xC (12)
+		protected CtrRef<Blueprint> m_Soldier = new CtrRef<Blueprint>();
+		[ContainerField(12), ContainerFieldNameHash(2844639087)]
+		public CtrRef<Blueprint> Soldier { get { return m_Soldier; } set { if (OnPropertyChanging("PlayFromHereAsset." + nameof(Soldier), this, m_Soldier, value)) m_Soldier = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public CtrRef<AnimatedSkeletonDatabase> AnimatedSkeletonDatabase { get; set; } = new CtrRef<AnimatedSkeletonDatabase>(); // 0x10 (16)
+		protected CtrRef<AnimatedSkeletonDatabase> m_AnimatedSkeletonDatabase = new CtrRef<AnimatedSkeletonDatabase>();
+		[ContainerField(16), ContainerFieldNameHash(3542888158)]
+		public CtrRef<AnimatedSkeletonDatabase> AnimatedSkeletonDatabase { get { return m_AnimatedSkeletonDatabase; } set { if (OnPropertyChanging("PlayFromHereAsset." + nameof(AnimatedSkeletonDatabase), this, m_AnimatedSkeletonDatabase, value)) m_AnimatedSkeletonDatabase = value; } } // 0x10 (16)
 		
-		[ContainerField(20)]
-		public CtrRef<AntProjectAsset> AntProject { get; set; } = new CtrRef<AntProjectAsset>(); // 0x14 (20)
+		protected CtrRef<AntProjectAsset> m_AntProject = new CtrRef<AntProjectAsset>();
+		[ContainerField(20), ContainerFieldNameHash(1712291019)]
+		public CtrRef<AntProjectAsset> AntProject { get { return m_AntProject; } set { if (OnPropertyChanging("PlayFromHereAsset." + nameof(AntProject), this, m_AntProject, value)) m_AntProject = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

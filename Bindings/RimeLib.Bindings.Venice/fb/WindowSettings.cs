@@ -5,52 +5,74 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class WindowSettings : 
 		SystemSettings
 	{
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public int PosX { get; set; } // 0xC (12)
+		protected int m_PosX = new int();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(2089458993)]
+		public int PosX { get { return m_PosX; } set { if (OnPropertyChanging("WindowSettings." + nameof(PosX), this, m_PosX, value)) m_PosX = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public int PosY { get; set; } // 0x10 (16)
+		protected int m_PosY = new int();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(2089458992)]
+		public int PosY { get { return m_PosY; } set { if (OnPropertyChanging("WindowSettings." + nameof(PosY), this, m_PosY, value)) m_PosY = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
-		public uint Width { get; set; } // 0x14 (20)
+		protected uint m_Width = new uint();
+		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(226981187)]
+		public uint Width { get { return m_Width; } set { if (OnPropertyChanging("WindowSettings." + nameof(Width), this, m_Width, value)) m_Width = value; } } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable]
-		public uint Height { get; set; } // 0x18 (24)
+		protected uint m_Height = new uint();
+		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(3054065626)]
+		public uint Height { get { return m_Height; } set { if (OnPropertyChanging("WindowSettings." + nameof(Height), this, m_Height, value)) m_Height = value; } } // 0x18 (24)
 		
-		[ContainerField(28), LayoutImmutable, Blittable]
-		public bool BordersEnable { get; set; } // 0x1C (28)
+		protected bool m_BordersEnable = new bool();
+		[ContainerField(28), LayoutImmutable, Blittable, ContainerFieldNameHash(1633866683)]
+		public bool BordersEnable { get { return m_BordersEnable; } set { if (OnPropertyChanging("WindowSettings." + nameof(BordersEnable), this, m_BordersEnable, value)) m_BordersEnable = value; } } // 0x1C (28)
 		
-		[ContainerField(29), LayoutImmutable, Blittable]
-		public bool AutoSize { get; set; } // 0x1D (29)
+		protected bool m_AutoSize = new bool();
+		[ContainerField(29), LayoutImmutable, Blittable, ContainerFieldNameHash(3538087823)]
+		public bool AutoSize { get { return m_AutoSize; } set { if (OnPropertyChanging("WindowSettings." + nameof(AutoSize), this, m_AutoSize, value)) m_AutoSize = value; } } // 0x1D (29)
 		
-		[ContainerField(30), LayoutImmutable, Blittable]
-		public bool FullscreenAutoSize { get; set; } // 0x1E (30)
+		protected bool m_FullscreenAutoSize = new bool();
+		[ContainerField(30), LayoutImmutable, Blittable, ContainerFieldNameHash(3126319920)]
+		public bool FullscreenAutoSize { get { return m_FullscreenAutoSize; } set { if (OnPropertyChanging("WindowSettings." + nameof(FullscreenAutoSize), this, m_FullscreenAutoSize, value)) m_FullscreenAutoSize = value; } } // 0x1E (30)
 		
-		[ContainerField(31), LayoutImmutable, Blittable]
-		public bool FullscreenWhenJoiningServer { get; set; } // 0x1F (31)
+		protected bool m_FullscreenWhenJoiningServer = new bool();
+		[ContainerField(31), LayoutImmutable, Blittable, ContainerFieldNameHash(4162898953)]
+		public bool FullscreenWhenJoiningServer { get { return m_FullscreenWhenJoiningServer; } set { if (OnPropertyChanging("WindowSettings." + nameof(FullscreenWhenJoiningServer), this, m_FullscreenWhenJoiningServer, value)) m_FullscreenWhenJoiningServer = value; } } // 0x1F (31)
 		
-		[ContainerField(32), LayoutImmutable, Blittable]
-		public bool EnableEscape { get; set; } // 0x20 (32)
+		protected bool m_EnableEscape = new bool();
+		[ContainerField(32), LayoutImmutable, Blittable, ContainerFieldNameHash(3728915013)]
+		public bool EnableEscape { get { return m_EnableEscape; } set { if (OnPropertyChanging("WindowSettings." + nameof(EnableEscape), this, m_EnableEscape, value)) m_EnableEscape = value; } } // 0x20 (32)
 		
-		[ContainerField(33), LayoutImmutable, Blittable]
-		public bool EnableInputOnActivate { get; set; } // 0x21 (33)
+		protected bool m_EnableInputOnActivate = new bool();
+		[ContainerField(33), LayoutImmutable, Blittable, ContainerFieldNameHash(3421649674)]
+		public bool EnableInputOnActivate { get { return m_EnableInputOnActivate; } set { if (OnPropertyChanging("WindowSettings." + nameof(EnableInputOnActivate), this, m_EnableInputOnActivate, value)) m_EnableInputOnActivate = value; } } // 0x21 (33)
 		
-		[ContainerField(34), LayoutImmutable, Blittable]
-		public bool HibernateOnClose { get; set; } // 0x22 (34)
+		protected bool m_HibernateOnClose = new bool();
+		[ContainerField(34), LayoutImmutable, Blittable, ContainerFieldNameHash(3110056536)]
+		public bool HibernateOnClose { get { return m_HibernateOnClose; } set { if (OnPropertyChanging("WindowSettings." + nameof(HibernateOnClose), this, m_HibernateOnClose, value)) m_HibernateOnClose = value; } } // 0x22 (34)
 		
-		[ContainerField(35), LayoutImmutable, Blittable]
-		public bool Hidden { get; set; } // 0x23 (35)
+		protected bool m_Hidden = new bool();
+		[ContainerField(35), LayoutImmutable, Blittable, ContainerFieldNameHash(3049491663)]
+		public bool Hidden { get { return m_Hidden; } set { if (OnPropertyChanging("WindowSettings." + nameof(Hidden), this, m_Hidden, value)) m_Hidden = value; } } // 0x23 (35)
 		
-		[ContainerField(36), LayoutImmutable, Blittable]
-		public bool Minimized { get; set; } // 0x24 (36)
+		protected bool m_Minimized = new bool();
+		[ContainerField(36), LayoutImmutable, Blittable, ContainerFieldNameHash(1910180473)]
+		public bool Minimized { get { return m_Minimized; } set { if (OnPropertyChanging("WindowSettings." + nameof(Minimized), this, m_Minimized, value)) m_Minimized = value; } } // 0x24 (36)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,25 +5,38 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class SubtitleDataNode : 
 		TreeNodeBase
 	{
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public float Time { get; set; } // 0xC (12)
+		protected float m_Time = new float();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(2089313744)]
+		public float Time { get { return m_Time; } set { if (OnPropertyChanging("SubtitleDataNode." + nameof(Time), this, m_Time, value)) m_Time = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public float DisplayTime { get; set; } // 0x10 (16)
+		protected float m_DisplayTime = new float();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(1925139498)]
+		public float DisplayTime { get { return m_DisplayTime; } set { if (OnPropertyChanging("SubtitleDataNode." + nameof(DisplayTime), this, m_DisplayTime, value)) m_DisplayTime = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable]
-		public string SID1 { get; set; } // 0x14 (20)
+		protected string m_SID1 = new string();
+		[ContainerField(20), LayoutImmutable, ContainerFieldNameHash(2089461706)]
+		public string SID1 { get { return m_SID1; } set { if (OnPropertyChanging("SubtitleDataNode." + nameof(SID1), this, m_SID1, value)) m_SID1 = value; } } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable]
-		public string SID2 { get; set; } // 0x18 (24)
+		protected string m_SID2 = new string();
+		[ContainerField(24), LayoutImmutable, ContainerFieldNameHash(2089461705)]
+		public string SID2 { get { return m_SID2; } set { if (OnPropertyChanging("SubtitleDataNode." + nameof(SID2), this, m_SID2, value)) m_SID2 = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

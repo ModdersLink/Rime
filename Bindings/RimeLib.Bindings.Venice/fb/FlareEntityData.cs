@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class FlareEntityData : 
 		GrenadeEntityData
 	{
-		[ContainerField(208), LayoutImmutable, Blittable]
-		public float FlareRange { get; set; } // 0xD0 (208)
+		protected float m_FlareRange = new float();
+		[ContainerField(208), LayoutImmutable, Blittable, ContainerFieldNameHash(1082869702)]
+		public float FlareRange { get { return m_FlareRange; } set { if (OnPropertyChanging("FlareEntityData." + nameof(FlareRange), this, m_FlareRange, value)) m_FlareRange = value; } } // 0xD0 (208)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

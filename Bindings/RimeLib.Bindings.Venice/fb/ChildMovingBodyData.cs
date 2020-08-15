@@ -5,29 +5,42 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class ChildMovingBodyData : 
 		LinearMovingBodyData
 	{
-		[ContainerField(80), LayoutImmutable, Blittable]
-		public float InputDelay { get; set; } // 0x50 (80)
+		protected float m_InputDelay = new float();
+		[ContainerField(80), LayoutImmutable, Blittable, ContainerFieldNameHash(1617181990)]
+		public float InputDelay { get { return m_InputDelay; } set { if (OnPropertyChanging("ChildMovingBodyData." + nameof(InputDelay), this, m_InputDelay, value)) m_InputDelay = value; } } // 0x50 (80)
 		
-		[ContainerField(84), LayoutImmutable, Blittable]
-		public float Speed { get; set; } // 0x54 (84)
+		protected float m_Speed = new float();
+		[ContainerField(84), LayoutImmutable, Blittable, ContainerFieldNameHash(230887042)]
+		public float Speed { get { return m_Speed; } set { if (OnPropertyChanging("ChildMovingBodyData." + nameof(Speed), this, m_Speed, value)) m_Speed = value; } } // 0x54 (84)
 		
-		[ContainerField(88)]
-		public EntryInputActionEnum InputAction { get; set; } = new EntryInputActionEnum(); // 0x58 (88)
+		protected EntryInputActionEnum m_InputAction = new EntryInputActionEnum();
+		[ContainerField(88), ContainerFieldNameHash(1407707693)]
+		public EntryInputActionEnum InputAction { get { return m_InputAction; } set { if (OnPropertyChanging("ChildMovingBodyData." + nameof(InputAction), this, m_InputAction, value)) m_InputAction = value; } } // 0x58 (88)
 		
-		[ContainerField(92), LayoutImmutable, Blittable]
-		public float TriggerImpulse { get; set; } // 0x5C (92)
+		protected float m_TriggerImpulse = new float();
+		[ContainerField(92), LayoutImmutable, Blittable, ContainerFieldNameHash(2705515430)]
+		public float TriggerImpulse { get { return m_TriggerImpulse; } set { if (OnPropertyChanging("ChildMovingBodyData." + nameof(TriggerImpulse), this, m_TriggerImpulse, value)) m_TriggerImpulse = value; } } // 0x5C (92)
 		
-		[ContainerField(96), LayoutImmutable, Blittable]
-		public bool IsOneShotInput { get; set; } // 0x60 (96)
+		protected bool m_IsOneShotInput = new bool();
+		[ContainerField(96), LayoutImmutable, Blittable, ContainerFieldNameHash(1020834765)]
+		public bool IsOneShotInput { get { return m_IsOneShotInput; } set { if (OnPropertyChanging("ChildMovingBodyData." + nameof(IsOneShotInput), this, m_IsOneShotInput, value)) m_IsOneShotInput = value; } } // 0x60 (96)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

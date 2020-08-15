@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class UIQueuedEventsCompData : 
 		UIComponentData
 	{
-		[ContainerField(28), LayoutImmutable, Blittable]
-		public float InitialQueueDelay { get; set; } // 0x1C (28)
+		protected float m_InitialQueueDelay = new float();
+		[ContainerField(28), LayoutImmutable, Blittable, ContainerFieldNameHash(3503517055)]
+		public float InitialQueueDelay { get { return m_InitialQueueDelay; } set { if (OnPropertyChanging("UIQueuedEventsCompData." + nameof(InitialQueueDelay), this, m_InitialQueueDelay, value)) m_InitialQueueDelay = value; } } // 0x1C (28)
 		
-		[ContainerField(32), LayoutImmutable, Blittable]
-		public bool ShowUnlocksBecomingAvailable { get; set; } // 0x20 (32)
+		protected bool m_ShowUnlocksBecomingAvailable = new bool();
+		[ContainerField(32), LayoutImmutable, Blittable, ContainerFieldNameHash(3270144506)]
+		public bool ShowUnlocksBecomingAvailable { get { return m_ShowUnlocksBecomingAvailable; } set { if (OnPropertyChanging("UIQueuedEventsCompData." + nameof(ShowUnlocksBecomingAvailable), this, m_ShowUnlocksBecomingAvailable, value)) m_ShowUnlocksBecomingAvailable = value; } } // 0x20 (32)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

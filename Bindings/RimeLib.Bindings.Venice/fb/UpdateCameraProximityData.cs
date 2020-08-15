@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class UpdateCameraProximityData : 
 		ProcessorData
 	{
-		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 Size { get; set; } = new Vec3(); // 0x30 (48)
+		protected Vec3 m_Size = new Vec3();
+		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(2089429248)]
+		public Vec3 Size { get { return m_Size; } set { if (OnPropertyChanging("UpdateCameraProximityData." + nameof(Size), this, m_Size, value)) m_Size = value; } } // 0x30 (48)
 		
-		[ContainerField(64), LayoutImmutable, Blittable]
-		public float ForwardOffset { get; set; } // 0x40 (64)
+		protected float m_ForwardOffset = new float();
+		[ContainerField(64), LayoutImmutable, Blittable, ContainerFieldNameHash(2564135379)]
+		public float ForwardOffset { get { return m_ForwardOffset; } set { if (OnPropertyChanging("UpdateCameraProximityData." + nameof(ForwardOffset), this, m_ForwardOffset, value)) m_ForwardOffset = value; } } // 0x40 (64)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,17 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class SoldierAutoAimData : 
 		DataContainer
 	{
-		[ContainerField(8)]
-		public List<AutoAimData> Poses { get; set; } = new List<AutoAimData>(); // 0x8 (8)
+		protected List<AutoAimData> m_Poses = new List<AutoAimData>();
+		[ContainerField(8), ContainerFieldNameHash(232668927)]
+		public List<AutoAimData> Poses { get { return m_Poses; } set { if (OnPropertyChanging("SoldierAutoAimData." + nameof(Poses), this, m_Poses, value)) m_Poses = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,22 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(8)]
+	[ContainerType(8)]
 	public class DamageToVehicleEvent : 
 		MetricEvent
 	{
-		[ContainerField(16), LayoutImmutable]
-		public string VehicleName { get; set; } // 0x10 (16)
+		protected string m_VehicleName = new string();
+		[ContainerField(16), LayoutImmutable, ContainerFieldNameHash(926391226)]
+		public string VehicleName { get { return m_VehicleName; } set { if (OnPropertyChanging("DamageToVehicleEvent." + nameof(VehicleName), this, m_VehicleName, value)) m_VehicleName = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable]
-		public string WeaponName { get; set; } // 0x14 (20)
+		protected string m_WeaponName = new string();
+		[ContainerField(20), LayoutImmutable, ContainerFieldNameHash(932725504)]
+		public string WeaponName { get { return m_WeaponName; } set { if (OnPropertyChanging("DamageToVehicleEvent." + nameof(WeaponName), this, m_WeaponName, value)) m_WeaponName = value; } } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable]
-		public float DamageAmount { get; set; } // 0x18 (24)
+		protected float m_DamageAmount = new float();
+		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(4282691970)]
+		public float DamageAmount { get { return m_DamageAmount; } set { if (OnPropertyChanging("DamageToVehicleEvent." + nameof(DamageAmount), this, m_DamageAmount, value)) m_DamageAmount = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

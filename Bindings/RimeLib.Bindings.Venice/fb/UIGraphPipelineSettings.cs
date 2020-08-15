@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class UIGraphPipelineSettings : 
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable, Blittable]
-		public bool OneBundlePerGraph { get; set; } // 0x8 (8)
+		protected bool m_OneBundlePerGraph = new bool();
+		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(1787189790)]
+		public bool OneBundlePerGraph { get { return m_OneBundlePerGraph; } set { if (OnPropertyChanging("UIGraphPipelineSettings." + nameof(OneBundlePerGraph), this, m_OneBundlePerGraph, value)) m_OneBundlePerGraph = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

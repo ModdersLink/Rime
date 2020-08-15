@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class CharacterCustomizationComponentData : 
 		ComponentData
 	{
-		[ContainerField(96)]
-		public CtrRef<CharacterSocketListAsset> SocketList { get; set; } = new CtrRef<CharacterSocketListAsset>(); // 0x60 (96)
+		protected CtrRef<CharacterSocketListAsset> m_SocketList = new CtrRef<CharacterSocketListAsset>();
+		[ContainerField(96), ContainerFieldNameHash(648025282)]
+		public CtrRef<CharacterSocketListAsset> SocketList { get { return m_SocketList; } set { if (OnPropertyChanging("CharacterCustomizationComponentData." + nameof(SocketList), this, m_SocketList, value)) m_SocketList = value; } } // 0x60 (96)
 		
-		[ContainerField(100)]
-		public CtrRef<MeshLodGroup> SharedLodGroup { get; set; } = new CtrRef<MeshLodGroup>(); // 0x64 (100)
+		protected CtrRef<MeshLodGroup> m_SharedLodGroup = new CtrRef<MeshLodGroup>();
+		[ContainerField(100), ContainerFieldNameHash(1815069620)]
+		public CtrRef<MeshLodGroup> SharedLodGroup { get { return m_SharedLodGroup; } set { if (OnPropertyChanging("CharacterCustomizationComponentData." + nameof(SharedLodGroup), this, m_SharedLodGroup, value)) m_SharedLodGroup = value; } } // 0x64 (100)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

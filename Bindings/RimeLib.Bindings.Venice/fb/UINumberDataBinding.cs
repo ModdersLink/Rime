@@ -5,22 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class UINumberDataBinding : 
 		UIDataBinding
 	{
-		[ContainerField(8)]
-		public UIDataSourceInfo Value { get; set; } = new UIDataSourceInfo(); // 0x8 (8)
+		protected UIDataSourceInfo m_Value = new UIDataSourceInfo();
+		[ContainerField(8), ContainerFieldNameHash(225375086)]
+		public UIDataSourceInfo Value { get { return m_Value; } set { if (OnPropertyChanging("UINumberDataBinding." + nameof(Value), this, m_Value, value)) m_Value = value; } } // 0x8 (8)
 		
-		[ContainerField(24), LayoutImmutable, Blittable]
-		public int NumValue { get; set; } // 0x18 (24)
+		protected int m_NumValue = new int();
+		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(768702008)]
+		public int NumValue { get { return m_NumValue; } set { if (OnPropertyChanging("UINumberDataBinding." + nameof(NumValue), this, m_NumValue, value)) m_NumValue = value; } } // 0x18 (24)
 		
-		[ContainerField(28), LayoutImmutable, Blittable]
-		public bool Refresh { get; set; } // 0x1C (28)
+		protected bool m_Refresh = new bool();
+		[ContainerField(28), LayoutImmutable, Blittable, ContainerFieldNameHash(1327541432)]
+		public bool Refresh { get { return m_Refresh; } set { if (OnPropertyChanging("UINumberDataBinding." + nameof(Refresh), this, m_Refresh, value)) m_Refresh = value; } } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class VehicleCustomizationAsset : 
 		Asset
 	{
-		[ContainerField(12)]
-		public CtrRef<CustomizationTable> Customization { get; set; } = new CtrRef<CustomizationTable>(); // 0xC (12)
+		protected CtrRef<CustomizationTable> m_Customization = new CtrRef<CustomizationTable>();
+		[ContainerField(12), ContainerFieldNameHash(1998291608)]
+		public CtrRef<CustomizationTable> Customization { get { return m_Customization; } set { if (OnPropertyChanging("VehicleCustomizationAsset." + nameof(Customization), this, m_Customization, value)) m_Customization = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

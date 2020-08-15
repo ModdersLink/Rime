@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class AntDrivenComponentData : 
 		ComponentData
 	{
-		[ContainerField(96)]
-		public AnimationDrivenBinding CharacterGameState { get; set; } = new AnimationDrivenBinding(); // 0x60 (96)
+		protected AnimationDrivenBinding m_CharacterGameState = new AnimationDrivenBinding();
+		[ContainerField(96), ContainerFieldNameHash(1998069317)]
+		public AnimationDrivenBinding CharacterGameState { get { return m_CharacterGameState; } set { if (OnPropertyChanging("AntDrivenComponentData." + nameof(CharacterGameState), this, m_CharacterGameState, value)) m_CharacterGameState = value; } } // 0x60 (96)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

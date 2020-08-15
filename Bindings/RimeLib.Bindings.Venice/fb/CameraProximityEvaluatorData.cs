@@ -5,28 +5,42 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class CameraProximityEvaluatorData : 
 		EvaluatorData
 	{
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 Size { get; set; } = new Vec3(); // 0x10 (16)
+		protected Vec3 m_Size = new Vec3();
+		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(2089429248)]
+		public Vec3 Size { get { return m_Size; } set { if (OnPropertyChanging("CameraProximityEvaluatorData." + nameof(Size), this, m_Size, value)) m_Size = value; } } // 0x10 (16)
 		
-		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 Offset { get; set; } = new Vec3(); // 0x20 (32)
+		protected Vec3 m_Offset = new Vec3();
+		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(2871410728)]
+		public Vec3 Offset { get { return m_Offset; } set { if (OnPropertyChanging("CameraProximityEvaluatorData." + nameof(Offset), this, m_Offset, value)) m_Offset = value; } } // 0x20 (32)
 		
-		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 InnerRadiusDirection { get; set; } = new Vec3(); // 0x30 (48)
+		protected Vec3 m_InnerRadiusDirection = new Vec3();
+		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(3044199494)]
+		public Vec3 InnerRadiusDirection { get { return m_InnerRadiusDirection; } set { if (OnPropertyChanging("CameraProximityEvaluatorData." + nameof(InnerRadiusDirection), this, m_InnerRadiusDirection, value)) m_InnerRadiusDirection = value; } } // 0x30 (48)
 		
-		[ContainerField(64), LayoutImmutable, Blittable]
-		public float InnerRadius { get; set; } // 0x40 (64)
+		protected float m_InnerRadius = new float();
+		[ContainerField(64), LayoutImmutable, Blittable, ContainerFieldNameHash(3334193859)]
+		public float InnerRadius { get { return m_InnerRadius; } set { if (OnPropertyChanging("CameraProximityEvaluatorData." + nameof(InnerRadius), this, m_InnerRadius, value)) m_InnerRadius = value; } } // 0x40 (64)
 		
-		[ContainerField(68), LayoutImmutable, Blittable]
-		public float ForwardOffset { get; set; } // 0x44 (68)
+		protected float m_ForwardOffset = new float();
+		[ContainerField(68), LayoutImmutable, Blittable, ContainerFieldNameHash(2564135379)]
+		public float ForwardOffset { get { return m_ForwardOffset; } set { if (OnPropertyChanging("CameraProximityEvaluatorData." + nameof(ForwardOffset), this, m_ForwardOffset, value)) m_ForwardOffset = value; } } // 0x44 (68)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

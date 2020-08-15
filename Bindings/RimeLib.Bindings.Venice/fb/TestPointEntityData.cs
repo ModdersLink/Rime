@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class TestPointEntityData : 
 		GameEntityData
 	{
-		[ContainerField(96), LayoutImmutable]
-		public string OutputName { get; set; } // 0x60 (96)
+		protected string m_OutputName = new string();
+		[ContainerField(96), LayoutImmutable, ContainerFieldNameHash(543054269)]
+		public string OutputName { get { return m_OutputName; } set { if (OnPropertyChanging("TestPointEntityData." + nameof(OutputName), this, m_OutputName, value)) m_OutputName = value; } } // 0x60 (96)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

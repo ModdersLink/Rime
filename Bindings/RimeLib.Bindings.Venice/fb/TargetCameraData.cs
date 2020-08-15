@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class TargetCameraData : 
 		CameraData
 	{
-		[ContainerField(80)]
-		public HudData Hud { get; set; } = new HudData(); // 0x50 (80)
+		protected HudData m_Hud = new HudData();
+		[ContainerField(80), ContainerFieldNameHash(193458844)]
+		public HudData Hud { get { return m_Hud; } set { if (OnPropertyChanging("TargetCameraData." + nameof(Hud), this, m_Hud, value)) m_Hud = value; } } // 0x50 (80)
 		
-		[ContainerField(148)]
-		public RefArray<UIPartData> UIParts { get; set; } = new RefArray<UIPartData>(); // 0x94 (148)
+		protected RefArray<UIPartData> m_UIParts = new RefArray<UIPartData>();
+		[ContainerField(148), ContainerFieldNameHash(187481405)]
+		public RefArray<UIPartData> UIParts { get { return m_UIParts; } set { if (OnPropertyChanging("TargetCameraData." + nameof(UIParts), this, m_UIParts, value)) m_UIParts = value; } } // 0x94 (148)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,29 +5,42 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class AudioLanguageSetting : 
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable]
-		public string Name { get; set; } // 0x8 (8)
+		protected string m_Name = new string();
+		[ContainerField(8), LayoutImmutable, ContainerFieldNameHash(2088949890)]
+		public string Name { get { return m_Name; } set { if (OnPropertyChanging("AudioLanguageSetting." + nameof(Name), this, m_Name, value)) m_Name = value; } } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public uint NameHash { get; set; } // 0xC (12)
+		protected uint m_NameHash = new uint();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(994057744)]
+		public uint NameHash { get { return m_NameHash; } set { if (OnPropertyChanging("AudioLanguageSetting." + nameof(NameHash), this, m_NameHash, value)) m_NameHash = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable]
-		public string DisplayName { get; set; } // 0x10 (16)
+		protected string m_DisplayName = new string();
+		[ContainerField(16), LayoutImmutable, ContainerFieldNameHash(1925224568)]
+		public string DisplayName { get { return m_DisplayName; } set { if (OnPropertyChanging("AudioLanguageSetting." + nameof(DisplayName), this, m_DisplayName, value)) m_DisplayName = value; } } // 0x10 (16)
 		
-		[ContainerField(20)]
-		public List<AudioLanguageMapping> Mappings { get; set; } = new List<AudioLanguageMapping>(); // 0x14 (20)
+		protected List<AudioLanguageMapping> m_Mappings = new List<AudioLanguageMapping>();
+		[ContainerField(20), ContainerFieldNameHash(673881690)]
+		public List<AudioLanguageMapping> Mappings { get { return m_Mappings; } set { if (OnPropertyChanging("AudioLanguageSetting." + nameof(Mappings), this, m_Mappings, value)) m_Mappings = value; } } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable]
-		public bool IsDefault { get; set; } // 0x18 (24)
+		protected bool m_IsDefault = new bool();
+		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(2802724276)]
+		public bool IsDefault { get { return m_IsDefault; } set { if (OnPropertyChanging("AudioLanguageSetting." + nameof(IsDefault), this, m_IsDefault, value)) m_IsDefault = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

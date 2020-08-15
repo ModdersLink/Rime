@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class AnimationSpawnTemplate : 
 		DataContainer
 	{
-		[ContainerField(8)]
-		public CtrRef<AntEnumeration> RunStyle { get; set; } = new CtrRef<AntEnumeration>(); // 0x8 (8)
+		protected CtrRef<AntEnumeration> m_RunStyle = new CtrRef<AntEnumeration>();
+		[ContainerField(8), ContainerFieldNameHash(1984199259)]
+		public CtrRef<AntEnumeration> RunStyle { get { return m_RunStyle; } set { if (OnPropertyChanging("AnimationSpawnTemplate." + nameof(RunStyle), this, m_RunStyle, value)) m_RunStyle = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

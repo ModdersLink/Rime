@@ -5,53 +5,74 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class ObjectiveEntityData : 
 		GameEntityData
 	{
-		[ContainerField(96), LayoutImmutable]
-		public string ObjectiveBriefSid { get; set; } // 0x60 (96)
+		protected string m_ObjectiveBriefSid = new string();
+		[ContainerField(96), LayoutImmutable, ContainerFieldNameHash(2106225038)]
+		public string ObjectiveBriefSid { get { return m_ObjectiveBriefSid; } set { if (OnPropertyChanging("ObjectiveEntityData." + nameof(ObjectiveBriefSid), this, m_ObjectiveBriefSid, value)) m_ObjectiveBriefSid = value; } } // 0x60 (96)
 		
-		[ContainerField(100), LayoutImmutable]
-		public string ObjectiveSid { get; set; } // 0x64 (100)
+		protected string m_ObjectiveSid = new string();
+		[ContainerField(100), LayoutImmutable, ContainerFieldNameHash(2081694452)]
+		public string ObjectiveSid { get { return m_ObjectiveSid; } set { if (OnPropertyChanging("ObjectiveEntityData." + nameof(ObjectiveSid), this, m_ObjectiveSid, value)) m_ObjectiveSid = value; } } // 0x64 (100)
 		
-		[ContainerField(104)]
-		public CtrRef<MissionObjectiveHudData> HudData { get; set; } = new CtrRef<MissionObjectiveHudData>(); // 0x68 (104)
+		protected CtrRef<MissionObjectiveHudData> m_HudData = new CtrRef<MissionObjectiveHudData>();
+		[ContainerField(104), ContainerFieldNameHash(2639805868)]
+		public CtrRef<MissionObjectiveHudData> HudData { get { return m_HudData; } set { if (OnPropertyChanging("ObjectiveEntityData." + nameof(HudData), this, m_HudData, value)) m_HudData = value; } } // 0x68 (104)
 		
-		[ContainerField(108)]
-		public ObjectiveType ObjectiveType { get; set; } = new ObjectiveType(); // 0x6C (108)
+		protected ObjectiveType m_ObjectiveType = new ObjectiveType();
+		[ContainerField(108), ContainerFieldNameHash(4271777266)]
+		public ObjectiveType ObjectiveType { get { return m_ObjectiveType; } set { if (OnPropertyChanging("ObjectiveEntityData." + nameof(ObjectiveType), this, m_ObjectiveType, value)) m_ObjectiveType = value; } } // 0x6C (108)
 		
-		[ContainerField(112), LayoutImmutable, Blittable]
-		public float DisplayTime { get; set; } // 0x70 (112)
+		protected float m_DisplayTime = new float();
+		[ContainerField(112), LayoutImmutable, Blittable, ContainerFieldNameHash(1925139498)]
+		public float DisplayTime { get { return m_DisplayTime; } set { if (OnPropertyChanging("ObjectiveEntityData." + nameof(DisplayTime), this, m_DisplayTime, value)) m_DisplayTime = value; } } // 0x70 (112)
 		
-		[ContainerField(116), LayoutImmutable, Blittable]
-		public float DelayTime { get; set; } // 0x74 (116)
+		protected float m_DelayTime = new float();
+		[ContainerField(116), LayoutImmutable, Blittable, ContainerFieldNameHash(3694246245)]
+		public float DelayTime { get { return m_DelayTime; } set { if (OnPropertyChanging("ObjectiveEntityData." + nameof(DelayTime), this, m_DelayTime, value)) m_DelayTime = value; } } // 0x74 (116)
 		
-		[ContainerField(120)]
-		public SquadId SquadId { get; set; } = new SquadId(); // 0x78 (120)
+		protected SquadId m_SquadId = new SquadId();
+		[ContainerField(120), ContainerFieldNameHash(2312333818)]
+		public SquadId SquadId { get { return m_SquadId; } set { if (OnPropertyChanging("ObjectiveEntityData." + nameof(SquadId), this, m_SquadId, value)) m_SquadId = value; } } // 0x78 (120)
 		
-		[ContainerField(124)]
-		public TeamId TeamId { get; set; } = new TeamId(); // 0x7C (124)
+		protected TeamId m_TeamId = new TeamId();
+		[ContainerField(124), ContainerFieldNameHash(3220374101)]
+		public TeamId TeamId { get { return m_TeamId; } set { if (OnPropertyChanging("ObjectiveEntityData." + nameof(TeamId), this, m_TeamId, value)) m_TeamId = value; } } // 0x7C (124)
 		
-		[ContainerField(128), LayoutImmutable]
-		public string SuccessSid { get; set; } // 0x80 (128)
+		protected string m_SuccessSid = new string();
+		[ContainerField(128), LayoutImmutable, ContainerFieldNameHash(1551323064)]
+		public string SuccessSid { get { return m_SuccessSid; } set { if (OnPropertyChanging("ObjectiveEntityData." + nameof(SuccessSid), this, m_SuccessSid, value)) m_SuccessSid = value; } } // 0x80 (128)
 		
-		[ContainerField(132)]
-		public MessageReciever Reciever { get; set; } = new MessageReciever(); // 0x84 (132)
+		protected MessageReciever m_Reciever = new MessageReciever();
+		[ContainerField(132), ContainerFieldNameHash(688681692)]
+		public MessageReciever Reciever { get { return m_Reciever; } set { if (OnPropertyChanging("ObjectiveEntityData." + nameof(Reciever), this, m_Reciever, value)) m_Reciever = value; } } // 0x84 (132)
 		
-		[ContainerField(136), LayoutImmutable, Blittable]
-		public bool RetriggerSuccessOnShowObjective { get; set; } // 0x88 (136)
+		protected bool m_RetriggerSuccessOnShowObjective = new bool();
+		[ContainerField(136), LayoutImmutable, Blittable, ContainerFieldNameHash(1462402436)]
+		public bool RetriggerSuccessOnShowObjective { get { return m_RetriggerSuccessOnShowObjective; } set { if (OnPropertyChanging("ObjectiveEntityData." + nameof(RetriggerSuccessOnShowObjective), this, m_RetriggerSuccessOnShowObjective, value)) m_RetriggerSuccessOnShowObjective = value; } } // 0x88 (136)
 		
-		[ContainerField(137), LayoutImmutable, Blittable]
-		public bool Tutorial { get; set; } // 0x89 (137)
+		protected bool m_Tutorial = new bool();
+		[ContainerField(137), LayoutImmutable, Blittable, ContainerFieldNameHash(3626722569)]
+		public bool Tutorial { get { return m_Tutorial; } set { if (OnPropertyChanging("ObjectiveEntityData." + nameof(Tutorial), this, m_Tutorial, value)) m_Tutorial = value; } } // 0x89 (137)
 		
-		[ContainerField(138), LayoutImmutable, Blittable]
-		public bool DisplaySuccess { get; set; } // 0x8A (138)
+		protected bool m_DisplaySuccess = new bool();
+		[ContainerField(138), LayoutImmutable, Blittable, ContainerFieldNameHash(4179535996)]
+		public bool DisplaySuccess { get { return m_DisplaySuccess; } set { if (OnPropertyChanging("ObjectiveEntityData." + nameof(DisplaySuccess), this, m_DisplaySuccess, value)) m_DisplaySuccess = value; } } // 0x8A (138)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,20 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class EntryInputActionMappingData : 
 		InputActionMappingData
 	{
-		[ContainerField(8)]
-		public EntryInputActionEnum ActionIdentifier { get; set; } = new EntryInputActionEnum(); // 0x8 (8)
+		protected EntryInputActionEnum m_ActionIdentifier = new EntryInputActionEnum();
+		[ContainerField(8), ContainerFieldNameHash(2090288440)]
+		public EntryInputActionEnum ActionIdentifier { get { return m_ActionIdentifier; } set { if (OnPropertyChanging("EntryInputActionMappingData." + nameof(ActionIdentifier), this, m_ActionIdentifier, value)) m_ActionIdentifier = value; } } // 0x8 (8)
 		
-		[ContainerField(12)]
-		public InputConceptIdentifiers ConceptIdentifier { get; set; } = new InputConceptIdentifiers(); // 0xC (12)
+		protected InputConceptIdentifiers m_ConceptIdentifier = new InputConceptIdentifiers();
+		[ContainerField(12), ContainerFieldNameHash(1320965734)]
+		public InputConceptIdentifiers ConceptIdentifier { get { return m_ConceptIdentifier; } set { if (OnPropertyChanging("EntryInputActionMappingData." + nameof(ConceptIdentifier), this, m_ConceptIdentifier, value)) m_ConceptIdentifier = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

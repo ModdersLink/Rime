@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class VeniceUISettings : 
 		SystemSettings
 	{
-		[ContainerField(12), LayoutImmutable]
-		public string MetaDataAssetPath { get; set; } // 0xC (12)
+		protected string m_MetaDataAssetPath = new string();
+		[ContainerField(12), LayoutImmutable, ContainerFieldNameHash(1169897301)]
+		public string MetaDataAssetPath { get { return m_MetaDataAssetPath; } set { if (OnPropertyChanging("VeniceUISettings." + nameof(MetaDataAssetPath), this, m_MetaDataAssetPath, value)) m_MetaDataAssetPath = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public bool GetStatsInOnlineFlow { get; set; } // 0x10 (16)
+		protected bool m_GetStatsInOnlineFlow = new bool();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(3247310760)]
+		public bool GetStatsInOnlineFlow { get { return m_GetStatsInOnlineFlow; } set { if (OnPropertyChanging("VeniceUISettings." + nameof(GetStatsInOnlineFlow), this, m_GetStatsInOnlineFlow, value)) m_GetStatsInOnlineFlow = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

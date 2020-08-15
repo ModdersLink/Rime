@@ -5,44 +5,62 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class EngineConfigData : 
 		DataContainer
 	{
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 Position { get; set; } = new Vec3(); // 0x10 (16)
+		protected Vec3 m_Position = new Vec3();
+		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(3402582524)]
+		public Vec3 Position { get { return m_Position; } set { if (OnPropertyChanging("EngineConfigData." + nameof(Position), this, m_Position, value)) m_Position = value; } } // 0x10 (16)
 		
-		[ContainerField(32)]
-		public List<float> RpmCurvePoints { get; set; } = new List<float>(); // 0x20 (32)
+		protected List<float> m_RpmCurvePoints = new List<float>();
+		[ContainerField(32), ContainerFieldNameHash(3171241218)]
+		public List<float> RpmCurvePoints { get { return m_RpmCurvePoints; } set { if (OnPropertyChanging("EngineConfigData." + nameof(RpmCurvePoints), this, m_RpmCurvePoints, value)) m_RpmCurvePoints = value; } } // 0x20 (32)
 		
-		[ContainerField(36)]
-		public List<float> TorqueCurvePoints { get; set; } = new List<float>(); // 0x24 (36)
+		protected List<float> m_TorqueCurvePoints = new List<float>();
+		[ContainerField(36), ContainerFieldNameHash(3328974597)]
+		public List<float> TorqueCurvePoints { get { return m_TorqueCurvePoints; } set { if (OnPropertyChanging("EngineConfigData." + nameof(TorqueCurvePoints), this, m_TorqueCurvePoints, value)) m_TorqueCurvePoints = value; } } // 0x24 (36)
 		
-		[ContainerField(40), LayoutImmutable, Blittable]
-		public float RpmMin { get; set; } // 0x28 (40)
+		protected float m_RpmMin = new float();
+		[ContainerField(40), LayoutImmutable, Blittable, ContainerFieldNameHash(3287857536)]
+		public float RpmMin { get { return m_RpmMin; } set { if (OnPropertyChanging("EngineConfigData." + nameof(RpmMin), this, m_RpmMin, value)) m_RpmMin = value; } } // 0x28 (40)
 		
-		[ContainerField(44), LayoutImmutable, Blittable]
-		public float RpmMax { get; set; } // 0x2C (44)
+		protected float m_RpmMax = new float();
+		[ContainerField(44), LayoutImmutable, Blittable, ContainerFieldNameHash(3287857310)]
+		public float RpmMax { get { return m_RpmMax; } set { if (OnPropertyChanging("EngineConfigData." + nameof(RpmMax), this, m_RpmMax, value)) m_RpmMax = value; } } // 0x2C (44)
 		
-		[ContainerField(48), LayoutImmutable, Blittable]
-		public float RpmCut { get; set; } // 0x30 (48)
+		protected float m_RpmCut = new float();
+		[ContainerField(48), LayoutImmutable, Blittable, ContainerFieldNameHash(3287864328)]
+		public float RpmCut { get { return m_RpmCut; } set { if (OnPropertyChanging("EngineConfigData." + nameof(RpmCut), this, m_RpmCut, value)) m_RpmCut = value; } } // 0x30 (48)
 		
-		[ContainerField(52), LayoutImmutable, Blittable]
-		public float EnginePowerMultiplier { get; set; } // 0x34 (52)
+		protected float m_EnginePowerMultiplier = new float();
+		[ContainerField(52), LayoutImmutable, Blittable, ContainerFieldNameHash(3037532383)]
+		public float EnginePowerMultiplier { get { return m_EnginePowerMultiplier; } set { if (OnPropertyChanging("EngineConfigData." + nameof(EnginePowerMultiplier), this, m_EnginePowerMultiplier, value)) m_EnginePowerMultiplier = value; } } // 0x34 (52)
 		
-		[ContainerField(56), LayoutImmutable, Blittable]
-		public float InternalAccelerationFactor { get; set; } // 0x38 (56)
+		protected float m_InternalAccelerationFactor = new float();
+		[ContainerField(56), LayoutImmutable, Blittable, ContainerFieldNameHash(1996992141)]
+		public float InternalAccelerationFactor { get { return m_InternalAccelerationFactor; } set { if (OnPropertyChanging("EngineConfigData." + nameof(InternalAccelerationFactor), this, m_InternalAccelerationFactor, value)) m_InternalAccelerationFactor = value; } } // 0x38 (56)
 		
-		[ContainerField(60), LayoutImmutable, Blittable]
-		public float InternalDeaccelerationFactor { get; set; } // 0x3C (60)
+		protected float m_InternalDeaccelerationFactor = new float();
+		[ContainerField(60), LayoutImmutable, Blittable, ContainerFieldNameHash(820379788)]
+		public float InternalDeaccelerationFactor { get { return m_InternalDeaccelerationFactor; } set { if (OnPropertyChanging("EngineConfigData." + nameof(InternalDeaccelerationFactor), this, m_InternalDeaccelerationFactor, value)) m_InternalDeaccelerationFactor = value; } } // 0x3C (60)
 		
-		[ContainerField(64)]
-		public Boost Boost { get; set; } = new Boost(); // 0x40 (64)
+		protected Boost m_Boost = new Boost();
+		[ContainerField(64), ContainerFieldNameHash(211344160)]
+		public Boost Boost { get { return m_Boost; } set { if (OnPropertyChanging("EngineConfigData." + nameof(Boost), this, m_Boost, value)) m_Boost = value; } } // 0x40 (64)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,28 +5,42 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class AiffWriterNodeData : 
 		AudioGraphNodeData
 	{
-		[ContainerField(8)]
-		public AudioGraphNodePort In { get; set; } = new AudioGraphNodePort(); // 0x8 (8)
+		protected AudioGraphNodePort m_In = new AudioGraphNodePort();
+		[ContainerField(8), ContainerFieldNameHash(5862146)]
+		public AudioGraphNodePort In { get { return m_In; } set { if (OnPropertyChanging("AiffWriterNodeData." + nameof(In), this, m_In, value)) m_In = value; } } // 0x8 (8)
 		
-		[ContainerField(16)]
-		public AudioGraphNodePort Start { get; set; } = new AudioGraphNodePort(); // 0x10 (16)
+		protected AudioGraphNodePort m_Start = new AudioGraphNodePort();
+		[ContainerField(16), ContainerFieldNameHash(230748069)]
+		public AudioGraphNodePort Start { get { return m_Start; } set { if (OnPropertyChanging("AiffWriterNodeData." + nameof(Start), this, m_Start, value)) m_Start = value; } } // 0x10 (16)
 		
-		[ContainerField(24)]
-		public AudioGraphNodePort Stop { get; set; } = new AudioGraphNodePort(); // 0x18 (24)
+		protected AudioGraphNodePort m_Stop = new AudioGraphNodePort();
+		[ContainerField(24), ContainerFieldNameHash(2089401213)]
+		public AudioGraphNodePort Stop { get { return m_Stop; } set { if (OnPropertyChanging("AiffWriterNodeData." + nameof(Stop), this, m_Stop, value)) m_Stop = value; } } // 0x18 (24)
 		
-		[ContainerField(32)]
-		public SoundGraphPluginRef Plugin { get; set; } = new SoundGraphPluginRef(); // 0x20 (32)
+		protected SoundGraphPluginRef m_Plugin = new SoundGraphPluginRef();
+		[ContainerField(32), ContainerFieldNameHash(3384353452)]
+		public SoundGraphPluginRef Plugin { get { return m_Plugin; } set { if (OnPropertyChanging("AiffWriterNodeData." + nameof(Plugin), this, m_Plugin, value)) m_Plugin = value; } } // 0x20 (32)
 		
-		[ContainerField(36), LayoutImmutable]
-		public string FileName { get; set; } // 0x24 (36)
+		protected string m_FileName = new string();
+		[ContainerField(36), LayoutImmutable, ContainerFieldNameHash(1134474212)]
+		public string FileName { get { return m_FileName; } set { if (OnPropertyChanging("AiffWriterNodeData." + nameof(FileName), this, m_FileName, value)) m_FileName = value; } } // 0x24 (36)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

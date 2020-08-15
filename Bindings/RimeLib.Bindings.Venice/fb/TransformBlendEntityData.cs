@@ -5,29 +5,42 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class TransformBlendEntityData : 
 		EntityData
 	{
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable]
-		public LinearTransform In2 { get; set; } = new LinearTransform(); // 0x10 (16)
+		protected LinearTransform m_In2 = new LinearTransform();
+		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(193450864)]
+		public LinearTransform In2 { get { return m_In2; } set { if (OnPropertyChanging("TransformBlendEntityData." + nameof(In2), this, m_In2, value)) m_In2 = value; } } // 0x10 (16)
 		
-		[ContainerField(80), Homogeneous, LayoutImmutable, Blittable]
-		public LinearTransform In1 { get; set; } = new LinearTransform(); // 0x50 (80)
+		protected LinearTransform m_In1 = new LinearTransform();
+		[ContainerField(80), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(193450867)]
+		public LinearTransform In1 { get { return m_In1; } set { if (OnPropertyChanging("TransformBlendEntityData." + nameof(In1), this, m_In1, value)) m_In1 = value; } } // 0x50 (80)
 		
-		[ContainerField(144), LayoutImmutable, Blittable]
-		public float BlendValue { get; set; } // 0x90 (144)
+		protected float m_BlendValue = new float();
+		[ContainerField(144), LayoutImmutable, Blittable, ContainerFieldNameHash(236872047)]
+		public float BlendValue { get { return m_BlendValue; } set { if (OnPropertyChanging("TransformBlendEntityData." + nameof(BlendValue), this, m_BlendValue, value)) m_BlendValue = value; } } // 0x90 (144)
 		
-		[ContainerField(148), LayoutImmutable, Blittable]
-		public float BlendValue2 { get; set; } // 0x94 (148)
+		protected float m_BlendValue2 = new float();
+		[ContainerField(148), LayoutImmutable, Blittable, ContainerFieldNameHash(3521810301)]
+		public float BlendValue2 { get { return m_BlendValue2; } set { if (OnPropertyChanging("TransformBlendEntityData." + nameof(BlendValue2), this, m_BlendValue2, value)) m_BlendValue2 = value; } } // 0x94 (148)
 		
-		[ContainerField(152)]
-		public Realm Realm { get; set; } = new Realm(); // 0x98 (152)
+		protected Realm m_Realm = new Realm();
+		[ContainerField(152), ContainerFieldNameHash(229961746)]
+		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("TransformBlendEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0x98 (152)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

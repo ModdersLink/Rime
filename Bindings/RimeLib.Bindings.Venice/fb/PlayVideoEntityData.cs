@@ -5,22 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class PlayVideoEntityData : 
 		EntityData
 	{
-		[ContainerField(12)]
-		public CtrRef<MovieTextureAsset> Movie { get; set; } = new CtrRef<MovieTextureAsset>(); // 0xC (12)
+		protected CtrRef<MovieTextureAsset> m_Movie = new CtrRef<MovieTextureAsset>();
+		[ContainerField(12), ContainerFieldNameHash(210030653)]
+		public CtrRef<MovieTextureAsset> Movie { get { return m_Movie; } set { if (OnPropertyChanging("PlayVideoEntityData." + nameof(Movie), this, m_Movie, value)) m_Movie = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public bool KeepBlackScreen { get; set; } // 0x10 (16)
+		protected bool m_KeepBlackScreen = new bool();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(1584450997)]
+		public bool KeepBlackScreen { get { return m_KeepBlackScreen; } set { if (OnPropertyChanging("PlayVideoEntityData." + nameof(KeepBlackScreen), this, m_KeepBlackScreen, value)) m_KeepBlackScreen = value; } } // 0x10 (16)
 		
-		[ContainerField(17), LayoutImmutable, Blittable]
-		public bool AllowSkip { get; set; } // 0x11 (17)
+		protected bool m_AllowSkip = new bool();
+		[ContainerField(17), LayoutImmutable, Blittable, ContainerFieldNameHash(2314030141)]
+		public bool AllowSkip { get { return m_AllowSkip; } set { if (OnPropertyChanging("PlayVideoEntityData." + nameof(AllowSkip), this, m_AllowSkip, value)) m_AllowSkip = value; } } // 0x11 (17)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,19 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class VoiceOverLanguageRoot : 
 		DataContainer
 	{
-		[ContainerField(8)]
-		public CtrRef<AudioLanguage> Language { get; set; } = new CtrRef<AudioLanguage>(); // 0x8 (8)
+		protected CtrRef<AudioLanguage> m_Language = new CtrRef<AudioLanguage>();
+		[ContainerField(8), ContainerFieldNameHash(3872303031)]
+		public CtrRef<AudioLanguage> Language { get { return m_Language; } set { if (OnPropertyChanging("VoiceOverLanguageRoot." + nameof(Language), this, m_Language, value)) m_Language = value; } } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable]
-		public string Path { get; set; } // 0xC (12)
+		protected string m_Path = new string();
+		[ContainerField(12), LayoutImmutable, ContainerFieldNameHash(2089448296)]
+		public string Path { get { return m_Path; } set { if (OnPropertyChanging("VoiceOverLanguageRoot." + nameof(Path), this, m_Path, value)) m_Path = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

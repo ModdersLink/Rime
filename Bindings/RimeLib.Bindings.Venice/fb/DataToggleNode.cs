@@ -5,22 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class DataToggleNode : 
 		UINodeData
 	{
-		[ContainerField(20)]
-		public CtrRef<UINodePort> In { get; set; } = new CtrRef<UINodePort>(); // 0x14 (20)
+		protected CtrRef<UINodePort> m_In = new CtrRef<UINodePort>();
+		[ContainerField(20), ContainerFieldNameHash(5862146)]
+		public CtrRef<UINodePort> In { get { return m_In; } set { if (OnPropertyChanging("DataToggleNode." + nameof(In), this, m_In, value)) m_In = value; } } // 0x14 (20)
 		
-		[ContainerField(24)]
-		public CtrRef<UINodePort> Out { get; set; } = new CtrRef<UINodePort>(); // 0x18 (24)
+		protected CtrRef<UINodePort> m_Out = new CtrRef<UINodePort>();
+		[ContainerField(24), ContainerFieldNameHash(193453899)]
+		public CtrRef<UINodePort> Out { get { return m_Out; } set { if (OnPropertyChanging("DataToggleNode." + nameof(Out), this, m_Out, value)) m_Out = value; } } // 0x18 (24)
 		
-		[ContainerField(28)]
-		public UIDataSourceInfo DataSource { get; set; } = new UIDataSourceInfo(); // 0x1C (28)
+		protected UIDataSourceInfo m_DataSource = new UIDataSourceInfo();
+		[ContainerField(28), ContainerFieldNameHash(3810860200)]
+		public UIDataSourceInfo DataSource { get { return m_DataSource; } set { if (OnPropertyChanging("DataToggleNode." + nameof(DataSource), this, m_DataSource, value)) m_DataSource = value; } } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

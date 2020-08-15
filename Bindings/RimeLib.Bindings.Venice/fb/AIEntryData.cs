@@ -5,41 +5,58 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class AIEntryData : 
 		GameAIEntryData
 	{
-		[ContainerField(12)]
-		public CtrRef<AIVehicleBehaviourData> EquipmentType { get; set; } = new CtrRef<AIVehicleBehaviourData>(); // 0xC (12)
+		protected CtrRef<AIVehicleBehaviourData> m_EquipmentType = new CtrRef<AIVehicleBehaviourData>();
+		[ContainerField(12), ContainerFieldNameHash(2631564535)]
+		public CtrRef<AIVehicleBehaviourData> EquipmentType { get { return m_EquipmentType; } set { if (OnPropertyChanging("AIEntryData." + nameof(EquipmentType), this, m_EquipmentType, value)) m_EquipmentType = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public CtrRef<ArmamentData> Armament { get; set; } = new CtrRef<ArmamentData>(); // 0x10 (16)
+		protected CtrRef<ArmamentData> m_Armament = new CtrRef<ArmamentData>();
+		[ContainerField(16), ContainerFieldNameHash(4084490376)]
+		public CtrRef<ArmamentData> Armament { get { return m_Armament; } set { if (OnPropertyChanging("AIEntryData." + nameof(Armament), this, m_Armament, value)) m_Armament = value; } } // 0x10 (16)
 		
-		[ContainerField(20)]
-		public CtrRef<MobilityData> Mobility { get; set; } = new CtrRef<MobilityData>(); // 0x14 (20)
+		protected CtrRef<MobilityData> m_Mobility = new CtrRef<MobilityData>();
+		[ContainerField(20), ContainerFieldNameHash(1143844292)]
+		public CtrRef<MobilityData> Mobility { get { return m_Mobility; } set { if (OnPropertyChanging("AIEntryData." + nameof(Mobility), this, m_Mobility, value)) m_Mobility = value; } } // 0x14 (20)
 		
-		[ContainerField(24)]
-		public StrengthType StrengthType { get; set; } = new StrengthType(); // 0x18 (24)
+		protected StrengthType m_StrengthType = new StrengthType();
+		[ContainerField(24), ContainerFieldNameHash(4037075576)]
+		public StrengthType StrengthType { get { return m_StrengthType; } set { if (OnPropertyChanging("AIEntryData." + nameof(StrengthType), this, m_StrengthType, value)) m_StrengthType = value; } } // 0x18 (24)
 		
-		[ContainerField(28), LayoutImmutable, Blittable]
-		public float ReuseTime { get; set; } // 0x1C (28)
+		protected float m_ReuseTime = new float();
+		[ContainerField(28), LayoutImmutable, Blittable, ContainerFieldNameHash(888103652)]
+		public float ReuseTime { get { return m_ReuseTime; } set { if (OnPropertyChanging("AIEntryData." + nameof(ReuseTime), this, m_ReuseTime, value)) m_ReuseTime = value; } } // 0x1C (28)
 		
-		[ContainerField(32), LayoutImmutable, Blittable]
-		public bool Forbidden { get; set; } // 0x20 (32)
+		protected bool m_Forbidden = new bool();
+		[ContainerField(32), LayoutImmutable, Blittable, ContainerFieldNameHash(3410005054)]
+		public bool Forbidden { get { return m_Forbidden; } set { if (OnPropertyChanging("AIEntryData." + nameof(Forbidden), this, m_Forbidden, value)) m_Forbidden = value; } } // 0x20 (32)
 		
-		[ContainerField(33), LayoutImmutable, Blittable]
-		public bool HasExposedSoldier { get; set; } // 0x21 (33)
+		protected bool m_HasExposedSoldier = new bool();
+		[ContainerField(33), LayoutImmutable, Blittable, ContainerFieldNameHash(969684421)]
+		public bool HasExposedSoldier { get { return m_HasExposedSoldier; } set { if (OnPropertyChanging("AIEntryData." + nameof(HasExposedSoldier), this, m_HasExposedSoldier, value)) m_HasExposedSoldier = value; } } // 0x21 (33)
 		
-		[ContainerField(34), LayoutImmutable, Blittable]
-		public bool InterludeOnly { get; set; } // 0x22 (34)
+		protected bool m_InterludeOnly = new bool();
+		[ContainerField(34), LayoutImmutable, Blittable, ContainerFieldNameHash(1784294221)]
+		public bool InterludeOnly { get { return m_InterludeOnly; } set { if (OnPropertyChanging("AIEntryData." + nameof(InterludeOnly), this, m_InterludeOnly, value)) m_InterludeOnly = value; } } // 0x22 (34)
 		
-		[ContainerField(35), LayoutImmutable, Blittable]
-		public bool InvalidForAI { get; set; } // 0x23 (35)
+		protected bool m_InvalidForAI = new bool();
+		[ContainerField(35), LayoutImmutable, Blittable, ContainerFieldNameHash(1160734887)]
+		public bool InvalidForAI { get { return m_InvalidForAI; } set { if (OnPropertyChanging("AIEntryData." + nameof(InvalidForAI), this, m_InvalidForAI, value)) m_InvalidForAI = value; } } // 0x23 (35)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

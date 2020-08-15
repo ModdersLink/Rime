@@ -5,17 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class OnlineProviderAsset : 
 		Asset
 	{
-		[ContainerField(12)]
-		public List<OnlineProviderConfiguration> Configurations { get; set; } = new List<OnlineProviderConfiguration>(); // 0xC (12)
+		protected List<OnlineProviderConfiguration> m_Configurations = new List<OnlineProviderConfiguration>();
+		[ContainerField(12), ContainerFieldNameHash(4211240070)]
+		public List<OnlineProviderConfiguration> Configurations { get { return m_Configurations; } set { if (OnPropertyChanging("OnlineProviderAsset." + nameof(Configurations), this, m_Configurations, value)) m_Configurations = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

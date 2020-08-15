@@ -5,25 +5,38 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class CharacterHealthComponentData : 
 		ComponentData
 	{
-		[ContainerField(96), LayoutImmutable, Blittable]
-		public float MaxHealth { get; set; } // 0x60 (96)
+		protected float m_MaxHealth = new float();
+		[ContainerField(96), LayoutImmutable, Blittable, ContainerFieldNameHash(1153188365)]
+		public float MaxHealth { get { return m_MaxHealth; } set { if (OnPropertyChanging("CharacterHealthComponentData." + nameof(MaxHealth), this, m_MaxHealth, value)) m_MaxHealth = value; } } // 0x60 (96)
 		
-		[ContainerField(100), LayoutImmutable, Blittable]
-		public float RegenerateHealthPerSecond { get; set; } // 0x64 (100)
+		protected float m_RegenerateHealthPerSecond = new float();
+		[ContainerField(100), LayoutImmutable, Blittable, ContainerFieldNameHash(3985253426)]
+		public float RegenerateHealthPerSecond { get { return m_RegenerateHealthPerSecond; } set { if (OnPropertyChanging("CharacterHealthComponentData." + nameof(RegenerateHealthPerSecond), this, m_RegenerateHealthPerSecond, value)) m_RegenerateHealthPerSecond = value; } } // 0x64 (100)
 		
-		[ContainerField(104), LayoutImmutable, Blittable]
-		public bool RegenerateHealth { get; set; } // 0x68 (104)
+		protected bool m_RegenerateHealth = new bool();
+		[ContainerField(104), LayoutImmutable, Blittable, ContainerFieldNameHash(736723333)]
+		public bool RegenerateHealth { get { return m_RegenerateHealth; } set { if (OnPropertyChanging("CharacterHealthComponentData." + nameof(RegenerateHealth), this, m_RegenerateHealth, value)) m_RegenerateHealth = value; } } // 0x68 (104)
 		
-		[ContainerField(105), LayoutImmutable, Blittable]
-		public bool IsImmortal { get; set; } // 0x69 (105)
+		protected bool m_IsImmortal = new bool();
+		[ContainerField(105), LayoutImmutable, Blittable, ContainerFieldNameHash(2713171602)]
+		public bool IsImmortal { get { return m_IsImmortal; } set { if (OnPropertyChanging("CharacterHealthComponentData." + nameof(IsImmortal), this, m_IsImmortal, value)) m_IsImmortal = value; } } // 0x69 (105)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

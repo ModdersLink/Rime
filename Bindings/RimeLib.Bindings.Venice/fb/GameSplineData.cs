@@ -5,17 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class GameSplineData : 
 		CustomSplineData
 	{
-		[ContainerField(28)]
-		public GameSplineType SplineType { get; set; } = new GameSplineType(); // 0x1C (28)
+		protected GameSplineType m_SplineType = new GameSplineType();
+		[ContainerField(28), ContainerFieldNameHash(3992327344)]
+		public GameSplineType SplineType { get { return m_SplineType; } set { if (OnPropertyChanging("GameSplineData." + nameof(SplineType), this, m_SplineType, value)) m_SplineType = value; } } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

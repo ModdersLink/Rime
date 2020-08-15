@@ -5,22 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class MixerAsset : 
 		Asset
 	{
-		[ContainerField(12)]
-		public CtrRef<MixerGraphData> Graph { get; set; } = new CtrRef<MixerGraphData>(); // 0xC (12)
+		protected CtrRef<MixerGraphData> m_Graph = new CtrRef<MixerGraphData>();
+		[ContainerField(12), ContainerFieldNameHash(208111145)]
+		public CtrRef<MixerGraphData> Graph { get { return m_Graph; } set { if (OnPropertyChanging("MixerAsset." + nameof(Graph), this, m_Graph, value)) m_Graph = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public RefArray<MixerPreset> Presets { get; set; } = new RefArray<MixerPreset>(); // 0x10 (16)
+		protected RefArray<MixerPreset> m_Presets = new RefArray<MixerPreset>();
+		[ContainerField(16), ContainerFieldNameHash(3463460435)]
+		public RefArray<MixerPreset> Presets { get { return m_Presets; } set { if (OnPropertyChanging("MixerAsset." + nameof(Presets), this, m_Presets, value)) m_Presets = value; } } // 0x10 (16)
 		
-		[ContainerField(20)]
-		public CtrRef<MixerPreset> DefaultPreset { get; set; } = new CtrRef<MixerPreset>(); // 0x14 (20)
+		protected CtrRef<MixerPreset> m_DefaultPreset = new CtrRef<MixerPreset>();
+		[ContainerField(20), ContainerFieldNameHash(4117030027)]
+		public CtrRef<MixerPreset> DefaultPreset { get { return m_DefaultPreset; } set { if (OnPropertyChanging("MixerAsset." + nameof(DefaultPreset), this, m_DefaultPreset, value)) m_DefaultPreset = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

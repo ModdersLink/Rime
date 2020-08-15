@@ -5,32 +5,46 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(16)]
+	[ContainerType(16)]
 	public class WarningSystemComponentData : 
 		ComponentData
 	{
-		[ContainerField(96)]
-		public CtrRef<SoundAsset> AimWarnSoundEffect { get; set; } = new CtrRef<SoundAsset>(); // 0x60 (96)
+		protected CtrRef<SoundAsset> m_AimWarnSoundEffect = new CtrRef<SoundAsset>();
+		[ContainerField(96), ContainerFieldNameHash(2573535070)]
+		public CtrRef<SoundAsset> AimWarnSoundEffect { get { return m_AimWarnSoundEffect; } set { if (OnPropertyChanging("WarningSystemComponentData." + nameof(AimWarnSoundEffect), this, m_AimWarnSoundEffect, value)) m_AimWarnSoundEffect = value; } } // 0x60 (96)
 		
-		[ContainerField(100)]
-		public CtrRef<SoundAsset> MissileWarnSoundEffect { get; set; } = new CtrRef<SoundAsset>(); // 0x64 (100)
+		protected CtrRef<SoundAsset> m_MissileWarnSoundEffect = new CtrRef<SoundAsset>();
+		[ContainerField(100), ContainerFieldNameHash(3117773919)]
+		public CtrRef<SoundAsset> MissileWarnSoundEffect { get { return m_MissileWarnSoundEffect; } set { if (OnPropertyChanging("WarningSystemComponentData." + nameof(MissileWarnSoundEffect), this, m_MissileWarnSoundEffect, value)) m_MissileWarnSoundEffect = value; } } // 0x64 (100)
 		
-		[ContainerField(104)]
-		public CtrRef<SoundAsset> LowHealthWarnSoundEffect { get; set; } = new CtrRef<SoundAsset>(); // 0x68 (104)
+		protected CtrRef<SoundAsset> m_LowHealthWarnSoundEffect = new CtrRef<SoundAsset>();
+		[ContainerField(104), ContainerFieldNameHash(2886566771)]
+		public CtrRef<SoundAsset> LowHealthWarnSoundEffect { get { return m_LowHealthWarnSoundEffect; } set { if (OnPropertyChanging("WarningSystemComponentData." + nameof(LowHealthWarnSoundEffect), this, m_LowHealthWarnSoundEffect, value)) m_LowHealthWarnSoundEffect = value; } } // 0x68 (104)
 		
-		[ContainerField(108)]
-		public CtrRef<SoundAsset> LockingWarnSoundEffect { get; set; } = new CtrRef<SoundAsset>(); // 0x6C (108)
+		protected CtrRef<SoundAsset> m_LockingWarnSoundEffect = new CtrRef<SoundAsset>();
+		[ContainerField(108), ContainerFieldNameHash(893923632)]
+		public CtrRef<SoundAsset> LockingWarnSoundEffect { get { return m_LockingWarnSoundEffect; } set { if (OnPropertyChanging("WarningSystemComponentData." + nameof(LockingWarnSoundEffect), this, m_LockingWarnSoundEffect, value)) m_LockingWarnSoundEffect = value; } } // 0x6C (108)
 		
-		[ContainerField(112)]
-		public CtrRef<SoundAsset> LockedWarnSoundEffect { get; set; } = new CtrRef<SoundAsset>(); // 0x70 (112)
+		protected CtrRef<SoundAsset> m_LockedWarnSoundEffect = new CtrRef<SoundAsset>();
+		[ContainerField(112), ContainerFieldNameHash(1254781329)]
+		public CtrRef<SoundAsset> LockedWarnSoundEffect { get { return m_LockedWarnSoundEffect; } set { if (OnPropertyChanging("WarningSystemComponentData." + nameof(LockedWarnSoundEffect), this, m_LockedWarnSoundEffect, value)) m_LockedWarnSoundEffect = value; } } // 0x70 (112)
 		
-		[ContainerField(116)]
-		public WarningPlayerType PlayerType { get; set; } = new WarningPlayerType(); // 0x74 (116)
+		protected WarningPlayerType m_PlayerType = new WarningPlayerType();
+		[ContainerField(116), ContainerFieldNameHash(774572558)]
+		public WarningPlayerType PlayerType { get { return m_PlayerType; } set { if (OnPropertyChanging("WarningSystemComponentData." + nameof(PlayerType), this, m_PlayerType, value)) m_PlayerType = value; } } // 0x74 (116)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

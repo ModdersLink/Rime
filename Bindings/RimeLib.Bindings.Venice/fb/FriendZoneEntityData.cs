@@ -5,31 +5,46 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class FriendZoneEntityData : 
 		EntityData
 	{
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public int EnemyWeight { get; set; } // 0xC (12)
+		protected int m_EnemyWeight = new int();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(3888167615)]
+		public int EnemyWeight { get { return m_EnemyWeight; } set { if (OnPropertyChanging("FriendZoneEntityData." + nameof(EnemyWeight), this, m_EnemyWeight, value)) m_EnemyWeight = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public int FriendlyWeight { get; set; } // 0x10 (16)
+		protected int m_FriendlyWeight = new int();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(365084578)]
+		public int FriendlyWeight { get { return m_FriendlyWeight; } set { if (OnPropertyChanging("FriendZoneEntityData." + nameof(FriendlyWeight), this, m_FriendlyWeight, value)) m_FriendlyWeight = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
-		public int CorpsTimeout { get; set; } // 0x14 (20)
+		protected int m_CorpsTimeout = new int();
+		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(2096723555)]
+		public int CorpsTimeout { get { return m_CorpsTimeout; } set { if (OnPropertyChanging("FriendZoneEntityData." + nameof(CorpsTimeout), this, m_CorpsTimeout, value)) m_CorpsTimeout = value; } } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable]
-		public int CorpsWeight { get; set; } // 0x18 (24)
+		protected int m_CorpsWeight = new int();
+		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(133234872)]
+		public int CorpsWeight { get { return m_CorpsWeight; } set { if (OnPropertyChanging("FriendZoneEntityData." + nameof(CorpsWeight), this, m_CorpsWeight, value)) m_CorpsWeight = value; } } // 0x18 (24)
 		
-		[ContainerField(28), LayoutImmutable, Blittable]
-		public bool CountCorpsesForAllTeams { get; set; } // 0x1C (28)
+		protected bool m_CountCorpsesForAllTeams = new bool();
+		[ContainerField(28), LayoutImmutable, Blittable, ContainerFieldNameHash(3473146361)]
+		public bool CountCorpsesForAllTeams { get { return m_CountCorpsesForAllTeams; } set { if (OnPropertyChanging("FriendZoneEntityData." + nameof(CountCorpsesForAllTeams), this, m_CountCorpsesForAllTeams, value)) m_CountCorpsesForAllTeams = value; } } // 0x1C (28)
 		
-		[ContainerField(29), LayoutImmutable, Blittable]
-		public bool InitialZoneRandomized { get; set; } // 0x1D (29)
+		protected bool m_InitialZoneRandomized = new bool();
+		[ContainerField(29), LayoutImmutable, Blittable, ContainerFieldNameHash(1766807212)]
+		public bool InitialZoneRandomized { get { return m_InitialZoneRandomized; } set { if (OnPropertyChanging("FriendZoneEntityData." + nameof(InitialZoneRandomized), this, m_InitialZoneRandomized, value)) m_InitialZoneRandomized = value; } } // 0x1D (29)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

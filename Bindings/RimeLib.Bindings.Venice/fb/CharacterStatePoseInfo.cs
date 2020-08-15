@@ -5,35 +5,50 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class CharacterStatePoseInfo : 
 		DataContainer
 	{
-		[ContainerField(8)]
-		public CharacterPoseType PoseType { get; set; } = new CharacterPoseType(); // 0x8 (8)
+		protected CharacterPoseType m_PoseType = new CharacterPoseType();
+		[ContainerField(8), ContainerFieldNameHash(3415409588)]
+		public CharacterPoseType PoseType { get { return m_PoseType; } set { if (OnPropertyChanging("CharacterStatePoseInfo." + nameof(PoseType), this, m_PoseType, value)) m_PoseType = value; } } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public float Velocity { get; set; } // 0xC (12)
+		protected float m_Velocity = new float();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(3860766482)]
+		public float Velocity { get { return m_Velocity; } set { if (OnPropertyChanging("CharacterStatePoseInfo." + nameof(Velocity), this, m_Velocity, value)) m_Velocity = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public float AccelerationGain { get; set; } // 0x10 (16)
+		protected float m_AccelerationGain = new float();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(1824913062)]
+		public float AccelerationGain { get { return m_AccelerationGain; } set { if (OnPropertyChanging("CharacterStatePoseInfo." + nameof(AccelerationGain), this, m_AccelerationGain, value)) m_AccelerationGain = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
-		public float DecelerationGain { get; set; } // 0x14 (20)
+		protected float m_DecelerationGain = new float();
+		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(1680484485)]
+		public float DecelerationGain { get { return m_DecelerationGain; } set { if (OnPropertyChanging("CharacterStatePoseInfo." + nameof(DecelerationGain), this, m_DecelerationGain, value)) m_DecelerationGain = value; } } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable]
-		public float SprintGain { get; set; } // 0x18 (24)
+		protected float m_SprintGain = new float();
+		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(1424279590)]
+		public float SprintGain { get { return m_SprintGain; } set { if (OnPropertyChanging("CharacterStatePoseInfo." + nameof(SprintGain), this, m_SprintGain, value)) m_SprintGain = value; } } // 0x18 (24)
 		
-		[ContainerField(28), LayoutImmutable, Blittable]
-		public float SprintMultiplier { get; set; } // 0x1C (28)
+		protected float m_SprintMultiplier = new float();
+		[ContainerField(28), LayoutImmutable, Blittable, ContainerFieldNameHash(4088490892)]
+		public float SprintMultiplier { get { return m_SprintMultiplier; } set { if (OnPropertyChanging("CharacterStatePoseInfo." + nameof(SprintMultiplier), this, m_SprintMultiplier, value)) m_SprintMultiplier = value; } } // 0x1C (28)
 		
-		[ContainerField(32)]
-		public SpeedModifierData SpeedModifier { get; set; } = new SpeedModifierData(); // 0x20 (32)
+		protected SpeedModifierData m_SpeedModifier = new SpeedModifierData();
+		[ContainerField(32), ContainerFieldNameHash(2276662581)]
+		public SpeedModifierData SpeedModifier { get { return m_SpeedModifier; } set { if (OnPropertyChanging("CharacterStatePoseInfo." + nameof(SpeedModifier), this, m_SpeedModifier, value)) m_SpeedModifier = value; } } // 0x20 (32)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

@@ -5,22 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class CameraShakeNodeData : 
 		AudioGraphNodeData
 	{
-		[ContainerField(8)]
-		public AudioGraphNodePort Pitch { get; set; } = new AudioGraphNodePort(); // 0x8 (8)
+		protected AudioGraphNodePort m_Pitch = new AudioGraphNodePort();
+		[ContainerField(8), ContainerFieldNameHash(232604323)]
+		public AudioGraphNodePort Pitch { get { return m_Pitch; } set { if (OnPropertyChanging("CameraShakeNodeData." + nameof(Pitch), this, m_Pitch, value)) m_Pitch = value; } } // 0x8 (8)
 		
-		[ContainerField(16)]
-		public AudioGraphNodePort Yaw { get; set; } = new AudioGraphNodePort(); // 0x10 (16)
+		protected AudioGraphNodePort m_Yaw = new AudioGraphNodePort();
+		[ContainerField(16), ContainerFieldNameHash(193468618)]
+		public AudioGraphNodePort Yaw { get { return m_Yaw; } set { if (OnPropertyChanging("CameraShakeNodeData." + nameof(Yaw), this, m_Yaw, value)) m_Yaw = value; } } // 0x10 (16)
 		
-		[ContainerField(24)]
-		public AudioGraphNodePort Roll { get; set; } = new AudioGraphNodePort(); // 0x18 (24)
+		protected AudioGraphNodePort m_Roll = new AudioGraphNodePort();
+		[ContainerField(24), ContainerFieldNameHash(2089387576)]
+		public AudioGraphNodePort Roll { get { return m_Roll; } set { if (OnPropertyChanging("CameraShakeNodeData." + nameof(Roll), this, m_Roll, value)) m_Roll = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

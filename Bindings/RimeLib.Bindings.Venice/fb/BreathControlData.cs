@@ -5,25 +5,38 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class BreathControlData : 
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable, Blittable]
-		public float BreathControlTime { get; set; } // 0x8 (8)
+		protected float m_BreathControlTime = new float();
+		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(4153846207)]
+		public float BreathControlTime { get { return m_BreathControlTime; } set { if (OnPropertyChanging("BreathControlData." + nameof(BreathControlTime), this, m_BreathControlTime, value)) m_BreathControlTime = value; } } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public float BreathControlReleaseTime { get; set; } // 0xC (12)
+		protected float m_BreathControlReleaseTime = new float();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(1085847638)]
+		public float BreathControlReleaseTime { get { return m_BreathControlReleaseTime; } set { if (OnPropertyChanging("BreathControlData." + nameof(BreathControlReleaseTime), this, m_BreathControlReleaseTime, value)) m_BreathControlReleaseTime = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public float BreathControlPenaltyMultiplier { get; set; } // 0x10 (16)
+		protected float m_BreathControlPenaltyMultiplier = new float();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(735731002)]
+		public float BreathControlPenaltyMultiplier { get { return m_BreathControlPenaltyMultiplier; } set { if (OnPropertyChanging("BreathControlData." + nameof(BreathControlPenaltyMultiplier), this, m_BreathControlPenaltyMultiplier, value)) m_BreathControlPenaltyMultiplier = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
-		public float BreathControlPenaltyTimeout { get; set; } // 0x14 (20)
+		protected float m_BreathControlPenaltyTimeout = new float();
+		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(3387044330)]
+		public float BreathControlPenaltyTimeout { get { return m_BreathControlPenaltyTimeout; } set { if (OnPropertyChanging("BreathControlData." + nameof(BreathControlPenaltyTimeout), this, m_BreathControlPenaltyTimeout, value)) m_BreathControlPenaltyTimeout = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

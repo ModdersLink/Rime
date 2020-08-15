@@ -5,49 +5,70 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class MasterUnitSettings : 
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable]
-		public string Name { get; set; } // 0x8 (8)
+		protected string m_Name = new string();
+		[ContainerField(8), LayoutImmutable, ContainerFieldNameHash(2088949890)]
+		public string Name { get { return m_Name; } set { if (OnPropertyChanging("MasterUnitSettings." + nameof(Name), this, m_Name, value)) m_Name = value; } } // 0x8 (8)
 		
-		[ContainerField(12)]
-		public CtrRef<EqualizerSettings> Equalizer { get; set; } = new CtrRef<EqualizerSettings>(); // 0xC (12)
+		protected CtrRef<EqualizerSettings> m_Equalizer = new CtrRef<EqualizerSettings>();
+		[ContainerField(12), ContainerFieldNameHash(1319916845)]
+		public CtrRef<EqualizerSettings> Equalizer { get { return m_Equalizer; } set { if (OnPropertyChanging("MasterUnitSettings." + nameof(Equalizer), this, m_Equalizer, value)) m_Equalizer = value; } } // 0xC (12)
 		
-		[ContainerField(16)]
-		public CtrRef<CompressorSettings> Compressor { get; set; } = new CtrRef<CompressorSettings>(); // 0x10 (16)
+		protected CtrRef<CompressorSettings> m_Compressor = new CtrRef<CompressorSettings>();
+		[ContainerField(16), ContainerFieldNameHash(2651512702)]
+		public CtrRef<CompressorSettings> Compressor { get { return m_Compressor; } set { if (OnPropertyChanging("MasterUnitSettings." + nameof(Compressor), this, m_Compressor, value)) m_Compressor = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
-		public float MasterVolume { get; set; } // 0x14 (20)
+		protected float m_MasterVolume = new float();
+		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(2602803985)]
+		public float MasterVolume { get { return m_MasterVolume; } set { if (OnPropertyChanging("MasterUnitSettings." + nameof(MasterVolume), this, m_MasterVolume, value)) m_MasterVolume = value; } } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable]
-		public float MasterLfeGain { get; set; } // 0x18 (24)
+		protected float m_MasterLfeGain = new float();
+		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(3456654679)]
+		public float MasterLfeGain { get { return m_MasterLfeGain; } set { if (OnPropertyChanging("MasterUnitSettings." + nameof(MasterLfeGain), this, m_MasterLfeGain, value)) m_MasterLfeGain = value; } } // 0x18 (24)
 		
-		[ContainerField(28), LayoutImmutable, Blittable]
-		public float MasterDialogGain { get; set; } // 0x1C (28)
+		protected float m_MasterDialogGain = new float();
+		[ContainerField(28), LayoutImmutable, Blittable, ContainerFieldNameHash(3075029008)]
+		public float MasterDialogGain { get { return m_MasterDialogGain; } set { if (OnPropertyChanging("MasterUnitSettings." + nameof(MasterDialogGain), this, m_MasterDialogGain, value)) m_MasterDialogGain = value; } } // 0x1C (28)
 		
-		[ContainerField(32), LayoutImmutable, Blittable]
-		public float ReverbVolume { get; set; } // 0x20 (32)
+		protected float m_ReverbVolume = new float();
+		[ContainerField(32), LayoutImmutable, Blittable, ContainerFieldNameHash(2647402425)]
+		public float ReverbVolume { get { return m_ReverbVolume; } set { if (OnPropertyChanging("MasterUnitSettings." + nameof(ReverbVolume), this, m_ReverbVolume, value)) m_ReverbVolume = value; } } // 0x20 (32)
 		
-		[ContainerField(36), LayoutImmutable, Blittable]
-		public float MainMixVolume { get; set; } // 0x24 (36)
+		protected float m_MainMixVolume = new float();
+		[ContainerField(36), LayoutImmutable, Blittable, ContainerFieldNameHash(592568858)]
+		public float MainMixVolume { get { return m_MainMixVolume; } set { if (OnPropertyChanging("MasterUnitSettings." + nameof(MainMixVolume), this, m_MainMixVolume, value)) m_MainMixVolume = value; } } // 0x24 (36)
 		
-		[ContainerField(40), LayoutImmutable, Blittable]
-		public float DistortionClipLevel { get; set; } // 0x28 (40)
+		protected float m_DistortionClipLevel = new float();
+		[ContainerField(40), LayoutImmutable, Blittable, ContainerFieldNameHash(3542291182)]
+		public float DistortionClipLevel { get { return m_DistortionClipLevel; } set { if (OnPropertyChanging("MasterUnitSettings." + nameof(DistortionClipLevel), this, m_DistortionClipLevel, value)) m_DistortionClipLevel = value; } } // 0x28 (40)
 		
-		[ContainerField(44), LayoutImmutable, Blittable]
-		public float ParallelDistortionGain { get; set; } // 0x2C (44)
+		protected float m_ParallelDistortionGain = new float();
+		[ContainerField(44), LayoutImmutable, Blittable, ContainerFieldNameHash(2605372900)]
+		public float ParallelDistortionGain { get { return m_ParallelDistortionGain; } set { if (OnPropertyChanging("MasterUnitSettings." + nameof(ParallelDistortionGain), this, m_ParallelDistortionGain, value)) m_ParallelDistortionGain = value; } } // 0x2C (44)
 		
-		[ContainerField(48), LayoutImmutable, Blittable]
-		public float PostEffectsGain { get; set; } // 0x30 (48)
+		protected float m_PostEffectsGain = new float();
+		[ContainerField(48), LayoutImmutable, Blittable, ContainerFieldNameHash(974497912)]
+		public float PostEffectsGain { get { return m_PostEffectsGain; } set { if (OnPropertyChanging("MasterUnitSettings." + nameof(PostEffectsGain), this, m_PostEffectsGain, value)) m_PostEffectsGain = value; } } // 0x30 (48)
 		
-		[ContainerField(52), LayoutImmutable, Blittable]
-		public float FadeTime { get; set; } // 0x34 (52)
+		protected float m_FadeTime = new float();
+		[ContainerField(52), LayoutImmutable, Blittable, ContainerFieldNameHash(4001222838)]
+		public float FadeTime { get { return m_FadeTime; } set { if (OnPropertyChanging("MasterUnitSettings." + nameof(FadeTime), this, m_FadeTime, value)) m_FadeTime = value; } } // 0x34 (52)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

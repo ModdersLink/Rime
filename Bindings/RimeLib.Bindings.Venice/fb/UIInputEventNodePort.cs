@@ -5,17 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class UIInputEventNodePort : 
 		UINodePort
 	{
-		[ContainerField(24)]
-		public UIInputAction InputEventType { get; set; } = new UIInputAction(); // 0x18 (24)
+		protected UIInputAction m_InputEventType = new UIInputAction();
+		[ContainerField(24), ContainerFieldNameHash(559387975)]
+		public UIInputAction InputEventType { get { return m_InputEventType; } set { if (OnPropertyChanging("UIInputEventNodePort." + nameof(InputEventType), this, m_InputEventType, value)) m_InputEventType = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

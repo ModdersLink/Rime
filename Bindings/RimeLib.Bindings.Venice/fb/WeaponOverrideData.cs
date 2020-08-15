@@ -5,20 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
 using System.Collections.Generic;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class WeaponOverrideData : 
 		DataContainer
 	{
-		[ContainerField(8)]
-		public CtrRef<DataContainer> Data { get; set; } = new CtrRef<DataContainer>(); // 0x8 (8)
+		protected CtrRef<DataContainer> m_Data = new CtrRef<DataContainer>();
+		[ContainerField(8), ContainerFieldNameHash(2088730869)]
+		public CtrRef<DataContainer> Data { get { return m_Data; } set { if (OnPropertyChanging("WeaponOverrideData." + nameof(Data), this, m_Data, value)) m_Data = value; } } // 0x8 (8)
 		
-		[ContainerField(12)]
-		public List<WeaponOverrideValue> Values { get; set; } = new List<WeaponOverrideValue>(); // 0xC (12)
+		protected List<WeaponOverrideValue> m_Values = new List<WeaponOverrideValue>();
+		[ContainerField(12), ContainerFieldNameHash(3142410589)]
+		public List<WeaponOverrideValue> Values { get { return m_Values; } set { if (OnPropertyChanging("WeaponOverrideData." + nameof(Values), this, m_Values, value)) m_Values = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

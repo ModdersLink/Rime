@@ -5,16 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class SceneRecordingData : 
 		DataContainer
 	{
-		[ContainerField(8)]
-		public RefArray<EntityRecordingData> Data { get; set; } = new RefArray<EntityRecordingData>(); // 0x8 (8)
+		protected RefArray<EntityRecordingData> m_Data = new RefArray<EntityRecordingData>();
+		[ContainerField(8), ContainerFieldNameHash(2088730869)]
+		public RefArray<EntityRecordingData> Data { get { return m_Data; } set { if (OnPropertyChanging("SceneRecordingData." + nameof(Data), this, m_Data, value)) m_Data = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

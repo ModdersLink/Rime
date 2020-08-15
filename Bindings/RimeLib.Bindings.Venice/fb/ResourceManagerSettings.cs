@@ -5,28 +5,42 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class ResourceManagerSettings : 
 		SystemSettings
 	{
-		[ContainerField(12), LayoutImmutable, Blittable]
-		public int CasBundleReadBufferSizeKb { get; set; } // 0xC (12)
+		protected int m_CasBundleReadBufferSizeKb = new int();
+		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(1627350526)]
+		public int CasBundleReadBufferSizeKb { get { return m_CasBundleReadBufferSizeKb; } set { if (OnPropertyChanging("ResourceManagerSettings." + nameof(CasBundleReadBufferSizeKb), this, m_CasBundleReadBufferSizeKb, value)) m_CasBundleReadBufferSizeKb = value; } } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
-		public int CasBundleDecompressBufferSizeKb { get; set; } // 0x10 (16)
+		protected int m_CasBundleDecompressBufferSizeKb = new int();
+		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(4137626923)]
+		public int CasBundleDecompressBufferSizeKb { get { return m_CasBundleDecompressBufferSizeKb; } set { if (OnPropertyChanging("ResourceManagerSettings." + nameof(CasBundleDecompressBufferSizeKb), this, m_CasBundleDecompressBufferSizeKb, value)) m_CasBundleDecompressBufferSizeKb = value; } } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
-		public int CasBundleDecompressBufferCount { get; set; } // 0x14 (20)
+		protected int m_CasBundleDecompressBufferCount = new int();
+		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(2318797924)]
+		public int CasBundleDecompressBufferCount { get { return m_CasBundleDecompressBufferCount; } set { if (OnPropertyChanging("ResourceManagerSettings." + nameof(CasBundleDecompressBufferCount), this, m_CasBundleDecompressBufferCount, value)) m_CasBundleDecompressBufferCount = value; } } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable]
-		public bool BundleProfilingEnable { get; set; } // 0x18 (24)
+		protected bool m_BundleProfilingEnable = new bool();
+		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(2207788158)]
+		public bool BundleProfilingEnable { get { return m_BundleProfilingEnable; } set { if (OnPropertyChanging("ResourceManagerSettings." + nameof(BundleProfilingEnable), this, m_BundleProfilingEnable, value)) m_BundleProfilingEnable = value; } } // 0x18 (24)
 		
-		[ContainerField(25), LayoutImmutable, Blittable]
-		public bool SPUDecompressEnable { get; set; } // 0x19 (25)
+		protected bool m_SPUDecompressEnable = new bool();
+		[ContainerField(25), LayoutImmutable, Blittable, ContainerFieldNameHash(2656801749)]
+		public bool SPUDecompressEnable { get { return m_SPUDecompressEnable; } set { if (OnPropertyChanging("ResourceManagerSettings." + nameof(SPUDecompressEnable), this, m_SPUDecompressEnable, value)) m_SPUDecompressEnable = value; } } // 0x19 (25)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

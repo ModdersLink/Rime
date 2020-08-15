@@ -5,19 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class StatsCategoryPlayerRoleData : 
 		StatsCategoryBaseData
 	{
-		[ContainerField(20)]
-		public List<PlayerRole> Roles { get; set; } = new List<PlayerRole>(); // 0x14 (20)
+		protected List<PlayerRole> m_Roles = new List<PlayerRole>();
+		[ContainerField(20), ContainerFieldNameHash(230312994)]
+		public List<PlayerRole> Roles { get { return m_Roles; } set { if (OnPropertyChanging("StatsCategoryPlayerRoleData." + nameof(Roles), this, m_Roles, value)) m_Roles = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{

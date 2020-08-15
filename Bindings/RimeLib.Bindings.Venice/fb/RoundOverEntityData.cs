@@ -5,17 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using System;
-using System.Reflection;using RimeLib.Serialization.Attributes;using RimeLib.Serialization.Ebx;using RimeLib.Serialization.Containers;using RimeLib.Frostbite.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-    [ContainerType(4)]
+	[ContainerType(4)]
 	public class RoundOverEntityData : 
 		EntityData
 	{
-		[ContainerField(12)]
-		public TeamId Team { get; set; } = new TeamId(); // 0xC (12)
+		protected TeamId m_Team = new TeamId();
+		[ContainerField(12), ContainerFieldNameHash(2089309528)]
+		public TeamId Team { get { return m_Team; } set { if (OnPropertyChanging("RoundOverEntityData." + nameof(Team), this, m_Team, value)) m_Team = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{
