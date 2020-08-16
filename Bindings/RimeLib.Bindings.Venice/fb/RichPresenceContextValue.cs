@@ -22,7 +22,7 @@ namespace fb
 	public class RichPresenceContextValue : 
 		DataContainer
 	{
-		protected string m_SID = new string();
+		protected string m_SID = string.Empty;
 		[ContainerField(8), LayoutImmutable, ContainerFieldNameHash(193467547)]
 		public string SID { get { return m_SID; } set { if (OnPropertyChanging("RichPresenceContextValue." + nameof(SID), this, m_SID, value)) m_SID = value; } } // 0x8 (8)
 		

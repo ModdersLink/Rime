@@ -86,11 +86,11 @@ namespace fb
 		[ContainerField(72), LayoutImmutable, Blittable, ContainerFieldNameHash(2028383634)]
 		public float CorruptionChance { get { return m_CorruptionChance; } set { if (OnPropertyChanging("ClientSettings." + nameof(CorruptionChance), this, m_CorruptionChance, value)) m_CorruptionChance = value; } } // 0x48 (72)
 		
-		protected string m_ServerIp = new string();
+		protected string m_ServerIp = string.Empty;
 		[ContainerField(76), LayoutImmutable, ContainerFieldNameHash(269843833)]
 		public string ServerIp { get { return m_ServerIp; } set { if (OnPropertyChanging("ClientSettings." + nameof(ServerIp), this, m_ServerIp, value)) m_ServerIp = value; } } // 0x4C (76)
 		
-		protected string m_ScreenshotSuffix = new string();
+		protected string m_ScreenshotSuffix = string.Empty;
 		[ContainerField(80), LayoutImmutable, ContainerFieldNameHash(2399091550)]
 		public string ScreenshotSuffix { get { return m_ScreenshotSuffix; } set { if (OnPropertyChanging("ClientSettings." + nameof(ScreenshotSuffix), this, m_ScreenshotSuffix, value)) m_ScreenshotSuffix = value; } } // 0x50 (80)
 		
@@ -102,7 +102,7 @@ namespace fb
 		[ContainerField(88), LayoutImmutable, Blittable, ContainerFieldNameHash(715003463)]
 		public float MinLatency { get { return m_MinLatency; } set { if (OnPropertyChanging("ClientSettings." + nameof(MinLatency), this, m_MinLatency, value)) m_MinLatency = value; } } // 0x58 (88)
 		
-		protected string m_ScreenshotFilename = new string();
+		protected string m_ScreenshotFilename = string.Empty;
 		[ContainerField(92), LayoutImmutable, ContainerFieldNameHash(3330296424)]
 		public string ScreenshotFilename { get { return m_ScreenshotFilename; } set { if (OnPropertyChanging("ClientSettings." + nameof(ScreenshotFilename), this, m_ScreenshotFilename, value)) m_ScreenshotFilename = value; } } // 0x5C (92)
 		
@@ -114,7 +114,7 @@ namespace fb
 		[ContainerField(100), LayoutImmutable, Blittable, ContainerFieldNameHash(2680888952)]
 		public float AimScale { get { return m_AimScale; } set { if (OnPropertyChanging("ClientSettings." + nameof(AimScale), this, m_AimScale, value)) m_AimScale = value; } } // 0x64 (100)
 		
-		protected string m_SecondaryServerIp = new string();
+		protected string m_SecondaryServerIp = string.Empty;
 		[ContainerField(104), LayoutImmutable, ContainerFieldNameHash(3819727747)]
 		public string SecondaryServerIp { get { return m_SecondaryServerIp; } set { if (OnPropertyChanging("ClientSettings." + nameof(SecondaryServerIp), this, m_SecondaryServerIp, value)) m_SecondaryServerIp = value; } } // 0x68 (104)
 		

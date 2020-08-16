@@ -22,7 +22,7 @@ namespace fb
 	public class VoiceOverEvent : 
 		DataContainer
 	{
-		protected string m_Name = new string();
+		protected string m_Name = string.Empty;
 		[ContainerField(8), LayoutImmutable, ContainerFieldNameHash(2088949890)]
 		public string Name { get { return m_Name; } set { if (OnPropertyChanging("VoiceOverEvent." + nameof(Name), this, m_Name, value)) m_Name = value; } } // 0x8 (8)
 		

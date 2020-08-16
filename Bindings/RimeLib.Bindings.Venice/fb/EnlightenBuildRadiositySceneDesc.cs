@@ -34,7 +34,7 @@ namespace fb
 		[ContainerField(16), ContainerFieldNameHash(2948767738)]
 		public List<Vec3> StaticLightProbes { get { return m_StaticLightProbes; } set { if (OnPropertyChanging("EnlightenBuildRadiositySceneDesc." + nameof(StaticLightProbes), this, m_StaticLightProbes, value)) m_StaticLightProbes = value; } } // 0x10 (16)
 		
-		protected string m_Terrain = new string();
+		protected string m_Terrain = string.Empty;
 		[ContainerField(20), LayoutImmutable, ContainerFieldNameHash(3173545970)]
 		public string Terrain { get { return m_Terrain; } set { if (OnPropertyChanging("EnlightenBuildRadiositySceneDesc." + nameof(Terrain), this, m_Terrain, value)) m_Terrain = value; } } // 0x14 (20)
 		

@@ -38,7 +38,7 @@ namespace fb
 		[ContainerField(108), ContainerFieldNameHash(2634820946)]
 		public List<AntRef> FacePoseLibrary { get { return m_FacePoseLibrary; } set { if (OnPropertyChanging("FaceposerComponentData." + nameof(FacePoseLibrary), this, m_FacePoseLibrary, value)) m_FacePoseLibrary = value; } } // 0x6C (108)
 		
-		protected string m_FacePoserDofSetName = new string();
+		protected string m_FacePoserDofSetName = string.Empty;
 		[ContainerField(112), LayoutImmutable, ContainerFieldNameHash(691847159)]
 		public string FacePoserDofSetName { get { return m_FacePoserDofSetName; } set { if (OnPropertyChanging("FaceposerComponentData." + nameof(FacePoserDofSetName), this, m_FacePoserDofSetName, value)) m_FacePoserDofSetName = value; } } // 0x70 (112)
 		

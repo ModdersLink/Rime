@@ -34,7 +34,7 @@ namespace fb
 		[ContainerField(32), LayoutImmutable, Blittable, ContainerFieldNameHash(3123792190)]
 		public float FloatValue { get { return m_FloatValue; } set { if (OnPropertyChanging("UISetValueData." + nameof(FloatValue), this, m_FloatValue, value)) m_FloatValue = value; } } // 0x20 (32)
 		
-		protected string m_StringValue = new string();
+		protected string m_StringValue = string.Empty;
 		[ContainerField(36), LayoutImmutable, ContainerFieldNameHash(1269878171)]
 		public string StringValue { get { return m_StringValue; } set { if (OnPropertyChanging("UISetValueData." + nameof(StringValue), this, m_StringValue, value)) m_StringValue = value; } } // 0x24 (36)
 		

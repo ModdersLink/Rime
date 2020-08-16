@@ -34,11 +34,11 @@ namespace fb
 		[ContainerField(224), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(2085022312)]
 		public LinearTransform ControllableTransform { get { return m_ControllableTransform; } set { if (OnPropertyChanging("SpawnReferenceObjectData." + nameof(ControllableTransform), this, m_ControllableTransform, value)) m_ControllableTransform = value; } } // 0xE0 (224)
 		
-		protected string m_LocationNameSid = new string();
+		protected string m_LocationNameSid = string.Empty;
 		[ContainerField(288), LayoutImmutable, ContainerFieldNameHash(1490142753)]
 		public string LocationNameSid { get { return m_LocationNameSid; } set { if (OnPropertyChanging("SpawnReferenceObjectData." + nameof(LocationNameSid), this, m_LocationNameSid, value)) m_LocationNameSid = value; } } // 0x120 (288)
 		
-		protected string m_LocationTextSid = new string();
+		protected string m_LocationTextSid = string.Empty;
 		[ContainerField(292), LayoutImmutable, ContainerFieldNameHash(2025703195)]
 		public string LocationTextSid { get { return m_LocationTextSid; } set { if (OnPropertyChanging("SpawnReferenceObjectData." + nameof(LocationTextSid), this, m_LocationTextSid, value)) m_LocationTextSid = value; } } // 0x124 (292)
 		

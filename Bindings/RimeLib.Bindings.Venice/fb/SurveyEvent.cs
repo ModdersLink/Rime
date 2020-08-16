@@ -22,7 +22,7 @@ namespace fb
 	public class SurveyEvent : 
 		MetricEvent
 	{
-		protected string m_SurveyName = new string();
+		protected string m_SurveyName = string.Empty;
 		[ContainerField(16), LayoutImmutable, ContainerFieldNameHash(261434364)]
 		public string SurveyName { get { return m_SurveyName; } set { if (OnPropertyChanging("SurveyEvent." + nameof(SurveyName), this, m_SurveyName, value)) m_SurveyName = value; } } // 0x10 (16)
 		
@@ -46,7 +46,7 @@ namespace fb
 		[ContainerField(36), LayoutImmutable, Blittable, ContainerFieldNameHash(2144258306)]
 		public int AnswerQuestion5 { get { return m_AnswerQuestion5; } set { if (OnPropertyChanging("SurveyEvent." + nameof(AnswerQuestion5), this, m_AnswerQuestion5, value)) m_AnswerQuestion5 = value; } } // 0x24 (36)
 		
-		protected string m_FreeTextField = new string();
+		protected string m_FreeTextField = string.Empty;
 		[ContainerField(40), LayoutImmutable, ContainerFieldNameHash(1219116622)]
 		public string FreeTextField { get { return m_FreeTextField; } set { if (OnPropertyChanging("SurveyEvent." + nameof(FreeTextField), this, m_FreeTextField, value)) m_FreeTextField = value; } } // 0x28 (40)
 		

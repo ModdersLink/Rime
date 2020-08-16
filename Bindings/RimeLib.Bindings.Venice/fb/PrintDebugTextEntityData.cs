@@ -30,7 +30,7 @@ namespace fb
 		[ContainerField(32), ContainerFieldNameHash(229961746)]
 		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("PrintDebugTextEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0x20 (32)
 		
-		protected string m_Text = new string();
+		protected string m_Text = string.Empty;
 		[ContainerField(36), LayoutImmutable, ContainerFieldNameHash(2089309304)]
 		public string Text { get { return m_Text; } set { if (OnPropertyChanging("PrintDebugTextEntityData." + nameof(Text), this, m_Text, value)) m_Text = value; } } // 0x24 (36)
 		

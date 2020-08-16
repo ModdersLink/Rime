@@ -34,15 +34,15 @@ namespace fb
 		[ContainerField(20), ContainerFieldNameHash(942751002)]
 		public GamePlatform Platform { get { return m_Platform; } set { if (OnPropertyChanging("EntitlementQuery." + nameof(Platform), this, m_Platform, value)) m_Platform = value; } } // 0x14 (20)
 		
-		protected string m_EntitlementTag = new string();
+		protected string m_EntitlementTag = string.Empty;
 		[ContainerField(24), LayoutImmutable, ContainerFieldNameHash(1654763342)]
 		public string EntitlementTag { get { return m_EntitlementTag; } set { if (OnPropertyChanging("EntitlementQuery." + nameof(EntitlementTag), this, m_EntitlementTag, value)) m_EntitlementTag = value; } } // 0x18 (24)
 		
-		protected string m_ProductId = new string();
+		protected string m_ProductId = string.Empty;
 		[ContainerField(28), LayoutImmutable, ContainerFieldNameHash(106414083)]
 		public string ProductId { get { return m_ProductId; } set { if (OnPropertyChanging("EntitlementQuery." + nameof(ProductId), this, m_ProductId, value)) m_ProductId = value; } } // 0x1C (28)
 		
-		protected string m_ProjectId = new string();
+		protected string m_ProjectId = string.Empty;
 		[ContainerField(32), LayoutImmutable, ContainerFieldNameHash(4152360413)]
 		public string ProjectId { get { return m_ProjectId; } set { if (OnPropertyChanging("EntitlementQuery." + nameof(ProjectId), this, m_ProjectId, value)) m_ProjectId = value; } } // 0x20 (32)
 		

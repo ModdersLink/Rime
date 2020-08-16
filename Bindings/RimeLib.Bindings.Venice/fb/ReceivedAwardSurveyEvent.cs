@@ -22,7 +22,7 @@ namespace fb
 	public class ReceivedAwardSurveyEvent : 
 		MetricEvent
 	{
-		protected string m_AwardName = new string();
+		protected string m_AwardName = string.Empty;
 		[ContainerField(16), LayoutImmutable, ContainerFieldNameHash(1054881347)]
 		public string AwardName { get { return m_AwardName; } set { if (OnPropertyChanging("ReceivedAwardSurveyEvent." + nameof(AwardName), this, m_AwardName, value)) m_AwardName = value; } } // 0x10 (16)
 		

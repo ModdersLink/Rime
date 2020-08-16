@@ -38,7 +38,7 @@ namespace fb
 		[ContainerField(136), ContainerFieldNameHash(1823157050)]
 		public CtrRef<WeaponFiringData> WeaponFiring { get { return m_WeaponFiring; } set { if (OnPropertyChanging("WeaponComponentData." + nameof(WeaponFiring), this, m_WeaponFiring, value)) m_WeaponFiring = value; } } // 0x88 (136)
 		
-		protected string m_DamageGiverName = new string();
+		protected string m_DamageGiverName = string.Empty;
 		[ContainerField(140), LayoutImmutable, ContainerFieldNameHash(38100006)]
 		public string DamageGiverName { get { return m_DamageGiverName; } set { if (OnPropertyChanging("WeaponComponentData." + nameof(DamageGiverName), this, m_DamageGiverName, value)) m_DamageGiverName = value; } } // 0x8C (140)
 		

@@ -22,7 +22,7 @@ namespace fb
 	public class KitStateEvent : 
 		MetricEvent
 	{
-		protected string m_Kit = new string();
+		protected string m_Kit = string.Empty;
 		[ContainerField(16), LayoutImmutable, ContainerFieldNameHash(193457363)]
 		public string Kit { get { return m_Kit; } set { if (OnPropertyChanging("KitStateEvent." + nameof(Kit), this, m_Kit, value)) m_Kit = value; } } // 0x10 (16)
 		

@@ -34,7 +34,7 @@ namespace fb
 		[ContainerField(20), ContainerFieldNameHash(1870777401)]
 		public AntRef Controller { get { return m_Controller; } set { if (OnPropertyChanging("AnimatedTransformEntityData." + nameof(Controller), this, m_Controller, value)) m_Controller = value; } } // 0x14 (20)
 		
-		protected string m_BoneName = new string();
+		protected string m_BoneName = string.Empty;
 		[ContainerField(24), LayoutImmutable, ContainerFieldNameHash(1590647844)]
 		public string BoneName { get { return m_BoneName; } set { if (OnPropertyChanging("AnimatedTransformEntityData." + nameof(BoneName), this, m_BoneName, value)) m_BoneName = value; } } // 0x18 (24)
 		

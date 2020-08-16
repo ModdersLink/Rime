@@ -54,7 +54,7 @@ namespace fb
 		[ContainerField(80), ContainerFieldNameHash(3953057472)]
 		public SensingLimits RelaxedLimits { get { return m_RelaxedLimits; } set { if (OnPropertyChanging("SensingTemplateData." + nameof(RelaxedLimits), this, m_RelaxedLimits, value)) m_RelaxedLimits = value; } } // 0x50 (80)
 		
-		protected string m_DebugText = new string();
+		protected string m_DebugText = string.Empty;
 		[ContainerField(108), LayoutImmutable, ContainerFieldNameHash(859165769)]
 		public string DebugText { get { return m_DebugText; } set { if (OnPropertyChanging("SensingTemplateData." + nameof(DebugText), this, m_DebugText, value)) m_DebugText = value; } } // 0x6C (108)
 		

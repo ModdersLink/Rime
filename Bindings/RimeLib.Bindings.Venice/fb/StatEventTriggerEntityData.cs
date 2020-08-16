@@ -26,11 +26,11 @@ namespace fb
 		[ContainerField(96), ContainerFieldNameHash(4089209307)]
 		public StatEvent StatEvent { get { return m_StatEvent; } set { if (OnPropertyChanging("StatEventTriggerEntityData." + nameof(StatEvent), this, m_StatEvent, value)) m_StatEvent = value; } } // 0x60 (96)
 		
-		protected string m_MiscParamX = new string();
+		protected string m_MiscParamX = string.Empty;
 		[ContainerField(100), LayoutImmutable, ContainerFieldNameHash(2570197190)]
 		public string MiscParamX { get { return m_MiscParamX; } set { if (OnPropertyChanging("StatEventTriggerEntityData." + nameof(MiscParamX), this, m_MiscParamX, value)) m_MiscParamX = value; } } // 0x64 (100)
 		
-		protected string m_MiscParamY = new string();
+		protected string m_MiscParamY = string.Empty;
 		[ContainerField(104), LayoutImmutable, ContainerFieldNameHash(2570197191)]
 		public string MiscParamY { get { return m_MiscParamY; } set { if (OnPropertyChanging("StatEventTriggerEntityData." + nameof(MiscParamY), this, m_MiscParamY, value)) m_MiscParamY = value; } } // 0x68 (104)
 		

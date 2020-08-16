@@ -34,7 +34,7 @@ namespace fb
 		[ContainerField(20), ContainerFieldNameHash(2480382480)]
 		public OnlineEnvironment Environment { get { return m_Environment; } set { if (OnPropertyChanging("OnlineSettings." + nameof(Environment), this, m_Environment, value)) m_Environment = value; } } // 0x14 (20)
 		
-		protected string m_MatchmakingToken = new string();
+		protected string m_MatchmakingToken = string.Empty;
 		[ContainerField(24), LayoutImmutable, ContainerFieldNameHash(2041898954)]
 		public string MatchmakingToken { get { return m_MatchmakingToken; } set { if (OnPropertyChanging("OnlineSettings." + nameof(MatchmakingToken), this, m_MatchmakingToken, value)) m_MatchmakingToken = value; } } // 0x18 (24)
 		
@@ -50,11 +50,11 @@ namespace fb
 		[ContainerField(36), ContainerFieldNameHash(1116129662)]
 		public CtrRef<ChatSettings> ChatSettings { get { return m_ChatSettings; } set { if (OnPropertyChanging("OnlineSettings." + nameof(ChatSettings), this, m_ChatSettings, value)) m_ChatSettings = value; } } // 0x24 (36)
 		
-		protected string m_MatchmakingOptions = new string();
+		protected string m_MatchmakingOptions = string.Empty;
 		[ContainerField(40), LayoutImmutable, ContainerFieldNameHash(3558992865)]
 		public string MatchmakingOptions { get { return m_MatchmakingOptions; } set { if (OnPropertyChanging("OnlineSettings." + nameof(MatchmakingOptions), this, m_MatchmakingOptions, value)) m_MatchmakingOptions = value; } } // 0x28 (40)
 		
-		protected string m_Region = new string();
+		protected string m_Region = string.Empty;
 		[ContainerField(44), LayoutImmutable, ContainerFieldNameHash(3293978493)]
 		public string Region { get { return m_Region; } set { if (OnPropertyChanging("OnlineSettings." + nameof(Region), this, m_Region, value)) m_Region = value; } } // 0x2C (44)
 		
@@ -62,11 +62,11 @@ namespace fb
 		[ContainerField(48), LayoutImmutable, Blittable, ContainerFieldNameHash(1822528579)]
 		public uint NegativeUserCacheRefreshPeriod { get { return m_NegativeUserCacheRefreshPeriod; } set { if (OnPropertyChanging("OnlineSettings." + nameof(NegativeUserCacheRefreshPeriod), this, m_NegativeUserCacheRefreshPeriod, value)) m_NegativeUserCacheRefreshPeriod = value; } } // 0x30 (48)
 		
-		protected string m_MatchmakingMode = new string();
+		protected string m_MatchmakingMode = string.Empty;
 		[ContainerField(52), LayoutImmutable, ContainerFieldNameHash(3576825522)]
 		public string MatchmakingMode { get { return m_MatchmakingMode; } set { if (OnPropertyChanging("OnlineSettings." + nameof(MatchmakingMode), this, m_MatchmakingMode, value)) m_MatchmakingMode = value; } } // 0x34 (52)
 		
-		protected string m_Country = new string();
+		protected string m_Country = string.Empty;
 		[ContainerField(56), LayoutImmutable, ContainerFieldNameHash(3685467405)]
 		public string Country { get { return m_Country; } set { if (OnPropertyChanging("OnlineSettings." + nameof(Country), this, m_Country, value)) m_Country = value; } } // 0x38 (56)
 		

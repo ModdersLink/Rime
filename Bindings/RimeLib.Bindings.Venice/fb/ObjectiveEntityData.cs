@@ -22,11 +22,11 @@ namespace fb
 	public class ObjectiveEntityData : 
 		GameEntityData
 	{
-		protected string m_ObjectiveBriefSid = new string();
+		protected string m_ObjectiveBriefSid = string.Empty;
 		[ContainerField(96), LayoutImmutable, ContainerFieldNameHash(2106225038)]
 		public string ObjectiveBriefSid { get { return m_ObjectiveBriefSid; } set { if (OnPropertyChanging("ObjectiveEntityData." + nameof(ObjectiveBriefSid), this, m_ObjectiveBriefSid, value)) m_ObjectiveBriefSid = value; } } // 0x60 (96)
 		
-		protected string m_ObjectiveSid = new string();
+		protected string m_ObjectiveSid = string.Empty;
 		[ContainerField(100), LayoutImmutable, ContainerFieldNameHash(2081694452)]
 		public string ObjectiveSid { get { return m_ObjectiveSid; } set { if (OnPropertyChanging("ObjectiveEntityData." + nameof(ObjectiveSid), this, m_ObjectiveSid, value)) m_ObjectiveSid = value; } } // 0x64 (100)
 		
@@ -54,7 +54,7 @@ namespace fb
 		[ContainerField(124), ContainerFieldNameHash(3220374101)]
 		public TeamId TeamId { get { return m_TeamId; } set { if (OnPropertyChanging("ObjectiveEntityData." + nameof(TeamId), this, m_TeamId, value)) m_TeamId = value; } } // 0x7C (124)
 		
-		protected string m_SuccessSid = new string();
+		protected string m_SuccessSid = string.Empty;
 		[ContainerField(128), LayoutImmutable, ContainerFieldNameHash(1551323064)]
 		public string SuccessSid { get { return m_SuccessSid; } set { if (OnPropertyChanging("ObjectiveEntityData." + nameof(SuccessSid), this, m_SuccessSid, value)) m_SuccessSid = value; } } // 0x80 (128)
 		

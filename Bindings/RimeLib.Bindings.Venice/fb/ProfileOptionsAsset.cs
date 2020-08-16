@@ -22,11 +22,11 @@ namespace fb
 	public class ProfileOptionsAsset : 
 		Asset
 	{
-		protected string m_FileName = new string();
+		protected string m_FileName = string.Empty;
 		[ContainerField(12), LayoutImmutable, ContainerFieldNameHash(1134474212)]
 		public string FileName { get { return m_FileName; } set { if (OnPropertyChanging("ProfileOptionsAsset." + nameof(FileName), this, m_FileName, value)) m_FileName = value; } } // 0xC (12)
 		
-		protected string m_ContentName = new string();
+		protected string m_ContentName = string.Empty;
 		[ContainerField(16), LayoutImmutable, ContainerFieldNameHash(4236678091)]
 		public string ContentName { get { return m_ContentName; } set { if (OnPropertyChanging("ProfileOptionsAsset." + nameof(ContentName), this, m_ContentName, value)) m_ContentName = value; } } // 0x10 (16)
 		

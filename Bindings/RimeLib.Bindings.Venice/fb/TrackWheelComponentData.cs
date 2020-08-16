@@ -22,7 +22,7 @@ namespace fb
 	public class TrackWheelComponentData : 
 		WheelComponentData
 	{
-		protected string m_BoneName = new string();
+		protected string m_BoneName = string.Empty;
 		[ContainerField(128), LayoutImmutable, ContainerFieldNameHash(1590647844)]
 		public string BoneName { get { return m_BoneName; } set { if (OnPropertyChanging("TrackWheelComponentData." + nameof(BoneName), this, m_BoneName, value)) m_BoneName = value; } } // 0x80 (128)
 		

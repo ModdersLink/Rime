@@ -22,7 +22,7 @@ namespace fb
 	public class BFServerSettings : 
 		SystemSettings
 	{
-		protected string m_ServerMessage = new string();
+		protected string m_ServerMessage = string.Empty;
 		[ContainerField(12), LayoutImmutable, ContainerFieldNameHash(294234699)]
 		public string ServerMessage { get { return m_ServerMessage; } set { if (OnPropertyChanging("BFServerSettings." + nameof(ServerMessage), this, m_ServerMessage, value)) m_ServerMessage = value; } } // 0xC (12)
 		
@@ -30,7 +30,7 @@ namespace fb
 		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(700307892)]
 		public float CTFRoundTimeModifier { get { return m_CTFRoundTimeModifier; } set { if (OnPropertyChanging("BFServerSettings." + nameof(CTFRoundTimeModifier), this, m_CTFRoundTimeModifier, value)) m_CTFRoundTimeModifier = value; } } // 0x10 (16)
 		
-		protected string m_ForceTeamForPlayerTag = new string();
+		protected string m_ForceTeamForPlayerTag = string.Empty;
 		[ContainerField(20), LayoutImmutable, ContainerFieldNameHash(3026740703)]
 		public string ForceTeamForPlayerTag { get { return m_ForceTeamForPlayerTag; } set { if (OnPropertyChanging("BFServerSettings." + nameof(ForceTeamForPlayerTag), this, m_ForceTeamForPlayerTag, value)) m_ForceTeamForPlayerTag = value; } } // 0x14 (20)
 		
@@ -90,19 +90,19 @@ namespace fb
 		[ContainerField(76), LayoutImmutable, Blittable, ContainerFieldNameHash(2371863664)]
 		public int RoundWarmupTimeout { get { return m_RoundWarmupTimeout; } set { if (OnPropertyChanging("BFServerSettings." + nameof(RoundWarmupTimeout), this, m_RoundWarmupTimeout, value)) m_RoundWarmupTimeout = value; } } // 0x4C (76)
 		
-		protected string m_BannerUrl = new string();
+		protected string m_BannerUrl = string.Empty;
 		[ContainerField(80), LayoutImmutable, ContainerFieldNameHash(524064634)]
 		public string BannerUrl { get { return m_BannerUrl; } set { if (OnPropertyChanging("BFServerSettings." + nameof(BannerUrl), this, m_BannerUrl, value)) m_BannerUrl = value; } } // 0x50 (80)
 		
-		protected string m_ServerPreset = new string();
+		protected string m_ServerPreset = string.Empty;
 		[ContainerField(84), LayoutImmutable, ContainerFieldNameHash(4054803269)]
 		public string ServerPreset { get { return m_ServerPreset; } set { if (OnPropertyChanging("BFServerSettings." + nameof(ServerPreset), this, m_ServerPreset, value)) m_ServerPreset = value; } } // 0x54 (84)
 		
-		protected string m_ServerDescription = new string();
+		protected string m_ServerDescription = string.Empty;
 		[ContainerField(88), LayoutImmutable, ContainerFieldNameHash(2053120230)]
 		public string ServerDescription { get { return m_ServerDescription; } set { if (OnPropertyChanging("BFServerSettings." + nameof(ServerDescription), this, m_ServerDescription, value)) m_ServerDescription = value; } } // 0x58 (88)
 		
-		protected string m_ServerAdministrationSettings = new string();
+		protected string m_ServerAdministrationSettings = string.Empty;
 		[ContainerField(92), LayoutImmutable, ContainerFieldNameHash(1747142923)]
 		public string ServerAdministrationSettings { get { return m_ServerAdministrationSettings; } set { if (OnPropertyChanging("BFServerSettings." + nameof(ServerAdministrationSettings), this, m_ServerAdministrationSettings, value)) m_ServerAdministrationSettings = value; } } // 0x5C (92)
 		
@@ -110,11 +110,11 @@ namespace fb
 		[ContainerField(96), LayoutImmutable, Blittable, ContainerFieldNameHash(510337326)]
 		public uint GameSize { get { return m_GameSize; } set { if (OnPropertyChanging("BFServerSettings." + nameof(GameSize), this, m_GameSize, value)) m_GameSize = value; } } // 0x60 (96)
 		
-		protected string m_ServerAdministrationMapRotation = new string();
+		protected string m_ServerAdministrationMapRotation = string.Empty;
 		[ContainerField(100), LayoutImmutable, ContainerFieldNameHash(519997478)]
 		public string ServerAdministrationMapRotation { get { return m_ServerAdministrationMapRotation; } set { if (OnPropertyChanging("BFServerSettings." + nameof(ServerAdministrationMapRotation), this, m_ServerAdministrationMapRotation, value)) m_ServerAdministrationMapRotation = value; } } // 0x64 (100)
 		
-		protected string m_ServerAdministrationMapRotationInformation = new string();
+		protected string m_ServerAdministrationMapRotationInformation = string.Empty;
 		[ContainerField(104), LayoutImmutable, ContainerFieldNameHash(3813127178)]
 		public string ServerAdministrationMapRotationInformation { get { return m_ServerAdministrationMapRotationInformation; } set { if (OnPropertyChanging("BFServerSettings." + nameof(ServerAdministrationMapRotationInformation), this, m_ServerAdministrationMapRotationInformation, value)) m_ServerAdministrationMapRotationInformation = value; } } // 0x68 (104)
 		
@@ -122,11 +122,11 @@ namespace fb
 		[ContainerField(108), LayoutImmutable, Blittable, ContainerFieldNameHash(992248100)]
 		public uint ServerAdministrationRoundsPerMap { get { return m_ServerAdministrationRoundsPerMap; } set { if (OnPropertyChanging("BFServerSettings." + nameof(ServerAdministrationRoundsPerMap), this, m_ServerAdministrationRoundsPerMap, value)) m_ServerAdministrationRoundsPerMap = value; } } // 0x6C (108)
 		
-		protected string m_Spectators = new string();
+		protected string m_Spectators = string.Empty;
 		[ContainerField(112), LayoutImmutable, ContainerFieldNameHash(2306821231)]
 		public string Spectators { get { return m_Spectators; } set { if (OnPropertyChanging("BFServerSettings." + nameof(Spectators), this, m_Spectators, value)) m_Spectators = value; } } // 0x70 (112)
 		
-		protected string m_PunkBusterVersion = new string();
+		protected string m_PunkBusterVersion = string.Empty;
 		[ContainerField(116), LayoutImmutable, ContainerFieldNameHash(231433080)]
 		public string PunkBusterVersion { get { return m_PunkBusterVersion; } set { if (OnPropertyChanging("BFServerSettings." + nameof(PunkBusterVersion), this, m_PunkBusterVersion, value)) m_PunkBusterVersion = value; } } // 0x74 (116)
 		
@@ -134,15 +134,15 @@ namespace fb
 		[ContainerField(120), LayoutImmutable, Blittable, ContainerFieldNameHash(1639781149)]
 		public uint TeamSwitchImbalanceLimit { get { return m_TeamSwitchImbalanceLimit; } set { if (OnPropertyChanging("BFServerSettings." + nameof(TeamSwitchImbalanceLimit), this, m_TeamSwitchImbalanceLimit, value)) m_TeamSwitchImbalanceLimit = value; } } // 0x78 (120)
 		
-		protected string m_GameMod = new string();
+		protected string m_GameMod = string.Empty;
 		[ContainerField(124), LayoutImmutable, ContainerFieldNameHash(2878752685)]
 		public string GameMod { get { return m_GameMod; } set { if (OnPropertyChanging("BFServerSettings." + nameof(GameMod), this, m_GameMod, value)) m_GameMod = value; } } // 0x7C (124)
 		
-		protected string m_PingSite = new string();
+		protected string m_PingSite = string.Empty;
 		[ContainerField(128), LayoutImmutable, ContainerFieldNameHash(1333330622)]
 		public string PingSite { get { return m_PingSite; } set { if (OnPropertyChanging("BFServerSettings." + nameof(PingSite), this, m_PingSite, value)) m_PingSite = value; } } // 0x80 (128)
 		
-		protected string m_OverrideServerConfigurationStartTime = new string();
+		protected string m_OverrideServerConfigurationStartTime = string.Empty;
 		[ContainerField(132), LayoutImmutable, ContainerFieldNameHash(456186673)]
 		public string OverrideServerConfigurationStartTime { get { return m_OverrideServerConfigurationStartTime; } set { if (OnPropertyChanging("BFServerSettings." + nameof(OverrideServerConfigurationStartTime), this, m_OverrideServerConfigurationStartTime, value)) m_OverrideServerConfigurationStartTime = value; } } // 0x84 (132)
 		

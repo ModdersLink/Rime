@@ -22,7 +22,7 @@ namespace fb
 	public class VehicleState : 
 		MetricState
 	{
-		protected string m_VehicleName = new string();
+		protected string m_VehicleName = string.Empty;
 		[ContainerField(24), LayoutImmutable, ContainerFieldNameHash(926391226)]
 		public string VehicleName { get { return m_VehicleName; } set { if (OnPropertyChanging("VehicleState." + nameof(VehicleName), this, m_VehicleName, value)) m_VehicleName = value; } } // 0x18 (24)
 		

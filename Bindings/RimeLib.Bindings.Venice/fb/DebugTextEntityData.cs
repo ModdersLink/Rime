@@ -26,7 +26,7 @@ namespace fb
 		[ContainerField(80), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(2527550245)]
 		public Vec3 TextColor { get { return m_TextColor; } set { if (OnPropertyChanging("DebugTextEntityData." + nameof(TextColor), this, m_TextColor, value)) m_TextColor = value; } } // 0x50 (80)
 		
-		protected string m_DebugText = new string();
+		protected string m_DebugText = string.Empty;
 		[ContainerField(96), LayoutImmutable, ContainerFieldNameHash(859165769)]
 		public string DebugText { get { return m_DebugText; } set { if (OnPropertyChanging("DebugTextEntityData." + nameof(DebugText), this, m_DebugText, value)) m_DebugText = value; } } // 0x60 (96)
 		

@@ -22,7 +22,7 @@ namespace fb
 	public class TreeNodeBase : 
 		DataContainer
 	{
-		protected string m_NodeName = new string();
+		protected string m_NodeName = string.Empty;
 		[ContainerField(8), LayoutImmutable, ContainerFieldNameHash(2598021986)]
 		public string NodeName { get { return m_NodeName; } set { if (OnPropertyChanging("TreeNodeBase." + nameof(NodeName), this, m_NodeName, value)) m_NodeName = value; } } // 0x8 (8)
 		

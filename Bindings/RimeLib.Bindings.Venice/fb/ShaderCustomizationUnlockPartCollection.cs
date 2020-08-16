@@ -26,7 +26,7 @@ namespace fb
 		[ContainerField(8), ContainerFieldNameHash(3317903690)]
 		public RefArray<ObjectBlueprint> MeshBlueprints { get { return m_MeshBlueprints; } set { if (OnPropertyChanging("ShaderCustomizationUnlockPartCollection." + nameof(MeshBlueprints), this, m_MeshBlueprints, value)) m_MeshBlueprints = value; } } // 0x8 (8)
 		
-		protected string m_ShaderNodeName = new string();
+		protected string m_ShaderNodeName = string.Empty;
 		[ContainerField(12), LayoutImmutable, ContainerFieldNameHash(4213969131)]
 		public string ShaderNodeName { get { return m_ShaderNodeName; } set { if (OnPropertyChanging("ShaderCustomizationUnlockPartCollection." + nameof(ShaderNodeName), this, m_ShaderNodeName, value)) m_ShaderNodeName = value; } } // 0xC (12)
 		

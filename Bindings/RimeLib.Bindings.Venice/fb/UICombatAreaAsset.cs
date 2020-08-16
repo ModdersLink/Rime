@@ -22,7 +22,7 @@ namespace fb
 	public class UICombatAreaAsset : 
 		Asset
 	{
-		protected string m_Prefix = new string();
+		protected string m_Prefix = string.Empty;
 		[ContainerField(12), LayoutImmutable, ContainerFieldNameHash(3358704757)]
 		public string Prefix { get { return m_Prefix; } set { if (OnPropertyChanging("UICombatAreaAsset." + nameof(Prefix), this, m_Prefix, value)) m_Prefix = value; } } // 0xC (12)
 		

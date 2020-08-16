@@ -22,7 +22,7 @@ namespace fb
 	public class LevelDescriptionAsset : 
 		Asset
 	{
-		protected string m_LevelName = new string();
+		protected string m_LevelName = string.Empty;
 		[ContainerField(12), LayoutImmutable, ContainerFieldNameHash(1599082292)]
 		public string LevelName { get { return m_LevelName; } set { if (OnPropertyChanging("LevelDescriptionAsset." + nameof(LevelName), this, m_LevelName, value)) m_LevelName = value; } } // 0xC (12)
 		

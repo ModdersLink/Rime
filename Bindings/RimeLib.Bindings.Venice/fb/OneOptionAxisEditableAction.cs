@@ -22,7 +22,7 @@ namespace fb
 	public class OneOptionAxisEditableAction : 
 		EditableAction
 	{
-		protected string m_Header = new string();
+		protected string m_Header = string.Empty;
 		[ContainerField(12), LayoutImmutable, ContainerFieldNameHash(3054345338)]
 		public string Header { get { return m_Header; } set { if (OnPropertyChanging("OneOptionAxisEditableAction." + nameof(Header), this, m_Header, value)) m_Header = value; } } // 0xC (12)
 		

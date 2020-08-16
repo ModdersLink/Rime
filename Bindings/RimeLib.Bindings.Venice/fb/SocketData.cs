@@ -38,7 +38,7 @@ namespace fb
 		[ContainerField(148), LayoutImmutable, Blittable, ContainerFieldNameHash(2679406126)]
 		public int BoneId { get { return m_BoneId; } set { if (OnPropertyChanging("SocketData." + nameof(BoneId), this, m_BoneId, value)) m_BoneId = value; } } // 0x94 (148)
 		
-		protected string m_BoneName = new string();
+		protected string m_BoneName = string.Empty;
 		[ContainerField(152), LayoutImmutable, ContainerFieldNameHash(1590647844)]
 		public string BoneName { get { return m_BoneName; } set { if (OnPropertyChanging("SocketData." + nameof(BoneName), this, m_BoneName, value)) m_BoneName = value; } } // 0x98 (152)
 		

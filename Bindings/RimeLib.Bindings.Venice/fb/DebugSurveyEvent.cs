@@ -22,7 +22,7 @@ namespace fb
 	public class DebugSurveyEvent : 
 		MetricEvent
 	{
-		protected string m_PlayerName = new string();
+		protected string m_PlayerName = string.Empty;
 		[ContainerField(16), LayoutImmutable, ContainerFieldNameHash(775476977)]
 		public string PlayerName { get { return m_PlayerName; } set { if (OnPropertyChanging("DebugSurveyEvent." + nameof(PlayerName), this, m_PlayerName, value)) m_PlayerName = value; } } // 0x10 (16)
 		

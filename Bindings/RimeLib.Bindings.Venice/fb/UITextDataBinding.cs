@@ -22,7 +22,7 @@ namespace fb
 	public class UITextDataBinding : 
 		UIDataBinding
 	{
-		protected string m_StaticText = new string();
+		protected string m_StaticText = string.Empty;
 		[ContainerField(8), LayoutImmutable, ContainerFieldNameHash(3461853472)]
 		public string StaticText { get { return m_StaticText; } set { if (OnPropertyChanging("UITextDataBinding." + nameof(StaticText), this, m_StaticText, value)) m_StaticText = value; } } // 0x8 (8)
 		

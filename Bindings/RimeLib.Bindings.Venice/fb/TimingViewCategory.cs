@@ -22,7 +22,7 @@ namespace fb
 	public class TimingViewCategory : 
 		DataContainer
 	{
-		protected string m_CategoryName = new string();
+		protected string m_CategoryName = string.Empty;
 		[ContainerField(8), LayoutImmutable, ContainerFieldNameHash(1997430002)]
 		public string CategoryName { get { return m_CategoryName; } set { if (OnPropertyChanging("TimingViewCategory." + nameof(CategoryName), this, m_CategoryName, value)) m_CategoryName = value; } } // 0x8 (8)
 		

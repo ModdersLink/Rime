@@ -22,7 +22,7 @@ namespace fb
 	public class RankLevelData : 
 		DataContainer
 	{
-		protected string m_RankName = new string();
+		protected string m_RankName = string.Empty;
 		[ContainerField(8), LayoutImmutable, ContainerFieldNameHash(1737773492)]
 		public string RankName { get { return m_RankName; } set { if (OnPropertyChanging("RankLevelData." + nameof(RankName), this, m_RankName, value)) m_RankName = value; } } // 0x8 (8)
 		
@@ -30,15 +30,15 @@ namespace fb
 		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(4136222257)]
 		public uint PointsNeeded { get { return m_PointsNeeded; } set { if (OnPropertyChanging("RankLevelData." + nameof(PointsNeeded), this, m_PointsNeeded, value)) m_PointsNeeded = value; } } // 0xC (12)
 		
-		protected string m_ImageName = new string();
+		protected string m_ImageName = string.Empty;
 		[ContainerField(16), LayoutImmutable, ContainerFieldNameHash(2678981541)]
 		public string ImageName { get { return m_ImageName; } set { if (OnPropertyChanging("RankLevelData." + nameof(ImageName), this, m_ImageName, value)) m_ImageName = value; } } // 0x10 (16)
 		
-		protected string m_IconName = new string();
+		protected string m_IconName = string.Empty;
 		[ContainerField(20), LayoutImmutable, ContainerFieldNameHash(268503081)]
 		public string IconName { get { return m_IconName; } set { if (OnPropertyChanging("RankLevelData." + nameof(IconName), this, m_IconName, value)) m_IconName = value; } } // 0x14 (20)
 		
-		protected string m_SoundName = new string();
+		protected string m_SoundName = string.Empty;
 		[ContainerField(24), LayoutImmutable, ContainerFieldNameHash(523979073)]
 		public string SoundName { get { return m_SoundName; } set { if (OnPropertyChanging("RankLevelData." + nameof(SoundName), this, m_SoundName, value)) m_SoundName = value; } } // 0x18 (24)
 		

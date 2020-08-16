@@ -22,7 +22,7 @@ namespace fb
 	public class SubWorldReferenceObjectData : 
 		ReferenceObjectData
 	{
-		protected string m_BundleName = new string();
+		protected string m_BundleName = string.Empty;
 		[ContainerField(96), LayoutImmutable, ContainerFieldNameHash(461157046)]
 		public string BundleName { get { return m_BundleName; } set { if (OnPropertyChanging("SubWorldReferenceObjectData." + nameof(BundleName), this, m_BundleName, value)) m_BundleName = value; } } // 0x60 (96)
 		

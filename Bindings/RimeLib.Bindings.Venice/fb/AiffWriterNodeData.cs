@@ -38,7 +38,7 @@ namespace fb
 		[ContainerField(32), ContainerFieldNameHash(3384353452)]
 		public SoundGraphPluginRef Plugin { get { return m_Plugin; } set { if (OnPropertyChanging("AiffWriterNodeData." + nameof(Plugin), this, m_Plugin, value)) m_Plugin = value; } } // 0x20 (32)
 		
-		protected string m_FileName = new string();
+		protected string m_FileName = string.Empty;
 		[ContainerField(36), LayoutImmutable, ContainerFieldNameHash(1134474212)]
 		public string FileName { get { return m_FileName; } set { if (OnPropertyChanging("AiffWriterNodeData." + nameof(FileName), this, m_FileName, value)) m_FileName = value; } } // 0x24 (36)
 		

@@ -22,15 +22,15 @@ namespace fb
 	public class TacticalObjectiveEntityData : 
 		GameEntityData
 	{
-		protected string m_MissionSid = new string();
+		protected string m_MissionSid = string.Empty;
 		[ContainerField(96), LayoutImmutable, ContainerFieldNameHash(1231602263)]
 		public string MissionSid { get { return m_MissionSid; } set { if (OnPropertyChanging("TacticalObjectiveEntityData." + nameof(MissionSid), this, m_MissionSid, value)) m_MissionSid = value; } } // 0x60 (96)
 		
-		protected string m_BriefingSidTeam1 = new string();
+		protected string m_BriefingSidTeam1 = string.Empty;
 		[ContainerField(100), LayoutImmutable, ContainerFieldNameHash(3340727469)]
 		public string BriefingSidTeam1 { get { return m_BriefingSidTeam1; } set { if (OnPropertyChanging("TacticalObjectiveEntityData." + nameof(BriefingSidTeam1), this, m_BriefingSidTeam1, value)) m_BriefingSidTeam1 = value; } } // 0x64 (100)
 		
-		protected string m_BriefingSidTeam2 = new string();
+		protected string m_BriefingSidTeam2 = string.Empty;
 		[ContainerField(104), LayoutImmutable, ContainerFieldNameHash(3340727470)]
 		public string BriefingSidTeam2 { get { return m_BriefingSidTeam2; } set { if (OnPropertyChanging("TacticalObjectiveEntityData." + nameof(BriefingSidTeam2), this, m_BriefingSidTeam2, value)) m_BriefingSidTeam2 = value; } } // 0x68 (104)
 		

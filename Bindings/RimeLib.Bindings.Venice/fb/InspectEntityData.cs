@@ -26,7 +26,7 @@ namespace fb
 		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(362641347)]
 		public Vec3 CenterOffset { get { return m_CenterOffset; } set { if (OnPropertyChanging("InspectEntityData." + nameof(CenterOffset), this, m_CenterOffset, value)) m_CenterOffset = value; } } // 0x60 (96)
 		
-		protected string m_UIName = new string();
+		protected string m_UIName = string.Empty;
 		[ContainerField(112), LayoutImmutable, ContainerFieldNameHash(2999506814)]
 		public string UIName { get { return m_UIName; } set { if (OnPropertyChanging("InspectEntityData." + nameof(UIName), this, m_UIName, value)) m_UIName = value; } } // 0x70 (112)
 		

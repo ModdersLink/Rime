@@ -22,11 +22,11 @@ namespace fb
 	public class PS3StoreImageHD1080 : 
 		UIItemDescription
 	{
-		protected string m_Identifier = new string();
+		protected string m_Identifier = string.Empty;
 		[ContainerField(16), LayoutImmutable, ContainerFieldNameHash(3512790342)]
 		public string Identifier { get { return m_Identifier; } set { if (OnPropertyChanging("PS3StoreImageHD1080." + nameof(Identifier), this, m_Identifier, value)) m_Identifier = value; } } // 0x10 (16)
 		
-		protected string m_ImagePath = new string();
+		protected string m_ImagePath = string.Empty;
 		[ContainerField(20), LayoutImmutable, ContainerFieldNameHash(2679336655)]
 		public string ImagePath { get { return m_ImagePath; } set { if (OnPropertyChanging("PS3StoreImageHD1080." + nameof(ImagePath), this, m_ImagePath, value)) m_ImagePath = value; } } // 0x14 (20)
 		

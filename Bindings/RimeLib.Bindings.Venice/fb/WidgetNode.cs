@@ -50,7 +50,7 @@ namespace fb
 		[ContainerField(44), ContainerFieldNameHash(1380677224)]
 		public List<UIWidgetProperty> WidgetProperties { get { return m_WidgetProperties; } set { if (OnPropertyChanging("WidgetNode." + nameof(WidgetProperties), this, m_WidgetProperties, value)) m_WidgetProperties = value; } } // 0x2C (44)
 		
-		protected string m_InstanceName = new string();
+		protected string m_InstanceName = string.Empty;
 		[ContainerField(48), LayoutImmutable, ContainerFieldNameHash(1186954283)]
 		public string InstanceName { get { return m_InstanceName; } set { if (OnPropertyChanging("WidgetNode." + nameof(InstanceName), this, m_InstanceName, value)) m_InstanceName = value; } } // 0x30 (48)
 		

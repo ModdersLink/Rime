@@ -22,11 +22,11 @@ namespace fb
 	public class InputRecorderData : 
 		DataContainer
 	{
-		protected string m_FileNamePrefix = new string();
+		protected string m_FileNamePrefix = string.Empty;
 		[ContainerField(8), LayoutImmutable, ContainerFieldNameHash(452437588)]
 		public string FileNamePrefix { get { return m_FileNamePrefix; } set { if (OnPropertyChanging("InputRecorderData." + nameof(FileNamePrefix), this, m_FileNamePrefix, value)) m_FileNamePrefix = value; } } // 0x8 (8)
 		
-		protected string m_FileName = new string();
+		protected string m_FileName = string.Empty;
 		[ContainerField(12), LayoutImmutable, ContainerFieldNameHash(1134474212)]
 		public string FileName { get { return m_FileName; } set { if (OnPropertyChanging("InputRecorderData." + nameof(FileName), this, m_FileName, value)) m_FileName = value; } } // 0xC (12)
 		

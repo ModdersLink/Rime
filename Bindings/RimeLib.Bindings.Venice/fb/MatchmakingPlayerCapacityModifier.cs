@@ -22,7 +22,7 @@ namespace fb
 	public class MatchmakingPlayerCapacityModifier : 
 		MatchmakingModifier
 	{
-		protected string m_Attribute = new string();
+		protected string m_Attribute = string.Empty;
 		[ContainerField(8), LayoutImmutable, ContainerFieldNameHash(2715851769)]
 		public string Attribute { get { return m_Attribute; } set { if (OnPropertyChanging("MatchmakingPlayerCapacityModifier." + nameof(Attribute), this, m_Attribute, value)) m_Attribute = value; } } // 0x8 (8)
 		

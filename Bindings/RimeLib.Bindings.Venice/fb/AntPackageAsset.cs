@@ -22,11 +22,11 @@ namespace fb
 	public class AntPackageAsset : 
 		Asset
 	{
-		protected string m_Win32FileName = new string();
+		protected string m_Win32FileName = string.Empty;
 		[ContainerField(12), LayoutImmutable, ContainerFieldNameHash(2932314709)]
 		public string Win32FileName { get { return m_Win32FileName; } set { if (OnPropertyChanging("AntPackageAsset." + nameof(Win32FileName), this, m_Win32FileName, value)) m_Win32FileName = value; } } // 0xC (12)
 		
-		protected string m_XePs3FileName = new string();
+		protected string m_XePs3FileName = string.Empty;
 		[ContainerField(16), LayoutImmutable, ContainerFieldNameHash(726189609)]
 		public string XePs3FileName { get { return m_XePs3FileName; } set { if (OnPropertyChanging("AntPackageAsset." + nameof(XePs3FileName), this, m_XePs3FileName, value)) m_XePs3FileName = value; } } // 0x10 (16)
 		

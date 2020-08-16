@@ -22,19 +22,19 @@ namespace fb
 	public class DogTagData : 
 		UnlockAssetBase
 	{
-		protected string m_NameSID = new string();
+		protected string m_NameSID = string.Empty;
 		[ContainerField(40), LayoutImmutable, ContainerFieldNameHash(3153746364)]
 		public string NameSID { get { return m_NameSID; } set { if (OnPropertyChanging("DogTagData." + nameof(NameSID), this, m_NameSID, value)) m_NameSID = value; } } // 0x28 (40)
 		
-		protected string m_DescriptionSID = new string();
+		protected string m_DescriptionSID = string.Empty;
 		[ContainerField(44), LayoutImmutable, ContainerFieldNameHash(1844416573)]
 		public string DescriptionSID { get { return m_DescriptionSID; } set { if (OnPropertyChanging("DogTagData." + nameof(DescriptionSID), this, m_DescriptionSID, value)) m_DescriptionSID = value; } } // 0x2C (44)
 		
-		protected string m_ImageName = new string();
+		protected string m_ImageName = string.Empty;
 		[ContainerField(48), LayoutImmutable, ContainerFieldNameHash(2678981541)]
 		public string ImageName { get { return m_ImageName; } set { if (OnPropertyChanging("DogTagData." + nameof(ImageName), this, m_ImageName, value)) m_ImageName = value; } } // 0x30 (48)
 		
-		protected string m_SmallImageName = new string();
+		protected string m_SmallImageName = string.Empty;
 		[ContainerField(52), LayoutImmutable, ContainerFieldNameHash(567066714)]
 		public string SmallImageName { get { return m_SmallImageName; } set { if (OnPropertyChanging("DogTagData." + nameof(SmallImageName), this, m_SmallImageName, value)) m_SmallImageName = value; } } // 0x34 (52)
 		

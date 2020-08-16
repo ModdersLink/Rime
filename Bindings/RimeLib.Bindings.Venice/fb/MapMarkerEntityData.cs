@@ -30,7 +30,7 @@ namespace fb
 		[ContainerField(112), LayoutImmutable, Blittable, ContainerFieldNameHash(1288296263)]
 		public float ProgressMinTime { get { return m_ProgressMinTime; } set { if (OnPropertyChanging("MapMarkerEntityData." + nameof(ProgressMinTime), this, m_ProgressMinTime, value)) m_ProgressMinTime = value; } } // 0x70 (112)
 		
-		protected string m_Sid = new string();
+		protected string m_Sid = string.Empty;
 		[ContainerField(116), LayoutImmutable, ContainerFieldNameHash(193466587)]
 		public string Sid { get { return m_Sid; } set { if (OnPropertyChanging("MapMarkerEntityData." + nameof(Sid), this, m_Sid, value)) m_Sid = value; } } // 0x74 (116)
 		

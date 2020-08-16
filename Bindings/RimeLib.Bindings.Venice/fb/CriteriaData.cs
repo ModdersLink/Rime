@@ -50,7 +50,7 @@ namespace fb
 		[ContainerField(32), ContainerFieldNameHash(3378346126)]
 		public CriteriaType CriteriaType { get { return m_CriteriaType; } set { if (OnPropertyChanging("CriteriaData." + nameof(CriteriaType), this, m_CriteriaType, value)) m_CriteriaType = value; } } // 0x20 (32)
 		
-		protected string m_DescriptionSid = new string();
+		protected string m_DescriptionSid = string.Empty;
 		[ContainerField(36), LayoutImmutable, ContainerFieldNameHash(1844417789)]
 		public string DescriptionSid { get { return m_DescriptionSid; } set { if (OnPropertyChanging("CriteriaData." + nameof(DescriptionSid), this, m_DescriptionSid, value)) m_DescriptionSid = value; } } // 0x24 (36)
 		

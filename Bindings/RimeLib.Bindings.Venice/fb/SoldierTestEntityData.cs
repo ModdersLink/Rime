@@ -62,7 +62,7 @@ namespace fb
 		[ContainerField(132), LayoutImmutable, Blittable, ContainerFieldNameHash(707538759)]
 		public float YawInputVal { get { return m_YawInputVal; } set { if (OnPropertyChanging("SoldierTestEntityData." + nameof(YawInputVal), this, m_YawInputVal, value)) m_YawInputVal = value; } } // 0x84 (132)
 		
-		protected string m_CameraMovementsFilename = new string();
+		protected string m_CameraMovementsFilename = string.Empty;
 		[ContainerField(136), LayoutImmutable, ContainerFieldNameHash(2458254669)]
 		public string CameraMovementsFilename { get { return m_CameraMovementsFilename; } set { if (OnPropertyChanging("SoldierTestEntityData." + nameof(CameraMovementsFilename), this, m_CameraMovementsFilename, value)) m_CameraMovementsFilename = value; } } // 0x88 (136)
 		

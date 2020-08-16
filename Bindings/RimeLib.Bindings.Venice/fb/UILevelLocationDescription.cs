@@ -22,15 +22,15 @@ namespace fb
 	public class UILevelLocationDescription : 
 		UIItemDescription
 	{
-		protected string m_Name = new string();
+		protected string m_Name = string.Empty;
 		[ContainerField(16), LayoutImmutable, ContainerFieldNameHash(2088949890)]
 		public string Name { get { return m_Name; } set { if (OnPropertyChanging("UILevelLocationDescription." + nameof(Name), this, m_Name, value)) m_Name = value; } } // 0x10 (16)
 		
-		protected string m_Description = new string();
+		protected string m_Description = string.Empty;
 		[ContainerField(20), LayoutImmutable, ContainerFieldNameHash(1636673251)]
 		public string Description { get { return m_Description; } set { if (OnPropertyChanging("UILevelLocationDescription." + nameof(Description), this, m_Description, value)) m_Description = value; } } // 0x14 (20)
 		
-		protected string m_TexturePath = new string();
+		protected string m_TexturePath = string.Empty;
 		[ContainerField(24), LayoutImmutable, ContainerFieldNameHash(3058477943)]
 		public string TexturePath { get { return m_TexturePath; } set { if (OnPropertyChanging("UILevelLocationDescription." + nameof(TexturePath), this, m_TexturePath, value)) m_TexturePath = value; } } // 0x18 (24)
 		

@@ -38,7 +38,7 @@ namespace fb
 		[ContainerField(28), LayoutImmutable, Blittable, ContainerFieldNameHash(331027820)]
 		public uint KeyStartIndex { get { return m_KeyStartIndex; } set { if (OnPropertyChanging("TransformPartPropertyTrackData." + nameof(KeyStartIndex), this, m_KeyStartIndex, value)) m_KeyStartIndex = value; } } // 0x1C (28)
 		
-		protected string m_ResourceName = new string();
+		protected string m_ResourceName = string.Empty;
 		[ContainerField(32), LayoutImmutable, ContainerFieldNameHash(2980323592)]
 		public string ResourceName { get { return m_ResourceName; } set { if (OnPropertyChanging("TransformPartPropertyTrackData." + nameof(ResourceName), this, m_ResourceName, value)) m_ResourceName = value; } } // 0x20 (32)
 		

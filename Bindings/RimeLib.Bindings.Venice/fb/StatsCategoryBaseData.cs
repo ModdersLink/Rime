@@ -26,7 +26,7 @@ namespace fb
 		[ContainerField(12), ContainerFieldNameHash(2950064290)]
 		public RefArray<StatsCategoryBaseData> BaseSubCategories { get { return m_BaseSubCategories; } set { if (OnPropertyChanging("StatsCategoryBaseData." + nameof(BaseSubCategories), this, m_BaseSubCategories, value)) m_BaseSubCategories = value; } } // 0xC (12)
 		
-		protected string m_Code = new string();
+		protected string m_Code = string.Empty;
 		[ContainerField(16), LayoutImmutable, ContainerFieldNameHash(2088844616)]
 		public string Code { get { return m_Code; } set { if (OnPropertyChanging("StatsCategoryBaseData." + nameof(Code), this, m_Code, value)) m_Code = value; } } // 0x10 (16)
 		

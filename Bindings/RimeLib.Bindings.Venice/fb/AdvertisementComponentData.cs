@@ -22,11 +22,11 @@ namespace fb
 	public class AdvertisementComponentData : 
 		PartComponentData
 	{
-		protected string m_Identifier = new string();
+		protected string m_Identifier = string.Empty;
 		[ContainerField(112), LayoutImmutable, ContainerFieldNameHash(3512790342)]
 		public string Identifier { get { return m_Identifier; } set { if (OnPropertyChanging("AdvertisementComponentData." + nameof(Identifier), this, m_Identifier, value)) m_Identifier = value; } } // 0x70 (112)
 		
-		protected string m_AdTexture = new string();
+		protected string m_AdTexture = string.Empty;
 		[ContainerField(116), LayoutImmutable, ContainerFieldNameHash(1084313599)]
 		public string AdTexture { get { return m_AdTexture; } set { if (OnPropertyChanging("AdvertisementComponentData." + nameof(AdTexture), this, m_AdTexture, value)) m_AdTexture = value; } } // 0x74 (116)
 		

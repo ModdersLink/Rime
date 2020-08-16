@@ -22,7 +22,7 @@ namespace fb
 	public class ConsoleCommandTriggerEntityData : 
 		EntityData
 	{
-		protected string m_CommandName = new string();
+		protected string m_CommandName = string.Empty;
 		[ContainerField(12), LayoutImmutable, ContainerFieldNameHash(1071676005)]
 		public string CommandName { get { return m_CommandName; } set { if (OnPropertyChanging("ConsoleCommandTriggerEntityData." + nameof(CommandName), this, m_CommandName, value)) m_CommandName = value; } } // 0xC (12)
 		

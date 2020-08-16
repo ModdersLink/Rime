@@ -22,11 +22,11 @@ namespace fb
 	public class UINodePort : 
 		DataContainer
 	{
-		protected string m_Name = new string();
+		protected string m_Name = string.Empty;
 		[ContainerField(8), LayoutImmutable, ContainerFieldNameHash(2088949890)]
 		public string Name { get { return m_Name; } set { if (OnPropertyChanging("UINodePort." + nameof(Name), this, m_Name, value)) m_Name = value; } } // 0x8 (8)
 		
-		protected string m_InstanceName = new string();
+		protected string m_InstanceName = string.Empty;
 		[ContainerField(12), LayoutImmutable, ContainerFieldNameHash(1186954283)]
 		public string InstanceName { get { return m_InstanceName; } set { if (OnPropertyChanging("UINodePort." + nameof(InstanceName), this, m_InstanceName, value)) m_InstanceName = value; } } // 0xC (12)
 		

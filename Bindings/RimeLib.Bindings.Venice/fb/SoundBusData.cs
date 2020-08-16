@@ -22,7 +22,7 @@ namespace fb
 	public class SoundBusData : 
 		AudioGraphNodeData
 	{
-		protected string m_BusName = new string();
+		protected string m_BusName = string.Empty;
 		[ContainerField(8), LayoutImmutable, ContainerFieldNameHash(2742307846)]
 		public string BusName { get { return m_BusName; } set { if (OnPropertyChanging("SoundBusData." + nameof(BusName), this, m_BusName, value)) m_BusName = value; } } // 0x8 (8)
 		

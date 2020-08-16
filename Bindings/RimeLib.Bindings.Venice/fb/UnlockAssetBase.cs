@@ -30,7 +30,7 @@ namespace fb
 		[ContainerField(16), ContainerFieldNameHash(334679412)]
 		public CtrRef<UnlockUserDataBase> UnlockUserData { get { return m_UnlockUserData; } set { if (OnPropertyChanging("UnlockAssetBase." + nameof(UnlockUserData), this, m_UnlockUserData, value)) m_UnlockUserData = value; } } // 0x10 (16)
 		
-		protected string m_DebugUnlockId = new string();
+		protected string m_DebugUnlockId = string.Empty;
 		[ContainerField(20), LayoutImmutable, ContainerFieldNameHash(2468774985)]
 		public string DebugUnlockId { get { return m_DebugUnlockId; } set { if (OnPropertyChanging("UnlockAssetBase." + nameof(DebugUnlockId), this, m_DebugUnlockId, value)) m_DebugUnlockId = value; } } // 0x14 (20)
 		

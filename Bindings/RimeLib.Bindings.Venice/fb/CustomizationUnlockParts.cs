@@ -22,7 +22,7 @@ namespace fb
 	public class CustomizationUnlockParts : 
 		DataContainer
 	{
-		protected string m_UICategorySid = new string();
+		protected string m_UICategorySid = string.Empty;
 		[ContainerField(8), LayoutImmutable, ContainerFieldNameHash(795269975)]
 		public string UICategorySid { get { return m_UICategorySid; } set { if (OnPropertyChanging("CustomizationUnlockParts." + nameof(UICategorySid), this, m_UICategorySid, value)) m_UICategorySid = value; } } // 0x8 (8)
 		

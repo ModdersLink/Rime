@@ -22,7 +22,7 @@ namespace fb
 	public class VeniceMatchmakingLevelDescriptionComponent : 
 		LevelDescriptionComponent
 	{
-		protected string m_Mod = new string();
+		protected string m_Mod = string.Empty;
 		[ContainerField(8), LayoutImmutable, ContainerFieldNameHash(193446659)]
 		public string Mod { get { return m_Mod; } set { if (OnPropertyChanging("VeniceMatchmakingLevelDescriptionComponent." + nameof(Mod), this, m_Mod, value)) m_Mod = value; } } // 0x8 (8)
 		

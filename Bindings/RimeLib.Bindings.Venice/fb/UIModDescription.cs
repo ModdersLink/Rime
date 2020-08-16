@@ -22,19 +22,19 @@ namespace fb
 	public class UIModDescription : 
 		UIItemDescription
 	{
-		protected string m_Identifier = new string();
+		protected string m_Identifier = string.Empty;
 		[ContainerField(16), LayoutImmutable, ContainerFieldNameHash(3512790342)]
 		public string Identifier { get { return m_Identifier; } set { if (OnPropertyChanging("UIModDescription." + nameof(Identifier), this, m_Identifier, value)) m_Identifier = value; } } // 0x10 (16)
 		
-		protected string m_ShortName = new string();
+		protected string m_ShortName = string.Empty;
 		[ContainerField(20), LayoutImmutable, ContainerFieldNameHash(1803010032)]
 		public string ShortName { get { return m_ShortName; } set { if (OnPropertyChanging("UIModDescription." + nameof(ShortName), this, m_ShortName, value)) m_ShortName = value; } } // 0x14 (20)
 		
-		protected string m_FullName = new string();
+		protected string m_FullName = string.Empty;
 		[ContainerField(24), LayoutImmutable, ContainerFieldNameHash(4054333169)]
 		public string FullName { get { return m_FullName; } set { if (OnPropertyChanging("UIModDescription." + nameof(FullName), this, m_FullName, value)) m_FullName = value; } } // 0x18 (24)
 		
-		protected string m_Desc = new string();
+		protected string m_Desc = string.Empty;
 		[ContainerField(28), LayoutImmutable, ContainerFieldNameHash(2088734996)]
 		public string Desc { get { return m_Desc; } set { if (OnPropertyChanging("UIModDescription." + nameof(Desc), this, m_Desc, value)) m_Desc = value; } } // 0x1C (28)
 		

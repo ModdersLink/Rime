@@ -26,7 +26,7 @@ namespace fb
 		[ContainerField(8), ContainerFieldNameHash(3872303031)]
 		public CtrRef<AudioLanguage> Language { get { return m_Language; } set { if (OnPropertyChanging("VoiceOverLanguageRoot." + nameof(Language), this, m_Language, value)) m_Language = value; } } // 0x8 (8)
 		
-		protected string m_Path = new string();
+		protected string m_Path = string.Empty;
 		[ContainerField(12), LayoutImmutable, ContainerFieldNameHash(2089448296)]
 		public string Path { get { return m_Path; } set { if (OnPropertyChanging("VoiceOverLanguageRoot." + nameof(Path), this, m_Path, value)) m_Path = value; } } // 0xC (12)
 		

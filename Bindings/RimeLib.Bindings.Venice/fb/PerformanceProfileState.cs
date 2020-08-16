@@ -42,11 +42,11 @@ namespace fb
 		[ContainerField(40), LayoutImmutable, Blittable, ContainerFieldNameHash(4164397837)]
 		public uint GpuMemMB { get { return m_GpuMemMB; } set { if (OnPropertyChanging("PerformanceProfileState." + nameof(GpuMemMB), this, m_GpuMemMB, value)) m_GpuMemMB = value; } } // 0x28 (40)
 		
-		protected string m_GraphicAdapterName = new string();
+		protected string m_GraphicAdapterName = string.Empty;
 		[ContainerField(44), LayoutImmutable, ContainerFieldNameHash(631166483)]
 		public string GraphicAdapterName { get { return m_GraphicAdapterName; } set { if (OnPropertyChanging("PerformanceProfileState." + nameof(GraphicAdapterName), this, m_GraphicAdapterName, value)) m_GraphicAdapterName = value; } } // 0x2C (44)
 		
-		protected string m_Platform = new string();
+		protected string m_Platform = string.Empty;
 		[ContainerField(48), LayoutImmutable, ContainerFieldNameHash(942751002)]
 		public string Platform { get { return m_Platform; } set { if (OnPropertyChanging("PerformanceProfileState." + nameof(Platform), this, m_Platform, value)) m_Platform = value; } } // 0x30 (48)
 		

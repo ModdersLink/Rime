@@ -26,7 +26,7 @@ namespace fb
 		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(212387320)]
 		public Vec3 Color { get { return m_Color; } set { if (OnPropertyChanging("RadiosityMaterial." + nameof(Color), this, m_Color, value)) m_Color = value; } } // 0x10 (16)
 		
-		protected string m_Name = new string();
+		protected string m_Name = string.Empty;
 		[ContainerField(32), LayoutImmutable, ContainerFieldNameHash(2088949890)]
 		public string Name { get { return m_Name; } set { if (OnPropertyChanging("RadiosityMaterial." + nameof(Name), this, m_Name, value)) m_Name = value; } } // 0x20 (32)
 		

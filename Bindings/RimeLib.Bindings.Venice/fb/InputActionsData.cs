@@ -22,7 +22,7 @@ namespace fb
 	public class InputActionsData : 
 		DataContainer
 	{
-		protected string m_NameSid = new string();
+		protected string m_NameSid = string.Empty;
 		[ContainerField(8), LayoutImmutable, ContainerFieldNameHash(3153745340)]
 		public string NameSid { get { return m_NameSid; } set { if (OnPropertyChanging("InputActionsData." + nameof(NameSid), this, m_NameSid, value)) m_NameSid = value; } } // 0x8 (8)
 		

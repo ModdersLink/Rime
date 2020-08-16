@@ -22,7 +22,7 @@ namespace fb
 	public class BehaviourData : 
 		UrgencyUserData
 	{
-		protected string m_Name = new string();
+		protected string m_Name = string.Empty;
 		[ContainerField(20), LayoutImmutable, ContainerFieldNameHash(2088949890)]
 		public string Name { get { return m_Name; } set { if (OnPropertyChanging("BehaviourData." + nameof(Name), this, m_Name, value)) m_Name = value; } } // 0x14 (20)
 		

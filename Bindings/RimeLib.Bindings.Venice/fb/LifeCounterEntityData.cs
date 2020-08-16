@@ -58,7 +58,7 @@ namespace fb
 		[ContainerField(128), LayoutImmutable, Blittable, ContainerFieldNameHash(3361010943)]
 		public int ReinforceThreshold { get { return m_ReinforceThreshold; } set { if (OnPropertyChanging("LifeCounterEntityData." + nameof(ReinforceThreshold), this, m_ReinforceThreshold, value)) m_ReinforceThreshold = value; } } // 0x80 (128)
 		
-		protected string m_ReinforceMessageSid = new string();
+		protected string m_ReinforceMessageSid = string.Empty;
 		[ContainerField(132), LayoutImmutable, ContainerFieldNameHash(331217021)]
 		public string ReinforceMessageSid { get { return m_ReinforceMessageSid; } set { if (OnPropertyChanging("LifeCounterEntityData." + nameof(ReinforceMessageSid), this, m_ReinforceMessageSid, value)) m_ReinforceMessageSid = value; } } // 0x84 (132)
 		
@@ -74,7 +74,7 @@ namespace fb
 		[ContainerField(144), LayoutImmutable, Blittable, ContainerFieldNameHash(1213191836)]
 		public float FallbackTime { get { return m_FallbackTime; } set { if (OnPropertyChanging("LifeCounterEntityData." + nameof(FallbackTime), this, m_FallbackTime, value)) m_FallbackTime = value; } } // 0x90 (144)
 		
-		protected string m_FightHarderMessageSid = new string();
+		protected string m_FightHarderMessageSid = string.Empty;
 		[ContainerField(148), LayoutImmutable, ContainerFieldNameHash(4210634540)]
 		public string FightHarderMessageSid { get { return m_FightHarderMessageSid; } set { if (OnPropertyChanging("LifeCounterEntityData." + nameof(FightHarderMessageSid), this, m_FightHarderMessageSid, value)) m_FightHarderMessageSid = value; } } // 0x94 (148)
 		

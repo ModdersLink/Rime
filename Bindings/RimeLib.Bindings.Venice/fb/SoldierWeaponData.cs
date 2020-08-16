@@ -42,7 +42,7 @@ namespace fb
 		[ContainerField(156), ContainerFieldNameHash(193458844)]
 		public HudData Hud { get { return m_Hud; } set { if (OnPropertyChanging("SoldierWeaponData." + nameof(Hud), this, m_Hud, value)) m_Hud = value; } } // 0x9C (156)
 		
-		protected string m_DamageGiverName = new string();
+		protected string m_DamageGiverName = string.Empty;
 		[ContainerField(224), LayoutImmutable, ContainerFieldNameHash(38100006)]
 		public string DamageGiverName { get { return m_DamageGiverName; } set { if (OnPropertyChanging("SoldierWeaponData." + nameof(DamageGiverName), this, m_DamageGiverName, value)) m_DamageGiverName = value; } } // 0xE0 (224)
 		
@@ -98,7 +98,7 @@ namespace fb
 		[ContainerField(316), ContainerFieldNameHash(1382654562)]
 		public CtrRef<SoldierWeaponBlueprint> SoldierWeaponBlueprint { get { return m_SoldierWeaponBlueprint; } set { if (OnPropertyChanging("SoldierWeaponData." + nameof(SoldierWeaponBlueprint), this, m_SoldierWeaponBlueprint, value)) m_SoldierWeaponBlueprint = value; } } // 0x13C (316)
 		
-		protected string m_PersistenceId = new string();
+		protected string m_PersistenceId = string.Empty;
 		[ContainerField(320), LayoutImmutable, ContainerFieldNameHash(526010015)]
 		public string PersistenceId { get { return m_PersistenceId; } set { if (OnPropertyChanging("SoldierWeaponData." + nameof(PersistenceId), this, m_PersistenceId, value)) m_PersistenceId = value; } } // 0x140 (320)
 		

@@ -22,7 +22,7 @@ namespace fb
 	public class UnlockValuePair : 
 		DataContainer
 	{
-		protected string m_Id = new string();
+		protected string m_Id = string.Empty;
 		[ContainerField(8), LayoutImmutable, ContainerFieldNameHash(5862152)]
 		public string Id { get { return m_Id; } set { if (OnPropertyChanging("UnlockValuePair." + nameof(Id), this, m_Id, value)) m_Id = value; } } // 0x8 (8)
 		

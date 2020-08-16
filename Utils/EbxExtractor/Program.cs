@@ -32,11 +32,6 @@ namespace EbxExtractor
 
         static void Main(string[] p_Args)
         {
-            var s_BB = new fb.AABBData();
-            s_BB.PropertyChanged += S_BB_PropertyChanged;
-            s_BB.PropertyChanging += S_BB_PropertyChanging;
-
-            s_BB.HalfExtents = new Vec3(1, 5, 10);
 
             Parser.Default.ParseArguments<Options>(p_Args).WithParsed(p_Options =>
             {
@@ -51,16 +46,6 @@ namespace EbxExtractor
                 System.Environment.Exit(1);
             });
             Console.WriteLine("Hello World!");
-        }
-
-        private static void S_BB_PropertyChanging(object sender, System.ComponentModel.PropertyChangingEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
-        private static void S_BB_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            throw new NotImplementedException();
         }
 
         private static void LoadContentAssembly(Options p_Options)

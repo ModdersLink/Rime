@@ -26,7 +26,7 @@ namespace fb
 		[ContainerField(12), ContainerFieldNameHash(229961746)]
 		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("ClientPlayerInputRecorderEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0xC (12)
 		
-		protected string m_FileNameBase = new string();
+		protected string m_FileNameBase = string.Empty;
 		[ContainerField(16), LayoutImmutable, ContainerFieldNameHash(2579130353)]
 		public string FileNameBase { get { return m_FileNameBase; } set { if (OnPropertyChanging("ClientPlayerInputRecorderEntityData." + nameof(FileNameBase), this, m_FileNameBase, value)) m_FileNameBase = value; } } // 0x10 (16)
 		

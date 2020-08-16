@@ -22,7 +22,7 @@ namespace fb
 	public class UnlockableShaderParameterValueCollection : 
 		DataContainer
 	{
-		protected string m_ShaderParameterName = new string();
+		protected string m_ShaderParameterName = string.Empty;
 		[ContainerField(8), LayoutImmutable, ContainerFieldNameHash(610960642)]
 		public string ShaderParameterName { get { return m_ShaderParameterName; } set { if (OnPropertyChanging("UnlockableShaderParameterValueCollection." + nameof(ShaderParameterName), this, m_ShaderParameterName, value)) m_ShaderParameterName = value; } } // 0x8 (8)
 		

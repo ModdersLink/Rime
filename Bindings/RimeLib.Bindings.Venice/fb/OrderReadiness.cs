@@ -22,7 +22,7 @@ namespace fb
 	public class OrderReadiness : 
 		UrgencyUserData
 	{
-		protected string m_OrderType = new string();
+		protected string m_OrderType = string.Empty;
 		[ContainerField(20), LayoutImmutable, ContainerFieldNameHash(2615460339)]
 		public string OrderType { get { return m_OrderType; } set { if (OnPropertyChanging("OrderReadiness." + nameof(OrderType), this, m_OrderType, value)) m_OrderType = value; } } // 0x14 (20)
 		

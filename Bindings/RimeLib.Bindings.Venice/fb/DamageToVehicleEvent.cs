@@ -22,11 +22,11 @@ namespace fb
 	public class DamageToVehicleEvent : 
 		MetricEvent
 	{
-		protected string m_VehicleName = new string();
+		protected string m_VehicleName = string.Empty;
 		[ContainerField(16), LayoutImmutable, ContainerFieldNameHash(926391226)]
 		public string VehicleName { get { return m_VehicleName; } set { if (OnPropertyChanging("DamageToVehicleEvent." + nameof(VehicleName), this, m_VehicleName, value)) m_VehicleName = value; } } // 0x10 (16)
 		
-		protected string m_WeaponName = new string();
+		protected string m_WeaponName = string.Empty;
 		[ContainerField(20), LayoutImmutable, ContainerFieldNameHash(932725504)]
 		public string WeaponName { get { return m_WeaponName; } set { if (OnPropertyChanging("DamageToVehicleEvent." + nameof(WeaponName), this, m_WeaponName, value)) m_WeaponName = value; } } // 0x14 (20)
 		

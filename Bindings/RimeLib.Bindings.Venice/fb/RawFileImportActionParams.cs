@@ -22,7 +22,7 @@ namespace fb
 	public class RawFileImportActionParams : 
 		DataContainer
 	{
-		protected string m_SourceFile = new string();
+		protected string m_SourceFile = string.Empty;
 		[ContainerField(8), LayoutImmutable, ContainerFieldNameHash(1522844286)]
 		public string SourceFile { get { return m_SourceFile; } set { if (OnPropertyChanging("RawFileImportActionParams." + nameof(SourceFile), this, m_SourceFile, value)) m_SourceFile = value; } } // 0x8 (8)
 		

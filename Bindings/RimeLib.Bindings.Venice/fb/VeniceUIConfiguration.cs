@@ -22,7 +22,7 @@ namespace fb
 	public class VeniceUIConfiguration : 
 		Asset
 	{
-		protected string m_MetaDataAssetPath = new string();
+		protected string m_MetaDataAssetPath = string.Empty;
 		[ContainerField(12), LayoutImmutable, ContainerFieldNameHash(1169897301)]
 		public string MetaDataAssetPath { get { return m_MetaDataAssetPath; } set { if (OnPropertyChanging("VeniceUIConfiguration." + nameof(MetaDataAssetPath), this, m_MetaDataAssetPath, value)) m_MetaDataAssetPath = value; } } // 0xC (12)
 		

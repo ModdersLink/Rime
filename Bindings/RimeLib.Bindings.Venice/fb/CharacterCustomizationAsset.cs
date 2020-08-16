@@ -22,7 +22,7 @@ namespace fb
 	public class CharacterCustomizationAsset : 
 		Asset
 	{
-		protected string m_LabelSid = new string();
+		protected string m_LabelSid = string.Empty;
 		[ContainerField(12), LayoutImmutable, ContainerFieldNameHash(4044105085)]
 		public string LabelSid { get { return m_LabelSid; } set { if (OnPropertyChanging("CharacterCustomizationAsset." + nameof(LabelSid), this, m_LabelSid, value)) m_LabelSid = value; } } // 0xC (12)
 		

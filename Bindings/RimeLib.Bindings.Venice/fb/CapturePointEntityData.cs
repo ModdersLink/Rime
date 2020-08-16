@@ -98,7 +98,7 @@ namespace fb
 		[ContainerField(168), ContainerFieldNameHash(4032836214)]
 		public CapturableType CapturableType { get { return m_CapturableType; } set { if (OnPropertyChanging("CapturePointEntityData." + nameof(CapturableType), this, m_CapturableType, value)) m_CapturableType = value; } } // 0xA8 (168)
 		
-		protected string m_IntruderWarningSID = new string();
+		protected string m_IntruderWarningSID = string.Empty;
 		[ContainerField(172), LayoutImmutable, ContainerFieldNameHash(691558678)]
 		public string IntruderWarningSID { get { return m_IntruderWarningSID; } set { if (OnPropertyChanging("CapturePointEntityData." + nameof(IntruderWarningSID), this, m_IntruderWarningSID, value)) m_IntruderWarningSID = value; } } // 0xAC (172)
 		

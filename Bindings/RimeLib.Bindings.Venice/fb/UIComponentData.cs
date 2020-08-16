@@ -22,7 +22,7 @@ namespace fb
 	public class UIComponentData : 
 		Asset
 	{
-		protected string m_ShortName = new string();
+		protected string m_ShortName = string.Empty;
 		[ContainerField(12), LayoutImmutable, ContainerFieldNameHash(1803010032)]
 		public string ShortName { get { return m_ShortName; } set { if (OnPropertyChanging("UIComponentData." + nameof(ShortName), this, m_ShortName, value)) m_ShortName = value; } } // 0xC (12)
 		

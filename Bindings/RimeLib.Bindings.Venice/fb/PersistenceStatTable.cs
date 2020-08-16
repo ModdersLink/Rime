@@ -22,7 +22,7 @@ namespace fb
 	public class PersistenceStatTable : 
 		DataContainer
 	{
-		protected string m_TableName = new string();
+		protected string m_TableName = string.Empty;
 		[ContainerField(8), LayoutImmutable, ContainerFieldNameHash(3117168284)]
 		public string TableName { get { return m_TableName; } set { if (OnPropertyChanging("PersistenceStatTable." + nameof(TableName), this, m_TableName, value)) m_TableName = value; } } // 0x8 (8)
 		

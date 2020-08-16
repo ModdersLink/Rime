@@ -34,11 +34,11 @@ namespace fb
 		[ContainerField(20), ContainerFieldNameHash(581231424)]
 		public List<string> ActionscriptNames { get { return m_ActionscriptNames; } set { if (OnPropertyChanging("UIStateAsset." + nameof(ActionscriptNames), this, m_ActionscriptNames, value)) m_ActionscriptNames = value; } } // 0x14 (20)
 		
-		protected string m_StateName = new string();
+		protected string m_StateName = string.Empty;
 		[ContainerField(24), LayoutImmutable, ContainerFieldNameHash(4126874677)]
 		public string StateName { get { return m_StateName; } set { if (OnPropertyChanging("UIStateAsset." + nameof(StateName), this, m_StateName, value)) m_StateName = value; } } // 0x18 (24)
 		
-		protected string m_StatePath = new string();
+		protected string m_StatePath = string.Empty;
 		[ContainerField(28), LayoutImmutable, ContainerFieldNameHash(4126080863)]
 		public string StatePath { get { return m_StatePath; } set { if (OnPropertyChanging("UIStateAsset." + nameof(StatePath), this, m_StatePath, value)) m_StatePath = value; } } // 0x1C (28)
 		

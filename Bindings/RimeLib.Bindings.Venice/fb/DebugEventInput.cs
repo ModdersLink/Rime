@@ -26,7 +26,7 @@ namespace fb
 		[ContainerField(8), ContainerFieldNameHash(177632)]
 		public AudioGraphNodePort E { get { return m_E; } set { if (OnPropertyChanging("DebugEventInput." + nameof(E), this, m_E, value)) m_E = value; } } // 0x8 (8)
 		
-		protected string m_Name = new string();
+		protected string m_Name = string.Empty;
 		[ContainerField(16), LayoutImmutable, ContainerFieldNameHash(2088949890)]
 		public string Name { get { return m_Name; } set { if (OnPropertyChanging("DebugEventInput." + nameof(Name), this, m_Name, value)) m_Name = value; } } // 0x10 (16)
 		

@@ -26,7 +26,7 @@ namespace fb
 		[ContainerField(12), ContainerFieldNameHash(229961746)]
 		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("TelemetryTriggerEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0xC (12)
 		
-		protected string m_Value = new string();
+		protected string m_Value = string.Empty;
 		[ContainerField(16), LayoutImmutable, ContainerFieldNameHash(225375086)]
 		public string Value { get { return m_Value; } set { if (OnPropertyChanging("TelemetryTriggerEntityData." + nameof(Value), this, m_Value, value)) m_Value = value; } } // 0x10 (16)
 		

@@ -38,7 +38,7 @@ namespace fb
 		[ContainerField(56), LayoutImmutable, Blittable, ContainerFieldNameHash(2089313744)]
 		public float Time { get { return m_Time; } set { if (OnPropertyChanging("KillEvent." + nameof(Time), this, m_Time, value)) m_Time = value; } } // 0x38 (56)
 		
-		protected string m_Weapon = new string();
+		protected string m_Weapon = string.Empty;
 		[ContainerField(60), LayoutImmutable, ContainerFieldNameHash(3190562823)]
 		public string Weapon { get { return m_Weapon; } set { if (OnPropertyChanging("KillEvent." + nameof(Weapon), this, m_Weapon, value)) m_Weapon = value; } } // 0x3C (60)
 		

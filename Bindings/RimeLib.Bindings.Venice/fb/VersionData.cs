@@ -22,7 +22,7 @@ namespace fb
 	public class VersionData : 
 		Asset
 	{
-		protected string m_disclaimer = new string();
+		protected string m_disclaimer = string.Empty;
 		[ContainerField(12), LayoutImmutable, ContainerFieldNameHash(33610342)]
 		public string disclaimer { get { return m_disclaimer; } set { if (OnPropertyChanging("VersionData." + nameof(disclaimer), this, m_disclaimer, value)) m_disclaimer = value; } } // 0xC (12)
 		
@@ -30,15 +30,15 @@ namespace fb
 		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(747123679)]
 		public int Version { get { return m_Version; } set { if (OnPropertyChanging("VersionData." + nameof(Version), this, m_Version, value)) m_Version = value; } } // 0x10 (16)
 		
-		protected string m_DateTime = new string();
+		protected string m_DateTime = string.Empty;
 		[ContainerField(20), LayoutImmutable, ContainerFieldNameHash(3244533220)]
 		public string DateTime { get { return m_DateTime; } set { if (OnPropertyChanging("VersionData." + nameof(DateTime), this, m_DateTime, value)) m_DateTime = value; } } // 0x14 (20)
 		
-		protected string m_BranchId = new string();
+		protected string m_BranchId = string.Empty;
 		[ContainerField(24), LayoutImmutable, ContainerFieldNameHash(2969494588)]
 		public string BranchId { get { return m_BranchId; } set { if (OnPropertyChanging("VersionData." + nameof(BranchId), this, m_BranchId, value)) m_BranchId = value; } } // 0x18 (24)
 		
-		protected string m_GameName = new string();
+		protected string m_GameName = string.Empty;
 		[ContainerField(28), LayoutImmutable, ContainerFieldNameHash(509587500)]
 		public string GameName { get { return m_GameName; } set { if (OnPropertyChanging("VersionData." + nameof(GameName), this, m_GameName, value)) m_GameName = value; } } // 0x1C (28)
 		

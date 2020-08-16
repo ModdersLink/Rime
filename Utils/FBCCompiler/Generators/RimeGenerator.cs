@@ -196,7 +196,16 @@ namespace FBCC.Generators
                 {
                     if (IsPrimitive(s_Member))
                     {
-                        m_Writer.WriteLine($"{m_Indent}protected {s_Type} m_{s_Member.Name} = new {s_Type}();");
+                        switch (s_Type)
+                        {
+                            case "string":
+                                m_Writer.WriteLine($"{m_Indent}protected {s_Type} m_{s_Member.Name} = string.Empty;");
+                                break;
+                            default:
+                                m_Writer.WriteLine($"{m_Indent}protected {s_Type} m_{s_Member.Name} = new {s_Type}();");
+                                break;
+                        }
+                        
                         
 
                         m_Writer.Write(m_Indent + "[ContainerField({0})", s_Member.Offset);

@@ -22,11 +22,11 @@ namespace fb
 	public class DialogNode : 
 		StateNode
 	{
-		protected string m_DialogTitle = new string();
+		protected string m_DialogTitle = string.Empty;
 		[ContainerField(48), LayoutImmutable, ContainerFieldNameHash(3325016493)]
 		public string DialogTitle { get { return m_DialogTitle; } set { if (OnPropertyChanging("DialogNode." + nameof(DialogTitle), this, m_DialogTitle, value)) m_DialogTitle = value; } } // 0x30 (48)
 		
-		protected string m_DialogText = new string();
+		protected string m_DialogText = string.Empty;
 		[ContainerField(52), LayoutImmutable, ContainerFieldNameHash(4005286480)]
 		public string DialogText { get { return m_DialogText; } set { if (OnPropertyChanging("DialogNode." + nameof(DialogText), this, m_DialogText, value)) m_DialogText = value; } } // 0x34 (52)
 		

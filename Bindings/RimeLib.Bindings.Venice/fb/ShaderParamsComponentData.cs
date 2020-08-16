@@ -26,7 +26,7 @@ namespace fb
 		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(225375086)]
 		public Vec4 Value { get { return m_Value; } set { if (OnPropertyChanging("ShaderParamsComponentData." + nameof(Value), this, m_Value, value)) m_Value = value; } } // 0x60 (96)
 		
-		protected string m_ParameterName = new string();
+		protected string m_ParameterName = string.Empty;
 		[ContainerField(112), LayoutImmutable, ContainerFieldNameHash(1568946859)]
 		public string ParameterName { get { return m_ParameterName; } set { if (OnPropertyChanging("ShaderParamsComponentData." + nameof(ParameterName), this, m_ParameterName, value)) m_ParameterName = value; } } // 0x70 (112)
 		

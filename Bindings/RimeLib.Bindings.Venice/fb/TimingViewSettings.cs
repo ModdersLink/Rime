@@ -46,7 +46,7 @@ namespace fb
 		[ContainerField(28), LayoutImmutable, Blittable, ContainerFieldNameHash(2834654070)]
 		public float AutolockThreshold { get { return m_AutolockThreshold; } set { if (OnPropertyChanging("TimingViewSettings." + nameof(AutolockThreshold), this, m_AutolockThreshold, value)) m_AutolockThreshold = value; } } // 0x1C (28)
 		
-		protected string m_AutolockNameFilter = new string();
+		protected string m_AutolockNameFilter = string.Empty;
 		[ContainerField(32), LayoutImmutable, ContainerFieldNameHash(700307558)]
 		public string AutolockNameFilter { get { return m_AutolockNameFilter; } set { if (OnPropertyChanging("TimingViewSettings." + nameof(AutolockNameFilter), this, m_AutolockNameFilter, value)) m_AutolockNameFilter = value; } } // 0x20 (32)
 		
@@ -70,7 +70,7 @@ namespace fb
 		[ContainerField(52), LayoutImmutable, Blittable, ContainerFieldNameHash(1835173031)]
 		public int MaxGpuLegendColumnCount { get { return m_MaxGpuLegendColumnCount; } set { if (OnPropertyChanging("TimingViewSettings." + nameof(MaxGpuLegendColumnCount), this, m_MaxGpuLegendColumnCount, value)) m_MaxGpuLegendColumnCount = value; } } // 0x34 (52)
 		
-		protected string m_SnoopEventName = new string();
+		protected string m_SnoopEventName = string.Empty;
 		[ContainerField(56), LayoutImmutable, ContainerFieldNameHash(570566851)]
 		public string SnoopEventName { get { return m_SnoopEventName; } set { if (OnPropertyChanging("TimingViewSettings." + nameof(SnoopEventName), this, m_SnoopEventName, value)) m_SnoopEventName = value; } } // 0x38 (56)
 		
@@ -102,7 +102,7 @@ namespace fb
 		[ContainerField(88), LayoutImmutable, Blittable, ContainerFieldNameHash(2196900171)]
 		public uint BarHeight { get { return m_BarHeight; } set { if (OnPropertyChanging("TimingViewSettings." + nameof(BarHeight), this, m_BarHeight, value)) m_BarHeight = value; } } // 0x58 (88)
 		
-		protected string m_FilterEventName = new string();
+		protected string m_FilterEventName = string.Empty;
 		[ContainerField(92), LayoutImmutable, ContainerFieldNameHash(1452602030)]
 		public string FilterEventName { get { return m_FilterEventName; } set { if (OnPropertyChanging("TimingViewSettings." + nameof(FilterEventName), this, m_FilterEventName, value)) m_FilterEventName = value; } } // 0x5C (92)
 		

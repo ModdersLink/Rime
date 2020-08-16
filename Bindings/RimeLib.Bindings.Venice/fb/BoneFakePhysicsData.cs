@@ -26,7 +26,7 @@ namespace fb
 		[ContainerField(8), ContainerFieldNameHash(3614234055)]
 		public CtrRef<FakePhysicsData> FakePhysics { get { return m_FakePhysics; } set { if (OnPropertyChanging("BoneFakePhysicsData." + nameof(FakePhysics), this, m_FakePhysics, value)) m_FakePhysics = value; } } // 0x8 (8)
 		
-		protected string m_BoneName = new string();
+		protected string m_BoneName = string.Empty;
 		[ContainerField(12), LayoutImmutable, ContainerFieldNameHash(1590647844)]
 		public string BoneName { get { return m_BoneName; } set { if (OnPropertyChanging("BoneFakePhysicsData." + nameof(BoneName), this, m_BoneName, value)) m_BoneName = value; } } // 0xC (12)
 		

@@ -22,11 +22,11 @@ namespace fb
 	public class UILicenseDescription : 
 		UIItemDescription
 	{
-		protected string m_LicenseId = new string();
+		protected string m_LicenseId = string.Empty;
 		[ContainerField(16), LayoutImmutable, ContainerFieldNameHash(1538246483)]
 		public string LicenseId { get { return m_LicenseId; } set { if (OnPropertyChanging("UILicenseDescription." + nameof(LicenseId), this, m_LicenseId, value)) m_LicenseId = value; } } // 0x10 (16)
 		
-		protected string m_PopupText = new string();
+		protected string m_PopupText = string.Empty;
 		[ContainerField(20), LayoutImmutable, ContainerFieldNameHash(1817045074)]
 		public string PopupText { get { return m_PopupText; } set { if (OnPropertyChanging("UILicenseDescription." + nameof(PopupText), this, m_PopupText, value)) m_PopupText = value; } } // 0x14 (20)
 		

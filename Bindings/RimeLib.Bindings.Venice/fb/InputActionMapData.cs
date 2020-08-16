@@ -34,7 +34,7 @@ namespace fb
 		[ContainerField(16), ContainerFieldNameHash(2089426785)]
 		public InputActionMapSlot Slot { get { return m_Slot; } set { if (OnPropertyChanging("InputActionMapData." + nameof(Slot), this, m_Slot, value)) m_Slot = value; } } // 0x10 (16)
 		
-		protected string m_CopyKeyBindingsFrom = new string();
+		protected string m_CopyKeyBindingsFrom = string.Empty;
 		[ContainerField(20), LayoutImmutable, ContainerFieldNameHash(2847317651)]
 		public string CopyKeyBindingsFrom { get { return m_CopyKeyBindingsFrom; } set { if (OnPropertyChanging("InputActionMapData." + nameof(CopyKeyBindingsFrom), this, m_CopyKeyBindingsFrom, value)) m_CopyKeyBindingsFrom = value; } } // 0x14 (20)
 		

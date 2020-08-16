@@ -62,7 +62,7 @@ namespace fb
 		[ContainerField(56), ContainerFieldNameHash(4099336946)]
 		public CtrRef<SoundBusData> MainSend { get { return m_MainSend; } set { if (OnPropertyChanging("OutputNodeData." + nameof(MainSend), this, m_MainSend, value)) m_MainSend = value; } } // 0x38 (56)
 		
-		protected string m_OutputName = new string();
+		protected string m_OutputName = string.Empty;
 		[ContainerField(60), LayoutImmutable, ContainerFieldNameHash(543054269)]
 		public string OutputName { get { return m_OutputName; } set { if (OnPropertyChanging("OutputNodeData." + nameof(OutputName), this, m_OutputName, value)) m_OutputName = value; } } // 0x3C (60)
 		

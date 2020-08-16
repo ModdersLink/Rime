@@ -42,7 +42,7 @@ namespace fb
 		[ContainerField(208), LayoutImmutable, Blittable, ContainerFieldNameHash(3318533033)]
 		public float DisabledDamageThreshold { get { return m_DisabledDamageThreshold; } set { if (OnPropertyChanging("VehicleEntityData." + nameof(DisabledDamageThreshold), this, m_DisabledDamageThreshold, value)) m_DisabledDamageThreshold = value; } } // 0xD0 (208)
 		
-		protected string m_ControllableType = new string();
+		protected string m_ControllableType = string.Empty;
 		[ContainerField(212), LayoutImmutable, ContainerFieldNameHash(1363023004)]
 		public string ControllableType { get { return m_ControllableType; } set { if (OnPropertyChanging("VehicleEntityData." + nameof(ControllableType), this, m_ControllableType, value)) m_ControllableType = value; } } // 0xD4 (212)
 		
@@ -154,7 +154,7 @@ namespace fb
 		[ContainerField(384), ContainerFieldNameHash(2639805868)]
 		public VehicleHudData HudData { get { return m_HudData; } set { if (OnPropertyChanging("VehicleEntityData." + nameof(HudData), this, m_HudData, value)) m_HudData = value; } } // 0x180 (384)
 		
-		protected string m_NameSid = new string();
+		protected string m_NameSid = string.Empty;
 		[ContainerField(416), LayoutImmutable, ContainerFieldNameHash(3153745340)]
 		public string NameSid { get { return m_NameSid; } set { if (OnPropertyChanging("VehicleEntityData." + nameof(NameSid), this, m_NameSid, value)) m_NameSid = value; } } // 0x1A0 (416)
 		

@@ -22,11 +22,11 @@ namespace fb
 	public class Ps3PresenceBackendData : 
 		PresenceBackendData
 	{
-		protected string m_CommunicationId = new string();
+		protected string m_CommunicationId = string.Empty;
 		[ContainerField(16), LayoutImmutable, ContainerFieldNameHash(1462563432)]
 		public string CommunicationId { get { return m_CommunicationId; } set { if (OnPropertyChanging("Ps3PresenceBackendData." + nameof(CommunicationId), this, m_CommunicationId, value)) m_CommunicationId = value; } } // 0x10 (16)
 		
-		protected string m_CommunicationSignature = new string();
+		protected string m_CommunicationSignature = string.Empty;
 		[ContainerField(20), LayoutImmutable, ContainerFieldNameHash(2337208161)]
 		public string CommunicationSignature { get { return m_CommunicationSignature; } set { if (OnPropertyChanging("Ps3PresenceBackendData." + nameof(CommunicationSignature), this, m_CommunicationSignature, value)) m_CommunicationSignature = value; } } // 0x14 (20)
 		

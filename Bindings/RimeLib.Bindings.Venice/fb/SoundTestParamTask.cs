@@ -22,7 +22,7 @@ namespace fb
 	public class SoundTestParamTask : 
 		SoundTestTaskSpec
 	{
-		protected string m_ParamName = new string();
+		protected string m_ParamName = string.Empty;
 		[ContainerField(16), LayoutImmutable, ContainerFieldNameHash(2964687917)]
 		public string ParamName { get { return m_ParamName; } set { if (OnPropertyChanging("SoundTestParamTask." + nameof(ParamName), this, m_ParamName, value)) m_ParamName = value; } } // 0x10 (16)
 		

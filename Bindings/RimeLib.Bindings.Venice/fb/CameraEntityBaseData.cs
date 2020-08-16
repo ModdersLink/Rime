@@ -22,7 +22,7 @@ namespace fb
 	public class CameraEntityBaseData : 
 		SpatialEntityData
 	{
-		protected string m_NameId = new string();
+		protected string m_NameId = string.Empty;
 		[ContainerField(80), LayoutImmutable, ContainerFieldNameHash(2828728719)]
 		public string NameId { get { return m_NameId; } set { if (OnPropertyChanging("CameraEntityBaseData." + nameof(NameId), this, m_NameId, value)) m_NameId = value; } } // 0x50 (80)
 		

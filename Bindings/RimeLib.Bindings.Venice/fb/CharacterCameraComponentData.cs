@@ -26,7 +26,7 @@ namespace fb
 		[ContainerField(96), ContainerFieldNameHash(3740512847)]
 		public RefArray<TargetCameraData> Cameras { get { return m_Cameras; } set { if (OnPropertyChanging("CharacterCameraComponentData." + nameof(Cameras), this, m_Cameras, value)) m_Cameras = value; } } // 0x60 (96)
 		
-		protected string m_CameraBoneName = new string();
+		protected string m_CameraBoneName = string.Empty;
 		[ContainerField(100), LayoutImmutable, ContainerFieldNameHash(771838749)]
 		public string CameraBoneName { get { return m_CameraBoneName; } set { if (OnPropertyChanging("CharacterCameraComponentData." + nameof(CameraBoneName), this, m_CameraBoneName, value)) m_CameraBoneName = value; } } // 0x64 (100)
 		

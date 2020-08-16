@@ -26,7 +26,7 @@ namespace fb
 		[ContainerField(12), ContainerFieldNameHash(765658940)]
 		public RefArray<AntPackageAsset> PackageAssets { get { return m_PackageAssets; } set { if (OnPropertyChanging("AntProjectAsset." + nameof(PackageAssets), this, m_PackageAssets, value)) m_PackageAssets = value; } } // 0xC (12)
 		
-		protected string m_AntNativeProjectName = new string();
+		protected string m_AntNativeProjectName = string.Empty;
 		[ContainerField(16), LayoutImmutable, ContainerFieldNameHash(3945376013)]
 		public string AntNativeProjectName { get { return m_AntNativeProjectName; } set { if (OnPropertyChanging("AntProjectAsset." + nameof(AntNativeProjectName), this, m_AntNativeProjectName, value)) m_AntNativeProjectName = value; } } // 0x10 (16)
 		

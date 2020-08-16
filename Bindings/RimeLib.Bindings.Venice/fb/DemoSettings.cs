@@ -22,19 +22,19 @@ namespace fb
 	public class DemoSettings : 
 		DataContainer
 	{
-		protected string m_RecordDemoFileName = new string();
+		protected string m_RecordDemoFileName = string.Empty;
 		[ContainerField(8), LayoutImmutable, ContainerFieldNameHash(3106827306)]
 		public string RecordDemoFileName { get { return m_RecordDemoFileName; } set { if (OnPropertyChanging("DemoSettings." + nameof(RecordDemoFileName), this, m_RecordDemoFileName, value)) m_RecordDemoFileName = value; } } // 0x8 (8)
 		
-		protected string m_PlaybackDemoFileName = new string();
+		protected string m_PlaybackDemoFileName = string.Empty;
 		[ContainerField(12), LayoutImmutable, ContainerFieldNameHash(2477555912)]
 		public string PlaybackDemoFileName { get { return m_PlaybackDemoFileName; } set { if (OnPropertyChanging("DemoSettings." + nameof(PlaybackDemoFileName), this, m_PlaybackDemoFileName, value)) m_PlaybackDemoFileName = value; } } // 0xC (12)
 		
-		protected string m_TimeDemo = new string();
+		protected string m_TimeDemo = string.Empty;
 		[ContainerField(16), LayoutImmutable, ContainerFieldNameHash(2999418899)]
 		public string TimeDemo { get { return m_TimeDemo; } set { if (OnPropertyChanging("DemoSettings." + nameof(TimeDemo), this, m_TimeDemo, value)) m_TimeDemo = value; } } // 0x10 (16)
 		
-		protected string m_LockToPlayerName = new string();
+		protected string m_LockToPlayerName = string.Empty;
 		[ContainerField(20), LayoutImmutable, ContainerFieldNameHash(1399694977)]
 		public string LockToPlayerName { get { return m_LockToPlayerName; } set { if (OnPropertyChanging("DemoSettings." + nameof(LockToPlayerName), this, m_LockToPlayerName, value)) m_LockToPlayerName = value; } } // 0x14 (20)
 		

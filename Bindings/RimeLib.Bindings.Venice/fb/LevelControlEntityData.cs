@@ -22,7 +22,7 @@ namespace fb
 	public class LevelControlEntityData : 
 		GameEntityData
 	{
-		protected string m_LevelToLoad = new string();
+		protected string m_LevelToLoad = string.Empty;
 		[ContainerField(96), LayoutImmutable, ContainerFieldNameHash(932165454)]
 		public string LevelToLoad { get { return m_LevelToLoad; } set { if (OnPropertyChanging("LevelControlEntityData." + nameof(LevelToLoad), this, m_LevelToLoad, value)) m_LevelToLoad = value; } } // 0x60 (96)
 		

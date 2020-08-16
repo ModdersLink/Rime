@@ -30,15 +30,15 @@ namespace fb
 		[ContainerField(16), ContainerFieldNameHash(335452726)]
 		public RefArray<CriteriaData> Criteria { get { return m_Criteria; } set { if (OnPropertyChanging("AwardData." + nameof(Criteria), this, m_Criteria, value)) m_Criteria = value; } } // 0x10 (16)
 		
-		protected string m_Code = new string();
+		protected string m_Code = string.Empty;
 		[ContainerField(20), LayoutImmutable, ContainerFieldNameHash(2088844616)]
 		public string Code { get { return m_Code; } set { if (OnPropertyChanging("AwardData." + nameof(Code), this, m_Code, value)) m_Code = value; } } // 0x14 (20)
 		
-		protected string m_Description = new string();
+		protected string m_Description = string.Empty;
 		[ContainerField(24), LayoutImmutable, ContainerFieldNameHash(1636673251)]
 		public string Description { get { return m_Description; } set { if (OnPropertyChanging("AwardData." + nameof(Description), this, m_Description, value)) m_Description = value; } } // 0x18 (24)
 		
-		protected string m_NameSid = new string();
+		protected string m_NameSid = string.Empty;
 		[ContainerField(28), LayoutImmutable, ContainerFieldNameHash(3153745340)]
 		public string NameSid { get { return m_NameSid; } set { if (OnPropertyChanging("AwardData." + nameof(NameSid), this, m_NameSid, value)) m_NameSid = value; } } // 0x1C (28)
 		
@@ -46,19 +46,19 @@ namespace fb
 		[ContainerField(32), ContainerFieldNameHash(2364156266)]
 		public AwardKitAssociation KitAssociation { get { return m_KitAssociation; } set { if (OnPropertyChanging("AwardData." + nameof(KitAssociation), this, m_KitAssociation, value)) m_KitAssociation = value; } } // 0x20 (32)
 		
-		protected string m_ImageName = new string();
+		protected string m_ImageName = string.Empty;
 		[ContainerField(36), LayoutImmutable, ContainerFieldNameHash(2678981541)]
 		public string ImageName { get { return m_ImageName; } set { if (OnPropertyChanging("AwardData." + nameof(ImageName), this, m_ImageName, value)) m_ImageName = value; } } // 0x24 (36)
 		
-		protected string m_ImageSmallName = new string();
+		protected string m_ImageSmallName = string.Empty;
 		[ContainerField(40), LayoutImmutable, ContainerFieldNameHash(4018906010)]
 		public string ImageSmallName { get { return m_ImageSmallName; } set { if (OnPropertyChanging("AwardData." + nameof(ImageSmallName), this, m_ImageSmallName, value)) m_ImageSmallName = value; } } // 0x28 (40)
 		
-		protected string m_ImageFancyName = new string();
+		protected string m_ImageFancyName = string.Empty;
 		[ContainerField(44), LayoutImmutable, ContainerFieldNameHash(2958929910)]
 		public string ImageFancyName { get { return m_ImageFancyName; } set { if (OnPropertyChanging("AwardData." + nameof(ImageFancyName), this, m_ImageFancyName, value)) m_ImageFancyName = value; } } // 0x2C (44)
 		
-		protected string m_SoundName = new string();
+		protected string m_SoundName = string.Empty;
 		[ContainerField(48), LayoutImmutable, ContainerFieldNameHash(523979073)]
 		public string SoundName { get { return m_SoundName; } set { if (OnPropertyChanging("AwardData." + nameof(SoundName), this, m_SoundName, value)) m_SoundName = value; } } // 0x30 (48)
 		

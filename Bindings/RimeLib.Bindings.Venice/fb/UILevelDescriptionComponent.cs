@@ -22,7 +22,7 @@ namespace fb
 	public class UILevelDescriptionComponent : 
 		LevelDescriptionComponent
 	{
-		protected string m_MPLoadingAssetPath = new string();
+		protected string m_MPLoadingAssetPath = string.Empty;
 		[ContainerField(8), LayoutImmutable, ContainerFieldNameHash(2284244963)]
 		public string MPLoadingAssetPath { get { return m_MPLoadingAssetPath; } set { if (OnPropertyChanging("UILevelDescriptionComponent." + nameof(MPLoadingAssetPath), this, m_MPLoadingAssetPath, value)) m_MPLoadingAssetPath = value; } } // 0x8 (8)
 		
@@ -30,19 +30,19 @@ namespace fb
 		[ContainerField(12), ContainerFieldNameHash(918318562)]
 		public CtrRef<SoundAsset> LoadingMusic { get { return m_LoadingMusic; } set { if (OnPropertyChanging("UILevelDescriptionComponent." + nameof(LoadingMusic), this, m_LoadingMusic, value)) m_LoadingMusic = value; } } // 0xC (12)
 		
-		protected string m_LoadingMusicPath = new string();
+		protected string m_LoadingMusicPath = string.Empty;
 		[ContainerField(16), LayoutImmutable, ContainerFieldNameHash(4182834255)]
 		public string LoadingMusicPath { get { return m_LoadingMusicPath; } set { if (OnPropertyChanging("UILevelDescriptionComponent." + nameof(LoadingMusicPath), this, m_LoadingMusicPath, value)) m_LoadingMusicPath = value; } } // 0x10 (16)
 		
-		protected string m_LevelImagePath = new string();
+		protected string m_LevelImagePath = string.Empty;
 		[ContainerField(20), LayoutImmutable, ContainerFieldNameHash(2627470009)]
 		public string LevelImagePath { get { return m_LevelImagePath; } set { if (OnPropertyChanging("UILevelDescriptionComponent." + nameof(LevelImagePath), this, m_LevelImagePath, value)) m_LevelImagePath = value; } } // 0x14 (20)
 		
-		protected string m_LoadingImagePath = new string();
+		protected string m_LoadingImagePath = string.Empty;
 		[ContainerField(24), LayoutImmutable, ContainerFieldNameHash(2651193097)]
 		public string LoadingImagePath { get { return m_LoadingImagePath; } set { if (OnPropertyChanging("UILevelDescriptionComponent." + nameof(LoadingImagePath), this, m_LoadingImagePath, value)) m_LoadingImagePath = value; } } // 0x18 (24)
 		
-		protected string m_SPLoadingAssetPath = new string();
+		protected string m_SPLoadingAssetPath = string.Empty;
 		[ContainerField(28), LayoutImmutable, ContainerFieldNameHash(1500941885)]
 		public string SPLoadingAssetPath { get { return m_SPLoadingAssetPath; } set { if (OnPropertyChanging("UILevelDescriptionComponent." + nameof(SPLoadingAssetPath), this, m_SPLoadingAssetPath, value)) m_SPLoadingAssetPath = value; } } // 0x1C (28)
 		

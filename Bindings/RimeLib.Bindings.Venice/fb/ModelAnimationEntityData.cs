@@ -42,7 +42,7 @@ namespace fb
 		[ContainerField(92), LayoutImmutable, Blittable, ContainerFieldNameHash(1188203099)]
 		public int InstanceSeed { get { return m_InstanceSeed; } set { if (OnPropertyChanging("ModelAnimationEntityData." + nameof(InstanceSeed), this, m_InstanceSeed, value)) m_InstanceSeed = value; } } // 0x5C (92)
 		
-		protected string m_DefaultAnimation = new string();
+		protected string m_DefaultAnimation = string.Empty;
 		[ContainerField(96), LayoutImmutable, ContainerFieldNameHash(1576290296)]
 		public string DefaultAnimation { get { return m_DefaultAnimation; } set { if (OnPropertyChanging("ModelAnimationEntityData." + nameof(DefaultAnimation), this, m_DefaultAnimation, value)) m_DefaultAnimation = value; } } // 0x60 (96)
 		
@@ -58,7 +58,7 @@ namespace fb
 		[ContainerField(108), LayoutImmutable, Blittable, ContainerFieldNameHash(2162678253)]
 		public float ExternalTime { get { return m_ExternalTime; } set { if (OnPropertyChanging("ModelAnimationEntityData." + nameof(ExternalTime), this, m_ExternalTime, value)) m_ExternalTime = value; } } // 0x6C (108)
 		
-		protected string m_RootMeshBoneName = new string();
+		protected string m_RootMeshBoneName = string.Empty;
 		[ContainerField(112), LayoutImmutable, ContainerFieldNameHash(2494072593)]
 		public string RootMeshBoneName { get { return m_RootMeshBoneName; } set { if (OnPropertyChanging("ModelAnimationEntityData." + nameof(RootMeshBoneName), this, m_RootMeshBoneName, value)) m_RootMeshBoneName = value; } } // 0x70 (112)
 		
@@ -66,7 +66,7 @@ namespace fb
 		[ContainerField(116), ContainerFieldNameHash(3480116738)]
 		public ModelAnimationUpdateOrder JointWorldTransformUpdateOrder { get { return m_JointWorldTransformUpdateOrder; } set { if (OnPropertyChanging("ModelAnimationEntityData." + nameof(JointWorldTransformUpdateOrder), this, m_JointWorldTransformUpdateOrder, value)) m_JointWorldTransformUpdateOrder = value; } } // 0x74 (116)
 		
-		protected string m_ConnectBoneName = new string();
+		protected string m_ConnectBoneName = string.Empty;
 		[ContainerField(120), LayoutImmutable, ContainerFieldNameHash(1693705370)]
 		public string ConnectBoneName { get { return m_ConnectBoneName; } set { if (OnPropertyChanging("ModelAnimationEntityData." + nameof(ConnectBoneName), this, m_ConnectBoneName, value)) m_ConnectBoneName = value; } } // 0x78 (120)
 		
@@ -74,7 +74,7 @@ namespace fb
 		[ContainerField(124), ContainerFieldNameHash(2683361333)]
 		public List<int> JointOutputPropertyIds { get { return m_JointOutputPropertyIds; } set { if (OnPropertyChanging("ModelAnimationEntityData." + nameof(JointOutputPropertyIds), this, m_JointOutputPropertyIds, value)) m_JointOutputPropertyIds = value; } } // 0x7C (124)
 		
-		protected string m_TrajectoryBoneName = new string();
+		protected string m_TrajectoryBoneName = string.Empty;
 		[ContainerField(128), LayoutImmutable, ContainerFieldNameHash(4054639135)]
 		public string TrajectoryBoneName { get { return m_TrajectoryBoneName; } set { if (OnPropertyChanging("ModelAnimationEntityData." + nameof(TrajectoryBoneName), this, m_TrajectoryBoneName, value)) m_TrajectoryBoneName = value; } } // 0x80 (128)
 		

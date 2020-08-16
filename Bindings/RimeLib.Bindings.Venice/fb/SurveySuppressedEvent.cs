@@ -22,7 +22,7 @@ namespace fb
 	public class SurveySuppressedEvent : 
 		MetricEvent
 	{
-		protected string m_SuppressReason = new string();
+		protected string m_SuppressReason = string.Empty;
 		[ContainerField(16), LayoutImmutable, ContainerFieldNameHash(422620368)]
 		public string SuppressReason { get { return m_SuppressReason; } set { if (OnPropertyChanging("SurveySuppressedEvent." + nameof(SuppressReason), this, m_SuppressReason, value)) m_SuppressReason = value; } } // 0x10 (16)
 		

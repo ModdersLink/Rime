@@ -30,7 +30,7 @@ namespace fb
 		[ContainerField(100), LayoutImmutable, Blittable, ContainerFieldNameHash(432257168)]
 		public float ParachuteSpawnDistance { get { return m_ParachuteSpawnDistance; } set { if (OnPropertyChanging("MobileSpawnComponentData." + nameof(ParachuteSpawnDistance), this, m_ParachuteSpawnDistance, value)) m_ParachuteSpawnDistance = value; } } // 0x64 (100)
 		
-		protected string m_NameSid = new string();
+		protected string m_NameSid = string.Empty;
 		[ContainerField(104), LayoutImmutable, ContainerFieldNameHash(3153745340)]
 		public string NameSid { get { return m_NameSid; } set { if (OnPropertyChanging("MobileSpawnComponentData." + nameof(NameSid), this, m_NameSid, value)) m_NameSid = value; } } // 0x68 (104)
 		

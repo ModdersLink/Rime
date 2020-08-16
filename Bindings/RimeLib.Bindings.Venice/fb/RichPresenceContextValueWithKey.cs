@@ -22,7 +22,7 @@ namespace fb
 	public class RichPresenceContextValueWithKey : 
 		RichPresenceContextValue
 	{
-		protected string m_Key = new string();
+		protected string m_Key = string.Empty;
 		[ContainerField(16), LayoutImmutable, ContainerFieldNameHash(193457490)]
 		public string Key { get { return m_Key; } set { if (OnPropertyChanging("RichPresenceContextValueWithKey." + nameof(Key), this, m_Key, value)) m_Key = value; } } // 0x10 (16)
 		

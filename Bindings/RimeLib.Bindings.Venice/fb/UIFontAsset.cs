@@ -22,7 +22,7 @@ namespace fb
 	public class UIFontAsset : 
 		Asset
 	{
-		protected string m_SourceFile = new string();
+		protected string m_SourceFile = string.Empty;
 		[ContainerField(12), LayoutImmutable, ContainerFieldNameHash(1522844286)]
 		public string SourceFile { get { return m_SourceFile; } set { if (OnPropertyChanging("UIFontAsset." + nameof(SourceFile), this, m_SourceFile, value)) m_SourceFile = value; } } // 0xC (12)
 		

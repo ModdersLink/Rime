@@ -38,7 +38,7 @@ namespace fb
 		[ContainerField(64), LayoutImmutable, Blittable, ContainerFieldNameHash(415061138)]
 		public uint MaxCount { get { return m_MaxCount; } set { if (OnPropertyChanging("EmitterTemplateData." + nameof(MaxCount), this, m_MaxCount, value)) m_MaxCount = value; } } // 0x40 (64)
 		
-		protected string m_Name = new string();
+		protected string m_Name = string.Empty;
 		[ContainerField(68), LayoutImmutable, ContainerFieldNameHash(2088949890)]
 		public string Name { get { return m_Name; } set { if (OnPropertyChanging("EmitterTemplateData." + nameof(Name), this, m_Name, value)) m_Name = value; } } // 0x44 (68)
 		

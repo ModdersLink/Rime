@@ -38,7 +38,7 @@ namespace fb
 		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(217831728)]
 		public float Limit { get { return m_Limit; } set { if (OnPropertyChanging("ScoringTypeData." + nameof(Limit), this, m_Limit, value)) m_Limit = value; } } // 0x14 (20)
 		
-		protected string m_DescriptionSid = new string();
+		protected string m_DescriptionSid = string.Empty;
 		[ContainerField(24), LayoutImmutable, ContainerFieldNameHash(1844417789)]
 		public string DescriptionSid { get { return m_DescriptionSid; } set { if (OnPropertyChanging("ScoringTypeData." + nameof(DescriptionSid), this, m_DescriptionSid, value)) m_DescriptionSid = value; } } // 0x18 (24)
 		

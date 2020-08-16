@@ -22,7 +22,7 @@ namespace fb
 	public class CustomSequenceTrackData : 
 		EntityData
 	{
-		protected string m_TrackName = new string();
+		protected string m_TrackName = string.Empty;
 		[ContainerField(12), LayoutImmutable, ContainerFieldNameHash(1755529293)]
 		public string TrackName { get { return m_TrackName; } set { if (OnPropertyChanging("CustomSequenceTrackData." + nameof(TrackName), this, m_TrackName, value)) m_TrackName = value; } } // 0xC (12)
 		

@@ -42,7 +42,7 @@ namespace fb
 		[ContainerField(128), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(311491116)]
 		public Vec2 Vec2Value { get { return m_Vec2Value; } set { if (OnPropertyChanging("PropertyDebugEntityData." + nameof(Vec2Value), this, m_Vec2Value, value)) m_Vec2Value = value; } } // 0x80 (128)
 		
-		protected string m_ValuePrefix = new string();
+		protected string m_ValuePrefix = string.Empty;
 		[ContainerField(136), LayoutImmutable, ContainerFieldNameHash(1051050718)]
 		public string ValuePrefix { get { return m_ValuePrefix; } set { if (OnPropertyChanging("PropertyDebugEntityData." + nameof(ValuePrefix), this, m_ValuePrefix, value)) m_ValuePrefix = value; } } // 0x88 (136)
 		
@@ -62,7 +62,7 @@ namespace fb
 		[ContainerField(152), LayoutImmutable, Blittable, ContainerFieldNameHash(2508713728)]
 		public float TextScale { get { return m_TextScale; } set { if (OnPropertyChanging("PropertyDebugEntityData." + nameof(TextScale), this, m_TextScale, value)) m_TextScale = value; } } // 0x98 (152)
 		
-		protected string m_StringValue = new string();
+		protected string m_StringValue = string.Empty;
 		[ContainerField(156), LayoutImmutable, ContainerFieldNameHash(1269878171)]
 		public string StringValue { get { return m_StringValue; } set { if (OnPropertyChanging("PropertyDebugEntityData." + nameof(StringValue), this, m_StringValue, value)) m_StringValue = value; } } // 0x9C (156)
 		

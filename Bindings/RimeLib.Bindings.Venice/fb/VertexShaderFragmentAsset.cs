@@ -26,7 +26,7 @@ namespace fb
 		[ContainerField(12), LayoutImmutable, ContainerFieldNameHash(1522844286)]
 		public FileRef SourceFile { get { return m_SourceFile; } set { if (OnPropertyChanging("VertexShaderFragmentAsset." + nameof(SourceFile), this, m_SourceFile, value)) m_SourceFile = value; } } // 0xC (12)
 		
-		protected string m_Function = new string();
+		protected string m_Function = string.Empty;
 		[ContainerField(16), LayoutImmutable, ContainerFieldNameHash(4136871687)]
 		public string Function { get { return m_Function; } set { if (OnPropertyChanging("VertexShaderFragmentAsset." + nameof(Function), this, m_Function, value)) m_Function = value; } } // 0x10 (16)
 		

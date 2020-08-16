@@ -22,7 +22,7 @@ namespace fb
 	public class ProfileOptionData : 
 		Asset
 	{
-		protected string m_UniqueId = new string();
+		protected string m_UniqueId = string.Empty;
 		[ContainerField(12), LayoutImmutable, ContainerFieldNameHash(3045776603)]
 		public string UniqueId { get { return m_UniqueId; } set { if (OnPropertyChanging("ProfileOptionData." + nameof(UniqueId), this, m_UniqueId, value)) m_UniqueId = value; } } // 0xC (12)
 		

@@ -34,35 +34,35 @@ namespace fb
 		[ContainerField(20), ContainerFieldNameHash(3008262953)]
 		public VoiceOverWaveNameTranslation NameTranslation { get { return m_NameTranslation; } set { if (OnPropertyChanging("VoiceOverManuscriptAsset." + nameof(NameTranslation), this, m_NameTranslation, value)) m_NameTranslation = value; } } // 0x14 (20)
 		
-		protected string m_SheetName = new string();
+		protected string m_SheetName = string.Empty;
 		[ContainerField(24), LayoutImmutable, ContainerFieldNameHash(1655714573)]
 		public string SheetName { get { return m_SheetName; } set { if (OnPropertyChanging("VoiceOverManuscriptAsset." + nameof(SheetName), this, m_SheetName, value)) m_SheetName = value; } } // 0x18 (24)
 		
-		protected string m_StringIdColumn = new string();
+		protected string m_StringIdColumn = string.Empty;
 		[ContainerField(28), LayoutImmutable, ContainerFieldNameHash(2316948715)]
 		public string StringIdColumn { get { return m_StringIdColumn; } set { if (OnPropertyChanging("VoiceOverManuscriptAsset." + nameof(StringIdColumn), this, m_StringIdColumn, value)) m_StringIdColumn = value; } } // 0x1C (28)
 		
-		protected string m_FileNameColumn = new string();
+		protected string m_FileNameColumn = string.Empty;
 		[ContainerField(32), LayoutImmutable, ContainerFieldNameHash(30584978)]
 		public string FileNameColumn { get { return m_FileNameColumn; } set { if (OnPropertyChanging("VoiceOverManuscriptAsset." + nameof(FileNameColumn), this, m_FileNameColumn, value)) m_FileNameColumn = value; } } // 0x20 (32)
 		
-		protected string m_PathColumn = new string();
+		protected string m_PathColumn = string.Empty;
 		[ContainerField(36), LayoutImmutable, ContainerFieldNameHash(1657585950)]
 		public string PathColumn { get { return m_PathColumn; } set { if (OnPropertyChanging("VoiceOverManuscriptAsset." + nameof(PathColumn), this, m_PathColumn, value)) m_PathColumn = value; } } // 0x24 (36)
 		
-		protected string m_WaveAssetStatusColumn = new string();
+		protected string m_WaveAssetStatusColumn = string.Empty;
 		[ContainerField(40), LayoutImmutable, ContainerFieldNameHash(355976178)]
 		public string WaveAssetStatusColumn { get { return m_WaveAssetStatusColumn; } set { if (OnPropertyChanging("VoiceOverManuscriptAsset." + nameof(WaveAssetStatusColumn), this, m_WaveAssetStatusColumn, value)) m_WaveAssetStatusColumn = value; } } // 0x28 (40)
 		
-		protected string m_CharacterColumn = new string();
+		protected string m_CharacterColumn = string.Empty;
 		[ContainerField(44), LayoutImmutable, ContainerFieldNameHash(2622712842)]
 		public string CharacterColumn { get { return m_CharacterColumn; } set { if (OnPropertyChanging("VoiceOverManuscriptAsset." + nameof(CharacterColumn), this, m_CharacterColumn, value)) m_CharacterColumn = value; } } // 0x2C (44)
 		
-		protected string m_VoiceColumn = new string();
+		protected string m_VoiceColumn = string.Empty;
 		[ContainerField(48), LayoutImmutable, ContainerFieldNameHash(3950839045)]
 		public string VoiceColumn { get { return m_VoiceColumn; } set { if (OnPropertyChanging("VoiceOverManuscriptAsset." + nameof(VoiceColumn), this, m_VoiceColumn, value)) m_VoiceColumn = value; } } // 0x30 (48)
 		
-		protected string m_StringIdPrefix = new string();
+		protected string m_StringIdPrefix = string.Empty;
 		[ContainerField(52), LayoutImmutable, ContainerFieldNameHash(1766158509)]
 		public string StringIdPrefix { get { return m_StringIdPrefix; } set { if (OnPropertyChanging("VoiceOverManuscriptAsset." + nameof(StringIdPrefix), this, m_StringIdPrefix, value)) m_StringIdPrefix = value; } } // 0x34 (52)
 		
@@ -74,7 +74,7 @@ namespace fb
 		[ContainerField(60), LayoutImmutable, Blittable, ContainerFieldNameHash(1758802268)]
 		public int FirstContentRow { get { return m_FirstContentRow; } set { if (OnPropertyChanging("VoiceOverManuscriptAsset." + nameof(FirstContentRow), this, m_FirstContentRow, value)) m_FirstContentRow = value; } } // 0x3C (60)
 		
-		protected string m_OutputPath = new string();
+		protected string m_OutputPath = string.Empty;
 		[ContainerField(64), LayoutImmutable, ContainerFieldNameHash(542834903)]
 		public string OutputPath { get { return m_OutputPath; } set { if (OnPropertyChanging("VoiceOverManuscriptAsset." + nameof(OutputPath), this, m_OutputPath, value)) m_OutputPath = value; } } // 0x40 (64)
 		

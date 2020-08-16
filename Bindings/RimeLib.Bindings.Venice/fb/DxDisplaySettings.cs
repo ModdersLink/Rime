@@ -30,7 +30,7 @@ namespace fb
 		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(109852325)]
 		public uint FullscreenHeight { get { return m_FullscreenHeight; } set { if (OnPropertyChanging("DxDisplaySettings." + nameof(FullscreenHeight), this, m_FullscreenHeight, value)) m_FullscreenHeight = value; } } // 0x10 (16)
 		
-		protected string m_AmdMinDriverVersion = new string();
+		protected string m_AmdMinDriverVersion = string.Empty;
 		[ContainerField(20), LayoutImmutable, ContainerFieldNameHash(2479381411)]
 		public string AmdMinDriverVersion { get { return m_AmdMinDriverVersion; } set { if (OnPropertyChanging("DxDisplaySettings." + nameof(AmdMinDriverVersion), this, m_AmdMinDriverVersion, value)) m_AmdMinDriverVersion = value; } } // 0x14 (20)
 		

@@ -58,7 +58,7 @@ namespace fb
 		[ContainerField(60), LayoutImmutable, Blittable, ContainerFieldNameHash(3048894763)]
 		public float AllocGPUMemory { get { return m_AllocGPUMemory; } set { if (OnPropertyChanging("PerformanceEvent." + nameof(AllocGPUMemory), this, m_AllocGPUMemory, value)) m_AllocGPUMemory = value; } } // 0x3C (60)
 		
-		protected string m_PerformanceLocation = new string();
+		protected string m_PerformanceLocation = string.Empty;
 		[ContainerField(64), LayoutImmutable, ContainerFieldNameHash(69700128)]
 		public string PerformanceLocation { get { return m_PerformanceLocation; } set { if (OnPropertyChanging("PerformanceEvent." + nameof(PerformanceLocation), this, m_PerformanceLocation, value)) m_PerformanceLocation = value; } } // 0x40 (64)
 		

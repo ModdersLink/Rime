@@ -22,7 +22,7 @@ namespace fb
 	public class MessageEntityData : 
 		EntityData
 	{
-		protected string m_MessageSid = new string();
+		protected string m_MessageSid = string.Empty;
 		[ContainerField(12), LayoutImmutable, ContainerFieldNameHash(2895326256)]
 		public string MessageSid { get { return m_MessageSid; } set { if (OnPropertyChanging("MessageEntityData." + nameof(MessageSid), this, m_MessageSid, value)) m_MessageSid = value; } } // 0xC (12)
 		

@@ -42,7 +42,7 @@ namespace fb
 		[ContainerField(84), ContainerFieldNameHash(1741285141)]
 		public LevelDescription LevelDescription { get { return m_LevelDescription; } set { if (OnPropertyChanging("LevelData." + nameof(LevelDescription), this, m_LevelDescription, value)) m_LevelDescription = value; } } // 0x54 (84)
 		
-		protected string m_GameConfigurationName = new string();
+		protected string m_GameConfigurationName = string.Empty;
 		[ContainerField(100), LayoutImmutable, ContainerFieldNameHash(2876236092)]
 		public string GameConfigurationName { get { return m_GameConfigurationName; } set { if (OnPropertyChanging("LevelData." + nameof(GameConfigurationName), this, m_GameConfigurationName, value)) m_GameConfigurationName = value; } } // 0x64 (100)
 		
@@ -94,7 +94,7 @@ namespace fb
 		[ContainerField(148), ContainerFieldNameHash(1261757736)]
 		public RefArray<AntProjectAsset> AntProjectAssets { get { return m_AntProjectAssets; } set { if (OnPropertyChanging("LevelData." + nameof(AntProjectAssets), this, m_AntProjectAssets, value)) m_AntProjectAssets = value; } } // 0x94 (148)
 		
-		protected string m_AerialHeightmapData = new string();
+		protected string m_AerialHeightmapData = string.Empty;
 		[ContainerField(152), LayoutImmutable, ContainerFieldNameHash(716637124)]
 		public string AerialHeightmapData { get { return m_AerialHeightmapData; } set { if (OnPropertyChanging("LevelData." + nameof(AerialHeightmapData), this, m_AerialHeightmapData, value)) m_AerialHeightmapData = value; } } // 0x98 (152)
 		

@@ -30,11 +30,11 @@ namespace fb
 		[ContainerField(16), ContainerFieldNameHash(1046011945)]
 		public List<OnlinePlatformConfiguration> Platforms { get { return m_Platforms; } set { if (OnPropertyChanging("VeniceOnlineSettings." + nameof(Platforms), this, m_Platforms, value)) m_Platforms = value; } } // 0x10 (16)
 		
-		protected string m_ServiceNameOverride = new string();
+		protected string m_ServiceNameOverride = string.Empty;
 		[ContainerField(20), LayoutImmutable, ContainerFieldNameHash(2327369995)]
 		public string ServiceNameOverride { get { return m_ServiceNameOverride; } set { if (OnPropertyChanging("VeniceOnlineSettings." + nameof(ServiceNameOverride), this, m_ServiceNameOverride, value)) m_ServiceNameOverride = value; } } // 0x14 (20)
 		
-		protected string m_ClientGameConfigurationOverride = new string();
+		protected string m_ClientGameConfigurationOverride = string.Empty;
 		[ContainerField(24), LayoutImmutable, ContainerFieldNameHash(733163350)]
 		public string ClientGameConfigurationOverride { get { return m_ClientGameConfigurationOverride; } set { if (OnPropertyChanging("VeniceOnlineSettings." + nameof(ClientGameConfigurationOverride), this, m_ClientGameConfigurationOverride, value)) m_ClientGameConfigurationOverride = value; } } // 0x18 (24)
 		
@@ -46,7 +46,7 @@ namespace fb
 		[ContainerField(32), LayoutImmutable, Blittable, ContainerFieldNameHash(4290716369)]
 		public int DirtySockLogLevel { get { return m_DirtySockLogLevel; } set { if (OnPropertyChanging("VeniceOnlineSettings." + nameof(DirtySockLogLevel), this, m_DirtySockLogLevel, value)) m_DirtySockLogLevel = value; } } // 0x20 (32)
 		
-		protected string m_BattlelogReportURL = new string();
+		protected string m_BattlelogReportURL = string.Empty;
 		[ContainerField(36), LayoutImmutable, ContainerFieldNameHash(2679714382)]
 		public string BattlelogReportURL { get { return m_BattlelogReportURL; } set { if (OnPropertyChanging("VeniceOnlineSettings." + nameof(BattlelogReportURL), this, m_BattlelogReportURL, value)) m_BattlelogReportURL = value; } } // 0x24 (36)
 		
@@ -54,7 +54,7 @@ namespace fb
 		[ContainerField(40), ContainerFieldNameHash(2121789744)]
 		public RefArray<EntitlementQuery> EntitlementQueries { get { return m_EntitlementQueries; } set { if (OnPropertyChanging("VeniceOnlineSettings." + nameof(EntitlementQueries), this, m_EntitlementQueries, value)) m_EntitlementQueries = value; } } // 0x28 (40)
 		
-		protected string m_WebFeedUrlPrefix = new string();
+		protected string m_WebFeedUrlPrefix = string.Empty;
 		[ContainerField(44), LayoutImmutable, ContainerFieldNameHash(2227976588)]
 		public string WebFeedUrlPrefix { get { return m_WebFeedUrlPrefix; } set { if (OnPropertyChanging("VeniceOnlineSettings." + nameof(WebFeedUrlPrefix), this, m_WebFeedUrlPrefix, value)) m_WebFeedUrlPrefix = value; } } // 0x2C (44)
 		
@@ -66,7 +66,7 @@ namespace fb
 		[ContainerField(52), LayoutImmutable, Blittable, ContainerFieldNameHash(4173302708)]
 		public int QueueCapacityOverride { get { return m_QueueCapacityOverride; } set { if (OnPropertyChanging("VeniceOnlineSettings." + nameof(QueueCapacityOverride), this, m_QueueCapacityOverride, value)) m_QueueCapacityOverride = value; } } // 0x34 (52)
 		
-		protected string m_WebFeedCountUrlPrefix = new string();
+		protected string m_WebFeedCountUrlPrefix = string.Empty;
 		[ContainerField(56), LayoutImmutable, ContainerFieldNameHash(1351173167)]
 		public string WebFeedCountUrlPrefix { get { return m_WebFeedCountUrlPrefix; } set { if (OnPropertyChanging("VeniceOnlineSettings." + nameof(WebFeedCountUrlPrefix), this, m_WebFeedCountUrlPrefix, value)) m_WebFeedCountUrlPrefix = value; } } // 0x38 (56)
 		
@@ -82,7 +82,7 @@ namespace fb
 		[ContainerField(68), LayoutImmutable, Blittable, ContainerFieldNameHash(3644485796)]
 		public uint WebFeedUnreadCountFetchPeriod { get { return m_WebFeedUnreadCountFetchPeriod; } set { if (OnPropertyChanging("VeniceOnlineSettings." + nameof(WebFeedUnreadCountFetchPeriod), this, m_WebFeedUnreadCountFetchPeriod, value)) m_WebFeedUnreadCountFetchPeriod = value; } } // 0x44 (68)
 		
-		protected string m_MatchImagesUrlPrefix = new string();
+		protected string m_MatchImagesUrlPrefix = string.Empty;
 		[ContainerField(72), LayoutImmutable, ContainerFieldNameHash(1247734425)]
 		public string MatchImagesUrlPrefix { get { return m_MatchImagesUrlPrefix; } set { if (OnPropertyChanging("VeniceOnlineSettings." + nameof(MatchImagesUrlPrefix), this, m_MatchImagesUrlPrefix, value)) m_MatchImagesUrlPrefix = value; } } // 0x48 (72)
 		
@@ -114,11 +114,11 @@ namespace fb
 		[ContainerField(100), LayoutImmutable, Blittable, ContainerFieldNameHash(2736357702)]
 		public uint MatchFeedMinimumMillisecondsBetweenNewRequestAttempt { get { return m_MatchFeedMinimumMillisecondsBetweenNewRequestAttempt; } set { if (OnPropertyChanging("VeniceOnlineSettings." + nameof(MatchFeedMinimumMillisecondsBetweenNewRequestAttempt), this, m_MatchFeedMinimumMillisecondsBetweenNewRequestAttempt, value)) m_MatchFeedMinimumMillisecondsBetweenNewRequestAttempt = value; } } // 0x64 (100)
 		
-		protected string m_MatchFeedDetailsUrlPrefix = new string();
+		protected string m_MatchFeedDetailsUrlPrefix = string.Empty;
 		[ContainerField(104), LayoutImmutable, ContainerFieldNameHash(51926925)]
 		public string MatchFeedDetailsUrlPrefix { get { return m_MatchFeedDetailsUrlPrefix; } set { if (OnPropertyChanging("VeniceOnlineSettings." + nameof(MatchFeedDetailsUrlPrefix), this, m_MatchFeedDetailsUrlPrefix, value)) m_MatchFeedDetailsUrlPrefix = value; } } // 0x68 (104)
 		
-		protected string m_MatchFeedListUrlPrefix = new string();
+		protected string m_MatchFeedListUrlPrefix = string.Empty;
 		[ContainerField(108), LayoutImmutable, ContainerFieldNameHash(89835149)]
 		public string MatchFeedListUrlPrefix { get { return m_MatchFeedListUrlPrefix; } set { if (OnPropertyChanging("VeniceOnlineSettings." + nameof(MatchFeedListUrlPrefix), this, m_MatchFeedListUrlPrefix, value)) m_MatchFeedListUrlPrefix = value; } } // 0x6C (108)
 		

@@ -26,7 +26,7 @@ namespace fb
 		[ContainerField(12), ContainerFieldNameHash(229961746)]
 		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("ProfileEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0xC (12)
 		
-		protected string m_ProfileName = new string();
+		protected string m_ProfileName = string.Empty;
 		[ContainerField(16), LayoutImmutable, ContainerFieldNameHash(1665193641)]
 		public string ProfileName { get { return m_ProfileName; } set { if (OnPropertyChanging("ProfileEntityData." + nameof(ProfileName), this, m_ProfileName, value)) m_ProfileName = value; } } // 0x10 (16)
 		

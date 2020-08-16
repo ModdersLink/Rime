@@ -34,15 +34,15 @@ namespace fb
 		[ContainerField(40), ContainerFieldNameHash(2088920302)]
 		public UIDataSourceInfo Icon { get { return m_Icon; } set { if (OnPropertyChanging("UIPageHeaderBinding." + nameof(Icon), this, m_Icon, value)) m_Icon = value; } } // 0x28 (40)
 		
-		protected string m_StaticHeader = new string();
+		protected string m_StaticHeader = string.Empty;
 		[ContainerField(56), LayoutImmutable, ContainerFieldNameHash(3731955490)]
 		public string StaticHeader { get { return m_StaticHeader; } set { if (OnPropertyChanging("UIPageHeaderBinding." + nameof(StaticHeader), this, m_StaticHeader, value)) m_StaticHeader = value; } } // 0x38 (56)
 		
-		protected string m_StaticSubHeader = new string();
+		protected string m_StaticSubHeader = string.Empty;
 		[ContainerField(60), LayoutImmutable, ContainerFieldNameHash(2094195686)]
 		public string StaticSubHeader { get { return m_StaticSubHeader; } set { if (OnPropertyChanging("UIPageHeaderBinding." + nameof(StaticSubHeader), this, m_StaticSubHeader, value)) m_StaticSubHeader = value; } } // 0x3C (60)
 		
-		protected string m_StaticIcon = new string();
+		protected string m_StaticIcon = string.Empty;
 		[ContainerField(64), LayoutImmutable, ContainerFieldNameHash(3462318262)]
 		public string StaticIcon { get { return m_StaticIcon; } set { if (OnPropertyChanging("UIPageHeaderBinding." + nameof(StaticIcon), this, m_StaticIcon, value)) m_StaticIcon = value; } } // 0x40 (64)
 		

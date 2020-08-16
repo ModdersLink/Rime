@@ -26,7 +26,7 @@ namespace fb
 		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(1347637313)]
 		public float SortIndex { get { return m_SortIndex; } set { if (OnPropertyChanging("StartEntityData." + nameof(SortIndex), this, m_SortIndex, value)) m_SortIndex = value; } } // 0xC (12)
 		
-		protected string m_StartName = new string();
+		protected string m_StartName = string.Empty;
 		[ContainerField(16), LayoutImmutable, ContainerFieldNameHash(3727215458)]
 		public string StartName { get { return m_StartName; } set { if (OnPropertyChanging("StartEntityData." + nameof(StartName), this, m_StartName, value)) m_StartName = value; } } // 0x10 (16)
 		

@@ -26,7 +26,7 @@ namespace fb
 		[ContainerField(96), ContainerFieldNameHash(594340867)]
 		public CtrRef<SoldierWeaponBlueprint> DefaultWeaponBlueprint { get { return m_DefaultWeaponBlueprint; } set { if (OnPropertyChanging("CharacterWeaponComponentData." + nameof(DefaultWeaponBlueprint), this, m_DefaultWeaponBlueprint, value)) m_DefaultWeaponBlueprint = value; } } // 0x60 (96)
 		
-		protected string m_AimBoneName = new string();
+		protected string m_AimBoneName = string.Empty;
 		[ContainerField(100), LayoutImmutable, ContainerFieldNameHash(529553697)]
 		public string AimBoneName { get { return m_AimBoneName; } set { if (OnPropertyChanging("CharacterWeaponComponentData." + nameof(AimBoneName), this, m_AimBoneName, value)) m_AimBoneName = value; } } // 0x64 (100)
 		

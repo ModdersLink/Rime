@@ -22,7 +22,7 @@ namespace fb
 	public class RoundEvent : 
 		MetricEvent
 	{
-		protected string m_LevelName = new string();
+		protected string m_LevelName = string.Empty;
 		[ContainerField(16), LayoutImmutable, ContainerFieldNameHash(1599082292)]
 		public string LevelName { get { return m_LevelName; } set { if (OnPropertyChanging("RoundEvent." + nameof(LevelName), this, m_LevelName, value)) m_LevelName = value; } } // 0x10 (16)
 		

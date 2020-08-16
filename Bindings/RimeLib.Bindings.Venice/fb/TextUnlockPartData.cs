@@ -22,7 +22,7 @@ namespace fb
 	public class TextUnlockPartData : 
 		DataContainer
 	{
-		protected string m_ShaderNodeName = new string();
+		protected string m_ShaderNodeName = string.Empty;
 		[ContainerField(8), LayoutImmutable, ContainerFieldNameHash(4213969131)]
 		public string ShaderNodeName { get { return m_ShaderNodeName; } set { if (OnPropertyChanging("TextUnlockPartData." + nameof(ShaderNodeName), this, m_ShaderNodeName, value)) m_ShaderNodeName = value; } } // 0x8 (8)
 		

@@ -22,7 +22,7 @@ namespace fb
 	public class ScriptEntityData : 
 		EntityData
 	{
-		protected string m_Code = new string();
+		protected string m_Code = string.Empty;
 		[ContainerField(12), LayoutImmutable, ContainerFieldNameHash(2088844616)]
 		public string Code { get { return m_Code; } set { if (OnPropertyChanging("ScriptEntityData." + nameof(Code), this, m_Code, value)) m_Code = value; } } // 0xC (12)
 		

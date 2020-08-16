@@ -22,7 +22,7 @@ namespace fb
 	public class AbstractLeaderboardData : 
 		DataContainer
 	{
-		protected string m_LeaderboardName = new string();
+		protected string m_LeaderboardName = string.Empty;
 		[ContainerField(8), LayoutImmutable, ContainerFieldNameHash(2718976483)]
 		public string LeaderboardName { get { return m_LeaderboardName; } set { if (OnPropertyChanging("AbstractLeaderboardData." + nameof(LeaderboardName), this, m_LeaderboardName, value)) m_LeaderboardName = value; } } // 0x8 (8)
 		

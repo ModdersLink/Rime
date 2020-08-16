@@ -22,11 +22,15 @@ namespace fb
 	public class UIRankDescription : 
 		UIItemDescription
 	{
-		protected bool m_IgnoreBuild = new bool();
-		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(1608120075)]
-		public bool IgnoreBuild { get { return m_IgnoreBuild; } set { if (OnPropertyChanging("UIRankDescription." + nameof(IgnoreBuild), this, m_IgnoreBuild, value)) m_IgnoreBuild = value; } } // 0x10 (16)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+#pragma warning disable CS0108 // Member hides inherited member; missing new keyword
+        protected bool m_IgnoreBuild = new bool();
+#pragma warning restore CS0108 // Member hides inherited member; missing new keyword
+        [ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(1608120075)]
+#pragma warning disable CS0108 // Member hides inherited member; missing new keyword
+        public bool IgnoreBuild { get { return m_IgnoreBuild; } set { if (OnPropertyChanging("UIRankDescription." + nameof(IgnoreBuild), this, m_IgnoreBuild, value)) m_IgnoreBuild = value; } } // 0x10 (16)
+#pragma warning restore CS0108 // Member hides inherited member; missing new keyword
+
+        public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
 		{
 			switch (p_Descriptor.NameHash)
 			{

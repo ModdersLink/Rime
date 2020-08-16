@@ -26,7 +26,7 @@ namespace fb
 		[ContainerField(96), LayoutImmutable, Blittable, ContainerFieldNameHash(277093856)]
 		public float PlayerKilledDelay { get { return m_PlayerKilledDelay; } set { if (OnPropertyChanging("HumanPlayerEntityData." + nameof(PlayerKilledDelay), this, m_PlayerKilledDelay, value)) m_PlayerKilledDelay = value; } } // 0x60 (96)
 		
-		protected string m_LastManStandingSid = new string();
+		protected string m_LastManStandingSid = string.Empty;
 		[ContainerField(100), LayoutImmutable, ContainerFieldNameHash(1039359551)]
 		public string LastManStandingSid { get { return m_LastManStandingSid; } set { if (OnPropertyChanging("HumanPlayerEntityData." + nameof(LastManStandingSid), this, m_LastManStandingSid, value)) m_LastManStandingSid = value; } } // 0x64 (100)
 		

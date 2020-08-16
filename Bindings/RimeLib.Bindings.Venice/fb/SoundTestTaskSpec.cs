@@ -22,7 +22,7 @@ namespace fb
 	public class SoundTestTaskSpec : 
 		DataContainer
 	{
-		protected string m_Description = new string();
+		protected string m_Description = string.Empty;
 		[ContainerField(8), LayoutImmutable, ContainerFieldNameHash(1636673251)]
 		public string Description { get { return m_Description; } set { if (OnPropertyChanging("SoundTestTaskSpec." + nameof(Description), this, m_Description, value)) m_Description = value; } } // 0x8 (8)
 		

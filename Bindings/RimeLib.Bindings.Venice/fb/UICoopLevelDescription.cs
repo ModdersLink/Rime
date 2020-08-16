@@ -22,7 +22,7 @@ namespace fb
 	public class UICoopLevelDescription : 
 		LevelDescriptionComponent
 	{
-		protected string m_Debriefing = new string();
+		protected string m_Debriefing = string.Empty;
 		[ContainerField(8), LayoutImmutable, ContainerFieldNameHash(1664834078)]
 		public string Debriefing { get { return m_Debriefing; } set { if (OnPropertyChanging("UICoopLevelDescription." + nameof(Debriefing), this, m_Debriefing, value)) m_Debriefing = value; } } // 0x8 (8)
 		

@@ -58,7 +58,7 @@ namespace fb
 		[ContainerField(144), ContainerFieldNameHash(1230905484)]
 		public CtrRef<WeaponSuppressionData> SuppressionData { get { return m_SuppressionData; } set { if (OnPropertyChanging("ProjectileEntityData." + nameof(SuppressionData), this, m_SuppressionData, value)) m_SuppressionData = value; } } // 0x90 (144)
 		
-		protected string m_AmmunitionType = new string();
+		protected string m_AmmunitionType = string.Empty;
 		[ContainerField(148), LayoutImmutable, ContainerFieldNameHash(1231027442)]
 		public string AmmunitionType { get { return m_AmmunitionType; } set { if (OnPropertyChanging("ProjectileEntityData." + nameof(AmmunitionType), this, m_AmmunitionType, value)) m_AmmunitionType = value; } } // 0x94 (148)
 		

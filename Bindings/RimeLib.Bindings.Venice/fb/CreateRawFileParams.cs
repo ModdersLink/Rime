@@ -22,11 +22,11 @@ namespace fb
 	public class CreateRawFileParams : 
 		DataContainer
 	{
-		protected string m_AssetName = new string();
+		protected string m_AssetName = string.Empty;
 		[ContainerField(8), LayoutImmutable, ContainerFieldNameHash(3654276786)]
 		public string AssetName { get { return m_AssetName; } set { if (OnPropertyChanging("CreateRawFileParams." + nameof(AssetName), this, m_AssetName, value)) m_AssetName = value; } } // 0x8 (8)
 		
-		protected string m_SourceFile = new string();
+		protected string m_SourceFile = string.Empty;
 		[ContainerField(12), LayoutImmutable, ContainerFieldNameHash(1522844286)]
 		public string SourceFile { get { return m_SourceFile; } set { if (OnPropertyChanging("CreateRawFileParams." + nameof(SourceFile), this, m_SourceFile, value)) m_SourceFile = value; } } // 0xC (12)
 		

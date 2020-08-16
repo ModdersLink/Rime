@@ -22,7 +22,7 @@ namespace fb
 	public class CreateDestructionVolumeParams : 
 		DataContainer
 	{
-		protected string m_AssetName = new string();
+		protected string m_AssetName = string.Empty;
 		[ContainerField(8), LayoutImmutable, ContainerFieldNameHash(3654276786)]
 		public string AssetName { get { return m_AssetName; } set { if (OnPropertyChanging("CreateDestructionVolumeParams." + nameof(AssetName), this, m_AssetName, value)) m_AssetName = value; } } // 0x8 (8)
 		

@@ -22,7 +22,7 @@ namespace fb
 	public class UICombatAreaCompData : 
 		UIComponentData
 	{
-		protected string m_OutOfAreaSidPrefix = new string();
+		protected string m_OutOfAreaSidPrefix = string.Empty;
 		[ContainerField(28), LayoutImmutable, ContainerFieldNameHash(3191885467)]
 		public string OutOfAreaSidPrefix { get { return m_OutOfAreaSidPrefix; } set { if (OnPropertyChanging("UICombatAreaCompData." + nameof(OutOfAreaSidPrefix), this, m_OutOfAreaSidPrefix, value)) m_OutOfAreaSidPrefix = value; } } // 0x1C (28)
 		

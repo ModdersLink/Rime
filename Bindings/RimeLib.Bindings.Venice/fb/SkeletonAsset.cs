@@ -38,19 +38,19 @@ namespace fb
 		[ContainerField(24), ContainerFieldNameHash(4243999587)]
 		public List<LinearTransform> ModelPose { get { return m_ModelPose; } set { if (OnPropertyChanging("SkeletonAsset." + nameof(ModelPose), this, m_ModelPose, value)) m_ModelPose = value; } } // 0x18 (24)
 		
-		protected string m_WeaponBoneName = new string();
+		protected string m_WeaponBoneName = string.Empty;
 		[ContainerField(28), LayoutImmutable, ContainerFieldNameHash(4180015014)]
 		public string WeaponBoneName { get { return m_WeaponBoneName; } set { if (OnPropertyChanging("SkeletonAsset." + nameof(WeaponBoneName), this, m_WeaponBoneName, value)) m_WeaponBoneName = value; } } // 0x1C (28)
 		
-		protected string m_HeadBoneName = new string();
+		protected string m_HeadBoneName = string.Empty;
 		[ContainerField(32), LayoutImmutable, ContainerFieldNameHash(3359050476)]
 		public string HeadBoneName { get { return m_HeadBoneName; } set { if (OnPropertyChanging("SkeletonAsset." + nameof(HeadBoneName), this, m_HeadBoneName, value)) m_HeadBoneName = value; } } // 0x20 (32)
 		
-		protected string m_HipBoneName = new string();
+		protected string m_HipBoneName = string.Empty;
 		[ContainerField(36), LayoutImmutable, ContainerFieldNameHash(3967379317)]
 		public string HipBoneName { get { return m_HipBoneName; } set { if (OnPropertyChanging("SkeletonAsset." + nameof(HipBoneName), this, m_HipBoneName, value)) m_HipBoneName = value; } } // 0x24 (36)
 		
-		protected string m_CameraBoneName = new string();
+		protected string m_CameraBoneName = string.Empty;
 		[ContainerField(40), LayoutImmutable, ContainerFieldNameHash(771838749)]
 		public string CameraBoneName { get { return m_CameraBoneName; } set { if (OnPropertyChanging("SkeletonAsset." + nameof(CameraBoneName), this, m_CameraBoneName, value)) m_CameraBoneName = value; } } // 0x28 (40)
 		

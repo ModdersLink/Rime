@@ -22,7 +22,7 @@ namespace fb
 	public class AdvertisementLevelDescriptionComponent : 
 		LevelDescriptionComponent
 	{
-		protected string m_Identifier = new string();
+		protected string m_Identifier = string.Empty;
 		[ContainerField(8), LayoutImmutable, ContainerFieldNameHash(3512790342)]
 		public string Identifier { get { return m_Identifier; } set { if (OnPropertyChanging("AdvertisementLevelDescriptionComponent." + nameof(Identifier), this, m_Identifier, value)) m_Identifier = value; } } // 0x8 (8)
 		

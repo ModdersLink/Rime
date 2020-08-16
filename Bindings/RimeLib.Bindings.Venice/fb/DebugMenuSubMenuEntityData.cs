@@ -22,7 +22,7 @@ namespace fb
 	public class DebugMenuSubMenuEntityData : 
 		GameEntityData
 	{
-		protected string m_Text = new string();
+		protected string m_Text = string.Empty;
 		[ContainerField(96), LayoutImmutable, ContainerFieldNameHash(2089309304)]
 		public string Text { get { return m_Text; } set { if (OnPropertyChanging("DebugMenuSubMenuEntityData." + nameof(Text), this, m_Text, value)) m_Text = value; } } // 0x60 (96)
 		

@@ -22,11 +22,11 @@ namespace fb
 	public class PersistenceData : 
 		AbstractPersistenceData
 	{
-		protected string m_PersistenceName = new string();
+		protected string m_PersistenceName = string.Empty;
 		[ContainerField(12), LayoutImmutable, ContainerFieldNameHash(1594500373)]
 		public string PersistenceName { get { return m_PersistenceName; } set { if (OnPropertyChanging("PersistenceData." + nameof(PersistenceName), this, m_PersistenceName, value)) m_PersistenceName = value; } } // 0xC (12)
 		
-		protected string m_ClubPersistenceName = new string();
+		protected string m_ClubPersistenceName = string.Empty;
 		[ContainerField(16), LayoutImmutable, ContainerFieldNameHash(1035208813)]
 		public string ClubPersistenceName { get { return m_ClubPersistenceName; } set { if (OnPropertyChanging("PersistenceData." + nameof(ClubPersistenceName), this, m_ClubPersistenceName, value)) m_ClubPersistenceName = value; } } // 0x10 (16)
 		

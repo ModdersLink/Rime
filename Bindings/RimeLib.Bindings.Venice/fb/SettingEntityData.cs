@@ -26,15 +26,15 @@ namespace fb
 		[ContainerField(12), ContainerFieldNameHash(229961746)]
 		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("SettingEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0xC (12)
 		
-		protected string m_BoolSettingName = new string();
+		protected string m_BoolSettingName = string.Empty;
 		[ContainerField(16), LayoutImmutable, ContainerFieldNameHash(2857256474)]
 		public string BoolSettingName { get { return m_BoolSettingName; } set { if (OnPropertyChanging("SettingEntityData." + nameof(BoolSettingName), this, m_BoolSettingName, value)) m_BoolSettingName = value; } } // 0x10 (16)
 		
-		protected string m_IntSettingName = new string();
+		protected string m_IntSettingName = string.Empty;
 		[ContainerField(20), LayoutImmutable, ContainerFieldNameHash(2665330183)]
 		public string IntSettingName { get { return m_IntSettingName; } set { if (OnPropertyChanging("SettingEntityData." + nameof(IntSettingName), this, m_IntSettingName, value)) m_IntSettingName = value; } } // 0x14 (20)
 		
-		protected string m_FloatSettingName = new string();
+		protected string m_FloatSettingName = string.Empty;
 		[ContainerField(24), LayoutImmutable, ContainerFieldNameHash(3117588292)]
 		public string FloatSettingName { get { return m_FloatSettingName; } set { if (OnPropertyChanging("SettingEntityData." + nameof(FloatSettingName), this, m_FloatSettingName, value)) m_FloatSettingName = value; } } // 0x18 (24)
 		

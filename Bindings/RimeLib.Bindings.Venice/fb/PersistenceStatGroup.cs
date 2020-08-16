@@ -22,7 +22,7 @@ namespace fb
 	public class PersistenceStatGroup : 
 		DataContainer
 	{
-		protected string m_GroupName = new string();
+		protected string m_GroupName = string.Empty;
 		[ContainerField(8), LayoutImmutable, ContainerFieldNameHash(3178263901)]
 		public string GroupName { get { return m_GroupName; } set { if (OnPropertyChanging("PersistenceStatGroup." + nameof(GroupName), this, m_GroupName, value)) m_GroupName = value; } } // 0x8 (8)
 		

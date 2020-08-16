@@ -26,7 +26,7 @@ namespace fb
 		[ContainerField(16), ContainerFieldNameHash(3455858997)]
 		public VehicleCategory Category { get { return m_Category; } set { if (OnPropertyChanging("VeniceVehicleCustomizationAsset." + nameof(Category), this, m_Category, value)) m_Category = value; } } // 0x10 (16)
 		
-		protected string m_NameSid = new string();
+		protected string m_NameSid = string.Empty;
 		[ContainerField(20), LayoutImmutable, ContainerFieldNameHash(3153745340)]
 		public string NameSid { get { return m_NameSid; } set { if (OnPropertyChanging("VeniceVehicleCustomizationAsset." + nameof(NameSid), this, m_NameSid, value)) m_NameSid = value; } } // 0x14 (20)
 		

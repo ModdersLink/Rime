@@ -26,7 +26,7 @@ namespace fb
 		[ContainerField(96), ContainerFieldNameHash(2972161480)]
 		public DebugMenuItemType ItemType { get { return m_ItemType; } set { if (OnPropertyChanging("DebugMenuItemEntityData." + nameof(ItemType), this, m_ItemType, value)) m_ItemType = value; } } // 0x60 (96)
 		
-		protected string m_Text = new string();
+		protected string m_Text = string.Empty;
 		[ContainerField(100), LayoutImmutable, ContainerFieldNameHash(2089309304)]
 		public string Text { get { return m_Text; } set { if (OnPropertyChanging("DebugMenuItemEntityData." + nameof(Text), this, m_Text, value)) m_Text = value; } } // 0x64 (100)
 		

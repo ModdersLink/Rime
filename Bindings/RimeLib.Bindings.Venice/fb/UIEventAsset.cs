@@ -22,7 +22,7 @@ namespace fb
 	public class UIEventAsset : 
 		Asset
 	{
-		protected string m_Category = new string();
+		protected string m_Category = string.Empty;
 		[ContainerField(12), LayoutImmutable, ContainerFieldNameHash(3455858997)]
 		public string Category { get { return m_Category; } set { if (OnPropertyChanging("UIEventAsset." + nameof(Category), this, m_Category, value)) m_Category = value; } } // 0xC (12)
 		

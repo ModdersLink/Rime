@@ -22,7 +22,7 @@ namespace fb
 	public class AudioLanguageSetting : 
 		DataContainer
 	{
-		protected string m_Name = new string();
+		protected string m_Name = string.Empty;
 		[ContainerField(8), LayoutImmutable, ContainerFieldNameHash(2088949890)]
 		public string Name { get { return m_Name; } set { if (OnPropertyChanging("AudioLanguageSetting." + nameof(Name), this, m_Name, value)) m_Name = value; } } // 0x8 (8)
 		
@@ -30,7 +30,7 @@ namespace fb
 		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(994057744)]
 		public uint NameHash { get { return m_NameHash; } set { if (OnPropertyChanging("AudioLanguageSetting." + nameof(NameHash), this, m_NameHash, value)) m_NameHash = value; } } // 0xC (12)
 		
-		protected string m_DisplayName = new string();
+		protected string m_DisplayName = string.Empty;
 		[ContainerField(16), LayoutImmutable, ContainerFieldNameHash(1925224568)]
 		public string DisplayName { get { return m_DisplayName; } set { if (OnPropertyChanging("AudioLanguageSetting." + nameof(DisplayName), this, m_DisplayName, value)) m_DisplayName = value; } } // 0x10 (16)
 		

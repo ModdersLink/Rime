@@ -30,7 +30,7 @@ namespace fb
 		[ContainerField(24), ContainerFieldNameHash(193453899)]
 		public CtrRef<UINodePort> Out { get { return m_Out; } set { if (OnPropertyChanging("DataSetNode." + nameof(Out), this, m_Out, value)) m_Out = value; } } // 0x18 (24)
 		
-		protected string m_Param = new string();
+		protected string m_Param = string.Empty;
 		[ContainerField(28), LayoutImmutable, ContainerFieldNameHash(232319210)]
 		public string Param { get { return m_Param; } set { if (OnPropertyChanging("DataSetNode." + nameof(Param), this, m_Param, value)) m_Param = value; } } // 0x1C (28)
 		

@@ -26,7 +26,7 @@ namespace fb
 		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(3170322697)]
 		public uint ProtocolVersion { get { return m_ProtocolVersion; } set { if (OnPropertyChanging("NetworkSettings." + nameof(ProtocolVersion), this, m_ProtocolVersion, value)) m_ProtocolVersion = value; } } // 0x8 (8)
 		
-		protected string m_TitleId = new string();
+		protected string m_TitleId = string.Empty;
 		[ContainerField(12), LayoutImmutable, ContainerFieldNameHash(3335995016)]
 		public string TitleId { get { return m_TitleId; } set { if (OnPropertyChanging("NetworkSettings." + nameof(TitleId), this, m_TitleId, value)) m_TitleId = value; } } // 0xC (12)
 		
@@ -54,19 +54,19 @@ namespace fb
 		[ContainerField(36), LayoutImmutable, Blittable, ContainerFieldNameHash(3192625292)]
 		public uint MaxServerFrameSize { get { return m_MaxServerFrameSize; } set { if (OnPropertyChanging("NetworkSettings." + nameof(MaxServerFrameSize), this, m_MaxServerFrameSize, value)) m_MaxServerFrameSize = value; } } // 0x24 (36)
 		
-		protected string m_XlspAddress = new string();
+		protected string m_XlspAddress = string.Empty;
 		[ContainerField(40), LayoutImmutable, ContainerFieldNameHash(536568484)]
 		public string XlspAddress { get { return m_XlspAddress; } set { if (OnPropertyChanging("NetworkSettings." + nameof(XlspAddress), this, m_XlspAddress, value)) m_XlspAddress = value; } } // 0x28 (40)
 		
-		protected string m_ServerAddress = new string();
+		protected string m_ServerAddress = string.Empty;
 		[ContainerField(44), LayoutImmutable, ContainerFieldNameHash(2537212758)]
 		public string ServerAddress { get { return m_ServerAddress; } set { if (OnPropertyChanging("NetworkSettings." + nameof(ServerAddress), this, m_ServerAddress, value)) m_ServerAddress = value; } } // 0x2C (44)
 		
-		protected string m_ClientConnectionDebugFilePrefix = new string();
+		protected string m_ClientConnectionDebugFilePrefix = string.Empty;
 		[ContainerField(48), LayoutImmutable, ContainerFieldNameHash(46256173)]
 		public string ClientConnectionDebugFilePrefix { get { return m_ClientConnectionDebugFilePrefix; } set { if (OnPropertyChanging("NetworkSettings." + nameof(ClientConnectionDebugFilePrefix), this, m_ClientConnectionDebugFilePrefix, value)) m_ClientConnectionDebugFilePrefix = value; } } // 0x30 (48)
 		
-		protected string m_ServerConnectionDebugFilePrefix = new string();
+		protected string m_ServerConnectionDebugFilePrefix = string.Empty;
 		[ContainerField(52), LayoutImmutable, ContainerFieldNameHash(1658812785)]
 		public string ServerConnectionDebugFilePrefix { get { return m_ServerConnectionDebugFilePrefix; } set { if (OnPropertyChanging("NetworkSettings." + nameof(ServerConnectionDebugFilePrefix), this, m_ServerConnectionDebugFilePrefix, value)) m_ServerConnectionDebugFilePrefix = value; } } // 0x34 (52)
 		

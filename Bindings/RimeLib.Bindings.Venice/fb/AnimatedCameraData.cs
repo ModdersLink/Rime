@@ -26,11 +26,11 @@ namespace fb
 		[ContainerField(80), ContainerFieldNameHash(291024164)]
 		public CtrRef<SkeletonAsset> Skeleton { get { return m_Skeleton; } set { if (OnPropertyChanging("AnimatedCameraData." + nameof(Skeleton), this, m_Skeleton, value)) m_Skeleton = value; } } // 0x50 (80)
 		
-		protected string m_CameraBone = new string();
+		protected string m_CameraBone = string.Empty;
 		[ContainerField(84), LayoutImmutable, ContainerFieldNameHash(3220426650)]
 		public string CameraBone { get { return m_CameraBone; } set { if (OnPropertyChanging("AnimatedCameraData." + nameof(CameraBone), this, m_CameraBone, value)) m_CameraBone = value; } } // 0x54 (84)
 		
-		protected string m_FovBone = new string();
+		protected string m_FovBone = string.Empty;
 		[ContainerField(88), LayoutImmutable, ContainerFieldNameHash(1981125884)]
 		public string FovBone { get { return m_FovBone; } set { if (OnPropertyChanging("AnimatedCameraData." + nameof(FovBone), this, m_FovBone, value)) m_FovBone = value; } } // 0x58 (88)
 		

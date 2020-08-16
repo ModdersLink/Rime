@@ -22,11 +22,11 @@ namespace fb
 	public class MeshSettings : 
 		DataContainer
 	{
-		protected string m_OverrideShadersShaderName = new string();
+		protected string m_OverrideShadersShaderName = string.Empty;
 		[ContainerField(8), LayoutImmutable, ContainerFieldNameHash(2376973253)]
 		public string OverrideShadersShaderName { get { return m_OverrideShadersShaderName; } set { if (OnPropertyChanging("MeshSettings." + nameof(OverrideShadersShaderName), this, m_OverrideShadersShaderName, value)) m_OverrideShadersShaderName = value; } } // 0x8 (8)
 		
-		protected string m_OverrideShadersMeshName = new string();
+		protected string m_OverrideShadersMeshName = string.Empty;
 		[ContainerField(12), LayoutImmutable, ContainerFieldNameHash(3516849727)]
 		public string OverrideShadersMeshName { get { return m_OverrideShadersMeshName; } set { if (OnPropertyChanging("MeshSettings." + nameof(OverrideShadersMeshName), this, m_OverrideShadersMeshName, value)) m_OverrideShadersMeshName = value; } } // 0xC (12)
 		

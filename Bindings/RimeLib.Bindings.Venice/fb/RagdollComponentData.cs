@@ -38,11 +38,11 @@ namespace fb
 		[ContainerField(108), ContainerFieldNameHash(2590060228)]
 		public RagdollBinding Binding { get { return m_Binding; } set { if (OnPropertyChanging("RagdollComponentData." + nameof(Binding), this, m_Binding, value)) m_Binding = value; } } // 0x6C (108)
 		
-		protected string m_LeftLegBoneName = new string();
+		protected string m_LeftLegBoneName = string.Empty;
 		[ContainerField(128), LayoutImmutable, ContainerFieldNameHash(718235633)]
 		public string LeftLegBoneName { get { return m_LeftLegBoneName; } set { if (OnPropertyChanging("RagdollComponentData." + nameof(LeftLegBoneName), this, m_LeftLegBoneName, value)) m_LeftLegBoneName = value; } } // 0x80 (128)
 		
-		protected string m_RightLegBoneName = new string();
+		protected string m_RightLegBoneName = string.Empty;
 		[ContainerField(132), LayoutImmutable, ContainerFieldNameHash(3038502186)]
 		public string RightLegBoneName { get { return m_RightLegBoneName; } set { if (OnPropertyChanging("RagdollComponentData." + nameof(RightLegBoneName), this, m_RightLegBoneName, value)) m_RightLegBoneName = value; } } // 0x84 (132)
 		

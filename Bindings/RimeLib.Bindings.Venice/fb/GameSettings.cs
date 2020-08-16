@@ -42,11 +42,11 @@ namespace fb
 		[ContainerField(28), LayoutImmutable, Blittable, ContainerFieldNameHash(3548846413)]
 		public uint LogFileRotationHistoryLength { get { return m_LogFileRotationHistoryLength; } set { if (OnPropertyChanging("GameSettings." + nameof(LogFileRotationHistoryLength), this, m_LogFileRotationHistoryLength, value)) m_LogFileRotationHistoryLength = value; } } // 0x1C (28)
 		
-		protected string m_Level = new string();
+		protected string m_Level = string.Empty;
 		[ContainerField(32), LayoutImmutable, ContainerFieldNameHash(218262515)]
 		public string Level { get { return m_Level; } set { if (OnPropertyChanging("GameSettings." + nameof(Level), this, m_Level, value)) m_Level = value; } } // 0x20 (32)
 		
-		protected string m_DefaultLayerInclusion = new string();
+		protected string m_DefaultLayerInclusion = string.Empty;
 		[ContainerField(36), LayoutImmutable, ContainerFieldNameHash(4278341003)]
 		public string DefaultLayerInclusion { get { return m_DefaultLayerInclusion; } set { if (OnPropertyChanging("GameSettings." + nameof(DefaultLayerInclusion), this, m_DefaultLayerInclusion, value)) m_DefaultLayerInclusion = value; } } // 0x24 (36)
 		

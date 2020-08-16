@@ -22,7 +22,7 @@ namespace fb
 	public class UIImageDataBinding : 
 		UIDataBinding
 	{
-		protected string m_StaticImageUrl = new string();
+		protected string m_StaticImageUrl = string.Empty;
 		[ContainerField(8), LayoutImmutable, ContainerFieldNameHash(1907338737)]
 		public string StaticImageUrl { get { return m_StaticImageUrl; } set { if (OnPropertyChanging("UIImageDataBinding." + nameof(StaticImageUrl), this, m_StaticImageUrl, value)) m_StaticImageUrl = value; } } // 0x8 (8)
 		

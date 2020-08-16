@@ -38,7 +38,7 @@ namespace fb
 		[ContainerField(24), ContainerFieldNameHash(3437982272)]
 		public CtrRef<UIAudioEventAsset> AudioEventMappings { get { return m_AudioEventMappings; } set { if (OnPropertyChanging("UIGraphAsset." + nameof(AudioEventMappings), this, m_AudioEventMappings, value)) m_AudioEventMappings = value; } } // 0x18 (24)
 		
-		protected string m_BundleAssetName = new string();
+		protected string m_BundleAssetName = string.Empty;
 		[ContainerField(28), LayoutImmutable, ContainerFieldNameHash(948318150)]
 		public string BundleAssetName { get { return m_BundleAssetName; } set { if (OnPropertyChanging("UIGraphAsset." + nameof(BundleAssetName), this, m_BundleAssetName, value)) m_BundleAssetName = value; } } // 0x1C (28)
 		

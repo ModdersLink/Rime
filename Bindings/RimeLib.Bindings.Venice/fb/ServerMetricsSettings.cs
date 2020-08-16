@@ -22,7 +22,7 @@ namespace fb
 	public class ServerMetricsSettings : 
 		DataContainer
 	{
-		protected string m_ReportName = new string();
+		protected string m_ReportName = string.Empty;
 		[ContainerField(8), LayoutImmutable, ContainerFieldNameHash(3796964268)]
 		public string ReportName { get { return m_ReportName; } set { if (OnPropertyChanging("ServerMetricsSettings." + nameof(ReportName), this, m_ReportName, value)) m_ReportName = value; } } // 0x8 (8)
 		

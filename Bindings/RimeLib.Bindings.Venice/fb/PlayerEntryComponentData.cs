@@ -30,7 +30,7 @@ namespace fb
 		[ContainerField(208), ContainerFieldNameHash(3749795303)]
 		public AntEntryIdEnum AntEntryId { get { return m_AntEntryId; } set { if (OnPropertyChanging("PlayerEntryComponentData." + nameof(AntEntryId), this, m_AntEntryId, value)) m_AntEntryId = value; } } // 0xD0 (208)
 		
-		protected string m_AntEntryID = new string();
+		protected string m_AntEntryID = string.Empty;
 		[ContainerField(212), LayoutImmutable, ContainerFieldNameHash(3749795271)]
 		public string AntEntryID { get { return m_AntEntryID; } set { if (OnPropertyChanging("PlayerEntryComponentData." + nameof(AntEntryID), this, m_AntEntryID, value)) m_AntEntryID = value; } } // 0xD4 (212)
 		

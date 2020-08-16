@@ -22,7 +22,7 @@ namespace fb
 	public class UIVehicleWeaponDescription : 
 		UIItemDescription
 	{
-		protected string m_Name = new string();
+		protected string m_Name = string.Empty;
 		[ContainerField(16), LayoutImmutable, ContainerFieldNameHash(2088949890)]
 		public string Name { get { return m_Name; } set { if (OnPropertyChanging("UIVehicleWeaponDescription." + nameof(Name), this, m_Name, value)) m_Name = value; } } // 0x10 (16)
 		

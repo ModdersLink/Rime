@@ -62,7 +62,7 @@ namespace fb
 		[ContainerField(84), ContainerFieldNameHash(385936785)]
 		public UIListUnFocusMode UnFocusMode { get { return m_UnFocusMode; } set { if (OnPropertyChanging("UIListDataBinding." + nameof(UnFocusMode), this, m_UnFocusMode, value)) m_UnFocusMode = value; } } // 0x54 (84)
 		
-		protected string m_DisabledRows = new string();
+		protected string m_DisabledRows = string.Empty;
 		[ContainerField(88), LayoutImmutable, ContainerFieldNameHash(3598316716)]
 		public string DisabledRows { get { return m_DisabledRows; } set { if (OnPropertyChanging("UIListDataBinding." + nameof(DisabledRows), this, m_DisabledRows, value)) m_DisabledRows = value; } } // 0x58 (88)
 		

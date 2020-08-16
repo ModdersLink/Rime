@@ -22,7 +22,7 @@ namespace fb
 	public class ServerSettings : 
 		SystemSettings
 	{
-		protected string m_InstancePath = new string();
+		protected string m_InstancePath = string.Empty;
 		[ContainerField(12), LayoutImmutable, ContainerFieldNameHash(1188027073)]
 		public string InstancePath { get { return m_InstancePath; } set { if (OnPropertyChanging("ServerSettings." + nameof(InstancePath), this, m_InstancePath, value)) m_InstancePath = value; } } // 0xC (12)
 		
@@ -42,7 +42,7 @@ namespace fb
 		[ContainerField(28), LayoutImmutable, Blittable, ContainerFieldNameHash(2028383634)]
 		public float CorruptionChance { get { return m_CorruptionChance; } set { if (OnPropertyChanging("ServerSettings." + nameof(CorruptionChance), this, m_CorruptionChance, value)) m_CorruptionChance = value; } } // 0x1C (28)
 		
-		protected string m_RemoteAdministrationPort = new string();
+		protected string m_RemoteAdministrationPort = string.Empty;
 		[ContainerField(32), LayoutImmutable, ContainerFieldNameHash(947290198)]
 		public string RemoteAdministrationPort { get { return m_RemoteAdministrationPort; } set { if (OnPropertyChanging("ServerSettings." + nameof(RemoteAdministrationPort), this, m_RemoteAdministrationPort, value)) m_RemoteAdministrationPort = value; } } // 0x20 (32)
 		
@@ -58,7 +58,7 @@ namespace fb
 		[ContainerField(44), LayoutImmutable, Blittable, ContainerFieldNameHash(1831700397)]
 		public float HumanHealthMultiplier { get { return m_HumanHealthMultiplier; } set { if (OnPropertyChanging("ServerSettings." + nameof(HumanHealthMultiplier), this, m_HumanHealthMultiplier, value)) m_HumanHealthMultiplier = value; } } // 0x2C (44)
 		
-		protected string m_ServerName = new string();
+		protected string m_ServerName = string.Empty;
 		[ContainerField(48), LayoutImmutable, ContainerFieldNameHash(1802252391)]
 		public string ServerName { get { return m_ServerName; } set { if (OnPropertyChanging("ServerSettings." + nameof(ServerName), this, m_ServerName, value)) m_ServerName = value; } } // 0x30 (48)
 		
@@ -90,11 +90,11 @@ namespace fb
 		[ContainerField(76), LayoutImmutable, Blittable, ContainerFieldNameHash(2958796769)]
 		public uint IncomingRate { get { return m_IncomingRate; } set { if (OnPropertyChanging("ServerSettings." + nameof(IncomingRate), this, m_IncomingRate, value)) m_IncomingRate = value; } } // 0x4C (76)
 		
-		protected string m_Playlist = new string();
+		protected string m_Playlist = string.Empty;
 		[ContainerField(80), LayoutImmutable, ContainerFieldNameHash(927771683)]
 		public string Playlist { get { return m_Playlist; } set { if (OnPropertyChanging("ServerSettings." + nameof(Playlist), this, m_Playlist, value)) m_Playlist = value; } } // 0x50 (80)
 		
-		protected string m_SavePoint = new string();
+		protected string m_SavePoint = string.Empty;
 		[ContainerField(84), LayoutImmutable, ContainerFieldNameHash(1886045224)]
 		public string SavePoint { get { return m_SavePoint; } set { if (OnPropertyChanging("ServerSettings." + nameof(SavePoint), this, m_SavePoint, value)) m_SavePoint = value; } } // 0x54 (84)
 		
@@ -114,7 +114,7 @@ namespace fb
 		[ContainerField(100), LayoutImmutable, Blittable, ContainerFieldNameHash(715003463)]
 		public float MinLatency { get { return m_MinLatency; } set { if (OnPropertyChanging("ServerSettings." + nameof(MinLatency), this, m_MinLatency, value)) m_MinLatency = value; } } // 0x64 (100)
 		
-		protected string m_ServerPassword = new string();
+		protected string m_ServerPassword = string.Empty;
 		[ContainerField(104), LayoutImmutable, ContainerFieldNameHash(82517919)]
 		public string ServerPassword { get { return m_ServerPassword; } set { if (OnPropertyChanging("ServerSettings." + nameof(ServerPassword), this, m_ServerPassword, value)) m_ServerPassword = value; } } // 0x68 (104)
 		
@@ -130,11 +130,11 @@ namespace fb
 		[ContainerField(116), LayoutImmutable, Blittable, ContainerFieldNameHash(1247328452)]
 		public float VehicleSpawnDelayModifier { get { return m_VehicleSpawnDelayModifier; } set { if (OnPropertyChanging("ServerSettings." + nameof(VehicleSpawnDelayModifier), this, m_VehicleSpawnDelayModifier, value)) m_VehicleSpawnDelayModifier = value; } } // 0x74 (116)
 		
-		protected string m_DebugMenuClick = new string();
+		protected string m_DebugMenuClick = string.Empty;
 		[ContainerField(120), LayoutImmutable, ContainerFieldNameHash(219459689)]
 		public string DebugMenuClick { get { return m_DebugMenuClick; } set { if (OnPropertyChanging("ServerSettings." + nameof(DebugMenuClick), this, m_DebugMenuClick, value)) m_DebugMenuClick = value; } } // 0x78 (120)
 		
-		protected string m_AdministrationPassword = new string();
+		protected string m_AdministrationPassword = string.Empty;
 		[ContainerField(124), LayoutImmutable, ContainerFieldNameHash(1271615764)]
 		public string AdministrationPassword { get { return m_AdministrationPassword; } set { if (OnPropertyChanging("ServerSettings." + nameof(AdministrationPassword), this, m_AdministrationPassword, value)) m_AdministrationPassword = value; } } // 0x7C (124)
 		

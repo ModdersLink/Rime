@@ -22,7 +22,7 @@ namespace fb
 	public class OrderEntityData : 
 		EntityData
 	{
-		protected string m_DebugName = new string();
+		protected string m_DebugName = string.Empty;
 		[ContainerField(12), LayoutImmutable, ContainerFieldNameHash(859955379)]
 		public string DebugName { get { return m_DebugName; } set { if (OnPropertyChanging("OrderEntityData." + nameof(DebugName), this, m_DebugName, value)) m_DebugName = value; } } // 0xC (12)
 		
