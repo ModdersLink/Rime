@@ -5,6 +5,7 @@ using RimeLib.Frostbite;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Containers;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
 using System;
 using System.Linq;
@@ -150,6 +151,9 @@ namespace EbxExtractor
                     continue;
 
                 PartitionRegistry.RegisterPartition(s_Partition);
+
+                var s_Serializer = new PartitionSerializer(new Fb2SerializationContext());
+                s_Serializer.SerializePartition(s_Partition);
             }
 #endif
             

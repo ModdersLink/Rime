@@ -202,6 +202,7 @@ namespace RimeLib.Serialization.Frostbite2_0.Ebx
 
             m_HashedTypeStrings = new Dictionary<uint, string>();
 
+
             foreach (var s_TypeString in m_TypeStrings)
                 m_HashedTypeStrings[FbUtils.HashQuick(s_TypeString)] = s_TypeString;
 

@@ -317,6 +317,40 @@ namespace RimeLib.Serialization.Containers
             return s_Names;
         }
 
+        public uint GetImportCount(bool p_TotalImportCount = false)
+        {
+            uint s_ImportCount = 0;
+            foreach (var s_Property in GetType().GetProperties())
+            {
+                // Check to see if this property is browsable or not
+                var s_Browsable = (BrowsableAttribute[])s_Property.GetCustomAttributes(typeof(BrowsableAttribute), false);
+
+                var s_NotBrowsable = s_Browsable.Any(p_Attr => !p_Attr.Browsable);
+
+                if (s_NotBrowsable)
+                    continue;
+
+                // Check to ensure that this property has a ContainerField attribute
+                var s_FieldAttributes = s_Property.GetCustomAttribute<ContainerFieldAttribute>();
+                if (s_FieldAttributes == null)
+                    continue;
+
+                if (!typeof(CtrRefBase).IsAssignableFrom(s_Property.PropertyType))
+                    continue;
+
+                var s_Value = s_Property.GetValue(this);
+                if (s_Value == null)
+                    continue;
+
+                var s_CtrRef = (CtrRefBase)s_Value;
+
+                if ((s_CtrRef.PartitionGuid != GUID.Empty && s_CtrRef.InstanceGuid != GUID.Empty) || p_TotalImportCount)
+                    s_ImportCount++;
+            }
+
+            return s_ImportCount;
+        }
+
         /// <summary>
         /// Gets the custom fields of this object
         /// </summary>
