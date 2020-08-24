@@ -18,25 +18,25 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(41), ContainerStruct]
 	public class DirectWeaponSwitchingMapData : FrostbiteContainer
 	{
-		[ContainerField(0)]
+		[ContainerField(0), MemberInfoFlag(137)]
 		public EntryInputActionEnum Action { get; set; } = new EntryInputActionEnum(); // 0x0 (0)
 		
-		[ContainerField(4)]
+		[ContainerField(4), MemberInfoFlag(137)]
 		public WeaponSwitchingEnum ToWeapon { get; set; } = new WeaponSwitchingEnum(); // 0x4 (4)
 		
-		[ContainerField(8), LayoutImmutable, Blittable]
+		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float PreventMeleeRepeatTime { get; set; } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable]
+		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float SwitchBackToPrevMaxTimePressed { get; set; } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
+		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool UseQuickSwitch { get; set; } // 0x10 (16)
 		
-		[ContainerField(17), LayoutImmutable, Blittable]
+		[ContainerField(17), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool FireAndSwitchBackToPrev { get; set; } // 0x11 (17)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

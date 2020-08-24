@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class VeniceUICombatAreaAsset : 
 		UICombatAreaAsset
 	{
 		protected CtrRef<UIDistanceFieldAsset> m_DistanceField = new CtrRef<UIDistanceFieldAsset>();
-		[ContainerField(16), ContainerFieldNameHash(750822692)]
+		[ContainerField(16), MemberInfoFlag(53), ContainerFieldNameHash(750822692), ContainerCtrRef]
 		public CtrRef<UIDistanceFieldAsset> DistanceField { get { return m_DistanceField; } set { if (OnPropertyChanging("VeniceUICombatAreaAsset." + nameof(DistanceField), this, m_DistanceField, value)) m_DistanceField = value; } } // 0x10 (16)
 		
 		protected CtrRef<UIDistanceFieldAsset> m_SurroundingDistanceField = new CtrRef<UIDistanceFieldAsset>();
-		[ContainerField(20), ContainerFieldNameHash(1134425682)]
+		[ContainerField(20), MemberInfoFlag(53), ContainerFieldNameHash(1134425682), ContainerCtrRef]
 		public CtrRef<UIDistanceFieldAsset> SurroundingDistanceField { get { return m_SurroundingDistanceField; } set { if (OnPropertyChanging("VeniceUICombatAreaAsset." + nameof(SurroundingDistanceField), this, m_SurroundingDistanceField, value)) m_SurroundingDistanceField = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,68 +18,68 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class GameInteractionEntityData : 
 		InteractionEntityData
 	{
 		protected BlinkType m_Blink = new BlinkType();
-		[ContainerField(128), ContainerFieldNameHash(211512871)]
+		[ContainerField(128), MemberInfoFlag(137), ContainerFieldNameHash(211512871)]
 		public BlinkType Blink { get { return m_Blink; } set { if (OnPropertyChanging("GameInteractionEntityData." + nameof(Blink), this, m_Blink, value)) m_Blink = value; } } // 0x80 (128)
 		
 		protected float m_CapturepointVerticalOffset = new float();
-		[ContainerField(132), LayoutImmutable, Blittable, ContainerFieldNameHash(3396848754)]
+		[ContainerField(132), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3396848754)]
 		public float CapturepointVerticalOffset { get { return m_CapturepointVerticalOffset; } set { if (OnPropertyChanging("GameInteractionEntityData." + nameof(CapturepointVerticalOffset), this, m_CapturepointVerticalOffset, value)) m_CapturepointVerticalOffset = value; } } // 0x84 (132)
 		
 		protected float m_DelayBetweenUses = new float();
-		[ContainerField(136), LayoutImmutable, Blittable, ContainerFieldNameHash(2736691946)]
+		[ContainerField(136), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2736691946)]
 		public float DelayBetweenUses { get { return m_DelayBetweenUses; } set { if (OnPropertyChanging("GameInteractionEntityData." + nameof(DelayBetweenUses), this, m_DelayBetweenUses, value)) m_DelayBetweenUses = value; } } // 0x88 (136)
 		
 		protected TeamId m_TeamId = new TeamId();
-		[ContainerField(140), ContainerFieldNameHash(3220374101)]
+		[ContainerField(140), MemberInfoFlag(137), ContainerFieldNameHash(3220374101)]
 		public TeamId TeamId { get { return m_TeamId; } set { if (OnPropertyChanging("GameInteractionEntityData." + nameof(TeamId), this, m_TeamId, value)) m_TeamId = value; } } // 0x8C (140)
 		
 		protected EntryInputActionEnum m_InputAction = new EntryInputActionEnum();
-		[ContainerField(144), ContainerFieldNameHash(1407707693)]
+		[ContainerField(144), MemberInfoFlag(137), ContainerFieldNameHash(1407707693)]
 		public EntryInputActionEnum InputAction { get { return m_InputAction; } set { if (OnPropertyChanging("GameInteractionEntityData." + nameof(InputAction), this, m_InputAction, value)) m_InputAction = value; } } // 0x90 (144)
 		
 		protected float m_HoldToInteractTime = new float();
-		[ContainerField(148), LayoutImmutable, Blittable, ContainerFieldNameHash(594026294)]
+		[ContainerField(148), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(594026294)]
 		public float HoldToInteractTime { get { return m_HoldToInteractTime; } set { if (OnPropertyChanging("GameInteractionEntityData." + nameof(HoldToInteractTime), this, m_HoldToInteractTime, value)) m_HoldToInteractTime = value; } } // 0x94 (148)
 		
 		protected InteractionEntityType m_InteractionEntityType = new InteractionEntityType();
-		[ContainerField(152), ContainerFieldNameHash(740392700)]
+		[ContainerField(152), MemberInfoFlag(137), ContainerFieldNameHash(740392700)]
 		public InteractionEntityType InteractionEntityType { get { return m_InteractionEntityType; } set { if (OnPropertyChanging("GameInteractionEntityData." + nameof(InteractionEntityType), this, m_InteractionEntityType, value)) m_InteractionEntityType = value; } } // 0x98 (152)
 		
 		protected string m_InteractionSid = string.Empty;
-		[ContainerField(156), LayoutImmutable, ContainerFieldNameHash(3925445313)]
+		[ContainerField(156), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(3925445313)]
 		public string InteractionSid { get { return m_InteractionSid; } set { if (OnPropertyChanging("GameInteractionEntityData." + nameof(InteractionSid), this, m_InteractionSid, value)) m_InteractionSid = value; } } // 0x9C (156)
 		
 		protected string m_InteractingSid = string.Empty;
-		[ContainerField(160), LayoutImmutable, ContainerFieldNameHash(3926175337)]
+		[ContainerField(160), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(3926175337)]
 		public string InteractingSid { get { return m_InteractingSid; } set { if (OnPropertyChanging("GameInteractionEntityData." + nameof(InteractingSid), this, m_InteractingSid, value)) m_InteractingSid = value; } } // 0xA0 (160)
 		
 		protected string m_FriendlyTextSid = string.Empty;
-		[ContainerField(164), LayoutImmutable, ContainerFieldNameHash(2455269025)]
+		[ContainerField(164), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(2455269025)]
 		public string FriendlyTextSid { get { return m_FriendlyTextSid; } set { if (OnPropertyChanging("GameInteractionEntityData." + nameof(FriendlyTextSid), this, m_FriendlyTextSid, value)) m_FriendlyTextSid = value; } } // 0xA4 (164)
 		
 		protected string m_NameSid = string.Empty;
-		[ContainerField(168), LayoutImmutable, ContainerFieldNameHash(3153745340)]
+		[ContainerField(168), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(3153745340)]
 		public string NameSid { get { return m_NameSid; } set { if (OnPropertyChanging("GameInteractionEntityData." + nameof(NameSid), this, m_NameSid, value)) m_NameSid = value; } } // 0xA8 (168)
 		
 		protected float m_InteractionVerticalOffset = new float();
-		[ContainerField(172), LayoutImmutable, Blittable, ContainerFieldNameHash(2621963328)]
+		[ContainerField(172), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2621963328)]
 		public float InteractionVerticalOffset { get { return m_InteractionVerticalOffset; } set { if (OnPropertyChanging("GameInteractionEntityData." + nameof(InteractionVerticalOffset), this, m_InteractionVerticalOffset, value)) m_InteractionVerticalOffset = value; } } // 0xAC (172)
 		
 		protected string m_EnemyTextSid = string.Empty;
-		[ContainerField(176), LayoutImmutable, ContainerFieldNameHash(1333856348)]
+		[ContainerField(176), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(1333856348)]
 		public string EnemyTextSid { get { return m_EnemyTextSid; } set { if (OnPropertyChanging("GameInteractionEntityData." + nameof(EnemyTextSid), this, m_EnemyTextSid, value)) m_EnemyTextSid = value; } } // 0xB0 (176)
 		
 		protected bool m_ShrinkSnap = new bool();
-		[ContainerField(180), LayoutImmutable, Blittable, ContainerFieldNameHash(232640812)]
+		[ContainerField(180), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(232640812)]
 		public bool ShrinkSnap { get { return m_ShrinkSnap; } set { if (OnPropertyChanging("GameInteractionEntityData." + nameof(ShrinkSnap), this, m_ShrinkSnap, value)) m_ShrinkSnap = value; } } // 0xB4 (180)
 		
 		protected bool m_ShowAsCapturePoint = new bool();
-		[ContainerField(181), LayoutImmutable, Blittable, ContainerFieldNameHash(2335255676)]
+		[ContainerField(181), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2335255676)]
 		public bool ShowAsCapturePoint { get { return m_ShowAsCapturePoint; } set { if (OnPropertyChanging("GameInteractionEntityData." + nameof(ShowAsCapturePoint), this, m_ShowAsCapturePoint, value)) m_ShowAsCapturePoint = value; } } // 0xB5 (181)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

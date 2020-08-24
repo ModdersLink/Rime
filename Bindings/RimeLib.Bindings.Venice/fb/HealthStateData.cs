@@ -18,44 +18,44 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class HealthStateData : 
 		DataContainer
 	{
 		protected RefArray<GameObjectData> m_Objects = new RefArray<GameObjectData>();
-		[ContainerField(8), ContainerFieldNameHash(105488131)]
+		[ContainerField(8), MemberInfoFlag(65), ContainerFieldNameHash(105488131), ContainerRefArray]
 		public RefArray<GameObjectData> Objects { get { return m_Objects; } set { if (OnPropertyChanging("HealthStateData." + nameof(Objects), this, m_Objects, value)) m_Objects = value; } } // 0x8 (8)
 		
 		protected RefArray<NetworkableLoosePartPhysicsData> m_LoosePartPhysics = new RefArray<NetworkableLoosePartPhysicsData>();
-		[ContainerField(12), ContainerFieldNameHash(4017113603)]
+		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(4017113603), ContainerRefArray]
 		public RefArray<NetworkableLoosePartPhysicsData> LoosePartPhysics { get { return m_LoosePartPhysics; } set { if (OnPropertyChanging("HealthStateData." + nameof(LoosePartPhysics), this, m_LoosePartPhysics, value)) m_LoosePartPhysics = value; } } // 0xC (12)
 		
 		protected CtrRef<ObjectBlueprint> m_SpawnedBangerBlueprint = new CtrRef<ObjectBlueprint>();
-		[ContainerField(16), ContainerFieldNameHash(1648406157)]
+		[ContainerField(16), MemberInfoFlag(53), ContainerFieldNameHash(1648406157), ContainerCtrRef]
 		public CtrRef<ObjectBlueprint> SpawnedBangerBlueprint { get { return m_SpawnedBangerBlueprint; } set { if (OnPropertyChanging("HealthStateData." + nameof(SpawnedBangerBlueprint), this, m_SpawnedBangerBlueprint, value)) m_SpawnedBangerBlueprint = value; } } // 0x10 (16)
 		
 		protected CtrRef<BangerSpawnImpulseParams> m_SpawnedBangerImpulseParams = new CtrRef<BangerSpawnImpulseParams>();
-		[ContainerField(20), ContainerFieldNameHash(4146360197)]
+		[ContainerField(20), MemberInfoFlag(53), ContainerFieldNameHash(4146360197), ContainerCtrRef]
 		public CtrRef<BangerSpawnImpulseParams> SpawnedBangerImpulseParams { get { return m_SpawnedBangerImpulseParams; } set { if (OnPropertyChanging("HealthStateData." + nameof(SpawnedBangerImpulseParams), this, m_SpawnedBangerImpulseParams, value)) m_SpawnedBangerImpulseParams = value; } } // 0x14 (20)
 		
 		protected float m_Health = new float();
-		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(3054337113)]
+		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3054337113)]
 		public float Health { get { return m_Health; } set { if (OnPropertyChanging("HealthStateData." + nameof(Health), this, m_Health, value)) m_Health = value; } } // 0x18 (24)
 		
 		protected uint m_PartIndex = new uint();
-		[ContainerField(28), LayoutImmutable, Blittable, ContainerFieldNameHash(3213901068)]
+		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(3213901068)]
 		public uint PartIndex { get { return m_PartIndex; } set { if (OnPropertyChanging("HealthStateData." + nameof(PartIndex), this, m_PartIndex, value)) m_PartIndex = value; } } // 0x1C (28)
 		
 		protected bool m_PhysicsEnabled = new bool();
-		[ContainerField(32), LayoutImmutable, Blittable, ContainerFieldNameHash(752388619)]
+		[ContainerField(32), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(752388619)]
 		public bool PhysicsEnabled { get { return m_PhysicsEnabled; } set { if (OnPropertyChanging("HealthStateData." + nameof(PhysicsEnabled), this, m_PhysicsEnabled, value)) m_PhysicsEnabled = value; } } // 0x20 (32)
 		
 		protected bool m_CopyDamageToBanger = new bool();
-		[ContainerField(33), LayoutImmutable, Blittable, ContainerFieldNameHash(3099666957)]
+		[ContainerField(33), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3099666957)]
 		public bool CopyDamageToBanger { get { return m_CopyDamageToBanger; } set { if (OnPropertyChanging("HealthStateData." + nameof(CopyDamageToBanger), this, m_CopyDamageToBanger, value)) m_CopyDamageToBanger = value; } } // 0x21 (33)
 		
 		protected bool m_CanSupportOtherParts = new bool();
-		[ContainerField(34), LayoutImmutable, Blittable, ContainerFieldNameHash(3085116102)]
+		[ContainerField(34), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3085116102)]
 		public bool CanSupportOtherParts { get { return m_CanSupportOtherParts; } set { if (OnPropertyChanging("HealthStateData." + nameof(CanSupportOtherParts), this, m_CanSupportOtherParts, value)) m_CanSupportOtherParts = value; } } // 0x22 (34)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class InAirStateData : 
 		CharacterStateData
 	{
 		protected float m_FreeFallVelocity = new float();
-		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(106738721)]
+		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(106738721)]
 		public float FreeFallVelocity { get { return m_FreeFallVelocity; } set { if (OnPropertyChanging("InAirStateData." + nameof(FreeFallVelocity), this, m_FreeFallVelocity, value)) m_FreeFallVelocity = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class ProfileOptionsAsset : 
 		Asset
 	{
 		protected string m_FileName = string.Empty;
-		[ContainerField(12), LayoutImmutable, ContainerFieldNameHash(1134474212)]
+		[ContainerField(12), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(1134474212)]
 		public string FileName { get { return m_FileName; } set { if (OnPropertyChanging("ProfileOptionsAsset." + nameof(FileName), this, m_FileName, value)) m_FileName = value; } } // 0xC (12)
 		
 		protected string m_ContentName = string.Empty;
-		[ContainerField(16), LayoutImmutable, ContainerFieldNameHash(4236678091)]
+		[ContainerField(16), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(4236678091)]
 		public string ContentName { get { return m_ContentName; } set { if (OnPropertyChanging("ProfileOptionsAsset." + nameof(ContentName), this, m_ContentName, value)) m_ContentName = value; } } // 0x10 (16)
 		
 		protected uint m_FileSize = new uint();
-		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(1134658022)]
+		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(1134658022)]
 		public uint FileSize { get { return m_FileSize; } set { if (OnPropertyChanging("ProfileOptionsAsset." + nameof(FileSize), this, m_FileSize, value)) m_FileSize = value; } } // 0x14 (20)
 		
 		protected RefArray<ProfileOptionData> m_Options = new RefArray<ProfileOptionData>();
-		[ContainerField(24), ContainerFieldNameHash(958915349)]
+		[ContainerField(24), MemberInfoFlag(65), ContainerFieldNameHash(958915349), ContainerRefArray]
 		public RefArray<ProfileOptionData> Options { get { return m_Options; } set { if (OnPropertyChanging("ProfileOptionsAsset." + nameof(Options), this, m_Options, value)) m_Options = value; } } // 0x18 (24)
 		
 		protected bool m_AutoSaveOnQuit = new bool();
-		[ContainerField(28), LayoutImmutable, Blittable, ContainerFieldNameHash(2066387635)]
+		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2066387635)]
 		public bool AutoSaveOnQuit { get { return m_AutoSaveOnQuit; } set { if (OnPropertyChanging("ProfileOptionsAsset." + nameof(AutoSaveOnQuit), this, m_AutoSaveOnQuit, value)) m_AutoSaveOnQuit = value; } } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

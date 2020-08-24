@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class BFServerConfiguration : 
 		DataContainer
 	{
 		protected List<BFServerConfigurationSchedule> m_Schedules = new List<BFServerConfigurationSchedule>();
-		[ContainerField(8), ContainerFieldNameHash(813057715)]
+		[ContainerField(8), MemberInfoFlag(65), ContainerFieldNameHash(813057715), ContainerArray]
 		public List<BFServerConfigurationSchedule> Schedules { get { return m_Schedules; } set { if (OnPropertyChanging("BFServerConfiguration." + nameof(Schedules), this, m_Schedules, value)) m_Schedules = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

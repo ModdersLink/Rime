@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class AIAimingConstraintsData : 
 		DataContainer
 	{
 		protected float m_MinYaw = new float();
-		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(2633709248)]
+		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2633709248)]
 		public float MinYaw { get { return m_MinYaw; } set { if (OnPropertyChanging("AIAimingConstraintsData." + nameof(MinYaw), this, m_MinYaw, value)) m_MinYaw = value; } } // 0x8 (8)
 		
 		protected float m_MaxYaw = new float();
-		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(2642824094)]
+		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2642824094)]
 		public float MaxYaw { get { return m_MaxYaw; } set { if (OnPropertyChanging("AIAimingConstraintsData." + nameof(MaxYaw), this, m_MaxYaw, value)) m_MaxYaw = value; } } // 0xC (12)
 		
 		protected float m_MinPitch = new float();
-		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(3374061353)]
+		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3374061353)]
 		public float MinPitch { get { return m_MinPitch; } set { if (OnPropertyChanging("AIAimingConstraintsData." + nameof(MinPitch), this, m_MinPitch, value)) m_MinPitch = value; } } // 0x10 (16)
 		
 		protected float m_MaxPitch = new float();
-		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(397101687)]
+		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(397101687)]
 		public float MaxPitch { get { return m_MaxPitch; } set { if (OnPropertyChanging("AIAimingConstraintsData." + nameof(MaxPitch), this, m_MaxPitch, value)) m_MaxPitch = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

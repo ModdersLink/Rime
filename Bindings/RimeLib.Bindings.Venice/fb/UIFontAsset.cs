@@ -18,36 +18,36 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class UIFontAsset : 
 		Asset
 	{
 		protected string m_SourceFile = string.Empty;
-		[ContainerField(12), LayoutImmutable, ContainerFieldNameHash(1522844286)]
+		[ContainerField(12), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(1522844286)]
 		public string SourceFile { get { return m_SourceFile; } set { if (OnPropertyChanging("UIFontAsset." + nameof(SourceFile), this, m_SourceFile, value)) m_SourceFile = value; } } // 0xC (12)
 		
 		protected CtrRef<UITextDatabase> m_TextDatabase = new CtrRef<UITextDatabase>();
-		[ContainerField(16), ContainerFieldNameHash(1951250813)]
+		[ContainerField(16), MemberInfoFlag(53), ContainerFieldNameHash(1951250813), ContainerCtrRef]
 		public CtrRef<UITextDatabase> TextDatabase { get { return m_TextDatabase; } set { if (OnPropertyChanging("UIFontAsset." + nameof(TextDatabase), this, m_TextDatabase, value)) m_TextDatabase = value; } } // 0x10 (16)
 		
 		protected List<string> m_ScaleformFontName = new List<string>();
-		[ContainerField(20), ContainerFieldNameHash(842040767)]
+		[ContainerField(20), MemberInfoFlag(65), ContainerFieldNameHash(842040767), ContainerArray]
 		public List<string> ScaleformFontName { get { return m_ScaleformFontName; } set { if (OnPropertyChanging("UIFontAsset." + nameof(ScaleformFontName), this, m_ScaleformFontName, value)) m_ScaleformFontName = value; } } // 0x14 (20)
 		
 		protected bool m_NumericsOnly = new bool();
-		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(1142577577)]
+		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1142577577)]
 		public bool NumericsOnly { get { return m_NumericsOnly; } set { if (OnPropertyChanging("UIFontAsset." + nameof(NumericsOnly), this, m_NumericsOnly, value)) m_NumericsOnly = value; } } // 0x18 (24)
 		
 		protected bool m_CompleteKorean = new bool();
-		[ContainerField(25), LayoutImmutable, Blittable, ContainerFieldNameHash(3382158800)]
+		[ContainerField(25), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3382158800)]
 		public bool CompleteKorean { get { return m_CompleteKorean; } set { if (OnPropertyChanging("UIFontAsset." + nameof(CompleteKorean), this, m_CompleteKorean, value)) m_CompleteKorean = value; } } // 0x19 (25)
 		
 		protected bool m_CompleteJapanese = new bool();
-		[ContainerField(26), LayoutImmutable, Blittable, ContainerFieldNameHash(3695683243)]
+		[ContainerField(26), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3695683243)]
 		public bool CompleteJapanese { get { return m_CompleteJapanese; } set { if (OnPropertyChanging("UIFontAsset." + nameof(CompleteJapanese), this, m_CompleteJapanese, value)) m_CompleteJapanese = value; } } // 0x1A (26)
 		
 		protected bool m_CompleteTraditionalChinese = new bool();
-		[ContainerField(27), LayoutImmutable, Blittable, ContainerFieldNameHash(1924875432)]
+		[ContainerField(27), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1924875432)]
 		public bool CompleteTraditionalChinese { get { return m_CompleteTraditionalChinese; } set { if (OnPropertyChanging("UIFontAsset." + nameof(CompleteTraditionalChinese), this, m_CompleteTraditionalChinese, value)) m_CompleteTraditionalChinese = value; } } // 0x1B (27)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

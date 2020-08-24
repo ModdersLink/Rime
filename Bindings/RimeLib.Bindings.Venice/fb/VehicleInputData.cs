@@ -18,67 +18,67 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(41), ContainerStruct]
 	public class VehicleInputData : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, Blittable]
+		[ContainerField(0), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float ThrottleDeadzone { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable, Blittable]
+		[ContainerField(4), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float BrakeDeadzone { get; set; } // 0x4 (4)
 		
-		[ContainerField(8), LayoutImmutable, Blittable]
+		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float YawDeadzone { get; set; } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable]
+		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float PitchDeadzone { get; set; } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
+		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float RollDeadzone { get; set; } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
+		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float ThrottleInertiaOutDuration { get; set; } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable]
+		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float ThrottleInertiaInDuration { get; set; } // 0x18 (24)
 		
-		[ContainerField(28), LayoutImmutable, Blittable]
+		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float ThrottleInertiaMinRatio { get; set; } // 0x1C (28)
 		
-		[ContainerField(32), LayoutImmutable, Blittable]
+		[ContainerField(32), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float BrakeInertiaOutDuration { get; set; } // 0x20 (32)
 		
-		[ContainerField(36), LayoutImmutable, Blittable]
+		[ContainerField(36), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float BrakeInertiaInDuration { get; set; } // 0x24 (36)
 		
-		[ContainerField(40), LayoutImmutable, Blittable]
+		[ContainerField(40), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float BrakeInertiaMinRatio { get; set; } // 0x28 (40)
 		
-		[ContainerField(44), LayoutImmutable, Blittable]
+		[ContainerField(44), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float YawInertiaOutDuration { get; set; } // 0x2C (44)
 		
-		[ContainerField(48), LayoutImmutable, Blittable]
+		[ContainerField(48), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float YawInertiaInDuration { get; set; } // 0x30 (48)
 		
-		[ContainerField(52), LayoutImmutable, Blittable]
+		[ContainerField(52), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float YawInertiaMinRatio { get; set; } // 0x34 (52)
 		
-		[ContainerField(56), LayoutImmutable, Blittable]
+		[ContainerField(56), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float PitchInertiaOutDuration { get; set; } // 0x38 (56)
 		
-		[ContainerField(60), LayoutImmutable, Blittable]
+		[ContainerField(60), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float PitchInertiaInDuration { get; set; } // 0x3C (60)
 		
-		[ContainerField(64), LayoutImmutable, Blittable]
+		[ContainerField(64), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float PitchInertiaMinRatio { get; set; } // 0x40 (64)
 		
-		[ContainerField(68), LayoutImmutable, Blittable]
+		[ContainerField(68), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float RollInertiaOutDuration { get; set; } // 0x44 (68)
 		
-		[ContainerField(72), LayoutImmutable, Blittable]
+		[ContainerField(72), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float RollInertiaInDuration { get; set; } // 0x48 (72)
 		
-		[ContainerField(76), LayoutImmutable, Blittable]
+		[ContainerField(76), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float RollInertiaMinRatio { get; set; } // 0x4C (76)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

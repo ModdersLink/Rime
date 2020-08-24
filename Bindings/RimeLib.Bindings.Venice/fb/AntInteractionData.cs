@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class AntInteractionData : 
 		GameEntityData
 	{
 		protected AntInteractionBinding m_AntBindings = new AntInteractionBinding();
-		[ContainerField(96), ContainerFieldNameHash(2658793676)]
+		[ContainerField(96), MemberInfoFlag(41), ContainerFieldNameHash(2658793676)]
 		public AntInteractionBinding AntBindings { get { return m_AntBindings; } set { if (OnPropertyChanging("AntInteractionData." + nameof(AntBindings), this, m_AntBindings, value)) m_AntBindings = value; } } // 0x60 (96)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

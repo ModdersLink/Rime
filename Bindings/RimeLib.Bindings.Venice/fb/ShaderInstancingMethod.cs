@@ -18,6 +18,7 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
+	[MemberInfoFlag(137), ContainerEnum]
 	public enum ShaderInstancingMethod : int
 	{
 		ShaderInstancingMethod_None = 0,

@@ -18,70 +18,70 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(41), ContainerStruct]
 	public class CoreSettings : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, Blittable]
+		[ContainerField(0), LayoutImmutable, Blittable, MemberInfoFlag(49405)]
 		public int RandomTickSeed { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable]
+		[ContainerField(4), LayoutImmutable, MemberInfoFlag(16509)]
 		public string AvailableLanguages { get; set; } // 0x4 (4)
 		
-		[ContainerField(8), LayoutImmutable, Blittable]
+		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49405)]
 		public int RandomSessionId { get; set; } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable]
+		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49405)]
 		public int RandomTimeSeed { get; set; } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
+		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float HardwareGpuBias { get; set; } // 0x10 (16)
 		
-		[ContainerField(20)]
+		[ContainerField(20), MemberInfoFlag(137)]
 		public HardwareProfile HardwareProfile { get; set; } = new HardwareProfile(); // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable]
+		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49405)]
 		public int JobProcessorCount { get; set; } // 0x18 (24)
 		
-		[ContainerField(28), LayoutImmutable, Blittable]
+		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49405)]
 		public int MaxJobThreadCount { get; set; } // 0x1C (28)
 		
-		[ContainerField(32), LayoutImmutable]
+		[ContainerField(32), LayoutImmutable, MemberInfoFlag(16509)]
 		public string Host { get; set; } // 0x20 (32)
 		
-		[ContainerField(36), LayoutImmutable]
+		[ContainerField(36), LayoutImmutable, MemberInfoFlag(16509)]
 		public string HostUser { get; set; } // 0x24 (36)
 		
-		[ContainerField(40), LayoutImmutable]
+		[ContainerField(40), LayoutImmutable, MemberInfoFlag(16509)]
 		public string HostUserDomain { get; set; } // 0x28 (40)
 		
-		[ContainerField(44), LayoutImmutable]
+		[ContainerField(44), LayoutImmutable, MemberInfoFlag(16509)]
 		public string InitSeed { get; set; } // 0x2C (44)
 		
-		[ContainerField(48)]
+		[ContainerField(48), MemberInfoFlag(137)]
 		public CoreLogLevel LogLevel { get; set; } = new CoreLogLevel(); // 0x30 (48)
 		
-		[ContainerField(52), LayoutImmutable, Blittable]
+		[ContainerField(52), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float HardwareCpuBias { get; set; } // 0x34 (52)
 		
-		[ContainerField(56), LayoutImmutable]
+		[ContainerField(56), LayoutImmutable, MemberInfoFlag(16509)]
 		public string GameConfigurationName { get; set; } // 0x38 (56)
 		
-		[ContainerField(60), LayoutImmutable]
+		[ContainerField(60), LayoutImmutable, MemberInfoFlag(16509)]
 		public string ProfileDirectoryName { get; set; } // 0x3C (60)
 		
-		[ContainerField(64), LayoutImmutable, Blittable]
+		[ContainerField(64), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool DisplayAsserts { get; set; } // 0x40 (64)
 		
-		[ContainerField(65), LayoutImmutable, Blittable]
+		[ContainerField(65), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool LiveEditingEnable { get; set; } // 0x41 (65)
 		
-		[ContainerField(66), LayoutImmutable, Blittable]
+		[ContainerField(66), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool UseStorageServer { get; set; } // 0x42 (66)
 		
-		[ContainerField(67), LayoutImmutable, Blittable]
+		[ContainerField(67), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool UseDiskCaching { get; set; } // 0x43 (67)
 		
-		[ContainerField(68), LayoutImmutable, Blittable]
+		[ContainerField(68), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool CrashOnFatalErrors { get; set; } // 0x44 (68)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class LocalizationAsset : 
 		Asset
 	{
 		protected RefArray<UITextDatabase> m_LocalizedTexts = new RefArray<UITextDatabase>();
-		[ContainerField(12), ContainerFieldNameHash(2715502676)]
+		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(2715502676), ContainerRefArray]
 		public RefArray<UITextDatabase> LocalizedTexts { get { return m_LocalizedTexts; } set { if (OnPropertyChanging("LocalizationAsset." + nameof(LocalizedTexts), this, m_LocalizedTexts, value)) m_LocalizedTexts = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

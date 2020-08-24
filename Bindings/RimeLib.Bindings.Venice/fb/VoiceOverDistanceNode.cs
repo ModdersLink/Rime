@@ -18,36 +18,36 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class VoiceOverDistanceNode : 
 		VoiceOverExpressionNode
 	{
 		protected CtrRef<VoiceOverValueConnection> m_A = new CtrRef<VoiceOverValueConnection>();
-		[ContainerField(8), ContainerFieldNameHash(177636)]
+		[ContainerField(8), MemberInfoFlag(53), ContainerFieldNameHash(177636), ContainerCtrRef]
 		public CtrRef<VoiceOverValueConnection> A { get { return m_A; } set { if (OnPropertyChanging("VoiceOverDistanceNode." + nameof(A), this, m_A, value)) m_A = value; } } // 0x8 (8)
 		
 		protected CtrRef<VoiceOverValueConnection> m_B = new CtrRef<VoiceOverValueConnection>();
-		[ContainerField(12), ContainerFieldNameHash(177639)]
+		[ContainerField(12), MemberInfoFlag(53), ContainerFieldNameHash(177639), ContainerCtrRef]
 		public CtrRef<VoiceOverValueConnection> B { get { return m_B; } set { if (OnPropertyChanging("VoiceOverDistanceNode." + nameof(B), this, m_B, value)) m_B = value; } } // 0xC (12)
 		
 		protected CtrRef<VoiceOverValueConnection> m_Threshold = new CtrRef<VoiceOverValueConnection>();
-		[ContainerField(16), ContainerFieldNameHash(3768602130)]
+		[ContainerField(16), MemberInfoFlag(53), ContainerFieldNameHash(3768602130), ContainerCtrRef]
 		public CtrRef<VoiceOverValueConnection> Threshold { get { return m_Threshold; } set { if (OnPropertyChanging("VoiceOverDistanceNode." + nameof(Threshold), this, m_Threshold, value)) m_Threshold = value; } } // 0x10 (16)
 		
 		protected CtrRef<VoiceOverValue> m_Distance = new CtrRef<VoiceOverValue>();
-		[ContainerField(20), ContainerFieldNameHash(408560070)]
+		[ContainerField(20), MemberInfoFlag(53), ContainerFieldNameHash(408560070), ContainerCtrRef]
 		public CtrRef<VoiceOverValue> Distance { get { return m_Distance; } set { if (OnPropertyChanging("VoiceOverDistanceNode." + nameof(Distance), this, m_Distance, value)) m_Distance = value; } } // 0x14 (20)
 		
 		protected CtrRef<VoiceOverValue> m_False = new CtrRef<VoiceOverValue>();
-		[ContainerField(24), ContainerFieldNameHash(206401336)]
+		[ContainerField(24), MemberInfoFlag(53), ContainerFieldNameHash(206401336), ContainerCtrRef]
 		public CtrRef<VoiceOverValue> False { get { return m_False; } set { if (OnPropertyChanging("VoiceOverDistanceNode." + nameof(False), this, m_False, value)) m_False = value; } } // 0x18 (24)
 		
 		protected CtrRef<VoiceOverValue> m_True = new CtrRef<VoiceOverValue>();
-		[ContainerField(28), ContainerFieldNameHash(2089293587)]
+		[ContainerField(28), MemberInfoFlag(53), ContainerFieldNameHash(2089293587), ContainerCtrRef]
 		public CtrRef<VoiceOverValue> True { get { return m_True; } set { if (OnPropertyChanging("VoiceOverDistanceNode." + nameof(True), this, m_True, value)) m_True = value; } } // 0x1C (28)
 		
 		protected VoiceOverCompareExpressionType m_Operation = new VoiceOverCompareExpressionType();
-		[ContainerField(32), ContainerFieldNameHash(2346271248)]
+		[ContainerField(32), MemberInfoFlag(137), ContainerFieldNameHash(2346271248)]
 		public VoiceOverCompareExpressionType Operation { get { return m_Operation; } set { if (OnPropertyChanging("VoiceOverDistanceNode." + nameof(Operation), this, m_Operation, value)) m_Operation = value; } } // 0x20 (32)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

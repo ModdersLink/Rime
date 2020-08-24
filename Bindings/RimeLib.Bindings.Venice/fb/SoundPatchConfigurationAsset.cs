@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class SoundPatchConfigurationAsset : 
 		SoundAsset
 	{
 		protected CtrRef<SoundPatchAsset> m_Sound = new CtrRef<SoundPatchAsset>();
-		[ContainerField(16), ContainerFieldNameHash(231353798)]
+		[ContainerField(16), MemberInfoFlag(53), ContainerFieldNameHash(231353798), ContainerCtrRef]
 		public CtrRef<SoundPatchAsset> Sound { get { return m_Sound; } set { if (OnPropertyChanging("SoundPatchConfigurationAsset." + nameof(Sound), this, m_Sound, value)) m_Sound = value; } } // 0x10 (16)
 		
 		protected RefArray<SoundPatchConfigurationEntry> m_Entries = new RefArray<SoundPatchConfigurationEntry>();
-		[ContainerField(20), ContainerFieldNameHash(8238103)]
+		[ContainerField(20), MemberInfoFlag(65), ContainerFieldNameHash(8238103), ContainerRefArray]
 		public RefArray<SoundPatchConfigurationEntry> Entries { get { return m_Entries; } set { if (OnPropertyChanging("SoundPatchConfigurationAsset." + nameof(Entries), this, m_Entries, value)) m_Entries = value; } } // 0x14 (20)
 		
 		protected float m_Loudness = new float();
-		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(2678891068)]
+		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2678891068)]
 		public float Loudness { get { return m_Loudness; } set { if (OnPropertyChanging("SoundPatchConfigurationAsset." + nameof(Loudness), this, m_Loudness, value)) m_Loudness = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

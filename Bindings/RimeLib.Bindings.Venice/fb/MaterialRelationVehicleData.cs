@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class MaterialRelationVehicleData : 
 		PhysicsMaterialRelationPropertyData
 	{
 		protected CtrRef<EffectBlueprint> m_ChassiEffect = new CtrRef<EffectBlueprint>();
-		[ContainerField(8), ContainerFieldNameHash(2206681905)]
+		[ContainerField(8), MemberInfoFlag(53), ContainerFieldNameHash(2206681905), ContainerCtrRef]
 		public CtrRef<EffectBlueprint> ChassiEffect { get { return m_ChassiEffect; } set { if (OnPropertyChanging("MaterialRelationVehicleData." + nameof(ChassiEffect), this, m_ChassiEffect, value)) m_ChassiEffect = value; } } // 0x8 (8)
 		
 		protected CtrRef<EffectBlueprint> m_TrackEffect = new CtrRef<EffectBlueprint>();
-		[ContainerField(12), ContainerFieldNameHash(1006696637)]
+		[ContainerField(12), MemberInfoFlag(53), ContainerFieldNameHash(1006696637), ContainerCtrRef]
 		public CtrRef<EffectBlueprint> TrackEffect { get { return m_TrackEffect; } set { if (OnPropertyChanging("MaterialRelationVehicleData." + nameof(TrackEffect), this, m_TrackEffect, value)) m_TrackEffect = value; } } // 0xC (12)
 		
 		protected CtrRef<EffectBlueprint> m_WheelEffect = new CtrRef<EffectBlueprint>();
-		[ContainerField(16), ContainerFieldNameHash(3303703137)]
+		[ContainerField(16), MemberInfoFlag(53), ContainerFieldNameHash(3303703137), ContainerCtrRef]
 		public CtrRef<EffectBlueprint> WheelEffect { get { return m_WheelEffect; } set { if (OnPropertyChanging("MaterialRelationVehicleData." + nameof(WheelEffect), this, m_WheelEffect, value)) m_WheelEffect = value; } } // 0x10 (16)
 		
 		protected CtrRef<EffectBlueprint> m_GroundEffect = new CtrRef<EffectBlueprint>();
-		[ContainerField(20), ContainerFieldNameHash(2819688663)]
+		[ContainerField(20), MemberInfoFlag(53), ContainerFieldNameHash(2819688663), ContainerCtrRef]
 		public CtrRef<EffectBlueprint> GroundEffect { get { return m_GroundEffect; } set { if (OnPropertyChanging("MaterialRelationVehicleData." + nameof(GroundEffect), this, m_GroundEffect, value)) m_GroundEffect = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

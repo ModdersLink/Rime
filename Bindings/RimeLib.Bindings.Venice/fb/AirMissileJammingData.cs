@@ -18,43 +18,43 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(41), ContainerStruct]
 	public class AirMissileJammingData : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, Blittable]
+		[ContainerField(0), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float MinTurnSpeed { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable, Blittable]
+		[ContainerField(4), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float MaxRadius { get; set; } // 0x4 (4)
 		
-		[ContainerField(8), LayoutImmutable, Blittable]
+		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float MinRadius { get; set; } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable]
+		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float Theta { get; set; } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
+		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float Phi { get; set; } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
+		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float UpdateJammingPositionTime { get; set; } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable]
+		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float MaxTurnSpeed { get; set; } // 0x18 (24)
 		
-		[ContainerField(28), LayoutImmutable, Blittable]
+		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float QuietModeProbability { get; set; } // 0x1C (28)
 		
-		[ContainerField(32), LayoutImmutable, Blittable]
+		[ContainerField(32), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float QuietModeTime { get; set; } // 0x20 (32)
 		
-		[ContainerField(36), LayoutImmutable, Blittable]
+		[ContainerField(36), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float JammingTime { get; set; } // 0x24 (36)
 		
-		[ContainerField(40), LayoutImmutable, Blittable]
+		[ContainerField(40), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float TurnCalculationTime { get; set; } // 0x28 (40)
 		
-		[ContainerField(44), LayoutImmutable, Blittable]
+		[ContainerField(44), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool EnableAirMissileJamming { get; set; } // 0x2C (44)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

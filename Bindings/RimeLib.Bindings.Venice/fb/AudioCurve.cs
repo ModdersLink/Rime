@@ -18,13 +18,13 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(41), ContainerStruct]
 	public class AudioCurve : FrostbiteContainer
 	{
-		[ContainerField(0)]
+		[ContainerField(0), MemberInfoFlag(65), ContainerArray]
 		public List<AudioCurvePoint> Points { get; set; } = new List<AudioCurvePoint>(); // 0x0 (0)
 		
-		[ContainerField(4)]
+		[ContainerField(4), MemberInfoFlag(137)]
 		public AudioCurveType CurveType { get; set; } = new AudioCurveType(); // 0x4 (4)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

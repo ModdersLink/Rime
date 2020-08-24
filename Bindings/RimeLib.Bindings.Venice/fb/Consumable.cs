@@ -18,13 +18,13 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(41), ContainerStruct]
 	public class Consumable : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, Blittable]
+		[ContainerField(0), LayoutImmutable, Blittable, MemberInfoFlag(49501)]
 		public GUID Instance { get; set; } // 0x0 (0)
 		
-		[ContainerField(16)]
+		[ContainerField(16), MemberInfoFlag(137)]
 		public ConsumableGroup Group { get; set; } = new ConsumableGroup(); // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

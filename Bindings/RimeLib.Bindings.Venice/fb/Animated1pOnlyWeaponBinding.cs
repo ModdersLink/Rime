@@ -18,19 +18,19 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(41), ContainerStruct]
 	public class Animated1pOnlyWeaponBinding : FrostbiteContainer
 	{
-		[ContainerField(0)]
+		[ContainerField(0), MemberInfoFlag(41)]
 		public AntRef UndeployFinished { get; set; } = new AntRef(); // 0x0 (0)
 		
-		[ContainerField(4)]
+		[ContainerField(4), MemberInfoFlag(41)]
 		public AntRef CameraFreeWeight { get; set; } = new AntRef(); // 0x4 (4)
 		
-		[ContainerField(8)]
+		[ContainerField(8), MemberInfoFlag(41)]
 		public AntRef Deploy1P { get; set; } = new AntRef(); // 0x8 (8)
 		
-		[ContainerField(12)]
+		[ContainerField(12), MemberInfoFlag(41)]
 		public AntRef HideWeapon1p { get; set; } = new AntRef(); // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

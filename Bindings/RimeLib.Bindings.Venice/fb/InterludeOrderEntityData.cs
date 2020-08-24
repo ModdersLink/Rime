@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class InterludeOrderEntityData : 
 		BFOrderEntityData
 	{
 		protected bool m_IsCutscene = new bool();
-		[ContainerField(40), LayoutImmutable, Blittable, ContainerFieldNameHash(2932449315)]
+		[ContainerField(40), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2932449315)]
 		public bool IsCutscene { get { return m_IsCutscene; } set { if (OnPropertyChanging("InterludeOrderEntityData." + nameof(IsCutscene), this, m_IsCutscene, value)) m_IsCutscene = value; } } // 0x28 (40)
 		
 		protected bool m_Crouch = new bool();
-		[ContainerField(41), LayoutImmutable, Blittable, ContainerFieldNameHash(2729602053)]
+		[ContainerField(41), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2729602053)]
 		public bool Crouch { get { return m_Crouch; } set { if (OnPropertyChanging("InterludeOrderEntityData." + nameof(Crouch), this, m_Crouch, value)) m_Crouch = value; } } // 0x29 (41)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

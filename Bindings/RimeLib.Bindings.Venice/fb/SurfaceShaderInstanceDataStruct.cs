@@ -18,22 +18,22 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(41), ContainerStruct]
 	public class SurfaceShaderInstanceDataStruct : FrostbiteContainer
 	{
-		[ContainerField(0)]
+		[ContainerField(0), MemberInfoFlag(53), ContainerCtrRef]
 		public CtrRef<SurfaceShaderBaseAsset> Shader { get; set; } = new CtrRef<SurfaceShaderBaseAsset>(); // 0x0 (0)
 		
-		[ContainerField(4)]
+		[ContainerField(4), MemberInfoFlag(65), ContainerArray]
 		public List<BoolShaderParameter> BoolParameters { get; set; } = new List<BoolShaderParameter>(); // 0x4 (4)
 		
-		[ContainerField(8)]
+		[ContainerField(8), MemberInfoFlag(65), ContainerArray]
 		public List<VectorShaderParameter> VectorParameters { get; set; } = new List<VectorShaderParameter>(); // 0x8 (8)
 		
-		[ContainerField(12)]
+		[ContainerField(12), MemberInfoFlag(65), ContainerArray]
 		public List<VectorArrayShaderParameter> VectorArrayParameters { get; set; } = new List<VectorArrayShaderParameter>(); // 0xC (12)
 		
-		[ContainerField(16)]
+		[ContainerField(16), MemberInfoFlag(65), ContainerArray]
 		public List<TextureShaderParameter> TextureParameters { get; set; } = new List<TextureShaderParameter>(); // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

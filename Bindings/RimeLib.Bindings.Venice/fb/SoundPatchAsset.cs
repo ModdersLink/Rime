@@ -18,60 +18,60 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class SoundPatchAsset : 
 		SoundGraphAsset
 	{
 		protected RefArray<AudioGraphNodeData> m_OutputNodes = new RefArray<AudioGraphNodeData>();
-		[ContainerField(24), ContainerFieldNameHash(740996521)]
+		[ContainerField(24), MemberInfoFlag(65), ContainerFieldNameHash(740996521), ContainerRefArray]
 		public RefArray<AudioGraphNodeData> OutputNodes { get { return m_OutputNodes; } set { if (OnPropertyChanging("SoundPatchAsset." + nameof(OutputNodes), this, m_OutputNodes, value)) m_OutputNodes = value; } } // 0x18 (24)
 		
 		protected float m_Loudness = new float();
-		[ContainerField(28), LayoutImmutable, Blittable, ContainerFieldNameHash(2678891068)]
+		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2678891068)]
 		public float Loudness { get { return m_Loudness; } set { if (OnPropertyChanging("SoundPatchAsset." + nameof(Loudness), this, m_Loudness, value)) m_Loudness = value; } } // 0x1C (28)
 		
 		protected float m_AILoudness = new float();
-		[ContainerField(32), LayoutImmutable, Blittable, ContainerFieldNameHash(2389898900)]
+		[ContainerField(32), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2389898900)]
 		public float AILoudness { get { return m_AILoudness; } set { if (OnPropertyChanging("SoundPatchAsset." + nameof(AILoudness), this, m_AILoudness, value)) m_AILoudness = value; } } // 0x20 (32)
 		
 		protected float m_Radius = new float();
-		[ContainerField(36), LayoutImmutable, Blittable, ContainerFieldNameHash(3298407133)]
+		[ContainerField(36), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3298407133)]
 		public float Radius { get { return m_Radius; } set { if (OnPropertyChanging("SoundPatchAsset." + nameof(Radius), this, m_Radius, value)) m_Radius = value; } } // 0x24 (36)
 		
 		protected float m_DopplerFactor = new float();
-		[ContainerField(40), LayoutImmutable, Blittable, ContainerFieldNameHash(1757845912)]
+		[ContainerField(40), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1757845912)]
 		public float DopplerFactor { get { return m_DopplerFactor; } set { if (OnPropertyChanging("SoundPatchAsset." + nameof(DopplerFactor), this, m_DopplerFactor, value)) m_DopplerFactor = value; } } // 0x28 (40)
 		
 		protected float m_MasterPitch = new float();
-		[ContainerField(44), LayoutImmutable, Blittable, ContainerFieldNameHash(1108720767)]
+		[ContainerField(44), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1108720767)]
 		public float MasterPitch { get { return m_MasterPitch; } set { if (OnPropertyChanging("SoundPatchAsset." + nameof(MasterPitch), this, m_MasterPitch, value)) m_MasterPitch = value; } } // 0x2C (44)
 		
 		protected CtrRef<MixGroup> m_MixGroup = new CtrRef<MixGroup>();
-		[ContainerField(48), ContainerFieldNameHash(3598170502)]
+		[ContainerField(48), MemberInfoFlag(53), ContainerFieldNameHash(3598170502), ContainerCtrRef]
 		public CtrRef<MixGroup> MixGroup { get { return m_MixGroup; } set { if (OnPropertyChanging("SoundPatchAsset." + nameof(MixGroup), this, m_MixGroup, value)) m_MixGroup = value; } } // 0x30 (48)
 		
 		protected CtrRef<AudioGraphEvent> m_DefaultStopEvent = new CtrRef<AudioGraphEvent>();
-		[ContainerField(52), ContainerFieldNameHash(113607258)]
+		[ContainerField(52), MemberInfoFlag(53), ContainerFieldNameHash(113607258), ContainerCtrRef]
 		public CtrRef<AudioGraphEvent> DefaultStopEvent { get { return m_DefaultStopEvent; } set { if (OnPropertyChanging("SoundPatchAsset." + nameof(DefaultStopEvent), this, m_DefaultStopEvent, value)) m_DefaultStopEvent = value; } } // 0x34 (52)
 		
 		protected CtrRef<AudioGraphEvent> m_DefaultStartEvent = new CtrRef<AudioGraphEvent>();
-		[ContainerField(56), ContainerFieldNameHash(3663021474)]
+		[ContainerField(56), MemberInfoFlag(53), ContainerFieldNameHash(3663021474), ContainerCtrRef]
 		public CtrRef<AudioGraphEvent> DefaultStartEvent { get { return m_DefaultStartEvent; } set { if (OnPropertyChanging("SoundPatchAsset." + nameof(DefaultStartEvent), this, m_DefaultStartEvent, value)) m_DefaultStartEvent = value; } } // 0x38 (56)
 		
 		protected CtrRef<AudioGraphEvent> m_DefaultForceInitEvent = new CtrRef<AudioGraphEvent>();
-		[ContainerField(60), ContainerFieldNameHash(2837520997)]
+		[ContainerField(60), MemberInfoFlag(53), ContainerFieldNameHash(2837520997), ContainerCtrRef]
 		public CtrRef<AudioGraphEvent> DefaultForceInitEvent { get { return m_DefaultForceInitEvent; } set { if (OnPropertyChanging("SoundPatchAsset." + nameof(DefaultForceInitEvent), this, m_DefaultForceInitEvent, value)) m_DefaultForceInitEvent = value; } } // 0x3C (60)
 		
 		protected CtrRef<AudioGraphEvent> m_DefaultEnterScopeEvent = new CtrRef<AudioGraphEvent>();
-		[ContainerField(64), ContainerFieldNameHash(3819788512)]
+		[ContainerField(64), MemberInfoFlag(53), ContainerFieldNameHash(3819788512), ContainerCtrRef]
 		public CtrRef<AudioGraphEvent> DefaultEnterScopeEvent { get { return m_DefaultEnterScopeEvent; } set { if (OnPropertyChanging("SoundPatchAsset." + nameof(DefaultEnterScopeEvent), this, m_DefaultEnterScopeEvent, value)) m_DefaultEnterScopeEvent = value; } } // 0x40 (64)
 		
 		protected bool m_IsPersistent = new bool();
-		[ContainerField(68), LayoutImmutable, Blittable, ContainerFieldNameHash(2920156954)]
+		[ContainerField(68), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2920156954)]
 		public bool IsPersistent { get { return m_IsPersistent; } set { if (OnPropertyChanging("SoundPatchAsset." + nameof(IsPersistent), this, m_IsPersistent, value)) m_IsPersistent = value; } } // 0x44 (68)
 		
 		protected bool m_IsLooping = new bool();
-		[ContainerField(69), LayoutImmutable, Blittable, ContainerFieldNameHash(1137411139)]
+		[ContainerField(69), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1137411139)]
 		public bool IsLooping { get { return m_IsLooping; } set { if (OnPropertyChanging("SoundPatchAsset." + nameof(IsLooping), this, m_IsLooping, value)) m_IsLooping = value; } } // 0x45 (69)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

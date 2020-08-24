@@ -18,22 +18,22 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(41), ContainerStruct]
 	public class StaticListItem : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable]
+		[ContainerField(0), LayoutImmutable, MemberInfoFlag(16509)]
 		public string ItemName { get; set; } // 0x0 (0)
 		
-		[ContainerField(4)]
+		[ContainerField(4), MemberInfoFlag(41)]
 		public UIDataSourceInfo DynamicDisable { get; set; } = new UIDataSourceInfo(); // 0x4 (4)
 		
-		[ContainerField(20)]
+		[ContainerField(20), MemberInfoFlag(41)]
 		public UIDataSourceInfo DynamicNewContent { get; set; } = new UIDataSourceInfo(); // 0x14 (20)
 		
-		[ContainerField(36), LayoutImmutable, Blittable]
+		[ContainerField(36), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool AppendPlatformToSID { get; set; } // 0x24 (36)
 		
-		[ContainerField(37), LayoutImmutable, Blittable]
+		[ContainerField(37), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool ExcludeInRetail { get; set; } // 0x25 (37)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

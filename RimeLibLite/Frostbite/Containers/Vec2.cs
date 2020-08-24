@@ -9,7 +9,7 @@ namespace RimeLib.Serialization.Containers
     /// <summary>
     /// Frostbite's built in 2D Vector Library
     /// </summary>
-    [ContainerType(4)]
+    [ContainerType(4), ContainerStruct]
     public class Vec2 : FrostbiteContainer
     {
         /// <summary>

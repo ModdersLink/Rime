@@ -18,32 +18,32 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class SequenceGeneratorNodeData : 
 		AudioGraphNodeData
 	{
 		protected AudioGraphNodePort m_Trigger = new AudioGraphNodePort();
-		[ContainerField(8), ContainerFieldNameHash(2606354109)]
+		[ContainerField(8), MemberInfoFlag(41), ContainerFieldNameHash(2606354109)]
 		public AudioGraphNodePort Trigger { get { return m_Trigger; } set { if (OnPropertyChanging("SequenceGeneratorNodeData." + nameof(Trigger), this, m_Trigger, value)) m_Trigger = value; } } // 0x8 (8)
 		
 		protected AudioGraphNodePort m_Reset = new AudioGraphNodePort();
-		[ContainerField(16), ContainerFieldNameHash(229946160)]
+		[ContainerField(16), MemberInfoFlag(41), ContainerFieldNameHash(229946160)]
 		public AudioGraphNodePort Reset { get { return m_Reset; } set { if (OnPropertyChanging("SequenceGeneratorNodeData." + nameof(Reset), this, m_Reset, value)) m_Reset = value; } } // 0x10 (16)
 		
 		protected AudioGraphNodePort m_Min = new AudioGraphNodePort();
-		[ContainerField(24), ContainerFieldNameHash(193446607)]
+		[ContainerField(24), MemberInfoFlag(41), ContainerFieldNameHash(193446607)]
 		public AudioGraphNodePort Min { get { return m_Min; } set { if (OnPropertyChanging("SequenceGeneratorNodeData." + nameof(Min), this, m_Min, value)) m_Min = value; } } // 0x18 (24)
 		
 		protected AudioGraphNodePort m_Max = new AudioGraphNodePort();
-		[ContainerField(32), ContainerFieldNameHash(193446865)]
+		[ContainerField(32), MemberInfoFlag(41), ContainerFieldNameHash(193446865)]
 		public AudioGraphNodePort Max { get { return m_Max; } set { if (OnPropertyChanging("SequenceGeneratorNodeData." + nameof(Max), this, m_Max, value)) m_Max = value; } } // 0x20 (32)
 		
 		protected AudioGraphNodePort m_Step = new AudioGraphNodePort();
-		[ContainerField(40), ContainerFieldNameHash(2089400887)]
+		[ContainerField(40), MemberInfoFlag(41), ContainerFieldNameHash(2089400887)]
 		public AudioGraphNodePort Step { get { return m_Step; } set { if (OnPropertyChanging("SequenceGeneratorNodeData." + nameof(Step), this, m_Step, value)) m_Step = value; } } // 0x28 (40)
 		
 		protected AudioGraphNodePort m_Value = new AudioGraphNodePort();
-		[ContainerField(48), ContainerFieldNameHash(225375086)]
+		[ContainerField(48), MemberInfoFlag(41), ContainerFieldNameHash(225375086)]
 		public AudioGraphNodePort Value { get { return m_Value; } set { if (OnPropertyChanging("SequenceGeneratorNodeData." + nameof(Value), this, m_Value, value)) m_Value = value; } } // 0x30 (48)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

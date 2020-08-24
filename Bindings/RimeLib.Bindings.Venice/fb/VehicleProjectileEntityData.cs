@@ -18,40 +18,40 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class VehicleProjectileEntityData : 
 		ProjectileEntityData
 	{
 		protected CtrRef<VehicleBlueprint> m_Vehicle = new CtrRef<VehicleBlueprint>();
-		[ContainerField(160), ContainerFieldNameHash(772552445)]
+		[ContainerField(160), MemberInfoFlag(53), ContainerFieldNameHash(772552445), ContainerCtrRef]
 		public CtrRef<VehicleBlueprint> Vehicle { get { return m_Vehicle; } set { if (OnPropertyChanging("VehicleProjectileEntityData." + nameof(Vehicle), this, m_Vehicle, value)) m_Vehicle = value; } } // 0xA0 (160)
 		
 		protected float m_EnterDelay = new float();
-		[ContainerField(164), LayoutImmutable, Blittable, ContainerFieldNameHash(4239333112)]
+		[ContainerField(164), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(4239333112)]
 		public float EnterDelay { get { return m_EnterDelay; } set { if (OnPropertyChanging("VehicleProjectileEntityData." + nameof(EnterDelay), this, m_EnterDelay, value)) m_EnterDelay = value; } } // 0xA4 (164)
 		
 		protected float m_NoVehicleCollisionTime = new float();
-		[ContainerField(168), LayoutImmutable, Blittable, ContainerFieldNameHash(2160489879)]
+		[ContainerField(168), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2160489879)]
 		public float NoVehicleCollisionTime { get { return m_NoVehicleCollisionTime; } set { if (OnPropertyChanging("VehicleProjectileEntityData." + nameof(NoVehicleCollisionTime), this, m_NoVehicleCollisionTime, value)) m_NoVehicleCollisionTime = value; } } // 0xA8 (168)
 		
 		protected float m_AlignWithGroundRayLength = new float();
-		[ContainerField(172), LayoutImmutable, Blittable, ContainerFieldNameHash(3491351705)]
+		[ContainerField(172), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3491351705)]
 		public float AlignWithGroundRayLength { get { return m_AlignWithGroundRayLength; } set { if (OnPropertyChanging("VehicleProjectileEntityData." + nameof(AlignWithGroundRayLength), this, m_AlignWithGroundRayLength, value)) m_AlignWithGroundRayLength = value; } } // 0xAC (172)
 		
 		protected bool m_AutoEnter = new bool();
-		[ContainerField(176), LayoutImmutable, Blittable, ContainerFieldNameHash(776240098)]
+		[ContainerField(176), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(776240098)]
 		public bool AutoEnter { get { return m_AutoEnter; } set { if (OnPropertyChanging("VehicleProjectileEntityData." + nameof(AutoEnter), this, m_AutoEnter, value)) m_AutoEnter = value; } } // 0xB0 (176)
 		
 		protected bool m_AlignWithGround = new bool();
-		[ContainerField(177), LayoutImmutable, Blittable, ContainerFieldNameHash(2955522671)]
+		[ContainerField(177), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2955522671)]
 		public bool AlignWithGround { get { return m_AlignWithGround; } set { if (OnPropertyChanging("VehicleProjectileEntityData." + nameof(AlignWithGround), this, m_AlignWithGround, value)) m_AlignWithGround = value; } } // 0xB1 (177)
 		
 		protected bool m_CheckGroundWhenSpawned = new bool();
-		[ContainerField(178), LayoutImmutable, Blittable, ContainerFieldNameHash(3321363400)]
+		[ContainerField(178), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3321363400)]
 		public bool CheckGroundWhenSpawned { get { return m_CheckGroundWhenSpawned; } set { if (OnPropertyChanging("VehicleProjectileEntityData." + nameof(CheckGroundWhenSpawned), this, m_CheckGroundWhenSpawned, value)) m_CheckGroundWhenSpawned = value; } } // 0xB2 (178)
 		
 		protected bool m_DeployInsideNeutralCombatAreaOnly = new bool();
-		[ContainerField(179), LayoutImmutable, Blittable, ContainerFieldNameHash(1945021714)]
+		[ContainerField(179), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1945021714)]
 		public bool DeployInsideNeutralCombatAreaOnly { get { return m_DeployInsideNeutralCombatAreaOnly; } set { if (OnPropertyChanging("VehicleProjectileEntityData." + nameof(DeployInsideNeutralCombatAreaOnly), this, m_DeployInsideNeutralCombatAreaOnly, value)) m_DeployInsideNeutralCombatAreaOnly = value; } } // 0xB3 (179)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,7 +18,7 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class StatsCategoryDifficultyData : 
 		StatsCategoryGuidData
 	{

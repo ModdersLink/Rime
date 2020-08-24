@@ -18,49 +18,49 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(41), ContainerStruct]
 	public class BoneCollisionData : FrostbiteContainer
 	{
-		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable]
+		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
 		public Vec4 DebugDrawColor { get; set; } = new Vec4(); // 0x0 (0)
 		
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable]
+		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
 		public Vec3 CapsuleOffset { get; set; } = new Vec3(); // 0x10 (16)
 		
-		[ContainerField(32), LayoutImmutable]
+		[ContainerField(32), LayoutImmutable, MemberInfoFlag(16509)]
 		public string BoneName { get; set; } // 0x20 (32)
 		
-		[ContainerField(36)]
+		[ContainerField(36), MemberInfoFlag(137)]
 		public HitReactionType AnimationHitReactionType { get; set; } = new HitReactionType(); // 0x24 (36)
 		
-		[ContainerField(40)]
+		[ContainerField(40), MemberInfoFlag(53), ContainerCtrRef]
 		public CtrRef<MaterialContainerPair> MaterialPair { get; set; } = new CtrRef<MaterialContainerPair>(); // 0x28 (40)
 		
-		[ContainerField(44), LayoutImmutable, Blittable]
+		[ContainerField(44), LayoutImmutable, Blittable, MemberInfoFlag(49405)]
 		public int BoneAxis { get; set; } // 0x2C (44)
 		
-		[ContainerField(48), LayoutImmutable, Blittable]
+		[ContainerField(48), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float CapsuleLength { get; set; } // 0x30 (48)
 		
-		[ContainerField(52), LayoutImmutable, Blittable]
+		[ContainerField(52), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float CapsuleRadius { get; set; } // 0x34 (52)
 		
-		[ContainerField(64)]
+		[ContainerField(64), MemberInfoFlag(41)]
 		public PitchModifier MinPitch { get; set; } = new PitchModifier(); // 0x40 (64)
 		
-		[ContainerField(96)]
+		[ContainerField(96), MemberInfoFlag(41)]
 		public PitchModifier MaxPitch { get; set; } = new PitchModifier(); // 0x60 (96)
 		
-		[ContainerField(128), LayoutImmutable, Blittable]
+		[ContainerField(128), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool ValidInHiLod { get; set; } // 0x80 (128)
 		
-		[ContainerField(129), LayoutImmutable, Blittable]
+		[ContainerField(129), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool ValidInLowLod { get; set; } // 0x81 (129)
 		
-		[ContainerField(130), LayoutImmutable, Blittable]
+		[ContainerField(130), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool UsePhysicsRotation { get; set; } // 0x82 (130)
 		
-		[ContainerField(131), LayoutImmutable, Blittable]
+		[ContainerField(131), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool DeactivateIfBehindWall { get; set; } // 0x83 (131)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

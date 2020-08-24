@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class SettingsBundleAsset : 
 		Asset
 	{
 		protected RefArray<SystemSettings> m_Settings = new RefArray<SystemSettings>();
-		[ContainerField(12), ContainerFieldNameHash(649772672)]
+		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(649772672), ContainerRefArray]
 		public RefArray<SystemSettings> Settings { get { return m_Settings; } set { if (OnPropertyChanging("SettingsBundleAsset." + nameof(Settings), this, m_Settings, value)) m_Settings = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

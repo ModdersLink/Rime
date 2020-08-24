@@ -18,56 +18,56 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class SpecialMovesComponentData : 
 		ComponentData
 	{
 		protected SpecialMoveStateData m_VaultOverHighState = new SpecialMoveStateData();
-		[ContainerField(96), ContainerFieldNameHash(2753012104)]
+		[ContainerField(96), MemberInfoFlag(41), ContainerFieldNameHash(2753012104)]
 		public SpecialMoveStateData VaultOverHighState { get { return m_VaultOverHighState; } set { if (OnPropertyChanging("SpecialMovesComponentData." + nameof(VaultOverHighState), this, m_VaultOverHighState, value)) m_VaultOverHighState = value; } } // 0x60 (96)
 		
 		protected SpecialMoveStateData m_VaultUpHighState = new SpecialMoveStateData();
-		[ContainerField(156), ContainerFieldNameHash(1265978819)]
+		[ContainerField(156), MemberInfoFlag(41), ContainerFieldNameHash(1265978819)]
 		public SpecialMoveStateData VaultUpHighState { get { return m_VaultUpHighState; } set { if (OnPropertyChanging("SpecialMovesComponentData." + nameof(VaultUpHighState), this, m_VaultUpHighState, value)) m_VaultUpHighState = value; } } // 0x9C (156)
 		
 		protected SpecialMoveStateData m_VaultOverLowState = new SpecialMoveStateData();
-		[ContainerField(216), ContainerFieldNameHash(1161455314)]
+		[ContainerField(216), MemberInfoFlag(41), ContainerFieldNameHash(1161455314)]
 		public SpecialMoveStateData VaultOverLowState { get { return m_VaultOverLowState; } set { if (OnPropertyChanging("SpecialMovesComponentData." + nameof(VaultOverLowState), this, m_VaultOverLowState, value)) m_VaultOverLowState = value; } } // 0xD8 (216)
 		
 		protected SpecialMoveStateData m_SprintToProneState = new SpecialMoveStateData();
-		[ContainerField(276), ContainerFieldNameHash(2775746029)]
+		[ContainerField(276), MemberInfoFlag(41), ContainerFieldNameHash(2775746029)]
 		public SpecialMoveStateData SprintToProneState { get { return m_SprintToProneState; } set { if (OnPropertyChanging("SpecialMovesComponentData." + nameof(SprintToProneState), this, m_SprintToProneState, value)) m_SprintToProneState = value; } } // 0x114 (276)
 		
 		protected SpecialMoveStateData m_DeathState = new SpecialMoveStateData();
-		[ContainerField(336), ContainerFieldNameHash(4180335470)]
+		[ContainerField(336), MemberInfoFlag(41), ContainerFieldNameHash(4180335470)]
 		public SpecialMoveStateData DeathState { get { return m_DeathState; } set { if (OnPropertyChanging("SpecialMovesComponentData." + nameof(DeathState), this, m_DeathState, value)) m_DeathState = value; } } // 0x150 (336)
 		
 		protected SpecialMoveStateData m_SpecialAnimationState = new SpecialMoveStateData();
-		[ContainerField(396), ContainerFieldNameHash(467878821)]
+		[ContainerField(396), MemberInfoFlag(41), ContainerFieldNameHash(467878821)]
 		public SpecialMoveStateData SpecialAnimationState { get { return m_SpecialAnimationState; } set { if (OnPropertyChanging("SpecialMovesComponentData." + nameof(SpecialAnimationState), this, m_SpecialAnimationState, value)) m_SpecialAnimationState = value; } } // 0x18C (396)
 		
 		protected List<SpecialMoveStateData> m_IndexedDeathStates = new List<SpecialMoveStateData>();
-		[ContainerField(456), ContainerFieldNameHash(1958491074)]
+		[ContainerField(456), MemberInfoFlag(65), ContainerFieldNameHash(1958491074), ContainerArray]
 		public List<SpecialMoveStateData> IndexedDeathStates { get { return m_IndexedDeathStates; } set { if (OnPropertyChanging("SpecialMovesComponentData." + nameof(IndexedDeathStates), this, m_IndexedDeathStates, value)) m_IndexedDeathStates = value; } } // 0x1C8 (456)
 		
 		protected List<SpecialMoveStateData> m_IndexedSpecialAnimationStates = new List<SpecialMoveStateData>();
-		[ContainerField(460), ContainerFieldNameHash(208626825)]
+		[ContainerField(460), MemberInfoFlag(65), ContainerFieldNameHash(208626825), ContainerArray]
 		public List<SpecialMoveStateData> IndexedSpecialAnimationStates { get { return m_IndexedSpecialAnimationStates; } set { if (OnPropertyChanging("SpecialMovesComponentData." + nameof(IndexedSpecialAnimationStates), this, m_IndexedSpecialAnimationStates, value)) m_IndexedSpecialAnimationStates = value; } } // 0x1CC (460)
 		
 		protected List<SpecialMoveVaultStateCriteria> m_IndexedVaultOverHighStates = new List<SpecialMoveVaultStateCriteria>();
-		[ContainerField(464), ContainerFieldNameHash(2945169956)]
+		[ContainerField(464), MemberInfoFlag(65), ContainerFieldNameHash(2945169956), ContainerArray]
 		public List<SpecialMoveVaultStateCriteria> IndexedVaultOverHighStates { get { return m_IndexedVaultOverHighStates; } set { if (OnPropertyChanging("SpecialMovesComponentData." + nameof(IndexedVaultOverHighStates), this, m_IndexedVaultOverHighStates, value)) m_IndexedVaultOverHighStates = value; } } // 0x1D0 (464)
 		
 		protected List<SpecialMoveVaultStateCriteria> m_IndexedVaultUpStates = new List<SpecialMoveVaultStateCriteria>();
-		[ContainerField(468), ContainerFieldNameHash(655182401)]
+		[ContainerField(468), MemberInfoFlag(65), ContainerFieldNameHash(655182401), ContainerArray]
 		public List<SpecialMoveVaultStateCriteria> IndexedVaultUpStates { get { return m_IndexedVaultUpStates; } set { if (OnPropertyChanging("SpecialMovesComponentData." + nameof(IndexedVaultUpStates), this, m_IndexedVaultUpStates, value)) m_IndexedVaultUpStates = value; } } // 0x1D4 (468)
 		
 		protected List<SpecialMoveVaultStateCriteria> m_IndexedVaultOverLowStates = new List<SpecialMoveVaultStateCriteria>();
-		[ContainerField(472), ContainerFieldNameHash(4065371102)]
+		[ContainerField(472), MemberInfoFlag(65), ContainerFieldNameHash(4065371102), ContainerArray]
 		public List<SpecialMoveVaultStateCriteria> IndexedVaultOverLowStates { get { return m_IndexedVaultOverLowStates; } set { if (OnPropertyChanging("SpecialMovesComponentData." + nameof(IndexedVaultOverLowStates), this, m_IndexedVaultOverLowStates, value)) m_IndexedVaultOverLowStates = value; } } // 0x1D8 (472)
 		
 		protected SpecialMovesBinding m_Binding = new SpecialMovesBinding();
-		[ContainerField(476), ContainerFieldNameHash(2590060228)]
+		[ContainerField(476), MemberInfoFlag(41), ContainerFieldNameHash(2590060228)]
 		public SpecialMovesBinding Binding { get { return m_Binding; } set { if (OnPropertyChanging("SpecialMovesComponentData." + nameof(Binding), this, m_Binding, value)) m_Binding = value; } } // 0x1DC (476)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

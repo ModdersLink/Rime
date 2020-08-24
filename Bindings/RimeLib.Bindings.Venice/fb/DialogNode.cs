@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class DialogNode : 
 		StateNode
 	{
 		protected string m_DialogTitle = string.Empty;
-		[ContainerField(48), LayoutImmutable, ContainerFieldNameHash(3325016493)]
+		[ContainerField(48), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(3325016493)]
 		public string DialogTitle { get { return m_DialogTitle; } set { if (OnPropertyChanging("DialogNode." + nameof(DialogTitle), this, m_DialogTitle, value)) m_DialogTitle = value; } } // 0x30 (48)
 		
 		protected string m_DialogText = string.Empty;
-		[ContainerField(52), LayoutImmutable, ContainerFieldNameHash(4005286480)]
+		[ContainerField(52), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(4005286480)]
 		public string DialogText { get { return m_DialogText; } set { if (OnPropertyChanging("DialogNode." + nameof(DialogText), this, m_DialogText, value)) m_DialogText = value; } } // 0x34 (52)
 		
 		protected List<UIPopupButton> m_Buttons = new List<UIPopupButton>();
-		[ContainerField(56), ContainerFieldNameHash(2744663360)]
+		[ContainerField(56), MemberInfoFlag(65), ContainerFieldNameHash(2744663360), ContainerArray]
 		public List<UIPopupButton> Buttons { get { return m_Buttons; } set { if (OnPropertyChanging("DialogNode." + nameof(Buttons), this, m_Buttons, value)) m_Buttons = value; } } // 0x38 (56)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

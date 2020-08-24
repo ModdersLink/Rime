@@ -18,76 +18,76 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(41), ContainerStruct]
 	public class SoldierHealthModuleBinding : FrostbiteContainer
 	{
-		[ContainerField(0)]
+		[ContainerField(0), MemberInfoFlag(41)]
 		public AntRef HeadShot { get; set; } = new AntRef(); // 0x0 (0)
 		
-		[ContainerField(4)]
+		[ContainerField(4), MemberInfoFlag(41)]
 		public AntRef LeftArmHit { get; set; } = new AntRef(); // 0x4 (4)
 		
-		[ContainerField(8)]
+		[ContainerField(8), MemberInfoFlag(41)]
 		public AntRef RightArmHit { get; set; } = new AntRef(); // 0x8 (8)
 		
-		[ContainerField(12)]
+		[ContainerField(12), MemberInfoFlag(41)]
 		public AntRef LeftLegHit { get; set; } = new AntRef(); // 0xC (12)
 		
-		[ContainerField(16)]
+		[ContainerField(16), MemberInfoFlag(41)]
 		public AntRef RightLegHit { get; set; } = new AntRef(); // 0x10 (16)
 		
-		[ContainerField(20)]
+		[ContainerField(20), MemberInfoFlag(41)]
 		public AntRef OnGround { get; set; } = new AntRef(); // 0x14 (20)
 		
-		[ContainerField(24)]
+		[ContainerField(24), MemberInfoFlag(41)]
 		public AntRef DeathAnimationTriggered { get; set; } = new AntRef(); // 0x18 (24)
 		
-		[ContainerField(28)]
+		[ContainerField(28), MemberInfoFlag(41)]
 		public AntRef RandomAnimationIndex { get; set; } = new AntRef(); // 0x1C (28)
 		
-		[ContainerField(32)]
+		[ContainerField(32), MemberInfoFlag(41)]
 		public AntRef Sprinting { get; set; } = new AntRef(); // 0x20 (32)
 		
-		[ContainerField(36)]
+		[ContainerField(36), MemberInfoFlag(41)]
 		public AntRef HitLeft { get; set; } = new AntRef(); // 0x24 (36)
 		
-		[ContainerField(40)]
+		[ContainerField(40), MemberInfoFlag(41)]
 		public AntRef HitRight { get; set; } = new AntRef(); // 0x28 (40)
 		
-		[ContainerField(44)]
+		[ContainerField(44), MemberInfoFlag(41)]
 		public AntRef HitFront { get; set; } = new AntRef(); // 0x2C (44)
 		
-		[ContainerField(48)]
+		[ContainerField(48), MemberInfoFlag(41)]
 		public AntRef HitBack { get; set; } = new AntRef(); // 0x30 (48)
 		
-		[ContainerField(52)]
+		[ContainerField(52), MemberInfoFlag(41)]
 		public AntRef DeathHitDirection { get; set; } = new AntRef(); // 0x34 (52)
 		
-		[ContainerField(56)]
+		[ContainerField(56), MemberInfoFlag(41)]
 		public AntRef Explosion { get; set; } = new AntRef(); // 0x38 (56)
 		
-		[ContainerField(60)]
+		[ContainerField(60), MemberInfoFlag(41)]
 		public AntRef Dead { get; set; } = new AntRef(); // 0x3C (60)
 		
-		[ContainerField(64)]
+		[ContainerField(64), MemberInfoFlag(41)]
 		public AntRef Revived { get; set; } = new AntRef(); // 0x40 (64)
 		
-		[ContainerField(68)]
+		[ContainerField(68), MemberInfoFlag(41)]
 		public AntRef RandomValue { get; set; } = new AntRef(); // 0x44 (68)
 		
-		[ContainerField(72)]
+		[ContainerField(72), MemberInfoFlag(41)]
 		public AntRef Pose { get; set; } = new AntRef(); // 0x48 (72)
 		
-		[ContainerField(76)]
+		[ContainerField(76), MemberInfoFlag(41)]
 		public AntRef RightSpeed { get; set; } = new AntRef(); // 0x4C (76)
 		
-		[ContainerField(80)]
+		[ContainerField(80), MemberInfoFlag(41)]
 		public AntRef ForwardSpeed { get; set; } = new AntRef(); // 0x50 (80)
 		
-		[ContainerField(84)]
+		[ContainerField(84), MemberInfoFlag(41)]
 		public AntRef CriticallyHit { get; set; } = new AntRef(); // 0x54 (84)
 		
-		[ContainerField(88)]
+		[ContainerField(88), MemberInfoFlag(41)]
 		public AntRef InteractiveManDown { get; set; } = new AntRef(); // 0x58 (88)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class WeaponSuppressionData : 
 		DataContainer
 	{
 		protected float m_MaxMultiplier = new float();
-		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(441185306)]
+		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(441185306)]
 		public float MaxMultiplier { get { return m_MaxMultiplier; } set { if (OnPropertyChanging("WeaponSuppressionData." + nameof(MaxMultiplier), this, m_MaxMultiplier, value)) m_MaxMultiplier = value; } } // 0x8 (8)
 		
 		protected float m_MinMultiplier = new float();
-		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(3723256324)]
+		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3723256324)]
 		public float MinMultiplier { get { return m_MinMultiplier; } set { if (OnPropertyChanging("WeaponSuppressionData." + nameof(MinMultiplier), this, m_MinMultiplier, value)) m_MinMultiplier = value; } } // 0xC (12)
 		
 		protected float m_MinDistance = new float();
-		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(1885855628)]
+		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1885855628)]
 		public float MinDistance { get { return m_MinDistance; } set { if (OnPropertyChanging("WeaponSuppressionData." + nameof(MinDistance), this, m_MinDistance, value)) m_MinDistance = value; } } // 0x10 (16)
 		
 		protected float m_MaxDistance = new float();
-		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(3520454034)]
+		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3520454034)]
 		public float MaxDistance { get { return m_MaxDistance; } set { if (OnPropertyChanging("WeaponSuppressionData." + nameof(MaxDistance), this, m_MaxDistance, value)) m_MaxDistance = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,25 +18,25 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(41), ContainerStruct]
 	public class MatchmakingCreateGameParameters : FrostbiteContainer
 	{
-		[ContainerField(0)]
+		[ContainerField(0), MemberInfoFlag(137)]
 		public MatchmakingNetworkTopology GameTopology { get; set; } = new MatchmakingNetworkTopology(); // 0x0 (0)
 		
-		[ContainerField(4)]
+		[ContainerField(4), MemberInfoFlag(137)]
 		public MatchmakingPeer2PeerMode PeerMode { get; set; } = new MatchmakingPeer2PeerMode(); // 0x4 (4)
 		
-		[ContainerField(8)]
+		[ContainerField(8), MemberInfoFlag(137)]
 		public MatchmakingNetworkTopology VoipTopology { get; set; } = new MatchmakingNetworkTopology(); // 0x8 (8)
 		
-		[ContainerField(12)]
+		[ContainerField(12), MemberInfoFlag(41)]
 		public MatchmakingGameSettings Settings { get; set; } = new MatchmakingGameSettings(); // 0xC (12)
 		
-		[ContainerField(24)]
+		[ContainerField(24), MemberInfoFlag(65), ContainerArray]
 		public List<MatchmakingGameAttribute> Attributes { get; set; } = new List<MatchmakingGameAttribute>(); // 0x18 (24)
 		
-		[ContainerField(28), LayoutImmutable, Blittable]
+		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
 		public uint QueueCapacity { get; set; } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

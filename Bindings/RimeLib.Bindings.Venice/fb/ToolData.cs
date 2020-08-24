@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class ToolData : 
 		DataContainer
 	{
 		protected bool m_IsAlwaysActive = new bool();
-		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(3510629186)]
+		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3510629186)]
 		public bool IsAlwaysActive { get { return m_IsAlwaysActive; } set { if (OnPropertyChanging("ToolData." + nameof(IsAlwaysActive), this, m_IsAlwaysActive, value)) m_IsAlwaysActive = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

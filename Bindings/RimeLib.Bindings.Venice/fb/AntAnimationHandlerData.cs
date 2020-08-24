@@ -18,31 +18,31 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(41), ContainerStruct]
 	public class AntAnimationHandlerData : FrostbiteContainer
 	{
-		[ContainerField(0)]
+		[ContainerField(0), MemberInfoFlag(41)]
 		public AntAnimatableData Animatable { get; set; } = new AntAnimatableData(); // 0x0 (0)
 		
-		[ContainerField(20)]
+		[ContainerField(20), MemberInfoFlag(41)]
 		public AntRef RootController { get; set; } = new AntRef(); // 0x14 (20)
 		
-		[ContainerField(24)]
+		[ContainerField(24), MemberInfoFlag(41)]
 		public LodBinding LodBinding { get; set; } = new LodBinding(); // 0x18 (24)
 		
-		[ContainerField(36)]
+		[ContainerField(36), MemberInfoFlag(65), ContainerRefArray]
 		public RefArray<AntPackageAsset> AntPackageData { get; set; } = new RefArray<AntPackageAsset>(); // 0x24 (36)
 		
-		[ContainerField(40)]
+		[ContainerField(40), MemberInfoFlag(65), ContainerArray]
 		public List<GameplayBone> BonesToMirror { get; set; } = new List<GameplayBone>(); // 0x28 (40)
 		
-		[ContainerField(44), LayoutImmutable, Blittable]
+		[ContainerField(44), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool ReportBackFromAnt { get; set; } // 0x2C (44)
 		
-		[ContainerField(45), LayoutImmutable, Blittable]
+		[ContainerField(45), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool EnableMasterSlaveCopy { get; set; } // 0x2D (45)
 		
-		[ContainerField(46), LayoutImmutable, Blittable]
+		[ContainerField(46), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool IsProp { get; set; } // 0x2E (46)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

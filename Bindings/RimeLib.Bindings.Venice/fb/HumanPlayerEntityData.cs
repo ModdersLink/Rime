@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class HumanPlayerEntityData : 
 		GameEntityData
 	{
 		protected float m_PlayerKilledDelay = new float();
-		[ContainerField(96), LayoutImmutable, Blittable, ContainerFieldNameHash(277093856)]
+		[ContainerField(96), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(277093856)]
 		public float PlayerKilledDelay { get { return m_PlayerKilledDelay; } set { if (OnPropertyChanging("HumanPlayerEntityData." + nameof(PlayerKilledDelay), this, m_PlayerKilledDelay, value)) m_PlayerKilledDelay = value; } } // 0x60 (96)
 		
 		protected string m_LastManStandingSid = string.Empty;
-		[ContainerField(100), LayoutImmutable, ContainerFieldNameHash(1039359551)]
+		[ContainerField(100), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(1039359551)]
 		public string LastManStandingSid { get { return m_LastManStandingSid; } set { if (OnPropertyChanging("HumanPlayerEntityData." + nameof(LastManStandingSid), this, m_LastManStandingSid, value)) m_LastManStandingSid = value; } } // 0x64 (100)
 		
 		protected float m_DisplayTime = new float();
-		[ContainerField(104), LayoutImmutable, Blittable, ContainerFieldNameHash(1925139498)]
+		[ContainerField(104), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1925139498)]
 		public float DisplayTime { get { return m_DisplayTime; } set { if (OnPropertyChanging("HumanPlayerEntityData." + nameof(DisplayTime), this, m_DisplayTime, value)) m_DisplayTime = value; } } // 0x68 (104)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

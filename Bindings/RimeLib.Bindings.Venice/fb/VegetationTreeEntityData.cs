@@ -18,144 +18,144 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class VegetationTreeEntityData : 
 		VegetationBaseEntityData
 	{
 		protected CtrRef<EffectBlueprint> m_GroundImpactEffect = new CtrRef<EffectBlueprint>();
-		[ContainerField(128), ContainerFieldNameHash(1595516597)]
+		[ContainerField(128), MemberInfoFlag(53), ContainerFieldNameHash(1595516597), ContainerCtrRef]
 		public CtrRef<EffectBlueprint> GroundImpactEffect { get { return m_GroundImpactEffect; } set { if (OnPropertyChanging("VegetationTreeEntityData." + nameof(GroundImpactEffect), this, m_GroundImpactEffect, value)) m_GroundImpactEffect = value; } } // 0x80 (128)
 		
 		protected CtrRef<EffectBlueprint> m_StemRipEffect = new CtrRef<EffectBlueprint>();
-		[ContainerField(132), ContainerFieldNameHash(935864630)]
+		[ContainerField(132), MemberInfoFlag(53), ContainerFieldNameHash(935864630), ContainerCtrRef]
 		public CtrRef<EffectBlueprint> StemRipEffect { get { return m_StemRipEffect; } set { if (OnPropertyChanging("VegetationTreeEntityData." + nameof(StemRipEffect), this, m_StemRipEffect, value)) m_StemRipEffect = value; } } // 0x84 (132)
 		
 		protected float m_StemPhysicsWidth = new float();
-		[ContainerField(136), LayoutImmutable, Blittable, ContainerFieldNameHash(3773105703)]
+		[ContainerField(136), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3773105703)]
 		public float StemPhysicsWidth { get { return m_StemPhysicsWidth; } set { if (OnPropertyChanging("VegetationTreeEntityData." + nameof(StemPhysicsWidth), this, m_StemPhysicsWidth, value)) m_StemPhysicsWidth = value; } } // 0x88 (136)
 		
 		protected float m_ColiPlaneDepth = new float();
-		[ContainerField(140), LayoutImmutable, Blittable, ContainerFieldNameHash(119595447)]
+		[ContainerField(140), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(119595447)]
 		public float ColiPlaneDepth { get { return m_ColiPlaneDepth; } set { if (OnPropertyChanging("VegetationTreeEntityData." + nameof(ColiPlaneDepth), this, m_ColiPlaneDepth, value)) m_ColiPlaneDepth = value; } } // 0x8C (140)
 		
 		protected float m_StemHitpoints = new float();
-		[ContainerField(144), LayoutImmutable, Blittable, ContainerFieldNameHash(156129888)]
+		[ContainerField(144), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(156129888)]
 		public float StemHitpoints { get { return m_StemHitpoints; } set { if (OnPropertyChanging("VegetationTreeEntityData." + nameof(StemHitpoints), this, m_StemHitpoints, value)) m_StemHitpoints = value; } } // 0x90 (144)
 		
 		protected float m_BranchHitpoints = new float();
-		[ContainerField(148), LayoutImmutable, Blittable, ContainerFieldNameHash(3684887323)]
+		[ContainerField(148), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3684887323)]
 		public float BranchHitpoints { get { return m_BranchHitpoints; } set { if (OnPropertyChanging("VegetationTreeEntityData." + nameof(BranchHitpoints), this, m_BranchHitpoints, value)) m_BranchHitpoints = value; } } // 0x94 (148)
 		
 		protected float m_BranchL2Hitpoints = new float();
-		[ContainerField(152), LayoutImmutable, Blittable, ContainerFieldNameHash(204675493)]
+		[ContainerField(152), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(204675493)]
 		public float BranchL2Hitpoints { get { return m_BranchL2Hitpoints; } set { if (OnPropertyChanging("VegetationTreeEntityData." + nameof(BranchL2Hitpoints), this, m_BranchL2Hitpoints, value)) m_BranchL2Hitpoints = value; } } // 0x98 (152)
 		
 		protected float m_StemStiffness = new float();
-		[ContainerField(156), LayoutImmutable, Blittable, ContainerFieldNameHash(257375119)]
+		[ContainerField(156), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(257375119)]
 		public float StemStiffness { get { return m_StemStiffness; } set { if (OnPropertyChanging("VegetationTreeEntityData." + nameof(StemStiffness), this, m_StemStiffness, value)) m_StemStiffness = value; } } // 0x9C (156)
 		
 		protected float m_StemStiffnessSpread = new float();
-		[ContainerField(160), LayoutImmutable, Blittable, ContainerFieldNameHash(713063358)]
+		[ContainerField(160), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(713063358)]
 		public float StemStiffnessSpread { get { return m_StemStiffnessSpread; } set { if (OnPropertyChanging("VegetationTreeEntityData." + nameof(StemStiffnessSpread), this, m_StemStiffnessSpread, value)) m_StemStiffnessSpread = value; } } // 0xA0 (160)
 		
 		protected float m_BranchStiffness = new float();
-		[ContainerField(164), LayoutImmutable, Blittable, ContainerFieldNameHash(1421593844)]
+		[ContainerField(164), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1421593844)]
 		public float BranchStiffness { get { return m_BranchStiffness; } set { if (OnPropertyChanging("VegetationTreeEntityData." + nameof(BranchStiffness), this, m_BranchStiffness, value)) m_BranchStiffness = value; } } // 0xA4 (164)
 		
 		protected float m_BranchStiffnessL2 = new float();
-		[ContainerField(168), LayoutImmutable, Blittable, ContainerFieldNameHash(1927467530)]
+		[ContainerField(168), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1927467530)]
 		public float BranchStiffnessL2 { get { return m_BranchStiffnessL2; } set { if (OnPropertyChanging("VegetationTreeEntityData." + nameof(BranchStiffnessL2), this, m_BranchStiffnessL2, value)) m_BranchStiffnessL2 = value; } } // 0xA8 (168)
 		
 		protected int m_StemBoneCount = new int();
-		[ContainerField(172), LayoutImmutable, Blittable, ContainerFieldNameHash(4140582895)]
+		[ContainerField(172), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(4140582895)]
 		public int StemBoneCount { get { return m_StemBoneCount; } set { if (OnPropertyChanging("VegetationTreeEntityData." + nameof(StemBoneCount), this, m_StemBoneCount, value)) m_StemBoneCount = value; } } // 0xAC (172)
 		
 		protected float m_WindStem = new float();
-		[ContainerField(176), LayoutImmutable, Blittable, ContainerFieldNameHash(356803134)]
+		[ContainerField(176), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(356803134)]
 		public float WindStem { get { return m_WindStem; } set { if (OnPropertyChanging("VegetationTreeEntityData." + nameof(WindStem), this, m_WindStem, value)) m_WindStem = value; } } // 0xB0 (176)
 		
 		protected float m_WindBranch = new float();
-		[ContainerField(180), LayoutImmutable, Blittable, ContainerFieldNameHash(2551442149)]
+		[ContainerField(180), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2551442149)]
 		public float WindBranch { get { return m_WindBranch; } set { if (OnPropertyChanging("VegetationTreeEntityData." + nameof(WindBranch), this, m_WindBranch, value)) m_WindBranch = value; } } // 0xB4 (180)
 		
 		protected float m_WindBranchL2 = new float();
-		[ContainerField(184), LayoutImmutable, Blittable, ContainerFieldNameHash(3971629275)]
+		[ContainerField(184), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3971629275)]
 		public float WindBranchL2 { get { return m_WindBranchL2; } set { if (OnPropertyChanging("VegetationTreeEntityData." + nameof(WindBranchL2), this, m_WindBranchL2, value)) m_WindBranchL2 = value; } } // 0xB8 (184)
 		
 		protected CtrRef<EffectBlueprint> m_TreeFallEffect = new CtrRef<EffectBlueprint>();
-		[ContainerField(188), ContainerFieldNameHash(3999221459)]
+		[ContainerField(188), MemberInfoFlag(53), ContainerFieldNameHash(3999221459), ContainerCtrRef]
 		public CtrRef<EffectBlueprint> TreeFallEffect { get { return m_TreeFallEffect; } set { if (OnPropertyChanging("VegetationTreeEntityData." + nameof(TreeFallEffect), this, m_TreeFallEffect, value)) m_TreeFallEffect = value; } } // 0xBC (188)
 		
 		protected float m_BreakableJointThreshold = new float();
-		[ContainerField(192), LayoutImmutable, Blittable, ContainerFieldNameHash(2951351665)]
+		[ContainerField(192), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2951351665)]
 		public float BreakableJointThreshold { get { return m_BreakableJointThreshold; } set { if (OnPropertyChanging("VegetationTreeEntityData." + nameof(BreakableJointThreshold), this, m_BreakableJointThreshold, value)) m_BreakableJointThreshold = value; } } // 0xC0 (192)
 		
 		protected float m_FallDirectionEnd = new float();
-		[ContainerField(196), LayoutImmutable, Blittable, ContainerFieldNameHash(3686844968)]
+		[ContainerField(196), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3686844968)]
 		public float FallDirectionEnd { get { return m_FallDirectionEnd; } set { if (OnPropertyChanging("VegetationTreeEntityData." + nameof(FallDirectionEnd), this, m_FallDirectionEnd, value)) m_FallDirectionEnd = value; } } // 0xC4 (196)
 		
 		protected CtrRef<EffectBlueprint> m_LocalWindEffect = new CtrRef<EffectBlueprint>();
-		[ContainerField(200), ContainerFieldNameHash(576309707)]
+		[ContainerField(200), MemberInfoFlag(53), ContainerFieldNameHash(576309707), ContainerCtrRef]
 		public CtrRef<EffectBlueprint> LocalWindEffect { get { return m_LocalWindEffect; } set { if (OnPropertyChanging("VegetationTreeEntityData." + nameof(LocalWindEffect), this, m_LocalWindEffect, value)) m_LocalWindEffect = value; } } // 0xC8 (200)
 		
 		protected float m_ImpactThreshold = new float();
-		[ContainerField(204), LayoutImmutable, Blittable, ContainerFieldNameHash(952638448)]
+		[ContainerField(204), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(952638448)]
 		public float ImpactThreshold { get { return m_ImpactThreshold; } set { if (OnPropertyChanging("VegetationTreeEntityData." + nameof(ImpactThreshold), this, m_ImpactThreshold, value)) m_ImpactThreshold = value; } } // 0xCC (204)
 		
 		protected float m_CollisionImpactMultiplier = new float();
-		[ContainerField(208), LayoutImmutable, Blittable, ContainerFieldNameHash(2929818610)]
+		[ContainerField(208), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2929818610)]
 		public float CollisionImpactMultiplier { get { return m_CollisionImpactMultiplier; } set { if (OnPropertyChanging("VegetationTreeEntityData." + nameof(CollisionImpactMultiplier), this, m_CollisionImpactMultiplier, value)) m_CollisionImpactMultiplier = value; } } // 0xD0 (208)
 		
 		protected float m_FallDirectionStart = new float();
-		[ContainerField(212), LayoutImmutable, Blittable, ContainerFieldNameHash(3490532775)]
+		[ContainerField(212), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3490532775)]
 		public float FallDirectionStart { get { return m_FallDirectionStart; } set { if (OnPropertyChanging("VegetationTreeEntityData." + nameof(FallDirectionStart), this, m_FallDirectionStart, value)) m_FallDirectionStart = value; } } // 0xD4 (212)
 		
 		protected CtrRef<EffectBlueprint> m_SplashDistantEffect = new CtrRef<EffectBlueprint>();
-		[ContainerField(216), ContainerFieldNameHash(609468470)]
+		[ContainerField(216), MemberInfoFlag(53), ContainerFieldNameHash(609468470), ContainerCtrRef]
 		public CtrRef<EffectBlueprint> SplashDistantEffect { get { return m_SplashDistantEffect; } set { if (OnPropertyChanging("VegetationTreeEntityData." + nameof(SplashDistantEffect), this, m_SplashDistantEffect, value)) m_SplashDistantEffect = value; } } // 0xD8 (216)
 		
 		protected CtrRef<EffectBlueprint> m_BulletImpactEffect = new CtrRef<EffectBlueprint>();
-		[ContainerField(220), ContainerFieldNameHash(494798614)]
+		[ContainerField(220), MemberInfoFlag(53), ContainerFieldNameHash(494798614), ContainerCtrRef]
 		public CtrRef<EffectBlueprint> BulletImpactEffect { get { return m_BulletImpactEffect; } set { if (OnPropertyChanging("VegetationTreeEntityData." + nameof(BulletImpactEffect), this, m_BulletImpactEffect, value)) m_BulletImpactEffect = value; } } // 0xDC (220)
 		
 		protected float m_PartsTimeToLive = new float();
-		[ContainerField(224), LayoutImmutable, Blittable, ContainerFieldNameHash(209652569)]
+		[ContainerField(224), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(209652569)]
 		public float PartsTimeToLive { get { return m_PartsTimeToLive; } set { if (OnPropertyChanging("VegetationTreeEntityData." + nameof(PartsTimeToLive), this, m_PartsTimeToLive, value)) m_PartsTimeToLive = value; } } // 0xE0 (224)
 		
 		protected uint m_ShadowLODOffset = new uint();
-		[ContainerField(228), LayoutImmutable, Blittable, ContainerFieldNameHash(1990024297)]
+		[ContainerField(228), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(1990024297)]
 		public uint ShadowLODOffset { get { return m_ShadowLODOffset; } set { if (OnPropertyChanging("VegetationTreeEntityData." + nameof(ShadowLODOffset), this, m_ShadowLODOffset, value)) m_ShadowLODOffset = value; } } // 0xE4 (228)
 		
 		protected CtrRef<EffectBlueprint> m_SplashNearEffect = new CtrRef<EffectBlueprint>();
-		[ContainerField(232), ContainerFieldNameHash(3849130143)]
+		[ContainerField(232), MemberInfoFlag(53), ContainerFieldNameHash(3849130143), ContainerCtrRef]
 		public CtrRef<EffectBlueprint> SplashNearEffect { get { return m_SplashNearEffect; } set { if (OnPropertyChanging("VegetationTreeEntityData." + nameof(SplashNearEffect), this, m_SplashNearEffect, value)) m_SplashNearEffect = value; } } // 0xE8 (232)
 		
 		protected CtrRef<EffectBlueprint> m_CollisionEffect = new CtrRef<EffectBlueprint>();
-		[ContainerField(236), ContainerFieldNameHash(2616680812)]
+		[ContainerField(236), MemberInfoFlag(53), ContainerFieldNameHash(2616680812), ContainerCtrRef]
 		public CtrRef<EffectBlueprint> CollisionEffect { get { return m_CollisionEffect; } set { if (OnPropertyChanging("VegetationTreeEntityData." + nameof(CollisionEffect), this, m_CollisionEffect, value)) m_CollisionEffect = value; } } // 0xEC (236)
 		
 		protected bool m_ForceFullSim = new bool();
-		[ContainerField(240), LayoutImmutable, Blittable, ContainerFieldNameHash(3014405532)]
+		[ContainerField(240), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3014405532)]
 		public bool ForceFullSim { get { return m_ForceFullSim; } set { if (OnPropertyChanging("VegetationTreeEntityData." + nameof(ForceFullSim), this, m_ForceFullSim, value)) m_ForceFullSim = value; } } // 0xF0 (240)
 		
 		protected bool m_UseImpactThreshold = new bool();
-		[ContainerField(241), LayoutImmutable, Blittable, ContainerFieldNameHash(215104275)]
+		[ContainerField(241), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(215104275)]
 		public bool UseImpactThreshold { get { return m_UseImpactThreshold; } set { if (OnPropertyChanging("VegetationTreeEntityData." + nameof(UseImpactThreshold), this, m_UseImpactThreshold, value)) m_UseImpactThreshold = value; } } // 0xF1 (241)
 		
 		protected bool m_UsePhysicsShapes = new bool();
-		[ContainerField(242), LayoutImmutable, Blittable, ContainerFieldNameHash(3641740433)]
+		[ContainerField(242), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3641740433)]
 		public bool UsePhysicsShapes { get { return m_UsePhysicsShapes; } set { if (OnPropertyChanging("VegetationTreeEntityData." + nameof(UsePhysicsShapes), this, m_UsePhysicsShapes, value)) m_UsePhysicsShapes = value; } } // 0xF2 (242)
 		
 		protected bool m_ConstraintStemB1 = new bool();
-		[ContainerField(243), LayoutImmutable, Blittable, ContainerFieldNameHash(553666876)]
+		[ContainerField(243), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(553666876)]
 		public bool ConstraintStemB1 { get { return m_ConstraintStemB1; } set { if (OnPropertyChanging("VegetationTreeEntityData." + nameof(ConstraintStemB1), this, m_ConstraintStemB1, value)) m_ConstraintStemB1 = value; } } // 0xF3 (243)
 		
 		protected bool m_ConstraintStemB2 = new bool();
-		[ContainerField(244), LayoutImmutable, Blittable, ContainerFieldNameHash(553666879)]
+		[ContainerField(244), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(553666879)]
 		public bool ConstraintStemB2 { get { return m_ConstraintStemB2; } set { if (OnPropertyChanging("VegetationTreeEntityData." + nameof(ConstraintStemB2), this, m_ConstraintStemB2, value)) m_ConstraintStemB2 = value; } } // 0xF4 (244)
 		
 		protected bool m_ClientSideOnly = new bool();
-		[ContainerField(245), LayoutImmutable, Blittable, ContainerFieldNameHash(3628043763)]
+		[ContainerField(245), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3628043763)]
 		public bool ClientSideOnly { get { return m_ClientSideOnly; } set { if (OnPropertyChanging("VegetationTreeEntityData." + nameof(ClientSideOnly), this, m_ClientSideOnly, value)) m_ClientSideOnly = value; } } // 0xF5 (245)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class FlagComponentData : 
 		ComponentData
 	{
 		protected Realm m_Realm = new Realm();
-		[ContainerField(96), ContainerFieldNameHash(229961746)]
+		[ContainerField(96), MemberInfoFlag(137), ContainerFieldNameHash(229961746)]
 		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("FlagComponentData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0x60 (96)
 		
 		protected CtrRef<ObjectBlueprint> m_Flag_Team1 = new CtrRef<ObjectBlueprint>();
-		[ContainerField(100), ContainerFieldNameHash(1681649722)]
+		[ContainerField(100), MemberInfoFlag(53), ContainerFieldNameHash(1681649722), ContainerCtrRef]
 		public CtrRef<ObjectBlueprint> Flag_Team1 { get { return m_Flag_Team1; } set { if (OnPropertyChanging("FlagComponentData." + nameof(Flag_Team1), this, m_Flag_Team1, value)) m_Flag_Team1 = value; } } // 0x64 (100)
 		
 		protected CtrRef<ObjectBlueprint> m_Flag_Team2 = new CtrRef<ObjectBlueprint>();
-		[ContainerField(104), ContainerFieldNameHash(1681649721)]
+		[ContainerField(104), MemberInfoFlag(53), ContainerFieldNameHash(1681649721), ContainerCtrRef]
 		public CtrRef<ObjectBlueprint> Flag_Team2 { get { return m_Flag_Team2; } set { if (OnPropertyChanging("FlagComponentData." + nameof(Flag_Team2), this, m_Flag_Team2, value)) m_Flag_Team2 = value; } } // 0x68 (104)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

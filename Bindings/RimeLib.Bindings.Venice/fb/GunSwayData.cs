@@ -18,84 +18,84 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class GunSwayData : 
 		WeaponSwayData
 	{
 		protected GunSwayStandData m_Stand = new GunSwayStandData();
-		[ContainerField(8), ContainerFieldNameHash(230747945)]
+		[ContainerField(8), MemberInfoFlag(41), ContainerFieldNameHash(230747945)]
 		public GunSwayStandData Stand { get { return m_Stand; } set { if (OnPropertyChanging("GunSwayData." + nameof(Stand), this, m_Stand, value)) m_Stand = value; } } // 0x8 (8)
 		
 		protected GunSwayCrouchProneData m_Crouch = new GunSwayCrouchProneData();
-		[ContainerField(288), ContainerFieldNameHash(2729602053)]
+		[ContainerField(288), MemberInfoFlag(41), ContainerFieldNameHash(2729602053)]
 		public GunSwayCrouchProneData Crouch { get { return m_Crouch; } set { if (OnPropertyChanging("GunSwayData." + nameof(Crouch), this, m_Crouch, value)) m_Crouch = value; } } // 0x120 (288)
 		
 		protected GunSwayCrouchProneData m_Prone = new GunSwayCrouchProneData();
-		[ContainerField(440), ContainerFieldNameHash(231940067)]
+		[ContainerField(440), MemberInfoFlag(41), ContainerFieldNameHash(231940067)]
 		public GunSwayCrouchProneData Prone { get { return m_Prone; } set { if (OnPropertyChanging("GunSwayData." + nameof(Prone), this, m_Prone, value)) m_Prone = value; } } // 0x1B8 (440)
 		
 		protected GunSwayStanceTransition m_ProneToCrouch = new GunSwayStanceTransition();
-		[ContainerField(592), ContainerFieldNameHash(4257061656)]
+		[ContainerField(592), MemberInfoFlag(41), ContainerFieldNameHash(4257061656)]
 		public GunSwayStanceTransition ProneToCrouch { get { return m_ProneToCrouch; } set { if (OnPropertyChanging("GunSwayData." + nameof(ProneToCrouch), this, m_ProneToCrouch, value)) m_ProneToCrouch = value; } } // 0x250 (592)
 		
 		protected GunSwayStanceTransition m_ProneToStand = new GunSwayStanceTransition();
-		[ContainerField(612), ContainerFieldNameHash(1152741652)]
+		[ContainerField(612), MemberInfoFlag(41), ContainerFieldNameHash(1152741652)]
 		public GunSwayStanceTransition ProneToStand { get { return m_ProneToStand; } set { if (OnPropertyChanging("GunSwayData." + nameof(ProneToStand), this, m_ProneToStand, value)) m_ProneToStand = value; } } // 0x264 (612)
 		
 		protected GunSwayStanceTransition m_CrouchToProne = new GunSwayStanceTransition();
-		[ContainerField(632), ContainerFieldNameHash(2777914232)]
+		[ContainerField(632), MemberInfoFlag(41), ContainerFieldNameHash(2777914232)]
 		public GunSwayStanceTransition CrouchToProne { get { return m_CrouchToProne; } set { if (OnPropertyChanging("GunSwayData." + nameof(CrouchToProne), this, m_CrouchToProne, value)) m_CrouchToProne = value; } } // 0x278 (632)
 		
 		protected GunSwayStanceTransition m_CrouchToStand = new GunSwayStanceTransition();
-		[ContainerField(652), ContainerFieldNameHash(2779097650)]
+		[ContainerField(652), MemberInfoFlag(41), ContainerFieldNameHash(2779097650)]
 		public GunSwayStanceTransition CrouchToStand { get { return m_CrouchToStand; } set { if (OnPropertyChanging("GunSwayData." + nameof(CrouchToStand), this, m_CrouchToStand, value)) m_CrouchToStand = value; } } // 0x28C (652)
 		
 		protected GunSwayStanceTransition m_StandToProne = new GunSwayStanceTransition();
-		[ContainerField(672), ContainerFieldNameHash(1537379924)]
+		[ContainerField(672), MemberInfoFlag(41), ContainerFieldNameHash(1537379924)]
 		public GunSwayStanceTransition StandToProne { get { return m_StandToProne; } set { if (OnPropertyChanging("GunSwayData." + nameof(StandToProne), this, m_StandToProne, value)) m_StandToProne = value; } } // 0x2A0 (672)
 		
 		protected GunSwayStanceTransition m_StandToCrouch = new GunSwayStanceTransition();
-		[ContainerField(692), ContainerFieldNameHash(3815050450)]
+		[ContainerField(692), MemberInfoFlag(41), ContainerFieldNameHash(3815050450)]
 		public GunSwayStanceTransition StandToCrouch { get { return m_StandToCrouch; } set { if (OnPropertyChanging("GunSwayData." + nameof(StandToCrouch), this, m_StandToCrouch, value)) m_StandToCrouch = value; } } // 0x2B4 (692)
 		
 		protected GunSwayStanceZoomModifierData m_SuppressionModifierUnzoomed = new GunSwayStanceZoomModifierData();
-		[ContainerField(712), ContainerFieldNameHash(3116538310)]
+		[ContainerField(712), MemberInfoFlag(41), ContainerFieldNameHash(3116538310)]
 		public GunSwayStanceZoomModifierData SuppressionModifierUnzoomed { get { return m_SuppressionModifierUnzoomed; } set { if (OnPropertyChanging("GunSwayData." + nameof(SuppressionModifierUnzoomed), this, m_SuppressionModifierUnzoomed, value)) m_SuppressionModifierUnzoomed = value; } } // 0x2C8 (712)
 		
 		protected GunSwayStanceZoomModifierData m_SuppressionModifierZoomed = new GunSwayStanceZoomModifierData();
-		[ContainerField(744), ContainerFieldNameHash(4158044605)]
+		[ContainerField(744), MemberInfoFlag(41), ContainerFieldNameHash(4158044605)]
 		public GunSwayStanceZoomModifierData SuppressionModifierZoomed { get { return m_SuppressionModifierZoomed; } set { if (OnPropertyChanging("GunSwayData." + nameof(SuppressionModifierZoomed), this, m_SuppressionModifierZoomed, value)) m_SuppressionModifierZoomed = value; } } // 0x2E8 (744)
 		
 		protected RefArray<GunSwayModifierData> m_Modifiers = new RefArray<GunSwayModifierData>();
-		[ContainerField(776), ContainerFieldNameHash(105828545)]
+		[ContainerField(776), MemberInfoFlag(65), ContainerFieldNameHash(105828545), ContainerRefArray]
 		public RefArray<GunSwayModifierData> Modifiers { get { return m_Modifiers; } set { if (OnPropertyChanging("GunSwayData." + nameof(Modifiers), this, m_Modifiers, value)) m_Modifiers = value; } } // 0x308 (776)
 		
 		protected float m_DeviationScaleFactorZoom = new float();
-		[ContainerField(780), LayoutImmutable, Blittable, ContainerFieldNameHash(384176132)]
+		[ContainerField(780), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(384176132)]
 		public float DeviationScaleFactorZoom { get { return m_DeviationScaleFactorZoom; } set { if (OnPropertyChanging("GunSwayData." + nameof(DeviationScaleFactorZoom), this, m_DeviationScaleFactorZoom, value)) m_DeviationScaleFactorZoom = value; } } // 0x30C (780)
 		
 		protected float m_GameplayDeviationScaleFactorZoom = new float();
-		[ContainerField(784), LayoutImmutable, Blittable, ContainerFieldNameHash(1053702158)]
+		[ContainerField(784), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1053702158)]
 		public float GameplayDeviationScaleFactorZoom { get { return m_GameplayDeviationScaleFactorZoom; } set { if (OnPropertyChanging("GunSwayData." + nameof(GameplayDeviationScaleFactorZoom), this, m_GameplayDeviationScaleFactorZoom, value)) m_GameplayDeviationScaleFactorZoom = value; } } // 0x310 (784)
 		
 		protected float m_DeviationScaleFactorNoZoom = new float();
-		[ContainerField(788), LayoutImmutable, Blittable, ContainerFieldNameHash(2529884645)]
+		[ContainerField(788), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2529884645)]
 		public float DeviationScaleFactorNoZoom { get { return m_DeviationScaleFactorNoZoom; } set { if (OnPropertyChanging("GunSwayData." + nameof(DeviationScaleFactorNoZoom), this, m_DeviationScaleFactorNoZoom, value)) m_DeviationScaleFactorNoZoom = value; } } // 0x314 (788)
 		
 		protected float m_GameplayDeviationScaleFactorNoZoom = new float();
-		[ContainerField(792), LayoutImmutable, Blittable, ContainerFieldNameHash(1499286127)]
+		[ContainerField(792), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1499286127)]
 		public float GameplayDeviationScaleFactorNoZoom { get { return m_GameplayDeviationScaleFactorNoZoom; } set { if (OnPropertyChanging("GunSwayData." + nameof(GameplayDeviationScaleFactorNoZoom), this, m_GameplayDeviationScaleFactorNoZoom, value)) m_GameplayDeviationScaleFactorNoZoom = value; } } // 0x318 (792)
 		
 		protected float m_ShootingRecoilDecreaseScale = new float();
-		[ContainerField(796), LayoutImmutable, Blittable, ContainerFieldNameHash(754056878)]
+		[ContainerField(796), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(754056878)]
 		public float ShootingRecoilDecreaseScale { get { return m_ShootingRecoilDecreaseScale; } set { if (OnPropertyChanging("GunSwayData." + nameof(ShootingRecoilDecreaseScale), this, m_ShootingRecoilDecreaseScale, value)) m_ShootingRecoilDecreaseScale = value; } } // 0x31C (796)
 		
 		protected float m_FirstShotRecoilMultiplier = new float();
-		[ContainerField(800), LayoutImmutable, Blittable, ContainerFieldNameHash(3947940458)]
+		[ContainerField(800), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3947940458)]
 		public float FirstShotRecoilMultiplier { get { return m_FirstShotRecoilMultiplier; } set { if (OnPropertyChanging("GunSwayData." + nameof(FirstShotRecoilMultiplier), this, m_FirstShotRecoilMultiplier, value)) m_FirstShotRecoilMultiplier = value; } } // 0x320 (800)
 		
 		protected CtrRef<CameraRecoilData> m_CameraRecoil = new CtrRef<CameraRecoilData>();
-		[ContainerField(804), ContainerFieldNameHash(1741067714)]
+		[ContainerField(804), MemberInfoFlag(53), ContainerFieldNameHash(1741067714), ContainerCtrRef]
 		public CtrRef<CameraRecoilData> CameraRecoil { get { return m_CameraRecoil; } set { if (OnPropertyChanging("GunSwayData." + nameof(CameraRecoil), this, m_CameraRecoil, value)) m_CameraRecoil = value; } } // 0x324 (804)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

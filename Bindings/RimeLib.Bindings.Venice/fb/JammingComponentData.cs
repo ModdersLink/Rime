@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class JammingComponentData : 
 		ComponentData
 	{
 		protected SmokeJammingData m_SmokeJamming = new SmokeJammingData();
-		[ContainerField(96), ContainerFieldNameHash(1348728305)]
+		[ContainerField(96), MemberInfoFlag(41), ContainerFieldNameHash(1348728305)]
 		public SmokeJammingData SmokeJamming { get { return m_SmokeJamming; } set { if (OnPropertyChanging("JammingComponentData." + nameof(SmokeJamming), this, m_SmokeJamming, value)) m_SmokeJamming = value; } } // 0x60 (96)
 		
 		protected AirMissileJammingData m_AirMissileJamming = new AirMissileJammingData();
-		[ContainerField(116), ContainerFieldNameHash(3537349392)]
+		[ContainerField(116), MemberInfoFlag(41), ContainerFieldNameHash(3537349392)]
 		public AirMissileJammingData AirMissileJamming { get { return m_AirMissileJamming; } set { if (OnPropertyChanging("JammingComponentData." + nameof(AirMissileJamming), this, m_AirMissileJamming, value)) m_AirMissileJamming = value; } } // 0x74 (116)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

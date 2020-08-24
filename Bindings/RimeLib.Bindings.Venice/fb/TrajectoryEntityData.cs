@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class TrajectoryEntityData : 
 		EntityData
 	{
 		protected LinearTransform m_OutTransform = new LinearTransform();
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(3120855655)]
+		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(3120855655)]
 		public LinearTransform OutTransform { get { return m_OutTransform; } set { if (OnPropertyChanging("TrajectoryEntityData." + nameof(OutTransform), this, m_OutTransform, value)) m_OutTransform = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

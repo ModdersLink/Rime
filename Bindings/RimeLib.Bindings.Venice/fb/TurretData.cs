@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class TurretData : 
 		DataContainer
 	{
 		protected float m_PitchP = new float();
-		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(3380975443)]
+		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3380975443)]
 		public float PitchP { get { return m_PitchP; } set { if (OnPropertyChanging("TurretData." + nameof(PitchP), this, m_PitchP, value)) m_PitchP = value; } } // 0x8 (8)
 		
 		protected float m_YawP = new float();
-		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(2089497178)]
+		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2089497178)]
 		public float YawP { get { return m_YawP; } set { if (OnPropertyChanging("TurretData." + nameof(YawP), this, m_YawP, value)) m_YawP = value; } } // 0xC (12)
 		
 		protected float m_FakeShootSpaceMinDistance = new float();
-		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(4286661422)]
+		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(4286661422)]
 		public float FakeShootSpaceMinDistance { get { return m_FakeShootSpaceMinDistance; } set { if (OnPropertyChanging("TurretData." + nameof(FakeShootSpaceMinDistance), this, m_FakeShootSpaceMinDistance, value)) m_FakeShootSpaceMinDistance = value; } } // 0x10 (16)
 		
 		protected float m_FakeShootSpaceMaxDistance = new float();
-		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(1645003312)]
+		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1645003312)]
 		public float FakeShootSpaceMaxDistance { get { return m_FakeShootSpaceMaxDistance; } set { if (OnPropertyChanging("TurretData." + nameof(FakeShootSpaceMaxDistance), this, m_FakeShootSpaceMaxDistance, value)) m_FakeShootSpaceMaxDistance = value; } } // 0x14 (20)
 		
 		protected CtrRef<AIAimingConstraintsData> m_AimingConstraints = new CtrRef<AIAimingConstraintsData>();
-		[ContainerField(24), ContainerFieldNameHash(1523178198)]
+		[ContainerField(24), MemberInfoFlag(53), ContainerFieldNameHash(1523178198), ContainerCtrRef]
 		public CtrRef<AIAimingConstraintsData> AimingConstraints { get { return m_AimingConstraints; } set { if (OnPropertyChanging("TurretData." + nameof(AimingConstraints), this, m_AimingConstraints, value)) m_AimingConstraints = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(8)]
+	[ContainerType(8), MemberInfoFlag(53), ContainerClass]
 	public class KitStateEvent : 
 		MetricEvent
 	{
 		protected string m_Kit = string.Empty;
-		[ContainerField(16), LayoutImmutable, ContainerFieldNameHash(193457363)]
+		[ContainerField(16), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(193457363)]
 		public string Kit { get { return m_Kit; } set { if (OnPropertyChanging("KitStateEvent." + nameof(Kit), this, m_Kit, value)) m_Kit = value; } } // 0x10 (16)
 		
 		protected float m_SecondsAsKit = new float();
-		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(711562626)]
+		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(711562626)]
 		public float SecondsAsKit { get { return m_SecondsAsKit; } set { if (OnPropertyChanging("KitStateEvent." + nameof(SecondsAsKit), this, m_SecondsAsKit, value)) m_SecondsAsKit = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

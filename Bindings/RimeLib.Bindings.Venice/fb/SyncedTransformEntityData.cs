@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class SyncedTransformEntityData : 
 		EntityData
 	{
 		protected LinearTransform m_In = new LinearTransform();
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(5862146)]
+		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(5862146)]
 		public LinearTransform In { get { return m_In; } set { if (OnPropertyChanging("SyncedTransformEntityData." + nameof(In), this, m_In, value)) m_In = value; } } // 0x10 (16)
 		
 		protected bool m_Interpolate = new bool();
-		[ContainerField(80), LayoutImmutable, Blittable, ContainerFieldNameHash(2332438914)]
+		[ContainerField(80), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2332438914)]
 		public bool Interpolate { get { return m_Interpolate; } set { if (OnPropertyChanging("SyncedTransformEntityData." + nameof(Interpolate), this, m_Interpolate, value)) m_Interpolate = value; } } // 0x50 (80)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class PathFollowingComponentData : 
 		ComponentData
 	{
 		protected float m_UpdatePathAtDistancePercent = new float();
-		[ContainerField(96), LayoutImmutable, Blittable, ContainerFieldNameHash(324611860)]
+		[ContainerField(96), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(324611860)]
 		public float UpdatePathAtDistancePercent { get { return m_UpdatePathAtDistancePercent; } set { if (OnPropertyChanging("PathFollowingComponentData." + nameof(UpdatePathAtDistancePercent), this, m_UpdatePathAtDistancePercent, value)) m_UpdatePathAtDistancePercent = value; } } // 0x60 (96)
 		
 		protected uint m_PreferredPathfindingIndex = new uint();
-		[ContainerField(100), LayoutImmutable, Blittable, ContainerFieldNameHash(233434614)]
+		[ContainerField(100), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(233434614)]
 		public uint PreferredPathfindingIndex { get { return m_PreferredPathfindingIndex; } set { if (OnPropertyChanging("PathFollowingComponentData." + nameof(PreferredPathfindingIndex), this, m_PreferredPathfindingIndex, value)) m_PreferredPathfindingIndex = value; } } // 0x64 (100)
 		
 		protected List<uint> m_AlternatePathfindingIndices = new List<uint>();
-		[ContainerField(104), ContainerFieldNameHash(1978090370)]
+		[ContainerField(104), MemberInfoFlag(65), ContainerFieldNameHash(1978090370), ContainerArray]
 		public List<uint> AlternatePathfindingIndices { get { return m_AlternatePathfindingIndices; } set { if (OnPropertyChanging("PathFollowingComponentData." + nameof(AlternatePathfindingIndices), this, m_AlternatePathfindingIndices, value)) m_AlternatePathfindingIndices = value; } } // 0x68 (104)
 		
 		protected float m_MovementCorridorRadius = new float();
-		[ContainerField(108), LayoutImmutable, Blittable, ContainerFieldNameHash(1392343010)]
+		[ContainerField(108), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1392343010)]
 		public float MovementCorridorRadius { get { return m_MovementCorridorRadius; } set { if (OnPropertyChanging("PathFollowingComponentData." + nameof(MovementCorridorRadius), this, m_MovementCorridorRadius, value)) m_MovementCorridorRadius = value; } } // 0x6C (108)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

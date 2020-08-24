@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class PadInputActionData : 
 		AxesInputActionData
 	{
 		protected InputDevicePadButtons m_Button = new InputDevicePadButtons();
-		[ContainerField(20), ContainerFieldNameHash(2686182099)]
+		[ContainerField(20), MemberInfoFlag(137), ContainerFieldNameHash(2686182099)]
 		public InputDevicePadButtons Button { get { return m_Button; } set { if (OnPropertyChanging("PadInputActionData." + nameof(Button), this, m_Button, value)) m_Button = value; } } // 0x14 (20)
 		
 		protected InputDevicePOVs m_Pov = new InputDevicePOVs();
-		[ContainerField(24), ContainerFieldNameHash(193467468)]
+		[ContainerField(24), MemberInfoFlag(137), ContainerFieldNameHash(193467468)]
 		public InputDevicePOVs Pov { get { return m_Pov; } set { if (OnPropertyChanging("PadInputActionData." + nameof(Pov), this, m_Pov, value)) m_Pov = value; } } // 0x18 (24)
 		
 		protected InputDevicePadButtons m_PS3AlternativeButton = new InputDevicePadButtons();
-		[ContainerField(28), ContainerFieldNameHash(1772338028)]
+		[ContainerField(28), MemberInfoFlag(137), ContainerFieldNameHash(1772338028)]
 		public InputDevicePadButtons PS3AlternativeButton { get { return m_PS3AlternativeButton; } set { if (OnPropertyChanging("PadInputActionData." + nameof(PS3AlternativeButton), this, m_PS3AlternativeButton, value)) m_PS3AlternativeButton = value; } } // 0x1C (28)
 		
 		protected bool m_UseSquareInput = new bool();
-		[ContainerField(32), LayoutImmutable, Blittable, ContainerFieldNameHash(3247391921)]
+		[ContainerField(32), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3247391921)]
 		public bool UseSquareInput { get { return m_UseSquareInput; } set { if (OnPropertyChanging("PadInputActionData." + nameof(UseSquareInput), this, m_UseSquareInput, value)) m_UseSquareInput = value; } } // 0x20 (32)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

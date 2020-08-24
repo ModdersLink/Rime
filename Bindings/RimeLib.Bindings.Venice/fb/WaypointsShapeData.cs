@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class WaypointsShapeData : 
 		VectorShapeData
 	{
 		protected RefArray<WaypointData> m_Waypoints = new RefArray<WaypointData>();
-		[ContainerField(28), ContainerFieldNameHash(1635609973)]
+		[ContainerField(28), MemberInfoFlag(65), ContainerFieldNameHash(1635609973), ContainerRefArray]
 		public RefArray<WaypointData> Waypoints { get { return m_Waypoints; } set { if (OnPropertyChanging("WaypointsShapeData." + nameof(Waypoints), this, m_Waypoints, value)) m_Waypoints = value; } } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

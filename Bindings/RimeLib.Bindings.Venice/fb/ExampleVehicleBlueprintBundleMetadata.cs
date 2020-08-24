@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class ExampleVehicleBlueprintBundleMetadata : 
 		BlueprintBundleMetadata
 	{
 		protected ExampleVehicleType m_ExampleVehicleType = new ExampleVehicleType();
-		[ContainerField(20), ContainerFieldNameHash(3964640141)]
+		[ContainerField(20), MemberInfoFlag(137), ContainerFieldNameHash(3964640141)]
 		public ExampleVehicleType ExampleVehicleType { get { return m_ExampleVehicleType; } set { if (OnPropertyChanging("ExampleVehicleBlueprintBundleMetadata." + nameof(ExampleVehicleType), this, m_ExampleVehicleType, value)) m_ExampleVehicleType = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

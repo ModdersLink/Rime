@@ -18,100 +18,100 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class ZoomLevelData : 
 		DataContainer
 	{
 		protected float m_FieldOfView = new float();
-		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(2227716035)]
+		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2227716035)]
 		public float FieldOfView { get { return m_FieldOfView; } set { if (OnPropertyChanging("ZoomLevelData." + nameof(FieldOfView), this, m_FieldOfView, value)) m_FieldOfView = value; } } // 0x8 (8)
 		
 		protected float m_DispersionMultiplier = new float();
-		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(2492618348)]
+		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2492618348)]
 		public float DispersionMultiplier { get { return m_DispersionMultiplier; } set { if (OnPropertyChanging("ZoomLevelData." + nameof(DispersionMultiplier), this, m_DispersionMultiplier, value)) m_DispersionMultiplier = value; } } // 0xC (12)
 		
 		protected float m_LookSpeedMultiplier = new float();
-		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(1418472942)]
+		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1418472942)]
 		public float LookSpeedMultiplier { get { return m_LookSpeedMultiplier; } set { if (OnPropertyChanging("ZoomLevelData." + nameof(LookSpeedMultiplier), this, m_LookSpeedMultiplier, value)) m_LookSpeedMultiplier = value; } } // 0x10 (16)
 		
 		protected float m_SprintLookSpeedMultiplier = new float();
-		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(1809327980)]
+		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1809327980)]
 		public float SprintLookSpeedMultiplier { get { return m_SprintLookSpeedMultiplier; } set { if (OnPropertyChanging("ZoomLevelData." + nameof(SprintLookSpeedMultiplier), this, m_SprintLookSpeedMultiplier, value)) m_SprintLookSpeedMultiplier = value; } } // 0x14 (20)
 		
 		protected float m_MoveSpeedMultiplier = new float();
-		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(968667256)]
+		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(968667256)]
 		public float MoveSpeedMultiplier { get { return m_MoveSpeedMultiplier; } set { if (OnPropertyChanging("ZoomLevelData." + nameof(MoveSpeedMultiplier), this, m_MoveSpeedMultiplier, value)) m_MoveSpeedMultiplier = value; } } // 0x18 (24)
 		
 		protected float m_SwayPitchMultiplier = new float();
-		[ContainerField(28), LayoutImmutable, Blittable, ContainerFieldNameHash(2304589396)]
+		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2304589396)]
 		public float SwayPitchMultiplier { get { return m_SwayPitchMultiplier; } set { if (OnPropertyChanging("ZoomLevelData." + nameof(SwayPitchMultiplier), this, m_SwayPitchMultiplier, value)) m_SwayPitchMultiplier = value; } } // 0x1C (28)
 		
 		protected float m_SwayYawMultiplier = new float();
-		[ContainerField(32), LayoutImmutable, Blittable, ContainerFieldNameHash(2483524029)]
+		[ContainerField(32), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2483524029)]
 		public float SwayYawMultiplier { get { return m_SwayYawMultiplier; } set { if (OnPropertyChanging("ZoomLevelData." + nameof(SwayYawMultiplier), this, m_SwayYawMultiplier, value)) m_SwayYawMultiplier = value; } } // 0x20 (32)
 		
 		protected float m_SupportedSwayPitchMultiplier = new float();
-		[ContainerField(36), LayoutImmutable, Blittable, ContainerFieldNameHash(44184954)]
+		[ContainerField(36), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(44184954)]
 		public float SupportedSwayPitchMultiplier { get { return m_SupportedSwayPitchMultiplier; } set { if (OnPropertyChanging("ZoomLevelData." + nameof(SupportedSwayPitchMultiplier), this, m_SupportedSwayPitchMultiplier, value)) m_SupportedSwayPitchMultiplier = value; } } // 0x24 (36)
 		
 		protected float m_SupportedSwayYawMultiplier = new float();
-		[ContainerField(40), LayoutImmutable, Blittable, ContainerFieldNameHash(741079379)]
+		[ContainerField(40), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(741079379)]
 		public float SupportedSwayYawMultiplier { get { return m_SupportedSwayYawMultiplier; } set { if (OnPropertyChanging("ZoomLevelData." + nameof(SupportedSwayYawMultiplier), this, m_SupportedSwayYawMultiplier, value)) m_SupportedSwayYawMultiplier = value; } } // 0x28 (40)
 		
 		protected float m_TimePitchMultiplier = new float();
-		[ContainerField(44), LayoutImmutable, Blittable, ContainerFieldNameHash(534769181)]
+		[ContainerField(44), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(534769181)]
 		public float TimePitchMultiplier { get { return m_TimePitchMultiplier; } set { if (OnPropertyChanging("ZoomLevelData." + nameof(TimePitchMultiplier), this, m_TimePitchMultiplier, value)) m_TimePitchMultiplier = value; } } // 0x2C (44)
 		
 		protected float m_TimeYawMultiplier = new float();
-		[ContainerField(48), LayoutImmutable, Blittable, ContainerFieldNameHash(1816853300)]
+		[ContainerField(48), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1816853300)]
 		public float TimeYawMultiplier { get { return m_TimeYawMultiplier; } set { if (OnPropertyChanging("ZoomLevelData." + nameof(TimeYawMultiplier), this, m_TimeYawMultiplier, value)) m_TimeYawMultiplier = value; } } // 0x30 (48)
 		
 		protected float m_RecoilMultiplier = new float();
-		[ContainerField(52), LayoutImmutable, Blittable, ContainerFieldNameHash(2433005616)]
+		[ContainerField(52), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2433005616)]
 		public float RecoilMultiplier { get { return m_RecoilMultiplier; } set { if (OnPropertyChanging("ZoomLevelData." + nameof(RecoilMultiplier), this, m_RecoilMultiplier, value)) m_RecoilMultiplier = value; } } // 0x34 (52)
 		
 		protected float m_FadeToBlackDuration = new float();
-		[ContainerField(56), LayoutImmutable, Blittable, ContainerFieldNameHash(4095432289)]
+		[ContainerField(56), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(4095432289)]
 		public float FadeToBlackDuration { get { return m_FadeToBlackDuration; } set { if (OnPropertyChanging("ZoomLevelData." + nameof(FadeToBlackDuration), this, m_FadeToBlackDuration, value)) m_FadeToBlackDuration = value; } } // 0x38 (56)
 		
 		protected float m_RecoilFovMultiplier = new float();
-		[ContainerField(60), LayoutImmutable, Blittable, ContainerFieldNameHash(2103090735)]
+		[ContainerField(60), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2103090735)]
 		public float RecoilFovMultiplier { get { return m_RecoilFovMultiplier; } set { if (OnPropertyChanging("ZoomLevelData." + nameof(RecoilFovMultiplier), this, m_RecoilFovMultiplier, value)) m_RecoilFovMultiplier = value; } } // 0x3C (60)
 		
 		protected float m_CameraImpulseMultiplier = new float();
-		[ContainerField(64), LayoutImmutable, Blittable, ContainerFieldNameHash(907226508)]
+		[ContainerField(64), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(907226508)]
 		public float CameraImpulseMultiplier { get { return m_CameraImpulseMultiplier; } set { if (OnPropertyChanging("ZoomLevelData." + nameof(CameraImpulseMultiplier), this, m_CameraImpulseMultiplier, value)) m_CameraImpulseMultiplier = value; } } // 0x40 (64)
 		
 		protected ZoomLevelActivateEventType m_OnActivateEventType = new ZoomLevelActivateEventType();
-		[ContainerField(68), ContainerFieldNameHash(269248393)]
+		[ContainerField(68), MemberInfoFlag(137), ContainerFieldNameHash(269248393)]
 		public ZoomLevelActivateEventType OnActivateEventType { get { return m_OnActivateEventType; } set { if (OnPropertyChanging("ZoomLevelData." + nameof(OnActivateEventType), this, m_OnActivateEventType, value)) m_OnActivateEventType = value; } } // 0x44 (68)
 		
 		protected float m_StartFadeToBlackAtTime = new float();
-		[ContainerField(72), LayoutImmutable, Blittable, ContainerFieldNameHash(3004064735)]
+		[ContainerField(72), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3004064735)]
 		public float StartFadeToBlackAtTime { get { return m_StartFadeToBlackAtTime; } set { if (OnPropertyChanging("ZoomLevelData." + nameof(StartFadeToBlackAtTime), this, m_StartFadeToBlackAtTime, value)) m_StartFadeToBlackAtTime = value; } } // 0x48 (72)
 		
 		protected float m_FadeFromBlackDuration = new float();
-		[ContainerField(76), LayoutImmutable, Blittable, ContainerFieldNameHash(869388908)]
+		[ContainerField(76), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(869388908)]
 		public float FadeFromBlackDuration { get { return m_FadeFromBlackDuration; } set { if (OnPropertyChanging("ZoomLevelData." + nameof(FadeFromBlackDuration), this, m_FadeFromBlackDuration, value)) m_FadeFromBlackDuration = value; } } // 0x4C (76)
 		
 		protected float m_StartFadeFromBlackAtTime = new float();
-		[ContainerField(80), LayoutImmutable, Blittable, ContainerFieldNameHash(3621030994)]
+		[ContainerField(80), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3621030994)]
 		public float StartFadeFromBlackAtTime { get { return m_StartFadeFromBlackAtTime; } set { if (OnPropertyChanging("ZoomLevelData." + nameof(StartFadeFromBlackAtTime), this, m_StartFadeFromBlackAtTime, value)) m_StartFadeFromBlackAtTime = value; } } // 0x50 (80)
 		
 		protected float m_ScreenExposureAreaScale = new float();
-		[ContainerField(84), LayoutImmutable, Blittable, ContainerFieldNameHash(2151479797)]
+		[ContainerField(84), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2151479797)]
 		public float ScreenExposureAreaScale { get { return m_ScreenExposureAreaScale; } set { if (OnPropertyChanging("ZoomLevelData." + nameof(ScreenExposureAreaScale), this, m_ScreenExposureAreaScale, value)) m_ScreenExposureAreaScale = value; } } // 0x54 (84)
 		
 		protected bool m_FadeToBlackInZoomTransition = new bool();
-		[ContainerField(88), LayoutImmutable, Blittable, ContainerFieldNameHash(2005859552)]
+		[ContainerField(88), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2005859552)]
 		public bool FadeToBlackInZoomTransition { get { return m_FadeToBlackInZoomTransition; } set { if (OnPropertyChanging("ZoomLevelData." + nameof(FadeToBlackInZoomTransition), this, m_FadeToBlackInZoomTransition, value)) m_FadeToBlackInZoomTransition = value; } } // 0x58 (88)
 		
 		protected bool m_UseFovSpecialisation = new bool();
-		[ContainerField(89), LayoutImmutable, Blittable, ContainerFieldNameHash(3389710847)]
+		[ContainerField(89), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3389710847)]
 		public bool UseFovSpecialisation { get { return m_UseFovSpecialisation; } set { if (OnPropertyChanging("ZoomLevelData." + nameof(UseFovSpecialisation), this, m_UseFovSpecialisation, value)) m_UseFovSpecialisation = value; } } // 0x59 (89)
 		
 		protected bool m_AllowFieldOfViewScaling = new bool();
-		[ContainerField(90), LayoutImmutable, Blittable, ContainerFieldNameHash(899159559)]
+		[ContainerField(90), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(899159559)]
 		public bool AllowFieldOfViewScaling { get { return m_AllowFieldOfViewScaling; } set { if (OnPropertyChanging("ZoomLevelData." + nameof(AllowFieldOfViewScaling), this, m_AllowFieldOfViewScaling, value)) m_AllowFieldOfViewScaling = value; } } // 0x5A (90)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

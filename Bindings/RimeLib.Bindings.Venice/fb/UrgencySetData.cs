@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class UrgencySetData : 
 		DataContainer
 	{
 		protected string m_Name = string.Empty;
-		[ContainerField(8), LayoutImmutable, ContainerFieldNameHash(2088949890)]
+		[ContainerField(8), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(2088949890)]
 		public string Name { get { return m_Name; } set { if (OnPropertyChanging("UrgencySetData." + nameof(Name), this, m_Name, value)) m_Name = value; } } // 0x8 (8)
 		
 		protected List<UrgencyModifierData> m_UrgencyModifiers = new List<UrgencyModifierData>();
-		[ContainerField(12), ContainerFieldNameHash(2098389712)]
+		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(2098389712), ContainerArray]
 		public List<UrgencyModifierData> UrgencyModifiers { get { return m_UrgencyModifiers; } set { if (OnPropertyChanging("UrgencySetData." + nameof(UrgencyModifiers), this, m_UrgencyModifiers, value)) m_UrgencyModifiers = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

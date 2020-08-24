@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class SkinnedMeshAsset : 
 		MeshAsset
 	{
 		protected Vec3 m_BoundingBoxPositionOffset = new Vec3();
-		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(2563040854)]
+		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(2563040854)]
 		public Vec3 BoundingBoxPositionOffset { get { return m_BoundingBoxPositionOffset; } set { if (OnPropertyChanging("SkinnedMeshAsset." + nameof(BoundingBoxPositionOffset), this, m_BoundingBoxPositionOffset, value)) m_BoundingBoxPositionOffset = value; } } // 0x30 (48)
 		
 		protected Vec3 m_BoundingBoxSizeOffset = new Vec3();
-		[ContainerField(64), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(2946347242)]
+		[ContainerField(64), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(2946347242)]
 		public Vec3 BoundingBoxSizeOffset { get { return m_BoundingBoxSizeOffset; } set { if (OnPropertyChanging("SkinnedMeshAsset." + nameof(BoundingBoxSizeOffset), this, m_BoundingBoxSizeOffset, value)) m_BoundingBoxSizeOffset = value; } } // 0x40 (64)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

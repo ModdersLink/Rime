@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class MovementActionGroupData : 
 		MovementActionData
 	{
 		protected RefArray<MovementActionData> m_Actions = new RefArray<MovementActionData>();
-		[ContainerField(8), ContainerFieldNameHash(373511656)]
+		[ContainerField(8), MemberInfoFlag(65), ContainerFieldNameHash(373511656), ContainerRefArray]
 		public RefArray<MovementActionData> Actions { get { return m_Actions; } set { if (OnPropertyChanging("MovementActionGroupData." + nameof(Actions), this, m_Actions, value)) m_Actions = value; } } // 0x8 (8)
 		
 		protected bool m_RunSimultaneously = new bool();
-		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(2322374336)]
+		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2322374336)]
 		public bool RunSimultaneously { get { return m_RunSimultaneously; } set { if (OnPropertyChanging("MovementActionGroupData." + nameof(RunSimultaneously), this, m_RunSimultaneously, value)) m_RunSimultaneously = value; } } // 0xC (12)
 		
 		protected bool m_RestartChildren = new bool();
-		[ContainerField(13), LayoutImmutable, Blittable, ContainerFieldNameHash(3914911489)]
+		[ContainerField(13), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3914911489)]
 		public bool RestartChildren { get { return m_RestartChildren; } set { if (OnPropertyChanging("MovementActionGroupData." + nameof(RestartChildren), this, m_RestartChildren, value)) m_RestartChildren = value; } } // 0xD (13)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

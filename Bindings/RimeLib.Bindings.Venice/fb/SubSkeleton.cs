@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(41), ContainerStruct]
 	public class SubSkeleton : FrostbiteContainer
 	{
-		[ContainerField(0)]
+		[ContainerField(0), MemberInfoFlag(53), ContainerCtrRef]
 		public CtrRef<SkeletonAsset> Skeleton { get; set; } = new CtrRef<SkeletonAsset>(); // 0x0 (0)
 		
-		[ContainerField(4)]
+		[ContainerField(4), MemberInfoFlag(65), ContainerArray]
 		public List<int> BoneMap { get; set; } = new List<int>(); // 0x4 (4)
 		
-		[ContainerField(8)]
+		[ContainerField(8), MemberInfoFlag(65), ContainerArray]
 		public List<LinearTransform> TransformMap { get; set; } = new List<LinearTransform>(); // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

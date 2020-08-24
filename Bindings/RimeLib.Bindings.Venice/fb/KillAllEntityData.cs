@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class KillAllEntityData : 
 		GameEntityData
 	{
 		protected bool m_KillAllHumanSoldiers = new bool();
-		[ContainerField(96), LayoutImmutable, Blittable, ContainerFieldNameHash(2202794880)]
+		[ContainerField(96), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2202794880)]
 		public bool KillAllHumanSoldiers { get { return m_KillAllHumanSoldiers; } set { if (OnPropertyChanging("KillAllEntityData." + nameof(KillAllHumanSoldiers), this, m_KillAllHumanSoldiers, value)) m_KillAllHumanSoldiers = value; } } // 0x60 (96)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

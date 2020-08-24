@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class SaveEntityData : 
 		EntityData
 	{
 		protected CtrRef<TextureAsset> m_SaveScreenTexture = new CtrRef<TextureAsset>();
-		[ContainerField(12), ContainerFieldNameHash(1992725143)]
+		[ContainerField(12), MemberInfoFlag(53), ContainerFieldNameHash(1992725143), ContainerCtrRef]
 		public CtrRef<TextureAsset> SaveScreenTexture { get { return m_SaveScreenTexture; } set { if (OnPropertyChanging("SaveEntityData." + nameof(SaveScreenTexture), this, m_SaveScreenTexture, value)) m_SaveScreenTexture = value; } } // 0xC (12)
 		
 		protected string m_LevelName = string.Empty;
-		[ContainerField(16), LayoutImmutable, ContainerFieldNameHash(1599082292)]
+		[ContainerField(16), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(1599082292)]
 		public string LevelName { get { return m_LevelName; } set { if (OnPropertyChanging("SaveEntityData." + nameof(LevelName), this, m_LevelName, value)) m_LevelName = value; } } // 0x10 (16)
 		
 		protected string m_SaveFileName = string.Empty;
-		[ContainerField(20), LayoutImmutable, ContainerFieldNameHash(1526449829)]
+		[ContainerField(20), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(1526449829)]
 		public string SaveFileName { get { return m_SaveFileName; } set { if (OnPropertyChanging("SaveEntityData." + nameof(SaveFileName), this, m_SaveFileName, value)) m_SaveFileName = value; } } // 0x14 (20)
 		
 		protected string m_SaveNameSID = string.Empty;
-		[ContainerField(24), LayoutImmutable, ContainerFieldNameHash(1206536541)]
+		[ContainerField(24), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(1206536541)]
 		public string SaveNameSID { get { return m_SaveNameSID; } set { if (OnPropertyChanging("SaveEntityData." + nameof(SaveNameSID), this, m_SaveNameSID, value)) m_SaveNameSID = value; } } // 0x18 (24)
 		
 		protected bool m_CheckForHumanPlayer = new bool();
-		[ContainerField(28), LayoutImmutable, Blittable, ContainerFieldNameHash(2331597556)]
+		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2331597556)]
 		public bool CheckForHumanPlayer { get { return m_CheckForHumanPlayer; } set { if (OnPropertyChanging("SaveEntityData." + nameof(CheckForHumanPlayer), this, m_CheckForHumanPlayer, value)) m_CheckForHumanPlayer = value; } } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

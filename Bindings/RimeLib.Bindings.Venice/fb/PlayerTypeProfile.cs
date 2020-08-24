@@ -18,44 +18,44 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class PlayerTypeProfile : 
 		Asset
 	{
 		protected CtrRef<PersistenceData> m_Values = new CtrRef<PersistenceData>();
-		[ContainerField(12), ContainerFieldNameHash(3142410589)]
+		[ContainerField(12), MemberInfoFlag(53), ContainerFieldNameHash(3142410589), ContainerCtrRef]
 		public CtrRef<PersistenceData> Values { get { return m_Values; } set { if (OnPropertyChanging("PlayerTypeProfile." + nameof(Values), this, m_Values, value)) m_Values = value; } } // 0xC (12)
 		
 		protected CtrRef<AwardDataTree> m_Awards = new CtrRef<AwardDataTree>();
-		[ContainerField(16), ContainerFieldNameHash(2497987255)]
+		[ContainerField(16), MemberInfoFlag(53), ContainerFieldNameHash(2497987255), ContainerCtrRef]
 		public CtrRef<AwardDataTree> Awards { get { return m_Awards; } set { if (OnPropertyChanging("PlayerTypeProfile." + nameof(Awards), this, m_Awards, value)) m_Awards = value; } } // 0x10 (16)
 		
 		protected CtrRef<RankParamsAsset> m_RankParams = new CtrRef<RankParamsAsset>();
-		[ContainerField(20), ContainerFieldNameHash(1481367663)]
+		[ContainerField(20), MemberInfoFlag(53), ContainerFieldNameHash(1481367663), ContainerCtrRef]
 		public CtrRef<RankParamsAsset> RankParams { get { return m_RankParams; } set { if (OnPropertyChanging("PlayerTypeProfile." + nameof(RankParams), this, m_RankParams, value)) m_RankParams = value; } } // 0x14 (20)
 		
 		protected CtrRef<ScoringData> m_Scoring = new CtrRef<ScoringData>();
-		[ContainerField(24), ContainerFieldNameHash(2696085640)]
+		[ContainerField(24), MemberInfoFlag(53), ContainerFieldNameHash(2696085640), ContainerCtrRef]
 		public CtrRef<ScoringData> Scoring { get { return m_Scoring; } set { if (OnPropertyChanging("PlayerTypeProfile." + nameof(Scoring), this, m_Scoring, value)) m_Scoring = value; } } // 0x18 (24)
 		
 		protected CtrRef<DogTagsAsset> m_DogTags = new CtrRef<DogTagsAsset>();
-		[ContainerField(28), ContainerFieldNameHash(242750408)]
+		[ContainerField(28), MemberInfoFlag(53), ContainerFieldNameHash(242750408), ContainerCtrRef]
 		public CtrRef<DogTagsAsset> DogTags { get { return m_DogTags; } set { if (OnPropertyChanging("PlayerTypeProfile." + nameof(DogTags), this, m_DogTags, value)) m_DogTags = value; } } // 0x1C (28)
 		
 		protected EloParameters m_EloParams = new EloParameters();
-		[ContainerField(32), ContainerFieldNameHash(4149055871)]
+		[ContainerField(32), MemberInfoFlag(41), ContainerFieldNameHash(4149055871)]
 		public EloParameters EloParams { get { return m_EloParams; } set { if (OnPropertyChanging("PlayerTypeProfile." + nameof(EloParams), this, m_EloParams, value)) m_EloParams = value; } } // 0x20 (32)
 		
 		protected CtrRef<StaticUnlockList> m_StaticUnlocks = new CtrRef<StaticUnlockList>();
-		[ContainerField(52), ContainerFieldNameHash(1696937534)]
+		[ContainerField(52), MemberInfoFlag(53), ContainerFieldNameHash(1696937534), ContainerCtrRef]
 		public CtrRef<StaticUnlockList> StaticUnlocks { get { return m_StaticUnlocks; } set { if (OnPropertyChanging("PlayerTypeProfile." + nameof(StaticUnlocks), this, m_StaticUnlocks, value)) m_StaticUnlocks = value; } } // 0x34 (52)
 		
 		protected CtrRef<StatSpamSettings> m_SpamSettings = new CtrRef<StatSpamSettings>();
-		[ContainerField(56), ContainerFieldNameHash(2878676975)]
+		[ContainerField(56), MemberInfoFlag(53), ContainerFieldNameHash(2878676975), ContainerCtrRef]
 		public CtrRef<StatSpamSettings> SpamSettings { get { return m_SpamSettings; } set { if (OnPropertyChanging("PlayerTypeProfile." + nameof(SpamSettings), this, m_SpamSettings, value)) m_SpamSettings = value; } } // 0x38 (56)
 		
 		protected List<string> m_OrderedUnlockNames = new List<string>();
-		[ContainerField(60), ContainerFieldNameHash(3883933262)]
+		[ContainerField(60), MemberInfoFlag(65), ContainerFieldNameHash(3883933262), ContainerArray]
 		public List<string> OrderedUnlockNames { get { return m_OrderedUnlockNames; } set { if (OnPropertyChanging("PlayerTypeProfile." + nameof(OrderedUnlockNames), this, m_OrderedUnlockNames, value)) m_OrderedUnlockNames = value; } } // 0x3C (60)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

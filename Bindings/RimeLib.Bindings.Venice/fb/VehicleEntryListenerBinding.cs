@@ -18,52 +18,52 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(41), ContainerStruct]
 	public class VehicleEntryListenerBinding : FrostbiteContainer
 	{
-		[ContainerField(0)]
+		[ContainerField(0), MemberInfoFlag(41)]
 		public AntRef InVehicle { get; set; } = new AntRef(); // 0x0 (0)
 		
-		[ContainerField(4)]
+		[ContainerField(4), MemberInfoFlag(41)]
 		public AntRef InOpenEntry { get; set; } = new AntRef(); // 0x4 (4)
 		
-		[ContainerField(8)]
+		[ContainerField(8), MemberInfoFlag(41)]
 		public AntRef VehicleEntryFire { get; set; } = new AntRef(); // 0x8 (8)
 		
-		[ContainerField(12)]
+		[ContainerField(12), MemberInfoFlag(41)]
 		public AntRef VehicleEntryYaw { get; set; } = new AntRef(); // 0xC (12)
 		
-		[ContainerField(16)]
+		[ContainerField(16), MemberInfoFlag(41)]
 		public AntRef VehicleEntryPitch { get; set; } = new AntRef(); // 0x10 (16)
 		
-		[ContainerField(20)]
+		[ContainerField(20), MemberInfoFlag(41)]
 		public AntRef VehicleEntryRoll { get; set; } = new AntRef(); // 0x14 (20)
 		
-		[ContainerField(24)]
+		[ContainerField(24), MemberInfoFlag(41)]
 		public AntRef VehicleEntryRotation { get; set; } = new AntRef(); // 0x18 (24)
 		
-		[ContainerField(28)]
+		[ContainerField(28), MemberInfoFlag(41)]
 		public AntRef VehicleEntryForceX { get; set; } = new AntRef(); // 0x1C (28)
 		
-		[ContainerField(32)]
+		[ContainerField(32), MemberInfoFlag(41)]
 		public AntRef VehicleEntryForceY { get; set; } = new AntRef(); // 0x20 (32)
 		
-		[ContainerField(36)]
+		[ContainerField(36), MemberInfoFlag(41)]
 		public AntRef VehicleEntryForceZ { get; set; } = new AntRef(); // 0x24 (36)
 		
-		[ContainerField(40)]
+		[ContainerField(40), MemberInfoFlag(41)]
 		public AntRef VehicleEntryIndex { get; set; } = new AntRef(); // 0x28 (40)
 		
-		[ContainerField(44)]
+		[ContainerField(44), MemberInfoFlag(41)]
 		public AntRef VehicleEntryIndexUpdated { get; set; } = new AntRef(); // 0x2C (44)
 		
-		[ContainerField(48)]
+		[ContainerField(48), MemberInfoFlag(41)]
 		public AntRef VehicleOpenEntryIndex { get; set; } = new AntRef(); // 0x30 (48)
 		
-		[ContainerField(52)]
+		[ContainerField(52), MemberInfoFlag(41)]
 		public AntRef InVehicleRetrigger { get; set; } = new AntRef(); // 0x34 (52)
 		
-		[ContainerField(56)]
+		[ContainerField(56), MemberInfoFlag(41)]
 		public AntRef VehicleEntryChooserIndex { get; set; } = new AntRef(); // 0x38 (56)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

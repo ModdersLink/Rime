@@ -18,52 +18,52 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class RotorComponentData : 
 		ComponentData
 	{
 		protected RotorModelData m_LowRpmModel = new RotorModelData();
-		[ContainerField(96), ContainerFieldNameHash(3693202929)]
+		[ContainerField(96), MemberInfoFlag(41), ContainerFieldNameHash(3693202929)]
 		public RotorModelData LowRpmModel { get { return m_LowRpmModel; } set { if (OnPropertyChanging("RotorComponentData." + nameof(LowRpmModel), this, m_LowRpmModel, value)) m_LowRpmModel = value; } } // 0x60 (96)
 		
 		protected RotorModelData m_HighRpmModel = new RotorModelData();
-		[ContainerField(104), ContainerFieldNameHash(4157411755)]
+		[ContainerField(104), MemberInfoFlag(41), ContainerFieldNameHash(4157411755)]
 		public RotorModelData HighRpmModel { get { return m_HighRpmModel; } set { if (OnPropertyChanging("RotorComponentData." + nameof(HighRpmModel), this, m_HighRpmModel, value)) m_HighRpmModel = value; } } // 0x68 (104)
 		
 		protected RotationAxis m_RotationAxis = new RotationAxis();
-		[ContainerField(112), ContainerFieldNameHash(3148542130)]
+		[ContainerField(112), MemberInfoFlag(137), ContainerFieldNameHash(3148542130)]
 		public RotationAxis RotationAxis { get { return m_RotationAxis; } set { if (OnPropertyChanging("RotorComponentData." + nameof(RotationAxis), this, m_RotationAxis, value)) m_RotationAxis = value; } } // 0x70 (112)
 		
 		protected float m_RotationMultiplier = new float();
-		[ContainerField(116), LayoutImmutable, Blittable, ContainerFieldNameHash(1226236954)]
+		[ContainerField(116), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1226236954)]
 		public float RotationMultiplier { get { return m_RotationMultiplier; } set { if (OnPropertyChanging("RotorComponentData." + nameof(RotationMultiplier), this, m_RotationMultiplier, value)) m_RotationMultiplier = value; } } // 0x74 (116)
 		
 		protected float m_ChangeModelRpm = new float();
-		[ContainerField(120), LayoutImmutable, Blittable, ContainerFieldNameHash(935487395)]
+		[ContainerField(120), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(935487395)]
 		public float ChangeModelRpm { get { return m_ChangeModelRpm; } set { if (OnPropertyChanging("RotorComponentData." + nameof(ChangeModelRpm), this, m_ChangeModelRpm, value)) m_ChangeModelRpm = value; } } // 0x78 (120)
 		
 		protected CtrRef<EffectBlueprint> m_BlowEffect = new CtrRef<EffectBlueprint>();
-		[ContainerField(124), ContainerFieldNameHash(3040391844)]
+		[ContainerField(124), MemberInfoFlag(53), ContainerFieldNameHash(3040391844), ContainerCtrRef]
 		public CtrRef<EffectBlueprint> BlowEffect { get { return m_BlowEffect; } set { if (OnPropertyChanging("RotorComponentData." + nameof(BlowEffect), this, m_BlowEffect, value)) m_BlowEffect = value; } } // 0x7C (124)
 		
 		protected float m_TriggerGroundEffectHeight = new float();
-		[ContainerField(128), LayoutImmutable, Blittable, ContainerFieldNameHash(1753938672)]
+		[ContainerField(128), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1753938672)]
 		public float TriggerGroundEffectHeight { get { return m_TriggerGroundEffectHeight; } set { if (OnPropertyChanging("RotorComponentData." + nameof(TriggerGroundEffectHeight), this, m_TriggerGroundEffectHeight, value)) m_TriggerGroundEffectHeight = value; } } // 0x80 (128)
 		
 		protected float m_CriticallyDamagedRotationForce = new float();
-		[ContainerField(132), LayoutImmutable, Blittable, ContainerFieldNameHash(482271037)]
+		[ContainerField(132), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(482271037)]
 		public float CriticallyDamagedRotationForce { get { return m_CriticallyDamagedRotationForce; } set { if (OnPropertyChanging("RotorComponentData." + nameof(CriticallyDamagedRotationForce), this, m_CriticallyDamagedRotationForce, value)) m_CriticallyDamagedRotationForce = value; } } // 0x84 (132)
 		
 		protected bool m_OnlyTriggerBlowEffectInWater = new bool();
-		[ContainerField(136), LayoutImmutable, Blittable, ContainerFieldNameHash(2216323514)]
+		[ContainerField(136), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2216323514)]
 		public bool OnlyTriggerBlowEffectInWater { get { return m_OnlyTriggerBlowEffectInWater; } set { if (OnPropertyChanging("RotorComponentData." + nameof(OnlyTriggerBlowEffectInWater), this, m_OnlyTriggerBlowEffectInWater, value)) m_OnlyTriggerBlowEffectInWater = value; } } // 0x88 (136)
 		
 		protected bool m_GroundEffectOnTerrainOnly = new bool();
-		[ContainerField(137), LayoutImmutable, Blittable, ContainerFieldNameHash(1990027221)]
+		[ContainerField(137), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1990027221)]
 		public bool GroundEffectOnTerrainOnly { get { return m_GroundEffectOnTerrainOnly; } set { if (OnPropertyChanging("RotorComponentData." + nameof(GroundEffectOnTerrainOnly), this, m_GroundEffectOnTerrainOnly, value)) m_GroundEffectOnTerrainOnly = value; } } // 0x89 (137)
 		
 		protected bool m_CriticalDamage = new bool();
-		[ContainerField(138), LayoutImmutable, Blittable, ContainerFieldNameHash(3377319365)]
+		[ContainerField(138), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3377319365)]
 		public bool CriticalDamage { get { return m_CriticalDamage; } set { if (OnPropertyChanging("RotorComponentData." + nameof(CriticalDamage), this, m_CriticalDamage, value)) m_CriticalDamage = value; } } // 0x8A (138)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

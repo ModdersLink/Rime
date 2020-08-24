@@ -18,32 +18,32 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class DelayNodeData : 
 		AudioGraphNodeData
 	{
 		protected AudioGraphNodePort m_In = new AudioGraphNodePort();
-		[ContainerField(8), ContainerFieldNameHash(5862146)]
+		[ContainerField(8), MemberInfoFlag(41), ContainerFieldNameHash(5862146)]
 		public AudioGraphNodePort In { get { return m_In; } set { if (OnPropertyChanging("DelayNodeData." + nameof(In), this, m_In, value)) m_In = value; } } // 0x8 (8)
 		
 		protected AudioGraphNodePort m_DelayTime = new AudioGraphNodePort();
-		[ContainerField(16), ContainerFieldNameHash(3694246245)]
+		[ContainerField(16), MemberInfoFlag(41), ContainerFieldNameHash(3694246245)]
 		public AudioGraphNodePort DelayTime { get { return m_DelayTime; } set { if (OnPropertyChanging("DelayNodeData." + nameof(DelayTime), this, m_DelayTime, value)) m_DelayTime = value; } } // 0x10 (16)
 		
 		protected AudioGraphNodePort m_Feedback = new AudioGraphNodePort();
-		[ContainerField(24), ContainerFieldNameHash(229061996)]
+		[ContainerField(24), MemberInfoFlag(41), ContainerFieldNameHash(229061996)]
 		public AudioGraphNodePort Feedback { get { return m_Feedback; } set { if (OnPropertyChanging("DelayNodeData." + nameof(Feedback), this, m_Feedback, value)) m_Feedback = value; } } // 0x18 (24)
 		
 		protected AudioGraphNodePort m_Out = new AudioGraphNodePort();
-		[ContainerField(32), ContainerFieldNameHash(193453899)]
+		[ContainerField(32), MemberInfoFlag(41), ContainerFieldNameHash(193453899)]
 		public AudioGraphNodePort Out { get { return m_Out; } set { if (OnPropertyChanging("DelayNodeData." + nameof(Out), this, m_Out, value)) m_Out = value; } } // 0x20 (32)
 		
 		protected float m_MaxDelayTime = new float();
-		[ContainerField(40), LayoutImmutable, Blittable, ContainerFieldNameHash(3367546161)]
+		[ContainerField(40), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3367546161)]
 		public float MaxDelayTime { get { return m_MaxDelayTime; } set { if (OnPropertyChanging("DelayNodeData." + nameof(MaxDelayTime), this, m_MaxDelayTime, value)) m_MaxDelayTime = value; } } // 0x28 (40)
 		
 		protected SoundGraphPluginRef m_Plugin = new SoundGraphPluginRef();
-		[ContainerField(44), ContainerFieldNameHash(3384353452)]
+		[ContainerField(44), MemberInfoFlag(41), ContainerFieldNameHash(3384353452)]
 		public SoundGraphPluginRef Plugin { get { return m_Plugin; } set { if (OnPropertyChanging("DelayNodeData." + nameof(Plugin), this, m_Plugin, value)) m_Plugin = value; } } // 0x2C (44)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

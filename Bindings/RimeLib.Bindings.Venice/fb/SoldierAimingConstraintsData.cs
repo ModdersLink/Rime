@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class SoldierAimingConstraintsData : 
 		DataContainer
 	{
 		protected AimingConstraintsData m_SwimmingConstraints = new AimingConstraintsData();
-		[ContainerField(8), ContainerFieldNameHash(2106853822)]
+		[ContainerField(8), MemberInfoFlag(41), ContainerFieldNameHash(2106853822)]
 		public AimingConstraintsData SwimmingConstraints { get { return m_SwimmingConstraints; } set { if (OnPropertyChanging("SoldierAimingConstraintsData." + nameof(SwimmingConstraints), this, m_SwimmingConstraints, value)) m_SwimmingConstraints = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

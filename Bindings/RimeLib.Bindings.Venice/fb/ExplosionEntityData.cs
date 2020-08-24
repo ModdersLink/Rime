@@ -18,104 +18,104 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class ExplosionEntityData : 
 		GameEntityData
 	{
 		protected CtrRef<EffectBlueprint> m_DetonationEffect = new CtrRef<EffectBlueprint>();
-		[ContainerField(96), ContainerFieldNameHash(2442173307)]
+		[ContainerField(96), MemberInfoFlag(53), ContainerFieldNameHash(2442173307), ContainerCtrRef]
 		public CtrRef<EffectBlueprint> DetonationEffect { get { return m_DetonationEffect; } set { if (OnPropertyChanging("ExplosionEntityData." + nameof(DetonationEffect), this, m_DetonationEffect, value)) m_DetonationEffect = value; } } // 0x60 (96)
 		
 		protected float m_BlastImpulse = new float();
-		[ContainerField(100), LayoutImmutable, Blittable, ContainerFieldNameHash(1357093398)]
+		[ContainerField(100), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1357093398)]
 		public float BlastImpulse { get { return m_BlastImpulse; } set { if (OnPropertyChanging("ExplosionEntityData." + nameof(BlastImpulse), this, m_BlastImpulse, value)) m_BlastImpulse = value; } } // 0x64 (100)
 		
 		protected CtrRef<MaskVolumeEntityData> m_MaskVolume = new CtrRef<MaskVolumeEntityData>();
-		[ContainerField(104), ContainerFieldNameHash(3961586169)]
+		[ContainerField(104), MemberInfoFlag(53), ContainerFieldNameHash(3961586169), ContainerCtrRef]
 		public CtrRef<MaskVolumeEntityData> MaskVolume { get { return m_MaskVolume; } set { if (OnPropertyChanging("ExplosionEntityData." + nameof(MaskVolume), this, m_MaskVolume, value)) m_MaskVolume = value; } } // 0x68 (104)
 		
 		protected CtrRef<DestructionMaskVolumeEntityData> m_DestructionMaskVolume = new CtrRef<DestructionMaskVolumeEntityData>();
-		[ContainerField(108), ContainerFieldNameHash(2657972903)]
+		[ContainerField(108), MemberInfoFlag(53), ContainerFieldNameHash(2657972903), ContainerCtrRef]
 		public CtrRef<DestructionMaskVolumeEntityData> DestructionMaskVolume { get { return m_DestructionMaskVolume; } set { if (OnPropertyChanging("ExplosionEntityData." + nameof(DestructionMaskVolume), this, m_DestructionMaskVolume, value)) m_DestructionMaskVolume = value; } } // 0x6C (108)
 		
 		protected CtrRef<MaterialContainerPair> m_MaterialPair = new CtrRef<MaterialContainerPair>();
-		[ContainerField(112), ContainerFieldNameHash(161392100)]
+		[ContainerField(112), MemberInfoFlag(53), ContainerFieldNameHash(161392100), ContainerCtrRef]
 		public CtrRef<MaterialContainerPair> MaterialPair { get { return m_MaterialPair; } set { if (OnPropertyChanging("ExplosionEntityData." + nameof(MaterialPair), this, m_MaterialPair, value)) m_MaterialPair = value; } } // 0x70 (112)
 		
 		protected DamageIndicationType m_DamageIndicationType = new DamageIndicationType();
-		[ContainerField(116), ContainerFieldNameHash(1466039938)]
+		[ContainerField(116), MemberInfoFlag(137), ContainerFieldNameHash(1466039938)]
 		public DamageIndicationType DamageIndicationType { get { return m_DamageIndicationType; } set { if (OnPropertyChanging("ExplosionEntityData." + nameof(DamageIndicationType), this, m_DamageIndicationType, value)) m_DamageIndicationType = value; } } // 0x74 (116)
 		
 		protected float m_EmpTime = new float();
-		[ContainerField(120), LayoutImmutable, Blittable, ContainerFieldNameHash(50680072)]
+		[ContainerField(120), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(50680072)]
 		public float EmpTime { get { return m_EmpTime; } set { if (OnPropertyChanging("ExplosionEntityData." + nameof(EmpTime), this, m_EmpTime, value)) m_EmpTime = value; } } // 0x78 (120)
 		
 		protected float m_MaxOcclusionRaycastRadius = new float();
-		[ContainerField(124), LayoutImmutable, Blittable, ContainerFieldNameHash(3529203691)]
+		[ContainerField(124), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3529203691)]
 		public float MaxOcclusionRaycastRadius { get { return m_MaxOcclusionRaycastRadius; } set { if (OnPropertyChanging("ExplosionEntityData." + nameof(MaxOcclusionRaycastRadius), this, m_MaxOcclusionRaycastRadius, value)) m_MaxOcclusionRaycastRadius = value; } } // 0x7C (124)
 		
 		protected float m_InnerBlastRadius = new float();
-		[ContainerField(128), LayoutImmutable, Blittable, ContainerFieldNameHash(3210314251)]
+		[ContainerField(128), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3210314251)]
 		public float InnerBlastRadius { get { return m_InnerBlastRadius; } set { if (OnPropertyChanging("ExplosionEntityData." + nameof(InnerBlastRadius), this, m_InnerBlastRadius, value)) m_InnerBlastRadius = value; } } // 0x80 (128)
 		
 		protected float m_BlastDamage = new float();
-		[ContainerField(132), LayoutImmutable, Blittable, ContainerFieldNameHash(2404506214)]
+		[ContainerField(132), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2404506214)]
 		public float BlastDamage { get { return m_BlastDamage; } set { if (OnPropertyChanging("ExplosionEntityData." + nameof(BlastDamage), this, m_BlastDamage, value)) m_BlastDamage = value; } } // 0x84 (132)
 		
 		protected float m_BlastRadius = new float();
-		[ContainerField(136), LayoutImmutable, Blittable, ContainerFieldNameHash(3113578581)]
+		[ContainerField(136), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3113578581)]
 		public float BlastRadius { get { return m_BlastRadius; } set { if (OnPropertyChanging("ExplosionEntityData." + nameof(BlastRadius), this, m_BlastRadius, value)) m_BlastRadius = value; } } // 0x88 (136)
 		
 		protected float m_ShockwaveImpulse = new float();
-		[ContainerField(140), LayoutImmutable, Blittable, ContainerFieldNameHash(2645636871)]
+		[ContainerField(140), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2645636871)]
 		public float ShockwaveImpulse { get { return m_ShockwaveImpulse; } set { if (OnPropertyChanging("ExplosionEntityData." + nameof(ShockwaveImpulse), this, m_ShockwaveImpulse, value)) m_ShockwaveImpulse = value; } } // 0x8C (140)
 		
 		protected float m_SpawnDelay = new float();
-		[ContainerField(144), LayoutImmutable, Blittable, ContainerFieldNameHash(3473198411)]
+		[ContainerField(144), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3473198411)]
 		public float SpawnDelay { get { return m_SpawnDelay; } set { if (OnPropertyChanging("ExplosionEntityData." + nameof(SpawnDelay), this, m_SpawnDelay, value)) m_SpawnDelay = value; } } // 0x90 (144)
 		
 		protected float m_ShockwaveDamage = new float();
-		[ContainerField(148), LayoutImmutable, Blittable, ContainerFieldNameHash(1308225879)]
+		[ContainerField(148), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1308225879)]
 		public float ShockwaveDamage { get { return m_ShockwaveDamage; } set { if (OnPropertyChanging("ExplosionEntityData." + nameof(ShockwaveDamage), this, m_ShockwaveDamage, value)) m_ShockwaveDamage = value; } } // 0x94 (148)
 		
 		protected float m_ShockwaveRadius = new float();
-		[ContainerField(152), LayoutImmutable, Blittable, ContainerFieldNameHash(764886628)]
+		[ContainerField(152), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(764886628)]
 		public float ShockwaveRadius { get { return m_ShockwaveRadius; } set { if (OnPropertyChanging("ExplosionEntityData." + nameof(ShockwaveRadius), this, m_ShockwaveRadius, value)) m_ShockwaveRadius = value; } } // 0x98 (152)
 		
 		protected float m_CameraShockwaveRadius = new float();
-		[ContainerField(156), LayoutImmutable, Blittable, ContainerFieldNameHash(1681428477)]
+		[ContainerField(156), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1681428477)]
 		public float CameraShockwaveRadius { get { return m_CameraShockwaveRadius; } set { if (OnPropertyChanging("ExplosionEntityData." + nameof(CameraShockwaveRadius), this, m_CameraShockwaveRadius, value)) m_CameraShockwaveRadius = value; } } // 0x9C (156)
 		
 		protected float m_ShockwaveTime = new float();
-		[ContainerField(160), LayoutImmutable, Blittable, ContainerFieldNameHash(2690395625)]
+		[ContainerField(160), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2690395625)]
 		public float ShockwaveTime { get { return m_ShockwaveTime; } set { if (OnPropertyChanging("ExplosionEntityData." + nameof(ShockwaveTime), this, m_ShockwaveTime, value)) m_ShockwaveTime = value; } } // 0xA0 (160)
 		
 		protected bool m_DisableOcclusion = new bool();
-		[ContainerField(164), LayoutImmutable, Blittable, ContainerFieldNameHash(4105695996)]
+		[ContainerField(164), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(4105695996)]
 		public bool DisableOcclusion { get { return m_DisableOcclusion; } set { if (OnPropertyChanging("ExplosionEntityData." + nameof(DisableOcclusion), this, m_DisableOcclusion, value)) m_DisableOcclusion = value; } } // 0xA4 (164)
 		
 		protected bool m_DisableStaticEntityOcclusion = new bool();
-		[ContainerField(165), LayoutImmutable, Blittable, ContainerFieldNameHash(1182367647)]
+		[ContainerField(165), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1182367647)]
 		public bool DisableStaticEntityOcclusion { get { return m_DisableStaticEntityOcclusion; } set { if (OnPropertyChanging("ExplosionEntityData." + nameof(DisableStaticEntityOcclusion), this, m_DisableStaticEntityOcclusion, value)) m_DisableStaticEntityOcclusion = value; } } // 0xA5 (165)
 		
 		protected bool m_UseEntityTransformForDetonationEffect = new bool();
-		[ContainerField(166), LayoutImmutable, Blittable, ContainerFieldNameHash(28012372)]
+		[ContainerField(166), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(28012372)]
 		public bool UseEntityTransformForDetonationEffect { get { return m_UseEntityTransformForDetonationEffect; } set { if (OnPropertyChanging("ExplosionEntityData." + nameof(UseEntityTransformForDetonationEffect), this, m_UseEntityTransformForDetonationEffect, value)) m_UseEntityTransformForDetonationEffect = value; } } // 0xA6 (166)
 		
 		protected bool m_HasStunEffect = new bool();
-		[ContainerField(167), LayoutImmutable, Blittable, ContainerFieldNameHash(3580962068)]
+		[ContainerField(167), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3580962068)]
 		public bool HasStunEffect { get { return m_HasStunEffect; } set { if (OnPropertyChanging("ExplosionEntityData." + nameof(HasStunEffect), this, m_HasStunEffect, value)) m_HasStunEffect = value; } } // 0xA7 (167)
 		
 		protected bool m_TriggerImpairedHearing = new bool();
-		[ContainerField(168), LayoutImmutable, Blittable, ContainerFieldNameHash(3966072268)]
+		[ContainerField(168), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3966072268)]
 		public bool TriggerImpairedHearing { get { return m_TriggerImpairedHearing; } set { if (OnPropertyChanging("ExplosionEntityData." + nameof(TriggerImpairedHearing), this, m_TriggerImpairedHearing, value)) m_TriggerImpairedHearing = value; } } // 0xA8 (168)
 		
 		protected bool m_DetonateOnce = new bool();
-		[ContainerField(169), LayoutImmutable, Blittable, ContainerFieldNameHash(1593780038)]
+		[ContainerField(169), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1593780038)]
 		public bool DetonateOnce { get { return m_DetonateOnce; } set { if (OnPropertyChanging("ExplosionEntityData." + nameof(DetonateOnce), this, m_DetonateOnce, value)) m_DetonateOnce = value; } } // 0xA9 (169)
 		
 		protected bool m_ShowOnMinimap = new bool();
-		[ContainerField(170), LayoutImmutable, Blittable, ContainerFieldNameHash(1450528952)]
+		[ContainerField(170), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1450528952)]
 		public bool ShowOnMinimap { get { return m_ShowOnMinimap; } set { if (OnPropertyChanging("ExplosionEntityData." + nameof(ShowOnMinimap), this, m_ShowOnMinimap, value)) m_ShowOnMinimap = value; } } // 0xAA (170)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

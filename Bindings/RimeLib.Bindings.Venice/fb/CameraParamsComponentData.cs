@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class CameraParamsComponentData : 
 		ComponentData
 	{
 		protected float m_ViewDistance = new float();
-		[ContainerField(96), LayoutImmutable, Blittable, ContainerFieldNameHash(2201945291)]
+		[ContainerField(96), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2201945291)]
 		public float ViewDistance { get { return m_ViewDistance; } set { if (OnPropertyChanging("CameraParamsComponentData." + nameof(ViewDistance), this, m_ViewDistance, value)) m_ViewDistance = value; } } // 0x60 (96)
 		
 		protected float m_NearPlane = new float();
-		[ContainerField(100), LayoutImmutable, Blittable, ContainerFieldNameHash(3156145579)]
+		[ContainerField(100), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3156145579)]
 		public float NearPlane { get { return m_NearPlane; } set { if (OnPropertyChanging("CameraParamsComponentData." + nameof(NearPlane), this, m_NearPlane, value)) m_NearPlane = value; } } // 0x64 (100)
 		
 		protected float m_SunShadowmapViewDistance = new float();
-		[ContainerField(104), LayoutImmutable, Blittable, ContainerFieldNameHash(2626774393)]
+		[ContainerField(104), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2626774393)]
 		public float SunShadowmapViewDistance { get { return m_SunShadowmapViewDistance; } set { if (OnPropertyChanging("CameraParamsComponentData." + nameof(SunShadowmapViewDistance), this, m_SunShadowmapViewDistance, value)) m_SunShadowmapViewDistance = value; } } // 0x68 (104)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

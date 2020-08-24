@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class CharacterAnimationSpaceEntityData : 
 		EntityData
 	{
 		protected Realm m_Realm = new Realm();
-		[ContainerField(12), ContainerFieldNameHash(229961746)]
+		[ContainerField(12), MemberInfoFlag(137), ContainerFieldNameHash(229961746)]
 		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("CharacterAnimationSpaceEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0xC (12)
 		
 		protected AntRef m_SpacePositionGS = new AntRef();
-		[ContainerField(16), ContainerFieldNameHash(2185021708)]
+		[ContainerField(16), MemberInfoFlag(41), ContainerFieldNameHash(2185021708)]
 		public AntRef SpacePositionGS { get { return m_SpacePositionGS; } set { if (OnPropertyChanging("CharacterAnimationSpaceEntityData." + nameof(SpacePositionGS), this, m_SpacePositionGS, value)) m_SpacePositionGS = value; } } // 0x10 (16)
 		
 		protected AntRef m_SpaceRotationGS = new AntRef();
-		[ContainerField(20), ContainerFieldNameHash(2997550689)]
+		[ContainerField(20), MemberInfoFlag(41), ContainerFieldNameHash(2997550689)]
 		public AntRef SpaceRotationGS { get { return m_SpaceRotationGS; } set { if (OnPropertyChanging("CharacterAnimationSpaceEntityData." + nameof(SpaceRotationGS), this, m_SpaceRotationGS, value)) m_SpaceRotationGS = value; } } // 0x14 (20)
 		
 		protected float m_WarpAnimationBlendTime = new float();
-		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(1283988115)]
+		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1283988115)]
 		public float WarpAnimationBlendTime { get { return m_WarpAnimationBlendTime; } set { if (OnPropertyChanging("CharacterAnimationSpaceEntityData." + nameof(WarpAnimationBlendTime), this, m_WarpAnimationBlendTime, value)) m_WarpAnimationBlendTime = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class VoiceOverStructureConnection : 
 		DataContainer
 	{
 		protected CtrRef<VoiceOverStructureNode> m_TargetNode = new CtrRef<VoiceOverStructureNode>();
-		[ContainerField(8), ContainerFieldNameHash(328873140)]
+		[ContainerField(8), MemberInfoFlag(53), ContainerFieldNameHash(328873140), ContainerCtrRef]
 		public CtrRef<VoiceOverStructureNode> TargetNode { get { return m_TargetNode; } set { if (OnPropertyChanging("VoiceOverStructureConnection." + nameof(TargetNode), this, m_TargetNode, value)) m_TargetNode = value; } } // 0x8 (8)
 		
 		protected CtrRef<VoiceOverRelationshipInput> m_TargetInput = new CtrRef<VoiceOverRelationshipInput>();
-		[ContainerField(12), ContainerFieldNameHash(2268616418)]
+		[ContainerField(12), MemberInfoFlag(53), ContainerFieldNameHash(2268616418), ContainerCtrRef]
 		public CtrRef<VoiceOverRelationshipInput> TargetInput { get { return m_TargetInput; } set { if (OnPropertyChanging("VoiceOverStructureConnection." + nameof(TargetInput), this, m_TargetInput, value)) m_TargetInput = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,79 +18,79 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(41), ContainerStruct]
 	public class FireLogicData : FrostbiteContainer
 	{
-		[ContainerField(0)]
+		[ContainerField(0), MemberInfoFlag(41)]
 		public HoldAndReleaseData HoldAndRelease { get; set; } = new HoldAndReleaseData(); // 0x0 (0)
 		
-		[ContainerField(28)]
+		[ContainerField(28), MemberInfoFlag(41)]
 		public BoltActionData BoltAction { get; set; } = new BoltActionData(); // 0x1C (28)
 		
-		[ContainerField(44)]
+		[ContainerField(44), MemberInfoFlag(41)]
 		public RecoilData Recoil { get; set; } = new RecoilData(); // 0x2C (44)
 		
-		[ContainerField(80)]
+		[ContainerField(80), MemberInfoFlag(137)]
 		public EntryInputActionEnum FireInputAction { get; set; } = new EntryInputActionEnum(); // 0x50 (80)
 		
-		[ContainerField(84)]
+		[ContainerField(84), MemberInfoFlag(137)]
 		public EntryInputActionEnum ReloadInputAction { get; set; } = new EntryInputActionEnum(); // 0x54 (84)
 		
-		[ContainerField(88)]
+		[ContainerField(88), MemberInfoFlag(137)]
 		public EntryInputActionEnum CycleFireModeInputAction { get; set; } = new EntryInputActionEnum(); // 0x58 (88)
 		
-		[ContainerField(92), LayoutImmutable, Blittable]
+		[ContainerField(92), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float TriggerPullWeight { get; set; } // 0x5C (92)
 		
-		[ContainerField(96), LayoutImmutable, Blittable]
+		[ContainerField(96), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float RateOfFire { get; set; } // 0x60 (96)
 		
-		[ContainerField(100), LayoutImmutable, Blittable]
+		[ContainerField(100), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float RateOfFireForBurst { get; set; } // 0x64 (100)
 		
-		[ContainerField(104), LayoutImmutable, Blittable]
+		[ContainerField(104), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float ClientFireRateMultiplier { get; set; } // 0x68 (104)
 		
-		[ContainerField(108), LayoutImmutable, Blittable]
+		[ContainerField(108), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float ReloadDelay { get; set; } // 0x6C (108)
 		
-		[ContainerField(112)]
+		[ContainerField(112), MemberInfoFlag(65), ContainerArray]
 		public List<FireLogicType> FireLogicTypeArray { get; set; } = new List<FireLogicType>(); // 0x70 (112)
 		
-		[ContainerField(116), LayoutImmutable, Blittable]
+		[ContainerField(116), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float ReloadThreshold { get; set; } // 0x74 (116)
 		
-		[ContainerField(120), LayoutImmutable, Blittable]
+		[ContainerField(120), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float PreFireDelay { get; set; } // 0x78 (120)
 		
-		[ContainerField(124), LayoutImmutable, Blittable]
+		[ContainerField(124), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float ReloadTime { get; set; } // 0x7C (124)
 		
-		[ContainerField(128), LayoutImmutable, Blittable]
+		[ContainerField(128), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float ReloadTimeBulletsLeft { get; set; } // 0x80 (128)
 		
-		[ContainerField(132)]
+		[ContainerField(132), MemberInfoFlag(137)]
 		public FireLogicType FireLogicType { get; set; } = new FireLogicType(); // 0x84 (132)
 		
-		[ContainerField(136)]
+		[ContainerField(136), MemberInfoFlag(137)]
 		public ReloadLogic ReloadLogic { get; set; } = new ReloadLogic(); // 0x88 (136)
 		
-		[ContainerField(140), LayoutImmutable, Blittable]
+		[ContainerField(140), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float AutomaticDelay { get; set; } // 0x8C (140)
 		
-		[ContainerField(144)]
+		[ContainerField(144), MemberInfoFlag(137)]
 		public ReloadType ReloadType { get; set; } = new ReloadType(); // 0x90 (144)
 		
-		[ContainerField(148), LayoutImmutable, Blittable]
+		[ContainerField(148), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool HoldOffReloadUntilZoomRelease { get; set; } // 0x94 (148)
 		
-		[ContainerField(149), LayoutImmutable, Blittable]
+		[ContainerField(149), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool ForceReloadActionOnFireTrigger { get; set; } // 0x95 (149)
 		
-		[ContainerField(150), LayoutImmutable, Blittable]
+		[ContainerField(150), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool HoldOffReloadUntilFireRelease { get; set; } // 0x96 (150)
 		
-		[ContainerField(151), LayoutImmutable, Blittable]
+		[ContainerField(151), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool AlwaysAutoReload { get; set; } // 0x97 (151)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

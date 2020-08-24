@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class PhysicsConstraintData : 
 		GameObjectData
 	{
 		protected LinearTransform m_Transform = new LinearTransform();
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(2270319721)]
+		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(2270319721)]
 		public LinearTransform Transform { get { return m_Transform; } set { if (OnPropertyChanging("PhysicsConstraintData." + nameof(Transform), this, m_Transform, value)) m_Transform = value; } } // 0x10 (16)
 		
 		protected CtrRef<ReferenceObjectData> m_ConstrainedObject = new CtrRef<ReferenceObjectData>();
-		[ContainerField(80), ContainerFieldNameHash(1695224768)]
+		[ContainerField(80), MemberInfoFlag(53), ContainerFieldNameHash(1695224768), ContainerCtrRef]
 		public CtrRef<ReferenceObjectData> ConstrainedObject { get { return m_ConstrainedObject; } set { if (OnPropertyChanging("PhysicsConstraintData." + nameof(ConstrainedObject), this, m_ConstrainedObject, value)) m_ConstrainedObject = value; } } // 0x50 (80)
 		
 		protected float m_BreakThreshold = new float();
-		[ContainerField(84), LayoutImmutable, Blittable, ContainerFieldNameHash(869561325)]
+		[ContainerField(84), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(869561325)]
 		public float BreakThreshold { get { return m_BreakThreshold; } set { if (OnPropertyChanging("PhysicsConstraintData." + nameof(BreakThreshold), this, m_BreakThreshold, value)) m_BreakThreshold = value; } } // 0x54 (84)
 		
 		protected bool m_IsBreakable = new bool();
-		[ContainerField(88), LayoutImmutable, Blittable, ContainerFieldNameHash(3764480426)]
+		[ContainerField(88), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3764480426)]
 		public bool IsBreakable { get { return m_IsBreakable; } set { if (OnPropertyChanging("PhysicsConstraintData." + nameof(IsBreakable), this, m_IsBreakable, value)) m_IsBreakable = value; } } // 0x58 (88)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,40 +18,40 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class WarpAnimationComponentData : 
 		ComponentData
 	{
 		protected LinearTransform m_ConnectTransform = new LinearTransform();
-		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(1194494871)]
+		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(1194494871)]
 		public LinearTransform ConnectTransform { get { return m_ConnectTransform; } set { if (OnPropertyChanging("WarpAnimationComponentData." + nameof(ConnectTransform), this, m_ConnectTransform, value)) m_ConnectTransform = value; } } // 0x60 (96)
 		
 		protected CannedAnimationBinding m_CannedAnimBinding = new CannedAnimationBinding();
-		[ContainerField(160), ContainerFieldNameHash(3536770252)]
+		[ContainerField(160), MemberInfoFlag(41), ContainerFieldNameHash(3536770252)]
 		public CannedAnimationBinding CannedAnimBinding { get { return m_CannedAnimBinding; } set { if (OnPropertyChanging("WarpAnimationComponentData." + nameof(CannedAnimBinding), this, m_CannedAnimBinding, value)) m_CannedAnimBinding = value; } } // 0xA0 (160)
 		
 		protected int m_AnimationEntitySpacePriority = new int();
-		[ContainerField(200), LayoutImmutable, Blittable, ContainerFieldNameHash(4041607518)]
+		[ContainerField(200), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(4041607518)]
 		public int AnimationEntitySpacePriority { get { return m_AnimationEntitySpacePriority; } set { if (OnPropertyChanging("WarpAnimationComponentData." + nameof(AnimationEntitySpacePriority), this, m_AnimationEntitySpacePriority, value)) m_AnimationEntitySpacePriority = value; } } // 0xC8 (200)
 		
 		protected WarpAnimationBinding m_WarpBinding = new WarpAnimationBinding();
-		[ContainerField(204), ContainerFieldNameHash(2937232592)]
+		[ContainerField(204), MemberInfoFlag(41), ContainerFieldNameHash(2937232592)]
 		public WarpAnimationBinding WarpBinding { get { return m_WarpBinding; } set { if (OnPropertyChanging("WarpAnimationComponentData." + nameof(WarpBinding), this, m_WarpBinding, value)) m_WarpBinding = value; } } // 0xCC (204)
 		
 		protected GameplayBones m_BoneToAlign = new GameplayBones();
-		[ContainerField(224), ContainerFieldNameHash(911082357)]
+		[ContainerField(224), MemberInfoFlag(137), ContainerFieldNameHash(911082357)]
 		public GameplayBones BoneToAlign { get { return m_BoneToAlign; } set { if (OnPropertyChanging("WarpAnimationComponentData." + nameof(BoneToAlign), this, m_BoneToAlign, value)) m_BoneToAlign = value; } } // 0xE0 (224)
 		
 		protected bool m_RequireAnimationWeight = new bool();
-		[ContainerField(228), LayoutImmutable, Blittable, ContainerFieldNameHash(1434930590)]
+		[ContainerField(228), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1434930590)]
 		public bool RequireAnimationWeight { get { return m_RequireAnimationWeight; } set { if (OnPropertyChanging("WarpAnimationComponentData." + nameof(RequireAnimationWeight), this, m_RequireAnimationWeight, value)) m_RequireAnimationWeight = value; } } // 0xE4 (228)
 		
 		protected bool m_ForceAnimationTransform = new bool();
-		[ContainerField(229), LayoutImmutable, Blittable, ContainerFieldNameHash(3539295138)]
+		[ContainerField(229), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3539295138)]
 		public bool ForceAnimationTransform { get { return m_ForceAnimationTransform; } set { if (OnPropertyChanging("WarpAnimationComponentData." + nameof(ForceAnimationTransform), this, m_ForceAnimationTransform, value)) m_ForceAnimationTransform = value; } } // 0xE5 (229)
 		
 		protected bool m_ExternalConnectTransform = new bool();
-		[ContainerField(230), LayoutImmutable, Blittable, ContainerFieldNameHash(3883178538)]
+		[ContainerField(230), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3883178538)]
 		public bool ExternalConnectTransform { get { return m_ExternalConnectTransform; } set { if (OnPropertyChanging("WarpAnimationComponentData." + nameof(ExternalConnectTransform), this, m_ExternalConnectTransform, value)) m_ExternalConnectTransform = value; } } // 0xE6 (230)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class StatCategoriesBaseTree : 
 		TreeBase
 	{
 		protected RefArray<StatsCategoryBaseData> m_RootBaseCategories = new RefArray<StatsCategoryBaseData>();
-		[ContainerField(12), ContainerFieldNameHash(3956513984)]
+		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(3956513984), ContainerRefArray]
 		public RefArray<StatsCategoryBaseData> RootBaseCategories { get { return m_RootBaseCategories; } set { if (OnPropertyChanging("StatCategoriesBaseTree." + nameof(RootBaseCategories), this, m_RootBaseCategories, value)) m_RootBaseCategories = value; } } // 0xC (12)
 		
 		protected RefArray<CriteriaData> m_ParamX = new RefArray<CriteriaData>();
-		[ContainerField(16), ContainerFieldNameHash(3371566706)]
+		[ContainerField(16), MemberInfoFlag(65), ContainerFieldNameHash(3371566706), ContainerRefArray]
 		public RefArray<CriteriaData> ParamX { get { return m_ParamX; } set { if (OnPropertyChanging("StatCategoriesBaseTree." + nameof(ParamX), this, m_ParamX, value)) m_ParamX = value; } } // 0x10 (16)
 		
 		protected RefArray<CriteriaData> m_ParamY = new RefArray<CriteriaData>();
-		[ContainerField(20), ContainerFieldNameHash(3371566707)]
+		[ContainerField(20), MemberInfoFlag(65), ContainerFieldNameHash(3371566707), ContainerRefArray]
 		public RefArray<CriteriaData> ParamY { get { return m_ParamY; } set { if (OnPropertyChanging("StatCategoriesBaseTree." + nameof(ParamY), this, m_ParamY, value)) m_ParamY = value; } } // 0x14 (20)
 		
 		protected bool m_ProcessAllLevelsInTree = new bool();
-		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(2812093131)]
+		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2812093131)]
 		public bool ProcessAllLevelsInTree { get { return m_ProcessAllLevelsInTree; } set { if (OnPropertyChanging("StatCategoriesBaseTree." + nameof(ProcessAllLevelsInTree), this, m_ProcessAllLevelsInTree, value)) m_ProcessAllLevelsInTree = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

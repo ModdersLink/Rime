@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class MaterialRelationDecalData : 
 		PhysicsMaterialRelationPropertyData
 	{
 		protected CtrRef<DecalTemplateData> m_Decal = new CtrRef<DecalTemplateData>();
-		[ContainerField(8), ContainerFieldNameHash(208760746)]
+		[ContainerField(8), MemberInfoFlag(53), ContainerFieldNameHash(208760746), ContainerCtrRef]
 		public CtrRef<DecalTemplateData> Decal { get { return m_Decal; } set { if (OnPropertyChanging("MaterialRelationDecalData." + nameof(Decal), this, m_Decal, value)) m_Decal = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

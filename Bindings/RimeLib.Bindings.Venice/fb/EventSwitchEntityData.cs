@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class EventSwitchEntityData : 
 		EntityData
 	{
 		protected Realm m_Realm = new Realm();
-		[ContainerField(12), ContainerFieldNameHash(229961746)]
+		[ContainerField(12), MemberInfoFlag(137), ContainerFieldNameHash(229961746)]
 		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("EventSwitchEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0xC (12)
 		
 		protected uint m_OutEvents = new uint();
-		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(2083855540)]
+		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(2083855540)]
 		public uint OutEvents { get { return m_OutEvents; } set { if (OnPropertyChanging("EventSwitchEntityData." + nameof(OutEvents), this, m_OutEvents, value)) m_OutEvents = value; } } // 0x10 (16)
 		
 		protected bool m_AutoIncrement = new bool();
-		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(1262167147)]
+		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1262167147)]
 		public bool AutoIncrement { get { return m_AutoIncrement; } set { if (OnPropertyChanging("EventSwitchEntityData." + nameof(AutoIncrement), this, m_AutoIncrement, value)) m_AutoIncrement = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

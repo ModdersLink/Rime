@@ -18,25 +18,25 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(41), ContainerStruct]
 	public class SoundGraphInfo : FrostbiteContainer
 	{
-		[ContainerField(0)]
+		[ContainerField(0), MemberInfoFlag(65), ContainerArray]
 		public List<SoundGraphVoiceInfo> Voices { get; set; } = new List<SoundGraphVoiceInfo>(); // 0x0 (0)
 		
-		[ContainerField(4)]
+		[ContainerField(4), MemberInfoFlag(65), ContainerArray]
 		public List<SoundGraphLinkedPluginAttribute> LinkedPluginAttributes { get; set; } = new List<SoundGraphLinkedPluginAttribute>(); // 0x4 (4)
 		
-		[ContainerField(8)]
+		[ContainerField(8), MemberInfoFlag(65), ContainerArray]
 		public List<SoundGraphPluginConnection> Connections { get; set; } = new List<SoundGraphPluginConnection>(); // 0x8 (8)
 		
-		[ContainerField(12)]
+		[ContainerField(12), MemberInfoFlag(65), ContainerArray]
 		public List<SoundGraphPluginConstructParam> ConstructParams { get; set; } = new List<SoundGraphPluginConstructParam>(); // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
+		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
 		public uint PluginsParamCount { get; set; } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
+		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
 		public uint PluginCount { get; set; } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

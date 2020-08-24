@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class VoiceOverEventNode : 
 		VoiceOverStructureNode
 	{
 		protected CtrRef<VoiceOverIntervalNode> m_Interval = new CtrRef<VoiceOverIntervalNode>();
-		[ContainerField(12), ContainerFieldNameHash(4280103418)]
+		[ContainerField(12), MemberInfoFlag(53), ContainerFieldNameHash(4280103418), ContainerCtrRef]
 		public CtrRef<VoiceOverIntervalNode> Interval { get { return m_Interval; } set { if (OnPropertyChanging("VoiceOverEventNode." + nameof(Interval), this, m_Interval, value)) m_Interval = value; } } // 0xC (12)
 		
 		protected RefArray<VoiceOverStructureNode> m_Relationship = new RefArray<VoiceOverStructureNode>();
-		[ContainerField(16), ContainerFieldNameHash(1551797377)]
+		[ContainerField(16), MemberInfoFlag(65), ContainerFieldNameHash(1551797377), ContainerRefArray]
 		public RefArray<VoiceOverStructureNode> Relationship { get { return m_Relationship; } set { if (OnPropertyChanging("VoiceOverEventNode." + nameof(Relationship), this, m_Relationship, value)) m_Relationship = value; } } // 0x10 (16)
 		
 		protected RefArray<VoiceOverValueRedirect> m_Redirects = new RefArray<VoiceOverValueRedirect>();
-		[ContainerField(20), ContainerFieldNameHash(1117013132)]
+		[ContainerField(20), MemberInfoFlag(65), ContainerFieldNameHash(1117013132), ContainerRefArray]
 		public RefArray<VoiceOverValueRedirect> Redirects { get { return m_Redirects; } set { if (OnPropertyChanging("VoiceOverEventNode." + nameof(Redirects), this, m_Redirects, value)) m_Redirects = value; } } // 0x14 (20)
 		
 		protected CtrRef<VoiceOverEvent> m_Event = new CtrRef<VoiceOverEvent>();
-		[ContainerField(24), ContainerFieldNameHash(201427689)]
+		[ContainerField(24), MemberInfoFlag(53), ContainerFieldNameHash(201427689), ContainerCtrRef]
 		public CtrRef<VoiceOverEvent> Event { get { return m_Event; } set { if (OnPropertyChanging("VoiceOverEventNode." + nameof(Event), this, m_Event, value)) m_Event = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

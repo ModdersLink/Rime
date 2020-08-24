@@ -18,32 +18,32 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class MaterialPropertySoundData : 
 		PhysicsMaterialRelationPropertyData
 	{
 		protected CtrRef<SoundAsset> m_ImpactSound = new CtrRef<SoundAsset>();
-		[ContainerField(8), ContainerFieldNameHash(3986717348)]
+		[ContainerField(8), MemberInfoFlag(53), ContainerFieldNameHash(3986717348), ContainerCtrRef]
 		public CtrRef<SoundAsset> ImpactSound { get { return m_ImpactSound; } set { if (OnPropertyChanging("MaterialPropertySoundData." + nameof(ImpactSound), this, m_ImpactSound, value)) m_ImpactSound = value; } } // 0x8 (8)
 		
 		protected CtrRef<SoundAsset> m_ScrapeSound = new CtrRef<SoundAsset>();
-		[ContainerField(12), ContainerFieldNameHash(1279692944)]
+		[ContainerField(12), MemberInfoFlag(53), ContainerFieldNameHash(1279692944), ContainerCtrRef]
 		public CtrRef<SoundAsset> ScrapeSound { get { return m_ScrapeSound; } set { if (OnPropertyChanging("MaterialPropertySoundData." + nameof(ScrapeSound), this, m_ScrapeSound, value)) m_ScrapeSound = value; } } // 0xC (12)
 		
 		protected float m_ScrapeLength = new float();
-		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(544833071)]
+		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(544833071)]
 		public float ScrapeLength { get { return m_ScrapeLength; } set { if (OnPropertyChanging("MaterialPropertySoundData." + nameof(ScrapeLength), this, m_ScrapeLength, value)) m_ScrapeLength = value; } } // 0x10 (16)
 		
 		protected CtrRef<MaterialSoldierSoundSettings> m_SoldierSettings = new CtrRef<MaterialSoldierSoundSettings>();
-		[ContainerField(20), ContainerFieldNameHash(4066272810)]
+		[ContainerField(20), MemberInfoFlag(53), ContainerFieldNameHash(4066272810), ContainerCtrRef]
 		public CtrRef<MaterialSoldierSoundSettings> SoldierSettings { get { return m_SoldierSettings; } set { if (OnPropertyChanging("MaterialPropertySoundData." + nameof(SoldierSettings), this, m_SoldierSettings, value)) m_SoldierSettings = value; } } // 0x14 (20)
 		
 		protected float m_Softness = new float();
-		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(3898807136)]
+		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3898807136)]
 		public float Softness { get { return m_Softness; } set { if (OnPropertyChanging("MaterialPropertySoundData." + nameof(Softness), this, m_Softness, value)) m_Softness = value; } } // 0x18 (24)
 		
 		protected float m_MaterialSoundId = new float();
-		[ContainerField(28), LayoutImmutable, Blittable, ContainerFieldNameHash(2481569024)]
+		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2481569024)]
 		public float MaterialSoundId { get { return m_MaterialSoundId; } set { if (OnPropertyChanging("MaterialPropertySoundData." + nameof(MaterialSoundId), this, m_MaterialSoundId, value)) m_MaterialSoundId = value; } } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

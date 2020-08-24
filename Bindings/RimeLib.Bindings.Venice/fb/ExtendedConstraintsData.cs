@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class ExtendedConstraintsData : 
 		DataContainer
 	{
 		protected float m_Heading = new float();
-		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(2009143629)]
+		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2009143629)]
 		public float Heading { get { return m_Heading; } set { if (OnPropertyChanging("ExtendedConstraintsData." + nameof(Heading), this, m_Heading, value)) m_Heading = value; } } // 0x8 (8)
 		
 		protected float m_Width = new float();
-		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(226981187)]
+		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(226981187)]
 		public float Width { get { return m_Width; } set { if (OnPropertyChanging("ExtendedConstraintsData." + nameof(Width), this, m_Width, value)) m_Width = value; } } // 0xC (12)
 		
 		protected float m_Falloff = new float();
-		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(1431733965)]
+		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1431733965)]
 		public float Falloff { get { return m_Falloff; } set { if (OnPropertyChanging("ExtendedConstraintsData." + nameof(Falloff), this, m_Falloff, value)) m_Falloff = value; } } // 0x10 (16)
 		
 		protected float m_AngularConstraintMin = new float();
-		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(731814824)]
+		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(731814824)]
 		public float AngularConstraintMin { get { return m_AngularConstraintMin; } set { if (OnPropertyChanging("ExtendedConstraintsData." + nameof(AngularConstraintMin), this, m_AngularConstraintMin, value)) m_AngularConstraintMin = value; } } // 0x14 (20)
 		
 		protected float m_AngularConstraintMax = new float();
-		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(731815094)]
+		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(731815094)]
 		public float AngularConstraintMax { get { return m_AngularConstraintMax; } set { if (OnPropertyChanging("ExtendedConstraintsData." + nameof(AngularConstraintMax), this, m_AngularConstraintMax, value)) m_AngularConstraintMax = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

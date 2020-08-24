@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class CombatActionTriggerEntityData : 
 		TriggerEntityData
 	{
 		protected float m_TimeToTriggerOnNoAction = new float();
-		[ContainerField(112), LayoutImmutable, Blittable, ContainerFieldNameHash(1868121293)]
+		[ContainerField(112), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1868121293)]
 		public float TimeToTriggerOnNoAction { get { return m_TimeToTriggerOnNoAction; } set { if (OnPropertyChanging("CombatActionTriggerEntityData." + nameof(TimeToTriggerOnNoAction), this, m_TimeToTriggerOnNoAction, value)) m_TimeToTriggerOnNoAction = value; } } // 0x70 (112)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

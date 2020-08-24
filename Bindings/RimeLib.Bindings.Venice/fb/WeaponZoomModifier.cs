@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class WeaponZoomModifier : 
 		WeaponModifierBase
 	{
 		protected float m_ZoomRenderFov = new float();
-		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(956290279)]
+		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(956290279)]
 		public float ZoomRenderFov { get { return m_ZoomRenderFov; } set { if (OnPropertyChanging("WeaponZoomModifier." + nameof(ZoomRenderFov), this, m_ZoomRenderFov, value)) m_ZoomRenderFov = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

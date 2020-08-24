@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class InterfaceDescriptorData : 
 		DynamicDataContainer
 	{
 		protected List<DynamicEvent> m_InputEvents = new List<DynamicEvent>();
-		[ContainerField(12), ContainerFieldNameHash(1542460652)]
+		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(1542460652), ContainerArray]
 		public List<DynamicEvent> InputEvents { get { return m_InputEvents; } set { if (OnPropertyChanging("InterfaceDescriptorData." + nameof(InputEvents), this, m_InputEvents, value)) m_InputEvents = value; } } // 0xC (12)
 		
 		protected List<DynamicEvent> m_OutputEvents = new List<DynamicEvent>();
-		[ContainerField(16), ContainerFieldNameHash(3452448709)]
+		[ContainerField(16), MemberInfoFlag(65), ContainerFieldNameHash(3452448709), ContainerArray]
 		public List<DynamicEvent> OutputEvents { get { return m_OutputEvents; } set { if (OnPropertyChanging("InterfaceDescriptorData." + nameof(OutputEvents), this, m_OutputEvents, value)) m_OutputEvents = value; } } // 0x10 (16)
 		
 		protected List<DynamicLink> m_InputLinks = new List<DynamicLink>();
-		[ContainerField(20), ContainerFieldNameHash(1626510432)]
+		[ContainerField(20), MemberInfoFlag(65), ContainerFieldNameHash(1626510432), ContainerArray]
 		public List<DynamicLink> InputLinks { get { return m_InputLinks; } set { if (OnPropertyChanging("InterfaceDescriptorData." + nameof(InputLinks), this, m_InputLinks, value)) m_InputLinks = value; } } // 0x14 (20)
 		
 		protected List<DynamicLink> m_OutputLinks = new List<DynamicLink>();
-		[ContainerField(24), ContainerFieldNameHash(748160425)]
+		[ContainerField(24), MemberInfoFlag(65), ContainerFieldNameHash(748160425), ContainerArray]
 		public List<DynamicLink> OutputLinks { get { return m_OutputLinks; } set { if (OnPropertyChanging("InterfaceDescriptorData." + nameof(OutputLinks), this, m_OutputLinks, value)) m_OutputLinks = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

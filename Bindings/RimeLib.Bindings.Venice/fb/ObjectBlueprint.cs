@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class ObjectBlueprint : 
 		Blueprint
 	{
 		protected CtrRef<GameObjectData> m_Object = new CtrRef<GameObjectData>();
-		[ContainerField(32), ContainerFieldNameHash(2866508144)]
+		[ContainerField(32), MemberInfoFlag(53), ContainerFieldNameHash(2866508144), ContainerCtrRef]
 		public CtrRef<GameObjectData> Object { get { return m_Object; } set { if (OnPropertyChanging("ObjectBlueprint." + nameof(Object), this, m_Object, value)) m_Object = value; } } // 0x20 (32)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

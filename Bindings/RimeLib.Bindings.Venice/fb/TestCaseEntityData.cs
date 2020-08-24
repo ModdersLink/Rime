@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class TestCaseEntityData : 
 		EntityData
 	{
 		protected float m_TimeOut = new float();
-		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(3344659518)]
+		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3344659518)]
 		public float TimeOut { get { return m_TimeOut; } set { if (OnPropertyChanging("TestCaseEntityData." + nameof(TimeOut), this, m_TimeOut, value)) m_TimeOut = value; } } // 0xC (12)
 		
 		protected string m_TestGroup = string.Empty;
-		[ContainerField(16), LayoutImmutable, ContainerFieldNameHash(1436402060)]
+		[ContainerField(16), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(1436402060)]
 		public string TestGroup { get { return m_TestGroup; } set { if (OnPropertyChanging("TestCaseEntityData." + nameof(TestGroup), this, m_TestGroup, value)) m_TestGroup = value; } } // 0x10 (16)
 		
 		protected string m_TestCaseName = string.Empty;
-		[ContainerField(20), LayoutImmutable, ContainerFieldNameHash(2495365472)]
+		[ContainerField(20), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(2495365472)]
 		public string TestCaseName { get { return m_TestCaseName; } set { if (OnPropertyChanging("TestCaseEntityData." + nameof(TestCaseName), this, m_TestCaseName, value)) m_TestCaseName = value; } } // 0x14 (20)
 		
 		protected bool m_Stable = new bool();
-		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(3319702312)]
+		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3319702312)]
 		public bool Stable { get { return m_Stable; } set { if (OnPropertyChanging("TestCaseEntityData." + nameof(Stable), this, m_Stable, value)) m_Stable = value; } } // 0x18 (24)
 		
 		protected bool m_Enabled = new bool();
-		[ContainerField(25), LayoutImmutable, Blittable, ContainerFieldNameHash(2662400)]
+		[ContainerField(25), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2662400)]
 		public bool Enabled { get { return m_Enabled; } set { if (OnPropertyChanging("TestCaseEntityData." + nameof(Enabled), this, m_Enabled, value)) m_Enabled = value; } } // 0x19 (25)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class BehaviourData : 
 		UrgencyUserData
 	{
 		protected string m_Name = string.Empty;
-		[ContainerField(20), LayoutImmutable, ContainerFieldNameHash(2088949890)]
+		[ContainerField(20), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(2088949890)]
 		public string Name { get { return m_Name; } set { if (OnPropertyChanging("BehaviourData." + nameof(Name), this, m_Name, value)) m_Name = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

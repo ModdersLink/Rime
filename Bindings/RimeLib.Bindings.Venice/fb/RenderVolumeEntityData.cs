@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class RenderVolumeEntityData : 
 		SpatialEntityData
 	{
 		protected Vec4 m_UserMasks = new Vec4();
-		[ContainerField(80), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(1589111411)]
+		[ContainerField(80), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(1589111411)]
 		public Vec4 UserMasks { get { return m_UserMasks; } set { if (OnPropertyChanging("RenderVolumeEntityData." + nameof(UserMasks), this, m_UserMasks, value)) m_UserMasks = value; } } // 0x50 (80)
 		
 		protected SurfaceShaderInstanceDataStruct m_Shader = new SurfaceShaderInstanceDataStruct();
-		[ContainerField(96), ContainerFieldNameHash(3352909900)]
+		[ContainerField(96), MemberInfoFlag(41), ContainerFieldNameHash(3352909900)]
 		public SurfaceShaderInstanceDataStruct Shader { get { return m_Shader; } set { if (OnPropertyChanging("RenderVolumeEntityData." + nameof(Shader), this, m_Shader, value)) m_Shader = value; } } // 0x60 (96)
 		
 		protected RenderVolumeTransformType m_TransformType = new RenderVolumeTransformType();
-		[ContainerField(116), ContainerFieldNameHash(3623123985)]
+		[ContainerField(116), MemberInfoFlag(137), ContainerFieldNameHash(3623123985)]
 		public RenderVolumeTransformType TransformType { get { return m_TransformType; } set { if (OnPropertyChanging("RenderVolumeEntityData." + nameof(TransformType), this, m_TransformType, value)) m_TransformType = value; } } // 0x74 (116)
 		
 		protected bool m_Enabled = new bool();
-		[ContainerField(120), LayoutImmutable, Blittable, ContainerFieldNameHash(2662400)]
+		[ContainerField(120), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2662400)]
 		public bool Enabled { get { return m_Enabled; } set { if (OnPropertyChanging("RenderVolumeEntityData." + nameof(Enabled), this, m_Enabled, value)) m_Enabled = value; } } // 0x78 (120)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(41), ContainerStruct]
 	public class Ps3ParentalLockAgeSettings : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable]
+		[ContainerField(0), LayoutImmutable, MemberInfoFlag(16509)]
 		public string Region { get; set; } // 0x0 (0)
 		
-		[ContainerField(4)]
+		[ContainerField(4), MemberInfoFlag(41)]
 		public Ps3AgeLevels AgeLevels { get; set; } = new Ps3AgeLevels(); // 0x4 (4)
 		
-		[ContainerField(20)]
+		[ContainerField(20), MemberInfoFlag(53), ContainerCtrRef]
 		public CtrRef<Ps3ParentalLockAgeSettingsOverrides> CountryOverrides { get; set; } = new CtrRef<Ps3ParentalLockAgeSettingsOverrides>(); // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

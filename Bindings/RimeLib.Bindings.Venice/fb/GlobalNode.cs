@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class GlobalNode : 
 		UINodeData
 	{
 		protected RefArray<UINodePort> m_Outputs = new RefArray<UINodePort>();
-		[ContainerField(20), ContainerFieldNameHash(1070022089)]
+		[ContainerField(20), MemberInfoFlag(65), ContainerFieldNameHash(1070022089), ContainerRefArray]
 		public RefArray<UINodePort> Outputs { get { return m_Outputs; } set { if (OnPropertyChanging("GlobalNode." + nameof(Outputs), this, m_Outputs, value)) m_Outputs = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

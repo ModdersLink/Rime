@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class UnlockableColorCollection : 
 		DataContainer
 	{
 		protected CtrRef<ColorReference> m_DefaultValue = new CtrRef<ColorReference>();
-		[ContainerField(8), ContainerFieldNameHash(2066049125)]
+		[ContainerField(8), MemberInfoFlag(53), ContainerFieldNameHash(2066049125), ContainerCtrRef]
 		public CtrRef<ColorReference> DefaultValue { get { return m_DefaultValue; } set { if (OnPropertyChanging("UnlockableColorCollection." + nameof(DefaultValue), this, m_DefaultValue, value)) m_DefaultValue = value; } } // 0x8 (8)
 		
 		protected RefArray<ColorUnlockPartData> m_PossibleValues = new RefArray<ColorUnlockPartData>();
-		[ContainerField(12), ContainerFieldNameHash(349877344)]
+		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(349877344), ContainerRefArray]
 		public RefArray<ColorUnlockPartData> PossibleValues { get { return m_PossibleValues; } set { if (OnPropertyChanging("UnlockableColorCollection." + nameof(PossibleValues), this, m_PossibleValues, value)) m_PossibleValues = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

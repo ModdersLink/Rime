@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class UIBarDataBinding : 
 		UIDataBinding
 	{
 		protected UIDataSourceInfo m_Visibility = new UIDataSourceInfo();
-		[ContainerField(8), ContainerFieldNameHash(1708270083)]
+		[ContainerField(8), MemberInfoFlag(41), ContainerFieldNameHash(1708270083)]
 		public UIDataSourceInfo Visibility { get { return m_Visibility; } set { if (OnPropertyChanging("UIBarDataBinding." + nameof(Visibility), this, m_Visibility, value)) m_Visibility = value; } } // 0x8 (8)
 		
 		protected UIDataSourceInfo m_Value = new UIDataSourceInfo();
-		[ContainerField(24), ContainerFieldNameHash(225375086)]
+		[ContainerField(24), MemberInfoFlag(41), ContainerFieldNameHash(225375086)]
 		public UIDataSourceInfo Value { get { return m_Value; } set { if (OnPropertyChanging("UIBarDataBinding." + nameof(Value), this, m_Value, value)) m_Value = value; } } // 0x18 (24)
 		
 		protected UIDataSourceInfo m_Color = new UIDataSourceInfo();
-		[ContainerField(40), ContainerFieldNameHash(212387320)]
+		[ContainerField(40), MemberInfoFlag(41), ContainerFieldNameHash(212387320)]
 		public UIDataSourceInfo Color { get { return m_Color; } set { if (OnPropertyChanging("UIBarDataBinding." + nameof(Color), this, m_Color, value)) m_Color = value; } } // 0x28 (40)
 		
 		protected bool m_Refresh = new bool();
-		[ContainerField(56), LayoutImmutable, Blittable, ContainerFieldNameHash(1327541432)]
+		[ContainerField(56), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1327541432)]
 		public bool Refresh { get { return m_Refresh; } set { if (OnPropertyChanging("UIBarDataBinding." + nameof(Refresh), this, m_Refresh, value)) m_Refresh = value; } } // 0x38 (56)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

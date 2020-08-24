@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class DebugConstantData : 
 		Asset
 	{
 		protected float m_BotDebugDistance = new float();
-		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(348493774)]
+		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(348493774)]
 		public float BotDebugDistance { get { return m_BotDebugDistance; } set { if (OnPropertyChanging("DebugConstantData." + nameof(BotDebugDistance), this, m_BotDebugDistance, value)) m_BotDebugDistance = value; } } // 0xC (12)
 		
 		protected float m_InViewModeFOV = new float();
-		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(1924732979)]
+		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1924732979)]
 		public float InViewModeFOV { get { return m_InViewModeFOV; } set { if (OnPropertyChanging("DebugConstantData." + nameof(InViewModeFOV), this, m_InViewModeFOV, value)) m_InViewModeFOV = value; } } // 0x10 (16)
 		
 		protected uint m_GraphDataBuffer = new uint();
-		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(4041264409)]
+		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(4041264409)]
 		public uint GraphDataBuffer { get { return m_GraphDataBuffer; } set { if (OnPropertyChanging("DebugConstantData." + nameof(GraphDataBuffer), this, m_GraphDataBuffer, value)) m_GraphDataBuffer = value; } } // 0x14 (20)
 		
 		protected float m_MinDecisionTime = new float();
-		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(762980938)]
+		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(762980938)]
 		public float MinDecisionTime { get { return m_MinDecisionTime; } set { if (OnPropertyChanging("DebugConstantData." + nameof(MinDecisionTime), this, m_MinDecisionTime, value)) m_MinDecisionTime = value; } } // 0x18 (24)
 		
 		protected bool m_InaccuracyEnabled = new bool();
-		[ContainerField(28), LayoutImmutable, Blittable, ContainerFieldNameHash(2816178938)]
+		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2816178938)]
 		public bool InaccuracyEnabled { get { return m_InaccuracyEnabled; } set { if (OnPropertyChanging("DebugConstantData." + nameof(InaccuracyEnabled), this, m_InaccuracyEnabled, value)) m_InaccuracyEnabled = value; } } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

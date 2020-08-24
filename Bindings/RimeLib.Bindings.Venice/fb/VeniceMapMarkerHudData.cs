@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class VeniceMapMarkerHudData : 
 		DataContainer
 	{
 		protected UIHudIcon m_Icon = new UIHudIcon();
-		[ContainerField(8), ContainerFieldNameHash(2088920302)]
+		[ContainerField(8), MemberInfoFlag(137), ContainerFieldNameHash(2088920302)]
 		public UIHudIcon Icon { get { return m_Icon; } set { if (OnPropertyChanging("VeniceMapMarkerHudData." + nameof(Icon), this, m_Icon, value)) m_Icon = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

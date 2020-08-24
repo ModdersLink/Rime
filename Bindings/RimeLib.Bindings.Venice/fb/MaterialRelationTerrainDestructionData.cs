@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class MaterialRelationTerrainDestructionData : 
 		PhysicsPropertyRelationPropertyData
 	{
 		protected float m_Width = new float();
-		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(226981187)]
+		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(226981187)]
 		public float Width { get { return m_Width; } set { if (OnPropertyChanging("MaterialRelationTerrainDestructionData." + nameof(Width), this, m_Width, value)) m_Width = value; } } // 0x8 (8)
 		
 		protected float m_Depth = new float();
-		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(208780552)]
+		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(208780552)]
 		public float Depth { get { return m_Depth; } set { if (OnPropertyChanging("MaterialRelationTerrainDestructionData." + nameof(Depth), this, m_Depth, value)) m_Depth = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

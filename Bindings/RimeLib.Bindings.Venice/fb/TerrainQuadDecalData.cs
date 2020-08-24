@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class TerrainQuadDecalData : 
 		VisualVectorShapeData
 	{
 		protected Vec4 m_UserMasks = new Vec4();
-		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(1589111411)]
+		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(1589111411)]
 		public Vec4 UserMasks { get { return m_UserMasks; } set { if (OnPropertyChanging("TerrainQuadDecalData." + nameof(UserMasks), this, m_UserMasks, value)) m_UserMasks = value; } } // 0x30 (48)
 		
 		protected CtrRef<SurfaceShaderBaseAsset> m_Shader3dZOnly = new CtrRef<SurfaceShaderBaseAsset>();
-		[ContainerField(64), ContainerFieldNameHash(585356309)]
+		[ContainerField(64), MemberInfoFlag(53), ContainerFieldNameHash(585356309), ContainerCtrRef]
 		public CtrRef<SurfaceShaderBaseAsset> Shader3dZOnly { get { return m_Shader3dZOnly; } set { if (OnPropertyChanging("TerrainQuadDecalData." + nameof(Shader3dZOnly), this, m_Shader3dZOnly, value)) m_Shader3dZOnly = value; } } // 0x40 (64)
 		
 		protected CtrRef<SurfaceShaderBaseAsset> m_Shader2d = new CtrRef<SurfaceShaderBaseAsset>();
-		[ContainerField(68), ContainerFieldNameHash(596681178)]
+		[ContainerField(68), MemberInfoFlag(53), ContainerFieldNameHash(596681178), ContainerCtrRef]
 		public CtrRef<SurfaceShaderBaseAsset> Shader2d { get { return m_Shader2d; } set { if (OnPropertyChanging("TerrainQuadDecalData." + nameof(Shader2d), this, m_Shader2d, value)) m_Shader2d = value; } } // 0x44 (68)
 		
 		protected CtrRef<TerrainQuadDecalAtlasTileTemplateData> m_AtlasTileTemplate = new CtrRef<TerrainQuadDecalAtlasTileTemplateData>();
-		[ContainerField(72), ContainerFieldNameHash(3181192042)]
+		[ContainerField(72), MemberInfoFlag(53), ContainerFieldNameHash(3181192042), ContainerCtrRef]
 		public CtrRef<TerrainQuadDecalAtlasTileTemplateData> AtlasTileTemplate { get { return m_AtlasTileTemplate; } set { if (OnPropertyChanging("TerrainQuadDecalData." + nameof(AtlasTileTemplate), this, m_AtlasTileTemplate, value)) m_AtlasTileTemplate = value; } } // 0x48 (72)
 		
 		protected TerrainQuadDecalAtlasTile m_AtlasTile = new TerrainQuadDecalAtlasTile();
-		[ContainerField(76), ContainerFieldNameHash(3027817338)]
+		[ContainerField(76), MemberInfoFlag(41), ContainerFieldNameHash(3027817338)]
 		public TerrainQuadDecalAtlasTile AtlasTile { get { return m_AtlasTile; } set { if (OnPropertyChanging("TerrainQuadDecalData." + nameof(AtlasTile), this, m_AtlasTile, value)) m_AtlasTile = value; } } // 0x4C (76)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

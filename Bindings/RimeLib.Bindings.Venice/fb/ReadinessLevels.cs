@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(41), ContainerStruct]
 	public class ReadinessLevels : FrostbiteContainer
 	{
-		[ContainerField(0)]
+		[ContainerField(0), MemberInfoFlag(41)]
 		public ReadinessLevelCharacteristics Patrol { get; set; } = new ReadinessLevelCharacteristics(); // 0x0 (0)
 		
-		[ContainerField(12)]
+		[ContainerField(12), MemberInfoFlag(41)]
 		public ReadinessLevelCharacteristics Ready { get; set; } = new ReadinessLevelCharacteristics(); // 0xC (12)
 		
-		[ContainerField(24)]
+		[ContainerField(24), MemberInfoFlag(41)]
 		public ReadinessLevelCharacteristics Combat { get; set; } = new ReadinessLevelCharacteristics(); // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

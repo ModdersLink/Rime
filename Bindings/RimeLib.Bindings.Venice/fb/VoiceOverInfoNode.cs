@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class VoiceOverInfoNode : 
 		VoiceOverExpressionNode
 	{
 		protected CtrRef<VoiceOverValueConnection> m_Object = new CtrRef<VoiceOverValueConnection>();
-		[ContainerField(8), ContainerFieldNameHash(2866508144)]
+		[ContainerField(8), MemberInfoFlag(53), ContainerFieldNameHash(2866508144), ContainerCtrRef]
 		public CtrRef<VoiceOverValueConnection> Object { get { return m_Object; } set { if (OnPropertyChanging("VoiceOverInfoNode." + nameof(Object), this, m_Object, value)) m_Object = value; } } // 0x8 (8)
 		
 		protected CtrRef<VoiceOverValue> m_Value = new CtrRef<VoiceOverValue>();
-		[ContainerField(12), ContainerFieldNameHash(225375086)]
+		[ContainerField(12), MemberInfoFlag(53), ContainerFieldNameHash(225375086), ContainerCtrRef]
 		public CtrRef<VoiceOverValue> Value { get { return m_Value; } set { if (OnPropertyChanging("VoiceOverInfoNode." + nameof(Value), this, m_Value, value)) m_Value = value; } } // 0xC (12)
 		
 		protected CtrRef<VoiceOverNamedValue> m_Field = new CtrRef<VoiceOverNamedValue>();
-		[ContainerField(16), ContainerFieldNameHash(206678151)]
+		[ContainerField(16), MemberInfoFlag(53), ContainerFieldNameHash(206678151), ContainerCtrRef]
 		public CtrRef<VoiceOverNamedValue> Field { get { return m_Field; } set { if (OnPropertyChanging("VoiceOverInfoNode." + nameof(Field), this, m_Field, value)) m_Field = value; } } // 0x10 (16)
 		
 		protected CtrRef<VoiceOverObject> m_ExpectedType = new CtrRef<VoiceOverObject>();
-		[ContainerField(20), ContainerFieldNameHash(1076570403)]
+		[ContainerField(20), MemberInfoFlag(53), ContainerFieldNameHash(1076570403), ContainerCtrRef]
 		public CtrRef<VoiceOverObject> ExpectedType { get { return m_ExpectedType; } set { if (OnPropertyChanging("VoiceOverInfoNode." + nameof(ExpectedType), this, m_ExpectedType, value)) m_ExpectedType = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

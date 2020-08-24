@@ -234,5 +234,10 @@ namespace RimeLib.Serialization.Ebx
         {
             return !Equals(left, right);
         }
+
+        public bool IsNull()
+        {
+            return InstanceGuid == GUID.Empty && PartitionGuid == GUID.Empty;
+        }
     }
 }

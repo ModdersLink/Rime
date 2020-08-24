@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class VoiceOverLanguageRoot : 
 		DataContainer
 	{
 		protected CtrRef<AudioLanguage> m_Language = new CtrRef<AudioLanguage>();
-		[ContainerField(8), ContainerFieldNameHash(3872303031)]
+		[ContainerField(8), MemberInfoFlag(53), ContainerFieldNameHash(3872303031), ContainerCtrRef]
 		public CtrRef<AudioLanguage> Language { get { return m_Language; } set { if (OnPropertyChanging("VoiceOverLanguageRoot." + nameof(Language), this, m_Language, value)) m_Language = value; } } // 0x8 (8)
 		
 		protected string m_Path = string.Empty;
-		[ContainerField(12), LayoutImmutable, ContainerFieldNameHash(2089448296)]
+		[ContainerField(12), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(2089448296)]
 		public string Path { get { return m_Path; } set { if (OnPropertyChanging("VoiceOverLanguageRoot." + nameof(Path), this, m_Path, value)) m_Path = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

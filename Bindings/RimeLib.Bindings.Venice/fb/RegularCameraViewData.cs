@@ -18,34 +18,34 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(41), ContainerStruct]
 	public class RegularCameraViewData : FrostbiteContainer
 	{
-		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable]
+		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
 		public Vec3 MeshOffset { get; set; } = new Vec3(); // 0x0 (0)
 		
-		[ContainerField(16)]
+		[ContainerField(16), MemberInfoFlag(41)]
 		public InputSuppressionData InputSuppression { get; set; } = new InputSuppressionData(); // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
+		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float FieldOfView { get; set; } // 0x14 (20)
 		
-		[ContainerField(24)]
+		[ContainerField(24), MemberInfoFlag(53), ContainerCtrRef]
 		public CtrRef<RigidMeshAsset> Mesh { get; set; } = new CtrRef<RigidMeshAsset>(); // 0x18 (24)
 		
-		[ContainerField(28), LayoutImmutable, Blittable]
+		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float ScreenExposureAreaScale { get; set; } // 0x1C (28)
 		
-		[ContainerField(32)]
+		[ContainerField(32), MemberInfoFlag(53), ContainerCtrRef]
 		public CtrRef<ObjectBlueprint> MaskMeshBlueprint { get; set; } = new CtrRef<ObjectBlueprint>(); // 0x20 (32)
 		
-		[ContainerField(36), LayoutImmutable, Blittable]
+		[ContainerField(36), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool LockMeshToRenderView { get; set; } // 0x24 (36)
 		
-		[ContainerField(37), LayoutImmutable, Blittable]
+		[ContainerField(37), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool AllowFieldOfViewScaling { get; set; } // 0x25 (37)
 		
-		[ContainerField(38), LayoutImmutable, Blittable]
+		[ContainerField(38), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool FLIREnabled { get; set; } // 0x26 (38)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

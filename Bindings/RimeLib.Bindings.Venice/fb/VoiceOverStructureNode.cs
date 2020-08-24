@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class VoiceOverStructureNode : 
 		VoiceOverNode
 	{
 		protected VoiceOverLogicFlowMode m_FlowMode = new VoiceOverLogicFlowMode();
-		[ContainerField(8), ContainerFieldNameHash(1740495380)]
+		[ContainerField(8), MemberInfoFlag(137), ContainerFieldNameHash(1740495380)]
 		public VoiceOverLogicFlowMode FlowMode { get { return m_FlowMode; } set { if (OnPropertyChanging("VoiceOverStructureNode." + nameof(FlowMode), this, m_FlowMode, value)) m_FlowMode = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

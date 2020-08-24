@@ -18,13 +18,13 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(41), ContainerStruct]
 	public class MaterialRelationPropertyPair : FrostbiteContainer
 	{
-		[ContainerField(0)]
+		[ContainerField(0), MemberInfoFlag(65), ContainerRefArray]
 		public RefArray<PhysicsMaterialRelationPropertyData> PhysicsMaterialProperties { get; set; } = new RefArray<PhysicsMaterialRelationPropertyData>(); // 0x0 (0)
 		
-		[ContainerField(4)]
+		[ContainerField(4), MemberInfoFlag(65), ContainerRefArray]
 		public RefArray<PhysicsPropertyRelationPropertyData> PhysicsPropertyProperties { get; set; } = new RefArray<PhysicsPropertyRelationPropertyData>(); // 0x4 (4)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

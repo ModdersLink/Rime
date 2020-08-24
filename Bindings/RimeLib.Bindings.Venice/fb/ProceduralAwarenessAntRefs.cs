@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class ProceduralAwarenessAntRefs : 
 		DataContainer
 	{
 		protected AntRef m_ProceduralAwarenessActive = new AntRef();
-		[ContainerField(8), ContainerFieldNameHash(917996519)]
+		[ContainerField(8), MemberInfoFlag(41), ContainerFieldNameHash(917996519)]
 		public AntRef ProceduralAwarenessActive { get { return m_ProceduralAwarenessActive; } set { if (OnPropertyChanging("ProceduralAwarenessAntRefs." + nameof(ProceduralAwarenessActive), this, m_ProceduralAwarenessActive, value)) m_ProceduralAwarenessActive = value; } } // 0x8 (8)
 		
 		protected AntRef m_ProceduralAwarenessHumanIKActive = new AntRef();
-		[ContainerField(12), ContainerFieldNameHash(2022287482)]
+		[ContainerField(12), MemberInfoFlag(41), ContainerFieldNameHash(2022287482)]
 		public AntRef ProceduralAwarenessHumanIKActive { get { return m_ProceduralAwarenessHumanIKActive; } set { if (OnPropertyChanging("ProceduralAwarenessAntRefs." + nameof(ProceduralAwarenessHumanIKActive), this, m_ProceduralAwarenessHumanIKActive, value)) m_ProceduralAwarenessHumanIKActive = value; } } // 0xC (12)
 		
 		protected AntRef m_ProceduralAwarenessData = new AntRef();
-		[ContainerField(16), ContainerFieldNameHash(935670043)]
+		[ContainerField(16), MemberInfoFlag(41), ContainerFieldNameHash(935670043)]
 		public AntRef ProceduralAwarenessData { get { return m_ProceduralAwarenessData; } set { if (OnPropertyChanging("ProceduralAwarenessAntRefs." + nameof(ProceduralAwarenessData), this, m_ProceduralAwarenessData, value)) m_ProceduralAwarenessData = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

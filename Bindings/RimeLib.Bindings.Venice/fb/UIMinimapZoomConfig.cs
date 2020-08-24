@@ -18,13 +18,13 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(41), ContainerStruct]
 	public class UIMinimapZoomConfig : FrostbiteContainer
 	{
-		[ContainerField(0)]
+		[ContainerField(0), MemberInfoFlag(137)]
 		public UIMinimapZoomState State { get; set; } = new UIMinimapZoomState(); // 0x0 (0)
 		
-		[ContainerField(16)]
+		[ContainerField(16), MemberInfoFlag(41)]
 		public MinimapData Data { get; set; } = new MinimapData(); // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

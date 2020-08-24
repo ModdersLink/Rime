@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(41), ContainerStruct]
 	public class AnimatedPointCloudAttributeDesc : FrostbiteContainer
 	{
-		[ContainerField(0)]
+		[ContainerField(0), MemberInfoFlag(137)]
 		public PointCloudAttributeUsage Usage { get; set; } = new PointCloudAttributeUsage(); // 0x0 (0)
 		
-		[ContainerField(4)]
+		[ContainerField(4), MemberInfoFlag(137)]
 		public PointCloudAttributeQuantization IFrameQuantization { get; set; } = new PointCloudAttributeQuantization(); // 0x4 (4)
 		
-		[ContainerField(8)]
+		[ContainerField(8), MemberInfoFlag(137)]
 		public PointCloudAttributeQuantization DFrameQuantization { get; set; } = new PointCloudAttributeQuantization(); // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

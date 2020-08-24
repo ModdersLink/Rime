@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class UIChatCompData : 
 		UIComponentData
 	{
 		protected CtrRef<ChatSettings> m_Settings = new CtrRef<ChatSettings>();
-		[ContainerField(28), ContainerFieldNameHash(649772672)]
+		[ContainerField(28), MemberInfoFlag(53), ContainerFieldNameHash(649772672), ContainerCtrRef]
 		public CtrRef<ChatSettings> Settings { get { return m_Settings; } set { if (OnPropertyChanging("UIChatCompData." + nameof(Settings), this, m_Settings, value)) m_Settings = value; } } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

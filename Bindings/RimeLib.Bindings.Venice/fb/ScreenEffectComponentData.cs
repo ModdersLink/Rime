@@ -18,40 +18,40 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class ScreenEffectComponentData : 
 		ComponentData
 	{
 		protected Vec4 m_ScreenEffectParams = new Vec4();
-		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(2179275266)]
+		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(2179275266)]
 		public Vec4 ScreenEffectParams { get { return m_ScreenEffectParams; } set { if (OnPropertyChanging("ScreenEffectComponentData." + nameof(ScreenEffectParams), this, m_ScreenEffectParams, value)) m_ScreenEffectParams = value; } } // 0x60 (96)
 		
 		protected ScreenEffectFrameType m_FrameType = new ScreenEffectFrameType();
-		[ContainerField(112), ContainerFieldNameHash(21868832)]
+		[ContainerField(112), MemberInfoFlag(137), ContainerFieldNameHash(21868832)]
 		public ScreenEffectFrameType FrameType { get { return m_FrameType; } set { if (OnPropertyChanging("ScreenEffectComponentData." + nameof(FrameType), this, m_FrameType, value)) m_FrameType = value; } } // 0x70 (112)
 		
 		protected CtrRef<SurfaceShaderBaseAsset> m_Shader = new CtrRef<SurfaceShaderBaseAsset>();
-		[ContainerField(116), ContainerFieldNameHash(3352909900)]
+		[ContainerField(116), MemberInfoFlag(53), ContainerFieldNameHash(3352909900), ContainerCtrRef]
 		public CtrRef<SurfaceShaderBaseAsset> Shader { get { return m_Shader; } set { if (OnPropertyChanging("ScreenEffectComponentData." + nameof(Shader), this, m_Shader, value)) m_Shader = value; } } // 0x74 (116)
 		
 		protected float m_FrameWidth = new float();
-		[ContainerField(120), LayoutImmutable, Blittable, ContainerFieldNameHash(727037822)]
+		[ContainerField(120), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(727037822)]
 		public float FrameWidth { get { return m_FrameWidth; } set { if (OnPropertyChanging("ScreenEffectComponentData." + nameof(FrameWidth), this, m_FrameWidth, value)) m_FrameWidth = value; } } // 0x78 (120)
 		
 		protected float m_OuterFrameOpacity = new float();
-		[ContainerField(124), LayoutImmutable, Blittable, ContainerFieldNameHash(2645729368)]
+		[ContainerField(124), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2645729368)]
 		public float OuterFrameOpacity { get { return m_OuterFrameOpacity; } set { if (OnPropertyChanging("ScreenEffectComponentData." + nameof(OuterFrameOpacity), this, m_OuterFrameOpacity, value)) m_OuterFrameOpacity = value; } } // 0x7C (124)
 		
 		protected float m_InnerFrameOpacity = new float();
-		[ContainerField(128), LayoutImmutable, Blittable, ContainerFieldNameHash(2573293567)]
+		[ContainerField(128), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2573293567)]
 		public float InnerFrameOpacity { get { return m_InnerFrameOpacity; } set { if (OnPropertyChanging("ScreenEffectComponentData." + nameof(InnerFrameOpacity), this, m_InnerFrameOpacity, value)) m_InnerFrameOpacity = value; } } // 0x80 (128)
 		
 		protected float m_Angle = new float();
-		[ContainerField(132), LayoutImmutable, Blittable, ContainerFieldNameHash(205597860)]
+		[ContainerField(132), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(205597860)]
 		public float Angle { get { return m_Angle; } set { if (OnPropertyChanging("ScreenEffectComponentData." + nameof(Angle), this, m_Angle, value)) m_Angle = value; } } // 0x84 (132)
 		
 		protected Realm m_Realm = new Realm();
-		[ContainerField(136), ContainerFieldNameHash(229961746)]
+		[ContainerField(136), MemberInfoFlag(137), ContainerFieldNameHash(229961746)]
 		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("ScreenEffectComponentData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0x88 (136)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

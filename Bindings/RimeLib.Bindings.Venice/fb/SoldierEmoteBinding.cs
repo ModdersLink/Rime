@@ -18,55 +18,55 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(41), ContainerStruct]
 	public class SoldierEmoteBinding : FrostbiteContainer
 	{
-		[ContainerField(0)]
+		[ContainerField(0), MemberInfoFlag(41)]
 		public AntRef Speak { get; set; } = new AntRef(); // 0x0 (0)
 		
-		[ContainerField(4)]
+		[ContainerField(4), MemberInfoFlag(41)]
 		public AntRef IsSquadLeader { get; set; } = new AntRef(); // 0x4 (4)
 		
-		[ContainerField(8)]
+		[ContainerField(8), MemberInfoFlag(41)]
 		public AntRef EmoteSpot { get; set; } = new AntRef(); // 0x8 (8)
 		
-		[ContainerField(12)]
+		[ContainerField(12), MemberInfoFlag(41)]
 		public AntRef EmoteOk { get; set; } = new AntRef(); // 0xC (12)
 		
-		[ContainerField(16)]
+		[ContainerField(16), MemberInfoFlag(41)]
 		public AntRef EmoteNeedARide { get; set; } = new AntRef(); // 0x10 (16)
 		
-		[ContainerField(20)]
+		[ContainerField(20), MemberInfoFlag(41)]
 		public AntRef EmoteGoGoGo { get; set; } = new AntRef(); // 0x14 (20)
 		
-		[ContainerField(24)]
+		[ContainerField(24), MemberInfoFlag(41)]
 		public AntRef EmoteNeedBackup { get; set; } = new AntRef(); // 0x18 (24)
 		
-		[ContainerField(28)]
+		[ContainerField(28), MemberInfoFlag(41)]
 		public AntRef EmoteThanks { get; set; } = new AntRef(); // 0x1C (28)
 		
-		[ContainerField(32)]
+		[ContainerField(32), MemberInfoFlag(41)]
 		public AntRef EmoteNeedMedic { get; set; } = new AntRef(); // 0x20 (32)
 		
-		[ContainerField(36)]
+		[ContainerField(36), MemberInfoFlag(41)]
 		public AntRef EmoteFollowMe { get; set; } = new AntRef(); // 0x24 (36)
 		
-		[ContainerField(40)]
+		[ContainerField(40), MemberInfoFlag(41)]
 		public AntRef EmoteNeedAmmo { get; set; } = new AntRef(); // 0x28 (40)
 		
-		[ContainerField(44)]
+		[ContainerField(44), MemberInfoFlag(41)]
 		public AntRef EmoteSorry { get; set; } = new AntRef(); // 0x2C (44)
 		
-		[ContainerField(48)]
+		[ContainerField(48), MemberInfoFlag(41)]
 		public AntRef EmoteNo { get; set; } = new AntRef(); // 0x30 (48)
 		
-		[ContainerField(52)]
+		[ContainerField(52), MemberInfoFlag(41)]
 		public AntRef EmoteDefendCapturePoint { get; set; } = new AntRef(); // 0x34 (52)
 		
-		[ContainerField(56)]
+		[ContainerField(56), MemberInfoFlag(41)]
 		public AntRef EmoteAttackCapturePoint { get; set; } = new AntRef(); // 0x38 (56)
 		
-		[ContainerField(60)]
+		[ContainerField(60), MemberInfoFlag(41)]
 		public AntRef EmoteMoveToPosition { get; set; } = new AntRef(); // 0x3C (60)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

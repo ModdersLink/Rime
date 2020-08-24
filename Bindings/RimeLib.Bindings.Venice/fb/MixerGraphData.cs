@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class MixerGraphData : 
 		AudioGraphData
 	{
 		protected RefArray<AudioGraphParameter> m_Inputs = new RefArray<AudioGraphParameter>();
-		[ContainerField(28), ContainerFieldNameHash(2784267136)]
+		[ContainerField(28), MemberInfoFlag(65), ContainerFieldNameHash(2784267136), ContainerRefArray]
 		public RefArray<AudioGraphParameter> Inputs { get { return m_Inputs; } set { if (OnPropertyChanging("MixerGraphData." + nameof(Inputs), this, m_Inputs, value)) m_Inputs = value; } } // 0x1C (28)
 		
 		protected List<MixerValueAccumulateMode> m_AccumulateModes = new List<MixerValueAccumulateMode>();
-		[ContainerField(32), ContainerFieldNameHash(918507941)]
+		[ContainerField(32), MemberInfoFlag(65), ContainerFieldNameHash(918507941), ContainerArray]
 		public List<MixerValueAccumulateMode> AccumulateModes { get { return m_AccumulateModes; } set { if (OnPropertyChanging("MixerGraphData." + nameof(AccumulateModes), this, m_AccumulateModes, value)) m_AccumulateModes = value; } } // 0x20 (32)
 		
 		protected RefArray<AudioGraphParameter> m_Outputs = new RefArray<AudioGraphParameter>();
-		[ContainerField(36), ContainerFieldNameHash(1070022089)]
+		[ContainerField(36), MemberInfoFlag(65), ContainerFieldNameHash(1070022089), ContainerRefArray]
 		public RefArray<AudioGraphParameter> Outputs { get { return m_Outputs; } set { if (OnPropertyChanging("MixerGraphData." + nameof(Outputs), this, m_Outputs, value)) m_Outputs = value; } } // 0x24 (36)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

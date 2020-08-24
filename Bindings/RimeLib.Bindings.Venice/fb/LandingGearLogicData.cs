@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class LandingGearLogicData : 
 		DataContainer
 	{
 		protected LandingGearConditionData m_RetractCondition = new LandingGearConditionData();
-		[ContainerField(8), ContainerFieldNameHash(750548785)]
+		[ContainerField(8), MemberInfoFlag(41), ContainerFieldNameHash(750548785)]
 		public LandingGearConditionData RetractCondition { get { return m_RetractCondition; } set { if (OnPropertyChanging("LandingGearLogicData." + nameof(RetractCondition), this, m_RetractCondition, value)) m_RetractCondition = value; } } // 0x8 (8)
 		
 		protected LandingGearConditionData m_DeployCondition = new LandingGearConditionData();
-		[ContainerField(20), ContainerFieldNameHash(3008584093)]
+		[ContainerField(20), MemberInfoFlag(41), ContainerFieldNameHash(3008584093)]
 		public LandingGearConditionData DeployCondition { get { return m_DeployCondition; } set { if (OnPropertyChanging("LandingGearLogicData." + nameof(DeployCondition), this, m_DeployCondition, value)) m_DeployCondition = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

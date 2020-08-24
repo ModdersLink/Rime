@@ -18,10 +18,10 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(41), ContainerStruct]
 	public class EdgeModelInstance : FrostbiteContainer
 	{
-		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable]
+		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
 		public LinearTransform Transform { get; set; } = new LinearTransform(); // 0x0 (0)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

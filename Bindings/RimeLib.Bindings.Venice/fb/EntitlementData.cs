@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(41), ContainerStruct]
 	public class EntitlementData : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable]
+		[ContainerField(0), LayoutImmutable, MemberInfoFlag(16509)]
 		public string License { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable]
+		[ContainerField(4), LayoutImmutable, MemberInfoFlag(16509)]
 		public string EntitlementTag { get; set; } // 0x4 (4)
 		
-		[ContainerField(8), LayoutImmutable]
+		[ContainerField(8), LayoutImmutable, MemberInfoFlag(16509)]
 		public string GroupName { get; set; } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable]
+		[ContainerField(12), LayoutImmutable, MemberInfoFlag(16509)]
 		public string ProductId { get; set; } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable]
+		[ContainerField(16), LayoutImmutable, MemberInfoFlag(16509)]
 		public string ProjectId { get; set; } // 0x10 (16)
 		
-		[ContainerField(20)]
+		[ContainerField(20), MemberInfoFlag(137)]
 		public EntitlementType UsageType { get; set; } = new EntitlementType(); // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable]
+		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool VerifyOwnership { get; set; } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

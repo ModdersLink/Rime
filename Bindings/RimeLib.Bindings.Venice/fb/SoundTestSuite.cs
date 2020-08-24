@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class SoundTestSuite : 
 		DataContainer
 	{
 		protected string m_Name = string.Empty;
-		[ContainerField(8), LayoutImmutable, ContainerFieldNameHash(2088949890)]
+		[ContainerField(8), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(2088949890)]
 		public string Name { get { return m_Name; } set { if (OnPropertyChanging("SoundTestSuite." + nameof(Name), this, m_Name, value)) m_Name = value; } } // 0x8 (8)
 		
 		protected RefArray<SoundAsset> m_Assets = new RefArray<SoundAsset>();
-		[ContainerField(12), ContainerFieldNameHash(2502242534)]
+		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(2502242534), ContainerRefArray]
 		public RefArray<SoundAsset> Assets { get { return m_Assets; } set { if (OnPropertyChanging("SoundTestSuite." + nameof(Assets), this, m_Assets, value)) m_Assets = value; } } // 0xC (12)
 		
 		protected RefArray<SoundTestSpec> m_Tests = new RefArray<SoundTestSpec>();
-		[ContainerField(16), ContainerFieldNameHash(227718400)]
+		[ContainerField(16), MemberInfoFlag(65), ContainerFieldNameHash(227718400), ContainerRefArray]
 		public RefArray<SoundTestSpec> Tests { get { return m_Tests; } set { if (OnPropertyChanging("SoundTestSuite." + nameof(Tests), this, m_Tests, value)) m_Tests = value; } } // 0x10 (16)
 		
 		protected bool m_ProfileTests = new bool();
-		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(3447328075)]
+		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3447328075)]
 		public bool ProfileTests { get { return m_ProfileTests; } set { if (OnPropertyChanging("SoundTestSuite." + nameof(ProfileTests), this, m_ProfileTests, value)) m_ProfileTests = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

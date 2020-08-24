@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class EnlightenEntityData : 
 		EntityData
 	{
 		protected int m_Priority = new int();
-		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(3062102871)]
+		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(3062102871)]
 		public int Priority { get { return m_Priority; } set { if (OnPropertyChanging("EnlightenEntityData." + nameof(Priority), this, m_Priority, value)) m_Priority = value; } } // 0xC (12)
 		
 		protected Realm m_Realm = new Realm();
-		[ContainerField(16), ContainerFieldNameHash(229961746)]
+		[ContainerField(16), MemberInfoFlag(137), ContainerFieldNameHash(229961746)]
 		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("EnlightenEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0x10 (16)
 		
 		protected bool m_Enable = new bool();
-		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(2342790116)]
+		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2342790116)]
 		public bool Enable { get { return m_Enable; } set { if (OnPropertyChanging("EnlightenEntityData." + nameof(Enable), this, m_Enable, value)) m_Enable = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

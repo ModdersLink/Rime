@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class UITextDataBinding : 
 		UIDataBinding
 	{
 		protected string m_StaticText = string.Empty;
-		[ContainerField(8), LayoutImmutable, ContainerFieldNameHash(3461853472)]
+		[ContainerField(8), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(3461853472)]
 		public string StaticText { get { return m_StaticText; } set { if (OnPropertyChanging("UITextDataBinding." + nameof(StaticText), this, m_StaticText, value)) m_StaticText = value; } } // 0x8 (8)
 		
 		protected UIDataSourceInfo m_TextData = new UIDataSourceInfo();
-		[ContainerField(12), ContainerFieldNameHash(2028824392)]
+		[ContainerField(12), MemberInfoFlag(41), ContainerFieldNameHash(2028824392)]
 		public UIDataSourceInfo TextData { get { return m_TextData; } set { if (OnPropertyChanging("UITextDataBinding." + nameof(TextData), this, m_TextData, value)) m_TextData = value; } } // 0xC (12)
 		
 		protected UIDataSourceInfo m_Visibility = new UIDataSourceInfo();
-		[ContainerField(28), ContainerFieldNameHash(1708270083)]
+		[ContainerField(28), MemberInfoFlag(41), ContainerFieldNameHash(1708270083)]
 		public UIDataSourceInfo Visibility { get { return m_Visibility; } set { if (OnPropertyChanging("UITextDataBinding." + nameof(Visibility), this, m_Visibility, value)) m_Visibility = value; } } // 0x1C (28)
 		
 		protected bool m_Refresh = new bool();
-		[ContainerField(44), LayoutImmutable, Blittable, ContainerFieldNameHash(1327541432)]
+		[ContainerField(44), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1327541432)]
 		public bool Refresh { get { return m_Refresh; } set { if (OnPropertyChanging("UITextDataBinding." + nameof(Refresh), this, m_Refresh, value)) m_Refresh = value; } } // 0x2C (44)
 		
 		protected bool m_OverrideDirectAccess = new bool();
-		[ContainerField(45), LayoutImmutable, Blittable, ContainerFieldNameHash(1955548088)]
+		[ContainerField(45), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1955548088)]
 		public bool OverrideDirectAccess { get { return m_OverrideDirectAccess; } set { if (OnPropertyChanging("UITextDataBinding." + nameof(OverrideDirectAccess), this, m_OverrideDirectAccess, value)) m_OverrideDirectAccess = value; } } // 0x2D (45)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

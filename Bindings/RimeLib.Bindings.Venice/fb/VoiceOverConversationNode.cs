@@ -18,64 +18,64 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class VoiceOverConversationNode : 
 		VoiceOverStructureNode
 	{
 		protected RefArray<VoiceOverDialogGroup> m_Groups = new RefArray<VoiceOverDialogGroup>();
-		[ContainerField(12), ContainerFieldNameHash(2573340009)]
+		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(2573340009), ContainerRefArray]
 		public RefArray<VoiceOverDialogGroup> Groups { get { return m_Groups; } set { if (OnPropertyChanging("VoiceOverConversationNode." + nameof(Groups), this, m_Groups, value)) m_Groups = value; } } // 0xC (12)
 		
 		protected RefArray<VoiceOverValueConnection> m_Condition = new RefArray<VoiceOverValueConnection>();
-		[ContainerField(16), ContainerFieldNameHash(1800624758)]
+		[ContainerField(16), MemberInfoFlag(65), ContainerFieldNameHash(1800624758), ContainerRefArray]
 		public RefArray<VoiceOverValueConnection> Condition { get { return m_Condition; } set { if (OnPropertyChanging("VoiceOverConversationNode." + nameof(Condition), this, m_Condition, value)) m_Condition = value; } } // 0x10 (16)
 		
 		protected CtrRef<VoiceOverIntervalNode> m_Interval = new CtrRef<VoiceOverIntervalNode>();
-		[ContainerField(20), ContainerFieldNameHash(4280103418)]
+		[ContainerField(20), MemberInfoFlag(53), ContainerFieldNameHash(4280103418), ContainerCtrRef]
 		public CtrRef<VoiceOverIntervalNode> Interval { get { return m_Interval; } set { if (OnPropertyChanging("VoiceOverConversationNode." + nameof(Interval), this, m_Interval, value)) m_Interval = value; } } // 0x14 (20)
 		
 		protected RefArray<VoiceOverStructureNode> m_FinishedRelationship = new RefArray<VoiceOverStructureNode>();
-		[ContainerField(24), ContainerFieldNameHash(1799875187)]
+		[ContainerField(24), MemberInfoFlag(65), ContainerFieldNameHash(1799875187), ContainerRefArray]
 		public RefArray<VoiceOverStructureNode> FinishedRelationship { get { return m_FinishedRelationship; } set { if (OnPropertyChanging("VoiceOverConversationNode." + nameof(FinishedRelationship), this, m_FinishedRelationship, value)) m_FinishedRelationship = value; } } // 0x18 (24)
 		
 		protected RefArray<VoiceOverStructureNode> m_BlockedRelationship = new RefArray<VoiceOverStructureNode>();
-		[ContainerField(28), ContainerFieldNameHash(3157137449)]
+		[ContainerField(28), MemberInfoFlag(65), ContainerFieldNameHash(3157137449), ContainerRefArray]
 		public RefArray<VoiceOverStructureNode> BlockedRelationship { get { return m_BlockedRelationship; } set { if (OnPropertyChanging("VoiceOverConversationNode." + nameof(BlockedRelationship), this, m_BlockedRelationship, value)) m_BlockedRelationship = value; } } // 0x1C (28)
 		
 		protected VoiceOverContainerConditionMode m_ConditionMode = new VoiceOverContainerConditionMode();
-		[ContainerField(32), ContainerFieldNameHash(1106041141)]
+		[ContainerField(32), MemberInfoFlag(137), ContainerFieldNameHash(1106041141)]
 		public VoiceOverContainerConditionMode ConditionMode { get { return m_ConditionMode; } set { if (OnPropertyChanging("VoiceOverConversationNode." + nameof(ConditionMode), this, m_ConditionMode, value)) m_ConditionMode = value; } } // 0x20 (32)
 		
 		protected float m_Probability = new float();
-		[ContainerField(36), LayoutImmutable, Blittable, ContainerFieldNameHash(35957416)]
+		[ContainerField(36), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(35957416)]
 		public float Probability { get { return m_Probability; } set { if (OnPropertyChanging("VoiceOverConversationNode." + nameof(Probability), this, m_Probability, value)) m_Probability = value; } } // 0x24 (36)
 		
 		protected CtrRef<VoiceOverPronunciation> m_Pronunciation = new CtrRef<VoiceOverPronunciation>();
-		[ContainerField(40), ContainerFieldNameHash(1030690794)]
+		[ContainerField(40), MemberInfoFlag(53), ContainerFieldNameHash(1030690794), ContainerCtrRef]
 		public CtrRef<VoiceOverPronunciation> Pronunciation { get { return m_Pronunciation; } set { if (OnPropertyChanging("VoiceOverConversationNode." + nameof(Pronunciation), this, m_Pronunciation, value)) m_Pronunciation = value; } } // 0x28 (40)
 		
 		protected VoiceOverConversationInterruptMode m_InterruptMode = new VoiceOverConversationInterruptMode();
-		[ContainerField(44), ContainerFieldNameHash(1567415617)]
+		[ContainerField(44), MemberInfoFlag(137), ContainerFieldNameHash(1567415617)]
 		public VoiceOverConversationInterruptMode InterruptMode { get { return m_InterruptMode; } set { if (OnPropertyChanging("VoiceOverConversationNode." + nameof(InterruptMode), this, m_InterruptMode, value)) m_InterruptMode = value; } } // 0x2C (44)
 		
 		protected int m_Priority = new int();
-		[ContainerField(48), LayoutImmutable, Blittable, ContainerFieldNameHash(3062102871)]
+		[ContainerField(48), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(3062102871)]
 		public int Priority { get { return m_Priority; } set { if (OnPropertyChanging("VoiceOverConversationNode." + nameof(Priority), this, m_Priority, value)) m_Priority = value; } } // 0x30 (48)
 		
 		protected VoiceOverConversationQueueMode m_QueueMode = new VoiceOverConversationQueueMode();
-		[ContainerField(52), ContainerFieldNameHash(451916407)]
+		[ContainerField(52), MemberInfoFlag(137), ContainerFieldNameHash(451916407)]
 		public VoiceOverConversationQueueMode QueueMode { get { return m_QueueMode; } set { if (OnPropertyChanging("VoiceOverConversationNode." + nameof(QueueMode), this, m_QueueMode, value)) m_QueueMode = value; } } // 0x34 (52)
 		
 		protected float m_Relevancy = new float();
-		[ContainerField(56), LayoutImmutable, Blittable, ContainerFieldNameHash(2394072376)]
+		[ContainerField(56), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2394072376)]
 		public float Relevancy { get { return m_Relevancy; } set { if (OnPropertyChanging("VoiceOverConversationNode." + nameof(Relevancy), this, m_Relevancy, value)) m_Relevancy = value; } } // 0x38 (56)
 		
 		protected sbyte m_TrackCount = new sbyte();
-		[ContainerField(60), LayoutImmutable, Blittable, ContainerFieldNameHash(2101390953)]
+		[ContainerField(60), LayoutImmutable, Blittable, MemberInfoFlag(49341), ContainerFieldNameHash(2101390953)]
 		public sbyte TrackCount { get { return m_TrackCount; } set { if (OnPropertyChanging("VoiceOverConversationNode." + nameof(TrackCount), this, m_TrackCount, value)) m_TrackCount = value; } } // 0x3C (60)
 		
 		protected sbyte m_LastSequenceIndex = new sbyte();
-		[ContainerField(61), LayoutImmutable, Blittable, ContainerFieldNameHash(1436490318)]
+		[ContainerField(61), LayoutImmutable, Blittable, MemberInfoFlag(49341), ContainerFieldNameHash(1436490318)]
 		public sbyte LastSequenceIndex { get { return m_LastSequenceIndex; } set { if (OnPropertyChanging("VoiceOverConversationNode." + nameof(LastSequenceIndex), this, m_LastSequenceIndex, value)) m_LastSequenceIndex = value; } } // 0x3D (61)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

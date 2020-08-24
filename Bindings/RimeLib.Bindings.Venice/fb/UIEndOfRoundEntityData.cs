@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class UIEndOfRoundEntityData : 
 		GameEntityData
 	{
 		protected float m_PreEorTime = new float();
-		[ContainerField(96), LayoutImmutable, Blittable, ContainerFieldNameHash(3258863311)]
+		[ContainerField(96), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3258863311)]
 		public float PreEorTime { get { return m_PreEorTime; } set { if (OnPropertyChanging("UIEndOfRoundEntityData." + nameof(PreEorTime), this, m_PreEorTime, value)) m_PreEorTime = value; } } // 0x60 (96)
 		
 		protected float m_EorTime = new float();
-		[ContainerField(100), LayoutImmutable, Blittable, ContainerFieldNameHash(4274483656)]
+		[ContainerField(100), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(4274483656)]
 		public float EorTime { get { return m_EorTime; } set { if (OnPropertyChanging("UIEndOfRoundEntityData." + nameof(EorTime), this, m_EorTime, value)) m_EorTime = value; } } // 0x64 (100)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

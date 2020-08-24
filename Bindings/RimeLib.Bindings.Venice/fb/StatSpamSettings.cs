@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class StatSpamSettings : 
 		Asset
 	{
 		protected List<StatSpamSetting> m_SpamList = new List<StatSpamSetting>();
-		[ContainerField(12), ContainerFieldNameHash(3963373928)]
+		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(3963373928), ContainerArray]
 		public List<StatSpamSetting> SpamList { get { return m_SpamList; } set { if (OnPropertyChanging("StatSpamSettings." + nameof(SpamList), this, m_SpamList, value)) m_SpamList = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

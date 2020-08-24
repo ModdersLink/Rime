@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class DynamicDataContainer : 
 		DataContainer
 	{
 		protected List<DataField> m_Fields = new List<DataField>();
-		[ContainerField(8), ContainerFieldNameHash(2525411604)]
+		[ContainerField(8), MemberInfoFlag(65), ContainerFieldNameHash(2525411604), ContainerArray]
 		public List<DataField> Fields { get { return m_Fields; } set { if (OnPropertyChanging("DynamicDataContainer." + nameof(Fields), this, m_Fields, value)) m_Fields = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class ObjectVariationSwitchEntityData : 
 		EntityData
 	{
 		protected CtrRef<ObjectVariation> m_Variation1 = new CtrRef<ObjectVariation>();
-		[ContainerField(12), ContainerFieldNameHash(2728063333)]
+		[ContainerField(12), MemberInfoFlag(53), ContainerFieldNameHash(2728063333), ContainerCtrRef]
 		public CtrRef<ObjectVariation> Variation1 { get { return m_Variation1; } set { if (OnPropertyChanging("ObjectVariationSwitchEntityData." + nameof(Variation1), this, m_Variation1, value)) m_Variation1 = value; } } // 0xC (12)
 		
 		protected CtrRef<ObjectVariation> m_Variation2 = new CtrRef<ObjectVariation>();
-		[ContainerField(16), ContainerFieldNameHash(2728063334)]
+		[ContainerField(16), MemberInfoFlag(53), ContainerFieldNameHash(2728063334), ContainerCtrRef]
 		public CtrRef<ObjectVariation> Variation2 { get { return m_Variation2; } set { if (OnPropertyChanging("ObjectVariationSwitchEntityData." + nameof(Variation2), this, m_Variation2, value)) m_Variation2 = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

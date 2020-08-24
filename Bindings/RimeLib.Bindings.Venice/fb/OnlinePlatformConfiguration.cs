@@ -18,22 +18,22 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(41), ContainerStruct]
 	public class OnlinePlatformConfiguration : FrostbiteContainer
 	{
-		[ContainerField(0)]
+		[ContainerField(0), MemberInfoFlag(137)]
 		public GamePlatform Platform { get; set; } = new GamePlatform(); // 0x0 (0)
 		
-		[ContainerField(4)]
+		[ContainerField(4), MemberInfoFlag(53), ContainerCtrRef]
 		public CtrRef<OnlineServicesAsset> Services { get; set; } = new CtrRef<OnlineServicesAsset>(); // 0x4 (4)
 		
-		[ContainerField(8)]
+		[ContainerField(8), MemberInfoFlag(65), ContainerRefArray]
 		public RefArray<PresenceBackendData> ClientBackends { get; set; } = new RefArray<PresenceBackendData>(); // 0x8 (8)
 		
-		[ContainerField(12)]
+		[ContainerField(12), MemberInfoFlag(65), ContainerRefArray]
 		public RefArray<ServerBackendData> ServerBackends { get; set; } = new RefArray<ServerBackendData>(); // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
+		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool IsFallback { get; set; } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,32 +18,32 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class VoiceOverContainerNode : 
 		VoiceOverStructureNode
 	{
 		protected RefArray<VoiceOverValueConnection> m_Condition = new RefArray<VoiceOverValueConnection>();
-		[ContainerField(12), ContainerFieldNameHash(1800624758)]
+		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(1800624758), ContainerRefArray]
 		public RefArray<VoiceOverValueConnection> Condition { get { return m_Condition; } set { if (OnPropertyChanging("VoiceOverContainerNode." + nameof(Condition), this, m_Condition, value)) m_Condition = value; } } // 0xC (12)
 		
 		protected CtrRef<VoiceOverIntervalNode> m_Interval = new CtrRef<VoiceOverIntervalNode>();
-		[ContainerField(16), ContainerFieldNameHash(4280103418)]
+		[ContainerField(16), MemberInfoFlag(53), ContainerFieldNameHash(4280103418), ContainerCtrRef]
 		public CtrRef<VoiceOverIntervalNode> Interval { get { return m_Interval; } set { if (OnPropertyChanging("VoiceOverContainerNode." + nameof(Interval), this, m_Interval, value)) m_Interval = value; } } // 0x10 (16)
 		
 		protected RefArray<VoiceOverStructureNode> m_TrueRelationship = new RefArray<VoiceOverStructureNode>();
-		[ContainerField(20), ContainerFieldNameHash(2563717655)]
+		[ContainerField(20), MemberInfoFlag(65), ContainerFieldNameHash(2563717655), ContainerRefArray]
 		public RefArray<VoiceOverStructureNode> TrueRelationship { get { return m_TrueRelationship; } set { if (OnPropertyChanging("VoiceOverContainerNode." + nameof(TrueRelationship), this, m_TrueRelationship, value)) m_TrueRelationship = value; } } // 0x14 (20)
 		
 		protected RefArray<VoiceOverStructureNode> m_FalseRelationship = new RefArray<VoiceOverStructureNode>();
-		[ContainerField(24), ContainerFieldNameHash(1133905660)]
+		[ContainerField(24), MemberInfoFlag(65), ContainerFieldNameHash(1133905660), ContainerRefArray]
 		public RefArray<VoiceOverStructureNode> FalseRelationship { get { return m_FalseRelationship; } set { if (OnPropertyChanging("VoiceOverContainerNode." + nameof(FalseRelationship), this, m_FalseRelationship, value)) m_FalseRelationship = value; } } // 0x18 (24)
 		
 		protected VoiceOverContainerConditionMode m_ConditionMode = new VoiceOverContainerConditionMode();
-		[ContainerField(28), ContainerFieldNameHash(1106041141)]
+		[ContainerField(28), MemberInfoFlag(137), ContainerFieldNameHash(1106041141)]
 		public VoiceOverContainerConditionMode ConditionMode { get { return m_ConditionMode; } set { if (OnPropertyChanging("VoiceOverContainerNode." + nameof(ConditionMode), this, m_ConditionMode, value)) m_ConditionMode = value; } } // 0x1C (28)
 		
 		protected float m_Probability = new float();
-		[ContainerField(32), LayoutImmutable, Blittable, ContainerFieldNameHash(35957416)]
+		[ContainerField(32), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(35957416)]
 		public float Probability { get { return m_Probability; } set { if (OnPropertyChanging("VoiceOverContainerNode." + nameof(Probability), this, m_Probability, value)) m_Probability = value; } } // 0x20 (32)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class MaterialContainerPair : 
 		DataContainer
 	{
 		protected uint m_FlagsAndIndex = new uint();
-		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(948792655)]
+		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(948792655)]
 		public uint FlagsAndIndex { get { return m_FlagsAndIndex; } set { if (OnPropertyChanging("MaterialContainerPair." + nameof(FlagsAndIndex), this, m_FlagsAndIndex, value)) m_FlagsAndIndex = value; } } // 0x8 (8)
 		
 		protected sbyte m_PhysicsPropertyIndex = new sbyte();
-		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(2298256471)]
+		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49341), ContainerFieldNameHash(2298256471)]
 		public sbyte PhysicsPropertyIndex { get { return m_PhysicsPropertyIndex; } set { if (OnPropertyChanging("MaterialContainerPair." + nameof(PhysicsPropertyIndex), this, m_PhysicsPropertyIndex, value)) m_PhysicsPropertyIndex = value; } } // 0xC (12)
 		
 		protected sbyte m_PhysicsMaterialIndex = new sbyte();
-		[ContainerField(13), LayoutImmutable, Blittable, ContainerFieldNameHash(2836775707)]
+		[ContainerField(13), LayoutImmutable, Blittable, MemberInfoFlag(49341), ContainerFieldNameHash(2836775707)]
 		public sbyte PhysicsMaterialIndex { get { return m_PhysicsMaterialIndex; } set { if (OnPropertyChanging("MaterialContainerPair." + nameof(PhysicsMaterialIndex), this, m_PhysicsMaterialIndex, value)) m_PhysicsMaterialIndex = value; } } // 0xD (13)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

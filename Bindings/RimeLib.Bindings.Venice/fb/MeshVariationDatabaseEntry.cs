@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class MeshVariationDatabaseEntry : 
 		DataContainer
 	{
 		protected CtrRef<MeshAsset> m_Mesh = new CtrRef<MeshAsset>();
-		[ContainerField(8), ContainerFieldNameHash(2088783990)]
+		[ContainerField(8), MemberInfoFlag(53), ContainerFieldNameHash(2088783990), ContainerCtrRef]
 		public CtrRef<MeshAsset> Mesh { get { return m_Mesh; } set { if (OnPropertyChanging("MeshVariationDatabaseEntry." + nameof(Mesh), this, m_Mesh, value)) m_Mesh = value; } } // 0x8 (8)
 		
 		protected uint m_VariationAssetNameHash = new uint();
-		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(442217361)]
+		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(442217361)]
 		public uint VariationAssetNameHash { get { return m_VariationAssetNameHash; } set { if (OnPropertyChanging("MeshVariationDatabaseEntry." + nameof(VariationAssetNameHash), this, m_VariationAssetNameHash, value)) m_VariationAssetNameHash = value; } } // 0xC (12)
 		
 		protected List<MeshVariationDatabaseMaterial> m_Materials = new List<MeshVariationDatabaseMaterial>();
-		[ContainerField(16), ContainerFieldNameHash(2136313565)]
+		[ContainerField(16), MemberInfoFlag(65), ContainerFieldNameHash(2136313565), ContainerArray]
 		public List<MeshVariationDatabaseMaterial> Materials { get { return m_Materials; } set { if (OnPropertyChanging("MeshVariationDatabaseEntry." + nameof(Materials), this, m_Materials, value)) m_Materials = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class SlidingStateData : 
 		CharacterStateData
 	{
 		protected float m_HorizontalInputScale = new float();
-		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(770027349)]
+		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(770027349)]
 		public float HorizontalInputScale { get { return m_HorizontalInputScale; } set { if (OnPropertyChanging("SlidingStateData." + nameof(HorizontalInputScale), this, m_HorizontalInputScale, value)) m_HorizontalInputScale = value; } } // 0xC (12)
 		
 		protected float m_GravityScale = new float();
-		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(1341716283)]
+		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1341716283)]
 		public float GravityScale { get { return m_GravityScale; } set { if (OnPropertyChanging("SlidingStateData." + nameof(GravityScale), this, m_GravityScale, value)) m_GravityScale = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class UnlockValuePair : 
 		DataContainer
 	{
 		protected string m_Id = string.Empty;
-		[ContainerField(8), LayoutImmutable, ContainerFieldNameHash(5862152)]
+		[ContainerField(8), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(5862152)]
 		public string Id { get { return m_Id; } set { if (OnPropertyChanging("UnlockValuePair." + nameof(Id), this, m_Id, value)) m_Id = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

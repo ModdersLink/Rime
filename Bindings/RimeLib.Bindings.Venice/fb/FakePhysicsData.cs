@@ -18,40 +18,40 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class FakePhysicsData : 
 		DataContainer
 	{
 		protected CtrRef<FakePhysicsData> m_ChildFakePhysics = new CtrRef<FakePhysicsData>();
-		[ContainerField(8), ContainerFieldNameHash(1652180525)]
+		[ContainerField(8), MemberInfoFlag(53), ContainerFieldNameHash(1652180525), ContainerCtrRef]
 		public CtrRef<FakePhysicsData> ChildFakePhysics { get { return m_ChildFakePhysics; } set { if (OnPropertyChanging("FakePhysicsData." + nameof(ChildFakePhysics), this, m_ChildFakePhysics, value)) m_ChildFakePhysics = value; } } // 0x8 (8)
 		
 		protected float m_StartSpeed = new float();
-		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(2753756066)]
+		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2753756066)]
 		public float StartSpeed { get { return m_StartSpeed; } set { if (OnPropertyChanging("FakePhysicsData." + nameof(StartSpeed), this, m_StartSpeed, value)) m_StartSpeed = value; } } // 0xC (12)
 		
 		protected float m_GravityModifier = new float();
-		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(1597941524)]
+		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1597941524)]
 		public float GravityModifier { get { return m_GravityModifier; } set { if (OnPropertyChanging("FakePhysicsData." + nameof(GravityModifier), this, m_GravityModifier, value)) m_GravityModifier = value; } } // 0x10 (16)
 		
 		protected float m_StartDampening = new float();
-		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(3397890358)]
+		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3397890358)]
 		public float StartDampening { get { return m_StartDampening; } set { if (OnPropertyChanging("FakePhysicsData." + nameof(StartDampening), this, m_StartDampening, value)) m_StartDampening = value; } } // 0x14 (20)
 		
 		protected float m_EndDampening = new float();
-		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(1802636313)]
+		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1802636313)]
 		public float EndDampening { get { return m_EndDampening; } set { if (OnPropertyChanging("FakePhysicsData." + nameof(EndDampening), this, m_EndDampening, value)) m_EndDampening = value; } } // 0x18 (24)
 		
 		protected float m_MinSpeed = new float();
-		[ContainerField(28), LayoutImmutable, Blittable, ContainerFieldNameHash(3368183944)]
+		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3368183944)]
 		public float MinSpeed { get { return m_MinSpeed; } set { if (OnPropertyChanging("FakePhysicsData." + nameof(MinSpeed), this, m_MinSpeed, value)) m_MinSpeed = value; } } // 0x1C (28)
 		
 		protected float m_MaxSpeed = new float();
-		[ContainerField(32), LayoutImmutable, Blittable, ContainerFieldNameHash(396228950)]
+		[ContainerField(32), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(396228950)]
 		public float MaxSpeed { get { return m_MaxSpeed; } set { if (OnPropertyChanging("FakePhysicsData." + nameof(MaxSpeed), this, m_MaxSpeed, value)) m_MaxSpeed = value; } } // 0x20 (32)
 		
 		protected float m_Mass = new float();
-		[ContainerField(36), LayoutImmutable, Blittable, ContainerFieldNameHash(2088779625)]
+		[ContainerField(36), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2088779625)]
 		public float Mass { get { return m_Mass; } set { if (OnPropertyChanging("FakePhysicsData." + nameof(Mass), this, m_Mass, value)) m_Mass = value; } } // 0x24 (36)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

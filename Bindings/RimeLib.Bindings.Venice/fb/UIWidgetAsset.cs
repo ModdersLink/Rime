@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class UIWidgetAsset : 
 		UIAsset
 	{
 		protected List<WidgetEventQueryPair> m_WidgetEvents = new List<WidgetEventQueryPair>();
-		[ContainerField(12), ContainerFieldNameHash(1260186326)]
+		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(1260186326), ContainerArray]
 		public List<WidgetEventQueryPair> WidgetEvents { get { return m_WidgetEvents; } set { if (OnPropertyChanging("UIWidgetAsset." + nameof(WidgetEvents), this, m_WidgetEvents, value)) m_WidgetEvents = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,32 +18,32 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class InteractionEntityData : 
 		GameEntityData
 	{
 		protected float m_UseWithinRadius = new float();
-		[ContainerField(96), LayoutImmutable, Blittable, ContainerFieldNameHash(2619256891)]
+		[ContainerField(96), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2619256891)]
 		public float UseWithinRadius { get { return m_UseWithinRadius; } set { if (OnPropertyChanging("InteractionEntityData." + nameof(UseWithinRadius), this, m_UseWithinRadius, value)) m_UseWithinRadius = value; } } // 0x60 (96)
 		
 		protected float m_UseWithinAngle = new float();
-		[ContainerField(100), LayoutImmutable, Blittable, ContainerFieldNameHash(2931974274)]
+		[ContainerField(100), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2931974274)]
 		public float UseWithinAngle { get { return m_UseWithinAngle; } set { if (OnPropertyChanging("InteractionEntityData." + nameof(UseWithinAngle), this, m_UseWithinAngle, value)) m_UseWithinAngle = value; } } // 0x64 (100)
 		
 		protected CtrRef<SoundAsset> m_PreInteractionSoundEffect = new CtrRef<SoundAsset>();
-		[ContainerField(104), ContainerFieldNameHash(3692764940)]
+		[ContainerField(104), MemberInfoFlag(53), ContainerFieldNameHash(3692764940), ContainerCtrRef]
 		public CtrRef<SoundAsset> PreInteractionSoundEffect { get { return m_PreInteractionSoundEffect; } set { if (OnPropertyChanging("InteractionEntityData." + nameof(PreInteractionSoundEffect), this, m_PreInteractionSoundEffect, value)) m_PreInteractionSoundEffect = value; } } // 0x68 (104)
 		
 		protected uint m_MaxUses = new uint();
-		[ContainerField(108), LayoutImmutable, Blittable, ContainerFieldNameHash(1313728481)]
+		[ContainerField(108), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(1313728481)]
 		public uint MaxUses { get { return m_MaxUses; } set { if (OnPropertyChanging("InteractionEntityData." + nameof(MaxUses), this, m_MaxUses, value)) m_MaxUses = value; } } // 0x6C (108)
 		
 		protected bool m_AllowInteractionViaRemoteEntry = new bool();
-		[ContainerField(112), LayoutImmutable, Blittable, ContainerFieldNameHash(1767691528)]
+		[ContainerField(112), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1767691528)]
 		public bool AllowInteractionViaRemoteEntry { get { return m_AllowInteractionViaRemoteEntry; } set { if (OnPropertyChanging("InteractionEntityData." + nameof(AllowInteractionViaRemoteEntry), this, m_AllowInteractionViaRemoteEntry, value)) m_AllowInteractionViaRemoteEntry = value; } } // 0x70 (112)
 		
 		protected bool m_TestIfOccluded = new bool();
-		[ContainerField(113), LayoutImmutable, Blittable, ContainerFieldNameHash(1300068079)]
+		[ContainerField(113), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1300068079)]
 		public bool TestIfOccluded { get { return m_TestIfOccluded; } set { if (OnPropertyChanging("InteractionEntityData." + nameof(TestIfOccluded), this, m_TestIfOccluded, value)) m_TestIfOccluded = value; } } // 0x71 (113)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

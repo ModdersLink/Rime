@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class AILocoComponentData : 
 		ComponentData
 	{
 		protected AILocoBinding m_Binding = new AILocoBinding();
-		[ContainerField(96), ContainerFieldNameHash(2590060228)]
+		[ContainerField(96), MemberInfoFlag(41), ContainerFieldNameHash(2590060228)]
 		public AILocoBinding Binding { get { return m_Binding; } set { if (OnPropertyChanging("AILocoComponentData." + nameof(Binding), this, m_Binding, value)) m_Binding = value; } } // 0x60 (96)
 		
 		protected AILocoVaultBinding m_VaultBinding = new AILocoVaultBinding();
-		[ContainerField(132), ContainerFieldNameHash(736566942)]
+		[ContainerField(132), MemberInfoFlag(41), ContainerFieldNameHash(736566942)]
 		public AILocoVaultBinding VaultBinding { get { return m_VaultBinding; } set { if (OnPropertyChanging("AILocoComponentData." + nameof(VaultBinding), this, m_VaultBinding, value)) m_VaultBinding = value; } } // 0x84 (132)
 		
 		protected AILocoCoverBinding m_CoverBinding = new AILocoCoverBinding();
-		[ContainerField(160), ContainerFieldNameHash(3534640393)]
+		[ContainerField(160), MemberInfoFlag(41), ContainerFieldNameHash(3534640393)]
 		public AILocoCoverBinding CoverBinding { get { return m_CoverBinding; } set { if (OnPropertyChanging("AILocoComponentData." + nameof(CoverBinding), this, m_CoverBinding, value)) m_CoverBinding = value; } } // 0xA0 (160)
 		
 		protected float m_WantedYaw = new float();
-		[ContainerField(232), LayoutImmutable, Blittable, ContainerFieldNameHash(82142727)]
+		[ContainerField(232), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(82142727)]
 		public float WantedYaw { get { return m_WantedYaw; } set { if (OnPropertyChanging("AILocoComponentData." + nameof(WantedYaw), this, m_WantedYaw, value)) m_WantedYaw = value; } } // 0xE8 (232)
 		
 		protected int m_AnimationEntitySpacePriority = new int();
-		[ContainerField(236), LayoutImmutable, Blittable, ContainerFieldNameHash(4041607518)]
+		[ContainerField(236), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(4041607518)]
 		public int AnimationEntitySpacePriority { get { return m_AnimationEntitySpacePriority; } set { if (OnPropertyChanging("AILocoComponentData." + nameof(AnimationEntitySpacePriority), this, m_AnimationEntitySpacePriority, value)) m_AnimationEntitySpacePriority = value; } } // 0xEC (236)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

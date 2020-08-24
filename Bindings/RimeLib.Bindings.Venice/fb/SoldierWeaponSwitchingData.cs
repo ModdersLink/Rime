@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class SoldierWeaponSwitchingData : 
 		Asset
 	{
 		protected List<WeaponSwitchingMapData> m_SwitchMap = new List<WeaponSwitchingMapData>();
-		[ContainerField(12), ContainerFieldNameHash(958053643)]
+		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(958053643), ContainerArray]
 		public List<WeaponSwitchingMapData> SwitchMap { get { return m_SwitchMap; } set { if (OnPropertyChanging("SoldierWeaponSwitchingData." + nameof(SwitchMap), this, m_SwitchMap, value)) m_SwitchMap = value; } } // 0xC (12)
 		
 		protected List<DirectWeaponSwitchingMapData> m_DirectSwitchMap = new List<DirectWeaponSwitchingMapData>();
-		[ContainerField(16), ContainerFieldNameHash(2207082534)]
+		[ContainerField(16), MemberInfoFlag(65), ContainerFieldNameHash(2207082534), ContainerArray]
 		public List<DirectWeaponSwitchingMapData> DirectSwitchMap { get { return m_DirectSwitchMap; } set { if (OnPropertyChanging("SoldierWeaponSwitchingData." + nameof(DirectSwitchMap), this, m_DirectSwitchMap, value)) m_DirectSwitchMap = value; } } // 0x10 (16)
 		
 		protected float m_SwitchToGadgetCooldownTime = new float();
-		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(2738447440)]
+		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2738447440)]
 		public float SwitchToGadgetCooldownTime { get { return m_SwitchToGadgetCooldownTime; } set { if (OnPropertyChanging("SoldierWeaponSwitchingData." + nameof(SwitchToGadgetCooldownTime), this, m_SwitchToGadgetCooldownTime, value)) m_SwitchToGadgetCooldownTime = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

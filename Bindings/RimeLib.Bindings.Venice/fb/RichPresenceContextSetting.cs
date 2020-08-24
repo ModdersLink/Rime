@@ -18,13 +18,13 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(41), ContainerStruct]
 	public class RichPresenceContextSetting : FrostbiteContainer
 	{
-		[ContainerField(0)]
+		[ContainerField(0), MemberInfoFlag(53), ContainerCtrRef]
 		public CtrRef<RichPresenceContext> Context { get; set; } = new CtrRef<RichPresenceContext>(); // 0x0 (0)
 		
-		[ContainerField(4)]
+		[ContainerField(4), MemberInfoFlag(53), ContainerCtrRef]
 		public CtrRef<RichPresenceContextValue> Value { get; set; } = new CtrRef<RichPresenceContextValue>(); // 0x4 (4)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

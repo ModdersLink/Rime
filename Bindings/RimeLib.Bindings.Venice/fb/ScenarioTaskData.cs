@@ -18,46 +18,46 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(41), ContainerStruct]
 	public class ScenarioTaskData : FrostbiteContainer
 	{
-		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable]
+		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
 		public Vec3 EndPointWorldOffset { get; set; } = new Vec3(); // 0x0 (0)
 		
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable]
+		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
 		public Vec3 StartPoint { get; set; } = new Vec3(); // 0x10 (16)
 		
-		[ContainerField(32), LayoutImmutable, Blittable]
+		[ContainerField(32), LayoutImmutable, Blittable, MemberInfoFlag(49405)]
 		public int ScenarioId { get; set; } // 0x20 (32)
 		
-		[ContainerField(36), LayoutImmutable, Blittable]
+		[ContainerField(36), LayoutImmutable, Blittable, MemberInfoFlag(49405)]
 		public int ActorId { get; set; } // 0x24 (36)
 		
-		[ContainerField(40), LayoutImmutable, Blittable]
+		[ContainerField(40), LayoutImmutable, Blittable, MemberInfoFlag(49405)]
 		public int PartId { get; set; } // 0x28 (40)
 		
-		[ContainerField(44), LayoutImmutable, Blittable]
+		[ContainerField(44), LayoutImmutable, Blittable, MemberInfoFlag(49405)]
 		public int LevelId { get; set; } // 0x2C (44)
 		
-		[ContainerField(48), LayoutImmutable, Blittable]
+		[ContainerField(48), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float WorldAngle { get; set; } // 0x30 (48)
 		
-		[ContainerField(52)]
+		[ContainerField(52), MemberInfoFlag(65), ContainerArray]
 		public List<LinearTransform> ConnectTransforms { get; set; } = new List<LinearTransform>(); // 0x34 (52)
 		
-		[ContainerField(56), LayoutImmutable, Blittable]
+		[ContainerField(56), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float StartTurnDistance { get; set; } // 0x38 (56)
 		
-		[ContainerField(60), LayoutImmutable, Blittable]
+		[ContainerField(60), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float StartTimerDistance { get; set; } // 0x3C (60)
 		
-		[ContainerField(64), LayoutImmutable, Blittable]
+		[ContainerField(64), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float TriggerScenarioDelay { get; set; } // 0x40 (64)
 		
-		[ContainerField(68), LayoutImmutable, Blittable]
+		[ContainerField(68), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool TriggerScenario { get; set; } // 0x44 (68)
 		
-		[ContainerField(69), LayoutImmutable, Blittable]
+		[ContainerField(69), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool UseClientPosition { get; set; } // 0x45 (69)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

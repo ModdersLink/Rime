@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class WeaponEntityData : 
 		GameEntityData
 	{
 		protected List<WeaponStateData> m_WeaponStates = new List<WeaponStateData>();
-		[ContainerField(96), ContainerFieldNameHash(2607587267)]
+		[ContainerField(96), MemberInfoFlag(65), ContainerFieldNameHash(2607587267), ContainerArray]
 		public List<WeaponStateData> WeaponStates { get { return m_WeaponStates; } set { if (OnPropertyChanging("WeaponEntityData." + nameof(WeaponStates), this, m_WeaponStates, value)) m_WeaponStates = value; } } // 0x60 (96)
 		
 		protected WeaponClassEnum m_WeaponClass = new WeaponClassEnum();
-		[ContainerField(100), ContainerFieldNameHash(711657993)]
+		[ContainerField(100), MemberInfoFlag(137), ContainerFieldNameHash(711657993)]
 		public WeaponClassEnum WeaponClass { get { return m_WeaponClass; } set { if (OnPropertyChanging("WeaponEntityData." + nameof(WeaponClass), this, m_WeaponClass, value)) m_WeaponClass = value; } } // 0x64 (100)
 		
 		protected CtrRef<GameAIWeaponData> m_AIData = new CtrRef<GameAIWeaponData>();
-		[ContainerField(104), ContainerFieldNameHash(2529950045)]
+		[ContainerField(104), MemberInfoFlag(53), ContainerFieldNameHash(2529950045), ContainerCtrRef]
 		public CtrRef<GameAIWeaponData> AIData { get { return m_AIData; } set { if (OnPropertyChanging("WeaponEntityData." + nameof(AIData), this, m_AIData, value)) m_AIData = value; } } // 0x68 (104)
 		
 		protected CtrRef<WeaponFiringData> m_WeaponFiring = new CtrRef<WeaponFiringData>();
-		[ContainerField(108), ContainerFieldNameHash(1823157050)]
+		[ContainerField(108), MemberInfoFlag(53), ContainerFieldNameHash(1823157050), ContainerCtrRef]
 		public CtrRef<WeaponFiringData> WeaponFiring { get { return m_WeaponFiring; } set { if (OnPropertyChanging("WeaponEntityData." + nameof(WeaponFiring), this, m_WeaponFiring, value)) m_WeaponFiring = value; } } // 0x6C (108)
 		
 		protected CtrRef<WeaponData> m_CustomWeaponType = new CtrRef<WeaponData>();
-		[ContainerField(112), ContainerFieldNameHash(3603058156)]
+		[ContainerField(112), MemberInfoFlag(53), ContainerFieldNameHash(3603058156), ContainerCtrRef]
 		public CtrRef<WeaponData> CustomWeaponType { get { return m_CustomWeaponType; } set { if (OnPropertyChanging("WeaponEntityData." + nameof(CustomWeaponType), this, m_CustomWeaponType, value)) m_CustomWeaponType = value; } } // 0x70 (112)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(41), ContainerStruct]
 	public class LevelSetup : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable]
+		[ContainerField(0), LayoutImmutable, MemberInfoFlag(16509)]
 		public string Name { get; set; } // 0x0 (0)
 		
-		[ContainerField(4)]
+		[ContainerField(4), MemberInfoFlag(65), ContainerArray]
 		public List<LevelSetupOption> InclusionOptions { get; set; } = new List<LevelSetupOption>(); // 0x4 (4)
 		
-		[ContainerField(8), LayoutImmutable, Blittable]
+		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
 		public uint DifficultyIndex { get; set; } // 0x8 (8)
 		
-		[ContainerField(12)]
+		[ContainerField(12), MemberInfoFlag(65), ContainerArray]
 		public List<string> SubLevelNames { get; set; } = new List<string>(); // 0xC (12)
 		
-		[ContainerField(16)]
+		[ContainerField(16), MemberInfoFlag(65), ContainerArray]
 		public List<int> SubLevelStates { get; set; } = new List<int>(); // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
+		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool IsSaveGame { get; set; } // 0x14 (20)
 		
-		[ContainerField(21), LayoutImmutable, Blittable]
+		[ContainerField(21), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool ForceReloadResources { get; set; } // 0x15 (21)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

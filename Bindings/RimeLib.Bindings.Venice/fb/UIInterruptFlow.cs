@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class UIInterruptFlow : 
 		Asset
 	{
 		protected List<InterruptFlow> m_interruptFlow = new List<InterruptFlow>();
-		[ContainerField(12), ContainerFieldNameHash(3294905584)]
+		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(3294905584), ContainerArray]
 		public List<InterruptFlow> interruptFlow { get { return m_interruptFlow; } set { if (OnPropertyChanging("UIInterruptFlow." + nameof(interruptFlow), this, m_interruptFlow, value)) m_interruptFlow = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

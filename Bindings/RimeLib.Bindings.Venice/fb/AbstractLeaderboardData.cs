@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class AbstractLeaderboardData : 
 		DataContainer
 	{
 		protected string m_LeaderboardName = string.Empty;
-		[ContainerField(8), LayoutImmutable, ContainerFieldNameHash(2718976483)]
+		[ContainerField(8), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(2718976483)]
 		public string LeaderboardName { get { return m_LeaderboardName; } set { if (OnPropertyChanging("AbstractLeaderboardData." + nameof(LeaderboardName), this, m_LeaderboardName, value)) m_LeaderboardName = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

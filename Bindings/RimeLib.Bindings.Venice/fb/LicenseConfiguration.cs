@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class LicenseConfiguration : 
 		Asset
 	{
 		protected List<LicenseInfo> m_Licenses = new List<LicenseInfo>();
-		[ContainerField(12), ContainerFieldNameHash(2259172461)]
+		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(2259172461), ContainerArray]
 		public List<LicenseInfo> Licenses { get { return m_Licenses; } set { if (OnPropertyChanging("LicenseConfiguration." + nameof(Licenses), this, m_Licenses, value)) m_Licenses = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

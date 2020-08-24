@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class CoopLobbyEntityData : 
 		GameEntityData
 	{
 		protected float m_ClientConnectionTimeout = new float();
-		[ContainerField(96), LayoutImmutable, Blittable, ContainerFieldNameHash(2916205073)]
+		[ContainerField(96), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2916205073)]
 		public float ClientConnectionTimeout { get { return m_ClientConnectionTimeout; } set { if (OnPropertyChanging("CoopLobbyEntityData." + nameof(ClientConnectionTimeout), this, m_ClientConnectionTimeout, value)) m_ClientConnectionTimeout = value; } } // 0x60 (96)
 		
 		protected bool m_IsInGame = new bool();
-		[ContainerField(100), LayoutImmutable, Blittable, ContainerFieldNameHash(703264438)]
+		[ContainerField(100), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(703264438)]
 		public bool IsInGame { get { return m_IsInGame; } set { if (OnPropertyChanging("CoopLobbyEntityData." + nameof(IsInGame), this, m_IsInGame, value)) m_IsInGame = value; } } // 0x64 (100)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,60 +18,60 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class SoldierAimingSimulationData : 
 		GameDataContainer
 	{
 		protected RefArray<ZoomLevelData> m_ZoomLevels = new RefArray<ZoomLevelData>();
-		[ContainerField(8), ContainerFieldNameHash(217440439)]
+		[ContainerField(8), MemberInfoFlag(65), ContainerFieldNameHash(217440439), ContainerRefArray]
 		public RefArray<ZoomLevelData> ZoomLevels { get { return m_ZoomLevels; } set { if (OnPropertyChanging("SoldierAimingSimulationData." + nameof(ZoomLevels), this, m_ZoomLevels, value)) m_ZoomLevels = value; } } // 0x8 (8)
 		
 		protected float m_ZoomTransitionTime = new float();
-		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(1414605576)]
+		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1414605576)]
 		public float ZoomTransitionTime { get { return m_ZoomTransitionTime; } set { if (OnPropertyChanging("SoldierAimingSimulationData." + nameof(ZoomTransitionTime), this, m_ZoomTransitionTime, value)) m_ZoomTransitionTime = value; } } // 0xC (12)
 		
 		protected CtrRef<SoldierAimAssistData> m_AimAssist = new CtrRef<SoldierAimAssistData>();
-		[ContainerField(16), ContainerFieldNameHash(2040410767)]
+		[ContainerField(16), MemberInfoFlag(53), ContainerFieldNameHash(2040410767), ContainerCtrRef]
 		public CtrRef<SoldierAimAssistData> AimAssist { get { return m_AimAssist; } set { if (OnPropertyChanging("SoldierAimingSimulationData." + nameof(AimAssist), this, m_AimAssist, value)) m_AimAssist = value; } } // 0x10 (16)
 		
 		protected AimingPoseData m_StandPose = new AimingPoseData();
-		[ContainerField(20), ContainerFieldNameHash(3580661600)]
+		[ContainerField(20), MemberInfoFlag(41), ContainerFieldNameHash(3580661600)]
 		public AimingPoseData StandPose { get { return m_StandPose; } set { if (OnPropertyChanging("SoldierAimingSimulationData." + nameof(StandPose), this, m_StandPose, value)) m_StandPose = value; } } // 0x14 (20)
 		
 		protected AimingPoseData m_CrouchPose = new AimingPoseData();
-		[ContainerField(44), ContainerFieldNameHash(1318089740)]
+		[ContainerField(44), MemberInfoFlag(41), ContainerFieldNameHash(1318089740)]
 		public AimingPoseData CrouchPose { get { return m_CrouchPose; } set { if (OnPropertyChanging("SoldierAimingSimulationData." + nameof(CrouchPose), this, m_CrouchPose, value)) m_CrouchPose = value; } } // 0x2C (44)
 		
 		protected AimingPoseData m_PronePose = new AimingPoseData();
-		[ContainerField(68), ContainerFieldNameHash(3841962)]
+		[ContainerField(68), MemberInfoFlag(41), ContainerFieldNameHash(3841962)]
 		public AimingPoseData PronePose { get { return m_PronePose; } set { if (OnPropertyChanging("SoldierAimingSimulationData." + nameof(PronePose), this, m_PronePose, value)) m_PronePose = value; } } // 0x44 (68)
 		
 		protected List<ZoomLevelSpecificTransitionTime> m_ZoomTransitionTimeArray = new List<ZoomLevelSpecificTransitionTime>();
-		[ContainerField(92), ContainerFieldNameHash(332980785)]
+		[ContainerField(92), MemberInfoFlag(65), ContainerFieldNameHash(332980785), ContainerArray]
 		public List<ZoomLevelSpecificTransitionTime> ZoomTransitionTimeArray { get { return m_ZoomTransitionTimeArray; } set { if (OnPropertyChanging("SoldierAimingSimulationData." + nameof(ZoomTransitionTimeArray), this, m_ZoomTransitionTimeArray, value)) m_ZoomTransitionTimeArray = value; } } // 0x5C (92)
 		
 		protected float m_FovTransitionTime = new float();
-		[ContainerField(96), LayoutImmutable, Blittable, ContainerFieldNameHash(1751899392)]
+		[ContainerField(96), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1751899392)]
 		public float FovTransitionTime { get { return m_FovTransitionTime; } set { if (OnPropertyChanging("SoldierAimingSimulationData." + nameof(FovTransitionTime), this, m_FovTransitionTime, value)) m_FovTransitionTime = value; } } // 0x60 (96)
 		
 		protected float m_FovDelayTime = new float();
-		[ContainerField(100), LayoutImmutable, Blittable, ContainerFieldNameHash(3279185818)]
+		[ContainerField(100), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3279185818)]
 		public float FovDelayTime { get { return m_FovDelayTime; } set { if (OnPropertyChanging("SoldierAimingSimulationData." + nameof(FovDelayTime), this, m_FovDelayTime, value)) m_FovDelayTime = value; } } // 0x64 (100)
 		
 		protected RefArray<AimerModifierData> m_Modifiers = new RefArray<AimerModifierData>();
-		[ContainerField(104), ContainerFieldNameHash(105828545)]
+		[ContainerField(104), MemberInfoFlag(65), ContainerFieldNameHash(105828545), ContainerRefArray]
 		public RefArray<AimerModifierData> Modifiers { get { return m_Modifiers; } set { if (OnPropertyChanging("SoldierAimingSimulationData." + nameof(Modifiers), this, m_Modifiers, value)) m_Modifiers = value; } } // 0x68 (104)
 		
 		protected float m_AimingRange = new float();
-		[ContainerField(108), LayoutImmutable, Blittable, ContainerFieldNameHash(1541306623)]
+		[ContainerField(108), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1541306623)]
 		public float AimingRange { get { return m_AimingRange; } set { if (OnPropertyChanging("SoldierAimingSimulationData." + nameof(AimingRange), this, m_AimingRange, value)) m_AimingRange = value; } } // 0x6C (108)
 		
 		protected float m_LockAimToTargetSpeed = new float();
-		[ContainerField(112), LayoutImmutable, Blittable, ContainerFieldNameHash(127388806)]
+		[ContainerField(112), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(127388806)]
 		public float LockAimToTargetSpeed { get { return m_LockAimToTargetSpeed; } set { if (OnPropertyChanging("SoldierAimingSimulationData." + nameof(LockAimToTargetSpeed), this, m_LockAimToTargetSpeed, value)) m_LockAimToTargetSpeed = value; } } // 0x70 (112)
 		
 		protected bool m_ReturnToZoomAfterReload = new bool();
-		[ContainerField(116), LayoutImmutable, Blittable, ContainerFieldNameHash(3110166998)]
+		[ContainerField(116), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3110166998)]
 		public bool ReturnToZoomAfterReload { get { return m_ReturnToZoomAfterReload; } set { if (OnPropertyChanging("SoldierAimingSimulationData." + nameof(ReturnToZoomAfterReload), this, m_ReturnToZoomAfterReload, value)) m_ReturnToZoomAfterReload = value; } } // 0x74 (116)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class CharacterCustomizationComponentData : 
 		ComponentData
 	{
 		protected CtrRef<CharacterSocketListAsset> m_SocketList = new CtrRef<CharacterSocketListAsset>();
-		[ContainerField(96), ContainerFieldNameHash(648025282)]
+		[ContainerField(96), MemberInfoFlag(53), ContainerFieldNameHash(648025282), ContainerCtrRef]
 		public CtrRef<CharacterSocketListAsset> SocketList { get { return m_SocketList; } set { if (OnPropertyChanging("CharacterCustomizationComponentData." + nameof(SocketList), this, m_SocketList, value)) m_SocketList = value; } } // 0x60 (96)
 		
 		protected CtrRef<MeshLodGroup> m_SharedLodGroup = new CtrRef<MeshLodGroup>();
-		[ContainerField(100), ContainerFieldNameHash(1815069620)]
+		[ContainerField(100), MemberInfoFlag(53), ContainerFieldNameHash(1815069620), ContainerCtrRef]
 		public CtrRef<MeshLodGroup> SharedLodGroup { get { return m_SharedLodGroup; } set { if (OnPropertyChanging("CharacterCustomizationComponentData." + nameof(SharedLodGroup), this, m_SharedLodGroup, value)) m_SharedLodGroup = value; } } // 0x64 (100)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

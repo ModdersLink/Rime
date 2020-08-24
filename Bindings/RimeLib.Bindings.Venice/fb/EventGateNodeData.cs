@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class EventGateNodeData : 
 		AudioGraphNodeData
 	{
 		protected AudioGraphNodePort m_In = new AudioGraphNodePort();
-		[ContainerField(8), ContainerFieldNameHash(5862146)]
+		[ContainerField(8), MemberInfoFlag(41), ContainerFieldNameHash(5862146)]
 		public AudioGraphNodePort In { get { return m_In; } set { if (OnPropertyChanging("EventGateNodeData." + nameof(In), this, m_In, value)) m_In = value; } } // 0x8 (8)
 		
 		protected AudioGraphNodePort m_Out = new AudioGraphNodePort();
-		[ContainerField(16), ContainerFieldNameHash(193453899)]
+		[ContainerField(16), MemberInfoFlag(41), ContainerFieldNameHash(193453899)]
 		public AudioGraphNodePort Out { get { return m_Out; } set { if (OnPropertyChanging("EventGateNodeData." + nameof(Out), this, m_Out, value)) m_Out = value; } } // 0x10 (16)
 		
 		protected AudioGraphNodePort m_CoolDownTime = new AudioGraphNodePort();
-		[ContainerField(24), ContainerFieldNameHash(282296301)]
+		[ContainerField(24), MemberInfoFlag(41), ContainerFieldNameHash(282296301)]
 		public AudioGraphNodePort CoolDownTime { get { return m_CoolDownTime; } set { if (OnPropertyChanging("EventGateNodeData." + nameof(CoolDownTime), this, m_CoolDownTime, value)) m_CoolDownTime = value; } } // 0x18 (24)
 		
 		protected AudioGraphNodePort m_Enable = new AudioGraphNodePort();
-		[ContainerField(32), ContainerFieldNameHash(2342790116)]
+		[ContainerField(32), MemberInfoFlag(41), ContainerFieldNameHash(2342790116)]
 		public AudioGraphNodePort Enable { get { return m_Enable; } set { if (OnPropertyChanging("EventGateNodeData." + nameof(Enable), this, m_Enable, value)) m_Enable = value; } } // 0x20 (32)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class MaterialRelationSoundData : 
 		PhysicsMaterialRelationPropertyData
 	{
 		protected CtrRef<SoundAsset> m_ImpactSound = new CtrRef<SoundAsset>();
-		[ContainerField(8), ContainerFieldNameHash(3986717348)]
+		[ContainerField(8), MemberInfoFlag(53), ContainerFieldNameHash(3986717348), ContainerCtrRef]
 		public CtrRef<SoundAsset> ImpactSound { get { return m_ImpactSound; } set { if (OnPropertyChanging("MaterialRelationSoundData." + nameof(ImpactSound), this, m_ImpactSound, value)) m_ImpactSound = value; } } // 0x8 (8)
 		
 		protected CtrRef<SoundAsset> m_ScrapeSound = new CtrRef<SoundAsset>();
-		[ContainerField(12), ContainerFieldNameHash(1279692944)]
+		[ContainerField(12), MemberInfoFlag(53), ContainerFieldNameHash(1279692944), ContainerCtrRef]
 		public CtrRef<SoundAsset> ScrapeSound { get { return m_ScrapeSound; } set { if (OnPropertyChanging("MaterialRelationSoundData." + nameof(ScrapeSound), this, m_ScrapeSound, value)) m_ScrapeSound = value; } } // 0xC (12)
 		
 		protected float m_ScrapeLength = new float();
-		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(544833071)]
+		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(544833071)]
 		public float ScrapeLength { get { return m_ScrapeLength; } set { if (OnPropertyChanging("MaterialRelationSoundData." + nameof(ScrapeLength), this, m_ScrapeLength, value)) m_ScrapeLength = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

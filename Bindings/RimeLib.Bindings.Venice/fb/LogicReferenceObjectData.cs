@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class LogicReferenceObjectData : 
 		ReferenceObjectData
 	{
 		protected SubRealm m_SubRealm = new SubRealm();
-		[ContainerField(96), ContainerFieldNameHash(1747841366)]
+		[ContainerField(96), MemberInfoFlag(137), ContainerFieldNameHash(1747841366)]
 		public SubRealm SubRealm { get { return m_SubRealm; } set { if (OnPropertyChanging("LogicReferenceObjectData." + nameof(SubRealm), this, m_SubRealm, value)) m_SubRealm = value; } } // 0x60 (96)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

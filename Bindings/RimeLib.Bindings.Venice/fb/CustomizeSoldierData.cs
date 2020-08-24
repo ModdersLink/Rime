@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class CustomizeSoldierData : 
 		CustomizeCharacterData
 	{
 		protected List<UnlockWeaponAndSlot> m_Weapons = new List<UnlockWeaponAndSlot>();
-		[ContainerField(32), ContainerFieldNameHash(2209357972)]
+		[ContainerField(32), MemberInfoFlag(65), ContainerFieldNameHash(2209357972), ContainerArray]
 		public List<UnlockWeaponAndSlot> Weapons { get { return m_Weapons; } set { if (OnPropertyChanging("CustomizeSoldierData." + nameof(Weapons), this, m_Weapons, value)) m_Weapons = value; } } // 0x20 (32)
 		
 		protected WeaponSlot m_ActiveSlot = new WeaponSlot();
-		[ContainerField(36), ContainerFieldNameHash(824022701)]
+		[ContainerField(36), MemberInfoFlag(137), ContainerFieldNameHash(824022701)]
 		public WeaponSlot ActiveSlot { get { return m_ActiveSlot; } set { if (OnPropertyChanging("CustomizeSoldierData." + nameof(ActiveSlot), this, m_ActiveSlot, value)) m_ActiveSlot = value; } } // 0x24 (36)
 		
 		protected CtrRef<PickupEntityAsset> m_DeathPickup = new CtrRef<PickupEntityAsset>();
-		[ContainerField(40), ContainerFieldNameHash(507619053)]
+		[ContainerField(40), MemberInfoFlag(53), ContainerFieldNameHash(507619053), ContainerCtrRef]
 		public CtrRef<PickupEntityAsset> DeathPickup { get { return m_DeathPickup; } set { if (OnPropertyChanging("CustomizeSoldierData." + nameof(DeathPickup), this, m_DeathPickup, value)) m_DeathPickup = value; } } // 0x28 (40)
 		
 		protected bool m_RemoveAllExistingWeapons = new bool();
-		[ContainerField(44), LayoutImmutable, Blittable, ContainerFieldNameHash(913454208)]
+		[ContainerField(44), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(913454208)]
 		public bool RemoveAllExistingWeapons { get { return m_RemoveAllExistingWeapons; } set { if (OnPropertyChanging("CustomizeSoldierData." + nameof(RemoveAllExistingWeapons), this, m_RemoveAllExistingWeapons, value)) m_RemoveAllExistingWeapons = value; } } // 0x2C (44)
 		
 		protected bool m_DisableDeathPickup = new bool();
-		[ContainerField(45), LayoutImmutable, Blittable, ContainerFieldNameHash(2771455705)]
+		[ContainerField(45), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2771455705)]
 		public bool DisableDeathPickup { get { return m_DisableDeathPickup; } set { if (OnPropertyChanging("CustomizeSoldierData." + nameof(DisableDeathPickup), this, m_DisableDeathPickup, value)) m_DisableDeathPickup = value; } } // 0x2D (45)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

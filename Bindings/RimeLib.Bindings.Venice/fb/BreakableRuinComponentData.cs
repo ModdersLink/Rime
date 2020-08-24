@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class BreakableRuinComponentData : 
 		ComponentData
 	{
 		protected CtrRef<ObjectBlueprint> m_RuinModel = new CtrRef<ObjectBlueprint>();
-		[ContainerField(96), ContainerFieldNameHash(1172592682)]
+		[ContainerField(96), MemberInfoFlag(53), ContainerFieldNameHash(1172592682), ContainerCtrRef]
 		public CtrRef<ObjectBlueprint> RuinModel { get { return m_RuinModel; } set { if (OnPropertyChanging("BreakableRuinComponentData." + nameof(RuinModel), this, m_RuinModel, value)) m_RuinModel = value; } } // 0x60 (96)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

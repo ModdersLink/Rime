@@ -18,31 +18,31 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(41), ContainerStruct]
 	public class AILocoBaseTaskData : FrostbiteContainer
 	{
-		[ContainerField(0)]
+		[ContainerField(0), MemberInfoFlag(137)]
 		public AntPoseEnum PoseChangeMovingTowards { get; set; } = new AntPoseEnum(); // 0x0 (0)
 		
-		[ContainerField(4)]
+		[ContainerField(4), MemberInfoFlag(137)]
 		public AntAttentionStateEnum AttentionChangeMovingTowards { get; set; } = new AntAttentionStateEnum(); // 0x4 (4)
 		
-		[ContainerField(8)]
+		[ContainerField(8), MemberInfoFlag(137)]
 		public AntSpeedLevel SpeedChangeMovingTowards { get; set; } = new AntSpeedLevel(); // 0x8 (8)
 		
-		[ContainerField(12)]
+		[ContainerField(12), MemberInfoFlag(137)]
 		public AntPoseEnum PoseChange { get; set; } = new AntPoseEnum(); // 0xC (12)
 		
-		[ContainerField(16)]
+		[ContainerField(16), MemberInfoFlag(137)]
 		public AntAttentionStateEnum AttentionStateChange { get; set; } = new AntAttentionStateEnum(); // 0x10 (16)
 		
-		[ContainerField(20)]
+		[ContainerField(20), MemberInfoFlag(137)]
 		public AntSpeedLevel SpeedLevelChange { get; set; } = new AntSpeedLevel(); // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable]
+		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float Radius { get; set; } // 0x18 (24)
 		
-		[ContainerField(28), LayoutImmutable, Blittable]
+		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool IsScripted { get; set; } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

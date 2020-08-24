@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class BFTargetEvaluatorComponentData : 
 		TargetEvaluatorComponentData
 	{
 		protected CtrRef<TargetEvaluationConstantData> m_Settings = new CtrRef<TargetEvaluationConstantData>();
-		[ContainerField(112), ContainerFieldNameHash(649772672)]
+		[ContainerField(112), MemberInfoFlag(53), ContainerFieldNameHash(649772672), ContainerCtrRef]
 		public CtrRef<TargetEvaluationConstantData> Settings { get { return m_Settings; } set { if (OnPropertyChanging("BFTargetEvaluatorComponentData." + nameof(Settings), this, m_Settings, value)) m_Settings = value; } } // 0x70 (112)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

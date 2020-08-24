@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class UIGraphPipelineSettings : 
 		DataContainer
 	{
 		protected bool m_OneBundlePerGraph = new bool();
-		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(1787189790)]
+		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1787189790)]
 		public bool OneBundlePerGraph { get { return m_OneBundlePerGraph; } set { if (OnPropertyChanging("UIGraphPipelineSettings." + nameof(OneBundlePerGraph), this, m_OneBundlePerGraph, value)) m_OneBundlePerGraph = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

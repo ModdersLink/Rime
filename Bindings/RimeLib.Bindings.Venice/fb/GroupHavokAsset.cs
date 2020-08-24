@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class GroupHavokAsset : 
 		HavokAsset
 	{
 		protected List<AssetAabbs> m_Aabb = new List<AssetAabbs>();
-		[ContainerField(20), ContainerFieldNameHash(2088635333)]
+		[ContainerField(20), MemberInfoFlag(65), ContainerFieldNameHash(2088635333), ContainerArray]
 		public List<AssetAabbs> Aabb { get { return m_Aabb; } set { if (OnPropertyChanging("GroupHavokAsset." + nameof(Aabb), this, m_Aabb, value)) m_Aabb = value; } } // 0x14 (20)
 		
 		protected List<ushort> m_ExternalAssetScaleIndex = new List<ushort>();
-		[ContainerField(24), ContainerFieldNameHash(29154286)]
+		[ContainerField(24), MemberInfoFlag(65), ContainerFieldNameHash(29154286), ContainerArray]
 		public List<ushort> ExternalAssetScaleIndex { get { return m_ExternalAssetScaleIndex; } set { if (OnPropertyChanging("GroupHavokAsset." + nameof(ExternalAssetScaleIndex), this, m_ExternalAssetScaleIndex, value)) m_ExternalAssetScaleIndex = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,43 +18,43 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(41), ContainerStruct]
 	public class SpecialMovesBinding : FrostbiteContainer
 	{
-		[ContainerField(0)]
+		[ContainerField(0), MemberInfoFlag(41)]
 		public AntRef TriggerHighVault { get; set; } = new AntRef(); // 0x0 (0)
 		
-		[ContainerField(4)]
+		[ContainerField(4), MemberInfoFlag(41)]
 		public AntRef TriggerUpVault { get; set; } = new AntRef(); // 0x4 (4)
 		
-		[ContainerField(8)]
+		[ContainerField(8), MemberInfoFlag(41)]
 		public AntRef TriggerLowVault { get; set; } = new AntRef(); // 0x8 (8)
 		
-		[ContainerField(12)]
+		[ContainerField(12), MemberInfoFlag(41)]
 		public AntRef TriggerSlideIntoProne { get; set; } = new AntRef(); // 0xC (12)
 		
-		[ContainerField(16)]
+		[ContainerField(16), MemberInfoFlag(41)]
 		public AntRef TriggerSpecialAnimation { get; set; } = new AntRef(); // 0x10 (16)
 		
-		[ContainerField(20)]
+		[ContainerField(20), MemberInfoFlag(41)]
 		public AntRef SpecialAnimationIndex { get; set; } = new AntRef(); // 0x14 (20)
 		
-		[ContainerField(24)]
+		[ContainerField(24), MemberInfoFlag(41)]
 		public AntRef ObjectHeight { get; set; } = new AntRef(); // 0x18 (24)
 		
-		[ContainerField(28)]
+		[ContainerField(28), MemberInfoFlag(41)]
 		public AntRef ObjectDistance { get; set; } = new AntRef(); // 0x1C (28)
 		
-		[ContainerField(32)]
+		[ContainerField(32), MemberInfoFlag(41)]
 		public AntRef StartObjectDistanceTimer { get; set; } = new AntRef(); // 0x20 (32)
 		
-		[ContainerField(36)]
+		[ContainerField(36), MemberInfoFlag(41)]
 		public AntRef VaultObjectPositionX { get; set; } = new AntRef(); // 0x24 (36)
 		
-		[ContainerField(40)]
+		[ContainerField(40), MemberInfoFlag(41)]
 		public AntRef VaultObjectPositionZ { get; set; } = new AntRef(); // 0x28 (40)
 		
-		[ContainerField(44)]
+		[ContainerField(44), MemberInfoFlag(41)]
 		public AntRef CancelAnimation { get; set; } = new AntRef(); // 0x2C (44)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

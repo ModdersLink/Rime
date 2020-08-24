@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class VoiceOverIntervalNode : 
 		VoiceOverExpressionNode
 	{
 		protected CtrRef<VoiceOverValueConnection> m_Threshold = new CtrRef<VoiceOverValueConnection>();
-		[ContainerField(8), ContainerFieldNameHash(3768602130)]
+		[ContainerField(8), MemberInfoFlag(53), ContainerFieldNameHash(3768602130), ContainerCtrRef]
 		public CtrRef<VoiceOverValueConnection> Threshold { get { return m_Threshold; } set { if (OnPropertyChanging("VoiceOverIntervalNode." + nameof(Threshold), this, m_Threshold, value)) m_Threshold = value; } } // 0x8 (8)
 		
 		protected CtrRef<VoiceOverValue> m_Time = new CtrRef<VoiceOverValue>();
-		[ContainerField(12), ContainerFieldNameHash(2089313744)]
+		[ContainerField(12), MemberInfoFlag(53), ContainerFieldNameHash(2089313744), ContainerCtrRef]
 		public CtrRef<VoiceOverValue> Time { get { return m_Time; } set { if (OnPropertyChanging("VoiceOverIntervalNode." + nameof(Time), this, m_Time, value)) m_Time = value; } } // 0xC (12)
 		
 		protected CtrRef<VoiceOverValue> m_False = new CtrRef<VoiceOverValue>();
-		[ContainerField(16), ContainerFieldNameHash(206401336)]
+		[ContainerField(16), MemberInfoFlag(53), ContainerFieldNameHash(206401336), ContainerCtrRef]
 		public CtrRef<VoiceOverValue> False { get { return m_False; } set { if (OnPropertyChanging("VoiceOverIntervalNode." + nameof(False), this, m_False, value)) m_False = value; } } // 0x10 (16)
 		
 		protected CtrRef<VoiceOverValue> m_True = new CtrRef<VoiceOverValue>();
-		[ContainerField(20), ContainerFieldNameHash(2089293587)]
+		[ContainerField(20), MemberInfoFlag(53), ContainerFieldNameHash(2089293587), ContainerCtrRef]
 		public CtrRef<VoiceOverValue> True { get { return m_True; } set { if (OnPropertyChanging("VoiceOverIntervalNode." + nameof(True), this, m_True, value)) m_True = value; } } // 0x14 (20)
 		
 		protected CtrRef<VoiceOverInterval> m_Interval = new CtrRef<VoiceOverInterval>();
-		[ContainerField(24), ContainerFieldNameHash(4280103418)]
+		[ContainerField(24), MemberInfoFlag(53), ContainerFieldNameHash(4280103418), ContainerCtrRef]
 		public CtrRef<VoiceOverInterval> Interval { get { return m_Interval; } set { if (OnPropertyChanging("VoiceOverIntervalNode." + nameof(Interval), this, m_Interval, value)) m_Interval = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

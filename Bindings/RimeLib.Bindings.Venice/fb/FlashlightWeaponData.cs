@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class FlashlightWeaponData : 
 		WeaponData
 	{
 		protected float m_UpdateFrequency = new float();
-		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(219717232)]
+		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(219717232)]
 		public float UpdateFrequency { get { return m_UpdateFrequency; } set { if (OnPropertyChanging("FlashlightWeaponData." + nameof(UpdateFrequency), this, m_UpdateFrequency, value)) m_UpdateFrequency = value; } } // 0x10 (16)
 		
 		protected float m_Range = new float();
-		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(230112826)]
+		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(230112826)]
 		public float Range { get { return m_Range; } set { if (OnPropertyChanging("FlashlightWeaponData." + nameof(Range), this, m_Range, value)) m_Range = value; } } // 0x14 (20)
 		
 		protected float m_Angle = new float();
-		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(205597860)]
+		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(205597860)]
 		public float Angle { get { return m_Angle; } set { if (OnPropertyChanging("FlashlightWeaponData." + nameof(Angle), this, m_Angle, value)) m_Angle = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

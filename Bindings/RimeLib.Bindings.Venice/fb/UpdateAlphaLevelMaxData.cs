@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class UpdateAlphaLevelMaxData : 
 		ProcessorData
 	{
 		protected float m_MaxLevel = new float();
-		[ContainerField(48), LayoutImmutable, Blittable, ContainerFieldNameHash(429847463)]
+		[ContainerField(48), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(429847463)]
 		public float MaxLevel { get { return m_MaxLevel; } set { if (OnPropertyChanging("UpdateAlphaLevelMaxData." + nameof(MaxLevel), this, m_MaxLevel, value)) m_MaxLevel = value; } } // 0x30 (48)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

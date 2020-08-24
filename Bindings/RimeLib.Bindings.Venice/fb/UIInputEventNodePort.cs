@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class UIInputEventNodePort : 
 		UINodePort
 	{
 		protected UIInputAction m_InputEventType = new UIInputAction();
-		[ContainerField(24), ContainerFieldNameHash(559387975)]
+		[ContainerField(24), MemberInfoFlag(137), ContainerFieldNameHash(559387975)]
 		public UIInputAction InputEventType { get { return m_InputEventType; } set { if (OnPropertyChanging("UIInputEventNodePort." + nameof(InputEventType), this, m_InputEventType, value)) m_InputEventType = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

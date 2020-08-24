@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(8)]
+	[ContainerType(8), MemberInfoFlag(53), ContainerClass]
 	public class MetricState : 
 		MetricEvent
 	{
 		protected bool m_IsSet = new bool();
-		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(215495965)]
+		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(215495965)]
 		public bool IsSet { get { return m_IsSet; } set { if (OnPropertyChanging("MetricState." + nameof(IsSet), this, m_IsSet, value)) m_IsSet = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

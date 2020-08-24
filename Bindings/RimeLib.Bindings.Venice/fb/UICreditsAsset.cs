@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class UICreditsAsset : 
 		Asset
 	{
 		protected List<UICreditsPage> m_Pages = new List<UICreditsPage>();
-		[ContainerField(12), ContainerFieldNameHash(232331173)]
+		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(232331173), ContainerArray]
 		public List<UICreditsPage> Pages { get { return m_Pages; } set { if (OnPropertyChanging("UICreditsAsset." + nameof(Pages), this, m_Pages, value)) m_Pages = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class WeaponData : 
 		ToolData
 	{
 		protected bool m_ShowLaserPaintedVehicles = new bool();
-		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(3679743847)]
+		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3679743847)]
 		public bool ShowLaserPaintedVehicles { get { return m_ShowLaserPaintedVehicles; } set { if (OnPropertyChanging("WeaponData." + nameof(ShowLaserPaintedVehicles), this, m_ShowLaserPaintedVehicles, value)) m_ShowLaserPaintedVehicles = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

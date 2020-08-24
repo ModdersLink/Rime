@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class MixerSystemAsset : 
 		Asset
 	{
 		protected RefArray<MixGroup> m_Groups = new RefArray<MixGroup>();
-		[ContainerField(12), ContainerFieldNameHash(2573340009)]
+		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(2573340009), ContainerRefArray]
 		public RefArray<MixGroup> Groups { get { return m_Groups; } set { if (OnPropertyChanging("MixerSystemAsset." + nameof(Groups), this, m_Groups, value)) m_Groups = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class SoldierSoundComponentData : 
 		ComponentData
 	{
 		protected float m_WalkVelocityThreshold = new float();
-		[ContainerField(96), LayoutImmutable, Blittable, ContainerFieldNameHash(2022862740)]
+		[ContainerField(96), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2022862740)]
 		public float WalkVelocityThreshold { get { return m_WalkVelocityThreshold; } set { if (OnPropertyChanging("SoldierSoundComponentData." + nameof(WalkVelocityThreshold), this, m_WalkVelocityThreshold, value)) m_WalkVelocityThreshold = value; } } // 0x60 (96)
 		
 		protected float m_RunVelocityThreshold = new float();
-		[ContainerField(100), LayoutImmutable, Blittable, ContainerFieldNameHash(37427148)]
+		[ContainerField(100), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(37427148)]
 		public float RunVelocityThreshold { get { return m_RunVelocityThreshold; } set { if (OnPropertyChanging("SoldierSoundComponentData." + nameof(RunVelocityThreshold), this, m_RunVelocityThreshold, value)) m_RunVelocityThreshold = value; } } // 0x64 (100)
 		
 		protected float m_WalkPeriod = new float();
-		[ContainerField(104), LayoutImmutable, Blittable, ContainerFieldNameHash(2834426449)]
+		[ContainerField(104), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2834426449)]
 		public float WalkPeriod { get { return m_WalkPeriod; } set { if (OnPropertyChanging("SoldierSoundComponentData." + nameof(WalkPeriod), this, m_WalkPeriod, value)) m_WalkPeriod = value; } } // 0x68 (104)
 		
 		protected float m_RunPeriod = new float();
-		[ContainerField(108), LayoutImmutable, Blittable, ContainerFieldNameHash(877844489)]
+		[ContainerField(108), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(877844489)]
 		public float RunPeriod { get { return m_RunPeriod; } set { if (OnPropertyChanging("SoldierSoundComponentData." + nameof(RunPeriod), this, m_RunPeriod, value)) m_RunPeriod = value; } } // 0x6C (108)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

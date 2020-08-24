@@ -18,32 +18,32 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class DataSetNode : 
 		UINodeData
 	{
 		protected CtrRef<UINodePort> m_In = new CtrRef<UINodePort>();
-		[ContainerField(20), ContainerFieldNameHash(5862146)]
+		[ContainerField(20), MemberInfoFlag(53), ContainerFieldNameHash(5862146), ContainerCtrRef]
 		public CtrRef<UINodePort> In { get { return m_In; } set { if (OnPropertyChanging("DataSetNode." + nameof(In), this, m_In, value)) m_In = value; } } // 0x14 (20)
 		
 		protected CtrRef<UINodePort> m_Out = new CtrRef<UINodePort>();
-		[ContainerField(24), ContainerFieldNameHash(193453899)]
+		[ContainerField(24), MemberInfoFlag(53), ContainerFieldNameHash(193453899), ContainerCtrRef]
 		public CtrRef<UINodePort> Out { get { return m_Out; } set { if (OnPropertyChanging("DataSetNode." + nameof(Out), this, m_Out, value)) m_Out = value; } } // 0x18 (24)
 		
 		protected string m_Param = string.Empty;
-		[ContainerField(28), LayoutImmutable, ContainerFieldNameHash(232319210)]
+		[ContainerField(28), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(232319210)]
 		public string Param { get { return m_Param; } set { if (OnPropertyChanging("DataSetNode." + nameof(Param), this, m_Param, value)) m_Param = value; } } // 0x1C (28)
 		
 		protected UIDataSourceInfo m_DataSource = new UIDataSourceInfo();
-		[ContainerField(32), ContainerFieldNameHash(3810860200)]
+		[ContainerField(32), MemberInfoFlag(41), ContainerFieldNameHash(3810860200)]
 		public UIDataSourceInfo DataSource { get { return m_DataSource; } set { if (OnPropertyChanging("DataSetNode." + nameof(DataSource), this, m_DataSource, value)) m_DataSource = value; } } // 0x20 (32)
 		
 		protected bool m_SetToEmptyString = new bool();
-		[ContainerField(48), LayoutImmutable, Blittable, ContainerFieldNameHash(2535912156)]
+		[ContainerField(48), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2535912156)]
 		public bool SetToEmptyString { get { return m_SetToEmptyString; } set { if (OnPropertyChanging("DataSetNode." + nameof(SetToEmptyString), this, m_SetToEmptyString, value)) m_SetToEmptyString = value; } } // 0x30 (48)
 		
 		protected bool m_ForceUpdate = new bool();
-		[ContainerField(49), LayoutImmutable, Blittable, ContainerFieldNameHash(4101084969)]
+		[ContainerField(49), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(4101084969)]
 		public bool ForceUpdate { get { return m_ForceUpdate; } set { if (OnPropertyChanging("DataSetNode." + nameof(ForceUpdate), this, m_ForceUpdate, value)) m_ForceUpdate = value; } } // 0x31 (49)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class UICombatAreaEntityData : 
 		GameObjectData
 	{
 		protected CtrRef<UICombatAreaAsset> m_Asset = new CtrRef<UICombatAreaAsset>();
-		[ContainerField(12), ContainerFieldNameHash(205976053)]
+		[ContainerField(12), MemberInfoFlag(53), ContainerFieldNameHash(205976053), ContainerCtrRef]
 		public CtrRef<UICombatAreaAsset> Asset { get { return m_Asset; } set { if (OnPropertyChanging("UICombatAreaEntityData." + nameof(Asset), this, m_Asset, value)) m_Asset = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

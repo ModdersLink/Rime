@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class LevelSaveData : 
 		DataContainer
 	{
 		protected uint m_SaveSize = new uint();
-		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(968383361)]
+		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(968383361)]
 		public uint SaveSize { get { return m_SaveSize; } set { if (OnPropertyChanging("LevelSaveData." + nameof(SaveSize), this, m_SaveSize, value)) m_SaveSize = value; } } // 0x8 (8)
 		
 		protected List<string> m_SaveNames = new List<string>();
-		[ContainerField(12), ContainerFieldNameHash(1878430608)]
+		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(1878430608), ContainerArray]
 		public List<string> SaveNames { get { return m_SaveNames; } set { if (OnPropertyChanging("LevelSaveData." + nameof(SaveNames), this, m_SaveNames, value)) m_SaveNames = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

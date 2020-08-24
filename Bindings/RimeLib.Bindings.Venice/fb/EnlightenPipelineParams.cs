@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class EnlightenPipelineParams : 
 		DataContainer
 	{
 		protected bool m_DynamicEnable = new bool();
-		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(2376411633)]
+		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2376411633)]
 		public bool DynamicEnable { get { return m_DynamicEnable; } set { if (OnPropertyChanging("EnlightenPipelineParams." + nameof(DynamicEnable), this, m_DynamicEnable, value)) m_DynamicEnable = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -8,7 +8,7 @@ namespace RimeLib.Serialization.Containers
     /// <summary>
     /// Implementation of fb::AxisAlignedBox
     /// </summary>
-    [ContainerType(16)]
+    [ContainerType(16), ContainerStruct]
     public class AxisAlignedBox : FrostbiteContainer
     {
         /// <summary>

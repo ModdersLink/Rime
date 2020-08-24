@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class UIComponentData : 
 		Asset
 	{
 		protected string m_ShortName = string.Empty;
-		[ContainerField(12), LayoutImmutable, ContainerFieldNameHash(1803010032)]
+		[ContainerField(12), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(1803010032)]
 		public string ShortName { get { return m_ShortName; } set { if (OnPropertyChanging("UIComponentData." + nameof(ShortName), this, m_ShortName, value)) m_ShortName = value; } } // 0xC (12)
 		
 		protected List<string> m_DataSources = new List<string>();
-		[ContainerField(16), ContainerFieldNameHash(1204335067)]
+		[ContainerField(16), MemberInfoFlag(65), ContainerFieldNameHash(1204335067), ContainerArray]
 		public List<string> DataSources { get { return m_DataSources; } set { if (OnPropertyChanging("UIComponentData." + nameof(DataSources), this, m_DataSources, value)) m_DataSources = value; } } // 0x10 (16)
 		
 		protected UIUpdateType m_UpdateType = new UIUpdateType();
-		[ContainerField(20), ContainerFieldNameHash(2270667052)]
+		[ContainerField(20), MemberInfoFlag(137), ContainerFieldNameHash(2270667052)]
 		public UIUpdateType UpdateType { get { return m_UpdateType; } set { if (OnPropertyChanging("UIComponentData." + nameof(UpdateType), this, m_UpdateType, value)) m_UpdateType = value; } } // 0x14 (20)
 		
 		protected int m_UpdatesPerSecond = new int();
-		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(2192548880)]
+		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(2192548880)]
 		public int UpdatesPerSecond { get { return m_UpdatesPerSecond; } set { if (OnPropertyChanging("UIComponentData." + nameof(UpdatesPerSecond), this, m_UpdatesPerSecond, value)) m_UpdatesPerSecond = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

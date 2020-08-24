@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class PartLinkData : 
 		DataContainer
 	{
 		protected uint m_PartComponentIndex1 = new uint();
-		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(830683346)]
+		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(830683346)]
 		public uint PartComponentIndex1 { get { return m_PartComponentIndex1; } set { if (OnPropertyChanging("PartLinkData." + nameof(PartComponentIndex1), this, m_PartComponentIndex1, value)) m_PartComponentIndex1 = value; } } // 0x8 (8)
 		
 		protected uint m_PartComponentIndex2 = new uint();
-		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(830683345)]
+		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(830683345)]
 		public uint PartComponentIndex2 { get { return m_PartComponentIndex2; } set { if (OnPropertyChanging("PartLinkData." + nameof(PartComponentIndex2), this, m_PartComponentIndex2, value)) m_PartComponentIndex2 = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

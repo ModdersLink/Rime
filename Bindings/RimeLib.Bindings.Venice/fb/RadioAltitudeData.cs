@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class RadioAltitudeData : 
 		DataContainer
 	{
 		protected float m_Range = new float();
-		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(230112826)]
+		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(230112826)]
 		public float Range { get { return m_Range; } set { if (OnPropertyChanging("RadioAltitudeData." + nameof(Range), this, m_Range, value)) m_Range = value; } } // 0x8 (8)
 		
 		protected float m_UpdateFrequency = new float();
-		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(219717232)]
+		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(219717232)]
 		public float UpdateFrequency { get { return m_UpdateFrequency; } set { if (OnPropertyChanging("RadioAltitudeData." + nameof(UpdateFrequency), this, m_UpdateFrequency, value)) m_UpdateFrequency = value; } } // 0xC (12)
 		
 		protected CollisionMethodEnum m_CollisionMethod = new CollisionMethodEnum();
-		[ContainerField(16), ContainerFieldNameHash(2308963620)]
+		[ContainerField(16), MemberInfoFlag(137), ContainerFieldNameHash(2308963620)]
 		public CollisionMethodEnum CollisionMethod { get { return m_CollisionMethod; } set { if (OnPropertyChanging("RadioAltitudeData." + nameof(CollisionMethod), this, m_CollisionMethod, value)) m_CollisionMethod = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

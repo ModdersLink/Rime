@@ -18,32 +18,32 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class CoverEntityData : 
 		SpatialEntityData
 	{
 		protected float m_Width = new float();
-		[ContainerField(80), LayoutImmutable, Blittable, ContainerFieldNameHash(226981187)]
+		[ContainerField(80), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(226981187)]
 		public float Width { get { return m_Width; } set { if (OnPropertyChanging("CoverEntityData." + nameof(Width), this, m_Width, value)) m_Width = value; } } // 0x50 (80)
 		
 		protected CoverType m_CoverType = new CoverType();
-		[ContainerField(84), ContainerFieldNameHash(2741637520)]
+		[ContainerField(84), MemberInfoFlag(137), ContainerFieldNameHash(2741637520)]
 		public CoverType CoverType { get { return m_CoverType; } set { if (OnPropertyChanging("CoverEntityData." + nameof(CoverType), this, m_CoverType, value)) m_CoverType = value; } } // 0x54 (84)
 		
 		protected List<CoverSlot> m_Slots = new List<CoverSlot>();
-		[ContainerField(88), ContainerFieldNameHash(231607282)]
+		[ContainerField(88), MemberInfoFlag(65), ContainerFieldNameHash(231607282), ContainerArray]
 		public List<CoverSlot> Slots { get { return m_Slots; } set { if (OnPropertyChanging("CoverEntityData." + nameof(Slots), this, m_Slots, value)) m_Slots = value; } } // 0x58 (88)
 		
 		protected bool m_RightEdgeBlocked = new bool();
-		[ContainerField(92), LayoutImmutable, Blittable, ContainerFieldNameHash(1465616558)]
+		[ContainerField(92), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1465616558)]
 		public bool RightEdgeBlocked { get { return m_RightEdgeBlocked; } set { if (OnPropertyChanging("CoverEntityData." + nameof(RightEdgeBlocked), this, m_RightEdgeBlocked, value)) m_RightEdgeBlocked = value; } } // 0x5C (92)
 		
 		protected bool m_TopBlocked = new bool();
-		[ContainerField(93), LayoutImmutable, Blittable, ContainerFieldNameHash(121893062)]
+		[ContainerField(93), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(121893062)]
 		public bool TopBlocked { get { return m_TopBlocked; } set { if (OnPropertyChanging("CoverEntityData." + nameof(TopBlocked), this, m_TopBlocked, value)) m_TopBlocked = value; } } // 0x5D (93)
 		
 		protected bool m_LeftEdgeBlocked = new bool();
-		[ContainerField(94), LayoutImmutable, Blittable, ContainerFieldNameHash(1700814261)]
+		[ContainerField(94), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1700814261)]
 		public bool LeftEdgeBlocked { get { return m_LeftEdgeBlocked; } set { if (OnPropertyChanging("CoverEntityData." + nameof(LeftEdgeBlocked), this, m_LeftEdgeBlocked, value)) m_LeftEdgeBlocked = value; } } // 0x5E (94)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

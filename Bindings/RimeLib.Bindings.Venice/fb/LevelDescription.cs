@@ -18,25 +18,25 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(41), ContainerStruct]
 	public class LevelDescription : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable]
+		[ContainerField(0), LayoutImmutable, MemberInfoFlag(16509)]
 		public string Name { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable]
+		[ContainerField(4), LayoutImmutable, MemberInfoFlag(16509)]
 		public string Description { get; set; } // 0x4 (4)
 		
-		[ContainerField(8)]
+		[ContainerField(8), MemberInfoFlag(65), ContainerRefArray]
 		public RefArray<LevelDescriptionComponent> Components { get; set; } = new RefArray<LevelDescriptionComponent>(); // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable]
+		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool IsCoop { get; set; } // 0xC (12)
 		
-		[ContainerField(13), LayoutImmutable, Blittable]
+		[ContainerField(13), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool IsMenu { get; set; } // 0xD (13)
 		
-		[ContainerField(14), LayoutImmutable, Blittable]
+		[ContainerField(14), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool IsMultiplayer { get; set; } // 0xE (14)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

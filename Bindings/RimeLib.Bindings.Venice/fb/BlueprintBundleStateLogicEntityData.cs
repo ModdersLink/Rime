@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class BlueprintBundleStateLogicEntityData : 
 		GameEntityData
 	{
 		protected List<string> m_BundleNames = new List<string>();
-		[ContainerField(96), ContainerFieldNameHash(2333280517)]
+		[ContainerField(96), MemberInfoFlag(65), ContainerFieldNameHash(2333280517), ContainerArray]
 		public List<string> BundleNames { get { return m_BundleNames; } set { if (OnPropertyChanging("BlueprintBundleStateLogicEntityData." + nameof(BundleNames), this, m_BundleNames, value)) m_BundleNames = value; } } // 0x60 (96)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

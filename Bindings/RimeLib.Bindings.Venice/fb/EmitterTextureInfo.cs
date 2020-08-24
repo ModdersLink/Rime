@@ -18,22 +18,22 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(41), ContainerStruct]
 	public class EmitterTextureInfo : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable]
+		[ContainerField(0), LayoutImmutable, MemberInfoFlag(16509)]
 		public string TextureName { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable]
+		[ContainerField(4), LayoutImmutable, MemberInfoFlag(16509)]
 		public string NormalmapName { get; set; } // 0x4 (4)
 		
-		[ContainerField(8), LayoutImmutable, Blittable]
+		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float AnimationFrameCount { get; set; } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable]
+		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float AnimationFrameColumnCount { get; set; } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
+		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool EnableAnimation { get; set; } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

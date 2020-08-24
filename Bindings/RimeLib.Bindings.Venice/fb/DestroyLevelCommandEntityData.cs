@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class DestroyLevelCommandEntityData : 
 		GameEntityData
 	{
 		protected uint m_InstanceCountDestroyedPerFrame = new uint();
-		[ContainerField(96), LayoutImmutable, Blittable, ContainerFieldNameHash(961630582)]
+		[ContainerField(96), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(961630582)]
 		public uint InstanceCountDestroyedPerFrame { get { return m_InstanceCountDestroyedPerFrame; } set { if (OnPropertyChanging("DestroyLevelCommandEntityData." + nameof(InstanceCountDestroyedPerFrame), this, m_InstanceCountDestroyedPerFrame, value)) m_InstanceCountDestroyedPerFrame = value; } } // 0x60 (96)
 		
 		protected uint m_DestroyDelay = new uint();
-		[ContainerField(100), LayoutImmutable, Blittable, ContainerFieldNameHash(3844272786)]
+		[ContainerField(100), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(3844272786)]
 		public uint DestroyDelay { get { return m_DestroyDelay; } set { if (OnPropertyChanging("DestroyLevelCommandEntityData." + nameof(DestroyDelay), this, m_DestroyDelay, value)) m_DestroyDelay = value; } } // 0x64 (100)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,36 +18,36 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class DynamicAvoidanceEntityData : 
 		EntityData
 	{
 		protected DynamicAvoidanceMode m_RepelOthers = new DynamicAvoidanceMode();
-		[ContainerField(12), ContainerFieldNameHash(2680634556)]
+		[ContainerField(12), MemberInfoFlag(137), ContainerFieldNameHash(2680634556)]
 		public DynamicAvoidanceMode RepelOthers { get { return m_RepelOthers; } set { if (OnPropertyChanging("DynamicAvoidanceEntityData." + nameof(RepelOthers), this, m_RepelOthers, value)) m_RepelOthers = value; } } // 0xC (12)
 		
 		protected DynamicAvoidanceMode m_ReportPredictedCollision = new DynamicAvoidanceMode();
-		[ContainerField(16), ContainerFieldNameHash(690685961)]
+		[ContainerField(16), MemberInfoFlag(137), ContainerFieldNameHash(690685961)]
 		public DynamicAvoidanceMode ReportPredictedCollision { get { return m_ReportPredictedCollision; } set { if (OnPropertyChanging("DynamicAvoidanceEntityData." + nameof(ReportPredictedCollision), this, m_ReportPredictedCollision, value)) m_ReportPredictedCollision = value; } } // 0x10 (16)
 		
 		protected float m_CollisionRadius = new float();
-		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(1874505603)]
+		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1874505603)]
 		public float CollisionRadius { get { return m_CollisionRadius; } set { if (OnPropertyChanging("DynamicAvoidanceEntityData." + nameof(CollisionRadius), this, m_CollisionRadius, value)) m_CollisionRadius = value; } } // 0x14 (20)
 		
 		protected Realm m_Realm = new Realm();
-		[ContainerField(24), ContainerFieldNameHash(229961746)]
+		[ContainerField(24), MemberInfoFlag(137), ContainerFieldNameHash(229961746)]
 		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("DynamicAvoidanceEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0x18 (24)
 		
 		protected AntDynamicAvoidanceBinding m_AntBinding = new AntDynamicAvoidanceBinding();
-		[ContainerField(28), ContainerFieldNameHash(2293128415)]
+		[ContainerField(28), MemberInfoFlag(41), ContainerFieldNameHash(2293128415)]
 		public AntDynamicAvoidanceBinding AntBinding { get { return m_AntBinding; } set { if (OnPropertyChanging("DynamicAvoidanceEntityData." + nameof(AntBinding), this, m_AntBinding, value)) m_AntBinding = value; } } // 0x1C (28)
 		
 		protected bool m_AffectedByRepellingForce = new bool();
-		[ContainerField(44), LayoutImmutable, Blittable, ContainerFieldNameHash(2759712179)]
+		[ContainerField(44), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2759712179)]
 		public bool AffectedByRepellingForce { get { return m_AffectedByRepellingForce; } set { if (OnPropertyChanging("DynamicAvoidanceEntityData." + nameof(AffectedByRepellingForce), this, m_AffectedByRepellingForce, value)) m_AffectedByRepellingForce = value; } } // 0x2C (44)
 		
 		protected bool m_PredictedByOthers = new bool();
-		[ContainerField(45), LayoutImmutable, Blittable, ContainerFieldNameHash(1713837653)]
+		[ContainerField(45), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1713837653)]
 		public bool PredictedByOthers { get { return m_PredictedByOthers; } set { if (OnPropertyChanging("DynamicAvoidanceEntityData." + nameof(PredictedByOthers), this, m_PredictedByOthers, value)) m_PredictedByOthers = value; } } // 0x2D (45)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

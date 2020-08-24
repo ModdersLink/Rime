@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class PadRumbleNodeData : 
 		AudioGraphNodeData
 	{
 		protected AudioGraphNodePort m_RumbleHigh = new AudioGraphNodePort();
-		[ContainerField(8), ContainerFieldNameHash(2053424650)]
+		[ContainerField(8), MemberInfoFlag(41), ContainerFieldNameHash(2053424650)]
 		public AudioGraphNodePort RumbleHigh { get { return m_RumbleHigh; } set { if (OnPropertyChanging("PadRumbleNodeData." + nameof(RumbleHigh), this, m_RumbleHigh, value)) m_RumbleHigh = value; } } // 0x8 (8)
 		
 		protected AudioGraphNodePort m_RumbleLow = new AudioGraphNodePort();
-		[ContainerField(16), ContainerFieldNameHash(2144629360)]
+		[ContainerField(16), MemberInfoFlag(41), ContainerFieldNameHash(2144629360)]
 		public AudioGraphNodePort RumbleLow { get { return m_RumbleLow; } set { if (OnPropertyChanging("PadRumbleNodeData." + nameof(RumbleLow), this, m_RumbleLow, value)) m_RumbleLow = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

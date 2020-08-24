@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(41), ContainerStruct]
 	public class NetworkVoteDetails : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, Blittable]
+		[ContainerField(0), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
 		public uint Issuer { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable, Blittable]
+		[ContainerField(4), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool Personal { get; set; } // 0x4 (4)
 		
-		[ContainerField(5), LayoutImmutable, Blittable]
+		[ContainerField(5), LayoutImmutable, Blittable, MemberInfoFlag(49341)]
 		public sbyte VoteId { get; set; } // 0x5 (5)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

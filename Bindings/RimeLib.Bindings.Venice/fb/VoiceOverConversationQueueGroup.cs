@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class VoiceOverConversationQueueGroup : 
 		DataContainer
 	{
 		protected string m_Name = string.Empty;
-		[ContainerField(8), LayoutImmutable, ContainerFieldNameHash(2088949890)]
+		[ContainerField(8), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(2088949890)]
 		public string Name { get { return m_Name; } set { if (OnPropertyChanging("VoiceOverConversationQueueGroup." + nameof(Name), this, m_Name, value)) m_Name = value; } } // 0x8 (8)
 		
 		protected VoiceOverConversationQueueGroupPolyphony m_PolyphonyMode = new VoiceOverConversationQueueGroupPolyphony();
-		[ContainerField(12), ContainerFieldNameHash(1898569388)]
+		[ContainerField(12), MemberInfoFlag(137), ContainerFieldNameHash(1898569388)]
 		public VoiceOverConversationQueueGroupPolyphony PolyphonyMode { get { return m_PolyphonyMode; } set { if (OnPropertyChanging("VoiceOverConversationQueueGroup." + nameof(PolyphonyMode), this, m_PolyphonyMode, value)) m_PolyphonyMode = value; } } // 0xC (12)
 		
 		protected uint m_Polyphony = new uint();
-		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(3372275311)]
+		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(3372275311)]
 		public uint Polyphony { get { return m_Polyphony; } set { if (OnPropertyChanging("VoiceOverConversationQueueGroup." + nameof(Polyphony), this, m_Polyphony, value)) m_Polyphony = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

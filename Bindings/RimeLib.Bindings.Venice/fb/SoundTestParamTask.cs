@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class SoundTestParamTask : 
 		SoundTestTaskSpec
 	{
 		protected string m_ParamName = string.Empty;
-		[ContainerField(16), LayoutImmutable, ContainerFieldNameHash(2964687917)]
+		[ContainerField(16), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(2964687917)]
 		public string ParamName { get { return m_ParamName; } set { if (OnPropertyChanging("SoundTestParamTask." + nameof(ParamName), this, m_ParamName, value)) m_ParamName = value; } } // 0x10 (16)
 		
 		protected SoundTestParamBehavior m_Behavior = new SoundTestParamBehavior();
-		[ContainerField(20), ContainerFieldNameHash(1967808137)]
+		[ContainerField(20), MemberInfoFlag(137), ContainerFieldNameHash(1967808137)]
 		public SoundTestParamBehavior Behavior { get { return m_Behavior; } set { if (OnPropertyChanging("SoundTestParamTask." + nameof(Behavior), this, m_Behavior, value)) m_Behavior = value; } } // 0x14 (20)
 		
 		protected float m_RangeMin = new float();
-		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(1752513616)]
+		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1752513616)]
 		public float RangeMin { get { return m_RangeMin; } set { if (OnPropertyChanging("SoundTestParamTask." + nameof(RangeMin), this, m_RangeMin, value)) m_RangeMin = value; } } // 0x18 (24)
 		
 		protected float m_RangeMax = new float();
-		[ContainerField(28), LayoutImmutable, Blittable, ContainerFieldNameHash(1752513358)]
+		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1752513358)]
 		public float RangeMax { get { return m_RangeMax; } set { if (OnPropertyChanging("SoundTestParamTask." + nameof(RangeMax), this, m_RangeMax, value)) m_RangeMax = value; } } // 0x1C (28)
 		
 		protected float m_InitialValue = new float();
-		[ContainerField(32), LayoutImmutable, Blittable, ContainerFieldNameHash(3684126256)]
+		[ContainerField(32), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3684126256)]
 		public float InitialValue { get { return m_InitialValue; } set { if (OnPropertyChanging("SoundTestParamTask." + nameof(InitialValue), this, m_InitialValue, value)) m_InitialValue = value; } } // 0x20 (32)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

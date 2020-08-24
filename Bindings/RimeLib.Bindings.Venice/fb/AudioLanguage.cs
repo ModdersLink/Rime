@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class AudioLanguage : 
 		DataContainer
 	{
 		protected string m_Name = string.Empty;
-		[ContainerField(8), LayoutImmutable, ContainerFieldNameHash(2088949890)]
+		[ContainerField(8), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(2088949890)]
 		public string Name { get { return m_Name; } set { if (OnPropertyChanging("AudioLanguage." + nameof(Name), this, m_Name, value)) m_Name = value; } } // 0x8 (8)
 		
 		protected LanguageFormat m_LanguageMapping = new LanguageFormat();
-		[ContainerField(12), ContainerFieldNameHash(1284921467)]
+		[ContainerField(12), MemberInfoFlag(137), ContainerFieldNameHash(1284921467)]
 		public LanguageFormat LanguageMapping { get { return m_LanguageMapping; } set { if (OnPropertyChanging("AudioLanguage." + nameof(LanguageMapping), this, m_LanguageMapping, value)) m_LanguageMapping = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

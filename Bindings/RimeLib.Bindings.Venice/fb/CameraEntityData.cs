@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class CameraEntityData : 
 		CameraEntityBaseData
 	{
 		protected float m_Fov = new float();
-		[ContainerField(96), LayoutImmutable, Blittable, ContainerFieldNameHash(193443802)]
+		[ContainerField(96), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(193443802)]
 		public float Fov { get { return m_Fov; } set { if (OnPropertyChanging("CameraEntityData." + nameof(Fov), this, m_Fov, value)) m_Fov = value; } } // 0x60 (96)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

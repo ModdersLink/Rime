@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class LaserDesignatorData : 
 		LockingWeaponData
 	{
 		protected float m_PostLockTime = new float();
-		[ContainerField(32), LayoutImmutable, Blittable, ContainerFieldNameHash(4004851651)]
+		[ContainerField(32), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(4004851651)]
 		public float PostLockTime { get { return m_PostLockTime; } set { if (OnPropertyChanging("LaserDesignatorData." + nameof(PostLockTime), this, m_PostLockTime, value)) m_PostLockTime = value; } } // 0x20 (32)
 		
 		protected float m_BomberTime = new float();
-		[ContainerField(36), LayoutImmutable, Blittable, ContainerFieldNameHash(3089415333)]
+		[ContainerField(36), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3089415333)]
 		public float BomberTime { get { return m_BomberTime; } set { if (OnPropertyChanging("LaserDesignatorData." + nameof(BomberTime), this, m_BomberTime, value)) m_BomberTime = value; } } // 0x24 (36)
 		
 		protected float m_BombWarnTime = new float();
-		[ContainerField(40), LayoutImmutable, Blittable, ContainerFieldNameHash(2755941208)]
+		[ContainerField(40), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2755941208)]
 		public float BombWarnTime { get { return m_BombWarnTime; } set { if (OnPropertyChanging("LaserDesignatorData." + nameof(BombWarnTime), this, m_BombWarnTime, value)) m_BombWarnTime = value; } } // 0x28 (40)
 		
 		protected CtrRef<SoundAsset> m_BomberSound = new CtrRef<SoundAsset>();
-		[ContainerField(44), ContainerFieldNameHash(3167598099)]
+		[ContainerField(44), MemberInfoFlag(53), ContainerFieldNameHash(3167598099), ContainerCtrRef]
 		public CtrRef<SoundAsset> BomberSound { get { return m_BomberSound; } set { if (OnPropertyChanging("LaserDesignatorData." + nameof(BomberSound), this, m_BomberSound, value)) m_BomberSound = value; } } // 0x2C (44)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

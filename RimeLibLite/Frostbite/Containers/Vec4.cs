@@ -9,7 +9,7 @@ namespace RimeLib.Serialization.Containers
     /// <summary>
     /// Implementation of fb::Vec4
     /// </summary>
-    [ContainerType(16)]
+    [ContainerType(16), ContainerStruct]
     public class Vec4 : FrostbiteContainer
     {
         /// <summary>

@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class DelayEntityData : 
 		EntityData
 	{
 		protected float m_Delay = new float();
-		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(208768368)]
+		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(208768368)]
 		public float Delay { get { return m_Delay; } set { if (OnPropertyChanging("DelayEntityData." + nameof(Delay), this, m_Delay, value)) m_Delay = value; } } // 0xC (12)
 		
 		protected Realm m_Realm = new Realm();
-		[ContainerField(16), ContainerFieldNameHash(229961746)]
+		[ContainerField(16), MemberInfoFlag(137), ContainerFieldNameHash(229961746)]
 		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("DelayEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0x10 (16)
 		
 		protected bool m_AutoStart = new bool();
-		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(792615882)]
+		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(792615882)]
 		public bool AutoStart { get { return m_AutoStart; } set { if (OnPropertyChanging("DelayEntityData." + nameof(AutoStart), this, m_AutoStart, value)) m_AutoStart = value; } } // 0x14 (20)
 		
 		protected bool m_RunOnce = new bool();
-		[ContainerField(21), LayoutImmutable, Blittable, ContainerFieldNameHash(709901739)]
+		[ContainerField(21), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(709901739)]
 		public bool RunOnce { get { return m_RunOnce; } set { if (OnPropertyChanging("DelayEntityData." + nameof(RunOnce), this, m_RunOnce, value)) m_RunOnce = value; } } // 0x15 (21)
 		
 		protected bool m_RemoveDuplicateEvents = new bool();
-		[ContainerField(22), LayoutImmutable, Blittable, ContainerFieldNameHash(2871488843)]
+		[ContainerField(22), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2871488843)]
 		public bool RemoveDuplicateEvents { get { return m_RemoveDuplicateEvents; } set { if (OnPropertyChanging("DelayEntityData." + nameof(RemoveDuplicateEvents), this, m_RemoveDuplicateEvents, value)) m_RemoveDuplicateEvents = value; } } // 0x16 (22)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,10 +18,10 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(41), ContainerStruct]
 	public class CharacterWeaponBinding : FrostbiteContainer
 	{
-		[ContainerField(0)]
+		[ContainerField(0), MemberInfoFlag(41)]
 		public AntRef WeaponId { get; set; } = new AntRef(); // 0x0 (0)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

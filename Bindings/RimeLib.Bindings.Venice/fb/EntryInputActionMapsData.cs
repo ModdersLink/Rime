@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class EntryInputActionMapsData : 
 		Asset
 	{
 		protected int m_ActionMapSettingsScheme = new int();
-		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(3553311511)]
+		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(3553311511)]
 		public int ActionMapSettingsScheme { get { return m_ActionMapSettingsScheme; } set { if (OnPropertyChanging("EntryInputActionMapsData." + nameof(ActionMapSettingsScheme), this, m_ActionMapSettingsScheme, value)) m_ActionMapSettingsScheme = value; } } // 0xC (12)
 		
 		protected InputActionMapSlot m_DefaultInputActionMap = new InputActionMapSlot();
-		[ContainerField(16), ContainerFieldNameHash(1781726042)]
+		[ContainerField(16), MemberInfoFlag(137), ContainerFieldNameHash(1781726042)]
 		public InputActionMapSlot DefaultInputActionMap { get { return m_DefaultInputActionMap; } set { if (OnPropertyChanging("EntryInputActionMapsData." + nameof(DefaultInputActionMap), this, m_DefaultInputActionMap, value)) m_DefaultInputActionMap = value; } } // 0x10 (16)
 		
 		protected RefArray<EntryInputActionMapData> m_InputActionMaps = new RefArray<EntryInputActionMapData>();
-		[ContainerField(20), ContainerFieldNameHash(2094181090)]
+		[ContainerField(20), MemberInfoFlag(65), ContainerFieldNameHash(2094181090), ContainerRefArray]
 		public RefArray<EntryInputActionMapData> InputActionMaps { get { return m_InputActionMaps; } set { if (OnPropertyChanging("EntryInputActionMapsData." + nameof(InputActionMaps), this, m_InputActionMaps, value)) m_InputActionMaps = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

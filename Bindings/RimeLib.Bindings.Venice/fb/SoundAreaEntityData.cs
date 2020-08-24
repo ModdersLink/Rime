@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class SoundAreaEntityData : 
 		EntityData
 	{
 		protected CtrRef<SoundAsset> m_Sound = new CtrRef<SoundAsset>();
-		[ContainerField(12), ContainerFieldNameHash(231353798)]
+		[ContainerField(12), MemberInfoFlag(53), ContainerFieldNameHash(231353798), ContainerCtrRef]
 		public CtrRef<SoundAsset> Sound { get { return m_Sound; } set { if (OnPropertyChanging("SoundAreaEntityData." + nameof(Sound), this, m_Sound, value)) m_Sound = value; } } // 0xC (12)
 		
 		protected CtrRef<BigWorldSettingsAsset> m_BigWorld = new CtrRef<BigWorldSettingsAsset>();
-		[ContainerField(16), ContainerFieldNameHash(4205700235)]
+		[ContainerField(16), MemberInfoFlag(53), ContainerFieldNameHash(4205700235), ContainerCtrRef]
 		public CtrRef<BigWorldSettingsAsset> BigWorld { get { return m_BigWorld; } set { if (OnPropertyChanging("SoundAreaEntityData." + nameof(BigWorld), this, m_BigWorld, value)) m_BigWorld = value; } } // 0x10 (16)
 		
 		protected float m_FadeWidth = new float();
-		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(3185416613)]
+		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3185416613)]
 		public float FadeWidth { get { return m_FadeWidth; } set { if (OnPropertyChanging("SoundAreaEntityData." + nameof(FadeWidth), this, m_FadeWidth, value)) m_FadeWidth = value; } } // 0x14 (20)
 		
 		protected float m_ProximityMultiplier = new float();
-		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(1947336347)]
+		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1947336347)]
 		public float ProximityMultiplier { get { return m_ProximityMultiplier; } set { if (OnPropertyChanging("SoundAreaEntityData." + nameof(ProximityMultiplier), this, m_ProximityMultiplier, value)) m_ProximityMultiplier = value; } } // 0x18 (24)
 		
 		protected FadeCurveType m_FadeCurve = new FadeCurveType();
-		[ContainerField(28), ContainerFieldNameHash(3162123636)]
+		[ContainerField(28), MemberInfoFlag(137), ContainerFieldNameHash(3162123636)]
 		public FadeCurveType FadeCurve { get { return m_FadeCurve; } set { if (OnPropertyChanging("SoundAreaEntityData." + nameof(FadeCurve), this, m_FadeCurve, value)) m_FadeCurve = value; } } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

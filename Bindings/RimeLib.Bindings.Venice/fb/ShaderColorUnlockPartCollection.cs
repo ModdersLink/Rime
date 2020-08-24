@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class ShaderColorUnlockPartCollection : 
 		ShaderCustomizationUnlockPartCollection
 	{
 		protected CtrRef<ColorReference> m_DefaultColorReference = new CtrRef<ColorReference>();
-		[ContainerField(20), ContainerFieldNameHash(1493675992)]
+		[ContainerField(20), MemberInfoFlag(53), ContainerFieldNameHash(1493675992), ContainerCtrRef]
 		public CtrRef<ColorReference> DefaultColorReference { get { return m_DefaultColorReference; } set { if (OnPropertyChanging("ShaderColorUnlockPartCollection." + nameof(DefaultColorReference), this, m_DefaultColorReference, value)) m_DefaultColorReference = value; } } // 0x14 (20)
 		
 		protected RefArray<ColorUnlockPartData> m_UnlockParts = new RefArray<ColorUnlockPartData>();
-		[ContainerField(24), ContainerFieldNameHash(4116003953)]
+		[ContainerField(24), MemberInfoFlag(65), ContainerFieldNameHash(4116003953), ContainerRefArray]
 		public RefArray<ColorUnlockPartData> UnlockParts { get { return m_UnlockParts; } set { if (OnPropertyChanging("ShaderColorUnlockPartCollection." + nameof(UnlockParts), this, m_UnlockParts, value)) m_UnlockParts = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

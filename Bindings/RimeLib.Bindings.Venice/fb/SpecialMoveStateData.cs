@@ -18,55 +18,55 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(41), ContainerStruct]
 	public class SpecialMoveStateData : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, Blittable]
+		[ContainerField(0), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float MinHeightScale { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable, Blittable]
+		[ContainerField(4), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float OptimumDistanceFromObject { get; set; } // 0x4 (4)
 		
-		[ContainerField(8), LayoutImmutable, Blittable]
+		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float OptimumHeightOfObject { get; set; } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable]
+		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float OptimumLengthOfObject { get; set; } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
+		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float MaxDistanceScale { get; set; } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
+		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float MinDistanceScale { get; set; } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable]
+		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float MaxHeightScale { get; set; } // 0x18 (24)
 		
-		[ContainerField(28)]
+		[ContainerField(28), MemberInfoFlag(65), ContainerArray]
 		public List<SpecialMoveInterpolatedPoint> MotionPoints { get; set; } = new List<SpecialMoveInterpolatedPoint>(); // 0x1C (28)
 		
-		[ContainerField(32), LayoutImmutable, Blittable]
+		[ContainerField(32), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float MaxObjectLengthScale { get; set; } // 0x20 (32)
 		
-		[ContainerField(36), LayoutImmutable, Blittable]
+		[ContainerField(36), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float MinObjectLengthScale { get; set; } // 0x24 (36)
 		
-		[ContainerField(40), LayoutImmutable, Blittable]
+		[ContainerField(40), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float ExitAnimationDrivenStateVelocity { get; set; } // 0x28 (40)
 		
-		[ContainerField(44)]
+		[ContainerField(44), MemberInfoFlag(137)]
 		public SpecialMovesPoseType ResetPose { get; set; } = new SpecialMovesPoseType(); // 0x2C (44)
 		
-		[ContainerField(48)]
+		[ContainerField(48), MemberInfoFlag(137)]
 		public SpecialMovesPoseType OverridePose { get; set; } = new SpecialMovesPoseType(); // 0x30 (48)
 		
-		[ContainerField(52)]
+		[ContainerField(52), MemberInfoFlag(65), ContainerArray]
 		public List<SpecialMoveInterpolatedPoint> GravityPoints { get; set; } = new List<SpecialMoveInterpolatedPoint>(); // 0x34 (52)
 		
-		[ContainerField(56), LayoutImmutable, Blittable]
+		[ContainerField(56), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool KeepInitialSoldierDirection { get; set; } // 0x38 (56)
 		
-		[ContainerField(57), LayoutImmutable, Blittable]
+		[ContainerField(57), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool ScaleWithDistanceToObject { get; set; } // 0x39 (57)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

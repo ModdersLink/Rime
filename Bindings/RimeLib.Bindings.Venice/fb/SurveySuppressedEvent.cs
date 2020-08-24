@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(8)]
+	[ContainerType(8), MemberInfoFlag(53), ContainerClass]
 	public class SurveySuppressedEvent : 
 		MetricEvent
 	{
 		protected string m_SuppressReason = string.Empty;
-		[ContainerField(16), LayoutImmutable, ContainerFieldNameHash(422620368)]
+		[ContainerField(16), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(422620368)]
 		public string SuppressReason { get { return m_SuppressReason; } set { if (OnPropertyChanging("SurveySuppressedEvent." + nameof(SuppressReason), this, m_SuppressReason, value)) m_SuppressReason = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class EnlightenPipelineTerrain : 
 		Asset
 	{
 		protected List<EnlightenPipelineTerrainMesh> m_Meshes = new List<EnlightenPipelineTerrainMesh>();
-		[ContainerField(12), ContainerFieldNameHash(2648066496)]
+		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(2648066496), ContainerArray]
 		public List<EnlightenPipelineTerrainMesh> Meshes { get { return m_Meshes; } set { if (OnPropertyChanging("EnlightenPipelineTerrain." + nameof(Meshes), this, m_Meshes, value)) m_Meshes = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

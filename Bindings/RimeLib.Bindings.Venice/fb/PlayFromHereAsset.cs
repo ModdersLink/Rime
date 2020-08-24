@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class PlayFromHereAsset : 
 		Asset
 	{
 		protected CtrRef<Blueprint> m_Soldier = new CtrRef<Blueprint>();
-		[ContainerField(12), ContainerFieldNameHash(2844639087)]
+		[ContainerField(12), MemberInfoFlag(53), ContainerFieldNameHash(2844639087), ContainerCtrRef]
 		public CtrRef<Blueprint> Soldier { get { return m_Soldier; } set { if (OnPropertyChanging("PlayFromHereAsset." + nameof(Soldier), this, m_Soldier, value)) m_Soldier = value; } } // 0xC (12)
 		
 		protected CtrRef<AnimatedSkeletonDatabase> m_AnimatedSkeletonDatabase = new CtrRef<AnimatedSkeletonDatabase>();
-		[ContainerField(16), ContainerFieldNameHash(3542888158)]
+		[ContainerField(16), MemberInfoFlag(53), ContainerFieldNameHash(3542888158), ContainerCtrRef]
 		public CtrRef<AnimatedSkeletonDatabase> AnimatedSkeletonDatabase { get { return m_AnimatedSkeletonDatabase; } set { if (OnPropertyChanging("PlayFromHereAsset." + nameof(AnimatedSkeletonDatabase), this, m_AnimatedSkeletonDatabase, value)) m_AnimatedSkeletonDatabase = value; } } // 0x10 (16)
 		
 		protected CtrRef<AntProjectAsset> m_AntProject = new CtrRef<AntProjectAsset>();
-		[ContainerField(20), ContainerFieldNameHash(1712291019)]
+		[ContainerField(20), MemberInfoFlag(53), ContainerFieldNameHash(1712291019), ContainerCtrRef]
 		public CtrRef<AntProjectAsset> AntProject { get { return m_AntProject; } set { if (OnPropertyChanging("PlayFromHereAsset." + nameof(AntProject), this, m_AntProject, value)) m_AntProject = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

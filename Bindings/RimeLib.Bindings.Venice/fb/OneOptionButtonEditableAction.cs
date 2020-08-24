@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class OneOptionButtonEditableAction : 
 		EditableAction
 	{
 		protected string m_Header = string.Empty;
-		[ContainerField(12), LayoutImmutable, ContainerFieldNameHash(3054345338)]
+		[ContainerField(12), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(3054345338)]
 		public string Header { get { return m_Header; } set { if (OnPropertyChanging("OneOptionButtonEditableAction." + nameof(Header), this, m_Header, value)) m_Header = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

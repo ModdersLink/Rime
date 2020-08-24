@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class PersistentCriteriaStatRef : 
 		AbstractPersistentStatRef
 	{
 		protected CtrRef<CriteriaData> m_Criteria = new CtrRef<CriteriaData>();
-		[ContainerField(8), ContainerFieldNameHash(335452726)]
+		[ContainerField(8), MemberInfoFlag(53), ContainerFieldNameHash(335452726), ContainerCtrRef]
 		public CtrRef<CriteriaData> Criteria { get { return m_Criteria; } set { if (OnPropertyChanging("PersistentCriteriaStatRef." + nameof(Criteria), this, m_Criteria, value)) m_Criteria = value; } } // 0x8 (8)
 		
 		protected CtrRef<StatsCategoryBaseData> m_ParamX = new CtrRef<StatsCategoryBaseData>();
-		[ContainerField(12), ContainerFieldNameHash(3371566706)]
+		[ContainerField(12), MemberInfoFlag(53), ContainerFieldNameHash(3371566706), ContainerCtrRef]
 		public CtrRef<StatsCategoryBaseData> ParamX { get { return m_ParamX; } set { if (OnPropertyChanging("PersistentCriteriaStatRef." + nameof(ParamX), this, m_ParamX, value)) m_ParamX = value; } } // 0xC (12)
 		
 		protected CtrRef<StatsCategoryBaseData> m_ParamY = new CtrRef<StatsCategoryBaseData>();
-		[ContainerField(16), ContainerFieldNameHash(3371566707)]
+		[ContainerField(16), MemberInfoFlag(53), ContainerFieldNameHash(3371566707), ContainerCtrRef]
 		public CtrRef<StatsCategoryBaseData> ParamY { get { return m_ParamY; } set { if (OnPropertyChanging("PersistentCriteriaStatRef." + nameof(ParamY), this, m_ParamY, value)) m_ParamY = value; } } // 0x10 (16)
 		
 		protected CtrRef<AwardData> m_CriteriaOwner = new CtrRef<AwardData>();
-		[ContainerField(20), ContainerFieldNameHash(4139530871)]
+		[ContainerField(20), MemberInfoFlag(53), ContainerFieldNameHash(4139530871), ContainerCtrRef]
 		public CtrRef<AwardData> CriteriaOwner { get { return m_CriteriaOwner; } set { if (OnPropertyChanging("PersistentCriteriaStatRef." + nameof(CriteriaOwner), this, m_CriteriaOwner, value)) m_CriteriaOwner = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

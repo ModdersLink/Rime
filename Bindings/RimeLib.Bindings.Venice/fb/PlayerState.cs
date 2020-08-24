@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(8)]
+	[ContainerType(8), MemberInfoFlag(53), ContainerClass]
 	public class PlayerState : 
 		MetricState
 	{
 		protected ulong m_OnlineId = new ulong();
-		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(3139508999)]
+		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49453), ContainerFieldNameHash(3139508999)]
 		public ulong OnlineId { get { return m_OnlineId; } set { if (OnPropertyChanging("PlayerState." + nameof(OnlineId), this, m_OnlineId, value)) m_OnlineId = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

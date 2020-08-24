@@ -18,36 +18,36 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class CharacterStatePoseInfo : 
 		DataContainer
 	{
 		protected CharacterPoseType m_PoseType = new CharacterPoseType();
-		[ContainerField(8), ContainerFieldNameHash(3415409588)]
+		[ContainerField(8), MemberInfoFlag(137), ContainerFieldNameHash(3415409588)]
 		public CharacterPoseType PoseType { get { return m_PoseType; } set { if (OnPropertyChanging("CharacterStatePoseInfo." + nameof(PoseType), this, m_PoseType, value)) m_PoseType = value; } } // 0x8 (8)
 		
 		protected float m_Velocity = new float();
-		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(3860766482)]
+		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3860766482)]
 		public float Velocity { get { return m_Velocity; } set { if (OnPropertyChanging("CharacterStatePoseInfo." + nameof(Velocity), this, m_Velocity, value)) m_Velocity = value; } } // 0xC (12)
 		
 		protected float m_AccelerationGain = new float();
-		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(1824913062)]
+		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1824913062)]
 		public float AccelerationGain { get { return m_AccelerationGain; } set { if (OnPropertyChanging("CharacterStatePoseInfo." + nameof(AccelerationGain), this, m_AccelerationGain, value)) m_AccelerationGain = value; } } // 0x10 (16)
 		
 		protected float m_DecelerationGain = new float();
-		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(1680484485)]
+		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1680484485)]
 		public float DecelerationGain { get { return m_DecelerationGain; } set { if (OnPropertyChanging("CharacterStatePoseInfo." + nameof(DecelerationGain), this, m_DecelerationGain, value)) m_DecelerationGain = value; } } // 0x14 (20)
 		
 		protected float m_SprintGain = new float();
-		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(1424279590)]
+		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1424279590)]
 		public float SprintGain { get { return m_SprintGain; } set { if (OnPropertyChanging("CharacterStatePoseInfo." + nameof(SprintGain), this, m_SprintGain, value)) m_SprintGain = value; } } // 0x18 (24)
 		
 		protected float m_SprintMultiplier = new float();
-		[ContainerField(28), LayoutImmutable, Blittable, ContainerFieldNameHash(4088490892)]
+		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(4088490892)]
 		public float SprintMultiplier { get { return m_SprintMultiplier; } set { if (OnPropertyChanging("CharacterStatePoseInfo." + nameof(SprintMultiplier), this, m_SprintMultiplier, value)) m_SprintMultiplier = value; } } // 0x1C (28)
 		
 		protected SpeedModifierData m_SpeedModifier = new SpeedModifierData();
-		[ContainerField(32), ContainerFieldNameHash(2276662581)]
+		[ContainerField(32), MemberInfoFlag(41), ContainerFieldNameHash(2276662581)]
 		public SpeedModifierData SpeedModifier { get { return m_SpeedModifier; } set { if (OnPropertyChanging("CharacterStatePoseInfo." + nameof(SpeedModifier), this, m_SpeedModifier, value)) m_SpeedModifier = value; } } // 0x20 (32)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

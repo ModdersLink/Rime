@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class ClientPlayerInputPlaybackEntityData : 
 		EntityData
 	{
 		protected Realm m_Realm = new Realm();
-		[ContainerField(12), ContainerFieldNameHash(229961746)]
+		[ContainerField(12), MemberInfoFlag(137), ContainerFieldNameHash(229961746)]
 		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("ClientPlayerInputPlaybackEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0xC (12)
 		
 		protected string m_FileName = string.Empty;
-		[ContainerField(16), LayoutImmutable, ContainerFieldNameHash(1134474212)]
+		[ContainerField(16), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(1134474212)]
 		public string FileName { get { return m_FileName; } set { if (OnPropertyChanging("ClientPlayerInputPlaybackEntityData." + nameof(FileName), this, m_FileName, value)) m_FileName = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

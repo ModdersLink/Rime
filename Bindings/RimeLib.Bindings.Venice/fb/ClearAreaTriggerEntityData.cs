@@ -18,44 +18,44 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class ClearAreaTriggerEntityData : 
 		TriggerEntityData
 	{
 		protected TeamId m_TeamOfImmortalSoldiers = new TeamId();
-		[ContainerField(112), ContainerFieldNameHash(3105392997)]
+		[ContainerField(112), MemberInfoFlag(137), ContainerFieldNameHash(3105392997)]
 		public TeamId TeamOfImmortalSoldiers { get { return m_TeamOfImmortalSoldiers; } set { if (OnPropertyChanging("ClearAreaTriggerEntityData." + nameof(TeamOfImmortalSoldiers), this, m_TeamOfImmortalSoldiers, value)) m_TeamOfImmortalSoldiers = value; } } // 0x70 (112)
 		
 		protected bool m_RemoveBangers = new bool();
-		[ContainerField(116), LayoutImmutable, Blittable, ContainerFieldNameHash(708015725)]
+		[ContainerField(116), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(708015725)]
 		public bool RemoveBangers { get { return m_RemoveBangers; } set { if (OnPropertyChanging("ClearAreaTriggerEntityData." + nameof(RemoveBangers), this, m_RemoveBangers, value)) m_RemoveBangers = value; } } // 0x74 (116)
 		
 		protected bool m_RemoveVehicles = new bool();
-		[ContainerField(117), LayoutImmutable, Blittable, ContainerFieldNameHash(2903248424)]
+		[ContainerField(117), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2903248424)]
 		public bool RemoveVehicles { get { return m_RemoveVehicles; } set { if (OnPropertyChanging("ClearAreaTriggerEntityData." + nameof(RemoveVehicles), this, m_RemoveVehicles, value)) m_RemoveVehicles = value; } } // 0x75 (117)
 		
 		protected bool m_RemoveEffects = new bool();
-		[ContainerField(118), LayoutImmutable, Blittable, ContainerFieldNameHash(234155399)]
+		[ContainerField(118), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(234155399)]
 		public bool RemoveEffects { get { return m_RemoveEffects; } set { if (OnPropertyChanging("ClearAreaTriggerEntityData." + nameof(RemoveEffects), this, m_RemoveEffects, value)) m_RemoveEffects = value; } } // 0x76 (118)
 		
 		protected bool m_RemoveStaticModels = new bool();
-		[ContainerField(119), LayoutImmutable, Blittable, ContainerFieldNameHash(521881607)]
+		[ContainerField(119), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(521881607)]
 		public bool RemoveStaticModels { get { return m_RemoveStaticModels; } set { if (OnPropertyChanging("ClearAreaTriggerEntityData." + nameof(RemoveStaticModels), this, m_RemoveStaticModels, value)) m_RemoveStaticModels = value; } } // 0x77 (119)
 		
 		protected bool m_RemoveDebrisClusters = new bool();
-		[ContainerField(120), LayoutImmutable, Blittable, ContainerFieldNameHash(2304161393)]
+		[ContainerField(120), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2304161393)]
 		public bool RemoveDebrisClusters { get { return m_RemoveDebrisClusters; } set { if (OnPropertyChanging("ClearAreaTriggerEntityData." + nameof(RemoveDebrisClusters), this, m_RemoveDebrisClusters, value)) m_RemoveDebrisClusters = value; } } // 0x78 (120)
 		
 		protected bool m_ExcludeImmortalSoldiersInTeam = new bool();
-		[ContainerField(121), LayoutImmutable, Blittable, ContainerFieldNameHash(1181765645)]
+		[ContainerField(121), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1181765645)]
 		public bool ExcludeImmortalSoldiersInTeam { get { return m_ExcludeImmortalSoldiersInTeam; } set { if (OnPropertyChanging("ClearAreaTriggerEntityData." + nameof(ExcludeImmortalSoldiersInTeam), this, m_ExcludeImmortalSoldiersInTeam, value)) m_ExcludeImmortalSoldiersInTeam = value; } } // 0x79 (121)
 		
 		protected bool m_RemoveMeshProxies = new bool();
-		[ContainerField(122), LayoutImmutable, Blittable, ContainerFieldNameHash(539264666)]
+		[ContainerField(122), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(539264666)]
 		public bool RemoveMeshProxies { get { return m_RemoveMeshProxies; } set { if (OnPropertyChanging("ClearAreaTriggerEntityData." + nameof(RemoveMeshProxies), this, m_RemoveMeshProxies, value)) m_RemoveMeshProxies = value; } } // 0x7A (122)
 		
 		protected bool m_RemoveSoldiers = new bool();
-		[ContainerField(123), LayoutImmutable, Blittable, ContainerFieldNameHash(466109562)]
+		[ContainerField(123), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(466109562)]
 		public bool RemoveSoldiers { get { return m_RemoveSoldiers; } set { if (OnPropertyChanging("ClearAreaTriggerEntityData." + nameof(RemoveSoldiers), this, m_RemoveSoldiers, value)) m_RemoveSoldiers = value; } } // 0x7B (123)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

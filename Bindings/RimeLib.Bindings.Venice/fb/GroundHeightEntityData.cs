@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class GroundHeightEntityData : 
 		SpatialEntityData
 	{
 		protected GroundHeightData m_Data = new GroundHeightData();
-		[ContainerField(80), ContainerFieldNameHash(2088730869)]
+		[ContainerField(80), MemberInfoFlag(41), ContainerFieldNameHash(2088730869)]
 		public GroundHeightData Data { get { return m_Data; } set { if (OnPropertyChanging("GroundHeightEntityData." + nameof(Data), this, m_Data, value)) m_Data = value; } } // 0x50 (80)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

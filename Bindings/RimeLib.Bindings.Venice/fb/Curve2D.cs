@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class Curve2D : 
 		DataContainer
 	{
 		protected List<Vec2> m_Curve = new List<Vec2>();
-		[ContainerField(8), ContainerFieldNameHash(212866962)]
+		[ContainerField(8), MemberInfoFlag(65), ContainerFieldNameHash(212866962), ContainerArray]
 		public List<Vec2> Curve { get { return m_Curve; } set { if (OnPropertyChanging("Curve2D." + nameof(Curve), this, m_Curve, value)) m_Curve = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

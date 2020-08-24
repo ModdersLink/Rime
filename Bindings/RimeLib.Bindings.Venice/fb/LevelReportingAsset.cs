@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class LevelReportingAsset : 
 		Asset
 	{
 		protected RefArray<LevelDescriptionAsset> m_BuiltLevels = new RefArray<LevelDescriptionAsset>();
-		[ContainerField(12), ContainerFieldNameHash(3293235878)]
+		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(3293235878), ContainerRefArray]
 		public RefArray<LevelDescriptionAsset> BuiltLevels { get { return m_BuiltLevels; } set { if (OnPropertyChanging("LevelReportingAsset." + nameof(BuiltLevels), this, m_BuiltLevels, value)) m_BuiltLevels = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

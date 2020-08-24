@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class PickupEntityAsset : 
 		Asset
 	{
 		protected CtrRef<PickupEntityData> m_Data = new CtrRef<PickupEntityData>();
-		[ContainerField(12), ContainerFieldNameHash(2088730869)]
+		[ContainerField(12), MemberInfoFlag(53), ContainerFieldNameHash(2088730869), ContainerCtrRef]
 		public CtrRef<PickupEntityData> Data { get { return m_Data; } set { if (OnPropertyChanging("PickupEntityAsset." + nameof(Data), this, m_Data, value)) m_Data = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

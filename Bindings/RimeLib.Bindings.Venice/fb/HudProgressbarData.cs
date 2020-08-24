@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class HudProgressbarData : 
 		UIPartData
 	{
 		protected ProgressType m_ProgressType = new ProgressType();
-		[ContainerField(8), ContainerFieldNameHash(1938381824)]
+		[ContainerField(8), MemberInfoFlag(137), ContainerFieldNameHash(1938381824)]
 		public ProgressType ProgressType { get { return m_ProgressType; } set { if (OnPropertyChanging("HudProgressbarData." + nameof(ProgressType), this, m_ProgressType, value)) m_ProgressType = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

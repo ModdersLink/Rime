@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class WeaponDeployTimeModifier : 
 		WeaponModifierBase
 	{
 		protected float m_DeployTime = new float();
-		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(2275884507)]
+		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2275884507)]
 		public float DeployTime { get { return m_DeployTime; } set { if (OnPropertyChanging("WeaponDeployTimeModifier." + nameof(DeployTime), this, m_DeployTime, value)) m_DeployTime = value; } } // 0x8 (8)
 		
 		protected float m_DisableZoomOnDeployTime = new float();
-		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(3731232633)]
+		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3731232633)]
 		public float DisableZoomOnDeployTime { get { return m_DisableZoomOnDeployTime; } set { if (OnPropertyChanging("WeaponDeployTimeModifier." + nameof(DisableZoomOnDeployTime), this, m_DisableZoomOnDeployTime, value)) m_DisableZoomOnDeployTime = value; } } // 0xC (12)
 		
 		protected float m_AltDeployTime = new float();
-		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(1924470306)]
+		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1924470306)]
 		public float AltDeployTime { get { return m_AltDeployTime; } set { if (OnPropertyChanging("WeaponDeployTimeModifier." + nameof(AltDeployTime), this, m_AltDeployTime, value)) m_AltDeployTime = value; } } // 0x10 (16)
 		
 		protected int m_AltDeployId = new int();
-		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(1819931514)]
+		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(1819931514)]
 		public int AltDeployId { get { return m_AltDeployId; } set { if (OnPropertyChanging("WeaponDeployTimeModifier." + nameof(AltDeployId), this, m_AltDeployId, value)) m_AltDeployId = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

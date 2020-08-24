@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class VehicleWaterEffectData : 
 		DataContainer
 	{
 		protected Vec3 m_Position = new Vec3();
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(3402582524)]
+		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(3402582524)]
 		public Vec3 Position { get { return m_Position; } set { if (OnPropertyChanging("VehicleWaterEffectData." + nameof(Position), this, m_Position, value)) m_Position = value; } } // 0x10 (16)
 		
 		protected CtrRef<EffectBlueprint> m_Effect = new CtrRef<EffectBlueprint>();
-		[ContainerField(32), ContainerFieldNameHash(2332983090)]
+		[ContainerField(32), MemberInfoFlag(53), ContainerFieldNameHash(2332983090), ContainerCtrRef]
 		public CtrRef<EffectBlueprint> Effect { get { return m_Effect; } set { if (OnPropertyChanging("VehicleWaterEffectData." + nameof(Effect), this, m_Effect, value)) m_Effect = value; } } // 0x20 (32)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

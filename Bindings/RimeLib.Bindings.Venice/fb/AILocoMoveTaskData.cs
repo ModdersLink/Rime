@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(41), ContainerStruct]
 	public class AILocoMoveTaskData : FrostbiteContainer
 	{
-		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable]
+		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
 		public Vec3 WantedPos { get; set; } = new Vec3(); // 0x0 (0)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
+		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float WorldAngle { get; set; } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
+		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float WaitTime { get; set; } // 0x14 (20)
 		
-		[ContainerField(24)]
+		[ContainerField(24), MemberInfoFlag(137)]
 		public AntPoseEnum EnterPose { get; set; } = new AntPoseEnum(); // 0x18 (24)
 		
-		[ContainerField(28)]
+		[ContainerField(28), MemberInfoFlag(137)]
 		public AntPoseEnum ExitPose { get; set; } = new AntPoseEnum(); // 0x1C (28)
 		
-		[ContainerField(32), LayoutImmutable, Blittable]
+		[ContainerField(32), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool OverrideAngle { get; set; } // 0x20 (32)
 		
-		[ContainerField(33), LayoutImmutable, Blittable]
+		[ContainerField(33), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool UseClientPosition { get; set; } // 0x21 (33)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

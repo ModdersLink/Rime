@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class IntHubEntityData : 
 		EntityData
 	{
 		protected Realm m_Realm = new Realm();
-		[ContainerField(12), ContainerFieldNameHash(229961746)]
+		[ContainerField(12), MemberInfoFlag(137), ContainerFieldNameHash(229961746)]
 		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("IntHubEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0xC (12)
 		
 		protected int m_InputCount = new int();
-		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(1607263120)]
+		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(1607263120)]
 		public int InputCount { get { return m_InputCount; } set { if (OnPropertyChanging("IntHubEntityData." + nameof(InputCount), this, m_InputCount, value)) m_InputCount = value; } } // 0x10 (16)
 		
 		protected int m_InputSelect = new int();
-		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(858290427)]
+		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(858290427)]
 		public int InputSelect { get { return m_InputSelect; } set { if (OnPropertyChanging("IntHubEntityData." + nameof(InputSelect), this, m_InputSelect, value)) m_InputSelect = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class GameSplineData : 
 		CustomSplineData
 	{
 		protected GameSplineType m_SplineType = new GameSplineType();
-		[ContainerField(28), ContainerFieldNameHash(3992327344)]
+		[ContainerField(28), MemberInfoFlag(137), ContainerFieldNameHash(3992327344)]
 		public GameSplineType SplineType { get { return m_SplineType; } set { if (OnPropertyChanging("GameSplineData." + nameof(SplineType), this, m_SplineType, value)) m_SplineType = value; } } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

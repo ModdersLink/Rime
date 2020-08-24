@@ -18,60 +18,60 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class ProjectileEntityData : 
 		GamePhysicsEntityData
 	{
 		protected float m_VisualConvergeDistance = new float();
-		[ContainerField(112), LayoutImmutable, Blittable, ContainerFieldNameHash(4030464179)]
+		[ContainerField(112), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(4030464179)]
 		public float VisualConvergeDistance { get { return m_VisualConvergeDistance; } set { if (OnPropertyChanging("ProjectileEntityData." + nameof(VisualConvergeDistance), this, m_VisualConvergeDistance, value)) m_VisualConvergeDistance = value; } } // 0x70 (112)
 		
 		protected float m_InitialSpeed = new float();
-		[ContainerField(116), LayoutImmutable, Blittable, ContainerFieldNameHash(3681055580)]
+		[ContainerField(116), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3681055580)]
 		public float InitialSpeed { get { return m_InitialSpeed; } set { if (OnPropertyChanging("ProjectileEntityData." + nameof(InitialSpeed), this, m_InitialSpeed, value)) m_InitialSpeed = value; } } // 0x74 (116)
 		
 		protected float m_TimeToLive = new float();
-		[ContainerField(120), LayoutImmutable, Blittable, ContainerFieldNameHash(1571456733)]
+		[ContainerField(120), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1571456733)]
 		public float TimeToLive { get { return m_TimeToLive; } set { if (OnPropertyChanging("ProjectileEntityData." + nameof(TimeToLive), this, m_TimeToLive, value)) m_TimeToLive = value; } } // 0x78 (120)
 		
 		protected uint m_MaxCount = new uint();
-		[ContainerField(124), LayoutImmutable, Blittable, ContainerFieldNameHash(415061138)]
+		[ContainerField(124), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(415061138)]
 		public uint MaxCount { get { return m_MaxCount; } set { if (OnPropertyChanging("ProjectileEntityData." + nameof(MaxCount), this, m_MaxCount, value)) m_MaxCount = value; } } // 0x7C (124)
 		
 		protected float m_InitMeshHideTime = new float();
-		[ContainerField(128), LayoutImmutable, Blittable, ContainerFieldNameHash(4189709497)]
+		[ContainerField(128), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(4189709497)]
 		public float InitMeshHideTime { get { return m_InitMeshHideTime; } set { if (OnPropertyChanging("ProjectileEntityData." + nameof(InitMeshHideTime), this, m_InitMeshHideTime, value)) m_InitMeshHideTime = value; } } // 0x80 (128)
 		
 		protected CtrRef<MaterialContainerPair> m_MaterialPair = new CtrRef<MaterialContainerPair>();
-		[ContainerField(132), ContainerFieldNameHash(161392100)]
+		[ContainerField(132), MemberInfoFlag(53), ContainerFieldNameHash(161392100), ContainerCtrRef]
 		public CtrRef<MaterialContainerPair> MaterialPair { get { return m_MaterialPair; } set { if (OnPropertyChanging("ProjectileEntityData." + nameof(MaterialPair), this, m_MaterialPair, value)) m_MaterialPair = value; } } // 0x84 (132)
 		
 		protected AntHitReactionWeaponType m_HitReactionWeaponType = new AntHitReactionWeaponType();
-		[ContainerField(136), ContainerFieldNameHash(2133337731)]
+		[ContainerField(136), MemberInfoFlag(137), ContainerFieldNameHash(2133337731)]
 		public AntHitReactionWeaponType HitReactionWeaponType { get { return m_HitReactionWeaponType; } set { if (OnPropertyChanging("ProjectileEntityData." + nameof(HitReactionWeaponType), this, m_HitReactionWeaponType, value)) m_HitReactionWeaponType = value; } } // 0x88 (136)
 		
 		protected CtrRef<ExplosionEntityData> m_Explosion = new CtrRef<ExplosionEntityData>();
-		[ContainerField(140), ContainerFieldNameHash(2222171184)]
+		[ContainerField(140), MemberInfoFlag(53), ContainerFieldNameHash(2222171184), ContainerCtrRef]
 		public CtrRef<ExplosionEntityData> Explosion { get { return m_Explosion; } set { if (OnPropertyChanging("ProjectileEntityData." + nameof(Explosion), this, m_Explosion, value)) m_Explosion = value; } } // 0x8C (140)
 		
 		protected CtrRef<WeaponSuppressionData> m_SuppressionData = new CtrRef<WeaponSuppressionData>();
-		[ContainerField(144), ContainerFieldNameHash(1230905484)]
+		[ContainerField(144), MemberInfoFlag(53), ContainerFieldNameHash(1230905484), ContainerCtrRef]
 		public CtrRef<WeaponSuppressionData> SuppressionData { get { return m_SuppressionData; } set { if (OnPropertyChanging("ProjectileEntityData." + nameof(SuppressionData), this, m_SuppressionData, value)) m_SuppressionData = value; } } // 0x90 (144)
 		
 		protected string m_AmmunitionType = string.Empty;
-		[ContainerField(148), LayoutImmutable, ContainerFieldNameHash(1231027442)]
+		[ContainerField(148), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(1231027442)]
 		public string AmmunitionType { get { return m_AmmunitionType; } set { if (OnPropertyChanging("ProjectileEntityData." + nameof(AmmunitionType), this, m_AmmunitionType, value)) m_AmmunitionType = value; } } // 0x94 (148)
 		
 		protected bool m_ServerProjectileDisabled = new bool();
-		[ContainerField(152), LayoutImmutable, Blittable, ContainerFieldNameHash(3578279269)]
+		[ContainerField(152), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3578279269)]
 		public bool ServerProjectileDisabled { get { return m_ServerProjectileDisabled; } set { if (OnPropertyChanging("ProjectileEntityData." + nameof(ServerProjectileDisabled), this, m_ServerProjectileDisabled, value)) m_ServerProjectileDisabled = value; } } // 0x98 (152)
 		
 		protected bool m_DetonateOnTimeout = new bool();
-		[ContainerField(153), LayoutImmutable, Blittable, ContainerFieldNameHash(3547425179)]
+		[ContainerField(153), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3547425179)]
 		public bool DetonateOnTimeout { get { return m_DetonateOnTimeout; } set { if (OnPropertyChanging("ProjectileEntityData." + nameof(DetonateOnTimeout), this, m_DetonateOnTimeout, value)) m_DetonateOnTimeout = value; } } // 0x99 (153)
 		
 		protected bool m_SuppressOwnerVehicleDamage = new bool();
-		[ContainerField(154), LayoutImmutable, Blittable, ContainerFieldNameHash(4245130982)]
+		[ContainerField(154), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(4245130982)]
 		public bool SuppressOwnerVehicleDamage { get { return m_SuppressOwnerVehicleDamage; } set { if (OnPropertyChanging("ProjectileEntityData." + nameof(SuppressOwnerVehicleDamage), this, m_SuppressOwnerVehicleDamage, value)) m_SuppressOwnerVehicleDamage = value; } } // 0x9A (154)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

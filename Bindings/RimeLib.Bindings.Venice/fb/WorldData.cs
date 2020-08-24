@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class WorldData : 
 		SubWorldData
 	{
 		protected CtrRef<MaterialGridData> m_RuntimeMaterialGrid = new CtrRef<MaterialGridData>();
-		[ContainerField(44), ContainerFieldNameHash(1453435306)]
+		[ContainerField(44), MemberInfoFlag(53), ContainerFieldNameHash(1453435306), ContainerCtrRef]
 		public CtrRef<MaterialGridData> RuntimeMaterialGrid { get { return m_RuntimeMaterialGrid; } set { if (OnPropertyChanging("WorldData." + nameof(RuntimeMaterialGrid), this, m_RuntimeMaterialGrid, value)) m_RuntimeMaterialGrid = value; } } // 0x2C (44)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

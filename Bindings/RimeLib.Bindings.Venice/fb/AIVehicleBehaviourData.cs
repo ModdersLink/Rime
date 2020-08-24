@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class AIVehicleBehaviourData : 
 		DataContainer
 	{
 		protected string m_Name = string.Empty;
-		[ContainerField(8), LayoutImmutable, ContainerFieldNameHash(2088949890)]
+		[ContainerField(8), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(2088949890)]
 		public string Name { get { return m_Name; } set { if (OnPropertyChanging("AIVehicleBehaviourData." + nameof(Name), this, m_Name, value)) m_Name = value; } } // 0x8 (8)
 		
 		protected List<string> m_Controls = new List<string>();
-		[ContainerField(12), ContainerFieldNameHash(333010129)]
+		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(333010129), ContainerArray]
 		public List<string> Controls { get { return m_Controls; } set { if (OnPropertyChanging("AIVehicleBehaviourData." + nameof(Controls), this, m_Controls, value)) m_Controls = value; } } // 0xC (12)
 		
 		protected List<string> m_Behaviours = new List<string>();
-		[ContainerField(16), ContainerFieldNameHash(4049352655)]
+		[ContainerField(16), MemberInfoFlag(65), ContainerFieldNameHash(4049352655), ContainerArray]
 		public List<string> Behaviours { get { return m_Behaviours; } set { if (OnPropertyChanging("AIVehicleBehaviourData." + nameof(Behaviours), this, m_Behaviours, value)) m_Behaviours = value; } } // 0x10 (16)
 		
 		protected List<string> m_Goals = new List<string>();
-		[ContainerField(20), ContainerFieldNameHash(207935763)]
+		[ContainerField(20), MemberInfoFlag(65), ContainerFieldNameHash(207935763), ContainerArray]
 		public List<string> Goals { get { return m_Goals; } set { if (OnPropertyChanging("AIVehicleBehaviourData." + nameof(Goals), this, m_Goals, value)) m_Goals = value; } } // 0x14 (20)
 		
 		protected List<IntentData> m_Intents = new List<IntentData>();
-		[ContainerField(24), ContainerFieldNameHash(1691535386)]
+		[ContainerField(24), MemberInfoFlag(65), ContainerFieldNameHash(1691535386), ContainerArray]
 		public List<IntentData> Intents { get { return m_Intents; } set { if (OnPropertyChanging("AIVehicleBehaviourData." + nameof(Intents), this, m_Intents, value)) m_Intents = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class WeaponMiscModifier : 
 		WeaponModifierBase
 	{
 		protected bool m_EnableBreathControl = new bool();
-		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(613505579)]
+		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(613505579)]
 		public bool EnableBreathControl { get { return m_EnableBreathControl; } set { if (OnPropertyChanging("WeaponMiscModifier." + nameof(EnableBreathControl), this, m_EnableBreathControl, value)) m_EnableBreathControl = value; } } // 0x8 (8)
 		
 		protected bool m_CanBeInSupportedShooting = new bool();
-		[ContainerField(9), LayoutImmutable, Blittable, ContainerFieldNameHash(2187452328)]
+		[ContainerField(9), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2187452328)]
 		public bool CanBeInSupportedShooting { get { return m_CanBeInSupportedShooting; } set { if (OnPropertyChanging("WeaponMiscModifier." + nameof(CanBeInSupportedShooting), this, m_CanBeInSupportedShooting, value)) m_CanBeInSupportedShooting = value; } } // 0x9 (9)
 		
 		protected bool m_UnZoomOnBoltAction = new bool();
-		[ContainerField(10), LayoutImmutable, Blittable, ContainerFieldNameHash(1438634691)]
+		[ContainerField(10), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1438634691)]
 		public bool UnZoomOnBoltAction { get { return m_UnZoomOnBoltAction; } set { if (OnPropertyChanging("WeaponMiscModifier." + nameof(UnZoomOnBoltAction), this, m_UnZoomOnBoltAction, value)) m_UnZoomOnBoltAction = value; } } // 0xA (10)
 		
 		protected bool m_HoldBoltActionUntilZoomRelease = new bool();
-		[ContainerField(11), LayoutImmutable, Blittable, ContainerFieldNameHash(3133940949)]
+		[ContainerField(11), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3133940949)]
 		public bool HoldBoltActionUntilZoomRelease { get { return m_HoldBoltActionUntilZoomRelease; } set { if (OnPropertyChanging("WeaponMiscModifier." + nameof(HoldBoltActionUntilZoomRelease), this, m_HoldBoltActionUntilZoomRelease, value)) m_HoldBoltActionUntilZoomRelease = value; } } // 0xB (11)
 		
 		protected bool m_IsSilenced = new bool();
-		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(1644964768)]
+		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1644964768)]
 		public bool IsSilenced { get { return m_IsSilenced; } set { if (OnPropertyChanging("WeaponMiscModifier." + nameof(IsSilenced), this, m_IsSilenced, value)) m_IsSilenced = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

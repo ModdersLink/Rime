@@ -18,6 +18,7 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
+	[MemberInfoFlag(137), ContainerEnum]
 	public enum ShaderRenderPath : int
 	{
 		ShaderRenderPath_Dx10 = 0,

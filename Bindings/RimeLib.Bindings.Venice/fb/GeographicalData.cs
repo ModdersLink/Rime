@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class GeographicalData : 
 		DataContainer
 	{
 		protected UIGeoLatitude m_Latitude = new UIGeoLatitude();
-		[ContainerField(8), ContainerFieldNameHash(591028213)]
+		[ContainerField(8), MemberInfoFlag(41), ContainerFieldNameHash(591028213)]
 		public UIGeoLatitude Latitude { get { return m_Latitude; } set { if (OnPropertyChanging("GeographicalData." + nameof(Latitude), this, m_Latitude, value)) m_Latitude = value; } } // 0x8 (8)
 		
 		protected UIGeoLongitude m_Longitude = new UIGeoLongitude();
-		[ContainerField(20), ContainerFieldNameHash(3158300774)]
+		[ContainerField(20), MemberInfoFlag(41), ContainerFieldNameHash(3158300774)]
 		public UIGeoLongitude Longitude { get { return m_Longitude; } set { if (OnPropertyChanging("GeographicalData." + nameof(Longitude), this, m_Longitude, value)) m_Longitude = value; } } // 0x14 (20)
 		
 		protected float m_SeaLevelOffset = new float();
-		[ContainerField(32), LayoutImmutable, Blittable, ContainerFieldNameHash(2454050473)]
+		[ContainerField(32), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2454050473)]
 		public float SeaLevelOffset { get { return m_SeaLevelOffset; } set { if (OnPropertyChanging("GeographicalData." + nameof(SeaLevelOffset), this, m_SeaLevelOffset, value)) m_SeaLevelOffset = value; } } // 0x20 (32)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

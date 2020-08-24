@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class FlareEntityData : 
 		GrenadeEntityData
 	{
 		protected float m_FlareRange = new float();
-		[ContainerField(208), LayoutImmutable, Blittable, ContainerFieldNameHash(1082869702)]
+		[ContainerField(208), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1082869702)]
 		public float FlareRange { get { return m_FlareRange; } set { if (OnPropertyChanging("FlareEntityData." + nameof(FlareRange), this, m_FlareRange, value)) m_FlareRange = value; } } // 0xD0 (208)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

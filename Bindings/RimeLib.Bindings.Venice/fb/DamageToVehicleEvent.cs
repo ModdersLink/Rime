@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(8)]
+	[ContainerType(8), MemberInfoFlag(53), ContainerClass]
 	public class DamageToVehicleEvent : 
 		MetricEvent
 	{
 		protected string m_VehicleName = string.Empty;
-		[ContainerField(16), LayoutImmutable, ContainerFieldNameHash(926391226)]
+		[ContainerField(16), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(926391226)]
 		public string VehicleName { get { return m_VehicleName; } set { if (OnPropertyChanging("DamageToVehicleEvent." + nameof(VehicleName), this, m_VehicleName, value)) m_VehicleName = value; } } // 0x10 (16)
 		
 		protected string m_WeaponName = string.Empty;
-		[ContainerField(20), LayoutImmutable, ContainerFieldNameHash(932725504)]
+		[ContainerField(20), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(932725504)]
 		public string WeaponName { get { return m_WeaponName; } set { if (OnPropertyChanging("DamageToVehicleEvent." + nameof(WeaponName), this, m_WeaponName, value)) m_WeaponName = value; } } // 0x14 (20)
 		
 		protected float m_DamageAmount = new float();
-		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(4282691970)]
+		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(4282691970)]
 		public float DamageAmount { get { return m_DamageAmount; } set { if (OnPropertyChanging("DamageToVehicleEvent." + nameof(DamageAmount), this, m_DamageAmount, value)) m_DamageAmount = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -7,7 +7,7 @@ using System.Text;
 
 namespace RimeLib.Serialization.Containers
 {
-    [ContainerType(8)]
+    [ContainerType(8), ContainerStruct]
     public class FileRef : FrostbiteContainer
     {
         private string m_Chars = string.Empty;

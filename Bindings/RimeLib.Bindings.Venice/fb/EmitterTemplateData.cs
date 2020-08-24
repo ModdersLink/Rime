@@ -18,172 +18,172 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class EmitterTemplateData : 
 		DataContainer
 	{
 		protected Vec4 m_PointLightIntensity = new Vec4();
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(2449280824)]
+		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(2449280824)]
 		public Vec4 PointLightIntensity { get { return m_PointLightIntensity; } set { if (OnPropertyChanging("EmitterTemplateData." + nameof(PointLightIntensity), this, m_PointLightIntensity, value)) m_PointLightIntensity = value; } } // 0x10 (16)
 		
 		protected Vec3 m_PointLightPivot = new Vec3();
-		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(2839277155)]
+		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(2839277155)]
 		public Vec3 PointLightPivot { get { return m_PointLightPivot; } set { if (OnPropertyChanging("EmitterTemplateData." + nameof(PointLightPivot), this, m_PointLightPivot, value)) m_PointLightPivot = value; } } // 0x20 (32)
 		
 		protected Vec3 m_PointLightColor = new Vec3();
-		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(2852380970)]
+		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(2852380970)]
 		public Vec3 PointLightColor { get { return m_PointLightColor; } set { if (OnPropertyChanging("EmitterTemplateData." + nameof(PointLightColor), this, m_PointLightColor, value)) m_PointLightColor = value; } } // 0x30 (48)
 		
 		protected uint m_MaxCount = new uint();
-		[ContainerField(64), LayoutImmutable, Blittable, ContainerFieldNameHash(415061138)]
+		[ContainerField(64), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(415061138)]
 		public uint MaxCount { get { return m_MaxCount; } set { if (OnPropertyChanging("EmitterTemplateData." + nameof(MaxCount), this, m_MaxCount, value)) m_MaxCount = value; } } // 0x40 (64)
 		
 		protected string m_Name = string.Empty;
-		[ContainerField(68), LayoutImmutable, ContainerFieldNameHash(2088949890)]
+		[ContainerField(68), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(2088949890)]
 		public string Name { get { return m_Name; } set { if (OnPropertyChanging("EmitterTemplateData." + nameof(Name), this, m_Name, value)) m_Name = value; } } // 0x44 (68)
 		
 		protected float m_TimeScale = new float();
-		[ContainerField(72), LayoutImmutable, Blittable, ContainerFieldNameHash(169511528)]
+		[ContainerField(72), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(169511528)]
 		public float TimeScale { get { return m_TimeScale; } set { if (OnPropertyChanging("EmitterTemplateData." + nameof(TimeScale), this, m_TimeScale, value)) m_TimeScale = value; } } // 0x48 (72)
 		
 		protected uint m_LifetimeFrameCount = new uint();
-		[ContainerField(76), LayoutImmutable, Blittable, ContainerFieldNameHash(2205246824)]
+		[ContainerField(76), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(2205246824)]
 		public uint LifetimeFrameCount { get { return m_LifetimeFrameCount; } set { if (OnPropertyChanging("EmitterTemplateData." + nameof(LifetimeFrameCount), this, m_LifetimeFrameCount, value)) m_LifetimeFrameCount = value; } } // 0x4C (76)
 		
 		protected float m_Lifetime = new float();
-		[ContainerField(80), LayoutImmutable, Blittable, ContainerFieldNameHash(2450521238)]
+		[ContainerField(80), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2450521238)]
 		public float Lifetime { get { return m_Lifetime; } set { if (OnPropertyChanging("EmitterTemplateData." + nameof(Lifetime), this, m_Lifetime, value)) m_Lifetime = value; } } // 0x50 (80)
 		
 		protected CtrRef<ProcessorData> m_RootProcessor = new CtrRef<ProcessorData>();
-		[ContainerField(84), ContainerFieldNameHash(3988805269)]
+		[ContainerField(84), MemberInfoFlag(53), ContainerFieldNameHash(3988805269), ContainerCtrRef]
 		public CtrRef<ProcessorData> RootProcessor { get { return m_RootProcessor; } set { if (OnPropertyChanging("EmitterTemplateData." + nameof(RootProcessor), this, m_RootProcessor, value)) m_RootProcessor = value; } } // 0x54 (84)
 		
 		protected float m_VisibleAfterDistance = new float();
-		[ContainerField(88), LayoutImmutable, Blittable, ContainerFieldNameHash(2130300524)]
+		[ContainerField(88), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2130300524)]
 		public float VisibleAfterDistance { get { return m_VisibleAfterDistance; } set { if (OnPropertyChanging("EmitterTemplateData." + nameof(VisibleAfterDistance), this, m_VisibleAfterDistance, value)) m_VisibleAfterDistance = value; } } // 0x58 (88)
 		
 		protected List<float> m_ZOcclusionLookup = new List<float>();
-		[ContainerField(92), ContainerFieldNameHash(3071713232)]
+		[ContainerField(92), MemberInfoFlag(65), ContainerFieldNameHash(3071713232), ContainerArray]
 		public List<float> ZOcclusionLookup { get { return m_ZOcclusionLookup; } set { if (OnPropertyChanging("EmitterTemplateData." + nameof(ZOcclusionLookup), this, m_ZOcclusionLookup, value)) m_ZOcclusionLookup = value; } } // 0x5C (92)
 		
 		protected EmittableType m_EmittableType = new EmittableType();
-		[ContainerField(96), ContainerFieldNameHash(3808538518)]
+		[ContainerField(96), MemberInfoFlag(137), ContainerFieldNameHash(3808538518)]
 		public EmittableType EmittableType { get { return m_EmittableType; } set { if (OnPropertyChanging("EmitterTemplateData." + nameof(EmittableType), this, m_EmittableType, value)) m_EmittableType = value; } } // 0x60 (96)
 		
 		protected CtrRef<MeshAsset> m_Mesh = new CtrRef<MeshAsset>();
-		[ContainerField(100), ContainerFieldNameHash(2088783990)]
+		[ContainerField(100), MemberInfoFlag(53), ContainerFieldNameHash(2088783990), ContainerCtrRef]
 		public CtrRef<MeshAsset> Mesh { get { return m_Mesh; } set { if (OnPropertyChanging("EmitterTemplateData." + nameof(Mesh), this, m_Mesh, value)) m_Mesh = value; } } // 0x64 (100)
 		
 		protected float m_DistanceScaleNearValue = new float();
-		[ContainerField(104), LayoutImmutable, Blittable, ContainerFieldNameHash(4151251565)]
+		[ContainerField(104), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(4151251565)]
 		public float DistanceScaleNearValue { get { return m_DistanceScaleNearValue; } set { if (OnPropertyChanging("EmitterTemplateData." + nameof(DistanceScaleNearValue), this, m_DistanceScaleNearValue, value)) m_DistanceScaleNearValue = value; } } // 0x68 (104)
 		
 		protected float m_PointLightRadius = new float();
-		[ContainerField(108), LayoutImmutable, Blittable, ContainerFieldNameHash(3261781711)]
+		[ContainerField(108), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3261781711)]
 		public float PointLightRadius { get { return m_PointLightRadius; } set { if (OnPropertyChanging("EmitterTemplateData." + nameof(PointLightRadius), this, m_PointLightRadius, value)) m_PointLightRadius = value; } } // 0x6C (108)
 		
 		protected float m_VertexPixelLightingBlendFactor = new float();
-		[ContainerField(112), LayoutImmutable, Blittable, ContainerFieldNameHash(2828867447)]
+		[ContainerField(112), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2828867447)]
 		public float VertexPixelLightingBlendFactor { get { return m_VertexPixelLightingBlendFactor; } set { if (OnPropertyChanging("EmitterTemplateData." + nameof(VertexPixelLightingBlendFactor), this, m_VertexPixelLightingBlendFactor, value)) m_VertexPixelLightingBlendFactor = value; } } // 0x70 (112)
 		
 		protected float m_GlobalLocalNormalBlendFactor = new float();
-		[ContainerField(116), LayoutImmutable, Blittable, ContainerFieldNameHash(3400652860)]
+		[ContainerField(116), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3400652860)]
 		public float GlobalLocalNormalBlendFactor { get { return m_GlobalLocalNormalBlendFactor; } set { if (OnPropertyChanging("EmitterTemplateData." + nameof(GlobalLocalNormalBlendFactor), this, m_GlobalLocalNormalBlendFactor, value)) m_GlobalLocalNormalBlendFactor = value; } } // 0x74 (116)
 		
 		protected float m_SoftParticlesFadeDistanceMultiplier = new float();
-		[ContainerField(120), LayoutImmutable, Blittable, ContainerFieldNameHash(2725694050)]
+		[ContainerField(120), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2725694050)]
 		public float SoftParticlesFadeDistanceMultiplier { get { return m_SoftParticlesFadeDistanceMultiplier; } set { if (OnPropertyChanging("EmitterTemplateData." + nameof(SoftParticlesFadeDistanceMultiplier), this, m_SoftParticlesFadeDistanceMultiplier, value)) m_SoftParticlesFadeDistanceMultiplier = value; } } // 0x78 (120)
 		
 		protected float m_LightWrapAroundFactor = new float();
-		[ContainerField(124), LayoutImmutable, Blittable, ContainerFieldNameHash(372734881)]
+		[ContainerField(124), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(372734881)]
 		public float LightWrapAroundFactor { get { return m_LightWrapAroundFactor; } set { if (OnPropertyChanging("EmitterTemplateData." + nameof(LightWrapAroundFactor), this, m_LightWrapAroundFactor, value)) m_LightWrapAroundFactor = value; } } // 0x7C (124)
 		
 		protected float m_LightMultiplier = new float();
-		[ContainerField(128), LayoutImmutable, Blittable, ContainerFieldNameHash(3252516944)]
+		[ContainerField(128), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3252516944)]
 		public float LightMultiplier { get { return m_LightMultiplier; } set { if (OnPropertyChanging("EmitterTemplateData." + nameof(LightMultiplier), this, m_LightMultiplier, value)) m_LightMultiplier = value; } } // 0x80 (128)
 		
 		protected float m_DistanceScaleFarValue = new float();
-		[ContainerField(132), LayoutImmutable, Blittable, ContainerFieldNameHash(1407092256)]
+		[ContainerField(132), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1407092256)]
 		public float DistanceScaleFarValue { get { return m_DistanceScaleFarValue; } set { if (OnPropertyChanging("EmitterTemplateData." + nameof(DistanceScaleFarValue), this, m_DistanceScaleFarValue, value)) m_DistanceScaleFarValue = value; } } // 0x84 (132)
 		
 		protected float m_PointLightRandomIntensityMin = new float();
-		[ContainerField(136), LayoutImmutable, Blittable, ContainerFieldNameHash(1255152585)]
+		[ContainerField(136), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1255152585)]
 		public float PointLightRandomIntensityMin { get { return m_PointLightRandomIntensityMin; } set { if (OnPropertyChanging("EmitterTemplateData." + nameof(PointLightRandomIntensityMin), this, m_PointLightRandomIntensityMin, value)) m_PointLightRandomIntensityMin = value; } } // 0x88 (136)
 		
 		protected float m_MeshCullingDistance = new float();
-		[ContainerField(140), LayoutImmutable, Blittable, ContainerFieldNameHash(2057455619)]
+		[ContainerField(140), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2057455619)]
 		public float MeshCullingDistance { get { return m_MeshCullingDistance; } set { if (OnPropertyChanging("EmitterTemplateData." + nameof(MeshCullingDistance), this, m_MeshCullingDistance, value)) m_MeshCullingDistance = value; } } // 0x8C (140)
 		
 		protected float m_PointLightRandomIntensityMax = new float();
-		[ContainerField(144), LayoutImmutable, Blittable, ContainerFieldNameHash(1255152855)]
+		[ContainerField(144), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1255152855)]
 		public float PointLightRandomIntensityMax { get { return m_PointLightRandomIntensityMax; } set { if (OnPropertyChanging("EmitterTemplateData." + nameof(PointLightRandomIntensityMax), this, m_PointLightRandomIntensityMax, value)) m_PointLightRandomIntensityMax = value; } } // 0x90 (144)
 		
 		protected float m_MaxSpawnDistance = new float();
-		[ContainerField(148), LayoutImmutable, Blittable, ContainerFieldNameHash(3656506569)]
+		[ContainerField(148), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3656506569)]
 		public float MaxSpawnDistance { get { return m_MaxSpawnDistance; } set { if (OnPropertyChanging("EmitterTemplateData." + nameof(MaxSpawnDistance), this, m_MaxSpawnDistance, value)) m_MaxSpawnDistance = value; } } // 0x94 (148)
 		
 		protected float m_MinScreenArea = new float();
-		[ContainerField(152), LayoutImmutable, Blittable, ContainerFieldNameHash(81136980)]
+		[ContainerField(152), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(81136980)]
 		public float MinScreenArea { get { return m_MinScreenArea; } set { if (OnPropertyChanging("EmitterTemplateData." + nameof(MinScreenArea), this, m_MinScreenArea, value)) m_MinScreenArea = value; } } // 0x98 (152)
 		
 		protected float m_DistanceScaleLength = new float();
-		[ContainerField(156), LayoutImmutable, Blittable, ContainerFieldNameHash(2372975298)]
+		[ContainerField(156), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2372975298)]
 		public float DistanceScaleLength { get { return m_DistanceScaleLength; } set { if (OnPropertyChanging("EmitterTemplateData." + nameof(DistanceScaleLength), this, m_DistanceScaleLength, value)) m_DistanceScaleLength = value; } } // 0x9C (156)
 		
 		protected float m_PointLightMaxClamp = new float();
-		[ContainerField(160), LayoutImmutable, Blittable, ContainerFieldNameHash(1762540112)]
+		[ContainerField(160), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1762540112)]
 		public float PointLightMaxClamp { get { return m_PointLightMaxClamp; } set { if (OnPropertyChanging("EmitterTemplateData." + nameof(PointLightMaxClamp), this, m_PointLightMaxClamp, value)) m_PointLightMaxClamp = value; } } // 0xA0 (160)
 		
 		protected float m_ParticleCullingFactor = new float();
-		[ContainerField(164), LayoutImmutable, Blittable, ContainerFieldNameHash(1653196586)]
+		[ContainerField(164), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1653196586)]
 		public float ParticleCullingFactor { get { return m_ParticleCullingFactor; } set { if (OnPropertyChanging("EmitterTemplateData." + nameof(ParticleCullingFactor), this, m_ParticleCullingFactor, value)) m_ParticleCullingFactor = value; } } // 0xA4 (164)
 		
 		protected float m_PointLightMinClamp = new float();
-		[ContainerField(168), LayoutImmutable, Blittable, ContainerFieldNameHash(1507153422)]
+		[ContainerField(168), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1507153422)]
 		public float PointLightMinClamp { get { return m_PointLightMinClamp; } set { if (OnPropertyChanging("EmitterTemplateData." + nameof(PointLightMinClamp), this, m_PointLightMinClamp, value)) m_PointLightMinClamp = value; } } // 0xA8 (168)
 		
 		protected bool m_FollowSpawnSource = new bool();
-		[ContainerField(172), LayoutImmutable, Blittable, ContainerFieldNameHash(1782450290)]
+		[ContainerField(172), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1782450290)]
 		public bool FollowSpawnSource { get { return m_FollowSpawnSource; } set { if (OnPropertyChanging("EmitterTemplateData." + nameof(FollowSpawnSource), this, m_FollowSpawnSource, value)) m_FollowSpawnSource = value; } } // 0xAC (172)
 		
 		protected bool m_RepeatParticleSpawning = new bool();
-		[ContainerField(173), LayoutImmutable, Blittable, ContainerFieldNameHash(2147054397)]
+		[ContainerField(173), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2147054397)]
 		public bool RepeatParticleSpawning { get { return m_RepeatParticleSpawning; } set { if (OnPropertyChanging("EmitterTemplateData." + nameof(RepeatParticleSpawning), this, m_RepeatParticleSpawning, value)) m_RepeatParticleSpawning = value; } } // 0xAD (173)
 		
 		protected bool m_Emissive = new bool();
-		[ContainerField(174), LayoutImmutable, Blittable, ContainerFieldNameHash(782359646)]
+		[ContainerField(174), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(782359646)]
 		public bool Emissive { get { return m_Emissive; } set { if (OnPropertyChanging("EmitterTemplateData." + nameof(Emissive), this, m_Emissive, value)) m_Emissive = value; } } // 0xAE (174)
 		
 		protected bool m_ExclusionVolumeCullEnable = new bool();
-		[ContainerField(175), LayoutImmutable, Blittable, ContainerFieldNameHash(3245605062)]
+		[ContainerField(175), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3245605062)]
 		public bool ExclusionVolumeCullEnable { get { return m_ExclusionVolumeCullEnable; } set { if (OnPropertyChanging("EmitterTemplateData." + nameof(ExclusionVolumeCullEnable), this, m_ExclusionVolumeCullEnable, value)) m_ExclusionVolumeCullEnable = value; } } // 0xAF (175)
 		
 		protected bool m_TransparencySunShadowEnable = new bool();
-		[ContainerField(176), LayoutImmutable, Blittable, ContainerFieldNameHash(3351532450)]
+		[ContainerField(176), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3351532450)]
 		public bool TransparencySunShadowEnable { get { return m_TransparencySunShadowEnable; } set { if (OnPropertyChanging("EmitterTemplateData." + nameof(TransparencySunShadowEnable), this, m_TransparencySunShadowEnable, value)) m_TransparencySunShadowEnable = value; } } // 0xB0 (176)
 		
 		protected bool m_ForceFullRes = new bool();
-		[ContainerField(177), LayoutImmutable, Blittable, ContainerFieldNameHash(3014404943)]
+		[ContainerField(177), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3014404943)]
 		public bool ForceFullRes { get { return m_ForceFullRes; } set { if (OnPropertyChanging("EmitterTemplateData." + nameof(ForceFullRes), this, m_ForceFullRes, value)) m_ForceFullRes = value; } } // 0xB1 (177)
 		
 		protected bool m_LocalSpace = new bool();
-		[ContainerField(178), LayoutImmutable, Blittable, ContainerFieldNameHash(4045017420)]
+		[ContainerField(178), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(4045017420)]
 		public bool LocalSpace { get { return m_LocalSpace; } set { if (OnPropertyChanging("EmitterTemplateData." + nameof(LocalSpace), this, m_LocalSpace, value)) m_LocalSpace = value; } } // 0xB2 (178)
 		
 		protected bool m_Opaque = new bool();
-		[ContainerField(179), LayoutImmutable, Blittable, ContainerFieldNameHash(2892752538)]
+		[ContainerField(179), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2892752538)]
 		public bool Opaque { get { return m_Opaque; } set { if (OnPropertyChanging("EmitterTemplateData." + nameof(Opaque), this, m_Opaque, value)) m_Opaque = value; } } // 0xB3 (179)
 		
 		protected bool m_ActAsPointLight = new bool();
-		[ContainerField(180), LayoutImmutable, Blittable, ContainerFieldNameHash(443059219)]
+		[ContainerField(180), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(443059219)]
 		public bool ActAsPointLight { get { return m_ActAsPointLight; } set { if (OnPropertyChanging("EmitterTemplateData." + nameof(ActAsPointLight), this, m_ActAsPointLight, value)) m_ActAsPointLight = value; } } // 0xB4 (180)
 		
 		protected bool m_KillParticlesWithEmitter = new bool();
-		[ContainerField(181), LayoutImmutable, Blittable, ContainerFieldNameHash(2140513492)]
+		[ContainerField(181), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2140513492)]
 		public bool KillParticlesWithEmitter { get { return m_KillParticlesWithEmitter; } set { if (OnPropertyChanging("EmitterTemplateData." + nameof(KillParticlesWithEmitter), this, m_KillParticlesWithEmitter, value)) m_KillParticlesWithEmitter = value; } } // 0xB5 (181)
 		
 		protected bool m_ForceNiceSorting = new bool();
-		[ContainerField(182), LayoutImmutable, Blittable, ContainerFieldNameHash(318607267)]
+		[ContainerField(182), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(318607267)]
 		public bool ForceNiceSorting { get { return m_ForceNiceSorting; } set { if (OnPropertyChanging("EmitterTemplateData." + nameof(ForceNiceSorting), this, m_ForceNiceSorting, value)) m_ForceNiceSorting = value; } } // 0xB6 (182)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

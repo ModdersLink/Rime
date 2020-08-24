@@ -18,25 +18,25 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(41), ContainerStruct]
 	public class BulletHitInfo : FrostbiteContainer
 	{
-		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable]
+		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
 		public Vec3 Direction { get; set; } = new Vec3(); // 0x0 (0)
 		
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable]
+		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
 		public Vec3 SpawnPosition { get; set; } = new Vec3(); // 0x10 (16)
 		
-		[ContainerField(32)]
+		[ContainerField(32), MemberInfoFlag(53), ContainerCtrRef]
 		public CtrRef<SoldierWeaponUnlockAsset> WeaponUnlockAsset { get; set; } = new CtrRef<SoldierWeaponUnlockAsset>(); // 0x20 (32)
 		
-		[ContainerField(36)]
+		[ContainerField(36), MemberInfoFlag(137)]
 		public AntHitReactionWeaponType WeaponType { get; set; } = new AntHitReactionWeaponType(); // 0x24 (36)
 		
-		[ContainerField(40), LayoutImmutable, Blittable]
+		[ContainerField(40), LayoutImmutable, Blittable, MemberInfoFlag(49405)]
 		public int BoneType { get; set; } // 0x28 (40)
 		
-		[ContainerField(44), LayoutImmutable, Blittable]
+		[ContainerField(44), LayoutImmutable, Blittable, MemberInfoFlag(49405)]
 		public int ShooterPlayerId { get; set; } // 0x2C (44)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

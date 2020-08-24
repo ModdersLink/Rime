@@ -18,6 +18,7 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
+	[MemberInfoFlag(137), ContainerEnum]
 	public enum MinimapIconInteractionConcept : int
 	{
 		MinimapIconInteractionConcept_None = 0,

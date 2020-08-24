@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class LogicalExpressionNodeData : 
 		AudioGraphNodeData
 	{
 		protected RefArray<LogicalExpressionEntry> m_Inputs = new RefArray<LogicalExpressionEntry>();
-		[ContainerField(8), ContainerFieldNameHash(2784267136)]
+		[ContainerField(8), MemberInfoFlag(65), ContainerFieldNameHash(2784267136), ContainerRefArray]
 		public RefArray<LogicalExpressionEntry> Inputs { get { return m_Inputs; } set { if (OnPropertyChanging("LogicalExpressionNodeData." + nameof(Inputs), this, m_Inputs, value)) m_Inputs = value; } } // 0x8 (8)
 		
 		protected AudioGraphNodePort m_Trigger = new AudioGraphNodePort();
-		[ContainerField(12), ContainerFieldNameHash(2606354109)]
+		[ContainerField(12), MemberInfoFlag(41), ContainerFieldNameHash(2606354109)]
 		public AudioGraphNodePort Trigger { get { return m_Trigger; } set { if (OnPropertyChanging("LogicalExpressionNodeData." + nameof(Trigger), this, m_Trigger, value)) m_Trigger = value; } } // 0xC (12)
 		
 		protected LogicalExpressionOperator m_Operator = new LogicalExpressionOperator();
-		[ContainerField(20), ContainerFieldNameHash(2153507813)]
+		[ContainerField(20), MemberInfoFlag(137), ContainerFieldNameHash(2153507813)]
 		public LogicalExpressionOperator Operator { get { return m_Operator; } set { if (OnPropertyChanging("LogicalExpressionNodeData." + nameof(Operator), this, m_Operator, value)) m_Operator = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

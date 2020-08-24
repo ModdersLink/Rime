@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class LensFlareComponentData : 
 		ComponentData
 	{
 		protected CtrRef<LensFlareEntityData> m_LensFlare = new CtrRef<LensFlareEntityData>();
-		[ContainerField(96), ContainerFieldNameHash(890070093)]
+		[ContainerField(96), MemberInfoFlag(53), ContainerFieldNameHash(890070093), ContainerCtrRef]
 		public CtrRef<LensFlareEntityData> LensFlare { get { return m_LensFlare; } set { if (OnPropertyChanging("LensFlareComponentData." + nameof(LensFlare), this, m_LensFlare, value)) m_LensFlare = value; } } // 0x60 (96)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class UpdateTextureCoordsData : 
 		ProcessorData
 	{
 		protected EmitterTextureInfo m_TextureInfo1 = new EmitterTextureInfo();
-		[ContainerField(48), ContainerFieldNameHash(2154121125)]
+		[ContainerField(48), MemberInfoFlag(41), ContainerFieldNameHash(2154121125)]
 		public EmitterTextureInfo TextureInfo1 { get { return m_TextureInfo1; } set { if (OnPropertyChanging("UpdateTextureCoordsData." + nameof(TextureInfo1), this, m_TextureInfo1, value)) m_TextureInfo1 = value; } } // 0x30 (48)
 		
 		protected float m_TextureBlendValue = new float();
-		[ContainerField(68), LayoutImmutable, Blittable, ContainerFieldNameHash(2879784880)]
+		[ContainerField(68), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2879784880)]
 		public float TextureBlendValue { get { return m_TextureBlendValue; } set { if (OnPropertyChanging("UpdateTextureCoordsData." + nameof(TextureBlendValue), this, m_TextureBlendValue, value)) m_TextureBlendValue = value; } } // 0x44 (68)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

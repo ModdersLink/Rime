@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class UIActionData : 
 		Asset
 	{
 		protected List<string> m_ActionKeys = new List<string>();
-		[ContainerField(12), ContainerFieldNameHash(1114688479)]
+		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(1114688479), ContainerArray]
 		public List<string> ActionKeys { get { return m_ActionKeys; } set { if (OnPropertyChanging("UIActionData." + nameof(ActionKeys), this, m_ActionKeys, value)) m_ActionKeys = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

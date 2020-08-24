@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class GeographicalLevelDescriptionComponent : 
 		LevelDescriptionComponent
 	{
 		protected CtrRef<GeographicalData> m_GeographicalData = new CtrRef<GeographicalData>();
-		[ContainerField(8), ContainerFieldNameHash(1880696403)]
+		[ContainerField(8), MemberInfoFlag(53), ContainerFieldNameHash(1880696403), ContainerCtrRef]
 		public CtrRef<GeographicalData> GeographicalData { get { return m_GeographicalData; } set { if (OnPropertyChanging("GeographicalLevelDescriptionComponent." + nameof(GeographicalData), this, m_GeographicalData, value)) m_GeographicalData = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

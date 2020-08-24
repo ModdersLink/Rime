@@ -18,40 +18,40 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class PropertyGateEntityData : 
 		EntityData
 	{
 		protected LinearTransform m_TransformIn = new LinearTransform();
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(2771982766)]
+		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(2771982766)]
 		public LinearTransform TransformIn { get { return m_TransformIn; } set { if (OnPropertyChanging("PropertyGateEntityData." + nameof(TransformIn), this, m_TransformIn, value)) m_TransformIn = value; } } // 0x10 (16)
 		
 		protected Vec4 m_Vec4In = new Vec4();
-		[ContainerField(80), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(3146684934)]
+		[ContainerField(80), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(3146684934)]
 		public Vec4 Vec4In { get { return m_Vec4In; } set { if (OnPropertyChanging("PropertyGateEntityData." + nameof(Vec4In), this, m_Vec4In, value)) m_Vec4In = value; } } // 0x50 (80)
 		
 		protected Vec3 m_Vec3In = new Vec3();
-		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(3146686209)]
+		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(3146686209)]
 		public Vec3 Vec3In { get { return m_Vec3In; } set { if (OnPropertyChanging("PropertyGateEntityData." + nameof(Vec3In), this, m_Vec3In, value)) m_Vec3In = value; } } // 0x60 (96)
 		
 		protected Realm m_Realm = new Realm();
-		[ContainerField(112), ContainerFieldNameHash(229961746)]
+		[ContainerField(112), MemberInfoFlag(137), ContainerFieldNameHash(229961746)]
 		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("PropertyGateEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0x70 (112)
 		
 		protected float m_FloatIn = new float();
-		[ContainerField(116), LayoutImmutable, Blittable, ContainerFieldNameHash(2134484562)]
+		[ContainerField(116), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2134484562)]
 		public float FloatIn { get { return m_FloatIn; } set { if (OnPropertyChanging("PropertyGateEntityData." + nameof(FloatIn), this, m_FloatIn, value)) m_FloatIn = value; } } // 0x74 (116)
 		
 		protected int m_IntIn = new int();
-		[ContainerField(120), LayoutImmutable, Blittable, ContainerFieldNameHash(214528497)]
+		[ContainerField(120), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(214528497)]
 		public int IntIn { get { return m_IntIn; } set { if (OnPropertyChanging("PropertyGateEntityData." + nameof(IntIn), this, m_IntIn, value)) m_IntIn = value; } } // 0x78 (120)
 		
 		protected bool m_BoolIn = new bool();
-		[ContainerField(124), LayoutImmutable, Blittable, ContainerFieldNameHash(2679383756)]
+		[ContainerField(124), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2679383756)]
 		public bool BoolIn { get { return m_BoolIn; } set { if (OnPropertyChanging("PropertyGateEntityData." + nameof(BoolIn), this, m_BoolIn, value)) m_BoolIn = value; } } // 0x7C (124)
 		
 		protected bool m_Default = new bool();
-		[ContainerField(125), LayoutImmutable, Blittable, ContainerFieldNameHash(3998752238)]
+		[ContainerField(125), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3998752238)]
 		public bool Default { get { return m_Default; } set { if (OnPropertyChanging("PropertyGateEntityData." + nameof(Default), this, m_Default, value)) m_Default = value; } } // 0x7D (125)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

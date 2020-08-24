@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class VoiceOverPronunciation : 
 		DataContainer
 	{
 		protected string m_Name = string.Empty;
-		[ContainerField(8), LayoutImmutable, ContainerFieldNameHash(2088949890)]
+		[ContainerField(8), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(2088949890)]
 		public string Name { get { return m_Name; } set { if (OnPropertyChanging("VoiceOverPronunciation." + nameof(Name), this, m_Name, value)) m_Name = value; } } // 0x8 (8)
 		
 		protected CtrRef<AudioLanguage> m_PrimaryLanguage = new CtrRef<AudioLanguage>();
-		[ContainerField(12), ContainerFieldNameHash(2775606523)]
+		[ContainerField(12), MemberInfoFlag(53), ContainerFieldNameHash(2775606523), ContainerCtrRef]
 		public CtrRef<AudioLanguage> PrimaryLanguage { get { return m_PrimaryLanguage; } set { if (OnPropertyChanging("VoiceOverPronunciation." + nameof(PrimaryLanguage), this, m_PrimaryLanguage, value)) m_PrimaryLanguage = value; } } // 0xC (12)
 		
 		protected CtrRef<AudioLanguage> m_SecondaryLanguage = new CtrRef<AudioLanguage>();
-		[ContainerField(16), ContainerFieldNameHash(1020526989)]
+		[ContainerField(16), MemberInfoFlag(53), ContainerFieldNameHash(1020526989), ContainerCtrRef]
 		public CtrRef<AudioLanguage> SecondaryLanguage { get { return m_SecondaryLanguage; } set { if (OnPropertyChanging("VoiceOverPronunciation." + nameof(SecondaryLanguage), this, m_SecondaryLanguage, value)) m_SecondaryLanguage = value; } } // 0x10 (16)
 		
 		protected VoiceOverPronunciationFallback m_SecondaryFallback = new VoiceOverPronunciationFallback();
-		[ContainerField(20), ContainerFieldNameHash(694512435)]
+		[ContainerField(20), MemberInfoFlag(137), ContainerFieldNameHash(694512435)]
 		public VoiceOverPronunciationFallback SecondaryFallback { get { return m_SecondaryFallback; } set { if (OnPropertyChanging("VoiceOverPronunciation." + nameof(SecondaryFallback), this, m_SecondaryFallback, value)) m_SecondaryFallback = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

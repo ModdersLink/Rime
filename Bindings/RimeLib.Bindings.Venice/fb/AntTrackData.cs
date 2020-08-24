@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class AntTrackData : 
 		CustomSequenceTrackData
 	{
 		protected RefArray<AntTrackItemData> m_AntTrackItemDatas = new RefArray<AntTrackItemData>();
-		[ContainerField(40), ContainerFieldNameHash(3918294759)]
+		[ContainerField(40), MemberInfoFlag(65), ContainerFieldNameHash(3918294759), ContainerRefArray]
 		public RefArray<AntTrackItemData> AntTrackItemDatas { get { return m_AntTrackItemDatas; } set { if (OnPropertyChanging("AntTrackData." + nameof(AntTrackItemDatas), this, m_AntTrackItemDatas, value)) m_AntTrackItemDatas = value; } } // 0x28 (40)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class AnimatedTransformEntityData : 
 		EntityData
 	{
 		protected AntRef m_Animatable = new AntRef();
-		[ContainerField(12), ContainerFieldNameHash(3208693873)]
+		[ContainerField(12), MemberInfoFlag(41), ContainerFieldNameHash(3208693873)]
 		public AntRef Animatable { get { return m_Animatable; } set { if (OnPropertyChanging("AnimatedTransformEntityData." + nameof(Animatable), this, m_Animatable, value)) m_Animatable = value; } } // 0xC (12)
 		
 		protected float m_ExternalTime = new float();
-		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(2162678253)]
+		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2162678253)]
 		public float ExternalTime { get { return m_ExternalTime; } set { if (OnPropertyChanging("AnimatedTransformEntityData." + nameof(ExternalTime), this, m_ExternalTime, value)) m_ExternalTime = value; } } // 0x10 (16)
 		
 		protected AntRef m_Controller = new AntRef();
-		[ContainerField(20), ContainerFieldNameHash(1870777401)]
+		[ContainerField(20), MemberInfoFlag(41), ContainerFieldNameHash(1870777401)]
 		public AntRef Controller { get { return m_Controller; } set { if (OnPropertyChanging("AnimatedTransformEntityData." + nameof(Controller), this, m_Controller, value)) m_Controller = value; } } // 0x14 (20)
 		
 		protected string m_BoneName = string.Empty;
-		[ContainerField(24), LayoutImmutable, ContainerFieldNameHash(1590647844)]
+		[ContainerField(24), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(1590647844)]
 		public string BoneName { get { return m_BoneName; } set { if (OnPropertyChanging("AnimatedTransformEntityData." + nameof(BoneName), this, m_BoneName, value)) m_BoneName = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,43 +18,43 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(1)]
+	[ContainerType(1), MemberInfoFlag(41), ContainerStruct]
 	public class MatchmakingGameSettings : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, Blittable]
+		[ContainerField(0), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool OpenToBrowsing { get; set; } // 0x0 (0)
 		
-		[ContainerField(1), LayoutImmutable, Blittable]
+		[ContainerField(1), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool OpenToInvites { get; set; } // 0x1 (1)
 		
-		[ContainerField(2), LayoutImmutable, Blittable]
+		[ContainerField(2), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool OpenToMatchmaking { get; set; } // 0x2 (2)
 		
-		[ContainerField(3), LayoutImmutable, Blittable]
+		[ContainerField(3), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool OpenToJoinByPlayer { get; set; } // 0x3 (3)
 		
-		[ContainerField(4), LayoutImmutable, Blittable]
+		[ContainerField(4), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool HostMigratable { get; set; } // 0x4 (4)
 		
-		[ContainerField(5), LayoutImmutable, Blittable]
+		[ContainerField(5), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool Ranked { get; set; } // 0x5 (5)
 		
-		[ContainerField(6), LayoutImmutable, Blittable]
+		[ContainerField(6), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool AdminOnlyInvites { get; set; } // 0x6 (6)
 		
-		[ContainerField(7), LayoutImmutable, Blittable]
+		[ContainerField(7), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool EnforceSingleGroupJoin { get; set; } // 0x7 (7)
 		
-		[ContainerField(8), LayoutImmutable, Blittable]
+		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool JoinInProgressSupported { get; set; } // 0x8 (8)
 		
-		[ContainerField(9), LayoutImmutable, Blittable]
+		[ContainerField(9), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool AdminInvitesOnlyIgnoreEntryChecks { get; set; } // 0x9 (9)
 		
-		[ContainerField(10), LayoutImmutable, Blittable]
+		[ContainerField(10), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool EnablePersistedGameId { get; set; } // 0xA (10)
 		
-		[ContainerField(11), LayoutImmutable, Blittable]
+		[ContainerField(11), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool AllowSameTeamId { get; set; } // 0xB (11)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

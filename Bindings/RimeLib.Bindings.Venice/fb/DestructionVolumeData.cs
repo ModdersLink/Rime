@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class DestructionVolumeData : 
 		DataContainer
 	{
 		protected AxisAlignedBox m_BoundingBox = new AxisAlignedBox();
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(2648132290)]
+		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(2648132290)]
 		public AxisAlignedBox BoundingBox { get { return m_BoundingBox; } set { if (OnPropertyChanging("DestructionVolumeData." + nameof(BoundingBox), this, m_BoundingBox, value)) m_BoundingBox = value; } } // 0x10 (16)
 		
 		protected CtrRef<DestructionVolumeAsset> m_Asset = new CtrRef<DestructionVolumeAsset>();
-		[ContainerField(48), ContainerFieldNameHash(205976053)]
+		[ContainerField(48), MemberInfoFlag(53), ContainerFieldNameHash(205976053), ContainerCtrRef]
 		public CtrRef<DestructionVolumeAsset> Asset { get { return m_Asset; } set { if (OnPropertyChanging("DestructionVolumeData." + nameof(Asset), this, m_Asset, value)) m_Asset = value; } } // 0x30 (48)
 		
 		protected List<Vec4> m_Impacts = new List<Vec4>();
-		[ContainerField(52), ContainerFieldNameHash(1723826932)]
+		[ContainerField(52), MemberInfoFlag(65), ContainerFieldNameHash(1723826932), ContainerArray]
 		public List<Vec4> Impacts { get { return m_Impacts; } set { if (OnPropertyChanging("DestructionVolumeData." + nameof(Impacts), this, m_Impacts, value)) m_Impacts = value; } } // 0x34 (52)
 		
 		protected List<uint> m_PartToImpactIndices = new List<uint>();
-		[ContainerField(56), ContainerFieldNameHash(4119124564)]
+		[ContainerField(56), MemberInfoFlag(65), ContainerFieldNameHash(4119124564), ContainerArray]
 		public List<uint> PartToImpactIndices { get { return m_PartToImpactIndices; } set { if (OnPropertyChanging("DestructionVolumeData." + nameof(PartToImpactIndices), this, m_PartToImpactIndices, value)) m_PartToImpactIndices = value; } } // 0x38 (56)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

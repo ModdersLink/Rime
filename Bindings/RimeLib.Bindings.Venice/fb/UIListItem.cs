@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(41), ContainerStruct]
 	public class UIListItem : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable]
+		[ContainerField(0), LayoutImmutable, MemberInfoFlag(16509)]
 		public string Label { get; set; } // 0x0 (0)
 		
-		[ContainerField(4)]
+		[ContainerField(4), MemberInfoFlag(41)]
 		public UIDataSourceInfo IsEnabled { get; set; } = new UIDataSourceInfo(); // 0x4 (4)
 		
-		[ContainerField(20)]
+		[ContainerField(20), MemberInfoFlag(41)]
 		public UIDataSourceInfo IsVisible { get; set; } = new UIDataSourceInfo(); // 0x14 (20)
 		
-		[ContainerField(36)]
+		[ContainerField(36), MemberInfoFlag(41)]
 		public UIDataSourceInfo ToggleItems { get; set; } = new UIDataSourceInfo(); // 0x24 (36)
 		
-		[ContainerField(52)]
+		[ContainerField(52), MemberInfoFlag(41)]
 		public UIDataSourceInfo DataUpdate { get; set; } = new UIDataSourceInfo(); // 0x34 (52)
 		
-		[ContainerField(68), LayoutImmutable, Blittable]
+		[ContainerField(68), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool DefaultIsVisible { get; set; } // 0x44 (68)
 		
-		[ContainerField(69), LayoutImmutable, Blittable]
+		[ContainerField(69), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool DefaultIsEnabled { get; set; } // 0x45 (69)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

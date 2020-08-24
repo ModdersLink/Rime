@@ -18,56 +18,56 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class TicketCounterEntityData : 
 		GameEntityData
 	{
 		protected List<TicketCountPercentage> m_TicketPercentages = new List<TicketCountPercentage>();
-		[ContainerField(96), ContainerFieldNameHash(2204467466)]
+		[ContainerField(96), MemberInfoFlag(65), ContainerFieldNameHash(2204467466), ContainerArray]
 		public List<TicketCountPercentage> TicketPercentages { get { return m_TicketPercentages; } set { if (OnPropertyChanging("TicketCounterEntityData." + nameof(TicketPercentages), this, m_TicketPercentages, value)) m_TicketPercentages = value; } } // 0x60 (96)
 		
 		protected int m_TicketLossPerMin = new int();
-		[ContainerField(100), LayoutImmutable, Blittable, ContainerFieldNameHash(2113367375)]
+		[ContainerField(100), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(2113367375)]
 		public int TicketLossPerMin { get { return m_TicketLossPerMin; } set { if (OnPropertyChanging("TicketCounterEntityData." + nameof(TicketLossPerMin), this, m_TicketLossPerMin, value)) m_TicketLossPerMin = value; } } // 0x64 (100)
 		
 		protected TicketDecreaseType m_DecreaseTickets = new TicketDecreaseType();
-		[ContainerField(104), ContainerFieldNameHash(3370519728)]
+		[ContainerField(104), MemberInfoFlag(137), ContainerFieldNameHash(3370519728)]
 		public TicketDecreaseType DecreaseTickets { get { return m_DecreaseTickets; } set { if (OnPropertyChanging("TicketCounterEntityData." + nameof(DecreaseTickets), this, m_DecreaseTickets, value)) m_DecreaseTickets = value; } } // 0x68 (104)
 		
 		protected TeamId m_TeamId = new TeamId();
-		[ContainerField(108), ContainerFieldNameHash(3220374101)]
+		[ContainerField(108), MemberInfoFlag(137), ContainerFieldNameHash(3220374101)]
 		public TeamId TeamId { get { return m_TeamId; } set { if (OnPropertyChanging("TicketCounterEntityData." + nameof(TeamId), this, m_TeamId, value)) m_TeamId = value; } } // 0x6C (108)
 		
 		protected int m_TicketLossWhenLostAll = new int();
-		[ContainerField(112), LayoutImmutable, Blittable, ContainerFieldNameHash(664870867)]
+		[ContainerField(112), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(664870867)]
 		public int TicketLossWhenLostAll { get { return m_TicketLossWhenLostAll; } set { if (OnPropertyChanging("TicketCounterEntityData." + nameof(TicketLossWhenLostAll), this, m_TicketLossWhenLostAll, value)) m_TicketLossWhenLostAll = value; } } // 0x70 (112)
 		
 		protected int m_TicketLossWhenLostAllControlsPoint = new int();
-		[ContainerField(116), LayoutImmutable, Blittable, ContainerFieldNameHash(1341075147)]
+		[ContainerField(116), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(1341075147)]
 		public int TicketLossWhenLostAllControlsPoint { get { return m_TicketLossWhenLostAllControlsPoint; } set { if (OnPropertyChanging("TicketCounterEntityData." + nameof(TicketLossWhenLostAllControlsPoint), this, m_TicketLossWhenLostAllControlsPoint, value)) m_TicketLossWhenLostAllControlsPoint = value; } } // 0x74 (116)
 		
 		protected int m_InitialTicketCount = new int();
-		[ContainerField(120), LayoutImmutable, Blittable, ContainerFieldNameHash(264089340)]
+		[ContainerField(120), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(264089340)]
 		public int InitialTicketCount { get { return m_InitialTicketCount; } set { if (OnPropertyChanging("TicketCounterEntityData." + nameof(InitialTicketCount), this, m_InitialTicketCount, value)) m_InitialTicketCount = value; } } // 0x78 (120)
 		
 		protected int m_TicketLossStart = new int();
-		[ContainerField(124), LayoutImmutable, Blittable, ContainerFieldNameHash(3058094434)]
+		[ContainerField(124), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(3058094434)]
 		public int TicketLossStart { get { return m_TicketLossStart; } set { if (OnPropertyChanging("TicketCounterEntityData." + nameof(TicketLossStart), this, m_TicketLossStart, value)) m_TicketLossStart = value; } } // 0x7C (124)
 		
 		protected bool m_SetBestSquadSpawner = new bool();
-		[ContainerField(128), LayoutImmutable, Blittable, ContainerFieldNameHash(1050080153)]
+		[ContainerField(128), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1050080153)]
 		public bool SetBestSquadSpawner { get { return m_SetBestSquadSpawner; } set { if (OnPropertyChanging("TicketCounterEntityData." + nameof(SetBestSquadSpawner), this, m_SetBestSquadSpawner, value)) m_SetBestSquadSpawner = value; } } // 0x80 (128)
 		
 		protected bool m_HaltTicketLossOnEqualPointCount = new bool();
-		[ContainerField(129), LayoutImmutable, Blittable, ContainerFieldNameHash(2787909457)]
+		[ContainerField(129), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2787909457)]
 		public bool HaltTicketLossOnEqualPointCount { get { return m_HaltTicketLossOnEqualPointCount; } set { if (OnPropertyChanging("TicketCounterEntityData." + nameof(HaltTicketLossOnEqualPointCount), this, m_HaltTicketLossOnEqualPointCount, value)) m_HaltTicketLossOnEqualPointCount = value; } } // 0x81 (129)
 		
 		protected bool m_ResetCapturePointsOnReset = new bool();
-		[ContainerField(130), LayoutImmutable, Blittable, ContainerFieldNameHash(2592156447)]
+		[ContainerField(130), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2592156447)]
 		public bool ResetCapturePointsOnReset { get { return m_ResetCapturePointsOnReset; } set { if (OnPropertyChanging("TicketCounterEntityData." + nameof(ResetCapturePointsOnReset), this, m_ResetCapturePointsOnReset, value)) m_ResetCapturePointsOnReset = value; } } // 0x82 (130)
 		
 		protected bool m_SpawnAlwaysAllowed = new bool();
-		[ContainerField(131), LayoutImmutable, Blittable, ContainerFieldNameHash(1811462007)]
+		[ContainerField(131), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1811462007)]
 		public bool SpawnAlwaysAllowed { get { return m_SpawnAlwaysAllowed; } set { if (OnPropertyChanging("TicketCounterEntityData." + nameof(SpawnAlwaysAllowed), this, m_SpawnAlwaysAllowed, value)) m_SpawnAlwaysAllowed = value; } } // 0x83 (131)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class CollisionData : 
 		DataContainer
 	{
 		protected List<ValueAtX> m_DamageAtVerticalVelocity = new List<ValueAtX>();
-		[ContainerField(8), ContainerFieldNameHash(670681886)]
+		[ContainerField(8), MemberInfoFlag(65), ContainerFieldNameHash(670681886), ContainerArray]
 		public List<ValueAtX> DamageAtVerticalVelocity { get { return m_DamageAtVerticalVelocity; } set { if (OnPropertyChanging("CollisionData." + nameof(DamageAtVerticalVelocity), this, m_DamageAtVerticalVelocity, value)) m_DamageAtVerticalVelocity = value; } } // 0x8 (8)
 		
 		protected List<ValueAtX> m_DamageAtHorizVelocity = new List<ValueAtX>();
-		[ContainerField(12), ContainerFieldNameHash(3966259722)]
+		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(3966259722), ContainerArray]
 		public List<ValueAtX> DamageAtHorizVelocity { get { return m_DamageAtHorizVelocity; } set { if (OnPropertyChanging("CollisionData." + nameof(DamageAtHorizVelocity), this, m_DamageAtHorizVelocity, value)) m_DamageAtHorizVelocity = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

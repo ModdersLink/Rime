@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class RandomFloatEntityData : 
 		EntityData
 	{
 		protected Realm m_Realm = new Realm();
-		[ContainerField(12), ContainerFieldNameHash(229961746)]
+		[ContainerField(12), MemberInfoFlag(137), ContainerFieldNameHash(229961746)]
 		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("RandomFloatEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0xC (12)
 		
 		protected float m_Min = new float();
-		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(193446607)]
+		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(193446607)]
 		public float Min { get { return m_Min; } set { if (OnPropertyChanging("RandomFloatEntityData." + nameof(Min), this, m_Min, value)) m_Min = value; } } // 0x10 (16)
 		
 		protected float m_Max = new float();
-		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(193446865)]
+		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(193446865)]
 		public float Max { get { return m_Max; } set { if (OnPropertyChanging("RandomFloatEntityData." + nameof(Max), this, m_Max, value)) m_Max = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

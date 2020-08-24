@@ -18,172 +18,172 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class MultipleActorScenarioEntityData : 
 		SpatialEntityData
 	{
 		protected LinearTransform m_WorldSpaceConnectTransform = new LinearTransform();
-		[ContainerField(80), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(1100259089)]
+		[ContainerField(80), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(1100259089)]
 		public LinearTransform WorldSpaceConnectTransform { get { return m_WorldSpaceConnectTransform; } set { if (OnPropertyChanging("MultipleActorScenarioEntityData." + nameof(WorldSpaceConnectTransform), this, m_WorldSpaceConnectTransform, value)) m_WorldSpaceConnectTransform = value; } } // 0x50 (80)
 		
 		protected int m_Actor5Part = new int();
-		[ContainerField(144), LayoutImmutable, Blittable, ContainerFieldNameHash(4063426348)]
+		[ContainerField(144), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(4063426348)]
 		public int Actor5Part { get { return m_Actor5Part; } set { if (OnPropertyChanging("MultipleActorScenarioEntityData." + nameof(Actor5Part), this, m_Actor5Part, value)) m_Actor5Part = value; } } // 0x90 (144)
 		
 		protected AntRef m_ScenarioAntRef = new AntRef();
-		[ContainerField(148), ContainerFieldNameHash(3249359201)]
+		[ContainerField(148), MemberInfoFlag(41), ContainerFieldNameHash(3249359201)]
 		public AntRef ScenarioAntRef { get { return m_ScenarioAntRef; } set { if (OnPropertyChanging("MultipleActorScenarioEntityData." + nameof(ScenarioAntRef), this, m_ScenarioAntRef, value)) m_ScenarioAntRef = value; } } // 0x94 (148)
 		
 		protected int m_LevelChoice = new int();
-		[ContainerField(152), LayoutImmutable, Blittable, ContainerFieldNameHash(1514666168)]
+		[ContainerField(152), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(1514666168)]
 		public int LevelChoice { get { return m_LevelChoice; } set { if (OnPropertyChanging("MultipleActorScenarioEntityData." + nameof(LevelChoice), this, m_LevelChoice, value)) m_LevelChoice = value; } } // 0x98 (152)
 		
 		protected int m_ScenarioChoice = new int();
-		[ContainerField(156), LayoutImmutable, Blittable, ContainerFieldNameHash(3315992608)]
+		[ContainerField(156), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(3315992608)]
 		public int ScenarioChoice { get { return m_ScenarioChoice; } set { if (OnPropertyChanging("MultipleActorScenarioEntityData." + nameof(ScenarioChoice), this, m_ScenarioChoice, value)) m_ScenarioChoice = value; } } // 0x9C (156)
 		
 		protected Realm m_Realm = new Realm();
-		[ContainerField(160), ContainerFieldNameHash(229961746)]
+		[ContainerField(160), MemberInfoFlag(137), ContainerFieldNameHash(229961746)]
 		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("MultipleActorScenarioEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0xA0 (160)
 		
 		protected int m_Actor6Part = new int();
-		[ContainerField(164), LayoutImmutable, Blittable, ContainerFieldNameHash(4064329455)]
+		[ContainerField(164), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(4064329455)]
 		public int Actor6Part { get { return m_Actor6Part; } set { if (OnPropertyChanging("MultipleActorScenarioEntityData." + nameof(Actor6Part), this, m_Actor6Part, value)) m_Actor6Part = value; } } // 0xA4 (164)
 		
 		protected int m_Actor1 = new int();
-		[ContainerField(168), LayoutImmutable, Blittable, ContainerFieldNameHash(2484184607)]
+		[ContainerField(168), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(2484184607)]
 		public int Actor1 { get { return m_Actor1; } set { if (OnPropertyChanging("MultipleActorScenarioEntityData." + nameof(Actor1), this, m_Actor1, value)) m_Actor1 = value; } } // 0xA8 (168)
 		
 		protected int m_Actor1Part = new int();
-		[ContainerField(172), LayoutImmutable, Blittable, ContainerFieldNameHash(4068170024)]
+		[ContainerField(172), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(4068170024)]
 		public int Actor1Part { get { return m_Actor1Part; } set { if (OnPropertyChanging("MultipleActorScenarioEntityData." + nameof(Actor1Part), this, m_Actor1Part, value)) m_Actor1Part = value; } } // 0xAC (172)
 		
 		protected int m_Actor1SecondPart = new int();
-		[ContainerField(176), LayoutImmutable, Blittable, ContainerFieldNameHash(3245706712)]
+		[ContainerField(176), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(3245706712)]
 		public int Actor1SecondPart { get { return m_Actor1SecondPart; } set { if (OnPropertyChanging("MultipleActorScenarioEntityData." + nameof(Actor1SecondPart), this, m_Actor1SecondPart, value)) m_Actor1SecondPart = value; } } // 0xB0 (176)
 		
 		protected int m_Actor2 = new int();
-		[ContainerField(180), LayoutImmutable, Blittable, ContainerFieldNameHash(2484184604)]
+		[ContainerField(180), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(2484184604)]
 		public int Actor2 { get { return m_Actor2; } set { if (OnPropertyChanging("MultipleActorScenarioEntityData." + nameof(Actor2), this, m_Actor2, value)) m_Actor2 = value; } } // 0xB4 (180)
 		
 		protected int m_Actor2Part = new int();
-		[ContainerField(184), LayoutImmutable, Blittable, ContainerFieldNameHash(4069073131)]
+		[ContainerField(184), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(4069073131)]
 		public int Actor2Part { get { return m_Actor2Part; } set { if (OnPropertyChanging("MultipleActorScenarioEntityData." + nameof(Actor2Part), this, m_Actor2Part, value)) m_Actor2Part = value; } } // 0xB8 (184)
 		
 		protected int m_Actor2SecondPart = new int();
-		[ContainerField(188), LayoutImmutable, Blittable, ContainerFieldNameHash(1494016859)]
+		[ContainerField(188), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(1494016859)]
 		public int Actor2SecondPart { get { return m_Actor2SecondPart; } set { if (OnPropertyChanging("MultipleActorScenarioEntityData." + nameof(Actor2SecondPart), this, m_Actor2SecondPart, value)) m_Actor2SecondPart = value; } } // 0xBC (188)
 		
 		protected int m_Actor3 = new int();
-		[ContainerField(192), LayoutImmutable, Blittable, ContainerFieldNameHash(2484184605)]
+		[ContainerField(192), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(2484184605)]
 		public int Actor3 { get { return m_Actor3; } set { if (OnPropertyChanging("MultipleActorScenarioEntityData." + nameof(Actor3), this, m_Actor3, value)) m_Actor3 = value; } } // 0xC0 (192)
 		
 		protected int m_Actor3Part = new int();
-		[ContainerField(196), LayoutImmutable, Blittable, ContainerFieldNameHash(4070394026)]
+		[ContainerField(196), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(4070394026)]
 		public int Actor3Part { get { return m_Actor3Part; } set { if (OnPropertyChanging("MultipleActorScenarioEntityData." + nameof(Actor3Part), this, m_Actor3Part, value)) m_Actor3Part = value; } } // 0xC4 (196)
 		
 		protected int m_Actor3SecondPart = new int();
-		[ContainerField(200), LayoutImmutable, Blittable, ContainerFieldNameHash(2441148378)]
+		[ContainerField(200), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(2441148378)]
 		public int Actor3SecondPart { get { return m_Actor3SecondPart; } set { if (OnPropertyChanging("MultipleActorScenarioEntityData." + nameof(Actor3SecondPart), this, m_Actor3SecondPart, value)) m_Actor3SecondPart = value; } } // 0xC8 (200)
 		
 		protected int m_Actor4 = new int();
-		[ContainerField(204), LayoutImmutable, Blittable, ContainerFieldNameHash(2484184602)]
+		[ContainerField(204), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(2484184602)]
 		public int Actor4 { get { return m_Actor4; } set { if (OnPropertyChanging("MultipleActorScenarioEntityData." + nameof(Actor4), this, m_Actor4, value)) m_Actor4 = value; } } // 0xCC (204)
 		
 		protected int m_Actor4Part = new int();
-		[ContainerField(208), LayoutImmutable, Blittable, ContainerFieldNameHash(4062105453)]
+		[ContainerField(208), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(4062105453)]
 		public int Actor4Part { get { return m_Actor4Part; } set { if (OnPropertyChanging("MultipleActorScenarioEntityData." + nameof(Actor4Part), this, m_Actor4Part, value)) m_Actor4Part = value; } } // 0xD0 (208)
 		
 		protected int m_Actor4SecondPart = new int();
-		[ContainerField(212), LayoutImmutable, Blittable, ContainerFieldNameHash(3250112349)]
+		[ContainerField(212), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(3250112349)]
 		public int Actor4SecondPart { get { return m_Actor4SecondPart; } set { if (OnPropertyChanging("MultipleActorScenarioEntityData." + nameof(Actor4SecondPart), this, m_Actor4SecondPart, value)) m_Actor4SecondPart = value; } } // 0xD4 (212)
 		
 		protected int m_Actor5 = new int();
-		[ContainerField(216), LayoutImmutable, Blittable, ContainerFieldNameHash(2484184603)]
+		[ContainerField(216), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(2484184603)]
 		public int Actor5 { get { return m_Actor5; } set { if (OnPropertyChanging("MultipleActorScenarioEntityData." + nameof(Actor5), this, m_Actor5, value)) m_Actor5 = value; } } // 0xD8 (216)
 		
 		protected int m_Actor5SecondPart = new int();
-		[ContainerField(220), LayoutImmutable, Blittable, ContainerFieldNameHash(4197243868)]
+		[ContainerField(220), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(4197243868)]
 		public int Actor5SecondPart { get { return m_Actor5SecondPart; } set { if (OnPropertyChanging("MultipleActorScenarioEntityData." + nameof(Actor5SecondPart), this, m_Actor5SecondPart, value)) m_Actor5SecondPart = value; } } // 0xDC (220)
 		
 		protected int m_Actor6SecondPart = new int();
-		[ContainerField(224), LayoutImmutable, Blittable, ContainerFieldNameHash(2445554015)]
+		[ContainerField(224), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(2445554015)]
 		public int Actor6SecondPart { get { return m_Actor6SecondPart; } set { if (OnPropertyChanging("MultipleActorScenarioEntityData." + nameof(Actor6SecondPart), this, m_Actor6SecondPart, value)) m_Actor6SecondPart = value; } } // 0xE0 (224)
 		
 		protected int m_Actor6 = new int();
-		[ContainerField(228), LayoutImmutable, Blittable, ContainerFieldNameHash(2484184600)]
+		[ContainerField(228), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(2484184600)]
 		public int Actor6 { get { return m_Actor6; } set { if (OnPropertyChanging("MultipleActorScenarioEntityData." + nameof(Actor6), this, m_Actor6, value)) m_Actor6 = value; } } // 0xE4 (228)
 		
 		protected float m_ExternalTime = new float();
-		[ContainerField(232), LayoutImmutable, Blittable, ContainerFieldNameHash(2162678253)]
+		[ContainerField(232), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2162678253)]
 		public float ExternalTime { get { return m_ExternalTime; } set { if (OnPropertyChanging("MultipleActorScenarioEntityData." + nameof(ExternalTime), this, m_ExternalTime, value)) m_ExternalTime = value; } } // 0xE8 (232)
 		
 		protected bool m_AligningEnabled = new bool();
-		[ContainerField(236), LayoutImmutable, Blittable, ContainerFieldNameHash(1454127501)]
+		[ContainerField(236), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1454127501)]
 		public bool AligningEnabled { get { return m_AligningEnabled; } set { if (OnPropertyChanging("MultipleActorScenarioEntityData." + nameof(AligningEnabled), this, m_AligningEnabled, value)) m_AligningEnabled = value; } } // 0xEC (236)
 		
 		protected bool m_ScenarioActive = new bool();
-		[ContainerField(237), LayoutImmutable, Blittable, ContainerFieldNameHash(3253317991)]
+		[ContainerField(237), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3253317991)]
 		public bool ScenarioActive { get { return m_ScenarioActive; } set { if (OnPropertyChanging("MultipleActorScenarioEntityData." + nameof(ScenarioActive), this, m_ScenarioActive, value)) m_ScenarioActive = value; } } // 0xED (237)
 		
 		protected bool m_Actor1Prepared = new bool();
-		[ContainerField(238), LayoutImmutable, Blittable, ContainerFieldNameHash(3975066650)]
+		[ContainerField(238), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3975066650)]
 		public bool Actor1Prepared { get { return m_Actor1Prepared; } set { if (OnPropertyChanging("MultipleActorScenarioEntityData." + nameof(Actor1Prepared), this, m_Actor1Prepared, value)) m_Actor1Prepared = value; } } // 0xEE (238)
 		
 		protected bool m_Actor2Prepared = new bool();
-		[ContainerField(239), LayoutImmutable, Blittable, ContainerFieldNameHash(2878190105)]
+		[ContainerField(239), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2878190105)]
 		public bool Actor2Prepared { get { return m_Actor2Prepared; } set { if (OnPropertyChanging("MultipleActorScenarioEntityData." + nameof(Actor2Prepared), this, m_Actor2Prepared, value)) m_Actor2Prepared = value; } } // 0xEF (239)
 		
 		protected bool m_Actor3Prepared = new bool();
-		[ContainerField(240), LayoutImmutable, Blittable, ContainerFieldNameHash(770618392)]
+		[ContainerField(240), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(770618392)]
 		public bool Actor3Prepared { get { return m_Actor3Prepared; } set { if (OnPropertyChanging("MultipleActorScenarioEntityData." + nameof(Actor3Prepared), this, m_Actor3Prepared, value)) m_Actor3Prepared = value; } } // 0xF0 (240)
 		
 		protected bool m_Actor4Prepared = new bool();
-		[ContainerField(241), LayoutImmutable, Blittable, ContainerFieldNameHash(2873438751)]
+		[ContainerField(241), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2873438751)]
 		public bool Actor4Prepared { get { return m_Actor4Prepared; } set { if (OnPropertyChanging("MultipleActorScenarioEntityData." + nameof(Actor4Prepared), this, m_Actor4Prepared, value)) m_Actor4Prepared = value; } } // 0xF1 (241)
 		
 		protected bool m_Actor5Prepared = new bool();
-		[ContainerField(242), LayoutImmutable, Blittable, ContainerFieldNameHash(765867038)]
+		[ContainerField(242), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(765867038)]
 		public bool Actor5Prepared { get { return m_Actor5Prepared; } set { if (OnPropertyChanging("MultipleActorScenarioEntityData." + nameof(Actor5Prepared), this, m_Actor5Prepared, value)) m_Actor5Prepared = value; } } // 0xF2 (242)
 		
 		protected bool m_Actor6Prepared = new bool();
-		[ContainerField(243), LayoutImmutable, Blittable, ContainerFieldNameHash(3963957789)]
+		[ContainerField(243), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3963957789)]
 		public bool Actor6Prepared { get { return m_Actor6Prepared; } set { if (OnPropertyChanging("MultipleActorScenarioEntityData." + nameof(Actor6Prepared), this, m_Actor6Prepared, value)) m_Actor6Prepared = value; } } // 0xF3 (243)
 		
 		protected bool m_CheckActor1Finished = new bool();
-		[ContainerField(244), LayoutImmutable, Blittable, ContainerFieldNameHash(2061362539)]
+		[ContainerField(244), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2061362539)]
 		public bool CheckActor1Finished { get { return m_CheckActor1Finished; } set { if (OnPropertyChanging("MultipleActorScenarioEntityData." + nameof(CheckActor1Finished), this, m_CheckActor1Finished, value)) m_CheckActor1Finished = value; } } // 0xF4 (244)
 		
 		protected bool m_CheckActor2Finished = new bool();
-		[ContainerField(245), LayoutImmutable, Blittable, ContainerFieldNameHash(4180155688)]
+		[ContainerField(245), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(4180155688)]
 		public bool CheckActor2Finished { get { return m_CheckActor2Finished; } set { if (OnPropertyChanging("MultipleActorScenarioEntityData." + nameof(CheckActor2Finished), this, m_CheckActor2Finished, value)) m_CheckActor2Finished = value; } } // 0xF5 (245)
 		
 		protected bool m_CheckActor3Finished = new bool();
-		[ContainerField(246), LayoutImmutable, Blittable, ContainerFieldNameHash(2998814185)]
+		[ContainerField(246), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2998814185)]
 		public bool CheckActor3Finished { get { return m_CheckActor3Finished; } set { if (OnPropertyChanging("MultipleActorScenarioEntityData." + nameof(CheckActor3Finished), this, m_CheckActor3Finished, value)) m_CheckActor3Finished = value; } } // 0xF6 (246)
 		
 		protected bool m_CheckActor4Finished = new bool();
-		[ContainerField(247), LayoutImmutable, Blittable, ContainerFieldNameHash(1137974702)]
+		[ContainerField(247), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1137974702)]
 		public bool CheckActor4Finished { get { return m_CheckActor4Finished; } set { if (OnPropertyChanging("MultipleActorScenarioEntityData." + nameof(CheckActor4Finished), this, m_CheckActor4Finished, value)) m_CheckActor4Finished = value; } } // 0xF7 (247)
 		
 		protected bool m_CheckActor5Finished = new bool();
-		[ContainerField(248), LayoutImmutable, Blittable, ContainerFieldNameHash(4251600495)]
+		[ContainerField(248), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(4251600495)]
 		public bool CheckActor5Finished { get { return m_CheckActor5Finished; } set { if (OnPropertyChanging("MultipleActorScenarioEntityData." + nameof(CheckActor5Finished), this, m_CheckActor5Finished, value)) m_CheckActor5Finished = value; } } // 0xF8 (248)
 		
 		protected bool m_CheckActor6Finished = new bool();
-		[ContainerField(249), LayoutImmutable, Blittable, ContainerFieldNameHash(2075426348)]
+		[ContainerField(249), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2075426348)]
 		public bool CheckActor6Finished { get { return m_CheckActor6Finished; } set { if (OnPropertyChanging("MultipleActorScenarioEntityData." + nameof(CheckActor6Finished), this, m_CheckActor6Finished, value)) m_CheckActor6Finished = value; } } // 0xF9 (249)
 		
 		protected bool m_UseInputEventPlayerAsPlayer1 = new bool();
-		[ContainerField(250), LayoutImmutable, Blittable, ContainerFieldNameHash(2839224479)]
+		[ContainerField(250), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2839224479)]
 		public bool UseInputEventPlayerAsPlayer1 { get { return m_UseInputEventPlayerAsPlayer1; } set { if (OnPropertyChanging("MultipleActorScenarioEntityData." + nameof(UseInputEventPlayerAsPlayer1), this, m_UseInputEventPlayerAsPlayer1, value)) m_UseInputEventPlayerAsPlayer1 = value; } } // 0xFA (250)
 		
 		protected bool m_UseExternalTime = new bool();
-		[ContainerField(251), LayoutImmutable, Blittable, ContainerFieldNameHash(2902061742)]
+		[ContainerField(251), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2902061742)]
 		public bool UseExternalTime { get { return m_UseExternalTime; } set { if (OnPropertyChanging("MultipleActorScenarioEntityData." + nameof(UseExternalTime), this, m_UseExternalTime, value)) m_UseExternalTime = value; } } // 0xFB (251)
 		
 		protected bool m_WorldSpace = new bool();
-		[ContainerField(252), LayoutImmutable, Blittable, ContainerFieldNameHash(632957315)]
+		[ContainerField(252), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(632957315)]
 		public bool WorldSpace { get { return m_WorldSpace; } set { if (OnPropertyChanging("MultipleActorScenarioEntityData." + nameof(WorldSpace), this, m_WorldSpace, value)) m_WorldSpace = value; } } // 0xFC (252)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,10 +18,10 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(41), ContainerStruct]
 	public class CoverSlot : FrostbiteContainer
 	{
-		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable]
+		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
 		public Vec3 Position { get; set; } = new Vec3(); // 0x0 (0)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,32 +18,32 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class DataIncrementNode : 
 		UINodeData
 	{
 		protected CtrRef<UINodePort> m_In = new CtrRef<UINodePort>();
-		[ContainerField(20), ContainerFieldNameHash(5862146)]
+		[ContainerField(20), MemberInfoFlag(53), ContainerFieldNameHash(5862146), ContainerCtrRef]
 		public CtrRef<UINodePort> In { get { return m_In; } set { if (OnPropertyChanging("DataIncrementNode." + nameof(In), this, m_In, value)) m_In = value; } } // 0x14 (20)
 		
 		protected CtrRef<UINodePort> m_Out = new CtrRef<UINodePort>();
-		[ContainerField(24), ContainerFieldNameHash(193453899)]
+		[ContainerField(24), MemberInfoFlag(53), ContainerFieldNameHash(193453899), ContainerCtrRef]
 		public CtrRef<UINodePort> Out { get { return m_Out; } set { if (OnPropertyChanging("DataIncrementNode." + nameof(Out), this, m_Out, value)) m_Out = value; } } // 0x18 (24)
 		
 		protected float m_Max = new float();
-		[ContainerField(28), LayoutImmutable, Blittable, ContainerFieldNameHash(193446865)]
+		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(193446865)]
 		public float Max { get { return m_Max; } set { if (OnPropertyChanging("DataIncrementNode." + nameof(Max), this, m_Max, value)) m_Max = value; } } // 0x1C (28)
 		
 		protected float m_Min = new float();
-		[ContainerField(32), LayoutImmutable, Blittable, ContainerFieldNameHash(193446607)]
+		[ContainerField(32), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(193446607)]
 		public float Min { get { return m_Min; } set { if (OnPropertyChanging("DataIncrementNode." + nameof(Min), this, m_Min, value)) m_Min = value; } } // 0x20 (32)
 		
 		protected float m_IncrementSize = new float();
-		[ContainerField(36), LayoutImmutable, Blittable, ContainerFieldNameHash(834119169)]
+		[ContainerField(36), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(834119169)]
 		public float IncrementSize { get { return m_IncrementSize; } set { if (OnPropertyChanging("DataIncrementNode." + nameof(IncrementSize), this, m_IncrementSize, value)) m_IncrementSize = value; } } // 0x24 (36)
 		
 		protected UIDataSourceInfo m_DataSource = new UIDataSourceInfo();
-		[ContainerField(40), ContainerFieldNameHash(3810860200)]
+		[ContainerField(40), MemberInfoFlag(41), ContainerFieldNameHash(3810860200)]
 		public UIDataSourceInfo DataSource { get { return m_DataSource; } set { if (OnPropertyChanging("DataIncrementNode." + nameof(DataSource), this, m_DataSource, value)) m_DataSource = value; } } // 0x28 (40)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,32 +18,32 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class EffectComponentData : 
 		ComponentData
 	{
 		protected CtrRef<EffectBlueprint> m_Effect = new CtrRef<EffectBlueprint>();
-		[ContainerField(96), ContainerFieldNameHash(2332983090)]
+		[ContainerField(96), MemberInfoFlag(53), ContainerFieldNameHash(2332983090), ContainerCtrRef]
 		public CtrRef<EffectBlueprint> Effect { get { return m_Effect; } set { if (OnPropertyChanging("EffectComponentData." + nameof(Effect), this, m_Effect, value)) m_Effect = value; } } // 0x60 (96)
 		
 		protected float m_EmitterParameter1 = new float();
-		[ContainerField(100), LayoutImmutable, Blittable, ContainerFieldNameHash(3454545451)]
+		[ContainerField(100), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3454545451)]
 		public float EmitterParameter1 { get { return m_EmitterParameter1; } set { if (OnPropertyChanging("EffectComponentData." + nameof(EmitterParameter1), this, m_EmitterParameter1, value)) m_EmitterParameter1 = value; } } // 0x64 (100)
 		
 		protected float m_EmitterParameter3 = new float();
-		[ContainerField(104), LayoutImmutable, Blittable, ContainerFieldNameHash(3454545449)]
+		[ContainerField(104), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3454545449)]
 		public float EmitterParameter3 { get { return m_EmitterParameter3; } set { if (OnPropertyChanging("EffectComponentData." + nameof(EmitterParameter3), this, m_EmitterParameter3, value)) m_EmitterParameter3 = value; } } // 0x68 (104)
 		
 		protected float m_EmitterParameter2 = new float();
-		[ContainerField(108), LayoutImmutable, Blittable, ContainerFieldNameHash(3454545448)]
+		[ContainerField(108), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3454545448)]
 		public float EmitterParameter2 { get { return m_EmitterParameter2; } set { if (OnPropertyChanging("EffectComponentData." + nameof(EmitterParameter2), this, m_EmitterParameter2, value)) m_EmitterParameter2 = value; } } // 0x6C (108)
 		
 		protected bool m_AutoStart = new bool();
-		[ContainerField(112), LayoutImmutable, Blittable, ContainerFieldNameHash(792615882)]
+		[ContainerField(112), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(792615882)]
 		public bool AutoStart { get { return m_AutoStart; } set { if (OnPropertyChanging("EffectComponentData." + nameof(AutoStart), this, m_AutoStart, value)) m_AutoStart = value; } } // 0x70 (112)
 		
 		protected bool m_SnapToWaterSurface = new bool();
-		[ContainerField(113), LayoutImmutable, Blittable, ContainerFieldNameHash(2958537010)]
+		[ContainerField(113), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2958537010)]
 		public bool SnapToWaterSurface { get { return m_SnapToWaterSurface; } set { if (OnPropertyChanging("EffectComponentData." + nameof(SnapToWaterSurface), this, m_SnapToWaterSurface, value)) m_SnapToWaterSurface = value; } } // 0x71 (113)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

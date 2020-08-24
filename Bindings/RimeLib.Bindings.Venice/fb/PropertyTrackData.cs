@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class PropertyTrackData : 
 		DataContainer
 	{
 		protected int m_Id = new int();
-		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(5862152)]
+		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(5862152)]
 		public int Id { get { return m_Id; } set { if (OnPropertyChanging("PropertyTrackData." + nameof(Id), this, m_Id, value)) m_Id = value; } } // 0x8 (8)
 		
 		protected List<int> m_Times = new List<int>();
-		[ContainerField(12), ContainerFieldNameHash(227876771)]
+		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(227876771), ContainerArray]
 		public List<int> Times { get { return m_Times; } set { if (OnPropertyChanging("PropertyTrackData." + nameof(Times), this, m_Times, value)) m_Times = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

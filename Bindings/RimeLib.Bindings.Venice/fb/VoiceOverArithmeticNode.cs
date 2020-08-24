@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class VoiceOverArithmeticNode : 
 		VoiceOverExpressionNode
 	{
 		protected CtrRef<VoiceOverValueConnection> m_A = new CtrRef<VoiceOverValueConnection>();
-		[ContainerField(8), ContainerFieldNameHash(177636)]
+		[ContainerField(8), MemberInfoFlag(53), ContainerFieldNameHash(177636), ContainerCtrRef]
 		public CtrRef<VoiceOverValueConnection> A { get { return m_A; } set { if (OnPropertyChanging("VoiceOverArithmeticNode." + nameof(A), this, m_A, value)) m_A = value; } } // 0x8 (8)
 		
 		protected CtrRef<VoiceOverValueConnection> m_B = new CtrRef<VoiceOverValueConnection>();
-		[ContainerField(12), ContainerFieldNameHash(177639)]
+		[ContainerField(12), MemberInfoFlag(53), ContainerFieldNameHash(177639), ContainerCtrRef]
 		public CtrRef<VoiceOverValueConnection> B { get { return m_B; } set { if (OnPropertyChanging("VoiceOverArithmeticNode." + nameof(B), this, m_B, value)) m_B = value; } } // 0xC (12)
 		
 		protected CtrRef<VoiceOverValue> m_Result = new CtrRef<VoiceOverValue>();
-		[ContainerField(16), ContainerFieldNameHash(3293273164)]
+		[ContainerField(16), MemberInfoFlag(53), ContainerFieldNameHash(3293273164), ContainerCtrRef]
 		public CtrRef<VoiceOverValue> Result { get { return m_Result; } set { if (OnPropertyChanging("VoiceOverArithmeticNode." + nameof(Result), this, m_Result, value)) m_Result = value; } } // 0x10 (16)
 		
 		protected VoiceOverArithmeticExpressionType m_Operation = new VoiceOverArithmeticExpressionType();
-		[ContainerField(20), ContainerFieldNameHash(2346271248)]
+		[ContainerField(20), MemberInfoFlag(137), ContainerFieldNameHash(2346271248)]
 		public VoiceOverArithmeticExpressionType Operation { get { return m_Operation; } set { if (OnPropertyChanging("VoiceOverArithmeticNode." + nameof(Operation), this, m_Operation, value)) m_Operation = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

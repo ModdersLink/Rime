@@ -18,61 +18,61 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(41), ContainerStruct]
 	public class ShotConfigData : FrostbiteContainer
 	{
-		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable]
+		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
 		public Vec3 InitialPosition { get; set; } = new Vec3(); // 0x0 (0)
 		
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable]
+		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
 		public Vec3 InitialDirection { get; set; } = new Vec3(); // 0x10 (16)
 		
-		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable]
+		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
 		public Vec3 InitialSpeed { get; set; } = new Vec3(); // 0x20 (32)
 		
-		[ContainerField(48), LayoutImmutable, Blittable]
+		[ContainerField(48), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float InheritWeaponSpeedAmount { get; set; } // 0x30 (48)
 		
-		[ContainerField(52)]
+		[ContainerField(52), MemberInfoFlag(53), ContainerCtrRef]
 		public CtrRef<ExplosionEntityData> MuzzleExplosion { get; set; } = new CtrRef<ExplosionEntityData>(); // 0x34 (52)
 		
-		[ContainerField(56)]
+		[ContainerField(56), MemberInfoFlag(53), ContainerCtrRef]
 		public CtrRef<ProjectileEntityData> ProjectileData { get; set; } = new CtrRef<ProjectileEntityData>(); // 0x38 (56)
 		
-		[ContainerField(60)]
+		[ContainerField(60), MemberInfoFlag(53), ContainerCtrRef]
 		public CtrRef<ProjectileEntityData> SecondaryProjectileData { get; set; } = new CtrRef<ProjectileEntityData>(); // 0x3C (60)
 		
-		[ContainerField(64)]
+		[ContainerField(64), MemberInfoFlag(53), ContainerCtrRef]
 		public CtrRef<ProjectileBlueprint> Projectile { get; set; } = new CtrRef<ProjectileBlueprint>(); // 0x40 (64)
 		
-		[ContainerField(68)]
+		[ContainerField(68), MemberInfoFlag(53), ContainerCtrRef]
 		public CtrRef<ProjectileBlueprint> SecondaryProjectile { get; set; } = new CtrRef<ProjectileBlueprint>(); // 0x44 (68)
 		
-		[ContainerField(72)]
+		[ContainerField(72), MemberInfoFlag(65), ContainerArray]
 		public List<UnlockableProjectile> AlternateProjectiles { get; set; } = new List<UnlockableProjectile>(); // 0x48 (72)
 		
-		[ContainerField(76), LayoutImmutable, Blittable]
+		[ContainerField(76), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float SpawnDelay { get; set; } // 0x4C (76)
 		
-		[ContainerField(80), LayoutImmutable, Blittable]
+		[ContainerField(80), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
 		public uint NumberOfBulletsPerShell { get; set; } // 0x50 (80)
 		
-		[ContainerField(84), LayoutImmutable, Blittable]
+		[ContainerField(84), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
 		public uint NumberOfBulletsPerShot { get; set; } // 0x54 (84)
 		
-		[ContainerField(88), LayoutImmutable, Blittable]
+		[ContainerField(88), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
 		public uint NumberOfBulletsPerBurst { get; set; } // 0x58 (88)
 		
-		[ContainerField(92), LayoutImmutable, Blittable]
+		[ContainerField(92), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool RelativeTargetAiming { get; set; } // 0x5C (92)
 		
-		[ContainerField(93), LayoutImmutable, Blittable]
+		[ContainerField(93), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool ForceSpawnToCamera { get; set; } // 0x5D (93)
 		
-		[ContainerField(94), LayoutImmutable, Blittable]
+		[ContainerField(94), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool SpawnVisualAtWeaponBone { get; set; } // 0x5E (94)
 		
-		[ContainerField(95), LayoutImmutable, Blittable]
+		[ContainerField(95), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool ActiveForceSpawnToCamera { get; set; } // 0x5F (95)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

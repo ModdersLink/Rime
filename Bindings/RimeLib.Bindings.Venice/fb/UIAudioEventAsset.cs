@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class UIAudioEventAsset : 
 		Asset
 	{
 		protected List<UIAudioEventMapping> m_AudioEventMappings = new List<UIAudioEventMapping>();
-		[ContainerField(12), ContainerFieldNameHash(3437982272)]
+		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(3437982272), ContainerArray]
 		public List<UIAudioEventMapping> AudioEventMappings { get { return m_AudioEventMappings; } set { if (OnPropertyChanging("UIAudioEventAsset." + nameof(AudioEventMappings), this, m_AudioEventMappings, value)) m_AudioEventMappings = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

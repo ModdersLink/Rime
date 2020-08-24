@@ -18,22 +18,22 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(41), ContainerStruct]
 	public class EntryComponentHudData : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, Blittable]
+		[ContainerField(0), LayoutImmutable, Blittable, MemberInfoFlag(49405)]
 		public int Index { get; set; } // 0x0 (0)
 		
-		[ContainerField(4)]
+		[ContainerField(4), MemberInfoFlag(137)]
 		public EntrySeatType SeatType { get; set; } = new EntrySeatType(); // 0x4 (4)
 		
-		[ContainerField(8), LayoutImmutable, Blittable]
+		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool Frustum { get; set; } // 0x8 (8)
 		
-		[ContainerField(9), LayoutImmutable, Blittable]
+		[ContainerField(9), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool Visible { get; set; } // 0x9 (9)
 		
-		[ContainerField(10), LayoutImmutable, Blittable]
+		[ContainerField(10), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool MaximizeMiniMapOnEntry { get; set; } // 0xA (10)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

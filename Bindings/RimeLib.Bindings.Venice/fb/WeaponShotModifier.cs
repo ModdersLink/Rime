@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class WeaponShotModifier : 
 		WeaponModifierBase
 	{
 		protected Vec3 m_InitialSpeed = new Vec3();
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(3681055580)]
+		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(3681055580)]
 		public Vec3 InitialSpeed { get { return m_InitialSpeed; } set { if (OnPropertyChanging("WeaponShotModifier." + nameof(InitialSpeed), this, m_InitialSpeed, value)) m_InitialSpeed = value; } } // 0x10 (16)
 		
 		protected int m_NumberOfBulletsPerShell = new int();
-		[ContainerField(32), LayoutImmutable, Blittable, ContainerFieldNameHash(464437027)]
+		[ContainerField(32), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(464437027)]
 		public int NumberOfBulletsPerShell { get { return m_NumberOfBulletsPerShell; } set { if (OnPropertyChanging("WeaponShotModifier." + nameof(NumberOfBulletsPerShell), this, m_NumberOfBulletsPerShell, value)) m_NumberOfBulletsPerShell = value; } } // 0x20 (32)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

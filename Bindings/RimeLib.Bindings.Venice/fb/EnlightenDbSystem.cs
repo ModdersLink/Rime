@@ -18,55 +18,55 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(41), ContainerStruct]
 	public class EnlightenDbSystem : FrostbiteContainer
 	{
-		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable]
+		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
 		public AxisAlignedBox BoundingBox { get; set; } = new AxisAlignedBox(); // 0x0 (0)
 		
-		[ContainerField(32), LayoutImmutable, Blittable]
+		[ContainerField(32), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
 		public uint AtlasStartX { get; set; } // 0x20 (32)
 		
-		[ContainerField(36), LayoutImmutable, Blittable]
+		[ContainerField(36), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
 		public uint AtlasStartY { get; set; } // 0x24 (36)
 		
-		[ContainerField(40), LayoutImmutable, Blittable]
+		[ContainerField(40), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
 		public uint OutputWidth { get; set; } // 0x28 (40)
 		
-		[ContainerField(44), LayoutImmutable, Blittable]
+		[ContainerField(44), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
 		public uint OutputHeight { get; set; } // 0x2C (44)
 		
-		[ContainerField(48), LayoutImmutable, Blittable]
+		[ContainerField(48), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
 		public uint PixelCount { get; set; } // 0x30 (48)
 		
-		[ContainerField(52), LayoutImmutable, Blittable]
+		[ContainerField(52), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float PixelSize { get; set; } // 0x34 (52)
 		
-		[ContainerField(56), LayoutImmutable, Blittable]
+		[ContainerField(56), LayoutImmutable, Blittable, MemberInfoFlag(49405)]
 		public int SystemId { get; set; } // 0x38 (56)
 		
-		[ContainerField(60)]
+		[ContainerField(60), MemberInfoFlag(65), ContainerArray]
 		public List<EnlightenDbInstance> Instances { get; set; } = new List<EnlightenDbInstance>(); // 0x3C (60)
 		
-		[ContainerField(64)]
+		[ContainerField(64), MemberInfoFlag(65), ContainerArray]
 		public List<int> InputSystems { get; set; } = new List<int>(); // 0x40 (64)
 		
-		[ContainerField(68)]
+		[ContainerField(68), MemberInfoFlag(41)]
 		public PrecomputeCache SystemCache { get; set; } = new PrecomputeCache(); // 0x44 (68)
 		
-		[ContainerField(92)]
+		[ContainerField(92), MemberInfoFlag(41)]
 		public PrecomputeCache ClusteringCache { get; set; } = new PrecomputeCache(); // 0x5C (92)
 		
-		[ContainerField(116)]
+		[ContainerField(116), MemberInfoFlag(41)]
 		public PrecomputeCache PreClusteringCache { get; set; } = new PrecomputeCache(); // 0x74 (116)
 		
-		[ContainerField(140)]
+		[ContainerField(140), MemberInfoFlag(41)]
 		public PrecomputeCache LightTransportCache { get; set; } = new PrecomputeCache(); // 0x8C (140)
 		
-		[ContainerField(164)]
+		[ContainerField(164), MemberInfoFlag(41)]
 		public PrecomputeCache VisibilityCache { get; set; } = new PrecomputeCache(); // 0xA4 (164)
 		
-		[ContainerField(188), LayoutImmutable, Blittable]
+		[ContainerField(188), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool TerrainSystem { get; set; } // 0xBC (188)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

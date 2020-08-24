@@ -18,32 +18,32 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class EntitlementQuery : 
 		Asset
 	{
 		protected List<EntitlementData> m_EntitlementsData = new List<EntitlementData>();
-		[ContainerField(12), ContainerFieldNameHash(2421825855)]
+		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(2421825855), ContainerArray]
 		public List<EntitlementData> EntitlementsData { get { return m_EntitlementsData; } set { if (OnPropertyChanging("EntitlementQuery." + nameof(EntitlementsData), this, m_EntitlementsData, value)) m_EntitlementsData = value; } } // 0xC (12)
 		
 		protected List<string> m_GroupNames = new List<string>();
-		[ContainerField(16), ContainerFieldNameHash(1803493518)]
+		[ContainerField(16), MemberInfoFlag(65), ContainerFieldNameHash(1803493518), ContainerArray]
 		public List<string> GroupNames { get { return m_GroupNames; } set { if (OnPropertyChanging("EntitlementQuery." + nameof(GroupNames), this, m_GroupNames, value)) m_GroupNames = value; } } // 0x10 (16)
 		
 		protected GamePlatform m_Platform = new GamePlatform();
-		[ContainerField(20), ContainerFieldNameHash(942751002)]
+		[ContainerField(20), MemberInfoFlag(137), ContainerFieldNameHash(942751002)]
 		public GamePlatform Platform { get { return m_Platform; } set { if (OnPropertyChanging("EntitlementQuery." + nameof(Platform), this, m_Platform, value)) m_Platform = value; } } // 0x14 (20)
 		
 		protected string m_EntitlementTag = string.Empty;
-		[ContainerField(24), LayoutImmutable, ContainerFieldNameHash(1654763342)]
+		[ContainerField(24), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(1654763342)]
 		public string EntitlementTag { get { return m_EntitlementTag; } set { if (OnPropertyChanging("EntitlementQuery." + nameof(EntitlementTag), this, m_EntitlementTag, value)) m_EntitlementTag = value; } } // 0x18 (24)
 		
 		protected string m_ProductId = string.Empty;
-		[ContainerField(28), LayoutImmutable, ContainerFieldNameHash(106414083)]
+		[ContainerField(28), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(106414083)]
 		public string ProductId { get { return m_ProductId; } set { if (OnPropertyChanging("EntitlementQuery." + nameof(ProductId), this, m_ProductId, value)) m_ProductId = value; } } // 0x1C (28)
 		
 		protected string m_ProjectId = string.Empty;
-		[ContainerField(32), LayoutImmutable, ContainerFieldNameHash(4152360413)]
+		[ContainerField(32), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(4152360413)]
 		public string ProjectId { get { return m_ProjectId; } set { if (OnPropertyChanging("EntitlementQuery." + nameof(ProjectId), this, m_ProjectId, value)) m_ProjectId = value; } } // 0x20 (32)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

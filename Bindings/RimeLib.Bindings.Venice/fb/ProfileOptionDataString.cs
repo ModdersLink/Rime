@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class ProfileOptionDataString : 
 		ProfileOptionData
 	{
 		protected int m_MaxLength = new int();
-		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(1300353773)]
+		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(1300353773)]
 		public int MaxLength { get { return m_MaxLength; } set { if (OnPropertyChanging("ProfileOptionDataString." + nameof(MaxLength), this, m_MaxLength, value)) m_MaxLength = value; } } // 0x14 (20)
 		
 		protected string m_Value = string.Empty;
-		[ContainerField(24), LayoutImmutable, ContainerFieldNameHash(225375086)]
+		[ContainerField(24), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(225375086)]
 		public string Value { get { return m_Value; } set { if (OnPropertyChanging("ProfileOptionDataString." + nameof(Value), this, m_Value, value)) m_Value = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

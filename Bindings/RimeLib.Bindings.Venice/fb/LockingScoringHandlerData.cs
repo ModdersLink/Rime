@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class LockingScoringHandlerData : 
 		ScoringHandlerData
 	{
 		protected float m_HotVehicleTimeout = new float();
-		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(1202160117)]
+		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1202160117)]
 		public float HotVehicleTimeout { get { return m_HotVehicleTimeout; } set { if (OnPropertyChanging("LockingScoringHandlerData." + nameof(HotVehicleTimeout), this, m_HotVehicleTimeout, value)) m_HotVehicleTimeout = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

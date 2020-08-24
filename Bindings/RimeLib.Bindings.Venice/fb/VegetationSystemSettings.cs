@@ -18,104 +18,104 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class VegetationSystemSettings : 
 		DataContainer
 	{
 		protected float m_WindVariation = new float();
-		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(2346154816)]
+		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2346154816)]
 		public float WindVariation { get { return m_WindVariation; } set { if (OnPropertyChanging("VegetationSystemSettings." + nameof(WindVariation), this, m_WindVariation, value)) m_WindVariation = value; } } // 0x8 (8)
 		
 		protected float m_WindVariationRate = new float();
-		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(1435068578)]
+		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1435068578)]
 		public float WindVariationRate { get { return m_WindVariationRate; } set { if (OnPropertyChanging("VegetationSystemSettings." + nameof(WindVariationRate), this, m_WindVariationRate, value)) m_WindVariationRate = value; } } // 0xC (12)
 		
 		protected float m_WindStrength = new float();
-		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(3768589012)]
+		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3768589012)]
 		public float WindStrength { get { return m_WindStrength; } set { if (OnPropertyChanging("VegetationSystemSettings." + nameof(WindStrength), this, m_WindStrength, value)) m_WindStrength = value; } } // 0x10 (16)
 		
 		protected float m_JointTensionLimit = new float();
-		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(2687352802)]
+		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2687352802)]
 		public float JointTensionLimit { get { return m_JointTensionLimit; } set { if (OnPropertyChanging("VegetationSystemSettings." + nameof(JointTensionLimit), this, m_JointTensionLimit, value)) m_JointTensionLimit = value; } } // 0x14 (20)
 		
 		protected int m_ForceShadowLod = new int();
-		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(694013785)]
+		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(694013785)]
 		public int ForceShadowLod { get { return m_ForceShadowLod; } set { if (OnPropertyChanging("VegetationSystemSettings." + nameof(ForceShadowLod), this, m_ForceShadowLod, value)) m_ForceShadowLod = value; } } // 0x18 (24)
 		
 		protected uint m_MaxPreSimsPerJob = new uint();
-		[ContainerField(28), LayoutImmutable, Blittable, ContainerFieldNameHash(3246910962)]
+		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(3246910962)]
 		public uint MaxPreSimsPerJob { get { return m_MaxPreSimsPerJob; } set { if (OnPropertyChanging("VegetationSystemSettings." + nameof(MaxPreSimsPerJob), this, m_MaxPreSimsPerJob, value)) m_MaxPreSimsPerJob = value; } } // 0x1C (28)
 		
 		protected uint m_SimulationMemKbClient = new uint();
-		[ContainerField(32), LayoutImmutable, Blittable, ContainerFieldNameHash(188140739)]
+		[ContainerField(32), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(188140739)]
 		public uint SimulationMemKbClient { get { return m_SimulationMemKbClient; } set { if (OnPropertyChanging("VegetationSystemSettings." + nameof(SimulationMemKbClient), this, m_SimulationMemKbClient, value)) m_SimulationMemKbClient = value; } } // 0x20 (32)
 		
 		protected float m_MaxActiveDistance = new float();
-		[ContainerField(36), LayoutImmutable, Blittable, ContainerFieldNameHash(2638833886)]
+		[ContainerField(36), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2638833886)]
 		public float MaxActiveDistance { get { return m_MaxActiveDistance; } set { if (OnPropertyChanging("VegetationSystemSettings." + nameof(MaxActiveDistance), this, m_MaxActiveDistance, value)) m_MaxActiveDistance = value; } } // 0x24 (36)
 		
 		protected uint m_SimulationMemKbServer = new uint();
-		[ContainerField(40), LayoutImmutable, Blittable, ContainerFieldNameHash(3858787743)]
+		[ContainerField(40), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(3858787743)]
 		public uint SimulationMemKbServer { get { return m_SimulationMemKbServer; } set { if (OnPropertyChanging("VegetationSystemSettings." + nameof(SimulationMemKbServer), this, m_SimulationMemKbServer, value)) m_SimulationMemKbServer = value; } } // 0x28 (40)
 		
 		protected uint m_JobCount = new uint();
-		[ContainerField(44), LayoutImmutable, Blittable, ContainerFieldNameHash(4166996065)]
+		[ContainerField(44), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(4166996065)]
 		public uint JobCount { get { return m_JobCount; } set { if (OnPropertyChanging("VegetationSystemSettings." + nameof(JobCount), this, m_JobCount, value)) m_JobCount = value; } } // 0x2C (44)
 		
 		protected int m_JointTensionLimitIndex = new int();
-		[ContainerField(48), LayoutImmutable, Blittable, ContainerFieldNameHash(1641973468)]
+		[ContainerField(48), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(1641973468)]
 		public int JointTensionLimitIndex { get { return m_JointTensionLimitIndex; } set { if (OnPropertyChanging("VegetationSystemSettings." + nameof(JointTensionLimitIndex), this, m_JointTensionLimitIndex, value)) m_JointTensionLimitIndex = value; } } // 0x30 (48)
 		
 		protected float m_TimeScale = new float();
-		[ContainerField(52), LayoutImmutable, Blittable, ContainerFieldNameHash(169511528)]
+		[ContainerField(52), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(169511528)]
 		public float TimeScale { get { return m_TimeScale; } set { if (OnPropertyChanging("VegetationSystemSettings." + nameof(TimeScale), this, m_TimeScale, value)) m_TimeScale = value; } } // 0x34 (52)
 		
 		protected bool m_LocalInfluencesEnabled = new bool();
-		[ContainerField(56), LayoutImmutable, Blittable, ContainerFieldNameHash(438465675)]
+		[ContainerField(56), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(438465675)]
 		public bool LocalInfluencesEnabled { get { return m_LocalInfluencesEnabled; } set { if (OnPropertyChanging("VegetationSystemSettings." + nameof(LocalInfluencesEnabled), this, m_LocalInfluencesEnabled, value)) m_LocalInfluencesEnabled = value; } } // 0x38 (56)
 		
 		protected bool m_SubDestructionEnabled = new bool();
-		[ContainerField(57), LayoutImmutable, Blittable, ContainerFieldNameHash(1151400922)]
+		[ContainerField(57), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1151400922)]
 		public bool SubDestructionEnabled { get { return m_SubDestructionEnabled; } set { if (OnPropertyChanging("VegetationSystemSettings." + nameof(SubDestructionEnabled), this, m_SubDestructionEnabled, value)) m_SubDestructionEnabled = value; } } // 0x39 (57)
 		
 		protected bool m_DissolveEnable = new bool();
-		[ContainerField(58), LayoutImmutable, Blittable, ContainerFieldNameHash(84402905)]
+		[ContainerField(58), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(84402905)]
 		public bool DissolveEnable { get { return m_DissolveEnable; } set { if (OnPropertyChanging("VegetationSystemSettings." + nameof(DissolveEnable), this, m_DissolveEnable, value)) m_DissolveEnable = value; } } // 0x3A (58)
 		
 		protected bool m_Enable = new bool();
-		[ContainerField(59), LayoutImmutable, Blittable, ContainerFieldNameHash(2342790116)]
+		[ContainerField(59), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2342790116)]
 		public bool Enable { get { return m_Enable; } set { if (OnPropertyChanging("VegetationSystemSettings." + nameof(Enable), this, m_Enable, value)) m_Enable = value; } } // 0x3B (59)
 		
 		protected bool m_SimulateServerSide = new bool();
-		[ContainerField(60), LayoutImmutable, Blittable, ContainerFieldNameHash(314597893)]
+		[ContainerField(60), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(314597893)]
 		public bool SimulateServerSide { get { return m_SimulateServerSide; } set { if (OnPropertyChanging("VegetationSystemSettings." + nameof(SimulateServerSide), this, m_SimulateServerSide, value)) m_SimulateServerSide = value; } } // 0x3C (60)
 		
 		protected bool m_EnableJobs = new bool();
-		[ContainerField(61), LayoutImmutable, Blittable, ContainerFieldNameHash(1190923856)]
+		[ContainerField(61), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1190923856)]
 		public bool EnableJobs { get { return m_EnableJobs; } set { if (OnPropertyChanging("VegetationSystemSettings." + nameof(EnableJobs), this, m_EnableJobs, value)) m_EnableJobs = value; } } // 0x3D (61)
 		
 		protected bool m_ShadowMeshEnable = new bool();
-		[ContainerField(62), LayoutImmutable, Blittable, ContainerFieldNameHash(4253576529)]
+		[ContainerField(62), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(4253576529)]
 		public bool ShadowMeshEnable { get { return m_ShadowMeshEnable; } set { if (OnPropertyChanging("VegetationSystemSettings." + nameof(ShadowMeshEnable), this, m_ShadowMeshEnable, value)) m_ShadowMeshEnable = value; } } // 0x3E (62)
 		
 		protected bool m_DrawNodes = new bool();
-		[ContainerField(63), LayoutImmutable, Blittable, ContainerFieldNameHash(2398188982)]
+		[ContainerField(63), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2398188982)]
 		public bool DrawNodes { get { return m_DrawNodes; } set { if (OnPropertyChanging("VegetationSystemSettings." + nameof(DrawNodes), this, m_DrawNodes, value)) m_DrawNodes = value; } } // 0x3F (63)
 		
 		protected bool m_DrawEnable = new bool();
-		[ContainerField(64), LayoutImmutable, Blittable, ContainerFieldNameHash(1347356004)]
+		[ContainerField(64), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1347356004)]
 		public bool DrawEnable { get { return m_DrawEnable; } set { if (OnPropertyChanging("VegetationSystemSettings." + nameof(DrawEnable), this, m_DrawEnable, value)) m_DrawEnable = value; } } // 0x40 (64)
 		
 		protected bool m_BatchDrawEnable = new bool();
-		[ContainerField(65), LayoutImmutable, Blittable, ContainerFieldNameHash(3539660312)]
+		[ContainerField(65), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3539660312)]
 		public bool BatchDrawEnable { get { return m_BatchDrawEnable; } set { if (OnPropertyChanging("VegetationSystemSettings." + nameof(BatchDrawEnable), this, m_BatchDrawEnable, value)) m_BatchDrawEnable = value; } } // 0x41 (65)
 		
 		protected bool m_DestructionEnabled = new bool();
-		[ContainerField(66), LayoutImmutable, Blittable, ContainerFieldNameHash(4087722398)]
+		[ContainerField(66), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(4087722398)]
 		public bool DestructionEnabled { get { return m_DestructionEnabled; } set { if (OnPropertyChanging("VegetationSystemSettings." + nameof(DestructionEnabled), this, m_DestructionEnabled, value)) m_DestructionEnabled = value; } } // 0x42 (66)
 		
 		protected bool m_UseShadowLodOffset = new bool();
-		[ContainerField(67), LayoutImmutable, Blittable, ContainerFieldNameHash(2320118218)]
+		[ContainerField(67), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2320118218)]
 		public bool UseShadowLodOffset { get { return m_UseShadowLodOffset; } set { if (OnPropertyChanging("VegetationSystemSettings." + nameof(UseShadowLodOffset), this, m_UseShadowLodOffset, value)) m_UseShadowLodOffset = value; } } // 0x43 (67)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

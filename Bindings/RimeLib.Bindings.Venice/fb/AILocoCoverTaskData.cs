@@ -18,55 +18,55 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(41), ContainerStruct]
 	public class AILocoCoverTaskData : FrostbiteContainer
 	{
-		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable]
+		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
 		public Vec3 WantedPos { get; set; } = new Vec3(); // 0x0 (0)
 		
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable]
+		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
 		public Vec3 ThreatPosition { get; set; } = new Vec3(); // 0x10 (16)
 		
-		[ContainerField(32)]
+		[ContainerField(32), MemberInfoFlag(137)]
 		public AntPoseEnum CoverPose { get; set; } = new AntPoseEnum(); // 0x20 (32)
 		
-		[ContainerField(36), LayoutImmutable, Blittable]
+		[ContainerField(36), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float WaitTime { get; set; } // 0x24 (36)
 		
-		[ContainerField(40)]
+		[ContainerField(40), MemberInfoFlag(137)]
 		public CoverPeekType PeekOut { get; set; } = new CoverPeekType(); // 0x28 (40)
 		
-		[ContainerField(44), LayoutImmutable, Blittable]
+		[ContainerField(44), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float WorldAngle { get; set; } // 0x2C (44)
 		
-		[ContainerField(48), LayoutImmutable, Blittable]
+		[ContainerField(48), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float OffsetLength { get; set; } // 0x30 (48)
 		
-		[ContainerField(52)]
+		[ContainerField(52), MemberInfoFlag(137)]
 		public AntPoseEnum ExitPose { get; set; } = new AntPoseEnum(); // 0x34 (52)
 		
-		[ContainerField(56), LayoutImmutable, Blittable]
+		[ContainerField(56), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float ExitAngle { get; set; } // 0x38 (56)
 		
-		[ContainerField(60), LayoutImmutable, Blittable]
+		[ContainerField(60), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float DistanceToNextWaypoint { get; set; } // 0x3C (60)
 		
-		[ContainerField(64)]
+		[ContainerField(64), MemberInfoFlag(137)]
 		public AntCoverEnum CoverType { get; set; } = new AntCoverEnum(); // 0x40 (64)
 		
-		[ContainerField(68)]
+		[ContainerField(68), MemberInfoFlag(137)]
 		public CoverEnterStrategy EnterStrategy { get; set; } = new CoverEnterStrategy(); // 0x44 (68)
 		
-		[ContainerField(72)]
+		[ContainerField(72), MemberInfoFlag(137)]
 		public CoverExitStyle ExitStyle { get; set; } = new CoverExitStyle(); // 0x48 (72)
 		
-		[ContainerField(76)]
+		[ContainerField(76), MemberInfoFlag(137)]
 		public CoverFireType PrepareFireType { get; set; } = new CoverFireType(); // 0x4C (76)
 		
-		[ContainerField(80), LayoutImmutable, Blittable]
+		[ContainerField(80), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool ForceExitCover { get; set; } // 0x50 (80)
 		
-		[ContainerField(81), LayoutImmutable, Blittable]
+		[ContainerField(81), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool UseClientPosition { get; set; } // 0x51 (81)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

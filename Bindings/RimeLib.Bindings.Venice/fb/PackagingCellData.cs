@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class PackagingCellData : 
 		EntityData
 	{
 		protected RefArray<PackagingRule> m_Rules = new RefArray<PackagingRule>();
-		[ContainerField(12), ContainerFieldNameHash(229400568)]
+		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(229400568), ContainerRefArray]
 		public RefArray<PackagingRule> Rules { get { return m_Rules; } set { if (OnPropertyChanging("PackagingCellData." + nameof(Rules), this, m_Rules, value)) m_Rules = value; } } // 0xC (12)
 		
 		protected RefArray<PackagingCellData> m_Targets = new RefArray<PackagingCellData>();
-		[ContainerField(16), ContainerFieldNameHash(3016537383)]
+		[ContainerField(16), MemberInfoFlag(65), ContainerFieldNameHash(3016537383), ContainerRefArray]
 		public RefArray<PackagingCellData> Targets { get { return m_Targets; } set { if (OnPropertyChanging("PackagingCellData." + nameof(Targets), this, m_Targets, value)) m_Targets = value; } } // 0x10 (16)
 		
 		protected List<Vec2> m_Shape = new List<Vec2>();
-		[ContainerField(20), ContainerFieldNameHash(231753450)]
+		[ContainerField(20), MemberInfoFlag(65), ContainerFieldNameHash(231753450), ContainerArray]
 		public List<Vec2> Shape { get { return m_Shape; } set { if (OnPropertyChanging("PackagingCellData." + nameof(Shape), this, m_Shape, value)) m_Shape = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

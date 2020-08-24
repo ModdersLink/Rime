@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class BreathControlData : 
 		DataContainer
 	{
 		protected float m_BreathControlTime = new float();
-		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(4153846207)]
+		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(4153846207)]
 		public float BreathControlTime { get { return m_BreathControlTime; } set { if (OnPropertyChanging("BreathControlData." + nameof(BreathControlTime), this, m_BreathControlTime, value)) m_BreathControlTime = value; } } // 0x8 (8)
 		
 		protected float m_BreathControlReleaseTime = new float();
-		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(1085847638)]
+		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1085847638)]
 		public float BreathControlReleaseTime { get { return m_BreathControlReleaseTime; } set { if (OnPropertyChanging("BreathControlData." + nameof(BreathControlReleaseTime), this, m_BreathControlReleaseTime, value)) m_BreathControlReleaseTime = value; } } // 0xC (12)
 		
 		protected float m_BreathControlPenaltyMultiplier = new float();
-		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(735731002)]
+		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(735731002)]
 		public float BreathControlPenaltyMultiplier { get { return m_BreathControlPenaltyMultiplier; } set { if (OnPropertyChanging("BreathControlData." + nameof(BreathControlPenaltyMultiplier), this, m_BreathControlPenaltyMultiplier, value)) m_BreathControlPenaltyMultiplier = value; } } // 0x10 (16)
 		
 		protected float m_BreathControlPenaltyTimeout = new float();
-		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(3387044330)]
+		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3387044330)]
 		public float BreathControlPenaltyTimeout { get { return m_BreathControlPenaltyTimeout; } set { if (OnPropertyChanging("BreathControlData." + nameof(BreathControlPenaltyTimeout), this, m_BreathControlPenaltyTimeout, value)) m_BreathControlPenaltyTimeout = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class SpottingEntityData : 
 		EntityData
 	{
 		protected Realm m_Realm = new Realm();
-		[ContainerField(12), ContainerFieldNameHash(229961746)]
+		[ContainerField(12), MemberInfoFlag(137), ContainerFieldNameHash(229961746)]
 		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("SpottingEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0xC (12)
 		
 		protected TeamId m_TeamToSpot = new TeamId();
-		[ContainerField(16), ContainerFieldNameHash(2742848923)]
+		[ContainerField(16), MemberInfoFlag(137), ContainerFieldNameHash(2742848923)]
 		public TeamId TeamToSpot { get { return m_TeamToSpot; } set { if (OnPropertyChanging("SpottingEntityData." + nameof(TeamToSpot), this, m_TeamToSpot, value)) m_TeamToSpot = value; } } // 0x10 (16)
 		
 		protected bool m_Enabled = new bool();
-		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(2662400)]
+		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2662400)]
 		public bool Enabled { get { return m_Enabled; } set { if (OnPropertyChanging("SpottingEntityData." + nameof(Enabled), this, m_Enabled, value)) m_Enabled = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

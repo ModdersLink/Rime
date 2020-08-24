@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(8)]
+	[ContainerType(8), MemberInfoFlag(53), ContainerClass]
 	public class RoundEvent : 
 		MetricEvent
 	{
 		protected string m_LevelName = string.Empty;
-		[ContainerField(16), LayoutImmutable, ContainerFieldNameHash(1599082292)]
+		[ContainerField(16), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(1599082292)]
 		public string LevelName { get { return m_LevelName; } set { if (OnPropertyChanging("RoundEvent." + nameof(LevelName), this, m_LevelName, value)) m_LevelName = value; } } // 0x10 (16)
 		
 		protected int m_JuiceSessionId = new int();
-		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(2516727206)]
+		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(2516727206)]
 		public int JuiceSessionId { get { return m_JuiceSessionId; } set { if (OnPropertyChanging("RoundEvent." + nameof(JuiceSessionId), this, m_JuiceSessionId, value)) m_JuiceSessionId = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class UserMusicControllerNodeData : 
 		AudioGraphNodeData
 	{
 		protected AudioGraphNodePort m_Override = new AudioGraphNodePort();
-		[ContainerField(8), ContainerFieldNameHash(3718925169)]
+		[ContainerField(8), MemberInfoFlag(41), ContainerFieldNameHash(3718925169)]
 		public AudioGraphNodePort Override { get { return m_Override; } set { if (OnPropertyChanging("UserMusicControllerNodeData." + nameof(Override), this, m_Override, value)) m_Override = value; } } // 0x8 (8)
 		
 		protected AudioGraphNodePort m_Restore = new AudioGraphNodePort();
-		[ContainerField(16), ContainerFieldNameHash(1303797069)]
+		[ContainerField(16), MemberInfoFlag(41), ContainerFieldNameHash(1303797069)]
 		public AudioGraphNodePort Restore { get { return m_Restore; } set { if (OnPropertyChanging("UserMusicControllerNodeData." + nameof(Restore), this, m_Restore, value)) m_Restore = value; } } // 0x10 (16)
 		
 		protected bool m_RestoreOnDeactivated = new bool();
-		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(1844570608)]
+		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1844570608)]
 		public bool RestoreOnDeactivated { get { return m_RestoreOnDeactivated; } set { if (OnPropertyChanging("UserMusicControllerNodeData." + nameof(RestoreOnDeactivated), this, m_RestoreOnDeactivated, value)) m_RestoreOnDeactivated = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

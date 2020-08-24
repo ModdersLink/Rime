@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class InputActionMappingsData : 
 		DataContainer
 	{
 		protected RefArray<InputActionMappingData> m_Mappings = new RefArray<InputActionMappingData>();
-		[ContainerField(8), ContainerFieldNameHash(673881690)]
+		[ContainerField(8), MemberInfoFlag(65), ContainerFieldNameHash(673881690), ContainerRefArray]
 		public RefArray<InputActionMappingData> Mappings { get { return m_Mappings; } set { if (OnPropertyChanging("InputActionMappingsData." + nameof(Mappings), this, m_Mappings, value)) m_Mappings = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

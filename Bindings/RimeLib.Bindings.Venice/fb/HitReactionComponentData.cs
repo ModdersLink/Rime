@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class HitReactionComponentData : 
 		ComponentData
 	{
 		protected HitReactionComponentBinding m_HitReactionBinding = new HitReactionComponentBinding();
-		[ContainerField(96), ContainerFieldNameHash(738313592)]
+		[ContainerField(96), MemberInfoFlag(41), ContainerFieldNameHash(738313592)]
 		public HitReactionComponentBinding HitReactionBinding { get { return m_HitReactionBinding; } set { if (OnPropertyChanging("HitReactionComponentData." + nameof(HitReactionBinding), this, m_HitReactionBinding, value)) m_HitReactionBinding = value; } } // 0x60 (96)
 		
 		protected bool m_Enabled = new bool();
-		[ContainerField(128), LayoutImmutable, Blittable, ContainerFieldNameHash(2662400)]
+		[ContainerField(128), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2662400)]
 		public bool Enabled { get { return m_Enabled; } set { if (OnPropertyChanging("HitReactionComponentData." + nameof(Enabled), this, m_Enabled, value)) m_Enabled = value; } } // 0x80 (128)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

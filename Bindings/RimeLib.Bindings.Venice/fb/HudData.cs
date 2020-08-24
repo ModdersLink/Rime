@@ -18,91 +18,91 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(41), ContainerStruct]
 	public class HudData : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, Blittable]
+		[ContainerField(0), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float CrosshairScaleMin { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable, Blittable]
+		[ContainerField(4), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float CrosshairScaleMax { get; set; } // 0x4 (4)
 		
-		[ContainerField(8), LayoutImmutable, Blittable]
+		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float CrosshairOpacityMin { get; set; } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable]
+		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float CrosshairOpacityMax { get; set; } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
+		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float CrosshairOpacityModifier { get; set; } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable]
+		[ContainerField(20), LayoutImmutable, MemberInfoFlag(16509)]
 		public string CrosshairTypeId { get; set; } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable]
+		[ContainerField(24), LayoutImmutable, MemberInfoFlag(16509)]
 		public string WeaponClass { get; set; } // 0x18 (24)
 		
-		[ContainerField(28), LayoutImmutable, Blittable]
+		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float CameraShakeModifier { get; set; } // 0x1C (28)
 		
-		[ContainerField(32), LayoutImmutable, Blittable]
+		[ContainerField(32), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float SeaLevelAltFreq { get; set; } // 0x20 (32)
 		
-		[ContainerField(36), LayoutImmutable, Blittable]
+		[ContainerField(36), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float LowAmmoWarning { get; set; } // 0x24 (36)
 		
-		[ContainerField(40), LayoutImmutable, Blittable]
+		[ContainerField(40), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float ReloadPrompt { get; set; } // 0x28 (40)
 		
-		[ContainerField(44), LayoutImmutable, Blittable]
+		[ContainerField(44), LayoutImmutable, Blittable, MemberInfoFlag(49405)]
 		public int RenderTargetIndex { get; set; } // 0x2C (44)
 		
-		[ContainerField(48)]
+		[ContainerField(48), MemberInfoFlag(53), ContainerCtrRef]
 		public CtrRef<UIPartPropertyList> HudPropertyList { get; set; } = new CtrRef<UIPartPropertyList>(); // 0x30 (48)
 		
-		[ContainerField(52), LayoutImmutable, Blittable]
+		[ContainerField(52), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool ShowMinimap { get; set; } // 0x34 (52)
 		
-		[ContainerField(53), LayoutImmutable, Blittable]
+		[ContainerField(53), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool InfiniteAmmo { get; set; } // 0x35 (53)
 		
-		[ContainerField(54), LayoutImmutable, Blittable]
+		[ContainerField(54), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool HideCrosshairWhenAimOnFriend { get; set; } // 0x36 (54)
 		
-		[ContainerField(55), LayoutImmutable, Blittable]
+		[ContainerField(55), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool HideAmmo { get; set; } // 0x37 (55)
 		
-		[ContainerField(56), LayoutImmutable, Blittable]
+		[ContainerField(56), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool UseRangeMeter { get; set; } // 0x38 (56)
 		
-		[ContainerField(57), LayoutImmutable, Blittable]
+		[ContainerField(57), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool UsePredictedSight { get; set; } // 0x39 (57)
 		
-		[ContainerField(58), LayoutImmutable, Blittable]
+		[ContainerField(58), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool UseWeaponOrientations { get; set; } // 0x3A (58)
 		
-		[ContainerField(59), LayoutImmutable, Blittable]
+		[ContainerField(59), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool UseVelocityVectorMarker { get; set; } // 0x3B (59)
 		
-		[ContainerField(60), LayoutImmutable, Blittable]
+		[ContainerField(60), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool UseLockingController { get; set; } // 0x3C (60)
 		
-		[ContainerField(61), LayoutImmutable, Blittable]
+		[ContainerField(61), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool UseThrust { get; set; } // 0x3D (61)
 		
-		[ContainerField(62), LayoutImmutable, Blittable]
+		[ContainerField(62), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool UseGForce { get; set; } // 0x3E (62)
 		
-		[ContainerField(63), LayoutImmutable, Blittable]
+		[ContainerField(63), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool UseSkidSlip { get; set; } // 0x3F (63)
 		
-		[ContainerField(64), LayoutImmutable, Blittable]
+		[ContainerField(64), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool UseClimbRate { get; set; } // 0x40 (64)
 		
-		[ContainerField(65), LayoutImmutable, Blittable]
+		[ContainerField(65), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool UseAimWarning { get; set; } // 0x41 (65)
 		
-		[ContainerField(66), LayoutImmutable, Blittable]
+		[ContainerField(66), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool UseRenderTarget { get; set; } // 0x42 (66)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

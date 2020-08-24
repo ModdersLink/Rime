@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class MixerAsset : 
 		Asset
 	{
 		protected CtrRef<MixerGraphData> m_Graph = new CtrRef<MixerGraphData>();
-		[ContainerField(12), ContainerFieldNameHash(208111145)]
+		[ContainerField(12), MemberInfoFlag(53), ContainerFieldNameHash(208111145), ContainerCtrRef]
 		public CtrRef<MixerGraphData> Graph { get { return m_Graph; } set { if (OnPropertyChanging("MixerAsset." + nameof(Graph), this, m_Graph, value)) m_Graph = value; } } // 0xC (12)
 		
 		protected RefArray<MixerPreset> m_Presets = new RefArray<MixerPreset>();
-		[ContainerField(16), ContainerFieldNameHash(3463460435)]
+		[ContainerField(16), MemberInfoFlag(65), ContainerFieldNameHash(3463460435), ContainerRefArray]
 		public RefArray<MixerPreset> Presets { get { return m_Presets; } set { if (OnPropertyChanging("MixerAsset." + nameof(Presets), this, m_Presets, value)) m_Presets = value; } } // 0x10 (16)
 		
 		protected CtrRef<MixerPreset> m_DefaultPreset = new CtrRef<MixerPreset>();
-		[ContainerField(20), ContainerFieldNameHash(4117030027)]
+		[ContainerField(20), MemberInfoFlag(53), ContainerFieldNameHash(4117030027), ContainerCtrRef]
 		public CtrRef<MixerPreset> DefaultPreset { get { return m_DefaultPreset; } set { if (OnPropertyChanging("MixerAsset." + nameof(DefaultPreset), this, m_DefaultPreset, value)) m_DefaultPreset = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

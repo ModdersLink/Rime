@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class CharacterEntityData : 
 		ControllableEntityData
 	{
 		protected PersonViewMode m_DefaultViewMode = new PersonViewMode();
-		[ContainerField(144), ContainerFieldNameHash(3414667104)]
+		[ContainerField(144), MemberInfoFlag(137), ContainerFieldNameHash(3414667104)]
 		public PersonViewMode DefaultViewMode { get { return m_DefaultViewMode; } set { if (OnPropertyChanging("CharacterEntityData." + nameof(DefaultViewMode), this, m_DefaultViewMode, value)) m_DefaultViewMode = value; } } // 0x90 (144)
 		
 		protected PlayerSpawnType m_PlayerSpawnType = new PlayerSpawnType();
-		[ContainerField(148), ContainerFieldNameHash(350489269)]
+		[ContainerField(148), MemberInfoFlag(137), ContainerFieldNameHash(350489269)]
 		public PlayerSpawnType PlayerSpawnType { get { return m_PlayerSpawnType; } set { if (OnPropertyChanging("CharacterEntityData." + nameof(PlayerSpawnType), this, m_PlayerSpawnType, value)) m_PlayerSpawnType = value; } } // 0x94 (148)
 		
 		protected bool m_CharacterLightingEnable = new bool();
-		[ContainerField(152), LayoutImmutable, Blittable, ContainerFieldNameHash(4279193667)]
+		[ContainerField(152), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(4279193667)]
 		public bool CharacterLightingEnable { get { return m_CharacterLightingEnable; } set { if (OnPropertyChanging("CharacterEntityData." + nameof(CharacterLightingEnable), this, m_CharacterLightingEnable, value)) m_CharacterLightingEnable = value; } } // 0x98 (152)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

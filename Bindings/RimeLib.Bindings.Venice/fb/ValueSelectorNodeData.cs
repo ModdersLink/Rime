@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class ValueSelectorNodeData : 
 		AudioGraphNodeData
 	{
 		protected RefArray<ValueSelectorEntry> m_Inputs = new RefArray<ValueSelectorEntry>();
-		[ContainerField(8), ContainerFieldNameHash(2784267136)]
+		[ContainerField(8), MemberInfoFlag(65), ContainerFieldNameHash(2784267136), ContainerRefArray]
 		public RefArray<ValueSelectorEntry> Inputs { get { return m_Inputs; } set { if (OnPropertyChanging("ValueSelectorNodeData." + nameof(Inputs), this, m_Inputs, value)) m_Inputs = value; } } // 0x8 (8)
 		
 		protected AudioGraphNodePort m_Value = new AudioGraphNodePort();
-		[ContainerField(12), ContainerFieldNameHash(225375086)]
+		[ContainerField(12), MemberInfoFlag(41), ContainerFieldNameHash(225375086)]
 		public AudioGraphNodePort Value { get { return m_Value; } set { if (OnPropertyChanging("ValueSelectorNodeData." + nameof(Value), this, m_Value, value)) m_Value = value; } } // 0xC (12)
 		
 		protected AudioGraphNodePort m_Out = new AudioGraphNodePort();
-		[ContainerField(20), ContainerFieldNameHash(193453899)]
+		[ContainerField(20), MemberInfoFlag(41), ContainerFieldNameHash(193453899)]
 		public AudioGraphNodePort Out { get { return m_Out; } set { if (OnPropertyChanging("ValueSelectorNodeData." + nameof(Out), this, m_Out, value)) m_Out = value; } } // 0x14 (20)
 		
 		protected float m_DefaultCaseValue = new float();
-		[ContainerField(28), LayoutImmutable, Blittable, ContainerFieldNameHash(3296679953)]
+		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3296679953)]
 		public float DefaultCaseValue { get { return m_DefaultCaseValue; } set { if (OnPropertyChanging("ValueSelectorNodeData." + nameof(DefaultCaseValue), this, m_DefaultCaseValue, value)) m_DefaultCaseValue = value; } } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

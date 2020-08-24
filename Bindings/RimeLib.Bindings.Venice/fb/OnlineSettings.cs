@@ -18,68 +18,68 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class OnlineSettings : 
 		SystemSettings
 	{
 		protected BackendType m_Backend = new BackendType();
-		[ContainerField(12), ContainerFieldNameHash(2290467745)]
+		[ContainerField(12), MemberInfoFlag(137), ContainerFieldNameHash(2290467745)]
 		public BackendType Backend { get { return m_Backend; } set { if (OnPropertyChanging("OnlineSettings." + nameof(Backend), this, m_Backend, value)) m_Backend = value; } } // 0xC (12)
 		
 		protected BackendType m_PeerBackend = new BackendType();
-		[ContainerField(16), ContainerFieldNameHash(3086640163)]
+		[ContainerField(16), MemberInfoFlag(137), ContainerFieldNameHash(3086640163)]
 		public BackendType PeerBackend { get { return m_PeerBackend; } set { if (OnPropertyChanging("OnlineSettings." + nameof(PeerBackend), this, m_PeerBackend, value)) m_PeerBackend = value; } } // 0x10 (16)
 		
 		protected OnlineEnvironment m_Environment = new OnlineEnvironment();
-		[ContainerField(20), ContainerFieldNameHash(2480382480)]
+		[ContainerField(20), MemberInfoFlag(137), ContainerFieldNameHash(2480382480)]
 		public OnlineEnvironment Environment { get { return m_Environment; } set { if (OnPropertyChanging("OnlineSettings." + nameof(Environment), this, m_Environment, value)) m_Environment = value; } } // 0x14 (20)
 		
 		protected string m_MatchmakingToken = string.Empty;
-		[ContainerField(24), LayoutImmutable, ContainerFieldNameHash(2041898954)]
+		[ContainerField(24), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(2041898954)]
 		public string MatchmakingToken { get { return m_MatchmakingToken; } set { if (OnPropertyChanging("OnlineSettings." + nameof(MatchmakingToken), this, m_MatchmakingToken, value)) m_MatchmakingToken = value; } } // 0x18 (24)
 		
 		protected CtrRef<OnlineProviderAsset> m_Provider = new CtrRef<OnlineProviderAsset>();
-		[ContainerField(28), ContainerFieldNameHash(3021915972)]
+		[ContainerField(28), MemberInfoFlag(53), ContainerFieldNameHash(3021915972), ContainerCtrRef]
 		public CtrRef<OnlineProviderAsset> Provider { get { return m_Provider; } set { if (OnPropertyChanging("OnlineSettings." + nameof(Provider), this, m_Provider, value)) m_Provider = value; } } // 0x1C (28)
 		
 		protected CtrRef<RichPresenceData> m_RichPresence = new CtrRef<RichPresenceData>();
-		[ContainerField(32), ContainerFieldNameHash(789861132)]
+		[ContainerField(32), MemberInfoFlag(53), ContainerFieldNameHash(789861132), ContainerCtrRef]
 		public CtrRef<RichPresenceData> RichPresence { get { return m_RichPresence; } set { if (OnPropertyChanging("OnlineSettings." + nameof(RichPresence), this, m_RichPresence, value)) m_RichPresence = value; } } // 0x20 (32)
 		
 		protected CtrRef<ChatSettings> m_ChatSettings = new CtrRef<ChatSettings>();
-		[ContainerField(36), ContainerFieldNameHash(1116129662)]
+		[ContainerField(36), MemberInfoFlag(53), ContainerFieldNameHash(1116129662), ContainerCtrRef]
 		public CtrRef<ChatSettings> ChatSettings { get { return m_ChatSettings; } set { if (OnPropertyChanging("OnlineSettings." + nameof(ChatSettings), this, m_ChatSettings, value)) m_ChatSettings = value; } } // 0x24 (36)
 		
 		protected string m_MatchmakingOptions = string.Empty;
-		[ContainerField(40), LayoutImmutable, ContainerFieldNameHash(3558992865)]
+		[ContainerField(40), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(3558992865)]
 		public string MatchmakingOptions { get { return m_MatchmakingOptions; } set { if (OnPropertyChanging("OnlineSettings." + nameof(MatchmakingOptions), this, m_MatchmakingOptions, value)) m_MatchmakingOptions = value; } } // 0x28 (40)
 		
 		protected string m_Region = string.Empty;
-		[ContainerField(44), LayoutImmutable, ContainerFieldNameHash(3293978493)]
+		[ContainerField(44), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(3293978493)]
 		public string Region { get { return m_Region; } set { if (OnPropertyChanging("OnlineSettings." + nameof(Region), this, m_Region, value)) m_Region = value; } } // 0x2C (44)
 		
 		protected uint m_NegativeUserCacheRefreshPeriod = new uint();
-		[ContainerField(48), LayoutImmutable, Blittable, ContainerFieldNameHash(1822528579)]
+		[ContainerField(48), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(1822528579)]
 		public uint NegativeUserCacheRefreshPeriod { get { return m_NegativeUserCacheRefreshPeriod; } set { if (OnPropertyChanging("OnlineSettings." + nameof(NegativeUserCacheRefreshPeriod), this, m_NegativeUserCacheRefreshPeriod, value)) m_NegativeUserCacheRefreshPeriod = value; } } // 0x30 (48)
 		
 		protected string m_MatchmakingMode = string.Empty;
-		[ContainerField(52), LayoutImmutable, ContainerFieldNameHash(3576825522)]
+		[ContainerField(52), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(3576825522)]
 		public string MatchmakingMode { get { return m_MatchmakingMode; } set { if (OnPropertyChanging("OnlineSettings." + nameof(MatchmakingMode), this, m_MatchmakingMode, value)) m_MatchmakingMode = value; } } // 0x34 (52)
 		
 		protected string m_Country = string.Empty;
-		[ContainerField(56), LayoutImmutable, ContainerFieldNameHash(3685467405)]
+		[ContainerField(56), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(3685467405)]
 		public string Country { get { return m_Country; } set { if (OnPropertyChanging("OnlineSettings." + nameof(Country), this, m_Country, value)) m_Country = value; } } // 0x38 (56)
 		
 		protected bool m_IsSecure = new bool();
-		[ContainerField(60), LayoutImmutable, Blittable, ContainerFieldNameHash(451767400)]
+		[ContainerField(60), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(451767400)]
 		public bool IsSecure { get { return m_IsSecure; } set { if (OnPropertyChanging("OnlineSettings." + nameof(IsSecure), this, m_IsSecure, value)) m_IsSecure = value; } } // 0x3C (60)
 		
 		protected bool m_SupportHostMigration = new bool();
-		[ContainerField(61), LayoutImmutable, Blittable, ContainerFieldNameHash(1663175238)]
+		[ContainerField(61), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1663175238)]
 		public bool SupportHostMigration { get { return m_SupportHostMigration; } set { if (OnPropertyChanging("OnlineSettings." + nameof(SupportHostMigration), this, m_SupportHostMigration, value)) m_SupportHostMigration = value; } } // 0x3D (61)
 		
 		protected bool m_MatchmakeImmediately = new bool();
-		[ContainerField(62), LayoutImmutable, Blittable, ContainerFieldNameHash(4001997328)]
+		[ContainerField(62), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(4001997328)]
 		public bool MatchmakeImmediately { get { return m_MatchmakeImmediately; } set { if (OnPropertyChanging("OnlineSettings." + nameof(MatchmakeImmediately), this, m_MatchmakeImmediately, value)) m_MatchmakeImmediately = value; } } // 0x3E (62)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

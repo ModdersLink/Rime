@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class TextureSliceUnlockPartData : 
 		DataContainer
 	{
 		protected int m_SliceIndex = new int();
-		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(3448212171)]
+		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(3448212171)]
 		public int SliceIndex { get { return m_SliceIndex; } set { if (OnPropertyChanging("TextureSliceUnlockPartData." + nameof(SliceIndex), this, m_SliceIndex, value)) m_SliceIndex = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

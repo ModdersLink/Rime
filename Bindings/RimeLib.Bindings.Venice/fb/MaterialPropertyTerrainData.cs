@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class MaterialPropertyTerrainData : 
 		PhysicsMaterialRelationPropertyData
 	{
 		protected Vec3 m_DirtTriggerColor = new Vec3();
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(2764380651)]
+		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(2764380651)]
 		public Vec3 DirtTriggerColor { get { return m_DirtTriggerColor; } set { if (OnPropertyChanging("MaterialPropertyTerrainData." + nameof(DirtTriggerColor), this, m_DirtTriggerColor, value)) m_DirtTriggerColor = value; } } // 0x10 (16)
 		
 		protected CtrRef<EffectBlueprint> m_DestructionEffect = new CtrRef<EffectBlueprint>();
-		[ContainerField(32), ContainerFieldNameHash(3907820780)]
+		[ContainerField(32), MemberInfoFlag(53), ContainerFieldNameHash(3907820780), ContainerCtrRef]
 		public CtrRef<EffectBlueprint> DestructionEffect { get { return m_DestructionEffect; } set { if (OnPropertyChanging("MaterialPropertyTerrainData." + nameof(DestructionEffect), this, m_DestructionEffect, value)) m_DestructionEffect = value; } } // 0x20 (32)
 		
 		protected float m_DirtTriggerFactor = new float();
-		[ContainerField(36), LayoutImmutable, Blittable, ContainerFieldNameHash(602292507)]
+		[ContainerField(36), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(602292507)]
 		public float DirtTriggerFactor { get { return m_DirtTriggerFactor; } set { if (OnPropertyChanging("MaterialPropertyTerrainData." + nameof(DirtTriggerFactor), this, m_DirtTriggerFactor, value)) m_DirtTriggerFactor = value; } } // 0x24 (36)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

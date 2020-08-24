@@ -18,19 +18,19 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(41), ContainerStruct]
 	public class GunSwayBaseMoveData : FrostbiteContainer
 	{
-		[ContainerField(0)]
+		[ContainerField(0), MemberInfoFlag(41)]
 		public GunSwayDispersionData BaseValue { get; set; } = new GunSwayDispersionData(); // 0x0 (0)
 		
-		[ContainerField(16)]
+		[ContainerField(16), MemberInfoFlag(41)]
 		public GunSwayDispersionData Moving { get; set; } = new GunSwayDispersionData(); // 0x10 (16)
 		
-		[ContainerField(32)]
+		[ContainerField(32), MemberInfoFlag(41)]
 		public GunSwayRecoilData Recoil { get; set; } = new GunSwayRecoilData(); // 0x20 (32)
 		
-		[ContainerField(56)]
+		[ContainerField(56), MemberInfoFlag(41)]
 		public GunSwayLagData GunSwayLag { get; set; } = new GunSwayLagData(); // 0x38 (56)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

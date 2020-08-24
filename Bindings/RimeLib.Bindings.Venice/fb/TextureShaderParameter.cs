@@ -18,13 +18,13 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(41), ContainerStruct]
 	public class TextureShaderParameter : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable]
+		[ContainerField(0), LayoutImmutable, MemberInfoFlag(16509)]
 		public string ParameterName { get; set; } // 0x0 (0)
 		
-		[ContainerField(4)]
+		[ContainerField(4), MemberInfoFlag(53), ContainerCtrRef]
 		public CtrRef<TextureBaseAsset> Value { get; set; } = new CtrRef<TextureBaseAsset>(); // 0x4 (4)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

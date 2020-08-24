@@ -18,46 +18,46 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(41), ContainerStruct]
 	public class LensFlareElement : FrostbiteContainer
 	{
-		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable]
+		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
 		public Vec4 SizeCamDistCurve { get; set; } = new Vec4(); // 0x0 (0)
 		
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable]
+		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
 		public Vec4 SizeAngleCurve { get; set; } = new Vec4(); // 0x10 (16)
 		
-		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable]
+		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
 		public Vec2 Size { get; set; } = new Vec2(); // 0x20 (32)
 		
-		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable]
+		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
 		public Vec4 SizeOccluderCurve { get; set; } = new Vec4(); // 0x30 (48)
 		
-		[ContainerField(64), Homogeneous, LayoutImmutable, Blittable]
+		[ContainerField(64), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
 		public Vec4 SizeScreenPosCurve { get; set; } = new Vec4(); // 0x40 (64)
 		
-		[ContainerField(80), Homogeneous, LayoutImmutable, Blittable]
+		[ContainerField(80), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
 		public Vec4 AlphaCamDistCurve { get; set; } = new Vec4(); // 0x50 (80)
 		
-		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable]
+		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
 		public Vec4 AlphaOccluderCurve { get; set; } = new Vec4(); // 0x60 (96)
 		
-		[ContainerField(112), Homogeneous, LayoutImmutable, Blittable]
+		[ContainerField(112), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
 		public Vec4 AlphaAngleCurve { get; set; } = new Vec4(); // 0x70 (112)
 		
-		[ContainerField(128), Homogeneous, LayoutImmutable, Blittable]
+		[ContainerField(128), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
 		public Vec4 AlphaScreenPosCurve { get; set; } = new Vec4(); // 0x80 (128)
 		
-		[ContainerField(144), LayoutImmutable, Blittable]
+		[ContainerField(144), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float SizeCamDistMax { get; set; } // 0x90 (144)
 		
-		[ContainerField(148), LayoutImmutable, Blittable]
+		[ContainerField(148), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float RayDistance { get; set; } // 0x94 (148)
 		
-		[ContainerField(152)]
+		[ContainerField(152), MemberInfoFlag(53), ContainerCtrRef]
 		public CtrRef<SurfaceShaderBaseAsset> Shader { get; set; } = new CtrRef<SurfaceShaderBaseAsset>(); // 0x98 (152)
 		
-		[ContainerField(156), LayoutImmutable, Blittable]
+		[ContainerField(156), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float AlphaCamDistMax { get; set; } // 0x9C (156)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

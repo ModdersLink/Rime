@@ -18,60 +18,60 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class RigidBodyData : 
 		DataContainer
 	{
 		protected Vec3 m_InertiaModifier = new Vec3();
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(3532865534)]
+		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(3532865534)]
 		public Vec3 InertiaModifier { get { return m_InertiaModifier; } set { if (OnPropertyChanging("RigidBodyData." + nameof(InertiaModifier), this, m_InertiaModifier, value)) m_InertiaModifier = value; } } // 0x10 (16)
 		
 		protected RigidBodyType m_RigidBodyType = new RigidBodyType();
-		[ContainerField(32), ContainerFieldNameHash(2892215548)]
+		[ContainerField(32), MemberInfoFlag(137), ContainerFieldNameHash(2892215548)]
 		public RigidBodyType RigidBodyType { get { return m_RigidBodyType; } set { if (OnPropertyChanging("RigidBodyData." + nameof(RigidBodyType), this, m_RigidBodyType, value)) m_RigidBodyType = value; } } // 0x20 (32)
 		
 		protected float m_Mass = new float();
-		[ContainerField(36), LayoutImmutable, Blittable, ContainerFieldNameHash(2088779625)]
+		[ContainerField(36), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2088779625)]
 		public float Mass { get { return m_Mass; } set { if (OnPropertyChanging("RigidBodyData." + nameof(Mass), this, m_Mass, value)) m_Mass = value; } } // 0x24 (36)
 		
 		protected float m_Restitution = new float();
-		[ContainerField(40), LayoutImmutable, Blittable, ContainerFieldNameHash(2298929185)]
+		[ContainerField(40), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2298929185)]
 		public float Restitution { get { return m_Restitution; } set { if (OnPropertyChanging("RigidBodyData." + nameof(Restitution), this, m_Restitution, value)) m_Restitution = value; } } // 0x28 (40)
 		
 		protected float m_Friction = new float();
-		[ContainerField(44), LayoutImmutable, Blittable, ContainerFieldNameHash(306207591)]
+		[ContainerField(44), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(306207591)]
 		public float Friction { get { return m_Friction; } set { if (OnPropertyChanging("RigidBodyData." + nameof(Friction), this, m_Friction, value)) m_Friction = value; } } // 0x2C (44)
 		
 		protected float m_AngularVelocityDamping = new float();
-		[ContainerField(48), LayoutImmutable, Blittable, ContainerFieldNameHash(2367237320)]
+		[ContainerField(48), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2367237320)]
 		public float AngularVelocityDamping { get { return m_AngularVelocityDamping; } set { if (OnPropertyChanging("RigidBodyData." + nameof(AngularVelocityDamping), this, m_AngularVelocityDamping, value)) m_AngularVelocityDamping = value; } } // 0x30 (48)
 		
 		protected float m_LinearVelocityDamping = new float();
-		[ContainerField(52), LayoutImmutable, Blittable, ContainerFieldNameHash(1004384727)]
+		[ContainerField(52), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1004384727)]
 		public float LinearVelocityDamping { get { return m_LinearVelocityDamping; } set { if (OnPropertyChanging("RigidBodyData." + nameof(LinearVelocityDamping), this, m_LinearVelocityDamping, value)) m_LinearVelocityDamping = value; } } // 0x34 (52)
 		
 		protected uint m_InteractionToolkitCollisionVolumeId = new uint();
-		[ContainerField(56), LayoutImmutable, Blittable, ContainerFieldNameHash(92982954)]
+		[ContainerField(56), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(92982954)]
 		public uint InteractionToolkitCollisionVolumeId { get { return m_InteractionToolkitCollisionVolumeId; } set { if (OnPropertyChanging("RigidBodyData." + nameof(InteractionToolkitCollisionVolumeId), this, m_InteractionToolkitCollisionVolumeId, value)) m_InteractionToolkitCollisionVolumeId = value; } } // 0x38 (56)
 		
 		protected RigidBodyMotionType m_MotionType = new RigidBodyMotionType();
-		[ContainerField(60), ContainerFieldNameHash(2158618691)]
+		[ContainerField(60), MemberInfoFlag(137), ContainerFieldNameHash(2158618691)]
 		public RigidBodyMotionType MotionType { get { return m_MotionType; } set { if (OnPropertyChanging("RigidBodyData." + nameof(MotionType), this, m_MotionType, value)) m_MotionType = value; } } // 0x3C (60)
 		
 		protected RigidBodyQualityType m_QualityType = new RigidBodyQualityType();
-		[ContainerField(64), ContainerFieldNameHash(2856027376)]
+		[ContainerField(64), MemberInfoFlag(137), ContainerFieldNameHash(2856027376)]
 		public RigidBodyQualityType QualityType { get { return m_QualityType; } set { if (OnPropertyChanging("RigidBodyData." + nameof(QualityType), this, m_QualityType, value)) m_QualityType = value; } } // 0x40 (64)
 		
 		protected RigidBodyCollisionLayer m_CollisionLayer = new RigidBodyCollisionLayer();
-		[ContainerField(68), ContainerFieldNameHash(719540408)]
+		[ContainerField(68), MemberInfoFlag(137), ContainerFieldNameHash(719540408)]
 		public RigidBodyCollisionLayer CollisionLayer { get { return m_CollisionLayer; } set { if (OnPropertyChanging("RigidBodyData." + nameof(CollisionLayer), this, m_CollisionLayer, value)) m_CollisionLayer = value; } } // 0x44 (68)
 		
 		protected CtrRef<FloatPhysicsData> m_FloatPhysics = new CtrRef<FloatPhysicsData>();
-		[ContainerField(72), ContainerFieldNameHash(2331402366)]
+		[ContainerField(72), MemberInfoFlag(53), ContainerFieldNameHash(2331402366), ContainerCtrRef]
 		public CtrRef<FloatPhysicsData> FloatPhysics { get { return m_FloatPhysics; } set { if (OnPropertyChanging("RigidBodyData." + nameof(FloatPhysics), this, m_FloatPhysics, value)) m_FloatPhysics = value; } } // 0x48 (72)
 		
 		protected RefArray<RigidBodyConstraintData> m_Constraints = new RefArray<RigidBodyConstraintData>();
-		[ContainerField(76), ContainerFieldNameHash(1187639635)]
+		[ContainerField(76), MemberInfoFlag(65), ContainerFieldNameHash(1187639635), ContainerRefArray]
 		public RefArray<RigidBodyConstraintData> Constraints { get { return m_Constraints; } set { if (OnPropertyChanging("RigidBodyData." + nameof(Constraints), this, m_Constraints, value)) m_Constraints = value; } } // 0x4C (76)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

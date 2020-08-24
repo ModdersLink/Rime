@@ -18,64 +18,64 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class HdrSetting : 
 		DataContainer
 	{
 		protected float m_WindowMinTop = new float();
-		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(4075961896)]
+		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(4075961896)]
 		public float WindowMinTop { get { return m_WindowMinTop; } set { if (OnPropertyChanging("HdrSetting." + nameof(WindowMinTop), this, m_WindowMinTop, value)) m_WindowMinTop = value; } } // 0x8 (8)
 		
 		protected float m_WindowMinBottom = new float();
-		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(1280335404)]
+		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1280335404)]
 		public float WindowMinBottom { get { return m_WindowMinBottom; } set { if (OnPropertyChanging("HdrSetting." + nameof(WindowMinBottom), this, m_WindowMinBottom, value)) m_WindowMinBottom = value; } } // 0xC (12)
 		
 		protected float m_WindowTopMinReleaseTime = new float();
-		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(3101523828)]
+		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3101523828)]
 		public float WindowTopMinReleaseTime { get { return m_WindowTopMinReleaseTime; } set { if (OnPropertyChanging("HdrSetting." + nameof(WindowTopMinReleaseTime), this, m_WindowTopMinReleaseTime, value)) m_WindowTopMinReleaseTime = value; } } // 0x10 (16)
 		
 		protected float m_WindowTopMaxReleaseTime = new float();
-		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(980586794)]
+		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(980586794)]
 		public float WindowTopMaxReleaseTime { get { return m_WindowTopMaxReleaseTime; } set { if (OnPropertyChanging("HdrSetting." + nameof(WindowTopMaxReleaseTime), this, m_WindowTopMaxReleaseTime, value)) m_WindowTopMaxReleaseTime = value; } } // 0x14 (20)
 		
 		protected float m_WindowTopAttackTime = new float();
-		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(4009242335)]
+		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(4009242335)]
 		public float WindowTopAttackTime { get { return m_WindowTopAttackTime; } set { if (OnPropertyChanging("HdrSetting." + nameof(WindowTopAttackTime), this, m_WindowTopAttackTime, value)) m_WindowTopAttackTime = value; } } // 0x18 (24)
 		
 		protected float m_WindowBottomReleaseTime = new float();
-		[ContainerField(28), LayoutImmutable, Blittable, ContainerFieldNameHash(2031081370)]
+		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2031081370)]
 		public float WindowBottomReleaseTime { get { return m_WindowBottomReleaseTime; } set { if (OnPropertyChanging("HdrSetting." + nameof(WindowBottomReleaseTime), this, m_WindowBottomReleaseTime, value)) m_WindowBottomReleaseTime = value; } } // 0x1C (28)
 		
 		protected AudioCurve m_WindowTopReleaseTimeCurve = new AudioCurve();
-		[ContainerField(32), ContainerFieldNameHash(3335723049)]
+		[ContainerField(32), MemberInfoFlag(41), ContainerFieldNameHash(3335723049)]
 		public AudioCurve WindowTopReleaseTimeCurve { get { return m_WindowTopReleaseTimeCurve; } set { if (OnPropertyChanging("HdrSetting." + nameof(WindowTopReleaseTimeCurve), this, m_WindowTopReleaseTimeCurve, value)) m_WindowTopReleaseTimeCurve = value; } } // 0x20 (32)
 		
 		protected float m_DischargeFactor = new float();
-		[ContainerField(40), LayoutImmutable, Blittable, ContainerFieldNameHash(3485908236)]
+		[ContainerField(40), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3485908236)]
 		public float DischargeFactor { get { return m_DischargeFactor; } set { if (OnPropertyChanging("HdrSetting." + nameof(DischargeFactor), this, m_DischargeFactor, value)) m_DischargeFactor = value; } } // 0x28 (40)
 		
 		protected float m_MaxAllowedEnergy = new float();
-		[ContainerField(44), LayoutImmutable, Blittable, ContainerFieldNameHash(2165069867)]
+		[ContainerField(44), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2165069867)]
 		public float MaxAllowedEnergy { get { return m_MaxAllowedEnergy; } set { if (OnPropertyChanging("HdrSetting." + nameof(MaxAllowedEnergy), this, m_MaxAllowedEnergy, value)) m_MaxAllowedEnergy = value; } } // 0x2C (44)
 		
 		protected float m_WindowBottomAttackTime = new float();
-		[ContainerField(48), LayoutImmutable, Blittable, ContainerFieldNameHash(1069365659)]
+		[ContainerField(48), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1069365659)]
 		public float WindowBottomAttackTime { get { return m_WindowBottomAttackTime; } set { if (OnPropertyChanging("HdrSetting." + nameof(WindowBottomAttackTime), this, m_WindowBottomAttackTime, value)) m_WindowBottomAttackTime = value; } } // 0x30 (48)
 		
 		protected float m_WindowSize = new float();
-		[ContainerField(52), LayoutImmutable, Blittable, ContainerFieldNameHash(1881978028)]
+		[ContainerField(52), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1881978028)]
 		public float WindowSize { get { return m_WindowSize; } set { if (OnPropertyChanging("HdrSetting." + nameof(WindowSize), this, m_WindowSize, value)) m_WindowSize = value; } } // 0x34 (52)
 		
 		protected float m_CompressFactor = new float();
-		[ContainerField(56), LayoutImmutable, Blittable, ContainerFieldNameHash(2404074926)]
+		[ContainerField(56), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2404074926)]
 		public float CompressFactor { get { return m_CompressFactor; } set { if (OnPropertyChanging("HdrSetting." + nameof(CompressFactor), this, m_CompressFactor, value)) m_CompressFactor = value; } } // 0x38 (56)
 		
 		protected float m_Headroom = new float();
-		[ContainerField(60), LayoutImmutable, Blittable, ContainerFieldNameHash(1877971122)]
+		[ContainerField(60), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1877971122)]
 		public float Headroom { get { return m_Headroom; } set { if (OnPropertyChanging("HdrSetting." + nameof(Headroom), this, m_Headroom, value)) m_Headroom = value; } } // 0x3C (60)
 		
 		protected float m_AllowedOvershoot = new float();
-		[ContainerField(64), LayoutImmutable, Blittable, ContainerFieldNameHash(730342460)]
+		[ContainerField(64), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(730342460)]
 		public float AllowedOvershoot { get { return m_AllowedOvershoot; } set { if (OnPropertyChanging("HdrSetting." + nameof(AllowedOvershoot), this, m_AllowedOvershoot, value)) m_AllowedOvershoot = value; } } // 0x40 (64)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

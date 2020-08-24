@@ -18,48 +18,48 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class MeshAsset : 
 		Asset
 	{
 		protected CtrRef<MeshLodGroup> m_LodGroup = new CtrRef<MeshLodGroup>();
-		[ContainerField(12), ContainerFieldNameHash(2046326013)]
+		[ContainerField(12), MemberInfoFlag(53), ContainerFieldNameHash(2046326013), ContainerCtrRef]
 		public CtrRef<MeshLodGroup> LodGroup { get { return m_LodGroup; } set { if (OnPropertyChanging("MeshAsset." + nameof(LodGroup), this, m_LodGroup, value)) m_LodGroup = value; } } // 0xC (12)
 		
 		protected float m_LodScale = new float();
-		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(2060016442)]
+		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2060016442)]
 		public float LodScale { get { return m_LodScale; } set { if (OnPropertyChanging("MeshAsset." + nameof(LodScale), this, m_LodScale, value)) m_LodScale = value; } } // 0x10 (16)
 		
 		protected float m_CullScale = new float();
-		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(2045441291)]
+		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2045441291)]
 		public float CullScale { get { return m_CullScale; } set { if (OnPropertyChanging("MeshAsset." + nameof(CullScale), this, m_CullScale, value)) m_CullScale = value; } } // 0x14 (20)
 		
 		protected uint m_NameHash = new uint();
-		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(994057744)]
+		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(994057744)]
 		public uint NameHash { get { return m_NameHash; } set { if (OnPropertyChanging("MeshAsset." + nameof(NameHash), this, m_NameHash, value)) m_NameHash = value; } } // 0x18 (24)
 		
 		protected EnlightenType m_EnlightenType = new EnlightenType();
-		[ContainerField(28), ContainerFieldNameHash(1801654019)]
+		[ContainerField(28), MemberInfoFlag(137), ContainerFieldNameHash(1801654019)]
 		public EnlightenType EnlightenType { get { return m_EnlightenType; } set { if (OnPropertyChanging("MeshAsset." + nameof(EnlightenType), this, m_EnlightenType, value)) m_EnlightenType = value; } } // 0x1C (28)
 		
 		protected RefArray<MeshMaterial> m_Materials = new RefArray<MeshMaterial>();
-		[ContainerField(32), ContainerFieldNameHash(2136313565)]
+		[ContainerField(32), MemberInfoFlag(65), ContainerFieldNameHash(2136313565), ContainerRefArray]
 		public RefArray<MeshMaterial> Materials { get { return m_Materials; } set { if (OnPropertyChanging("MeshAsset." + nameof(Materials), this, m_Materials, value)) m_Materials = value; } } // 0x20 (32)
 		
 		protected bool m_OccluderHighPriority = new bool();
-		[ContainerField(36), LayoutImmutable, Blittable, ContainerFieldNameHash(1133933052)]
+		[ContainerField(36), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1133933052)]
 		public bool OccluderHighPriority { get { return m_OccluderHighPriority; } set { if (OnPropertyChanging("MeshAsset." + nameof(OccluderHighPriority), this, m_OccluderHighPriority, value)) m_OccluderHighPriority = value; } } // 0x24 (36)
 		
 		protected bool m_StreamingEnable = new bool();
-		[ContainerField(37), LayoutImmutable, Blittable, ContainerFieldNameHash(958910872)]
+		[ContainerField(37), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(958910872)]
 		public bool StreamingEnable { get { return m_StreamingEnable; } set { if (OnPropertyChanging("MeshAsset." + nameof(StreamingEnable), this, m_StreamingEnable, value)) m_StreamingEnable = value; } } // 0x25 (37)
 		
 		protected bool m_DestructionMaterialEnable = new bool();
-		[ContainerField(38), LayoutImmutable, Blittable, ContainerFieldNameHash(927750673)]
+		[ContainerField(38), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(927750673)]
 		public bool DestructionMaterialEnable { get { return m_DestructionMaterialEnable; } set { if (OnPropertyChanging("MeshAsset." + nameof(DestructionMaterialEnable), this, m_DestructionMaterialEnable, value)) m_DestructionMaterialEnable = value; } } // 0x26 (38)
 		
 		protected bool m_OccluderMeshEnable = new bool();
-		[ContainerField(39), LayoutImmutable, Blittable, ContainerFieldNameHash(1918782450)]
+		[ContainerField(39), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1918782450)]
 		public bool OccluderMeshEnable { get { return m_OccluderMeshEnable; } set { if (OnPropertyChanging("MeshAsset." + nameof(OccluderMeshEnable), this, m_OccluderMeshEnable, value)) m_OccluderMeshEnable = value; } } // 0x27 (39)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

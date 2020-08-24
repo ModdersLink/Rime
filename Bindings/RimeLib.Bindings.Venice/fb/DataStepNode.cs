@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class DataStepNode : 
 		UINodeData
 	{
 		protected CtrRef<UINodePort> m_In = new CtrRef<UINodePort>();
-		[ContainerField(20), ContainerFieldNameHash(5862146)]
+		[ContainerField(20), MemberInfoFlag(53), ContainerFieldNameHash(5862146), ContainerCtrRef]
 		public CtrRef<UINodePort> In { get { return m_In; } set { if (OnPropertyChanging("DataStepNode." + nameof(In), this, m_In, value)) m_In = value; } } // 0x14 (20)
 		
 		protected CtrRef<UINodePort> m_Out = new CtrRef<UINodePort>();
-		[ContainerField(24), ContainerFieldNameHash(193453899)]
+		[ContainerField(24), MemberInfoFlag(53), ContainerFieldNameHash(193453899), ContainerCtrRef]
 		public CtrRef<UINodePort> Out { get { return m_Out; } set { if (OnPropertyChanging("DataStepNode." + nameof(Out), this, m_Out, value)) m_Out = value; } } // 0x18 (24)
 		
 		protected List<float> m_Steps = new List<float>();
-		[ContainerField(28), ContainerFieldNameHash(230752612)]
+		[ContainerField(28), MemberInfoFlag(65), ContainerFieldNameHash(230752612), ContainerArray]
 		public List<float> Steps { get { return m_Steps; } set { if (OnPropertyChanging("DataStepNode." + nameof(Steps), this, m_Steps, value)) m_Steps = value; } } // 0x1C (28)
 		
 		protected UIDataSourceInfo m_CurrentStepDataSource = new UIDataSourceInfo();
-		[ContainerField(32), ContainerFieldNameHash(3729599635)]
+		[ContainerField(32), MemberInfoFlag(41), ContainerFieldNameHash(3729599635)]
 		public UIDataSourceInfo CurrentStepDataSource { get { return m_CurrentStepDataSource; } set { if (OnPropertyChanging("DataStepNode." + nameof(CurrentStepDataSource), this, m_CurrentStepDataSource, value)) m_CurrentStepDataSource = value; } } // 0x20 (32)
 		
 		protected UIDataSourceInfo m_DataSource = new UIDataSourceInfo();
-		[ContainerField(48), ContainerFieldNameHash(3810860200)]
+		[ContainerField(48), MemberInfoFlag(41), ContainerFieldNameHash(3810860200)]
 		public UIDataSourceInfo DataSource { get { return m_DataSource; } set { if (OnPropertyChanging("DataStepNode." + nameof(DataSource), this, m_DataSource, value)) m_DataSource = value; } } // 0x30 (48)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

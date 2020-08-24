@@ -18,36 +18,36 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(8)]
+	[ContainerType(8), MemberInfoFlag(53), ContainerClass]
 	public class OperandLogicNode : 
 		UINodeData
 	{
 		protected UIDataSourceInfo m_LeftDataSourceInfo = new UIDataSourceInfo();
-		[ContainerField(20), ContainerFieldNameHash(872142941)]
+		[ContainerField(20), MemberInfoFlag(41), ContainerFieldNameHash(872142941)]
 		public UIDataSourceInfo LeftDataSourceInfo { get { return m_LeftDataSourceInfo; } set { if (OnPropertyChanging("OperandLogicNode." + nameof(LeftDataSourceInfo), this, m_LeftDataSourceInfo, value)) m_LeftDataSourceInfo = value; } } // 0x14 (20)
 		
 		protected UILogicOperator m_Operator = new UILogicOperator();
-		[ContainerField(36), ContainerFieldNameHash(2153507813)]
+		[ContainerField(36), MemberInfoFlag(137), ContainerFieldNameHash(2153507813)]
 		public UILogicOperator Operator { get { return m_Operator; } set { if (OnPropertyChanging("OperandLogicNode." + nameof(Operator), this, m_Operator, value)) m_Operator = value; } } // 0x24 (36)
 		
 		protected UIDataSourceInfo m_RightDataSourceInfo = new UIDataSourceInfo();
-		[ContainerField(40), ContainerFieldNameHash(3559826726)]
+		[ContainerField(40), MemberInfoFlag(41), ContainerFieldNameHash(3559826726)]
 		public UIDataSourceInfo RightDataSourceInfo { get { return m_RightDataSourceInfo; } set { if (OnPropertyChanging("OperandLogicNode." + nameof(RightDataSourceInfo), this, m_RightDataSourceInfo, value)) m_RightDataSourceInfo = value; } } // 0x28 (40)
 		
 		protected double m_RightLiteralOperand = new double();
-		[ContainerField(56), LayoutImmutable, Blittable, ContainerFieldNameHash(2434142605)]
+		[ContainerField(56), LayoutImmutable, Blittable, MemberInfoFlag(49485), ContainerFieldNameHash(2434142605)]
 		public double RightLiteralOperand { get { return m_RightLiteralOperand; } set { if (OnPropertyChanging("OperandLogicNode." + nameof(RightLiteralOperand), this, m_RightLiteralOperand, value)) m_RightLiteralOperand = value; } } // 0x38 (56)
 		
 		protected CtrRef<UINodePort> m_In = new CtrRef<UINodePort>();
-		[ContainerField(64), ContainerFieldNameHash(5862146)]
+		[ContainerField(64), MemberInfoFlag(53), ContainerFieldNameHash(5862146), ContainerCtrRef]
 		public CtrRef<UINodePort> In { get { return m_In; } set { if (OnPropertyChanging("OperandLogicNode." + nameof(In), this, m_In, value)) m_In = value; } } // 0x40 (64)
 		
 		protected CtrRef<UINodePort> m_True = new CtrRef<UINodePort>();
-		[ContainerField(68), ContainerFieldNameHash(2089293587)]
+		[ContainerField(68), MemberInfoFlag(53), ContainerFieldNameHash(2089293587), ContainerCtrRef]
 		public CtrRef<UINodePort> True { get { return m_True; } set { if (OnPropertyChanging("OperandLogicNode." + nameof(True), this, m_True, value)) m_True = value; } } // 0x44 (68)
 		
 		protected CtrRef<UINodePort> m_False = new CtrRef<UINodePort>();
-		[ContainerField(72), ContainerFieldNameHash(206401336)]
+		[ContainerField(72), MemberInfoFlag(53), ContainerFieldNameHash(206401336), ContainerCtrRef]
 		public CtrRef<UINodePort> False { get { return m_False; } set { if (OnPropertyChanging("OperandLogicNode." + nameof(False), this, m_False, value)) m_False = value; } } // 0x48 (72)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

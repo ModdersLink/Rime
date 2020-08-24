@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class VehicleSoundData : 
 		DataContainer
 	{
 		protected CtrRef<SoundAsset> m_BulletImpact = new CtrRef<SoundAsset>();
-		[ContainerField(8), ContainerFieldNameHash(1157477793)]
+		[ContainerField(8), MemberInfoFlag(53), ContainerFieldNameHash(1157477793), ContainerCtrRef]
 		public CtrRef<SoundAsset> BulletImpact { get { return m_BulletImpact; } set { if (OnPropertyChanging("VehicleSoundData." + nameof(BulletImpact), this, m_BulletImpact, value)) m_BulletImpact = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

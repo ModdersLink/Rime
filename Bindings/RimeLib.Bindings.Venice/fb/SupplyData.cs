@@ -18,25 +18,25 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(41), ContainerStruct]
 	public class SupplyData : FrostbiteContainer
 	{
-		[ContainerField(0)]
+		[ContainerField(0), MemberInfoFlag(41)]
 		public SupplyUnitSphereData Healing { get; set; } = new SupplyUnitSphereData(); // 0x0 (0)
 		
-		[ContainerField(20)]
+		[ContainerField(20), MemberInfoFlag(41)]
 		public SupplyUnitSphereData Ammo { get; set; } = new SupplyUnitSphereData(); // 0x14 (20)
 		
-		[ContainerField(40), LayoutImmutable, Blittable]
+		[ContainerField(40), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool SupplyVehicles { get; set; } // 0x28 (40)
 		
-		[ContainerField(41), LayoutImmutable, Blittable]
+		[ContainerField(41), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool SupplySoldiers { get; set; } // 0x29 (41)
 		
-		[ContainerField(42), LayoutImmutable, Blittable]
+		[ContainerField(42), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool TeamSpecific { get; set; } // 0x2A (42)
 		
-		[ContainerField(43), LayoutImmutable, Blittable]
+		[ContainerField(43), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool ExcludeSelf { get; set; } // 0x2B (43)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

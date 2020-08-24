@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class PlayerData : 
 		Asset
 	{
 		protected CtrRef<PlayerViewData> m_PlayerView = new CtrRef<PlayerViewData>();
-		[ContainerField(12), ContainerFieldNameHash(774623483)]
+		[ContainerField(12), MemberInfoFlag(53), ContainerFieldNameHash(774623483), ContainerCtrRef]
 		public CtrRef<PlayerViewData> PlayerView { get { return m_PlayerView; } set { if (OnPropertyChanging("PlayerData." + nameof(PlayerView), this, m_PlayerView, value)) m_PlayerView = value; } } // 0xC (12)
 		
 		protected CtrRef<EntryInputActionMapsData> m_InputConceptDefinition = new CtrRef<EntryInputActionMapsData>();
-		[ContainerField(16), ContainerFieldNameHash(1770668454)]
+		[ContainerField(16), MemberInfoFlag(53), ContainerFieldNameHash(1770668454), ContainerCtrRef]
 		public CtrRef<EntryInputActionMapsData> InputConceptDefinition { get { return m_InputConceptDefinition; } set { if (OnPropertyChanging("PlayerData." + nameof(InputConceptDefinition), this, m_InputConceptDefinition, value)) m_InputConceptDefinition = value; } } // 0x10 (16)
 		
 		protected CtrRef<InputActionMappingsData> m_InputMapping = new CtrRef<InputActionMappingsData>();
-		[ContainerField(20), ContainerFieldNameHash(1744270687)]
+		[ContainerField(20), MemberInfoFlag(53), ContainerFieldNameHash(1744270687), ContainerCtrRef]
 		public CtrRef<InputActionMappingsData> InputMapping { get { return m_InputMapping; } set { if (OnPropertyChanging("PlayerData." + nameof(InputMapping), this, m_InputMapping, value)) m_InputMapping = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

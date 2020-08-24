@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class BigWorldSettingsAsset : 
 		Asset
 	{
 		protected RefArray<BigWorldSetting> m_Settings = new RefArray<BigWorldSetting>();
-		[ContainerField(12), ContainerFieldNameHash(649772672)]
+		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(649772672), ContainerRefArray]
 		public RefArray<BigWorldSetting> Settings { get { return m_Settings; } set { if (OnPropertyChanging("BigWorldSettingsAsset." + nameof(Settings), this, m_Settings, value)) m_Settings = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

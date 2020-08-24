@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class RandomEvaluatorData : 
 		EvaluatorData
 	{
 		protected float m_Max = new float();
-		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(193446865)]
+		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(193446865)]
 		public float Max { get { return m_Max; } set { if (OnPropertyChanging("RandomEvaluatorData." + nameof(Max), this, m_Max, value)) m_Max = value; } } // 0xC (12)
 		
 		protected float m_Min = new float();
-		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(193446607)]
+		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(193446607)]
 		public float Min { get { return m_Min; } set { if (OnPropertyChanging("RandomEvaluatorData." + nameof(Min), this, m_Min, value)) m_Min = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class AABBData : 
 		BaseShapeData
 	{
 		protected Vec3 m_Position = new Vec3();
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(3402582524)]
+		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(3402582524)]
 		public Vec3 Position { get { return m_Position; } set { if (OnPropertyChanging("AABBData." + nameof(Position), this, m_Position, value)) m_Position = value; } } // 0x10 (16)
 		
 		protected Vec3 m_HalfExtents = new Vec3();
-		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(905253763)]
+		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(905253763)]
 		public Vec3 HalfExtents { get { return m_HalfExtents; } set { if (OnPropertyChanging("AABBData." + nameof(HalfExtents), this, m_HalfExtents, value)) m_HalfExtents = value; } } // 0x20 (32)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

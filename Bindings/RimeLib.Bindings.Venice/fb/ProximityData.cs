@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class ProximityData : 
 		DataContainer
 	{
 		protected ProximityObjectType m_ProximityType = new ProximityObjectType();
-		[ContainerField(8), ContainerFieldNameHash(259289960)]
+		[ContainerField(8), MemberInfoFlag(137), ContainerFieldNameHash(259289960)]
 		public ProximityObjectType ProximityType { get { return m_ProximityType; } set { if (OnPropertyChanging("ProximityData." + nameof(ProximityType), this, m_ProximityType, value)) m_ProximityType = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

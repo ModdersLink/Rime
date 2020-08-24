@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class StaticEnlightenEntityData : 
 		EnlightenEntityData
 	{
 		protected CtrRef<StaticEnlightenData> m_EnlightenData = new CtrRef<StaticEnlightenData>();
-		[ContainerField(24), ContainerFieldNameHash(1802220171)]
+		[ContainerField(24), MemberInfoFlag(53), ContainerFieldNameHash(1802220171), ContainerCtrRef]
 		public CtrRef<StaticEnlightenData> EnlightenData { get { return m_EnlightenData; } set { if (OnPropertyChanging("StaticEnlightenEntityData." + nameof(EnlightenData), this, m_EnlightenData, value)) m_EnlightenData = value; } } // 0x18 (24)
 		
 		protected CtrRef<EnlightenDataAsset> m_DynamicEnlightenData = new CtrRef<EnlightenDataAsset>();
-		[ContainerField(28), ContainerFieldNameHash(79303358)]
+		[ContainerField(28), MemberInfoFlag(53), ContainerFieldNameHash(79303358), ContainerCtrRef]
 		public CtrRef<EnlightenDataAsset> DynamicEnlightenData { get { return m_DynamicEnlightenData; } set { if (OnPropertyChanging("StaticEnlightenEntityData." + nameof(DynamicEnlightenData), this, m_DynamicEnlightenData, value)) m_DynamicEnlightenData = value; } } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

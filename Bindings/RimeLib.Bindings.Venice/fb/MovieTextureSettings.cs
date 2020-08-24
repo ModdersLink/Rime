@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class MovieTextureSettings : 
 		DataContainer
 	{
 		protected bool m_Enable = new bool();
-		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(2342790116)]
+		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2342790116)]
 		public bool Enable { get { return m_Enable; } set { if (OnPropertyChanging("MovieTextureSettings." + nameof(Enable), this, m_Enable, value)) m_Enable = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

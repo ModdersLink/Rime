@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class VeniceMatchmakingLevelDescriptionComponent : 
 		LevelDescriptionComponent
 	{
 		protected string m_Mod = string.Empty;
-		[ContainerField(8), LayoutImmutable, ContainerFieldNameHash(193446659)]
+		[ContainerField(8), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(193446659)]
 		public string Mod { get { return m_Mod; } set { if (OnPropertyChanging("VeniceMatchmakingLevelDescriptionComponent." + nameof(Mod), this, m_Mod, value)) m_Mod = value; } } // 0x8 (8)
 		
 		protected List<string> m_Licenses = new List<string>();
-		[ContainerField(12), ContainerFieldNameHash(2259172461)]
+		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(2259172461), ContainerArray]
 		public List<string> Licenses { get { return m_Licenses; } set { if (OnPropertyChanging("VeniceMatchmakingLevelDescriptionComponent." + nameof(Licenses), this, m_Licenses, value)) m_Licenses = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class MaterialSoldierSoundSettings : 
 		DataContainer
 	{
 		protected CtrRef<SoundAsset> m_FootStepSound = new CtrRef<SoundAsset>();
-		[ContainerField(8), ContainerFieldNameHash(556404134)]
+		[ContainerField(8), MemberInfoFlag(53), ContainerFieldNameHash(556404134), ContainerCtrRef]
 		public CtrRef<SoundAsset> FootStepSound { get { return m_FootStepSound; } set { if (OnPropertyChanging("MaterialSoldierSoundSettings." + nameof(FootStepSound), this, m_FootStepSound, value)) m_FootStepSound = value; } } // 0x8 (8)
 		
 		protected CtrRef<SoundAsset> m_ProneSound = new CtrRef<SoundAsset>();
-		[ContainerField(12), ContainerFieldNameHash(130192352)]
+		[ContainerField(12), MemberInfoFlag(53), ContainerFieldNameHash(130192352), ContainerCtrRef]
 		public CtrRef<SoundAsset> ProneSound { get { return m_ProneSound; } set { if (OnPropertyChanging("MaterialSoldierSoundSettings." + nameof(ProneSound), this, m_ProneSound, value)) m_ProneSound = value; } } // 0xC (12)
 		
 		protected CtrRef<SoundAsset> m_LandSound = new CtrRef<SoundAsset>();
-		[ContainerField(16), ContainerFieldNameHash(3226502081)]
+		[ContainerField(16), MemberInfoFlag(53), ContainerFieldNameHash(3226502081), ContainerCtrRef]
 		public CtrRef<SoundAsset> LandSound { get { return m_LandSound; } set { if (OnPropertyChanging("MaterialSoldierSoundSettings." + nameof(LandSound), this, m_LandSound, value)) m_LandSound = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

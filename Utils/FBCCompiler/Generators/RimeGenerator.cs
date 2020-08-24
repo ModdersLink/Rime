@@ -132,6 +132,8 @@ namespace FBCC.Generators
 
         private void WriteClass(ContainerClass p_Class)
         {
+            p_Class.AddAttribute(new ContainerAttribute("ContainerClass"));
+
 	        var s_ClassAttributes = string.Join(", ", p_Class.Attributes);
 
 	        m_Writer.WriteLine(m_Indent + "[ContainerType{0}{1}]",
@@ -165,13 +167,19 @@ namespace FBCC.Generators
                 if (string.IsNullOrWhiteSpace(s_Type))
                     continue;
 
-                var s_Attribute = new ContainerAttribute("ContainerFieldNameHash");
-                s_Attribute.Parameters.Add(new ContainerIntegerAttributeParam(fb_hashQuick(s_Member.Name)));
+                // Add custom attributes
+                var s_FieldNameHashAttribute = new ContainerAttribute("ContainerFieldNameHash");
+                s_FieldNameHashAttribute.Parameters.Add(new ContainerIntegerAttributeParam(fb_hashQuick(s_Member.Name)));
+                s_Member.Attributes.Add(s_FieldNameHashAttribute);
 
-                s_Member.Attributes.Add(s_Attribute);
+                if (s_Pointer && s_Member.Array)
+                    s_Member.Attributes.Add(new ContainerAttribute("ContainerRefArray"));
+                if (s_Pointer && !s_Member.Array)
+                    s_Member.Attributes.Add(new ContainerAttribute("ContainerCtrRef"));
+                if (!s_Pointer && s_Member.Array)
+                    s_Member.Attributes.Add(new ContainerAttribute("ContainerArray"));
 
                 var s_FieldAttributes = string.Join(", ", s_Member.Attributes);
-                
 
                 if (s_Pointer && s_Member.Array)
                 {
@@ -427,6 +435,9 @@ namespace FBCC.Generators
 
         private void WriteStruct(ContainerStruct p_Struct)
 		{
+            // Add this attribute for easier serialization later
+            p_Struct.AddAttribute(new ContainerAttribute("ContainerStruct"));
+
 			var s_StructAttributes = string.Join(", ", p_Struct.Attributes);
 
 			m_Writer.WriteLine(m_Indent + "[ContainerType{0}{1}]",
@@ -446,6 +457,14 @@ namespace FBCC.Generators
             {
                 var s_Pointer = s_Member.MemberType == ContainerMemberType.Container &&
                                 ContainerManager.HasClass(s_Member.ContainerType);
+
+                // Add custom attributes to help with serialization
+                if (s_Pointer && s_Member.Array)
+                    s_Member.Attributes.Add(new ContainerAttribute("ContainerRefArray"));
+                if (s_Pointer && !s_Member.Array)
+                    s_Member.Attributes.Add(new ContainerAttribute("ContainerCtrRef"));
+                if (!s_Pointer && s_Member.Array)
+                    s_Member.Attributes.Add(new ContainerAttribute("ContainerArray"));
 
                 var s_Type = GetMemberType(s_Member);
 
@@ -672,6 +691,8 @@ namespace FBCC.Generators
 
         private void WriteEnum(ContainerEnum p_Enum)
         {
+            p_Enum.AddAttribute(new ContainerAttribute("ContainerEnum"));
+
             var s_Type = GetEnumType(p_Enum);
 
 			var s_EnumAttributes = string.Join(", ", p_Enum.Attributes);

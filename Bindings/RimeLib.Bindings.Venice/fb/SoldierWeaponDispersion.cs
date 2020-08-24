@@ -18,31 +18,31 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(41), ContainerStruct]
 	public class SoldierWeaponDispersion : FrostbiteContainer
 	{
-		[ContainerField(0)]
+		[ContainerField(0), MemberInfoFlag(41)]
 		public FiringDispersionData StandDispersion { get; set; } = new FiringDispersionData(); // 0x0 (0)
 		
-		[ContainerField(16)]
+		[ContainerField(16), MemberInfoFlag(41)]
 		public FiringDispersionData CrouchDispersion { get; set; } = new FiringDispersionData(); // 0x10 (16)
 		
-		[ContainerField(32)]
+		[ContainerField(32), MemberInfoFlag(41)]
 		public FiringDispersionData ProneDispersion { get; set; } = new FiringDispersionData(); // 0x20 (32)
 		
-		[ContainerField(48), LayoutImmutable, Blittable]
+		[ContainerField(48), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float JumpDispersionAngle { get; set; } // 0x30 (48)
 		
-		[ContainerField(52), LayoutImmutable, Blittable]
+		[ContainerField(52), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float ProneTransitionDispersionAngle { get; set; } // 0x34 (52)
 		
-		[ContainerField(56), LayoutImmutable, Blittable]
+		[ContainerField(56), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float MoveDispersionAngle { get; set; } // 0x38 (56)
 		
-		[ContainerField(60), LayoutImmutable, Blittable]
+		[ContainerField(60), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float MoveZoomedDispersionAngle { get; set; } // 0x3C (60)
 		
-		[ContainerField(64), LayoutImmutable, Blittable]
+		[ContainerField(64), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float DecreasePerSecond { get; set; } // 0x40 (64)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

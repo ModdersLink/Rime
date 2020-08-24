@@ -18,25 +18,25 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(41), ContainerStruct]
 	public class PackagingDetailInfo : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, Blittable]
+		[ContainerField(0), LayoutImmutable, Blittable, MemberInfoFlag(49405)]
 		public int MipsToSkip { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable, Blittable]
+		[ContainerField(4), LayoutImmutable, Blittable, MemberInfoFlag(49405)]
 		public int LodsToSkip { get; set; } // 0x4 (4)
 		
-		[ContainerField(8), LayoutImmutable, Blittable]
+		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool IncludeAnimation { get; set; } // 0x8 (8)
 		
-		[ContainerField(9), LayoutImmutable, Blittable]
+		[ContainerField(9), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool IncludeMeshes { get; set; } // 0x9 (9)
 		
-		[ContainerField(10), LayoutImmutable, Blittable]
+		[ContainerField(10), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool IncludeSounds { get; set; } // 0xA (10)
 		
-		[ContainerField(11), LayoutImmutable, Blittable]
+		[ContainerField(11), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool IncludeTextures { get; set; } // 0xB (11)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

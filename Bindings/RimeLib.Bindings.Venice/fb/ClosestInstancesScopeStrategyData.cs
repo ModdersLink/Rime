@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class ClosestInstancesScopeStrategyData : 
 		SoundScopeStrategyData
 	{
 		protected uint m_Count = new uint();
-		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(212413894)]
+		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(212413894)]
 		public uint Count { get { return m_Count; } set { if (OnPropertyChanging("ClosestInstancesScopeStrategyData." + nameof(Count), this, m_Count, value)) m_Count = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

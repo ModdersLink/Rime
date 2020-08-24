@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class Crossfader2NodeData : 
 		AudioGraphNodeData
 	{
 		protected AudioGraphNodePort m_Ctrl = new AudioGraphNodePort();
-		[ContainerField(8), ContainerFieldNameHash(2088859916)]
+		[ContainerField(8), MemberInfoFlag(41), ContainerFieldNameHash(2088859916)]
 		public AudioGraphNodePort Ctrl { get { return m_Ctrl; } set { if (OnPropertyChanging("Crossfader2NodeData." + nameof(Ctrl), this, m_Ctrl, value)) m_Ctrl = value; } } // 0x8 (8)
 		
 		protected AudioGraphNodePort m_CtrlOut1 = new AudioGraphNodePort();
-		[ContainerField(16), ContainerFieldNameHash(1670261395)]
+		[ContainerField(16), MemberInfoFlag(41), ContainerFieldNameHash(1670261395)]
 		public AudioGraphNodePort CtrlOut1 { get { return m_CtrlOut1; } set { if (OnPropertyChanging("Crossfader2NodeData." + nameof(CtrlOut1), this, m_CtrlOut1, value)) m_CtrlOut1 = value; } } // 0x10 (16)
 		
 		protected AudioGraphNodePort m_CtrlOut2 = new AudioGraphNodePort();
-		[ContainerField(24), ContainerFieldNameHash(1670261392)]
+		[ContainerField(24), MemberInfoFlag(41), ContainerFieldNameHash(1670261392)]
 		public AudioGraphNodePort CtrlOut2 { get { return m_CtrlOut2; } set { if (OnPropertyChanging("Crossfader2NodeData." + nameof(CtrlOut2), this, m_CtrlOut2, value)) m_CtrlOut2 = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

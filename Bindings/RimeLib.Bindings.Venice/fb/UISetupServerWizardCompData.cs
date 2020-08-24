@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class UISetupServerWizardCompData : 
 		UIComponentData
 	{
 		protected int m_PasswdMinLen = new int();
-		[ContainerField(28), LayoutImmutable, Blittable, ContainerFieldNameHash(3300371370)]
+		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(3300371370)]
 		public int PasswdMinLen { get { return m_PasswdMinLen; } set { if (OnPropertyChanging("UISetupServerWizardCompData." + nameof(PasswdMinLen), this, m_PasswdMinLen, value)) m_PasswdMinLen = value; } } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

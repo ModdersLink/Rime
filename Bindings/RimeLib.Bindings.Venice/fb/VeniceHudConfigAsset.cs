@@ -18,112 +18,112 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class VeniceHudConfigAsset : 
 		DataContainer
 	{
 		protected CtrRef<SoundWaveAsset> m_AmmoPickupSound = new CtrRef<SoundWaveAsset>();
-		[ContainerField(8), ContainerFieldNameHash(1035113052)]
+		[ContainerField(8), MemberInfoFlag(53), ContainerFieldNameHash(1035113052), ContainerCtrRef]
 		public CtrRef<SoundWaveAsset> AmmoPickupSound { get { return m_AmmoPickupSound; } set { if (OnPropertyChanging("VeniceHudConfigAsset." + nameof(AmmoPickupSound), this, m_AmmoPickupSound, value)) m_AmmoPickupSound = value; } } // 0x8 (8)
 		
 		protected CtrRef<SoundWaveAsset> m_WeaponPickupSound = new CtrRef<SoundWaveAsset>();
-		[ContainerField(12), ContainerFieldNameHash(574181488)]
+		[ContainerField(12), MemberInfoFlag(53), ContainerFieldNameHash(574181488), ContainerCtrRef]
 		public CtrRef<SoundWaveAsset> WeaponPickupSound { get { return m_WeaponPickupSound; } set { if (OnPropertyChanging("VeniceHudConfigAsset." + nameof(WeaponPickupSound), this, m_WeaponPickupSound, value)) m_WeaponPickupSound = value; } } // 0xC (12)
 		
 		protected CtrRef<SoundWaveAsset> m_NewObjectiveSound = new CtrRef<SoundWaveAsset>();
-		[ContainerField(16), ContainerFieldNameHash(1841129077)]
+		[ContainerField(16), MemberInfoFlag(53), ContainerFieldNameHash(1841129077), ContainerCtrRef]
 		public CtrRef<SoundWaveAsset> NewObjectiveSound { get { return m_NewObjectiveSound; } set { if (OnPropertyChanging("VeniceHudConfigAsset." + nameof(NewObjectiveSound), this, m_NewObjectiveSound, value)) m_NewObjectiveSound = value; } } // 0x10 (16)
 		
 		protected CtrRef<SoundWaveAsset> m_ObjectiveCompletedSound = new CtrRef<SoundWaveAsset>();
-		[ContainerField(20), ContainerFieldNameHash(2161871908)]
+		[ContainerField(20), MemberInfoFlag(53), ContainerFieldNameHash(2161871908), ContainerCtrRef]
 		public CtrRef<SoundWaveAsset> ObjectiveCompletedSound { get { return m_ObjectiveCompletedSound; } set { if (OnPropertyChanging("VeniceHudConfigAsset." + nameof(ObjectiveCompletedSound), this, m_ObjectiveCompletedSound, value)) m_ObjectiveCompletedSound = value; } } // 0x14 (20)
 		
 		protected CtrRef<SoundWaveAsset> m_ObjectiveUpdatedSound = new CtrRef<SoundWaveAsset>();
-		[ContainerField(24), ContainerFieldNameHash(3617975644)]
+		[ContainerField(24), MemberInfoFlag(53), ContainerFieldNameHash(3617975644), ContainerCtrRef]
 		public CtrRef<SoundWaveAsset> ObjectiveUpdatedSound { get { return m_ObjectiveUpdatedSound; } set { if (OnPropertyChanging("VeniceHudConfigAsset." + nameof(ObjectiveUpdatedSound), this, m_ObjectiveUpdatedSound, value)) m_ObjectiveUpdatedSound = value; } } // 0x18 (24)
 		
 		protected CtrRef<SoundWaveAsset> m_MPVictorySoundMec = new CtrRef<SoundWaveAsset>();
-		[ContainerField(28), ContainerFieldNameHash(397160828)]
+		[ContainerField(28), MemberInfoFlag(53), ContainerFieldNameHash(397160828), ContainerCtrRef]
 		public CtrRef<SoundWaveAsset> MPVictorySoundMec { get { return m_MPVictorySoundMec; } set { if (OnPropertyChanging("VeniceHudConfigAsset." + nameof(MPVictorySoundMec), this, m_MPVictorySoundMec, value)) m_MPVictorySoundMec = value; } } // 0x1C (28)
 		
 		protected CtrRef<SoundWaveAsset> m_MPVictorySoundUs = new CtrRef<SoundWaveAsset>();
-		[ContainerField(32), ContainerFieldNameHash(1313539633)]
+		[ContainerField(32), MemberInfoFlag(53), ContainerFieldNameHash(1313539633), ContainerCtrRef]
 		public CtrRef<SoundWaveAsset> MPVictorySoundUs { get { return m_MPVictorySoundUs; } set { if (OnPropertyChanging("VeniceHudConfigAsset." + nameof(MPVictorySoundUs), this, m_MPVictorySoundUs, value)) m_MPVictorySoundUs = value; } } // 0x20 (32)
 		
 		protected CtrRef<SoundWaveAsset> m_MPVictorySoundRu = new CtrRef<SoundWaveAsset>();
-		[ContainerField(36), ContainerFieldNameHash(1313539792)]
+		[ContainerField(36), MemberInfoFlag(53), ContainerFieldNameHash(1313539792), ContainerCtrRef]
 		public CtrRef<SoundWaveAsset> MPVictorySoundRu { get { return m_MPVictorySoundRu; } set { if (OnPropertyChanging("VeniceHudConfigAsset." + nameof(MPVictorySoundRu), this, m_MPVictorySoundRu, value)) m_MPVictorySoundRu = value; } } // 0x24 (36)
 		
 		protected CtrRef<SoundWaveAsset> m_MPDefeatSoundMec = new CtrRef<SoundWaveAsset>();
-		[ContainerField(40), ContainerFieldNameHash(3033616263)]
+		[ContainerField(40), MemberInfoFlag(53), ContainerFieldNameHash(3033616263), ContainerCtrRef]
 		public CtrRef<SoundWaveAsset> MPDefeatSoundMec { get { return m_MPDefeatSoundMec; } set { if (OnPropertyChanging("VeniceHudConfigAsset." + nameof(MPDefeatSoundMec), this, m_MPDefeatSoundMec, value)) m_MPDefeatSoundMec = value; } } // 0x28 (40)
 		
 		protected CtrRef<SoundWaveAsset> m_MPDefeatSoundUs = new CtrRef<SoundWaveAsset>();
-		[ContainerField(44), ContainerFieldNameHash(3996444266)]
+		[ContainerField(44), MemberInfoFlag(53), ContainerFieldNameHash(3996444266), ContainerCtrRef]
 		public CtrRef<SoundWaveAsset> MPDefeatSoundUs { get { return m_MPDefeatSoundUs; } set { if (OnPropertyChanging("VeniceHudConfigAsset." + nameof(MPDefeatSoundUs), this, m_MPDefeatSoundUs, value)) m_MPDefeatSoundUs = value; } } // 0x2C (44)
 		
 		protected CtrRef<SoundWaveAsset> m_MPDefeatSoundRu = new CtrRef<SoundWaveAsset>();
-		[ContainerField(48), ContainerFieldNameHash(3996444363)]
+		[ContainerField(48), MemberInfoFlag(53), ContainerFieldNameHash(3996444363), ContainerCtrRef]
 		public CtrRef<SoundWaveAsset> MPDefeatSoundRu { get { return m_MPDefeatSoundRu; } set { if (OnPropertyChanging("VeniceHudConfigAsset." + nameof(MPDefeatSoundRu), this, m_MPDefeatSoundRu, value)) m_MPDefeatSoundRu = value; } } // 0x30 (48)
 		
 		protected CtrRef<SoundWaveAsset> m_ArtilleryAiming = new CtrRef<SoundWaveAsset>();
-		[ContainerField(52), ContainerFieldNameHash(2653209888)]
+		[ContainerField(52), MemberInfoFlag(53), ContainerFieldNameHash(2653209888), ContainerCtrRef]
 		public CtrRef<SoundWaveAsset> ArtilleryAiming { get { return m_ArtilleryAiming; } set { if (OnPropertyChanging("VeniceHudConfigAsset." + nameof(ArtilleryAiming), this, m_ArtilleryAiming, value)) m_ArtilleryAiming = value; } } // 0x34 (52)
 		
 		protected CtrRef<SoundWaveAsset> m_ArtilleryAimingOOA = new CtrRef<SoundWaveAsset>();
-		[ContainerField(56), ContainerFieldNameHash(129857345)]
+		[ContainerField(56), MemberInfoFlag(53), ContainerFieldNameHash(129857345), ContainerCtrRef]
 		public CtrRef<SoundWaveAsset> ArtilleryAimingOOA { get { return m_ArtilleryAimingOOA; } set { if (OnPropertyChanging("VeniceHudConfigAsset." + nameof(ArtilleryAimingOOA), this, m_ArtilleryAimingOOA, value)) m_ArtilleryAimingOOA = value; } } // 0x38 (56)
 		
 		protected CtrRef<SoundWaveAsset> m_MortarStrikeLocking = new CtrRef<SoundWaveAsset>();
-		[ContainerField(60), ContainerFieldNameHash(2962838539)]
+		[ContainerField(60), MemberInfoFlag(53), ContainerFieldNameHash(2962838539), ContainerCtrRef]
 		public CtrRef<SoundWaveAsset> MortarStrikeLocking { get { return m_MortarStrikeLocking; } set { if (OnPropertyChanging("VeniceHudConfigAsset." + nameof(MortarStrikeLocking), this, m_MortarStrikeLocking, value)) m_MortarStrikeLocking = value; } } // 0x3C (60)
 		
 		protected CtrRef<SoundWaveAsset> m_LaserDesignatorLocked = new CtrRef<SoundWaveAsset>();
-		[ContainerField(64), ContainerFieldNameHash(2363796156)]
+		[ContainerField(64), MemberInfoFlag(53), ContainerFieldNameHash(2363796156), ContainerCtrRef]
 		public CtrRef<SoundWaveAsset> LaserDesignatorLocked { get { return m_LaserDesignatorLocked; } set { if (OnPropertyChanging("VeniceHudConfigAsset." + nameof(LaserDesignatorLocked), this, m_LaserDesignatorLocked, value)) m_LaserDesignatorLocked = value; } } // 0x40 (64)
 		
 		protected CtrRef<SoundWaveAsset> m_LaserDesignatorLocking = new CtrRef<SoundWaveAsset>();
-		[ContainerField(68), ContainerFieldNameHash(695857437)]
+		[ContainerField(68), MemberInfoFlag(53), ContainerFieldNameHash(695857437), ContainerCtrRef]
 		public CtrRef<SoundWaveAsset> LaserDesignatorLocking { get { return m_LaserDesignatorLocking; } set { if (OnPropertyChanging("VeniceHudConfigAsset." + nameof(LaserDesignatorLocking), this, m_LaserDesignatorLocking, value)) m_LaserDesignatorLocking = value; } } // 0x44 (68)
 		
 		protected RefArray<UINametag> m_Nametags = new RefArray<UINametag>();
-		[ContainerField(72), ContainerFieldNameHash(995562467)]
+		[ContainerField(72), MemberInfoFlag(65), ContainerFieldNameHash(995562467), ContainerRefArray]
 		public RefArray<UINametag> Nametags { get { return m_Nametags; } set { if (OnPropertyChanging("VeniceHudConfigAsset." + nameof(Nametags), this, m_Nametags, value)) m_Nametags = value; } } // 0x48 (72)
 		
 		protected List<SpawnScreenWeaponData> m_SpawnScreenWeapons = new List<SpawnScreenWeaponData>();
-		[ContainerField(76), ContainerFieldNameHash(683915459)]
+		[ContainerField(76), MemberInfoFlag(65), ContainerFieldNameHash(683915459), ContainerArray]
 		public List<SpawnScreenWeaponData> SpawnScreenWeapons { get { return m_SpawnScreenWeapons; } set { if (OnPropertyChanging("VeniceHudConfigAsset." + nameof(SpawnScreenWeapons), this, m_SpawnScreenWeapons, value)) m_SpawnScreenWeapons = value; } } // 0x4C (76)
 		
 		protected float m_MaxOrderIconDistance = new float();
-		[ContainerField(80), LayoutImmutable, Blittable, ContainerFieldNameHash(1785001655)]
+		[ContainerField(80), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1785001655)]
 		public float MaxOrderIconDistance { get { return m_MaxOrderIconDistance; } set { if (OnPropertyChanging("VeniceHudConfigAsset." + nameof(MaxOrderIconDistance), this, m_MaxOrderIconDistance, value)) m_MaxOrderIconDistance = value; } } // 0x50 (80)
 		
 		protected float m_InnerNametagRadius = new float();
-		[ContainerField(84), LayoutImmutable, Blittable, ContainerFieldNameHash(2232877206)]
+		[ContainerField(84), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2232877206)]
 		public float InnerNametagRadius { get { return m_InnerNametagRadius; } set { if (OnPropertyChanging("VeniceHudConfigAsset." + nameof(InnerNametagRadius), this, m_InnerNametagRadius, value)) m_InnerNametagRadius = value; } } // 0x54 (84)
 		
 		protected float m_OuterNametagRadius = new float();
-		[ContainerField(88), LayoutImmutable, Blittable, ContainerFieldNameHash(2112874321)]
+		[ContainerField(88), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2112874321)]
 		public float OuterNametagRadius { get { return m_OuterNametagRadius; } set { if (OnPropertyChanging("VeniceHudConfigAsset." + nameof(OuterNametagRadius), this, m_OuterNametagRadius, value)) m_OuterNametagRadius = value; } } // 0x58 (88)
 		
 		protected float m_CriticalHealthThreshold = new float();
-		[ContainerField(92), LayoutImmutable, Blittable, ContainerFieldNameHash(3436084165)]
+		[ContainerField(92), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3436084165)]
 		public float CriticalHealthThreshold { get { return m_CriticalHealthThreshold; } set { if (OnPropertyChanging("VeniceHudConfigAsset." + nameof(CriticalHealthThreshold), this, m_CriticalHealthThreshold, value)) m_CriticalHealthThreshold = value; } } // 0x5C (92)
 		
 		protected UITaggedVehicleCrosshair m_TaggedVehicleCrosshair = new UITaggedVehicleCrosshair();
-		[ContainerField(96), ContainerFieldNameHash(4212658085)]
+		[ContainerField(96), MemberInfoFlag(41), ContainerFieldNameHash(4212658085)]
 		public UITaggedVehicleCrosshair TaggedVehicleCrosshair { get { return m_TaggedVehicleCrosshair; } set { if (OnPropertyChanging("VeniceHudConfigAsset." + nameof(TaggedVehicleCrosshair), this, m_TaggedVehicleCrosshair, value)) m_TaggedVehicleCrosshair = value; } } // 0x60 (96)
 		
 		protected UIMinimapConfig m_Minimap = new UIMinimapConfig();
-		[ContainerField(112), ContainerFieldNameHash(1011406874)]
+		[ContainerField(112), MemberInfoFlag(41), ContainerFieldNameHash(1011406874)]
 		public UIMinimapConfig Minimap { get { return m_Minimap; } set { if (OnPropertyChanging("VeniceHudConfigAsset." + nameof(Minimap), this, m_Minimap, value)) m_Minimap = value; } } // 0x70 (112)
 		
 		protected bool m_ShowSpawnPointsOnMinimap = new bool();
-		[ContainerField(148), LayoutImmutable, Blittable, ContainerFieldNameHash(569271516)]
+		[ContainerField(148), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(569271516)]
 		public bool ShowSpawnPointsOnMinimap { get { return m_ShowSpawnPointsOnMinimap; } set { if (OnPropertyChanging("VeniceHudConfigAsset." + nameof(ShowSpawnPointsOnMinimap), this, m_ShowSpawnPointsOnMinimap, value)) m_ShowSpawnPointsOnMinimap = value; } } // 0x94 (148)
 		
 		protected bool m_NametagHealthVisibleForAll = new bool();
-		[ContainerField(149), LayoutImmutable, Blittable, ContainerFieldNameHash(312850008)]
+		[ContainerField(149), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(312850008)]
 		public bool NametagHealthVisibleForAll { get { return m_NametagHealthVisibleForAll; } set { if (OnPropertyChanging("VeniceHudConfigAsset." + nameof(NametagHealthVisibleForAll), this, m_NametagHealthVisibleForAll, value)) m_NametagHealthVisibleForAll = value; } } // 0x95 (149)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

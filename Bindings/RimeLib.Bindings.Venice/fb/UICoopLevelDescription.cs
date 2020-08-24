@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class UICoopLevelDescription : 
 		LevelDescriptionComponent
 	{
 		protected string m_Debriefing = string.Empty;
-		[ContainerField(8), LayoutImmutable, ContainerFieldNameHash(1664834078)]
+		[ContainerField(8), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(1664834078)]
 		public string Debriefing { get { return m_Debriefing; } set { if (OnPropertyChanging("UICoopLevelDescription." + nameof(Debriefing), this, m_Debriefing, value)) m_Debriefing = value; } } // 0x8 (8)
 		
 		protected int m_DevTime = new int();
-		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(4015961031)]
+		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(4015961031)]
 		public int DevTime { get { return m_DevTime; } set { if (OnPropertyChanging("UICoopLevelDescription." + nameof(DevTime), this, m_DevTime, value)) m_DevTime = value; } } // 0xC (12)
 		
 		protected List<string> m_UnlockedByLevels = new List<string>();
-		[ContainerField(16), ContainerFieldNameHash(2749335882)]
+		[ContainerField(16), MemberInfoFlag(65), ContainerFieldNameHash(2749335882), ContainerArray]
 		public List<string> UnlockedByLevels { get { return m_UnlockedByLevels; } set { if (OnPropertyChanging("UICoopLevelDescription." + nameof(UnlockedByLevels), this, m_UnlockedByLevels, value)) m_UnlockedByLevels = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

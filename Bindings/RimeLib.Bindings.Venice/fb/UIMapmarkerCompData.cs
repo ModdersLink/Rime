@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class UIMapmarkerCompData : 
 		UIComponentData
 	{
 		protected List<int> m_ProximityIntervals = new List<int>();
-		[ContainerField(28), ContainerFieldNameHash(2970219836)]
+		[ContainerField(28), MemberInfoFlag(65), ContainerFieldNameHash(2970219836), ContainerArray]
 		public List<int> ProximityIntervals { get { return m_ProximityIntervals; } set { if (OnPropertyChanging("UIMapmarkerCompData." + nameof(ProximityIntervals), this, m_ProximityIntervals, value)) m_ProximityIntervals = value; } } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

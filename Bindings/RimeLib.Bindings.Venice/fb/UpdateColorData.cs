@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class UpdateColorData : 
 		ProcessorData
 	{
 		protected Vec3 m_Color = new Vec3();
-		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(212387320)]
+		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(212387320)]
 		public Vec3 Color { get { return m_Color; } set { if (OnPropertyChanging("UpdateColorData." + nameof(Color), this, m_Color, value)) m_Color = value; } } // 0x30 (48)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

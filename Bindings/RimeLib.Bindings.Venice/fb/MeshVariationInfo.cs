@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(41), ContainerStruct]
 	public class MeshVariationInfo : FrostbiteContainer
 	{
-		[ContainerField(0)]
+		[ContainerField(0), MemberInfoFlag(53), ContainerCtrRef]
 		public CtrRef<MeshAsset> MeshAsset { get; set; } = new CtrRef<MeshAsset>(); // 0x0 (0)
 		
-		[ContainerField(4)]
+		[ContainerField(4), MemberInfoFlag(53), ContainerCtrRef]
 		public CtrRef<MeshAsset> OrigMeshAsset { get; set; } = new CtrRef<MeshAsset>(); // 0x4 (4)
 		
-		[ContainerField(8)]
+		[ContainerField(8), MemberInfoFlag(53), ContainerCtrRef]
 		public CtrRef<ObjectVariation> VariationAsset { get; set; } = new CtrRef<ObjectVariation>(); // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

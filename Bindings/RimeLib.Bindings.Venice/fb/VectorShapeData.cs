@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class VectorShapeData : 
 		BaseShapeData
 	{
 		protected List<Vec3> m_Points = new List<Vec3>();
-		[ContainerField(12), ContainerFieldNameHash(3383606106)]
+		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(3383606106), ContainerArray]
 		public List<Vec3> Points { get { return m_Points; } set { if (OnPropertyChanging("VectorShapeData." + nameof(Points), this, m_Points, value)) m_Points = value; } } // 0xC (12)
 		
 		protected List<Vec3> m_Normals = new List<Vec3>();
-		[ContainerField(16), ContainerFieldNameHash(3102907301)]
+		[ContainerField(16), MemberInfoFlag(65), ContainerFieldNameHash(3102907301), ContainerArray]
 		public List<Vec3> Normals { get { return m_Normals; } set { if (OnPropertyChanging("VectorShapeData." + nameof(Normals), this, m_Normals, value)) m_Normals = value; } } // 0x10 (16)
 		
 		protected float m_Tension = new float();
-		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(3196074177)]
+		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3196074177)]
 		public float Tension { get { return m_Tension; } set { if (OnPropertyChanging("VectorShapeData." + nameof(Tension), this, m_Tension, value)) m_Tension = value; } } // 0x14 (20)
 		
 		protected bool m_IsClosed = new bool();
-		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(1070153421)]
+		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1070153421)]
 		public bool IsClosed { get { return m_IsClosed; } set { if (OnPropertyChanging("VectorShapeData." + nameof(IsClosed), this, m_IsClosed, value)) m_IsClosed = value; } } // 0x18 (24)
 		
 		protected bool m_AllowRoll = new bool();
-		[ContainerField(25), LayoutImmutable, Blittable, ContainerFieldNameHash(2314066145)]
+		[ContainerField(25), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2314066145)]
 		public bool AllowRoll { get { return m_AllowRoll; } set { if (OnPropertyChanging("VectorShapeData." + nameof(AllowRoll), this, m_AllowRoll, value)) m_AllowRoll = value; } } // 0x19 (25)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

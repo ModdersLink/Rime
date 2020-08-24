@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(8)]
+	[ContainerType(8), MemberInfoFlag(53), ContainerClass]
 	public class MetricEvent : 
 		DataContainer
 	{
 		protected ulong m_Owner = new ulong();
-		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(217695012)]
+		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49453), ContainerFieldNameHash(217695012)]
 		public ulong Owner { get { return m_Owner; } set { if (OnPropertyChanging("MetricEvent." + nameof(Owner), this, m_Owner, value)) m_Owner = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

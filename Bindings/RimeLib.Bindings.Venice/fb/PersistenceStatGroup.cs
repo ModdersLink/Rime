@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class PersistenceStatGroup : 
 		DataContainer
 	{
 		protected string m_GroupName = string.Empty;
-		[ContainerField(8), LayoutImmutable, ContainerFieldNameHash(3178263901)]
+		[ContainerField(8), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(3178263901)]
 		public string GroupName { get { return m_GroupName; } set { if (OnPropertyChanging("PersistenceStatGroup." + nameof(GroupName), this, m_GroupName, value)) m_GroupName = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

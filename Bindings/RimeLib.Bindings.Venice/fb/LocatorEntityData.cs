@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class LocatorEntityData : 
 		SpatialEntityData
 	{
 		protected Realm m_Realm = new Realm();
-		[ContainerField(80), ContainerFieldNameHash(229961746)]
+		[ContainerField(80), MemberInfoFlag(137), ContainerFieldNameHash(229961746)]
 		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("LocatorEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0x50 (80)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

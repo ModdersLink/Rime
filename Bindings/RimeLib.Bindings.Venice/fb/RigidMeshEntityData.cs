@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class RigidMeshEntityData : 
 		SpatialEntityData
 	{
 		protected CtrRef<RigidMeshAsset> m_Mesh = new CtrRef<RigidMeshAsset>();
-		[ContainerField(80), ContainerFieldNameHash(2088783990)]
+		[ContainerField(80), MemberInfoFlag(53), ContainerFieldNameHash(2088783990), ContainerCtrRef]
 		public CtrRef<RigidMeshAsset> Mesh { get { return m_Mesh; } set { if (OnPropertyChanging("RigidMeshEntityData." + nameof(Mesh), this, m_Mesh, value)) m_Mesh = value; } } // 0x50 (80)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

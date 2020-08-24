@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class DebugComponentData : 
 		ComponentData
 	{
 		protected Realm m_Realm = new Realm();
-		[ContainerField(96), ContainerFieldNameHash(229961746)]
+		[ContainerField(96), MemberInfoFlag(137), ContainerFieldNameHash(229961746)]
 		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("DebugComponentData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0x60 (96)
 		
 		protected CtrRef<TextureAsset> m_DebugTexture = new CtrRef<TextureAsset>();
-		[ContainerField(100), ContainerFieldNameHash(3615235787)]
+		[ContainerField(100), MemberInfoFlag(53), ContainerFieldNameHash(3615235787), ContainerCtrRef]
 		public CtrRef<TextureAsset> DebugTexture { get { return m_DebugTexture; } set { if (OnPropertyChanging("DebugComponentData." + nameof(DebugTexture), this, m_DebugTexture, value)) m_DebugTexture = value; } } // 0x64 (100)
 		
 		protected bool m_Fullscreen = new bool();
-		[ContainerField(104), LayoutImmutable, Blittable, ContainerFieldNameHash(2248877754)]
+		[ContainerField(104), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2248877754)]
 		public bool Fullscreen { get { return m_Fullscreen; } set { if (OnPropertyChanging("DebugComponentData." + nameof(Fullscreen), this, m_Fullscreen, value)) m_Fullscreen = value; } } // 0x68 (104)
 		
 		protected bool m_Enable = new bool();
-		[ContainerField(105), LayoutImmutable, Blittable, ContainerFieldNameHash(2342790116)]
+		[ContainerField(105), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2342790116)]
 		public bool Enable { get { return m_Enable; } set { if (OnPropertyChanging("DebugComponentData." + nameof(Enable), this, m_Enable, value)) m_Enable = value; } } // 0x69 (105)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,32 +18,32 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class DacNodeData : 
 		AudioGraphNodeData
 	{
 		protected AudioGraphNodePort m_In = new AudioGraphNodePort();
-		[ContainerField(8), ContainerFieldNameHash(5862146)]
+		[ContainerField(8), MemberInfoFlag(41), ContainerFieldNameHash(5862146)]
 		public AudioGraphNodePort In { get { return m_In; } set { if (OnPropertyChanging("DacNodeData." + nameof(In), this, m_In, value)) m_In = value; } } // 0x8 (8)
 		
 		protected AudioGraphNodePort m_SpeakerCount = new AudioGraphNodePort();
-		[ContainerField(16), ContainerFieldNameHash(3711188829)]
+		[ContainerField(16), MemberInfoFlag(41), ContainerFieldNameHash(3711188829)]
 		public AudioGraphNodePort SpeakerCount { get { return m_SpeakerCount; } set { if (OnPropertyChanging("DacNodeData." + nameof(SpeakerCount), this, m_SpeakerCount, value)) m_SpeakerCount = value; } } // 0x10 (16)
 		
 		protected AudioGraphNodePort m_SampleRate = new AudioGraphNodePort();
-		[ContainerField(24), ContainerFieldNameHash(604757697)]
+		[ContainerField(24), MemberInfoFlag(41), ContainerFieldNameHash(604757697)]
 		public AudioGraphNodePort SampleRate { get { return m_SampleRate; } set { if (OnPropertyChanging("DacNodeData." + nameof(SampleRate), this, m_SampleRate, value)) m_SampleRate = value; } } // 0x18 (24)
 		
 		protected SoundGraphPluginRef m_VuPlugin = new SoundGraphPluginRef();
-		[ContainerField(32), ContainerFieldNameHash(2033640783)]
+		[ContainerField(32), MemberInfoFlag(41), ContainerFieldNameHash(2033640783)]
 		public SoundGraphPluginRef VuPlugin { get { return m_VuPlugin; } set { if (OnPropertyChanging("DacNodeData." + nameof(VuPlugin), this, m_VuPlugin, value)) m_VuPlugin = value; } } // 0x20 (32)
 		
 		protected SoundGraphPluginRef m_GainPlugin = new SoundGraphPluginRef();
-		[ContainerField(35), ContainerFieldNameHash(3501812877)]
+		[ContainerField(35), MemberInfoFlag(41), ContainerFieldNameHash(3501812877)]
 		public SoundGraphPluginRef GainPlugin { get { return m_GainPlugin; } set { if (OnPropertyChanging("DacNodeData." + nameof(GainPlugin), this, m_GainPlugin, value)) m_GainPlugin = value; } } // 0x23 (35)
 		
 		protected SoundGraphPluginRef m_DacPlugin = new SoundGraphPluginRef();
-		[ContainerField(38), ContainerFieldNameHash(2354647978)]
+		[ContainerField(38), MemberInfoFlag(41), ContainerFieldNameHash(2354647978)]
 		public SoundGraphPluginRef DacPlugin { get { return m_DacPlugin; } set { if (OnPropertyChanging("DacNodeData." + nameof(DacPlugin), this, m_DacPlugin, value)) m_DacPlugin = value; } } // 0x26 (38)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

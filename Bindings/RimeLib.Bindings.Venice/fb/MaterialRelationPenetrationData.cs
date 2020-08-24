@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class MaterialRelationPenetrationData : 
 		PhysicsPropertyRelationPropertyData
 	{
 		protected bool m_NeverPenetrate = new bool();
-		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(2064798663)]
+		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2064798663)]
 		public bool NeverPenetrate { get { return m_NeverPenetrate; } set { if (OnPropertyChanging("MaterialRelationPenetrationData." + nameof(NeverPenetrate), this, m_NeverPenetrate, value)) m_NeverPenetrate = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

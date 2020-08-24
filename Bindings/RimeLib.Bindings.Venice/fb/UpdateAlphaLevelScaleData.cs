@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class UpdateAlphaLevelScaleData : 
 		ProcessorData
 	{
 		protected float m_Exponent = new float();
-		[ContainerField(48), LayoutImmutable, Blittable, ContainerFieldNameHash(4228690070)]
+		[ContainerField(48), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(4228690070)]
 		public float Exponent { get { return m_Exponent; } set { if (OnPropertyChanging("UpdateAlphaLevelScaleData." + nameof(Exponent), this, m_Exponent, value)) m_Exponent = value; } } // 0x30 (48)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class InputCurveData : 
 		DataContainer
 	{
 		protected List<EntryInputActionEnum> m_AffectedInputs = new List<EntryInputActionEnum>();
-		[ContainerField(8), ContainerFieldNameHash(337107346)]
+		[ContainerField(8), MemberInfoFlag(65), ContainerFieldNameHash(337107346), ContainerArray]
 		public List<EntryInputActionEnum> AffectedInputs { get { return m_AffectedInputs; } set { if (OnPropertyChanging("InputCurveData." + nameof(AffectedInputs), this, m_AffectedInputs, value)) m_AffectedInputs = value; } } // 0x8 (8)
 		
 		protected List<Vec2> m_InputModifierCurve = new List<Vec2>();
-		[ContainerField(12), ContainerFieldNameHash(1217881747)]
+		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(1217881747), ContainerArray]
 		public List<Vec2> InputModifierCurve { get { return m_InputModifierCurve; } set { if (OnPropertyChanging("InputCurveData." + nameof(InputModifierCurve), this, m_InputModifierCurve, value)) m_InputModifierCurve = value; } } // 0xC (12)
 		
 		protected bool m_HandleMultipleInputsAsSquare = new bool();
-		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(1190597481)]
+		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1190597481)]
 		public bool HandleMultipleInputsAsSquare { get { return m_HandleMultipleInputsAsSquare; } set { if (OnPropertyChanging("InputCurveData." + nameof(HandleMultipleInputsAsSquare), this, m_HandleMultipleInputsAsSquare, value)) m_HandleMultipleInputsAsSquare = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

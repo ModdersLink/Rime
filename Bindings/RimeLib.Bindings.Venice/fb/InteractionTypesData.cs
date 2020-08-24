@@ -18,25 +18,25 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(1)]
+	[ContainerType(1), MemberInfoFlag(41), ContainerStruct]
 	public class InteractionTypesData : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, Blittable]
+		[ContainerField(0), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool InteractionEntity { get; set; } // 0x0 (0)
 		
-		[ContainerField(1), LayoutImmutable, Blittable]
+		[ContainerField(1), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool PickupEntity { get; set; } // 0x1 (1)
 		
-		[ContainerField(2), LayoutImmutable, Blittable]
+		[ContainerField(2), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool AmmoCrateEntity { get; set; } // 0x2 (2)
 		
-		[ContainerField(3), LayoutImmutable, Blittable]
+		[ContainerField(3), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool VehicleEntity { get; set; } // 0x3 (3)
 		
-		[ContainerField(4), LayoutImmutable, Blittable]
+		[ContainerField(4), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool ExplosionPackEntity { get; set; } // 0x4 (4)
 		
-		[ContainerField(5), LayoutImmutable, Blittable]
+		[ContainerField(5), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool SoldierEntity { get; set; } // 0x5 (5)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

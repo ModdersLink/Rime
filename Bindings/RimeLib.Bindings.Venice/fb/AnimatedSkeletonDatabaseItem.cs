@@ -18,31 +18,31 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(41), ContainerStruct]
 	public class AnimatedSkeletonDatabaseItem : FrostbiteContainer
 	{
-		[ContainerField(0)]
+		[ContainerField(0), MemberInfoFlag(53), ContainerCtrRef]
 		public CtrRef<SkeletonAsset> Asset { get; set; } = new CtrRef<SkeletonAsset>(); // 0x0 (0)
 		
-		[ContainerField(4)]
+		[ContainerField(4), MemberInfoFlag(65), ContainerArray]
 		public List<int> Names { get; set; } = new List<int>(); // 0x4 (4)
 		
-		[ContainerField(8)]
+		[ContainerField(8), MemberInfoFlag(53), ContainerCtrRef]
 		public CtrRef<SkeletonCollisionData> SoldierCollision { get; set; } = new CtrRef<SkeletonCollisionData>(); // 0x8 (8)
 		
-		[ContainerField(12)]
+		[ContainerField(12), MemberInfoFlag(53), ContainerCtrRef]
 		public CtrRef<SkeletonCollisionData> RagdollCollision { get; set; } = new CtrRef<SkeletonCollisionData>(); // 0xC (12)
 		
-		[ContainerField(16)]
+		[ContainerField(16), MemberInfoFlag(53), ContainerCtrRef]
 		public CtrRef<RagdollAsset> Ragdoll { get; set; } = new CtrRef<RagdollAsset>(); // 0x10 (16)
 		
-		[ContainerField(20)]
+		[ContainerField(20), MemberInfoFlag(65), ContainerArray]
 		public List<string> SpecialBones { get; set; } = new List<string>(); // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable]
+		[ContainerField(24), LayoutImmutable, MemberInfoFlag(16509)]
 		public string HipBone { get; set; } // 0x18 (24)
 		
-		[ContainerField(28), LayoutImmutable]
+		[ContainerField(28), LayoutImmutable, MemberInfoFlag(16509)]
 		public string HeadBone { get; set; } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

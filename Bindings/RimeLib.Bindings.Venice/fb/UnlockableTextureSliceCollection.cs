@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class UnlockableTextureSliceCollection : 
 		DataContainer
 	{
 		protected int m_DefaultValue = new int();
-		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(2066049125)]
+		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(2066049125)]
 		public int DefaultValue { get { return m_DefaultValue; } set { if (OnPropertyChanging("UnlockableTextureSliceCollection." + nameof(DefaultValue), this, m_DefaultValue, value)) m_DefaultValue = value; } } // 0x8 (8)
 		
 		protected RefArray<TextureSliceUnlockPartData> m_PossibleValues = new RefArray<TextureSliceUnlockPartData>();
-		[ContainerField(12), ContainerFieldNameHash(349877344)]
+		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(349877344), ContainerRefArray]
 		public RefArray<TextureSliceUnlockPartData> PossibleValues { get { return m_PossibleValues; } set { if (OnPropertyChanging("UnlockableTextureSliceCollection." + nameof(PossibleValues), this, m_PossibleValues, value)) m_PossibleValues = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

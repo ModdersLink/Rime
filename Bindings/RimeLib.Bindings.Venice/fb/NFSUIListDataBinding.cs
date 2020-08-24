@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class NFSUIListDataBinding : 
 		UIDataBinding
 	{
 		protected UIDataSourceInfo m_Refresh = new UIDataSourceInfo();
-		[ContainerField(8), ContainerFieldNameHash(1327541432)]
+		[ContainerField(8), MemberInfoFlag(41), ContainerFieldNameHash(1327541432)]
 		public UIDataSourceInfo Refresh { get { return m_Refresh; } set { if (OnPropertyChanging("NFSUIListDataBinding." + nameof(Refresh), this, m_Refresh, value)) m_Refresh = value; } } // 0x8 (8)
 		
 		protected List<UIListItem> m_Items = new List<UIListItem>();
-		[ContainerField(24), ContainerFieldNameHash(215446531)]
+		[ContainerField(24), MemberInfoFlag(65), ContainerFieldNameHash(215446531), ContainerArray]
 		public List<UIListItem> Items { get { return m_Items; } set { if (OnPropertyChanging("NFSUIListDataBinding." + nameof(Items), this, m_Items, value)) m_Items = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

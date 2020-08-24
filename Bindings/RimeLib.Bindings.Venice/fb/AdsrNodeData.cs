@@ -18,40 +18,40 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class AdsrNodeData : 
 		AudioGraphNodeData
 	{
 		protected AudioGraphNodePort m_Trigger = new AudioGraphNodePort();
-		[ContainerField(8), ContainerFieldNameHash(2606354109)]
+		[ContainerField(8), MemberInfoFlag(41), ContainerFieldNameHash(2606354109)]
 		public AudioGraphNodePort Trigger { get { return m_Trigger; } set { if (OnPropertyChanging("AdsrNodeData." + nameof(Trigger), this, m_Trigger, value)) m_Trigger = value; } } // 0x8 (8)
 		
 		protected AudioGraphNodePort m_Release = new AudioGraphNodePort();
-		[ContainerField(16), ContainerFieldNameHash(1335266828)]
+		[ContainerField(16), MemberInfoFlag(41), ContainerFieldNameHash(1335266828)]
 		public AudioGraphNodePort Release { get { return m_Release; } set { if (OnPropertyChanging("AdsrNodeData." + nameof(Release), this, m_Release, value)) m_Release = value; } } // 0x10 (16)
 		
 		protected AudioGraphNodePort m_A = new AudioGraphNodePort();
-		[ContainerField(24), ContainerFieldNameHash(177636)]
+		[ContainerField(24), MemberInfoFlag(41), ContainerFieldNameHash(177636)]
 		public AudioGraphNodePort A { get { return m_A; } set { if (OnPropertyChanging("AdsrNodeData." + nameof(A), this, m_A, value)) m_A = value; } } // 0x18 (24)
 		
 		protected AudioGraphNodePort m_D = new AudioGraphNodePort();
-		[ContainerField(32), ContainerFieldNameHash(177633)]
+		[ContainerField(32), MemberInfoFlag(41), ContainerFieldNameHash(177633)]
 		public AudioGraphNodePort D { get { return m_D; } set { if (OnPropertyChanging("AdsrNodeData." + nameof(D), this, m_D, value)) m_D = value; } } // 0x20 (32)
 		
 		protected AudioGraphNodePort m_S = new AudioGraphNodePort();
-		[ContainerField(40), ContainerFieldNameHash(177654)]
+		[ContainerField(40), MemberInfoFlag(41), ContainerFieldNameHash(177654)]
 		public AudioGraphNodePort S { get { return m_S; } set { if (OnPropertyChanging("AdsrNodeData." + nameof(S), this, m_S, value)) m_S = value; } } // 0x28 (40)
 		
 		protected AudioGraphNodePort m_R = new AudioGraphNodePort();
-		[ContainerField(48), ContainerFieldNameHash(177655)]
+		[ContainerField(48), MemberInfoFlag(41), ContainerFieldNameHash(177655)]
 		public AudioGraphNodePort R { get { return m_R; } set { if (OnPropertyChanging("AdsrNodeData." + nameof(R), this, m_R, value)) m_R = value; } } // 0x30 (48)
 		
 		protected AudioGraphNodePort m_Value = new AudioGraphNodePort();
-		[ContainerField(56), ContainerFieldNameHash(225375086)]
+		[ContainerField(56), MemberInfoFlag(41), ContainerFieldNameHash(225375086)]
 		public AudioGraphNodePort Value { get { return m_Value; } set { if (OnPropertyChanging("AdsrNodeData." + nameof(Value), this, m_Value, value)) m_Value = value; } } // 0x38 (56)
 		
 		protected AudioGraphNodePort m_Finished = new AudioGraphNodePort();
-		[ContainerField(64), ContainerFieldNameHash(1223765815)]
+		[ContainerField(64), MemberInfoFlag(41), ContainerFieldNameHash(1223765815)]
 		public AudioGraphNodePort Finished { get { return m_Finished; } set { if (OnPropertyChanging("AdsrNodeData." + nameof(Finished), this, m_Finished, value)) m_Finished = value; } } // 0x40 (64)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

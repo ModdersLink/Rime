@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class RotateVectorData : 
 		EvaluatorData
 	{
 		protected float m_Angle = new float();
-		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(205597860)]
+		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(205597860)]
 		public float Angle { get { return m_Angle; } set { if (OnPropertyChanging("RotateVectorData." + nameof(Angle), this, m_Angle, value)) m_Angle = value; } } // 0xC (12)
 		
 		protected bool m_RotateWithinPlane = new bool();
-		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(658584111)]
+		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(658584111)]
 		public bool RotateWithinPlane { get { return m_RotateWithinPlane; } set { if (OnPropertyChanging("RotateVectorData." + nameof(RotateWithinPlane), this, m_RotateWithinPlane, value)) m_RotateWithinPlane = value; } } // 0x10 (16)
 		
 		protected bool m_InputAffectsPhi = new bool();
-		[ContainerField(17), LayoutImmutable, Blittable, ContainerFieldNameHash(2136254690)]
+		[ContainerField(17), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2136254690)]
 		public bool InputAffectsPhi { get { return m_InputAffectsPhi; } set { if (OnPropertyChanging("RotateVectorData." + nameof(InputAffectsPhi), this, m_InputAffectsPhi, value)) m_InputAffectsPhi = value; } } // 0x11 (17)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

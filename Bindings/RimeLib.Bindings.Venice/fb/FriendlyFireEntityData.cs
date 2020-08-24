@@ -18,32 +18,32 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class FriendlyFireEntityData : 
 		EntityData
 	{
 		protected List<TeamId> m_Teams = new List<TeamId>();
-		[ContainerField(12), ContainerFieldNameHash(227737643)]
+		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(227737643), ContainerArray]
 		public List<TeamId> Teams { get { return m_Teams; } set { if (OnPropertyChanging("FriendlyFireEntityData." + nameof(Teams), this, m_Teams, value)) m_Teams = value; } } // 0xC (12)
 		
 		protected float m_EnemyCommitmentAllocation = new float();
-		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(2175171884)]
+		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2175171884)]
 		public float EnemyCommitmentAllocation { get { return m_EnemyCommitmentAllocation; } set { if (OnPropertyChanging("FriendlyFireEntityData." + nameof(EnemyCommitmentAllocation), this, m_EnemyCommitmentAllocation, value)) m_EnemyCommitmentAllocation = value; } } // 0x10 (16)
 		
 		protected float m_FriendlyCommitmentAllocation = new float();
-		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(4158058161)]
+		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(4158058161)]
 		public float FriendlyCommitmentAllocation { get { return m_FriendlyCommitmentAllocation; } set { if (OnPropertyChanging("FriendlyFireEntityData." + nameof(FriendlyCommitmentAllocation), this, m_FriendlyCommitmentAllocation, value)) m_FriendlyCommitmentAllocation = value; } } // 0x14 (20)
 		
 		protected float m_MaxCommitment = new float();
-		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(2794924786)]
+		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2794924786)]
 		public float MaxCommitment { get { return m_MaxCommitment; } set { if (OnPropertyChanging("FriendlyFireEntityData." + nameof(MaxCommitment), this, m_MaxCommitment, value)) m_MaxCommitment = value; } } // 0x18 (24)
 		
 		protected float m_FailureThreshold = new float();
-		[ContainerField(28), LayoutImmutable, Blittable, ContainerFieldNameHash(280940370)]
+		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(280940370)]
 		public float FailureThreshold { get { return m_FailureThreshold; } set { if (OnPropertyChanging("FriendlyFireEntityData." + nameof(FailureThreshold), this, m_FailureThreshold, value)) m_FailureThreshold = value; } } // 0x1C (28)
 		
 		protected float m_DecayRate = new float();
-		[ContainerField(32), LayoutImmutable, Blittable, ContainerFieldNameHash(3274236317)]
+		[ContainerField(32), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3274236317)]
 		public float DecayRate { get { return m_DecayRate; } set { if (OnPropertyChanging("FriendlyFireEntityData." + nameof(DecayRate), this, m_DecayRate, value)) m_DecayRate = value; } } // 0x20 (32)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

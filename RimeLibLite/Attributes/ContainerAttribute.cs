@@ -26,6 +26,45 @@ namespace RimeLib.Serialization.Attributes
     }
 
     /// <summary>
+    /// Attribute specifying type is a frostbite class (DataContainer inheritance)
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Enum | AttributeTargets.Struct)]
+    public class ContainerClassAttribute : Attribute
+    {
+
+    }
+    /// <summary>
+    /// Attribute for specifying that this is a frostbite struct (No DataContainer, flat type)
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Enum | AttributeTargets.Struct)]
+    public class ContainerStructAttribute : Attribute
+    {
+    }
+
+    /// <summary>
+    /// Attribute for specifying that this is a frostbite enum (fb::enum name)
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Enum | AttributeTargets.Struct)]
+    public class ContainerEnumAttribute : Attribute
+    {
+    }
+
+    [AttributeUsage(AttributeTargets.Property)]
+    public class ContainerRefArray : Attribute
+    {
+    }
+
+    [AttributeUsage(AttributeTargets.Property)]
+    public class ContainerCtrRef : Attribute
+    {
+    }
+
+    [AttributeUsage(AttributeTargets.Property)]
+    public class ContainerArray : Attribute
+    {
+    }
+
+    /// <summary>
     /// Attributes for name hash
     /// </summary>
     [AttributeUsage(AttributeTargets.Property)]
@@ -41,6 +80,16 @@ namespace RimeLib.Serialization.Attributes
         public ContainerFieldNameHash(string p_Name)
         {
             NameHash = Frostbite.Utils.HashQuick(p_Name);
+        }
+    }
+
+    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Class | AttributeTargets.Struct | AttributeTargets.Enum)]
+    public class MemberInfoFlagAttribute : Attribute
+    {
+        public ushort Flag { get; set; }
+        public MemberInfoFlagAttribute(ushort p_Flags = 0)
+        {
+            Flag = p_Flags;
         }
     }
 

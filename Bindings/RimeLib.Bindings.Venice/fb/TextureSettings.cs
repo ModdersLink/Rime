@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class TextureSettings : 
 		DataContainer
 	{
 		protected uint m_SkipMipmapCount = new uint();
-		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(679697071)]
+		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(679697071)]
 		public uint SkipMipmapCount { get { return m_SkipMipmapCount; } set { if (OnPropertyChanging("TextureSettings." + nameof(SkipMipmapCount), this, m_SkipMipmapCount, value)) m_SkipMipmapCount = value; } } // 0x8 (8)
 		
 		protected bool m_LoadingEnabled = new bool();
-		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(1695799750)]
+		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1695799750)]
 		public bool LoadingEnabled { get { return m_LoadingEnabled; } set { if (OnPropertyChanging("TextureSettings." + nameof(LoadingEnabled), this, m_LoadingEnabled, value)) m_LoadingEnabled = value; } } // 0xC (12)
 		
 		protected bool m_RenderTexturesEnabled = new bool();
-		[ContainerField(13), LayoutImmutable, Blittable, ContainerFieldNameHash(437746662)]
+		[ContainerField(13), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(437746662)]
 		public bool RenderTexturesEnabled { get { return m_RenderTexturesEnabled; } set { if (OnPropertyChanging("TextureSettings." + nameof(RenderTexturesEnabled), this, m_RenderTexturesEnabled, value)) m_RenderTexturesEnabled = value; } } // 0xD (13)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

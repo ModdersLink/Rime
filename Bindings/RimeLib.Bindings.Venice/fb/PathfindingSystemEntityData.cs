@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class PathfindingSystemEntityData : 
 		EntityData
 	{
 		protected List<uint> m_PathfindingTypesOnLevel = new List<uint>();
-		[ContainerField(12), ContainerFieldNameHash(2264269169)]
+		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(2264269169), ContainerArray]
 		public List<uint> PathfindingTypesOnLevel { get { return m_PathfindingTypesOnLevel; } set { if (OnPropertyChanging("PathfindingSystemEntityData." + nameof(PathfindingTypesOnLevel), this, m_PathfindingTypesOnLevel, value)) m_PathfindingTypesOnLevel = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

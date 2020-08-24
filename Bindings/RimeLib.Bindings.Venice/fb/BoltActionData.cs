@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(41), ContainerStruct]
 	public class BoltActionData : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, Blittable]
+		[ContainerField(0), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float BoltActionDelay { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable, Blittable]
+		[ContainerField(4), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float BoltActionTime { get; set; } // 0x4 (4)
 		
-		[ContainerField(8), LayoutImmutable, Blittable]
+		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool HoldBoltActionUntilFireRelease { get; set; } // 0x8 (8)
 		
-		[ContainerField(9), LayoutImmutable, Blittable]
+		[ContainerField(9), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool HoldBoltActionUntilZoomRelease { get; set; } // 0x9 (9)
 		
-		[ContainerField(10), LayoutImmutable, Blittable]
+		[ContainerField(10), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool ForceBoltActionOnFireTrigger { get; set; } // 0xA (10)
 		
-		[ContainerField(11), LayoutImmutable, Blittable]
+		[ContainerField(11), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool UnZoomOnBoltAction { get; set; } // 0xB (11)
 		
-		[ContainerField(12), LayoutImmutable, Blittable]
+		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool ReturnToZoomAfterBoltAction { get; set; } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

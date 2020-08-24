@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class AntEventEntityData : 
 		GameEntityData
 	{
 		protected List<AntEventData> m_OnEnterEvents = new List<AntEventData>();
-		[ContainerField(96), ContainerFieldNameHash(3335046611)]
+		[ContainerField(96), MemberInfoFlag(65), ContainerFieldNameHash(3335046611), ContainerArray]
 		public List<AntEventData> OnEnterEvents { get { return m_OnEnterEvents; } set { if (OnPropertyChanging("AntEventEntityData." + nameof(OnEnterEvents), this, m_OnEnterEvents, value)) m_OnEnterEvents = value; } } // 0x60 (96)
 		
 		protected List<AntEventData> m_OnUpdateEvents = new List<AntEventData>();
-		[ContainerField(100), ContainerFieldNameHash(1556391722)]
+		[ContainerField(100), MemberInfoFlag(65), ContainerFieldNameHash(1556391722), ContainerArray]
 		public List<AntEventData> OnUpdateEvents { get { return m_OnUpdateEvents; } set { if (OnPropertyChanging("AntEventEntityData." + nameof(OnUpdateEvents), this, m_OnUpdateEvents, value)) m_OnUpdateEvents = value; } } // 0x64 (100)
 		
 		protected List<AntEventData> m_OnLeaveEvents = new List<AntEventData>();
-		[ContainerField(104), ContainerFieldNameHash(514519232)]
+		[ContainerField(104), MemberInfoFlag(65), ContainerFieldNameHash(514519232), ContainerArray]
 		public List<AntEventData> OnLeaveEvents { get { return m_OnLeaveEvents; } set { if (OnPropertyChanging("AntEventEntityData." + nameof(OnLeaveEvents), this, m_OnLeaveEvents, value)) m_OnLeaveEvents = value; } } // 0x68 (104)
 		
 		protected bool m_SendAsPlayerEvent = new bool();
-		[ContainerField(108), LayoutImmutable, Blittable, ContainerFieldNameHash(2177775476)]
+		[ContainerField(108), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2177775476)]
 		public bool SendAsPlayerEvent { get { return m_SendAsPlayerEvent; } set { if (OnPropertyChanging("AntEventEntityData." + nameof(SendAsPlayerEvent), this, m_SendAsPlayerEvent, value)) m_SendAsPlayerEvent = value; } } // 0x6C (108)
 		
 		protected bool m_AutoActivate = new bool();
-		[ContainerField(109), LayoutImmutable, Blittable, ContainerFieldNameHash(778899923)]
+		[ContainerField(109), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(778899923)]
 		public bool AutoActivate { get { return m_AutoActivate; } set { if (OnPropertyChanging("AntEventEntityData." + nameof(AutoActivate), this, m_AutoActivate, value)) m_AutoActivate = value; } } // 0x6D (109)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

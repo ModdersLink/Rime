@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class BFOrderEntityData : 
 		OrderEntityData
 	{
 		protected bool m_ForbiddenToFire = new bool();
-		[ContainerField(36), LayoutImmutable, Blittable, ContainerFieldNameHash(3995127293)]
+		[ContainerField(36), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3995127293)]
 		public bool ForbiddenToFire { get { return m_ForbiddenToFire; } set { if (OnPropertyChanging("BFOrderEntityData." + nameof(ForbiddenToFire), this, m_ForbiddenToFire, value)) m_ForbiddenToFire = value; } } // 0x24 (36)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

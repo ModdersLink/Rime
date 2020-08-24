@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class SoldierSpawnTemplateData : 
 		Asset
 	{
 		protected CtrRef<CustomizeSoldierData> m_CustomizeSoldierData = new CtrRef<CustomizeSoldierData>();
-		[ContainerField(12), ContainerFieldNameHash(2875154650)]
+		[ContainerField(12), MemberInfoFlag(53), ContainerFieldNameHash(2875154650), ContainerCtrRef]
 		public CtrRef<CustomizeSoldierData> CustomizeSoldierData { get { return m_CustomizeSoldierData; } set { if (OnPropertyChanging("SoldierSpawnTemplateData." + nameof(CustomizeSoldierData), this, m_CustomizeSoldierData, value)) m_CustomizeSoldierData = value; } } // 0xC (12)
 		
 		protected CtrRef<GameSensingTemplateData> m_Sensing = new CtrRef<GameSensingTemplateData>();
-		[ContainerField(16), ContainerFieldNameHash(2773286638)]
+		[ContainerField(16), MemberInfoFlag(53), ContainerFieldNameHash(2773286638), ContainerCtrRef]
 		public CtrRef<GameSensingTemplateData> Sensing { get { return m_Sensing; } set { if (OnPropertyChanging("SoldierSpawnTemplateData." + nameof(Sensing), this, m_Sensing, value)) m_Sensing = value; } } // 0x10 (16)
 		
 		protected CtrRef<GameBehaviourTemplateData> m_Behaviour = new CtrRef<GameBehaviourTemplateData>();
-		[ContainerField(20), ContainerFieldNameHash(513159228)]
+		[ContainerField(20), MemberInfoFlag(53), ContainerFieldNameHash(513159228), ContainerCtrRef]
 		public CtrRef<GameBehaviourTemplateData> Behaviour { get { return m_Behaviour; } set { if (OnPropertyChanging("SoldierSpawnTemplateData." + nameof(Behaviour), this, m_Behaviour, value)) m_Behaviour = value; } } // 0x14 (20)
 		
 		protected CtrRef<AnimationSpawnTemplate> m_AnimationTemplate = new CtrRef<AnimationSpawnTemplate>();
-		[ContainerField(24), ContainerFieldNameHash(4294916323)]
+		[ContainerField(24), MemberInfoFlag(53), ContainerFieldNameHash(4294916323), ContainerCtrRef]
 		public CtrRef<AnimationSpawnTemplate> AnimationTemplate { get { return m_AnimationTemplate; } set { if (OnPropertyChanging("SoldierSpawnTemplateData." + nameof(AnimationTemplate), this, m_AnimationTemplate, value)) m_AnimationTemplate = value; } } // 0x18 (24)
 		
 		protected RefArray<VoiceOverLabel> m_VoiceOverLabels = new RefArray<VoiceOverLabel>();
-		[ContainerField(28), ContainerFieldNameHash(2741340584)]
+		[ContainerField(28), MemberInfoFlag(65), ContainerFieldNameHash(2741340584), ContainerRefArray]
 		public RefArray<VoiceOverLabel> VoiceOverLabels { get { return m_VoiceOverLabels; } set { if (OnPropertyChanging("SoldierSpawnTemplateData." + nameof(VoiceOverLabels), this, m_VoiceOverLabels, value)) m_VoiceOverLabels = value; } } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class EntitySettings : 
 		SystemSettings
 	{
 		protected uint m_OutOfEntityBusNetworkIdThreshold = new uint();
-		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(2379599769)]
+		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(2379599769)]
 		public uint OutOfEntityBusNetworkIdThreshold { get { return m_OutOfEntityBusNetworkIdThreshold; } set { if (OnPropertyChanging("EntitySettings." + nameof(OutOfEntityBusNetworkIdThreshold), this, m_OutOfEntityBusNetworkIdThreshold, value)) m_OutOfEntityBusNetworkIdThreshold = value; } } // 0xC (12)
 		
 		protected ExecutionModeType m_ExecutionMode = new ExecutionModeType();
-		[ContainerField(16), ContainerFieldNameHash(3634549556)]
+		[ContainerField(16), MemberInfoFlag(137), ContainerFieldNameHash(3634549556)]
 		public ExecutionModeType ExecutionMode { get { return m_ExecutionMode; } set { if (OnPropertyChanging("EntitySettings." + nameof(ExecutionMode), this, m_ExecutionMode, value)) m_ExecutionMode = value; } } // 0x10 (16)
 		
 		protected bool m_SpawnSubLevelsFromLogic = new bool();
-		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(1806867047)]
+		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1806867047)]
 		public bool SpawnSubLevelsFromLogic { get { return m_SpawnSubLevelsFromLogic; } set { if (OnPropertyChanging("EntitySettings." + nameof(SpawnSubLevelsFromLogic), this, m_SpawnSubLevelsFromLogic, value)) m_SpawnSubLevelsFromLogic = value; } } // 0x14 (20)
 		
 		protected bool m_EditorGameViewEnable = new bool();
-		[ContainerField(21), LayoutImmutable, Blittable, ContainerFieldNameHash(1497073094)]
+		[ContainerField(21), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1497073094)]
 		public bool EditorGameViewEnable { get { return m_EditorGameViewEnable; } set { if (OnPropertyChanging("EntitySettings." + nameof(EditorGameViewEnable), this, m_EditorGameViewEnable, value)) m_EditorGameViewEnable = value; } } // 0x15 (21)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

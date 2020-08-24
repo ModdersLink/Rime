@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class CharacterHealthComponentData : 
 		ComponentData
 	{
 		protected float m_MaxHealth = new float();
-		[ContainerField(96), LayoutImmutable, Blittable, ContainerFieldNameHash(1153188365)]
+		[ContainerField(96), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1153188365)]
 		public float MaxHealth { get { return m_MaxHealth; } set { if (OnPropertyChanging("CharacterHealthComponentData." + nameof(MaxHealth), this, m_MaxHealth, value)) m_MaxHealth = value; } } // 0x60 (96)
 		
 		protected float m_RegenerateHealthPerSecond = new float();
-		[ContainerField(100), LayoutImmutable, Blittable, ContainerFieldNameHash(3985253426)]
+		[ContainerField(100), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3985253426)]
 		public float RegenerateHealthPerSecond { get { return m_RegenerateHealthPerSecond; } set { if (OnPropertyChanging("CharacterHealthComponentData." + nameof(RegenerateHealthPerSecond), this, m_RegenerateHealthPerSecond, value)) m_RegenerateHealthPerSecond = value; } } // 0x64 (100)
 		
 		protected bool m_RegenerateHealth = new bool();
-		[ContainerField(104), LayoutImmutable, Blittable, ContainerFieldNameHash(736723333)]
+		[ContainerField(104), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(736723333)]
 		public bool RegenerateHealth { get { return m_RegenerateHealth; } set { if (OnPropertyChanging("CharacterHealthComponentData." + nameof(RegenerateHealth), this, m_RegenerateHealth, value)) m_RegenerateHealth = value; } } // 0x68 (104)
 		
 		protected bool m_IsImmortal = new bool();
-		[ContainerField(105), LayoutImmutable, Blittable, ContainerFieldNameHash(2713171602)]
+		[ContainerField(105), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2713171602)]
 		public bool IsImmortal { get { return m_IsImmortal; } set { if (OnPropertyChanging("CharacterHealthComponentData." + nameof(IsImmortal), this, m_IsImmortal, value)) m_IsImmortal = value; } } // 0x69 (105)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

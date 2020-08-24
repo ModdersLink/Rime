@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class VeniceFPSCameraData : 
 		FPSCameraData
 	{
 		protected float m_SuppressionBlurAmountMultiplier = new float();
-		[ContainerField(224), LayoutImmutable, Blittable, ContainerFieldNameHash(471397458)]
+		[ContainerField(224), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(471397458)]
 		public float SuppressionBlurAmountMultiplier { get { return m_SuppressionBlurAmountMultiplier; } set { if (OnPropertyChanging("VeniceFPSCameraData." + nameof(SuppressionBlurAmountMultiplier), this, m_SuppressionBlurAmountMultiplier, value)) m_SuppressionBlurAmountMultiplier = value; } } // 0xE0 (224)
 		
 		protected float m_SuppressionBlurSizeMultiplier = new float();
-		[ContainerField(228), LayoutImmutable, Blittable, ContainerFieldNameHash(1437853051)]
+		[ContainerField(228), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1437853051)]
 		public float SuppressionBlurSizeMultiplier { get { return m_SuppressionBlurSizeMultiplier; } set { if (OnPropertyChanging("VeniceFPSCameraData." + nameof(SuppressionBlurSizeMultiplier), this, m_SuppressionBlurSizeMultiplier, value)) m_SuppressionBlurSizeMultiplier = value; } } // 0xE4 (228)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

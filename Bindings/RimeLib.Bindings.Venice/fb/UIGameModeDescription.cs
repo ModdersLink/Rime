@@ -18,36 +18,36 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class UIGameModeDescription : 
 		UIItemDescription
 	{
 		protected string m_Identifier = string.Empty;
-		[ContainerField(16), LayoutImmutable, ContainerFieldNameHash(3512790342)]
+		[ContainerField(16), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(3512790342)]
 		public string Identifier { get { return m_Identifier; } set { if (OnPropertyChanging("UIGameModeDescription." + nameof(Identifier), this, m_Identifier, value)) m_Identifier = value; } } // 0x10 (16)
 		
 		protected string m_Name = string.Empty;
-		[ContainerField(20), LayoutImmutable, ContainerFieldNameHash(2088949890)]
+		[ContainerField(20), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(2088949890)]
 		public string Name { get { return m_Name; } set { if (OnPropertyChanging("UIGameModeDescription." + nameof(Name), this, m_Name, value)) m_Name = value; } } // 0x14 (20)
 		
 		protected string m_Abbreviation = string.Empty;
-		[ContainerField(24), LayoutImmutable, ContainerFieldNameHash(1781328241)]
+		[ContainerField(24), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(1781328241)]
 		public string Abbreviation { get { return m_Abbreviation; } set { if (OnPropertyChanging("UIGameModeDescription." + nameof(Abbreviation), this, m_Abbreviation, value)) m_Abbreviation = value; } } // 0x18 (24)
 		
 		protected string m_Desc = string.Empty;
-		[ContainerField(28), LayoutImmutable, ContainerFieldNameHash(2088734996)]
+		[ContainerField(28), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(2088734996)]
 		public string Desc { get { return m_Desc; } set { if (OnPropertyChanging("UIGameModeDescription." + nameof(Desc), this, m_Desc, value)) m_Desc = value; } } // 0x1C (28)
 		
 		protected int m_BattlelogId = new int();
-		[ContainerField(32), LayoutImmutable, Blittable, ContainerFieldNameHash(281607366)]
+		[ContainerField(32), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(281607366)]
 		public int BattlelogId { get { return m_BattlelogId; } set { if (OnPropertyChanging("UIGameModeDescription." + nameof(BattlelogId), this, m_BattlelogId, value)) m_BattlelogId = value; } } // 0x20 (32)
 		
 		protected string m_TexturePath = string.Empty;
-		[ContainerField(36), LayoutImmutable, ContainerFieldNameHash(3058477943)]
+		[ContainerField(36), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(3058477943)]
 		public string TexturePath { get { return m_TexturePath; } set { if (OnPropertyChanging("UIGameModeDescription." + nameof(TexturePath), this, m_TexturePath, value)) m_TexturePath = value; } } // 0x24 (36)
 		
 		protected List<GameModeVariation> m_Variations = new List<GameModeVariation>();
-		[ContainerField(40), ContainerFieldNameHash(2728063271)]
+		[ContainerField(40), MemberInfoFlag(65), ContainerFieldNameHash(2728063271), ContainerArray]
 		public List<GameModeVariation> Variations { get { return m_Variations; } set { if (OnPropertyChanging("UIGameModeDescription." + nameof(Variations), this, m_Variations, value)) m_Variations = value; } } // 0x28 (40)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

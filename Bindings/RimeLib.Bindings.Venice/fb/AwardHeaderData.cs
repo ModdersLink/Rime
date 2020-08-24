@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class AwardHeaderData : 
 		AbstractAwardData
 	{
 		protected AwardGroup m_Group = new AwardGroup();
-		[ContainerField(12), ContainerFieldNameHash(208130522)]
+		[ContainerField(12), MemberInfoFlag(137), ContainerFieldNameHash(208130522)]
 		public AwardGroup Group { get { return m_Group; } set { if (OnPropertyChanging("AwardHeaderData." + nameof(Group), this, m_Group, value)) m_Group = value; } } // 0xC (12)
 		
 		protected StatsMultiplicity m_Multiplicity = new StatsMultiplicity();
-		[ContainerField(16), ContainerFieldNameHash(2648087582)]
+		[ContainerField(16), MemberInfoFlag(137), ContainerFieldNameHash(2648087582)]
 		public StatsMultiplicity Multiplicity { get { return m_Multiplicity; } set { if (OnPropertyChanging("AwardHeaderData." + nameof(Multiplicity), this, m_Multiplicity, value)) m_Multiplicity = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

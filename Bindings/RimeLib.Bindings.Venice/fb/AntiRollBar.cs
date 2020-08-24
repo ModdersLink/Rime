@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class AntiRollBar : 
 		DataContainer
 	{
 		protected float m_Stiffness = new float();
-		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(721813632)]
+		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(721813632)]
 		public float Stiffness { get { return m_Stiffness; } set { if (OnPropertyChanging("AntiRollBar." + nameof(Stiffness), this, m_Stiffness, value)) m_Stiffness = value; } } // 0x8 (8)
 		
 		protected float m_TorqueActivationLimit = new float();
-		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(2156176460)]
+		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2156176460)]
 		public float TorqueActivationLimit { get { return m_TorqueActivationLimit; } set { if (OnPropertyChanging("AntiRollBar." + nameof(TorqueActivationLimit), this, m_TorqueActivationLimit, value)) m_TorqueActivationLimit = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

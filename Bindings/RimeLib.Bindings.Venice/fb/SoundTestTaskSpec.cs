@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class SoundTestTaskSpec : 
 		DataContainer
 	{
 		protected string m_Description = string.Empty;
-		[ContainerField(8), LayoutImmutable, ContainerFieldNameHash(1636673251)]
+		[ContainerField(8), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(1636673251)]
 		public string Description { get { return m_Description; } set { if (OnPropertyChanging("SoundTestTaskSpec." + nameof(Description), this, m_Description, value)) m_Description = value; } } // 0x8 (8)
 		
 		protected float m_Duration = new float();
-		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(1828507227)]
+		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1828507227)]
 		public float Duration { get { return m_Duration; } set { if (OnPropertyChanging("SoundTestTaskSpec." + nameof(Duration), this, m_Duration, value)) m_Duration = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

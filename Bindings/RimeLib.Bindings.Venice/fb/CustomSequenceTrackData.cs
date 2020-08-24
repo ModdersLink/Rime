@@ -18,36 +18,36 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class CustomSequenceTrackData : 
 		EntityData
 	{
 		protected string m_TrackName = string.Empty;
-		[ContainerField(12), LayoutImmutable, ContainerFieldNameHash(1755529293)]
+		[ContainerField(12), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(1755529293)]
 		public string TrackName { get { return m_TrackName; } set { if (OnPropertyChanging("CustomSequenceTrackData." + nameof(TrackName), this, m_TrackName, value)) m_TrackName = value; } } // 0xC (12)
 		
 		protected RefArray<CustomSequenceTrackLinkMapping> m_InputLinkMap = new RefArray<CustomSequenceTrackLinkMapping>();
-		[ContainerField(16), ContainerFieldNameHash(1743335471)]
+		[ContainerField(16), MemberInfoFlag(65), ContainerFieldNameHash(1743335471), ContainerRefArray]
 		public RefArray<CustomSequenceTrackLinkMapping> InputLinkMap { get { return m_InputLinkMap; } set { if (OnPropertyChanging("CustomSequenceTrackData." + nameof(InputLinkMap), this, m_InputLinkMap, value)) m_InputLinkMap = value; } } // 0x10 (16)
 		
 		protected RefArray<CustomSequenceTrackLinkMapping> m_OutputLinkMap = new RefArray<CustomSequenceTrackLinkMapping>();
-		[ContainerField(20), ContainerFieldNameHash(2997861030)]
+		[ContainerField(20), MemberInfoFlag(65), ContainerFieldNameHash(2997861030), ContainerRefArray]
 		public RefArray<CustomSequenceTrackLinkMapping> OutputLinkMap { get { return m_OutputLinkMap; } set { if (OnPropertyChanging("CustomSequenceTrackData." + nameof(OutputLinkMap), this, m_OutputLinkMap, value)) m_OutputLinkMap = value; } } // 0x14 (20)
 		
 		protected RefArray<CustomSequenceTrackEventMapping> m_EventMap = new RefArray<CustomSequenceTrackEventMapping>();
-		[ContainerField(24), ContainerFieldNameHash(1687029045)]
+		[ContainerField(24), MemberInfoFlag(65), ContainerFieldNameHash(1687029045), ContainerRefArray]
 		public RefArray<CustomSequenceTrackEventMapping> EventMap { get { return m_EventMap; } set { if (OnPropertyChanging("CustomSequenceTrackData." + nameof(EventMap), this, m_EventMap, value)) m_EventMap = value; } } // 0x18 (24)
 		
 		protected RefArray<CustomSequenceTrackPropertyMapping> m_SourcePropertyMap = new RefArray<CustomSequenceTrackPropertyMapping>();
-		[ContainerField(28), ContainerFieldNameHash(130951907)]
+		[ContainerField(28), MemberInfoFlag(65), ContainerFieldNameHash(130951907), ContainerRefArray]
 		public RefArray<CustomSequenceTrackPropertyMapping> SourcePropertyMap { get { return m_SourcePropertyMap; } set { if (OnPropertyChanging("CustomSequenceTrackData." + nameof(SourcePropertyMap), this, m_SourcePropertyMap, value)) m_SourcePropertyMap = value; } } // 0x1C (28)
 		
 		protected RefArray<CustomSequenceTrackPropertyMapping> m_TargetPropertyMap = new RefArray<CustomSequenceTrackPropertyMapping>();
-		[ContainerField(32), ContainerFieldNameHash(1050699055)]
+		[ContainerField(32), MemberInfoFlag(65), ContainerFieldNameHash(1050699055), ContainerRefArray]
 		public RefArray<CustomSequenceTrackPropertyMapping> TargetPropertyMap { get { return m_TargetPropertyMap; } set { if (OnPropertyChanging("CustomSequenceTrackData." + nameof(TargetPropertyMap), this, m_TargetPropertyMap, value)) m_TargetPropertyMap = value; } } // 0x20 (32)
 		
 		protected RefArray<CustomSequenceTrackPropertyMapping> m_SourceAndTargetPropertyMap = new RefArray<CustomSequenceTrackPropertyMapping>();
-		[ContainerField(36), ContainerFieldNameHash(3803134969)]
+		[ContainerField(36), MemberInfoFlag(65), ContainerFieldNameHash(3803134969), ContainerRefArray]
 		public RefArray<CustomSequenceTrackPropertyMapping> SourceAndTargetPropertyMap { get { return m_SourceAndTargetPropertyMap; } set { if (OnPropertyChanging("CustomSequenceTrackData." + nameof(SourceAndTargetPropertyMap), this, m_SourceAndTargetPropertyMap, value)) m_SourceAndTargetPropertyMap = value; } } // 0x24 (36)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

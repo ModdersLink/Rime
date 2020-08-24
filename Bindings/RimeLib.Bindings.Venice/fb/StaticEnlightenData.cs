@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class StaticEnlightenData : 
 		Asset
 	{
 		protected CtrRef<TextureAsset> m_StaticIrradianceChromaTexture = new CtrRef<TextureAsset>();
-		[ContainerField(12), ContainerFieldNameHash(1710622452)]
+		[ContainerField(12), MemberInfoFlag(53), ContainerFieldNameHash(1710622452), ContainerCtrRef]
 		public CtrRef<TextureAsset> StaticIrradianceChromaTexture { get { return m_StaticIrradianceChromaTexture; } set { if (OnPropertyChanging("StaticEnlightenData." + nameof(StaticIrradianceChromaTexture), this, m_StaticIrradianceChromaTexture, value)) m_StaticIrradianceChromaTexture = value; } } // 0xC (12)
 		
 		protected CtrRef<TextureAsset> m_StaticIrradianceLumaTexture = new CtrRef<TextureAsset>();
-		[ContainerField(16), ContainerFieldNameHash(125414651)]
+		[ContainerField(16), MemberInfoFlag(53), ContainerFieldNameHash(125414651), ContainerCtrRef]
 		public CtrRef<TextureAsset> StaticIrradianceLumaTexture { get { return m_StaticIrradianceLumaTexture; } set { if (OnPropertyChanging("StaticEnlightenData." + nameof(StaticIrradianceLumaTexture), this, m_StaticIrradianceLumaTexture, value)) m_StaticIrradianceLumaTexture = value; } } // 0x10 (16)
 		
 		protected CtrRef<TextureAsset> m_StaticDirectionTexture = new CtrRef<TextureAsset>();
-		[ContainerField(20), ContainerFieldNameHash(2658604391)]
+		[ContainerField(20), MemberInfoFlag(53), ContainerFieldNameHash(2658604391), ContainerCtrRef]
 		public CtrRef<TextureAsset> StaticDirectionTexture { get { return m_StaticDirectionTexture; } set { if (OnPropertyChanging("StaticEnlightenData." + nameof(StaticDirectionTexture), this, m_StaticDirectionTexture, value)) m_StaticDirectionTexture = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

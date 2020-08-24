@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class TrackWheelComponentData : 
 		WheelComponentData
 	{
 		protected string m_BoneName = string.Empty;
-		[ContainerField(128), LayoutImmutable, ContainerFieldNameHash(1590647844)]
+		[ContainerField(128), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(1590647844)]
 		public string BoneName { get { return m_BoneName; } set { if (OnPropertyChanging("TrackWheelComponentData." + nameof(BoneName), this, m_BoneName, value)) m_BoneName = value; } } // 0x80 (128)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

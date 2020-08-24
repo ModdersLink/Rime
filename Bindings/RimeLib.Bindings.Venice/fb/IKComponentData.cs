@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class IKComponentData : 
 		ComponentData
 	{
 		protected IKEffectorEnum m_IKEffector = new IKEffectorEnum();
-		[ContainerField(96), ContainerFieldNameHash(4088955053)]
+		[ContainerField(96), MemberInfoFlag(137), ContainerFieldNameHash(4088955053)]
 		public IKEffectorEnum IKEffector { get { return m_IKEffector; } set { if (OnPropertyChanging("IKComponentData." + nameof(IKEffector), this, m_IKEffector, value)) m_IKEffector = value; } } // 0x60 (96)
 		
 		protected HIKData m_IKData = new HIKData();
-		[ContainerField(100), ContainerFieldNameHash(2831034455)]
+		[ContainerField(100), MemberInfoFlag(41), ContainerFieldNameHash(2831034455)]
 		public HIKData IKData { get { return m_IKData; } set { if (OnPropertyChanging("IKComponentData." + nameof(IKData), this, m_IKData, value)) m_IKData = value; } } // 0x64 (100)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

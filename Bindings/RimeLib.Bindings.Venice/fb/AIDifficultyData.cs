@@ -18,36 +18,36 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class AIDifficultyData : 
 		GameAIDifficultyData
 	{
 		protected string m_Name = string.Empty;
-		[ContainerField(8), LayoutImmutable, ContainerFieldNameHash(2088949890)]
+		[ContainerField(8), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(2088949890)]
 		public string Name { get { return m_Name; } set { if (OnPropertyChanging("AIDifficultyData." + nameof(Name), this, m_Name, value)) m_Name = value; } } // 0x8 (8)
 		
 		protected float m_AccuracyIncreaseTimeModifier = new float();
-		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(3502722014)]
+		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3502722014)]
 		public float AccuracyIncreaseTimeModifier { get { return m_AccuracyIncreaseTimeModifier; } set { if (OnPropertyChanging("AIDifficultyData." + nameof(AccuracyIncreaseTimeModifier), this, m_AccuracyIncreaseTimeModifier, value)) m_AccuracyIncreaseTimeModifier = value; } } // 0xC (12)
 		
 		protected float m_StartAccuracyModifierStanding = new float();
-		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(2363771747)]
+		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2363771747)]
 		public float StartAccuracyModifierStanding { get { return m_StartAccuracyModifierStanding; } set { if (OnPropertyChanging("AIDifficultyData." + nameof(StartAccuracyModifierStanding), this, m_StartAccuracyModifierStanding, value)) m_StartAccuracyModifierStanding = value; } } // 0x10 (16)
 		
 		protected float m_StartAccuracyModifierCrouching = new float();
-		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(1049658063)]
+		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1049658063)]
 		public float StartAccuracyModifierCrouching { get { return m_StartAccuracyModifierCrouching; } set { if (OnPropertyChanging("AIDifficultyData." + nameof(StartAccuracyModifierCrouching), this, m_StartAccuracyModifierCrouching, value)) m_StartAccuracyModifierCrouching = value; } } // 0x14 (20)
 		
 		protected float m_FinalAccuracyModifierStanding = new float();
-		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(604575407)]
+		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(604575407)]
 		public float FinalAccuracyModifierStanding { get { return m_FinalAccuracyModifierStanding; } set { if (OnPropertyChanging("AIDifficultyData." + nameof(FinalAccuracyModifierStanding), this, m_FinalAccuracyModifierStanding, value)) m_FinalAccuracyModifierStanding = value; } } // 0x18 (24)
 		
 		protected float m_FinalAccuracyModifierCrouching = new float();
-		[ContainerField(28), LayoutImmutable, Blittable, ContainerFieldNameHash(746968067)]
+		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(746968067)]
 		public float FinalAccuracyModifierCrouching { get { return m_FinalAccuracyModifierCrouching; } set { if (OnPropertyChanging("AIDifficultyData." + nameof(FinalAccuracyModifierCrouching), this, m_FinalAccuracyModifierCrouching, value)) m_FinalAccuracyModifierCrouching = value; } } // 0x1C (28)
 		
 		protected float m_ReadinessReactionTimeMultiplier = new float();
-		[ContainerField(32), LayoutImmutable, Blittable, ContainerFieldNameHash(2192704706)]
+		[ContainerField(32), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2192704706)]
 		public float ReadinessReactionTimeMultiplier { get { return m_ReadinessReactionTimeMultiplier; } set { if (OnPropertyChanging("AIDifficultyData." + nameof(ReadinessReactionTimeMultiplier), this, m_ReadinessReactionTimeMultiplier, value)) m_ReadinessReactionTimeMultiplier = value; } } // 0x20 (32)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,36 +18,36 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class ActionNode : 
 		UINodeData
 	{
 		protected int m_ActionKey = new int();
-		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(3027240492)]
+		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(3027240492)]
 		public int ActionKey { get { return m_ActionKey; } set { if (OnPropertyChanging("ActionNode." + nameof(ActionKey), this, m_ActionKey, value)) m_ActionKey = value; } } // 0x14 (20)
 		
 		protected List<string> m_Params = new List<string>();
-		[ContainerField(24), ContainerFieldNameHash(3371566681)]
+		[ContainerField(24), MemberInfoFlag(65), ContainerFieldNameHash(3371566681), ContainerArray]
 		public List<string> Params { get { return m_Params; } set { if (OnPropertyChanging("ActionNode." + nameof(Params), this, m_Params, value)) m_Params = value; } } // 0x18 (24)
 		
 		protected CtrRef<Asset> m_ActionAsset = new CtrRef<Asset>();
-		[ContainerField(28), ContainerFieldNameHash(2440817227)]
+		[ContainerField(28), MemberInfoFlag(53), ContainerFieldNameHash(2440817227), ContainerCtrRef]
 		public CtrRef<Asset> ActionAsset { get { return m_ActionAsset; } set { if (OnPropertyChanging("ActionNode." + nameof(ActionAsset), this, m_ActionAsset, value)) m_ActionAsset = value; } } // 0x1C (28)
 		
 		protected CtrRef<UINodePort> m_In = new CtrRef<UINodePort>();
-		[ContainerField(32), ContainerFieldNameHash(5862146)]
+		[ContainerField(32), MemberInfoFlag(53), ContainerFieldNameHash(5862146), ContainerCtrRef]
 		public CtrRef<UINodePort> In { get { return m_In; } set { if (OnPropertyChanging("ActionNode." + nameof(In), this, m_In, value)) m_In = value; } } // 0x20 (32)
 		
 		protected CtrRef<UINodePort> m_Out = new CtrRef<UINodePort>();
-		[ContainerField(36), ContainerFieldNameHash(193453899)]
+		[ContainerField(36), MemberInfoFlag(53), ContainerFieldNameHash(193453899), ContainerCtrRef]
 		public CtrRef<UINodePort> Out { get { return m_Out; } set { if (OnPropertyChanging("ActionNode." + nameof(Out), this, m_Out, value)) m_Out = value; } } // 0x24 (36)
 		
 		protected RefArray<UINodePort> m_DataInputs = new RefArray<UINodePort>();
-		[ContainerField(40), ContainerFieldNameHash(201610416)]
+		[ContainerField(40), MemberInfoFlag(65), ContainerFieldNameHash(201610416), ContainerRefArray]
 		public RefArray<UINodePort> DataInputs { get { return m_DataInputs; } set { if (OnPropertyChanging("ActionNode." + nameof(DataInputs), this, m_DataInputs, value)) m_DataInputs = value; } } // 0x28 (40)
 		
 		protected bool m_AppendIncomingParams = new bool();
-		[ContainerField(44), LayoutImmutable, Blittable, ContainerFieldNameHash(2745114833)]
+		[ContainerField(44), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2745114833)]
 		public bool AppendIncomingParams { get { return m_AppendIncomingParams; } set { if (OnPropertyChanging("ActionNode." + nameof(AppendIncomingParams), this, m_AppendIncomingParams, value)) m_AppendIncomingParams = value; } } // 0x2C (44)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

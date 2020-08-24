@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class StatsCategoryBaseData : 
 		TreeNodeBase
 	{
 		protected RefArray<StatsCategoryBaseData> m_BaseSubCategories = new RefArray<StatsCategoryBaseData>();
-		[ContainerField(12), ContainerFieldNameHash(2950064290)]
+		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(2950064290), ContainerRefArray]
 		public RefArray<StatsCategoryBaseData> BaseSubCategories { get { return m_BaseSubCategories; } set { if (OnPropertyChanging("StatsCategoryBaseData." + nameof(BaseSubCategories), this, m_BaseSubCategories, value)) m_BaseSubCategories = value; } } // 0xC (12)
 		
 		protected string m_Code = string.Empty;
-		[ContainerField(16), LayoutImmutable, ContainerFieldNameHash(2088844616)]
+		[ContainerField(16), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(2088844616)]
 		public string Code { get { return m_Code; } set { if (OnPropertyChanging("StatsCategoryBaseData." + nameof(Code), this, m_Code, value)) m_Code = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,32 +18,32 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(8)]
+	[ContainerType(8), MemberInfoFlag(53), ContainerClass]
 	public class ServerPerformanceEvent : 
 		MetricEvent
 	{
 		protected float m_CPUAverage = new float();
-		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(2154799904)]
+		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2154799904)]
 		public float CPUAverage { get { return m_CPUAverage; } set { if (OnPropertyChanging("ServerPerformanceEvent." + nameof(CPUAverage), this, m_CPUAverage, value)) m_CPUAverage = value; } } // 0x10 (16)
 		
 		protected float m_CPUMemory = new float();
-		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(1683758594)]
+		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1683758594)]
 		public float CPUMemory { get { return m_CPUMemory; } set { if (OnPropertyChanging("ServerPerformanceEvent." + nameof(CPUMemory), this, m_CPUMemory, value)) m_CPUMemory = value; } } // 0x14 (20)
 		
 		protected uint m_Received = new uint();
-		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(684081738)]
+		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(684081738)]
 		public uint Received { get { return m_Received; } set { if (OnPropertyChanging("ServerPerformanceEvent." + nameof(Received), this, m_Received, value)) m_Received = value; } } // 0x18 (24)
 		
 		protected uint m_Sent = new uint();
-		[ContainerField(28), LayoutImmutable, Blittable, ContainerFieldNameHash(2089417353)]
+		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(2089417353)]
 		public uint Sent { get { return m_Sent; } set { if (OnPropertyChanging("ServerPerformanceEvent." + nameof(Sent), this, m_Sent, value)) m_Sent = value; } } // 0x1C (28)
 		
 		protected float m_ReceivedAverage = new float();
-		[ContainerField(32), LayoutImmutable, Blittable, ContainerFieldNameHash(186958889)]
+		[ContainerField(32), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(186958889)]
 		public float ReceivedAverage { get { return m_ReceivedAverage; } set { if (OnPropertyChanging("ServerPerformanceEvent." + nameof(ReceivedAverage), this, m_ReceivedAverage, value)) m_ReceivedAverage = value; } } // 0x20 (32)
 		
 		protected float m_SentAverage = new float();
-		[ContainerField(36), LayoutImmutable, Blittable, ContainerFieldNameHash(3828469642)]
+		[ContainerField(36), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3828469642)]
 		public float SentAverage { get { return m_SentAverage; } set { if (OnPropertyChanging("ServerPerformanceEvent." + nameof(SentAverage), this, m_SentAverage, value)) m_SentAverage = value; } } // 0x24 (36)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

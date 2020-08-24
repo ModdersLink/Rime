@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class DestructionControllerComponentData : 
 		ComponentData
 	{
 		protected RefArray<ObjectBlueprint> m_DebrisClusters = new RefArray<ObjectBlueprint>();
-		[ContainerField(96), ContainerFieldNameHash(3290200503)]
+		[ContainerField(96), MemberInfoFlag(65), ContainerFieldNameHash(3290200503), ContainerRefArray]
 		public RefArray<ObjectBlueprint> DebrisClusters { get { return m_DebrisClusters; } set { if (OnPropertyChanging("DestructionControllerComponentData." + nameof(DebrisClusters), this, m_DebrisClusters, value)) m_DebrisClusters = value; } } // 0x60 (96)
 		
 		protected bool m_AttachToNearbyObjects = new bool();
-		[ContainerField(100), LayoutImmutable, Blittable, ContainerFieldNameHash(193040880)]
+		[ContainerField(100), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(193040880)]
 		public bool AttachToNearbyObjects { get { return m_AttachToNearbyObjects; } set { if (OnPropertyChanging("DestructionControllerComponentData." + nameof(AttachToNearbyObjects), this, m_AttachToNearbyObjects, value)) m_AttachToNearbyObjects = value; } } // 0x64 (100)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

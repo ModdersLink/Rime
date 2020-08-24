@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class EffectReferenceObjectData : 
 		ReferenceObjectData
 	{
 		protected bool m_AutoStart = new bool();
-		[ContainerField(96), LayoutImmutable, Blittable, ContainerFieldNameHash(792615882)]
+		[ContainerField(96), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(792615882)]
 		public bool AutoStart { get { return m_AutoStart; } set { if (OnPropertyChanging("EffectReferenceObjectData." + nameof(AutoStart), this, m_AutoStart, value)) m_AutoStart = value; } } // 0x60 (96)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,73 +18,73 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(41), ContainerStruct]
 	public class UIMinimapData : FrostbiteContainer
 	{
-		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable]
+		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
 		public Vec2 WorldCenter { get; set; } = new Vec2(); // 0x0 (0)
 		
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable]
+		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
 		public Vec4 CombatAreaColor { get; set; } = new Vec4(); // 0x10 (16)
 		
-		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable]
+		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
 		public Vec4 DetailTextureTint { get; set; } = new Vec4(); // 0x20 (32)
 		
-		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable]
+		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
 		public Vec2 CombatAreaMultiplyWrapAmount { get; set; } = new Vec2(); // 0x30 (48)
 		
-		[ContainerField(64)]
+		[ContainerField(64), MemberInfoFlag(41)]
 		public UIMinimapDistanceFieldParams Vegetation { get; set; } = new UIMinimapDistanceFieldParams(); // 0x40 (64)
 		
-		[ContainerField(128)]
+		[ContainerField(128), MemberInfoFlag(53), ContainerCtrRef]
 		public CtrRef<TextureAsset> FadeTexture { get; set; } = new CtrRef<TextureAsset>(); // 0x80 (128)
 		
-		[ContainerField(132), LayoutImmutable, Blittable]
+		[ContainerField(132), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float StreamingMinimapDelay { get; set; } // 0x84 (132)
 		
-		[ContainerField(136)]
+		[ContainerField(136), MemberInfoFlag(53), ContainerCtrRef]
 		public CtrRef<TextureAsset> AirRadarFadeTexture { get; set; } = new CtrRef<TextureAsset>(); // 0x88 (136)
 		
-		[ContainerField(140)]
+		[ContainerField(140), MemberInfoFlag(53), ContainerCtrRef]
 		public CtrRef<TextureAsset> DetailTexture { get; set; } = new CtrRef<TextureAsset>(); // 0x8C (140)
 		
-		[ContainerField(144)]
+		[ContainerField(144), MemberInfoFlag(41)]
 		public UIMinimapDistanceFieldParams Detail { get; set; } = new UIMinimapDistanceFieldParams(); // 0x90 (144)
 		
-		[ContainerField(208), LayoutImmutable, Blittable]
+		[ContainerField(208), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float StreamingMinimapTransitionSpeed { get; set; } // 0xD0 (208)
 		
-		[ContainerField(212), LayoutImmutable, Blittable]
+		[ContainerField(212), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float WorldRotation { get; set; } // 0xD4 (212)
 		
-		[ContainerField(216), LayoutImmutable, Blittable]
+		[ContainerField(216), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float WorldRange { get; set; } // 0xD8 (216)
 		
-		[ContainerField(220), LayoutImmutable, Blittable]
+		[ContainerField(220), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float CombatAreaDistanceScale { get; set; } // 0xDC (220)
 		
-		[ContainerField(224), LayoutImmutable, Blittable]
+		[ContainerField(224), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float CombatAreaFadeSpeed { get; set; } // 0xE0 (224)
 		
-		[ContainerField(228), LayoutImmutable, Blittable]
+		[ContainerField(228), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float CombatAreaAlphaThreshold { get; set; } // 0xE4 (228)
 		
-		[ContainerField(232)]
+		[ContainerField(232), MemberInfoFlag(53), ContainerCtrRef]
 		public CtrRef<TextureAsset> CombatAreaMultiplyTexture { get; set; } = new CtrRef<TextureAsset>(); // 0xE8 (232)
 		
-		[ContainerField(236), LayoutImmutable, Blittable]
+		[ContainerField(236), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float WorldSize { get; set; } // 0xEC (236)
 		
-		[ContainerField(240), LayoutImmutable, Blittable]
+		[ContainerField(240), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float AirRadarRange { get; set; } // 0xF0 (240)
 		
-		[ContainerField(244), LayoutImmutable, Blittable]
+		[ContainerField(244), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float CombatAreaScale { get; set; } // 0xF4 (244)
 		
-		[ContainerField(248), LayoutImmutable, Blittable]
+		[ContainerField(248), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool UseStreamingMinimap { get; set; } // 0xF8 (248)
 		
-		[ContainerField(249), LayoutImmutable, Blittable]
+		[ContainerField(249), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool UseCombatAreaTexture { get; set; } // 0xF9 (249)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

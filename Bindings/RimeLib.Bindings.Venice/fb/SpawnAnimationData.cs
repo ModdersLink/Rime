@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class SpawnAnimationData : 
 		ProcessorData
 	{
 		protected float m_AnimationSpeed = new float();
-		[ContainerField(48), LayoutImmutable, Blittable, ContainerFieldNameHash(3065159348)]
+		[ContainerField(48), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3065159348)]
 		public float AnimationSpeed { get { return m_AnimationSpeed; } set { if (OnPropertyChanging("SpawnAnimationData." + nameof(AnimationSpeed), this, m_AnimationSpeed, value)) m_AnimationSpeed = value; } } // 0x30 (48)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

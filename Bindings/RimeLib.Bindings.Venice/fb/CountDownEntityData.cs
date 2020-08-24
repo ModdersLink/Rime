@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class CountDownEntityData : 
 		EntityData
 	{
 		protected int m_StartValue = new int();
-		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(2748522638)]
+		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(2748522638)]
 		public int StartValue { get { return m_StartValue; } set { if (OnPropertyChanging("CountDownEntityData." + nameof(StartValue), this, m_StartValue, value)) m_StartValue = value; } } // 0xC (12)
 		
 		protected Realm m_Realm = new Realm();
-		[ContainerField(16), ContainerFieldNameHash(229961746)]
+		[ContainerField(16), MemberInfoFlag(137), ContainerFieldNameHash(229961746)]
 		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("CountDownEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0x10 (16)
 		
 		protected bool m_RunOnce = new bool();
-		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(709901739)]
+		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(709901739)]
 		public bool RunOnce { get { return m_RunOnce; } set { if (OnPropertyChanging("CountDownEntityData." + nameof(RunOnce), this, m_RunOnce, value)) m_RunOnce = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

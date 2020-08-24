@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class Vec3PropertyTrackData : 
 		SimplePropertyTrackData
 	{
 		protected List<Vec3> m_Values = new List<Vec3>();
-		[ContainerField(20), ContainerFieldNameHash(3142410589)]
+		[ContainerField(20), MemberInfoFlag(65), ContainerFieldNameHash(3142410589), ContainerArray]
 		public List<Vec3> Values { get { return m_Values; } set { if (OnPropertyChanging("Vec3PropertyTrackData." + nameof(Values), this, m_Values, value)) m_Values = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

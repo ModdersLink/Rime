@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class SubWorldInclusionSettings : 
 		DataContainer
 	{
 		protected RefArray<SubWorldInclusionSetting> m_Settings = new RefArray<SubWorldInclusionSetting>();
-		[ContainerField(8), ContainerFieldNameHash(649772672)]
+		[ContainerField(8), MemberInfoFlag(65), ContainerFieldNameHash(649772672), ContainerRefArray]
 		public RefArray<SubWorldInclusionSetting> Settings { get { return m_Settings; } set { if (OnPropertyChanging("SubWorldInclusionSettings." + nameof(Settings), this, m_Settings, value)) m_Settings = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

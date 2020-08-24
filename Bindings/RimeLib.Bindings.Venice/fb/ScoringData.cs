@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class ScoringData : 
 		Asset
 	{
 		protected RefArray<ScoringTypeData> m_ScoringTypes = new RefArray<ScoringTypeData>();
-		[ContainerField(12), ContainerFieldNameHash(1268919875)]
+		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(1268919875), ContainerRefArray]
 		public RefArray<ScoringTypeData> ScoringTypes { get { return m_ScoringTypes; } set { if (OnPropertyChanging("ScoringData." + nameof(ScoringTypes), this, m_ScoringTypes, value)) m_ScoringTypes = value; } } // 0xC (12)
 		
 		protected RefArray<ScoringHandlerData> m_ScoringHandlers = new RefArray<ScoringHandlerData>();
-		[ContainerField(16), ContainerFieldNameHash(3193568419)]
+		[ContainerField(16), MemberInfoFlag(65), ContainerFieldNameHash(3193568419), ContainerRefArray]
 		public RefArray<ScoringHandlerData> ScoringHandlers { get { return m_ScoringHandlers; } set { if (OnPropertyChanging("ScoringData." + nameof(ScoringHandlers), this, m_ScoringHandlers, value)) m_ScoringHandlers = value; } } // 0x10 (16)
 		
 		protected RefArray<ScoringBucketData> m_Buckets = new RefArray<ScoringBucketData>();
-		[ContainerField(20), ContainerFieldNameHash(2760100856)]
+		[ContainerField(20), MemberInfoFlag(65), ContainerFieldNameHash(2760100856), ContainerRefArray]
 		public RefArray<ScoringBucketData> Buckets { get { return m_Buckets; } set { if (OnPropertyChanging("ScoringData." + nameof(Buckets), this, m_Buckets, value)) m_Buckets = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

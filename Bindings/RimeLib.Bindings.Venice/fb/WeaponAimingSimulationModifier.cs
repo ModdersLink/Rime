@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class WeaponAimingSimulationModifier : 
 		WeaponModifierBase
 	{
 		protected CtrRef<SoldierAimingSimulationData> m_AimingController = new CtrRef<SoldierAimingSimulationData>();
-		[ContainerField(8), ContainerFieldNameHash(3247374364)]
+		[ContainerField(8), MemberInfoFlag(53), ContainerFieldNameHash(3247374364), ContainerCtrRef]
 		public CtrRef<SoldierAimingSimulationData> AimingController { get { return m_AimingController; } set { if (OnPropertyChanging("WeaponAimingSimulationModifier." + nameof(AimingController), this, m_AimingController, value)) m_AimingController = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

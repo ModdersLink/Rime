@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class DeathAreaTriggerEntityData : 
 		GameEntityData
 	{
 		protected float m_Damage = new float();
-		[ContainerField(96), LayoutImmutable, Blittable, ContainerFieldNameHash(2589892334)]
+		[ContainerField(96), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2589892334)]
 		public float Damage { get { return m_Damage; } set { if (OnPropertyChanging("DeathAreaTriggerEntityData." + nameof(Damage), this, m_Damage, value)) m_Damage = value; } } // 0x60 (96)
 		
 		protected float m_TimeToReturn = new float();
-		[ContainerField(100), LayoutImmutable, Blittable, ContainerFieldNameHash(2769825281)]
+		[ContainerField(100), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2769825281)]
 		public float TimeToReturn { get { return m_TimeToReturn; } set { if (OnPropertyChanging("DeathAreaTriggerEntityData." + nameof(TimeToReturn), this, m_TimeToReturn, value)) m_TimeToReturn = value; } } // 0x64 (100)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class DestructionPartComponentData : 
 		ComponentData
 	{
 		protected RefArray<GameObjectData> m_Objects = new RefArray<GameObjectData>();
-		[ContainerField(96), ContainerFieldNameHash(105488131)]
+		[ContainerField(96), MemberInfoFlag(65), ContainerFieldNameHash(105488131), ContainerRefArray]
 		public RefArray<GameObjectData> Objects { get { return m_Objects; } set { if (OnPropertyChanging("DestructionPartComponentData." + nameof(Objects), this, m_Objects, value)) m_Objects = value; } } // 0x60 (96)
 		
 		protected uint m_PartIndex = new uint();
-		[ContainerField(100), LayoutImmutable, Blittable, ContainerFieldNameHash(3213901068)]
+		[ContainerField(100), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(3213901068)]
 		public uint PartIndex { get { return m_PartIndex; } set { if (OnPropertyChanging("DestructionPartComponentData." + nameof(PartIndex), this, m_PartIndex, value)) m_PartIndex = value; } } // 0x64 (100)
 		
 		protected DestructionConnectivityType m_ConnectivityType = new DestructionConnectivityType();
-		[ContainerField(104), ContainerFieldNameHash(135434200)]
+		[ContainerField(104), MemberInfoFlag(137), ContainerFieldNameHash(135434200)]
 		public DestructionConnectivityType ConnectivityType { get { return m_ConnectivityType; } set { if (OnPropertyChanging("DestructionPartComponentData." + nameof(ConnectivityType), this, m_ConnectivityType, value)) m_ConnectivityType = value; } } // 0x68 (104)
 		
 		protected bool m_Fixed = new bool();
-		[ContainerField(108), LayoutImmutable, Blittable, ContainerFieldNameHash(206684275)]
+		[ContainerField(108), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(206684275)]
 		public bool Fixed { get { return m_Fixed; } set { if (OnPropertyChanging("DestructionPartComponentData." + nameof(Fixed), this, m_Fixed, value)) m_Fixed = value; } } // 0x6C (108)
 		
 		protected bool m_Fragile = new bool();
-		[ContainerField(109), LayoutImmutable, Blittable, ContainerFieldNameHash(2082366423)]
+		[ContainerField(109), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2082366423)]
 		public bool Fragile { get { return m_Fragile; } set { if (OnPropertyChanging("DestructionPartComponentData." + nameof(Fragile), this, m_Fragile, value)) m_Fragile = value; } } // 0x6D (109)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

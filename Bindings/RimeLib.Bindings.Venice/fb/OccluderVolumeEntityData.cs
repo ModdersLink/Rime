@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class OccluderVolumeEntityData : 
 		SpatialEntityData
 	{
 		protected bool m_OccluderHighPriority = new bool();
-		[ContainerField(80), LayoutImmutable, Blittable, ContainerFieldNameHash(1133933052)]
+		[ContainerField(80), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1133933052)]
 		public bool OccluderHighPriority { get { return m_OccluderHighPriority; } set { if (OnPropertyChanging("OccluderVolumeEntityData." + nameof(OccluderHighPriority), this, m_OccluderHighPriority, value)) m_OccluderHighPriority = value; } } // 0x50 (80)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

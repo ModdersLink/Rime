@@ -18,19 +18,19 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(41), ContainerStruct]
 	public class SoundGraphPluginConnection : FrostbiteContainer
 	{
-		[ContainerField(0)]
+		[ContainerField(0), MemberInfoFlag(137)]
 		public SoundGraphPluginConnectionType ConnectionType { get; set; } = new SoundGraphPluginConnectionType(); // 0x0 (0)
 		
-		[ContainerField(4)]
+		[ContainerField(4), MemberInfoFlag(65), ContainerArray]
 		public List<SoundGraphPluginConnectionParam> Parameters { get; set; } = new List<SoundGraphPluginConnectionParam>(); // 0x4 (4)
 		
-		[ContainerField(8)]
+		[ContainerField(8), MemberInfoFlag(53), ContainerCtrRef]
 		public CtrRef<SoundBusData> Bus { get; set; } = new CtrRef<SoundBusData>(); // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable]
+		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49341)]
 		public sbyte VoiceIndex { get; set; } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class LaserPainterData : 
 		LockingWeaponData
 	{
 		protected float m_TimeObjectIsPainted = new float();
-		[ContainerField(32), LayoutImmutable, Blittable, ContainerFieldNameHash(641195484)]
+		[ContainerField(32), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(641195484)]
 		public float TimeObjectIsPainted { get { return m_TimeObjectIsPainted; } set { if (OnPropertyChanging("LaserPainterData." + nameof(TimeObjectIsPainted), this, m_TimeObjectIsPainted, value)) m_TimeObjectIsPainted = value; } } // 0x20 (32)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

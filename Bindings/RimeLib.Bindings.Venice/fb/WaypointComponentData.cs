@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class WaypointComponentData : 
 		ComponentData
 	{
 		protected bool m_Looping = new bool();
-		[ContainerField(96), LayoutImmutable, Blittable, ContainerFieldNameHash(1366646169)]
+		[ContainerField(96), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1366646169)]
 		public bool Looping { get { return m_Looping; } set { if (OnPropertyChanging("WaypointComponentData." + nameof(Looping), this, m_Looping, value)) m_Looping = value; } } // 0x60 (96)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

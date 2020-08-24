@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class EventMemoryEntityData : 
 		GameEntityData
 	{
 		protected Realm m_Realm = new Realm();
-		[ContainerField(96), ContainerFieldNameHash(229961746)]
+		[ContainerField(96), MemberInfoFlag(137), ContainerFieldNameHash(229961746)]
 		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("EventMemoryEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0x60 (96)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

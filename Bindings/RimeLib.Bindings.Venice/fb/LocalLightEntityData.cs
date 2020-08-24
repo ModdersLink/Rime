@@ -18,48 +18,48 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class LocalLightEntityData : 
 		SpatialEntityData
 	{
 		protected Vec3 m_Color = new Vec3();
-		[ContainerField(80), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(212387320)]
+		[ContainerField(80), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(212387320)]
 		public Vec3 Color { get { return m_Color; } set { if (OnPropertyChanging("LocalLightEntityData." + nameof(Color), this, m_Color, value)) m_Color = value; } } // 0x50 (80)
 		
 		protected Vec3 m_ParticleColorScale = new Vec3();
-		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(2597022356)]
+		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(2597022356)]
 		public Vec3 ParticleColorScale { get { return m_ParticleColorScale; } set { if (OnPropertyChanging("LocalLightEntityData." + nameof(ParticleColorScale), this, m_ParticleColorScale, value)) m_ParticleColorScale = value; } } // 0x60 (96)
 		
 		protected Vec3 m_EnlightenColorScale = new Vec3();
-		[ContainerField(112), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(2430608254)]
+		[ContainerField(112), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(2430608254)]
 		public Vec3 EnlightenColorScale { get { return m_EnlightenColorScale; } set { if (OnPropertyChanging("LocalLightEntityData." + nameof(EnlightenColorScale), this, m_EnlightenColorScale, value)) m_EnlightenColorScale = value; } } // 0x70 (112)
 		
 		protected float m_Radius = new float();
-		[ContainerField(128), LayoutImmutable, Blittable, ContainerFieldNameHash(3298407133)]
+		[ContainerField(128), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3298407133)]
 		public float Radius { get { return m_Radius; } set { if (OnPropertyChanging("LocalLightEntityData." + nameof(Radius), this, m_Radius, value)) m_Radius = value; } } // 0x80 (128)
 		
 		protected float m_Intensity = new float();
-		[ContainerField(132), LayoutImmutable, Blittable, ContainerFieldNameHash(3836394730)]
+		[ContainerField(132), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3836394730)]
 		public float Intensity { get { return m_Intensity; } set { if (OnPropertyChanging("LocalLightEntityData." + nameof(Intensity), this, m_Intensity, value)) m_Intensity = value; } } // 0x84 (132)
 		
 		protected float m_AttenuationOffset = new float();
-		[ContainerField(136), LayoutImmutable, Blittable, ContainerFieldNameHash(1890669738)]
+		[ContainerField(136), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1890669738)]
 		public float AttenuationOffset { get { return m_AttenuationOffset; } set { if (OnPropertyChanging("LocalLightEntityData." + nameof(AttenuationOffset), this, m_AttenuationOffset, value)) m_AttenuationOffset = value; } } // 0x88 (136)
 		
 		protected EnlightenColorMode m_EnlightenColorMode = new EnlightenColorMode();
-		[ContainerField(140), ContainerFieldNameHash(2676157573)]
+		[ContainerField(140), MemberInfoFlag(137), ContainerFieldNameHash(2676157573)]
 		public EnlightenColorMode EnlightenColorMode { get { return m_EnlightenColorMode; } set { if (OnPropertyChanging("LocalLightEntityData." + nameof(EnlightenColorMode), this, m_EnlightenColorMode, value)) m_EnlightenColorMode = value; } } // 0x8C (140)
 		
 		protected bool m_EnlightenEnable = new bool();
-		[ContainerField(144), LayoutImmutable, Blittable, ContainerFieldNameHash(4137078682)]
+		[ContainerField(144), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(4137078682)]
 		public bool EnlightenEnable { get { return m_EnlightenEnable; } set { if (OnPropertyChanging("LocalLightEntityData." + nameof(EnlightenEnable), this, m_EnlightenEnable, value)) m_EnlightenEnable = value; } } // 0x90 (144)
 		
 		protected bool m_Visible = new bool();
-		[ContainerField(145), LayoutImmutable, Blittable, ContainerFieldNameHash(901540267)]
+		[ContainerField(145), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(901540267)]
 		public bool Visible { get { return m_Visible; } set { if (OnPropertyChanging("LocalLightEntityData." + nameof(Visible), this, m_Visible, value)) m_Visible = value; } } // 0x91 (145)
 		
 		protected bool m_SpecularEnable = new bool();
-		[ContainerField(146), LayoutImmutable, Blittable, ContainerFieldNameHash(2335981451)]
+		[ContainerField(146), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2335981451)]
 		public bool SpecularEnable { get { return m_SpecularEnable; } set { if (OnPropertyChanging("LocalLightEntityData." + nameof(SpecularEnable), this, m_SpecularEnable, value)) m_SpecularEnable = value; } } // 0x92 (146)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

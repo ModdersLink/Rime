@@ -18,7 +18,7 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(8)]
+	[ContainerType(8), MemberInfoFlag(53), ContainerClass]
 	public class MetricAggregate : 
 		MetricEvent
 	{

@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class PlayerOrderTrackerData : 
 		HudTrackerData
 	{
 		protected UIHudIcon m_AttackIcon = new UIHudIcon();
-		[ContainerField(44), ContainerFieldNameHash(1150263942)]
+		[ContainerField(44), MemberInfoFlag(137), ContainerFieldNameHash(1150263942)]
 		public UIHudIcon AttackIcon { get { return m_AttackIcon; } set { if (OnPropertyChanging("PlayerOrderTrackerData." + nameof(AttackIcon), this, m_AttackIcon, value)) m_AttackIcon = value; } } // 0x2C (44)
 		
 		protected UIHudIcon m_DefendIcon = new UIHudIcon();
-		[ContainerField(48), ContainerFieldNameHash(2423818630)]
+		[ContainerField(48), MemberInfoFlag(137), ContainerFieldNameHash(2423818630)]
 		public UIHudIcon DefendIcon { get { return m_DefendIcon; } set { if (OnPropertyChanging("PlayerOrderTrackerData." + nameof(DefendIcon), this, m_DefendIcon, value)) m_DefendIcon = value; } } // 0x30 (48)
 		
 		protected UIHudIcon m_MoveToIcon = new UIHudIcon();
-		[ContainerField(52), ContainerFieldNameHash(2367850372)]
+		[ContainerField(52), MemberInfoFlag(137), ContainerFieldNameHash(2367850372)]
 		public UIHudIcon MoveToIcon { get { return m_MoveToIcon; } set { if (OnPropertyChanging("PlayerOrderTrackerData." + nameof(MoveToIcon), this, m_MoveToIcon, value)) m_MoveToIcon = value; } } // 0x34 (52)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

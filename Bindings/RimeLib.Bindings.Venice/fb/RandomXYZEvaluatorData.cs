@@ -18,32 +18,32 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class RandomXYZEvaluatorData : 
 		EvaluatorData
 	{
 		protected float m_MaxX = new float();
-		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(2088779177)]
+		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2088779177)]
 		public float MaxX { get { return m_MaxX; } set { if (OnPropertyChanging("RandomXYZEvaluatorData." + nameof(MaxX), this, m_MaxX, value)) m_MaxX = value; } } // 0xC (12)
 		
 		protected float m_MinX = new float();
-		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(2088770807)]
+		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2088770807)]
 		public float MinX { get { return m_MinX; } set { if (OnPropertyChanging("RandomXYZEvaluatorData." + nameof(MinX), this, m_MinX, value)) m_MinX = value; } } // 0x10 (16)
 		
 		protected float m_MaxY = new float();
-		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(2088779176)]
+		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2088779176)]
 		public float MaxY { get { return m_MaxY; } set { if (OnPropertyChanging("RandomXYZEvaluatorData." + nameof(MaxY), this, m_MaxY, value)) m_MaxY = value; } } // 0x14 (20)
 		
 		protected float m_MinY = new float();
-		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(2088770806)]
+		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2088770806)]
 		public float MinY { get { return m_MinY; } set { if (OnPropertyChanging("RandomXYZEvaluatorData." + nameof(MinY), this, m_MinY, value)) m_MinY = value; } } // 0x18 (24)
 		
 		protected float m_MaxZ = new float();
-		[ContainerField(28), LayoutImmutable, Blittable, ContainerFieldNameHash(2088779179)]
+		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2088779179)]
 		public float MaxZ { get { return m_MaxZ; } set { if (OnPropertyChanging("RandomXYZEvaluatorData." + nameof(MaxZ), this, m_MaxZ, value)) m_MaxZ = value; } } // 0x1C (28)
 		
 		protected float m_MinZ = new float();
-		[ContainerField(32), LayoutImmutable, Blittable, ContainerFieldNameHash(2088770805)]
+		[ContainerField(32), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2088770805)]
 		public float MinZ { get { return m_MinZ; } set { if (OnPropertyChanging("RandomXYZEvaluatorData." + nameof(MinZ), this, m_MinZ, value)) m_MinZ = value; } } // 0x20 (32)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

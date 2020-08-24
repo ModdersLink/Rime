@@ -18,32 +18,32 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class SoundTestSpec : 
 		DataContainer
 	{
 		protected string m_Name = string.Empty;
-		[ContainerField(8), LayoutImmutable, ContainerFieldNameHash(2088949890)]
+		[ContainerField(8), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(2088949890)]
 		public string Name { get { return m_Name; } set { if (OnPropertyChanging("SoundTestSpec." + nameof(Name), this, m_Name, value)) m_Name = value; } } // 0x8 (8)
 		
 		protected string m_Description = string.Empty;
-		[ContainerField(12), LayoutImmutable, ContainerFieldNameHash(1636673251)]
+		[ContainerField(12), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(1636673251)]
 		public string Description { get { return m_Description; } set { if (OnPropertyChanging("SoundTestSpec." + nameof(Description), this, m_Description, value)) m_Description = value; } } // 0xC (12)
 		
 		protected CtrRef<SoundTestTask> m_MainStartTask = new CtrRef<SoundTestTask>();
-		[ContainerField(16), ContainerFieldNameHash(6996003)]
+		[ContainerField(16), MemberInfoFlag(53), ContainerFieldNameHash(6996003), ContainerCtrRef]
 		public CtrRef<SoundTestTask> MainStartTask { get { return m_MainStartTask; } set { if (OnPropertyChanging("SoundTestSpec." + nameof(MainStartTask), this, m_MainStartTask, value)) m_MainStartTask = value; } } // 0x10 (16)
 		
 		protected CtrRef<SoundTestTask> m_MainStopTask = new CtrRef<SoundTestTask>();
-		[ContainerField(20), ContainerFieldNameHash(2755082011)]
+		[ContainerField(20), MemberInfoFlag(53), ContainerFieldNameHash(2755082011), ContainerCtrRef]
 		public CtrRef<SoundTestTask> MainStopTask { get { return m_MainStopTask; } set { if (OnPropertyChanging("SoundTestSpec." + nameof(MainStopTask), this, m_MainStopTask, value)) m_MainStopTask = value; } } // 0x14 (20)
 		
 		protected float m_Duration = new float();
-		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(1828507227)]
+		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1828507227)]
 		public float Duration { get { return m_Duration; } set { if (OnPropertyChanging("SoundTestSpec." + nameof(Duration), this, m_Duration, value)) m_Duration = value; } } // 0x18 (24)
 		
 		protected RefArray<SoundTestTask> m_Tasks = new RefArray<SoundTestTask>();
-		[ContainerField(28), ContainerFieldNameHash(227574651)]
+		[ContainerField(28), MemberInfoFlag(65), ContainerFieldNameHash(227574651), ContainerRefArray]
 		public RefArray<SoundTestTask> Tasks { get { return m_Tasks; } set { if (OnPropertyChanging("SoundTestSpec." + nameof(Tasks), this, m_Tasks, value)) m_Tasks = value; } } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

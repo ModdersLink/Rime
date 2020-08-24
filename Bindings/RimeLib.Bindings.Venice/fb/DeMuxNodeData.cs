@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class DeMuxNodeData : 
 		AudioGraphNodeData
 	{
 		protected RefArray<DeMuxOutput> m_Outputs = new RefArray<DeMuxOutput>();
-		[ContainerField(8), ContainerFieldNameHash(1070022089)]
+		[ContainerField(8), MemberInfoFlag(65), ContainerFieldNameHash(1070022089), ContainerRefArray]
 		public RefArray<DeMuxOutput> Outputs { get { return m_Outputs; } set { if (OnPropertyChanging("DeMuxNodeData." + nameof(Outputs), this, m_Outputs, value)) m_Outputs = value; } } // 0x8 (8)
 		
 		protected AudioGraphNodePort m_Trigger = new AudioGraphNodePort();
-		[ContainerField(12), ContainerFieldNameHash(2606354109)]
+		[ContainerField(12), MemberInfoFlag(41), ContainerFieldNameHash(2606354109)]
 		public AudioGraphNodePort Trigger { get { return m_Trigger; } set { if (OnPropertyChanging("DeMuxNodeData." + nameof(Trigger), this, m_Trigger, value)) m_Trigger = value; } } // 0xC (12)
 		
 		protected AudioGraphNodePort m_Value = new AudioGraphNodePort();
-		[ContainerField(20), ContainerFieldNameHash(225375086)]
+		[ContainerField(20), MemberInfoFlag(41), ContainerFieldNameHash(225375086)]
 		public AudioGraphNodePort Value { get { return m_Value; } set { if (OnPropertyChanging("DeMuxNodeData." + nameof(Value), this, m_Value, value)) m_Value = value; } } // 0x14 (20)
 		
 		protected bool m_WrapValue = new bool();
-		[ContainerField(28), LayoutImmutable, Blittable, ContainerFieldNameHash(1779662746)]
+		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1779662746)]
 		public bool WrapValue { get { return m_WrapValue; } set { if (OnPropertyChanging("DeMuxNodeData." + nameof(WrapValue), this, m_WrapValue, value)) m_WrapValue = value; } } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

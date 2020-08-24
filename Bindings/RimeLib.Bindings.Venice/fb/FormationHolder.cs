@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class FormationHolder : 
 		Asset
 	{
 		protected RefArray<FormationData> m_Formations = new RefArray<FormationData>();
-		[ContainerField(12), ContainerFieldNameHash(408468541)]
+		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(408468541), ContainerRefArray]
 		public RefArray<FormationData> Formations { get { return m_Formations; } set { if (OnPropertyChanging("FormationHolder." + nameof(Formations), this, m_Formations, value)) m_Formations = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

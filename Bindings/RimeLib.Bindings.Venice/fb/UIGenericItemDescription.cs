@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class UIGenericItemDescription : 
 		UIItemDescription
 	{
 		protected string m_Identifier = string.Empty;
-		[ContainerField(16), LayoutImmutable, ContainerFieldNameHash(3512790342)]
+		[ContainerField(16), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(3512790342)]
 		public string Identifier { get { return m_Identifier; } set { if (OnPropertyChanging("UIGenericItemDescription." + nameof(Identifier), this, m_Identifier, value)) m_Identifier = value; } } // 0x10 (16)
 		
 		protected string m_ImagePath = string.Empty;
-		[ContainerField(20), LayoutImmutable, ContainerFieldNameHash(2679336655)]
+		[ContainerField(20), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(2679336655)]
 		public string ImagePath { get { return m_ImagePath; } set { if (OnPropertyChanging("UIGenericItemDescription." + nameof(ImagePath), this, m_ImagePath, value)) m_ImagePath = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

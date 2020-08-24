@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class ToWorldSpaceTransformEntityData : 
 		EntityData
 	{
 		protected LinearTransform m_In1 = new LinearTransform();
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(193450867)]
+		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(193450867)]
 		public LinearTransform In1 { get { return m_In1; } set { if (OnPropertyChanging("ToWorldSpaceTransformEntityData." + nameof(In1), this, m_In1, value)) m_In1 = value; } } // 0x10 (16)
 		
 		protected Realm m_Realm = new Realm();
-		[ContainerField(80), ContainerFieldNameHash(229961746)]
+		[ContainerField(80), MemberInfoFlag(137), ContainerFieldNameHash(229961746)]
 		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("ToWorldSpaceTransformEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0x50 (80)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

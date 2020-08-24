@@ -18,32 +18,32 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class SampleTextureData : 
 		EvaluatorData
 	{
 		protected Vec2 m_TextureDimensions = new Vec2();
-		[ContainerField(12), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(1486911481)]
+		[ContainerField(12), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(1486911481)]
 		public Vec2 TextureDimensions { get { return m_TextureDimensions; } set { if (OnPropertyChanging("SampleTextureData." + nameof(TextureDimensions), this, m_TextureDimensions, value)) m_TextureDimensions = value; } } // 0xC (12)
 		
 		protected Vec3 m_ColorIntensityMax = new Vec3();
-		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(707866275)]
+		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(707866275)]
 		public Vec3 ColorIntensityMax { get { return m_ColorIntensityMax; } set { if (OnPropertyChanging("SampleTextureData." + nameof(ColorIntensityMax), this, m_ColorIntensityMax, value)) m_ColorIntensityMax = value; } } // 0x20 (32)
 		
 		protected Vec3 m_ColorIntensityMin = new Vec3();
-		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(707866045)]
+		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(707866045)]
 		public Vec3 ColorIntensityMin { get { return m_ColorIntensityMin; } set { if (OnPropertyChanging("SampleTextureData." + nameof(ColorIntensityMin), this, m_ColorIntensityMin, value)) m_ColorIntensityMin = value; } } // 0x30 (48)
 		
 		protected List<Vec4> m_GradientData = new List<Vec4>();
-		[ContainerField(64), ContainerFieldNameHash(2003028595)]
+		[ContainerField(64), MemberInfoFlag(65), ContainerFieldNameHash(2003028595), ContainerArray]
 		public List<Vec4> GradientData { get { return m_GradientData; } set { if (OnPropertyChanging("SampleTextureData." + nameof(GradientData), this, m_GradientData, value)) m_GradientData = value; } } // 0x40 (64)
 		
 		protected float m_TextureOriginU = new float();
-		[ContainerField(68), LayoutImmutable, Blittable, ContainerFieldNameHash(1728068571)]
+		[ContainerField(68), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1728068571)]
 		public float TextureOriginU { get { return m_TextureOriginU; } set { if (OnPropertyChanging("SampleTextureData." + nameof(TextureOriginU), this, m_TextureOriginU, value)) m_TextureOriginU = value; } } // 0x44 (68)
 		
 		protected float m_TextureOriginV = new float();
-		[ContainerField(72), LayoutImmutable, Blittable, ContainerFieldNameHash(1728068568)]
+		[ContainerField(72), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1728068568)]
 		public float TextureOriginV { get { return m_TextureOriginV; } set { if (OnPropertyChanging("SampleTextureData." + nameof(TextureOriginV), this, m_TextureOriginV, value)) m_TextureOriginV = value; } } // 0x48 (72)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

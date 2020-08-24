@@ -756,7 +756,7 @@ namespace RimeLib.Serialization.Frostbite2_0.Ebx
 
                                 if (s_Attr != null)
                                 {
-                                    typeof(CtrRef<>).IsAssignableFrom(s_Property.PropertyType);
+                                    //typeof(CtrRef<>).IsAssignableFrom(s_Property.PropertyType);
                                     // Make sure this is an array.
                                     if (!typeof(CtrRef<>).IsGenericAssignableFrom(s_Property.PropertyType))
                                     {

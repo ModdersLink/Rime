@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class ConditionGroup : 
 		AudioGraphNodePortGroup
 	{
 		protected AudioGraphNodePort m_X = new AudioGraphNodePort();
-		[ContainerField(8), ContainerFieldNameHash(177661)]
+		[ContainerField(8), MemberInfoFlag(41), ContainerFieldNameHash(177661)]
 		public AudioGraphNodePort X { get { return m_X; } set { if (OnPropertyChanging("ConditionGroup." + nameof(X), this, m_X, value)) m_X = value; } } // 0x8 (8)
 		
 		protected AudioGraphNodePort m_Y = new AudioGraphNodePort();
-		[ContainerField(16), ContainerFieldNameHash(177660)]
+		[ContainerField(16), MemberInfoFlag(41), ContainerFieldNameHash(177660)]
 		public AudioGraphNodePort Y { get { return m_Y; } set { if (OnPropertyChanging("ConditionGroup." + nameof(Y), this, m_Y, value)) m_Y = value; } } // 0x10 (16)
 		
 		protected AudioGraphNodePort m_True = new AudioGraphNodePort();
-		[ContainerField(24), ContainerFieldNameHash(2089293587)]
+		[ContainerField(24), MemberInfoFlag(41), ContainerFieldNameHash(2089293587)]
 		public AudioGraphNodePort True { get { return m_True; } set { if (OnPropertyChanging("ConditionGroup." + nameof(True), this, m_True, value)) m_True = value; } } // 0x18 (24)
 		
 		protected ConditionType m_Condition = new ConditionType();
-		[ContainerField(32), ContainerFieldNameHash(1800624758)]
+		[ContainerField(32), MemberInfoFlag(137), ContainerFieldNameHash(1800624758)]
 		public ConditionType Condition { get { return m_Condition; } set { if (OnPropertyChanging("ConditionGroup." + nameof(Condition), this, m_Condition, value)) m_Condition = value; } } // 0x20 (32)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

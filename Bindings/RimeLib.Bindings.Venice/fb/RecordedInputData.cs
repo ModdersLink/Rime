@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class RecordedInputData : 
 		Asset
 	{
 		protected List<InputRecorderTrackData> m_TrackData = new List<InputRecorderTrackData>();
-		[ContainerField(12), ContainerFieldNameHash(1756028410)]
+		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(1756028410), ContainerArray]
 		public List<InputRecorderTrackData> TrackData { get { return m_TrackData; } set { if (OnPropertyChanging("RecordedInputData." + nameof(TrackData), this, m_TrackData, value)) m_TrackData = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

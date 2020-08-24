@@ -18,25 +18,25 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(41), ContainerStruct]
 	public class BasicUnlockInfo : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, Blittable]
+		[ContainerField(0), LayoutImmutable, Blittable, MemberInfoFlag(49501)]
 		public GUID UnlockGuid { get; set; } // 0x0 (0)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
+		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
 		public uint Identifier { get; set; } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
+		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
 		public uint UnlockScore { get; set; } // 0x14 (20)
 		
-		[ContainerField(24)]
+		[ContainerField(24), MemberInfoFlag(65), ContainerArray]
 		public List<string> Licenses { get; set; } = new List<string>(); // 0x18 (24)
 		
-		[ContainerField(28)]
+		[ContainerField(28), MemberInfoFlag(65), ContainerArray]
 		public List<string> AdditionalLicenses { get; set; } = new List<string>(); // 0x1C (28)
 		
-		[ContainerField(32), LayoutImmutable]
+		[ContainerField(32), LayoutImmutable, MemberInfoFlag(16509)]
 		public string StringId { get; set; } // 0x20 (32)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

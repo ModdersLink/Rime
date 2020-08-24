@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class AiffWriterNodeData : 
 		AudioGraphNodeData
 	{
 		protected AudioGraphNodePort m_In = new AudioGraphNodePort();
-		[ContainerField(8), ContainerFieldNameHash(5862146)]
+		[ContainerField(8), MemberInfoFlag(41), ContainerFieldNameHash(5862146)]
 		public AudioGraphNodePort In { get { return m_In; } set { if (OnPropertyChanging("AiffWriterNodeData." + nameof(In), this, m_In, value)) m_In = value; } } // 0x8 (8)
 		
 		protected AudioGraphNodePort m_Start = new AudioGraphNodePort();
-		[ContainerField(16), ContainerFieldNameHash(230748069)]
+		[ContainerField(16), MemberInfoFlag(41), ContainerFieldNameHash(230748069)]
 		public AudioGraphNodePort Start { get { return m_Start; } set { if (OnPropertyChanging("AiffWriterNodeData." + nameof(Start), this, m_Start, value)) m_Start = value; } } // 0x10 (16)
 		
 		protected AudioGraphNodePort m_Stop = new AudioGraphNodePort();
-		[ContainerField(24), ContainerFieldNameHash(2089401213)]
+		[ContainerField(24), MemberInfoFlag(41), ContainerFieldNameHash(2089401213)]
 		public AudioGraphNodePort Stop { get { return m_Stop; } set { if (OnPropertyChanging("AiffWriterNodeData." + nameof(Stop), this, m_Stop, value)) m_Stop = value; } } // 0x18 (24)
 		
 		protected SoundGraphPluginRef m_Plugin = new SoundGraphPluginRef();
-		[ContainerField(32), ContainerFieldNameHash(3384353452)]
+		[ContainerField(32), MemberInfoFlag(41), ContainerFieldNameHash(3384353452)]
 		public SoundGraphPluginRef Plugin { get { return m_Plugin; } set { if (OnPropertyChanging("AiffWriterNodeData." + nameof(Plugin), this, m_Plugin, value)) m_Plugin = value; } } // 0x20 (32)
 		
 		protected string m_FileName = string.Empty;
-		[ContainerField(36), LayoutImmutable, ContainerFieldNameHash(1134474212)]
+		[ContainerField(36), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(1134474212)]
 		public string FileName { get { return m_FileName; } set { if (OnPropertyChanging("AiffWriterNodeData." + nameof(FileName), this, m_FileName, value)) m_FileName = value; } } // 0x24 (36)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

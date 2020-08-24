@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class SoundTestTask : 
 		DataContainer
 	{
 		protected CtrRef<SoundTestTaskSpec> m_Spec = new CtrRef<SoundTestTaskSpec>();
-		[ContainerField(8), ContainerFieldNameHash(2089404960)]
+		[ContainerField(8), MemberInfoFlag(53), ContainerFieldNameHash(2089404960), ContainerCtrRef]
 		public CtrRef<SoundTestTaskSpec> Spec { get { return m_Spec; } set { if (OnPropertyChanging("SoundTestTask." + nameof(Spec), this, m_Spec, value)) m_Spec = value; } } // 0x8 (8)
 		
 		protected CtrRef<SoundTestTaskParam> m_Param = new CtrRef<SoundTestTaskParam>();
-		[ContainerField(12), ContainerFieldNameHash(232319210)]
+		[ContainerField(12), MemberInfoFlag(53), ContainerFieldNameHash(232319210), ContainerCtrRef]
 		public CtrRef<SoundTestTaskParam> Param { get { return m_Param; } set { if (OnPropertyChanging("SoundTestTask." + nameof(Param), this, m_Param, value)) m_Param = value; } } // 0xC (12)
 		
 		protected float m_StartTime = new float();
-		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(3727579056)]
+		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3727579056)]
 		public float StartTime { get { return m_StartTime; } set { if (OnPropertyChanging("SoundTestTask." + nameof(StartTime), this, m_StartTime, value)) m_StartTime = value; } } // 0x10 (16)
 		
 		protected uint m_Repetitions = new uint();
-		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(1673296181)]
+		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(1673296181)]
 		public uint Repetitions { get { return m_Repetitions; } set { if (OnPropertyChanging("SoundTestTask." + nameof(Repetitions), this, m_Repetitions, value)) m_Repetitions = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

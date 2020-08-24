@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class EmitterDocument : 
 		EmitterAsset
 	{
 		protected CtrRef<ProcessorData> m_RootProcessor = new CtrRef<ProcessorData>();
-		[ContainerField(12), ContainerFieldNameHash(3988805269)]
+		[ContainerField(12), MemberInfoFlag(53), ContainerFieldNameHash(3988805269), ContainerCtrRef]
 		public CtrRef<ProcessorData> RootProcessor { get { return m_RootProcessor; } set { if (OnPropertyChanging("EmitterDocument." + nameof(RootProcessor), this, m_RootProcessor, value)) m_RootProcessor = value; } } // 0xC (12)
 		
 		protected CtrRef<EmitterTemplateData> m_TemplateData = new CtrRef<EmitterTemplateData>();
-		[ContainerField(16), ContainerFieldNameHash(673762469)]
+		[ContainerField(16), MemberInfoFlag(53), ContainerFieldNameHash(673762469), ContainerCtrRef]
 		public CtrRef<EmitterTemplateData> TemplateData { get { return m_TemplateData; } set { if (OnPropertyChanging("EmitterDocument." + nameof(TemplateData), this, m_TemplateData, value)) m_TemplateData = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

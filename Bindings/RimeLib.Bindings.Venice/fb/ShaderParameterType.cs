@@ -18,6 +18,7 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
+	[MemberInfoFlag(137), ContainerEnum]
 	public enum ShaderParameterType : int
 	{
 		ShaderParameterType_Bool = 0,

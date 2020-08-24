@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class PositionEvaluationConstantData : 
 		Asset
 	{
 		protected float m_OwnRandomPositionsRadius = new float();
-		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(40735674)]
+		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(40735674)]
 		public float OwnRandomPositionsRadius { get { return m_OwnRandomPositionsRadius; } set { if (OnPropertyChanging("PositionEvaluationConstantData." + nameof(OwnRandomPositionsRadius), this, m_OwnRandomPositionsRadius, value)) m_OwnRandomPositionsRadius = value; } } // 0xC (12)
 		
 		protected float m_LeaderRandomPositionsRadius = new float();
-		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(1408843063)]
+		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1408843063)]
 		public float LeaderRandomPositionsRadius { get { return m_LeaderRandomPositionsRadius; } set { if (OnPropertyChanging("PositionEvaluationConstantData." + nameof(LeaderRandomPositionsRadius), this, m_LeaderRandomPositionsRadius, value)) m_LeaderRandomPositionsRadius = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

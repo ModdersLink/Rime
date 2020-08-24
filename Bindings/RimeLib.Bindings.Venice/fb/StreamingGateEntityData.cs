@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class StreamingGateEntityData : 
 		EntityData
 	{
 		protected float m_Timeout = new float();
-		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(3344700766)]
+		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3344700766)]
 		public float Timeout { get { return m_Timeout; } set { if (OnPropertyChanging("StreamingGateEntityData." + nameof(Timeout), this, m_Timeout, value)) m_Timeout = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

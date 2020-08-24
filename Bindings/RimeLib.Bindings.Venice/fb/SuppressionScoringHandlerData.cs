@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class SuppressionScoringHandlerData : 
 		ScoringHandlerData
 	{
 		protected float m_SuppressionAmountLimit = new float();
-		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(3089705413)]
+		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3089705413)]
 		public float SuppressionAmountLimit { get { return m_SuppressionAmountLimit; } set { if (OnPropertyChanging("SuppressionScoringHandlerData." + nameof(SuppressionAmountLimit), this, m_SuppressionAmountLimit, value)) m_SuppressionAmountLimit = value; } } // 0x8 (8)
 		
 		protected float m_TimeSinceSuppressionLimit = new float();
-		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(804971118)]
+		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(804971118)]
 		public float TimeSinceSuppressionLimit { get { return m_TimeSinceSuppressionLimit; } set { if (OnPropertyChanging("SuppressionScoringHandlerData." + nameof(TimeSinceSuppressionLimit), this, m_TimeSinceSuppressionLimit, value)) m_TimeSinceSuppressionLimit = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

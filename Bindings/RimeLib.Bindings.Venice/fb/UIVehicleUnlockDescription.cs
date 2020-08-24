@@ -18,40 +18,40 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class UIVehicleUnlockDescription : 
 		UIItemDescription
 	{
 		protected string m_Name = string.Empty;
-		[ContainerField(16), LayoutImmutable, ContainerFieldNameHash(2088949890)]
+		[ContainerField(16), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(2088949890)]
 		public string Name { get { return m_Name; } set { if (OnPropertyChanging("UIVehicleUnlockDescription." + nameof(Name), this, m_Name, value)) m_Name = value; } } // 0x10 (16)
 		
 		protected string m_Description = string.Empty;
-		[ContainerField(20), LayoutImmutable, ContainerFieldNameHash(1636673251)]
+		[ContainerField(20), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(1636673251)]
 		public string Description { get { return m_Description; } set { if (OnPropertyChanging("UIVehicleUnlockDescription." + nameof(Description), this, m_Description, value)) m_Description = value; } } // 0x14 (20)
 		
 		protected string m_Category = string.Empty;
-		[ContainerField(24), LayoutImmutable, ContainerFieldNameHash(3455858997)]
+		[ContainerField(24), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(3455858997)]
 		public string Category { get { return m_Category; } set { if (OnPropertyChanging("UIVehicleUnlockDescription." + nameof(Category), this, m_Category, value)) m_Category = value; } } // 0x18 (24)
 		
 		protected string m_TexturePath = string.Empty;
-		[ContainerField(28), LayoutImmutable, ContainerFieldNameHash(3058477943)]
+		[ContainerField(28), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(3058477943)]
 		public string TexturePath { get { return m_TexturePath; } set { if (OnPropertyChanging("UIVehicleUnlockDescription." + nameof(TexturePath), this, m_TexturePath, value)) m_TexturePath = value; } } // 0x1C (28)
 		
 		protected string m_IconTexturePath = string.Empty;
-		[ContainerField(32), LayoutImmutable, ContainerFieldNameHash(377747068)]
+		[ContainerField(32), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(377747068)]
 		public string IconTexturePath { get { return m_IconTexturePath; } set { if (OnPropertyChanging("UIVehicleUnlockDescription." + nameof(IconTexturePath), this, m_IconTexturePath, value)) m_IconTexturePath = value; } } // 0x20 (32)
 		
 		protected string m_UnlockTexturePath = string.Empty;
-		[ContainerField(36), LayoutImmutable, ContainerFieldNameHash(2699666183)]
+		[ContainerField(36), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(2699666183)]
 		public string UnlockTexturePath { get { return m_UnlockTexturePath; } set { if (OnPropertyChanging("UIVehicleUnlockDescription." + nameof(UnlockTexturePath), this, m_UnlockTexturePath, value)) m_UnlockTexturePath = value; } } // 0x24 (36)
 		
 		protected bool m_HiddenInProgression = new bool();
-		[ContainerField(40), LayoutImmutable, Blittable, ContainerFieldNameHash(1800564573)]
+		[ContainerField(40), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1800564573)]
 		public bool HiddenInProgression { get { return m_HiddenInProgression; } set { if (OnPropertyChanging("UIVehicleUnlockDescription." + nameof(HiddenInProgression), this, m_HiddenInProgression, value)) m_HiddenInProgression = value; } } // 0x28 (40)
 		
 		protected bool m_NotExplicitelySelectable = new bool();
-		[ContainerField(41), LayoutImmutable, Blittable, ContainerFieldNameHash(3852874612)]
+		[ContainerField(41), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3852874612)]
 		public bool NotExplicitelySelectable { get { return m_NotExplicitelySelectable; } set { if (OnPropertyChanging("UIVehicleUnlockDescription." + nameof(NotExplicitelySelectable), this, m_NotExplicitelySelectable, value)) m_NotExplicitelySelectable = value; } } // 0x29 (41)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

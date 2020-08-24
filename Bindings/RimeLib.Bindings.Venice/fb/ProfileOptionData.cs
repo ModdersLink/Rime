@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class ProfileOptionData : 
 		Asset
 	{
 		protected string m_UniqueId = string.Empty;
-		[ContainerField(12), LayoutImmutable, ContainerFieldNameHash(3045776603)]
+		[ContainerField(12), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(3045776603)]
 		public string UniqueId { get { return m_UniqueId; } set { if (OnPropertyChanging("ProfileOptionData." + nameof(UniqueId), this, m_UniqueId, value)) m_UniqueId = value; } } // 0xC (12)
 		
 		protected ProfileOptionsType m_Category = new ProfileOptionsType();
-		[ContainerField(16), ContainerFieldNameHash(3455858997)]
+		[ContainerField(16), MemberInfoFlag(137), ContainerFieldNameHash(3455858997)]
 		public ProfileOptionsType Category { get { return m_Category; } set { if (OnPropertyChanging("ProfileOptionData." + nameof(Category), this, m_Category, value)) m_Category = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

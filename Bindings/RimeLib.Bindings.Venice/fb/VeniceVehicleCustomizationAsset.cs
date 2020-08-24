@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class VeniceVehicleCustomizationAsset : 
 		VehicleCustomizationAsset
 	{
 		protected VehicleCategory m_Category = new VehicleCategory();
-		[ContainerField(16), ContainerFieldNameHash(3455858997)]
+		[ContainerField(16), MemberInfoFlag(137), ContainerFieldNameHash(3455858997)]
 		public VehicleCategory Category { get { return m_Category; } set { if (OnPropertyChanging("VeniceVehicleCustomizationAsset." + nameof(Category), this, m_Category, value)) m_Category = value; } } // 0x10 (16)
 		
 		protected string m_NameSid = string.Empty;
-		[ContainerField(20), LayoutImmutable, ContainerFieldNameHash(3153745340)]
+		[ContainerField(20), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(3153745340)]
 		public string NameSid { get { return m_NameSid; } set { if (OnPropertyChanging("VeniceVehicleCustomizationAsset." + nameof(NameSid), this, m_NameSid, value)) m_NameSid = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

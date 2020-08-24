@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class DynamicEnvmapComponentData : 
 		ComponentData
 	{
 		protected Vec3 m_KeyColorEnvmap = new Vec3();
-		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(1689648046)]
+		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(1689648046)]
 		public Vec3 KeyColorEnvmap { get { return m_KeyColorEnvmap; } set { if (OnPropertyChanging("DynamicEnvmapComponentData." + nameof(KeyColorEnvmap), this, m_KeyColorEnvmap, value)) m_KeyColorEnvmap = value; } } // 0x60 (96)
 		
 		protected Vec3 m_GroundColorEnvmap = new Vec3();
-		[ContainerField(112), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(3864914716)]
+		[ContainerField(112), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(3864914716)]
 		public Vec3 GroundColorEnvmap { get { return m_GroundColorEnvmap; } set { if (OnPropertyChanging("DynamicEnvmapComponentData." + nameof(GroundColorEnvmap), this, m_GroundColorEnvmap, value)) m_GroundColorEnvmap = value; } } // 0x70 (112)
 		
 		protected Vec3 m_SkyColorEnvmap = new Vec3();
-		[ContainerField(128), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(297337912)]
+		[ContainerField(128), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(297337912)]
 		public Vec3 SkyColorEnvmap { get { return m_SkyColorEnvmap; } set { if (OnPropertyChanging("DynamicEnvmapComponentData." + nameof(SkyColorEnvmap), this, m_SkyColorEnvmap, value)) m_SkyColorEnvmap = value; } } // 0x80 (128)
 		
 		protected bool m_Enable = new bool();
-		[ContainerField(144), LayoutImmutable, Blittable, ContainerFieldNameHash(2342790116)]
+		[ContainerField(144), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2342790116)]
 		public bool Enable { get { return m_Enable; } set { if (OnPropertyChanging("DynamicEnvmapComponentData." + nameof(Enable), this, m_Enable, value)) m_Enable = value; } } // 0x90 (144)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

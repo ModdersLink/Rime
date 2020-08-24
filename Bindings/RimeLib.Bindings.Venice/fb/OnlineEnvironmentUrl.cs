@@ -18,10 +18,10 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(41), ContainerStruct]
 	public class OnlineEnvironmentUrl : FrostbiteContainer
 	{
-		[ContainerField(0)]
+		[ContainerField(0), MemberInfoFlag(65), ContainerArray]
 		public List<OnlineEnvironmentUrlData> Urls { get; set; } = new List<OnlineEnvironmentUrlData>(); // 0x0 (0)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

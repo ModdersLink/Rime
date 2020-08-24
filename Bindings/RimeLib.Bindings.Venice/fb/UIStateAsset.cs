@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class UIStateAsset : 
 		Asset
 	{
 		protected RefArray<UIComponentData> m_UIComponents = new RefArray<UIComponentData>();
-		[ContainerField(12), ContainerFieldNameHash(4207180421)]
+		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(4207180421), ContainerRefArray]
 		public RefArray<UIComponentData> UIComponents { get { return m_UIComponents; } set { if (OnPropertyChanging("UIStateAsset." + nameof(UIComponents), this, m_UIComponents, value)) m_UIComponents = value; } } // 0xC (12)
 		
 		protected RefArray<UIAsset> m_ActionscriptLibraries = new RefArray<UIAsset>();
-		[ContainerField(16), ContainerFieldNameHash(439634061)]
+		[ContainerField(16), MemberInfoFlag(65), ContainerFieldNameHash(439634061), ContainerRefArray]
 		public RefArray<UIAsset> ActionscriptLibraries { get { return m_ActionscriptLibraries; } set { if (OnPropertyChanging("UIStateAsset." + nameof(ActionscriptLibraries), this, m_ActionscriptLibraries, value)) m_ActionscriptLibraries = value; } } // 0x10 (16)
 		
 		protected List<string> m_ActionscriptNames = new List<string>();
-		[ContainerField(20), ContainerFieldNameHash(581231424)]
+		[ContainerField(20), MemberInfoFlag(65), ContainerFieldNameHash(581231424), ContainerArray]
 		public List<string> ActionscriptNames { get { return m_ActionscriptNames; } set { if (OnPropertyChanging("UIStateAsset." + nameof(ActionscriptNames), this, m_ActionscriptNames, value)) m_ActionscriptNames = value; } } // 0x14 (20)
 		
 		protected string m_StateName = string.Empty;
-		[ContainerField(24), LayoutImmutable, ContainerFieldNameHash(4126874677)]
+		[ContainerField(24), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(4126874677)]
 		public string StateName { get { return m_StateName; } set { if (OnPropertyChanging("UIStateAsset." + nameof(StateName), this, m_StateName, value)) m_StateName = value; } } // 0x18 (24)
 		
 		protected string m_StatePath = string.Empty;
-		[ContainerField(28), LayoutImmutable, ContainerFieldNameHash(4126080863)]
+		[ContainerField(28), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(4126080863)]
 		public string StatePath { get { return m_StatePath; } set { if (OnPropertyChanging("UIStateAsset." + nameof(StatePath), this, m_StatePath, value)) m_StatePath = value; } } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class ConsumableTriggerEntityData : 
 		TriggerEntityData
 	{
 		protected ConsumableGroup m_ConsumableGroup = new ConsumableGroup();
-		[ContainerField(112), ContainerFieldNameHash(869617913)]
+		[ContainerField(112), MemberInfoFlag(137), ContainerFieldNameHash(869617913)]
 		public ConsumableGroup ConsumableGroup { get { return m_ConsumableGroup; } set { if (OnPropertyChanging("ConsumableTriggerEntityData." + nameof(ConsumableGroup), this, m_ConsumableGroup, value)) m_ConsumableGroup = value; } } // 0x70 (112)
 		
 		protected bool m_Persistent = new bool();
-		[ContainerField(116), LayoutImmutable, Blittable, ContainerFieldNameHash(125026048)]
+		[ContainerField(116), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(125026048)]
 		public bool Persistent { get { return m_Persistent; } set { if (OnPropertyChanging("ConsumableTriggerEntityData." + nameof(Persistent), this, m_Persistent, value)) m_Persistent = value; } } // 0x74 (116)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

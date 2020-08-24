@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class AreaProximityEntityData : 
 		EntityData
 	{
 		protected Realm m_Realm = new Realm();
-		[ContainerField(12), ContainerFieldNameHash(229961746)]
+		[ContainerField(12), MemberInfoFlag(137), ContainerFieldNameHash(229961746)]
 		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("AreaProximityEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0xC (12)
 		
 		protected float m_ProximityDistance = new float();
-		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(3313540371)]
+		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3313540371)]
 		public float ProximityDistance { get { return m_ProximityDistance; } set { if (OnPropertyChanging("AreaProximityEntityData." + nameof(ProximityDistance), this, m_ProximityDistance, value)) m_ProximityDistance = value; } } // 0x10 (16)
 		
 		protected UpdatePass m_UpdatePass = new UpdatePass();
-		[ContainerField(20), ContainerFieldNameHash(2270785669)]
+		[ContainerField(20), MemberInfoFlag(137), ContainerFieldNameHash(2270785669)]
 		public UpdatePass UpdatePass { get { return m_UpdatePass; } set { if (OnPropertyChanging("AreaProximityEntityData." + nameof(UpdatePass), this, m_UpdatePass, value)) m_UpdatePass = value; } } // 0x14 (20)
 		
 		protected bool m_AutoStart = new bool();
-		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(792615882)]
+		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(792615882)]
 		public bool AutoStart { get { return m_AutoStart; } set { if (OnPropertyChanging("AreaProximityEntityData." + nameof(AutoStart), this, m_AutoStart, value)) m_AutoStart = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

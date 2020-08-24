@@ -18,6 +18,7 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
+	[MemberInfoFlag(137), ContainerEnum]
 	public enum UI3dIconQuery : int
 	{
 		UI3dIconQuery_Active3dIconsData = 0

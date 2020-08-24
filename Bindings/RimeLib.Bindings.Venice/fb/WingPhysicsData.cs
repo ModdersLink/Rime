@@ -18,72 +18,72 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class WingPhysicsData : 
 		DataContainer
 	{
 		protected float m_Lift = new float();
-		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(2089009074)]
+		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2089009074)]
 		public float Lift { get { return m_Lift; } set { if (OnPropertyChanging("WingPhysicsData." + nameof(Lift), this, m_Lift, value)) m_Lift = value; } } // 0x8 (8)
 		
 		protected float m_FlapLift = new float();
-		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(2436170665)]
+		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2436170665)]
 		public float FlapLift { get { return m_FlapLift; } set { if (OnPropertyChanging("WingPhysicsData." + nameof(FlapLift), this, m_FlapLift, value)) m_FlapLift = value; } } // 0xC (12)
 		
 		protected CtrRef<Curve2D> m_LiftCoefficient = new CtrRef<Curve2D>();
-		[ContainerField(16), ContainerFieldNameHash(2899213127)]
+		[ContainerField(16), MemberInfoFlag(53), ContainerFieldNameHash(2899213127), ContainerCtrRef]
 		public CtrRef<Curve2D> LiftCoefficient { get { return m_LiftCoefficient; } set { if (OnPropertyChanging("WingPhysicsData." + nameof(LiftCoefficient), this, m_LiftCoefficient, value)) m_LiftCoefficient = value; } } // 0x10 (16)
 		
 		protected float m_Drag = new float();
-		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(2088752789)]
+		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2088752789)]
 		public float Drag { get { return m_Drag; } set { if (OnPropertyChanging("WingPhysicsData." + nameof(Drag), this, m_Drag, value)) m_Drag = value; } } // 0x14 (20)
 		
 		protected float m_FlapDrag = new float();
-		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(2436426702)]
+		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2436426702)]
 		public float FlapDrag { get { return m_FlapDrag; } set { if (OnPropertyChanging("WingPhysicsData." + nameof(FlapDrag), this, m_FlapDrag, value)) m_FlapDrag = value; } } // 0x18 (24)
 		
 		protected CtrRef<Curve2D> m_DragCoefficient = new CtrRef<Curve2D>();
-		[ContainerField(28), ContainerFieldNameHash(4054248384)]
+		[ContainerField(28), MemberInfoFlag(53), ContainerFieldNameHash(4054248384), ContainerCtrRef]
 		public CtrRef<Curve2D> DragCoefficient { get { return m_DragCoefficient; } set { if (OnPropertyChanging("WingPhysicsData." + nameof(DragCoefficient), this, m_DragCoefficient, value)) m_DragCoefficient = value; } } // 0x1C (28)
 		
 		protected float m_AngularVelocityLiftModifier = new float();
-		[ContainerField(32), LayoutImmutable, Blittable, ContainerFieldNameHash(1734554736)]
+		[ContainerField(32), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1734554736)]
 		public float AngularVelocityLiftModifier { get { return m_AngularVelocityLiftModifier; } set { if (OnPropertyChanging("WingPhysicsData." + nameof(AngularVelocityLiftModifier), this, m_AngularVelocityLiftModifier, value)) m_AngularVelocityLiftModifier = value; } } // 0x20 (32)
 		
 		protected float m_DragRotationModifier = new float();
-		[ContainerField(36), LayoutImmutable, Blittable, ContainerFieldNameHash(951001014)]
+		[ContainerField(36), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(951001014)]
 		public float DragRotationModifier { get { return m_DragRotationModifier; } set { if (OnPropertyChanging("WingPhysicsData." + nameof(DragRotationModifier), this, m_DragRotationModifier, value)) m_DragRotationModifier = value; } } // 0x24 (36)
 		
 		protected float m_BaseAngleOfAttack = new float();
-		[ContainerField(40), LayoutImmutable, Blittable, ContainerFieldNameHash(335385008)]
+		[ContainerField(40), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(335385008)]
 		public float BaseAngleOfAttack { get { return m_BaseAngleOfAttack; } set { if (OnPropertyChanging("WingPhysicsData." + nameof(BaseAngleOfAttack), this, m_BaseAngleOfAttack, value)) m_BaseAngleOfAttack = value; } } // 0x28 (40)
 		
 		protected int m_InputForFlap = new int();
-		[ContainerField(44), LayoutImmutable, Blittable, ContainerFieldNameHash(1375426899)]
+		[ContainerField(44), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(1375426899)]
 		public int InputForFlap { get { return m_InputForFlap; } set { if (OnPropertyChanging("WingPhysicsData." + nameof(InputForFlap), this, m_InputForFlap, value)) m_InputForFlap = value; } } // 0x2C (44)
 		
 		protected float m_FlapTurnSpeed = new float();
-		[ContainerField(48), LayoutImmutable, Blittable, ContainerFieldNameHash(2891422820)]
+		[ContainerField(48), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2891422820)]
 		public float FlapTurnSpeed { get { return m_FlapTurnSpeed; } set { if (OnPropertyChanging("WingPhysicsData." + nameof(FlapTurnSpeed), this, m_FlapTurnSpeed, value)) m_FlapTurnSpeed = value; } } // 0x30 (48)
 		
 		protected float m_VisualFlapTurnSpeed = new float();
-		[ContainerField(52), LayoutImmutable, Blittable, ContainerFieldNameHash(443872528)]
+		[ContainerField(52), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(443872528)]
 		public float VisualFlapTurnSpeed { get { return m_VisualFlapTurnSpeed; } set { if (OnPropertyChanging("WingPhysicsData." + nameof(VisualFlapTurnSpeed), this, m_VisualFlapTurnSpeed, value)) m_VisualFlapTurnSpeed = value; } } // 0x34 (52)
 		
 		protected float m_VisualFlapAngleLimit = new float();
-		[ContainerField(56), LayoutImmutable, Blittable, ContainerFieldNameHash(2332810590)]
+		[ContainerField(56), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2332810590)]
 		public float VisualFlapAngleLimit { get { return m_VisualFlapAngleLimit; } set { if (OnPropertyChanging("WingPhysicsData." + nameof(VisualFlapAngleLimit), this, m_VisualFlapAngleLimit, value)) m_VisualFlapAngleLimit = value; } } // 0x38 (56)
 		
 		protected CtrRef<Curve2D> m_MaxFlapAngleScaleFactor = new CtrRef<Curve2D>();
-		[ContainerField(60), ContainerFieldNameHash(924054846)]
+		[ContainerField(60), MemberInfoFlag(53), ContainerFieldNameHash(924054846), ContainerCtrRef]
 		public CtrRef<Curve2D> MaxFlapAngleScaleFactor { get { return m_MaxFlapAngleScaleFactor; } set { if (OnPropertyChanging("WingPhysicsData." + nameof(MaxFlapAngleScaleFactor), this, m_MaxFlapAngleScaleFactor, value)) m_MaxFlapAngleScaleFactor = value; } } // 0x3C (60)
 		
 		protected float m_LandingFlapLift = new float();
-		[ContainerField(64), LayoutImmutable, Blittable, ContainerFieldNameHash(3100228014)]
+		[ContainerField(64), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3100228014)]
 		public float LandingFlapLift { get { return m_LandingFlapLift; } set { if (OnPropertyChanging("WingPhysicsData." + nameof(LandingFlapLift), this, m_LandingFlapLift, value)) m_LandingFlapLift = value; } } // 0x40 (64)
 		
 		protected CtrRef<LandingFlapData> m_LandingFlapLogic = new CtrRef<LandingFlapData>();
-		[ContainerField(68), ContainerFieldNameHash(3523347703)]
+		[ContainerField(68), MemberInfoFlag(53), ContainerFieldNameHash(3523347703), ContainerCtrRef]
 		public CtrRef<LandingFlapData> LandingFlapLogic { get { return m_LandingFlapLogic; } set { if (OnPropertyChanging("WingPhysicsData." + nameof(LandingFlapLogic), this, m_LandingFlapLogic, value)) m_LandingFlapLogic = value; } } // 0x44 (68)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

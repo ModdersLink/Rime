@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class UIManDownCompData : 
 		UIComponentData
 	{
 		protected float m_DelayManDownTextTime = new float();
-		[ContainerField(28), LayoutImmutable, Blittable, ContainerFieldNameHash(3590261480)]
+		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3590261480)]
 		public float DelayManDownTextTime { get { return m_DelayManDownTextTime; } set { if (OnPropertyChanging("UIManDownCompData." + nameof(DelayManDownTextTime), this, m_DelayManDownTextTime, value)) m_DelayManDownTextTime = value; } } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

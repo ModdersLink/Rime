@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class VeniceUnlockUserData : 
 		UnlockUserDataBase
 	{
 		protected bool m_CheckSquad = new bool();
-		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(28509873)]
+		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(28509873)]
 		public bool CheckSquad { get { return m_CheckSquad; } set { if (OnPropertyChanging("VeniceUnlockUserData." + nameof(CheckSquad), this, m_CheckSquad, value)) m_CheckSquad = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

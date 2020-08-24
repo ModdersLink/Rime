@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class MaterialPropertyPhysicsData : 
 		PhysicsMaterialRelationPropertyData
 	{
 		protected float m_DynamicFrictionModifier = new float();
-		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(3684693189)]
+		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3684693189)]
 		public float DynamicFrictionModifier { get { return m_DynamicFrictionModifier; } set { if (OnPropertyChanging("MaterialPropertyPhysicsData." + nameof(DynamicFrictionModifier), this, m_DynamicFrictionModifier, value)) m_DynamicFrictionModifier = value; } } // 0x8 (8)
 		
 		protected float m_StaticFrictionModifier = new float();
-		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(1034015560)]
+		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1034015560)]
 		public float StaticFrictionModifier { get { return m_StaticFrictionModifier; } set { if (OnPropertyChanging("MaterialPropertyPhysicsData." + nameof(StaticFrictionModifier), this, m_StaticFrictionModifier, value)) m_StaticFrictionModifier = value; } } // 0xC (12)
 		
 		protected float m_RestitutionModifier = new float();
-		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(459278038)]
+		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(459278038)]
 		public float RestitutionModifier { get { return m_RestitutionModifier; } set { if (OnPropertyChanging("MaterialPropertyPhysicsData." + nameof(RestitutionModifier), this, m_RestitutionModifier, value)) m_RestitutionModifier = value; } } // 0x10 (16)
 		
 		protected float m_Resistance = new float();
-		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(61696806)]
+		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(61696806)]
 		public float Resistance { get { return m_Resistance; } set { if (OnPropertyChanging("MaterialPropertyPhysicsData." + nameof(Resistance), this, m_Resistance, value)) m_Resistance = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

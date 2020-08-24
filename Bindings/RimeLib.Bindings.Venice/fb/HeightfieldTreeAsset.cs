@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class HeightfieldTreeAsset : 
 		RasterTreeAsset
 	{
 		protected float m_MinHeightWidth = new float();
-		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(1959332726)]
+		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1959332726)]
 		public float MinHeightWidth { get { return m_MinHeightWidth; } set { if (OnPropertyChanging("HeightfieldTreeAsset." + nameof(MinHeightWidth), this, m_MinHeightWidth, value)) m_MinHeightWidth = value; } } // 0x8 (8)
 		
 		protected int m_MinHeightSamplesPerSide = new int();
-		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(4074360025)]
+		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(4074360025)]
 		public int MinHeightSamplesPerSide { get { return m_MinHeightSamplesPerSide; } set { if (OnPropertyChanging("HeightfieldTreeAsset." + nameof(MinHeightSamplesPerSide), this, m_MinHeightSamplesPerSide, value)) m_MinHeightSamplesPerSide = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

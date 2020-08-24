@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class GameEntityData : 
 		SpatialEntityData
 	{
 		protected RefArray<GameObjectData> m_Components = new RefArray<GameObjectData>();
-		[ContainerField(80), ContainerFieldNameHash(3391050425)]
+		[ContainerField(80), MemberInfoFlag(65), ContainerFieldNameHash(3391050425), ContainerRefArray]
 		public RefArray<GameObjectData> Components { get { return m_Components; } set { if (OnPropertyChanging("GameEntityData." + nameof(Components), this, m_Components, value)) m_Components = value; } } // 0x50 (80)
 		
 		protected bool m_Enabled = new bool();
-		[ContainerField(84), LayoutImmutable, Blittable, ContainerFieldNameHash(2662400)]
+		[ContainerField(84), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2662400)]
 		public bool Enabled { get { return m_Enabled; } set { if (OnPropertyChanging("GameEntityData." + nameof(Enabled), this, m_Enabled, value)) m_Enabled = value; } } // 0x54 (84)
 		
 		protected sbyte m_RuntimeComponentCount = new sbyte();
-		[ContainerField(85), LayoutImmutable, Blittable, ContainerFieldNameHash(3928419541)]
+		[ContainerField(85), LayoutImmutable, Blittable, MemberInfoFlag(49341), ContainerFieldNameHash(3928419541)]
 		public sbyte RuntimeComponentCount { get { return m_RuntimeComponentCount; } set { if (OnPropertyChanging("GameEntityData." + nameof(RuntimeComponentCount), this, m_RuntimeComponentCount, value)) m_RuntimeComponentCount = value; } } // 0x55 (85)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class UpdateAlphaLevelMinData : 
 		ProcessorData
 	{
 		protected float m_MinLevel = new float();
-		[ContainerField(48), LayoutImmutable, Blittable, ContainerFieldNameHash(3341324025)]
+		[ContainerField(48), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3341324025)]
 		public float MinLevel { get { return m_MinLevel; } set { if (OnPropertyChanging("UpdateAlphaLevelMinData." + nameof(MinLevel), this, m_MinLevel, value)) m_MinLevel = value; } } // 0x30 (48)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

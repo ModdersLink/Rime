@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class FloatRecordingData : 
 		PropertyRecordingData
 	{
 		protected List<float> m_Values = new List<float>();
-		[ContainerField(12), ContainerFieldNameHash(3142410589)]
+		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(3142410589), ContainerArray]
 		public List<float> Values { get { return m_Values; } set { if (OnPropertyChanging("FloatRecordingData." + nameof(Values), this, m_Values, value)) m_Values = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

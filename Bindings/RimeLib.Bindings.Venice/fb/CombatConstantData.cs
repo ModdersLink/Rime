@@ -18,116 +18,116 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class CombatConstantData : 
 		Asset
 	{
 		protected float m_PoseTransitionFireDelay = new float();
-		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(1389063054)]
+		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1389063054)]
 		public float PoseTransitionFireDelay { get { return m_PoseTransitionFireDelay; } set { if (OnPropertyChanging("CombatConstantData." + nameof(PoseTransitionFireDelay), this, m_PoseTransitionFireDelay, value)) m_PoseTransitionFireDelay = value; } } // 0xC (12)
 		
 		protected float m_ChangePoseStopDelay = new float();
-		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(1131204007)]
+		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1131204007)]
 		public float ChangePoseStopDelay { get { return m_ChangePoseStopDelay; } set { if (OnPropertyChanging("CombatConstantData." + nameof(ChangePoseStopDelay), this, m_ChangePoseStopDelay, value)) m_ChangePoseStopDelay = value; } } // 0x10 (16)
 		
 		protected float m_AllowCrouchFiringWaterLevel = new float();
-		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(255588098)]
+		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(255588098)]
 		public float AllowCrouchFiringWaterLevel { get { return m_AllowCrouchFiringWaterLevel; } set { if (OnPropertyChanging("CombatConstantData." + nameof(AllowCrouchFiringWaterLevel), this, m_AllowCrouchFiringWaterLevel, value)) m_AllowCrouchFiringWaterLevel = value; } } // 0x14 (20)
 		
 		protected float m_PoseChangeLockoutTime = new float();
-		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(3713665594)]
+		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3713665594)]
 		public float PoseChangeLockoutTime { get { return m_PoseChangeLockoutTime; } set { if (OnPropertyChanging("CombatConstantData." + nameof(PoseChangeLockoutTime), this, m_PoseChangeLockoutTime, value)) m_PoseChangeLockoutTime = value; } } // 0x18 (24)
 		
 		protected float m_ExplosionInterestRange = new float();
-		[ContainerField(28), LayoutImmutable, Blittable, ContainerFieldNameHash(93209033)]
+		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(93209033)]
 		public float ExplosionInterestRange { get { return m_ExplosionInterestRange; } set { if (OnPropertyChanging("CombatConstantData." + nameof(ExplosionInterestRange), this, m_ExplosionInterestRange, value)) m_ExplosionInterestRange = value; } } // 0x1C (28)
 		
 		protected float m_ExplosiveObjectSearchRadius = new float();
-		[ContainerField(32), LayoutImmutable, Blittable, ContainerFieldNameHash(998458977)]
+		[ContainerField(32), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(998458977)]
 		public float ExplosiveObjectSearchRadius { get { return m_ExplosiveObjectSearchRadius; } set { if (OnPropertyChanging("CombatConstantData." + nameof(ExplosiveObjectSearchRadius), this, m_ExplosiveObjectSearchRadius, value)) m_ExplosiveObjectSearchRadius = value; } } // 0x20 (32)
 		
 		protected float m_ExplosiveBlastMultiplier = new float();
-		[ContainerField(36), LayoutImmutable, Blittable, ContainerFieldNameHash(1067074529)]
+		[ContainerField(36), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1067074529)]
 		public float ExplosiveBlastMultiplier { get { return m_ExplosiveBlastMultiplier; } set { if (OnPropertyChanging("CombatConstantData." + nameof(ExplosiveBlastMultiplier), this, m_ExplosiveBlastMultiplier, value)) m_ExplosiveBlastMultiplier = value; } } // 0x24 (36)
 		
 		protected float m_MaxSuppressDistance = new float();
-		[ContainerField(40), LayoutImmutable, Blittable, ContainerFieldNameHash(305591139)]
+		[ContainerField(40), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(305591139)]
 		public float MaxSuppressDistance { get { return m_MaxSuppressDistance; } set { if (OnPropertyChanging("CombatConstantData." + nameof(MaxSuppressDistance), this, m_MaxSuppressDistance, value)) m_MaxSuppressDistance = value; } } // 0x28 (40)
 		
 		protected float m_MaxSuppressorsRatio = new float();
-		[ContainerField(44), LayoutImmutable, Blittable, ContainerFieldNameHash(2648235343)]
+		[ContainerField(44), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2648235343)]
 		public float MaxSuppressorsRatio { get { return m_MaxSuppressorsRatio; } set { if (OnPropertyChanging("CombatConstantData." + nameof(MaxSuppressorsRatio), this, m_MaxSuppressorsRatio, value)) m_MaxSuppressorsRatio = value; } } // 0x2C (44)
 		
 		protected float m_SuppressOffsetXz = new float();
-		[ContainerField(48), LayoutImmutable, Blittable, ContainerFieldNameHash(827702331)]
+		[ContainerField(48), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(827702331)]
 		public float SuppressOffsetXz { get { return m_SuppressOffsetXz; } set { if (OnPropertyChanging("CombatConstantData." + nameof(SuppressOffsetXz), this, m_SuppressOffsetXz, value)) m_SuppressOffsetXz = value; } } // 0x30 (48)
 		
 		protected float m_SuppressOffsetY = new float();
-		[ContainerField(52), LayoutImmutable, Blittable, ContainerFieldNameHash(25081888)]
+		[ContainerField(52), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(25081888)]
 		public float SuppressOffsetY { get { return m_SuppressOffsetY; } set { if (OnPropertyChanging("CombatConstantData." + nameof(SuppressOffsetY), this, m_SuppressOffsetY, value)) m_SuppressOffsetY = value; } } // 0x34 (52)
 		
 		protected float m_SuppressMinLOFDistance = new float();
-		[ContainerField(56), LayoutImmutable, Blittable, ContainerFieldNameHash(4131068152)]
+		[ContainerField(56), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(4131068152)]
 		public float SuppressMinLOFDistance { get { return m_SuppressMinLOFDistance; } set { if (OnPropertyChanging("CombatConstantData." + nameof(SuppressMinLOFDistance), this, m_SuppressMinLOFDistance, value)) m_SuppressMinLOFDistance = value; } } // 0x38 (56)
 		
 		protected float m_SuppressMinLOFOffsetDistance = new float();
-		[ContainerField(60), LayoutImmutable, Blittable, ContainerFieldNameHash(2750141589)]
+		[ContainerField(60), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2750141589)]
 		public float SuppressMinLOFOffsetDistance { get { return m_SuppressMinLOFOffsetDistance; } set { if (OnPropertyChanging("CombatConstantData." + nameof(SuppressMinLOFOffsetDistance), this, m_SuppressMinLOFOffsetDistance, value)) m_SuppressMinLOFOffsetDistance = value; } } // 0x3C (60)
 		
 		protected float m_InvestigateCoverSearchWidth = new float();
-		[ContainerField(64), LayoutImmutable, Blittable, ContainerFieldNameHash(675451181)]
+		[ContainerField(64), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(675451181)]
 		public float InvestigateCoverSearchWidth { get { return m_InvestigateCoverSearchWidth; } set { if (OnPropertyChanging("CombatConstantData." + nameof(InvestigateCoverSearchWidth), this, m_InvestigateCoverSearchWidth, value)) m_InvestigateCoverSearchWidth = value; } } // 0x40 (64)
 		
 		protected float m_InvestigateAroundTargetRadius = new float();
-		[ContainerField(68), LayoutImmutable, Blittable, ContainerFieldNameHash(1642795970)]
+		[ContainerField(68), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1642795970)]
 		public float InvestigateAroundTargetRadius { get { return m_InvestigateAroundTargetRadius; } set { if (OnPropertyChanging("CombatConstantData." + nameof(InvestigateAroundTargetRadius), this, m_InvestigateAroundTargetRadius, value)) m_InvestigateAroundTargetRadius = value; } } // 0x44 (68)
 		
 		protected float m_InvestigateFreeLookRadius = new float();
-		[ContainerField(72), LayoutImmutable, Blittable, ContainerFieldNameHash(1749973155)]
+		[ContainerField(72), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1749973155)]
 		public float InvestigateFreeLookRadius { get { return m_InvestigateFreeLookRadius; } set { if (OnPropertyChanging("CombatConstantData." + nameof(InvestigateFreeLookRadius), this, m_InvestigateFreeLookRadius, value)) m_InvestigateFreeLookRadius = value; } } // 0x48 (72)
 		
 		protected float m_InvestigatePauseTimeMin = new float();
-		[ContainerField(76), LayoutImmutable, Blittable, ContainerFieldNameHash(1935358117)]
+		[ContainerField(76), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1935358117)]
 		public float InvestigatePauseTimeMin { get { return m_InvestigatePauseTimeMin; } set { if (OnPropertyChanging("CombatConstantData." + nameof(InvestigatePauseTimeMin), this, m_InvestigatePauseTimeMin, value)) m_InvestigatePauseTimeMin = value; } } // 0x4C (76)
 		
 		protected float m_InvestigatePauseTimeMax = new float();
-		[ContainerField(80), LayoutImmutable, Blittable, ContainerFieldNameHash(1935357883)]
+		[ContainerField(80), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1935357883)]
 		public float InvestigatePauseTimeMax { get { return m_InvestigatePauseTimeMax; } set { if (OnPropertyChanging("CombatConstantData." + nameof(InvestigatePauseTimeMax), this, m_InvestigatePauseTimeMax, value)) m_InvestigatePauseTimeMax = value; } } // 0x50 (80)
 		
 		protected float m_AvoidC4Time = new float();
-		[ContainerField(84), LayoutImmutable, Blittable, ContainerFieldNameHash(3879239442)]
+		[ContainerField(84), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3879239442)]
 		public float AvoidC4Time { get { return m_AvoidC4Time; } set { if (OnPropertyChanging("CombatConstantData." + nameof(AvoidC4Time), this, m_AvoidC4Time, value)) m_AvoidC4Time = value; } } // 0x54 (84)
 		
 		protected float m_StandStillMinTime = new float();
-		[ContainerField(88), LayoutImmutable, Blittable, ContainerFieldNameHash(549291608)]
+		[ContainerField(88), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(549291608)]
 		public float StandStillMinTime { get { return m_StandStillMinTime; } set { if (OnPropertyChanging("CombatConstantData." + nameof(StandStillMinTime), this, m_StandStillMinTime, value)) m_StandStillMinTime = value; } } // 0x58 (88)
 		
 		protected float m_StationaryBailDistance = new float();
-		[ContainerField(92), LayoutImmutable, Blittable, ContainerFieldNameHash(481697168)]
+		[ContainerField(92), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(481697168)]
 		public float StationaryBailDistance { get { return m_StationaryBailDistance; } set { if (OnPropertyChanging("CombatConstantData." + nameof(StationaryBailDistance), this, m_StationaryBailDistance, value)) m_StationaryBailDistance = value; } } // 0x5C (92)
 		
 		protected float m_PrecisionTimeout = new float();
-		[ContainerField(96), LayoutImmutable, Blittable, ContainerFieldNameHash(471987080)]
+		[ContainerField(96), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(471987080)]
 		public float PrecisionTimeout { get { return m_PrecisionTimeout; } set { if (OnPropertyChanging("CombatConstantData." + nameof(PrecisionTimeout), this, m_PrecisionTimeout, value)) m_PrecisionTimeout = value; } } // 0x60 (96)
 		
 		protected float m_CloseRangeAccuracyDistance = new float();
-		[ContainerField(100), LayoutImmutable, Blittable, ContainerFieldNameHash(2796687794)]
+		[ContainerField(100), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2796687794)]
 		public float CloseRangeAccuracyDistance { get { return m_CloseRangeAccuracyDistance; } set { if (OnPropertyChanging("CombatConstantData." + nameof(CloseRangeAccuracyDistance), this, m_CloseRangeAccuracyDistance, value)) m_CloseRangeAccuracyDistance = value; } } // 0x64 (100)
 		
 		protected float m_FightFromPathRadius = new float();
-		[ContainerField(104), LayoutImmutable, Blittable, ContainerFieldNameHash(2003526898)]
+		[ContainerField(104), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2003526898)]
 		public float FightFromPathRadius { get { return m_FightFromPathRadius; } set { if (OnPropertyChanging("CombatConstantData." + nameof(FightFromPathRadius), this, m_FightFromPathRadius, value)) m_FightFromPathRadius = value; } } // 0x68 (104)
 		
 		protected float m_SmokeRadius = new float();
-		[ContainerField(108), LayoutImmutable, Blittable, ContainerFieldNameHash(1940031714)]
+		[ContainerField(108), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1940031714)]
 		public float SmokeRadius { get { return m_SmokeRadius; } set { if (OnPropertyChanging("CombatConstantData." + nameof(SmokeRadius), this, m_SmokeRadius, value)) m_SmokeRadius = value; } } // 0x6C (108)
 		
 		protected float m_SmokeLifeTime = new float();
-		[ContainerField(112), LayoutImmutable, Blittable, ContainerFieldNameHash(2689736265)]
+		[ContainerField(112), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2689736265)]
 		public float SmokeLifeTime { get { return m_SmokeLifeTime; } set { if (OnPropertyChanging("CombatConstantData." + nameof(SmokeLifeTime), this, m_SmokeLifeTime, value)) m_SmokeLifeTime = value; } } // 0x70 (112)
 		
 		protected float m_MeleeCooldown = new float();
-		[ContainerField(116), LayoutImmutable, Blittable, ContainerFieldNameHash(64560700)]
+		[ContainerField(116), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(64560700)]
 		public float MeleeCooldown { get { return m_MeleeCooldown; } set { if (OnPropertyChanging("CombatConstantData." + nameof(MeleeCooldown), this, m_MeleeCooldown, value)) m_MeleeCooldown = value; } } // 0x74 (116)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

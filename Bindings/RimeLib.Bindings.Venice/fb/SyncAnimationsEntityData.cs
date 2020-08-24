@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class SyncAnimationsEntityData : 
 		EntityData
 	{
 		protected float m_ExternalTime = new float();
-		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(2162678253)]
+		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2162678253)]
 		public float ExternalTime { get { return m_ExternalTime; } set { if (OnPropertyChanging("SyncAnimationsEntityData." + nameof(ExternalTime), this, m_ExternalTime, value)) m_ExternalTime = value; } } // 0xC (12)
 		
 		protected float m_NearEndEventTime = new float();
-		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(960001067)]
+		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(960001067)]
 		public float NearEndEventTime { get { return m_NearEndEventTime; } set { if (OnPropertyChanging("SyncAnimationsEntityData." + nameof(NearEndEventTime), this, m_NearEndEventTime, value)) m_NearEndEventTime = value; } } // 0x10 (16)
 		
 		protected bool m_StartServerPaused = new bool();
-		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(2407205110)]
+		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2407205110)]
 		public bool StartServerPaused { get { return m_StartServerPaused; } set { if (OnPropertyChanging("SyncAnimationsEntityData." + nameof(StartServerPaused), this, m_StartServerPaused, value)) m_StartServerPaused = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class NetworkableLoosePartPhysicsData : 
 		LoosePartPhysicsData
 	{
 		protected bool m_Networked = new bool();
-		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(1516563994)]
+		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1516563994)]
 		public bool Networked { get { return m_Networked; } set { if (OnPropertyChanging("NetworkableLoosePartPhysicsData." + nameof(Networked), this, m_Networked, value)) m_Networked = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

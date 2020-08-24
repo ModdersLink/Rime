@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class TestPointEntityData : 
 		GameEntityData
 	{
 		protected string m_OutputName = string.Empty;
-		[ContainerField(96), LayoutImmutable, ContainerFieldNameHash(543054269)]
+		[ContainerField(96), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(543054269)]
 		public string OutputName { get { return m_OutputName; } set { if (OnPropertyChanging("TestPointEntityData." + nameof(OutputName), this, m_OutputName, value)) m_OutputName = value; } } // 0x60 (96)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

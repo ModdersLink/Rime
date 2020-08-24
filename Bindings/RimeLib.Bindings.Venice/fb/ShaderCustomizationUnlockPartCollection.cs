@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class ShaderCustomizationUnlockPartCollection : 
 		DataContainer
 	{
 		protected RefArray<ObjectBlueprint> m_MeshBlueprints = new RefArray<ObjectBlueprint>();
-		[ContainerField(8), ContainerFieldNameHash(3317903690)]
+		[ContainerField(8), MemberInfoFlag(65), ContainerFieldNameHash(3317903690), ContainerRefArray]
 		public RefArray<ObjectBlueprint> MeshBlueprints { get { return m_MeshBlueprints; } set { if (OnPropertyChanging("ShaderCustomizationUnlockPartCollection." + nameof(MeshBlueprints), this, m_MeshBlueprints, value)) m_MeshBlueprints = value; } } // 0x8 (8)
 		
 		protected string m_ShaderNodeName = string.Empty;
-		[ContainerField(12), LayoutImmutable, ContainerFieldNameHash(4213969131)]
+		[ContainerField(12), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(4213969131)]
 		public string ShaderNodeName { get { return m_ShaderNodeName; } set { if (OnPropertyChanging("ShaderCustomizationUnlockPartCollection." + nameof(ShaderNodeName), this, m_ShaderNodeName, value)) m_ShaderNodeName = value; } } // 0xC (12)
 		
 		protected List<CustomizedMeshMaterialsData> m_MeshMaterials = new List<CustomizedMeshMaterialsData>();
-		[ContainerField(16), ContainerFieldNameHash(3833968526)]
+		[ContainerField(16), MemberInfoFlag(65), ContainerFieldNameHash(3833968526), ContainerArray]
 		public List<CustomizedMeshMaterialsData> MeshMaterials { get { return m_MeshMaterials; } set { if (OnPropertyChanging("ShaderCustomizationUnlockPartCollection." + nameof(MeshMaterials), this, m_MeshMaterials, value)) m_MeshMaterials = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

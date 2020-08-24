@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class SoldierHeadCollisionData : 
 		DataContainer
 	{
 		protected float m_HeadRadius = new float();
-		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(2199912853)]
+		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2199912853)]
 		public float HeadRadius { get { return m_HeadRadius; } set { if (OnPropertyChanging("SoldierHeadCollisionData." + nameof(HeadRadius), this, m_HeadRadius, value)) m_HeadRadius = value; } } // 0x8 (8)
 		
 		protected List<SoldierHeadCollisionPoseData> m_PoseStates = new List<SoldierHeadCollisionPoseData>();
-		[ContainerField(12), ContainerFieldNameHash(294615368)]
+		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(294615368), ContainerArray]
 		public List<SoldierHeadCollisionPoseData> PoseStates { get { return m_PoseStates; } set { if (OnPropertyChanging("SoldierHeadCollisionData." + nameof(PoseStates), this, m_PoseStates, value)) m_PoseStates = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class AxesInputActionData : 
 		InputActionData
 	{
 		protected InputDeviceAxes m_Axis = new InputDeviceAxes();
-		[ContainerField(12), ContainerFieldNameHash(2088662246)]
+		[ContainerField(12), MemberInfoFlag(137), ContainerFieldNameHash(2088662246)]
 		public InputDeviceAxes Axis { get { return m_Axis; } set { if (OnPropertyChanging("AxesInputActionData." + nameof(Axis), this, m_Axis, value)) m_Axis = value; } } // 0xC (12)
 		
 		protected bool m_NormalizeInput = new bool();
-		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(4067559830)]
+		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(4067559830)]
 		public bool NormalizeInput { get { return m_NormalizeInput; } set { if (OnPropertyChanging("AxesInputActionData." + nameof(NormalizeInput), this, m_NormalizeInput, value)) m_NormalizeInput = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

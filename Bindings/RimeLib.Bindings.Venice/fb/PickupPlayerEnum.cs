@@ -18,6 +18,7 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
+	[MemberInfoFlag(137), ContainerEnum]
 	public enum PickupPlayerEnum : int
 	{
 		PickupPlayerEnum_None = 0,

@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(8)]
+	[ContainerType(8), MemberInfoFlag(53), ContainerClass]
 	public class NetworkPerformanceEvent : 
 		MetricEvent
 	{
 		protected uint m_Received = new uint();
-		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(684081738)]
+		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(684081738)]
 		public uint Received { get { return m_Received; } set { if (OnPropertyChanging("NetworkPerformanceEvent." + nameof(Received), this, m_Received, value)) m_Received = value; } } // 0x10 (16)
 		
 		protected uint m_Sent = new uint();
-		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(2089417353)]
+		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(2089417353)]
 		public uint Sent { get { return m_Sent; } set { if (OnPropertyChanging("NetworkPerformanceEvent." + nameof(Sent), this, m_Sent, value)) m_Sent = value; } } // 0x14 (20)
 		
 		protected float m_ReceivedAverage = new float();
-		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(186958889)]
+		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(186958889)]
 		public float ReceivedAverage { get { return m_ReceivedAverage; } set { if (OnPropertyChanging("NetworkPerformanceEvent." + nameof(ReceivedAverage), this, m_ReceivedAverage, value)) m_ReceivedAverage = value; } } // 0x18 (24)
 		
 		protected float m_SentAverage = new float();
-		[ContainerField(28), LayoutImmutable, Blittable, ContainerFieldNameHash(3828469642)]
+		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3828469642)]
 		public float SentAverage { get { return m_SentAverage; } set { if (OnPropertyChanging("NetworkPerformanceEvent." + nameof(SentAverage), this, m_SentAverage, value)) m_SentAverage = value; } } // 0x1C (28)
 		
 		protected GUID m_PerformanceLink = new GUID();
-		[ContainerField(32), LayoutImmutable, Blittable, ContainerFieldNameHash(3478312829)]
+		[ContainerField(32), LayoutImmutable, Blittable, MemberInfoFlag(49501), ContainerFieldNameHash(3478312829)]
 		public GUID PerformanceLink { get { return m_PerformanceLink; } set { if (OnPropertyChanging("NetworkPerformanceEvent." + nameof(PerformanceLink), this, m_PerformanceLink, value)) m_PerformanceLink = value; } } // 0x20 (32)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

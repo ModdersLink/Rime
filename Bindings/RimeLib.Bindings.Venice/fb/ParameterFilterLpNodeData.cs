@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class ParameterFilterLpNodeData : 
 		AudioGraphNodeData
 	{
 		protected AudioGraphNodePort m_In = new AudioGraphNodePort();
-		[ContainerField(8), ContainerFieldNameHash(5862146)]
+		[ContainerField(8), MemberInfoFlag(41), ContainerFieldNameHash(5862146)]
 		public AudioGraphNodePort In { get { return m_In; } set { if (OnPropertyChanging("ParameterFilterLpNodeData." + nameof(In), this, m_In, value)) m_In = value; } } // 0x8 (8)
 		
 		protected AudioGraphNodePort m_Out = new AudioGraphNodePort();
-		[ContainerField(16), ContainerFieldNameHash(193453899)]
+		[ContainerField(16), MemberInfoFlag(41), ContainerFieldNameHash(193453899)]
 		public AudioGraphNodePort Out { get { return m_Out; } set { if (OnPropertyChanging("ParameterFilterLpNodeData." + nameof(Out), this, m_Out, value)) m_Out = value; } } // 0x10 (16)
 		
 		protected AudioGraphNodePort m_Hz = new AudioGraphNodePort();
-		[ContainerField(24), ContainerFieldNameHash(5862391)]
+		[ContainerField(24), MemberInfoFlag(41), ContainerFieldNameHash(5862391)]
 		public AudioGraphNodePort Hz { get { return m_Hz; } set { if (OnPropertyChanging("ParameterFilterLpNodeData." + nameof(Hz), this, m_Hz, value)) m_Hz = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

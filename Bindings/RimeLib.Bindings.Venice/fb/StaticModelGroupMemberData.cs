@@ -18,43 +18,43 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(41), ContainerStruct]
 	public class StaticModelGroupMemberData : FrostbiteContainer
 	{
-		[ContainerField(0)]
+		[ContainerField(0), MemberInfoFlag(65), ContainerArray]
 		public List<LinearTransform> InstanceTransforms { get; set; } = new List<LinearTransform>(); // 0x0 (0)
 		
-		[ContainerField(4)]
+		[ContainerField(4), MemberInfoFlag(65), ContainerArray]
 		public List<float> InstanceScale { get; set; } = new List<float>(); // 0x4 (4)
 		
-		[ContainerField(8)]
+		[ContainerField(8), MemberInfoFlag(65), ContainerArray]
 		public List<uint> InstanceObjectVariation { get; set; } = new List<uint>(); // 0x8 (8)
 		
-		[ContainerField(12)]
+		[ContainerField(12), MemberInfoFlag(65), ContainerArray]
 		public List<bool> InstanceCastSunShadow { get; set; } = new List<bool>(); // 0xC (12)
 		
-		[ContainerField(16)]
+		[ContainerField(16), MemberInfoFlag(53), ContainerCtrRef]
 		public CtrRef<GamePhysicsEntityData> MemberType { get; set; } = new CtrRef<GamePhysicsEntityData>(); // 0x10 (16)
 		
-		[ContainerField(20)]
+		[ContainerField(20), MemberInfoFlag(53), ContainerCtrRef]
 		public CtrRef<EntityData> MeshEntityType { get; set; } = new CtrRef<EntityData>(); // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable]
+		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
 		public uint InstanceCount { get; set; } // 0x18 (24)
 		
-		[ContainerField(28), LayoutImmutable, Blittable]
+		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
 		public uint HealthStateEntityManagerId { get; set; } // 0x1C (28)
 		
-		[ContainerField(32)]
+		[ContainerField(32), MemberInfoFlag(41)]
 		public IndexRange PhysicsPartRange { get; set; } = new IndexRange(); // 0x20 (32)
 		
-		[ContainerField(40), LayoutImmutable, Blittable]
+		[ContainerField(40), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
 		public uint PhysicsPartCountPerInstance { get; set; } // 0x28 (40)
 		
-		[ContainerField(44)]
+		[ContainerField(44), MemberInfoFlag(41)]
 		public IndexRange NetworkIdRange { get; set; } = new IndexRange(); // 0x2C (44)
 		
-		[ContainerField(52), LayoutImmutable, Blittable]
+		[ContainerField(52), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
 		public uint NetworkIdCountPerInstance { get; set; } // 0x34 (52)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

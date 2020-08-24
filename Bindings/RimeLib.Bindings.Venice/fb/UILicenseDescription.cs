@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class UILicenseDescription : 
 		UIItemDescription
 	{
 		protected string m_LicenseId = string.Empty;
-		[ContainerField(16), LayoutImmutable, ContainerFieldNameHash(1538246483)]
+		[ContainerField(16), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(1538246483)]
 		public string LicenseId { get { return m_LicenseId; } set { if (OnPropertyChanging("UILicenseDescription." + nameof(LicenseId), this, m_LicenseId, value)) m_LicenseId = value; } } // 0x10 (16)
 		
 		protected string m_PopupText = string.Empty;
-		[ContainerField(20), LayoutImmutable, ContainerFieldNameHash(1817045074)]
+		[ContainerField(20), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(1817045074)]
 		public string PopupText { get { return m_PopupText; } set { if (OnPropertyChanging("UILicenseDescription." + nameof(PopupText), this, m_PopupText, value)) m_PopupText = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

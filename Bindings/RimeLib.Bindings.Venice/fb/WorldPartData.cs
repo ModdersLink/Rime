@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class WorldPartData : 
 		SpatialPrefabBlueprint
 	{
 		protected GUID m_HackToSolveRealTimeTweakingIssue = new GUID();
-		[ContainerField(36), LayoutImmutable, Blittable, ContainerFieldNameHash(1452521702)]
+		[ContainerField(36), LayoutImmutable, Blittable, MemberInfoFlag(49501), ContainerFieldNameHash(1452521702)]
 		public GUID HackToSolveRealTimeTweakingIssue { get { return m_HackToSolveRealTimeTweakingIssue; } set { if (OnPropertyChanging("WorldPartData." + nameof(HackToSolveRealTimeTweakingIssue), this, m_HackToSolveRealTimeTweakingIssue, value)) m_HackToSolveRealTimeTweakingIssue = value; } } // 0x24 (36)
 		
 		protected bool m_UseDeferredEntityCreation = new bool();
-		[ContainerField(52), LayoutImmutable, Blittable, ContainerFieldNameHash(2224120471)]
+		[ContainerField(52), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2224120471)]
 		public bool UseDeferredEntityCreation { get { return m_UseDeferredEntityCreation; } set { if (OnPropertyChanging("WorldPartData." + nameof(UseDeferredEntityCreation), this, m_UseDeferredEntityCreation, value)) m_UseDeferredEntityCreation = value; } } // 0x34 (52)
 		
 		protected bool m_Enabled = new bool();
-		[ContainerField(53), LayoutImmutable, Blittable, ContainerFieldNameHash(2662400)]
+		[ContainerField(53), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2662400)]
 		public bool Enabled { get { return m_Enabled; } set { if (OnPropertyChanging("WorldPartData." + nameof(Enabled), this, m_Enabled, value)) m_Enabled = value; } } // 0x35 (53)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class NumberGeneratorNodeData : 
 		AudioGraphNodeData
 	{
 		protected AudioGraphNodePort m_Trigger = new AudioGraphNodePort();
-		[ContainerField(8), ContainerFieldNameHash(2606354109)]
+		[ContainerField(8), MemberInfoFlag(41), ContainerFieldNameHash(2606354109)]
 		public AudioGraphNodePort Trigger { get { return m_Trigger; } set { if (OnPropertyChanging("NumberGeneratorNodeData." + nameof(Trigger), this, m_Trigger, value)) m_Trigger = value; } } // 0x8 (8)
 		
 		protected float m_Min = new float();
-		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(193446607)]
+		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(193446607)]
 		public float Min { get { return m_Min; } set { if (OnPropertyChanging("NumberGeneratorNodeData." + nameof(Min), this, m_Min, value)) m_Min = value; } } // 0x10 (16)
 		
 		protected float m_Max = new float();
-		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(193446865)]
+		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(193446865)]
 		public float Max { get { return m_Max; } set { if (OnPropertyChanging("NumberGeneratorNodeData." + nameof(Max), this, m_Max, value)) m_Max = value; } } // 0x14 (20)
 		
 		protected NumberGeneratorMode m_Mode = new NumberGeneratorMode();
-		[ContainerField(24), ContainerFieldNameHash(2088772358)]
+		[ContainerField(24), MemberInfoFlag(137), ContainerFieldNameHash(2088772358)]
 		public NumberGeneratorMode Mode { get { return m_Mode; } set { if (OnPropertyChanging("NumberGeneratorNodeData." + nameof(Mode), this, m_Mode, value)) m_Mode = value; } } // 0x18 (24)
 		
 		protected AudioGraphNodePort m_Y = new AudioGraphNodePort();
-		[ContainerField(28), ContainerFieldNameHash(177660)]
+		[ContainerField(28), MemberInfoFlag(41), ContainerFieldNameHash(177660)]
 		public AudioGraphNodePort Y { get { return m_Y; } set { if (OnPropertyChanging("NumberGeneratorNodeData." + nameof(Y), this, m_Y, value)) m_Y = value; } } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

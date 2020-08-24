@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class AntEnumeration : 
 		DataContainer
 	{
 		protected AntRef m_AntAsset = new AntRef();
-		[ContainerField(8), ContainerFieldNameHash(1873036974)]
+		[ContainerField(8), MemberInfoFlag(41), ContainerFieldNameHash(1873036974)]
 		public AntRef AntAsset { get { return m_AntAsset; } set { if (OnPropertyChanging("AntEnumeration." + nameof(AntAsset), this, m_AntAsset, value)) m_AntAsset = value; } } // 0x8 (8)
 		
 		protected int m_Value = new int();
-		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(225375086)]
+		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(225375086)]
 		public int Value { get { return m_Value; } set { if (OnPropertyChanging("AntEnumeration." + nameof(Value), this, m_Value, value)) m_Value = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

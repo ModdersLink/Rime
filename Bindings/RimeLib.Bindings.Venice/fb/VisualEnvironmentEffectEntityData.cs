@@ -18,32 +18,32 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class VisualEnvironmentEffectEntityData : 
 		EffectEntityData
 	{
 		protected Vec4 m_LifetimeCurve = new Vec4();
-		[ContainerField(112), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(1623248993)]
+		[ContainerField(112), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(1623248993)]
 		public Vec4 LifetimeCurve { get { return m_LifetimeCurve; } set { if (OnPropertyChanging("VisualEnvironmentEffectEntityData." + nameof(LifetimeCurve), this, m_LifetimeCurve, value)) m_LifetimeCurve = value; } } // 0x70 (112)
 		
 		protected Vec4 m_CullDistanceCurve = new Vec4();
-		[ContainerField(128), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(3239208743)]
+		[ContainerField(128), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(3239208743)]
 		public Vec4 CullDistanceCurve { get { return m_CullDistanceCurve; } set { if (OnPropertyChanging("VisualEnvironmentEffectEntityData." + nameof(CullDistanceCurve), this, m_CullDistanceCurve, value)) m_CullDistanceCurve = value; } } // 0x80 (128)
 		
 		protected Vec4 m_CullAngleCurve = new Vec4();
-		[ContainerField(144), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(3589421957)]
+		[ContainerField(144), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(3589421957)]
 		public Vec4 CullAngleCurve { get { return m_CullAngleCurve; } set { if (OnPropertyChanging("VisualEnvironmentEffectEntityData." + nameof(CullAngleCurve), this, m_CullAngleCurve, value)) m_CullAngleCurve = value; } } // 0x90 (144)
 		
 		protected float m_Lifetime = new float();
-		[ContainerField(160), LayoutImmutable, Blittable, ContainerFieldNameHash(2450521238)]
+		[ContainerField(160), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2450521238)]
 		public float Lifetime { get { return m_Lifetime; } set { if (OnPropertyChanging("VisualEnvironmentEffectEntityData." + nameof(Lifetime), this, m_Lifetime, value)) m_Lifetime = value; } } // 0xA0 (160)
 		
 		protected CtrRef<VisualEnvironmentBlueprint> m_VisualEnvironment = new CtrRef<VisualEnvironmentBlueprint>();
-		[ContainerField(164), ContainerFieldNameHash(1724714788)]
+		[ContainerField(164), MemberInfoFlag(53), ContainerFieldNameHash(1724714788), ContainerCtrRef]
 		public CtrRef<VisualEnvironmentBlueprint> VisualEnvironment { get { return m_VisualEnvironment; } set { if (OnPropertyChanging("VisualEnvironmentEffectEntityData." + nameof(VisualEnvironment), this, m_VisualEnvironment, value)) m_VisualEnvironment = value; } } // 0xA4 (164)
 		
 		protected bool m_SampleOnStartOnly = new bool();
-		[ContainerField(168), LayoutImmutable, Blittable, ContainerFieldNameHash(3530277558)]
+		[ContainerField(168), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3530277558)]
 		public bool SampleOnStartOnly { get { return m_SampleOnStartOnly; } set { if (OnPropertyChanging("VisualEnvironmentEffectEntityData." + nameof(SampleOnStartOnly), this, m_SampleOnStartOnly, value)) m_SampleOnStartOnly = value; } } // 0xA8 (168)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

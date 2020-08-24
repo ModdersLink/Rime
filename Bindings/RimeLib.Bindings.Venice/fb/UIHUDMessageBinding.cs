@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class UIHUDMessageBinding : 
 		UIDataBinding
 	{
 		protected UIDataSourceInfo m_MessageQuery = new UIDataSourceInfo();
-		[ContainerField(8), ContainerFieldNameHash(501651684)]
+		[ContainerField(8), MemberInfoFlag(41), ContainerFieldNameHash(501651684)]
 		public UIDataSourceInfo MessageQuery { get { return m_MessageQuery; } set { if (OnPropertyChanging("UIHUDMessageBinding." + nameof(MessageQuery), this, m_MessageQuery, value)) m_MessageQuery = value; } } // 0x8 (8)
 		
 		protected UIDataSourceInfo m_VisibilityQuery = new UIDataSourceInfo();
-		[ContainerField(24), ContainerFieldNameHash(734252745)]
+		[ContainerField(24), MemberInfoFlag(41), ContainerFieldNameHash(734252745)]
 		public UIDataSourceInfo VisibilityQuery { get { return m_VisibilityQuery; } set { if (OnPropertyChanging("UIHUDMessageBinding." + nameof(VisibilityQuery), this, m_VisibilityQuery, value)) m_VisibilityQuery = value; } } // 0x18 (24)
 		
 		protected int m_NumberOfRows = new int();
-		[ContainerField(40), LayoutImmutable, Blittable, ContainerFieldNameHash(2507942582)]
+		[ContainerField(40), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(2507942582)]
 		public int NumberOfRows { get { return m_NumberOfRows; } set { if (OnPropertyChanging("UIHUDMessageBinding." + nameof(NumberOfRows), this, m_NumberOfRows, value)) m_NumberOfRows = value; } } // 0x28 (40)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

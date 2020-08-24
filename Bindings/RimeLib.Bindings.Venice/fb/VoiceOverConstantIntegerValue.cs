@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class VoiceOverConstantIntegerValue : 
 		VoiceOverConstantValue
 	{
 		protected int m_Value = new int();
-		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(225375086)]
+		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(225375086)]
 		public int Value { get { return m_Value; } set { if (OnPropertyChanging("VoiceOverConstantIntegerValue." + nameof(Value), this, m_Value, value)) m_Value = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

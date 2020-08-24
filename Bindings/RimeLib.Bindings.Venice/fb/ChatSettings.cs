@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class ChatSettings : 
 		Asset
 	{
 		protected List<ChatChannelType> m_Channels = new List<ChatChannelType>();
-		[ContainerField(12), ContainerFieldNameHash(1585412981)]
+		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(1585412981), ContainerArray]
 		public List<ChatChannelType> Channels { get { return m_Channels; } set { if (OnPropertyChanging("ChatSettings." + nameof(Channels), this, m_Channels, value)) m_Channels = value; } } // 0xC (12)
 		
 		protected AntiSpamConfig m_AntiSpam = new AntiSpamConfig();
-		[ContainerField(16), ContainerFieldNameHash(1819988664)]
+		[ContainerField(16), MemberInfoFlag(41), ContainerFieldNameHash(1819988664)]
 		public AntiSpamConfig AntiSpam { get { return m_AntiSpam; } set { if (OnPropertyChanging("ChatSettings." + nameof(AntiSpam), this, m_AntiSpam, value)) m_AntiSpam = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

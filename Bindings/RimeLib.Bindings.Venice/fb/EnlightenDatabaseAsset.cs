@@ -18,32 +18,32 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class EnlightenDatabaseAsset : 
 		Asset
 	{
 		protected uint m_DataVersion = new uint();
-		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(3409245615)]
+		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(3409245615)]
 		public uint DataVersion { get { return m_DataVersion; } set { if (OnPropertyChanging("EnlightenDatabaseAsset." + nameof(DataVersion), this, m_DataVersion, value)) m_DataVersion = value; } } // 0xC (12)
 		
 		protected uint m_DebugMeshDataVersion = new uint();
-		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(2953964973)]
+		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(2953964973)]
 		public uint DebugMeshDataVersion { get { return m_DebugMeshDataVersion; } set { if (OnPropertyChanging("EnlightenDatabaseAsset." + nameof(DebugMeshDataVersion), this, m_DebugMeshDataVersion, value)) m_DebugMeshDataVersion = value; } } // 0x10 (16)
 		
 		protected uint m_OutputSizeX = new uint();
-		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(734302791)]
+		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(734302791)]
 		public uint OutputSizeX { get { return m_OutputSizeX; } set { if (OnPropertyChanging("EnlightenDatabaseAsset." + nameof(OutputSizeX), this, m_OutputSizeX, value)) m_OutputSizeX = value; } } // 0x14 (20)
 		
 		protected uint m_OutputSizeY = new uint();
-		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(734302790)]
+		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(734302790)]
 		public uint OutputSizeY { get { return m_OutputSizeY; } set { if (OnPropertyChanging("EnlightenDatabaseAsset." + nameof(OutputSizeY), this, m_OutputSizeY, value)) m_OutputSizeY = value; } } // 0x18 (24)
 		
 		protected List<EnlightenDbSystem> m_Systems = new List<EnlightenDbSystem>();
-		[ContainerField(28), ContainerFieldNameHash(2622499059)]
+		[ContainerField(28), MemberInfoFlag(65), ContainerFieldNameHash(2622499059), ContainerArray]
 		public List<EnlightenDbSystem> Systems { get { return m_Systems; } set { if (OnPropertyChanging("EnlightenDatabaseAsset." + nameof(Systems), this, m_Systems, value)) m_Systems = value; } } // 0x1C (28)
 		
 		protected List<EnlightenLightProbeSet> m_LightProbeSets = new List<EnlightenLightProbeSet>();
-		[ContainerField(32), ContainerFieldNameHash(3933473824)]
+		[ContainerField(32), MemberInfoFlag(65), ContainerFieldNameHash(3933473824), ContainerArray]
 		public List<EnlightenLightProbeSet> LightProbeSets { get { return m_LightProbeSets; } set { if (OnPropertyChanging("EnlightenDatabaseAsset." + nameof(LightProbeSets), this, m_LightProbeSets, value)) m_LightProbeSets = value; } } // 0x20 (32)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

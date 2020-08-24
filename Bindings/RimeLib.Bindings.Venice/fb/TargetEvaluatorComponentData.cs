@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class TargetEvaluatorComponentData : 
 		ComponentData
 	{
 		protected float m_UpdateInterval = new float();
-		[ContainerField(96), LayoutImmutable, Blittable, ContainerFieldNameHash(754325291)]
+		[ContainerField(96), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(754325291)]
 		public float UpdateInterval { get { return m_UpdateInterval; } set { if (OnPropertyChanging("TargetEvaluatorComponentData." + nameof(UpdateInterval), this, m_UpdateInterval, value)) m_UpdateInterval = value; } } // 0x60 (96)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

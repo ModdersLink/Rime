@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class CompressorSettings : 
 		DataContainer
 	{
 		protected float m_Ratio = new float();
-		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(230084836)]
+		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(230084836)]
 		public float Ratio { get { return m_Ratio; } set { if (OnPropertyChanging("CompressorSettings." + nameof(Ratio), this, m_Ratio, value)) m_Ratio = value; } } // 0x8 (8)
 		
 		protected float m_Threshold = new float();
-		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(3768602130)]
+		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3768602130)]
 		public float Threshold { get { return m_Threshold; } set { if (OnPropertyChanging("CompressorSettings." + nameof(Threshold), this, m_Threshold, value)) m_Threshold = value; } } // 0xC (12)
 		
 		protected float m_Attack = new float();
-		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(2500885101)]
+		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2500885101)]
 		public float Attack { get { return m_Attack; } set { if (OnPropertyChanging("CompressorSettings." + nameof(Attack), this, m_Attack, value)) m_Attack = value; } } // 0x10 (16)
 		
 		protected float m_Release = new float();
-		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(1335266828)]
+		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1335266828)]
 		public float Release { get { return m_Release; } set { if (OnPropertyChanging("CompressorSettings." + nameof(Release), this, m_Release, value)) m_Release = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,140 +18,140 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(8)]
+	[ContainerType(8), MemberInfoFlag(53), ContainerClass]
 	public class TimingViewSettings : 
 		DataContainer
 	{
 		protected uint m_MaxFrameEventCount = new uint();
-		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(3847876579)]
+		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(3847876579)]
 		public uint MaxFrameEventCount { get { return m_MaxFrameEventCount; } set { if (OnPropertyChanging("TimingViewSettings." + nameof(MaxFrameEventCount), this, m_MaxFrameEventCount, value)) m_MaxFrameEventCount = value; } } // 0x8 (8)
 		
 		protected uint m_FrameCount = new uint();
-		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(741182715)]
+		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(741182715)]
 		public uint FrameCount { get { return m_FrameCount; } set { if (OnPropertyChanging("TimingViewSettings." + nameof(FrameCount), this, m_FrameCount, value)) m_FrameCount = value; } } // 0xC (12)
 		
 		protected uint m_FrameDelayCount = new uint();
-		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(4056595598)]
+		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(4056595598)]
 		public uint FrameDelayCount { get { return m_FrameDelayCount; } set { if (OnPropertyChanging("TimingViewSettings." + nameof(FrameDelayCount), this, m_FrameDelayCount, value)) m_FrameDelayCount = value; } } // 0x10 (16)
 		
 		protected float m_TimeRange = new float();
-		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(170778575)]
+		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(170778575)]
 		public float TimeRange { get { return m_TimeRange; } set { if (OnPropertyChanging("TimingViewSettings." + nameof(TimeRange), this, m_TimeRange, value)) m_TimeRange = value; } } // 0x14 (20)
 		
 		protected float m_TimeOffset = new float();
-		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(2388918461)]
+		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2388918461)]
 		public float TimeOffset { get { return m_TimeOffset; } set { if (OnPropertyChanging("TimingViewSettings." + nameof(TimeOffset), this, m_TimeOffset, value)) m_TimeOffset = value; } } // 0x18 (24)
 		
 		protected float m_AutolockThreshold = new float();
-		[ContainerField(28), LayoutImmutable, Blittable, ContainerFieldNameHash(2834654070)]
+		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2834654070)]
 		public float AutolockThreshold { get { return m_AutolockThreshold; } set { if (OnPropertyChanging("TimingViewSettings." + nameof(AutolockThreshold), this, m_AutolockThreshold, value)) m_AutolockThreshold = value; } } // 0x1C (28)
 		
 		protected string m_AutolockNameFilter = string.Empty;
-		[ContainerField(32), LayoutImmutable, ContainerFieldNameHash(700307558)]
+		[ContainerField(32), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(700307558)]
 		public string AutolockNameFilter { get { return m_AutolockNameFilter; } set { if (OnPropertyChanging("TimingViewSettings." + nameof(AutolockNameFilter), this, m_AutolockNameFilter, value)) m_AutolockNameFilter = value; } } // 0x20 (32)
 		
 		protected int m_LegendScreenOffset = new int();
-		[ContainerField(36), LayoutImmutable, Blittable, ContainerFieldNameHash(2099355397)]
+		[ContainerField(36), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(2099355397)]
 		public int LegendScreenOffset { get { return m_LegendScreenOffset; } set { if (OnPropertyChanging("TimingViewSettings." + nameof(LegendScreenOffset), this, m_LegendScreenOffset, value)) m_LegendScreenOffset = value; } } // 0x24 (36)
 		
 		protected int m_LegendColumnWidth = new int();
-		[ContainerField(40), LayoutImmutable, Blittable, ContainerFieldNameHash(4015483860)]
+		[ContainerField(40), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(4015483860)]
 		public int LegendColumnWidth { get { return m_LegendColumnWidth; } set { if (OnPropertyChanging("TimingViewSettings." + nameof(LegendColumnWidth), this, m_LegendColumnWidth, value)) m_LegendColumnWidth = value; } } // 0x28 (40)
 		
 		protected int m_LegendDisplayMode = new int();
-		[ContainerField(44), LayoutImmutable, Blittable, ContainerFieldNameHash(3524433245)]
+		[ContainerField(44), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(3524433245)]
 		public int LegendDisplayMode { get { return m_LegendDisplayMode; } set { if (OnPropertyChanging("TimingViewSettings." + nameof(LegendDisplayMode), this, m_LegendDisplayMode, value)) m_LegendDisplayMode = value; } } // 0x2C (44)
 		
 		protected int m_AverageFrameCount = new int();
-		[ContainerField(48), LayoutImmutable, Blittable, ContainerFieldNameHash(4155437432)]
+		[ContainerField(48), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(4155437432)]
 		public int AverageFrameCount { get { return m_AverageFrameCount; } set { if (OnPropertyChanging("TimingViewSettings." + nameof(AverageFrameCount), this, m_AverageFrameCount, value)) m_AverageFrameCount = value; } } // 0x30 (48)
 		
 		protected int m_MaxGpuLegendColumnCount = new int();
-		[ContainerField(52), LayoutImmutable, Blittable, ContainerFieldNameHash(1835173031)]
+		[ContainerField(52), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(1835173031)]
 		public int MaxGpuLegendColumnCount { get { return m_MaxGpuLegendColumnCount; } set { if (OnPropertyChanging("TimingViewSettings." + nameof(MaxGpuLegendColumnCount), this, m_MaxGpuLegendColumnCount, value)) m_MaxGpuLegendColumnCount = value; } } // 0x34 (52)
 		
 		protected string m_SnoopEventName = string.Empty;
-		[ContainerField(56), LayoutImmutable, ContainerFieldNameHash(570566851)]
+		[ContainerField(56), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(570566851)]
 		public string SnoopEventName { get { return m_SnoopEventName; } set { if (OnPropertyChanging("TimingViewSettings." + nameof(SnoopEventName), this, m_SnoopEventName, value)) m_SnoopEventName = value; } } // 0x38 (56)
 		
 		protected int m_GpuBarFrameOffset = new int();
-		[ContainerField(60), LayoutImmutable, Blittable, ContainerFieldNameHash(3381491878)]
+		[ContainerField(60), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(3381491878)]
 		public int GpuBarFrameOffset { get { return m_GpuBarFrameOffset; } set { if (OnPropertyChanging("TimingViewSettings." + nameof(GpuBarFrameOffset), this, m_GpuBarFrameOffset, value)) m_GpuBarFrameOffset = value; } } // 0x3C (60)
 		
 		protected int m_MaxCpuLegendColumnCount = new int();
-		[ContainerField(64), LayoutImmutable, Blittable, ContainerFieldNameHash(3144102947)]
+		[ContainerField(64), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(3144102947)]
 		public int MaxCpuLegendColumnCount { get { return m_MaxCpuLegendColumnCount; } set { if (OnPropertyChanging("TimingViewSettings." + nameof(MaxCpuLegendColumnCount), this, m_MaxCpuLegendColumnCount, value)) m_MaxCpuLegendColumnCount = value; } } // 0x40 (64)
 		
 		protected uint m_BarPad = new uint();
-		[ContainerField(68), LayoutImmutable, Blittable, ContainerFieldNameHash(2672961185)]
+		[ContainerField(68), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(2672961185)]
 		public uint BarPad { get { return m_BarPad; } set { if (OnPropertyChanging("TimingViewSettings." + nameof(BarPad), this, m_BarPad, value)) m_BarPad = value; } } // 0x44 (68)
 		
 		protected int m_MaxSpuLegendColumnCount = new int();
-		[ContainerField(72), LayoutImmutable, Blittable, ContainerFieldNameHash(3652642355)]
+		[ContainerField(72), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(3652642355)]
 		public int MaxSpuLegendColumnCount { get { return m_MaxSpuLegendColumnCount; } set { if (OnPropertyChanging("TimingViewSettings." + nameof(MaxSpuLegendColumnCount), this, m_MaxSpuLegendColumnCount, value)) m_MaxSpuLegendColumnCount = value; } } // 0x48 (72)
 		
 		protected int m_BarSyncProcessor = new int();
-		[ContainerField(76), LayoutImmutable, Blittable, ContainerFieldNameHash(2518052805)]
+		[ContainerField(76), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(2518052805)]
 		public int BarSyncProcessor { get { return m_BarSyncProcessor; } set { if (OnPropertyChanging("TimingViewSettings." + nameof(BarSyncProcessor), this, m_BarSyncProcessor, value)) m_BarSyncProcessor = value; } } // 0x4C (76)
 		
 		protected double m_BarMinTime = new double();
-		[ContainerField(80), LayoutImmutable, Blittable, ContainerFieldNameHash(1638553323)]
+		[ContainerField(80), LayoutImmutable, Blittable, MemberInfoFlag(49485), ContainerFieldNameHash(1638553323)]
 		public double BarMinTime { get { return m_BarMinTime; } set { if (OnPropertyChanging("TimingViewSettings." + nameof(BarMinTime), this, m_BarMinTime, value)) m_BarMinTime = value; } } // 0x50 (80)
 		
 		protected uint m_BarHeight = new uint();
-		[ContainerField(88), LayoutImmutable, Blittable, ContainerFieldNameHash(2196900171)]
+		[ContainerField(88), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(2196900171)]
 		public uint BarHeight { get { return m_BarHeight; } set { if (OnPropertyChanging("TimingViewSettings." + nameof(BarHeight), this, m_BarHeight, value)) m_BarHeight = value; } } // 0x58 (88)
 		
 		protected string m_FilterEventName = string.Empty;
-		[ContainerField(92), LayoutImmutable, ContainerFieldNameHash(1452602030)]
+		[ContainerField(92), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(1452602030)]
 		public string FilterEventName { get { return m_FilterEventName; } set { if (OnPropertyChanging("TimingViewSettings." + nameof(FilterEventName), this, m_FilterEventName, value)) m_FilterEventName = value; } } // 0x5C (92)
 		
 		protected bool m_SnoopOnly = new bool();
-		[ContainerField(96), LayoutImmutable, Blittable, ContainerFieldNameHash(477460828)]
+		[ContainerField(96), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(477460828)]
 		public bool SnoopOnly { get { return m_SnoopOnly; } set { if (OnPropertyChanging("TimingViewSettings." + nameof(SnoopOnly), this, m_SnoopOnly, value)) m_SnoopOnly = value; } } // 0x60 (96)
 		
 		protected bool m_DrawEnable = new bool();
-		[ContainerField(97), LayoutImmutable, Blittable, ContainerFieldNameHash(1347356004)]
+		[ContainerField(97), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1347356004)]
 		public bool DrawEnable { get { return m_DrawEnable; } set { if (OnPropertyChanging("TimingViewSettings." + nameof(DrawEnable), this, m_DrawEnable, value)) m_DrawEnable = value; } } // 0x61 (97)
 		
 		protected bool m_DrawSpuLegendEnable = new bool();
-		[ContainerField(98), LayoutImmutable, Blittable, ContainerFieldNameHash(3543221203)]
+		[ContainerField(98), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3543221203)]
 		public bool DrawSpuLegendEnable { get { return m_DrawSpuLegendEnable; } set { if (OnPropertyChanging("TimingViewSettings." + nameof(DrawSpuLegendEnable), this, m_DrawSpuLegendEnable, value)) m_DrawSpuLegendEnable = value; } } // 0x62 (98)
 		
 		protected bool m_SnoopEnable = new bool();
-		[ContainerField(99), LayoutImmutable, Blittable, ContainerFieldNameHash(332594601)]
+		[ContainerField(99), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(332594601)]
 		public bool SnoopEnable { get { return m_SnoopEnable; } set { if (OnPropertyChanging("TimingViewSettings." + nameof(SnoopEnable), this, m_SnoopEnable, value)) m_SnoopEnable = value; } } // 0x63 (99)
 		
 		protected bool m_FilterEnable = new bool();
-		[ContainerField(100), LayoutImmutable, Blittable, ContainerFieldNameHash(3231420132)]
+		[ContainerField(100), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3231420132)]
 		public bool FilterEnable { get { return m_FilterEnable; } set { if (OnPropertyChanging("TimingViewSettings." + nameof(FilterEnable), this, m_FilterEnable, value)) m_FilterEnable = value; } } // 0x64 (100)
 		
 		protected bool m_DrawBarsEnable = new bool();
-		[ContainerField(101), LayoutImmutable, Blittable, ContainerFieldNameHash(3694545030)]
+		[ContainerField(101), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3694545030)]
 		public bool DrawBarsEnable { get { return m_DrawBarsEnable; } set { if (OnPropertyChanging("TimingViewSettings." + nameof(DrawBarsEnable), this, m_DrawBarsEnable, value)) m_DrawBarsEnable = value; } } // 0x65 (101)
 		
 		protected bool m_DrawLegendEnable = new bool();
-		[ContainerField(102), LayoutImmutable, Blittable, ContainerFieldNameHash(1644114661)]
+		[ContainerField(102), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1644114661)]
 		public bool DrawLegendEnable { get { return m_DrawLegendEnable; } set { if (OnPropertyChanging("TimingViewSettings." + nameof(DrawLegendEnable), this, m_DrawLegendEnable, value)) m_DrawLegendEnable = value; } } // 0x66 (102)
 		
 		protected bool m_DrawOnlySummaryEnable = new bool();
-		[ContainerField(103), LayoutImmutable, Blittable, ContainerFieldNameHash(720557660)]
+		[ContainerField(103), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(720557660)]
 		public bool DrawOnlySummaryEnable { get { return m_DrawOnlySummaryEnable; } set { if (OnPropertyChanging("TimingViewSettings." + nameof(DrawOnlySummaryEnable), this, m_DrawOnlySummaryEnable, value)) m_DrawOnlySummaryEnable = value; } } // 0x67 (103)
 		
 		protected bool m_SortByTime = new bool();
-		[ContainerField(104), LayoutImmutable, Blittable, ContainerFieldNameHash(1839336369)]
+		[ContainerField(104), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1839336369)]
 		public bool SortByTime { get { return m_SortByTime; } set { if (OnPropertyChanging("TimingViewSettings." + nameof(SortByTime), this, m_SortByTime, value)) m_SortByTime = value; } } // 0x68 (104)
 		
 		protected bool m_DrawCpuLegendEnable = new bool();
-		[ContainerField(105), LayoutImmutable, Blittable, ContainerFieldNameHash(450915267)]
+		[ContainerField(105), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(450915267)]
 		public bool DrawCpuLegendEnable { get { return m_DrawCpuLegendEnable; } set { if (OnPropertyChanging("TimingViewSettings." + nameof(DrawCpuLegendEnable), this, m_DrawCpuLegendEnable, value)) m_DrawCpuLegendEnable = value; } } // 0x69 (105)
 		
 		protected bool m_DrawGpuLegendEnable = new bool();
-		[ContainerField(106), LayoutImmutable, Blittable, ContainerFieldNameHash(591363015)]
+		[ContainerField(106), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(591363015)]
 		public bool DrawGpuLegendEnable { get { return m_DrawGpuLegendEnable; } set { if (OnPropertyChanging("TimingViewSettings." + nameof(DrawGpuLegendEnable), this, m_DrawGpuLegendEnable, value)) m_DrawGpuLegendEnable = value; } } // 0x6A (106)
 		
 		protected bool m_Enable = new bool();
-		[ContainerField(107), LayoutImmutable, Blittable, ContainerFieldNameHash(2342790116)]
+		[ContainerField(107), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2342790116)]
 		public bool Enable { get { return m_Enable; } set { if (OnPropertyChanging("TimingViewSettings." + nameof(Enable), this, m_Enable, value)) m_Enable = value; } } // 0x6B (107)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

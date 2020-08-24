@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class MixerInputEntry : 
 		AudioGraphNodePortGroup
 	{
 		protected AudioGraphNodePort m_Out = new AudioGraphNodePort();
-		[ContainerField(8), ContainerFieldNameHash(193453899)]
+		[ContainerField(8), MemberInfoFlag(41), ContainerFieldNameHash(193453899)]
 		public AudioGraphNodePort Out { get { return m_Out; } set { if (OnPropertyChanging("MixerInputEntry." + nameof(Out), this, m_Out, value)) m_Out = value; } } // 0x8 (8)
 		
 		protected CtrRef<AudioGraphParameter> m_Source = new CtrRef<AudioGraphParameter>();
-		[ContainerField(16), ContainerFieldNameHash(3339738264)]
+		[ContainerField(16), MemberInfoFlag(53), ContainerFieldNameHash(3339738264), ContainerCtrRef]
 		public CtrRef<AudioGraphParameter> Source { get { return m_Source; } set { if (OnPropertyChanging("MixerInputEntry." + nameof(Source), this, m_Source, value)) m_Source = value; } } // 0x10 (16)
 		
 		protected MixerValueAccumulateMode m_AccumulateMode = new MixerValueAccumulateMode();
-		[ContainerField(20), ContainerFieldNameHash(2760994582)]
+		[ContainerField(20), MemberInfoFlag(137), ContainerFieldNameHash(2760994582)]
 		public MixerValueAccumulateMode AccumulateMode { get { return m_AccumulateMode; } set { if (OnPropertyChanging("MixerInputEntry." + nameof(AccumulateMode), this, m_AccumulateMode, value)) m_AccumulateMode = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

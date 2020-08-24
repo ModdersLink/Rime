@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class LensFlareEntityData : 
 		SpatialEntityData
 	{
 		protected List<LensFlareElement> m_Elements = new List<LensFlareElement>();
-		[ContainerField(80), ContainerFieldNameHash(2347524808)]
+		[ContainerField(80), MemberInfoFlag(65), ContainerFieldNameHash(2347524808), ContainerArray]
 		public List<LensFlareElement> Elements { get { return m_Elements; } set { if (OnPropertyChanging("LensFlareEntityData." + nameof(Elements), this, m_Elements, value)) m_Elements = value; } } // 0x50 (80)
 		
 		protected float m_OccluderSize = new float();
-		[ContainerField(84), LayoutImmutable, Blittable, ContainerFieldNameHash(2630779365)]
+		[ContainerField(84), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2630779365)]
 		public float OccluderSize { get { return m_OccluderSize; } set { if (OnPropertyChanging("LensFlareEntityData." + nameof(OccluderSize), this, m_OccluderSize, value)) m_OccluderSize = value; } } // 0x54 (84)
 		
 		protected bool m_Visible = new bool();
-		[ContainerField(88), LayoutImmutable, Blittable, ContainerFieldNameHash(901540267)]
+		[ContainerField(88), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(901540267)]
 		public bool Visible { get { return m_Visible; } set { if (OnPropertyChanging("LensFlareEntityData." + nameof(Visible), this, m_Visible, value)) m_Visible = value; } } // 0x58 (88)
 		
 		protected bool m_HalfRes = new bool();
-		[ContainerField(89), LayoutImmutable, Blittable, ContainerFieldNameHash(2152832706)]
+		[ContainerField(89), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2152832706)]
 		public bool HalfRes { get { return m_HalfRes; } set { if (OnPropertyChanging("LensFlareEntityData." + nameof(HalfRes), this, m_HalfRes, value)) m_HalfRes = value; } } // 0x59 (89)
 		
 		protected bool m_DebugDrawOccluder = new bool();
-		[ContainerField(90), LayoutImmutable, Blittable, ContainerFieldNameHash(3156672721)]
+		[ContainerField(90), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3156672721)]
 		public bool DebugDrawOccluder { get { return m_DebugDrawOccluder; } set { if (OnPropertyChanging("LensFlareEntityData." + nameof(DebugDrawOccluder), this, m_DebugDrawOccluder, value)) m_DebugDrawOccluder = value; } } // 0x5A (90)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

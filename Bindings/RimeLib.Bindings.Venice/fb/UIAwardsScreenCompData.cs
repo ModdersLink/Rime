@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class UIAwardsScreenCompData : 
 		UIComponentData
 	{
 		protected RefArray<StatsCategoryBaseData> m_TrackableAwardRow = new RefArray<StatsCategoryBaseData>();
-		[ContainerField(28), ContainerFieldNameHash(383950411)]
+		[ContainerField(28), MemberInfoFlag(65), ContainerFieldNameHash(383950411), ContainerRefArray]
 		public RefArray<StatsCategoryBaseData> TrackableAwardRow { get { return m_TrackableAwardRow; } set { if (OnPropertyChanging("UIAwardsScreenCompData." + nameof(TrackableAwardRow), this, m_TrackableAwardRow, value)) m_TrackableAwardRow = value; } } // 0x1C (28)
 		
 		protected RefArray<StatsCategoryBaseData> m_TrackableAwardCol = new RefArray<StatsCategoryBaseData>();
-		[ContainerField(32), ContainerFieldNameHash(383933953)]
+		[ContainerField(32), MemberInfoFlag(65), ContainerFieldNameHash(383933953), ContainerRefArray]
 		public RefArray<StatsCategoryBaseData> TrackableAwardCol { get { return m_TrackableAwardCol; } set { if (OnPropertyChanging("UIAwardsScreenCompData." + nameof(TrackableAwardCol), this, m_TrackableAwardCol, value)) m_TrackableAwardCol = value; } } // 0x20 (32)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

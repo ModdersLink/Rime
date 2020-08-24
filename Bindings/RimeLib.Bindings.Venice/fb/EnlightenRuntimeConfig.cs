@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class EnlightenRuntimeConfig : 
 		Asset
 	{
 		protected uint m_JobCount = new uint();
-		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(4166996065)]
+		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(4166996065)]
 		public uint JobCount { get { return m_JobCount; } set { if (OnPropertyChanging("EnlightenRuntimeConfig." + nameof(JobCount), this, m_JobCount, value)) m_JobCount = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

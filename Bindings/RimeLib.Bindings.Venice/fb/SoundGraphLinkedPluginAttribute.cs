@@ -18,22 +18,22 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(41), ContainerStruct]
 	public class SoundGraphLinkedPluginAttribute : FrostbiteContainer
 	{
-		[ContainerField(0)]
+		[ContainerField(0), MemberInfoFlag(41)]
 		public SoundGraphPluginRef Plugin { get; set; } = new SoundGraphPluginRef(); // 0x0 (0)
 		
-		[ContainerField(4)]
+		[ContainerField(4), MemberInfoFlag(53), ContainerCtrRef]
 		public CtrRef<AudioGraphNodeData> Node { get; set; } = new CtrRef<AudioGraphNodeData>(); // 0x4 (4)
 		
-		[ContainerField(8)]
+		[ContainerField(8), MemberInfoFlag(41)]
 		public AudioGraphNodePort Port { get; set; } = new AudioGraphNodePort(); // 0x8 (8)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
+		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49341)]
 		public sbyte AttributeIndex { get; set; } // 0x10 (16)
 		
-		[ContainerField(17), LayoutImmutable, Blittable]
+		[ContainerField(17), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool AllowExtremeValues { get; set; } // 0x11 (17)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

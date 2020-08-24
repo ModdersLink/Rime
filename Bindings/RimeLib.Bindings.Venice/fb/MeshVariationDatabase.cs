@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class MeshVariationDatabase : 
 		Asset
 	{
 		protected RefArray<MeshVariationDatabaseEntry> m_Entries = new RefArray<MeshVariationDatabaseEntry>();
-		[ContainerField(12), ContainerFieldNameHash(8238103)]
+		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(8238103), ContainerRefArray]
 		public RefArray<MeshVariationDatabaseEntry> Entries { get { return m_Entries; } set { if (OnPropertyChanging("MeshVariationDatabase." + nameof(Entries), this, m_Entries, value)) m_Entries = value; } } // 0xC (12)
 		
 		protected RefArray<MeshVariationDatabaseEntry> m_RedirectEntries = new RefArray<MeshVariationDatabaseEntry>();
-		[ContainerField(16), ContainerFieldNameHash(1590518733)]
+		[ContainerField(16), MemberInfoFlag(65), ContainerFieldNameHash(1590518733), ContainerRefArray]
 		public RefArray<MeshVariationDatabaseEntry> RedirectEntries { get { return m_RedirectEntries; } set { if (OnPropertyChanging("MeshVariationDatabase." + nameof(RedirectEntries), this, m_RedirectEntries, value)) m_RedirectEntries = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

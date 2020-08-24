@@ -18,6 +18,7 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
+	[MemberInfoFlag(137), ContainerEnum]
 	public enum VoiceOverLabelCompareMode : int
 	{
 		VoiceOverLabelCompareMode_Any = 0,

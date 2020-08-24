@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class SimpleValueSelectorNodeData : 
 		AudioGraphNodeData
 	{
 		protected List<float> m_OutValues = new List<float>();
-		[ContainerField(8), ContainerFieldNameHash(2730967827)]
+		[ContainerField(8), MemberInfoFlag(65), ContainerFieldNameHash(2730967827), ContainerArray]
 		public List<float> OutValues { get { return m_OutValues; } set { if (OnPropertyChanging("SimpleValueSelectorNodeData." + nameof(OutValues), this, m_OutValues, value)) m_OutValues = value; } } // 0x8 (8)
 		
 		protected AudioGraphNodePort m_Index = new AudioGraphNodePort();
-		[ContainerField(12), ContainerFieldNameHash(214509467)]
+		[ContainerField(12), MemberInfoFlag(41), ContainerFieldNameHash(214509467)]
 		public AudioGraphNodePort Index { get { return m_Index; } set { if (OnPropertyChanging("SimpleValueSelectorNodeData." + nameof(Index), this, m_Index, value)) m_Index = value; } } // 0xC (12)
 		
 		protected AudioGraphNodePort m_Out = new AudioGraphNodePort();
-		[ContainerField(20), ContainerFieldNameHash(193453899)]
+		[ContainerField(20), MemberInfoFlag(41), ContainerFieldNameHash(193453899)]
 		public AudioGraphNodePort Out { get { return m_Out; } set { if (OnPropertyChanging("SimpleValueSelectorNodeData." + nameof(Out), this, m_Out, value)) m_Out = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class DeltaGroup : 
 		AudioGraphNodePortGroup
 	{
 		protected AudioGraphNodePort m_In = new AudioGraphNodePort();
-		[ContainerField(8), ContainerFieldNameHash(5862146)]
+		[ContainerField(8), MemberInfoFlag(41), ContainerFieldNameHash(5862146)]
 		public AudioGraphNodePort In { get { return m_In; } set { if (OnPropertyChanging("DeltaGroup." + nameof(In), this, m_In, value)) m_In = value; } } // 0x8 (8)
 		
 		protected AudioGraphNodePort m_Delta = new AudioGraphNodePort();
-		[ContainerField(16), ContainerFieldNameHash(208768797)]
+		[ContainerField(16), MemberInfoFlag(41), ContainerFieldNameHash(208768797)]
 		public AudioGraphNodePort Delta { get { return m_Delta; } set { if (OnPropertyChanging("DeltaGroup." + nameof(Delta), this, m_Delta, value)) m_Delta = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

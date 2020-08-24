@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class SoundScopeSetupEntityData : 
 		EntityData
 	{
 		protected CtrRef<SoundScopeSetupData> m_Setup = new CtrRef<SoundScopeSetupData>();
-		[ContainerField(12), ContainerFieldNameHash(231277282)]
+		[ContainerField(12), MemberInfoFlag(53), ContainerFieldNameHash(231277282), ContainerCtrRef]
 		public CtrRef<SoundScopeSetupData> Setup { get { return m_Setup; } set { if (OnPropertyChanging("SoundScopeSetupEntityData." + nameof(Setup), this, m_Setup, value)) m_Setup = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

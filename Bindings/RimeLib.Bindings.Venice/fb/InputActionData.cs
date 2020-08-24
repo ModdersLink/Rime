@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class InputActionData : 
 		DataContainer
 	{
 		protected bool m_IsAnalog = new bool();
-		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(998391125)]
+		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(998391125)]
 		public bool IsAnalog { get { return m_IsAnalog; } set { if (OnPropertyChanging("InputActionData." + nameof(IsAnalog), this, m_IsAnalog, value)) m_IsAnalog = value; } } // 0x8 (8)
 		
 		protected bool m_NegateValue = new bool();
-		[ContainerField(9), LayoutImmutable, Blittable, ContainerFieldNameHash(928334002)]
+		[ContainerField(9), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(928334002)]
 		public bool NegateValue { get { return m_NegateValue; } set { if (OnPropertyChanging("InputActionData." + nameof(NegateValue), this, m_NegateValue, value)) m_NegateValue = value; } } // 0x9 (9)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,32 +18,32 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class MaterialGridData : 
 		Asset
 	{
 		protected CtrRef<MaterialContainerPair> m_DefaultMaterial = new CtrRef<MaterialContainerPair>();
-		[ContainerField(12), ContainerFieldNameHash(1956671429)]
+		[ContainerField(12), MemberInfoFlag(53), ContainerFieldNameHash(1956671429), ContainerCtrRef]
 		public CtrRef<MaterialContainerPair> DefaultMaterial { get { return m_DefaultMaterial; } set { if (OnPropertyChanging("MaterialGridData." + nameof(DefaultMaterial), this, m_DefaultMaterial, value)) m_DefaultMaterial = value; } } // 0xC (12)
 		
 		protected RefArray<MaterialContainerPair> m_MaterialPairs = new RefArray<MaterialContainerPair>();
-		[ContainerField(16), ContainerFieldNameHash(1030971927)]
+		[ContainerField(16), MemberInfoFlag(65), ContainerFieldNameHash(1030971927), ContainerRefArray]
 		public RefArray<MaterialContainerPair> MaterialPairs { get { return m_MaterialPairs; } set { if (OnPropertyChanging("MaterialGridData." + nameof(MaterialPairs), this, m_MaterialPairs, value)) m_MaterialPairs = value; } } // 0x10 (16)
 		
 		protected List<uint> m_MaterialIndexMap = new List<uint>();
-		[ContainerField(20), ContainerFieldNameHash(3087328300)]
+		[ContainerField(20), MemberInfoFlag(65), ContainerFieldNameHash(3087328300), ContainerArray]
 		public List<uint> MaterialIndexMap { get { return m_MaterialIndexMap; } set { if (OnPropertyChanging("MaterialGridData." + nameof(MaterialIndexMap), this, m_MaterialIndexMap, value)) m_MaterialIndexMap = value; } } // 0x14 (20)
 		
 		protected uint m_DefaultMaterialIndex = new uint();
-		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(214719451)]
+		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(214719451)]
 		public uint DefaultMaterialIndex { get { return m_DefaultMaterialIndex; } set { if (OnPropertyChanging("MaterialGridData." + nameof(DefaultMaterialIndex), this, m_DefaultMaterialIndex, value)) m_DefaultMaterialIndex = value; } } // 0x18 (24)
 		
 		protected List<MaterialRelationPropertyPair> m_MaterialProperties = new List<MaterialRelationPropertyPair>();
-		[ContainerField(28), ContainerFieldNameHash(1479818927)]
+		[ContainerField(28), MemberInfoFlag(65), ContainerFieldNameHash(1479818927), ContainerArray]
 		public List<MaterialRelationPropertyPair> MaterialProperties { get { return m_MaterialProperties; } set { if (OnPropertyChanging("MaterialGridData." + nameof(MaterialProperties), this, m_MaterialProperties, value)) m_MaterialProperties = value; } } // 0x1C (28)
 		
 		protected List<MaterialInteractionGridRow> m_InteractionGrid = new List<MaterialInteractionGridRow>();
-		[ContainerField(32), ContainerFieldNameHash(691097959)]
+		[ContainerField(32), MemberInfoFlag(65), ContainerFieldNameHash(691097959), ContainerArray]
 		public List<MaterialInteractionGridRow> InteractionGrid { get { return m_InteractionGrid; } set { if (OnPropertyChanging("MaterialGridData." + nameof(InteractionGrid), this, m_InteractionGrid, value)) m_InteractionGrid = value; } } // 0x20 (32)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

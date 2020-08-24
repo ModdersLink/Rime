@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class WaypointData : 
 		DataContainer
 	{
 		protected int m_SchematicsNameHash = new int();
-		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(2506236300)]
+		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(2506236300)]
 		public int SchematicsNameHash { get { return m_SchematicsNameHash; } set { if (OnPropertyChanging("WaypointData." + nameof(SchematicsNameHash), this, m_SchematicsNameHash, value)) m_SchematicsNameHash = value; } } // 0x8 (8)
 		
 		protected ushort m_WaypointId = new ushort();
-		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(2435520331)]
+		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49389), ContainerFieldNameHash(2435520331)]
 		public ushort WaypointId { get { return m_WaypointId; } set { if (OnPropertyChanging("WaypointData." + nameof(WaypointId), this, m_WaypointId, value)) m_WaypointId = value; } } // 0xC (12)
 		
 		protected bool m_UseClientsPosition = new bool();
-		[ContainerField(14), LayoutImmutable, Blittable, ContainerFieldNameHash(2175538773)]
+		[ContainerField(14), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2175538773)]
 		public bool UseClientsPosition { get { return m_UseClientsPosition; } set { if (OnPropertyChanging("WaypointData." + nameof(UseClientsPosition), this, m_UseClientsPosition, value)) m_UseClientsPosition = value; } } // 0xE (14)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

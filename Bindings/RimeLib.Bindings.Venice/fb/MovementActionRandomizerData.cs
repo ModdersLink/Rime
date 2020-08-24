@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class MovementActionRandomizerData : 
 		MovementActionData
 	{
 		protected RefArray<MovementActionData> m_Actions = new RefArray<MovementActionData>();
-		[ContainerField(8), ContainerFieldNameHash(373511656)]
+		[ContainerField(8), MemberInfoFlag(65), ContainerFieldNameHash(373511656), ContainerRefArray]
 		public RefArray<MovementActionData> Actions { get { return m_Actions; } set { if (OnPropertyChanging("MovementActionRandomizerData." + nameof(Actions), this, m_Actions, value)) m_Actions = value; } } // 0x8 (8)
 		
 		protected bool m_ReinsertIntoRandomizedListAfterUse = new bool();
-		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(201056821)]
+		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(201056821)]
 		public bool ReinsertIntoRandomizedListAfterUse { get { return m_ReinsertIntoRandomizedListAfterUse; } set { if (OnPropertyChanging("MovementActionRandomizerData." + nameof(ReinsertIntoRandomizedListAfterUse), this, m_ReinsertIntoRandomizedListAfterUse, value)) m_ReinsertIntoRandomizedListAfterUse = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

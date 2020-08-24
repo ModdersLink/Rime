@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class UrgencyUserData : 
 		DataContainer
 	{
 		protected CtrRef<UrgencyUserData> m_Base = new CtrRef<UrgencyUserData>();
-		[ContainerField(8), ContainerFieldNameHash(2088806864)]
+		[ContainerField(8), MemberInfoFlag(53), ContainerFieldNameHash(2088806864), ContainerCtrRef]
 		public CtrRef<UrgencyUserData> Base { get { return m_Base; } set { if (OnPropertyChanging("UrgencyUserData." + nameof(Base), this, m_Base, value)) m_Base = value; } } // 0x8 (8)
 		
 		protected List<UrgencyModifierData> m_UrgencyModifiers = new List<UrgencyModifierData>();
-		[ContainerField(12), ContainerFieldNameHash(2098389712)]
+		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(2098389712), ContainerArray]
 		public List<UrgencyModifierData> UrgencyModifiers { get { return m_UrgencyModifiers; } set { if (OnPropertyChanging("UrgencyUserData." + nameof(UrgencyModifiers), this, m_UrgencyModifiers, value)) m_UrgencyModifiers = value; } } // 0xC (12)
 		
 		protected RefArray<UrgencySetData> m_ModifierSets = new RefArray<UrgencySetData>();
-		[ContainerField(16), ContainerFieldNameHash(2115619811)]
+		[ContainerField(16), MemberInfoFlag(65), ContainerFieldNameHash(2115619811), ContainerRefArray]
 		public RefArray<UrgencySetData> ModifierSets { get { return m_ModifierSets; } set { if (OnPropertyChanging("UrgencyUserData." + nameof(ModifierSets), this, m_ModifierSets, value)) m_ModifierSets = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

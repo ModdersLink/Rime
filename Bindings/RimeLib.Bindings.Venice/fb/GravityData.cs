@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class GravityData : 
 		ProcessorData
 	{
 		protected float m_Gravity = new float();
-		[ContainerField(48), LayoutImmutable, Blittable, ContainerFieldNameHash(3295092963)]
+		[ContainerField(48), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3295092963)]
 		public float Gravity { get { return m_Gravity; } set { if (OnPropertyChanging("GravityData." + nameof(Gravity), this, m_Gravity, value)) m_Gravity = value; } } // 0x30 (48)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

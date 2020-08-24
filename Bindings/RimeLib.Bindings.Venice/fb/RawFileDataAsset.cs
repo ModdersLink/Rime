@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class RawFileDataAsset : 
 		RawFileAsset
 	{
 		protected List<byte> m_RawData = new List<byte>();
-		[ContainerField(12), ContainerFieldNameHash(1456371441)]
+		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(1456371441), ContainerArray]
 		public List<byte> RawData { get { return m_RawData; } set { if (OnPropertyChanging("RawFileDataAsset." + nameof(RawData), this, m_RawData, value)) m_RawData = value; } } // 0xC (12)
 		
 		protected uint m_Size = new uint();
-		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(2089429248)]
+		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(2089429248)]
 		public uint Size { get { return m_Size; } set { if (OnPropertyChanging("RawFileDataAsset." + nameof(Size), this, m_Size, value)) m_Size = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

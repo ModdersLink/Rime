@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class PolynomialColorInterpData : 
 		EvaluatorData
 	{
 		protected Vec3 m_Color0 = new Vec3();
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(2713814216)]
+		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(2713814216)]
 		public Vec3 Color0 { get { return m_Color0; } set { if (OnPropertyChanging("PolynomialColorInterpData." + nameof(Color0), this, m_Color0, value)) m_Color0 = value; } } // 0x10 (16)
 		
 		protected Vec3 m_Color1 = new Vec3();
-		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(2713814217)]
+		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(2713814217)]
 		public Vec3 Color1 { get { return m_Color1; } set { if (OnPropertyChanging("PolynomialColorInterpData." + nameof(Color1), this, m_Color1, value)) m_Color1 = value; } } // 0x20 (32)
 		
 		protected Vec4 m_Coefficients = new Vec4();
-		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(2816855587)]
+		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(2816855587)]
 		public Vec4 Coefficients { get { return m_Coefficients; } set { if (OnPropertyChanging("PolynomialColorInterpData." + nameof(Coefficients), this, m_Coefficients, value)) m_Coefficients = value; } } // 0x30 (48)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

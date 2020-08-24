@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class TransformSplitterEntityData : 
 		EntityData
 	{
 		protected LinearTransform m_Transform = new LinearTransform();
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(2270319721)]
+		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(2270319721)]
 		public LinearTransform Transform { get { return m_Transform; } set { if (OnPropertyChanging("TransformSplitterEntityData." + nameof(Transform), this, m_Transform, value)) m_Transform = value; } } // 0x10 (16)
 		
 		protected Realm m_Realm = new Realm();
-		[ContainerField(80), ContainerFieldNameHash(229961746)]
+		[ContainerField(80), MemberInfoFlag(137), ContainerFieldNameHash(229961746)]
 		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("TransformSplitterEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0x50 (80)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

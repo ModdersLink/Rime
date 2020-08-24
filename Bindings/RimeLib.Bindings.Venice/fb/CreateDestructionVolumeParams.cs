@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class CreateDestructionVolumeParams : 
 		DataContainer
 	{
 		protected string m_AssetName = string.Empty;
-		[ContainerField(8), LayoutImmutable, ContainerFieldNameHash(3654276786)]
+		[ContainerField(8), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(3654276786)]
 		public string AssetName { get { return m_AssetName; } set { if (OnPropertyChanging("CreateDestructionVolumeParams." + nameof(AssetName), this, m_AssetName, value)) m_AssetName = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

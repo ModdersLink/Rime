@@ -18,37 +18,37 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(41), ContainerStruct]
 	public class FireEffectData : FrostbiteContainer
 	{
-		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable]
+		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
 		public Vec3 Rotation { get; set; } = new Vec3(); // 0x0 (0)
 		
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable]
+		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
 		public Vec3 Offset { get; set; } = new Vec3(); // 0x10 (16)
 		
-		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable]
+		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
 		public Vec3 ZoomRotation { get; set; } = new Vec3(); // 0x20 (32)
 		
-		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable]
+		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
 		public Vec3 ZoomOffset { get; set; } = new Vec3(); // 0x30 (48)
 		
-		[ContainerField(64)]
+		[ContainerField(64), MemberInfoFlag(53), ContainerCtrRef]
 		public CtrRef<EffectBlueprint> Effect { get; set; } = new CtrRef<EffectBlueprint>(); // 0x40 (64)
 		
-		[ContainerField(68), LayoutImmutable, Blittable]
+		[ContainerField(68), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool UseZoomOffset { get; set; } // 0x44 (68)
 		
-		[ContainerField(69), LayoutImmutable, Blittable]
+		[ContainerField(69), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool UseZoomRotation { get; set; } // 0x45 (69)
 		
-		[ContainerField(70), LayoutImmutable, Blittable]
+		[ContainerField(70), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool DisableDuringZoom { get; set; } // 0x46 (70)
 		
-		[ContainerField(71), LayoutImmutable, Blittable]
+		[ContainerField(71), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool UpdateTransform { get; set; } // 0x47 (71)
 		
-		[ContainerField(72), LayoutImmutable, Blittable]
+		[ContainerField(72), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool StopLoopingEffects { get; set; } // 0x48 (72)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

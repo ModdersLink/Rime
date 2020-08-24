@@ -18,22 +18,22 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(41), ContainerStruct]
 	public class EloParameters : FrostbiteContainer
 	{
-		[ContainerField(0)]
+		[ContainerField(0), MemberInfoFlag(65), ContainerArray]
 		public List<EloFunctionPoint> KWinner { get; set; } = new List<EloFunctionPoint>(); // 0x0 (0)
 		
-		[ContainerField(4)]
+		[ContainerField(4), MemberInfoFlag(65), ContainerArray]
 		public List<EloFunctionPoint> KLoser { get; set; } = new List<EloFunctionPoint>(); // 0x4 (4)
 		
-		[ContainerField(8)]
+		[ContainerField(8), MemberInfoFlag(65), ContainerArray]
 		public List<EloFunctionPoint> KNewbie { get; set; } = new List<EloFunctionPoint>(); // 0x8 (8)
 		
-		[ContainerField(12)]
+		[ContainerField(12), MemberInfoFlag(65), ContainerArray]
 		public List<EloFunctionPoint> KCompetitor { get; set; } = new List<EloFunctionPoint>(); // 0xC (12)
 		
-		[ContainerField(16)]
+		[ContainerField(16), MemberInfoFlag(65), ContainerArray]
 		public List<EloExpectedFunctionPoint> Expected { get; set; } = new List<EloExpectedFunctionPoint>(); // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

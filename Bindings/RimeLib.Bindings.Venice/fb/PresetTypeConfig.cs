@@ -18,25 +18,25 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(41), ContainerStruct]
 	public class PresetTypeConfig : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, Blittable]
+		[ContainerField(0), LayoutImmutable, Blittable, MemberInfoFlag(49405)]
 		public int PresetId { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable]
+		[ContainerField(4), LayoutImmutable, MemberInfoFlag(16509)]
 		public string Key { get; set; } // 0x4 (4)
 		
-		[ContainerField(8), LayoutImmutable]
+		[ContainerField(8), LayoutImmutable, MemberInfoFlag(16509)]
 		public string NameSid { get; set; } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable]
+		[ContainerField(12), LayoutImmutable, MemberInfoFlag(16509)]
 		public string DescSid { get; set; } // 0xC (12)
 		
-		[ContainerField(16)]
+		[ContainerField(16), MemberInfoFlag(65), ContainerArray]
 		public List<LockedSettingConfig> LockedSettings { get; set; } = new List<LockedSettingConfig>(); // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
+		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool Predefined { get; set; } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

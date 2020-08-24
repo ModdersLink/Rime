@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class SensingManagerEntityData : 
 		EntityData
 	{
 		protected List<SensingSphere> m_SenseTerrainAreas = new List<SensingSphere>();
-		[ContainerField(12), ContainerFieldNameHash(1470254904)]
+		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(1470254904), ContainerArray]
 		public List<SensingSphere> SenseTerrainAreas { get { return m_SenseTerrainAreas; } set { if (OnPropertyChanging("SensingManagerEntityData." + nameof(SenseTerrainAreas), this, m_SenseTerrainAreas, value)) m_SenseTerrainAreas = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

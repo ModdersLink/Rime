@@ -18,22 +18,22 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(1)]
+	[ContainerType(1), MemberInfoFlag(41), ContainerStruct]
 	public class WeaponMiscModifierSettings : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, Blittable]
+		[ContainerField(0), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool EnableBreathControl { get; set; } // 0x0 (0)
 		
-		[ContainerField(1), LayoutImmutable, Blittable]
+		[ContainerField(1), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool CanBeInSupportedShooting { get; set; } // 0x1 (1)
 		
-		[ContainerField(2), LayoutImmutable, Blittable]
+		[ContainerField(2), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool UnZoomOnBoltAction { get; set; } // 0x2 (2)
 		
-		[ContainerField(3), LayoutImmutable, Blittable]
+		[ContainerField(3), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool HoldBoltActionUntilZoomRelease { get; set; } // 0x3 (3)
 		
-		[ContainerField(4), LayoutImmutable, Blittable]
+		[ContainerField(4), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool IsSilenced { get; set; } // 0x4 (4)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

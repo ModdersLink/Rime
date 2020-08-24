@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class TurretControlConstantData : 
 		Asset
 	{
 		protected float m_SearchLookSpeed = new float();
-		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(1142077483)]
+		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1142077483)]
 		public float SearchLookSpeed { get { return m_SearchLookSpeed; } set { if (OnPropertyChanging("TurretControlConstantData." + nameof(SearchLookSpeed), this, m_SearchLookSpeed, value)) m_SearchLookSpeed = value; } } // 0xC (12)
 		
 		protected float m_SlowLookSpeed = new float();
-		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(3507040034)]
+		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3507040034)]
 		public float SlowLookSpeed { get { return m_SlowLookSpeed; } set { if (OnPropertyChanging("TurretControlConstantData." + nameof(SlowLookSpeed), this, m_SlowLookSpeed, value)) m_SlowLookSpeed = value; } } // 0x10 (16)
 		
 		protected float m_NormalLookSpeed = new float();
-		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(3237374486)]
+		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3237374486)]
 		public float NormalLookSpeed { get { return m_NormalLookSpeed; } set { if (OnPropertyChanging("TurretControlConstantData." + nameof(NormalLookSpeed), this, m_NormalLookSpeed, value)) m_NormalLookSpeed = value; } } // 0x14 (20)
 		
 		protected float m_FastLookSpeed = new float();
-		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(599104037)]
+		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(599104037)]
 		public float FastLookSpeed { get { return m_FastLookSpeed; } set { if (OnPropertyChanging("TurretControlConstantData." + nameof(FastLookSpeed), this, m_FastLookSpeed, value)) m_FastLookSpeed = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

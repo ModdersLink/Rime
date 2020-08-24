@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class DogTagsAsset : 
 		Asset
 	{
 		protected CtrRef<StatsCategoryWeaponData> m_MeleeKillWeapon = new CtrRef<StatsCategoryWeaponData>();
-		[ContainerField(12), ContainerFieldNameHash(789892769)]
+		[ContainerField(12), MemberInfoFlag(53), ContainerFieldNameHash(789892769), ContainerCtrRef]
 		public CtrRef<StatsCategoryWeaponData> MeleeKillWeapon { get { return m_MeleeKillWeapon; } set { if (OnPropertyChanging("DogTagsAsset." + nameof(MeleeKillWeapon), this, m_MeleeKillWeapon, value)) m_MeleeKillWeapon = value; } } // 0xC (12)
 		
 		protected RefArray<BasicDogTagData> m_BasicDogTags = new RefArray<BasicDogTagData>();
-		[ContainerField(16), ContainerFieldNameHash(3176450162)]
+		[ContainerField(16), MemberInfoFlag(65), ContainerFieldNameHash(3176450162), ContainerRefArray]
 		public RefArray<BasicDogTagData> BasicDogTags { get { return m_BasicDogTags; } set { if (OnPropertyChanging("DogTagsAsset." + nameof(BasicDogTags), this, m_BasicDogTags, value)) m_BasicDogTags = value; } } // 0x10 (16)
 		
 		protected RefArray<AdvancedDogTagData> m_AdvancedDogTags = new RefArray<AdvancedDogTagData>();
-		[ContainerField(20), ContainerFieldNameHash(1447180982)]
+		[ContainerField(20), MemberInfoFlag(65), ContainerFieldNameHash(1447180982), ContainerRefArray]
 		public RefArray<AdvancedDogTagData> AdvancedDogTags { get { return m_AdvancedDogTags; } set { if (OnPropertyChanging("DogTagsAsset." + nameof(AdvancedDogTags), this, m_AdvancedDogTags, value)) m_AdvancedDogTags = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

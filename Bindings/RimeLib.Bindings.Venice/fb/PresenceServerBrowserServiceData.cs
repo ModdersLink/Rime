@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class PresenceServerBrowserServiceData : 
 		PresenceServiceData
 	{
 		protected MatchmakingCriteria m_FilterCriterias = new MatchmakingCriteria();
-		[ContainerField(12), ContainerFieldNameHash(4095044485)]
+		[ContainerField(12), MemberInfoFlag(41), ContainerFieldNameHash(4095044485)]
 		public MatchmakingCriteria FilterCriterias { get { return m_FilterCriterias; } set { if (OnPropertyChanging("PresenceServerBrowserServiceData." + nameof(FilterCriterias), this, m_FilterCriterias, value)) m_FilterCriterias = value; } } // 0xC (12)
 		
 		protected uint m_ListCapacity = new uint();
-		[ContainerField(44), LayoutImmutable, Blittable, ContainerFieldNameHash(2930314355)]
+		[ContainerField(44), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(2930314355)]
 		public uint ListCapacity { get { return m_ListCapacity; } set { if (OnPropertyChanging("PresenceServerBrowserServiceData." + nameof(ListCapacity), this, m_ListCapacity, value)) m_ListCapacity = value; } } // 0x2C (44)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

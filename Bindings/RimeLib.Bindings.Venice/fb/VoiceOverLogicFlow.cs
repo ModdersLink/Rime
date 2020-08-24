@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class VoiceOverLogicFlow : 
 		DataContainer
 	{
 		protected string m_Name = string.Empty;
-		[ContainerField(8), LayoutImmutable, ContainerFieldNameHash(2088949890)]
+		[ContainerField(8), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(2088949890)]
 		public string Name { get { return m_Name; } set { if (OnPropertyChanging("VoiceOverLogicFlow." + nameof(Name), this, m_Name, value)) m_Name = value; } } // 0x8 (8)
 		
 		protected CtrRef<VoiceOverGroup> m_Group = new CtrRef<VoiceOverGroup>();
-		[ContainerField(12), ContainerFieldNameHash(208130522)]
+		[ContainerField(12), MemberInfoFlag(53), ContainerFieldNameHash(208130522), ContainerCtrRef]
 		public CtrRef<VoiceOverGroup> Group { get { return m_Group; } set { if (OnPropertyChanging("VoiceOverLogicFlow." + nameof(Group), this, m_Group, value)) m_Group = value; } } // 0xC (12)
 		
 		protected RefArray<VoiceOverValue> m_Locals = new RefArray<VoiceOverValue>();
-		[ContainerField(16), ContainerFieldNameHash(2904565275)]
+		[ContainerField(16), MemberInfoFlag(65), ContainerFieldNameHash(2904565275), ContainerRefArray]
 		public RefArray<VoiceOverValue> Locals { get { return m_Locals; } set { if (OnPropertyChanging("VoiceOverLogicFlow." + nameof(Locals), this, m_Locals, value)) m_Locals = value; } } // 0x10 (16)
 		
 		protected RefArray<VoiceOverEventNode> m_Roots = new RefArray<VoiceOverEventNode>();
-		[ContainerField(20), ContainerFieldNameHash(230317904)]
+		[ContainerField(20), MemberInfoFlag(65), ContainerFieldNameHash(230317904), ContainerRefArray]
 		public RefArray<VoiceOverEventNode> Roots { get { return m_Roots; } set { if (OnPropertyChanging("VoiceOverLogicFlow." + nameof(Roots), this, m_Roots, value)) m_Roots = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

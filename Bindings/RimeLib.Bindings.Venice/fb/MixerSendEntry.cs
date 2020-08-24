@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class MixerSendEntry : 
 		AudioGraphNodePortGroup
 	{
 		protected AudioGraphNodePort m_In = new AudioGraphNodePort();
-		[ContainerField(8), ContainerFieldNameHash(5862146)]
+		[ContainerField(8), MemberInfoFlag(41), ContainerFieldNameHash(5862146)]
 		public AudioGraphNodePort In { get { return m_In; } set { if (OnPropertyChanging("MixerSendEntry." + nameof(In), this, m_In, value)) m_In = value; } } // 0x8 (8)
 		
 		protected CtrRef<AudioGraphParameter> m_Target = new CtrRef<AudioGraphParameter>();
-		[ContainerField(16), ContainerFieldNameHash(3215022804)]
+		[ContainerField(16), MemberInfoFlag(53), ContainerFieldNameHash(3215022804), ContainerCtrRef]
 		public CtrRef<AudioGraphParameter> Target { get { return m_Target; } set { if (OnPropertyChanging("MixerSendEntry." + nameof(Target), this, m_Target, value)) m_Target = value; } } // 0x10 (16)
 		
 		protected CtrRef<MixerAsset> m_Mixer = new CtrRef<MixerAsset>();
-		[ContainerField(20), ContainerFieldNameHash(209965422)]
+		[ContainerField(20), MemberInfoFlag(53), ContainerFieldNameHash(209965422), ContainerCtrRef]
 		public CtrRef<MixerAsset> Mixer { get { return m_Mixer; } set { if (OnPropertyChanging("MixerSendEntry." + nameof(Mixer), this, m_Mixer, value)) m_Mixer = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

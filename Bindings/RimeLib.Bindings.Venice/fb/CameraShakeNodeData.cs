@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class CameraShakeNodeData : 
 		AudioGraphNodeData
 	{
 		protected AudioGraphNodePort m_Pitch = new AudioGraphNodePort();
-		[ContainerField(8), ContainerFieldNameHash(232604323)]
+		[ContainerField(8), MemberInfoFlag(41), ContainerFieldNameHash(232604323)]
 		public AudioGraphNodePort Pitch { get { return m_Pitch; } set { if (OnPropertyChanging("CameraShakeNodeData." + nameof(Pitch), this, m_Pitch, value)) m_Pitch = value; } } // 0x8 (8)
 		
 		protected AudioGraphNodePort m_Yaw = new AudioGraphNodePort();
-		[ContainerField(16), ContainerFieldNameHash(193468618)]
+		[ContainerField(16), MemberInfoFlag(41), ContainerFieldNameHash(193468618)]
 		public AudioGraphNodePort Yaw { get { return m_Yaw; } set { if (OnPropertyChanging("CameraShakeNodeData." + nameof(Yaw), this, m_Yaw, value)) m_Yaw = value; } } // 0x10 (16)
 		
 		protected AudioGraphNodePort m_Roll = new AudioGraphNodePort();
-		[ContainerField(24), ContainerFieldNameHash(2089387576)]
+		[ContainerField(24), MemberInfoFlag(41), ContainerFieldNameHash(2089387576)]
 		public AudioGraphNodePort Roll { get { return m_Roll; } set { if (OnPropertyChanging("CameraShakeNodeData." + nameof(Roll), this, m_Roll, value)) m_Roll = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

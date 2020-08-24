@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class AudioGraphParameter : 
 		DataContainer
 	{
 		protected float m_DefaultValue = new float();
-		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(2066049125)]
+		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2066049125)]
 		public float DefaultValue { get { return m_DefaultValue; } set { if (OnPropertyChanging("AudioGraphParameter." + nameof(DefaultValue), this, m_DefaultValue, value)) m_DefaultValue = value; } } // 0x8 (8)
 		
 		protected uint m_NameHash = new uint();
-		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(994057744)]
+		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(994057744)]
 		public uint NameHash { get { return m_NameHash; } set { if (OnPropertyChanging("AudioGraphParameter." + nameof(NameHash), this, m_NameHash, value)) m_NameHash = value; } } // 0xC (12)
 		
 		protected ushort m_ValueIndex = new ushort();
-		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(2085408208)]
+		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49389), ContainerFieldNameHash(2085408208)]
 		public ushort ValueIndex { get { return m_ValueIndex; } set { if (OnPropertyChanging("AudioGraphParameter." + nameof(ValueIndex), this, m_ValueIndex, value)) m_ValueIndex = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

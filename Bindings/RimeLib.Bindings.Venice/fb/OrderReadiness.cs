@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class OrderReadiness : 
 		UrgencyUserData
 	{
 		protected string m_OrderType = string.Empty;
-		[ContainerField(20), LayoutImmutable, ContainerFieldNameHash(2615460339)]
+		[ContainerField(20), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(2615460339)]
 		public string OrderType { get { return m_OrderType; } set { if (OnPropertyChanging("OrderReadiness." + nameof(OrderType), this, m_OrderType, value)) m_OrderType = value; } } // 0x14 (20)
 		
 		protected ReadinessState m_MinimumReadiness = new ReadinessState();
-		[ContainerField(24), ContainerFieldNameHash(3511254371)]
+		[ContainerField(24), MemberInfoFlag(137), ContainerFieldNameHash(3511254371)]
 		public ReadinessState MinimumReadiness { get { return m_MinimumReadiness; } set { if (OnPropertyChanging("OrderReadiness." + nameof(MinimumReadiness), this, m_MinimumReadiness, value)) m_MinimumReadiness = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

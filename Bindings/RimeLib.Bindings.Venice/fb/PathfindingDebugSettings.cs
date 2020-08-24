@@ -18,68 +18,68 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class PathfindingDebugSettings : 
 		DataContainer
 	{
 		protected int m_TypesToDrawMask = new int();
-		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(2964791457)]
+		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(2964791457)]
 		public int TypesToDrawMask { get { return m_TypesToDrawMask; } set { if (OnPropertyChanging("PathfindingDebugSettings." + nameof(TypesToDrawMask), this, m_TypesToDrawMask, value)) m_TypesToDrawMask = value; } } // 0x8 (8)
 		
 		protected int m_TextOffsetY = new int();
-		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(3116283628)]
+		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(3116283628)]
 		public int TextOffsetY { get { return m_TextOffsetY; } set { if (OnPropertyChanging("PathfindingDebugSettings." + nameof(TextOffsetY), this, m_TextOffsetY, value)) m_TextOffsetY = value; } } // 0xC (12)
 		
 		protected int m_TextStartX = new int();
-		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(1212530848)]
+		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(1212530848)]
 		public int TextStartX { get { return m_TextStartX; } set { if (OnPropertyChanging("PathfindingDebugSettings." + nameof(TextStartX), this, m_TextStartX, value)) m_TextStartX = value; } } // 0x10 (16)
 		
 		protected int m_TextStartY = new int();
-		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(1212530849)]
+		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(1212530849)]
 		public int TextStartY { get { return m_TextStartY; } set { if (OnPropertyChanging("PathfindingDebugSettings." + nameof(TextStartY), this, m_TextStartY, value)) m_TextStartY = value; } } // 0x14 (20)
 		
 		protected PathfindingReplayMode m_ReplayMode = new PathfindingReplayMode();
-		[ContainerField(24), ContainerFieldNameHash(1723041685)]
+		[ContainerField(24), MemberInfoFlag(137), ContainerFieldNameHash(1723041685)]
 		public PathfindingReplayMode ReplayMode { get { return m_ReplayMode; } set { if (OnPropertyChanging("PathfindingDebugSettings." + nameof(ReplayMode), this, m_ReplayMode, value)) m_ReplayMode = value; } } // 0x18 (24)
 		
 		protected bool m_DrawConnections = new bool();
-		[ContainerField(28), LayoutImmutable, Blittable, ContainerFieldNameHash(2313499072)]
+		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2313499072)]
 		public bool DrawConnections { get { return m_DrawConnections; } set { if (OnPropertyChanging("PathfindingDebugSettings." + nameof(DrawConnections), this, m_DrawConnections, value)) m_DrawConnections = value; } } // 0x1C (28)
 		
 		protected bool m_DrawObstacles = new bool();
-		[ContainerField(29), LayoutImmutable, Blittable, ContainerFieldNameHash(3626078967)]
+		[ContainerField(29), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3626078967)]
 		public bool DrawObstacles { get { return m_DrawObstacles; } set { if (OnPropertyChanging("PathfindingDebugSettings." + nameof(DrawObstacles), this, m_DrawObstacles, value)) m_DrawObstacles = value; } } // 0x1D (29)
 		
 		protected bool m_DrawPolygonOutline = new bool();
-		[ContainerField(30), LayoutImmutable, Blittable, ContainerFieldNameHash(4098331465)]
+		[ContainerField(30), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(4098331465)]
 		public bool DrawPolygonOutline { get { return m_DrawPolygonOutline; } set { if (OnPropertyChanging("PathfindingDebugSettings." + nameof(DrawPolygonOutline), this, m_DrawPolygonOutline, value)) m_DrawPolygonOutline = value; } } // 0x1E (30)
 		
 		protected bool m_DrawFilledPolygons = new bool();
-		[ContainerField(31), LayoutImmutable, Blittable, ContainerFieldNameHash(297524372)]
+		[ContainerField(31), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(297524372)]
 		public bool DrawFilledPolygons { get { return m_DrawFilledPolygons; } set { if (OnPropertyChanging("PathfindingDebugSettings." + nameof(DrawFilledPolygons), this, m_DrawFilledPolygons, value)) m_DrawFilledPolygons = value; } } // 0x1F (31)
 		
 		protected bool m_DrawMemory = new bool();
-		[ContainerField(32), LayoutImmutable, Blittable, ContainerFieldNameHash(1651442660)]
+		[ContainerField(32), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1651442660)]
 		public bool DrawMemory { get { return m_DrawMemory; } set { if (OnPropertyChanging("PathfindingDebugSettings." + nameof(DrawMemory), this, m_DrawMemory, value)) m_DrawMemory = value; } } // 0x20 (32)
 		
 		protected bool m_DrawStats = new bool();
-		[ContainerField(33), LayoutImmutable, Blittable, ContainerFieldNameHash(2413142628)]
+		[ContainerField(33), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2413142628)]
 		public bool DrawStats { get { return m_DrawStats; } set { if (OnPropertyChanging("PathfindingDebugSettings." + nameof(DrawStats), this, m_DrawStats, value)) m_DrawStats = value; } } // 0x21 (33)
 		
 		protected bool m_DrawTimings = new bool();
-		[ContainerField(34), LayoutImmutable, Blittable, ContainerFieldNameHash(560544582)]
+		[ContainerField(34), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(560544582)]
 		public bool DrawTimings { get { return m_DrawTimings; } set { if (OnPropertyChanging("PathfindingDebugSettings." + nameof(DrawTimings), this, m_DrawTimings, value)) m_DrawTimings = value; } } // 0x22 (34)
 		
 		protected bool m_OriginalPaths = new bool();
-		[ContainerField(35), LayoutImmutable, Blittable, ContainerFieldNameHash(3948559810)]
+		[ContainerField(35), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3948559810)]
 		public bool OriginalPaths { get { return m_OriginalPaths; } set { if (OnPropertyChanging("PathfindingDebugSettings." + nameof(OriginalPaths), this, m_OriginalPaths, value)) m_OriginalPaths = value; } } // 0x23 (35)
 		
 		protected bool m_RandomPositions = new bool();
-		[ContainerField(36), LayoutImmutable, Blittable, ContainerFieldNameHash(4000636404)]
+		[ContainerField(36), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(4000636404)]
 		public bool RandomPositions { get { return m_RandomPositions; } set { if (OnPropertyChanging("PathfindingDebugSettings." + nameof(RandomPositions), this, m_RandomPositions, value)) m_RandomPositions = value; } } // 0x24 (36)
 		
 		protected bool m_PotentialObstacles = new bool();
-		[ContainerField(37), LayoutImmutable, Blittable, ContainerFieldNameHash(1779192423)]
+		[ContainerField(37), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1779192423)]
 		public bool PotentialObstacles { get { return m_PotentialObstacles; } set { if (OnPropertyChanging("PathfindingDebugSettings." + nameof(PotentialObstacles), this, m_PotentialObstacles, value)) m_PotentialObstacles = value; } } // 0x25 (37)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

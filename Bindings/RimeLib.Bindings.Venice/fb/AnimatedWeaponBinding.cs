@@ -18,199 +18,199 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(41), ContainerStruct]
 	public class AnimatedWeaponBinding : FrostbiteContainer
 	{
-		[ContainerField(0)]
+		[ContainerField(0), MemberInfoFlag(41)]
 		public AntRef Deploy { get; set; } = new AntRef(); // 0x0 (0)
 		
-		[ContainerField(4)]
+		[ContainerField(4), MemberInfoFlag(41)]
 		public AntRef AltDeploy { get; set; } = new AntRef(); // 0x4 (4)
 		
-		[ContainerField(8)]
+		[ContainerField(8), MemberInfoFlag(41)]
 		public AntRef Undeploy { get; set; } = new AntRef(); // 0x8 (8)
 		
-		[ContainerField(12)]
+		[ContainerField(12), MemberInfoFlag(41)]
 		public AntRef QuickSwitch { get; set; } = new AntRef(); // 0xC (12)
 		
-		[ContainerField(16)]
+		[ContainerField(16), MemberInfoFlag(41)]
 		public AntRef Reload { get; set; } = new AntRef(); // 0x10 (16)
 		
-		[ContainerField(20)]
+		[ContainerField(20), MemberInfoFlag(41)]
 		public AntRef ReloadShotgun { get; set; } = new AntRef(); // 0x14 (20)
 		
-		[ContainerField(24)]
+		[ContainerField(24), MemberInfoFlag(41)]
 		public AntRef Fire { get; set; } = new AntRef(); // 0x18 (24)
 		
-		[ContainerField(28)]
+		[ContainerField(28), MemberInfoFlag(41)]
 		public AntRef FireSingle { get; set; } = new AntRef(); // 0x1C (28)
 		
-		[ContainerField(32)]
+		[ContainerField(32), MemberInfoFlag(41)]
 		public AntRef FireHoldAndRelease { get; set; } = new AntRef(); // 0x20 (32)
 		
-		[ContainerField(36)]
+		[ContainerField(36), MemberInfoFlag(41)]
 		public AntRef FireSimple { get; set; } = new AntRef(); // 0x24 (36)
 		
-		[ContainerField(40)]
+		[ContainerField(40), MemberInfoFlag(41)]
 		public AntRef FirstShotSpawned { get; set; } = new AntRef(); // 0x28 (40)
 		
-		[ContainerField(44)]
+		[ContainerField(44), MemberInfoFlag(41)]
 		public AntRef BoltAction { get; set; } = new AntRef(); // 0x2C (44)
 		
-		[ContainerField(48)]
+		[ContainerField(48), MemberInfoFlag(41)]
 		public AntRef PumpAction { get; set; } = new AntRef(); // 0x30 (48)
 		
-		[ContainerField(52)]
+		[ContainerField(52), MemberInfoFlag(41)]
 		public AntRef MeleeAttack { get; set; } = new AntRef(); // 0x34 (52)
 		
-		[ContainerField(56)]
+		[ContainerField(56), MemberInfoFlag(41)]
 		public AntRef QuickThrow { get; set; } = new AntRef(); // 0x38 (56)
 		
-		[ContainerField(60)]
+		[ContainerField(60), MemberInfoFlag(41)]
 		public AntRef QuickThrowType { get; set; } = new AntRef(); // 0x3C (60)
 		
-		[ContainerField(64)]
+		[ContainerField(64), MemberInfoFlag(41)]
 		public AntRef AimBody { get; set; } = new AntRef(); // 0x40 (64)
 		
-		[ContainerField(68)]
+		[ContainerField(68), MemberInfoFlag(41)]
 		public AntRef AlwaysAimHead { get; set; } = new AntRef(); // 0x44 (68)
 		
-		[ContainerField(72)]
+		[ContainerField(72), MemberInfoFlag(41)]
 		public AntRef OneHanded { get; set; } = new AntRef(); // 0x48 (72)
 		
-		[ContainerField(76)]
+		[ContainerField(76), MemberInfoFlag(41)]
 		public AntRef OneHandedAiming { get; set; } = new AntRef(); // 0x4C (76)
 		
-		[ContainerField(80)]
+		[ContainerField(80), MemberInfoFlag(41)]
 		public AntRef AimingEnabled { get; set; } = new AntRef(); // 0x50 (80)
 		
-		[ContainerField(84)]
+		[ContainerField(84), MemberInfoFlag(41)]
 		public AntRef LowerGun { get; set; } = new AntRef(); // 0x54 (84)
 		
-		[ContainerField(88)]
+		[ContainerField(88), MemberInfoFlag(41)]
 		public AntRef BreathControl { get; set; } = new AntRef(); // 0x58 (88)
 		
-		[ContainerField(92)]
+		[ContainerField(92), MemberInfoFlag(41)]
 		public AntRef RflType { get; set; } = new AntRef(); // 0x5C (92)
 		
-		[ContainerField(96)]
+		[ContainerField(96), MemberInfoFlag(41)]
 		public AntRef PstlType { get; set; } = new AntRef(); // 0x60 (96)
 		
-		[ContainerField(100)]
+		[ContainerField(100), MemberInfoFlag(41)]
 		public AntRef HgrType { get; set; } = new AntRef(); // 0x64 (100)
 		
-		[ContainerField(104)]
+		[ContainerField(104), MemberInfoFlag(41)]
 		public AntRef ATType { get; set; } = new AntRef(); // 0x68 (104)
 		
-		[ContainerField(108)]
+		[ContainerField(108), MemberInfoFlag(41)]
 		public AntRef ShgType { get; set; } = new AntRef(); // 0x6C (108)
 		
-		[ContainerField(112)]
+		[ContainerField(112), MemberInfoFlag(41)]
 		public AntRef LMGType { get; set; } = new AntRef(); // 0x70 (112)
 		
-		[ContainerField(116)]
+		[ContainerField(116), MemberInfoFlag(41)]
 		public AntRef BagType { get; set; } = new AntRef(); // 0x74 (116)
 		
-		[ContainerField(120)]
+		[ContainerField(120), MemberInfoFlag(41)]
 		public AntRef SnpType { get; set; } = new AntRef(); // 0x78 (120)
 		
-		[ContainerField(124)]
+		[ContainerField(124), MemberInfoFlag(41)]
 		public AntRef Zoom { get; set; } = new AntRef(); // 0x7C (124)
 		
-		[ContainerField(128)]
+		[ContainerField(128), MemberInfoFlag(41)]
 		public AntRef AimBodyWeight { get; set; } = new AntRef(); // 0x80 (128)
 		
-		[ContainerField(132)]
+		[ContainerField(132), MemberInfoFlag(41)]
 		public AntRef DisableZoomToggleWeight { get; set; } = new AntRef(); // 0x84 (132)
 		
-		[ContainerField(136)]
+		[ContainerField(136), MemberInfoFlag(41)]
 		public AntRef ZoomParameter { get; set; } = new AntRef(); // 0x88 (136)
 		
-		[ContainerField(140)]
+		[ContainerField(140), MemberInfoFlag(41)]
 		public AntRef ZoomScaleFactor { get; set; } = new AntRef(); // 0x8C (140)
 		
-		[ContainerField(144)]
+		[ContainerField(144), MemberInfoFlag(41)]
 		public AntRef Dispersion { get; set; } = new AntRef(); // 0x90 (144)
 		
-		[ContainerField(148)]
+		[ContainerField(148), MemberInfoFlag(41)]
 		public AntRef AimTargetPosBody { get; set; } = new AntRef(); // 0x94 (148)
 		
-		[ContainerField(152)]
+		[ContainerField(152), MemberInfoFlag(41)]
 		public AntRef ZoomOutSpeed { get; set; } = new AntRef(); // 0x98 (152)
 		
-		[ContainerField(156)]
+		[ContainerField(156), MemberInfoFlag(41)]
 		public AntRef ZoomInSpeed { get; set; } = new AntRef(); // 0x9C (156)
 		
-		[ContainerField(160)]
+		[ContainerField(160), MemberInfoFlag(41)]
 		public AntRef UnDeploySpeed { get; set; } = new AntRef(); // 0xA0 (160)
 		
-		[ContainerField(164)]
+		[ContainerField(164), MemberInfoFlag(41)]
 		public AntRef DeploySpeed { get; set; } = new AntRef(); // 0xA4 (164)
 		
-		[ContainerField(168)]
+		[ContainerField(168), MemberInfoFlag(41)]
 		public AntRef LightEnabled { get; set; } = new AntRef(); // 0xA8 (168)
 		
-		[ContainerField(172)]
+		[ContainerField(172), MemberInfoFlag(41)]
 		public AntRef FireModeChanged { get; set; } = new AntRef(); // 0xAC (172)
 		
-		[ContainerField(176)]
+		[ContainerField(176), MemberInfoFlag(41)]
 		public AntRef AnimType { get; set; } = new AntRef(); // 0xB0 (176)
 		
-		[ContainerField(180)]
+		[ContainerField(180), MemberInfoFlag(41)]
 		public AntRef GunDown { get; set; } = new AntRef(); // 0xB4 (180)
 		
-		[ContainerField(184)]
+		[ContainerField(184), MemberInfoFlag(41)]
 		public AntRef NumberOfBulletsLeftInGun { get; set; } = new AntRef(); // 0xB8 (184)
 		
-		[ContainerField(188)]
+		[ContainerField(188), MemberInfoFlag(41)]
 		public AntRef BulletsLeftInGun { get; set; } = new AntRef(); // 0xBC (188)
 		
-		[ContainerField(192)]
+		[ContainerField(192), MemberInfoFlag(41)]
 		public AntRef AbortVehicleDeploy { get; set; } = new AntRef(); // 0xC0 (192)
 		
-		[ContainerField(196)]
+		[ContainerField(196), MemberInfoFlag(41)]
 		public AntRef CurrentProjectileIndex { get; set; } = new AntRef(); // 0xC4 (196)
 		
-		[ContainerField(200)]
+		[ContainerField(200), MemberInfoFlag(41)]
 		public AntRef WeaponActionESIG { get; set; } = new AntRef(); // 0xC8 (200)
 		
-		[ContainerField(204)]
+		[ContainerField(204), MemberInfoFlag(41)]
 		public AntRef IsSprinting { get; set; } = new AntRef(); // 0xCC (204)
 		
-		[ContainerField(208)]
+		[ContainerField(208), MemberInfoFlag(41)]
 		public AntRef PreparingToBash { get; set; } = new AntRef(); // 0xD0 (208)
 		
-		[ContainerField(212)]
+		[ContainerField(212), MemberInfoFlag(41)]
 		public AntRef JustStartedSprinting { get; set; } = new AntRef(); // 0xD4 (212)
 		
-		[ContainerField(216)]
+		[ContainerField(216), MemberInfoFlag(41)]
 		public AntRef KickBackInIronSight { get; set; } = new AntRef(); // 0xD8 (216)
 		
-		[ContainerField(220)]
+		[ContainerField(220), MemberInfoFlag(41)]
 		public AntRef ZoomingTime { get; set; } = new AntRef(); // 0xDC (220)
 		
-		[ContainerField(224)]
+		[ContainerField(224), MemberInfoFlag(41)]
 		public AntRef TriggerZoomGunTwitch { get; set; } = new AntRef(); // 0xE0 (224)
 		
-		[ContainerField(228)]
+		[ContainerField(228), MemberInfoFlag(41)]
 		public AntRef WeaponChooserSignal { get; set; } = new AntRef(); // 0xE4 (228)
 		
-		[ContainerField(232)]
+		[ContainerField(232), MemberInfoFlag(41)]
 		public AntRef WeaponClassSignal { get; set; } = new AntRef(); // 0xE8 (232)
 		
-		[ContainerField(236)]
+		[ContainerField(236), MemberInfoFlag(41)]
 		public AntRef OffsetX { get; set; } = new AntRef(); // 0xEC (236)
 		
-		[ContainerField(240)]
+		[ContainerField(240), MemberInfoFlag(41)]
 		public AntRef OffsetY { get; set; } = new AntRef(); // 0xF0 (240)
 		
-		[ContainerField(244)]
+		[ContainerField(244), MemberInfoFlag(41)]
 		public AntRef OffsetZ { get; set; } = new AntRef(); // 0xF4 (244)
 		
-		[ContainerField(248)]
+		[ContainerField(248), MemberInfoFlag(41)]
 		public AntRef AIAllowFire { get; set; } = new AntRef(); // 0xF8 (248)
 		
-		[ContainerField(252)]
+		[ContainerField(252), MemberInfoFlag(41)]
 		public AntRef AIAltFireFromAnt { get; set; } = new AntRef(); // 0xFC (252)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

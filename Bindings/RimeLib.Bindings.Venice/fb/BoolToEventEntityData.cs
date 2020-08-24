@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class BoolToEventEntityData : 
 		EntityData
 	{
 		protected Realm m_Realm = new Realm();
-		[ContainerField(12), ContainerFieldNameHash(229961746)]
+		[ContainerField(12), MemberInfoFlag(137), ContainerFieldNameHash(229961746)]
 		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("BoolToEventEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0xC (12)
 		
 		protected bool m_Value = new bool();
-		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(225375086)]
+		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(225375086)]
 		public bool Value { get { return m_Value; } set { if (OnPropertyChanging("BoolToEventEntityData." + nameof(Value), this, m_Value, value)) m_Value = value; } } // 0x10 (16)
 		
 		protected bool m_InitalEvent = new bool();
-		[ContainerField(17), LayoutImmutable, Blittable, ContainerFieldNameHash(3855319582)]
+		[ContainerField(17), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3855319582)]
 		public bool InitalEvent { get { return m_InitalEvent; } set { if (OnPropertyChanging("BoolToEventEntityData." + nameof(InitalEvent), this, m_InitalEvent, value)) m_InitalEvent = value; } } // 0x11 (17)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

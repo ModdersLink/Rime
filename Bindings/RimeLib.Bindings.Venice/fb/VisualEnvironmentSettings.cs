@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class VisualEnvironmentSettings : 
 		DataContainer
 	{
 		protected float m_SunRotationX = new float();
-		[ContainerField(8), LayoutImmutable, Blittable, ContainerFieldNameHash(2283294049)]
+		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2283294049)]
 		public float SunRotationX { get { return m_SunRotationX; } set { if (OnPropertyChanging("VisualEnvironmentSettings." + nameof(SunRotationX), this, m_SunRotationX, value)) m_SunRotationX = value; } } // 0x8 (8)
 		
 		protected float m_SunRotationY = new float();
-		[ContainerField(12), LayoutImmutable, Blittable, ContainerFieldNameHash(2283294048)]
+		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2283294048)]
 		public float SunRotationY { get { return m_SunRotationY; } set { if (OnPropertyChanging("VisualEnvironmentSettings." + nameof(SunRotationY), this, m_SunRotationY, value)) m_SunRotationY = value; } } // 0xC (12)
 		
 		protected bool m_DrawStats = new bool();
-		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(2413142628)]
+		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2413142628)]
 		public bool DrawStats { get { return m_DrawStats; } set { if (OnPropertyChanging("VisualEnvironmentSettings." + nameof(DrawStats), this, m_DrawStats, value)) m_DrawStats = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

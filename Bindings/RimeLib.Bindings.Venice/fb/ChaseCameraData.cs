@@ -18,108 +18,108 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class ChaseCameraData : 
 		TargetCameraData
 	{
 		protected Vec3 m_TargetOffset = new Vec3();
-		[ContainerField(160), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(1634518457)]
+		[ContainerField(160), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(1634518457)]
 		public Vec3 TargetOffset { get { return m_TargetOffset; } set { if (OnPropertyChanging("ChaseCameraData." + nameof(TargetOffset), this, m_TargetOffset, value)) m_TargetOffset = value; } } // 0xA0 (160)
 		
 		protected Vec3 m_ToWantedPositionScale = new Vec3();
-		[ContainerField(176), Homogeneous, LayoutImmutable, Blittable, ContainerFieldNameHash(2553064018)]
+		[ContainerField(176), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(2553064018)]
 		public Vec3 ToWantedPositionScale { get { return m_ToWantedPositionScale; } set { if (OnPropertyChanging("ChaseCameraData." + nameof(ToWantedPositionScale), this, m_ToWantedPositionScale, value)) m_ToWantedPositionScale = value; } } // 0xB0 (176)
 		
 		protected float m_AwayFromTargetForceScale = new float();
-		[ContainerField(192), LayoutImmutable, Blittable, ContainerFieldNameHash(2623914665)]
+		[ContainerField(192), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2623914665)]
 		public float AwayFromTargetForceScale { get { return m_AwayFromTargetForceScale; } set { if (OnPropertyChanging("ChaseCameraData." + nameof(AwayFromTargetForceScale), this, m_AwayFromTargetForceScale, value)) m_AwayFromTargetForceScale = value; } } // 0xC0 (192)
 		
 		protected float m_TargetRotationOffset = new float();
-		[ContainerField(196), LayoutImmutable, Blittable, ContainerFieldNameHash(1618502637)]
+		[ContainerField(196), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1618502637)]
 		public float TargetRotationOffset { get { return m_TargetRotationOffset; } set { if (OnPropertyChanging("ChaseCameraData." + nameof(TargetRotationOffset), this, m_TargetRotationOffset, value)) m_TargetRotationOffset = value; } } // 0xC4 (196)
 		
 		protected float m_MaxViewRotationAngleDeg = new float();
-		[ContainerField(200), LayoutImmutable, Blittable, ContainerFieldNameHash(389369231)]
+		[ContainerField(200), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(389369231)]
 		public float MaxViewRotationAngleDeg { get { return m_MaxViewRotationAngleDeg; } set { if (OnPropertyChanging("ChaseCameraData." + nameof(MaxViewRotationAngleDeg), this, m_MaxViewRotationAngleDeg, value)) m_MaxViewRotationAngleDeg = value; } } // 0xC8 (200)
 		
 		protected float m_WantedAngleDeg = new float();
-		[ContainerField(204), LayoutImmutable, Blittable, ContainerFieldNameHash(3363627311)]
+		[ContainerField(204), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3363627311)]
 		public float WantedAngleDeg { get { return m_WantedAngleDeg; } set { if (OnPropertyChanging("ChaseCameraData." + nameof(WantedAngleDeg), this, m_WantedAngleDeg, value)) m_WantedAngleDeg = value; } } // 0xCC (204)
 		
 		protected float m_WantedDistance = new float();
-		[ContainerField(208), LayoutImmutable, Blittable, ContainerFieldNameHash(543265451)]
+		[ContainerField(208), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(543265451)]
 		public float WantedDistance { get { return m_WantedDistance; } set { if (OnPropertyChanging("ChaseCameraData." + nameof(WantedDistance), this, m_WantedDistance, value)) m_WantedDistance = value; } } // 0xD0 (208)
 		
 		protected float m_MaxDistance = new float();
-		[ContainerField(212), LayoutImmutable, Blittable, ContainerFieldNameHash(3520454034)]
+		[ContainerField(212), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3520454034)]
 		public float MaxDistance { get { return m_MaxDistance; } set { if (OnPropertyChanging("ChaseCameraData." + nameof(MaxDistance), this, m_MaxDistance, value)) m_MaxDistance = value; } } // 0xD4 (212)
 		
 		protected float m_SnapDistance = new float();
-		[ContainerField(216), LayoutImmutable, Blittable, ContainerFieldNameHash(2841439402)]
+		[ContainerField(216), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2841439402)]
 		public float SnapDistance { get { return m_SnapDistance; } set { if (OnPropertyChanging("ChaseCameraData." + nameof(SnapDistance), this, m_SnapDistance, value)) m_SnapDistance = value; } } // 0xD8 (216)
 		
 		protected float m_ForceFieldRadius = new float();
-		[ContainerField(220), LayoutImmutable, Blittable, ContainerFieldNameHash(1763697730)]
+		[ContainerField(220), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1763697730)]
 		public float ForceFieldRadius { get { return m_ForceFieldRadius; } set { if (OnPropertyChanging("ChaseCameraData." + nameof(ForceFieldRadius), this, m_ForceFieldRadius, value)) m_ForceFieldRadius = value; } } // 0xDC (220)
 		
 		protected float m_CollisionRadius = new float();
-		[ContainerField(224), LayoutImmutable, Blittable, ContainerFieldNameHash(1874505603)]
+		[ContainerField(224), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1874505603)]
 		public float CollisionRadius { get { return m_CollisionRadius; } set { if (OnPropertyChanging("ChaseCameraData." + nameof(CollisionRadius), this, m_CollisionRadius, value)) m_CollisionRadius = value; } } // 0xE0 (224)
 		
 		protected float m_ForceFieldForceScale = new float();
-		[ContainerField(228), LayoutImmutable, Blittable, ContainerFieldNameHash(3317981151)]
+		[ContainerField(228), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3317981151)]
 		public float ForceFieldForceScale { get { return m_ForceFieldForceScale; } set { if (OnPropertyChanging("ChaseCameraData." + nameof(ForceFieldForceScale), this, m_ForceFieldForceScale, value)) m_ForceFieldForceScale = value; } } // 0xE4 (228)
 		
 		protected float m_MaxVelocity = new float();
-		[ContainerField(232), LayoutImmutable, Blittable, ContainerFieldNameHash(81127366)]
+		[ContainerField(232), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(81127366)]
 		public float MaxVelocity { get { return m_MaxVelocity; } set { if (OnPropertyChanging("ChaseCameraData." + nameof(MaxVelocity), this, m_MaxVelocity, value)) m_MaxVelocity = value; } } // 0xE8 (232)
 		
 		protected float m_VelocityDrag = new float();
-		[ContainerField(236), LayoutImmutable, Blittable, ContainerFieldNameHash(58335362)]
+		[ContainerField(236), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(58335362)]
 		public float VelocityDrag { get { return m_VelocityDrag; } set { if (OnPropertyChanging("ChaseCameraData." + nameof(VelocityDrag), this, m_VelocityDrag, value)) m_VelocityDrag = value; } } // 0xEC (236)
 		
 		protected float m_PillExpandSizeSpeedAcceleration = new float();
-		[ContainerField(240), LayoutImmutable, Blittable, ContainerFieldNameHash(2985104634)]
+		[ContainerField(240), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2985104634)]
 		public float PillExpandSizeSpeedAcceleration { get { return m_PillExpandSizeSpeedAcceleration; } set { if (OnPropertyChanging("ChaseCameraData." + nameof(PillExpandSizeSpeedAcceleration), this, m_PillExpandSizeSpeedAcceleration, value)) m_PillExpandSizeSpeedAcceleration = value; } } // 0xF0 (240)
 		
 		protected float m_PillMinimumCollisionRadius = new float();
-		[ContainerField(244), LayoutImmutable, Blittable, ContainerFieldNameHash(804419372)]
+		[ContainerField(244), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(804419372)]
 		public float PillMinimumCollisionRadius { get { return m_PillMinimumCollisionRadius; } set { if (OnPropertyChanging("ChaseCameraData." + nameof(PillMinimumCollisionRadius), this, m_PillMinimumCollisionRadius, value)) m_PillMinimumCollisionRadius = value; } } // 0xF4 (244)
 		
 		protected float m_PillMaximumCollisionRadius = new float();
-		[ContainerField(248), LayoutImmutable, Blittable, ContainerFieldNameHash(3536568050)]
+		[ContainerField(248), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3536568050)]
 		public float PillMaximumCollisionRadius { get { return m_PillMaximumCollisionRadius; } set { if (OnPropertyChanging("ChaseCameraData." + nameof(PillMaximumCollisionRadius), this, m_PillMaximumCollisionRadius, value)) m_PillMaximumCollisionRadius = value; } } // 0xF8 (248)
 		
 		protected float m_PillMinimumCollisionLength = new float();
-		[ContainerField(252), LayoutImmutable, Blittable, ContainerFieldNameHash(1361574600)]
+		[ContainerField(252), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1361574600)]
 		public float PillMinimumCollisionLength { get { return m_PillMinimumCollisionLength; } set { if (OnPropertyChanging("ChaseCameraData." + nameof(PillMinimumCollisionLength), this, m_PillMinimumCollisionLength, value)) m_PillMinimumCollisionLength = value; } } // 0xFC (252)
 		
 		protected float m_LookDistanceScale = new float();
-		[ContainerField(256), LayoutImmutable, Blittable, ContainerFieldNameHash(4112376025)]
+		[ContainerField(256), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(4112376025)]
 		public float LookDistanceScale { get { return m_LookDistanceScale; } set { if (OnPropertyChanging("ChaseCameraData." + nameof(LookDistanceScale), this, m_LookDistanceScale, value)) m_LookDistanceScale = value; } } // 0x100 (256)
 		
 		protected float m_LookDistanceInFrontOfTarget = new float();
-		[ContainerField(260), LayoutImmutable, Blittable, ContainerFieldNameHash(4045244511)]
+		[ContainerField(260), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(4045244511)]
 		public float LookDistanceInFrontOfTarget { get { return m_LookDistanceInFrontOfTarget; } set { if (OnPropertyChanging("ChaseCameraData." + nameof(LookDistanceInFrontOfTarget), this, m_LookDistanceInFrontOfTarget, value)) m_LookDistanceInFrontOfTarget = value; } } // 0x104 (260)
 		
 		protected uint m_UpdateRate = new uint();
-		[ContainerField(264), LayoutImmutable, Blittable, ContainerFieldNameHash(2270996982)]
+		[ContainerField(264), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(2270996982)]
 		public uint UpdateRate { get { return m_UpdateRate; } set { if (OnPropertyChanging("ChaseCameraData." + nameof(UpdateRate), this, m_UpdateRate, value)) m_UpdateRate = value; } } // 0x108 (264)
 		
 		protected bool m_KeepTargetPitch = new bool();
-		[ContainerField(268), LayoutImmutable, Blittable, ContainerFieldNameHash(3248397385)]
+		[ContainerField(268), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3248397385)]
 		public bool KeepTargetPitch { get { return m_KeepTargetPitch; } set { if (OnPropertyChanging("ChaseCameraData." + nameof(KeepTargetPitch), this, m_KeepTargetPitch, value)) m_KeepTargetPitch = value; } } // 0x10C (268)
 		
 		protected bool m_InheritTargetVelocity = new bool();
-		[ContainerField(269), LayoutImmutable, Blittable, ContainerFieldNameHash(219688038)]
+		[ContainerField(269), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(219688038)]
 		public bool InheritTargetVelocity { get { return m_InheritTargetVelocity; } set { if (OnPropertyChanging("ChaseCameraData." + nameof(InheritTargetVelocity), this, m_InheritTargetVelocity, value)) m_InheritTargetVelocity = value; } } // 0x10D (269)
 		
 		protected bool m_ShouldRollWithTarget = new bool();
-		[ContainerField(270), LayoutImmutable, Blittable, ContainerFieldNameHash(2421688066)]
+		[ContainerField(270), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2421688066)]
 		public bool ShouldRollWithTarget { get { return m_ShouldRollWithTarget; } set { if (OnPropertyChanging("ChaseCameraData." + nameof(ShouldRollWithTarget), this, m_ShouldRollWithTarget, value)) m_ShouldRollWithTarget = value; } } // 0x10E (270)
 		
 		protected bool m_HasCollision = new bool();
-		[ContainerField(271), LayoutImmutable, Blittable, ContainerFieldNameHash(2369733505)]
+		[ContainerField(271), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2369733505)]
 		public bool HasCollision { get { return m_HasCollision; } set { if (OnPropertyChanging("ChaseCameraData." + nameof(HasCollision), this, m_HasCollision, value)) m_HasCollision = value; } } // 0x10F (271)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

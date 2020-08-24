@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class PhysicsEntry : 
 		AudioGraphNodePortGroup
 	{
 		protected AudioGraphNodePort m_Distance = new AudioGraphNodePort();
-		[ContainerField(8), ContainerFieldNameHash(408560070)]
+		[ContainerField(8), MemberInfoFlag(41), ContainerFieldNameHash(408560070)]
 		public AudioGraphNodePort Distance { get { return m_Distance; } set { if (OnPropertyChanging("PhysicsEntry." + nameof(Distance), this, m_Distance, value)) m_Distance = value; } } // 0x8 (8)
 		
 		protected AudioGraphNodePort m_Azimuth = new AudioGraphNodePort();
-		[ContainerField(16), ContainerFieldNameHash(1333813715)]
+		[ContainerField(16), MemberInfoFlag(41), ContainerFieldNameHash(1333813715)]
 		public AudioGraphNodePort Azimuth { get { return m_Azimuth; } set { if (OnPropertyChanging("PhysicsEntry." + nameof(Azimuth), this, m_Azimuth, value)) m_Azimuth = value; } } // 0x10 (16)
 		
 		protected AudioGraphNodePort m_ElevationAngle = new AudioGraphNodePort();
-		[ContainerField(24), ContainerFieldNameHash(891204419)]
+		[ContainerField(24), MemberInfoFlag(41), ContainerFieldNameHash(891204419)]
 		public AudioGraphNodePort ElevationAngle { get { return m_ElevationAngle; } set { if (OnPropertyChanging("PhysicsEntry." + nameof(ElevationAngle), this, m_ElevationAngle, value)) m_ElevationAngle = value; } } // 0x18 (24)
 		
 		protected CtrRef<OutputNodeData> m_Output = new CtrRef<OutputNodeData>();
-		[ContainerField(32), ContainerFieldNameHash(2895736442)]
+		[ContainerField(32), MemberInfoFlag(53), ContainerFieldNameHash(2895736442), ContainerCtrRef]
 		public CtrRef<OutputNodeData> Output { get { return m_Output; } set { if (OnPropertyChanging("PhysicsEntry." + nameof(Output), this, m_Output, value)) m_Output = value; } } // 0x20 (32)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

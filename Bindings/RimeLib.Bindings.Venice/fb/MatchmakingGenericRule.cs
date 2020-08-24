@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(41), ContainerStruct]
 	public class MatchmakingGenericRule : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable]
+		[ContainerField(0), LayoutImmutable, MemberInfoFlag(16509)]
 		public string Rule { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable]
+		[ContainerField(4), LayoutImmutable, MemberInfoFlag(16509)]
 		public string MinFitThresHold { get; set; } // 0x4 (4)
 		
-		[ContainerField(8), LayoutImmutable]
+		[ContainerField(8), LayoutImmutable, MemberInfoFlag(16509)]
 		public string Setting { get; set; } // 0x8 (8)
 		
-		[ContainerField(12)]
+		[ContainerField(12), MemberInfoFlag(65), ContainerArray]
 		public List<MatchmakingRuleString> DesiredValues { get; set; } = new List<MatchmakingRuleString>(); // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
+		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool IgnoreIfDefault { get; set; } // 0x10 (16)
 		
-		[ContainerField(17), LayoutImmutable, Blittable]
+		[ContainerField(17), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool MergeValues { get; set; } // 0x11 (17)
 		
-		[ContainerField(18), LayoutImmutable, Blittable]
+		[ContainerField(18), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool SortValues { get; set; } // 0x12 (18)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

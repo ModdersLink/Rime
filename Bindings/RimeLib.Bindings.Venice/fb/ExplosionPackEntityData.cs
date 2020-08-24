@@ -18,56 +18,56 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class ExplosionPackEntityData : 
 		MeshProjectileEntityData
 	{
 		protected float m_TimeToLiveOnPlayerDeath = new float();
-		[ContainerField(192), LayoutImmutable, Blittable, ContainerFieldNameHash(3787573811)]
+		[ContainerField(192), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3787573811)]
 		public float TimeToLiveOnPlayerDeath { get { return m_TimeToLiveOnPlayerDeath; } set { if (OnPropertyChanging("ExplosionPackEntityData." + nameof(TimeToLiveOnPlayerDeath), this, m_TimeToLiveOnPlayerDeath, value)) m_TimeToLiveOnPlayerDeath = value; } } // 0xC0 (192)
 		
 		protected SoldierDetonationData m_SoldierDetonationData = new SoldierDetonationData();
-		[ContainerField(196), ContainerFieldNameHash(4178909974)]
+		[ContainerField(196), MemberInfoFlag(41), ContainerFieldNameHash(4178909974)]
 		public SoldierDetonationData SoldierDetonationData { get { return m_SoldierDetonationData; } set { if (OnPropertyChanging("ExplosionPackEntityData." + nameof(SoldierDetonationData), this, m_SoldierDetonationData, value)) m_SoldierDetonationData = value; } } // 0xC4 (196)
 		
 		protected float m_VehicleDetonationActivationDelay = new float();
-		[ContainerField(216), LayoutImmutable, Blittable, ContainerFieldNameHash(4100261205)]
+		[ContainerField(216), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(4100261205)]
 		public float VehicleDetonationActivationDelay { get { return m_VehicleDetonationActivationDelay; } set { if (OnPropertyChanging("ExplosionPackEntityData." + nameof(VehicleDetonationActivationDelay), this, m_VehicleDetonationActivationDelay, value)) m_VehicleDetonationActivationDelay = value; } } // 0xD8 (216)
 		
 		protected float m_VehicleDetonationRadius = new float();
-		[ContainerField(220), LayoutImmutable, Blittable, ContainerFieldNameHash(1470001196)]
+		[ContainerField(220), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1470001196)]
 		public float VehicleDetonationRadius { get { return m_VehicleDetonationRadius; } set { if (OnPropertyChanging("ExplosionPackEntityData." + nameof(VehicleDetonationRadius), this, m_VehicleDetonationRadius, value)) m_VehicleDetonationRadius = value; } } // 0xDC (220)
 		
 		protected UIHudIcon m_Icon = new UIHudIcon();
-		[ContainerField(224), ContainerFieldNameHash(2088920302)]
+		[ContainerField(224), MemberInfoFlag(137), ContainerFieldNameHash(2088920302)]
 		public UIHudIcon Icon { get { return m_Icon; } set { if (OnPropertyChanging("ExplosionPackEntityData." + nameof(Icon), this, m_Icon, value)) m_Icon = value; } } // 0xE0 (224)
 		
 		protected float m_SpottedTime = new float();
-		[ContainerField(228), LayoutImmutable, Blittable, ContainerFieldNameHash(850456669)]
+		[ContainerField(228), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(850456669)]
 		public float SpottedTime { get { return m_SpottedTime; } set { if (OnPropertyChanging("ExplosionPackEntityData." + nameof(SpottedTime), this, m_SpottedTime, value)) m_SpottedTime = value; } } // 0xE4 (228)
 		
 		protected float m_DefuseRadius = new float();
-		[ContainerField(232), LayoutImmutable, Blittable, ContainerFieldNameHash(3739807449)]
+		[ContainerField(232), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3739807449)]
 		public float DefuseRadius { get { return m_DefuseRadius; } set { if (OnPropertyChanging("ExplosionPackEntityData." + nameof(DefuseRadius), this, m_DefuseRadius, value)) m_DefuseRadius = value; } } // 0xE8 (232)
 		
 		protected float m_Health = new float();
-		[ContainerField(236), LayoutImmutable, Blittable, ContainerFieldNameHash(3054337113)]
+		[ContainerField(236), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3054337113)]
 		public float Health { get { return m_Health; } set { if (OnPropertyChanging("ExplosionPackEntityData." + nameof(Health), this, m_Health, value)) m_Health = value; } } // 0xEC (236)
 		
 		protected bool m_HasRemoteDetonator = new bool();
-		[ContainerField(240), LayoutImmutable, Blittable, ContainerFieldNameHash(2357284391)]
+		[ContainerField(240), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2357284391)]
 		public bool HasRemoteDetonator { get { return m_HasRemoteDetonator; } set { if (OnPropertyChanging("ExplosionPackEntityData." + nameof(HasRemoteDetonator), this, m_HasRemoteDetonator, value)) m_HasRemoteDetonator = value; } } // 0xF0 (240)
 		
 		protected bool m_IsDestructible = new bool();
-		[ContainerField(241), LayoutImmutable, Blittable, ContainerFieldNameHash(121724683)]
+		[ContainerField(241), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(121724683)]
 		public bool IsDestructible { get { return m_IsDestructible; } set { if (OnPropertyChanging("ExplosionPackEntityData." + nameof(IsDestructible), this, m_IsDestructible, value)) m_IsDestructible = value; } } // 0xF1 (241)
 		
 		protected bool m_HasVehicleDetonation = new bool();
-		[ContainerField(242), LayoutImmutable, Blittable, ContainerFieldNameHash(2164993390)]
+		[ContainerField(242), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2164993390)]
 		public bool HasVehicleDetonation { get { return m_HasVehicleDetonation; } set { if (OnPropertyChanging("ExplosionPackEntityData." + nameof(HasVehicleDetonation), this, m_HasVehicleDetonation, value)) m_HasVehicleDetonation = value; } } // 0xF2 (242)
 		
 		protected bool m_ReceivesExplosionDamage = new bool();
-		[ContainerField(243), LayoutImmutable, Blittable, ContainerFieldNameHash(3643641923)]
+		[ContainerField(243), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3643641923)]
 		public bool ReceivesExplosionDamage { get { return m_ReceivesExplosionDamage; } set { if (OnPropertyChanging("ExplosionPackEntityData." + nameof(ReceivesExplosionDamage), this, m_ReceivesExplosionDamage, value)) m_ReceivesExplosionDamage = value; } } // 0xF3 (243)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

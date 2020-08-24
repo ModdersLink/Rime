@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class DebrisSystemAsset : 
 		Asset
 	{
 		protected List<DebrisHavokInfo> m_HavokMeshes = new List<DebrisHavokInfo>();
-		[ContainerField(12), ContainerFieldNameHash(3852503739)]
+		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(3852503739), ContainerArray]
 		public List<DebrisHavokInfo> HavokMeshes { get { return m_HavokMeshes; } set { if (OnPropertyChanging("DebrisSystemAsset." + nameof(HavokMeshes), this, m_HavokMeshes, value)) m_HavokMeshes = value; } } // 0xC (12)
 		
 		protected int m_HavokMeshCount = new int();
-		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(3497183694)]
+		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(3497183694)]
 		public int HavokMeshCount { get { return m_HavokMeshCount; } set { if (OnPropertyChanging("DebrisSystemAsset." + nameof(HavokMeshCount), this, m_HavokMeshCount, value)) m_HavokMeshCount = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

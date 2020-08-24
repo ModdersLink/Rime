@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class PropertyCastEntityData : 
 		EntityData
 	{
 		protected Realm m_Realm = new Realm();
-		[ContainerField(12), ContainerFieldNameHash(229961746)]
+		[ContainerField(12), MemberInfoFlag(137), ContainerFieldNameHash(229961746)]
 		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("PropertyCastEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0xC (12)
 		
 		protected int m_IntValue = new int();
-		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(5685821)]
+		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(5685821)]
 		public int IntValue { get { return m_IntValue; } set { if (OnPropertyChanging("PropertyCastEntityData." + nameof(IntValue), this, m_IntValue, value)) m_IntValue = value; } } // 0x10 (16)
 		
 		protected float m_FloatValue = new float();
-		[ContainerField(20), LayoutImmutable, Blittable, ContainerFieldNameHash(3123792190)]
+		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3123792190)]
 		public float FloatValue { get { return m_FloatValue; } set { if (OnPropertyChanging("PropertyCastEntityData." + nameof(FloatValue), this, m_FloatValue, value)) m_FloatValue = value; } } // 0x14 (20)
 		
 		protected bool m_BoolValue = new bool();
-		[ContainerField(24), LayoutImmutable, Blittable, ContainerFieldNameHash(176040160)]
+		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(176040160)]
 		public bool BoolValue { get { return m_BoolValue; } set { if (OnPropertyChanging("PropertyCastEntityData." + nameof(BoolValue), this, m_BoolValue, value)) m_BoolValue = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

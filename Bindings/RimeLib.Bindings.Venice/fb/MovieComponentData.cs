@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class MovieComponentData : 
 		ComponentData
 	{
 		protected CtrRef<MovieTextureAsset> m_Movie = new CtrRef<MovieTextureAsset>();
-		[ContainerField(96), ContainerFieldNameHash(210030653)]
+		[ContainerField(96), MemberInfoFlag(53), ContainerFieldNameHash(210030653), ContainerCtrRef]
 		public CtrRef<MovieTextureAsset> Movie { get { return m_Movie; } set { if (OnPropertyChanging("MovieComponentData." + nameof(Movie), this, m_Movie, value)) m_Movie = value; } } // 0x60 (96)
 		
 		protected float m_ExternalTime = new float();
-		[ContainerField(100), LayoutImmutable, Blittable, ContainerFieldNameHash(2162678253)]
+		[ContainerField(100), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2162678253)]
 		public float ExternalTime { get { return m_ExternalTime; } set { if (OnPropertyChanging("MovieComponentData." + nameof(ExternalTime), this, m_ExternalTime, value)) m_ExternalTime = value; } } // 0x64 (100)
 		
 		protected bool m_IsNormalMap = new bool();
-		[ContainerField(104), LayoutImmutable, Blittable, ContainerFieldNameHash(797341680)]
+		[ContainerField(104), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(797341680)]
 		public bool IsNormalMap { get { return m_IsNormalMap; } set { if (OnPropertyChanging("MovieComponentData." + nameof(IsNormalMap), this, m_IsNormalMap, value)) m_IsNormalMap = value; } } // 0x68 (104)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class CreateRawFileParams : 
 		DataContainer
 	{
 		protected string m_AssetName = string.Empty;
-		[ContainerField(8), LayoutImmutable, ContainerFieldNameHash(3654276786)]
+		[ContainerField(8), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(3654276786)]
 		public string AssetName { get { return m_AssetName; } set { if (OnPropertyChanging("CreateRawFileParams." + nameof(AssetName), this, m_AssetName, value)) m_AssetName = value; } } // 0x8 (8)
 		
 		protected string m_SourceFile = string.Empty;
-		[ContainerField(12), LayoutImmutable, ContainerFieldNameHash(1522844286)]
+		[ContainerField(12), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(1522844286)]
 		public string SourceFile { get { return m_SourceFile; } set { if (OnPropertyChanging("CreateRawFileParams." + nameof(SourceFile), this, m_SourceFile, value)) m_SourceFile = value; } } // 0xC (12)
 		
 		protected bool m_CreateResource = new bool();
-		[ContainerField(16), LayoutImmutable, Blittable, ContainerFieldNameHash(4248986347)]
+		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(4248986347)]
 		public bool CreateResource { get { return m_CreateResource; } set { if (OnPropertyChanging("CreateRawFileParams." + nameof(CreateResource), this, m_CreateResource, value)) m_CreateResource = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

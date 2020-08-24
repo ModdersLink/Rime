@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class SoundScopeData : 
 		DataContainer
 	{
 		protected string m_Name = string.Empty;
-		[ContainerField(8), LayoutImmutable, ContainerFieldNameHash(2088949890)]
+		[ContainerField(8), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(2088949890)]
 		public string Name { get { return m_Name; } set { if (OnPropertyChanging("SoundScopeData." + nameof(Name), this, m_Name, value)) m_Name = value; } } // 0x8 (8)
 		
 		protected CtrRef<SoundScopeStrategyData> m_DefaultStrategy = new CtrRef<SoundScopeStrategyData>();
-		[ContainerField(12), ContainerFieldNameHash(4107015189)]
+		[ContainerField(12), MemberInfoFlag(53), ContainerFieldNameHash(4107015189), ContainerCtrRef]
 		public CtrRef<SoundScopeStrategyData> DefaultStrategy { get { return m_DefaultStrategy; } set { if (OnPropertyChanging("SoundScopeData." + nameof(DefaultStrategy), this, m_DefaultStrategy, value)) m_DefaultStrategy = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

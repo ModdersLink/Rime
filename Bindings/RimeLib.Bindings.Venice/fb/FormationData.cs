@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4)]
+	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
 	public class FormationData : 
 		GameDataContainer
 	{
 		protected List<Vec3> m_Positions = new List<Vec3>();
-		[ContainerField(8), ContainerFieldNameHash(616073487)]
+		[ContainerField(8), MemberInfoFlag(65), ContainerFieldNameHash(616073487), ContainerArray]
 		public List<Vec3> Positions { get { return m_Positions; } set { if (OnPropertyChanging("FormationData." + nameof(Positions), this, m_Positions, value)) m_Positions = value; } } // 0x8 (8)
 		
 		protected string m_Name = string.Empty;
-		[ContainerField(12), LayoutImmutable, ContainerFieldNameHash(2088949890)]
+		[ContainerField(12), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(2088949890)]
 		public string Name { get { return m_Name; } set { if (OnPropertyChanging("FormationData." + nameof(Name), this, m_Name, value)) m_Name = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

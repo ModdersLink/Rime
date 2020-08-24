@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
 	public class ScenarioWaypointData : 
 		AbstractLocoWaypointData
 	{
 		protected AntRef m_ScenarioAntRef = new AntRef();
-		[ContainerField(48), ContainerFieldNameHash(3249359201)]
+		[ContainerField(48), MemberInfoFlag(41), ContainerFieldNameHash(3249359201)]
 		public AntRef ScenarioAntRef { get { return m_ScenarioAntRef; } set { if (OnPropertyChanging("ScenarioWaypointData." + nameof(ScenarioAntRef), this, m_ScenarioAntRef, value)) m_ScenarioAntRef = value; } } // 0x30 (48)
 		
 		protected ScenarioTaskData m_ScenarioTask = new ScenarioTaskData();
-		[ContainerField(64), ContainerFieldNameHash(764854566)]
+		[ContainerField(64), MemberInfoFlag(41), ContainerFieldNameHash(764854566)]
 		public ScenarioTaskData ScenarioTask { get { return m_ScenarioTask; } set { if (OnPropertyChanging("ScenarioWaypointData." + nameof(ScenarioTask), this, m_ScenarioTask, value)) m_ScenarioTask = value; } } // 0x40 (64)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

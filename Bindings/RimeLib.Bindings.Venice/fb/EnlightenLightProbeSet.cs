@@ -18,46 +18,46 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16)]
+	[ContainerType(16), MemberInfoFlag(41), ContainerStruct]
 	public class EnlightenLightProbeSet : FrostbiteContainer
 	{
-		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable]
+		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
 		public LinearTransform Transform { get; set; } = new LinearTransform(); // 0x0 (0)
 		
-		[ContainerField(64), Homogeneous, LayoutImmutable, Blittable]
+		[ContainerField(64), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
 		public AxisAlignedBox BoundingBox { get; set; } = new AxisAlignedBox(); // 0x40 (64)
 		
-		[ContainerField(96), LayoutImmutable, Blittable]
+		[ContainerField(96), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
 		public uint SizeX { get; set; } // 0x60 (96)
 		
-		[ContainerField(100), LayoutImmutable, Blittable]
+		[ContainerField(100), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
 		public uint SizeZ { get; set; } // 0x64 (100)
 		
-		[ContainerField(104), LayoutImmutable, Blittable]
+		[ContainerField(104), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
 		public uint SizeY { get; set; } // 0x68 (104)
 		
-		[ContainerField(108), LayoutImmutable, Blittable]
+		[ContainerField(108), LayoutImmutable, Blittable, MemberInfoFlag(49405)]
 		public int SystemId { get; set; } // 0x6C (108)
 		
-		[ContainerField(112), LayoutImmutable, Blittable]
+		[ContainerField(112), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
 		public float BlendDistance { get; set; } // 0x70 (112)
 		
-		[ContainerField(116), LayoutImmutable, Blittable]
+		[ContainerField(116), LayoutImmutable, Blittable, MemberInfoFlag(49405)]
 		public int Priority { get; set; } // 0x74 (116)
 		
-		[ContainerField(120)]
+		[ContainerField(120), MemberInfoFlag(65), ContainerArray]
 		public List<Vec3> Positions { get; set; } = new List<Vec3>(); // 0x78 (120)
 		
-		[ContainerField(124)]
+		[ContainerField(124), MemberInfoFlag(65), ContainerArray]
 		public List<uint> ValidIndices { get; set; } = new List<uint>(); // 0x7C (124)
 		
-		[ContainerField(128)]
+		[ContainerField(128), MemberInfoFlag(65), ContainerArray]
 		public List<int> InputSystems { get; set; } = new List<int>(); // 0x80 (128)
 		
-		[ContainerField(132)]
+		[ContainerField(132), MemberInfoFlag(41)]
 		public PrecomputeCache Cache { get; set; } = new PrecomputeCache(); // 0x84 (132)
 		
-		[ContainerField(156), LayoutImmutable, Blittable]
+		[ContainerField(156), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
 		public bool StaticProbeSet { get; set; } // 0x9C (156)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
