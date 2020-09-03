@@ -264,9 +264,15 @@ namespace RimeLib.Serialization.Frostbite2_0
                         NameHash = FbUtils.HashQuick(s_Property.Name),
                         Offset = (int)s_FieldAttributes.FieldOffset,
                         SecondaryOffset = 0,
-                        FieldType = 0 // This is set in a second pass, this is a index into the field descriptor types
+                        FieldType = 0 // This is set in a second pass, this is a index into the field type descriptors
                     });
                 }
+            }
+
+            // TODO: Iterate each instance and create the type descriptors
+            foreach (var s_Instance in p_Partition.Instances)
+            {
+                //var s_TypeDescriptors
             }
             //var s_ImportEntry = new ImportEntry(
 

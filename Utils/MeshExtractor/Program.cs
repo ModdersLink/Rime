@@ -37,7 +37,7 @@ namespace MeshExtractor
         internal class Options
         {
             [Option('q', "quiet", Required = false, Default = false, HelpText = "Suppress console output.")]
-            public bool Quiet { get; set; } = false;
+            public bool Quiet { get; set; } = true;
 
             [Value(0, MetaName = "gamePath", Required = true, HelpText = "The path of the game to be whose content you want to extract.")]
             public string GamePath { get; set; } = "";
@@ -63,13 +63,13 @@ namespace MeshExtractor
                 Mount(p_Options, out IEngineMounter s_Mounter);
 
                 // Load all of the ebx files
-                LoadEbx(p_Options, s_Mounter);
+                //LoadEbx(p_Options, s_Mounter);
 
                 // Skeletoms
                 //DumpSkeletons(p_Options, s_Mounter);
 
                 // Dump all of the files + skels
-                //DumpFiles(p_Options, s_Mounter);
+                DumpFiles(p_Options, s_Mounter);
 
                 Console.WriteLine("Content successfully extracted. Press any key to exit...");
                 Console.ReadKey();
@@ -134,13 +134,31 @@ namespace MeshExtractor
             if (!p_Options.Quiet)
                 Console.WriteLine($"Mounting game with engine '{p_Options.EngineType}' at path '{p_Options.GamePath}'. Please wait, this could take a while.");
 
+            /*
+             * s_Context!.ProcessCommand("mount_sb win32/xp1chunks true", s_Out, out s_Context);
+            s_Context!.ProcessCommand("mount_sb win32/xp4chunks true", s_Out, out s_Context);
+            s_Context!.ProcessCommand("mount_sb win32/mpchunks true", s_Out, out s_Context);
+            s_Context!.ProcessCommand("mount_sb win32/levels/xp1_002/xp1_002 false", s_Out, out s_Context);
+            s_Context!.ProcessCommand("mount_sb win32/levels/xp4_quake/xp4_quake false", s_Out, out s_Context);
+            s_Context!.ProcessCommand("mount_sb win32/levels/sp_bank/sp_bank false", s_Out, out s_Context);
+            s_Context!.ProcessCommand("mount_bundle win32/levels/xp1_002/xp1_002", s_Out, out s_Context);
+            s_Context!.ProcessCommand("mount_bundle win32/levels/xp1_002/CQ_S", s_Out, out s_Context);
+            s_Context!.ProcessCommand("mount_bundle win32/levels/XP4_Quake/XP4_Quake", s_Out, out s_Context);
+            s_Context!.ProcessCommand("mount_bundle win32/levels/XP4_Quake/DeathMatch", s_Out, out s_Context);
+            s_Context!.ProcessCommand("mount_bundle win32/levels/XP4_Quake/TeamDeathMatch", s_Out, out s_Context);
+            s_Context!.ProcessCommand("mount_bundle win32/levels/SP_Bank/SP_Bank", s_Out, out s_Context);
+            s_Context!.ProcessCommand("mount_bundle win32/levels/SP_Bank/Passage_CUTSCENE", s_Out, out s_Context);*/
+
             p_Mounter.Mount(p_Options.GamePath, false, EngineType.Frostbite2_0).Wait();
             p_Mounter.MountSuperbundle("Win32/Chunks0", true).Wait();
             p_Mounter.MountSuperbundle("Win32/Chunks1", true).Wait();
             p_Mounter.MountSuperbundle("Win32/Chunks2", true).Wait();
             p_Mounter.MountSuperbundle("Win32/MpChunks", true).Wait();
             p_Mounter.MountSuperbundle("Win32/Xp2Chunks", true).Wait();
-            p_Mounter.MountSuperbundle("Win32/Levels/XP2_Factory/XP2_Factory", true).Wait();
+            //p_Mounter.MountSuperbundle("Win32/Levels/XP2_Factory/XP2_Factory", true).Wait();
+            p_Mounter.MountSuperbundle("Win32/Levels/XP1_002/XP1_002", true).Wait();
+            p_Mounter.MountSuperbundle("Win32/Levels/XP4_Quake/XP4_Quake", true).Wait();
+            p_Mounter.MountSuperbundle("Win32/Levels/SP_Bank/SP_Bank", true).Wait();
 
             if (!p_Options.Quiet)
                 Console.WriteLine($"Everythingis now mounted! Starting model conversion.");
@@ -392,17 +410,24 @@ namespace MeshExtractor
                 var s_Name = s_Resource.Key;
                 var s_MountedObject = s_Resource.Value;
 
-                foreach (var s_Variant in s_MountedObject.Variants)
-                {
-                    if (s_Variant.GetResourceType() != RimeLib.Content.Frostbite.ResourceType.MeshSet)
-                        continue;
+                var s_Variant = s_MountedObject.FirstVariant;
+                if (s_Variant.GetResourceType() != RimeLib.Content.Frostbite.ResourceType.MeshSet)
+                    continue;
 
-                    DumpMesh(p_Mounter, p_Options, s_Name, s_MountedObject);
-                }
+                DumpMesh(p_Mounter, p_Options, s_Name, s_MountedObject);
+
+                //foreach (var s_Variant in s_MountedObject.Variants)
+                //{
+                //    if (s_Variant.GetResourceType() != RimeLib.Content.Frostbite.ResourceType.MeshSet)
+                //        continue;
+
+                //    DumpMesh(p_Mounter, p_Options, s_Name, s_MountedObject);
+                //}
             }
 #endif
         }
 
+        public static List<string> m_SeenGuids = new List<string>();
         private static void ParseRigidMesh(IEngineMounter p_Mounter, MeshSetLayout p_Layout, Options p_Options = null)
         {
             var s_BoundingBox = p_Layout.BoundingBox;
@@ -450,6 +475,12 @@ namespace MeshExtractor
 
                     continue;
                 }
+
+                if (m_SeenGuids.Contains(s_DataChunkId.ToString()))
+                    throw new Exception("dupe found");
+                m_SeenGuids.Add(s_DataChunkId.ToString());
+
+                //Console.WriteLine($"{s_Lod.Name.Object} {s_DataChunkId}");
 
                 // Hold all of our data
                 byte[] s_VertexChunkData = null;
