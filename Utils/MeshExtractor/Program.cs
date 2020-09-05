@@ -428,6 +428,20 @@ namespace MeshExtractor
         }
 
         public static List<string> m_SeenGuids = new List<string>();
+
+        public static byte[] StringToByteArray(string hex)
+        {
+            return Enumerable.Range(0, hex.Length)
+                             .Where(x => x % 2 == 0)
+                             .Select(x => Convert.ToByte(hex.Substring(x, 2), 16))
+                             .ToArray();
+        }
+
+        public static string ByteArrayToString(byte[] ba)
+        {
+            return BitConverter.ToString(ba).Replace("-", "");
+        }
+
         private static void ParseRigidMesh(IEngineMounter p_Mounter, MeshSetLayout p_Layout, Options p_Options = null)
         {
             var s_BoundingBox = p_Layout.BoundingBox;
@@ -474,6 +488,47 @@ namespace MeshExtractor
                         Console.WriteLine($"could not find data: {BitConverter.ToString(s_DataChunkId.Id)}");
 
                     continue;
+                }
+
+                if (s_LodName.Contains("venom"))
+                {
+
+                    // Parse this 9MB text file >_>
+                    var s_Text = File.ReadAllText(@"C:\Users\gamedev\Downloads\message(1).txt");
+
+                    var s_SectionSplit = s_Text.Split("[D]", StringSplitOptions.RemoveEmptyEntries);
+                    foreach (var s_Section in s_SectionSplit)
+                    {
+                        var s_StartIndex = s_Section.IndexOf('\'');
+                        var s_EndIndex = s_Section.LastIndexOf('\'');
+
+                        var s_Name = s_Section.Substring(s_StartIndex, s_EndIndex - s_StartIndex);
+                        s_Name = s_Name.Replace("'", "");
+                        if (s_Name != s_LodName)
+                            continue;
+
+                        var s_DataIndex = s_Section.LastIndexOf("Data: ");
+
+                        var s_DataString = s_Section.Substring(s_DataIndex + "Data: ".Length).Replace("\r\n", "");
+                        //var s_Data = StringToByteArray(s_DataString);
+
+
+                        using var s_Reader = p_Chunk.FirstVariant.GetReader();
+
+                        var s_ReaderData = s_Reader.ReadBytes((int)s_Reader.Length);
+
+                        var s_F = ByteArrayToString(s_ReaderData);
+
+                        var s_Equal = s_DataString == s_F;
+
+                        for (int i = 0; i < Math.Min(s_F.Length, s_DataString.Length); ++i)
+                        {
+                            if (s_F[i] != s_DataString[i])
+                                throw new Exception();
+                        }
+                        if (!s_Equal)
+                            throw new Exception();
+                    }
                 }
 
                 if (m_SeenGuids.Contains(s_DataChunkId.ToString()))

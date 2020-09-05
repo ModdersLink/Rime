@@ -7,6 +7,7 @@ using RimeLib.Content.Mounting;
 using RimeLib.Frostbite;
 using RimeLib.Serialization.Containers;
 using RimeLib.Texture.Frostbite.Fb2;
+using System.IO;
 
 namespace TextureExtractor
 {
@@ -174,6 +175,7 @@ namespace TextureExtractor
 
             // Load the texture header
             var s_TextureHeader = new TextureHeader(s_VariantData);
+
 
             // Print out debugging information
             if (!p_Options.Quiet)
