@@ -18,6 +18,7 @@ using System.Security.Cryptography;
 using System.Text;
 using MemberType = RimeLib.Frostbite.Core.MemberType;
 using TypeCategory = RimeLib.Frostbite.Core.TypeCategory;
+using TypeDescriptor = RimeLib.Serialization.Ebx.TypeDescriptor;
 
 namespace RimeLib.Serialization.Frostbite2_0
 {
@@ -233,6 +234,7 @@ namespace RimeLib.Serialization.Frostbite2_0
             foreach (var s_Instance in p_Partition.Instances)
             {
                 var s_InstanceFieldDescriptors = new List<FieldDescriptor>();
+                var s_TypeDescriptors = new List<TypeDescriptor>();
 
                 // Iterate over each property
                 foreach (var s_Property in s_Instance.GetType().GetProperties())
@@ -263,10 +265,15 @@ namespace RimeLib.Serialization.Frostbite2_0
                         Name = s_Property.Name,
                         NameHash = FbUtils.HashQuick(s_Property.Name),
                         Offset = (int)s_FieldAttributes.FieldOffset,
-                        SecondaryOffset = 0,
+                        SecondaryOffset = 0, // TODO: Determine if this is non-zero anywhere
                         FieldType = 0 // This is set in a second pass, this is a index into the field type descriptors
                     });
                 }
+
+                new TypeDescriptor
+                {
+                    
+                };
             }
 
             // TODO: Iterate each instance and create the type descriptors

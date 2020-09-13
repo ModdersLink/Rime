@@ -490,6 +490,8 @@ namespace MeshExtractor
                     continue;
                 }
 
+                // Testing for nofate
+                /*
                 if (s_LodName.Contains("venom"))
                 {
 
@@ -536,6 +538,7 @@ namespace MeshExtractor
                 m_SeenGuids.Add(s_DataChunkId.ToString());
 
                 //Console.WriteLine($"{s_Lod.Name.Object} {s_DataChunkId}");
+                */
 
                 // Hold all of our data
                 byte[] s_VertexChunkData = null;
