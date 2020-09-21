@@ -4,6 +4,9 @@ using System.IO;
 using RimeLib.Cmd.Commands.Game;
 using RimeLib.Content.Mounting;
 using RimeLib.Frostbite.Core;
+using RimeLib.Texture;
+using RimeLib.Texture.Frostbite;
+using RimeLib.Texture.Frostbite.DDS;
 
 namespace RimeLib.Cmd.Contexts
 {
@@ -23,6 +26,7 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<ListMountedSbCommand>();
             RegisterCommand<ListBundlesCommand>();
             RegisterCommand<MountBundleCommand>();
+            RegisterCommand<MountAllBundlesCommand>();
             RegisterCommand<ListMountedBundlesCommand>();
             RegisterCommand<ListChunksCommand>();
             RegisterCommand<ListResourcesCommand>();
@@ -33,6 +37,12 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<DumpChunkCommand>();
             RegisterCommand<DumpResourceCommand>();
             RegisterCommand<DumpPartitionCommand>();
+            RegisterCommand<DumpTextureCommand>();
+
+#if DEBUG
+            RegisterCommand<DebugVerifyTexturesBitCount>();
+#endif
+
         }
 
         public override string GetShortDescription()
@@ -79,6 +89,9 @@ namespace RimeLib.Cmd.Contexts
             return m_Mounter.GetMountedBundles();
         }
 
+
+
+
         internal void DumpChunk(GUID p_Guid, FileInfo p_Destination)
         {
             if (!m_Mounter.TryGetChunk(p_Guid, out var s_Chunk))
@@ -100,6 +113,62 @@ namespace RimeLib.Cmd.Contexts
 
             s_Reader.CopyTo(s_FileStream);
         }
+
+        internal void DumpTexture(string p_Name, FileInfo p_Destination)
+        {
+            if (!m_Mounter.TryGetResource(p_Name, out var s_Resource))
+                throw new Exception($"Could not find resource with name '{p_Name}'.");
+
+            if( !TextureHelper.LoadTexture( m_Mounter, s_Resource!.FirstVariant, out var s_Texture) )
+                throw new Exception($"Could not load resource with name '{p_Name}'.");
+
+            using var s_FileStream = File.Create(p_Destination.FullName);
+
+            //DDSExporter.WriteTextureToStream(new IO.RimeWriter(s_FileStream), s_Texture!);
+        }
+
+
+#if DEBUG
+        internal void Debug_VerifyBitCount(TextWriter p_Writer)
+        {
+
+            var s_FoundList = new Dictionary<TextureFormat,TextureFormat>();
+            foreach (var s_Resource in m_Mounter.GetResources())
+            {
+                if (s_Resource.Value.FirstVariant.GetResourceType() != Content.Frostbite.ResourceType.DxTexture &&
+                    s_Resource.Value.FirstVariant.GetResourceType() != Content.Frostbite.ResourceType.Ps3Texture &&
+                    s_Resource.Value.FirstVariant.GetResourceType() != Content.Frostbite.ResourceType.XenonTexture)
+                    continue;
+
+                if (!TextureHelper.LoadTexture(m_Mounter, s_Resource.Value.FirstVariant, out var s_Texture))
+                {
+                    p_Writer.WriteLine($"Could not load resource with name '{s_Resource.Key}'.");
+                    continue;
+                }
+
+                if (s_Texture!.MipmapCount < 1)
+                    continue;
+
+                TextureUtils.ComputePitch(s_Texture!.Format, s_Texture!.Width, s_Texture!.Height, out var _, out var s_SlicePitch);
+
+                if (s_Texture!.GetMipmapSize(0) == s_SlicePitch)
+                    continue;
+
+                if (s_FoundList.TryGetValue(s_Texture!.Format, out var _))
+                    continue;
+
+                
+
+                p_Writer.WriteLine($"Texture with format {s_Texture!.Format} W:H {s_Texture!.Width}:{s_Texture!.Height} has invalid bit size! Generated {s_SlicePitch} but original has {s_Texture!.GetMipmapSize(0)}");
+
+
+                TextureUtils.ComputePitch(s_Texture!.Format, s_Texture!.Width, s_Texture!.Height, out var _, out var _);
+
+
+                s_FoundList[s_Texture!.Format] = s_Texture!.Format;
+            }
+        }
+#endif
 
         internal void DumpPartition(string p_Name, FileInfo p_Destination)
         {

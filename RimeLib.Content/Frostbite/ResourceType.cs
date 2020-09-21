@@ -70,5 +70,13 @@ namespace RimeLib.Content.Frostbite
         FifaPhysicsResourceData = 0xEF23407C,
         MorphTargetsResource = 0x1091C8C5,
         NewWaveResource = 0xB2C465F6,
+
+
+
+        //AO4 ps3
+        Ps3Texture = 0x921476CA,
+
+        //AO4 xbox 360(xenon)
+        XenonTexture = 0xACD91FE8,
     }
 }

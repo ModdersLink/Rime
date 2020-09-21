@@ -21,7 +21,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Contexts\GameContext.cs~RF197c0191.TMP" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\RimeLib.Content\RimeLib.Content.csproj" />
+    <ProjectReference Include="..\RimeLib.Texture\RimeLib.Texture.csproj" />
     <ProjectReference Include="..\RimeLibLite\RimeLibLite.csproj" />
   </ItemGroup>
 

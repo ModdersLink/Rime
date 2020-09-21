@@ -10,19 +10,21 @@ namespace RimeLib.Texture.Frostbite.DDS
         public static readonly Dictionary<TextureFormat, DDSPixelFormat> c_DDSFormatMap = new Dictionary<TextureFormat, DDSPixelFormat>( )
         {
             { TextureFormat.TextureFormat_Dxt1, new DDSPixelFormat("DXT1") },
-            { TextureFormat.TextureFormat_Dxt1A, new DDSPixelFormat("BC1") },
+            { TextureFormat.TextureFormat_Dxt1A, new DDSPixelFormat("DXT1") },
+
             { TextureFormat.TextureFormat_Dxt3, new DDSPixelFormat("DXT3") },
-            { TextureFormat.TextureFormat_Dxt5, new DDSPixelFormat("DXT5") },
-            { TextureFormat.TextureFormat_Dxt5A, new DDSPixelFormat("BC4") },
-            { TextureFormat.TextureFormat_Dxn, new DDSPixelFormat("BC5") },
+
+            { TextureFormat.TextureFormat_Dxt5, new DDSPixelFormat("DXT5") }, //ATI1
+            { TextureFormat.TextureFormat_Dxt5A, new DDSPixelFormat("ATI1") }, //ATI1N
+            { TextureFormat.TextureFormat_Dxn, new DDSPixelFormat("ATI2") }, //BC5, ATI2
 
             { TextureFormat.TextureFormat_Bc7, new DDSPixelFormat("BC7") },
 
-            { TextureFormat.TextureFormat_NormalDxn, new DDSPixelFormat("BC5") },
+            { TextureFormat.TextureFormat_NormalDxn, new DDSPixelFormat("DXT5") }, //ATI2
 
-            { TextureFormat.TextureFormat_NormalDxt1,   new DDSPixelFormat("DXT1") },
-            { TextureFormat.TextureFormat_NormalDxt5, new DDSPixelFormat("DXT5") },
-            { TextureFormat.TextureFormat_NormalDxt5Rga, new DDSPixelFormat("DXT5") }, //Not sure about this one
+            { TextureFormat.TextureFormat_NormalDxt1, new DDSPixelFormat("DXT1") },
+            { TextureFormat.TextureFormat_NormalDxt5, new DDSPixelFormat("ATI1") },
+            { TextureFormat.TextureFormat_NormalDxt5Rga, new DDSPixelFormat("ATI1") }, //Not sure about this one
 
             { TextureFormat.TextureFormat_Rgb565, new DDSPixelFormat(DDSFormatFlags.Rgb, 0, 0x0000f800, 0x000007e0, 0x0000001f) },
             { TextureFormat.TextureFormat_Rgb888, new DDSPixelFormat(DDSFormatFlags.Rgb, 0, 0x00ff0000, 0x0000ff00, 0x000000ff) },
@@ -45,9 +47,6 @@ namespace RimeLib.Texture.Frostbite.DDS
 
 
             { TextureFormat.TextureFormat_A2R10G10B10, new DDSPixelFormat( DDSFormatFlags.Rgba, 0, 0x3FF00000, 0xFFC00, 0x3FF, 0xC0000000 ) },
-            
-
-            
         };
 
 

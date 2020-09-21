@@ -516,6 +516,9 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
             // Figure out which endianness our readers should have.
             var s_Endianness = p_Toc.Cas ? Endianness.LittleEndian : Endianness.BigEndian;
 
+            if (!File.Exists(p_Superbundle.Path + ".sb"))
+                return;
+
             // Open up our superbundle readers.
             using var s_Reader = new RimeReader(File.Open(p_Superbundle.Path + ".sb", FileMode.Open, FileAccess.Read, FileShare.Read), s_Endianness);
             RimeReader? s_PatchReader = null;

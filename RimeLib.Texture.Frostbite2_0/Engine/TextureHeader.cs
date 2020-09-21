@@ -42,7 +42,7 @@ namespace RimeLib.Texture.Frostbite2_0.Engine
         /// <summary>
         /// Flags
         /// </summary>
-        public uint Flags
+        public TextureFlags Flags
         {
             get; set;
         }
@@ -137,7 +137,7 @@ namespace RimeLib.Texture.Frostbite2_0.Engine
         /// <summary>
         /// Default constructor
         /// </summary>
-        public TextureHeader( )
+        public TextureHeader()
         {
 
         }
@@ -147,56 +147,57 @@ namespace RimeLib.Texture.Frostbite2_0.Engine
         /// This will read out the ITexture structure at an opened stream where the position is at a ITexture structure in the data
         /// </summary>
         /// <param name="p_Reader">Reference to an IceReader class</param>
-        public TextureHeader( RimeReader p_Reader )
+        public TextureHeader(RimeReader p_Reader)
         {
-            Deserialize( p_Reader );
+            Deserialize(p_Reader);
         }
 
-        public bool Serialize( RimeWriter p_Writer )
+        public bool Serialize(RimeWriter p_Writer)
         {
-            throw new System.NotImplementedException( );
+            throw new System.NotImplementedException();
         }
 
-        public bool Serialize( out byte[] p_Data )
+        public bool Serialize(out byte[] p_Data)
         {
-            throw new System.NotImplementedException( );
+            throw new System.NotImplementedException();
         }
 
-        public void Deserialize( RimeReader p_Reader )
+        public void Deserialize(RimeReader p_Reader)
         {
-            Version = p_Reader.ReadUInt32( );
+            Version = p_Reader.ReadUInt32();
 
-            if ( Version != 10 )
+            if (Version != 10)
                 return;
 
-            Type = ( TextureType )p_Reader.ReadUInt32( );
-            Format = ( TextureFormat )p_Reader.ReadUInt32( );
+            Type = (TextureType) p_Reader.ReadUInt32();
+            Format = (TextureFormat) p_Reader.ReadUInt32();
 
-            if ( Format >= TextureFormat.TextureFormat_FB2_Unknown )
+            if (Format >= TextureFormat.TextureFormat_FB2_Unknown)
                 return;
 
-            Flags = p_Reader.ReadUInt32( );
-            Width = p_Reader.ReadInt16( );
-            Height = p_Reader.ReadInt16( );
-            Depth = p_Reader.ReadInt16( );
-            SliceCount = p_Reader.ReadInt16( );
-            Unused0 = p_Reader.ReadInt16( );
-            MipmapCount = p_Reader.ReadUByte( );
-            MipmapBaseIndex = p_Reader.ReadUByte( );
-            StreamingChunkId = new GUID( p_Reader );
+            Flags = (TextureFlags) p_Reader.ReadUInt32();
+            Width = p_Reader.ReadInt16();
+            Height = p_Reader.ReadInt16();
+            Depth = p_Reader.ReadInt16();
+            SliceCount = p_Reader.ReadInt16();
+            Unused0 = p_Reader.ReadInt16();
+            MipmapCount = p_Reader.ReadUByte();
+            MipmapBaseIndex = p_Reader.ReadUByte();
+            StreamingChunkId = new GUID(p_Reader);
 
             MipmapSizes = new uint[15];
-            for ( var i = 0; i < 15; ++i )
-                MipmapSizes[i] = p_Reader.ReadUInt32( );
+            for (var i = 0; i < 15; ++i)
+                MipmapSizes[i] = p_Reader.ReadUInt32();
 
-            MipmapChainSize = p_Reader.ReadUInt32( );
-            ResourceNamehash = p_Reader.ReadUInt32( );
-            TextureGroup = Encoding.UTF8.GetString( p_Reader.ReadBytes( 16 ) );
+            MipmapChainSize = p_Reader.ReadUInt32();
+            ResourceNamehash = p_Reader.ReadUInt32();
+            TextureGroup = Encoding.UTF8.GetString(p_Reader.ReadBytes(16));
+        
         }
 
-        public void Deserialize( byte[] p_Data )
+        public void Deserialize(byte[] p_Data)
         {
-            throw new System.NotImplementedException( );
+            throw new System.NotImplementedException();
         }
     }
 }

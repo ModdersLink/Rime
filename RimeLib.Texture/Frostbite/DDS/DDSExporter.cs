@@ -7,9 +7,167 @@ using System.Text;
 
 namespace RimeLib.Texture.Frostbite.DDS
 {
-    public static class DDSExporter
+    public class DDSExporter
     {
-        public static void WriteTextureToStream(RimeWriter p_Stream, ITexture p_Texture)
+        public DDSExporter(TextureBase p_Texture)
+        {
+            m_IsTiled = p_Texture.IsTiled;
+
+            SetHeader(p_Texture);
+            SetPixelFormat(p_Texture);
+        }
+        DDSHeader m_Header = new DDSHeader();
+        DDSDX10Header? m_ExtendedHeader = null;
+        bool m_IsTiled = false;
+
+        void SetHeader(TextureBase p_Texture)
+        {
+            //Signature, not needed
+            m_Header.m_Reserved1[9] = DDSPixelFormat.MakeFourCC("RIME");
+
+            m_Header.m_Flags = DDSFlags.Texture;
+
+            m_Header.m_Caps = DDSCaps.Texture;
+
+            m_Header.m_Height = p_Texture.Height;
+            m_Header.m_Width = p_Texture.Width;
+            m_Header.m_Depth = p_Texture.Depth;
+
+            m_Header.m_MipmapCount = p_Texture.MipmapCount;
+
+            if (m_Header.m_MipmapCount > 0)
+            {
+                m_Header.m_Flags |= DDSFlags.MipmapCount;
+
+
+                if (m_Header.m_MipmapCount > 1)
+                    m_Header.m_Caps |= DDSCaps.MipmapFlags;
+            }
+
+
+            switch (p_Texture.Type)
+            {
+            case TextureType.TextureType_Cube:
+            case TextureType.TextureType_CubeArray:
+                m_Header.m_Caps |= DDSCaps.Complex;
+                m_Header.m_Caps2 |= DDSCaps2.AllFaces;
+                break;
+
+            case TextureType.TextureType_3D:
+                m_Header.m_Flags |= DDSFlags.Depth;
+                m_Header.m_Caps2 |= DDSCaps2.Volume;
+                break;
+            }
+
+            if (p_Texture.Flags.HasFlag(TextureFlags.SrgbGamma))  //NVIDIA format | some loaders might require this? (DirectXTex)
+                m_Header.m_Flags |= DDSFlags.Srgb;
+
+
+            if (!TextureUtils.ComputePitch(p_Texture.Format, (uint) p_Texture.Width, (uint) p_Texture.Height, out var s_RowPitch, out var s_SlicePitch))
+                throw new Exception("Failed to compute pitch!");
+
+            if (TextureUtils.IsCompressed(p_Texture.Format))
+            {
+                m_Header.m_Flags |= DDSFlags.LinearSize;
+                m_Header.m_PitchOrLinearSize = s_SlicePitch;
+            }
+            else
+            {
+                m_Header.m_Flags |= DDSFlags.Pitch;
+                m_Header.m_PitchOrLinearSize = s_RowPitch;
+            }
+
+        }
+
+        void SetPixelFormat(TextureBase p_Texture)
+        {
+            if (DDSUtils.c_DDSFormatMap.TryGetValue(p_Texture.Format, out var s_Format))
+            {
+                //TODO: change
+                s_Format.m_RGBBitCount = TextureUtils.BitsPerPixel(p_Texture.Format);
+
+                m_Header.m_PixelFormat = s_Format;
+            }
+            else
+            {
+                if (!DDSUtils.c_DDSDXFormatMap.TryGetValue(p_Texture.Format, out var s_DXGIFormat))
+                    throw new Exception($"Invalid textureformat {p_Texture.Format}");
+
+                m_Header.m_PixelFormat = DDSPixelFormat.s_DXExtFormat;
+
+                m_ExtendedHeader = new DDSDX10Header();
+
+
+                m_ExtendedHeader.m_DxgiFormat = s_DXGIFormat;
+
+
+                switch (p_Texture.Type)
+                {
+                case TextureType.TextureType_1D:
+                case TextureType.TextureType_1DArray:
+                    m_ExtendedHeader.m_ResourceDimension = DDSResoruceDimension.Texture1D;
+                    break;
+
+                case TextureType.TextureType_2D:
+                case TextureType.TextureType_2DArray:
+                    m_ExtendedHeader.m_ResourceDimension = DDSResoruceDimension.Texture2D;
+                    break;
+
+                case TextureType.TextureType_3D:
+                    m_ExtendedHeader.m_ResourceDimension = DDSResoruceDimension.Texture3D;
+                    break;
+
+                case TextureType.TextureType_Cube:
+                case TextureType.TextureType_CubeArray:
+                    m_ExtendedHeader.m_ResourceDimension = DDSResoruceDimension.Texture2D;
+
+                    m_ExtendedHeader.m_MiscFlag = DDSMiscFlag1.TextureCube;
+                    m_ExtendedHeader.m_ArraySize = 6;
+                    break;
+                }
+            }
+        }
+
+
+        public void WriteToStream(RimeWriter p_Stream)
+        {
+            m_Header.Serialize(p_Stream);
+
+            if (m_ExtendedHeader != null)
+            {
+                //Align
+                if (p_Stream.Position % 0x10 != 0)
+                    p_Stream.Seek(0x10 - (p_Stream.Position % 0x10), SeekOrigin.Current);
+
+                m_ExtendedHeader.Serialize(p_Stream);
+            }
+
+            /*
+            if (m_IsTiled)
+            {
+                var s_Untiled = Xbox.XboxUntiler.GetUntiledTextureData(this);
+
+                if (s_Untiled == null)
+                    throw new Exception("Failed to get texture data");
+
+                p_Stream.Write(s_Untiled);
+            }
+            else
+            {
+
+                var s_TextureData = this.GetRawTextureData( );
+
+                if (s_TextureData == null)
+                    throw new Exception("Failed to get texture data");
+
+                s_TextureData.CopyTo(p_Stream.BaseStream);
+            }
+            */
+            
+        }
+
+        /*
+        public static void WriteTextureToStream(RimeWriter p_Stream)
         {
             var s_Header = new DDSHeader( );
 
@@ -36,30 +194,24 @@ namespace RimeLib.Texture.Frostbite.DDS
             }
 
 
-            if (p_Texture.Type == TextureType.TextureType_Cube ||
-                p_Texture.Type == TextureType.TextureType_CubeArray)
+            switch (p_Texture.Type)
             {
+            case TextureType.TextureType_Cube:
+            case TextureType.TextureType_CubeArray:
                 s_Header.m_Caps |= DDSCaps.Complex;
-
                 s_Header.m_Caps2 |= DDSCaps2.AllFaces;
-            }
+                break;
 
-            if (p_Texture.Type == TextureType.TextureType_3D)
-            {
+            case TextureType.TextureType_3D:
                 s_Header.m_Flags |= DDSFlags.Depth;
-
                 s_Header.m_Caps2 |= DDSCaps2.Volume;
+                break;
             }
 
-
-            if ((p_Texture.Flags & (int) TextureFlags.SrgbGamma) != 0)
-            {
-                //NVIDIA format | some loaders might require this? (DirectXTex)
-
-                //
+            if (p_Texture.Flags.HasFlag(TextureFlags.SrgbGamma))  //NVIDIA format | some loaders might require this? (DirectXTex)
                 s_Header.m_Flags |= DDSFlags.Srgb;
-            }
-
+            
+            
             if (!TextureUtils.ComputePitch(p_Texture.Format, (uint) p_Texture.Width, (uint) p_Texture.Height, out var s_RowPitch, out var s_SlicePitch))
                 throw new Exception("Failed to compute pitch!");
 
@@ -133,13 +285,28 @@ namespace RimeLib.Texture.Frostbite.DDS
                 s_ExtendedHeader.Serialize(p_Stream);
             }
 
+            /*
+            if (p_Texture.Flags.HasFlag(TextureFlags.UnknownFlag))
+            {
+                var s_Untiled = Xbox.XboxUntiler.GetUntiledTextureData(p_Texture);
 
-            var s_TextureData = p_Texture.GetRawTextureData( );
+                if (s_Untiled == null)
+                    throw new Exception("Failed to get texture data");
 
-            if ( s_TextureData != null )
+                p_Stream.Write(s_Untiled);
+            }
+            else
+            *
+            {
+
+                var s_TextureData = p_Texture.GetRawTextureData( );
+
+                if (s_TextureData == null)
+                    throw new Exception("Failed to get texture data");
+
                 s_TextureData.CopyTo(p_Stream.BaseStream);
-
-        }
+            }
+        }*/
 
     }
 }

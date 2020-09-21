@@ -59,7 +59,7 @@ namespace RimeLib.Texture.Frostbite2_0
 
             //Some srgb check, not sure about this one
             if (s_DDSHeader.m_Flags.HasFlag(DDSFlags.Srgb))
-                p_Header.Flags |= (uint) TextureFlags.SrgbGamma;
+                p_Header.Flags |= TextureFlags.SrgbGamma;
 
 
             //Make it work for some strange dds

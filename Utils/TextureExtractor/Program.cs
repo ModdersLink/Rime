@@ -1,8 +1,8 @@
 ﻿using CommandLine;
 using RimeLib.Content.Mounting;
-using RimeLib.Content.Resource;
 using RimeLib.Frostbite;
 using RimeLib.IO;
+using RimeLib.Texture;
 using RimeLib.Texture.Frostbite;
 using RimeLib.Texture.Frostbite.DDS;
 using RimeLib.Texture.Frostbite2_0;
@@ -107,7 +107,7 @@ namespace TextureExtractor
             if (!p_Options.Quiet)
                 Console.WriteLine($"Mounting game with engine '{p_Options.EngineType}' at path '{p_Options.GamePath}'. Please wait, this could take a while.");
 
-            await s_Mounter.Mount(p_Options.GamePath, s_MountSuperbundles.Count == 0 && s_MountBundles.Count == 0);
+            await s_Mounter.Mount(p_Options.GamePath, s_MountSuperbundles.Count == 0 && s_MountBundles.Count == 0, p_Options.EngineType);
 
             // Mount the requested superbundles.
             if (s_MountSuperbundles.Count > 0)
@@ -161,22 +161,12 @@ namespace TextureExtractor
             }
 
 
-            IResource s_TextureResoruce = null;
+            TextureBase s_Texture = null;
 
-            if (!ResourceHelper.LoadResource(p_Mounter, s_TextureObject.FirstVariant, out s_TextureResoruce))
+            if (!TextureHelper.LoadTexture(p_Mounter, s_TextureObject.FirstVariant, out s_Texture))
             {
                 if (!p_Options.Quiet)
                     Console.WriteLine($"Error loading texture {p_Path}!");
-                return;
-            }
-
-
-            var s_Texture = s_TextureResoruce as ITexture;
-
-            if (s_Texture == null)
-            {
-                if (!p_Options.Quiet)
-                    Console.WriteLine($"Resource {p_Path} is not a texture");
                 return;
             }
 
@@ -184,7 +174,7 @@ namespace TextureExtractor
             {
                 using var s_RimeWriter = new RimeWriter(s_MemoryStream);
 
-                DDSExporter.WriteTextureToStream(s_RimeWriter, s_Texture);
+                //DDSExporter.WriteTextureToStream(s_RimeWriter, s_Texture);
 
                 s_MemoryStream.Seek(0, SeekOrigin.Begin);
 
@@ -209,22 +199,12 @@ namespace TextureExtractor
             }
 
 
-            IResource s_TextureResoruce = null;
+            TextureBase s_Texture = null;
 
-            if (!ResourceHelper.LoadResource(p_Mounter, s_TextureObject.FirstVariant, out s_TextureResoruce))
+            if (!TextureHelper.LoadTexture(p_Mounter, s_TextureObject.FirstVariant, out s_Texture))
             {
                 if (!p_Options.Quiet)
                     Console.WriteLine($"Error loading texture {p_Path}!");
-                return;
-            }
-
-
-            var s_Texture = s_TextureResoruce as ITexture;
-
-            if (s_Texture == null)
-            {
-                if (!p_Options.Quiet)
-                    Console.WriteLine($"Resource {p_Path} is not a texture");
                 return;
             }
 
@@ -234,9 +214,11 @@ namespace TextureExtractor
                 Console.WriteLine($"Dumping texture {p_Path} to {s_SavePath}");
 
 
+            /*
             using (var s_FileStream = new FileStream(s_SavePath, FileMode.OpenOrCreate))
             using (var s_RimeWriter = new RimeWriter(s_FileStream))
                 DDSExporter.WriteTextureToStream(s_RimeWriter, s_Texture);
+            */
         }
 
 

@@ -46,7 +46,7 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
 
             var s_SbPath = ContainedSuperbundle.Path + ".sb";
 
-            if (ContainedBundle.InUpdate)
+            if (ContainedBundle.InUpdate && ContainedSuperbundle.PatchPath != null)
                 s_SbPath = ContainedSuperbundle.PatchPath + ".sb";
 
             var s_Reader = new RimeReader(File.Open(s_SbPath, FileMode.Open, FileAccess.Read, FileShare.Read), s_Endianness);
@@ -134,7 +134,7 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
             
             var s_SbPath = ContainedSuperbundle.Path + ".sb";
 
-            if (ContainedBundle.InUpdate)
+            if (ContainedBundle.InUpdate && ContainedSuperbundle.PatchPath != null)
                 s_SbPath = ContainedSuperbundle.PatchPath + ".sb";
 
             var s_Reader = new RimeReader(File.Open(s_SbPath, FileMode.Open, FileAccess.Read, FileShare.Read), s_Endianness);
@@ -225,7 +225,7 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
 
             var s_SbPath = ContainedSuperbundle.Path + ".sb";
 
-            if (ContainedBundle.InUpdate)
+            if (ContainedBundle.InUpdate && ContainedSuperbundle.PatchPath != null)
                 s_SbPath = ContainedSuperbundle.PatchPath + ".sb";
 
             var s_Reader = new RimeReader(File.Open(s_SbPath, FileMode.Open, FileAccess.Read, FileShare.Read), s_Endianness);
