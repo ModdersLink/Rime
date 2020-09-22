@@ -106,7 +106,7 @@ namespace RimeLib.Texture.TextureHandlers
 
             p_Texture.Provider?.GetReader()?.CopyTo(p_Writer);
 
-            return false;
+            return true;
         }
 
 

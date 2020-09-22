@@ -23,7 +23,7 @@ namespace RimeLib.Texture.Frostbite2_0
         {
             var s_ChunkId = m_Texture?.m_Texture.StreamingChunkId;
 
-            if (s_ChunkId == null)
+            if (s_ChunkId is null)
                 return null;
 
             if (!m_Engine.TryGetChunk(s_ChunkId, out var s_Chunk))

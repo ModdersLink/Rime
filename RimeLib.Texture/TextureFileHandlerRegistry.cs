@@ -7,25 +7,25 @@ using System.Text;
 
 namespace RimeLib.Texture
 {
-    class TextureFileHandlerRegistry
+    public class TextureFileHandlerRegistry
     {
         private static Dictionary<string, ITextureFileHandler> m_Handlers = new Dictionary<string, ITextureFileHandler>( );
 
 
-        public static ITextureFileHandler? FindLoader(string p_Engine)
+        public static ITextureFileHandler? FindHandler(string p_Type)
         {
-            if (m_Handlers.TryGetValue(p_Engine.ToLower( ), out var s_Loader))
+            if (m_Handlers.TryGetValue(p_Type.ToLower( ), out var s_Loader))
                 return s_Loader;
 
 
-            return RefreshLoaders(p_Engine);
+            return RefreshHandlers(p_Type);
         }
 
         /// <summary>
         /// Refresh all the available texture loaders from the loaded assemblies.
         /// </summary>
         /// <returns>A texture loader of the specific version, if found.</returns>
-        private static ITextureFileHandler? RefreshLoaders(string p_Engine)
+        private static ITextureFileHandler? RefreshHandlers(string p_Type)
         {
             // Load texture assembly
             //AssemblyUtils.LoadSupportAssembly(AssemblyType.Texture, p_Engine);
@@ -66,7 +66,7 @@ namespace RimeLib.Texture
                 foreach (var s_Attribute in s_Attributes)
                 {
                     // Save loader if we find a matching one
-                    if (s_Attribute.FormatType.ToLower() == p_Engine.ToLower())
+                    if (s_Attribute.FormatType.ToLower() == p_Type.ToLower())
                         s_FoundLoader = s_Loader;
 
                     if (m_Handlers.ContainsKey(s_Attribute.FormatType.ToLower()))
@@ -81,5 +81,7 @@ namespace RimeLib.Texture
 
             return s_FoundLoader;
         }
+
+
     }
 }

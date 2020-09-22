@@ -1,4 +1,5 @@
 ﻿using RimeLib.Frostbite;
+using RimeLib.Texture.Attributes;
 using RimeLib.Utils;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Text;
 
 namespace RimeLib.Texture
 {
-    class TextureLoaderRegistry
+    public class TextureLoaderRegistry
     {
         private static Dictionary<EngineType, ITextureHandler> m_Factories = new Dictionary<EngineType, ITextureHandler>( );
 

@@ -4,6 +4,7 @@ using System.IO;
 using RimeLib.Cmd.Commands.Game;
 using RimeLib.Content.Mounting;
 using RimeLib.Frostbite.Core;
+using RimeLib.IO;
 using RimeLib.Texture;
 using RimeLib.Texture.Frostbite;
 using RimeLib.Texture.Frostbite.DDS;
@@ -124,6 +125,9 @@ namespace RimeLib.Cmd.Contexts
 
             using var s_FileStream = File.Create(p_Destination.FullName);
 
+            var s_TextureFileHandler = TextureFileHandlerRegistry.FindHandler("dds");
+
+            s_TextureFileHandler?.Save(s_Texture!, new RimeWriter(s_FileStream));
             //DDSExporter.WriteTextureToStream(new IO.RimeWriter(s_FileStream), s_Texture!);
         }
 
@@ -146,6 +150,10 @@ namespace RimeLib.Cmd.Contexts
                     continue;
                 }
 
+                if (s_FoundList.TryGetValue(s_Texture!.Format, out var _))
+                    continue;
+
+
                 if (s_Texture!.MipmapCount < 1)
                     continue;
 
@@ -154,9 +162,7 @@ namespace RimeLib.Cmd.Contexts
                 if (s_Texture!.GetMipmapSize(0) == s_SlicePitch)
                     continue;
 
-                if (s_FoundList.TryGetValue(s_Texture!.Format, out var _))
-                    continue;
-
+                
                 
 
                 p_Writer.WriteLine($"Texture with format {s_Texture!.Format} W:H {s_Texture!.Width}:{s_Texture!.Height} has invalid bit size! Generated {s_SlicePitch} but original has {s_Texture!.GetMipmapSize(0)}");

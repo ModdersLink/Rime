@@ -5,7 +5,7 @@ using System.Text;
 
 namespace RimeLib.Texture
 {
-    interface ITextureFileHandler
+    public interface ITextureFileHandler
     {
 
 
