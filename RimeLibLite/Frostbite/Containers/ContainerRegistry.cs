@@ -1,6 +1,7 @@
 ﻿using RimeLib.Frostbite.Core;
 using RimeLib.Utils;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -12,14 +13,15 @@ namespace RimeLib.Serialization.Containers
     /// </summary>
     public static class ContainerRegistry
     {
-        private static readonly Dictionary<uint, Type> m_RegisteredTypes;
+        private static readonly ConcurrentDictionary<uint, Type> m_RegisteredTypes;
+        //private static readonly Dictionary<uint, Type> m_RegisteredTypes;
 
         /// <summary>
         /// Default constructor for the container registry
         /// </summary>
         static ContainerRegistry()
         {
-            m_RegisteredTypes = new Dictionary<uint, Type>();
+            m_RegisteredTypes = new ConcurrentDictionary<uint, Type>();
 
             // Register our built-ins.
             RegisterType(typeof(Vec2));
@@ -68,10 +70,12 @@ namespace RimeLib.Serialization.Containers
         {
             var s_TypeNameHash = FbUtils.HashQuick(p_Type.Name);
 
-            if (m_RegisteredTypes.ContainsKey(s_TypeNameHash))
-                m_RegisteredTypes[s_TypeNameHash] = p_Type;
-            else
-                m_RegisteredTypes.Add(s_TypeNameHash, p_Type);
+            m_RegisteredTypes.AddOrUpdate(s_TypeNameHash, p_Type, (p_K, p_V) => p_Type);
+
+            //if (m_RegisteredTypes.ContainsKey(s_TypeNameHash))
+            //    m_RegisteredTypes[s_TypeNameHash] = p_Type;
+            //else
+            //    m_RegisteredTypes.Add(s_TypeNameHash, p_Type);
         }
 
         /// <summary>
@@ -88,6 +92,11 @@ namespace RimeLib.Serialization.Containers
             RegisterType(typeof(LinearTransform));
             RegisterType(typeof(DataContainer));
             RegisterType(typeof(AxisAlignedBox));
+        }
+
+        public static IEnumerable<Type> GetRegisteredTypes()
+        {
+            return m_RegisteredTypes.Values;
         }
     }
 }
