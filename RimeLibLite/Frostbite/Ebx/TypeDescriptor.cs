@@ -35,8 +35,6 @@ namespace RimeLib.Serialization.Ebx
         public ushort Size { get; set; }
         public ushort SecondarySize { get; set; }
 
-        public Type? ArrayElementType { get; set; } // Helper property for serialization purposes.
-
         private string m_Name;
 
         public TypeDescriptor(RimeReader p_Reader, IReadOnlyDictionary<uint, string> p_HashedTypeNames)
@@ -48,7 +46,6 @@ namespace RimeLib.Serialization.Ebx
             Flags = new MemberInfoFlags(p_Reader);
             Size = p_Reader.ReadUInt16();
             SecondarySize = p_Reader.ReadUInt16();
-            ArrayElementType = null;
             m_Name = string.Empty;
 
             var s_Name = string.Empty;
@@ -60,7 +57,6 @@ namespace RimeLib.Serialization.Ebx
         public TypeDescriptor()
         {
             m_Name = string.Empty;
-            ArrayElementType = null;
             Flags = new MemberInfoFlags();
         }
 

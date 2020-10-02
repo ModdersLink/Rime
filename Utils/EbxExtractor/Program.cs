@@ -120,21 +120,6 @@ namespace EbxExtractor
 
             var s_Partitions = s_Mounter.GetPartitions();
 
-            //var s_Ret = Parallel.ForEach(s_Partitions, p_Pair =>
-            //{
-            //    var s_PartitionName = p_Pair.Key;
-
-            //    var s_PartitionObject = p_Pair.Value;
-
-            //    using var s_PartitionReader = s_PartitionObject.FirstVariant.GetReader();
-
-            //    var s_Reader = new Fb2EbxReader();
-
-            //    var s_Partition = s_Reader.ParsePartition(s_PartitionName, s_PartitionReader);
-            //    if (s_Partition != null)
-            //        PartitionRegistry.RegisterPartition(s_Partition);
-            //});
-
 #if !_SLOW_CODE
             foreach (var s_PartitionPair in s_Partitions)
             {
@@ -152,11 +137,28 @@ namespace EbxExtractor
 
                 PartitionRegistry.RegisterPartition(s_Partition);
 
-                var s_Serializer = new PartitionSerializer(new Fb2SerializationContext());
-                s_Serializer.SerializePartition(s_Partition);
+                new Serialization(s_Partition);
+
+                /*var s_Serializer = new PartitionSerializer(new Fb2SerializationContext());
+                s_Serializer.SerializePartition(s_Partition);*/
             }
+#else
+            var s_Ret = Parallel.ForEach(s_Partitions, p_Pair =>
+            {
+                var s_PartitionName = p_Pair.Key;
+
+                var s_PartitionObject = p_Pair.Value;
+
+                using var s_PartitionReader = s_PartitionObject.FirstVariant.GetReader();
+
+                var s_Reader = new Fb2EbxReader();
+
+                var s_Partition = s_Reader.ParsePartition(s_PartitionName, s_PartitionReader);
+                if (s_Partition != null)
+                    PartitionRegistry.RegisterPartition(s_Partition);
+            });
 #endif
-            
+
             var s_Results = PartitionRegistry.Partitions.Where(p_Partition => p_Partition.PrimaryInstance.ContainerTypeName == "SoundWaveAsset");
         }
     }
