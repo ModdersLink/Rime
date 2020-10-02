@@ -270,6 +270,8 @@ namespace RimeLib.Serialization.Frostbite2_0
                     });
                 }
 
+                var s_RegisteredTypes = ContainerRegistry.GetRegisteredTypes();
+
                 new TypeDescriptor
                 {
                     
