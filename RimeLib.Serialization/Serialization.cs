@@ -17,8 +17,8 @@ namespace RimeLib.Serialization
         // The partition we are serializing
         private readonly FrostbitePartition m_Partition;
 
-        // This will map each of the FieldDescriptor types to the owning type
-        private Dictionary<Ebx.TypeDescriptor, FieldDescriptor[]> m_TypeFieldDict;
+        private List<Ebx.TypeDescriptor> m_TypeDescriptors;
+        private List<FieldDescriptor> m_FieldDescriptors;
 
         /// <summary>
         /// Creates a new serialization instance
@@ -27,7 +27,8 @@ namespace RimeLib.Serialization
         public Serialization(FrostbitePartition p_Partition)
         {
             m_Partition = p_Partition;
-            m_TypeFieldDict = new Dictionary<Ebx.TypeDescriptor, FieldDescriptor[]>();
+            m_TypeDescriptors = new List<Ebx.TypeDescriptor>();
+            m_FieldDescriptors = new List<FieldDescriptor>();
 
             ParsePartition();
         }
@@ -52,23 +53,82 @@ namespace RimeLib.Serialization
 
         private void ParseInstance(DataContainer p_Instance)
         {
-            var s_TypeDescriptor = p_Instance.GetTypeDescriptor();
+
+            var s_InstanceTypeDescriptor = p_Instance.GetTypeDescriptor();
 
             // This is an index of the start of the Fields for this type
             // m_FieldDescriptors[s_TypeDescriptor.LayoutDescriptor]
             // and goes until
             // m_FieldDescriptors[s_TypeDescritpr.LayoutDescriptor + FieldCount]
-            s_TypeDescriptor.LayoutDescriptor = 0;
+            s_InstanceTypeDescriptor.LayoutDescriptor = 0;
+
+            Debug.WriteLine("---");
 
             // Iterate through each of the fields
             Type? s_CurrentType = p_Instance.GetType();
             while (s_CurrentType != typeof(System.Dynamic.DynamicObject))
             {
+                // Check to see if this type has already been added to our list
+                if (m_TypeDescriptors.Any(p_TypeDescriptor =>
+                {
+                    return p_TypeDescriptor.Name == s_CurrentType.Name;
+                }))
+                {
+                    // Go higher up in the inheritance chain
+                    s_CurrentType = s_CurrentType.BaseType;
+
+                    continue;
+                }
+
+                // Get the container type attribute
+                var s_ContainerTypeAttribute = s_CurrentType.GetCustomAttribute<ContainerTypeAttribute>();
+                if (s_ContainerTypeAttribute == null)
+                {
+                    Debug.WriteLine($"There was an error getting {s_CurrentType.Name} ContainerType attribute.");
+                    continue;
+                }
+
+                // Get the memberinfoflags attribute
+                var s_MemberInfoFlagAttribute = s_CurrentType.GetCustomAttribute<MemberInfoFlagAttribute>();
+                if (s_MemberInfoFlagAttribute == null)
+                {
+                    Debug.WriteLine($"There was an error getting {s_CurrentType.Name} MemberInfoFlag attribute.");
+                    continue;
+                }
+
+                // Get all of the fields for this current type
                 var s_Fields = GetFieldsFromType(s_CurrentType);
 
+                // Save the start index, because we need to set this in our type descriptor
+                var s_FieldStartIndex = m_FieldDescriptors.Count;
+
+                // Add the field descriptors to the long ass list we have
+                m_FieldDescriptors.AddRange(s_Fields);
+
+                // Save the ending field descriptor
+                var s_FieldEndIndex = m_FieldDescriptors.Count;
+
+
+
+
+                // Create a new type descriptor
+                var s_TypeDescriptor = new Ebx.TypeDescriptor
+                {
+                    Alignment = s_ContainerTypeAttribute.DataAlignment,
+                    FieldCount = (byte)s_Fields.Count,
+                    Flags = new MemberInfoFlags(s_MemberInfoFlagAttribute.Flag),
+                    LayoutDescriptor = 0,
+                    Name = s_CurrentType.Name,
+                    NameHash = FbUtils.HashQuick(s_CurrentType.Name),
+                    SecondarySize = 0,
+                    Size = 0
+                };
+
+                // Debug information for rattling off each of the fields within a specific type
                 Debug.WriteLine(s_CurrentType.Name);
                 s_Fields.ForEach(p_Item => Debug.WriteLine("\t" + p_Item.Name));
 
+                // Go higher up in the inheritance chain
                 s_CurrentType = s_CurrentType.BaseType;
             }
             //var s_Fields = GetFieldsFromType(p_Instance);
