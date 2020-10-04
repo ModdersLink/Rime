@@ -220,17 +220,17 @@ namespace RimeLib.Serialization.Containers
         /// <returns>TypeDescriptor object</returns>
         public TypeDescriptor GetTypeDescriptor()
         {
-            var s_TypeDescriptor = new TypeDescriptor
+            return new TypeDescriptor
             {
                 Alignment = ContainerAlignment,
                 Flags = new MemberInfoFlags() { FlagBits = ContainerFlags },
                 Name = ContainerTypeName,
-                FieldCount = 0
+                FieldCount = (byte)(m_Fields.Count() & 0xFF),
+                NameHash = FbUtils.HashQuick(ContainerTypeName),
+                LayoutDescriptor = 0, // Index into FieldDescriptor table for fields
+                SecondarySize = 0, // Is this ever non-zero?
+                Size = 0 // Size in bytes of this type
             };
-
-            s_TypeDescriptor.NameHash = FbUtils.HashQuick(s_TypeDescriptor.Name);
-
-            return s_TypeDescriptor;
         }
 
         /// <summary>
