@@ -96,8 +96,8 @@ namespace RimeLib.Serialization.Attributes
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct | AttributeTargets.Enum)]
     public class ContainerSizeAttribute : Attribute
     {
-        public uint Size { get; set; }
-        public ContainerSizeAttribute(uint p_Size = 0)
+        public ushort Size { get; set; }
+        public ContainerSizeAttribute(ushort p_Size = 0)
         {
             Size = p_Size;
         }

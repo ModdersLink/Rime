@@ -17,7 +17,10 @@ namespace RimeLib.Serialization
         // The partition we are serializing
         private readonly FrostbitePartition m_Partition;
 
+        // Total amount of types in this partition
         private List<Ebx.TypeDescriptor> m_TypeDescriptors;
+
+        // List of field descriptors for all of the types
         private List<FieldDescriptor> m_FieldDescriptors;
 
         /// <summary>
@@ -54,19 +57,19 @@ namespace RimeLib.Serialization
         private void ParseInstance(DataContainer p_Instance)
         {
 
-            var s_InstanceTypeDescriptor = p_Instance.GetTypeDescriptor();
+            //var s_InstanceTypeDescriptor = p_Instance.GetTypeDescriptor();
 
             // This is an index of the start of the Fields for this type
             // m_FieldDescriptors[s_TypeDescriptor.LayoutDescriptor]
             // and goes until
             // m_FieldDescriptors[s_TypeDescritpr.LayoutDescriptor + FieldCount]
-            s_InstanceTypeDescriptor.LayoutDescriptor = 0;
+            //s_InstanceTypeDescriptor.LayoutDescriptor = 0;
 
             Debug.WriteLine("---");
 
             // Iterate through each of the fields
             Type? s_CurrentType = p_Instance.GetType();
-            while (s_CurrentType != typeof(System.Dynamic.DynamicObject))
+            while (s_CurrentType != typeof(System.Dynamic.DynamicObject) && s_CurrentType != typeof(FrostbiteContainer))
             {
                 // Check to see if this type has already been added to our list
                 if (m_TypeDescriptors.Any(p_TypeDescriptor =>
@@ -88,13 +91,20 @@ namespace RimeLib.Serialization
                     continue;
                 }
 
+                var s_ContainerSizeAttribute = s_CurrentType.GetCustomAttribute<ContainerSizeAttribute>(false);
+                if (s_ContainerSizeAttribute == null)
+                {
+                    if (s_CurrentType == typeof(DataContainer))
+                        s_ContainerSizeAttribute = new ContainerSizeAttribute(8);
+                    else
+                    {
+                        Debug.WriteLine($"Skipping instance {s_CurrentType.Name} because container size attribute was not found.");
+                        continue;
+                    }
+                }
+
                 // Get the memberinfoflags attribute
                 var s_MemberInfoFlagAttribute = s_CurrentType.GetCustomAttribute<MemberInfoFlagAttribute>();
-                if (s_MemberInfoFlagAttribute == null)
-                {
-                    Debug.WriteLine($"There was an error getting {s_CurrentType.Name} MemberInfoFlag attribute.");
-                    continue;
-                }
 
                 // Get all of the fields for this current type
                 var s_Fields = GetFieldsFromType(s_CurrentType);
@@ -116,12 +126,12 @@ namespace RimeLib.Serialization
                 {
                     Alignment = s_ContainerTypeAttribute.DataAlignment,
                     FieldCount = (byte)s_Fields.Count,
-                    Flags = new MemberInfoFlags(s_MemberInfoFlagAttribute.Flag),
-                    LayoutDescriptor = 0,
+                    Flags = new MemberInfoFlags(s_MemberInfoFlagAttribute?.Flag ?? 0),
+                    LayoutDescriptor = (uint)s_FieldStartIndex,
                     Name = s_CurrentType.Name,
                     NameHash = FbUtils.HashQuick(s_CurrentType.Name),
                     SecondarySize = 0,
-                    Size = 0
+                    Size = s_ContainerSizeAttribute.Size 
                 };
 
                 // Debug information for rattling off each of the fields within a specific type

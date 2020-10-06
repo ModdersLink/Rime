@@ -218,7 +218,7 @@ namespace RimeLib.Serialization.Containers
         /// Gets the type descriptor for this object
         /// </summary>
         /// <returns>TypeDescriptor object</returns>
-        public TypeDescriptor GetTypeDescriptor()
+        /*public TypeDescriptor GetTypeDescriptor()
         {
             return new TypeDescriptor
             {
@@ -231,7 +231,7 @@ namespace RimeLib.Serialization.Containers
                 SecondarySize = 0, // Is this ever non-zero?
                 Size = 0 // Size in bytes of this type
             };
-        }
+        }*/
 
         /// <summary>
         /// Gets the type names for provided object
