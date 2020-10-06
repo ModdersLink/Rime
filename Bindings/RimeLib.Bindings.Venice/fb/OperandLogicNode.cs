@@ -18,7 +18,7 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(8), MemberInfoFlag(53), ContainerClass]
+	[ContainerType(8), MemberInfoFlag(53), ContainerSize(80), ContainerClass]
 	public class OperandLogicNode : 
 		UINodeData
 	{

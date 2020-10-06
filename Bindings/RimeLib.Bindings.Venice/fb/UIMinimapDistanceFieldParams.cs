@@ -18,7 +18,7 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(41), ContainerStruct]
+	[ContainerType(16), MemberInfoFlag(41), ContainerSize(64), ContainerStruct]
 	public class UIMinimapDistanceFieldParams : FrostbiteContainer
 	{
 		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]

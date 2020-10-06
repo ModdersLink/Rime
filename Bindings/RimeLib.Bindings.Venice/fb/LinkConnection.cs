@@ -18,7 +18,7 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerStruct]
+	[ContainerType(4), MemberInfoFlag(41), ContainerSize(16), ContainerStruct]
 	public class LinkConnection : FrostbiteContainer
 	{
 		[ContainerField(0), MemberInfoFlag(53), ContainerCtrRef]

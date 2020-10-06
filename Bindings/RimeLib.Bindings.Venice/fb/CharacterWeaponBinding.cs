@@ -18,7 +18,7 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerStruct]
+	[ContainerType(4), MemberInfoFlag(41), ContainerSize(4), ContainerStruct]
 	public class CharacterWeaponBinding : FrostbiteContainer
 	{
 		[ContainerField(0), MemberInfoFlag(41)]

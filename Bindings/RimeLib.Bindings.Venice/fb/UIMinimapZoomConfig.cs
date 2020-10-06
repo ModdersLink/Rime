@@ -18,7 +18,7 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(41), ContainerStruct]
+	[ContainerType(16), MemberInfoFlag(41), ContainerSize(128), ContainerStruct]
 	public class UIMinimapZoomConfig : FrostbiteContainer
 	{
 		[ContainerField(0), MemberInfoFlag(137)]

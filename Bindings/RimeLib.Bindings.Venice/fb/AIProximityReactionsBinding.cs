@@ -18,7 +18,7 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerStruct]
+	[ContainerType(4), MemberInfoFlag(41), ContainerSize(56), ContainerStruct]
 	public class AIProximityReactionsBinding : FrostbiteContainer
 	{
 		[ContainerField(0), MemberInfoFlag(41)]

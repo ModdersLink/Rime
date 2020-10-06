@@ -18,7 +18,7 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerStruct]
+	[ContainerType(4), MemberInfoFlag(41), ContainerSize(80), ContainerStruct]
 	public class VehicleInputData : FrostbiteContainer
 	{
 		[ContainerField(0), LayoutImmutable, Blittable, MemberInfoFlag(49469)]

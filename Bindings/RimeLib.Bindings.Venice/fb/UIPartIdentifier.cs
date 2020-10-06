@@ -18,7 +18,7 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[MemberInfoFlag(137), ContainerEnum]
+	[MemberInfoFlag(137), ContainerSize(4), ContainerEnum]
 	public enum UIPartIdentifier : int
 	{
 		HCI_None = 0,

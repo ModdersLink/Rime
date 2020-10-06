@@ -18,7 +18,7 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
+	[ContainerType(4), MemberInfoFlag(53), ContainerSize(92), ContainerClass]
 	public class ArtilleryStrikeWeaponData : 
 		WeaponData
 	{

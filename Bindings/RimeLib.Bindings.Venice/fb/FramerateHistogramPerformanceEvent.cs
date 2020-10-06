@@ -18,7 +18,7 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(8), MemberInfoFlag(53), ContainerClass]
+	[ContainerType(8), MemberInfoFlag(53), ContainerSize(72), ContainerClass]
 	public class FramerateHistogramPerformanceEvent : 
 		MetricEvent
 	{

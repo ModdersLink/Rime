@@ -18,7 +18,7 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(8), MemberInfoFlag(53), ContainerClass]
+	[ContainerType(8), MemberInfoFlag(53), ContainerSize(56), ContainerClass]
 	public class PerformanceProfileState : 
 		MetricState
 	{

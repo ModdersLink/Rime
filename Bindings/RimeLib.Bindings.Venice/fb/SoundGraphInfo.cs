@@ -18,7 +18,7 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerStruct]
+	[ContainerType(4), MemberInfoFlag(41), ContainerSize(24), ContainerStruct]
 	public class SoundGraphInfo : FrostbiteContainer
 	{
 		[ContainerField(0), MemberInfoFlag(65), ContainerArray]

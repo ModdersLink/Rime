@@ -18,7 +18,7 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[MemberInfoFlag(137), ContainerEnum]
+	[MemberInfoFlag(137), ContainerSize(4), ContainerEnum]
 	public enum ShaderSkinningMethod : int
 	{
 		ShaderSkinningMethod_None = 0,

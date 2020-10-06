@@ -18,7 +18,7 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
+	[ContainerType(16), MemberInfoFlag(53), ContainerSize(256), ContainerClass]
 	public class MultipleActorScenarioEntityData : 
 		SpatialEntityData
 	{

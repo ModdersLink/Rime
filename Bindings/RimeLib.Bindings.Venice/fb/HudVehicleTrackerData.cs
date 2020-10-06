@@ -18,7 +18,7 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerClass]
+	[ContainerType(4), MemberInfoFlag(53), ContainerSize(100), ContainerClass]
 	public class HudVehicleTrackerData : 
 		UIPartData
 	{

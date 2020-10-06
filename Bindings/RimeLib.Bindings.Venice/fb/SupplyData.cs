@@ -18,7 +18,7 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerStruct]
+	[ContainerType(4), MemberInfoFlag(41), ContainerSize(44), ContainerStruct]
 	public class SupplyData : FrostbiteContainer
 	{
 		[ContainerField(0), MemberInfoFlag(41)]

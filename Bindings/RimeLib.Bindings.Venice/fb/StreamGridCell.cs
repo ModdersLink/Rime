@@ -18,7 +18,7 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerStruct]
+	[ContainerType(4), MemberInfoFlag(41), ContainerSize(12), ContainerStruct]
 	public class StreamGridCell : FrostbiteContainer
 	{
 		[ContainerField(0), MemberInfoFlag(53), ContainerCtrRef]

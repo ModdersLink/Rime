@@ -18,7 +18,7 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerStruct]
+	[ContainerType(4), MemberInfoFlag(41), ContainerSize(20), ContainerStruct]
 	public class TerrainQuadDecalAtlasTile : FrostbiteContainer
 	{
 		[ContainerField(0), LayoutImmutable, Blittable, MemberInfoFlag(49421)]

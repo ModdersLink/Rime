@@ -18,7 +18,7 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(8), MemberInfoFlag(41), ContainerStruct]
+	[ContainerType(8), MemberInfoFlag(41), ContainerSize(24), ContainerStruct]
 	public class UIGPSPosition : FrostbiteContainer
 	{
 		[ContainerField(0), LayoutImmutable, Blittable, MemberInfoFlag(49485)]

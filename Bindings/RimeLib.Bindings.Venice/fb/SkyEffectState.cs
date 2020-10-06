@@ -18,7 +18,7 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
+	[ContainerType(16), MemberInfoFlag(53), ContainerSize(240), ContainerClass]
 	public class SkyEffectState : 
 		DataContainer
 	{

@@ -18,7 +18,7 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[MemberInfoFlag(137), ContainerEnum]
+	[MemberInfoFlag(137), ContainerSize(4), ContainerEnum]
 	public enum UIUpdateType : int
 	{
 		UIUpdateType_Always = 0,

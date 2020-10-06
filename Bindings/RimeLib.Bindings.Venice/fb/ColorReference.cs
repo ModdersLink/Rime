@@ -18,7 +18,7 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerClass]
+	[ContainerType(16), MemberInfoFlag(53), ContainerSize(32), ContainerClass]
 	public class ColorReference : 
 		Asset
 	{

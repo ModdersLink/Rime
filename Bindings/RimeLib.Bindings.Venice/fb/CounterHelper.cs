@@ -18,7 +18,7 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(1), MemberInfoFlag(41), ContainerStruct]
+	[ContainerType(1), MemberInfoFlag(41), ContainerSize(1), ContainerStruct]
 	public class CounterHelper : FrostbiteContainer
 	{
 		[ContainerField(0), LayoutImmutable, Blittable, MemberInfoFlag(49325)]

@@ -18,7 +18,7 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(1), MemberInfoFlag(41), ContainerStruct]
+	[ContainerType(1), MemberInfoFlag(41), ContainerSize(12), ContainerStruct]
 	public class DivisibleLoopPlayerPlugins : FrostbiteContainer
 	{
 		[ContainerField(0), MemberInfoFlag(41)]

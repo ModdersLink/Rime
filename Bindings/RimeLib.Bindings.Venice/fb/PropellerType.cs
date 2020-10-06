@@ -18,7 +18,7 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[MemberInfoFlag(137), ContainerEnum]
+	[MemberInfoFlag(137), ContainerSize(4), ContainerEnum]
 	public enum PropellerType : int
 	{
 		PropellerType_Regular = 0,

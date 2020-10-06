@@ -18,7 +18,7 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(41), ContainerStruct]
+	[ContainerType(16), MemberInfoFlag(41), ContainerSize(96), ContainerStruct]
 	public class OverHeatData : FrostbiteContainer
 	{
 		[ContainerField(0), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
