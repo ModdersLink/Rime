@@ -115,5 +115,10 @@ namespace RimeLib.Serialization.Ebx
         {
             return !Equals(left, right);
         }
+
+        public override string ToString()
+        {
+            return m_Name;
+        }
     }
 }

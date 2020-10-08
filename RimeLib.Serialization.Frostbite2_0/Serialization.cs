@@ -2,6 +2,7 @@
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization.Containers;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 using RimeLib.Utils;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 
-namespace RimeLib.Serialization
+namespace RimeLib.Serialization.Frostbite2_0
 {
     public class Serialization
     {
@@ -18,10 +19,13 @@ namespace RimeLib.Serialization
         private readonly FrostbitePartition m_Partition;
 
         // Total amount of types in this partition
-        private List<Ebx.TypeDescriptor> m_TypeDescriptors;
+        private List<RimeLib.Serialization.Ebx.TypeDescriptor> m_TypeDescriptors;
 
         // List of field descriptors for all of the types
         private List<FieldDescriptor> m_FieldDescriptors;
+
+        // List of all of the instance entries
+        private List<InstanceEntry> m_InstanceEntries;
 
         /// <summary>
         /// Creates a new serialization instance
@@ -30,8 +34,9 @@ namespace RimeLib.Serialization
         public Serialization(FrostbitePartition p_Partition)
         {
             m_Partition = p_Partition;
-            m_TypeDescriptors = new List<Ebx.TypeDescriptor>();
+            m_TypeDescriptors = new List<RimeLib.Serialization.Ebx.TypeDescriptor>();
             m_FieldDescriptors = new List<FieldDescriptor>();
+            m_InstanceEntries = new List<InstanceEntry>();
 
             ParsePartition();
         }
@@ -69,6 +74,7 @@ namespace RimeLib.Serialization
 
             // Iterate through each of the fields
             Type? s_CurrentType = p_Instance.GetType();
+            int s_MainTypeDescriptorIndex = -1;
             while (s_CurrentType != typeof(System.Dynamic.DynamicObject) && s_CurrentType != typeof(FrostbiteContainer))
             {
                 // Check to see if this type has already been added to our list
@@ -118,11 +124,8 @@ namespace RimeLib.Serialization
                 // Save the ending field descriptor
                 var s_FieldEndIndex = m_FieldDescriptors.Count;
 
-
-
-
                 // Create a new type descriptor
-                var s_TypeDescriptor = new Ebx.TypeDescriptor
+                var s_TypeDescriptor = new RimeLib.Serialization.Ebx.TypeDescriptor
                 {
                     Alignment = s_ContainerTypeAttribute.DataAlignment,
                     FieldCount = (byte)s_Fields.Count,
@@ -134,6 +137,13 @@ namespace RimeLib.Serialization
                     Size = s_ContainerSizeAttribute.Size 
                 };
 
+                // Add this type descriptor to the list of all type descriptors
+                m_TypeDescriptors.Add(s_TypeDescriptor);
+
+                // Save the primary type descriptor index
+                if (p_Instance.ContainerTypeName == s_CurrentType.Name)
+                    s_MainTypeDescriptorIndex = m_TypeDescriptors.Count() - 1;
+
                 // Debug information for rattling off each of the fields within a specific type
                 Debug.WriteLine(s_CurrentType.Name);
                 s_Fields.ForEach(p_Item => Debug.WriteLine("\t" + p_Item.Name));
@@ -141,7 +151,23 @@ namespace RimeLib.Serialization
                 // Go higher up in the inheritance chain
                 s_CurrentType = s_CurrentType.BaseType;
             }
-            //var s_Fields = GetFieldsFromType(p_Instance);
+
+            if (s_MainTypeDescriptorIndex == -1)
+            {
+                return;
+            }
+
+            // Create a new instance
+            var s_InstanceEntry = new InstanceEntry
+            {
+                TypeDescriptorIndex = (uint)s_MainTypeDescriptorIndex
+            };
+
+            // TODO: Calculate the import and export counts
+            // Export Count = new GUID[ExportCount]
+            // The export count is stored inside of m_InstanceGuids
+
+            m_InstanceEntries.Add(s_InstanceEntry);
         }
 
         private List<FieldDescriptor> GetFieldsFromType(Type p_InstanceType)
