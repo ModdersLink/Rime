@@ -118,9 +118,6 @@ namespace RimeLib.Serialization
                 // Save the ending field descriptor
                 var s_FieldEndIndex = m_FieldDescriptors.Count;
 
-
-
-
                 // Create a new type descriptor
                 var s_TypeDescriptor = new Ebx.TypeDescriptor
                 {
