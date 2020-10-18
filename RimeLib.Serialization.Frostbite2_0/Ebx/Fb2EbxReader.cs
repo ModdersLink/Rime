@@ -44,7 +44,7 @@ namespace RimeLib.Serialization.Frostbite2_0.Ebx
         private StreamingPartitionHeader m_Header;
         private RimeReader m_Reader;
         private List<ImportEntry> m_ImportEntries;
-        private List<string> m_TypeStrings;
+        public List<string> m_TypeStrings;
         private Dictionary<uint, string> m_HashedTypeStrings;
         private List<FieldDescriptor> m_FieldDescriptors;
         private List<TypeDescriptor> m_TypeDescriptors;

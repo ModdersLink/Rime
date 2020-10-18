@@ -8,6 +8,7 @@ using RimeLib.Serialization.Ebx;
 using RimeLib.Serialization.Frostbite2_0;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
 using System;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -124,6 +125,8 @@ namespace EbxExtractor
             foreach (var s_PartitionPair in s_Partitions)
             {
                 var s_PartitionName = s_PartitionPair.Key;
+                if (s_PartitionName != "Weapons/M1014/U_M1014_Flashlight".ToLower())
+                    continue;
 
                 var s_PartitionObject = s_PartitionPair.Value;
 
@@ -137,8 +140,19 @@ namespace EbxExtractor
 
                 PartitionRegistry.RegisterPartition(s_Partition);
 
-                if (s_Partition.Name == "Weapons/M1014/U_M1014_Flashlight")
-                    new Serialization(s_Partition);
+                
+                var s_Serialization = new Serialization(s_Partition);
+
+                using (TextWriter s_Writer = new StreamWriter("out.txt"))
+                {
+                    s_Writer.WriteLine("EBX TypeStrings:");
+                    foreach (var l_TypeString in s_Reader.m_TypeStrings)
+                        s_Writer.WriteLine(l_TypeString);
+
+                    s_Writer.WriteLine("Generated TypeStrings:");
+                    foreach (var l_TypeString in s_Serialization.m_TypeStrings)
+                        s_Writer.WriteLine(l_TypeString);
+                }
 
                 /*var s_Serializer = new PartitionSerializer(new Fb2SerializationContext());
                 s_Serializer.SerializePartition(s_Partition);*/

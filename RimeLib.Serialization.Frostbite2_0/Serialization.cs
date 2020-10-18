@@ -27,6 +27,8 @@ namespace RimeLib.Serialization.Frostbite2_0
         // List of all of the instance entries
         private List<InstanceEntry> m_InstanceEntries;
 
+        public List<string> m_TypeStrings;
+
         /// <summary>
         /// Creates a new serialization instance
         /// </summary>
@@ -37,6 +39,7 @@ namespace RimeLib.Serialization.Frostbite2_0
             m_TypeDescriptors = new List<RimeLib.Serialization.Ebx.TypeDescriptor>();
             m_FieldDescriptors = new List<FieldDescriptor>();
             m_InstanceEntries = new List<InstanceEntry>();
+            m_TypeStrings = new List<string>();
 
             ParsePartition();
         }
@@ -89,6 +92,9 @@ namespace RimeLib.Serialization.Frostbite2_0
                     continue;
                 }
 
+                if (!m_TypeStrings.Contains(s_CurrentType.Name))
+                    m_TypeStrings.Add(s_CurrentType.Name);
+
                 // Get the container type attribute
                 var s_ContainerTypeAttribute = s_CurrentType.GetCustomAttribute<ContainerTypeAttribute>();
                 if (s_ContainerTypeAttribute == null)
@@ -114,6 +120,15 @@ namespace RimeLib.Serialization.Frostbite2_0
 
                 // Get all of the fields for this current type
                 var s_Fields = GetFieldsFromType(s_CurrentType);
+
+                // Iterate each of the fields and add the names to the partition string table
+                foreach (var l_Field in s_Fields)
+                {
+                    var l_FieldName = l_Field.Name;
+
+                    if (!m_TypeStrings.Contains(l_FieldName))
+                        m_TypeStrings.Add(l_FieldName);
+                }
 
                 // Save the start index, because we need to set this in our type descriptor
                 var s_FieldStartIndex = m_FieldDescriptors.Count;
@@ -161,6 +176,9 @@ namespace RimeLib.Serialization.Frostbite2_0
             var s_InstanceEntry = new InstanceEntry
             {
                 TypeDescriptorIndex = (uint)s_MainTypeDescriptorIndex,
+                // NOTE: WE recalculate these later
+                InternalCount = 0, // CtrRef's pointing to the same partition
+                ExportCount  = 0, // CtrRef's pointing to another partition
             };
 
             // TODO: Calculate the import and export counts
