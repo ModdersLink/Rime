@@ -16,10 +16,24 @@ namespace RimeLib.Serialization.Attributes
         public byte DataAlignment { get; set; }
 
         /// <summary>
+        /// Size of this data
+        /// NOTE: FBCCompiler will need to be updated once working
+        /// </summary>
+        public ushort Size { get; set; }
+
+        /// <summary>
+        /// Member information flags
+        /// </summary>
+        public ushort Flags { get; set; }
+
+        /// <summary>
         /// Default constructor that takes an alignment
+        /// NOTE: FBCCompiler will need to be updated once working
         /// </summary>
         /// <param name="Alignment">Default alignment: 0</param>
-        public ContainerTypeAttribute(byte Alignment = 0)
+        /// <param name="p_Size">Size of this container</param>
+        /// <param name="p_Flags">Member information flags of this container</param>
+        public ContainerTypeAttribute(byte Alignment = 0, ushort p_Size = 0, ushort p_Flags = 0)
         {
             DataAlignment = Alignment;
         }

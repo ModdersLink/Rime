@@ -1,8 +1,11 @@
 ﻿using RimeLib.Frostbite.Core;
+using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization.Containers;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
 
 namespace RimeLib.Serialization.Ebx
 {
@@ -72,6 +75,94 @@ namespace RimeLib.Serialization.Ebx
         public byte[] Serialize()
         {
             throw new NotImplementedException();
+        }
+
+        public uint GetImportCount(bool p_TotalImportCount = false, bool p_Recursive = true)
+        {
+            uint s_ImportCount = 0;
+
+            PropertyInfo[]? s_Properties;
+
+            if (p_Recursive)
+                s_Properties = GetType().GetProperties();
+            else
+                s_Properties = GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
+
+            foreach (var s_Property in s_Properties)
+            {
+                // Check to see if this property is browsable or not
+                var s_Browsable = (BrowsableAttribute[])s_Property.GetCustomAttributes(typeof(BrowsableAttribute), false);
+
+                var s_NotBrowsable = s_Browsable.Any(p_Attr => !p_Attr.Browsable);
+
+                if (s_NotBrowsable)
+                    continue;
+
+                // Check to ensure that this property has a ContainerField attribute
+                var s_FieldAttributes = s_Property.GetCustomAttribute<ContainerFieldAttribute>();
+                if (s_FieldAttributes == null)
+                    continue;
+
+                if (!typeof(CtrRefBase).IsAssignableFrom(s_Property.PropertyType))
+                    continue;
+
+                var s_Value = s_Property.GetValue(this);
+                if (s_Value == null)
+                    continue;
+
+                var s_CtrRef = (CtrRefBase)s_Value;
+
+                if (p_TotalImportCount)
+                    s_ImportCount++;
+                else if (s_CtrRef.PartitionGuid != GUID.Empty && s_CtrRef.InstanceGuid != GUID.Empty && s_CtrRef.PartitionGuid != PartitionGuid)
+                    s_ImportCount++;
+            }
+
+            return s_ImportCount;
+        }
+
+        public uint GetInternalCount(bool p_TotalImportCount = false, bool p_Recursive = true)
+        {
+            uint s_InternalCount = 0;
+
+            PropertyInfo[]? s_Properties;
+
+            if (p_Recursive)
+                s_Properties = GetType().GetProperties();
+            else
+                s_Properties = GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
+
+            foreach (var s_Property in s_Properties)
+            {
+                // Check to see if this property is browsable or not
+                var s_Browsable = (BrowsableAttribute[])s_Property.GetCustomAttributes(typeof(BrowsableAttribute), false);
+
+                var s_NotBrowsable = s_Browsable.Any(p_Attr => !p_Attr.Browsable);
+
+                if (s_NotBrowsable)
+                    continue;
+
+                // Check to ensure that this property has a ContainerField attribute
+                var s_FieldAttributes = s_Property.GetCustomAttribute<ContainerFieldAttribute>();
+                if (s_FieldAttributes == null)
+                    continue;
+
+                if (!typeof(CtrRefBase).IsAssignableFrom(s_Property.PropertyType))
+                    continue;
+
+                var s_Value = s_Property.GetValue(this);
+                if (s_Value == null)
+                    continue;
+
+                var s_CtrRef = (CtrRefBase)s_Value;
+
+                if (p_TotalImportCount)
+                    s_InternalCount++;
+                else if (s_CtrRef.PartitionGuid != GUID.Empty && s_CtrRef.InstanceGuid != GUID.Empty && s_CtrRef.PartitionGuid == PartitionGuid)
+                    s_InternalCount++;
+            }
+
+            return s_InternalCount;
         }
     }
 }

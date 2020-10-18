@@ -160,7 +160,7 @@ namespace RimeLib.Serialization.Frostbite2_0
             // Create a new instance
             var s_InstanceEntry = new InstanceEntry
             {
-                TypeDescriptorIndex = (uint)s_MainTypeDescriptorIndex
+                TypeDescriptorIndex = (uint)s_MainTypeDescriptorIndex,
             };
 
             // TODO: Calculate the import and export counts

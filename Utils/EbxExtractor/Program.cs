@@ -137,7 +137,8 @@ namespace EbxExtractor
 
                 PartitionRegistry.RegisterPartition(s_Partition);
 
-                new Serialization(s_Partition);
+                if (s_Partition.Name == "Weapons/M1014/U_M1014_Flashlight")
+                    new Serialization(s_Partition);
 
                 /*var s_Serializer = new PartitionSerializer(new Fb2SerializationContext());
                 s_Serializer.SerializePartition(s_Partition);*/
