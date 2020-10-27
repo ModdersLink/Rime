@@ -25,15 +25,15 @@ namespace RimeLib.Texture.Frostbite2_0
             //Init this
             p_Header.MipmapSizes = new uint[15];
 
-            p_Header.Width = (short) s_DDSHeader.m_Width;
-            p_Header.Height = (short) s_DDSHeader.m_Height;
-            p_Header.Depth = (short) s_DDSHeader.m_Depth;
+            p_Header.Width = (short)s_DDSHeader.m_Width;
+            p_Header.Height = (short)s_DDSHeader.m_Height;
+            p_Header.Depth = (short)s_DDSHeader.m_Depth;
 
             //Check for mipmaps
-            if (s_DDSHeader.m_Flags.HasFlag(DDSFlags.MipmapCount) )
+            if (s_DDSHeader.m_Flags.HasFlag(DDSFlags.MipmapCount))
             {
-                p_Header.MipmapCount = (byte) s_DDSHeader.m_MipmapCount;
-                p_Header.SliceCount = (short) s_DDSHeader.m_MipmapCount;
+                p_Header.MipmapCount = (byte)s_DDSHeader.m_MipmapCount;
+                p_Header.SliceCount = (short)s_DDSHeader.m_MipmapCount;
 
                 //Calculate mimap sizes and chain size
                 var s_CurrentWidth = (uint) p_Header.Width;
@@ -65,7 +65,7 @@ namespace RimeLib.Texture.Frostbite2_0
             //Make it work for some strange dds
             p_Reader.Seek(s_StartPosition + s_DDSHeader.m_Size, SeekOrigin.Begin);
 
-            
+
 
             if (s_DDSHeader.m_PixelFormat.m_Flags.HasFlag(DDSFormatFlags.FourCC) &&
                 s_DDSHeader.m_PixelFormat.m_FourCC == DDSPixelFormat.s_DXExtFormat.m_FourCC) //This is a dx texture
@@ -73,7 +73,7 @@ namespace RimeLib.Texture.Frostbite2_0
                 //This is aligned for some reason
                 p_Reader.Align(0x10);
 
-                var s_ExtendedHeader = new DDSDX10Header( p_Reader );
+                var s_ExtendedHeader = new DDSDX10Header(p_Reader);
 
                 if (s_ExtendedHeader.m_DxgiFormat == DXGIFormat.UNKNOWN)
                     throw new Exception("Invalid format for dx10 texture!");
@@ -138,7 +138,7 @@ namespace RimeLib.Texture.Frostbite2_0
                             continue;
                     }
 
-                    
+
 
                     s_TextureFormat = s_FormatPair.Key;
                     Debug.WriteLine($"Found valid format {s_FormatPair.Key}");
@@ -154,7 +154,7 @@ namespace RimeLib.Texture.Frostbite2_0
                     p_Header.Type = TextureType.TextureType_Cube;
                 else if (s_DDSHeader.m_Flags.HasFlag(DDSFlags.Depth))
                     p_Header.Type = TextureType.TextureType_3D;
-                else if(s_DDSHeader.m_Height > 1)
+                else if (s_DDSHeader.m_Height > 1)
                     p_Header.Type = TextureType.TextureType_2D;
                 else
                     p_Header.Type = TextureType.TextureType_1D; //if the height is 1, load as texture1d
@@ -164,7 +164,7 @@ namespace RimeLib.Texture.Frostbite2_0
 
             //TODO: Probably calculate texture size based off bitcount, will just use the input stream size for now
             var s_SizeLeft = p_Reader.Length - p_Reader.Position;
-            
+
             p_Data = new LimitedRimeReader(p_Reader, s_SizeLeft);
         }
     }

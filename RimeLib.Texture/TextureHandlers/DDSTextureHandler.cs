@@ -71,7 +71,7 @@ namespace RimeLib.Texture.TextureHandlers
             // TODO: Custom textures support?
             var s_Texture = p_Handler.CreateTexture(ResourceType.DxTexture, s_Header.m_Width, s_Header.m_Height, s_TextureFormat, s_TextureType, s_Header.m_MipmapCount);
 
-            if (s_Texture == null)
+            if (s_Texture is null)
                 return false;
 
             var s_TextureData = p_Reader.ReadBytes((int) s_Texture.TextureSize);
@@ -80,7 +80,7 @@ namespace RimeLib.Texture.TextureHandlers
 
             var s_Writer = s_Texture?.Provider?.GetWriter();
 
-            if (s_Writer == null)
+            if (s_Writer is null)
                 return false;
 
             s_Writer.Write(s_TextureData);
@@ -91,11 +91,12 @@ namespace RimeLib.Texture.TextureHandlers
 
         public bool Save(TextureBase p_Texture, RimeWriter p_Writer)
         {
-            GenerateDDSHeader(p_Texture, out var s_Header, out var s_ExtendedHeader);
+            if (!GenerateDDSHeader(p_Texture, out var s_Header, out var s_ExtendedHeader))
+                return false;
 
             s_Header.Serialize(p_Writer);
 
-            if (s_ExtendedHeader != null)
+            if (!(s_ExtendedHeader is null))
             {
                 //Align
                 if (p_Writer.Position % 0x10 != 0)

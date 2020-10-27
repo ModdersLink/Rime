@@ -161,12 +161,30 @@ namespace TextureExtractor
             }
 
 
-            TextureBase s_Texture = null;
+            var s_Loader = TextureLoaderRegistry.FindLoader( p_Mounter.GetEngineType( ) );
 
-            if (!TextureHelper.LoadTexture(p_Mounter, s_TextureObject.FirstVariant, out s_Texture))
+
+            if (s_Loader == null)
+            {
+                if (!p_Options.Quiet)
+                    Console.WriteLine($"Error find texture loader for engine {p_Mounter.GetEngineType()}!");
+                return;
+            }
+
+
+            if (!s_Loader.Load(p_Mounter, s_TextureObject.FirstVariant, out var s_Texture))
             {
                 if (!p_Options.Quiet)
                     Console.WriteLine($"Error loading texture {p_Path}!");
+                return;
+            }
+
+            var s_DDSHandler = TextureFileHandlerRegistry.FindHandler("dds");
+
+            if (s_DDSHandler is null)
+            {
+                if (!p_Options.Quiet)
+                    Console.WriteLine($"Dds not supported?!");
                 return;
             }
 
@@ -174,19 +192,25 @@ namespace TextureExtractor
             {
                 using var s_RimeWriter = new RimeWriter(s_MemoryStream);
 
+                s_DDSHandler!.Save(s_Texture, s_RimeWriter);
                 //DDSExporter.WriteTextureToStream(s_RimeWriter, s_Texture);
 
                 s_MemoryStream.Seek(0, SeekOrigin.Begin);
 
                 using var s_Reader = new RimeReader(s_MemoryStream);
 
-                FB2DDSImporter.LoadDDS(s_Reader, out var s_Header, out var s_Stream);
+
+                if (!s_DDSHandler!.Load(s_Loader, s_Reader, out var s_NewTexture))
+                {
+                    Console.WriteLine("Failed to load texture again!");
+                    return;
+                }
             }
 
         }
 
 
-        private static void DumpTexture(IEngineMounter p_Mounter, string p_Path, Options p_Options)
+        private static void DumpTexture(IEngineMounter p_Mounter, string p_Path, Options p_Options, string p_Extension = "dds")
         {
 
             IMountedObject<IResourceVariant> s_TextureObject = null;
@@ -208,17 +232,19 @@ namespace TextureExtractor
                 return;
             }
 
-            var s_SavePath = $"{p_Options.OutputPath}/{Path.GetFileName( p_Path )}.dds";
+            var s_SavePath = $"{p_Options.OutputPath}/{Path.GetFileName( p_Path )}.{p_Extension}";
 
             if (!p_Options.Quiet)
                 Console.WriteLine($"Dumping texture {p_Path} to {s_SavePath}");
 
+            var s_SaveHandler = TextureFileHandlerRegistry.FindHandler(p_Extension);
 
-            /*
-            using (var s_FileStream = new FileStream(s_SavePath, FileMode.OpenOrCreate))
-            using (var s_RimeWriter = new RimeWriter(s_FileStream))
-                DDSExporter.WriteTextureToStream(s_RimeWriter, s_Texture);
-            */
+            using var s_FileStream = new FileStream(s_SavePath, FileMode.OpenOrCreate);
+            using var s_RimeWriter = new RimeWriter(s_FileStream);
+
+
+            s_SaveHandler?.Save(s_Texture, s_RimeWriter);
+            
         }
 
 
