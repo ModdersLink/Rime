@@ -149,7 +149,9 @@ namespace RimeLib.Serialization.Ebx
             if (s_Container == null)
                 return $"{s_Partition?.Name}/{InstanceGuid}";
 
+#pragma warning disable IDE0059 // Unnecessary assignment of a value
             var s_Name = "";
+#pragma warning restore IDE0059 // Unnecessary assignment of a value
             var s_NameProperty = s_Container.GetType().GetProperty("Name");
 
             if (s_NameProperty != null)
@@ -193,7 +195,7 @@ namespace RimeLib.Serialization.Ebx
         /// </summary>
         /// <param name="obj">Other reference</param>
         /// <returns>True if equal, false otherwise</returns>
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;

@@ -130,7 +130,9 @@ namespace Rime.Utils.ContentLister
             var s_Path = Path.Join(p_Options.OutputPath, p_FilePath + "." + p_Type).Normalize();
          
             var s_Directory = Path.GetDirectoryName(s_Path);
+#pragma warning disable CS8604 // Possible null reference argument.
             Directory.CreateDirectory(s_Directory);
+#pragma warning restore CS8604 // Possible null reference argument.
             
             if (!p_Options.Quiet)
                 Console.WriteLine("/" + p_FilePath + "." + p_Type);

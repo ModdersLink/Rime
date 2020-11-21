@@ -67,7 +67,9 @@ namespace RimeLib.Frostbite.Db
                     continue;
 
                 var s_Attribute = (DbObjectFieldAttribute) s_PropertyAttributes[0];
+#pragma warning disable CS8604 // Possible null reference argument.
                 s_Object.AddElement(ConvertObject(s_Property.GetValue(p_Object), s_Attribute.FieldName, s_Attribute.VariableLength));
+#pragma warning restore CS8604 // Possible null reference argument.
             }
 
             return s_Object;
@@ -215,6 +217,9 @@ namespace RimeLib.Frostbite.Db
                 EnsureElementType(p_Element, DbObjectType.Array);
 
                 var s_ArrayItemType = s_FieldType.GetElementType();
+                if (s_ArrayItemType == null)
+                    throw new NullReferenceException(nameof(s_ArrayItemType));
+
                 var s_DbArray = (DbObject) p_Element.Value;
 
                 // Create our array.
@@ -237,7 +242,9 @@ namespace RimeLib.Frostbite.Db
                 EnsureElementType(p_Element, DbObjectType.Object);
 
                 // Call ConvertFrom with the property type as the generic parameter.
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
                 var s_Method = typeof(DbObjectConverter).GetMethod("FromDbObject").MakeGenericMethod(s_FieldType);
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
                 return s_Method.Invoke(null, new[] { p_Element.Value });
             }
 

@@ -28,11 +28,14 @@ namespace RimeLib.Frostbite.Core
             Object = DeserializeObject(p_Reader);
         }
 
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         public RelocPtr()
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         {
-#pragma warning disable CS8601
-            Object = default(T);
-#pragma warning restore CS8601
+#pragma warning disable CS8601 // Possible null reference assignment.
+            Object = default;
+#pragma warning restore CS8601 // Possible null reference assignment.
+            BaseAddress = 0;
         }
 
         public bool Serialize(RimeWriter p_Writer)
@@ -126,8 +129,12 @@ namespace RimeLib.Frostbite.Core
                             throw new NotImplementedException();
                         }
 
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
                         var s_Val = (IFbSerializable) Activator.CreateInstance(typeof(T), new object[] { });
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
                         s_Val.Deserialize(p_Reader);
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
 
                         return (T) s_Val;
 

@@ -77,7 +77,7 @@ namespace RimeLib.Serialization.Ebx
             return NameHash == other.NameHash && Equals(Flags, other.Flags) && FieldType == other.FieldType && Offset == other.Offset && SecondaryOffset == other.SecondaryOffset;
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;

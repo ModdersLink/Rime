@@ -143,7 +143,9 @@ namespace RimeLib.Cmd.Contexts
         {
             var s_OutPath = Path.Join(m_OutPath, m_SbName);
 
+#pragma warning disable CS8604 // Possible null reference argument.
             Directory.CreateDirectory(Path.GetDirectoryName(s_OutPath));
+#pragma warning restore CS8604 // Possible null reference argument.
 
             using var s_TocStream = File.Open(s_OutPath + ".toc", FileMode.Create, FileAccess.ReadWrite);
             using var s_SbStream = File.Open(s_OutPath + ".sb", FileMode.Create, FileAccess.ReadWrite);

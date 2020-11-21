@@ -117,7 +117,7 @@ namespace RimeLib.Frostbite.Core
         /// </summary>
         /// <param name="obj">Other flag object</param>
         /// <returns>True if equal, false otherwise</returns>
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;

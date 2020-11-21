@@ -124,7 +124,8 @@ namespace RimeLib.Frostbite.Core
                         }
 
                         s_Object = (T) Activator.CreateInstance(typeof(T), new object[] { });
-                        ((IFbSerializable) s_Object).Deserialize(p_Reader);
+                        (s_Object as IFbSerializable)?.Deserialize(p_Reader);
+                        //((IFbSerializable) s_Object).Deserialize(p_Reader); // C# 9 refactoring
 
                         break;
 
@@ -133,7 +134,9 @@ namespace RimeLib.Frostbite.Core
                         throw new NotImplementedException();
                 }
 
-                m_Objects.Add(s_Object);
+                // C# 9 refactoring
+                if (s_Object != null)
+                    m_Objects.Add(s_Object);
             }
 
             // Reset the position

@@ -419,7 +419,7 @@ namespace RimeLib.Serialization.Containers
             return X.Equals(other.X) && Y.Equals(other.Y);
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;

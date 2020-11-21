@@ -39,10 +39,8 @@ namespace RimeLib.Serialization.Containers
         /// <returns>Type object</returns>
         public static Type GetContainerType(uint p_TypeNameHash)
         {
-            Type s_Type;
-
-            if (!m_RegisteredTypes.TryGetValue(p_TypeNameHash, out s_Type))
-                return Type.EmptyTypes.FirstOrDefault();
+            if (!m_RegisteredTypes.TryGetValue(p_TypeNameHash, out Type? s_Type))
+                return Type.EmptyTypes[0];
 
             return s_Type;
         }
@@ -54,10 +52,8 @@ namespace RimeLib.Serialization.Containers
         /// <returns>Type object</returns>
         public static Type GetContainerType(string p_TypeName)
         {
-            Type s_Type;
-
-            if (!m_RegisteredTypes.TryGetValue(FbUtils.HashQuick(p_TypeName), out s_Type))
-                return Type.EmptyTypes.FirstOrDefault();
+            if (!m_RegisteredTypes.TryGetValue(FbUtils.HashQuick(p_TypeName), out Type? s_Type))
+                return Type.EmptyTypes[0];
 
             return s_Type;
         }

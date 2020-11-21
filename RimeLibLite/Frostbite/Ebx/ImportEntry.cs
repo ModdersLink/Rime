@@ -46,7 +46,7 @@ namespace RimeLib.Serialization.Ebx
             return Equals(PartitionGuid, other.PartitionGuid) && Equals(InstanceGuid, other.InstanceGuid);
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;

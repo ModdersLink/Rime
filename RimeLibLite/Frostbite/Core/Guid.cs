@@ -164,7 +164,7 @@ namespace RimeLib.Frostbite.Core
         /// </summary>
         /// <param name="p_Obj">Object to compare</param>
         /// <returns>True if equal, false otherwise</returns>
-        public override bool Equals(object p_Obj)
+        public override bool Equals(object? p_Obj)
         {
             if (ReferenceEquals(this, p_Obj)) 
                 return true;

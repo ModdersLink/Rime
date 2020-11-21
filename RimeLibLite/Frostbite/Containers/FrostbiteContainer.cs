@@ -186,11 +186,11 @@ namespace RimeLib.Serialization.Containers
         /// <param name="p_Binder">GetMemberBinder object</param>
         /// <param name="p_Result">Result object</param>
         /// <returns>True on success, false otherwise</returns>
-	    public override bool TryGetMember(GetMemberBinder p_Binder, out object? p_Result)
+	    public override bool TryGetMember(GetMemberBinder p_Binder, out object p_Result)
         {
-            Tuple<FieldDescriptor, object> s_Value;
+            p_Result = new object();
 
-            p_Result = null;
+            Tuple<FieldDescriptor, object>? s_Value;
 
             if (!m_Fields.TryGetValue(p_Binder.Name, out s_Value))
                 return false;
@@ -205,9 +205,12 @@ namespace RimeLib.Serialization.Containers
         /// <param name="p_Binder">SetMemberBinder object</param>
         /// <param name="p_Value">Object to set</param>
         /// <returns>True on success, false otherwise</returns>
-	    public override bool TrySetMember(SetMemberBinder p_Binder, object p_Value)
+	    public override bool TrySetMember(SetMemberBinder p_Binder, object? p_Value)
         {
             if (!m_Fields.ContainsKey(p_Binder.Name))
+                return false;
+
+            if (p_Value is null)
                 return false;
 
             m_Fields[p_Binder.Name] = new Tuple<FieldDescriptor, object>(m_Fields[p_Binder.Name].Item1, p_Value);
@@ -348,7 +351,9 @@ namespace RimeLib.Serialization.Containers
 
                     if (typeof(FrostbiteContainer).IsAssignableFrom(s_ArrayType))
                     {
-                        var s_List = (IList)s_Property.GetValue(this);
+                        var s_List = s_Property.GetValue(this) as IList;
+                        if (s_List is null)
+                            continue;
 
                         foreach (var s_ListValue in s_List)
                         {
@@ -365,7 +370,7 @@ namespace RimeLib.Serialization.Containers
                 if (!typeof(FrostbiteContainer).IsAssignableFrom(s_Property.PropertyType))
                     continue;
 
-                var s_ValueProperty = (FrostbiteContainer)s_Property.GetValue(this);
+                var s_ValueProperty = s_Property.GetValue(this) as FrostbiteContainer;
 
                 if (s_ValueProperty == null)
                     continue;

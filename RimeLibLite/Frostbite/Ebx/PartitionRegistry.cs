@@ -53,7 +53,11 @@ namespace RimeLib.Serialization
         public static bool RemovePartition(GUID p_Guid)
         {
             FrostbitePartition s_Partition;
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
+#pragma warning disable IDE0059 // Unnecessary assignment of a value
             return m_Partitions.TryRemove(p_Guid, out s_Partition);
+#pragma warning restore IDE0059 // Unnecessary assignment of a value
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
         }
 
         /// <summary>
@@ -73,7 +77,7 @@ namespace RimeLib.Serialization
         /// <returns>Partition or null</returns>
         public static FrostbitePartition? LookupPartition(GUID p_Guid)
         {
-            FrostbitePartition s_Partition;
+            FrostbitePartition? s_Partition;
 
             if (!m_Partitions.TryGetValue(p_Guid, out s_Partition))
                 return null;
@@ -86,7 +90,7 @@ namespace RimeLib.Serialization
         /// </summary>
         /// <param name="p_Path">Name of the partition</param>
         /// <returns>Partition, or null if not found</returns>
-        public static FrostbitePartition LookupPartition(string p_Path)
+        public static FrostbitePartition? LookupPartition(string p_Path)
         {
             var s_Path = p_Path.ToLower();
             return m_Partitions.Values.FirstOrDefault(p_Partition => p_Partition.Name.ToLower() == s_Path);

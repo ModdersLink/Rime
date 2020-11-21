@@ -48,10 +48,14 @@ namespace RimeLib.Serialization.Ebx
             SecondarySize = p_Reader.ReadUInt16();
             m_Name = string.Empty;
 
+#pragma warning disable IDE0059 // Unnecessary assignment of a value
             var s_Name = string.Empty;
+#pragma warning restore IDE0059 // Unnecessary assignment of a value
             p_HashedTypeNames.TryGetValue(NameHash, out s_Name);
 
+#pragma warning disable CS8601 // Possible null reference assignment.
             Name = s_Name;
+#pragma warning restore CS8601 // Possible null reference assignment.
         }
 
         public TypeDescriptor()
@@ -83,7 +87,7 @@ namespace RimeLib.Serialization.Ebx
             return NameHash == other.NameHash && LayoutDescriptor == other.LayoutDescriptor && FieldCount == other.FieldCount && Alignment == other.Alignment && Equals(Flags, other.Flags) && Size == other.Size && SecondarySize == other.SecondarySize;
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;

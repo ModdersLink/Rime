@@ -32,7 +32,11 @@ namespace RimeLib.Content.Building
             if (s_SerializerType == null)
                 throw new ArgumentException("The engine type you provided does not have a superbundle serializer associated with it. This means that the engine type you're trying to mount is either not supported, or the support module for it is not loaded.", nameof(p_Type));
 
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
+#pragma warning disable CS8603 // Possible null reference return.
             return (ISuperbundleSerializer) Activator.CreateInstance(s_SerializerType);
+#pragma warning restore CS8603 // Possible null reference return.
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
         }
 
         /// <summary>
@@ -64,7 +68,9 @@ namespace RimeLib.Content.Building
                 {
                     var s_Attribute = s_SerializerType.GetCustomAttribute<EngineSupportAttribute>(true);
 
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
                     foreach (var s_SupportedEngine in s_Attribute.SupportedEngines)
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
                     {
                         m_Serializers[s_SupportedEngine] = s_SerializerType;
 
