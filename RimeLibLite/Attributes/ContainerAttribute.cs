@@ -33,34 +33,12 @@ namespace RimeLib.Serialization.Attributes
         /// <param name="Alignment">Default alignment: 0</param>
         /// <param name="p_Size">Size of this container</param>
         /// <param name="p_Flags">Member information flags of this container</param>
-        public ContainerTypeAttribute(byte Alignment = 0, ushort p_Size = 0, ushort p_Flags = 0)
+        public ContainerTypeAttribute(byte Alignment = 0, ushort Size = 0, ushort Flags = 0)
         {
             DataAlignment = Alignment;
+            this.Size = Size;
+            this.Flags = Flags;
         }
-    }
-
-    /// <summary>
-    /// Attribute specifying type is a frostbite class (DataContainer inheritance)
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Enum | AttributeTargets.Struct)]
-    public class ContainerClassAttribute : Attribute
-    {
-
-    }
-    /// <summary>
-    /// Attribute for specifying that this is a frostbite struct (No DataContainer, flat type)
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Enum | AttributeTargets.Struct)]
-    public class ContainerStructAttribute : Attribute
-    {
-    }
-
-    /// <summary>
-    /// Attribute for specifying that this is a frostbite enum (fb::enum name)
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Enum | AttributeTargets.Struct)]
-    public class ContainerEnumAttribute : Attribute
-    {
     }
 
     [AttributeUsage(AttributeTargets.Property)]
@@ -134,6 +112,11 @@ namespace RimeLib.Serialization.Attributes
 		public string FieldName { get; set; }
 
         /// <summary>
+        /// Fnv hash of the name of this field
+        /// </summary>
+        public uint FieldNameHash { get; set; }
+
+        /// <summary>
         /// Default constructor
         /// </summary>
         /// <param name="Offset">Offset of this field, default: 0</param>
@@ -141,6 +124,7 @@ namespace RimeLib.Serialization.Attributes
         {
             FieldOffset = Offset;
             FieldName = string.Empty;
+            FieldNameHash = 0;
         }
 
         /// <summary>
@@ -148,10 +132,11 @@ namespace RimeLib.Serialization.Attributes
         /// </summary>
         /// <param name="Name">Name of this field</param>
         /// <param name="Offset">Offset of this field</param>
-	    public ContainerFieldAttribute(string Name, uint Offset = 0)
+	    public ContainerFieldAttribute(string Name, uint Offset = 0, uint NameHash = 0)
         {
             FieldOffset = Offset;
             FieldName = Name;
+            FieldNameHash = NameHash;
         }
     }
 

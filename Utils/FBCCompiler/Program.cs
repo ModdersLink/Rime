@@ -21,8 +21,8 @@ namespace FBCC
             var s_Args = new List<string>()
             {
                 "--gen-rime",
-                @"--in=D:\fbcgen",
-                @"--out=D:\fbcgen_rime",
+                @"--in=D:\Data\Rime\fbcgen",
+                @"--out=D:\Data\Rime\fbcgen_rime",
                 //"--gen-bindings",
                 //"--gen-native",
                 //"--gen-vext-docs",

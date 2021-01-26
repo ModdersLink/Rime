@@ -9,8 +9,9 @@ namespace RimeLib.Serialization.Containers
     /// <summary>
     /// Frostbite's built in 2D Vector Library
     /// </summary>
-    [ContainerType(4), ContainerStruct]
-    public class Vec2 : FrostbiteContainer
+    // TODO: Implement MemberInfoFlags
+    [ContainerType(Alignment: 4, Size: 8)]
+    public class Vec2 : FrostbiteContainer, IEquatable<Vec2>
     {
         /// <summary>
         /// X component
@@ -433,6 +434,11 @@ namespace RimeLib.Serialization.Containers
             {
                 return (X.GetHashCode()*397) ^ Y.GetHashCode();
             }
+        }
+
+        bool IEquatable<Vec2>.Equals(Vec2 other)
+        {
+            return Equals(other);
         }
     }
 }

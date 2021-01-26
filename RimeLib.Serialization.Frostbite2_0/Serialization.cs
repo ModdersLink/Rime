@@ -119,7 +119,7 @@ namespace RimeLib.Serialization.Frostbite2_0
                 var s_MemberInfoFlagAttribute = s_CurrentType.GetCustomAttribute<MemberInfoFlagAttribute>();
 
                 // Get all of the fields for this current type
-                var s_Fields = GetFieldsFromType(s_CurrentType);
+                var s_Fields = GetFieldDescriptorsFromType(s_CurrentType);
 
                 // Iterate each of the fields and add the names to the partition string table
                 foreach (var l_Field in s_Fields)
@@ -128,6 +128,29 @@ namespace RimeLib.Serialization.Frostbite2_0
 
                     if (!m_TypeStrings.Contains(l_FieldName))
                         m_TypeStrings.Add(l_FieldName);
+
+
+                    var s_FieldType = l_Field.Flags.GetFieldType();
+                    switch (s_FieldType)
+                    {
+                        case FieldType.Enum:
+                            var s_Typ = l_Field.CSharpType;
+                            if (!m_TypeStrings.Contains(s_Typ.Name))
+                                m_TypeStrings.Add(s_Typ.Name);
+
+                            Array values = Enum.GetValues(s_Typ);
+
+                            foreach (Enum val in values)
+                            {
+                                if (!m_TypeStrings.Contains(val.ToString()))
+                                    m_TypeStrings.Add(val.ToString());
+                            }
+                            break;
+                        case FieldType.Array:
+                            if (!m_TypeStrings.Contains("array"))
+                                m_TypeStrings.Add("array");
+                            break;
+                    }
                 }
 
                 // Save the start index, because we need to set this in our type descriptor
@@ -188,7 +211,7 @@ namespace RimeLib.Serialization.Frostbite2_0
             m_InstanceEntries.Add(s_InstanceEntry);
         }
 
-        private List<FieldDescriptor> GetFieldsFromType(Type p_InstanceType)
+        private List<FieldDescriptor> GetFieldDescriptorsFromType(Type p_InstanceType)
         {
             // NOTE: This will give you everything in the inheritance chain
             // Is this what we want? or no?
@@ -223,7 +246,6 @@ namespace RimeLib.Serialization.Frostbite2_0
                     FlagBits = s_MemberInfoFlagAttributes.Flag
                 };
 
-
                 var s_FieldName = s_Property.Name;
                 var s_Offset = s_FieldAttributes.FieldOffset;
 
@@ -235,7 +257,8 @@ namespace RimeLib.Serialization.Frostbite2_0
                     FieldType = 0, // This is the TypeDescriptor index, not actual field type
                     Flags = s_MemberInfoFlags,
                     Offset = (int)s_Offset,
-                    SecondaryOffset = 0 // Is this ever non-zero?
+                    SecondaryOffset = 0, // Is this ever non-zero?
+                    CSharpType = s_Property.PropertyType
                 };
 
                 s_FieldDescriptors.Add(s_FieldDescriptor);

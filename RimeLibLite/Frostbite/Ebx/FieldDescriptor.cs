@@ -11,6 +11,10 @@ namespace RimeLib.Serialization.Ebx
     {
         public static int SizeOf => 14 + MemberInfoFlags.SizeOf;
 
+        /// <summary>
+        /// Gets the name of this field
+        /// On Set will update NameHash
+        /// </summary>
         public string Name
         {
             get
@@ -26,11 +30,38 @@ namespace RimeLib.Serialization.Ebx
             }
         }
 
+        /// <summary>
+        /// fb::HashQuick of Name field
+        /// </summary>
         public uint NameHash { get; set; }
+
+        /// <summary>
+        /// Frostbite MemberInfoFlags
+        /// </summary>
         public MemberInfoFlags Flags { get; set; }
+
+        /// <summary>
+        /// This is the TypeDescriptor index, not actual field type
+        /// </summary>
         public ushort FieldType { get; set; }
+
+        /// <summary>
+        /// Offset
+        /// TODO: Better description
+        /// </summary>
         public int Offset { get; set; }
+
+        /// <summary>
+        /// I have no idea what this is used for
+        /// Is it ever non-zero in BF3?
+        /// </summary>
         public int SecondaryOffset { get; set; }
+
+        /// <summary>
+        /// IGNORE THIS
+        /// This is just to make my life easier, it's not actually serialized
+        /// </summary>
+        public Type? CSharpType { get; set; }
 
         private string m_Name;
 

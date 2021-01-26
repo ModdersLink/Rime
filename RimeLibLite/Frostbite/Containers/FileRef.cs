@@ -7,7 +7,8 @@ using System.Text;
 
 namespace RimeLib.Serialization.Containers
 {
-    [ContainerType(8), ContainerStruct]
+    // TODO: Implement MemberInfoFlags
+    [ContainerType(Alignment: 8)]
     public class FileRef : FrostbiteContainer
     {
         private string m_Chars = string.Empty;

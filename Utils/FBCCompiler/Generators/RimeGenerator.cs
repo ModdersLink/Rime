@@ -3,6 +3,7 @@ using FBCC.Containers;
 using System.IO;
 using FBCC.Managers;
 using Antlr4.Runtime.Misc;
+using System.Linq;
 
 namespace FBCC.Generators
 {
@@ -132,14 +133,27 @@ namespace FBCC.Generators
 
         private void WriteClass(ContainerClass p_Class)
         {
-            p_Class.AddAttribute(new ContainerAttribute("ContainerClass"));
+            var s_SizeAttribute = p_Class.Attributes.FirstOrDefault(p_Attribute => p_Attribute.Attribute == "ContainerSize");
+            var s_MemberInfoFlagsAttribute = p_Class.Attributes.FirstOrDefault(p_Attribute => p_Attribute.Attribute == "MemberInfoFlag");
 
-	        var s_ClassAttributes = string.Join(", ", p_Class.Attributes);
+            if (s_SizeAttribute == null || s_MemberInfoFlagsAttribute == null)
+            {
+                // Invalid
+                throw new System.Exception("Why is this happening");
+            }
 
-	        m_Writer.WriteLine(m_Indent + "[ContainerType{0}{1}]",
-		        (p_Class.Alignment == 0) ? "" : "(" + p_Class.Alignment + ")",
-		        s_ClassAttributes.Length > 0 ? ", " + s_ClassAttributes : "",
-				p_Class.Name);
+            if (s_MemberInfoFlagsAttribute.Parameters.Count < 1)
+                throw new System.Exception("Not enough member info flag parameters.");
+
+            if (s_SizeAttribute.Parameters.Count < 1)
+                throw new System.Exception("not enough size parameters.");
+
+            p_Class.Attributes.Remove(s_SizeAttribute);
+            p_Class.Attributes.Remove(s_MemberInfoFlagsAttribute);
+
+            var s_ClassAttributes = string.Join(", ", p_Class.Attributes);
+
+            m_Writer.WriteLine($"{m_Indent}[ContainerType({ (p_Class.Alignment == 0 ? "" : "Alignment: " + p_Class.Alignment + ", ") } Flags: {s_MemberInfoFlagsAttribute.Parameters.First()}, Size: {s_SizeAttribute.Parameters[0]} { (p_Class.Attributes.Count > 0 ? s_ClassAttributes : "") } )]");
 
             m_Writer.Write(m_Indent + "public class {0}", p_Class.Name);
 
@@ -435,17 +449,29 @@ namespace FBCC.Generators
 
         private void WriteStruct(ContainerStruct p_Struct)
 		{
-            // Add this attribute for easier serialization later
-            p_Struct.AddAttribute(new ContainerAttribute("ContainerStruct"));
+            var s_SizeAttribute = p_Struct.Attributes.FirstOrDefault(p_Attribute => p_Attribute.Attribute == "ContainerSize");
+            var s_MemberInfoFlagsAttribute = p_Struct.Attributes.FirstOrDefault(p_Attribute => p_Attribute.Attribute == "MemberInfoFlag");
 
-			var s_StructAttributes = string.Join(", ", p_Struct.Attributes);
+            if (s_SizeAttribute == null || s_MemberInfoFlagsAttribute == null)
+            {
+                // Invalid
+                throw new System.Exception("Why is this happening");
+            }
 
-			m_Writer.WriteLine(m_Indent + "[ContainerType{0}{1}]",
-				(p_Struct.Alignment == 0) ? "" : "(" + p_Struct.Alignment + ")",
-				s_StructAttributes.Length > 0 ? ", " + s_StructAttributes : "",
-				p_Struct.Name);
+            if (s_MemberInfoFlagsAttribute.Parameters.Count < 1)
+                throw new System.Exception("Not enough member info flag parameters.");
 
-			m_Writer.Write(m_Indent + "public class {0} : FrostbiteContainer", p_Struct.Name);
+            if (s_SizeAttribute.Parameters.Count < 1)
+                throw new System.Exception("not enough size parameters.");
+
+            p_Struct.Attributes.Remove(s_SizeAttribute);
+            p_Struct.Attributes.Remove(s_MemberInfoFlagsAttribute);
+
+            var s_StructAttributes = string.Join(", ", p_Struct.Attributes);
+
+            m_Writer.WriteLine($"{m_Indent}[ContainerType({ (p_Struct.Alignment == 0 ? "" : "Alignment: " + p_Struct.Alignment + ", ") } Flags: {s_MemberInfoFlagsAttribute.Parameters.First()}, Size: {s_SizeAttribute.Parameters[0]} { (p_Struct.Attributes.Count > 0 ? s_StructAttributes : "") } )]");
+
+            m_Writer.Write(m_Indent + "public class {0} : FrostbiteContainer", p_Struct.Name);
             m_Writer.WriteLine();
 
             // Write class body start
@@ -691,16 +717,32 @@ namespace FBCC.Generators
 
         private void WriteEnum(ContainerEnum p_Enum)
         {
-            p_Enum.AddAttribute(new ContainerAttribute("ContainerEnum"));
-
             var s_Type = GetEnumType(p_Enum);
 
-			var s_EnumAttributes = string.Join(", ", p_Enum.Attributes);
+            var s_SizeAttribute = p_Enum.Attributes.FirstOrDefault(p_Attribute => p_Attribute.Attribute == "ContainerSize");
+            var s_MemberInfoFlagsAttribute = p_Enum.Attributes.FirstOrDefault(p_Attribute => p_Attribute.Attribute == "MemberInfoFlag");
 
-			if (s_EnumAttributes.Length > 0)
-				m_Writer.WriteLine(m_Indent + "[" + s_EnumAttributes + "]");
+            if (s_SizeAttribute == null || s_MemberInfoFlagsAttribute == null)
+            {
+                // Invalid
+                throw new System.Exception("Why is this happening");
+            }
 
-			m_Writer.WriteLine(m_Indent + "public enum {0} : {1}", p_Enum.Name, s_Type);
+            if (s_MemberInfoFlagsAttribute.Parameters.Count < 1)
+                throw new System.Exception("Not enough member info flag parameters.");
+
+            if (s_SizeAttribute.Parameters.Count < 1)
+                throw new System.Exception("not enough size parameters.");
+
+            p_Enum.Attributes.Remove(s_SizeAttribute);
+            p_Enum.Attributes.Remove(s_MemberInfoFlagsAttribute);
+
+            var s_EnumAttributes = string.Join(", ", p_Enum.Attributes);
+
+            m_Writer.WriteLine($"{m_Indent}[ContainerType(Flags: {s_MemberInfoFlagsAttribute.Parameters.First()}, Size: {s_SizeAttribute.Parameters[0]} { (p_Enum.Attributes.Count > 0 ? s_EnumAttributes : "") } )]");
+
+
+            m_Writer.WriteLine(m_Indent + "public enum {0} : {1}", p_Enum.Name, s_Type);
 
             // Write enum body start.
             m_Writer.WriteLine(m_Indent + "{");

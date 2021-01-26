@@ -9,7 +9,8 @@ namespace RimeLib.Serialization.Containers
     /// <summary>
     /// Implementation of fb::Vec4
     /// </summary>
-    [ContainerType(16), ContainerStruct]
+    // TODO: Set MemberInfoFlags
+    [ContainerType(Alignment: 16, Size: 16)]
     public class Vec4 : FrostbiteContainer
     {
         /// <summary>

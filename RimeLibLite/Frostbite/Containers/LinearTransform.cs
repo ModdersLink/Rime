@@ -7,7 +7,8 @@ namespace RimeLib.Serialization.Containers
     /// <summary>
     /// Implementation for fb::LinearTransform
     /// </summary>
-    [ContainerType(16), ContainerStruct]
+    // TODO: Implement MemberInfoFlags
+    [ContainerType(Alignment: 16, Size: 64)]
     public class LinearTransform : FrostbiteContainer
     {
         /// <summary>
