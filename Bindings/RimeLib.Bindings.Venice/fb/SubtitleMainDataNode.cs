@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(20), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 20)]
 	public class SubtitleMainDataNode : 
 		TreeNodeBase
 	{
 		protected LanguageFormat m_Language = new LanguageFormat();
-		[ContainerField(12), MemberInfoFlag(137), ContainerFieldNameHash(3872303031)]
+		[ContainerField(Name: "Language", Offset: 12, NameHash: 3872303031, Flags: 137)]
 		public LanguageFormat Language { get { return m_Language; } set { if (OnPropertyChanging("SubtitleMainDataNode." + nameof(Language), this, m_Language, value)) m_Language = value; } } // 0xC (12)
 		
 		protected RefArray<SubtitleDataNode> m_Subtitles = new RefArray<SubtitleDataNode>();
-		[ContainerField(16), MemberInfoFlag(65), ContainerFieldNameHash(595907762), ContainerRefArray]
+		[ContainerField(Name: "Subtitles", Offset: 16, NameHash: 595907762, Flags: 65)]
 		public RefArray<SubtitleDataNode> Subtitles { get { return m_Subtitles; } set { if (OnPropertyChanging("SubtitleMainDataNode." + nameof(Subtitles), this, m_Subtitles, value)) m_Subtitles = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,48 +18,48 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(160), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 160)]
 	public class CharacterLightingComponentData : 
 		ComponentData
 	{
 		protected Vec3 m_BottomLight = new Vec3();
-		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(609828532)]
+		[ContainerField(Name: "BottomLight", Offset: 96, NameHash: 609828532, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 BottomLight { get { return m_BottomLight; } set { if (OnPropertyChanging("CharacterLightingComponentData." + nameof(BottomLight), this, m_BottomLight, value)) m_BottomLight = value; } } // 0x60 (96)
 		
 		protected Vec3 m_TopLight = new Vec3();
-		[ContainerField(112), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(2399334960)]
+		[ContainerField(Name: "TopLight", Offset: 112, NameHash: 2399334960, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 TopLight { get { return m_TopLight; } set { if (OnPropertyChanging("CharacterLightingComponentData." + nameof(TopLight), this, m_TopLight, value)) m_TopLight = value; } } // 0x70 (112)
 		
 		protected CharacterLightingMode m_CharacterLightingMode = new CharacterLightingMode();
-		[ContainerField(128), MemberInfoFlag(137), ContainerFieldNameHash(3372338465)]
+		[ContainerField(Name: "CharacterLightingMode", Offset: 128, NameHash: 3372338465, Flags: 137)]
 		public CharacterLightingMode CharacterLightingMode { get { return m_CharacterLightingMode; } set { if (OnPropertyChanging("CharacterLightingComponentData." + nameof(CharacterLightingMode), this, m_CharacterLightingMode, value)) m_CharacterLightingMode = value; } } // 0x80 (128)
 		
 		protected float m_CameraUpRotation = new float();
-		[ContainerField(132), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3569471469)]
+		[ContainerField(Name: "CameraUpRotation", Offset: 132, NameHash: 3569471469, Flags: 49469), LayoutImmutable, Blittable]
 		public float CameraUpRotation { get { return m_CameraUpRotation; } set { if (OnPropertyChanging("CharacterLightingComponentData." + nameof(CameraUpRotation), this, m_CameraUpRotation, value)) m_CameraUpRotation = value; } } // 0x84 (132)
 		
 		protected float m_TopLightDirY = new float();
-		[ContainerField(136), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1588880502)]
+		[ContainerField(Name: "TopLightDirY", Offset: 136, NameHash: 1588880502, Flags: 49469), LayoutImmutable, Blittable]
 		public float TopLightDirY { get { return m_TopLightDirY; } set { if (OnPropertyChanging("CharacterLightingComponentData." + nameof(TopLightDirY), this, m_TopLightDirY, value)) m_TopLightDirY = value; } } // 0x88 (136)
 		
 		protected float m_BlendFactor = new float();
-		[ContainerField(140), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2895077833)]
+		[ContainerField(Name: "BlendFactor", Offset: 140, NameHash: 2895077833, Flags: 49469), LayoutImmutable, Blittable]
 		public float BlendFactor { get { return m_BlendFactor; } set { if (OnPropertyChanging("CharacterLightingComponentData." + nameof(BlendFactor), this, m_BlendFactor, value)) m_BlendFactor = value; } } // 0x8C (140)
 		
 		protected float m_TopLightDirX = new float();
-		[ContainerField(144), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1588880503)]
+		[ContainerField(Name: "TopLightDirX", Offset: 144, NameHash: 1588880503, Flags: 49469), LayoutImmutable, Blittable]
 		public float TopLightDirX { get { return m_TopLightDirX; } set { if (OnPropertyChanging("CharacterLightingComponentData." + nameof(TopLightDirX), this, m_TopLightDirX, value)) m_TopLightDirX = value; } } // 0x90 (144)
 		
 		protected bool m_LockToCameraDirection = new bool();
-		[ContainerField(148), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(689897193)]
+		[ContainerField(Name: "LockToCameraDirection", Offset: 148, NameHash: 689897193, Flags: 49325), LayoutImmutable, Blittable]
 		public bool LockToCameraDirection { get { return m_LockToCameraDirection; } set { if (OnPropertyChanging("CharacterLightingComponentData." + nameof(LockToCameraDirection), this, m_LockToCameraDirection, value)) m_LockToCameraDirection = value; } } // 0x94 (148)
 		
 		protected bool m_FirstPersonEnable = new bool();
-		[ContainerField(149), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2753363403)]
+		[ContainerField(Name: "FirstPersonEnable", Offset: 149, NameHash: 2753363403, Flags: 49325), LayoutImmutable, Blittable]
 		public bool FirstPersonEnable { get { return m_FirstPersonEnable; } set { if (OnPropertyChanging("CharacterLightingComponentData." + nameof(FirstPersonEnable), this, m_FirstPersonEnable, value)) m_FirstPersonEnable = value; } } // 0x95 (149)
 		
 		protected bool m_CharacterLightEnable = new bool();
-		[ContainerField(150), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3028030371)]
+		[ContainerField(Name: "CharacterLightEnable", Offset: 150, NameHash: 3028030371, Flags: 49325), LayoutImmutable, Blittable]
 		public bool CharacterLightEnable { get { return m_CharacterLightEnable; } set { if (OnPropertyChanging("CharacterLightingComponentData." + nameof(CharacterLightEnable), this, m_CharacterLightEnable, value)) m_CharacterLightEnable = value; } } // 0x96 (150)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

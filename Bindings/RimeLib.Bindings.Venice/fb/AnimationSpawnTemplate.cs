@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(12), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 12)]
 	public class AnimationSpawnTemplate : 
 		DataContainer
 	{
 		protected CtrRef<AntEnumeration> m_RunStyle = new CtrRef<AntEnumeration>();
-		[ContainerField(8), MemberInfoFlag(53), ContainerFieldNameHash(1984199259), ContainerCtrRef]
+		[ContainerField(Name: "RunStyle", Offset: 8, NameHash: 1984199259, Flags: 53)]
 		public CtrRef<AntEnumeration> RunStyle { get { return m_RunStyle; } set { if (OnPropertyChanging("AnimationSpawnTemplate." + nameof(RunStyle), this, m_RunStyle, value)) m_RunStyle = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

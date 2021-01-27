@@ -18,19 +18,19 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(16), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 16)]
 	public class SupportedShootingProximityChecking : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "RayAboveGunHeightOffset", Offset: 0, NameHash: 3036253694, Flags: 49469), LayoutImmutable, Blittable]
 		public float RayAboveGunHeightOffset { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "RayAboveLength", Offset: 4, NameHash: 3860297932, Flags: 49469), LayoutImmutable, Blittable]
 		public float RayAboveLength { get; set; } // 0x4 (4)
 		
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "RayBelowGunHeightOffset", Offset: 8, NameHash: 2261799346, Flags: 49469), LayoutImmutable, Blittable]
 		public float RayBelowGunHeightOffset { get; set; } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "RayBelowLength", Offset: 12, NameHash: 421914752, Flags: 49469), LayoutImmutable, Blittable]
 		public float RayBelowLength { get; set; } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

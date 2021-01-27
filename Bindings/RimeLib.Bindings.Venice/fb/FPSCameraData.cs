@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(224), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 224)]
 	public class FPSCameraData : 
 		TargetCameraData
 	{
 		protected TurnEffectData m_TurnEffectSettings = new TurnEffectData();
-		[ContainerField(160), MemberInfoFlag(41), ContainerFieldNameHash(76337482)]
+		[ContainerField(Name: "TurnEffectSettings", Offset: 160, NameHash: 76337482, Flags: 41)]
 		public TurnEffectData TurnEffectSettings { get { return m_TurnEffectSettings; } set { if (OnPropertyChanging("FPSCameraData." + nameof(TurnEffectSettings), this, m_TurnEffectSettings, value)) m_TurnEffectSettings = value; } } // 0xA0 (160)
 		
 		protected BlurEffectData m_BlurEffectSettings = new BlurEffectData();
-		[ContainerField(192), MemberInfoFlag(41), ContainerFieldNameHash(2488763390)]
+		[ContainerField(Name: "BlurEffectSettings", Offset: 192, NameHash: 2488763390, Flags: 41)]
 		public BlurEffectData BlurEffectSettings { get { return m_BlurEffectSettings; } set { if (OnPropertyChanging("FPSCameraData." + nameof(BlurEffectSettings), this, m_BlurEffectSettings, value)) m_BlurEffectSettings = value; } } // 0xC0 (192)
 		
 		protected float m_FOV = new float();
-		[ContainerField(216), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(193442778)]
+		[ContainerField(Name: "FOV", Offset: 216, NameHash: 193442778, Flags: 49469), LayoutImmutable, Blittable]
 		public float FOV { get { return m_FOV; } set { if (OnPropertyChanging("FPSCameraData." + nameof(FOV), this, m_FOV, value)) m_FOV = value; } } // 0xD8 (216)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

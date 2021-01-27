@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(41), ContainerSize(32), ContainerStruct]
+	[ContainerType(Alignment: 16,  Flags: 41, Size: 32)]
 	public class VectorShaderParameter : FrostbiteContainer
 	{
-		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
+		[ContainerField(Name: "Value", Offset: 0, NameHash: 225375086, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec4 Value { get; set; } = new Vec4(); // 0x0 (0)
 		
-		[ContainerField(16), MemberInfoFlag(137)]
+		[ContainerField(Name: "ParameterType", Offset: 16, NameHash: 1569850964, Flags: 137)]
 		public ShaderParameterType ParameterType { get; set; } = new ShaderParameterType(); // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "ParameterName", Offset: 20, NameHash: 1568946859, Flags: 16509), LayoutImmutable]
 		public string ParameterName { get; set; } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

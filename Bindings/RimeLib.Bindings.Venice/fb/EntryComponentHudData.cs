@@ -18,22 +18,22 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(12), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 12)]
 	public class EntryComponentHudData : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, Blittable, MemberInfoFlag(49405)]
+		[ContainerField(Name: "Index", Offset: 0, NameHash: 214509467, Flags: 49405), LayoutImmutable, Blittable]
 		public int Index { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), MemberInfoFlag(137)]
+		[ContainerField(Name: "SeatType", Offset: 4, NameHash: 1128962654, Flags: 137)]
 		public EntrySeatType SeatType { get; set; } = new EntrySeatType(); // 0x4 (4)
 		
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "Frustum", Offset: 8, NameHash: 2068536187, Flags: 49325), LayoutImmutable, Blittable]
 		public bool Frustum { get; set; } // 0x8 (8)
 		
-		[ContainerField(9), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "Visible", Offset: 9, NameHash: 901540267, Flags: 49325), LayoutImmutable, Blittable]
 		public bool Visible { get; set; } // 0x9 (9)
 		
-		[ContainerField(10), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "MaximizeMiniMapOnEntry", Offset: 10, NameHash: 2821599657, Flags: 49325), LayoutImmutable, Blittable]
 		public bool MaximizeMiniMapOnEntry { get; set; } // 0xA (10)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

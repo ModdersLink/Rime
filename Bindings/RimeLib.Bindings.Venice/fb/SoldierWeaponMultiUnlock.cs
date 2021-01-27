@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(20), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 20)]
 	public class SoldierWeaponMultiUnlock : 
 		UnlockUserDataBase
 	{
 		protected CtrRef<UnlockAssetBase> m_First = new CtrRef<UnlockAssetBase>();
-		[ContainerField(12), MemberInfoFlag(53), ContainerFieldNameHash(206694335), ContainerCtrRef]
+		[ContainerField(Name: "First", Offset: 12, NameHash: 206694335, Flags: 53)]
 		public CtrRef<UnlockAssetBase> First { get { return m_First; } set { if (OnPropertyChanging("SoldierWeaponMultiUnlock." + nameof(First), this, m_First, value)) m_First = value; } } // 0xC (12)
 		
 		protected List<UnlockAssetPair> m_UnlockAssetPairs = new List<UnlockAssetPair>();
-		[ContainerField(16), MemberInfoFlag(65), ContainerFieldNameHash(2683444764), ContainerArray]
+		[ContainerField(Name: "UnlockAssetPairs", Offset: 16, NameHash: 2683444764, Flags: 65)]
 		public List<UnlockAssetPair> UnlockAssetPairs { get { return m_UnlockAssetPairs; } set { if (OnPropertyChanging("SoldierWeaponMultiUnlock." + nameof(UnlockAssetPairs), this, m_UnlockAssetPairs, value)) m_UnlockAssetPairs = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

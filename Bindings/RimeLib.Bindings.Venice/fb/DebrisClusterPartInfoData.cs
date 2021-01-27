@@ -18,31 +18,31 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(41), ContainerSize(48), ContainerStruct]
+	[ContainerType(Alignment: 16,  Flags: 41, Size: 48)]
 	public class DebrisClusterPartInfoData : FrostbiteContainer
 	{
-		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
+		[ContainerField(Name: "AngularVelocity", Offset: 0, NameHash: 1379775472, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 AngularVelocity { get; set; } = new Vec3(); // 0x0 (0)
 		
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
+		[ContainerField(Name: "LinearVelocity", Offset: 16, NameHash: 1252550863, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 LinearVelocity { get; set; } = new Vec3(); // 0x10 (16)
 		
-		[ContainerField(32), LayoutImmutable, Blittable, MemberInfoFlag(49405)]
+		[ContainerField(Name: "NumberOfChildren", Offset: 32, NameHash: 798522684, Flags: 49405), LayoutImmutable, Blittable]
 		public int NumberOfChildren { get; set; } // 0x20 (32)
 		
-		[ContainerField(36), LayoutImmutable, Blittable, MemberInfoFlag(49405)]
+		[ContainerField(Name: "PartIndex", Offset: 36, NameHash: 3213901068, Flags: 49405), LayoutImmutable, Blittable]
 		public int PartIndex { get; set; } // 0x24 (36)
 		
-		[ContainerField(40), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "SplitSpeedThreshold", Offset: 40, NameHash: 2280900007, Flags: 49469), LayoutImmutable, Blittable]
 		public float SplitSpeedThreshold { get; set; } // 0x28 (40)
 		
-		[ContainerField(44), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "InEffectWorldOnly", Offset: 44, NameHash: 1269951075, Flags: 49325), LayoutImmutable, Blittable]
 		public bool InEffectWorldOnly { get; set; } // 0x2C (44)
 		
-		[ContainerField(45), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "SyncRestPosition", Offset: 45, NameHash: 535707627, Flags: 49325), LayoutImmutable, Blittable]
 		public bool SyncRestPosition { get; set; } // 0x2D (45)
 		
-		[ContainerField(46), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "SyncContinous", Offset: 46, NameHash: 618548762, Flags: 49325), LayoutImmutable, Blittable]
 		public bool SyncContinous { get; set; } // 0x2E (46)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

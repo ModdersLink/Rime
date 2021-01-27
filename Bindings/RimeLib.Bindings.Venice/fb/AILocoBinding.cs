@@ -18,34 +18,34 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(36), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 36)]
 	public class AILocoBinding : FrostbiteContainer
 	{
-		[ContainerField(0), MemberInfoFlag(41)]
+		[ContainerField(Name: "LocoTarget", Offset: 0, NameHash: 1880034011, Flags: 41)]
 		public AntRef LocoTarget { get; set; } = new AntRef(); // 0x0 (0)
 		
-		[ContainerField(4), MemberInfoFlag(41)]
+		[ContainerField(Name: "AttentionState", Offset: 4, NameHash: 4224473092, Flags: 41)]
 		public AntRef AttentionState { get; set; } = new AntRef(); // 0x4 (4)
 		
-		[ContainerField(8), MemberInfoFlag(41)]
+		[ContainerField(Name: "EndPoseEnum", Offset: 8, NameHash: 2112616464, Flags: 41)]
 		public AntRef EndPoseEnum { get; set; } = new AntRef(); // 0x8 (8)
 		
-		[ContainerField(12), MemberInfoFlag(41)]
+		[ContainerField(Name: "CurrentPoseEnum", Offset: 12, NameHash: 2074109494, Flags: 41)]
 		public AntRef CurrentPoseEnum { get; set; } = new AntRef(); // 0xC (12)
 		
-		[ContainerField(16), MemberInfoFlag(41)]
+		[ContainerField(Name: "EnterExitPoseEnum", Offset: 16, NameHash: 3252204311, Flags: 41)]
 		public AntRef EnterExitPoseEnum { get; set; } = new AntRef(); // 0x10 (16)
 		
-		[ContainerField(20), MemberInfoFlag(41)]
+		[ContainerField(Name: "RunStyle", Offset: 20, NameHash: 1984199259, Flags: 41)]
 		public AntRef RunStyle { get; set; } = new AntRef(); // 0x14 (20)
 		
-		[ContainerField(24), MemberInfoFlag(41)]
+		[ContainerField(Name: "TargetWaypointPosition", Offset: 24, NameHash: 3424917486, Flags: 41)]
 		public AntRef TargetWaypointPosition { get; set; } = new AntRef(); // 0x18 (24)
 		
-		[ContainerField(28), MemberInfoFlag(41)]
+		[ContainerField(Name: "TargetSpeedLevel", Offset: 28, NameHash: 1705448581, Flags: 41)]
 		public AntRef TargetSpeedLevel { get; set; } = new AntRef(); // 0x1C (28)
 		
-		[ContainerField(32), MemberInfoFlag(41)]
+		[ContainerField(Name: "EnableProceduralHeadAim", Offset: 32, NameHash: 2283438924, Flags: 41)]
 		public AntRef EnableProceduralHeadAim { get; set; } = new AntRef(); // 0x20 (32)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

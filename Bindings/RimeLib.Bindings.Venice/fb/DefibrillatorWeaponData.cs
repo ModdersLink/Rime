@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(24), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 24)]
 	public class DefibrillatorWeaponData : 
 		WeaponData
 	{
 		protected float m_ReviveTime = new float();
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3083359915)]
+		[ContainerField(Name: "ReviveTime", Offset: 16, NameHash: 3083359915, Flags: 49469), LayoutImmutable, Blittable]
 		public float ReviveTime { get { return m_ReviveTime; } set { if (OnPropertyChanging("DefibrillatorWeaponData." + nameof(ReviveTime), this, m_ReviveTime, value)) m_ReviveTime = value; } } // 0x10 (16)
 		
 		protected float m_AttackTime = new float();
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1150936440)]
+		[ContainerField(Name: "AttackTime", Offset: 20, NameHash: 1150936440, Flags: 49469), LayoutImmutable, Blittable]
 		public float AttackTime { get { return m_AttackTime; } set { if (OnPropertyChanging("DefibrillatorWeaponData." + nameof(AttackTime), this, m_AttackTime, value)) m_AttackTime = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

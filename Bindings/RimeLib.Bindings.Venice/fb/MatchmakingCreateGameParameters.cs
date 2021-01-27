@@ -18,25 +18,25 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(32), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 32)]
 	public class MatchmakingCreateGameParameters : FrostbiteContainer
 	{
-		[ContainerField(0), MemberInfoFlag(137)]
+		[ContainerField(Name: "GameTopology", Offset: 0, NameHash: 3949212722, Flags: 137)]
 		public MatchmakingNetworkTopology GameTopology { get; set; } = new MatchmakingNetworkTopology(); // 0x0 (0)
 		
-		[ContainerField(4), MemberInfoFlag(137)]
+		[ContainerField(Name: "PeerMode", Offset: 4, NameHash: 3663647812, Flags: 137)]
 		public MatchmakingPeer2PeerMode PeerMode { get; set; } = new MatchmakingPeer2PeerMode(); // 0x4 (4)
 		
-		[ContainerField(8), MemberInfoFlag(137)]
+		[ContainerField(Name: "VoipTopology", Offset: 8, NameHash: 3415203484, Flags: 137)]
 		public MatchmakingNetworkTopology VoipTopology { get; set; } = new MatchmakingNetworkTopology(); // 0x8 (8)
 		
-		[ContainerField(12), MemberInfoFlag(41)]
+		[ContainerField(Name: "Settings", Offset: 12, NameHash: 649772672, Flags: 41)]
 		public MatchmakingGameSettings Settings { get; set; } = new MatchmakingGameSettings(); // 0xC (12)
 		
-		[ContainerField(24), MemberInfoFlag(65), ContainerArray]
+		[ContainerField(Name: "Attributes", Offset: 24, NameHash: 3723762538, Flags: 65)]
 		public List<MatchmakingGameAttribute> Attributes { get; set; } = new List<MatchmakingGameAttribute>(); // 0x18 (24)
 		
-		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
+		[ContainerField(Name: "QueueCapacity", Offset: 28, NameHash: 2357148928, Flags: 49421), LayoutImmutable, Blittable]
 		public uint QueueCapacity { get; set; } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

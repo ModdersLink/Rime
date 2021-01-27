@@ -18,84 +18,84 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(240), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 240)]
 	public class SkyEffectState : 
 		DataContainer
 	{
 		protected Vec3 m_CloudLayerSunColor = new Vec3();
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(2080466082)]
+		[ContainerField(Name: "CloudLayerSunColor", Offset: 16, NameHash: 2080466082, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 CloudLayerSunColor { get { return m_CloudLayerSunColor; } set { if (OnPropertyChanging("SkyEffectState." + nameof(CloudLayerSunColor), this, m_CloudLayerSunColor, value)) m_CloudLayerSunColor = value; } } // 0x10 (16)
 		
 		protected float m_PanoramicTileFactor = new float();
-		[ContainerField(32), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(4205943736)]
+		[ContainerField(Name: "PanoramicTileFactor", Offset: 32, NameHash: 4205943736, Flags: 49469), LayoutImmutable, Blittable]
 		public float PanoramicTileFactor { get { return m_PanoramicTileFactor; } set { if (OnPropertyChanging("SkyEffectState." + nameof(PanoramicTileFactor), this, m_PanoramicTileFactor, value)) m_PanoramicTileFactor = value; } } // 0x20 (32)
 		
 		protected float m_SunSize = new float();
-		[ContainerField(36), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2149343816)]
+		[ContainerField(Name: "SunSize", Offset: 36, NameHash: 2149343816, Flags: 49469), LayoutImmutable, Blittable]
 		public float SunSize { get { return m_SunSize; } set { if (OnPropertyChanging("SkyEffectState." + nameof(SunSize), this, m_SunSize, value)) m_SunSize = value; } } // 0x24 (36)
 		
 		protected float m_SkyGradientScale = new float();
-		[ContainerField(40), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3803360250)]
+		[ContainerField(Name: "SkyGradientScale", Offset: 40, NameHash: 3803360250, Flags: 49469), LayoutImmutable, Blittable]
 		public float SkyGradientScale { get { return m_SkyGradientScale; } set { if (OnPropertyChanging("SkyEffectState." + nameof(SkyGradientScale), this, m_SkyGradientScale, value)) m_SkyGradientScale = value; } } // 0x28 (40)
 		
 		protected float m_SunScale = new float();
-		[ContainerField(44), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2209231701)]
+		[ContainerField(Name: "SunScale", Offset: 44, NameHash: 2209231701, Flags: 49469), LayoutImmutable, Blittable]
 		public float SunScale { get { return m_SunScale; } set { if (OnPropertyChanging("SkyEffectState." + nameof(SunScale), this, m_SunScale, value)) m_SunScale = value; } } // 0x2C (44)
 		
 		protected float m_PanoramicUVMinX = new float();
-		[ContainerField(48), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2272259824)]
+		[ContainerField(Name: "PanoramicUVMinX", Offset: 48, NameHash: 2272259824, Flags: 49469), LayoutImmutable, Blittable]
 		public float PanoramicUVMinX { get { return m_PanoramicUVMinX; } set { if (OnPropertyChanging("SkyEffectState." + nameof(PanoramicUVMinX), this, m_PanoramicUVMinX, value)) m_PanoramicUVMinX = value; } } // 0x30 (48)
 		
 		protected CtrRef<TextureAsset> m_SkyGradientTexture = new CtrRef<TextureAsset>();
-		[ContainerField(52), MemberInfoFlag(53), ContainerFieldNameHash(1001603005), ContainerCtrRef]
+		[ContainerField(Name: "SkyGradientTexture", Offset: 52, NameHash: 1001603005, Flags: 53)]
 		public CtrRef<TextureAsset> SkyGradientTexture { get { return m_SkyGradientTexture; } set { if (OnPropertyChanging("SkyEffectState." + nameof(SkyGradientTexture), this, m_SkyGradientTexture, value)) m_SkyGradientTexture = value; } } // 0x34 (52)
 		
 		protected float m_PanoramicUVMinY = new float();
-		[ContainerField(56), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2272259825)]
+		[ContainerField(Name: "PanoramicUVMinY", Offset: 56, NameHash: 2272259825, Flags: 49469), LayoutImmutable, Blittable]
 		public float PanoramicUVMinY { get { return m_PanoramicUVMinY; } set { if (OnPropertyChanging("SkyEffectState." + nameof(PanoramicUVMinY), this, m_PanoramicUVMinY, value)) m_PanoramicUVMinY = value; } } // 0x38 (56)
 		
 		protected float m_PanoramicUVMaxY = new float();
-		[ContainerField(60), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2272268591)]
+		[ContainerField(Name: "PanoramicUVMaxY", Offset: 60, NameHash: 2272268591, Flags: 49469), LayoutImmutable, Blittable]
 		public float PanoramicUVMaxY { get { return m_PanoramicUVMaxY; } set { if (OnPropertyChanging("SkyEffectState." + nameof(PanoramicUVMaxY), this, m_PanoramicUVMaxY, value)) m_PanoramicUVMaxY = value; } } // 0x3C (60)
 		
 		protected float m_PanoramicUVMaxX = new float();
-		[ContainerField(64), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2272268590)]
+		[ContainerField(Name: "PanoramicUVMaxX", Offset: 64, NameHash: 2272268590, Flags: 49469), LayoutImmutable, Blittable]
 		public float PanoramicUVMaxX { get { return m_PanoramicUVMaxX; } set { if (OnPropertyChanging("SkyEffectState." + nameof(PanoramicUVMaxX), this, m_PanoramicUVMaxX, value)) m_PanoramicUVMaxX = value; } } // 0x40 (64)
 		
 		protected float m_PanoramicRotation = new float();
-		[ContainerField(68), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(980600565)]
+		[ContainerField(Name: "PanoramicRotation", Offset: 68, NameHash: 980600565, Flags: 49469), LayoutImmutable, Blittable]
 		public float PanoramicRotation { get { return m_PanoramicRotation; } set { if (OnPropertyChanging("SkyEffectState." + nameof(PanoramicRotation), this, m_PanoramicRotation, value)) m_PanoramicRotation = value; } } // 0x44 (68)
 		
 		protected CtrRef<TextureAsset> m_PanoramicTexture = new CtrRef<TextureAsset>();
-		[ContainerField(72), MemberInfoFlag(53), ContainerFieldNameHash(2684028734), ContainerCtrRef]
+		[ContainerField(Name: "PanoramicTexture", Offset: 72, NameHash: 2684028734, Flags: 53)]
 		public CtrRef<TextureAsset> PanoramicTexture { get { return m_PanoramicTexture; } set { if (OnPropertyChanging("SkyEffectState." + nameof(PanoramicTexture), this, m_PanoramicTexture, value)) m_PanoramicTexture = value; } } // 0x48 (72)
 		
 		protected CtrRef<TextureAsset> m_PanoramicAlphaTexture = new CtrRef<TextureAsset>();
-		[ContainerField(76), MemberInfoFlag(53), ContainerFieldNameHash(2261597450), ContainerCtrRef]
+		[ContainerField(Name: "PanoramicAlphaTexture", Offset: 76, NameHash: 2261597450, Flags: 53)]
 		public CtrRef<TextureAsset> PanoramicAlphaTexture { get { return m_PanoramicAlphaTexture; } set { if (OnPropertyChanging("SkyEffectState." + nameof(PanoramicAlphaTexture), this, m_PanoramicAlphaTexture, value)) m_PanoramicAlphaTexture = value; } } // 0x4C (76)
 		
 		protected float m_WindDirection = new float();
-		[ContainerField(80), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3147800788)]
+		[ContainerField(Name: "WindDirection", Offset: 80, NameHash: 3147800788, Flags: 49469), LayoutImmutable, Blittable]
 		public float WindDirection { get { return m_WindDirection; } set { if (OnPropertyChanging("SkyEffectState." + nameof(WindDirection), this, m_WindDirection, value)) m_WindDirection = value; } } // 0x50 (80)
 		
 		protected CtrRef<TextureAsset> m_CloudLayerMaskTexture = new CtrRef<TextureAsset>();
-		[ContainerField(84), MemberInfoFlag(53), ContainerFieldNameHash(1350837372), ContainerCtrRef]
+		[ContainerField(Name: "CloudLayerMaskTexture", Offset: 84, NameHash: 1350837372, Flags: 53)]
 		public CtrRef<TextureAsset> CloudLayerMaskTexture { get { return m_CloudLayerMaskTexture; } set { if (OnPropertyChanging("SkyEffectState." + nameof(CloudLayerMaskTexture), this, m_CloudLayerMaskTexture, value)) m_CloudLayerMaskTexture = value; } } // 0x54 (84)
 		
 		protected SkyCloudLayer m_CloudLayer1 = new SkyCloudLayer();
-		[ContainerField(96), MemberInfoFlag(41), ContainerFieldNameHash(1938926278)]
+		[ContainerField(Name: "CloudLayer1", Offset: 96, NameHash: 1938926278, Flags: 41)]
 		public SkyCloudLayer CloudLayer1 { get { return m_CloudLayer1; } set { if (OnPropertyChanging("SkyEffectState." + nameof(CloudLayer1), this, m_CloudLayer1, value)) m_CloudLayer1 = value; } } // 0x60 (96)
 		
 		protected SkyCloudLayer m_CloudLayer2 = new SkyCloudLayer();
-		[ContainerField(160), MemberInfoFlag(41), ContainerFieldNameHash(1938926277)]
+		[ContainerField(Name: "CloudLayer2", Offset: 160, NameHash: 1938926277, Flags: 41)]
 		public SkyCloudLayer CloudLayer2 { get { return m_CloudLayer2; } set { if (OnPropertyChanging("SkyEffectState." + nameof(CloudLayer2), this, m_CloudLayer2, value)) m_CloudLayer2 = value; } } // 0xA0 (160)
 		
 		protected CtrRef<TextureAsset> m_StaticEnvmapTexture = new CtrRef<TextureAsset>();
-		[ContainerField(224), MemberInfoFlag(53), ContainerFieldNameHash(2547512451), ContainerCtrRef]
+		[ContainerField(Name: "StaticEnvmapTexture", Offset: 224, NameHash: 2547512451, Flags: 53)]
 		public CtrRef<TextureAsset> StaticEnvmapTexture { get { return m_StaticEnvmapTexture; } set { if (OnPropertyChanging("SkyEffectState." + nameof(StaticEnvmapTexture), this, m_StaticEnvmapTexture, value)) m_StaticEnvmapTexture = value; } } // 0xE0 (224)
 		
 		protected bool m_Enable = new bool();
-		[ContainerField(228), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2342790116)]
+		[ContainerField(Name: "Enable", Offset: 228, NameHash: 2342790116, Flags: 49325), LayoutImmutable, Blittable]
 		public bool Enable { get { return m_Enable; } set { if (OnPropertyChanging("SkyEffectState." + nameof(Enable), this, m_Enable, value)) m_Enable = value; } } // 0xE4 (228)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

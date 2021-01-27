@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(96), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 96)]
 	public class AlternateSpawnEntityData : 
 		SpatialEntityData
 	{
 		protected TeamId m_Team = new TeamId();
-		[ContainerField(80), MemberInfoFlag(137), ContainerFieldNameHash(2089309528)]
+		[ContainerField(Name: "Team", Offset: 80, NameHash: 2089309528, Flags: 137)]
 		public TeamId Team { get { return m_Team; } set { if (OnPropertyChanging("AlternateSpawnEntityData." + nameof(Team), this, m_Team, value)) m_Team = value; } } // 0x50 (80)
 		
 		protected float m_Priority = new float();
-		[ContainerField(84), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3062102871)]
+		[ContainerField(Name: "Priority", Offset: 84, NameHash: 3062102871, Flags: 49469), LayoutImmutable, Blittable]
 		public float Priority { get { return m_Priority; } set { if (OnPropertyChanging("AlternateSpawnEntityData." + nameof(Priority), this, m_Priority, value)) m_Priority = value; } } // 0x54 (84)
 		
 		protected bool m_Enabled = new bool();
-		[ContainerField(88), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2662400)]
+		[ContainerField(Name: "Enabled", Offset: 88, NameHash: 2662400, Flags: 49325), LayoutImmutable, Blittable]
 		public bool Enabled { get { return m_Enabled; } set { if (OnPropertyChanging("AlternateSpawnEntityData." + nameof(Enabled), this, m_Enabled, value)) m_Enabled = value; } } // 0x58 (88)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

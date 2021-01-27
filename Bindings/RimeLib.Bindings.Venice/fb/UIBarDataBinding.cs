@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(60), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 60)]
 	public class UIBarDataBinding : 
 		UIDataBinding
 	{
 		protected UIDataSourceInfo m_Visibility = new UIDataSourceInfo();
-		[ContainerField(8), MemberInfoFlag(41), ContainerFieldNameHash(1708270083)]
+		[ContainerField(Name: "Visibility", Offset: 8, NameHash: 1708270083, Flags: 41)]
 		public UIDataSourceInfo Visibility { get { return m_Visibility; } set { if (OnPropertyChanging("UIBarDataBinding." + nameof(Visibility), this, m_Visibility, value)) m_Visibility = value; } } // 0x8 (8)
 		
 		protected UIDataSourceInfo m_Value = new UIDataSourceInfo();
-		[ContainerField(24), MemberInfoFlag(41), ContainerFieldNameHash(225375086)]
+		[ContainerField(Name: "Value", Offset: 24, NameHash: 225375086, Flags: 41)]
 		public UIDataSourceInfo Value { get { return m_Value; } set { if (OnPropertyChanging("UIBarDataBinding." + nameof(Value), this, m_Value, value)) m_Value = value; } } // 0x18 (24)
 		
 		protected UIDataSourceInfo m_Color = new UIDataSourceInfo();
-		[ContainerField(40), MemberInfoFlag(41), ContainerFieldNameHash(212387320)]
+		[ContainerField(Name: "Color", Offset: 40, NameHash: 212387320, Flags: 41)]
 		public UIDataSourceInfo Color { get { return m_Color; } set { if (OnPropertyChanging("UIBarDataBinding." + nameof(Color), this, m_Color, value)) m_Color = value; } } // 0x28 (40)
 		
 		protected bool m_Refresh = new bool();
-		[ContainerField(56), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1327541432)]
+		[ContainerField(Name: "Refresh", Offset: 56, NameHash: 1327541432, Flags: 49325), LayoutImmutable, Blittable]
 		public bool Refresh { get { return m_Refresh; } set { if (OnPropertyChanging("UIBarDataBinding." + nameof(Refresh), this, m_Refresh, value)) m_Refresh = value; } } // 0x38 (56)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

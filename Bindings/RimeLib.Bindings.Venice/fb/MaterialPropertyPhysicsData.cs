@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(24), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 24)]
 	public class MaterialPropertyPhysicsData : 
 		PhysicsMaterialRelationPropertyData
 	{
 		protected float m_DynamicFrictionModifier = new float();
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3684693189)]
+		[ContainerField(Name: "DynamicFrictionModifier", Offset: 8, NameHash: 3684693189, Flags: 49469), LayoutImmutable, Blittable]
 		public float DynamicFrictionModifier { get { return m_DynamicFrictionModifier; } set { if (OnPropertyChanging("MaterialPropertyPhysicsData." + nameof(DynamicFrictionModifier), this, m_DynamicFrictionModifier, value)) m_DynamicFrictionModifier = value; } } // 0x8 (8)
 		
 		protected float m_StaticFrictionModifier = new float();
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1034015560)]
+		[ContainerField(Name: "StaticFrictionModifier", Offset: 12, NameHash: 1034015560, Flags: 49469), LayoutImmutable, Blittable]
 		public float StaticFrictionModifier { get { return m_StaticFrictionModifier; } set { if (OnPropertyChanging("MaterialPropertyPhysicsData." + nameof(StaticFrictionModifier), this, m_StaticFrictionModifier, value)) m_StaticFrictionModifier = value; } } // 0xC (12)
 		
 		protected float m_RestitutionModifier = new float();
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(459278038)]
+		[ContainerField(Name: "RestitutionModifier", Offset: 16, NameHash: 459278038, Flags: 49469), LayoutImmutable, Blittable]
 		public float RestitutionModifier { get { return m_RestitutionModifier; } set { if (OnPropertyChanging("MaterialPropertyPhysicsData." + nameof(RestitutionModifier), this, m_RestitutionModifier, value)) m_RestitutionModifier = value; } } // 0x10 (16)
 		
 		protected float m_Resistance = new float();
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(61696806)]
+		[ContainerField(Name: "Resistance", Offset: 20, NameHash: 61696806, Flags: 49469), LayoutImmutable, Blittable]
 		public float Resistance { get { return m_Resistance; } set { if (OnPropertyChanging("MaterialPropertyPhysicsData." + nameof(Resistance), this, m_Resistance, value)) m_Resistance = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(24), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 24)]
 	public class RichPresenceContext : 
 		DataContainer
 	{
 		protected string m_Name = string.Empty;
-		[ContainerField(8), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(2088949890)]
+		[ContainerField(Name: "Name", Offset: 8, NameHash: 2088949890, Flags: 16509), LayoutImmutable]
 		public string Name { get { return m_Name; } set { if (OnPropertyChanging("RichPresenceContext." + nameof(Name), this, m_Name, value)) m_Name = value; } } // 0x8 (8)
 		
 		protected RefArray<RichPresenceContextValue> m_Values = new RefArray<RichPresenceContextValue>();
-		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(3142410589), ContainerRefArray]
+		[ContainerField(Name: "Values", Offset: 12, NameHash: 3142410589, Flags: 65)]
 		public RefArray<RichPresenceContextValue> Values { get { return m_Values; } set { if (OnPropertyChanging("RichPresenceContext." + nameof(Values), this, m_Values, value)) m_Values = value; } } // 0xC (12)
 		
 		protected CtrRef<RichPresenceContextValue> m_DefaultValue = new CtrRef<RichPresenceContextValue>();
-		[ContainerField(16), MemberInfoFlag(53), ContainerFieldNameHash(2066049125), ContainerCtrRef]
+		[ContainerField(Name: "DefaultValue", Offset: 16, NameHash: 2066049125, Flags: 53)]
 		public CtrRef<RichPresenceContextValue> DefaultValue { get { return m_DefaultValue; } set { if (OnPropertyChanging("RichPresenceContext." + nameof(DefaultValue), this, m_DefaultValue, value)) m_DefaultValue = value; } } // 0x10 (16)
 		
 		protected sbyte m_Index = new sbyte();
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49341), ContainerFieldNameHash(214509467)]
+		[ContainerField(Name: "Index", Offset: 20, NameHash: 214509467, Flags: 49341), LayoutImmutable, Blittable]
 		public sbyte Index { get { return m_Index; } set { if (OnPropertyChanging("RichPresenceContext." + nameof(Index), this, m_Index, value)) m_Index = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

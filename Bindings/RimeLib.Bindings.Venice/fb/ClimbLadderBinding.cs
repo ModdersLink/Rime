@@ -18,25 +18,25 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(24), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 24)]
 	public class ClimbLadderBinding : FrostbiteContainer
 	{
-		[ContainerField(0), MemberInfoFlag(41)]
+		[ContainerField(Name: "ClimbLadderPhase", Offset: 0, NameHash: 2303344697, Flags: 41)]
 		public AntRef ClimbLadderPhase { get; set; } = new AntRef(); // 0x0 (0)
 		
-		[ContainerField(4), MemberInfoFlag(41)]
+		[ContainerField(Name: "ClimbLadderConnectPhase", Offset: 4, NameHash: 298090343, Flags: 41)]
 		public AntRef ClimbLadderConnectPhase { get; set; } = new AntRef(); // 0x4 (4)
 		
-		[ContainerField(8), MemberInfoFlag(41)]
+		[ContainerField(Name: "ClimbLadderTransitionPhase", Offset: 8, NameHash: 940490966, Flags: 41)]
 		public AntRef ClimbLadderTransitionPhase { get; set; } = new AntRef(); // 0x8 (8)
 		
-		[ContainerField(12), MemberInfoFlag(41)]
+		[ContainerField(Name: "OnLadder", Offset: 12, NameHash: 1979319070, Flags: 41)]
 		public AntRef OnLadder { get; set; } = new AntRef(); // 0xC (12)
 		
-		[ContainerField(16), MemberInfoFlag(41)]
+		[ContainerField(Name: "LadderTopTransition", Offset: 16, NameHash: 2037201883, Flags: 41)]
 		public AntRef LadderTopTransition { get; set; } = new AntRef(); // 0x10 (16)
 		
-		[ContainerField(20), MemberInfoFlag(41)]
+		[ContainerField(Name: "FallHigh", Offset: 20, NameHash: 3473772, Flags: 41)]
 		public AntRef FallHigh { get; set; } = new AntRef(); // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

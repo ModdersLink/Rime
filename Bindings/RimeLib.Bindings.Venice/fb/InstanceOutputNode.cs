@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(32), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 32)]
 	public class InstanceOutputNode : 
 		UINodeData
 	{
 		protected CtrRef<UINodePort> m_In = new CtrRef<UINodePort>();
-		[ContainerField(20), MemberInfoFlag(53), ContainerFieldNameHash(5862146), ContainerCtrRef]
+		[ContainerField(Name: "In", Offset: 20, NameHash: 5862146, Flags: 53)]
 		public CtrRef<UINodePort> In { get { return m_In; } set { if (OnPropertyChanging("InstanceOutputNode." + nameof(In), this, m_In, value)) m_In = value; } } // 0x14 (20)
 		
 		protected int m_Id = new int();
-		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(5862152)]
+		[ContainerField(Name: "Id", Offset: 24, NameHash: 5862152, Flags: 49405), LayoutImmutable, Blittable]
 		public int Id { get { return m_Id; } set { if (OnPropertyChanging("InstanceOutputNode." + nameof(Id), this, m_Id, value)) m_Id = value; } } // 0x18 (24)
 		
 		protected bool m_DestroyGraph = new bool();
-		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3848224203)]
+		[ContainerField(Name: "DestroyGraph", Offset: 28, NameHash: 3848224203, Flags: 49325), LayoutImmutable, Blittable]
 		public bool DestroyGraph { get { return m_DestroyGraph; } set { if (OnPropertyChanging("InstanceOutputNode." + nameof(DestroyGraph), this, m_DestroyGraph, value)) m_DestroyGraph = value; } } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

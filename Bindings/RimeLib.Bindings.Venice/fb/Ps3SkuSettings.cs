@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(12), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 12)]
 	public class Ps3SkuSettings : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "TitleId", Offset: 0, NameHash: 3335995016, Flags: 16509), LayoutImmutable]
 		public string TitleId { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "SpId", Offset: 4, NameHash: 2089404363, Flags: 16509), LayoutImmutable]
 		public string SpId { get; set; } // 0x4 (4)
 		
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "GrantsOnlinePass", Offset: 8, NameHash: 2999853990, Flags: 49325), LayoutImmutable, Blittable]
 		public bool GrantsOnlinePass { get; set; } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

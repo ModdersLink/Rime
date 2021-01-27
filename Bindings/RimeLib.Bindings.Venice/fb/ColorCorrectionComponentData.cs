@@ -18,40 +18,40 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(160), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 160)]
 	public class ColorCorrectionComponentData : 
 		ComponentData
 	{
 		protected Vec3 m_Contrast = new Vec3();
-		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(332991719)]
+		[ContainerField(Name: "Contrast", Offset: 96, NameHash: 332991719, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 Contrast { get { return m_Contrast; } set { if (OnPropertyChanging("ColorCorrectionComponentData." + nameof(Contrast), this, m_Contrast, value)) m_Contrast = value; } } // 0x60 (96)
 		
 		protected Vec3 m_Saturation = new Vec3();
-		[ContainerField(112), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(2572315705)]
+		[ContainerField(Name: "Saturation", Offset: 112, NameHash: 2572315705, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 Saturation { get { return m_Saturation; } set { if (OnPropertyChanging("ColorCorrectionComponentData." + nameof(Saturation), this, m_Saturation, value)) m_Saturation = value; } } // 0x70 (112)
 		
 		protected Vec3 m_Brightness = new Vec3();
-		[ContainerField(128), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(2298333740)]
+		[ContainerField(Name: "Brightness", Offset: 128, NameHash: 2298333740, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 Brightness { get { return m_Brightness; } set { if (OnPropertyChanging("ColorCorrectionComponentData." + nameof(Brightness), this, m_Brightness, value)) m_Brightness = value; } } // 0x80 (128)
 		
 		protected Realm m_Realm = new Realm();
-		[ContainerField(144), MemberInfoFlag(137), ContainerFieldNameHash(229961746)]
+		[ContainerField(Name: "Realm", Offset: 144, NameHash: 229961746, Flags: 137)]
 		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("ColorCorrectionComponentData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0x90 (144)
 		
 		protected float m_Hue = new float();
-		[ContainerField(148), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(193458845)]
+		[ContainerField(Name: "Hue", Offset: 148, NameHash: 193458845, Flags: 49469), LayoutImmutable, Blittable]
 		public float Hue { get { return m_Hue; } set { if (OnPropertyChanging("ColorCorrectionComponentData." + nameof(Hue), this, m_Hue, value)) m_Hue = value; } } // 0x94 (148)
 		
 		protected CtrRef<TextureAsset> m_ColorGradingTexture = new CtrRef<TextureAsset>();
-		[ContainerField(152), MemberInfoFlag(53), ContainerFieldNameHash(432198551), ContainerCtrRef]
+		[ContainerField(Name: "ColorGradingTexture", Offset: 152, NameHash: 432198551, Flags: 53)]
 		public CtrRef<TextureAsset> ColorGradingTexture { get { return m_ColorGradingTexture; } set { if (OnPropertyChanging("ColorCorrectionComponentData." + nameof(ColorGradingTexture), this, m_ColorGradingTexture, value)) m_ColorGradingTexture = value; } } // 0x98 (152)
 		
 		protected bool m_ColorGradingEnable = new bool();
-		[ContainerField(156), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1205773449)]
+		[ContainerField(Name: "ColorGradingEnable", Offset: 156, NameHash: 1205773449, Flags: 49325), LayoutImmutable, Blittable]
 		public bool ColorGradingEnable { get { return m_ColorGradingEnable; } set { if (OnPropertyChanging("ColorCorrectionComponentData." + nameof(ColorGradingEnable), this, m_ColorGradingEnable, value)) m_ColorGradingEnable = value; } } // 0x9C (156)
 		
 		protected bool m_Enable = new bool();
-		[ContainerField(157), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2342790116)]
+		[ContainerField(Name: "Enable", Offset: 157, NameHash: 2342790116, Flags: 49325), LayoutImmutable, Blittable]
 		public bool Enable { get { return m_Enable; } set { if (OnPropertyChanging("ColorCorrectionComponentData." + nameof(Enable), this, m_Enable, value)) m_Enable = value; } } // 0x9D (157)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

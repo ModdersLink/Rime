@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(12), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 12)]
 	public class MaterialPropertyEffectData : 
 		PhysicsMaterialRelationPropertyData
 	{
 		protected RefArray<EffectBlueprint> m_ImpactEffects = new RefArray<EffectBlueprint>();
-		[ContainerField(8), MemberInfoFlag(65), ContainerFieldNameHash(2149182307), ContainerRefArray]
+		[ContainerField(Name: "ImpactEffects", Offset: 8, NameHash: 2149182307, Flags: 65)]
 		public RefArray<EffectBlueprint> ImpactEffects { get { return m_ImpactEffects; } set { if (OnPropertyChanging("MaterialPropertyEffectData." + nameof(ImpactEffects), this, m_ImpactEffects, value)) m_ImpactEffects = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(12), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 12)]
 	public class ManualDataEntry : FrostbiteContainer
 	{
-		[ContainerField(0), MemberInfoFlag(137)]
+		[ContainerField(Name: "Platform", Offset: 0, NameHash: 942751002, Flags: 137)]
 		public GamePlatform Platform { get; set; } = new GamePlatform(); // 0x0 (0)
 		
-		[ContainerField(4), MemberInfoFlag(137)]
+		[ContainerField(Name: "Language", Offset: 4, NameHash: 3872303031, Flags: 137)]
 		public LanguageFormat Language { get; set; } = new LanguageFormat(); // 0x4 (4)
 		
-		[ContainerField(8), MemberInfoFlag(65), ContainerRefArray]
+		[ContainerField(Name: "Textures", Offset: 8, NameHash: 2027158633, Flags: 65)]
 		public RefArray<TextureAsset> Textures { get; set; } = new RefArray<TextureAsset>(); // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

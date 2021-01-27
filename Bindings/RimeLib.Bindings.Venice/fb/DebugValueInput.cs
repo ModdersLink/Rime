@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(32), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 32)]
 	public class DebugValueInput : 
 		AudioGraphNodePortGroup
 	{
 		protected AudioGraphNodePort m_V = new AudioGraphNodePort();
-		[ContainerField(8), MemberInfoFlag(41), ContainerFieldNameHash(177651)]
+		[ContainerField(Name: "V", Offset: 8, NameHash: 177651, Flags: 41)]
 		public AudioGraphNodePort V { get { return m_V; } set { if (OnPropertyChanging("DebugValueInput." + nameof(V), this, m_V, value)) m_V = value; } } // 0x8 (8)
 		
 		protected string m_Name = string.Empty;
-		[ContainerField(16), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(2088949890)]
+		[ContainerField(Name: "Name", Offset: 16, NameHash: 2088949890, Flags: 16509), LayoutImmutable]
 		public string Name { get { return m_Name; } set { if (OnPropertyChanging("DebugValueInput." + nameof(Name), this, m_Name, value)) m_Name = value; } } // 0x10 (16)
 		
 		protected DebugRenderType m_RenderType = new DebugRenderType();
-		[ContainerField(20), MemberInfoFlag(137), ContainerFieldNameHash(604852279)]
+		[ContainerField(Name: "RenderType", Offset: 20, NameHash: 604852279, Flags: 137)]
 		public DebugRenderType RenderType { get { return m_RenderType; } set { if (OnPropertyChanging("DebugValueInput." + nameof(RenderType), this, m_RenderType, value)) m_RenderType = value; } } // 0x14 (20)
 		
 		protected float m_Min = new float();
-		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(193446607)]
+		[ContainerField(Name: "Min", Offset: 24, NameHash: 193446607, Flags: 49469), LayoutImmutable, Blittable]
 		public float Min { get { return m_Min; } set { if (OnPropertyChanging("DebugValueInput." + nameof(Min), this, m_Min, value)) m_Min = value; } } // 0x18 (24)
 		
 		protected float m_Max = new float();
-		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(193446865)]
+		[ContainerField(Name: "Max", Offset: 28, NameHash: 193446865, Flags: 49469), LayoutImmutable, Blittable]
 		public float Max { get { return m_Max; } set { if (OnPropertyChanging("DebugValueInput." + nameof(Max), this, m_Max, value)) m_Max = value; } } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

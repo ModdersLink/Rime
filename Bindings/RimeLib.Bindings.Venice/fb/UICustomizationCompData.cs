@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(96), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 96)]
 	public class UICustomizationCompData : 
 		UIComponentData
 	{
 		protected Vec3 m_SoldierOffset = new Vec3();
-		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(1109239746)]
+		[ContainerField(Name: "SoldierOffset", Offset: 32, NameHash: 1109239746, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 SoldierOffset { get { return m_SoldierOffset; } set { if (OnPropertyChanging("UICustomizationCompData." + nameof(SoldierOffset), this, m_SoldierOffset, value)) m_SoldierOffset = value; } } // 0x20 (32)
 		
 		protected Vec3 m_SoldierRotation = new Vec3();
-		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(853309051)]
+		[ContainerField(Name: "SoldierRotation", Offset: 48, NameHash: 853309051, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 SoldierRotation { get { return m_SoldierRotation; } set { if (OnPropertyChanging("UICustomizationCompData." + nameof(SoldierRotation), this, m_SoldierRotation, value)) m_SoldierRotation = value; } } // 0x30 (48)
 		
 		protected Vec3 m_VehicleRotation = new Vec3();
-		[ContainerField(64), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(7325673)]
+		[ContainerField(Name: "VehicleRotation", Offset: 64, NameHash: 7325673, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 VehicleRotation { get { return m_VehicleRotation; } set { if (OnPropertyChanging("UICustomizationCompData." + nameof(VehicleRotation), this, m_VehicleRotation, value)) m_VehicleRotation = value; } } // 0x40 (64)
 		
 		protected float m_NetworkThrottleTimer = new float();
-		[ContainerField(80), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(441904308)]
+		[ContainerField(Name: "NetworkThrottleTimer", Offset: 80, NameHash: 441904308, Flags: 49469), LayoutImmutable, Blittable]
 		public float NetworkThrottleTimer { get { return m_NetworkThrottleTimer; } set { if (OnPropertyChanging("UICustomizationCompData." + nameof(NetworkThrottleTimer), this, m_NetworkThrottleTimer, value)) m_NetworkThrottleTimer = value; } } // 0x50 (80)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

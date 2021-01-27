@@ -18,19 +18,19 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(41), ContainerSize(32), ContainerStruct]
+	[ContainerType(Alignment: 16,  Flags: 41, Size: 32)]
 	public class ConstantForceData : FrostbiteContainer
 	{
-		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
+		[ContainerField(Name: "Value", Offset: 0, NameHash: 225375086, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 Value { get; set; } = new Vec3(); // 0x0 (0)
 		
-		[ContainerField(16), MemberInfoFlag(137)]
+		[ContainerField(Name: "Condition", Offset: 16, NameHash: 1800624758, Flags: 137)]
 		public ForceCondition Condition { get; set; } = new ForceCondition(); // 0x10 (16)
 		
-		[ContainerField(20), MemberInfoFlag(137)]
+		[ContainerField(Name: "TypeOfForce", Offset: 20, NameHash: 2167151145, Flags: 137)]
 		public ForceType TypeOfForce { get; set; } = new ForceType(); // 0x14 (20)
 		
-		[ContainerField(24), MemberInfoFlag(137)]
+		[ContainerField(Name: "Space", Offset: 24, NameHash: 230891329, Flags: 137)]
 		public SpaceType Space { get; set; } = new SpaceType(); // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

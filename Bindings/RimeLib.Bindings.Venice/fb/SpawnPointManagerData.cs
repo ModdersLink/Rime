@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(16), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
 	public class SpawnPointManagerData : 
 		Asset
 	{
 		protected bool m_UseAiLodSystem = new bool();
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1610978156)]
+		[ContainerField(Name: "UseAiLodSystem", Offset: 12, NameHash: 1610978156, Flags: 49325), LayoutImmutable, Blittable]
 		public bool UseAiLodSystem { get { return m_UseAiLodSystem; } set { if (OnPropertyChanging("SpawnPointManagerData." + nameof(UseAiLodSystem), this, m_UseAiLodSystem, value)) m_UseAiLodSystem = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

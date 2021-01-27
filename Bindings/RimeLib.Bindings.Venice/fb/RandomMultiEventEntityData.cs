@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(24), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 24)]
 	public class RandomMultiEventEntityData : 
 		EntityData
 	{
 		protected Realm m_Realm = new Realm();
-		[ContainerField(12), MemberInfoFlag(137), ContainerFieldNameHash(229961746)]
+		[ContainerField(Name: "Realm", Offset: 12, NameHash: 229961746, Flags: 137)]
 		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("RandomMultiEventEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0xC (12)
 		
 		protected List<float> m_RandomEventWeight = new List<float>();
-		[ContainerField(16), MemberInfoFlag(65), ContainerFieldNameHash(2700434098), ContainerArray]
+		[ContainerField(Name: "RandomEventWeight", Offset: 16, NameHash: 2700434098, Flags: 65)]
 		public List<float> RandomEventWeight { get { return m_RandomEventWeight; } set { if (OnPropertyChanging("RandomMultiEventEntityData." + nameof(RandomEventWeight), this, m_RandomEventWeight, value)) m_RandomEventWeight = value; } } // 0x10 (16)
 		
 		protected bool m_UniformDistribution = new bool();
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3070004891)]
+		[ContainerField(Name: "UniformDistribution", Offset: 20, NameHash: 3070004891, Flags: 49325), LayoutImmutable, Blittable]
 		public bool UniformDistribution { get { return m_UniformDistribution; } set { if (OnPropertyChanging("RandomMultiEventEntityData." + nameof(UniformDistribution), this, m_UniformDistribution, value)) m_UniformDistribution = value; } } // 0x14 (20)
 		
 		protected bool m_ResetOutputsWhenAllHasTriggered = new bool();
-		[ContainerField(21), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(386838442)]
+		[ContainerField(Name: "ResetOutputsWhenAllHasTriggered", Offset: 21, NameHash: 386838442, Flags: 49325), LayoutImmutable, Blittable]
 		public bool ResetOutputsWhenAllHasTriggered { get { return m_ResetOutputsWhenAllHasTriggered; } set { if (OnPropertyChanging("RandomMultiEventEntityData." + nameof(ResetOutputsWhenAllHasTriggered), this, m_ResetOutputsWhenAllHasTriggered, value)) m_ResetOutputsWhenAllHasTriggered = value; } } // 0x15 (21)
 		
 		protected bool m_DisableOutputOnTrigger = new bool();
-		[ContainerField(22), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1250184567)]
+		[ContainerField(Name: "DisableOutputOnTrigger", Offset: 22, NameHash: 1250184567, Flags: 49325), LayoutImmutable, Blittable]
 		public bool DisableOutputOnTrigger { get { return m_DisableOutputOnTrigger; } set { if (OnPropertyChanging("RandomMultiEventEntityData." + nameof(DisableOutputOnTrigger), this, m_DisableOutputOnTrigger, value)) m_DisableOutputOnTrigger = value; } } // 0x16 (22)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,10 +18,10 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(4), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 4)]
 	public class UIButtonSet : FrostbiteContainer
 	{
-		[ContainerField(0), MemberInfoFlag(65), ContainerArray]
+		[ContainerField(Name: "Buttons", Offset: 0, NameHash: 2744663360, Flags: 65)]
 		public List<UIButton> Buttons { get; set; } = new List<UIButton>(); // 0x0 (0)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

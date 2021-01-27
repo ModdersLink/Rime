@@ -18,13 +18,13 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(8), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 8)]
 	public class GunMasterWeaponsPreset : FrostbiteContainer
 	{
-		[ContainerField(0), MemberInfoFlag(65), ContainerArray]
+		[ContainerField(Name: "GunMasterLevelInfos", Offset: 0, NameHash: 1245436782, Flags: 65)]
 		public List<GunMasterLevelInfo> GunMasterLevelInfos { get; set; } = new List<GunMasterLevelInfo>(); // 0x0 (0)
 		
-		[ContainerField(4), MemberInfoFlag(65), ContainerRefArray]
+		[ContainerField(Name: "LevelOverrides", Offset: 4, NameHash: 2294052628, Flags: 65)]
 		public RefArray<CustomizeSoldierData> LevelOverrides { get; set; } = new RefArray<CustomizeSoldierData>(); // 0x4 (4)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

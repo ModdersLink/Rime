@@ -18,40 +18,40 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(128), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 128)]
 	public class SoldierCameraComponentData : 
 		ComponentData
 	{
 		protected float m_ExplosionImpulseMultiplier = new float();
-		[ContainerField(96), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(513000320)]
+		[ContainerField(Name: "ExplosionImpulseMultiplier", Offset: 96, NameHash: 513000320, Flags: 49469), LayoutImmutable, Blittable]
 		public float ExplosionImpulseMultiplier { get { return m_ExplosionImpulseMultiplier; } set { if (OnPropertyChanging("SoldierCameraComponentData." + nameof(ExplosionImpulseMultiplier), this, m_ExplosionImpulseMultiplier, value)) m_ExplosionImpulseMultiplier = value; } } // 0x60 (96)
 		
 		protected float m_StrafeTiltStrength = new float();
-		[ContainerField(100), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(12216306)]
+		[ContainerField(Name: "StrafeTiltStrength", Offset: 100, NameHash: 12216306, Flags: 49469), LayoutImmutable, Blittable]
 		public float StrafeTiltStrength { get { return m_StrafeTiltStrength; } set { if (OnPropertyChanging("SoldierCameraComponentData." + nameof(StrafeTiltStrength), this, m_StrafeTiltStrength, value)) m_StrafeTiltStrength = value; } } // 0x64 (100)
 		
 		protected float m_PitchTiltStrength = new float();
-		[ContainerField(104), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(398108931)]
+		[ContainerField(Name: "PitchTiltStrength", Offset: 104, NameHash: 398108931, Flags: 49469), LayoutImmutable, Blittable]
 		public float PitchTiltStrength { get { return m_PitchTiltStrength; } set { if (OnPropertyChanging("SoldierCameraComponentData." + nameof(PitchTiltStrength), this, m_PitchTiltStrength, value)) m_PitchTiltStrength = value; } } // 0x68 (104)
 		
 		protected RefArray<TargetCameraData> m_Cameras = new RefArray<TargetCameraData>();
-		[ContainerField(108), MemberInfoFlag(65), ContainerFieldNameHash(3740512847), ContainerRefArray]
+		[ContainerField(Name: "Cameras", Offset: 108, NameHash: 3740512847, Flags: 65)]
 		public RefArray<TargetCameraData> Cameras { get { return m_Cameras; } set { if (OnPropertyChanging("SoldierCameraComponentData." + nameof(Cameras), this, m_Cameras, value)) m_Cameras = value; } } // 0x6C (108)
 		
 		protected CameraBinding m_CameraBinding = new CameraBinding();
-		[ContainerField(112), MemberInfoFlag(41), ContainerFieldNameHash(656489757)]
+		[ContainerField(Name: "CameraBinding", Offset: 112, NameHash: 656489757, Flags: 41)]
 		public CameraBinding CameraBinding { get { return m_CameraBinding; } set { if (OnPropertyChanging("SoldierCameraComponentData." + nameof(CameraBinding), this, m_CameraBinding, value)) m_CameraBinding = value; } } // 0x70 (112)
 		
 		protected float m_ForceFieldOfView = new float();
-		[ContainerField(120), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2191221214)]
+		[ContainerField(Name: "ForceFieldOfView", Offset: 120, NameHash: 2191221214, Flags: 49469), LayoutImmutable, Blittable]
 		public float ForceFieldOfView { get { return m_ForceFieldOfView; } set { if (OnPropertyChanging("SoldierCameraComponentData." + nameof(ForceFieldOfView), this, m_ForceFieldOfView, value)) m_ForceFieldOfView = value; } } // 0x78 (120)
 		
 		protected bool m_AuthoritativeEyePosition = new bool();
-		[ContainerField(124), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2287547522)]
+		[ContainerField(Name: "AuthoritativeEyePosition", Offset: 124, NameHash: 2287547522, Flags: 49325), LayoutImmutable, Blittable]
 		public bool AuthoritativeEyePosition { get { return m_AuthoritativeEyePosition; } set { if (OnPropertyChanging("SoldierCameraComponentData." + nameof(AuthoritativeEyePosition), this, m_AuthoritativeEyePosition, value)) m_AuthoritativeEyePosition = value; } } // 0x7C (124)
 		
 		protected bool m_DisableAiming = new bool();
-		[ContainerField(125), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1555811028)]
+		[ContainerField(Name: "DisableAiming", Offset: 125, NameHash: 1555811028, Flags: 49325), LayoutImmutable, Blittable]
 		public bool DisableAiming { get { return m_DisableAiming; } set { if (OnPropertyChanging("SoldierCameraComponentData." + nameof(DisableAiming), this, m_DisableAiming, value)) m_DisableAiming = value; } } // 0x7D (125)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

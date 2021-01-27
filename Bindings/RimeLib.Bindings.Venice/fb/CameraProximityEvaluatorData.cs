@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(80), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 80)]
 	public class CameraProximityEvaluatorData : 
 		EvaluatorData
 	{
 		protected Vec3 m_Size = new Vec3();
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(2089429248)]
+		[ContainerField(Name: "Size", Offset: 16, NameHash: 2089429248, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 Size { get { return m_Size; } set { if (OnPropertyChanging("CameraProximityEvaluatorData." + nameof(Size), this, m_Size, value)) m_Size = value; } } // 0x10 (16)
 		
 		protected Vec3 m_Offset = new Vec3();
-		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(2871410728)]
+		[ContainerField(Name: "Offset", Offset: 32, NameHash: 2871410728, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 Offset { get { return m_Offset; } set { if (OnPropertyChanging("CameraProximityEvaluatorData." + nameof(Offset), this, m_Offset, value)) m_Offset = value; } } // 0x20 (32)
 		
 		protected Vec3 m_InnerRadiusDirection = new Vec3();
-		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(3044199494)]
+		[ContainerField(Name: "InnerRadiusDirection", Offset: 48, NameHash: 3044199494, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 InnerRadiusDirection { get { return m_InnerRadiusDirection; } set { if (OnPropertyChanging("CameraProximityEvaluatorData." + nameof(InnerRadiusDirection), this, m_InnerRadiusDirection, value)) m_InnerRadiusDirection = value; } } // 0x30 (48)
 		
 		protected float m_InnerRadius = new float();
-		[ContainerField(64), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3334193859)]
+		[ContainerField(Name: "InnerRadius", Offset: 64, NameHash: 3334193859, Flags: 49469), LayoutImmutable, Blittable]
 		public float InnerRadius { get { return m_InnerRadius; } set { if (OnPropertyChanging("CameraProximityEvaluatorData." + nameof(InnerRadius), this, m_InnerRadius, value)) m_InnerRadius = value; } } // 0x40 (64)
 		
 		protected float m_ForwardOffset = new float();
-		[ContainerField(68), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2564135379)]
+		[ContainerField(Name: "ForwardOffset", Offset: 68, NameHash: 2564135379, Flags: 49469), LayoutImmutable, Blittable]
 		public float ForwardOffset { get { return m_ForwardOffset; } set { if (OnPropertyChanging("CameraProximityEvaluatorData." + nameof(ForwardOffset), this, m_ForwardOffset, value)) m_ForwardOffset = value; } } // 0x44 (68)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

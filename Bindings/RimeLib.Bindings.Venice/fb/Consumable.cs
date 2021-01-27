@@ -18,13 +18,13 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(20), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 20)]
 	public class Consumable : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, Blittable, MemberInfoFlag(49501)]
+		[ContainerField(Name: "Instance", Offset: 0, NameHash: 4152547692, Flags: 49501), LayoutImmutable, Blittable]
 		public GUID Instance { get; set; } // 0x0 (0)
 		
-		[ContainerField(16), MemberInfoFlag(137)]
+		[ContainerField(Name: "Group", Offset: 16, NameHash: 208130522, Flags: 137)]
 		public ConsumableGroup Group { get; set; } = new ConsumableGroup(); // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

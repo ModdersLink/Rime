@@ -18,13 +18,13 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(41), ContainerSize(80), ContainerStruct]
+	[ContainerType(Alignment: 16,  Flags: 41, Size: 80)]
 	public class RigidMeshSocketTransform : FrostbiteContainer
 	{
-		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
+		[ContainerField(Name: "Transform", Offset: 0, NameHash: 2270319721, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public LinearTransform Transform { get; set; } = new LinearTransform(); // 0x0 (0)
 		
-		[ContainerField(64), MemberInfoFlag(53), ContainerCtrRef]
+		[ContainerField(Name: "SocketObject", Offset: 64, NameHash: 1217427573, Flags: 53)]
 		public CtrRef<WeaponRegularSocketObjectData> SocketObject { get; set; } = new CtrRef<WeaponRegularSocketObjectData>(); // 0x40 (64)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

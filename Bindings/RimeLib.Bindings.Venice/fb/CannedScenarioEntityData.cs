@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(60), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 60)]
 	public class CannedScenarioEntityData : 
 		EntityData
 	{
 		protected CannedAnimationBinding m_CannedAnimBinding = new CannedAnimationBinding();
-		[ContainerField(12), MemberInfoFlag(41), ContainerFieldNameHash(3536770252)]
+		[ContainerField(Name: "CannedAnimBinding", Offset: 12, NameHash: 3536770252, Flags: 41)]
 		public CannedAnimationBinding CannedAnimBinding { get { return m_CannedAnimBinding; } set { if (OnPropertyChanging("CannedScenarioEntityData." + nameof(CannedAnimBinding), this, m_CannedAnimBinding, value)) m_CannedAnimBinding = value; } } // 0xC (12)
 		
 		protected int m_AnimationEntitySpacePriority = new int();
-		[ContainerField(52), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(4041607518)]
+		[ContainerField(Name: "AnimationEntitySpacePriority", Offset: 52, NameHash: 4041607518, Flags: 49405), LayoutImmutable, Blittable]
 		public int AnimationEntitySpacePriority { get { return m_AnimationEntitySpacePriority; } set { if (OnPropertyChanging("CannedScenarioEntityData." + nameof(AnimationEntitySpacePriority), this, m_AnimationEntitySpacePriority, value)) m_AnimationEntitySpacePriority = value; } } // 0x34 (52)
 		
 		protected bool m_AlwaysClearEntitySpaceWhenInScenario = new bool();
-		[ContainerField(56), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(4447823)]
+		[ContainerField(Name: "AlwaysClearEntitySpaceWhenInScenario", Offset: 56, NameHash: 4447823, Flags: 49325), LayoutImmutable, Blittable]
 		public bool AlwaysClearEntitySpaceWhenInScenario { get { return m_AlwaysClearEntitySpaceWhenInScenario; } set { if (OnPropertyChanging("CannedScenarioEntityData." + nameof(AlwaysClearEntitySpaceWhenInScenario), this, m_AlwaysClearEntitySpaceWhenInScenario, value)) m_AlwaysClearEntitySpaceWhenInScenario = value; } } // 0x38 (56)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

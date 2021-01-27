@@ -18,10 +18,10 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(4), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 4)]
 	public class FootStepTrigger : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "Time", Offset: 0, NameHash: 2089313744, Flags: 49469), LayoutImmutable, Blittable]
 		public float Time { get; set; } // 0x0 (0)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

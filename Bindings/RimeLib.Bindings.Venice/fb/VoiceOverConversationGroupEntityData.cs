@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(16), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
 	public class VoiceOverConversationGroupEntityData : 
 		EntityData
 	{
 		protected CtrRef<VoiceOverConversationQueueGroup> m_QueueGroup = new CtrRef<VoiceOverConversationQueueGroup>();
-		[ContainerField(12), MemberInfoFlag(53), ContainerFieldNameHash(2016027659), ContainerCtrRef]
+		[ContainerField(Name: "QueueGroup", Offset: 12, NameHash: 2016027659, Flags: 53)]
 		public CtrRef<VoiceOverConversationQueueGroup> QueueGroup { get { return m_QueueGroup; } set { if (OnPropertyChanging("VoiceOverConversationGroupEntityData." + nameof(QueueGroup), this, m_QueueGroup, value)) m_QueueGroup = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

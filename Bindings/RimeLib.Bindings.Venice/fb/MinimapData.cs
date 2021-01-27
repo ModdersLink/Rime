@@ -18,58 +18,58 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(41), ContainerSize(112), ContainerStruct]
+	[ContainerType(Alignment: 16,  Flags: 41, Size: 112)]
 	public class MinimapData : FrostbiteContainer
 	{
-		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
+		[ContainerField(Name: "Position", Offset: 0, NameHash: 3402582524, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec2 Position { get; set; } = new Vec2(); // 0x0 (0)
 		
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
+		[ContainerField(Name: "CameraPosition", Offset: 16, NameHash: 1421454469, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 CameraPosition { get; set; } = new Vec3(); // 0x10 (16)
 		
-		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
+		[ContainerField(Name: "Size", Offset: 32, NameHash: 2089429248, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec2 Size { get; set; } = new Vec2(); // 0x20 (32)
 		
-		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
+		[ContainerField(Name: "OverlayColor", Offset: 48, NameHash: 1805748258, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 OverlayColor { get; set; } = new Vec3(); // 0x30 (48)
 		
-		[ContainerField(64), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "AnchorPosVertical", Offset: 64, NameHash: 2529064194, Flags: 49469), LayoutImmutable, Blittable]
 		public float AnchorPosVertical { get; set; } // 0x40 (64)
 		
-		[ContainerField(68), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "AnchorPosHorizontal", Offset: 68, NameHash: 1148668334, Flags: 49469), LayoutImmutable, Blittable]
 		public float AnchorPosHorizontal { get; set; } // 0x44 (68)
 		
-		[ContainerField(72), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "CameraLookDistance", Offset: 72, NameHash: 3115939832, Flags: 49469), LayoutImmutable, Blittable]
 		public float CameraLookDistance { get; set; } // 0x48 (72)
 		
-		[ContainerField(76), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "CameraDistance", Offset: 76, NameHash: 3954324415, Flags: 49469), LayoutImmutable, Blittable]
 		public float CameraDistance { get; set; } // 0x4C (76)
 		
-		[ContainerField(80), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "CameraFov", Offset: 80, NameHash: 1789541379, Flags: 49469), LayoutImmutable, Blittable]
 		public float CameraFov { get; set; } // 0x50 (80)
 		
-		[ContainerField(84), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "OverlayAlpha", Offset: 84, NameHash: 1803308715, Flags: 49469), LayoutImmutable, Blittable]
 		public float OverlayAlpha { get; set; } // 0x54 (84)
 		
-		[ContainerField(88), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "CameraRotation", Offset: 88, NameHash: 2168484520, Flags: 49469), LayoutImmutable, Blittable]
 		public float CameraRotation { get; set; } // 0x58 (88)
 		
-		[ContainerField(92), LayoutImmutable, Blittable, MemberInfoFlag(49405)]
+		[ContainerField(Name: "StartZoomLevel", Offset: 92, NameHash: 917267620, Flags: 49405), LayoutImmutable, Blittable]
 		public int StartZoomLevel { get; set; } // 0x5C (92)
 		
-		[ContainerField(96), LayoutImmutable, Blittable, MemberInfoFlag(49405)]
+		[ContainerField(Name: "InnerZoomFactor", Offset: 96, NameHash: 429772065, Flags: 49405), LayoutImmutable, Blittable]
 		public int InnerZoomFactor { get; set; } // 0x60 (96)
 		
-		[ContainerField(100), LayoutImmutable, Blittable, MemberInfoFlag(49405)]
+		[ContainerField(Name: "MaxZoomLevels", Offset: 100, NameHash: 875018595, Flags: 49405), LayoutImmutable, Blittable]
 		public int MaxZoomLevels { get; set; } // 0x64 (100)
 		
-		[ContainerField(104), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "CenterOnCombatArea", Offset: 104, NameHash: 1758109518, Flags: 49325), LayoutImmutable, Blittable]
 		public bool CenterOnCombatArea { get; set; } // 0x68 (104)
 		
-		[ContainerField(105), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "RotationFromPlayer", Offset: 105, NameHash: 1216356340, Flags: 49325), LayoutImmutable, Blittable]
 		public bool RotationFromPlayer { get; set; } // 0x69 (105)
 		
-		[ContainerField(106), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "PositionFromPlayer", Offset: 106, NameHash: 593075033, Flags: 49325), LayoutImmutable, Blittable]
 		public bool PositionFromPlayer { get; set; } // 0x6A (106)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

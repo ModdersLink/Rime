@@ -18,25 +18,25 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(24), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 24)]
 	public class MapRotationConfig : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, Blittable, MemberInfoFlag(49405)]
+		[ContainerField(Name: "MapRotationId", Offset: 0, NameHash: 3190659456, Flags: 49405), LayoutImmutable, Blittable]
 		public int MapRotationId { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "NameSid", Offset: 4, NameHash: 3153745340, Flags: 16509), LayoutImmutable]
 		public string NameSid { get; set; } // 0x4 (4)
 		
-		[ContainerField(8), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "DescSid", Offset: 8, NameHash: 4021143274, Flags: 16509), LayoutImmutable]
 		public string DescSid { get; set; } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "Mod", Offset: 12, NameHash: 193446659, Flags: 16509), LayoutImmutable]
 		public string Mod { get; set; } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "GameMode", Offset: 16, NameHash: 509558056, Flags: 16509), LayoutImmutable]
 		public string GameMode { get; set; } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "RandomizeStartingMap", Offset: 20, NameHash: 514866356, Flags: 49325), LayoutImmutable, Blittable]
 		public bool RandomizeStartingMap { get; set; } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

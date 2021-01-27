@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(12), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 12)]
 	public class VoiceOverConstantGlobalValue : 
 		VoiceOverConstantValue
 	{
 		protected CtrRef<VoiceOverGlobalConstantValue> m_Source = new CtrRef<VoiceOverGlobalConstantValue>();
-		[ContainerField(8), MemberInfoFlag(53), ContainerFieldNameHash(3339738264), ContainerCtrRef]
+		[ContainerField(Name: "Source", Offset: 8, NameHash: 3339738264, Flags: 53)]
 		public CtrRef<VoiceOverGlobalConstantValue> Source { get { return m_Source; } set { if (OnPropertyChanging("VoiceOverConstantGlobalValue." + nameof(Source), this, m_Source, value)) m_Source = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

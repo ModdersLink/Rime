@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(28), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 28)]
 	public class SoundStateSettingsAsset : 
 		Asset
 	{
 		protected RefArray<SoundState> m_SoundStates = new RefArray<SoundState>();
-		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(4087884162), ContainerRefArray]
+		[ContainerField(Name: "SoundStates", Offset: 12, NameHash: 4087884162, Flags: 65)]
 		public RefArray<SoundState> SoundStates { get { return m_SoundStates; } set { if (OnPropertyChanging("SoundStateSettingsAsset." + nameof(SoundStates), this, m_SoundStates, value)) m_SoundStates = value; } } // 0xC (12)
 		
 		protected float m_ImpairedHearingImpulseThreshold = new float();
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3350088792)]
+		[ContainerField(Name: "ImpairedHearingImpulseThreshold", Offset: 16, NameHash: 3350088792, Flags: 49469), LayoutImmutable, Blittable]
 		public float ImpairedHearingImpulseThreshold { get { return m_ImpairedHearingImpulseThreshold; } set { if (OnPropertyChanging("SoundStateSettingsAsset." + nameof(ImpairedHearingImpulseThreshold), this, m_ImpairedHearingImpulseThreshold, value)) m_ImpairedHearingImpulseThreshold = value; } } // 0x10 (16)
 		
 		protected float m_ScreamThreshold = new float();
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3986899289)]
+		[ContainerField(Name: "ScreamThreshold", Offset: 20, NameHash: 3986899289, Flags: 49469), LayoutImmutable, Blittable]
 		public float ScreamThreshold { get { return m_ScreamThreshold; } set { if (OnPropertyChanging("SoundStateSettingsAsset." + nameof(ScreamThreshold), this, m_ScreamThreshold, value)) m_ScreamThreshold = value; } } // 0x14 (20)
 		
 		protected float m_SupressionThreshold = new float();
-		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1285763547)]
+		[ContainerField(Name: "SupressionThreshold", Offset: 24, NameHash: 1285763547, Flags: 49469), LayoutImmutable, Blittable]
 		public float SupressionThreshold { get { return m_SupressionThreshold; } set { if (OnPropertyChanging("SoundStateSettingsAsset." + nameof(SupressionThreshold), this, m_SupressionThreshold, value)) m_SupressionThreshold = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

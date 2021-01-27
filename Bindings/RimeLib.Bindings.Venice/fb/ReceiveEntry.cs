@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(28), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 28)]
 	public class ReceiveEntry : 
 		AudioGraphNodePortGroup
 	{
 		protected AudioGraphNodePort m_Out = new AudioGraphNodePort();
-		[ContainerField(8), MemberInfoFlag(41), ContainerFieldNameHash(193453899)]
+		[ContainerField(Name: "Out", Offset: 8, NameHash: 193453899, Flags: 41)]
 		public AudioGraphNodePort Out { get { return m_Out; } set { if (OnPropertyChanging("ReceiveEntry." + nameof(Out), this, m_Out, value)) m_Out = value; } } // 0x8 (8)
 		
 		protected CtrRef<AudioGraphParameter> m_Source = new CtrRef<AudioGraphParameter>();
-		[ContainerField(16), MemberInfoFlag(53), ContainerFieldNameHash(3339738264), ContainerCtrRef]
+		[ContainerField(Name: "Source", Offset: 16, NameHash: 3339738264, Flags: 53)]
 		public CtrRef<AudioGraphParameter> Source { get { return m_Source; } set { if (OnPropertyChanging("ReceiveEntry." + nameof(Source), this, m_Source, value)) m_Source = value; } } // 0x10 (16)
 		
 		protected float m_Parameter = new float();
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2964084716)]
+		[ContainerField(Name: "Parameter", Offset: 20, NameHash: 2964084716, Flags: 49469), LayoutImmutable, Blittable]
 		public float Parameter { get { return m_Parameter; } set { if (OnPropertyChanging("ReceiveEntry." + nameof(Parameter), this, m_Parameter, value)) m_Parameter = value; } } // 0x14 (20)
 		
 		protected float m_SavedValue = new float();
-		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2552725931)]
+		[ContainerField(Name: "SavedValue", Offset: 24, NameHash: 2552725931, Flags: 49469), LayoutImmutable, Blittable]
 		public float SavedValue { get { return m_SavedValue; } set { if (OnPropertyChanging("ReceiveEntry." + nameof(SavedValue), this, m_SavedValue, value)) m_SavedValue = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,37 +18,37 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(41), ContainerSize(80), ContainerStruct]
+	[ContainerType(Alignment: 16,  Flags: 41, Size: 80)]
 	public class FireEffectData : FrostbiteContainer
 	{
-		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
+		[ContainerField(Name: "Rotation", Offset: 0, NameHash: 48673745, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 Rotation { get; set; } = new Vec3(); // 0x0 (0)
 		
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
+		[ContainerField(Name: "Offset", Offset: 16, NameHash: 2871410728, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 Offset { get; set; } = new Vec3(); // 0x10 (16)
 		
-		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
+		[ContainerField(Name: "ZoomRotation", Offset: 32, NameHash: 3320560134, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 ZoomRotation { get; set; } = new Vec3(); // 0x20 (32)
 		
-		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
+		[ContainerField(Name: "ZoomOffset", Offset: 48, NameHash: 4245097407, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 ZoomOffset { get; set; } = new Vec3(); // 0x30 (48)
 		
-		[ContainerField(64), MemberInfoFlag(53), ContainerCtrRef]
+		[ContainerField(Name: "Effect", Offset: 64, NameHash: 2332983090, Flags: 53)]
 		public CtrRef<EffectBlueprint> Effect { get; set; } = new CtrRef<EffectBlueprint>(); // 0x40 (64)
 		
-		[ContainerField(68), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "UseZoomOffset", Offset: 68, NameHash: 3904716028, Flags: 49325), LayoutImmutable, Blittable]
 		public bool UseZoomOffset { get; set; } // 0x44 (68)
 		
-		[ContainerField(69), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "UseZoomRotation", Offset: 69, NameHash: 3031914373, Flags: 49325), LayoutImmutable, Blittable]
 		public bool UseZoomRotation { get; set; } // 0x45 (69)
 		
-		[ContainerField(70), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "DisableDuringZoom", Offset: 70, NameHash: 3735365637, Flags: 49325), LayoutImmutable, Blittable]
 		public bool DisableDuringZoom { get; set; } // 0x46 (70)
 		
-		[ContainerField(71), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "UpdateTransform", Offset: 71, NameHash: 2409007832, Flags: 49325), LayoutImmutable, Blittable]
 		public bool UpdateTransform { get; set; } // 0x47 (71)
 		
-		[ContainerField(72), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "StopLoopingEffects", Offset: 72, NameHash: 3709447781, Flags: 49325), LayoutImmutable, Blittable]
 		public bool StopLoopingEffects { get; set; } // 0x48 (72)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(16), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
 	public class DifficultyDatas : 
 		Asset
 	{
 		protected RefArray<DifficultyData> m_Difficulties = new RefArray<DifficultyData>();
-		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(850210768), ContainerRefArray]
+		[ContainerField(Name: "Difficulties", Offset: 12, NameHash: 850210768, Flags: 65)]
 		public RefArray<DifficultyData> Difficulties { get { return m_Difficulties; } set { if (OnPropertyChanging("DifficultyDatas." + nameof(Difficulties), this, m_Difficulties, value)) m_Difficulties = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

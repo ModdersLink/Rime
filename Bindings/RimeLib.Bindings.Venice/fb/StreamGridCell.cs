@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(12), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 12)]
 	public class StreamGridCell : FrostbiteContainer
 	{
-		[ContainerField(0), MemberInfoFlag(53), ContainerCtrRef]
+		[ContainerField(Name: "ReferenceData", Offset: 0, NameHash: 1934350878, Flags: 53)]
 		public CtrRef<ReferenceObjectData> ReferenceData { get; set; } = new CtrRef<ReferenceObjectData>(); // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable, Blittable, MemberInfoFlag(49405)]
+		[ContainerField(Name: "X", Offset: 4, NameHash: 177661, Flags: 49405), LayoutImmutable, Blittable]
 		public int X { get; set; } // 0x4 (4)
 		
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49405)]
+		[ContainerField(Name: "Z", Offset: 8, NameHash: 177663, Flags: 49405), LayoutImmutable, Blittable]
 		public int Z { get; set; } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

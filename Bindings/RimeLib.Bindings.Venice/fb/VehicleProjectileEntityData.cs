@@ -18,40 +18,40 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(192), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 192)]
 	public class VehicleProjectileEntityData : 
 		ProjectileEntityData
 	{
 		protected CtrRef<VehicleBlueprint> m_Vehicle = new CtrRef<VehicleBlueprint>();
-		[ContainerField(160), MemberInfoFlag(53), ContainerFieldNameHash(772552445), ContainerCtrRef]
+		[ContainerField(Name: "Vehicle", Offset: 160, NameHash: 772552445, Flags: 53)]
 		public CtrRef<VehicleBlueprint> Vehicle { get { return m_Vehicle; } set { if (OnPropertyChanging("VehicleProjectileEntityData." + nameof(Vehicle), this, m_Vehicle, value)) m_Vehicle = value; } } // 0xA0 (160)
 		
 		protected float m_EnterDelay = new float();
-		[ContainerField(164), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(4239333112)]
+		[ContainerField(Name: "EnterDelay", Offset: 164, NameHash: 4239333112, Flags: 49469), LayoutImmutable, Blittable]
 		public float EnterDelay { get { return m_EnterDelay; } set { if (OnPropertyChanging("VehicleProjectileEntityData." + nameof(EnterDelay), this, m_EnterDelay, value)) m_EnterDelay = value; } } // 0xA4 (164)
 		
 		protected float m_NoVehicleCollisionTime = new float();
-		[ContainerField(168), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2160489879)]
+		[ContainerField(Name: "NoVehicleCollisionTime", Offset: 168, NameHash: 2160489879, Flags: 49469), LayoutImmutable, Blittable]
 		public float NoVehicleCollisionTime { get { return m_NoVehicleCollisionTime; } set { if (OnPropertyChanging("VehicleProjectileEntityData." + nameof(NoVehicleCollisionTime), this, m_NoVehicleCollisionTime, value)) m_NoVehicleCollisionTime = value; } } // 0xA8 (168)
 		
 		protected float m_AlignWithGroundRayLength = new float();
-		[ContainerField(172), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3491351705)]
+		[ContainerField(Name: "AlignWithGroundRayLength", Offset: 172, NameHash: 3491351705, Flags: 49469), LayoutImmutable, Blittable]
 		public float AlignWithGroundRayLength { get { return m_AlignWithGroundRayLength; } set { if (OnPropertyChanging("VehicleProjectileEntityData." + nameof(AlignWithGroundRayLength), this, m_AlignWithGroundRayLength, value)) m_AlignWithGroundRayLength = value; } } // 0xAC (172)
 		
 		protected bool m_AutoEnter = new bool();
-		[ContainerField(176), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(776240098)]
+		[ContainerField(Name: "AutoEnter", Offset: 176, NameHash: 776240098, Flags: 49325), LayoutImmutable, Blittable]
 		public bool AutoEnter { get { return m_AutoEnter; } set { if (OnPropertyChanging("VehicleProjectileEntityData." + nameof(AutoEnter), this, m_AutoEnter, value)) m_AutoEnter = value; } } // 0xB0 (176)
 		
 		protected bool m_AlignWithGround = new bool();
-		[ContainerField(177), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2955522671)]
+		[ContainerField(Name: "AlignWithGround", Offset: 177, NameHash: 2955522671, Flags: 49325), LayoutImmutable, Blittable]
 		public bool AlignWithGround { get { return m_AlignWithGround; } set { if (OnPropertyChanging("VehicleProjectileEntityData." + nameof(AlignWithGround), this, m_AlignWithGround, value)) m_AlignWithGround = value; } } // 0xB1 (177)
 		
 		protected bool m_CheckGroundWhenSpawned = new bool();
-		[ContainerField(178), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3321363400)]
+		[ContainerField(Name: "CheckGroundWhenSpawned", Offset: 178, NameHash: 3321363400, Flags: 49325), LayoutImmutable, Blittable]
 		public bool CheckGroundWhenSpawned { get { return m_CheckGroundWhenSpawned; } set { if (OnPropertyChanging("VehicleProjectileEntityData." + nameof(CheckGroundWhenSpawned), this, m_CheckGroundWhenSpawned, value)) m_CheckGroundWhenSpawned = value; } } // 0xB2 (178)
 		
 		protected bool m_DeployInsideNeutralCombatAreaOnly = new bool();
-		[ContainerField(179), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1945021714)]
+		[ContainerField(Name: "DeployInsideNeutralCombatAreaOnly", Offset: 179, NameHash: 1945021714, Flags: 49325), LayoutImmutable, Blittable]
 		public bool DeployInsideNeutralCombatAreaOnly { get { return m_DeployInsideNeutralCombatAreaOnly; } set { if (OnPropertyChanging("VehicleProjectileEntityData." + nameof(DeployInsideNeutralCombatAreaOnly), this, m_DeployInsideNeutralCombatAreaOnly, value)) m_DeployInsideNeutralCombatAreaOnly = value; } } // 0xB3 (179)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

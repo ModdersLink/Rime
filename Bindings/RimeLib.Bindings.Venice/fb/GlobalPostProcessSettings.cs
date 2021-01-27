@@ -18,448 +18,448 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(416), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 416)]
 	public class GlobalPostProcessSettings : 
 		DataContainer
 	{
 		protected Vec3 m_Brightness = new Vec3();
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(2298333740)]
+		[ContainerField(Name: "Brightness", Offset: 16, NameHash: 2298333740, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 Brightness { get { return m_Brightness; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(Brightness), this, m_Brightness, value)) m_Brightness = value; } } // 0x10 (16)
 		
 		protected Vec3 m_ForceBloomScale = new Vec3();
-		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(1167733187)]
+		[ContainerField(Name: "ForceBloomScale", Offset: 32, NameHash: 1167733187, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 ForceBloomScale { get { return m_ForceBloomScale; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(ForceBloomScale), this, m_ForceBloomScale, value)) m_ForceBloomScale = value; } } // 0x20 (32)
 		
 		protected Vec4 m_ForceVignetteColor = new Vec4();
-		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(1913810643)]
+		[ContainerField(Name: "ForceVignetteColor", Offset: 48, NameHash: 1913810643, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec4 ForceVignetteColor { get { return m_ForceVignetteColor; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(ForceVignetteColor), this, m_ForceVignetteColor, value)) m_ForceVignetteColor = value; } } // 0x30 (48)
 		
 		protected Vec3 m_Contrast = new Vec3();
-		[ContainerField(64), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(332991719)]
+		[ContainerField(Name: "Contrast", Offset: 64, NameHash: 332991719, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 Contrast { get { return m_Contrast; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(Contrast), this, m_Contrast, value)) m_Contrast = value; } } // 0x40 (64)
 		
 		protected Vec3 m_Saturation = new Vec3();
-		[ContainerField(80), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(2572315705)]
+		[ContainerField(Name: "Saturation", Offset: 80, NameHash: 2572315705, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 Saturation { get { return m_Saturation; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(Saturation), this, m_Saturation, value)) m_Saturation = value; } } // 0x50 (80)
 		
 		protected Vec2 m_FilmGrainTextureScale = new Vec2();
-		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(698171103)]
+		[ContainerField(Name: "FilmGrainTextureScale", Offset: 96, NameHash: 698171103, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec2 FilmGrainTextureScale { get { return m_FilmGrainTextureScale; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(FilmGrainTextureScale), this, m_FilmGrainTextureScale, value)) m_FilmGrainTextureScale = value; } } // 0x60 (96)
 		
 		protected Vec2 m_ForceVignetteScale = new Vec2();
-		[ContainerField(104), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(1933210934)]
+		[ContainerField(Name: "ForceVignetteScale", Offset: 104, NameHash: 1933210934, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec2 ForceVignetteScale { get { return m_ForceVignetteScale; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(ForceVignetteScale), this, m_ForceVignetteScale, value)) m_ForceVignetteScale = value; } } // 0x68 (104)
 		
 		protected Vec3 m_FilmGrainColorScale = new Vec3();
-		[ContainerField(112), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(2297646077)]
+		[ContainerField(Name: "FilmGrainColorScale", Offset: 112, NameHash: 2297646077, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 FilmGrainColorScale { get { return m_FilmGrainColorScale; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(FilmGrainColorScale), this, m_FilmGrainColorScale, value)) m_FilmGrainColorScale = value; } } // 0x70 (112)
 		
 		protected uint m_Ps3EdgeMlaaJobPriority = new uint();
-		[ContainerField(128), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(2531442370)]
+		[ContainerField(Name: "Ps3EdgeMlaaJobPriority", Offset: 128, NameHash: 2531442370, Flags: 49421), LayoutImmutable, Blittable]
 		public uint Ps3EdgeMlaaJobPriority { get { return m_Ps3EdgeMlaaJobPriority; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(Ps3EdgeMlaaJobPriority), this, m_Ps3EdgeMlaaJobPriority, value)) m_Ps3EdgeMlaaJobPriority = value; } } // 0x80 (128)
 		
 		protected uint m_BloomBlurIterationCount = new uint();
-		[ContainerField(132), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(559176571)]
+		[ContainerField(Name: "BloomBlurIterationCount", Offset: 132, NameHash: 559176571, Flags: 49421), LayoutImmutable, Blittable]
 		public uint BloomBlurIterationCount { get { return m_BloomBlurIterationCount; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(BloomBlurIterationCount), this, m_BloomBlurIterationCount, value)) m_BloomBlurIterationCount = value; } } // 0x84 (132)
 		
 		protected uint m_DebugModeStep = new uint();
-		[ContainerField(136), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(4013667205)]
+		[ContainerField(Name: "DebugModeStep", Offset: 136, NameHash: 4013667205, Flags: 49421), LayoutImmutable, Blittable]
 		public uint DebugModeStep { get { return m_DebugModeStep; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(DebugModeStep), this, m_DebugModeStep, value)) m_DebugModeStep = value; } } // 0x88 (136)
 		
 		protected BlurFilter m_BloomBlurFilter = new BlurFilter();
-		[ContainerField(140), MemberInfoFlag(137), ContainerFieldNameHash(1641766607)]
+		[ContainerField(Name: "BloomBlurFilter", Offset: 140, NameHash: 1641766607, Flags: 137)]
 		public BlurFilter BloomBlurFilter { get { return m_BloomBlurFilter; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(BloomBlurFilter), this, m_BloomBlurFilter, value)) m_BloomBlurFilter = value; } } // 0x8C (140)
 		
 		protected float m_LdrBloomRange = new float();
-		[ContainerField(144), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3302789155)]
+		[ContainerField(Name: "LdrBloomRange", Offset: 144, NameHash: 3302789155, Flags: 49469), LayoutImmutable, Blittable]
 		public float LdrBloomRange { get { return m_LdrBloomRange; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(LdrBloomRange), this, m_LdrBloomRange, value)) m_LdrBloomRange = value; } } // 0x90 (144)
 		
 		protected PostProcessDebugMode m_DebugMode = new PostProcessDebugMode();
-		[ContainerField(148), MemberInfoFlag(137), ContainerFieldNameHash(859984823)]
+		[ContainerField(Name: "DebugMode", Offset: 148, NameHash: 859984823, Flags: 137)]
 		public PostProcessDebugMode DebugMode { get { return m_DebugMode; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(DebugMode), this, m_DebugMode, value)) m_DebugMode = value; } } // 0x94 (148)
 		
 		protected float m_UserBrightnessMin = new float();
-		[ContainerField(152), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2984710295)]
+		[ContainerField(Name: "UserBrightnessMin", Offset: 152, NameHash: 2984710295, Flags: 49469), LayoutImmutable, Blittable]
 		public float UserBrightnessMin { get { return m_UserBrightnessMin; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(UserBrightnessMin), this, m_UserBrightnessMin, value)) m_UserBrightnessMin = value; } } // 0x98 (152)
 		
 		protected float m_UIBrightnessNorm = new float();
-		[ContainerField(156), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3718973230)]
+		[ContainerField(Name: "UIBrightnessNorm", Offset: 156, NameHash: 3718973230, Flags: 49469), LayoutImmutable, Blittable]
 		public float UIBrightnessNorm { get { return m_UIBrightnessNorm; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(UIBrightnessNorm), this, m_UIBrightnessNorm, value)) m_UIBrightnessNorm = value; } } // 0x9C (156)
 		
 		protected uint m_Ps3EdgeMlaaJobCount = new uint();
-		[ContainerField(160), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(3203807475)]
+		[ContainerField(Name: "Ps3EdgeMlaaJobCount", Offset: 160, NameHash: 3203807475, Flags: 49421), LayoutImmutable, Blittable]
 		public uint Ps3EdgeMlaaJobCount { get { return m_Ps3EdgeMlaaJobCount; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(Ps3EdgeMlaaJobCount), this, m_Ps3EdgeMlaaJobCount, value)) m_Ps3EdgeMlaaJobCount = value; } } // 0xA0 (160)
 		
 		protected uint m_Ps3EdgeMlaaAbsoluteThreshold = new uint();
-		[ContainerField(164), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(3239984215)]
+		[ContainerField(Name: "Ps3EdgeMlaaAbsoluteThreshold", Offset: 164, NameHash: 3239984215, Flags: 49421), LayoutImmutable, Blittable]
 		public uint Ps3EdgeMlaaAbsoluteThreshold { get { return m_Ps3EdgeMlaaAbsoluteThreshold; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(Ps3EdgeMlaaAbsoluteThreshold), this, m_Ps3EdgeMlaaAbsoluteThreshold, value)) m_Ps3EdgeMlaaAbsoluteThreshold = value; } } // 0xA4 (164)
 		
 		protected uint m_BloomPyramidLevelCount = new uint();
-		[ContainerField(168), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(3447104137)]
+		[ContainerField(Name: "BloomPyramidLevelCount", Offset: 168, NameHash: 3447104137, Flags: 49421), LayoutImmutable, Blittable]
 		public uint BloomPyramidLevelCount { get { return m_BloomPyramidLevelCount; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(BloomPyramidLevelCount), this, m_BloomPyramidLevelCount, value)) m_BloomPyramidLevelCount = value; } } // 0xA8 (168)
 		
 		protected uint m_BloomPyramidFinalLevel = new uint();
-		[ContainerField(172), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(3067494054)]
+		[ContainerField(Name: "BloomPyramidFinalLevel", Offset: 172, NameHash: 3067494054, Flags: 49421), LayoutImmutable, Blittable]
 		public uint BloomPyramidFinalLevel { get { return m_BloomPyramidFinalLevel; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(BloomPyramidFinalLevel), this, m_BloomPyramidFinalLevel, value)) m_BloomPyramidFinalLevel = value; } } // 0xAC (172)
 		
 		protected float m_UserBrightnessMax = new float();
-		[ContainerField(176), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2984710025)]
+		[ContainerField(Name: "UserBrightnessMax", Offset: 176, NameHash: 2984710025, Flags: 49469), LayoutImmutable, Blittable]
 		public float UserBrightnessMax { get { return m_UserBrightnessMax; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(UserBrightnessMax), this, m_UserBrightnessMax, value)) m_UserBrightnessMax = value; } } // 0xB0 (176)
 		
 		protected float m_UserBrightnessMulScale = new float();
-		[ContainerField(180), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3175574289)]
+		[ContainerField(Name: "UserBrightnessMulScale", Offset: 180, NameHash: 3175574289, Flags: 49469), LayoutImmutable, Blittable]
 		public float UserBrightnessMulScale { get { return m_UserBrightnessMulScale; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(UserBrightnessMulScale), this, m_UserBrightnessMulScale, value)) m_UserBrightnessMulScale = value; } } // 0xB4 (180)
 		
 		protected float m_UserBrightnessAddScale = new float();
-		[ContainerField(184), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2118006468)]
+		[ContainerField(Name: "UserBrightnessAddScale", Offset: 184, NameHash: 2118006468, Flags: 49469), LayoutImmutable, Blittable]
 		public float UserBrightnessAddScale { get { return m_UserBrightnessAddScale; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(UserBrightnessAddScale), this, m_UserBrightnessAddScale, value)) m_UserBrightnessAddScale = value; } } // 0xB8 (184)
 		
 		protected uint m_DownsampleAverageStartMipmap = new uint();
-		[ContainerField(188), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(3334314874)]
+		[ContainerField(Name: "DownsampleAverageStartMipmap", Offset: 188, NameHash: 3334314874, Flags: 49421), LayoutImmutable, Blittable]
 		public uint DownsampleAverageStartMipmap { get { return m_DownsampleAverageStartMipmap; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(DownsampleAverageStartMipmap), this, m_DownsampleAverageStartMipmap, value)) m_DownsampleAverageStartMipmap = value; } } // 0xBC (188)
 		
 		protected uint m_Ps3EdgeMlaaThresholdFactor = new uint();
-		[ContainerField(192), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(1293096493)]
+		[ContainerField(Name: "Ps3EdgeMlaaThresholdFactor", Offset: 192, NameHash: 1293096493, Flags: 49421), LayoutImmutable, Blittable]
 		public uint Ps3EdgeMlaaThresholdFactor { get { return m_Ps3EdgeMlaaThresholdFactor; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(Ps3EdgeMlaaThresholdFactor), this, m_Ps3EdgeMlaaThresholdFactor, value)) m_Ps3EdgeMlaaThresholdFactor = value; } } // 0xC0 (192)
 		
 		protected uint m_Ps3EdgeMlaaThresholdBase = new uint();
-		[ContainerField(196), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(2710541461)]
+		[ContainerField(Name: "Ps3EdgeMlaaThresholdBase", Offset: 196, NameHash: 2710541461, Flags: 49421), LayoutImmutable, Blittable]
 		public uint Ps3EdgeMlaaThresholdBase { get { return m_Ps3EdgeMlaaThresholdBase; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(Ps3EdgeMlaaThresholdBase), this, m_Ps3EdgeMlaaThresholdBase, value)) m_Ps3EdgeMlaaThresholdBase = value; } } // 0xC4 (196)
 		
 		protected uint m_Ps3TiledLdrMipmapCount = new uint();
-		[ContainerField(200), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(2148079284)]
+		[ContainerField(Name: "Ps3TiledLdrMipmapCount", Offset: 200, NameHash: 2148079284, Flags: 49421), LayoutImmutable, Blittable]
 		public uint Ps3TiledLdrMipmapCount { get { return m_Ps3TiledLdrMipmapCount; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(Ps3TiledLdrMipmapCount), this, m_Ps3TiledLdrMipmapCount, value)) m_Ps3TiledLdrMipmapCount = value; } } // 0xC8 (200)
 		
 		protected uint m_Ps3TiledFloatMipmapCount = new uint();
-		[ContainerField(204), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(1166085150)]
+		[ContainerField(Name: "Ps3TiledFloatMipmapCount", Offset: 204, NameHash: 1166085150, Flags: 49421), LayoutImmutable, Blittable]
 		public uint Ps3TiledFloatMipmapCount { get { return m_Ps3TiledFloatMipmapCount; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(Ps3TiledFloatMipmapCount), this, m_Ps3TiledFloatMipmapCount, value)) m_Ps3TiledFloatMipmapCount = value; } } // 0xCC (204)
 		
 		protected uint m_Ps3TiledBloomMipmapCount = new uint();
-		[ContainerField(208), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(969308909)]
+		[ContainerField(Name: "Ps3TiledBloomMipmapCount", Offset: 208, NameHash: 969308909, Flags: 49421), LayoutImmutable, Blittable]
 		public uint Ps3TiledBloomMipmapCount { get { return m_Ps3TiledBloomMipmapCount; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(Ps3TiledBloomMipmapCount), this, m_Ps3TiledBloomMipmapCount, value)) m_Ps3TiledBloomMipmapCount = value; } } // 0xD0 (208)
 		
 		protected BlurFilter m_HbaoGaussianBlurSize = new BlurFilter();
-		[ContainerField(212), MemberInfoFlag(137), ContainerFieldNameHash(2138453560)]
+		[ContainerField(Name: "HbaoGaussianBlurSize", Offset: 212, NameHash: 2138453560, Flags: 137)]
 		public BlurFilter HbaoGaussianBlurSize { get { return m_HbaoGaussianBlurSize; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(HbaoGaussianBlurSize), this, m_HbaoGaussianBlurSize, value)) m_HbaoGaussianBlurSize = value; } } // 0xD4 (212)
 		
 		protected float m_ForceExposure = new float();
-		[ContainerField(216), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3271822859)]
+		[ContainerField(Name: "ForceExposure", Offset: 216, NameHash: 3271822859, Flags: 49469), LayoutImmutable, Blittable]
 		public float ForceExposure { get { return m_ForceExposure; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(ForceExposure), this, m_ForceExposure, value)) m_ForceExposure = value; } } // 0xD8 (216)
 		
 		protected float m_ForceBlurAdd = new float();
-		[ContainerField(220), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2796023760)]
+		[ContainerField(Name: "ForceBlurAdd", Offset: 220, NameHash: 2796023760, Flags: 49469), LayoutImmutable, Blittable]
 		public float ForceBlurAdd { get { return m_ForceBlurAdd; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(ForceBlurAdd), this, m_ForceBlurAdd, value)) m_ForceBlurAdd = value; } } // 0xDC (220)
 		
 		protected int m_ForceDofEnable = new int();
-		[ContainerField(224), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(1234693812)]
+		[ContainerField(Name: "ForceDofEnable", Offset: 224, NameHash: 1234693812, Flags: 49405), LayoutImmutable, Blittable]
 		public int ForceDofEnable { get { return m_ForceDofEnable; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(ForceDofEnable), this, m_ForceDofEnable, value)) m_ForceDofEnable = value; } } // 0xE0 (224)
 		
 		protected float m_ForceDofFocusDistance = new float();
-		[ContainerField(228), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(773536698)]
+		[ContainerField(Name: "ForceDofFocusDistance", Offset: 228, NameHash: 773536698, Flags: 49469), LayoutImmutable, Blittable]
 		public float ForceDofFocusDistance { get { return m_ForceDofFocusDistance; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(ForceDofFocusDistance), this, m_ForceDofFocusDistance, value)) m_ForceDofFocusDistance = value; } } // 0xE4 (228)
 		
 		protected float m_ForceDofNearDistanceScale = new float();
-		[ContainerField(232), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1756776310)]
+		[ContainerField(Name: "ForceDofNearDistanceScale", Offset: 232, NameHash: 1756776310, Flags: 49469), LayoutImmutable, Blittable]
 		public float ForceDofNearDistanceScale { get { return m_ForceDofNearDistanceScale; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(ForceDofNearDistanceScale), this, m_ForceDofNearDistanceScale, value)) m_ForceDofNearDistanceScale = value; } } // 0xE8 (232)
 		
 		protected float m_ForceDofFarDistanceScale = new float();
-		[ContainerField(236), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(67724763)]
+		[ContainerField(Name: "ForceDofFarDistanceScale", Offset: 236, NameHash: 67724763, Flags: 49469), LayoutImmutable, Blittable]
 		public float ForceDofFarDistanceScale { get { return m_ForceDofFarDistanceScale; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(ForceDofFarDistanceScale), this, m_ForceDofFarDistanceScale, value)) m_ForceDofFarDistanceScale = value; } } // 0xEC (236)
 		
 		protected float m_ForceDofScale = new float();
-		[ContainerField(240), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(150495693)]
+		[ContainerField(Name: "ForceDofScale", Offset: 240, NameHash: 150495693, Flags: 49469), LayoutImmutable, Blittable]
 		public float ForceDofScale { get { return m_ForceDofScale; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(ForceDofScale), this, m_ForceDofScale, value)) m_ForceDofScale = value; } } // 0xF0 (240)
 		
 		protected float m_ForceDofBlurFilterDeviation = new float();
-		[ContainerField(244), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2506033663)]
+		[ContainerField(Name: "ForceDofBlurFilterDeviation", Offset: 244, NameHash: 2506033663, Flags: 49469), LayoutImmutable, Blittable]
 		public float ForceDofBlurFilterDeviation { get { return m_ForceDofBlurFilterDeviation; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(ForceDofBlurFilterDeviation), this, m_ForceDofBlurFilterDeviation, value)) m_ForceDofBlurFilterDeviation = value; } } // 0xF4 (244)
 		
 		protected uint m_HbaoTemporalFilterMaxNumFrames = new uint();
-		[ContainerField(248), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(3572552369)]
+		[ContainerField(Name: "HbaoTemporalFilterMaxNumFrames", Offset: 248, NameHash: 3572552369, Flags: 49421), LayoutImmutable, Blittable]
 		public uint HbaoTemporalFilterMaxNumFrames { get { return m_HbaoTemporalFilterMaxNumFrames; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(HbaoTemporalFilterMaxNumFrames), this, m_HbaoTemporalFilterMaxNumFrames, value)) m_HbaoTemporalFilterMaxNumFrames = value; } } // 0xF8 (248)
 		
 		protected int m_HbaoForceVendor = new int();
-		[ContainerField(252), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(2257925048)]
+		[ContainerField(Name: "HbaoForceVendor", Offset: 252, NameHash: 2257925048, Flags: 49405), LayoutImmutable, Blittable]
 		public int HbaoForceVendor { get { return m_HbaoForceVendor; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(HbaoForceVendor), this, m_HbaoForceVendor, value)) m_HbaoForceVendor = value; } } // 0xFC (252)
 		
 		protected float m_ForceVignetteExponent = new float();
-		[ContainerField(256), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(119843677)]
+		[ContainerField(Name: "ForceVignetteExponent", Offset: 256, NameHash: 119843677, Flags: 49469), LayoutImmutable, Blittable]
 		public float ForceVignetteExponent { get { return m_ForceVignetteExponent; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(ForceVignetteExponent), this, m_ForceVignetteExponent, value)) m_ForceVignetteExponent = value; } } // 0x100 (256)
 		
 		protected float m_HbaoTemporalFilterThreshold = new float();
-		[ContainerField(260), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1604474378)]
+		[ContainerField(Name: "HbaoTemporalFilterThreshold", Offset: 260, NameHash: 1604474378, Flags: 49469), LayoutImmutable, Blittable]
 		public float HbaoTemporalFilterThreshold { get { return m_HbaoTemporalFilterThreshold; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(HbaoTemporalFilterThreshold), this, m_HbaoTemporalFilterThreshold, value)) m_HbaoTemporalFilterThreshold = value; } } // 0x104 (260)
 		
 		protected int m_ForceTonemapMethod = new int();
-		[ContainerField(264), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(2295468203)]
+		[ContainerField(Name: "ForceTonemapMethod", Offset: 264, NameHash: 2295468203, Flags: 49405), LayoutImmutable, Blittable]
 		public int ForceTonemapMethod { get { return m_ForceTonemapMethod; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(ForceTonemapMethod), this, m_ForceTonemapMethod, value)) m_ForceTonemapMethod = value; } } // 0x108 (264)
 		
 		protected float m_LUTGammaR = new float();
-		[ContainerField(268), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3798210365)]
+		[ContainerField(Name: "LUTGammaR", Offset: 268, NameHash: 3798210365, Flags: 49469), LayoutImmutable, Blittable]
 		public float LUTGammaR { get { return m_LUTGammaR; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(LUTGammaR), this, m_LUTGammaR, value)) m_LUTGammaR = value; } } // 0x10C (268)
 		
 		protected float m_LUTGammaG = new float();
-		[ContainerField(272), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3798210344)]
+		[ContainerField(Name: "LUTGammaG", Offset: 272, NameHash: 3798210344, Flags: 49469), LayoutImmutable, Blittable]
 		public float LUTGammaG { get { return m_LUTGammaG; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(LUTGammaG), this, m_LUTGammaG, value)) m_LUTGammaG = value; } } // 0x110 (272)
 		
 		protected float m_HbaoTemporalFilterThreshold2 = new float();
-		[ContainerField(276), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1408046968)]
+		[ContainerField(Name: "HbaoTemporalFilterThreshold2", Offset: 276, NameHash: 1408046968, Flags: 49469), LayoutImmutable, Blittable]
 		public float HbaoTemporalFilterThreshold2 { get { return m_HbaoTemporalFilterThreshold2; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(HbaoTemporalFilterThreshold2), this, m_HbaoTemporalFilterThreshold2, value)) m_HbaoTemporalFilterThreshold2 = value; } } // 0x114 (276)
 		
 		protected int m_ForceChromostereopsisEnable = new int();
-		[ContainerField(280), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(3269666222)]
+		[ContainerField(Name: "ForceChromostereopsisEnable", Offset: 280, NameHash: 3269666222, Flags: 49405), LayoutImmutable, Blittable]
 		public int ForceChromostereopsisEnable { get { return m_ForceChromostereopsisEnable; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(ForceChromostereopsisEnable), this, m_ForceChromostereopsisEnable, value)) m_ForceChromostereopsisEnable = value; } } // 0x118 (280)
 		
 		protected int m_ForceChromostereopsisOffset = new int();
-		[ContainerField(284), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(2740580066)]
+		[ContainerField(Name: "ForceChromostereopsisOffset", Offset: 284, NameHash: 2740580066, Flags: 49405), LayoutImmutable, Blittable]
 		public int ForceChromostereopsisOffset { get { return m_ForceChromostereopsisOffset; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(ForceChromostereopsisOffset), this, m_ForceChromostereopsisOffset, value)) m_ForceChromostereopsisOffset = value; } } // 0x11C (284)
 		
 		protected float m_ForceChromostereopsisScale = new float();
-		[ContainerField(288), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3890443543)]
+		[ContainerField(Name: "ForceChromostereopsisScale", Offset: 288, NameHash: 3890443543, Flags: 49469), LayoutImmutable, Blittable]
 		public float ForceChromostereopsisScale { get { return m_ForceChromostereopsisScale; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(ForceChromostereopsisScale), this, m_ForceChromostereopsisScale, value)) m_ForceChromostereopsisScale = value; } } // 0x120 (288)
 		
 		protected uint m_HbaoBilateralBlurRadius = new uint();
-		[ContainerField(292), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(2029554424)]
+		[ContainerField(Name: "HbaoBilateralBlurRadius", Offset: 292, NameHash: 2029554424, Flags: 49421), LayoutImmutable, Blittable]
 		public uint HbaoBilateralBlurRadius { get { return m_HbaoBilateralBlurRadius; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(HbaoBilateralBlurRadius), this, m_HbaoBilateralBlurRadius, value)) m_HbaoBilateralBlurRadius = value; } } // 0x124 (292)
 		
 		protected float m_ForceMiddleGray = new float();
-		[ContainerField(296), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(235090328)]
+		[ContainerField(Name: "ForceMiddleGray", Offset: 296, NameHash: 235090328, Flags: 49469), LayoutImmutable, Blittable]
 		public float ForceMiddleGray { get { return m_ForceMiddleGray; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(ForceMiddleGray), this, m_ForceMiddleGray, value)) m_ForceMiddleGray = value; } } // 0x128 (296)
 		
 		protected float m_LUTGammaB = new float();
-		[ContainerField(300), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3798210349)]
+		[ContainerField(Name: "LUTGammaB", Offset: 300, NameHash: 3798210349, Flags: 49469), LayoutImmutable, Blittable]
 		public float LUTGammaB { get { return m_LUTGammaB; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(LUTGammaB), this, m_LUTGammaB, value)) m_LUTGammaB = value; } } // 0x12C (300)
 		
 		protected float m_LUTGammaCurbOffset = new float();
-		[ContainerField(304), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2241568676)]
+		[ContainerField(Name: "LUTGammaCurbOffset", Offset: 304, NameHash: 2241568676, Flags: 49469), LayoutImmutable, Blittable]
 		public float LUTGammaCurbOffset { get { return m_LUTGammaCurbOffset; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(LUTGammaCurbOffset), this, m_LUTGammaCurbOffset, value)) m_LUTGammaCurbOffset = value; } } // 0x130 (304)
 		
 		protected float m_HbaoBilateralBlurSharpness = new float();
-		[ContainerField(308), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1816381715)]
+		[ContainerField(Name: "HbaoBilateralBlurSharpness", Offset: 308, NameHash: 1816381715, Flags: 49469), LayoutImmutable, Blittable]
 		public float HbaoBilateralBlurSharpness { get { return m_HbaoBilateralBlurSharpness; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(HbaoBilateralBlurSharpness), this, m_HbaoBilateralBlurSharpness, value)) m_HbaoBilateralBlurSharpness = value; } } // 0x134 (308)
 		
 		protected uint m_HbaoRandomTextureWidth = new uint();
-		[ContainerField(312), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(636926051)]
+		[ContainerField(Name: "HbaoRandomTextureWidth", Offset: 312, NameHash: 636926051, Flags: 49421), LayoutImmutable, Blittable]
 		public uint HbaoRandomTextureWidth { get { return m_HbaoRandomTextureWidth; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(HbaoRandomTextureWidth), this, m_HbaoRandomTextureWidth, value)) m_HbaoRandomTextureWidth = value; } } // 0x138 (312)
 		
 		protected float m_LensScopeFilterColorScale = new float();
-		[ContainerField(316), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(567563134)]
+		[ContainerField(Name: "LensScopeFilterColorScale", Offset: 316, NameHash: 567563134, Flags: 49469), LayoutImmutable, Blittable]
 		public float LensScopeFilterColorScale { get { return m_LensScopeFilterColorScale; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(LensScopeFilterColorScale), this, m_LensScopeFilterColorScale, value)) m_LensScopeFilterColorScale = value; } } // 0x13C (316)
 		
 		protected float m_HbaoStepCount = new float();
-		[ContainerField(320), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3117304240)]
+		[ContainerField(Name: "HbaoStepCount", Offset: 320, NameHash: 3117304240, Flags: 49469), LayoutImmutable, Blittable]
 		public float HbaoStepCount { get { return m_HbaoStepCount; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(HbaoStepCount), this, m_HbaoStepCount, value)) m_HbaoStepCount = value; } } // 0x140 (320)
 		
 		protected float m_HbaoMaxFootprintRadius = new float();
-		[ContainerField(324), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(312723150)]
+		[ContainerField(Name: "HbaoMaxFootprintRadius", Offset: 324, NameHash: 312723150, Flags: 49469), LayoutImmutable, Blittable]
 		public float HbaoMaxFootprintRadius { get { return m_HbaoMaxFootprintRadius; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(HbaoMaxFootprintRadius), this, m_HbaoMaxFootprintRadius, value)) m_HbaoMaxFootprintRadius = value; } } // 0x144 (324)
 		
 		protected float m_HbaoDirCount = new float();
-		[ContainerField(328), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(199681341)]
+		[ContainerField(Name: "HbaoDirCount", Offset: 328, NameHash: 199681341, Flags: 49469), LayoutImmutable, Blittable]
 		public float HbaoDirCount { get { return m_HbaoDirCount; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(HbaoDirCount), this, m_HbaoDirCount, value)) m_HbaoDirCount = value; } } // 0x148 (328)
 		
 		protected float m_Hue = new float();
-		[ContainerField(332), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(193458845)]
+		[ContainerField(Name: "Hue", Offset: 332, NameHash: 193458845, Flags: 49469), LayoutImmutable, Blittable]
 		public float Hue { get { return m_Hue; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(Hue), this, m_Hue, value)) m_Hue = value; } } // 0x14C (332)
 		
 		protected uint m_HbaoQuality = new uint();
-		[ContainerField(336), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(658038220)]
+		[ContainerField(Name: "HbaoQuality", Offset: 336, NameHash: 658038220, Flags: 49421), LayoutImmutable, Blittable]
 		public uint HbaoQuality { get { return m_HbaoQuality; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(HbaoQuality), this, m_HbaoQuality, value)) m_HbaoQuality = value; } } // 0x150 (336)
 		
 		protected uint m_HbaoRandomDirVariationCount = new uint();
-		[ContainerField(340), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(3036070167)]
+		[ContainerField(Name: "HbaoRandomDirVariationCount", Offset: 340, NameHash: 3036070167, Flags: 49421), LayoutImmutable, Blittable]
 		public uint HbaoRandomDirVariationCount { get { return m_HbaoRandomDirVariationCount; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(HbaoRandomDirVariationCount), this, m_HbaoRandomDirVariationCount, value)) m_HbaoRandomDirVariationCount = value; } } // 0x154 (340)
 		
 		protected float m_ForceDiffusionDofPlaneInFocus = new float();
-		[ContainerField(344), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3422420331)]
+		[ContainerField(Name: "ForceDiffusionDofPlaneInFocus", Offset: 344, NameHash: 3422420331, Flags: 49469), LayoutImmutable, Blittable]
 		public float ForceDiffusionDofPlaneInFocus { get { return m_ForceDiffusionDofPlaneInFocus; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(ForceDiffusionDofPlaneInFocus), this, m_ForceDiffusionDofPlaneInFocus, value)) m_ForceDiffusionDofPlaneInFocus = value; } } // 0x158 (344)
 		
 		protected float m_DiffusionDofLuminance = new float();
-		[ContainerField(348), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(761872977)]
+		[ContainerField(Name: "DiffusionDofLuminance", Offset: 348, NameHash: 761872977, Flags: 49469), LayoutImmutable, Blittable]
 		public float DiffusionDofLuminance { get { return m_DiffusionDofLuminance; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(DiffusionDofLuminance), this, m_DiffusionDofLuminance, value)) m_DiffusionDofLuminance = value; } } // 0x15C (348)
 		
 		protected uint m_HbaoTemporalFilterDebugMode = new uint();
-		[ContainerField(352), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(506800047)]
+		[ContainerField(Name: "HbaoTemporalFilterDebugMode", Offset: 352, NameHash: 506800047, Flags: 49421), LayoutImmutable, Blittable]
 		public uint HbaoTemporalFilterDebugMode { get { return m_HbaoTemporalFilterDebugMode; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(HbaoTemporalFilterDebugMode), this, m_HbaoTemporalFilterDebugMode, value)) m_HbaoTemporalFilterDebugMode = value; } } // 0x160 (352)
 		
 		protected float m_ForceDiffusionDofAperture = new float();
-		[ContainerField(356), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1045199206)]
+		[ContainerField(Name: "ForceDiffusionDofAperture", Offset: 356, NameHash: 1045199206, Flags: 49469), LayoutImmutable, Blittable]
 		public float ForceDiffusionDofAperture { get { return m_ForceDiffusionDofAperture; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(ForceDiffusionDofAperture), this, m_ForceDiffusionDofAperture, value)) m_ForceDiffusionDofAperture = value; } } // 0x164 (356)
 		
 		protected float m_ForceDiffusionDofFocalLength = new float();
-		[ContainerField(360), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3489263661)]
+		[ContainerField(Name: "ForceDiffusionDofFocalLength", Offset: 360, NameHash: 3489263661, Flags: 49469), LayoutImmutable, Blittable]
 		public float ForceDiffusionDofFocalLength { get { return m_ForceDiffusionDofFocalLength; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(ForceDiffusionDofFocalLength), this, m_ForceDiffusionDofFocalLength, value)) m_ForceDiffusionDofFocalLength = value; } } // 0x168 (360)
 		
 		protected DynamicAOMethod m_DynamicAOMethod = new DynamicAOMethod();
-		[ContainerField(364), MemberInfoFlag(137), ContainerFieldNameHash(3208923969)]
+		[ContainerField(Name: "DynamicAOMethod", Offset: 364, NameHash: 3208923969, Flags: 137)]
 		public DynamicAOMethod DynamicAOMethod { get { return m_DynamicAOMethod; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(DynamicAOMethod), this, m_DynamicAOMethod, value)) m_DynamicAOMethod = value; } } // 0x16C (364)
 		
 		protected bool m_DrawDebugInfo = new bool();
-		[ContainerField(368), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(727053050)]
+		[ContainerField(Name: "DrawDebugInfo", Offset: 368, NameHash: 727053050, Flags: 49325), LayoutImmutable, Blittable]
 		public bool DrawDebugInfo { get { return m_DrawDebugInfo; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(DrawDebugInfo), this, m_DrawDebugInfo, value)) m_DrawDebugInfo = value; } } // 0x170 (368)
 		
 		protected bool m_ColorGradingForceUpdateAlways = new bool();
-		[ContainerField(369), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1921841397)]
+		[ContainerField(Name: "ColorGradingForceUpdateAlways", Offset: 369, NameHash: 1921841397, Flags: 49325), LayoutImmutable, Blittable]
 		public bool ColorGradingForceUpdateAlways { get { return m_ColorGradingForceUpdateAlways; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(ColorGradingForceUpdateAlways), this, m_ColorGradingForceUpdateAlways, value)) m_ColorGradingForceUpdateAlways = value; } } // 0x171 (369)
 		
 		protected bool m_BloomBlurEnable = new bool();
-		[ContainerField(370), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1610321454)]
+		[ContainerField(Name: "BloomBlurEnable", Offset: 370, NameHash: 1610321454, Flags: 49325), LayoutImmutable, Blittable]
 		public bool BloomBlurEnable { get { return m_BloomBlurEnable; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(BloomBlurEnable), this, m_BloomBlurEnable, value)) m_BloomBlurEnable = value; } } // 0x172 (370)
 		
 		protected bool m_HdrBlurEnable = new bool();
-		[ContainerField(371), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1500746835)]
+		[ContainerField(Name: "HdrBlurEnable", Offset: 371, NameHash: 1500746835, Flags: 49325), LayoutImmutable, Blittable]
 		public bool HdrBlurEnable { get { return m_HdrBlurEnable; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(HdrBlurEnable), this, m_HdrBlurEnable, value)) m_HdrBlurEnable = value; } } // 0x173 (371)
 		
 		protected bool m_BlurBlendEnable = new bool();
-		[ContainerField(372), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2574022316)]
+		[ContainerField(Name: "BlurBlendEnable", Offset: 372, NameHash: 2574022316, Flags: 49325), LayoutImmutable, Blittable]
 		public bool BlurBlendEnable { get { return m_BlurBlendEnable; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(BlurBlendEnable), this, m_BlurBlendEnable, value)) m_BlurBlendEnable = value; } } // 0x174 (372)
 		
 		protected bool m_DownsampleAverageFromBloomEnable = new bool();
-		[ContainerField(373), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1220691910)]
+		[ContainerField(Name: "DownsampleAverageFromBloomEnable", Offset: 373, NameHash: 1220691910, Flags: 49325), LayoutImmutable, Blittable]
 		public bool DownsampleAverageFromBloomEnable { get { return m_DownsampleAverageFromBloomEnable; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(DownsampleAverageFromBloomEnable), this, m_DownsampleAverageFromBloomEnable, value)) m_DownsampleAverageFromBloomEnable = value; } } // 0x175 (373)
 		
 		protected bool m_FilmGrainEnable = new bool();
-		[ContainerField(374), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1422577945)]
+		[ContainerField(Name: "FilmGrainEnable", Offset: 374, NameHash: 1422577945, Flags: 49325), LayoutImmutable, Blittable]
 		public bool FilmGrainEnable { get { return m_FilmGrainEnable; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(FilmGrainEnable), this, m_FilmGrainEnable, value)) m_FilmGrainEnable = value; } } // 0x176 (374)
 		
 		protected bool m_Ldr16BitBloomEnable = new bool();
-		[ContainerField(375), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3738080069)]
+		[ContainerField(Name: "Ldr16BitBloomEnable", Offset: 375, NameHash: 3738080069, Flags: 49325), LayoutImmutable, Blittable]
 		public bool Ldr16BitBloomEnable { get { return m_Ldr16BitBloomEnable; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(Ldr16BitBloomEnable), this, m_Ldr16BitBloomEnable, value)) m_Ldr16BitBloomEnable = value; } } // 0x177 (375)
 		
 		protected bool m_DynamicAOEnable = new bool();
-		[ContainerField(376), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3514386399)]
+		[ContainerField(Name: "DynamicAOEnable", Offset: 376, NameHash: 3514386399, Flags: 49325), LayoutImmutable, Blittable]
 		public bool DynamicAOEnable { get { return m_DynamicAOEnable; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(DynamicAOEnable), this, m_DynamicAOEnable, value)) m_DynamicAOEnable = value; } } // 0x178 (376)
 		
 		protected bool m_DiffusionDofEnable = new bool();
-		[ContainerField(377), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(830589130)]
+		[ContainerField(Name: "DiffusionDofEnable", Offset: 377, NameHash: 830589130, Flags: 49325), LayoutImmutable, Blittable]
 		public bool DiffusionDofEnable { get { return m_DiffusionDofEnable; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(DiffusionDofEnable), this, m_DiffusionDofEnable, value)) m_DiffusionDofEnable = value; } } // 0x179 (377)
 		
 		protected bool m_HbaoHalfResEnable = new bool();
-		[ContainerField(378), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(993231463)]
+		[ContainerField(Name: "HbaoHalfResEnable", Offset: 378, NameHash: 993231463, Flags: 49325), LayoutImmutable, Blittable]
 		public bool HbaoHalfResEnable { get { return m_HbaoHalfResEnable; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(HbaoHalfResEnable), this, m_HbaoHalfResEnable, value)) m_HbaoHalfResEnable = value; } } // 0x17A (378)
 		
 		protected bool m_HbaoHalfResDepthEnable = new bool();
-		[ContainerField(379), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3557347146)]
+		[ContainerField(Name: "HbaoHalfResDepthEnable", Offset: 379, NameHash: 3557347146, Flags: 49325), LayoutImmutable, Blittable]
 		public bool HbaoHalfResDepthEnable { get { return m_HbaoHalfResDepthEnable; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(HbaoHalfResDepthEnable), this, m_HbaoHalfResDepthEnable, value)) m_HbaoHalfResDepthEnable = value; } } // 0x17B (379)
 		
 		protected bool m_HbaoVectorizedEnable = new bool();
-		[ContainerField(380), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3608945675)]
+		[ContainerField(Name: "HbaoVectorizedEnable", Offset: 380, NameHash: 3608945675, Flags: 49325), LayoutImmutable, Blittable]
 		public bool HbaoVectorizedEnable { get { return m_HbaoVectorizedEnable; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(HbaoVectorizedEnable), this, m_HbaoVectorizedEnable, value)) m_HbaoVectorizedEnable = value; } } // 0x17C (380)
 		
 		protected bool m_Ps3CompressedRenderTargetsEnable = new bool();
-		[ContainerField(381), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2404166427)]
+		[ContainerField(Name: "Ps3CompressedRenderTargetsEnable", Offset: 381, NameHash: 2404166427, Flags: 49325), LayoutImmutable, Blittable]
 		public bool Ps3CompressedRenderTargetsEnable { get { return m_Ps3CompressedRenderTargetsEnable; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(Ps3CompressedRenderTargetsEnable), this, m_Ps3CompressedRenderTargetsEnable, value)) m_Ps3CompressedRenderTargetsEnable = value; } } // 0x17D (381)
 		
 		protected bool m_HdrBloomEnable = new bool();
-		[ContainerField(382), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2031748249)]
+		[ContainerField(Name: "HdrBloomEnable", Offset: 382, NameHash: 2031748249, Flags: 49325), LayoutImmutable, Blittable]
 		public bool HdrBloomEnable { get { return m_HdrBloomEnable; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(HdrBloomEnable), this, m_HdrBloomEnable, value)) m_HdrBloomEnable = value; } } // 0x17E (382)
 		
 		protected bool m_FilmGrainRandomEnable = new bool();
-		[ContainerField(383), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2060964098)]
+		[ContainerField(Name: "FilmGrainRandomEnable", Offset: 383, NameHash: 2060964098, Flags: 49325), LayoutImmutable, Blittable]
 		public bool FilmGrainRandomEnable { get { return m_FilmGrainRandomEnable; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(FilmGrainRandomEnable), this, m_FilmGrainRandomEnable, value)) m_FilmGrainRandomEnable = value; } } // 0x17F (383)
 		
 		protected bool m_DirectExposureEnable = new bool();
-		[ContainerField(384), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(883851546)]
+		[ContainerField(Name: "DirectExposureEnable", Offset: 384, NameHash: 883851546, Flags: 49325), LayoutImmutable, Blittable]
 		public bool DirectExposureEnable { get { return m_DirectExposureEnable; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(DirectExposureEnable), this, m_DirectExposureEnable, value)) m_DirectExposureEnable = value; } } // 0x180 (384)
 		
 		protected bool m_ExposureClampEnable = new bool();
-		[ContainerField(385), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(982365156)]
+		[ContainerField(Name: "ExposureClampEnable", Offset: 385, NameHash: 982365156, Flags: 49325), LayoutImmutable, Blittable]
 		public bool ExposureClampEnable { get { return m_ExposureClampEnable; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(ExposureClampEnable), this, m_ExposureClampEnable, value)) m_ExposureClampEnable = value; } } // 0x181 (385)
 		
 		protected bool m_FilmGrainLinearFilteringEnable = new bool();
-		[ContainerField(386), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(751424836)]
+		[ContainerField(Name: "FilmGrainLinearFilteringEnable", Offset: 386, NameHash: 751424836, Flags: 49325), LayoutImmutable, Blittable]
 		public bool FilmGrainLinearFilteringEnable { get { return m_FilmGrainLinearFilteringEnable; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(FilmGrainLinearFilteringEnable), this, m_FilmGrainLinearFilteringEnable, value)) m_FilmGrainLinearFilteringEnable = value; } } // 0x182 (386)
 		
 		protected bool m_HbaoBilateralBlurEnable = new bool();
-		[ContainerField(387), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1609473089)]
+		[ContainerField(Name: "HbaoBilateralBlurEnable", Offset: 387, NameHash: 1609473089, Flags: 49325), LayoutImmutable, Blittable]
 		public bool HbaoBilateralBlurEnable { get { return m_HbaoBilateralBlurEnable; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(HbaoBilateralBlurEnable), this, m_HbaoBilateralBlurEnable, value)) m_HbaoBilateralBlurEnable = value; } } // 0x183 (387)
 		
 		protected bool m_ColorGradingEnable = new bool();
-		[ContainerField(388), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1205773449)]
+		[ContainerField(Name: "ColorGradingEnable", Offset: 388, NameHash: 1205773449, Flags: 49325), LayoutImmutable, Blittable]
 		public bool ColorGradingEnable { get { return m_ColorGradingEnable; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(ColorGradingEnable), this, m_ColorGradingEnable, value)) m_ColorGradingEnable = value; } } // 0x184 (388)
 		
 		protected bool m_ColorTransformEnable = new bool();
-		[ContainerField(389), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1095107349)]
+		[ContainerField(Name: "ColorTransformEnable", Offset: 389, NameHash: 1095107349, Flags: 49325), LayoutImmutable, Blittable]
 		public bool ColorTransformEnable { get { return m_ColorTransformEnable; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(ColorTransformEnable), this, m_ColorTransformEnable, value)) m_ColorTransformEnable = value; } } // 0x185 (389)
 		
 		protected bool m_HbaoBilateralBlurCsEnable = new bool();
-		[ContainerField(390), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1787893969)]
+		[ContainerField(Name: "HbaoBilateralBlurCsEnable", Offset: 390, NameHash: 1787893969, Flags: 49325), LayoutImmutable, Blittable]
 		public bool HbaoBilateralBlurCsEnable { get { return m_HbaoBilateralBlurCsEnable; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(HbaoBilateralBlurCsEnable), this, m_HbaoBilateralBlurCsEnable, value)) m_HbaoBilateralBlurCsEnable = value; } } // 0x186 (390)
 		
 		protected bool m_HbaoTemporalFilterEnable = new bool();
-		[ContainerField(391), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(569736956)]
+		[ContainerField(Name: "HbaoTemporalFilterEnable", Offset: 391, NameHash: 569736956, Flags: 49325), LayoutImmutable, Blittable]
 		public bool HbaoTemporalFilterEnable { get { return m_HbaoTemporalFilterEnable; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(HbaoTemporalFilterEnable), this, m_HbaoTemporalFilterEnable, value)) m_HbaoTemporalFilterEnable = value; } } // 0x187 (391)
 		
 		protected bool m_QuarterDownsamplingEnable = new bool();
-		[ContainerField(392), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2460614977)]
+		[ContainerField(Name: "QuarterDownsamplingEnable", Offset: 392, NameHash: 2460614977, Flags: 49325), LayoutImmutable, Blittable]
 		public bool QuarterDownsamplingEnable { get { return m_QuarterDownsamplingEnable; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(QuarterDownsamplingEnable), this, m_QuarterDownsamplingEnable, value)) m_QuarterDownsamplingEnable = value; } } // 0x188 (392)
 		
 		protected bool m_DrawDebugUserBrightnessLUT = new bool();
-		[ContainerField(393), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(4051730177)]
+		[ContainerField(Name: "DrawDebugUserBrightnessLUT", Offset: 393, NameHash: 4051730177, Flags: 49325), LayoutImmutable, Blittable]
 		public bool DrawDebugUserBrightnessLUT { get { return m_DrawDebugUserBrightnessLUT; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(DrawDebugUserBrightnessLUT), this, m_DrawDebugUserBrightnessLUT, value)) m_DrawDebugUserBrightnessLUT = value; } } // 0x189 (393)
 		
 		protected bool m_BloomPyramidAttenuateEnable = new bool();
-		[ContainerField(394), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1368610322)]
+		[ContainerField(Name: "BloomPyramidAttenuateEnable", Offset: 394, NameHash: 1368610322, Flags: 49325), LayoutImmutable, Blittable]
 		public bool BloomPyramidAttenuateEnable { get { return m_BloomPyramidAttenuateEnable; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(BloomPyramidAttenuateEnable), this, m_BloomPyramidAttenuateEnable, value)) m_BloomPyramidAttenuateEnable = value; } } // 0x18A (394)
 		
 		protected bool m_DownsampleBeforeBlurEnable = new bool();
-		[ContainerField(395), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3596142400)]
+		[ContainerField(Name: "DownsampleBeforeBlurEnable", Offset: 395, NameHash: 3596142400, Flags: 49325), LayoutImmutable, Blittable]
 		public bool DownsampleBeforeBlurEnable { get { return m_DownsampleBeforeBlurEnable; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(DownsampleBeforeBlurEnable), this, m_DownsampleBeforeBlurEnable, value)) m_DownsampleBeforeBlurEnable = value; } } // 0x18B (395)
 		
 		protected bool m_HbaoGaussianBlurEnable = new bool();
-		[ContainerField(396), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1146018076)]
+		[ContainerField(Name: "HbaoGaussianBlurEnable", Offset: 396, NameHash: 1146018076, Flags: 49325), LayoutImmutable, Blittable]
 		public bool HbaoGaussianBlurEnable { get { return m_HbaoGaussianBlurEnable; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(HbaoGaussianBlurEnable), this, m_HbaoGaussianBlurEnable, value)) m_HbaoGaussianBlurEnable = value; } } // 0x18C (396)
 		
 		protected bool m_HbaoGaussianBlurHalfResEnable = new bool();
-		[ContainerField(397), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2411002971)]
+		[ContainerField(Name: "HbaoGaussianBlurHalfResEnable", Offset: 397, NameHash: 2411002971, Flags: 49325), LayoutImmutable, Blittable]
 		public bool HbaoGaussianBlurHalfResEnable { get { return m_HbaoGaussianBlurHalfResEnable; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(HbaoGaussianBlurHalfResEnable), this, m_HbaoGaussianBlurHalfResEnable, value)) m_HbaoGaussianBlurHalfResEnable = value; } } // 0x18D (397)
 		
 		protected bool m_BloomPyramidEnable = new bool();
-		[ContainerField(398), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3107191069)]
+		[ContainerField(Name: "BloomPyramidEnable", Offset: 398, NameHash: 3107191069, Flags: 49325), LayoutImmutable, Blittable]
 		public bool BloomPyramidEnable { get { return m_BloomPyramidEnable; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(BloomPyramidEnable), this, m_BloomPyramidEnable, value)) m_BloomPyramidEnable = value; } } // 0x18E (398)
 		
 		protected bool m_UserBrightnessLUTEnable = new bool();
-		[ContainerField(399), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2817018737)]
+		[ContainerField(Name: "UserBrightnessLUTEnable", Offset: 399, NameHash: 2817018737, Flags: 49325), LayoutImmutable, Blittable]
 		public bool UserBrightnessLUTEnable { get { return m_UserBrightnessLUTEnable; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(UserBrightnessLUTEnable), this, m_UserBrightnessLUTEnable, value)) m_UserBrightnessLUTEnable = value; } } // 0x18F (399)
 		
 		protected bool m_Ps3EdgeMlaaEnable = new bool();
-		[ContainerField(400), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3539499382)]
+		[ContainerField(Name: "Ps3EdgeMlaaEnable", Offset: 400, NameHash: 3539499382, Flags: 49325), LayoutImmutable, Blittable]
 		public bool Ps3EdgeMlaaEnable { get { return m_Ps3EdgeMlaaEnable; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(Ps3EdgeMlaaEnable), this, m_Ps3EdgeMlaaEnable, value)) m_Ps3EdgeMlaaEnable = value; } } // 0x190 (400)
 		
 		protected bool m_Ps3EdgeMlaaCopyOnly = new bool();
-		[ContainerField(401), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(550522886)]
+		[ContainerField(Name: "Ps3EdgeMlaaCopyOnly", Offset: 401, NameHash: 550522886, Flags: 49325), LayoutImmutable, Blittable]
 		public bool Ps3EdgeMlaaCopyOnly { get { return m_Ps3EdgeMlaaCopyOnly; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(Ps3EdgeMlaaCopyOnly), this, m_Ps3EdgeMlaaCopyOnly, value)) m_Ps3EdgeMlaaCopyOnly = value; } } // 0x191 (401)
 		
 		protected bool m_Ps3EdgeMlaaShowEdges = new bool();
-		[ContainerField(402), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1583173380)]
+		[ContainerField(Name: "Ps3EdgeMlaaShowEdges", Offset: 402, NameHash: 1583173380, Flags: 49325), LayoutImmutable, Blittable]
 		public bool Ps3EdgeMlaaShowEdges { get { return m_Ps3EdgeMlaaShowEdges; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(Ps3EdgeMlaaShowEdges), this, m_Ps3EdgeMlaaShowEdges, value)) m_Ps3EdgeMlaaShowEdges = value; } } // 0x192 (402)
 		
 		protected bool m_Ps3EdgeMlaaRelativeEdgeDetection = new bool();
-		[ContainerField(403), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1826009647)]
+		[ContainerField(Name: "Ps3EdgeMlaaRelativeEdgeDetection", Offset: 403, NameHash: 1826009647, Flags: 49325), LayoutImmutable, Blittable]
 		public bool Ps3EdgeMlaaRelativeEdgeDetection { get { return m_Ps3EdgeMlaaRelativeEdgeDetection; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(Ps3EdgeMlaaRelativeEdgeDetection), this, m_Ps3EdgeMlaaRelativeEdgeDetection, value)) m_Ps3EdgeMlaaRelativeEdgeDetection = value; } } // 0x193 (403)
 		
 		protected bool m_Ps3EdgeMlaaGpuBlockEnable = new bool();
-		[ContainerField(404), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(507429533)]
+		[ContainerField(Name: "Ps3EdgeMlaaGpuBlockEnable", Offset: 404, NameHash: 507429533, Flags: 49325), LayoutImmutable, Blittable]
 		public bool Ps3EdgeMlaaGpuBlockEnable { get { return m_Ps3EdgeMlaaGpuBlockEnable; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(Ps3EdgeMlaaGpuBlockEnable), this, m_Ps3EdgeMlaaGpuBlockEnable, value)) m_Ps3EdgeMlaaGpuBlockEnable = value; } } // 0x194 (404)
 		
 		protected bool m_Ps3BackBufferAsLdrTargetEnable = new bool();
-		[ContainerField(405), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2463474662)]
+		[ContainerField(Name: "Ps3BackBufferAsLdrTargetEnable", Offset: 405, NameHash: 2463474662, Flags: 49325), LayoutImmutable, Blittable]
 		public bool Ps3BackBufferAsLdrTargetEnable { get { return m_Ps3BackBufferAsLdrTargetEnable; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(Ps3BackBufferAsLdrTargetEnable), this, m_Ps3BackBufferAsLdrTargetEnable, value)) m_Ps3BackBufferAsLdrTargetEnable = value; } } // 0x195 (405)
 		
 		protected bool m_DownsampleLogAverageEnable = new bool();
-		[ContainerField(406), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3775842167)]
+		[ContainerField(Name: "DownsampleLogAverageEnable", Offset: 406, NameHash: 3775842167, Flags: 49325), LayoutImmutable, Blittable]
 		public bool DownsampleLogAverageEnable { get { return m_DownsampleLogAverageEnable; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(DownsampleLogAverageEnable), this, m_DownsampleLogAverageEnable, value)) m_DownsampleLogAverageEnable = value; } } // 0x196 (406)
 		
 		protected bool m_BloomQuarterResEnable = new bool();
-		[ContainerField(407), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1900886743)]
+		[ContainerField(Name: "BloomQuarterResEnable", Offset: 407, NameHash: 1900886743, Flags: 49325), LayoutImmutable, Blittable]
 		public bool BloomQuarterResEnable { get { return m_BloomQuarterResEnable; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(BloomQuarterResEnable), this, m_BloomQuarterResEnable, value)) m_BloomQuarterResEnable = value; } } // 0x197 (407)
 		
 		protected bool m_BloomEnable = new bool();
-		[ContainerField(408), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(931235495)]
+		[ContainerField(Name: "BloomEnable", Offset: 408, NameHash: 931235495, Flags: 49325), LayoutImmutable, Blittable]
 		public bool BloomEnable { get { return m_BloomEnable; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(BloomEnable), this, m_BloomEnable, value)) m_BloomEnable = value; } } // 0x198 (408)
 		
 		protected bool m_LensScopeFilterEnable = new bool();
-		[ContainerField(409), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1425211290)]
+		[ContainerField(Name: "LensScopeFilterEnable", Offset: 409, NameHash: 1425211290, Flags: 49325), LayoutImmutable, Blittable]
 		public bool LensScopeFilterEnable { get { return m_LensScopeFilterEnable; } set { if (OnPropertyChanging("GlobalPostProcessSettings." + nameof(LensScopeFilterEnable), this, m_LensScopeFilterEnable, value)) m_LensScopeFilterEnable = value; } } // 0x199 (409)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

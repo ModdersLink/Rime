@@ -18,13 +18,13 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(8), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 8)]
 	public class PhysicsPartInfo : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
+		[ContainerField(Name: "PartComponentIndex", Offset: 0, NameHash: 4189988995, Flags: 49421), LayoutImmutable, Blittable]
 		public uint PartComponentIndex { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
+		[ContainerField(Name: "HealthStateIndex", Offset: 4, NameHash: 3506272272, Flags: 49421), LayoutImmutable, Blittable]
 		public uint HealthStateIndex { get; set; } // 0x4 (4)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

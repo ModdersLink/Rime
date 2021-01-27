@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(16), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
 	public class BlueprintBundleMetadataContainer : 
 		Asset
 	{
 		protected RefArray<BlueprintContainerItem> m_Items = new RefArray<BlueprintContainerItem>();
-		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(215446531), ContainerRefArray]
+		[ContainerField(Name: "Items", Offset: 12, NameHash: 215446531, Flags: 65)]
 		public RefArray<BlueprintContainerItem> Items { get { return m_Items; } set { if (OnPropertyChanging("BlueprintBundleMetadataContainer." + nameof(Items), this, m_Items, value)) m_Items = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

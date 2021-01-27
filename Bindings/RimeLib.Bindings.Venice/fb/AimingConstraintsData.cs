@@ -18,19 +18,19 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(16), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 16)]
 	public class AimingConstraintsData : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "MinYaw", Offset: 0, NameHash: 2633709248, Flags: 49469), LayoutImmutable, Blittable]
 		public float MinYaw { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "MaxYaw", Offset: 4, NameHash: 2642824094, Flags: 49469), LayoutImmutable, Blittable]
 		public float MaxYaw { get; set; } // 0x4 (4)
 		
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "MinPitch", Offset: 8, NameHash: 3374061353, Flags: 49469), LayoutImmutable, Blittable]
 		public float MinPitch { get; set; } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "MaxPitch", Offset: 12, NameHash: 397101687, Flags: 49469), LayoutImmutable, Blittable]
 		public float MaxPitch { get; set; } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

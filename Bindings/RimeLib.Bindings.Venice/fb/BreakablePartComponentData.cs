@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(128), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 128)]
 	public class BreakablePartComponentData : 
 		DestructionPartComponentData
 	{
 		protected uint m_HealthPercentage = new uint();
-		[ContainerField(112), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(3168756705)]
+		[ContainerField(Name: "HealthPercentage", Offset: 112, NameHash: 3168756705, Flags: 49421), LayoutImmutable, Blittable]
 		public uint HealthPercentage { get { return m_HealthPercentage; } set { if (OnPropertyChanging("BreakablePartComponentData." + nameof(HealthPercentage), this, m_HealthPercentage, value)) m_HealthPercentage = value; } } // 0x70 (112)
 		
 		protected bool m_Collapsable = new bool();
-		[ContainerField(116), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3767665825)]
+		[ContainerField(Name: "Collapsable", Offset: 116, NameHash: 3767665825, Flags: 49325), LayoutImmutable, Blittable]
 		public bool Collapsable { get { return m_Collapsable; } set { if (OnPropertyChanging("BreakablePartComponentData." + nameof(Collapsable), this, m_Collapsable, value)) m_Collapsable = value; } } // 0x74 (116)
 		
 		protected bool m_DestroyNearbyStaticEntities = new bool();
-		[ContainerField(117), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(986094273)]
+		[ContainerField(Name: "DestroyNearbyStaticEntities", Offset: 117, NameHash: 986094273, Flags: 49325), LayoutImmutable, Blittable]
 		public bool DestroyNearbyStaticEntities { get { return m_DestroyNearbyStaticEntities; } set { if (OnPropertyChanging("BreakablePartComponentData." + nameof(DestroyNearbyStaticEntities), this, m_DestroyNearbyStaticEntities, value)) m_DestroyNearbyStaticEntities = value; } } // 0x75 (117)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

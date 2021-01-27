@@ -18,40 +18,40 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(40), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 40)]
 	public class SoldierSprintSettingsData : 
 		DataContainer
 	{
 		protected float m_Fov = new float();
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(193443802)]
+		[ContainerField(Name: "Fov", Offset: 8, NameHash: 193443802, Flags: 49469), LayoutImmutable, Blittable]
 		public float Fov { get { return m_Fov; } set { if (OnPropertyChanging("SoldierSprintSettingsData." + nameof(Fov), this, m_Fov, value)) m_Fov = value; } } // 0x8 (8)
 		
 		protected float m_FovInDelay = new float();
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2914334632)]
+		[ContainerField(Name: "FovInDelay", Offset: 12, NameHash: 2914334632, Flags: 49469), LayoutImmutable, Blittable]
 		public float FovInDelay { get { return m_FovInDelay; } set { if (OnPropertyChanging("SoldierSprintSettingsData." + nameof(FovInDelay), this, m_FovInDelay, value)) m_FovInDelay = value; } } // 0xC (12)
 		
 		protected float m_FovInTime = new float();
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1259080584)]
+		[ContainerField(Name: "FovInTime", Offset: 16, NameHash: 1259080584, Flags: 49469), LayoutImmutable, Blittable]
 		public float FovInTime { get { return m_FovInTime; } set { if (OnPropertyChanging("SoldierSprintSettingsData." + nameof(FovInTime), this, m_FovInTime, value)) m_FovInTime = value; } } // 0x10 (16)
 		
 		protected float m_FovOutDelay = new float();
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(401599137)]
+		[ContainerField(Name: "FovOutDelay", Offset: 20, NameHash: 401599137, Flags: 49469), LayoutImmutable, Blittable]
 		public float FovOutDelay { get { return m_FovOutDelay; } set { if (OnPropertyChanging("SoldierSprintSettingsData." + nameof(FovOutDelay), this, m_FovOutDelay, value)) m_FovOutDelay = value; } } // 0x14 (20)
 		
 		protected float m_FovOutTime = new float();
-		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3785964001)]
+		[ContainerField(Name: "FovOutTime", Offset: 24, NameHash: 3785964001, Flags: 49469), LayoutImmutable, Blittable]
 		public float FovOutTime { get { return m_FovOutTime; } set { if (OnPropertyChanging("SoldierSprintSettingsData." + nameof(FovOutTime), this, m_FovOutTime, value)) m_FovOutTime = value; } } // 0x18 (24)
 		
 		protected float m_RecoverTime = new float();
-		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3786458634)]
+		[ContainerField(Name: "RecoverTime", Offset: 28, NameHash: 3786458634, Flags: 49469), LayoutImmutable, Blittable]
 		public float RecoverTime { get { return m_RecoverTime; } set { if (OnPropertyChanging("SoldierSprintSettingsData." + nameof(RecoverTime), this, m_RecoverTime, value)) m_RecoverTime = value; } } // 0x1C (28)
 		
 		protected float m_SprintToProneRecoverTime = new float();
-		[ContainerField(32), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(498825685)]
+		[ContainerField(Name: "SprintToProneRecoverTime", Offset: 32, NameHash: 498825685, Flags: 49469), LayoutImmutable, Blittable]
 		public float SprintToProneRecoverTime { get { return m_SprintToProneRecoverTime; } set { if (OnPropertyChanging("SoldierSprintSettingsData." + nameof(SprintToProneRecoverTime), this, m_SprintToProneRecoverTime, value)) m_SprintToProneRecoverTime = value; } } // 0x20 (32)
 		
 		protected List<EntryInputActionEnum> m_InterruptingActions = new List<EntryInputActionEnum>();
-		[ContainerField(36), MemberInfoFlag(65), ContainerFieldNameHash(1860467119), ContainerArray]
+		[ContainerField(Name: "InterruptingActions", Offset: 36, NameHash: 1860467119, Flags: 65)]
 		public List<EntryInputActionEnum> InterruptingActions { get { return m_InterruptingActions; } set { if (OnPropertyChanging("SoldierSprintSettingsData." + nameof(InterruptingActions), this, m_InterruptingActions, value)) m_InterruptingActions = value; } } // 0x24 (36)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(12), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 12)]
 	public class UIBundleAssetState : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "StateName", Offset: 0, NameHash: 4126874677, Flags: 16509), LayoutImmutable]
 		public string StateName { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), MemberInfoFlag(137)]
+		[ContainerField(Name: "UIState", Offset: 4, NameHash: 187033486, Flags: 137)]
 		public UIState UIState { get; set; } = new UIState(); // 0x4 (4)
 		
-		[ContainerField(8), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "ResourceBundleName", Offset: 8, NameHash: 1249588540, Flags: 16509), LayoutImmutable]
 		public string ResourceBundleName { get; set; } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

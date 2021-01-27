@@ -18,32 +18,32 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(52), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 52)]
 	public class AimingConstraintEntityCommonData : 
 		Asset
 	{
 		protected AimingConstraintEntityBinding m_AimingConstraintsBinding = new AimingConstraintEntityBinding();
-		[ContainerField(12), MemberInfoFlag(41), ContainerFieldNameHash(959117047)]
+		[ContainerField(Name: "AimingConstraintsBinding", Offset: 12, NameHash: 959117047, Flags: 41)]
 		public AimingConstraintEntityBinding AimingConstraintsBinding { get { return m_AimingConstraintsBinding; } set { if (OnPropertyChanging("AimingConstraintEntityCommonData." + nameof(AimingConstraintsBinding), this, m_AimingConstraintsBinding, value)) m_AimingConstraintsBinding = value; } } // 0xC (12)
 		
 		protected AimingConstraintsData m_AimingConstraints = new AimingConstraintsData();
-		[ContainerField(20), MemberInfoFlag(41), ContainerFieldNameHash(1523178198)]
+		[ContainerField(Name: "AimingConstraints", Offset: 20, NameHash: 1523178198, Flags: 41)]
 		public AimingConstraintsData AimingConstraints { get { return m_AimingConstraints; } set { if (OnPropertyChanging("AimingConstraintEntityCommonData." + nameof(AimingConstraints), this, m_AimingConstraints, value)) m_AimingConstraints = value; } } // 0x14 (20)
 		
 		protected float m_DisableAimingConstraintsDelay = new float();
-		[ContainerField(36), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(4044073143)]
+		[ContainerField(Name: "DisableAimingConstraintsDelay", Offset: 36, NameHash: 4044073143, Flags: 49469), LayoutImmutable, Blittable]
 		public float DisableAimingConstraintsDelay { get { return m_DisableAimingConstraintsDelay; } set { if (OnPropertyChanging("AimingConstraintEntityCommonData." + nameof(DisableAimingConstraintsDelay), this, m_DisableAimingConstraintsDelay, value)) m_DisableAimingConstraintsDelay = value; } } // 0x24 (36)
 		
 		protected float m_ConstraintMoveSpeedMultiplier = new float();
-		[ContainerField(40), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1613795389)]
+		[ContainerField(Name: "ConstraintMoveSpeedMultiplier", Offset: 40, NameHash: 1613795389, Flags: 49469), LayoutImmutable, Blittable]
 		public float ConstraintMoveSpeedMultiplier { get { return m_ConstraintMoveSpeedMultiplier; } set { if (OnPropertyChanging("AimingConstraintEntityCommonData." + nameof(ConstraintMoveSpeedMultiplier), this, m_ConstraintMoveSpeedMultiplier, value)) m_ConstraintMoveSpeedMultiplier = value; } } // 0x28 (40)
 		
 		protected float m_ShuffleAnimationThreshold = new float();
-		[ContainerField(44), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1503561667)]
+		[ContainerField(Name: "ShuffleAnimationThreshold", Offset: 44, NameHash: 1503561667, Flags: 49469), LayoutImmutable, Blittable]
 		public float ShuffleAnimationThreshold { get { return m_ShuffleAnimationThreshold; } set { if (OnPropertyChanging("AimingConstraintEntityCommonData." + nameof(ShuffleAnimationThreshold), this, m_ShuffleAnimationThreshold, value)) m_ShuffleAnimationThreshold = value; } } // 0x2C (44)
 		
 		protected float m_ShuffleAnimationDelay = new float();
-		[ContainerField(48), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1783074145)]
+		[ContainerField(Name: "ShuffleAnimationDelay", Offset: 48, NameHash: 1783074145, Flags: 49469), LayoutImmutable, Blittable]
 		public float ShuffleAnimationDelay { get { return m_ShuffleAnimationDelay; } set { if (OnPropertyChanging("AimingConstraintEntityCommonData." + nameof(ShuffleAnimationDelay), this, m_ShuffleAnimationDelay, value)) m_ShuffleAnimationDelay = value; } } // 0x30 (48)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

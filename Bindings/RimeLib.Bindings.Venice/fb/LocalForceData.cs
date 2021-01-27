@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(64), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 64)]
 	public class LocalForceData : 
 		ProcessorData
 	{
 		protected Vec3 m_LocalForce = new Vec3();
-		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(4022902837)]
+		[ContainerField(Name: "LocalForce", Offset: 48, NameHash: 4022902837, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 LocalForce { get { return m_LocalForce; } set { if (OnPropertyChanging("LocalForceData." + nameof(LocalForce), this, m_LocalForce, value)) m_LocalForce = value; } } // 0x30 (48)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

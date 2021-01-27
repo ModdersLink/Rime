@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(112), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 112)]
 	public class TeamFilterEntityData : 
 		GameEntityData
 	{
 		protected Realm m_Realm = new Realm();
-		[ContainerField(96), MemberInfoFlag(137), ContainerFieldNameHash(229961746)]
+		[ContainerField(Name: "Realm", Offset: 96, NameHash: 229961746, Flags: 137)]
 		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("TeamFilterEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0x60 (96)
 		
 		protected TeamId m_Team = new TeamId();
-		[ContainerField(100), MemberInfoFlag(137), ContainerFieldNameHash(2089309528)]
+		[ContainerField(Name: "Team", Offset: 100, NameHash: 2089309528, Flags: 137)]
 		public TeamId Team { get { return m_Team; } set { if (OnPropertyChanging("TeamFilterEntityData." + nameof(Team), this, m_Team, value)) m_Team = value; } } // 0x64 (100)
 		
 		protected bool m_InvertFilter = new bool();
-		[ContainerField(104), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2846947863)]
+		[ContainerField(Name: "InvertFilter", Offset: 104, NameHash: 2846947863, Flags: 49325), LayoutImmutable, Blittable]
 		public bool InvertFilter { get { return m_InvertFilter; } set { if (OnPropertyChanging("TeamFilterEntityData." + nameof(InvertFilter), this, m_InvertFilter, value)) m_InvertFilter = value; } } // 0x68 (104)
 		
 		protected bool m_GenerateEventForEveryMatchingTeamMember = new bool();
-		[ContainerField(105), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2999321434)]
+		[ContainerField(Name: "GenerateEventForEveryMatchingTeamMember", Offset: 105, NameHash: 2999321434, Flags: 49325), LayoutImmutable, Blittable]
 		public bool GenerateEventForEveryMatchingTeamMember { get { return m_GenerateEventForEveryMatchingTeamMember; } set { if (OnPropertyChanging("TeamFilterEntityData." + nameof(GenerateEventForEveryMatchingTeamMember), this, m_GenerateEventForEveryMatchingTeamMember, value)) m_GenerateEventForEveryMatchingTeamMember = value; } } // 0x69 (105)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

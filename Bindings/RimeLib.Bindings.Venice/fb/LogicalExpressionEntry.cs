@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(16), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
 	public class LogicalExpressionEntry : 
 		AudioGraphNodePortGroup
 	{
 		protected AudioGraphNodePort m_Trigger = new AudioGraphNodePort();
-		[ContainerField(8), MemberInfoFlag(41), ContainerFieldNameHash(2606354109)]
+		[ContainerField(Name: "Trigger", Offset: 8, NameHash: 2606354109, Flags: 41)]
 		public AudioGraphNodePort Trigger { get { return m_Trigger; } set { if (OnPropertyChanging("LogicalExpressionEntry." + nameof(Trigger), this, m_Trigger, value)) m_Trigger = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

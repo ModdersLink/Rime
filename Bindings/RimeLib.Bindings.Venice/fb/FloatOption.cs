@@ -18,22 +18,22 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(20), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 20)]
 	public class FloatOption : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "Name", Offset: 0, NameHash: 2088949890, Flags: 16509), LayoutImmutable]
 		public string Name { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "Value", Offset: 4, NameHash: 225375086, Flags: 49469), LayoutImmutable, Blittable]
 		public float Value { get; set; } // 0x4 (4)
 		
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "Min", Offset: 8, NameHash: 193446607, Flags: 49469), LayoutImmutable, Blittable]
 		public float Min { get; set; } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "Max", Offset: 12, NameHash: 193446865, Flags: 49469), LayoutImmutable, Blittable]
 		public float Max { get; set; } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "Step", Offset: 16, NameHash: 2089400887, Flags: 49469), LayoutImmutable, Blittable]
 		public float Step { get; set; } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

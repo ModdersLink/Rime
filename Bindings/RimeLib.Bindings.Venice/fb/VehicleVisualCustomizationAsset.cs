@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(20), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 20)]
 	public class VehicleVisualCustomizationAsset : 
 		Asset
 	{
 		protected RefArray<ShaderTextureUnlockPartCollection> m_TextureUnlockPartCollections = new RefArray<ShaderTextureUnlockPartCollection>();
-		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(3762069016), ContainerRefArray]
+		[ContainerField(Name: "TextureUnlockPartCollections", Offset: 12, NameHash: 3762069016, Flags: 65)]
 		public RefArray<ShaderTextureUnlockPartCollection> TextureUnlockPartCollections { get { return m_TextureUnlockPartCollections; } set { if (OnPropertyChanging("VehicleVisualCustomizationAsset." + nameof(TextureUnlockPartCollections), this, m_TextureUnlockPartCollections, value)) m_TextureUnlockPartCollections = value; } } // 0xC (12)
 		
 		protected RefArray<TextUnlockPartData> m_TextUnlockParts = new RefArray<TextUnlockPartData>();
-		[ContainerField(16), MemberInfoFlag(65), ContainerFieldNameHash(1176201452), ContainerRefArray]
+		[ContainerField(Name: "TextUnlockParts", Offset: 16, NameHash: 1176201452, Flags: 65)]
 		public RefArray<TextUnlockPartData> TextUnlockParts { get { return m_TextUnlockParts; } set { if (OnPropertyChanging("VehicleVisualCustomizationAsset." + nameof(TextUnlockParts), this, m_TextUnlockParts, value)) m_TextUnlockParts = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(32), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 32)]
 	public class SoundAreaEntityData : 
 		EntityData
 	{
 		protected CtrRef<SoundAsset> m_Sound = new CtrRef<SoundAsset>();
-		[ContainerField(12), MemberInfoFlag(53), ContainerFieldNameHash(231353798), ContainerCtrRef]
+		[ContainerField(Name: "Sound", Offset: 12, NameHash: 231353798, Flags: 53)]
 		public CtrRef<SoundAsset> Sound { get { return m_Sound; } set { if (OnPropertyChanging("SoundAreaEntityData." + nameof(Sound), this, m_Sound, value)) m_Sound = value; } } // 0xC (12)
 		
 		protected CtrRef<BigWorldSettingsAsset> m_BigWorld = new CtrRef<BigWorldSettingsAsset>();
-		[ContainerField(16), MemberInfoFlag(53), ContainerFieldNameHash(4205700235), ContainerCtrRef]
+		[ContainerField(Name: "BigWorld", Offset: 16, NameHash: 4205700235, Flags: 53)]
 		public CtrRef<BigWorldSettingsAsset> BigWorld { get { return m_BigWorld; } set { if (OnPropertyChanging("SoundAreaEntityData." + nameof(BigWorld), this, m_BigWorld, value)) m_BigWorld = value; } } // 0x10 (16)
 		
 		protected float m_FadeWidth = new float();
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3185416613)]
+		[ContainerField(Name: "FadeWidth", Offset: 20, NameHash: 3185416613, Flags: 49469), LayoutImmutable, Blittable]
 		public float FadeWidth { get { return m_FadeWidth; } set { if (OnPropertyChanging("SoundAreaEntityData." + nameof(FadeWidth), this, m_FadeWidth, value)) m_FadeWidth = value; } } // 0x14 (20)
 		
 		protected float m_ProximityMultiplier = new float();
-		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1947336347)]
+		[ContainerField(Name: "ProximityMultiplier", Offset: 24, NameHash: 1947336347, Flags: 49469), LayoutImmutable, Blittable]
 		public float ProximityMultiplier { get { return m_ProximityMultiplier; } set { if (OnPropertyChanging("SoundAreaEntityData." + nameof(ProximityMultiplier), this, m_ProximityMultiplier, value)) m_ProximityMultiplier = value; } } // 0x18 (24)
 		
 		protected FadeCurveType m_FadeCurve = new FadeCurveType();
-		[ContainerField(28), MemberInfoFlag(137), ContainerFieldNameHash(3162123636)]
+		[ContainerField(Name: "FadeCurve", Offset: 28, NameHash: 3162123636, Flags: 137)]
 		public FadeCurveType FadeCurve { get { return m_FadeCurve; } set { if (OnPropertyChanging("SoundAreaEntityData." + nameof(FadeCurve), this, m_FadeCurve, value)) m_FadeCurve = value; } } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

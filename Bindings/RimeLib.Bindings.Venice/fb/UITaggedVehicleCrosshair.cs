@@ -18,19 +18,19 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(16), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 16)]
 	public class UITaggedVehicleCrosshair : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "MinDistance", Offset: 0, NameHash: 1885855628, Flags: 49469), LayoutImmutable, Blittable]
 		public float MinDistance { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "MaxDistance", Offset: 4, NameHash: 3520454034, Flags: 49469), LayoutImmutable, Blittable]
 		public float MaxDistance { get; set; } // 0x4 (4)
 		
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49405)]
+		[ContainerField(Name: "MinSize", Offset: 8, NameHash: 1013127370, Flags: 49405), LayoutImmutable, Blittable]
 		public int MinSize { get; set; } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49405)]
+		[ContainerField(Name: "MaxSize", Offset: 12, NameHash: 1313502420, Flags: 49405), LayoutImmutable, Blittable]
 		public int MaxSize { get; set; } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

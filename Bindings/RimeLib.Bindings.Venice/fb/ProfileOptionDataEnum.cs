@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(24), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 24)]
 	public class ProfileOptionDataEnum : 
 		ProfileOptionData
 	{
 		protected List<ProfileOptionDataEnumItem> m_Items = new List<ProfileOptionDataEnumItem>();
-		[ContainerField(20), MemberInfoFlag(65), ContainerFieldNameHash(215446531), ContainerArray]
+		[ContainerField(Name: "Items", Offset: 20, NameHash: 215446531, Flags: 65)]
 		public List<ProfileOptionDataEnumItem> Items { get { return m_Items; } set { if (OnPropertyChanging("ProfileOptionDataEnum." + nameof(Items), this, m_Items, value)) m_Items = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

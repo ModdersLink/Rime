@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(20), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 20)]
 	public class AlignmentData : 
 		DataContainer
 	{
 		protected EntryInputActionEnum m_AlignAction = new EntryInputActionEnum();
-		[ContainerField(8), MemberInfoFlag(137), ContainerFieldNameHash(2810627638)]
+		[ContainerField(Name: "AlignAction", Offset: 8, NameHash: 2810627638, Flags: 137)]
 		public EntryInputActionEnum AlignAction { get { return m_AlignAction; } set { if (OnPropertyChanging("AlignmentData." + nameof(AlignAction), this, m_AlignAction, value)) m_AlignAction = value; } } // 0x8 (8)
 		
 		protected float m_StopTolerance = new float();
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3127075412)]
+		[ContainerField(Name: "StopTolerance", Offset: 12, NameHash: 3127075412, Flags: 49469), LayoutImmutable, Blittable]
 		public float StopTolerance { get { return m_StopTolerance; } set { if (OnPropertyChanging("AlignmentData." + nameof(StopTolerance), this, m_StopTolerance, value)) m_StopTolerance = value; } } // 0xC (12)
 		
 		protected float m_Speed = new float();
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(230887042)]
+		[ContainerField(Name: "Speed", Offset: 16, NameHash: 230887042, Flags: 49469), LayoutImmutable, Blittable]
 		public float Speed { get { return m_Speed; } set { if (OnPropertyChanging("AlignmentData." + nameof(Speed), this, m_Speed, value)) m_Speed = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

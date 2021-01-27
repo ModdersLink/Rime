@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(52), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 52)]
 	public class SearchAndDestroyOrderEntityData : 
 		BFOrderEntityData
 	{
 		protected TargetPosKnowledgeType m_TargetPosKnowledge = new TargetPosKnowledgeType();
-		[ContainerField(40), MemberInfoFlag(137), ContainerFieldNameHash(230186890)]
+		[ContainerField(Name: "TargetPosKnowledge", Offset: 40, NameHash: 230186890, Flags: 137)]
 		public TargetPosKnowledgeType TargetPosKnowledge { get { return m_TargetPosKnowledge; } set { if (OnPropertyChanging("SearchAndDestroyOrderEntityData." + nameof(TargetPosKnowledge), this, m_TargetPosKnowledge, value)) m_TargetPosKnowledge = value; } } // 0x28 (40)
 		
 		protected float m_FindTargetTime = new float();
-		[ContainerField(44), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3667793764)]
+		[ContainerField(Name: "FindTargetTime", Offset: 44, NameHash: 3667793764, Flags: 49469), LayoutImmutable, Blittable]
 		public float FindTargetTime { get { return m_FindTargetTime; } set { if (OnPropertyChanging("SearchAndDestroyOrderEntityData." + nameof(FindTargetTime), this, m_FindTargetTime, value)) m_FindTargetTime = value; } } // 0x2C (44)
 		
 		protected bool m_TargetAreaFollowsTarget = new bool();
-		[ContainerField(48), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3741825168)]
+		[ContainerField(Name: "TargetAreaFollowsTarget", Offset: 48, NameHash: 3741825168, Flags: 49325), LayoutImmutable, Blittable]
 		public bool TargetAreaFollowsTarget { get { return m_TargetAreaFollowsTarget; } set { if (OnPropertyChanging("SearchAndDestroyOrderEntityData." + nameof(TargetAreaFollowsTarget), this, m_TargetAreaFollowsTarget, value)) m_TargetAreaFollowsTarget = value; } } // 0x30 (48)
 		
 		protected bool m_Aggressive = new bool();
-		[ContainerField(49), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(4037886889)]
+		[ContainerField(Name: "Aggressive", Offset: 49, NameHash: 4037886889, Flags: 49325), LayoutImmutable, Blittable]
 		public bool Aggressive { get { return m_Aggressive; } set { if (OnPropertyChanging("SearchAndDestroyOrderEntityData." + nameof(Aggressive), this, m_Aggressive, value)) m_Aggressive = value; } } // 0x31 (49)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

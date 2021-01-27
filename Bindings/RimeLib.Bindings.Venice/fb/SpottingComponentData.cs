@@ -18,68 +18,68 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(160), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 160)]
 	public class SpottingComponentData : 
 		ComponentData
 	{
 		protected float m_SpottingFov = new float();
-		[ContainerField(96), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(397806838)]
+		[ContainerField(Name: "SpottingFov", Offset: 96, NameHash: 397806838, Flags: 49469), LayoutImmutable, Blittable]
 		public float SpottingFov { get { return m_SpottingFov; } set { if (OnPropertyChanging("SpottingComponentData." + nameof(SpottingFov), this, m_SpottingFov, value)) m_SpottingFov = value; } } // 0x60 (96)
 		
 		protected float m_TeamOrderFov = new float();
-		[ContainerField(100), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3618311177)]
+		[ContainerField(Name: "TeamOrderFov", Offset: 100, NameHash: 3618311177, Flags: 49469), LayoutImmutable, Blittable]
 		public float TeamOrderFov { get { return m_TeamOrderFov; } set { if (OnPropertyChanging("SpottingComponentData." + nameof(TeamOrderFov), this, m_TeamOrderFov, value)) m_TeamOrderFov = value; } } // 0x64 (100)
 		
 		protected float m_SpottingDistance = new float();
-		[ContainerField(104), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3680681002)]
+		[ContainerField(Name: "SpottingDistance", Offset: 104, NameHash: 3680681002, Flags: 49469), LayoutImmutable, Blittable]
 		public float SpottingDistance { get { return m_SpottingDistance; } set { if (OnPropertyChanging("SpottingComponentData." + nameof(SpottingDistance), this, m_SpottingDistance, value)) m_SpottingDistance = value; } } // 0x68 (104)
 		
 		protected float m_PassiveSpottingTimeInterval = new float();
-		[ContainerField(108), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3147290600)]
+		[ContainerField(Name: "PassiveSpottingTimeInterval", Offset: 108, NameHash: 3147290600, Flags: 49469), LayoutImmutable, Blittable]
 		public float PassiveSpottingTimeInterval { get { return m_PassiveSpottingTimeInterval; } set { if (OnPropertyChanging("SpottingComponentData." + nameof(PassiveSpottingTimeInterval), this, m_PassiveSpottingTimeInterval, value)) m_PassiveSpottingTimeInterval = value; } } // 0x6C (108)
 		
 		protected float m_TimeRequiredToPassiveSpot = new float();
-		[ContainerField(112), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1717291665)]
+		[ContainerField(Name: "TimeRequiredToPassiveSpot", Offset: 112, NameHash: 1717291665, Flags: 49469), LayoutImmutable, Blittable]
 		public float TimeRequiredToPassiveSpot { get { return m_TimeRequiredToPassiveSpot; } set { if (OnPropertyChanging("SpottingComponentData." + nameof(TimeRequiredToPassiveSpot), this, m_TimeRequiredToPassiveSpot, value)) m_TimeRequiredToPassiveSpot = value; } } // 0x70 (112)
 		
 		protected float m_OrderNeedAmmoPercentage = new float();
-		[ContainerField(116), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(92823575)]
+		[ContainerField(Name: "OrderNeedAmmoPercentage", Offset: 116, NameHash: 92823575, Flags: 49469), LayoutImmutable, Blittable]
 		public float OrderNeedAmmoPercentage { get { return m_OrderNeedAmmoPercentage; } set { if (OnPropertyChanging("SpottingComponentData." + nameof(OrderNeedAmmoPercentage), this, m_OrderNeedAmmoPercentage, value)) m_OrderNeedAmmoPercentage = value; } } // 0x74 (116)
 		
 		protected float m_OrderHealPercentage = new float();
-		[ContainerField(120), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(727727347)]
+		[ContainerField(Name: "OrderHealPercentage", Offset: 120, NameHash: 727727347, Flags: 49469), LayoutImmutable, Blittable]
 		public float OrderHealPercentage { get { return m_OrderHealPercentage; } set { if (OnPropertyChanging("SpottingComponentData." + nameof(OrderHealPercentage), this, m_OrderHealPercentage, value)) m_OrderHealPercentage = value; } } // 0x78 (120)
 		
 		protected float m_OrderRepairPercentage = new float();
-		[ContainerField(124), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(579931694)]
+		[ContainerField(Name: "OrderRepairPercentage", Offset: 124, NameHash: 579931694, Flags: 49469), LayoutImmutable, Blittable]
 		public float OrderRepairPercentage { get { return m_OrderRepairPercentage; } set { if (OnPropertyChanging("SpottingComponentData." + nameof(OrderRepairPercentage), this, m_OrderRepairPercentage, value)) m_OrderRepairPercentage = value; } } // 0x7C (124)
 		
 		protected float m_PickupOrderDistance = new float();
-		[ContainerField(128), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(968171260)]
+		[ContainerField(Name: "PickupOrderDistance", Offset: 128, NameHash: 968171260, Flags: 49469), LayoutImmutable, Blittable]
 		public float PickupOrderDistance { get { return m_PickupOrderDistance; } set { if (OnPropertyChanging("SpottingComponentData." + nameof(PickupOrderDistance), this, m_PickupOrderDistance, value)) m_PickupOrderDistance = value; } } // 0x80 (128)
 		
 		protected float m_HealOrderDistance = new float();
-		[ContainerField(132), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1879982728)]
+		[ContainerField(Name: "HealOrderDistance", Offset: 132, NameHash: 1879982728, Flags: 49469), LayoutImmutable, Blittable]
 		public float HealOrderDistance { get { return m_HealOrderDistance; } set { if (OnPropertyChanging("SpottingComponentData." + nameof(HealOrderDistance), this, m_HealOrderDistance, value)) m_HealOrderDistance = value; } } // 0x84 (132)
 		
 		protected float m_AmmoOrderDistance = new float();
-		[ContainerField(136), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1349582694)]
+		[ContainerField(Name: "AmmoOrderDistance", Offset: 136, NameHash: 1349582694, Flags: 49469), LayoutImmutable, Blittable]
 		public float AmmoOrderDistance { get { return m_AmmoOrderDistance; } set { if (OnPropertyChanging("SpottingComponentData." + nameof(AmmoOrderDistance), this, m_AmmoOrderDistance, value)) m_AmmoOrderDistance = value; } } // 0x88 (136)
 		
 		protected float m_RepairOrderDistance = new float();
-		[ContainerField(140), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3910859893)]
+		[ContainerField(Name: "RepairOrderDistance", Offset: 140, NameHash: 3910859893, Flags: 49469), LayoutImmutable, Blittable]
 		public float RepairOrderDistance { get { return m_RepairOrderDistance; } set { if (OnPropertyChanging("SpottingComponentData." + nameof(RepairOrderDistance), this, m_RepairOrderDistance, value)) m_RepairOrderDistance = value; } } // 0x8C (140)
 		
 		protected float m_CoolDownHistoryTime = new float();
-		[ContainerField(144), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(717220879)]
+		[ContainerField(Name: "CoolDownHistoryTime", Offset: 144, NameHash: 717220879, Flags: 49469), LayoutImmutable, Blittable]
 		public float CoolDownHistoryTime { get { return m_CoolDownHistoryTime; } set { if (OnPropertyChanging("SpottingComponentData." + nameof(CoolDownHistoryTime), this, m_CoolDownHistoryTime, value)) m_CoolDownHistoryTime = value; } } // 0x90 (144)
 		
 		protected int m_CoolDownAllowedSpotsWithinHistory = new int();
-		[ContainerField(148), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(2646556076)]
+		[ContainerField(Name: "CoolDownAllowedSpotsWithinHistory", Offset: 148, NameHash: 2646556076, Flags: 49405), LayoutImmutable, Blittable]
 		public int CoolDownAllowedSpotsWithinHistory { get { return m_CoolDownAllowedSpotsWithinHistory; } set { if (OnPropertyChanging("SpottingComponentData." + nameof(CoolDownAllowedSpotsWithinHistory), this, m_CoolDownAllowedSpotsWithinHistory, value)) m_CoolDownAllowedSpotsWithinHistory = value; } } // 0x94 (148)
 		
 		protected bool m_OnlyAllowedToHaveOneSpottedPlayer = new bool();
-		[ContainerField(152), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1329177458)]
+		[ContainerField(Name: "OnlyAllowedToHaveOneSpottedPlayer", Offset: 152, NameHash: 1329177458, Flags: 49325), LayoutImmutable, Blittable]
 		public bool OnlyAllowedToHaveOneSpottedPlayer { get { return m_OnlyAllowedToHaveOneSpottedPlayer; } set { if (OnPropertyChanging("SpottingComponentData." + nameof(OnlyAllowedToHaveOneSpottedPlayer), this, m_OnlyAllowedToHaveOneSpottedPlayer, value)) m_OnlyAllowedToHaveOneSpottedPlayer = value; } } // 0x98 (152)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

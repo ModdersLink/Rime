@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(36), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 36)]
 	public class PowerToolWeaponData : 
 		WeaponData
 	{
 		protected CtrRef<SoundAsset> m_RepairSound = new CtrRef<SoundAsset>();
-		[ContainerField(16), MemberInfoFlag(53), ContainerFieldNameHash(3648939963), ContainerCtrRef]
+		[ContainerField(Name: "RepairSound", Offset: 16, NameHash: 3648939963, Flags: 53)]
 		public CtrRef<SoundAsset> RepairSound { get { return m_RepairSound; } set { if (OnPropertyChanging("PowerToolWeaponData." + nameof(RepairSound), this, m_RepairSound, value)) m_RepairSound = value; } } // 0x10 (16)
 		
 		protected CtrRef<SoundAsset> m_RepairCompletedSound = new CtrRef<SoundAsset>();
-		[ContainerField(20), MemberInfoFlag(53), ContainerFieldNameHash(1421478710), ContainerCtrRef]
+		[ContainerField(Name: "RepairCompletedSound", Offset: 20, NameHash: 1421478710, Flags: 53)]
 		public CtrRef<SoundAsset> RepairCompletedSound { get { return m_RepairCompletedSound; } set { if (OnPropertyChanging("PowerToolWeaponData." + nameof(RepairCompletedSound), this, m_RepairCompletedSound, value)) m_RepairCompletedSound = value; } } // 0x14 (20)
 		
 		protected CtrRef<SoundAsset> m_DamageSound = new CtrRef<SoundAsset>();
-		[ContainerField(24), MemberInfoFlag(53), ContainerFieldNameHash(2233576717), ContainerCtrRef]
+		[ContainerField(Name: "DamageSound", Offset: 24, NameHash: 2233576717, Flags: 53)]
 		public CtrRef<SoundAsset> DamageSound { get { return m_DamageSound; } set { if (OnPropertyChanging("PowerToolWeaponData." + nameof(DamageSound), this, m_DamageSound, value)) m_DamageSound = value; } } // 0x18 (24)
 		
 		protected CtrRef<MaterialContainerPair> m_RepairMaterialPair = new CtrRef<MaterialContainerPair>();
-		[ContainerField(28), MemberInfoFlag(53), ContainerFieldNameHash(3188237177), ContainerCtrRef]
+		[ContainerField(Name: "RepairMaterialPair", Offset: 28, NameHash: 3188237177, Flags: 53)]
 		public CtrRef<MaterialContainerPair> RepairMaterialPair { get { return m_RepairMaterialPair; } set { if (OnPropertyChanging("PowerToolWeaponData." + nameof(RepairMaterialPair), this, m_RepairMaterialPair, value)) m_RepairMaterialPair = value; } } // 0x1C (28)
 		
 		protected bool m_PlayFireEffectOnRepairOnly = new bool();
-		[ContainerField(32), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(295476486)]
+		[ContainerField(Name: "PlayFireEffectOnRepairOnly", Offset: 32, NameHash: 295476486, Flags: 49325), LayoutImmutable, Blittable]
 		public bool PlayFireEffectOnRepairOnly { get { return m_PlayFireEffectOnRepairOnly; } set { if (OnPropertyChanging("PowerToolWeaponData." + nameof(PlayFireEffectOnRepairOnly), this, m_PlayFireEffectOnRepairOnly, value)) m_PlayFireEffectOnRepairOnly = value; } } // 0x20 (32)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

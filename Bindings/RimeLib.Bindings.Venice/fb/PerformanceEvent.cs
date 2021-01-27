@@ -18,52 +18,52 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(96), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 96)]
 	public class PerformanceEvent : 
 		MetricEvent
 	{
 		protected Vec3 m_Position = new Vec3();
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(3402582524)]
+		[ContainerField(Name: "Position", Offset: 16, NameHash: 3402582524, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 Position { get { return m_Position; } set { if (OnPropertyChanging("PerformanceEvent." + nameof(Position), this, m_Position, value)) m_Position = value; } } // 0x10 (16)
 		
 		protected float m_FreeCPUMemory = new float();
-		[ContainerField(32), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3299715286)]
+		[ContainerField(Name: "FreeCPUMemory", Offset: 32, NameHash: 3299715286, Flags: 49469), LayoutImmutable, Blittable]
 		public float FreeCPUMemory { get { return m_FreeCPUMemory; } set { if (OnPropertyChanging("PerformanceEvent." + nameof(FreeCPUMemory), this, m_FreeCPUMemory, value)) m_FreeCPUMemory = value; } } // 0x20 (32)
 		
 		protected float m_CPUAverage = new float();
-		[ContainerField(36), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2154799904)]
+		[ContainerField(Name: "CPUAverage", Offset: 36, NameHash: 2154799904, Flags: 49469), LayoutImmutable, Blittable]
 		public float CPUAverage { get { return m_CPUAverage; } set { if (OnPropertyChanging("PerformanceEvent." + nameof(CPUAverage), this, m_CPUAverage, value)) m_CPUAverage = value; } } // 0x24 (36)
 		
 		protected float m_AllocCPUMemory = new float();
-		[ContainerField(40), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(964546863)]
+		[ContainerField(Name: "AllocCPUMemory", Offset: 40, NameHash: 964546863, Flags: 49469), LayoutImmutable, Blittable]
 		public float AllocCPUMemory { get { return m_AllocCPUMemory; } set { if (OnPropertyChanging("PerformanceEvent." + nameof(AllocCPUMemory), this, m_AllocCPUMemory, value)) m_AllocCPUMemory = value; } } // 0x28 (40)
 		
 		protected float m_FreeGPUMemory = new float();
-		[ContainerField(44), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1089095890)]
+		[ContainerField(Name: "FreeGPUMemory", Offset: 44, NameHash: 1089095890, Flags: 49469), LayoutImmutable, Blittable]
 		public float FreeGPUMemory { get { return m_FreeGPUMemory; } set { if (OnPropertyChanging("PerformanceEvent." + nameof(FreeGPUMemory), this, m_FreeGPUMemory, value)) m_FreeGPUMemory = value; } } // 0x2C (44)
 		
 		protected float m_GPUAverage = new float();
-		[ContainerField(48), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3225125796)]
+		[ContainerField(Name: "GPUAverage", Offset: 48, NameHash: 3225125796, Flags: 49469), LayoutImmutable, Blittable]
 		public float GPUAverage { get { return m_GPUAverage; } set { if (OnPropertyChanging("PerformanceEvent." + nameof(GPUAverage), this, m_GPUAverage, value)) m_GPUAverage = value; } } // 0x30 (48)
 		
 		protected int m_DrawCallCount = new int();
-		[ContainerField(52), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(182572740)]
+		[ContainerField(Name: "DrawCallCount", Offset: 52, NameHash: 182572740, Flags: 49405), LayoutImmutable, Blittable]
 		public int DrawCallCount { get { return m_DrawCallCount; } set { if (OnPropertyChanging("PerformanceEvent." + nameof(DrawCallCount), this, m_DrawCallCount, value)) m_DrawCallCount = value; } } // 0x34 (52)
 		
 		protected int m_PrimitiveCount = new int();
-		[ContainerField(56), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(1563515559)]
+		[ContainerField(Name: "PrimitiveCount", Offset: 56, NameHash: 1563515559, Flags: 49405), LayoutImmutable, Blittable]
 		public int PrimitiveCount { get { return m_PrimitiveCount; } set { if (OnPropertyChanging("PerformanceEvent." + nameof(PrimitiveCount), this, m_PrimitiveCount, value)) m_PrimitiveCount = value; } } // 0x38 (56)
 		
 		protected float m_AllocGPUMemory = new float();
-		[ContainerField(60), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3048894763)]
+		[ContainerField(Name: "AllocGPUMemory", Offset: 60, NameHash: 3048894763, Flags: 49469), LayoutImmutable, Blittable]
 		public float AllocGPUMemory { get { return m_AllocGPUMemory; } set { if (OnPropertyChanging("PerformanceEvent." + nameof(AllocGPUMemory), this, m_AllocGPUMemory, value)) m_AllocGPUMemory = value; } } // 0x3C (60)
 		
 		protected string m_PerformanceLocation = string.Empty;
-		[ContainerField(64), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(69700128)]
+		[ContainerField(Name: "PerformanceLocation", Offset: 64, NameHash: 69700128, Flags: 16509), LayoutImmutable]
 		public string PerformanceLocation { get { return m_PerformanceLocation; } set { if (OnPropertyChanging("PerformanceEvent." + nameof(PerformanceLocation), this, m_PerformanceLocation, value)) m_PerformanceLocation = value; } } // 0x40 (64)
 		
 		protected GUID m_PerformanceLink = new GUID();
-		[ContainerField(68), LayoutImmutable, Blittable, MemberInfoFlag(49501), ContainerFieldNameHash(3478312829)]
+		[ContainerField(Name: "PerformanceLink", Offset: 68, NameHash: 3478312829, Flags: 49501), LayoutImmutable, Blittable]
 		public GUID PerformanceLink { get { return m_PerformanceLink; } set { if (OnPropertyChanging("PerformanceEvent." + nameof(PerformanceLink), this, m_PerformanceLink, value)) m_PerformanceLink = value; } } // 0x44 (68)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

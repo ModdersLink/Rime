@@ -18,19 +18,19 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(40), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 40)]
 	public class GameModeInformation : FrostbiteContainer
 	{
-		[ContainerField(0), MemberInfoFlag(137)]
+		[ContainerField(Name: "Platform", Offset: 0, NameHash: 942751002, Flags: 137)]
 		public GamePlatform Platform { get; set; } = new GamePlatform(); // 0x0 (0)
 		
-		[ContainerField(4), MemberInfoFlag(65), ContainerArray]
+		[ContainerField(Name: "Sizes", Offset: 4, NameHash: 231688563, Flags: 65)]
 		public List<GameModeSize> Sizes { get; set; } = new List<GameModeSize>(); // 0x4 (4)
 		
-		[ContainerField(8), MemberInfoFlag(41)]
+		[ContainerField(Name: "DefaultSize", Offset: 8, NameHash: 2015239083, Flags: 41)]
 		public GameModeSize DefaultSize { get; set; } = new GameModeSize(); // 0x8 (8)
 		
-		[ContainerField(36), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "AllowFallbackToDefault", Offset: 36, NameHash: 1742608896, Flags: 49325), LayoutImmutable, Blittable]
 		public bool AllowFallbackToDefault { get; set; } // 0x24 (36)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

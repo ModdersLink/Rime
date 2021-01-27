@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(32), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 32)]
 	public class OrientationNodeData : 
 		AudioGraphNodeData
 	{
 		protected AudioGraphNodePort m_ListenerRelativeYaw = new AudioGraphNodePort();
-		[ContainerField(8), MemberInfoFlag(41), ContainerFieldNameHash(3524495584)]
+		[ContainerField(Name: "ListenerRelativeYaw", Offset: 8, NameHash: 3524495584, Flags: 41)]
 		public AudioGraphNodePort ListenerRelativeYaw { get { return m_ListenerRelativeYaw; } set { if (OnPropertyChanging("OrientationNodeData." + nameof(ListenerRelativeYaw), this, m_ListenerRelativeYaw, value)) m_ListenerRelativeYaw = value; } } // 0x8 (8)
 		
 		protected AudioGraphNodePort m_ListenerRelativePitch = new AudioGraphNodePort();
-		[ContainerField(16), MemberInfoFlag(41), ContainerFieldNameHash(2777770313)]
+		[ContainerField(Name: "ListenerRelativePitch", Offset: 16, NameHash: 2777770313, Flags: 41)]
 		public AudioGraphNodePort ListenerRelativePitch { get { return m_ListenerRelativePitch; } set { if (OnPropertyChanging("OrientationNodeData." + nameof(ListenerRelativePitch), this, m_ListenerRelativePitch, value)) m_ListenerRelativePitch = value; } } // 0x10 (16)
 		
 		protected AudioGraphNodePort m_ListenerRelativeRoll = new AudioGraphNodePort();
-		[ContainerField(24), MemberInfoFlag(41), ContainerFieldNameHash(344546642)]
+		[ContainerField(Name: "ListenerRelativeRoll", Offset: 24, NameHash: 344546642, Flags: 41)]
 		public AudioGraphNodePort ListenerRelativeRoll { get { return m_ListenerRelativeRoll; } set { if (OnPropertyChanging("OrientationNodeData." + nameof(ListenerRelativeRoll), this, m_ListenerRelativeRoll, value)) m_ListenerRelativeRoll = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

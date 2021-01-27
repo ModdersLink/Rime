@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(24), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 24)]
 	public class VoiceOverLogicFlow : 
 		DataContainer
 	{
 		protected string m_Name = string.Empty;
-		[ContainerField(8), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(2088949890)]
+		[ContainerField(Name: "Name", Offset: 8, NameHash: 2088949890, Flags: 16509), LayoutImmutable]
 		public string Name { get { return m_Name; } set { if (OnPropertyChanging("VoiceOverLogicFlow." + nameof(Name), this, m_Name, value)) m_Name = value; } } // 0x8 (8)
 		
 		protected CtrRef<VoiceOverGroup> m_Group = new CtrRef<VoiceOverGroup>();
-		[ContainerField(12), MemberInfoFlag(53), ContainerFieldNameHash(208130522), ContainerCtrRef]
+		[ContainerField(Name: "Group", Offset: 12, NameHash: 208130522, Flags: 53)]
 		public CtrRef<VoiceOverGroup> Group { get { return m_Group; } set { if (OnPropertyChanging("VoiceOverLogicFlow." + nameof(Group), this, m_Group, value)) m_Group = value; } } // 0xC (12)
 		
 		protected RefArray<VoiceOverValue> m_Locals = new RefArray<VoiceOverValue>();
-		[ContainerField(16), MemberInfoFlag(65), ContainerFieldNameHash(2904565275), ContainerRefArray]
+		[ContainerField(Name: "Locals", Offset: 16, NameHash: 2904565275, Flags: 65)]
 		public RefArray<VoiceOverValue> Locals { get { return m_Locals; } set { if (OnPropertyChanging("VoiceOverLogicFlow." + nameof(Locals), this, m_Locals, value)) m_Locals = value; } } // 0x10 (16)
 		
 		protected RefArray<VoiceOverEventNode> m_Roots = new RefArray<VoiceOverEventNode>();
-		[ContainerField(20), MemberInfoFlag(65), ContainerFieldNameHash(230317904), ContainerRefArray]
+		[ContainerField(Name: "Roots", Offset: 20, NameHash: 230317904, Flags: 65)]
 		public RefArray<VoiceOverEventNode> Roots { get { return m_Roots; } set { if (OnPropertyChanging("VoiceOverLogicFlow." + nameof(Roots), this, m_Roots, value)) m_Roots = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

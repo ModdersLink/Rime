@@ -18,34 +18,34 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(32), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 32)]
 	public class ScreenshotInfo : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "Name", Offset: 0, NameHash: 2088949890, Flags: 16509), LayoutImmutable]
 		public string Name { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
+		[ContainerField(Name: "CropImageY1", Offset: 4, NameHash: 3713821508, Flags: 49421), LayoutImmutable, Blittable]
 		public uint CropImageY1 { get; set; } // 0x4 (4)
 		
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
+		[ContainerField(Name: "CropImageX1", Offset: 8, NameHash: 3713821541, Flags: 49421), LayoutImmutable, Blittable]
 		public uint CropImageX1 { get; set; } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
+		[ContainerField(Name: "CropImageX2", Offset: 12, NameHash: 3713821542, Flags: 49421), LayoutImmutable, Blittable]
 		public uint CropImageX2 { get; set; } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
+		[ContainerField(Name: "CropImageY2", Offset: 16, NameHash: 3713821511, Flags: 49421), LayoutImmutable, Blittable]
 		public uint CropImageY2 { get; set; } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
+		[ContainerField(Name: "ResizeOutputImageHeight", Offset: 20, NameHash: 2676658224, Flags: 49421), LayoutImmutable, Blittable]
 		public uint ResizeOutputImageHeight { get; set; } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
+		[ContainerField(Name: "ResizeOutputImageWidth", Offset: 24, NameHash: 228904617, Flags: 49421), LayoutImmutable, Blittable]
 		public uint ResizeOutputImageWidth { get; set; } // 0x18 (24)
 		
-		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "ResizeOutputImage", Offset: 28, NameHash: 204807471, Flags: 49325), LayoutImmutable, Blittable]
 		public bool ResizeOutputImage { get; set; } // 0x1C (28)
 		
-		[ContainerField(29), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "CropImage", Offset: 29, NameHash: 713322252, Flags: 49325), LayoutImmutable, Blittable]
 		public bool CropImage { get; set; } // 0x1D (29)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

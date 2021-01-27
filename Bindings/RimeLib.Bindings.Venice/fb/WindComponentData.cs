@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(112), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 112)]
 	public class WindComponentData : 
 		ComponentData
 	{
 		protected Realm m_Realm = new Realm();
-		[ContainerField(96), MemberInfoFlag(137), ContainerFieldNameHash(229961746)]
+		[ContainerField(Name: "Realm", Offset: 96, NameHash: 229961746, Flags: 137)]
 		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("WindComponentData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0x60 (96)
 		
 		protected float m_WindDirection = new float();
-		[ContainerField(100), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3147800788)]
+		[ContainerField(Name: "WindDirection", Offset: 100, NameHash: 3147800788, Flags: 49469), LayoutImmutable, Blittable]
 		public float WindDirection { get { return m_WindDirection; } set { if (OnPropertyChanging("WindComponentData." + nameof(WindDirection), this, m_WindDirection, value)) m_WindDirection = value; } } // 0x64 (100)
 		
 		protected float m_WindStrength = new float();
-		[ContainerField(104), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3768589012)]
+		[ContainerField(Name: "WindStrength", Offset: 104, NameHash: 3768589012, Flags: 49469), LayoutImmutable, Blittable]
 		public float WindStrength { get { return m_WindStrength; } set { if (OnPropertyChanging("WindComponentData." + nameof(WindStrength), this, m_WindStrength, value)) m_WindStrength = value; } } // 0x68 (104)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

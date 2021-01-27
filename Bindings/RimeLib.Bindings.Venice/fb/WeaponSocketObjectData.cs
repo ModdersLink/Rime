@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(24), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 24)]
 	public class WeaponSocketObjectData : 
 		SocketObjectDataBase
 	{
 		protected List<uint> m_ReferencedAssetHashes = new List<uint>();
-		[ContainerField(8), MemberInfoFlag(65), ContainerFieldNameHash(3589205886), ContainerArray]
+		[ContainerField(Name: "ReferencedAssetHashes", Offset: 8, NameHash: 3589205886, Flags: 65)]
 		public List<uint> ReferencedAssetHashes { get { return m_ReferencedAssetHashes; } set { if (OnPropertyChanging("WeaponSocketObjectData." + nameof(ReferencedAssetHashes), this, m_ReferencedAssetHashes, value)) m_ReferencedAssetHashes = value; } } // 0x8 (8)
 		
 		protected CtrRef<Asset> m_Asset1p = new CtrRef<Asset>();
-		[ContainerField(12), MemberInfoFlag(53), ContainerFieldNameHash(969622868), ContainerCtrRef]
+		[ContainerField(Name: "Asset1p", Offset: 12, NameHash: 969622868, Flags: 53)]
 		public CtrRef<Asset> Asset1p { get { return m_Asset1p; } set { if (OnPropertyChanging("WeaponSocketObjectData." + nameof(Asset1p), this, m_Asset1p, value)) m_Asset1p = value; } } // 0xC (12)
 		
 		protected CtrRef<Asset> m_Asset1pzoom = new CtrRef<Asset>();
-		[ContainerField(16), MemberInfoFlag(53), ContainerFieldNameHash(230633315), ContainerCtrRef]
+		[ContainerField(Name: "Asset1pzoom", Offset: 16, NameHash: 230633315, Flags: 53)]
 		public CtrRef<Asset> Asset1pzoom { get { return m_Asset1pzoom; } set { if (OnPropertyChanging("WeaponSocketObjectData." + nameof(Asset1pzoom), this, m_Asset1pzoom, value)) m_Asset1pzoom = value; } } // 0x10 (16)
 		
 		protected CtrRef<Asset> m_Asset3p = new CtrRef<Asset>();
-		[ContainerField(20), MemberInfoFlag(53), ContainerFieldNameHash(969622806), ContainerCtrRef]
+		[ContainerField(Name: "Asset3p", Offset: 20, NameHash: 969622806, Flags: 53)]
 		public CtrRef<Asset> Asset3p { get { return m_Asset3p; } set { if (OnPropertyChanging("WeaponSocketObjectData." + nameof(Asset3p), this, m_Asset3p, value)) m_Asset3p = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

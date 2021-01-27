@@ -18,48 +18,48 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(48), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 48)]
 	public class ScoringTypeData : 
 		DataContainer
 	{
 		protected StatEvent m_Measuring = new StatEvent();
-		[ContainerField(8), MemberInfoFlag(137), ContainerFieldNameHash(2896657528)]
+		[ContainerField(Name: "Measuring", Offset: 8, NameHash: 2896657528, Flags: 137)]
 		public StatEvent Measuring { get { return m_Measuring; } set { if (OnPropertyChanging("ScoringTypeData." + nameof(Measuring), this, m_Measuring, value)) m_Measuring = value; } } // 0x8 (8)
 		
 		protected CtrRef<StatsCategoryBaseData> m_ParamX = new CtrRef<StatsCategoryBaseData>();
-		[ContainerField(12), MemberInfoFlag(53), ContainerFieldNameHash(3371566706), ContainerCtrRef]
+		[ContainerField(Name: "ParamX", Offset: 12, NameHash: 3371566706, Flags: 53)]
 		public CtrRef<StatsCategoryBaseData> ParamX { get { return m_ParamX; } set { if (OnPropertyChanging("ScoringTypeData." + nameof(ParamX), this, m_ParamX, value)) m_ParamX = value; } } // 0xC (12)
 		
 		protected CtrRef<StatsCategoryBaseData> m_ParamY = new CtrRef<StatsCategoryBaseData>();
-		[ContainerField(16), MemberInfoFlag(53), ContainerFieldNameHash(3371566707), ContainerCtrRef]
+		[ContainerField(Name: "ParamY", Offset: 16, NameHash: 3371566707, Flags: 53)]
 		public CtrRef<StatsCategoryBaseData> ParamY { get { return m_ParamY; } set { if (OnPropertyChanging("ScoringTypeData." + nameof(ParamY), this, m_ParamY, value)) m_ParamY = value; } } // 0x10 (16)
 		
 		protected float m_Limit = new float();
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(217831728)]
+		[ContainerField(Name: "Limit", Offset: 20, NameHash: 217831728, Flags: 49469), LayoutImmutable, Blittable]
 		public float Limit { get { return m_Limit; } set { if (OnPropertyChanging("ScoringTypeData." + nameof(Limit), this, m_Limit, value)) m_Limit = value; } } // 0x14 (20)
 		
 		protected string m_DescriptionSid = string.Empty;
-		[ContainerField(24), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(1844417789)]
+		[ContainerField(Name: "DescriptionSid", Offset: 24, NameHash: 1844417789, Flags: 16509), LayoutImmutable]
 		public string DescriptionSid { get { return m_DescriptionSid; } set { if (OnPropertyChanging("ScoringTypeData." + nameof(DescriptionSid), this, m_DescriptionSid, value)) m_DescriptionSid = value; } } // 0x18 (24)
 		
 		protected ScoringVisibilityType m_VisibilityType = new ScoringVisibilityType();
-		[ContainerField(28), MemberInfoFlag(137), ContainerFieldNameHash(1714602875)]
+		[ContainerField(Name: "VisibilityType", Offset: 28, NameHash: 1714602875, Flags: 137)]
 		public ScoringVisibilityType VisibilityType { get { return m_VisibilityType; } set { if (OnPropertyChanging("ScoringTypeData." + nameof(VisibilityType), this, m_VisibilityType, value)) m_VisibilityType = value; } } // 0x1C (28)
 		
 		protected ScoringBucket m_Bucket = new ScoringBucket();
-		[ContainerField(32), MemberInfoFlag(137), ContainerFieldNameHash(2686649899)]
+		[ContainerField(Name: "Bucket", Offset: 32, NameHash: 2686649899, Flags: 137)]
 		public ScoringBucket Bucket { get { return m_Bucket; } set { if (OnPropertyChanging("ScoringTypeData." + nameof(Bucket), this, m_Bucket, value)) m_Bucket = value; } } // 0x20 (32)
 		
 		protected float m_Score = new float();
-		[ContainerField(36), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(231225165)]
+		[ContainerField(Name: "Score", Offset: 36, NameHash: 231225165, Flags: 49469), LayoutImmutable, Blittable]
 		public float Score { get { return m_Score; } set { if (OnPropertyChanging("ScoringTypeData." + nameof(Score), this, m_Score, value)) m_Score = value; } } // 0x24 (36)
 		
 		protected float m_AdditionalValueMultiplier = new float();
-		[ContainerField(40), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1815918684)]
+		[ContainerField(Name: "AdditionalValueMultiplier", Offset: 40, NameHash: 1815918684, Flags: 49469), LayoutImmutable, Blittable]
 		public float AdditionalValueMultiplier { get { return m_AdditionalValueMultiplier; } set { if (OnPropertyChanging("ScoringTypeData." + nameof(AdditionalValueMultiplier), this, m_AdditionalValueMultiplier, value)) m_AdditionalValueMultiplier = value; } } // 0x28 (40)
 		
 		protected bool m_ShowForTeam = new bool();
-		[ContainerField(44), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2745690560)]
+		[ContainerField(Name: "ShowForTeam", Offset: 44, NameHash: 2745690560, Flags: 49325), LayoutImmutable, Blittable]
 		public bool ShowForTeam { get { return m_ShowForTeam; } set { if (OnPropertyChanging("ScoringTypeData." + nameof(ShowForTeam), this, m_ShowForTeam, value)) m_ShowForTeam = value; } } // 0x2C (44)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

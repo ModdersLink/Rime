@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(41), ContainerSize(80), ContainerStruct]
+	[ContainerType(Alignment: 16,  Flags: 41, Size: 80)]
 	public class CameraLeapData : FrostbiteContainer
 	{
-		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
+		[ContainerField(Name: "Transform", Offset: 0, NameHash: 2270319721, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public LinearTransform Transform { get; set; } = new LinearTransform(); // 0x0 (0)
 		
-		[ContainerField(64), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "Time", Offset: 64, NameHash: 2089313744, Flags: 49469), LayoutImmutable, Blittable]
 		public float Time { get; set; } // 0x40 (64)
 		
-		[ContainerField(68), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "FovModifier", Offset: 68, NameHash: 3245684845, Flags: 49469), LayoutImmutable, Blittable]
 		public float FovModifier { get; set; } // 0x44 (68)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

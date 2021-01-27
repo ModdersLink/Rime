@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(16), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
 	public class CameraComponentSoundData : 
 		DataContainer
 	{
 		protected CtrRef<SoundAsset> m_SwitchToAlternateViewSound = new CtrRef<SoundAsset>();
-		[ContainerField(8), MemberInfoFlag(53), ContainerFieldNameHash(1181169106), ContainerCtrRef]
+		[ContainerField(Name: "SwitchToAlternateViewSound", Offset: 8, NameHash: 1181169106, Flags: 53)]
 		public CtrRef<SoundAsset> SwitchToAlternateViewSound { get { return m_SwitchToAlternateViewSound; } set { if (OnPropertyChanging("CameraComponentSoundData." + nameof(SwitchToAlternateViewSound), this, m_SwitchToAlternateViewSound, value)) m_SwitchToAlternateViewSound = value; } } // 0x8 (8)
 		
 		protected CtrRef<SoundAsset> m_SwitchToNormalViewSound = new CtrRef<SoundAsset>();
-		[ContainerField(12), MemberInfoFlag(53), ContainerFieldNameHash(3067038865), ContainerCtrRef]
+		[ContainerField(Name: "SwitchToNormalViewSound", Offset: 12, NameHash: 3067038865, Flags: 53)]
 		public CtrRef<SoundAsset> SwitchToNormalViewSound { get { return m_SwitchToNormalViewSound; } set { if (OnPropertyChanging("CameraComponentSoundData." + nameof(SwitchToNormalViewSound), this, m_SwitchToNormalViewSound, value)) m_SwitchToNormalViewSound = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

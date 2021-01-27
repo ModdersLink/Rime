@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(32), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 32)]
 	public class JumpNode : 
 		UINodeData
 	{
 		protected CtrRef<UINodePort> m_In = new CtrRef<UINodePort>();
-		[ContainerField(20), MemberInfoFlag(53), ContainerFieldNameHash(5862146), ContainerCtrRef]
+		[ContainerField(Name: "In", Offset: 20, NameHash: 5862146, Flags: 53)]
 		public CtrRef<UINodePort> In { get { return m_In; } set { if (OnPropertyChanging("JumpNode." + nameof(In), this, m_In, value)) m_In = value; } } // 0x14 (20)
 		
 		protected CtrRef<UINodeData> m_TargetNode = new CtrRef<UINodeData>();
-		[ContainerField(24), MemberInfoFlag(53), ContainerFieldNameHash(328873140), ContainerCtrRef]
+		[ContainerField(Name: "TargetNode", Offset: 24, NameHash: 328873140, Flags: 53)]
 		public CtrRef<UINodeData> TargetNode { get { return m_TargetNode; } set { if (OnPropertyChanging("JumpNode." + nameof(TargetNode), this, m_TargetNode, value)) m_TargetNode = value; } } // 0x18 (24)
 		
 		protected CtrRef<UINodePort> m_TargetPort = new CtrRef<UINodePort>();
-		[ContainerField(28), MemberInfoFlag(53), ContainerFieldNameHash(328235565), ContainerCtrRef]
+		[ContainerField(Name: "TargetPort", Offset: 28, NameHash: 328235565, Flags: 53)]
 		public CtrRef<UINodePort> TargetPort { get { return m_TargetPort; } set { if (OnPropertyChanging("JumpNode." + nameof(TargetPort), this, m_TargetPort, value)) m_TargetPort = value; } } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

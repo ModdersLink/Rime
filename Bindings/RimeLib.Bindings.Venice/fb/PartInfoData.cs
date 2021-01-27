@@ -18,13 +18,13 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(41), ContainerSize(48), ContainerStruct]
+	[ContainerType(Alignment: 16,  Flags: 41, Size: 48)]
 	public class PartInfoData : FrostbiteContainer
 	{
-		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
+		[ContainerField(Name: "Aabb", Offset: 0, NameHash: 2088635333, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public AxisAlignedBox Aabb { get; set; } = new AxisAlignedBox(); // 0x0 (0)
 		
-		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
+		[ContainerField(Name: "Translation", Offset: 32, NameHash: 2696156750, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 Translation { get; set; } = new Vec3(); // 0x20 (32)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

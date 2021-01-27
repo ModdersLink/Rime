@@ -18,46 +18,46 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(41), ContainerSize(160), ContainerStruct]
+	[ContainerType(Alignment: 16,  Flags: 41, Size: 160)]
 	public class LensFlareElement : FrostbiteContainer
 	{
-		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
+		[ContainerField(Name: "SizeCamDistCurve", Offset: 0, NameHash: 581854770, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec4 SizeCamDistCurve { get; set; } = new Vec4(); // 0x0 (0)
 		
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
+		[ContainerField(Name: "SizeAngleCurve", Offset: 16, NameHash: 2048655894, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec4 SizeAngleCurve { get; set; } = new Vec4(); // 0x10 (16)
 		
-		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
+		[ContainerField(Name: "Size", Offset: 32, NameHash: 2089429248, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec2 Size { get; set; } = new Vec2(); // 0x20 (32)
 		
-		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
+		[ContainerField(Name: "SizeOccluderCurve", Offset: 48, NameHash: 3776114, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec4 SizeOccluderCurve { get; set; } = new Vec4(); // 0x30 (48)
 		
-		[ContainerField(64), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
+		[ContainerField(Name: "SizeScreenPosCurve", Offset: 64, NameHash: 3056630583, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec4 SizeScreenPosCurve { get; set; } = new Vec4(); // 0x40 (64)
 		
-		[ContainerField(80), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
+		[ContainerField(Name: "AlphaCamDistCurve", Offset: 80, NameHash: 3212151939, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec4 AlphaCamDistCurve { get; set; } = new Vec4(); // 0x50 (80)
 		
-		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
+		[ContainerField(Name: "AlphaOccluderCurve", Offset: 96, NameHash: 667546595, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec4 AlphaOccluderCurve { get; set; } = new Vec4(); // 0x60 (96)
 		
-		[ContainerField(112), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
+		[ContainerField(Name: "AlphaAngleCurve", Offset: 112, NameHash: 4159333799, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec4 AlphaAngleCurve { get; set; } = new Vec4(); // 0x70 (112)
 		
-		[ContainerField(128), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
+		[ContainerField(Name: "AlphaScreenPosCurve", Offset: 128, NameHash: 1611913286, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec4 AlphaScreenPosCurve { get; set; } = new Vec4(); // 0x80 (128)
 		
-		[ContainerField(144), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "SizeCamDistMax", Offset: 144, NameHash: 1664889457, Flags: 49469), LayoutImmutable, Blittable]
 		public float SizeCamDistMax { get; set; } // 0x90 (144)
 		
-		[ContainerField(148), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "RayDistance", Offset: 148, NameHash: 223111116, Flags: 49469), LayoutImmutable, Blittable]
 		public float RayDistance { get; set; } // 0x94 (148)
 		
-		[ContainerField(152), MemberInfoFlag(53), ContainerCtrRef]
+		[ContainerField(Name: "Shader", Offset: 152, NameHash: 3352909900, Flags: 53)]
 		public CtrRef<SurfaceShaderBaseAsset> Shader { get; set; } = new CtrRef<SurfaceShaderBaseAsset>(); // 0x98 (152)
 		
-		[ContainerField(156), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "AlphaCamDistMax", Offset: 156, NameHash: 961329344, Flags: 49469), LayoutImmutable, Blittable]
 		public float AlphaCamDistMax { get; set; } // 0x9C (156)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

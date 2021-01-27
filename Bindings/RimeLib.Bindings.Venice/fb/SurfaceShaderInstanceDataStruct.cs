@@ -18,22 +18,22 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(20), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 20)]
 	public class SurfaceShaderInstanceDataStruct : FrostbiteContainer
 	{
-		[ContainerField(0), MemberInfoFlag(53), ContainerCtrRef]
+		[ContainerField(Name: "Shader", Offset: 0, NameHash: 3352909900, Flags: 53)]
 		public CtrRef<SurfaceShaderBaseAsset> Shader { get; set; } = new CtrRef<SurfaceShaderBaseAsset>(); // 0x0 (0)
 		
-		[ContainerField(4), MemberInfoFlag(65), ContainerArray]
+		[ContainerField(Name: "BoolParameters", Offset: 4, NameHash: 1729647825, Flags: 65)]
 		public List<BoolShaderParameter> BoolParameters { get; set; } = new List<BoolShaderParameter>(); // 0x4 (4)
 		
-		[ContainerField(8), MemberInfoFlag(65), ContainerArray]
+		[ContainerField(Name: "VectorParameters", Offset: 8, NameHash: 3213368934, Flags: 65)]
 		public List<VectorShaderParameter> VectorParameters { get; set; } = new List<VectorShaderParameter>(); // 0x8 (8)
 		
-		[ContainerField(12), MemberInfoFlag(65), ContainerArray]
+		[ContainerField(Name: "VectorArrayParameters", Offset: 12, NameHash: 2449140063, Flags: 65)]
 		public List<VectorArrayShaderParameter> VectorArrayParameters { get; set; } = new List<VectorArrayShaderParameter>(); // 0xC (12)
 		
-		[ContainerField(16), MemberInfoFlag(65), ContainerArray]
+		[ContainerField(Name: "TextureParameters", Offset: 16, NameHash: 2131743936, Flags: 65)]
 		public List<TextureShaderParameter> TextureParameters { get; set; } = new List<TextureShaderParameter>(); // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

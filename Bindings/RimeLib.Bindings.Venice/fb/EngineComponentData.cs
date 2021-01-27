@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(112), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 112)]
 	public class EngineComponentData : 
 		ComponentData
 	{
 		protected CtrRef<EngineConfigData> m_Config = new CtrRef<EngineConfigData>();
-		[ContainerField(96), MemberInfoFlag(53), ContainerFieldNameHash(2713732399), ContainerCtrRef]
+		[ContainerField(Name: "Config", Offset: 96, NameHash: 2713732399, Flags: 53)]
 		public CtrRef<EngineConfigData> Config { get { return m_Config; } set { if (OnPropertyChanging("EngineComponentData." + nameof(Config), this, m_Config, value)) m_Config = value; } } // 0x60 (96)
 		
 		protected CtrRef<SoundAsset> m_SoundEffect = new CtrRef<SoundAsset>();
-		[ContainerField(100), MemberInfoFlag(53), ContainerFieldNameHash(3556609201), ContainerCtrRef]
+		[ContainerField(Name: "SoundEffect", Offset: 100, NameHash: 3556609201, Flags: 53)]
 		public CtrRef<SoundAsset> SoundEffect { get { return m_SoundEffect; } set { if (OnPropertyChanging("EngineComponentData." + nameof(SoundEffect), this, m_SoundEffect, value)) m_SoundEffect = value; } } // 0x64 (100)
 		
 		protected CtrRef<SoundAsset> m_SurfaceSoundEffect = new CtrRef<SoundAsset>();
-		[ContainerField(104), MemberInfoFlag(53), ContainerFieldNameHash(3348100644), ContainerCtrRef]
+		[ContainerField(Name: "SurfaceSoundEffect", Offset: 104, NameHash: 3348100644, Flags: 53)]
 		public CtrRef<SoundAsset> SurfaceSoundEffect { get { return m_SurfaceSoundEffect; } set { if (OnPropertyChanging("EngineComponentData." + nameof(SurfaceSoundEffect), this, m_SurfaceSoundEffect, value)) m_SurfaceSoundEffect = value; } } // 0x68 (104)
 		
 		protected bool m_UseFirstPersonSounds = new bool();
-		[ContainerField(108), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2865323833)]
+		[ContainerField(Name: "UseFirstPersonSounds", Offset: 108, NameHash: 2865323833, Flags: 49325), LayoutImmutable, Blittable]
 		public bool UseFirstPersonSounds { get { return m_UseFirstPersonSounds; } set { if (OnPropertyChanging("EngineComponentData." + nameof(UseFirstPersonSounds), this, m_UseFirstPersonSounds, value)) m_UseFirstPersonSounds = value; } } // 0x6C (108)
 		
 		protected bool m_OutputIsEngineInWater = new bool();
-		[ContainerField(109), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(844188796)]
+		[ContainerField(Name: "OutputIsEngineInWater", Offset: 109, NameHash: 844188796, Flags: 49325), LayoutImmutable, Blittable]
 		public bool OutputIsEngineInWater { get { return m_OutputIsEngineInWater; } set { if (OnPropertyChanging("EngineComponentData." + nameof(OutputIsEngineInWater), this, m_OutputIsEngineInWater, value)) m_OutputIsEngineInWater = value; } } // 0x6D (109)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

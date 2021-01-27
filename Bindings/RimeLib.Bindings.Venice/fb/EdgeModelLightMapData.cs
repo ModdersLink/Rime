@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(12), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 12)]
 	public class EdgeModelLightMapData : 
 		DataContainer
 	{
 		protected List<Vec4> m_LightMapUvs = new List<Vec4>();
-		[ContainerField(8), MemberInfoFlag(65), ContainerFieldNameHash(397898871), ContainerArray]
+		[ContainerField(Name: "LightMapUvs", Offset: 8, NameHash: 397898871, Flags: 65)]
 		public List<Vec4> LightMapUvs { get { return m_LightMapUvs; } set { if (OnPropertyChanging("EdgeModelLightMapData." + nameof(LightMapUvs), this, m_LightMapUvs, value)) m_LightMapUvs = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

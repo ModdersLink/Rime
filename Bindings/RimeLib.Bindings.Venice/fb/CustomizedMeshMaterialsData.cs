@@ -18,13 +18,13 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(8), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 8)]
 	public class CustomizedMeshMaterialsData : FrostbiteContainer
 	{
-		[ContainerField(0), MemberInfoFlag(53), ContainerCtrRef]
+		[ContainerField(Name: "MeshBlueprint", Offset: 0, NameHash: 1662348825, Flags: 53)]
 		public CtrRef<ObjectBlueprint> MeshBlueprint { get; set; } = new CtrRef<ObjectBlueprint>(); // 0x0 (0)
 		
-		[ContainerField(4), MemberInfoFlag(65), ContainerArray]
+		[ContainerField(Name: "MaterialNames", Offset: 4, NameHash: 990812474, Flags: 65)]
 		public List<string> MaterialNames { get; set; } = new List<string>(); // 0x4 (4)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(20), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 20)]
 	public class VisualTerrainEntityData : 
 		EntityData
 	{
 		protected CtrRef<TerrainData> m_Terrain = new CtrRef<TerrainData>();
-		[ContainerField(12), MemberInfoFlag(53), ContainerFieldNameHash(3173545970), ContainerCtrRef]
+		[ContainerField(Name: "Terrain", Offset: 12, NameHash: 3173545970, Flags: 53)]
 		public CtrRef<TerrainData> Terrain { get { return m_Terrain; } set { if (OnPropertyChanging("VisualTerrainEntityData." + nameof(Terrain), this, m_Terrain, value)) m_Terrain = value; } } // 0xC (12)
 		
 		protected CtrRef<VisualTerrainSettings> m_Settings = new CtrRef<VisualTerrainSettings>();
-		[ContainerField(16), MemberInfoFlag(53), ContainerFieldNameHash(649772672), ContainerCtrRef]
+		[ContainerField(Name: "Settings", Offset: 16, NameHash: 649772672, Flags: 53)]
 		public CtrRef<VisualTerrainSettings> Settings { get { return m_Settings; } set { if (OnPropertyChanging("VisualTerrainEntityData." + nameof(Settings), this, m_Settings, value)) m_Settings = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

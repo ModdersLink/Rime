@@ -18,61 +18,61 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(41), ContainerSize(96), ContainerStruct]
+	[ContainerType(Alignment: 16,  Flags: 41, Size: 96)]
 	public class ShotConfigData : FrostbiteContainer
 	{
-		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
+		[ContainerField(Name: "InitialPosition", Offset: 0, NameHash: 3791803234, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 InitialPosition { get; set; } = new Vec3(); // 0x0 (0)
 		
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
+		[ContainerField(Name: "InitialDirection", Offset: 16, NameHash: 1073214622, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 InitialDirection { get; set; } = new Vec3(); // 0x10 (16)
 		
-		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
+		[ContainerField(Name: "InitialSpeed", Offset: 32, NameHash: 3681055580, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 InitialSpeed { get; set; } = new Vec3(); // 0x20 (32)
 		
-		[ContainerField(48), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "InheritWeaponSpeedAmount", Offset: 48, NameHash: 3681006953, Flags: 49469), LayoutImmutable, Blittable]
 		public float InheritWeaponSpeedAmount { get; set; } // 0x30 (48)
 		
-		[ContainerField(52), MemberInfoFlag(53), ContainerCtrRef]
+		[ContainerField(Name: "MuzzleExplosion", Offset: 52, NameHash: 2257917377, Flags: 53)]
 		public CtrRef<ExplosionEntityData> MuzzleExplosion { get; set; } = new CtrRef<ExplosionEntityData>(); // 0x34 (52)
 		
-		[ContainerField(56), MemberInfoFlag(53), ContainerCtrRef]
+		[ContainerField(Name: "ProjectileData", Offset: 56, NameHash: 2690942720, Flags: 53)]
 		public CtrRef<ProjectileEntityData> ProjectileData { get; set; } = new CtrRef<ProjectileEntityData>(); // 0x38 (56)
 		
-		[ContainerField(60), MemberInfoFlag(53), ContainerCtrRef]
+		[ContainerField(Name: "SecondaryProjectileData", Offset: 60, NameHash: 2405794234, Flags: 53)]
 		public CtrRef<ProjectileEntityData> SecondaryProjectileData { get; set; } = new CtrRef<ProjectileEntityData>(); // 0x3C (60)
 		
-		[ContainerField(64), MemberInfoFlag(53), ContainerCtrRef]
+		[ContainerField(Name: "Projectile", Offset: 64, NameHash: 3883939888, Flags: 53)]
 		public CtrRef<ProjectileBlueprint> Projectile { get; set; } = new CtrRef<ProjectileBlueprint>(); // 0x40 (64)
 		
-		[ContainerField(68), MemberInfoFlag(53), ContainerCtrRef]
+		[ContainerField(Name: "SecondaryProjectile", Offset: 68, NameHash: 2606311818, Flags: 53)]
 		public CtrRef<ProjectileBlueprint> SecondaryProjectile { get; set; } = new CtrRef<ProjectileBlueprint>(); // 0x44 (68)
 		
-		[ContainerField(72), MemberInfoFlag(65), ContainerArray]
+		[ContainerField(Name: "AlternateProjectiles", Offset: 72, NameHash: 1066262867, Flags: 65)]
 		public List<UnlockableProjectile> AlternateProjectiles { get; set; } = new List<UnlockableProjectile>(); // 0x48 (72)
 		
-		[ContainerField(76), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "SpawnDelay", Offset: 76, NameHash: 3473198411, Flags: 49469), LayoutImmutable, Blittable]
 		public float SpawnDelay { get; set; } // 0x4C (76)
 		
-		[ContainerField(80), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
+		[ContainerField(Name: "NumberOfBulletsPerShell", Offset: 80, NameHash: 464437027, Flags: 49421), LayoutImmutable, Blittable]
 		public uint NumberOfBulletsPerShell { get; set; } // 0x50 (80)
 		
-		[ContainerField(84), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
+		[ContainerField(Name: "NumberOfBulletsPerShot", Offset: 84, NameHash: 404525501, Flags: 49421), LayoutImmutable, Blittable]
 		public uint NumberOfBulletsPerShot { get; set; } // 0x54 (84)
 		
-		[ContainerField(88), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
+		[ContainerField(Name: "NumberOfBulletsPerBurst", Offset: 88, NameHash: 491113727, Flags: 49421), LayoutImmutable, Blittable]
 		public uint NumberOfBulletsPerBurst { get; set; } // 0x58 (88)
 		
-		[ContainerField(92), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "RelativeTargetAiming", Offset: 92, NameHash: 3309775045, Flags: 49325), LayoutImmutable, Blittable]
 		public bool RelativeTargetAiming { get; set; } // 0x5C (92)
 		
-		[ContainerField(93), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "ForceSpawnToCamera", Offset: 93, NameHash: 1364356545, Flags: 49325), LayoutImmutable, Blittable]
 		public bool ForceSpawnToCamera { get; set; } // 0x5D (93)
 		
-		[ContainerField(94), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "SpawnVisualAtWeaponBone", Offset: 94, NameHash: 3532019419, Flags: 49325), LayoutImmutable, Blittable]
 		public bool SpawnVisualAtWeaponBone { get; set; } // 0x5E (94)
 		
-		[ContainerField(95), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "ActiveForceSpawnToCamera", Offset: 95, NameHash: 2063799309, Flags: 49325), LayoutImmutable, Blittable]
 		public bool ActiveForceSpawnToCamera { get; set; } // 0x5F (95)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

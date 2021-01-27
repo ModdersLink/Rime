@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(96), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 96)]
 	public class SoundEntityData : 
 		EntityData
 	{
 		protected LinearTransform m_Transform = new LinearTransform();
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(2270319721)]
+		[ContainerField(Name: "Transform", Offset: 16, NameHash: 2270319721, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public LinearTransform Transform { get { return m_Transform; } set { if (OnPropertyChanging("SoundEntityData." + nameof(Transform), this, m_Transform, value)) m_Transform = value; } } // 0x10 (16)
 		
 		protected CtrRef<SoundAsset> m_Sound = new CtrRef<SoundAsset>();
-		[ContainerField(80), MemberInfoFlag(53), ContainerFieldNameHash(231353798), ContainerCtrRef]
+		[ContainerField(Name: "Sound", Offset: 80, NameHash: 231353798, Flags: 53)]
 		public CtrRef<SoundAsset> Sound { get { return m_Sound; } set { if (OnPropertyChanging("SoundEntityData." + nameof(Sound), this, m_Sound, value)) m_Sound = value; } } // 0x50 (80)
 		
 		protected int m_ObstructionHandle = new int();
-		[ContainerField(84), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(2253671389)]
+		[ContainerField(Name: "ObstructionHandle", Offset: 84, NameHash: 2253671389, Flags: 49405), LayoutImmutable, Blittable]
 		public int ObstructionHandle { get { return m_ObstructionHandle; } set { if (OnPropertyChanging("SoundEntityData." + nameof(ObstructionHandle), this, m_ObstructionHandle, value)) m_ObstructionHandle = value; } } // 0x54 (84)
 		
 		protected bool m_PlayOnCreation = new bool();
-		[ContainerField(88), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2168204873)]
+		[ContainerField(Name: "PlayOnCreation", Offset: 88, NameHash: 2168204873, Flags: 49325), LayoutImmutable, Blittable]
 		public bool PlayOnCreation { get { return m_PlayOnCreation; } set { if (OnPropertyChanging("SoundEntityData." + nameof(PlayOnCreation), this, m_PlayOnCreation, value)) m_PlayOnCreation = value; } } // 0x58 (88)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

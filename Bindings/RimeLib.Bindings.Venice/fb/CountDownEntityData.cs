@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(24), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 24)]
 	public class CountDownEntityData : 
 		EntityData
 	{
 		protected int m_StartValue = new int();
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(2748522638)]
+		[ContainerField(Name: "StartValue", Offset: 12, NameHash: 2748522638, Flags: 49405), LayoutImmutable, Blittable]
 		public int StartValue { get { return m_StartValue; } set { if (OnPropertyChanging("CountDownEntityData." + nameof(StartValue), this, m_StartValue, value)) m_StartValue = value; } } // 0xC (12)
 		
 		protected Realm m_Realm = new Realm();
-		[ContainerField(16), MemberInfoFlag(137), ContainerFieldNameHash(229961746)]
+		[ContainerField(Name: "Realm", Offset: 16, NameHash: 229961746, Flags: 137)]
 		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("CountDownEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0x10 (16)
 		
 		protected bool m_RunOnce = new bool();
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(709901739)]
+		[ContainerField(Name: "RunOnce", Offset: 20, NameHash: 709901739, Flags: 49325), LayoutImmutable, Blittable]
 		public bool RunOnce { get { return m_RunOnce; } set { if (OnPropertyChanging("CountDownEntityData." + nameof(RunOnce), this, m_RunOnce, value)) m_RunOnce = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

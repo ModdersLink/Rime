@@ -18,32 +18,32 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(96), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 96)]
 	public class ReferenceObjectData : 
 		GameObjectData
 	{
 		protected LinearTransform m_BlueprintTransform = new LinearTransform();
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(3885036614)]
+		[ContainerField(Name: "BlueprintTransform", Offset: 16, NameHash: 3885036614, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public LinearTransform BlueprintTransform { get { return m_BlueprintTransform; } set { if (OnPropertyChanging("ReferenceObjectData." + nameof(BlueprintTransform), this, m_BlueprintTransform, value)) m_BlueprintTransform = value; } } // 0x10 (16)
 		
 		protected CtrRef<Blueprint> m_Blueprint = new CtrRef<Blueprint>();
-		[ContainerField(80), MemberInfoFlag(53), ContainerFieldNameHash(4232469066), ContainerCtrRef]
+		[ContainerField(Name: "Blueprint", Offset: 80, NameHash: 4232469066, Flags: 53)]
 		public CtrRef<Blueprint> Blueprint { get { return m_Blueprint; } set { if (OnPropertyChanging("ReferenceObjectData." + nameof(Blueprint), this, m_Blueprint, value)) m_Blueprint = value; } } // 0x50 (80)
 		
 		protected CtrRef<ObjectVariation> m_ObjectVariation = new CtrRef<ObjectVariation>();
-		[ContainerField(84), MemberInfoFlag(53), ContainerFieldNameHash(3624336577), ContainerCtrRef]
+		[ContainerField(Name: "ObjectVariation", Offset: 84, NameHash: 3624336577, Flags: 53)]
 		public CtrRef<ObjectVariation> ObjectVariation { get { return m_ObjectVariation; } set { if (OnPropertyChanging("ReferenceObjectData." + nameof(ObjectVariation), this, m_ObjectVariation, value)) m_ObjectVariation = value; } } // 0x54 (84)
 		
 		protected StreamRealm m_StreamRealm = new StreamRealm();
-		[ContainerField(88), MemberInfoFlag(137), ContainerFieldNameHash(1844114478)]
+		[ContainerField(Name: "StreamRealm", Offset: 88, NameHash: 1844114478, Flags: 137)]
 		public StreamRealm StreamRealm { get { return m_StreamRealm; } set { if (OnPropertyChanging("ReferenceObjectData." + nameof(StreamRealm), this, m_StreamRealm, value)) m_StreamRealm = value; } } // 0x58 (88)
 		
 		protected bool m_CastSunShadowEnable = new bool();
-		[ContainerField(92), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1557133743)]
+		[ContainerField(Name: "CastSunShadowEnable", Offset: 92, NameHash: 1557133743, Flags: 49325), LayoutImmutable, Blittable]
 		public bool CastSunShadowEnable { get { return m_CastSunShadowEnable; } set { if (OnPropertyChanging("ReferenceObjectData." + nameof(CastSunShadowEnable), this, m_CastSunShadowEnable, value)) m_CastSunShadowEnable = value; } } // 0x5C (92)
 		
 		protected bool m_Excluded = new bool();
-		[ContainerField(93), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(755715367)]
+		[ContainerField(Name: "Excluded", Offset: 93, NameHash: 755715367, Flags: 49325), LayoutImmutable, Blittable]
 		public bool Excluded { get { return m_Excluded; } set { if (OnPropertyChanging("ReferenceObjectData." + nameof(Excluded), this, m_Excluded, value)) m_Excluded = value; } } // 0x5D (93)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

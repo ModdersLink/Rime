@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(96), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 96)]
 	public class MeshProxyEntityData : 
 		SpatialEntityData
 	{
 		protected CtrRef<MeshAsset> m_Mesh = new CtrRef<MeshAsset>();
-		[ContainerField(80), MemberInfoFlag(53), ContainerFieldNameHash(2088783990), ContainerCtrRef]
+		[ContainerField(Name: "Mesh", Offset: 80, NameHash: 2088783990, Flags: 53)]
 		public CtrRef<MeshAsset> Mesh { get { return m_Mesh; } set { if (OnPropertyChanging("MeshProxyEntityData." + nameof(Mesh), this, m_Mesh, value)) m_Mesh = value; } } // 0x50 (80)
 		
 		protected List<LinearTransform> m_BasePoseTransforms = new List<LinearTransform>();
-		[ContainerField(84), MemberInfoFlag(65), ContainerFieldNameHash(2949884966), ContainerArray]
+		[ContainerField(Name: "BasePoseTransforms", Offset: 84, NameHash: 2949884966, Flags: 65)]
 		public List<LinearTransform> BasePoseTransforms { get { return m_BasePoseTransforms; } set { if (OnPropertyChanging("MeshProxyEntityData." + nameof(BasePoseTransforms), this, m_BasePoseTransforms, value)) m_BasePoseTransforms = value; } } // 0x54 (84)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

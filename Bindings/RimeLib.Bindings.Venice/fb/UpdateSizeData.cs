@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(64), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 64)]
 	public class UpdateSizeData : 
 		ProcessorData
 	{
 		protected Vec2 m_Pivot = new Vec2();
-		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(232602033)]
+		[ContainerField(Name: "Pivot", Offset: 48, NameHash: 232602033, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec2 Pivot { get { return m_Pivot; } set { if (OnPropertyChanging("UpdateSizeData." + nameof(Pivot), this, m_Pivot, value)) m_Pivot = value; } } // 0x30 (48)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(64), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 64)]
 	public class SpawnRateData : 
 		ProcessorData
 	{
 		protected float m_SpawnRate = new float();
-		[ContainerField(48), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2317161148)]
+		[ContainerField(Name: "SpawnRate", Offset: 48, NameHash: 2317161148, Flags: 49469), LayoutImmutable, Blittable]
 		public float SpawnRate { get { return m_SpawnRate; } set { if (OnPropertyChanging("SpawnRateData." + nameof(SpawnRate), this, m_SpawnRate, value)) m_SpawnRate = value; } } // 0x30 (48)
 		
 		protected float m_TrailSegmentLength = new float();
-		[ContainerField(52), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3461940440)]
+		[ContainerField(Name: "TrailSegmentLength", Offset: 52, NameHash: 3461940440, Flags: 49469), LayoutImmutable, Blittable]
 		public float TrailSegmentLength { get { return m_TrailSegmentLength; } set { if (OnPropertyChanging("SpawnRateData." + nameof(TrailSegmentLength), this, m_TrailSegmentLength, value)) m_TrailSegmentLength = value; } } // 0x34 (52)
 		
 		protected bool m_DistributeOverTime = new bool();
-		[ContainerField(56), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2990510569)]
+		[ContainerField(Name: "DistributeOverTime", Offset: 56, NameHash: 2990510569, Flags: 49325), LayoutImmutable, Blittable]
 		public bool DistributeOverTime { get { return m_DistributeOverTime; } set { if (OnPropertyChanging("SpawnRateData." + nameof(DistributeOverTime), this, m_DistributeOverTime, value)) m_DistributeOverTime = value; } } // 0x38 (56)
 		
 		protected bool m_DistributeOverDistance = new bool();
-		[ContainerField(57), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2314066943)]
+		[ContainerField(Name: "DistributeOverDistance", Offset: 57, NameHash: 2314066943, Flags: 49325), LayoutImmutable, Blittable]
 		public bool DistributeOverDistance { get { return m_DistributeOverDistance; } set { if (OnPropertyChanging("SpawnRateData." + nameof(DistributeOverDistance), this, m_DistributeOverDistance, value)) m_DistributeOverDistance = value; } } // 0x39 (57)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

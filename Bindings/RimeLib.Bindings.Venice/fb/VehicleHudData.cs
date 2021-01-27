@@ -18,22 +18,22 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(41), ContainerSize(32), ContainerStruct]
+	[ContainerType(Alignment: 16,  Flags: 41, Size: 32)]
 	public class VehicleHudData : FrostbiteContainer
 	{
-		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
+		[ContainerField(Name: "CustomizationOffset", Offset: 0, NameHash: 2069977717, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 CustomizationOffset { get; set; } = new Vec3(); // 0x0 (0)
 		
-		[ContainerField(16), MemberInfoFlag(53), ContainerCtrRef]
+		[ContainerField(Name: "Customization", Offset: 16, NameHash: 1998291608, Flags: 53)]
 		public CtrRef<VehicleCustomizationAsset> Customization { get; set; } = new CtrRef<VehicleCustomizationAsset>(); // 0x10 (16)
 		
-		[ContainerField(20), MemberInfoFlag(137)]
+		[ContainerField(Name: "MinimapIcon", Offset: 20, NameHash: 1721945905, Flags: 137)]
 		public UIHudIcon MinimapIcon { get; set; } = new UIHudIcon(); // 0x14 (20)
 		
-		[ContainerField(24), MemberInfoFlag(53), ContainerCtrRef]
+		[ContainerField(Name: "Texture", Offset: 24, NameHash: 3185041626, Flags: 53)]
 		public CtrRef<TextureAsset> Texture { get; set; } = new CtrRef<TextureAsset>(); // 0x18 (24)
 		
-		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
+		[ContainerField(Name: "VehicleItemHash", Offset: 28, NameHash: 1208512666, Flags: 49421), LayoutImmutable, Blittable]
 		public uint VehicleItemHash { get; set; } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

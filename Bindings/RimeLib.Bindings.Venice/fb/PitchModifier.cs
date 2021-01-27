@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(41), ContainerSize(32), ContainerStruct]
+	[ContainerType(Alignment: 16,  Flags: 41, Size: 32)]
 	public class PitchModifier : FrostbiteContainer
 	{
-		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
+		[ContainerField(Name: "Offset", Offset: 0, NameHash: 2871410728, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 Offset { get; set; } = new Vec3(); // 0x0 (0)
 		
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "PitchVal", Offset: 16, NameHash: 1095283832, Flags: 49469), LayoutImmutable, Blittable]
 		public float PitchVal { get; set; } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "PitchAngle", Offset: 20, NameHash: 3042696834, Flags: 49469), LayoutImmutable, Blittable]
 		public float PitchAngle { get; set; } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

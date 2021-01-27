@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(24), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 24)]
 	public class SoundTestTask : 
 		DataContainer
 	{
 		protected CtrRef<SoundTestTaskSpec> m_Spec = new CtrRef<SoundTestTaskSpec>();
-		[ContainerField(8), MemberInfoFlag(53), ContainerFieldNameHash(2089404960), ContainerCtrRef]
+		[ContainerField(Name: "Spec", Offset: 8, NameHash: 2089404960, Flags: 53)]
 		public CtrRef<SoundTestTaskSpec> Spec { get { return m_Spec; } set { if (OnPropertyChanging("SoundTestTask." + nameof(Spec), this, m_Spec, value)) m_Spec = value; } } // 0x8 (8)
 		
 		protected CtrRef<SoundTestTaskParam> m_Param = new CtrRef<SoundTestTaskParam>();
-		[ContainerField(12), MemberInfoFlag(53), ContainerFieldNameHash(232319210), ContainerCtrRef]
+		[ContainerField(Name: "Param", Offset: 12, NameHash: 232319210, Flags: 53)]
 		public CtrRef<SoundTestTaskParam> Param { get { return m_Param; } set { if (OnPropertyChanging("SoundTestTask." + nameof(Param), this, m_Param, value)) m_Param = value; } } // 0xC (12)
 		
 		protected float m_StartTime = new float();
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3727579056)]
+		[ContainerField(Name: "StartTime", Offset: 16, NameHash: 3727579056, Flags: 49469), LayoutImmutable, Blittable]
 		public float StartTime { get { return m_StartTime; } set { if (OnPropertyChanging("SoundTestTask." + nameof(StartTime), this, m_StartTime, value)) m_StartTime = value; } } // 0x10 (16)
 		
 		protected uint m_Repetitions = new uint();
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(1673296181)]
+		[ContainerField(Name: "Repetitions", Offset: 20, NameHash: 1673296181, Flags: 49421), LayoutImmutable, Blittable]
 		public uint Repetitions { get { return m_Repetitions; } set { if (OnPropertyChanging("SoundTestTask." + nameof(Repetitions), this, m_Repetitions, value)) m_Repetitions = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,19 +18,19 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(20), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 20)]
 	public class PoissonRadialBlurData : FrostbiteContainer
 	{
-		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
+		[ContainerField(Name: "PoissonDiscScale", Offset: 0, NameHash: 414320215, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec2 PoissonDiscScale { get; set; } = new Vec2(); // 0x0 (0)
 		
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "BlendFactor", Offset: 8, NameHash: 2895077833, Flags: 49469), LayoutImmutable, Blittable]
 		public float BlendFactor { get; set; } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "RadialScale", Offset: 12, NameHash: 948161198, Flags: 49469), LayoutImmutable, Blittable]
 		public float RadialScale { get; set; } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "RadialExponent", Offset: 16, NameHash: 3819783621, Flags: 49469), LayoutImmutable, Blittable]
 		public float RadialExponent { get; set; } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

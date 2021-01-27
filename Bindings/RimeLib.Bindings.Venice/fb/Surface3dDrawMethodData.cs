@@ -18,7 +18,7 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(1), MemberInfoFlag(41), ContainerSize(1), ContainerStruct]
+	[ContainerType(Alignment: 1,  Flags: 41, Size: 1)]
 	public class Surface3dDrawMethodData : FrostbiteContainer
 	{
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(112), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 112)]
 	public class AnimationTurretRotationComponentData : 
 		ComponentData
 	{
 		protected List<TurretRotationInfo> m_Rotations = new List<TurretRotationInfo>();
-		[ContainerField(96), MemberInfoFlag(65), ContainerFieldNameHash(1606233474), ContainerArray]
+		[ContainerField(Name: "Rotations", Offset: 96, NameHash: 1606233474, Flags: 65)]
 		public List<TurretRotationInfo> Rotations { get { return m_Rotations; } set { if (OnPropertyChanging("AnimationTurretRotationComponentData." + nameof(Rotations), this, m_Rotations, value)) m_Rotations = value; } } // 0x60 (96)
 		
 		protected int m_SoldierBaseIndex = new int();
-		[ContainerField(100), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(3732427844)]
+		[ContainerField(Name: "SoldierBaseIndex", Offset: 100, NameHash: 3732427844, Flags: 49405), LayoutImmutable, Blittable]
 		public int SoldierBaseIndex { get { return m_SoldierBaseIndex; } set { if (OnPropertyChanging("AnimationTurretRotationComponentData." + nameof(SoldierBaseIndex), this, m_SoldierBaseIndex, value)) m_SoldierBaseIndex = value; } } // 0x64 (100)
 		
 		protected bool m_UseVehicleWorldTransform = new bool();
-		[ContainerField(104), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(4119091248)]
+		[ContainerField(Name: "UseVehicleWorldTransform", Offset: 104, NameHash: 4119091248, Flags: 49325), LayoutImmutable, Blittable]
 		public bool UseVehicleWorldTransform { get { return m_UseVehicleWorldTransform; } set { if (OnPropertyChanging("AnimationTurretRotationComponentData." + nameof(UseVehicleWorldTransform), this, m_UseVehicleWorldTransform, value)) m_UseVehicleWorldTransform = value; } } // 0x68 (104)
 		
 		protected bool m_OutputWorldTransform = new bool();
-		[ContainerField(105), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1849681172)]
+		[ContainerField(Name: "OutputWorldTransform", Offset: 105, NameHash: 1849681172, Flags: 49325), LayoutImmutable, Blittable]
 		public bool OutputWorldTransform { get { return m_OutputWorldTransform; } set { if (OnPropertyChanging("AnimationTurretRotationComponentData." + nameof(OutputWorldTransform), this, m_OutputWorldTransform, value)) m_OutputWorldTransform = value; } } // 0x69 (105)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

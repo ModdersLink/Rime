@@ -18,79 +18,79 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(152), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 152)]
 	public class FireLogicData : FrostbiteContainer
 	{
-		[ContainerField(0), MemberInfoFlag(41)]
+		[ContainerField(Name: "HoldAndRelease", Offset: 0, NameHash: 990430632, Flags: 41)]
 		public HoldAndReleaseData HoldAndRelease { get; set; } = new HoldAndReleaseData(); // 0x0 (0)
 		
-		[ContainerField(28), MemberInfoFlag(41)]
+		[ContainerField(Name: "BoltAction", Offset: 28, NameHash: 2541973070, Flags: 41)]
 		public BoltActionData BoltAction { get; set; } = new BoltActionData(); // 0x1C (28)
 		
-		[ContainerField(44), MemberInfoFlag(41)]
+		[ContainerField(Name: "Recoil", Offset: 44, NameHash: 3293845435, Flags: 41)]
 		public RecoilData Recoil { get; set; } = new RecoilData(); // 0x2C (44)
 		
-		[ContainerField(80), MemberInfoFlag(137)]
+		[ContainerField(Name: "FireInputAction", Offset: 80, NameHash: 2678055381, Flags: 137)]
 		public EntryInputActionEnum FireInputAction { get; set; } = new EntryInputActionEnum(); // 0x50 (80)
 		
-		[ContainerField(84), MemberInfoFlag(137)]
+		[ContainerField(Name: "ReloadInputAction", Offset: 84, NameHash: 3775146780, Flags: 137)]
 		public EntryInputActionEnum ReloadInputAction { get; set; } = new EntryInputActionEnum(); // 0x54 (84)
 		
-		[ContainerField(88), MemberInfoFlag(137)]
+		[ContainerField(Name: "CycleFireModeInputAction", Offset: 88, NameHash: 1729611942, Flags: 137)]
 		public EntryInputActionEnum CycleFireModeInputAction { get; set; } = new EntryInputActionEnum(); // 0x58 (88)
 		
-		[ContainerField(92), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "TriggerPullWeight", Offset: 92, NameHash: 2750237048, Flags: 49469), LayoutImmutable, Blittable]
 		public float TriggerPullWeight { get; set; } // 0x5C (92)
 		
-		[ContainerField(96), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "RateOfFire", Offset: 96, NameHash: 3866082710, Flags: 49469), LayoutImmutable, Blittable]
 		public float RateOfFire { get; set; } // 0x60 (96)
 		
-		[ContainerField(100), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "RateOfFireForBurst", Offset: 100, NameHash: 1393806543, Flags: 49469), LayoutImmutable, Blittable]
 		public float RateOfFireForBurst { get; set; } // 0x64 (100)
 		
-		[ContainerField(104), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "ClientFireRateMultiplier", Offset: 104, NameHash: 4266906285, Flags: 49469), LayoutImmutable, Blittable]
 		public float ClientFireRateMultiplier { get; set; } // 0x68 (104)
 		
-		[ContainerField(108), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "ReloadDelay", Offset: 108, NameHash: 2958021633, Flags: 49469), LayoutImmutable, Blittable]
 		public float ReloadDelay { get; set; } // 0x6C (108)
 		
-		[ContainerField(112), MemberInfoFlag(65), ContainerArray]
+		[ContainerField(Name: "FireLogicTypeArray", Offset: 112, NameHash: 4279400946, Flags: 65)]
 		public List<FireLogicType> FireLogicTypeArray { get; set; } = new List<FireLogicType>(); // 0x70 (112)
 		
-		[ContainerField(116), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "ReloadThreshold", Offset: 116, NameHash: 607792483, Flags: 49469), LayoutImmutable, Blittable]
 		public float ReloadThreshold { get; set; } // 0x74 (116)
 		
-		[ContainerField(120), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "PreFireDelay", Offset: 120, NameHash: 52152975, Flags: 49469), LayoutImmutable, Blittable]
 		public float PreFireDelay { get; set; } // 0x78 (120)
 		
-		[ContainerField(124), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "ReloadTime", Offset: 124, NameHash: 1390571137, Flags: 49469), LayoutImmutable, Blittable]
 		public float ReloadTime { get; set; } // 0x7C (124)
 		
-		[ContainerField(128), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "ReloadTimeBulletsLeft", Offset: 128, NameHash: 257608303, Flags: 49469), LayoutImmutable, Blittable]
 		public float ReloadTimeBulletsLeft { get; set; } // 0x80 (128)
 		
-		[ContainerField(132), MemberInfoFlag(137)]
+		[ContainerField(Name: "FireLogicType", Offset: 132, NameHash: 1365968171, Flags: 137)]
 		public FireLogicType FireLogicType { get; set; } = new FireLogicType(); // 0x84 (132)
 		
-		[ContainerField(136), MemberInfoFlag(137)]
+		[ContainerField(Name: "ReloadLogic", Offset: 136, NameHash: 2967140250, Flags: 137)]
 		public ReloadLogic ReloadLogic { get; set; } = new ReloadLogic(); // 0x88 (136)
 		
-		[ContainerField(140), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "AutomaticDelay", Offset: 140, NameHash: 3726024813, Flags: 49469), LayoutImmutable, Blittable]
 		public float AutomaticDelay { get; set; } // 0x8C (140)
 		
-		[ContainerField(144), MemberInfoFlag(137)]
+		[ContainerField(Name: "ReloadType", Offset: 144, NameHash: 1390588396, Flags: 137)]
 		public ReloadType ReloadType { get; set; } = new ReloadType(); // 0x90 (144)
 		
-		[ContainerField(148), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "HoldOffReloadUntilZoomRelease", Offset: 148, NameHash: 3888370560, Flags: 49325), LayoutImmutable, Blittable]
 		public bool HoldOffReloadUntilZoomRelease { get; set; } // 0x94 (148)
 		
-		[ContainerField(149), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "ForceReloadActionOnFireTrigger", Offset: 149, NameHash: 2262034806, Flags: 49325), LayoutImmutable, Blittable]
 		public bool ForceReloadActionOnFireTrigger { get; set; } // 0x95 (149)
 		
-		[ContainerField(150), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "HoldOffReloadUntilFireRelease", Offset: 150, NameHash: 957247311, Flags: 49325), LayoutImmutable, Blittable]
 		public bool HoldOffReloadUntilFireRelease { get; set; } // 0x96 (150)
 		
-		[ContainerField(151), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "AlwaysAutoReload", Offset: 151, NameHash: 3053142090, Flags: 49325), LayoutImmutable, Blittable]
 		public bool AlwaysAutoReload { get; set; } // 0x97 (151)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

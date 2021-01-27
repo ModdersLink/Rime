@@ -18,25 +18,25 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(24), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 24)]
 	public class PresetTypeConfig : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, Blittable, MemberInfoFlag(49405)]
+		[ContainerField(Name: "PresetId", Offset: 0, NameHash: 2625045485, Flags: 49405), LayoutImmutable, Blittable]
 		public int PresetId { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "Key", Offset: 4, NameHash: 193457490, Flags: 16509), LayoutImmutable]
 		public string Key { get; set; } // 0x4 (4)
 		
-		[ContainerField(8), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "NameSid", Offset: 8, NameHash: 3153745340, Flags: 16509), LayoutImmutable]
 		public string NameSid { get; set; } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "DescSid", Offset: 12, NameHash: 4021143274, Flags: 16509), LayoutImmutable]
 		public string DescSid { get; set; } // 0xC (12)
 		
-		[ContainerField(16), MemberInfoFlag(65), ContainerArray]
+		[ContainerField(Name: "LockedSettings", Offset: 16, NameHash: 3735643818, Flags: 65)]
 		public List<LockedSettingConfig> LockedSettings { get; set; } = new List<LockedSettingConfig>(); // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "Predefined", Offset: 20, NameHash: 2934266467, Flags: 49325), LayoutImmutable, Blittable]
 		public bool Predefined { get; set; } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

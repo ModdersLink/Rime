@@ -18,31 +18,31 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(68), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 68)]
 	public class SoldierWeaponDispersion : FrostbiteContainer
 	{
-		[ContainerField(0), MemberInfoFlag(41)]
+		[ContainerField(Name: "StandDispersion", Offset: 0, NameHash: 1584552523, Flags: 41)]
 		public FiringDispersionData StandDispersion { get; set; } = new FiringDispersionData(); // 0x0 (0)
 		
-		[ContainerField(16), MemberInfoFlag(41)]
+		[ContainerField(Name: "CrouchDispersion", Offset: 16, NameHash: 429011943, Flags: 41)]
 		public FiringDispersionData CrouchDispersion { get; set; } = new FiringDispersionData(); // 0x10 (16)
 		
-		[ContainerField(32), MemberInfoFlag(41)]
+		[ContainerField(Name: "ProneDispersion", Offset: 32, NameHash: 1226401409, Flags: 41)]
 		public FiringDispersionData ProneDispersion { get; set; } = new FiringDispersionData(); // 0x20 (32)
 		
-		[ContainerField(48), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "JumpDispersionAngle", Offset: 48, NameHash: 1831944196, Flags: 49469), LayoutImmutable, Blittable]
 		public float JumpDispersionAngle { get; set; } // 0x30 (48)
 		
-		[ContainerField(52), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "ProneTransitionDispersionAngle", Offset: 52, NameHash: 4178809039, Flags: 49469), LayoutImmutable, Blittable]
 		public float ProneTransitionDispersionAngle { get; set; } // 0x34 (52)
 		
-		[ContainerField(56), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "MoveDispersionAngle", Offset: 56, NameHash: 371686199, Flags: 49469), LayoutImmutable, Blittable]
 		public float MoveDispersionAngle { get; set; } // 0x38 (56)
 		
-		[ContainerField(60), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "MoveZoomedDispersionAngle", Offset: 60, NameHash: 2897726465, Flags: 49469), LayoutImmutable, Blittable]
 		public float MoveZoomedDispersionAngle { get; set; } // 0x3C (60)
 		
-		[ContainerField(64), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "DecreasePerSecond", Offset: 64, NameHash: 3208554608, Flags: 49469), LayoutImmutable, Blittable]
 		public float DecreasePerSecond { get; set; } // 0x40 (64)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

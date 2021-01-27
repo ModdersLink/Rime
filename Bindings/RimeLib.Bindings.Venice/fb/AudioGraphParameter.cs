@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(20), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 20)]
 	public class AudioGraphParameter : 
 		DataContainer
 	{
 		protected float m_DefaultValue = new float();
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2066049125)]
+		[ContainerField(Name: "DefaultValue", Offset: 8, NameHash: 2066049125, Flags: 49469), LayoutImmutable, Blittable]
 		public float DefaultValue { get { return m_DefaultValue; } set { if (OnPropertyChanging("AudioGraphParameter." + nameof(DefaultValue), this, m_DefaultValue, value)) m_DefaultValue = value; } } // 0x8 (8)
 		
 		protected uint m_NameHash = new uint();
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(994057744)]
+		[ContainerField(Name: "NameHash", Offset: 12, NameHash: 994057744, Flags: 49421), LayoutImmutable, Blittable]
 		public uint NameHash { get { return m_NameHash; } set { if (OnPropertyChanging("AudioGraphParameter." + nameof(NameHash), this, m_NameHash, value)) m_NameHash = value; } } // 0xC (12)
 		
 		protected ushort m_ValueIndex = new ushort();
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49389), ContainerFieldNameHash(2085408208)]
+		[ContainerField(Name: "ValueIndex", Offset: 16, NameHash: 2085408208, Flags: 49389), LayoutImmutable, Blittable]
 		public ushort ValueIndex { get { return m_ValueIndex; } set { if (OnPropertyChanging("AudioGraphParameter." + nameof(ValueIndex), this, m_ValueIndex, value)) m_ValueIndex = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

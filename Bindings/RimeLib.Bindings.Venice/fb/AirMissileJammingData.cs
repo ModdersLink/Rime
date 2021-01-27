@@ -18,43 +18,43 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(48), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 48)]
 	public class AirMissileJammingData : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "MinTurnSpeed", Offset: 0, NameHash: 1800548181, Flags: 49469), LayoutImmutable, Blittable]
 		public float MinTurnSpeed { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "MaxRadius", Offset: 4, NameHash: 439602313, Flags: 49469), LayoutImmutable, Blittable]
 		public float MaxRadius { get; set; } // 0x4 (4)
 		
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "MinRadius", Offset: 8, NameHash: 4053568023, Flags: 49469), LayoutImmutable, Blittable]
 		public float MinRadius { get; set; } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "Theta", Offset: 12, NameHash: 228123753, Flags: 49469), LayoutImmutable, Blittable]
 		public float Theta { get; set; } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "Phi", Offset: 16, NameHash: 193467636, Flags: 49469), LayoutImmutable, Blittable]
 		public float Phi { get; set; } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "UpdateJammingPositionTime", Offset: 20, NameHash: 1697402931, Flags: 49469), LayoutImmutable, Blittable]
 		public float UpdateJammingPositionTime { get; set; } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "MaxTurnSpeed", Offset: 24, NameHash: 3021183627, Flags: 49469), LayoutImmutable, Blittable]
 		public float MaxTurnSpeed { get; set; } // 0x18 (24)
 		
-		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "QuietModeProbability", Offset: 28, NameHash: 3225989559, Flags: 49469), LayoutImmutable, Blittable]
 		public float QuietModeProbability { get; set; } // 0x1C (28)
 		
-		[ContainerField(32), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "QuietModeTime", Offset: 32, NameHash: 3362853871, Flags: 49469), LayoutImmutable, Blittable]
 		public float QuietModeTime { get; set; } // 0x20 (32)
 		
-		[ContainerField(36), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "JammingTime", Offset: 36, NameHash: 46309755, Flags: 49469), LayoutImmutable, Blittable]
 		public float JammingTime { get; set; } // 0x24 (36)
 		
-		[ContainerField(40), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "TurnCalculationTime", Offset: 40, NameHash: 553058692, Flags: 49469), LayoutImmutable, Blittable]
 		public float TurnCalculationTime { get; set; } // 0x28 (40)
 		
-		[ContainerField(44), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "EnableAirMissileJamming", Offset: 44, NameHash: 114900689, Flags: 49325), LayoutImmutable, Blittable]
 		public bool EnableAirMissileJamming { get; set; } // 0x2C (44)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

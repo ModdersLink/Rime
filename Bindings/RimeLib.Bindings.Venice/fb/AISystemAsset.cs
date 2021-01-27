@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(24), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 24)]
 	public class AISystemAsset : 
 		GameAISystem
 	{
 		protected CtrRef<AIVehicleTypes> m_Behaviours = new CtrRef<AIVehicleTypes>();
-		[ContainerField(12), MemberInfoFlag(53), ContainerFieldNameHash(4049352655), ContainerCtrRef]
+		[ContainerField(Name: "Behaviours", Offset: 12, NameHash: 4049352655, Flags: 53)]
 		public CtrRef<AIVehicleTypes> Behaviours { get { return m_Behaviours; } set { if (OnPropertyChanging("AISystemAsset." + nameof(Behaviours), this, m_Behaviours, value)) m_Behaviours = value; } } // 0xC (12)
 		
 		protected CtrRef<OrderSettings> m_Orders = new CtrRef<OrderSettings>();
-		[ContainerField(16), MemberInfoFlag(53), ContainerFieldNameHash(2885972376), ContainerCtrRef]
+		[ContainerField(Name: "Orders", Offset: 16, NameHash: 2885972376, Flags: 53)]
 		public CtrRef<OrderSettings> Orders { get { return m_Orders; } set { if (OnPropertyChanging("AISystemAsset." + nameof(Orders), this, m_Orders, value)) m_Orders = value; } } // 0x10 (16)
 		
 		protected CtrRef<AISettingsData> m_Settings = new CtrRef<AISettingsData>();
-		[ContainerField(20), MemberInfoFlag(53), ContainerFieldNameHash(649772672), ContainerCtrRef]
+		[ContainerField(Name: "Settings", Offset: 20, NameHash: 649772672, Flags: 53)]
 		public CtrRef<AISettingsData> Settings { get { return m_Settings; } set { if (OnPropertyChanging("AISystemAsset." + nameof(Settings), this, m_Settings, value)) m_Settings = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

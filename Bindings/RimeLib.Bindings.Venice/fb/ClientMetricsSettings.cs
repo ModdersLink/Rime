@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(12), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 12)]
 	public class ClientMetricsSettings : 
 		DataContainer
 	{
 		protected bool m_Enabled = new bool();
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2662400)]
+		[ContainerField(Name: "Enabled", Offset: 8, NameHash: 2662400, Flags: 49325), LayoutImmutable, Blittable]
 		public bool Enabled { get { return m_Enabled; } set { if (OnPropertyChanging("ClientMetricsSettings." + nameof(Enabled), this, m_Enabled, value)) m_Enabled = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

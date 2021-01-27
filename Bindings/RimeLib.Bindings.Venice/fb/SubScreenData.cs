@@ -18,37 +18,37 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(41), ContainerSize(64), ContainerStruct]
+	[ContainerType(Alignment: 16,  Flags: 41, Size: 64)]
 	public class SubScreenData : FrostbiteContainer
 	{
-		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
+		[ContainerField(Name: "ScreenPosition", Offset: 0, NameHash: 2288910864, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 ScreenPosition { get; set; } = new Vec3(); // 0x0 (0)
 		
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "ProjectionAngleY", Offset: 16, NameHash: 213589344, Flags: 49469), LayoutImmutable, Blittable]
 		public float ProjectionAngleY { get; set; } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "ProjectionAngleZ", Offset: 20, NameHash: 213589347, Flags: 49469), LayoutImmutable, Blittable]
 		public float ProjectionAngleZ { get; set; } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "ProjectionAngleX", Offset: 24, NameHash: 213589345, Flags: 49469), LayoutImmutable, Blittable]
 		public float ProjectionAngleX { get; set; } // 0x18 (24)
 		
-		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "ScreenSize", Offset: 28, NameHash: 2100560172, Flags: 49469), LayoutImmutable, Blittable]
 		public float ScreenSize { get; set; } // 0x1C (28)
 		
-		[ContainerField(32), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "IconSize", Offset: 32, NameHash: 269738667, Flags: 49469), LayoutImmutable, Blittable]
 		public float IconSize { get; set; } // 0x20 (32)
 		
-		[ContainerField(36), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "ScaleIconSizeByDepthStrength", Offset: 36, NameHash: 609483936, Flags: 49469), LayoutImmutable, Blittable]
 		public float ScaleIconSizeByDepthStrength { get; set; } // 0x24 (36)
 		
-		[ContainerField(40), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "RenderTargetApectRatio", Offset: 40, NameHash: 984520476, Flags: 49469), LayoutImmutable, Blittable]
 		public float RenderTargetApectRatio { get; set; } // 0x28 (40)
 		
-		[ContainerField(44), LayoutImmutable, Blittable, MemberInfoFlag(49405)]
+		[ContainerField(Name: "RenderTargetIndex", Offset: 44, NameHash: 3545373920, Flags: 49405), LayoutImmutable, Blittable]
 		public int RenderTargetIndex { get; set; } // 0x2C (44)
 		
-		[ContainerField(48), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "UseRenderTarget", Offset: 48, NameHash: 3192099997, Flags: 49325), LayoutImmutable, Blittable]
 		public bool UseRenderTarget { get; set; } // 0x30 (48)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

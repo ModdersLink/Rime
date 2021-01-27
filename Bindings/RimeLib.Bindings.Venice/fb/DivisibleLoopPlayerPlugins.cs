@@ -18,19 +18,19 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(1), MemberInfoFlag(41), ContainerSize(12), ContainerStruct]
+	[ContainerType(Alignment: 1,  Flags: 41, Size: 12)]
 	public class DivisibleLoopPlayerPlugins : FrostbiteContainer
 	{
-		[ContainerField(0), MemberInfoFlag(41)]
+		[ContainerField(Name: "SndPlayer", Offset: 0, NameHash: 728257487, Flags: 41)]
 		public SoundGraphPluginRef SndPlayer { get; set; } = new SoundGraphPluginRef(); // 0x0 (0)
 		
-		[ContainerField(3), MemberInfoFlag(41)]
+		[ContainerField(Name: "Pause", Offset: 3, NameHash: 232316407, Flags: 41)]
 		public SoundGraphPluginRef Pause { get; set; } = new SoundGraphPluginRef(); // 0x3 (3)
 		
-		[ContainerField(6), MemberInfoFlag(41)]
+		[ContainerField(Name: "Gain", Offset: 6, NameHash: 2088703076, Flags: 41)]
 		public SoundGraphPluginRef Gain { get; set; } = new SoundGraphPluginRef(); // 0x6 (6)
 		
-		[ContainerField(9), MemberInfoFlag(41)]
+		[ContainerField(Name: "GainFader", Offset: 9, NameHash: 2943317296, Flags: 41)]
 		public SoundGraphPluginRef GainFader { get; set; } = new SoundGraphPluginRef(); // 0x9 (9)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,13 +18,13 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(16), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 16)]
 	public class UITextureAtlasInfo : FrostbiteContainer
 	{
-		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
+		[ContainerField(Name: "MinUv", Offset: 0, NameHash: 209960012, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec2 MinUv { get; set; } = new Vec2(); // 0x0 (0)
 		
-		[ContainerField(8), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
+		[ContainerField(Name: "MaxUv", Offset: 8, NameHash: 210235986, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec2 MaxUv { get; set; } = new Vec2(); // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

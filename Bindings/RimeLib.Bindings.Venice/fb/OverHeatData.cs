@@ -18,22 +18,22 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(41), ContainerSize(96), ContainerStruct]
+	[ContainerType(Alignment: 16,  Flags: 41, Size: 96)]
 	public class OverHeatData : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "HeatPerBullet", Offset: 0, NameHash: 2230088284, Flags: 49469), LayoutImmutable, Blittable]
 		public float HeatPerBullet { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "HeatDropPerSecond", Offset: 4, NameHash: 2173208259, Flags: 49469), LayoutImmutable, Blittable]
 		public float HeatDropPerSecond { get; set; } // 0x4 (4)
 		
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "OverHeatPenaltyTime", Offset: 8, NameHash: 1305646237, Flags: 49469), LayoutImmutable, Blittable]
 		public float OverHeatPenaltyTime { get; set; } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "OverHeatThreshold", Offset: 12, NameHash: 1042108772, Flags: 49469), LayoutImmutable, Blittable]
 		public float OverHeatThreshold { get; set; } // 0xC (12)
 		
-		[ContainerField(16), MemberInfoFlag(41)]
+		[ContainerField(Name: "OverHeatEffect", Offset: 16, NameHash: 3498278916, Flags: 41)]
 		public FireEffectData OverHeatEffect { get; set; } = new FireEffectData(); // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,22 +18,22 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(20), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 20)]
 	public class EmitterTextureInfo : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "TextureName", Offset: 0, NameHash: 3058697309, Flags: 16509), LayoutImmutable]
 		public string TextureName { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "NormalmapName", Offset: 4, NameHash: 3269467725, Flags: 16509), LayoutImmutable]
 		public string NormalmapName { get; set; } // 0x4 (4)
 		
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "AnimationFrameCount", Offset: 8, NameHash: 1220614861, Flags: 49469), LayoutImmutable, Blittable]
 		public float AnimationFrameCount { get; set; } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "AnimationFrameColumnCount", Offset: 12, NameHash: 3878152251, Flags: 49469), LayoutImmutable, Blittable]
 		public float AnimationFrameColumnCount { get; set; } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "EnableAnimation", Offset: 16, NameHash: 3666133042, Flags: 49325), LayoutImmutable, Blittable]
 		public bool EnableAnimation { get; set; } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

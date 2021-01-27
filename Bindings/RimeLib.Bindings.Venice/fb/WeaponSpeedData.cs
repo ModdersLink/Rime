@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(24), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 24)]
 	public class WeaponSpeedData : 
 		DataContainer
 	{
 		protected float m_ZoomOutSpeed = new float();
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2275851931)]
+		[ContainerField(Name: "ZoomOutSpeed", Offset: 8, NameHash: 2275851931, Flags: 49469), LayoutImmutable, Blittable]
 		public float ZoomOutSpeed { get { return m_ZoomOutSpeed; } set { if (OnPropertyChanging("WeaponSpeedData." + nameof(ZoomOutSpeed), this, m_ZoomOutSpeed, value)) m_ZoomOutSpeed = value; } } // 0x8 (8)
 		
 		protected float m_ZoomInSpeed = new float();
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(638313682)]
+		[ContainerField(Name: "ZoomInSpeed", Offset: 12, NameHash: 638313682, Flags: 49469), LayoutImmutable, Blittable]
 		public float ZoomInSpeed { get { return m_ZoomInSpeed; } set { if (OnPropertyChanging("WeaponSpeedData." + nameof(ZoomInSpeed), this, m_ZoomInSpeed, value)) m_ZoomInSpeed = value; } } // 0xC (12)
 		
 		protected float m_UnDeploySpeed = new float();
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3170443666)]
+		[ContainerField(Name: "UnDeploySpeed", Offset: 16, NameHash: 3170443666, Flags: 49469), LayoutImmutable, Blittable]
 		public float UnDeploySpeed { get { return m_UnDeploySpeed; } set { if (OnPropertyChanging("WeaponSpeedData." + nameof(UnDeploySpeed), this, m_UnDeploySpeed, value)) m_UnDeploySpeed = value; } } // 0x10 (16)
 		
 		protected float m_DeploySpeed = new float();
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2095054953)]
+		[ContainerField(Name: "DeploySpeed", Offset: 20, NameHash: 2095054953, Flags: 49469), LayoutImmutable, Blittable]
 		public float DeploySpeed { get { return m_DeploySpeed; } set { if (OnPropertyChanging("WeaponSpeedData." + nameof(DeploySpeed), this, m_DeploySpeed, value)) m_DeploySpeed = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

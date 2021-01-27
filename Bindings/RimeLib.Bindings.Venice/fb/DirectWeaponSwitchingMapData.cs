@@ -18,25 +18,25 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(20), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 20)]
 	public class DirectWeaponSwitchingMapData : FrostbiteContainer
 	{
-		[ContainerField(0), MemberInfoFlag(137)]
+		[ContainerField(Name: "Action", Offset: 0, NameHash: 2484178491, Flags: 137)]
 		public EntryInputActionEnum Action { get; set; } = new EntryInputActionEnum(); // 0x0 (0)
 		
-		[ContainerField(4), MemberInfoFlag(137)]
+		[ContainerField(Name: "ToWeapon", Offset: 4, NameHash: 3504623164, Flags: 137)]
 		public WeaponSwitchingEnum ToWeapon { get; set; } = new WeaponSwitchingEnum(); // 0x4 (4)
 		
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "PreventMeleeRepeatTime", Offset: 8, NameHash: 4062736589, Flags: 49469), LayoutImmutable, Blittable]
 		public float PreventMeleeRepeatTime { get; set; } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "SwitchBackToPrevMaxTimePressed", Offset: 12, NameHash: 1443716209, Flags: 49469), LayoutImmutable, Blittable]
 		public float SwitchBackToPrevMaxTimePressed { get; set; } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "UseQuickSwitch", Offset: 16, NameHash: 138398865, Flags: 49325), LayoutImmutable, Blittable]
 		public bool UseQuickSwitch { get; set; } // 0x10 (16)
 		
-		[ContainerField(17), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "FireAndSwitchBackToPrev", Offset: 17, NameHash: 1486658789, Flags: 49325), LayoutImmutable, Blittable]
 		public bool FireAndSwitchBackToPrev { get; set; } // 0x11 (17)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

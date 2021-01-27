@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(12), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 12)]
 	public class StateRenderSettings : 
 		DataContainer
 	{
 		protected bool m_Ps3PixelShaderConstantsEnable = new bool();
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(4042857272)]
+		[ContainerField(Name: "Ps3PixelShaderConstantsEnable", Offset: 8, NameHash: 4042857272, Flags: 49325), LayoutImmutable, Blittable]
 		public bool Ps3PixelShaderConstantsEnable { get { return m_Ps3PixelShaderConstantsEnable; } set { if (OnPropertyChanging("StateRenderSettings." + nameof(Ps3PixelShaderConstantsEnable), this, m_Ps3PixelShaderConstantsEnable, value)) m_Ps3PixelShaderConstantsEnable = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

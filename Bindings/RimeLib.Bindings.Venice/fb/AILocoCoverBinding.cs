@@ -18,61 +18,61 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(72), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 72)]
 	public class AILocoCoverBinding : FrostbiteContainer
 	{
-		[ContainerField(0), MemberInfoFlag(41)]
+		[ContainerField(Name: "PrepareFire", Offset: 0, NameHash: 2746539868, Flags: 41)]
 		public AntRef PrepareFire { get; set; } = new AntRef(); // 0x0 (0)
 		
-		[ContainerField(4), MemberInfoFlag(41)]
+		[ContainerField(Name: "ThrowGrenade", Offset: 4, NameHash: 2210644077, Flags: 41)]
 		public AntRef ThrowGrenade { get; set; } = new AntRef(); // 0x4 (4)
 		
-		[ContainerField(8), MemberInfoFlag(41)]
+		[ContainerField(Name: "PeekOut", Offset: 8, NameHash: 3756039152, Flags: 41)]
 		public AntRef PeekOut { get; set; } = new AntRef(); // 0x8 (8)
 		
-		[ContainerField(12), MemberInfoFlag(41)]
+		[ContainerField(Name: "IdleBehindCover", Offset: 12, NameHash: 2661629696, Flags: 41)]
 		public AntRef IdleBehindCover { get; set; } = new AntRef(); // 0xC (12)
 		
-		[ContainerField(16), MemberInfoFlag(41)]
+		[ContainerField(Name: "PeekType", Offset: 16, NameHash: 3690184166, Flags: 41)]
 		public AntRef PeekType { get; set; } = new AntRef(); // 0x10 (16)
 		
-		[ContainerField(20), MemberInfoFlag(41)]
+		[ContainerField(Name: "CoverTypeEnum", Offset: 20, NameHash: 2254217891, Flags: 41)]
 		public AntRef CoverTypeEnum { get; set; } = new AntRef(); // 0x14 (20)
 		
-		[ContainerField(24), MemberInfoFlag(41)]
+		[ContainerField(Name: "CoverFireStyle", Offset: 24, NameHash: 1027634375, Flags: 41)]
 		public AntRef CoverFireStyle { get; set; } = new AntRef(); // 0x18 (24)
 		
-		[ContainerField(28), MemberInfoFlag(41)]
+		[ContainerField(Name: "EnterCover", Offset: 28, NameHash: 4242418080, Flags: 41)]
 		public AntRef EnterCover { get; set; } = new AntRef(); // 0x1C (28)
 		
-		[ContainerField(32), MemberInfoFlag(41)]
+		[ContainerField(Name: "ExitCover", Offset: 32, NameHash: 3825704328, Flags: 41)]
 		public AntRef ExitCover { get; set; } = new AntRef(); // 0x20 (32)
 		
-		[ContainerField(36), MemberInfoFlag(41)]
+		[ContainerField(Name: "IsCloseCover", Offset: 36, NameHash: 1859127588, Flags: 41)]
 		public AntRef IsCloseCover { get; set; } = new AntRef(); // 0x24 (36)
 		
-		[ContainerField(40), MemberInfoFlag(41)]
+		[ContainerField(Name: "DistanceScale", Offset: 40, NameHash: 773140030, Flags: 41)]
 		public AntRef DistanceScale { get; set; } = new AntRef(); // 0x28 (40)
 		
-		[ContainerField(44), MemberInfoFlag(41)]
+		[ContainerField(Name: "AbsoluteDistance", Offset: 44, NameHash: 1029013297, Flags: 41)]
 		public AntRef AbsoluteDistance { get; set; } = new AntRef(); // 0x2C (44)
 		
-		[ContainerField(48), MemberInfoFlag(41)]
+		[ContainerField(Name: "AngleToNormal", Offset: 48, NameHash: 3510389260, Flags: 41)]
 		public AntRef AngleToNormal { get; set; } = new AntRef(); // 0x30 (48)
 		
-		[ContainerField(52), MemberInfoFlag(41)]
+		[ContainerField(Name: "OutAngle", Offset: 52, NameHash: 968880426, Flags: 41)]
 		public AntRef OutAngle { get; set; } = new AntRef(); // 0x34 (52)
 		
-		[ContainerField(56), MemberInfoFlag(41)]
+		[ContainerField(Name: "ThreatAngle", Offset: 56, NameHash: 1510288250, Flags: 41)]
 		public AntRef ThreatAngle { get; set; } = new AntRef(); // 0x38 (56)
 		
-		[ContainerField(60), MemberInfoFlag(41)]
+		[ContainerField(Name: "StopExitCoverOutAround", Offset: 60, NameHash: 2863174461, Flags: 41)]
 		public AntRef StopExitCoverOutAround { get; set; } = new AntRef(); // 0x3C (60)
 		
-		[ContainerField(64), MemberInfoFlag(41)]
+		[ContainerField(Name: "EnterStrategy", Offset: 64, NameHash: 2784850742, Flags: 41)]
 		public AntRef EnterStrategy { get; set; } = new AntRef(); // 0x40 (64)
 		
-		[ContainerField(68), MemberInfoFlag(41)]
+		[ContainerField(Name: "ExitStyle", Offset: 68, NameHash: 3843788370, Flags: 41)]
 		public AntRef ExitStyle { get; set; } = new AntRef(); // 0x44 (68)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

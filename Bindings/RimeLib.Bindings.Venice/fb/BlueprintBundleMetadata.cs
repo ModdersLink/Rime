@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(20), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 20)]
 	public class BlueprintBundleMetadata : 
 		DataContainer
 	{
 		protected string m_BundlePathName = string.Empty;
-		[ContainerField(8), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(852575899)]
+		[ContainerField(Name: "BundlePathName", Offset: 8, NameHash: 852575899, Flags: 16509), LayoutImmutable]
 		public string BundlePathName { get { return m_BundlePathName; } set { if (OnPropertyChanging("BlueprintBundleMetadata." + nameof(BundlePathName), this, m_BundlePathName, value)) m_BundlePathName = value; } } // 0x8 (8)
 		
 		protected string m_BundleName = string.Empty;
-		[ContainerField(12), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(461157046)]
+		[ContainerField(Name: "BundleName", Offset: 12, NameHash: 461157046, Flags: 16509), LayoutImmutable]
 		public string BundleName { get { return m_BundleName; } set { if (OnPropertyChanging("BlueprintBundleMetadata." + nameof(BundleName), this, m_BundleName, value)) m_BundleName = value; } } // 0xC (12)
 		
 		protected string m_BlueprintName = string.Empty;
-		[ContainerField(16), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(289256909)]
+		[ContainerField(Name: "BlueprintName", Offset: 16, NameHash: 289256909, Flags: 16509), LayoutImmutable]
 		public string BlueprintName { get { return m_BlueprintName; } set { if (OnPropertyChanging("BlueprintBundleMetadata." + nameof(BlueprintName), this, m_BlueprintName, value)) m_BlueprintName = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

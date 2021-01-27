@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(24), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 24)]
 	public class InputActionMapData : 
 		DataContainer
 	{
 		protected RefArray<InputActionsData> m_Actions = new RefArray<InputActionsData>();
-		[ContainerField(8), MemberInfoFlag(65), ContainerFieldNameHash(373511656), ContainerRefArray]
+		[ContainerField(Name: "Actions", Offset: 8, NameHash: 373511656, Flags: 65)]
 		public RefArray<InputActionsData> Actions { get { return m_Actions; } set { if (OnPropertyChanging("InputActionMapData." + nameof(Actions), this, m_Actions, value)) m_Actions = value; } } // 0x8 (8)
 		
 		protected InputActionMapPlatform m_PlatformSpecific = new InputActionMapPlatform();
-		[ContainerField(12), MemberInfoFlag(137), ContainerFieldNameHash(818960378)]
+		[ContainerField(Name: "PlatformSpecific", Offset: 12, NameHash: 818960378, Flags: 137)]
 		public InputActionMapPlatform PlatformSpecific { get { return m_PlatformSpecific; } set { if (OnPropertyChanging("InputActionMapData." + nameof(PlatformSpecific), this, m_PlatformSpecific, value)) m_PlatformSpecific = value; } } // 0xC (12)
 		
 		protected InputActionMapSlot m_Slot = new InputActionMapSlot();
-		[ContainerField(16), MemberInfoFlag(137), ContainerFieldNameHash(2089426785)]
+		[ContainerField(Name: "Slot", Offset: 16, NameHash: 2089426785, Flags: 137)]
 		public InputActionMapSlot Slot { get { return m_Slot; } set { if (OnPropertyChanging("InputActionMapData." + nameof(Slot), this, m_Slot, value)) m_Slot = value; } } // 0x10 (16)
 		
 		protected string m_CopyKeyBindingsFrom = string.Empty;
-		[ContainerField(20), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(2847317651)]
+		[ContainerField(Name: "CopyKeyBindingsFrom", Offset: 20, NameHash: 2847317651, Flags: 16509), LayoutImmutable]
 		public string CopyKeyBindingsFrom { get { return m_CopyKeyBindingsFrom; } set { if (OnPropertyChanging("InputActionMapData." + nameof(CopyKeyBindingsFrom), this, m_CopyKeyBindingsFrom, value)) m_CopyKeyBindingsFrom = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

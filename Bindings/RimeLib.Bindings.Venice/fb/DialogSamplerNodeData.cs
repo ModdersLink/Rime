@@ -18,52 +18,52 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(72), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 72)]
 	public class DialogSamplerNodeData : 
 		AudioGraphNodeData
 	{
 		protected AudioGraphNodePort m_Pitch = new AudioGraphNodePort();
-		[ContainerField(8), MemberInfoFlag(41), ContainerFieldNameHash(232604323)]
+		[ContainerField(Name: "Pitch", Offset: 8, NameHash: 232604323, Flags: 41)]
 		public AudioGraphNodePort Pitch { get { return m_Pitch; } set { if (OnPropertyChanging("DialogSamplerNodeData." + nameof(Pitch), this, m_Pitch, value)) m_Pitch = value; } } // 0x8 (8)
 		
 		protected AudioGraphNodePort m_Amplitude = new AudioGraphNodePort();
-		[ContainerField(16), MemberInfoFlag(41), ContainerFieldNameHash(698564572)]
+		[ContainerField(Name: "Amplitude", Offset: 16, NameHash: 698564572, Flags: 41)]
 		public AudioGraphNodePort Amplitude { get { return m_Amplitude; } set { if (OnPropertyChanging("DialogSamplerNodeData." + nameof(Amplitude), this, m_Amplitude, value)) m_Amplitude = value; } } // 0x10 (16)
 		
 		protected AudioGraphNodePort m_Continue = new AudioGraphNodePort();
-		[ContainerField(24), MemberInfoFlag(41), ContainerFieldNameHash(333815684)]
+		[ContainerField(Name: "Continue", Offset: 24, NameHash: 333815684, Flags: 41)]
 		public AudioGraphNodePort Continue { get { return m_Continue; } set { if (OnPropertyChanging("DialogSamplerNodeData." + nameof(Continue), this, m_Continue, value)) m_Continue = value; } } // 0x18 (24)
 		
 		protected AudioGraphNodePort m_Output = new AudioGraphNodePort();
-		[ContainerField(32), MemberInfoFlag(41), ContainerFieldNameHash(2895736442)]
+		[ContainerField(Name: "Output", Offset: 32, NameHash: 2895736442, Flags: 41)]
 		public AudioGraphNodePort Output { get { return m_Output; } set { if (OnPropertyChanging("DialogSamplerNodeData." + nameof(Output), this, m_Output, value)) m_Output = value; } } // 0x20 (32)
 		
 		protected AudioGraphNodePort m_Triggered = new AudioGraphNodePort();
-		[ContainerField(40), MemberInfoFlag(41), ContainerFieldNameHash(3641208156)]
+		[ContainerField(Name: "Triggered", Offset: 40, NameHash: 3641208156, Flags: 41)]
 		public AudioGraphNodePort Triggered { get { return m_Triggered; } set { if (OnPropertyChanging("DialogSamplerNodeData." + nameof(Triggered), this, m_Triggered, value)) m_Triggered = value; } } // 0x28 (40)
 		
 		protected AudioGraphNodePort m_Finished = new AudioGraphNodePort();
-		[ContainerField(48), MemberInfoFlag(41), ContainerFieldNameHash(1223765815)]
+		[ContainerField(Name: "Finished", Offset: 48, NameHash: 1223765815, Flags: 41)]
 		public AudioGraphNodePort Finished { get { return m_Finished; } set { if (OnPropertyChanging("DialogSamplerNodeData." + nameof(Finished), this, m_Finished, value)) m_Finished = value; } } // 0x30 (48)
 		
 		protected SoundGraphPluginRef m_SndPlayerPlugin = new SoundGraphPluginRef();
-		[ContainerField(56), MemberInfoFlag(41), ContainerFieldNameHash(824187494)]
+		[ContainerField(Name: "SndPlayerPlugin", Offset: 56, NameHash: 824187494, Flags: 41)]
 		public SoundGraphPluginRef SndPlayerPlugin { get { return m_SndPlayerPlugin; } set { if (OnPropertyChanging("DialogSamplerNodeData." + nameof(SndPlayerPlugin), this, m_SndPlayerPlugin, value)) m_SndPlayerPlugin = value; } } // 0x38 (56)
 		
 		protected SoundGraphPluginRef m_ResamplePlugin = new SoundGraphPluginRef();
-		[ContainerField(59), MemberInfoFlag(41), ContainerFieldNameHash(2592670685)]
+		[ContainerField(Name: "ResamplePlugin", Offset: 59, NameHash: 2592670685, Flags: 41)]
 		public SoundGraphPluginRef ResamplePlugin { get { return m_ResamplePlugin; } set { if (OnPropertyChanging("DialogSamplerNodeData." + nameof(ResamplePlugin), this, m_ResamplePlugin, value)) m_ResamplePlugin = value; } } // 0x3B (59)
 		
 		protected SoundGraphPluginRef m_PausePlugin = new SoundGraphPluginRef();
-		[ContainerField(62), MemberInfoFlag(41), ContainerFieldNameHash(2591219422)]
+		[ContainerField(Name: "PausePlugin", Offset: 62, NameHash: 2591219422, Flags: 41)]
 		public SoundGraphPluginRef PausePlugin { get { return m_PausePlugin; } set { if (OnPropertyChanging("DialogSamplerNodeData." + nameof(PausePlugin), this, m_PausePlugin, value)) m_PausePlugin = value; } } // 0x3E (62)
 		
 		protected SoundGraphPluginRef m_GainPlugin = new SoundGraphPluginRef();
-		[ContainerField(65), MemberInfoFlag(41), ContainerFieldNameHash(3501812877)]
+		[ContainerField(Name: "GainPlugin", Offset: 65, NameHash: 3501812877, Flags: 41)]
 		public SoundGraphPluginRef GainPlugin { get { return m_GainPlugin; } set { if (OnPropertyChanging("DialogSamplerNodeData." + nameof(GainPlugin), this, m_GainPlugin, value)) m_GainPlugin = value; } } // 0x41 (65)
 		
 		protected float m_TailLength = new float();
-		[ContainerField(68), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(906601577)]
+		[ContainerField(Name: "TailLength", Offset: 68, NameHash: 906601577, Flags: 49469), LayoutImmutable, Blittable]
 		public float TailLength { get { return m_TailLength; } set { if (OnPropertyChanging("DialogSamplerNodeData." + nameof(TailLength), this, m_TailLength, value)) m_TailLength = value; } } // 0x44 (68)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

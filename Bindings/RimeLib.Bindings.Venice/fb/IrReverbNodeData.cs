@@ -18,40 +18,40 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(64), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 64)]
 	public class IrReverbNodeData : 
 		AudioGraphNodeData
 	{
 		protected AudioGraphNodePort m_In = new AudioGraphNodePort();
-		[ContainerField(8), MemberInfoFlag(41), ContainerFieldNameHash(5862146)]
+		[ContainerField(Name: "In", Offset: 8, NameHash: 5862146, Flags: 41)]
 		public AudioGraphNodePort In { get { return m_In; } set { if (OnPropertyChanging("IrReverbNodeData." + nameof(In), this, m_In, value)) m_In = value; } } // 0x8 (8)
 		
 		protected AudioGraphNodePort m_Out = new AudioGraphNodePort();
-		[ContainerField(16), MemberInfoFlag(41), ContainerFieldNameHash(193453899)]
+		[ContainerField(Name: "Out", Offset: 16, NameHash: 193453899, Flags: 41)]
 		public AudioGraphNodePort Out { get { return m_Out; } set { if (OnPropertyChanging("IrReverbNodeData." + nameof(Out), this, m_Out, value)) m_Out = value; } } // 0x10 (16)
 		
 		protected AudioGraphNodePort m_Reverb0 = new AudioGraphNodePort();
-		[ContainerField(24), MemberInfoFlag(41), ContainerFieldNameHash(1309052001)]
+		[ContainerField(Name: "Reverb0", Offset: 24, NameHash: 1309052001, Flags: 41)]
 		public AudioGraphNodePort Reverb0 { get { return m_Reverb0; } set { if (OnPropertyChanging("IrReverbNodeData." + nameof(Reverb0), this, m_Reverb0, value)) m_Reverb0 = value; } } // 0x18 (24)
 		
 		protected AudioGraphNodePort m_Amplitude0 = new AudioGraphNodePort();
-		[ContainerField(32), MemberInfoFlag(41), ContainerFieldNameHash(1577794412)]
+		[ContainerField(Name: "Amplitude0", Offset: 32, NameHash: 1577794412, Flags: 41)]
 		public AudioGraphNodePort Amplitude0 { get { return m_Amplitude0; } set { if (OnPropertyChanging("IrReverbNodeData." + nameof(Amplitude0), this, m_Amplitude0, value)) m_Amplitude0 = value; } } // 0x20 (32)
 		
 		protected AudioGraphNodePort m_Reverb1 = new AudioGraphNodePort();
-		[ContainerField(40), MemberInfoFlag(41), ContainerFieldNameHash(1309052000)]
+		[ContainerField(Name: "Reverb1", Offset: 40, NameHash: 1309052000, Flags: 41)]
 		public AudioGraphNodePort Reverb1 { get { return m_Reverb1; } set { if (OnPropertyChanging("IrReverbNodeData." + nameof(Reverb1), this, m_Reverb1, value)) m_Reverb1 = value; } } // 0x28 (40)
 		
 		protected AudioGraphNodePort m_Amplitude1 = new AudioGraphNodePort();
-		[ContainerField(48), MemberInfoFlag(41), ContainerFieldNameHash(1577794413)]
+		[ContainerField(Name: "Amplitude1", Offset: 48, NameHash: 1577794413, Flags: 41)]
 		public AudioGraphNodePort Amplitude1 { get { return m_Amplitude1; } set { if (OnPropertyChanging("IrReverbNodeData." + nameof(Amplitude1), this, m_Amplitude1, value)) m_Amplitude1 = value; } } // 0x30 (48)
 		
 		protected float m_MaxReverbLength = new float();
-		[ContainerField(56), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(812921689)]
+		[ContainerField(Name: "MaxReverbLength", Offset: 56, NameHash: 812921689, Flags: 49469), LayoutImmutable, Blittable]
 		public float MaxReverbLength { get { return m_MaxReverbLength; } set { if (OnPropertyChanging("IrReverbNodeData." + nameof(MaxReverbLength), this, m_MaxReverbLength, value)) m_MaxReverbLength = value; } } // 0x38 (56)
 		
 		protected SoundGraphPluginRef m_ReverbPlugin = new SoundGraphPluginRef();
-		[ContainerField(60), MemberInfoFlag(41), ContainerFieldNameHash(2571271960)]
+		[ContainerField(Name: "ReverbPlugin", Offset: 60, NameHash: 2571271960, Flags: 41)]
 		public SoundGraphPluginRef ReverbPlugin { get { return m_ReverbPlugin; } set { if (OnPropertyChanging("IrReverbNodeData." + nameof(ReverbPlugin), this, m_ReverbPlugin, value)) m_ReverbPlugin = value; } } // 0x3C (60)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,25 +18,25 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(24), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 24)]
 	public class GunSwayRecoilData : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "RecoilAmplitudeMax", Offset: 0, NameHash: 2197654614, Flags: 49469), LayoutImmutable, Blittable]
 		public float RecoilAmplitudeMax { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "RecoilAmplitudeIncPerShot", Offset: 4, NameHash: 2578458785, Flags: 49469), LayoutImmutable, Blittable]
 		public float RecoilAmplitudeIncPerShot { get; set; } // 0x4 (4)
 		
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "HorizontalRecoilAmplitudeIncPerShotMin", Offset: 8, NameHash: 301051253, Flags: 49469), LayoutImmutable, Blittable]
 		public float HorizontalRecoilAmplitudeIncPerShotMin { get; set; } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "HorizontalRecoilAmplitudeIncPerShotMax", Offset: 12, NameHash: 301050987, Flags: 49469), LayoutImmutable, Blittable]
 		public float HorizontalRecoilAmplitudeIncPerShotMax { get; set; } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "HorizontalRecoilAmplitudeMax", Offset: 16, NameHash: 3300506952, Flags: 49469), LayoutImmutable, Blittable]
 		public float HorizontalRecoilAmplitudeMax { get; set; } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "RecoilAmplitudeDecreaseFactor", Offset: 20, NameHash: 255021325, Flags: 49469), LayoutImmutable, Blittable]
 		public float RecoilAmplitudeDecreaseFactor { get; set; } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

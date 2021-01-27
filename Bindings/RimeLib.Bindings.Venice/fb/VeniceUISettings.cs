@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(20), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 20)]
 	public class VeniceUISettings : 
 		SystemSettings
 	{
 		protected string m_MetaDataAssetPath = string.Empty;
-		[ContainerField(12), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(1169897301)]
+		[ContainerField(Name: "MetaDataAssetPath", Offset: 12, NameHash: 1169897301, Flags: 16509), LayoutImmutable]
 		public string MetaDataAssetPath { get { return m_MetaDataAssetPath; } set { if (OnPropertyChanging("VeniceUISettings." + nameof(MetaDataAssetPath), this, m_MetaDataAssetPath, value)) m_MetaDataAssetPath = value; } } // 0xC (12)
 		
 		protected bool m_GetStatsInOnlineFlow = new bool();
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3247310760)]
+		[ContainerField(Name: "GetStatsInOnlineFlow", Offset: 16, NameHash: 3247310760, Flags: 49325), LayoutImmutable, Blittable]
 		public bool GetStatsInOnlineFlow { get { return m_GetStatsInOnlineFlow; } set { if (OnPropertyChanging("VeniceUISettings." + nameof(GetStatsInOnlineFlow), this, m_GetStatsInOnlineFlow, value)) m_GetStatsInOnlineFlow = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

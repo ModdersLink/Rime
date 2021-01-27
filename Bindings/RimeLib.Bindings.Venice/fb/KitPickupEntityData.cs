@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(192), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 192)]
 	public class KitPickupEntityData : 
 		PickupEntityData
 	{
 		protected bool m_KeepAdditionalWeapons = new bool();
-		[ContainerField(176), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2585816246)]
+		[ContainerField(Name: "KeepAdditionalWeapons", Offset: 176, NameHash: 2585816246, Flags: 49325), LayoutImmutable, Blittable]
 		public bool KeepAdditionalWeapons { get { return m_KeepAdditionalWeapons; } set { if (OnPropertyChanging("KitPickupEntityData." + nameof(KeepAdditionalWeapons), this, m_KeepAdditionalWeapons, value)) m_KeepAdditionalWeapons = value; } } // 0xB0 (176)
 		
 		protected bool m_KeepAmmoState = new bool();
-		[ContainerField(177), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2997013959)]
+		[ContainerField(Name: "KeepAmmoState", Offset: 177, NameHash: 2997013959, Flags: 49325), LayoutImmutable, Blittable]
 		public bool KeepAmmoState { get { return m_KeepAmmoState; } set { if (OnPropertyChanging("KitPickupEntityData." + nameof(KeepAmmoState), this, m_KeepAmmoState, value)) m_KeepAmmoState = value; } } // 0xB1 (177)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

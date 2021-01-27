@@ -18,296 +18,296 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(544), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 544)]
 	public class VehicleEntityData : 
 		ControllableEntityData
 	{
 		protected Vec3 m_CriticallyDamagedEffectPosition = new Vec3();
-		[ContainerField(144), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(1856265210)]
+		[ContainerField(Name: "CriticallyDamagedEffectPosition", Offset: 144, NameHash: 1856265210, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 CriticallyDamagedEffectPosition { get { return m_CriticallyDamagedEffectPosition; } set { if (OnPropertyChanging("VehicleEntityData." + nameof(CriticallyDamagedEffectPosition), this, m_CriticallyDamagedEffectPosition, value)) m_CriticallyDamagedEffectPosition = value; } } // 0x90 (144)
 		
 		protected Vec3 m_FLIRKeyColor = new Vec3();
-		[ContainerField(160), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(844334526)]
+		[ContainerField(Name: "FLIRKeyColor", Offset: 160, NameHash: 844334526, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 FLIRKeyColor { get { return m_FLIRKeyColor; } set { if (OnPropertyChanging("VehicleEntityData." + nameof(FLIRKeyColor), this, m_FLIRKeyColor, value)) m_FLIRKeyColor = value; } } // 0xA0 (160)
 		
 		protected Vec3 m_PreExplosionEffectPosition = new Vec3();
-		[ContainerField(176), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(2935241977)]
+		[ContainerField(Name: "PreExplosionEffectPosition", Offset: 176, NameHash: 2935241977, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 PreExplosionEffectPosition { get { return m_PreExplosionEffectPosition; } set { if (OnPropertyChanging("VehicleEntityData." + nameof(PreExplosionEffectPosition), this, m_PreExplosionEffectPosition, value)) m_PreExplosionEffectPosition = value; } } // 0xB0 (176)
 		
 		protected Vec3 m_InteractionOffset = new Vec3();
-		[ContainerField(192), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(696984818)]
+		[ContainerField(Name: "InteractionOffset", Offset: 192, NameHash: 696984818, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 InteractionOffset { get { return m_InteractionOffset; } set { if (OnPropertyChanging("VehicleEntityData." + nameof(InteractionOffset), this, m_InteractionOffset, value)) m_InteractionOffset = value; } } // 0xC0 (192)
 		
 		protected float m_DisabledDamageThreshold = new float();
-		[ContainerField(208), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3318533033)]
+		[ContainerField(Name: "DisabledDamageThreshold", Offset: 208, NameHash: 3318533033, Flags: 49469), LayoutImmutable, Blittable]
 		public float DisabledDamageThreshold { get { return m_DisabledDamageThreshold; } set { if (OnPropertyChanging("VehicleEntityData." + nameof(DisabledDamageThreshold), this, m_DisabledDamageThreshold, value)) m_DisabledDamageThreshold = value; } } // 0xD0 (208)
 		
 		protected string m_ControllableType = string.Empty;
-		[ContainerField(212), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(1363023004)]
+		[ContainerField(Name: "ControllableType", Offset: 212, NameHash: 1363023004, Flags: 16509), LayoutImmutable]
 		public string ControllableType { get { return m_ControllableType; } set { if (OnPropertyChanging("VehicleEntityData." + nameof(ControllableType), this, m_ControllableType, value)) m_ControllableType = value; } } // 0xD4 (212)
 		
 		protected float m_PreDestructionDamageThreshold = new float();
-		[ContainerField(216), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2383353120)]
+		[ContainerField(Name: "PreDestructionDamageThreshold", Offset: 216, NameHash: 2383353120, Flags: 49469), LayoutImmutable, Blittable]
 		public float PreDestructionDamageThreshold { get { return m_PreDestructionDamageThreshold; } set { if (OnPropertyChanging("VehicleEntityData." + nameof(PreDestructionDamageThreshold), this, m_PreDestructionDamageThreshold, value)) m_PreDestructionDamageThreshold = value; } } // 0xD8 (216)
 		
 		protected VehicleHealthZoneData m_RearHealthZone = new VehicleHealthZoneData();
-		[ContainerField(220), MemberInfoFlag(41), ContainerFieldNameHash(3627622819)]
+		[ContainerField(Name: "RearHealthZone", Offset: 220, NameHash: 3627622819, Flags: 41)]
 		public VehicleHealthZoneData RearHealthZone { get { return m_RearHealthZone; } set { if (OnPropertyChanging("VehicleEntityData." + nameof(RearHealthZone), this, m_RearHealthZone, value)) m_RearHealthZone = value; } } // 0xDC (220)
 		
 		protected VehicleHealthZoneData m_LeftHealthZone = new VehicleHealthZoneData();
-		[ContainerField(240), MemberInfoFlag(41), ContainerFieldNameHash(3030125852)]
+		[ContainerField(Name: "LeftHealthZone", Offset: 240, NameHash: 3030125852, Flags: 41)]
 		public VehicleHealthZoneData LeftHealthZone { get { return m_LeftHealthZone; } set { if (OnPropertyChanging("VehicleEntityData." + nameof(LeftHealthZone), this, m_LeftHealthZone, value)) m_LeftHealthZone = value; } } // 0xF0 (240)
 		
 		protected VehicleHealthZoneData m_RightHealthZone = new VehicleHealthZoneData();
-		[ContainerField(260), MemberInfoFlag(41), ContainerFieldNameHash(2832264487)]
+		[ContainerField(Name: "RightHealthZone", Offset: 260, NameHash: 2832264487, Flags: 41)]
 		public VehicleHealthZoneData RightHealthZone { get { return m_RightHealthZone; } set { if (OnPropertyChanging("VehicleEntityData." + nameof(RightHealthZone), this, m_RightHealthZone, value)) m_RightHealthZone = value; } } // 0x104 (260)
 		
 		protected float m_MinSpeedForMineActivation = new float();
-		[ContainerField(280), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(339948744)]
+		[ContainerField(Name: "MinSpeedForMineActivation", Offset: 280, NameHash: 339948744, Flags: 49469), LayoutImmutable, Blittable]
 		public float MinSpeedForMineActivation { get { return m_MinSpeedForMineActivation; } set { if (OnPropertyChanging("VehicleEntityData." + nameof(MinSpeedForMineActivation), this, m_MinSpeedForMineActivation, value)) m_MinSpeedForMineActivation = value; } } // 0x118 (280)
 		
 		protected VehicleHealthZoneData m_FrontHealthZone = new VehicleHealthZoneData();
-		[ContainerField(284), MemberInfoFlag(41), ContainerFieldNameHash(2276895046)]
+		[ContainerField(Name: "FrontHealthZone", Offset: 284, NameHash: 2276895046, Flags: 41)]
 		public VehicleHealthZoneData FrontHealthZone { get { return m_FrontHealthZone; } set { if (OnPropertyChanging("VehicleEntityData." + nameof(FrontHealthZone), this, m_FrontHealthZone, value)) m_FrontHealthZone = value; } } // 0x11C (284)
 		
 		protected float m_UpsideDownDamage = new float();
-		[ContainerField(304), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(4107473026)]
+		[ContainerField(Name: "UpsideDownDamage", Offset: 304, NameHash: 4107473026, Flags: 49469), LayoutImmutable, Blittable]
 		public float UpsideDownDamage { get { return m_UpsideDownDamage; } set { if (OnPropertyChanging("VehicleEntityData." + nameof(UpsideDownDamage), this, m_UpsideDownDamage, value)) m_UpsideDownDamage = value; } } // 0x130 (304)
 		
 		protected float m_WaterDamageOffset = new float();
-		[ContainerField(308), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(559085046)]
+		[ContainerField(Name: "WaterDamageOffset", Offset: 308, NameHash: 559085046, Flags: 49469), LayoutImmutable, Blittable]
 		public float WaterDamageOffset { get { return m_WaterDamageOffset; } set { if (OnPropertyChanging("VehicleEntityData." + nameof(WaterDamageOffset), this, m_WaterDamageOffset, value)) m_WaterDamageOffset = value; } } // 0x134 (308)
 		
 		protected float m_ArmorMultiplier = new float();
-		[ContainerField(312), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3612687949)]
+		[ContainerField(Name: "ArmorMultiplier", Offset: 312, NameHash: 3612687949, Flags: 49469), LayoutImmutable, Blittable]
 		public float ArmorMultiplier { get { return m_ArmorMultiplier; } set { if (OnPropertyChanging("VehicleEntityData." + nameof(ArmorMultiplier), this, m_ArmorMultiplier, value)) m_ArmorMultiplier = value; } } // 0x138 (312)
 		
 		protected float m_RegenerationDelayMultiplier = new float();
-		[ContainerField(316), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2331689578)]
+		[ContainerField(Name: "RegenerationDelayMultiplier", Offset: 316, NameHash: 2331689578, Flags: 49469), LayoutImmutable, Blittable]
 		public float RegenerationDelayMultiplier { get { return m_RegenerationDelayMultiplier; } set { if (OnPropertyChanging("VehicleEntityData." + nameof(RegenerationDelayMultiplier), this, m_RegenerationDelayMultiplier, value)) m_RegenerationDelayMultiplier = value; } } // 0x13C (316)
 		
 		protected float m_RegenerationRateMultiplier = new float();
-		[ContainerField(320), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2044311709)]
+		[ContainerField(Name: "RegenerationRateMultiplier", Offset: 320, NameHash: 2044311709, Flags: 49469), LayoutImmutable, Blittable]
 		public float RegenerationRateMultiplier { get { return m_RegenerationRateMultiplier; } set { if (OnPropertyChanging("VehicleEntityData." + nameof(RegenerationRateMultiplier), this, m_RegenerationRateMultiplier, value)) m_RegenerationRateMultiplier = value; } } // 0x140 (320)
 		
 		protected float m_EmergencyRepairHealth = new float();
-		[ContainerField(324), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2646266061)]
+		[ContainerField(Name: "EmergencyRepairHealth", Offset: 324, NameHash: 2646266061, Flags: 49469), LayoutImmutable, Blittable]
 		public float EmergencyRepairHealth { get { return m_EmergencyRepairHealth; } set { if (OnPropertyChanging("VehicleEntityData." + nameof(EmergencyRepairHealth), this, m_EmergencyRepairHealth, value)) m_EmergencyRepairHealth = value; } } // 0x144 (324)
 		
 		protected float m_DecayDelay = new float();
-		[ContainerField(328), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(696940618)]
+		[ContainerField(Name: "DecayDelay", Offset: 328, NameHash: 696940618, Flags: 49469), LayoutImmutable, Blittable]
 		public float DecayDelay { get { return m_DecayDelay; } set { if (OnPropertyChanging("VehicleEntityData." + nameof(DecayDelay), this, m_DecayDelay, value)) m_DecayDelay = value; } } // 0x148 (328)
 		
 		protected float m_DecayRate = new float();
-		[ContainerField(332), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3274236317)]
+		[ContainerField(Name: "DecayRate", Offset: 332, NameHash: 3274236317, Flags: 49469), LayoutImmutable, Blittable]
 		public float DecayRate { get { return m_DecayRate; } set { if (OnPropertyChanging("VehicleEntityData." + nameof(DecayRate), this, m_DecayRate, value)) m_DecayRate = value; } } // 0x14C (332)
 		
 		protected float m_BelowWaterDamageDelay = new float();
-		[ContainerField(336), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2319914781)]
+		[ContainerField(Name: "BelowWaterDamageDelay", Offset: 336, NameHash: 2319914781, Flags: 49469), LayoutImmutable, Blittable]
 		public float BelowWaterDamageDelay { get { return m_BelowWaterDamageDelay; } set { if (OnPropertyChanging("VehicleEntityData." + nameof(BelowWaterDamageDelay), this, m_BelowWaterDamageDelay, value)) m_BelowWaterDamageDelay = value; } } // 0x150 (336)
 		
 		protected CtrRef<EffectBlueprint> m_CriticallyDamagedEffect = new CtrRef<EffectBlueprint>();
-		[ContainerField(340), MemberInfoFlag(53), ContainerFieldNameHash(3947288579), ContainerCtrRef]
+		[ContainerField(Name: "CriticallyDamagedEffect", Offset: 340, NameHash: 3947288579, Flags: 53)]
 		public CtrRef<EffectBlueprint> CriticallyDamagedEffect { get { return m_CriticallyDamagedEffect; } set { if (OnPropertyChanging("VehicleEntityData." + nameof(CriticallyDamagedEffect), this, m_CriticallyDamagedEffect, value)) m_CriticallyDamagedEffect = value; } } // 0x154 (340)
 		
 		protected float m_RegenerationRate = new float();
-		[ContainerField(344), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3407288278)]
+		[ContainerField(Name: "RegenerationRate", Offset: 344, NameHash: 3407288278, Flags: 49469), LayoutImmutable, Blittable]
 		public float RegenerationRate { get { return m_RegenerationRate; } set { if (OnPropertyChanging("VehicleEntityData." + nameof(RegenerationRate), this, m_RegenerationRate, value)) m_RegenerationRate = value; } } // 0x158 (344)
 		
 		protected float m_CriticalDamageTime = new float();
-		[ContainerField(348), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(859585936)]
+		[ContainerField(Name: "CriticalDamageTime", Offset: 348, NameHash: 859585936, Flags: 49469), LayoutImmutable, Blittable]
 		public float CriticalDamageTime { get { return m_CriticalDamageTime; } set { if (OnPropertyChanging("VehicleEntityData." + nameof(CriticalDamageTime), this, m_CriticalDamageTime, value)) m_CriticalDamageTime = value; } } // 0x15C (348)
 		
 		protected CtrRef<EffectBlueprint> m_PreExplosionEffect = new CtrRef<EffectBlueprint>();
-		[ContainerField(352), MemberInfoFlag(53), ContainerFieldNameHash(2795974848), ContainerCtrRef]
+		[ContainerField(Name: "PreExplosionEffect", Offset: 352, NameHash: 2795974848, Flags: 53)]
 		public CtrRef<EffectBlueprint> PreExplosionEffect { get { return m_PreExplosionEffect; } set { if (OnPropertyChanging("VehicleEntityData." + nameof(PreExplosionEffect), this, m_PreExplosionEffect, value)) m_PreExplosionEffect = value; } } // 0x160 (352)
 		
 		protected float m_RegenerationDelay = new float();
-		[ContainerField(356), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(778753505)]
+		[ContainerField(Name: "RegenerationDelay", Offset: 356, NameHash: 778753505, Flags: 49469), LayoutImmutable, Blittable]
 		public float RegenerationDelay { get { return m_RegenerationDelay; } set { if (OnPropertyChanging("VehicleEntityData." + nameof(RegenerationDelay), this, m_RegenerationDelay, value)) m_RegenerationDelay = value; } } // 0x164 (356)
 		
 		protected float m_PreExplosionTime = new float();
-		[ContainerField(360), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3054583394)]
+		[ContainerField(Name: "PreExplosionTime", Offset: 360, NameHash: 3054583394, Flags: 49469), LayoutImmutable, Blittable]
 		public float PreExplosionTime { get { return m_PreExplosionTime; } set { if (OnPropertyChanging("VehicleEntityData." + nameof(PreExplosionTime), this, m_PreExplosionTime, value)) m_PreExplosionTime = value; } } // 0x168 (360)
 		
 		protected CtrRef<ExplosionEntityData> m_Explosion = new CtrRef<ExplosionEntityData>();
-		[ContainerField(364), MemberInfoFlag(53), ContainerFieldNameHash(2222171184), ContainerCtrRef]
+		[ContainerField(Name: "Explosion", Offset: 364, NameHash: 2222171184, Flags: 53)]
 		public CtrRef<ExplosionEntityData> Explosion { get { return m_Explosion; } set { if (OnPropertyChanging("VehicleEntityData." + nameof(Explosion), this, m_Explosion, value)) m_Explosion = value; } } // 0x16C (364)
 		
 		protected CtrRef<CompositeMeshAsset> m_Mesh = new CtrRef<CompositeMeshAsset>();
-		[ContainerField(368), MemberInfoFlag(53), ContainerFieldNameHash(2088783990), ContainerCtrRef]
+		[ContainerField(Name: "Mesh", Offset: 368, NameHash: 2088783990, Flags: 53)]
 		public CtrRef<CompositeMeshAsset> Mesh { get { return m_Mesh; } set { if (OnPropertyChanging("VehicleEntityData." + nameof(Mesh), this, m_Mesh, value)) m_Mesh = value; } } // 0x170 (368)
 		
 		protected CtrRef<ObjectBlueprint> m_CockpitMesh = new CtrRef<ObjectBlueprint>();
-		[ContainerField(372), MemberInfoFlag(53), ContainerFieldNameHash(1006188287), ContainerCtrRef]
+		[ContainerField(Name: "CockpitMesh", Offset: 372, NameHash: 1006188287, Flags: 53)]
 		public CtrRef<ObjectBlueprint> CockpitMesh { get { return m_CockpitMesh; } set { if (OnPropertyChanging("VehicleEntityData." + nameof(CockpitMesh), this, m_CockpitMesh, value)) m_CockpitMesh = value; } } // 0x174 (372)
 		
 		protected float m_VelocityDamageMagnifier = new float();
-		[ContainerField(376), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(489897037)]
+		[ContainerField(Name: "VelocityDamageMagnifier", Offset: 376, NameHash: 489897037, Flags: 49469), LayoutImmutable, Blittable]
 		public float VelocityDamageMagnifier { get { return m_VelocityDamageMagnifier; } set { if (OnPropertyChanging("VehicleEntityData." + nameof(VelocityDamageMagnifier), this, m_VelocityDamageMagnifier, value)) m_VelocityDamageMagnifier = value; } } // 0x178 (376)
 		
 		protected float m_ExitSpeedThreshold = new float();
-		[ContainerField(380), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1049184085)]
+		[ContainerField(Name: "ExitSpeedThreshold", Offset: 380, NameHash: 1049184085, Flags: 49469), LayoutImmutable, Blittable]
 		public float ExitSpeedThreshold { get { return m_ExitSpeedThreshold; } set { if (OnPropertyChanging("VehicleEntityData." + nameof(ExitSpeedThreshold), this, m_ExitSpeedThreshold, value)) m_ExitSpeedThreshold = value; } } // 0x17C (380)
 		
 		protected VehicleHudData m_HudData = new VehicleHudData();
-		[ContainerField(384), MemberInfoFlag(41), ContainerFieldNameHash(2639805868)]
+		[ContainerField(Name: "HudData", Offset: 384, NameHash: 2639805868, Flags: 41)]
 		public VehicleHudData HudData { get { return m_HudData; } set { if (OnPropertyChanging("VehicleEntityData." + nameof(HudData), this, m_HudData, value)) m_HudData = value; } } // 0x180 (384)
 		
 		protected string m_NameSid = string.Empty;
-		[ContainerField(416), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(3153745340)]
+		[ContainerField(Name: "NameSid", Offset: 416, NameHash: 3153745340, Flags: 16509), LayoutImmutable]
 		public string NameSid { get { return m_NameSid; } set { if (OnPropertyChanging("VehicleEntityData." + nameof(NameSid), this, m_NameSid, value)) m_NameSid = value; } } // 0x1A0 (416)
 		
 		protected int m_MaxPlayersInVehicle = new int();
-		[ContainerField(420), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(3678083790)]
+		[ContainerField(Name: "MaxPlayersInVehicle", Offset: 420, NameHash: 3678083790, Flags: 49405), LayoutImmutable, Blittable]
 		public int MaxPlayersInVehicle { get { return m_MaxPlayersInVehicle; } set { if (OnPropertyChanging("VehicleEntityData." + nameof(MaxPlayersInVehicle), this, m_MaxPlayersInVehicle, value)) m_MaxPlayersInVehicle = value; } } // 0x1A4 (420)
 		
 		protected float m_NametagHeightScale = new float();
-		[ContainerField(424), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3182332183)]
+		[ContainerField(Name: "NametagHeightScale", Offset: 424, NameHash: 3182332183, Flags: 49469), LayoutImmutable, Blittable]
 		public float NametagHeightScale { get { return m_NametagHeightScale; } set { if (OnPropertyChanging("VehicleEntityData." + nameof(NametagHeightScale), this, m_NametagHeightScale, value)) m_NametagHeightScale = value; } } // 0x1A8 (424)
 		
 		protected CtrRef<VehicleSoundData> m_Sound = new CtrRef<VehicleSoundData>();
-		[ContainerField(428), MemberInfoFlag(53), ContainerFieldNameHash(231353798), ContainerCtrRef]
+		[ContainerField(Name: "Sound", Offset: 428, NameHash: 231353798, Flags: 53)]
 		public CtrRef<VehicleSoundData> Sound { get { return m_Sound; } set { if (OnPropertyChanging("VehicleEntityData." + nameof(Sound), this, m_Sound, value)) m_Sound = value; } } // 0x1AC (428)
 		
 		protected float m_UpsideDownDamageDelay = new float();
-		[ContainerField(432), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1848412439)]
+		[ContainerField(Name: "UpsideDownDamageDelay", Offset: 432, NameHash: 1848412439, Flags: 49469), LayoutImmutable, Blittable]
 		public float UpsideDownDamageDelay { get { return m_UpsideDownDamageDelay; } set { if (OnPropertyChanging("VehicleEntityData." + nameof(UpsideDownDamageDelay), this, m_UpsideDownDamageDelay, value)) m_UpsideDownDamageDelay = value; } } // 0x1B0 (432)
 		
 		protected float m_UpsideDownAngle = new float();
-		[ContainerField(436), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(511050632)]
+		[ContainerField(Name: "UpsideDownAngle", Offset: 436, NameHash: 511050632, Flags: 49469), LayoutImmutable, Blittable]
 		public float UpsideDownAngle { get { return m_UpsideDownAngle; } set { if (OnPropertyChanging("VehicleEntityData." + nameof(UpsideDownAngle), this, m_UpsideDownAngle, value)) m_UpsideDownAngle = value; } } // 0x1B4 (436)
 		
 		protected float m_WaterDamage = new float();
-		[ContainerField(440), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(470266331)]
+		[ContainerField(Name: "WaterDamage", Offset: 440, NameHash: 470266331, Flags: 49469), LayoutImmutable, Blittable]
 		public float WaterDamage { get { return m_WaterDamage; } set { if (OnPropertyChanging("VehicleEntityData." + nameof(WaterDamage), this, m_WaterDamage, value)) m_WaterDamage = value; } } // 0x1B8 (440)
 		
 		protected float m_LockingTimeMultiplier = new float();
-		[ContainerField(444), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1983394672)]
+		[ContainerField(Name: "LockingTimeMultiplier", Offset: 444, NameHash: 1983394672, Flags: 49469), LayoutImmutable, Blittable]
 		public float LockingTimeMultiplier { get { return m_LockingTimeMultiplier; } set { if (OnPropertyChanging("VehicleEntityData." + nameof(LockingTimeMultiplier), this, m_LockingTimeMultiplier, value)) m_LockingTimeMultiplier = value; } } // 0x1BC (444)
 		
 		protected float m_NametagHeightOffset = new float();
-		[ContainerField(448), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(847741666)]
+		[ContainerField(Name: "NametagHeightOffset", Offset: 448, NameHash: 847741666, Flags: 49469), LayoutImmutable, Blittable]
 		public float NametagHeightOffset { get { return m_NametagHeightOffset; } set { if (OnPropertyChanging("VehicleEntityData." + nameof(NametagHeightOffset), this, m_NametagHeightOffset, value)) m_NametagHeightOffset = value; } } // 0x1C0 (448)
 		
 		protected float m_HighAltitudeLockHeight = new float();
-		[ContainerField(452), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(562612431)]
+		[ContainerField(Name: "HighAltitudeLockHeight", Offset: 452, NameHash: 562612431, Flags: 49469), LayoutImmutable, Blittable]
 		public float HighAltitudeLockHeight { get { return m_HighAltitudeLockHeight; } set { if (OnPropertyChanging("VehicleEntityData." + nameof(HighAltitudeLockHeight), this, m_HighAltitudeLockHeight, value)) m_HighAltitudeLockHeight = value; } } // 0x1C4 (452)
 		
 		protected float m_VelocityDamageThreshold = new float();
-		[ContainerField(456), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3583792430)]
+		[ContainerField(Name: "VelocityDamageThreshold", Offset: 456, NameHash: 3583792430, Flags: 49469), LayoutImmutable, Blittable]
 		public float VelocityDamageThreshold { get { return m_VelocityDamageThreshold; } set { if (OnPropertyChanging("VehicleEntityData." + nameof(VelocityDamageThreshold), this, m_VelocityDamageThreshold, value)) m_VelocityDamageThreshold = value; } } // 0x1C8 (456)
 		
 		protected CtrRef<EntityVoiceOverInfo> m_VoiceOverInfo = new CtrRef<EntityVoiceOverInfo>();
-		[ContainerField(460), MemberInfoFlag(53), ContainerFieldNameHash(1260547539), ContainerCtrRef]
+		[ContainerField(Name: "VoiceOverInfo", Offset: 460, NameHash: 1260547539, Flags: 53)]
 		public CtrRef<EntityVoiceOverInfo> VoiceOverInfo { get { return m_VoiceOverInfo; } set { if (OnPropertyChanging("VehicleEntityData." + nameof(VoiceOverInfo), this, m_VoiceOverInfo, value)) m_VoiceOverInfo = value; } } // 0x1CC (460)
 		
 		protected float m_ExitCameraSwitchDelay = new float();
-		[ContainerField(464), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(774785883)]
+		[ContainerField(Name: "ExitCameraSwitchDelay", Offset: 464, NameHash: 774785883, Flags: 49469), LayoutImmutable, Blittable]
 		public float ExitCameraSwitchDelay { get { return m_ExitCameraSwitchDelay; } set { if (OnPropertyChanging("VehicleEntityData." + nameof(ExitCameraSwitchDelay), this, m_ExitCameraSwitchDelay, value)) m_ExitCameraSwitchDelay = value; } } // 0x1D0 (464)
 		
 		protected float m_KillSoldierCollisionSpeedThreshold = new float();
-		[ContainerField(468), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3028123395)]
+		[ContainerField(Name: "KillSoldierCollisionSpeedThreshold", Offset: 468, NameHash: 3028123395, Flags: 49469), LayoutImmutable, Blittable]
 		public float KillSoldierCollisionSpeedThreshold { get { return m_KillSoldierCollisionSpeedThreshold; } set { if (OnPropertyChanging("VehicleEntityData." + nameof(KillSoldierCollisionSpeedThreshold), this, m_KillSoldierCollisionSpeedThreshold, value)) m_KillSoldierCollisionSpeedThreshold = value; } } // 0x1D4 (468)
 		
 		protected float m_ExitDirectionSpeedThreshold = new float();
-		[ContainerField(472), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1613225104)]
+		[ContainerField(Name: "ExitDirectionSpeedThreshold", Offset: 472, NameHash: 1613225104, Flags: 49469), LayoutImmutable, Blittable]
 		public float ExitDirectionSpeedThreshold { get { return m_ExitDirectionSpeedThreshold; } set { if (OnPropertyChanging("VehicleEntityData." + nameof(ExitDirectionSpeedThreshold), this, m_ExitDirectionSpeedThreshold, value)) m_ExitDirectionSpeedThreshold = value; } } // 0x1D8 (472)
 		
 		protected AngleOfImpactData m_AngleOfImpact = new AngleOfImpactData();
-		[ContainerField(476), MemberInfoFlag(41), ContainerFieldNameHash(2658042767)]
+		[ContainerField(Name: "AngleOfImpact", Offset: 476, NameHash: 2658042767, Flags: 41)]
 		public AngleOfImpactData AngleOfImpact { get { return m_AngleOfImpact; } set { if (OnPropertyChanging("VehicleEntityData." + nameof(AngleOfImpact), this, m_AngleOfImpact, value)) m_AngleOfImpact = value; } } // 0x1DC (476)
 		
 		protected VehicleLockableInfoData m_VehicleLockableInfo = new VehicleLockableInfoData();
-		[ContainerField(500), MemberInfoFlag(41), ContainerFieldNameHash(3058902738)]
+		[ContainerField(Name: "VehicleLockableInfo", Offset: 500, NameHash: 3058902738, Flags: 41)]
 		public VehicleLockableInfoData VehicleLockableInfo { get { return m_VehicleLockableInfo; } set { if (OnPropertyChanging("VehicleEntityData." + nameof(VehicleLockableInfo), this, m_VehicleLockableInfo, value)) m_VehicleLockableInfo = value; } } // 0x1F4 (500)
 		
 		protected float m_FLIRValue = new float();
-		[ContainerField(516), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3325471103)]
+		[ContainerField(Name: "FLIRValue", Offset: 516, NameHash: 3325471103, Flags: 49469), LayoutImmutable, Blittable]
 		public float FLIRValue { get { return m_FLIRValue; } set { if (OnPropertyChanging("VehicleEntityData." + nameof(FLIRValue), this, m_FLIRValue, value)) m_FLIRValue = value; } } // 0x204 (516)
 		
 		protected MPModeData m_MPMode = new MPModeData();
-		[ContainerField(520), MemberInfoFlag(41), ContainerFieldNameHash(2699506811)]
+		[ContainerField(Name: "MPMode", Offset: 520, NameHash: 2699506811, Flags: 41)]
 		public MPModeData MPMode { get { return m_MPMode; } set { if (OnPropertyChanging("VehicleEntityData." + nameof(MPMode), this, m_MPMode, value)) m_MPMode = value; } } // 0x208 (520)
 		
 		protected bool m_IgnoreSoldierCollisionNormal = new bool();
-		[ContainerField(524), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1916568890)]
+		[ContainerField(Name: "IgnoreSoldierCollisionNormal", Offset: 524, NameHash: 1916568890, Flags: 49325), LayoutImmutable, Blittable]
 		public bool IgnoreSoldierCollisionNormal { get { return m_IgnoreSoldierCollisionNormal; } set { if (OnPropertyChanging("VehicleEntityData." + nameof(IgnoreSoldierCollisionNormal), this, m_IgnoreSoldierCollisionNormal, value)) m_IgnoreSoldierCollisionNormal = value; } } // 0x20C (524)
 		
 		protected bool m_ShowPlayerHealth = new bool();
-		[ContainerField(525), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1579764169)]
+		[ContainerField(Name: "ShowPlayerHealth", Offset: 525, NameHash: 1579764169, Flags: 49325), LayoutImmutable, Blittable]
 		public bool ShowPlayerHealth { get { return m_ShowPlayerHealth; } set { if (OnPropertyChanging("VehicleEntityData." + nameof(ShowPlayerHealth), this, m_ShowPlayerHealth, value)) m_ShowPlayerHealth = value; } } // 0x20D (525)
 		
 		protected bool m_ForegroundRenderCockpitMesh = new bool();
-		[ContainerField(526), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1107408366)]
+		[ContainerField(Name: "ForegroundRenderCockpitMesh", Offset: 526, NameHash: 1107408366, Flags: 49325), LayoutImmutable, Blittable]
 		public bool ForegroundRenderCockpitMesh { get { return m_ForegroundRenderCockpitMesh; } set { if (OnPropertyChanging("VehicleEntityData." + nameof(ForegroundRenderCockpitMesh), this, m_ForegroundRenderCockpitMesh, value)) m_ForegroundRenderCockpitMesh = value; } } // 0x20E (526)
 		
 		protected bool m_RenderVehicleMesh = new bool();
-		[ContainerField(527), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2056273412)]
+		[ContainerField(Name: "RenderVehicleMesh", Offset: 527, NameHash: 2056273412, Flags: 49325), LayoutImmutable, Blittable]
 		public bool RenderVehicleMesh { get { return m_RenderVehicleMesh; } set { if (OnPropertyChanging("VehicleEntityData." + nameof(RenderVehicleMesh), this, m_RenderVehicleMesh, value)) m_RenderVehicleMesh = value; } } // 0x20F (527)
 		
 		protected bool m_IsAffectedByEMP = new bool();
-		[ContainerField(528), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2093965006)]
+		[ContainerField(Name: "IsAffectedByEMP", Offset: 528, NameHash: 2093965006, Flags: 49325), LayoutImmutable, Blittable]
 		public bool IsAffectedByEMP { get { return m_IsAffectedByEMP; } set { if (OnPropertyChanging("VehicleEntityData." + nameof(IsAffectedByEMP), this, m_IsAffectedByEMP, value)) m_IsAffectedByEMP = value; } } // 0x210 (528)
 		
 		protected bool m_ThrowOutSoldierInsideOnWaterDamage = new bool();
-		[ContainerField(529), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1661389364)]
+		[ContainerField(Name: "ThrowOutSoldierInsideOnWaterDamage", Offset: 529, NameHash: 1661389364, Flags: 49325), LayoutImmutable, Blittable]
 		public bool ThrowOutSoldierInsideOnWaterDamage { get { return m_ThrowOutSoldierInsideOnWaterDamage; } set { if (OnPropertyChanging("VehicleEntityData." + nameof(ThrowOutSoldierInsideOnWaterDamage), this, m_ThrowOutSoldierInsideOnWaterDamage, value)) m_ThrowOutSoldierInsideOnWaterDamage = value; } } // 0x211 (529)
 		
 		protected bool m_UseAsTeamSpawner = new bool();
-		[ContainerField(530), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1433904997)]
+		[ContainerField(Name: "UseAsTeamSpawner", Offset: 530, NameHash: 1433904997, Flags: 49325), LayoutImmutable, Blittable]
 		public bool UseAsTeamSpawner { get { return m_UseAsTeamSpawner; } set { if (OnPropertyChanging("VehicleEntityData." + nameof(UseAsTeamSpawner), this, m_UseAsTeamSpawner, value)) m_UseAsTeamSpawner = value; } } // 0x212 (530)
 		
 		protected bool m_IsLockable = new bool();
-		[ContainerField(531), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3657214078)]
+		[ContainerField(Name: "IsLockable", Offset: 531, NameHash: 3657214078, Flags: 49325), LayoutImmutable, Blittable]
 		public bool IsLockable { get { return m_IsLockable; } set { if (OnPropertyChanging("VehicleEntityData." + nameof(IsLockable), this, m_IsLockable, value)) m_IsLockable = value; } } // 0x213 (531)
 		
 		protected bool m_ChoseExitPointByDirection = new bool();
-		[ContainerField(532), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(775582885)]
+		[ContainerField(Name: "ChoseExitPointByDirection", Offset: 532, NameHash: 775582885, Flags: 49325), LayoutImmutable, Blittable]
 		public bool ChoseExitPointByDirection { get { return m_ChoseExitPointByDirection; } set { if (OnPropertyChanging("VehicleEntityData." + nameof(ChoseExitPointByDirection), this, m_ChoseExitPointByDirection, value)) m_ChoseExitPointByDirection = value; } } // 0x214 (532)
 		
 		protected bool m_HealthZonesShareDamage = new bool();
-		[ContainerField(533), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(4208633362)]
+		[ContainerField(Name: "HealthZonesShareDamage", Offset: 533, NameHash: 4208633362, Flags: 49325), LayoutImmutable, Blittable]
 		public bool HealthZonesShareDamage { get { return m_HealthZonesShareDamage; } set { if (OnPropertyChanging("VehicleEntityData." + nameof(HealthZonesShareDamage), this, m_HealthZonesShareDamage, value)) m_HealthZonesShareDamage = value; } } // 0x215 (533)
 		
 		protected bool m_NeverReportVehicleAsEmpty = new bool();
-		[ContainerField(534), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1610705598)]
+		[ContainerField(Name: "NeverReportVehicleAsEmpty", Offset: 534, NameHash: 1610705598, Flags: 49325), LayoutImmutable, Blittable]
 		public bool NeverReportVehicleAsEmpty { get { return m_NeverReportVehicleAsEmpty; } set { if (OnPropertyChanging("VehicleEntityData." + nameof(NeverReportVehicleAsEmpty), this, m_NeverReportVehicleAsEmpty, value)) m_NeverReportVehicleAsEmpty = value; } } // 0x216 (534)
 		
 		protected bool m_ExitAllowed = new bool();
-		[ContainerField(535), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1004482141)]
+		[ContainerField(Name: "ExitAllowed", Offset: 535, NameHash: 1004482141, Flags: 49325), LayoutImmutable, Blittable]
 		public bool ExitAllowed { get { return m_ExitAllowed; } set { if (OnPropertyChanging("VehicleEntityData." + nameof(ExitAllowed), this, m_ExitAllowed, value)) m_ExitAllowed = value; } } // 0x217 (535)
 		
 		protected bool m_UseLowAltitudeHeatSignature = new bool();
-		[ContainerField(536), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3071375774)]
+		[ContainerField(Name: "UseLowAltitudeHeatSignature", Offset: 536, NameHash: 3071375774, Flags: 49325), LayoutImmutable, Blittable]
 		public bool UseLowAltitudeHeatSignature { get { return m_UseLowAltitudeHeatSignature; } set { if (OnPropertyChanging("VehicleEntityData." + nameof(UseLowAltitudeHeatSignature), this, m_UseLowAltitudeHeatSignature, value)) m_UseLowAltitudeHeatSignature = value; } } // 0x218 (536)
 		
 		protected bool m_AllowVehicleOutsideCombatAreas = new bool();
-		[ContainerField(537), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(4259780355)]
+		[ContainerField(Name: "AllowVehicleOutsideCombatAreas", Offset: 537, NameHash: 4259780355, Flags: 49325), LayoutImmutable, Blittable]
 		public bool AllowVehicleOutsideCombatAreas { get { return m_AllowVehicleOutsideCombatAreas; } set { if (OnPropertyChanging("VehicleEntityData." + nameof(AllowVehicleOutsideCombatAreas), this, m_AllowVehicleOutsideCombatAreas, value)) m_AllowVehicleOutsideCombatAreas = value; } } // 0x219 (537)
 		
 		protected bool m_EnableGroundmapLighting = new bool();
-		[ContainerField(538), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1278245411)]
+		[ContainerField(Name: "EnableGroundmapLighting", Offset: 538, NameHash: 1278245411, Flags: 49325), LayoutImmutable, Blittable]
 		public bool EnableGroundmapLighting { get { return m_EnableGroundmapLighting; } set { if (OnPropertyChanging("VehicleEntityData." + nameof(EnableGroundmapLighting), this, m_EnableGroundmapLighting, value)) m_EnableGroundmapLighting = value; } } // 0x21A (538)
 		
 		protected bool m_MotionBlurMask = new bool();
-		[ContainerField(539), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3803525894)]
+		[ContainerField(Name: "MotionBlurMask", Offset: 539, NameHash: 3803525894, Flags: 49325), LayoutImmutable, Blittable]
 		public bool MotionBlurMask { get { return m_MotionBlurMask; } set { if (OnPropertyChanging("VehicleEntityData." + nameof(MotionBlurMask), this, m_MotionBlurMask, value)) m_MotionBlurMask = value; } } // 0x21B (539)
 		
 		protected bool m_UseProtectedShields = new bool();
-		[ContainerField(540), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3998576672)]
+		[ContainerField(Name: "UseProtectedShields", Offset: 540, NameHash: 3998576672, Flags: 49325), LayoutImmutable, Blittable]
 		public bool UseProtectedShields { get { return m_UseProtectedShields; } set { if (OnPropertyChanging("VehicleEntityData." + nameof(UseProtectedShields), this, m_UseProtectedShields, value)) m_UseProtectedShields = value; } } // 0x21C (540)
 		
 		protected bool m_UseDriverEyePosForNametagPos = new bool();
-		[ContainerField(541), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2055300591)]
+		[ContainerField(Name: "UseDriverEyePosForNametagPos", Offset: 541, NameHash: 2055300591, Flags: 49325), LayoutImmutable, Blittable]
 		public bool UseDriverEyePosForNametagPos { get { return m_UseDriverEyePosForNametagPos; } set { if (OnPropertyChanging("VehicleEntityData." + nameof(UseDriverEyePosForNametagPos), this, m_UseDriverEyePosForNametagPos, value)) m_UseDriverEyePosForNametagPos = value; } } // 0x21D (541)
 		
 		protected bool m_EquipmentFakeVehicle = new bool();
-		[ContainerField(542), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3184500446)]
+		[ContainerField(Name: "EquipmentFakeVehicle", Offset: 542, NameHash: 3184500446, Flags: 49325), LayoutImmutable, Blittable]
 		public bool EquipmentFakeVehicle { get { return m_EquipmentFakeVehicle; } set { if (OnPropertyChanging("VehicleEntityData." + nameof(EquipmentFakeVehicle), this, m_EquipmentFakeVehicle, value)) m_EquipmentFakeVehicle = value; } } // 0x21E (542)
 		
 		protected bool m_ExplosionPacksAttachable = new bool();
-		[ContainerField(543), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2851996027)]
+		[ContainerField(Name: "ExplosionPacksAttachable", Offset: 543, NameHash: 2851996027, Flags: 49325), LayoutImmutable, Blittable]
 		public bool ExplosionPacksAttachable { get { return m_ExplosionPacksAttachable; } set { if (OnPropertyChanging("VehicleEntityData." + nameof(ExplosionPacksAttachable), this, m_ExplosionPacksAttachable, value)) m_ExplosionPacksAttachable = value; } } // 0x21F (543)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

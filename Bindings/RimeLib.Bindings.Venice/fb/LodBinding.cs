@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(12), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 12)]
 	public class LodBinding : FrostbiteContainer
 	{
-		[ContainerField(0), MemberInfoFlag(41)]
+		[ContainerField(Name: "DisableControllerUpdate", Offset: 0, NameHash: 2089791388, Flags: 41)]
 		public AntRef DisableControllerUpdate { get; set; } = new AntRef(); // 0x0 (0)
 		
-		[ContainerField(4), MemberInfoFlag(41)]
+		[ContainerField(Name: "DisablePoseUpdate", Offset: 4, NameHash: 605526569, Flags: 41)]
 		public AntRef DisablePoseUpdate { get; set; } = new AntRef(); // 0x4 (4)
 		
-		[ContainerField(8), MemberInfoFlag(41)]
+		[ContainerField(Name: "DistanceFromCamera", Offset: 8, NameHash: 621427369, Flags: 41)]
 		public AntRef DistanceFromCamera { get; set; } = new AntRef(); // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

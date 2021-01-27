@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(28), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 28)]
 	public class UILevelDescription : 
 		UIItemDescription
 	{
 		protected string m_LevelName = string.Empty;
-		[ContainerField(16), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(1599082292)]
+		[ContainerField(Name: "LevelName", Offset: 16, NameHash: 1599082292, Flags: 16509), LayoutImmutable]
 		public string LevelName { get { return m_LevelName; } set { if (OnPropertyChanging("UILevelDescription." + nameof(LevelName), this, m_LevelName, value)) m_LevelName = value; } } // 0x10 (16)
 		
 		protected string m_TexturePath = string.Empty;
-		[ContainerField(20), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(3058477943)]
+		[ContainerField(Name: "TexturePath", Offset: 20, NameHash: 3058477943, Flags: 16509), LayoutImmutable]
 		public string TexturePath { get { return m_TexturePath; } set { if (OnPropertyChanging("UILevelDescription." + nameof(TexturePath), this, m_TexturePath, value)) m_TexturePath = value; } } // 0x14 (20)
 		
 		protected string m_ThumbnailTexturePath = string.Empty;
-		[ContainerField(24), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(2407220379)]
+		[ContainerField(Name: "ThumbnailTexturePath", Offset: 24, NameHash: 2407220379, Flags: 16509), LayoutImmutable]
 		public string ThumbnailTexturePath { get { return m_ThumbnailTexturePath; } set { if (OnPropertyChanging("UILevelDescription." + nameof(ThumbnailTexturePath), this, m_ThumbnailTexturePath, value)) m_ThumbnailTexturePath = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

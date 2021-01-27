@@ -18,13 +18,13 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(8), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 8)]
 	public class OnlineEnvironmentConsoleUrlData : FrostbiteContainer
 	{
-		[ContainerField(0), MemberInfoFlag(137)]
+		[ContainerField(Name: "Platform", Offset: 0, NameHash: 942751002, Flags: 137)]
 		public GamePlatform Platform { get; set; } = new GamePlatform(); // 0x0 (0)
 		
-		[ContainerField(4), MemberInfoFlag(41)]
+		[ContainerField(Name: "Url", Offset: 4, NameHash: 193455022, Flags: 41)]
 		public OnlineEnvironmentUrl Url { get; set; } = new OnlineEnvironmentUrl(); // 0x4 (4)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

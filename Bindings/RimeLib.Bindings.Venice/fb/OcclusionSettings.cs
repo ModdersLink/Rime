@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(12), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 12)]
 	public class OcclusionSettings : 
 		DataContainer
 	{
 		protected bool m_Enable = new bool();
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2342790116)]
+		[ContainerField(Name: "Enable", Offset: 8, NameHash: 2342790116, Flags: 49325), LayoutImmutable, Blittable]
 		public bool Enable { get { return m_Enable; } set { if (OnPropertyChanging("OcclusionSettings." + nameof(Enable), this, m_Enable, value)) m_Enable = value; } } // 0x8 (8)
 		
 		protected bool m_DrawZbuffer = new bool();
-		[ContainerField(9), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(449305695)]
+		[ContainerField(Name: "DrawZbuffer", Offset: 9, NameHash: 449305695, Flags: 49325), LayoutImmutable, Blittable]
 		public bool DrawZbuffer { get { return m_DrawZbuffer; } set { if (OnPropertyChanging("OcclusionSettings." + nameof(DrawZbuffer), this, m_DrawZbuffer, value)) m_DrawZbuffer = value; } } // 0x9 (9)
 		
 		protected bool m_DrawBinaryBuffer = new bool();
-		[ContainerField(10), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(728628138)]
+		[ContainerField(Name: "DrawBinaryBuffer", Offset: 10, NameHash: 728628138, Flags: 49325), LayoutImmutable, Blittable]
 		public bool DrawBinaryBuffer { get { return m_DrawBinaryBuffer; } set { if (OnPropertyChanging("OcclusionSettings." + nameof(DrawBinaryBuffer), this, m_DrawBinaryBuffer, value)) m_DrawBinaryBuffer = value; } } // 0xA (10)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(128), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 128)]
 	public class SoldierFootplantEffectComponentData : 
 		ComponentData
 	{
 		protected CtrRef<MaterialContainerPair> m_FootMaterialPair = new CtrRef<MaterialContainerPair>();
-		[ContainerField(96), MemberInfoFlag(53), ContainerFieldNameHash(3867460534), ContainerCtrRef]
+		[ContainerField(Name: "FootMaterialPair", Offset: 96, NameHash: 3867460534, Flags: 53)]
 		public CtrRef<MaterialContainerPair> FootMaterialPair { get { return m_FootMaterialPair; } set { if (OnPropertyChanging("SoldierFootplantEffectComponentData." + nameof(FootMaterialPair), this, m_FootMaterialPair, value)) m_FootMaterialPair = value; } } // 0x60 (96)
 		
 		protected float m_HeightOverGroundThreshold = new float();
-		[ContainerField(100), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1421561158)]
+		[ContainerField(Name: "HeightOverGroundThreshold", Offset: 100, NameHash: 1421561158, Flags: 49469), LayoutImmutable, Blittable]
 		public float HeightOverGroundThreshold { get { return m_HeightOverGroundThreshold; } set { if (OnPropertyChanging("SoldierFootplantEffectComponentData." + nameof(HeightOverGroundThreshold), this, m_HeightOverGroundThreshold, value)) m_HeightOverGroundThreshold = value; } } // 0x64 (100)
 		
 		protected float m_FootVelocityThreshold = new float();
-		[ContainerField(104), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(4147690487)]
+		[ContainerField(Name: "FootVelocityThreshold", Offset: 104, NameHash: 4147690487, Flags: 49469), LayoutImmutable, Blittable]
 		public float FootVelocityThreshold { get { return m_FootVelocityThreshold; } set { if (OnPropertyChanging("SoldierFootplantEffectComponentData." + nameof(FootVelocityThreshold), this, m_FootVelocityThreshold, value)) m_FootVelocityThreshold = value; } } // 0x68 (104)
 		
 		protected float m_LodDistance = new float();
-		[ContainerField(108), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3054638721)]
+		[ContainerField(Name: "LodDistance", Offset: 108, NameHash: 3054638721, Flags: 49469), LayoutImmutable, Blittable]
 		public float LodDistance { get { return m_LodDistance; } set { if (OnPropertyChanging("SoldierFootplantEffectComponentData." + nameof(LodDistance), this, m_LodDistance, value)) m_LodDistance = value; } } // 0x6C (108)
 		
 		protected bool m_FullFootplantingEnabled = new bool();
-		[ContainerField(112), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2514567430)]
+		[ContainerField(Name: "FullFootplantingEnabled", Offset: 112, NameHash: 2514567430, Flags: 49325), LayoutImmutable, Blittable]
 		public bool FullFootplantingEnabled { get { return m_FullFootplantingEnabled; } set { if (OnPropertyChanging("SoldierFootplantEffectComponentData." + nameof(FullFootplantingEnabled), this, m_FullFootplantingEnabled, value)) m_FullFootplantingEnabled = value; } } // 0x70 (112)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

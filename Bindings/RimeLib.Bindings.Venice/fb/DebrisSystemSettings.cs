@@ -18,68 +18,68 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(44), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 44)]
 	public class DebrisSystemSettings : 
 		DataContainer
 	{
 		protected uint m_MeshDrawCountLimit = new uint();
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(3584341216)]
+		[ContainerField(Name: "MeshDrawCountLimit", Offset: 8, NameHash: 3584341216, Flags: 49421), LayoutImmutable, Blittable]
 		public uint MeshDrawCountLimit { get { return m_MeshDrawCountLimit; } set { if (OnPropertyChanging("DebrisSystemSettings." + nameof(MeshDrawCountLimit), this, m_MeshDrawCountLimit, value)) m_MeshDrawCountLimit = value; } } // 0x8 (8)
 		
 		protected float m_TimeScale = new float();
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(169511528)]
+		[ContainerField(Name: "TimeScale", Offset: 12, NameHash: 169511528, Flags: 49469), LayoutImmutable, Blittable]
 		public float TimeScale { get { return m_TimeScale; } set { if (OnPropertyChanging("DebrisSystemSettings." + nameof(TimeScale), this, m_TimeScale, value)) m_TimeScale = value; } } // 0xC (12)
 		
 		protected float m_MeshCullingDistance = new float();
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2057455619)]
+		[ContainerField(Name: "MeshCullingDistance", Offset: 16, NameHash: 2057455619, Flags: 49469), LayoutImmutable, Blittable]
 		public float MeshCullingDistance { get { return m_MeshCullingDistance; } set { if (OnPropertyChanging("DebrisSystemSettings." + nameof(MeshCullingDistance), this, m_MeshCullingDistance, value)) m_MeshCullingDistance = value; } } // 0x10 (16)
 		
 		protected uint m_DrawStats = new uint();
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(2413142628)]
+		[ContainerField(Name: "DrawStats", Offset: 20, NameHash: 2413142628, Flags: 49421), LayoutImmutable, Blittable]
 		public uint DrawStats { get { return m_DrawStats; } set { if (OnPropertyChanging("DebrisSystemSettings." + nameof(DrawStats), this, m_DrawStats, value)) m_DrawStats = value; } } // 0x14 (20)
 		
 		protected uint m_MeshBatchCountLimit = new uint();
-		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(1925711996)]
+		[ContainerField(Name: "MeshBatchCountLimit", Offset: 24, NameHash: 1925711996, Flags: 49421), LayoutImmutable, Blittable]
 		public uint MeshBatchCountLimit { get { return m_MeshBatchCountLimit; } set { if (OnPropertyChanging("DebrisSystemSettings." + nameof(MeshBatchCountLimit), this, m_MeshBatchCountLimit, value)) m_MeshBatchCountLimit = value; } } // 0x18 (24)
 		
 		protected float m_MeshStreamingPriorityMultiplier = new float();
-		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1971206387)]
+		[ContainerField(Name: "MeshStreamingPriorityMultiplier", Offset: 28, NameHash: 1971206387, Flags: 49469), LayoutImmutable, Blittable]
 		public float MeshStreamingPriorityMultiplier { get { return m_MeshStreamingPriorityMultiplier; } set { if (OnPropertyChanging("DebrisSystemSettings." + nameof(MeshStreamingPriorityMultiplier), this, m_MeshStreamingPriorityMultiplier, value)) m_MeshStreamingPriorityMultiplier = value; } } // 0x1C (28)
 		
 		protected bool m_MeshRenderingEnable = new bool();
-		[ContainerField(32), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2979790077)]
+		[ContainerField(Name: "MeshRenderingEnable", Offset: 32, NameHash: 2979790077, Flags: 49325), LayoutImmutable, Blittable]
 		public bool MeshRenderingEnable { get { return m_MeshRenderingEnable; } set { if (OnPropertyChanging("DebrisSystemSettings." + nameof(MeshRenderingEnable), this, m_MeshRenderingEnable, value)) m_MeshRenderingEnable = value; } } // 0x20 (32)
 		
 		protected bool m_EnableJobs = new bool();
-		[ContainerField(33), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1190923856)]
+		[ContainerField(Name: "EnableJobs", Offset: 33, NameHash: 1190923856, Flags: 49325), LayoutImmutable, Blittable]
 		public bool EnableJobs { get { return m_EnableJobs; } set { if (OnPropertyChanging("DebrisSystemSettings." + nameof(EnableJobs), this, m_EnableJobs, value)) m_EnableJobs = value; } } // 0x21 (33)
 		
 		protected bool m_MeshShadowEnable = new bool();
-		[ContainerField(34), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(418824849)]
+		[ContainerField(Name: "MeshShadowEnable", Offset: 34, NameHash: 418824849, Flags: 49325), LayoutImmutable, Blittable]
 		public bool MeshShadowEnable { get { return m_MeshShadowEnable; } set { if (OnPropertyChanging("DebrisSystemSettings." + nameof(MeshShadowEnable), this, m_MeshShadowEnable, value)) m_MeshShadowEnable = value; } } // 0x22 (34)
 		
 		protected bool m_MeshViewCullingEnable = new bool();
-		[ContainerField(35), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(875555468)]
+		[ContainerField(Name: "MeshViewCullingEnable", Offset: 35, NameHash: 875555468, Flags: 49325), LayoutImmutable, Blittable]
 		public bool MeshViewCullingEnable { get { return m_MeshViewCullingEnable; } set { if (OnPropertyChanging("DebrisSystemSettings." + nameof(MeshViewCullingEnable), this, m_MeshViewCullingEnable, value)) m_MeshViewCullingEnable = value; } } // 0x23 (35)
 		
 		protected bool m_MeshHavokRenderingEnable = new bool();
-		[ContainerField(36), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1194385862)]
+		[ContainerField(Name: "MeshHavokRenderingEnable", Offset: 36, NameHash: 1194385862, Flags: 49325), LayoutImmutable, Blittable]
 		public bool MeshHavokRenderingEnable { get { return m_MeshHavokRenderingEnable; } set { if (OnPropertyChanging("DebrisSystemSettings." + nameof(MeshHavokRenderingEnable), this, m_MeshHavokRenderingEnable, value)) m_MeshHavokRenderingEnable = value; } } // 0x24 (36)
 		
 		protected bool m_MeshDrawTransforms = new bool();
-		[ContainerField(37), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(67393161)]
+		[ContainerField(Name: "MeshDrawTransforms", Offset: 37, NameHash: 67393161, Flags: 49325), LayoutImmutable, Blittable]
 		public bool MeshDrawTransforms { get { return m_MeshDrawTransforms; } set { if (OnPropertyChanging("DebrisSystemSettings." + nameof(MeshDrawTransforms), this, m_MeshDrawTransforms, value)) m_MeshDrawTransforms = value; } } // 0x25 (37)
 		
 		protected bool m_Enable = new bool();
-		[ContainerField(38), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2342790116)]
+		[ContainerField(Name: "Enable", Offset: 38, NameHash: 2342790116, Flags: 49325), LayoutImmutable, Blittable]
 		public bool Enable { get { return m_Enable; } set { if (OnPropertyChanging("DebrisSystemSettings." + nameof(Enable), this, m_Enable, value)) m_Enable = value; } } // 0x26 (38)
 		
 		protected bool m_MeshDrawBoundingBoxes = new bool();
-		[ContainerField(39), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1284065831)]
+		[ContainerField(Name: "MeshDrawBoundingBoxes", Offset: 39, NameHash: 1284065831, Flags: 49325), LayoutImmutable, Blittable]
 		public bool MeshDrawBoundingBoxes { get { return m_MeshDrawBoundingBoxes; } set { if (OnPropertyChanging("DebrisSystemSettings." + nameof(MeshDrawBoundingBoxes), this, m_MeshDrawBoundingBoxes, value)) m_MeshDrawBoundingBoxes = value; } } // 0x27 (39)
 		
 		protected bool m_MeshDrawCullStats = new bool();
-		[ContainerField(40), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2146509665)]
+		[ContainerField(Name: "MeshDrawCullStats", Offset: 40, NameHash: 2146509665, Flags: 49325), LayoutImmutable, Blittable]
 		public bool MeshDrawCullStats { get { return m_MeshDrawCullStats; } set { if (OnPropertyChanging("DebrisSystemSettings." + nameof(MeshDrawCullStats), this, m_MeshDrawCullStats, value)) m_MeshDrawCullStats = value; } } // 0x28 (40)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

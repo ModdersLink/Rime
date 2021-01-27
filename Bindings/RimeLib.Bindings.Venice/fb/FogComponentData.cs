@@ -18,88 +18,88 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(208), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 208)]
 	public class FogComponentData : 
 		ComponentData
 	{
 		protected Vec4 m_Curve = new Vec4();
-		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(212866962)]
+		[ContainerField(Name: "Curve", Offset: 96, NameHash: 212866962, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec4 Curve { get { return m_Curve; } set { if (OnPropertyChanging("FogComponentData." + nameof(Curve), this, m_Curve, value)) m_Curve = value; } } // 0x60 (96)
 		
 		protected Vec4 m_FogColorCurve = new Vec4();
-		[ContainerField(112), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(1743450305)]
+		[ContainerField(Name: "FogColorCurve", Offset: 112, NameHash: 1743450305, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec4 FogColorCurve { get { return m_FogColorCurve; } set { if (OnPropertyChanging("FogComponentData." + nameof(FogColorCurve), this, m_FogColorCurve, value)) m_FogColorCurve = value; } } // 0x70 (112)
 		
 		protected Vec3 m_FogColor = new Vec3();
-		[ContainerField(128), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(361914486)]
+		[ContainerField(Name: "FogColor", Offset: 128, NameHash: 361914486, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 FogColor { get { return m_FogColor; } set { if (OnPropertyChanging("FogComponentData." + nameof(FogColor), this, m_FogColor, value)) m_FogColor = value; } } // 0x80 (128)
 		
 		protected float m_FogColorStart = new float();
-		[ContainerField(144), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1725847734)]
+		[ContainerField(Name: "FogColorStart", Offset: 144, NameHash: 1725847734, Flags: 49469), LayoutImmutable, Blittable]
 		public float FogColorStart { get { return m_FogColorStart; } set { if (OnPropertyChanging("FogComponentData." + nameof(FogColorStart), this, m_FogColorStart, value)) m_FogColorStart = value; } } // 0x90 (144)
 		
 		protected float m_FogDistanceMultiplier = new float();
-		[ContainerField(148), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2043637059)]
+		[ContainerField(Name: "FogDistanceMultiplier", Offset: 148, NameHash: 2043637059, Flags: 49469), LayoutImmutable, Blittable]
 		public float FogDistanceMultiplier { get { return m_FogDistanceMultiplier; } set { if (OnPropertyChanging("FogComponentData." + nameof(FogDistanceMultiplier), this, m_FogDistanceMultiplier, value)) m_FogDistanceMultiplier = value; } } // 0x94 (148)
 		
 		protected Realm m_Realm = new Realm();
-		[ContainerField(152), MemberInfoFlag(137), ContainerFieldNameHash(229961746)]
+		[ContainerField(Name: "Realm", Offset: 152, NameHash: 229961746, Flags: 137)]
 		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("FogComponentData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0x98 (152)
 		
 		protected float m_End = new float();
-		[ContainerField(156), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(193438506)]
+		[ContainerField(Name: "End", Offset: 156, NameHash: 193438506, Flags: 49469), LayoutImmutable, Blittable]
 		public float End { get { return m_End; } set { if (OnPropertyChanging("FogComponentData." + nameof(End), this, m_End, value)) m_End = value; } } // 0x9C (156)
 		
 		protected float m_TransparencyFadeStart = new float();
-		[ContainerField(160), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(986565259)]
+		[ContainerField(Name: "TransparencyFadeStart", Offset: 160, NameHash: 986565259, Flags: 49469), LayoutImmutable, Blittable]
 		public float TransparencyFadeStart { get { return m_TransparencyFadeStart; } set { if (OnPropertyChanging("FogComponentData." + nameof(TransparencyFadeStart), this, m_TransparencyFadeStart, value)) m_TransparencyFadeStart = value; } } // 0xA0 (160)
 		
 		protected float m_Start = new float();
-		[ContainerField(164), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(230748069)]
+		[ContainerField(Name: "Start", Offset: 164, NameHash: 230748069, Flags: 49469), LayoutImmutable, Blittable]
 		public float Start { get { return m_Start; } set { if (OnPropertyChanging("FogComponentData." + nameof(Start), this, m_Start, value)) m_Start = value; } } // 0xA4 (164)
 		
 		protected float m_TransparencyFadeEnd = new float();
-		[ContainerField(168), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(994775812)]
+		[ContainerField(Name: "TransparencyFadeEnd", Offset: 168, NameHash: 994775812, Flags: 49469), LayoutImmutable, Blittable]
 		public float TransparencyFadeEnd { get { return m_TransparencyFadeEnd; } set { if (OnPropertyChanging("FogComponentData." + nameof(TransparencyFadeEnd), this, m_TransparencyFadeEnd, value)) m_TransparencyFadeEnd = value; } } // 0xA8 (168)
 		
 		protected float m_FogColorEnd = new float();
-		[ContainerField(172), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(959976761)]
+		[ContainerField(Name: "FogColorEnd", Offset: 172, NameHash: 959976761, Flags: 49469), LayoutImmutable, Blittable]
 		public float FogColorEnd { get { return m_FogColorEnd; } set { if (OnPropertyChanging("FogComponentData." + nameof(FogColorEnd), this, m_FogColorEnd, value)) m_FogColorEnd = value; } } // 0xAC (172)
 		
 		protected float m_TransparencyFadeClamp = new float();
-		[ContainerField(176), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(967877752)]
+		[ContainerField(Name: "TransparencyFadeClamp", Offset: 176, NameHash: 967877752, Flags: 49469), LayoutImmutable, Blittable]
 		public float TransparencyFadeClamp { get { return m_TransparencyFadeClamp; } set { if (OnPropertyChanging("FogComponentData." + nameof(TransparencyFadeClamp), this, m_TransparencyFadeClamp, value)) m_TransparencyFadeClamp = value; } } // 0xB0 (176)
 		
 		protected float m_HeightFogVisibilityRange = new float();
-		[ContainerField(180), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2134547565)]
+		[ContainerField(Name: "HeightFogVisibilityRange", Offset: 180, NameHash: 2134547565, Flags: 49469), LayoutImmutable, Blittable]
 		public float HeightFogVisibilityRange { get { return m_HeightFogVisibilityRange; } set { if (OnPropertyChanging("FogComponentData." + nameof(HeightFogVisibilityRange), this, m_HeightFogVisibilityRange, value)) m_HeightFogVisibilityRange = value; } } // 0xB4 (180)
 		
 		protected float m_HeightFogAltitude = new float();
-		[ContainerField(184), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2293972388)]
+		[ContainerField(Name: "HeightFogAltitude", Offset: 184, NameHash: 2293972388, Flags: 49469), LayoutImmutable, Blittable]
 		public float HeightFogAltitude { get { return m_HeightFogAltitude; } set { if (OnPropertyChanging("FogComponentData." + nameof(HeightFogAltitude), this, m_HeightFogAltitude, value)) m_HeightFogAltitude = value; } } // 0xB8 (184)
 		
 		protected float m_HeightFogDepth = new float();
-		[ContainerField(188), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2648051353)]
+		[ContainerField(Name: "HeightFogDepth", Offset: 188, NameHash: 2648051353, Flags: 49469), LayoutImmutable, Blittable]
 		public float HeightFogDepth { get { return m_HeightFogDepth; } set { if (OnPropertyChanging("FogComponentData." + nameof(HeightFogDepth), this, m_HeightFogDepth, value)) m_HeightFogDepth = value; } } // 0xBC (188)
 		
 		protected float m_HeightFogFollowCamera = new float();
-		[ContainerField(192), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2492969564)]
+		[ContainerField(Name: "HeightFogFollowCamera", Offset: 192, NameHash: 2492969564, Flags: 49469), LayoutImmutable, Blittable]
 		public float HeightFogFollowCamera { get { return m_HeightFogFollowCamera; } set { if (OnPropertyChanging("FogComponentData." + nameof(HeightFogFollowCamera), this, m_HeightFogFollowCamera, value)) m_HeightFogFollowCamera = value; } } // 0xC0 (192)
 		
 		protected bool m_FogGradientEnable = new bool();
-		[ContainerField(196), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(669336364)]
+		[ContainerField(Name: "FogGradientEnable", Offset: 196, NameHash: 669336364, Flags: 49325), LayoutImmutable, Blittable]
 		public bool FogGradientEnable { get { return m_FogGradientEnable; } set { if (OnPropertyChanging("FogComponentData." + nameof(FogGradientEnable), this, m_FogGradientEnable, value)) m_FogGradientEnable = value; } } // 0xC4 (196)
 		
 		protected bool m_Enable = new bool();
-		[ContainerField(197), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2342790116)]
+		[ContainerField(Name: "Enable", Offset: 197, NameHash: 2342790116, Flags: 49325), LayoutImmutable, Blittable]
 		public bool Enable { get { return m_Enable; } set { if (OnPropertyChanging("FogComponentData." + nameof(Enable), this, m_Enable, value)) m_Enable = value; } } // 0xC5 (197)
 		
 		protected bool m_HeightFogEnable = new bool();
-		[ContainerField(198), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1467683669)]
+		[ContainerField(Name: "HeightFogEnable", Offset: 198, NameHash: 1467683669, Flags: 49325), LayoutImmutable, Blittable]
 		public bool HeightFogEnable { get { return m_HeightFogEnable; } set { if (OnPropertyChanging("FogComponentData." + nameof(HeightFogEnable), this, m_HeightFogEnable, value)) m_HeightFogEnable = value; } } // 0xC6 (198)
 		
 		protected bool m_FogColorEnable = new bool();
-		[ContainerField(199), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1507686231)]
+		[ContainerField(Name: "FogColorEnable", Offset: 199, NameHash: 1507686231, Flags: 49325), LayoutImmutable, Blittable]
 		public bool FogColorEnable { get { return m_FogColorEnable; } set { if (OnPropertyChanging("FogComponentData." + nameof(FogColorEnable), this, m_FogColorEnable, value)) m_FogColorEnable = value; } } // 0xC7 (199)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

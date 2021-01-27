@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(128), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 128)]
 	public class ClientEffectMaskVolumeEntityData : 
 		GameEntityData
 	{
 		protected Vec4 m_ApplyEffectCurve = new Vec4();
-		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(2484955953)]
+		[ContainerField(Name: "ApplyEffectCurve", Offset: 96, NameHash: 2484955953, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec4 ApplyEffectCurve { get { return m_ApplyEffectCurve; } set { if (OnPropertyChanging("ClientEffectMaskVolumeEntityData." + nameof(ApplyEffectCurve), this, m_ApplyEffectCurve, value)) m_ApplyEffectCurve = value; } } // 0x60 (96)
 		
 		protected float m_LifeTimeInSeconds = new float();
-		[ContainerField(112), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3163808466)]
+		[ContainerField(Name: "LifeTimeInSeconds", Offset: 112, NameHash: 3163808466, Flags: 49469), LayoutImmutable, Blittable]
 		public float LifeTimeInSeconds { get { return m_LifeTimeInSeconds; } set { if (OnPropertyChanging("ClientEffectMaskVolumeEntityData." + nameof(LifeTimeInSeconds), this, m_LifeTimeInSeconds, value)) m_LifeTimeInSeconds = value; } } // 0x70 (112)
 		
 		protected float m_UpdatePeriodInSeconds = new float();
-		[ContainerField(116), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1890008213)]
+		[ContainerField(Name: "UpdatePeriodInSeconds", Offset: 116, NameHash: 1890008213, Flags: 49469), LayoutImmutable, Blittable]
 		public float UpdatePeriodInSeconds { get { return m_UpdatePeriodInSeconds; } set { if (OnPropertyChanging("ClientEffectMaskVolumeEntityData." + nameof(UpdatePeriodInSeconds), this, m_UpdatePeriodInSeconds, value)) m_UpdatePeriodInSeconds = value; } } // 0x74 (116)
 		
 		protected float m_Radius = new float();
-		[ContainerField(120), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3298407133)]
+		[ContainerField(Name: "Radius", Offset: 120, NameHash: 3298407133, Flags: 49469), LayoutImmutable, Blittable]
 		public float Radius { get { return m_Radius; } set { if (OnPropertyChanging("ClientEffectMaskVolumeEntityData." + nameof(Radius), this, m_Radius, value)) m_Radius = value; } } // 0x78 (120)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

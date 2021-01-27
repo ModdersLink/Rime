@@ -18,7 +18,7 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(240), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 240)]
 	public class UINametagSPCompData : 
 		UINametagCompData
 	{

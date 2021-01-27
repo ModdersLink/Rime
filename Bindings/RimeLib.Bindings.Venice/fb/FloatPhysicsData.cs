@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(16), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
 	public class FloatPhysicsData : 
 		DataContainer
 	{
 		protected float m_Density = new float();
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(4008572221)]
+		[ContainerField(Name: "Density", Offset: 8, NameHash: 4008572221, Flags: 49469), LayoutImmutable, Blittable]
 		public float Density { get { return m_Density; } set { if (OnPropertyChanging("FloatPhysicsData." + nameof(Density), this, m_Density, value)) m_Density = value; } } // 0x8 (8)
 		
 		protected float m_FilledDensity = new float();
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1851378675)]
+		[ContainerField(Name: "FilledDensity", Offset: 12, NameHash: 1851378675, Flags: 49469), LayoutImmutable, Blittable]
 		public float FilledDensity { get { return m_FilledDensity; } set { if (OnPropertyChanging("FloatPhysicsData." + nameof(FilledDensity), this, m_FilledDensity, value)) m_FilledDensity = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

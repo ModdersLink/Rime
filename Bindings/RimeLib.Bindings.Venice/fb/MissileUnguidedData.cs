@@ -18,19 +18,19 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(20), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 20)]
 	public class MissileUnguidedData : FrostbiteContainer
 	{
-		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
+		[ContainerField(Name: "StaticPosition", Offset: 0, NameHash: 242876836, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec2 StaticPosition { get; set; } = new Vec2(); // 0x0 (0)
 		
-		[ContainerField(8), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
+		[ContainerField(Name: "TargetPositionOffset", Offset: 8, NameHash: 3190891072, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec2 TargetPositionOffset { get; set; } = new Vec2(); // 0x8 (8)
 		
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "UseTargetPosition", Offset: 16, NameHash: 1827844270, Flags: 49325), LayoutImmutable, Blittable]
 		public bool UseTargetPosition { get; set; } // 0x10 (16)
 		
-		[ContainerField(17), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "UseStaticPosition", Offset: 17, NameHash: 753327591, Flags: 49325), LayoutImmutable, Blittable]
 		public bool UseStaticPosition { get; set; } // 0x11 (17)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

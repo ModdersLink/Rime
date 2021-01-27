@@ -18,13 +18,13 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(8), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 8)]
 	public class AudioLanguageMapping : FrostbiteContainer
 	{
-		[ContainerField(0), MemberInfoFlag(53), ContainerCtrRef]
+		[ContainerField(Name: "Source", Offset: 0, NameHash: 3339738264, Flags: 53)]
 		public CtrRef<AudioLanguage> Source { get; set; } = new CtrRef<AudioLanguage>(); // 0x0 (0)
 		
-		[ContainerField(4), MemberInfoFlag(53), ContainerCtrRef]
+		[ContainerField(Name: "Target", Offset: 4, NameHash: 3215022804, Flags: 53)]
 		public CtrRef<AudioLanguage> Target { get; set; } = new CtrRef<AudioLanguage>(); // 0x4 (4)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

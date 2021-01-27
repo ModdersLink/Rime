@@ -18,13 +18,13 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(8), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 8)]
 	public class DebrisSystemMetrics : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, Blittable, MemberInfoFlag(49405)]
+		[ContainerField(Name: "HavokParticleCount", Offset: 0, NameHash: 3946001929, Flags: 49405), LayoutImmutable, Blittable]
 		public int HavokParticleCount { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable, Blittable, MemberInfoFlag(49405)]
+		[ContainerField(Name: "HavokParticlePartCount", Offset: 4, NameHash: 580687198, Flags: 49405), LayoutImmutable, Blittable]
 		public int HavokParticlePartCount { get; set; } // 0x4 (4)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

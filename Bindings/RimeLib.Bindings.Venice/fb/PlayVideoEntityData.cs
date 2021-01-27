@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(20), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 20)]
 	public class PlayVideoEntityData : 
 		EntityData
 	{
 		protected CtrRef<MovieTextureAsset> m_Movie = new CtrRef<MovieTextureAsset>();
-		[ContainerField(12), MemberInfoFlag(53), ContainerFieldNameHash(210030653), ContainerCtrRef]
+		[ContainerField(Name: "Movie", Offset: 12, NameHash: 210030653, Flags: 53)]
 		public CtrRef<MovieTextureAsset> Movie { get { return m_Movie; } set { if (OnPropertyChanging("PlayVideoEntityData." + nameof(Movie), this, m_Movie, value)) m_Movie = value; } } // 0xC (12)
 		
 		protected bool m_KeepBlackScreen = new bool();
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1584450997)]
+		[ContainerField(Name: "KeepBlackScreen", Offset: 16, NameHash: 1584450997, Flags: 49325), LayoutImmutable, Blittable]
 		public bool KeepBlackScreen { get { return m_KeepBlackScreen; } set { if (OnPropertyChanging("PlayVideoEntityData." + nameof(KeepBlackScreen), this, m_KeepBlackScreen, value)) m_KeepBlackScreen = value; } } // 0x10 (16)
 		
 		protected bool m_AllowSkip = new bool();
-		[ContainerField(17), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2314030141)]
+		[ContainerField(Name: "AllowSkip", Offset: 17, NameHash: 2314030141, Flags: 49325), LayoutImmutable, Blittable]
 		public bool AllowSkip { get { return m_AllowSkip; } set { if (OnPropertyChanging("PlayVideoEntityData." + nameof(AllowSkip), this, m_AllowSkip, value)) m_AllowSkip = value; } } // 0x11 (17)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(20), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 20)]
 	public class UIRankDescription : 
 		UIItemDescription
 	{
 		protected bool m_IgnoreBuild = new bool();
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1608120075)]
+		[ContainerField(Name: "IgnoreBuild", Offset: 16, NameHash: 1608120075, Flags: 49325), LayoutImmutable, Blittable]
 		public bool IgnoreBuild { get { return m_IgnoreBuild; } set { if (OnPropertyChanging("UIRankDescription." + nameof(IgnoreBuild), this, m_IgnoreBuild, value)) m_IgnoreBuild = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

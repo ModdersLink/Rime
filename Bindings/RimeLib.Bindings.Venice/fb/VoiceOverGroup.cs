@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(16), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
 	public class VoiceOverGroup : 
 		DataContainer
 	{
 		protected string m_Name = string.Empty;
-		[ContainerField(8), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(2088949890)]
+		[ContainerField(Name: "Name", Offset: 8, NameHash: 2088949890, Flags: 16509), LayoutImmutable]
 		public string Name { get { return m_Name; } set { if (OnPropertyChanging("VoiceOverGroup." + nameof(Name), this, m_Name, value)) m_Name = value; } } // 0x8 (8)
 		
 		protected int m_Priority = new int();
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(3062102871)]
+		[ContainerField(Name: "Priority", Offset: 12, NameHash: 3062102871, Flags: 49405), LayoutImmutable, Blittable]
 		public int Priority { get { return m_Priority; } set { if (OnPropertyChanging("VoiceOverGroup." + nameof(Priority), this, m_Priority, value)) m_Priority = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

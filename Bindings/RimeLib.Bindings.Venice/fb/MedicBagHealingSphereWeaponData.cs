@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(32), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 32)]
 	public class MedicBagHealingSphereWeaponData : 
 		WeaponData
 	{
 		protected HealingSphereData m_Healer = new HealingSphereData();
-		[ContainerField(16), MemberInfoFlag(41), ContainerFieldNameHash(3054336626)]
+		[ContainerField(Name: "Healer", Offset: 16, NameHash: 3054336626, Flags: 41)]
 		public HealingSphereData Healer { get { return m_Healer; } set { if (OnPropertyChanging("MedicBagHealingSphereWeaponData." + nameof(Healer), this, m_Healer, value)) m_Healer = value; } } // 0x10 (16)
 		
 		protected float m_HealthPointsRefillSpeed = new float();
-		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(677121433)]
+		[ContainerField(Name: "HealthPointsRefillSpeed", Offset: 24, NameHash: 677121433, Flags: 49469), LayoutImmutable, Blittable]
 		public float HealthPointsRefillSpeed { get { return m_HealthPointsRefillSpeed; } set { if (OnPropertyChanging("MedicBagHealingSphereWeaponData." + nameof(HealthPointsRefillSpeed), this, m_HealthPointsRefillSpeed, value)) m_HealthPointsRefillSpeed = value; } } // 0x18 (24)
 		
 		protected float m_HealthPointsPerBag = new float();
-		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(134333413)]
+		[ContainerField(Name: "HealthPointsPerBag", Offset: 28, NameHash: 134333413, Flags: 49469), LayoutImmutable, Blittable]
 		public float HealthPointsPerBag { get { return m_HealthPointsPerBag; } set { if (OnPropertyChanging("MedicBagHealingSphereWeaponData." + nameof(HealthPointsPerBag), this, m_HealthPointsPerBag, value)) m_HealthPointsPerBag = value; } } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

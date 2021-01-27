@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(16), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
 	public class GameAnimationConfig : 
 		Asset
 	{
 		protected bool m_ServerEnable = new bool();
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3875294337)]
+		[ContainerField(Name: "ServerEnable", Offset: 12, NameHash: 3875294337, Flags: 49325), LayoutImmutable, Blittable]
 		public bool ServerEnable { get { return m_ServerEnable; } set { if (OnPropertyChanging("GameAnimationConfig." + nameof(ServerEnable), this, m_ServerEnable, value)) m_ServerEnable = value; } } // 0xC (12)
 		
 		protected bool m_ClientEnable = new bool();
-		[ContainerField(13), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1069919325)]
+		[ContainerField(Name: "ClientEnable", Offset: 13, NameHash: 1069919325, Flags: 49325), LayoutImmutable, Blittable]
 		public bool ClientEnable { get { return m_ClientEnable; } set { if (OnPropertyChanging("GameAnimationConfig." + nameof(ClientEnable), this, m_ClientEnable, value)) m_ClientEnable = value; } } // 0xD (13)
 		
 		protected bool m_UseRawGamepadInput = new bool();
-		[ContainerField(14), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2767734287)]
+		[ContainerField(Name: "UseRawGamepadInput", Offset: 14, NameHash: 2767734287, Flags: 49325), LayoutImmutable, Blittable]
 		public bool UseRawGamepadInput { get { return m_UseRawGamepadInput; } set { if (OnPropertyChanging("GameAnimationConfig." + nameof(UseRawGamepadInput), this, m_UseRawGamepadInput, value)) m_UseRawGamepadInput = value; } } // 0xE (14)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

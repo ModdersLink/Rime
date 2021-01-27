@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(28), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 28)]
 	public class HoldAndReleaseData : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "MaxHoldTime", Offset: 0, NameHash: 2026966059, Flags: 49469), LayoutImmutable, Blittable]
 		public float MaxHoldTime { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "MinPowerModifier", Offset: 4, NameHash: 1396894279, Flags: 49469), LayoutImmutable, Blittable]
 		public float MinPowerModifier { get; set; } // 0x4 (4)
 		
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "MaxPowerModifier", Offset: 8, NameHash: 4200451609, Flags: 49469), LayoutImmutable, Blittable]
 		public float MaxPowerModifier { get; set; } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "PowerIncreasePerSecond", Offset: 12, NameHash: 1198568329, Flags: 49469), LayoutImmutable, Blittable]
 		public float PowerIncreasePerSecond { get; set; } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "Delay", Offset: 16, NameHash: 208768368, Flags: 49469), LayoutImmutable, Blittable]
 		public float Delay { get; set; } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "KilledHoldingPowerModifier", Offset: 20, NameHash: 1213290625, Flags: 49469), LayoutImmutable, Blittable]
 		public float KilledHoldingPowerModifier { get; set; } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "ForceFireWhenKilledHolding", Offset: 24, NameHash: 2172080088, Flags: 49325), LayoutImmutable, Blittable]
 		public bool ForceFireWhenKilledHolding { get; set; } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

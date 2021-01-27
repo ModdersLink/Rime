@@ -18,120 +18,120 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(192), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 192)]
 	public class SoldierAimAssistData : 
 		GameDataContainer
 	{
 		protected Vec3 m_EyePosOffset = new Vec3();
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(334053853)]
+		[ContainerField(Name: "EyePosOffset", Offset: 16, NameHash: 334053853, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 EyePosOffset { get { return m_EyePosOffset; } set { if (OnPropertyChanging("SoldierAimAssistData." + nameof(EyePosOffset), this, m_EyePosOffset, value)) m_EyePosOffset = value; } } // 0x10 (16)
 		
 		protected Vec3 m_StickyBoxScale = new Vec3();
-		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(3854254263)]
+		[ContainerField(Name: "StickyBoxScale", Offset: 32, NameHash: 3854254263, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 StickyBoxScale { get { return m_StickyBoxScale; } set { if (OnPropertyChanging("SoldierAimAssistData." + nameof(StickyBoxScale), this, m_StickyBoxScale, value)) m_StickyBoxScale = value; } } // 0x20 (32)
 		
 		protected Vec3 m_SnapDistanceScale = new Vec3();
-		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(3981710610)]
+		[ContainerField(Name: "SnapDistanceScale", Offset: 48, NameHash: 3981710610, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 SnapDistanceScale { get { return m_SnapDistanceScale; } set { if (OnPropertyChanging("SoldierAimAssistData." + nameof(SnapDistanceScale), this, m_SnapDistanceScale, value)) m_SnapDistanceScale = value; } } // 0x30 (48)
 		
 		protected Vec3 m_SnapBoxScale = new Vec3();
-		[ContainerField(64), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(425834884)]
+		[ContainerField(Name: "SnapBoxScale", Offset: 64, NameHash: 425834884, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 SnapBoxScale { get { return m_SnapBoxScale; } set { if (OnPropertyChanging("SoldierAimAssistData." + nameof(SnapBoxScale), this, m_SnapBoxScale, value)) m_SnapBoxScale = value; } } // 0x40 (64)
 		
 		protected Vec3 m_StickyDistanceScale = new Vec3();
-		[ContainerField(80), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(1797517697)]
+		[ContainerField(Name: "StickyDistanceScale", Offset: 80, NameHash: 1797517697, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 StickyDistanceScale { get { return m_StickyDistanceScale; } set { if (OnPropertyChanging("SoldierAimAssistData." + nameof(StickyDistanceScale), this, m_StickyDistanceScale, value)) m_StickyDistanceScale = value; } } // 0x50 (80)
 		
 		protected Vec2 m_MaxAcceleration = new Vec2();
-		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(1511134867)]
+		[ContainerField(Name: "MaxAcceleration", Offset: 96, NameHash: 1511134867, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec2 MaxAcceleration { get { return m_MaxAcceleration; } set { if (OnPropertyChanging("SoldierAimAssistData." + nameof(MaxAcceleration), this, m_MaxAcceleration, value)) m_MaxAcceleration = value; } } // 0x60 (96)
 		
 		protected float m_AccelerationDamping = new float();
-		[ContainerField(104), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3904446687)]
+		[ContainerField(Name: "AccelerationDamping", Offset: 104, NameHash: 3904446687, Flags: 49469), LayoutImmutable, Blittable]
 		public float AccelerationDamping { get { return m_AccelerationDamping; } set { if (OnPropertyChanging("SoldierAimAssistData." + nameof(AccelerationDamping), this, m_AccelerationDamping, value)) m_AccelerationDamping = value; } } // 0x68 (104)
 		
 		protected float m_AccelerationInputThreshold = new float();
-		[ContainerField(108), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(438577286)]
+		[ContainerField(Name: "AccelerationInputThreshold", Offset: 108, NameHash: 438577286, Flags: 49469), LayoutImmutable, Blittable]
 		public float AccelerationInputThreshold { get { return m_AccelerationInputThreshold; } set { if (OnPropertyChanging("SoldierAimAssistData." + nameof(AccelerationInputThreshold), this, m_AccelerationInputThreshold, value)) m_AccelerationInputThreshold = value; } } // 0x6C (108)
 		
 		protected float m_AccelerationMultiplier = new float();
-		[ContainerField(112), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(609974796)]
+		[ContainerField(Name: "AccelerationMultiplier", Offset: 112, NameHash: 609974796, Flags: 49469), LayoutImmutable, Blittable]
 		public float AccelerationMultiplier { get { return m_AccelerationMultiplier; } set { if (OnPropertyChanging("SoldierAimAssistData." + nameof(AccelerationMultiplier), this, m_AccelerationMultiplier, value)) m_AccelerationMultiplier = value; } } // 0x70 (112)
 		
 		protected float m_SquaredAcceleration = new float();
-		[ContainerField(116), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2257519106)]
+		[ContainerField(Name: "SquaredAcceleration", Offset: 116, NameHash: 2257519106, Flags: 49469), LayoutImmutable, Blittable]
 		public float SquaredAcceleration { get { return m_SquaredAcceleration; } set { if (OnPropertyChanging("SoldierAimAssistData." + nameof(SquaredAcceleration), this, m_SquaredAcceleration, value)) m_SquaredAcceleration = value; } } // 0x74 (116)
 		
 		protected float m_YawSpeedStrength = new float();
-		[ContainerField(120), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2553748136)]
+		[ContainerField(Name: "YawSpeedStrength", Offset: 120, NameHash: 2553748136, Flags: 49469), LayoutImmutable, Blittable]
 		public float YawSpeedStrength { get { return m_YawSpeedStrength; } set { if (OnPropertyChanging("SoldierAimAssistData." + nameof(YawSpeedStrength), this, m_YawSpeedStrength, value)) m_YawSpeedStrength = value; } } // 0x78 (120)
 		
 		protected List<float> m_ZoomedInputPolynomial = new List<float>();
-		[ContainerField(124), MemberInfoFlag(65), ContainerFieldNameHash(1758785415), ContainerArray]
+		[ContainerField(Name: "ZoomedInputPolynomial", Offset: 124, NameHash: 1758785415, Flags: 65)]
 		public List<float> ZoomedInputPolynomial { get { return m_ZoomedInputPolynomial; } set { if (OnPropertyChanging("SoldierAimAssistData." + nameof(ZoomedInputPolynomial), this, m_ZoomedInputPolynomial, value)) m_ZoomedInputPolynomial = value; } } // 0x7C (124)
 		
 		protected float m_AccelerationTimeThreshold = new float();
-		[ContainerField(128), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(805561701)]
+		[ContainerField(Name: "AccelerationTimeThreshold", Offset: 128, NameHash: 805561701, Flags: 49469), LayoutImmutable, Blittable]
 		public float AccelerationTimeThreshold { get { return m_AccelerationTimeThreshold; } set { if (OnPropertyChanging("SoldierAimAssistData." + nameof(AccelerationTimeThreshold), this, m_AccelerationTimeThreshold, value)) m_AccelerationTimeThreshold = value; } } // 0x80 (128)
 		
 		protected List<float> m_AttractDistanceFallOff = new List<float>();
-		[ContainerField(132), MemberInfoFlag(65), ContainerFieldNameHash(422416875), ContainerArray]
+		[ContainerField(Name: "AttractDistanceFallOff", Offset: 132, NameHash: 422416875, Flags: 65)]
 		public List<float> AttractDistanceFallOff { get { return m_AttractDistanceFallOff; } set { if (OnPropertyChanging("SoldierAimAssistData." + nameof(AttractDistanceFallOff), this, m_AttractDistanceFallOff, value)) m_AttractDistanceFallOff = value; } } // 0x84 (132)
 		
 		protected float m_AttractUserInputMultiplier = new float();
-		[ContainerField(136), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(583637228)]
+		[ContainerField(Name: "AttractUserInputMultiplier", Offset: 136, NameHash: 583637228, Flags: 49469), LayoutImmutable, Blittable]
 		public float AttractUserInputMultiplier { get { return m_AttractUserInputMultiplier; } set { if (OnPropertyChanging("SoldierAimAssistData." + nameof(AttractUserInputMultiplier), this, m_AttractUserInputMultiplier, value)) m_AttractUserInputMultiplier = value; } } // 0x88 (136)
 		
 		protected float m_AttractOwnSpeedInfluence = new float();
-		[ContainerField(140), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2072441956)]
+		[ContainerField(Name: "AttractOwnSpeedInfluence", Offset: 140, NameHash: 2072441956, Flags: 49469), LayoutImmutable, Blittable]
 		public float AttractOwnSpeedInfluence { get { return m_AttractOwnSpeedInfluence; } set { if (OnPropertyChanging("SoldierAimAssistData." + nameof(AttractOwnSpeedInfluence), this, m_AttractOwnSpeedInfluence, value)) m_AttractOwnSpeedInfluence = value; } } // 0x8C (140)
 		
 		protected float m_AttractTargetSpeedInfluence = new float();
-		[ContainerField(144), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(4195244099)]
+		[ContainerField(Name: "AttractTargetSpeedInfluence", Offset: 144, NameHash: 4195244099, Flags: 49469), LayoutImmutable, Blittable]
 		public float AttractTargetSpeedInfluence { get { return m_AttractTargetSpeedInfluence; } set { if (OnPropertyChanging("SoldierAimAssistData." + nameof(AttractTargetSpeedInfluence), this, m_AttractTargetSpeedInfluence, value)) m_AttractTargetSpeedInfluence = value; } } // 0x90 (144)
 		
 		protected float m_AttractOwnRequiredMovementForMaximumAttract = new float();
-		[ContainerField(148), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3256866282)]
+		[ContainerField(Name: "AttractOwnRequiredMovementForMaximumAttract", Offset: 148, NameHash: 3256866282, Flags: 49469), LayoutImmutable, Blittable]
 		public float AttractOwnRequiredMovementForMaximumAttract { get { return m_AttractOwnRequiredMovementForMaximumAttract; } set { if (OnPropertyChanging("SoldierAimAssistData." + nameof(AttractOwnRequiredMovementForMaximumAttract), this, m_AttractOwnRequiredMovementForMaximumAttract, value)) m_AttractOwnRequiredMovementForMaximumAttract = value; } } // 0x94 (148)
 		
 		protected float m_AttractStartInputThreshold = new float();
-		[ContainerField(152), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3874172161)]
+		[ContainerField(Name: "AttractStartInputThreshold", Offset: 152, NameHash: 3874172161, Flags: 49469), LayoutImmutable, Blittable]
 		public float AttractStartInputThreshold { get { return m_AttractStartInputThreshold; } set { if (OnPropertyChanging("SoldierAimAssistData." + nameof(AttractStartInputThreshold), this, m_AttractStartInputThreshold, value)) m_AttractStartInputThreshold = value; } } // 0x98 (152)
 		
 		protected float m_AttractZoomingMultiplier = new float();
-		[ContainerField(156), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2845655516)]
+		[ContainerField(Name: "AttractZoomingMultiplier", Offset: 156, NameHash: 2845655516, Flags: 49469), LayoutImmutable, Blittable]
 		public float AttractZoomingMultiplier { get { return m_AttractZoomingMultiplier; } set { if (OnPropertyChanging("SoldierAimAssistData." + nameof(AttractZoomingMultiplier), this, m_AttractZoomingMultiplier, value)) m_AttractZoomingMultiplier = value; } } // 0x9C (156)
 		
 		protected float m_AttractZoomingPostTime = new float();
-		[ContainerField(160), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(286135002)]
+		[ContainerField(Name: "AttractZoomingPostTime", Offset: 160, NameHash: 286135002, Flags: 49469), LayoutImmutable, Blittable]
 		public float AttractZoomingPostTime { get { return m_AttractZoomingPostTime; } set { if (OnPropertyChanging("SoldierAimAssistData." + nameof(AttractZoomingPostTime), this, m_AttractZoomingPostTime, value)) m_AttractZoomingPostTime = value; } } // 0xA0 (160)
 		
 		protected float m_AttractYawStrength = new float();
-		[ContainerField(164), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(4291196522)]
+		[ContainerField(Name: "AttractYawStrength", Offset: 164, NameHash: 4291196522, Flags: 49469), LayoutImmutable, Blittable]
 		public float AttractYawStrength { get { return m_AttractYawStrength; } set { if (OnPropertyChanging("SoldierAimAssistData." + nameof(AttractYawStrength), this, m_AttractYawStrength, value)) m_AttractYawStrength = value; } } // 0xA4 (164)
 		
 		protected float m_AttractPitchStrength = new float();
-		[ContainerField(168), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2360266947)]
+		[ContainerField(Name: "AttractPitchStrength", Offset: 168, NameHash: 2360266947, Flags: 49469), LayoutImmutable, Blittable]
 		public float AttractPitchStrength { get { return m_AttractPitchStrength; } set { if (OnPropertyChanging("SoldierAimAssistData." + nameof(AttractPitchStrength), this, m_AttractPitchStrength, value)) m_AttractPitchStrength = value; } } // 0xA8 (168)
 		
 		protected float m_PitchSpeedStrength = new float();
-		[ContainerField(172), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1028465505)]
+		[ContainerField(Name: "PitchSpeedStrength", Offset: 172, NameHash: 1028465505, Flags: 49469), LayoutImmutable, Blittable]
 		public float PitchSpeedStrength { get { return m_PitchSpeedStrength; } set { if (OnPropertyChanging("SoldierAimAssistData." + nameof(PitchSpeedStrength), this, m_PitchSpeedStrength, value)) m_PitchSpeedStrength = value; } } // 0xAC (172)
 		
 		protected float m_AttractSoftZone = new float();
-		[ContainerField(176), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2537844656)]
+		[ContainerField(Name: "AttractSoftZone", Offset: 176, NameHash: 2537844656, Flags: 49469), LayoutImmutable, Blittable]
 		public float AttractSoftZone { get { return m_AttractSoftZone; } set { if (OnPropertyChanging("SoldierAimAssistData." + nameof(AttractSoftZone), this, m_AttractSoftZone, value)) m_AttractSoftZone = value; } } // 0xB0 (176)
 		
 		protected List<float> m_InputPolynomial = new List<float>();
-		[ContainerField(180), MemberInfoFlag(65), ContainerFieldNameHash(1051263345), ContainerArray]
+		[ContainerField(Name: "InputPolynomial", Offset: 180, NameHash: 1051263345, Flags: 65)]
 		public List<float> InputPolynomial { get { return m_InputPolynomial; } set { if (OnPropertyChanging("SoldierAimAssistData." + nameof(InputPolynomial), this, m_InputPolynomial, value)) m_InputPolynomial = value; } } // 0xB4 (180)
 		
 		protected bool m_UseYawAcceleration = new bool();
-		[ContainerField(184), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2274673707)]
+		[ContainerField(Name: "UseYawAcceleration", Offset: 184, NameHash: 2274673707, Flags: 49325), LayoutImmutable, Blittable]
 		public bool UseYawAcceleration { get { return m_UseYawAcceleration; } set { if (OnPropertyChanging("SoldierAimAssistData." + nameof(UseYawAcceleration), this, m_UseYawAcceleration, value)) m_UseYawAcceleration = value; } } // 0xB8 (184)
 		
 		protected bool m_UsePitchAcceleration = new bool();
-		[ContainerField(185), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(142087170)]
+		[ContainerField(Name: "UsePitchAcceleration", Offset: 185, NameHash: 142087170, Flags: 49325), LayoutImmutable, Blittable]
 		public bool UsePitchAcceleration { get { return m_UsePitchAcceleration; } set { if (OnPropertyChanging("SoldierAimAssistData." + nameof(UsePitchAcceleration), this, m_UsePitchAcceleration, value)) m_UsePitchAcceleration = value; } } // 0xB9 (185)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

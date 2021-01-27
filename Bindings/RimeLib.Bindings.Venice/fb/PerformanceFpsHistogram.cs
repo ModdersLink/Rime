@@ -18,31 +18,31 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(32), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 32)]
 	public class PerformanceFpsHistogram : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "Below5", Offset: 0, NameHash: 2668044995, Flags: 49469), LayoutImmutable, Blittable]
 		public float Below5 { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "Below10", Offset: 4, NameHash: 2146139031, Flags: 49469), LayoutImmutable, Blittable]
 		public float Below10 { get; set; } // 0x4 (4)
 		
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "Below15", Offset: 8, NameHash: 2146139026, Flags: 49469), LayoutImmutable, Blittable]
 		public float Below15 { get; set; } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "Below20", Offset: 12, NameHash: 2146138996, Flags: 49469), LayoutImmutable, Blittable]
 		public float Below20 { get; set; } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "Below25", Offset: 16, NameHash: 2146138993, Flags: 49469), LayoutImmutable, Blittable]
 		public float Below25 { get; set; } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "Below30", Offset: 20, NameHash: 2146138965, Flags: 49469), LayoutImmutable, Blittable]
 		public float Below30 { get; set; } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "Below60", Offset: 24, NameHash: 2146138864, Flags: 49469), LayoutImmutable, Blittable]
 		public float Below60 { get; set; } // 0x18 (24)
 		
-		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "Above60", Offset: 28, NameHash: 402579644, Flags: 49469), LayoutImmutable, Blittable]
 		public float Above60 { get; set; } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

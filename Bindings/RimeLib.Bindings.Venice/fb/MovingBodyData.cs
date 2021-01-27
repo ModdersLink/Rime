@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(16), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
 	public class MovingBodyData : 
 		DataContainer
 	{
 		protected float m_Mass = new float();
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2088779625)]
+		[ContainerField(Name: "Mass", Offset: 8, NameHash: 2088779625, Flags: 49469), LayoutImmutable, Blittable]
 		public float Mass { get { return m_Mass; } set { if (OnPropertyChanging("MovingBodyData." + nameof(Mass), this, m_Mass, value)) m_Mass = value; } } // 0x8 (8)
 		
 		protected float m_Inertia = new float();
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1681436809)]
+		[ContainerField(Name: "Inertia", Offset: 12, NameHash: 1681436809, Flags: 49469), LayoutImmutable, Blittable]
 		public float Inertia { get { return m_Inertia; } set { if (OnPropertyChanging("MovingBodyData." + nameof(Inertia), this, m_Inertia, value)) m_Inertia = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(24), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 24)]
 	public class EventSwitchEntityData : 
 		EntityData
 	{
 		protected Realm m_Realm = new Realm();
-		[ContainerField(12), MemberInfoFlag(137), ContainerFieldNameHash(229961746)]
+		[ContainerField(Name: "Realm", Offset: 12, NameHash: 229961746, Flags: 137)]
 		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("EventSwitchEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0xC (12)
 		
 		protected uint m_OutEvents = new uint();
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(2083855540)]
+		[ContainerField(Name: "OutEvents", Offset: 16, NameHash: 2083855540, Flags: 49421), LayoutImmutable, Blittable]
 		public uint OutEvents { get { return m_OutEvents; } set { if (OnPropertyChanging("EventSwitchEntityData." + nameof(OutEvents), this, m_OutEvents, value)) m_OutEvents = value; } } // 0x10 (16)
 		
 		protected bool m_AutoIncrement = new bool();
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1262167147)]
+		[ContainerField(Name: "AutoIncrement", Offset: 20, NameHash: 1262167147, Flags: 49325), LayoutImmutable, Blittable]
 		public bool AutoIncrement { get { return m_AutoIncrement; } set { if (OnPropertyChanging("EventSwitchEntityData." + nameof(AutoIncrement), this, m_AutoIncrement, value)) m_AutoIncrement = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

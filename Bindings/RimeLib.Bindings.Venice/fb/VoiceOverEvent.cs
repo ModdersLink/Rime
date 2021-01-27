@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(20), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 20)]
 	public class VoiceOverEvent : 
 		DataContainer
 	{
 		protected string m_Name = string.Empty;
-		[ContainerField(8), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(2088949890)]
+		[ContainerField(Name: "Name", Offset: 8, NameHash: 2088949890, Flags: 16509), LayoutImmutable]
 		public string Name { get { return m_Name; } set { if (OnPropertyChanging("VoiceOverEvent." + nameof(Name), this, m_Name, value)) m_Name = value; } } // 0x8 (8)
 		
 		protected RefArray<VoiceOverNamedValue> m_Parameters = new RefArray<VoiceOverNamedValue>();
-		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(3325515039), ContainerRefArray]
+		[ContainerField(Name: "Parameters", Offset: 12, NameHash: 3325515039, Flags: 65)]
 		public RefArray<VoiceOverNamedValue> Parameters { get { return m_Parameters; } set { if (OnPropertyChanging("VoiceOverEvent." + nameof(Parameters), this, m_Parameters, value)) m_Parameters = value; } } // 0xC (12)
 		
 		protected CtrRef<VoiceOverLogicAsset> m_Owner = new CtrRef<VoiceOverLogicAsset>();
-		[ContainerField(16), MemberInfoFlag(53), ContainerFieldNameHash(217695012), ContainerCtrRef]
+		[ContainerField(Name: "Owner", Offset: 16, NameHash: 217695012, Flags: 53)]
 		public CtrRef<VoiceOverLogicAsset> Owner { get { return m_Owner; } set { if (OnPropertyChanging("VoiceOverEvent." + nameof(Owner), this, m_Owner, value)) m_Owner = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

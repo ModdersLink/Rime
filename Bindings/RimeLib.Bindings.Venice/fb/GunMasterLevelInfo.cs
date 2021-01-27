@@ -18,13 +18,13 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(8), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 8)]
 	public class GunMasterLevelInfo : FrostbiteContainer
 	{
-		[ContainerField(0), MemberInfoFlag(53), ContainerCtrRef]
+		[ContainerField(Name: "CustomizeData", Offset: 0, NameHash: 1994334608, Flags: 53)]
 		public CtrRef<CustomizeSoldierData> CustomizeData { get; set; } = new CtrRef<CustomizeSoldierData>(); // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable, Blittable, MemberInfoFlag(49405)]
+		[ContainerField(Name: "KillsNeeded", Offset: 4, NameHash: 2408595391, Flags: 49405), LayoutImmutable, Blittable]
 		public int KillsNeeded { get; set; } // 0x4 (4)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

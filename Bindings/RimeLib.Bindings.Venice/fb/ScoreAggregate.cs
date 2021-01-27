@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(8), MemberInfoFlag(53), ContainerSize(24), ContainerClass]
+	[ContainerType(Alignment: 8,  Flags: 53, Size: 24)]
 	public class ScoreAggregate : 
 		MetricAggregate
 	{
 		protected float m_TotalScore = new float();
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(4045234607)]
+		[ContainerField(Name: "TotalScore", Offset: 16, NameHash: 4045234607, Flags: 49469), LayoutImmutable, Blittable]
 		public float TotalScore { get { return m_TotalScore; } set { if (OnPropertyChanging("ScoreAggregate." + nameof(TotalScore), this, m_TotalScore, value)) m_TotalScore = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

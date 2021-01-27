@@ -18,44 +18,44 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(48), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 48)]
 	public class UIWeaponAccessoryDescription : 
 		UIItemDescription
 	{
 		protected string m_Name = string.Empty;
-		[ContainerField(16), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(2088949890)]
+		[ContainerField(Name: "Name", Offset: 16, NameHash: 2088949890, Flags: 16509), LayoutImmutable]
 		public string Name { get { return m_Name; } set { if (OnPropertyChanging("UIWeaponAccessoryDescription." + nameof(Name), this, m_Name, value)) m_Name = value; } } // 0x10 (16)
 		
 		protected string m_Description = string.Empty;
-		[ContainerField(20), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(1636673251)]
+		[ContainerField(Name: "Description", Offset: 20, NameHash: 1636673251, Flags: 16509), LayoutImmutable]
 		public string Description { get { return m_Description; } set { if (OnPropertyChanging("UIWeaponAccessoryDescription." + nameof(Description), this, m_Description, value)) m_Description = value; } } // 0x14 (20)
 		
 		protected string m_Category = string.Empty;
-		[ContainerField(24), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(3455858997)]
+		[ContainerField(Name: "Category", Offset: 24, NameHash: 3455858997, Flags: 16509), LayoutImmutable]
 		public string Category { get { return m_Category; } set { if (OnPropertyChanging("UIWeaponAccessoryDescription." + nameof(Category), this, m_Category, value)) m_Category = value; } } // 0x18 (24)
 		
 		protected string m_TexturePath = string.Empty;
-		[ContainerField(28), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(3058477943)]
+		[ContainerField(Name: "TexturePath", Offset: 28, NameHash: 3058477943, Flags: 16509), LayoutImmutable]
 		public string TexturePath { get { return m_TexturePath; } set { if (OnPropertyChanging("UIWeaponAccessoryDescription." + nameof(TexturePath), this, m_TexturePath, value)) m_TexturePath = value; } } // 0x1C (28)
 		
 		protected string m_IconTexturePath = string.Empty;
-		[ContainerField(32), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(377747068)]
+		[ContainerField(Name: "IconTexturePath", Offset: 32, NameHash: 377747068, Flags: 16509), LayoutImmutable]
 		public string IconTexturePath { get { return m_IconTexturePath; } set { if (OnPropertyChanging("UIWeaponAccessoryDescription." + nameof(IconTexturePath), this, m_IconTexturePath, value)) m_IconTexturePath = value; } } // 0x20 (32)
 		
 		protected string m_UnlockTexturePath = string.Empty;
-		[ContainerField(36), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(2699666183)]
+		[ContainerField(Name: "UnlockTexturePath", Offset: 36, NameHash: 2699666183, Flags: 16509), LayoutImmutable]
 		public string UnlockTexturePath { get { return m_UnlockTexturePath; } set { if (OnPropertyChanging("UIWeaponAccessoryDescription." + nameof(UnlockTexturePath), this, m_UnlockTexturePath, value)) m_UnlockTexturePath = value; } } // 0x24 (36)
 		
 		protected string m_MiscTexturePath = string.Empty;
-		[ContainerField(40), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(3395490563)]
+		[ContainerField(Name: "MiscTexturePath", Offset: 40, NameHash: 3395490563, Flags: 16509), LayoutImmutable]
 		public string MiscTexturePath { get { return m_MiscTexturePath; } set { if (OnPropertyChanging("UIWeaponAccessoryDescription." + nameof(MiscTexturePath), this, m_MiscTexturePath, value)) m_MiscTexturePath = value; } } // 0x28 (40)
 		
 		protected bool m_CoreAccessory = new bool();
-		[ContainerField(44), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2311956670)]
+		[ContainerField(Name: "CoreAccessory", Offset: 44, NameHash: 2311956670, Flags: 49325), LayoutImmutable, Blittable]
 		public bool CoreAccessory { get { return m_CoreAccessory; } set { if (OnPropertyChanging("UIWeaponAccessoryDescription." + nameof(CoreAccessory), this, m_CoreAccessory, value)) m_CoreAccessory = value; } } // 0x2C (44)
 		
 		protected bool m_HiddenInProgression = new bool();
-		[ContainerField(45), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1800564573)]
+		[ContainerField(Name: "HiddenInProgression", Offset: 45, NameHash: 1800564573, Flags: 49325), LayoutImmutable, Blittable]
 		public bool HiddenInProgression { get { return m_HiddenInProgression; } set { if (OnPropertyChanging("UIWeaponAccessoryDescription." + nameof(HiddenInProgression), this, m_HiddenInProgression, value)) m_HiddenInProgression = value; } } // 0x2D (45)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

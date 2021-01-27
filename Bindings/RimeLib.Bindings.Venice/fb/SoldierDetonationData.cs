@@ -18,25 +18,25 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(20), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 20)]
 	public class SoldierDetonationData : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "Angle", Offset: 0, NameHash: 205597860, Flags: 49469), LayoutImmutable, Blittable]
 		public float Angle { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "MinSpeedForActivation", Offset: 4, NameHash: 1129224071, Flags: 49469), LayoutImmutable, Blittable]
 		public float MinSpeedForActivation { get; set; } // 0x4 (4)
 		
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "Radius", Offset: 8, NameHash: 3298407133, Flags: 49469), LayoutImmutable, Blittable]
 		public float Radius { get; set; } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "SoldierDetonationActivationDelay", Offset: 12, NameHash: 1649653383, Flags: 49469), LayoutImmutable, Blittable]
 		public float SoldierDetonationActivationDelay { get; set; } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "UseAngle", Offset: 16, NameHash: 249175111, Flags: 49325), LayoutImmutable, Blittable]
 		public bool UseAngle { get; set; } // 0x10 (16)
 		
-		[ContainerField(17), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "HasSoldierDetonation", Offset: 17, NameHash: 1339359612, Flags: 49325), LayoutImmutable, Blittable]
 		public bool HasSoldierDetonation { get; set; } // 0x11 (17)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

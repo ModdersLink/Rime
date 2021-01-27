@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(24), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 24)]
 	public class InputRecorderData : 
 		DataContainer
 	{
 		protected string m_FileNamePrefix = string.Empty;
-		[ContainerField(8), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(452437588)]
+		[ContainerField(Name: "FileNamePrefix", Offset: 8, NameHash: 452437588, Flags: 16509), LayoutImmutable]
 		public string FileNamePrefix { get { return m_FileNamePrefix; } set { if (OnPropertyChanging("InputRecorderData." + nameof(FileNamePrefix), this, m_FileNamePrefix, value)) m_FileNamePrefix = value; } } // 0x8 (8)
 		
 		protected string m_FileName = string.Empty;
-		[ContainerField(12), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(1134474212)]
+		[ContainerField(Name: "FileName", Offset: 12, NameHash: 1134474212, Flags: 16509), LayoutImmutable]
 		public string FileName { get { return m_FileName; } set { if (OnPropertyChanging("InputRecorderData." + nameof(FileName), this, m_FileName, value)) m_FileName = value; } } // 0xC (12)
 		
 		protected EntryInputActionEnum m_ToggleRecordAction = new EntryInputActionEnum();
-		[ContainerField(16), MemberInfoFlag(137), ContainerFieldNameHash(390577636)]
+		[ContainerField(Name: "ToggleRecordAction", Offset: 16, NameHash: 390577636, Flags: 137)]
 		public EntryInputActionEnum ToggleRecordAction { get { return m_ToggleRecordAction; } set { if (OnPropertyChanging("InputRecorderData." + nameof(ToggleRecordAction), this, m_ToggleRecordAction, value)) m_ToggleRecordAction = value; } } // 0x10 (16)
 		
 		protected bool m_AutoIncrementFileName = new bool();
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(4191315274)]
+		[ContainerField(Name: "AutoIncrementFileName", Offset: 20, NameHash: 4191315274, Flags: 49325), LayoutImmutable, Blittable]
 		public bool AutoIncrementFileName { get { return m_AutoIncrementFileName; } set { if (OnPropertyChanging("InputRecorderData." + nameof(AutoIncrementFileName), this, m_AutoIncrementFileName, value)) m_AutoIncrementFileName = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

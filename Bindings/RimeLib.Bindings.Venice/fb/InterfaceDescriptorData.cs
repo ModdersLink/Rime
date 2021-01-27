@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(28), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 28)]
 	public class InterfaceDescriptorData : 
 		DynamicDataContainer
 	{
 		protected List<DynamicEvent> m_InputEvents = new List<DynamicEvent>();
-		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(1542460652), ContainerArray]
+		[ContainerField(Name: "InputEvents", Offset: 12, NameHash: 1542460652, Flags: 65)]
 		public List<DynamicEvent> InputEvents { get { return m_InputEvents; } set { if (OnPropertyChanging("InterfaceDescriptorData." + nameof(InputEvents), this, m_InputEvents, value)) m_InputEvents = value; } } // 0xC (12)
 		
 		protected List<DynamicEvent> m_OutputEvents = new List<DynamicEvent>();
-		[ContainerField(16), MemberInfoFlag(65), ContainerFieldNameHash(3452448709), ContainerArray]
+		[ContainerField(Name: "OutputEvents", Offset: 16, NameHash: 3452448709, Flags: 65)]
 		public List<DynamicEvent> OutputEvents { get { return m_OutputEvents; } set { if (OnPropertyChanging("InterfaceDescriptorData." + nameof(OutputEvents), this, m_OutputEvents, value)) m_OutputEvents = value; } } // 0x10 (16)
 		
 		protected List<DynamicLink> m_InputLinks = new List<DynamicLink>();
-		[ContainerField(20), MemberInfoFlag(65), ContainerFieldNameHash(1626510432), ContainerArray]
+		[ContainerField(Name: "InputLinks", Offset: 20, NameHash: 1626510432, Flags: 65)]
 		public List<DynamicLink> InputLinks { get { return m_InputLinks; } set { if (OnPropertyChanging("InterfaceDescriptorData." + nameof(InputLinks), this, m_InputLinks, value)) m_InputLinks = value; } } // 0x14 (20)
 		
 		protected List<DynamicLink> m_OutputLinks = new List<DynamicLink>();
-		[ContainerField(24), MemberInfoFlag(65), ContainerFieldNameHash(748160425), ContainerArray]
+		[ContainerField(Name: "OutputLinks", Offset: 24, NameHash: 748160425, Flags: 65)]
 		public List<DynamicLink> OutputLinks { get { return m_OutputLinks; } set { if (OnPropertyChanging("InterfaceDescriptorData." + nameof(OutputLinks), this, m_OutputLinks, value)) m_OutputLinks = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

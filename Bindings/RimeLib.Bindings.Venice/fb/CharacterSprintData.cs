@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(24), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 24)]
 	public class CharacterSprintData : 
 		DataContainer
 	{
 		protected float m_SprintPowerDecreasePerSecond = new float();
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(4236817773)]
+		[ContainerField(Name: "SprintPowerDecreasePerSecond", Offset: 8, NameHash: 4236817773, Flags: 49469), LayoutImmutable, Blittable]
 		public float SprintPowerDecreasePerSecond { get { return m_SprintPowerDecreasePerSecond; } set { if (OnPropertyChanging("CharacterSprintData." + nameof(SprintPowerDecreasePerSecond), this, m_SprintPowerDecreasePerSecond, value)) m_SprintPowerDecreasePerSecond = value; } } // 0x8 (8)
 		
 		protected float m_SprintPowerIncreasePerSecond = new float();
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3679952971)]
+		[ContainerField(Name: "SprintPowerIncreasePerSecond", Offset: 12, NameHash: 3679952971, Flags: 49469), LayoutImmutable, Blittable]
 		public float SprintPowerIncreasePerSecond { get { return m_SprintPowerIncreasePerSecond; } set { if (OnPropertyChanging("CharacterSprintData." + nameof(SprintPowerIncreasePerSecond), this, m_SprintPowerIncreasePerSecond, value)) m_SprintPowerIncreasePerSecond = value; } } // 0xC (12)
 		
 		protected float m_SprintMinimumPower = new float();
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2057558894)]
+		[ContainerField(Name: "SprintMinimumPower", Offset: 16, NameHash: 2057558894, Flags: 49469), LayoutImmutable, Blittable]
 		public float SprintMinimumPower { get { return m_SprintMinimumPower; } set { if (OnPropertyChanging("CharacterSprintData." + nameof(SprintMinimumPower), this, m_SprintMinimumPower, value)) m_SprintMinimumPower = value; } } // 0x10 (16)
 		
 		protected bool m_AllowContinousSprinting = new bool();
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3446677350)]
+		[ContainerField(Name: "AllowContinousSprinting", Offset: 20, NameHash: 3446677350, Flags: 49325), LayoutImmutable, Blittable]
 		public bool AllowContinousSprinting { get { return m_AllowContinousSprinting; } set { if (OnPropertyChanging("CharacterSprintData." + nameof(AllowContinousSprinting), this, m_AllowContinousSprinting, value)) m_AllowContinousSprinting = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

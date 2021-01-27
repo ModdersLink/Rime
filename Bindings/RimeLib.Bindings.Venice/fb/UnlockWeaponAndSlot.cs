@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(12), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 12)]
 	public class UnlockWeaponAndSlot : FrostbiteContainer
 	{
-		[ContainerField(0), MemberInfoFlag(53), ContainerCtrRef]
+		[ContainerField(Name: "Weapon", Offset: 0, NameHash: 3190562823, Flags: 53)]
 		public CtrRef<SoldierWeaponUnlockAsset> Weapon { get; set; } = new CtrRef<SoldierWeaponUnlockAsset>(); // 0x0 (0)
 		
-		[ContainerField(4), MemberInfoFlag(137)]
+		[ContainerField(Name: "Slot", Offset: 4, NameHash: 2089426785, Flags: 137)]
 		public WeaponSlot Slot { get; set; } = new WeaponSlot(); // 0x4 (4)
 		
-		[ContainerField(8), MemberInfoFlag(65), ContainerRefArray]
+		[ContainerField(Name: "UnlockAssets", Offset: 8, NameHash: 3332539414, Flags: 65)]
 		public RefArray<UnlockAssetBase> UnlockAssets { get; set; } = new RefArray<UnlockAssetBase>(); // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

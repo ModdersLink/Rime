@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(24), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 24)]
 	public class PlayerData : 
 		Asset
 	{
 		protected CtrRef<PlayerViewData> m_PlayerView = new CtrRef<PlayerViewData>();
-		[ContainerField(12), MemberInfoFlag(53), ContainerFieldNameHash(774623483), ContainerCtrRef]
+		[ContainerField(Name: "PlayerView", Offset: 12, NameHash: 774623483, Flags: 53)]
 		public CtrRef<PlayerViewData> PlayerView { get { return m_PlayerView; } set { if (OnPropertyChanging("PlayerData." + nameof(PlayerView), this, m_PlayerView, value)) m_PlayerView = value; } } // 0xC (12)
 		
 		protected CtrRef<EntryInputActionMapsData> m_InputConceptDefinition = new CtrRef<EntryInputActionMapsData>();
-		[ContainerField(16), MemberInfoFlag(53), ContainerFieldNameHash(1770668454), ContainerCtrRef]
+		[ContainerField(Name: "InputConceptDefinition", Offset: 16, NameHash: 1770668454, Flags: 53)]
 		public CtrRef<EntryInputActionMapsData> InputConceptDefinition { get { return m_InputConceptDefinition; } set { if (OnPropertyChanging("PlayerData." + nameof(InputConceptDefinition), this, m_InputConceptDefinition, value)) m_InputConceptDefinition = value; } } // 0x10 (16)
 		
 		protected CtrRef<InputActionMappingsData> m_InputMapping = new CtrRef<InputActionMappingsData>();
-		[ContainerField(20), MemberInfoFlag(53), ContainerFieldNameHash(1744270687), ContainerCtrRef]
+		[ContainerField(Name: "InputMapping", Offset: 20, NameHash: 1744270687, Flags: 53)]
 		public CtrRef<InputActionMappingsData> InputMapping { get { return m_InputMapping; } set { if (OnPropertyChanging("PlayerData." + nameof(InputMapping), this, m_InputMapping, value)) m_InputMapping = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

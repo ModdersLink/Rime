@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(20), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 20)]
 	public class AimingConstraintEntityData : 
 		EntityData
 	{
 		protected CtrRef<AimingConstraintEntityCommonData> m_CommonData = new CtrRef<AimingConstraintEntityCommonData>();
-		[ContainerField(12), MemberInfoFlag(53), ContainerFieldNameHash(760803064), ContainerCtrRef]
+		[ContainerField(Name: "CommonData", Offset: 12, NameHash: 760803064, Flags: 53)]
 		public CtrRef<AimingConstraintEntityCommonData> CommonData { get { return m_CommonData; } set { if (OnPropertyChanging("AimingConstraintEntityData." + nameof(CommonData), this, m_CommonData, value)) m_CommonData = value; } } // 0xC (12)
 		
 		protected bool m_EnabledInProne = new bool();
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1941848993)]
+		[ContainerField(Name: "EnabledInProne", Offset: 16, NameHash: 1941848993, Flags: 49325), LayoutImmutable, Blittable]
 		public bool EnabledInProne { get { return m_EnabledInProne; } set { if (OnPropertyChanging("AimingConstraintEntityData." + nameof(EnabledInProne), this, m_EnabledInProne, value)) m_EnabledInProne = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

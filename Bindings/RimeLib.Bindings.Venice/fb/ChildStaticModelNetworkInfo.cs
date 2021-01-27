@@ -18,19 +18,19 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(20), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 20)]
 	public class ChildStaticModelNetworkInfo : FrostbiteContainer
 	{
-		[ContainerField(0), MemberInfoFlag(41)]
+		[ContainerField(Name: "NetworkRange", Offset: 0, NameHash: 1862047044, Flags: 41)]
 		public IndexRange NetworkRange { get; set; } = new IndexRange(); // 0x0 (0)
 		
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
+		[ContainerField(Name: "ParentPartComponentIndex", Offset: 8, NameHash: 2200889407, Flags: 49421), LayoutImmutable, Blittable]
 		public uint ParentPartComponentIndex { get; set; } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
+		[ContainerField(Name: "ParentHealthStateIndex", Offset: 12, NameHash: 3385119660, Flags: 49421), LayoutImmutable, Blittable]
 		public uint ParentHealthStateIndex { get; set; } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
+		[ContainerField(Name: "InstanceIndex", Offset: 16, NameHash: 521024402, Flags: 49421), LayoutImmutable, Blittable]
 		public uint InstanceIndex { get; set; } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

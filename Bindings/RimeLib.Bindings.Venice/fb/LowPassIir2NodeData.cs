@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(36), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 36)]
 	public class LowPassIir2NodeData : 
 		AudioGraphNodeData
 	{
 		protected AudioGraphNodePort m_In = new AudioGraphNodePort();
-		[ContainerField(8), MemberInfoFlag(41), ContainerFieldNameHash(5862146)]
+		[ContainerField(Name: "In", Offset: 8, NameHash: 5862146, Flags: 41)]
 		public AudioGraphNodePort In { get { return m_In; } set { if (OnPropertyChanging("LowPassIir2NodeData." + nameof(In), this, m_In, value)) m_In = value; } } // 0x8 (8)
 		
 		protected AudioGraphNodePort m_Frequency = new AudioGraphNodePort();
-		[ContainerField(16), MemberInfoFlag(41), ContainerFieldNameHash(4112821953)]
+		[ContainerField(Name: "Frequency", Offset: 16, NameHash: 4112821953, Flags: 41)]
 		public AudioGraphNodePort Frequency { get { return m_Frequency; } set { if (OnPropertyChanging("LowPassIir2NodeData." + nameof(Frequency), this, m_Frequency, value)) m_Frequency = value; } } // 0x10 (16)
 		
 		protected AudioGraphNodePort m_Out = new AudioGraphNodePort();
-		[ContainerField(24), MemberInfoFlag(41), ContainerFieldNameHash(193453899)]
+		[ContainerField(Name: "Out", Offset: 24, NameHash: 193453899, Flags: 41)]
 		public AudioGraphNodePort Out { get { return m_Out; } set { if (OnPropertyChanging("LowPassIir2NodeData." + nameof(Out), this, m_Out, value)) m_Out = value; } } // 0x18 (24)
 		
 		protected SoundGraphPluginRef m_Plugin = new SoundGraphPluginRef();
-		[ContainerField(32), MemberInfoFlag(41), ContainerFieldNameHash(3384353452)]
+		[ContainerField(Name: "Plugin", Offset: 32, NameHash: 3384353452, Flags: 41)]
 		public SoundGraphPluginRef Plugin { get { return m_Plugin; } set { if (OnPropertyChanging("LowPassIir2NodeData." + nameof(Plugin), this, m_Plugin, value)) m_Plugin = value; } } // 0x20 (32)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

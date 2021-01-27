@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(20), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 20)]
 	public class FollowWaypointsEntityData : 
 		EntityData
 	{
 		protected RouteType m_TypeOfRoute = new RouteType();
-		[ContainerField(12), MemberInfoFlag(137), ContainerFieldNameHash(2152665933)]
+		[ContainerField(Name: "TypeOfRoute", Offset: 12, NameHash: 2152665933, Flags: 137)]
 		public RouteType TypeOfRoute { get { return m_TypeOfRoute; } set { if (OnPropertyChanging("FollowWaypointsEntityData." + nameof(TypeOfRoute), this, m_TypeOfRoute, value)) m_TypeOfRoute = value; } } // 0xC (12)
 		
 		protected bool m_UsePathFinding = new bool();
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2941510446)]
+		[ContainerField(Name: "UsePathFinding", Offset: 16, NameHash: 2941510446, Flags: 49325), LayoutImmutable, Blittable]
 		public bool UsePathFinding { get { return m_UsePathFinding; } set { if (OnPropertyChanging("FollowWaypointsEntityData." + nameof(UsePathFinding), this, m_UsePathFinding, value)) m_UsePathFinding = value; } } // 0x10 (16)
 		
 		protected bool m_StartAtGeometricallyClosestWaypoint = new bool();
-		[ContainerField(17), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(4268018707)]
+		[ContainerField(Name: "StartAtGeometricallyClosestWaypoint", Offset: 17, NameHash: 4268018707, Flags: 49325), LayoutImmutable, Blittable]
 		public bool StartAtGeometricallyClosestWaypoint { get { return m_StartAtGeometricallyClosestWaypoint; } set { if (OnPropertyChanging("FollowWaypointsEntityData." + nameof(StartAtGeometricallyClosestWaypoint), this, m_StartAtGeometricallyClosestWaypoint, value)) m_StartAtGeometricallyClosestWaypoint = value; } } // 0x11 (17)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

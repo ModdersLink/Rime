@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(112), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 112)]
 	public class SimpleAnimationControlComponentData : 
 		ComponentData
 	{
 		protected SimpleAnimationControlBinding m_Binding = new SimpleAnimationControlBinding();
-		[ContainerField(96), MemberInfoFlag(41), ContainerFieldNameHash(2590060228)]
+		[ContainerField(Name: "Binding", Offset: 96, NameHash: 2590060228, Flags: 41)]
 		public SimpleAnimationControlBinding Binding { get { return m_Binding; } set { if (OnPropertyChanging("SimpleAnimationControlComponentData." + nameof(Binding), this, m_Binding, value)) m_Binding = value; } } // 0x60 (96)
 		
 		protected int m_AnimationEntitySpacePriority = new int();
-		[ContainerField(100), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(4041607518)]
+		[ContainerField(Name: "AnimationEntitySpacePriority", Offset: 100, NameHash: 4041607518, Flags: 49405), LayoutImmutable, Blittable]
 		public int AnimationEntitySpacePriority { get { return m_AnimationEntitySpacePriority; } set { if (OnPropertyChanging("SimpleAnimationControlComponentData." + nameof(AnimationEntitySpacePriority), this, m_AnimationEntitySpacePriority, value)) m_AnimationEntitySpacePriority = value; } } // 0x64 (100)
 		
 		protected bool m_Run = new bool();
-		[ContainerField(104), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(193464460)]
+		[ContainerField(Name: "Run", Offset: 104, NameHash: 193464460, Flags: 49325), LayoutImmutable, Blittable]
 		public bool Run { get { return m_Run; } set { if (OnPropertyChanging("SimpleAnimationControlComponentData." + nameof(Run), this, m_Run, value)) m_Run = value; } } // 0x68 (104)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

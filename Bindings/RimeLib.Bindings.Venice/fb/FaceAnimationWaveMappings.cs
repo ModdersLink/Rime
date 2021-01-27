@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(20), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 20)]
 	public class FaceAnimationWaveMappings : 
 		DataContainer
 	{
 		protected AntRef m_AntAsset = new AntRef();
-		[ContainerField(8), MemberInfoFlag(41), ContainerFieldNameHash(1873036974)]
+		[ContainerField(Name: "AntAsset", Offset: 8, NameHash: 1873036974, Flags: 41)]
 		public AntRef AntAsset { get { return m_AntAsset; } set { if (OnPropertyChanging("FaceAnimationWaveMappings." + nameof(AntAsset), this, m_AntAsset, value)) m_AntAsset = value; } } // 0x8 (8)
 		
 		protected AntRef m_OnStartedTalking = new AntRef();
-		[ContainerField(12), MemberInfoFlag(41), ContainerFieldNameHash(2148011415)]
+		[ContainerField(Name: "OnStartedTalking", Offset: 12, NameHash: 2148011415, Flags: 41)]
 		public AntRef OnStartedTalking { get { return m_OnStartedTalking; } set { if (OnPropertyChanging("FaceAnimationWaveMappings." + nameof(OnStartedTalking), this, m_OnStartedTalking, value)) m_OnStartedTalking = value; } } // 0xC (12)
 		
 		protected List<FaceAnimationWaveMapping> m_Mappings = new List<FaceAnimationWaveMapping>();
-		[ContainerField(16), MemberInfoFlag(65), ContainerFieldNameHash(673881690), ContainerArray]
+		[ContainerField(Name: "Mappings", Offset: 16, NameHash: 673881690, Flags: 65)]
 		public List<FaceAnimationWaveMapping> Mappings { get { return m_Mappings; } set { if (OnPropertyChanging("FaceAnimationWaveMappings." + nameof(Mappings), this, m_Mappings, value)) m_Mappings = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

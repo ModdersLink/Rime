@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(36), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 36)]
 	public class PrefabBlueprint : 
 		Blueprint
 	{
 		protected RefArray<GameObjectData> m_Objects = new RefArray<GameObjectData>();
-		[ContainerField(32), MemberInfoFlag(65), ContainerFieldNameHash(105488131), ContainerRefArray]
+		[ContainerField(Name: "Objects", Offset: 32, NameHash: 105488131, Flags: 65)]
 		public RefArray<GameObjectData> Objects { get { return m_Objects; } set { if (OnPropertyChanging("PrefabBlueprint." + nameof(Objects), this, m_Objects, value)) m_Objects = value; } } // 0x20 (32)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

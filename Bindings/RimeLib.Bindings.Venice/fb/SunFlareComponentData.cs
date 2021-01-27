@@ -18,184 +18,184 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(544), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 544)]
 	public class SunFlareComponentData : 
 		ComponentData
 	{
 		protected Vec4 m_Element5AlphaScreenPosCurve = new Vec4();
-		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(2056610477)]
+		[ContainerField(Name: "Element5AlphaScreenPosCurve", Offset: 96, NameHash: 2056610477, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec4 Element5AlphaScreenPosCurve { get { return m_Element5AlphaScreenPosCurve; } set { if (OnPropertyChanging("SunFlareComponentData." + nameof(Element5AlphaScreenPosCurve), this, m_Element5AlphaScreenPosCurve, value)) m_Element5AlphaScreenPosCurve = value; } } // 0x60 (96)
 		
 		protected Vec4 m_Element5AlphaOccluderCurve = new Vec4();
-		[ContainerField(112), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(777591848)]
+		[ContainerField(Name: "Element5AlphaOccluderCurve", Offset: 112, NameHash: 777591848, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec4 Element5AlphaOccluderCurve { get { return m_Element5AlphaOccluderCurve; } set { if (OnPropertyChanging("SunFlareComponentData." + nameof(Element5AlphaOccluderCurve), this, m_Element5AlphaOccluderCurve, value)) m_Element5AlphaOccluderCurve = value; } } // 0x70 (112)
 		
 		protected Vec4 m_Element5SizeScreenPosCurve = new Vec4();
-		[ContainerField(128), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(1381132604)]
+		[ContainerField(Name: "Element5SizeScreenPosCurve", Offset: 128, NameHash: 1381132604, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec4 Element5SizeScreenPosCurve { get { return m_Element5SizeScreenPosCurve; } set { if (OnPropertyChanging("SunFlareComponentData." + nameof(Element5SizeScreenPosCurve), this, m_Element5SizeScreenPosCurve, value)) m_Element5SizeScreenPosCurve = value; } } // 0x80 (128)
 		
 		protected Vec4 m_Element2SizeOccluderCurve = new Vec4();
-		[ContainerField(144), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(1592508798)]
+		[ContainerField(Name: "Element2SizeOccluderCurve", Offset: 144, NameHash: 1592508798, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec4 Element2SizeOccluderCurve { get { return m_Element2SizeOccluderCurve; } set { if (OnPropertyChanging("SunFlareComponentData." + nameof(Element2SizeOccluderCurve), this, m_Element2SizeOccluderCurve, value)) m_Element2SizeOccluderCurve = value; } } // 0x90 (144)
 		
 		protected Vec4 m_Element5SizeOccluderCurve = new Vec4();
-		[ContainerField(160), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(66701465)]
+		[ContainerField(Name: "Element5SizeOccluderCurve", Offset: 160, NameHash: 66701465, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec4 Element5SizeOccluderCurve { get { return m_Element5SizeOccluderCurve; } set { if (OnPropertyChanging("SunFlareComponentData." + nameof(Element5SizeOccluderCurve), this, m_Element5SizeOccluderCurve, value)) m_Element5SizeOccluderCurve = value; } } // 0xA0 (160)
 		
 		protected Vec4 m_Element2AlphaOccluderCurve = new Vec4();
-		[ContainerField(176), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(2083412079)]
+		[ContainerField(Name: "Element2AlphaOccluderCurve", Offset: 176, NameHash: 2083412079, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec4 Element2AlphaOccluderCurve { get { return m_Element2AlphaOccluderCurve; } set { if (OnPropertyChanging("SunFlareComponentData." + nameof(Element2AlphaOccluderCurve), this, m_Element2AlphaOccluderCurve, value)) m_Element2AlphaOccluderCurve = value; } } // 0xB0 (176)
 		
 		protected Vec4 m_Element2AlphaScreenPosCurve = new Vec4();
-		[ContainerField(192), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(1836962634)]
+		[ContainerField(Name: "Element2AlphaScreenPosCurve", Offset: 192, NameHash: 1836962634, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec4 Element2AlphaScreenPosCurve { get { return m_Element2AlphaScreenPosCurve; } set { if (OnPropertyChanging("SunFlareComponentData." + nameof(Element2AlphaScreenPosCurve), this, m_Element2AlphaScreenPosCurve, value)) m_Element2AlphaScreenPosCurve = value; } } // 0xC0 (192)
 		
 		protected Vec2 m_Element1Size = new Vec2();
-		[ContainerField(208), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(2566133135)]
+		[ContainerField(Name: "Element1Size", Offset: 208, NameHash: 2566133135, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec2 Element1Size { get { return m_Element1Size; } set { if (OnPropertyChanging("SunFlareComponentData." + nameof(Element1Size), this, m_Element1Size, value)) m_Element1Size = value; } } // 0xD0 (208)
 		
 		protected Vec4 m_Element1SizeOccluderCurve = new Vec4();
-		[ContainerField(224), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(559736093)]
+		[ContainerField(Name: "Element1SizeOccluderCurve", Offset: 224, NameHash: 559736093, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec4 Element1SizeOccluderCurve { get { return m_Element1SizeOccluderCurve; } set { if (OnPropertyChanging("SunFlareComponentData." + nameof(Element1SizeOccluderCurve), this, m_Element1SizeOccluderCurve, value)) m_Element1SizeOccluderCurve = value; } } // 0xE0 (224)
 		
 		protected Vec4 m_Element1SizeScreenPosCurve = new Vec4();
-		[ContainerField(240), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(1652365624)]
+		[ContainerField(Name: "Element1SizeScreenPosCurve", Offset: 240, NameHash: 1652365624, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec4 Element1SizeScreenPosCurve { get { return m_Element1SizeScreenPosCurve; } set { if (OnPropertyChanging("SunFlareComponentData." + nameof(Element1SizeScreenPosCurve), this, m_Element1SizeScreenPosCurve, value)) m_Element1SizeScreenPosCurve = value; } } // 0xF0 (240)
 		
 		protected Vec4 m_Element1AlphaOccluderCurve = new Vec4();
-		[ContainerField(256), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(4252527404)]
+		[ContainerField(Name: "Element1AlphaOccluderCurve", Offset: 256, NameHash: 4252527404, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec4 Element1AlphaOccluderCurve { get { return m_Element1AlphaOccluderCurve; } set { if (OnPropertyChanging("SunFlareComponentData." + nameof(Element1AlphaOccluderCurve), this, m_Element1AlphaOccluderCurve, value)) m_Element1AlphaOccluderCurve = value; } } // 0x100 (256)
 		
 		protected Vec4 m_Element1AlphaScreenPosCurve = new Vec4();
-		[ContainerField(272), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(1946326313)]
+		[ContainerField(Name: "Element1AlphaScreenPosCurve", Offset: 272, NameHash: 1946326313, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec4 Element1AlphaScreenPosCurve { get { return m_Element1AlphaScreenPosCurve; } set { if (OnPropertyChanging("SunFlareComponentData." + nameof(Element1AlphaScreenPosCurve), this, m_Element1AlphaScreenPosCurve, value)) m_Element1AlphaScreenPosCurve = value; } } // 0x110 (272)
 		
 		protected Vec2 m_Element5Size = new Vec2();
-		[ContainerField(288), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(2570876811)]
+		[ContainerField(Name: "Element5Size", Offset: 288, NameHash: 2570876811, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec2 Element5Size { get { return m_Element5Size; } set { if (OnPropertyChanging("SunFlareComponentData." + nameof(Element5Size), this, m_Element5Size, value)) m_Element5Size = value; } } // 0x120 (288)
 		
 		protected Vec4 m_Element4SizeOccluderCurve = new Vec4();
-		[ContainerField(304), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(2043716408)]
+		[ContainerField(Name: "Element4SizeOccluderCurve", Offset: 304, NameHash: 2043716408, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec4 Element4SizeOccluderCurve { get { return m_Element4SizeOccluderCurve; } set { if (OnPropertyChanging("SunFlareComponentData." + nameof(Element4SizeOccluderCurve), this, m_Element4SizeOccluderCurve, value)) m_Element4SizeOccluderCurve = value; } } // 0x130 (304)
 		
 		protected Vec2 m_Element3Size = new Vec2();
-		[ContainerField(320), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(2568509069)]
+		[ContainerField(Name: "Element3Size", Offset: 320, NameHash: 2568509069, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec2 Element3Size { get { return m_Element3Size; } set { if (OnPropertyChanging("SunFlareComponentData." + nameof(Element3Size), this, m_Element3Size, value)) m_Element3Size = value; } } // 0x140 (320)
 		
 		protected Vec2 m_Element2Size = new Vec2();
-		[ContainerField(328), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(2569623180)]
+		[ContainerField(Name: "Element2Size", Offset: 328, NameHash: 2569623180, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec2 Element2Size { get { return m_Element2Size; } set { if (OnPropertyChanging("SunFlareComponentData." + nameof(Element2Size), this, m_Element2Size, value)) m_Element2Size = value; } } // 0x148 (328)
 		
 		protected Vec4 m_Element4AlphaScreenPosCurve = new Vec4();
-		[ContainerField(336), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(2336573580)]
+		[ContainerField(Name: "Element4AlphaScreenPosCurve", Offset: 336, NameHash: 2336573580, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec4 Element4AlphaScreenPosCurve { get { return m_Element4AlphaScreenPosCurve; } set { if (OnPropertyChanging("SunFlareComponentData." + nameof(Element4AlphaScreenPosCurve), this, m_Element4AlphaScreenPosCurve, value)) m_Element4AlphaScreenPosCurve = value; } } // 0x150 (336)
 		
 		protected Vec4 m_Element2SizeScreenPosCurve = new Vec4();
-		[ContainerField(352), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(396362939)]
+		[ContainerField(Name: "Element2SizeScreenPosCurve", Offset: 352, NameHash: 396362939, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec4 Element2SizeScreenPosCurve { get { return m_Element2SizeScreenPosCurve; } set { if (OnPropertyChanging("SunFlareComponentData." + nameof(Element2SizeScreenPosCurve), this, m_Element2SizeScreenPosCurve, value)) m_Element2SizeScreenPosCurve = value; } } // 0x160 (352)
 		
 		protected Vec4 m_Element4SizeScreenPosCurve = new Vec4();
-		[ContainerField(368), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(3624094653)]
+		[ContainerField(Name: "Element4SizeScreenPosCurve", Offset: 368, NameHash: 3624094653, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec4 Element4SizeScreenPosCurve { get { return m_Element4SizeScreenPosCurve; } set { if (OnPropertyChanging("SunFlareComponentData." + nameof(Element4SizeScreenPosCurve), this, m_Element4SizeScreenPosCurve, value)) m_Element4SizeScreenPosCurve = value; } } // 0x170 (368)
 		
 		protected Vec2 m_Element4Size = new Vec2();
-		[ContainerField(384), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(2571990922)]
+		[ContainerField(Name: "Element4Size", Offset: 384, NameHash: 2571990922, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec2 Element4Size { get { return m_Element4Size; } set { if (OnPropertyChanging("SunFlareComponentData." + nameof(Element4Size), this, m_Element4Size, value)) m_Element4Size = value; } } // 0x180 (384)
 		
 		protected Vec4 m_Element3AlphaScreenPosCurve = new Vec4();
-		[ContainerField(400), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(3605704299)]
+		[ContainerField(Name: "Element3AlphaScreenPosCurve", Offset: 400, NameHash: 3605704299, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec4 Element3AlphaScreenPosCurve { get { return m_Element3AlphaScreenPosCurve; } set { if (OnPropertyChanging("SunFlareComponentData." + nameof(Element3AlphaScreenPosCurve), this, m_Element3AlphaScreenPosCurve, value)) m_Element3AlphaScreenPosCurve = value; } } // 0x190 (400)
 		
 		protected Vec4 m_Element4AlphaOccluderCurve = new Vec4();
-		[ContainerField(416), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(982699753)]
+		[ContainerField(Name: "Element4AlphaOccluderCurve", Offset: 416, NameHash: 982699753, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec4 Element4AlphaOccluderCurve { get { return m_Element4AlphaOccluderCurve; } set { if (OnPropertyChanging("SunFlareComponentData." + nameof(Element4AlphaOccluderCurve), this, m_Element4AlphaOccluderCurve, value)) m_Element4AlphaOccluderCurve = value; } } // 0x1A0 (416)
 		
 		protected Vec4 m_Element3SizeOccluderCurve = new Vec4();
-		[ContainerField(432), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(3910461151)]
+		[ContainerField(Name: "Element3SizeOccluderCurve", Offset: 432, NameHash: 3910461151, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec4 Element3SizeOccluderCurve { get { return m_Element3SizeOccluderCurve; } set { if (OnPropertyChanging("SunFlareComponentData." + nameof(Element3SizeOccluderCurve), this, m_Element3SizeOccluderCurve, value)) m_Element3SizeOccluderCurve = value; } } // 0x1B0 (432)
 		
 		protected Vec4 m_Element3SizeScreenPosCurve = new Vec4();
-		[ContainerField(448), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(2439176762)]
+		[ContainerField(Name: "Element3SizeScreenPosCurve", Offset: 448, NameHash: 2439176762, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec4 Element3SizeScreenPosCurve { get { return m_Element3SizeScreenPosCurve; } set { if (OnPropertyChanging("SunFlareComponentData." + nameof(Element3SizeScreenPosCurve), this, m_Element3SizeScreenPosCurve, value)) m_Element3SizeScreenPosCurve = value; } } // 0x1C0 (448)
 		
 		protected Vec4 m_Element3AlphaOccluderCurve = new Vec4();
-		[ContainerField(464), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(1588749230)]
+		[ContainerField(Name: "Element3AlphaOccluderCurve", Offset: 464, NameHash: 1588749230, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec4 Element3AlphaOccluderCurve { get { return m_Element3AlphaOccluderCurve; } set { if (OnPropertyChanging("SunFlareComponentData." + nameof(Element3AlphaOccluderCurve), this, m_Element3AlphaOccluderCurve, value)) m_Element3AlphaOccluderCurve = value; } } // 0x1D0 (464)
 		
 		protected CtrRef<SurfaceShaderBaseAsset> m_Element1Shader = new CtrRef<SurfaceShaderBaseAsset>();
-		[ContainerField(480), MemberInfoFlag(53), ContainerFieldNameHash(2789512003), ContainerCtrRef]
+		[ContainerField(Name: "Element1Shader", Offset: 480, NameHash: 2789512003, Flags: 53)]
 		public CtrRef<SurfaceShaderBaseAsset> Element1Shader { get { return m_Element1Shader; } set { if (OnPropertyChanging("SunFlareComponentData." + nameof(Element1Shader), this, m_Element1Shader, value)) m_Element1Shader = value; } } // 0x1E0 (480)
 		
 		protected float m_OccluderSize = new float();
-		[ContainerField(484), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2630779365)]
+		[ContainerField(Name: "OccluderSize", Offset: 484, NameHash: 2630779365, Flags: 49469), LayoutImmutable, Blittable]
 		public float OccluderSize { get { return m_OccluderSize; } set { if (OnPropertyChanging("SunFlareComponentData." + nameof(OccluderSize), this, m_OccluderSize, value)) m_OccluderSize = value; } } // 0x1E4 (484)
 		
 		protected CtrRef<SurfaceShaderBaseAsset> m_Element2Shader = new CtrRef<SurfaceShaderBaseAsset>();
-		[ContainerField(488), MemberInfoFlag(53), ContainerFieldNameHash(2297516480), ContainerCtrRef]
+		[ContainerField(Name: "Element2Shader", Offset: 488, NameHash: 2297516480, Flags: 53)]
 		public CtrRef<SurfaceShaderBaseAsset> Element2Shader { get { return m_Element2Shader; } set { if (OnPropertyChanging("SunFlareComponentData." + nameof(Element2Shader), this, m_Element2Shader, value)) m_Element2Shader = value; } } // 0x1E8 (488)
 		
 		protected float m_Element3RayDistance = new float();
-		[ContainerField(492), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(4136213409)]
+		[ContainerField(Name: "Element3RayDistance", Offset: 492, NameHash: 4136213409, Flags: 49469), LayoutImmutable, Blittable]
 		public float Element3RayDistance { get { return m_Element3RayDistance; } set { if (OnPropertyChanging("SunFlareComponentData." + nameof(Element3RayDistance), this, m_Element3RayDistance, value)) m_Element3RayDistance = value; } } // 0x1EC (492)
 		
 		protected CtrRef<SurfaceShaderBaseAsset> m_Element4Shader = new CtrRef<SurfaceShaderBaseAsset>();
-		[ContainerField(496), MemberInfoFlag(53), ContainerFieldNameHash(580872518), ContainerCtrRef]
+		[ContainerField(Name: "Element4Shader", Offset: 496, NameHash: 580872518, Flags: 53)]
 		public CtrRef<SurfaceShaderBaseAsset> Element4Shader { get { return m_Element4Shader; } set { if (OnPropertyChanging("SunFlareComponentData." + nameof(Element4Shader), this, m_Element4Shader, value)) m_Element4Shader = value; } } // 0x1F0 (496)
 		
 		protected float m_Element4RayDistance = new float();
-		[ContainerField(500), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(4220190726)]
+		[ContainerField(Name: "Element4RayDistance", Offset: 500, NameHash: 4220190726, Flags: 49469), LayoutImmutable, Blittable]
 		public float Element4RayDistance { get { return m_Element4RayDistance; } set { if (OnPropertyChanging("SunFlareComponentData." + nameof(Element4RayDistance), this, m_Element4RayDistance, value)) m_Element4RayDistance = value; } } // 0x1F4 (500)
 		
 		protected float m_Element2RayDistance = new float();
-		[ContainerField(504), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(665139136)]
+		[ContainerField(Name: "Element2RayDistance", Offset: 504, NameHash: 665139136, Flags: 49469), LayoutImmutable, Blittable]
 		public float Element2RayDistance { get { return m_Element2RayDistance; } set { if (OnPropertyChanging("SunFlareComponentData." + nameof(Element2RayDistance), this, m_Element2RayDistance, value)) m_Element2RayDistance = value; } } // 0x1F8 (504)
 		
 		protected float m_Element1RayDistance = new float();
-		[ContainerField(508), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1346368355)]
+		[ContainerField(Name: "Element1RayDistance", Offset: 508, NameHash: 1346368355, Flags: 49469), LayoutImmutable, Blittable]
 		public float Element1RayDistance { get { return m_Element1RayDistance; } set { if (OnPropertyChanging("SunFlareComponentData." + nameof(Element1RayDistance), this, m_Element1RayDistance, value)) m_Element1RayDistance = value; } } // 0x1FC (508)
 		
 		protected float m_Element5RayDistance = new float();
-		[ContainerField(512), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2995741671)]
+		[ContainerField(Name: "Element5RayDistance", Offset: 512, NameHash: 2995741671, Flags: 49469), LayoutImmutable, Blittable]
 		public float Element5RayDistance { get { return m_Element5RayDistance; } set { if (OnPropertyChanging("SunFlareComponentData." + nameof(Element5RayDistance), this, m_Element5RayDistance, value)) m_Element5RayDistance = value; } } // 0x200 (512)
 		
 		protected CtrRef<SurfaceShaderBaseAsset> m_Element3Shader = new CtrRef<SurfaceShaderBaseAsset>();
-		[ContainerField(516), MemberInfoFlag(53), ContainerFieldNameHash(1082084801), ContainerCtrRef]
+		[ContainerField(Name: "Element3Shader", Offset: 516, NameHash: 1082084801, Flags: 53)]
 		public CtrRef<SurfaceShaderBaseAsset> Element3Shader { get { return m_Element3Shader; } set { if (OnPropertyChanging("SunFlareComponentData." + nameof(Element3Shader), this, m_Element3Shader, value)) m_Element3Shader = value; } } // 0x204 (516)
 		
 		protected Realm m_Realm = new Realm();
-		[ContainerField(520), MemberInfoFlag(137), ContainerFieldNameHash(229961746)]
+		[ContainerField(Name: "Realm", Offset: 520, NameHash: 229961746, Flags: 137)]
 		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("SunFlareComponentData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0x208 (520)
 		
 		protected CtrRef<SurfaceShaderBaseAsset> m_Element5Shader = new CtrRef<SurfaceShaderBaseAsset>();
-		[ContainerField(524), MemberInfoFlag(53), ContainerFieldNameHash(3660408135), ContainerCtrRef]
+		[ContainerField(Name: "Element5Shader", Offset: 524, NameHash: 3660408135, Flags: 53)]
 		public CtrRef<SurfaceShaderBaseAsset> Element5Shader { get { return m_Element5Shader; } set { if (OnPropertyChanging("SunFlareComponentData." + nameof(Element5Shader), this, m_Element5Shader, value)) m_Element5Shader = value; } } // 0x20C (524)
 		
 		protected bool m_Element5Enable = new bool();
-		[ContainerField(528), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2811012015)]
+		[ContainerField(Name: "Element5Enable", Offset: 528, NameHash: 2811012015, Flags: 49325), LayoutImmutable, Blittable]
 		public bool Element5Enable { get { return m_Element5Enable; } set { if (OnPropertyChanging("SunFlareComponentData." + nameof(Element5Enable), this, m_Element5Enable, value)) m_Element5Enable = value; } } // 0x210 (528)
 		
 		protected bool m_Element3Enable = new bool();
-		[ContainerField(529), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(375274153)]
+		[ContainerField(Name: "Element3Enable", Offset: 529, NameHash: 375274153, Flags: 49325), LayoutImmutable, Blittable]
 		public bool Element3Enable { get { return m_Element3Enable; } set { if (OnPropertyChanging("SunFlareComponentData." + nameof(Element3Enable), this, m_Element3Enable, value)) m_Element3Enable = value; } } // 0x211 (529)
 		
 		protected bool m_Element2Enable = new bool();
-		[ContainerField(530), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1590984808)]
+		[ContainerField(Name: "Element2Enable", Offset: 530, NameHash: 1590984808, Flags: 49325), LayoutImmutable, Blittable]
 		public bool Element2Enable { get { return m_Element2Enable; } set { if (OnPropertyChanging("SunFlareComponentData." + nameof(Element2Enable), this, m_Element2Enable, value)) m_Element2Enable = value; } } // 0x212 (530)
 		
 		protected bool m_Element1Enable = new bool();
-		[ContainerField(531), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2243703467)]
+		[ContainerField(Name: "Element1Enable", Offset: 531, NameHash: 2243703467, Flags: 49325), LayoutImmutable, Blittable]
 		public bool Element1Enable { get { return m_Element1Enable; } set { if (OnPropertyChanging("SunFlareComponentData." + nameof(Element1Enable), this, m_Element1Enable, value)) m_Element1Enable = value; } } // 0x213 (531)
 		
 		protected bool m_DebugDrawOccluder = new bool();
-		[ContainerField(532), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3156672721)]
+		[ContainerField(Name: "DebugDrawOccluder", Offset: 532, NameHash: 3156672721, Flags: 49325), LayoutImmutable, Blittable]
 		public bool DebugDrawOccluder { get { return m_DebugDrawOccluder; } set { if (OnPropertyChanging("SunFlareComponentData." + nameof(DebugDrawOccluder), this, m_DebugDrawOccluder, value)) m_DebugDrawOccluder = value; } } // 0x214 (532)
 		
 		protected bool m_Enable = new bool();
-		[ContainerField(533), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2342790116)]
+		[ContainerField(Name: "Enable", Offset: 533, NameHash: 2342790116, Flags: 49325), LayoutImmutable, Blittable]
 		public bool Enable { get { return m_Enable; } set { if (OnPropertyChanging("SunFlareComponentData." + nameof(Enable), this, m_Enable, value)) m_Enable = value; } } // 0x215 (533)
 		
 		protected bool m_Element4Enable = new bool();
-		[ContainerField(534), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(4026722670)]
+		[ContainerField(Name: "Element4Enable", Offset: 534, NameHash: 4026722670, Flags: 49325), LayoutImmutable, Blittable]
 		public bool Element4Enable { get { return m_Element4Enable; } set { if (OnPropertyChanging("SunFlareComponentData." + nameof(Element4Enable), this, m_Element4Enable, value)) m_Element4Enable = value; } } // 0x216 (534)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

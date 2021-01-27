@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(32), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 32)]
 	public class VolumeVectorShapeData : 
 		VectorShapeData
 	{
 		protected float m_Height = new float();
-		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3054065626)]
+		[ContainerField(Name: "Height", Offset: 28, NameHash: 3054065626, Flags: 49469), LayoutImmutable, Blittable]
 		public float Height { get { return m_Height; } set { if (OnPropertyChanging("VolumeVectorShapeData." + nameof(Height), this, m_Height, value)) m_Height = value; } } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

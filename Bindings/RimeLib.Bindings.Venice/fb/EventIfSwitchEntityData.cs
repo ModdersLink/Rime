@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(112), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 112)]
 	public class EventIfSwitchEntityData : 
 		GameEntityData
 	{
 		protected bool m_RunOnce = new bool();
-		[ContainerField(96), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(709901739)]
+		[ContainerField(Name: "RunOnce", Offset: 96, NameHash: 709901739, Flags: 49325), LayoutImmutable, Blittable]
 		public bool RunOnce { get { return m_RunOnce; } set { if (OnPropertyChanging("EventIfSwitchEntityData." + nameof(RunOnce), this, m_RunOnce, value)) m_RunOnce = value; } } // 0x60 (96)
 		
 		protected bool m_StartState = new bool();
-		[ContainerField(97), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2753617170)]
+		[ContainerField(Name: "StartState", Offset: 97, NameHash: 2753617170, Flags: 49325), LayoutImmutable, Blittable]
 		public bool StartState { get { return m_StartState; } set { if (OnPropertyChanging("EventIfSwitchEntityData." + nameof(StartState), this, m_StartState, value)) m_StartState = value; } } // 0x61 (97)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

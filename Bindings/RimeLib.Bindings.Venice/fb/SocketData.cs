@@ -18,64 +18,64 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(176), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 176)]
 	public class SocketData : 
 		DataContainer
 	{
 		protected LinearTransform m_BoneRigidTransform = new LinearTransform();
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(774814302)]
+		[ContainerField(Name: "BoneRigidTransform", Offset: 16, NameHash: 774814302, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public LinearTransform BoneRigidTransform { get { return m_BoneRigidTransform; } set { if (OnPropertyChanging("SocketData." + nameof(BoneRigidTransform), this, m_BoneRigidTransform, value)) m_BoneRigidTransform = value; } } // 0x10 (16)
 		
 		protected LinearTransform m_Transform = new LinearTransform();
-		[ContainerField(80), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(2270319721)]
+		[ContainerField(Name: "Transform", Offset: 80, NameHash: 2270319721, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public LinearTransform Transform { get { return m_Transform; } set { if (OnPropertyChanging("SocketData." + nameof(Transform), this, m_Transform, value)) m_Transform = value; } } // 0x50 (80)
 		
 		protected CtrRef<UnlockAssetBase> m_UnlockAsset = new CtrRef<UnlockAssetBase>();
-		[ContainerField(144), MemberInfoFlag(53), ContainerFieldNameHash(4135652293), ContainerCtrRef]
+		[ContainerField(Name: "UnlockAsset", Offset: 144, NameHash: 4135652293, Flags: 53)]
 		public CtrRef<UnlockAssetBase> UnlockAsset { get { return m_UnlockAsset; } set { if (OnPropertyChanging("SocketData." + nameof(UnlockAsset), this, m_UnlockAsset, value)) m_UnlockAsset = value; } } // 0x90 (144)
 		
 		protected int m_BoneId = new int();
-		[ContainerField(148), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(2679406126)]
+		[ContainerField(Name: "BoneId", Offset: 148, NameHash: 2679406126, Flags: 49405), LayoutImmutable, Blittable]
 		public int BoneId { get { return m_BoneId; } set { if (OnPropertyChanging("SocketData." + nameof(BoneId), this, m_BoneId, value)) m_BoneId = value; } } // 0x94 (148)
 		
 		protected string m_BoneName = string.Empty;
-		[ContainerField(152), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(1590647844)]
+		[ContainerField(Name: "BoneName", Offset: 152, NameHash: 1590647844, Flags: 16509), LayoutImmutable]
 		public string BoneName { get { return m_BoneName; } set { if (OnPropertyChanging("SocketData." + nameof(BoneName), this, m_BoneName, value)) m_BoneName = value; } } // 0x98 (152)
 		
 		protected RefArray<SocketObjectDataBase> m_AvailableObjects = new RefArray<SocketObjectDataBase>();
-		[ContainerField(156), MemberInfoFlag(65), ContainerFieldNameHash(1171714522), ContainerRefArray]
+		[ContainerField(Name: "AvailableObjects", Offset: 156, NameHash: 1171714522, Flags: 65)]
 		public RefArray<SocketObjectDataBase> AvailableObjects { get { return m_AvailableObjects; } set { if (OnPropertyChanging("SocketData." + nameof(AvailableObjects), this, m_AvailableObjects, value)) m_AvailableObjects = value; } } // 0x9C (156)
 		
 		protected GearSlot m_GearSlot = new GearSlot();
-		[ContainerField(160), MemberInfoFlag(137), ContainerFieldNameHash(930851280)]
+		[ContainerField(Name: "GearSlot", Offset: 160, NameHash: 930851280, Flags: 137)]
 		public GearSlot GearSlot { get { return m_GearSlot; } set { if (OnPropertyChanging("SocketData." + nameof(GearSlot), this, m_GearSlot, value)) m_GearSlot = value; } } // 0xA0 (160)
 		
 		protected SocketType m_SocketType = new SocketType();
-		[ContainerField(164), MemberInfoFlag(137), ContainerFieldNameHash(648312824)]
+		[ContainerField(Name: "SocketType", Offset: 164, NameHash: 648312824, Flags: 137)]
 		public SocketType SocketType { get { return m_SocketType; } set { if (OnPropertyChanging("SocketData." + nameof(SocketType), this, m_SocketType, value)) m_SocketType = value; } } // 0xA4 (164)
 		
 		protected bool m_UsesDefaultObject = new bool();
-		[ContainerField(168), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1952973611)]
+		[ContainerField(Name: "UsesDefaultObject", Offset: 168, NameHash: 1952973611, Flags: 49325), LayoutImmutable, Blittable]
 		public bool UsesDefaultObject { get { return m_UsesDefaultObject; } set { if (OnPropertyChanging("SocketData." + nameof(UsesDefaultObject), this, m_UsesDefaultObject, value)) m_UsesDefaultObject = value; } } // 0xA8 (168)
 		
 		protected bool m_Excluded = new bool();
-		[ContainerField(169), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(755715367)]
+		[ContainerField(Name: "Excluded", Offset: 169, NameHash: 755715367, Flags: 49325), LayoutImmutable, Blittable]
 		public bool Excluded { get { return m_Excluded; } set { if (OnPropertyChanging("SocketData." + nameof(Excluded), this, m_Excluded, value)) m_Excluded = value; } } // 0xA9 (169)
 		
 		protected bool m_DefaultEnableSocketEntities = new bool();
-		[ContainerField(170), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(851092279)]
+		[ContainerField(Name: "DefaultEnableSocketEntities", Offset: 170, NameHash: 851092279, Flags: 49325), LayoutImmutable, Blittable]
 		public bool DefaultEnableSocketEntities { get { return m_DefaultEnableSocketEntities; } set { if (OnPropertyChanging("SocketData." + nameof(DefaultEnableSocketEntities), this, m_DefaultEnableSocketEntities, value)) m_DefaultEnableSocketEntities = value; } } // 0xAA (170)
 		
 		protected bool m_ForceSocketEntitiesEnabled = new bool();
-		[ContainerField(171), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1026441125)]
+		[ContainerField(Name: "ForceSocketEntitiesEnabled", Offset: 171, NameHash: 1026441125, Flags: 49325), LayoutImmutable, Blittable]
 		public bool ForceSocketEntitiesEnabled { get { return m_ForceSocketEntitiesEnabled; } set { if (OnPropertyChanging("SocketData." + nameof(ForceSocketEntitiesEnabled), this, m_ForceSocketEntitiesEnabled, value)) m_ForceSocketEntitiesEnabled = value; } } // 0xAB (171)
 		
 		protected bool m_HideByZoomTransition = new bool();
-		[ContainerField(172), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(568486406)]
+		[ContainerField(Name: "HideByZoomTransition", Offset: 172, NameHash: 568486406, Flags: 49325), LayoutImmutable, Blittable]
 		public bool HideByZoomTransition { get { return m_HideByZoomTransition; } set { if (OnPropertyChanging("SocketData." + nameof(HideByZoomTransition), this, m_HideByZoomTransition, value)) m_HideByZoomTransition = value; } } // 0xAC (172)
 		
 		protected bool m_HideByLightToggle = new bool();
-		[ContainerField(173), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1655750130)]
+		[ContainerField(Name: "HideByLightToggle", Offset: 173, NameHash: 1655750130, Flags: 49325), LayoutImmutable, Blittable]
 		public bool HideByLightToggle { get { return m_HideByLightToggle; } set { if (OnPropertyChanging("SocketData." + nameof(HideByLightToggle), this, m_HideByLightToggle, value)) m_HideByLightToggle = value; } } // 0xAD (173)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

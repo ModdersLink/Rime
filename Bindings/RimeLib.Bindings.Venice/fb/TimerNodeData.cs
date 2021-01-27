@@ -18,32 +18,32 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(52), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 52)]
 	public class TimerNodeData : 
 		AudioGraphNodeData
 	{
 		protected AudioGraphNodePort m_Start = new AudioGraphNodePort();
-		[ContainerField(8), MemberInfoFlag(41), ContainerFieldNameHash(230748069)]
+		[ContainerField(Name: "Start", Offset: 8, NameHash: 230748069, Flags: 41)]
 		public AudioGraphNodePort Start { get { return m_Start; } set { if (OnPropertyChanging("TimerNodeData." + nameof(Start), this, m_Start, value)) m_Start = value; } } // 0x8 (8)
 		
 		protected AudioGraphNodePort m_Stop = new AudioGraphNodePort();
-		[ContainerField(16), MemberInfoFlag(41), ContainerFieldNameHash(2089401213)]
+		[ContainerField(Name: "Stop", Offset: 16, NameHash: 2089401213, Flags: 41)]
 		public AudioGraphNodePort Stop { get { return m_Stop; } set { if (OnPropertyChanging("TimerNodeData." + nameof(Stop), this, m_Stop, value)) m_Stop = value; } } // 0x10 (16)
 		
 		protected AudioGraphNodePort m_Period = new AudioGraphNodePort();
-		[ContainerField(24), MemberInfoFlag(41), ContainerFieldNameHash(3366831232)]
+		[ContainerField(Name: "Period", Offset: 24, NameHash: 3366831232, Flags: 41)]
 		public AudioGraphNodePort Period { get { return m_Period; } set { if (OnPropertyChanging("TimerNodeData." + nameof(Period), this, m_Period, value)) m_Period = value; } } // 0x18 (24)
 		
 		protected AudioGraphNodePort m_Tick = new AudioGraphNodePort();
-		[ContainerField(32), MemberInfoFlag(41), ContainerFieldNameHash(2089313808)]
+		[ContainerField(Name: "Tick", Offset: 32, NameHash: 2089313808, Flags: 41)]
 		public AudioGraphNodePort Tick { get { return m_Tick; } set { if (OnPropertyChanging("TimerNodeData." + nameof(Tick), this, m_Tick, value)) m_Tick = value; } } // 0x20 (32)
 		
 		protected AudioGraphNodePort m_Progress = new AudioGraphNodePort();
-		[ContainerField(40), MemberInfoFlag(41), ContainerFieldNameHash(3002510520)]
+		[ContainerField(Name: "Progress", Offset: 40, NameHash: 3002510520, Flags: 41)]
 		public AudioGraphNodePort Progress { get { return m_Progress; } set { if (OnPropertyChanging("TimerNodeData." + nameof(Progress), this, m_Progress, value)) m_Progress = value; } } // 0x28 (40)
 		
 		protected TimerMode m_Mode = new TimerMode();
-		[ContainerField(48), MemberInfoFlag(137), ContainerFieldNameHash(2088772358)]
+		[ContainerField(Name: "Mode", Offset: 48, NameHash: 2088772358, Flags: 137)]
 		public TimerMode Mode { get { return m_Mode; } set { if (OnPropertyChanging("TimerNodeData." + nameof(Mode), this, m_Mode, value)) m_Mode = value; } } // 0x30 (48)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

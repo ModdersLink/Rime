@@ -18,37 +18,37 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(41), ContainerSize(64), ContainerStruct]
+	[ContainerType(Alignment: 16,  Flags: 41, Size: 64)]
 	public class SkyCloudLayer : FrostbiteContainer
 	{
-		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
+		[ContainerField(Name: "Color", Offset: 0, NameHash: 212387320, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 Color { get; set; } = new Vec3(); // 0x0 (0)
 		
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "TileFactor", Offset: 16, NameHash: 2579682268, Flags: 49469), LayoutImmutable, Blittable]
 		public float TileFactor { get; set; } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "Rotation", Offset: 20, NameHash: 48673745, Flags: 49469), LayoutImmutable, Blittable]
 		public float Rotation { get; set; } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "Altitude", Offset: 24, NameHash: 4249664917, Flags: 49469), LayoutImmutable, Blittable]
 		public float Altitude { get; set; } // 0x18 (24)
 		
-		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "Speed", Offset: 28, NameHash: 230887042, Flags: 49469), LayoutImmutable, Blittable]
 		public float Speed { get; set; } // 0x1C (28)
 		
-		[ContainerField(32), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "SunLightPower", Offset: 32, NameHash: 4090337004, Flags: 49469), LayoutImmutable, Blittable]
 		public float SunLightPower { get; set; } // 0x20 (32)
 		
-		[ContainerField(36), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "AmbientLightIntensity", Offset: 36, NameHash: 1203735884, Flags: 49469), LayoutImmutable, Blittable]
 		public float AmbientLightIntensity { get; set; } // 0x24 (36)
 		
-		[ContainerField(40), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "SunLightIntensity", Offset: 40, NameHash: 2700596092, Flags: 49469), LayoutImmutable, Blittable]
 		public float SunLightIntensity { get; set; } // 0x28 (40)
 		
-		[ContainerField(44), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "AlphaMul", Offset: 44, NameHash: 4095152933, Flags: 49469), LayoutImmutable, Blittable]
 		public float AlphaMul { get; set; } // 0x2C (44)
 		
-		[ContainerField(48), MemberInfoFlag(53), ContainerCtrRef]
+		[ContainerField(Name: "Texture", Offset: 48, NameHash: 3185041626, Flags: 53)]
 		public CtrRef<TextureAsset> Texture { get; set; } = new CtrRef<TextureAsset>(); // 0x30 (48)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

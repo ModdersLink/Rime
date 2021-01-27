@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(28), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 28)]
 	public class RouteEntry : 
 		AudioGraphNodePortGroup
 	{
 		protected AudioGraphNodePort m_Output = new AudioGraphNodePort();
-		[ContainerField(8), MemberInfoFlag(41), ContainerFieldNameHash(2895736442)]
+		[ContainerField(Name: "Output", Offset: 8, NameHash: 2895736442, Flags: 41)]
 		public AudioGraphNodePort Output { get { return m_Output; } set { if (OnPropertyChanging("RouteEntry." + nameof(Output), this, m_Output, value)) m_Output = value; } } // 0x8 (8)
 		
 		protected AudioGraphNodePort m_Amplitude = new AudioGraphNodePort();
-		[ContainerField(16), MemberInfoFlag(41), ContainerFieldNameHash(698564572)]
+		[ContainerField(Name: "Amplitude", Offset: 16, NameHash: 698564572, Flags: 41)]
 		public AudioGraphNodePort Amplitude { get { return m_Amplitude; } set { if (OnPropertyChanging("RouteEntry." + nameof(Amplitude), this, m_Amplitude, value)) m_Amplitude = value; } } // 0x10 (16)
 		
 		protected SoundGraphPluginRef m_Plugin = new SoundGraphPluginRef();
-		[ContainerField(24), MemberInfoFlag(41), ContainerFieldNameHash(3384353452)]
+		[ContainerField(Name: "Plugin", Offset: 24, NameHash: 3384353452, Flags: 41)]
 		public SoundGraphPluginRef Plugin { get { return m_Plugin; } set { if (OnPropertyChanging("RouteEntry." + nameof(Plugin), this, m_Plugin, value)) m_Plugin = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

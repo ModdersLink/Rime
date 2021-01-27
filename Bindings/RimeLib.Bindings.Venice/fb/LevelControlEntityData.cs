@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(112), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 112)]
 	public class LevelControlEntityData : 
 		GameEntityData
 	{
 		protected string m_LevelToLoad = string.Empty;
-		[ContainerField(96), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(932165454)]
+		[ContainerField(Name: "LevelToLoad", Offset: 96, NameHash: 932165454, Flags: 16509), LayoutImmutable]
 		public string LevelToLoad { get { return m_LevelToLoad; } set { if (OnPropertyChanging("LevelControlEntityData." + nameof(LevelToLoad), this, m_LevelToLoad, value)) m_LevelToLoad = value; } } // 0x60 (96)
 		
 		protected bool m_RollCredits = new bool();
-		[ContainerField(100), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3139123878)]
+		[ContainerField(Name: "RollCredits", Offset: 100, NameHash: 3139123878, Flags: 49325), LayoutImmutable, Blittable]
 		public bool RollCredits { get { return m_RollCredits; } set { if (OnPropertyChanging("LevelControlEntityData." + nameof(RollCredits), this, m_RollCredits, value)) m_RollCredits = value; } } // 0x64 (100)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

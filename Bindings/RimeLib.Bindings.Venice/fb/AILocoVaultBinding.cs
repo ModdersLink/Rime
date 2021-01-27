@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(28), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 28)]
 	public class AILocoVaultBinding : FrostbiteContainer
 	{
-		[ContainerField(0), MemberInfoFlag(41)]
+		[ContainerField(Name: "Vault", Offset: 0, NameHash: 225348511, Flags: 41)]
 		public AntRef Vault { get; set; } = new AntRef(); // 0x0 (0)
 		
-		[ContainerField(4), MemberInfoFlag(41)]
+		[ContainerField(Name: "DistanceBeforeVault", Offset: 4, NameHash: 3862494437, Flags: 41)]
 		public AntRef DistanceBeforeVault { get; set; } = new AntRef(); // 0x4 (4)
 		
-		[ContainerField(8), MemberInfoFlag(41)]
+		[ContainerField(Name: "HeightBeforeVault", Offset: 8, NameHash: 3431098489, Flags: 41)]
 		public AntRef HeightBeforeVault { get; set; } = new AntRef(); // 0x8 (8)
 		
-		[ContainerField(12), MemberInfoFlag(41)]
+		[ContainerField(Name: "LengthOfVaultableObject", Offset: 12, NameHash: 1652501653, Flags: 41)]
 		public AntRef LengthOfVaultableObject { get; set; } = new AntRef(); // 0xC (12)
 		
-		[ContainerField(16), MemberInfoFlag(41)]
+		[ContainerField(Name: "HeightAfterVault", Offset: 16, NameHash: 2025884548, Flags: 41)]
 		public AntRef HeightAfterVault { get; set; } = new AntRef(); // 0x10 (16)
 		
-		[ContainerField(20), MemberInfoFlag(41)]
+		[ContainerField(Name: "DistanceAfterVault", Offset: 20, NameHash: 1369021080, Flags: 41)]
 		public AntRef DistanceAfterVault { get; set; } = new AntRef(); // 0x14 (20)
 		
-		[ContainerField(24), MemberInfoFlag(41)]
+		[ContainerField(Name: "VaultType", Offset: 24, NameHash: 4073516007, Flags: 41)]
 		public AntRef VaultType { get; set; } = new AntRef(); // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

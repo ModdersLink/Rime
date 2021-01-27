@@ -18,36 +18,36 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(72), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 72)]
 	public class SocketObjectData : 
 		SocketObjectDataBase
 	{
 		protected GUID m_Asset1pGuid = new GUID();
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49501), ContainerFieldNameHash(229660779)]
+		[ContainerField(Name: "Asset1pGuid", Offset: 8, NameHash: 229660779, Flags: 49501), LayoutImmutable, Blittable]
 		public GUID Asset1pGuid { get { return m_Asset1pGuid; } set { if (OnPropertyChanging("SocketObjectData." + nameof(Asset1pGuid), this, m_Asset1pGuid, value)) m_Asset1pGuid = value; } } // 0x8 (8)
 		
 		protected List<GUID> m_Variation1pGuids = new List<GUID>();
-		[ContainerField(24), MemberInfoFlag(65), ContainerFieldNameHash(2848287545), ContainerArray]
+		[ContainerField(Name: "Variation1pGuids", Offset: 24, NameHash: 2848287545, Flags: 65)]
 		public List<GUID> Variation1pGuids { get { return m_Variation1pGuids; } set { if (OnPropertyChanging("SocketObjectData." + nameof(Variation1pGuids), this, m_Variation1pGuids, value)) m_Variation1pGuids = value; } } // 0x18 (24)
 		
 		protected GUID m_Asset1pZoomGuid = new GUID();
-		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49501), ContainerFieldNameHash(1108630652)]
+		[ContainerField(Name: "Asset1pZoomGuid", Offset: 28, NameHash: 1108630652, Flags: 49501), LayoutImmutable, Blittable]
 		public GUID Asset1pZoomGuid { get { return m_Asset1pZoomGuid; } set { if (OnPropertyChanging("SocketObjectData." + nameof(Asset1pZoomGuid), this, m_Asset1pZoomGuid, value)) m_Asset1pZoomGuid = value; } } // 0x1C (28)
 		
 		protected List<GUID> m_Variation1pZoomGuids = new List<GUID>();
-		[ContainerField(44), MemberInfoFlag(65), ContainerFieldNameHash(2457058062), ContainerArray]
+		[ContainerField(Name: "Variation1pZoomGuids", Offset: 44, NameHash: 2457058062, Flags: 65)]
 		public List<GUID> Variation1pZoomGuids { get { return m_Variation1pZoomGuids; } set { if (OnPropertyChanging("SocketObjectData." + nameof(Variation1pZoomGuids), this, m_Variation1pZoomGuids, value)) m_Variation1pZoomGuids = value; } } // 0x2C (44)
 		
 		protected GUID m_Asset3pGuid = new GUID();
-		[ContainerField(48), LayoutImmutable, Blittable, MemberInfoFlag(49501), ContainerFieldNameHash(156129193)]
+		[ContainerField(Name: "Asset3pGuid", Offset: 48, NameHash: 156129193, Flags: 49501), LayoutImmutable, Blittable]
 		public GUID Asset3pGuid { get { return m_Asset3pGuid; } set { if (OnPropertyChanging("SocketObjectData." + nameof(Asset3pGuid), this, m_Asset3pGuid, value)) m_Asset3pGuid = value; } } // 0x30 (48)
 		
 		protected List<GUID> m_Variation3pGuids = new List<GUID>();
-		[ContainerField(64), MemberInfoFlag(65), ContainerFieldNameHash(412553787), ContainerArray]
+		[ContainerField(Name: "Variation3pGuids", Offset: 64, NameHash: 412553787, Flags: 65)]
 		public List<GUID> Variation3pGuids { get { return m_Variation3pGuids; } set { if (OnPropertyChanging("SocketObjectData." + nameof(Variation3pGuids), this, m_Variation3pGuids, value)) m_Variation3pGuids = value; } } // 0x40 (64)
 		
 		protected RefArray<CustomizedMaterialData> m_CustomizedMaterials = new RefArray<CustomizedMaterialData>();
-		[ContainerField(68), MemberInfoFlag(65), ContainerFieldNameHash(474428220), ContainerRefArray]
+		[ContainerField(Name: "CustomizedMaterials", Offset: 68, NameHash: 474428220, Flags: 65)]
 		public RefArray<CustomizedMaterialData> CustomizedMaterials { get { return m_CustomizedMaterials; } set { if (OnPropertyChanging("SocketObjectData." + nameof(CustomizedMaterials), this, m_CustomizedMaterials, value)) m_CustomizedMaterials = value; } } // 0x44 (68)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

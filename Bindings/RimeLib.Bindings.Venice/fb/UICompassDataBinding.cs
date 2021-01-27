@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(88), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 88)]
 	public class UICompassDataBinding : 
 		UIDataBinding
 	{
 		protected UIDataSourceInfo m_Heading = new UIDataSourceInfo();
-		[ContainerField(8), MemberInfoFlag(41), ContainerFieldNameHash(2009143629)]
+		[ContainerField(Name: "Heading", Offset: 8, NameHash: 2009143629, Flags: 41)]
 		public UIDataSourceInfo Heading { get { return m_Heading; } set { if (OnPropertyChanging("UICompassDataBinding." + nameof(Heading), this, m_Heading, value)) m_Heading = value; } } // 0x8 (8)
 		
 		protected UIDataSourceInfo m_Objectives = new UIDataSourceInfo();
-		[ContainerField(24), MemberInfoFlag(41), ContainerFieldNameHash(2766624249)]
+		[ContainerField(Name: "Objectives", Offset: 24, NameHash: 2766624249, Flags: 41)]
 		public UIDataSourceInfo Objectives { get { return m_Objectives; } set { if (OnPropertyChanging("UICompassDataBinding." + nameof(Objectives), this, m_Objectives, value)) m_Objectives = value; } } // 0x18 (24)
 		
 		protected UIDataSourceInfo m_Visibility = new UIDataSourceInfo();
-		[ContainerField(40), MemberInfoFlag(41), ContainerFieldNameHash(1708270083)]
+		[ContainerField(Name: "Visibility", Offset: 40, NameHash: 1708270083, Flags: 41)]
 		public UIDataSourceInfo Visibility { get { return m_Visibility; } set { if (OnPropertyChanging("UICompassDataBinding." + nameof(Visibility), this, m_Visibility, value)) m_Visibility = value; } } // 0x28 (40)
 		
 		protected UIDataSourceInfo m_ShowAirRadar = new UIDataSourceInfo();
-		[ContainerField(56), MemberInfoFlag(41), ContainerFieldNameHash(1704705368)]
+		[ContainerField(Name: "ShowAirRadar", Offset: 56, NameHash: 1704705368, Flags: 41)]
 		public UIDataSourceInfo ShowAirRadar { get { return m_ShowAirRadar; } set { if (OnPropertyChanging("UICompassDataBinding." + nameof(ShowAirRadar), this, m_ShowAirRadar, value)) m_ShowAirRadar = value; } } // 0x38 (56)
 		
 		protected UIDataSourceInfo m_RadarSweepDegree = new UIDataSourceInfo();
-		[ContainerField(72), MemberInfoFlag(41), ContainerFieldNameHash(2148740705)]
+		[ContainerField(Name: "RadarSweepDegree", Offset: 72, NameHash: 2148740705, Flags: 41)]
 		public UIDataSourceInfo RadarSweepDegree { get { return m_RadarSweepDegree; } set { if (OnPropertyChanging("UICompassDataBinding." + nameof(RadarSweepDegree), this, m_RadarSweepDegree, value)) m_RadarSweepDegree = value; } } // 0x48 (72)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

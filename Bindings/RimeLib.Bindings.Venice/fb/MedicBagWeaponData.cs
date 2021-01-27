@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(40), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 40)]
 	public class MedicBagWeaponData : 
 		WeaponData
 	{
 		protected HealerData m_Healer = new HealerData();
-		[ContainerField(16), MemberInfoFlag(41), ContainerFieldNameHash(3054336626)]
+		[ContainerField(Name: "Healer", Offset: 16, NameHash: 3054336626, Flags: 41)]
 		public HealerData Healer { get { return m_Healer; } set { if (OnPropertyChanging("MedicBagWeaponData." + nameof(Healer), this, m_Healer, value)) m_Healer = value; } } // 0x10 (16)
 		
 		protected float m_HealthPointsRefillSpeed = new float();
-		[ContainerField(32), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(677121433)]
+		[ContainerField(Name: "HealthPointsRefillSpeed", Offset: 32, NameHash: 677121433, Flags: 49469), LayoutImmutable, Blittable]
 		public float HealthPointsRefillSpeed { get { return m_HealthPointsRefillSpeed; } set { if (OnPropertyChanging("MedicBagWeaponData." + nameof(HealthPointsRefillSpeed), this, m_HealthPointsRefillSpeed, value)) m_HealthPointsRefillSpeed = value; } } // 0x20 (32)
 		
 		protected float m_HealthPointsPerBag = new float();
-		[ContainerField(36), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(134333413)]
+		[ContainerField(Name: "HealthPointsPerBag", Offset: 36, NameHash: 134333413, Flags: 49469), LayoutImmutable, Blittable]
 		public float HealthPointsPerBag { get { return m_HealthPointsPerBag; } set { if (OnPropertyChanging("MedicBagWeaponData." + nameof(HealthPointsPerBag), this, m_HealthPointsPerBag, value)) m_HealthPointsPerBag = value; } } // 0x24 (36)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

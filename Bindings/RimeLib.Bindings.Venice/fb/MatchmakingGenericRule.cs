@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(20), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 20)]
 	public class MatchmakingGenericRule : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "Rule", Offset: 0, NameHash: 2089359915, Flags: 16509), LayoutImmutable]
 		public string Rule { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "MinFitThresHold", Offset: 4, NameHash: 3351757955, Flags: 16509), LayoutImmutable]
 		public string MinFitThresHold { get; set; } // 0x4 (4)
 		
-		[ContainerField(8), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "Setting", Offset: 8, NameHash: 2752851091, Flags: 16509), LayoutImmutable]
 		public string Setting { get; set; } // 0x8 (8)
 		
-		[ContainerField(12), MemberInfoFlag(65), ContainerArray]
+		[ContainerField(Name: "DesiredValues", Offset: 12, NameHash: 2104393557, Flags: 65)]
 		public List<MatchmakingRuleString> DesiredValues { get; set; } = new List<MatchmakingRuleString>(); // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "IgnoreIfDefault", Offset: 16, NameHash: 6250777, Flags: 49325), LayoutImmutable, Blittable]
 		public bool IgnoreIfDefault { get; set; } // 0x10 (16)
 		
-		[ContainerField(17), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "MergeValues", Offset: 17, NameHash: 1359715749, Flags: 49325), LayoutImmutable, Blittable]
 		public bool MergeValues { get; set; } // 0x11 (17)
 		
-		[ContainerField(18), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "SortValues", Offset: 18, NameHash: 1083437895, Flags: 49325), LayoutImmutable, Blittable]
 		public bool SortValues { get; set; } // 0x12 (18)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

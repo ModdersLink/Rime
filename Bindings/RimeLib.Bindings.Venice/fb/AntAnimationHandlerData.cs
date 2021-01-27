@@ -18,31 +18,31 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(48), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 48)]
 	public class AntAnimationHandlerData : FrostbiteContainer
 	{
-		[ContainerField(0), MemberInfoFlag(41)]
+		[ContainerField(Name: "Animatable", Offset: 0, NameHash: 3208693873, Flags: 41)]
 		public AntAnimatableData Animatable { get; set; } = new AntAnimatableData(); // 0x0 (0)
 		
-		[ContainerField(20), MemberInfoFlag(41)]
+		[ContainerField(Name: "RootController", Offset: 20, NameHash: 3403232383, Flags: 41)]
 		public AntRef RootController { get; set; } = new AntRef(); // 0x14 (20)
 		
-		[ContainerField(24), MemberInfoFlag(41)]
+		[ContainerField(Name: "LodBinding", Offset: 24, NameHash: 3718483171, Flags: 41)]
 		public LodBinding LodBinding { get; set; } = new LodBinding(); // 0x18 (24)
 		
-		[ContainerField(36), MemberInfoFlag(65), ContainerRefArray]
+		[ContainerField(Name: "AntPackageData", Offset: 36, NameHash: 1530906868, Flags: 65)]
 		public RefArray<AntPackageAsset> AntPackageData { get; set; } = new RefArray<AntPackageAsset>(); // 0x24 (36)
 		
-		[ContainerField(40), MemberInfoFlag(65), ContainerArray]
+		[ContainerField(Name: "BonesToMirror", Offset: 40, NameHash: 4237573170, Flags: 65)]
 		public List<GameplayBone> BonesToMirror { get; set; } = new List<GameplayBone>(); // 0x28 (40)
 		
-		[ContainerField(44), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "ReportBackFromAnt", Offset: 44, NameHash: 3577562349, Flags: 49325), LayoutImmutable, Blittable]
 		public bool ReportBackFromAnt { get; set; } // 0x2C (44)
 		
-		[ContainerField(45), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "EnableMasterSlaveCopy", Offset: 45, NameHash: 4006836336, Flags: 49325), LayoutImmutable, Blittable]
 		public bool EnableMasterSlaveCopy { get; set; } // 0x2D (45)
 		
-		[ContainerField(46), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "IsProp", Offset: 46, NameHash: 2816600898, Flags: 49325), LayoutImmutable, Blittable]
 		public bool IsProp { get; set; } // 0x2E (46)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

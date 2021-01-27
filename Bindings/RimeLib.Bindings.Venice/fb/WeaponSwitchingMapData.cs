@@ -18,19 +18,19 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(16), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 16)]
 	public class WeaponSwitchingMapData : FrostbiteContainer
 	{
-		[ContainerField(0), MemberInfoFlag(137)]
+		[ContainerField(Name: "FromWeapon", Offset: 0, NameHash: 2475999121, Flags: 137)]
 		public WeaponSwitchingEnum FromWeapon { get; set; } = new WeaponSwitchingEnum(); // 0x0 (0)
 		
-		[ContainerField(4), MemberInfoFlag(137)]
+		[ContainerField(Name: "Action", Offset: 4, NameHash: 2484178491, Flags: 137)]
 		public EntryInputActionEnum Action { get; set; } = new EntryInputActionEnum(); // 0x4 (4)
 		
-		[ContainerField(8), MemberInfoFlag(65), ContainerArray]
+		[ContainerField(Name: "ToWeapon", Offset: 8, NameHash: 3504623164, Flags: 65)]
 		public List<WeaponSwitchingEnum> ToWeapon { get; set; } = new List<WeaponSwitchingEnum>(); // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "FireAndSwitchBackToPrev", Offset: 12, NameHash: 1486658789, Flags: 49325), LayoutImmutable, Blittable]
 		public bool FireAndSwitchBackToPrev { get; set; } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

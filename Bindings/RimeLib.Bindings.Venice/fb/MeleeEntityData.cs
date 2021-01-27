@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(16), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
 	public class MeleeEntityData : 
 		EntityData
 	{
 		protected CtrRef<MeleeEntityCommonData> m_CommonData = new CtrRef<MeleeEntityCommonData>();
-		[ContainerField(12), MemberInfoFlag(53), ContainerFieldNameHash(760803064), ContainerCtrRef]
+		[ContainerField(Name: "CommonData", Offset: 12, NameHash: 760803064, Flags: 53)]
 		public CtrRef<MeleeEntityCommonData> CommonData { get { return m_CommonData; } set { if (OnPropertyChanging("MeleeEntityData." + nameof(CommonData), this, m_CommonData, value)) m_CommonData = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

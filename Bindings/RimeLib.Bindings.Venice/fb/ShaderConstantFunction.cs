@@ -18,7 +18,7 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[MemberInfoFlag(137), ContainerSize(4), ContainerEnum]
+	[ContainerType(Flags: 137, Size: 4  )]
 	public enum ShaderConstantFunction : int
 	{
 		ShaderConstantFunction_ViewMatrix = 0,

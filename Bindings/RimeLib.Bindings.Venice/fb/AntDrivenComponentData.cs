@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(112), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 112)]
 	public class AntDrivenComponentData : 
 		ComponentData
 	{
 		protected AnimationDrivenBinding m_CharacterGameState = new AnimationDrivenBinding();
-		[ContainerField(96), MemberInfoFlag(41), ContainerFieldNameHash(1998069317)]
+		[ContainerField(Name: "CharacterGameState", Offset: 96, NameHash: 1998069317, Flags: 41)]
 		public AnimationDrivenBinding CharacterGameState { get { return m_CharacterGameState; } set { if (OnPropertyChanging("AntDrivenComponentData." + nameof(CharacterGameState), this, m_CharacterGameState, value)) m_CharacterGameState = value; } } // 0x60 (96)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(24), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 24)]
 	public class PS3StoreImageHD1080 : 
 		UIItemDescription
 	{
 		protected string m_Identifier = string.Empty;
-		[ContainerField(16), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(3512790342)]
+		[ContainerField(Name: "Identifier", Offset: 16, NameHash: 3512790342, Flags: 16509), LayoutImmutable]
 		public string Identifier { get { return m_Identifier; } set { if (OnPropertyChanging("PS3StoreImageHD1080." + nameof(Identifier), this, m_Identifier, value)) m_Identifier = value; } } // 0x10 (16)
 		
 		protected string m_ImagePath = string.Empty;
-		[ContainerField(20), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(2679336655)]
+		[ContainerField(Name: "ImagePath", Offset: 20, NameHash: 2679336655, Flags: 16509), LayoutImmutable]
 		public string ImagePath { get { return m_ImagePath; } set { if (OnPropertyChanging("PS3StoreImageHD1080." + nameof(ImagePath), this, m_ImagePath, value)) m_ImagePath = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

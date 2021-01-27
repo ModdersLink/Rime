@@ -18,22 +18,22 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(24), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 24)]
 	public class VehicleTrackerRenderTargetData : FrostbiteContainer
 	{
-		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
+		[ContainerField(Name: "PositionOffset", Offset: 0, NameHash: 3901577617, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec2 PositionOffset { get; set; } = new Vec2(); // 0x0 (0)
 		
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49405)]
+		[ContainerField(Name: "RenderTargetIndex", Offset: 8, NameHash: 3545373920, Flags: 49405), LayoutImmutable, Blittable]
 		public int RenderTargetIndex { get; set; } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "RenderTargetApectRatio", Offset: 12, NameHash: 984520476, Flags: 49469), LayoutImmutable, Blittable]
 		public float RenderTargetApectRatio { get; set; } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "ScaleSize", Offset: 16, NameHash: 563381912, Flags: 49469), LayoutImmutable, Blittable]
 		public float ScaleSize { get; set; } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "UseRenderTarget", Offset: 20, NameHash: 3192099997, Flags: 49325), LayoutImmutable, Blittable]
 		public bool UseRenderTarget { get; set; } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

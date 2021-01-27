@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(20), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 20)]
 	public class InputCurveData : 
 		DataContainer
 	{
 		protected List<EntryInputActionEnum> m_AffectedInputs = new List<EntryInputActionEnum>();
-		[ContainerField(8), MemberInfoFlag(65), ContainerFieldNameHash(337107346), ContainerArray]
+		[ContainerField(Name: "AffectedInputs", Offset: 8, NameHash: 337107346, Flags: 65)]
 		public List<EntryInputActionEnum> AffectedInputs { get { return m_AffectedInputs; } set { if (OnPropertyChanging("InputCurveData." + nameof(AffectedInputs), this, m_AffectedInputs, value)) m_AffectedInputs = value; } } // 0x8 (8)
 		
 		protected List<Vec2> m_InputModifierCurve = new List<Vec2>();
-		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(1217881747), ContainerArray]
+		[ContainerField(Name: "InputModifierCurve", Offset: 12, NameHash: 1217881747, Flags: 65)]
 		public List<Vec2> InputModifierCurve { get { return m_InputModifierCurve; } set { if (OnPropertyChanging("InputCurveData." + nameof(InputModifierCurve), this, m_InputModifierCurve, value)) m_InputModifierCurve = value; } } // 0xC (12)
 		
 		protected bool m_HandleMultipleInputsAsSquare = new bool();
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1190597481)]
+		[ContainerField(Name: "HandleMultipleInputsAsSquare", Offset: 16, NameHash: 1190597481, Flags: 49325), LayoutImmutable, Blittable]
 		public bool HandleMultipleInputsAsSquare { get { return m_HandleMultipleInputsAsSquare; } set { if (OnPropertyChanging("InputCurveData." + nameof(HandleMultipleInputsAsSquare), this, m_HandleMultipleInputsAsSquare, value)) m_HandleMultipleInputsAsSquare = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

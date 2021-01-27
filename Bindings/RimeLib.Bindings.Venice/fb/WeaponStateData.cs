@@ -18,82 +18,82 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(92), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 92)]
 	public class WeaponStateData : FrostbiteContainer
 	{
-		[ContainerField(0), MemberInfoFlag(65), ContainerArray]
+		[ContainerField(Name: "ReferencedAssetHashes", Offset: 0, NameHash: 3589205886, Flags: 65)]
 		public List<uint> ReferencedAssetHashes { get; set; } = new List<uint>(); // 0x0 (0)
 		
-		[ContainerField(4), MemberInfoFlag(65), ContainerRefArray]
+		[ContainerField(Name: "BoneFakePhysics", Offset: 4, NameHash: 2227758113, Flags: 65)]
 		public RefArray<BoneFakePhysicsData> BoneFakePhysics { get; set; } = new RefArray<BoneFakePhysicsData>(); // 0x4 (4)
 		
-		[ContainerField(8), MemberInfoFlag(53), ContainerCtrRef]
+		[ContainerField(Name: "Mesh1p", Offset: 8, NameHash: 2648063895, Flags: 53)]
 		public CtrRef<SkinnedMeshAsset> Mesh1p { get; set; } = new CtrRef<SkinnedMeshAsset>(); // 0x8 (8)
 		
-		[ContainerField(12), MemberInfoFlag(53), ContainerCtrRef]
+		[ContainerField(Name: "MeshZoom1p", Offset: 12, NameHash: 19960000, Flags: 53)]
 		public CtrRef<SkinnedMeshAsset> MeshZoom1p { get; set; } = new CtrRef<SkinnedMeshAsset>(); // 0xC (12)
 		
-		[ContainerField(16), MemberInfoFlag(53), ContainerCtrRef]
+		[ContainerField(Name: "Mesh3p", Offset: 16, NameHash: 2648063957, Flags: 53)]
 		public CtrRef<SkinnedMeshAsset> Mesh3p { get; set; } = new CtrRef<SkinnedMeshAsset>(); // 0x10 (16)
 		
-		[ContainerField(20), MemberInfoFlag(41)]
+		[ContainerField(Name: "Weapon", Offset: 20, NameHash: 3190562823, Flags: 41)]
 		public AntRef Weapon { get; set; } = new AntRef(); // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "ZoomMeshTransitionFactor", Offset: 24, NameHash: 3770881859, Flags: 49469), LayoutImmutable, Blittable]
 		public float ZoomMeshTransitionFactor { get; set; } // 0x18 (24)
 		
-		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "ZoomScaleFactor", Offset: 28, NameHash: 840793031, Flags: 49469), LayoutImmutable, Blittable]
 		public float ZoomScaleFactor { get; set; } // 0x1C (28)
 		
-		[ContainerField(32), MemberInfoFlag(65), ContainerArray]
+		[ContainerField(Name: "ZoomInOutMeshTransitionFactors", Offset: 32, NameHash: 1322171705, Flags: 65)]
 		public List<float> ZoomInOutMeshTransitionFactors { get; set; } = new List<float>(); // 0x20 (32)
 		
-		[ContainerField(36), MemberInfoFlag(53), ContainerCtrRef]
+		[ContainerField(Name: "ZoomedScopeFilter", Offset: 36, NameHash: 852738745, Flags: 53)]
 		public CtrRef<ScopeFilterData> ZoomedScopeFilter { get; set; } = new CtrRef<ScopeFilterData>(); // 0x24 (36)
 		
-		[ContainerField(40), MemberInfoFlag(53), ContainerCtrRef]
+		[ContainerField(Name: "NonZoomedScopeFilter", Offset: 40, NameHash: 2182858966, Flags: 53)]
 		public CtrRef<ScopeFilterData> NonZoomedScopeFilter { get; set; } = new CtrRef<ScopeFilterData>(); // 0x28 (40)
 		
-		[ContainerField(44), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "KeepAimingTime", Offset: 44, NameHash: 2567043342, Flags: 49469), LayoutImmutable, Blittable]
 		public float KeepAimingTime { get; set; } // 0x2C (44)
 		
-		[ContainerField(48), MemberInfoFlag(41)]
+		[ContainerField(Name: "AnimationConfiguration", Offset: 48, NameHash: 711248867, Flags: 41)]
 		public AnimationConfigurationData AnimationConfiguration { get; set; } = new AnimationConfigurationData(); // 0x30 (48)
 		
-		[ContainerField(60), MemberInfoFlag(137)]
+		[ContainerField(Name: "AnimatedFireType", Offset: 60, NameHash: 1066105722, Flags: 137)]
 		public AnimatedFireEnum AnimatedFireType { get; set; } = new AnimatedFireEnum(); // 0x3C (60)
 		
-		[ContainerField(64), MemberInfoFlag(137)]
+		[ContainerField(Name: "AnimatedAimingType", Offset: 64, NameHash: 2384119975, Flags: 137)]
 		public AnimatedAimingEnum AnimatedAimingType { get; set; } = new AnimatedAimingEnum(); // 0x40 (64)
 		
-		[ContainerField(68), MemberInfoFlag(65), ContainerArray]
+		[ContainerField(Name: "Mesh3pTransforms", Offset: 68, NameHash: 1625436330, Flags: 65)]
 		public List<LinearTransform> Mesh3pTransforms { get; set; } = new List<LinearTransform>(); // 0x44 (68)
 		
-		[ContainerField(72), MemberInfoFlag(65), ContainerArray]
+		[ContainerField(Name: "Mesh3pRigidMeshSocketObjectTransforms", Offset: 72, NameHash: 2631945560, Flags: 65)]
 		public List<RigidMeshSocketTransform> Mesh3pRigidMeshSocketObjectTransforms { get; set; } = new List<RigidMeshSocketTransform>(); // 0x48 (72)
 		
-		[ContainerField(76), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "HideProjectileAfterFireTime", Offset: 76, NameHash: 905979417, Flags: 49469), LayoutImmutable, Blittable]
 		public float HideProjectileAfterFireTime { get; set; } // 0x4C (76)
 		
-		[ContainerField(80), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "ProjectileBoneName", Offset: 80, NameHash: 1352166801, Flags: 16509), LayoutImmutable]
 		public string ProjectileBoneName { get; set; } // 0x50 (80)
 		
-		[ContainerField(84), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "IsOneHanded", Offset: 84, NameHash: 2053998137, Flags: 49325), LayoutImmutable, Blittable]
 		public bool IsOneHanded { get; set; } // 0x54 (84)
 		
-		[ContainerField(85), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "PlayDeployAfterFire", Offset: 85, NameHash: 876103510, Flags: 49325), LayoutImmutable, Blittable]
 		public bool PlayDeployAfterFire { get; set; } // 0x55 (85)
 		
-		[ContainerField(86), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "SkipFireAnimation", Offset: 86, NameHash: 1175954314, Flags: 49325), LayoutImmutable, Blittable]
 		public bool SkipFireAnimation { get; set; } // 0x56 (86)
 		
-		[ContainerField(87), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "SkipDeployAnimation", Offset: 87, NameHash: 2215837145, Flags: 49325), LayoutImmutable, Blittable]
 		public bool SkipDeployAnimation { get; set; } // 0x57 (87)
 		
-		[ContainerField(88), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "SkipReloadAnimation", Offset: 88, NameHash: 2233306307, Flags: 49325), LayoutImmutable, Blittable]
 		public bool SkipReloadAnimation { get; set; } // 0x58 (88)
 		
-		[ContainerField(89), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "AlwaysAimHead", Offset: 89, NameHash: 3649734905, Flags: 49325), LayoutImmutable, Blittable]
 		public bool AlwaysAimHead { get; set; } // 0x59 (89)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

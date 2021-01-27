@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(96), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 96)]
 	public class LookAtEntityData : 
 		SpatialEntityData
 	{
 		protected bool m_RunOnce = new bool();
-		[ContainerField(80), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(709901739)]
+		[ContainerField(Name: "RunOnce", Offset: 80, NameHash: 709901739, Flags: 49325), LayoutImmutable, Blittable]
 		public bool RunOnce { get { return m_RunOnce; } set { if (OnPropertyChanging("LookAtEntityData." + nameof(RunOnce), this, m_RunOnce, value)) m_RunOnce = value; } } // 0x50 (80)
 		
 		protected bool m_UseStaticDirection = new bool();
-		[ContainerField(81), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(597626235)]
+		[ContainerField(Name: "UseStaticDirection", Offset: 81, NameHash: 597626235, Flags: 49325), LayoutImmutable, Blittable]
 		public bool UseStaticDirection { get { return m_UseStaticDirection; } set { if (OnPropertyChanging("LookAtEntityData." + nameof(UseStaticDirection), this, m_UseStaticDirection, value)) m_UseStaticDirection = value; } } // 0x51 (81)
 		
 		protected bool m_Enabled = new bool();
-		[ContainerField(82), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2662400)]
+		[ContainerField(Name: "Enabled", Offset: 82, NameHash: 2662400, Flags: 49325), LayoutImmutable, Blittable]
 		public bool Enabled { get { return m_Enabled; } set { if (OnPropertyChanging("LookAtEntityData." + nameof(Enabled), this, m_Enabled, value)) m_Enabled = value; } } // 0x52 (82)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

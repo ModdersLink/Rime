@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(128), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 128)]
 	public class FlagCounterEntityData : 
 		GameEntityData
 	{
 		protected TeamId m_TeamId = new TeamId();
-		[ContainerField(96), MemberInfoFlag(137), ContainerFieldNameHash(3220374101)]
+		[ContainerField(Name: "TeamId", Offset: 96, NameHash: 3220374101, Flags: 137)]
 		public TeamId TeamId { get { return m_TeamId; } set { if (OnPropertyChanging("FlagCounterEntityData." + nameof(TeamId), this, m_TeamId, value)) m_TeamId = value; } } // 0x60 (96)
 		
 		protected float m_EnemyFlagProgress = new float();
-		[ContainerField(100), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1874843822)]
+		[ContainerField(Name: "EnemyFlagProgress", Offset: 100, NameHash: 1874843822, Flags: 49469), LayoutImmutable, Blittable]
 		public float EnemyFlagProgress { get { return m_EnemyFlagProgress; } set { if (OnPropertyChanging("FlagCounterEntityData." + nameof(EnemyFlagProgress), this, m_EnemyFlagProgress, value)) m_EnemyFlagProgress = value; } } // 0x64 (100)
 		
 		protected float m_RoundTime = new float();
-		[ContainerField(104), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(4171794130)]
+		[ContainerField(Name: "RoundTime", Offset: 104, NameHash: 4171794130, Flags: 49469), LayoutImmutable, Blittable]
 		public float RoundTime { get { return m_RoundTime; } set { if (OnPropertyChanging("FlagCounterEntityData." + nameof(RoundTime), this, m_RoundTime, value)) m_RoundTime = value; } } // 0x68 (104)
 		
 		protected int m_ObjectiveFlagCount = new int();
-		[ContainerField(108), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(952118181)]
+		[ContainerField(Name: "ObjectiveFlagCount", Offset: 108, NameHash: 952118181, Flags: 49405), LayoutImmutable, Blittable]
 		public int ObjectiveFlagCount { get { return m_ObjectiveFlagCount; } set { if (OnPropertyChanging("FlagCounterEntityData." + nameof(ObjectiveFlagCount), this, m_ObjectiveFlagCount, value)) m_ObjectiveFlagCount = value; } } // 0x6C (108)
 		
 		protected bool m_VisibleInMinimap = new bool();
-		[ContainerField(112), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2256980243)]
+		[ContainerField(Name: "VisibleInMinimap", Offset: 112, NameHash: 2256980243, Flags: 49325), LayoutImmutable, Blittable]
 		public bool VisibleInMinimap { get { return m_VisibleInMinimap; } set { if (OnPropertyChanging("FlagCounterEntityData." + nameof(VisibleInMinimap), this, m_VisibleInMinimap, value)) m_VisibleInMinimap = value; } } // 0x70 (112)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

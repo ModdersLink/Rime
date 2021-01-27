@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(44), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 44)]
 	public class RandomWalkOrderEntityData : 
 		BFOrderEntityData
 	{
 		protected bool m_CombatForbidden = new bool();
-		[ContainerField(40), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2646993448)]
+		[ContainerField(Name: "CombatForbidden", Offset: 40, NameHash: 2646993448, Flags: 49325), LayoutImmutable, Blittable]
 		public bool CombatForbidden { get { return m_CombatForbidden; } set { if (OnPropertyChanging("RandomWalkOrderEntityData." + nameof(CombatForbidden), this, m_CombatForbidden, value)) m_CombatForbidden = value; } } // 0x28 (40)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

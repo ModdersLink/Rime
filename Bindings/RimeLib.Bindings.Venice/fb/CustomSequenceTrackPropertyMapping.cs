@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(16), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
 	public class CustomSequenceTrackPropertyMapping : 
 		DataContainer
 	{
 		protected int m_TrackPropertyID = new int();
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(3764113472)]
+		[ContainerField(Name: "TrackPropertyID", Offset: 8, NameHash: 3764113472, Flags: 49405), LayoutImmutable, Blittable]
 		public int TrackPropertyID { get { return m_TrackPropertyID; } set { if (OnPropertyChanging("CustomSequenceTrackPropertyMapping." + nameof(TrackPropertyID), this, m_TrackPropertyID, value)) m_TrackPropertyID = value; } } // 0x8 (8)
 		
 		protected int m_SequencePropertyID = new int();
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(2623680624)]
+		[ContainerField(Name: "SequencePropertyID", Offset: 12, NameHash: 2623680624, Flags: 49405), LayoutImmutable, Blittable]
 		public int SequencePropertyID { get { return m_SequencePropertyID; } set { if (OnPropertyChanging("CustomSequenceTrackPropertyMapping." + nameof(SequencePropertyID), this, m_SequencePropertyID, value)) m_SequencePropertyID = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

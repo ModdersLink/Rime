@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(32), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 32)]
 	public class SaveEntityData : 
 		EntityData
 	{
 		protected CtrRef<TextureAsset> m_SaveScreenTexture = new CtrRef<TextureAsset>();
-		[ContainerField(12), MemberInfoFlag(53), ContainerFieldNameHash(1992725143), ContainerCtrRef]
+		[ContainerField(Name: "SaveScreenTexture", Offset: 12, NameHash: 1992725143, Flags: 53)]
 		public CtrRef<TextureAsset> SaveScreenTexture { get { return m_SaveScreenTexture; } set { if (OnPropertyChanging("SaveEntityData." + nameof(SaveScreenTexture), this, m_SaveScreenTexture, value)) m_SaveScreenTexture = value; } } // 0xC (12)
 		
 		protected string m_LevelName = string.Empty;
-		[ContainerField(16), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(1599082292)]
+		[ContainerField(Name: "LevelName", Offset: 16, NameHash: 1599082292, Flags: 16509), LayoutImmutable]
 		public string LevelName { get { return m_LevelName; } set { if (OnPropertyChanging("SaveEntityData." + nameof(LevelName), this, m_LevelName, value)) m_LevelName = value; } } // 0x10 (16)
 		
 		protected string m_SaveFileName = string.Empty;
-		[ContainerField(20), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(1526449829)]
+		[ContainerField(Name: "SaveFileName", Offset: 20, NameHash: 1526449829, Flags: 16509), LayoutImmutable]
 		public string SaveFileName { get { return m_SaveFileName; } set { if (OnPropertyChanging("SaveEntityData." + nameof(SaveFileName), this, m_SaveFileName, value)) m_SaveFileName = value; } } // 0x14 (20)
 		
 		protected string m_SaveNameSID = string.Empty;
-		[ContainerField(24), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(1206536541)]
+		[ContainerField(Name: "SaveNameSID", Offset: 24, NameHash: 1206536541, Flags: 16509), LayoutImmutable]
 		public string SaveNameSID { get { return m_SaveNameSID; } set { if (OnPropertyChanging("SaveEntityData." + nameof(SaveNameSID), this, m_SaveNameSID, value)) m_SaveNameSID = value; } } // 0x18 (24)
 		
 		protected bool m_CheckForHumanPlayer = new bool();
-		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2331597556)]
+		[ContainerField(Name: "CheckForHumanPlayer", Offset: 28, NameHash: 2331597556, Flags: 49325), LayoutImmutable, Blittable]
 		public bool CheckForHumanPlayer { get { return m_CheckForHumanPlayer; } set { if (OnPropertyChanging("SaveEntityData." + nameof(CheckForHumanPlayer), this, m_CheckForHumanPlayer, value)) m_CheckForHumanPlayer = value; } } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

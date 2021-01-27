@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(12), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 12)]
 	public class ConsumablesLevelDescriptionComponent : 
 		LevelDescriptionComponent
 	{
 		protected List<Consumable> m_Consumables = new List<Consumable>();
-		[ContainerField(8), MemberInfoFlag(65), ContainerFieldNameHash(1050838517), ContainerArray]
+		[ContainerField(Name: "Consumables", Offset: 8, NameHash: 1050838517, Flags: 65)]
 		public List<Consumable> Consumables { get { return m_Consumables; } set { if (OnPropertyChanging("ConsumablesLevelDescriptionComponent." + nameof(Consumables), this, m_Consumables, value)) m_Consumables = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

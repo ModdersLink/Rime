@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(16), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
 	public class ShaderDatabaseAsset : 
 		Asset
 	{
 		protected string m_LevelName = string.Empty;
-		[ContainerField(12), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(1599082292)]
+		[ContainerField(Name: "LevelName", Offset: 12, NameHash: 1599082292, Flags: 16509), LayoutImmutable]
 		public string LevelName { get { return m_LevelName; } set { if (OnPropertyChanging("ShaderDatabaseAsset." + nameof(LevelName), this, m_LevelName, value)) m_LevelName = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

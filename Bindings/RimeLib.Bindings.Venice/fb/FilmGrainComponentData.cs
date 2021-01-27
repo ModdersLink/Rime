@@ -18,36 +18,36 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(144), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 144)]
 	public class FilmGrainComponentData : 
 		ComponentData
 	{
 		protected Vec3 m_ColorScale = new Vec3();
-		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(4213919872)]
+		[ContainerField(Name: "ColorScale", Offset: 96, NameHash: 4213919872, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 ColorScale { get { return m_ColorScale; } set { if (OnPropertyChanging("FilmGrainComponentData." + nameof(ColorScale), this, m_ColorScale, value)) m_ColorScale = value; } } // 0x60 (96)
 		
 		protected Vec2 m_TextureScale = new Vec2();
-		[ContainerField(112), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(2137417890)]
+		[ContainerField(Name: "TextureScale", Offset: 112, NameHash: 2137417890, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec2 TextureScale { get { return m_TextureScale; } set { if (OnPropertyChanging("FilmGrainComponentData." + nameof(TextureScale), this, m_TextureScale, value)) m_TextureScale = value; } } // 0x70 (112)
 		
 		protected Realm m_Realm = new Realm();
-		[ContainerField(120), MemberInfoFlag(137), ContainerFieldNameHash(229961746)]
+		[ContainerField(Name: "Realm", Offset: 120, NameHash: 229961746, Flags: 137)]
 		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("FilmGrainComponentData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0x78 (120)
 		
 		protected CtrRef<TextureAsset> m_Texture = new CtrRef<TextureAsset>();
-		[ContainerField(124), MemberInfoFlag(53), ContainerFieldNameHash(3185041626), ContainerCtrRef]
+		[ContainerField(Name: "Texture", Offset: 124, NameHash: 3185041626, Flags: 53)]
 		public CtrRef<TextureAsset> Texture { get { return m_Texture; } set { if (OnPropertyChanging("FilmGrainComponentData." + nameof(Texture), this, m_Texture, value)) m_Texture = value; } } // 0x7C (124)
 		
 		protected bool m_LinearFilteringEnable = new bool();
-		[ContainerField(128), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1423958617)]
+		[ContainerField(Name: "LinearFilteringEnable", Offset: 128, NameHash: 1423958617, Flags: 49325), LayoutImmutable, Blittable]
 		public bool LinearFilteringEnable { get { return m_LinearFilteringEnable; } set { if (OnPropertyChanging("FilmGrainComponentData." + nameof(LinearFilteringEnable), this, m_LinearFilteringEnable, value)) m_LinearFilteringEnable = value; } } // 0x80 (128)
 		
 		protected bool m_RandomEnable = new bool();
-		[ContainerField(129), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3235429567)]
+		[ContainerField(Name: "RandomEnable", Offset: 129, NameHash: 3235429567, Flags: 49325), LayoutImmutable, Blittable]
 		public bool RandomEnable { get { return m_RandomEnable; } set { if (OnPropertyChanging("FilmGrainComponentData." + nameof(RandomEnable), this, m_RandomEnable, value)) m_RandomEnable = value; } } // 0x81 (129)
 		
 		protected bool m_Enable = new bool();
-		[ContainerField(130), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2342790116)]
+		[ContainerField(Name: "Enable", Offset: 130, NameHash: 2342790116, Flags: 49325), LayoutImmutable, Blittable]
 		public bool Enable { get { return m_Enable; } set { if (OnPropertyChanging("FilmGrainComponentData." + nameof(Enable), this, m_Enable, value)) m_Enable = value; } } // 0x82 (130)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

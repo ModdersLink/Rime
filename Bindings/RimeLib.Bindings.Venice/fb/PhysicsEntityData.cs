@@ -18,64 +18,64 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(80), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 80)]
 	public class PhysicsEntityData : 
 		EntityData
 	{
 		protected Vec3 m_InertiaModifier = new Vec3();
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(3532865534)]
+		[ContainerField(Name: "InertiaModifier", Offset: 16, NameHash: 3532865534, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 InertiaModifier { get { return m_InertiaModifier; } set { if (OnPropertyChanging("PhysicsEntityData." + nameof(InertiaModifier), this, m_InertiaModifier, value)) m_InertiaModifier = value; } } // 0x10 (16)
 		
 		protected RefArray<HavokAsset> m_ScaledAssets = new RefArray<HavokAsset>();
-		[ContainerField(32), MemberInfoFlag(65), ContainerFieldNameHash(3460372282), ContainerRefArray]
+		[ContainerField(Name: "ScaledAssets", Offset: 32, NameHash: 3460372282, Flags: 65)]
 		public RefArray<HavokAsset> ScaledAssets { get { return m_ScaledAssets; } set { if (OnPropertyChanging("PhysicsEntityData." + nameof(ScaledAssets), this, m_ScaledAssets, value)) m_ScaledAssets = value; } } // 0x20 (32)
 		
 		protected RefArray<RigidBodyData> m_RigidBodies = new RefArray<RigidBodyData>();
-		[ContainerField(36), MemberInfoFlag(65), ContainerFieldNameHash(3015855522), ContainerRefArray]
+		[ContainerField(Name: "RigidBodies", Offset: 36, NameHash: 3015855522, Flags: 65)]
 		public RefArray<RigidBodyData> RigidBodies { get { return m_RigidBodies; } set { if (OnPropertyChanging("PhysicsEntityData." + nameof(RigidBodies), this, m_RigidBodies, value)) m_RigidBodies = value; } } // 0x24 (36)
 		
 		protected CtrRef<HavokAsset> m_Asset = new CtrRef<HavokAsset>();
-		[ContainerField(40), MemberInfoFlag(53), ContainerFieldNameHash(205976053), ContainerCtrRef]
+		[ContainerField(Name: "Asset", Offset: 40, NameHash: 205976053, Flags: 53)]
 		public CtrRef<HavokAsset> Asset { get { return m_Asset; } set { if (OnPropertyChanging("PhysicsEntityData." + nameof(Asset), this, m_Asset, value)) m_Asset = value; } } // 0x28 (40)
 		
 		protected CtrRef<FloatPhysicsData> m_FloatPhysics = new CtrRef<FloatPhysicsData>();
-		[ContainerField(44), MemberInfoFlag(53), ContainerFieldNameHash(2331402366), ContainerCtrRef]
+		[ContainerField(Name: "FloatPhysics", Offset: 44, NameHash: 2331402366, Flags: 53)]
 		public CtrRef<FloatPhysicsData> FloatPhysics { get { return m_FloatPhysics; } set { if (OnPropertyChanging("PhysicsEntityData." + nameof(FloatPhysics), this, m_FloatPhysics, value)) m_FloatPhysics = value; } } // 0x2C (44)
 		
 		protected float m_Mass = new float();
-		[ContainerField(48), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2088779625)]
+		[ContainerField(Name: "Mass", Offset: 48, NameHash: 2088779625, Flags: 49469), LayoutImmutable, Blittable]
 		public float Mass { get { return m_Mass; } set { if (OnPropertyChanging("PhysicsEntityData." + nameof(Mass), this, m_Mass, value)) m_Mass = value; } } // 0x30 (48)
 		
 		protected float m_Restitution = new float();
-		[ContainerField(52), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2298929185)]
+		[ContainerField(Name: "Restitution", Offset: 52, NameHash: 2298929185, Flags: 49469), LayoutImmutable, Blittable]
 		public float Restitution { get { return m_Restitution; } set { if (OnPropertyChanging("PhysicsEntityData." + nameof(Restitution), this, m_Restitution, value)) m_Restitution = value; } } // 0x34 (52)
 		
 		protected float m_Friction = new float();
-		[ContainerField(56), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(306207591)]
+		[ContainerField(Name: "Friction", Offset: 56, NameHash: 306207591, Flags: 49469), LayoutImmutable, Blittable]
 		public float Friction { get { return m_Friction; } set { if (OnPropertyChanging("PhysicsEntityData." + nameof(Friction), this, m_Friction, value)) m_Friction = value; } } // 0x38 (56)
 		
 		protected float m_LinearVelocityDamping = new float();
-		[ContainerField(60), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1004384727)]
+		[ContainerField(Name: "LinearVelocityDamping", Offset: 60, NameHash: 1004384727, Flags: 49469), LayoutImmutable, Blittable]
 		public float LinearVelocityDamping { get { return m_LinearVelocityDamping; } set { if (OnPropertyChanging("PhysicsEntityData." + nameof(LinearVelocityDamping), this, m_LinearVelocityDamping, value)) m_LinearVelocityDamping = value; } } // 0x3C (60)
 		
 		protected float m_AngularVelocityDamping = new float();
-		[ContainerField(64), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2367237320)]
+		[ContainerField(Name: "AngularVelocityDamping", Offset: 64, NameHash: 2367237320, Flags: 49469), LayoutImmutable, Blittable]
 		public float AngularVelocityDamping { get { return m_AngularVelocityDamping; } set { if (OnPropertyChanging("PhysicsEntityData." + nameof(AngularVelocityDamping), this, m_AngularVelocityDamping, value)) m_AngularVelocityDamping = value; } } // 0x40 (64)
 		
 		protected CtrRef<ProximityData> m_Proximity = new CtrRef<ProximityData>();
-		[ContainerField(68), MemberInfoFlag(53), ContainerFieldNameHash(258157264), ContainerCtrRef]
+		[ContainerField(Name: "Proximity", Offset: 68, NameHash: 258157264, Flags: 53)]
 		public CtrRef<ProximityData> Proximity { get { return m_Proximity; } set { if (OnPropertyChanging("PhysicsEntityData." + nameof(Proximity), this, m_Proximity, value)) m_Proximity = value; } } // 0x44 (68)
 		
 		protected RefArray<RigidBodyConstraintData> m_Constraints = new RefArray<RigidBodyConstraintData>();
-		[ContainerField(72), MemberInfoFlag(65), ContainerFieldNameHash(1187639635), ContainerRefArray]
+		[ContainerField(Name: "Constraints", Offset: 72, NameHash: 1187639635, Flags: 65)]
 		public RefArray<RigidBodyConstraintData> Constraints { get { return m_Constraints; } set { if (OnPropertyChanging("PhysicsEntityData." + nameof(Constraints), this, m_Constraints, value)) m_Constraints = value; } } // 0x48 (72)
 		
 		protected bool m_EncapsulatePartsInLists = new bool();
-		[ContainerField(76), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3158648404)]
+		[ContainerField(Name: "EncapsulatePartsInLists", Offset: 76, NameHash: 3158648404, Flags: 49325), LayoutImmutable, Blittable]
 		public bool EncapsulatePartsInLists { get { return m_EncapsulatePartsInLists; } set { if (OnPropertyChanging("PhysicsEntityData." + nameof(EncapsulatePartsInLists), this, m_EncapsulatePartsInLists, value)) m_EncapsulatePartsInLists = value; } } // 0x4C (76)
 		
 		protected bool m_MovableParts = new bool();
-		[ContainerField(77), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(532177919)]
+		[ContainerField(Name: "MovableParts", Offset: 77, NameHash: 532177919, Flags: 49325), LayoutImmutable, Blittable]
 		public bool MovableParts { get { return m_MovableParts; } set { if (OnPropertyChanging("PhysicsEntityData." + nameof(MovableParts), this, m_MovableParts, value)) m_MovableParts = value; } } // 0x4D (77)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

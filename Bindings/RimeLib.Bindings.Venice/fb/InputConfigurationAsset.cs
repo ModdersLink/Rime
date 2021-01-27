@@ -18,100 +18,100 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(68), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 68)]
 	public class InputConfigurationAsset : 
 		Asset
 	{
 		protected CtrRef<EntryInputActionMapsData> m_DefaultInputConceptDefinition = new CtrRef<EntryInputActionMapsData>();
-		[ContainerField(12), MemberInfoFlag(53), ContainerFieldNameHash(4121024077), ContainerCtrRef]
+		[ContainerField(Name: "DefaultInputConceptDefinition", Offset: 12, NameHash: 4121024077, Flags: 53)]
 		public CtrRef<EntryInputActionMapsData> DefaultInputConceptDefinition { get { return m_DefaultInputConceptDefinition; } set { if (OnPropertyChanging("InputConfigurationAsset." + nameof(DefaultInputConceptDefinition), this, m_DefaultInputConceptDefinition, value)) m_DefaultInputConceptDefinition = value; } } // 0xC (12)
 		
 		protected List<InputConceptIdentifiers> m_DefaultExclusiveInputConcepts = new List<InputConceptIdentifiers>();
-		[ContainerField(16), MemberInfoFlag(65), ContainerFieldNameHash(3010993925), ContainerArray]
+		[ContainerField(Name: "DefaultExclusiveInputConcepts", Offset: 16, NameHash: 3010993925, Flags: 65)]
 		public List<InputConceptIdentifiers> DefaultExclusiveInputConcepts { get { return m_DefaultExclusiveInputConcepts; } set { if (OnPropertyChanging("InputConfigurationAsset." + nameof(DefaultExclusiveInputConcepts), this, m_DefaultExclusiveInputConcepts, value)) m_DefaultExclusiveInputConcepts = value; } } // 0x10 (16)
 		
 		protected List<EditableActionMap> m_UserConfigurableActionMaps = new List<EditableActionMap>();
-		[ContainerField(20), MemberInfoFlag(65), ContainerFieldNameHash(3516645410), ContainerArray]
+		[ContainerField(Name: "UserConfigurableActionMaps", Offset: 20, NameHash: 3516645410, Flags: 65)]
 		public List<EditableActionMap> UserConfigurableActionMaps { get { return m_UserConfigurableActionMaps; } set { if (OnPropertyChanging("InputConfigurationAsset." + nameof(UserConfigurableActionMaps), this, m_UserConfigurableActionMaps, value)) m_UserConfigurableActionMaps = value; } } // 0x14 (20)
 		
 		protected EntryInputActionEnum m_TogglePoseAction = new EntryInputActionEnum();
-		[ContainerField(24), MemberInfoFlag(137), ContainerFieldNameHash(1502188000)]
+		[ContainerField(Name: "TogglePoseAction", Offset: 24, NameHash: 1502188000, Flags: 137)]
 		public EntryInputActionEnum TogglePoseAction { get { return m_TogglePoseAction; } set { if (OnPropertyChanging("InputConfigurationAsset." + nameof(TogglePoseAction), this, m_TogglePoseAction, value)) m_TogglePoseAction = value; } } // 0x18 (24)
 		
 		protected EntryInputActionEnum m_CrouchAction = new EntryInputActionEnum();
-		[ContainerField(28), MemberInfoFlag(137), ContainerFieldNameHash(4276692283)]
+		[ContainerField(Name: "CrouchAction", Offset: 28, NameHash: 4276692283, Flags: 137)]
 		public EntryInputActionEnum CrouchAction { get { return m_CrouchAction; } set { if (OnPropertyChanging("InputConfigurationAsset." + nameof(CrouchAction), this, m_CrouchAction, value)) m_CrouchAction = value; } } // 0x1C (28)
 		
 		protected EntryInputActionEnum m_CrouchAndHoldAction = new EntryInputActionEnum();
-		[ContainerField(32), MemberInfoFlag(137), ContainerFieldNameHash(3467662783)]
+		[ContainerField(Name: "CrouchAndHoldAction", Offset: 32, NameHash: 3467662783, Flags: 137)]
 		public EntryInputActionEnum CrouchAndHoldAction { get { return m_CrouchAndHoldAction; } set { if (OnPropertyChanging("InputConfigurationAsset." + nameof(CrouchAndHoldAction), this, m_CrouchAndHoldAction, value)) m_CrouchAndHoldAction = value; } } // 0x20 (32)
 		
 		protected EntryInputActionEnum m_PickupInteractionAction = new EntryInputActionEnum();
-		[ContainerField(36), MemberInfoFlag(137), ContainerFieldNameHash(2068877077)]
+		[ContainerField(Name: "PickupInteractionAction", Offset: 36, NameHash: 2068877077, Flags: 137)]
 		public EntryInputActionEnum PickupInteractionAction { get { return m_PickupInteractionAction; } set { if (OnPropertyChanging("InputConfigurationAsset." + nameof(PickupInteractionAction), this, m_PickupInteractionAction, value)) m_PickupInteractionAction = value; } } // 0x24 (36)
 		
 		protected List<PoseTransition> m_FiringDisablingTransitions = new List<PoseTransition>();
-		[ContainerField(40), MemberInfoFlag(65), ContainerFieldNameHash(2330749333), ContainerArray]
+		[ContainerField(Name: "FiringDisablingTransitions", Offset: 40, NameHash: 2330749333, Flags: 65)]
 		public List<PoseTransition> FiringDisablingTransitions { get { return m_FiringDisablingTransitions; } set { if (OnPropertyChanging("InputConfigurationAsset." + nameof(FiringDisablingTransitions), this, m_FiringDisablingTransitions, value)) m_FiringDisablingTransitions = value; } } // 0x28 (40)
 		
 		protected float m_SprintReleaseTime = new float();
-		[ContainerField(44), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2508865115)]
+		[ContainerField(Name: "SprintReleaseTime", Offset: 44, NameHash: 2508865115, Flags: 49469), LayoutImmutable, Blittable]
 		public float SprintReleaseTime { get { return m_SprintReleaseTime; } set { if (OnPropertyChanging("InputConfigurationAsset." + nameof(SprintReleaseTime), this, m_SprintReleaseTime, value)) m_SprintReleaseTime = value; } } // 0x2C (44)
 		
 		protected float m_ThrottleInputRequiredForSprint = new float();
-		[ContainerField(48), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(628008395)]
+		[ContainerField(Name: "ThrottleInputRequiredForSprint", Offset: 48, NameHash: 628008395, Flags: 49469), LayoutImmutable, Blittable]
 		public float ThrottleInputRequiredForSprint { get { return m_ThrottleInputRequiredForSprint; } set { if (OnPropertyChanging("InputConfigurationAsset." + nameof(ThrottleInputRequiredForSprint), this, m_ThrottleInputRequiredForSprint, value)) m_ThrottleInputRequiredForSprint = value; } } // 0x30 (48)
 		
 		protected bool m_StandAutomaticallyIfSprinting = new bool();
-		[ContainerField(52), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2006399905)]
+		[ContainerField(Name: "StandAutomaticallyIfSprinting", Offset: 52, NameHash: 2006399905, Flags: 49325), LayoutImmutable, Blittable]
 		public bool StandAutomaticallyIfSprinting { get { return m_StandAutomaticallyIfSprinting; } set { if (OnPropertyChanging("InputConfigurationAsset." + nameof(StandAutomaticallyIfSprinting), this, m_StandAutomaticallyIfSprinting, value)) m_StandAutomaticallyIfSprinting = value; } } // 0x34 (52)
 		
 		protected bool m_ProneToStandOnJump = new bool();
-		[ContainerField(53), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1479235671)]
+		[ContainerField(Name: "ProneToStandOnJump", Offset: 53, NameHash: 1479235671, Flags: 49325), LayoutImmutable, Blittable]
 		public bool ProneToStandOnJump { get { return m_ProneToStandOnJump; } set { if (OnPropertyChanging("InputConfigurationAsset." + nameof(ProneToStandOnJump), this, m_ProneToStandOnJump, value)) m_ProneToStandOnJump = value; } } // 0x35 (53)
 		
 		protected bool m_DisableCrawlingWhileReloading = new bool();
-		[ContainerField(54), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1988899892)]
+		[ContainerField(Name: "DisableCrawlingWhileReloading", Offset: 54, NameHash: 1988899892, Flags: 49325), LayoutImmutable, Blittable]
 		public bool DisableCrawlingWhileReloading { get { return m_DisableCrawlingWhileReloading; } set { if (OnPropertyChanging("InputConfigurationAsset." + nameof(DisableCrawlingWhileReloading), this, m_DisableCrawlingWhileReloading, value)) m_DisableCrawlingWhileReloading = value; } } // 0x36 (54)
 		
 		protected bool m_DisableFiringWhileDeployingBipod = new bool();
-		[ContainerField(55), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1128942440)]
+		[ContainerField(Name: "DisableFiringWhileDeployingBipod", Offset: 55, NameHash: 1128942440, Flags: 49325), LayoutImmutable, Blittable]
 		public bool DisableFiringWhileDeployingBipod { get { return m_DisableFiringWhileDeployingBipod; } set { if (OnPropertyChanging("InputConfigurationAsset." + nameof(DisableFiringWhileDeployingBipod), this, m_DisableFiringWhileDeployingBipod, value)) m_DisableFiringWhileDeployingBipod = value; } } // 0x37 (55)
 		
 		protected bool m_DisableFiringWhileJumping = new bool();
-		[ContainerField(56), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(4184774481)]
+		[ContainerField(Name: "DisableFiringWhileJumping", Offset: 56, NameHash: 4184774481, Flags: 49325), LayoutImmutable, Blittable]
 		public bool DisableFiringWhileJumping { get { return m_DisableFiringWhileJumping; } set { if (OnPropertyChanging("InputConfigurationAsset." + nameof(DisableFiringWhileJumping), this, m_DisableFiringWhileJumping, value)) m_DisableFiringWhileJumping = value; } } // 0x38 (56)
 		
 		protected bool m_DisableSprintingWhileReloading = new bool();
-		[ContainerField(57), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2874893853)]
+		[ContainerField(Name: "DisableSprintingWhileReloading", Offset: 57, NameHash: 2874893853, Flags: 49325), LayoutImmutable, Blittable]
 		public bool DisableSprintingWhileReloading { get { return m_DisableSprintingWhileReloading; } set { if (OnPropertyChanging("InputConfigurationAsset." + nameof(DisableSprintingWhileReloading), this, m_DisableSprintingWhileReloading, value)) m_DisableSprintingWhileReloading = value; } } // 0x39 (57)
 		
 		protected bool m_EnableSprintToCrouchTransition = new bool();
-		[ContainerField(58), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2358130898)]
+		[ContainerField(Name: "EnableSprintToCrouchTransition", Offset: 58, NameHash: 2358130898, Flags: 49325), LayoutImmutable, Blittable]
 		public bool EnableSprintToCrouchTransition { get { return m_EnableSprintToCrouchTransition; } set { if (OnPropertyChanging("InputConfigurationAsset." + nameof(EnableSprintToCrouchTransition), this, m_EnableSprintToCrouchTransition, value)) m_EnableSprintToCrouchTransition = value; } } // 0x3A (58)
 		
 		protected bool m_StopSprintingWhenReleasingThrottle = new bool();
-		[ContainerField(59), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1435580527)]
+		[ContainerField(Name: "StopSprintingWhenReleasingThrottle", Offset: 59, NameHash: 1435580527, Flags: 49325), LayoutImmutable, Blittable]
 		public bool StopSprintingWhenReleasingThrottle { get { return m_StopSprintingWhenReleasingThrottle; } set { if (OnPropertyChanging("InputConfigurationAsset." + nameof(StopSprintingWhenReleasingThrottle), this, m_StopSprintingWhenReleasingThrottle, value)) m_StopSprintingWhenReleasingThrottle = value; } } // 0x3B (59)
 		
 		protected bool m_StopSprintingWhenReleasingSprint = new bool();
-		[ContainerField(60), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(485538437)]
+		[ContainerField(Name: "StopSprintingWhenReleasingSprint", Offset: 60, NameHash: 485538437, Flags: 49325), LayoutImmutable, Blittable]
 		public bool StopSprintingWhenReleasingSprint { get { return m_StopSprintingWhenReleasingSprint; } set { if (OnPropertyChanging("InputConfigurationAsset." + nameof(StopSprintingWhenReleasingSprint), this, m_StopSprintingWhenReleasingSprint, value)) m_StopSprintingWhenReleasingSprint = value; } } // 0x3C (60)
 		
 		protected bool m_WaitForSprintReleaseBeforeSprintAgain = new bool();
-		[ContainerField(61), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(381150149)]
+		[ContainerField(Name: "WaitForSprintReleaseBeforeSprintAgain", Offset: 61, NameHash: 381150149, Flags: 49325), LayoutImmutable, Blittable]
 		public bool WaitForSprintReleaseBeforeSprintAgain { get { return m_WaitForSprintReleaseBeforeSprintAgain; } set { if (OnPropertyChanging("InputConfigurationAsset." + nameof(WaitForSprintReleaseBeforeSprintAgain), this, m_WaitForSprintReleaseBeforeSprintAgain, value)) m_WaitForSprintReleaseBeforeSprintAgain = value; } } // 0x3D (61)
 		
 		protected bool m_VehicleBoostIsToggle = new bool();
-		[ContainerField(62), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1735323024)]
+		[ContainerField(Name: "VehicleBoostIsToggle", Offset: 62, NameHash: 1735323024, Flags: 49325), LayoutImmutable, Blittable]
 		public bool VehicleBoostIsToggle { get { return m_VehicleBoostIsToggle; } set { if (OnPropertyChanging("InputConfigurationAsset." + nameof(VehicleBoostIsToggle), this, m_VehicleBoostIsToggle, value)) m_VehicleBoostIsToggle = value; } } // 0x3E (62)
 		
 		protected bool m_InputCurvesEnabled = new bool();
-		[ContainerField(63), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2151840626)]
+		[ContainerField(Name: "InputCurvesEnabled", Offset: 63, NameHash: 2151840626, Flags: 49325), LayoutImmutable, Blittable]
 		public bool InputCurvesEnabled { get { return m_InputCurvesEnabled; } set { if (OnPropertyChanging("InputConfigurationAsset." + nameof(InputCurvesEnabled), this, m_InputCurvesEnabled, value)) m_InputCurvesEnabled = value; } } // 0x3F (63)
 		
 		protected bool m_DisableCrawlingWhileFiring = new bool();
-		[ContainerField(64), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1554862200)]
+		[ContainerField(Name: "DisableCrawlingWhileFiring", Offset: 64, NameHash: 1554862200, Flags: 49325), LayoutImmutable, Blittable]
 		public bool DisableCrawlingWhileFiring { get { return m_DisableCrawlingWhileFiring; } set { if (OnPropertyChanging("InputConfigurationAsset." + nameof(DisableCrawlingWhileFiring), this, m_DisableCrawlingWhileFiring, value)) m_DisableCrawlingWhileFiring = value; } } // 0x40 (64)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

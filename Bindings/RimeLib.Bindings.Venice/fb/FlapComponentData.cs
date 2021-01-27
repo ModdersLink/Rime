@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(128), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 128)]
 	public class FlapComponentData : 
 		PartComponentData
 	{
 		protected RotationAxisEnum m_RotationAxis = new RotationAxisEnum();
-		[ContainerField(112), MemberInfoFlag(137), ContainerFieldNameHash(3148542130)]
+		[ContainerField(Name: "RotationAxis", Offset: 112, NameHash: 3148542130, Flags: 137)]
 		public RotationAxisEnum RotationAxis { get { return m_RotationAxis; } set { if (OnPropertyChanging("FlapComponentData." + nameof(RotationAxis), this, m_RotationAxis, value)) m_RotationAxis = value; } } // 0x70 (112)
 		
 		protected float m_RotationScale = new float();
-		[ContainerField(116), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(801800009)]
+		[ContainerField(Name: "RotationScale", Offset: 116, NameHash: 801800009, Flags: 49469), LayoutImmutable, Blittable]
 		public float RotationScale { get { return m_RotationScale; } set { if (OnPropertyChanging("FlapComponentData." + nameof(RotationScale), this, m_RotationScale, value)) m_RotationScale = value; } } // 0x74 (116)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

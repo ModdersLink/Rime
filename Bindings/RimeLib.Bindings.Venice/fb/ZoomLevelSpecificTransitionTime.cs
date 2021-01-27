@@ -18,19 +18,19 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(16), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 16)]
 	public class ZoomLevelSpecificTransitionTime : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, Blittable, MemberInfoFlag(49405)]
+		[ContainerField(Name: "FromZoomLevel", Offset: 0, NameHash: 3920419474, Flags: 49405), LayoutImmutable, Blittable]
 		public int FromZoomLevel { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable, Blittable, MemberInfoFlag(49405)]
+		[ContainerField(Name: "ToZoomLevel", Offset: 4, NameHash: 1509429727, Flags: 49405), LayoutImmutable, Blittable]
 		public int ToZoomLevel { get; set; } // 0x4 (4)
 		
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "ZoomTransitionTime", Offset: 8, NameHash: 1414605576, Flags: 49469), LayoutImmutable, Blittable]
 		public float ZoomTransitionTime { get; set; } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "FovTransitionTime", Offset: 12, NameHash: 1751899392, Flags: 49469), LayoutImmutable, Blittable]
 		public float FovTransitionTime { get; set; } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

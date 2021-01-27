@@ -18,13 +18,13 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(8), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 8)]
 	public class RotorModelData : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "RotationRpm", Offset: 0, NameHash: 1136603326, Flags: 49469), LayoutImmutable, Blittable]
 		public float RotationRpm { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
+		[ContainerField(Name: "PartIndex", Offset: 4, NameHash: 3213901068, Flags: 49421), LayoutImmutable, Blittable]
 		public uint PartIndex { get; set; } // 0x4 (4)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

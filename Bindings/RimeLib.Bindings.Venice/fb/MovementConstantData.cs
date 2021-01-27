@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(16), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
 	public class MovementConstantData : 
 		Asset
 	{
 		protected float m_MaxCrouchWalkDistance = new float();
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(268407235)]
+		[ContainerField(Name: "MaxCrouchWalkDistance", Offset: 12, NameHash: 268407235, Flags: 49469), LayoutImmutable, Blittable]
 		public float MaxCrouchWalkDistance { get { return m_MaxCrouchWalkDistance; } set { if (OnPropertyChanging("MovementConstantData." + nameof(MaxCrouchWalkDistance), this, m_MaxCrouchWalkDistance, value)) m_MaxCrouchWalkDistance = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

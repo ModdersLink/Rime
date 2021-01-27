@@ -18,13 +18,13 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(41), ContainerSize(32), ContainerStruct]
+	[ContainerType(Alignment: 16,  Flags: 41, Size: 32)]
 	public class SoldierHeadCollisionPoseData : FrostbiteContainer
 	{
-		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
+		[ContainerField(Name: "IdleOffset", Offset: 0, NameHash: 2890341292, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 IdleOffset { get; set; } = new Vec3(); // 0x0 (0)
 		
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
+		[ContainerField(Name: "MovingForwardOffset", Offset: 16, NameHash: 4106472903, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 MovingForwardOffset { get; set; } = new Vec3(); // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

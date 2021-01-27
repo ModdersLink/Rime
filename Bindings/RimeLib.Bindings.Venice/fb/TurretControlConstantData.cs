@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(28), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 28)]
 	public class TurretControlConstantData : 
 		Asset
 	{
 		protected float m_SearchLookSpeed = new float();
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1142077483)]
+		[ContainerField(Name: "SearchLookSpeed", Offset: 12, NameHash: 1142077483, Flags: 49469), LayoutImmutable, Blittable]
 		public float SearchLookSpeed { get { return m_SearchLookSpeed; } set { if (OnPropertyChanging("TurretControlConstantData." + nameof(SearchLookSpeed), this, m_SearchLookSpeed, value)) m_SearchLookSpeed = value; } } // 0xC (12)
 		
 		protected float m_SlowLookSpeed = new float();
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3507040034)]
+		[ContainerField(Name: "SlowLookSpeed", Offset: 16, NameHash: 3507040034, Flags: 49469), LayoutImmutable, Blittable]
 		public float SlowLookSpeed { get { return m_SlowLookSpeed; } set { if (OnPropertyChanging("TurretControlConstantData." + nameof(SlowLookSpeed), this, m_SlowLookSpeed, value)) m_SlowLookSpeed = value; } } // 0x10 (16)
 		
 		protected float m_NormalLookSpeed = new float();
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3237374486)]
+		[ContainerField(Name: "NormalLookSpeed", Offset: 20, NameHash: 3237374486, Flags: 49469), LayoutImmutable, Blittable]
 		public float NormalLookSpeed { get { return m_NormalLookSpeed; } set { if (OnPropertyChanging("TurretControlConstantData." + nameof(NormalLookSpeed), this, m_NormalLookSpeed, value)) m_NormalLookSpeed = value; } } // 0x14 (20)
 		
 		protected float m_FastLookSpeed = new float();
-		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(599104037)]
+		[ContainerField(Name: "FastLookSpeed", Offset: 24, NameHash: 599104037, Flags: 49469), LayoutImmutable, Blittable]
 		public float FastLookSpeed { get { return m_FastLookSpeed; } set { if (OnPropertyChanging("TurretControlConstantData." + nameof(FastLookSpeed), this, m_FastLookSpeed, value)) m_FastLookSpeed = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

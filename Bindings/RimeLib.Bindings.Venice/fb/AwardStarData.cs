@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(104), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 104)]
 	public class AwardStarData : 
 		AwardData
 	{
 		protected CtrRef<AwardStarNameData> m_StarTemplate = new CtrRef<AwardStarNameData>();
-		[ContainerField(100), MemberInfoFlag(53), ContainerFieldNameHash(982112673), ContainerCtrRef]
+		[ContainerField(Name: "StarTemplate", Offset: 100, NameHash: 982112673, Flags: 53)]
 		public CtrRef<AwardStarNameData> StarTemplate { get { return m_StarTemplate; } set { if (OnPropertyChanging("AwardStarData." + nameof(StarTemplate), this, m_StarTemplate, value)) m_StarTemplate = value; } } // 0x64 (100)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,7 +18,7 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(160), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 160)]
 	public class UI3dLaserTagCompData : 
 		UI3dIconCompData
 	{

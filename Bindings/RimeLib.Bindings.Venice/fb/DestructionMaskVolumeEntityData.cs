@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(160), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 160)]
 	public class DestructionMaskVolumeEntityData : 
 		GameEntityData
 	{
 		protected Vec4 m_DustAccumulationCurve = new Vec4();
-		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(2881902809)]
+		[ContainerField(Name: "DustAccumulationCurve", Offset: 96, NameHash: 2881902809, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec4 DustAccumulationCurve { get { return m_DustAccumulationCurve; } set { if (OnPropertyChanging("DestructionMaskVolumeEntityData." + nameof(DustAccumulationCurve), this, m_DustAccumulationCurve, value)) m_DustAccumulationCurve = value; } } // 0x60 (96)
 		
 		protected Vec4 m_ShaderUserMasks = new Vec4();
-		[ContainerField(112), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(739662234)]
+		[ContainerField(Name: "ShaderUserMasks", Offset: 112, NameHash: 739662234, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec4 ShaderUserMasks { get { return m_ShaderUserMasks; } set { if (OnPropertyChanging("DestructionMaskVolumeEntityData." + nameof(ShaderUserMasks), this, m_ShaderUserMasks, value)) m_ShaderUserMasks = value; } } // 0x70 (112)
 		
 		protected float m_DustAccumulationLifeTime = new float();
-		[ContainerField(128), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3645148381)]
+		[ContainerField(Name: "DustAccumulationLifeTime", Offset: 128, NameHash: 3645148381, Flags: 49469), LayoutImmutable, Blittable]
 		public float DustAccumulationLifeTime { get { return m_DustAccumulationLifeTime; } set { if (OnPropertyChanging("DestructionMaskVolumeEntityData." + nameof(DustAccumulationLifeTime), this, m_DustAccumulationLifeTime, value)) m_DustAccumulationLifeTime = value; } } // 0x80 (128)
 		
 		protected SurfaceShaderInstanceDataStruct m_Shader = new SurfaceShaderInstanceDataStruct();
-		[ContainerField(132), MemberInfoFlag(41), ContainerFieldNameHash(3352909900)]
+		[ContainerField(Name: "Shader", Offset: 132, NameHash: 3352909900, Flags: 41)]
 		public SurfaceShaderInstanceDataStruct Shader { get { return m_Shader; } set { if (OnPropertyChanging("DestructionMaskVolumeEntityData." + nameof(Shader), this, m_Shader, value)) m_Shader = value; } } // 0x84 (132)
 		
 		protected float m_Radius = new float();
-		[ContainerField(152), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3298407133)]
+		[ContainerField(Name: "Radius", Offset: 152, NameHash: 3298407133, Flags: 49469), LayoutImmutable, Blittable]
 		public float Radius { get { return m_Radius; } set { if (OnPropertyChanging("DestructionMaskVolumeEntityData." + nameof(Radius), this, m_Radius, value)) m_Radius = value; } } // 0x98 (152)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

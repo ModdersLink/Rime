@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(112), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 112)]
 	public class WeaponInputRouterComponentData : 
 		ComponentData
 	{
 		protected float m_MaxFireRate = new float();
-		[ContainerField(96), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(369835659)]
+		[ContainerField(Name: "MaxFireRate", Offset: 96, NameHash: 369835659, Flags: 49469), LayoutImmutable, Blittable]
 		public float MaxFireRate { get { return m_MaxFireRate; } set { if (OnPropertyChanging("WeaponInputRouterComponentData." + nameof(MaxFireRate), this, m_MaxFireRate, value)) m_MaxFireRate = value; } } // 0x60 (96)
 		
 		protected uint m_RotationCount = new uint();
-		[ContainerField(100), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(821183634)]
+		[ContainerField(Name: "RotationCount", Offset: 100, NameHash: 821183634, Flags: 49421), LayoutImmutable, Blittable]
 		public uint RotationCount { get { return m_RotationCount; } set { if (OnPropertyChanging("WeaponInputRouterComponentData." + nameof(RotationCount), this, m_RotationCount, value)) m_RotationCount = value; } } // 0x64 (100)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

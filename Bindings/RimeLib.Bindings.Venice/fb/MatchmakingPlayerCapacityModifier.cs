@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(12), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 12)]
 	public class MatchmakingPlayerCapacityModifier : 
 		MatchmakingModifier
 	{
 		protected string m_Attribute = string.Empty;
-		[ContainerField(8), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(2715851769)]
+		[ContainerField(Name: "Attribute", Offset: 8, NameHash: 2715851769, Flags: 16509), LayoutImmutable]
 		public string Attribute { get { return m_Attribute; } set { if (OnPropertyChanging("MatchmakingPlayerCapacityModifier." + nameof(Attribute), this, m_Attribute, value)) m_Attribute = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

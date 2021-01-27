@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(52), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 52)]
 	public class SoldierWeaponUnlockAsset : 
 		UnlockAssetBase
 	{
 		protected CtrRef<SoldierWeaponBlueprint> m_Weapon = new CtrRef<SoldierWeaponBlueprint>();
-		[ContainerField(40), MemberInfoFlag(53), ContainerFieldNameHash(3190562823), ContainerCtrRef]
+		[ContainerField(Name: "Weapon", Offset: 40, NameHash: 3190562823, Flags: 53)]
 		public CtrRef<SoldierWeaponBlueprint> Weapon { get { return m_Weapon; } set { if (OnPropertyChanging("SoldierWeaponUnlockAsset." + nameof(Weapon), this, m_Weapon, value)) m_Weapon = value; } } // 0x28 (40)
 		
 		protected CtrRef<UnlockAssetBase> m_Extra = new CtrRef<UnlockAssetBase>();
-		[ContainerField(44), MemberInfoFlag(53), ContainerFieldNameHash(201622975), ContainerCtrRef]
+		[ContainerField(Name: "Extra", Offset: 44, NameHash: 201622975, Flags: 53)]
 		public CtrRef<UnlockAssetBase> Extra { get { return m_Extra; } set { if (OnPropertyChanging("SoldierWeaponUnlockAsset." + nameof(Extra), this, m_Extra, value)) m_Extra = value; } } // 0x2C (44)
 		
 		protected uint m_WeaponIdentifier = new uint();
-		[ContainerField(48), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(222597316)]
+		[ContainerField(Name: "WeaponIdentifier", Offset: 48, NameHash: 222597316, Flags: 49421), LayoutImmutable, Blittable]
 		public uint WeaponIdentifier { get { return m_WeaponIdentifier; } set { if (OnPropertyChanging("SoldierWeaponUnlockAsset." + nameof(WeaponIdentifier), this, m_WeaponIdentifier, value)) m_WeaponIdentifier = value; } } // 0x30 (48)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

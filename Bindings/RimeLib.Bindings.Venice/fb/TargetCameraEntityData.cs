@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(112), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 112)]
 	public class TargetCameraEntityData : 
 		CameraEntityBaseData
 	{
 		protected CtrRef<TargetCameraData> m_Camera = new CtrRef<TargetCameraData>();
-		[ContainerField(96), MemberInfoFlag(53), ContainerFieldNameHash(2716359356), ContainerCtrRef]
+		[ContainerField(Name: "Camera", Offset: 96, NameHash: 2716359356, Flags: 53)]
 		public CtrRef<TargetCameraData> Camera { get { return m_Camera; } set { if (OnPropertyChanging("TargetCameraEntityData." + nameof(Camera), this, m_Camera, value)) m_Camera = value; } } // 0x60 (96)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

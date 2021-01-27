@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(128), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 128)]
 	public class WheelComponentData : 
 		PartComponentData
 	{
 		protected CtrRef<WheelConfigData> m_Config = new CtrRef<WheelConfigData>();
-		[ContainerField(112), MemberInfoFlag(53), ContainerFieldNameHash(2713732399), ContainerCtrRef]
+		[ContainerField(Name: "Config", Offset: 112, NameHash: 2713732399, Flags: 53)]
 		public CtrRef<WheelConfigData> Config { get { return m_Config; } set { if (OnPropertyChanging("WheelComponentData." + nameof(Config), this, m_Config, value)) m_Config = value; } } // 0x70 (112)
 		
 		protected WheelPhysicsType m_PhysicsType = new WheelPhysicsType();
-		[ContainerField(116), MemberInfoFlag(137), ContainerFieldNameHash(1744391446)]
+		[ContainerField(Name: "PhysicsType", Offset: 116, NameHash: 1744391446, Flags: 137)]
 		public WheelPhysicsType PhysicsType { get { return m_PhysicsType; } set { if (OnPropertyChanging("WheelComponentData." + nameof(PhysicsType), this, m_PhysicsType, value)) m_PhysicsType = value; } } // 0x74 (116)
 		
 		protected float m_EffectClampVelocity = new float();
-		[ContainerField(120), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2869239062)]
+		[ContainerField(Name: "EffectClampVelocity", Offset: 120, NameHash: 2869239062, Flags: 49469), LayoutImmutable, Blittable]
 		public float EffectClampVelocity { get { return m_EffectClampVelocity; } set { if (OnPropertyChanging("WheelComponentData." + nameof(EffectClampVelocity), this, m_EffectClampVelocity, value)) m_EffectClampVelocity = value; } } // 0x78 (120)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,32 +18,32 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(44), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 44)]
 	public class LfoNodeData : 
 		AudioGraphNodeData
 	{
 		protected AudioGraphNodePort m_Hz = new AudioGraphNodePort();
-		[ContainerField(8), MemberInfoFlag(41), ContainerFieldNameHash(5862391)]
+		[ContainerField(Name: "Hz", Offset: 8, NameHash: 5862391, Flags: 41)]
 		public AudioGraphNodePort Hz { get { return m_Hz; } set { if (OnPropertyChanging("LfoNodeData." + nameof(Hz), this, m_Hz, value)) m_Hz = value; } } // 0x8 (8)
 		
 		protected AudioGraphNodePort m_Amplitude = new AudioGraphNodePort();
-		[ContainerField(16), MemberInfoFlag(41), ContainerFieldNameHash(698564572)]
+		[ContainerField(Name: "Amplitude", Offset: 16, NameHash: 698564572, Flags: 41)]
 		public AudioGraphNodePort Amplitude { get { return m_Amplitude; } set { if (OnPropertyChanging("LfoNodeData." + nameof(Amplitude), this, m_Amplitude, value)) m_Amplitude = value; } } // 0x10 (16)
 		
 		protected AudioGraphNodePort m_Out = new AudioGraphNodePort();
-		[ContainerField(24), MemberInfoFlag(41), ContainerFieldNameHash(193453899)]
+		[ContainerField(Name: "Out", Offset: 24, NameHash: 193453899, Flags: 41)]
 		public AudioGraphNodePort Out { get { return m_Out; } set { if (OnPropertyChanging("LfoNodeData." + nameof(Out), this, m_Out, value)) m_Out = value; } } // 0x18 (24)
 		
 		protected float m_Min = new float();
-		[ContainerField(32), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(193446607)]
+		[ContainerField(Name: "Min", Offset: 32, NameHash: 193446607, Flags: 49469), LayoutImmutable, Blittable]
 		public float Min { get { return m_Min; } set { if (OnPropertyChanging("LfoNodeData." + nameof(Min), this, m_Min, value)) m_Min = value; } } // 0x20 (32)
 		
 		protected float m_Max = new float();
-		[ContainerField(36), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(193446865)]
+		[ContainerField(Name: "Max", Offset: 36, NameHash: 193446865, Flags: 49469), LayoutImmutable, Blittable]
 		public float Max { get { return m_Max; } set { if (OnPropertyChanging("LfoNodeData." + nameof(Max), this, m_Max, value)) m_Max = value; } } // 0x24 (36)
 		
 		protected bool m_StartAtRandomValue = new bool();
-		[ContainerField(40), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2693653696)]
+		[ContainerField(Name: "StartAtRandomValue", Offset: 40, NameHash: 2693653696, Flags: 49325), LayoutImmutable, Blittable]
 		public bool StartAtRandomValue { get { return m_StartAtRandomValue; } set { if (OnPropertyChanging("LfoNodeData." + nameof(StartAtRandomValue), this, m_StartAtRandomValue, value)) m_StartAtRandomValue = value; } } // 0x28 (40)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

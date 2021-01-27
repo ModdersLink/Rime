@@ -18,40 +18,40 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(44), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 44)]
 	public class TransformPartPropertyTrackData : 
 		PropertyTrackData
 	{
 		protected TransformPart m_TransformPart = new TransformPart();
-		[ContainerField(16), MemberInfoFlag(137), ContainerFieldNameHash(3623005534)]
+		[ContainerField(Name: "TransformPart", Offset: 16, NameHash: 3623005534, Flags: 137)]
 		public TransformPart TransformPart { get { return m_TransformPart; } set { if (OnPropertyChanging("TransformPartPropertyTrackData." + nameof(TransformPart), this, m_TransformPart, value)) m_TransformPart = value; } } // 0x10 (16)
 		
 		protected CurveInfinityType m_PreInfinity = new CurveInfinityType();
-		[ContainerField(20), MemberInfoFlag(137), ContainerFieldNameHash(887592928)]
+		[ContainerField(Name: "PreInfinity", Offset: 20, NameHash: 887592928, Flags: 137)]
 		public CurveInfinityType PreInfinity { get { return m_PreInfinity; } set { if (OnPropertyChanging("TransformPartPropertyTrackData." + nameof(PreInfinity), this, m_PreInfinity, value)) m_PreInfinity = value; } } // 0x14 (20)
 		
 		protected CurveInfinityType m_PostInfinity = new CurveInfinityType();
-		[ContainerField(24), MemberInfoFlag(137), ContainerFieldNameHash(1471303071)]
+		[ContainerField(Name: "PostInfinity", Offset: 24, NameHash: 1471303071, Flags: 137)]
 		public CurveInfinityType PostInfinity { get { return m_PostInfinity; } set { if (OnPropertyChanging("TransformPartPropertyTrackData." + nameof(PostInfinity), this, m_PostInfinity, value)) m_PostInfinity = value; } } // 0x18 (24)
 		
 		protected uint m_KeyStartIndex = new uint();
-		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(331027820)]
+		[ContainerField(Name: "KeyStartIndex", Offset: 28, NameHash: 331027820, Flags: 49421), LayoutImmutable, Blittable]
 		public uint KeyStartIndex { get { return m_KeyStartIndex; } set { if (OnPropertyChanging("TransformPartPropertyTrackData." + nameof(KeyStartIndex), this, m_KeyStartIndex, value)) m_KeyStartIndex = value; } } // 0x1C (28)
 		
 		protected string m_ResourceName = string.Empty;
-		[ContainerField(32), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(2980323592)]
+		[ContainerField(Name: "ResourceName", Offset: 32, NameHash: 2980323592, Flags: 16509), LayoutImmutable]
 		public string ResourceName { get { return m_ResourceName; } set { if (OnPropertyChanging("TransformPartPropertyTrackData." + nameof(ResourceName), this, m_ResourceName, value)) m_ResourceName = value; } } // 0x20 (32)
 		
 		protected uint m_KeyCount = new uint();
-		[ContainerField(36), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(4061186033)]
+		[ContainerField(Name: "KeyCount", Offset: 36, NameHash: 4061186033, Flags: 49421), LayoutImmutable, Blittable]
 		public uint KeyCount { get { return m_KeyCount; } set { if (OnPropertyChanging("TransformPartPropertyTrackData." + nameof(KeyCount), this, m_KeyCount, value)) m_KeyCount = value; } } // 0x24 (36)
 		
 		protected bool m_Weighted = new bool();
-		[ContainerField(40), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(222605828)]
+		[ContainerField(Name: "Weighted", Offset: 40, NameHash: 222605828, Flags: 49325), LayoutImmutable, Blittable]
 		public bool Weighted { get { return m_Weighted; } set { if (OnPropertyChanging("TransformPartPropertyTrackData." + nameof(Weighted), this, m_Weighted, value)) m_Weighted = value; } } // 0x28 (40)
 		
 		protected bool m_IsStatic = new bool();
-		[ContainerField(41), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(471816263)]
+		[ContainerField(Name: "IsStatic", Offset: 41, NameHash: 471816263, Flags: 49325), LayoutImmutable, Blittable]
 		public bool IsStatic { get { return m_IsStatic; } set { if (OnPropertyChanging("TransformPartPropertyTrackData." + nameof(IsStatic), this, m_IsStatic, value)) m_IsStatic = value; } } // 0x29 (41)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

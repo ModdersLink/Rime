@@ -18,13 +18,13 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(8), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 8)]
 	public class PathfindingObjectCategoryRepresentation : FrostbiteContainer
 	{
-		[ContainerField(0), MemberInfoFlag(53), ContainerCtrRef]
+		[ContainerField(Name: "Category", Offset: 0, NameHash: 3455858997, Flags: 53)]
 		public CtrRef<PathfindingObjectCategoryAsset> Category { get; set; } = new CtrRef<PathfindingObjectCategoryAsset>(); // 0x0 (0)
 		
-		[ContainerField(4), MemberInfoFlag(137)]
+		[ContainerField(Name: "Representation", Offset: 4, NameHash: 1809320132, Flags: 137)]
 		public PathfindingRepresentation Representation { get; set; } = new PathfindingRepresentation(); // 0x4 (4)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

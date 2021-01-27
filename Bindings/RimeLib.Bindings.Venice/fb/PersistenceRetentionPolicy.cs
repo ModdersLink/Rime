@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(24), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 24)]
 	public class PersistenceRetentionPolicy : 
 		Asset
 	{
 		protected int m_DailyHistoryCount = new int();
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(2827768221)]
+		[ContainerField(Name: "DailyHistoryCount", Offset: 12, NameHash: 2827768221, Flags: 49405), LayoutImmutable, Blittable]
 		public int DailyHistoryCount { get { return m_DailyHistoryCount; } set { if (OnPropertyChanging("PersistenceRetentionPolicy." + nameof(DailyHistoryCount), this, m_DailyHistoryCount, value)) m_DailyHistoryCount = value; } } // 0xC (12)
 		
 		protected int m_WeeklyHistoryCount = new int();
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(808067565)]
+		[ContainerField(Name: "WeeklyHistoryCount", Offset: 16, NameHash: 808067565, Flags: 49405), LayoutImmutable, Blittable]
 		public int WeeklyHistoryCount { get { return m_WeeklyHistoryCount; } set { if (OnPropertyChanging("PersistenceRetentionPolicy." + nameof(WeeklyHistoryCount), this, m_WeeklyHistoryCount, value)) m_WeeklyHistoryCount = value; } } // 0x10 (16)
 		
 		protected int m_MonthlyHistoryCount = new int();
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(345590273)]
+		[ContainerField(Name: "MonthlyHistoryCount", Offset: 20, NameHash: 345590273, Flags: 49405), LayoutImmutable, Blittable]
 		public int MonthlyHistoryCount { get { return m_MonthlyHistoryCount; } set { if (OnPropertyChanging("PersistenceRetentionPolicy." + nameof(MonthlyHistoryCount), this, m_MonthlyHistoryCount, value)) m_MonthlyHistoryCount = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

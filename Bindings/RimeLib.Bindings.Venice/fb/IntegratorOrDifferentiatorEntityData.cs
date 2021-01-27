@@ -18,36 +18,36 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(40), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 40)]
 	public class IntegratorOrDifferentiatorEntityData : 
 		EntityData
 	{
 		protected Realm m_Realm = new Realm();
-		[ContainerField(12), MemberInfoFlag(137), ContainerFieldNameHash(229961746)]
+		[ContainerField(Name: "Realm", Offset: 12, NameHash: 229961746, Flags: 137)]
 		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("IntegratorOrDifferentiatorEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0xC (12)
 		
 		protected EntityUpdateOrder m_UpdatePass = new EntityUpdateOrder();
-		[ContainerField(16), MemberInfoFlag(137), ContainerFieldNameHash(2270785669)]
+		[ContainerField(Name: "UpdatePass", Offset: 16, NameHash: 2270785669, Flags: 137)]
 		public EntityUpdateOrder UpdatePass { get { return m_UpdatePass; } set { if (OnPropertyChanging("IntegratorOrDifferentiatorEntityData." + nameof(UpdatePass), this, m_UpdatePass, value)) m_UpdatePass = value; } } // 0x10 (16)
 		
 		protected float m_StartValue = new float();
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2748522638)]
+		[ContainerField(Name: "StartValue", Offset: 20, NameHash: 2748522638, Flags: 49469), LayoutImmutable, Blittable]
 		public float StartValue { get { return m_StartValue; } set { if (OnPropertyChanging("IntegratorOrDifferentiatorEntityData." + nameof(StartValue), this, m_StartValue, value)) m_StartValue = value; } } // 0x14 (20)
 		
 		protected float m_Input = new float();
-		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(214522259)]
+		[ContainerField(Name: "Input", Offset: 24, NameHash: 214522259, Flags: 49469), LayoutImmutable, Blittable]
 		public float Input { get { return m_Input; } set { if (OnPropertyChanging("IntegratorOrDifferentiatorEntityData." + nameof(Input), this, m_Input, value)) m_Input = value; } } // 0x18 (24)
 		
 		protected float m_MaxValue = new float();
-		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(408516922)]
+		[ContainerField(Name: "MaxValue", Offset: 28, NameHash: 408516922, Flags: 49469), LayoutImmutable, Blittable]
 		public float MaxValue { get { return m_MaxValue; } set { if (OnPropertyChanging("IntegratorOrDifferentiatorEntityData." + nameof(MaxValue), this, m_MaxValue, value)) m_MaxValue = value; } } // 0x1C (28)
 		
 		protected float m_MinValue = new float();
-		[ContainerField(32), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3371854436)]
+		[ContainerField(Name: "MinValue", Offset: 32, NameHash: 3371854436, Flags: 49469), LayoutImmutable, Blittable]
 		public float MinValue { get { return m_MinValue; } set { if (OnPropertyChanging("IntegratorOrDifferentiatorEntityData." + nameof(MinValue), this, m_MinValue, value)) m_MinValue = value; } } // 0x20 (32)
 		
 		protected bool m_Bounded = new bool();
-		[ContainerField(36), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2541140406)]
+		[ContainerField(Name: "Bounded", Offset: 36, NameHash: 2541140406, Flags: 49325), LayoutImmutable, Blittable]
 		public bool Bounded { get { return m_Bounded; } set { if (OnPropertyChanging("IntegratorOrDifferentiatorEntityData." + nameof(Bounded), this, m_Bounded, value)) m_Bounded = value; } } // 0x24 (36)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

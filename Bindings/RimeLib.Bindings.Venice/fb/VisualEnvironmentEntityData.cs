@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(112), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 112)]
 	public class VisualEnvironmentEntityData : 
 		GameEntityData
 	{
 		protected float m_Visibility = new float();
-		[ContainerField(96), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1708270083)]
+		[ContainerField(Name: "Visibility", Offset: 96, NameHash: 1708270083, Flags: 49469), LayoutImmutable, Blittable]
 		public float Visibility { get { return m_Visibility; } set { if (OnPropertyChanging("VisualEnvironmentEntityData." + nameof(Visibility), this, m_Visibility, value)) m_Visibility = value; } } // 0x60 (96)
 		
 		protected int m_Priority = new int();
-		[ContainerField(100), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(3062102871)]
+		[ContainerField(Name: "Priority", Offset: 100, NameHash: 3062102871, Flags: 49405), LayoutImmutable, Blittable]
 		public int Priority { get { return m_Priority; } set { if (OnPropertyChanging("VisualEnvironmentEntityData." + nameof(Priority), this, m_Priority, value)) m_Priority = value; } } // 0x64 (100)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

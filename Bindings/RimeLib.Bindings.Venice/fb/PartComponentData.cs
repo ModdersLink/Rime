@@ -18,36 +18,36 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(112), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 112)]
 	public class PartComponentData : 
 		ComponentData
 	{
 		protected RefArray<HealthStateData> m_HealthStates = new RefArray<HealthStateData>();
-		[ContainerField(96), MemberInfoFlag(65), ContainerFieldNameHash(2256734877), ContainerRefArray]
+		[ContainerField(Name: "HealthStates", Offset: 96, NameHash: 2256734877, Flags: 65)]
 		public RefArray<HealthStateData> HealthStates { get { return m_HealthStates; } set { if (OnPropertyChanging("PartComponentData." + nameof(HealthStates), this, m_HealthStates, value)) m_HealthStates = value; } } // 0x60 (96)
 		
 		protected RefArray<PartLinkData> m_PartLinks = new RefArray<PartLinkData>();
-		[ContainerField(100), MemberInfoFlag(65), ContainerFieldNameHash(3210318177), ContainerRefArray]
+		[ContainerField(Name: "PartLinks", Offset: 100, NameHash: 3210318177, Flags: 65)]
 		public RefArray<PartLinkData> PartLinks { get { return m_PartLinks; } set { if (OnPropertyChanging("PartComponentData." + nameof(PartLinks), this, m_PartLinks, value)) m_PartLinks = value; } } // 0x64 (100)
 		
 		protected bool m_IsSupported = new bool();
-		[ContainerField(104), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(797903537)]
+		[ContainerField(Name: "IsSupported", Offset: 104, NameHash: 797903537, Flags: 49325), LayoutImmutable, Blittable]
 		public bool IsSupported { get { return m_IsSupported; } set { if (OnPropertyChanging("PartComponentData." + nameof(IsSupported), this, m_IsSupported, value)) m_IsSupported = value; } } // 0x68 (104)
 		
 		protected bool m_IsFragile = new bool();
-		[ContainerField(105), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3219228557)]
+		[ContainerField(Name: "IsFragile", Offset: 105, NameHash: 3219228557, Flags: 49325), LayoutImmutable, Blittable]
 		public bool IsFragile { get { return m_IsFragile; } set { if (OnPropertyChanging("PartComponentData." + nameof(IsFragile), this, m_IsFragile, value)) m_IsFragile = value; } } // 0x69 (105)
 		
 		protected bool m_IsNetworkable = new bool();
-		[ContainerField(106), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(4000919755)]
+		[ContainerField(Name: "IsNetworkable", Offset: 106, NameHash: 4000919755, Flags: 49325), LayoutImmutable, Blittable]
 		public bool IsNetworkable { get { return m_IsNetworkable; } set { if (OnPropertyChanging("PartComponentData." + nameof(IsNetworkable), this, m_IsNetworkable, value)) m_IsNetworkable = value; } } // 0x6A (106)
 		
 		protected bool m_IsWindow = new bool();
-		[ContainerField(107), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(290846451)]
+		[ContainerField(Name: "IsWindow", Offset: 107, NameHash: 290846451, Flags: 49325), LayoutImmutable, Blittable]
 		public bool IsWindow { get { return m_IsWindow; } set { if (OnPropertyChanging("PartComponentData." + nameof(IsWindow), this, m_IsWindow, value)) m_IsWindow = value; } } // 0x6B (107)
 		
 		protected bool m_AnimatePhysics = new bool();
-		[ContainerField(108), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(443997333)]
+		[ContainerField(Name: "AnimatePhysics", Offset: 108, NameHash: 443997333, Flags: 49325), LayoutImmutable, Blittable]
 		public bool AnimatePhysics { get { return m_AnimatePhysics; } set { if (OnPropertyChanging("PartComponentData." + nameof(AnimatePhysics), this, m_AnimatePhysics, value)) m_AnimatePhysics = value; } } // 0x6C (108)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

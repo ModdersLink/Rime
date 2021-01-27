@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(112), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 112)]
 	public class ShaderParameterComponentData : 
 		ComponentData
 	{
 		protected List<ShaderParameterVector> m_ShaderParameterVectors = new List<ShaderParameterVector>();
-		[ContainerField(96), MemberInfoFlag(65), ContainerFieldNameHash(2124466895), ContainerArray]
+		[ContainerField(Name: "ShaderParameterVectors", Offset: 96, NameHash: 2124466895, Flags: 65)]
 		public List<ShaderParameterVector> ShaderParameterVectors { get { return m_ShaderParameterVectors; } set { if (OnPropertyChanging("ShaderParameterComponentData." + nameof(ShaderParameterVectors), this, m_ShaderParameterVectors, value)) m_ShaderParameterVectors = value; } } // 0x60 (96)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

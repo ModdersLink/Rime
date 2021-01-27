@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(272), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 272)]
 	public class MedicBagEntityData : 
 		ExplosionPackEntityData
 	{
 		protected HealerData m_Healer = new HealerData();
-		[ContainerField(256), MemberInfoFlag(41), ContainerFieldNameHash(3054336626)]
+		[ContainerField(Name: "Healer", Offset: 256, NameHash: 3054336626, Flags: 41)]
 		public HealerData Healer { get { return m_Healer; } set { if (OnPropertyChanging("MedicBagEntityData." + nameof(Healer), this, m_Healer, value)) m_Healer = value; } } // 0x100 (256)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

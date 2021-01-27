@@ -18,36 +18,36 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(48), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 48)]
 	public class MultiCrossfaderGroup : 
 		AudioGraphNodePortGroup
 	{
 		protected AudioGraphNodePort m_Amplitude = new AudioGraphNodePort();
-		[ContainerField(8), MemberInfoFlag(41), ContainerFieldNameHash(698564572)]
+		[ContainerField(Name: "Amplitude", Offset: 8, NameHash: 698564572, Flags: 41)]
 		public AudioGraphNodePort Amplitude { get { return m_Amplitude; } set { if (OnPropertyChanging("MultiCrossfaderGroup." + nameof(Amplitude), this, m_Amplitude, value)) m_Amplitude = value; } } // 0x8 (8)
 		
 		protected AudioGraphNodePort m_Start = new AudioGraphNodePort();
-		[ContainerField(16), MemberInfoFlag(41), ContainerFieldNameHash(230748069)]
+		[ContainerField(Name: "Start", Offset: 16, NameHash: 230748069, Flags: 41)]
 		public AudioGraphNodePort Start { get { return m_Start; } set { if (OnPropertyChanging("MultiCrossfaderGroup." + nameof(Start), this, m_Start, value)) m_Start = value; } } // 0x10 (16)
 		
 		protected AudioGraphNodePort m_Stop = new AudioGraphNodePort();
-		[ContainerField(24), MemberInfoFlag(41), ContainerFieldNameHash(2089401213)]
+		[ContainerField(Name: "Stop", Offset: 24, NameHash: 2089401213, Flags: 41)]
 		public AudioGraphNodePort Stop { get { return m_Stop; } set { if (OnPropertyChanging("MultiCrossfaderGroup." + nameof(Stop), this, m_Stop, value)) m_Stop = value; } } // 0x18 (24)
 		
 		protected float m_FadeAmplitude = new float();
-		[ContainerField(32), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(282245178)]
+		[ContainerField(Name: "FadeAmplitude", Offset: 32, NameHash: 282245178, Flags: 49469), LayoutImmutable, Blittable]
 		public float FadeAmplitude { get { return m_FadeAmplitude; } set { if (OnPropertyChanging("MultiCrossfaderGroup." + nameof(FadeAmplitude), this, m_FadeAmplitude, value)) m_FadeAmplitude = value; } } // 0x20 (32)
 		
 		protected float m_FadeBegin = new float();
-		[ContainerField(36), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3160511748)]
+		[ContainerField(Name: "FadeBegin", Offset: 36, NameHash: 3160511748, Flags: 49469), LayoutImmutable, Blittable]
 		public float FadeBegin { get { return m_FadeBegin; } set { if (OnPropertyChanging("MultiCrossfaderGroup." + nameof(FadeBegin), this, m_FadeBegin, value)) m_FadeBegin = value; } } // 0x24 (36)
 		
 		protected float m_FadeEnd = new float();
-		[ContainerField(40), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1422737676)]
+		[ContainerField(Name: "FadeEnd", Offset: 40, NameHash: 1422737676, Flags: 49469), LayoutImmutable, Blittable]
 		public float FadeEnd { get { return m_FadeEnd; } set { if (OnPropertyChanging("MultiCrossfaderGroup." + nameof(FadeEnd), this, m_FadeEnd, value)) m_FadeEnd = value; } } // 0x28 (40)
 		
 		protected FaderType m_FadeType = new FaderType();
-		[ContainerField(44), MemberInfoFlag(137), ContainerFieldNameHash(4001206363)]
+		[ContainerField(Name: "FadeType", Offset: 44, NameHash: 4001206363, Flags: 137)]
 		public FaderType FadeType { get { return m_FadeType; } set { if (OnPropertyChanging("MultiCrossfaderGroup." + nameof(FadeType), this, m_FadeType, value)) m_FadeType = value; } } // 0x2C (44)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

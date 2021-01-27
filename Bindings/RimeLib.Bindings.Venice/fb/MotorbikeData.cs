@@ -18,164 +18,164 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(224), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 224)]
 	public class MotorbikeData : 
 		DataContainer
 	{
 		protected Vec3 m_WheelieForceBodyOffset = new Vec3();
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(4050311162)]
+		[ContainerField(Name: "WheelieForceBodyOffset", Offset: 16, NameHash: 4050311162, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 WheelieForceBodyOffset { get { return m_WheelieForceBodyOffset; } set { if (OnPropertyChanging("MotorbikeData." + nameof(WheelieForceBodyOffset), this, m_WheelieForceBodyOffset, value)) m_WheelieForceBodyOffset = value; } } // 0x10 (16)
 		
 		protected Vec3 m_WheelieForce = new Vec3();
-		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(1325583079)]
+		[ContainerField(Name: "WheelieForce", Offset: 32, NameHash: 1325583079, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 WheelieForce { get { return m_WheelieForce; } set { if (OnPropertyChanging("MotorbikeData." + nameof(WheelieForce), this, m_WheelieForce, value)) m_WheelieForce = value; } } // 0x20 (32)
 		
 		protected Vec3 m_DampBigJumpImpactCounterForce = new Vec3();
-		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(425540600)]
+		[ContainerField(Name: "DampBigJumpImpactCounterForce", Offset: 48, NameHash: 425540600, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 DampBigJumpImpactCounterForce { get { return m_DampBigJumpImpactCounterForce; } set { if (OnPropertyChanging("MotorbikeData." + nameof(DampBigJumpImpactCounterForce), this, m_DampBigJumpImpactCounterForce, value)) m_DampBigJumpImpactCounterForce = value; } } // 0x30 (48)
 		
 		protected Vec3 m_ProximityExtScale = new Vec3();
-		[ContainerField(64), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(3588712321)]
+		[ContainerField(Name: "ProximityExtScale", Offset: 64, NameHash: 3588712321, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 ProximityExtScale { get { return m_ProximityExtScale; } set { if (OnPropertyChanging("MotorbikeData." + nameof(ProximityExtScale), this, m_ProximityExtScale, value)) m_ProximityExtScale = value; } } // 0x40 (64)
 		
 		protected float m_JumpForwardLeanMinAngle = new float();
-		[ContainerField(80), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(401127825)]
+		[ContainerField(Name: "JumpForwardLeanMinAngle", Offset: 80, NameHash: 401127825, Flags: 49469), LayoutImmutable, Blittable]
 		public float JumpForwardLeanMinAngle { get { return m_JumpForwardLeanMinAngle; } set { if (OnPropertyChanging("MotorbikeData." + nameof(JumpForwardLeanMinAngle), this, m_JumpForwardLeanMinAngle, value)) m_JumpForwardLeanMinAngle = value; } } // 0x50 (80)
 		
 		protected float m_JumpForwardLeanMomentum = new float();
-		[ContainerField(84), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2197270066)]
+		[ContainerField(Name: "JumpForwardLeanMomentum", Offset: 84, NameHash: 2197270066, Flags: 49469), LayoutImmutable, Blittable]
 		public float JumpForwardLeanMomentum { get { return m_JumpForwardLeanMomentum; } set { if (OnPropertyChanging("MotorbikeData." + nameof(JumpForwardLeanMomentum), this, m_JumpForwardLeanMomentum, value)) m_JumpForwardLeanMomentum = value; } } // 0x54 (84)
 		
 		protected float m_KickstandRoll = new float();
-		[ContainerField(88), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(743919134)]
+		[ContainerField(Name: "KickstandRoll", Offset: 88, NameHash: 743919134, Flags: 49469), LayoutImmutable, Blittable]
 		public float KickstandRoll { get { return m_KickstandRoll; } set { if (OnPropertyChanging("MotorbikeData." + nameof(KickstandRoll), this, m_KickstandRoll, value)) m_KickstandRoll = value; } } // 0x58 (88)
 		
 		protected float m_KickstandLinearDamping = new float();
-		[ContainerField(92), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(184258502)]
+		[ContainerField(Name: "KickstandLinearDamping", Offset: 92, NameHash: 184258502, Flags: 49469), LayoutImmutable, Blittable]
 		public float KickstandLinearDamping { get { return m_KickstandLinearDamping; } set { if (OnPropertyChanging("MotorbikeData." + nameof(KickstandLinearDamping), this, m_KickstandLinearDamping, value)) m_KickstandLinearDamping = value; } } // 0x5C (92)
 		
 		protected float m_LeanForceMaxVel = new float();
-		[ContainerField(96), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(90919029)]
+		[ContainerField(Name: "LeanForceMaxVel", Offset: 96, NameHash: 90919029, Flags: 49469), LayoutImmutable, Blittable]
 		public float LeanForceMaxVel { get { return m_LeanForceMaxVel; } set { if (OnPropertyChanging("MotorbikeData." + nameof(LeanForceMaxVel), this, m_LeanForceMaxVel, value)) m_LeanForceMaxVel = value; } } // 0x60 (96)
 		
 		protected float m_CounterLeanForce = new float();
-		[ContainerField(100), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2727731914)]
+		[ContainerField(Name: "CounterLeanForce", Offset: 100, NameHash: 2727731914, Flags: 49469), LayoutImmutable, Blittable]
 		public float CounterLeanForce { get { return m_CounterLeanForce; } set { if (OnPropertyChanging("MotorbikeData." + nameof(CounterLeanForce), this, m_CounterLeanForce, value)) m_CounterLeanForce = value; } } // 0x64 (100)
 		
 		protected float m_StandStillRoll = new float();
-		[ContainerField(104), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(877604538)]
+		[ContainerField(Name: "StandStillRoll", Offset: 104, NameHash: 877604538, Flags: 49469), LayoutImmutable, Blittable]
 		public float StandStillRoll { get { return m_StandStillRoll; } set { if (OnPropertyChanging("MotorbikeData." + nameof(StandStillRoll), this, m_StandStillRoll, value)) m_StandStillRoll = value; } } // 0x68 (104)
 		
 		protected float m_DampBigJumpImpactVelocity = new float();
-		[ContainerField(108), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(441919910)]
+		[ContainerField(Name: "DampBigJumpImpactVelocity", Offset: 108, NameHash: 441919910, Flags: 49469), LayoutImmutable, Blittable]
 		public float DampBigJumpImpactVelocity { get { return m_DampBigJumpImpactVelocity; } set { if (OnPropertyChanging("MotorbikeData." + nameof(DampBigJumpImpactVelocity), this, m_DampBigJumpImpactVelocity, value)) m_DampBigJumpImpactVelocity = value; } } // 0x6C (108)
 		
 		protected float m_YawBrakeDampingLerpStartScale = new float();
-		[ContainerField(112), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(4278552638)]
+		[ContainerField(Name: "YawBrakeDampingLerpStartScale", Offset: 112, NameHash: 4278552638, Flags: 49469), LayoutImmutable, Blittable]
 		public float YawBrakeDampingLerpStartScale { get { return m_YawBrakeDampingLerpStartScale; } set { if (OnPropertyChanging("MotorbikeData." + nameof(YawBrakeDampingLerpStartScale), this, m_YawBrakeDampingLerpStartScale, value)) m_YawBrakeDampingLerpStartScale = value; } } // 0x70 (112)
 		
 		protected float m_YawBrakeDampingLerpEndScale = new float();
-		[ContainerField(116), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3443030225)]
+		[ContainerField(Name: "YawBrakeDampingLerpEndScale", Offset: 116, NameHash: 3443030225, Flags: 49469), LayoutImmutable, Blittable]
 		public float YawBrakeDampingLerpEndScale { get { return m_YawBrakeDampingLerpEndScale; } set { if (OnPropertyChanging("MotorbikeData." + nameof(YawBrakeDampingLerpEndScale), this, m_YawBrakeDampingLerpEndScale, value)) m_YawBrakeDampingLerpEndScale = value; } } // 0x74 (116)
 		
 		protected float m_StoppieActivationVelocity = new float();
-		[ContainerField(120), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2464692130)]
+		[ContainerField(Name: "StoppieActivationVelocity", Offset: 120, NameHash: 2464692130, Flags: 49469), LayoutImmutable, Blittable]
 		public float StoppieActivationVelocity { get { return m_StoppieActivationVelocity; } set { if (OnPropertyChanging("MotorbikeData." + nameof(StoppieActivationVelocity), this, m_StoppieActivationVelocity, value)) m_StoppieActivationVelocity = value; } } // 0x78 (120)
 		
 		protected float m_StoppieStartVelocity = new float();
-		[ContainerField(124), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3715175158)]
+		[ContainerField(Name: "StoppieStartVelocity", Offset: 124, NameHash: 3715175158, Flags: 49469), LayoutImmutable, Blittable]
 		public float StoppieStartVelocity { get { return m_StoppieStartVelocity; } set { if (OnPropertyChanging("MotorbikeData." + nameof(StoppieStartVelocity), this, m_StoppieStartVelocity, value)) m_StoppieStartVelocity = value; } } // 0x7C (124)
 		
 		protected float m_LeanForce = new float();
-		[ContainerField(128), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3891742718)]
+		[ContainerField(Name: "LeanForce", Offset: 128, NameHash: 3891742718, Flags: 49469), LayoutImmutable, Blittable]
 		public float LeanForce { get { return m_LeanForce; } set { if (OnPropertyChanging("MotorbikeData." + nameof(LeanForce), this, m_LeanForce, value)) m_LeanForce = value; } } // 0x80 (128)
 		
 		protected float m_StoppieMomentum = new float();
-		[ContainerField(132), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2105377289)]
+		[ContainerField(Name: "StoppieMomentum", Offset: 132, NameHash: 2105377289, Flags: 49469), LayoutImmutable, Blittable]
 		public float StoppieMomentum { get { return m_StoppieMomentum; } set { if (OnPropertyChanging("MotorbikeData." + nameof(StoppieMomentum), this, m_StoppieMomentum, value)) m_StoppieMomentum = value; } } // 0x84 (132)
 		
 		protected float m_ShortOffgroundGravityMultiplier = new float();
-		[ContainerField(136), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2398478128)]
+		[ContainerField(Name: "ShortOffgroundGravityMultiplier", Offset: 136, NameHash: 2398478128, Flags: 49469), LayoutImmutable, Blittable]
 		public float ShortOffgroundGravityMultiplier { get { return m_ShortOffgroundGravityMultiplier; } set { if (OnPropertyChanging("MotorbikeData." + nameof(ShortOffgroundGravityMultiplier), this, m_ShortOffgroundGravityMultiplier, value)) m_ShortOffgroundGravityMultiplier = value; } } // 0x88 (136)
 		
 		protected float m_MaxLeaningRoll = new float();
-		[ContainerField(140), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2063770090)]
+		[ContainerField(Name: "MaxLeaningRoll", Offset: 140, NameHash: 2063770090, Flags: 49469), LayoutImmutable, Blittable]
 		public float MaxLeaningRoll { get { return m_MaxLeaningRoll; } set { if (OnPropertyChanging("MotorbikeData." + nameof(MaxLeaningRoll), this, m_MaxLeaningRoll, value)) m_MaxLeaningRoll = value; } } // 0x8C (140)
 		
 		protected float m_StoppieStopVelocity = new float();
-		[ContainerField(144), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3176785966)]
+		[ContainerField(Name: "StoppieStopVelocity", Offset: 144, NameHash: 3176785966, Flags: 49469), LayoutImmutable, Blittable]
 		public float StoppieStopVelocity { get { return m_StoppieStopVelocity; } set { if (OnPropertyChanging("MotorbikeData." + nameof(StoppieStopVelocity), this, m_StoppieStopVelocity, value)) m_StoppieStopVelocity = value; } } // 0x90 (144)
 		
 		protected float m_ProximityHeightTranslation = new float();
-		[ContainerField(148), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2388981380)]
+		[ContainerField(Name: "ProximityHeightTranslation", Offset: 148, NameHash: 2388981380, Flags: 49469), LayoutImmutable, Blittable]
 		public float ProximityHeightTranslation { get { return m_ProximityHeightTranslation; } set { if (OnPropertyChanging("MotorbikeData." + nameof(ProximityHeightTranslation), this, m_ProximityHeightTranslation, value)) m_ProximityHeightTranslation = value; } } // 0x94 (148)
 		
 		protected float m_WheelieMaxNoDownForceContactTime = new float();
-		[ContainerField(152), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3008032341)]
+		[ContainerField(Name: "WheelieMaxNoDownForceContactTime", Offset: 152, NameHash: 3008032341, Flags: 49469), LayoutImmutable, Blittable]
 		public float WheelieMaxNoDownForceContactTime { get { return m_WheelieMaxNoDownForceContactTime; } set { if (OnPropertyChanging("MotorbikeData." + nameof(WheelieMaxNoDownForceContactTime), this, m_WheelieMaxNoDownForceContactTime, value)) m_WheelieMaxNoDownForceContactTime = value; } } // 0x98 (152)
 		
 		protected float m_WheelieMaxNoContactTime = new float();
-		[ContainerField(156), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3277378970)]
+		[ContainerField(Name: "WheelieMaxNoContactTime", Offset: 156, NameHash: 3277378970, Flags: 49469), LayoutImmutable, Blittable]
 		public float WheelieMaxNoContactTime { get { return m_WheelieMaxNoContactTime; } set { if (OnPropertyChanging("MotorbikeData." + nameof(WheelieMaxNoContactTime), this, m_WheelieMaxNoContactTime, value)) m_WheelieMaxNoContactTime = value; } } // 0x9C (156)
 		
 		protected float m_WheelieSteeringFactor = new float();
-		[ContainerField(160), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(922430370)]
+		[ContainerField(Name: "WheelieSteeringFactor", Offset: 160, NameHash: 922430370, Flags: 49469), LayoutImmutable, Blittable]
 		public float WheelieSteeringFactor { get { return m_WheelieSteeringFactor; } set { if (OnPropertyChanging("MotorbikeData." + nameof(WheelieSteeringFactor), this, m_WheelieSteeringFactor, value)) m_WheelieSteeringFactor = value; } } // 0xA0 (160)
 		
 		protected float m_WheelieInertia = new float();
-		[ContainerField(164), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(756716118)]
+		[ContainerField(Name: "WheelieInertia", Offset: 164, NameHash: 756716118, Flags: 49469), LayoutImmutable, Blittable]
 		public float WheelieInertia { get { return m_WheelieInertia; } set { if (OnPropertyChanging("MotorbikeData." + nameof(WheelieInertia), this, m_WheelieInertia, value)) m_WheelieInertia = value; } } // 0xA4 (164)
 		
 		protected float m_WheelieStartVelocity = new float();
-		[ContainerField(168), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1112627949)]
+		[ContainerField(Name: "WheelieStartVelocity", Offset: 168, NameHash: 1112627949, Flags: 49469), LayoutImmutable, Blittable]
 		public float WheelieStartVelocity { get { return m_WheelieStartVelocity; } set { if (OnPropertyChanging("MotorbikeData." + nameof(WheelieStartVelocity), this, m_WheelieStartVelocity, value)) m_WheelieStartVelocity = value; } } // 0xA8 (168)
 		
 		protected float m_WheelieMaxVelocityUndamped = new float();
-		[ContainerField(172), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2044326939)]
+		[ContainerField(Name: "WheelieMaxVelocityUndamped", Offset: 172, NameHash: 2044326939, Flags: 49469), LayoutImmutable, Blittable]
 		public float WheelieMaxVelocityUndamped { get { return m_WheelieMaxVelocityUndamped; } set { if (OnPropertyChanging("MotorbikeData." + nameof(WheelieMaxVelocityUndamped), this, m_WheelieMaxVelocityUndamped, value)) m_WheelieMaxVelocityUndamped = value; } } // 0xAC (172)
 		
 		protected float m_WheelieMaxVelocityDampRange = new float();
-		[ContainerField(176), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(911316990)]
+		[ContainerField(Name: "WheelieMaxVelocityDampRange", Offset: 176, NameHash: 911316990, Flags: 49469), LayoutImmutable, Blittable]
 		public float WheelieMaxVelocityDampRange { get { return m_WheelieMaxVelocityDampRange; } set { if (OnPropertyChanging("MotorbikeData." + nameof(WheelieMaxVelocityDampRange), this, m_WheelieMaxVelocityDampRange, value)) m_WheelieMaxVelocityDampRange = value; } } // 0xB0 (176)
 		
 		protected float m_WheelieOutAngularMomentum = new float();
-		[ContainerField(180), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3287389598)]
+		[ContainerField(Name: "WheelieOutAngularMomentum", Offset: 180, NameHash: 3287389598, Flags: 49469), LayoutImmutable, Blittable]
 		public float WheelieOutAngularMomentum { get { return m_WheelieOutAngularMomentum; } set { if (OnPropertyChanging("MotorbikeData." + nameof(WheelieOutAngularMomentum), this, m_WheelieOutAngularMomentum, value)) m_WheelieOutAngularMomentum = value; } } // 0xB4 (180)
 		
 		protected float m_WheelieSpringDamping = new float();
-		[ContainerField(184), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2926554611)]
+		[ContainerField(Name: "WheelieSpringDamping", Offset: 184, NameHash: 2926554611, Flags: 49469), LayoutImmutable, Blittable]
 		public float WheelieSpringDamping { get { return m_WheelieSpringDamping; } set { if (OnPropertyChanging("MotorbikeData." + nameof(WheelieSpringDamping), this, m_WheelieSpringDamping, value)) m_WheelieSpringDamping = value; } } // 0xB8 (184)
 		
 		protected float m_WheelieAngularDamping = new float();
-		[ContainerField(188), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3467767936)]
+		[ContainerField(Name: "WheelieAngularDamping", Offset: 188, NameHash: 3467767936, Flags: 49469), LayoutImmutable, Blittable]
 		public float WheelieAngularDamping { get { return m_WheelieAngularDamping; } set { if (OnPropertyChanging("MotorbikeData." + nameof(WheelieAngularDamping), this, m_WheelieAngularDamping, value)) m_WheelieAngularDamping = value; } } // 0xBC (188)
 		
 		protected float m_WheelieAngularDampingSpeed = new float();
-		[ContainerField(192), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2883819815)]
+		[ContainerField(Name: "WheelieAngularDampingSpeed", Offset: 192, NameHash: 2883819815, Flags: 49469), LayoutImmutable, Blittable]
 		public float WheelieAngularDampingSpeed { get { return m_WheelieAngularDampingSpeed; } set { if (OnPropertyChanging("MotorbikeData." + nameof(WheelieAngularDampingSpeed), this, m_WheelieAngularDampingSpeed, value)) m_WheelieAngularDampingSpeed = value; } } // 0xC0 (192)
 		
 		protected float m_ShortOffgroundPeriod = new float();
-		[ContainerField(196), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2265366232)]
+		[ContainerField(Name: "ShortOffgroundPeriod", Offset: 196, NameHash: 2265366232, Flags: 49469), LayoutImmutable, Blittable]
 		public float ShortOffgroundPeriod { get { return m_ShortOffgroundPeriod; } set { if (OnPropertyChanging("MotorbikeData." + nameof(ShortOffgroundPeriod), this, m_ShortOffgroundPeriod, value)) m_ShortOffgroundPeriod = value; } } // 0xC4 (196)
 		
 		protected float m_WheelieMaxAngle = new float();
-		[ContainerField(200), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2419359695)]
+		[ContainerField(Name: "WheelieMaxAngle", Offset: 200, NameHash: 2419359695, Flags: 49469), LayoutImmutable, Blittable]
 		public float WheelieMaxAngle { get { return m_WheelieMaxAngle; } set { if (OnPropertyChanging("MotorbikeData." + nameof(WheelieMaxAngle), this, m_WheelieMaxAngle, value)) m_WheelieMaxAngle = value; } } // 0xC8 (200)
 		
 		protected float m_WheelieAngularStartMomentum = new float();
-		[ContainerField(204), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(698093808)]
+		[ContainerField(Name: "WheelieAngularStartMomentum", Offset: 204, NameHash: 698093808, Flags: 49469), LayoutImmutable, Blittable]
 		public float WheelieAngularStartMomentum { get { return m_WheelieAngularStartMomentum; } set { if (OnPropertyChanging("MotorbikeData." + nameof(WheelieAngularStartMomentum), this, m_WheelieAngularStartMomentum, value)) m_WheelieAngularStartMomentum = value; } } // 0xCC (204)
 		
 		protected float m_WheelieMaxVelocity = new float();
-		[ContainerField(208), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2291827481)]
+		[ContainerField(Name: "WheelieMaxVelocity", Offset: 208, NameHash: 2291827481, Flags: 49469), LayoutImmutable, Blittable]
 		public float WheelieMaxVelocity { get { return m_WheelieMaxVelocity; } set { if (OnPropertyChanging("MotorbikeData." + nameof(WheelieMaxVelocity), this, m_WheelieMaxVelocity, value)) m_WheelieMaxVelocity = value; } } // 0xD0 (208)
 		
 		protected float m_WheelieVelocityForceScale = new float();
-		[ContainerField(212), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(581384360)]
+		[ContainerField(Name: "WheelieVelocityForceScale", Offset: 212, NameHash: 581384360, Flags: 49469), LayoutImmutable, Blittable]
 		public float WheelieVelocityForceScale { get { return m_WheelieVelocityForceScale; } set { if (OnPropertyChanging("MotorbikeData." + nameof(WheelieVelocityForceScale), this, m_WheelieVelocityForceScale, value)) m_WheelieVelocityForceScale = value; } } // 0xD4 (212)
 		
 		protected bool m_DampBigJumpImpact = new bool();
-		[ContainerField(216), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1921216113)]
+		[ContainerField(Name: "DampBigJumpImpact", Offset: 216, NameHash: 1921216113, Flags: 49325), LayoutImmutable, Blittable]
 		public bool DampBigJumpImpact { get { return m_DampBigJumpImpact; } set { if (OnPropertyChanging("MotorbikeData." + nameof(DampBigJumpImpact), this, m_DampBigJumpImpact, value)) m_DampBigJumpImpact = value; } } // 0xD8 (216)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

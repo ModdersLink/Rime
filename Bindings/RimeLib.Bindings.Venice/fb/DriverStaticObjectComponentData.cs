@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(128), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 128)]
 	public class DriverStaticObjectComponentData : 
 		DriverComponentData
 	{
 		protected float m_Acceleration = new float();
-		[ContainerField(112), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(62601415)]
+		[ContainerField(Name: "Acceleration", Offset: 112, NameHash: 62601415, Flags: 49469), LayoutImmutable, Blittable]
 		public float Acceleration { get { return m_Acceleration; } set { if (OnPropertyChanging("DriverStaticObjectComponentData." + nameof(Acceleration), this, m_Acceleration, value)) m_Acceleration = value; } } // 0x70 (112)
 		
 		protected float m_Deceleration = new float();
-		[ContainerField(116), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(8356516)]
+		[ContainerField(Name: "Deceleration", Offset: 116, NameHash: 8356516, Flags: 49469), LayoutImmutable, Blittable]
 		public float Deceleration { get { return m_Deceleration; } set { if (OnPropertyChanging("DriverStaticObjectComponentData." + nameof(Deceleration), this, m_Deceleration, value)) m_Deceleration = value; } } // 0x74 (116)
 		
 		protected float m_TurningRadius = new float();
-		[ContainerField(120), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(4134465344)]
+		[ContainerField(Name: "TurningRadius", Offset: 120, NameHash: 4134465344, Flags: 49469), LayoutImmutable, Blittable]
 		public float TurningRadius { get { return m_TurningRadius; } set { if (OnPropertyChanging("DriverStaticObjectComponentData." + nameof(TurningRadius), this, m_TurningRadius, value)) m_TurningRadius = value; } } // 0x78 (120)
 		
 		protected bool m_TurnWhileStill = new bool();
-		[ContainerField(124), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2034681993)]
+		[ContainerField(Name: "TurnWhileStill", Offset: 124, NameHash: 2034681993, Flags: 49325), LayoutImmutable, Blittable]
 		public bool TurnWhileStill { get { return m_TurnWhileStill; } set { if (OnPropertyChanging("DriverStaticObjectComponentData." + nameof(TurnWhileStill), this, m_TurnWhileStill, value)) m_TurnWhileStill = value; } } // 0x7C (124)
 		
 		protected bool m_AlignWithGroundNormal = new bool();
-		[ContainerField(125), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(387843516)]
+		[ContainerField(Name: "AlignWithGroundNormal", Offset: 125, NameHash: 387843516, Flags: 49325), LayoutImmutable, Blittable]
 		public bool AlignWithGroundNormal { get { return m_AlignWithGroundNormal; } set { if (OnPropertyChanging("DriverStaticObjectComponentData." + nameof(AlignWithGroundNormal), this, m_AlignWithGroundNormal, value)) m_AlignWithGroundNormal = value; } } // 0x7D (125)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

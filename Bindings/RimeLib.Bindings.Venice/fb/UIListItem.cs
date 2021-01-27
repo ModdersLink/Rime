@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(72), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 72)]
 	public class UIListItem : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "Label", Offset: 0, NameHash: 218105699, Flags: 16509), LayoutImmutable]
 		public string Label { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), MemberInfoFlag(41)]
+		[ContainerField(Name: "IsEnabled", Offset: 4, NameHash: 2323834330, Flags: 41)]
 		public UIDataSourceInfo IsEnabled { get; set; } = new UIDataSourceInfo(); // 0x4 (4)
 		
-		[ContainerField(20), MemberInfoFlag(41)]
+		[ContainerField(Name: "IsVisible", Offset: 20, NameHash: 4174428017, Flags: 41)]
 		public UIDataSourceInfo IsVisible { get; set; } = new UIDataSourceInfo(); // 0x14 (20)
 		
-		[ContainerField(36), MemberInfoFlag(41)]
+		[ContainerField(Name: "ToggleItems", Offset: 36, NameHash: 1972979281, Flags: 41)]
 		public UIDataSourceInfo ToggleItems { get; set; } = new UIDataSourceInfo(); // 0x24 (36)
 		
-		[ContainerField(52), MemberInfoFlag(41)]
+		[ContainerField(Name: "DataUpdate", Offset: 52, NameHash: 3436913316, Flags: 41)]
 		public UIDataSourceInfo DataUpdate { get; set; } = new UIDataSourceInfo(); // 0x34 (52)
 		
-		[ContainerField(68), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "DefaultIsVisible", Offset: 68, NameHash: 606137530, Flags: 49325), LayoutImmutable, Blittable]
 		public bool DefaultIsVisible { get; set; } // 0x44 (68)
 		
-		[ContainerField(69), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "DefaultIsEnabled", Offset: 69, NameHash: 1109158225, Flags: 49325), LayoutImmutable, Blittable]
 		public bool DefaultIsEnabled { get; set; } // 0x45 (69)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

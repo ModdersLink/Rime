@@ -18,22 +18,22 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(41), ContainerSize(80), ContainerStruct]
+	[ContainerType(Alignment: 16,  Flags: 41, Size: 80)]
 	public class EnlightenPipelineTerrainMesh : FrostbiteContainer
 	{
-		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
+		[ContainerField(Name: "UvTranslation", Offset: 0, NameHash: 2805972397, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec2 UvTranslation { get; set; } = new Vec2(); // 0x0 (0)
 		
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
+		[ContainerField(Name: "BoundingBox", Offset: 16, NameHash: 2648132290, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public AxisAlignedBox BoundingBox { get; set; } = new AxisAlignedBox(); // 0x10 (16)
 		
-		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
+		[ContainerField(Name: "UvTransform", Offset: 48, NameHash: 2858488202, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec4 UvTransform { get; set; } = new Vec4(); // 0x30 (48)
 		
-		[ContainerField(64), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
+		[ContainerField(Name: "LightMapResolution", Offset: 64, NameHash: 2797852905, Flags: 49421), LayoutImmutable, Blittable]
 		public uint LightMapResolution { get; set; } // 0x40 (64)
 		
-		[ContainerField(68), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "TerrainMeshName", Offset: 68, NameHash: 1156977350, Flags: 16509), LayoutImmutable]
 		public string TerrainMeshName { get; set; } // 0x44 (68)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

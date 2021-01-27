@@ -18,22 +18,22 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(41), ContainerSize(80), ContainerStruct]
+	[ContainerType(Alignment: 16,  Flags: 41, Size: 80)]
 	public class AutoAimData : FrostbiteContainer
 	{
-		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
+		[ContainerField(Name: "AutoAimOuterBoxOffset", Offset: 0, NameHash: 139244878, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 AutoAimOuterBoxOffset { get; set; } = new Vec3(); // 0x0 (0)
 		
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
+		[ContainerField(Name: "AutoAimOuterBoxExtends", Offset: 16, NameHash: 1265999350, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 AutoAimOuterBoxExtends { get; set; } = new Vec3(); // 0x10 (16)
 		
-		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
+		[ContainerField(Name: "AutoAimInnerBoxOffset", Offset: 32, NameHash: 2561090505, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 AutoAimInnerBoxOffset { get; set; } = new Vec3(); // 0x20 (32)
 		
-		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
+		[ContainerField(Name: "AutoAimInnerBoxExtends", Offset: 48, NameHash: 301487121, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 AutoAimInnerBoxExtends { get; set; } = new Vec3(); // 0x30 (48)
 		
-		[ContainerField(64), MemberInfoFlag(137)]
+		[ContainerField(Name: "PoseType", Offset: 64, NameHash: 3415409588, Flags: 137)]
 		public CharacterPoseType PoseType { get; set; } = new CharacterPoseType(); // 0x40 (64)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

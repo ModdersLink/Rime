@@ -18,13 +18,13 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(20), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 20)]
 	public class DefaultSelectionItem : FrostbiteContainer
 	{
-		[ContainerField(0), MemberInfoFlag(41)]
+		[ContainerField(Name: "DefaultSelectionQuery", Offset: 0, NameHash: 3074304548, Flags: 41)]
 		public UIDataSourceInfo DefaultSelectionQuery { get; set; } = new UIDataSourceInfo(); // 0x0 (0)
 		
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49405)]
+		[ContainerField(Name: "DefaultSelectionIndex", Offset: 16, NameHash: 3046460336, Flags: 49405), LayoutImmutable, Blittable]
 		public int DefaultSelectionIndex { get; set; } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

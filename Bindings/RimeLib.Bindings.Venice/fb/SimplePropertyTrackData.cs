@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(20), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 20)]
 	public class SimplePropertyTrackData : 
 		PropertyTrackData
 	{
 		protected InterpolationType m_InterpolationType = new InterpolationType();
-		[ContainerField(16), MemberInfoFlag(137), ContainerFieldNameHash(1709219799)]
+		[ContainerField(Name: "InterpolationType", Offset: 16, NameHash: 1709219799, Flags: 137)]
 		public InterpolationType InterpolationType { get { return m_InterpolationType; } set { if (OnPropertyChanging("SimplePropertyTrackData." + nameof(InterpolationType), this, m_InterpolationType, value)) m_InterpolationType = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

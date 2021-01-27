@@ -18,13 +18,13 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(8), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 8)]
 	public class PoseTransitionTime : FrostbiteContainer
 	{
-		[ContainerField(0), MemberInfoFlag(137)]
+		[ContainerField(Name: "ToPose", Offset: 0, NameHash: 3237354551, Flags: 137)]
 		public CharacterPoseType ToPose { get; set; } = new CharacterPoseType(); // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "TransitionTime", Offset: 4, NameHash: 3976931807, Flags: 49469), LayoutImmutable, Blittable]
 		public float TransitionTime { get; set; } // 0x4 (4)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

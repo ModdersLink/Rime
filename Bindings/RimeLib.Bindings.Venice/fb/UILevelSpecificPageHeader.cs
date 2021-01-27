@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(12), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 12)]
 	public class UILevelSpecificPageHeader : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "LevelNameSID", Offset: 0, NameHash: 3852928010, Flags: 16509), LayoutImmutable]
 		public string LevelNameSID { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "Header", Offset: 4, NameHash: 3054345338, Flags: 16509), LayoutImmutable]
 		public string Header { get; set; } // 0x4 (4)
 		
-		[ContainerField(8), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "SubHeader", Offset: 8, NameHash: 1300890558, Flags: 16509), LayoutImmutable]
 		public string SubHeader { get; set; } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

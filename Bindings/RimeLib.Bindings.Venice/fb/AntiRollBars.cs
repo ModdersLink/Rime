@@ -18,13 +18,13 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(8), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 8)]
 	public class AntiRollBars : FrostbiteContainer
 	{
-		[ContainerField(0), MemberInfoFlag(53), ContainerCtrRef]
+		[ContainerField(Name: "Front", Offset: 0, NameHash: 207008228, Flags: 53)]
 		public CtrRef<AntiRollBar> Front { get; set; } = new CtrRef<AntiRollBar>(); // 0x0 (0)
 		
-		[ContainerField(4), MemberInfoFlag(53), ContainerCtrRef]
+		[ContainerField(Name: "Rear", Offset: 4, NameHash: 2089376897, Flags: 53)]
 		public CtrRef<AntiRollBar> Rear { get; set; } = new CtrRef<AntiRollBar>(); // 0x4 (4)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

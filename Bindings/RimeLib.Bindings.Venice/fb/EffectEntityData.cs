@@ -18,40 +18,40 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(112), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 112)]
 	public class EffectEntityData : 
 		SpatialEntityData
 	{
 		protected RefArray<GameObjectData> m_Components = new RefArray<GameObjectData>();
-		[ContainerField(80), MemberInfoFlag(65), ContainerFieldNameHash(3391050425), ContainerRefArray]
+		[ContainerField(Name: "Components", Offset: 80, NameHash: 3391050425, Flags: 65)]
 		public RefArray<GameObjectData> Components { get { return m_Components; } set { if (OnPropertyChanging("EffectEntityData." + nameof(Components), this, m_Components, value)) m_Components = value; } } // 0x50 (80)
 		
 		protected uint m_MaxInstanceCount = new uint();
-		[ContainerField(84), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(3587631771)]
+		[ContainerField(Name: "MaxInstanceCount", Offset: 84, NameHash: 3587631771, Flags: 49421), LayoutImmutable, Blittable]
 		public uint MaxInstanceCount { get { return m_MaxInstanceCount; } set { if (OnPropertyChanging("EffectEntityData." + nameof(MaxInstanceCount), this, m_MaxInstanceCount, value)) m_MaxInstanceCount = value; } } // 0x54 (84)
 		
 		protected float m_CullDistance = new float();
-		[ContainerField(88), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1000432400)]
+		[ContainerField(Name: "CullDistance", Offset: 88, NameHash: 1000432400, Flags: 49469), LayoutImmutable, Blittable]
 		public float CullDistance { get { return m_CullDistance; } set { if (OnPropertyChanging("EffectEntityData." + nameof(CullDistance), this, m_CullDistance, value)) m_CullDistance = value; } } // 0x58 (88)
 		
 		protected float m_StartDelay = new float();
-		[ContainerField(92), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2731915920)]
+		[ContainerField(Name: "StartDelay", Offset: 92, NameHash: 2731915920, Flags: 49469), LayoutImmutable, Blittable]
 		public float StartDelay { get { return m_StartDelay; } set { if (OnPropertyChanging("EffectEntityData." + nameof(StartDelay), this, m_StartDelay, value)) m_StartDelay = value; } } // 0x5C (92)
 		
 		protected bool m_HighEndPc = new bool();
-		[ContainerField(96), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(47851991)]
+		[ContainerField(Name: "HighEndPc", Offset: 96, NameHash: 47851991, Flags: 49325), LayoutImmutable, Blittable]
 		public bool HighEndPc { get { return m_HighEndPc; } set { if (OnPropertyChanging("EffectEntityData." + nameof(HighEndPc), this, m_HighEndPc, value)) m_HighEndPc = value; } } // 0x60 (96)
 		
 		protected bool m_MediumPc = new bool();
-		[ContainerField(97), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(773886027)]
+		[ContainerField(Name: "MediumPc", Offset: 97, NameHash: 773886027, Flags: 49325), LayoutImmutable, Blittable]
 		public bool MediumPc { get { return m_MediumPc; } set { if (OnPropertyChanging("EffectEntityData." + nameof(MediumPc), this, m_MediumPc, value)) m_MediumPc = value; } } // 0x61 (97)
 		
 		protected bool m_LowEndPc = new bool();
-		[ContainerField(98), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2485938765)]
+		[ContainerField(Name: "LowEndPc", Offset: 98, NameHash: 2485938765, Flags: 49325), LayoutImmutable, Blittable]
 		public bool LowEndPc { get { return m_LowEndPc; } set { if (OnPropertyChanging("EffectEntityData." + nameof(LowEndPc), this, m_LowEndPc, value)) m_LowEndPc = value; } } // 0x62 (98)
 		
 		protected bool m_ResetInstanceWhenStarted = new bool();
-		[ContainerField(99), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1039558380)]
+		[ContainerField(Name: "ResetInstanceWhenStarted", Offset: 99, NameHash: 1039558380, Flags: 49325), LayoutImmutable, Blittable]
 		public bool ResetInstanceWhenStarted { get { return m_ResetInstanceWhenStarted; } set { if (OnPropertyChanging("EffectEntityData." + nameof(ResetInstanceWhenStarted), this, m_ResetInstanceWhenStarted, value)) m_ResetInstanceWhenStarted = value; } } // 0x63 (99)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

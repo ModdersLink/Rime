@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(28), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 28)]
 	public class EntitlementData : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "License", Offset: 0, NameHash: 979513438, Flags: 16509), LayoutImmutable]
 		public string License { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "EntitlementTag", Offset: 4, NameHash: 1654763342, Flags: 16509), LayoutImmutable]
 		public string EntitlementTag { get; set; } // 0x4 (4)
 		
-		[ContainerField(8), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "GroupName", Offset: 8, NameHash: 3178263901, Flags: 16509), LayoutImmutable]
 		public string GroupName { get; set; } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "ProductId", Offset: 12, NameHash: 106414083, Flags: 16509), LayoutImmutable]
 		public string ProductId { get; set; } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "ProjectId", Offset: 16, NameHash: 4152360413, Flags: 16509), LayoutImmutable]
 		public string ProjectId { get; set; } // 0x10 (16)
 		
-		[ContainerField(20), MemberInfoFlag(137)]
+		[ContainerField(Name: "UsageType", Offset: 20, NameHash: 161626008, Flags: 137)]
 		public EntitlementType UsageType { get; set; } = new EntitlementType(); // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "VerifyOwnership", Offset: 24, NameHash: 4151436721, Flags: 49325), LayoutImmutable, Blittable]
 		public bool VerifyOwnership { get; set; } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

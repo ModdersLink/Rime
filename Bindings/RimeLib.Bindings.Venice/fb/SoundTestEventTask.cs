@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(20), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 20)]
 	public class SoundTestEventTask : 
 		SoundTestTaskSpec
 	{
 		protected string m_EventName = string.Empty;
-		[ContainerField(16), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(4132530094)]
+		[ContainerField(Name: "EventName", Offset: 16, NameHash: 4132530094, Flags: 16509), LayoutImmutable]
 		public string EventName { get { return m_EventName; } set { if (OnPropertyChanging("SoundTestEventTask." + nameof(EventName), this, m_EventName, value)) m_EventName = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

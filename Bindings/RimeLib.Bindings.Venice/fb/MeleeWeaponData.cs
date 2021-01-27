@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(20), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 20)]
 	public class MeleeWeaponData : 
 		WeaponData
 	{
 		protected bool m_UseCannedAnimation = new bool();
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1105762899)]
+		[ContainerField(Name: "UseCannedAnimation", Offset: 16, NameHash: 1105762899, Flags: 49325), LayoutImmutable, Blittable]
 		public bool UseCannedAnimation { get { return m_UseCannedAnimation; } set { if (OnPropertyChanging("MeleeWeaponData." + nameof(UseCannedAnimation), this, m_UseCannedAnimation, value)) m_UseCannedAnimation = value; } } // 0x10 (16)
 		
 		protected bool m_UseSphereDamage = new bool();
-		[ContainerField(17), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1535336436)]
+		[ContainerField(Name: "UseSphereDamage", Offset: 17, NameHash: 1535336436, Flags: 49325), LayoutImmutable, Blittable]
 		public bool UseSphereDamage { get { return m_UseSphereDamage; } set { if (OnPropertyChanging("MeleeWeaponData." + nameof(UseSphereDamage), this, m_UseSphereDamage, value)) m_UseSphereDamage = value; } } // 0x11 (17)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

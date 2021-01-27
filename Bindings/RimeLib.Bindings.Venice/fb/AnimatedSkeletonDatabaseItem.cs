@@ -18,31 +18,31 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(32), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 32)]
 	public class AnimatedSkeletonDatabaseItem : FrostbiteContainer
 	{
-		[ContainerField(0), MemberInfoFlag(53), ContainerCtrRef]
+		[ContainerField(Name: "Asset", Offset: 0, NameHash: 205976053, Flags: 53)]
 		public CtrRef<SkeletonAsset> Asset { get; set; } = new CtrRef<SkeletonAsset>(); // 0x0 (0)
 		
-		[ContainerField(4), MemberInfoFlag(65), ContainerArray]
+		[ContainerField(Name: "Names", Offset: 4, NameHash: 215869617, Flags: 65)]
 		public List<int> Names { get; set; } = new List<int>(); // 0x4 (4)
 		
-		[ContainerField(8), MemberInfoFlag(53), ContainerCtrRef]
+		[ContainerField(Name: "SoldierCollision", Offset: 8, NameHash: 3880482801, Flags: 53)]
 		public CtrRef<SkeletonCollisionData> SoldierCollision { get; set; } = new CtrRef<SkeletonCollisionData>(); // 0x8 (8)
 		
-		[ContainerField(12), MemberInfoFlag(53), ContainerCtrRef]
+		[ContainerField(Name: "RagdollCollision", Offset: 12, NameHash: 1384663972, Flags: 53)]
 		public CtrRef<SkeletonCollisionData> RagdollCollision { get; set; } = new CtrRef<SkeletonCollisionData>(); // 0xC (12)
 		
-		[ContainerField(16), MemberInfoFlag(53), ContainerCtrRef]
+		[ContainerField(Name: "Ragdoll", Offset: 16, NameHash: 1473995034, Flags: 53)]
 		public CtrRef<RagdollAsset> Ragdoll { get; set; } = new CtrRef<RagdollAsset>(); // 0x10 (16)
 		
-		[ContainerField(20), MemberInfoFlag(65), ContainerArray]
+		[ContainerField(Name: "SpecialBones", Offset: 20, NameHash: 872557553, Flags: 65)]
 		public List<string> SpecialBones { get; set; } = new List<string>(); // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "HipBone", Offset: 24, NameHash: 1871690802, Flags: 16509), LayoutImmutable]
 		public string HipBone { get; set; } // 0x18 (24)
 		
-		[ContainerField(28), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "HeadBone", Offset: 28, NameHash: 1878748843, Flags: 16509), LayoutImmutable]
 		public string HeadBone { get; set; } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

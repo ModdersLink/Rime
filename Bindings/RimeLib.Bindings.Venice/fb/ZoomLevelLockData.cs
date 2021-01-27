@@ -18,13 +18,13 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(8), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 8)]
 	public class ZoomLevelLockData : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "OutlineTaggedDistance", Offset: 0, NameHash: 2697603954, Flags: 49469), LayoutImmutable, Blittable]
 		public float OutlineTaggedDistance { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), MemberInfoFlag(137)]
+		[ContainerField(Name: "LockType", Offset: 4, NameHash: 1982079030, Flags: 137)]
 		public LockType LockType { get; set; } = new LockType(); // 0x4 (4)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

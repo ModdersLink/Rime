@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(128), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 128)]
 	public class ShaderParamsComponentData : 
 		ComponentData
 	{
 		protected Vec4 m_Value = new Vec4();
-		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(225375086)]
+		[ContainerField(Name: "Value", Offset: 96, NameHash: 225375086, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec4 Value { get { return m_Value; } set { if (OnPropertyChanging("ShaderParamsComponentData." + nameof(Value), this, m_Value, value)) m_Value = value; } } // 0x60 (96)
 		
 		protected string m_ParameterName = string.Empty;
-		[ContainerField(112), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(1568946859)]
+		[ContainerField(Name: "ParameterName", Offset: 112, NameHash: 1568946859, Flags: 16509), LayoutImmutable]
 		public string ParameterName { get { return m_ParameterName; } set { if (OnPropertyChanging("ShaderParamsComponentData." + nameof(ParameterName), this, m_ParameterName, value)) m_ParameterName = value; } } // 0x70 (112)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(16), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
 	public class MenuIdAsset : 
 		Asset
 	{
 		protected string m_ShortName = string.Empty;
-		[ContainerField(12), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(1803010032)]
+		[ContainerField(Name: "ShortName", Offset: 12, NameHash: 1803010032, Flags: 16509), LayoutImmutable]
 		public string ShortName { get { return m_ShortName; } set { if (OnPropertyChanging("MenuIdAsset." + nameof(ShortName), this, m_ShortName, value)) m_ShortName = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

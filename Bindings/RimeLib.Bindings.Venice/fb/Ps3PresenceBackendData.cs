@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(32), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 32)]
 	public class Ps3PresenceBackendData : 
 		PresenceBackendData
 	{
 		protected string m_CommunicationId = string.Empty;
-		[ContainerField(16), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(1462563432)]
+		[ContainerField(Name: "CommunicationId", Offset: 16, NameHash: 1462563432, Flags: 16509), LayoutImmutable]
 		public string CommunicationId { get { return m_CommunicationId; } set { if (OnPropertyChanging("Ps3PresenceBackendData." + nameof(CommunicationId), this, m_CommunicationId, value)) m_CommunicationId = value; } } // 0x10 (16)
 		
 		protected string m_CommunicationSignature = string.Empty;
-		[ContainerField(20), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(2337208161)]
+		[ContainerField(Name: "CommunicationSignature", Offset: 20, NameHash: 2337208161, Flags: 16509), LayoutImmutable]
 		public string CommunicationSignature { get { return m_CommunicationSignature; } set { if (OnPropertyChanging("Ps3PresenceBackendData." + nameof(CommunicationSignature), this, m_CommunicationSignature, value)) m_CommunicationSignature = value; } } // 0x14 (20)
 		
 		protected List<Ps3SkuSettings> m_SkuSettings = new List<Ps3SkuSettings>();
-		[ContainerField(24), MemberInfoFlag(65), ContainerFieldNameHash(1395605389), ContainerArray]
+		[ContainerField(Name: "SkuSettings", Offset: 24, NameHash: 1395605389, Flags: 65)]
 		public List<Ps3SkuSettings> SkuSettings { get { return m_SkuSettings; } set { if (OnPropertyChanging("Ps3PresenceBackendData." + nameof(SkuSettings), this, m_SkuSettings, value)) m_SkuSettings = value; } } // 0x18 (24)
 		
 		protected List<Ps3ParentalLockAgeSettings> m_ParentalLockAgeSettings = new List<Ps3ParentalLockAgeSettings>();
-		[ContainerField(28), MemberInfoFlag(65), ContainerFieldNameHash(786148441), ContainerArray]
+		[ContainerField(Name: "ParentalLockAgeSettings", Offset: 28, NameHash: 786148441, Flags: 65)]
 		public List<Ps3ParentalLockAgeSettings> ParentalLockAgeSettings { get { return m_ParentalLockAgeSettings; } set { if (OnPropertyChanging("Ps3PresenceBackendData." + nameof(ParentalLockAgeSettings), this, m_ParentalLockAgeSettings, value)) m_ParentalLockAgeSettings = value; } } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

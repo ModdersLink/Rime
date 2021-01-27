@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(20), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 20)]
 	public class LogicVisualEnvironmentEntityData : 
 		EntityData
 	{
 		protected CtrRef<VisualEnvironmentBlueprint> m_VisualEnvironment = new CtrRef<VisualEnvironmentBlueprint>();
-		[ContainerField(12), MemberInfoFlag(53), ContainerFieldNameHash(1724714788), ContainerCtrRef]
+		[ContainerField(Name: "VisualEnvironment", Offset: 12, NameHash: 1724714788, Flags: 53)]
 		public CtrRef<VisualEnvironmentBlueprint> VisualEnvironment { get { return m_VisualEnvironment; } set { if (OnPropertyChanging("LogicVisualEnvironmentEntityData." + nameof(VisualEnvironment), this, m_VisualEnvironment, value)) m_VisualEnvironment = value; } } // 0xC (12)
 		
 		protected float m_Visibility = new float();
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1708270083)]
+		[ContainerField(Name: "Visibility", Offset: 16, NameHash: 1708270083, Flags: 49469), LayoutImmutable, Blittable]
 		public float Visibility { get { return m_Visibility; } set { if (OnPropertyChanging("LogicVisualEnvironmentEntityData." + nameof(Visibility), this, m_Visibility, value)) m_Visibility = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

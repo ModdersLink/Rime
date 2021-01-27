@@ -18,10 +18,10 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(4), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 4)]
 	public class VoiceOverDialogTake : FrostbiteContainer
 	{
-		[ContainerField(0), MemberInfoFlag(53), ContainerCtrRef]
+		[ContainerField(Name: "Wave", Offset: 0, NameHash: 2089277184, Flags: 53)]
 		public CtrRef<SoundWaveAsset> Wave { get; set; } = new CtrRef<SoundWaveAsset>(); // 0x0 (0)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

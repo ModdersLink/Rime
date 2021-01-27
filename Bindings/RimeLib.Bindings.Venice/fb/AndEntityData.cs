@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(20), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 20)]
 	public class AndEntityData : 
 		EntityData
 	{
 		protected Realm m_Realm = new Realm();
-		[ContainerField(12), MemberInfoFlag(137), ContainerFieldNameHash(229961746)]
+		[ContainerField(Name: "Realm", Offset: 12, NameHash: 229961746, Flags: 137)]
 		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("AndEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0xC (12)
 		
 		protected bool m_In1 = new bool();
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(193450867)]
+		[ContainerField(Name: "In1", Offset: 16, NameHash: 193450867, Flags: 49325), LayoutImmutable, Blittable]
 		public bool In1 { get { return m_In1; } set { if (OnPropertyChanging("AndEntityData." + nameof(In1), this, m_In1, value)) m_In1 = value; } } // 0x10 (16)
 		
 		protected bool m_In2 = new bool();
-		[ContainerField(17), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(193450864)]
+		[ContainerField(Name: "In2", Offset: 17, NameHash: 193450864, Flags: 49325), LayoutImmutable, Blittable]
 		public bool In2 { get { return m_In2; } set { if (OnPropertyChanging("AndEntityData." + nameof(In2), this, m_In2, value)) m_In2 = value; } } // 0x11 (17)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

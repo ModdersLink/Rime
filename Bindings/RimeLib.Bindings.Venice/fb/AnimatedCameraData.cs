@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(96), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 96)]
 	public class AnimatedCameraData : 
 		CameraData
 	{
 		protected CtrRef<SkeletonAsset> m_Skeleton = new CtrRef<SkeletonAsset>();
-		[ContainerField(80), MemberInfoFlag(53), ContainerFieldNameHash(291024164), ContainerCtrRef]
+		[ContainerField(Name: "Skeleton", Offset: 80, NameHash: 291024164, Flags: 53)]
 		public CtrRef<SkeletonAsset> Skeleton { get { return m_Skeleton; } set { if (OnPropertyChanging("AnimatedCameraData." + nameof(Skeleton), this, m_Skeleton, value)) m_Skeleton = value; } } // 0x50 (80)
 		
 		protected string m_CameraBone = string.Empty;
-		[ContainerField(84), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(3220426650)]
+		[ContainerField(Name: "CameraBone", Offset: 84, NameHash: 3220426650, Flags: 16509), LayoutImmutable]
 		public string CameraBone { get { return m_CameraBone; } set { if (OnPropertyChanging("AnimatedCameraData." + nameof(CameraBone), this, m_CameraBone, value)) m_CameraBone = value; } } // 0x54 (84)
 		
 		protected string m_FovBone = string.Empty;
-		[ContainerField(88), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(1981125884)]
+		[ContainerField(Name: "FovBone", Offset: 88, NameHash: 1981125884, Flags: 16509), LayoutImmutable]
 		public string FovBone { get { return m_FovBone; } set { if (OnPropertyChanging("AnimatedCameraData." + nameof(FovBone), this, m_FovBone, value)) m_FovBone = value; } } // 0x58 (88)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

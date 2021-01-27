@@ -18,199 +18,199 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(256), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 256)]
 	public class AnimatedWeaponBinding : FrostbiteContainer
 	{
-		[ContainerField(0), MemberInfoFlag(41)]
+		[ContainerField(Name: "Deploy", Offset: 0, NameHash: 2594816654, Flags: 41)]
 		public AntRef Deploy { get; set; } = new AntRef(); // 0x0 (0)
 		
-		[ContainerField(4), MemberInfoFlag(41)]
+		[ContainerField(Name: "AltDeploy", Offset: 4, NameHash: 4198039607, Flags: 41)]
 		public AntRef AltDeploy { get; set; } = new AntRef(); // 0x4 (4)
 		
-		[ContainerField(8), MemberInfoFlag(41)]
+		[ContainerField(Name: "Undeploy", Offset: 8, NameHash: 2955773173, Flags: 41)]
 		public AntRef Undeploy { get; set; } = new AntRef(); // 0x8 (8)
 		
-		[ContainerField(12), MemberInfoFlag(41)]
+		[ContainerField(Name: "QuickSwitch", Offset: 12, NameHash: 1768907058, Flags: 41)]
 		public AntRef QuickSwitch { get; set; } = new AntRef(); // 0xC (12)
 		
-		[ContainerField(16), MemberInfoFlag(41)]
+		[ContainerField(Name: "Reload", Offset: 16, NameHash: 3294210644, Flags: 41)]
 		public AntRef Reload { get; set; } = new AntRef(); // 0x10 (16)
 		
-		[ContainerField(20), MemberInfoFlag(41)]
+		[ContainerField(Name: "ReloadShotgun", Offset: 20, NameHash: 2265667496, Flags: 41)]
 		public AntRef ReloadShotgun { get; set; } = new AntRef(); // 0x14 (20)
 		
-		[ContainerField(24), MemberInfoFlag(41)]
+		[ContainerField(Name: "Fire", Offset: 24, NameHash: 2088671869, Flags: 41)]
 		public AntRef Fire { get; set; } = new AntRef(); // 0x18 (24)
 		
-		[ContainerField(28), MemberInfoFlag(41)]
+		[ContainerField(Name: "FireSingle", Offset: 28, NameHash: 4198505383, Flags: 41)]
 		public AntRef FireSingle { get; set; } = new AntRef(); // 0x1C (28)
 		
-		[ContainerField(32), MemberInfoFlag(41)]
+		[ContainerField(Name: "FireHoldAndRelease", Offset: 32, NameHash: 584417488, Flags: 41)]
 		public AntRef FireHoldAndRelease { get; set; } = new AntRef(); // 0x20 (32)
 		
-		[ContainerField(36), MemberInfoFlag(41)]
+		[ContainerField(Name: "FireSimple", Offset: 36, NameHash: 4198485907, Flags: 41)]
 		public AntRef FireSimple { get; set; } = new AntRef(); // 0x24 (36)
 		
-		[ContainerField(40), MemberInfoFlag(41)]
+		[ContainerField(Name: "FirstShotSpawned", Offset: 40, NameHash: 2531638821, Flags: 41)]
 		public AntRef FirstShotSpawned { get; set; } = new AntRef(); // 0x28 (40)
 		
-		[ContainerField(44), MemberInfoFlag(41)]
+		[ContainerField(Name: "BoltAction", Offset: 44, NameHash: 2541973070, Flags: 41)]
 		public AntRef BoltAction { get; set; } = new AntRef(); // 0x2C (44)
 		
-		[ContainerField(48), MemberInfoFlag(41)]
+		[ContainerField(Name: "PumpAction", Offset: 48, NameHash: 3655647587, Flags: 41)]
 		public AntRef PumpAction { get; set; } = new AntRef(); // 0x30 (48)
 		
-		[ContainerField(52), MemberInfoFlag(41)]
+		[ContainerField(Name: "MeleeAttack", Offset: 52, NameHash: 834934665, Flags: 41)]
 		public AntRef MeleeAttack { get; set; } = new AntRef(); // 0x34 (52)
 		
-		[ContainerField(56), MemberInfoFlag(41)]
+		[ContainerField(Name: "QuickThrow", Offset: 56, NameHash: 704108118, Flags: 41)]
 		public AntRef QuickThrow { get; set; } = new AntRef(); // 0x38 (56)
 		
-		[ContainerField(60), MemberInfoFlag(41)]
+		[ContainerField(Name: "QuickThrowType", Offset: 60, NameHash: 1948331758, Flags: 41)]
 		public AntRef QuickThrowType { get; set; } = new AntRef(); // 0x3C (60)
 		
-		[ContainerField(64), MemberInfoFlag(41)]
+		[ContainerField(Name: "AimBody", Offset: 64, NameHash: 731461168, Flags: 41)]
 		public AntRef AimBody { get; set; } = new AntRef(); // 0x40 (64)
 		
-		[ContainerField(68), MemberInfoFlag(41)]
+		[ContainerField(Name: "AlwaysAimHead", Offset: 68, NameHash: 3649734905, Flags: 41)]
 		public AntRef AlwaysAimHead { get; set; } = new AntRef(); // 0x44 (68)
 		
-		[ContainerField(72), MemberInfoFlag(41)]
+		[ContainerField(Name: "OneHanded", Offset: 72, NameHash: 1335628643, Flags: 41)]
 		public AntRef OneHanded { get; set; } = new AntRef(); // 0x48 (72)
 		
-		[ContainerField(76), MemberInfoFlag(41)]
+		[ContainerField(Name: "OneHandedAiming", Offset: 76, NameHash: 1389814790, Flags: 41)]
 		public AntRef OneHandedAiming { get; set; } = new AntRef(); // 0x4C (76)
 		
-		[ContainerField(80), MemberInfoFlag(41)]
+		[ContainerField(Name: "AimingEnabled", Offset: 80, NameHash: 2456366725, Flags: 41)]
 		public AntRef AimingEnabled { get; set; } = new AntRef(); // 0x50 (80)
 		
-		[ContainerField(84), MemberInfoFlag(41)]
+		[ContainerField(Name: "LowerGun", Offset: 84, NameHash: 2449527962, Flags: 41)]
 		public AntRef LowerGun { get; set; } = new AntRef(); // 0x54 (84)
 		
-		[ContainerField(88), MemberInfoFlag(41)]
+		[ContainerField(Name: "BreathControl", Offset: 88, NameHash: 2325792682, Flags: 41)]
 		public AntRef BreathControl { get; set; } = new AntRef(); // 0x58 (88)
 		
-		[ContainerField(92), MemberInfoFlag(41)]
+		[ContainerField(Name: "RflType", Offset: 92, NameHash: 1370206533, Flags: 41)]
 		public AntRef RflType { get; set; } = new AntRef(); // 0x5C (92)
 		
-		[ContainerField(96), MemberInfoFlag(41)]
+		[ContainerField(Name: "PstlType", Offset: 96, NameHash: 433138886, Flags: 41)]
 		public AntRef PstlType { get; set; } = new AntRef(); // 0x60 (96)
 		
-		[ContainerField(100), MemberInfoFlag(41)]
+		[ContainerField(Name: "HgrType", Offset: 100, NameHash: 2250832352, Flags: 41)]
 		public AntRef HgrType { get; set; } = new AntRef(); // 0x64 (100)
 		
-		[ContainerField(104), MemberInfoFlag(41)]
+		[ContainerField(Name: "ATType", Offset: 104, NameHash: 2537709960, Flags: 41)]
 		public AntRef ATType { get; set; } = new AntRef(); // 0x68 (104)
 		
-		[ContainerField(108), MemberInfoFlag(41)]
+		[ContainerField(Name: "ShgType", Offset: 108, NameHash: 3267688577, Flags: 41)]
 		public AntRef ShgType { get; set; } = new AntRef(); // 0x6C (108)
 		
-		[ContainerField(112), MemberInfoFlag(41)]
+		[ContainerField(Name: "LMGType", Offset: 112, NameHash: 4213783803, Flags: 41)]
 		public AntRef LMGType { get; set; } = new AntRef(); // 0x70 (112)
 		
-		[ContainerField(116), MemberInfoFlag(41)]
+		[ContainerField(Name: "BagType", Offset: 116, NameHash: 2287261561, Flags: 41)]
 		public AntRef BagType { get; set; } = new AntRef(); // 0x74 (116)
 		
-		[ContainerField(120), MemberInfoFlag(41)]
+		[ContainerField(Name: "SnpType", Offset: 120, NameHash: 2869149456, Flags: 41)]
 		public AntRef SnpType { get; set; } = new AntRef(); // 0x78 (120)
 		
-		[ContainerField(124), MemberInfoFlag(41)]
+		[ContainerField(Name: "Zoom", Offset: 124, NameHash: 2089658322, Flags: 41)]
 		public AntRef Zoom { get; set; } = new AntRef(); // 0x7C (124)
 		
-		[ContainerField(128), MemberInfoFlag(41)]
+		[ContainerField(Name: "AimBodyWeight", Offset: 128, NameHash: 1871842320, Flags: 41)]
 		public AntRef AimBodyWeight { get; set; } = new AntRef(); // 0x80 (128)
 		
-		[ContainerField(132), MemberInfoFlag(41)]
+		[ContainerField(Name: "DisableZoomToggleWeight", Offset: 132, NameHash: 830962388, Flags: 41)]
 		public AntRef DisableZoomToggleWeight { get; set; } = new AntRef(); // 0x84 (132)
 		
-		[ContainerField(136), MemberInfoFlag(41)]
+		[ContainerField(Name: "ZoomParameter", Offset: 136, NameHash: 3375444059, Flags: 41)]
 		public AntRef ZoomParameter { get; set; } = new AntRef(); // 0x88 (136)
 		
-		[ContainerField(140), MemberInfoFlag(41)]
+		[ContainerField(Name: "ZoomScaleFactor", Offset: 140, NameHash: 840793031, Flags: 41)]
 		public AntRef ZoomScaleFactor { get; set; } = new AntRef(); // 0x8C (140)
 		
-		[ContainerField(144), MemberInfoFlag(41)]
+		[ContainerField(Name: "Dispersion", Offset: 144, NameHash: 1858542823, Flags: 41)]
 		public AntRef Dispersion { get; set; } = new AntRef(); // 0x90 (144)
 		
-		[ContainerField(148), MemberInfoFlag(41)]
+		[ContainerField(Name: "AimTargetPosBody", Offset: 148, NameHash: 1779857261, Flags: 41)]
 		public AntRef AimTargetPosBody { get; set; } = new AntRef(); // 0x94 (148)
 		
-		[ContainerField(152), MemberInfoFlag(41)]
+		[ContainerField(Name: "ZoomOutSpeed", Offset: 152, NameHash: 2275851931, Flags: 41)]
 		public AntRef ZoomOutSpeed { get; set; } = new AntRef(); // 0x98 (152)
 		
-		[ContainerField(156), MemberInfoFlag(41)]
+		[ContainerField(Name: "ZoomInSpeed", Offset: 156, NameHash: 638313682, Flags: 41)]
 		public AntRef ZoomInSpeed { get; set; } = new AntRef(); // 0x9C (156)
 		
-		[ContainerField(160), MemberInfoFlag(41)]
+		[ContainerField(Name: "UnDeploySpeed", Offset: 160, NameHash: 3170443666, Flags: 41)]
 		public AntRef UnDeploySpeed { get; set; } = new AntRef(); // 0xA0 (160)
 		
-		[ContainerField(164), MemberInfoFlag(41)]
+		[ContainerField(Name: "DeploySpeed", Offset: 164, NameHash: 2095054953, Flags: 41)]
 		public AntRef DeploySpeed { get; set; } = new AntRef(); // 0xA4 (164)
 		
-		[ContainerField(168), MemberInfoFlag(41)]
+		[ContainerField(Name: "LightEnabled", Offset: 168, NameHash: 1653920350, Flags: 41)]
 		public AntRef LightEnabled { get; set; } = new AntRef(); // 0xA8 (168)
 		
-		[ContainerField(172), MemberInfoFlag(41)]
+		[ContainerField(Name: "FireModeChanged", Offset: 172, NameHash: 3115352604, Flags: 41)]
 		public AntRef FireModeChanged { get; set; } = new AntRef(); // 0xAC (172)
 		
-		[ContainerField(176), MemberInfoFlag(41)]
+		[ContainerField(Name: "AnimType", Offset: 176, NameHash: 1018050646, Flags: 41)]
 		public AntRef AnimType { get; set; } = new AntRef(); // 0xB0 (176)
 		
-		[ContainerField(180), MemberInfoFlag(41)]
+		[ContainerField(Name: "GunDown", Offset: 180, NameHash: 3645314635, Flags: 41)]
 		public AntRef GunDown { get; set; } = new AntRef(); // 0xB4 (180)
 		
-		[ContainerField(184), MemberInfoFlag(41)]
+		[ContainerField(Name: "NumberOfBulletsLeftInGun", Offset: 184, NameHash: 3212631994, Flags: 41)]
 		public AntRef NumberOfBulletsLeftInGun { get; set; } = new AntRef(); // 0xB8 (184)
 		
-		[ContainerField(188), MemberInfoFlag(41)]
+		[ContainerField(Name: "BulletsLeftInGun", Offset: 188, NameHash: 1743038736, Flags: 41)]
 		public AntRef BulletsLeftInGun { get; set; } = new AntRef(); // 0xBC (188)
 		
-		[ContainerField(192), MemberInfoFlag(41)]
+		[ContainerField(Name: "AbortVehicleDeploy", Offset: 192, NameHash: 598085148, Flags: 41)]
 		public AntRef AbortVehicleDeploy { get; set; } = new AntRef(); // 0xC0 (192)
 		
-		[ContainerField(196), MemberInfoFlag(41)]
+		[ContainerField(Name: "CurrentProjectileIndex", Offset: 196, NameHash: 4293122215, Flags: 41)]
 		public AntRef CurrentProjectileIndex { get; set; } = new AntRef(); // 0xC4 (196)
 		
-		[ContainerField(200), MemberInfoFlag(41)]
+		[ContainerField(Name: "WeaponActionESIG", Offset: 200, NameHash: 724796257, Flags: 41)]
 		public AntRef WeaponActionESIG { get; set; } = new AntRef(); // 0xC8 (200)
 		
-		[ContainerField(204), MemberInfoFlag(41)]
+		[ContainerField(Name: "IsSprinting", Offset: 204, NameHash: 1831681117, Flags: 41)]
 		public AntRef IsSprinting { get; set; } = new AntRef(); // 0xCC (204)
 		
-		[ContainerField(208), MemberInfoFlag(41)]
+		[ContainerField(Name: "PreparingToBash", Offset: 208, NameHash: 3540902146, Flags: 41)]
 		public AntRef PreparingToBash { get; set; } = new AntRef(); // 0xD0 (208)
 		
-		[ContainerField(212), MemberInfoFlag(41)]
+		[ContainerField(Name: "JustStartedSprinting", Offset: 212, NameHash: 2041640638, Flags: 41)]
 		public AntRef JustStartedSprinting { get; set; } = new AntRef(); // 0xD4 (212)
 		
-		[ContainerField(216), MemberInfoFlag(41)]
+		[ContainerField(Name: "KickBackInIronSight", Offset: 216, NameHash: 2275349528, Flags: 41)]
 		public AntRef KickBackInIronSight { get; set; } = new AntRef(); // 0xD8 (216)
 		
-		[ContainerField(220), MemberInfoFlag(41)]
+		[ContainerField(Name: "ZoomingTime", Offset: 220, NameHash: 858178599, Flags: 41)]
 		public AntRef ZoomingTime { get; set; } = new AntRef(); // 0xDC (220)
 		
-		[ContainerField(224), MemberInfoFlag(41)]
+		[ContainerField(Name: "TriggerZoomGunTwitch", Offset: 224, NameHash: 1979410083, Flags: 41)]
 		public AntRef TriggerZoomGunTwitch { get; set; } = new AntRef(); // 0xE0 (224)
 		
-		[ContainerField(228), MemberInfoFlag(41)]
+		[ContainerField(Name: "WeaponChooserSignal", Offset: 228, NameHash: 2927778678, Flags: 41)]
 		public AntRef WeaponChooserSignal { get; set; } = new AntRef(); // 0xE4 (228)
 		
-		[ContainerField(232), MemberInfoFlag(41)]
+		[ContainerField(Name: "WeaponClassSignal", Offset: 232, NameHash: 1218349463, Flags: 41)]
 		public AntRef WeaponClassSignal { get; set; } = new AntRef(); // 0xE8 (232)
 		
-		[ContainerField(236), MemberInfoFlag(41)]
+		[ContainerField(Name: "OffsetX", Offset: 236, NameHash: 267273584, Flags: 41)]
 		public AntRef OffsetX { get; set; } = new AntRef(); // 0xEC (236)
 		
-		[ContainerField(240), MemberInfoFlag(41)]
+		[ContainerField(Name: "OffsetY", Offset: 240, NameHash: 267273585, Flags: 41)]
 		public AntRef OffsetY { get; set; } = new AntRef(); // 0xF0 (240)
 		
-		[ContainerField(244), MemberInfoFlag(41)]
+		[ContainerField(Name: "OffsetZ", Offset: 244, NameHash: 267273586, Flags: 41)]
 		public AntRef OffsetZ { get; set; } = new AntRef(); // 0xF4 (244)
 		
-		[ContainerField(248), MemberInfoFlag(41)]
+		[ContainerField(Name: "AIAllowFire", Offset: 248, NameHash: 1490975884, Flags: 41)]
 		public AntRef AIAllowFire { get; set; } = new AntRef(); // 0xF8 (248)
 		
-		[ContainerField(252), MemberInfoFlag(41)]
+		[ContainerField(Name: "AIAltFireFromAnt", Offset: 252, NameHash: 2700636449, Flags: 41)]
 		public AntRef AIAltFireFromAnt { get; set; } = new AntRef(); // 0xFC (252)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

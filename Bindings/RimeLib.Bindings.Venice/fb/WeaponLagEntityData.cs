@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(32), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 32)]
 	public class WeaponLagEntityData : 
 		EntityData
 	{
 		protected WeaponLagBinding m_Binding = new WeaponLagBinding();
-		[ContainerField(12), MemberInfoFlag(41), ContainerFieldNameHash(2590060228)]
+		[ContainerField(Name: "Binding", Offset: 12, NameHash: 2590060228, Flags: 41)]
 		public WeaponLagBinding Binding { get { return m_Binding; } set { if (OnPropertyChanging("WeaponLagEntityData." + nameof(Binding), this, m_Binding, value)) m_Binding = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

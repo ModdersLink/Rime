@@ -18,22 +18,22 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(20), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 20)]
 	public class GunSwayLagData : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "MoveStrafeModifier", Offset: 0, NameHash: 3886718324, Flags: 49469), LayoutImmutable, Blittable]
 		public float MoveStrafeModifier { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "MoveForwardModifier", Offset: 4, NameHash: 3166800568, Flags: 49469), LayoutImmutable, Blittable]
 		public float MoveForwardModifier { get; set; } // 0x4 (4)
 		
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "RotateYawModifier", Offset: 8, NameHash: 2055262564, Flags: 49469), LayoutImmutable, Blittable]
 		public float RotateYawModifier { get; set; } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "RotatePitchModifier", Offset: 12, NameHash: 3243027341, Flags: 49469), LayoutImmutable, Blittable]
 		public float RotatePitchModifier { get; set; } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "ReleaseModifier", Offset: 16, NameHash: 2602876219, Flags: 49469), LayoutImmutable, Blittable]
 		public float ReleaseModifier { get; set; } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

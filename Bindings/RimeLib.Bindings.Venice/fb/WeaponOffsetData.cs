@@ -18,32 +18,32 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(32), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 32)]
 	public class WeaponOffsetData : 
 		DataContainer
 	{
 		protected float m_WeaponOffsetX = new float();
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2991904818)]
+		[ContainerField(Name: "WeaponOffsetX", Offset: 8, NameHash: 2991904818, Flags: 49469), LayoutImmutable, Blittable]
 		public float WeaponOffsetX { get { return m_WeaponOffsetX; } set { if (OnPropertyChanging("WeaponOffsetData." + nameof(WeaponOffsetX), this, m_WeaponOffsetX, value)) m_WeaponOffsetX = value; } } // 0x8 (8)
 		
 		protected float m_WeaponOffsetY = new float();
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2991904819)]
+		[ContainerField(Name: "WeaponOffsetY", Offset: 12, NameHash: 2991904819, Flags: 49469), LayoutImmutable, Blittable]
 		public float WeaponOffsetY { get { return m_WeaponOffsetY; } set { if (OnPropertyChanging("WeaponOffsetData." + nameof(WeaponOffsetY), this, m_WeaponOffsetY, value)) m_WeaponOffsetY = value; } } // 0xC (12)
 		
 		protected float m_WeaponOffsetZ = new float();
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2991904816)]
+		[ContainerField(Name: "WeaponOffsetZ", Offset: 16, NameHash: 2991904816, Flags: 49469), LayoutImmutable, Blittable]
 		public float WeaponOffsetZ { get { return m_WeaponOffsetZ; } set { if (OnPropertyChanging("WeaponOffsetData." + nameof(WeaponOffsetZ), this, m_WeaponOffsetZ, value)) m_WeaponOffsetZ = value; } } // 0x10 (16)
 		
 		protected float m_WeaponZoomedOffsetX = new float();
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2753985860)]
+		[ContainerField(Name: "WeaponZoomedOffsetX", Offset: 20, NameHash: 2753985860, Flags: 49469), LayoutImmutable, Blittable]
 		public float WeaponZoomedOffsetX { get { return m_WeaponZoomedOffsetX; } set { if (OnPropertyChanging("WeaponOffsetData." + nameof(WeaponZoomedOffsetX), this, m_WeaponZoomedOffsetX, value)) m_WeaponZoomedOffsetX = value; } } // 0x14 (20)
 		
 		protected float m_WeaponZoomedOffsetY = new float();
-		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2753985861)]
+		[ContainerField(Name: "WeaponZoomedOffsetY", Offset: 24, NameHash: 2753985861, Flags: 49469), LayoutImmutable, Blittable]
 		public float WeaponZoomedOffsetY { get { return m_WeaponZoomedOffsetY; } set { if (OnPropertyChanging("WeaponOffsetData." + nameof(WeaponZoomedOffsetY), this, m_WeaponZoomedOffsetY, value)) m_WeaponZoomedOffsetY = value; } } // 0x18 (24)
 		
 		protected float m_WeaponZoomedOffsetZ = new float();
-		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2753985862)]
+		[ContainerField(Name: "WeaponZoomedOffsetZ", Offset: 28, NameHash: 2753985862, Flags: 49469), LayoutImmutable, Blittable]
 		public float WeaponZoomedOffsetZ { get { return m_WeaponZoomedOffsetZ; } set { if (OnPropertyChanging("WeaponOffsetData." + nameof(WeaponZoomedOffsetZ), this, m_WeaponZoomedOffsetZ, value)) m_WeaponZoomedOffsetZ = value; } } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

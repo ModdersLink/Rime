@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(48), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 48)]
 	public class MotionDampingData : 
 		DataContainer
 	{
 		protected Vec3 m_LinearModifier = new Vec3();
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(2104370415)]
+		[ContainerField(Name: "LinearModifier", Offset: 16, NameHash: 2104370415, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 LinearModifier { get { return m_LinearModifier; } set { if (OnPropertyChanging("MotionDampingData." + nameof(LinearModifier), this, m_LinearModifier, value)) m_LinearModifier = value; } } // 0x10 (16)
 		
 		protected float m_Pitch = new float();
-		[ContainerField(32), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(232604323)]
+		[ContainerField(Name: "Pitch", Offset: 32, NameHash: 232604323, Flags: 49469), LayoutImmutable, Blittable]
 		public float Pitch { get { return m_Pitch; } set { if (OnPropertyChanging("MotionDampingData." + nameof(Pitch), this, m_Pitch, value)) m_Pitch = value; } } // 0x20 (32)
 		
 		protected float m_Yaw = new float();
-		[ContainerField(36), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(193468618)]
+		[ContainerField(Name: "Yaw", Offset: 36, NameHash: 193468618, Flags: 49469), LayoutImmutable, Blittable]
 		public float Yaw { get { return m_Yaw; } set { if (OnPropertyChanging("MotionDampingData." + nameof(Yaw), this, m_Yaw, value)) m_Yaw = value; } } // 0x24 (36)
 		
 		protected float m_Roll = new float();
-		[ContainerField(40), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2089387576)]
+		[ContainerField(Name: "Roll", Offset: 40, NameHash: 2089387576, Flags: 49469), LayoutImmutable, Blittable]
 		public float Roll { get { return m_Roll; } set { if (OnPropertyChanging("MotionDampingData." + nameof(Roll), this, m_Roll, value)) m_Roll = value; } } // 0x28 (40)
 		
 		protected float m_Linear = new float();
-		[ContainerField(44), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2893456344)]
+		[ContainerField(Name: "Linear", Offset: 44, NameHash: 2893456344, Flags: 49469), LayoutImmutable, Blittable]
 		public float Linear { get { return m_Linear; } set { if (OnPropertyChanging("MotionDampingData." + nameof(Linear), this, m_Linear, value)) m_Linear = value; } } // 0x2C (44)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

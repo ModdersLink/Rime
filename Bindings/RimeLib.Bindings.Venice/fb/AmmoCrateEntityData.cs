@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(128), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 128)]
 	public class AmmoCrateEntityData : 
 		GameEntityData
 	{
 		protected CtrRef<MapMarkerEntityData> m_Marker = new CtrRef<MapMarkerEntityData>();
-		[ContainerField(96), MemberInfoFlag(53), ContainerFieldNameHash(2643283879), ContainerCtrRef]
+		[ContainerField(Name: "Marker", Offset: 96, NameHash: 2643283879, Flags: 53)]
 		public CtrRef<MapMarkerEntityData> Marker { get { return m_Marker; } set { if (OnPropertyChanging("AmmoCrateEntityData." + nameof(Marker), this, m_Marker, value)) m_Marker = value; } } // 0x60 (96)
 		
 		protected CtrRef<StaticModelEntityData> m_Model = new CtrRef<StaticModelEntityData>();
-		[ContainerField(100), MemberInfoFlag(53), ContainerFieldNameHash(210011050), ContainerCtrRef]
+		[ContainerField(Name: "Model", Offset: 100, NameHash: 210011050, Flags: 53)]
 		public CtrRef<StaticModelEntityData> Model { get { return m_Model; } set { if (OnPropertyChanging("AmmoCrateEntityData." + nameof(Model), this, m_Model, value)) m_Model = value; } } // 0x64 (100)
 		
 		protected float m_RefillDelay = new float();
-		[ContainerField(104), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1895357000)]
+		[ContainerField(Name: "RefillDelay", Offset: 104, NameHash: 1895357000, Flags: 49469), LayoutImmutable, Blittable]
 		public float RefillDelay { get { return m_RefillDelay; } set { if (OnPropertyChanging("AmmoCrateEntityData." + nameof(RefillDelay), this, m_RefillDelay, value)) m_RefillDelay = value; } } // 0x68 (104)
 		
 		protected float m_Radius = new float();
-		[ContainerField(108), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3298407133)]
+		[ContainerField(Name: "Radius", Offset: 108, NameHash: 3298407133, Flags: 49469), LayoutImmutable, Blittable]
 		public float Radius { get { return m_Radius; } set { if (OnPropertyChanging("AmmoCrateEntityData." + nameof(Radius), this, m_Radius, value)) m_Radius = value; } } // 0x6C (108)
 		
 		protected bool m_EnableReplenish = new bool();
-		[ContainerField(112), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(720329910)]
+		[ContainerField(Name: "EnableReplenish", Offset: 112, NameHash: 720329910, Flags: 49325), LayoutImmutable, Blittable]
 		public bool EnableReplenish { get { return m_EnableReplenish; } set { if (OnPropertyChanging("AmmoCrateEntityData." + nameof(EnableReplenish), this, m_EnableReplenish, value)) m_EnableReplenish = value; } } // 0x70 (112)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

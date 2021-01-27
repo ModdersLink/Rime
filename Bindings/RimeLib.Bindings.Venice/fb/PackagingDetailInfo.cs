@@ -18,25 +18,25 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(12), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 12)]
 	public class PackagingDetailInfo : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, Blittable, MemberInfoFlag(49405)]
+		[ContainerField(Name: "MipsToSkip", Offset: 0, NameHash: 3915133016, Flags: 49405), LayoutImmutable, Blittable]
 		public int MipsToSkip { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable, Blittable, MemberInfoFlag(49405)]
+		[ContainerField(Name: "LodsToSkip", Offset: 4, NameHash: 1143487915, Flags: 49405), LayoutImmutable, Blittable]
 		public int LodsToSkip { get; set; } // 0x4 (4)
 		
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "IncludeAnimation", Offset: 8, NameHash: 2443212815, Flags: 49325), LayoutImmutable, Blittable]
 		public bool IncludeAnimation { get; set; } // 0x8 (8)
 		
-		[ContainerField(9), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "IncludeMeshes", Offset: 9, NameHash: 879627068, Flags: 49325), LayoutImmutable, Blittable]
 		public bool IncludeMeshes { get; set; } // 0x9 (9)
 		
-		[ContainerField(10), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "IncludeSounds", Offset: 10, NameHash: 330444105, Flags: 49325), LayoutImmutable, Blittable]
 		public bool IncludeSounds { get; set; } // 0xA (10)
 		
-		[ContainerField(11), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "IncludeTextures", Offset: 11, NameHash: 3274933973, Flags: 49325), LayoutImmutable, Blittable]
 		public bool IncludeTextures { get; set; } // 0xB (11)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

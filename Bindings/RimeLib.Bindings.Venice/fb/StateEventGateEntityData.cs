@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(112), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 112)]
 	public class StateEventGateEntityData : 
 		GameEntityData
 	{
 		protected EventGateState m_CheckedState = new EventGateState();
-		[ContainerField(96), MemberInfoFlag(137), ContainerFieldNameHash(1967429493)]
+		[ContainerField(Name: "CheckedState", Offset: 96, NameHash: 1967429493, Flags: 137)]
 		public EventGateState CheckedState { get { return m_CheckedState; } set { if (OnPropertyChanging("StateEventGateEntityData." + nameof(CheckedState), this, m_CheckedState, value)) m_CheckedState = value; } } // 0x60 (96)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

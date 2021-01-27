@@ -18,34 +18,34 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(41), ContainerSize(48), ContainerStruct]
+	[ContainerType(Alignment: 16,  Flags: 41, Size: 48)]
 	public class RegularCameraViewData : FrostbiteContainer
 	{
-		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
+		[ContainerField(Name: "MeshOffset", Offset: 0, NameHash: 775818267, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 MeshOffset { get; set; } = new Vec3(); // 0x0 (0)
 		
-		[ContainerField(16), MemberInfoFlag(41)]
+		[ContainerField(Name: "InputSuppression", Offset: 16, NameHash: 2197295466, Flags: 41)]
 		public InputSuppressionData InputSuppression { get; set; } = new InputSuppressionData(); // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "FieldOfView", Offset: 20, NameHash: 2227716035, Flags: 49469), LayoutImmutable, Blittable]
 		public float FieldOfView { get; set; } // 0x14 (20)
 		
-		[ContainerField(24), MemberInfoFlag(53), ContainerCtrRef]
+		[ContainerField(Name: "Mesh", Offset: 24, NameHash: 2088783990, Flags: 53)]
 		public CtrRef<RigidMeshAsset> Mesh { get; set; } = new CtrRef<RigidMeshAsset>(); // 0x18 (24)
 		
-		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "ScreenExposureAreaScale", Offset: 28, NameHash: 2151479797, Flags: 49469), LayoutImmutable, Blittable]
 		public float ScreenExposureAreaScale { get; set; } // 0x1C (28)
 		
-		[ContainerField(32), MemberInfoFlag(53), ContainerCtrRef]
+		[ContainerField(Name: "MaskMeshBlueprint", Offset: 32, NameHash: 775268525, Flags: 53)]
 		public CtrRef<ObjectBlueprint> MaskMeshBlueprint { get; set; } = new CtrRef<ObjectBlueprint>(); // 0x20 (32)
 		
-		[ContainerField(36), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "LockMeshToRenderView", Offset: 36, NameHash: 3810317313, Flags: 49325), LayoutImmutable, Blittable]
 		public bool LockMeshToRenderView { get; set; } // 0x24 (36)
 		
-		[ContainerField(37), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "AllowFieldOfViewScaling", Offset: 37, NameHash: 899159559, Flags: 49325), LayoutImmutable, Blittable]
 		public bool AllowFieldOfViewScaling { get; set; } // 0x25 (37)
 		
-		[ContainerField(38), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "FLIREnabled", Offset: 38, NameHash: 1594804433, Flags: 49325), LayoutImmutable, Blittable]
 		public bool FLIREnabled { get; set; } // 0x26 (38)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

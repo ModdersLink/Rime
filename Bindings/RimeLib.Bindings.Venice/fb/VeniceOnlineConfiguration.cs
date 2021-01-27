@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(40), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 40)]
 	public class VeniceOnlineConfiguration : 
 		OnlineConfiguration
 	{
 		protected List<OnlinePlatformConfiguration> m_Platforms = new List<OnlinePlatformConfiguration>();
-		[ContainerField(28), MemberInfoFlag(65), ContainerFieldNameHash(1046011945), ContainerArray]
+		[ContainerField(Name: "Platforms", Offset: 28, NameHash: 1046011945, Flags: 65)]
 		public List<OnlinePlatformConfiguration> Platforms { get { return m_Platforms; } set { if (OnPropertyChanging("VeniceOnlineConfiguration." + nameof(Platforms), this, m_Platforms, value)) m_Platforms = value; } } // 0x1C (28)
 		
 		protected RefArray<EntitlementQuery> m_EntitlementQueries = new RefArray<EntitlementQuery>();
-		[ContainerField(32), MemberInfoFlag(65), ContainerFieldNameHash(2121789744), ContainerRefArray]
+		[ContainerField(Name: "EntitlementQueries", Offset: 32, NameHash: 2121789744, Flags: 65)]
 		public RefArray<EntitlementQuery> EntitlementQueries { get { return m_EntitlementQueries; } set { if (OnPropertyChanging("VeniceOnlineConfiguration." + nameof(EntitlementQueries), this, m_EntitlementQueries, value)) m_EntitlementQueries = value; } } // 0x20 (32)
 		
 		protected bool m_UseFallback = new bool();
-		[ContainerField(36), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2260806602)]
+		[ContainerField(Name: "UseFallback", Offset: 36, NameHash: 2260806602, Flags: 49325), LayoutImmutable, Blittable]
 		public bool UseFallback { get { return m_UseFallback; } set { if (OnPropertyChanging("VeniceOnlineConfiguration." + nameof(UseFallback), this, m_UseFallback, value)) m_UseFallback = value; } } // 0x24 (36)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

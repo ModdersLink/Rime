@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(24), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 24)]
 	public class ObjectEnterAreaTriggerEntityData : 
 		EntityData
 	{
 		protected Realm m_Realm = new Realm();
-		[ContainerField(12), MemberInfoFlag(137), ContainerFieldNameHash(229961746)]
+		[ContainerField(Name: "Realm", Offset: 12, NameHash: 229961746, Flags: 137)]
 		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("ObjectEnterAreaTriggerEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0xC (12)
 		
 		protected UpdatePass m_UpdatePass = new UpdatePass();
-		[ContainerField(16), MemberInfoFlag(137), ContainerFieldNameHash(2270785669)]
+		[ContainerField(Name: "UpdatePass", Offset: 16, NameHash: 2270785669, Flags: 137)]
 		public UpdatePass UpdatePass { get { return m_UpdatePass; } set { if (OnPropertyChanging("ObjectEnterAreaTriggerEntityData." + nameof(UpdatePass), this, m_UpdatePass, value)) m_UpdatePass = value; } } // 0x10 (16)
 		
 		protected bool m_AutoStart = new bool();
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(792615882)]
+		[ContainerField(Name: "AutoStart", Offset: 20, NameHash: 792615882, Flags: 49325), LayoutImmutable, Blittable]
 		public bool AutoStart { get { return m_AutoStart; } set { if (OnPropertyChanging("ObjectEnterAreaTriggerEntityData." + nameof(AutoStart), this, m_AutoStart, value)) m_AutoStart = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

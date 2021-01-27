@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(16), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
 	public class SkeletonCollisionData : 
 		DataContainer
 	{
 		protected CtrRef<SkeletonAsset> m_SkeletonAsset = new CtrRef<SkeletonAsset>();
-		[ContainerField(8), MemberInfoFlag(53), ContainerFieldNameHash(2375870068), ContainerCtrRef]
+		[ContainerField(Name: "SkeletonAsset", Offset: 8, NameHash: 2375870068, Flags: 53)]
 		public CtrRef<SkeletonAsset> SkeletonAsset { get { return m_SkeletonAsset; } set { if (OnPropertyChanging("SkeletonCollisionData." + nameof(SkeletonAsset), this, m_SkeletonAsset, value)) m_SkeletonAsset = value; } } // 0x8 (8)
 		
 		protected List<BoneCollisionData> m_BoneCollisionData = new List<BoneCollisionData>();
-		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(3073290765), ContainerArray]
+		[ContainerField(Name: "BoneCollisionData", Offset: 12, NameHash: 3073290765, Flags: 65)]
 		public List<BoneCollisionData> BoneCollisionData { get { return m_BoneCollisionData; } set { if (OnPropertyChanging("SkeletonCollisionData." + nameof(BoneCollisionData), this, m_BoneCollisionData, value)) m_BoneCollisionData = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

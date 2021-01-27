@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(80), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 80)]
 	public class LinearMovingBodyData : 
 		MovingBodyData
 	{
 		protected Vec3 m_Axis = new Vec3();
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(2088662246)]
+		[ContainerField(Name: "Axis", Offset: 16, NameHash: 2088662246, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 Axis { get { return m_Axis; } set { if (OnPropertyChanging("LinearMovingBodyData." + nameof(Axis), this, m_Axis, value)) m_Axis = value; } } // 0x10 (16)
 		
 		protected EndPointData m_Start = new EndPointData();
-		[ContainerField(32), MemberInfoFlag(41), ContainerFieldNameHash(230748069)]
+		[ContainerField(Name: "Start", Offset: 32, NameHash: 230748069, Flags: 41)]
 		public EndPointData Start { get { return m_Start; } set { if (OnPropertyChanging("LinearMovingBodyData." + nameof(Start), this, m_Start, value)) m_Start = value; } } // 0x20 (32)
 		
 		protected EndPointData m_End = new EndPointData();
-		[ContainerField(52), MemberInfoFlag(41), ContainerFieldNameHash(193438506)]
+		[ContainerField(Name: "End", Offset: 52, NameHash: 193438506, Flags: 41)]
 		public EndPointData End { get { return m_End; } set { if (OnPropertyChanging("LinearMovingBodyData." + nameof(End), this, m_End, value)) m_End = value; } } // 0x34 (52)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

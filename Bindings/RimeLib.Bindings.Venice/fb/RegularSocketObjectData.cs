@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(160), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 160)]
 	public class RegularSocketObjectData : 
 		SocketObjectData
 	{
 		protected LinearTransform m_Transform = new LinearTransform();
-		[ContainerField(80), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(2270319721)]
+		[ContainerField(Name: "Transform", Offset: 80, NameHash: 2270319721, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public LinearTransform Transform { get { return m_Transform; } set { if (OnPropertyChanging("RegularSocketObjectData." + nameof(Transform), this, m_Transform, value)) m_Transform = value; } } // 0x50 (80)
 		
 		protected List<LinearTransform> m_Mesh3pTransforms = new List<LinearTransform>();
-		[ContainerField(144), MemberInfoFlag(65), ContainerFieldNameHash(1625436330), ContainerArray]
+		[ContainerField(Name: "Mesh3pTransforms", Offset: 144, NameHash: 1625436330, Flags: 65)]
 		public List<LinearTransform> Mesh3pTransforms { get { return m_Mesh3pTransforms; } set { if (OnPropertyChanging("RegularSocketObjectData." + nameof(Mesh3pTransforms), this, m_Mesh3pTransforms, value)) m_Mesh3pTransforms = value; } } // 0x90 (144)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

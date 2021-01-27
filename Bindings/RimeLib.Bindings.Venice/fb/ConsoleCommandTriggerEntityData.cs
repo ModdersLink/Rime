@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(20), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 20)]
 	public class ConsoleCommandTriggerEntityData : 
 		EntityData
 	{
 		protected string m_CommandName = string.Empty;
-		[ContainerField(12), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(1071676005)]
+		[ContainerField(Name: "CommandName", Offset: 12, NameHash: 1071676005, Flags: 16509), LayoutImmutable]
 		public string CommandName { get { return m_CommandName; } set { if (OnPropertyChanging("ConsoleCommandTriggerEntityData." + nameof(CommandName), this, m_CommandName, value)) m_CommandName = value; } } // 0xC (12)
 		
 		protected Realm m_Realm = new Realm();
-		[ContainerField(16), MemberInfoFlag(137), ContainerFieldNameHash(229961746)]
+		[ContainerField(Name: "Realm", Offset: 16, NameHash: 229961746, Flags: 137)]
 		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("ConsoleCommandTriggerEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

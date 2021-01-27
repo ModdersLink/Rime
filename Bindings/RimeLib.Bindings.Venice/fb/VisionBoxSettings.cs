@@ -18,19 +18,19 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(16), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 16)]
 	public class VisionBoxSettings : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "DecreaseXz", Offset: 0, NameHash: 4108635749, Flags: 49469), LayoutImmutable, Blittable]
 		public float DecreaseXz { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "LowerTop", Offset: 4, NameHash: 2449544077, Flags: 49469), LayoutImmutable, Blittable]
 		public float LowerTop { get; set; } // 0x4 (4)
 		
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "RaiseBottom", Offset: 8, NameHash: 4168639462, Flags: 49469), LayoutImmutable, Blittable]
 		public float RaiseBottom { get; set; } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "RaiseBottomHuman", Offset: 12, NameHash: 266392633, Flags: 49469), LayoutImmutable, Blittable]
 		public float RaiseBottomHuman { get; set; } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

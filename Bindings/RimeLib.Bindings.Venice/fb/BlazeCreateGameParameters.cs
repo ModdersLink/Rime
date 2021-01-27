@@ -18,10 +18,10 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(32), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 32)]
 	public class BlazeCreateGameParameters : FrostbiteContainer
 	{
-		[ContainerField(0), MemberInfoFlag(41)]
+		[ContainerField(Name: "Base", Offset: 0, NameHash: 2088806864, Flags: 41)]
 		public MatchmakingCreateGameParameters Base { get; set; } = new MatchmakingCreateGameParameters(); // 0x0 (0)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

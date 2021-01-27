@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(112), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 112)]
 	public class SensingComponentData : 
 		ComponentData
 	{
 		protected CtrRef<SensingTemplateData> m_Template = new CtrRef<SensingTemplateData>();
-		[ContainerField(96), MemberInfoFlag(53), ContainerFieldNameHash(2427043285), ContainerCtrRef]
+		[ContainerField(Name: "Template", Offset: 96, NameHash: 2427043285, Flags: 53)]
 		public CtrRef<SensingTemplateData> Template { get { return m_Template; } set { if (OnPropertyChanging("SensingComponentData." + nameof(Template), this, m_Template, value)) m_Template = value; } } // 0x60 (96)
 		
 		protected CtrRef<SensingSettings> m_Settings = new CtrRef<SensingSettings>();
-		[ContainerField(100), MemberInfoFlag(53), ContainerFieldNameHash(649772672), ContainerCtrRef]
+		[ContainerField(Name: "Settings", Offset: 100, NameHash: 649772672, Flags: 53)]
 		public CtrRef<SensingSettings> Settings { get { return m_Settings; } set { if (OnPropertyChanging("SensingComponentData." + nameof(Settings), this, m_Settings, value)) m_Settings = value; } } // 0x64 (100)
 		
 		protected bool m_Enabled = new bool();
-		[ContainerField(104), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2662400)]
+		[ContainerField(Name: "Enabled", Offset: 104, NameHash: 2662400, Flags: 49325), LayoutImmutable, Blittable]
 		public bool Enabled { get { return m_Enabled; } set { if (OnPropertyChanging("SensingComponentData." + nameof(Enabled), this, m_Enabled, value)) m_Enabled = value; } } // 0x68 (104)
 		
 		protected bool m_SharedPlayerMemory = new bool();
-		[ContainerField(105), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3832351454)]
+		[ContainerField(Name: "SharedPlayerMemory", Offset: 105, NameHash: 3832351454, Flags: 49325), LayoutImmutable, Blittable]
 		public bool SharedPlayerMemory { get { return m_SharedPlayerMemory; } set { if (OnPropertyChanging("SensingComponentData." + nameof(SharedPlayerMemory), this, m_SharedPlayerMemory, value)) m_SharedPlayerMemory = value; } } // 0x69 (105)
 		
 		protected bool m_UseWeaponTransform = new bool();
-		[ContainerField(106), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3375914696)]
+		[ContainerField(Name: "UseWeaponTransform", Offset: 106, NameHash: 3375914696, Flags: 49325), LayoutImmutable, Blittable]
 		public bool UseWeaponTransform { get { return m_UseWeaponTransform; } set { if (OnPropertyChanging("SensingComponentData." + nameof(UseWeaponTransform), this, m_UseWeaponTransform, value)) m_UseWeaponTransform = value; } } // 0x6A (106)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

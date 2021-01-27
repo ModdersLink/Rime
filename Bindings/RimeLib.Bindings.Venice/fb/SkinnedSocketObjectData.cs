@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(76), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 76)]
 	public class SkinnedSocketObjectData : 
 		SocketObjectData
 	{
 		protected int m_FaceposerLibraryIndex = new int();
-		[ContainerField(72), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(1714120990)]
+		[ContainerField(Name: "FaceposerLibraryIndex", Offset: 72, NameHash: 1714120990, Flags: 49405), LayoutImmutable, Blittable]
 		public int FaceposerLibraryIndex { get { return m_FaceposerLibraryIndex; } set { if (OnPropertyChanging("SkinnedSocketObjectData." + nameof(FaceposerLibraryIndex), this, m_FaceposerLibraryIndex, value)) m_FaceposerLibraryIndex = value; } } // 0x48 (72)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

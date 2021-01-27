@@ -18,13 +18,13 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(8), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 8)]
 	public class UIAudioEventMapping : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "EventName", Offset: 0, NameHash: 4132530094, Flags: 16509), LayoutImmutable]
 		public string EventName { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), MemberInfoFlag(53), ContainerCtrRef]
+		[ContainerField(Name: "SoundAsset", Offset: 4, NameHash: 112978902, Flags: 53)]
 		public CtrRef<SoundAsset> SoundAsset { get; set; } = new CtrRef<SoundAsset>(); // 0x4 (4)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

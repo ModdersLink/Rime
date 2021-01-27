@@ -18,22 +18,22 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(20), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 20)]
 	public class OnlinePlatformConfiguration : FrostbiteContainer
 	{
-		[ContainerField(0), MemberInfoFlag(137)]
+		[ContainerField(Name: "Platform", Offset: 0, NameHash: 942751002, Flags: 137)]
 		public GamePlatform Platform { get; set; } = new GamePlatform(); // 0x0 (0)
 		
-		[ContainerField(4), MemberInfoFlag(53), ContainerCtrRef]
+		[ContainerField(Name: "Services", Offset: 4, NameHash: 270289867, Flags: 53)]
 		public CtrRef<OnlineServicesAsset> Services { get; set; } = new CtrRef<OnlineServicesAsset>(); // 0x4 (4)
 		
-		[ContainerField(8), MemberInfoFlag(65), ContainerRefArray]
+		[ContainerField(Name: "ClientBackends", Offset: 8, NameHash: 3444245387, Flags: 65)]
 		public RefArray<PresenceBackendData> ClientBackends { get; set; } = new RefArray<PresenceBackendData>(); // 0x8 (8)
 		
-		[ContainerField(12), MemberInfoFlag(65), ContainerRefArray]
+		[ContainerField(Name: "ServerBackends", Offset: 12, NameHash: 2837482711, Flags: 65)]
 		public RefArray<ServerBackendData> ServerBackends { get; set; } = new RefArray<ServerBackendData>(); // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "IsFallback", Offset: 16, NameHash: 72751187, Flags: 49325), LayoutImmutable, Blittable]
 		public bool IsFallback { get; set; } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

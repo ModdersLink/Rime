@@ -18,19 +18,19 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(16), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 16)]
 	public class UIPopupTextInput : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "Id", Offset: 0, NameHash: 5862152, Flags: 16509), LayoutImmutable]
 		public string Id { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "Label", Offset: 4, NameHash: 218105699, Flags: 16509), LayoutImmutable]
 		public string Label { get; set; } // 0x4 (4)
 		
-		[ContainerField(8), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "DefaultValue", Offset: 8, NameHash: 2066049125, Flags: 16509), LayoutImmutable]
 		public string DefaultValue { get; set; } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "IsPassword", Offset: 12, NameHash: 1832244704, Flags: 49325), LayoutImmutable, Blittable]
 		public bool IsPassword { get; set; } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

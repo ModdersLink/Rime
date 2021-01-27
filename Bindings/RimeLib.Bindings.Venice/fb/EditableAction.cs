@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(12), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 12)]
 	public class EditableAction : 
 		DataContainer
 	{
 		protected InputConceptIdentifiers m_Concept = new InputConceptIdentifiers();
-		[ContainerField(8), MemberInfoFlag(137), ContainerFieldNameHash(3653994469)]
+		[ContainerField(Name: "Concept", Offset: 8, NameHash: 3653994469, Flags: 137)]
 		public InputConceptIdentifiers Concept { get { return m_Concept; } set { if (OnPropertyChanging("EditableAction." + nameof(Concept), this, m_Concept, value)) m_Concept = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,55 +18,55 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(60), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 60)]
 	public class SpecialMoveStateData : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "MinHeightScale", Offset: 0, NameHash: 1954093224, Flags: 49469), LayoutImmutable, Blittable]
 		public float MinHeightScale { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "OptimumDistanceFromObject", Offset: 4, NameHash: 994268946, Flags: 49469), LayoutImmutable, Blittable]
 		public float OptimumDistanceFromObject { get; set; } // 0x4 (4)
 		
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "OptimumHeightOfObject", Offset: 8, NameHash: 885491089, Flags: 49469), LayoutImmutable, Blittable]
 		public float OptimumHeightOfObject { get; set; } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "OptimumLengthOfObject", Offset: 12, NameHash: 2467815538, Flags: 49469), LayoutImmutable, Blittable]
 		public float OptimumLengthOfObject { get; set; } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "MaxDistanceScale", Offset: 16, NameHash: 301144810, Flags: 49469), LayoutImmutable, Blittable]
 		public float MaxDistanceScale { get; set; } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "MinDistanceScale", Offset: 20, NameHash: 1135265332, Flags: 49469), LayoutImmutable, Blittable]
 		public float MinDistanceScale { get; set; } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "MaxHeightScale", Offset: 24, NameHash: 3932743542, Flags: 49469), LayoutImmutable, Blittable]
 		public float MaxHeightScale { get; set; } // 0x18 (24)
 		
-		[ContainerField(28), MemberInfoFlag(65), ContainerArray]
+		[ContainerField(Name: "MotionPoints", Offset: 28, NameHash: 1211724068, Flags: 65)]
 		public List<SpecialMoveInterpolatedPoint> MotionPoints { get; set; } = new List<SpecialMoveInterpolatedPoint>(); // 0x1C (28)
 		
-		[ContainerField(32), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "MaxObjectLengthScale", Offset: 32, NameHash: 842198496, Flags: 49469), LayoutImmutable, Blittable]
 		public float MaxObjectLengthScale { get; set; } // 0x20 (32)
 		
-		[ContainerField(36), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "MinObjectLengthScale", Offset: 36, NameHash: 746779070, Flags: 49469), LayoutImmutable, Blittable]
 		public float MinObjectLengthScale { get; set; } // 0x24 (36)
 		
-		[ContainerField(40), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "ExitAnimationDrivenStateVelocity", Offset: 40, NameHash: 926295825, Flags: 49469), LayoutImmutable, Blittable]
 		public float ExitAnimationDrivenStateVelocity { get; set; } // 0x28 (40)
 		
-		[ContainerField(44), MemberInfoFlag(137)]
+		[ContainerField(Name: "ResetPose", Offset: 44, NameHash: 1918089849, Flags: 137)]
 		public SpecialMovesPoseType ResetPose { get; set; } = new SpecialMovesPoseType(); // 0x2C (44)
 		
-		[ContainerField(48), MemberInfoFlag(137)]
+		[ContainerField(Name: "OverridePose", Offset: 48, NameHash: 4159539896, Flags: 137)]
 		public SpecialMovesPoseType OverridePose { get; set; } = new SpecialMovesPoseType(); // 0x30 (48)
 		
-		[ContainerField(52), MemberInfoFlag(65), ContainerArray]
+		[ContainerField(Name: "GravityPoints", Offset: 52, NameHash: 1228375932, Flags: 65)]
 		public List<SpecialMoveInterpolatedPoint> GravityPoints { get; set; } = new List<SpecialMoveInterpolatedPoint>(); // 0x34 (52)
 		
-		[ContainerField(56), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "KeepInitialSoldierDirection", Offset: 56, NameHash: 3901116463, Flags: 49325), LayoutImmutable, Blittable]
 		public bool KeepInitialSoldierDirection { get; set; } // 0x38 (56)
 		
-		[ContainerField(57), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "ScaleWithDistanceToObject", Offset: 57, NameHash: 2442340306, Flags: 49325), LayoutImmutable, Blittable]
 		public bool ScaleWithDistanceToObject { get; set; } // 0x39 (57)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(12), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 12)]
 	public class EnlightenDataCreatorParams : 
 		DataContainer
 	{
 		protected string m_AssetName = string.Empty;
-		[ContainerField(8), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(3654276786)]
+		[ContainerField(Name: "AssetName", Offset: 8, NameHash: 3654276786, Flags: 16509), LayoutImmutable]
 		public string AssetName { get { return m_AssetName; } set { if (OnPropertyChanging("EnlightenDataCreatorParams." + nameof(AssetName), this, m_AssetName, value)) m_AssetName = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

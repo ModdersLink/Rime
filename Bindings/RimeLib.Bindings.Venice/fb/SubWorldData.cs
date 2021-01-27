@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(44), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 44)]
 	public class SubWorldData : 
 		SpatialPrefabBlueprint
 	{
 		protected CtrRef<RegistryContainer> m_RegistryContainer = new CtrRef<RegistryContainer>();
-		[ContainerField(36), MemberInfoFlag(53), ContainerFieldNameHash(1535522391), ContainerCtrRef]
+		[ContainerField(Name: "RegistryContainer", Offset: 36, NameHash: 1535522391, Flags: 53)]
 		public CtrRef<RegistryContainer> RegistryContainer { get { return m_RegistryContainer; } set { if (OnPropertyChanging("SubWorldData." + nameof(RegistryContainer), this, m_RegistryContainer, value)) m_RegistryContainer = value; } } // 0x24 (36)
 		
 		protected bool m_IsWin32SubLevel = new bool();
-		[ContainerField(40), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2682003100)]
+		[ContainerField(Name: "IsWin32SubLevel", Offset: 40, NameHash: 2682003100, Flags: 49325), LayoutImmutable, Blittable]
 		public bool IsWin32SubLevel { get { return m_IsWin32SubLevel; } set { if (OnPropertyChanging("SubWorldData." + nameof(IsWin32SubLevel), this, m_IsWin32SubLevel, value)) m_IsWin32SubLevel = value; } } // 0x28 (40)
 		
 		protected bool m_IsXenonSubLevel = new bool();
-		[ContainerField(41), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(948884383)]
+		[ContainerField(Name: "IsXenonSubLevel", Offset: 41, NameHash: 948884383, Flags: 49325), LayoutImmutable, Blittable]
 		public bool IsXenonSubLevel { get { return m_IsXenonSubLevel; } set { if (OnPropertyChanging("SubWorldData." + nameof(IsXenonSubLevel), this, m_IsXenonSubLevel, value)) m_IsXenonSubLevel = value; } } // 0x29 (41)
 		
 		protected bool m_IsPs3SubLevel = new bool();
-		[ContainerField(42), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(396788349)]
+		[ContainerField(Name: "IsPs3SubLevel", Offset: 42, NameHash: 396788349, Flags: 49325), LayoutImmutable, Blittable]
 		public bool IsPs3SubLevel { get { return m_IsPs3SubLevel; } set { if (OnPropertyChanging("SubWorldData." + nameof(IsPs3SubLevel), this, m_IsPs3SubLevel, value)) m_IsPs3SubLevel = value; } } // 0x2A (42)
 		
 		protected bool m_RememberStateOnStreamOut = new bool();
-		[ContainerField(43), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(4212179462)]
+		[ContainerField(Name: "RememberStateOnStreamOut", Offset: 43, NameHash: 4212179462, Flags: 49325), LayoutImmutable, Blittable]
 		public bool RememberStateOnStreamOut { get { return m_RememberStateOnStreamOut; } set { if (OnPropertyChanging("SubWorldData." + nameof(RememberStateOnStreamOut), this, m_RememberStateOnStreamOut, value)) m_RememberStateOnStreamOut = value; } } // 0x2B (43)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

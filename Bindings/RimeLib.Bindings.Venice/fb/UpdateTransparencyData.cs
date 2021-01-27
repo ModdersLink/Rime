@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(64), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 64)]
 	public class UpdateTransparencyData : 
 		ProcessorData
 	{
 		protected float m_CullThreshold = new float();
-		[ContainerField(48), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3466482692)]
+		[ContainerField(Name: "CullThreshold", Offset: 48, NameHash: 3466482692, Flags: 49469), LayoutImmutable, Blittable]
 		public float CullThreshold { get { return m_CullThreshold; } set { if (OnPropertyChanging("UpdateTransparencyData." + nameof(CullThreshold), this, m_CullThreshold, value)) m_CullThreshold = value; } } // 0x30 (48)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

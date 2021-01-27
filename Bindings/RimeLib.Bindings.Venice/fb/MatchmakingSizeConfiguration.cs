@@ -18,25 +18,25 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(24), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 24)]
 	public class MatchmakingSizeConfiguration : FrostbiteContainer
 	{
-		[ContainerField(0), MemberInfoFlag(137)]
+		[ContainerField(Name: "Platform", Offset: 0, NameHash: 942751002, Flags: 137)]
 		public MatchmakingPlatform Platform { get; set; } = new MatchmakingPlatform(); // 0x0 (0)
 		
-		[ContainerField(4), MemberInfoFlag(65), ContainerArray]
+		[ContainerField(Name: "Settings", Offset: 4, NameHash: 649772672, Flags: 65)]
 		public List<string> Settings { get; set; } = new List<string>(); // 0x4 (4)
 		
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
+		[ContainerField(Name: "DesiredPlayerCount", Offset: 8, NameHash: 3876155997, Flags: 49421), LayoutImmutable, Blittable]
 		public uint DesiredPlayerCount { get; set; } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
+		[ContainerField(Name: "MinPlayerCount", Offset: 12, NameHash: 891225311, Flags: 49421), LayoutImmutable, Blittable]
 		public uint MinPlayerCount { get; set; } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
+		[ContainerField(Name: "MaxPlayerCapacity", Offset: 16, NameHash: 4024578774, Flags: 49421), LayoutImmutable, Blittable]
 		public uint MaxPlayerCapacity { get; set; } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "MinFitThreshold", Offset: 20, NameHash: 3350684067, Flags: 16509), LayoutImmutable]
 		public string MinFitThreshold { get; set; } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(20), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 20)]
 	public class IntUnlockValuePair : 
 		UnlockValuePair
 	{
 		protected int m_DefaultValue = new int();
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(2066049125)]
+		[ContainerField(Name: "DefaultValue", Offset: 12, NameHash: 2066049125, Flags: 49405), LayoutImmutable, Blittable]
 		public int DefaultValue { get { return m_DefaultValue; } set { if (OnPropertyChanging("IntUnlockValuePair." + nameof(DefaultValue), this, m_DefaultValue, value)) m_DefaultValue = value; } } // 0xC (12)
 		
 		protected int m_UnlockedValue = new int();
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(2493912799)]
+		[ContainerField(Name: "UnlockedValue", Offset: 16, NameHash: 2493912799, Flags: 49405), LayoutImmutable, Blittable]
 		public int UnlockedValue { get { return m_UnlockedValue; } set { if (OnPropertyChanging("IntUnlockValuePair." + nameof(UnlockedValue), this, m_UnlockedValue, value)) m_UnlockedValue = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

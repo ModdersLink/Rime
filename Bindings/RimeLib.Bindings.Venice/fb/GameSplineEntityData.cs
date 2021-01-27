@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(112), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 112)]
 	public class GameSplineEntityData : 
 		GameEntityData
 	{
 		protected GameSplineType m_SplineType = new GameSplineType();
-		[ContainerField(96), MemberInfoFlag(137), ContainerFieldNameHash(3992327344)]
+		[ContainerField(Name: "SplineType", Offset: 96, NameHash: 3992327344, Flags: 137)]
 		public GameSplineType SplineType { get { return m_SplineType; } set { if (OnPropertyChanging("GameSplineEntityData." + nameof(SplineType), this, m_SplineType, value)) m_SplineType = value; } } // 0x60 (96)
 		
 		protected List<Vec3> m_LocalPoints = new List<Vec3>();
-		[ContainerField(100), MemberInfoFlag(65), ContainerFieldNameHash(168850167), ContainerArray]
+		[ContainerField(Name: "LocalPoints", Offset: 100, NameHash: 168850167, Flags: 65)]
 		public List<Vec3> LocalPoints { get { return m_LocalPoints; } set { if (OnPropertyChanging("GameSplineEntityData." + nameof(LocalPoints), this, m_LocalPoints, value)) m_LocalPoints = value; } } // 0x64 (100)
 		
 		protected List<Vec3> m_Normals = new List<Vec3>();
-		[ContainerField(104), MemberInfoFlag(65), ContainerFieldNameHash(3102907301), ContainerArray]
+		[ContainerField(Name: "Normals", Offset: 104, NameHash: 3102907301, Flags: 65)]
 		public List<Vec3> Normals { get { return m_Normals; } set { if (OnPropertyChanging("GameSplineEntityData." + nameof(Normals), this, m_Normals, value)) m_Normals = value; } } // 0x68 (104)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

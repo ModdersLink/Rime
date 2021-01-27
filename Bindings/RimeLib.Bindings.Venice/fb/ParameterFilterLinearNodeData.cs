@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(40), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 40)]
 	public class ParameterFilterLinearNodeData : 
 		AudioGraphNodeData
 	{
 		protected AudioGraphNodePort m_In = new AudioGraphNodePort();
-		[ContainerField(8), MemberInfoFlag(41), ContainerFieldNameHash(5862146)]
+		[ContainerField(Name: "In", Offset: 8, NameHash: 5862146, Flags: 41)]
 		public AudioGraphNodePort In { get { return m_In; } set { if (OnPropertyChanging("ParameterFilterLinearNodeData." + nameof(In), this, m_In, value)) m_In = value; } } // 0x8 (8)
 		
 		protected AudioGraphNodePort m_Out = new AudioGraphNodePort();
-		[ContainerField(16), MemberInfoFlag(41), ContainerFieldNameHash(193453899)]
+		[ContainerField(Name: "Out", Offset: 16, NameHash: 193453899, Flags: 41)]
 		public AudioGraphNodePort Out { get { return m_Out; } set { if (OnPropertyChanging("ParameterFilterLinearNodeData." + nameof(Out), this, m_Out, value)) m_Out = value; } } // 0x10 (16)
 		
 		protected AudioGraphNodePort m_AttackSpeed = new AudioGraphNodePort();
-		[ContainerField(24), MemberInfoFlag(41), ContainerFieldNameHash(3633653226)]
+		[ContainerField(Name: "AttackSpeed", Offset: 24, NameHash: 3633653226, Flags: 41)]
 		public AudioGraphNodePort AttackSpeed { get { return m_AttackSpeed; } set { if (OnPropertyChanging("ParameterFilterLinearNodeData." + nameof(AttackSpeed), this, m_AttackSpeed, value)) m_AttackSpeed = value; } } // 0x18 (24)
 		
 		protected AudioGraphNodePort m_ReleaseSpeed = new AudioGraphNodePort();
-		[ContainerField(32), MemberInfoFlag(41), ContainerFieldNameHash(3687083307)]
+		[ContainerField(Name: "ReleaseSpeed", Offset: 32, NameHash: 3687083307, Flags: 41)]
 		public AudioGraphNodePort ReleaseSpeed { get { return m_ReleaseSpeed; } set { if (OnPropertyChanging("ParameterFilterLinearNodeData." + nameof(ReleaseSpeed), this, m_ReleaseSpeed, value)) m_ReleaseSpeed = value; } } // 0x20 (32)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

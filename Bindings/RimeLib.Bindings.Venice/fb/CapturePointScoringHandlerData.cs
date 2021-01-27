@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(12), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 12)]
 	public class CapturePointScoringHandlerData : 
 		ScoringHandlerData
 	{
 		protected float m_SquadCappingBonus = new float();
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3764557584)]
+		[ContainerField(Name: "SquadCappingBonus", Offset: 8, NameHash: 3764557584, Flags: 49469), LayoutImmutable, Blittable]
 		public float SquadCappingBonus { get { return m_SquadCappingBonus; } set { if (OnPropertyChanging("CapturePointScoringHandlerData." + nameof(SquadCappingBonus), this, m_SquadCappingBonus, value)) m_SquadCappingBonus = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

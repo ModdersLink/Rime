@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(32), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 32)]
 	public class PointSystemParamsAsset : 
 		Asset
 	{
 		protected float m_MultiKillTimeLimit = new float();
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3857154606)]
+		[ContainerField(Name: "MultiKillTimeLimit", Offset: 12, NameHash: 3857154606, Flags: 49469), LayoutImmutable, Blittable]
 		public float MultiKillTimeLimit { get { return m_MultiKillTimeLimit; } set { if (OnPropertyChanging("PointSystemParamsAsset." + nameof(MultiKillTimeLimit), this, m_MultiKillTimeLimit, value)) m_MultiKillTimeLimit = value; } } // 0xC (12)
 		
 		protected float m_DnfTimeout = new float();
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(478606706)]
+		[ContainerField(Name: "DnfTimeout", Offset: 16, NameHash: 478606706, Flags: 49469), LayoutImmutable, Blittable]
 		public float DnfTimeout { get { return m_DnfTimeout; } set { if (OnPropertyChanging("PointSystemParamsAsset." + nameof(DnfTimeout), this, m_DnfTimeout, value)) m_DnfTimeout = value; } } // 0x10 (16)
 		
 		protected uint m_KillStreakX = new uint();
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(2976281157)]
+		[ContainerField(Name: "KillStreakX", Offset: 20, NameHash: 2976281157, Flags: 49421), LayoutImmutable, Blittable]
 		public uint KillStreakX { get { return m_KillStreakX; } set { if (OnPropertyChanging("PointSystemParamsAsset." + nameof(KillStreakX), this, m_KillStreakX, value)) m_KillStreakX = value; } } // 0x14 (20)
 		
 		protected uint m_NemesisKillX = new uint();
-		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(2569054453)]
+		[ContainerField(Name: "NemesisKillX", Offset: 24, NameHash: 2569054453, Flags: 49421), LayoutImmutable, Blittable]
 		public uint NemesisKillX { get { return m_NemesisKillX; } set { if (OnPropertyChanging("PointSystemParamsAsset." + nameof(NemesisKillX), this, m_NemesisKillX, value)) m_NemesisKillX = value; } } // 0x18 (24)
 		
 		protected float m_FreefallHeight = new float();
-		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1685675721)]
+		[ContainerField(Name: "FreefallHeight", Offset: 28, NameHash: 1685675721, Flags: 49469), LayoutImmutable, Blittable]
 		public float FreefallHeight { get { return m_FreefallHeight; } set { if (OnPropertyChanging("PointSystemParamsAsset." + nameof(FreefallHeight), this, m_FreefallHeight, value)) m_FreefallHeight = value; } } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

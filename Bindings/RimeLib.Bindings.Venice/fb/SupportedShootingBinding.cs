@@ -18,34 +18,34 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(36), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 36)]
 	public class SupportedShootingBinding : FrostbiteContainer
 	{
-		[ContainerField(0), MemberInfoFlag(41)]
+		[ContainerField(Name: "Supported", Offset: 0, NameHash: 1676564587, Flags: 41)]
 		public AntRef Supported { get; set; } = new AntRef(); // 0x0 (0)
 		
-		[ContainerField(4), MemberInfoFlag(41)]
+		[ContainerField(Name: "SupportedPos", Offset: 4, NameHash: 900279143, Flags: 41)]
 		public AntRef SupportedPos { get; set; } = new AntRef(); // 0x4 (4)
 		
-		[ContainerField(8), MemberInfoFlag(41)]
+		[ContainerField(Name: "ForwardVector", Offset: 8, NameHash: 2279866951, Flags: 41)]
 		public AntRef ForwardVector { get; set; } = new AntRef(); // 0x8 (8)
 		
-		[ContainerField(12), MemberInfoFlag(41)]
+		[ContainerField(Name: "Yaw", Offset: 12, NameHash: 193468618, Flags: 41)]
 		public AntRef Yaw { get; set; } = new AntRef(); // 0xC (12)
 		
-		[ContainerField(16), MemberInfoFlag(41)]
+		[ContainerField(Name: "Pitch", Offset: 16, NameHash: 232604323, Flags: 41)]
 		public AntRef Pitch { get; set; } = new AntRef(); // 0x10 (16)
 		
-		[ContainerField(20), MemberInfoFlag(41)]
+		[ContainerField(Name: "DistToObject", Offset: 20, NameHash: 1707862081, Flags: 41)]
 		public AntRef DistToObject { get; set; } = new AntRef(); // 0x14 (20)
 		
-		[ContainerField(24), MemberInfoFlag(41)]
+		[ContainerField(Name: "HeightOfObject", Offset: 24, NameHash: 2836557414, Flags: 41)]
 		public AntRef HeightOfObject { get; set; } = new AntRef(); // 0x18 (24)
 		
-		[ContainerField(28), MemberInfoFlag(41)]
+		[ContainerField(Name: "Undeploying", Offset: 28, NameHash: 2784429365, Flags: 41)]
 		public AntRef Undeploying { get; set; } = new AntRef(); // 0x1C (28)
 		
-		[ContainerField(32), MemberInfoFlag(41)]
+		[ContainerField(Name: "AnimatedCamera", Offset: 32, NameHash: 496739715, Flags: 41)]
 		public AntRef AnimatedCamera { get; set; } = new AntRef(); // 0x20 (32)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

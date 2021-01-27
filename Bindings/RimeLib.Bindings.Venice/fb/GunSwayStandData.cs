@@ -18,13 +18,13 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(280), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 280)]
 	public class GunSwayStandData : FrostbiteContainer
 	{
-		[ContainerField(0), MemberInfoFlag(41)]
+		[ContainerField(Name: "NoZoom", Offset: 0, NameHash: 2828535091, Flags: 41)]
 		public GunSwayBaseMoveJumpData NoZoom { get; set; } = new GunSwayBaseMoveJumpData(); // 0x0 (0)
 		
-		[ContainerField(140), MemberInfoFlag(41)]
+		[ContainerField(Name: "Zoom", Offset: 140, NameHash: 2089658322, Flags: 41)]
 		public GunSwayBaseMoveJumpData Zoom { get; set; } = new GunSwayBaseMoveJumpData(); // 0x8C (140)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

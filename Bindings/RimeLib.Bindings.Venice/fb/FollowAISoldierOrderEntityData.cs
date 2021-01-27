@@ -18,7 +18,7 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(48), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 48)]
 	public class FollowAISoldierOrderEntityData : 
 		FollowPlayerOrderEntityData
 	{

@@ -18,25 +18,25 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(36), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 36)]
 	public class BasicUnlockInfo : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, Blittable, MemberInfoFlag(49501)]
+		[ContainerField(Name: "UnlockGuid", Offset: 0, NameHash: 1036441738, Flags: 49501), LayoutImmutable, Blittable]
 		public GUID UnlockGuid { get; set; } // 0x0 (0)
 		
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
+		[ContainerField(Name: "Identifier", Offset: 16, NameHash: 3512790342, Flags: 49421), LayoutImmutable, Blittable]
 		public uint Identifier { get; set; } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
+		[ContainerField(Name: "UnlockScore", Offset: 20, NameHash: 4124076605, Flags: 49421), LayoutImmutable, Blittable]
 		public uint UnlockScore { get; set; } // 0x14 (20)
 		
-		[ContainerField(24), MemberInfoFlag(65), ContainerArray]
+		[ContainerField(Name: "Licenses", Offset: 24, NameHash: 2259172461, Flags: 65)]
 		public List<string> Licenses { get; set; } = new List<string>(); // 0x18 (24)
 		
-		[ContainerField(28), MemberInfoFlag(65), ContainerArray]
+		[ContainerField(Name: "AdditionalLicenses", Offset: 28, NameHash: 2557362420, Flags: 65)]
 		public List<string> AdditionalLicenses { get; set; } = new List<string>(); // 0x1C (28)
 		
-		[ContainerField(32), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "StringId", Offset: 32, NameHash: 3536090717, Flags: 16509), LayoutImmutable]
 		public string StringId { get; set; } // 0x20 (32)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

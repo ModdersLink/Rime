@@ -18,31 +18,31 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(32), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 32)]
 	public class TurnEffectData : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "MaxRollAngle", Offset: 0, NameHash: 863732973, Flags: 49469), LayoutImmutable, Blittable]
 		public float MaxRollAngle { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "MaxPitchAngle", Offset: 4, NameHash: 1228368214, Flags: 49469), LayoutImmutable, Blittable]
 		public float MaxPitchAngle { get; set; } // 0x4 (4)
 		
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "YawVelocityThreshhold", Offset: 8, NameHash: 3352651138, Flags: 49469), LayoutImmutable, Blittable]
 		public float YawVelocityThreshhold { get; set; } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "VelocityThreshhold", Offset: 12, NameHash: 2190993229, Flags: 49469), LayoutImmutable, Blittable]
 		public float VelocityThreshhold { get; set; } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "SafeTime", Offset: 16, NameHash: 1593077185, Flags: 49469), LayoutImmutable, Blittable]
 		public float SafeTime { get; set; } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "BeginTime", Offset: 20, NameHash: 900554935, Flags: 49469), LayoutImmutable, Blittable]
 		public float BeginTime { get; set; } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "HoldTime", Offset: 24, NameHash: 3936329343, Flags: 49469), LayoutImmutable, Blittable]
 		public float HoldTime { get; set; } // 0x18 (24)
 		
-		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "EndTime", Offset: 28, NameHash: 4286530879, Flags: 49469), LayoutImmutable, Blittable]
 		public float EndTime { get; set; } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

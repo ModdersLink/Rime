@@ -18,34 +18,34 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(36), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 36)]
 	public class SpringData : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "Length", Offset: 0, NameHash: 2906827577, Flags: 49469), LayoutImmutable, Blittable]
 		public float Length { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "Stiffness", Offset: 4, NameHash: 721813632, Flags: 49469), LayoutImmutable, Blittable]
 		public float Stiffness { get; set; } // 0x4 (4)
 		
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "Damping", Offset: 8, NameHash: 3862601053, Flags: 49469), LayoutImmutable, Blittable]
 		public float Damping { get; set; } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "MaxSpringForce", Offset: 12, NameHash: 140975709, Flags: 49469), LayoutImmutable, Blittable]
 		public float MaxSpringForce { get; set; } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "ProgressiveStartRatio", Offset: 16, NameHash: 623340227, Flags: 49469), LayoutImmutable, Blittable]
 		public float ProgressiveStartRatio { get; set; } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "ProgressiveExponent", Offset: 20, NameHash: 487101329, Flags: 49469), LayoutImmutable, Blittable]
 		public float ProgressiveExponent { get; set; } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "VisualClipOffset", Offset: 24, NameHash: 4006753322, Flags: 49469), LayoutImmutable, Blittable]
 		public float VisualClipOffset { get; set; } // 0x18 (24)
 		
-		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "AttachOffsetY", Offset: 28, NameHash: 1742442042, Flags: 49469), LayoutImmutable, Blittable]
 		public float AttachOffsetY { get; set; } // 0x1C (28)
 		
-		[ContainerField(32), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "DisabledStrenghModifier", Offset: 32, NameHash: 1291254003, Flags: 49469), LayoutImmutable, Blittable]
 		public float DisabledStrenghModifier { get; set; } // 0x20 (32)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

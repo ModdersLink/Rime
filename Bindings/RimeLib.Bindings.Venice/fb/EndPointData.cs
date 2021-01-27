@@ -18,22 +18,22 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(20), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 20)]
 	public class EndPointData : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "Pos", Offset: 0, NameHash: 193467465, Flags: 49469), LayoutImmutable, Blittable]
 		public float Pos { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "EndDamping", Offset: 4, NameHash: 2868914898, Flags: 49469), LayoutImmutable, Blittable]
 		public float EndDamping { get; set; } // 0x4 (4)
 		
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "SpringLength", Offset: 8, NameHash: 116753576, Flags: 49469), LayoutImmutable, Blittable]
 		public float SpringLength { get; set; } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "SpringAcceleration", Offset: 12, NameHash: 820551190, Flags: 49469), LayoutImmutable, Blittable]
 		public float SpringAcceleration { get; set; } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "SpringDamping", Offset: 16, NameHash: 1976598700, Flags: 49469), LayoutImmutable, Blittable]
 		public float SpringDamping { get; set; } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

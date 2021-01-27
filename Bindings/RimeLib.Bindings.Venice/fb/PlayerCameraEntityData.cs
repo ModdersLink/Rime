@@ -18,40 +18,40 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(128), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 128)]
 	public class PlayerCameraEntityData : 
 		CameraEntityBaseData
 	{
 		protected TargetMode m_SoldierTargetMode = new TargetMode();
-		[ContainerField(96), MemberInfoFlag(137), ContainerFieldNameHash(2742914237)]
+		[ContainerField(Name: "SoldierTargetMode", Offset: 96, NameHash: 2742914237, Flags: 137)]
 		public TargetMode SoldierTargetMode { get { return m_SoldierTargetMode; } set { if (OnPropertyChanging("PlayerCameraEntityData." + nameof(SoldierTargetMode), this, m_SoldierTargetMode, value)) m_SoldierTargetMode = value; } } // 0x60 (96)
 		
 		protected uint m_SoldierCameraIndex = new uint();
-		[ContainerField(100), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(61768104)]
+		[ContainerField(Name: "SoldierCameraIndex", Offset: 100, NameHash: 61768104, Flags: 49421), LayoutImmutable, Blittable]
 		public uint SoldierCameraIndex { get { return m_SoldierCameraIndex; } set { if (OnPropertyChanging("PlayerCameraEntityData." + nameof(SoldierCameraIndex), this, m_SoldierCameraIndex, value)) m_SoldierCameraIndex = value; } } // 0x64 (100)
 		
 		protected TargetMode m_VehicleTargetMode = new TargetMode();
-		[ContainerField(104), MemberInfoFlag(137), ContainerFieldNameHash(3963983535)]
+		[ContainerField(Name: "VehicleTargetMode", Offset: 104, NameHash: 3963983535, Flags: 137)]
 		public TargetMode VehicleTargetMode { get { return m_VehicleTargetMode; } set { if (OnPropertyChanging("PlayerCameraEntityData." + nameof(VehicleTargetMode), this, m_VehicleTargetMode, value)) m_VehicleTargetMode = value; } } // 0x68 (104)
 		
 		protected uint m_VehicleCameraIndex = new uint();
-		[ContainerField(108), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(1896906746)]
+		[ContainerField(Name: "VehicleCameraIndex", Offset: 108, NameHash: 1896906746, Flags: 49421), LayoutImmutable, Blittable]
 		public uint VehicleCameraIndex { get { return m_VehicleCameraIndex; } set { if (OnPropertyChanging("PlayerCameraEntityData." + nameof(VehicleCameraIndex), this, m_VehicleCameraIndex, value)) m_VehicleCameraIndex = value; } } // 0x6C (108)
 		
 		protected bool m_ReleaseControlIfTargetLost = new bool();
-		[ContainerField(112), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3292924305)]
+		[ContainerField(Name: "ReleaseControlIfTargetLost", Offset: 112, NameHash: 3292924305, Flags: 49325), LayoutImmutable, Blittable]
 		public bool ReleaseControlIfTargetLost { get { return m_ReleaseControlIfTargetLost; } set { if (OnPropertyChanging("PlayerCameraEntityData." + nameof(ReleaseControlIfTargetLost), this, m_ReleaseControlIfTargetLost, value)) m_ReleaseControlIfTargetLost = value; } } // 0x70 (112)
 		
 		protected bool m_ShouldTargetControllable = new bool();
-		[ContainerField(113), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(341097948)]
+		[ContainerField(Name: "ShouldTargetControllable", Offset: 113, NameHash: 341097948, Flags: 49325), LayoutImmutable, Blittable]
 		public bool ShouldTargetControllable { get { return m_ShouldTargetControllable; } set { if (OnPropertyChanging("PlayerCameraEntityData." + nameof(ShouldTargetControllable), this, m_ShouldTargetControllable, value)) m_ShouldTargetControllable = value; } } // 0x71 (113)
 		
 		protected bool m_ShouldTargetVehicleDriverEntry = new bool();
-		[ContainerField(114), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1821967951)]
+		[ContainerField(Name: "ShouldTargetVehicleDriverEntry", Offset: 114, NameHash: 1821967951, Flags: 49325), LayoutImmutable, Blittable]
 		public bool ShouldTargetVehicleDriverEntry { get { return m_ShouldTargetVehicleDriverEntry; } set { if (OnPropertyChanging("PlayerCameraEntityData." + nameof(ShouldTargetVehicleDriverEntry), this, m_ShouldTargetVehicleDriverEntry, value)) m_ShouldTargetVehicleDriverEntry = value; } } // 0x72 (114)
 		
 		protected bool m_ShouldTargetExtraPlayerInDoublePlayerEvent = new bool();
-		[ContainerField(115), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1876542201)]
+		[ContainerField(Name: "ShouldTargetExtraPlayerInDoublePlayerEvent", Offset: 115, NameHash: 1876542201, Flags: 49325), LayoutImmutable, Blittable]
 		public bool ShouldTargetExtraPlayerInDoublePlayerEvent { get { return m_ShouldTargetExtraPlayerInDoublePlayerEvent; } set { if (OnPropertyChanging("PlayerCameraEntityData." + nameof(ShouldTargetExtraPlayerInDoublePlayerEvent), this, m_ShouldTargetExtraPlayerInDoublePlayerEvent, value)) m_ShouldTargetExtraPlayerInDoublePlayerEvent = value; } } // 0x73 (115)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

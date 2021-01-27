@@ -18,36 +18,36 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(40), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 40)]
 	public class MultipleTargetPainterWeaponData : 
 		WeaponData
 	{
 		protected SpottingType m_SpottingBehavior = new SpottingType();
-		[ContainerField(16), MemberInfoFlag(137), ContainerFieldNameHash(3595491045)]
+		[ContainerField(Name: "SpottingBehavior", Offset: 16, NameHash: 3595491045, Flags: 137)]
 		public SpottingType SpottingBehavior { get { return m_SpottingBehavior; } set { if (OnPropertyChanging("MultipleTargetPainterWeaponData." + nameof(SpottingBehavior), this, m_SpottingBehavior, value)) m_SpottingBehavior = value; } } // 0x10 (16)
 		
 		protected float m_TimeObjectIsPainted = new float();
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(641195484)]
+		[ContainerField(Name: "TimeObjectIsPainted", Offset: 20, NameHash: 641195484, Flags: 49469), LayoutImmutable, Blittable]
 		public float TimeObjectIsPainted { get { return m_TimeObjectIsPainted; } set { if (OnPropertyChanging("MultipleTargetPainterWeaponData." + nameof(TimeObjectIsPainted), this, m_TimeObjectIsPainted, value)) m_TimeObjectIsPainted = value; } } // 0x14 (20)
 		
 		protected float m_Angle = new float();
-		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(205597860)]
+		[ContainerField(Name: "Angle", Offset: 24, NameHash: 205597860, Flags: 49469), LayoutImmutable, Blittable]
 		public float Angle { get { return m_Angle; } set { if (OnPropertyChanging("MultipleTargetPainterWeaponData." + nameof(Angle), this, m_Angle, value)) m_Angle = value; } } // 0x18 (24)
 		
 		protected float m_TimeObjectIsSpotted = new float();
-		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3440952178)]
+		[ContainerField(Name: "TimeObjectIsSpotted", Offset: 28, NameHash: 3440952178, Flags: 49469), LayoutImmutable, Blittable]
 		public float TimeObjectIsSpotted { get { return m_TimeObjectIsSpotted; } set { if (OnPropertyChanging("MultipleTargetPainterWeaponData." + nameof(TimeObjectIsSpotted), this, m_TimeObjectIsSpotted, value)) m_TimeObjectIsSpotted = value; } } // 0x1C (28)
 		
 		protected float m_Range = new float();
-		[ContainerField(32), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(230112826)]
+		[ContainerField(Name: "Range", Offset: 32, NameHash: 230112826, Flags: 49469), LayoutImmutable, Blittable]
 		public float Range { get { return m_Range; } set { if (OnPropertyChanging("MultipleTargetPainterWeaponData." + nameof(Range), this, m_Range, value)) m_Range = value; } } // 0x20 (32)
 		
 		protected bool m_UseSpotting = new bool();
-		[ContainerField(36), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3045673834)]
+		[ContainerField(Name: "UseSpotting", Offset: 36, NameHash: 3045673834, Flags: 49325), LayoutImmutable, Blittable]
 		public bool UseSpotting { get { return m_UseSpotting; } set { if (OnPropertyChanging("MultipleTargetPainterWeaponData." + nameof(UseSpotting), this, m_UseSpotting, value)) m_UseSpotting = value; } } // 0x24 (36)
 		
 		protected bool m_UseLaserPainting = new bool();
-		[ContainerField(37), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(952732621)]
+		[ContainerField(Name: "UseLaserPainting", Offset: 37, NameHash: 952732621, Flags: 49325), LayoutImmutable, Blittable]
 		public bool UseLaserPainting { get { return m_UseLaserPainting; } set { if (OnPropertyChanging("MultipleTargetPainterWeaponData." + nameof(UseLaserPainting), this, m_UseLaserPainting, value)) m_UseLaserPainting = value; } } // 0x25 (37)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

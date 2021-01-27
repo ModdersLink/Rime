@@ -18,19 +18,19 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(16), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 16)]
 	public class UavCameraPointData : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "MinTime", Offset: 0, NameHash: 1013155226, Flags: 49469), LayoutImmutable, Blittable]
 		public float MinTime { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "MaxTime", Offset: 4, NameHash: 1313681284, Flags: 49469), LayoutImmutable, Blittable]
 		public float MaxTime { get; set; } // 0x4 (4)
 		
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "Speed", Offset: 8, NameHash: 230887042, Flags: 49469), LayoutImmutable, Blittable]
 		public float Speed { get; set; } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "AccelerationTime", Offset: 12, NameHash: 1825667474, Flags: 49469), LayoutImmutable, Blittable]
 		public float AccelerationTime { get; set; } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

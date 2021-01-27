@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(64), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 64)]
 	public class AirResistanceData : 
 		ProcessorData
 	{
 		protected float m_DragFactor = new float();
-		[ContainerField(48), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(709065016)]
+		[ContainerField(Name: "DragFactor", Offset: 48, NameHash: 709065016, Flags: 49469), LayoutImmutable, Blittable]
 		public float DragFactor { get { return m_DragFactor; } set { if (OnPropertyChanging("AirResistanceData." + nameof(DragFactor), this, m_DragFactor, value)) m_DragFactor = value; } } // 0x30 (48)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

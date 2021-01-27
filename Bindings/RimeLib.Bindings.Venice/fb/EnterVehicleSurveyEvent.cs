@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(8), MemberInfoFlag(53), ContainerSize(40), ContainerClass]
+	[ContainerType(Alignment: 8,  Flags: 53, Size: 40)]
 	public class EnterVehicleSurveyEvent : 
 		MetricEvent
 	{
 		protected string m_VehicleName = string.Empty;
-		[ContainerField(16), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(926391226)]
+		[ContainerField(Name: "VehicleName", Offset: 16, NameHash: 926391226, Flags: 16509), LayoutImmutable]
 		public string VehicleName { get { return m_VehicleName; } set { if (OnPropertyChanging("EnterVehicleSurveyEvent." + nameof(VehicleName), this, m_VehicleName, value)) m_VehicleName = value; } } // 0x10 (16)
 		
 		protected GUID m_SurveyMetricLink = new GUID();
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49501), ContainerFieldNameHash(1497575487)]
+		[ContainerField(Name: "SurveyMetricLink", Offset: 20, NameHash: 1497575487, Flags: 49501), LayoutImmutable, Blittable]
 		public GUID SurveyMetricLink { get { return m_SurveyMetricLink; } set { if (OnPropertyChanging("EnterVehicleSurveyEvent." + nameof(SurveyMetricLink), this, m_SurveyMetricLink, value)) m_SurveyMetricLink = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

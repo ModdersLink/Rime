@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(20), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 20)]
 	public class JumpStateData : 
 		CharacterStateData
 	{
 		protected float m_JumpHeight = new float();
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1265809368)]
+		[ContainerField(Name: "JumpHeight", Offset: 12, NameHash: 1265809368, Flags: 49469), LayoutImmutable, Blittable]
 		public float JumpHeight { get { return m_JumpHeight; } set { if (OnPropertyChanging("JumpStateData." + nameof(JumpHeight), this, m_JumpHeight, value)) m_JumpHeight = value; } } // 0xC (12)
 		
 		protected float m_JumpEffectSize = new float();
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2845964789)]
+		[ContainerField(Name: "JumpEffectSize", Offset: 16, NameHash: 2845964789, Flags: 49469), LayoutImmutable, Blittable]
 		public float JumpEffectSize { get { return m_JumpEffectSize; } set { if (OnPropertyChanging("JumpStateData." + nameof(JumpEffectSize), this, m_JumpEffectSize, value)) m_JumpEffectSize = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

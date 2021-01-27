@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(24), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 24)]
 	public class SearchAndDestroyConstantData : 
 		Asset
 	{
 		protected float m_TimeToWaitMin = new float();
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3374725610)]
+		[ContainerField(Name: "TimeToWaitMin", Offset: 12, NameHash: 3374725610, Flags: 49469), LayoutImmutable, Blittable]
 		public float TimeToWaitMin { get { return m_TimeToWaitMin; } set { if (OnPropertyChanging("SearchAndDestroyConstantData." + nameof(TimeToWaitMin), this, m_TimeToWaitMin, value)) m_TimeToWaitMin = value; } } // 0xC (12)
 		
 		protected float m_TimeToWaitMax = new float();
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3374725876)]
+		[ContainerField(Name: "TimeToWaitMax", Offset: 16, NameHash: 3374725876, Flags: 49469), LayoutImmutable, Blittable]
 		public float TimeToWaitMax { get { return m_TimeToWaitMax; } set { if (OnPropertyChanging("SearchAndDestroyConstantData." + nameof(TimeToWaitMax), this, m_TimeToWaitMax, value)) m_TimeToWaitMax = value; } } // 0x10 (16)
 		
 		protected float m_DefaultSearchAndDestroyRadius = new float();
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(222001681)]
+		[ContainerField(Name: "DefaultSearchAndDestroyRadius", Offset: 20, NameHash: 222001681, Flags: 49469), LayoutImmutable, Blittable]
 		public float DefaultSearchAndDestroyRadius { get { return m_DefaultSearchAndDestroyRadius; } set { if (OnPropertyChanging("SearchAndDestroyConstantData." + nameof(DefaultSearchAndDestroyRadius), this, m_DefaultSearchAndDestroyRadius, value)) m_DefaultSearchAndDestroyRadius = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

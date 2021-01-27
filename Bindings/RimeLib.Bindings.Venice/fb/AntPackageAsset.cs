@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(44), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 44)]
 	public class AntPackageAsset : 
 		Asset
 	{
 		protected string m_Win32FileName = string.Empty;
-		[ContainerField(12), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(2932314709)]
+		[ContainerField(Name: "Win32FileName", Offset: 12, NameHash: 2932314709, Flags: 16509), LayoutImmutable]
 		public string Win32FileName { get { return m_Win32FileName; } set { if (OnPropertyChanging("AntPackageAsset." + nameof(Win32FileName), this, m_Win32FileName, value)) m_Win32FileName = value; } } // 0xC (12)
 		
 		protected string m_XePs3FileName = string.Empty;
-		[ContainerField(16), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(726189609)]
+		[ContainerField(Name: "XePs3FileName", Offset: 16, NameHash: 726189609, Flags: 16509), LayoutImmutable]
 		public string XePs3FileName { get { return m_XePs3FileName; } set { if (OnPropertyChanging("AntPackageAsset." + nameof(XePs3FileName), this, m_XePs3FileName, value)) m_XePs3FileName = value; } } // 0x10 (16)
 		
 		protected AntPackagingType m_PackagingType = new AntPackagingType();
-		[ContainerField(20), MemberInfoFlag(137), ContainerFieldNameHash(1490994978)]
+		[ContainerField(Name: "PackagingType", Offset: 20, NameHash: 1490994978, Flags: 137)]
 		public AntPackagingType PackagingType { get { return m_PackagingType; } set { if (OnPropertyChanging("AntPackageAsset." + nameof(PackagingType), this, m_PackagingType, value)) m_PackagingType = value; } } // 0x14 (20)
 		
 		protected GUID m_StreamingGuid = new GUID();
-		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49501), ContainerFieldNameHash(24747526)]
+		[ContainerField(Name: "StreamingGuid", Offset: 24, NameHash: 24747526, Flags: 49501), LayoutImmutable, Blittable]
 		public GUID StreamingGuid { get { return m_StreamingGuid; } set { if (OnPropertyChanging("AntPackageAsset." + nameof(StreamingGuid), this, m_StreamingGuid, value)) m_StreamingGuid = value; } } // 0x18 (24)
 		
 		protected uint m_ChunkSize = new uint();
-		[ContainerField(40), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(3692630139)]
+		[ContainerField(Name: "ChunkSize", Offset: 40, NameHash: 3692630139, Flags: 49421), LayoutImmutable, Blittable]
 		public uint ChunkSize { get { return m_ChunkSize; } set { if (OnPropertyChanging("AntPackageAsset." + nameof(ChunkSize), this, m_ChunkSize, value)) m_ChunkSize = value; } } // 0x28 (40)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

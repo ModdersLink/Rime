@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(16), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
 	public class GunMasterKillCounterEntityData : 
 		EntityData
 	{
 		protected List<GunMasterWeaponsPreset> m_WeaponsPreset = new List<GunMasterWeaponsPreset>();
-		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(3199558001), ContainerArray]
+		[ContainerField(Name: "WeaponsPreset", Offset: 12, NameHash: 3199558001, Flags: 65)]
 		public List<GunMasterWeaponsPreset> WeaponsPreset { get { return m_WeaponsPreset; } set { if (OnPropertyChanging("GunMasterKillCounterEntityData." + nameof(WeaponsPreset), this, m_WeaponsPreset, value)) m_WeaponsPreset = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

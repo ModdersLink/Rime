@@ -18,76 +18,76 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(92), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 92)]
 	public class SoldierHealthModuleBinding : FrostbiteContainer
 	{
-		[ContainerField(0), MemberInfoFlag(41)]
+		[ContainerField(Name: "HeadShot", Offset: 0, NameHash: 1879088173, Flags: 41)]
 		public AntRef HeadShot { get; set; } = new AntRef(); // 0x0 (0)
 		
-		[ContainerField(4), MemberInfoFlag(41)]
+		[ContainerField(Name: "LeftArmHit", Offset: 4, NameHash: 3127433237, Flags: 41)]
 		public AntRef LeftArmHit { get; set; } = new AntRef(); // 0x4 (4)
 		
-		[ContainerField(8), MemberInfoFlag(41)]
+		[ContainerField(Name: "RightArmHit", Offset: 8, NameHash: 2197362286, Flags: 41)]
 		public AntRef RightArmHit { get; set; } = new AntRef(); // 0x8 (8)
 		
-		[ContainerField(12), MemberInfoFlag(41)]
+		[ContainerField(Name: "LeftLegHit", Offset: 12, NameHash: 2411705509, Flags: 41)]
 		public AntRef LeftLegHit { get; set; } = new AntRef(); // 0xC (12)
 		
-		[ContainerField(16), MemberInfoFlag(41)]
+		[ContainerField(Name: "RightLegHit", Offset: 16, NameHash: 2600294366, Flags: 41)]
 		public AntRef RightLegHit { get; set; } = new AntRef(); // 0x10 (16)
 		
-		[ContainerField(20), MemberInfoFlag(41)]
+		[ContainerField(Name: "OnGround", Offset: 20, NameHash: 1569364897, Flags: 41)]
 		public AntRef OnGround { get; set; } = new AntRef(); // 0x14 (20)
 		
-		[ContainerField(24), MemberInfoFlag(41)]
+		[ContainerField(Name: "DeathAnimationTriggered", Offset: 24, NameHash: 47349622, Flags: 41)]
 		public AntRef DeathAnimationTriggered { get; set; } = new AntRef(); // 0x18 (24)
 		
-		[ContainerField(28), MemberInfoFlag(41)]
+		[ContainerField(Name: "RandomAnimationIndex", Offset: 28, NameHash: 3646496566, Flags: 41)]
 		public AntRef RandomAnimationIndex { get; set; } = new AntRef(); // 0x1C (28)
 		
-		[ContainerField(32), MemberInfoFlag(41)]
+		[ContainerField(Name: "Sprinting", Offset: 32, NameHash: 3687360775, Flags: 41)]
 		public AntRef Sprinting { get; set; } = new AntRef(); // 0x20 (32)
 		
-		[ContainerField(36), MemberInfoFlag(41)]
+		[ContainerField(Name: "HitLeft", Offset: 36, NameHash: 1867156715, Flags: 41)]
 		public AntRef HitLeft { get; set; } = new AntRef(); // 0x24 (36)
 		
-		[ContainerField(40), MemberInfoFlag(41)]
+		[ContainerField(Name: "HitRight", Offset: 40, NameHash: 1460819504, Flags: 41)]
 		public AntRef HitRight { get; set; } = new AntRef(); // 0x28 (40)
 		
-		[ContainerField(44), MemberInfoFlag(41)]
+		[ContainerField(Name: "HitFront", Offset: 44, NameHash: 1483500369, Flags: 41)]
 		public AntRef HitFront { get; set; } = new AntRef(); // 0x2C (44)
 		
-		[ContainerField(48), MemberInfoFlag(41)]
+		[ContainerField(Name: "HitBack", Offset: 48, NameHash: 1866940763, Flags: 41)]
 		public AntRef HitBack { get; set; } = new AntRef(); // 0x30 (48)
 		
-		[ContainerField(52), MemberInfoFlag(41)]
+		[ContainerField(Name: "DeathHitDirection", Offset: 52, NameHash: 2501867113, Flags: 41)]
 		public AntRef DeathHitDirection { get; set; } = new AntRef(); // 0x34 (52)
 		
-		[ContainerField(56), MemberInfoFlag(41)]
+		[ContainerField(Name: "Explosion", Offset: 56, NameHash: 2222171184, Flags: 41)]
 		public AntRef Explosion { get; set; } = new AntRef(); // 0x38 (56)
 		
-		[ContainerField(60), MemberInfoFlag(41)]
+		[ContainerField(Name: "Dead", Offset: 60, NameHash: 2088734529, Flags: 41)]
 		public AntRef Dead { get; set; } = new AntRef(); // 0x3C (60)
 		
-		[ContainerField(64), MemberInfoFlag(41)]
+		[ContainerField(Name: "Revived", Offset: 64, NameHash: 1309478938, Flags: 41)]
 		public AntRef Revived { get; set; } = new AntRef(); // 0x40 (64)
 		
-		[ContainerField(68), MemberInfoFlag(41)]
+		[ContainerField(Name: "RandomValue", Offset: 68, NameHash: 1123937429, Flags: 41)]
 		public AntRef RandomValue { get; set; } = new AntRef(); // 0x44 (68)
 		
-		[ContainerField(72), MemberInfoFlag(41)]
+		[ContainerField(Name: "Pose", Offset: 72, NameHash: 2089458956, Flags: 41)]
 		public AntRef Pose { get; set; } = new AntRef(); // 0x48 (72)
 		
-		[ContainerField(76), MemberInfoFlag(41)]
+		[ContainerField(Name: "RightSpeed", Offset: 76, NameHash: 742191746, Flags: 41)]
 		public AntRef RightSpeed { get; set; } = new AntRef(); // 0x4C (76)
 		
-		[ContainerField(80), MemberInfoFlag(41)]
+		[ContainerField(Name: "ForwardSpeed", Offset: 80, NameHash: 333477913, Flags: 41)]
 		public AntRef ForwardSpeed { get; set; } = new AntRef(); // 0x50 (80)
 		
-		[ContainerField(84), MemberInfoFlag(41)]
+		[ContainerField(Name: "CriticallyHit", Offset: 84, NameHash: 2270513582, Flags: 41)]
 		public AntRef CriticallyHit { get; set; } = new AntRef(); // 0x54 (84)
 		
-		[ContainerField(88), MemberInfoFlag(41)]
+		[ContainerField(Name: "InteractiveManDown", Offset: 88, NameHash: 701073533, Flags: 41)]
 		public AntRef InteractiveManDown { get; set; } = new AntRef(); // 0x58 (88)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

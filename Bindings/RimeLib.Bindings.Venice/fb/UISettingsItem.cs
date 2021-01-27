@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(12), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 12)]
 	public class UISettingsItem : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "NameSid", Offset: 0, NameHash: 3153745340, Flags: 16509), LayoutImmutable]
 		public string NameSid { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), MemberInfoFlag(137)]
+		[ContainerField(Name: "StartEndSymbols", Offset: 4, NameHash: 1013788735, Flags: 137)]
 		public UISettingSymbols StartEndSymbols { get; set; } = new UISettingSymbols(); // 0x4 (4)
 		
-		[ContainerField(8), MemberInfoFlag(53), ContainerCtrRef]
+		[ContainerField(Name: "Setting", Offset: 8, NameHash: 2752851091, Flags: 53)]
 		public CtrRef<ProfileOptionData> Setting { get; set; } = new CtrRef<ProfileOptionData>(); // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

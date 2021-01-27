@@ -18,52 +18,52 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(160), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 160)]
 	public class InspectEntityData : 
 		GameEntityData
 	{
 		protected Vec3 m_CenterOffset = new Vec3();
-		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(362641347)]
+		[ContainerField(Name: "CenterOffset", Offset: 96, NameHash: 362641347, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 CenterOffset { get { return m_CenterOffset; } set { if (OnPropertyChanging("InspectEntityData." + nameof(CenterOffset), this, m_CenterOffset, value)) m_CenterOffset = value; } } // 0x60 (96)
 		
 		protected string m_UIName = string.Empty;
-		[ContainerField(112), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(2999506814)]
+		[ContainerField(Name: "UIName", Offset: 112, NameHash: 2999506814, Flags: 16509), LayoutImmutable]
 		public string UIName { get { return m_UIName; } set { if (OnPropertyChanging("InspectEntityData." + nameof(UIName), this, m_UIName, value)) m_UIName = value; } } // 0x70 (112)
 		
 		protected float m_MaxLookAtHeight = new float();
-		[ContainerField(116), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2912738716)]
+		[ContainerField(Name: "MaxLookAtHeight", Offset: 116, NameHash: 2912738716, Flags: 49469), LayoutImmutable, Blittable]
 		public float MaxLookAtHeight { get { return m_MaxLookAtHeight; } set { if (OnPropertyChanging("InspectEntityData." + nameof(MaxLookAtHeight), this, m_MaxLookAtHeight, value)) m_MaxLookAtHeight = value; } } // 0x74 (116)
 		
 		protected List<InspectViewPointData> m_ViewPoints = new List<InspectViewPointData>();
-		[ContainerField(120), MemberInfoFlag(65), ContainerFieldNameHash(92696663), ContainerArray]
+		[ContainerField(Name: "ViewPoints", Offset: 120, NameHash: 92696663, Flags: 65)]
 		public List<InspectViewPointData> ViewPoints { get { return m_ViewPoints; } set { if (OnPropertyChanging("InspectEntityData." + nameof(ViewPoints), this, m_ViewPoints, value)) m_ViewPoints = value; } } // 0x78 (120)
 		
 		protected RefArray<TargetCameraData> m_Cameras = new RefArray<TargetCameraData>();
-		[ContainerField(124), MemberInfoFlag(65), ContainerFieldNameHash(3740512847), ContainerRefArray]
+		[ContainerField(Name: "Cameras", Offset: 124, NameHash: 3740512847, Flags: 65)]
 		public RefArray<TargetCameraData> Cameras { get { return m_Cameras; } set { if (OnPropertyChanging("InspectEntityData." + nameof(Cameras), this, m_Cameras, value)) m_Cameras = value; } } // 0x7C (124)
 		
 		protected float m_MinLookAtHeight = new float();
-		[ContainerField(128), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3192024578)]
+		[ContainerField(Name: "MinLookAtHeight", Offset: 128, NameHash: 3192024578, Flags: 49469), LayoutImmutable, Blittable]
 		public float MinLookAtHeight { get { return m_MinLookAtHeight; } set { if (OnPropertyChanging("InspectEntityData." + nameof(MinLookAtHeight), this, m_MinLookAtHeight, value)) m_MinLookAtHeight = value; } } // 0x80 (128)
 		
 		protected float m_MinDistance = new float();
-		[ContainerField(132), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1885855628)]
+		[ContainerField(Name: "MinDistance", Offset: 132, NameHash: 1885855628, Flags: 49469), LayoutImmutable, Blittable]
 		public float MinDistance { get { return m_MinDistance; } set { if (OnPropertyChanging("InspectEntityData." + nameof(MinDistance), this, m_MinDistance, value)) m_MinDistance = value; } } // 0x84 (132)
 		
 		protected float m_ZoomScrollSpeed = new float();
-		[ContainerField(136), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3969725080)]
+		[ContainerField(Name: "ZoomScrollSpeed", Offset: 136, NameHash: 3969725080, Flags: 49469), LayoutImmutable, Blittable]
 		public float ZoomScrollSpeed { get { return m_ZoomScrollSpeed; } set { if (OnPropertyChanging("InspectEntityData." + nameof(ZoomScrollSpeed), this, m_ZoomScrollSpeed, value)) m_ZoomScrollSpeed = value; } } // 0x88 (136)
 		
 		protected float m_MaxDistance = new float();
-		[ContainerField(140), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3520454034)]
+		[ContainerField(Name: "MaxDistance", Offset: 140, NameHash: 3520454034, Flags: 49469), LayoutImmutable, Blittable]
 		public float MaxDistance { get { return m_MaxDistance; } set { if (OnPropertyChanging("InspectEntityData." + nameof(MaxDistance), this, m_MaxDistance, value)) m_MaxDistance = value; } } // 0x8C (140)
 		
 		protected AntRef m_AnimationSignal = new AntRef();
-		[ContainerField(144), MemberInfoFlag(41), ContainerFieldNameHash(2364599213)]
+		[ContainerField(Name: "AnimationSignal", Offset: 144, NameHash: 2364599213, Flags: 41)]
 		public AntRef AnimationSignal { get { return m_AnimationSignal; } set { if (OnPropertyChanging("InspectEntityData." + nameof(AnimationSignal), this, m_AnimationSignal, value)) m_AnimationSignal = value; } } // 0x90 (144)
 		
 		protected float m_ZoomScrollAcceleration = new float();
-		[ContainerField(148), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2121669405)]
+		[ContainerField(Name: "ZoomScrollAcceleration", Offset: 148, NameHash: 2121669405, Flags: 49469), LayoutImmutable, Blittable]
 		public float ZoomScrollAcceleration { get { return m_ZoomScrollAcceleration; } set { if (OnPropertyChanging("InspectEntityData." + nameof(ZoomScrollAcceleration), this, m_ZoomScrollAcceleration, value)) m_ZoomScrollAcceleration = value; } } // 0x94 (148)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,19 +18,19 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(16), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 16)]
 	public class StatSpamSetting : FrostbiteContainer
 	{
-		[ContainerField(0), MemberInfoFlag(137)]
+		[ContainerField(Name: "Event", Offset: 0, NameHash: 201427689, Flags: 137)]
 		public StatEvent Event { get; set; } = new StatEvent(); // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
+		[ContainerField(Name: "AmountLimit", Offset: 4, NameHash: 4229032540, Flags: 49421), LayoutImmutable, Blittable]
 		public uint AmountLimit { get; set; } // 0x4 (4)
 		
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "TimeLimit", Offset: 8, NameHash: 205910853, Flags: 49469), LayoutImmutable, Blittable]
 		public float TimeLimit { get; set; } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "PlayerToPlayer", Offset: 12, NameHash: 2558647998, Flags: 49325), LayoutImmutable, Blittable]
 		public bool PlayerToPlayer { get; set; } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,32 +18,32 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(144), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 144)]
 	public class KillCounterEntityData : 
 		GameEntityData
 	{
 		protected KillWeight m_TeamKillWeight = new KillWeight();
-		[ContainerField(96), MemberInfoFlag(41), ContainerFieldNameHash(998126394)]
+		[ContainerField(Name: "TeamKillWeight", Offset: 96, NameHash: 998126394, Flags: 41)]
 		public KillWeight TeamKillWeight { get { return m_TeamKillWeight; } set { if (OnPropertyChanging("KillCounterEntityData." + nameof(TeamKillWeight), this, m_TeamKillWeight, value)) m_TeamKillWeight = value; } } // 0x60 (96)
 		
 		protected TeamId m_TeamId = new TeamId();
-		[ContainerField(108), MemberInfoFlag(137), ContainerFieldNameHash(3220374101)]
+		[ContainerField(Name: "TeamId", Offset: 108, NameHash: 3220374101, Flags: 137)]
 		public TeamId TeamId { get { return m_TeamId; } set { if (OnPropertyChanging("KillCounterEntityData." + nameof(TeamId), this, m_TeamId, value)) m_TeamId = value; } } // 0x6C (108)
 		
 		protected KillWeight m_NeutralTeamWeight = new KillWeight();
-		[ContainerField(112), MemberInfoFlag(41), ContainerFieldNameHash(358454093)]
+		[ContainerField(Name: "NeutralTeamWeight", Offset: 112, NameHash: 358454093, Flags: 41)]
 		public KillWeight NeutralTeamWeight { get { return m_NeutralTeamWeight; } set { if (OnPropertyChanging("KillCounterEntityData." + nameof(NeutralTeamWeight), this, m_NeutralTeamWeight, value)) m_NeutralTeamWeight = value; } } // 0x70 (112)
 		
 		protected float m_EnemyWeight = new float();
-		[ContainerField(124), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3888167615)]
+		[ContainerField(Name: "EnemyWeight", Offset: 124, NameHash: 3888167615, Flags: 49469), LayoutImmutable, Blittable]
 		public float EnemyWeight { get { return m_EnemyWeight; } set { if (OnPropertyChanging("KillCounterEntityData." + nameof(EnemyWeight), this, m_EnemyWeight, value)) m_EnemyWeight = value; } } // 0x7C (124)
 		
 		protected uint m_MaxKillCount = new uint();
-		[ContainerField(128), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(4105122832)]
+		[ContainerField(Name: "MaxKillCount", Offset: 128, NameHash: 4105122832, Flags: 49421), LayoutImmutable, Blittable]
 		public uint MaxKillCount { get { return m_MaxKillCount; } set { if (OnPropertyChanging("KillCounterEntityData." + nameof(MaxKillCount), this, m_MaxKillCount, value)) m_MaxKillCount = value; } } // 0x80 (128)
 		
 		protected bool m_IgnoreAI = new bool();
-		[ContainerField(132), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3960373301)]
+		[ContainerField(Name: "IgnoreAI", Offset: 132, NameHash: 3960373301, Flags: 49325), LayoutImmutable, Blittable]
 		public bool IgnoreAI { get { return m_IgnoreAI; } set { if (OnPropertyChanging("KillCounterEntityData." + nameof(IgnoreAI), this, m_IgnoreAI, value)) m_IgnoreAI = value; } } // 0x84 (132)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

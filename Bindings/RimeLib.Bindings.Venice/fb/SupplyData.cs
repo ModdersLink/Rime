@@ -18,25 +18,25 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(44), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 44)]
 	public class SupplyData : FrostbiteContainer
 	{
-		[ContainerField(0), MemberInfoFlag(41)]
+		[ContainerField(Name: "Healing", Offset: 0, NameHash: 2008873029, Flags: 41)]
 		public SupplyUnitSphereData Healing { get; set; } = new SupplyUnitSphereData(); // 0x0 (0)
 		
-		[ContainerField(20), MemberInfoFlag(41)]
+		[ContainerField(Name: "Ammo", Offset: 20, NameHash: 2088639403, Flags: 41)]
 		public SupplyUnitSphereData Ammo { get; set; } = new SupplyUnitSphereData(); // 0x14 (20)
 		
-		[ContainerField(40), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "SupplyVehicles", Offset: 40, NameHash: 827934845, Flags: 49325), LayoutImmutable, Blittable]
 		public bool SupplyVehicles { get; set; } // 0x28 (40)
 		
-		[ContainerField(41), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "SupplySoldiers", Offset: 41, NameHash: 1875571247, Flags: 49325), LayoutImmutable, Blittable]
 		public bool SupplySoldiers { get; set; } // 0x29 (41)
 		
-		[ContainerField(42), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "TeamSpecific", Offset: 42, NameHash: 3883487160, Flags: 49325), LayoutImmutable, Blittable]
 		public bool TeamSpecific { get; set; } // 0x2A (42)
 		
-		[ContainerField(43), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "ExcludeSelf", Offset: 43, NameHash: 1064218111, Flags: 49325), LayoutImmutable, Blittable]
 		public bool ExcludeSelf { get; set; } // 0x2B (43)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

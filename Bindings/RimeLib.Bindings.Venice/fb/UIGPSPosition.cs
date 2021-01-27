@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(8), MemberInfoFlag(41), ContainerSize(24), ContainerStruct]
+	[ContainerType(Alignment: 8,  Flags: 41, Size: 24)]
 	public class UIGPSPosition : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, Blittable, MemberInfoFlag(49485)]
+		[ContainerField(Name: "Latitude", Offset: 0, NameHash: 591028213, Flags: 49485), LayoutImmutable, Blittable]
 		public double Latitude { get; set; } // 0x0 (0)
 		
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49485)]
+		[ContainerField(Name: "Longitude", Offset: 8, NameHash: 3158300774, Flags: 49485), LayoutImmutable, Blittable]
 		public double Longitude { get; set; } // 0x8 (8)
 		
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49485)]
+		[ContainerField(Name: "SeaLevelOffset", Offset: 16, NameHash: 2454050473, Flags: 49485), LayoutImmutable, Blittable]
 		public double SeaLevelOffset { get; set; } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

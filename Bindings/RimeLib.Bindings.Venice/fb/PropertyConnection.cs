@@ -18,19 +18,19 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(16), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 16)]
 	public class PropertyConnection : FrostbiteContainer
 	{
-		[ContainerField(0), MemberInfoFlag(53), ContainerCtrRef]
+		[ContainerField(Name: "Source", Offset: 0, NameHash: 3339738264, Flags: 53)]
 		public CtrRef<DataContainer> Source { get; set; } = new CtrRef<DataContainer>(); // 0x0 (0)
 		
-		[ContainerField(4), MemberInfoFlag(53), ContainerCtrRef]
+		[ContainerField(Name: "Target", Offset: 4, NameHash: 3215022804, Flags: 53)]
 		public CtrRef<DataContainer> Target { get; set; } = new CtrRef<DataContainer>(); // 0x4 (4)
 		
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49405)]
+		[ContainerField(Name: "SourceFieldId", Offset: 8, NameHash: 4259496439, Flags: 49405), LayoutImmutable, Blittable]
 		public int SourceFieldId { get; set; } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49405)]
+		[ContainerField(Name: "TargetFieldId", Offset: 12, NameHash: 2227058747, Flags: 49405), LayoutImmutable, Blittable]
 		public int TargetFieldId { get; set; } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

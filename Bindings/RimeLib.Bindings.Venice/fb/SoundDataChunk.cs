@@ -18,13 +18,13 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(20), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 20)]
 	public class SoundDataChunk : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, Blittable, MemberInfoFlag(49501)]
+		[ContainerField(Name: "ChunkId", Offset: 0, NameHash: 4097216883, Flags: 49501), LayoutImmutable, Blittable]
 		public GUID ChunkId { get; set; } // 0x0 (0)
 		
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
+		[ContainerField(Name: "ChunkSize", Offset: 16, NameHash: 3692630139, Flags: 49421), LayoutImmutable, Blittable]
 		public uint ChunkSize { get; set; } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

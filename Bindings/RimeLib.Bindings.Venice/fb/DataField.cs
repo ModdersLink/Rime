@@ -18,19 +18,19 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(16), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 16)]
 	public class DataField : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "Value", Offset: 0, NameHash: 225375086, Flags: 16509), LayoutImmutable]
 		public string Value { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), MemberInfoFlag(53), ContainerCtrRef]
+		[ContainerField(Name: "ValueRef", Offset: 4, NameHash: 3291194335, Flags: 53)]
 		public CtrRef<DataContainer> ValueRef { get; set; } = new CtrRef<DataContainer>(); // 0x4 (4)
 		
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49405)]
+		[ContainerField(Name: "Id", Offset: 8, NameHash: 5862152, Flags: 49405), LayoutImmutable, Blittable]
 		public int Id { get; set; } // 0x8 (8)
 		
-		[ContainerField(12), MemberInfoFlag(137)]
+		[ContainerField(Name: "AccessType", Offset: 12, NameHash: 2232606137, Flags: 137)]
 		public FieldAccessType AccessType { get; set; } = new FieldAccessType(); // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

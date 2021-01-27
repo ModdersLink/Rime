@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(12), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 12)]
 	public class Ps3ParentalLockAgeSettingsOverrides : 
 		DataContainer
 	{
 		protected List<Ps3ParentalLockAgeSettingsForCountry> m_Overrides = new List<Ps3ParentalLockAgeSettingsForCountry>();
-		[ContainerField(8), MemberInfoFlag(65), ContainerFieldNameHash(2465446370), ContainerArray]
+		[ContainerField(Name: "Overrides", Offset: 8, NameHash: 2465446370, Flags: 65)]
 		public List<Ps3ParentalLockAgeSettingsForCountry> Overrides { get { return m_Overrides; } set { if (OnPropertyChanging("Ps3ParentalLockAgeSettingsOverrides." + nameof(Overrides), this, m_Overrides, value)) m_Overrides = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

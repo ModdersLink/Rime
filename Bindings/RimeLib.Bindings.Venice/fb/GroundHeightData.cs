@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(16), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 16)]
 	public class GroundHeightData : FrostbiteContainer
 	{
-		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
+		[ContainerField(Name: "HeightSpan", Offset: 0, NameHash: 3361614390, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec2 HeightSpan { get; set; } = new Vec2(); // 0x0 (0)
 		
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "WorldSize", Offset: 8, NameHash: 2492064770, Flags: 49469), LayoutImmutable, Blittable]
 		public float WorldSize { get; set; } // 0x8 (8)
 		
-		[ContainerField(12), MemberInfoFlag(65), ContainerArray]
+		[ContainerField(Name: "Data", Offset: 12, NameHash: 2088730869, Flags: 65)]
 		public List<ushort> Data { get; set; } = new List<ushort>(); // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,40 +18,40 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(40), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 40)]
 	public class VoiceOverLabelNode : 
 		VoiceOverExpressionNode
 	{
 		protected RefArray<VoiceOverLabelSource> m_Sources = new RefArray<VoiceOverLabelSource>();
-		[ContainerField(8), MemberInfoFlag(65), ContainerFieldNameHash(2837180395), ContainerRefArray]
+		[ContainerField(Name: "Sources", Offset: 8, NameHash: 2837180395, Flags: 65)]
 		public RefArray<VoiceOverLabelSource> Sources { get { return m_Sources; } set { if (OnPropertyChanging("VoiceOverLabelNode." + nameof(Sources), this, m_Sources, value)) m_Sources = value; } } // 0x8 (8)
 		
 		protected CtrRef<VoiceOverValue> m_False = new CtrRef<VoiceOverValue>();
-		[ContainerField(12), MemberInfoFlag(53), ContainerFieldNameHash(206401336), ContainerCtrRef]
+		[ContainerField(Name: "False", Offset: 12, NameHash: 206401336, Flags: 53)]
 		public CtrRef<VoiceOverValue> False { get { return m_False; } set { if (OnPropertyChanging("VoiceOverLabelNode." + nameof(False), this, m_False, value)) m_False = value; } } // 0xC (12)
 		
 		protected CtrRef<VoiceOverValue> m_True = new CtrRef<VoiceOverValue>();
-		[ContainerField(16), MemberInfoFlag(53), ContainerFieldNameHash(2089293587), ContainerCtrRef]
+		[ContainerField(Name: "True", Offset: 16, NameHash: 2089293587, Flags: 53)]
 		public CtrRef<VoiceOverValue> True { get { return m_True; } set { if (OnPropertyChanging("VoiceOverLabelNode." + nameof(True), this, m_True, value)) m_True = value; } } // 0x10 (16)
 		
 		protected RefArray<VoiceOverLabel> m_WantedLabels = new RefArray<VoiceOverLabel>();
-		[ContainerField(20), MemberInfoFlag(65), ContainerFieldNameHash(591591005), ContainerRefArray]
+		[ContainerField(Name: "WantedLabels", Offset: 20, NameHash: 591591005, Flags: 65)]
 		public RefArray<VoiceOverLabel> WantedLabels { get { return m_WantedLabels; } set { if (OnPropertyChanging("VoiceOverLabelNode." + nameof(WantedLabels), this, m_WantedLabels, value)) m_WantedLabels = value; } } // 0x14 (20)
 		
 		protected RefArray<VoiceOverLabel> m_UnwantedLabels = new RefArray<VoiceOverLabel>();
-		[ContainerField(24), MemberInfoFlag(65), ContainerFieldNameHash(2244868070), ContainerRefArray]
+		[ContainerField(Name: "UnwantedLabels", Offset: 24, NameHash: 2244868070, Flags: 65)]
 		public RefArray<VoiceOverLabel> UnwantedLabels { get { return m_UnwantedLabels; } set { if (OnPropertyChanging("VoiceOverLabelNode." + nameof(UnwantedLabels), this, m_UnwantedLabels, value)) m_UnwantedLabels = value; } } // 0x18 (24)
 		
 		protected VoiceOverLabelSourceMode m_SourceMode = new VoiceOverLabelSourceMode();
-		[ContainerField(28), MemberInfoFlag(137), ContainerFieldNameHash(1522324635)]
+		[ContainerField(Name: "SourceMode", Offset: 28, NameHash: 1522324635, Flags: 137)]
 		public VoiceOverLabelSourceMode SourceMode { get { return m_SourceMode; } set { if (OnPropertyChanging("VoiceOverLabelNode." + nameof(SourceMode), this, m_SourceMode, value)) m_SourceMode = value; } } // 0x1C (28)
 		
 		protected VoiceOverLabelCompareMode m_WantedCompareMode = new VoiceOverLabelCompareMode();
-		[ContainerField(32), MemberInfoFlag(137), ContainerFieldNameHash(1232611212)]
+		[ContainerField(Name: "WantedCompareMode", Offset: 32, NameHash: 1232611212, Flags: 137)]
 		public VoiceOverLabelCompareMode WantedCompareMode { get { return m_WantedCompareMode; } set { if (OnPropertyChanging("VoiceOverLabelNode." + nameof(WantedCompareMode), this, m_WantedCompareMode, value)) m_WantedCompareMode = value; } } // 0x20 (32)
 		
 		protected VoiceOverLabelCompareMode m_UnwantedCompareMode = new VoiceOverLabelCompareMode();
-		[ContainerField(36), MemberInfoFlag(137), ContainerFieldNameHash(133443287)]
+		[ContainerField(Name: "UnwantedCompareMode", Offset: 36, NameHash: 133443287, Flags: 137)]
 		public VoiceOverLabelCompareMode UnwantedCompareMode { get { return m_UnwantedCompareMode; } set { if (OnPropertyChanging("VoiceOverLabelNode." + nameof(UnwantedCompareMode), this, m_UnwantedCompareMode, value)) m_UnwantedCompareMode = value; } } // 0x24 (36)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

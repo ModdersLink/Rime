@@ -18,32 +18,32 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(48), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 48)]
 	public class CrossfaderNodeData : 
 		AudioGraphNodeData
 	{
 		protected AudioGraphNodePort m_In1 = new AudioGraphNodePort();
-		[ContainerField(8), MemberInfoFlag(41), ContainerFieldNameHash(193450867)]
+		[ContainerField(Name: "In1", Offset: 8, NameHash: 193450867, Flags: 41)]
 		public AudioGraphNodePort In1 { get { return m_In1; } set { if (OnPropertyChanging("CrossfaderNodeData." + nameof(In1), this, m_In1, value)) m_In1 = value; } } // 0x8 (8)
 		
 		protected AudioGraphNodePort m_In2 = new AudioGraphNodePort();
-		[ContainerField(16), MemberInfoFlag(41), ContainerFieldNameHash(193450864)]
+		[ContainerField(Name: "In2", Offset: 16, NameHash: 193450864, Flags: 41)]
 		public AudioGraphNodePort In2 { get { return m_In2; } set { if (OnPropertyChanging("CrossfaderNodeData." + nameof(In2), this, m_In2, value)) m_In2 = value; } } // 0x10 (16)
 		
 		protected AudioGraphNodePort m_Ctrl = new AudioGraphNodePort();
-		[ContainerField(24), MemberInfoFlag(41), ContainerFieldNameHash(2088859916)]
+		[ContainerField(Name: "Ctrl", Offset: 24, NameHash: 2088859916, Flags: 41)]
 		public AudioGraphNodePort Ctrl { get { return m_Ctrl; } set { if (OnPropertyChanging("CrossfaderNodeData." + nameof(Ctrl), this, m_Ctrl, value)) m_Ctrl = value; } } // 0x18 (24)
 		
 		protected AudioGraphNodePort m_Out = new AudioGraphNodePort();
-		[ContainerField(32), MemberInfoFlag(41), ContainerFieldNameHash(193453899)]
+		[ContainerField(Name: "Out", Offset: 32, NameHash: 193453899, Flags: 41)]
 		public AudioGraphNodePort Out { get { return m_Out; } set { if (OnPropertyChanging("CrossfaderNodeData." + nameof(Out), this, m_Out, value)) m_Out = value; } } // 0x20 (32)
 		
 		protected SoundGraphPluginRef m_Plugin1 = new SoundGraphPluginRef();
-		[ContainerField(40), MemberInfoFlag(41), ContainerFieldNameHash(14514205)]
+		[ContainerField(Name: "Plugin1", Offset: 40, NameHash: 14514205, Flags: 41)]
 		public SoundGraphPluginRef Plugin1 { get { return m_Plugin1; } set { if (OnPropertyChanging("CrossfaderNodeData." + nameof(Plugin1), this, m_Plugin1, value)) m_Plugin1 = value; } } // 0x28 (40)
 		
 		protected SoundGraphPluginRef m_Plugin2 = new SoundGraphPluginRef();
-		[ContainerField(43), MemberInfoFlag(41), ContainerFieldNameHash(14514206)]
+		[ContainerField(Name: "Plugin2", Offset: 43, NameHash: 14514206, Flags: 41)]
 		public SoundGraphPluginRef Plugin2 { get { return m_Plugin2; } set { if (OnPropertyChanging("CrossfaderNodeData." + nameof(Plugin2), this, m_Plugin2, value)) m_Plugin2 = value; } } // 0x2B (43)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

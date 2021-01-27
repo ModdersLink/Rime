@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(12), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 12)]
 	public class SurfaceShaderInstanceData : 
 		DataContainer
 	{
 		protected CtrRef<SurfaceShaderBaseAsset> m_Shader = new CtrRef<SurfaceShaderBaseAsset>();
-		[ContainerField(8), MemberInfoFlag(53), ContainerFieldNameHash(3352909900), ContainerCtrRef]
+		[ContainerField(Name: "Shader", Offset: 8, NameHash: 3352909900, Flags: 53)]
 		public CtrRef<SurfaceShaderBaseAsset> Shader { get { return m_Shader; } set { if (OnPropertyChanging("SurfaceShaderInstanceData." + nameof(Shader), this, m_Shader, value)) m_Shader = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

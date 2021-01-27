@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(28), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 28)]
 	public class GameModeSize : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "Name", Offset: 0, NameHash: 2088949890, Flags: 16509), LayoutImmutable]
 		public string Name { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "ShortName", Offset: 4, NameHash: 1803010032, Flags: 16509), LayoutImmutable]
 		public string ShortName { get; set; } // 0x4 (4)
 		
-		[ContainerField(8), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "MetaIdentifier", Offset: 8, NameHash: 3002741083, Flags: 16509), LayoutImmutable]
 		public string MetaIdentifier { get; set; } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
+		[ContainerField(Name: "PlayerCount", Offset: 12, NameHash: 4110176597, Flags: 49421), LayoutImmutable, Blittable]
 		public uint PlayerCount { get; set; } // 0xC (12)
 		
-		[ContainerField(16), MemberInfoFlag(65), ContainerArray]
+		[ContainerField(Name: "Teams", Offset: 16, NameHash: 227737643, Flags: 65)]
 		public List<GameModeTeamSize> Teams { get; set; } = new List<GameModeTeamSize>(); // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
+		[ContainerField(Name: "RoundsPerMap", Offset: 20, NameHash: 2321647407, Flags: 49421), LayoutImmutable, Blittable]
 		public uint RoundsPerMap { get; set; } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "ForceSquad", Offset: 24, NameHash: 1037585386, Flags: 49325), LayoutImmutable, Blittable]
 		public bool ForceSquad { get; set; } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

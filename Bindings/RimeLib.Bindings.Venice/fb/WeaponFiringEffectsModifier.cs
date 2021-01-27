@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(16), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
 	public class WeaponFiringEffectsModifier : 
 		WeaponModifierBase
 	{
 		protected List<FireEffectData> m_FireEffects1p = new List<FireEffectData>();
-		[ContainerField(8), MemberInfoFlag(65), ContainerFieldNameHash(3749424600), ContainerArray]
+		[ContainerField(Name: "FireEffects1p", Offset: 8, NameHash: 3749424600, Flags: 65)]
 		public List<FireEffectData> FireEffects1p { get { return m_FireEffects1p; } set { if (OnPropertyChanging("WeaponFiringEffectsModifier." + nameof(FireEffects1p), this, m_FireEffects1p, value)) m_FireEffects1p = value; } } // 0x8 (8)
 		
 		protected List<FireEffectData> m_FireEffects3p = new List<FireEffectData>();
-		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(3749424538), ContainerArray]
+		[ContainerField(Name: "FireEffects3p", Offset: 12, NameHash: 3749424538, Flags: 65)]
 		public List<FireEffectData> FireEffects3p { get { return m_FireEffects3p; } set { if (OnPropertyChanging("WeaponFiringEffectsModifier." + nameof(FireEffects3p), this, m_FireEffects3p, value)) m_FireEffects3p = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,56 +18,56 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(256), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 256)]
 	public class ExplosionPackEntityData : 
 		MeshProjectileEntityData
 	{
 		protected float m_TimeToLiveOnPlayerDeath = new float();
-		[ContainerField(192), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3787573811)]
+		[ContainerField(Name: "TimeToLiveOnPlayerDeath", Offset: 192, NameHash: 3787573811, Flags: 49469), LayoutImmutable, Blittable]
 		public float TimeToLiveOnPlayerDeath { get { return m_TimeToLiveOnPlayerDeath; } set { if (OnPropertyChanging("ExplosionPackEntityData." + nameof(TimeToLiveOnPlayerDeath), this, m_TimeToLiveOnPlayerDeath, value)) m_TimeToLiveOnPlayerDeath = value; } } // 0xC0 (192)
 		
 		protected SoldierDetonationData m_SoldierDetonationData = new SoldierDetonationData();
-		[ContainerField(196), MemberInfoFlag(41), ContainerFieldNameHash(4178909974)]
+		[ContainerField(Name: "SoldierDetonationData", Offset: 196, NameHash: 4178909974, Flags: 41)]
 		public SoldierDetonationData SoldierDetonationData { get { return m_SoldierDetonationData; } set { if (OnPropertyChanging("ExplosionPackEntityData." + nameof(SoldierDetonationData), this, m_SoldierDetonationData, value)) m_SoldierDetonationData = value; } } // 0xC4 (196)
 		
 		protected float m_VehicleDetonationActivationDelay = new float();
-		[ContainerField(216), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(4100261205)]
+		[ContainerField(Name: "VehicleDetonationActivationDelay", Offset: 216, NameHash: 4100261205, Flags: 49469), LayoutImmutable, Blittable]
 		public float VehicleDetonationActivationDelay { get { return m_VehicleDetonationActivationDelay; } set { if (OnPropertyChanging("ExplosionPackEntityData." + nameof(VehicleDetonationActivationDelay), this, m_VehicleDetonationActivationDelay, value)) m_VehicleDetonationActivationDelay = value; } } // 0xD8 (216)
 		
 		protected float m_VehicleDetonationRadius = new float();
-		[ContainerField(220), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1470001196)]
+		[ContainerField(Name: "VehicleDetonationRadius", Offset: 220, NameHash: 1470001196, Flags: 49469), LayoutImmutable, Blittable]
 		public float VehicleDetonationRadius { get { return m_VehicleDetonationRadius; } set { if (OnPropertyChanging("ExplosionPackEntityData." + nameof(VehicleDetonationRadius), this, m_VehicleDetonationRadius, value)) m_VehicleDetonationRadius = value; } } // 0xDC (220)
 		
 		protected UIHudIcon m_Icon = new UIHudIcon();
-		[ContainerField(224), MemberInfoFlag(137), ContainerFieldNameHash(2088920302)]
+		[ContainerField(Name: "Icon", Offset: 224, NameHash: 2088920302, Flags: 137)]
 		public UIHudIcon Icon { get { return m_Icon; } set { if (OnPropertyChanging("ExplosionPackEntityData." + nameof(Icon), this, m_Icon, value)) m_Icon = value; } } // 0xE0 (224)
 		
 		protected float m_SpottedTime = new float();
-		[ContainerField(228), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(850456669)]
+		[ContainerField(Name: "SpottedTime", Offset: 228, NameHash: 850456669, Flags: 49469), LayoutImmutable, Blittable]
 		public float SpottedTime { get { return m_SpottedTime; } set { if (OnPropertyChanging("ExplosionPackEntityData." + nameof(SpottedTime), this, m_SpottedTime, value)) m_SpottedTime = value; } } // 0xE4 (228)
 		
 		protected float m_DefuseRadius = new float();
-		[ContainerField(232), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3739807449)]
+		[ContainerField(Name: "DefuseRadius", Offset: 232, NameHash: 3739807449, Flags: 49469), LayoutImmutable, Blittable]
 		public float DefuseRadius { get { return m_DefuseRadius; } set { if (OnPropertyChanging("ExplosionPackEntityData." + nameof(DefuseRadius), this, m_DefuseRadius, value)) m_DefuseRadius = value; } } // 0xE8 (232)
 		
 		protected float m_Health = new float();
-		[ContainerField(236), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3054337113)]
+		[ContainerField(Name: "Health", Offset: 236, NameHash: 3054337113, Flags: 49469), LayoutImmutable, Blittable]
 		public float Health { get { return m_Health; } set { if (OnPropertyChanging("ExplosionPackEntityData." + nameof(Health), this, m_Health, value)) m_Health = value; } } // 0xEC (236)
 		
 		protected bool m_HasRemoteDetonator = new bool();
-		[ContainerField(240), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2357284391)]
+		[ContainerField(Name: "HasRemoteDetonator", Offset: 240, NameHash: 2357284391, Flags: 49325), LayoutImmutable, Blittable]
 		public bool HasRemoteDetonator { get { return m_HasRemoteDetonator; } set { if (OnPropertyChanging("ExplosionPackEntityData." + nameof(HasRemoteDetonator), this, m_HasRemoteDetonator, value)) m_HasRemoteDetonator = value; } } // 0xF0 (240)
 		
 		protected bool m_IsDestructible = new bool();
-		[ContainerField(241), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(121724683)]
+		[ContainerField(Name: "IsDestructible", Offset: 241, NameHash: 121724683, Flags: 49325), LayoutImmutable, Blittable]
 		public bool IsDestructible { get { return m_IsDestructible; } set { if (OnPropertyChanging("ExplosionPackEntityData." + nameof(IsDestructible), this, m_IsDestructible, value)) m_IsDestructible = value; } } // 0xF1 (241)
 		
 		protected bool m_HasVehicleDetonation = new bool();
-		[ContainerField(242), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2164993390)]
+		[ContainerField(Name: "HasVehicleDetonation", Offset: 242, NameHash: 2164993390, Flags: 49325), LayoutImmutable, Blittable]
 		public bool HasVehicleDetonation { get { return m_HasVehicleDetonation; } set { if (OnPropertyChanging("ExplosionPackEntityData." + nameof(HasVehicleDetonation), this, m_HasVehicleDetonation, value)) m_HasVehicleDetonation = value; } } // 0xF2 (242)
 		
 		protected bool m_ReceivesExplosionDamage = new bool();
-		[ContainerField(243), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3643641923)]
+		[ContainerField(Name: "ReceivesExplosionDamage", Offset: 243, NameHash: 3643641923, Flags: 49325), LayoutImmutable, Blittable]
 		public bool ReceivesExplosionDamage { get { return m_ReceivesExplosionDamage; } set { if (OnPropertyChanging("ExplosionPackEntityData." + nameof(ReceivesExplosionDamage), this, m_ReceivesExplosionDamage, value)) m_ReceivesExplosionDamage = value; } } // 0xF3 (243)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

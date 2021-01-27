@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(32), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 32)]
 	public class UIModDescription : 
 		UIItemDescription
 	{
 		protected string m_Identifier = string.Empty;
-		[ContainerField(16), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(3512790342)]
+		[ContainerField(Name: "Identifier", Offset: 16, NameHash: 3512790342, Flags: 16509), LayoutImmutable]
 		public string Identifier { get { return m_Identifier; } set { if (OnPropertyChanging("UIModDescription." + nameof(Identifier), this, m_Identifier, value)) m_Identifier = value; } } // 0x10 (16)
 		
 		protected string m_ShortName = string.Empty;
-		[ContainerField(20), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(1803010032)]
+		[ContainerField(Name: "ShortName", Offset: 20, NameHash: 1803010032, Flags: 16509), LayoutImmutable]
 		public string ShortName { get { return m_ShortName; } set { if (OnPropertyChanging("UIModDescription." + nameof(ShortName), this, m_ShortName, value)) m_ShortName = value; } } // 0x14 (20)
 		
 		protected string m_FullName = string.Empty;
-		[ContainerField(24), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(4054333169)]
+		[ContainerField(Name: "FullName", Offset: 24, NameHash: 4054333169, Flags: 16509), LayoutImmutable]
 		public string FullName { get { return m_FullName; } set { if (OnPropertyChanging("UIModDescription." + nameof(FullName), this, m_FullName, value)) m_FullName = value; } } // 0x18 (24)
 		
 		protected string m_Desc = string.Empty;
-		[ContainerField(28), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(2088734996)]
+		[ContainerField(Name: "Desc", Offset: 28, NameHash: 2088734996, Flags: 16509), LayoutImmutable]
 		public string Desc { get { return m_Desc; } set { if (OnPropertyChanging("UIModDescription." + nameof(Desc), this, m_Desc, value)) m_Desc = value; } } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

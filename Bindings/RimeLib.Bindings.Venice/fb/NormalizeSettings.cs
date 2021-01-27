@@ -18,25 +18,25 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(24), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 24)]
 	public class NormalizeSettings : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "Maximum", Offset: 0, NameHash: 1313344397, Flags: 49469), LayoutImmutable, Blittable]
 		public float Maximum { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "Minimum", Offset: 4, NameHash: 1011407507, Flags: 49469), LayoutImmutable, Blittable]
 		public float Minimum { get; set; } // 0x4 (4)
 		
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "Velocity", Offset: 8, NameHash: 3860766482, Flags: 49469), LayoutImmutable, Blittable]
 		public float Velocity { get; set; } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "Lower", Offset: 12, NameHash: 218180838, Flags: 49469), LayoutImmutable, Blittable]
 		public float Lower { get; set; } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "Upper", Offset: 16, NameHash: 219190343, Flags: 49469), LayoutImmutable, Blittable]
 		public float Upper { get; set; } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "Normalize", Offset: 20, NameHash: 3221786848, Flags: 49325), LayoutImmutable, Blittable]
 		public bool Normalize { get; set; } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

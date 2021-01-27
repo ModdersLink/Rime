@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(20), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 20)]
 	public class SwitcherEntry : 
 		AudioGraphNodePortGroup
 	{
 		protected AudioGraphNodePort m_CaseTrigger = new AudioGraphNodePort();
-		[ContainerField(8), MemberInfoFlag(41), ContainerFieldNameHash(394100425)]
+		[ContainerField(Name: "CaseTrigger", Offset: 8, NameHash: 394100425, Flags: 41)]
 		public AudioGraphNodePort CaseTrigger { get { return m_CaseTrigger; } set { if (OnPropertyChanging("SwitcherEntry." + nameof(CaseTrigger), this, m_CaseTrigger, value)) m_CaseTrigger = value; } } // 0x8 (8)
 		
 		protected float m_CaseValue = new float();
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(723060122)]
+		[ContainerField(Name: "CaseValue", Offset: 16, NameHash: 723060122, Flags: 49469), LayoutImmutable, Blittable]
 		public float CaseValue { get { return m_CaseValue; } set { if (OnPropertyChanging("SwitcherEntry." + nameof(CaseValue), this, m_CaseValue, value)) m_CaseValue = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

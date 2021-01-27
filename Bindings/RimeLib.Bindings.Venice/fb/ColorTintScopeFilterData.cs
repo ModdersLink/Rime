@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(80), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 80)]
 	public class ColorTintScopeFilterData : 
 		ScopeFilterData
 	{
 		protected ColorTintData m_ColorTintData = new ColorTintData();
-		[ContainerField(16), MemberInfoFlag(41), ContainerFieldNameHash(1503443055)]
+		[ContainerField(Name: "ColorTintData", Offset: 16, NameHash: 1503443055, Flags: 41)]
 		public ColorTintData ColorTintData { get { return m_ColorTintData; } set { if (OnPropertyChanging("ColorTintScopeFilterData." + nameof(ColorTintData), this, m_ColorTintData, value)) m_ColorTintData = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

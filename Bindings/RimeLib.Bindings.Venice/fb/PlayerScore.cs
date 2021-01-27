@@ -18,34 +18,34 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(36), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 36)]
 	public class PlayerScore : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, Blittable, MemberInfoFlag(49405)]
+		[ContainerField(Name: "Rank", Offset: 0, NameHash: 2089381491, Flags: 49405), LayoutImmutable, Blittable]
 		public int Rank { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
+		[ContainerField(Name: "Kills", Offset: 4, NameHash: 221663060, Flags: 49421), LayoutImmutable, Blittable]
 		public uint Kills { get; set; } // 0x4 (4)
 		
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
+		[ContainerField(Name: "Deaths", Offset: 8, NameHash: 2594217034, Flags: 49421), LayoutImmutable, Blittable]
 		public uint Deaths { get; set; } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
+		[ContainerField(Name: "ScoreMultiplier", Offset: 12, NameHash: 81894022, Flags: 49421), LayoutImmutable, Blittable]
 		public uint ScoreMultiplier { get; set; } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49405)]
+		[ContainerField(Name: "Score", Offset: 16, NameHash: 231225165, Flags: 49405), LayoutImmutable, Blittable]
 		public int Score { get; set; } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49405)]
+		[ContainerField(Name: "GlobalScoreOriginal", Offset: 20, NameHash: 3481353183, Flags: 49405), LayoutImmutable, Blittable]
 		public int GlobalScoreOriginal { get; set; } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49405)]
+		[ContainerField(Name: "GlobalScoreUpdated", Offset: 24, NameHash: 816609331, Flags: 49405), LayoutImmutable, Blittable]
 		public int GlobalScoreUpdated { get; set; } // 0x18 (24)
 		
-		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "Time", Offset: 28, NameHash: 2089313744, Flags: 49469), LayoutImmutable, Blittable]
 		public float Time { get; set; } // 0x1C (28)
 		
-		[ContainerField(32), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
+		[ContainerField(Name: "GunMasterLevel", Offset: 32, NameHash: 1411188979, Flags: 49421), LayoutImmutable, Blittable]
 		public uint GunMasterLevel { get; set; } // 0x20 (32)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

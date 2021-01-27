@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(96), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 96)]
 	public class StandardMoveWaypointData : 
 		AbstractLocoWaypointData
 	{
 		protected AILocoMoveTaskData m_MoveTask = new AILocoMoveTaskData();
-		[ContainerField(48), MemberInfoFlag(41), ContainerFieldNameHash(1607355097)]
+		[ContainerField(Name: "MoveTask", Offset: 48, NameHash: 1607355097, Flags: 41)]
 		public AILocoMoveTaskData MoveTask { get { return m_MoveTask; } set { if (OnPropertyChanging("StandardMoveWaypointData." + nameof(MoveTask), this, m_MoveTask, value)) m_MoveTask = value; } } // 0x30 (48)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

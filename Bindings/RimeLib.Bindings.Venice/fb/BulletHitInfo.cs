@@ -18,25 +18,25 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(41), ContainerSize(48), ContainerStruct]
+	[ContainerType(Alignment: 16,  Flags: 41, Size: 48)]
 	public class BulletHitInfo : FrostbiteContainer
 	{
-		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
+		[ContainerField(Name: "Direction", Offset: 0, NameHash: 2698949952, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 Direction { get; set; } = new Vec3(); // 0x0 (0)
 		
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
+		[ContainerField(Name: "SpawnPosition", Offset: 16, NameHash: 4274978279, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 SpawnPosition { get; set; } = new Vec3(); // 0x10 (16)
 		
-		[ContainerField(32), MemberInfoFlag(53), ContainerCtrRef]
+		[ContainerField(Name: "WeaponUnlockAsset", Offset: 32, NameHash: 1477356935, Flags: 53)]
 		public CtrRef<SoldierWeaponUnlockAsset> WeaponUnlockAsset { get; set; } = new CtrRef<SoldierWeaponUnlockAsset>(); // 0x20 (32)
 		
-		[ContainerField(36), MemberInfoFlag(137)]
+		[ContainerField(Name: "WeaponType", Offset: 36, NameHash: 933216383, Flags: 137)]
 		public AntHitReactionWeaponType WeaponType { get; set; } = new AntHitReactionWeaponType(); // 0x24 (36)
 		
-		[ContainerField(40), LayoutImmutable, Blittable, MemberInfoFlag(49405)]
+		[ContainerField(Name: "BoneType", Offset: 40, NameHash: 1590859931, Flags: 49405), LayoutImmutable, Blittable]
 		public int BoneType { get; set; } // 0x28 (40)
 		
-		[ContainerField(44), LayoutImmutable, Blittable, MemberInfoFlag(49405)]
+		[ContainerField(Name: "ShooterPlayerId", Offset: 44, NameHash: 359819395, Flags: 49405), LayoutImmutable, Blittable]
 		public int ShooterPlayerId { get; set; } // 0x2C (44)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(32), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 32)]
 	public class VersionData : 
 		Asset
 	{
 		protected string m_disclaimer = string.Empty;
-		[ContainerField(12), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(33610342)]
+		[ContainerField(Name: "disclaimer", Offset: 12, NameHash: 33610342, Flags: 16509), LayoutImmutable]
 		public string disclaimer { get { return m_disclaimer; } set { if (OnPropertyChanging("VersionData." + nameof(disclaimer), this, m_disclaimer, value)) m_disclaimer = value; } } // 0xC (12)
 		
 		protected int m_Version = new int();
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(747123679)]
+		[ContainerField(Name: "Version", Offset: 16, NameHash: 747123679, Flags: 49405), LayoutImmutable, Blittable]
 		public int Version { get { return m_Version; } set { if (OnPropertyChanging("VersionData." + nameof(Version), this, m_Version, value)) m_Version = value; } } // 0x10 (16)
 		
 		protected string m_DateTime = string.Empty;
-		[ContainerField(20), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(3244533220)]
+		[ContainerField(Name: "DateTime", Offset: 20, NameHash: 3244533220, Flags: 16509), LayoutImmutable]
 		public string DateTime { get { return m_DateTime; } set { if (OnPropertyChanging("VersionData." + nameof(DateTime), this, m_DateTime, value)) m_DateTime = value; } } // 0x14 (20)
 		
 		protected string m_BranchId = string.Empty;
-		[ContainerField(24), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(2969494588)]
+		[ContainerField(Name: "BranchId", Offset: 24, NameHash: 2969494588, Flags: 16509), LayoutImmutable]
 		public string BranchId { get { return m_BranchId; } set { if (OnPropertyChanging("VersionData." + nameof(BranchId), this, m_BranchId, value)) m_BranchId = value; } } // 0x18 (24)
 		
 		protected string m_GameName = string.Empty;
-		[ContainerField(28), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(509587500)]
+		[ContainerField(Name: "GameName", Offset: 28, NameHash: 509587500, Flags: 16509), LayoutImmutable]
 		public string GameName { get { return m_GameName; } set { if (OnPropertyChanging("VersionData." + nameof(GameName), this, m_GameName, value)) m_GameName = value; } } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

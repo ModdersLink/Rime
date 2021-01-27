@@ -18,48 +18,48 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(160), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 160)]
 	public class TonemapComponentData : 
 		ComponentData
 	{
 		protected Vec3 m_BloomScale = new Vec3();
-		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(4088580734)]
+		[ContainerField(Name: "BloomScale", Offset: 96, NameHash: 4088580734, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 BloomScale { get { return m_BloomScale; } set { if (OnPropertyChanging("TonemapComponentData." + nameof(BloomScale), this, m_BloomScale, value)) m_BloomScale = value; } } // 0x60 (96)
 		
 		protected Realm m_Realm = new Realm();
-		[ContainerField(112), MemberInfoFlag(137), ContainerFieldNameHash(229961746)]
+		[ContainerField(Name: "Realm", Offset: 112, NameHash: 229961746, Flags: 137)]
 		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("TonemapComponentData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0x70 (112)
 		
 		protected TonemapMethod m_TonemapMethod = new TonemapMethod();
-		[ContainerField(116), MemberInfoFlag(137), ContainerFieldNameHash(3755826422)]
+		[ContainerField(Name: "TonemapMethod", Offset: 116, NameHash: 3755826422, Flags: 137)]
 		public TonemapMethod TonemapMethod { get { return m_TonemapMethod; } set { if (OnPropertyChanging("TonemapComponentData." + nameof(TonemapMethod), this, m_TonemapMethod, value)) m_TonemapMethod = value; } } // 0x74 (116)
 		
 		protected float m_MinExposure = new float();
-		[ContainerField(120), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1485398908)]
+		[ContainerField(Name: "MinExposure", Offset: 120, NameHash: 1485398908, Flags: 49469), LayoutImmutable, Blittable]
 		public float MinExposure { get { return m_MinExposure; } set { if (OnPropertyChanging("TonemapComponentData." + nameof(MinExposure), this, m_MinExposure, value)) m_MinExposure = value; } } // 0x78 (120)
 		
 		protected float m_MiddleGray = new float();
-		[ContainerField(124), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3985215205)]
+		[ContainerField(Name: "MiddleGray", Offset: 124, NameHash: 3985215205, Flags: 49469), LayoutImmutable, Blittable]
 		public float MiddleGray { get { return m_MiddleGray; } set { if (OnPropertyChanging("TonemapComponentData." + nameof(MiddleGray), this, m_MiddleGray, value)) m_MiddleGray = value; } } // 0x7C (124)
 		
 		protected float m_ExposureAdjustTime = new float();
-		[ContainerField(128), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(219629342)]
+		[ContainerField(Name: "ExposureAdjustTime", Offset: 128, NameHash: 219629342, Flags: 49469), LayoutImmutable, Blittable]
 		public float ExposureAdjustTime { get { return m_ExposureAdjustTime; } set { if (OnPropertyChanging("TonemapComponentData." + nameof(ExposureAdjustTime), this, m_ExposureAdjustTime, value)) m_ExposureAdjustTime = value; } } // 0x80 (128)
 		
 		protected float m_MaxExposure = new float();
-		[ContainerField(132), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1313706850)]
+		[ContainerField(Name: "MaxExposure", Offset: 132, NameHash: 1313706850, Flags: 49469), LayoutImmutable, Blittable]
 		public float MaxExposure { get { return m_MaxExposure; } set { if (OnPropertyChanging("TonemapComponentData." + nameof(MaxExposure), this, m_MaxExposure, value)) m_MaxExposure = value; } } // 0x84 (132)
 		
 		protected float m_ChromostereopsisOffset = new float();
-		[ContainerField(136), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2469845791)]
+		[ContainerField(Name: "ChromostereopsisOffset", Offset: 136, NameHash: 2469845791, Flags: 49469), LayoutImmutable, Blittable]
 		public float ChromostereopsisOffset { get { return m_ChromostereopsisOffset; } set { if (OnPropertyChanging("TonemapComponentData." + nameof(ChromostereopsisOffset), this, m_ChromostereopsisOffset, value)) m_ChromostereopsisOffset = value; } } // 0x88 (136)
 		
 		protected float m_ChromostereopsisScale = new float();
-		[ContainerField(140), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(952871242)]
+		[ContainerField(Name: "ChromostereopsisScale", Offset: 140, NameHash: 952871242, Flags: 49469), LayoutImmutable, Blittable]
 		public float ChromostereopsisScale { get { return m_ChromostereopsisScale; } set { if (OnPropertyChanging("TonemapComponentData." + nameof(ChromostereopsisScale), this, m_ChromostereopsisScale, value)) m_ChromostereopsisScale = value; } } // 0x8C (140)
 		
 		protected bool m_ChromostereopsisEnable = new bool();
-		[ContainerField(144), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2087966035)]
+		[ContainerField(Name: "ChromostereopsisEnable", Offset: 144, NameHash: 2087966035, Flags: 49325), LayoutImmutable, Blittable]
 		public bool ChromostereopsisEnable { get { return m_ChromostereopsisEnable; } set { if (OnPropertyChanging("TonemapComponentData." + nameof(ChromostereopsisEnable), this, m_ChromostereopsisEnable, value)) m_ChromostereopsisEnable = value; } } // 0x90 (144)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

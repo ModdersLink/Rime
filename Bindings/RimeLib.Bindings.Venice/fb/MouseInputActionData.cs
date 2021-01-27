@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(28), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 28)]
 	public class MouseInputActionData : 
 		AxesInputActionData
 	{
 		protected InputDeviceMouseButtons m_Button = new InputDeviceMouseButtons();
-		[ContainerField(20), MemberInfoFlag(137), ContainerFieldNameHash(2686182099)]
+		[ContainerField(Name: "Button", Offset: 20, NameHash: 2686182099, Flags: 137)]
 		public InputDeviceMouseButtons Button { get { return m_Button; } set { if (OnPropertyChanging("MouseInputActionData." + nameof(Button), this, m_Button, value)) m_Button = value; } } // 0x14 (20)
 		
 		protected bool m_SimulateJoystickAxis = new bool();
-		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3307710434)]
+		[ContainerField(Name: "SimulateJoystickAxis", Offset: 24, NameHash: 3307710434, Flags: 49325), LayoutImmutable, Blittable]
 		public bool SimulateJoystickAxis { get { return m_SimulateJoystickAxis; } set { if (OnPropertyChanging("MouseInputActionData." + nameof(SimulateJoystickAxis), this, m_SimulateJoystickAxis, value)) m_SimulateJoystickAxis = value; } } // 0x18 (24)
 		
 		protected bool m_RememberExcessInput = new bool();
-		[ContainerField(25), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1274294351)]
+		[ContainerField(Name: "RememberExcessInput", Offset: 25, NameHash: 1274294351, Flags: 49325), LayoutImmutable, Blittable]
 		public bool RememberExcessInput { get { return m_RememberExcessInput; } set { if (OnPropertyChanging("MouseInputActionData." + nameof(RememberExcessInput), this, m_RememberExcessInput, value)) m_RememberExcessInput = value; } } // 0x19 (25)
 		
 		protected bool m_ScaleScrollWheelAxisInput = new bool();
-		[ContainerField(26), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(809122294)]
+		[ContainerField(Name: "ScaleScrollWheelAxisInput", Offset: 26, NameHash: 809122294, Flags: 49325), LayoutImmutable, Blittable]
 		public bool ScaleScrollWheelAxisInput { get { return m_ScaleScrollWheelAxisInput; } set { if (OnPropertyChanging("MouseInputActionData." + nameof(ScaleScrollWheelAxisInput), this, m_ScaleScrollWheelAxisInput, value)) m_ScaleScrollWheelAxisInput = value; } } // 0x1A (26)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

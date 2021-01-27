@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(20), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 20)]
 	public class SmokeJammingData : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "JammingTime", Offset: 0, NameHash: 46309755, Flags: 49469), LayoutImmutable, Blittable]
 		public float JammingTime { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "MaxRadius", Offset: 4, NameHash: 439602313, Flags: 49469), LayoutImmutable, Blittable]
 		public float MaxRadius { get; set; } // 0x4 (4)
 		
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "MinRadius", Offset: 8, NameHash: 4053568023, Flags: 49469), LayoutImmutable, Blittable]
 		public float MinRadius { get; set; } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "TargetUpdateTime", Offset: 12, NameHash: 18960400, Flags: 49469), LayoutImmutable, Blittable]
 		public float TargetUpdateTime { get; set; } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "EnableSmokeJamming", Offset: 16, NameHash: 3034547280, Flags: 49325), LayoutImmutable, Blittable]
 		public bool EnableSmokeJamming { get; set; } // 0x10 (16)
 		
-		[ContainerField(17), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "JammingPositionIsLocationDependent", Offset: 17, NameHash: 3550251569, Flags: 49325), LayoutImmutable, Blittable]
 		public bool JammingPositionIsLocationDependent { get; set; } // 0x11 (17)
 		
-		[ContainerField(18), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "ReportJammedBasedOnStartPosition", Offset: 18, NameHash: 2195169576, Flags: 49325), LayoutImmutable, Blittable]
 		public bool ReportJammedBasedOnStartPosition { get; set; } // 0x12 (18)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

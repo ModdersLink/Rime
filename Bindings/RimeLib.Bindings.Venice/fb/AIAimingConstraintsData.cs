@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(24), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 24)]
 	public class AIAimingConstraintsData : 
 		DataContainer
 	{
 		protected float m_MinYaw = new float();
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2633709248)]
+		[ContainerField(Name: "MinYaw", Offset: 8, NameHash: 2633709248, Flags: 49469), LayoutImmutable, Blittable]
 		public float MinYaw { get { return m_MinYaw; } set { if (OnPropertyChanging("AIAimingConstraintsData." + nameof(MinYaw), this, m_MinYaw, value)) m_MinYaw = value; } } // 0x8 (8)
 		
 		protected float m_MaxYaw = new float();
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2642824094)]
+		[ContainerField(Name: "MaxYaw", Offset: 12, NameHash: 2642824094, Flags: 49469), LayoutImmutable, Blittable]
 		public float MaxYaw { get { return m_MaxYaw; } set { if (OnPropertyChanging("AIAimingConstraintsData." + nameof(MaxYaw), this, m_MaxYaw, value)) m_MaxYaw = value; } } // 0xC (12)
 		
 		protected float m_MinPitch = new float();
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3374061353)]
+		[ContainerField(Name: "MinPitch", Offset: 16, NameHash: 3374061353, Flags: 49469), LayoutImmutable, Blittable]
 		public float MinPitch { get { return m_MinPitch; } set { if (OnPropertyChanging("AIAimingConstraintsData." + nameof(MinPitch), this, m_MinPitch, value)) m_MinPitch = value; } } // 0x10 (16)
 		
 		protected float m_MaxPitch = new float();
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(397101687)]
+		[ContainerField(Name: "MaxPitch", Offset: 20, NameHash: 397101687, Flags: 49469), LayoutImmutable, Blittable]
 		public float MaxPitch { get { return m_MaxPitch; } set { if (OnPropertyChanging("AIAimingConstraintsData." + nameof(MaxPitch), this, m_MaxPitch, value)) m_MaxPitch = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

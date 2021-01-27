@@ -18,31 +18,31 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(32), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 32)]
 	public class AILocoBaseTaskData : FrostbiteContainer
 	{
-		[ContainerField(0), MemberInfoFlag(137)]
+		[ContainerField(Name: "PoseChangeMovingTowards", Offset: 0, NameHash: 1377364758, Flags: 137)]
 		public AntPoseEnum PoseChangeMovingTowards { get; set; } = new AntPoseEnum(); // 0x0 (0)
 		
-		[ContainerField(4), MemberInfoFlag(137)]
+		[ContainerField(Name: "AttentionChangeMovingTowards", Offset: 4, NameHash: 1439359817, Flags: 137)]
 		public AntAttentionStateEnum AttentionChangeMovingTowards { get; set; } = new AntAttentionStateEnum(); // 0x4 (4)
 		
-		[ContainerField(8), MemberInfoFlag(137)]
+		[ContainerField(Name: "SpeedChangeMovingTowards", Offset: 8, NameHash: 1457701336, Flags: 137)]
 		public AntSpeedLevel SpeedChangeMovingTowards { get; set; } = new AntSpeedLevel(); // 0x8 (8)
 		
-		[ContainerField(12), MemberInfoFlag(137)]
+		[ContainerField(Name: "PoseChange", Offset: 12, NameHash: 3977623818, Flags: 137)]
 		public AntPoseEnum PoseChange { get; set; } = new AntPoseEnum(); // 0xC (12)
 		
-		[ContainerField(16), MemberInfoFlag(137)]
+		[ContainerField(Name: "AttentionStateChange", Offset: 16, NameHash: 2093421058, Flags: 137)]
 		public AntAttentionStateEnum AttentionStateChange { get; set; } = new AntAttentionStateEnum(); // 0x10 (16)
 		
-		[ContainerField(20), MemberInfoFlag(137)]
+		[ContainerField(Name: "SpeedLevelChange", Offset: 20, NameHash: 4237171346, Flags: 137)]
 		public AntSpeedLevel SpeedLevelChange { get; set; } = new AntSpeedLevel(); // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "Radius", Offset: 24, NameHash: 3298407133, Flags: 49469), LayoutImmutable, Blittable]
 		public float Radius { get; set; } // 0x18 (24)
 		
-		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "IsScripted", Offset: 28, NameHash: 2618831345, Flags: 49325), LayoutImmutable, Blittable]
 		public bool IsScripted { get; set; } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

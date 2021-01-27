@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(16), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
 	public class SwimmingStateData : 
 		CharacterStateData
 	{
 		protected float m_BodyUnderWater = new float();
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1498497544)]
+		[ContainerField(Name: "BodyUnderWater", Offset: 12, NameHash: 1498497544, Flags: 49469), LayoutImmutable, Blittable]
 		public float BodyUnderWater { get { return m_BodyUnderWater; } set { if (OnPropertyChanging("SwimmingStateData." + nameof(BodyUnderWater), this, m_BodyUnderWater, value)) m_BodyUnderWater = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

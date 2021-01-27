@@ -18,13 +18,13 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(8), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 8)]
 	public class UIMinimapIconTexture : FrostbiteContainer
 	{
-		[ContainerField(0), MemberInfoFlag(137)]
+		[ContainerField(Name: "IconType", Offset: 0, NameHash: 269550934, Flags: 137)]
 		public UIHudIcon IconType { get; set; } = new UIHudIcon(); // 0x0 (0)
 		
-		[ContainerField(4), MemberInfoFlag(65), ContainerArray]
+		[ContainerField(Name: "States", Offset: 4, NameHash: 3319729985, Flags: 65)]
 		public List<UIMinimapIconTextureState> States { get; set; } = new List<UIMinimapIconTextureState>(); // 0x4 (4)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

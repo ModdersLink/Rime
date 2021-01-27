@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(52), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 52)]
 	public class PeerServerBackendData : 
 		ServerBackendData
 	{
 		protected PeerCreateGameParameters m_CreateParameters = new PeerCreateGameParameters();
-		[ContainerField(16), MemberInfoFlag(41), ContainerFieldNameHash(4233299195)]
+		[ContainerField(Name: "CreateParameters", Offset: 16, NameHash: 4233299195, Flags: 41)]
 		public PeerCreateGameParameters CreateParameters { get { return m_CreateParameters; } set { if (OnPropertyChanging("PeerServerBackendData." + nameof(CreateParameters), this, m_CreateParameters, value)) m_CreateParameters = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

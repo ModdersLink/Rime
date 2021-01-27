@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(1), MemberInfoFlag(41), ContainerSize(3), ContainerStruct]
+	[ContainerType(Alignment: 1,  Flags: 41, Size: 3)]
 	public class CharacterPoseConstraintsData : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "StandPose", Offset: 0, NameHash: 3580661600, Flags: 49325), LayoutImmutable, Blittable]
 		public bool StandPose { get; set; } // 0x0 (0)
 		
-		[ContainerField(1), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "CrouchPose", Offset: 1, NameHash: 1318089740, Flags: 49325), LayoutImmutable, Blittable]
 		public bool CrouchPose { get; set; } // 0x1 (1)
 		
-		[ContainerField(2), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "PronePose", Offset: 2, NameHash: 3841962, Flags: 49325), LayoutImmutable, Blittable]
 		public bool PronePose { get; set; } // 0x2 (2)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

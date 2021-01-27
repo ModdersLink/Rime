@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(24), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 24)]
 	public class WeaponSuppressionData : 
 		DataContainer
 	{
 		protected float m_MaxMultiplier = new float();
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(441185306)]
+		[ContainerField(Name: "MaxMultiplier", Offset: 8, NameHash: 441185306, Flags: 49469), LayoutImmutable, Blittable]
 		public float MaxMultiplier { get { return m_MaxMultiplier; } set { if (OnPropertyChanging("WeaponSuppressionData." + nameof(MaxMultiplier), this, m_MaxMultiplier, value)) m_MaxMultiplier = value; } } // 0x8 (8)
 		
 		protected float m_MinMultiplier = new float();
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3723256324)]
+		[ContainerField(Name: "MinMultiplier", Offset: 12, NameHash: 3723256324, Flags: 49469), LayoutImmutable, Blittable]
 		public float MinMultiplier { get { return m_MinMultiplier; } set { if (OnPropertyChanging("WeaponSuppressionData." + nameof(MinMultiplier), this, m_MinMultiplier, value)) m_MinMultiplier = value; } } // 0xC (12)
 		
 		protected float m_MinDistance = new float();
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1885855628)]
+		[ContainerField(Name: "MinDistance", Offset: 16, NameHash: 1885855628, Flags: 49469), LayoutImmutable, Blittable]
 		public float MinDistance { get { return m_MinDistance; } set { if (OnPropertyChanging("WeaponSuppressionData." + nameof(MinDistance), this, m_MinDistance, value)) m_MinDistance = value; } } // 0x10 (16)
 		
 		protected float m_MaxDistance = new float();
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3520454034)]
+		[ContainerField(Name: "MaxDistance", Offset: 20, NameHash: 3520454034, Flags: 49469), LayoutImmutable, Blittable]
 		public float MaxDistance { get { return m_MaxDistance; } set { if (OnPropertyChanging("WeaponSuppressionData." + nameof(MaxDistance), this, m_MaxDistance, value)) m_MaxDistance = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,19 +18,19 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(16), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 16)]
 	public class NearTargetDetonationData : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "DetonationRadius", Offset: 0, NameHash: 3488213844, Flags: 49469), LayoutImmutable, Blittable]
 		public float DetonationRadius { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "MinDetonationDelay", Offset: 4, NameHash: 1672486355, Flags: 49469), LayoutImmutable, Blittable]
 		public float MinDetonationDelay { get; set; } // 0x4 (4)
 		
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "MaxDetonationDelay", Offset: 8, NameHash: 23395725, Flags: 49469), LayoutImmutable, Blittable]
 		public float MaxDetonationDelay { get; set; } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "DetonateNearTarget", Offset: 12, NameHash: 2722241128, Flags: 49325), LayoutImmutable, Blittable]
 		public bool DetonateNearTarget { get; set; } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

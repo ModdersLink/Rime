@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(8), MemberInfoFlag(53), ContainerSize(32), ContainerClass]
+	[ContainerType(Alignment: 8,  Flags: 53, Size: 32)]
 	public class VehicleState : 
 		MetricState
 	{
 		protected string m_VehicleName = string.Empty;
-		[ContainerField(24), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(926391226)]
+		[ContainerField(Name: "VehicleName", Offset: 24, NameHash: 926391226, Flags: 16509), LayoutImmutable]
 		public string VehicleName { get { return m_VehicleName; } set { if (OnPropertyChanging("VehicleState." + nameof(VehicleName), this, m_VehicleName, value)) m_VehicleName = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

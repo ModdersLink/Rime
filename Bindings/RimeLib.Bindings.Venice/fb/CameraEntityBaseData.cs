@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(96), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 96)]
 	public class CameraEntityBaseData : 
 		SpatialEntityData
 	{
 		protected string m_NameId = string.Empty;
-		[ContainerField(80), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(2828728719)]
+		[ContainerField(Name: "NameId", Offset: 80, NameHash: 2828728719, Flags: 16509), LayoutImmutable]
 		public string NameId { get { return m_NameId; } set { if (OnPropertyChanging("CameraEntityBaseData." + nameof(NameId), this, m_NameId, value)) m_NameId = value; } } // 0x50 (80)
 		
 		protected int m_Priority = new int();
-		[ContainerField(84), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(3062102871)]
+		[ContainerField(Name: "Priority", Offset: 84, NameHash: 3062102871, Flags: 49405), LayoutImmutable, Blittable]
 		public int Priority { get { return m_Priority; } set { if (OnPropertyChanging("CameraEntityBaseData." + nameof(Priority), this, m_Priority, value)) m_Priority = value; } } // 0x54 (84)
 		
 		protected bool m_Enabled = new bool();
-		[ContainerField(88), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2662400)]
+		[ContainerField(Name: "Enabled", Offset: 88, NameHash: 2662400, Flags: 49325), LayoutImmutable, Blittable]
 		public bool Enabled { get { return m_Enabled; } set { if (OnPropertyChanging("CameraEntityBaseData." + nameof(Enabled), this, m_Enabled, value)) m_Enabled = value; } } // 0x58 (88)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

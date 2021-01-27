@@ -18,19 +18,19 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(16), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 16)]
 	public class CharacterMeleeBinding : FrostbiteContainer
 	{
-		[ContainerField(0), MemberInfoFlag(41)]
+		[ContainerField(Name: "TriggerMelee", Offset: 0, NameHash: 3578873369, Flags: 41)]
 		public AntRef TriggerMelee { get; set; } = new AntRef(); // 0x0 (0)
 		
-		[ContainerField(4), MemberInfoFlag(41)]
+		[ContainerField(Name: "SelfActor", Offset: 4, NameHash: 68504242, Flags: 41)]
 		public AntRef SelfActor { get; set; } = new AntRef(); // 0x4 (4)
 		
-		[ContainerField(8), MemberInfoFlag(41)]
+		[ContainerField(Name: "OtherActor", Offset: 8, NameHash: 15471402, Flags: 41)]
 		public AntRef OtherActor { get; set; } = new AntRef(); // 0x8 (8)
 		
-		[ContainerField(12), MemberInfoFlag(41)]
+		[ContainerField(Name: "MeleeActive", Offset: 12, NameHash: 818515309, Flags: 41)]
 		public AntRef MeleeActive { get; set; } = new AntRef(); // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

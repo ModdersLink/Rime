@@ -18,55 +18,55 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(41), ContainerSize(96), ContainerStruct]
+	[ContainerType(Alignment: 16,  Flags: 41, Size: 96)]
 	public class AILocoCoverTaskData : FrostbiteContainer
 	{
-		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
+		[ContainerField(Name: "WantedPos", Offset: 0, NameHash: 82144004, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 WantedPos { get; set; } = new Vec3(); // 0x0 (0)
 		
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
+		[ContainerField(Name: "ThreatPosition", Offset: 16, NameHash: 4029413858, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 ThreatPosition { get; set; } = new Vec3(); // 0x10 (16)
 		
-		[ContainerField(32), MemberInfoFlag(137)]
+		[ContainerField(Name: "CoverPose", Offset: 32, NameHash: 2741512545, Flags: 137)]
 		public AntPoseEnum CoverPose { get; set; } = new AntPoseEnum(); // 0x20 (32)
 		
-		[ContainerField(36), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "WaitTime", Offset: 36, NameHash: 3637870203, Flags: 49469), LayoutImmutable, Blittable]
 		public float WaitTime { get; set; } // 0x24 (36)
 		
-		[ContainerField(40), MemberInfoFlag(137)]
+		[ContainerField(Name: "PeekOut", Offset: 40, NameHash: 3756039152, Flags: 137)]
 		public CoverPeekType PeekOut { get; set; } = new CoverPeekType(); // 0x28 (40)
 		
-		[ContainerField(44), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "WorldAngle", Offset: 44, NameHash: 612547046, Flags: 49469), LayoutImmutable, Blittable]
 		public float WorldAngle { get; set; } // 0x2C (44)
 		
-		[ContainerField(48), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "OffsetLength", Offset: 48, NameHash: 184511572, Flags: 49469), LayoutImmutable, Blittable]
 		public float OffsetLength { get; set; } // 0x30 (48)
 		
-		[ContainerField(52), MemberInfoFlag(137)]
+		[ContainerField(Name: "ExitPose", Offset: 52, NameHash: 506708652, Flags: 137)]
 		public AntPoseEnum ExitPose { get; set; } = new AntPoseEnum(); // 0x34 (52)
 		
-		[ContainerField(56), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "ExitAngle", Offset: 56, NameHash: 3818612484, Flags: 49469), LayoutImmutable, Blittable]
 		public float ExitAngle { get; set; } // 0x38 (56)
 		
-		[ContainerField(60), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "DistanceToNextWaypoint", Offset: 60, NameHash: 3374983833, Flags: 49469), LayoutImmutable, Blittable]
 		public float DistanceToNextWaypoint { get; set; } // 0x3C (60)
 		
-		[ContainerField(64), MemberInfoFlag(137)]
+		[ContainerField(Name: "CoverType", Offset: 64, NameHash: 2741637520, Flags: 137)]
 		public AntCoverEnum CoverType { get; set; } = new AntCoverEnum(); // 0x40 (64)
 		
-		[ContainerField(68), MemberInfoFlag(137)]
+		[ContainerField(Name: "EnterStrategy", Offset: 68, NameHash: 2784850742, Flags: 137)]
 		public CoverEnterStrategy EnterStrategy { get; set; } = new CoverEnterStrategy(); // 0x44 (68)
 		
-		[ContainerField(72), MemberInfoFlag(137)]
+		[ContainerField(Name: "ExitStyle", Offset: 72, NameHash: 3843788370, Flags: 137)]
 		public CoverExitStyle ExitStyle { get; set; } = new CoverExitStyle(); // 0x48 (72)
 		
-		[ContainerField(76), MemberInfoFlag(137)]
+		[ContainerField(Name: "PrepareFireType", Offset: 76, NameHash: 660661988, Flags: 137)]
 		public CoverFireType PrepareFireType { get; set; } = new CoverFireType(); // 0x4C (76)
 		
-		[ContainerField(80), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "ForceExitCover", Offset: 80, NameHash: 397580885, Flags: 49325), LayoutImmutable, Blittable]
 		public bool ForceExitCover { get; set; } // 0x50 (80)
 		
-		[ContainerField(81), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "UseClientPosition", Offset: 81, NameHash: 430257222, Flags: 49325), LayoutImmutable, Blittable]
 		public bool UseClientPosition { get; set; } // 0x51 (81)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

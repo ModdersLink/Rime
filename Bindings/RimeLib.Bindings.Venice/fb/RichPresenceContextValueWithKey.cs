@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(20), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 20)]
 	public class RichPresenceContextValueWithKey : 
 		RichPresenceContextValue
 	{
 		protected string m_Key = string.Empty;
-		[ContainerField(16), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(193457490)]
+		[ContainerField(Name: "Key", Offset: 16, NameHash: 193457490, Flags: 16509), LayoutImmutable]
 		public string Key { get { return m_Key; } set { if (OnPropertyChanging("RichPresenceContextValueWithKey." + nameof(Key), this, m_Key, value)) m_Key = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

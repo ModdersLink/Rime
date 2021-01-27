@@ -18,36 +18,36 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(36), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 36)]
 	public class AntAnimationSetAsset : 
 		Asset
 	{
 		protected CtrRef<SkeletonAsset> m_SkeletonAsset = new CtrRef<SkeletonAsset>();
-		[ContainerField(12), MemberInfoFlag(53), ContainerFieldNameHash(2375870068), ContainerCtrRef]
+		[ContainerField(Name: "SkeletonAsset", Offset: 12, NameHash: 2375870068, Flags: 53)]
 		public CtrRef<SkeletonAsset> SkeletonAsset { get { return m_SkeletonAsset; } set { if (OnPropertyChanging("AntAnimationSetAsset." + nameof(SkeletonAsset), this, m_SkeletonAsset, value)) m_SkeletonAsset = value; } } // 0xC (12)
 		
 		protected int m_ActorAssetIndex = new int();
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(1719210944)]
+		[ContainerField(Name: "ActorAssetIndex", Offset: 16, NameHash: 1719210944, Flags: 49405), LayoutImmutable, Blittable]
 		public int ActorAssetIndex { get { return m_ActorAssetIndex; } set { if (OnPropertyChanging("AntAnimationSetAsset." + nameof(ActorAssetIndex), this, m_ActorAssetIndex, value)) m_ActorAssetIndex = value; } } // 0x10 (16)
 		
 		protected List<int> m_ClipAssetIndices = new List<int>();
-		[ContainerField(20), MemberInfoFlag(65), ContainerFieldNameHash(3918246524), ContainerArray]
+		[ContainerField(Name: "ClipAssetIndices", Offset: 20, NameHash: 3918246524, Flags: 65)]
 		public List<int> ClipAssetIndices { get { return m_ClipAssetIndices; } set { if (OnPropertyChanging("AntAnimationSetAsset." + nameof(ClipAssetIndices), this, m_ClipAssetIndices, value)) m_ClipAssetIndices = value; } } // 0x14 (20)
 		
 		protected List<int> m_LoopingClipAssetIndices = new List<int>();
-		[ContainerField(24), MemberInfoFlag(65), ContainerFieldNameHash(346444768), ContainerArray]
+		[ContainerField(Name: "LoopingClipAssetIndices", Offset: 24, NameHash: 346444768, Flags: 65)]
 		public List<int> LoopingClipAssetIndices { get { return m_LoopingClipAssetIndices; } set { if (OnPropertyChanging("AntAnimationSetAsset." + nameof(LoopingClipAssetIndices), this, m_LoopingClipAssetIndices, value)) m_LoopingClipAssetIndices = value; } } // 0x18 (24)
 		
 		protected int m_SceneOpMatrixAssetIndex = new int();
-		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(1085428945)]
+		[ContainerField(Name: "SceneOpMatrixAssetIndex", Offset: 28, NameHash: 1085428945, Flags: 49405), LayoutImmutable, Blittable]
 		public int SceneOpMatrixAssetIndex { get { return m_SceneOpMatrixAssetIndex; } set { if (OnPropertyChanging("AntAnimationSetAsset." + nameof(SceneOpMatrixAssetIndex), this, m_SceneOpMatrixAssetIndex, value)) m_SceneOpMatrixAssetIndex = value; } } // 0x1C (28)
 		
 		protected bool m_UseTraj2Ref = new bool();
-		[ContainerField(32), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(880398792)]
+		[ContainerField(Name: "UseTraj2Ref", Offset: 32, NameHash: 880398792, Flags: 49325), LayoutImmutable, Blittable]
 		public bool UseTraj2Ref { get { return m_UseTraj2Ref; } set { if (OnPropertyChanging("AntAnimationSetAsset." + nameof(UseTraj2Ref), this, m_UseTraj2Ref, value)) m_UseTraj2Ref = value; } } // 0x20 (32)
 		
 		protected bool m_AllowAnimationCulling = new bool();
-		[ContainerField(33), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(524938044)]
+		[ContainerField(Name: "AllowAnimationCulling", Offset: 33, NameHash: 524938044, Flags: 49325), LayoutImmutable, Blittable]
 		public bool AllowAnimationCulling { get { return m_AllowAnimationCulling; } set { if (OnPropertyChanging("AntAnimationSetAsset." + nameof(AllowAnimationCulling), this, m_AllowAnimationCulling, value)) m_AllowAnimationCulling = value; } } // 0x21 (33)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

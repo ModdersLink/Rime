@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(8), MemberInfoFlag(53), ContainerSize(24), ContainerClass]
+	[ContainerType(Alignment: 8,  Flags: 53, Size: 24)]
 	public class RoundOverEvent : 
 		MetricEvent
 	{
 		protected int m_WinningTeam = new int();
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(2949944838)]
+		[ContainerField(Name: "WinningTeam", Offset: 16, NameHash: 2949944838, Flags: 49405), LayoutImmutable, Blittable]
 		public int WinningTeam { get { return m_WinningTeam; } set { if (OnPropertyChanging("RoundOverEvent." + nameof(WinningTeam), this, m_WinningTeam, value)) m_WinningTeam = value; } } // 0x10 (16)
 		
 		protected int m_TicketsLeft = new int();
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(715127049)]
+		[ContainerField(Name: "TicketsLeft", Offset: 20, NameHash: 715127049, Flags: 49405), LayoutImmutable, Blittable]
 		public int TicketsLeft { get { return m_TicketsLeft; } set { if (OnPropertyChanging("RoundOverEvent." + nameof(TicketsLeft), this, m_TicketsLeft, value)) m_TicketsLeft = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

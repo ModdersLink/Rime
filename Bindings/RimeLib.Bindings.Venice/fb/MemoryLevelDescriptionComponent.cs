@@ -18,32 +18,32 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(32), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 32)]
 	public class MemoryLevelDescriptionComponent : 
 		LevelDescriptionComponent
 	{
 		protected int m_TexturePoolSize = new int();
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(1354314819)]
+		[ContainerField(Name: "TexturePoolSize", Offset: 8, NameHash: 1354314819, Flags: 49405), LayoutImmutable, Blittable]
 		public int TexturePoolSize { get { return m_TexturePoolSize; } set { if (OnPropertyChanging("MemoryLevelDescriptionComponent." + nameof(TexturePoolSize), this, m_TexturePoolSize, value)) m_TexturePoolSize = value; } } // 0x8 (8)
 		
 		protected int m_TexturePoolSizeXenon = new int();
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(2601129393)]
+		[ContainerField(Name: "TexturePoolSizeXenon", Offset: 12, NameHash: 2601129393, Flags: 49405), LayoutImmutable, Blittable]
 		public int TexturePoolSizeXenon { get { return m_TexturePoolSizeXenon; } set { if (OnPropertyChanging("MemoryLevelDescriptionComponent." + nameof(TexturePoolSizeXenon), this, m_TexturePoolSizeXenon, value)) m_TexturePoolSizeXenon = value; } } // 0xC (12)
 		
 		protected int m_TexturePoolSizePs3 = new int();
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(3737304851)]
+		[ContainerField(Name: "TexturePoolSizePs3", Offset: 16, NameHash: 3737304851, Flags: 49405), LayoutImmutable, Blittable]
 		public int TexturePoolSizePs3 { get { return m_TexturePoolSizePs3; } set { if (OnPropertyChanging("MemoryLevelDescriptionComponent." + nameof(TexturePoolSizePs3), this, m_TexturePoolSizePs3, value)) m_TexturePoolSizePs3 = value; } } // 0x10 (16)
 		
 		protected int m_MeshPoolSizePs3 = new int();
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(3688895551)]
+		[ContainerField(Name: "MeshPoolSizePs3", Offset: 20, NameHash: 3688895551, Flags: 49405), LayoutImmutable, Blittable]
 		public int MeshPoolSizePs3 { get { return m_MeshPoolSizePs3; } set { if (OnPropertyChanging("MemoryLevelDescriptionComponent." + nameof(MeshPoolSizePs3), this, m_MeshPoolSizePs3, value)) m_MeshPoolSizePs3 = value; } } // 0x14 (20)
 		
 		protected int m_MeshPoolSizePs3Cell = new int();
-		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(979301689)]
+		[ContainerField(Name: "MeshPoolSizePs3Cell", Offset: 24, NameHash: 979301689, Flags: 49405), LayoutImmutable, Blittable]
 		public int MeshPoolSizePs3Cell { get { return m_MeshPoolSizePs3Cell; } set { if (OnPropertyChanging("MemoryLevelDescriptionComponent." + nameof(MeshPoolSizePs3Cell), this, m_MeshPoolSizePs3Cell, value)) m_MeshPoolSizePs3Cell = value; } } // 0x18 (24)
 		
 		protected int m_MeshPoolSizeXenon = new int();
-		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(1403770333)]
+		[ContainerField(Name: "MeshPoolSizeXenon", Offset: 28, NameHash: 1403770333, Flags: 49405), LayoutImmutable, Blittable]
 		public int MeshPoolSizeXenon { get { return m_MeshPoolSizeXenon; } set { if (OnPropertyChanging("MemoryLevelDescriptionComponent." + nameof(MeshPoolSizeXenon), this, m_MeshPoolSizeXenon, value)) m_MeshPoolSizeXenon = value; } } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(128), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 128)]
 	public class PhantomComponentData : 
 		ComponentData
 	{
 		protected Vec3 m_BoxSize = new Vec3();
-		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(2526771413)]
+		[ContainerField(Name: "BoxSize", Offset: 96, NameHash: 2526771413, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 BoxSize { get { return m_BoxSize; } set { if (OnPropertyChanging("PhantomComponentData." + nameof(BoxSize), this, m_BoxSize, value)) m_BoxSize = value; } } // 0x60 (96)
 		
 		protected AntRef m_AsyncQueryPointerAsset = new AntRef();
-		[ContainerField(112), MemberInfoFlag(41), ContainerFieldNameHash(597429154)]
+		[ContainerField(Name: "AsyncQueryPointerAsset", Offset: 112, NameHash: 597429154, Flags: 41)]
 		public AntRef AsyncQueryPointerAsset { get { return m_AsyncQueryPointerAsset; } set { if (OnPropertyChanging("PhantomComponentData." + nameof(AsyncQueryPointerAsset), this, m_AsyncQueryPointerAsset, value)) m_AsyncQueryPointerAsset = value; } } // 0x70 (112)
 		
 		protected AntRef m_EnableTrajectoryOverride = new AntRef();
-		[ContainerField(116), MemberInfoFlag(41), ContainerFieldNameHash(1154108267)]
+		[ContainerField(Name: "EnableTrajectoryOverride", Offset: 116, NameHash: 1154108267, Flags: 41)]
 		public AntRef EnableTrajectoryOverride { get { return m_EnableTrajectoryOverride; } set { if (OnPropertyChanging("PhantomComponentData." + nameof(EnableTrajectoryOverride), this, m_EnableTrajectoryOverride, value)) m_EnableTrajectoryOverride = value; } } // 0x74 (116)
 		
 		protected AntRef m_TrajectoryOverride = new AntRef();
-		[ContainerField(120), MemberInfoFlag(41), ContainerFieldNameHash(3150043274)]
+		[ContainerField(Name: "TrajectoryOverride", Offset: 120, NameHash: 3150043274, Flags: 41)]
 		public AntRef TrajectoryOverride { get { return m_TrajectoryOverride; } set { if (OnPropertyChanging("PhantomComponentData." + nameof(TrajectoryOverride), this, m_TrajectoryOverride, value)) m_TrajectoryOverride = value; } } // 0x78 (120)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,22 +18,22 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(20), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 20)]
 	public class AwardStatus : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "Code", Offset: 0, NameHash: 2088844616, Flags: 16509), LayoutImmutable]
 		public string Code { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
+		[ContainerField(Name: "CurrentValue", Offset: 4, NameHash: 1144276871, Flags: 49421), LayoutImmutable, Blittable]
 		public uint CurrentValue { get; set; } // 0x4 (4)
 		
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
+		[ContainerField(Name: "OriginalValue", Offset: 8, NameHash: 3950775415, Flags: 49421), LayoutImmutable, Blittable]
 		public uint OriginalValue { get; set; } // 0x8 (8)
 		
-		[ContainerField(12), MemberInfoFlag(65), ContainerArray]
+		[ContainerField(Name: "Counters", Offset: 12, NameHash: 1361324322, Flags: 65)]
 		public List<CounterStatus> Counters { get; set; } = new List<CounterStatus>(); // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "IsCounting", Offset: 16, NameHash: 2475040956, Flags: 49325), LayoutImmutable, Blittable]
 		public bool IsCounting { get; set; } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

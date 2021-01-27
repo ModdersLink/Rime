@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(24), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 24)]
 	public class UINodePort : 
 		DataContainer
 	{
 		protected string m_Name = string.Empty;
-		[ContainerField(8), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(2088949890)]
+		[ContainerField(Name: "Name", Offset: 8, NameHash: 2088949890, Flags: 16509), LayoutImmutable]
 		public string Name { get { return m_Name; } set { if (OnPropertyChanging("UINodePort." + nameof(Name), this, m_Name, value)) m_Name = value; } } // 0x8 (8)
 		
 		protected string m_InstanceName = string.Empty;
-		[ContainerField(12), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(1186954283)]
+		[ContainerField(Name: "InstanceName", Offset: 12, NameHash: 1186954283, Flags: 16509), LayoutImmutable]
 		public string InstanceName { get { return m_InstanceName; } set { if (OnPropertyChanging("UINodePort." + nameof(InstanceName), this, m_InstanceName, value)) m_InstanceName = value; } } // 0xC (12)
 		
 		protected UIWidgetEventID m_Query = new UIWidgetEventID();
-		[ContainerField(16), MemberInfoFlag(137), ContainerFieldNameHash(223744783)]
+		[ContainerField(Name: "Query", Offset: 16, NameHash: 223744783, Flags: 137)]
 		public UIWidgetEventID Query { get { return m_Query; } set { if (OnPropertyChanging("UINodePort." + nameof(Query), this, m_Query, value)) m_Query = value; } } // 0x10 (16)
 		
 		protected bool m_AllowManualRemove = new bool();
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(64098272)]
+		[ContainerField(Name: "AllowManualRemove", Offset: 20, NameHash: 64098272, Flags: 49325), LayoutImmutable, Blittable]
 		public bool AllowManualRemove { get { return m_AllowManualRemove; } set { if (OnPropertyChanging("UINodePort." + nameof(AllowManualRemove), this, m_AllowManualRemove, value)) m_AllowManualRemove = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

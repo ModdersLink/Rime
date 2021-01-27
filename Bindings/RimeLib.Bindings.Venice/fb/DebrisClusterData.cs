@@ -18,104 +18,104 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(208), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 208)]
 	public class DebrisClusterData : 
 		GameEntityData
 	{
 		protected Vec3 m_PushVelocityMul = new Vec3();
-		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(3314270712)]
+		[ContainerField(Name: "PushVelocityMul", Offset: 96, NameHash: 3314270712, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 PushVelocityMul { get { return m_PushVelocityMul; } set { if (OnPropertyChanging("DebrisClusterData." + nameof(PushVelocityMul), this, m_PushVelocityMul, value)) m_PushVelocityMul = value; } } // 0x60 (96)
 		
 		protected Vec3 m_PushVelocityRndMul = new Vec3();
-		[ContainerField(112), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(2525151328)]
+		[ContainerField(Name: "PushVelocityRndMul", Offset: 112, NameHash: 2525151328, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 PushVelocityRndMul { get { return m_PushVelocityRndMul; } set { if (OnPropertyChanging("DebrisClusterData." + nameof(PushVelocityRndMul), this, m_PushVelocityRndMul, value)) m_PushVelocityRndMul = value; } } // 0x70 (112)
 		
 		protected Vec3 m_InitRotationRndMul = new Vec3();
-		[ContainerField(128), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(2277112647)]
+		[ContainerField(Name: "InitRotationRndMul", Offset: 128, NameHash: 2277112647, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 InitRotationRndMul { get { return m_InitRotationRndMul; } set { if (OnPropertyChanging("DebrisClusterData." + nameof(InitRotationRndMul), this, m_InitRotationRndMul, value)) m_InitRotationRndMul = value; } } // 0x80 (128)
 		
 		protected float m_ClusterLifetime = new float();
-		[ContainerField(144), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(250402940)]
+		[ContainerField(Name: "ClusterLifetime", Offset: 144, NameHash: 250402940, Flags: 49469), LayoutImmutable, Blittable]
 		public float ClusterLifetime { get { return m_ClusterLifetime; } set { if (OnPropertyChanging("DebrisClusterData." + nameof(ClusterLifetime), this, m_ClusterLifetime, value)) m_ClusterLifetime = value; } } // 0x90 (144)
 		
 		protected CtrRef<MeshAsset> m_Mesh = new CtrRef<MeshAsset>();
-		[ContainerField(148), MemberInfoFlag(53), ContainerFieldNameHash(2088783990), ContainerCtrRef]
+		[ContainerField(Name: "Mesh", Offset: 148, NameHash: 2088783990, Flags: 53)]
 		public CtrRef<MeshAsset> Mesh { get { return m_Mesh; } set { if (OnPropertyChanging("DebrisClusterData." + nameof(Mesh), this, m_Mesh, value)) m_Mesh = value; } } // 0x94 (148)
 		
 		protected uint m_CompositePartCount = new uint();
-		[ContainerField(152), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(3195612804)]
+		[ContainerField(Name: "CompositePartCount", Offset: 152, NameHash: 3195612804, Flags: 49421), LayoutImmutable, Blittable]
 		public uint CompositePartCount { get { return m_CompositePartCount; } set { if (OnPropertyChanging("DebrisClusterData." + nameof(CompositePartCount), this, m_CompositePartCount, value)) m_CompositePartCount = value; } } // 0x98 (152)
 		
 		protected uint m_MaxActivePartsCount = new uint();
-		[ContainerField(156), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(2283606746)]
+		[ContainerField(Name: "MaxActivePartsCount", Offset: 156, NameHash: 2283606746, Flags: 49421), LayoutImmutable, Blittable]
 		public uint MaxActivePartsCount { get { return m_MaxActivePartsCount; } set { if (OnPropertyChanging("DebrisClusterData." + nameof(MaxActivePartsCount), this, m_MaxActivePartsCount, value)) m_MaxActivePartsCount = value; } } // 0x9C (156)
 		
 		protected List<DebrisClusterPartInfoData> m_PartHierarchy = new List<DebrisClusterPartInfoData>();
-		[ContainerField(160), MemberInfoFlag(65), ContainerFieldNameHash(3544065669), ContainerArray]
+		[ContainerField(Name: "PartHierarchy", Offset: 160, NameHash: 3544065669, Flags: 65)]
 		public List<DebrisClusterPartInfoData> PartHierarchy { get { return m_PartHierarchy; } set { if (OnPropertyChanging("DebrisClusterData." + nameof(PartHierarchy), this, m_PartHierarchy, value)) m_PartHierarchy = value; } } // 0xA0 (160)
 		
 		protected float m_ActivationPushForceMul = new float();
-		[ContainerField(164), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(4184797926)]
+		[ContainerField(Name: "ActivationPushForceMul", Offset: 164, NameHash: 4184797926, Flags: 49469), LayoutImmutable, Blittable]
 		public float ActivationPushForceMul { get { return m_ActivationPushForceMul; } set { if (OnPropertyChanging("DebrisClusterData." + nameof(ActivationPushForceMul), this, m_ActivationPushForceMul, value)) m_ActivationPushForceMul = value; } } // 0xA4 (164)
 		
 		protected float m_ProjectileForceTransferMul = new float();
-		[ContainerField(168), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(501994258)]
+		[ContainerField(Name: "ProjectileForceTransferMul", Offset: 168, NameHash: 501994258, Flags: 49469), LayoutImmutable, Blittable]
 		public float ProjectileForceTransferMul { get { return m_ProjectileForceTransferMul; } set { if (OnPropertyChanging("DebrisClusterData." + nameof(ProjectileForceTransferMul), this, m_ProjectileForceTransferMul, value)) m_ProjectileForceTransferMul = value; } } // 0xA8 (168)
 		
 		protected CtrRef<PhysicsEntityData> m_PhysicsData = new CtrRef<PhysicsEntityData>();
-		[ContainerField(172), MemberInfoFlag(53), ContainerFieldNameHash(1743842718), ContainerCtrRef]
+		[ContainerField(Name: "PhysicsData", Offset: 172, NameHash: 1743842718, Flags: 53)]
 		public CtrRef<PhysicsEntityData> PhysicsData { get { return m_PhysicsData; } set { if (OnPropertyChanging("DebrisClusterData." + nameof(PhysicsData), this, m_PhysicsData, value)) m_PhysicsData = value; } } // 0xAC (172)
 		
 		protected CtrRef<GameEntityData> m_Explosion = new CtrRef<GameEntityData>();
-		[ContainerField(176), MemberInfoFlag(53), ContainerFieldNameHash(2222171184), ContainerCtrRef]
+		[ContainerField(Name: "Explosion", Offset: 176, NameHash: 2222171184, Flags: 53)]
 		public CtrRef<GameEntityData> Explosion { get { return m_Explosion; } set { if (OnPropertyChanging("DebrisClusterData." + nameof(Explosion), this, m_Explosion, value)) m_Explosion = value; } } // 0xB0 (176)
 		
 		protected CtrRef<EffectBlueprint> m_ActivationEffect = new CtrRef<EffectBlueprint>();
-		[ContainerField(180), MemberInfoFlag(53), ContainerFieldNameHash(2134350406), ContainerCtrRef]
+		[ContainerField(Name: "ActivationEffect", Offset: 180, NameHash: 2134350406, Flags: 53)]
 		public CtrRef<EffectBlueprint> ActivationEffect { get { return m_ActivationEffect; } set { if (OnPropertyChanging("DebrisClusterData." + nameof(ActivationEffect), this, m_ActivationEffect, value)) m_ActivationEffect = value; } } // 0xB4 (180)
 		
 		protected CtrRef<EffectBlueprint> m_Effect = new CtrRef<EffectBlueprint>();
-		[ContainerField(184), MemberInfoFlag(53), ContainerFieldNameHash(2332983090), ContainerCtrRef]
+		[ContainerField(Name: "Effect", Offset: 184, NameHash: 2332983090, Flags: 53)]
 		public CtrRef<EffectBlueprint> Effect { get { return m_Effect; } set { if (OnPropertyChanging("DebrisClusterData." + nameof(Effect), this, m_Effect, value)) m_Effect = value; } } // 0xB8 (184)
 		
 		protected float m_OnPartCollisionSpeedThreshold = new float();
-		[ContainerField(188), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(322306461)]
+		[ContainerField(Name: "OnPartCollisionSpeedThreshold", Offset: 188, NameHash: 322306461, Flags: 49469), LayoutImmutable, Blittable]
 		public float OnPartCollisionSpeedThreshold { get { return m_OnPartCollisionSpeedThreshold; } set { if (OnPropertyChanging("DebrisClusterData." + nameof(OnPartCollisionSpeedThreshold), this, m_OnPartCollisionSpeedThreshold, value)) m_OnPartCollisionSpeedThreshold = value; } } // 0xBC (188)
 		
 		protected bool m_PartialDestruction = new bool();
-		[ContainerField(192), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2157329736)]
+		[ContainerField(Name: "PartialDestruction", Offset: 192, NameHash: 2157329736, Flags: 49325), LayoutImmutable, Blittable]
 		public bool PartialDestruction { get { return m_PartialDestruction; } set { if (OnPropertyChanging("DebrisClusterData." + nameof(PartialDestruction), this, m_PartialDestruction, value)) m_PartialDestruction = value; } } // 0xC0 (192)
 		
 		protected bool m_ClientSideOnly = new bool();
-		[ContainerField(193), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3628043763)]
+		[ContainerField(Name: "ClientSideOnly", Offset: 193, NameHash: 3628043763, Flags: 49325), LayoutImmutable, Blittable]
 		public bool ClientSideOnly { get { return m_ClientSideOnly; } set { if (OnPropertyChanging("DebrisClusterData." + nameof(ClientSideOnly), this, m_ClientSideOnly, value)) m_ClientSideOnly = value; } } // 0xC1 (193)
 		
 		protected bool m_OnPartCollisionEnable = new bool();
-		[ContainerField(194), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1786102988)]
+		[ContainerField(Name: "OnPartCollisionEnable", Offset: 194, NameHash: 1786102988, Flags: 49325), LayoutImmutable, Blittable]
 		public bool OnPartCollisionEnable { get { return m_OnPartCollisionEnable; } set { if (OnPropertyChanging("DebrisClusterData." + nameof(OnPartCollisionEnable), this, m_OnPartCollisionEnable, value)) m_OnPartCollisionEnable = value; } } // 0xC2 (194)
 		
 		protected bool m_NoCollision = new bool();
-		[ContainerField(195), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3513186074)]
+		[ContainerField(Name: "NoCollision", Offset: 195, NameHash: 3513186074, Flags: 49325), LayoutImmutable, Blittable]
 		public bool NoCollision { get { return m_NoCollision; } set { if (OnPropertyChanging("DebrisClusterData." + nameof(NoCollision), this, m_NoCollision, value)) m_NoCollision = value; } } // 0xC3 (195)
 		
 		protected bool m_KillPartsOnCollision = new bool();
-		[ContainerField(196), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1968153084)]
+		[ContainerField(Name: "KillPartsOnCollision", Offset: 196, NameHash: 1968153084, Flags: 49325), LayoutImmutable, Blittable]
 		public bool KillPartsOnCollision { get { return m_KillPartsOnCollision; } set { if (OnPropertyChanging("DebrisClusterData." + nameof(KillPartsOnCollision), this, m_KillPartsOnCollision, value)) m_KillPartsOnCollision = value; } } // 0xC4 (196)
 		
 		protected bool m_DeactivatePartsOnSleep = new bool();
-		[ContainerField(197), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(4098365303)]
+		[ContainerField(Name: "DeactivatePartsOnSleep", Offset: 197, NameHash: 4098365303, Flags: 49325), LayoutImmutable, Blittable]
 		public bool DeactivatePartsOnSleep { get { return m_DeactivatePartsOnSleep; } set { if (OnPropertyChanging("DebrisClusterData." + nameof(DeactivatePartsOnSleep), this, m_DeactivatePartsOnSleep, value)) m_DeactivatePartsOnSleep = value; } } // 0xC5 (197)
 		
 		protected bool m_ActivateOnSpawn = new bool();
-		[ContainerField(198), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(471103942)]
+		[ContainerField(Name: "ActivateOnSpawn", Offset: 198, NameHash: 471103942, Flags: 49325), LayoutImmutable, Blittable]
 		public bool ActivateOnSpawn { get { return m_ActivateOnSpawn; } set { if (OnPropertyChanging("DebrisClusterData." + nameof(ActivateOnSpawn), this, m_ActivateOnSpawn, value)) m_ActivateOnSpawn = value; } } // 0xC6 (198)
 		
 		protected bool m_InEffectWorldOnly = new bool();
-		[ContainerField(199), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1269951075)]
+		[ContainerField(Name: "InEffectWorldOnly", Offset: 199, NameHash: 1269951075, Flags: 49325), LayoutImmutable, Blittable]
 		public bool InEffectWorldOnly { get { return m_InEffectWorldOnly; } set { if (OnPropertyChanging("DebrisClusterData." + nameof(InEffectWorldOnly), this, m_InEffectWorldOnly, value)) m_InEffectWorldOnly = value; } } // 0xC7 (199)
 		
 		protected bool m_SpawnExplosionOnFirstImpactOnly = new bool();
-		[ContainerField(200), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3769890534)]
+		[ContainerField(Name: "SpawnExplosionOnFirstImpactOnly", Offset: 200, NameHash: 3769890534, Flags: 49325), LayoutImmutable, Blittable]
 		public bool SpawnExplosionOnFirstImpactOnly { get { return m_SpawnExplosionOnFirstImpactOnly; } set { if (OnPropertyChanging("DebrisClusterData." + nameof(SpawnExplosionOnFirstImpactOnly), this, m_SpawnExplosionOnFirstImpactOnly, value)) m_SpawnExplosionOnFirstImpactOnly = value; } } // 0xC8 (200)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

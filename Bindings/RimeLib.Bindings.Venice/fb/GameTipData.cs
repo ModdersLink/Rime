@@ -18,10 +18,10 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(4), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 4)]
 	public class GameTipData : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "Text", Offset: 0, NameHash: 2089309304, Flags: 16509), LayoutImmutable]
 		public string Text { get; set; } // 0x0 (0)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

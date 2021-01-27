@@ -18,13 +18,13 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(8), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 8)]
 	public class ActionSuppressor : FrostbiteContainer
 	{
-		[ContainerField(0), MemberInfoFlag(137)]
+		[ContainerField(Name: "ActionToSuppress", Offset: 0, NameHash: 3644641713, Flags: 137)]
 		public EntryInputActionEnum ActionToSuppress { get; set; } = new EntryInputActionEnum(); // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "SuppressingValue", Offset: 4, NameHash: 390019807, Flags: 49469), LayoutImmutable, Blittable]
 		public float SuppressingValue { get; set; } // 0x4 (4)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

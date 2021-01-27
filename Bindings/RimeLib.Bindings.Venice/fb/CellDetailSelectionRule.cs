@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(64), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 64)]
 	public class CellDetailSelectionRule : 
 		PackagingRule
 	{
 		protected PackagingDetailLevel m_Detail = new PackagingDetailLevel();
-		[ContainerField(48), MemberInfoFlag(137), ContainerFieldNameHash(2594676244)]
+		[ContainerField(Name: "Detail", Offset: 48, NameHash: 2594676244, Flags: 137)]
 		public PackagingDetailLevel Detail { get { return m_Detail; } set { if (OnPropertyChanging("CellDetailSelectionRule." + nameof(Detail), this, m_Detail, value)) m_Detail = value; } } // 0x30 (48)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,172 +18,172 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(120), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 120)]
 	public class GameSettings : 
 		SystemSettings
 	{
 		protected uint m_MaxPlayerCount = new uint();
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(4192814593)]
+		[ContainerField(Name: "MaxPlayerCount", Offset: 12, NameHash: 4192814593, Flags: 49421), LayoutImmutable, Blittable]
 		public uint MaxPlayerCount { get { return m_MaxPlayerCount; } set { if (OnPropertyChanging("GameSettings." + nameof(MaxPlayerCount), this, m_MaxPlayerCount, value)) m_MaxPlayerCount = value; } } // 0xC (12)
 		
 		protected uint m_MaxSpectatorCount = new uint();
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(3946650923)]
+		[ContainerField(Name: "MaxSpectatorCount", Offset: 16, NameHash: 3946650923, Flags: 49421), LayoutImmutable, Blittable]
 		public uint MaxSpectatorCount { get { return m_MaxSpectatorCount; } set { if (OnPropertyChanging("GameSettings." + nameof(MaxSpectatorCount), this, m_MaxSpectatorCount, value)) m_MaxSpectatorCount = value; } } // 0x10 (16)
 		
 		protected CtrRef<SubWorldInclusion> m_LayerInclusionTable = new CtrRef<SubWorldInclusion>();
-		[ContainerField(20), MemberInfoFlag(53), ContainerFieldNameHash(1500062686), ContainerCtrRef]
+		[ContainerField(Name: "LayerInclusionTable", Offset: 20, NameHash: 1500062686, Flags: 53)]
 		public CtrRef<SubWorldInclusion> LayerInclusionTable { get { return m_LayerInclusionTable; } set { if (OnPropertyChanging("GameSettings." + nameof(LayerInclusionTable), this, m_LayerInclusionTable, value)) m_LayerInclusionTable = value; } } // 0x14 (20)
 		
 		protected LogFileCollisionMode m_LogFileCollisionMode = new LogFileCollisionMode();
-		[ContainerField(24), MemberInfoFlag(137), ContainerFieldNameHash(3429178042)]
+		[ContainerField(Name: "LogFileCollisionMode", Offset: 24, NameHash: 3429178042, Flags: 137)]
 		public LogFileCollisionMode LogFileCollisionMode { get { return m_LogFileCollisionMode; } set { if (OnPropertyChanging("GameSettings." + nameof(LogFileCollisionMode), this, m_LogFileCollisionMode, value)) m_LogFileCollisionMode = value; } } // 0x18 (24)
 		
 		protected uint m_LogFileRotationHistoryLength = new uint();
-		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(3548846413)]
+		[ContainerField(Name: "LogFileRotationHistoryLength", Offset: 28, NameHash: 3548846413, Flags: 49421), LayoutImmutable, Blittable]
 		public uint LogFileRotationHistoryLength { get { return m_LogFileRotationHistoryLength; } set { if (OnPropertyChanging("GameSettings." + nameof(LogFileRotationHistoryLength), this, m_LogFileRotationHistoryLength, value)) m_LogFileRotationHistoryLength = value; } } // 0x1C (28)
 		
 		protected string m_Level = string.Empty;
-		[ContainerField(32), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(218262515)]
+		[ContainerField(Name: "Level", Offset: 32, NameHash: 218262515, Flags: 16509), LayoutImmutable]
 		public string Level { get { return m_Level; } set { if (OnPropertyChanging("GameSettings." + nameof(Level), this, m_Level, value)) m_Level = value; } } // 0x20 (32)
 		
 		protected string m_DefaultLayerInclusion = string.Empty;
-		[ContainerField(36), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(4278341003)]
+		[ContainerField(Name: "DefaultLayerInclusion", Offset: 36, NameHash: 4278341003, Flags: 16509), LayoutImmutable]
 		public string DefaultLayerInclusion { get { return m_DefaultLayerInclusion; } set { if (OnPropertyChanging("GameSettings." + nameof(DefaultLayerInclusion), this, m_DefaultLayerInclusion, value)) m_DefaultLayerInclusion = value; } } // 0x24 (36)
 		
 		protected RefArray<InputConfigurationAsset> m_InputConfiguration = new RefArray<InputConfigurationAsset>();
-		[ContainerField(40), MemberInfoFlag(65), ContainerFieldNameHash(2676875651), ContainerRefArray]
+		[ContainerField(Name: "InputConfiguration", Offset: 40, NameHash: 2676875651, Flags: 65)]
 		public RefArray<InputConfigurationAsset> InputConfiguration { get { return m_InputConfiguration; } set { if (OnPropertyChanging("GameSettings." + nameof(InputConfiguration), this, m_InputConfiguration, value)) m_InputConfiguration = value; } } // 0x28 (40)
 		
 		protected TeamId m_DefaultTeamId = new TeamId();
-		[ContainerField(44), MemberInfoFlag(137), ContainerFieldNameHash(3990246590)]
+		[ContainerField(Name: "DefaultTeamId", Offset: 44, NameHash: 3990246590, Flags: 137)]
 		public TeamId DefaultTeamId { get { return m_DefaultTeamId; } set { if (OnPropertyChanging("GameSettings." + nameof(DefaultTeamId), this, m_DefaultTeamId, value)) m_DefaultTeamId = value; } } // 0x2C (44)
 		
 		protected float m_LevelWarmUpTime = new float();
-		[ContainerField(48), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3353881322)]
+		[ContainerField(Name: "LevelWarmUpTime", Offset: 48, NameHash: 3353881322, Flags: 49469), LayoutImmutable, Blittable]
 		public float LevelWarmUpTime { get { return m_LevelWarmUpTime; } set { if (OnPropertyChanging("GameSettings." + nameof(LevelWarmUpTime), this, m_LevelWarmUpTime, value)) m_LevelWarmUpTime = value; } } // 0x30 (48)
 		
 		protected float m_TimeToWaitForQuitTaskCompletion = new float();
-		[ContainerField(52), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2225926219)]
+		[ContainerField(Name: "TimeToWaitForQuitTaskCompletion", Offset: 52, NameHash: 2225926219, Flags: 49469), LayoutImmutable, Blittable]
 		public float TimeToWaitForQuitTaskCompletion { get { return m_TimeToWaitForQuitTaskCompletion; } set { if (OnPropertyChanging("GameSettings." + nameof(TimeToWaitForQuitTaskCompletion), this, m_TimeToWaitForQuitTaskCompletion, value)) m_TimeToWaitForQuitTaskCompletion = value; } } // 0x34 (52)
 		
 		protected GamePlatform m_Platform = new GamePlatform();
-		[ContainerField(56), MemberInfoFlag(137), ContainerFieldNameHash(942751002)]
+		[ContainerField(Name: "Platform", Offset: 56, NameHash: 942751002, Flags: 137)]
 		public GamePlatform Platform { get { return m_Platform; } set { if (OnPropertyChanging("GameSettings." + nameof(Platform), this, m_Platform, value)) m_Platform = value; } } // 0x38 (56)
 		
 		protected CtrRef<VersionData> m_Version = new CtrRef<VersionData>();
-		[ContainerField(60), MemberInfoFlag(53), ContainerFieldNameHash(747123679), ContainerCtrRef]
+		[ContainerField(Name: "Version", Offset: 60, NameHash: 747123679, Flags: 53)]
 		public CtrRef<VersionData> Version { get { return m_Version; } set { if (OnPropertyChanging("GameSettings." + nameof(Version), this, m_Version, value)) m_Version = value; } } // 0x3C (60)
 		
 		protected uint m_PS3ContentRatingAge = new uint();
-		[ContainerField(64), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(534892568)]
+		[ContainerField(Name: "PS3ContentRatingAge", Offset: 64, NameHash: 534892568, Flags: 49421), LayoutImmutable, Blittable]
 		public uint PS3ContentRatingAge { get { return m_PS3ContentRatingAge; } set { if (OnPropertyChanging("GameSettings." + nameof(PS3ContentRatingAge), this, m_PS3ContentRatingAge, value)) m_PS3ContentRatingAge = value; } } // 0x40 (64)
 		
 		protected int m_DifficultyIndex = new int();
-		[ContainerField(68), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(302070728)]
+		[ContainerField(Name: "DifficultyIndex", Offset: 68, NameHash: 302070728, Flags: 49405), LayoutImmutable, Blittable]
 		public int DifficultyIndex { get { return m_DifficultyIndex; } set { if (OnPropertyChanging("GameSettings." + nameof(DifficultyIndex), this, m_DifficultyIndex, value)) m_DifficultyIndex = value; } } // 0x44 (68)
 		
 		protected float m_TimeBeforeSpawnIsAllowed = new float();
-		[ContainerField(72), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3672151792)]
+		[ContainerField(Name: "TimeBeforeSpawnIsAllowed", Offset: 72, NameHash: 3672151792, Flags: 49469), LayoutImmutable, Blittable]
 		public float TimeBeforeSpawnIsAllowed { get { return m_TimeBeforeSpawnIsAllowed; } set { if (OnPropertyChanging("GameSettings." + nameof(TimeBeforeSpawnIsAllowed), this, m_TimeBeforeSpawnIsAllowed, value)) m_TimeBeforeSpawnIsAllowed = value; } } // 0x48 (72)
 		
 		protected CtrRef<SoldierWeaponSwitchingData> m_SoldierWeaponSwitching = new CtrRef<SoldierWeaponSwitchingData>();
-		[ContainerField(76), MemberInfoFlag(53), ContainerFieldNameHash(2122873599), ContainerCtrRef]
+		[ContainerField(Name: "SoldierWeaponSwitching", Offset: 76, NameHash: 2122873599, Flags: 53)]
 		public CtrRef<SoldierWeaponSwitchingData> SoldierWeaponSwitching { get { return m_SoldierWeaponSwitching; } set { if (OnPropertyChanging("GameSettings." + nameof(SoldierWeaponSwitching), this, m_SoldierWeaponSwitching, value)) m_SoldierWeaponSwitching = value; } } // 0x4C (76)
 		
 		protected uint m_LogHistory = new uint();
-		[ContainerField(80), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(1374192771)]
+		[ContainerField(Name: "LogHistory", Offset: 80, NameHash: 1374192771, Flags: 49421), LayoutImmutable, Blittable]
 		public uint LogHistory { get { return m_LogHistory; } set { if (OnPropertyChanging("GameSettings." + nameof(LogHistory), this, m_LogHistory, value)) m_LogHistory = value; } } // 0x50 (80)
 		
 		protected CtrRef<DifficultyDatas> m_DifficultySettings = new CtrRef<DifficultyDatas>();
-		[ContainerField(84), MemberInfoFlag(53), ContainerFieldNameHash(1244447411), ContainerCtrRef]
+		[ContainerField(Name: "DifficultySettings", Offset: 84, NameHash: 1244447411, Flags: 53)]
 		public CtrRef<DifficultyDatas> DifficultySettings { get { return m_DifficultySettings; } set { if (OnPropertyChanging("GameSettings." + nameof(DifficultySettings), this, m_DifficultySettings, value)) m_DifficultySettings = value; } } // 0x54 (84)
 		
 		protected RefArray<BlueprintBundleMetadataContainer> m_MetadataContainers = new RefArray<BlueprintBundleMetadataContainer>();
-		[ContainerField(88), MemberInfoFlag(65), ContainerFieldNameHash(2114222460), ContainerRefArray]
+		[ContainerField(Name: "MetadataContainers", Offset: 88, NameHash: 2114222460, Flags: 65)]
 		public RefArray<BlueprintBundleMetadataContainer> MetadataContainers { get { return m_MetadataContainers; } set { if (OnPropertyChanging("GameSettings." + nameof(MetadataContainers), this, m_MetadataContainers, value)) m_MetadataContainers = value; } } // 0x58 (88)
 		
 		protected SKU m_CurrentSKU = new SKU();
-		[ContainerField(92), MemberInfoFlag(137), ContainerFieldNameHash(1385383009)]
+		[ContainerField(Name: "CurrentSKU", Offset: 92, NameHash: 1385383009, Flags: 137)]
 		public SKU CurrentSKU { get { return m_CurrentSKU; } set { if (OnPropertyChanging("GameSettings." + nameof(CurrentSKU), this, m_CurrentSKU, value)) m_CurrentSKU = value; } } // 0x5C (92)
 		
 		protected CtrRef<PlayerData> m_Player = new CtrRef<PlayerData>();
-		[ContainerField(96), MemberInfoFlag(53), ContainerFieldNameHash(3384765366), ContainerCtrRef]
+		[ContainerField(Name: "Player", Offset: 96, NameHash: 3384765366, Flags: 53)]
 		public CtrRef<PlayerData> Player { get { return m_Player; } set { if (OnPropertyChanging("GameSettings." + nameof(Player), this, m_Player, value)) m_Player = value; } } // 0x60 (96)
 		
 		protected bool m_LogFileEnable = new bool();
-		[ContainerField(100), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2156101894)]
+		[ContainerField(Name: "LogFileEnable", Offset: 100, NameHash: 2156101894, Flags: 49325), LayoutImmutable, Blittable]
 		public bool LogFileEnable { get { return m_LogFileEnable; } set { if (OnPropertyChanging("GameSettings." + nameof(LogFileEnable), this, m_LogFileEnable, value)) m_LogFileEnable = value; } } // 0x64 (100)
 		
 		protected bool m_RotateLogs = new bool();
-		[ContainerField(101), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1480400363)]
+		[ContainerField(Name: "RotateLogs", Offset: 101, NameHash: 1480400363, Flags: 49325), LayoutImmutable, Blittable]
 		public bool RotateLogs { get { return m_RotateLogs; } set { if (OnPropertyChanging("GameSettings." + nameof(RotateLogs), this, m_RotateLogs, value)) m_RotateLogs = value; } } // 0x65 (101)
 		
 		protected bool m_EnableLoadingProfile = new bool();
-		[ContainerField(102), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(456285193)]
+		[ContainerField(Name: "EnableLoadingProfile", Offset: 102, NameHash: 456285193, Flags: 49325), LayoutImmutable, Blittable]
 		public bool EnableLoadingProfile { get { return m_EnableLoadingProfile; } set { if (OnPropertyChanging("GameSettings." + nameof(EnableLoadingProfile), this, m_EnableLoadingProfile, value)) m_EnableLoadingProfile = value; } } // 0x66 (102)
 		
 		protected bool m_AdjustVehicleCenterOfMass = new bool();
-		[ContainerField(103), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(589491054)]
+		[ContainerField(Name: "AdjustVehicleCenterOfMass", Offset: 103, NameHash: 589491054, Flags: 49325), LayoutImmutable, Blittable]
 		public bool AdjustVehicleCenterOfMass { get { return m_AdjustVehicleCenterOfMass; } set { if (OnPropertyChanging("GameSettings." + nameof(AdjustVehicleCenterOfMass), this, m_AdjustVehicleCenterOfMass, value)) m_AdjustVehicleCenterOfMass = value; } } // 0x67 (103)
 		
 		protected bool m_AutoAimEnabled = new bool();
-		[ContainerField(104), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2330232810)]
+		[ContainerField(Name: "AutoAimEnabled", Offset: 104, NameHash: 2330232810, Flags: 49325), LayoutImmutable, Blittable]
 		public bool AutoAimEnabled { get { return m_AutoAimEnabled; } set { if (OnPropertyChanging("GameSettings." + nameof(AutoAimEnabled), this, m_AutoAimEnabled, value)) m_AutoAimEnabled = value; } } // 0x68 (104)
 		
 		protected bool m_HasUnlimitedAmmo = new bool();
-		[ContainerField(105), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3689258814)]
+		[ContainerField(Name: "HasUnlimitedAmmo", Offset: 105, NameHash: 3689258814, Flags: 49325), LayoutImmutable, Blittable]
 		public bool HasUnlimitedAmmo { get { return m_HasUnlimitedAmmo; } set { if (OnPropertyChanging("GameSettings." + nameof(HasUnlimitedAmmo), this, m_HasUnlimitedAmmo, value)) m_HasUnlimitedAmmo = value; } } // 0x69 (105)
 		
 		protected bool m_HasUnlimitedMags = new bool();
-		[ContainerField(106), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3689677416)]
+		[ContainerField(Name: "HasUnlimitedMags", Offset: 106, NameHash: 3689677416, Flags: 49325), LayoutImmutable, Blittable]
 		public bool HasUnlimitedMags { get { return m_HasUnlimitedMags; } set { if (OnPropertyChanging("GameSettings." + nameof(HasUnlimitedMags), this, m_HasUnlimitedMags, value)) m_HasUnlimitedMags = value; } } // 0x6A (106)
 		
 		protected bool m_ResourceRefreshAlwaysAllowed = new bool();
-		[ContainerField(107), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3415354971)]
+		[ContainerField(Name: "ResourceRefreshAlwaysAllowed", Offset: 107, NameHash: 3415354971, Flags: 49325), LayoutImmutable, Blittable]
 		public bool ResourceRefreshAlwaysAllowed { get { return m_ResourceRefreshAlwaysAllowed; } set { if (OnPropertyChanging("GameSettings." + nameof(ResourceRefreshAlwaysAllowed), this, m_ResourceRefreshAlwaysAllowed, value)) m_ResourceRefreshAlwaysAllowed = value; } } // 0x6B (107)
 		
 		protected bool m_UseSpeedBasedDetailedCollision = new bool();
-		[ContainerField(108), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(801331358)]
+		[ContainerField(Name: "UseSpeedBasedDetailedCollision", Offset: 108, NameHash: 801331358, Flags: 49325), LayoutImmutable, Blittable]
 		public bool UseSpeedBasedDetailedCollision { get { return m_UseSpeedBasedDetailedCollision; } set { if (OnPropertyChanging("GameSettings." + nameof(UseSpeedBasedDetailedCollision), this, m_UseSpeedBasedDetailedCollision, value)) m_UseSpeedBasedDetailedCollision = value; } } // 0x6C (108)
 		
 		protected bool m_AimAssistEnabled = new bool();
-		[ContainerField(109), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3924289354)]
+		[ContainerField(Name: "AimAssistEnabled", Offset: 109, NameHash: 3924289354, Flags: 49325), LayoutImmutable, Blittable]
 		public bool AimAssistEnabled { get { return m_AimAssistEnabled; } set { if (OnPropertyChanging("GameSettings." + nameof(AimAssistEnabled), this, m_AimAssistEnabled, value)) m_AimAssistEnabled = value; } } // 0x6D (109)
 		
 		protected bool m_AimAssistUsePolynomials = new bool();
-		[ContainerField(110), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1082705757)]
+		[ContainerField(Name: "AimAssistUsePolynomials", Offset: 110, NameHash: 1082705757, Flags: 49325), LayoutImmutable, Blittable]
 		public bool AimAssistUsePolynomials { get { return m_AimAssistUsePolynomials; } set { if (OnPropertyChanging("GameSettings." + nameof(AimAssistUsePolynomials), this, m_AimAssistUsePolynomials, value)) m_AimAssistUsePolynomials = value; } } // 0x6E (110)
 		
 		protected bool m_ForceFreeStreaming = new bool();
-		[ContainerField(111), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(428656304)]
+		[ContainerField(Name: "ForceFreeStreaming", Offset: 111, NameHash: 428656304, Flags: 49325), LayoutImmutable, Blittable]
 		public bool ForceFreeStreaming { get { return m_ForceFreeStreaming; } set { if (OnPropertyChanging("GameSettings." + nameof(ForceFreeStreaming), this, m_ForceFreeStreaming, value)) m_ForceFreeStreaming = value; } } // 0x6F (111)
 		
 		protected bool m_ForceDisableFreeStreaming = new bool();
-		[ContainerField(112), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2029153572)]
+		[ContainerField(Name: "ForceDisableFreeStreaming", Offset: 112, NameHash: 2029153572, Flags: 49325), LayoutImmutable, Blittable]
 		public bool ForceDisableFreeStreaming { get { return m_ForceDisableFreeStreaming; } set { if (OnPropertyChanging("GameSettings." + nameof(ForceDisableFreeStreaming), this, m_ForceDisableFreeStreaming, value)) m_ForceDisableFreeStreaming = value; } } // 0x70 (112)
 		
 		protected bool m_IsGodMode = new bool();
-		[ContainerField(113), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(568328144)]
+		[ContainerField(Name: "IsGodMode", Offset: 113, NameHash: 568328144, Flags: 49325), LayoutImmutable, Blittable]
 		public bool IsGodMode { get { return m_IsGodMode; } set { if (OnPropertyChanging("GameSettings." + nameof(IsGodMode), this, m_IsGodMode, value)) m_IsGodMode = value; } } // 0x71 (113)
 		
 		protected bool m_IsJesusMode = new bool();
-		[ContainerField(114), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(314138150)]
+		[ContainerField(Name: "IsJesusMode", Offset: 114, NameHash: 314138150, Flags: 49325), LayoutImmutable, Blittable]
 		public bool IsJesusMode { get { return m_IsJesusMode; } set { if (OnPropertyChanging("GameSettings." + nameof(IsJesusMode), this, m_IsJesusMode, value)) m_IsJesusMode = value; } } // 0x72 (114)
 		
 		protected bool m_IsJesusModeAi = new bool();
-		[ContainerField(115), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2794026990)]
+		[ContainerField(Name: "IsJesusModeAi", Offset: 115, NameHash: 2794026990, Flags: 49325), LayoutImmutable, Blittable]
 		public bool IsJesusModeAi { get { return m_IsJesusModeAi; } set { if (OnPropertyChanging("GameSettings." + nameof(IsJesusModeAi), this, m_IsJesusModeAi, value)) m_IsJesusModeAi = value; } } // 0x73 (115)
 		
 		protected bool m_UseSingleWeaponSelector = new bool();
-		[ContainerField(116), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1670669515)]
+		[ContainerField(Name: "UseSingleWeaponSelector", Offset: 116, NameHash: 1670669515, Flags: 49325), LayoutImmutable, Blittable]
 		public bool UseSingleWeaponSelector { get { return m_UseSingleWeaponSelector; } set { if (OnPropertyChanging("GameSettings." + nameof(UseSingleWeaponSelector), this, m_UseSingleWeaponSelector, value)) m_UseSingleWeaponSelector = value; } } // 0x74 (116)
 		
 		protected bool m_GameAdministrationEnabled = new bool();
-		[ContainerField(117), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2064959744)]
+		[ContainerField(Name: "GameAdministrationEnabled", Offset: 117, NameHash: 2064959744, Flags: 49325), LayoutImmutable, Blittable]
 		public bool GameAdministrationEnabled { get { return m_GameAdministrationEnabled; } set { if (OnPropertyChanging("GameSettings." + nameof(GameAdministrationEnabled), this, m_GameAdministrationEnabled, value)) m_GameAdministrationEnabled = value; } } // 0x75 (117)
 		
 		protected bool m_AllowDestructionOutsideCombatArea = new bool();
-		[ContainerField(118), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1836790742)]
+		[ContainerField(Name: "AllowDestructionOutsideCombatArea", Offset: 118, NameHash: 1836790742, Flags: 49325), LayoutImmutable, Blittable]
 		public bool AllowDestructionOutsideCombatArea { get { return m_AllowDestructionOutsideCombatArea; } set { if (OnPropertyChanging("GameSettings." + nameof(AllowDestructionOutsideCombatArea), this, m_AllowDestructionOutsideCombatArea, value)) m_AllowDestructionOutsideCombatArea = value; } } // 0x76 (118)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

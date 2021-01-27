@@ -18,84 +18,84 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(84), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 84)]
 	public class UINestedListDataBinding : 
 		UIDataBinding
 	{
 		protected int m_ListIndex = new int();
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(102126553)]
+		[ContainerField(Name: "ListIndex", Offset: 8, NameHash: 102126553, Flags: 49405), LayoutImmutable, Blittable]
 		public int ListIndex { get { return m_ListIndex; } set { if (OnPropertyChanging("UINestedListDataBinding." + nameof(ListIndex), this, m_ListIndex, value)) m_ListIndex = value; } } // 0x8 (8)
 		
 		protected List<NestedList> m_NestedLists = new List<NestedList>();
-		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(4213273), ContainerArray]
+		[ContainerField(Name: "NestedLists", Offset: 12, NameHash: 4213273, Flags: 65)]
 		public List<NestedList> NestedLists { get { return m_NestedLists; } set { if (OnPropertyChanging("UINestedListDataBinding." + nameof(NestedLists), this, m_NestedLists, value)) m_NestedLists = value; } } // 0xC (12)
 		
 		protected int m_RowSpacing = new int();
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(3371971726)]
+		[ContainerField(Name: "RowSpacing", Offset: 16, NameHash: 3371971726, Flags: 49405), LayoutImmutable, Blittable]
 		public int RowSpacing { get { return m_RowSpacing; } set { if (OnPropertyChanging("UINestedListDataBinding." + nameof(RowSpacing), this, m_RowSpacing, value)) m_RowSpacing = value; } } // 0x10 (16)
 		
 		protected DefaultSelectionItem m_DefaultHighlightedRow = new DefaultSelectionItem();
-		[ContainerField(20), MemberInfoFlag(41), ContainerFieldNameHash(3059833365)]
+		[ContainerField(Name: "DefaultHighlightedRow", Offset: 20, NameHash: 3059833365, Flags: 41)]
 		public DefaultSelectionItem DefaultHighlightedRow { get { return m_DefaultHighlightedRow; } set { if (OnPropertyChanging("UINestedListDataBinding." + nameof(DefaultHighlightedRow), this, m_DefaultHighlightedRow, value)) m_DefaultHighlightedRow = value; } } // 0x14 (20)
 		
 		protected UIListNavigationType m_NavigationType = new UIListNavigationType();
-		[ContainerField(40), MemberInfoFlag(137), ContainerFieldNameHash(3962792471)]
+		[ContainerField(Name: "NavigationType", Offset: 40, NameHash: 3962792471, Flags: 137)]
 		public UIListNavigationType NavigationType { get { return m_NavigationType; } set { if (OnPropertyChanging("UINestedListDataBinding." + nameof(NavigationType), this, m_NavigationType, value)) m_NavigationType = value; } } // 0x28 (40)
 		
 		protected UIListRowType m_RowType = new UIListRowType();
-		[ContainerField(44), MemberInfoFlag(137), ContainerFieldNameHash(1700793143)]
+		[ContainerField(Name: "RowType", Offset: 44, NameHash: 1700793143, Flags: 137)]
 		public UIListRowType RowType { get { return m_RowType; } set { if (OnPropertyChanging("UINestedListDataBinding." + nameof(RowType), this, m_RowType, value)) m_RowType = value; } } // 0x2C (44)
 		
 		protected UIListEmptyRowType m_EmptyRowType = new UIListEmptyRowType();
-		[ContainerField(48), MemberInfoFlag(137), ContainerFieldNameHash(3029081730)]
+		[ContainerField(Name: "EmptyRowType", Offset: 48, NameHash: 3029081730, Flags: 137)]
 		public UIListEmptyRowType EmptyRowType { get { return m_EmptyRowType; } set { if (OnPropertyChanging("UINestedListDataBinding." + nameof(EmptyRowType), this, m_EmptyRowType, value)) m_EmptyRowType = value; } } // 0x30 (48)
 		
 		protected int m_SelectorWidth = new int();
-		[ContainerField(52), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(595342646)]
+		[ContainerField(Name: "SelectorWidth", Offset: 52, NameHash: 595342646, Flags: 49405), LayoutImmutable, Blittable]
 		public int SelectorWidth { get { return m_SelectorWidth; } set { if (OnPropertyChanging("UINestedListDataBinding." + nameof(SelectorWidth), this, m_SelectorWidth, value)) m_SelectorWidth = value; } } // 0x34 (52)
 		
 		protected UIDataSourceInfo m_Visibility = new UIDataSourceInfo();
-		[ContainerField(56), MemberInfoFlag(41), ContainerFieldNameHash(1708270083)]
+		[ContainerField(Name: "Visibility", Offset: 56, NameHash: 1708270083, Flags: 41)]
 		public UIDataSourceInfo Visibility { get { return m_Visibility; } set { if (OnPropertyChanging("UINestedListDataBinding." + nameof(Visibility), this, m_Visibility, value)) m_Visibility = value; } } // 0x38 (56)
 		
 		protected bool m_SendIndexWithEvent = new bool();
-		[ContainerField(72), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(936991273)]
+		[ContainerField(Name: "SendIndexWithEvent", Offset: 72, NameHash: 936991273, Flags: 49325), LayoutImmutable, Blittable]
 		public bool SendIndexWithEvent { get { return m_SendIndexWithEvent; } set { if (OnPropertyChanging("UINestedListDataBinding." + nameof(SendIndexWithEvent), this, m_SendIndexWithEvent, value)) m_SendIndexWithEvent = value; } } // 0x48 (72)
 		
 		protected bool m_UseScrollBar = new bool();
-		[ContainerField(73), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(900221658)]
+		[ContainerField(Name: "UseScrollBar", Offset: 73, NameHash: 900221658, Flags: 49325), LayoutImmutable, Blittable]
 		public bool UseScrollBar { get { return m_UseScrollBar; } set { if (OnPropertyChanging("UINestedListDataBinding." + nameof(UseScrollBar), this, m_UseScrollBar, value)) m_UseScrollBar = value; } } // 0x49 (73)
 		
 		protected bool m_DataIncludesButtonLayout = new bool();
-		[ContainerField(74), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(4158288630)]
+		[ContainerField(Name: "DataIncludesButtonLayout", Offset: 74, NameHash: 4158288630, Flags: 49325), LayoutImmutable, Blittable]
 		public bool DataIncludesButtonLayout { get { return m_DataIncludesButtonLayout; } set { if (OnPropertyChanging("UINestedListDataBinding." + nameof(DataIncludesButtonLayout), this, m_DataIncludesButtonLayout, value)) m_DataIncludesButtonLayout = value; } } // 0x4A (74)
 		
 		protected bool m_ClearListAtNavigationEvent = new bool();
-		[ContainerField(75), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1717286605)]
+		[ContainerField(Name: "ClearListAtNavigationEvent", Offset: 75, NameHash: 1717286605, Flags: 49325), LayoutImmutable, Blittable]
 		public bool ClearListAtNavigationEvent { get { return m_ClearListAtNavigationEvent; } set { if (OnPropertyChanging("UINestedListDataBinding." + nameof(ClearListAtNavigationEvent), this, m_ClearListAtNavigationEvent, value)) m_ClearListAtNavigationEvent = value; } } // 0x4B (75)
 		
 		protected bool m_Use3DSelection = new bool();
-		[ContainerField(76), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3486139089)]
+		[ContainerField(Name: "Use3DSelection", Offset: 76, NameHash: 3486139089, Flags: 49325), LayoutImmutable, Blittable]
 		public bool Use3DSelection { get { return m_Use3DSelection; } set { if (OnPropertyChanging("UINestedListDataBinding." + nameof(Use3DSelection), this, m_Use3DSelection, value)) m_Use3DSelection = value; } } // 0x4C (76)
 		
 		protected bool m_InvertVisible = new bool();
-		[ContainerField(77), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(301381369)]
+		[ContainerField(Name: "InvertVisible", Offset: 77, NameHash: 301381369, Flags: 49325), LayoutImmutable, Blittable]
 		public bool InvertVisible { get { return m_InvertVisible; } set { if (OnPropertyChanging("UINestedListDataBinding." + nameof(InvertVisible), this, m_InvertVisible, value)) m_InvertVisible = value; } } // 0x4D (77)
 		
 		protected bool m_Visible = new bool();
-		[ContainerField(78), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(901540267)]
+		[ContainerField(Name: "Visible", Offset: 78, NameHash: 901540267, Flags: 49325), LayoutImmutable, Blittable]
 		public bool Visible { get { return m_Visible; } set { if (OnPropertyChanging("UINestedListDataBinding." + nameof(Visible), this, m_Visible, value)) m_Visible = value; } } // 0x4E (78)
 		
 		protected bool m_ScreenRotationEnabled = new bool();
-		[ContainerField(79), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3744685560)]
+		[ContainerField(Name: "ScreenRotationEnabled", Offset: 79, NameHash: 3744685560, Flags: 49325), LayoutImmutable, Blittable]
 		public bool ScreenRotationEnabled { get { return m_ScreenRotationEnabled; } set { if (OnPropertyChanging("UINestedListDataBinding." + nameof(ScreenRotationEnabled), this, m_ScreenRotationEnabled, value)) m_ScreenRotationEnabled = value; } } // 0x4F (79)
 		
 		protected bool m_HighLightOnUpdate = new bool();
-		[ContainerField(80), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2774529029)]
+		[ContainerField(Name: "HighLightOnUpdate", Offset: 80, NameHash: 2774529029, Flags: 49325), LayoutImmutable, Blittable]
 		public bool HighLightOnUpdate { get { return m_HighLightOnUpdate; } set { if (OnPropertyChanging("UINestedListDataBinding." + nameof(HighLightOnUpdate), this, m_HighLightOnUpdate, value)) m_HighLightOnUpdate = value; } } // 0x50 (80)
 		
 		protected bool m_KeepScrollOffset = new bool();
-		[ContainerField(81), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(983569566)]
+		[ContainerField(Name: "KeepScrollOffset", Offset: 81, NameHash: 983569566, Flags: 49325), LayoutImmutable, Blittable]
 		public bool KeepScrollOffset { get { return m_KeepScrollOffset; } set { if (OnPropertyChanging("UINestedListDataBinding." + nameof(KeepScrollOffset), this, m_KeepScrollOffset, value)) m_KeepScrollOffset = value; } } // 0x51 (81)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

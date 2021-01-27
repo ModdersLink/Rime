@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(16), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
 	public class SyncedIntEntityData : 
 		EntityData
 	{
 		protected int m_In = new int();
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(5862146)]
+		[ContainerField(Name: "In", Offset: 12, NameHash: 5862146, Flags: 49405), LayoutImmutable, Blittable]
 		public int In { get { return m_In; } set { if (OnPropertyChanging("SyncedIntEntityData." + nameof(In), this, m_In, value)) m_In = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

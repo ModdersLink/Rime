@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(224), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 224)]
 	public class SoldierEntryComponentData : 
 		EntryComponentData
 	{
 		protected AimingConstraintsData m_AimingConstraints = new AimingConstraintsData();
-		[ContainerField(192), MemberInfoFlag(41), ContainerFieldNameHash(1523178198)]
+		[ContainerField(Name: "AimingConstraints", Offset: 192, NameHash: 1523178198, Flags: 41)]
 		public AimingConstraintsData AimingConstraints { get { return m_AimingConstraints; } set { if (OnPropertyChanging("SoldierEntryComponentData." + nameof(AimingConstraints), this, m_AimingConstraints, value)) m_AimingConstraints = value; } } // 0xC0 (192)
 		
 		protected CtrRef<AntEnumeration> m_AntEntryEnumeration = new CtrRef<AntEnumeration>();
-		[ContainerField(208), MemberInfoFlag(53), ContainerFieldNameHash(1819698227), ContainerCtrRef]
+		[ContainerField(Name: "AntEntryEnumeration", Offset: 208, NameHash: 1819698227, Flags: 53)]
 		public CtrRef<AntEnumeration> AntEntryEnumeration { get { return m_AntEntryEnumeration; } set { if (OnPropertyChanging("SoldierEntryComponentData." + nameof(AntEntryEnumeration), this, m_AntEntryEnumeration, value)) m_AntEntryEnumeration = value; } } // 0xD0 (208)
 		
 		protected bool m_AlignConstraintsToEntity = new bool();
-		[ContainerField(212), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3847387294)]
+		[ContainerField(Name: "AlignConstraintsToEntity", Offset: 212, NameHash: 3847387294, Flags: 49325), LayoutImmutable, Blittable]
 		public bool AlignConstraintsToEntity { get { return m_AlignConstraintsToEntity; } set { if (OnPropertyChanging("SoldierEntryComponentData." + nameof(AlignConstraintsToEntity), this, m_AlignConstraintsToEntity, value)) m_AlignConstraintsToEntity = value; } } // 0xD4 (212)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

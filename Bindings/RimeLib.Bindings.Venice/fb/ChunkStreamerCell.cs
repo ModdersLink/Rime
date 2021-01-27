@@ -18,13 +18,13 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(8), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 8)]
 	public class ChunkStreamerCell : FrostbiteContainer
 	{
-		[ContainerField(0), MemberInfoFlag(65), ContainerArray]
+		[ContainerField(Name: "Shape", Offset: 0, NameHash: 231753450, Flags: 65)]
 		public List<Vec2> Shape { get; set; } = new List<Vec2>(); // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "BundleName", Offset: 4, NameHash: 461157046, Flags: 16509), LayoutImmutable]
 		public string BundleName { get; set; } // 0x4 (4)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

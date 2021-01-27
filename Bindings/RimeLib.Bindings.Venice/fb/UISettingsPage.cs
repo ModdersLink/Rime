@@ -18,13 +18,13 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(8), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 8)]
 	public class UISettingsPage : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "NameSid", Offset: 0, NameHash: 3153745340, Flags: 16509), LayoutImmutable]
 		public string NameSid { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), MemberInfoFlag(65), ContainerArray]
+		[ContainerField(Name: "SettingsGroups", Offset: 4, NameHash: 2837166892, Flags: 65)]
 		public List<UISettingsGroup> SettingsGroups { get; set; } = new List<UISettingsGroup>(); // 0x4 (4)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

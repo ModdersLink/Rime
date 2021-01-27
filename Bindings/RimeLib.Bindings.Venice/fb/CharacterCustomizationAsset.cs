@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(32), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 32)]
 	public class CharacterCustomizationAsset : 
 		Asset
 	{
 		protected string m_LabelSid = string.Empty;
-		[ContainerField(12), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(4044105085)]
+		[ContainerField(Name: "LabelSid", Offset: 12, NameHash: 4044105085, Flags: 16509), LayoutImmutable]
 		public string LabelSid { get { return m_LabelSid; } set { if (OnPropertyChanging("CharacterCustomizationAsset." + nameof(LabelSid), this, m_LabelSid, value)) m_LabelSid = value; } } // 0xC (12)
 		
 		protected UIHudIcon m_UIHudIcon = new UIHudIcon();
-		[ContainerField(16), MemberInfoFlag(137), ContainerFieldNameHash(3556510859)]
+		[ContainerField(Name: "UIHudIcon", Offset: 16, NameHash: 3556510859, Flags: 137)]
 		public UIHudIcon UIHudIcon { get { return m_UIHudIcon; } set { if (OnPropertyChanging("CharacterCustomizationAsset." + nameof(UIHudIcon), this, m_UIHudIcon, value)) m_UIHudIcon = value; } } // 0x10 (16)
 		
 		protected RefArray<VoiceOverLabel> m_VoiceOverLabels = new RefArray<VoiceOverLabel>();
-		[ContainerField(20), MemberInfoFlag(65), ContainerFieldNameHash(2741340584), ContainerRefArray]
+		[ContainerField(Name: "VoiceOverLabels", Offset: 20, NameHash: 2741340584, Flags: 65)]
 		public RefArray<VoiceOverLabel> VoiceOverLabels { get { return m_VoiceOverLabels; } set { if (OnPropertyChanging("CharacterCustomizationAsset." + nameof(VoiceOverLabels), this, m_VoiceOverLabels, value)) m_VoiceOverLabels = value; } } // 0x14 (20)
 		
 		protected CtrRef<CustomizationTable> m_VisualTable = new CtrRef<CustomizationTable>();
-		[ContainerField(24), MemberInfoFlag(53), ContainerFieldNameHash(277951407), ContainerCtrRef]
+		[ContainerField(Name: "VisualTable", Offset: 24, NameHash: 277951407, Flags: 53)]
 		public CtrRef<CustomizationTable> VisualTable { get { return m_VisualTable; } set { if (OnPropertyChanging("CharacterCustomizationAsset." + nameof(VisualTable), this, m_VisualTable, value)) m_VisualTable = value; } } // 0x18 (24)
 		
 		protected CtrRef<CustomizationTable> m_SpecializationTable = new CtrRef<CustomizationTable>();
-		[ContainerField(28), MemberInfoFlag(53), ContainerFieldNameHash(1559267348), ContainerCtrRef]
+		[ContainerField(Name: "SpecializationTable", Offset: 28, NameHash: 1559267348, Flags: 53)]
 		public CtrRef<CustomizationTable> SpecializationTable { get { return m_SpecializationTable; } set { if (OnPropertyChanging("CharacterCustomizationAsset." + nameof(SpecializationTable), this, m_SpecializationTable, value)) m_SpecializationTable = value; } } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

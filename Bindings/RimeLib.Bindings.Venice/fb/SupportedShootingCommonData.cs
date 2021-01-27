@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(100), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 100)]
 	public class SupportedShootingCommonData : 
 		Asset
 	{
 		protected AimingConstraintsData m_AimingConstraints = new AimingConstraintsData();
-		[ContainerField(12), MemberInfoFlag(41), ContainerFieldNameHash(1523178198)]
+		[ContainerField(Name: "AimingConstraints", Offset: 12, NameHash: 1523178198, Flags: 41)]
 		public AimingConstraintsData AimingConstraints { get { return m_AimingConstraints; } set { if (OnPropertyChanging("SupportedShootingCommonData." + nameof(AimingConstraints), this, m_AimingConstraints, value)) m_AimingConstraints = value; } } // 0xC (12)
 		
 		protected EntryInputActionEnum m_EnterSupportedShootingAction = new EntryInputActionEnum();
-		[ContainerField(28), MemberInfoFlag(137), ContainerFieldNameHash(3674101426)]
+		[ContainerField(Name: "EnterSupportedShootingAction", Offset: 28, NameHash: 3674101426, Flags: 137)]
 		public EntryInputActionEnum EnterSupportedShootingAction { get { return m_EnterSupportedShootingAction; } set { if (OnPropertyChanging("SupportedShootingCommonData." + nameof(EnterSupportedShootingAction), this, m_EnterSupportedShootingAction, value)) m_EnterSupportedShootingAction = value; } } // 0x1C (28)
 		
 		protected SupportedShootingBinding m_Binding = new SupportedShootingBinding();
-		[ContainerField(32), MemberInfoFlag(41), ContainerFieldNameHash(2590060228)]
+		[ContainerField(Name: "Binding", Offset: 32, NameHash: 2590060228, Flags: 41)]
 		public SupportedShootingBinding Binding { get { return m_Binding; } set { if (OnPropertyChanging("SupportedShootingCommonData." + nameof(Binding), this, m_Binding, value)) m_Binding = value; } } // 0x20 (32)
 		
 		protected SupportedShootingProximityChecking m_Stand = new SupportedShootingProximityChecking();
-		[ContainerField(68), MemberInfoFlag(41), ContainerFieldNameHash(230747945)]
+		[ContainerField(Name: "Stand", Offset: 68, NameHash: 230747945, Flags: 41)]
 		public SupportedShootingProximityChecking Stand { get { return m_Stand; } set { if (OnPropertyChanging("SupportedShootingCommonData." + nameof(Stand), this, m_Stand, value)) m_Stand = value; } } // 0x44 (68)
 		
 		protected SupportedShootingProximityChecking m_Crouch = new SupportedShootingProximityChecking();
-		[ContainerField(84), MemberInfoFlag(41), ContainerFieldNameHash(2729602053)]
+		[ContainerField(Name: "Crouch", Offset: 84, NameHash: 2729602053, Flags: 41)]
 		public SupportedShootingProximityChecking Crouch { get { return m_Crouch; } set { if (OnPropertyChanging("SupportedShootingCommonData." + nameof(Crouch), this, m_Crouch, value)) m_Crouch = value; } } // 0x54 (84)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

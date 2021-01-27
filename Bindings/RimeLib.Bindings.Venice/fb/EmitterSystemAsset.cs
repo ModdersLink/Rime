@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(24), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 24)]
 	public class EmitterSystemAsset : 
 		Asset
 	{
 		protected List<EmitterTextureAtlasInfo> m_TextureInfos = new List<EmitterTextureAtlasInfo>();
-		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(2154121191), ContainerArray]
+		[ContainerField(Name: "TextureInfos", Offset: 12, NameHash: 2154121191, Flags: 65)]
 		public List<EmitterTextureAtlasInfo> TextureInfos { get { return m_TextureInfos; } set { if (OnPropertyChanging("EmitterSystemAsset." + nameof(TextureInfos), this, m_TextureInfos, value)) m_TextureInfos = value; } } // 0xC (12)
 		
 		protected CtrRef<TextureAsset> m_BaseAtlasTexture = new CtrRef<TextureAsset>();
-		[ContainerField(16), MemberInfoFlag(53), ContainerFieldNameHash(1736187172), ContainerCtrRef]
+		[ContainerField(Name: "BaseAtlasTexture", Offset: 16, NameHash: 1736187172, Flags: 53)]
 		public CtrRef<TextureAsset> BaseAtlasTexture { get { return m_BaseAtlasTexture; } set { if (OnPropertyChanging("EmitterSystemAsset." + nameof(BaseAtlasTexture), this, m_BaseAtlasTexture, value)) m_BaseAtlasTexture = value; } } // 0x10 (16)
 		
 		protected CtrRef<TextureAsset> m_NormalAtlasTexture = new CtrRef<TextureAsset>();
-		[ContainerField(20), MemberInfoFlag(53), ContainerFieldNameHash(2946813282), ContainerCtrRef]
+		[ContainerField(Name: "NormalAtlasTexture", Offset: 20, NameHash: 2946813282, Flags: 53)]
 		public CtrRef<TextureAsset> NormalAtlasTexture { get { return m_NormalAtlasTexture; } set { if (OnPropertyChanging("EmitterSystemAsset." + nameof(NormalAtlasTexture), this, m_NormalAtlasTexture, value)) m_NormalAtlasTexture = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

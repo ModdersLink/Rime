@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(32), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 32)]
 	public class UIOnDemandFontComponentData : 
 		UIComponentData
 	{
 		protected RefArray<UIFontCollection> m_FontCollections = new RefArray<UIFontCollection>();
-		[ContainerField(28), MemberInfoFlag(65), ContainerFieldNameHash(2744963667), ContainerRefArray]
+		[ContainerField(Name: "FontCollections", Offset: 28, NameHash: 2744963667, Flags: 65)]
 		public RefArray<UIFontCollection> FontCollections { get { return m_FontCollections; } set { if (OnPropertyChanging("UIOnDemandFontComponentData." + nameof(FontCollections), this, m_FontCollections, value)) m_FontCollections = value; } } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

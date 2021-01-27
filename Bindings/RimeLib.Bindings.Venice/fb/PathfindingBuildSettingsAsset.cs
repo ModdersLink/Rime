@@ -18,60 +18,60 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(52), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 52)]
 	public class PathfindingBuildSettingsAsset : 
 		Asset
 	{
 		protected float m_EntityRadius = new float();
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1657367494)]
+		[ContainerField(Name: "EntityRadius", Offset: 12, NameHash: 1657367494, Flags: 49469), LayoutImmutable, Blittable]
 		public float EntityRadius { get { return m_EntityRadius; } set { if (OnPropertyChanging("PathfindingBuildSettingsAsset." + nameof(EntityRadius), this, m_EntityRadius, value)) m_EntityRadius = value; } } // 0xC (12)
 		
 		protected float m_EntityHeight = new float();
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1892517569)]
+		[ContainerField(Name: "EntityHeight", Offset: 16, NameHash: 1892517569, Flags: 49469), LayoutImmutable, Blittable]
 		public float EntityHeight { get { return m_EntityHeight; } set { if (OnPropertyChanging("PathfindingBuildSettingsAsset." + nameof(EntityHeight), this, m_EntityHeight, value)) m_EntityHeight = value; } } // 0x10 (16)
 		
 		protected float m_MaxWalkableSlope = new float();
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(4231342063)]
+		[ContainerField(Name: "MaxWalkableSlope", Offset: 20, NameHash: 4231342063, Flags: 49469), LayoutImmutable, Blittable]
 		public float MaxWalkableSlope { get { return m_MaxWalkableSlope; } set { if (OnPropertyChanging("PathfindingBuildSettingsAsset." + nameof(MaxWalkableSlope), this, m_MaxWalkableSlope, value)) m_MaxWalkableSlope = value; } } // 0x14 (20)
 		
 		protected float m_MaxStep = new float();
-		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1313516259)]
+		[ContainerField(Name: "MaxStep", Offset: 24, NameHash: 1313516259, Flags: 49469), LayoutImmutable, Blittable]
 		public float MaxStep { get { return m_MaxStep; } set { if (OnPropertyChanging("PathfindingBuildSettingsAsset." + nameof(MaxStep), this, m_MaxStep, value)) m_MaxStep = value; } } // 0x18 (24)
 		
 		protected float m_MinIslandSurfaceArea = new float();
-		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(4012611888)]
+		[ContainerField(Name: "MinIslandSurfaceArea", Offset: 28, NameHash: 4012611888, Flags: 49469), LayoutImmutable, Blittable]
 		public float MinIslandSurfaceArea { get { return m_MinIslandSurfaceArea; } set { if (OnPropertyChanging("PathfindingBuildSettingsAsset." + nameof(MinIslandSurfaceArea), this, m_MinIslandSurfaceArea, value)) m_MinIslandSurfaceArea = value; } } // 0x1C (28)
 		
 		protected float m_VoxSize = new float();
-		[ContainerField(32), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1120800449)]
+		[ContainerField(Name: "VoxSize", Offset: 32, NameHash: 1120800449, Flags: 49469), LayoutImmutable, Blittable]
 		public float VoxSize { get { return m_VoxSize; } set { if (OnPropertyChanging("PathfindingBuildSettingsAsset." + nameof(VoxSize), this, m_VoxSize, value)) m_VoxSize = value; } } // 0x20 (32)
 		
 		protected float m_GridSideLength = new float();
-		[ContainerField(36), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(272494682)]
+		[ContainerField(Name: "GridSideLength", Offset: 36, NameHash: 272494682, Flags: 49469), LayoutImmutable, Blittable]
 		public float GridSideLength { get { return m_GridSideLength; } set { if (OnPropertyChanging("PathfindingBuildSettingsAsset." + nameof(GridSideLength), this, m_GridSideLength, value)) m_GridSideLength = value; } } // 0x24 (36)
 		
 		protected float m_AdditionalInwardsSmoothingDist = new float();
-		[ContainerField(40), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2989176800)]
+		[ContainerField(Name: "AdditionalInwardsSmoothingDist", Offset: 40, NameHash: 2989176800, Flags: 49469), LayoutImmutable, Blittable]
 		public float AdditionalInwardsSmoothingDist { get { return m_AdditionalInwardsSmoothingDist; } set { if (OnPropertyChanging("PathfindingBuildSettingsAsset." + nameof(AdditionalInwardsSmoothingDist), this, m_AdditionalInwardsSmoothingDist, value)) m_AdditionalInwardsSmoothingDist = value; } } // 0x28 (40)
 		
 		protected uint m_TerrainSamplingStep = new uint();
-		[ContainerField(44), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(2825496355)]
+		[ContainerField(Name: "TerrainSamplingStep", Offset: 44, NameHash: 2825496355, Flags: 49421), LayoutImmutable, Blittable]
 		public uint TerrainSamplingStep { get { return m_TerrainSamplingStep; } set { if (OnPropertyChanging("PathfindingBuildSettingsAsset." + nameof(TerrainSamplingStep), this, m_TerrainSamplingStep, value)) m_TerrainSamplingStep = value; } } // 0x2C (44)
 		
 		protected bool m_TesselateForPathingAccuracy = new bool();
-		[ContainerField(48), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2360234118)]
+		[ContainerField(Name: "TesselateForPathingAccuracy", Offset: 48, NameHash: 2360234118, Flags: 49325), LayoutImmutable, Blittable]
 		public bool TesselateForPathingAccuracy { get { return m_TesselateForPathingAccuracy; } set { if (OnPropertyChanging("PathfindingBuildSettingsAsset." + nameof(TesselateForPathingAccuracy), this, m_TesselateForPathingAccuracy, value)) m_TesselateForPathingAccuracy = value; } } // 0x30 (48)
 		
 		protected bool m_UseEnhancedTerrainTracking = new bool();
-		[ContainerField(49), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(543071632)]
+		[ContainerField(Name: "UseEnhancedTerrainTracking", Offset: 49, NameHash: 543071632, Flags: 49325), LayoutImmutable, Blittable]
 		public bool UseEnhancedTerrainTracking { get { return m_UseEnhancedTerrainTracking; } set { if (OnPropertyChanging("PathfindingBuildSettingsAsset." + nameof(UseEnhancedTerrainTracking), this, m_UseEnhancedTerrainTracking, value)) m_UseEnhancedTerrainTracking = value; } } // 0x31 (49)
 		
 		protected bool m_OptimizeForAxisAligned = new bool();
-		[ContainerField(50), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(425521512)]
+		[ContainerField(Name: "OptimizeForAxisAligned", Offset: 50, NameHash: 425521512, Flags: 49325), LayoutImmutable, Blittable]
 		public bool OptimizeForAxisAligned { get { return m_OptimizeForAxisAligned; } set { if (OnPropertyChanging("PathfindingBuildSettingsAsset." + nameof(OptimizeForAxisAligned), this, m_OptimizeForAxisAligned, value)) m_OptimizeForAxisAligned = value; } } // 0x32 (50)
 		
 		protected bool m_LeaveSmallIslandsTouchingPortals = new bool();
-		[ContainerField(51), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2918504877)]
+		[ContainerField(Name: "LeaveSmallIslandsTouchingPortals", Offset: 51, NameHash: 2918504877, Flags: 49325), LayoutImmutable, Blittable]
 		public bool LeaveSmallIslandsTouchingPortals { get { return m_LeaveSmallIslandsTouchingPortals; } set { if (OnPropertyChanging("PathfindingBuildSettingsAsset." + nameof(LeaveSmallIslandsTouchingPortals), this, m_LeaveSmallIslandsTouchingPortals, value)) m_LeaveSmallIslandsTouchingPortals = value; } } // 0x33 (51)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

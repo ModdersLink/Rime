@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(48), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 48)]
 	public class RibbonData : 
 		VisualVectorShapeData
 	{
 		protected List<RibbonPointData> m_RibbonPoints = new List<RibbonPointData>();
-		[ContainerField(44), MemberInfoFlag(65), ContainerFieldNameHash(935977920), ContainerArray]
+		[ContainerField(Name: "RibbonPoints", Offset: 44, NameHash: 935977920, Flags: 65)]
 		public List<RibbonPointData> RibbonPoints { get { return m_RibbonPoints; } set { if (OnPropertyChanging("RibbonData." + nameof(RibbonPoints), this, m_RibbonPoints, value)) m_RibbonPoints = value; } } // 0x2C (44)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

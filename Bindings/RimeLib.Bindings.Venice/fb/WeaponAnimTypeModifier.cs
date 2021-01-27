@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(12), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 12)]
 	public class WeaponAnimTypeModifier : 
 		WeaponModifierBase
 	{
 		protected WeaponAnimType m_WeaponAnimType = new WeaponAnimType();
-		[ContainerField(8), MemberInfoFlag(137), ContainerFieldNameHash(2116604244)]
+		[ContainerField(Name: "WeaponAnimType", Offset: 8, NameHash: 2116604244, Flags: 137)]
 		public WeaponAnimType WeaponAnimType { get { return m_WeaponAnimType; } set { if (OnPropertyChanging("WeaponAnimTypeModifier." + nameof(WeaponAnimType), this, m_WeaponAnimType, value)) m_WeaponAnimType = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

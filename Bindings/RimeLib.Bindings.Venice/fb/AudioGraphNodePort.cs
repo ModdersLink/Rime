@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(8), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 8)]
 	public class AudioGraphNodePort : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "UnconnectedValue", Offset: 0, NameHash: 1858729834, Flags: 49469), LayoutImmutable, Blittable]
 		public float UnconnectedValue { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable, Blittable, MemberInfoFlag(49389)]
+		[ContainerField(Name: "ValueIndex", Offset: 4, NameHash: 2085408208, Flags: 49389), LayoutImmutable, Blittable]
 		public ushort ValueIndex { get; set; } // 0x4 (4)
 		
-		[ContainerField(6), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "IsConnected", Offset: 6, NameHash: 292566976, Flags: 49325), LayoutImmutable, Blittable]
 		public bool IsConnected { get; set; } // 0x6 (6)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

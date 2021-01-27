@@ -18,52 +18,52 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(60), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 60)]
 	public class VehicleEntryListenerBinding : FrostbiteContainer
 	{
-		[ContainerField(0), MemberInfoFlag(41)]
+		[ContainerField(Name: "InVehicle", Offset: 0, NameHash: 2027857690, Flags: 41)]
 		public AntRef InVehicle { get; set; } = new AntRef(); // 0x0 (0)
 		
-		[ContainerField(4), MemberInfoFlag(41)]
+		[ContainerField(Name: "InOpenEntry", Offset: 4, NameHash: 3944895714, Flags: 41)]
 		public AntRef InOpenEntry { get; set; } = new AntRef(); // 0x4 (4)
 		
-		[ContainerField(8), MemberInfoFlag(41)]
+		[ContainerField(Name: "VehicleEntryFire", Offset: 8, NameHash: 1657787569, Flags: 41)]
 		public AntRef VehicleEntryFire { get; set; } = new AntRef(); // 0x8 (8)
 		
-		[ContainerField(12), MemberInfoFlag(41)]
+		[ContainerField(Name: "VehicleEntryYaw", Offset: 12, NameHash: 50235142, Flags: 41)]
 		public AntRef VehicleEntryYaw { get; set; } = new AntRef(); // 0xC (12)
 		
-		[ContainerField(16), MemberInfoFlag(41)]
+		[ContainerField(Name: "VehicleEntryPitch", Offset: 16, NameHash: 3174613487, Flags: 41)]
 		public AntRef VehicleEntryPitch { get; set; } = new AntRef(); // 0x10 (16)
 		
-		[ContainerField(20), MemberInfoFlag(41)]
+		[ContainerField(Name: "VehicleEntryRoll", Offset: 20, NameHash: 1658216564, Flags: 41)]
 		public AntRef VehicleEntryRoll { get; set; } = new AntRef(); // 0x14 (20)
 		
-		[ContainerField(24), MemberInfoFlag(41)]
+		[ContainerField(Name: "VehicleEntryRotation", Offset: 24, NameHash: 2010737181, Flags: 41)]
 		public AntRef VehicleEntryRotation { get; set; } = new AntRef(); // 0x18 (24)
 		
-		[ContainerField(28), MemberInfoFlag(41)]
+		[ContainerField(Name: "VehicleEntryForceX", Offset: 28, NameHash: 1432827884, Flags: 41)]
 		public AntRef VehicleEntryForceX { get; set; } = new AntRef(); // 0x1C (28)
 		
-		[ContainerField(32), MemberInfoFlag(41)]
+		[ContainerField(Name: "VehicleEntryForceY", Offset: 32, NameHash: 1432827885, Flags: 41)]
 		public AntRef VehicleEntryForceY { get; set; } = new AntRef(); // 0x20 (32)
 		
-		[ContainerField(36), MemberInfoFlag(41)]
+		[ContainerField(Name: "VehicleEntryForceZ", Offset: 36, NameHash: 1432827886, Flags: 41)]
 		public AntRef VehicleEntryForceZ { get; set; } = new AntRef(); // 0x24 (36)
 		
-		[ContainerField(40), MemberInfoFlag(41)]
+		[ContainerField(Name: "VehicleEntryIndex", Offset: 40, NameHash: 3148172503, Flags: 41)]
 		public AntRef VehicleEntryIndex { get; set; } = new AntRef(); // 0x28 (40)
 		
-		[ContainerField(44), MemberInfoFlag(41)]
+		[ContainerField(Name: "VehicleEntryIndexUpdated", Offset: 44, NameHash: 3953478242, Flags: 41)]
 		public AntRef VehicleEntryIndexUpdated { get; set; } = new AntRef(); // 0x2C (44)
 		
-		[ContainerField(48), MemberInfoFlag(41)]
+		[ContainerField(Name: "VehicleOpenEntryIndex", Offset: 48, NameHash: 1471285795, Flags: 41)]
 		public AntRef VehicleOpenEntryIndex { get; set; } = new AntRef(); // 0x30 (48)
 		
-		[ContainerField(52), MemberInfoFlag(41)]
+		[ContainerField(Name: "InVehicleRetrigger", Offset: 52, NameHash: 3157938229, Flags: 41)]
 		public AntRef InVehicleRetrigger { get; set; } = new AntRef(); // 0x34 (52)
 		
-		[ContainerField(56), MemberInfoFlag(41)]
+		[ContainerField(Name: "VehicleEntryChooserIndex", Offset: 56, NameHash: 2285531672, Flags: 41)]
 		public AntRef VehicleEntryChooserIndex { get; set; } = new AntRef(); // 0x38 (56)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

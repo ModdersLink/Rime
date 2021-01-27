@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(24), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 24)]
 	public class StartEntityData : 
 		EntityData
 	{
 		protected float m_SortIndex = new float();
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1347637313)]
+		[ContainerField(Name: "SortIndex", Offset: 12, NameHash: 1347637313, Flags: 49469), LayoutImmutable, Blittable]
 		public float SortIndex { get { return m_SortIndex; } set { if (OnPropertyChanging("StartEntityData." + nameof(SortIndex), this, m_SortIndex, value)) m_SortIndex = value; } } // 0xC (12)
 		
 		protected string m_StartName = string.Empty;
-		[ContainerField(16), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(3727215458)]
+		[ContainerField(Name: "StartName", Offset: 16, NameHash: 3727215458, Flags: 16509), LayoutImmutable]
 		public string StartName { get { return m_StartName; } set { if (OnPropertyChanging("StartEntityData." + nameof(StartName), this, m_StartName, value)) m_StartName = value; } } // 0x10 (16)
 		
 		protected bool m_IsDefault = new bool();
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2802724276)]
+		[ContainerField(Name: "IsDefault", Offset: 20, NameHash: 2802724276, Flags: 49325), LayoutImmutable, Blittable]
 		public bool IsDefault { get { return m_IsDefault; } set { if (OnPropertyChanging("StartEntityData." + nameof(IsDefault), this, m_IsDefault, value)) m_IsDefault = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

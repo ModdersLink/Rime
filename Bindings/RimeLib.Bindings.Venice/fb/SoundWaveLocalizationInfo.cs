@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(8), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 8)]
 	public class SoundWaveLocalizationInfo : FrostbiteContainer
 	{
-		[ContainerField(0), MemberInfoFlag(53), ContainerCtrRef]
+		[ContainerField(Name: "Language", Offset: 0, NameHash: 3872303031, Flags: 53)]
 		public CtrRef<AudioLanguage> Language { get; set; } = new CtrRef<AudioLanguage>(); // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable, Blittable, MemberInfoFlag(49389)]
+		[ContainerField(Name: "FirstVariationIndex", Offset: 4, NameHash: 4275355664, Flags: 49389), LayoutImmutable, Blittable]
 		public ushort FirstVariationIndex { get; set; } // 0x4 (4)
 		
-		[ContainerField(6), LayoutImmutable, Blittable, MemberInfoFlag(49389)]
+		[ContainerField(Name: "VariationCount", Offset: 6, NameHash: 1780023607, Flags: 49389), LayoutImmutable, Blittable]
 		public ushort VariationCount { get; set; } // 0x6 (6)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

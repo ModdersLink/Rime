@@ -18,36 +18,36 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(32), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 32)]
 	public class LockingWeaponData : 
 		WeaponData
 	{
 		protected CtrRef<LockingControllerData> m_LockingController = new CtrRef<LockingControllerData>();
-		[ContainerField(16), MemberInfoFlag(53), ContainerFieldNameHash(1783566994), ContainerCtrRef]
+		[ContainerField(Name: "LockingController", Offset: 16, NameHash: 1783566994, Flags: 53)]
 		public CtrRef<LockingControllerData> LockingController { get { return m_LockingController; } set { if (OnPropertyChanging("LockingWeaponData." + nameof(LockingController), this, m_LockingController, value)) m_LockingController = value; } } // 0x10 (16)
 		
 		protected CtrRef<LockingControllerData> m_SecondaryLockingController = new CtrRef<LockingControllerData>();
-		[ContainerField(20), MemberInfoFlag(53), ContainerFieldNameHash(212156840), ContainerCtrRef]
+		[ContainerField(Name: "SecondaryLockingController", Offset: 20, NameHash: 212156840, Flags: 53)]
 		public CtrRef<LockingControllerData> SecondaryLockingController { get { return m_SecondaryLockingController; } set { if (OnPropertyChanging("LockingWeaponData." + nameof(SecondaryLockingController), this, m_SecondaryLockingController, value)) m_SecondaryLockingController = value; } } // 0x14 (20)
 		
 		protected WarnTarget m_WarnLock = new WarnTarget();
-		[ContainerField(24), MemberInfoFlag(137), ContainerFieldNameHash(2457242500)]
+		[ContainerField(Name: "WarnLock", Offset: 24, NameHash: 2457242500, Flags: 137)]
 		public WarnTarget WarnLock { get { return m_WarnLock; } set { if (OnPropertyChanging("LockingWeaponData." + nameof(WarnLock), this, m_WarnLock, value)) m_WarnLock = value; } } // 0x18 (24)
 		
 		protected bool m_IsHoming = new bool();
-		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(962805909)]
+		[ContainerField(Name: "IsHoming", Offset: 28, NameHash: 962805909, Flags: 49325), LayoutImmutable, Blittable]
 		public bool IsHoming { get { return m_IsHoming; } set { if (OnPropertyChanging("LockingWeaponData." + nameof(IsHoming), this, m_IsHoming, value)) m_IsHoming = value; } } // 0x1C (28)
 		
 		protected bool m_IsGuidedWhenZoomed = new bool();
-		[ContainerField(29), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(951364163)]
+		[ContainerField(Name: "IsGuidedWhenZoomed", Offset: 29, NameHash: 951364163, Flags: 49325), LayoutImmutable, Blittable]
 		public bool IsGuidedWhenZoomed { get { return m_IsGuidedWhenZoomed; } set { if (OnPropertyChanging("LockingWeaponData." + nameof(IsGuidedWhenZoomed), this, m_IsGuidedWhenZoomed, value)) m_IsGuidedWhenZoomed = value; } } // 0x1D (29)
 		
 		protected bool m_FireOnlyWhenLockedOn = new bool();
-		[ContainerField(30), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(708469046)]
+		[ContainerField(Name: "FireOnlyWhenLockedOn", Offset: 30, NameHash: 708469046, Flags: 49325), LayoutImmutable, Blittable]
 		public bool FireOnlyWhenLockedOn { get { return m_FireOnlyWhenLockedOn; } set { if (OnPropertyChanging("LockingWeaponData." + nameof(FireOnlyWhenLockedOn), this, m_FireOnlyWhenLockedOn, value)) m_FireOnlyWhenLockedOn = value; } } // 0x1E (30)
 		
 		protected bool m_IsGuided = new bool();
-		[ContainerField(31), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(911651905)]
+		[ContainerField(Name: "IsGuided", Offset: 31, NameHash: 911651905, Flags: 49325), LayoutImmutable, Blittable]
 		public bool IsGuided { get { return m_IsGuided; } set { if (OnPropertyChanging("LockingWeaponData." + nameof(IsGuided), this, m_IsGuided, value)) m_IsGuided = value; } } // 0x1F (31)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

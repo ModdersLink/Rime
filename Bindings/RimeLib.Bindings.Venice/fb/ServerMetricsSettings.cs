@@ -18,48 +18,48 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(24), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 24)]
 	public class ServerMetricsSettings : 
 		DataContainer
 	{
 		protected string m_ReportName = string.Empty;
-		[ContainerField(8), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(3796964268)]
+		[ContainerField(Name: "ReportName", Offset: 8, NameHash: 3796964268, Flags: 16509), LayoutImmutable]
 		public string ReportName { get { return m_ReportName; } set { if (OnPropertyChanging("ServerMetricsSettings." + nameof(ReportName), this, m_ReportName, value)) m_ReportName = value; } } // 0x8 (8)
 		
 		protected bool m_Enabled = new bool();
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2662400)]
+		[ContainerField(Name: "Enabled", Offset: 12, NameHash: 2662400, Flags: 49325), LayoutImmutable, Blittable]
 		public bool Enabled { get { return m_Enabled; } set { if (OnPropertyChanging("ServerMetricsSettings." + nameof(Enabled), this, m_Enabled, value)) m_Enabled = value; } } // 0xC (12)
 		
 		protected bool m_DbxReportEnabled = new bool();
-		[ContainerField(13), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1024647888)]
+		[ContainerField(Name: "DbxReportEnabled", Offset: 13, NameHash: 1024647888, Flags: 49325), LayoutImmutable, Blittable]
 		public bool DbxReportEnabled { get { return m_DbxReportEnabled; } set { if (OnPropertyChanging("ServerMetricsSettings." + nameof(DbxReportEnabled), this, m_DbxReportEnabled, value)) m_DbxReportEnabled = value; } } // 0xD (13)
 		
 		protected bool m_TickTelemetryEnabled = new bool();
-		[ContainerField(14), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1626619386)]
+		[ContainerField(Name: "TickTelemetryEnabled", Offset: 14, NameHash: 1626619386, Flags: 49325), LayoutImmutable, Blittable]
 		public bool TickTelemetryEnabled { get { return m_TickTelemetryEnabled; } set { if (OnPropertyChanging("ServerMetricsSettings." + nameof(TickTelemetryEnabled), this, m_TickTelemetryEnabled, value)) m_TickTelemetryEnabled = value; } } // 0xE (14)
 		
 		protected bool m_DevelopmentTelemetryEnabled = new bool();
-		[ContainerField(15), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3737843804)]
+		[ContainerField(Name: "DevelopmentTelemetryEnabled", Offset: 15, NameHash: 3737843804, Flags: 49325), LayoutImmutable, Blittable]
 		public bool DevelopmentTelemetryEnabled { get { return m_DevelopmentTelemetryEnabled; } set { if (OnPropertyChanging("ServerMetricsSettings." + nameof(DevelopmentTelemetryEnabled), this, m_DevelopmentTelemetryEnabled, value)) m_DevelopmentTelemetryEnabled = value; } } // 0xF (15)
 		
 		protected bool m_PerformanceTelemetryEnabled = new bool();
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(4251590071)]
+		[ContainerField(Name: "PerformanceTelemetryEnabled", Offset: 16, NameHash: 4251590071, Flags: 49325), LayoutImmutable, Blittable]
 		public bool PerformanceTelemetryEnabled { get { return m_PerformanceTelemetryEnabled; } set { if (OnPropertyChanging("ServerMetricsSettings." + nameof(PerformanceTelemetryEnabled), this, m_PerformanceTelemetryEnabled, value)) m_PerformanceTelemetryEnabled = value; } } // 0x10 (16)
 		
 		protected bool m_JuiceTelemetryEnabled = new bool();
-		[ContainerField(17), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(4037238111)]
+		[ContainerField(Name: "JuiceTelemetryEnabled", Offset: 17, NameHash: 4037238111, Flags: 49325), LayoutImmutable, Blittable]
 		public bool JuiceTelemetryEnabled { get { return m_JuiceTelemetryEnabled; } set { if (OnPropertyChanging("ServerMetricsSettings." + nameof(JuiceTelemetryEnabled), this, m_JuiceTelemetryEnabled, value)) m_JuiceTelemetryEnabled = value; } } // 0x11 (17)
 		
 		protected bool m_PerformanceProfileStateEnabled = new bool();
-		[ContainerField(18), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3999842340)]
+		[ContainerField(Name: "PerformanceProfileStateEnabled", Offset: 18, NameHash: 3999842340, Flags: 49325), LayoutImmutable, Blittable]
 		public bool PerformanceProfileStateEnabled { get { return m_PerformanceProfileStateEnabled; } set { if (OnPropertyChanging("ServerMetricsSettings." + nameof(PerformanceProfileStateEnabled), this, m_PerformanceProfileStateEnabled, value)) m_PerformanceProfileStateEnabled = value; } } // 0x12 (18)
 		
 		protected bool m_TransactionTelemetryEnabled = new bool();
-		[ContainerField(19), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2302981003)]
+		[ContainerField(Name: "TransactionTelemetryEnabled", Offset: 19, NameHash: 2302981003, Flags: 49325), LayoutImmutable, Blittable]
 		public bool TransactionTelemetryEnabled { get { return m_TransactionTelemetryEnabled; } set { if (OnPropertyChanging("ServerMetricsSettings." + nameof(TransactionTelemetryEnabled), this, m_TransactionTelemetryEnabled, value)) m_TransactionTelemetryEnabled = value; } } // 0x13 (19)
 		
 		protected bool m_CompressTransactions = new bool();
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1385035316)]
+		[ContainerField(Name: "CompressTransactions", Offset: 20, NameHash: 1385035316, Flags: 49325), LayoutImmutable, Blittable]
 		public bool CompressTransactions { get { return m_CompressTransactions; } set { if (OnPropertyChanging("ServerMetricsSettings." + nameof(CompressTransactions), this, m_CompressTransactions, value)) m_CompressTransactions = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

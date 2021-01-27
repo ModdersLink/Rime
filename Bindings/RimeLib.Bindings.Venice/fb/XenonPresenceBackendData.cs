@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(20), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 20)]
 	public class XenonPresenceBackendData : 
 		PresenceBackendData
 	{
 		protected uint m_TitleId = new uint();
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(3335995016)]
+		[ContainerField(Name: "TitleId", Offset: 16, NameHash: 3335995016, Flags: 49421), LayoutImmutable, Blittable]
 		public uint TitleId { get { return m_TitleId; } set { if (OnPropertyChanging("XenonPresenceBackendData." + nameof(TitleId), this, m_TitleId, value)) m_TitleId = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(24), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 24)]
 	public class RandomEventEntityData : 
 		EntityData
 	{
 		protected Realm m_Realm = new Realm();
-		[ContainerField(12), MemberInfoFlag(137), ContainerFieldNameHash(229961746)]
+		[ContainerField(Name: "Realm", Offset: 12, NameHash: 229961746, Flags: 137)]
 		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("RandomEventEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0xC (12)
 		
 		protected int m_Probability = new int();
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(35957416)]
+		[ContainerField(Name: "Probability", Offset: 16, NameHash: 35957416, Flags: 49405), LayoutImmutable, Blittable]
 		public int Probability { get { return m_Probability; } set { if (OnPropertyChanging("RandomEventEntityData." + nameof(Probability), this, m_Probability, value)) m_Probability = value; } } // 0x10 (16)
 		
 		protected bool m_RandomizeFirstOnly = new bool();
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(882338790)]
+		[ContainerField(Name: "RandomizeFirstOnly", Offset: 20, NameHash: 882338790, Flags: 49325), LayoutImmutable, Blittable]
 		public bool RandomizeFirstOnly { get { return m_RandomizeFirstOnly; } set { if (OnPropertyChanging("RandomEventEntityData." + nameof(RandomizeFirstOnly), this, m_RandomizeFirstOnly, value)) m_RandomizeFirstOnly = value; } } // 0x14 (20)
 		
 		protected bool m_AutoStart = new bool();
-		[ContainerField(21), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(792615882)]
+		[ContainerField(Name: "AutoStart", Offset: 21, NameHash: 792615882, Flags: 49325), LayoutImmutable, Blittable]
 		public bool AutoStart { get { return m_AutoStart; } set { if (OnPropertyChanging("RandomEventEntityData." + nameof(AutoStart), this, m_AutoStart, value)) m_AutoStart = value; } } // 0x15 (21)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

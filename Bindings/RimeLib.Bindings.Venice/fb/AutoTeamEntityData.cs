@@ -18,32 +18,32 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(112), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 112)]
 	public class AutoTeamEntityData : 
 		GameEntityData
 	{
 		protected uint m_TeamDifferenceToAutoBalance = new uint();
-		[ContainerField(96), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(113977021)]
+		[ContainerField(Name: "TeamDifferenceToAutoBalance", Offset: 96, NameHash: 113977021, Flags: 49421), LayoutImmutable, Blittable]
 		public uint TeamDifferenceToAutoBalance { get { return m_TeamDifferenceToAutoBalance; } set { if (OnPropertyChanging("AutoTeamEntityData." + nameof(TeamDifferenceToAutoBalance), this, m_TeamDifferenceToAutoBalance, value)) m_TeamDifferenceToAutoBalance = value; } } // 0x60 (96)
 		
 		protected TeamAssignMode m_TeamAssignMode = new TeamAssignMode();
-		[ContainerField(100), MemberInfoFlag(137), ContainerFieldNameHash(3887289498)]
+		[ContainerField(Name: "TeamAssignMode", Offset: 100, NameHash: 3887289498, Flags: 137)]
 		public TeamAssignMode TeamAssignMode { get { return m_TeamAssignMode; } set { if (OnPropertyChanging("AutoTeamEntityData." + nameof(TeamAssignMode), this, m_TeamAssignMode, value)) m_TeamAssignMode = value; } } // 0x64 (100)
 		
 		protected uint m_PlayerCountNeededToAutoBalance = new uint();
-		[ContainerField(104), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(84550380)]
+		[ContainerField(Name: "PlayerCountNeededToAutoBalance", Offset: 104, NameHash: 84550380, Flags: 49421), LayoutImmutable, Blittable]
 		public uint PlayerCountNeededToAutoBalance { get { return m_PlayerCountNeededToAutoBalance; } set { if (OnPropertyChanging("AutoTeamEntityData." + nameof(PlayerCountNeededToAutoBalance), this, m_PlayerCountNeededToAutoBalance, value)) m_PlayerCountNeededToAutoBalance = value; } } // 0x68 (104)
 		
 		protected bool m_ForceIntoSquad = new bool();
-		[ContainerField(108), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1527339574)]
+		[ContainerField(Name: "ForceIntoSquad", Offset: 108, NameHash: 1527339574, Flags: 49325), LayoutImmutable, Blittable]
 		public bool ForceIntoSquad { get { return m_ForceIntoSquad; } set { if (OnPropertyChanging("AutoTeamEntityData." + nameof(ForceIntoSquad), this, m_ForceIntoSquad, value)) m_ForceIntoSquad = value; } } // 0x6C (108)
 		
 		protected bool m_RotateTeamOnNewRound = new bool();
-		[ContainerField(109), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3788125566)]
+		[ContainerField(Name: "RotateTeamOnNewRound", Offset: 109, NameHash: 3788125566, Flags: 49325), LayoutImmutable, Blittable]
 		public bool RotateTeamOnNewRound { get { return m_RotateTeamOnNewRound; } set { if (OnPropertyChanging("AutoTeamEntityData." + nameof(RotateTeamOnNewRound), this, m_RotateTeamOnNewRound, value)) m_RotateTeamOnNewRound = value; } } // 0x6D (109)
 		
 		protected bool m_AutoBalance = new bool();
-		[ContainerField(110), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2626919340)]
+		[ContainerField(Name: "AutoBalance", Offset: 110, NameHash: 2626919340, Flags: 49325), LayoutImmutable, Blittable]
 		public bool AutoBalance { get { return m_AutoBalance; } set { if (OnPropertyChanging("AutoTeamEntityData." + nameof(AutoBalance), this, m_AutoBalance, value)) m_AutoBalance = value; } } // 0x6E (110)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

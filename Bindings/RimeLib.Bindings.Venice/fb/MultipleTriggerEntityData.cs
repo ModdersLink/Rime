@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(128), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 128)]
 	public class MultipleTriggerEntityData : 
 		TriggerEventEntityData
 	{
 		protected int m_TriggerAmount = new int();
-		[ContainerField(112), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(2589587985)]
+		[ContainerField(Name: "TriggerAmount", Offset: 112, NameHash: 2589587985, Flags: 49405), LayoutImmutable, Blittable]
 		public int TriggerAmount { get { return m_TriggerAmount; } set { if (OnPropertyChanging("MultipleTriggerEntityData." + nameof(TriggerAmount), this, m_TriggerAmount, value)) m_TriggerAmount = value; } } // 0x70 (112)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

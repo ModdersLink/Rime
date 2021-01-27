@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(16), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
 	public class RichPresencePresenceString : 
 		DataContainer
 	{
 		protected string m_SID = string.Empty;
-		[ContainerField(8), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(193467547)]
+		[ContainerField(Name: "SID", Offset: 8, NameHash: 193467547, Flags: 16509), LayoutImmutable]
 		public string SID { get { return m_SID; } set { if (OnPropertyChanging("RichPresencePresenceString." + nameof(SID), this, m_SID, value)) m_SID = value; } } // 0x8 (8)
 		
 		protected bool m_Interpolated = new bool();
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3956040102)]
+		[ContainerField(Name: "Interpolated", Offset: 12, NameHash: 3956040102, Flags: 49325), LayoutImmutable, Blittable]
 		public bool Interpolated { get { return m_Interpolated; } set { if (OnPropertyChanging("RichPresencePresenceString." + nameof(Interpolated), this, m_Interpolated, value)) m_Interpolated = value; } } // 0xC (12)
 		
 		protected sbyte m_Index = new sbyte();
-		[ContainerField(13), LayoutImmutable, Blittable, MemberInfoFlag(49341), ContainerFieldNameHash(214509467)]
+		[ContainerField(Name: "Index", Offset: 13, NameHash: 214509467, Flags: 49341), LayoutImmutable, Blittable]
 		public sbyte Index { get { return m_Index; } set { if (OnPropertyChanging("RichPresencePresenceString." + nameof(Index), this, m_Index, value)) m_Index = value; } } // 0xD (13)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

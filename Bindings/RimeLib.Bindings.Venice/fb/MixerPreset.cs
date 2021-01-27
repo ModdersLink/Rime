@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(20), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 20)]
 	public class MixerPreset : 
 		DataContainer
 	{
 		protected uint m_NameHash = new uint();
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(994057744)]
+		[ContainerField(Name: "NameHash", Offset: 8, NameHash: 994057744, Flags: 49421), LayoutImmutable, Blittable]
 		public uint NameHash { get { return m_NameHash; } set { if (OnPropertyChanging("MixerPreset." + nameof(NameHash), this, m_NameHash, value)) m_NameHash = value; } } // 0x8 (8)
 		
 		protected List<MixerPresetGroupData> m_Groups = new List<MixerPresetGroupData>();
-		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(2573340009), ContainerArray]
+		[ContainerField(Name: "Groups", Offset: 12, NameHash: 2573340009, Flags: 65)]
 		public List<MixerPresetGroupData> Groups { get { return m_Groups; } set { if (OnPropertyChanging("MixerPreset." + nameof(Groups), this, m_Groups, value)) m_Groups = value; } } // 0xC (12)
 		
 		protected List<MixerPresetNodeData> m_Nodes = new List<MixerPresetNodeData>();
-		[ContainerField(16), MemberInfoFlag(65), ContainerFieldNameHash(215794742), ContainerArray]
+		[ContainerField(Name: "Nodes", Offset: 16, NameHash: 215794742, Flags: 65)]
 		public List<MixerPresetNodeData> Nodes { get { return m_Nodes; } set { if (OnPropertyChanging("MixerPreset." + nameof(Nodes), this, m_Nodes, value)) m_Nodes = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,25 +18,25 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(24), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 24)]
 	public class SubsystemTimingConfigData : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "Sensing", Offset: 0, NameHash: 2773286638, Flags: 49469), LayoutImmutable, Blittable]
 		public float Sensing { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "Evaluation", Offset: 4, NameHash: 2114752051, Flags: 49469), LayoutImmutable, Blittable]
 		public float Evaluation { get; set; } // 0x4 (4)
 		
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "GoalUpdates", Offset: 8, NameHash: 1646124194, Flags: 49469), LayoutImmutable, Blittable]
 		public float GoalUpdates { get; set; } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "IntentUpdates", Offset: 12, NameHash: 3880187307, Flags: 49469), LayoutImmutable, Blittable]
 		public float IntentUpdates { get; set; } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "BehaviourSelection", Offset: 16, NameHash: 2270407900, Flags: 49469), LayoutImmutable, Blittable]
 		public float BehaviourSelection { get; set; } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "BehaviourExecution", Offset: 20, NameHash: 4008376558, Flags: 49469), LayoutImmutable, Blittable]
 		public float BehaviourExecution { get; set; } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

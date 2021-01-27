@@ -18,22 +18,22 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(20), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 20)]
 	public class AntAnimatableData : FrostbiteContainer
 	{
-		[ContainerField(0), MemberInfoFlag(41)]
+		[ContainerField(Name: "Actor", Offset: 0, NameHash: 205428846, Flags: 41)]
 		public AntRef Actor { get; set; } = new AntRef(); // 0x0 (0)
 		
-		[ContainerField(4), MemberInfoFlag(53), ContainerCtrRef]
+		[ContainerField(Name: "ProceduralAwareness", Offset: 4, NameHash: 3096885739, Flags: 53)]
 		public CtrRef<ProceduralAwarenessAntRefs> ProceduralAwareness { get; set; } = new CtrRef<ProceduralAwarenessAntRefs>(); // 0x4 (4)
 		
-		[ContainerField(8), MemberInfoFlag(41)]
+		[ContainerField(Name: "RightHandEffectorDisableOverride", Offset: 8, NameHash: 3621503884, Flags: 41)]
 		public AntRef RightHandEffectorDisableOverride { get; set; } = new AntRef(); // 0x8 (8)
 		
-		[ContainerField(12), MemberInfoFlag(41)]
+		[ContainerField(Name: "LeftHandEffectorDisableOverride", Offset: 12, NameHash: 2879725591, Flags: 41)]
 		public AntRef LeftHandEffectorDisableOverride { get; set; } = new AntRef(); // 0xC (12)
 		
-		[ContainerField(16), MemberInfoFlag(53), ContainerCtrRef]
+		[ContainerField(Name: "MasterSkeletonAsset", Offset: 16, NameHash: 2238702888, Flags: 53)]
 		public CtrRef<MasterSkeletonAsset> MasterSkeletonAsset { get; set; } = new CtrRef<MasterSkeletonAsset>(); // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

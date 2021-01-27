@@ -18,19 +18,19 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(16), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 16)]
 	public class UILevelStatData : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "StatEasy", Offset: 0, NameHash: 3117395417, Flags: 16509), LayoutImmutable]
 		public string StatEasy { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "StatMedium", Offset: 4, NameHash: 2137844554, Flags: 16509), LayoutImmutable]
 		public string StatMedium { get; set; } // 0x4 (4)
 		
-		[ContainerField(8), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "StatHard", Offset: 8, NameHash: 3117794824, Flags: 16509), LayoutImmutable]
 		public string StatHard { get; set; } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "StatHardcore", Offset: 12, NameHash: 2618242163, Flags: 16509), LayoutImmutable]
 		public string StatHardcore { get; set; } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,36 +18,36 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(44), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 44)]
 	public class VehicleWaypointData : 
 		WaypointData
 	{
 		protected float m_Speed = new float();
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(230887042)]
+		[ContainerField(Name: "Speed", Offset: 16, NameHash: 230887042, Flags: 49469), LayoutImmutable, Blittable]
 		public float Speed { get { return m_Speed; } set { if (OnPropertyChanging("VehicleWaypointData." + nameof(Speed), this, m_Speed, value)) m_Speed = value; } } // 0x10 (16)
 		
 		protected float m_SpeedOverrideMovingTowards = new float();
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(4149709546)]
+		[ContainerField(Name: "SpeedOverrideMovingTowards", Offset: 20, NameHash: 4149709546, Flags: 49469), LayoutImmutable, Blittable]
 		public float SpeedOverrideMovingTowards { get { return m_SpeedOverrideMovingTowards; } set { if (OnPropertyChanging("VehicleWaypointData." + nameof(SpeedOverrideMovingTowards), this, m_SpeedOverrideMovingTowards, value)) m_SpeedOverrideMovingTowards = value; } } // 0x14 (20)
 		
 		protected float m_Angleoffset = new float();
-		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(686454889)]
+		[ContainerField(Name: "Angleoffset", Offset: 24, NameHash: 686454889, Flags: 49469), LayoutImmutable, Blittable]
 		public float Angleoffset { get { return m_Angleoffset; } set { if (OnPropertyChanging("VehicleWaypointData." + nameof(Angleoffset), this, m_Angleoffset, value)) m_Angleoffset = value; } } // 0x18 (24)
 		
 		protected float m_StopHereRadius = new float();
-		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3378547103)]
+		[ContainerField(Name: "StopHereRadius", Offset: 28, NameHash: 3378547103, Flags: 49469), LayoutImmutable, Blittable]
 		public float StopHereRadius { get { return m_StopHereRadius; } set { if (OnPropertyChanging("VehicleWaypointData." + nameof(StopHereRadius), this, m_StopHereRadius, value)) m_StopHereRadius = value; } } // 0x1C (28)
 		
 		protected float m_StoppingDeceleration = new float();
-		[ContainerField(32), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2524085644)]
+		[ContainerField(Name: "StoppingDeceleration", Offset: 32, NameHash: 2524085644, Flags: 49469), LayoutImmutable, Blittable]
 		public float StoppingDeceleration { get { return m_StoppingDeceleration; } set { if (OnPropertyChanging("VehicleWaypointData." + nameof(StoppingDeceleration), this, m_StoppingDeceleration, value)) m_StoppingDeceleration = value; } } // 0x20 (32)
 		
 		protected float m_MinSlowdownSpeed = new float();
-		[ContainerField(36), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3207717373)]
+		[ContainerField(Name: "MinSlowdownSpeed", Offset: 36, NameHash: 3207717373, Flags: 49469), LayoutImmutable, Blittable]
 		public float MinSlowdownSpeed { get { return m_MinSlowdownSpeed; } set { if (OnPropertyChanging("VehicleWaypointData." + nameof(MinSlowdownSpeed), this, m_MinSlowdownSpeed, value)) m_MinSlowdownSpeed = value; } } // 0x24 (36)
 		
 		protected bool m_StopHere = new bool();
-		[ContainerField(40), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3655484487)]
+		[ContainerField(Name: "StopHere", Offset: 40, NameHash: 3655484487, Flags: 49325), LayoutImmutable, Blittable]
 		public bool StopHere { get { return m_StopHere; } set { if (OnPropertyChanging("VehicleWaypointData." + nameof(StopHere), this, m_StopHere, value)) m_StopHere = value; } } // 0x28 (40)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,19 +18,19 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(41), ContainerSize(32), ContainerStruct]
+	[ContainerType(Alignment: 16,  Flags: 41, Size: 32)]
 	public class PolynomialTempData : FrostbiteContainer
 	{
-		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
+		[ContainerField(Name: "Coefficients", Offset: 0, NameHash: 2816855587, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec4 Coefficients { get; set; } = new Vec4(); // 0x0 (0)
 		
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "ScaleValue", Offset: 16, NameHash: 1405926902, Flags: 49469), LayoutImmutable, Blittable]
 		public float ScaleValue { get; set; } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "MinClamp", Offset: 20, NameHash: 3349357596, Flags: 49469), LayoutImmutable, Blittable]
 		public float MinClamp { get; set; } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "MaxClamp", Offset: 24, NameHash: 415055298, Flags: 49469), LayoutImmutable, Blittable]
 		public float MaxClamp { get; set; } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

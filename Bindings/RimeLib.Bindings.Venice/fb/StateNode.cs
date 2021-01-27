@@ -18,36 +18,36 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(48), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 48)]
 	public class StateNode : 
 		UINodeData
 	{
 		protected CtrRef<UIScreenAsset> m_Screen = new CtrRef<UIScreenAsset>();
-		[ContainerField(20), MemberInfoFlag(53), ContainerFieldNameHash(3334722793), ContainerCtrRef]
+		[ContainerField(Name: "Screen", Offset: 20, NameHash: 3334722793, Flags: 53)]
 		public CtrRef<UIScreenAsset> Screen { get { return m_Screen; } set { if (OnPropertyChanging("StateNode." + nameof(Screen), this, m_Screen, value)) m_Screen = value; } } // 0x14 (20)
 		
 		protected CtrRef<UINodePort> m_In = new CtrRef<UINodePort>();
-		[ContainerField(24), MemberInfoFlag(53), ContainerFieldNameHash(5862146), ContainerCtrRef]
+		[ContainerField(Name: "In", Offset: 24, NameHash: 5862146, Flags: 53)]
 		public CtrRef<UINodePort> In { get { return m_In; } set { if (OnPropertyChanging("StateNode." + nameof(In), this, m_In, value)) m_In = value; } } // 0x18 (24)
 		
 		protected CtrRef<UINodePort> m_Show = new CtrRef<UINodePort>();
-		[ContainerField(28), MemberInfoFlag(53), ContainerFieldNameHash(2089430886), ContainerCtrRef]
+		[ContainerField(Name: "Show", Offset: 28, NameHash: 2089430886, Flags: 53)]
 		public CtrRef<UINodePort> Show { get { return m_Show; } set { if (OnPropertyChanging("StateNode." + nameof(Show), this, m_Show, value)) m_Show = value; } } // 0x1C (28)
 		
 		protected CtrRef<UINodePort> m_Hide = new CtrRef<UINodePort>();
-		[ContainerField(32), MemberInfoFlag(53), ContainerFieldNameHash(2089152613), ContainerCtrRef]
+		[ContainerField(Name: "Hide", Offset: 32, NameHash: 2089152613, Flags: 53)]
 		public CtrRef<UINodePort> Hide { get { return m_Hide; } set { if (OnPropertyChanging("StateNode." + nameof(Hide), this, m_Hide, value)) m_Hide = value; } } // 0x20 (32)
 		
 		protected RefArray<UINodePort> m_Inputs = new RefArray<UINodePort>();
-		[ContainerField(36), MemberInfoFlag(65), ContainerFieldNameHash(2784267136), ContainerRefArray]
+		[ContainerField(Name: "Inputs", Offset: 36, NameHash: 2784267136, Flags: 65)]
 		public RefArray<UINodePort> Inputs { get { return m_Inputs; } set { if (OnPropertyChanging("StateNode." + nameof(Inputs), this, m_Inputs, value)) m_Inputs = value; } } // 0x24 (36)
 		
 		protected RefArray<UINodePort> m_Outputs = new RefArray<UINodePort>();
-		[ContainerField(40), MemberInfoFlag(65), ContainerFieldNameHash(1070022089), ContainerRefArray]
+		[ContainerField(Name: "Outputs", Offset: 40, NameHash: 1070022089, Flags: 65)]
 		public RefArray<UINodePort> Outputs { get { return m_Outputs; } set { if (OnPropertyChanging("StateNode." + nameof(Outputs), this, m_Outputs, value)) m_Outputs = value; } } // 0x28 (40)
 		
 		protected bool m_RenderToTexture = new bool();
-		[ContainerField(44), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(627956363)]
+		[ContainerField(Name: "RenderToTexture", Offset: 44, NameHash: 627956363, Flags: 49325), LayoutImmutable, Blittable]
 		public bool RenderToTexture { get { return m_RenderToTexture; } set { if (OnPropertyChanging("StateNode." + nameof(RenderToTexture), this, m_RenderToTexture, value)) m_RenderToTexture = value; } } // 0x2C (44)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

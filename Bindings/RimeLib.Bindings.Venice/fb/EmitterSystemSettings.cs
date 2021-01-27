@@ -18,188 +18,188 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(104), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 104)]
 	public class EmitterSystemSettings : 
 		DataContainer
 	{
 		protected uint m_MeshDrawCountLimit = new uint();
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(3584341216)]
+		[ContainerField(Name: "MeshDrawCountLimit", Offset: 8, NameHash: 3584341216, Flags: 49421), LayoutImmutable, Blittable]
 		public uint MeshDrawCountLimit { get { return m_MeshDrawCountLimit; } set { if (OnPropertyChanging("EmitterSystemSettings." + nameof(MeshDrawCountLimit), this, m_MeshDrawCountLimit, value)) m_MeshDrawCountLimit = value; } } // 0x8 (8)
 		
 		protected float m_TimeScale = new float();
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(169511528)]
+		[ContainerField(Name: "TimeScale", Offset: 12, NameHash: 169511528, Flags: 49469), LayoutImmutable, Blittable]
 		public float TimeScale { get { return m_TimeScale; } set { if (OnPropertyChanging("EmitterSystemSettings." + nameof(TimeScale), this, m_TimeScale, value)) m_TimeScale = value; } } // 0xC (12)
 		
 		protected float m_GlobalResetStartTimeInterval = new float();
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(191922705)]
+		[ContainerField(Name: "GlobalResetStartTimeInterval", Offset: 16, NameHash: 191922705, Flags: 49469), LayoutImmutable, Blittable]
 		public float GlobalResetStartTimeInterval { get { return m_GlobalResetStartTimeInterval; } set { if (OnPropertyChanging("EmitterSystemSettings." + nameof(GlobalResetStartTimeInterval), this, m_GlobalResetStartTimeInterval, value)) m_GlobalResetStartTimeInterval = value; } } // 0x10 (16)
 		
 		protected float m_QuadHalfResSlice2ThresholdLow = new float();
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(248249250)]
+		[ContainerField(Name: "QuadHalfResSlice2ThresholdLow", Offset: 20, NameHash: 248249250, Flags: 49469), LayoutImmutable, Blittable]
 		public float QuadHalfResSlice2ThresholdLow { get { return m_QuadHalfResSlice2ThresholdLow; } set { if (OnPropertyChanging("EmitterSystemSettings." + nameof(QuadHalfResSlice2ThresholdLow), this, m_QuadHalfResSlice2ThresholdLow, value)) m_QuadHalfResSlice2ThresholdLow = value; } } // 0x14 (20)
 		
 		protected float m_QuadHalfResSlice2ThresholdHigh = new float();
-		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3897404056)]
+		[ContainerField(Name: "QuadHalfResSlice2ThresholdHigh", Offset: 24, NameHash: 3897404056, Flags: 49469), LayoutImmutable, Blittable]
 		public float QuadHalfResSlice2ThresholdHigh { get { return m_QuadHalfResSlice2ThresholdHigh; } set { if (OnPropertyChanging("EmitterSystemSettings." + nameof(QuadHalfResSlice2ThresholdHigh), this, m_QuadHalfResSlice2ThresholdHigh, value)) m_QuadHalfResSlice2ThresholdHigh = value; } } // 0x18 (24)
 		
 		protected float m_QuadHalfResSlice1ThresholdLow = new float();
-		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(332076321)]
+		[ContainerField(Name: "QuadHalfResSlice1ThresholdLow", Offset: 28, NameHash: 332076321, Flags: 49469), LayoutImmutable, Blittable]
 		public float QuadHalfResSlice1ThresholdLow { get { return m_QuadHalfResSlice1ThresholdLow; } set { if (OnPropertyChanging("EmitterSystemSettings." + nameof(QuadHalfResSlice1ThresholdLow), this, m_QuadHalfResSlice1ThresholdLow, value)) m_QuadHalfResSlice1ThresholdLow = value; } } // 0x1C (28)
 		
 		protected float m_QuadHalfResSlice1ThresholdHigh = new float();
-		[ContainerField(32), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2368726075)]
+		[ContainerField(Name: "QuadHalfResSlice1ThresholdHigh", Offset: 32, NameHash: 2368726075, Flags: 49469), LayoutImmutable, Blittable]
 		public float QuadHalfResSlice1ThresholdHigh { get { return m_QuadHalfResSlice1ThresholdHigh; } set { if (OnPropertyChanging("EmitterSystemSettings." + nameof(QuadHalfResSlice1ThresholdHigh), this, m_QuadHalfResSlice1ThresholdHigh, value)) m_QuadHalfResSlice1ThresholdHigh = value; } } // 0x20 (32)
 		
 		protected int m_DebugOverdrawCount = new int();
-		[ContainerField(36), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(955445401)]
+		[ContainerField(Name: "DebugOverdrawCount", Offset: 36, NameHash: 955445401, Flags: 49405), LayoutImmutable, Blittable]
 		public int DebugOverdrawCount { get { return m_DebugOverdrawCount; } set { if (OnPropertyChanging("EmitterSystemSettings." + nameof(DebugOverdrawCount), this, m_DebugOverdrawCount, value)) m_DebugOverdrawCount = value; } } // 0x24 (36)
 		
 		protected uint m_DrawStats = new uint();
-		[ContainerField(40), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(2413142628)]
+		[ContainerField(Name: "DrawStats", Offset: 40, NameHash: 2413142628, Flags: 49421), LayoutImmutable, Blittable]
 		public uint DrawStats { get { return m_DrawStats; } set { if (OnPropertyChanging("EmitterSystemSettings." + nameof(DrawStats), this, m_DrawStats, value)) m_DrawStats = value; } } // 0x28 (40)
 		
 		protected float m_MeshStreamingPriorityMultiplier = new float();
-		[ContainerField(44), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1971206387)]
+		[ContainerField(Name: "MeshStreamingPriorityMultiplier", Offset: 44, NameHash: 1971206387, Flags: 49469), LayoutImmutable, Blittable]
 		public float MeshStreamingPriorityMultiplier { get { return m_MeshStreamingPriorityMultiplier; } set { if (OnPropertyChanging("EmitterSystemSettings." + nameof(MeshStreamingPriorityMultiplier), this, m_MeshStreamingPriorityMultiplier, value)) m_MeshStreamingPriorityMultiplier = value; } } // 0x2C (44)
 		
 		protected float m_QuadZOcclusionBias = new float();
-		[ContainerField(48), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(158175114)]
+		[ContainerField(Name: "QuadZOcclusionBias", Offset: 48, NameHash: 158175114, Flags: 49469), LayoutImmutable, Blittable]
 		public float QuadZOcclusionBias { get { return m_QuadZOcclusionBias; } set { if (OnPropertyChanging("EmitterSystemSettings." + nameof(QuadZOcclusionBias), this, m_QuadZOcclusionBias, value)) m_QuadZOcclusionBias = value; } } // 0x30 (48)
 		
 		protected uint m_DrawBoundingBoxes = new uint();
-		[ContainerField(52), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(256065972)]
+		[ContainerField(Name: "DrawBoundingBoxes", Offset: 52, NameHash: 256065972, Flags: 49421), LayoutImmutable, Blittable]
 		public uint DrawBoundingBoxes { get { return m_DrawBoundingBoxes; } set { if (OnPropertyChanging("EmitterSystemSettings." + nameof(DrawBoundingBoxes), this, m_DrawBoundingBoxes, value)) m_DrawBoundingBoxes = value; } } // 0x34 (52)
 		
 		protected float m_MinScreenArea = new float();
-		[ContainerField(56), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(81136980)]
+		[ContainerField(Name: "MinScreenArea", Offset: 56, NameHash: 81136980, Flags: 49469), LayoutImmutable, Blittable]
 		public float MinScreenArea { get { return m_MinScreenArea; } set { if (OnPropertyChanging("EmitterSystemSettings." + nameof(MinScreenArea), this, m_MinScreenArea, value)) m_MinScreenArea = value; } } // 0x38 (56)
 		
 		protected float m_QuadNearFadeDistance = new float();
-		[ContainerField(60), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1063747929)]
+		[ContainerField(Name: "QuadNearFadeDistance", Offset: 60, NameHash: 1063747929, Flags: 49469), LayoutImmutable, Blittable]
 		public float QuadNearFadeDistance { get { return m_QuadNearFadeDistance; } set { if (OnPropertyChanging("EmitterSystemSettings." + nameof(QuadNearFadeDistance), this, m_QuadNearFadeDistance, value)) m_QuadNearFadeDistance = value; } } // 0x3C (60)
 		
 		protected int m_QuadTechnique = new int();
-		[ContainerField(64), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(481029528)]
+		[ContainerField(Name: "QuadTechnique", Offset: 64, NameHash: 481029528, Flags: 49405), LayoutImmutable, Blittable]
 		public int QuadTechnique { get { return m_QuadTechnique; } set { if (OnPropertyChanging("EmitterSystemSettings." + nameof(QuadTechnique), this, m_QuadTechnique, value)) m_QuadTechnique = value; } } // 0x40 (64)
 		
 		protected float m_MeshCullingDistance = new float();
-		[ContainerField(68), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2057455619)]
+		[ContainerField(Name: "MeshCullingDistance", Offset: 68, NameHash: 2057455619, Flags: 49469), LayoutImmutable, Blittable]
 		public float MeshCullingDistance { get { return m_MeshCullingDistance; } set { if (OnPropertyChanging("EmitterSystemSettings." + nameof(MeshCullingDistance), this, m_MeshCullingDistance, value)) m_MeshCullingDistance = value; } } // 0x44 (68)
 		
 		protected bool m_EnableFixedTimeStep = new bool();
-		[ContainerField(72), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3426148757)]
+		[ContainerField(Name: "EnableFixedTimeStep", Offset: 72, NameHash: 3426148757, Flags: 49325), LayoutImmutable, Blittable]
 		public bool EnableFixedTimeStep { get { return m_EnableFixedTimeStep; } set { if (OnPropertyChanging("EmitterSystemSettings." + nameof(EnableFixedTimeStep), this, m_EnableFixedTimeStep, value)) m_EnableFixedTimeStep = value; } } // 0x48 (72)
 		
 		protected bool m_ZBufferCullEnable = new bool();
-		[ContainerField(73), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2454313224)]
+		[ContainerField(Name: "ZBufferCullEnable", Offset: 73, NameHash: 2454313224, Flags: 49325), LayoutImmutable, Blittable]
 		public bool ZBufferCullEnable { get { return m_ZBufferCullEnable; } set { if (OnPropertyChanging("EmitterSystemSettings." + nameof(ZBufferCullEnable), this, m_ZBufferCullEnable, value)) m_ZBufferCullEnable = value; } } // 0x49 (73)
 		
 		protected bool m_QuadEnableOverdrawRendering = new bool();
-		[ContainerField(74), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2026766721)]
+		[ContainerField(Name: "QuadEnableOverdrawRendering", Offset: 74, NameHash: 2026766721, Flags: 49325), LayoutImmutable, Blittable]
 		public bool QuadEnableOverdrawRendering { get { return m_QuadEnableOverdrawRendering; } set { if (OnPropertyChanging("EmitterSystemSettings." + nameof(QuadEnableOverdrawRendering), this, m_QuadEnableOverdrawRendering, value)) m_QuadEnableOverdrawRendering = value; } } // 0x4A (74)
 		
 		protected bool m_QuadColorShaderCostsEnable = new bool();
-		[ContainerField(75), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(583045289)]
+		[ContainerField(Name: "QuadColorShaderCostsEnable", Offset: 75, NameHash: 583045289, Flags: 49325), LayoutImmutable, Blittable]
 		public bool QuadColorShaderCostsEnable { get { return m_QuadColorShaderCostsEnable; } set { if (OnPropertyChanging("EmitterSystemSettings." + nameof(QuadColorShaderCostsEnable), this, m_QuadColorShaderCostsEnable, value)) m_QuadColorShaderCostsEnable = value; } } // 0x4B (75)
 		
 		protected bool m_DrawProjectedBoxes = new bool();
-		[ContainerField(76), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3600370386)]
+		[ContainerField(Name: "DrawProjectedBoxes", Offset: 76, NameHash: 3600370386, Flags: 49325), LayoutImmutable, Blittable]
 		public bool DrawProjectedBoxes { get { return m_DrawProjectedBoxes; } set { if (OnPropertyChanging("EmitterSystemSettings." + nameof(DrawProjectedBoxes), this, m_DrawProjectedBoxes, value)) m_DrawProjectedBoxes = value; } } // 0x4C (76)
 		
 		protected bool m_QuadSimpleRenderingEnable = new bool();
-		[ContainerField(77), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2930079169)]
+		[ContainerField(Name: "QuadSimpleRenderingEnable", Offset: 77, NameHash: 2930079169, Flags: 49325), LayoutImmutable, Blittable]
 		public bool QuadSimpleRenderingEnable { get { return m_QuadSimpleRenderingEnable; } set { if (OnPropertyChanging("EmitterSystemSettings." + nameof(QuadSimpleRenderingEnable), this, m_QuadSimpleRenderingEnable, value)) m_QuadSimpleRenderingEnable = value; } } // 0x4D (77)
 		
 		protected bool m_EnableJobs = new bool();
-		[ContainerField(78), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1190923856)]
+		[ContainerField(Name: "EnableJobs", Offset: 78, NameHash: 1190923856, Flags: 49325), LayoutImmutable, Blittable]
 		public bool EnableJobs { get { return m_EnableJobs; } set { if (OnPropertyChanging("EmitterSystemSettings." + nameof(EnableJobs), this, m_EnableJobs, value)) m_EnableJobs = value; } } // 0x4E (78)
 		
 		protected bool m_EnableRendering = new bool();
-		[ContainerField(79), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(40741518)]
+		[ContainerField(Name: "EnableRendering", Offset: 79, NameHash: 40741518, Flags: 49325), LayoutImmutable, Blittable]
 		public bool EnableRendering { get { return m_EnableRendering; } set { if (OnPropertyChanging("EmitterSystemSettings." + nameof(EnableRendering), this, m_EnableRendering, value)) m_EnableRendering = value; } } // 0x4F (79)
 		
 		protected bool m_QuadHalfResEnable = new bool();
-		[ContainerField(80), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(780819106)]
+		[ContainerField(Name: "QuadHalfResEnable", Offset: 80, NameHash: 780819106, Flags: 49325), LayoutImmutable, Blittable]
 		public bool QuadHalfResEnable { get { return m_QuadHalfResEnable; } set { if (OnPropertyChanging("EmitterSystemSettings." + nameof(QuadHalfResEnable), this, m_QuadHalfResEnable, value)) m_QuadHalfResEnable = value; } } // 0x50 (80)
 		
 		protected bool m_QuadEnableRendering = new bool();
-		[ContainerField(81), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(468998543)]
+		[ContainerField(Name: "QuadEnableRendering", Offset: 81, NameHash: 468998543, Flags: 49325), LayoutImmutable, Blittable]
 		public bool QuadEnableRendering { get { return m_QuadEnableRendering; } set { if (OnPropertyChanging("EmitterSystemSettings." + nameof(QuadEnableRendering), this, m_QuadEnableRendering, value)) m_QuadEnableRendering = value; } } // 0x51 (81)
 		
 		protected bool m_EnableFixedDelta = new bool();
-		[ContainerField(82), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3036744842)]
+		[ContainerField(Name: "EnableFixedDelta", Offset: 82, NameHash: 3036744842, Flags: 49325), LayoutImmutable, Blittable]
 		public bool EnableFixedDelta { get { return m_EnableFixedDelta; } set { if (OnPropertyChanging("EmitterSystemSettings." + nameof(EnableFixedDelta), this, m_EnableFixedDelta, value)) m_EnableFixedDelta = value; } } // 0x52 (82)
 		
 		protected bool m_QuadClipScaleEnable = new bool();
-		[ContainerField(83), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2519874955)]
+		[ContainerField(Name: "QuadClipScaleEnable", Offset: 83, NameHash: 2519874955, Flags: 49325), LayoutImmutable, Blittable]
 		public bool QuadClipScaleEnable { get { return m_QuadClipScaleEnable; } set { if (OnPropertyChanging("EmitterSystemSettings." + nameof(QuadClipScaleEnable), this, m_QuadClipScaleEnable, value)) m_QuadClipScaleEnable = value; } } // 0x53 (83)
 		
 		protected bool m_QuadNiceRenderingEnable = new bool();
-		[ContainerField(84), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(4038089934)]
+		[ContainerField(Name: "QuadNiceRenderingEnable", Offset: 84, NameHash: 4038089934, Flags: 49325), LayoutImmutable, Blittable]
 		public bool QuadNiceRenderingEnable { get { return m_QuadNiceRenderingEnable; } set { if (OnPropertyChanging("EmitterSystemSettings." + nameof(QuadNiceRenderingEnable), this, m_QuadNiceRenderingEnable, value)) m_QuadNiceRenderingEnable = value; } } // 0x54 (84)
 		
 		protected bool m_QuadGroupsJoinAll = new bool();
-		[ContainerField(85), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3752191243)]
+		[ContainerField(Name: "QuadGroupsJoinAll", Offset: 85, NameHash: 3752191243, Flags: 49325), LayoutImmutable, Blittable]
 		public bool QuadGroupsJoinAll { get { return m_QuadGroupsJoinAll; } set { if (OnPropertyChanging("EmitterSystemSettings." + nameof(QuadGroupsJoinAll), this, m_QuadGroupsJoinAll, value)) m_QuadGroupsJoinAll = value; } } // 0x55 (85)
 		
 		protected bool m_QuadGroupsJoinNone = new bool();
-		[ContainerField(86), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3563197984)]
+		[ContainerField(Name: "QuadGroupsJoinNone", Offset: 86, NameHash: 3563197984, Flags: 49325), LayoutImmutable, Blittable]
 		public bool QuadGroupsJoinNone { get { return m_QuadGroupsJoinNone; } set { if (OnPropertyChanging("EmitterSystemSettings." + nameof(QuadGroupsJoinNone), this, m_QuadGroupsJoinNone, value)) m_QuadGroupsJoinNone = value; } } // 0x56 (86)
 		
 		protected bool m_QuadGroupsJoinNiceAndSimple = new bool();
-		[ContainerField(87), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2729389326)]
+		[ContainerField(Name: "QuadGroupsJoinNiceAndSimple", Offset: 87, NameHash: 2729389326, Flags: 49325), LayoutImmutable, Blittable]
 		public bool QuadGroupsJoinNiceAndSimple { get { return m_QuadGroupsJoinNiceAndSimple; } set { if (OnPropertyChanging("EmitterSystemSettings." + nameof(QuadGroupsJoinNiceAndSimple), this, m_QuadGroupsJoinNiceAndSimple, value)) m_QuadGroupsJoinNiceAndSimple = value; } } // 0x57 (87)
 		
 		protected bool m_QuadEnableOpaque = new bool();
-		[ContainerField(88), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1334058906)]
+		[ContainerField(Name: "QuadEnableOpaque", Offset: 88, NameHash: 1334058906, Flags: 49325), LayoutImmutable, Blittable]
 		public bool QuadEnableOpaque { get { return m_QuadEnableOpaque; } set { if (OnPropertyChanging("EmitterSystemSettings." + nameof(QuadEnableOpaque), this, m_QuadEnableOpaque, value)) m_QuadEnableOpaque = value; } } // 0x58 (88)
 		
 		protected bool m_QuadVertexShadowsEnable = new bool();
-		[ContainerField(89), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2940509112)]
+		[ContainerField(Name: "QuadVertexShadowsEnable", Offset: 89, NameHash: 2940509112, Flags: 49325), LayoutImmutable, Blittable]
 		public bool QuadVertexShadowsEnable { get { return m_QuadVertexShadowsEnable; } set { if (OnPropertyChanging("EmitterSystemSettings." + nameof(QuadVertexShadowsEnable), this, m_QuadVertexShadowsEnable, value)) m_QuadVertexShadowsEnable = value; } } // 0x59 (89)
 		
 		protected bool m_QuadPointLightsEnable = new bool();
-		[ContainerField(90), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1678550564)]
+		[ContainerField(Name: "QuadPointLightsEnable", Offset: 90, NameHash: 1678550564, Flags: 49325), LayoutImmutable, Blittable]
 		public bool QuadPointLightsEnable { get { return m_QuadPointLightsEnable; } set { if (OnPropertyChanging("EmitterSystemSettings." + nameof(QuadPointLightsEnable), this, m_QuadPointLightsEnable, value)) m_QuadPointLightsEnable = value; } } // 0x5A (90)
 		
 		protected bool m_QuadSpotLightsEnable = new bool();
-		[ContainerField(91), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2807602672)]
+		[ContainerField(Name: "QuadSpotLightsEnable", Offset: 91, NameHash: 2807602672, Flags: 49325), LayoutImmutable, Blittable]
 		public bool QuadSpotLightsEnable { get { return m_QuadSpotLightsEnable; } set { if (OnPropertyChanging("EmitterSystemSettings." + nameof(QuadSpotLightsEnable), this, m_QuadSpotLightsEnable, value)) m_QuadSpotLightsEnable = value; } } // 0x5B (91)
 		
 		protected bool m_QuadEnableSorting = new bool();
-		[ContainerField(92), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2931738335)]
+		[ContainerField(Name: "QuadEnableSorting", Offset: 92, NameHash: 2931738335, Flags: 49325), LayoutImmutable, Blittable]
 		public bool QuadEnableSorting { get { return m_QuadEnableSorting; } set { if (OnPropertyChanging("EmitterSystemSettings." + nameof(QuadEnableSorting), this, m_QuadEnableSorting, value)) m_QuadEnableSorting = value; } } // 0x5C (92)
 		
 		protected bool m_MeshRenderingEnable = new bool();
-		[ContainerField(93), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2979790077)]
+		[ContainerField(Name: "MeshRenderingEnable", Offset: 93, NameHash: 2979790077, Flags: 49325), LayoutImmutable, Blittable]
 		public bool MeshRenderingEnable { get { return m_MeshRenderingEnable; } set { if (OnPropertyChanging("EmitterSystemSettings." + nameof(MeshRenderingEnable), this, m_MeshRenderingEnable, value)) m_MeshRenderingEnable = value; } } // 0x5D (93)
 		
 		protected bool m_MeshDrawTransforms = new bool();
-		[ContainerField(94), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(67393161)]
+		[ContainerField(Name: "MeshDrawTransforms", Offset: 94, NameHash: 67393161, Flags: 49325), LayoutImmutable, Blittable]
 		public bool MeshDrawTransforms { get { return m_MeshDrawTransforms; } set { if (OnPropertyChanging("EmitterSystemSettings." + nameof(MeshDrawTransforms), this, m_MeshDrawTransforms, value)) m_MeshDrawTransforms = value; } } // 0x5E (94)
 		
 		protected bool m_MeshDrawBoundingBoxes = new bool();
-		[ContainerField(95), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1284065831)]
+		[ContainerField(Name: "MeshDrawBoundingBoxes", Offset: 95, NameHash: 1284065831, Flags: 49325), LayoutImmutable, Blittable]
 		public bool MeshDrawBoundingBoxes { get { return m_MeshDrawBoundingBoxes; } set { if (OnPropertyChanging("EmitterSystemSettings." + nameof(MeshDrawBoundingBoxes), this, m_MeshDrawBoundingBoxes, value)) m_MeshDrawBoundingBoxes = value; } } // 0x5F (95)
 		
 		protected bool m_MeshShadowEnable = new bool();
-		[ContainerField(96), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(418824849)]
+		[ContainerField(Name: "MeshShadowEnable", Offset: 96, NameHash: 418824849, Flags: 49325), LayoutImmutable, Blittable]
 		public bool MeshShadowEnable { get { return m_MeshShadowEnable; } set { if (OnPropertyChanging("EmitterSystemSettings." + nameof(MeshShadowEnable), this, m_MeshShadowEnable, value)) m_MeshShadowEnable = value; } } // 0x60 (96)
 		
 		protected bool m_QuadEnableWireframe = new bool();
-		[ContainerField(97), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1089239377)]
+		[ContainerField(Name: "QuadEnableWireframe", Offset: 97, NameHash: 1089239377, Flags: 49325), LayoutImmutable, Blittable]
 		public bool QuadEnableWireframe { get { return m_QuadEnableWireframe; } set { if (OnPropertyChanging("EmitterSystemSettings." + nameof(QuadEnableWireframe), this, m_QuadEnableWireframe, value)) m_QuadEnableWireframe = value; } } // 0x61 (97)
 		
 		protected bool m_Enable = new bool();
-		[ContainerField(98), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2342790116)]
+		[ContainerField(Name: "Enable", Offset: 98, NameHash: 2342790116, Flags: 49325), LayoutImmutable, Blittable]
 		public bool Enable { get { return m_Enable; } set { if (OnPropertyChanging("EmitterSystemSettings." + nameof(Enable), this, m_Enable, value)) m_Enable = value; } } // 0x62 (98)
 		
 		protected bool m_QuadEnableZOcclusion = new bool();
-		[ContainerField(99), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1606935154)]
+		[ContainerField(Name: "QuadEnableZOcclusion", Offset: 99, NameHash: 1606935154, Flags: 49325), LayoutImmutable, Blittable]
 		public bool QuadEnableZOcclusion { get { return m_QuadEnableZOcclusion; } set { if (OnPropertyChanging("EmitterSystemSettings." + nameof(QuadEnableZOcclusion), this, m_QuadEnableZOcclusion, value)) m_QuadEnableZOcclusion = value; } } // 0x63 (99)
 		
 		protected bool m_MeshDrawCullStats = new bool();
-		[ContainerField(100), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2146509665)]
+		[ContainerField(Name: "MeshDrawCullStats", Offset: 100, NameHash: 2146509665, Flags: 49325), LayoutImmutable, Blittable]
 		public bool MeshDrawCullStats { get { return m_MeshDrawCullStats; } set { if (OnPropertyChanging("EmitterSystemSettings." + nameof(MeshDrawCullStats), this, m_MeshDrawCullStats, value)) m_MeshDrawCullStats = value; } } // 0x64 (100)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

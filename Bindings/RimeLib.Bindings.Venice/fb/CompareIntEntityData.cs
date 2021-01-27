@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(28), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 28)]
 	public class CompareIntEntityData : 
 		EntityData
 	{
 		protected Realm m_Realm = new Realm();
-		[ContainerField(12), MemberInfoFlag(137), ContainerFieldNameHash(229961746)]
+		[ContainerField(Name: "Realm", Offset: 12, NameHash: 229961746, Flags: 137)]
 		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("CompareIntEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0xC (12)
 		
 		protected int m_A = new int();
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(177636)]
+		[ContainerField(Name: "A", Offset: 16, NameHash: 177636, Flags: 49405), LayoutImmutable, Blittable]
 		public int A { get { return m_A; } set { if (OnPropertyChanging("CompareIntEntityData." + nameof(A), this, m_A, value)) m_A = value; } } // 0x10 (16)
 		
 		protected int m_B = new int();
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(177639)]
+		[ContainerField(Name: "B", Offset: 20, NameHash: 177639, Flags: 49405), LayoutImmutable, Blittable]
 		public int B { get { return m_B; } set { if (OnPropertyChanging("CompareIntEntityData." + nameof(B), this, m_B, value)) m_B = value; } } // 0x14 (20)
 		
 		protected bool m_TriggerOnPropertyChange = new bool();
-		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3134109917)]
+		[ContainerField(Name: "TriggerOnPropertyChange", Offset: 24, NameHash: 3134109917, Flags: 49325), LayoutImmutable, Blittable]
 		public bool TriggerOnPropertyChange { get { return m_TriggerOnPropertyChange; } set { if (OnPropertyChanging("CompareIntEntityData." + nameof(TriggerOnPropertyChange), this, m_TriggerOnPropertyChange, value)) m_TriggerOnPropertyChange = value; } } // 0x18 (24)
 		
 		protected bool m_TriggerOnStart = new bool();
-		[ContainerField(25), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3859836348)]
+		[ContainerField(Name: "TriggerOnStart", Offset: 25, NameHash: 3859836348, Flags: 49325), LayoutImmutable, Blittable]
 		public bool TriggerOnStart { get { return m_TriggerOnStart; } set { if (OnPropertyChanging("CompareIntEntityData." + nameof(TriggerOnStart), this, m_TriggerOnStart, value)) m_TriggerOnStart = value; } } // 0x19 (25)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

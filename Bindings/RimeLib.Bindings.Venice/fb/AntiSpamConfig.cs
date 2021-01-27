@@ -18,31 +18,31 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(32), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 32)]
 	public class AntiSpamConfig : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "DetectionInterval", Offset: 0, NameHash: 2687662965, Flags: 49469), LayoutImmutable, Blittable]
 		public float DetectionInterval { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
+		[ContainerField(Name: "DetectionIntervalMaxMessageCount", Offset: 4, NameHash: 1519475401, Flags: 49421), LayoutImmutable, Blittable]
 		public uint DetectionIntervalMaxMessageCount { get; set; } // 0x4 (4)
 		
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
+		[ContainerField(Name: "ServerSideMessageCountTolerance", Offset: 8, NameHash: 2059768186, Flags: 49421), LayoutImmutable, Blittable]
 		public uint ServerSideMessageCountTolerance { get; set; } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
+		[ContainerField(Name: "SecondsBlocked", Offset: 12, NameHash: 3680341614, Flags: 49421), LayoutImmutable, Blittable]
 		public uint SecondsBlocked { get; set; } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
+		[ContainerField(Name: "ServerSideSecondsBlockedTolerance", Offset: 16, NameHash: 2942017753, Flags: 49421), LayoutImmutable, Blittable]
 		public uint ServerSideSecondsBlockedTolerance { get; set; } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "NotificationSid", Offset: 20, NameHash: 4064585174, Flags: 16509), LayoutImmutable]
 		public string NotificationSid { get; set; } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "StillBlockedSid", Offset: 24, NameHash: 928322077, Flags: 16509), LayoutImmutable]
 		public string StillBlockedSid { get; set; } // 0x18 (24)
 		
-		[ContainerField(28), MemberInfoFlag(53), ContainerCtrRef]
+		[ContainerField(Name: "WarningSound", Offset: 28, NameHash: 2673651404, Flags: 53)]
 		public CtrRef<SoundWaveAsset> WarningSound { get; set; } = new CtrRef<SoundWaveAsset>(); // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

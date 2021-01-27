@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(20), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 20)]
 	public class SelectEventEntityData : 
 		EntityData
 	{
 		protected Realm m_Realm = new Realm();
-		[ContainerField(12), MemberInfoFlag(137), ContainerFieldNameHash(229961746)]
+		[ContainerField(Name: "Realm", Offset: 12, NameHash: 229961746, Flags: 137)]
 		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("SelectEventEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0xC (12)
 		
 		protected List<string> m_Events = new List<string>();
-		[ContainerField(16), MemberInfoFlag(65), ContainerFieldNameHash(2352146554), ContainerArray]
+		[ContainerField(Name: "Events", Offset: 16, NameHash: 2352146554, Flags: 65)]
 		public List<string> Events { get { return m_Events; } set { if (OnPropertyChanging("SelectEventEntityData." + nameof(Events), this, m_Events, value)) m_Events = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

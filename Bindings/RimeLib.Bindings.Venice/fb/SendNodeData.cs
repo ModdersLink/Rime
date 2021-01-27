@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(12), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 12)]
 	public class SendNodeData : 
 		AudioGraphNodeData
 	{
 		protected RefArray<SendEntry> m_Entries = new RefArray<SendEntry>();
-		[ContainerField(8), MemberInfoFlag(65), ContainerFieldNameHash(8238103), ContainerRefArray]
+		[ContainerField(Name: "Entries", Offset: 8, NameHash: 8238103, Flags: 65)]
 		public RefArray<SendEntry> Entries { get { return m_Entries; } set { if (OnPropertyChanging("SendNodeData." + nameof(Entries), this, m_Entries, value)) m_Entries = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

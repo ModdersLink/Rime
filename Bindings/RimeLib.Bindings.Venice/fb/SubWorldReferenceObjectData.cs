@@ -18,32 +18,32 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(112), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 112)]
 	public class SubWorldReferenceObjectData : 
 		ReferenceObjectData
 	{
 		protected string m_BundleName = string.Empty;
-		[ContainerField(96), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(461157046)]
+		[ContainerField(Name: "BundleName", Offset: 96, NameHash: 461157046, Flags: 16509), LayoutImmutable]
 		public string BundleName { get { return m_BundleName; } set { if (OnPropertyChanging("SubWorldReferenceObjectData." + nameof(BundleName), this, m_BundleName, value)) m_BundleName = value; } } // 0x60 (96)
 		
 		protected CtrRef<SubWorldInclusionSettings> m_InclusionSettings = new CtrRef<SubWorldInclusionSettings>();
-		[ContainerField(100), MemberInfoFlag(53), ContainerFieldNameHash(1787638950), ContainerCtrRef]
+		[ContainerField(Name: "InclusionSettings", Offset: 100, NameHash: 1787638950, Flags: 53)]
 		public CtrRef<SubWorldInclusionSettings> InclusionSettings { get { return m_InclusionSettings; } set { if (OnPropertyChanging("SubWorldReferenceObjectData." + nameof(InclusionSettings), this, m_InclusionSettings, value)) m_InclusionSettings = value; } } // 0x64 (100)
 		
 		protected bool m_AutoLoad = new bool();
-		[ContainerField(104), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3537348684)]
+		[ContainerField(Name: "AutoLoad", Offset: 104, NameHash: 3537348684, Flags: 49325), LayoutImmutable, Blittable]
 		public bool AutoLoad { get { return m_AutoLoad; } set { if (OnPropertyChanging("SubWorldReferenceObjectData." + nameof(AutoLoad), this, m_AutoLoad, value)) m_AutoLoad = value; } } // 0x68 (104)
 		
 		protected bool m_IsWin32SubLevel = new bool();
-		[ContainerField(105), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2682003100)]
+		[ContainerField(Name: "IsWin32SubLevel", Offset: 105, NameHash: 2682003100, Flags: 49325), LayoutImmutable, Blittable]
 		public bool IsWin32SubLevel { get { return m_IsWin32SubLevel; } set { if (OnPropertyChanging("SubWorldReferenceObjectData." + nameof(IsWin32SubLevel), this, m_IsWin32SubLevel, value)) m_IsWin32SubLevel = value; } } // 0x69 (105)
 		
 		protected bool m_IsXenonSubLevel = new bool();
-		[ContainerField(106), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(948884383)]
+		[ContainerField(Name: "IsXenonSubLevel", Offset: 106, NameHash: 948884383, Flags: 49325), LayoutImmutable, Blittable]
 		public bool IsXenonSubLevel { get { return m_IsXenonSubLevel; } set { if (OnPropertyChanging("SubWorldReferenceObjectData." + nameof(IsXenonSubLevel), this, m_IsXenonSubLevel, value)) m_IsXenonSubLevel = value; } } // 0x6A (106)
 		
 		protected bool m_IsPs3SubLevel = new bool();
-		[ContainerField(107), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(396788349)]
+		[ContainerField(Name: "IsPs3SubLevel", Offset: 107, NameHash: 396788349, Flags: 49325), LayoutImmutable, Blittable]
 		public bool IsPs3SubLevel { get { return m_IsPs3SubLevel; } set { if (OnPropertyChanging("SubWorldReferenceObjectData." + nameof(IsPs3SubLevel), this, m_IsPs3SubLevel, value)) m_IsPs3SubLevel = value; } } // 0x6B (107)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

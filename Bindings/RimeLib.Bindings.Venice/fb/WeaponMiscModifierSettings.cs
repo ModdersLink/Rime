@@ -18,22 +18,22 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(1), MemberInfoFlag(41), ContainerSize(5), ContainerStruct]
+	[ContainerType(Alignment: 1,  Flags: 41, Size: 5)]
 	public class WeaponMiscModifierSettings : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "EnableBreathControl", Offset: 0, NameHash: 613505579, Flags: 49325), LayoutImmutable, Blittable]
 		public bool EnableBreathControl { get; set; } // 0x0 (0)
 		
-		[ContainerField(1), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "CanBeInSupportedShooting", Offset: 1, NameHash: 2187452328, Flags: 49325), LayoutImmutable, Blittable]
 		public bool CanBeInSupportedShooting { get; set; } // 0x1 (1)
 		
-		[ContainerField(2), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "UnZoomOnBoltAction", Offset: 2, NameHash: 1438634691, Flags: 49325), LayoutImmutable, Blittable]
 		public bool UnZoomOnBoltAction { get; set; } // 0x2 (2)
 		
-		[ContainerField(3), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "HoldBoltActionUntilZoomRelease", Offset: 3, NameHash: 3133940949, Flags: 49325), LayoutImmutable, Blittable]
 		public bool HoldBoltActionUntilZoomRelease { get; set; } // 0x3 (3)
 		
-		[ContainerField(4), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "IsSilenced", Offset: 4, NameHash: 1644964768, Flags: 49325), LayoutImmutable, Blittable]
 		public bool IsSilenced { get; set; } // 0x4 (4)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

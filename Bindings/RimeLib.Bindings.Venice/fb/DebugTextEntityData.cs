@@ -18,40 +18,40 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(112), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 112)]
 	public class DebugTextEntityData : 
 		SpatialEntityData
 	{
 		protected Vec3 m_TextColor = new Vec3();
-		[ContainerField(80), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(2527550245)]
+		[ContainerField(Name: "TextColor", Offset: 80, NameHash: 2527550245, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 TextColor { get { return m_TextColor; } set { if (OnPropertyChanging("DebugTextEntityData." + nameof(TextColor), this, m_TextColor, value)) m_TextColor = value; } } // 0x50 (80)
 		
 		protected string m_DebugText = string.Empty;
-		[ContainerField(96), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(859165769)]
+		[ContainerField(Name: "DebugText", Offset: 96, NameHash: 859165769, Flags: 16509), LayoutImmutable]
 		public string DebugText { get { return m_DebugText; } set { if (OnPropertyChanging("DebugTextEntityData." + nameof(DebugText), this, m_DebugText, value)) m_DebugText = value; } } // 0x60 (96)
 		
 		protected Realm m_Realm = new Realm();
-		[ContainerField(100), MemberInfoFlag(137), ContainerFieldNameHash(229961746)]
+		[ContainerField(Name: "Realm", Offset: 100, NameHash: 229961746, Flags: 137)]
 		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("DebugTextEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0x64 (100)
 		
 		protected float m_Scale = new float();
-		[ContainerField(104), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(231223453)]
+		[ContainerField(Name: "Scale", Offset: 104, NameHash: 231223453, Flags: 49469), LayoutImmutable, Blittable]
 		public float Scale { get { return m_Scale; } set { if (OnPropertyChanging("DebugTextEntityData." + nameof(Scale), this, m_Scale, value)) m_Scale = value; } } // 0x68 (104)
 		
 		protected bool m_Visible = new bool();
-		[ContainerField(108), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(901540267)]
+		[ContainerField(Name: "Visible", Offset: 108, NameHash: 901540267, Flags: 49325), LayoutImmutable, Blittable]
 		public bool Visible { get { return m_Visible; } set { if (OnPropertyChanging("DebugTextEntityData." + nameof(Visible), this, m_Visible, value)) m_Visible = value; } } // 0x6C (108)
 		
 		protected bool m_Centered = new bool();
-		[ContainerField(109), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2363373967)]
+		[ContainerField(Name: "Centered", Offset: 109, NameHash: 2363373967, Flags: 49325), LayoutImmutable, Blittable]
 		public bool Centered { get { return m_Centered; } set { if (OnPropertyChanging("DebugTextEntityData." + nameof(Centered), this, m_Centered, value)) m_Centered = value; } } // 0x6D (109)
 		
 		protected bool m_DepthTest = new bool();
-		[ContainerField(110), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(969307550)]
+		[ContainerField(Name: "DepthTest", Offset: 110, NameHash: 969307550, Flags: 49325), LayoutImmutable, Blittable]
 		public bool DepthTest { get { return m_DepthTest; } set { if (OnPropertyChanging("DebugTextEntityData." + nameof(DepthTest), this, m_DepthTest, value)) m_DepthTest = value; } } // 0x6E (110)
 		
 		protected bool m_ScaleWithDistance = new bool();
-		[ContainerField(111), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(646053404)]
+		[ContainerField(Name: "ScaleWithDistance", Offset: 111, NameHash: 646053404, Flags: 49325), LayoutImmutable, Blittable]
 		public bool ScaleWithDistance { get { return m_ScaleWithDistance; } set { if (OnPropertyChanging("DebugTextEntityData." + nameof(ScaleWithDistance), this, m_ScaleWithDistance, value)) m_ScaleWithDistance = value; } } // 0x6F (111)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

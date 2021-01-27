@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(24), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 24)]
 	public class MotionControllerInputActionData : 
 		AxesInputActionData
 	{
 		protected InputDeviceMotionControllerButtons m_Button = new InputDeviceMotionControllerButtons();
-		[ContainerField(20), MemberInfoFlag(137), ContainerFieldNameHash(2686182099)]
+		[ContainerField(Name: "Button", Offset: 20, NameHash: 2686182099, Flags: 137)]
 		public InputDeviceMotionControllerButtons Button { get { return m_Button; } set { if (OnPropertyChanging("MotionControllerInputActionData." + nameof(Button), this, m_Button, value)) m_Button = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

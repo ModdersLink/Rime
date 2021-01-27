@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(144), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 144)]
 	public class SoldierParachuteComponentData : 
 		ComponentData
 	{
 		protected SoldierParachuteBinding m_Binding = new SoldierParachuteBinding();
-		[ContainerField(96), MemberInfoFlag(41), ContainerFieldNameHash(2590060228)]
+		[ContainerField(Name: "Binding", Offset: 96, NameHash: 2590060228, Flags: 41)]
 		public SoldierParachuteBinding Binding { get { return m_Binding; } set { if (OnPropertyChanging("SoldierParachuteComponentData." + nameof(Binding), this, m_Binding, value)) m_Binding = value; } } // 0x60 (96)
 		
 		protected AimingConstraintsData m_AimingConstraints = new AimingConstraintsData();
-		[ContainerField(116), MemberInfoFlag(41), ContainerFieldNameHash(1523178198)]
+		[ContainerField(Name: "AimingConstraints", Offset: 116, NameHash: 1523178198, Flags: 41)]
 		public AimingConstraintsData AimingConstraints { get { return m_AimingConstraints; } set { if (OnPropertyChanging("SoldierParachuteComponentData." + nameof(AimingConstraints), this, m_AimingConstraints, value)) m_AimingConstraints = value; } } // 0x74 (116)
 		
 		protected float m_UndeployTime = new float();
-		[ContainerField(132), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1689758176)]
+		[ContainerField(Name: "UndeployTime", Offset: 132, NameHash: 1689758176, Flags: 49469), LayoutImmutable, Blittable]
 		public float UndeployTime { get { return m_UndeployTime; } set { if (OnPropertyChanging("SoldierParachuteComponentData." + nameof(UndeployTime), this, m_UndeployTime, value)) m_UndeployTime = value; } } // 0x84 (132)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

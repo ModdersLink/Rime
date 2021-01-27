@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(16), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
 	public class MinMaxValueSelectorEntry : 
 		AudioGraphNodePortGroup
 	{
 		protected AudioGraphNodePort m_Input = new AudioGraphNodePort();
-		[ContainerField(8), MemberInfoFlag(41), ContainerFieldNameHash(214522259)]
+		[ContainerField(Name: "Input", Offset: 8, NameHash: 214522259, Flags: 41)]
 		public AudioGraphNodePort Input { get { return m_Input; } set { if (OnPropertyChanging("MinMaxValueSelectorEntry." + nameof(Input), this, m_Input, value)) m_Input = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

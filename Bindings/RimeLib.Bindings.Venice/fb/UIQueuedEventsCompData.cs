@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(36), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 36)]
 	public class UIQueuedEventsCompData : 
 		UIComponentData
 	{
 		protected float m_InitialQueueDelay = new float();
-		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3503517055)]
+		[ContainerField(Name: "InitialQueueDelay", Offset: 28, NameHash: 3503517055, Flags: 49469), LayoutImmutable, Blittable]
 		public float InitialQueueDelay { get { return m_InitialQueueDelay; } set { if (OnPropertyChanging("UIQueuedEventsCompData." + nameof(InitialQueueDelay), this, m_InitialQueueDelay, value)) m_InitialQueueDelay = value; } } // 0x1C (28)
 		
 		protected bool m_ShowUnlocksBecomingAvailable = new bool();
-		[ContainerField(32), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3270144506)]
+		[ContainerField(Name: "ShowUnlocksBecomingAvailable", Offset: 32, NameHash: 3270144506, Flags: 49325), LayoutImmutable, Blittable]
 		public bool ShowUnlocksBecomingAvailable { get { return m_ShowUnlocksBecomingAvailable; } set { if (OnPropertyChanging("UIQueuedEventsCompData." + nameof(ShowUnlocksBecomingAvailable), this, m_ShowUnlocksBecomingAvailable, value)) m_ShowUnlocksBecomingAvailable = value; } } // 0x20 (32)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

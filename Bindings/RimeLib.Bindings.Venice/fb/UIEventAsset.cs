@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(20), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 20)]
 	public class UIEventAsset : 
 		Asset
 	{
 		protected string m_Category = string.Empty;
-		[ContainerField(12), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(3455858997)]
+		[ContainerField(Name: "Category", Offset: 12, NameHash: 3455858997, Flags: 16509), LayoutImmutable]
 		public string Category { get { return m_Category; } set { if (OnPropertyChanging("UIEventAsset." + nameof(Category), this, m_Category, value)) m_Category = value; } } // 0xC (12)
 		
 		protected List<string> m_EventList = new List<string>();
-		[ContainerField(16), MemberInfoFlag(65), ContainerFieldNameHash(4132327979), ContainerArray]
+		[ContainerField(Name: "EventList", Offset: 16, NameHash: 4132327979, Flags: 65)]
 		public List<string> EventList { get { return m_EventList; } set { if (OnPropertyChanging("UIEventAsset." + nameof(EventList), this, m_EventList, value)) m_EventList = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

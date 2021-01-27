@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(48), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 48)]
 	public class RadiosityMaterial : 
 		DataContainer
 	{
 		protected Vec3 m_Color = new Vec3();
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(212387320)]
+		[ContainerField(Name: "Color", Offset: 16, NameHash: 212387320, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 Color { get { return m_Color; } set { if (OnPropertyChanging("RadiosityMaterial." + nameof(Color), this, m_Color, value)) m_Color = value; } } // 0x10 (16)
 		
 		protected string m_Name = string.Empty;
-		[ContainerField(32), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(2088949890)]
+		[ContainerField(Name: "Name", Offset: 32, NameHash: 2088949890, Flags: 16509), LayoutImmutable]
 		public string Name { get { return m_Name; } set { if (OnPropertyChanging("RadiosityMaterial." + nameof(Name), this, m_Name, value)) m_Name = value; } } // 0x20 (32)
 		
 		protected bool m_Emissive = new bool();
-		[ContainerField(36), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(782359646)]
+		[ContainerField(Name: "Emissive", Offset: 36, NameHash: 782359646, Flags: 49325), LayoutImmutable, Blittable]
 		public bool Emissive { get { return m_Emissive; } set { if (OnPropertyChanging("RadiosityMaterial." + nameof(Emissive), this, m_Emissive, value)) m_Emissive = value; } } // 0x24 (36)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

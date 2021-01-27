@@ -18,31 +18,31 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(32), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 32)]
 	public class HitReactionComponentBinding : FrostbiteContainer
 	{
-		[ContainerField(0), MemberInfoFlag(41)]
+		[ContainerField(Name: "Hit", Offset: 0, NameHash: 193458192, Flags: 41)]
 		public AntRef Hit { get; set; } = new AntRef(); // 0x0 (0)
 		
-		[ContainerField(4), MemberInfoFlag(41)]
+		[ContainerField(Name: "AllowKillFromAnimation", Offset: 4, NameHash: 3918793758, Flags: 41)]
 		public AntRef AllowKillFromAnimation { get; set; } = new AntRef(); // 0x4 (4)
 		
-		[ContainerField(8), MemberInfoFlag(41)]
+		[ContainerField(Name: "Direction", Offset: 8, NameHash: 2698949952, Flags: 41)]
 		public AntRef Direction { get; set; } = new AntRef(); // 0x8 (8)
 		
-		[ContainerField(12), MemberInfoFlag(41)]
+		[ContainerField(Name: "FiringDistance", Offset: 12, NameHash: 1253253819, Flags: 41)]
 		public AntRef FiringDistance { get; set; } = new AntRef(); // 0xC (12)
 		
-		[ContainerField(16), MemberInfoFlag(41)]
+		[ContainerField(Name: "BoneType", Offset: 16, NameHash: 1590859931, Flags: 41)]
 		public AntRef BoneType { get; set; } = new AntRef(); // 0x10 (16)
 		
-		[ContainerField(20), MemberInfoFlag(41)]
+		[ContainerField(Name: "ImpactType", Offset: 20, NameHash: 2853987935, Flags: 41)]
 		public AntRef ImpactType { get; set; } = new AntRef(); // 0x14 (20)
 		
-		[ContainerField(24), MemberInfoFlag(41)]
+		[ContainerField(Name: "Immortal", Offset: 24, NameHash: 922982664, Flags: 41)]
 		public AntRef Immortal { get; set; } = new AntRef(); // 0x18 (24)
 		
-		[ContainerField(28), MemberInfoFlag(41)]
+		[ContainerField(Name: "RandomAnimationIndex", Offset: 28, NameHash: 3646496566, Flags: 41)]
 		public AntRef RandomAnimationIndex { get; set; } = new AntRef(); // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

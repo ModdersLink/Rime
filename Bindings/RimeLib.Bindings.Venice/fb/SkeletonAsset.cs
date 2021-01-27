@@ -18,40 +18,40 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(44), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 44)]
 	public class SkeletonAsset : 
 		BaseSkeletonAsset
 	{
 		protected List<string> m_BoneNames = new List<string>();
-		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(951771351), ContainerArray]
+		[ContainerField(Name: "BoneNames", Offset: 12, NameHash: 951771351, Flags: 65)]
 		public List<string> BoneNames { get { return m_BoneNames; } set { if (OnPropertyChanging("SkeletonAsset." + nameof(BoneNames), this, m_BoneNames, value)) m_BoneNames = value; } } // 0xC (12)
 		
 		protected List<int> m_Hierarchy = new List<int>();
-		[ContainerField(16), MemberInfoFlag(65), ContainerFieldNameHash(2981249554), ContainerArray]
+		[ContainerField(Name: "Hierarchy", Offset: 16, NameHash: 2981249554, Flags: 65)]
 		public List<int> Hierarchy { get { return m_Hierarchy; } set { if (OnPropertyChanging("SkeletonAsset." + nameof(Hierarchy), this, m_Hierarchy, value)) m_Hierarchy = value; } } // 0x10 (16)
 		
 		protected List<LinearTransform> m_LocalPose = new List<LinearTransform>();
-		[ContainerField(20), MemberInfoFlag(65), ContainerFieldNameHash(773169313), ContainerArray]
+		[ContainerField(Name: "LocalPose", Offset: 20, NameHash: 773169313, Flags: 65)]
 		public List<LinearTransform> LocalPose { get { return m_LocalPose; } set { if (OnPropertyChanging("SkeletonAsset." + nameof(LocalPose), this, m_LocalPose, value)) m_LocalPose = value; } } // 0x14 (20)
 		
 		protected List<LinearTransform> m_ModelPose = new List<LinearTransform>();
-		[ContainerField(24), MemberInfoFlag(65), ContainerFieldNameHash(4243999587), ContainerArray]
+		[ContainerField(Name: "ModelPose", Offset: 24, NameHash: 4243999587, Flags: 65)]
 		public List<LinearTransform> ModelPose { get { return m_ModelPose; } set { if (OnPropertyChanging("SkeletonAsset." + nameof(ModelPose), this, m_ModelPose, value)) m_ModelPose = value; } } // 0x18 (24)
 		
 		protected string m_WeaponBoneName = string.Empty;
-		[ContainerField(28), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(4180015014)]
+		[ContainerField(Name: "WeaponBoneName", Offset: 28, NameHash: 4180015014, Flags: 16509), LayoutImmutable]
 		public string WeaponBoneName { get { return m_WeaponBoneName; } set { if (OnPropertyChanging("SkeletonAsset." + nameof(WeaponBoneName), this, m_WeaponBoneName, value)) m_WeaponBoneName = value; } } // 0x1C (28)
 		
 		protected string m_HeadBoneName = string.Empty;
-		[ContainerField(32), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(3359050476)]
+		[ContainerField(Name: "HeadBoneName", Offset: 32, NameHash: 3359050476, Flags: 16509), LayoutImmutable]
 		public string HeadBoneName { get { return m_HeadBoneName; } set { if (OnPropertyChanging("SkeletonAsset." + nameof(HeadBoneName), this, m_HeadBoneName, value)) m_HeadBoneName = value; } } // 0x20 (32)
 		
 		protected string m_HipBoneName = string.Empty;
-		[ContainerField(36), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(3967379317)]
+		[ContainerField(Name: "HipBoneName", Offset: 36, NameHash: 3967379317, Flags: 16509), LayoutImmutable]
 		public string HipBoneName { get { return m_HipBoneName; } set { if (OnPropertyChanging("SkeletonAsset." + nameof(HipBoneName), this, m_HipBoneName, value)) m_HipBoneName = value; } } // 0x24 (36)
 		
 		protected string m_CameraBoneName = string.Empty;
-		[ContainerField(40), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(771838749)]
+		[ContainerField(Name: "CameraBoneName", Offset: 40, NameHash: 771838749, Flags: 16509), LayoutImmutable]
 		public string CameraBoneName { get { return m_CameraBoneName; } set { if (OnPropertyChanging("SkeletonAsset." + nameof(CameraBoneName), this, m_CameraBoneName, value)) m_CameraBoneName = value; } } // 0x28 (40)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

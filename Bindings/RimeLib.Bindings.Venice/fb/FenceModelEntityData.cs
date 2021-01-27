@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(176), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 176)]
 	public class FenceModelEntityData : 
 		StaticModelEntityData
 	{
 		protected float m_Width = new float();
-		[ContainerField(160), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(226981187)]
+		[ContainerField(Name: "Width", Offset: 160, NameHash: 226981187, Flags: 49469), LayoutImmutable, Blittable]
 		public float Width { get { return m_Width; } set { if (OnPropertyChanging("FenceModelEntityData." + nameof(Width), this, m_Width, value)) m_Width = value; } } // 0xA0 (160)
 		
 		protected float m_Angle = new float();
-		[ContainerField(164), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(205597860)]
+		[ContainerField(Name: "Angle", Offset: 164, NameHash: 205597860, Flags: 49469), LayoutImmutable, Blittable]
 		public float Angle { get { return m_Angle; } set { if (OnPropertyChanging("FenceModelEntityData." + nameof(Angle), this, m_Angle, value)) m_Angle = value; } } // 0xA4 (164)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

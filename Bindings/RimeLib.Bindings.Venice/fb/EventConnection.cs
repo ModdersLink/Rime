@@ -18,22 +18,22 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(20), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 20)]
 	public class EventConnection : FrostbiteContainer
 	{
-		[ContainerField(0), MemberInfoFlag(53), ContainerCtrRef]
+		[ContainerField(Name: "Source", Offset: 0, NameHash: 3339738264, Flags: 53)]
 		public CtrRef<DataContainer> Source { get; set; } = new CtrRef<DataContainer>(); // 0x0 (0)
 		
-		[ContainerField(4), MemberInfoFlag(53), ContainerCtrRef]
+		[ContainerField(Name: "Target", Offset: 4, NameHash: 3215022804, Flags: 53)]
 		public CtrRef<DataContainer> Target { get; set; } = new CtrRef<DataContainer>(); // 0x4 (4)
 		
-		[ContainerField(8), MemberInfoFlag(41)]
+		[ContainerField(Name: "SourceEvent", Offset: 8, NameHash: 3000664532, Flags: 41)]
 		public EventSpec SourceEvent { get; set; } = new EventSpec(); // 0x8 (8)
 		
-		[ContainerField(12), MemberInfoFlag(41)]
+		[ContainerField(Name: "TargetEvent", Offset: 12, NameHash: 2254399000, Flags: 41)]
 		public EventSpec TargetEvent { get; set; } = new EventSpec(); // 0xC (12)
 		
-		[ContainerField(16), MemberInfoFlag(137)]
+		[ContainerField(Name: "TargetType", Offset: 16, NameHash: 328114796, Flags: 137)]
 		public EventConnectionTargetType TargetType { get; set; } = new EventConnectionTargetType(); // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

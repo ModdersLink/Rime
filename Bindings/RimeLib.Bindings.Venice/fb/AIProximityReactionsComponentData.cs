@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(176), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 176)]
 	public class AIProximityReactionsComponentData : 
 		ComponentData
 	{
 		protected AIProximityReactionsBinding m_Binding = new AIProximityReactionsBinding();
-		[ContainerField(96), MemberInfoFlag(41), ContainerFieldNameHash(2590060228)]
+		[ContainerField(Name: "Binding", Offset: 96, NameHash: 2590060228, Flags: 41)]
 		public AIProximityReactionsBinding Binding { get { return m_Binding; } set { if (OnPropertyChanging("AIProximityReactionsComponentData." + nameof(Binding), this, m_Binding, value)) m_Binding = value; } } // 0x60 (96)
 		
 		protected float m_MinExplosionImpulseForce = new float();
-		[ContainerField(152), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1140171772)]
+		[ContainerField(Name: "MinExplosionImpulseForce", Offset: 152, NameHash: 1140171772, Flags: 49469), LayoutImmutable, Blittable]
 		public float MinExplosionImpulseForce { get { return m_MinExplosionImpulseForce; } set { if (OnPropertyChanging("AIProximityReactionsComponentData." + nameof(MinExplosionImpulseForce), this, m_MinExplosionImpulseForce, value)) m_MinExplosionImpulseForce = value; } } // 0x98 (152)
 		
 		protected float m_MaxExplosionLookDistance = new float();
-		[ContainerField(156), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(322238752)]
+		[ContainerField(Name: "MaxExplosionLookDistance", Offset: 156, NameHash: 322238752, Flags: 49469), LayoutImmutable, Blittable]
 		public float MaxExplosionLookDistance { get { return m_MaxExplosionLookDistance; } set { if (OnPropertyChanging("AIProximityReactionsComponentData." + nameof(MaxExplosionLookDistance), this, m_MaxExplosionLookDistance, value)) m_MaxExplosionLookDistance = value; } } // 0x9C (156)
 		
 		protected float m_FireReactionDistance = new float();
-		[ContainerField(160), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2123733591)]
+		[ContainerField(Name: "FireReactionDistance", Offset: 160, NameHash: 2123733591, Flags: 49469), LayoutImmutable, Blittable]
 		public float FireReactionDistance { get { return m_FireReactionDistance; } set { if (OnPropertyChanging("AIProximityReactionsComponentData." + nameof(FireReactionDistance), this, m_FireReactionDistance, value)) m_FireReactionDistance = value; } } // 0xA0 (160)
 		
 		protected bool m_Enabled = new bool();
-		[ContainerField(164), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2662400)]
+		[ContainerField(Name: "Enabled", Offset: 164, NameHash: 2662400, Flags: 49325), LayoutImmutable, Blittable]
 		public bool Enabled { get { return m_Enabled; } set { if (OnPropertyChanging("AIProximityReactionsComponentData." + nameof(Enabled), this, m_Enabled, value)) m_Enabled = value; } } // 0xA4 (164)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

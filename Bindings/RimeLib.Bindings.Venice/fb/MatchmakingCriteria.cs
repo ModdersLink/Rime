@@ -18,25 +18,25 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(32), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 32)]
 	public class MatchmakingCriteria : FrostbiteContainer
 	{
-		[ContainerField(0), MemberInfoFlag(41)]
+		[ContainerField(Name: "SizeRule", Offset: 0, NameHash: 2544174702, Flags: 41)]
 		public MatchmakingSizeRule SizeRule { get; set; } = new MatchmakingSizeRule(); // 0x0 (0)
 		
-		[ContainerField(8), MemberInfoFlag(41)]
+		[ContainerField(Name: "PingSiteRule", Offset: 8, NameHash: 2506878288, Flags: 41)]
 		public MatchmakingPingSiteRule PingSiteRule { get; set; } = new MatchmakingPingSiteRule(); // 0x8 (8)
 		
-		[ContainerField(12), MemberInfoFlag(41)]
+		[ContainerField(Name: "RankedRule", Offset: 12, NameHash: 3471512572, Flags: 41)]
 		public MatchmakingRankedRule RankedRule { get; set; } = new MatchmakingRankedRule(); // 0xC (12)
 		
-		[ContainerField(16), MemberInfoFlag(65), ContainerArray]
+		[ContainerField(Name: "GenericRules", Offset: 16, NameHash: 2031266057, Flags: 65)]
 		public List<MatchmakingGenericRule> GenericRules { get; set; } = new List<MatchmakingGenericRule>(); // 0x10 (16)
 		
-		[ContainerField(20), MemberInfoFlag(41)]
+		[ContainerField(Name: "VirtualizedRule", Offset: 20, NameHash: 2775847128, Flags: 41)]
 		public MatchmakingVirtualizedRule VirtualizedRule { get; set; } = new MatchmakingVirtualizedRule(); // 0x14 (20)
 		
-		[ContainerField(28), MemberInfoFlag(65), ContainerArray]
+		[ContainerField(Name: "UEDRules", Offset: 28, NameHash: 1513224812, Flags: 65)]
 		public List<MatchmakingUserExtendedDataRule> UEDRules { get; set; } = new List<MatchmakingUserExtendedDataRule>(); // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

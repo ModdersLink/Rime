@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(128), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 128)]
 	public class WingComponentData : 
 		PartComponentData
 	{
 		protected CtrRef<WingPhysicsData> m_Config = new CtrRef<WingPhysicsData>();
-		[ContainerField(112), MemberInfoFlag(53), ContainerFieldNameHash(2713732399), ContainerCtrRef]
+		[ContainerField(Name: "Config", Offset: 112, NameHash: 2713732399, Flags: 53)]
 		public CtrRef<WingPhysicsData> Config { get { return m_Config; } set { if (OnPropertyChanging("WingComponentData." + nameof(Config), this, m_Config, value)) m_Config = value; } } // 0x70 (112)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(80), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 80)]
 	public class AdvancedDogTagData : 
 		DogTagData
 	{
 		protected string m_StatCode = string.Empty;
-		[ContainerField(68), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(3117339322)]
+		[ContainerField(Name: "StatCode", Offset: 68, NameHash: 3117339322, Flags: 16509), LayoutImmutable]
 		public string StatCode { get { return m_StatCode; } set { if (OnPropertyChanging("AdvancedDogTagData." + nameof(StatCode), this, m_StatCode, value)) m_StatCode = value; } } // 0x44 (68)
 		
 		protected string m_StatSID = string.Empty;
-		[ContainerField(72), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(2176854761)]
+		[ContainerField(Name: "StatSID", Offset: 72, NameHash: 2176854761, Flags: 16509), LayoutImmutable]
 		public string StatSID { get { return m_StatSID; } set { if (OnPropertyChanging("AdvancedDogTagData." + nameof(StatSID), this, m_StatSID, value)) m_StatSID = value; } } // 0x48 (72)
 		
 		protected bool m_IsStatMeasuredInTime = new bool();
-		[ContainerField(76), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3369514563)]
+		[ContainerField(Name: "IsStatMeasuredInTime", Offset: 76, NameHash: 3369514563, Flags: 49325), LayoutImmutable, Blittable]
 		public bool IsStatMeasuredInTime { get { return m_IsStatMeasuredInTime; } set { if (OnPropertyChanging("AdvancedDogTagData." + nameof(IsStatMeasuredInTime), this, m_IsStatMeasuredInTime, value)) m_IsStatMeasuredInTime = value; } } // 0x4C (76)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

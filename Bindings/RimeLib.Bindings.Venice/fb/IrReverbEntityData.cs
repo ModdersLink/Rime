@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(28), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 28)]
 	public class IrReverbEntityData : 
 		EntityData
 	{
 		protected CtrRef<ImpulseResponseAsset> m_ImpulseResponse = new CtrRef<ImpulseResponseAsset>();
-		[ContainerField(12), MemberInfoFlag(53), ContainerFieldNameHash(182557405), ContainerCtrRef]
+		[ContainerField(Name: "ImpulseResponse", Offset: 12, NameHash: 182557405, Flags: 53)]
 		public CtrRef<ImpulseResponseAsset> ImpulseResponse { get { return m_ImpulseResponse; } set { if (OnPropertyChanging("IrReverbEntityData." + nameof(ImpulseResponse), this, m_ImpulseResponse, value)) m_ImpulseResponse = value; } } // 0xC (12)
 		
 		protected float m_Gain = new float();
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2088703076)]
+		[ContainerField(Name: "Gain", Offset: 16, NameHash: 2088703076, Flags: 49469), LayoutImmutable, Blittable]
 		public float Gain { get { return m_Gain; } set { if (OnPropertyChanging("IrReverbEntityData." + nameof(Gain), this, m_Gain, value)) m_Gain = value; } } // 0x10 (16)
 		
 		protected float m_Volume = new float();
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3158011725)]
+		[ContainerField(Name: "Volume", Offset: 20, NameHash: 3158011725, Flags: 49469), LayoutImmutable, Blittable]
 		public float Volume { get { return m_Volume; } set { if (OnPropertyChanging("IrReverbEntityData." + nameof(Volume), this, m_Volume, value)) m_Volume = value; } } // 0x14 (20)
 		
 		protected FadeCurveType m_FadeCurve = new FadeCurveType();
-		[ContainerField(24), MemberInfoFlag(137), ContainerFieldNameHash(3162123636)]
+		[ContainerField(Name: "FadeCurve", Offset: 24, NameHash: 3162123636, Flags: 137)]
 		public FadeCurveType FadeCurve { get { return m_FadeCurve; } set { if (OnPropertyChanging("IrReverbEntityData." + nameof(FadeCurve), this, m_FadeCurve, value)) m_FadeCurve = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

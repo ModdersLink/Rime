@@ -18,36 +18,36 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(8), MemberInfoFlag(53), ContainerSize(56), ContainerClass]
+	[ContainerType(Alignment: 8,  Flags: 53, Size: 56)]
 	public class PerformanceProfileState : 
 		MetricState
 	{
 		protected uint m_ProcessorCount = new uint();
-		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(391539216)]
+		[ContainerField(Name: "ProcessorCount", Offset: 24, NameHash: 391539216, Flags: 49421), LayoutImmutable, Blittable]
 		public uint ProcessorCount { get { return m_ProcessorCount; } set { if (OnPropertyChanging("PerformanceProfileState." + nameof(ProcessorCount), this, m_ProcessorCount, value)) m_ProcessorCount = value; } } // 0x18 (24)
 		
 		protected uint m_ProcessorCoreCount = new uint();
-		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(2243702507)]
+		[ContainerField(Name: "ProcessorCoreCount", Offset: 28, NameHash: 2243702507, Flags: 49421), LayoutImmutable, Blittable]
 		public uint ProcessorCoreCount { get { return m_ProcessorCoreCount; } set { if (OnPropertyChanging("PerformanceProfileState." + nameof(ProcessorCoreCount), this, m_ProcessorCoreCount, value)) m_ProcessorCoreCount = value; } } // 0x1C (28)
 		
 		protected uint m_ProcessorClock = new uint();
-		[ContainerField(32), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(391374875)]
+		[ContainerField(Name: "ProcessorClock", Offset: 32, NameHash: 391374875, Flags: 49421), LayoutImmutable, Blittable]
 		public uint ProcessorClock { get { return m_ProcessorClock; } set { if (OnPropertyChanging("PerformanceProfileState." + nameof(ProcessorClock), this, m_ProcessorClock, value)) m_ProcessorClock = value; } } // 0x20 (32)
 		
 		protected uint m_TotalMemMB = new uint();
-		[ContainerField(36), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(4037894605)]
+		[ContainerField(Name: "TotalMemMB", Offset: 36, NameHash: 4037894605, Flags: 49421), LayoutImmutable, Blittable]
 		public uint TotalMemMB { get { return m_TotalMemMB; } set { if (OnPropertyChanging("PerformanceProfileState." + nameof(TotalMemMB), this, m_TotalMemMB, value)) m_TotalMemMB = value; } } // 0x24 (36)
 		
 		protected uint m_GpuMemMB = new uint();
-		[ContainerField(40), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(4164397837)]
+		[ContainerField(Name: "GpuMemMB", Offset: 40, NameHash: 4164397837, Flags: 49421), LayoutImmutable, Blittable]
 		public uint GpuMemMB { get { return m_GpuMemMB; } set { if (OnPropertyChanging("PerformanceProfileState." + nameof(GpuMemMB), this, m_GpuMemMB, value)) m_GpuMemMB = value; } } // 0x28 (40)
 		
 		protected string m_GraphicAdapterName = string.Empty;
-		[ContainerField(44), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(631166483)]
+		[ContainerField(Name: "GraphicAdapterName", Offset: 44, NameHash: 631166483, Flags: 16509), LayoutImmutable]
 		public string GraphicAdapterName { get { return m_GraphicAdapterName; } set { if (OnPropertyChanging("PerformanceProfileState." + nameof(GraphicAdapterName), this, m_GraphicAdapterName, value)) m_GraphicAdapterName = value; } } // 0x2C (44)
 		
 		protected string m_Platform = string.Empty;
-		[ContainerField(48), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(942751002)]
+		[ContainerField(Name: "Platform", Offset: 48, NameHash: 942751002, Flags: 16509), LayoutImmutable]
 		public string Platform { get { return m_Platform; } set { if (OnPropertyChanging("PerformanceProfileState." + nameof(Platform), this, m_Platform, value)) m_Platform = value; } } // 0x30 (48)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

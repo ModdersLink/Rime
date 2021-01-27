@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(32), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 32)]
 	public class InstanceNode : 
 		UINodeData
 	{
 		protected CtrRef<UIGraphAsset> m_UIGraph = new CtrRef<UIGraphAsset>();
-		[ContainerField(20), MemberInfoFlag(53), ContainerFieldNameHash(209526997), ContainerCtrRef]
+		[ContainerField(Name: "UIGraph", Offset: 20, NameHash: 209526997, Flags: 53)]
 		public CtrRef<UIGraphAsset> UIGraph { get { return m_UIGraph; } set { if (OnPropertyChanging("InstanceNode." + nameof(UIGraph), this, m_UIGraph, value)) m_UIGraph = value; } } // 0x14 (20)
 		
 		protected RefArray<UINodePort> m_Inputs = new RefArray<UINodePort>();
-		[ContainerField(24), MemberInfoFlag(65), ContainerFieldNameHash(2784267136), ContainerRefArray]
+		[ContainerField(Name: "Inputs", Offset: 24, NameHash: 2784267136, Flags: 65)]
 		public RefArray<UINodePort> Inputs { get { return m_Inputs; } set { if (OnPropertyChanging("InstanceNode." + nameof(Inputs), this, m_Inputs, value)) m_Inputs = value; } } // 0x18 (24)
 		
 		protected RefArray<UINodePort> m_Outputs = new RefArray<UINodePort>();
-		[ContainerField(28), MemberInfoFlag(65), ContainerFieldNameHash(1070022089), ContainerRefArray]
+		[ContainerField(Name: "Outputs", Offset: 28, NameHash: 1070022089, Flags: 65)]
 		public RefArray<UINodePort> Outputs { get { return m_Outputs; } set { if (OnPropertyChanging("InstanceNode." + nameof(Outputs), this, m_Outputs, value)) m_Outputs = value; } } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

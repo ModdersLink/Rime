@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(112), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 112)]
 	public class DestroyLevelCommandEntityData : 
 		GameEntityData
 	{
 		protected uint m_InstanceCountDestroyedPerFrame = new uint();
-		[ContainerField(96), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(961630582)]
+		[ContainerField(Name: "InstanceCountDestroyedPerFrame", Offset: 96, NameHash: 961630582, Flags: 49421), LayoutImmutable, Blittable]
 		public uint InstanceCountDestroyedPerFrame { get { return m_InstanceCountDestroyedPerFrame; } set { if (OnPropertyChanging("DestroyLevelCommandEntityData." + nameof(InstanceCountDestroyedPerFrame), this, m_InstanceCountDestroyedPerFrame, value)) m_InstanceCountDestroyedPerFrame = value; } } // 0x60 (96)
 		
 		protected uint m_DestroyDelay = new uint();
-		[ContainerField(100), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(3844272786)]
+		[ContainerField(Name: "DestroyDelay", Offset: 100, NameHash: 3844272786, Flags: 49421), LayoutImmutable, Blittable]
 		public uint DestroyDelay { get { return m_DestroyDelay; } set { if (OnPropertyChanging("DestroyLevelCommandEntityData." + nameof(DestroyDelay), this, m_DestroyDelay, value)) m_DestroyDelay = value; } } // 0x64 (100)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

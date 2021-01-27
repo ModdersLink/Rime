@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(16), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
 	public class AnimationControlledStateData : 
 		CharacterStateData
 	{
 		protected float m_UpNormalTolerance = new float();
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(4245736634)]
+		[ContainerField(Name: "UpNormalTolerance", Offset: 12, NameHash: 4245736634, Flags: 49469), LayoutImmutable, Blittable]
 		public float UpNormalTolerance { get { return m_UpNormalTolerance; } set { if (OnPropertyChanging("AnimationControlledStateData." + nameof(UpNormalTolerance), this, m_UpNormalTolerance, value)) m_UpNormalTolerance = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

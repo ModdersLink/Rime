@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(20), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 20)]
 	public class VoiceOverProbabilityNode : 
 		VoiceOverExpressionNode
 	{
 		protected CtrRef<VoiceOverValue> m_False = new CtrRef<VoiceOverValue>();
-		[ContainerField(8), MemberInfoFlag(53), ContainerFieldNameHash(206401336), ContainerCtrRef]
+		[ContainerField(Name: "False", Offset: 8, NameHash: 206401336, Flags: 53)]
 		public CtrRef<VoiceOverValue> False { get { return m_False; } set { if (OnPropertyChanging("VoiceOverProbabilityNode." + nameof(False), this, m_False, value)) m_False = value; } } // 0x8 (8)
 		
 		protected CtrRef<VoiceOverValue> m_True = new CtrRef<VoiceOverValue>();
-		[ContainerField(12), MemberInfoFlag(53), ContainerFieldNameHash(2089293587), ContainerCtrRef]
+		[ContainerField(Name: "True", Offset: 12, NameHash: 2089293587, Flags: 53)]
 		public CtrRef<VoiceOverValue> True { get { return m_True; } set { if (OnPropertyChanging("VoiceOverProbabilityNode." + nameof(True), this, m_True, value)) m_True = value; } } // 0xC (12)
 		
 		protected float m_Probability = new float();
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(35957416)]
+		[ContainerField(Name: "Probability", Offset: 16, NameHash: 35957416, Flags: 49469), LayoutImmutable, Blittable]
 		public float Probability { get { return m_Probability; } set { if (OnPropertyChanging("VoiceOverProbabilityNode." + nameof(Probability), this, m_Probability, value)) m_Probability = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

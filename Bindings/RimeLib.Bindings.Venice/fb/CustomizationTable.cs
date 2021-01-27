@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(12), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 12)]
 	public class CustomizationTable : 
 		DataContainer
 	{
 		protected RefArray<CustomizationUnlockParts> m_UnlockParts = new RefArray<CustomizationUnlockParts>();
-		[ContainerField(8), MemberInfoFlag(65), ContainerFieldNameHash(4116003953), ContainerRefArray]
+		[ContainerField(Name: "UnlockParts", Offset: 8, NameHash: 4116003953, Flags: 65)]
 		public RefArray<CustomizationUnlockParts> UnlockParts { get { return m_UnlockParts; } set { if (OnPropertyChanging("CustomizationTable." + nameof(UnlockParts), this, m_UnlockParts, value)) m_UnlockParts = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

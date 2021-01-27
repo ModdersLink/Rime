@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(64), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 64)]
 	public class DataStepNode : 
 		UINodeData
 	{
 		protected CtrRef<UINodePort> m_In = new CtrRef<UINodePort>();
-		[ContainerField(20), MemberInfoFlag(53), ContainerFieldNameHash(5862146), ContainerCtrRef]
+		[ContainerField(Name: "In", Offset: 20, NameHash: 5862146, Flags: 53)]
 		public CtrRef<UINodePort> In { get { return m_In; } set { if (OnPropertyChanging("DataStepNode." + nameof(In), this, m_In, value)) m_In = value; } } // 0x14 (20)
 		
 		protected CtrRef<UINodePort> m_Out = new CtrRef<UINodePort>();
-		[ContainerField(24), MemberInfoFlag(53), ContainerFieldNameHash(193453899), ContainerCtrRef]
+		[ContainerField(Name: "Out", Offset: 24, NameHash: 193453899, Flags: 53)]
 		public CtrRef<UINodePort> Out { get { return m_Out; } set { if (OnPropertyChanging("DataStepNode." + nameof(Out), this, m_Out, value)) m_Out = value; } } // 0x18 (24)
 		
 		protected List<float> m_Steps = new List<float>();
-		[ContainerField(28), MemberInfoFlag(65), ContainerFieldNameHash(230752612), ContainerArray]
+		[ContainerField(Name: "Steps", Offset: 28, NameHash: 230752612, Flags: 65)]
 		public List<float> Steps { get { return m_Steps; } set { if (OnPropertyChanging("DataStepNode." + nameof(Steps), this, m_Steps, value)) m_Steps = value; } } // 0x1C (28)
 		
 		protected UIDataSourceInfo m_CurrentStepDataSource = new UIDataSourceInfo();
-		[ContainerField(32), MemberInfoFlag(41), ContainerFieldNameHash(3729599635)]
+		[ContainerField(Name: "CurrentStepDataSource", Offset: 32, NameHash: 3729599635, Flags: 41)]
 		public UIDataSourceInfo CurrentStepDataSource { get { return m_CurrentStepDataSource; } set { if (OnPropertyChanging("DataStepNode." + nameof(CurrentStepDataSource), this, m_CurrentStepDataSource, value)) m_CurrentStepDataSource = value; } } // 0x20 (32)
 		
 		protected UIDataSourceInfo m_DataSource = new UIDataSourceInfo();
-		[ContainerField(48), MemberInfoFlag(41), ContainerFieldNameHash(3810860200)]
+		[ContainerField(Name: "DataSource", Offset: 48, NameHash: 3810860200, Flags: 41)]
 		public UIDataSourceInfo DataSource { get { return m_DataSource; } set { if (OnPropertyChanging("DataStepNode." + nameof(DataSource), this, m_DataSource, value)) m_DataSource = value; } } // 0x30 (48)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(80), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 80)]
 	public class UpdateCameraProximityData : 
 		ProcessorData
 	{
 		protected Vec3 m_Size = new Vec3();
-		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(2089429248)]
+		[ContainerField(Name: "Size", Offset: 48, NameHash: 2089429248, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 Size { get { return m_Size; } set { if (OnPropertyChanging("UpdateCameraProximityData." + nameof(Size), this, m_Size, value)) m_Size = value; } } // 0x30 (48)
 		
 		protected float m_ForwardOffset = new float();
-		[ContainerField(64), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2564135379)]
+		[ContainerField(Name: "ForwardOffset", Offset: 64, NameHash: 2564135379, Flags: 49469), LayoutImmutable, Blittable]
 		public float ForwardOffset { get { return m_ForwardOffset; } set { if (OnPropertyChanging("UpdateCameraProximityData." + nameof(ForwardOffset), this, m_ForwardOffset, value)) m_ForwardOffset = value; } } // 0x40 (64)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

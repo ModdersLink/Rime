@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(24), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 24)]
 	public class SoundTestAsset : 
 		Asset
 	{
 		protected RefArray<SoundTestTaskSpec> m_TaskSpecs = new RefArray<SoundTestTaskSpec>();
-		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(2660376702), ContainerRefArray]
+		[ContainerField(Name: "TaskSpecs", Offset: 12, NameHash: 2660376702, Flags: 65)]
 		public RefArray<SoundTestTaskSpec> TaskSpecs { get { return m_TaskSpecs; } set { if (OnPropertyChanging("SoundTestAsset." + nameof(TaskSpecs), this, m_TaskSpecs, value)) m_TaskSpecs = value; } } // 0xC (12)
 		
 		protected RefArray<SoundTestSpec> m_TestSpecs = new RefArray<SoundTestSpec>();
-		[ContainerField(16), MemberInfoFlag(65), ContainerFieldNameHash(1413619717), ContainerRefArray]
+		[ContainerField(Name: "TestSpecs", Offset: 16, NameHash: 1413619717, Flags: 65)]
 		public RefArray<SoundTestSpec> TestSpecs { get { return m_TestSpecs; } set { if (OnPropertyChanging("SoundTestAsset." + nameof(TestSpecs), this, m_TestSpecs, value)) m_TestSpecs = value; } } // 0x10 (16)
 		
 		protected RefArray<SoundTestSuite> m_Suites = new RefArray<SoundTestSuite>();
-		[ContainerField(20), MemberInfoFlag(65), ContainerFieldNameHash(3318968904), ContainerRefArray]
+		[ContainerField(Name: "Suites", Offset: 20, NameHash: 3318968904, Flags: 65)]
 		public RefArray<SoundTestSuite> Suites { get { return m_Suites; } set { if (OnPropertyChanging("SoundTestAsset." + nameof(Suites), this, m_Suites, value)) m_Suites = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

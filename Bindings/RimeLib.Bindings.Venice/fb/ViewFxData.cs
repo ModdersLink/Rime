@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(112), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 112)]
 	public class ViewFxData : 
 		DataContainer
 	{
 		protected PoissonRadialBlurData m_PoissonRadialBlur = new PoissonRadialBlurData();
-		[ContainerField(8), MemberInfoFlag(41), ContainerFieldNameHash(838527112)]
+		[ContainerField(Name: "PoissonRadialBlur", Offset: 8, NameHash: 838527112, Flags: 41)]
 		public PoissonRadialBlurData PoissonRadialBlur { get { return m_PoissonRadialBlur; } set { if (OnPropertyChanging("ViewFxData." + nameof(PoissonRadialBlur), this, m_PoissonRadialBlur, value)) m_PoissonRadialBlur = value; } } // 0x8 (8)
 		
 		protected ColorTintData m_ColorTint = new ColorTintData();
-		[ContainerField(32), MemberInfoFlag(41), ContainerFieldNameHash(518108063)]
+		[ContainerField(Name: "ColorTint", Offset: 32, NameHash: 518108063, Flags: 41)]
 		public ColorTintData ColorTint { get { return m_ColorTint; } set { if (OnPropertyChanging("ViewFxData." + nameof(ColorTint), this, m_ColorTint, value)) m_ColorTint = value; } } // 0x20 (32)
 		
 		protected float m_BlurAdd = new float();
-		[ContainerField(96), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2736421901)]
+		[ContainerField(Name: "BlurAdd", Offset: 96, NameHash: 2736421901, Flags: 49469), LayoutImmutable, Blittable]
 		public float BlurAdd { get { return m_BlurAdd; } set { if (OnPropertyChanging("ViewFxData." + nameof(BlurAdd), this, m_BlurAdd, value)) m_BlurAdd = value; } } // 0x60 (96)
 		
 		protected bool m_ColorTintEnable = new bool();
-		[ContainerField(100), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(596952702)]
+		[ContainerField(Name: "ColorTintEnable", Offset: 100, NameHash: 596952702, Flags: 49325), LayoutImmutable, Blittable]
 		public bool ColorTintEnable { get { return m_ColorTintEnable; } set { if (OnPropertyChanging("ViewFxData." + nameof(ColorTintEnable), this, m_ColorTintEnable, value)) m_ColorTintEnable = value; } } // 0x64 (100)
 		
 		protected bool m_PoissonRadialBlurEnable = new bool();
-		[ContainerField(101), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2327396521)]
+		[ContainerField(Name: "PoissonRadialBlurEnable", Offset: 101, NameHash: 2327396521, Flags: 49325), LayoutImmutable, Blittable]
 		public bool PoissonRadialBlurEnable { get { return m_PoissonRadialBlurEnable; } set { if (OnPropertyChanging("ViewFxData." + nameof(PoissonRadialBlurEnable), this, m_PoissonRadialBlurEnable, value)) m_PoissonRadialBlurEnable = value; } } // 0x65 (101)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

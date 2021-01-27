@@ -18,32 +18,32 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(144), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 144)]
 	public class BangerEntityData : 
 		DynamicGamePhysicsEntityData
 	{
 		protected List<float> m_Scales = new List<float>();
-		[ContainerField(112), MemberInfoFlag(65), ContainerFieldNameHash(3335406670), ContainerArray]
+		[ContainerField(Name: "Scales", Offset: 112, NameHash: 3335406670, Flags: 65)]
 		public List<float> Scales { get { return m_Scales; } set { if (OnPropertyChanging("BangerEntityData." + nameof(Scales), this, m_Scales, value)) m_Scales = value; } } // 0x70 (112)
 		
 		protected CtrRef<MeshAsset> m_Mesh = new CtrRef<MeshAsset>();
-		[ContainerField(116), MemberInfoFlag(53), ContainerFieldNameHash(2088783990), ContainerCtrRef]
+		[ContainerField(Name: "Mesh", Offset: 116, NameHash: 2088783990, Flags: 53)]
 		public CtrRef<MeshAsset> Mesh { get { return m_Mesh; } set { if (OnPropertyChanging("BangerEntityData." + nameof(Mesh), this, m_Mesh, value)) m_Mesh = value; } } // 0x74 (116)
 		
 		protected CtrRef<ExplosionEntityData> m_Explosion = new CtrRef<ExplosionEntityData>();
-		[ContainerField(120), MemberInfoFlag(53), ContainerFieldNameHash(2222171184), ContainerCtrRef]
+		[ContainerField(Name: "Explosion", Offset: 120, NameHash: 2222171184, Flags: 53)]
 		public CtrRef<ExplosionEntityData> Explosion { get { return m_Explosion; } set { if (OnPropertyChanging("BangerEntityData." + nameof(Explosion), this, m_Explosion, value)) m_Explosion = value; } } // 0x78 (120)
 		
 		protected float m_TimeToLive = new float();
-		[ContainerField(124), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1571456733)]
+		[ContainerField(Name: "TimeToLive", Offset: 124, NameHash: 1571456733, Flags: 49469), LayoutImmutable, Blittable]
 		public float TimeToLive { get { return m_TimeToLive; } set { if (OnPropertyChanging("BangerEntityData." + nameof(TimeToLive), this, m_TimeToLive, value)) m_TimeToLive = value; } } // 0x7C (124)
 		
 		protected uint m_DestructiblePartCount = new uint();
-		[ContainerField(128), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(539039685)]
+		[ContainerField(Name: "DestructiblePartCount", Offset: 128, NameHash: 539039685, Flags: 49421), LayoutImmutable, Blittable]
 		public uint DestructiblePartCount { get { return m_DestructiblePartCount; } set { if (OnPropertyChanging("BangerEntityData." + nameof(DestructiblePartCount), this, m_DestructiblePartCount, value)) m_DestructiblePartCount = value; } } // 0x80 (128)
 		
 		protected bool m_UseVariableNetworkFrequency = new bool();
-		[ContainerField(132), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1010950522)]
+		[ContainerField(Name: "UseVariableNetworkFrequency", Offset: 132, NameHash: 1010950522, Flags: 49325), LayoutImmutable, Blittable]
 		public bool UseVariableNetworkFrequency { get { return m_UseVariableNetworkFrequency; } set { if (OnPropertyChanging("BangerEntityData." + nameof(UseVariableNetworkFrequency), this, m_UseVariableNetworkFrequency, value)) m_UseVariableNetworkFrequency = value; } } // 0x84 (132)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

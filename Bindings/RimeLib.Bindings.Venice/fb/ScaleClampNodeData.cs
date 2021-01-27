@@ -18,32 +18,32 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(56), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 56)]
 	public class ScaleClampNodeData : 
 		AudioGraphNodeData
 	{
 		protected AudioGraphNodePort m_In = new AudioGraphNodePort();
-		[ContainerField(8), MemberInfoFlag(41), ContainerFieldNameHash(5862146)]
+		[ContainerField(Name: "In", Offset: 8, NameHash: 5862146, Flags: 41)]
 		public AudioGraphNodePort In { get { return m_In; } set { if (OnPropertyChanging("ScaleClampNodeData." + nameof(In), this, m_In, value)) m_In = value; } } // 0x8 (8)
 		
 		protected AudioGraphNodePort m_InMin = new AudioGraphNodePort();
-		[ContainerField(16), MemberInfoFlag(41), ContainerFieldNameHash(214484264)]
+		[ContainerField(Name: "InMin", Offset: 16, NameHash: 214484264, Flags: 41)]
 		public AudioGraphNodePort InMin { get { return m_InMin; } set { if (OnPropertyChanging("ScaleClampNodeData." + nameof(InMin), this, m_InMin, value)) m_InMin = value; } } // 0x10 (16)
 		
 		protected AudioGraphNodePort m_InMax = new AudioGraphNodePort();
-		[ContainerField(24), MemberInfoFlag(41), ContainerFieldNameHash(214484534)]
+		[ContainerField(Name: "InMax", Offset: 24, NameHash: 214484534, Flags: 41)]
 		public AudioGraphNodePort InMax { get { return m_InMax; } set { if (OnPropertyChanging("ScaleClampNodeData." + nameof(InMax), this, m_InMax, value)) m_InMax = value; } } // 0x18 (24)
 		
 		protected AudioGraphNodePort m_OutMin = new AudioGraphNodePort();
-		[ContainerField(32), MemberInfoFlag(41), ContainerFieldNameHash(2895749057)]
+		[ContainerField(Name: "OutMin", Offset: 32, NameHash: 2895749057, Flags: 41)]
 		public AudioGraphNodePort OutMin { get { return m_OutMin; } set { if (OnPropertyChanging("ScaleClampNodeData." + nameof(OutMin), this, m_OutMin, value)) m_OutMin = value; } } // 0x20 (32)
 		
 		protected AudioGraphNodePort m_OutMax = new AudioGraphNodePort();
-		[ContainerField(40), MemberInfoFlag(41), ContainerFieldNameHash(2895748831)]
+		[ContainerField(Name: "OutMax", Offset: 40, NameHash: 2895748831, Flags: 41)]
 		public AudioGraphNodePort OutMax { get { return m_OutMax; } set { if (OnPropertyChanging("ScaleClampNodeData." + nameof(OutMax), this, m_OutMax, value)) m_OutMax = value; } } // 0x28 (40)
 		
 		protected AudioGraphNodePort m_Out = new AudioGraphNodePort();
-		[ContainerField(48), MemberInfoFlag(41), ContainerFieldNameHash(193453899)]
+		[ContainerField(Name: "Out", Offset: 48, NameHash: 193453899, Flags: 41)]
 		public AudioGraphNodePort Out { get { return m_Out; } set { if (OnPropertyChanging("ScaleClampNodeData." + nameof(Out), this, m_Out, value)) m_Out = value; } } // 0x30 (48)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

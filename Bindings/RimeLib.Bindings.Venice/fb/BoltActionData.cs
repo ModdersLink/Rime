@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(16), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 16)]
 	public class BoltActionData : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "BoltActionDelay", Offset: 0, NameHash: 322896091, Flags: 49469), LayoutImmutable, Blittable]
 		public float BoltActionDelay { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "BoltActionTime", Offset: 4, NameHash: 1832454555, Flags: 49469), LayoutImmutable, Blittable]
 		public float BoltActionTime { get; set; } // 0x4 (4)
 		
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "HoldBoltActionUntilFireRelease", Offset: 8, NameHash: 832817818, Flags: 49325), LayoutImmutable, Blittable]
 		public bool HoldBoltActionUntilFireRelease { get; set; } // 0x8 (8)
 		
-		[ContainerField(9), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "HoldBoltActionUntilZoomRelease", Offset: 9, NameHash: 3133940949, Flags: 49325), LayoutImmutable, Blittable]
 		public bool HoldBoltActionUntilZoomRelease { get; set; } // 0x9 (9)
 		
-		[ContainerField(10), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "ForceBoltActionOnFireTrigger", Offset: 10, NameHash: 1053477586, Flags: 49325), LayoutImmutable, Blittable]
 		public bool ForceBoltActionOnFireTrigger { get; set; } // 0xA (10)
 		
-		[ContainerField(11), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "UnZoomOnBoltAction", Offset: 11, NameHash: 1438634691, Flags: 49325), LayoutImmutable, Blittable]
 		public bool UnZoomOnBoltAction { get; set; } // 0xB (11)
 		
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "ReturnToZoomAfterBoltAction", Offset: 12, NameHash: 3074155596, Flags: 49325), LayoutImmutable, Blittable]
 		public bool ReturnToZoomAfterBoltAction { get; set; } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

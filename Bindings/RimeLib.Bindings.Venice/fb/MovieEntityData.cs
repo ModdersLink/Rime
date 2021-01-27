@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(112), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 112)]
 	public class MovieEntityData : 
 		GameEntityData
 	{
 		protected CtrRef<MovieTextureAsset> m_Movie = new CtrRef<MovieTextureAsset>();
-		[ContainerField(96), MemberInfoFlag(53), ContainerFieldNameHash(210030653), ContainerCtrRef]
+		[ContainerField(Name: "Movie", Offset: 96, NameHash: 210030653, Flags: 53)]
 		public CtrRef<MovieTextureAsset> Movie { get { return m_Movie; } set { if (OnPropertyChanging("MovieEntityData." + nameof(Movie), this, m_Movie, value)) m_Movie = value; } } // 0x60 (96)
 		
 		protected float m_ExternalTime = new float();
-		[ContainerField(100), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2162678253)]
+		[ContainerField(Name: "ExternalTime", Offset: 100, NameHash: 2162678253, Flags: 49469), LayoutImmutable, Blittable]
 		public float ExternalTime { get { return m_ExternalTime; } set { if (OnPropertyChanging("MovieEntityData." + nameof(ExternalTime), this, m_ExternalTime, value)) m_ExternalTime = value; } } // 0x64 (100)
 		
 		protected bool m_IsNormalMap = new bool();
-		[ContainerField(104), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(797341680)]
+		[ContainerField(Name: "IsNormalMap", Offset: 104, NameHash: 797341680, Flags: 49325), LayoutImmutable, Blittable]
 		public bool IsNormalMap { get { return m_IsNormalMap; } set { if (OnPropertyChanging("MovieEntityData." + nameof(IsNormalMap), this, m_IsNormalMap, value)) m_IsNormalMap = value; } } // 0x68 (104)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

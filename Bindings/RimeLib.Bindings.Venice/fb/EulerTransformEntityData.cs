@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(48), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 48)]
 	public class EulerTransformEntityData : 
 		EntityData
 	{
 		protected Vec3 m_In1 = new Vec3();
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(193450867)]
+		[ContainerField(Name: "In1", Offset: 16, NameHash: 193450867, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 In1 { get { return m_In1; } set { if (OnPropertyChanging("EulerTransformEntityData." + nameof(In1), this, m_In1, value)) m_In1 = value; } } // 0x10 (16)
 		
 		protected Realm m_Realm = new Realm();
-		[ContainerField(32), MemberInfoFlag(137), ContainerFieldNameHash(229961746)]
+		[ContainerField(Name: "Realm", Offset: 32, NameHash: 229961746, Flags: 137)]
 		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("EulerTransformEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0x20 (32)
 		
 		protected float m_In = new float();
-		[ContainerField(36), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(5862146)]
+		[ContainerField(Name: "In", Offset: 36, NameHash: 5862146, Flags: 49469), LayoutImmutable, Blittable]
 		public float In { get { return m_In; } set { if (OnPropertyChanging("EulerTransformEntityData." + nameof(In), this, m_In, value)) m_In = value; } } // 0x24 (36)
 		
 		protected ModifierEuler m_Euler = new ModifierEuler();
-		[ContainerField(40), MemberInfoFlag(137), ContainerFieldNameHash(201462510)]
+		[ContainerField(Name: "Euler", Offset: 40, NameHash: 201462510, Flags: 137)]
 		public ModifierEuler Euler { get { return m_Euler; } set { if (OnPropertyChanging("EulerTransformEntityData." + nameof(Euler), this, m_Euler, value)) m_Euler = value; } } // 0x28 (40)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

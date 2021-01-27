@@ -18,55 +18,55 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(41), ContainerSize(192), ContainerStruct]
+	[ContainerType(Alignment: 16,  Flags: 41, Size: 192)]
 	public class EnlightenDbSystem : FrostbiteContainer
 	{
-		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
+		[ContainerField(Name: "BoundingBox", Offset: 0, NameHash: 2648132290, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public AxisAlignedBox BoundingBox { get; set; } = new AxisAlignedBox(); // 0x0 (0)
 		
-		[ContainerField(32), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
+		[ContainerField(Name: "AtlasStartX", Offset: 32, NameHash: 2929172246, Flags: 49421), LayoutImmutable, Blittable]
 		public uint AtlasStartX { get; set; } // 0x20 (32)
 		
-		[ContainerField(36), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
+		[ContainerField(Name: "AtlasStartY", Offset: 36, NameHash: 2929172247, Flags: 49421), LayoutImmutable, Blittable]
 		public uint AtlasStartY { get; set; } // 0x24 (36)
 		
-		[ContainerField(40), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
+		[ContainerField(Name: "OutputWidth", Offset: 40, NameHash: 739018396, Flags: 49421), LayoutImmutable, Blittable]
 		public uint OutputWidth { get; set; } // 0x28 (40)
 		
-		[ContainerField(44), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
+		[ContainerField(Name: "OutputHeight", Offset: 44, NameHash: 3054125413, Flags: 49421), LayoutImmutable, Blittable]
 		public uint OutputHeight { get; set; } // 0x2C (44)
 		
-		[ContainerField(48), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
+		[ContainerField(Name: "PixelCount", Offset: 48, NameHash: 2412623662, Flags: 49421), LayoutImmutable, Blittable]
 		public uint PixelCount { get; set; } // 0x30 (48)
 		
-		[ContainerField(52), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "PixelSize", Offset: 52, NameHash: 854589352, Flags: 49469), LayoutImmutable, Blittable]
 		public float PixelSize { get; set; } // 0x34 (52)
 		
-		[ContainerField(56), LayoutImmutable, Blittable, MemberInfoFlag(49405)]
+		[ContainerField(Name: "SystemId", Offset: 56, NameHash: 643121549, Flags: 49405), LayoutImmutable, Blittable]
 		public int SystemId { get; set; } // 0x38 (56)
 		
-		[ContainerField(60), MemberInfoFlag(65), ContainerArray]
+		[ContainerField(Name: "Instances", Offset: 60, NameHash: 3890087583, Flags: 65)]
 		public List<EnlightenDbInstance> Instances { get; set; } = new List<EnlightenDbInstance>(); // 0x3C (60)
 		
-		[ContainerField(64), MemberInfoFlag(65), ContainerArray]
+		[ContainerField(Name: "InputSystems", Offset: 64, NameHash: 3312183461, Flags: 65)]
 		public List<int> InputSystems { get; set; } = new List<int>(); // 0x40 (64)
 		
-		[ContainerField(68), MemberInfoFlag(41)]
+		[ContainerField(Name: "SystemCache", Offset: 68, NameHash: 637498348, Flags: 41)]
 		public PrecomputeCache SystemCache { get; set; } = new PrecomputeCache(); // 0x44 (68)
 		
-		[ContainerField(92), MemberInfoFlag(41)]
+		[ContainerField(Name: "ClusteringCache", Offset: 92, NameHash: 3343002403, Flags: 41)]
 		public PrecomputeCache ClusteringCache { get; set; } = new PrecomputeCache(); // 0x5C (92)
 		
-		[ContainerField(116), MemberInfoFlag(41)]
+		[ContainerField(Name: "PreClusteringCache", Offset: 116, NameHash: 317514276, Flags: 41)]
 		public PrecomputeCache PreClusteringCache { get; set; } = new PrecomputeCache(); // 0x74 (116)
 		
-		[ContainerField(140), MemberInfoFlag(41)]
+		[ContainerField(Name: "LightTransportCache", Offset: 140, NameHash: 3540697556, Flags: 41)]
 		public PrecomputeCache LightTransportCache { get; set; } = new PrecomputeCache(); // 0x8C (140)
 		
-		[ContainerField(164), MemberInfoFlag(41)]
+		[ContainerField(Name: "VisibilityCache", Offset: 164, NameHash: 717943567, Flags: 41)]
 		public PrecomputeCache VisibilityCache { get; set; } = new PrecomputeCache(); // 0xA4 (164)
 		
-		[ContainerField(188), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "TerrainSystem", Offset: 188, NameHash: 2277632311, Flags: 49325), LayoutImmutable, Blittable]
 		public bool TerrainSystem { get; set; } // 0xBC (188)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

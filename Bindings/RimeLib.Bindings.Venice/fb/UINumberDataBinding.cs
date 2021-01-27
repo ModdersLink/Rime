@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(32), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 32)]
 	public class UINumberDataBinding : 
 		UIDataBinding
 	{
 		protected UIDataSourceInfo m_Value = new UIDataSourceInfo();
-		[ContainerField(8), MemberInfoFlag(41), ContainerFieldNameHash(225375086)]
+		[ContainerField(Name: "Value", Offset: 8, NameHash: 225375086, Flags: 41)]
 		public UIDataSourceInfo Value { get { return m_Value; } set { if (OnPropertyChanging("UINumberDataBinding." + nameof(Value), this, m_Value, value)) m_Value = value; } } // 0x8 (8)
 		
 		protected int m_NumValue = new int();
-		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(768702008)]
+		[ContainerField(Name: "NumValue", Offset: 24, NameHash: 768702008, Flags: 49405), LayoutImmutable, Blittable]
 		public int NumValue { get { return m_NumValue; } set { if (OnPropertyChanging("UINumberDataBinding." + nameof(NumValue), this, m_NumValue, value)) m_NumValue = value; } } // 0x18 (24)
 		
 		protected bool m_Refresh = new bool();
-		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1327541432)]
+		[ContainerField(Name: "Refresh", Offset: 28, NameHash: 1327541432, Flags: 49325), LayoutImmutable, Blittable]
 		public bool Refresh { get { return m_Refresh; } set { if (OnPropertyChanging("UINumberDataBinding." + nameof(Refresh), this, m_Refresh, value)) m_Refresh = value; } } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

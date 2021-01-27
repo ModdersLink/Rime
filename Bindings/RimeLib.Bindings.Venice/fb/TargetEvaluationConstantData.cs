@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(28), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 28)]
 	public class TargetEvaluationConstantData : 
 		Asset
 	{
 		protected float m_MaxBattleStrength = new float();
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1522242046)]
+		[ContainerField(Name: "MaxBattleStrength", Offset: 12, NameHash: 1522242046, Flags: 49469), LayoutImmutable, Blittable]
 		public float MaxBattleStrength { get { return m_MaxBattleStrength; } set { if (OnPropertyChanging("TargetEvaluationConstantData." + nameof(MaxBattleStrength), this, m_MaxBattleStrength, value)) m_MaxBattleStrength = value; } } // 0xC (12)
 		
 		protected float m_DefaultHumanTargetPreference = new float();
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(170113627)]
+		[ContainerField(Name: "DefaultHumanTargetPreference", Offset: 16, NameHash: 170113627, Flags: 49469), LayoutImmutable, Blittable]
 		public float DefaultHumanTargetPreference { get { return m_DefaultHumanTargetPreference; } set { if (OnPropertyChanging("TargetEvaluationConstantData." + nameof(DefaultHumanTargetPreference), this, m_DefaultHumanTargetPreference, value)) m_DefaultHumanTargetPreference = value; } } // 0x10 (16)
 		
 		protected float m_OtherSquadAttackerFactorUsage = new float();
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1113892580)]
+		[ContainerField(Name: "OtherSquadAttackerFactorUsage", Offset: 20, NameHash: 1113892580, Flags: 49469), LayoutImmutable, Blittable]
 		public float OtherSquadAttackerFactorUsage { get { return m_OtherSquadAttackerFactorUsage; } set { if (OnPropertyChanging("TargetEvaluationConstantData." + nameof(OtherSquadAttackerFactorUsage), this, m_OtherSquadAttackerFactorUsage, value)) m_OtherSquadAttackerFactorUsage = value; } } // 0x14 (20)
 		
 		protected float m_TargetFlipFactorUsage = new float();
-		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3580919279)]
+		[ContainerField(Name: "TargetFlipFactorUsage", Offset: 24, NameHash: 3580919279, Flags: 49469), LayoutImmutable, Blittable]
 		public float TargetFlipFactorUsage { get { return m_TargetFlipFactorUsage; } set { if (OnPropertyChanging("TargetEvaluationConstantData." + nameof(TargetFlipFactorUsage), this, m_TargetFlipFactorUsage, value)) m_TargetFlipFactorUsage = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

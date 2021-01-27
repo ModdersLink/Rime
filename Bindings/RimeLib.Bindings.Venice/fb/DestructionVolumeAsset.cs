@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(24), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 24)]
 	public class DestructionVolumeAsset : 
 		Asset
 	{
 		protected CtrRef<TextureAsset> m_DiffuseAtlas = new CtrRef<TextureAsset>();
-		[ContainerField(12), MemberInfoFlag(53), ContainerFieldNameHash(4294572704), ContainerCtrRef]
+		[ContainerField(Name: "DiffuseAtlas", Offset: 12, NameHash: 4294572704, Flags: 53)]
 		public CtrRef<TextureAsset> DiffuseAtlas { get { return m_DiffuseAtlas; } set { if (OnPropertyChanging("DestructionVolumeAsset." + nameof(DiffuseAtlas), this, m_DiffuseAtlas, value)) m_DiffuseAtlas = value; } } // 0xC (12)
 		
 		protected CtrRef<TextureAsset> m_NormalmapAtlas = new CtrRef<TextureAsset>();
-		[ContainerField(16), MemberInfoFlag(53), ContainerFieldNameHash(529589985), ContainerCtrRef]
+		[ContainerField(Name: "NormalmapAtlas", Offset: 16, NameHash: 529589985, Flags: 53)]
 		public CtrRef<TextureAsset> NormalmapAtlas { get { return m_NormalmapAtlas; } set { if (OnPropertyChanging("DestructionVolumeAsset." + nameof(NormalmapAtlas), this, m_NormalmapAtlas, value)) m_NormalmapAtlas = value; } } // 0x10 (16)
 		
 		protected float m_AtlasTextureScale = new float();
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3639310441)]
+		[ContainerField(Name: "AtlasTextureScale", Offset: 20, NameHash: 3639310441, Flags: 49469), LayoutImmutable, Blittable]
 		public float AtlasTextureScale { get { return m_AtlasTextureScale; } set { if (OnPropertyChanging("DestructionVolumeAsset." + nameof(AtlasTextureScale), this, m_AtlasTextureScale, value)) m_AtlasTextureScale = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

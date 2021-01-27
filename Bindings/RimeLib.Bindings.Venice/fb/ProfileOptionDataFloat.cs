@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(36), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 36)]
 	public class ProfileOptionDataFloat : 
 		ProfileOptionData
 	{
 		protected float m_Min = new float();
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(193446607)]
+		[ContainerField(Name: "Min", Offset: 20, NameHash: 193446607, Flags: 49469), LayoutImmutable, Blittable]
 		public float Min { get { return m_Min; } set { if (OnPropertyChanging("ProfileOptionDataFloat." + nameof(Min), this, m_Min, value)) m_Min = value; } } // 0x14 (20)
 		
 		protected float m_Max = new float();
-		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(193446865)]
+		[ContainerField(Name: "Max", Offset: 24, NameHash: 193446865, Flags: 49469), LayoutImmutable, Blittable]
 		public float Max { get { return m_Max; } set { if (OnPropertyChanging("ProfileOptionDataFloat." + nameof(Max), this, m_Max, value)) m_Max = value; } } // 0x18 (24)
 		
 		protected float m_Value = new float();
-		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(225375086)]
+		[ContainerField(Name: "Value", Offset: 28, NameHash: 225375086, Flags: 49469), LayoutImmutable, Blittable]
 		public float Value { get { return m_Value; } set { if (OnPropertyChanging("ProfileOptionDataFloat." + nameof(Value), this, m_Value, value)) m_Value = value; } } // 0x1C (28)
 		
 		protected float m_Step = new float();
-		[ContainerField(32), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2089400887)]
+		[ContainerField(Name: "Step", Offset: 32, NameHash: 2089400887, Flags: 49469), LayoutImmutable, Blittable]
 		public float Step { get { return m_Step; } set { if (OnPropertyChanging("ProfileOptionDataFloat." + nameof(Step), this, m_Step, value)) m_Step = value; } } // 0x20 (32)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

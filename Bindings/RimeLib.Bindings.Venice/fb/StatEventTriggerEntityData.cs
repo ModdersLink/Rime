@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(112), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 112)]
 	public class StatEventTriggerEntityData : 
 		GameEntityData
 	{
 		protected StatEvent m_StatEvent = new StatEvent();
-		[ContainerField(96), MemberInfoFlag(137), ContainerFieldNameHash(4089209307)]
+		[ContainerField(Name: "StatEvent", Offset: 96, NameHash: 4089209307, Flags: 137)]
 		public StatEvent StatEvent { get { return m_StatEvent; } set { if (OnPropertyChanging("StatEventTriggerEntityData." + nameof(StatEvent), this, m_StatEvent, value)) m_StatEvent = value; } } // 0x60 (96)
 		
 		protected string m_MiscParamX = string.Empty;
-		[ContainerField(100), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(2570197190)]
+		[ContainerField(Name: "MiscParamX", Offset: 100, NameHash: 2570197190, Flags: 16509), LayoutImmutable]
 		public string MiscParamX { get { return m_MiscParamX; } set { if (OnPropertyChanging("StatEventTriggerEntityData." + nameof(MiscParamX), this, m_MiscParamX, value)) m_MiscParamX = value; } } // 0x64 (100)
 		
 		protected string m_MiscParamY = string.Empty;
-		[ContainerField(104), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(2570197191)]
+		[ContainerField(Name: "MiscParamY", Offset: 104, NameHash: 2570197191, Flags: 16509), LayoutImmutable]
 		public string MiscParamY { get { return m_MiscParamY; } set { if (OnPropertyChanging("StatEventTriggerEntityData." + nameof(MiscParamY), this, m_MiscParamY, value)) m_MiscParamY = value; } } // 0x68 (104)
 		
 		protected bool m_SendToAll = new bool();
-		[ContainerField(108), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1285040867)]
+		[ContainerField(Name: "SendToAll", Offset: 108, NameHash: 1285040867, Flags: 49325), LayoutImmutable, Blittable]
 		public bool SendToAll { get { return m_SendToAll; } set { if (OnPropertyChanging("StatEventTriggerEntityData." + nameof(SendToAll), this, m_SendToAll, value)) m_SendToAll = value; } } // 0x6C (108)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

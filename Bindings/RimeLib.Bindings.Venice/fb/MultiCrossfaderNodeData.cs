@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(40), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 40)]
 	public class MultiCrossfaderNodeData : 
 		AudioGraphNodeData
 	{
 		protected RefArray<MultiCrossfaderGroup> m_CrossfaderGroups = new RefArray<MultiCrossfaderGroup>();
-		[ContainerField(8), MemberInfoFlag(65), ContainerFieldNameHash(521495907), ContainerRefArray]
+		[ContainerField(Name: "CrossfaderGroups", Offset: 8, NameHash: 521495907, Flags: 65)]
 		public RefArray<MultiCrossfaderGroup> CrossfaderGroups { get { return m_CrossfaderGroups; } set { if (OnPropertyChanging("MultiCrossfaderNodeData." + nameof(CrossfaderGroups), this, m_CrossfaderGroups, value)) m_CrossfaderGroups = value; } } // 0x8 (8)
 		
 		protected AudioGraphNodePort m_Start = new AudioGraphNodePort();
-		[ContainerField(12), MemberInfoFlag(41), ContainerFieldNameHash(230748069)]
+		[ContainerField(Name: "Start", Offset: 12, NameHash: 230748069, Flags: 41)]
 		public AudioGraphNodePort Start { get { return m_Start; } set { if (OnPropertyChanging("MultiCrossfaderNodeData." + nameof(Start), this, m_Start, value)) m_Start = value; } } // 0xC (12)
 		
 		protected AudioGraphNodePort m_Stop = new AudioGraphNodePort();
-		[ContainerField(20), MemberInfoFlag(41), ContainerFieldNameHash(2089401213)]
+		[ContainerField(Name: "Stop", Offset: 20, NameHash: 2089401213, Flags: 41)]
 		public AudioGraphNodePort Stop { get { return m_Stop; } set { if (OnPropertyChanging("MultiCrossfaderNodeData." + nameof(Stop), this, m_Stop, value)) m_Stop = value; } } // 0x14 (20)
 		
 		protected AudioGraphNodePort m_Control = new AudioGraphNodePort();
-		[ContainerField(28), MemberInfoFlag(41), ContainerFieldNameHash(3654305890)]
+		[ContainerField(Name: "Control", Offset: 28, NameHash: 3654305890, Flags: 41)]
 		public AudioGraphNodePort Control { get { return m_Control; } set { if (OnPropertyChanging("MultiCrossfaderNodeData." + nameof(Control), this, m_Control, value)) m_Control = value; } } // 0x1C (28)
 		
 		protected bool m_LockControlValue = new bool();
-		[ContainerField(36), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1905437282)]
+		[ContainerField(Name: "LockControlValue", Offset: 36, NameHash: 1905437282, Flags: 49325), LayoutImmutable, Blittable]
 		public bool LockControlValue { get { return m_LockControlValue; } set { if (OnPropertyChanging("MultiCrossfaderNodeData." + nameof(LockControlValue), this, m_LockControlValue, value)) m_LockControlValue = value; } } // 0x24 (36)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

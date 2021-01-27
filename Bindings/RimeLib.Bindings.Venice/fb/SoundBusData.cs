@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(16), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
 	public class SoundBusData : 
 		AudioGraphNodeData
 	{
 		protected string m_BusName = string.Empty;
-		[ContainerField(8), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(2742307846)]
+		[ContainerField(Name: "BusName", Offset: 8, NameHash: 2742307846, Flags: 16509), LayoutImmutable]
 		public string BusName { get { return m_BusName; } set { if (OnPropertyChanging("SoundBusData." + nameof(BusName), this, m_BusName, value)) m_BusName = value; } } // 0x8 (8)
 		
 		protected SoundGraphPluginRef m_SubmixPlugin = new SoundGraphPluginRef();
-		[ContainerField(12), MemberInfoFlag(41), ContainerFieldNameHash(132398548)]
+		[ContainerField(Name: "SubmixPlugin", Offset: 12, NameHash: 132398548, Flags: 41)]
 		public SoundGraphPluginRef SubmixPlugin { get { return m_SubmixPlugin; } set { if (OnPropertyChanging("SoundBusData." + nameof(SubmixPlugin), this, m_SubmixPlugin, value)) m_SubmixPlugin = value; } } // 0xC (12)
 		
 		protected sbyte m_ChannelCount = new sbyte();
-		[ContainerField(15), LayoutImmutable, Blittable, MemberInfoFlag(49341), ContainerFieldNameHash(1014205285)]
+		[ContainerField(Name: "ChannelCount", Offset: 15, NameHash: 1014205285, Flags: 49341), LayoutImmutable, Blittable]
 		public sbyte ChannelCount { get { return m_ChannelCount; } set { if (OnPropertyChanging("SoundBusData." + nameof(ChannelCount), this, m_ChannelCount, value)) m_ChannelCount = value; } } // 0xF (15)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

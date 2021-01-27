@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(24), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 24)]
 	public class InstanceInputNode : 
 		UINodeData
 	{
 		protected CtrRef<UINodePort> m_Out = new CtrRef<UINodePort>();
-		[ContainerField(20), MemberInfoFlag(53), ContainerFieldNameHash(193453899), ContainerCtrRef]
+		[ContainerField(Name: "Out", Offset: 20, NameHash: 193453899, Flags: 53)]
 		public CtrRef<UINodePort> Out { get { return m_Out; } set { if (OnPropertyChanging("InstanceInputNode." + nameof(Out), this, m_Out, value)) m_Out = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

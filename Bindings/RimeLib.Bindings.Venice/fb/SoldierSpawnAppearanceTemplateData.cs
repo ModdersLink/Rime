@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(16), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
 	public class SoldierSpawnAppearanceTemplateData : 
 		Asset
 	{
 		protected uint m_Body = new uint();
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(2088812853)]
+		[ContainerField(Name: "Body", Offset: 12, NameHash: 2088812853, Flags: 49421), LayoutImmutable, Blittable]
 		public uint Body { get { return m_Body; } set { if (OnPropertyChanging("SoldierSpawnAppearanceTemplateData." + nameof(Body), this, m_Body, value)) m_Body = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

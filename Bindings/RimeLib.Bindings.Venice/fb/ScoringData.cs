@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(24), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 24)]
 	public class ScoringData : 
 		Asset
 	{
 		protected RefArray<ScoringTypeData> m_ScoringTypes = new RefArray<ScoringTypeData>();
-		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(1268919875), ContainerRefArray]
+		[ContainerField(Name: "ScoringTypes", Offset: 12, NameHash: 1268919875, Flags: 65)]
 		public RefArray<ScoringTypeData> ScoringTypes { get { return m_ScoringTypes; } set { if (OnPropertyChanging("ScoringData." + nameof(ScoringTypes), this, m_ScoringTypes, value)) m_ScoringTypes = value; } } // 0xC (12)
 		
 		protected RefArray<ScoringHandlerData> m_ScoringHandlers = new RefArray<ScoringHandlerData>();
-		[ContainerField(16), MemberInfoFlag(65), ContainerFieldNameHash(3193568419), ContainerRefArray]
+		[ContainerField(Name: "ScoringHandlers", Offset: 16, NameHash: 3193568419, Flags: 65)]
 		public RefArray<ScoringHandlerData> ScoringHandlers { get { return m_ScoringHandlers; } set { if (OnPropertyChanging("ScoringData." + nameof(ScoringHandlers), this, m_ScoringHandlers, value)) m_ScoringHandlers = value; } } // 0x10 (16)
 		
 		protected RefArray<ScoringBucketData> m_Buckets = new RefArray<ScoringBucketData>();
-		[ContainerField(20), MemberInfoFlag(65), ContainerFieldNameHash(2760100856), ContainerRefArray]
+		[ContainerField(Name: "Buckets", Offset: 20, NameHash: 2760100856, Flags: 65)]
 		public RefArray<ScoringBucketData> Buckets { get { return m_Buckets; } set { if (OnPropertyChanging("ScoringData." + nameof(Buckets), this, m_Buckets, value)) m_Buckets = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

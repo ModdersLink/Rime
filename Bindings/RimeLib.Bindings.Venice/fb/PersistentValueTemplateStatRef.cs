@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(12), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 12)]
 	public class PersistentValueTemplateStatRef : 
 		AbstractPersistentStatRef
 	{
 		protected CtrRef<PersistentValueTemplate> m_Definition = new CtrRef<PersistentValueTemplate>();
-		[ContainerField(8), MemberInfoFlag(53), ContainerFieldNameHash(2980331600), ContainerCtrRef]
+		[ContainerField(Name: "Definition", Offset: 8, NameHash: 2980331600, Flags: 53)]
 		public CtrRef<PersistentValueTemplate> Definition { get { return m_Definition; } set { if (OnPropertyChanging("PersistentValueTemplateStatRef." + nameof(Definition), this, m_Definition, value)) m_Definition = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

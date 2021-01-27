@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(28), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 28)]
 	public class UIVehicleDescription : 
 		UIItemDescription
 	{
 		protected string m_Name = string.Empty;
-		[ContainerField(16), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(2088949890)]
+		[ContainerField(Name: "Name", Offset: 16, NameHash: 2088949890, Flags: 16509), LayoutImmutable]
 		public string Name { get { return m_Name; } set { if (OnPropertyChanging("UIVehicleDescription." + nameof(Name), this, m_Name, value)) m_Name = value; } } // 0x10 (16)
 		
 		protected string m_Description = string.Empty;
-		[ContainerField(20), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(1636673251)]
+		[ContainerField(Name: "Description", Offset: 20, NameHash: 1636673251, Flags: 16509), LayoutImmutable]
 		public string Description { get { return m_Description; } set { if (OnPropertyChanging("UIVehicleDescription." + nameof(Description), this, m_Description, value)) m_Description = value; } } // 0x14 (20)
 		
 		protected string m_TexturePath = string.Empty;
-		[ContainerField(24), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(3058477943)]
+		[ContainerField(Name: "TexturePath", Offset: 24, NameHash: 3058477943, Flags: 16509), LayoutImmutable]
 		public string TexturePath { get { return m_TexturePath; } set { if (OnPropertyChanging("UIVehicleDescription." + nameof(TexturePath), this, m_TexturePath, value)) m_TexturePath = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(12), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 12)]
 	public class MaterialPropertyImpulseData : 
 		PhysicsPropertyRelationPropertyData
 	{
 		protected float m_ImpulseAbsorptionMultiplier = new float();
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1970095508)]
+		[ContainerField(Name: "ImpulseAbsorptionMultiplier", Offset: 8, NameHash: 1970095508, Flags: 49469), LayoutImmutable, Blittable]
 		public float ImpulseAbsorptionMultiplier { get { return m_ImpulseAbsorptionMultiplier; } set { if (OnPropertyChanging("MaterialPropertyImpulseData." + nameof(ImpulseAbsorptionMultiplier), this, m_ImpulseAbsorptionMultiplier, value)) m_ImpulseAbsorptionMultiplier = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,13 +18,13 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(40), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 40)]
 	public class ScoringBucketUnlockData : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
+		[ContainerField(Name: "PointsNeeded", Offset: 0, NameHash: 4136222257, Flags: 49421), LayoutImmutable, Blittable]
 		public uint PointsNeeded { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), MemberInfoFlag(41)]
+		[ContainerField(Name: "UnlockInfo", Offset: 4, NameHash: 1036660731, Flags: 41)]
 		public BasicUnlockInfo UnlockInfo { get; set; } = new BasicUnlockInfo(); // 0x4 (4)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

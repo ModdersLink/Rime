@@ -18,34 +18,34 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(36), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 36)]
 	public class UIMinimapConfig : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "CombatAreaCameraDelay", Offset: 0, NameHash: 77672872, Flags: 49469), LayoutImmutable, Blittable]
 		public float CombatAreaCameraDelay { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "CameraInterpolationTime", Offset: 4, NameHash: 2739454499, Flags: 49469), LayoutImmutable, Blittable]
 		public float CameraInterpolationTime { get; set; } // 0x4 (4)
 		
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "CombatAreaFadeSpeed", Offset: 8, NameHash: 23124261, Flags: 49469), LayoutImmutable, Blittable]
 		public float CombatAreaFadeSpeed { get; set; } // 0x8 (8)
 		
-		[ContainerField(12), MemberInfoFlag(65), ContainerArray]
+		[ContainerField(Name: "ZoomStates", Offset: 12, NameHash: 3179811734, Flags: 65)]
 		public List<UIMinimapZoomConfig> ZoomStates { get; set; } = new List<UIMinimapZoomConfig>(); // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "CameraPanSensitivity", Offset: 16, NameHash: 3636190702, Flags: 49469), LayoutImmutable, Blittable]
 		public float CameraPanSensitivity { get; set; } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "MinVelocity", Offset: 20, NameHash: 1013895128, Flags: 49469), LayoutImmutable, Blittable]
 		public float MinVelocity { get; set; } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "MaxVelocity", Offset: 24, NameHash: 81127366, Flags: 49469), LayoutImmutable, Blittable]
 		public float MaxVelocity { get; set; } // 0x18 (24)
 		
-		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "VelocityModifier", Offset: 28, NameHash: 278805925, Flags: 49469), LayoutImmutable, Blittable]
 		public float VelocityModifier { get; set; } // 0x1C (28)
 		
-		[ContainerField(32), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "DisableDefaultState", Offset: 32, NameHash: 3302098829, Flags: 49325), LayoutImmutable, Blittable]
 		public bool DisableDefaultState { get; set; } // 0x20 (32)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(24), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 24)]
 	public class StatsCategoryPlayerRoleData : 
 		StatsCategoryBaseData
 	{
 		protected List<PlayerRole> m_Roles = new List<PlayerRole>();
-		[ContainerField(20), MemberInfoFlag(65), ContainerFieldNameHash(230312994), ContainerArray]
+		[ContainerField(Name: "Roles", Offset: 20, NameHash: 230312994, Flags: 65)]
 		public List<PlayerRole> Roles { get { return m_Roles; } set { if (OnPropertyChanging("StatsCategoryPlayerRoleData." + nameof(Roles), this, m_Roles, value)) m_Roles = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

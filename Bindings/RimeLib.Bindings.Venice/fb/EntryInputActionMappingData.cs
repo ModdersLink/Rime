@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(16), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
 	public class EntryInputActionMappingData : 
 		InputActionMappingData
 	{
 		protected EntryInputActionEnum m_ActionIdentifier = new EntryInputActionEnum();
-		[ContainerField(8), MemberInfoFlag(137), ContainerFieldNameHash(2090288440)]
+		[ContainerField(Name: "ActionIdentifier", Offset: 8, NameHash: 2090288440, Flags: 137)]
 		public EntryInputActionEnum ActionIdentifier { get { return m_ActionIdentifier; } set { if (OnPropertyChanging("EntryInputActionMappingData." + nameof(ActionIdentifier), this, m_ActionIdentifier, value)) m_ActionIdentifier = value; } } // 0x8 (8)
 		
 		protected InputConceptIdentifiers m_ConceptIdentifier = new InputConceptIdentifiers();
-		[ContainerField(12), MemberInfoFlag(137), ContainerFieldNameHash(1320965734)]
+		[ContainerField(Name: "ConceptIdentifier", Offset: 12, NameHash: 1320965734, Flags: 137)]
 		public InputConceptIdentifiers ConceptIdentifier { get { return m_ConceptIdentifier; } set { if (OnPropertyChanging("EntryInputActionMappingData." + nameof(ConceptIdentifier), this, m_ConceptIdentifier, value)) m_ConceptIdentifier = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

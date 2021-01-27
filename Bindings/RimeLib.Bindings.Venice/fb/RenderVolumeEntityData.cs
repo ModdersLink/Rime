@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(128), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 128)]
 	public class RenderVolumeEntityData : 
 		SpatialEntityData
 	{
 		protected Vec4 m_UserMasks = new Vec4();
-		[ContainerField(80), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(1589111411)]
+		[ContainerField(Name: "UserMasks", Offset: 80, NameHash: 1589111411, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec4 UserMasks { get { return m_UserMasks; } set { if (OnPropertyChanging("RenderVolumeEntityData." + nameof(UserMasks), this, m_UserMasks, value)) m_UserMasks = value; } } // 0x50 (80)
 		
 		protected SurfaceShaderInstanceDataStruct m_Shader = new SurfaceShaderInstanceDataStruct();
-		[ContainerField(96), MemberInfoFlag(41), ContainerFieldNameHash(3352909900)]
+		[ContainerField(Name: "Shader", Offset: 96, NameHash: 3352909900, Flags: 41)]
 		public SurfaceShaderInstanceDataStruct Shader { get { return m_Shader; } set { if (OnPropertyChanging("RenderVolumeEntityData." + nameof(Shader), this, m_Shader, value)) m_Shader = value; } } // 0x60 (96)
 		
 		protected RenderVolumeTransformType m_TransformType = new RenderVolumeTransformType();
-		[ContainerField(116), MemberInfoFlag(137), ContainerFieldNameHash(3623123985)]
+		[ContainerField(Name: "TransformType", Offset: 116, NameHash: 3623123985, Flags: 137)]
 		public RenderVolumeTransformType TransformType { get { return m_TransformType; } set { if (OnPropertyChanging("RenderVolumeEntityData." + nameof(TransformType), this, m_TransformType, value)) m_TransformType = value; } } // 0x74 (116)
 		
 		protected bool m_Enabled = new bool();
-		[ContainerField(120), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2662400)]
+		[ContainerField(Name: "Enabled", Offset: 120, NameHash: 2662400, Flags: 49325), LayoutImmutable, Blittable]
 		public bool Enabled { get { return m_Enabled; } set { if (OnPropertyChanging("RenderVolumeEntityData." + nameof(Enabled), this, m_Enabled, value)) m_Enabled = value; } } // 0x78 (120)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

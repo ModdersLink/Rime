@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(12), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 12)]
 	public class TreeNodeBase : 
 		DataContainer
 	{
 		protected string m_NodeName = string.Empty;
-		[ContainerField(8), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(2598021986)]
+		[ContainerField(Name: "NodeName", Offset: 8, NameHash: 2598021986, Flags: 16509), LayoutImmutable]
 		public string NodeName { get { return m_NodeName; } set { if (OnPropertyChanging("TreeNodeBase." + nameof(NodeName), this, m_NodeName, value)) m_NodeName = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(24), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 24)]
 	public class IntEntityData : 
 		EntityData
 	{
 		protected Realm m_Realm = new Realm();
-		[ContainerField(12), MemberInfoFlag(137), ContainerFieldNameHash(229961746)]
+		[ContainerField(Name: "Realm", Offset: 12, NameHash: 229961746, Flags: 137)]
 		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("IntEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0xC (12)
 		
 		protected int m_DefaultValue = new int();
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(2066049125)]
+		[ContainerField(Name: "DefaultValue", Offset: 16, NameHash: 2066049125, Flags: 49405), LayoutImmutable, Blittable]
 		public int DefaultValue { get { return m_DefaultValue; } set { if (OnPropertyChanging("IntEntityData." + nameof(DefaultValue), this, m_DefaultValue, value)) m_DefaultValue = value; } } // 0x10 (16)
 		
 		protected int m_IncDecValue = new int();
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(3097399752)]
+		[ContainerField(Name: "IncDecValue", Offset: 20, NameHash: 3097399752, Flags: 49405), LayoutImmutable, Blittable]
 		public int IncDecValue { get { return m_IncDecValue; } set { if (OnPropertyChanging("IntEntityData." + nameof(IncDecValue), this, m_IncDecValue, value)) m_IncDecValue = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

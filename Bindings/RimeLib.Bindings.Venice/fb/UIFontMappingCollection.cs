@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(20), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 20)]
 	public class UIFontMappingCollection : 
 		Asset
 	{
 		protected List<UIFontMapping> m_Fonts = new List<UIFontMapping>();
-		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(206880581), ContainerArray]
+		[ContainerField(Name: "Fonts", Offset: 12, NameHash: 206880581, Flags: 65)]
 		public List<UIFontMapping> Fonts { get { return m_Fonts; } set { if (OnPropertyChanging("UIFontMappingCollection." + nameof(Fonts), this, m_Fonts, value)) m_Fonts = value; } } // 0xC (12)
 		
 		protected RefArray<UITextDatabase> m_TextDatabase = new RefArray<UITextDatabase>();
-		[ContainerField(16), MemberInfoFlag(65), ContainerFieldNameHash(1951250813), ContainerRefArray]
+		[ContainerField(Name: "TextDatabase", Offset: 16, NameHash: 1951250813, Flags: 65)]
 		public RefArray<UITextDatabase> TextDatabase { get { return m_TextDatabase; } set { if (OnPropertyChanging("UIFontMappingCollection." + nameof(TextDatabase), this, m_TextDatabase, value)) m_TextDatabase = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

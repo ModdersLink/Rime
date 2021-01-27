@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(16), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
 	public class VeniceRichPresenceLevelDescriptionComponent : 
 		LevelDescriptionComponent
 	{
 		protected CtrRef<RichPresencePresenceString> m_PresenceMode = new CtrRef<RichPresencePresenceString>();
-		[ContainerField(8), MemberInfoFlag(53), ContainerFieldNameHash(2266879327), ContainerCtrRef]
+		[ContainerField(Name: "PresenceMode", Offset: 8, NameHash: 2266879327, Flags: 53)]
 		public CtrRef<RichPresencePresenceString> PresenceMode { get { return m_PresenceMode; } set { if (OnPropertyChanging("VeniceRichPresenceLevelDescriptionComponent." + nameof(PresenceMode), this, m_PresenceMode, value)) m_PresenceMode = value; } } // 0x8 (8)
 		
 		protected List<RichPresenceContextSetting> m_ContextValues = new List<RichPresenceContextSetting>();
-		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(3085702594), ContainerArray]
+		[ContainerField(Name: "ContextValues", Offset: 12, NameHash: 3085702594, Flags: 65)]
 		public List<RichPresenceContextSetting> ContextValues { get { return m_ContextValues; } set { if (OnPropertyChanging("VeniceRichPresenceLevelDescriptionComponent." + nameof(ContextValues), this, m_ContextValues, value)) m_ContextValues = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(16), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
 	public class PersistenceStatTable : 
 		DataContainer
 	{
 		protected string m_TableName = string.Empty;
-		[ContainerField(8), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(3117168284)]
+		[ContainerField(Name: "TableName", Offset: 8, NameHash: 3117168284, Flags: 16509), LayoutImmutable]
 		public string TableName { get { return m_TableName; } set { if (OnPropertyChanging("PersistenceStatTable." + nameof(TableName), this, m_TableName, value)) m_TableName = value; } } // 0x8 (8)
 		
 		protected CtrRef<AbstractPersistenceData> m_OwnerPersistenceData = new CtrRef<AbstractPersistenceData>();
-		[ContainerField(12), MemberInfoFlag(53), ContainerFieldNameHash(1012363171), ContainerCtrRef]
+		[ContainerField(Name: "OwnerPersistenceData", Offset: 12, NameHash: 1012363171, Flags: 53)]
 		public CtrRef<AbstractPersistenceData> OwnerPersistenceData { get { return m_OwnerPersistenceData; } set { if (OnPropertyChanging("PersistenceStatTable." + nameof(OwnerPersistenceData), this, m_OwnerPersistenceData, value)) m_OwnerPersistenceData = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

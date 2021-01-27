@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(24), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 24)]
 	public class SimpleMovementActionBaseData : 
 		MovementActionData
 	{
 		protected SimpleMovementActionTimeData m_StartTimeInfo = new SimpleMovementActionTimeData();
-		[ContainerField(8), MemberInfoFlag(41), ContainerFieldNameHash(2015117886)]
+		[ContainerField(Name: "StartTimeInfo", Offset: 8, NameHash: 2015117886, Flags: 41)]
 		public SimpleMovementActionTimeData StartTimeInfo { get { return m_StartTimeInfo; } set { if (OnPropertyChanging("SimpleMovementActionBaseData." + nameof(StartTimeInfo), this, m_StartTimeInfo, value)) m_StartTimeInfo = value; } } // 0x8 (8)
 		
 		protected SimpleMovementActionTimeData m_RunTimeInfo = new SimpleMovementActionTimeData();
-		[ContainerField(16), MemberInfoFlag(41), ContainerFieldNameHash(3849518743)]
+		[ContainerField(Name: "RunTimeInfo", Offset: 16, NameHash: 3849518743, Flags: 41)]
 		public SimpleMovementActionTimeData RunTimeInfo { get { return m_RunTimeInfo; } set { if (OnPropertyChanging("SimpleMovementActionBaseData." + nameof(RunTimeInfo), this, m_RunTimeInfo, value)) m_RunTimeInfo = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

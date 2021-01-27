@@ -18,48 +18,48 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(80), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 80)]
 	public class UINametag : 
 		DataContainer
 	{
 		protected Vec3 m_TextColor = new Vec3();
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(2527550245)]
+		[ContainerField(Name: "TextColor", Offset: 16, NameHash: 2527550245, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 TextColor { get { return m_TextColor; } set { if (OnPropertyChanging("UINametag." + nameof(TextColor), this, m_TextColor, value)) m_TextColor = value; } } // 0x10 (16)
 		
 		protected float m_IconFadeDistance = new float();
-		[ContainerField(32), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1271959627)]
+		[ContainerField(Name: "IconFadeDistance", Offset: 32, NameHash: 1271959627, Flags: 49469), LayoutImmutable, Blittable]
 		public float IconFadeDistance { get { return m_IconFadeDistance; } set { if (OnPropertyChanging("UINametag." + nameof(IconFadeDistance), this, m_IconFadeDistance, value)) m_IconFadeDistance = value; } } // 0x20 (32)
 		
 		protected float m_IconMaxDistance = new float();
-		[ContainerField(36), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3794322777)]
+		[ContainerField(Name: "IconMaxDistance", Offset: 36, NameHash: 3794322777, Flags: 49469), LayoutImmutable, Blittable]
 		public float IconMaxDistance { get { return m_IconMaxDistance; } set { if (OnPropertyChanging("UINametag." + nameof(IconMaxDistance), this, m_IconMaxDistance, value)) m_IconMaxDistance = value; } } // 0x24 (36)
 		
 		protected UIHudIcon m_Icon = new UIHudIcon();
-		[ContainerField(40), MemberInfoFlag(137), ContainerFieldNameHash(2088920302)]
+		[ContainerField(Name: "Icon", Offset: 40, NameHash: 2088920302, Flags: 137)]
 		public UIHudIcon Icon { get { return m_Icon; } set { if (OnPropertyChanging("UINametag." + nameof(Icon), this, m_Icon, value)) m_Icon = value; } } // 0x28 (40)
 		
 		protected float m_TextFadeDistance = new float();
-		[ContainerField(44), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2771100253)]
+		[ContainerField(Name: "TextFadeDistance", Offset: 44, NameHash: 2771100253, Flags: 49469), LayoutImmutable, Blittable]
 		public float TextFadeDistance { get { return m_TextFadeDistance; } set { if (OnPropertyChanging("UINametag." + nameof(TextFadeDistance), this, m_TextFadeDistance, value)) m_TextFadeDistance = value; } } // 0x2C (44)
 		
 		protected float m_HealthFadeDistance = new float();
-		[ContainerField(48), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3613363196)]
+		[ContainerField(Name: "HealthFadeDistance", Offset: 48, NameHash: 3613363196, Flags: 49469), LayoutImmutable, Blittable]
 		public float HealthFadeDistance { get { return m_HealthFadeDistance; } set { if (OnPropertyChanging("UINametag." + nameof(HealthFadeDistance), this, m_HealthFadeDistance, value)) m_HealthFadeDistance = value; } } // 0x30 (48)
 		
 		protected float m_HealthMaxDistance = new float();
-		[ContainerField(52), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2811802830)]
+		[ContainerField(Name: "HealthMaxDistance", Offset: 52, NameHash: 2811802830, Flags: 49469), LayoutImmutable, Blittable]
 		public float HealthMaxDistance { get { return m_HealthMaxDistance; } set { if (OnPropertyChanging("UINametag." + nameof(HealthMaxDistance), this, m_HealthMaxDistance, value)) m_HealthMaxDistance = value; } } // 0x34 (52)
 		
 		protected float m_TextMaxDistance = new float();
-		[ContainerField(56), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3993118095)]
+		[ContainerField(Name: "TextMaxDistance", Offset: 56, NameHash: 3993118095, Flags: 49469), LayoutImmutable, Blittable]
 		public float TextMaxDistance { get { return m_TextMaxDistance; } set { if (OnPropertyChanging("UINametag." + nameof(TextMaxDistance), this, m_TextMaxDistance, value)) m_TextMaxDistance = value; } } // 0x38 (56)
 		
 		protected float m_TargetInTimer = new float();
-		[ContainerField(60), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(956843572)]
+		[ContainerField(Name: "TargetInTimer", Offset: 60, NameHash: 956843572, Flags: 49469), LayoutImmutable, Blittable]
 		public float TargetInTimer { get { return m_TargetInTimer; } set { if (OnPropertyChanging("UINametag." + nameof(TargetInTimer), this, m_TargetInTimer, value)) m_TargetInTimer = value; } } // 0x3C (60)
 		
 		protected float m_TargetOutTimer = new float();
-		[ContainerField(64), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1911827965)]
+		[ContainerField(Name: "TargetOutTimer", Offset: 64, NameHash: 1911827965, Flags: 49469), LayoutImmutable, Blittable]
 		public float TargetOutTimer { get { return m_TargetOutTimer; } set { if (OnPropertyChanging("UINametag." + nameof(TargetOutTimer), this, m_TargetOutTimer, value)) m_TargetOutTimer = value; } } // 0x40 (64)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

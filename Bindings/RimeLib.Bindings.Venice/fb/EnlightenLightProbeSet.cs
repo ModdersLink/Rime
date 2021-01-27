@@ -18,46 +18,46 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(41), ContainerSize(160), ContainerStruct]
+	[ContainerType(Alignment: 16,  Flags: 41, Size: 160)]
 	public class EnlightenLightProbeSet : FrostbiteContainer
 	{
-		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
+		[ContainerField(Name: "Transform", Offset: 0, NameHash: 2270319721, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public LinearTransform Transform { get; set; } = new LinearTransform(); // 0x0 (0)
 		
-		[ContainerField(64), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
+		[ContainerField(Name: "BoundingBox", Offset: 64, NameHash: 2648132290, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public AxisAlignedBox BoundingBox { get; set; } = new AxisAlignedBox(); // 0x40 (64)
 		
-		[ContainerField(96), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
+		[ContainerField(Name: "SizeX", Offset: 96, NameHash: 231688536, Flags: 49421), LayoutImmutable, Blittable]
 		public uint SizeX { get; set; } // 0x60 (96)
 		
-		[ContainerField(100), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
+		[ContainerField(Name: "SizeZ", Offset: 100, NameHash: 231688538, Flags: 49421), LayoutImmutable, Blittable]
 		public uint SizeZ { get; set; } // 0x64 (100)
 		
-		[ContainerField(104), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
+		[ContainerField(Name: "SizeY", Offset: 104, NameHash: 231688537, Flags: 49421), LayoutImmutable, Blittable]
 		public uint SizeY { get; set; } // 0x68 (104)
 		
-		[ContainerField(108), LayoutImmutable, Blittable, MemberInfoFlag(49405)]
+		[ContainerField(Name: "SystemId", Offset: 108, NameHash: 643121549, Flags: 49405), LayoutImmutable, Blittable]
 		public int SystemId { get; set; } // 0x6C (108)
 		
-		[ContainerField(112), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "BlendDistance", Offset: 112, NameHash: 1435233063, Flags: 49469), LayoutImmutable, Blittable]
 		public float BlendDistance { get; set; } // 0x70 (112)
 		
-		[ContainerField(116), LayoutImmutable, Blittable, MemberInfoFlag(49405)]
+		[ContainerField(Name: "Priority", Offset: 116, NameHash: 3062102871, Flags: 49405), LayoutImmutable, Blittable]
 		public int Priority { get; set; } // 0x74 (116)
 		
-		[ContainerField(120), MemberInfoFlag(65), ContainerArray]
+		[ContainerField(Name: "Positions", Offset: 120, NameHash: 616073487, Flags: 65)]
 		public List<Vec3> Positions { get; set; } = new List<Vec3>(); // 0x78 (120)
 		
-		[ContainerField(124), MemberInfoFlag(65), ContainerArray]
+		[ContainerField(Name: "ValidIndices", Offset: 124, NameHash: 1822652428, Flags: 65)]
 		public List<uint> ValidIndices { get; set; } = new List<uint>(); // 0x7C (124)
 		
-		[ContainerField(128), MemberInfoFlag(65), ContainerArray]
+		[ContainerField(Name: "InputSystems", Offset: 128, NameHash: 3312183461, Flags: 65)]
 		public List<int> InputSystems { get; set; } = new List<int>(); // 0x80 (128)
 		
-		[ContainerField(132), MemberInfoFlag(41)]
+		[ContainerField(Name: "Cache", Offset: 132, NameHash: 212453833, Flags: 41)]
 		public PrecomputeCache Cache { get; set; } = new PrecomputeCache(); // 0x84 (132)
 		
-		[ContainerField(156), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "StaticProbeSet", Offset: 156, NameHash: 928615733, Flags: 49325), LayoutImmutable, Blittable]
 		public bool StaticProbeSet { get; set; } // 0x9C (156)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

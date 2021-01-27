@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(24), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 24)]
 	public class BlazePresenceBackendData : 
 		PresenceBackendData
 	{
 		protected RefArray<MatchmakingSession> m_MatchmakingSessions = new RefArray<MatchmakingSession>();
-		[ContainerField(16), MemberInfoFlag(65), ContainerFieldNameHash(971927356), ContainerRefArray]
+		[ContainerField(Name: "MatchmakingSessions", Offset: 16, NameHash: 971927356, Flags: 65)]
 		public RefArray<MatchmakingSession> MatchmakingSessions { get { return m_MatchmakingSessions; } set { if (OnPropertyChanging("BlazePresenceBackendData." + nameof(MatchmakingSessions), this, m_MatchmakingSessions, value)) m_MatchmakingSessions = value; } } // 0x10 (16)
 		
 		protected bool m_UseDemanglerService = new bool();
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1785911844)]
+		[ContainerField(Name: "UseDemanglerService", Offset: 20, NameHash: 1785911844, Flags: 49325), LayoutImmutable, Blittable]
 		public bool UseDemanglerService { get { return m_UseDemanglerService; } set { if (OnPropertyChanging("BlazePresenceBackendData." + nameof(UseDemanglerService), this, m_UseDemanglerService, value)) m_UseDemanglerService = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

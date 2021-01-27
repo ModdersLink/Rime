@@ -18,46 +18,46 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(41), ContainerSize(80), ContainerStruct]
+	[ContainerType(Alignment: 16,  Flags: 41, Size: 80)]
 	public class ScenarioTaskData : FrostbiteContainer
 	{
-		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
+		[ContainerField(Name: "EndPointWorldOffset", Offset: 0, NameHash: 826674953, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 EndPointWorldOffset { get; set; } = new Vec3(); // 0x0 (0)
 		
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
+		[ContainerField(Name: "StartPoint", Offset: 16, NameHash: 2755831849, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 StartPoint { get; set; } = new Vec3(); // 0x10 (16)
 		
-		[ContainerField(32), LayoutImmutable, Blittable, MemberInfoFlag(49405)]
+		[ContainerField(Name: "ScenarioId", Offset: 32, NameHash: 3278128294, Flags: 49405), LayoutImmutable, Blittable]
 		public int ScenarioId { get; set; } // 0x20 (32)
 		
-		[ContainerField(36), LayoutImmutable, Blittable, MemberInfoFlag(49405)]
+		[ContainerField(Name: "ActorId", Offset: 36, NameHash: 373715747, Flags: 49405), LayoutImmutable, Blittable]
 		public int ActorId { get; set; } // 0x24 (36)
 		
-		[ContainerField(40), LayoutImmutable, Blittable, MemberInfoFlag(49405)]
+		[ContainerField(Name: "PartId", Offset: 40, NameHash: 3371573631, Flags: 49405), LayoutImmutable, Blittable]
 		public int PartId { get; set; } // 0x28 (40)
 		
-		[ContainerField(44), LayoutImmutable, Blittable, MemberInfoFlag(49405)]
+		[ContainerField(Name: "LevelId", Offset: 44, NameHash: 1464675646, Flags: 49405), LayoutImmutable, Blittable]
 		public int LevelId { get; set; } // 0x2C (44)
 		
-		[ContainerField(48), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "WorldAngle", Offset: 48, NameHash: 612547046, Flags: 49469), LayoutImmutable, Blittable]
 		public float WorldAngle { get; set; } // 0x30 (48)
 		
-		[ContainerField(52), MemberInfoFlag(65), ContainerArray]
+		[ContainerField(Name: "ConnectTransforms", Offset: 52, NameHash: 763624964, Flags: 65)]
 		public List<LinearTransform> ConnectTransforms { get; set; } = new List<LinearTransform>(); // 0x34 (52)
 		
-		[ContainerField(56), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "StartTurnDistance", Offset: 56, NameHash: 432617307, Flags: 49469), LayoutImmutable, Blittable]
 		public float StartTurnDistance { get; set; } // 0x38 (56)
 		
-		[ContainerField(60), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "StartTimerDistance", Offset: 60, NameHash: 1775830017, Flags: 49469), LayoutImmutable, Blittable]
 		public float StartTimerDistance { get; set; } // 0x3C (60)
 		
-		[ContainerField(64), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "TriggerScenarioDelay", Offset: 64, NameHash: 2455523686, Flags: 49469), LayoutImmutable, Blittable]
 		public float TriggerScenarioDelay { get; set; } // 0x40 (64)
 		
-		[ContainerField(68), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "TriggerScenario", Offset: 68, NameHash: 3734607443, Flags: 49325), LayoutImmutable, Blittable]
 		public bool TriggerScenario { get; set; } // 0x44 (68)
 		
-		[ContainerField(69), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "UseClientPosition", Offset: 69, NameHash: 430257222, Flags: 49325), LayoutImmutable, Blittable]
 		public bool UseClientPosition { get; set; } // 0x45 (69)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

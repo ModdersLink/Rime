@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(28), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 28)]
 	public class TimingViewCategory : 
 		DataContainer
 	{
 		protected string m_CategoryName = string.Empty;
-		[ContainerField(8), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(1997430002)]
+		[ContainerField(Name: "CategoryName", Offset: 8, NameHash: 1997430002, Flags: 16509), LayoutImmutable]
 		public string CategoryName { get { return m_CategoryName; } set { if (OnPropertyChanging("TimingViewCategory." + nameof(CategoryName), this, m_CategoryName, value)) m_CategoryName = value; } } // 0x8 (8)
 		
 		protected List<string> m_Keywords = new List<string>();
-		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(4091618511), ContainerArray]
+		[ContainerField(Name: "Keywords", Offset: 12, NameHash: 4091618511, Flags: 65)]
 		public List<string> Keywords { get { return m_Keywords; } set { if (OnPropertyChanging("TimingViewCategory." + nameof(Keywords), this, m_Keywords, value)) m_Keywords = value; } } // 0xC (12)
 		
 		protected float m_SpuBudget = new float();
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3212164214)]
+		[ContainerField(Name: "SpuBudget", Offset: 16, NameHash: 3212164214, Flags: 49469), LayoutImmutable, Blittable]
 		public float SpuBudget { get { return m_SpuBudget; } set { if (OnPropertyChanging("TimingViewCategory." + nameof(SpuBudget), this, m_SpuBudget, value)) m_SpuBudget = value; } } // 0x10 (16)
 		
 		protected float m_CpuBudget = new float();
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1659158630)]
+		[ContainerField(Name: "CpuBudget", Offset: 20, NameHash: 1659158630, Flags: 49469), LayoutImmutable, Blittable]
 		public float CpuBudget { get { return m_CpuBudget; } set { if (OnPropertyChanging("TimingViewCategory." + nameof(CpuBudget), this, m_CpuBudget, value)) m_CpuBudget = value; } } // 0x14 (20)
 		
 		protected float m_GpuBudget = new float();
-		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(4164444258)]
+		[ContainerField(Name: "GpuBudget", Offset: 24, NameHash: 4164444258, Flags: 49469), LayoutImmutable, Blittable]
 		public float GpuBudget { get { return m_GpuBudget; } set { if (OnPropertyChanging("TimingViewCategory." + nameof(GpuBudget), this, m_GpuBudget, value)) m_GpuBudget = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

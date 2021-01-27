@@ -18,348 +18,348 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(180), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 180)]
 	public class GameRenderSettings : 
 		DataContainer
 	{
 		protected float m_StereoCrosshairDampingFactor = new float();
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3082102470)]
+		[ContainerField(Name: "StereoCrosshairDampingFactor", Offset: 8, NameHash: 3082102470, Flags: 49469), LayoutImmutable, Blittable]
 		public float StereoCrosshairDampingFactor { get { return m_StereoCrosshairDampingFactor; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(StereoCrosshairDampingFactor), this, m_StereoCrosshairDampingFactor, value)) m_StereoCrosshairDampingFactor = value; } } // 0x8 (8)
 		
 		protected uint m_InactiveSkipFrameCount = new uint();
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(2655362545)]
+		[ContainerField(Name: "InactiveSkipFrameCount", Offset: 12, NameHash: 2655362545, Flags: 49421), LayoutImmutable, Blittable]
 		public uint InactiveSkipFrameCount { get { return m_InactiveSkipFrameCount; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(InactiveSkipFrameCount), this, m_InactiveSkipFrameCount, value)) m_InactiveSkipFrameCount = value; } } // 0xC (12)
 		
 		protected float m_ForceOrthoViewSize = new float();
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3323242110)]
+		[ContainerField(Name: "ForceOrthoViewSize", Offset: 16, NameHash: 3323242110, Flags: 49469), LayoutImmutable, Blittable]
 		public float ForceOrthoViewSize { get { return m_ForceOrthoViewSize; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(ForceOrthoViewSize), this, m_ForceOrthoViewSize, value)) m_ForceOrthoViewSize = value; } } // 0x10 (16)
 		
 		protected float m_StereoCrosshairRadius = new float();
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2441395179)]
+		[ContainerField(Name: "StereoCrosshairRadius", Offset: 20, NameHash: 2441395179, Flags: 49469), LayoutImmutable, Blittable]
 		public float StereoCrosshairRadius { get { return m_StereoCrosshairRadius; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(StereoCrosshairRadius), this, m_StereoCrosshairRadius, value)) m_StereoCrosshairRadius = value; } } // 0x14 (20)
 		
 		protected float m_StereoCrosshairMaxHitDepth = new float();
-		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2704522783)]
+		[ContainerField(Name: "StereoCrosshairMaxHitDepth", Offset: 24, NameHash: 2704522783, Flags: 49469), LayoutImmutable, Blittable]
 		public float StereoCrosshairMaxHitDepth { get { return m_StereoCrosshairMaxHitDepth; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(StereoCrosshairMaxHitDepth), this, m_StereoCrosshairMaxHitDepth, value)) m_StereoCrosshairMaxHitDepth = value; } } // 0x18 (24)
 		
 		protected float m_ForceBlurAmount = new float();
-		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(4248942685)]
+		[ContainerField(Name: "ForceBlurAmount", Offset: 28, NameHash: 4248942685, Flags: 49469), LayoutImmutable, Blittable]
 		public float ForceBlurAmount { get { return m_ForceBlurAmount; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(ForceBlurAmount), this, m_ForceBlurAmount, value)) m_ForceBlurAmount = value; } } // 0x1C (28)
 		
 		protected uint m_DrawFpsMethod = new uint();
-		[ContainerField(32), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(167743071)]
+		[ContainerField(Name: "DrawFpsMethod", Offset: 32, NameHash: 167743071, Flags: 49421), LayoutImmutable, Blittable]
 		public uint DrawFpsMethod { get { return m_DrawFpsMethod; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(DrawFpsMethod), this, m_DrawFpsMethod, value)) m_DrawFpsMethod = value; } } // 0x20 (32)
 		
 		protected float m_ForceFov = new float();
-		[ContainerField(36), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1152601159)]
+		[ContainerField(Name: "ForceFov", Offset: 36, NameHash: 1152601159, Flags: 49469), LayoutImmutable, Blittable]
 		public float ForceFov { get { return m_ForceFov; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(ForceFov), this, m_ForceFov, value)) m_ForceFov = value; } } // 0x24 (36)
 		
 		protected float m_FovMultiplier = new float();
-		[ContainerField(40), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3789653393)]
+		[ContainerField(Name: "FovMultiplier", Offset: 40, NameHash: 3789653393, Flags: 49469), LayoutImmutable, Blittable]
 		public float FovMultiplier { get { return m_FovMultiplier; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(FovMultiplier), this, m_FovMultiplier, value)) m_FovMultiplier = value; } } // 0x28 (40)
 		
 		protected float m_StaticModelPartOcclusionMaxScreenArea = new float();
-		[ContainerField(44), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2191141031)]
+		[ContainerField(Name: "StaticModelPartOcclusionMaxScreenArea", Offset: 44, NameHash: 2191141031, Flags: 49469), LayoutImmutable, Blittable]
 		public float StaticModelPartOcclusionMaxScreenArea { get { return m_StaticModelPartOcclusionMaxScreenArea; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(StaticModelPartOcclusionMaxScreenArea), this, m_StaticModelPartOcclusionMaxScreenArea, value)) m_StaticModelPartOcclusionMaxScreenArea = value; } } // 0x2C (44)
 		
 		protected uint m_StaticModelCullJobCount = new uint();
-		[ContainerField(48), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(2262716864)]
+		[ContainerField(Name: "StaticModelCullJobCount", Offset: 48, NameHash: 2262716864, Flags: 49421), LayoutImmutable, Blittable]
 		public uint StaticModelCullJobCount { get { return m_StaticModelCullJobCount; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(StaticModelCullJobCount), this, m_StaticModelCullJobCount, value)) m_StaticModelCullJobCount = value; } } // 0x30 (48)
 		
 		protected float m_EdgeModelLodScale = new float();
-		[ContainerField(52), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1165587222)]
+		[ContainerField(Name: "EdgeModelLodScale", Offset: 52, NameHash: 1165587222, Flags: 49469), LayoutImmutable, Blittable]
 		public float EdgeModelLodScale { get { return m_EdgeModelLodScale; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(EdgeModelLodScale), this, m_EdgeModelLodScale, value)) m_EdgeModelLodScale = value; } } // 0x34 (52)
 		
 		protected float m_EdgeModelScreenAreaScale = new float();
-		[ContainerField(56), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(4227759818)]
+		[ContainerField(Name: "EdgeModelScreenAreaScale", Offset: 56, NameHash: 4227759818, Flags: 49469), LayoutImmutable, Blittable]
 		public float EdgeModelScreenAreaScale { get { return m_EdgeModelScreenAreaScale; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(EdgeModelScreenAreaScale), this, m_EdgeModelScreenAreaScale, value)) m_EdgeModelScreenAreaScale = value; } } // 0x38 (56)
 		
 		protected uint m_XenonRingBufferSize = new uint();
-		[ContainerField(60), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(324402816)]
+		[ContainerField(Name: "XenonRingBufferSize", Offset: 60, NameHash: 324402816, Flags: 49421), LayoutImmutable, Blittable]
 		public uint XenonRingBufferSize { get { return m_XenonRingBufferSize; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(XenonRingBufferSize), this, m_XenonRingBufferSize, value)) m_XenonRingBufferSize = value; } } // 0x3C (60)
 		
 		protected uint m_SplitScreenTestViewCount = new uint();
-		[ContainerField(64), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(700075907)]
+		[ContainerField(Name: "SplitScreenTestViewCount", Offset: 64, NameHash: 700075907, Flags: 49421), LayoutImmutable, Blittable]
 		public uint SplitScreenTestViewCount { get { return m_SplitScreenTestViewCount; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(SplitScreenTestViewCount), this, m_SplitScreenTestViewCount, value)) m_SplitScreenTestViewCount = value; } } // 0x40 (64)
 		
 		protected uint m_XenonPresentImmediateThreshold = new uint();
-		[ContainerField(68), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(2639411546)]
+		[ContainerField(Name: "XenonPresentImmediateThreshold", Offset: 68, NameHash: 2639411546, Flags: 49421), LayoutImmutable, Blittable]
 		public uint XenonPresentImmediateThreshold { get { return m_XenonPresentImmediateThreshold; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(XenonPresentImmediateThreshold), this, m_XenonPresentImmediateThreshold, value)) m_XenonPresentImmediateThreshold = value; } } // 0x44 (68)
 		
 		protected uint m_XenonGammaRampType = new uint();
-		[ContainerField(72), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(2019953318)]
+		[ContainerField(Name: "XenonGammaRampType", Offset: 72, NameHash: 2019953318, Flags: 49421), LayoutImmutable, Blittable]
 		public uint XenonGammaRampType { get { return m_XenonGammaRampType; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(XenonGammaRampType), this, m_XenonGammaRampType, value)) m_XenonGammaRampType = value; } } // 0x48 (72)
 		
 		protected uint m_Ps3VSyncMethod = new uint();
-		[ContainerField(76), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(4142817563)]
+		[ContainerField(Name: "Ps3VSyncMethod", Offset: 76, NameHash: 4142817563, Flags: 49421), LayoutImmutable, Blittable]
 		public uint Ps3VSyncMethod { get { return m_Ps3VSyncMethod; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(Ps3VSyncMethod), this, m_Ps3VSyncMethod, value)) m_Ps3VSyncMethod = value; } } // 0x4C (76)
 		
 		protected float m_Ps3VideoGamma = new float();
-		[ContainerField(80), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2476657891)]
+		[ContainerField(Name: "Ps3VideoGamma", Offset: 80, NameHash: 2476657891, Flags: 49469), LayoutImmutable, Blittable]
 		public float Ps3VideoGamma { get { return m_Ps3VideoGamma; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(Ps3VideoGamma), this, m_Ps3VideoGamma, value)) m_Ps3VideoGamma = value; } } // 0x50 (80)
 		
 		protected uint m_Ps3FrameMainBufferSize = new uint();
-		[ContainerField(84), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(2892170406)]
+		[ContainerField(Name: "Ps3FrameMainBufferSize", Offset: 84, NameHash: 2892170406, Flags: 49421), LayoutImmutable, Blittable]
 		public uint Ps3FrameMainBufferSize { get { return m_Ps3FrameMainBufferSize; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(Ps3FrameMainBufferSize), this, m_Ps3FrameMainBufferSize, value)) m_Ps3FrameMainBufferSize = value; } } // 0x54 (84)
 		
 		protected uint m_Ps3FrameLocalBufferSize = new uint();
-		[ContainerField(88), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(2611594240)]
+		[ContainerField(Name: "Ps3FrameLocalBufferSize", Offset: 88, NameHash: 2611594240, Flags: 49421), LayoutImmutable, Blittable]
 		public uint Ps3FrameLocalBufferSize { get { return m_Ps3FrameLocalBufferSize; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(Ps3FrameLocalBufferSize), this, m_Ps3FrameLocalBufferSize, value)) m_Ps3FrameLocalBufferSize = value; } } // 0x58 (88)
 		
 		protected float m_ViewDistance = new float();
-		[ContainerField(92), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2201945291)]
+		[ContainerField(Name: "ViewDistance", Offset: 92, NameHash: 2201945291, Flags: 49469), LayoutImmutable, Blittable]
 		public float ViewDistance { get { return m_ViewDistance; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(ViewDistance), this, m_ViewDistance, value)) m_ViewDistance = value; } } // 0x5C (92)
 		
 		protected float m_CameraCutMaxFrameTranslation = new float();
-		[ContainerField(96), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(857495452)]
+		[ContainerField(Name: "CameraCutMaxFrameTranslation", Offset: 96, NameHash: 857495452, Flags: 49469), LayoutImmutable, Blittable]
 		public float CameraCutMaxFrameTranslation { get { return m_CameraCutMaxFrameTranslation; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(CameraCutMaxFrameTranslation), this, m_CameraCutMaxFrameTranslation, value)) m_CameraCutMaxFrameTranslation = value; } } // 0x60 (96)
 		
 		protected float m_NearPlane = new float();
-		[ContainerField(100), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3156145579)]
+		[ContainerField(Name: "NearPlane", Offset: 100, NameHash: 3156145579, Flags: 49469), LayoutImmutable, Blittable]
 		public float NearPlane { get { return m_NearPlane; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(NearPlane), this, m_NearPlane, value)) m_NearPlane = value; } } // 0x64 (100)
 		
 		protected float m_ForceWorldFadeAmount = new float();
-		[ContainerField(104), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3732853520)]
+		[ContainerField(Name: "ForceWorldFadeAmount", Offset: 104, NameHash: 3732853520, Flags: 49469), LayoutImmutable, Blittable]
 		public float ForceWorldFadeAmount { get { return m_ForceWorldFadeAmount; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(ForceWorldFadeAmount), this, m_ForceWorldFadeAmount, value)) m_ForceWorldFadeAmount = value; } } // 0x68 (104)
 		
 		protected uint m_EdgeModelMaxVisibleInstanceCount = new uint();
-		[ContainerField(108), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(1451185241)]
+		[ContainerField(Name: "EdgeModelMaxVisibleInstanceCount", Offset: 108, NameHash: 1451185241, Flags: 49421), LayoutImmutable, Blittable]
 		public uint EdgeModelMaxVisibleInstanceCount { get { return m_EdgeModelMaxVisibleInstanceCount; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(EdgeModelMaxVisibleInstanceCount), this, m_EdgeModelMaxVisibleInstanceCount, value)) m_EdgeModelMaxVisibleInstanceCount = value; } } // 0x6C (108)
 		
 		protected int m_EdgeModelForceLod = new int();
-		[ContainerField(112), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(386262579)]
+		[ContainerField(Name: "EdgeModelForceLod", Offset: 112, NameHash: 386262579, Flags: 49405), LayoutImmutable, Blittable]
 		public int EdgeModelForceLod { get { return m_EdgeModelForceLod; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(EdgeModelForceLod), this, m_EdgeModelForceLod, value)) m_EdgeModelForceLod = value; } } // 0x70 (112)
 		
 		protected float m_EdgeModelViewDistance = new float();
-		[ContainerField(116), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2290647591)]
+		[ContainerField(Name: "EdgeModelViewDistance", Offset: 116, NameHash: 2290647591, Flags: 49469), LayoutImmutable, Blittable]
 		public float EdgeModelViewDistance { get { return m_EdgeModelViewDistance; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(EdgeModelViewDistance), this, m_EdgeModelViewDistance, value)) m_EdgeModelViewDistance = value; } } // 0x74 (116)
 		
 		protected bool m_Ps3LinearFrameCmdBufEnable = new bool();
-		[ContainerField(120), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3181089999)]
+		[ContainerField(Name: "Ps3LinearFrameCmdBufEnable", Offset: 120, NameHash: 3181089999, Flags: 49325), LayoutImmutable, Blittable]
 		public bool Ps3LinearFrameCmdBufEnable { get { return m_Ps3LinearFrameCmdBufEnable; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(Ps3LinearFrameCmdBufEnable), this, m_Ps3LinearFrameCmdBufEnable, value)) m_Ps3LinearFrameCmdBufEnable = value; } } // 0x78 (120)
 		
 		protected bool m_XenonRes1280x704Enable = new bool();
-		[ContainerField(121), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(619543602)]
+		[ContainerField(Name: "XenonRes1280x704Enable", Offset: 121, NameHash: 619543602, Flags: 49325), LayoutImmutable, Blittable]
 		public bool XenonRes1280x704Enable { get { return m_XenonRes1280x704Enable; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(XenonRes1280x704Enable), this, m_XenonRes1280x704Enable, value)) m_XenonRes1280x704Enable = value; } } // 0x79 (121)
 		
 		protected bool m_PerfOverlayEnable = new bool();
-		[ContainerField(122), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1531499007)]
+		[ContainerField(Name: "PerfOverlayEnable", Offset: 122, NameHash: 1531499007, Flags: 49325), LayoutImmutable, Blittable]
 		public bool PerfOverlayEnable { get { return m_PerfOverlayEnable; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(PerfOverlayEnable), this, m_PerfOverlayEnable, value)) m_PerfOverlayEnable = value; } } // 0x7A (122)
 		
 		protected bool m_GcmHudEnable = new bool();
-		[ContainerField(123), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3207867476)]
+		[ContainerField(Name: "GcmHudEnable", Offset: 123, NameHash: 3207867476, Flags: 49325), LayoutImmutable, Blittable]
 		public bool GcmHudEnable { get { return m_GcmHudEnable; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(GcmHudEnable), this, m_GcmHudEnable, value)) m_GcmHudEnable = value; } } // 0x7B (123)
 		
 		protected bool m_MovieVSyncEnable = new bool();
-		[ContainerField(124), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3216962093)]
+		[ContainerField(Name: "MovieVSyncEnable", Offset: 124, NameHash: 3216962093, Flags: 49325), LayoutImmutable, Blittable]
 		public bool MovieVSyncEnable { get { return m_MovieVSyncEnable; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(MovieVSyncEnable), this, m_MovieVSyncEnable, value)) m_MovieVSyncEnable = value; } } // 0x7C (124)
 		
 		protected bool m_Ps3Res1280x704Enable = new bool();
-		[ContainerField(125), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1187504528)]
+		[ContainerField(Name: "Ps3Res1280x704Enable", Offset: 125, NameHash: 1187504528, Flags: 49325), LayoutImmutable, Blittable]
 		public bool Ps3Res1280x704Enable { get { return m_Ps3Res1280x704Enable; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(Ps3Res1280x704Enable), this, m_Ps3Res1280x704Enable, value)) m_Ps3Res1280x704Enable = value; } } // 0x7D (125)
 		
 		protected bool m_InitialClearEnable = new bool();
-		[ContainerField(126), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(676050019)]
+		[ContainerField(Name: "InitialClearEnable", Offset: 126, NameHash: 676050019, Flags: 49325), LayoutImmutable, Blittable]
 		public bool InitialClearEnable { get { return m_InitialClearEnable; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(InitialClearEnable), this, m_InitialClearEnable, value)) m_InitialClearEnable = value; } } // 0x7E (126)
 		
 		protected bool m_GpuProfilerEnable = new bool();
-		[ContainerField(127), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1651467743)]
+		[ContainerField(Name: "GpuProfilerEnable", Offset: 127, NameHash: 1651467743, Flags: 49325), LayoutImmutable, Blittable]
 		public bool GpuProfilerEnable { get { return m_GpuProfilerEnable; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(GpuProfilerEnable), this, m_GpuProfilerEnable, value)) m_GpuProfilerEnable = value; } } // 0x7F (127)
 		
 		protected bool m_Ps3CellMemoryTexturesEnable = new bool();
-		[ContainerField(128), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1001772351)]
+		[ContainerField(Name: "Ps3CellMemoryTexturesEnable", Offset: 128, NameHash: 1001772351, Flags: 49325), LayoutImmutable, Blittable]
 		public bool Ps3CellMemoryTexturesEnable { get { return m_Ps3CellMemoryTexturesEnable; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(Ps3CellMemoryTexturesEnable), this, m_Ps3CellMemoryTexturesEnable, value)) m_Ps3CellMemoryTexturesEnable = value; } } // 0x80 (128)
 		
 		protected bool m_XenonBufferTwoFramesEnable = new bool();
-		[ContainerField(129), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(609481908)]
+		[ContainerField(Name: "XenonBufferTwoFramesEnable", Offset: 129, NameHash: 609481908, Flags: 49325), LayoutImmutable, Blittable]
 		public bool XenonBufferTwoFramesEnable { get { return m_XenonBufferTwoFramesEnable; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(XenonBufferTwoFramesEnable), this, m_XenonBufferTwoFramesEnable, value)) m_XenonBufferTwoFramesEnable = value; } } // 0x81 (129)
 		
 		protected bool m_DrawFpsHistogram = new bool();
-		[ContainerField(130), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(109066192)]
+		[ContainerField(Name: "DrawFpsHistogram", Offset: 130, NameHash: 109066192, Flags: 49325), LayoutImmutable, Blittable]
 		public bool DrawFpsHistogram { get { return m_DrawFpsHistogram; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(DrawFpsHistogram), this, m_DrawFpsHistogram, value)) m_DrawFpsHistogram = value; } } // 0x82 (130)
 		
 		protected bool m_Fullscreen = new bool();
-		[ContainerField(131), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2248877754)]
+		[ContainerField(Name: "Fullscreen", Offset: 131, NameHash: 2248877754, Flags: 49325), LayoutImmutable, Blittable]
 		public bool Fullscreen { get { return m_Fullscreen; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(Fullscreen), this, m_Fullscreen, value)) m_Fullscreen = value; } } // 0x83 (131)
 		
 		protected bool m_PerfOverlayLatestFrameTimeEnable = new bool();
-		[ContainerField(132), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1529162668)]
+		[ContainerField(Name: "PerfOverlayLatestFrameTimeEnable", Offset: 132, NameHash: 1529162668, Flags: 49325), LayoutImmutable, Blittable]
 		public bool PerfOverlayLatestFrameTimeEnable { get { return m_PerfOverlayLatestFrameTimeEnable; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(PerfOverlayLatestFrameTimeEnable), this, m_PerfOverlayLatestFrameTimeEnable, value)) m_PerfOverlayLatestFrameTimeEnable = value; } } // 0x84 (132)
 		
 		protected bool m_JobEnable = new bool();
-		[ContainerField(133), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(442685923)]
+		[ContainerField(Name: "JobEnable", Offset: 133, NameHash: 442685923, Flags: 49325), LayoutImmutable, Blittable]
 		public bool JobEnable { get { return m_JobEnable; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(JobEnable), this, m_JobEnable, value)) m_JobEnable = value; } } // 0x85 (133)
 		
 		protected bool m_PerfOverlayVisible = new bool();
-		[ContainerField(134), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2073387536)]
+		[ContainerField(Name: "PerfOverlayVisible", Offset: 134, NameHash: 2073387536, Flags: 49325), LayoutImmutable, Blittable]
 		public bool PerfOverlayVisible { get { return m_PerfOverlayVisible; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(PerfOverlayVisible), this, m_PerfOverlayVisible, value)) m_PerfOverlayVisible = value; } } // 0x86 (134)
 		
 		protected bool m_EmittersEnable = new bool();
-		[ContainerField(135), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(121284033)]
+		[ContainerField(Name: "EmittersEnable", Offset: 135, NameHash: 121284033, Flags: 49325), LayoutImmutable, Blittable]
 		public bool EmittersEnable { get { return m_EmittersEnable; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(EmittersEnable), this, m_EmittersEnable, value)) m_EmittersEnable = value; } } // 0x87 (135)
 		
 		protected bool m_EdgeModelsEnable = new bool();
-		[ContainerField(136), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(928744923)]
+		[ContainerField(Name: "EdgeModelsEnable", Offset: 136, NameHash: 928744923, Flags: 49325), LayoutImmutable, Blittable]
 		public bool EdgeModelsEnable { get { return m_EdgeModelsEnable; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(EdgeModelsEnable), this, m_EdgeModelsEnable, value)) m_EdgeModelsEnable = value; } } // 0x88 (136)
 		
 		protected bool m_EdgeModelCastShadowsEnable = new bool();
-		[ContainerField(137), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(4261856024)]
+		[ContainerField(Name: "EdgeModelCastShadowsEnable", Offset: 137, NameHash: 4261856024, Flags: 49325), LayoutImmutable, Blittable]
 		public bool EdgeModelCastShadowsEnable { get { return m_EdgeModelCastShadowsEnable; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(EdgeModelCastShadowsEnable), this, m_EdgeModelCastShadowsEnable, value)) m_EdgeModelCastShadowsEnable = value; } } // 0x89 (137)
 		
 		protected bool m_EdgeModelDepthBiasEnable = new bool();
-		[ContainerField(138), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3070669020)]
+		[ContainerField(Name: "EdgeModelDepthBiasEnable", Offset: 138, NameHash: 3070669020, Flags: 49325), LayoutImmutable, Blittable]
 		public bool EdgeModelDepthBiasEnable { get { return m_EdgeModelDepthBiasEnable; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(EdgeModelDepthBiasEnable), this, m_EdgeModelDepthBiasEnable, value)) m_EdgeModelDepthBiasEnable = value; } } // 0x8A (138)
 		
 		protected bool m_EdgeModelShadowDepthBiasEnable = new bool();
-		[ContainerField(139), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3511388634)]
+		[ContainerField(Name: "EdgeModelShadowDepthBiasEnable", Offset: 139, NameHash: 3511388634, Flags: 49325), LayoutImmutable, Blittable]
 		public bool EdgeModelShadowDepthBiasEnable { get { return m_EdgeModelShadowDepthBiasEnable; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(EdgeModelShadowDepthBiasEnable), this, m_EdgeModelShadowDepthBiasEnable, value)) m_EdgeModelShadowDepthBiasEnable = value; } } // 0x8B (139)
 		
 		protected bool m_VSyncFlashTestEnable = new bool();
-		[ContainerField(140), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2611047923)]
+		[ContainerField(Name: "VSyncFlashTestEnable", Offset: 140, NameHash: 2611047923, Flags: 49325), LayoutImmutable, Blittable]
 		public bool VSyncFlashTestEnable { get { return m_VSyncFlashTestEnable; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(VSyncFlashTestEnable), this, m_VSyncFlashTestEnable, value)) m_VSyncFlashTestEnable = value; } } // 0x8C (140)
 		
 		protected bool m_EntityRenderEnable = new bool();
-		[ContainerField(141), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1701938165)]
+		[ContainerField(Name: "EntityRenderEnable", Offset: 141, NameHash: 1701938165, Flags: 49325), LayoutImmutable, Blittable]
 		public bool EntityRenderEnable { get { return m_EntityRenderEnable; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(EntityRenderEnable), this, m_EntityRenderEnable, value)) m_EntityRenderEnable = value; } } // 0x8D (141)
 		
 		protected bool m_EdgeModelSpuInstancingEnable = new bool();
-		[ContainerField(142), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2066931218)]
+		[ContainerField(Name: "EdgeModelSpuInstancingEnable", Offset: 142, NameHash: 2066931218, Flags: 49325), LayoutImmutable, Blittable]
 		public bool EdgeModelSpuInstancingEnable { get { return m_EdgeModelSpuInstancingEnable; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(EdgeModelSpuInstancingEnable), this, m_EdgeModelSpuInstancingEnable, value)) m_EdgeModelSpuInstancingEnable = value; } } // 0x8E (142)
 		
 		protected bool m_EdgeModelUseMainLodEnable = new bool();
-		[ContainerField(143), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(711389031)]
+		[ContainerField(Name: "EdgeModelUseMainLodEnable", Offset: 143, NameHash: 711389031, Flags: 49325), LayoutImmutable, Blittable]
 		public bool EdgeModelUseMainLodEnable { get { return m_EdgeModelUseMainLodEnable; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(EdgeModelUseMainLodEnable), this, m_EdgeModelUseMainLodEnable, value)) m_EdgeModelUseMainLodEnable = value; } } // 0x8F (143)
 		
 		protected bool m_DebugRenderServiceEnable = new bool();
-		[ContainerField(144), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(215748418)]
+		[ContainerField(Name: "DebugRenderServiceEnable", Offset: 144, NameHash: 215748418, Flags: 49325), LayoutImmutable, Blittable]
 		public bool DebugRenderServiceEnable { get { return m_DebugRenderServiceEnable; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(DebugRenderServiceEnable), this, m_DebugRenderServiceEnable, value)) m_DebugRenderServiceEnable = value; } } // 0x90 (144)
 		
 		protected bool m_EdgeModelUseLodBox = new bool();
-		[ContainerField(145), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2867701848)]
+		[ContainerField(Name: "EdgeModelUseLodBox", Offset: 145, NameHash: 2867701848, Flags: 49325), LayoutImmutable, Blittable]
 		public bool EdgeModelUseLodBox { get { return m_EdgeModelUseLodBox; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(EdgeModelUseLodBox), this, m_EdgeModelUseLodBox, value)) m_EdgeModelUseLodBox = value; } } // 0x91 (145)
 		
 		protected bool m_DebugRendererEnable = new bool();
-		[ContainerField(146), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(4239334696)]
+		[ContainerField(Name: "DebugRendererEnable", Offset: 146, NameHash: 4239334696, Flags: 49325), LayoutImmutable, Blittable]
 		public bool DebugRendererEnable { get { return m_DebugRendererEnable; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(DebugRendererEnable), this, m_DebugRendererEnable, value)) m_DebugRendererEnable = value; } } // 0x92 (146)
 		
 		protected bool m_ForceVSyncEnable = new bool();
-		[ContainerField(147), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1841857032)]
+		[ContainerField(Name: "ForceVSyncEnable", Offset: 147, NameHash: 1841857032, Flags: 49325), LayoutImmutable, Blittable]
 		public bool ForceVSyncEnable { get { return m_ForceVSyncEnable; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(ForceVSyncEnable), this, m_ForceVSyncEnable, value)) m_ForceVSyncEnable = value; } } // 0x93 (147)
 		
 		protected bool m_EdgeModelCullEnable = new bool();
-		[ContainerField(148), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1610471710)]
+		[ContainerField(Name: "EdgeModelCullEnable", Offset: 148, NameHash: 1610471710, Flags: 49325), LayoutImmutable, Blittable]
 		public bool EdgeModelCullEnable { get { return m_EdgeModelCullEnable; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(EdgeModelCullEnable), this, m_EdgeModelCullEnable, value)) m_EdgeModelCullEnable = value; } } // 0x94 (148)
 		
 		protected bool m_EdgeModelFrustumCullEnable = new bool();
-		[ContainerField(149), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3571022816)]
+		[ContainerField(Name: "EdgeModelFrustumCullEnable", Offset: 149, NameHash: 3571022816, Flags: 49325), LayoutImmutable, Blittable]
 		public bool EdgeModelFrustumCullEnable { get { return m_EdgeModelFrustumCullEnable; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(EdgeModelFrustumCullEnable), this, m_EdgeModelFrustumCullEnable, value)) m_EdgeModelFrustumCullEnable = value; } } // 0x95 (149)
 		
 		protected bool m_EdgeModelOcclusionCullEnable = new bool();
-		[ContainerField(150), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3807955731)]
+		[ContainerField(Name: "EdgeModelOcclusionCullEnable", Offset: 150, NameHash: 3807955731, Flags: 49325), LayoutImmutable, Blittable]
 		public bool EdgeModelOcclusionCullEnable { get { return m_EdgeModelOcclusionCullEnable; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(EdgeModelOcclusionCullEnable), this, m_EdgeModelOcclusionCullEnable, value)) m_EdgeModelOcclusionCullEnable = value; } } // 0x96 (150)
 		
 		protected bool m_EdgeModelAdditionalCullEnable = new bool();
-		[ContainerField(151), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2958104775)]
+		[ContainerField(Name: "EdgeModelAdditionalCullEnable", Offset: 151, NameHash: 2958104775, Flags: 49325), LayoutImmutable, Blittable]
 		public bool EdgeModelAdditionalCullEnable { get { return m_EdgeModelAdditionalCullEnable; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(EdgeModelAdditionalCullEnable), this, m_EdgeModelAdditionalCullEnable, value)) m_EdgeModelAdditionalCullEnable = value; } } // 0x97 (151)
 		
 		protected bool m_EdgeModelDrawBoxes = new bool();
-		[ContainerField(152), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3437926730)]
+		[ContainerField(Name: "EdgeModelDrawBoxes", Offset: 152, NameHash: 3437926730, Flags: 49325), LayoutImmutable, Blittable]
 		public bool EdgeModelDrawBoxes { get { return m_EdgeModelDrawBoxes; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(EdgeModelDrawBoxes), this, m_EdgeModelDrawBoxes, value)) m_EdgeModelDrawBoxes = value; } } // 0x98 (152)
 		
 		protected bool m_EdgeModelDrawStats = new bool();
-		[ContainerField(153), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3457602056)]
+		[ContainerField(Name: "EdgeModelDrawStats", Offset: 153, NameHash: 3457602056, Flags: 49325), LayoutImmutable, Blittable]
 		public bool EdgeModelDrawStats { get { return m_EdgeModelDrawStats; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(EdgeModelDrawStats), this, m_EdgeModelDrawStats, value)) m_EdgeModelDrawStats = value; } } // 0x99 (153)
 		
 		protected bool m_StaticModelEnable = new bool();
-		[ContainerField(154), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(16174035)]
+		[ContainerField(Name: "StaticModelEnable", Offset: 154, NameHash: 16174035, Flags: 49325), LayoutImmutable, Blittable]
 		public bool StaticModelEnable { get { return m_StaticModelEnable; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(StaticModelEnable), this, m_StaticModelEnable, value)) m_StaticModelEnable = value; } } // 0x9A (154)
 		
 		protected bool m_StaticModelMeshesEnable = new bool();
-		[ContainerField(155), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3520548374)]
+		[ContainerField(Name: "StaticModelMeshesEnable", Offset: 155, NameHash: 3520548374, Flags: 49325), LayoutImmutable, Blittable]
 		public bool StaticModelMeshesEnable { get { return m_StaticModelMeshesEnable; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(StaticModelMeshesEnable), this, m_StaticModelMeshesEnable, value)) m_StaticModelMeshesEnable = value; } } // 0x9B (155)
 		
 		protected bool m_StaticModelZPassEnable = new bool();
-		[ContainerField(156), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(157779288)]
+		[ContainerField(Name: "StaticModelZPassEnable", Offset: 156, NameHash: 157779288, Flags: 49325), LayoutImmutable, Blittable]
 		public bool StaticModelZPassEnable { get { return m_StaticModelZPassEnable; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(StaticModelZPassEnable), this, m_StaticModelZPassEnable, value)) m_StaticModelZPassEnable = value; } } // 0x9C (156)
 		
 		protected bool m_StaticModelPartCullEnable = new bool();
-		[ContainerField(157), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(756373810)]
+		[ContainerField(Name: "StaticModelPartCullEnable", Offset: 157, NameHash: 756373810, Flags: 49325), LayoutImmutable, Blittable]
 		public bool StaticModelPartCullEnable { get { return m_StaticModelPartCullEnable; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(StaticModelPartCullEnable), this, m_StaticModelPartCullEnable, value)) m_StaticModelPartCullEnable = value; } } // 0x9D (157)
 		
 		protected bool m_StaticModelPartFrustumCullEnable = new bool();
-		[ContainerField(158), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2549275532)]
+		[ContainerField(Name: "StaticModelPartFrustumCullEnable", Offset: 158, NameHash: 2549275532, Flags: 49325), LayoutImmutable, Blittable]
 		public bool StaticModelPartFrustumCullEnable { get { return m_StaticModelPartFrustumCullEnable; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(StaticModelPartFrustumCullEnable), this, m_StaticModelPartFrustumCullEnable, value)) m_StaticModelPartFrustumCullEnable = value; } } // 0x9E (158)
 		
 		protected bool m_StaticModelPartOcclusionCullEnable = new bool();
-		[ContainerField(159), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3865476287)]
+		[ContainerField(Name: "StaticModelPartOcclusionCullEnable", Offset: 159, NameHash: 3865476287, Flags: 49325), LayoutImmutable, Blittable]
 		public bool StaticModelPartOcclusionCullEnable { get { return m_StaticModelPartOcclusionCullEnable; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(StaticModelPartOcclusionCullEnable), this, m_StaticModelPartOcclusionCullEnable, value)) m_StaticModelPartOcclusionCullEnable = value; } } // 0x9F (159)
 		
 		protected bool m_StaticModelPartShadowCullEnable = new bool();
-		[ContainerField(160), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1569108020)]
+		[ContainerField(Name: "StaticModelPartShadowCullEnable", Offset: 160, NameHash: 1569108020, Flags: 49325), LayoutImmutable, Blittable]
 		public bool StaticModelPartShadowCullEnable { get { return m_StaticModelPartShadowCullEnable; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(StaticModelPartShadowCullEnable), this, m_StaticModelPartShadowCullEnable, value)) m_StaticModelPartShadowCullEnable = value; } } // 0xA0 (160)
 		
 		protected bool m_StaticModelDrawBoxes = new bool();
-		[ContainerField(161), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2399189489)]
+		[ContainerField(Name: "StaticModelDrawBoxes", Offset: 161, NameHash: 2399189489, Flags: 49325), LayoutImmutable, Blittable]
 		public bool StaticModelDrawBoxes { get { return m_StaticModelDrawBoxes; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(StaticModelDrawBoxes), this, m_StaticModelDrawBoxes, value)) m_StaticModelDrawBoxes = value; } } // 0xA1 (161)
 		
 		protected bool m_StaticModelDrawStats = new bool();
-		[ContainerField(162), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2379235123)]
+		[ContainerField(Name: "StaticModelDrawStats", Offset: 162, NameHash: 2379235123, Flags: 49325), LayoutImmutable, Blittable]
 		public bool StaticModelDrawStats { get { return m_StaticModelDrawStats; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(StaticModelDrawStats), this, m_StaticModelDrawStats, value)) m_StaticModelDrawStats = value; } } // 0xA2 (162)
 		
 		protected bool m_DrawScreenInfo = new bool();
-		[ContainerField(163), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2003014247)]
+		[ContainerField(Name: "DrawScreenInfo", Offset: 163, NameHash: 2003014247, Flags: 49325), LayoutImmutable, Blittable]
 		public bool DrawScreenInfo { get { return m_DrawScreenInfo; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(DrawScreenInfo), this, m_DrawScreenInfo, value)) m_DrawScreenInfo = value; } } // 0xA3 (163)
 		
 		protected bool m_ForceOrthoViewEnable = new bool();
-		[ContainerField(164), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3649401946)]
+		[ContainerField(Name: "ForceOrthoViewEnable", Offset: 164, NameHash: 3649401946, Flags: 49325), LayoutImmutable, Blittable]
 		public bool ForceOrthoViewEnable { get { return m_ForceOrthoViewEnable; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(ForceOrthoViewEnable), this, m_ForceOrthoViewEnable, value)) m_ForceOrthoViewEnable = value; } } // 0xA4 (164)
 		
 		protected bool m_StaticModelCullSpuJobEnable = new bool();
-		[ContainerField(165), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1653994164)]
+		[ContainerField(Name: "StaticModelCullSpuJobEnable", Offset: 165, NameHash: 1653994164, Flags: 49325), LayoutImmutable, Blittable]
 		public bool StaticModelCullSpuJobEnable { get { return m_StaticModelCullSpuJobEnable; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(StaticModelCullSpuJobEnable), this, m_StaticModelCullSpuJobEnable, value)) m_StaticModelCullSpuJobEnable = value; } } // 0xA5 (165)
 		
 		protected bool m_LockView = new bool();
-		[ContainerField(166), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1982163459)]
+		[ContainerField(Name: "LockView", Offset: 166, NameHash: 1982163459, Flags: 49325), LayoutImmutable, Blittable]
 		public bool LockView { get { return m_LockView; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(LockView), this, m_LockView, value)) m_LockView = value; } } // 0xA6 (166)
 		
 		protected bool m_ResetLockedView = new bool();
-		[ContainerField(167), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2200752407)]
+		[ContainerField(Name: "ResetLockedView", Offset: 167, NameHash: 2200752407, Flags: 49325), LayoutImmutable, Blittable]
 		public bool ResetLockedView { get { return m_ResetLockedView; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(ResetLockedView), this, m_ResetLockedView, value)) m_ResetLockedView = value; } } // 0xA7 (167)
 		
 		protected bool m_DrawInfo = new bool();
-		[ContainerField(168), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3456547147)]
+		[ContainerField(Name: "DrawInfo", Offset: 168, NameHash: 3456547147, Flags: 49325), LayoutImmutable, Blittable]
 		public bool DrawInfo { get { return m_DrawInfo; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(DrawInfo), this, m_DrawInfo, value)) m_DrawInfo = value; } } // 0xA8 (168)
 		
 		protected bool m_FadeEnable = new bool();
-		[ContainerField(169), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1633100994)]
+		[ContainerField(Name: "FadeEnable", Offset: 169, NameHash: 1633100994, Flags: 49325), LayoutImmutable, Blittable]
 		public bool FadeEnable { get { return m_FadeEnable; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(FadeEnable), this, m_FadeEnable, value)) m_FadeEnable = value; } } // 0xA9 (169)
 		
 		protected bool m_FadeWaitingEnable = new bool();
-		[ContainerField(170), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3804420041)]
+		[ContainerField(Name: "FadeWaitingEnable", Offset: 170, NameHash: 3804420041, Flags: 49325), LayoutImmutable, Blittable]
 		public bool FadeWaitingEnable { get { return m_FadeWaitingEnable; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(FadeWaitingEnable), this, m_FadeWaitingEnable, value)) m_FadeWaitingEnable = value; } } // 0xAA (170)
 		
 		protected bool m_DrawFps = new bool();
-		[ContainerField(171), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(365038176)]
+		[ContainerField(Name: "DrawFps", Offset: 171, NameHash: 365038176, Flags: 49325), LayoutImmutable, Blittable]
 		public bool DrawFps { get { return m_DrawFps; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(DrawFps), this, m_DrawFps, value)) m_DrawFps = value; } } // 0xAB (171)
 		
 		protected bool m_DestructionVolumeDrawEnable = new bool();
-		[ContainerField(172), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3224392434)]
+		[ContainerField(Name: "DestructionVolumeDrawEnable", Offset: 172, NameHash: 3224392434, Flags: 49325), LayoutImmutable, Blittable]
 		public bool DestructionVolumeDrawEnable { get { return m_DestructionVolumeDrawEnable; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(DestructionVolumeDrawEnable), this, m_DestructionVolumeDrawEnable, value)) m_DestructionVolumeDrawEnable = value; } } // 0xAC (172)
 		
 		protected bool m_BlurEnable = new bool();
-		[ContainerField(173), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1072996973)]
+		[ContainerField(Name: "BlurEnable", Offset: 173, NameHash: 1072996973, Flags: 49325), LayoutImmutable, Blittable]
 		public bool BlurEnable { get { return m_BlurEnable; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(BlurEnable), this, m_BlurEnable, value)) m_BlurEnable = value; } } // 0xAD (173)
 		
 		protected bool m_BuildJobSyncEnable = new bool();
-		[ContainerField(174), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3715134706)]
+		[ContainerField(Name: "BuildJobSyncEnable", Offset: 174, NameHash: 3715134706, Flags: 49325), LayoutImmutable, Blittable]
 		public bool BuildJobSyncEnable { get { return m_BuildJobSyncEnable; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(BuildJobSyncEnable), this, m_BuildJobSyncEnable, value)) m_BuildJobSyncEnable = value; } } // 0xAE (174)
 		
 		protected bool m_ForceSquareOrthoView = new bool();
-		[ContainerField(175), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1356920058)]
+		[ContainerField(Name: "ForceSquareOrthoView", Offset: 175, NameHash: 1356920058, Flags: 49325), LayoutImmutable, Blittable]
 		public bool ForceSquareOrthoView { get { return m_ForceSquareOrthoView; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(ForceSquareOrthoView), this, m_ForceSquareOrthoView, value)) m_ForceSquareOrthoView = value; } } // 0xAF (175)
 		
 		protected bool m_Enable = new bool();
-		[ContainerField(176), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2342790116)]
+		[ContainerField(Name: "Enable", Offset: 176, NameHash: 2342790116, Flags: 49325), LayoutImmutable, Blittable]
 		public bool Enable { get { return m_Enable; } set { if (OnPropertyChanging("GameRenderSettings." + nameof(Enable), this, m_Enable, value)) m_Enable = value; } } // 0xB0 (176)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

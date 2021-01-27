@@ -18,60 +18,60 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(28), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 28)]
 	public class SyncedBFSettings : 
 		SystemSettings
 	{
 		protected float m_GameModeCounterModifier = new float();
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3667623179)]
+		[ContainerField(Name: "GameModeCounterModifier", Offset: 12, NameHash: 3667623179, Flags: 49469), LayoutImmutable, Blittable]
 		public float GameModeCounterModifier { get { return m_GameModeCounterModifier; } set { if (OnPropertyChanging("SyncedBFSettings." + nameof(GameModeCounterModifier), this, m_GameModeCounterModifier, value)) m_GameModeCounterModifier = value; } } // 0xC (12)
 		
 		protected bool m_UnlicensedUnlocksUnlocked = new bool();
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3594366899)]
+		[ContainerField(Name: "UnlicensedUnlocksUnlocked", Offset: 16, NameHash: 3594366899, Flags: 49325), LayoutImmutable, Blittable]
 		public bool UnlicensedUnlocksUnlocked { get { return m_UnlicensedUnlocksUnlocked; } set { if (OnPropertyChanging("SyncedBFSettings." + nameof(UnlicensedUnlocksUnlocked), this, m_UnlicensedUnlocksUnlocked, value)) m_UnlicensedUnlocksUnlocked = value; } } // 0x10 (16)
 		
 		protected bool m_NoMinimap = new bool();
-		[ContainerField(17), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1386192603)]
+		[ContainerField(Name: "NoMinimap", Offset: 17, NameHash: 1386192603, Flags: 49325), LayoutImmutable, Blittable]
 		public bool NoMinimap { get { return m_NoMinimap; } set { if (OnPropertyChanging("SyncedBFSettings." + nameof(NoMinimap), this, m_NoMinimap, value)) m_NoMinimap = value; } } // 0x11 (17)
 		
 		protected bool m_NoHud = new bool();
-		[ContainerField(18), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(215840861)]
+		[ContainerField(Name: "NoHud", Offset: 18, NameHash: 215840861, Flags: 49325), LayoutImmutable, Blittable]
 		public bool NoHud { get { return m_NoHud; } set { if (OnPropertyChanging("SyncedBFSettings." + nameof(NoHud), this, m_NoHud, value)) m_NoHud = value; } } // 0x12 (18)
 		
 		protected bool m_NoMinimapSpotting = new bool();
-		[ContainerField(19), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1230894711)]
+		[ContainerField(Name: "NoMinimapSpotting", Offset: 19, NameHash: 1230894711, Flags: 49325), LayoutImmutable, Blittable]
 		public bool NoMinimapSpotting { get { return m_NoMinimapSpotting; } set { if (OnPropertyChanging("SyncedBFSettings." + nameof(NoMinimapSpotting), this, m_NoMinimapSpotting, value)) m_NoMinimapSpotting = value; } } // 0x13 (19)
 		
 		protected bool m_No3dSpotting = new bool();
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1747911103)]
+		[ContainerField(Name: "No3dSpotting", Offset: 20, NameHash: 1747911103, Flags: 49325), LayoutImmutable, Blittable]
 		public bool No3dSpotting { get { return m_No3dSpotting; } set { if (OnPropertyChanging("SyncedBFSettings." + nameof(No3dSpotting), this, m_No3dSpotting, value)) m_No3dSpotting = value; } } // 0x14 (20)
 		
 		protected bool m_NoNameTag = new bool();
-		[ContainerField(21), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(698198321)]
+		[ContainerField(Name: "NoNameTag", Offset: 21, NameHash: 698198321, Flags: 49325), LayoutImmutable, Blittable]
 		public bool NoNameTag { get { return m_NoNameTag; } set { if (OnPropertyChanging("SyncedBFSettings." + nameof(NoNameTag), this, m_NoNameTag, value)) m_NoNameTag = value; } } // 0x15 (21)
 		
 		protected bool m_OnlySquadLeaderSpawn = new bool();
-		[ContainerField(22), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1511489379)]
+		[ContainerField(Name: "OnlySquadLeaderSpawn", Offset: 22, NameHash: 1511489379, Flags: 49325), LayoutImmutable, Blittable]
 		public bool OnlySquadLeaderSpawn { get { return m_OnlySquadLeaderSpawn; } set { if (OnPropertyChanging("SyncedBFSettings." + nameof(OnlySquadLeaderSpawn), this, m_OnlySquadLeaderSpawn, value)) m_OnlySquadLeaderSpawn = value; } } // 0x16 (22)
 		
 		protected bool m_TeamSwitchingAllowed = new bool();
-		[ContainerField(23), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3622000178)]
+		[ContainerField(Name: "TeamSwitchingAllowed", Offset: 23, NameHash: 3622000178, Flags: 49325), LayoutImmutable, Blittable]
 		public bool TeamSwitchingAllowed { get { return m_TeamSwitchingAllowed; } set { if (OnPropertyChanging("SyncedBFSettings." + nameof(TeamSwitchingAllowed), this, m_TeamSwitchingAllowed, value)) m_TeamSwitchingAllowed = value; } } // 0x17 (23)
 		
 		protected bool m_MemoryDefragUI = new bool();
-		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2646324939)]
+		[ContainerField(Name: "MemoryDefragUI", Offset: 24, NameHash: 2646324939, Flags: 49325), LayoutImmutable, Blittable]
 		public bool MemoryDefragUI { get { return m_MemoryDefragUI; } set { if (OnPropertyChanging("SyncedBFSettings." + nameof(MemoryDefragUI), this, m_MemoryDefragUI, value)) m_MemoryDefragUI = value; } } // 0x18 (24)
 		
 		protected bool m_MemoryGarbageCollectHavok = new bool();
-		[ContainerField(25), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1120555892)]
+		[ContainerField(Name: "MemoryGarbageCollectHavok", Offset: 25, NameHash: 1120555892, Flags: 49325), LayoutImmutable, Blittable]
 		public bool MemoryGarbageCollectHavok { get { return m_MemoryGarbageCollectHavok; } set { if (OnPropertyChanging("SyncedBFSettings." + nameof(MemoryGarbageCollectHavok), this, m_MemoryGarbageCollectHavok, value)) m_MemoryGarbageCollectHavok = value; } } // 0x19 (25)
 		
 		protected bool m_MemoryDefragGlobal = new bool();
-		[ContainerField(26), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(153257596)]
+		[ContainerField(Name: "MemoryDefragGlobal", Offset: 26, NameHash: 153257596, Flags: 49325), LayoutImmutable, Blittable]
 		public bool MemoryDefragGlobal { get { return m_MemoryDefragGlobal; } set { if (OnPropertyChanging("SyncedBFSettings." + nameof(MemoryDefragGlobal), this, m_MemoryDefragGlobal, value)) m_MemoryDefragGlobal = value; } } // 0x1A (26)
 		
 		protected bool m_AllUnlocksUnlocked = new bool();
-		[ContainerField(27), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3219327094)]
+		[ContainerField(Name: "AllUnlocksUnlocked", Offset: 27, NameHash: 3219327094, Flags: 49325), LayoutImmutable, Blittable]
 		public bool AllUnlocksUnlocked { get { return m_AllUnlocksUnlocked; } set { if (OnPropertyChanging("SyncedBFSettings." + nameof(AllUnlocksUnlocked), this, m_AllUnlocksUnlocked, value)) m_AllUnlocksUnlocked = value; } } // 0x1B (27)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,19 +18,19 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(16), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 16)]
 	public class UIMinimapIconTextureState : FrostbiteContainer
 	{
-		[ContainerField(0), MemberInfoFlag(137)]
+		[ContainerField(Name: "State", Offset: 0, NameHash: 230748402, Flags: 137)]
 		public UIIconState State { get; set; } = new UIIconState(); // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "FrameRate", Offset: 4, NameHash: 21928954, Flags: 49469), LayoutImmutable, Blittable]
 		public float FrameRate { get; set; } // 0x4 (4)
 		
-		[ContainerField(8), MemberInfoFlag(65), ContainerArray]
+		[ContainerField(Name: "TextureInfos", Offset: 8, NameHash: 2154121191, Flags: 65)]
 		public List<UIMinimapIconUv> TextureInfos { get; set; } = new List<UIMinimapIconUv>(); // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "ShouldRotate", Offset: 12, NameHash: 1996765845, Flags: 49325), LayoutImmutable, Blittable]
 		public bool ShouldRotate { get; set; } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

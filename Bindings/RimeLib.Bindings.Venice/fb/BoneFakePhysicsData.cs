@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(20), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 20)]
 	public class BoneFakePhysicsData : 
 		DataContainer
 	{
 		protected CtrRef<FakePhysicsData> m_FakePhysics = new CtrRef<FakePhysicsData>();
-		[ContainerField(8), MemberInfoFlag(53), ContainerFieldNameHash(3614234055), ContainerCtrRef]
+		[ContainerField(Name: "FakePhysics", Offset: 8, NameHash: 3614234055, Flags: 53)]
 		public CtrRef<FakePhysicsData> FakePhysics { get { return m_FakePhysics; } set { if (OnPropertyChanging("BoneFakePhysicsData." + nameof(FakePhysics), this, m_FakePhysics, value)) m_FakePhysics = value; } } // 0x8 (8)
 		
 		protected string m_BoneName = string.Empty;
-		[ContainerField(12), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(1590647844)]
+		[ContainerField(Name: "BoneName", Offset: 12, NameHash: 1590647844, Flags: 16509), LayoutImmutable]
 		public string BoneName { get { return m_BoneName; } set { if (OnPropertyChanging("BoneFakePhysicsData." + nameof(BoneName), this, m_BoneName, value)) m_BoneName = value; } } // 0xC (12)
 		
 		protected int m_BoneId = new int();
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(2679406126)]
+		[ContainerField(Name: "BoneId", Offset: 16, NameHash: 2679406126, Flags: 49405), LayoutImmutable, Blittable]
 		public int BoneId { get { return m_BoneId; } set { if (OnPropertyChanging("BoneFakePhysicsData." + nameof(BoneId), this, m_BoneId, value)) m_BoneId = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

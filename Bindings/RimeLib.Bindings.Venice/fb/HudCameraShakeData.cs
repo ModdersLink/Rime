@@ -18,80 +18,80 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(100), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 100)]
 	public class HudCameraShakeData : 
 		UIComponentData
 	{
 		protected float m_WeaponDispersionMin = new float();
-		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2596092207)]
+		[ContainerField(Name: "WeaponDispersionMin", Offset: 28, NameHash: 2596092207, Flags: 49469), LayoutImmutable, Blittable]
 		public float WeaponDispersionMin { get { return m_WeaponDispersionMin; } set { if (OnPropertyChanging("HudCameraShakeData." + nameof(WeaponDispersionMin), this, m_WeaponDispersionMin, value)) m_WeaponDispersionMin = value; } } // 0x1C (28)
 		
 		protected float m_WeaponDispersionMax = new float();
-		[ContainerField(32), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2596092465)]
+		[ContainerField(Name: "WeaponDispersionMax", Offset: 32, NameHash: 2596092465, Flags: 49469), LayoutImmutable, Blittable]
 		public float WeaponDispersionMax { get { return m_WeaponDispersionMax; } set { if (OnPropertyChanging("HudCameraShakeData." + nameof(WeaponDispersionMax), this, m_WeaponDispersionMax, value)) m_WeaponDispersionMax = value; } } // 0x20 (32)
 		
 		protected float m_WeaponDispersionOffsetScale = new float();
-		[ContainerField(36), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2636099696)]
+		[ContainerField(Name: "WeaponDispersionOffsetScale", Offset: 36, NameHash: 2636099696, Flags: 49469), LayoutImmutable, Blittable]
 		public float WeaponDispersionOffsetScale { get { return m_WeaponDispersionOffsetScale; } set { if (OnPropertyChanging("HudCameraShakeData." + nameof(WeaponDispersionOffsetScale), this, m_WeaponDispersionOffsetScale, value)) m_WeaponDispersionOffsetScale = value; } } // 0x24 (36)
 		
 		protected float m_JumpEffectDurationMin = new float();
-		[ContainerField(40), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3119984708)]
+		[ContainerField(Name: "JumpEffectDurationMin", Offset: 40, NameHash: 3119984708, Flags: 49469), LayoutImmutable, Blittable]
 		public float JumpEffectDurationMin { get { return m_JumpEffectDurationMin; } set { if (OnPropertyChanging("HudCameraShakeData." + nameof(JumpEffectDurationMin), this, m_JumpEffectDurationMin, value)) m_JumpEffectDurationMin = value; } } // 0x28 (40)
 		
 		protected float m_JumpEffectDurationMax = new float();
-		[ContainerField(44), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3119984474)]
+		[ContainerField(Name: "JumpEffectDurationMax", Offset: 44, NameHash: 3119984474, Flags: 49469), LayoutImmutable, Blittable]
 		public float JumpEffectDurationMax { get { return m_JumpEffectDurationMax; } set { if (OnPropertyChanging("HudCameraShakeData." + nameof(JumpEffectDurationMax), this, m_JumpEffectDurationMax, value)) m_JumpEffectDurationMax = value; } } // 0x2C (44)
 		
 		protected float m_JumpEffectMin = new float();
-		[ContainerField(48), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2038531226)]
+		[ContainerField(Name: "JumpEffectMin", Offset: 48, NameHash: 2038531226, Flags: 49469), LayoutImmutable, Blittable]
 		public float JumpEffectMin { get { return m_JumpEffectMin; } set { if (OnPropertyChanging("HudCameraShakeData." + nameof(JumpEffectMin), this, m_JumpEffectMin, value)) m_JumpEffectMin = value; } } // 0x30 (48)
 		
 		protected float m_JumpEffectMax = new float();
-		[ContainerField(52), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2038531460)]
+		[ContainerField(Name: "JumpEffectMax", Offset: 52, NameHash: 2038531460, Flags: 49469), LayoutImmutable, Blittable]
 		public float JumpEffectMax { get { return m_JumpEffectMax; } set { if (OnPropertyChanging("HudCameraShakeData." + nameof(JumpEffectMax), this, m_JumpEffectMax, value)) m_JumpEffectMax = value; } } // 0x34 (52)
 		
 		protected float m_LandEffectDurationMin = new float();
-		[ContainerField(56), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3149698945)]
+		[ContainerField(Name: "LandEffectDurationMin", Offset: 56, NameHash: 3149698945, Flags: 49469), LayoutImmutable, Blittable]
 		public float LandEffectDurationMin { get { return m_LandEffectDurationMin; } set { if (OnPropertyChanging("HudCameraShakeData." + nameof(LandEffectDurationMin), this, m_LandEffectDurationMin, value)) m_LandEffectDurationMin = value; } } // 0x38 (56)
 		
 		protected float m_LandEffectDurationMax = new float();
-		[ContainerField(60), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3149698719)]
+		[ContainerField(Name: "LandEffectDurationMax", Offset: 60, NameHash: 3149698719, Flags: 49469), LayoutImmutable, Blittable]
 		public float LandEffectDurationMax { get { return m_LandEffectDurationMax; } set { if (OnPropertyChanging("HudCameraShakeData." + nameof(LandEffectDurationMax), this, m_LandEffectDurationMax, value)) m_LandEffectDurationMax = value; } } // 0x3C (60)
 		
 		protected float m_LandEffectMin = new float();
-		[ContainerField(64), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2460750495)]
+		[ContainerField(Name: "LandEffectMin", Offset: 64, NameHash: 2460750495, Flags: 49469), LayoutImmutable, Blittable]
 		public float LandEffectMin { get { return m_LandEffectMin; } set { if (OnPropertyChanging("HudCameraShakeData." + nameof(LandEffectMin), this, m_LandEffectMin, value)) m_LandEffectMin = value; } } // 0x40 (64)
 		
 		protected float m_LandEffectMax = new float();
-		[ContainerField(68), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2460750721)]
+		[ContainerField(Name: "LandEffectMax", Offset: 68, NameHash: 2460750721, Flags: 49469), LayoutImmutable, Blittable]
 		public float LandEffectMax { get { return m_LandEffectMax; } set { if (OnPropertyChanging("HudCameraShakeData." + nameof(LandEffectMax), this, m_LandEffectMax, value)) m_LandEffectMax = value; } } // 0x44 (68)
 		
 		protected float m_CameraShakeMinAngle = new float();
-		[ContainerField(72), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(939510435)]
+		[ContainerField(Name: "CameraShakeMinAngle", Offset: 72, NameHash: 939510435, Flags: 49469), LayoutImmutable, Blittable]
 		public float CameraShakeMinAngle { get { return m_CameraShakeMinAngle; } set { if (OnPropertyChanging("HudCameraShakeData." + nameof(CameraShakeMinAngle), this, m_CameraShakeMinAngle, value)) m_CameraShakeMinAngle = value; } } // 0x48 (72)
 		
 		protected float m_CameraShakeMaxAngle = new float();
-		[ContainerField(76), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(375932157)]
+		[ContainerField(Name: "CameraShakeMaxAngle", Offset: 76, NameHash: 375932157, Flags: 49469), LayoutImmutable, Blittable]
 		public float CameraShakeMaxAngle { get { return m_CameraShakeMaxAngle; } set { if (OnPropertyChanging("HudCameraShakeData." + nameof(CameraShakeMaxAngle), this, m_CameraShakeMaxAngle, value)) m_CameraShakeMaxAngle = value; } } // 0x4C (76)
 		
 		protected float m_CameraShakeScale = new float();
-		[ContainerField(80), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3342909616)]
+		[ContainerField(Name: "CameraShakeScale", Offset: 80, NameHash: 3342909616, Flags: 49469), LayoutImmutable, Blittable]
 		public float CameraShakeScale { get { return m_CameraShakeScale; } set { if (OnPropertyChanging("HudCameraShakeData." + nameof(CameraShakeScale), this, m_CameraShakeScale, value)) m_CameraShakeScale = value; } } // 0x50 (80)
 		
 		protected float m_WeaponLagXScale = new float();
-		[ContainerField(84), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(994760237)]
+		[ContainerField(Name: "WeaponLagXScale", Offset: 84, NameHash: 994760237, Flags: 49469), LayoutImmutable, Blittable]
 		public float WeaponLagXScale { get { return m_WeaponLagXScale; } set { if (OnPropertyChanging("HudCameraShakeData." + nameof(WeaponLagXScale), this, m_WeaponLagXScale, value)) m_WeaponLagXScale = value; } } // 0x54 (84)
 		
 		protected float m_WeaponLagYScale = new float();
-		[ContainerField(88), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1109790412)]
+		[ContainerField(Name: "WeaponLagYScale", Offset: 88, NameHash: 1109790412, Flags: 49469), LayoutImmutable, Blittable]
 		public float WeaponLagYScale { get { return m_WeaponLagYScale; } set { if (OnPropertyChanging("HudCameraShakeData." + nameof(WeaponLagYScale), this, m_WeaponLagYScale, value)) m_WeaponLagYScale = value; } } // 0x58 (88)
 		
 		protected uint m_FilterSize = new uint();
-		[ContainerField(92), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(2796213248)]
+		[ContainerField(Name: "FilterSize", Offset: 92, NameHash: 2796213248, Flags: 49421), LayoutImmutable, Blittable]
 		public uint FilterSize { get { return m_FilterSize; } set { if (OnPropertyChanging("HudCameraShakeData." + nameof(FilterSize), this, m_FilterSize, value)) m_FilterSize = value; } } // 0x5C (92)
 		
 		protected float m_MaxDisplacement = new float();
-		[ContainerField(96), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(263952390)]
+		[ContainerField(Name: "MaxDisplacement", Offset: 96, NameHash: 263952390, Flags: 49469), LayoutImmutable, Blittable]
 		public float MaxDisplacement { get { return m_MaxDisplacement; } set { if (OnPropertyChanging("HudCameraShakeData." + nameof(MaxDisplacement), this, m_MaxDisplacement, value)) m_MaxDisplacement = value; } } // 0x60 (96)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

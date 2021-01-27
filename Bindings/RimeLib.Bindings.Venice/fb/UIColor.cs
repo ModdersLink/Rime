@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(48), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 48)]
 	public class UIColor : 
 		DataContainer
 	{
 		protected Vec4 m_Color = new Vec4();
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(212387320)]
+		[ContainerField(Name: "Color", Offset: 16, NameHash: 212387320, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec4 Color { get { return m_Color; } set { if (OnPropertyChanging("UIColor." + nameof(Color), this, m_Color, value)) m_Color = value; } } // 0x10 (16)
 		
 		protected UIColorType m_ColorType = new UIColorType();
-		[ContainerField(32), MemberInfoFlag(137), ContainerFieldNameHash(518124864)]
+		[ContainerField(Name: "ColorType", Offset: 32, NameHash: 518124864, Flags: 137)]
 		public UIColorType ColorType { get { return m_ColorType; } set { if (OnPropertyChanging("UIColor." + nameof(ColorType), this, m_ColorType, value)) m_ColorType = value; } } // 0x20 (32)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

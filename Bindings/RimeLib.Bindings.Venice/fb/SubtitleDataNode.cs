@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(28), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 28)]
 	public class SubtitleDataNode : 
 		TreeNodeBase
 	{
 		protected float m_Time = new float();
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2089313744)]
+		[ContainerField(Name: "Time", Offset: 12, NameHash: 2089313744, Flags: 49469), LayoutImmutable, Blittable]
 		public float Time { get { return m_Time; } set { if (OnPropertyChanging("SubtitleDataNode." + nameof(Time), this, m_Time, value)) m_Time = value; } } // 0xC (12)
 		
 		protected float m_DisplayTime = new float();
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1925139498)]
+		[ContainerField(Name: "DisplayTime", Offset: 16, NameHash: 1925139498, Flags: 49469), LayoutImmutable, Blittable]
 		public float DisplayTime { get { return m_DisplayTime; } set { if (OnPropertyChanging("SubtitleDataNode." + nameof(DisplayTime), this, m_DisplayTime, value)) m_DisplayTime = value; } } // 0x10 (16)
 		
 		protected string m_SID1 = string.Empty;
-		[ContainerField(20), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(2089461706)]
+		[ContainerField(Name: "SID1", Offset: 20, NameHash: 2089461706, Flags: 16509), LayoutImmutable]
 		public string SID1 { get { return m_SID1; } set { if (OnPropertyChanging("SubtitleDataNode." + nameof(SID1), this, m_SID1, value)) m_SID1 = value; } } // 0x14 (20)
 		
 		protected string m_SID2 = string.Empty;
-		[ContainerField(24), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(2089461705)]
+		[ContainerField(Name: "SID2", Offset: 24, NameHash: 2089461705, Flags: 16509), LayoutImmutable]
 		public string SID2 { get { return m_SID2; } set { if (OnPropertyChanging("SubtitleDataNode." + nameof(SID2), this, m_SID2, value)) m_SID2 = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

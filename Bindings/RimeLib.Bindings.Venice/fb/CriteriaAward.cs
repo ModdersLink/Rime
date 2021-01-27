@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(12), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 12)]
 	public class CriteriaAward : FrostbiteContainer
 	{
-		[ContainerField(0), MemberInfoFlag(53), ContainerCtrRef]
+		[ContainerField(Name: "Award", Offset: 0, NameHash: 205847108, Flags: 53)]
 		public CtrRef<AwardData> Award { get; set; } = new CtrRef<AwardData>(); // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
+		[ContainerField(Name: "Count", Offset: 4, NameHash: 212413894, Flags: 49421), LayoutImmutable, Blittable]
 		public uint Count { get; set; } // 0x4 (4)
 		
-		[ContainerField(8), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "Sid", Offset: 8, NameHash: 193466587, Flags: 16509), LayoutImmutable]
 		public string Sid { get; set; } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

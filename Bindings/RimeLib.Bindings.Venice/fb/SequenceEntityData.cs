@@ -18,60 +18,60 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(52), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 52)]
 	public class SequenceEntityData : 
 		EntityData
 	{
 		protected List<SequenceEventData> m_Events = new List<SequenceEventData>();
-		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(2352146554), ContainerArray]
+		[ContainerField(Name: "Events", Offset: 12, NameHash: 2352146554, Flags: 65)]
 		public List<SequenceEventData> Events { get { return m_Events; } set { if (OnPropertyChanging("SequenceEntityData." + nameof(Events), this, m_Events, value)) m_Events = value; } } // 0xC (12)
 		
 		protected int m_SequenceStartTime = new int();
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(1603593583)]
+		[ContainerField(Name: "SequenceStartTime", Offset: 16, NameHash: 1603593583, Flags: 49405), LayoutImmutable, Blittable]
 		public int SequenceStartTime { get { return m_SequenceStartTime; } set { if (OnPropertyChanging("SequenceEntityData." + nameof(SequenceStartTime), this, m_SequenceStartTime, value)) m_SequenceStartTime = value; } } // 0x10 (16)
 		
 		protected int m_SequenceLength = new int();
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(2068204742)]
+		[ContainerField(Name: "SequenceLength", Offset: 20, NameHash: 2068204742, Flags: 49405), LayoutImmutable, Blittable]
 		public int SequenceLength { get { return m_SequenceLength; } set { if (OnPropertyChanging("SequenceEntityData." + nameof(SequenceLength), this, m_SequenceLength, value)) m_SequenceLength = value; } } // 0x14 (20)
 		
 		protected float m_ExternalTime = new float();
-		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2162678253)]
+		[ContainerField(Name: "ExternalTime", Offset: 24, NameHash: 2162678253, Flags: 49469), LayoutImmutable, Blittable]
 		public float ExternalTime { get { return m_ExternalTime; } set { if (OnPropertyChanging("SequenceEntityData." + nameof(ExternalTime), this, m_ExternalTime, value)) m_ExternalTime = value; } } // 0x18 (24)
 		
 		protected RefArray<PropertyTrackData> m_PropertyTracks = new RefArray<PropertyTrackData>();
-		[ContainerField(28), MemberInfoFlag(65), ContainerFieldNameHash(3471592734), ContainerRefArray]
+		[ContainerField(Name: "PropertyTracks", Offset: 28, NameHash: 3471592734, Flags: 65)]
 		public RefArray<PropertyTrackData> PropertyTracks { get { return m_PropertyTracks; } set { if (OnPropertyChanging("SequenceEntityData." + nameof(PropertyTracks), this, m_PropertyTracks, value)) m_PropertyTracks = value; } } // 0x1C (28)
 		
 		protected Realm m_Realm = new Realm();
-		[ContainerField(32), MemberInfoFlag(137), ContainerFieldNameHash(229961746)]
+		[ContainerField(Name: "Realm", Offset: 32, NameHash: 229961746, Flags: 137)]
 		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("SequenceEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0x20 (32)
 		
 		protected UpdatePass m_ServerUpdatePass = new UpdatePass();
-		[ContainerField(36), MemberInfoFlag(137), ContainerFieldNameHash(2515352480)]
+		[ContainerField(Name: "ServerUpdatePass", Offset: 36, NameHash: 2515352480, Flags: 137)]
 		public UpdatePass ServerUpdatePass { get { return m_ServerUpdatePass; } set { if (OnPropertyChanging("SequenceEntityData." + nameof(ServerUpdatePass), this, m_ServerUpdatePass, value)) m_ServerUpdatePass = value; } } // 0x24 (36)
 		
 		protected UpdatePass m_ClientUpdatePass = new UpdatePass();
-		[ContainerField(40), MemberInfoFlag(137), ContainerFieldNameHash(2631769212)]
+		[ContainerField(Name: "ClientUpdatePass", Offset: 40, NameHash: 2631769212, Flags: 137)]
 		public UpdatePass ClientUpdatePass { get { return m_ClientUpdatePass; } set { if (OnPropertyChanging("SequenceEntityData." + nameof(ClientUpdatePass), this, m_ClientUpdatePass, value)) m_ClientUpdatePass = value; } } // 0x28 (40)
 		
 		protected RefArray<CustomSequenceTrackData> m_CustomSequenceTracks = new RefArray<CustomSequenceTrackData>();
-		[ContainerField(44), MemberInfoFlag(65), ContainerFieldNameHash(2058346709), ContainerRefArray]
+		[ContainerField(Name: "CustomSequenceTracks", Offset: 44, NameHash: 2058346709, Flags: 65)]
 		public RefArray<CustomSequenceTrackData> CustomSequenceTracks { get { return m_CustomSequenceTracks; } set { if (OnPropertyChanging("SequenceEntityData." + nameof(CustomSequenceTracks), this, m_CustomSequenceTracks, value)) m_CustomSequenceTracks = value; } } // 0x2C (44)
 		
 		protected bool m_AutoPlayFirstFrame = new bool();
-		[ContainerField(48), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3638007145)]
+		[ContainerField(Name: "AutoPlayFirstFrame", Offset: 48, NameHash: 3638007145, Flags: 49325), LayoutImmutable, Blittable]
 		public bool AutoPlayFirstFrame { get { return m_AutoPlayFirstFrame; } set { if (OnPropertyChanging("SequenceEntityData." + nameof(AutoPlayFirstFrame), this, m_AutoPlayFirstFrame, value)) m_AutoPlayFirstFrame = value; } } // 0x30 (48)
 		
 		protected bool m_Looping = new bool();
-		[ContainerField(49), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1366646169)]
+		[ContainerField(Name: "Looping", Offset: 49, NameHash: 1366646169, Flags: 49325), LayoutImmutable, Blittable]
 		public bool Looping { get { return m_Looping; } set { if (OnPropertyChanging("SequenceEntityData." + nameof(Looping), this, m_Looping, value)) m_Looping = value; } } // 0x31 (49)
 		
 		protected bool m_AutoStart = new bool();
-		[ContainerField(50), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(792615882)]
+		[ContainerField(Name: "AutoStart", Offset: 50, NameHash: 792615882, Flags: 49325), LayoutImmutable, Blittable]
 		public bool AutoStart { get { return m_AutoStart; } set { if (OnPropertyChanging("SequenceEntityData." + nameof(AutoStart), this, m_AutoStart, value)) m_AutoStart = value; } } // 0x32 (50)
 		
 		protected bool m_PlayInReverse = new bool();
-		[ContainerField(51), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2845503782)]
+		[ContainerField(Name: "PlayInReverse", Offset: 51, NameHash: 2845503782, Flags: 49325), LayoutImmutable, Blittable]
 		public bool PlayInReverse { get { return m_PlayInReverse; } set { if (OnPropertyChanging("SequenceEntityData." + nameof(PlayInReverse), this, m_PlayInReverse, value)) m_PlayInReverse = value; } } // 0x33 (51)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(28), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 28)]
 	public class DuplicateSpawnScopeStrategyData : 
 		SoundScopeStrategyData
 	{
 		protected float m_Time = new float();
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2089313744)]
+		[ContainerField(Name: "Time", Offset: 12, NameHash: 2089313744, Flags: 49469), LayoutImmutable, Blittable]
 		public float Time { get { return m_Time; } set { if (OnPropertyChanging("DuplicateSpawnScopeStrategyData." + nameof(Time), this, m_Time, value)) m_Time = value; } } // 0xC (12)
 		
 		protected float m_Distance = new float();
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(408560070)]
+		[ContainerField(Name: "Distance", Offset: 16, NameHash: 408560070, Flags: 49469), LayoutImmutable, Blittable]
 		public float Distance { get { return m_Distance; } set { if (OnPropertyChanging("DuplicateSpawnScopeStrategyData." + nameof(Distance), this, m_Distance, value)) m_Distance = value; } } // 0x10 (16)
 		
 		protected uint m_ClosestCount = new uint();
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(4143870103)]
+		[ContainerField(Name: "ClosestCount", Offset: 20, NameHash: 4143870103, Flags: 49421), LayoutImmutable, Blittable]
 		public uint ClosestCount { get { return m_ClosestCount; } set { if (OnPropertyChanging("DuplicateSpawnScopeStrategyData." + nameof(ClosestCount), this, m_ClosestCount, value)) m_ClosestCount = value; } } // 0x14 (20)
 		
 		protected bool m_GroupTypes = new bool();
-		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1801246673)]
+		[ContainerField(Name: "GroupTypes", Offset: 24, NameHash: 1801246673, Flags: 49325), LayoutImmutable, Blittable]
 		public bool GroupTypes { get { return m_GroupTypes; } set { if (OnPropertyChanging("DuplicateSpawnScopeStrategyData." + nameof(GroupTypes), this, m_GroupTypes, value)) m_GroupTypes = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,25 +18,25 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(1), MemberInfoFlag(41), ContainerSize(6), ContainerStruct]
+	[ContainerType(Alignment: 1,  Flags: 41, Size: 6)]
 	public class InteractionTypesData : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "InteractionEntity", Offset: 0, NameHash: 1225422660, Flags: 49325), LayoutImmutable, Blittable]
 		public bool InteractionEntity { get; set; } // 0x0 (0)
 		
-		[ContainerField(1), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "PickupEntity", Offset: 1, NameHash: 2090982314, Flags: 49325), LayoutImmutable, Blittable]
 		public bool PickupEntity { get; set; } // 0x1 (1)
 		
-		[ContainerField(2), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "AmmoCrateEntity", Offset: 2, NameHash: 128996113, Flags: 49325), LayoutImmutable, Blittable]
 		public bool AmmoCrateEntity { get; set; } // 0x2 (2)
 		
-		[ContainerField(3), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "VehicleEntity", Offset: 3, NameHash: 3928223142, Flags: 49325), LayoutImmutable, Blittable]
 		public bool VehicleEntity { get; set; } // 0x3 (3)
 		
-		[ContainerField(4), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "ExplosionPackEntity", Offset: 4, NameHash: 3822215602, Flags: 49325), LayoutImmutable, Blittable]
 		public bool ExplosionPackEntity { get; set; } // 0x4 (4)
 		
-		[ContainerField(5), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "SoldierEntity", Offset: 5, NameHash: 1335195956, Flags: 49325), LayoutImmutable, Blittable]
 		public bool SoldierEntity { get; set; } // 0x5 (5)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

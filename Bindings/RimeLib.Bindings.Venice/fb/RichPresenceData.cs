@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(32), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 32)]
 	public class RichPresenceData : 
 		Asset
 	{
 		protected RefArray<RichPresencePresenceString> m_PresenceModes = new RefArray<RichPresencePresenceString>();
-		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(1792573772), ContainerRefArray]
+		[ContainerField(Name: "PresenceModes", Offset: 12, NameHash: 1792573772, Flags: 65)]
 		public RefArray<RichPresencePresenceString> PresenceModes { get { return m_PresenceModes; } set { if (OnPropertyChanging("RichPresenceData." + nameof(PresenceModes), this, m_PresenceModes, value)) m_PresenceModes = value; } } // 0xC (12)
 		
 		protected CtrRef<RichPresencePresenceString> m_DefaultMode = new CtrRef<RichPresencePresenceString>();
-		[ContainerField(16), MemberInfoFlag(53), ContainerFieldNameHash(2014189229), ContainerCtrRef]
+		[ContainerField(Name: "DefaultMode", Offset: 16, NameHash: 2014189229, Flags: 53)]
 		public CtrRef<RichPresencePresenceString> DefaultMode { get { return m_DefaultMode; } set { if (OnPropertyChanging("RichPresenceData." + nameof(DefaultMode), this, m_DefaultMode, value)) m_DefaultMode = value; } } // 0x10 (16)
 		
 		protected CtrRef<RichPresencePresenceString> m_InactiveMode = new CtrRef<RichPresencePresenceString>();
-		[ContainerField(20), MemberInfoFlag(53), ContainerFieldNameHash(2860645485), ContainerCtrRef]
+		[ContainerField(Name: "InactiveMode", Offset: 20, NameHash: 2860645485, Flags: 53)]
 		public CtrRef<RichPresencePresenceString> InactiveMode { get { return m_InactiveMode; } set { if (OnPropertyChanging("RichPresenceData." + nameof(InactiveMode), this, m_InactiveMode, value)) m_InactiveMode = value; } } // 0x14 (20)
 		
 		protected RefArray<RichPresenceContext> m_Contexts = new RefArray<RichPresenceContext>();
-		[ContainerField(24), MemberInfoFlag(65), ContainerFieldNameHash(333666601), ContainerRefArray]
+		[ContainerField(Name: "Contexts", Offset: 24, NameHash: 333666601, Flags: 65)]
 		public RefArray<RichPresenceContext> Contexts { get { return m_Contexts; } set { if (OnPropertyChanging("RichPresenceData." + nameof(Contexts), this, m_Contexts, value)) m_Contexts = value; } } // 0x18 (24)
 		
 		protected List<RichPresenceProperty> m_Properties = new List<RichPresenceProperty>();
-		[ContainerField(28), MemberInfoFlag(65), ContainerFieldNameHash(1506334468), ContainerArray]
+		[ContainerField(Name: "Properties", Offset: 28, NameHash: 1506334468, Flags: 65)]
 		public List<RichPresenceProperty> Properties { get { return m_Properties; } set { if (OnPropertyChanging("RichPresenceData." + nameof(Properties), this, m_Properties, value)) m_Properties = value; } } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(24), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 24)]
 	public class ProfileOptionDataBool : 
 		ProfileOptionData
 	{
 		protected bool m_Value = new bool();
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(225375086)]
+		[ContainerField(Name: "Value", Offset: 20, NameHash: 225375086, Flags: 49325), LayoutImmutable, Blittable]
 		public bool Value { get { return m_Value; } set { if (OnPropertyChanging("ProfileOptionDataBool." + nameof(Value), this, m_Value, value)) m_Value = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

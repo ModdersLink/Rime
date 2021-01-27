@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(16), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
 	public class MovementActionRandomizerData : 
 		MovementActionData
 	{
 		protected RefArray<MovementActionData> m_Actions = new RefArray<MovementActionData>();
-		[ContainerField(8), MemberInfoFlag(65), ContainerFieldNameHash(373511656), ContainerRefArray]
+		[ContainerField(Name: "Actions", Offset: 8, NameHash: 373511656, Flags: 65)]
 		public RefArray<MovementActionData> Actions { get { return m_Actions; } set { if (OnPropertyChanging("MovementActionRandomizerData." + nameof(Actions), this, m_Actions, value)) m_Actions = value; } } // 0x8 (8)
 		
 		protected bool m_ReinsertIntoRandomizedListAfterUse = new bool();
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(201056821)]
+		[ContainerField(Name: "ReinsertIntoRandomizedListAfterUse", Offset: 12, NameHash: 201056821, Flags: 49325), LayoutImmutable, Blittable]
 		public bool ReinsertIntoRandomizedListAfterUse { get { return m_ReinsertIntoRandomizedListAfterUse; } set { if (OnPropertyChanging("MovementActionRandomizerData." + nameof(ReinsertIntoRandomizedListAfterUse), this, m_ReinsertIntoRandomizedListAfterUse, value)) m_ReinsertIntoRandomizedListAfterUse = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(20), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 20)]
 	public class RagdollAsset : 
 		Asset
 	{
 		protected CtrRef<MaterialContainerPair> m_MaterialPair = new CtrRef<MaterialContainerPair>();
-		[ContainerField(12), MemberInfoFlag(53), ContainerFieldNameHash(161392100), ContainerCtrRef]
+		[ContainerField(Name: "MaterialPair", Offset: 12, NameHash: 161392100, Flags: 53)]
 		public CtrRef<MaterialContainerPair> MaterialPair { get { return m_MaterialPair; } set { if (OnPropertyChanging("RagdollAsset." + nameof(MaterialPair), this, m_MaterialPair, value)) m_MaterialPair = value; } } // 0xC (12)
 		
 		protected bool m_UseServerRagdoll = new bool();
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1214326076)]
+		[ContainerField(Name: "UseServerRagdoll", Offset: 16, NameHash: 1214326076, Flags: 49325), LayoutImmutable, Blittable]
 		public bool UseServerRagdoll { get { return m_UseServerRagdoll; } set { if (OnPropertyChanging("RagdollAsset." + nameof(UseServerRagdoll), this, m_UseServerRagdoll, value)) m_UseServerRagdoll = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

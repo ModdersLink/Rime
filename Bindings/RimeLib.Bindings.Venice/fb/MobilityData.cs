@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(16), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
 	public class MobilityData : 
 		DataContainer
 	{
 		protected float m_MaxSpeed = new float();
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(396228950)]
+		[ContainerField(Name: "MaxSpeed", Offset: 8, NameHash: 396228950, Flags: 49469), LayoutImmutable, Blittable]
 		public float MaxSpeed { get { return m_MaxSpeed; } set { if (OnPropertyChanging("MobilityData." + nameof(MaxSpeed), this, m_MaxSpeed, value)) m_MaxSpeed = value; } } // 0x8 (8)
 		
 		protected bool m_Use3DWaypoints = new bool();
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(184580769)]
+		[ContainerField(Name: "Use3DWaypoints", Offset: 12, NameHash: 184580769, Flags: 49325), LayoutImmutable, Blittable]
 		public bool Use3DWaypoints { get { return m_Use3DWaypoints; } set { if (OnPropertyChanging("MobilityData." + nameof(Use3DWaypoints), this, m_Use3DWaypoints, value)) m_Use3DWaypoints = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,48 +18,48 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(256), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 256)]
 	public class VehicleCameraData : 
 		TargetCameraData
 	{
 		protected Vec3 m_MoveToPosition = new Vec3();
-		[ContainerField(160), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(2255519254)]
+		[ContainerField(Name: "MoveToPosition", Offset: 160, NameHash: 2255519254, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 MoveToPosition { get { return m_MoveToPosition; } set { if (OnPropertyChanging("VehicleCameraData." + nameof(MoveToPosition), this, m_MoveToPosition, value)) m_MoveToPosition = value; } } // 0xA0 (160)
 		
 		protected Vec3 m_MoveToPositionSlopeFactor = new Vec3();
-		[ContainerField(176), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(3566386494)]
+		[ContainerField(Name: "MoveToPositionSlopeFactor", Offset: 176, NameHash: 3566386494, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 MoveToPositionSlopeFactor { get { return m_MoveToPositionSlopeFactor; } set { if (OnPropertyChanging("VehicleCameraData." + nameof(MoveToPositionSlopeFactor), this, m_MoveToPositionSlopeFactor, value)) m_MoveToPositionSlopeFactor = value; } } // 0xB0 (176)
 		
 		protected Vec3 m_TargetOffset = new Vec3();
-		[ContainerField(192), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(1634518457)]
+		[ContainerField(Name: "TargetOffset", Offset: 192, NameHash: 1634518457, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 TargetOffset { get { return m_TargetOffset; } set { if (OnPropertyChanging("VehicleCameraData." + nameof(TargetOffset), this, m_TargetOffset, value)) m_TargetOffset = value; } } // 0xC0 (192)
 		
 		protected Vec3 m_TargetOffsetSlopeFactor = new Vec3();
-		[ContainerField(208), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(2939212273)]
+		[ContainerField(Name: "TargetOffsetSlopeFactor", Offset: 208, NameHash: 2939212273, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 TargetOffsetSlopeFactor { get { return m_TargetOffsetSlopeFactor; } set { if (OnPropertyChanging("VehicleCameraData." + nameof(TargetOffsetSlopeFactor), this, m_TargetOffsetSlopeFactor, value)) m_TargetOffsetSlopeFactor = value; } } // 0xD0 (208)
 		
 		protected Vec3 m_RotationFactor = new Vec3();
-		[ContainerField(224), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(1739032700)]
+		[ContainerField(Name: "RotationFactor", Offset: 224, NameHash: 1739032700, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 RotationFactor { get { return m_RotationFactor; } set { if (OnPropertyChanging("VehicleCameraData." + nameof(RotationFactor), this, m_RotationFactor, value)) m_RotationFactor = value; } } // 0xE0 (224)
 		
 		protected float m_PositionFactor = new float();
-		[ContainerField(240), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3939849105)]
+		[ContainerField(Name: "PositionFactor", Offset: 240, NameHash: 3939849105, Flags: 49469), LayoutImmutable, Blittable]
 		public float PositionFactor { get { return m_PositionFactor; } set { if (OnPropertyChanging("VehicleCameraData." + nameof(PositionFactor), this, m_PositionFactor, value)) m_PositionFactor = value; } } // 0xF0 (240)
 		
 		protected float m_ResetDistance = new float();
-		[ContainerField(244), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(601574707)]
+		[ContainerField(Name: "ResetDistance", Offset: 244, NameHash: 601574707, Flags: 49469), LayoutImmutable, Blittable]
 		public float ResetDistance { get { return m_ResetDistance; } set { if (OnPropertyChanging("VehicleCameraData." + nameof(ResetDistance), this, m_ResetDistance, value)) m_ResetDistance = value; } } // 0xF4 (244)
 		
 		protected bool m_FixedPosition = new bool();
-		[ContainerField(248), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2172041354)]
+		[ContainerField(Name: "FixedPosition", Offset: 248, NameHash: 2172041354, Flags: 49325), LayoutImmutable, Blittable]
 		public bool FixedPosition { get { return m_FixedPosition; } set { if (OnPropertyChanging("VehicleCameraData." + nameof(FixedPosition), this, m_FixedPosition, value)) m_FixedPosition = value; } } // 0xF8 (248)
 		
 		protected bool m_FixedAngleZ = new bool();
-		[ContainerField(249), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3991869768)]
+		[ContainerField(Name: "FixedAngleZ", Offset: 249, NameHash: 3991869768, Flags: 49325), LayoutImmutable, Blittable]
 		public bool FixedAngleZ { get { return m_FixedAngleZ; } set { if (OnPropertyChanging("VehicleCameraData." + nameof(FixedAngleZ), this, m_FixedAngleZ, value)) m_FixedAngleZ = value; } } // 0xF9 (249)
 		
 		protected bool m_UseTerrainAdjustment = new bool();
-		[ContainerField(250), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3333670366)]
+		[ContainerField(Name: "UseTerrainAdjustment", Offset: 250, NameHash: 3333670366, Flags: 49325), LayoutImmutable, Blittable]
 		public bool UseTerrainAdjustment { get { return m_UseTerrainAdjustment; } set { if (OnPropertyChanging("VehicleCameraData." + nameof(UseTerrainAdjustment), this, m_UseTerrainAdjustment, value)) m_UseTerrainAdjustment = value; } } // 0xFA (250)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

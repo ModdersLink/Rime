@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(28), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 28)]
 	public class SettingConfig : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "Key", Offset: 0, NameHash: 193457490, Flags: 16509), LayoutImmutable]
 		public string Key { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "NameSid", Offset: 4, NameHash: 3153745340, Flags: 16509), LayoutImmutable]
 		public string NameSid { get; set; } // 0x4 (4)
 		
-		[ContainerField(8), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "DescSid", Offset: 8, NameHash: 4021143274, Flags: 16509), LayoutImmutable]
 		public string DescSid { get; set; } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
+		[ContainerField(Name: "Max", Offset: 12, NameHash: 193446865, Flags: 49421), LayoutImmutable, Blittable]
 		public uint Max { get; set; } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
+		[ContainerField(Name: "Default", Offset: 16, NameHash: 3998752238, Flags: 49421), LayoutImmutable, Blittable]
 		public uint Default { get; set; } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
+		[ContainerField(Name: "Min", Offset: 20, NameHash: 193446607, Flags: 49421), LayoutImmutable, Blittable]
 		public uint Min { get; set; } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "Ranked", Offset: 24, NameHash: 3298743058, Flags: 49325), LayoutImmutable, Blittable]
 		public bool Ranked { get; set; } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

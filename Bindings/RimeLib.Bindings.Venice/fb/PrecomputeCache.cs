@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(24), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 24)]
 	public class PrecomputeCache : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, Blittable, MemberInfoFlag(49501)]
+		[ContainerField(Name: "Guid", Offset: 0, NameHash: 2088724858, Flags: 49501), LayoutImmutable, Blittable]
 		public GUID Guid { get; set; } // 0x0 (0)
 		
-		[ContainerField(16), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "Key", Offset: 16, NameHash: 193457490, Flags: 16509), LayoutImmutable]
 		public string Key { get; set; } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "CachedDataEnable", Offset: 20, NameHash: 2181989276, Flags: 49325), LayoutImmutable, Blittable]
 		public bool CachedDataEnable { get; set; } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

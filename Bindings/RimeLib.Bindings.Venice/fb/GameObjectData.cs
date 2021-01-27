@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(12), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 12)]
 	public class GameObjectData : 
 		GameDataContainer
 	{
 		protected ushort m_IndexInBlueprint = new ushort();
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49389), ContainerFieldNameHash(1440948467)]
+		[ContainerField(Name: "IndexInBlueprint", Offset: 8, NameHash: 1440948467, Flags: 49389), LayoutImmutable, Blittable]
 		public ushort IndexInBlueprint { get { return m_IndexInBlueprint; } set { if (OnPropertyChanging("GameObjectData." + nameof(IndexInBlueprint), this, m_IndexInBlueprint, value)) m_IndexInBlueprint = value; } } // 0x8 (8)
 		
 		protected sbyte m_IsEventConnectionTarget = new sbyte();
-		[ContainerField(10), LayoutImmutable, Blittable, MemberInfoFlag(49341), ContainerFieldNameHash(443195188)]
+		[ContainerField(Name: "IsEventConnectionTarget", Offset: 10, NameHash: 443195188, Flags: 49341), LayoutImmutable, Blittable]
 		public sbyte IsEventConnectionTarget { get { return m_IsEventConnectionTarget; } set { if (OnPropertyChanging("GameObjectData." + nameof(IsEventConnectionTarget), this, m_IsEventConnectionTarget, value)) m_IsEventConnectionTarget = value; } } // 0xA (10)
 		
 		protected sbyte m_IsPropertyConnectionTarget = new sbyte();
-		[ContainerField(11), LayoutImmutable, Blittable, MemberInfoFlag(49341), ContainerFieldNameHash(3243963839)]
+		[ContainerField(Name: "IsPropertyConnectionTarget", Offset: 11, NameHash: 3243963839, Flags: 49341), LayoutImmutable, Blittable]
 		public sbyte IsPropertyConnectionTarget { get { return m_IsPropertyConnectionTarget; } set { if (OnPropertyChanging("GameObjectData." + nameof(IsPropertyConnectionTarget), this, m_IsPropertyConnectionTarget, value)) m_IsPropertyConnectionTarget = value; } } // 0xB (11)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

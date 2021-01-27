@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(24), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 24)]
 	public class SoundTestSuite : 
 		DataContainer
 	{
 		protected string m_Name = string.Empty;
-		[ContainerField(8), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(2088949890)]
+		[ContainerField(Name: "Name", Offset: 8, NameHash: 2088949890, Flags: 16509), LayoutImmutable]
 		public string Name { get { return m_Name; } set { if (OnPropertyChanging("SoundTestSuite." + nameof(Name), this, m_Name, value)) m_Name = value; } } // 0x8 (8)
 		
 		protected RefArray<SoundAsset> m_Assets = new RefArray<SoundAsset>();
-		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(2502242534), ContainerRefArray]
+		[ContainerField(Name: "Assets", Offset: 12, NameHash: 2502242534, Flags: 65)]
 		public RefArray<SoundAsset> Assets { get { return m_Assets; } set { if (OnPropertyChanging("SoundTestSuite." + nameof(Assets), this, m_Assets, value)) m_Assets = value; } } // 0xC (12)
 		
 		protected RefArray<SoundTestSpec> m_Tests = new RefArray<SoundTestSpec>();
-		[ContainerField(16), MemberInfoFlag(65), ContainerFieldNameHash(227718400), ContainerRefArray]
+		[ContainerField(Name: "Tests", Offset: 16, NameHash: 227718400, Flags: 65)]
 		public RefArray<SoundTestSpec> Tests { get { return m_Tests; } set { if (OnPropertyChanging("SoundTestSuite." + nameof(Tests), this, m_Tests, value)) m_Tests = value; } } // 0x10 (16)
 		
 		protected bool m_ProfileTests = new bool();
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3447328075)]
+		[ContainerField(Name: "ProfileTests", Offset: 20, NameHash: 3447328075, Flags: 49325), LayoutImmutable, Blittable]
 		public bool ProfileTests { get { return m_ProfileTests; } set { if (OnPropertyChanging("SoundTestSuite." + nameof(ProfileTests), this, m_ProfileTests, value)) m_ProfileTests = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

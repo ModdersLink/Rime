@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(28), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 28)]
 	public class CameraActionData : 
 		SimpleMovementActionBaseData
 	{
 		protected CameraMovementActionMode m_ActionMode = new CameraMovementActionMode();
-		[ContainerField(24), MemberInfoFlag(137), ContainerFieldNameHash(1115046008)]
+		[ContainerField(Name: "ActionMode", Offset: 24, NameHash: 1115046008, Flags: 137)]
 		public CameraMovementActionMode ActionMode { get { return m_ActionMode; } set { if (OnPropertyChanging("CameraActionData." + nameof(ActionMode), this, m_ActionMode, value)) m_ActionMode = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

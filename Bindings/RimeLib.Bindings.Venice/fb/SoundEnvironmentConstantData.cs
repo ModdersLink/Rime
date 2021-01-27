@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(24), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 24)]
 	public class SoundEnvironmentConstantData : 
 		Asset
 	{
 		protected float m_HumanPlayerSoldierMovementVolumeOverride = new float();
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2922581308)]
+		[ContainerField(Name: "HumanPlayerSoldierMovementVolumeOverride", Offset: 12, NameHash: 2922581308, Flags: 49469), LayoutImmutable, Blittable]
 		public float HumanPlayerSoldierMovementVolumeOverride { get { return m_HumanPlayerSoldierMovementVolumeOverride; } set { if (OnPropertyChanging("SoundEnvironmentConstantData." + nameof(HumanPlayerSoldierMovementVolumeOverride), this, m_HumanPlayerSoldierMovementVolumeOverride, value)) m_HumanPlayerSoldierMovementVolumeOverride = value; } } // 0xC (12)
 		
 		protected float m_MemoryTime = new float();
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1308283505)]
+		[ContainerField(Name: "MemoryTime", Offset: 16, NameHash: 1308283505, Flags: 49469), LayoutImmutable, Blittable]
 		public float MemoryTime { get { return m_MemoryTime; } set { if (OnPropertyChanging("SoundEnvironmentConstantData." + nameof(MemoryTime), this, m_MemoryTime, value)) m_MemoryTime = value; } } // 0x10 (16)
 		
 		protected float m_MinimumLoudness = new float();
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1173996714)]
+		[ContainerField(Name: "MinimumLoudness", Offset: 20, NameHash: 1173996714, Flags: 49469), LayoutImmutable, Blittable]
 		public float MinimumLoudness { get { return m_MinimumLoudness; } set { if (OnPropertyChanging("SoundEnvironmentConstantData." + nameof(MinimumLoudness), this, m_MinimumLoudness, value)) m_MinimumLoudness = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

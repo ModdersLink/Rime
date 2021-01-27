@@ -18,44 +18,44 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(128), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 128)]
 	public class FakeHingeData : 
 		FakePhysicsData
 	{
 		protected Vec3 m_Pivot = new Vec3();
-		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(232602033)]
+		[ContainerField(Name: "Pivot", Offset: 48, NameHash: 232602033, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 Pivot { get { return m_Pivot; } set { if (OnPropertyChanging("FakeHingeData." + nameof(Pivot), this, m_Pivot, value)) m_Pivot = value; } } // 0x30 (48)
 		
 		protected Vec3 m_RotationAxis = new Vec3();
-		[ContainerField(64), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(3148542130)]
+		[ContainerField(Name: "RotationAxis", Offset: 64, NameHash: 3148542130, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 RotationAxis { get { return m_RotationAxis; } set { if (OnPropertyChanging("FakeHingeData." + nameof(RotationAxis), this, m_RotationAxis, value)) m_RotationAxis = value; } } // 0x40 (64)
 		
 		protected Vec3 m_ExtensionAxis = new Vec3();
-		[ContainerField(80), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(4281429311)]
+		[ContainerField(Name: "ExtensionAxis", Offset: 80, NameHash: 4281429311, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 ExtensionAxis { get { return m_ExtensionAxis; } set { if (OnPropertyChanging("FakeHingeData." + nameof(ExtensionAxis), this, m_ExtensionAxis, value)) m_ExtensionAxis = value; } } // 0x50 (80)
 		
 		protected float m_MinAngle = new float();
-		[ContainerField(96), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3356124462)]
+		[ContainerField(Name: "MinAngle", Offset: 96, NameHash: 3356124462, Flags: 49469), LayoutImmutable, Blittable]
 		public float MinAngle { get { return m_MinAngle; } set { if (OnPropertyChanging("FakeHingeData." + nameof(MinAngle), this, m_MinAngle, value)) m_MinAngle = value; } } // 0x60 (96)
 		
 		protected float m_MaxAngle = new float();
-		[ContainerField(100), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(417488496)]
+		[ContainerField(Name: "MaxAngle", Offset: 100, NameHash: 417488496, Flags: 49469), LayoutImmutable, Blittable]
 		public float MaxAngle { get { return m_MaxAngle; } set { if (OnPropertyChanging("FakeHingeData." + nameof(MaxAngle), this, m_MaxAngle, value)) m_MaxAngle = value; } } // 0x64 (100)
 		
 		protected float m_AngularDampening = new float();
-		[ContainerField(104), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(705185012)]
+		[ContainerField(Name: "AngularDampening", Offset: 104, NameHash: 705185012, Flags: 49469), LayoutImmutable, Blittable]
 		public float AngularDampening { get { return m_AngularDampening; } set { if (OnPropertyChanging("FakeHingeData." + nameof(AngularDampening), this, m_AngularDampening, value)) m_AngularDampening = value; } } // 0x68 (104)
 		
 		protected float m_PullbackAcceleration = new float();
-		[ContainerField(108), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1407037897)]
+		[ContainerField(Name: "PullbackAcceleration", Offset: 108, NameHash: 1407037897, Flags: 49469), LayoutImmutable, Blittable]
 		public float PullbackAcceleration { get { return m_PullbackAcceleration; } set { if (OnPropertyChanging("FakeHingeData." + nameof(PullbackAcceleration), this, m_PullbackAcceleration, value)) m_PullbackAcceleration = value; } } // 0x6C (108)
 		
 		protected float m_ProgressiveExponent = new float();
-		[ContainerField(112), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(487101329)]
+		[ContainerField(Name: "ProgressiveExponent", Offset: 112, NameHash: 487101329, Flags: 49469), LayoutImmutable, Blittable]
 		public float ProgressiveExponent { get { return m_ProgressiveExponent; } set { if (OnPropertyChanging("FakeHingeData." + nameof(ProgressiveExponent), this, m_ProgressiveExponent, value)) m_ProgressiveExponent = value; } } // 0x70 (112)
 		
 		protected float m_InertiaModifier = new float();
-		[ContainerField(116), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3532865534)]
+		[ContainerField(Name: "InertiaModifier", Offset: 116, NameHash: 3532865534, Flags: 49469), LayoutImmutable, Blittable]
 		public float InertiaModifier { get { return m_InertiaModifier; } set { if (OnPropertyChanging("FakeHingeData." + nameof(InertiaModifier), this, m_InertiaModifier, value)) m_InertiaModifier = value; } } // 0x74 (116)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

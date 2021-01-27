@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(16), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
 	public class SubWorldInclusionSetting : 
 		DataContainer
 	{
 		protected CtrRef<SubWorldInclusionCriterion> m_Criterion = new CtrRef<SubWorldInclusionCriterion>();
-		[ContainerField(8), MemberInfoFlag(53), ContainerFieldNameHash(2480005462), ContainerCtrRef]
+		[ContainerField(Name: "Criterion", Offset: 8, NameHash: 2480005462, Flags: 53)]
 		public CtrRef<SubWorldInclusionCriterion> Criterion { get { return m_Criterion; } set { if (OnPropertyChanging("SubWorldInclusionSetting." + nameof(Criterion), this, m_Criterion, value)) m_Criterion = value; } } // 0x8 (8)
 		
 		protected List<string> m_EnabledOptions = new List<string>();
-		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(2588709552), ContainerArray]
+		[ContainerField(Name: "EnabledOptions", Offset: 12, NameHash: 2588709552, Flags: 65)]
 		public List<string> EnabledOptions { get { return m_EnabledOptions; } set { if (OnPropertyChanging("SubWorldInclusionSetting." + nameof(EnabledOptions), this, m_EnabledOptions, value)) m_EnabledOptions = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

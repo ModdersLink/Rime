@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(20), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 20)]
 	public class PlayerFilterEntityData : 
 		EntityData
 	{
 		protected Realm m_Realm = new Realm();
-		[ContainerField(12), MemberInfoFlag(137), ContainerFieldNameHash(229961746)]
+		[ContainerField(Name: "Realm", Offset: 12, NameHash: 229961746, Flags: 137)]
 		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("PlayerFilterEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0xC (12)
 		
 		protected bool m_InvertFilter = new bool();
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2846947863)]
+		[ContainerField(Name: "InvertFilter", Offset: 16, NameHash: 2846947863, Flags: 49325), LayoutImmutable, Blittable]
 		public bool InvertFilter { get { return m_InvertFilter; } set { if (OnPropertyChanging("PlayerFilterEntityData." + nameof(InvertFilter), this, m_InvertFilter, value)) m_InvertFilter = value; } } // 0x10 (16)
 		
 		protected bool m_ForwardToSpectators = new bool();
-		[ContainerField(17), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1753756911)]
+		[ContainerField(Name: "ForwardToSpectators", Offset: 17, NameHash: 1753756911, Flags: 49325), LayoutImmutable, Blittable]
 		public bool ForwardToSpectators { get { return m_ForwardToSpectators; } set { if (OnPropertyChanging("PlayerFilterEntityData." + nameof(ForwardToSpectators), this, m_ForwardToSpectators, value)) m_ForwardToSpectators = value; } } // 0x11 (17)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

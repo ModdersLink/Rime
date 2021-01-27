@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(24), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 24)]
 	public class PathfindingBlob : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, Blittable, MemberInfoFlag(49501)]
+		[ContainerField(Name: "BlobId", Offset: 0, NameHash: 2684880523, Flags: 49501), LayoutImmutable, Blittable]
 		public GUID BlobId { get; set; } // 0x0 (0)
 		
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
+		[ContainerField(Name: "BlobSize", Offset: 16, NameHash: 3257493379, Flags: 49421), LayoutImmutable, Blittable]
 		public uint BlobSize { get; set; } // 0x10 (16)
 		
-		[ContainerField(20), MemberInfoFlag(65), ContainerArray]
+		[ContainerField(Name: "ChunkSizes", Offset: 20, NameHash: 1597710248, Flags: 65)]
 		public List<uint> ChunkSizes { get; set; } = new List<uint>(); // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

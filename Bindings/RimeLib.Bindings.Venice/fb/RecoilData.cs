@@ -18,34 +18,34 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(36), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 36)]
 	public class RecoilData : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "MaxRecoilAngleX", Offset: 0, NameHash: 1566215510, Flags: 49469), LayoutImmutable, Blittable]
 		public float MaxRecoilAngleX { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "MinRecoilAngleX", Offset: 4, NameHash: 2010820808, Flags: 49469), LayoutImmutable, Blittable]
 		public float MinRecoilAngleX { get; set; } // 0x4 (4)
 		
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "MaxRecoilAngleY", Offset: 8, NameHash: 1566215511, Flags: 49469), LayoutImmutable, Blittable]
 		public float MaxRecoilAngleY { get; set; } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "MinRecoilAngleY", Offset: 12, NameHash: 2010820809, Flags: 49469), LayoutImmutable, Blittable]
 		public float MinRecoilAngleY { get; set; } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "MaxRecoilAngleZ", Offset: 16, NameHash: 1566215508, Flags: 49469), LayoutImmutable, Blittable]
 		public float MaxRecoilAngleZ { get; set; } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "MinRecoilAngleZ", Offset: 20, NameHash: 2010820810, Flags: 49469), LayoutImmutable, Blittable]
 		public float MinRecoilAngleZ { get; set; } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "MaxRecoilFov", Offset: 24, NameHash: 2812200304, Flags: 49469), LayoutImmutable, Blittable]
 		public float MaxRecoilFov { get; set; } // 0x18 (24)
 		
-		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "MinRecoilFov", Offset: 28, NameHash: 3551417774, Flags: 49469), LayoutImmutable, Blittable]
 		public float MinRecoilFov { get; set; } // 0x1C (28)
 		
-		[ContainerField(32), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "RecoilFollowsDispersion", Offset: 32, NameHash: 4254392955, Flags: 49325), LayoutImmutable, Blittable]
 		public bool RecoilFollowsDispersion { get; set; } // 0x20 (32)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,36 +18,36 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(144), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 144)]
 	public class LookAtTriggerEntityData : 
 		TriggerEventEntityData
 	{
 		protected float m_FOV = new float();
-		[ContainerField(112), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(193442778)]
+		[ContainerField(Name: "FOV", Offset: 112, NameHash: 193442778, Flags: 49469), LayoutImmutable, Blittable]
 		public float FOV { get { return m_FOV; } set { if (OnPropertyChanging("LookAtTriggerEntityData." + nameof(FOV), this, m_FOV, value)) m_FOV = value; } } // 0x70 (112)
 		
 		protected CtrRef<SoldierWeaponBlueprint> m_Weapon = new CtrRef<SoldierWeaponBlueprint>();
-		[ContainerField(116), MemberInfoFlag(53), ContainerFieldNameHash(3190562823), ContainerCtrRef]
+		[ContainerField(Name: "Weapon", Offset: 116, NameHash: 3190562823, Flags: 53)]
 		public CtrRef<SoldierWeaponBlueprint> Weapon { get { return m_Weapon; } set { if (OnPropertyChanging("LookAtTriggerEntityData." + nameof(Weapon), this, m_Weapon, value)) m_Weapon = value; } } // 0x74 (116)
 		
 		protected uint m_ZoomLevel = new uint();
-		[ContainerField(120), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(3650803780)]
+		[ContainerField(Name: "ZoomLevel", Offset: 120, NameHash: 3650803780, Flags: 49421), LayoutImmutable, Blittable]
 		public uint ZoomLevel { get { return m_ZoomLevel; } set { if (OnPropertyChanging("LookAtTriggerEntityData." + nameof(ZoomLevel), this, m_ZoomLevel, value)) m_ZoomLevel = value; } } // 0x78 (120)
 		
 		protected float m_MinDistanceToObject = new float();
-		[ContainerField(124), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3463845186)]
+		[ContainerField(Name: "MinDistanceToObject", Offset: 124, NameHash: 3463845186, Flags: 49469), LayoutImmutable, Blittable]
 		public float MinDistanceToObject { get { return m_MinDistanceToObject; } set { if (OnPropertyChanging("LookAtTriggerEntityData." + nameof(MinDistanceToObject), this, m_MinDistanceToObject, value)) m_MinDistanceToObject = value; } } // 0x7C (124)
 		
 		protected float m_MaxDistanceToObject = new float();
-		[ContainerField(128), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(954132188)]
+		[ContainerField(Name: "MaxDistanceToObject", Offset: 128, NameHash: 954132188, Flags: 49469), LayoutImmutable, Blittable]
 		public float MaxDistanceToObject { get { return m_MaxDistanceToObject; } set { if (OnPropertyChanging("LookAtTriggerEntityData." + nameof(MaxDistanceToObject), this, m_MaxDistanceToObject, value)) m_MaxDistanceToObject = value; } } // 0x80 (128)
 		
 		protected bool m_StartTriggerLookingAt = new bool();
-		[ContainerField(132), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2703714543)]
+		[ContainerField(Name: "StartTriggerLookingAt", Offset: 132, NameHash: 2703714543, Flags: 49325), LayoutImmutable, Blittable]
 		public bool StartTriggerLookingAt { get { return m_StartTriggerLookingAt; } set { if (OnPropertyChanging("LookAtTriggerEntityData." + nameof(StartTriggerLookingAt), this, m_StartTriggerLookingAt, value)) m_StartTriggerLookingAt = value; } } // 0x84 (132)
 		
 		protected bool m_CheckOcclusion = new bool();
-		[ContainerField(133), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3588432334)]
+		[ContainerField(Name: "CheckOcclusion", Offset: 133, NameHash: 3588432334, Flags: 49325), LayoutImmutable, Blittable]
 		public bool CheckOcclusion { get { return m_CheckOcclusion; } set { if (OnPropertyChanging("LookAtTriggerEntityData." + nameof(CheckOcclusion), this, m_CheckOcclusion, value)) m_CheckOcclusion = value; } } // 0x85 (133)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

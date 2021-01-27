@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(160), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 160)]
 	public class TransformBlendEntityData : 
 		EntityData
 	{
 		protected LinearTransform m_In2 = new LinearTransform();
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(193450864)]
+		[ContainerField(Name: "In2", Offset: 16, NameHash: 193450864, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public LinearTransform In2 { get { return m_In2; } set { if (OnPropertyChanging("TransformBlendEntityData." + nameof(In2), this, m_In2, value)) m_In2 = value; } } // 0x10 (16)
 		
 		protected LinearTransform m_In1 = new LinearTransform();
-		[ContainerField(80), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(193450867)]
+		[ContainerField(Name: "In1", Offset: 80, NameHash: 193450867, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public LinearTransform In1 { get { return m_In1; } set { if (OnPropertyChanging("TransformBlendEntityData." + nameof(In1), this, m_In1, value)) m_In1 = value; } } // 0x50 (80)
 		
 		protected float m_BlendValue = new float();
-		[ContainerField(144), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(236872047)]
+		[ContainerField(Name: "BlendValue", Offset: 144, NameHash: 236872047, Flags: 49469), LayoutImmutable, Blittable]
 		public float BlendValue { get { return m_BlendValue; } set { if (OnPropertyChanging("TransformBlendEntityData." + nameof(BlendValue), this, m_BlendValue, value)) m_BlendValue = value; } } // 0x90 (144)
 		
 		protected float m_BlendValue2 = new float();
-		[ContainerField(148), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3521810301)]
+		[ContainerField(Name: "BlendValue2", Offset: 148, NameHash: 3521810301, Flags: 49469), LayoutImmutable, Blittable]
 		public float BlendValue2 { get { return m_BlendValue2; } set { if (OnPropertyChanging("TransformBlendEntityData." + nameof(BlendValue2), this, m_BlendValue2, value)) m_BlendValue2 = value; } } // 0x94 (148)
 		
 		protected Realm m_Realm = new Realm();
-		[ContainerField(152), MemberInfoFlag(137), ContainerFieldNameHash(229961746)]
+		[ContainerField(Name: "Realm", Offset: 152, NameHash: 229961746, Flags: 137)]
 		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("TransformBlendEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0x98 (152)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(192), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 192)]
 	public class WeaponPickupEntityData : 
 		PickupEntityData
 	{
 		protected List<WeaponPickupData> m_Weapons = new List<WeaponPickupData>();
-		[ContainerField(176), MemberInfoFlag(65), ContainerFieldNameHash(2209357972), ContainerArray]
+		[ContainerField(Name: "Weapons", Offset: 176, NameHash: 2209357972, Flags: 65)]
 		public List<WeaponPickupData> Weapons { get { return m_Weapons; } set { if (OnPropertyChanging("WeaponPickupEntityData." + nameof(Weapons), this, m_Weapons, value)) m_Weapons = value; } } // 0xB0 (176)
 		
 		protected bool m_UseForPersistence = new bool();
-		[ContainerField(180), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2840570666)]
+		[ContainerField(Name: "UseForPersistence", Offset: 180, NameHash: 2840570666, Flags: 49325), LayoutImmutable, Blittable]
 		public bool UseForPersistence { get { return m_UseForPersistence; } set { if (OnPropertyChanging("WeaponPickupEntityData." + nameof(UseForPersistence), this, m_UseForPersistence, value)) m_UseForPersistence = value; } } // 0xB4 (180)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

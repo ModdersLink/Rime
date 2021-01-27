@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(41), ContainerSize(48), ContainerStruct]
+	[ContainerType(Alignment: 16,  Flags: 41, Size: 48)]
 	public class AILocoMoveTaskData : FrostbiteContainer
 	{
-		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
+		[ContainerField(Name: "WantedPos", Offset: 0, NameHash: 82144004, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 WantedPos { get; set; } = new Vec3(); // 0x0 (0)
 		
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "WorldAngle", Offset: 16, NameHash: 612547046, Flags: 49469), LayoutImmutable, Blittable]
 		public float WorldAngle { get; set; } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "WaitTime", Offset: 20, NameHash: 3637870203, Flags: 49469), LayoutImmutable, Blittable]
 		public float WaitTime { get; set; } // 0x14 (20)
 		
-		[ContainerField(24), MemberInfoFlag(137)]
+		[ContainerField(Name: "EnterPose", Offset: 24, NameHash: 1040225668, Flags: 137)]
 		public AntPoseEnum EnterPose { get; set; } = new AntPoseEnum(); // 0x18 (24)
 		
-		[ContainerField(28), MemberInfoFlag(137)]
+		[ContainerField(Name: "ExitPose", Offset: 28, NameHash: 506708652, Flags: 137)]
 		public AntPoseEnum ExitPose { get; set; } = new AntPoseEnum(); // 0x1C (28)
 		
-		[ContainerField(32), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "OverrideAngle", Offset: 32, NameHash: 4140865680, Flags: 49325), LayoutImmutable, Blittable]
 		public bool OverrideAngle { get; set; } // 0x20 (32)
 		
-		[ContainerField(33), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "UseClientPosition", Offset: 33, NameHash: 430257222, Flags: 49325), LayoutImmutable, Blittable]
 		public bool UseClientPosition { get; set; } // 0x21 (33)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

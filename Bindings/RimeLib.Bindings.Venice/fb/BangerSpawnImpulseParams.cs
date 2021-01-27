@@ -18,44 +18,44 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(44), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 44)]
 	public class BangerSpawnImpulseParams : 
 		DataContainer
 	{
 		protected float m_MinHorizontalAngle = new float();
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1294078192)]
+		[ContainerField(Name: "MinHorizontalAngle", Offset: 8, NameHash: 1294078192, Flags: 49469), LayoutImmutable, Blittable]
 		public float MinHorizontalAngle { get { return m_MinHorizontalAngle; } set { if (OnPropertyChanging("BangerSpawnImpulseParams." + nameof(MinHorizontalAngle), this, m_MinHorizontalAngle, value)) m_MinHorizontalAngle = value; } } // 0x8 (8)
 		
 		protected float m_MaxHorizontalAngle = new float();
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3734684206)]
+		[ContainerField(Name: "MaxHorizontalAngle", Offset: 12, NameHash: 3734684206, Flags: 49469), LayoutImmutable, Blittable]
 		public float MaxHorizontalAngle { get { return m_MaxHorizontalAngle; } set { if (OnPropertyChanging("BangerSpawnImpulseParams." + nameof(MaxHorizontalAngle), this, m_MaxHorizontalAngle, value)) m_MaxHorizontalAngle = value; } } // 0xC (12)
 		
 		protected float m_MinVerticalAngle = new float();
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(335615388)]
+		[ContainerField(Name: "MinVerticalAngle", Offset: 16, NameHash: 335615388, Flags: 49469), LayoutImmutable, Blittable]
 		public float MinVerticalAngle { get { return m_MinVerticalAngle; } set { if (OnPropertyChanging("BangerSpawnImpulseParams." + nameof(MinVerticalAngle), this, m_MinVerticalAngle, value)) m_MinVerticalAngle = value; } } // 0x10 (16)
 		
 		protected float m_MaxVerticalAngle = new float();
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3164410690)]
+		[ContainerField(Name: "MaxVerticalAngle", Offset: 20, NameHash: 3164410690, Flags: 49469), LayoutImmutable, Blittable]
 		public float MaxVerticalAngle { get { return m_MaxVerticalAngle; } set { if (OnPropertyChanging("BangerSpawnImpulseParams." + nameof(MaxVerticalAngle), this, m_MaxVerticalAngle, value)) m_MaxVerticalAngle = value; } } // 0x14 (20)
 		
 		protected float m_MinStrength = new float();
-		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1539610890)]
+		[ContainerField(Name: "MinStrength", Offset: 24, NameHash: 1539610890, Flags: 49469), LayoutImmutable, Blittable]
 		public float MinStrength { get { return m_MinStrength; } set { if (OnPropertyChanging("BangerSpawnImpulseParams." + nameof(MinStrength), this, m_MinStrength, value)) m_MinStrength = value; } } // 0x18 (24)
 		
 		protected float m_MaxStrength = new float();
-		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1356104340)]
+		[ContainerField(Name: "MaxStrength", Offset: 28, NameHash: 1356104340, Flags: 49469), LayoutImmutable, Blittable]
 		public float MaxStrength { get { return m_MaxStrength; } set { if (OnPropertyChanging("BangerSpawnImpulseParams." + nameof(MaxStrength), this, m_MaxStrength, value)) m_MaxStrength = value; } } // 0x1C (28)
 		
 		protected float m_WaterStrengthModifier = new float();
-		[ContainerField(32), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(778848386)]
+		[ContainerField(Name: "WaterStrengthModifier", Offset: 32, NameHash: 778848386, Flags: 49469), LayoutImmutable, Blittable]
 		public float WaterStrengthModifier { get { return m_WaterStrengthModifier; } set { if (OnPropertyChanging("BangerSpawnImpulseParams." + nameof(WaterStrengthModifier), this, m_WaterStrengthModifier, value)) m_WaterStrengthModifier = value; } } // 0x20 (32)
 		
 		protected float m_LinearDamping = new float();
-		[ContainerField(36), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1796037280)]
+		[ContainerField(Name: "LinearDamping", Offset: 36, NameHash: 1796037280, Flags: 49469), LayoutImmutable, Blittable]
 		public float LinearDamping { get { return m_LinearDamping; } set { if (OnPropertyChanging("BangerSpawnImpulseParams." + nameof(LinearDamping), this, m_LinearDamping, value)) m_LinearDamping = value; } } // 0x24 (36)
 		
 		protected float m_AngularDamping = new float();
-		[ContainerField(40), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2055444159)]
+		[ContainerField(Name: "AngularDamping", Offset: 40, NameHash: 2055444159, Flags: 49469), LayoutImmutable, Blittable]
 		public float AngularDamping { get { return m_AngularDamping; } set { if (OnPropertyChanging("BangerSpawnImpulseParams." + nameof(AngularDamping), this, m_AngularDamping, value)) m_AngularDamping = value; } } // 0x28 (40)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

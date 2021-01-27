@@ -18,40 +18,40 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(72), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 72)]
 	public class NestedList : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "Label", Offset: 0, NameHash: 218105699, Flags: 16509), LayoutImmutable]
 		public string Label { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "Index", Offset: 4, NameHash: 214509467, Flags: 16509), LayoutImmutable]
 		public string Index { get; set; } // 0x4 (4)
 		
-		[ContainerField(8), MemberInfoFlag(41)]
+		[ContainerField(Name: "ListDataSource", Offset: 8, NameHash: 1537495466, Flags: 41)]
 		public UIDataSourceInfo ListDataSource { get; set; } = new UIDataSourceInfo(); // 0x8 (8)
 		
-		[ContainerField(24), MemberInfoFlag(41)]
+		[ContainerField(Name: "DynamicShowList", Offset: 24, NameHash: 3565414705, Flags: 41)]
 		public UIDataSourceInfo DynamicShowList { get; set; } = new UIDataSourceInfo(); // 0x18 (24)
 		
-		[ContainerField(40), MemberInfoFlag(65), ContainerArray]
+		[ContainerField(Name: "StaticItems", Offset: 40, NameHash: 2586461275, Flags: 65)]
 		public List<string> StaticItems { get; set; } = new List<string>(); // 0x28 (40)
 		
-		[ContainerField(44), MemberInfoFlag(41)]
+		[ContainerField(Name: "DefaultHighlighted", Offset: 44, NameHash: 2153962783, Flags: 41)]
 		public DefaultSelectionItem DefaultHighlighted { get; set; } = new DefaultSelectionItem(); // 0x2C (44)
 		
-		[ContainerField(64), MemberInfoFlag(137)]
+		[ContainerField(Name: "RowType", Offset: 64, NameHash: 1700793143, Flags: 137)]
 		public UIListRowType RowType { get; set; } = new UIListRowType(); // 0x40 (64)
 		
-		[ContainerField(68), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "UseAsNormalListRows", Offset: 68, NameHash: 2244616668, Flags: 49325), LayoutImmutable, Blittable]
 		public bool UseAsNormalListRows { get; set; } // 0x44 (68)
 		
-		[ContainerField(69), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "HiddenOnPC", Offset: 69, NameHash: 3546601373, Flags: 49325), LayoutImmutable, Blittable]
 		public bool HiddenOnPC { get; set; } // 0x45 (69)
 		
-		[ContainerField(70), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "HiddenOnXenon", Offset: 70, NameHash: 1050741724, Flags: 49325), LayoutImmutable, Blittable]
 		public bool HiddenOnXenon { get; set; } // 0x46 (70)
 		
-		[ContainerField(71), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "HighLightOnUpdate", Offset: 71, NameHash: 2774529029, Flags: 49325), LayoutImmutable, Blittable]
 		public bool HighLightOnUpdate { get; set; } // 0x47 (71)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

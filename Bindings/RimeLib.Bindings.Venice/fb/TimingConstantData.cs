@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(44), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 44)]
 	public class TimingConstantData : 
 		Asset
 	{
 		protected float m_UpdateTimePerFrame = new float();
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2600656827)]
+		[ContainerField(Name: "UpdateTimePerFrame", Offset: 12, NameHash: 2600656827, Flags: 49469), LayoutImmutable, Blittable]
 		public float UpdateTimePerFrame { get { return m_UpdateTimePerFrame; } set { if (OnPropertyChanging("TimingConstantData." + nameof(UpdateTimePerFrame), this, m_UpdateTimePerFrame, value)) m_UpdateTimePerFrame = value; } } // 0xC (12)
 		
 		protected SubsystemTimingConfigData m_SubsystemTimeParts = new SubsystemTimingConfigData();
-		[ContainerField(16), MemberInfoFlag(41), ContainerFieldNameHash(3741694197)]
+		[ContainerField(Name: "SubsystemTimeParts", Offset: 16, NameHash: 3741694197, Flags: 41)]
 		public SubsystemTimingConfigData SubsystemTimeParts { get { return m_SubsystemTimeParts; } set { if (OnPropertyChanging("TimingConstantData." + nameof(SubsystemTimeParts), this, m_SubsystemTimeParts, value)) m_SubsystemTimeParts = value; } } // 0x10 (16)
 		
 		protected RefArray<BotPriorityConfigData> m_PriorityClasses = new RefArray<BotPriorityConfigData>();
-		[ContainerField(40), MemberInfoFlag(65), ContainerFieldNameHash(1128874863), ContainerRefArray]
+		[ContainerField(Name: "PriorityClasses", Offset: 40, NameHash: 1128874863, Flags: 65)]
 		public RefArray<BotPriorityConfigData> PriorityClasses { get { return m_PriorityClasses; } set { if (OnPropertyChanging("TimingConstantData." + nameof(PriorityClasses), this, m_PriorityClasses, value)) m_PriorityClasses = value; } } // 0x28 (40)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

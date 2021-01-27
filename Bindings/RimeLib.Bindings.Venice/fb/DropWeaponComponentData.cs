@@ -18,44 +18,44 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(128), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 128)]
 	public class DropWeaponComponentData : 
 		ComponentData
 	{
 		protected CtrRef<PickupEntityAsset> m_DeathPickup = new CtrRef<PickupEntityAsset>();
-		[ContainerField(96), MemberInfoFlag(53), ContainerFieldNameHash(507619053), ContainerCtrRef]
+		[ContainerField(Name: "DeathPickup", Offset: 96, NameHash: 507619053, Flags: 53)]
 		public CtrRef<PickupEntityAsset> DeathPickup { get { return m_DeathPickup; } set { if (OnPropertyChanging("DropWeaponComponentData." + nameof(DeathPickup), this, m_DeathPickup, value)) m_DeathPickup = value; } } // 0x60 (96)
 		
 		protected EntryInputActionEnum m_ActionIdentifier = new EntryInputActionEnum();
-		[ContainerField(100), MemberInfoFlag(137), ContainerFieldNameHash(2090288440)]
+		[ContainerField(Name: "ActionIdentifier", Offset: 100, NameHash: 2090288440, Flags: 137)]
 		public EntryInputActionEnum ActionIdentifier { get { return m_ActionIdentifier; } set { if (OnPropertyChanging("DropWeaponComponentData." + nameof(ActionIdentifier), this, m_ActionIdentifier, value)) m_ActionIdentifier = value; } } // 0x64 (100)
 		
 		protected float m_DropWeaponAfterTime = new float();
-		[ContainerField(104), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1483095999)]
+		[ContainerField(Name: "DropWeaponAfterTime", Offset: 104, NameHash: 1483095999, Flags: 49469), LayoutImmutable, Blittable]
 		public float DropWeaponAfterTime { get { return m_DropWeaponAfterTime; } set { if (OnPropertyChanging("DropWeaponComponentData." + nameof(DropWeaponAfterTime), this, m_DropWeaponAfterTime, value)) m_DropWeaponAfterTime = value; } } // 0x68 (104)
 		
 		protected CtrRef<PickupEntityAsset> m_Pickup = new CtrRef<PickupEntityAsset>();
-		[ContainerField(108), MemberInfoFlag(53), ContainerFieldNameHash(3381581553), ContainerCtrRef]
+		[ContainerField(Name: "Pickup", Offset: 108, NameHash: 3381581553, Flags: 53)]
 		public CtrRef<PickupEntityAsset> Pickup { get { return m_Pickup; } set { if (OnPropertyChanging("DropWeaponComponentData." + nameof(Pickup), this, m_Pickup, value)) m_Pickup = value; } } // 0x6C (108)
 		
 		protected List<WeaponSlot> m_ExcludedWeaponSlots = new List<WeaponSlot>();
-		[ContainerField(112), MemberInfoFlag(65), ContainerFieldNameHash(1714084178), ContainerArray]
+		[ContainerField(Name: "ExcludedWeaponSlots", Offset: 112, NameHash: 1714084178, Flags: 65)]
 		public List<WeaponSlot> ExcludedWeaponSlots { get { return m_ExcludedWeaponSlots; } set { if (OnPropertyChanging("DropWeaponComponentData." + nameof(ExcludedWeaponSlots), this, m_ExcludedWeaponSlots, value)) m_ExcludedWeaponSlots = value; } } // 0x70 (112)
 		
 		protected float m_WeaponDropTime = new float();
-		[ContainerField(116), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(961265435)]
+		[ContainerField(Name: "WeaponDropTime", Offset: 116, NameHash: 961265435, Flags: 49469), LayoutImmutable, Blittable]
 		public float WeaponDropTime { get { return m_WeaponDropTime; } set { if (OnPropertyChanging("DropWeaponComponentData." + nameof(WeaponDropTime), this, m_WeaponDropTime, value)) m_WeaponDropTime = value; } } // 0x74 (116)
 		
 		protected bool m_ListenToAnimationWeaponDropSignal = new bool();
-		[ContainerField(120), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(423346996)]
+		[ContainerField(Name: "ListenToAnimationWeaponDropSignal", Offset: 120, NameHash: 423346996, Flags: 49325), LayoutImmutable, Blittable]
 		public bool ListenToAnimationWeaponDropSignal { get { return m_ListenToAnimationWeaponDropSignal; } set { if (OnPropertyChanging("DropWeaponComponentData." + nameof(ListenToAnimationWeaponDropSignal), this, m_ListenToAnimationWeaponDropSignal, value)) m_ListenToAnimationWeaponDropSignal = value; } } // 0x78 (120)
 		
 		protected bool m_AllowDropWeaponOnAction = new bool();
-		[ContainerField(121), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3589518696)]
+		[ContainerField(Name: "AllowDropWeaponOnAction", Offset: 121, NameHash: 3589518696, Flags: 49325), LayoutImmutable, Blittable]
 		public bool AllowDropWeaponOnAction { get { return m_AllowDropWeaponOnAction; } set { if (OnPropertyChanging("DropWeaponComponentData." + nameof(AllowDropWeaponOnAction), this, m_AllowDropWeaponOnAction, value)) m_AllowDropWeaponOnAction = value; } } // 0x79 (121)
 		
 		protected bool m_RequireWeaponSlotEmpty = new bool();
-		[ContainerField(122), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2054797371)]
+		[ContainerField(Name: "RequireWeaponSlotEmpty", Offset: 122, NameHash: 2054797371, Flags: 49325), LayoutImmutable, Blittable]
 		public bool RequireWeaponSlotEmpty { get { return m_RequireWeaponSlotEmpty; } set { if (OnPropertyChanging("DropWeaponComponentData." + nameof(RequireWeaponSlotEmpty), this, m_RequireWeaponSlotEmpty, value)) m_RequireWeaponSlotEmpty = value; } } // 0x7A (122)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

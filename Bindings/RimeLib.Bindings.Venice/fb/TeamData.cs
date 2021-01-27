@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(28), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 28)]
 	public class TeamData : 
 		TeamAsset
 	{
 		protected CtrRef<SoldierBlueprint> m_Soldier = new CtrRef<SoldierBlueprint>();
-		[ContainerField(12), MemberInfoFlag(53), ContainerFieldNameHash(2844639087), ContainerCtrRef]
+		[ContainerField(Name: "Soldier", Offset: 12, NameHash: 2844639087, Flags: 53)]
 		public CtrRef<SoldierBlueprint> Soldier { get { return m_Soldier; } set { if (OnPropertyChanging("TeamData." + nameof(Soldier), this, m_Soldier, value)) m_Soldier = value; } } // 0xC (12)
 		
 		protected FactionId m_Faction = new FactionId();
-		[ContainerField(16), MemberInfoFlag(137), ContainerFieldNameHash(1419764413)]
+		[ContainerField(Name: "Faction", Offset: 16, NameHash: 1419764413, Flags: 137)]
 		public FactionId Faction { get { return m_Faction; } set { if (OnPropertyChanging("TeamData." + nameof(Faction), this, m_Faction, value)) m_Faction = value; } } // 0x10 (16)
 		
 		protected RefArray<SoldierCustomizationAsset> m_SoldierCustomization = new RefArray<SoldierCustomizationAsset>();
-		[ContainerField(20), MemberInfoFlag(65), ContainerFieldNameHash(2197823922), ContainerRefArray]
+		[ContainerField(Name: "SoldierCustomization", Offset: 20, NameHash: 2197823922, Flags: 65)]
 		public RefArray<SoldierCustomizationAsset> SoldierCustomization { get { return m_SoldierCustomization; } set { if (OnPropertyChanging("TeamData." + nameof(SoldierCustomization), this, m_SoldierCustomization, value)) m_SoldierCustomization = value; } } // 0x14 (20)
 		
 		protected RefArray<VehicleCustomizationAsset> m_VehicleCustomization = new RefArray<VehicleCustomizationAsset>();
-		[ContainerField(24), MemberInfoFlag(65), ContainerFieldNameHash(448553568), ContainerRefArray]
+		[ContainerField(Name: "VehicleCustomization", Offset: 24, NameHash: 448553568, Flags: 65)]
 		public RefArray<VehicleCustomizationAsset> VehicleCustomization { get { return m_VehicleCustomization; } set { if (OnPropertyChanging("TeamData." + nameof(VehicleCustomization), this, m_VehicleCustomization, value)) m_VehicleCustomization = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

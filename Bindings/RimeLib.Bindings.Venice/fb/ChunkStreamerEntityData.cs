@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(16), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
 	public class ChunkStreamerEntityData : 
 		EntityData
 	{
 		protected List<ChunkStreamerCell> m_Cells = new List<ChunkStreamerCell>();
-		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(212327888), ContainerArray]
+		[ContainerField(Name: "Cells", Offset: 12, NameHash: 212327888, Flags: 65)]
 		public List<ChunkStreamerCell> Cells { get { return m_Cells; } set { if (OnPropertyChanging("ChunkStreamerEntityData." + nameof(Cells), this, m_Cells, value)) m_Cells = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

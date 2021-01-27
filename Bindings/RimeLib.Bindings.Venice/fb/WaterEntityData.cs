@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(128), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 128)]
 	public class WaterEntityData : 
 		GamePhysicsEntityData
 	{
 		protected CtrRef<WaterAsset> m_Asset = new CtrRef<WaterAsset>();
-		[ContainerField(112), MemberInfoFlag(53), ContainerFieldNameHash(205976053), ContainerCtrRef]
+		[ContainerField(Name: "Asset", Offset: 112, NameHash: 205976053, Flags: 53)]
 		public CtrRef<WaterAsset> Asset { get { return m_Asset; } set { if (OnPropertyChanging("WaterEntityData." + nameof(Asset), this, m_Asset, value)) m_Asset = value; } } // 0x70 (112)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

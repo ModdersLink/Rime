@@ -18,19 +18,19 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(41), ContainerSize(64), ContainerStruct]
+	[ContainerType(Alignment: 16,  Flags: 41, Size: 64)]
 	public class ColorTintData : FrostbiteContainer
 	{
-		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
+		[ContainerField(Name: "Contrast", Offset: 0, NameHash: 332991719, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 Contrast { get; set; } = new Vec3(); // 0x0 (0)
 		
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
+		[ContainerField(Name: "Brightness", Offset: 16, NameHash: 2298333740, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 Brightness { get; set; } = new Vec3(); // 0x10 (16)
 		
-		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
+		[ContainerField(Name: "Saturation", Offset: 32, NameHash: 2572315705, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 Saturation { get; set; } = new Vec3(); // 0x20 (32)
 		
-		[ContainerField(48), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "Hue", Offset: 48, NameHash: 193458845, Flags: 49469), LayoutImmutable, Blittable]
 		public float Hue { get; set; } // 0x30 (48)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

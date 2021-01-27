@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(44), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 44)]
 	public class UIScreenshotCompData : 
 		UIComponentData
 	{
 		protected uint m_ResizeImageWidth = new uint();
-		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(983449366)]
+		[ContainerField(Name: "ResizeImageWidth", Offset: 28, NameHash: 983449366, Flags: 49421), LayoutImmutable, Blittable]
 		public uint ResizeImageWidth { get { return m_ResizeImageWidth; } set { if (OnPropertyChanging("UIScreenshotCompData." + nameof(ResizeImageWidth), this, m_ResizeImageWidth, value)) m_ResizeImageWidth = value; } } // 0x1C (28)
 		
 		protected List<ScreenshotInfo> m_ScreenshotInfos = new List<ScreenshotInfo>();
-		[ContainerField(32), MemberInfoFlag(65), ContainerFieldNameHash(4072764724), ContainerArray]
+		[ContainerField(Name: "ScreenshotInfos", Offset: 32, NameHash: 4072764724, Flags: 65)]
 		public List<ScreenshotInfo> ScreenshotInfos { get { return m_ScreenshotInfos; } set { if (OnPropertyChanging("UIScreenshotCompData." + nameof(ScreenshotInfos), this, m_ScreenshotInfos, value)) m_ScreenshotInfos = value; } } // 0x20 (32)
 		
 		protected uint m_ResizeImageHeight = new uint();
-		[ContainerField(36), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(2980493103)]
+		[ContainerField(Name: "ResizeImageHeight", Offset: 36, NameHash: 2980493103, Flags: 49421), LayoutImmutable, Blittable]
 		public uint ResizeImageHeight { get { return m_ResizeImageHeight; } set { if (OnPropertyChanging("UIScreenshotCompData." + nameof(ResizeImageHeight), this, m_ResizeImageHeight, value)) m_ResizeImageHeight = value; } } // 0x24 (36)
 		
 		protected bool m_AutoResizeImage = new bool();
-		[ContainerField(40), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(767083359)]
+		[ContainerField(Name: "AutoResizeImage", Offset: 40, NameHash: 767083359, Flags: 49325), LayoutImmutable, Blittable]
 		public bool AutoResizeImage { get { return m_AutoResizeImage; } set { if (OnPropertyChanging("UIScreenshotCompData." + nameof(AutoResizeImage), this, m_AutoResizeImage, value)) m_AutoResizeImage = value; } } // 0x28 (40)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

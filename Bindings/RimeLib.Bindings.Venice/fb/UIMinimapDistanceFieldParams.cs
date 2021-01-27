@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(41), ContainerSize(64), ContainerStruct]
+	[ContainerType(Alignment: 16,  Flags: 41, Size: 64)]
 	public class UIMinimapDistanceFieldParams : FrostbiteContainer
 	{
-		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
+		[ContainerField(Name: "ColorTint", Offset: 0, NameHash: 518108063, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec4 ColorTint { get; set; } = new Vec4(); // 0x0 (0)
 		
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
+		[ContainerField(Name: "OutlineColor", Offset: 16, NameHash: 3944405112, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec4 OutlineColor { get; set; } = new Vec4(); // 0x10 (16)
 		
-		[ContainerField(32), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "DistanceScale", Offset: 32, NameHash: 773140030, Flags: 49469), LayoutImmutable, Blittable]
 		public float DistanceScale { get; set; } // 0x20 (32)
 		
-		[ContainerField(36), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "AlphaThreshold", Offset: 36, NameHash: 2686813414, Flags: 49469), LayoutImmutable, Blittable]
 		public float AlphaThreshold { get; set; } // 0x24 (36)
 		
-		[ContainerField(40), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "OutlineInner", Offset: 40, NameHash: 3946538011, Flags: 49469), LayoutImmutable, Blittable]
 		public float OutlineInner { get; set; } // 0x28 (40)
 		
-		[ContainerField(44), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "OutlineOuter", Offset: 44, NameHash: 3949917564, Flags: 49469), LayoutImmutable, Blittable]
 		public float OutlineOuter { get; set; } // 0x2C (44)
 		
-		[ContainerField(48), MemberInfoFlag(53), ContainerCtrRef]
+		[ContainerField(Name: "DistanceField", Offset: 48, NameHash: 750822692, Flags: 53)]
 		public CtrRef<UIDistanceFieldAsset> DistanceField { get; set; } = new CtrRef<UIDistanceFieldAsset>(); // 0x30 (48)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

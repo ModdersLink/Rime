@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(16), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
 	public class SoundPatchConfigurationAssetEntry : 
 		SoundPatchConfigurationEntry
 	{
 		protected uint m_NameHash = new uint();
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(994057744)]
+		[ContainerField(Name: "NameHash", Offset: 8, NameHash: 994057744, Flags: 49421), LayoutImmutable, Blittable]
 		public uint NameHash { get { return m_NameHash; } set { if (OnPropertyChanging("SoundPatchConfigurationAssetEntry." + nameof(NameHash), this, m_NameHash, value)) m_NameHash = value; } } // 0x8 (8)
 		
 		protected CtrRef<Asset> m_Value = new CtrRef<Asset>();
-		[ContainerField(12), MemberInfoFlag(53), ContainerFieldNameHash(225375086), ContainerCtrRef]
+		[ContainerField(Name: "Value", Offset: 12, NameHash: 225375086, Flags: 53)]
 		public CtrRef<Asset> Value { get { return m_Value; } set { if (OnPropertyChanging("SoundPatchConfigurationAssetEntry." + nameof(Value), this, m_Value, value)) m_Value = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(16), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
 	public class CustomizationUnlockParts : 
 		DataContainer
 	{
 		protected string m_UICategorySid = string.Empty;
-		[ContainerField(8), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(795269975)]
+		[ContainerField(Name: "UICategorySid", Offset: 8, NameHash: 795269975, Flags: 16509), LayoutImmutable]
 		public string UICategorySid { get { return m_UICategorySid; } set { if (OnPropertyChanging("CustomizationUnlockParts." + nameof(UICategorySid), this, m_UICategorySid, value)) m_UICategorySid = value; } } // 0x8 (8)
 		
 		protected RefArray<UnlockAssetBase> m_SelectableUnlocks = new RefArray<UnlockAssetBase>();
-		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(1920005412), ContainerRefArray]
+		[ContainerField(Name: "SelectableUnlocks", Offset: 12, NameHash: 1920005412, Flags: 65)]
 		public RefArray<UnlockAssetBase> SelectableUnlocks { get { return m_SelectableUnlocks; } set { if (OnPropertyChanging("CustomizationUnlockParts." + nameof(SelectableUnlocks), this, m_SelectableUnlocks, value)) m_SelectableUnlocks = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

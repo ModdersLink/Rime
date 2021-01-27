@@ -18,48 +18,48 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(52), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 52)]
 	public class ParachuteStateData : 
 		CharacterStateData
 	{
 		protected float m_DeployTime = new float();
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2275884507)]
+		[ContainerField(Name: "DeployTime", Offset: 12, NameHash: 2275884507, Flags: 49469), LayoutImmutable, Blittable]
 		public float DeployTime { get { return m_DeployTime; } set { if (OnPropertyChanging("ParachuteStateData." + nameof(DeployTime), this, m_DeployTime, value)) m_DeployTime = value; } } // 0xC (12)
 		
 		protected float m_TerminalVelocity = new float();
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1459893878)]
+		[ContainerField(Name: "TerminalVelocity", Offset: 16, NameHash: 1459893878, Flags: 49469), LayoutImmutable, Blittable]
 		public float TerminalVelocity { get { return m_TerminalVelocity; } set { if (OnPropertyChanging("ParachuteStateData." + nameof(TerminalVelocity), this, m_TerminalVelocity, value)) m_TerminalVelocity = value; } } // 0x10 (16)
 		
 		protected float m_ForwardDragCoefficient = new float();
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2142952731)]
+		[ContainerField(Name: "ForwardDragCoefficient", Offset: 20, NameHash: 2142952731, Flags: 49469), LayoutImmutable, Blittable]
 		public float ForwardDragCoefficient { get { return m_ForwardDragCoefficient; } set { if (OnPropertyChanging("ParachuteStateData." + nameof(ForwardDragCoefficient), this, m_ForwardDragCoefficient, value)) m_ForwardDragCoefficient = value; } } // 0x14 (20)
 		
 		protected float m_AngleOfAttack = new float();
-		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2971529797)]
+		[ContainerField(Name: "AngleOfAttack", Offset: 24, NameHash: 2971529797, Flags: 49469), LayoutImmutable, Blittable]
 		public float AngleOfAttack { get { return m_AngleOfAttack; } set { if (OnPropertyChanging("ParachuteStateData." + nameof(AngleOfAttack), this, m_AngleOfAttack, value)) m_AngleOfAttack = value; } } // 0x18 (24)
 		
 		protected float m_BankOffset = new float();
-		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1603265742)]
+		[ContainerField(Name: "BankOffset", Offset: 28, NameHash: 1603265742, Flags: 49469), LayoutImmutable, Blittable]
 		public float BankOffset { get { return m_BankOffset; } set { if (OnPropertyChanging("ParachuteStateData." + nameof(BankOffset), this, m_BankOffset, value)) m_BankOffset = value; } } // 0x1C (28)
 		
 		protected float m_ThrottleOffset = new float();
-		[ContainerField(32), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1429396608)]
+		[ContainerField(Name: "ThrottleOffset", Offset: 32, NameHash: 1429396608, Flags: 49469), LayoutImmutable, Blittable]
 		public float ThrottleOffset { get { return m_ThrottleOffset; } set { if (OnPropertyChanging("ParachuteStateData." + nameof(ThrottleOffset), this, m_ThrottleOffset, value)) m_ThrottleOffset = value; } } // 0x20 (32)
 		
 		protected float m_BrakeOffset = new float();
-		[ContainerField(36), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1350216631)]
+		[ContainerField(Name: "BrakeOffset", Offset: 36, NameHash: 1350216631, Flags: 49469), LayoutImmutable, Blittable]
 		public float BrakeOffset { get { return m_BrakeOffset; } set { if (OnPropertyChanging("ParachuteStateData." + nameof(BrakeOffset), this, m_BrakeOffset, value)) m_BrakeOffset = value; } } // 0x24 (36)
 		
 		protected float m_MaxRollVelocity = new float();
-		[ContainerField(40), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1947747259)]
+		[ContainerField(Name: "MaxRollVelocity", Offset: 40, NameHash: 1947747259, Flags: 49469), LayoutImmutable, Blittable]
 		public float MaxRollVelocity { get { return m_MaxRollVelocity; } set { if (OnPropertyChanging("ParachuteStateData." + nameof(MaxRollVelocity), this, m_MaxRollVelocity, value)) m_MaxRollVelocity = value; } } // 0x28 (40)
 		
 		protected float m_MaxPitchVelocity = new float();
-		[ContainerField(44), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2587272352)]
+		[ContainerField(Name: "MaxPitchVelocity", Offset: 44, NameHash: 2587272352, Flags: 49469), LayoutImmutable, Blittable]
 		public float MaxPitchVelocity { get { return m_MaxPitchVelocity; } set { if (OnPropertyChanging("ParachuteStateData." + nameof(MaxPitchVelocity), this, m_MaxPitchVelocity, value)) m_MaxPitchVelocity = value; } } // 0x2C (44)
 		
 		protected float m_MaxYawVelocity = new float();
-		[ContainerField(48), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3921711241)]
+		[ContainerField(Name: "MaxYawVelocity", Offset: 48, NameHash: 3921711241, Flags: 49469), LayoutImmutable, Blittable]
 		public float MaxYawVelocity { get { return m_MaxYawVelocity; } set { if (OnPropertyChanging("ParachuteStateData." + nameof(MaxYawVelocity), this, m_MaxYawVelocity, value)) m_MaxYawVelocity = value; } } // 0x30 (48)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

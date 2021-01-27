@@ -18,19 +18,19 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(16), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 16)]
 	public class Strengths : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "Infantry", Offset: 0, NameHash: 3732923988, Flags: 49469), LayoutImmutable, Blittable]
 		public float Infantry { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "LightArmour", Offset: 4, NameHash: 539448013, Flags: 49469), LayoutImmutable, Blittable]
 		public float LightArmour { get; set; } // 0x4 (4)
 		
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "HeavyArmour", Offset: 8, NameHash: 779698192, Flags: 49469), LayoutImmutable, Blittable]
 		public float HeavyArmour { get; set; } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "Helicopter", Offset: 12, NameHash: 3980345330, Flags: 49469), LayoutImmutable, Blittable]
 		public float Helicopter { get; set; } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

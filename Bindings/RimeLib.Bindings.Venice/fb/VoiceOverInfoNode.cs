@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(24), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 24)]
 	public class VoiceOverInfoNode : 
 		VoiceOverExpressionNode
 	{
 		protected CtrRef<VoiceOverValueConnection> m_Object = new CtrRef<VoiceOverValueConnection>();
-		[ContainerField(8), MemberInfoFlag(53), ContainerFieldNameHash(2866508144), ContainerCtrRef]
+		[ContainerField(Name: "Object", Offset: 8, NameHash: 2866508144, Flags: 53)]
 		public CtrRef<VoiceOverValueConnection> Object { get { return m_Object; } set { if (OnPropertyChanging("VoiceOverInfoNode." + nameof(Object), this, m_Object, value)) m_Object = value; } } // 0x8 (8)
 		
 		protected CtrRef<VoiceOverValue> m_Value = new CtrRef<VoiceOverValue>();
-		[ContainerField(12), MemberInfoFlag(53), ContainerFieldNameHash(225375086), ContainerCtrRef]
+		[ContainerField(Name: "Value", Offset: 12, NameHash: 225375086, Flags: 53)]
 		public CtrRef<VoiceOverValue> Value { get { return m_Value; } set { if (OnPropertyChanging("VoiceOverInfoNode." + nameof(Value), this, m_Value, value)) m_Value = value; } } // 0xC (12)
 		
 		protected CtrRef<VoiceOverNamedValue> m_Field = new CtrRef<VoiceOverNamedValue>();
-		[ContainerField(16), MemberInfoFlag(53), ContainerFieldNameHash(206678151), ContainerCtrRef]
+		[ContainerField(Name: "Field", Offset: 16, NameHash: 206678151, Flags: 53)]
 		public CtrRef<VoiceOverNamedValue> Field { get { return m_Field; } set { if (OnPropertyChanging("VoiceOverInfoNode." + nameof(Field), this, m_Field, value)) m_Field = value; } } // 0x10 (16)
 		
 		protected CtrRef<VoiceOverObject> m_ExpectedType = new CtrRef<VoiceOverObject>();
-		[ContainerField(20), MemberInfoFlag(53), ContainerFieldNameHash(1076570403), ContainerCtrRef]
+		[ContainerField(Name: "ExpectedType", Offset: 20, NameHash: 1076570403, Flags: 53)]
 		public CtrRef<VoiceOverObject> ExpectedType { get { return m_ExpectedType; } set { if (OnPropertyChanging("VoiceOverInfoNode." + nameof(ExpectedType), this, m_ExpectedType, value)) m_ExpectedType = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

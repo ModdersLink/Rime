@@ -18,22 +18,22 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(40), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 40)]
 	public class StaticListItem : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "ItemName", Offset: 0, NameHash: 2972930359, Flags: 16509), LayoutImmutable]
 		public string ItemName { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), MemberInfoFlag(41)]
+		[ContainerField(Name: "DynamicDisable", Offset: 4, NameHash: 2500014788, Flags: 41)]
 		public UIDataSourceInfo DynamicDisable { get; set; } = new UIDataSourceInfo(); // 0x4 (4)
 		
-		[ContainerField(20), MemberInfoFlag(41)]
+		[ContainerField(Name: "DynamicNewContent", Offset: 20, NameHash: 3743471429, Flags: 41)]
 		public UIDataSourceInfo DynamicNewContent { get; set; } = new UIDataSourceInfo(); // 0x14 (20)
 		
-		[ContainerField(36), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "AppendPlatformToSID", Offset: 36, NameHash: 4010498481, Flags: 49325), LayoutImmutable, Blittable]
 		public bool AppendPlatformToSID { get; set; } // 0x24 (36)
 		
-		[ContainerField(37), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "ExcludeInRetail", Offset: 37, NameHash: 243223587, Flags: 49325), LayoutImmutable, Blittable]
 		public bool ExcludeInRetail { get; set; } // 0x25 (37)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

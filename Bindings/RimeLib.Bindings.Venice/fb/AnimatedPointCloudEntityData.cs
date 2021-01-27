@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(28), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 28)]
 	public class AnimatedPointCloudEntityData : 
 		EntityData
 	{
 		protected Realm m_Realm = new Realm();
-		[ContainerField(12), MemberInfoFlag(137), ContainerFieldNameHash(229961746)]
+		[ContainerField(Name: "Realm", Offset: 12, NameHash: 229961746, Flags: 137)]
 		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("AnimatedPointCloudEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0xC (12)
 		
 		protected CtrRef<AnimatedPointCloudAsset> m_PointCloud = new CtrRef<AnimatedPointCloudAsset>();
-		[ContainerField(16), MemberInfoFlag(53), ContainerFieldNameHash(396521112), ContainerCtrRef]
+		[ContainerField(Name: "PointCloud", Offset: 16, NameHash: 396521112, Flags: 53)]
 		public CtrRef<AnimatedPointCloudAsset> PointCloud { get { return m_PointCloud; } set { if (OnPropertyChanging("AnimatedPointCloudEntityData." + nameof(PointCloud), this, m_PointCloud, value)) m_PointCloud = value; } } // 0x10 (16)
 		
 		protected float m_ExternalTime = new float();
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2162678253)]
+		[ContainerField(Name: "ExternalTime", Offset: 20, NameHash: 2162678253, Flags: 49469), LayoutImmutable, Blittable]
 		public float ExternalTime { get { return m_ExternalTime; } set { if (OnPropertyChanging("AnimatedPointCloudEntityData." + nameof(ExternalTime), this, m_ExternalTime, value)) m_ExternalTime = value; } } // 0x14 (20)
 		
 		protected bool m_StartPaused = new bool();
-		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(735997331)]
+		[ContainerField(Name: "StartPaused", Offset: 24, NameHash: 735997331, Flags: 49325), LayoutImmutable, Blittable]
 		public bool StartPaused { get { return m_StartPaused; } set { if (OnPropertyChanging("AnimatedPointCloudEntityData." + nameof(StartPaused), this, m_StartPaused, value)) m_StartPaused = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

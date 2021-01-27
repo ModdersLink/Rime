@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(144), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 144)]
 	public class StaticModelGroupEntityData : 
 		GamePhysicsEntityData
 	{
 		protected List<StaticModelGroupMemberData> m_MemberDatas = new List<StaticModelGroupMemberData>();
-		[ContainerField(112), MemberInfoFlag(65), ContainerFieldNameHash(1084657014), ContainerArray]
+		[ContainerField(Name: "MemberDatas", Offset: 112, NameHash: 1084657014, Flags: 65)]
 		public List<StaticModelGroupMemberData> MemberDatas { get { return m_MemberDatas; } set { if (OnPropertyChanging("StaticModelGroupEntityData." + nameof(MemberDatas), this, m_MemberDatas, value)) m_MemberDatas = value; } } // 0x70 (112)
 		
 		protected GUID m_HackToSolveRealTimeTweakingIssue = new GUID();
-		[ContainerField(116), LayoutImmutable, Blittable, MemberInfoFlag(49501), ContainerFieldNameHash(1452521702)]
+		[ContainerField(Name: "HackToSolveRealTimeTweakingIssue", Offset: 116, NameHash: 1452521702, Flags: 49501), LayoutImmutable, Blittable]
 		public GUID HackToSolveRealTimeTweakingIssue { get { return m_HackToSolveRealTimeTweakingIssue; } set { if (OnPropertyChanging("StaticModelGroupEntityData." + nameof(HackToSolveRealTimeTweakingIssue), this, m_HackToSolveRealTimeTweakingIssue, value)) m_HackToSolveRealTimeTweakingIssue = value; } } // 0x74 (116)
 		
 		protected uint m_NetworkIdCount = new uint();
-		[ContainerField(132), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(1234693717)]
+		[ContainerField(Name: "NetworkIdCount", Offset: 132, NameHash: 1234693717, Flags: 49421), LayoutImmutable, Blittable]
 		public uint NetworkIdCount { get { return m_NetworkIdCount; } set { if (OnPropertyChanging("StaticModelGroupEntityData." + nameof(NetworkIdCount), this, m_NetworkIdCount, value)) m_NetworkIdCount = value; } } // 0x84 (132)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

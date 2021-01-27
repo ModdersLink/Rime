@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(128), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 128)]
 	public class DynamicModelEntityData : 
 		DynamicGamePhysicsEntityData
 	{
 		protected CtrRef<PartComponentData> m_Part = new CtrRef<PartComponentData>();
-		[ContainerField(112), MemberInfoFlag(53), ContainerFieldNameHash(2089448370), ContainerCtrRef]
+		[ContainerField(Name: "Part", Offset: 112, NameHash: 2089448370, Flags: 53)]
 		public CtrRef<PartComponentData> Part { get { return m_Part; } set { if (OnPropertyChanging("DynamicModelEntityData." + nameof(Part), this, m_Part, value)) m_Part = value; } } // 0x70 (112)
 		
 		protected CtrRef<MeshAsset> m_Mesh = new CtrRef<MeshAsset>();
-		[ContainerField(116), MemberInfoFlag(53), ContainerFieldNameHash(2088783990), ContainerCtrRef]
+		[ContainerField(Name: "Mesh", Offset: 116, NameHash: 2088783990, Flags: 53)]
 		public CtrRef<MeshAsset> Mesh { get { return m_Mesh; } set { if (OnPropertyChanging("DynamicModelEntityData." + nameof(Mesh), this, m_Mesh, value)) m_Mesh = value; } } // 0x74 (116)
 		
 		protected bool m_NoCollision = new bool();
-		[ContainerField(120), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3513186074)]
+		[ContainerField(Name: "NoCollision", Offset: 120, NameHash: 3513186074, Flags: 49325), LayoutImmutable, Blittable]
 		public bool NoCollision { get { return m_NoCollision; } set { if (OnPropertyChanging("DynamicModelEntityData." + nameof(NoCollision), this, m_NoCollision, value)) m_NoCollision = value; } } // 0x78 (120)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

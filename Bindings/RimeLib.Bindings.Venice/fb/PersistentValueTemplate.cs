@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(48), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 48)]
 	public class PersistentValueTemplate : 
 		DataContainer
 	{
 		protected PersistentValueTemplateData m_Data = new PersistentValueTemplateData();
-		[ContainerField(8), MemberInfoFlag(41), ContainerFieldNameHash(2088730869)]
+		[ContainerField(Name: "Data", Offset: 8, NameHash: 2088730869, Flags: 41)]
 		public PersistentValueTemplateData Data { get { return m_Data; } set { if (OnPropertyChanging("PersistentValueTemplate." + nameof(Data), this, m_Data, value)) m_Data = value; } } // 0x8 (8)
 		
 		protected RefArray<AbstractPersistentStatRef> m_DerivedFormulaRefs = new RefArray<AbstractPersistentStatRef>();
-		[ContainerField(44), MemberInfoFlag(65), ContainerFieldNameHash(98984868), ContainerRefArray]
+		[ContainerField(Name: "DerivedFormulaRefs", Offset: 44, NameHash: 98984868, Flags: 65)]
 		public RefArray<AbstractPersistentStatRef> DerivedFormulaRefs { get { return m_DerivedFormulaRefs; } set { if (OnPropertyChanging("PersistentValueTemplate." + nameof(DerivedFormulaRefs), this, m_DerivedFormulaRefs, value)) m_DerivedFormulaRefs = value; } } // 0x2C (44)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

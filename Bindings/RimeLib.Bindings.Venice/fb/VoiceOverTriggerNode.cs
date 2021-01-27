@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(24), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 24)]
 	public class VoiceOverTriggerNode : 
 		VoiceOverStructureNode
 	{
 		protected RefArray<VoiceOverTriggerParameter> m_Parameters = new RefArray<VoiceOverTriggerParameter>();
-		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(3325515039), ContainerRefArray]
+		[ContainerField(Name: "Parameters", Offset: 12, NameHash: 3325515039, Flags: 65)]
 		public RefArray<VoiceOverTriggerParameter> Parameters { get { return m_Parameters; } set { if (OnPropertyChanging("VoiceOverTriggerNode." + nameof(Parameters), this, m_Parameters, value)) m_Parameters = value; } } // 0xC (12)
 		
 		protected float m_Delay = new float();
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(208768368)]
+		[ContainerField(Name: "Delay", Offset: 16, NameHash: 208768368, Flags: 49469), LayoutImmutable, Blittable]
 		public float Delay { get { return m_Delay; } set { if (OnPropertyChanging("VoiceOverTriggerNode." + nameof(Delay), this, m_Delay, value)) m_Delay = value; } } // 0x10 (16)
 		
 		protected CtrRef<VoiceOverEvent> m_Event = new CtrRef<VoiceOverEvent>();
-		[ContainerField(20), MemberInfoFlag(53), ContainerFieldNameHash(201427689), ContainerCtrRef]
+		[ContainerField(Name: "Event", Offset: 20, NameHash: 201427689, Flags: 53)]
 		public CtrRef<VoiceOverEvent> Event { get { return m_Event; } set { if (OnPropertyChanging("VoiceOverTriggerNode." + nameof(Event), this, m_Event, value)) m_Event = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

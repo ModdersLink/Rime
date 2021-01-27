@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(112), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 112)]
 	public class PlayerTakeOverTriggerEntityData : 
 		GameEntityData
 	{
 		protected TeamId m_TeamId = new TeamId();
-		[ContainerField(96), MemberInfoFlag(137), ContainerFieldNameHash(3220374101)]
+		[ContainerField(Name: "TeamId", Offset: 96, NameHash: 3220374101, Flags: 137)]
 		public TeamId TeamId { get { return m_TeamId; } set { if (OnPropertyChanging("PlayerTakeOverTriggerEntityData." + nameof(TeamId), this, m_TeamId, value)) m_TeamId = value; } } // 0x60 (96)
 		
 		protected float m_TimeToLoseControl = new float();
-		[ContainerField(100), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3830029753)]
+		[ContainerField(Name: "TimeToLoseControl", Offset: 100, NameHash: 3830029753, Flags: 49469), LayoutImmutable, Blittable]
 		public float TimeToLoseControl { get { return m_TimeToLoseControl; } set { if (OnPropertyChanging("PlayerTakeOverTriggerEntityData." + nameof(TimeToLoseControl), this, m_TimeToLoseControl, value)) m_TimeToLoseControl = value; } } // 0x64 (100)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

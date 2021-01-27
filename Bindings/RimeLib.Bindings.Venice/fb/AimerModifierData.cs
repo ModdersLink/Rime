@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(20), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 20)]
 	public class AimerModifierData : 
 		Asset
 	{
 		protected float m_LookSpeedMultiplier = new float();
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1418472942)]
+		[ContainerField(Name: "LookSpeedMultiplier", Offset: 12, NameHash: 1418472942, Flags: 49469), LayoutImmutable, Blittable]
 		public float LookSpeedMultiplier { get { return m_LookSpeedMultiplier; } set { if (OnPropertyChanging("AimerModifierData." + nameof(LookSpeedMultiplier), this, m_LookSpeedMultiplier, value)) m_LookSpeedMultiplier = value; } } // 0xC (12)
 		
 		protected bool m_OnlyInSupportedShooting = new bool();
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(809776183)]
+		[ContainerField(Name: "OnlyInSupportedShooting", Offset: 16, NameHash: 809776183, Flags: 49325), LayoutImmutable, Blittable]
 		public bool OnlyInSupportedShooting { get { return m_OnlyInSupportedShooting; } set { if (OnPropertyChanging("AimerModifierData." + nameof(OnlyInSupportedShooting), this, m_OnlyInSupportedShooting, value)) m_OnlyInSupportedShooting = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

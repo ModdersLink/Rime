@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(16), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
 	public class AdvertisementLevelDescriptionComponent : 
 		LevelDescriptionComponent
 	{
 		protected string m_Identifier = string.Empty;
-		[ContainerField(8), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(3512790342)]
+		[ContainerField(Name: "Identifier", Offset: 8, NameHash: 3512790342, Flags: 16509), LayoutImmutable]
 		public string Identifier { get { return m_Identifier; } set { if (OnPropertyChanging("AdvertisementLevelDescriptionComponent." + nameof(Identifier), this, m_Identifier, value)) m_Identifier = value; } } // 0x8 (8)
 		
 		protected List<AdvertisementZoneMember> m_Members = new List<AdvertisementZoneMember>();
-		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(1446896454), ContainerArray]
+		[ContainerField(Name: "Members", Offset: 12, NameHash: 1446896454, Flags: 65)]
 		public List<AdvertisementZoneMember> Members { get { return m_Members; } set { if (OnPropertyChanging("AdvertisementLevelDescriptionComponent." + nameof(Members), this, m_Members, value)) m_Members = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

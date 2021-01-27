@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(24), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 24)]
 	public class ProfileOptionDataBinary : 
 		ProfileOptionData
 	{
 		protected int m_MaxLength = new int();
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(1300353773)]
+		[ContainerField(Name: "MaxLength", Offset: 20, NameHash: 1300353773, Flags: 49405), LayoutImmutable, Blittable]
 		public int MaxLength { get { return m_MaxLength; } set { if (OnPropertyChanging("ProfileOptionDataBinary." + nameof(MaxLength), this, m_MaxLength, value)) m_MaxLength = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

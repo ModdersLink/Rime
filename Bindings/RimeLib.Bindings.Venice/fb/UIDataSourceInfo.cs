@@ -18,22 +18,22 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(16), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 16)]
 	public class UIDataSourceInfo : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "DataName", Offset: 0, NameHash: 3250054578, Flags: 16509), LayoutImmutable]
 		public string DataName { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), MemberInfoFlag(53), ContainerCtrRef]
+		[ContainerField(Name: "DataCategory", Offset: 4, NameHash: 4099955781, Flags: 53)]
 		public CtrRef<UIComponentData> DataCategory { get; set; } = new CtrRef<UIComponentData>(); // 0x4 (4)
 		
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49405)]
+		[ContainerField(Name: "DataKey", Offset: 8, NameHash: 3872856866, Flags: 49405), LayoutImmutable, Blittable]
 		public int DataKey { get; set; } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "UseDirectAccess", Offset: 12, NameHash: 3627000399, Flags: 49325), LayoutImmutable, Blittable]
 		public bool UseDirectAccess { get; set; } // 0xC (12)
 		
-		[ContainerField(13), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "UpdateOnInitialize", Offset: 13, NameHash: 455979421, Flags: 49325), LayoutImmutable, Blittable]
 		public bool UpdateOnInitialize { get; set; } // 0xD (13)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

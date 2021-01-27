@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(20), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 20)]
 	public class BlueprintBundle : 
 		Asset
 	{
 		protected CtrRef<Blueprint> m_Blueprint = new CtrRef<Blueprint>();
-		[ContainerField(12), MemberInfoFlag(53), ContainerFieldNameHash(4232469066), ContainerCtrRef]
+		[ContainerField(Name: "Blueprint", Offset: 12, NameHash: 4232469066, Flags: 53)]
 		public CtrRef<Blueprint> Blueprint { get { return m_Blueprint; } set { if (OnPropertyChanging("BlueprintBundle." + nameof(Blueprint), this, m_Blueprint, value)) m_Blueprint = value; } } // 0xC (12)
 		
 		protected CtrRef<RegistryContainer> m_RegistryContainer = new CtrRef<RegistryContainer>();
-		[ContainerField(16), MemberInfoFlag(53), ContainerFieldNameHash(1535522391), ContainerCtrRef]
+		[ContainerField(Name: "RegistryContainer", Offset: 16, NameHash: 1535522391, Flags: 53)]
 		public CtrRef<RegistryContainer> RegistryContainer { get { return m_RegistryContainer; } set { if (OnPropertyChanging("BlueprintBundle." + nameof(RegistryContainer), this, m_RegistryContainer, value)) m_RegistryContainer = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,10 +18,10 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(1), MemberInfoFlag(41), ContainerSize(1), ContainerStruct]
+	[ContainerType(Alignment: 1,  Flags: 41, Size: 1)]
 	public class CounterHelper : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "dummy", Offset: 0, NameHash: 164703757, Flags: 49325), LayoutImmutable, Blittable]
 		public bool dummy { get; set; } // 0x0 (0)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

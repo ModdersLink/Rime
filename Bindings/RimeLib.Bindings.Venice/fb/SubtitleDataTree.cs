@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(16), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
 	public class SubtitleDataTree : 
 		TreeBase
 	{
 		protected RefArray<SubtitleMainDataNode> m_Subtitles = new RefArray<SubtitleMainDataNode>();
-		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(595907762), ContainerRefArray]
+		[ContainerField(Name: "Subtitles", Offset: 12, NameHash: 595907762, Flags: 65)]
 		public RefArray<SubtitleMainDataNode> Subtitles { get { return m_Subtitles; } set { if (OnPropertyChanging("SubtitleDataTree." + nameof(Subtitles), this, m_Subtitles, value)) m_Subtitles = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

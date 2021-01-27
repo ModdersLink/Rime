@@ -18,25 +18,25 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(20), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 20)]
 	public class TerrainQuadDecalAtlasTile : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
+		[ContainerField(Name: "TileIndexX", Offset: 0, NameHash: 2534612119, Flags: 49421), LayoutImmutable, Blittable]
 		public uint TileIndexX { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
+		[ContainerField(Name: "TileIndexY", Offset: 4, NameHash: 2534612118, Flags: 49421), LayoutImmutable, Blittable]
 		public uint TileIndexY { get; set; } // 0x4 (4)
 		
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
+		[ContainerField(Name: "TileCountX", Offset: 8, NameHash: 2473222698, Flags: 49421), LayoutImmutable, Blittable]
 		public uint TileCountX { get; set; } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
+		[ContainerField(Name: "TileCountY", Offset: 12, NameHash: 2473222699, Flags: 49421), LayoutImmutable, Blittable]
 		public uint TileCountY { get; set; } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "FlipX", Offset: 16, NameHash: 207056974, Flags: 49325), LayoutImmutable, Blittable]
 		public bool FlipX { get; set; } // 0x10 (16)
 		
-		[ContainerField(17), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "FlipY", Offset: 17, NameHash: 207056975, Flags: 49325), LayoutImmutable, Blittable]
 		public bool FlipY { get; set; } // 0x11 (17)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

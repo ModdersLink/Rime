@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(64), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 64)]
 	public class UpdateClipScaleData : 
 		ProcessorData
 	{
 		protected List<short> m_Lookup = new List<short>();
-		[ContainerField(48), MemberInfoFlag(65), ContainerFieldNameHash(2904698983), ContainerArray]
+		[ContainerField(Name: "Lookup", Offset: 48, NameHash: 2904698983, Flags: 65)]
 		public List<short> Lookup { get { return m_Lookup; } set { if (OnPropertyChanging("UpdateClipScaleData." + nameof(Lookup), this, m_Lookup, value)) m_Lookup = value; } } // 0x30 (48)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

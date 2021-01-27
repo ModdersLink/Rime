@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(28), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 28)]
 	public class InputActionsData : 
 		DataContainer
 	{
 		protected string m_NameSid = string.Empty;
-		[ContainerField(8), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(3153745340)]
+		[ContainerField(Name: "NameSid", Offset: 8, NameHash: 3153745340, Flags: 16509), LayoutImmutable]
 		public string NameSid { get { return m_NameSid; } set { if (OnPropertyChanging("InputActionsData." + nameof(NameSid), this, m_NameSid, value)) m_NameSid = value; } } // 0x8 (8)
 		
 		protected InputConceptIdentifiers m_ConceptIdentifier = new InputConceptIdentifiers();
-		[ContainerField(12), MemberInfoFlag(137), ContainerFieldNameHash(1320965734)]
+		[ContainerField(Name: "ConceptIdentifier", Offset: 12, NameHash: 1320965734, Flags: 137)]
 		public InputConceptIdentifiers ConceptIdentifier { get { return m_ConceptIdentifier; } set { if (OnPropertyChanging("InputActionsData." + nameof(ConceptIdentifier), this, m_ConceptIdentifier, value)) m_ConceptIdentifier = value; } } // 0xC (12)
 		
 		protected InputConceptIdentifiers m_CopyKeyBindingFrom = new InputConceptIdentifiers();
-		[ContainerField(16), MemberInfoFlag(137), ContainerFieldNameHash(1909891296)]
+		[ContainerField(Name: "CopyKeyBindingFrom", Offset: 16, NameHash: 1909891296, Flags: 137)]
 		public InputConceptIdentifiers CopyKeyBindingFrom { get { return m_CopyKeyBindingFrom; } set { if (OnPropertyChanging("InputActionsData." + nameof(CopyKeyBindingFrom), this, m_CopyKeyBindingFrom, value)) m_CopyKeyBindingFrom = value; } } // 0x10 (16)
 		
 		protected RefArray<InputActionData> m_InputActions = new RefArray<InputActionData>();
-		[ContainerField(20), MemberInfoFlag(65), ContainerFieldNameHash(3504680894), ContainerRefArray]
+		[ContainerField(Name: "InputActions", Offset: 20, NameHash: 3504680894, Flags: 65)]
 		public RefArray<InputActionData> InputActions { get { return m_InputActions; } set { if (OnPropertyChanging("InputActionsData." + nameof(InputActions), this, m_InputActions, value)) m_InputActions = value; } } // 0x14 (20)
 		
 		protected bool m_HideInKeyBindings = new bool();
-		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3898345319)]
+		[ContainerField(Name: "HideInKeyBindings", Offset: 24, NameHash: 3898345319, Flags: 49325), LayoutImmutable, Blittable]
 		public bool HideInKeyBindings { get { return m_HideInKeyBindings; } set { if (OnPropertyChanging("InputActionsData." + nameof(HideInKeyBindings), this, m_HideInKeyBindings, value)) m_HideInKeyBindings = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

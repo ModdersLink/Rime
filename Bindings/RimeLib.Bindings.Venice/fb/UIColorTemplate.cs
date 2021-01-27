@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(20), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 20)]
 	public class UIColorTemplate : 
 		Asset
 	{
 		protected RefArray<UIColor> m_Colors = new RefArray<UIColor>();
-		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(2713814155), ContainerRefArray]
+		[ContainerField(Name: "Colors", Offset: 12, NameHash: 2713814155, Flags: 65)]
 		public RefArray<UIColor> Colors { get { return m_Colors; } set { if (OnPropertyChanging("UIColorTemplate." + nameof(Colors), this, m_Colors, value)) m_Colors = value; } } // 0xC (12)
 		
 		protected bool m_Active = new bool();
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2484178249)]
+		[ContainerField(Name: "Active", Offset: 16, NameHash: 2484178249, Flags: 49325), LayoutImmutable, Blittable]
 		public bool Active { get { return m_Active; } set { if (OnPropertyChanging("UIColorTemplate." + nameof(Active), this, m_Active, value)) m_Active = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

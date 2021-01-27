@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(12), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 12)]
 	public class TextureAssetUnlockPartData : 
 		DataContainer
 	{
 		protected CtrRef<TextureAsset> m_Texture = new CtrRef<TextureAsset>();
-		[ContainerField(8), MemberInfoFlag(53), ContainerFieldNameHash(3185041626), ContainerCtrRef]
+		[ContainerField(Name: "Texture", Offset: 8, NameHash: 3185041626, Flags: 53)]
 		public CtrRef<TextureAsset> Texture { get { return m_Texture; } set { if (OnPropertyChanging("TextureAssetUnlockPartData." + nameof(Texture), this, m_Texture, value)) m_Texture = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

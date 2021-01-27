@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(28), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 28)]
 	public class StatsCategoryData : 
 		StatsCategoryBaseData
 	{
 		protected RefArray<StatsCategoryData> m_Categories = new RefArray<StatsCategoryData>();
-		[ContainerField(20), MemberInfoFlag(65), ContainerFieldNameHash(1039077843), ContainerRefArray]
+		[ContainerField(Name: "Categories", Offset: 20, NameHash: 1039077843, Flags: 65)]
 		public RefArray<StatsCategoryData> Categories { get { return m_Categories; } set { if (OnPropertyChanging("StatsCategoryData." + nameof(Categories), this, m_Categories, value)) m_Categories = value; } } // 0x14 (20)
 		
 		protected List<string> m_Members = new List<string>();
-		[ContainerField(24), MemberInfoFlag(65), ContainerFieldNameHash(1446896454), ContainerArray]
+		[ContainerField(Name: "Members", Offset: 24, NameHash: 1446896454, Flags: 65)]
 		public List<string> Members { get { return m_Members; } set { if (OnPropertyChanging("StatsCategoryData." + nameof(Members), this, m_Members, value)) m_Members = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

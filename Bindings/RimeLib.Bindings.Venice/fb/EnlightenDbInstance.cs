@@ -18,49 +18,49 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(41), ContainerSize(192), ContainerStruct]
+	[ContainerType(Alignment: 16,  Flags: 41, Size: 192)]
 	public class EnlightenDbInstance : FrostbiteContainer
 	{
-		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
+		[ContainerField(Name: "WorldBoundingbox", Offset: 0, NameHash: 3818495328, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public AxisAlignedBox WorldBoundingbox { get; set; } = new AxisAlignedBox(); // 0x0 (0)
 		
-		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
+		[ContainerField(Name: "WorldTransform", Offset: 32, NameHash: 2538324011, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public LinearTransform WorldTransform { get; set; } = new LinearTransform(); // 0x20 (32)
 		
-		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
+		[ContainerField(Name: "UvTranslation", Offset: 96, NameHash: 2805972397, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec2 UvTranslation { get; set; } = new Vec2(); // 0x60 (96)
 		
-		[ContainerField(112), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
+		[ContainerField(Name: "UvTransform", Offset: 112, NameHash: 2858488202, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec4 UvTransform { get; set; } = new Vec4(); // 0x70 (112)
 		
-		[ContainerField(128), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
+		[ContainerField(Name: "GeometryId", Offset: 128, NameHash: 2646119826, Flags: 49421), LayoutImmutable, Blittable]
 		public uint GeometryId { get; set; } // 0x80 (128)
 		
-		[ContainerField(132), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "ObjectVariation", Offset: 132, NameHash: 3624336577, Flags: 16509), LayoutImmutable]
 		public string ObjectVariation { get; set; } // 0x84 (132)
 		
-		[ContainerField(136), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "GuidString", Offset: 136, NameHash: 1743579631, Flags: 16509), LayoutImmutable]
 		public string GuidString { get; set; } // 0x88 (136)
 		
-		[ContainerField(140), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
+		[ContainerField(Name: "UvSizeX", Offset: 140, NameHash: 2523551419, Flags: 49421), LayoutImmutable, Blittable]
 		public uint UvSizeX { get; set; } // 0x8C (140)
 		
-		[ContainerField(144), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
+		[ContainerField(Name: "UvSizeY", Offset: 144, NameHash: 2523551418, Flags: 49421), LayoutImmutable, Blittable]
 		public uint UvSizeY { get; set; } // 0x90 (144)
 		
-		[ContainerField(148), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "PixelSize", Offset: 148, NameHash: 854589352, Flags: 49469), LayoutImmutable, Blittable]
 		public float PixelSize { get; set; } // 0x94 (148)
 		
-		[ContainerField(152), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "EnlightenMeshName", Offset: 152, NameHash: 1268643727, Flags: 16509), LayoutImmutable]
 		public string EnlightenMeshName { get; set; } // 0x98 (152)
 		
-		[ContainerField(156), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "MeshAsset", Offset: 156, NameHash: 15738982, Flags: 16509), LayoutImmutable]
 		public string MeshAsset { get; set; } // 0x9C (156)
 		
-		[ContainerField(160), MemberInfoFlag(65), ContainerArray]
+		[ContainerField(Name: "InstanceAlbedos", Offset: 160, NameHash: 1348110462, Flags: 65)]
 		public List<ulong> InstanceAlbedos { get; set; } = new List<ulong>(); // 0xA0 (160)
 		
-		[ContainerField(164), LayoutImmutable, Blittable, MemberInfoFlag(49501)]
+		[ContainerField(Name: "CacheKey", Offset: 164, NameHash: 2796431134, Flags: 49501), LayoutImmutable, Blittable]
 		public GUID CacheKey { get; set; } // 0xA4 (164)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

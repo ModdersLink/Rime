@@ -18,94 +18,94 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(116), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 116)]
 	public class PhysicsDrivenAnimationEntityBinding : FrostbiteContainer
 	{
-		[ContainerField(0), MemberInfoFlag(41)]
+		[ContainerField(Name: "AimLeftRight", Offset: 0, NameHash: 159833211, Flags: 41)]
 		public AntRef AimLeftRight { get; set; } = new AntRef(); // 0x0 (0)
 		
-		[ContainerField(4), MemberInfoFlag(41)]
+		[ContainerField(Name: "AimUpDown", Offset: 4, NameHash: 2778567511, Flags: 41)]
 		public AntRef AimUpDown { get; set; } = new AntRef(); // 0x4 (4)
 		
-		[ContainerField(8), MemberInfoFlag(41)]
+		[ContainerField(Name: "Crouch", Offset: 8, NameHash: 2729602053, Flags: 41)]
 		public AntRef Crouch { get; set; } = new AntRef(); // 0x8 (8)
 		
-		[ContainerField(12), MemberInfoFlag(41)]
+		[ContainerField(Name: "ForceSetTrajectory", Offset: 12, NameHash: 622503969, Flags: 41)]
 		public AntRef ForceSetTrajectory { get; set; } = new AntRef(); // 0xC (12)
 		
-		[ContainerField(16), MemberInfoFlag(41)]
+		[ContainerField(Name: "InAir", Offset: 16, NameHash: 214471736, Flags: 41)]
 		public AntRef InAir { get; set; } = new AntRef(); // 0x10 (16)
 		
-		[ContainerField(20), MemberInfoFlag(41)]
+		[ContainerField(Name: "Skydive", Offset: 20, NameHash: 2978576858, Flags: 41)]
 		public AntRef Skydive { get; set; } = new AntRef(); // 0x14 (20)
 		
-		[ContainerField(24), MemberInfoFlag(41)]
+		[ContainerField(Name: "Parachute", Offset: 24, NameHash: 2952549480, Flags: 41)]
 		public AntRef Parachute { get; set; } = new AntRef(); // 0x18 (24)
 		
-		[ContainerField(28), MemberInfoFlag(41)]
+		[ContainerField(Name: "Swim", Offset: 28, NameHash: 2089393637, Flags: 41)]
 		public AntRef Swim { get; set; } = new AntRef(); // 0x1C (28)
 		
-		[ContainerField(32), MemberInfoFlag(41)]
+		[ContainerField(Name: "InputBackward", Offset: 32, NameHash: 1803140280, Flags: 41)]
 		public AntRef InputBackward { get; set; } = new AntRef(); // 0x20 (32)
 		
-		[ContainerField(36), MemberInfoFlag(41)]
+		[ContainerField(Name: "InputForward", Offset: 36, NameHash: 1377055592, Flags: 41)]
 		public AntRef InputForward { get; set; } = new AntRef(); // 0x24 (36)
 		
-		[ContainerField(40), MemberInfoFlag(41)]
+		[ContainerField(Name: "InputLeft", Offset: 40, NameHash: 2652303016, Flags: 41)]
 		public AntRef InputLeft { get; set; } = new AntRef(); // 0x28 (40)
 		
-		[ContainerField(44), MemberInfoFlag(41)]
+		[ContainerField(Name: "InputRight", Offset: 44, NameHash: 1586915283, Flags: 41)]
 		public AntRef InputRight { get; set; } = new AntRef(); // 0x2C (44)
 		
-		[ContainerField(48), MemberInfoFlag(41)]
+		[ContainerField(Name: "IsEnemy", Offset: 48, NameHash: 2758954501, Flags: 41)]
 		public AntRef IsEnemy { get; set; } = new AntRef(); // 0x30 (48)
 		
-		[ContainerField(52), MemberInfoFlag(41)]
+		[ContainerField(Name: "Jump", Offset: 52, NameHash: 2089106695, Flags: 41)]
 		public AntRef Jump { get; set; } = new AntRef(); // 0x34 (52)
 		
-		[ContainerField(56), MemberInfoFlag(41)]
+		[ContainerField(Name: "LeanLeftRight", Offset: 56, NameHash: 1838371096, Flags: 41)]
 		public AntRef LeanLeftRight { get; set; } = new AntRef(); // 0x38 (56)
 		
-		[ContainerField(60), MemberInfoFlag(41)]
+		[ContainerField(Name: "Prone", Offset: 60, NameHash: 231940067, Flags: 41)]
 		public AntRef Prone { get; set; } = new AntRef(); // 0x3C (60)
 		
-		[ContainerField(64), MemberInfoFlag(41)]
+		[ContainerField(Name: "Sprint", Offset: 64, NameHash: 3324856903, Flags: 41)]
 		public AntRef Sprint { get; set; } = new AntRef(); // 0x40 (64)
 		
-		[ContainerField(68), MemberInfoFlag(41)]
+		[ContainerField(Name: "GroundSupported", Offset: 68, NameHash: 3938707566, Flags: 41)]
 		public AntRef GroundSupported { get; set; } = new AntRef(); // 0x44 (68)
 		
-		[ContainerField(72), MemberInfoFlag(41)]
+		[ContainerField(Name: "GroundNormal", Offset: 72, NameHash: 3081183731, Flags: 41)]
 		public AntRef GroundNormal { get; set; } = new AntRef(); // 0x48 (72)
 		
-		[ContainerField(76), MemberInfoFlag(41)]
+		[ContainerField(Name: "GroundDistance", Offset: 76, NameHash: 1468700707, Flags: 41)]
 		public AntRef GroundDistance { get; set; } = new AntRef(); // 0x4C (76)
 		
-		[ContainerField(80), MemberInfoFlag(41)]
+		[ContainerField(Name: "GroundAngleZ", Offset: 80, NameHash: 2681866779, Flags: 41)]
 		public AntRef GroundAngleZ { get; set; } = new AntRef(); // 0x50 (80)
 		
-		[ContainerField(84), MemberInfoFlag(41)]
+		[ContainerField(Name: "GroundAngleX", Offset: 84, NameHash: 2681866777, Flags: 41)]
 		public AntRef GroundAngleX { get; set; } = new AntRef(); // 0x54 (84)
 		
-		[ContainerField(88), MemberInfoFlag(41)]
+		[ContainerField(Name: "GroundAngleFromNormal", Offset: 88, NameHash: 3644136484, Flags: 41)]
 		public AntRef GroundAngleFromNormal { get; set; } = new AntRef(); // 0x58 (88)
 		
-		[ContainerField(92), MemberInfoFlag(41)]
+		[ContainerField(Name: "IsClientAnimatable", Offset: 92, NameHash: 2825869266, Flags: 41)]
 		public AntRef IsClientAnimatable { get; set; } = new AntRef(); // 0x5C (92)
 		
-		[ContainerField(96), MemberInfoFlag(41)]
+		[ContainerField(Name: "CustomizationScreen", Offset: 96, NameHash: 1606661556, Flags: 41)]
 		public AntRef CustomizationScreen { get; set; } = new AntRef(); // 0x60 (96)
 		
-		[ContainerField(100), MemberInfoFlag(41)]
+		[ContainerField(Name: "Minimal3pServer", Offset: 100, NameHash: 4030580672, Flags: 41)]
 		public AntRef Minimal3pServer { get; set; } = new AntRef(); // 0x64 (100)
 		
-		[ContainerField(104), MemberInfoFlag(41)]
+		[ContainerField(Name: "VerticalImpact", Offset: 104, NameHash: 2494325141, Flags: 41)]
 		public AntRef VerticalImpact { get; set; } = new AntRef(); // 0x68 (104)
 		
-		[ContainerField(108), MemberInfoFlag(41)]
+		[ContainerField(Name: "FalseSignal", Offset: 108, NameHash: 486591334, Flags: 41)]
 		public AntRef FalseSignal { get; set; } = new AntRef(); // 0x6C (108)
 		
-		[ContainerField(112), MemberInfoFlag(41)]
+		[ContainerField(Name: "LockArmsToCameraWeight", Offset: 112, NameHash: 4025942465, Flags: 41)]
 		public AntRef LockArmsToCameraWeight { get; set; } = new AntRef(); // 0x70 (112)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

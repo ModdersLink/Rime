@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(112), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 112)]
 	public class LightProbeVolumeData : 
 		SpatialEntityData
 	{
 		protected uint m_Xres = new uint();
-		[ContainerField(80), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(2089724057)]
+		[ContainerField(Name: "Xres", Offset: 80, NameHash: 2089724057, Flags: 49421), LayoutImmutable, Blittable]
 		public uint Xres { get { return m_Xres; } set { if (OnPropertyChanging("LightProbeVolumeData." + nameof(Xres), this, m_Xres, value)) m_Xres = value; } } // 0x50 (80)
 		
 		protected uint m_Yres = new uint();
-		[ContainerField(84), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(2089479288)]
+		[ContainerField(Name: "Yres", Offset: 84, NameHash: 2089479288, Flags: 49421), LayoutImmutable, Blittable]
 		public uint Yres { get { return m_Yres; } set { if (OnPropertyChanging("LightProbeVolumeData." + nameof(Yres), this, m_Yres, value)) m_Yres = value; } } // 0x54 (84)
 		
 		protected uint m_Zres = new uint();
-		[ContainerField(88), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(2089652315)]
+		[ContainerField(Name: "Zres", Offset: 88, NameHash: 2089652315, Flags: 49421), LayoutImmutable, Blittable]
 		public uint Zres { get { return m_Zres; } set { if (OnPropertyChanging("LightProbeVolumeData." + nameof(Zres), this, m_Zres, value)) m_Zres = value; } } // 0x58 (88)
 		
 		protected float m_BlendDistance = new float();
-		[ContainerField(92), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1435233063)]
+		[ContainerField(Name: "BlendDistance", Offset: 92, NameHash: 1435233063, Flags: 49469), LayoutImmutable, Blittable]
 		public float BlendDistance { get { return m_BlendDistance; } set { if (OnPropertyChanging("LightProbeVolumeData." + nameof(BlendDistance), this, m_BlendDistance, value)) m_BlendDistance = value; } } // 0x5C (92)
 		
 		protected int m_Priority = new int();
-		[ContainerField(96), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(3062102871)]
+		[ContainerField(Name: "Priority", Offset: 96, NameHash: 3062102871, Flags: 49405), LayoutImmutable, Blittable]
 		public int Priority { get { return m_Priority; } set { if (OnPropertyChanging("LightProbeVolumeData." + nameof(Priority), this, m_Priority, value)) m_Priority = value; } } // 0x60 (96)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

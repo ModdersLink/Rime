@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(16), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
 	public class RoundOverEntityData : 
 		EntityData
 	{
 		protected TeamId m_Team = new TeamId();
-		[ContainerField(12), MemberInfoFlag(137), ContainerFieldNameHash(2089309528)]
+		[ContainerField(Name: "Team", Offset: 12, NameHash: 2089309528, Flags: 137)]
 		public TeamId Team { get { return m_Team; } set { if (OnPropertyChanging("RoundOverEntityData." + nameof(Team), this, m_Team, value)) m_Team = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

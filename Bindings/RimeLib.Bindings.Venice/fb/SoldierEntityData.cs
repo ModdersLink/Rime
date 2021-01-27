@@ -18,152 +18,152 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(288), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 288)]
 	public class SoldierEntityData : 
 		CharacterEntityData
 	{
 		protected Vec3 m_FLIRKeyColor = new Vec3();
-		[ContainerField(160), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(844334526)]
+		[ContainerField(Name: "FLIRKeyColor", Offset: 160, NameHash: 844334526, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 FLIRKeyColor { get { return m_FLIRKeyColor; } set { if (OnPropertyChanging("SoldierEntityData." + nameof(FLIRKeyColor), this, m_FLIRKeyColor, value)) m_FLIRKeyColor = value; } } // 0xA0 (160)
 		
 		protected CtrRef<MaterialContainerPair> m_HeadMaterialPair = new CtrRef<MaterialContainerPair>();
-		[ContainerField(176), MemberInfoFlag(53), ContainerFieldNameHash(1872530092), ContainerCtrRef]
+		[ContainerField(Name: "HeadMaterialPair", Offset: 176, NameHash: 1872530092, Flags: 53)]
 		public CtrRef<MaterialContainerPair> HeadMaterialPair { get { return m_HeadMaterialPair; } set { if (OnPropertyChanging("SoldierEntityData." + nameof(HeadMaterialPair), this, m_HeadMaterialPair, value)) m_HeadMaterialPair = value; } } // 0xB0 (176)
 		
 		protected RefArray<BoneFakePhysicsData> m_BoneFakePhysics = new RefArray<BoneFakePhysicsData>();
-		[ContainerField(180), MemberInfoFlag(65), ContainerFieldNameHash(2227758113), ContainerRefArray]
+		[ContainerField(Name: "BoneFakePhysics", Offset: 180, NameHash: 2227758113, Flags: 65)]
 		public RefArray<BoneFakePhysicsData> BoneFakePhysics { get { return m_BoneFakePhysics; } set { if (OnPropertyChanging("SoldierEntityData." + nameof(BoneFakePhysics), this, m_BoneFakePhysics, value)) m_BoneFakePhysics = value; } } // 0xB4 (180)
 		
 		protected CtrRef<SoldierAutoAimData> m_AutoAim = new CtrRef<SoldierAutoAimData>();
-		[ContainerField(184), MemberInfoFlag(53), ContainerFieldNameHash(888098479), ContainerCtrRef]
+		[ContainerField(Name: "AutoAim", Offset: 184, NameHash: 888098479, Flags: 53)]
 		public CtrRef<SoldierAutoAimData> AutoAim { get { return m_AutoAim; } set { if (OnPropertyChanging("SoldierEntityData." + nameof(AutoAim), this, m_AutoAim, value)) m_AutoAim = value; } } // 0xB8 (184)
 		
 		protected CtrRef<SoldierAimingConstraintsData> m_AimingConstraints = new CtrRef<SoldierAimingConstraintsData>();
-		[ContainerField(188), MemberInfoFlag(53), ContainerFieldNameHash(1523178198), ContainerCtrRef]
+		[ContainerField(Name: "AimingConstraints", Offset: 188, NameHash: 1523178198, Flags: 53)]
 		public CtrRef<SoldierAimingConstraintsData> AimingConstraints { get { return m_AimingConstraints; } set { if (OnPropertyChanging("SoldierEntityData." + nameof(AimingConstraints), this, m_AimingConstraints, value)) m_AimingConstraints = value; } } // 0xBC (188)
 		
 		protected CtrRef<SoldierHeadCollisionData> m_HeadCollision = new CtrRef<SoldierHeadCollisionData>();
-		[ContainerField(192), MemberInfoFlag(53), ContainerFieldNameHash(964117651), ContainerCtrRef]
+		[ContainerField(Name: "HeadCollision", Offset: 192, NameHash: 964117651, Flags: 53)]
 		public CtrRef<SoldierHeadCollisionData> HeadCollision { get { return m_HeadCollision; } set { if (OnPropertyChanging("SoldierEntityData." + nameof(HeadCollision), this, m_HeadCollision, value)) m_HeadCollision = value; } } // 0xC0 (192)
 		
 		protected CtrRef<CharacterPhysicsData> m_CharacterPhysics = new CtrRef<CharacterPhysicsData>();
-		[ContainerField(196), MemberInfoFlag(53), ContainerFieldNameHash(4032988407), ContainerCtrRef]
+		[ContainerField(Name: "CharacterPhysics", Offset: 196, NameHash: 4032988407, Flags: 53)]
 		public CtrRef<CharacterPhysicsData> CharacterPhysics { get { return m_CharacterPhysics; } set { if (OnPropertyChanging("SoldierEntityData." + nameof(CharacterPhysics), this, m_CharacterPhysics, value)) m_CharacterPhysics = value; } } // 0xC4 (196)
 		
 		protected CtrRef<MaterialContainerPair> m_FootMaterialPair = new CtrRef<MaterialContainerPair>();
-		[ContainerField(200), MemberInfoFlag(53), ContainerFieldNameHash(3867460534), ContainerCtrRef]
+		[ContainerField(Name: "FootMaterialPair", Offset: 200, NameHash: 3867460534, Flags: 53)]
 		public CtrRef<MaterialContainerPair> FootMaterialPair { get { return m_FootMaterialPair; } set { if (OnPropertyChanging("SoldierEntityData." + nameof(FootMaterialPair), this, m_FootMaterialPair, value)) m_FootMaterialPair = value; } } // 0xC8 (200)
 		
 		protected CtrRef<SoldierSprintSettingsData> m_SprintSettings = new CtrRef<SoldierSprintSettingsData>();
-		[ContainerField(204), MemberInfoFlag(53), ContainerFieldNameHash(1580077506), ContainerCtrRef]
+		[ContainerField(Name: "SprintSettings", Offset: 204, NameHash: 1580077506, Flags: 53)]
 		public CtrRef<SoldierSprintSettingsData> SprintSettings { get { return m_SprintSettings; } set { if (OnPropertyChanging("SoldierEntityData." + nameof(SprintSettings), this, m_SprintSettings, value)) m_SprintSettings = value; } } // 0xCC (204)
 		
 		protected List<SoldierMeshData> m_Meshes1p = new List<SoldierMeshData>();
-		[ContainerField(208), MemberInfoFlag(65), ContainerFieldNameHash(1821360225), ContainerArray]
+		[ContainerField(Name: "Meshes1p", Offset: 208, NameHash: 1821360225, Flags: 65)]
 		public List<SoldierMeshData> Meshes1p { get { return m_Meshes1p; } set { if (OnPropertyChanging("SoldierEntityData." + nameof(Meshes1p), this, m_Meshes1p, value)) m_Meshes1p = value; } } // 0xD0 (208)
 		
 		protected List<SoldierMeshData> m_Meshes3p = new List<SoldierMeshData>();
-		[ContainerField(212), MemberInfoFlag(65), ContainerFieldNameHash(1821360163), ContainerArray]
+		[ContainerField(Name: "Meshes3p", Offset: 212, NameHash: 1821360163, Flags: 65)]
 		public List<SoldierMeshData> Meshes3p { get { return m_Meshes3p; } set { if (OnPropertyChanging("SoldierEntityData." + nameof(Meshes3p), this, m_Meshes3p, value)) m_Meshes3p = value; } } // 0xD4 (212)
 		
 		protected List<HidableSoldierMeshWeaponPart> m_HidableMeshParts = new List<HidableSoldierMeshWeaponPart>();
-		[ContainerField(216), MemberInfoFlag(65), ContainerFieldNameHash(4062781021), ContainerArray]
+		[ContainerField(Name: "HidableMeshParts", Offset: 216, NameHash: 4062781021, Flags: 65)]
 		public List<HidableSoldierMeshWeaponPart> HidableMeshParts { get { return m_HidableMeshParts; } set { if (OnPropertyChanging("SoldierEntityData." + nameof(HidableMeshParts), this, m_HidableMeshParts, value)) m_HidableMeshParts = value; } } // 0xD8 (216)
 		
 		protected CtrRef<SoldierSoundData> m_Sound = new CtrRef<SoldierSoundData>();
-		[ContainerField(220), MemberInfoFlag(53), ContainerFieldNameHash(231353798), ContainerCtrRef]
+		[ContainerField(Name: "Sound", Offset: 220, NameHash: 231353798, Flags: 53)]
 		public CtrRef<SoldierSoundData> Sound { get { return m_Sound; } set { if (OnPropertyChanging("SoldierEntityData." + nameof(Sound), this, m_Sound, value)) m_Sound = value; } } // 0xDC (220)
 		
 		protected CtrRef<StreamGroupData> m_StreamGroup1p = new CtrRef<StreamGroupData>();
-		[ContainerField(224), MemberInfoFlag(53), ContainerFieldNameHash(3004812039), ContainerCtrRef]
+		[ContainerField(Name: "StreamGroup1p", Offset: 224, NameHash: 3004812039, Flags: 53)]
 		public CtrRef<StreamGroupData> StreamGroup1p { get { return m_StreamGroup1p; } set { if (OnPropertyChanging("SoldierEntityData." + nameof(StreamGroup1p), this, m_StreamGroup1p, value)) m_StreamGroup1p = value; } } // 0xE0 (224)
 		
 		protected float m_ImpulseReactionTime = new float();
-		[ContainerField(228), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(712696098)]
+		[ContainerField(Name: "ImpulseReactionTime", Offset: 228, NameHash: 712696098, Flags: 49469), LayoutImmutable, Blittable]
 		public float ImpulseReactionTime { get { return m_ImpulseReactionTime; } set { if (OnPropertyChanging("SoldierEntityData." + nameof(ImpulseReactionTime), this, m_ImpulseReactionTime, value)) m_ImpulseReactionTime = value; } } // 0xE4 (228)
 		
 		protected CtrRef<SoldierHealthModuleData> m_HealthModule = new CtrRef<SoldierHealthModuleData>();
-		[ContainerField(232), MemberInfoFlag(53), ContainerFieldNameHash(2786810819), ContainerCtrRef]
+		[ContainerField(Name: "HealthModule", Offset: 232, NameHash: 2786810819, Flags: 53)]
 		public CtrRef<SoldierHealthModuleData> HealthModule { get { return m_HealthModule; } set { if (OnPropertyChanging("SoldierEntityData." + nameof(HealthModule), this, m_HealthModule, value)) m_HealthModule = value; } } // 0xE8 (232)
 		
 		protected float m_MaxHealth = new float();
-		[ContainerField(236), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1153188365)]
+		[ContainerField(Name: "MaxHealth", Offset: 236, NameHash: 1153188365, Flags: 49469), LayoutImmutable, Blittable]
 		public float MaxHealth { get { return m_MaxHealth; } set { if (OnPropertyChanging("SoldierEntityData." + nameof(MaxHealth), this, m_MaxHealth, value)) m_MaxHealth = value; } } // 0xEC (236)
 		
 		protected CtrRef<CollisionData> m_CollisionInfo = new CtrRef<CollisionData>();
-		[ContainerField(240), MemberInfoFlag(53), ContainerFieldNameHash(2885020053), ContainerCtrRef]
+		[ContainerField(Name: "CollisionInfo", Offset: 240, NameHash: 2885020053, Flags: 53)]
 		public CtrRef<CollisionData> CollisionInfo { get { return m_CollisionInfo; } set { if (OnPropertyChanging("SoldierEntityData." + nameof(CollisionInfo), this, m_CollisionInfo, value)) m_CollisionInfo = value; } } // 0xF0 (240)
 		
 		protected CtrRef<EntityVoiceOverInfo> m_VoiceOverInfo = new CtrRef<EntityVoiceOverInfo>();
-		[ContainerField(244), MemberInfoFlag(53), ContainerFieldNameHash(1260547539), ContainerCtrRef]
+		[ContainerField(Name: "VoiceOverInfo", Offset: 244, NameHash: 1260547539, Flags: 53)]
 		public CtrRef<EntityVoiceOverInfo> VoiceOverInfo { get { return m_VoiceOverInfo; } set { if (OnPropertyChanging("SoldierEntityData." + nameof(VoiceOverInfo), this, m_VoiceOverInfo, value)) m_VoiceOverInfo = value; } } // 0xF4 (244)
 		
 		protected float m_FLIRValue = new float();
-		[ContainerField(248), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3325471103)]
+		[ContainerField(Name: "FLIRValue", Offset: 248, NameHash: 3325471103, Flags: 49469), LayoutImmutable, Blittable]
 		public float FLIRValue { get { return m_FLIRValue; } set { if (OnPropertyChanging("SoldierEntityData." + nameof(FLIRValue), this, m_FLIRValue, value)) m_FLIRValue = value; } } // 0xF8 (248)
 		
 		protected RefArray<BreathControlData> m_BreathControl = new RefArray<BreathControlData>();
-		[ContainerField(252), MemberInfoFlag(65), ContainerFieldNameHash(2325792682), ContainerRefArray]
+		[ContainerField(Name: "BreathControl", Offset: 252, NameHash: 2325792682, Flags: 65)]
 		public RefArray<BreathControlData> BreathControl { get { return m_BreathControl; } set { if (OnPropertyChanging("SoldierEntityData." + nameof(BreathControl), this, m_BreathControl, value)) m_BreathControl = value; } } // 0xFC (252)
 		
 		protected float m_ExplosionDamageModifier = new float();
-		[ContainerField(256), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(874268012)]
+		[ContainerField(Name: "ExplosionDamageModifier", Offset: 256, NameHash: 874268012, Flags: 49469), LayoutImmutable, Blittable]
 		public float ExplosionDamageModifier { get { return m_ExplosionDamageModifier; } set { if (OnPropertyChanging("SoldierEntityData." + nameof(ExplosionDamageModifier), this, m_ExplosionDamageModifier, value)) m_ExplosionDamageModifier = value; } } // 0x100 (256)
 		
 		protected RefArray<UIPartData> m_UIParts = new RefArray<UIPartData>();
-		[ContainerField(260), MemberInfoFlag(65), ContainerFieldNameHash(187481405), ContainerRefArray]
+		[ContainerField(Name: "UIParts", Offset: 260, NameHash: 187481405, Flags: 65)]
 		public RefArray<UIPartData> UIParts { get { return m_UIParts; } set { if (OnPropertyChanging("SoldierEntityData." + nameof(UIParts), this, m_UIParts, value)) m_UIParts = value; } } // 0x104 (260)
 		
 		protected float m_RegenerationDelayModifier = new float();
-		[ContainerField(264), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2924338326)]
+		[ContainerField(Name: "RegenerationDelayModifier", Offset: 264, NameHash: 2924338326, Flags: 49469), LayoutImmutable, Blittable]
 		public float RegenerationDelayModifier { get { return m_RegenerationDelayModifier; } set { if (OnPropertyChanging("SoldierEntityData." + nameof(RegenerationDelayModifier), this, m_RegenerationDelayModifier, value)) m_RegenerationDelayModifier = value; } } // 0x108 (264)
 		
 		protected bool m_FreeSpaceCheck = new bool();
-		[ContainerField(268), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1181198163)]
+		[ContainerField(Name: "FreeSpaceCheck", Offset: 268, NameHash: 1181198163, Flags: 49325), LayoutImmutable, Blittable]
 		public bool FreeSpaceCheck { get { return m_FreeSpaceCheck; } set { if (OnPropertyChanging("SoldierEntityData." + nameof(FreeSpaceCheck), this, m_FreeSpaceCheck, value)) m_FreeSpaceCheck = value; } } // 0x10C (268)
 		
 		protected bool m_ProximityCheck = new bool();
-		[ContainerField(269), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(4271686838)]
+		[ContainerField(Name: "ProximityCheck", Offset: 269, NameHash: 4271686838, Flags: 49325), LayoutImmutable, Blittable]
 		public bool ProximityCheck { get { return m_ProximityCheck; } set { if (OnPropertyChanging("SoldierEntityData." + nameof(ProximityCheck), this, m_ProximityCheck, value)) m_ProximityCheck = value; } } // 0x10D (269)
 		
 		protected bool m_EnableGroundmapLighting = new bool();
-		[ContainerField(270), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1278245411)]
+		[ContainerField(Name: "EnableGroundmapLighting", Offset: 270, NameHash: 1278245411, Flags: 49325), LayoutImmutable, Blittable]
 		public bool EnableGroundmapLighting { get { return m_EnableGroundmapLighting; } set { if (OnPropertyChanging("SoldierEntityData." + nameof(EnableGroundmapLighting), this, m_EnableGroundmapLighting, value)) m_EnableGroundmapLighting = value; } } // 0x10E (270)
 		
 		protected bool m_ShowWeaponWhenDead = new bool();
-		[ContainerField(271), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3915982996)]
+		[ContainerField(Name: "ShowWeaponWhenDead", Offset: 271, NameHash: 3915982996, Flags: 49325), LayoutImmutable, Blittable]
 		public bool ShowWeaponWhenDead { get { return m_ShowWeaponWhenDead; } set { if (OnPropertyChanging("SoldierEntityData." + nameof(ShowWeaponWhenDead), this, m_ShowWeaponWhenDead, value)) m_ShowWeaponWhenDead = value; } } // 0x10F (271)
 		
 		protected bool m_LowerGunOnOwnTeam = new bool();
-		[ContainerField(272), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3271387216)]
+		[ContainerField(Name: "LowerGunOnOwnTeam", Offset: 272, NameHash: 3271387216, Flags: 49325), LayoutImmutable, Blittable]
 		public bool LowerGunOnOwnTeam { get { return m_LowerGunOnOwnTeam; } set { if (OnPropertyChanging("SoldierEntityData." + nameof(LowerGunOnOwnTeam), this, m_LowerGunOnOwnTeam, value)) m_LowerGunOnOwnTeam = value; } } // 0x110 (272)
 		
 		protected bool m_UseSpineXRotation = new bool();
-		[ContainerField(273), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3042773355)]
+		[ContainerField(Name: "UseSpineXRotation", Offset: 273, NameHash: 3042773355, Flags: 49325), LayoutImmutable, Blittable]
 		public bool UseSpineXRotation { get { return m_UseSpineXRotation; } set { if (OnPropertyChanging("SoldierEntityData." + nameof(UseSpineXRotation), this, m_UseSpineXRotation, value)) m_UseSpineXRotation = value; } } // 0x111 (273)
 		
 		protected bool m_CollisionEnabled = new bool();
-		[ContainerField(274), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(134809118)]
+		[ContainerField(Name: "CollisionEnabled", Offset: 274, NameHash: 134809118, Flags: 49325), LayoutImmutable, Blittable]
 		public bool CollisionEnabled { get { return m_CollisionEnabled; } set { if (OnPropertyChanging("SoldierEntityData." + nameof(CollisionEnabled), this, m_CollisionEnabled, value)) m_CollisionEnabled = value; } } // 0x112 (274)
 		
 		protected bool m_PhysicsControlled = new bool();
-		[ContainerField(275), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3834786116)]
+		[ContainerField(Name: "PhysicsControlled", Offset: 275, NameHash: 3834786116, Flags: 49325), LayoutImmutable, Blittable]
 		public bool PhysicsControlled { get { return m_PhysicsControlled; } set { if (OnPropertyChanging("SoldierEntityData." + nameof(PhysicsControlled), this, m_PhysicsControlled, value)) m_PhysicsControlled = value; } } // 0x113 (275)
 		
 		protected bool m_IsPushable = new bool();
-		[ContainerField(276), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3202802347)]
+		[ContainerField(Name: "IsPushable", Offset: 276, NameHash: 3202802347, Flags: 49325), LayoutImmutable, Blittable]
 		public bool IsPushable { get { return m_IsPushable; } set { if (OnPropertyChanging("SoldierEntityData." + nameof(IsPushable), this, m_IsPushable, value)) m_IsPushable = value; } } // 0x114 (276)
 		
 		protected bool m_HumanPlayerControlled = new bool();
-		[ContainerField(277), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3591714019)]
+		[ContainerField(Name: "HumanPlayerControlled", Offset: 277, NameHash: 3591714019, Flags: 49325), LayoutImmutable, Blittable]
 		public bool HumanPlayerControlled { get { return m_HumanPlayerControlled; } set { if (OnPropertyChanging("SoldierEntityData." + nameof(HumanPlayerControlled), this, m_HumanPlayerControlled, value)) m_HumanPlayerControlled = value; } } // 0x115 (277)
 		
 		protected bool m_InteractiveManDownAllowed = new bool();
-		[ContainerField(278), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(283015237)]
+		[ContainerField(Name: "InteractiveManDownAllowed", Offset: 278, NameHash: 283015237, Flags: 49325), LayoutImmutable, Blittable]
 		public bool InteractiveManDownAllowed { get { return m_InteractiveManDownAllowed; } set { if (OnPropertyChanging("SoldierEntityData." + nameof(InteractiveManDownAllowed), this, m_InteractiveManDownAllowed, value)) m_InteractiveManDownAllowed = value; } } // 0x116 (278)
 		
 		protected bool m_ShowNametag = new bool();
-		[ContainerField(279), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(4065911763)]
+		[ContainerField(Name: "ShowNametag", Offset: 279, NameHash: 4065911763, Flags: 49325), LayoutImmutable, Blittable]
 		public bool ShowNametag { get { return m_ShowNametag; } set { if (OnPropertyChanging("SoldierEntityData." + nameof(ShowNametag), this, m_ShowNametag, value)) m_ShowNametag = value; } } // 0x117 (279)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

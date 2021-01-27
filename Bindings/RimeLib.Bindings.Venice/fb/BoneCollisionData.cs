@@ -18,49 +18,49 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(41), ContainerSize(144), ContainerStruct]
+	[ContainerType(Alignment: 16,  Flags: 41, Size: 144)]
 	public class BoneCollisionData : FrostbiteContainer
 	{
-		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
+		[ContainerField(Name: "DebugDrawColor", Offset: 0, NameHash: 34201065, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec4 DebugDrawColor { get; set; } = new Vec4(); // 0x0 (0)
 		
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
+		[ContainerField(Name: "CapsuleOffset", Offset: 16, NameHash: 1863560277, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 CapsuleOffset { get; set; } = new Vec3(); // 0x10 (16)
 		
-		[ContainerField(32), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "BoneName", Offset: 32, NameHash: 1590647844, Flags: 16509), LayoutImmutable]
 		public string BoneName { get; set; } // 0x20 (32)
 		
-		[ContainerField(36), MemberInfoFlag(137)]
+		[ContainerField(Name: "AnimationHitReactionType", Offset: 36, NameHash: 3424827895, Flags: 137)]
 		public HitReactionType AnimationHitReactionType { get; set; } = new HitReactionType(); // 0x24 (36)
 		
-		[ContainerField(40), MemberInfoFlag(53), ContainerCtrRef]
+		[ContainerField(Name: "MaterialPair", Offset: 40, NameHash: 161392100, Flags: 53)]
 		public CtrRef<MaterialContainerPair> MaterialPair { get; set; } = new CtrRef<MaterialContainerPair>(); // 0x28 (40)
 		
-		[ContainerField(44), LayoutImmutable, Blittable, MemberInfoFlag(49405)]
+		[ContainerField(Name: "BoneAxis", Offset: 44, NameHash: 1590208000, Flags: 49405), LayoutImmutable, Blittable]
 		public int BoneAxis { get; set; } // 0x2C (44)
 		
-		[ContainerField(48), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "CapsuleLength", Offset: 48, NameHash: 1676345540, Flags: 49469), LayoutImmutable, Blittable]
 		public float CapsuleLength { get; set; } // 0x30 (48)
 		
-		[ContainerField(52), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "CapsuleRadius", Offset: 52, NameHash: 1441176608, Flags: 49469), LayoutImmutable, Blittable]
 		public float CapsuleRadius { get; set; } // 0x34 (52)
 		
-		[ContainerField(64), MemberInfoFlag(41)]
+		[ContainerField(Name: "MinPitch", Offset: 64, NameHash: 3374061353, Flags: 41)]
 		public PitchModifier MinPitch { get; set; } = new PitchModifier(); // 0x40 (64)
 		
-		[ContainerField(96), MemberInfoFlag(41)]
+		[ContainerField(Name: "MaxPitch", Offset: 96, NameHash: 397101687, Flags: 41)]
 		public PitchModifier MaxPitch { get; set; } = new PitchModifier(); // 0x60 (96)
 		
-		[ContainerField(128), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "ValidInHiLod", Offset: 128, NameHash: 1872072018, Flags: 49325), LayoutImmutable, Blittable]
 		public bool ValidInHiLod { get; set; } // 0x80 (128)
 		
-		[ContainerField(129), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "ValidInLowLod", Offset: 129, NameHash: 1492667495, Flags: 49325), LayoutImmutable, Blittable]
 		public bool ValidInLowLod { get; set; } // 0x81 (129)
 		
-		[ContainerField(130), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "UsePhysicsRotation", Offset: 130, NameHash: 979803673, Flags: 49325), LayoutImmutable, Blittable]
 		public bool UsePhysicsRotation { get; set; } // 0x82 (130)
 		
-		[ContainerField(131), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "DeactivateIfBehindWall", Offset: 131, NameHash: 4263951528, Flags: 49325), LayoutImmutable, Blittable]
 		public bool DeactivateIfBehindWall { get; set; } // 0x83 (131)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

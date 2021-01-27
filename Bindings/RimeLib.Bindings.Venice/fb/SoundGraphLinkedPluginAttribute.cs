@@ -18,22 +18,22 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(20), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 20)]
 	public class SoundGraphLinkedPluginAttribute : FrostbiteContainer
 	{
-		[ContainerField(0), MemberInfoFlag(41)]
+		[ContainerField(Name: "Plugin", Offset: 0, NameHash: 3384353452, Flags: 41)]
 		public SoundGraphPluginRef Plugin { get; set; } = new SoundGraphPluginRef(); // 0x0 (0)
 		
-		[ContainerField(4), MemberInfoFlag(53), ContainerCtrRef]
+		[ContainerField(Name: "Node", Offset: 4, NameHash: 2088947621, Flags: 53)]
 		public CtrRef<AudioGraphNodeData> Node { get; set; } = new CtrRef<AudioGraphNodeData>(); // 0x4 (4)
 		
-		[ContainerField(8), MemberInfoFlag(41)]
+		[ContainerField(Name: "Port", Offset: 8, NameHash: 2089459004, Flags: 41)]
 		public AudioGraphNodePort Port { get; set; } = new AudioGraphNodePort(); // 0x8 (8)
 		
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49341)]
+		[ContainerField(Name: "AttributeIndex", Offset: 16, NameHash: 2787489767, Flags: 49341), LayoutImmutable, Blittable]
 		public sbyte AttributeIndex { get; set; } // 0x10 (16)
 		
-		[ContainerField(17), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "AllowExtremeValues", Offset: 17, NameHash: 1873573874, Flags: 49325), LayoutImmutable, Blittable]
 		public bool AllowExtremeValues { get; set; } // 0x11 (17)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

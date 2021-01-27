@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(24), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 24)]
 	public class RegistryContainer : 
 		DataContainer
 	{
 		protected RefArray<DataContainer> m_EntityRegistry = new RefArray<DataContainer>();
-		[ContainerField(8), MemberInfoFlag(65), ContainerFieldNameHash(398962539), ContainerRefArray]
+		[ContainerField(Name: "EntityRegistry", Offset: 8, NameHash: 398962539, Flags: 65)]
 		public RefArray<DataContainer> EntityRegistry { get { return m_EntityRegistry; } set { if (OnPropertyChanging("RegistryContainer." + nameof(EntityRegistry), this, m_EntityRegistry, value)) m_EntityRegistry = value; } } // 0x8 (8)
 		
 		protected RefArray<DataContainer> m_AssetRegistry = new RefArray<DataContainer>();
-		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(3305796672), ContainerRefArray]
+		[ContainerField(Name: "AssetRegistry", Offset: 12, NameHash: 3305796672, Flags: 65)]
 		public RefArray<DataContainer> AssetRegistry { get { return m_AssetRegistry; } set { if (OnPropertyChanging("RegistryContainer." + nameof(AssetRegistry), this, m_AssetRegistry, value)) m_AssetRegistry = value; } } // 0xC (12)
 		
 		protected RefArray<DataContainer> m_BlueprintRegistry = new RefArray<DataContainer>();
-		[ContainerField(16), MemberInfoFlag(65), ContainerFieldNameHash(3531202111), ContainerRefArray]
+		[ContainerField(Name: "BlueprintRegistry", Offset: 16, NameHash: 3531202111, Flags: 65)]
 		public RefArray<DataContainer> BlueprintRegistry { get { return m_BlueprintRegistry; } set { if (OnPropertyChanging("RegistryContainer." + nameof(BlueprintRegistry), this, m_BlueprintRegistry, value)) m_BlueprintRegistry = value; } } // 0x10 (16)
 		
 		protected RefArray<DataContainer> m_ReferenceObjectRegistry = new RefArray<DataContainer>();
-		[ContainerField(20), MemberInfoFlag(65), ContainerFieldNameHash(1248214958), ContainerRefArray]
+		[ContainerField(Name: "ReferenceObjectRegistry", Offset: 20, NameHash: 1248214958, Flags: 65)]
 		public RefArray<DataContainer> ReferenceObjectRegistry { get { return m_ReferenceObjectRegistry; } set { if (OnPropertyChanging("RegistryContainer." + nameof(ReferenceObjectRegistry), this, m_ReferenceObjectRegistry, value)) m_ReferenceObjectRegistry = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

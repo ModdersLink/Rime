@@ -18,19 +18,19 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(12), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 12)]
 	public class LicenseInfo : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "Name", Offset: 0, NameHash: 2088949890, Flags: 16509), LayoutImmutable]
 		public string Name { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), MemberInfoFlag(137)]
+		[ContainerField(Name: "StagingPlatform", Offset: 4, NameHash: 1395887771, Flags: 137)]
 		public GamePlatform StagingPlatform { get; set; } = new GamePlatform(); // 0x4 (4)
 		
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "AllowStaging", Offset: 8, NameHash: 1112770237, Flags: 49325), LayoutImmutable, Blittable]
 		public bool AllowStaging { get; set; } // 0x8 (8)
 		
-		[ContainerField(9), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "ClientOnly", Offset: 9, NameHash: 892252904, Flags: 49325), LayoutImmutable, Blittable]
 		public bool ClientOnly { get; set; } // 0x9 (9)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

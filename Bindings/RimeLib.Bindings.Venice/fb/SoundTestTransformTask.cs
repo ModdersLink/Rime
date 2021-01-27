@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(48), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 48)]
 	public class SoundTestTransformTask : 
 		SoundTestTaskSpec
 	{
 		protected Vec3 m_InitialPosition = new Vec3();
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(3791803234)]
+		[ContainerField(Name: "InitialPosition", Offset: 16, NameHash: 3791803234, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 InitialPosition { get { return m_InitialPosition; } set { if (OnPropertyChanging("SoundTestTransformTask." + nameof(InitialPosition), this, m_InitialPosition, value)) m_InitialPosition = value; } } // 0x10 (16)
 		
 		protected SoundTestTransformBehavior m_Behavior = new SoundTestTransformBehavior();
-		[ContainerField(32), MemberInfoFlag(137), ContainerFieldNameHash(1967808137)]
+		[ContainerField(Name: "Behavior", Offset: 32, NameHash: 1967808137, Flags: 137)]
 		public SoundTestTransformBehavior Behavior { get { return m_Behavior; } set { if (OnPropertyChanging("SoundTestTransformTask." + nameof(Behavior), this, m_Behavior, value)) m_Behavior = value; } } // 0x20 (32)
 		
 		protected bool m_RelativeListener = new bool();
-		[ContainerField(36), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2476645295)]
+		[ContainerField(Name: "RelativeListener", Offset: 36, NameHash: 2476645295, Flags: 49325), LayoutImmutable, Blittable]
 		public bool RelativeListener { get { return m_RelativeListener; } set { if (OnPropertyChanging("SoundTestTransformTask." + nameof(RelativeListener), this, m_RelativeListener, value)) m_RelativeListener = value; } } // 0x24 (36)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

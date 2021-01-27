@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(112), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 112)]
 	public class GameSoundEntityData : 
 		GameEntityData
 	{
 		protected CtrRef<SoundAsset> m_Sound = new CtrRef<SoundAsset>();
-		[ContainerField(96), MemberInfoFlag(53), ContainerFieldNameHash(231353798), ContainerCtrRef]
+		[ContainerField(Name: "Sound", Offset: 96, NameHash: 231353798, Flags: 53)]
 		public CtrRef<SoundAsset> Sound { get { return m_Sound; } set { if (OnPropertyChanging("GameSoundEntityData." + nameof(Sound), this, m_Sound, value)) m_Sound = value; } } // 0x60 (96)
 		
 		protected bool m_PlayOnCreation = new bool();
-		[ContainerField(100), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2168204873)]
+		[ContainerField(Name: "PlayOnCreation", Offset: 100, NameHash: 2168204873, Flags: 49325), LayoutImmutable, Blittable]
 		public bool PlayOnCreation { get { return m_PlayOnCreation; } set { if (OnPropertyChanging("GameSoundEntityData." + nameof(PlayOnCreation), this, m_PlayOnCreation, value)) m_PlayOnCreation = value; } } // 0x64 (100)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

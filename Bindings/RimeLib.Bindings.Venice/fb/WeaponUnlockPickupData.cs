@@ -18,25 +18,25 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(32), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 32)]
 	public class WeaponUnlockPickupData : FrostbiteContainer
 	{
-		[ContainerField(0), MemberInfoFlag(41)]
+		[ContainerField(Name: "UnlockWeaponAndSlot", Offset: 0, NameHash: 2966548408, Flags: 41)]
 		public UnlockWeaponAndSlot UnlockWeaponAndSlot { get; set; } = new UnlockWeaponAndSlot(); // 0x0 (0)
 		
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49405)]
+		[ContainerField(Name: "AltWeaponSlot", Offset: 12, NameHash: 2588912794, Flags: 49405), LayoutImmutable, Blittable]
 		public int AltWeaponSlot { get; set; } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49405)]
+		[ContainerField(Name: "LinkedToWeaponSlot", Offset: 16, NameHash: 3974693081, Flags: 49405), LayoutImmutable, Blittable]
 		public int LinkedToWeaponSlot { get; set; } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
+		[ContainerField(Name: "MinAmmo", Offset: 20, NameHash: 1012759905, Flags: 49421), LayoutImmutable, Blittable]
 		public uint MinAmmo { get; set; } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
+		[ContainerField(Name: "MaxAmmo", Offset: 24, NameHash: 1314148735, Flags: 49421), LayoutImmutable, Blittable]
 		public uint MaxAmmo { get; set; } // 0x18 (24)
 		
-		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "DefaultToFullAmmo", Offset: 28, NameHash: 471486984, Flags: 49325), LayoutImmutable, Blittable]
 		public bool DefaultToFullAmmo { get; set; } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

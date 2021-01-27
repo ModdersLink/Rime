@@ -18,76 +18,76 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(64), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 64)]
 	public class GearboxConfigData : 
 		DataContainer
 	{
 		protected List<float> m_ForwardGearRatios = new List<float>();
-		[ContainerField(8), MemberInfoFlag(65), ContainerFieldNameHash(3289089437), ContainerArray]
+		[ContainerField(Name: "ForwardGearRatios", Offset: 8, NameHash: 3289089437, Flags: 65)]
 		public List<float> ForwardGearRatios { get { return m_ForwardGearRatios; } set { if (OnPropertyChanging("GearboxConfigData." + nameof(ForwardGearRatios), this, m_ForwardGearRatios, value)) m_ForwardGearRatios = value; } } // 0x8 (8)
 		
 		protected List<float> m_ForwardGearSpeeds = new List<float>();
-		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(3306387643), ContainerArray]
+		[ContainerField(Name: "ForwardGearSpeeds", Offset: 12, NameHash: 3306387643, Flags: 65)]
 		public List<float> ForwardGearSpeeds { get { return m_ForwardGearSpeeds; } set { if (OnPropertyChanging("GearboxConfigData." + nameof(ForwardGearSpeeds), this, m_ForwardGearSpeeds, value)) m_ForwardGearSpeeds = value; } } // 0xC (12)
 		
 		protected List<float> m_ReverseGearRatios = new List<float>();
-		[ContainerField(16), MemberInfoFlag(65), ContainerFieldNameHash(180205926), ContainerArray]
+		[ContainerField(Name: "ReverseGearRatios", Offset: 16, NameHash: 180205926, Flags: 65)]
 		public List<float> ReverseGearRatios { get { return m_ReverseGearRatios; } set { if (OnPropertyChanging("GearboxConfigData." + nameof(ReverseGearRatios), this, m_ReverseGearRatios, value)) m_ReverseGearRatios = value; } } // 0x10 (16)
 		
 		protected List<float> m_ReverseGearSpeeds = new List<float>();
-		[ContainerField(20), MemberInfoFlag(65), ContainerFieldNameHash(162915904), ContainerArray]
+		[ContainerField(Name: "ReverseGearSpeeds", Offset: 20, NameHash: 162915904, Flags: 65)]
 		public List<float> ReverseGearSpeeds { get { return m_ReverseGearSpeeds; } set { if (OnPropertyChanging("GearboxConfigData." + nameof(ReverseGearSpeeds), this, m_ReverseGearSpeeds, value)) m_ReverseGearSpeeds = value; } } // 0x14 (20)
 		
 		protected int m_GearboxType = new int();
-		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(1540232153)]
+		[ContainerField(Name: "GearboxType", Offset: 24, NameHash: 1540232153, Flags: 49405), LayoutImmutable, Blittable]
 		public int GearboxType { get { return m_GearboxType; } set { if (OnPropertyChanging("GearboxConfigData." + nameof(GearboxType), this, m_GearboxType, value)) m_GearboxType = value; } } // 0x18 (24)
 		
 		protected int m_GearboxMode = new int();
-		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(1539978082)]
+		[ContainerField(Name: "GearboxMode", Offset: 28, NameHash: 1539978082, Flags: 49405), LayoutImmutable, Blittable]
 		public int GearboxMode { get { return m_GearboxMode; } set { if (OnPropertyChanging("GearboxConfigData." + nameof(GearboxMode), this, m_GearboxMode, value)) m_GearboxMode = value; } } // 0x1C (28)
 		
 		protected float m_GearChangeTime = new float();
-		[ContainerField(32), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2688527911)]
+		[ContainerField(Name: "GearChangeTime", Offset: 32, NameHash: 2688527911, Flags: 49469), LayoutImmutable, Blittable]
 		public float GearChangeTime { get { return m_GearChangeTime; } set { if (OnPropertyChanging("GearboxConfigData." + nameof(GearChangeTime), this, m_GearChangeTime, value)) m_GearChangeTime = value; } } // 0x20 (32)
 		
 		protected float m_GearDownSpeedFactor = new float();
-		[ContainerField(36), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(699099436)]
+		[ContainerField(Name: "GearDownSpeedFactor", Offset: 36, NameHash: 699099436, Flags: 49469), LayoutImmutable, Blittable]
 		public float GearDownSpeedFactor { get { return m_GearDownSpeedFactor; } set { if (OnPropertyChanging("GearboxConfigData." + nameof(GearDownSpeedFactor), this, m_GearDownSpeedFactor, value)) m_GearDownSpeedFactor = value; } } // 0x24 (36)
 		
 		protected float m_OppositeDirGearChangeMaxSpeed = new float();
-		[ContainerField(40), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3344611765)]
+		[ContainerField(Name: "OppositeDirGearChangeMaxSpeed", Offset: 40, NameHash: 3344611765, Flags: 49469), LayoutImmutable, Blittable]
 		public float OppositeDirGearChangeMaxSpeed { get { return m_OppositeDirGearChangeMaxSpeed; } set { if (OnPropertyChanging("GearboxConfigData." + nameof(OppositeDirGearChangeMaxSpeed), this, m_OppositeDirGearChangeMaxSpeed, value)) m_OppositeDirGearChangeMaxSpeed = value; } } // 0x28 (40)
 		
 		protected float m_OppositeDirGearChangeTime = new float();
-		[ContainerField(44), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(777981235)]
+		[ContainerField(Name: "OppositeDirGearChangeTime", Offset: 44, NameHash: 777981235, Flags: 49469), LayoutImmutable, Blittable]
 		public float OppositeDirGearChangeTime { get { return m_OppositeDirGearChangeTime; } set { if (OnPropertyChanging("GearboxConfigData." + nameof(OppositeDirGearChangeTime), this, m_OppositeDirGearChangeTime, value)) m_OppositeDirGearChangeTime = value; } } // 0x2C (44)
 		
 		protected float m_ClutchSpeedFactor = new float();
-		[ContainerField(48), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1429608074)]
+		[ContainerField(Name: "ClutchSpeedFactor", Offset: 48, NameHash: 1429608074, Flags: 49469), LayoutImmutable, Blittable]
 		public float ClutchSpeedFactor { get { return m_ClutchSpeedFactor; } set { if (OnPropertyChanging("GearboxConfigData." + nameof(ClutchSpeedFactor), this, m_ClutchSpeedFactor, value)) m_ClutchSpeedFactor = value; } } // 0x30 (48)
 		
 		protected float m_TransmissionEfficiency = new float();
-		[ContainerField(52), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(846717476)]
+		[ContainerField(Name: "TransmissionEfficiency", Offset: 52, NameHash: 846717476, Flags: 49469), LayoutImmutable, Blittable]
 		public float TransmissionEfficiency { get { return m_TransmissionEfficiency; } set { if (OnPropertyChanging("GearboxConfigData." + nameof(TransmissionEfficiency), this, m_TransmissionEfficiency, value)) m_TransmissionEfficiency = value; } } // 0x34 (52)
 		
 		protected float m_BackwardThrottleLimit = new float();
-		[ContainerField(56), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3691491475)]
+		[ContainerField(Name: "BackwardThrottleLimit", Offset: 56, NameHash: 3691491475, Flags: 49469), LayoutImmutable, Blittable]
 		public float BackwardThrottleLimit { get { return m_BackwardThrottleLimit; } set { if (OnPropertyChanging("GearboxConfigData." + nameof(BackwardThrottleLimit), this, m_BackwardThrottleLimit, value)) m_BackwardThrottleLimit = value; } } // 0x38 (56)
 		
 		protected bool m_UseClassicGearBoxAutoClutch = new bool();
-		[ContainerField(60), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1239657644)]
+		[ContainerField(Name: "UseClassicGearBoxAutoClutch", Offset: 60, NameHash: 1239657644, Flags: 49325), LayoutImmutable, Blittable]
 		public bool UseClassicGearBoxAutoClutch { get { return m_UseClassicGearBoxAutoClutch; } set { if (OnPropertyChanging("GearboxConfigData." + nameof(UseClassicGearBoxAutoClutch), this, m_UseClassicGearBoxAutoClutch, value)) m_UseClassicGearBoxAutoClutch = value; } } // 0x3C (60)
 		
 		protected bool m_UseNeutralGear = new bool();
-		[ContainerField(61), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3124815010)]
+		[ContainerField(Name: "UseNeutralGear", Offset: 61, NameHash: 3124815010, Flags: 49325), LayoutImmutable, Blittable]
 		public bool UseNeutralGear { get { return m_UseNeutralGear; } set { if (OnPropertyChanging("GearboxConfigData." + nameof(UseNeutralGear), this, m_UseNeutralGear, value)) m_UseNeutralGear = value; } } // 0x3D (61)
 		
 		protected bool m_LimitBackwardThrottle = new bool();
-		[ContainerField(62), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3340732019)]
+		[ContainerField(Name: "LimitBackwardThrottle", Offset: 62, NameHash: 3340732019, Flags: 49325), LayoutImmutable, Blittable]
 		public bool LimitBackwardThrottle { get { return m_LimitBackwardThrottle; } set { if (OnPropertyChanging("GearboxConfigData." + nameof(LimitBackwardThrottle), this, m_LimitBackwardThrottle, value)) m_LimitBackwardThrottle = value; } } // 0x3E (62)
 		
 		protected bool m_UseAutoClutch = new bool();
-		[ContainerField(63), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3208098444)]
+		[ContainerField(Name: "UseAutoClutch", Offset: 63, NameHash: 3208098444, Flags: 49325), LayoutImmutable, Blittable]
 		public bool UseAutoClutch { get { return m_UseAutoClutch; } set { if (OnPropertyChanging("GearboxConfigData." + nameof(UseAutoClutch), this, m_UseAutoClutch, value)) m_UseAutoClutch = value; } } // 0x3F (63)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(60), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 60)]
 	public class DialogNode : 
 		StateNode
 	{
 		protected string m_DialogTitle = string.Empty;
-		[ContainerField(48), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(3325016493)]
+		[ContainerField(Name: "DialogTitle", Offset: 48, NameHash: 3325016493, Flags: 16509), LayoutImmutable]
 		public string DialogTitle { get { return m_DialogTitle; } set { if (OnPropertyChanging("DialogNode." + nameof(DialogTitle), this, m_DialogTitle, value)) m_DialogTitle = value; } } // 0x30 (48)
 		
 		protected string m_DialogText = string.Empty;
-		[ContainerField(52), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(4005286480)]
+		[ContainerField(Name: "DialogText", Offset: 52, NameHash: 4005286480, Flags: 16509), LayoutImmutable]
 		public string DialogText { get { return m_DialogText; } set { if (OnPropertyChanging("DialogNode." + nameof(DialogText), this, m_DialogText, value)) m_DialogText = value; } } // 0x34 (52)
 		
 		protected List<UIPopupButton> m_Buttons = new List<UIPopupButton>();
-		[ContainerField(56), MemberInfoFlag(65), ContainerFieldNameHash(2744663360), ContainerArray]
+		[ContainerField(Name: "Buttons", Offset: 56, NameHash: 2744663360, Flags: 65)]
 		public List<UIPopupButton> Buttons { get { return m_Buttons; } set { if (OnPropertyChanging("DialogNode." + nameof(Buttons), this, m_Buttons, value)) m_Buttons = value; } } // 0x38 (56)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

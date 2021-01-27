@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(28), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 28)]
 	public class AnimatedTransformEntityData : 
 		EntityData
 	{
 		protected AntRef m_Animatable = new AntRef();
-		[ContainerField(12), MemberInfoFlag(41), ContainerFieldNameHash(3208693873)]
+		[ContainerField(Name: "Animatable", Offset: 12, NameHash: 3208693873, Flags: 41)]
 		public AntRef Animatable { get { return m_Animatable; } set { if (OnPropertyChanging("AnimatedTransformEntityData." + nameof(Animatable), this, m_Animatable, value)) m_Animatable = value; } } // 0xC (12)
 		
 		protected float m_ExternalTime = new float();
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2162678253)]
+		[ContainerField(Name: "ExternalTime", Offset: 16, NameHash: 2162678253, Flags: 49469), LayoutImmutable, Blittable]
 		public float ExternalTime { get { return m_ExternalTime; } set { if (OnPropertyChanging("AnimatedTransformEntityData." + nameof(ExternalTime), this, m_ExternalTime, value)) m_ExternalTime = value; } } // 0x10 (16)
 		
 		protected AntRef m_Controller = new AntRef();
-		[ContainerField(20), MemberInfoFlag(41), ContainerFieldNameHash(1870777401)]
+		[ContainerField(Name: "Controller", Offset: 20, NameHash: 1870777401, Flags: 41)]
 		public AntRef Controller { get { return m_Controller; } set { if (OnPropertyChanging("AnimatedTransformEntityData." + nameof(Controller), this, m_Controller, value)) m_Controller = value; } } // 0x14 (20)
 		
 		protected string m_BoneName = string.Empty;
-		[ContainerField(24), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(1590647844)]
+		[ContainerField(Name: "BoneName", Offset: 24, NameHash: 1590647844, Flags: 16509), LayoutImmutable]
 		public string BoneName { get { return m_BoneName; } set { if (OnPropertyChanging("AnimatedTransformEntityData." + nameof(BoneName), this, m_BoneName, value)) m_BoneName = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

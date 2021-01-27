@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(128), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 128)]
 	public class EmitterEntityData : 
 		EffectEntityData
 	{
 		protected CtrRef<EmitterAsset> m_Emitter = new CtrRef<EmitterAsset>();
-		[ContainerField(112), MemberInfoFlag(53), ContainerFieldNameHash(23395891), ContainerCtrRef]
+		[ContainerField(Name: "Emitter", Offset: 112, NameHash: 23395891, Flags: 53)]
 		public CtrRef<EmitterAsset> Emitter { get { return m_Emitter; } set { if (OnPropertyChanging("EmitterEntityData." + nameof(Emitter), this, m_Emitter, value)) m_Emitter = value; } } // 0x70 (112)
 		
 		protected float m_SpawnProbability = new float();
-		[ContainerField(116), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2017232915)]
+		[ContainerField(Name: "SpawnProbability", Offset: 116, NameHash: 2017232915, Flags: 49469), LayoutImmutable, Blittable]
 		public float SpawnProbability { get { return m_SpawnProbability; } set { if (OnPropertyChanging("EmitterEntityData." + nameof(SpawnProbability), this, m_SpawnProbability, value)) m_SpawnProbability = value; } } // 0x74 (116)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

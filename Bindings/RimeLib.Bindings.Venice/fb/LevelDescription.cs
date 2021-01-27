@@ -18,25 +18,25 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(16), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 16)]
 	public class LevelDescription : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "Name", Offset: 0, NameHash: 2088949890, Flags: 16509), LayoutImmutable]
 		public string Name { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "Description", Offset: 4, NameHash: 1636673251, Flags: 16509), LayoutImmutable]
 		public string Description { get; set; } // 0x4 (4)
 		
-		[ContainerField(8), MemberInfoFlag(65), ContainerRefArray]
+		[ContainerField(Name: "Components", Offset: 8, NameHash: 3391050425, Flags: 65)]
 		public RefArray<LevelDescriptionComponent> Components { get; set; } = new RefArray<LevelDescriptionComponent>(); // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "IsCoop", Offset: 12, NameHash: 2816971820, Flags: 49325), LayoutImmutable, Blittable]
 		public bool IsCoop { get; set; } // 0xC (12)
 		
-		[ContainerField(13), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "IsMenu", Offset: 13, NameHash: 2816483916, Flags: 49325), LayoutImmutable, Blittable]
 		public bool IsMenu { get; set; } // 0xD (13)
 		
-		[ContainerField(14), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "IsMultiplayer", Offset: 14, NameHash: 3764930757, Flags: 49325), LayoutImmutable, Blittable]
 		public bool IsMultiplayer { get; set; } // 0xE (14)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

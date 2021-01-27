@@ -18,32 +18,32 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(36), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 36)]
 	public class MessageEntityData : 
 		EntityData
 	{
 		protected string m_MessageSid = string.Empty;
-		[ContainerField(12), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(2895326256)]
+		[ContainerField(Name: "MessageSid", Offset: 12, NameHash: 2895326256, Flags: 16509), LayoutImmutable]
 		public string MessageSid { get { return m_MessageSid; } set { if (OnPropertyChanging("MessageEntityData." + nameof(MessageSid), this, m_MessageSid, value)) m_MessageSid = value; } } // 0xC (12)
 		
 		protected List<MessageLineData> m_AdditionalMessages = new List<MessageLineData>();
-		[ContainerField(16), MemberInfoFlag(65), ContainerFieldNameHash(836911268), ContainerArray]
+		[ContainerField(Name: "AdditionalMessages", Offset: 16, NameHash: 836911268, Flags: 65)]
 		public List<MessageLineData> AdditionalMessages { get { return m_AdditionalMessages; } set { if (OnPropertyChanging("MessageEntityData." + nameof(AdditionalMessages), this, m_AdditionalMessages, value)) m_AdditionalMessages = value; } } // 0x10 (16)
 		
 		protected UIMessageEntityType m_MessageType = new UIMessageEntityType();
-		[ContainerField(20), MemberInfoFlag(137), ContainerFieldNameHash(1056298038)]
+		[ContainerField(Name: "MessageType", Offset: 20, NameHash: 1056298038, Flags: 137)]
 		public UIMessageEntityType MessageType { get { return m_MessageType; } set { if (OnPropertyChanging("MessageEntityData." + nameof(MessageType), this, m_MessageType, value)) m_MessageType = value; } } // 0x14 (20)
 		
 		protected float m_DisplayTime = new float();
-		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1925139498)]
+		[ContainerField(Name: "DisplayTime", Offset: 24, NameHash: 1925139498, Flags: 49469), LayoutImmutable, Blittable]
 		public float DisplayTime { get { return m_DisplayTime; } set { if (OnPropertyChanging("MessageEntityData." + nameof(DisplayTime), this, m_DisplayTime, value)) m_DisplayTime = value; } } // 0x18 (24)
 		
 		protected EntryInputActionEnum m_EntryInputAction = new EntryInputActionEnum();
-		[ContainerField(28), MemberInfoFlag(137), ContainerFieldNameHash(4156259417)]
+		[ContainerField(Name: "EntryInputAction", Offset: 28, NameHash: 4156259417, Flags: 137)]
 		public EntryInputActionEnum EntryInputAction { get { return m_EntryInputAction; } set { if (OnPropertyChanging("MessageEntityData." + nameof(EntryInputAction), this, m_EntryInputAction, value)) m_EntryInputAction = value; } } // 0x1C (28)
 		
 		protected bool m_Enabled = new bool();
-		[ContainerField(32), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2662400)]
+		[ContainerField(Name: "Enabled", Offset: 32, NameHash: 2662400, Flags: 49325), LayoutImmutable, Blittable]
 		public bool Enabled { get { return m_Enabled; } set { if (OnPropertyChanging("MessageEntityData." + nameof(Enabled), this, m_Enabled, value)) m_Enabled = value; } } // 0x20 (32)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

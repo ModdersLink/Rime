@@ -18,25 +18,25 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(12), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 12)]
 	public class SoundGraphPluginInfo : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
+		[ContainerField(Name: "Id", Offset: 0, NameHash: 5862152, Flags: 49421), LayoutImmutable, Blittable]
 		public uint Id { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
+		[ContainerField(Name: "EnableAttributeReadMask", Offset: 4, NameHash: 482068574, Flags: 49421), LayoutImmutable, Blittable]
 		public uint EnableAttributeReadMask { get; set; } // 0x4 (4)
 		
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49341)]
+		[ContainerField(Name: "ConnectionIndex", Offset: 8, NameHash: 2316221069, Flags: 49341), LayoutImmutable, Blittable]
 		public sbyte ConnectionIndex { get; set; } // 0x8 (8)
 		
-		[ContainerField(9), LayoutImmutable, Blittable, MemberInfoFlag(49341)]
+		[ContainerField(Name: "OutputChannelCount", Offset: 9, NameHash: 4054579418, Flags: 49341), LayoutImmutable, Blittable]
 		public sbyte OutputChannelCount { get; set; } // 0x9 (9)
 		
-		[ContainerField(10), LayoutImmutable, Blittable, MemberInfoFlag(49341)]
+		[ContainerField(Name: "ConstructParamsIndex", Offset: 10, NameHash: 226456690, Flags: 49341), LayoutImmutable, Blittable]
 		public sbyte ConstructParamsIndex { get; set; } // 0xA (10)
 		
-		[ContainerField(11), LayoutImmutable, Blittable, MemberInfoFlag(49341)]
+		[ContainerField(Name: "ConstructParamCount", Offset: 11, NameHash: 1363907676, Flags: 49341), LayoutImmutable, Blittable]
 		public sbyte ConstructParamCount { get; set; } // 0xB (11)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

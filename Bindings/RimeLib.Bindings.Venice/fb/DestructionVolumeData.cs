@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(64), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 64)]
 	public class DestructionVolumeData : 
 		DataContainer
 	{
 		protected AxisAlignedBox m_BoundingBox = new AxisAlignedBox();
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(2648132290)]
+		[ContainerField(Name: "BoundingBox", Offset: 16, NameHash: 2648132290, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public AxisAlignedBox BoundingBox { get { return m_BoundingBox; } set { if (OnPropertyChanging("DestructionVolumeData." + nameof(BoundingBox), this, m_BoundingBox, value)) m_BoundingBox = value; } } // 0x10 (16)
 		
 		protected CtrRef<DestructionVolumeAsset> m_Asset = new CtrRef<DestructionVolumeAsset>();
-		[ContainerField(48), MemberInfoFlag(53), ContainerFieldNameHash(205976053), ContainerCtrRef]
+		[ContainerField(Name: "Asset", Offset: 48, NameHash: 205976053, Flags: 53)]
 		public CtrRef<DestructionVolumeAsset> Asset { get { return m_Asset; } set { if (OnPropertyChanging("DestructionVolumeData." + nameof(Asset), this, m_Asset, value)) m_Asset = value; } } // 0x30 (48)
 		
 		protected List<Vec4> m_Impacts = new List<Vec4>();
-		[ContainerField(52), MemberInfoFlag(65), ContainerFieldNameHash(1723826932), ContainerArray]
+		[ContainerField(Name: "Impacts", Offset: 52, NameHash: 1723826932, Flags: 65)]
 		public List<Vec4> Impacts { get { return m_Impacts; } set { if (OnPropertyChanging("DestructionVolumeData." + nameof(Impacts), this, m_Impacts, value)) m_Impacts = value; } } // 0x34 (52)
 		
 		protected List<uint> m_PartToImpactIndices = new List<uint>();
-		[ContainerField(56), MemberInfoFlag(65), ContainerFieldNameHash(4119124564), ContainerArray]
+		[ContainerField(Name: "PartToImpactIndices", Offset: 56, NameHash: 4119124564, Flags: 65)]
 		public List<uint> PartToImpactIndices { get { return m_PartToImpactIndices; } set { if (OnPropertyChanging("DestructionVolumeData." + nameof(PartToImpactIndices), this, m_PartToImpactIndices, value)) m_PartToImpactIndices = value; } } // 0x38 (56)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

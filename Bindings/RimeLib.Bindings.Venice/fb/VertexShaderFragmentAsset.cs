@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(20), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 20)]
 	public class VertexShaderFragmentAsset : 
 		Asset
 	{
 		protected FileRef m_SourceFile = new FileRef();
-		[ContainerField(12), LayoutImmutable, MemberInfoFlag(16541), ContainerFieldNameHash(1522844286)]
+		[ContainerField(Name: "SourceFile", Offset: 12, NameHash: 1522844286, Flags: 16541), LayoutImmutable]
 		public FileRef SourceFile { get { return m_SourceFile; } set { if (OnPropertyChanging("VertexShaderFragmentAsset." + nameof(SourceFile), this, m_SourceFile, value)) m_SourceFile = value; } } // 0xC (12)
 		
 		protected string m_Function = string.Empty;
-		[ContainerField(16), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(4136871687)]
+		[ContainerField(Name: "Function", Offset: 16, NameHash: 4136871687, Flags: 16509), LayoutImmutable]
 		public string Function { get { return m_Function; } set { if (OnPropertyChanging("VertexShaderFragmentAsset." + nameof(Function), this, m_Function, value)) m_Function = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

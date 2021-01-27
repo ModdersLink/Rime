@@ -18,43 +18,43 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(48), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 48)]
 	public class SpecialMovesBinding : FrostbiteContainer
 	{
-		[ContainerField(0), MemberInfoFlag(41)]
+		[ContainerField(Name: "TriggerHighVault", Offset: 0, NameHash: 44544169, Flags: 41)]
 		public AntRef TriggerHighVault { get; set; } = new AntRef(); // 0x0 (0)
 		
-		[ContainerField(4), MemberInfoFlag(41)]
+		[ContainerField(Name: "TriggerUpVault", Offset: 4, NameHash: 333133442, Flags: 41)]
 		public AntRef TriggerUpVault { get; set; } = new AntRef(); // 0x4 (4)
 		
-		[ContainerField(8), MemberInfoFlag(41)]
+		[ContainerField(Name: "TriggerLowVault", Offset: 8, NameHash: 548543603, Flags: 41)]
 		public AntRef TriggerLowVault { get; set; } = new AntRef(); // 0x8 (8)
 		
-		[ContainerField(12), MemberInfoFlag(41)]
+		[ContainerField(Name: "TriggerSlideIntoProne", Offset: 12, NameHash: 2509228816, Flags: 41)]
 		public AntRef TriggerSlideIntoProne { get; set; } = new AntRef(); // 0xC (12)
 		
-		[ContainerField(16), MemberInfoFlag(41)]
+		[ContainerField(Name: "TriggerSpecialAnimation", Offset: 16, NameHash: 949651018, Flags: 41)]
 		public AntRef TriggerSpecialAnimation { get; set; } = new AntRef(); // 0x10 (16)
 		
-		[ContainerField(20), MemberInfoFlag(41)]
+		[ContainerField(Name: "SpecialAnimationIndex", Offset: 20, NameHash: 502517260, Flags: 41)]
 		public AntRef SpecialAnimationIndex { get; set; } = new AntRef(); // 0x14 (20)
 		
-		[ContainerField(24), MemberInfoFlag(41)]
+		[ContainerField(Name: "ObjectHeight", Offset: 24, NameHash: 3307956847, Flags: 41)]
 		public AntRef ObjectHeight { get; set; } = new AntRef(); // 0x18 (24)
 		
-		[ContainerField(28), MemberInfoFlag(41)]
+		[ContainerField(Name: "ObjectDistance", Offset: 28, NameHash: 709323379, Flags: 41)]
 		public AntRef ObjectDistance { get; set; } = new AntRef(); // 0x1C (28)
 		
-		[ContainerField(32), MemberInfoFlag(41)]
+		[ContainerField(Name: "StartObjectDistanceTimer", Offset: 32, NameHash: 1175862644, Flags: 41)]
 		public AntRef StartObjectDistanceTimer { get; set; } = new AntRef(); // 0x20 (32)
 		
-		[ContainerField(36), MemberInfoFlag(41)]
+		[ContainerField(Name: "VaultObjectPositionX", Offset: 36, NameHash: 6864875, Flags: 41)]
 		public AntRef VaultObjectPositionX { get; set; } = new AntRef(); // 0x24 (36)
 		
-		[ContainerField(40), MemberInfoFlag(41)]
+		[ContainerField(Name: "VaultObjectPositionZ", Offset: 40, NameHash: 6864873, Flags: 41)]
 		public AntRef VaultObjectPositionZ { get; set; } = new AntRef(); // 0x28 (40)
 		
-		[ContainerField(44), MemberInfoFlag(41)]
+		[ContainerField(Name: "CancelAnimation", Offset: 44, NameHash: 636163605, Flags: 41)]
 		public AntRef CancelAnimation { get; set; } = new AntRef(); // 0x2C (44)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

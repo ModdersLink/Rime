@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(128), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 128)]
 	public class BreakableControllerComponentData : 
 		DestructionControllerComponentData
 	{
 		protected uint m_BreakablePartCount = new uint();
-		[ContainerField(112), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(3849422468)]
+		[ContainerField(Name: "BreakablePartCount", Offset: 112, NameHash: 3849422468, Flags: 49421), LayoutImmutable, Blittable]
 		public uint BreakablePartCount { get { return m_BreakablePartCount; } set { if (OnPropertyChanging("BreakableControllerComponentData." + nameof(BreakablePartCount), this, m_BreakablePartCount, value)) m_BreakablePartCount = value; } } // 0x70 (112)
 		
 		protected uint m_NetworkIdCount = new uint();
-		[ContainerField(116), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(1234693717)]
+		[ContainerField(Name: "NetworkIdCount", Offset: 116, NameHash: 1234693717, Flags: 49421), LayoutImmutable, Blittable]
 		public uint NetworkIdCount { get { return m_NetworkIdCount; } set { if (OnPropertyChanging("BreakableControllerComponentData." + nameof(NetworkIdCount), this, m_NetworkIdCount, value)) m_NetworkIdCount = value; } } // 0x74 (116)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

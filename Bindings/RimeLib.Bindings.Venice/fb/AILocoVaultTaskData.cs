@@ -18,34 +18,34 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(41), ContainerSize(48), ContainerStruct]
+	[ContainerType(Alignment: 16,  Flags: 41, Size: 48)]
 	public class AILocoVaultTaskData : FrostbiteContainer
 	{
-		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
+		[ContainerField(Name: "StartPoint", Offset: 0, NameHash: 2755831849, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 StartPoint { get; set; } = new Vec3(); // 0x0 (0)
 		
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "DistanceBeforeVault", Offset: 16, NameHash: 3862494437, Flags: 49469), LayoutImmutable, Blittable]
 		public float DistanceBeforeVault { get; set; } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "HeightBeforeVault", Offset: 20, NameHash: 3431098489, Flags: 49469), LayoutImmutable, Blittable]
 		public float HeightBeforeVault { get; set; } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "HeightAfterVault", Offset: 24, NameHash: 2025884548, Flags: 49469), LayoutImmutable, Blittable]
 		public float HeightAfterVault { get; set; } // 0x18 (24)
 		
-		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "LengthOfVaultableObject", Offset: 28, NameHash: 1652501653, Flags: 49469), LayoutImmutable, Blittable]
 		public float LengthOfVaultableObject { get; set; } // 0x1C (28)
 		
-		[ContainerField(32), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "WorldAngle", Offset: 32, NameHash: 612547046, Flags: 49469), LayoutImmutable, Blittable]
 		public float WorldAngle { get; set; } // 0x20 (32)
 		
-		[ContainerField(36), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "DistanceAfterVault", Offset: 36, NameHash: 1369021080, Flags: 49469), LayoutImmutable, Blittable]
 		public float DistanceAfterVault { get; set; } // 0x24 (36)
 		
-		[ContainerField(40), MemberInfoFlag(137)]
+		[ContainerField(Name: "VaultType", Offset: 40, NameHash: 4073516007, Flags: 137)]
 		public WaypointVaultType VaultType { get; set; } = new WaypointVaultType(); // 0x28 (40)
 		
-		[ContainerField(44), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "UseClientPosition", Offset: 44, NameHash: 430257222, Flags: 49325), LayoutImmutable, Blittable]
 		public bool UseClientPosition { get; set; } // 0x2C (44)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

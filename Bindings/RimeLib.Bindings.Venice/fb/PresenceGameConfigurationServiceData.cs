@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(16), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
 	public class PresenceGameConfigurationServiceData : 
 		PresenceServiceData
 	{
 		protected OnlineEnvironmentConsoleUrl m_ConfigUrl = new OnlineEnvironmentConsoleUrl();
-		[ContainerField(12), MemberInfoFlag(41), ContainerFieldNameHash(1873884036)]
+		[ContainerField(Name: "ConfigUrl", Offset: 12, NameHash: 1873884036, Flags: 41)]
 		public OnlineEnvironmentConsoleUrl ConfigUrl { get { return m_ConfigUrl; } set { if (OnPropertyChanging("PresenceGameConfigurationServiceData." + nameof(ConfigUrl), this, m_ConfigUrl, value)) m_ConfigUrl = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

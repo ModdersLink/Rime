@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(20), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 20)]
 	public class ArmamentData : 
 		DataContainer
 	{
 		protected int m_ThreatLength = new int();
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(2704429479)]
+		[ContainerField(Name: "ThreatLength", Offset: 8, NameHash: 2704429479, Flags: 49405), LayoutImmutable, Blittable]
 		public int ThreatLength { get { return m_ThreatLength; } set { if (OnPropertyChanging("ArmamentData." + nameof(ThreatLength), this, m_ThreatLength, value)) m_ThreatLength = value; } } // 0x8 (8)
 		
 		protected CtrRef<TurretData> m_TurretData = new CtrRef<TurretData>();
-		[ContainerField(12), MemberInfoFlag(53), ContainerFieldNameHash(1721999205), ContainerCtrRef]
+		[ContainerField(Name: "TurretData", Offset: 12, NameHash: 1721999205, Flags: 53)]
 		public CtrRef<TurretData> TurretData { get { return m_TurretData; } set { if (OnPropertyChanging("ArmamentData." + nameof(TurretData), this, m_TurretData, value)) m_TurretData = value; } } // 0xC (12)
 		
 		protected bool m_IsAntiAircraft = new bool();
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1061521109)]
+		[ContainerField(Name: "IsAntiAircraft", Offset: 16, NameHash: 1061521109, Flags: 49325), LayoutImmutable, Blittable]
 		public bool IsAntiAircraft { get { return m_IsAntiAircraft; } set { if (OnPropertyChanging("ArmamentData." + nameof(IsAntiAircraft), this, m_IsAntiAircraft, value)) m_IsAntiAircraft = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

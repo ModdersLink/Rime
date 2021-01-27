@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(112), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 112)]
 	public class CharacterWeaponComponentData : 
 		ComponentData
 	{
 		protected CtrRef<SoldierWeaponBlueprint> m_DefaultWeaponBlueprint = new CtrRef<SoldierWeaponBlueprint>();
-		[ContainerField(96), MemberInfoFlag(53), ContainerFieldNameHash(594340867), ContainerCtrRef]
+		[ContainerField(Name: "DefaultWeaponBlueprint", Offset: 96, NameHash: 594340867, Flags: 53)]
 		public CtrRef<SoldierWeaponBlueprint> DefaultWeaponBlueprint { get { return m_DefaultWeaponBlueprint; } set { if (OnPropertyChanging("CharacterWeaponComponentData." + nameof(DefaultWeaponBlueprint), this, m_DefaultWeaponBlueprint, value)) m_DefaultWeaponBlueprint = value; } } // 0x60 (96)
 		
 		protected string m_AimBoneName = string.Empty;
-		[ContainerField(100), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(529553697)]
+		[ContainerField(Name: "AimBoneName", Offset: 100, NameHash: 529553697, Flags: 16509), LayoutImmutable]
 		public string AimBoneName { get { return m_AimBoneName; } set { if (OnPropertyChanging("CharacterWeaponComponentData." + nameof(AimBoneName), this, m_AimBoneName, value)) m_AimBoneName = value; } } // 0x64 (100)
 		
 		protected CtrRef<SkeletonAsset> m_WeaponSkeleton = new CtrRef<SkeletonAsset>();
-		[ContainerField(104), MemberInfoFlag(53), ContainerFieldNameHash(170547750), ContainerCtrRef]
+		[ContainerField(Name: "WeaponSkeleton", Offset: 104, NameHash: 170547750, Flags: 53)]
 		public CtrRef<SkeletonAsset> WeaponSkeleton { get { return m_WeaponSkeleton; } set { if (OnPropertyChanging("CharacterWeaponComponentData." + nameof(WeaponSkeleton), this, m_WeaponSkeleton, value)) m_WeaponSkeleton = value; } } // 0x68 (104)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

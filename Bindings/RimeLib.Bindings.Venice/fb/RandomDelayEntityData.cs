@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(28), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 28)]
 	public class RandomDelayEntityData : 
 		EntityData
 	{
 		protected float m_MinDelay = new float();
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3350783098)]
+		[ContainerField(Name: "MinDelay", Offset: 12, NameHash: 3350783098, Flags: 49469), LayoutImmutable, Blittable]
 		public float MinDelay { get { return m_MinDelay; } set { if (OnPropertyChanging("RandomDelayEntityData." + nameof(MinDelay), this, m_MinDelay, value)) m_MinDelay = value; } } // 0xC (12)
 		
 		protected float m_MaxDelay = new float();
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(420379940)]
+		[ContainerField(Name: "MaxDelay", Offset: 16, NameHash: 420379940, Flags: 49469), LayoutImmutable, Blittable]
 		public float MaxDelay { get { return m_MaxDelay; } set { if (OnPropertyChanging("RandomDelayEntityData." + nameof(MaxDelay), this, m_MaxDelay, value)) m_MaxDelay = value; } } // 0x10 (16)
 		
 		protected Realm m_Realm = new Realm();
-		[ContainerField(20), MemberInfoFlag(137), ContainerFieldNameHash(229961746)]
+		[ContainerField(Name: "Realm", Offset: 20, NameHash: 229961746, Flags: 137)]
 		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("RandomDelayEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0x14 (20)
 		
 		protected bool m_AutoStart = new bool();
-		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(792615882)]
+		[ContainerField(Name: "AutoStart", Offset: 24, NameHash: 792615882, Flags: 49325), LayoutImmutable, Blittable]
 		public bool AutoStart { get { return m_AutoStart; } set { if (OnPropertyChanging("RandomDelayEntityData." + nameof(AutoStart), this, m_AutoStart, value)) m_AutoStart = value; } } // 0x18 (24)
 		
 		protected bool m_RunOnce = new bool();
-		[ContainerField(25), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(709901739)]
+		[ContainerField(Name: "RunOnce", Offset: 25, NameHash: 709901739, Flags: 49325), LayoutImmutable, Blittable]
 		public bool RunOnce { get { return m_RunOnce; } set { if (OnPropertyChanging("RandomDelayEntityData." + nameof(RunOnce), this, m_RunOnce, value)) m_RunOnce = value; } } // 0x19 (25)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

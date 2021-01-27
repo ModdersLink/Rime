@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(24), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 24)]
 	public class TurretRotationInfo : FrostbiteContainer
 	{
-		[ContainerField(0), MemberInfoFlag(137)]
+		[ContainerField(Name: "RotationAxis", Offset: 0, NameHash: 3148542130, Flags: 137)]
 		public RotationAxis RotationAxis { get; set; } = new RotationAxis(); // 0x0 (0)
 		
-		[ContainerField(4), MemberInfoFlag(137)]
+		[ContainerField(Name: "Channel", Offset: 4, NameHash: 4082709062, Flags: 137)]
 		public RotationChannel Channel { get; set; } = new RotationChannel(); // 0x4 (4)
 		
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "MaxRotation", Offset: 8, NameHash: 1608547717, Flags: 49469), LayoutImmutable, Blittable]
 		public float MaxRotation { get; set; } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "MinRotation", Offset: 12, NameHash: 3781648795, Flags: 49469), LayoutImmutable, Blittable]
 		public float MinRotation { get; set; } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "PhaseOffset", Offset: 16, NameHash: 3780505959, Flags: 49469), LayoutImmutable, Blittable]
 		public float PhaseOffset { get; set; } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "NormalizeRotation", Offset: 20, NameHash: 1190235636, Flags: 49325), LayoutImmutable, Blittable]
 		public bool NormalizeRotation { get; set; } // 0x14 (20)
 		
-		[ContainerField(21), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "InvertRotation", Offset: 21, NameHash: 1002888771, Flags: 49325), LayoutImmutable, Blittable]
 		public bool InvertRotation { get; set; } // 0x15 (21)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

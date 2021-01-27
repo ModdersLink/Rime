@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(28), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 28)]
 	public class CharacterAnimationSpaceEntityData : 
 		EntityData
 	{
 		protected Realm m_Realm = new Realm();
-		[ContainerField(12), MemberInfoFlag(137), ContainerFieldNameHash(229961746)]
+		[ContainerField(Name: "Realm", Offset: 12, NameHash: 229961746, Flags: 137)]
 		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("CharacterAnimationSpaceEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0xC (12)
 		
 		protected AntRef m_SpacePositionGS = new AntRef();
-		[ContainerField(16), MemberInfoFlag(41), ContainerFieldNameHash(2185021708)]
+		[ContainerField(Name: "SpacePositionGS", Offset: 16, NameHash: 2185021708, Flags: 41)]
 		public AntRef SpacePositionGS { get { return m_SpacePositionGS; } set { if (OnPropertyChanging("CharacterAnimationSpaceEntityData." + nameof(SpacePositionGS), this, m_SpacePositionGS, value)) m_SpacePositionGS = value; } } // 0x10 (16)
 		
 		protected AntRef m_SpaceRotationGS = new AntRef();
-		[ContainerField(20), MemberInfoFlag(41), ContainerFieldNameHash(2997550689)]
+		[ContainerField(Name: "SpaceRotationGS", Offset: 20, NameHash: 2997550689, Flags: 41)]
 		public AntRef SpaceRotationGS { get { return m_SpaceRotationGS; } set { if (OnPropertyChanging("CharacterAnimationSpaceEntityData." + nameof(SpaceRotationGS), this, m_SpaceRotationGS, value)) m_SpaceRotationGS = value; } } // 0x14 (20)
 		
 		protected float m_WarpAnimationBlendTime = new float();
-		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1283988115)]
+		[ContainerField(Name: "WarpAnimationBlendTime", Offset: 24, NameHash: 1283988115, Flags: 49469), LayoutImmutable, Blittable]
 		public float WarpAnimationBlendTime { get { return m_WarpAnimationBlendTime; } set { if (OnPropertyChanging("CharacterAnimationSpaceEntityData." + nameof(WarpAnimationBlendTime), this, m_WarpAnimationBlendTime, value)) m_WarpAnimationBlendTime = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

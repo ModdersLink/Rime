@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(16), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
 	public class TextUnlockPartData : 
 		DataContainer
 	{
 		protected string m_ShaderNodeName = string.Empty;
-		[ContainerField(8), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(4213969131)]
+		[ContainerField(Name: "ShaderNodeName", Offset: 8, NameHash: 4213969131, Flags: 16509), LayoutImmutable]
 		public string ShaderNodeName { get { return m_ShaderNodeName; } set { if (OnPropertyChanging("TextUnlockPartData." + nameof(ShaderNodeName), this, m_ShaderNodeName, value)) m_ShaderNodeName = value; } } // 0x8 (8)
 		
 		protected CtrRef<ObjectBlueprint> m_MeshBlueprint = new CtrRef<ObjectBlueprint>();
-		[ContainerField(12), MemberInfoFlag(53), ContainerFieldNameHash(1662348825), ContainerCtrRef]
+		[ContainerField(Name: "MeshBlueprint", Offset: 12, NameHash: 1662348825, Flags: 53)]
 		public CtrRef<ObjectBlueprint> MeshBlueprint { get { return m_MeshBlueprint; } set { if (OnPropertyChanging("TextUnlockPartData." + nameof(MeshBlueprint), this, m_MeshBlueprint, value)) m_MeshBlueprint = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(12), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 12)]
 	public class CustomReportValueData : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "Name", Offset: 0, NameHash: 2088949890, Flags: 16509), LayoutImmutable]
 		public string Name { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), MemberInfoFlag(137)]
+		[ContainerField(Name: "Kind", Offset: 4, NameHash: 2089125261, Flags: 137)]
 		public CustomReportValueKind Kind { get; set; } = new CustomReportValueKind(); // 0x4 (4)
 		
-		[ContainerField(8), MemberInfoFlag(137)]
+		[ContainerField(Name: "DataType", Offset: 8, NameHash: 3249006477, Flags: 137)]
 		public PersistentValueDataType DataType { get; set; } = new PersistentValueDataType(); // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

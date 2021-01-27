@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(112), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 112)]
 	public class SupportedShootingComponentData : 
 		ComponentData
 	{
 		protected CtrRef<SupportedShootingCommonData> m_CommonData = new CtrRef<SupportedShootingCommonData>();
-		[ContainerField(96), MemberInfoFlag(53), ContainerFieldNameHash(760803064), ContainerCtrRef]
+		[ContainerField(Name: "CommonData", Offset: 96, NameHash: 760803064, Flags: 53)]
 		public CtrRef<SupportedShootingCommonData> CommonData { get { return m_CommonData; } set { if (OnPropertyChanging("SupportedShootingComponentData." + nameof(CommonData), this, m_CommonData, value)) m_CommonData = value; } } // 0x60 (96)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

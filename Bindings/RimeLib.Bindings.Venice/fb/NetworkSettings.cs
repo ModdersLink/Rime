@@ -18,80 +18,80 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(72), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 72)]
 	public class NetworkSettings : 
 		DataContainer
 	{
 		protected uint m_ProtocolVersion = new uint();
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(3170322697)]
+		[ContainerField(Name: "ProtocolVersion", Offset: 8, NameHash: 3170322697, Flags: 49421), LayoutImmutable, Blittable]
 		public uint ProtocolVersion { get { return m_ProtocolVersion; } set { if (OnPropertyChanging("NetworkSettings." + nameof(ProtocolVersion), this, m_ProtocolVersion, value)) m_ProtocolVersion = value; } } // 0x8 (8)
 		
 		protected string m_TitleId = string.Empty;
-		[ContainerField(12), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(3335995016)]
+		[ContainerField(Name: "TitleId", Offset: 12, NameHash: 3335995016, Flags: 16509), LayoutImmutable]
 		public string TitleId { get { return m_TitleId; } set { if (OnPropertyChanging("NetworkSettings." + nameof(TitleId), this, m_TitleId, value)) m_TitleId = value; } } // 0xC (12)
 		
 		protected uint m_ClientPort = new uint();
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(891909509)]
+		[ContainerField(Name: "ClientPort", Offset: 16, NameHash: 891909509, Flags: 49421), LayoutImmutable, Blittable]
 		public uint ClientPort { get { return m_ClientPort; } set { if (OnPropertyChanging("NetworkSettings." + nameof(ClientPort), this, m_ClientPort, value)) m_ClientPort = value; } } // 0x10 (16)
 		
 		protected uint m_ServerPort = new uint();
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(1802195673)]
+		[ContainerField(Name: "ServerPort", Offset: 20, NameHash: 1802195673, Flags: 49421), LayoutImmutable, Blittable]
 		public uint ServerPort { get { return m_ServerPort; } set { if (OnPropertyChanging("NetworkSettings." + nameof(ServerPort), this, m_ServerPort, value)) m_ServerPort = value; } } // 0x14 (20)
 		
 		protected uint m_MaxGhostCount = new uint();
-		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(2256733237)]
+		[ContainerField(Name: "MaxGhostCount", Offset: 24, NameHash: 2256733237, Flags: 49421), LayoutImmutable, Blittable]
 		public uint MaxGhostCount { get { return m_MaxGhostCount; } set { if (OnPropertyChanging("NetworkSettings." + nameof(MaxGhostCount), this, m_MaxGhostCount, value)) m_MaxGhostCount = value; } } // 0x18 (24)
 		
 		protected uint m_MaxClientCount = new uint();
-		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(59362443)]
+		[ContainerField(Name: "MaxClientCount", Offset: 28, NameHash: 59362443, Flags: 49421), LayoutImmutable, Blittable]
 		public uint MaxClientCount { get { return m_MaxClientCount; } set { if (OnPropertyChanging("NetworkSettings." + nameof(MaxClientCount), this, m_MaxClientCount, value)) m_MaxClientCount = value; } } // 0x1C (28)
 		
 		protected uint m_MaxClientFrameSize = new uint();
-		[ContainerField(32), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(1801242448)]
+		[ContainerField(Name: "MaxClientFrameSize", Offset: 32, NameHash: 1801242448, Flags: 49421), LayoutImmutable, Blittable]
 		public uint MaxClientFrameSize { get { return m_MaxClientFrameSize; } set { if (OnPropertyChanging("NetworkSettings." + nameof(MaxClientFrameSize), this, m_MaxClientFrameSize, value)) m_MaxClientFrameSize = value; } } // 0x20 (32)
 		
 		protected uint m_MaxServerFrameSize = new uint();
-		[ContainerField(36), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(3192625292)]
+		[ContainerField(Name: "MaxServerFrameSize", Offset: 36, NameHash: 3192625292, Flags: 49421), LayoutImmutable, Blittable]
 		public uint MaxServerFrameSize { get { return m_MaxServerFrameSize; } set { if (OnPropertyChanging("NetworkSettings." + nameof(MaxServerFrameSize), this, m_MaxServerFrameSize, value)) m_MaxServerFrameSize = value; } } // 0x24 (36)
 		
 		protected string m_XlspAddress = string.Empty;
-		[ContainerField(40), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(536568484)]
+		[ContainerField(Name: "XlspAddress", Offset: 40, NameHash: 536568484, Flags: 16509), LayoutImmutable]
 		public string XlspAddress { get { return m_XlspAddress; } set { if (OnPropertyChanging("NetworkSettings." + nameof(XlspAddress), this, m_XlspAddress, value)) m_XlspAddress = value; } } // 0x28 (40)
 		
 		protected string m_ServerAddress = string.Empty;
-		[ContainerField(44), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(2537212758)]
+		[ContainerField(Name: "ServerAddress", Offset: 44, NameHash: 2537212758, Flags: 16509), LayoutImmutable]
 		public string ServerAddress { get { return m_ServerAddress; } set { if (OnPropertyChanging("NetworkSettings." + nameof(ServerAddress), this, m_ServerAddress, value)) m_ServerAddress = value; } } // 0x2C (44)
 		
 		protected string m_ClientConnectionDebugFilePrefix = string.Empty;
-		[ContainerField(48), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(46256173)]
+		[ContainerField(Name: "ClientConnectionDebugFilePrefix", Offset: 48, NameHash: 46256173, Flags: 16509), LayoutImmutable]
 		public string ClientConnectionDebugFilePrefix { get { return m_ClientConnectionDebugFilePrefix; } set { if (OnPropertyChanging("NetworkSettings." + nameof(ClientConnectionDebugFilePrefix), this, m_ClientConnectionDebugFilePrefix, value)) m_ClientConnectionDebugFilePrefix = value; } } // 0x30 (48)
 		
 		protected string m_ServerConnectionDebugFilePrefix = string.Empty;
-		[ContainerField(52), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(1658812785)]
+		[ContainerField(Name: "ServerConnectionDebugFilePrefix", Offset: 52, NameHash: 1658812785, Flags: 16509), LayoutImmutable]
 		public string ServerConnectionDebugFilePrefix { get { return m_ServerConnectionDebugFilePrefix; } set { if (OnPropertyChanging("NetworkSettings." + nameof(ServerConnectionDebugFilePrefix), this, m_ServerConnectionDebugFilePrefix, value)) m_ServerConnectionDebugFilePrefix = value; } } // 0x34 (52)
 		
 		protected float m_TimeNudgeGhostFrequencyFactor = new float();
-		[ContainerField(56), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3739247939)]
+		[ContainerField(Name: "TimeNudgeGhostFrequencyFactor", Offset: 56, NameHash: 3739247939, Flags: 49469), LayoutImmutable, Blittable]
 		public float TimeNudgeGhostFrequencyFactor { get { return m_TimeNudgeGhostFrequencyFactor; } set { if (OnPropertyChanging("NetworkSettings." + nameof(TimeNudgeGhostFrequencyFactor), this, m_TimeNudgeGhostFrequencyFactor, value)) m_TimeNudgeGhostFrequencyFactor = value; } } // 0x38 (56)
 		
 		protected float m_TimeNudgeBias = new float();
-		[ContainerField(60), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1899495764)]
+		[ContainerField(Name: "TimeNudgeBias", Offset: 60, NameHash: 1899495764, Flags: 49469), LayoutImmutable, Blittable]
 		public float TimeNudgeBias { get { return m_TimeNudgeBias; } set { if (OnPropertyChanging("NetworkSettings." + nameof(TimeNudgeBias), this, m_TimeNudgeBias, value)) m_TimeNudgeBias = value; } } // 0x3C (60)
 		
 		protected float m_ConnectTimeout = new float();
-		[ContainerField(64), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1924381792)]
+		[ContainerField(Name: "ConnectTimeout", Offset: 64, NameHash: 1924381792, Flags: 49469), LayoutImmutable, Blittable]
 		public float ConnectTimeout { get { return m_ConnectTimeout; } set { if (OnPropertyChanging("NetworkSettings." + nameof(ConnectTimeout), this, m_ConnectTimeout, value)) m_ConnectTimeout = value; } } // 0x40 (64)
 		
 		protected bool m_UseFrameManager = new bool();
-		[ContainerField(68), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1232877352)]
+		[ContainerField(Name: "UseFrameManager", Offset: 68, NameHash: 1232877352, Flags: 49325), LayoutImmutable, Blittable]
 		public bool UseFrameManager { get { return m_UseFrameManager; } set { if (OnPropertyChanging("NetworkSettings." + nameof(UseFrameManager), this, m_UseFrameManager, value)) m_UseFrameManager = value; } } // 0x44 (68)
 		
 		protected bool m_TimeSyncEnabled = new bool();
-		[ContainerField(69), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1025585810)]
+		[ContainerField(Name: "TimeSyncEnabled", Offset: 69, NameHash: 1025585810, Flags: 49325), LayoutImmutable, Blittable]
 		public bool TimeSyncEnabled { get { return m_TimeSyncEnabled; } set { if (OnPropertyChanging("NetworkSettings." + nameof(TimeSyncEnabled), this, m_TimeSyncEnabled, value)) m_TimeSyncEnabled = value; } } // 0x45 (69)
 		
 		protected bool m_IncrementServerPortOnFail = new bool();
-		[ContainerField(70), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1185335067)]
+		[ContainerField(Name: "IncrementServerPortOnFail", Offset: 70, NameHash: 1185335067, Flags: 49325), LayoutImmutable, Blittable]
 		public bool IncrementServerPortOnFail { get { return m_IncrementServerPortOnFail; } set { if (OnPropertyChanging("NetworkSettings." + nameof(IncrementServerPortOnFail), this, m_IncrementServerPortOnFail, value)) m_IncrementServerPortOnFail = value; } } // 0x46 (70)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

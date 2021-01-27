@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(32), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 32)]
 	public class UIVoiceCompData : 
 		UIComponentData
 	{
 		protected uint m_HudMaxSpeakers = new uint();
-		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(2797323936)]
+		[ContainerField(Name: "HudMaxSpeakers", Offset: 28, NameHash: 2797323936, Flags: 49421), LayoutImmutable, Blittable]
 		public uint HudMaxSpeakers { get { return m_HudMaxSpeakers; } set { if (OnPropertyChanging("UIVoiceCompData." + nameof(HudMaxSpeakers), this, m_HudMaxSpeakers, value)) m_HudMaxSpeakers = value; } } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

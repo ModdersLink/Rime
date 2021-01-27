@@ -18,56 +18,56 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(112), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 112)]
 	public class EnlightenState : 
 		DataContainer
 	{
 		protected Vec3 m_SkyBoxGroundColor = new Vec3();
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(2438224137)]
+		[ContainerField(Name: "SkyBoxGroundColor", Offset: 16, NameHash: 2438224137, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 SkyBoxGroundColor { get { return m_SkyBoxGroundColor; } set { if (OnPropertyChanging("EnlightenState." + nameof(SkyBoxGroundColor), this, m_SkyBoxGroundColor, value)) m_SkyBoxGroundColor = value; } } // 0x10 (16)
 		
 		protected Vec3 m_SkyBoxSunLightColor = new Vec3();
-		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(2622963034)]
+		[ContainerField(Name: "SkyBoxSunLightColor", Offset: 32, NameHash: 2622963034, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 SkyBoxSunLightColor { get { return m_SkyBoxSunLightColor; } set { if (OnPropertyChanging("EnlightenState." + nameof(SkyBoxSunLightColor), this, m_SkyBoxSunLightColor, value)) m_SkyBoxSunLightColor = value; } } // 0x20 (32)
 		
 		protected Vec3 m_SkyBoxBackLightColor = new Vec3();
-		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(554253337)]
+		[ContainerField(Name: "SkyBoxBackLightColor", Offset: 48, NameHash: 554253337, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 SkyBoxBackLightColor { get { return m_SkyBoxBackLightColor; } set { if (OnPropertyChanging("EnlightenState." + nameof(SkyBoxBackLightColor), this, m_SkyBoxBackLightColor, value)) m_SkyBoxBackLightColor = value; } } // 0x30 (48)
 		
 		protected Vec3 m_SkyBoxSkyColor = new Vec3();
-		[ContainerField(64), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(573165997)]
+		[ContainerField(Name: "SkyBoxSkyColor", Offset: 64, NameHash: 573165997, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 SkyBoxSkyColor { get { return m_SkyBoxSkyColor; } set { if (OnPropertyChanging("EnlightenState." + nameof(SkyBoxSkyColor), this, m_SkyBoxSkyColor, value)) m_SkyBoxSkyColor = value; } } // 0x40 (64)
 		
 		protected float m_SunScale = new float();
-		[ContainerField(80), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2209231701)]
+		[ContainerField(Name: "SunScale", Offset: 80, NameHash: 2209231701, Flags: 49469), LayoutImmutable, Blittable]
 		public float SunScale { get { return m_SunScale; } set { if (OnPropertyChanging("EnlightenState." + nameof(SunScale), this, m_SunScale, value)) m_SunScale = value; } } // 0x50 (80)
 		
 		protected float m_OutputScale = new float();
-		[ContainerField(84), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(734776130)]
+		[ContainerField(Name: "OutputScale", Offset: 84, NameHash: 734776130, Flags: 49469), LayoutImmutable, Blittable]
 		public float OutputScale { get { return m_OutputScale; } set { if (OnPropertyChanging("EnlightenState." + nameof(OutputScale), this, m_OutputScale, value)) m_OutputScale = value; } } // 0x54 (84)
 		
 		protected float m_BounceScale = new float();
-		[ContainerField(88), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1158285805)]
+		[ContainerField(Name: "BounceScale", Offset: 88, NameHash: 1158285805, Flags: 49469), LayoutImmutable, Blittable]
 		public float BounceScale { get { return m_BounceScale; } set { if (OnPropertyChanging("EnlightenState." + nameof(BounceScale), this, m_BounceScale, value)) m_BounceScale = value; } } // 0x58 (88)
 		
 		protected float m_SkyBoxSunLightColorSize = new float();
-		[ContainerField(92), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1176662367)]
+		[ContainerField(Name: "SkyBoxSunLightColorSize", Offset: 92, NameHash: 1176662367, Flags: 49469), LayoutImmutable, Blittable]
 		public float SkyBoxSunLightColorSize { get { return m_SkyBoxSunLightColorSize; } set { if (OnPropertyChanging("EnlightenState." + nameof(SkyBoxSunLightColorSize), this, m_SkyBoxSunLightColorSize, value)) m_SkyBoxSunLightColorSize = value; } } // 0x5C (92)
 		
 		protected float m_SkyBoxBackLightRotationY = new float();
-		[ContainerField(96), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(533859401)]
+		[ContainerField(Name: "SkyBoxBackLightRotationY", Offset: 96, NameHash: 533859401, Flags: 49469), LayoutImmutable, Blittable]
 		public float SkyBoxBackLightRotationY { get { return m_SkyBoxBackLightRotationY; } set { if (OnPropertyChanging("EnlightenState." + nameof(SkyBoxBackLightRotationY), this, m_SkyBoxBackLightRotationY, value)) m_SkyBoxBackLightRotationY = value; } } // 0x60 (96)
 		
 		protected float m_SkyBoxBackLightColorSize = new float();
-		[ContainerField(100), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3173445660)]
+		[ContainerField(Name: "SkyBoxBackLightColorSize", Offset: 100, NameHash: 3173445660, Flags: 49469), LayoutImmutable, Blittable]
 		public float SkyBoxBackLightColorSize { get { return m_SkyBoxBackLightColorSize; } set { if (OnPropertyChanging("EnlightenState." + nameof(SkyBoxBackLightColorSize), this, m_SkyBoxBackLightColorSize, value)) m_SkyBoxBackLightColorSize = value; } } // 0x64 (100)
 		
 		protected float m_SkyBoxBackLightRotationX = new float();
-		[ContainerField(104), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(533859400)]
+		[ContainerField(Name: "SkyBoxBackLightRotationX", Offset: 104, NameHash: 533859400, Flags: 49469), LayoutImmutable, Blittable]
 		public float SkyBoxBackLightRotationX { get { return m_SkyBoxBackLightRotationX; } set { if (OnPropertyChanging("EnlightenState." + nameof(SkyBoxBackLightRotationX), this, m_SkyBoxBackLightRotationX, value)) m_SkyBoxBackLightRotationX = value; } } // 0x68 (104)
 		
 		protected bool m_SkyBoxEnable = new bool();
-		[ContainerField(108), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2201282448)]
+		[ContainerField(Name: "SkyBoxEnable", Offset: 108, NameHash: 2201282448, Flags: 49325), LayoutImmutable, Blittable]
 		public bool SkyBoxEnable { get { return m_SkyBoxEnable; } set { if (OnPropertyChanging("EnlightenState." + nameof(SkyBoxEnable), this, m_SkyBoxEnable, value)) m_SkyBoxEnable = value; } } // 0x6C (108)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

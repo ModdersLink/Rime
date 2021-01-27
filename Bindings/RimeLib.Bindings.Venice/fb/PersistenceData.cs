@@ -18,60 +18,60 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(52), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 52)]
 	public class PersistenceData : 
 		AbstractPersistenceData
 	{
 		protected string m_PersistenceName = string.Empty;
-		[ContainerField(12), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(1594500373)]
+		[ContainerField(Name: "PersistenceName", Offset: 12, NameHash: 1594500373, Flags: 16509), LayoutImmutable]
 		public string PersistenceName { get { return m_PersistenceName; } set { if (OnPropertyChanging("PersistenceData." + nameof(PersistenceName), this, m_PersistenceName, value)) m_PersistenceName = value; } } // 0xC (12)
 		
 		protected string m_ClubPersistenceName = string.Empty;
-		[ContainerField(16), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(1035208813)]
+		[ContainerField(Name: "ClubPersistenceName", Offset: 16, NameHash: 1035208813, Flags: 16509), LayoutImmutable]
 		public string ClubPersistenceName { get { return m_ClubPersistenceName; } set { if (OnPropertyChanging("PersistenceData." + nameof(ClubPersistenceName), this, m_ClubPersistenceName, value)) m_ClubPersistenceName = value; } } // 0x10 (16)
 		
 		protected CtrRef<PersistenceStatGroup> m_ClientDefaultGroup = new CtrRef<PersistenceStatGroup>();
-		[ContainerField(20), MemberInfoFlag(53), ContainerFieldNameHash(2136132136), ContainerCtrRef]
+		[ContainerField(Name: "ClientDefaultGroup", Offset: 20, NameHash: 2136132136, Flags: 53)]
 		public CtrRef<PersistenceStatGroup> ClientDefaultGroup { get { return m_ClientDefaultGroup; } set { if (OnPropertyChanging("PersistenceData." + nameof(ClientDefaultGroup), this, m_ClientDefaultGroup, value)) m_ClientDefaultGroup = value; } } // 0x14 (20)
 		
 		protected List<PersistentValueTemplateData> m_Values = new List<PersistentValueTemplateData>();
-		[ContainerField(24), MemberInfoFlag(65), ContainerFieldNameHash(3142410589), ContainerArray]
+		[ContainerField(Name: "Values", Offset: 24, NameHash: 3142410589, Flags: 65)]
 		public List<PersistentValueTemplateData> Values { get { return m_Values; } set { if (OnPropertyChanging("PersistenceData." + nameof(Values), this, m_Values, value)) m_Values = value; } } // 0x18 (24)
 		
 		protected List<CustomReportValueData> m_CustomReportValues = new List<CustomReportValueData>();
-		[ContainerField(28), MemberInfoFlag(65), ContainerFieldNameHash(982732000), ContainerArray]
+		[ContainerField(Name: "CustomReportValues", Offset: 28, NameHash: 982732000, Flags: 65)]
 		public List<CustomReportValueData> CustomReportValues { get { return m_CustomReportValues; } set { if (OnPropertyChanging("PersistenceData." + nameof(CustomReportValues), this, m_CustomReportValues, value)) m_CustomReportValues = value; } } // 0x1C (28)
 		
 		protected CtrRef<PersistenceStatGroup> m_ServerDefaultGroup = new CtrRef<PersistenceStatGroup>();
-		[ContainerField(32), MemberInfoFlag(53), ContainerFieldNameHash(1370365556), ContainerCtrRef]
+		[ContainerField(Name: "ServerDefaultGroup", Offset: 32, NameHash: 1370365556, Flags: 53)]
 		public CtrRef<PersistenceStatGroup> ServerDefaultGroup { get { return m_ServerDefaultGroup; } set { if (OnPropertyChanging("PersistenceData." + nameof(ServerDefaultGroup), this, m_ServerDefaultGroup, value)) m_ServerDefaultGroup = value; } } // 0x20 (32)
 		
 		protected CtrRef<PersistenceRetentionPolicy> m_RetentionPolicy = new CtrRef<PersistenceRetentionPolicy>();
-		[ContainerField(36), MemberInfoFlag(53), ContainerFieldNameHash(1323382353), ContainerCtrRef]
+		[ContainerField(Name: "RetentionPolicy", Offset: 36, NameHash: 1323382353, Flags: 53)]
 		public CtrRef<PersistenceRetentionPolicy> RetentionPolicy { get { return m_RetentionPolicy; } set { if (OnPropertyChanging("PersistenceData." + nameof(RetentionPolicy), this, m_RetentionPolicy, value)) m_RetentionPolicy = value; } } // 0x24 (36)
 		
 		protected List<PersistenceConsumableMapping> m_ConsumableMappings = new List<PersistenceConsumableMapping>();
-		[ContainerField(40), MemberInfoFlag(65), ContainerFieldNameHash(420464793), ContainerArray]
+		[ContainerField(Name: "ConsumableMappings", Offset: 40, NameHash: 420464793, Flags: 65)]
 		public List<PersistenceConsumableMapping> ConsumableMappings { get { return m_ConsumableMappings; } set { if (OnPropertyChanging("PersistenceData." + nameof(ConsumableMappings), this, m_ConsumableMappings, value)) m_ConsumableMappings = value; } } // 0x28 (40)
 		
 		protected bool m_HistoryDaily = new bool();
-		[ContainerField(44), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2252214046)]
+		[ContainerField(Name: "HistoryDaily", Offset: 44, NameHash: 2252214046, Flags: 49325), LayoutImmutable, Blittable]
 		public bool HistoryDaily { get { return m_HistoryDaily; } set { if (OnPropertyChanging("PersistenceData." + nameof(HistoryDaily), this, m_HistoryDaily, value)) m_HistoryDaily = value; } } // 0x2C (44)
 		
 		protected bool m_HistoryWeekly = new bool();
-		[ContainerField(45), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1752784430)]
+		[ContainerField(Name: "HistoryWeekly", Offset: 45, NameHash: 1752784430, Flags: 49325), LayoutImmutable, Blittable]
 		public bool HistoryWeekly { get { return m_HistoryWeekly; } set { if (OnPropertyChanging("PersistenceData." + nameof(HistoryWeekly), this, m_HistoryWeekly, value)) m_HistoryWeekly = value; } } // 0x2D (45)
 		
 		protected bool m_HistoryMonthly = new bool();
-		[ContainerField(46), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3030502658)]
+		[ContainerField(Name: "HistoryMonthly", Offset: 46, NameHash: 3030502658, Flags: 49325), LayoutImmutable, Blittable]
 		public bool HistoryMonthly { get { return m_HistoryMonthly; } set { if (OnPropertyChanging("PersistenceData." + nameof(HistoryMonthly), this, m_HistoryMonthly, value)) m_HistoryMonthly = value; } } // 0x2E (46)
 		
 		protected bool m_OutputProperties = new bool();
-		[ContainerField(47), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1376339771)]
+		[ContainerField(Name: "OutputProperties", Offset: 47, NameHash: 1376339771, Flags: 49325), LayoutImmutable, Blittable]
 		public bool OutputProperties { get { return m_OutputProperties; } set { if (OnPropertyChanging("PersistenceData." + nameof(OutputProperties), this, m_OutputProperties, value)) m_OutputProperties = value; } } // 0x2F (47)
 		
 		protected bool m_DeltaGameReports = new bool();
-		[ContainerField(48), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1383796302)]
+		[ContainerField(Name: "DeltaGameReports", Offset: 48, NameHash: 1383796302, Flags: 49325), LayoutImmutable, Blittable]
 		public bool DeltaGameReports { get { return m_DeltaGameReports; } set { if (OnPropertyChanging("PersistenceData." + nameof(DeltaGameReports), this, m_DeltaGameReports, value)) m_DeltaGameReports = value; } } // 0x30 (48)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

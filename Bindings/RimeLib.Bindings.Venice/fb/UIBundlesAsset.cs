@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(16), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
 	public class UIBundlesAsset : 
 		Asset
 	{
 		protected List<UIBundleAssetState> m_UIBundleAssetStateList = new List<UIBundleAssetState>();
-		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(3131409800), ContainerArray]
+		[ContainerField(Name: "UIBundleAssetStateList", Offset: 12, NameHash: 3131409800, Flags: 65)]
 		public List<UIBundleAssetState> UIBundleAssetStateList { get { return m_UIBundleAssetStateList; } set { if (OnPropertyChanging("UIBundlesAsset." + nameof(UIBundleAssetStateList), this, m_UIBundleAssetStateList, value)) m_UIBundleAssetStateList = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

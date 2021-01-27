@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(16), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
 	public class VoiceOverDialogClipEvents : 
 		DataContainer
 	{
 		protected uint m_StartedNameHash = new uint();
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(2297623121)]
+		[ContainerField(Name: "StartedNameHash", Offset: 8, NameHash: 2297623121, Flags: 49421), LayoutImmutable, Blittable]
 		public uint StartedNameHash { get { return m_StartedNameHash; } set { if (OnPropertyChanging("VoiceOverDialogClipEvents." + nameof(StartedNameHash), this, m_StartedNameHash, value)) m_StartedNameHash = value; } } // 0x8 (8)
 		
 		protected uint m_FinishedNameHash = new uint();
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(651465762)]
+		[ContainerField(Name: "FinishedNameHash", Offset: 12, NameHash: 651465762, Flags: 49421), LayoutImmutable, Blittable]
 		public uint FinishedNameHash { get { return m_FinishedNameHash; } set { if (OnPropertyChanging("VoiceOverDialogClipEvents." + nameof(FinishedNameHash), this, m_FinishedNameHash, value)) m_FinishedNameHash = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

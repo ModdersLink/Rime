@@ -18,19 +18,19 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(41), ContainerSize(48), ContainerStruct]
+	[ContainerType(Alignment: 16,  Flags: 41, Size: 48)]
 	public class RibbonPointData : FrostbiteContainer
 	{
-		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
+		[ContainerField(Name: "UserMaskRight", Offset: 0, NameHash: 1923208736, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec4 UserMaskRight { get; set; } = new Vec4(); // 0x0 (0)
 		
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
+		[ContainerField(Name: "UserMaskLeft", Offset: 16, NameHash: 2010169083, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec4 UserMaskLeft { get; set; } = new Vec4(); // 0x10 (16)
 		
-		[ContainerField(32), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "Right", Offset: 32, NameHash: 230390021, Flags: 49469), LayoutImmutable, Blittable]
 		public float Right { get; set; } // 0x20 (32)
 		
-		[ContainerField(36), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "Left", Offset: 36, NameHash: 2089021886, Flags: 49469), LayoutImmutable, Blittable]
 		public float Left { get; set; } // 0x24 (36)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

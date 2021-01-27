@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(16), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
 	public class PathfindingSandboxAsset : 
 		Asset
 	{
 		protected CtrRef<PathfindingSystemEntityData> m_System = new CtrRef<PathfindingSystemEntityData>();
-		[ContainerField(12), MemberInfoFlag(53), ContainerFieldNameHash(3333232768), ContainerCtrRef]
+		[ContainerField(Name: "System", Offset: 12, NameHash: 3333232768, Flags: 53)]
 		public CtrRef<PathfindingSystemEntityData> System { get { return m_System; } set { if (OnPropertyChanging("PathfindingSandboxAsset." + nameof(System), this, m_System, value)) m_System = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

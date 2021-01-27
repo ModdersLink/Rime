@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(112), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 112)]
 	public class VisualEnvironmentReferenceObjectData : 
 		ReferenceObjectData
 	{
 		protected int m_Priority = new int();
-		[ContainerField(96), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(3062102871)]
+		[ContainerField(Name: "Priority", Offset: 96, NameHash: 3062102871, Flags: 49405), LayoutImmutable, Blittable]
 		public int Priority { get { return m_Priority; } set { if (OnPropertyChanging("VisualEnvironmentReferenceObjectData." + nameof(Priority), this, m_Priority, value)) m_Priority = value; } } // 0x60 (96)
 		
 		protected bool m_OverrideVisibility = new bool();
-		[ContainerField(100), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3611184311)]
+		[ContainerField(Name: "OverrideVisibility", Offset: 100, NameHash: 3611184311, Flags: 49325), LayoutImmutable, Blittable]
 		public bool OverrideVisibility { get { return m_OverrideVisibility; } set { if (OnPropertyChanging("VisualEnvironmentReferenceObjectData." + nameof(OverrideVisibility), this, m_OverrideVisibility, value)) m_OverrideVisibility = value; } } // 0x64 (100)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

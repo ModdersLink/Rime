@@ -18,104 +18,104 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(320), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 320)]
 	public class MissileEntityData : 
 		MeshProjectileEntityData
 	{
 		protected float m_Gravity = new float();
-		[ContainerField(192), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3295092963)]
+		[ContainerField(Name: "Gravity", Offset: 192, NameHash: 3295092963, Flags: 49469), LayoutImmutable, Blittable]
 		public float Gravity { get { return m_Gravity; } set { if (OnPropertyChanging("MissileEntityData." + nameof(Gravity), this, m_Gravity, value)) m_Gravity = value; } } // 0xC0 (192)
 		
 		protected CtrRef<EffectBlueprint> m_EngineEffect = new CtrRef<EffectBlueprint>();
-		[ContainerField(196), MemberInfoFlag(53), ContainerFieldNameHash(2238351068), ContainerCtrRef]
+		[ContainerField(Name: "EngineEffect", Offset: 196, NameHash: 2238351068, Flags: 53)]
 		public CtrRef<EffectBlueprint> EngineEffect { get { return m_EngineEffect; } set { if (OnPropertyChanging("MissileEntityData." + nameof(EngineEffect), this, m_EngineEffect, value)) m_EngineEffect = value; } } // 0xC4 (196)
 		
 		protected CtrRef<ExplosionEntityData> m_DudExplosion = new CtrRef<ExplosionEntityData>();
-		[ContainerField(200), MemberInfoFlag(53), ContainerFieldNameHash(123118469), ContainerCtrRef]
+		[ContainerField(Name: "DudExplosion", Offset: 200, NameHash: 123118469, Flags: 53)]
 		public CtrRef<ExplosionEntityData> DudExplosion { get { return m_DudExplosion; } set { if (OnPropertyChanging("MissileEntityData." + nameof(DudExplosion), this, m_DudExplosion, value)) m_DudExplosion = value; } } // 0xC8 (200)
 		
 		protected CtrRef<SoundAsset> m_FlyBySound = new CtrRef<SoundAsset>();
-		[ContainerField(204), MemberInfoFlag(53), ContainerFieldNameHash(3743063886), ContainerCtrRef]
+		[ContainerField(Name: "FlyBySound", Offset: 204, NameHash: 3743063886, Flags: 53)]
 		public CtrRef<SoundAsset> FlyBySound { get { return m_FlyBySound; } set { if (OnPropertyChanging("MissileEntityData." + nameof(FlyBySound), this, m_FlyBySound, value)) m_FlyBySound = value; } } // 0xCC (204)
 		
 		protected float m_EngineStrength = new float();
-		[ContainerField(208), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1553827310)]
+		[ContainerField(Name: "EngineStrength", Offset: 208, NameHash: 1553827310, Flags: 49469), LayoutImmutable, Blittable]
 		public float EngineStrength { get { return m_EngineStrength; } set { if (OnPropertyChanging("MissileEntityData." + nameof(EngineStrength), this, m_EngineStrength, value)) m_EngineStrength = value; } } // 0xD0 (208)
 		
 		protected float m_MaxSpeed = new float();
-		[ContainerField(212), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(396228950)]
+		[ContainerField(Name: "MaxSpeed", Offset: 212, NameHash: 396228950, Flags: 49469), LayoutImmutable, Blittable]
 		public float MaxSpeed { get { return m_MaxSpeed; } set { if (OnPropertyChanging("MissileEntityData." + nameof(MaxSpeed), this, m_MaxSpeed, value)) m_MaxSpeed = value; } } // 0xD4 (212)
 		
 		protected float m_EngineTimeToIgnition = new float();
-		[ContainerField(216), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(916282736)]
+		[ContainerField(Name: "EngineTimeToIgnition", Offset: 216, NameHash: 916282736, Flags: 49469), LayoutImmutable, Blittable]
 		public float EngineTimeToIgnition { get { return m_EngineTimeToIgnition; } set { if (OnPropertyChanging("MissileEntityData." + nameof(EngineTimeToIgnition), this, m_EngineTimeToIgnition, value)) m_EngineTimeToIgnition = value; } } // 0xD8 (216)
 		
 		protected float m_EngineTimeToLive = new float();
-		[ContainerField(220), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(41196403)]
+		[ContainerField(Name: "EngineTimeToLive", Offset: 220, NameHash: 41196403, Flags: 49469), LayoutImmutable, Blittable]
 		public float EngineTimeToLive { get { return m_EngineTimeToLive; } set { if (OnPropertyChanging("MissileEntityData." + nameof(EngineTimeToLive), this, m_EngineTimeToLive, value)) m_EngineTimeToLive = value; } } // 0xDC (220)
 		
 		protected float m_TimeToActivateGuidingSystem = new float();
-		[ContainerField(224), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2537799752)]
+		[ContainerField(Name: "TimeToActivateGuidingSystem", Offset: 224, NameHash: 2537799752, Flags: 49469), LayoutImmutable, Blittable]
 		public float TimeToActivateGuidingSystem { get { return m_TimeToActivateGuidingSystem; } set { if (OnPropertyChanging("MissileEntityData." + nameof(TimeToActivateGuidingSystem), this, m_TimeToActivateGuidingSystem, value)) m_TimeToActivateGuidingSystem = value; } } // 0xE0 (224)
 		
 		protected float m_TimeToArm = new float();
-		[ContainerField(228), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(177776085)]
+		[ContainerField(Name: "TimeToArm", Offset: 228, NameHash: 177776085, Flags: 49469), LayoutImmutable, Blittable]
 		public float TimeToArm { get { return m_TimeToArm; } set { if (OnPropertyChanging("MissileEntityData." + nameof(TimeToArm), this, m_TimeToArm, value)) m_TimeToArm = value; } } // 0xE4 (228)
 		
 		protected float m_MaxTurnAngle = new float();
-		[ContainerField(232), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2995598829)]
+		[ContainerField(Name: "MaxTurnAngle", Offset: 232, NameHash: 2995598829, Flags: 49469), LayoutImmutable, Blittable]
 		public float MaxTurnAngle { get { return m_MaxTurnAngle; } set { if (OnPropertyChanging("MissileEntityData." + nameof(MaxTurnAngle), this, m_MaxTurnAngle, value)) m_MaxTurnAngle = value; } } // 0xE8 (232)
 		
 		protected float m_Drag = new float();
-		[ContainerField(236), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2088752789)]
+		[ContainerField(Name: "Drag", Offset: 236, NameHash: 2088752789, Flags: 49469), LayoutImmutable, Blittable]
 		public float Drag { get { return m_Drag; } set { if (OnPropertyChanging("MissileEntityData." + nameof(Drag), this, m_Drag, value)) m_Drag = value; } } // 0xEC (236)
 		
 		protected NearTargetDetonationData m_NearTargetDetonation = new NearTargetDetonationData();
-		[ContainerField(240), MemberInfoFlag(41), ContainerFieldNameHash(3676526149)]
+		[ContainerField(Name: "NearTargetDetonation", Offset: 240, NameHash: 3676526149, Flags: 41)]
 		public NearTargetDetonationData NearTargetDetonation { get { return m_NearTargetDetonation; } set { if (OnPropertyChanging("MissileEntityData." + nameof(NearTargetDetonation), this, m_NearTargetDetonation, value)) m_NearTargetDetonation = value; } } // 0xF0 (240)
 		
 		protected TeamId m_DefaultTeam = new TeamId();
-		[ContainerField(256), MemberInfoFlag(137), ContainerFieldNameHash(2015081331)]
+		[ContainerField(Name: "DefaultTeam", Offset: 256, NameHash: 2015081331, Flags: 137)]
 		public TeamId DefaultTeam { get { return m_DefaultTeam; } set { if (OnPropertyChanging("MissileEntityData." + nameof(DefaultTeam), this, m_DefaultTeam, value)) m_DefaultTeam = value; } } // 0x100 (256)
 		
 		protected float m_FlyBySoundRadius = new float();
-		[ContainerField(260), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3728826774)]
+		[ContainerField(Name: "FlyBySoundRadius", Offset: 260, NameHash: 3728826774, Flags: 49469), LayoutImmutable, Blittable]
 		public float FlyBySoundRadius { get { return m_FlyBySoundRadius; } set { if (OnPropertyChanging("MissileEntityData." + nameof(FlyBySoundRadius), this, m_FlyBySoundRadius, value)) m_FlyBySoundRadius = value; } } // 0x104 (260)
 		
 		protected float m_FlyBySoundSpeed = new float();
-		[ContainerField(264), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(4276155561)]
+		[ContainerField(Name: "FlyBySoundSpeed", Offset: 264, NameHash: 4276155561, Flags: 49469), LayoutImmutable, Blittable]
 		public float FlyBySoundSpeed { get { return m_FlyBySoundSpeed; } set { if (OnPropertyChanging("MissileEntityData." + nameof(FlyBySoundSpeed), this, m_FlyBySoundSpeed, value)) m_FlyBySoundSpeed = value; } } // 0x108 (264)
 		
 		protected float m_ImpactImpulse = new float();
-		[ContainerField(268), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(59311612)]
+		[ContainerField(Name: "ImpactImpulse", Offset: 268, NameHash: 59311612, Flags: 49469), LayoutImmutable, Blittable]
 		public float ImpactImpulse { get { return m_ImpactImpulse; } set { if (OnPropertyChanging("MissileEntityData." + nameof(ImpactImpulse), this, m_ImpactImpulse, value)) m_ImpactImpulse = value; } } // 0x10C (268)
 		
 		protected float m_Damage = new float();
-		[ContainerField(272), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2589892334)]
+		[ContainerField(Name: "Damage", Offset: 272, NameHash: 2589892334, Flags: 49469), LayoutImmutable, Blittable]
 		public float Damage { get { return m_Damage; } set { if (OnPropertyChanging("MissileEntityData." + nameof(Damage), this, m_Damage, value)) m_Damage = value; } } // 0x110 (272)
 		
 		protected MissileUnguidedData m_UnguidedData = new MissileUnguidedData();
-		[ContainerField(276), MemberInfoFlag(41), ContainerFieldNameHash(952180624)]
+		[ContainerField(Name: "UnguidedData", Offset: 276, NameHash: 952180624, Flags: 41)]
 		public MissileUnguidedData UnguidedData { get { return m_UnguidedData; } set { if (OnPropertyChanging("MissileEntityData." + nameof(UnguidedData), this, m_UnguidedData, value)) m_UnguidedData = value; } } // 0x114 (276)
 		
 		protected WarnTarget m_WarnTarget = new WarnTarget();
-		[ContainerField(296), MemberInfoFlag(137), ContainerFieldNameHash(1103784926)]
+		[ContainerField(Name: "WarnTarget", Offset: 296, NameHash: 1103784926, Flags: 137)]
 		public WarnTarget WarnTarget { get { return m_WarnTarget; } set { if (OnPropertyChanging("MissileEntityData." + nameof(WarnTarget), this, m_WarnTarget, value)) m_WarnTarget = value; } } // 0x128 (296)
 		
 		protected MissileLockableInfoData m_LockableInfo = new MissileLockableInfoData();
-		[ContainerField(300), MemberInfoFlag(41), ContainerFieldNameHash(632168042)]
+		[ContainerField(Name: "LockableInfo", Offset: 300, NameHash: 632168042, Flags: 41)]
 		public MissileLockableInfoData LockableInfo { get { return m_LockableInfo; } set { if (OnPropertyChanging("MissileEntityData." + nameof(LockableInfo), this, m_LockableInfo, value)) m_LockableInfo = value; } } // 0x12C (300)
 		
 		protected CtrRef<LockingControllerData> m_LockingController = new CtrRef<LockingControllerData>();
-		[ContainerField(308), MemberInfoFlag(53), ContainerFieldNameHash(1783566994), ContainerCtrRef]
+		[ContainerField(Name: "LockingController", Offset: 308, NameHash: 1783566994, Flags: 53)]
 		public CtrRef<LockingControllerData> LockingController { get { return m_LockingController; } set { if (OnPropertyChanging("MissileEntityData." + nameof(LockingController), this, m_LockingController, value)) m_LockingController = value; } } // 0x134 (308)
 		
 		protected bool m_WarnOnPointingMissile = new bool();
-		[ContainerField(312), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(288907718)]
+		[ContainerField(Name: "WarnOnPointingMissile", Offset: 312, NameHash: 288907718, Flags: 49325), LayoutImmutable, Blittable]
 		public bool WarnOnPointingMissile { get { return m_WarnOnPointingMissile; } set { if (OnPropertyChanging("MissileEntityData." + nameof(WarnOnPointingMissile), this, m_WarnOnPointingMissile, value)) m_WarnOnPointingMissile = value; } } // 0x138 (312)
 		
 		protected bool m_ApplyGravityWhenGuided = new bool();
-		[ContainerField(313), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(407646333)]
+		[ContainerField(Name: "ApplyGravityWhenGuided", Offset: 313, NameHash: 407646333, Flags: 49325), LayoutImmutable, Blittable]
 		public bool ApplyGravityWhenGuided { get { return m_ApplyGravityWhenGuided; } set { if (OnPropertyChanging("MissileEntityData." + nameof(ApplyGravityWhenGuided), this, m_ApplyGravityWhenGuided, value)) m_ApplyGravityWhenGuided = value; } } // 0x139 (313)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

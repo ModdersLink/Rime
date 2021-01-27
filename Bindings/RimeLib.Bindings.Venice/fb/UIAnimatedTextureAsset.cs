@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(24), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 24)]
 	public class UIAnimatedTextureAsset : 
 		Asset
 	{
 		protected float m_FrameRate = new float();
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(21928954)]
+		[ContainerField(Name: "FrameRate", Offset: 12, NameHash: 21928954, Flags: 49469), LayoutImmutable, Blittable]
 		public float FrameRate { get { return m_FrameRate; } set { if (OnPropertyChanging("UIAnimatedTextureAsset." + nameof(FrameRate), this, m_FrameRate, value)) m_FrameRate = value; } } // 0xC (12)
 		
 		protected CtrRef<TextureAsset> m_TextureAtlas = new CtrRef<TextureAsset>();
-		[ContainerField(16), MemberInfoFlag(53), ContainerFieldNameHash(2162950897), ContainerCtrRef]
+		[ContainerField(Name: "TextureAtlas", Offset: 16, NameHash: 2162950897, Flags: 53)]
 		public CtrRef<TextureAsset> TextureAtlas { get { return m_TextureAtlas; } set { if (OnPropertyChanging("UIAnimatedTextureAsset." + nameof(TextureAtlas), this, m_TextureAtlas, value)) m_TextureAtlas = value; } } // 0x10 (16)
 		
 		protected List<UITextureAtlasInfo> m_TextureInfos = new List<UITextureAtlasInfo>();
-		[ContainerField(20), MemberInfoFlag(65), ContainerFieldNameHash(2154121191), ContainerArray]
+		[ContainerField(Name: "TextureInfos", Offset: 20, NameHash: 2154121191, Flags: 65)]
 		public List<UITextureAtlasInfo> TextureInfos { get { return m_TextureInfos; } set { if (OnPropertyChanging("UIAnimatedTextureAsset." + nameof(TextureInfos), this, m_TextureInfos, value)) m_TextureInfos = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

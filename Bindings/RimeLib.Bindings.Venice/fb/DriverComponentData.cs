@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(112), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 112)]
 	public class DriverComponentData : 
 		ComponentData
 	{
 		protected float m_WantedSpeed = new float();
-		[ContainerField(96), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3561027151)]
+		[ContainerField(Name: "WantedSpeed", Offset: 96, NameHash: 3561027151, Flags: 49469), LayoutImmutable, Blittable]
 		public float WantedSpeed { get { return m_WantedSpeed; } set { if (OnPropertyChanging("DriverComponentData." + nameof(WantedSpeed), this, m_WantedSpeed, value)) m_WantedSpeed = value; } } // 0x60 (96)
 		
 		protected CtrRef<DriverSettings> m_Settings = new CtrRef<DriverSettings>();
-		[ContainerField(100), MemberInfoFlag(53), ContainerFieldNameHash(649772672), ContainerCtrRef]
+		[ContainerField(Name: "Settings", Offset: 100, NameHash: 649772672, Flags: 53)]
 		public CtrRef<DriverSettings> Settings { get { return m_Settings; } set { if (OnPropertyChanging("DriverComponentData." + nameof(Settings), this, m_Settings, value)) m_Settings = value; } } // 0x64 (100)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

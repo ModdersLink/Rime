@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(112), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 112)]
 	public class DestructionCommandEntityData : 
 		GameEntityData
 	{
 		protected uint m_InstanceCountDestroyedPerFrame = new uint();
-		[ContainerField(96), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(961630582)]
+		[ContainerField(Name: "InstanceCountDestroyedPerFrame", Offset: 96, NameHash: 961630582, Flags: 49421), LayoutImmutable, Blittable]
 		public uint InstanceCountDestroyedPerFrame { get { return m_InstanceCountDestroyedPerFrame; } set { if (OnPropertyChanging("DestructionCommandEntityData." + nameof(InstanceCountDestroyedPerFrame), this, m_InstanceCountDestroyedPerFrame, value)) m_InstanceCountDestroyedPerFrame = value; } } // 0x60 (96)
 		
 		protected uint m_InstanceCountDestroyedPerType = new uint();
-		[ContainerField(100), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(1461542483)]
+		[ContainerField(Name: "InstanceCountDestroyedPerType", Offset: 100, NameHash: 1461542483, Flags: 49421), LayoutImmutable, Blittable]
 		public uint InstanceCountDestroyedPerType { get { return m_InstanceCountDestroyedPerType; } set { if (OnPropertyChanging("DestructionCommandEntityData." + nameof(InstanceCountDestroyedPerType), this, m_InstanceCountDestroyedPerType, value)) m_InstanceCountDestroyedPerType = value; } } // 0x64 (100)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

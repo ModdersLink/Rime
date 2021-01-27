@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(48), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 48)]
 	public class TickEvent : 
 		MetricEvent
 	{
 		protected Vec3 m_Position = new Vec3();
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(3402582524)]
+		[ContainerField(Name: "Position", Offset: 16, NameHash: 3402582524, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 Position { get { return m_Position; } set { if (OnPropertyChanging("TickEvent." + nameof(Position), this, m_Position, value)) m_Position = value; } } // 0x10 (16)
 		
 		protected float m_Time = new float();
-		[ContainerField(32), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2089313744)]
+		[ContainerField(Name: "Time", Offset: 32, NameHash: 2089313744, Flags: 49469), LayoutImmutable, Blittable]
 		public float Time { get { return m_Time; } set { if (OnPropertyChanging("TickEvent." + nameof(Time), this, m_Time, value)) m_Time = value; } } // 0x20 (32)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

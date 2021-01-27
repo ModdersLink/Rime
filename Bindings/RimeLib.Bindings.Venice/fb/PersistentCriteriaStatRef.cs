@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(24), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 24)]
 	public class PersistentCriteriaStatRef : 
 		AbstractPersistentStatRef
 	{
 		protected CtrRef<CriteriaData> m_Criteria = new CtrRef<CriteriaData>();
-		[ContainerField(8), MemberInfoFlag(53), ContainerFieldNameHash(335452726), ContainerCtrRef]
+		[ContainerField(Name: "Criteria", Offset: 8, NameHash: 335452726, Flags: 53)]
 		public CtrRef<CriteriaData> Criteria { get { return m_Criteria; } set { if (OnPropertyChanging("PersistentCriteriaStatRef." + nameof(Criteria), this, m_Criteria, value)) m_Criteria = value; } } // 0x8 (8)
 		
 		protected CtrRef<StatsCategoryBaseData> m_ParamX = new CtrRef<StatsCategoryBaseData>();
-		[ContainerField(12), MemberInfoFlag(53), ContainerFieldNameHash(3371566706), ContainerCtrRef]
+		[ContainerField(Name: "ParamX", Offset: 12, NameHash: 3371566706, Flags: 53)]
 		public CtrRef<StatsCategoryBaseData> ParamX { get { return m_ParamX; } set { if (OnPropertyChanging("PersistentCriteriaStatRef." + nameof(ParamX), this, m_ParamX, value)) m_ParamX = value; } } // 0xC (12)
 		
 		protected CtrRef<StatsCategoryBaseData> m_ParamY = new CtrRef<StatsCategoryBaseData>();
-		[ContainerField(16), MemberInfoFlag(53), ContainerFieldNameHash(3371566707), ContainerCtrRef]
+		[ContainerField(Name: "ParamY", Offset: 16, NameHash: 3371566707, Flags: 53)]
 		public CtrRef<StatsCategoryBaseData> ParamY { get { return m_ParamY; } set { if (OnPropertyChanging("PersistentCriteriaStatRef." + nameof(ParamY), this, m_ParamY, value)) m_ParamY = value; } } // 0x10 (16)
 		
 		protected CtrRef<AwardData> m_CriteriaOwner = new CtrRef<AwardData>();
-		[ContainerField(20), MemberInfoFlag(53), ContainerFieldNameHash(4139530871), ContainerCtrRef]
+		[ContainerField(Name: "CriteriaOwner", Offset: 20, NameHash: 4139530871, Flags: 53)]
 		public CtrRef<AwardData> CriteriaOwner { get { return m_CriteriaOwner; } set { if (OnPropertyChanging("PersistentCriteriaStatRef." + nameof(CriteriaOwner), this, m_CriteriaOwner, value)) m_CriteriaOwner = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(32), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 32)]
 	public class UISettingsCompData : 
 		UIComponentData
 	{
 		protected List<UISettingsPage> m_SettingsPages = new List<UISettingsPage>();
-		[ContainerField(28), MemberInfoFlag(65), ContainerFieldNameHash(3477862144), ContainerArray]
+		[ContainerField(Name: "SettingsPages", Offset: 28, NameHash: 3477862144, Flags: 65)]
 		public List<UISettingsPage> SettingsPages { get { return m_SettingsPages; } set { if (OnPropertyChanging("UISettingsCompData." + nameof(SettingsPages), this, m_SettingsPages, value)) m_SettingsPages = value; } } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

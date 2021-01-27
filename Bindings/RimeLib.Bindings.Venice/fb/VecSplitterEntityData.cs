@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(64), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 64)]
 	public class VecSplitterEntityData : 
 		EntityData
 	{
 		protected Vec3 m_Vec3 = new Vec3();
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(2089241862)]
+		[ContainerField(Name: "Vec3", Offset: 16, NameHash: 2089241862, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 Vec3 { get { return m_Vec3; } set { if (OnPropertyChanging("VecSplitterEntityData." + nameof(Vec3), this, m_Vec3, value)) m_Vec3 = value; } } // 0x10 (16)
 		
 		protected Vec4 m_Vec4 = new Vec4();
-		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(2089241857)]
+		[ContainerField(Name: "Vec4", Offset: 32, NameHash: 2089241857, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec4 Vec4 { get { return m_Vec4; } set { if (OnPropertyChanging("VecSplitterEntityData." + nameof(Vec4), this, m_Vec4, value)) m_Vec4 = value; } } // 0x20 (32)
 		
 		protected Realm m_Realm = new Realm();
-		[ContainerField(48), MemberInfoFlag(137), ContainerFieldNameHash(229961746)]
+		[ContainerField(Name: "Realm", Offset: 48, NameHash: 229961746, Flags: 137)]
 		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("VecSplitterEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0x30 (48)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

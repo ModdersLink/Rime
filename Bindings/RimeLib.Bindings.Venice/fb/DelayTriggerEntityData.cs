@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(128), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 128)]
 	public class DelayTriggerEntityData : 
 		TriggerEventEntityData
 	{
 		protected bool m_AutoTriggerEvent = new bool();
-		[ContainerField(112), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2983396190)]
+		[ContainerField(Name: "AutoTriggerEvent", Offset: 112, NameHash: 2983396190, Flags: 49325), LayoutImmutable, Blittable]
 		public bool AutoTriggerEvent { get { return m_AutoTriggerEvent; } set { if (OnPropertyChanging("DelayTriggerEntityData." + nameof(AutoTriggerEvent), this, m_AutoTriggerEvent, value)) m_AutoTriggerEvent = value; } } // 0x70 (112)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

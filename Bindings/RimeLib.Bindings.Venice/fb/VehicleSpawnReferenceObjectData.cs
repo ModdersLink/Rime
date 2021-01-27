@@ -18,76 +18,76 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(512), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 512)]
 	public class VehicleSpawnReferenceObjectData : 
 		SpawnReferenceObjectData
 	{
 		protected LinearTransform m_AirDropCarrierTransform = new LinearTransform();
-		[ContainerField(384), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(1315516038)]
+		[ContainerField(Name: "AirDropCarrierTransform", Offset: 384, NameHash: 1315516038, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public LinearTransform AirDropCarrierTransform { get { return m_AirDropCarrierTransform; } set { if (OnPropertyChanging("VehicleSpawnReferenceObjectData." + nameof(AirDropCarrierTransform), this, m_AirDropCarrierTransform, value)) m_AirDropCarrierTransform = value; } } // 0x180 (384)
 		
 		protected float m_TimeUntilAbandoned = new float();
-		[ContainerField(448), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(590788402)]
+		[ContainerField(Name: "TimeUntilAbandoned", Offset: 448, NameHash: 590788402, Flags: 49469), LayoutImmutable, Blittable]
 		public float TimeUntilAbandoned { get { return m_TimeUntilAbandoned; } set { if (OnPropertyChanging("VehicleSpawnReferenceObjectData." + nameof(TimeUntilAbandoned), this, m_TimeUntilAbandoned, value)) m_TimeUntilAbandoned = value; } } // 0x1C0 (448)
 		
 		protected float m_TimeUntilAbandonedIsDestroyed = new float();
-		[ContainerField(452), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1439912203)]
+		[ContainerField(Name: "TimeUntilAbandonedIsDestroyed", Offset: 452, NameHash: 1439912203, Flags: 49469), LayoutImmutable, Blittable]
 		public float TimeUntilAbandonedIsDestroyed { get { return m_TimeUntilAbandonedIsDestroyed; } set { if (OnPropertyChanging("VehicleSpawnReferenceObjectData." + nameof(TimeUntilAbandonedIsDestroyed), this, m_TimeUntilAbandonedIsDestroyed, value)) m_TimeUntilAbandonedIsDestroyed = value; } } // 0x1C4 (452)
 		
 		protected EntryEnterRestriction m_EnterRestriction = new EntryEnterRestriction();
-		[ContainerField(456), MemberInfoFlag(137), ContainerFieldNameHash(1187365209)]
+		[ContainerField(Name: "EnterRestriction", Offset: 456, NameHash: 1187365209, Flags: 137)]
 		public EntryEnterRestriction EnterRestriction { get { return m_EnterRestriction; } set { if (OnPropertyChanging("VehicleSpawnReferenceObjectData." + nameof(EnterRestriction), this, m_EnterRestriction, value)) m_EnterRestriction = value; } } // 0x1C8 (456)
 		
 		protected float m_BotBailWhenHealthBelow = new float();
-		[ContainerField(460), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2439578209)]
+		[ContainerField(Name: "BotBailWhenHealthBelow", Offset: 460, NameHash: 2439578209, Flags: 49469), LayoutImmutable, Blittable]
 		public float BotBailWhenHealthBelow { get { return m_BotBailWhenHealthBelow; } set { if (OnPropertyChanging("VehicleSpawnReferenceObjectData." + nameof(BotBailWhenHealthBelow), this, m_BotBailWhenHealthBelow, value)) m_BotBailWhenHealthBelow = value; } } // 0x1CC (460)
 		
 		protected float m_BotBailOutDelay = new float();
-		[ContainerField(464), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2997620897)]
+		[ContainerField(Name: "BotBailOutDelay", Offset: 464, NameHash: 2997620897, Flags: 49469), LayoutImmutable, Blittable]
 		public float BotBailOutDelay { get { return m_BotBailOutDelay; } set { if (OnPropertyChanging("VehicleSpawnReferenceObjectData." + nameof(BotBailOutDelay), this, m_BotBailOutDelay, value)) m_BotBailOutDelay = value; } } // 0x1D0 (464)
 		
 		protected float m_WreckDuration = new float();
-		[ContainerField(468), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3721892947)]
+		[ContainerField(Name: "WreckDuration", Offset: 468, NameHash: 3721892947, Flags: 49469), LayoutImmutable, Blittable]
 		public float WreckDuration { get { return m_WreckDuration; } set { if (OnPropertyChanging("VehicleSpawnReferenceObjectData." + nameof(WreckDuration), this, m_WreckDuration, value)) m_WreckDuration = value; } } // 0x1D4 (468)
 		
 		protected float m_RespawnRange = new float();
-		[ContainerField(472), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(696491990)]
+		[ContainerField(Name: "RespawnRange", Offset: 472, NameHash: 696491990, Flags: 49469), LayoutImmutable, Blittable]
 		public float RespawnRange { get { return m_RespawnRange; } set { if (OnPropertyChanging("VehicleSpawnReferenceObjectData." + nameof(RespawnRange), this, m_RespawnRange, value)) m_RespawnRange = value; } } // 0x1D8 (472)
 		
 		protected int m_ActiveStanceEntryIndex = new int();
-		[ContainerField(476), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(1513018797)]
+		[ContainerField(Name: "ActiveStanceEntryIndex", Offset: 476, NameHash: 1513018797, Flags: 49405), LayoutImmutable, Blittable]
 		public int ActiveStanceEntryIndex { get { return m_ActiveStanceEntryIndex; } set { if (OnPropertyChanging("VehicleSpawnReferenceObjectData." + nameof(ActiveStanceEntryIndex), this, m_ActiveStanceEntryIndex, value)) m_ActiveStanceEntryIndex = value; } } // 0x1DC (476)
 		
 		protected int m_ActiveStance = new int();
-		[ContainerField(480), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(3998105031)]
+		[ContainerField(Name: "ActiveStance", Offset: 480, NameHash: 3998105031, Flags: 49405), LayoutImmutable, Blittable]
 		public int ActiveStance { get { return m_ActiveStance; } set { if (OnPropertyChanging("VehicleSpawnReferenceObjectData." + nameof(ActiveStance), this, m_ActiveStance, value)) m_ActiveStance = value; } } // 0x1E0 (480)
 		
 		protected float m_KeepAliveRadius = new float();
-		[ContainerField(484), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3493637041)]
+		[ContainerField(Name: "KeepAliveRadius", Offset: 484, NameHash: 3493637041, Flags: 49469), LayoutImmutable, Blittable]
 		public float KeepAliveRadius { get { return m_KeepAliveRadius; } set { if (OnPropertyChanging("VehicleSpawnReferenceObjectData." + nameof(KeepAliveRadius), this, m_KeepAliveRadius, value)) m_KeepAliveRadius = value; } } // 0x1E4 (484)
 		
 		protected float m_VehicleIsNearDistance = new float();
-		[ContainerField(488), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3573981180)]
+		[ContainerField(Name: "VehicleIsNearDistance", Offset: 488, NameHash: 3573981180, Flags: 49469), LayoutImmutable, Blittable]
 		public float VehicleIsNearDistance { get { return m_VehicleIsNearDistance; } set { if (OnPropertyChanging("VehicleSpawnReferenceObjectData." + nameof(VehicleIsNearDistance), this, m_VehicleIsNearDistance, value)) m_VehicleIsNearDistance = value; } } // 0x1E8 (488)
 		
 		protected bool m_SetTeamOnSpawn = new bool();
-		[ContainerField(492), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1290825280)]
+		[ContainerField(Name: "SetTeamOnSpawn", Offset: 492, NameHash: 1290825280, Flags: 49325), LayoutImmutable, Blittable]
 		public bool SetTeamOnSpawn { get { return m_SetTeamOnSpawn; } set { if (OnPropertyChanging("VehicleSpawnReferenceObjectData." + nameof(SetTeamOnSpawn), this, m_SetTeamOnSpawn, value)) m_SetTeamOnSpawn = value; } } // 0x1EC (492)
 		
 		protected bool m_ApplyDamageToAbandonedVehicles = new bool();
-		[ContainerField(493), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3721191714)]
+		[ContainerField(Name: "ApplyDamageToAbandonedVehicles", Offset: 493, NameHash: 3721191714, Flags: 49325), LayoutImmutable, Blittable]
 		public bool ApplyDamageToAbandonedVehicles { get { return m_ApplyDamageToAbandonedVehicles; } set { if (OnPropertyChanging("VehicleSpawnReferenceObjectData." + nameof(ApplyDamageToAbandonedVehicles), this, m_ApplyDamageToAbandonedVehicles, value)) m_ApplyDamageToAbandonedVehicles = value; } } // 0x1ED (493)
 		
 		protected bool m_EnableAvailableSeatOutput = new bool();
-		[ContainerField(494), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(154114977)]
+		[ContainerField(Name: "EnableAvailableSeatOutput", Offset: 494, NameHash: 154114977, Flags: 49325), LayoutImmutable, Blittable]
 		public bool EnableAvailableSeatOutput { get { return m_EnableAvailableSeatOutput; } set { if (OnPropertyChanging("VehicleSpawnReferenceObjectData." + nameof(EnableAvailableSeatOutput), this, m_EnableAvailableSeatOutput, value)) m_EnableAvailableSeatOutput = value; } } // 0x1EE (494)
 		
 		protected bool m_DisregardSpawnAllowedSetting = new bool();
-		[ContainerField(495), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3707783529)]
+		[ContainerField(Name: "DisregardSpawnAllowedSetting", Offset: 495, NameHash: 3707783529, Flags: 49325), LayoutImmutable, Blittable]
 		public bool DisregardSpawnAllowedSetting { get { return m_DisregardSpawnAllowedSetting; } set { if (OnPropertyChanging("VehicleSpawnReferenceObjectData." + nameof(DisregardSpawnAllowedSetting), this, m_DisregardSpawnAllowedSetting, value)) m_DisregardSpawnAllowedSetting = value; } } // 0x1EF (495)
 		
 		protected bool m_AffectedByImpulse = new bool();
-		[ContainerField(496), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3802426327)]
+		[ContainerField(Name: "AffectedByImpulse", Offset: 496, NameHash: 3802426327, Flags: 49325), LayoutImmutable, Blittable]
 		public bool AffectedByImpulse { get { return m_AffectedByImpulse; } set { if (OnPropertyChanging("VehicleSpawnReferenceObjectData." + nameof(AffectedByImpulse), this, m_AffectedByImpulse, value)) m_AffectedByImpulse = value; } } // 0x1F0 (496)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

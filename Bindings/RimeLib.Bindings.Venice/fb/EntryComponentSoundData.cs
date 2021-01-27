@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(16), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
 	public class EntryComponentSoundData : 
 		DataContainer
 	{
 		protected List<StanceSwitchSoundData> m_StanceSounds = new List<StanceSwitchSoundData>();
-		[ContainerField(8), MemberInfoFlag(65), ContainerFieldNameHash(3318640379), ContainerArray]
+		[ContainerField(Name: "StanceSounds", Offset: 8, NameHash: 3318640379, Flags: 65)]
 		public List<StanceSwitchSoundData> StanceSounds { get { return m_StanceSounds; } set { if (OnPropertyChanging("EntryComponentSoundData." + nameof(StanceSounds), this, m_StanceSounds, value)) m_StanceSounds = value; } } // 0x8 (8)
 		
 		protected CtrRef<SoundAsset> m_StanceSwitchSound = new CtrRef<SoundAsset>();
-		[ContainerField(12), MemberInfoFlag(53), ContainerFieldNameHash(865104730), ContainerCtrRef]
+		[ContainerField(Name: "StanceSwitchSound", Offset: 12, NameHash: 865104730, Flags: 53)]
 		public CtrRef<SoundAsset> StanceSwitchSound { get { return m_StanceSwitchSound; } set { if (OnPropertyChanging("EntryComponentSoundData." + nameof(StanceSwitchSound), this, m_StanceSwitchSound, value)) m_StanceSwitchSound = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

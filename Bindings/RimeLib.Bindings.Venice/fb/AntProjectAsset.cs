@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(28), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 28)]
 	public class AntProjectAsset : 
 		Asset
 	{
 		protected RefArray<AntPackageAsset> m_PackageAssets = new RefArray<AntPackageAsset>();
-		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(765658940), ContainerRefArray]
+		[ContainerField(Name: "PackageAssets", Offset: 12, NameHash: 765658940, Flags: 65)]
 		public RefArray<AntPackageAsset> PackageAssets { get { return m_PackageAssets; } set { if (OnPropertyChanging("AntProjectAsset." + nameof(PackageAssets), this, m_PackageAssets, value)) m_PackageAssets = value; } } // 0xC (12)
 		
 		protected string m_AntNativeProjectName = string.Empty;
-		[ContainerField(16), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(3945376013)]
+		[ContainerField(Name: "AntNativeProjectName", Offset: 16, NameHash: 3945376013, Flags: 16509), LayoutImmutable]
 		public string AntNativeProjectName { get { return m_AntNativeProjectName; } set { if (OnPropertyChanging("AntProjectAsset." + nameof(AntNativeProjectName), this, m_AntNativeProjectName, value)) m_AntNativeProjectName = value; } } // 0x10 (16)
 		
 		protected AntRef m_SceneOp = new AntRef();
-		[ContainerField(20), MemberInfoFlag(41), ContainerFieldNameHash(2689985284)]
+		[ContainerField(Name: "SceneOp", Offset: 20, NameHash: 2689985284, Flags: 41)]
 		public AntRef SceneOp { get { return m_SceneOp; } set { if (OnPropertyChanging("AntProjectAsset." + nameof(SceneOp), this, m_SceneOp, value)) m_SceneOp = value; } } // 0x14 (20)
 		
 		protected int m_ProjectId = new int();
-		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(4152360413)]
+		[ContainerField(Name: "ProjectId", Offset: 24, NameHash: 4152360413, Flags: 49405), LayoutImmutable, Blittable]
 		public int ProjectId { get { return m_ProjectId; } set { if (OnPropertyChanging("AntProjectAsset." + nameof(ProjectId), this, m_ProjectId, value)) m_ProjectId = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

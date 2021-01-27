@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(24), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 24)]
 	public class EntitySettings : 
 		SystemSettings
 	{
 		protected uint m_OutOfEntityBusNetworkIdThreshold = new uint();
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(2379599769)]
+		[ContainerField(Name: "OutOfEntityBusNetworkIdThreshold", Offset: 12, NameHash: 2379599769, Flags: 49421), LayoutImmutable, Blittable]
 		public uint OutOfEntityBusNetworkIdThreshold { get { return m_OutOfEntityBusNetworkIdThreshold; } set { if (OnPropertyChanging("EntitySettings." + nameof(OutOfEntityBusNetworkIdThreshold), this, m_OutOfEntityBusNetworkIdThreshold, value)) m_OutOfEntityBusNetworkIdThreshold = value; } } // 0xC (12)
 		
 		protected ExecutionModeType m_ExecutionMode = new ExecutionModeType();
-		[ContainerField(16), MemberInfoFlag(137), ContainerFieldNameHash(3634549556)]
+		[ContainerField(Name: "ExecutionMode", Offset: 16, NameHash: 3634549556, Flags: 137)]
 		public ExecutionModeType ExecutionMode { get { return m_ExecutionMode; } set { if (OnPropertyChanging("EntitySettings." + nameof(ExecutionMode), this, m_ExecutionMode, value)) m_ExecutionMode = value; } } // 0x10 (16)
 		
 		protected bool m_SpawnSubLevelsFromLogic = new bool();
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1806867047)]
+		[ContainerField(Name: "SpawnSubLevelsFromLogic", Offset: 20, NameHash: 1806867047, Flags: 49325), LayoutImmutable, Blittable]
 		public bool SpawnSubLevelsFromLogic { get { return m_SpawnSubLevelsFromLogic; } set { if (OnPropertyChanging("EntitySettings." + nameof(SpawnSubLevelsFromLogic), this, m_SpawnSubLevelsFromLogic, value)) m_SpawnSubLevelsFromLogic = value; } } // 0x14 (20)
 		
 		protected bool m_EditorGameViewEnable = new bool();
-		[ContainerField(21), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1497073094)]
+		[ContainerField(Name: "EditorGameViewEnable", Offset: 21, NameHash: 1497073094, Flags: 49325), LayoutImmutable, Blittable]
 		public bool EditorGameViewEnable { get { return m_EditorGameViewEnable; } set { if (OnPropertyChanging("EntitySettings." + nameof(EditorGameViewEnable), this, m_EditorGameViewEnable, value)) m_EditorGameViewEnable = value; } } // 0x15 (21)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

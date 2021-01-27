@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(56), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 56)]
 	public class SyncedSequenceEntityData : 
 		SequenceEntityData
 	{
 		protected bool m_InterpolateTime = new bool();
-		[ContainerField(52), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(500083415)]
+		[ContainerField(Name: "InterpolateTime", Offset: 52, NameHash: 500083415, Flags: 49325), LayoutImmutable, Blittable]
 		public bool InterpolateTime { get { return m_InterpolateTime; } set { if (OnPropertyChanging("SyncedSequenceEntityData." + nameof(InterpolateTime), this, m_InterpolateTime, value)) m_InterpolateTime = value; } } // 0x34 (52)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

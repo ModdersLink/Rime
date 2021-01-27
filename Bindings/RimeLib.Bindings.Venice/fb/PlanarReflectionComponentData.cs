@@ -18,36 +18,36 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(128), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 128)]
 	public class PlanarReflectionComponentData : 
 		ComponentData
 	{
 		protected BlurFilter m_VerticalBlurFilter = new BlurFilter();
-		[ContainerField(96), MemberInfoFlag(137), ContainerFieldNameHash(1814002686)]
+		[ContainerField(Name: "VerticalBlurFilter", Offset: 96, NameHash: 1814002686, Flags: 137)]
 		public BlurFilter VerticalBlurFilter { get { return m_VerticalBlurFilter; } set { if (OnPropertyChanging("PlanarReflectionComponentData." + nameof(VerticalBlurFilter), this, m_VerticalBlurFilter, value)) m_VerticalBlurFilter = value; } } // 0x60 (96)
 		
 		protected float m_HorizontalDeviation = new float();
-		[ContainerField(100), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3316039832)]
+		[ContainerField(Name: "HorizontalDeviation", Offset: 100, NameHash: 3316039832, Flags: 49469), LayoutImmutable, Blittable]
 		public float HorizontalDeviation { get { return m_HorizontalDeviation; } set { if (OnPropertyChanging("PlanarReflectionComponentData." + nameof(HorizontalDeviation), this, m_HorizontalDeviation, value)) m_HorizontalDeviation = value; } } // 0x64 (100)
 		
 		protected float m_GroundHeight = new float();
-		[ContainerField(104), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2719610687)]
+		[ContainerField(Name: "GroundHeight", Offset: 104, NameHash: 2719610687, Flags: 49469), LayoutImmutable, Blittable]
 		public float GroundHeight { get { return m_GroundHeight; } set { if (OnPropertyChanging("PlanarReflectionComponentData." + nameof(GroundHeight), this, m_GroundHeight, value)) m_GroundHeight = value; } } // 0x68 (104)
 		
 		protected float m_VerticalDeviation = new float();
-		[ContainerField(108), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2069073588)]
+		[ContainerField(Name: "VerticalDeviation", Offset: 108, NameHash: 2069073588, Flags: 49469), LayoutImmutable, Blittable]
 		public float VerticalDeviation { get { return m_VerticalDeviation; } set { if (OnPropertyChanging("PlanarReflectionComponentData." + nameof(VerticalDeviation), this, m_VerticalDeviation, value)) m_VerticalDeviation = value; } } // 0x6C (108)
 		
 		protected BlurFilter m_HorizontalBlurFilter = new BlurFilter();
-		[ContainerField(112), MemberInfoFlag(137), ContainerFieldNameHash(3076987858)]
+		[ContainerField(Name: "HorizontalBlurFilter", Offset: 112, NameHash: 3076987858, Flags: 137)]
 		public BlurFilter HorizontalBlurFilter { get { return m_HorizontalBlurFilter; } set { if (OnPropertyChanging("PlanarReflectionComponentData." + nameof(HorizontalBlurFilter), this, m_HorizontalBlurFilter, value)) m_HorizontalBlurFilter = value; } } // 0x70 (112)
 		
 		protected bool m_SkyRenderEnable = new bool();
-		[ContainerField(116), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1642488687)]
+		[ContainerField(Name: "SkyRenderEnable", Offset: 116, NameHash: 1642488687, Flags: 49325), LayoutImmutable, Blittable]
 		public bool SkyRenderEnable { get { return m_SkyRenderEnable; } set { if (OnPropertyChanging("PlanarReflectionComponentData." + nameof(SkyRenderEnable), this, m_SkyRenderEnable, value)) m_SkyRenderEnable = value; } } // 0x74 (116)
 		
 		protected bool m_Enable = new bool();
-		[ContainerField(117), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2342790116)]
+		[ContainerField(Name: "Enable", Offset: 117, NameHash: 2342790116, Flags: 49325), LayoutImmutable, Blittable]
 		public bool Enable { get { return m_Enable; } set { if (OnPropertyChanging("PlanarReflectionComponentData." + nameof(Enable), this, m_Enable, value)) m_Enable = value; } } // 0x75 (117)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

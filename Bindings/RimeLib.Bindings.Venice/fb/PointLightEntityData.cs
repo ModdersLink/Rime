@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(192), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 192)]
 	public class PointLightEntityData : 
 		LocalLightEntityData
 	{
 		protected float m_Width = new float();
-		[ContainerField(160), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(226981187)]
+		[ContainerField(Name: "Width", Offset: 160, NameHash: 226981187, Flags: 49469), LayoutImmutable, Blittable]
 		public float Width { get { return m_Width; } set { if (OnPropertyChanging("PointLightEntityData." + nameof(Width), this, m_Width, value)) m_Width = value; } } // 0xA0 (160)
 		
 		protected float m_TranslucencyAmbient = new float();
-		[ContainerField(164), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2476604812)]
+		[ContainerField(Name: "TranslucencyAmbient", Offset: 164, NameHash: 2476604812, Flags: 49469), LayoutImmutable, Blittable]
 		public float TranslucencyAmbient { get { return m_TranslucencyAmbient; } set { if (OnPropertyChanging("PointLightEntityData." + nameof(TranslucencyAmbient), this, m_TranslucencyAmbient, value)) m_TranslucencyAmbient = value; } } // 0xA4 (164)
 		
 		protected float m_TranslucencyScale = new float();
-		[ContainerField(168), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(317261612)]
+		[ContainerField(Name: "TranslucencyScale", Offset: 168, NameHash: 317261612, Flags: 49469), LayoutImmutable, Blittable]
 		public float TranslucencyScale { get { return m_TranslucencyScale; } set { if (OnPropertyChanging("PointLightEntityData." + nameof(TranslucencyScale), this, m_TranslucencyScale, value)) m_TranslucencyScale = value; } } // 0xA8 (168)
 		
 		protected uint m_TranslucencyPower = new uint();
-		[ContainerField(172), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(311917771)]
+		[ContainerField(Name: "TranslucencyPower", Offset: 172, NameHash: 311917771, Flags: 49421), LayoutImmutable, Blittable]
 		public uint TranslucencyPower { get { return m_TranslucencyPower; } set { if (OnPropertyChanging("PointLightEntityData." + nameof(TranslucencyPower), this, m_TranslucencyPower, value)) m_TranslucencyPower = value; } } // 0xAC (172)
 		
 		protected float m_TranslucencyDistortion = new float();
-		[ContainerField(176), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(654575839)]
+		[ContainerField(Name: "TranslucencyDistortion", Offset: 176, NameHash: 654575839, Flags: 49469), LayoutImmutable, Blittable]
 		public float TranslucencyDistortion { get { return m_TranslucencyDistortion; } set { if (OnPropertyChanging("PointLightEntityData." + nameof(TranslucencyDistortion), this, m_TranslucencyDistortion, value)) m_TranslucencyDistortion = value; } } // 0xB0 (176)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

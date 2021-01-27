@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(16), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
 	public class UIItemDescription : 
 		DataContainer
 	{
 		protected List<uint> m_ItemIds = new List<uint>();
-		[ContainerField(8), MemberInfoFlag(65), ContainerFieldNameHash(2693096110), ContainerArray]
+		[ContainerField(Name: "ItemIds", Offset: 8, NameHash: 2693096110, Flags: 65)]
 		public List<uint> ItemIds { get { return m_ItemIds; } set { if (OnPropertyChanging("UIItemDescription." + nameof(ItemIds), this, m_ItemIds, value)) m_ItemIds = value; } } // 0x8 (8)
 		
 		protected bool m_IgnoreBuild = new bool();
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1608120075)]
+		[ContainerField(Name: "IgnoreBuild", Offset: 12, NameHash: 1608120075, Flags: 49325), LayoutImmutable, Blittable]
 		public bool IgnoreBuild { get { return m_IgnoreBuild; } set { if (OnPropertyChanging("UIItemDescription." + nameof(IgnoreBuild), this, m_IgnoreBuild, value)) m_IgnoreBuild = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

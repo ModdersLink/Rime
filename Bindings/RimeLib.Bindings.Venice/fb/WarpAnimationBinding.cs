@@ -18,22 +18,22 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(20), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 20)]
 	public class WarpAnimationBinding : FrostbiteContainer
 	{
-		[ContainerField(0), MemberInfoFlag(41)]
+		[ContainerField(Name: "ConnectJointGroup", Offset: 0, NameHash: 3144089970, Flags: 41)]
 		public AntRef ConnectJointGroup { get; set; } = new AntRef(); // 0x0 (0)
 		
-		[ContainerField(4), MemberInfoFlag(41)]
+		[ContainerField(Name: "ConnectJointWeight", Offset: 4, NameHash: 1293270221, Flags: 41)]
 		public AntRef ConnectJointWeight { get; set; } = new AntRef(); // 0x4 (4)
 		
-		[ContainerField(8), MemberInfoFlag(41)]
+		[ContainerField(Name: "EnableAlign", Offset: 8, NameHash: 637937353, Flags: 41)]
 		public AntRef EnableAlign { get; set; } = new AntRef(); // 0x8 (8)
 		
-		[ContainerField(12), MemberInfoFlag(41)]
+		[ContainerField(Name: "DisableCulling", Offset: 12, NameHash: 900615207, Flags: 41)]
 		public AntRef DisableCulling { get; set; } = new AntRef(); // 0xC (12)
 		
-		[ContainerField(16), MemberInfoFlag(41)]
+		[ContainerField(Name: "TranslationYWarpTolerance", Offset: 16, NameHash: 544117098, Flags: 41)]
 		public AntRef TranslationYWarpTolerance { get; set; } = new AntRef(); // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

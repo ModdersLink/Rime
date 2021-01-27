@@ -18,37 +18,37 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(40), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 40)]
 	public class InspectViewPointData : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "ViewPointID", Offset: 0, NameHash: 3058990665, Flags: 16509), LayoutImmutable]
 		public string ViewPointID { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), MemberInfoFlag(65), ContainerArray]
+		[ContainerField(Name: "AnimationTriggers", Offset: 4, NameHash: 870786648, Flags: 65)]
 		public List<InspectAnimationTriggerData> AnimationTriggers { get; set; } = new List<InspectAnimationTriggerData>(); // 0x4 (4)
 		
-		[ContainerField(8), MemberInfoFlag(65), ContainerArray]
+		[ContainerField(Name: "ContinuousAnimationSignal", Offset: 8, NameHash: 2681825504, Flags: 65)]
 		public List<AntRef> ContinuousAnimationSignal { get; set; } = new List<AntRef>(); // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "LookAtHeight", Offset: 12, NameHash: 11825096, Flags: 49469), LayoutImmutable, Blittable]
 		public float LookAtHeight { get; set; } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "Yaw", Offset: 16, NameHash: 193468618, Flags: 49469), LayoutImmutable, Blittable]
 		public float Yaw { get; set; } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "Pitch", Offset: 20, NameHash: 232604323, Flags: 49469), LayoutImmutable, Blittable]
 		public float Pitch { get; set; } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "Distance", Offset: 24, NameHash: 408560070, Flags: 49469), LayoutImmutable, Blittable]
 		public float Distance { get; set; } // 0x18 (24)
 		
-		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "FovOffset", Offset: 28, NameHash: 1171027895, Flags: 49469), LayoutImmutable, Blittable]
 		public float FovOffset { get; set; } // 0x1C (28)
 		
-		[ContainerField(32), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "AdjustmentYaw", Offset: 32, NameHash: 782014309, Flags: 49469), LayoutImmutable, Blittable]
 		public float AdjustmentYaw { get; set; } // 0x20 (32)
 		
-		[ContainerField(36), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "Fixed", Offset: 36, NameHash: 206684275, Flags: 49325), LayoutImmutable, Blittable]
 		public bool Fixed { get; set; } // 0x24 (36)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

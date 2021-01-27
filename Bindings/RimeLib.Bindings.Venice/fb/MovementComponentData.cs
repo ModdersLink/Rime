@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(112), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 112)]
 	public class MovementComponentData : 
 		ComponentData
 	{
 		protected MovementComponentBinding m_MovementBinding = new MovementComponentBinding();
-		[ContainerField(96), MemberInfoFlag(41), ContainerFieldNameHash(3329760007)]
+		[ContainerField(Name: "MovementBinding", Offset: 96, NameHash: 3329760007, Flags: 41)]
 		public MovementComponentBinding MovementBinding { get { return m_MovementBinding; } set { if (OnPropertyChanging("MovementComponentData." + nameof(MovementBinding), this, m_MovementBinding, value)) m_MovementBinding = value; } } // 0x60 (96)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

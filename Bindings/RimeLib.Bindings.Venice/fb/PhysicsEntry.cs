@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(36), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 36)]
 	public class PhysicsEntry : 
 		AudioGraphNodePortGroup
 	{
 		protected AudioGraphNodePort m_Distance = new AudioGraphNodePort();
-		[ContainerField(8), MemberInfoFlag(41), ContainerFieldNameHash(408560070)]
+		[ContainerField(Name: "Distance", Offset: 8, NameHash: 408560070, Flags: 41)]
 		public AudioGraphNodePort Distance { get { return m_Distance; } set { if (OnPropertyChanging("PhysicsEntry." + nameof(Distance), this, m_Distance, value)) m_Distance = value; } } // 0x8 (8)
 		
 		protected AudioGraphNodePort m_Azimuth = new AudioGraphNodePort();
-		[ContainerField(16), MemberInfoFlag(41), ContainerFieldNameHash(1333813715)]
+		[ContainerField(Name: "Azimuth", Offset: 16, NameHash: 1333813715, Flags: 41)]
 		public AudioGraphNodePort Azimuth { get { return m_Azimuth; } set { if (OnPropertyChanging("PhysicsEntry." + nameof(Azimuth), this, m_Azimuth, value)) m_Azimuth = value; } } // 0x10 (16)
 		
 		protected AudioGraphNodePort m_ElevationAngle = new AudioGraphNodePort();
-		[ContainerField(24), MemberInfoFlag(41), ContainerFieldNameHash(891204419)]
+		[ContainerField(Name: "ElevationAngle", Offset: 24, NameHash: 891204419, Flags: 41)]
 		public AudioGraphNodePort ElevationAngle { get { return m_ElevationAngle; } set { if (OnPropertyChanging("PhysicsEntry." + nameof(ElevationAngle), this, m_ElevationAngle, value)) m_ElevationAngle = value; } } // 0x18 (24)
 		
 		protected CtrRef<OutputNodeData> m_Output = new CtrRef<OutputNodeData>();
-		[ContainerField(32), MemberInfoFlag(53), ContainerFieldNameHash(2895736442), ContainerCtrRef]
+		[ContainerField(Name: "Output", Offset: 32, NameHash: 2895736442, Flags: 53)]
 		public CtrRef<OutputNodeData> Output { get { return m_Output; } set { if (OnPropertyChanging("PhysicsEntry." + nameof(Output), this, m_Output, value)) m_Output = value; } } // 0x20 (32)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

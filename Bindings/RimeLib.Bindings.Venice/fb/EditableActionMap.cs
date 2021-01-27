@@ -18,19 +18,19 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(16), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 16)]
 	public class EditableActionMap : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "Id", Offset: 0, NameHash: 5862152, Flags: 16509), LayoutImmutable]
 		public string Id { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "NameId", Offset: 4, NameHash: 2828728719, Flags: 16509), LayoutImmutable]
 		public string NameId { get; set; } // 0x4 (4)
 		
-		[ContainerField(8), MemberInfoFlag(53), ContainerCtrRef]
+		[ContainerField(Name: "ActionMap", Offset: 8, NameHash: 3027251111, Flags: 53)]
 		public CtrRef<EntryInputActionMapsData> ActionMap { get; set; } = new CtrRef<EntryInputActionMapsData>(); // 0x8 (8)
 		
-		[ContainerField(12), MemberInfoFlag(41)]
+		[ContainerField(Name: "ConfigurationLayout", Offset: 12, NameHash: 3332287471, Flags: 41)]
 		public EditableActions ConfigurationLayout { get; set; } = new EditableActions(); // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

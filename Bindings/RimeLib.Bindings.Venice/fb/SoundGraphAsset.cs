@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(24), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 24)]
 	public class SoundGraphAsset : 
 		SoundAsset
 	{
 		protected CtrRef<SoundGraphData> m_Graph = new CtrRef<SoundGraphData>();
-		[ContainerField(16), MemberInfoFlag(53), ContainerFieldNameHash(208111145), ContainerCtrRef]
+		[ContainerField(Name: "Graph", Offset: 16, NameHash: 208111145, Flags: 53)]
 		public CtrRef<SoundGraphData> Graph { get { return m_Graph; } set { if (OnPropertyChanging("SoundGraphAsset." + nameof(Graph), this, m_Graph, value)) m_Graph = value; } } // 0x10 (16)
 		
 		protected CtrRef<MixerAsset> m_Mixer = new CtrRef<MixerAsset>();
-		[ContainerField(20), MemberInfoFlag(53), ContainerFieldNameHash(209965422), ContainerCtrRef]
+		[ContainerField(Name: "Mixer", Offset: 20, NameHash: 209965422, Flags: 53)]
 		public CtrRef<MixerAsset> Mixer { get { return m_Mixer; } set { if (OnPropertyChanging("SoundGraphAsset." + nameof(Mixer), this, m_Mixer, value)) m_Mixer = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

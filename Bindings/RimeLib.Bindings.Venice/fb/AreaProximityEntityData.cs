@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(28), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 28)]
 	public class AreaProximityEntityData : 
 		EntityData
 	{
 		protected Realm m_Realm = new Realm();
-		[ContainerField(12), MemberInfoFlag(137), ContainerFieldNameHash(229961746)]
+		[ContainerField(Name: "Realm", Offset: 12, NameHash: 229961746, Flags: 137)]
 		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("AreaProximityEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0xC (12)
 		
 		protected float m_ProximityDistance = new float();
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3313540371)]
+		[ContainerField(Name: "ProximityDistance", Offset: 16, NameHash: 3313540371, Flags: 49469), LayoutImmutable, Blittable]
 		public float ProximityDistance { get { return m_ProximityDistance; } set { if (OnPropertyChanging("AreaProximityEntityData." + nameof(ProximityDistance), this, m_ProximityDistance, value)) m_ProximityDistance = value; } } // 0x10 (16)
 		
 		protected UpdatePass m_UpdatePass = new UpdatePass();
-		[ContainerField(20), MemberInfoFlag(137), ContainerFieldNameHash(2270785669)]
+		[ContainerField(Name: "UpdatePass", Offset: 20, NameHash: 2270785669, Flags: 137)]
 		public UpdatePass UpdatePass { get { return m_UpdatePass; } set { if (OnPropertyChanging("AreaProximityEntityData." + nameof(UpdatePass), this, m_UpdatePass, value)) m_UpdatePass = value; } } // 0x14 (20)
 		
 		protected bool m_AutoStart = new bool();
-		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(792615882)]
+		[ContainerField(Name: "AutoStart", Offset: 24, NameHash: 792615882, Flags: 49325), LayoutImmutable, Blittable]
 		public bool AutoStart { get { return m_AutoStart; } set { if (OnPropertyChanging("AreaProximityEntityData." + nameof(AutoStart), this, m_AutoStart, value)) m_AutoStart = value; } } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

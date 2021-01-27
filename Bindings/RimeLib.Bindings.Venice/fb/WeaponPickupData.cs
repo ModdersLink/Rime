@@ -18,25 +18,25 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(24), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 24)]
 	public class WeaponPickupData : FrostbiteContainer
 	{
-		[ContainerField(0), MemberInfoFlag(53), ContainerCtrRef]
+		[ContainerField(Name: "Weapon", Offset: 0, NameHash: 3190562823, Flags: 53)]
 		public CtrRef<SoldierWeaponBlueprint> Weapon { get; set; } = new CtrRef<SoldierWeaponBlueprint>(); // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
+		[ContainerField(Name: "WeaponSlot", Offset: 4, NameHash: 933194083, Flags: 49421), LayoutImmutable, Blittable]
 		public uint WeaponSlot { get; set; } // 0x4 (4)
 		
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49405)]
+		[ContainerField(Name: "AltWeaponSlot", Offset: 8, NameHash: 2588912794, Flags: 49405), LayoutImmutable, Blittable]
 		public int AltWeaponSlot { get; set; } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49405)]
+		[ContainerField(Name: "LinkedToWeaponSlot", Offset: 12, NameHash: 3974693081, Flags: 49405), LayoutImmutable, Blittable]
 		public int LinkedToWeaponSlot { get; set; } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
+		[ContainerField(Name: "MinAmmo", Offset: 16, NameHash: 1012759905, Flags: 49421), LayoutImmutable, Blittable]
 		public uint MinAmmo { get; set; } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
+		[ContainerField(Name: "MaxAmmo", Offset: 20, NameHash: 1314148735, Flags: 49421), LayoutImmutable, Blittable]
 		public uint MaxAmmo { get; set; } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

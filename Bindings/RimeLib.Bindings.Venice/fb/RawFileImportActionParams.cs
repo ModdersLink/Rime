@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(12), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 12)]
 	public class RawFileImportActionParams : 
 		DataContainer
 	{
 		protected string m_SourceFile = string.Empty;
-		[ContainerField(8), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(1522844286)]
+		[ContainerField(Name: "SourceFile", Offset: 8, NameHash: 1522844286, Flags: 16509), LayoutImmutable]
 		public string SourceFile { get { return m_SourceFile; } set { if (OnPropertyChanging("RawFileImportActionParams." + nameof(SourceFile), this, m_SourceFile, value)) m_SourceFile = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

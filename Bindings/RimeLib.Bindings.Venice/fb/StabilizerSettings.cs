@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(12), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 12)]
 	public class StabilizerSettings : FrostbiteContainer
 	{
-		[ContainerField(0), MemberInfoFlag(137)]
+		[ContainerField(Name: "Property", Offset: 0, NameHash: 3010621090, Flags: 137)]
 		public StabilizerProperty Property { get; set; } = new StabilizerProperty(); // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "Strength", Offset: 4, NameHash: 3531643328, Flags: 49469), LayoutImmutable, Blittable]
 		public float Strength { get; set; } // 0x4 (4)
 		
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "Advanced", Offset: 8, NameHash: 2748179067, Flags: 49325), LayoutImmutable, Blittable]
 		public bool Advanced { get; set; } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

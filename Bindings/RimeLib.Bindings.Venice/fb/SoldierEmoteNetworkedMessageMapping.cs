@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(16), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
 	public class SoldierEmoteNetworkedMessageMapping : 
 		DataContainer
 	{
 		protected SoldierEmote m_Emote = new SoldierEmote();
-		[ContainerField(8), MemberInfoFlag(137), ContainerFieldNameHash(201165523)]
+		[ContainerField(Name: "Emote", Offset: 8, NameHash: 201165523, Flags: 137)]
 		public SoldierEmote Emote { get { return m_Emote; } set { if (OnPropertyChanging("SoldierEmoteNetworkedMessageMapping." + nameof(Emote), this, m_Emote, value)) m_Emote = value; } } // 0x8 (8)
 		
 		protected List<UIMessageType> m_Messages = new List<UIMessageType>();
-		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(1812934205), ContainerArray]
+		[ContainerField(Name: "Messages", Offset: 12, NameHash: 1812934205, Flags: 65)]
 		public List<UIMessageType> Messages { get { return m_Messages; } set { if (OnPropertyChanging("SoldierEmoteNetworkedMessageMapping." + nameof(Messages), this, m_Messages, value)) m_Messages = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

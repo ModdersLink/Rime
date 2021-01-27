@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(12), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 12)]
 	public class WeaponAnimatedFireTypeModifier : 
 		WeaponModifierBase
 	{
 		protected AnimatedFireEnum m_AnimatedFireType = new AnimatedFireEnum();
-		[ContainerField(8), MemberInfoFlag(137), ContainerFieldNameHash(1066105722)]
+		[ContainerField(Name: "AnimatedFireType", Offset: 8, NameHash: 1066105722, Flags: 137)]
 		public AnimatedFireEnum AnimatedFireType { get { return m_AnimatedFireType; } set { if (OnPropertyChanging("WeaponAnimatedFireTypeModifier." + nameof(AnimatedFireType), this, m_AnimatedFireType, value)) m_AnimatedFireType = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,19 +18,19 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(16), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 16)]
 	public class UIPartProperties : FrostbiteContainer
 	{
-		[ContainerField(0), MemberInfoFlag(137)]
+		[ContainerField(Name: "Identifier", Offset: 0, NameHash: 3512790342, Flags: 137)]
 		public UIPartIdentifier Identifier { get; set; } = new UIPartIdentifier(); // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "Range", Offset: 4, NameHash: 230112826, Flags: 49469), LayoutImmutable, Blittable]
 		public float Range { get; set; } // 0x4 (4)
 		
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "Frequency", Offset: 8, NameHash: 4112821953, Flags: 49469), LayoutImmutable, Blittable]
 		public float Frequency { get; set; } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "CompensateFreelook", Offset: 12, NameHash: 3705803663, Flags: 49325), LayoutImmutable, Blittable]
 		public bool CompensateFreelook { get; set; } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

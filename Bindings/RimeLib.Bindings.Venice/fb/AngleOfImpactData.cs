@@ -18,25 +18,25 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(24), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 24)]
 	public class AngleOfImpactData : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "Zone12Delimiter", Offset: 0, NameHash: 1249719259, Flags: 49469), LayoutImmutable, Blittable]
 		public float Zone12Delimiter { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "Zone23Delimiter", Offset: 4, NameHash: 2906626489, Flags: 49469), LayoutImmutable, Blittable]
 		public float Zone23Delimiter { get; set; } // 0x4 (4)
 		
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "Zone1Multiplier", Offset: 8, NameHash: 1160298209, Flags: 49469), LayoutImmutable, Blittable]
 		public float Zone1Multiplier { get; set; } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "Zone2Multiplier", Offset: 12, NameHash: 1257656802, Flags: 49469), LayoutImmutable, Blittable]
 		public float Zone2Multiplier { get; set; } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "Zone3Multiplier", Offset: 16, NameHash: 2162935267, Flags: 49469), LayoutImmutable, Blittable]
 		public float Zone3Multiplier { get; set; } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "Enabled", Offset: 20, NameHash: 2662400, Flags: 49325), LayoutImmutable, Blittable]
 		public bool Enabled { get; set; } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

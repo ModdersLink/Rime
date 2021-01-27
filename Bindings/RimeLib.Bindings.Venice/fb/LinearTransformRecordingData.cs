@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(16), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
 	public class LinearTransformRecordingData : 
 		PropertyRecordingData
 	{
 		protected List<LinearTransform> m_Values = new List<LinearTransform>();
-		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(3142410589), ContainerArray]
+		[ContainerField(Name: "Values", Offset: 12, NameHash: 3142410589, Flags: 65)]
 		public List<LinearTransform> Values { get { return m_Values; } set { if (OnPropertyChanging("LinearTransformRecordingData." + nameof(Values), this, m_Values, value)) m_Values = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

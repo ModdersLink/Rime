@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(32), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 32)]
 	public class UICombatAreaCompData : 
 		UIComponentData
 	{
 		protected string m_OutOfAreaSidPrefix = string.Empty;
-		[ContainerField(28), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(3191885467)]
+		[ContainerField(Name: "OutOfAreaSidPrefix", Offset: 28, NameHash: 3191885467, Flags: 16509), LayoutImmutable]
 		public string OutOfAreaSidPrefix { get { return m_OutOfAreaSidPrefix; } set { if (OnPropertyChanging("UICombatAreaCompData." + nameof(OutOfAreaSidPrefix), this, m_OutOfAreaSidPrefix, value)) m_OutOfAreaSidPrefix = value; } } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(32), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 32)]
 	public class SwitcherNodeData : 
 		AudioGraphNodeData
 	{
 		protected RefArray<SwitcherEntry> m_Outputs = new RefArray<SwitcherEntry>();
-		[ContainerField(8), MemberInfoFlag(65), ContainerFieldNameHash(1070022089), ContainerRefArray]
+		[ContainerField(Name: "Outputs", Offset: 8, NameHash: 1070022089, Flags: 65)]
 		public RefArray<SwitcherEntry> Outputs { get { return m_Outputs; } set { if (OnPropertyChanging("SwitcherNodeData." + nameof(Outputs), this, m_Outputs, value)) m_Outputs = value; } } // 0x8 (8)
 		
 		protected AudioGraphNodePort m_Trigger = new AudioGraphNodePort();
-		[ContainerField(12), MemberInfoFlag(41), ContainerFieldNameHash(2606354109)]
+		[ContainerField(Name: "Trigger", Offset: 12, NameHash: 2606354109, Flags: 41)]
 		public AudioGraphNodePort Trigger { get { return m_Trigger; } set { if (OnPropertyChanging("SwitcherNodeData." + nameof(Trigger), this, m_Trigger, value)) m_Trigger = value; } } // 0xC (12)
 		
 		protected AudioGraphNodePort m_Value = new AudioGraphNodePort();
-		[ContainerField(20), MemberInfoFlag(41), ContainerFieldNameHash(225375086)]
+		[ContainerField(Name: "Value", Offset: 20, NameHash: 225375086, Flags: 41)]
 		public AudioGraphNodePort Value { get { return m_Value; } set { if (OnPropertyChanging("SwitcherNodeData." + nameof(Value), this, m_Value, value)) m_Value = value; } } // 0x14 (20)
 		
 		protected float m_DefaultCaseValue = new float();
-		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3296679953)]
+		[ContainerField(Name: "DefaultCaseValue", Offset: 28, NameHash: 3296679953, Flags: 49469), LayoutImmutable, Blittable]
 		public float DefaultCaseValue { get { return m_DefaultCaseValue; } set { if (OnPropertyChanging("SwitcherNodeData." + nameof(DefaultCaseValue), this, m_DefaultCaseValue, value)) m_DefaultCaseValue = value; } } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(56), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 56)]
 	public class UITextDatabase : 
 		Asset
 	{
 		protected LanguageFormat m_Language = new LanguageFormat();
-		[ContainerField(12), MemberInfoFlag(137), ContainerFieldNameHash(3872303031)]
+		[ContainerField(Name: "Language", Offset: 12, NameHash: 3872303031, Flags: 137)]
 		public LanguageFormat Language { get { return m_Language; } set { if (OnPropertyChanging("UITextDatabase." + nameof(Language), this, m_Language, value)) m_Language = value; } } // 0xC (12)
 		
 		protected GUID m_BinaryChunk = new GUID();
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49501), ContainerFieldNameHash(1121887089)]
+		[ContainerField(Name: "BinaryChunk", Offset: 16, NameHash: 1121887089, Flags: 49501), LayoutImmutable, Blittable]
 		public GUID BinaryChunk { get { return m_BinaryChunk; } set { if (OnPropertyChanging("UITextDatabase." + nameof(BinaryChunk), this, m_BinaryChunk, value)) m_BinaryChunk = value; } } // 0x10 (16)
 		
 		protected uint m_BinaryChunkSize = new uint();
-		[ContainerField(32), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(261197236)]
+		[ContainerField(Name: "BinaryChunkSize", Offset: 32, NameHash: 261197236, Flags: 49421), LayoutImmutable, Blittable]
 		public uint BinaryChunkSize { get { return m_BinaryChunkSize; } set { if (OnPropertyChanging("UITextDatabase." + nameof(BinaryChunkSize), this, m_BinaryChunkSize, value)) m_BinaryChunkSize = value; } } // 0x20 (32)
 		
 		protected GUID m_HistogramChunk = new GUID();
-		[ContainerField(36), LayoutImmutable, Blittable, MemberInfoFlag(49501), ContainerFieldNameHash(423724782)]
+		[ContainerField(Name: "HistogramChunk", Offset: 36, NameHash: 423724782, Flags: 49501), LayoutImmutable, Blittable]
 		public GUID HistogramChunk { get { return m_HistogramChunk; } set { if (OnPropertyChanging("UITextDatabase." + nameof(HistogramChunk), this, m_HistogramChunk, value)) m_HistogramChunk = value; } } // 0x24 (36)
 		
 		protected uint m_HistogramChunkSize = new uint();
-		[ContainerField(52), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(1536427179)]
+		[ContainerField(Name: "HistogramChunkSize", Offset: 52, NameHash: 1536427179, Flags: 49421), LayoutImmutable, Blittable]
 		public uint HistogramChunkSize { get { return m_HistogramChunkSize; } set { if (OnPropertyChanging("UITextDatabase." + nameof(HistogramChunkSize), this, m_HistogramChunkSize, value)) m_HistogramChunkSize = value; } } // 0x34 (52)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

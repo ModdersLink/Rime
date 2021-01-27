@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(32), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 32)]
 	public class MeshMaterial : 
 		DataContainer
 	{
 		protected CtrRef<SurfaceShaderInstanceData> m_ShaderInstance = new CtrRef<SurfaceShaderInstanceData>();
-		[ContainerField(8), MemberInfoFlag(53), ContainerFieldNameHash(963778021), ContainerCtrRef]
+		[ContainerField(Name: "ShaderInstance", Offset: 8, NameHash: 963778021, Flags: 53)]
 		public CtrRef<SurfaceShaderInstanceData> ShaderInstance { get { return m_ShaderInstance; } set { if (OnPropertyChanging("MeshMaterial." + nameof(ShaderInstance), this, m_ShaderInstance, value)) m_ShaderInstance = value; } } // 0x8 (8)
 		
 		protected SurfaceShaderInstanceDataStruct m_Shader = new SurfaceShaderInstanceDataStruct();
-		[ContainerField(12), MemberInfoFlag(41), ContainerFieldNameHash(3352909900)]
+		[ContainerField(Name: "Shader", Offset: 12, NameHash: 3352909900, Flags: 41)]
 		public SurfaceShaderInstanceDataStruct Shader { get { return m_Shader; } set { if (OnPropertyChanging("MeshMaterial." + nameof(Shader), this, m_Shader, value)) m_Shader = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

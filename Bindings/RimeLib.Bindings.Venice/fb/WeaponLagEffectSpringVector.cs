@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(24), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 24)]
 	public class WeaponLagEffectSpringVector : FrostbiteContainer
 	{
-		[ContainerField(0), MemberInfoFlag(41)]
+		[ContainerField(Name: "SpringX", Offset: 0, NameHash: 2346095756, Flags: 41)]
 		public WeaponLagEffectSpringData SpringX { get; set; } = new WeaponLagEffectSpringData(); // 0x0 (0)
 		
-		[ContainerField(8), MemberInfoFlag(41)]
+		[ContainerField(Name: "SpringY", Offset: 8, NameHash: 2346095757, Flags: 41)]
 		public WeaponLagEffectSpringData SpringY { get; set; } = new WeaponLagEffectSpringData(); // 0x8 (8)
 		
-		[ContainerField(16), MemberInfoFlag(41)]
+		[ContainerField(Name: "SpringZ", Offset: 16, NameHash: 2346095758, Flags: 41)]
 		public WeaponLagEffectSpringData SpringZ { get; set; } = new WeaponLagEffectSpringData(); // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

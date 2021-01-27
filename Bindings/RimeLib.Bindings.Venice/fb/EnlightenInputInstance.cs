@@ -18,19 +18,19 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(41), ContainerSize(80), ContainerStruct]
+	[ContainerType(Alignment: 16,  Flags: 41, Size: 80)]
 	public class EnlightenInputInstance : FrostbiteContainer
 	{
-		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
+		[ContainerField(Name: "Transform", Offset: 0, NameHash: 2270319721, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public LinearTransform Transform { get; set; } = new LinearTransform(); // 0x0 (0)
 		
-		[ContainerField(64), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "Asset", Offset: 64, NameHash: 205976053, Flags: 16509), LayoutImmutable]
 		public string Asset { get; set; } // 0x40 (64)
 		
-		[ContainerField(68), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "ObjectVariation", Offset: 68, NameHash: 3624336577, Flags: 16509), LayoutImmutable]
 		public string ObjectVariation { get; set; } // 0x44 (68)
 		
-		[ContainerField(72), LayoutImmutable, Blittable, MemberInfoFlag(49405)]
+		[ContainerField(Name: "SystemId", Offset: 72, NameHash: 643121549, Flags: 49405), LayoutImmutable, Blittable]
 		public int SystemId { get; set; } // 0x48 (72)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

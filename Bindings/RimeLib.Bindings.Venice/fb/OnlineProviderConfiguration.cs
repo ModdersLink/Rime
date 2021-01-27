@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(28), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 28)]
 	public class OnlineProviderConfiguration : FrostbiteContainer
 	{
-		[ContainerField(0), MemberInfoFlag(137)]
+		[ContainerField(Name: "Platform", Offset: 0, NameHash: 942751002, Flags: 137)]
 		public GamePlatform Platform { get; set; } = new GamePlatform(); // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "Client", Offset: 4, NameHash: 2721713788, Flags: 16509), LayoutImmutable]
 		public string Client { get; set; } // 0x4 (4)
 		
-		[ContainerField(8), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "ServiceName", Offset: 8, NameHash: 2487476607, Flags: 16509), LayoutImmutable]
 		public string ServiceName { get; set; } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "SKU", Offset: 12, NameHash: 193467592, Flags: 16509), LayoutImmutable]
 		public string SKU { get; set; } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "Version", Offset: 16, NameHash: 747123679, Flags: 16509), LayoutImmutable]
 		public string Version { get; set; } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
+		[ContainerField(Name: "ServerSocketPacketSize", Offset: 20, NameHash: 2343662152, Flags: 49421), LayoutImmutable, Blittable]
 		public uint ServerSocketPacketSize { get; set; } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "IsServer", Offset: 24, NameHash: 452268730, Flags: 49325), LayoutImmutable, Blittable]
 		public bool IsServer { get; set; } // 0x18 (24)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

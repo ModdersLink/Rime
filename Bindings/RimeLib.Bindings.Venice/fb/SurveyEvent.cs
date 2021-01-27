@@ -18,40 +18,40 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(8), MemberInfoFlag(53), ContainerSize(64), ContainerClass]
+	[ContainerType(Alignment: 8,  Flags: 53, Size: 64)]
 	public class SurveyEvent : 
 		MetricEvent
 	{
 		protected string m_SurveyName = string.Empty;
-		[ContainerField(16), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(261434364)]
+		[ContainerField(Name: "SurveyName", Offset: 16, NameHash: 261434364, Flags: 16509), LayoutImmutable]
 		public string SurveyName { get { return m_SurveyName; } set { if (OnPropertyChanging("SurveyEvent." + nameof(SurveyName), this, m_SurveyName, value)) m_SurveyName = value; } } // 0x10 (16)
 		
 		protected int m_AnswerQuestion1 = new int();
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(2144258310)]
+		[ContainerField(Name: "AnswerQuestion1", Offset: 20, NameHash: 2144258310, Flags: 49405), LayoutImmutable, Blittable]
 		public int AnswerQuestion1 { get { return m_AnswerQuestion1; } set { if (OnPropertyChanging("SurveyEvent." + nameof(AnswerQuestion1), this, m_AnswerQuestion1, value)) m_AnswerQuestion1 = value; } } // 0x14 (20)
 		
 		protected int m_AnswerQuestion2 = new int();
-		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(2144258309)]
+		[ContainerField(Name: "AnswerQuestion2", Offset: 24, NameHash: 2144258309, Flags: 49405), LayoutImmutable, Blittable]
 		public int AnswerQuestion2 { get { return m_AnswerQuestion2; } set { if (OnPropertyChanging("SurveyEvent." + nameof(AnswerQuestion2), this, m_AnswerQuestion2, value)) m_AnswerQuestion2 = value; } } // 0x18 (24)
 		
 		protected int m_AnswerQuestion3 = new int();
-		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(2144258308)]
+		[ContainerField(Name: "AnswerQuestion3", Offset: 28, NameHash: 2144258308, Flags: 49405), LayoutImmutable, Blittable]
 		public int AnswerQuestion3 { get { return m_AnswerQuestion3; } set { if (OnPropertyChanging("SurveyEvent." + nameof(AnswerQuestion3), this, m_AnswerQuestion3, value)) m_AnswerQuestion3 = value; } } // 0x1C (28)
 		
 		protected int m_AnswerQuestion4 = new int();
-		[ContainerField(32), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(2144258307)]
+		[ContainerField(Name: "AnswerQuestion4", Offset: 32, NameHash: 2144258307, Flags: 49405), LayoutImmutable, Blittable]
 		public int AnswerQuestion4 { get { return m_AnswerQuestion4; } set { if (OnPropertyChanging("SurveyEvent." + nameof(AnswerQuestion4), this, m_AnswerQuestion4, value)) m_AnswerQuestion4 = value; } } // 0x20 (32)
 		
 		protected int m_AnswerQuestion5 = new int();
-		[ContainerField(36), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(2144258306)]
+		[ContainerField(Name: "AnswerQuestion5", Offset: 36, NameHash: 2144258306, Flags: 49405), LayoutImmutable, Blittable]
 		public int AnswerQuestion5 { get { return m_AnswerQuestion5; } set { if (OnPropertyChanging("SurveyEvent." + nameof(AnswerQuestion5), this, m_AnswerQuestion5, value)) m_AnswerQuestion5 = value; } } // 0x24 (36)
 		
 		protected string m_FreeTextField = string.Empty;
-		[ContainerField(40), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(1219116622)]
+		[ContainerField(Name: "FreeTextField", Offset: 40, NameHash: 1219116622, Flags: 16509), LayoutImmutable]
 		public string FreeTextField { get { return m_FreeTextField; } set { if (OnPropertyChanging("SurveyEvent." + nameof(FreeTextField), this, m_FreeTextField, value)) m_FreeTextField = value; } } // 0x28 (40)
 		
 		protected GUID m_SurveyMetricLink = new GUID();
-		[ContainerField(44), LayoutImmutable, Blittable, MemberInfoFlag(49501), ContainerFieldNameHash(1497575487)]
+		[ContainerField(Name: "SurveyMetricLink", Offset: 44, NameHash: 1497575487, Flags: 49501), LayoutImmutable, Blittable]
 		public GUID SurveyMetricLink { get { return m_SurveyMetricLink; } set { if (OnPropertyChanging("SurveyEvent." + nameof(SurveyMetricLink), this, m_SurveyMetricLink, value)) m_SurveyMetricLink = value; } } // 0x2C (44)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

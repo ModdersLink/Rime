@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(112), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 112)]
 	public class TriggerEntityData : 
 		GameEntityData
 	{
 		protected float m_Delay = new float();
-		[ContainerField(96), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(208768368)]
+		[ContainerField(Name: "Delay", Offset: 96, NameHash: 208768368, Flags: 49469), LayoutImmutable, Blittable]
 		public float Delay { get { return m_Delay; } set { if (OnPropertyChanging("TriggerEntityData." + nameof(Delay), this, m_Delay, value)) m_Delay = value; } } // 0x60 (96)
 		
 		protected bool m_RunOnce = new bool();
-		[ContainerField(100), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(709901739)]
+		[ContainerField(Name: "RunOnce", Offset: 100, NameHash: 709901739, Flags: 49325), LayoutImmutable, Blittable]
 		public bool RunOnce { get { return m_RunOnce; } set { if (OnPropertyChanging("TriggerEntityData." + nameof(RunOnce), this, m_RunOnce, value)) m_RunOnce = value; } } // 0x64 (100)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

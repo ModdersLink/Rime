@@ -18,32 +18,32 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(112), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 112)]
 	public class TransformSnapToGroundEntityData : 
 		EntityData
 	{
 		protected LinearTransform m_In = new LinearTransform();
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(5862146)]
+		[ContainerField(Name: "In", Offset: 16, NameHash: 5862146, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public LinearTransform In { get { return m_In; } set { if (OnPropertyChanging("TransformSnapToGroundEntityData." + nameof(In), this, m_In, value)) m_In = value; } } // 0x10 (16)
 		
 		protected Realm m_Realm = new Realm();
-		[ContainerField(80), MemberInfoFlag(137), ContainerFieldNameHash(229961746)]
+		[ContainerField(Name: "Realm", Offset: 80, NameHash: 229961746, Flags: 137)]
 		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("TransformSnapToGroundEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0x50 (80)
 		
 		protected float m_DistanceToGround = new float();
-		[ContainerField(84), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3638863832)]
+		[ContainerField(Name: "DistanceToGround", Offset: 84, NameHash: 3638863832, Flags: 49469), LayoutImmutable, Blittable]
 		public float DistanceToGround { get { return m_DistanceToGround; } set { if (OnPropertyChanging("TransformSnapToGroundEntityData." + nameof(DistanceToGround), this, m_DistanceToGround, value)) m_DistanceToGround = value; } } // 0x54 (84)
 		
 		protected float m_RayCastLength = new float();
-		[ContainerField(88), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2786399190)]
+		[ContainerField(Name: "RayCastLength", Offset: 88, NameHash: 2786399190, Flags: 49469), LayoutImmutable, Blittable]
 		public float RayCastLength { get { return m_RayCastLength; } set { if (OnPropertyChanging("TransformSnapToGroundEntityData." + nameof(RayCastLength), this, m_RayCastLength, value)) m_RayCastLength = value; } } // 0x58 (88)
 		
 		protected float m_RayCastUpOffset = new float();
-		[ContainerField(92), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2052773058)]
+		[ContainerField(Name: "RayCastUpOffset", Offset: 92, NameHash: 2052773058, Flags: 49469), LayoutImmutable, Blittable]
 		public float RayCastUpOffset { get { return m_RayCastUpOffset; } set { if (OnPropertyChanging("TransformSnapToGroundEntityData." + nameof(RayCastUpOffset), this, m_RayCastUpOffset, value)) m_RayCastUpOffset = value; } } // 0x5C (92)
 		
 		protected bool m_AlignWithGroundNormal = new bool();
-		[ContainerField(96), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(387843516)]
+		[ContainerField(Name: "AlignWithGroundNormal", Offset: 96, NameHash: 387843516, Flags: 49325), LayoutImmutable, Blittable]
 		public bool AlignWithGroundNormal { get { return m_AlignWithGroundNormal; } set { if (OnPropertyChanging("TransformSnapToGroundEntityData." + nameof(AlignWithGroundNormal), this, m_AlignWithGroundNormal, value)) m_AlignWithGroundNormal = value; } } // 0x60 (96)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

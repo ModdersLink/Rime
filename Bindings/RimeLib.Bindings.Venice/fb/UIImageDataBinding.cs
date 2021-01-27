@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(48), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 48)]
 	public class UIImageDataBinding : 
 		UIDataBinding
 	{
 		protected string m_StaticImageUrl = string.Empty;
-		[ContainerField(8), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(1907338737)]
+		[ContainerField(Name: "StaticImageUrl", Offset: 8, NameHash: 1907338737, Flags: 16509), LayoutImmutable]
 		public string StaticImageUrl { get { return m_StaticImageUrl; } set { if (OnPropertyChanging("UIImageDataBinding." + nameof(StaticImageUrl), this, m_StaticImageUrl, value)) m_StaticImageUrl = value; } } // 0x8 (8)
 		
 		protected UIDataSourceInfo m_ImageData = new UIDataSourceInfo();
-		[ContainerField(12), MemberInfoFlag(41), ContainerFieldNameHash(2678906194)]
+		[ContainerField(Name: "ImageData", Offset: 12, NameHash: 2678906194, Flags: 41)]
 		public UIDataSourceInfo ImageData { get { return m_ImageData; } set { if (OnPropertyChanging("UIImageDataBinding." + nameof(ImageData), this, m_ImageData, value)) m_ImageData = value; } } // 0xC (12)
 		
 		protected UIDataSourceInfo m_Visibility = new UIDataSourceInfo();
-		[ContainerField(28), MemberInfoFlag(41), ContainerFieldNameHash(1708270083)]
+		[ContainerField(Name: "Visibility", Offset: 28, NameHash: 1708270083, Flags: 41)]
 		public UIDataSourceInfo Visibility { get { return m_Visibility; } set { if (OnPropertyChanging("UIImageDataBinding." + nameof(Visibility), this, m_Visibility, value)) m_Visibility = value; } } // 0x1C (28)
 		
 		protected bool m_Visible = new bool();
-		[ContainerField(44), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(901540267)]
+		[ContainerField(Name: "Visible", Offset: 44, NameHash: 901540267, Flags: 49325), LayoutImmutable, Blittable]
 		public bool Visible { get { return m_Visible; } set { if (OnPropertyChanging("UIImageDataBinding." + nameof(Visible), this, m_Visible, value)) m_Visible = value; } } // 0x2C (44)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,60 +18,60 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(52), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 52)]
 	public class CriteriaData : 
 		DataContainer
 	{
 		protected float m_CompletionValue = new float();
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1987114858)]
+		[ContainerField(Name: "CompletionValue", Offset: 8, NameHash: 1987114858, Flags: 49469), LayoutImmutable, Blittable]
 		public float CompletionValue { get { return m_CompletionValue; } set { if (OnPropertyChanging("CriteriaData." + nameof(CompletionValue), this, m_CompletionValue, value)) m_CompletionValue = value; } } // 0x8 (8)
 		
 		protected CtrRef<CriteriaGateList> m_GateList = new CtrRef<CriteriaGateList>();
-		[ContainerField(12), MemberInfoFlag(53), ContainerFieldNameHash(788844496), ContainerCtrRef]
+		[ContainerField(Name: "GateList", Offset: 12, NameHash: 788844496, Flags: 53)]
 		public CtrRef<CriteriaGateList> GateList { get { return m_GateList; } set { if (OnPropertyChanging("CriteriaData." + nameof(GateList), this, m_GateList, value)) m_GateList = value; } } // 0xC (12)
 		
 		protected StatEvent m_Measuring = new StatEvent();
-		[ContainerField(16), MemberInfoFlag(137), ContainerFieldNameHash(2896657528)]
+		[ContainerField(Name: "Measuring", Offset: 16, NameHash: 2896657528, Flags: 137)]
 		public StatEvent Measuring { get { return m_Measuring; } set { if (OnPropertyChanging("CriteriaData." + nameof(Measuring), this, m_Measuring, value)) m_Measuring = value; } } // 0x10 (16)
 		
 		protected CtrRef<StatsCategoryBaseData> m_ParamX = new CtrRef<StatsCategoryBaseData>();
-		[ContainerField(20), MemberInfoFlag(53), ContainerFieldNameHash(3371566706), ContainerCtrRef]
+		[ContainerField(Name: "ParamX", Offset: 20, NameHash: 3371566706, Flags: 53)]
 		public CtrRef<StatsCategoryBaseData> ParamX { get { return m_ParamX; } set { if (OnPropertyChanging("CriteriaData." + nameof(ParamX), this, m_ParamX, value)) m_ParamX = value; } } // 0x14 (20)
 		
 		protected CtrRef<StatsCategoryBaseData> m_ParamY = new CtrRef<StatsCategoryBaseData>();
-		[ContainerField(24), MemberInfoFlag(53), ContainerFieldNameHash(3371566707), ContainerCtrRef]
+		[ContainerField(Name: "ParamY", Offset: 24, NameHash: 3371566707, Flags: 53)]
 		public CtrRef<StatsCategoryBaseData> ParamY { get { return m_ParamY; } set { if (OnPropertyChanging("CriteriaData." + nameof(ParamY), this, m_ParamY, value)) m_ParamY = value; } } // 0x18 (24)
 		
 		protected RefArray<StatsCategoryBaseData> m_OrParamsX = new RefArray<StatsCategoryBaseData>();
-		[ContainerField(28), MemberInfoFlag(65), ContainerFieldNameHash(2810693212), ContainerRefArray]
+		[ContainerField(Name: "OrParamsX", Offset: 28, NameHash: 2810693212, Flags: 65)]
 		public RefArray<StatsCategoryBaseData> OrParamsX { get { return m_OrParamsX; } set { if (OnPropertyChanging("CriteriaData." + nameof(OrParamsX), this, m_OrParamsX, value)) m_OrParamsX = value; } } // 0x1C (28)
 		
 		protected CriteriaType m_CriteriaType = new CriteriaType();
-		[ContainerField(32), MemberInfoFlag(137), ContainerFieldNameHash(3378346126)]
+		[ContainerField(Name: "CriteriaType", Offset: 32, NameHash: 3378346126, Flags: 137)]
 		public CriteriaType CriteriaType { get { return m_CriteriaType; } set { if (OnPropertyChanging("CriteriaData." + nameof(CriteriaType), this, m_CriteriaType, value)) m_CriteriaType = value; } } // 0x20 (32)
 		
 		protected string m_DescriptionSid = string.Empty;
-		[ContainerField(36), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(1844417789)]
+		[ContainerField(Name: "DescriptionSid", Offset: 36, NameHash: 1844417789, Flags: 16509), LayoutImmutable]
 		public string DescriptionSid { get { return m_DescriptionSid; } set { if (OnPropertyChanging("CriteriaData." + nameof(DescriptionSid), this, m_DescriptionSid, value)) m_DescriptionSid = value; } } // 0x24 (36)
 		
 		protected float m_ScaleFactor = new float();
-		[ContainerField(40), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(4072224560)]
+		[ContainerField(Name: "ScaleFactor", Offset: 40, NameHash: 4072224560, Flags: 49469), LayoutImmutable, Blittable]
 		public float ScaleFactor { get { return m_ScaleFactor; } set { if (OnPropertyChanging("CriteriaData." + nameof(ScaleFactor), this, m_ScaleFactor, value)) m_ScaleFactor = value; } } // 0x28 (40)
 		
 		protected float m_Scale = new float();
-		[ContainerField(44), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(231223453)]
+		[ContainerField(Name: "Scale", Offset: 44, NameHash: 231223453, Flags: 49469), LayoutImmutable, Blittable]
 		public float Scale { get { return m_Scale; } set { if (OnPropertyChanging("CriteriaData." + nameof(Scale), this, m_Scale, value)) m_Scale = value; } } // 0x2C (44)
 		
 		protected bool m_ShouldSummarize = new bool();
-		[ContainerField(48), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2491844207)]
+		[ContainerField(Name: "ShouldSummarize", Offset: 48, NameHash: 2491844207, Flags: 49325), LayoutImmutable, Blittable]
 		public bool ShouldSummarize { get { return m_ShouldSummarize; } set { if (OnPropertyChanging("CriteriaData." + nameof(ShouldSummarize), this, m_ShouldSummarize, value)) m_ShouldSummarize = value; } } // 0x30 (48)
 		
 		protected bool m_ShouldHide = new bool();
-		[ContainerField(49), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1866549580)]
+		[ContainerField(Name: "ShouldHide", Offset: 49, NameHash: 1866549580, Flags: 49325), LayoutImmutable, Blittable]
 		public bool ShouldHide { get { return m_ShouldHide; } set { if (OnPropertyChanging("CriteriaData." + nameof(ShouldHide), this, m_ShouldHide, value)) m_ShouldHide = value; } } // 0x31 (49)
 		
 		protected bool m_CountEvents = new bool();
-		[ContainerField(50), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1061148025)]
+		[ContainerField(Name: "CountEvents", Offset: 50, NameHash: 1061148025, Flags: 49325), LayoutImmutable, Blittable]
 		public bool CountEvents { get { return m_CountEvents; } set { if (OnPropertyChanging("CriteriaData." + nameof(CountEvents), this, m_CountEvents, value)) m_CountEvents = value; } } // 0x32 (50)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

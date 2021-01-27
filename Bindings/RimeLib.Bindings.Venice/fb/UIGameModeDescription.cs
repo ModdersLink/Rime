@@ -18,36 +18,36 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(44), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 44)]
 	public class UIGameModeDescription : 
 		UIItemDescription
 	{
 		protected string m_Identifier = string.Empty;
-		[ContainerField(16), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(3512790342)]
+		[ContainerField(Name: "Identifier", Offset: 16, NameHash: 3512790342, Flags: 16509), LayoutImmutable]
 		public string Identifier { get { return m_Identifier; } set { if (OnPropertyChanging("UIGameModeDescription." + nameof(Identifier), this, m_Identifier, value)) m_Identifier = value; } } // 0x10 (16)
 		
 		protected string m_Name = string.Empty;
-		[ContainerField(20), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(2088949890)]
+		[ContainerField(Name: "Name", Offset: 20, NameHash: 2088949890, Flags: 16509), LayoutImmutable]
 		public string Name { get { return m_Name; } set { if (OnPropertyChanging("UIGameModeDescription." + nameof(Name), this, m_Name, value)) m_Name = value; } } // 0x14 (20)
 		
 		protected string m_Abbreviation = string.Empty;
-		[ContainerField(24), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(1781328241)]
+		[ContainerField(Name: "Abbreviation", Offset: 24, NameHash: 1781328241, Flags: 16509), LayoutImmutable]
 		public string Abbreviation { get { return m_Abbreviation; } set { if (OnPropertyChanging("UIGameModeDescription." + nameof(Abbreviation), this, m_Abbreviation, value)) m_Abbreviation = value; } } // 0x18 (24)
 		
 		protected string m_Desc = string.Empty;
-		[ContainerField(28), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(2088734996)]
+		[ContainerField(Name: "Desc", Offset: 28, NameHash: 2088734996, Flags: 16509), LayoutImmutable]
 		public string Desc { get { return m_Desc; } set { if (OnPropertyChanging("UIGameModeDescription." + nameof(Desc), this, m_Desc, value)) m_Desc = value; } } // 0x1C (28)
 		
 		protected int m_BattlelogId = new int();
-		[ContainerField(32), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(281607366)]
+		[ContainerField(Name: "BattlelogId", Offset: 32, NameHash: 281607366, Flags: 49405), LayoutImmutable, Blittable]
 		public int BattlelogId { get { return m_BattlelogId; } set { if (OnPropertyChanging("UIGameModeDescription." + nameof(BattlelogId), this, m_BattlelogId, value)) m_BattlelogId = value; } } // 0x20 (32)
 		
 		protected string m_TexturePath = string.Empty;
-		[ContainerField(36), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(3058477943)]
+		[ContainerField(Name: "TexturePath", Offset: 36, NameHash: 3058477943, Flags: 16509), LayoutImmutable]
 		public string TexturePath { get { return m_TexturePath; } set { if (OnPropertyChanging("UIGameModeDescription." + nameof(TexturePath), this, m_TexturePath, value)) m_TexturePath = value; } } // 0x24 (36)
 		
 		protected List<GameModeVariation> m_Variations = new List<GameModeVariation>();
-		[ContainerField(40), MemberInfoFlag(65), ContainerFieldNameHash(2728063271), ContainerArray]
+		[ContainerField(Name: "Variations", Offset: 40, NameHash: 2728063271, Flags: 65)]
 		public List<GameModeVariation> Variations { get { return m_Variations; } set { if (OnPropertyChanging("UIGameModeDescription." + nameof(Variations), this, m_Variations, value)) m_Variations = value; } } // 0x28 (40)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

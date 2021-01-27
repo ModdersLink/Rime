@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(112), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 112)]
 	public class SpeedEventGateEntityData : 
 		GameEntityData
 	{
 		protected float m_MinSpeed = new float();
-		[ContainerField(96), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3368183944)]
+		[ContainerField(Name: "MinSpeed", Offset: 96, NameHash: 3368183944, Flags: 49469), LayoutImmutable, Blittable]
 		public float MinSpeed { get { return m_MinSpeed; } set { if (OnPropertyChanging("SpeedEventGateEntityData." + nameof(MinSpeed), this, m_MinSpeed, value)) m_MinSpeed = value; } } // 0x60 (96)
 		
 		protected float m_MaxSpeed = new float();
-		[ContainerField(100), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(396228950)]
+		[ContainerField(Name: "MaxSpeed", Offset: 100, NameHash: 396228950, Flags: 49469), LayoutImmutable, Blittable]
 		public float MaxSpeed { get { return m_MaxSpeed; } set { if (OnPropertyChanging("SpeedEventGateEntityData." + nameof(MaxSpeed), this, m_MaxSpeed, value)) m_MaxSpeed = value; } } // 0x64 (100)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

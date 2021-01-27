@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(128), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 128)]
 	public class DecalEntityData : 
 		GameEntityData
 	{
 		protected CtrRef<SurfaceShaderBaseAsset> m_Shader = new CtrRef<SurfaceShaderBaseAsset>();
-		[ContainerField(96), MemberInfoFlag(53), ContainerFieldNameHash(3352909900), ContainerCtrRef]
+		[ContainerField(Name: "Shader", Offset: 96, NameHash: 3352909900, Flags: 53)]
 		public CtrRef<SurfaceShaderBaseAsset> Shader { get { return m_Shader; } set { if (OnPropertyChanging("DecalEntityData." + nameof(Shader), this, m_Shader, value)) m_Shader = value; } } // 0x60 (96)
 		
 		protected DecalAtlasTile m_AtlasTile = new DecalAtlasTile();
-		[ContainerField(100), MemberInfoFlag(41), ContainerFieldNameHash(3027817338)]
+		[ContainerField(Name: "AtlasTile", Offset: 100, NameHash: 3027817338, Flags: 41)]
 		public DecalAtlasTile AtlasTile { get { return m_AtlasTile; } set { if (OnPropertyChanging("DecalEntityData." + nameof(AtlasTile), this, m_AtlasTile, value)) m_AtlasTile = value; } } // 0x64 (100)
 		
 		protected sbyte m_MaterialIndex = new sbyte();
-		[ContainerField(120), LayoutImmutable, Blittable, MemberInfoFlag(49341), ContainerFieldNameHash(1001372496)]
+		[ContainerField(Name: "MaterialIndex", Offset: 120, NameHash: 1001372496, Flags: 49341), LayoutImmutable, Blittable]
 		public sbyte MaterialIndex { get { return m_MaterialIndex; } set { if (OnPropertyChanging("DecalEntityData." + nameof(MaterialIndex), this, m_MaterialIndex, value)) m_MaterialIndex = value; } } // 0x78 (120)
 		
 		protected sbyte m_SortingPriority = new sbyte();
-		[ContainerField(121), LayoutImmutable, Blittable, MemberInfoFlag(49341), ContainerFieldNameHash(3523655821)]
+		[ContainerField(Name: "SortingPriority", Offset: 121, NameHash: 3523655821, Flags: 49341), LayoutImmutable, Blittable]
 		public sbyte SortingPriority { get { return m_SortingPriority; } set { if (OnPropertyChanging("DecalEntityData." + nameof(SortingPriority), this, m_SortingPriority, value)) m_SortingPriority = value; } } // 0x79 (121)
 		
 		protected bool m_Projected = new bool();
-		[ContainerField(122), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(4152361265)]
+		[ContainerField(Name: "Projected", Offset: 122, NameHash: 4152361265, Flags: 49325), LayoutImmutable, Blittable]
 		public bool Projected { get { return m_Projected; } set { if (OnPropertyChanging("DecalEntityData." + nameof(Projected), this, m_Projected, value)) m_Projected = value; } } // 0x7A (122)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

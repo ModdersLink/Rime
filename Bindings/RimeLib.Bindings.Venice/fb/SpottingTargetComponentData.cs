@@ -18,32 +18,32 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(128), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 128)]
 	public class SpottingTargetComponentData : 
 		ComponentData
 	{
 		protected float m_ActiveSpottedTime = new float();
-		[ContainerField(96), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(748599697)]
+		[ContainerField(Name: "ActiveSpottedTime", Offset: 96, NameHash: 748599697, Flags: 49469), LayoutImmutable, Blittable]
 		public float ActiveSpottedTime { get { return m_ActiveSpottedTime; } set { if (OnPropertyChanging("SpottingTargetComponentData." + nameof(ActiveSpottedTime), this, m_ActiveSpottedTime, value)) m_ActiveSpottedTime = value; } } // 0x60 (96)
 		
 		protected float m_PassiveSpottedTime = new float();
-		[ContainerField(100), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2532328150)]
+		[ContainerField(Name: "PassiveSpottedTime", Offset: 100, NameHash: 2532328150, Flags: 49469), LayoutImmutable, Blittable]
 		public float PassiveSpottedTime { get { return m_PassiveSpottedTime; } set { if (OnPropertyChanging("SpottingTargetComponentData." + nameof(PassiveSpottedTime), this, m_PassiveSpottedTime, value)) m_PassiveSpottedTime = value; } } // 0x64 (100)
 		
 		protected float m_ActiveSpottedTimeMultiplier = new float();
-		[ContainerField(104), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1518946778)]
+		[ContainerField(Name: "ActiveSpottedTimeMultiplier", Offset: 104, NameHash: 1518946778, Flags: 49469), LayoutImmutable, Blittable]
 		public float ActiveSpottedTimeMultiplier { get { return m_ActiveSpottedTimeMultiplier; } set { if (OnPropertyChanging("SpottingTargetComponentData." + nameof(ActiveSpottedTimeMultiplier), this, m_ActiveSpottedTimeMultiplier, value)) m_ActiveSpottedTimeMultiplier = value; } } // 0x68 (104)
 		
 		protected float m_PassiveSpottedTimeMultiplier = new float();
-		[ContainerField(108), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(996451229)]
+		[ContainerField(Name: "PassiveSpottedTimeMultiplier", Offset: 108, NameHash: 996451229, Flags: 49469), LayoutImmutable, Blittable]
 		public float PassiveSpottedTimeMultiplier { get { return m_PassiveSpottedTimeMultiplier; } set { if (OnPropertyChanging("SpottingTargetComponentData." + nameof(PassiveSpottedTimeMultiplier), this, m_PassiveSpottedTimeMultiplier, value)) m_PassiveSpottedTimeMultiplier = value; } } // 0x6C (108)
 		
 		protected float m_SpotOnFireMultiplier = new float();
-		[ContainerField(112), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3169810191)]
+		[ContainerField(Name: "SpotOnFireMultiplier", Offset: 112, NameHash: 3169810191, Flags: 49469), LayoutImmutable, Blittable]
 		public float SpotOnFireMultiplier { get { return m_SpotOnFireMultiplier; } set { if (OnPropertyChanging("SpottingTargetComponentData." + nameof(SpotOnFireMultiplier), this, m_SpotOnFireMultiplier, value)) m_SpotOnFireMultiplier = value; } } // 0x70 (112)
 		
 		protected bool m_TargetBoundingBoxCenter = new bool();
-		[ContainerField(116), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2640665496)]
+		[ContainerField(Name: "TargetBoundingBoxCenter", Offset: 116, NameHash: 2640665496, Flags: 49325), LayoutImmutable, Blittable]
 		public bool TargetBoundingBoxCenter { get { return m_TargetBoundingBoxCenter; } set { if (OnPropertyChanging("SpottingTargetComponentData." + nameof(TargetBoundingBoxCenter), this, m_TargetBoundingBoxCenter, value)) m_TargetBoundingBoxCenter = value; } } // 0x74 (116)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

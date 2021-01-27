@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(20), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 20)]
 	public class SoldierMovementSequenceData : 
 		MovementActionData
 	{
 		protected CtrRef<RecordedInputData> m_RecordedInput = new CtrRef<RecordedInputData>();
-		[ContainerField(8), MemberInfoFlag(53), ContainerFieldNameHash(1633327487), ContainerCtrRef]
+		[ContainerField(Name: "RecordedInput", Offset: 8, NameHash: 1633327487, Flags: 53)]
 		public CtrRef<RecordedInputData> RecordedInput { get { return m_RecordedInput; } set { if (OnPropertyChanging("SoldierMovementSequenceData." + nameof(RecordedInput), this, m_RecordedInput, value)) m_RecordedInput = value; } } // 0x8 (8)
 		
 		protected int m_InputRecordingIndex = new int();
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(228494272)]
+		[ContainerField(Name: "InputRecordingIndex", Offset: 12, NameHash: 228494272, Flags: 49405), LayoutImmutable, Blittable]
 		public int InputRecordingIndex { get { return m_InputRecordingIndex; } set { if (OnPropertyChanging("SoldierMovementSequenceData." + nameof(InputRecordingIndex), this, m_InputRecordingIndex, value)) m_InputRecordingIndex = value; } } // 0xC (12)
 		
 		protected bool m_IgnoreRecordingIndexFilter = new bool();
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2391351758)]
+		[ContainerField(Name: "IgnoreRecordingIndexFilter", Offset: 16, NameHash: 2391351758, Flags: 49325), LayoutImmutable, Blittable]
 		public bool IgnoreRecordingIndexFilter { get { return m_IgnoreRecordingIndexFilter; } set { if (OnPropertyChanging("SoldierMovementSequenceData." + nameof(IgnoreRecordingIndexFilter), this, m_IgnoreRecordingIndexFilter, value)) m_IgnoreRecordingIndexFilter = value; } } // 0x10 (16)
 		
 		protected bool m_ReportWhenFinished = new bool();
-		[ContainerField(17), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(644020589)]
+		[ContainerField(Name: "ReportWhenFinished", Offset: 17, NameHash: 644020589, Flags: 49325), LayoutImmutable, Blittable]
 		public bool ReportWhenFinished { get { return m_ReportWhenFinished; } set { if (OnPropertyChanging("SoldierMovementSequenceData." + nameof(ReportWhenFinished), this, m_ReportWhenFinished, value)) m_ReportWhenFinished = value; } } // 0x11 (17)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

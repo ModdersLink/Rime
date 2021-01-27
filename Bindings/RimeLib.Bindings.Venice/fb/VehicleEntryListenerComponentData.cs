@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(176), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 176)]
 	public class VehicleEntryListenerComponentData : 
 		ComponentData
 	{
 		protected VehicleEntryListenerBinding m_VehicleEntryListener = new VehicleEntryListenerBinding();
-		[ContainerField(96), MemberInfoFlag(41), ContainerFieldNameHash(1646308695)]
+		[ContainerField(Name: "VehicleEntryListener", Offset: 96, NameHash: 1646308695, Flags: 41)]
 		public VehicleEntryListenerBinding VehicleEntryListener { get { return m_VehicleEntryListener; } set { if (OnPropertyChanging("VehicleEntryListenerComponentData." + nameof(VehicleEntryListener), this, m_VehicleEntryListener, value)) m_VehicleEntryListener = value; } } // 0x60 (96)
 		
 		protected VehicleCameraControlBinding m_VehicleCameraControl = new VehicleCameraControlBinding();
-		[ContainerField(156), MemberInfoFlag(41), ContainerFieldNameHash(478775939)]
+		[ContainerField(Name: "VehicleCameraControl", Offset: 156, NameHash: 478775939, Flags: 41)]
 		public VehicleCameraControlBinding VehicleCameraControl { get { return m_VehicleCameraControl; } set { if (OnPropertyChanging("VehicleEntryListenerComponentData." + nameof(VehicleCameraControl), this, m_VehicleCameraControl, value)) m_VehicleCameraControl = value; } } // 0x9C (156)
 		
 		protected int m_AnimationEntitySpacePriority = new int();
-		[ContainerField(160), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(4041607518)]
+		[ContainerField(Name: "AnimationEntitySpacePriority", Offset: 160, NameHash: 4041607518, Flags: 49405), LayoutImmutable, Blittable]
 		public int AnimationEntitySpacePriority { get { return m_AnimationEntitySpacePriority; } set { if (OnPropertyChanging("VehicleEntryListenerComponentData." + nameof(AnimationEntitySpacePriority), this, m_AnimationEntitySpacePriority, value)) m_AnimationEntitySpacePriority = value; } } // 0xA0 (160)
 		
 		protected float m_AnimationWheelTransformDelay = new float();
-		[ContainerField(164), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2638640185)]
+		[ContainerField(Name: "AnimationWheelTransformDelay", Offset: 164, NameHash: 2638640185, Flags: 49469), LayoutImmutable, Blittable]
 		public float AnimationWheelTransformDelay { get { return m_AnimationWheelTransformDelay; } set { if (OnPropertyChanging("VehicleEntryListenerComponentData." + nameof(AnimationWheelTransformDelay), this, m_AnimationWheelTransformDelay, value)) m_AnimationWheelTransformDelay = value; } } // 0xA4 (164)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

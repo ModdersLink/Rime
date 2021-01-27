@@ -18,55 +18,55 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(64), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 64)]
 	public class SoldierEmoteBinding : FrostbiteContainer
 	{
-		[ContainerField(0), MemberInfoFlag(41)]
+		[ContainerField(Name: "Speak", Offset: 0, NameHash: 230886921, Flags: 41)]
 		public AntRef Speak { get; set; } = new AntRef(); // 0x0 (0)
 		
-		[ContainerField(4), MemberInfoFlag(41)]
+		[ContainerField(Name: "IsSquadLeader", Offset: 4, NameHash: 215794326, Flags: 41)]
 		public AntRef IsSquadLeader { get; set; } = new AntRef(); // 0x4 (4)
 		
-		[ContainerField(8), MemberInfoFlag(41)]
+		[ContainerField(Name: "EmoteSpot", Offset: 8, NameHash: 2461279019, Flags: 41)]
 		public AntRef EmoteSpot { get; set; } = new AntRef(); // 0x8 (8)
 		
-		[ContainerField(12), MemberInfoFlag(41)]
+		[ContainerField(Name: "EmoteOk", Offset: 12, NameHash: 25924759, Flags: 41)]
 		public AntRef EmoteOk { get; set; } = new AntRef(); // 0xC (12)
 		
-		[ContainerField(16), MemberInfoFlag(41)]
+		[ContainerField(Name: "EmoteNeedARide", Offset: 16, NameHash: 1724790978, Flags: 41)]
 		public AntRef EmoteNeedARide { get; set; } = new AntRef(); // 0x10 (16)
 		
-		[ContainerField(20), MemberInfoFlag(41)]
+		[ContainerField(Name: "EmoteGoGoGo", Offset: 20, NameHash: 1039124251, Flags: 41)]
 		public AntRef EmoteGoGoGo { get; set; } = new AntRef(); // 0x14 (20)
 		
-		[ContainerField(24), MemberInfoFlag(41)]
+		[ContainerField(Name: "EmoteNeedBackup", Offset: 24, NameHash: 1254362103, Flags: 41)]
 		public AntRef EmoteNeedBackup { get; set; } = new AntRef(); // 0x18 (24)
 		
-		[ContainerField(28), MemberInfoFlag(41)]
+		[ContainerField(Name: "EmoteThanks", Offset: 28, NameHash: 613118968, Flags: 41)]
 		public AntRef EmoteThanks { get; set; } = new AntRef(); // 0x1C (28)
 		
-		[ContainerField(32), MemberInfoFlag(41)]
+		[ContainerField(Name: "EmoteNeedMedic", Offset: 32, NameHash: 1719165247, Flags: 41)]
 		public AntRef EmoteNeedMedic { get; set; } = new AntRef(); // 0x20 (32)
 		
-		[ContainerField(36), MemberInfoFlag(41)]
+		[ContainerField(Name: "EmoteFollowMe", Offset: 36, NameHash: 1620732426, Flags: 41)]
 		public AntRef EmoteFollowMe { get; set; } = new AntRef(); // 0x24 (36)
 		
-		[ContainerField(40), MemberInfoFlag(41)]
+		[ContainerField(Name: "EmoteNeedAmmo", Offset: 40, NameHash: 2785400695, Flags: 41)]
 		public AntRef EmoteNeedAmmo { get; set; } = new AntRef(); // 0x28 (40)
 		
-		[ContainerField(44), MemberInfoFlag(41)]
+		[ContainerField(Name: "EmoteSorry", Offset: 44, NameHash: 3912552534, Flags: 41)]
 		public AntRef EmoteSorry { get; set; } = new AntRef(); // 0x2C (44)
 		
-		[ContainerField(48), MemberInfoFlag(41)]
+		[ContainerField(Name: "EmoteNo", Offset: 48, NameHash: 25924978, Flags: 41)]
 		public AntRef EmoteNo { get; set; } = new AntRef(); // 0x30 (48)
 		
-		[ContainerField(52), MemberInfoFlag(41)]
+		[ContainerField(Name: "EmoteDefendCapturePoint", Offset: 52, NameHash: 3478388147, Flags: 41)]
 		public AntRef EmoteDefendCapturePoint { get; set; } = new AntRef(); // 0x34 (52)
 		
-		[ContainerField(56), MemberInfoFlag(41)]
+		[ContainerField(Name: "EmoteAttackCapturePoint", Offset: 56, NameHash: 534389299, Flags: 41)]
 		public AntRef EmoteAttackCapturePoint { get; set; } = new AntRef(); // 0x38 (56)
 		
-		[ContainerField(60), MemberInfoFlag(41)]
+		[ContainerField(Name: "EmoteMoveToPosition", Offset: 60, NameHash: 1059056960, Flags: 41)]
 		public AntRef EmoteMoveToPosition { get; set; } = new AntRef(); // 0x3C (60)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

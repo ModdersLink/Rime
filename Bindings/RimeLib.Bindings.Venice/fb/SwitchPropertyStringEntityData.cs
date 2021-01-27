@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(20), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 20)]
 	public class SwitchPropertyStringEntityData : 
 		EntityData
 	{
 		protected List<string> m_StringProperties = new List<string>();
-		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(1548227025), ContainerArray]
+		[ContainerField(Name: "StringProperties", Offset: 12, NameHash: 1548227025, Flags: 65)]
 		public List<string> StringProperties { get { return m_StringProperties; } set { if (OnPropertyChanging("SwitchPropertyStringEntityData." + nameof(StringProperties), this, m_StringProperties, value)) m_StringProperties = value; } } // 0xC (12)
 		
 		protected Realm m_Realm = new Realm();
-		[ContainerField(16), MemberInfoFlag(137), ContainerFieldNameHash(229961746)]
+		[ContainerField(Name: "Realm", Offset: 16, NameHash: 229961746, Flags: 137)]
 		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("SwitchPropertyStringEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

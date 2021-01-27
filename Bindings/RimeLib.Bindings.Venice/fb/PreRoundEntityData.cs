@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(112), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 112)]
 	public class PreRoundEntityData : 
 		GameEntityData
 	{
 		protected int m_RoundMaxPlayerCount = new int();
-		[ContainerField(96), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(3644312963)]
+		[ContainerField(Name: "RoundMaxPlayerCount", Offset: 96, NameHash: 3644312963, Flags: 49405), LayoutImmutable, Blittable]
 		public int RoundMaxPlayerCount { get { return m_RoundMaxPlayerCount; } set { if (OnPropertyChanging("PreRoundEntityData." + nameof(RoundMaxPlayerCount), this, m_RoundMaxPlayerCount, value)) m_RoundMaxPlayerCount = value; } } // 0x60 (96)
 		
 		protected uint m_RoundRestartCountdown = new uint();
-		[ContainerField(100), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(1048503553)]
+		[ContainerField(Name: "RoundRestartCountdown", Offset: 100, NameHash: 1048503553, Flags: 49421), LayoutImmutable, Blittable]
 		public uint RoundRestartCountdown { get { return m_RoundRestartCountdown; } set { if (OnPropertyChanging("PreRoundEntityData." + nameof(RoundRestartCountdown), this, m_RoundRestartCountdown, value)) m_RoundRestartCountdown = value; } } // 0x64 (100)
 		
 		protected int m_RoundMinPlayerCount = new int();
-		[ContainerField(104), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(1656551901)]
+		[ContainerField(Name: "RoundMinPlayerCount", Offset: 104, NameHash: 1656551901, Flags: 49405), LayoutImmutable, Blittable]
 		public int RoundMinPlayerCount { get { return m_RoundMinPlayerCount; } set { if (OnPropertyChanging("PreRoundEntityData." + nameof(RoundMinPlayerCount), this, m_RoundMinPlayerCount, value)) m_RoundMinPlayerCount = value; } } // 0x68 (104)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

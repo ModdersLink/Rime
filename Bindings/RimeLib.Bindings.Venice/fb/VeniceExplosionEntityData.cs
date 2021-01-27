@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(192), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 192)]
 	public class VeniceExplosionEntityData : 
 		ExplosionEntityData
 	{
 		protected float m_UnspottableTime = new float();
-		[ContainerField(176), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(985310797)]
+		[ContainerField(Name: "UnspottableTime", Offset: 176, NameHash: 985310797, Flags: 49469), LayoutImmutable, Blittable]
 		public float UnspottableTime { get { return m_UnspottableTime; } set { if (OnPropertyChanging("VeniceExplosionEntityData." + nameof(UnspottableTime), this, m_UnspottableTime, value)) m_UnspottableTime = value; } } // 0xB0 (176)
 		
 		protected bool m_UnspotsOnExplode = new bool();
-		[ContainerField(180), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(958509307)]
+		[ContainerField(Name: "UnspotsOnExplode", Offset: 180, NameHash: 958509307, Flags: 49325), LayoutImmutable, Blittable]
 		public bool UnspotsOnExplode { get { return m_UnspotsOnExplode; } set { if (OnPropertyChanging("VeniceExplosionEntityData." + nameof(UnspotsOnExplode), this, m_UnspotsOnExplode, value)) m_UnspotsOnExplode = value; } } // 0xB4 (180)
 		
 		protected bool m_SpotsOnExplode = new bool();
-		[ContainerField(181), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(516835456)]
+		[ContainerField(Name: "SpotsOnExplode", Offset: 181, NameHash: 516835456, Flags: 49325), LayoutImmutable, Blittable]
 		public bool SpotsOnExplode { get { return m_SpotsOnExplode; } set { if (OnPropertyChanging("VeniceExplosionEntityData." + nameof(SpotsOnExplode), this, m_SpotsOnExplode, value)) m_SpotsOnExplode = value; } } // 0xB5 (181)
 		
 		protected bool m_IsCausingSuppression = new bool();
-		[ContainerField(182), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(617259970)]
+		[ContainerField(Name: "IsCausingSuppression", Offset: 182, NameHash: 617259970, Flags: 49325), LayoutImmutable, Blittable]
 		public bool IsCausingSuppression { get { return m_IsCausingSuppression; } set { if (OnPropertyChanging("VeniceExplosionEntityData." + nameof(IsCausingSuppression), this, m_IsCausingSuppression, value)) m_IsCausingSuppression = value; } } // 0xB6 (182)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

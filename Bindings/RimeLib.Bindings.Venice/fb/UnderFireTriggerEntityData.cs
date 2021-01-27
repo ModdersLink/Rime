@@ -18,36 +18,36 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(144), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 144)]
 	public class UnderFireTriggerEntityData : 
 		TriggerEntityData
 	{
 		protected float m_Radius = new float();
-		[ContainerField(112), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3298407133)]
+		[ContainerField(Name: "Radius", Offset: 112, NameHash: 3298407133, Flags: 49469), LayoutImmutable, Blittable]
 		public float Radius { get { return m_Radius; } set { if (OnPropertyChanging("UnderFireTriggerEntityData." + nameof(Radius), this, m_Radius, value)) m_Radius = value; } } // 0x70 (112)
 		
 		protected float m_CoolDownTime = new float();
-		[ContainerField(116), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(282296301)]
+		[ContainerField(Name: "CoolDownTime", Offset: 116, NameHash: 282296301, Flags: 49469), LayoutImmutable, Blittable]
 		public float CoolDownTime { get { return m_CoolDownTime; } set { if (OnPropertyChanging("UnderFireTriggerEntityData." + nameof(CoolDownTime), this, m_CoolDownTime, value)) m_CoolDownTime = value; } } // 0x74 (116)
 		
 		protected CtrRef<MaterialContainerPair> m_TriggerOnMaterialOnly = new CtrRef<MaterialContainerPair>();
-		[ContainerField(120), MemberInfoFlag(53), ContainerFieldNameHash(3821487555), ContainerCtrRef]
+		[ContainerField(Name: "TriggerOnMaterialOnly", Offset: 120, NameHash: 3821487555, Flags: 53)]
 		public CtrRef<MaterialContainerPair> TriggerOnMaterialOnly { get { return m_TriggerOnMaterialOnly; } set { if (OnPropertyChanging("UnderFireTriggerEntityData." + nameof(TriggerOnMaterialOnly), this, m_TriggerOnMaterialOnly, value)) m_TriggerOnMaterialOnly = value; } } // 0x78 (120)
 		
 		protected AreaTriggerInclude m_TriggeredBy = new AreaTriggerInclude();
-		[ContainerField(124), MemberInfoFlag(137), ContainerFieldNameHash(1020865575)]
+		[ContainerField(Name: "TriggeredBy", Offset: 124, NameHash: 1020865575, Flags: 137)]
 		public AreaTriggerInclude TriggeredBy { get { return m_TriggeredBy; } set { if (OnPropertyChanging("UnderFireTriggerEntityData." + nameof(TriggeredBy), this, m_TriggeredBy, value)) m_TriggeredBy = value; } } // 0x7C (124)
 		
 		protected bool m_DisableIfTrackEntityIsLost = new bool();
-		[ContainerField(128), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1061491348)]
+		[ContainerField(Name: "DisableIfTrackEntityIsLost", Offset: 128, NameHash: 1061491348, Flags: 49325), LayoutImmutable, Blittable]
 		public bool DisableIfTrackEntityIsLost { get { return m_DisableIfTrackEntityIsLost; } set { if (OnPropertyChanging("UnderFireTriggerEntityData." + nameof(DisableIfTrackEntityIsLost), this, m_DisableIfTrackEntityIsLost, value)) m_DisableIfTrackEntityIsLost = value; } } // 0x80 (128)
 		
 		protected bool m_RandomYaw = new bool();
-		[ContainerField(129), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1799468081)]
+		[ContainerField(Name: "RandomYaw", Offset: 129, NameHash: 1799468081, Flags: 49325), LayoutImmutable, Blittable]
 		public bool RandomYaw { get { return m_RandomYaw; } set { if (OnPropertyChanging("UnderFireTriggerEntityData." + nameof(RandomYaw), this, m_RandomYaw, value)) m_RandomYaw = value; } } // 0x81 (129)
 		
 		protected bool m_IndicateHit = new bool();
-		[ContainerField(130), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1494915465)]
+		[ContainerField(Name: "IndicateHit", Offset: 130, NameHash: 1494915465, Flags: 49325), LayoutImmutable, Blittable]
 		public bool IndicateHit { get { return m_IndicateHit; } set { if (OnPropertyChanging("UnderFireTriggerEntityData." + nameof(IndicateHit), this, m_IndicateHit, value)) m_IndicateHit = value; } } // 0x82 (130)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

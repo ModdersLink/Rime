@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(144), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 144)]
 	public class BreakableModelEntityData : 
 		GamePhysicsEntityData
 	{
 		protected CtrRef<SurfaceShaderBaseAsset> m_DecalVolumeShader = new CtrRef<SurfaceShaderBaseAsset>();
-		[ContainerField(112), MemberInfoFlag(53), ContainerFieldNameHash(1251902379), ContainerCtrRef]
+		[ContainerField(Name: "DecalVolumeShader", Offset: 112, NameHash: 1251902379, Flags: 53)]
 		public CtrRef<SurfaceShaderBaseAsset> DecalVolumeShader { get { return m_DecalVolumeShader; } set { if (OnPropertyChanging("BreakableModelEntityData." + nameof(DecalVolumeShader), this, m_DecalVolumeShader, value)) m_DecalVolumeShader = value; } } // 0x70 (112)
 		
 		protected float m_DecalVolumeScaleFactor = new float();
-		[ContainerField(116), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3086740471)]
+		[ContainerField(Name: "DecalVolumeScaleFactor", Offset: 116, NameHash: 3086740471, Flags: 49469), LayoutImmutable, Blittable]
 		public float DecalVolumeScaleFactor { get { return m_DecalVolumeScaleFactor; } set { if (OnPropertyChanging("BreakableModelEntityData." + nameof(DecalVolumeScaleFactor), this, m_DecalVolumeScaleFactor, value)) m_DecalVolumeScaleFactor = value; } } // 0x74 (116)
 		
 		protected CtrRef<MeshAsset> m_Mesh = new CtrRef<MeshAsset>();
-		[ContainerField(120), MemberInfoFlag(53), ContainerFieldNameHash(2088783990), ContainerCtrRef]
+		[ContainerField(Name: "Mesh", Offset: 120, NameHash: 2088783990, Flags: 53)]
 		public CtrRef<MeshAsset> Mesh { get { return m_Mesh; } set { if (OnPropertyChanging("BreakableModelEntityData." + nameof(Mesh), this, m_Mesh, value)) m_Mesh = value; } } // 0x78 (120)
 		
 		protected uint m_BoneCount = new uint();
-		[ContainerField(124), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(939250912)]
+		[ContainerField(Name: "BoneCount", Offset: 124, NameHash: 939250912, Flags: 49421), LayoutImmutable, Blittable]
 		public uint BoneCount { get { return m_BoneCount; } set { if (OnPropertyChanging("BreakableModelEntityData." + nameof(BoneCount), this, m_BoneCount, value)) m_BoneCount = value; } } // 0x7C (124)
 		
 		protected CtrRef<EdgeModelLightMapData> m_EdgeModelLightMapData = new CtrRef<EdgeModelLightMapData>();
-		[ContainerField(128), MemberInfoFlag(53), ContainerFieldNameHash(863288475), ContainerCtrRef]
+		[ContainerField(Name: "EdgeModelLightMapData", Offset: 128, NameHash: 863288475, Flags: 53)]
 		public CtrRef<EdgeModelLightMapData> EdgeModelLightMapData { get { return m_EdgeModelLightMapData; } set { if (OnPropertyChanging("BreakableModelEntityData." + nameof(EdgeModelLightMapData), this, m_EdgeModelLightMapData, value)) m_EdgeModelLightMapData = value; } } // 0x80 (128)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

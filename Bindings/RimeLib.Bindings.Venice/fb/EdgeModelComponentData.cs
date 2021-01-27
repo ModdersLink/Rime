@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(112), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 112)]
 	public class EdgeModelComponentData : 
 		DestructionEdgeModelComponentData
 	{
 		protected RefArray<RigidMeshAsset> m_RigidMeshes = new RefArray<RigidMeshAsset>();
-		[ContainerField(96), MemberInfoFlag(65), ContainerFieldNameHash(3208409265), ContainerRefArray]
+		[ContainerField(Name: "RigidMeshes", Offset: 96, NameHash: 3208409265, Flags: 65)]
 		public RefArray<RigidMeshAsset> RigidMeshes { get { return m_RigidMeshes; } set { if (OnPropertyChanging("EdgeModelComponentData." + nameof(RigidMeshes), this, m_RigidMeshes, value)) m_RigidMeshes = value; } } // 0x60 (96)
 		
 		protected uint m_MaxInstanceCount = new uint();
-		[ContainerField(100), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(3587631771)]
+		[ContainerField(Name: "MaxInstanceCount", Offset: 100, NameHash: 3587631771, Flags: 49421), LayoutImmutable, Blittable]
 		public uint MaxInstanceCount { get { return m_MaxInstanceCount; } set { if (OnPropertyChanging("EdgeModelComponentData." + nameof(MaxInstanceCount), this, m_MaxInstanceCount, value)) m_MaxInstanceCount = value; } } // 0x64 (100)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

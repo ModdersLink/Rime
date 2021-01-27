@@ -18,13 +18,13 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(8), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 8)]
 	public class InterruptFlow : FrostbiteContainer
 	{
-		[ContainerField(0), MemberInfoFlag(137)]
+		[ContainerField(Name: "interruptEnum", Offset: 0, NameHash: 3295085585, Flags: 137)]
 		public UIInterruptID interruptEnum { get; set; } = new UIInterruptID(); // 0x0 (0)
 		
-		[ContainerField(4), MemberInfoFlag(53), ContainerCtrRef]
+		[ContainerField(Name: "interruptFlow", Offset: 4, NameHash: 3294905584, Flags: 53)]
 		public CtrRef<UIGraphAsset> interruptFlow { get; set; } = new CtrRef<UIGraphAsset>(); // 0x4 (4)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

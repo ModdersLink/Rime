@@ -18,48 +18,48 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(208), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 208)]
 	public class SpotLightEntityData : 
 		LocalLightEntityData
 	{
 		protected SpotLightShape m_Shape = new SpotLightShape();
-		[ContainerField(160), MemberInfoFlag(137), ContainerFieldNameHash(231753450)]
+		[ContainerField(Name: "Shape", Offset: 160, NameHash: 231753450, Flags: 137)]
 		public SpotLightShape Shape { get { return m_Shape; } set { if (OnPropertyChanging("SpotLightEntityData." + nameof(Shape), this, m_Shape, value)) m_Shape = value; } } // 0xA0 (160)
 		
 		protected float m_ConeInnerAngle = new float();
-		[ContainerField(164), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3810873469)]
+		[ContainerField(Name: "ConeInnerAngle", Offset: 164, NameHash: 3810873469, Flags: 49469), LayoutImmutable, Blittable]
 		public float ConeInnerAngle { get { return m_ConeInnerAngle; } set { if (OnPropertyChanging("SpotLightEntityData." + nameof(ConeInnerAngle), this, m_ConeInnerAngle, value)) m_ConeInnerAngle = value; } } // 0xA4 (164)
 		
 		protected float m_ConeOuterAngle = new float();
-		[ContainerField(168), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3019106938)]
+		[ContainerField(Name: "ConeOuterAngle", Offset: 168, NameHash: 3019106938, Flags: 49469), LayoutImmutable, Blittable]
 		public float ConeOuterAngle { get { return m_ConeOuterAngle; } set { if (OnPropertyChanging("SpotLightEntityData." + nameof(ConeOuterAngle), this, m_ConeOuterAngle, value)) m_ConeOuterAngle = value; } } // 0xA8 (168)
 		
 		protected float m_FrustumFov = new float();
-		[ContainerField(172), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3985893604)]
+		[ContainerField(Name: "FrustumFov", Offset: 172, NameHash: 3985893604, Flags: 49469), LayoutImmutable, Blittable]
 		public float FrustumFov { get { return m_FrustumFov; } set { if (OnPropertyChanging("SpotLightEntityData." + nameof(FrustumFov), this, m_FrustumFov, value)) m_FrustumFov = value; } } // 0xAC (172)
 		
 		protected float m_FrustumAspect = new float();
-		[ContainerField(176), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3695152459)]
+		[ContainerField(Name: "FrustumAspect", Offset: 176, NameHash: 3695152459, Flags: 49469), LayoutImmutable, Blittable]
 		public float FrustumAspect { get { return m_FrustumAspect; } set { if (OnPropertyChanging("SpotLightEntityData." + nameof(FrustumAspect), this, m_FrustumAspect, value)) m_FrustumAspect = value; } } // 0xB0 (176)
 		
 		protected float m_OrthoWidth = new float();
-		[ContainerField(180), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2723884589)]
+		[ContainerField(Name: "OrthoWidth", Offset: 180, NameHash: 2723884589, Flags: 49469), LayoutImmutable, Blittable]
 		public float OrthoWidth { get { return m_OrthoWidth; } set { if (OnPropertyChanging("SpotLightEntityData." + nameof(OrthoWidth), this, m_OrthoWidth, value)) m_OrthoWidth = value; } } // 0xB4 (180)
 		
 		protected float m_OrthoHeight = new float();
-		[ContainerField(184), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3103292980)]
+		[ContainerField(Name: "OrthoHeight", Offset: 184, NameHash: 3103292980, Flags: 49469), LayoutImmutable, Blittable]
 		public float OrthoHeight { get { return m_OrthoHeight; } set { if (OnPropertyChanging("SpotLightEntityData." + nameof(OrthoHeight), this, m_OrthoHeight, value)) m_OrthoHeight = value; } } // 0xB8 (184)
 		
 		protected CtrRef<TextureAsset> m_Texture = new CtrRef<TextureAsset>();
-		[ContainerField(188), MemberInfoFlag(53), ContainerFieldNameHash(3185041626), ContainerCtrRef]
+		[ContainerField(Name: "Texture", Offset: 188, NameHash: 3185041626, Flags: 53)]
 		public CtrRef<TextureAsset> Texture { get { return m_Texture; } set { if (OnPropertyChanging("SpotLightEntityData." + nameof(Texture), this, m_Texture, value)) m_Texture = value; } } // 0xBC (188)
 		
 		protected QualityLevel m_CastShadowsMinLevel = new QualityLevel();
-		[ContainerField(192), MemberInfoFlag(137), ContainerFieldNameHash(1169958953)]
+		[ContainerField(Name: "CastShadowsMinLevel", Offset: 192, NameHash: 1169958953, Flags: 137)]
 		public QualityLevel CastShadowsMinLevel { get { return m_CastShadowsMinLevel; } set { if (OnPropertyChanging("SpotLightEntityData." + nameof(CastShadowsMinLevel), this, m_CastShadowsMinLevel, value)) m_CastShadowsMinLevel = value; } } // 0xC0 (192)
 		
 		protected bool m_CastShadowsEnable = new bool();
-		[ContainerField(196), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3967009076)]
+		[ContainerField(Name: "CastShadowsEnable", Offset: 196, NameHash: 3967009076, Flags: 49325), LayoutImmutable, Blittable]
 		public bool CastShadowsEnable { get { return m_CastShadowsEnable; } set { if (OnPropertyChanging("SpotLightEntityData." + nameof(CastShadowsEnable), this, m_CastShadowsEnable, value)) m_CastShadowsEnable = value; } } // 0xC4 (196)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

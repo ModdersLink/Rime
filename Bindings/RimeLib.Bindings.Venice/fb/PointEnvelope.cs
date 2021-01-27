@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(12), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 12)]
 	public class PointEnvelope : 
 		DataContainer
 	{
 		protected List<PointEnvelopePoint> m_Points = new List<PointEnvelopePoint>();
-		[ContainerField(8), MemberInfoFlag(65), ContainerFieldNameHash(3383606106), ContainerArray]
+		[ContainerField(Name: "Points", Offset: 8, NameHash: 3383606106, Flags: 65)]
 		public List<PointEnvelopePoint> Points { get { return m_Points; } set { if (OnPropertyChanging("PointEnvelope." + nameof(Points), this, m_Points, value)) m_Points = value; } } // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

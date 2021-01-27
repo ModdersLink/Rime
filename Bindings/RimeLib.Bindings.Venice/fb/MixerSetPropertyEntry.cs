@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(32), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 32)]
 	public class MixerSetPropertyEntry : 
 		AudioGraphNodePortGroup
 	{
 		protected AudioGraphNodePort m_In = new AudioGraphNodePort();
-		[ContainerField(8), MemberInfoFlag(41), ContainerFieldNameHash(5862146)]
+		[ContainerField(Name: "In", Offset: 8, NameHash: 5862146, Flags: 41)]
 		public AudioGraphNodePort In { get { return m_In; } set { if (OnPropertyChanging("MixerSetPropertyEntry." + nameof(In), this, m_In, value)) m_In = value; } } // 0x8 (8)
 		
 		protected uint m_Target = new uint();
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(3215022804)]
+		[ContainerField(Name: "Target", Offset: 16, NameHash: 3215022804, Flags: 49421), LayoutImmutable, Blittable]
 		public uint Target { get { return m_Target; } set { if (OnPropertyChanging("MixerSetPropertyEntry." + nameof(Target), this, m_Target, value)) m_Target = value; } } // 0x10 (16)
 		
 		protected CtrRef<MixGroup> m_Group = new CtrRef<MixGroup>();
-		[ContainerField(20), MemberInfoFlag(53), ContainerFieldNameHash(208130522), ContainerCtrRef]
+		[ContainerField(Name: "Group", Offset: 20, NameHash: 208130522, Flags: 53)]
 		public CtrRef<MixGroup> Group { get { return m_Group; } set { if (OnPropertyChanging("MixerSetPropertyEntry." + nameof(Group), this, m_Group, value)) m_Group = value; } } // 0x14 (20)
 		
 		protected float m_AttackTime = new float();
-		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1150936440)]
+		[ContainerField(Name: "AttackTime", Offset: 24, NameHash: 1150936440, Flags: 49469), LayoutImmutable, Blittable]
 		public float AttackTime { get { return m_AttackTime; } set { if (OnPropertyChanging("MixerSetPropertyEntry." + nameof(AttackTime), this, m_AttackTime, value)) m_AttackTime = value; } } // 0x18 (24)
 		
 		protected float m_ReleaseTime = new float();
-		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(892319833)]
+		[ContainerField(Name: "ReleaseTime", Offset: 28, NameHash: 892319833, Flags: 49469), LayoutImmutable, Blittable]
 		public float ReleaseTime { get { return m_ReleaseTime; } set { if (OnPropertyChanging("MixerSetPropertyEntry." + nameof(ReleaseTime), this, m_ReleaseTime, value)) m_ReleaseTime = value; } } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

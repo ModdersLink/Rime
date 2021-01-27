@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(128), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 128)]
 	public class TerrainEntityData : 
 		GamePhysicsEntityData
 	{
 		protected CtrRef<TerrainData> m_TerrainAsset = new CtrRef<TerrainData>();
-		[ContainerField(112), MemberInfoFlag(53), ContainerFieldNameHash(84434530), ContainerCtrRef]
+		[ContainerField(Name: "TerrainAsset", Offset: 112, NameHash: 84434530, Flags: 53)]
 		public CtrRef<TerrainData> TerrainAsset { get { return m_TerrainAsset; } set { if (OnPropertyChanging("TerrainEntityData." + nameof(TerrainAsset), this, m_TerrainAsset, value)) m_TerrainAsset = value; } } // 0x70 (112)
 		
 		protected CtrRef<MaterialContainerPair> m_WaterMaterial = new CtrRef<MaterialContainerPair>();
-		[ContainerField(116), MemberInfoFlag(53), ContainerFieldNameHash(2658409947), ContainerCtrRef]
+		[ContainerField(Name: "WaterMaterial", Offset: 116, NameHash: 2658409947, Flags: 53)]
 		public CtrRef<MaterialContainerPair> WaterMaterial { get { return m_WaterMaterial; } set { if (OnPropertyChanging("TerrainEntityData." + nameof(WaterMaterial), this, m_WaterMaterial, value)) m_WaterMaterial = value; } } // 0x74 (116)
 		
 		protected bool m_Visible = new bool();
-		[ContainerField(120), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(901540267)]
+		[ContainerField(Name: "Visible", Offset: 120, NameHash: 901540267, Flags: 49325), LayoutImmutable, Blittable]
 		public bool Visible { get { return m_Visible; } set { if (OnPropertyChanging("TerrainEntityData." + nameof(Visible), this, m_Visible, value)) m_Visible = value; } } // 0x78 (120)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

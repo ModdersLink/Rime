@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(1), MemberInfoFlag(41), ContainerSize(3), ContainerStruct]
+	[ContainerType(Alignment: 1,  Flags: 41, Size: 3)]
 	public class SoundGraphPluginRef : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "IsValid", Offset: 0, NameHash: 2741198505, Flags: 49325), LayoutImmutable, Blittable]
 		public bool IsValid { get; set; } // 0x0 (0)
 		
-		[ContainerField(1), LayoutImmutable, Blittable, MemberInfoFlag(49341)]
+		[ContainerField(Name: "VoiceIndex", Offset: 1, NameHash: 785984109, Flags: 49341), LayoutImmutable, Blittable]
 		public sbyte VoiceIndex { get; set; } // 0x1 (1)
 		
-		[ContainerField(2), LayoutImmutable, Blittable, MemberInfoFlag(49341)]
+		[ContainerField(Name: "PluginIndex", Offset: 2, NameHash: 2855577170, Flags: 49341), LayoutImmutable, Blittable]
 		public sbyte PluginIndex { get; set; } // 0x2 (2)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

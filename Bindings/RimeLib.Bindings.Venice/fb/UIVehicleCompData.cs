@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(32), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 32)]
 	public class UIVehicleCompData : 
 		UIComponentData
 	{
 		protected int m_RangeMeterUpdatesPerSecond = new int();
-		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49405), ContainerFieldNameHash(2500462308)]
+		[ContainerField(Name: "RangeMeterUpdatesPerSecond", Offset: 28, NameHash: 2500462308, Flags: 49405), LayoutImmutable, Blittable]
 		public int RangeMeterUpdatesPerSecond { get { return m_RangeMeterUpdatesPerSecond; } set { if (OnPropertyChanging("UIVehicleCompData." + nameof(RangeMeterUpdatesPerSecond), this, m_RangeMeterUpdatesPerSecond, value)) m_RangeMeterUpdatesPerSecond = value; } } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

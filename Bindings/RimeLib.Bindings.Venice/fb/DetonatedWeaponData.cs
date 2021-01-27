@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(24), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 24)]
 	public class DetonatedWeaponData : 
 		WeaponData
 	{
 		protected CtrRef<LockingControllerData> m_LockingController = new CtrRef<LockingControllerData>();
-		[ContainerField(16), MemberInfoFlag(53), ContainerFieldNameHash(1783566994), ContainerCtrRef]
+		[ContainerField(Name: "LockingController", Offset: 16, NameHash: 1783566994, Flags: 53)]
 		public CtrRef<LockingControllerData> LockingController { get { return m_LockingController; } set { if (OnPropertyChanging("DetonatedWeaponData." + nameof(LockingController), this, m_LockingController, value)) m_LockingController = value; } } // 0x10 (16)
 		
 		protected float m_Range = new float();
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(230112826)]
+		[ContainerField(Name: "Range", Offset: 20, NameHash: 230112826, Flags: 49469), LayoutImmutable, Blittable]
 		public float Range { get { return m_Range; } set { if (OnPropertyChanging("DetonatedWeaponData." + nameof(Range), this, m_Range, value)) m_Range = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

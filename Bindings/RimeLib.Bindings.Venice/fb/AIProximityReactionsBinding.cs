@@ -18,49 +18,49 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(56), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 56)]
 	public class AIProximityReactionsBinding : FrostbiteContainer
 	{
-		[ContainerField(0), MemberInfoFlag(41)]
+		[ContainerField(Name: "AIReaction", Offset: 0, NameHash: 419848388, Flags: 41)]
 		public AntRef AIReaction { get; set; } = new AntRef(); // 0x0 (0)
 		
-		[ContainerField(4), MemberInfoFlag(41)]
+		[ContainerField(Name: "AIExplosionReaction", Offset: 4, NameHash: 2129752945, Flags: 41)]
 		public AntRef AIExplosionReaction { get; set; } = new AntRef(); // 0x4 (4)
 		
-		[ContainerField(8), MemberInfoFlag(41)]
+		[ContainerField(Name: "AIExplosionForce", Offset: 8, NameHash: 2244860293, Flags: 41)]
 		public AntRef AIExplosionForce { get; set; } = new AntRef(); // 0x8 (8)
 		
-		[ContainerField(12), MemberInfoFlag(41)]
+		[ContainerField(Name: "AIStunReaction", Offset: 12, NameHash: 3419931640, Flags: 41)]
 		public AntRef AIStunReaction { get; set; } = new AntRef(); // 0xC (12)
 		
-		[ContainerField(16), MemberInfoFlag(41)]
+		[ContainerField(Name: "AIStunReactionRandomFactor", Offset: 16, NameHash: 382567182, Flags: 41)]
 		public AntRef AIStunReactionRandomFactor { get; set; } = new AntRef(); // 0x10 (16)
 		
-		[ContainerField(20), MemberInfoFlag(41)]
+		[ContainerField(Name: "AIReactionDirection", Offset: 20, NameHash: 2704201761, Flags: 41)]
 		public AntRef AIReactionDirection { get; set; } = new AntRef(); // 0x14 (20)
 		
-		[ContainerField(24), MemberInfoFlag(41)]
+		[ContainerField(Name: "FireNearby", Offset: 24, NameHash: 39716990, Flags: 41)]
 		public AntRef FireNearby { get; set; } = new AntRef(); // 0x18 (24)
 		
-		[ContainerField(28), MemberInfoFlag(41)]
+		[ContainerField(Name: "AimUpAndDown", Offset: 28, NameHash: 1716632252, Flags: 41)]
 		public AntRef AimUpAndDown { get; set; } = new AntRef(); // 0x1C (28)
 		
-		[ContainerField(32), MemberInfoFlag(41)]
+		[ContainerField(Name: "FocusAimScale", Offset: 32, NameHash: 1524585044, Flags: 41)]
 		public AntRef FocusAimScale { get; set; } = new AntRef(); // 0x20 (32)
 		
-		[ContainerField(36), MemberInfoFlag(41)]
+		[ContainerField(Name: "FocusAiming", Offset: 36, NameHash: 3361584780, Flags: 41)]
 		public AntRef FocusAiming { get; set; } = new AntRef(); // 0x24 (36)
 		
-		[ContainerField(40), MemberInfoFlag(41)]
+		[ContainerField(Name: "EnableProceduralHeadAim", Offset: 40, NameHash: 2283438924, Flags: 41)]
 		public AntRef EnableProceduralHeadAim { get; set; } = new AntRef(); // 0x28 (40)
 		
-		[ContainerField(44), MemberInfoFlag(41)]
+		[ContainerField(Name: "KillFromAnimation", Offset: 44, NameHash: 1941020071, Flags: 41)]
 		public AntRef KillFromAnimation { get; set; } = new AntRef(); // 0x2C (44)
 		
-		[ContainerField(48), MemberInfoFlag(41)]
+		[ContainerField(Name: "PlayerAnimationKill", Offset: 48, NameHash: 1965517602, Flags: 41)]
 		public AntRef PlayerAnimationKill { get; set; } = new AntRef(); // 0x30 (48)
 		
-		[ContainerField(52), MemberInfoFlag(41)]
+		[ContainerField(Name: "PlayerInitiatedRagdoll", Offset: 52, NameHash: 1275134830, Flags: 41)]
 		public AntRef PlayerInitiatedRagdoll { get; set; } = new AntRef(); // 0x34 (52)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

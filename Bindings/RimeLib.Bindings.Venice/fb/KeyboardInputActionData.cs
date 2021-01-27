@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(16), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
 	public class KeyboardInputActionData : 
 		InputActionData
 	{
 		protected InputDeviceKeys m_Key = new InputDeviceKeys();
-		[ContainerField(12), MemberInfoFlag(137), ContainerFieldNameHash(193457490)]
+		[ContainerField(Name: "Key", Offset: 12, NameHash: 193457490, Flags: 137)]
 		public InputDeviceKeys Key { get { return m_Key; } set { if (OnPropertyChanging("KeyboardInputActionData." + nameof(Key), this, m_Key, value)) m_Key = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(168), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 168)]
 	public class UIInteractionCompData : 
 		UI3dIconCompData
 	{
 		protected float m_RepairSnapDistance = new float();
-		[ContainerField(160), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(619854519)]
+		[ContainerField(Name: "RepairSnapDistance", Offset: 160, NameHash: 619854519, Flags: 49469), LayoutImmutable, Blittable]
 		public float RepairSnapDistance { get { return m_RepairSnapDistance; } set { if (OnPropertyChanging("UIInteractionCompData." + nameof(RepairSnapDistance), this, m_RepairSnapDistance, value)) m_RepairSnapDistance = value; } } // 0xA0 (160)
 		
 		protected bool m_RepairSnapCircle = new bool();
-		[ContainerField(164), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(4082184934)]
+		[ContainerField(Name: "RepairSnapCircle", Offset: 164, NameHash: 4082184934, Flags: 49325), LayoutImmutable, Blittable]
 		public bool RepairSnapCircle { get { return m_RepairSnapCircle; } set { if (OnPropertyChanging("UIInteractionCompData." + nameof(RepairSnapCircle), this, m_RepairSnapCircle, value)) m_RepairSnapCircle = value; } } // 0xA4 (164)
 		
 		protected bool m_PickupShrinkSnap = new bool();
-		[ContainerField(165), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1291739672)]
+		[ContainerField(Name: "PickupShrinkSnap", Offset: 165, NameHash: 1291739672, Flags: 49325), LayoutImmutable, Blittable]
 		public bool PickupShrinkSnap { get { return m_PickupShrinkSnap; } set { if (OnPropertyChanging("UIInteractionCompData." + nameof(PickupShrinkSnap), this, m_PickupShrinkSnap, value)) m_PickupShrinkSnap = value; } } // 0xA5 (165)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

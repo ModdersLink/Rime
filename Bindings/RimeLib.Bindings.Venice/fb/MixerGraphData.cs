@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(40), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 40)]
 	public class MixerGraphData : 
 		AudioGraphData
 	{
 		protected RefArray<AudioGraphParameter> m_Inputs = new RefArray<AudioGraphParameter>();
-		[ContainerField(28), MemberInfoFlag(65), ContainerFieldNameHash(2784267136), ContainerRefArray]
+		[ContainerField(Name: "Inputs", Offset: 28, NameHash: 2784267136, Flags: 65)]
 		public RefArray<AudioGraphParameter> Inputs { get { return m_Inputs; } set { if (OnPropertyChanging("MixerGraphData." + nameof(Inputs), this, m_Inputs, value)) m_Inputs = value; } } // 0x1C (28)
 		
 		protected List<MixerValueAccumulateMode> m_AccumulateModes = new List<MixerValueAccumulateMode>();
-		[ContainerField(32), MemberInfoFlag(65), ContainerFieldNameHash(918507941), ContainerArray]
+		[ContainerField(Name: "AccumulateModes", Offset: 32, NameHash: 918507941, Flags: 65)]
 		public List<MixerValueAccumulateMode> AccumulateModes { get { return m_AccumulateModes; } set { if (OnPropertyChanging("MixerGraphData." + nameof(AccumulateModes), this, m_AccumulateModes, value)) m_AccumulateModes = value; } } // 0x20 (32)
 		
 		protected RefArray<AudioGraphParameter> m_Outputs = new RefArray<AudioGraphParameter>();
-		[ContainerField(36), MemberInfoFlag(65), ContainerFieldNameHash(1070022089), ContainerRefArray]
+		[ContainerField(Name: "Outputs", Offset: 36, NameHash: 1070022089, Flags: 65)]
 		public RefArray<AudioGraphParameter> Outputs { get { return m_Outputs; } set { if (OnPropertyChanging("MixerGraphData." + nameof(Outputs), this, m_Outputs, value)) m_Outputs = value; } } // 0x24 (36)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

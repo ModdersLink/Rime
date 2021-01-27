@@ -18,22 +18,22 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(20), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 20)]
 	public class WeaponLagBinding : FrostbiteContainer
 	{
-		[ContainerField(0), MemberInfoFlag(41)]
+		[ContainerField(Name: "EntityPitch", Offset: 0, NameHash: 177871704, Flags: 41)]
 		public AntRef EntityPitch { get; set; } = new AntRef(); // 0x0 (0)
 		
-		[ContainerField(4), MemberInfoFlag(41)]
+		[ContainerField(Name: "EntityYaw", Offset: 4, NameHash: 572027185, Flags: 41)]
 		public AntRef EntityYaw { get; set; } = new AntRef(); // 0x4 (4)
 		
-		[ContainerField(8), MemberInfoFlag(41)]
+		[ContainerField(Name: "PitchResult", Offset: 8, NameHash: 1982335530, Flags: 41)]
 		public AntRef PitchResult { get; set; } = new AntRef(); // 0x8 (8)
 		
-		[ContainerField(12), MemberInfoFlag(41)]
+		[ContainerField(Name: "YawResult", Offset: 12, NameHash: 2023530371, Flags: 41)]
 		public AntRef YawResult { get; set; } = new AntRef(); // 0xC (12)
 		
-		[ContainerField(16), MemberInfoFlag(41)]
+		[ContainerField(Name: "RollResult", Offset: 16, NameHash: 1227528625, Flags: 41)]
 		public AntRef RollResult { get; set; } = new AntRef(); // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

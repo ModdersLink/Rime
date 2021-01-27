@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(20), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 20)]
 	public class SoldierSpawnKitTemplateData : 
 		Asset
 	{
 		protected uint m_Kit = new uint();
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(193457363)]
+		[ContainerField(Name: "Kit", Offset: 12, NameHash: 193457363, Flags: 49421), LayoutImmutable, Blittable]
 		public uint Kit { get { return m_Kit; } set { if (OnPropertyChanging("SoldierSpawnKitTemplateData." + nameof(Kit), this, m_Kit, value)) m_Kit = value; } } // 0xC (12)
 		
 		protected uint m_MainGun = new uint();
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(1295556050)]
+		[ContainerField(Name: "MainGun", Offset: 16, NameHash: 1295556050, Flags: 49421), LayoutImmutable, Blittable]
 		public uint MainGun { get { return m_MainGun; } set { if (OnPropertyChanging("SoldierSpawnKitTemplateData." + nameof(MainGun), this, m_MainGun, value)) m_MainGun = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

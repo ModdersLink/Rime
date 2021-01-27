@@ -18,10 +18,10 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(4), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 4)]
 	public class EditableActions : FrostbiteContainer
 	{
-		[ContainerField(0), MemberInfoFlag(65), ContainerRefArray]
+		[ContainerField(Name: "Actions", Offset: 0, NameHash: 373511656, Flags: 65)]
 		public RefArray<EditableAction> Actions { get; set; } = new RefArray<EditableAction>(); // 0x0 (0)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

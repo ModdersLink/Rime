@@ -18,36 +18,36 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(64), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 64)]
 	public class MissionObjectiveHudData : 
 		DataContainer
 	{
 		protected Vec3 m_CameraPosition = new Vec3();
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(1421454469)]
+		[ContainerField(Name: "CameraPosition", Offset: 16, NameHash: 1421454469, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 CameraPosition { get { return m_CameraPosition; } set { if (OnPropertyChanging("MissionObjectiveHudData." + nameof(CameraPosition), this, m_CameraPosition, value)) m_CameraPosition = value; } } // 0x10 (16)
 		
 		protected Vec2 m_HorizontalBoundaries = new Vec2();
-		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(2977590629)]
+		[ContainerField(Name: "HorizontalBoundaries", Offset: 32, NameHash: 2977590629, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec2 HorizontalBoundaries { get { return m_HorizontalBoundaries; } set { if (OnPropertyChanging("MissionObjectiveHudData." + nameof(HorizontalBoundaries), this, m_HorizontalBoundaries, value)) m_HorizontalBoundaries = value; } } // 0x20 (32)
 		
 		protected Vec2 m_VerticalBoundaries = new Vec2();
-		[ContainerField(40), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(402891209)]
+		[ContainerField(Name: "VerticalBoundaries", Offset: 40, NameHash: 402891209, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec2 VerticalBoundaries { get { return m_VerticalBoundaries; } set { if (OnPropertyChanging("MissionObjectiveHudData." + nameof(VerticalBoundaries), this, m_VerticalBoundaries, value)) m_VerticalBoundaries = value; } } // 0x28 (40)
 		
 		protected float m_CameraRotation = new float();
-		[ContainerField(48), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2168484520)]
+		[ContainerField(Name: "CameraRotation", Offset: 48, NameHash: 2168484520, Flags: 49469), LayoutImmutable, Blittable]
 		public float CameraRotation { get { return m_CameraRotation; } set { if (OnPropertyChanging("MissionObjectiveHudData." + nameof(CameraRotation), this, m_CameraRotation, value)) m_CameraRotation = value; } } // 0x30 (48)
 		
 		protected float m_CameraFov = new float();
-		[ContainerField(52), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1789541379)]
+		[ContainerField(Name: "CameraFov", Offset: 52, NameHash: 1789541379, Flags: 49469), LayoutImmutable, Blittable]
 		public float CameraFov { get { return m_CameraFov; } set { if (OnPropertyChanging("MissionObjectiveHudData." + nameof(CameraFov), this, m_CameraFov, value)) m_CameraFov = value; } } // 0x34 (52)
 		
 		protected float m_CameraLookDistance = new float();
-		[ContainerField(56), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3115939832)]
+		[ContainerField(Name: "CameraLookDistance", Offset: 56, NameHash: 3115939832, Flags: 49469), LayoutImmutable, Blittable]
 		public float CameraLookDistance { get { return m_CameraLookDistance; } set { if (OnPropertyChanging("MissionObjectiveHudData." + nameof(CameraLookDistance), this, m_CameraLookDistance, value)) m_CameraLookDistance = value; } } // 0x38 (56)
 		
 		protected float m_CameraDistance = new float();
-		[ContainerField(60), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3954324415)]
+		[ContainerField(Name: "CameraDistance", Offset: 60, NameHash: 3954324415, Flags: 49469), LayoutImmutable, Blittable]
 		public float CameraDistance { get { return m_CameraDistance; } set { if (OnPropertyChanging("MissionObjectiveHudData." + nameof(CameraDistance), this, m_CameraDistance, value)) m_CameraDistance = value; } } // 0x3C (60)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

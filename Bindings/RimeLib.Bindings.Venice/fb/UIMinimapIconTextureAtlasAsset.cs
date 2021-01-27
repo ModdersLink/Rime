@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(20), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 20)]
 	public class UIMinimapIconTextureAtlasAsset : 
 		Asset
 	{
 		protected List<UIMinimapIconTexture> m_Icons = new List<UIMinimapIconTexture>();
-		[ContainerField(12), MemberInfoFlag(65), ContainerFieldNameHash(214893277), ContainerArray]
+		[ContainerField(Name: "Icons", Offset: 12, NameHash: 214893277, Flags: 65)]
 		public List<UIMinimapIconTexture> Icons { get { return m_Icons; } set { if (OnPropertyChanging("UIMinimapIconTextureAtlasAsset." + nameof(Icons), this, m_Icons, value)) m_Icons = value; } } // 0xC (12)
 		
 		protected CtrRef<TextureAsset> m_TextureAtlas = new CtrRef<TextureAsset>();
-		[ContainerField(16), MemberInfoFlag(53), ContainerFieldNameHash(2162950897), ContainerCtrRef]
+		[ContainerField(Name: "TextureAtlas", Offset: 16, NameHash: 2162950897, Flags: 53)]
 		public CtrRef<TextureAsset> TextureAtlas { get { return m_TextureAtlas; } set { if (OnPropertyChanging("UIMinimapIconTextureAtlasAsset." + nameof(TextureAtlas), this, m_TextureAtlas, value)) m_TextureAtlas = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

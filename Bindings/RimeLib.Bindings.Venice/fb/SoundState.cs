@@ -18,44 +18,44 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(44), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 44)]
 	public class SoundState : 
 		DataContainer
 	{
 		protected string m_Name = string.Empty;
-		[ContainerField(8), LayoutImmutable, MemberInfoFlag(16509), ContainerFieldNameHash(2088949890)]
+		[ContainerField(Name: "Name", Offset: 8, NameHash: 2088949890, Flags: 16509), LayoutImmutable]
 		public string Name { get { return m_Name; } set { if (OnPropertyChanging("SoundState." + nameof(Name), this, m_Name, value)) m_Name = value; } } // 0x8 (8)
 		
 		protected float m_LpCutoffFrequency = new float();
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(414264080)]
+		[ContainerField(Name: "LpCutoffFrequency", Offset: 12, NameHash: 414264080, Flags: 49469), LayoutImmutable, Blittable]
 		public float LpCutoffFrequency { get { return m_LpCutoffFrequency; } set { if (OnPropertyChanging("SoundState." + nameof(LpCutoffFrequency), this, m_LpCutoffFrequency, value)) m_LpCutoffFrequency = value; } } // 0xC (12)
 		
 		protected float m_Duration = new float();
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1828507227)]
+		[ContainerField(Name: "Duration", Offset: 16, NameHash: 1828507227, Flags: 49469), LayoutImmutable, Blittable]
 		public float Duration { get { return m_Duration; } set { if (OnPropertyChanging("SoundState." + nameof(Duration), this, m_Duration, value)) m_Duration = value; } } // 0x10 (16)
 		
 		protected float m_FadeInTime = new float();
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1781703921)]
+		[ContainerField(Name: "FadeInTime", Offset: 20, NameHash: 1781703921, Flags: 49469), LayoutImmutable, Blittable]
 		public float FadeInTime { get { return m_FadeInTime; } set { if (OnPropertyChanging("SoundState." + nameof(FadeInTime), this, m_FadeInTime, value)) m_FadeInTime = value; } } // 0x14 (20)
 		
 		protected float m_FadeOutTime = new float();
-		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1285109176)]
+		[ContainerField(Name: "FadeOutTime", Offset: 24, NameHash: 1285109176, Flags: 49469), LayoutImmutable, Blittable]
 		public float FadeOutTime { get { return m_FadeOutTime; } set { if (OnPropertyChanging("SoundState." + nameof(FadeOutTime), this, m_FadeOutTime, value)) m_FadeOutTime = value; } } // 0x18 (24)
 		
 		protected CtrRef<SoundAsset> m_BypassSound = new CtrRef<SoundAsset>();
-		[ContainerField(28), MemberInfoFlag(53), ContainerFieldNameHash(1531107980), ContainerCtrRef]
+		[ContainerField(Name: "BypassSound", Offset: 28, NameHash: 1531107980, Flags: 53)]
 		public CtrRef<SoundAsset> BypassSound { get { return m_BypassSound; } set { if (OnPropertyChanging("SoundState." + nameof(BypassSound), this, m_BypassSound, value)) m_BypassSound = value; } } // 0x1C (28)
 		
 		protected CtrRef<HdrSetting> m_HdrSetting = new CtrRef<HdrSetting>();
-		[ContainerField(32), MemberInfoFlag(53), ContainerFieldNameHash(1761163949), ContainerCtrRef]
+		[ContainerField(Name: "HdrSetting", Offset: 32, NameHash: 1761163949, Flags: 53)]
 		public CtrRef<HdrSetting> HdrSetting { get { return m_HdrSetting; } set { if (OnPropertyChanging("SoundState." + nameof(HdrSetting), this, m_HdrSetting, value)) m_HdrSetting = value; } } // 0x20 (32)
 		
 		protected CtrRef<MixerAsset> m_Mixer = new CtrRef<MixerAsset>();
-		[ContainerField(36), MemberInfoFlag(53), ContainerFieldNameHash(209965422), ContainerCtrRef]
+		[ContainerField(Name: "Mixer", Offset: 36, NameHash: 209965422, Flags: 53)]
 		public CtrRef<MixerAsset> Mixer { get { return m_Mixer; } set { if (OnPropertyChanging("SoundState." + nameof(Mixer), this, m_Mixer, value)) m_Mixer = value; } } // 0x24 (36)
 		
 		protected bool m_FadeSound = new bool();
-		[ContainerField(40), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3181011744)]
+		[ContainerField(Name: "FadeSound", Offset: 40, NameHash: 3181011744, Flags: 49325), LayoutImmutable, Blittable]
 		public bool FadeSound { get { return m_FadeSound; } set { if (OnPropertyChanging("SoundState." + nameof(FadeSound), this, m_FadeSound, value)) m_FadeSound = value; } } // 0x28 (40)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

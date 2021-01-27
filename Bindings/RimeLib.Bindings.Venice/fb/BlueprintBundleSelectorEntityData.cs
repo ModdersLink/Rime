@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(112), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 112)]
 	public class BlueprintBundleSelectorEntityData : 
 		GameEntityData
 	{
 		protected CtrRef<SpawnEntitySelector> m_BlueprintSelector = new CtrRef<SpawnEntitySelector>();
-		[ContainerField(96), MemberInfoFlag(53), ContainerFieldNameHash(4244087711), ContainerCtrRef]
+		[ContainerField(Name: "BlueprintSelector", Offset: 96, NameHash: 4244087711, Flags: 53)]
 		public CtrRef<SpawnEntitySelector> BlueprintSelector { get { return m_BlueprintSelector; } set { if (OnPropertyChanging("BlueprintBundleSelectorEntityData." + nameof(BlueprintSelector), this, m_BlueprintSelector, value)) m_BlueprintSelector = value; } } // 0x60 (96)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

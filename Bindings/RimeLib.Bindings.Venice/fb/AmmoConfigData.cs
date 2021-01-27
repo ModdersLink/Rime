@@ -18,34 +18,34 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(36), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 36)]
 	public class AmmoConfigData : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, Blittable, MemberInfoFlag(49405)]
+		[ContainerField(Name: "MagazineCapacity", Offset: 0, NameHash: 1634670339, Flags: 49405), LayoutImmutable, Blittable]
 		public int MagazineCapacity { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), LayoutImmutable, Blittable, MemberInfoFlag(49405)]
+		[ContainerField(Name: "NumberOfMagazines", Offset: 4, NameHash: 2684433166, Flags: 49405), LayoutImmutable, Blittable]
 		public int NumberOfMagazines { get; set; } // 0x4 (4)
 		
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
+		[ContainerField(Name: "TraceFrequency", Offset: 8, NameHash: 1101083936, Flags: 49421), LayoutImmutable, Blittable]
 		public uint TraceFrequency { get; set; } // 0x8 (8)
 		
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
+		[ContainerField(Name: "AmmoPickupMinAmount", Offset: 12, NameHash: 1049056889, Flags: 49421), LayoutImmutable, Blittable]
 		public uint AmmoPickupMinAmount { get; set; } // 0xC (12)
 		
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
+		[ContainerField(Name: "AmmoPickupMaxAmount", Offset: 16, NameHash: 1825618791, Flags: 49421), LayoutImmutable, Blittable]
 		public uint AmmoPickupMaxAmount { get; set; } // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "AutoReplenishDelay", Offset: 20, NameHash: 2884902349, Flags: 49469), LayoutImmutable, Blittable]
 		public float AutoReplenishDelay { get; set; } // 0x14 (20)
 		
-		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49405)]
+		[ContainerField(Name: "AmmoBagPickupAmount", Offset: 24, NameHash: 3198605367, Flags: 49405), LayoutImmutable, Blittable]
 		public int AmmoBagPickupAmount { get; set; } // 0x18 (24)
 		
-		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49469)]
+		[ContainerField(Name: "AmmoBagPickupDelayMultiplier", Offset: 28, NameHash: 3753352741, Flags: 49469), LayoutImmutable, Blittable]
 		public float AmmoBagPickupDelayMultiplier { get; set; } // 0x1C (28)
 		
-		[ContainerField(32), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "AutoReplenishMagazine", Offset: 32, NameHash: 3199294250, Flags: 49325), LayoutImmutable, Blittable]
 		public bool AutoReplenishMagazine { get; set; } // 0x20 (32)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

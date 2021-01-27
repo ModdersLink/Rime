@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(112), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 112)]
 	public class PhysicsConeConstraintData : 
 		PhysicsConstraintData
 	{
 		protected float m_MinAngle = new float();
-		[ContainerField(96), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(3356124462)]
+		[ContainerField(Name: "MinAngle", Offset: 96, NameHash: 3356124462, Flags: 49469), LayoutImmutable, Blittable]
 		public float MinAngle { get { return m_MinAngle; } set { if (OnPropertyChanging("PhysicsConeConstraintData." + nameof(MinAngle), this, m_MinAngle, value)) m_MinAngle = value; } } // 0x60 (96)
 		
 		protected float m_AngularFriction = new float();
-		[ContainerField(100), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1552731461)]
+		[ContainerField(Name: "AngularFriction", Offset: 100, NameHash: 1552731461, Flags: 49469), LayoutImmutable, Blittable]
 		public float AngularFriction { get { return m_AngularFriction; } set { if (OnPropertyChanging("PhysicsConeConstraintData." + nameof(AngularFriction), this, m_AngularFriction, value)) m_AngularFriction = value; } } // 0x64 (100)
 		
 		protected float m_MaxAngle = new float();
-		[ContainerField(104), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(417488496)]
+		[ContainerField(Name: "MaxAngle", Offset: 104, NameHash: 417488496, Flags: 49469), LayoutImmutable, Blittable]
 		public float MaxAngle { get { return m_MaxAngle; } set { if (OnPropertyChanging("PhysicsConeConstraintData." + nameof(MaxAngle), this, m_MaxAngle, value)) m_MaxAngle = value; } } // 0x68 (104)
 		
 		protected bool m_HasLimits = new bool();
-		[ContainerField(108), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2421583705)]
+		[ContainerField(Name: "HasLimits", Offset: 108, NameHash: 2421583705, Flags: 49325), LayoutImmutable, Blittable]
 		public bool HasLimits { get { return m_HasLimits; } set { if (OnPropertyChanging("PhysicsConeConstraintData." + nameof(HasLimits), this, m_HasLimits, value)) m_HasLimits = value; } } // 0x6C (108)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

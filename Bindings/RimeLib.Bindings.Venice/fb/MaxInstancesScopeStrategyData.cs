@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(20), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 20)]
 	public class MaxInstancesScopeStrategyData : 
 		SoundScopeStrategyData
 	{
 		protected uint m_Count = new uint();
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(212413894)]
+		[ContainerField(Name: "Count", Offset: 12, NameHash: 212413894, Flags: 49421), LayoutImmutable, Blittable]
 		public uint Count { get { return m_Count; } set { if (OnPropertyChanging("MaxInstancesScopeStrategyData." + nameof(Count), this, m_Count, value)) m_Count = value; } } // 0xC (12)
 		
 		protected bool m_KeepOldest = new bool();
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(135411227)]
+		[ContainerField(Name: "KeepOldest", Offset: 16, NameHash: 135411227, Flags: 49325), LayoutImmutable, Blittable]
 		public bool KeepOldest { get { return m_KeepOldest; } set { if (OnPropertyChanging("MaxInstancesScopeStrategyData." + nameof(KeepOldest), this, m_KeepOldest, value)) m_KeepOldest = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

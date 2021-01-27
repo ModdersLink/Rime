@@ -18,13 +18,13 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(41), ContainerSize(32), ContainerStruct]
+	[ContainerType(Alignment: 16,  Flags: 41, Size: 32)]
 	public class WeaponLagEffectForceData : FrostbiteContainer
 	{
-		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
+		[ContainerField(Name: "OffsetForce", Offset: 0, NameHash: 1062756213, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 OffsetForce { get; set; } = new Vec3(); // 0x0 (0)
 		
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289)]
+		[ContainerField(Name: "RotationForce", Offset: 16, NameHash: 833522092, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 RotationForce { get; set; } = new Vec3(); // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(160), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 160)]
 	public class TransformSelectorEntityData : 
 		EntityData
 	{
 		protected LinearTransform m_In1 = new LinearTransform();
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(193450867)]
+		[ContainerField(Name: "In1", Offset: 16, NameHash: 193450867, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public LinearTransform In1 { get { return m_In1; } set { if (OnPropertyChanging("TransformSelectorEntityData." + nameof(In1), this, m_In1, value)) m_In1 = value; } } // 0x10 (16)
 		
 		protected LinearTransform m_In2 = new LinearTransform();
-		[ContainerField(80), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(193450864)]
+		[ContainerField(Name: "In2", Offset: 80, NameHash: 193450864, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public LinearTransform In2 { get { return m_In2; } set { if (OnPropertyChanging("TransformSelectorEntityData." + nameof(In2), this, m_In2, value)) m_In2 = value; } } // 0x50 (80)
 		
 		protected Realm m_Realm = new Realm();
-		[ContainerField(144), MemberInfoFlag(137), ContainerFieldNameHash(229961746)]
+		[ContainerField(Name: "Realm", Offset: 144, NameHash: 229961746, Flags: 137)]
 		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("TransformSelectorEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0x90 (144)
 		
 		protected bool m_Selection = new bool();
-		[ContainerField(148), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(299217285)]
+		[ContainerField(Name: "Selection", Offset: 148, NameHash: 299217285, Flags: 49325), LayoutImmutable, Blittable]
 		public bool Selection { get { return m_Selection; } set { if (OnPropertyChanging("TransformSelectorEntityData." + nameof(Selection), this, m_Selection, value)) m_Selection = value; } } // 0x94 (148)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

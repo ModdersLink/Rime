@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(20), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 20)]
 	public class CompareBoolEntityData : 
 		EntityData
 	{
 		protected Realm m_Realm = new Realm();
-		[ContainerField(12), MemberInfoFlag(137), ContainerFieldNameHash(229961746)]
+		[ContainerField(Name: "Realm", Offset: 12, NameHash: 229961746, Flags: 137)]
 		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("CompareBoolEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0xC (12)
 		
 		protected bool m_Bool = new bool();
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2088812747)]
+		[ContainerField(Name: "Bool", Offset: 16, NameHash: 2088812747, Flags: 49325), LayoutImmutable, Blittable]
 		public bool Bool { get { return m_Bool; } set { if (OnPropertyChanging("CompareBoolEntityData." + nameof(Bool), this, m_Bool, value)) m_Bool = value; } } // 0x10 (16)
 		
 		protected bool m_TriggerOnPropertyChange = new bool();
-		[ContainerField(17), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3134109917)]
+		[ContainerField(Name: "TriggerOnPropertyChange", Offset: 17, NameHash: 3134109917, Flags: 49325), LayoutImmutable, Blittable]
 		public bool TriggerOnPropertyChange { get { return m_TriggerOnPropertyChange; } set { if (OnPropertyChanging("CompareBoolEntityData." + nameof(TriggerOnPropertyChange), this, m_TriggerOnPropertyChange, value)) m_TriggerOnPropertyChange = value; } } // 0x11 (17)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

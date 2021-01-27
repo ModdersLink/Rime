@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(24), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 24)]
 	public class LevelSetup : FrostbiteContainer
 	{
-		[ContainerField(0), LayoutImmutable, MemberInfoFlag(16509)]
+		[ContainerField(Name: "Name", Offset: 0, NameHash: 2088949890, Flags: 16509), LayoutImmutable]
 		public string Name { get; set; } // 0x0 (0)
 		
-		[ContainerField(4), MemberInfoFlag(65), ContainerArray]
+		[ContainerField(Name: "InclusionOptions", Offset: 4, NameHash: 1857959091, Flags: 65)]
 		public List<LevelSetupOption> InclusionOptions { get; set; } = new List<LevelSetupOption>(); // 0x4 (4)
 		
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49421)]
+		[ContainerField(Name: "DifficultyIndex", Offset: 8, NameHash: 302070728, Flags: 49421), LayoutImmutable, Blittable]
 		public uint DifficultyIndex { get; set; } // 0x8 (8)
 		
-		[ContainerField(12), MemberInfoFlag(65), ContainerArray]
+		[ContainerField(Name: "SubLevelNames", Offset: 12, NameHash: 2087484675, Flags: 65)]
 		public List<string> SubLevelNames { get; set; } = new List<string>(); // 0xC (12)
 		
-		[ContainerField(16), MemberInfoFlag(65), ContainerArray]
+		[ContainerField(Name: "SubLevelStates", Offset: 16, NameHash: 3729589043, Flags: 65)]
 		public List<int> SubLevelStates { get; set; } = new List<int>(); // 0x10 (16)
 		
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "IsSaveGame", Offset: 20, NameHash: 3625496752, Flags: 49325), LayoutImmutable, Blittable]
 		public bool IsSaveGame { get; set; } // 0x14 (20)
 		
-		[ContainerField(21), LayoutImmutable, Blittable, MemberInfoFlag(49325)]
+		[ContainerField(Name: "ForceReloadResources", Offset: 21, NameHash: 3211157744, Flags: 49325), LayoutImmutable, Blittable]
 		public bool ForceReloadResources { get; set; } // 0x15 (21)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

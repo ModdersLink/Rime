@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(12), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 12)]
 	public class MeshVariationDatabaseMaterial : FrostbiteContainer
 	{
-		[ContainerField(0), MemberInfoFlag(53), ContainerCtrRef]
+		[ContainerField(Name: "Material", Offset: 0, NameHash: 845639918, Flags: 53)]
 		public CtrRef<MeshMaterial> Material { get; set; } = new CtrRef<MeshMaterial>(); // 0x0 (0)
 		
-		[ContainerField(4), MemberInfoFlag(53), ContainerCtrRef]
+		[ContainerField(Name: "MaterialVariation", Offset: 4, NameHash: 3711459359, Flags: 53)]
 		public CtrRef<MeshMaterialVariation> MaterialVariation { get; set; } = new CtrRef<MeshMaterialVariation>(); // 0x4 (4)
 		
-		[ContainerField(8), MemberInfoFlag(65), ContainerArray]
+		[ContainerField(Name: "TextureParameters", Offset: 8, NameHash: 2131743936, Flags: 65)]
 		public List<TextureShaderParameter> TextureParameters { get; set; } = new List<TextureShaderParameter>(); // 0x8 (8)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

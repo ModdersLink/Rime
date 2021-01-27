@@ -18,84 +18,84 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(44), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 44)]
 	public class PhysicsSettings : 
 		DataContainer
 	{
 		protected uint m_IntegrateJobCount = new uint();
-		[ContainerField(8), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(3254030898)]
+		[ContainerField(Name: "IntegrateJobCount", Offset: 8, NameHash: 3254030898, Flags: 49421), LayoutImmutable, Blittable]
 		public uint IntegrateJobCount { get { return m_IntegrateJobCount; } set { if (OnPropertyChanging("PhysicsSettings." + nameof(IntegrateJobCount), this, m_IntegrateJobCount, value)) m_IntegrateJobCount = value; } } // 0x8 (8)
 		
 		protected uint m_ClientEffectWorldThreadCount = new uint();
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(2748873924)]
+		[ContainerField(Name: "ClientEffectWorldThreadCount", Offset: 12, NameHash: 2748873924, Flags: 49421), LayoutImmutable, Blittable]
 		public uint ClientEffectWorldThreadCount { get { return m_ClientEffectWorldThreadCount; } set { if (OnPropertyChanging("PhysicsSettings." + nameof(ClientEffectWorldThreadCount), this, m_ClientEffectWorldThreadCount, value)) m_ClientEffectWorldThreadCount = value; } } // 0xC (12)
 		
 		protected uint m_ClientWorldThreadCount = new uint();
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(2754405235)]
+		[ContainerField(Name: "ClientWorldThreadCount", Offset: 16, NameHash: 2754405235, Flags: 49421), LayoutImmutable, Blittable]
 		public uint ClientWorldThreadCount { get { return m_ClientWorldThreadCount; } set { if (OnPropertyChanging("PhysicsSettings." + nameof(ClientWorldThreadCount), this, m_ClientWorldThreadCount, value)) m_ClientWorldThreadCount = value; } } // 0x10 (16)
 		
 		protected uint m_ServerWorldThreadCount = new uint();
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(2066496687)]
+		[ContainerField(Name: "ServerWorldThreadCount", Offset: 20, NameHash: 2066496687, Flags: 49421), LayoutImmutable, Blittable]
 		public uint ServerWorldThreadCount { get { return m_ServerWorldThreadCount; } set { if (OnPropertyChanging("PhysicsSettings." + nameof(ServerWorldThreadCount), this, m_ServerWorldThreadCount, value)) m_ServerWorldThreadCount = value; } } // 0x14 (20)
 		
 		protected uint m_CollideJobCount = new uint();
-		[ContainerField(24), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(3265113317)]
+		[ContainerField(Name: "CollideJobCount", Offset: 24, NameHash: 3265113317, Flags: 49421), LayoutImmutable, Blittable]
 		public uint CollideJobCount { get { return m_CollideJobCount; } set { if (OnPropertyChanging("PhysicsSettings." + nameof(CollideJobCount), this, m_CollideJobCount, value)) m_CollideJobCount = value; } } // 0x18 (24)
 		
 		protected bool m_Enable = new bool();
-		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2342790116)]
+		[ContainerField(Name: "Enable", Offset: 28, NameHash: 2342790116, Flags: 49325), LayoutImmutable, Blittable]
 		public bool Enable { get { return m_Enable; } set { if (OnPropertyChanging("PhysicsSettings." + nameof(Enable), this, m_Enable, value)) m_Enable = value; } } // 0x1C (28)
 		
 		protected bool m_EnableAIRigidBody = new bool();
-		[ContainerField(29), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3043137069)]
+		[ContainerField(Name: "EnableAIRigidBody", Offset: 29, NameHash: 3043137069, Flags: 49325), LayoutImmutable, Blittable]
 		public bool EnableAIRigidBody { get { return m_EnableAIRigidBody; } set { if (OnPropertyChanging("PhysicsSettings." + nameof(EnableAIRigidBody), this, m_EnableAIRigidBody, value)) m_EnableAIRigidBody = value; } } // 0x1D (29)
 		
 		protected bool m_ForestEnable = new bool();
-		[ContainerField(30), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1260596861)]
+		[ContainerField(Name: "ForestEnable", Offset: 30, NameHash: 1260596861, Flags: 49325), LayoutImmutable, Blittable]
 		public bool ForestEnable { get { return m_ForestEnable; } set { if (OnPropertyChanging("PhysicsSettings." + nameof(ForestEnable), this, m_ForestEnable, value)) m_ForestEnable = value; } } // 0x1E (30)
 		
 		protected bool m_EnableJobs = new bool();
-		[ContainerField(31), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1190923856)]
+		[ContainerField(Name: "EnableJobs", Offset: 31, NameHash: 1190923856, Flags: 49325), LayoutImmutable, Blittable]
 		public bool EnableJobs { get { return m_EnableJobs; } set { if (OnPropertyChanging("PhysicsSettings." + nameof(EnableJobs), this, m_EnableJobs, value)) m_EnableJobs = value; } } // 0x1F (31)
 		
 		protected bool m_RemoveRagdollWhenWoken = new bool();
-		[ContainerField(32), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2226229296)]
+		[ContainerField(Name: "RemoveRagdollWhenWoken", Offset: 32, NameHash: 2226229296, Flags: 49325), LayoutImmutable, Blittable]
 		public bool RemoveRagdollWhenWoken { get { return m_RemoveRagdollWhenWoken; } set { if (OnPropertyChanging("PhysicsSettings." + nameof(RemoveRagdollWhenWoken), this, m_RemoveRagdollWhenWoken, value)) m_RemoveRagdollWhenWoken = value; } } // 0x20 (32)
 		
 		protected bool m_RemoveFromWorldOnCollisionOverflow = new bool();
-		[ContainerField(33), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(422957492)]
+		[ContainerField(Name: "RemoveFromWorldOnCollisionOverflow", Offset: 33, NameHash: 422957492, Flags: 49325), LayoutImmutable, Blittable]
 		public bool RemoveFromWorldOnCollisionOverflow { get { return m_RemoveFromWorldOnCollisionOverflow; } set { if (OnPropertyChanging("PhysicsSettings." + nameof(RemoveFromWorldOnCollisionOverflow), this, m_RemoveFromWorldOnCollisionOverflow, value)) m_RemoveFromWorldOnCollisionOverflow = value; } } // 0x21 (33)
 		
 		protected bool m_SingleStepCharacter = new bool();
-		[ContainerField(34), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1398272148)]
+		[ContainerField(Name: "SingleStepCharacter", Offset: 34, NameHash: 1398272148, Flags: 49325), LayoutImmutable, Blittable]
 		public bool SingleStepCharacter { get { return m_SingleStepCharacter; } set { if (OnPropertyChanging("PhysicsSettings." + nameof(SingleStepCharacter), this, m_SingleStepCharacter, value)) m_SingleStepCharacter = value; } } // 0x22 (34)
 		
 		protected bool m_ForceSingleStepCharacterInSP = new bool();
-		[ContainerField(35), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3854381293)]
+		[ContainerField(Name: "ForceSingleStepCharacterInSP", Offset: 35, NameHash: 3854381293, Flags: 49325), LayoutImmutable, Blittable]
 		public bool ForceSingleStepCharacterInSP { get { return m_ForceSingleStepCharacterInSP; } set { if (OnPropertyChanging("PhysicsSettings." + nameof(ForceSingleStepCharacterInSP), this, m_ForceSingleStepCharacterInSP, value)) m_ForceSingleStepCharacterInSP = value; } } // 0x23 (35)
 		
 		protected bool m_EnableFollowWheelRaycasts = new bool();
-		[ContainerField(36), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1775482970)]
+		[ContainerField(Name: "EnableFollowWheelRaycasts", Offset: 36, NameHash: 1775482970, Flags: 49325), LayoutImmutable, Blittable]
 		public bool EnableFollowWheelRaycasts { get { return m_EnableFollowWheelRaycasts; } set { if (OnPropertyChanging("PhysicsSettings." + nameof(EnableFollowWheelRaycasts), this, m_EnableFollowWheelRaycasts, value)) m_EnableFollowWheelRaycasts = value; } } // 0x24 (36)
 		
 		protected bool m_EnableClientWheelRaycasts = new bool();
-		[ContainerField(37), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2450184562)]
+		[ContainerField(Name: "EnableClientWheelRaycasts", Offset: 37, NameHash: 2450184562, Flags: 49325), LayoutImmutable, Blittable]
 		public bool EnableClientWheelRaycasts { get { return m_EnableClientWheelRaycasts; } set { if (OnPropertyChanging("PhysicsSettings." + nameof(EnableClientWheelRaycasts), this, m_EnableClientWheelRaycasts, value)) m_EnableClientWheelRaycasts = value; } } // 0x25 (37)
 		
 		protected bool m_EnableASyncWheelRaycasts = new bool();
-		[ContainerField(38), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(1311090861)]
+		[ContainerField(Name: "EnableASyncWheelRaycasts", Offset: 38, NameHash: 1311090861, Flags: 49325), LayoutImmutable, Blittable]
 		public bool EnableASyncWheelRaycasts { get { return m_EnableASyncWheelRaycasts; } set { if (OnPropertyChanging("PhysicsSettings." + nameof(EnableASyncWheelRaycasts), this, m_EnableASyncWheelRaycasts, value)) m_EnableASyncWheelRaycasts = value; } } // 0x26 (38)
 		
 		protected bool m_UseDelayedWakeUpClient = new bool();
-		[ContainerField(39), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2531078454)]
+		[ContainerField(Name: "UseDelayedWakeUpClient", Offset: 39, NameHash: 2531078454, Flags: 49325), LayoutImmutable, Blittable]
 		public bool UseDelayedWakeUpClient { get { return m_UseDelayedWakeUpClient; } set { if (OnPropertyChanging("PhysicsSettings." + nameof(UseDelayedWakeUpClient), this, m_UseDelayedWakeUpClient, value)) m_UseDelayedWakeUpClient = value; } } // 0x27 (39)
 		
 		protected bool m_UseDelayedWakeUpServer = new bool();
-		[ContainerField(40), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3164738410)]
+		[ContainerField(Name: "UseDelayedWakeUpServer", Offset: 40, NameHash: 3164738410, Flags: 49325), LayoutImmutable, Blittable]
 		public bool UseDelayedWakeUpServer { get { return m_UseDelayedWakeUpServer; } set { if (OnPropertyChanging("PhysicsSettings." + nameof(UseDelayedWakeUpServer), this, m_UseDelayedWakeUpServer, value)) m_UseDelayedWakeUpServer = value; } } // 0x28 (40)
 		
 		protected bool m_SuppressDebrisSpawnUntilReady = new bool();
-		[ContainerField(41), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(62351077)]
+		[ContainerField(Name: "SuppressDebrisSpawnUntilReady", Offset: 41, NameHash: 62351077, Flags: 49325), LayoutImmutable, Blittable]
 		public bool SuppressDebrisSpawnUntilReady { get { return m_SuppressDebrisSpawnUntilReady; } set { if (OnPropertyChanging("PhysicsSettings." + nameof(SuppressDebrisSpawnUntilReady), this, m_SuppressDebrisSpawnUntilReady, value)) m_SuppressDebrisSpawnUntilReady = value; } } // 0x29 (41)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

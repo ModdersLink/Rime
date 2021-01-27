@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(32), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 32)]
 	public class UIScoreboardCompData : 
 		UIComponentData
 	{
 		protected float m_MaxUpdateInterval = new float();
-		[ContainerField(28), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2164988415)]
+		[ContainerField(Name: "MaxUpdateInterval", Offset: 28, NameHash: 2164988415, Flags: 49469), LayoutImmutable, Blittable]
 		public float MaxUpdateInterval { get { return m_MaxUpdateInterval; } set { if (OnPropertyChanging("UIScoreboardCompData." + nameof(MaxUpdateInterval), this, m_MaxUpdateInterval, value)) m_MaxUpdateInterval = value; } } // 0x1C (28)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

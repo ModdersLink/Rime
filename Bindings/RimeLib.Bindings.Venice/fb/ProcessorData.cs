@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(48), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 48)]
 	public class ProcessorData : 
 		EmitterComponentData
 	{
 		protected Vec4 m_DefaultValues = new Vec4();
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(3755111798)]
+		[ContainerField(Name: "DefaultValues", Offset: 16, NameHash: 3755111798, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public Vec4 DefaultValues { get { return m_DefaultValues; } set { if (OnPropertyChanging("ProcessorData." + nameof(DefaultValues), this, m_DefaultValues, value)) m_DefaultValues = value; } } // 0x10 (16)
 		
 		protected CtrRef<ProcessorData> m_NextProcessor = new CtrRef<ProcessorData>();
-		[ContainerField(32), MemberInfoFlag(53), ContainerFieldNameHash(4017683988), ContainerCtrRef]
+		[ContainerField(Name: "NextProcessor", Offset: 32, NameHash: 4017683988, Flags: 53)]
 		public CtrRef<ProcessorData> NextProcessor { get { return m_NextProcessor; } set { if (OnPropertyChanging("ProcessorData." + nameof(NextProcessor), this, m_NextProcessor, value)) m_NextProcessor = value; } } // 0x20 (32)
 		
 		protected CtrRef<EmitterComponentData> m_Pre = new CtrRef<EmitterComponentData>();
-		[ContainerField(36), MemberInfoFlag(53), ContainerFieldNameHash(193466786), ContainerCtrRef]
+		[ContainerField(Name: "Pre", Offset: 36, NameHash: 193466786, Flags: 53)]
 		public CtrRef<EmitterComponentData> Pre { get { return m_Pre; } set { if (OnPropertyChanging("ProcessorData." + nameof(Pre), this, m_Pre, value)) m_Pre = value; } } // 0x24 (36)
 		
 		protected EmittableField m_EvaluatorInput = new EmittableField();
-		[ContainerField(40), MemberInfoFlag(137), ContainerFieldNameHash(1132314832)]
+		[ContainerField(Name: "EvaluatorInput", Offset: 40, NameHash: 1132314832, Flags: 137)]
 		public EmittableField EvaluatorInput { get { return m_EvaluatorInput; } set { if (OnPropertyChanging("ProcessorData." + nameof(EvaluatorInput), this, m_EvaluatorInput, value)) m_EvaluatorInput = value; } } // 0x28 (40)
 		
 		protected bool m_Enable = new bool();
-		[ContainerField(44), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2342790116)]
+		[ContainerField(Name: "Enable", Offset: 44, NameHash: 2342790116, Flags: 49325), LayoutImmutable, Blittable]
 		public bool Enable { get { return m_Enable; } set { if (OnPropertyChanging("ProcessorData." + nameof(Enable), this, m_Enable, value)) m_Enable = value; } } // 0x2C (44)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

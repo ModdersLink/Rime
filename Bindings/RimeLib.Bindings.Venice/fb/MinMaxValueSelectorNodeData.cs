@@ -18,28 +18,28 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(44), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 44)]
 	public class MinMaxValueSelectorNodeData : 
 		AudioGraphNodeData
 	{
 		protected RefArray<MinMaxValueSelectorEntry> m_Inputs = new RefArray<MinMaxValueSelectorEntry>();
-		[ContainerField(8), MemberInfoFlag(65), ContainerFieldNameHash(2784267136), ContainerRefArray]
+		[ContainerField(Name: "Inputs", Offset: 8, NameHash: 2784267136, Flags: 65)]
 		public RefArray<MinMaxValueSelectorEntry> Inputs { get { return m_Inputs; } set { if (OnPropertyChanging("MinMaxValueSelectorNodeData." + nameof(Inputs), this, m_Inputs, value)) m_Inputs = value; } } // 0x8 (8)
 		
 		protected AudioGraphNodePort m_MaxValue = new AudioGraphNodePort();
-		[ContainerField(12), MemberInfoFlag(41), ContainerFieldNameHash(408516922)]
+		[ContainerField(Name: "MaxValue", Offset: 12, NameHash: 408516922, Flags: 41)]
 		public AudioGraphNodePort MaxValue { get { return m_MaxValue; } set { if (OnPropertyChanging("MinMaxValueSelectorNodeData." + nameof(MaxValue), this, m_MaxValue, value)) m_MaxValue = value; } } // 0xC (12)
 		
 		protected AudioGraphNodePort m_MaxIndex = new AudioGraphNodePort();
-		[ContainerField(20), MemberInfoFlag(41), ContainerFieldNameHash(426400079)]
+		[ContainerField(Name: "MaxIndex", Offset: 20, NameHash: 426400079, Flags: 41)]
 		public AudioGraphNodePort MaxIndex { get { return m_MaxIndex; } set { if (OnPropertyChanging("MinMaxValueSelectorNodeData." + nameof(MaxIndex), this, m_MaxIndex, value)) m_MaxIndex = value; } } // 0x14 (20)
 		
 		protected AudioGraphNodePort m_MinValue = new AudioGraphNodePort();
-		[ContainerField(28), MemberInfoFlag(41), ContainerFieldNameHash(3371854436)]
+		[ContainerField(Name: "MinValue", Offset: 28, NameHash: 3371854436, Flags: 41)]
 		public AudioGraphNodePort MinValue { get { return m_MinValue; } set { if (OnPropertyChanging("MinMaxValueSelectorNodeData." + nameof(MinValue), this, m_MinValue, value)) m_MinValue = value; } } // 0x1C (28)
 		
 		protected AudioGraphNodePort m_MinIndex = new AudioGraphNodePort();
-		[ContainerField(36), MemberInfoFlag(41), ContainerFieldNameHash(3347206417)]
+		[ContainerField(Name: "MinIndex", Offset: 36, NameHash: 3347206417, Flags: 41)]
 		public AudioGraphNodePort MinIndex { get { return m_MinIndex; } set { if (OnPropertyChanging("MinMaxValueSelectorNodeData." + nameof(MinIndex), this, m_MinIndex, value)) m_MinIndex = value; } } // 0x24 (36)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

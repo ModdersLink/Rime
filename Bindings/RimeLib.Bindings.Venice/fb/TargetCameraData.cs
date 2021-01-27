@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(160), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 160)]
 	public class TargetCameraData : 
 		CameraData
 	{
 		protected HudData m_Hud = new HudData();
-		[ContainerField(80), MemberInfoFlag(41), ContainerFieldNameHash(193458844)]
+		[ContainerField(Name: "Hud", Offset: 80, NameHash: 193458844, Flags: 41)]
 		public HudData Hud { get { return m_Hud; } set { if (OnPropertyChanging("TargetCameraData." + nameof(Hud), this, m_Hud, value)) m_Hud = value; } } // 0x50 (80)
 		
 		protected RefArray<UIPartData> m_UIParts = new RefArray<UIPartData>();
-		[ContainerField(148), MemberInfoFlag(65), ContainerFieldNameHash(187481405), ContainerRefArray]
+		[ContainerField(Name: "UIParts", Offset: 148, NameHash: 187481405, Flags: 65)]
 		public RefArray<UIPartData> UIParts { get { return m_UIParts; } set { if (OnPropertyChanging("TargetCameraData." + nameof(UIParts), this, m_UIParts, value)) m_UIParts = value; } } // 0x94 (148)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

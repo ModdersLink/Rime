@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(8), MemberInfoFlag(53), ContainerSize(32), ContainerClass]
+	[ContainerType(Alignment: 8,  Flags: 53, Size: 32)]
 	public class SpawnSurveyEvent : 
 		MetricEvent
 	{
 		protected GUID m_SurveyMetricLink = new GUID();
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49501), ContainerFieldNameHash(1497575487)]
+		[ContainerField(Name: "SurveyMetricLink", Offset: 16, NameHash: 1497575487, Flags: 49501), LayoutImmutable, Blittable]
 		public GUID SurveyMetricLink { get { return m_SurveyMetricLink; } set { if (OnPropertyChanging("SpawnSurveyEvent." + nameof(SurveyMetricLink), this, m_SurveyMetricLink, value)) m_SurveyMetricLink = value; } } // 0x10 (16)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

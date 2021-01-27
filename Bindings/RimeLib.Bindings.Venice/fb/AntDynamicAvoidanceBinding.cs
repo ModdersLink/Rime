@@ -18,19 +18,19 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(41), ContainerSize(16), ContainerStruct]
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 16)]
 	public class AntDynamicAvoidanceBinding : FrostbiteContainer
 	{
-		[ContainerField(0), MemberInfoFlag(41)]
+		[ContainerField(Name: "TimeUntilCollision", Offset: 0, NameHash: 3142481924, Flags: 41)]
 		public AntRef TimeUntilCollision { get; set; } = new AntRef(); // 0x0 (0)
 		
-		[ContainerField(4), MemberInfoFlag(41)]
+		[ContainerField(Name: "DistanceUntilCollision", Offset: 4, NameHash: 1945583762, Flags: 41)]
 		public AntRef DistanceUntilCollision { get; set; } = new AntRef(); // 0x4 (4)
 		
-		[ContainerField(8), MemberInfoFlag(41)]
+		[ContainerField(Name: "NormalizedVelocity", Offset: 8, NameHash: 113203091, Flags: 41)]
 		public AntRef NormalizedVelocity { get; set; } = new AntRef(); // 0x8 (8)
 		
-		[ContainerField(12), MemberInfoFlag(41)]
+		[ContainerField(Name: "Speed", Offset: 12, NameHash: 230887042, Flags: 41)]
 		public AntRef Speed { get; set; } = new AntRef(); // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

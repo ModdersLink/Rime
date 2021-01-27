@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(112), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 112)]
 	public class TeamEntityData : 
 		GameEntityData
 	{
 		protected CtrRef<TeamData> m_Team = new CtrRef<TeamData>();
-		[ContainerField(96), MemberInfoFlag(53), ContainerFieldNameHash(2089309528), ContainerCtrRef]
+		[ContainerField(Name: "Team", Offset: 96, NameHash: 2089309528, Flags: 53)]
 		public CtrRef<TeamData> Team { get { return m_Team; } set { if (OnPropertyChanging("TeamEntityData." + nameof(Team), this, m_Team, value)) m_Team = value; } } // 0x60 (96)
 		
 		protected TeamId m_Id = new TeamId();
-		[ContainerField(100), MemberInfoFlag(137), ContainerFieldNameHash(5862152)]
+		[ContainerField(Name: "Id", Offset: 100, NameHash: 5862152, Flags: 137)]
 		public TeamId Id { get { return m_Id; } set { if (OnPropertyChanging("TeamEntityData." + nameof(Id), this, m_Id, value)) m_Id = value; } } // 0x64 (100)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

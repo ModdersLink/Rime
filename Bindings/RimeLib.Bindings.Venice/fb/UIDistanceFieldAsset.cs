@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(16), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
 	public class UIDistanceFieldAsset : 
 		Asset
 	{
 		protected CtrRef<TextureAsset> m_DistanceFieldTexture = new CtrRef<TextureAsset>();
-		[ContainerField(12), MemberInfoFlag(53), ContainerFieldNameHash(62920603), ContainerCtrRef]
+		[ContainerField(Name: "DistanceFieldTexture", Offset: 12, NameHash: 62920603, Flags: 53)]
 		public CtrRef<TextureAsset> DistanceFieldTexture { get { return m_DistanceFieldTexture; } set { if (OnPropertyChanging("UIDistanceFieldAsset." + nameof(DistanceFieldTexture), this, m_DistanceFieldTexture, value)) m_DistanceFieldTexture = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

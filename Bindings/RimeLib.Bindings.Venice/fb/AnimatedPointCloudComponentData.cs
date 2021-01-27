@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(112), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 112)]
 	public class AnimatedPointCloudComponentData : 
 		ComponentData
 	{
 		protected CtrRef<AnimatedPointCloudAsset> m_PointCloud = new CtrRef<AnimatedPointCloudAsset>();
-		[ContainerField(96), MemberInfoFlag(53), ContainerFieldNameHash(396521112), ContainerCtrRef]
+		[ContainerField(Name: "PointCloud", Offset: 96, NameHash: 396521112, Flags: 53)]
 		public CtrRef<AnimatedPointCloudAsset> PointCloud { get { return m_PointCloud; } set { if (OnPropertyChanging("AnimatedPointCloudComponentData." + nameof(PointCloud), this, m_PointCloud, value)) m_PointCloud = value; } } // 0x60 (96)
 		
 		protected float m_ExternalTime = new float();
-		[ContainerField(100), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2162678253)]
+		[ContainerField(Name: "ExternalTime", Offset: 100, NameHash: 2162678253, Flags: 49469), LayoutImmutable, Blittable]
 		public float ExternalTime { get { return m_ExternalTime; } set { if (OnPropertyChanging("AnimatedPointCloudComponentData." + nameof(ExternalTime), this, m_ExternalTime, value)) m_ExternalTime = value; } } // 0x64 (100)
 		
 		protected bool m_StartPaused = new bool();
-		[ContainerField(104), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(735997331)]
+		[ContainerField(Name: "StartPaused", Offset: 104, NameHash: 735997331, Flags: 49325), LayoutImmutable, Blittable]
 		public bool StartPaused { get { return m_StartPaused; } set { if (OnPropertyChanging("AnimatedPointCloudComponentData." + nameof(StartPaused), this, m_StartPaused, value)) m_StartPaused = value; } } // 0x68 (104)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,16 +18,16 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(36), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 36)]
 	public class UIAwardsScreenCompData : 
 		UIComponentData
 	{
 		protected RefArray<StatsCategoryBaseData> m_TrackableAwardRow = new RefArray<StatsCategoryBaseData>();
-		[ContainerField(28), MemberInfoFlag(65), ContainerFieldNameHash(383950411), ContainerRefArray]
+		[ContainerField(Name: "TrackableAwardRow", Offset: 28, NameHash: 383950411, Flags: 65)]
 		public RefArray<StatsCategoryBaseData> TrackableAwardRow { get { return m_TrackableAwardRow; } set { if (OnPropertyChanging("UIAwardsScreenCompData." + nameof(TrackableAwardRow), this, m_TrackableAwardRow, value)) m_TrackableAwardRow = value; } } // 0x1C (28)
 		
 		protected RefArray<StatsCategoryBaseData> m_TrackableAwardCol = new RefArray<StatsCategoryBaseData>();
-		[ContainerField(32), MemberInfoFlag(65), ContainerFieldNameHash(383933953), ContainerRefArray]
+		[ContainerField(Name: "TrackableAwardCol", Offset: 32, NameHash: 383933953, Flags: 65)]
 		public RefArray<StatsCategoryBaseData> TrackableAwardCol { get { return m_TrackableAwardCol; } set { if (OnPropertyChanging("UIAwardsScreenCompData." + nameof(TrackableAwardCol), this, m_TrackableAwardCol, value)) m_TrackableAwardCol = value; } } // 0x20 (32)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

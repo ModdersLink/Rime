@@ -18,32 +18,32 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(36), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 36)]
 	public class PersistenceConfiguration : 
 		Asset
 	{
 		protected CtrRef<StatCategoryTreeCollection> m_StatCategoryTreeCollection = new CtrRef<StatCategoryTreeCollection>();
-		[ContainerField(12), MemberInfoFlag(53), ContainerFieldNameHash(3707151255), ContainerCtrRef]
+		[ContainerField(Name: "StatCategoryTreeCollection", Offset: 12, NameHash: 3707151255, Flags: 53)]
 		public CtrRef<StatCategoryTreeCollection> StatCategoryTreeCollection { get { return m_StatCategoryTreeCollection; } set { if (OnPropertyChanging("PersistenceConfiguration." + nameof(StatCategoryTreeCollection), this, m_StatCategoryTreeCollection, value)) m_StatCategoryTreeCollection = value; } } // 0xC (12)
 		
 		protected CtrRef<PlayerTypeProfile> m_MPProfile = new CtrRef<PlayerTypeProfile>();
-		[ContainerField(16), MemberInfoFlag(53), ContainerFieldNameHash(3634413939), ContainerCtrRef]
+		[ContainerField(Name: "MPProfile", Offset: 16, NameHash: 3634413939, Flags: 53)]
 		public CtrRef<PlayerTypeProfile> MPProfile { get { return m_MPProfile; } set { if (OnPropertyChanging("PersistenceConfiguration." + nameof(MPProfile), this, m_MPProfile, value)) m_MPProfile = value; } } // 0x10 (16)
 		
 		protected CtrRef<PlayerTypeProfile> m_SPProfile = new CtrRef<PlayerTypeProfile>();
-		[ContainerField(20), MemberInfoFlag(53), ContainerFieldNameHash(1193421421), ContainerCtrRef]
+		[ContainerField(Name: "SPProfile", Offset: 20, NameHash: 1193421421, Flags: 53)]
 		public CtrRef<PlayerTypeProfile> SPProfile { get { return m_SPProfile; } set { if (OnPropertyChanging("PersistenceConfiguration." + nameof(SPProfile), this, m_SPProfile, value)) m_SPProfile = value; } } // 0x14 (20)
 		
 		protected CtrRef<PlayerTypeProfile> m_CoopProfile = new CtrRef<PlayerTypeProfile>();
-		[ContainerField(24), MemberInfoFlag(53), ContainerFieldNameHash(3202703933), ContainerCtrRef]
+		[ContainerField(Name: "CoopProfile", Offset: 24, NameHash: 3202703933, Flags: 53)]
 		public CtrRef<PlayerTypeProfile> CoopProfile { get { return m_CoopProfile; } set { if (OnPropertyChanging("PersistenceConfiguration." + nameof(CoopProfile), this, m_CoopProfile, value)) m_CoopProfile = value; } } // 0x18 (24)
 		
 		protected CtrRef<PointSystemParamsAsset> m_PointSystemParams = new CtrRef<PointSystemParamsAsset>();
-		[ContainerField(28), MemberInfoFlag(53), ContainerFieldNameHash(2854935248), ContainerCtrRef]
+		[ContainerField(Name: "PointSystemParams", Offset: 28, NameHash: 2854935248, Flags: 53)]
 		public CtrRef<PointSystemParamsAsset> PointSystemParams { get { return m_PointSystemParams; } set { if (OnPropertyChanging("PersistenceConfiguration." + nameof(PointSystemParams), this, m_PointSystemParams, value)) m_PointSystemParams = value; } } // 0x1C (28)
 		
 		protected CtrRef<LicenseConfiguration> m_LicenseConfig = new CtrRef<LicenseConfiguration>();
-		[ContainerField(32), MemberInfoFlag(53), ContainerFieldNameHash(3061955380), ContainerCtrRef]
+		[ContainerField(Name: "LicenseConfig", Offset: 32, NameHash: 3061955380, Flags: 53)]
 		public CtrRef<LicenseConfiguration> LicenseConfig { get { return m_LicenseConfig; } set { if (OnPropertyChanging("PersistenceConfiguration." + nameof(LicenseConfig), this, m_LicenseConfig, value)) m_LicenseConfig = value; } } // 0x20 (32)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

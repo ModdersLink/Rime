@@ -18,24 +18,24 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(60), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 60)]
 	public class UICrosshairDataBinding : 
 		UIDataBinding
 	{
 		protected UIDataSourceInfo m_Dispersion = new UIDataSourceInfo();
-		[ContainerField(8), MemberInfoFlag(41), ContainerFieldNameHash(1858542823)]
+		[ContainerField(Name: "Dispersion", Offset: 8, NameHash: 1858542823, Flags: 41)]
 		public UIDataSourceInfo Dispersion { get { return m_Dispersion; } set { if (OnPropertyChanging("UICrosshairDataBinding." + nameof(Dispersion), this, m_Dispersion, value)) m_Dispersion = value; } } // 0x8 (8)
 		
 		protected UIDataSourceInfo m_Zoomed = new UIDataSourceInfo();
-		[ContainerField(24), MemberInfoFlag(41), ContainerFieldNameHash(3600216371)]
+		[ContainerField(Name: "Zoomed", Offset: 24, NameHash: 3600216371, Flags: 41)]
 		public UIDataSourceInfo Zoomed { get { return m_Zoomed; } set { if (OnPropertyChanging("UICrosshairDataBinding." + nameof(Zoomed), this, m_Zoomed, value)) m_Zoomed = value; } } // 0x18 (24)
 		
 		protected UIDataSourceInfo m_Visibility = new UIDataSourceInfo();
-		[ContainerField(40), MemberInfoFlag(41), ContainerFieldNameHash(1708270083)]
+		[ContainerField(Name: "Visibility", Offset: 40, NameHash: 1708270083, Flags: 41)]
 		public UIDataSourceInfo Visibility { get { return m_Visibility; } set { if (OnPropertyChanging("UICrosshairDataBinding." + nameof(Visibility), this, m_Visibility, value)) m_Visibility = value; } } // 0x28 (40)
 		
 		protected float m_DispersionBaseOffset = new float();
-		[ContainerField(56), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1903973791)]
+		[ContainerField(Name: "DispersionBaseOffset", Offset: 56, NameHash: 1903973791, Flags: 49469), LayoutImmutable, Blittable]
 		public float DispersionBaseOffset { get { return m_DispersionBaseOffset; } set { if (OnPropertyChanging("UICrosshairDataBinding." + nameof(DispersionBaseOffset), this, m_DispersionBaseOffset, value)) m_DispersionBaseOffset = value; } } // 0x38 (56)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

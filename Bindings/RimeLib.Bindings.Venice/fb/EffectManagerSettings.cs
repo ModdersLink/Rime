@@ -18,20 +18,20 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(24), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 24)]
 	public class EffectManagerSettings : 
 		SystemSettings
 	{
 		protected uint m_MaxNewEffectsPerFrameCount = new uint();
-		[ContainerField(12), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(2561526576)]
+		[ContainerField(Name: "MaxNewEffectsPerFrameCount", Offset: 12, NameHash: 2561526576, Flags: 49421), LayoutImmutable, Blittable]
 		public uint MaxNewEffectsPerFrameCount { get { return m_MaxNewEffectsPerFrameCount; } set { if (OnPropertyChanging("EffectManagerSettings." + nameof(MaxNewEffectsPerFrameCount), this, m_MaxNewEffectsPerFrameCount, value)) m_MaxNewEffectsPerFrameCount = value; } } // 0xC (12)
 		
 		protected uint m_SizeToGrowNewEffectsContainer = new uint();
-		[ContainerField(16), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(146515561)]
+		[ContainerField(Name: "SizeToGrowNewEffectsContainer", Offset: 16, NameHash: 146515561, Flags: 49421), LayoutImmutable, Blittable]
 		public uint SizeToGrowNewEffectsContainer { get { return m_SizeToGrowNewEffectsContainer; } set { if (OnPropertyChanging("EffectManagerSettings." + nameof(SizeToGrowNewEffectsContainer), this, m_SizeToGrowNewEffectsContainer, value)) m_SizeToGrowNewEffectsContainer = value; } } // 0x10 (16)
 		
 		protected uint m_EffectQuality = new uint();
-		[ContainerField(20), LayoutImmutable, Blittable, MemberInfoFlag(49421), ContainerFieldNameHash(3929474783)]
+		[ContainerField(Name: "EffectQuality", Offset: 20, NameHash: 3929474783, Flags: 49421), LayoutImmutable, Blittable]
 		public uint EffectQuality { get { return m_EffectQuality; } set { if (OnPropertyChanging("EffectManagerSettings." + nameof(EffectQuality), this, m_EffectQuality, value)) m_EffectQuality = value; } } // 0x14 (20)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

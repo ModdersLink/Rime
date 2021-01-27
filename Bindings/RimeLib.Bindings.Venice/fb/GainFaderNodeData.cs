@@ -18,40 +18,40 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(64), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 64)]
 	public class GainFaderNodeData : 
 		AudioGraphNodeData
 	{
 		protected AudioGraphNodePort m_In = new AudioGraphNodePort();
-		[ContainerField(8), MemberInfoFlag(41), ContainerFieldNameHash(5862146)]
+		[ContainerField(Name: "In", Offset: 8, NameHash: 5862146, Flags: 41)]
 		public AudioGraphNodePort In { get { return m_In; } set { if (OnPropertyChanging("GainFaderNodeData." + nameof(In), this, m_In, value)) m_In = value; } } // 0x8 (8)
 		
 		protected AudioGraphNodePort m_Start = new AudioGraphNodePort();
-		[ContainerField(16), MemberInfoFlag(41), ContainerFieldNameHash(230748069)]
+		[ContainerField(Name: "Start", Offset: 16, NameHash: 230748069, Flags: 41)]
 		public AudioGraphNodePort Start { get { return m_Start; } set { if (OnPropertyChanging("GainFaderNodeData." + nameof(Start), this, m_Start, value)) m_Start = value; } } // 0x10 (16)
 		
 		protected AudioGraphNodePort m_StartTime = new AudioGraphNodePort();
-		[ContainerField(24), MemberInfoFlag(41), ContainerFieldNameHash(3727579056)]
+		[ContainerField(Name: "StartTime", Offset: 24, NameHash: 3727579056, Flags: 41)]
 		public AudioGraphNodePort StartTime { get { return m_StartTime; } set { if (OnPropertyChanging("GainFaderNodeData." + nameof(StartTime), this, m_StartTime, value)) m_StartTime = value; } } // 0x18 (24)
 		
 		protected AudioGraphNodePort m_FadeTime = new AudioGraphNodePort();
-		[ContainerField(32), MemberInfoFlag(41), ContainerFieldNameHash(4001222838)]
+		[ContainerField(Name: "FadeTime", Offset: 32, NameHash: 4001222838, Flags: 41)]
 		public AudioGraphNodePort FadeTime { get { return m_FadeTime; } set { if (OnPropertyChanging("GainFaderNodeData." + nameof(FadeTime), this, m_FadeTime, value)) m_FadeTime = value; } } // 0x20 (32)
 		
 		protected AudioGraphNodePort m_Amplitude = new AudioGraphNodePort();
-		[ContainerField(40), MemberInfoFlag(41), ContainerFieldNameHash(698564572)]
+		[ContainerField(Name: "Amplitude", Offset: 40, NameHash: 698564572, Flags: 41)]
 		public AudioGraphNodePort Amplitude { get { return m_Amplitude; } set { if (OnPropertyChanging("GainFaderNodeData." + nameof(Amplitude), this, m_Amplitude, value)) m_Amplitude = value; } } // 0x28 (40)
 		
 		protected AudioGraphNodePort m_Out = new AudioGraphNodePort();
-		[ContainerField(48), MemberInfoFlag(41), ContainerFieldNameHash(193453899)]
+		[ContainerField(Name: "Out", Offset: 48, NameHash: 193453899, Flags: 41)]
 		public AudioGraphNodePort Out { get { return m_Out; } set { if (OnPropertyChanging("GainFaderNodeData." + nameof(Out), this, m_Out, value)) m_Out = value; } } // 0x30 (48)
 		
 		protected GainFaderFadeType m_FadeType = new GainFaderFadeType();
-		[ContainerField(56), MemberInfoFlag(137), ContainerFieldNameHash(4001206363)]
+		[ContainerField(Name: "FadeType", Offset: 56, NameHash: 4001206363, Flags: 137)]
 		public GainFaderFadeType FadeType { get { return m_FadeType; } set { if (OnPropertyChanging("GainFaderNodeData." + nameof(FadeType), this, m_FadeType, value)) m_FadeType = value; } } // 0x38 (56)
 		
 		protected SoundGraphPluginRef m_Plugin = new SoundGraphPluginRef();
-		[ContainerField(60), MemberInfoFlag(41), ContainerFieldNameHash(3384353452)]
+		[ContainerField(Name: "Plugin", Offset: 60, NameHash: 3384353452, Flags: 41)]
 		public SoundGraphPluginRef Plugin { get { return m_Plugin; } set { if (OnPropertyChanging("GainFaderNodeData." + nameof(Plugin), this, m_Plugin, value)) m_Plugin = value; } } // 0x3C (60)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

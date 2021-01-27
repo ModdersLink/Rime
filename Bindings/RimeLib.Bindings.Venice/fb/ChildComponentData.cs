@@ -18,44 +18,44 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(224), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 224)]
 	public class ChildComponentData : 
 		PartComponentData
 	{
 		protected LinearTransform m_AlignTransform = new LinearTransform();
-		[ContainerField(112), Homogeneous, LayoutImmutable, Blittable, MemberInfoFlag(53289), ContainerFieldNameHash(4277081604)]
+		[ContainerField(Name: "AlignTransform", Offset: 112, NameHash: 4277081604, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
 		public LinearTransform AlignTransform { get { return m_AlignTransform; } set { if (OnPropertyChanging("ChildComponentData." + nameof(AlignTransform), this, m_AlignTransform, value)) m_AlignTransform = value; } } // 0x70 (112)
 		
 		protected CtrRef<MovingBodyData> m_MovingBody = new CtrRef<MovingBodyData>();
-		[ContainerField(176), MemberInfoFlag(53), ContainerFieldNameHash(654150049), ContainerCtrRef]
+		[ContainerField(Name: "MovingBody", Offset: 176, NameHash: 654150049, Flags: 53)]
 		public CtrRef<MovingBodyData> MovingBody { get { return m_MovingBody; } set { if (OnPropertyChanging("ChildComponentData." + nameof(MovingBody), this, m_MovingBody, value)) m_MovingBody = value; } } // 0xB0 (176)
 		
 		protected VehicleHealthZoneData m_HealthZone = new VehicleHealthZoneData();
-		[ContainerField(180), MemberInfoFlag(41), ContainerFieldNameHash(3196619047)]
+		[ContainerField(Name: "HealthZone", Offset: 180, NameHash: 3196619047, Flags: 41)]
 		public VehicleHealthZoneData HealthZone { get { return m_HealthZone; } set { if (OnPropertyChanging("ChildComponentData." + nameof(HealthZone), this, m_HealthZone, value)) m_HealthZone = value; } } // 0xB4 (180)
 		
 		protected float m_SoundEffectStartRpm = new float();
-		[ContainerField(200), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(2939554110)]
+		[ContainerField(Name: "SoundEffectStartRpm", Offset: 200, NameHash: 2939554110, Flags: 49469), LayoutImmutable, Blittable]
 		public float SoundEffectStartRpm { get { return m_SoundEffectStartRpm; } set { if (OnPropertyChanging("ChildComponentData." + nameof(SoundEffectStartRpm), this, m_SoundEffectStartRpm, value)) m_SoundEffectStartRpm = value; } } // 0xC8 (200)
 		
 		protected float m_SoundEffectStopRpm = new float();
-		[ContainerField(204), LayoutImmutable, Blittable, MemberInfoFlag(49469), ContainerFieldNameHash(1267382822)]
+		[ContainerField(Name: "SoundEffectStopRpm", Offset: 204, NameHash: 1267382822, Flags: 49469), LayoutImmutable, Blittable]
 		public float SoundEffectStopRpm { get { return m_SoundEffectStopRpm; } set { if (OnPropertyChanging("ChildComponentData." + nameof(SoundEffectStopRpm), this, m_SoundEffectStopRpm, value)) m_SoundEffectStopRpm = value; } } // 0xCC (204)
 		
 		protected CtrRef<AlignmentData> m_AlignmentSettings = new CtrRef<AlignmentData>();
-		[ContainerField(208), MemberInfoFlag(53), ContainerFieldNameHash(870827711), ContainerCtrRef]
+		[ContainerField(Name: "AlignmentSettings", Offset: 208, NameHash: 870827711, Flags: 53)]
 		public CtrRef<AlignmentData> AlignmentSettings { get { return m_AlignmentSettings; } set { if (OnPropertyChanging("ChildComponentData." + nameof(AlignmentSettings), this, m_AlignmentSettings, value)) m_AlignmentSettings = value; } } // 0xD0 (208)
 		
 		protected CtrRef<SoundAsset> m_SoundEffect = new CtrRef<SoundAsset>();
-		[ContainerField(212), MemberInfoFlag(53), ContainerFieldNameHash(3556609201), ContainerCtrRef]
+		[ContainerField(Name: "SoundEffect", Offset: 212, NameHash: 3556609201, Flags: 53)]
 		public CtrRef<SoundAsset> SoundEffect { get { return m_SoundEffect; } set { if (OnPropertyChanging("ChildComponentData." + nameof(SoundEffect), this, m_SoundEffect, value)) m_SoundEffect = value; } } // 0xD4 (212)
 		
 		protected bool m_EnableAlignToCamera = new bool();
-		[ContainerField(216), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(2538251595)]
+		[ContainerField(Name: "EnableAlignToCamera", Offset: 216, NameHash: 2538251595, Flags: 49325), LayoutImmutable, Blittable]
 		public bool EnableAlignToCamera { get { return m_EnableAlignToCamera; } set { if (OnPropertyChanging("ChildComponentData." + nameof(EnableAlignToCamera), this, m_EnableAlignToCamera, value)) m_EnableAlignToCamera = value; } } // 0xD8 (216)
 		
 		protected bool m_WorldSpacePositionLock = new bool();
-		[ContainerField(217), LayoutImmutable, Blittable, MemberInfoFlag(49325), ContainerFieldNameHash(3785410993)]
+		[ContainerField(Name: "WorldSpacePositionLock", Offset: 217, NameHash: 3785410993, Flags: 49325), LayoutImmutable, Blittable]
 		public bool WorldSpacePositionLock { get { return m_WorldSpacePositionLock; } set { if (OnPropertyChanging("ChildComponentData." + nameof(WorldSpacePositionLock), this, m_WorldSpacePositionLock, value)) m_WorldSpacePositionLock = value; } } // 0xD9 (217)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

@@ -18,32 +18,32 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(16), MemberInfoFlag(53), ContainerSize(128), ContainerClass]
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 128)]
 	public class VegetationBaseEntityData : 
 		GameEntityData
 	{
 		protected List<LinearTransform> m_BasePoseTransforms = new List<LinearTransform>();
-		[ContainerField(96), MemberInfoFlag(65), ContainerFieldNameHash(2949884966), ContainerArray]
+		[ContainerField(Name: "BasePoseTransforms", Offset: 96, NameHash: 2949884966, Flags: 65)]
 		public List<LinearTransform> BasePoseTransforms { get { return m_BasePoseTransforms; } set { if (OnPropertyChanging("VegetationBaseEntityData." + nameof(BasePoseTransforms), this, m_BasePoseTransforms, value)) m_BasePoseTransforms = value; } } // 0x60 (96)
 		
 		protected List<Vec3> m_BasePoseTranslations = new List<Vec3>();
-		[ContainerField(100), MemberInfoFlag(65), ContainerFieldNameHash(3010608801), ContainerArray]
+		[ContainerField(Name: "BasePoseTranslations", Offset: 100, NameHash: 3010608801, Flags: 65)]
 		public List<Vec3> BasePoseTranslations { get { return m_BasePoseTranslations; } set { if (OnPropertyChanging("VegetationBaseEntityData." + nameof(BasePoseTranslations), this, m_BasePoseTranslations, value)) m_BasePoseTranslations = value; } } // 0x64 (100)
 		
 		protected List<int> m_Hierarchy = new List<int>();
-		[ContainerField(104), MemberInfoFlag(65), ContainerFieldNameHash(2981249554), ContainerArray]
+		[ContainerField(Name: "Hierarchy", Offset: 104, NameHash: 2981249554, Flags: 65)]
 		public List<int> Hierarchy { get { return m_Hierarchy; } set { if (OnPropertyChanging("VegetationBaseEntityData." + nameof(Hierarchy), this, m_Hierarchy, value)) m_Hierarchy = value; } } // 0x68 (104)
 		
 		protected CtrRef<SkinnedMeshAsset> m_Mesh = new CtrRef<SkinnedMeshAsset>();
-		[ContainerField(108), MemberInfoFlag(53), ContainerFieldNameHash(2088783990), ContainerCtrRef]
+		[ContainerField(Name: "Mesh", Offset: 108, NameHash: 2088783990, Flags: 53)]
 		public CtrRef<SkinnedMeshAsset> Mesh { get { return m_Mesh; } set { if (OnPropertyChanging("VegetationBaseEntityData." + nameof(Mesh), this, m_Mesh, value)) m_Mesh = value; } } // 0x6C (108)
 		
 		protected CtrRef<SkinnedMeshAsset> m_ShadowMesh = new CtrRef<SkinnedMeshAsset>();
-		[ContainerField(112), MemberInfoFlag(53), ContainerFieldNameHash(699932784), ContainerCtrRef]
+		[ContainerField(Name: "ShadowMesh", Offset: 112, NameHash: 699932784, Flags: 53)]
 		public CtrRef<SkinnedMeshAsset> ShadowMesh { get { return m_ShadowMesh; } set { if (OnPropertyChanging("VegetationBaseEntityData." + nameof(ShadowMesh), this, m_ShadowMesh, value)) m_ShadowMesh = value; } } // 0x70 (112)
 		
 		protected CtrRef<PhysicsEntityData> m_PhysicsData = new CtrRef<PhysicsEntityData>();
-		[ContainerField(116), MemberInfoFlag(53), ContainerFieldNameHash(1743842718), ContainerCtrRef]
+		[ContainerField(Name: "PhysicsData", Offset: 116, NameHash: 1743842718, Flags: 53)]
 		public CtrRef<PhysicsEntityData> PhysicsData { get { return m_PhysicsData; } set { if (OnPropertyChanging("VegetationBaseEntityData." + nameof(PhysicsData), this, m_PhysicsData, value)) m_PhysicsData = value; } } // 0x74 (116)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

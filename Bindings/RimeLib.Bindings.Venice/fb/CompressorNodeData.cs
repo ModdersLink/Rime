@@ -18,40 +18,40 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(64), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 64)]
 	public class CompressorNodeData : 
 		AudioGraphNodeData
 	{
 		protected AudioGraphNodePort m_In = new AudioGraphNodePort();
-		[ContainerField(8), MemberInfoFlag(41), ContainerFieldNameHash(5862146)]
+		[ContainerField(Name: "In", Offset: 8, NameHash: 5862146, Flags: 41)]
 		public AudioGraphNodePort In { get { return m_In; } set { if (OnPropertyChanging("CompressorNodeData." + nameof(In), this, m_In, value)) m_In = value; } } // 0x8 (8)
 		
 		protected AudioGraphNodePort m_Threshold = new AudioGraphNodePort();
-		[ContainerField(16), MemberInfoFlag(41), ContainerFieldNameHash(3768602130)]
+		[ContainerField(Name: "Threshold", Offset: 16, NameHash: 3768602130, Flags: 41)]
 		public AudioGraphNodePort Threshold { get { return m_Threshold; } set { if (OnPropertyChanging("CompressorNodeData." + nameof(Threshold), this, m_Threshold, value)) m_Threshold = value; } } // 0x10 (16)
 		
 		protected AudioGraphNodePort m_Ratio = new AudioGraphNodePort();
-		[ContainerField(24), MemberInfoFlag(41), ContainerFieldNameHash(230084836)]
+		[ContainerField(Name: "Ratio", Offset: 24, NameHash: 230084836, Flags: 41)]
 		public AudioGraphNodePort Ratio { get { return m_Ratio; } set { if (OnPropertyChanging("CompressorNodeData." + nameof(Ratio), this, m_Ratio, value)) m_Ratio = value; } } // 0x18 (24)
 		
 		protected AudioGraphNodePort m_AttackTime = new AudioGraphNodePort();
-		[ContainerField(32), MemberInfoFlag(41), ContainerFieldNameHash(1150936440)]
+		[ContainerField(Name: "AttackTime", Offset: 32, NameHash: 1150936440, Flags: 41)]
 		public AudioGraphNodePort AttackTime { get { return m_AttackTime; } set { if (OnPropertyChanging("CompressorNodeData." + nameof(AttackTime), this, m_AttackTime, value)) m_AttackTime = value; } } // 0x20 (32)
 		
 		protected AudioGraphNodePort m_ReleaseTime = new AudioGraphNodePort();
-		[ContainerField(40), MemberInfoFlag(41), ContainerFieldNameHash(892319833)]
+		[ContainerField(Name: "ReleaseTime", Offset: 40, NameHash: 892319833, Flags: 41)]
 		public AudioGraphNodePort ReleaseTime { get { return m_ReleaseTime; } set { if (OnPropertyChanging("CompressorNodeData." + nameof(ReleaseTime), this, m_ReleaseTime, value)) m_ReleaseTime = value; } } // 0x28 (40)
 		
 		protected AudioGraphNodePort m_Out = new AudioGraphNodePort();
-		[ContainerField(48), MemberInfoFlag(41), ContainerFieldNameHash(193453899)]
+		[ContainerField(Name: "Out", Offset: 48, NameHash: 193453899, Flags: 41)]
 		public AudioGraphNodePort Out { get { return m_Out; } set { if (OnPropertyChanging("CompressorNodeData." + nameof(Out), this, m_Out, value)) m_Out = value; } } // 0x30 (48)
 		
 		protected CompressorChannelMode m_ChannelMode = new CompressorChannelMode();
-		[ContainerField(56), MemberInfoFlag(137), ContainerFieldNameHash(2243633477)]
+		[ContainerField(Name: "ChannelMode", Offset: 56, NameHash: 2243633477, Flags: 137)]
 		public CompressorChannelMode ChannelMode { get { return m_ChannelMode; } set { if (OnPropertyChanging("CompressorNodeData." + nameof(ChannelMode), this, m_ChannelMode, value)) m_ChannelMode = value; } } // 0x38 (56)
 		
 		protected SoundGraphPluginRef m_Plugin = new SoundGraphPluginRef();
-		[ContainerField(60), MemberInfoFlag(41), ContainerFieldNameHash(3384353452)]
+		[ContainerField(Name: "Plugin", Offset: 60, NameHash: 3384353452, Flags: 41)]
 		public SoundGraphPluginRef Plugin { get { return m_Plugin; } set { if (OnPropertyChanging("CompressorNodeData." + nameof(Plugin), this, m_Plugin, value)) m_Plugin = value; } } // 0x3C (60)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)

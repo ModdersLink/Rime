@@ -18,12 +18,12 @@ using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(4), MemberInfoFlag(53), ContainerSize(32), ContainerClass]
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 32)]
 	public class TerrainQuadDecalAtlasTileTemplateData : 
 		Asset
 	{
 		protected TerrainQuadDecalAtlasTile m_AtlasTile = new TerrainQuadDecalAtlasTile();
-		[ContainerField(12), MemberInfoFlag(41), ContainerFieldNameHash(3027817338)]
+		[ContainerField(Name: "AtlasTile", Offset: 12, NameHash: 3027817338, Flags: 41)]
 		public TerrainQuadDecalAtlasTile AtlasTile { get { return m_AtlasTile; } set { if (OnPropertyChanging("TerrainQuadDecalAtlasTileTemplateData." + nameof(AtlasTile), this, m_AtlasTile, value)) m_AtlasTile = value; } } // 0xC (12)
 		
 		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
