@@ -134,26 +134,26 @@ namespace FBCC.Generators
         private void WriteClass(ContainerClass p_Class)
         {
             var s_SizeAttribute = p_Class.Attributes.FirstOrDefault(p_Attribute => p_Attribute.Attribute == "ContainerSize");
-            var s_MemberInfoFlagsAttribute = p_Class.Attributes.FirstOrDefault(p_Attribute => p_Attribute.Attribute == "MemberInfoFlag");
+            var s_ClassFlags = p_Class.Attributes.FirstOrDefault(p_Attribute => p_Attribute.Attribute == "MemberInfoFlag");
 
-            if (s_SizeAttribute == null || s_MemberInfoFlagsAttribute == null)
+            if (s_SizeAttribute == null || s_ClassFlags == null)
             {
                 // Invalid
                 throw new System.Exception("Why is this happening");
             }
 
-            if (s_MemberInfoFlagsAttribute.Parameters.Count < 1)
+            if (s_ClassFlags.Parameters.Count < 1)
                 throw new System.Exception("Not enough member info flag parameters.");
 
             if (s_SizeAttribute.Parameters.Count < 1)
                 throw new System.Exception("not enough size parameters.");
 
             p_Class.Attributes.Remove(s_SizeAttribute);
-            p_Class.Attributes.Remove(s_MemberInfoFlagsAttribute);
+            p_Class.Attributes.Remove(s_ClassFlags);
 
             var s_ClassAttributes = string.Join(", ", p_Class.Attributes);
 
-            m_Writer.WriteLine($"{m_Indent}[ContainerType({ (p_Class.Alignment == 0 ? "" : "Alignment: " + p_Class.Alignment + ", ") } Flags: {s_MemberInfoFlagsAttribute.Parameters.First()}, Size: {s_SizeAttribute.Parameters[0]} { (p_Class.Attributes.Count > 0 ? s_ClassAttributes : "") } )]");
+            m_Writer.WriteLine($"{m_Indent}[ContainerType({ (p_Class.Alignment == 0 ? "" : "Alignment: " + p_Class.Alignment + ", ") } Flags: {s_ClassFlags.Parameters.First()}, Size: {s_SizeAttribute.Parameters[0]}){(s_ClassAttributes.Length > 0 ? ", " + s_ClassAttributes : "")}]");
 
             m_Writer.Write(m_Indent + "public class {0}", p_Class.Name);
 
@@ -181,17 +181,19 @@ namespace FBCC.Generators
                 if (string.IsNullOrWhiteSpace(s_Type))
                     continue;
 
-                // Add custom attributes
-                var s_FieldNameHashAttribute = new ContainerAttribute("ContainerFieldNameHash");
-                s_FieldNameHashAttribute.Parameters.Add(new ContainerIntegerAttributeParam(fb_hashQuick(s_Member.Name)));
-                s_Member.Attributes.Add(s_FieldNameHashAttribute);
+                //var s_NameHashAttribute = s_Member.Attributes.FirstOrDefault(p_Attribute => p_Attribute.Attribute == "ContainerFieldNameHash");
+                var s_MemberFlagsAttribute = s_Member.Attributes.FirstOrDefault(p_Attribute => p_Attribute.Attribute == "MemberInfoFlag");
 
-                if (s_Pointer && s_Member.Array)
-                    s_Member.Attributes.Add(new ContainerAttribute("ContainerRefArray"));
-                if (s_Pointer && !s_Member.Array)
-                    s_Member.Attributes.Add(new ContainerAttribute("ContainerCtrRef"));
-                if (!s_Pointer && s_Member.Array)
-                    s_Member.Attributes.Add(new ContainerAttribute("ContainerArray"));
+                if (s_MemberFlagsAttribute == null)
+                {
+                    // Invalid
+                    throw new System.Exception("Why is this happening");
+                }
+
+                if (s_MemberFlagsAttribute.Parameters.Count < 1)
+                    throw new System.Exception("Not enough member info flag parameters.");
+
+                s_Member.Attributes.Remove(s_MemberFlagsAttribute);
 
                 var s_FieldAttributes = string.Join(", ", s_Member.Attributes);
 
@@ -199,9 +201,10 @@ namespace FBCC.Generators
                 {
                     m_Writer.WriteLine($"{m_Indent}protected RefArray<{s_Type}> m_{s_Member.Name} = new RefArray<{s_Type}>();");
 
-                    m_Writer.Write(m_Indent + "[ContainerField({0})", s_Member.Offset);
+                    m_Writer.WriteLine($"{m_Indent}[ContainerField(Name: \"{s_Member.Name}\", Offset: {s_Member.Offset}, NameHash: {fb_hashQuick(s_Member.Name)}, Flags: {s_MemberFlagsAttribute.Parameters[0]}){(s_FieldAttributes.Length > 0 ? ", " + s_FieldAttributes : "")}]");
+                    /*m_Writer.Write(m_Indent + "[ContainerField({0})", s_Member.Offset);
                     m_Writer.Write(s_FieldAttributes.Length > 0 ? ", " + s_FieldAttributes : "");
-                    m_Writer.WriteLine("]");
+                    m_Writer.WriteLine("]");*/
 
                     m_Writer.WriteLine(m_Indent + "public RefArray<{2}> {0} {{ get {{ return m_{0}; }} set {{ if (OnPropertyChanging(\"{3}.\" + nameof({0}), this, m_{0}, value)) m_{0} = value; }} }} // 0x{1:X} ({1})", s_Member.Name, s_Member.Offset, s_Type, p_Class.Name);
                 }
@@ -209,9 +212,11 @@ namespace FBCC.Generators
                 {
                     m_Writer.WriteLine($"{m_Indent}protected CtrRef<{s_Type}> m_{s_Member.Name} = new CtrRef<{s_Type}>();");
 
-                    m_Writer.Write(m_Indent + "[ContainerField({0})", s_Member.Offset);
+                    m_Writer.WriteLine($"{m_Indent}[ContainerField(Name: \"{s_Member.Name}\", Offset: {s_Member.Offset}, NameHash: {fb_hashQuick(s_Member.Name)}, Flags: {s_MemberFlagsAttribute.Parameters[0]}){(s_FieldAttributes.Length > 0 ? ", " + s_FieldAttributes : "")}]");
+
+                    /*m_Writer.Write(m_Indent + "[ContainerField({0})", s_Member.Offset);
                     m_Writer.Write(s_FieldAttributes.Length > 0 ? ", " + s_FieldAttributes : "");
-                    m_Writer.WriteLine("]");
+                    m_Writer.WriteLine("]");*/
                     m_Writer.WriteLine(m_Indent + "public CtrRef<{2}> {0} {{ get {{ return m_{0}; }} set {{ if (OnPropertyChanging(\"{3}.\" + nameof({0}), this, m_{0}, value)) m_{0} = value; }} }} // 0x{1:X} ({1})", s_Member.Name, s_Member.Offset, s_Type, p_Class.Name);
                 }
                 else if (!s_Pointer && !s_Member.Array)
@@ -227,21 +232,23 @@ namespace FBCC.Generators
                                 m_Writer.WriteLine($"{m_Indent}protected {s_Type} m_{s_Member.Name} = new {s_Type}();");
                                 break;
                         }
-                        
-                        
 
-                        m_Writer.Write(m_Indent + "[ContainerField({0})", s_Member.Offset);
+
+
+                        /*m_Writer.Write(m_Indent + "[ContainerField({0})", s_Member.Offset);
                         m_Writer.Write(s_FieldAttributes.Length > 0 ? ", " + s_FieldAttributes : "");
-                        m_Writer.WriteLine("]");
+                        m_Writer.WriteLine("]");*/
+                        m_Writer.WriteLine($"{m_Indent}[ContainerField(Name: \"{s_Member.Name}\", Offset: {s_Member.Offset}, NameHash: {fb_hashQuick(s_Member.Name)}, Flags: {s_MemberFlagsAttribute.Parameters[0]}){(s_FieldAttributes.Length > 0 ? ", " + s_FieldAttributes : "")}]");
                         m_Writer.WriteLine(m_Indent + "public {0} {1} {{ get {{ return m_{1}; }} set {{ if (OnPropertyChanging(\"{3}.\" + nameof({1}), this, m_{1}, value)) m_{1} = value; }} }} // 0x{2:X} ({2})", s_Type, s_Member.Name, s_Member.Offset, p_Class.Name);
                     }
                     else
                     {
                         m_Writer.WriteLine($"{m_Indent}protected {s_Type} m_{s_Member.Name} = new {s_Type}();");
 
-                        m_Writer.Write(m_Indent + "[ContainerField({0})", s_Member.Offset);
+                        /*m_Writer.Write(m_Indent + "[ContainerField({0})", s_Member.Offset);
                         m_Writer.Write(s_FieldAttributes.Length > 0 ? ", " + s_FieldAttributes : "");
-                        m_Writer.WriteLine("]");
+                        m_Writer.WriteLine("]");*/
+                        m_Writer.WriteLine($"{m_Indent}[ContainerField(Name: \"{s_Member.Name}\", Offset: {s_Member.Offset}, NameHash: {fb_hashQuick(s_Member.Name)}, Flags: {s_MemberFlagsAttribute.Parameters[0]}){(s_FieldAttributes.Length > 0 ? ", " + s_FieldAttributes : "")}]");
 
                         m_Writer.WriteLine(m_Indent + "public {0} {1} {{ get {{ return m_{1}; }} set {{ if (OnPropertyChanging(\"{3}.\" + nameof({1}), this, m_{1}, value)) m_{1} = value; }} }} // 0x{2:X} ({2})", s_Type, s_Member.Name, s_Member.Offset, p_Class.Name);
                     }
@@ -250,9 +257,10 @@ namespace FBCC.Generators
                 {
                     m_Writer.WriteLine($"{m_Indent}protected List<{s_Type}> m_{s_Member.Name} = new List<{s_Type}>();");
 
-                    m_Writer.Write(m_Indent + "[ContainerField({0})", s_Member.Offset);
+                    /*m_Writer.Write(m_Indent + "[ContainerField({0})", s_Member.Offset);
                     m_Writer.Write(s_FieldAttributes.Length > 0 ? ", " + s_FieldAttributes : "");
-                    m_Writer.WriteLine("]");
+                    m_Writer.WriteLine("]");*/
+                    m_Writer.WriteLine($"{m_Indent}[ContainerField(Name: \"{s_Member.Name}\", Offset: {s_Member.Offset}, NameHash: {fb_hashQuick(s_Member.Name)}, Flags: {s_MemberFlagsAttribute.Parameters[0]}){(s_FieldAttributes.Length > 0 ? ", " + s_FieldAttributes : "")}]");
 
                     m_Writer.WriteLine(m_Indent + "public List<{0}> {1} {{ get {{ return m_{1}; }} set {{ if (OnPropertyChanging(\"{3}.\" + nameof({1}), this, m_{1}, value)) m_{1} = value; }} }} // 0x{2:X} ({2})", s_Type, s_Member.Name, s_Member.Offset, p_Class.Name);
                 }
@@ -469,7 +477,7 @@ namespace FBCC.Generators
 
             var s_StructAttributes = string.Join(", ", p_Struct.Attributes);
 
-            m_Writer.WriteLine($"{m_Indent}[ContainerType({ (p_Struct.Alignment == 0 ? "" : "Alignment: " + p_Struct.Alignment + ", ") } Flags: {s_MemberInfoFlagsAttribute.Parameters.First()}, Size: {s_SizeAttribute.Parameters[0]} { (p_Struct.Attributes.Count > 0 ? s_StructAttributes : "") } )]");
+            m_Writer.WriteLine($"{m_Indent}[ContainerType({ (p_Struct.Alignment == 0 ? "" : "Alignment: " + p_Struct.Alignment + ", ") } Flags: {s_MemberInfoFlagsAttribute.Parameters.First()}, Size: {s_SizeAttribute.Parameters[0]}){(s_StructAttributes.Length > 0 ? ", " + s_StructAttributes : "")}]");
 
             m_Writer.Write(m_Indent + "public class {0} : FrostbiteContainer", p_Struct.Name);
             m_Writer.WriteLine();
@@ -484,28 +492,37 @@ namespace FBCC.Generators
                 var s_Pointer = s_Member.MemberType == ContainerMemberType.Container &&
                                 ContainerManager.HasClass(s_Member.ContainerType);
 
-                // Add custom attributes to help with serialization
-                if (s_Pointer && s_Member.Array)
-                    s_Member.Attributes.Add(new ContainerAttribute("ContainerRefArray"));
-                if (s_Pointer && !s_Member.Array)
-                    s_Member.Attributes.Add(new ContainerAttribute("ContainerCtrRef"));
-                if (!s_Pointer && s_Member.Array)
-                    s_Member.Attributes.Add(new ContainerAttribute("ContainerArray"));
 
                 var s_Type = GetMemberType(s_Member);
 
                 if (string.IsNullOrWhiteSpace(s_Type))
                     continue;
-				
-				var s_FieldAttributes = string.Join(", ", s_Member.Attributes);
 
-				m_Writer.Write(m_Indent + "[ContainerField({0})", s_Member.Offset);
+                //var s_NameHashAttribute = s_Member.Attributes.FirstOrDefault(p_Attribute => p_Attribute.Attribute == "ContainerFieldNameHash");
+                var s_MemberFlagsAttribute = s_Member.Attributes.FirstOrDefault(p_Attribute => p_Attribute.Attribute == "MemberInfoFlag");
 
-				/*if (s_Member.MemberType == ContainerMemberType.Container && ContainerManager.HasStruct(s_Member.ContainerType) && !s_Member.Array)
-					m_Writer.Write(", ExpandableObject");*/
+                if (s_MemberFlagsAttribute == null)
+                {
+                    // Invalid
+                    throw new System.Exception("Why is this happening");
+                }
 
-				m_Writer.Write(s_FieldAttributes.Length > 0 ? ", " + s_FieldAttributes : "");
-				m_Writer.WriteLine("]");
+                if (s_MemberFlagsAttribute.Parameters.Count < 1)
+                    throw new System.Exception("not enough size parameters.");
+
+                s_Member.Attributes.Remove(s_MemberFlagsAttribute);
+
+                var s_FieldAttributes = string.Join(", ", s_Member.Attributes);
+                m_Writer.WriteLine($"{m_Indent}[ContainerField(Name: \"{s_Member.Name}\", Offset: {s_Member.Offset}, NameHash: {fb_hashQuick(s_Member.Name)}, Flags: {s_MemberFlagsAttribute.Parameters[0]}){(s_FieldAttributes.Length > 0 ? ", " + s_FieldAttributes : "")}]");
+
+
+                /*m_Writer.Write(m_Indent + "[ContainerField({0})", s_Member.Offset);
+
+				//if (s_Member.MemberType == ContainerMemberType.Container && ContainerManager.HasStruct(s_Member.ContainerType) && !s_Member.Array)
+					//m_Writer.Write(", ExpandableObject");
+
+                m_Writer.Write(s_FieldAttributes.Length > 0 ? ", " + s_FieldAttributes : "");
+				m_Writer.WriteLine("]");*/
 
                 if (s_Pointer && s_Member.Array)
                 {

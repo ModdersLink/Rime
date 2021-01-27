@@ -117,22 +117,28 @@ namespace RimeLib.Serialization.Attributes
         public uint FieldNameHash { get; set; }
 
         /// <summary>
+        /// Member info flags for this field
+        /// </summary>
+        public ushort FieldFlags { get; set; }
+
+        /// <summary>
         /// Default constructor
         /// </summary>
         /// <param name="Offset">Offset of this field, default: 0</param>
-		public ContainerFieldAttribute(uint Offset = 0)
-        {
-            FieldOffset = Offset;
-            FieldName = string.Empty;
-            FieldNameHash = 0;
-        }
+		//public ContainerFieldAttribute(uint Offset = 0)
+  //      {
+  //          FieldOffset = Offset;
+  //          FieldName = string.Empty;
+  //          FieldNameHash = 0;
+  //          FieldFlags = 0;
+  //      }
 
         /// <summary>
         /// Constructor taking a name and offset
         /// </summary>
         /// <param name="Name">Name of this field</param>
         /// <param name="Offset">Offset of this field</param>
-	    public ContainerFieldAttribute(string Name, uint Offset = 0, uint NameHash = 0)
+	    public ContainerFieldAttribute(string Name, uint Offset = 0, uint NameHash = 0, ushort Flags = 0)
         {
             FieldOffset = Offset;
             FieldName = Name;
