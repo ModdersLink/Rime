@@ -436,9 +436,11 @@ namespace RimeLib.Serialization.Containers
             }
         }
 
-        bool IEquatable<Vec2>.Equals(Vec2 other)
+        bool IEquatable<Vec2>.Equals(Vec2? other)
         {
-            return Equals(other);
+#pragma warning disable CS8604 // Possible null reference argument.
+            return this.Equals(other);
+#pragma warning restore CS8604 // Possible null reference argument.
         }
     }
 }
