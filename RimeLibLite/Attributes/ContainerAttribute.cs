@@ -143,6 +143,7 @@ namespace RimeLib.Serialization.Attributes
             FieldOffset = Offset;
             FieldName = Name;
             FieldNameHash = NameHash;
+            FieldFlags = Flags;
         }
     }
 

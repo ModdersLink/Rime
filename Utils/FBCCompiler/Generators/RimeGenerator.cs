@@ -153,7 +153,7 @@ namespace FBCC.Generators
 
             var s_ClassAttributes = string.Join(", ", p_Class.Attributes);
 
-            m_Writer.WriteLine($"{m_Indent}[ContainerType({ (p_Class.Alignment == 0 ? "" : "Alignment: " + p_Class.Alignment + ", ") } Flags: {s_ClassFlags.Parameters.First()}, Size: {s_SizeAttribute.Parameters[0]}){(s_ClassAttributes.Length > 0 ? ", " + s_ClassAttributes : "")}]");
+            m_Writer.WriteLine($"{m_Indent}[ContainerType({ (p_Class.Alignment == 0 ? "" : "Alignment: " + p_Class.Alignment + ", ") } Flags: {s_ClassFlags.Parameters[0]}, Size: {s_SizeAttribute.Parameters[0]}){(s_ClassAttributes.Length > 0 ? ", " + s_ClassAttributes : "")}]");
 
             m_Writer.Write(m_Indent + "public class {0}", p_Class.Name);
 

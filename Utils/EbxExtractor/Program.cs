@@ -138,6 +138,8 @@ namespace EbxExtractor
                 if (s_Partition == null)
                     continue;
 
+                new FrostbitePartitionVisitor(s_Partition.PrimaryInstance).Iterate();
+
                 PartitionRegistry.RegisterPartition(s_Partition);
 
                 
