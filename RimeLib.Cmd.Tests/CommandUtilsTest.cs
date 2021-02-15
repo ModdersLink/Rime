@@ -1,58 +1,59 @@
-﻿using Xunit;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace RimeLib.Cmd.Tests
 {
+    [TestClass]
     public class CommandUtilsTest
     {
-        [Fact]
+        [TestMethod]
         public void TestParseArguments()
         {
-            Assert.Equal(
+            Assert.AreEqual(
                 CommandUtils.ParseArguments("one"),
                 new[] { "one" }
             );
 
-            Assert.Equal(
+            Assert.AreEqual(
                 CommandUtils.ParseArguments("one two"),
                 new[] { "one", "two" }
             );
 
-            Assert.Equal(
+            Assert.AreEqual(
                 CommandUtils.ParseArguments("one    two"),
                 new[] { "one", "two" }
             );
 
-            Assert.Equal(
+            Assert.AreEqual(
                 CommandUtils.ParseArguments("one \"two\""),
                 new[] { "one", "two" }
             );
 
-            Assert.Equal(
+            Assert.AreEqual(
                 CommandUtils.ParseArguments("one \"two\" \"three spaced\""),
                 new[] { "one", "two", "three spaced" }
             );
 
-            Assert.Equal(
+            Assert.AreEqual(
                 CommandUtils.ParseArguments("one \"two\" \"three \\\"spaced\\\"\""),
                 new[] { "one", "two", "three \"spaced\"" }
             );
 
-            Assert.Equal(
+            Assert.AreEqual(
                 CommandUtils.ParseArguments("one\"two\""),
                 new[] { "one", "two" }
             );
 
-            Assert.Equal(
+            Assert.AreEqual(
                 CommandUtils.ParseArguments("one\"two"),
                 new[] { "one", "two" }
             );
 
-            Assert.Equal(
+            Assert.AreEqual(
                 CommandUtils.ParseArguments("one\"two\"three"),
                 new[] { "one", "two", "three" }
             );
 
-            Assert.Equal(
+            Assert.AreEqual(
                 CommandUtils.ParseArguments("one t\\wo"),
                 new[] { "one", "t\\wo" }
             );
