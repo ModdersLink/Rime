@@ -1,7 +1,10 @@
-﻿using RimeLib.UI.ViewModels.fb;
+﻿using RimeLib.Serialization.Containers;
+using RimeLib.UI.Controls.Meta;
+using RimeLib.UI.ViewModels.fb;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -21,15 +24,34 @@ namespace RimeLib.UI
     /// </summary>
     public partial class MainWindow : Window
     {
+        /// <summary>
+        /// Current build string
+        /// </summary>
+        public string BuildString => $"RimeLib.UI Pre-Beta [Build: {GetType().Assembly.GetName().Version}]";
+
         public MainWindow()
         {
             InitializeComponent();
 
-            var s_Control = new Controls.Meta.Vec2Control
+            dockingManager.DocumentsSource = new[] 
             {
-                DataContext = new Vec2ViewModel()
+                new Vec2ViewModel
+                {
+                    Value = new Vec2(1337, 1338)
+                },
+                new Vec2ViewModel
+                {
+                    Value = new Vec2(1337, 1338)
+                },
+                new Vec2ViewModel
+                {
+                    Value = new Vec2(1337, 1338)
+                },
+                new Vec2ViewModel
+                {
+                    Value = new Vec2(1337, 1338)
+                }
             };
-            this.Content = s_Control;
         }
     }
 }

@@ -24,6 +24,8 @@ namespace RimeLib.Serialization.Containers
         /// </summary>
         [ContainerField("y", 4)]
         public float Y { get; set; }
+
+        public static readonly Vec2 Zero = new Vec2(0, 0);
         
         /// <summary>
         /// Default constructor

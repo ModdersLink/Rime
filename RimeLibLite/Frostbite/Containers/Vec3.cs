@@ -12,7 +12,7 @@ namespace RimeLib.Serialization.Containers
     /// </summary>
     // TODO: Implement MemberInfoFlags
     [ContainerType(Alignment: 16, Size: 16)]
-    public class Vec3 : FrostbiteContainer
+    public class Vec3 : FrostbiteContainer, IEquatable<Vec3>
     {
         /// <summary>
         /// X component
@@ -870,11 +870,6 @@ namespace RimeLib.Serialization.Containers
             p_Writer.Write(0);
         }
 
-        protected bool Equals(Vec3 other)
-        {
-            return X.Equals(other.X) && Y.Equals(other.Y) && Z.Equals(other.Z);
-        }
-
         public override bool Equals(object? obj)
         {
             if (ReferenceEquals(null, obj)) return false;
@@ -892,6 +887,14 @@ namespace RimeLib.Serialization.Containers
                 hashCode = (hashCode*397) ^ Z.GetHashCode();
                 return hashCode;
             }
+        }
+
+        public bool Equals(Vec3? other)
+        {
+            if (other is null)
+                return false;
+
+            return X.Equals(other.X) && Y.Equals(other.Y) && Z.Equals(other.Z);
         }
     }
 }

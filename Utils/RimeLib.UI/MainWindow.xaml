@@ -4,7 +4,35 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RimeLib.UI"
+        xmlns:vms="clr-namespace:RimeLib.UI.ViewModels.fb"
+        xmlns:vms2="clr-namespace:RimeLib.UI.Controls.Meta"
+        xmlns:dock="https://github.com/Dirkster99/AvalonDock"
         mc:Ignorable="d"
         x:Name="mainWindow"
-        Title="MainWindow" Height="450" Width="800">
+        Title="{Binding ElementName=mainWindow, Path=BuildString}" Height="450" Width="800">
+    <dock:DockingManager x:Name="dockingManager">
+        <dock:DockingManager.DocumentHeaderTemplate>
+            <DataTemplate>
+                <TextBlock Text="{Binding Content}"/>
+            </DataTemplate>
+        </dock:DockingManager.DocumentHeaderTemplate>
+        <dock:DockingManager.Resources>
+            <DataTemplate DataType="{x:Type vms:Vec2ViewModel}">
+                <vms2:Vec2Control/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type vms:Vec3ViewModel}">
+                <vms2:Vec3Control/>
+            </DataTemplate>
+        </dock:DockingManager.Resources>
+
+
+        <!--<dock:DockingManager.LayoutItemContainerStyle>
+            --><!-- you can add additional bindings from the layoutitem to the DockWindowViewModel --><!--
+            <Style TargetType="{x:Type dockctrl:LayoutItem}">
+                <Setter Property="Title" Value="{Binding Model.Title}" />
+                <Setter Property="CloseCommand" Value="{Binding Model.CloseCommand}" />
+                <Setter Property="CanClose" Value="{Binding Model.CanClose}" />
+            </Style>
+        </dock:DockingManager.LayoutItemContainerStyle>-->
+    </dock:DockingManager>
 </Window>

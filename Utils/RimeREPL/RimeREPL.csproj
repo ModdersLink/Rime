@@ -8,7 +8,7 @@
     <RootNamespace>Rime.Utils.RimeREPL</RootNamespace>
     <OutputPath>$(SolutionDir)\bin\$(Configuration)</OutputPath>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <Platforms>AnyCPU;x64</Platforms>
+    <Platforms>x64</Platforms>
   </PropertyGroup>
 
   <ItemGroup>
