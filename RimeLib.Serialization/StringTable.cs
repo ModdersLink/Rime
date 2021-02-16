@@ -14,10 +14,18 @@ namespace RimeLib.Serialization
         protected ConcurrentDictionary<int, string> m_Strings;
         protected int m_StringTableSize;
 
+        /// <summary>
+        /// Start offset of this string table
+        /// 
+        /// This is added to the "start" offsets when recalculating
+        /// </summary>
+        public int StringTableBase;
+
         public StringTable()
         {
             m_Strings = new ConcurrentDictionary<int, string>();
             m_StringTableSize = 0;
+            StringTableBase = 0;
         }
 
         public bool AddString(string p_String)
@@ -63,7 +71,7 @@ namespace RimeLib.Serialization
 
             var s_Strings = new ConcurrentDictionary<int, string>();
 
-            var s_CurrentOffset = 0;
+            var s_CurrentOffset = StringTableBase;
             foreach (var s_Pair in m_Strings)
             {
                 s_Strings.TryAdd(s_CurrentOffset, s_Pair.Value);

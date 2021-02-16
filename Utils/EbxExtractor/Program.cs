@@ -142,6 +142,10 @@ namespace EbxExtractor
 
                 PartitionRegistry.RegisterPartition(s_Partition);
 
+                var s_SerializationContext = new SerializationContext(s_Partition);
+
+                s_SerializationContext.Parse();
+
                 
                 var s_Serialization = new Serialization(s_Partition);
 
