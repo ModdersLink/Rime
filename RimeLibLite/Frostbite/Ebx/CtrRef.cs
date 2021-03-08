@@ -9,6 +9,8 @@ namespace RimeLib.Serialization.Ebx
     public class CtrRef<T> : CtrRefBase
         where T : DataContainer
     {
+        public readonly Type BaseType = typeof(T);
+
         /// <inheritdoc />
         public CtrRef() : base()
         {

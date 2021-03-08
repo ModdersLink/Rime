@@ -1,4 +1,5 @@
 ﻿using RimeLib.Serialization.Containers;
+using System;
 using System.Collections.Generic;
 
 namespace RimeLib.Serialization.Ebx
@@ -10,5 +11,6 @@ namespace RimeLib.Serialization.Ebx
     public class RefArray<T> : List<CtrRef<T>>
         where T : DataContainer
     {
+        public readonly Type BaseType = typeof(T);
     }
 }
