@@ -145,23 +145,6 @@ namespace EbxExtractor
                 var s_SerializationContext = new SerializationContext(s_Partition);
 
                 s_SerializationContext.Parse();
-
-                
-                var s_Serialization = new Serialization(s_Partition);
-
-                using (TextWriter s_Writer = new StreamWriter("out.txt"))
-                {
-                    s_Writer.WriteLine("EBX TypeStrings:");
-                    foreach (var l_TypeString in s_Reader.m_TypeStrings)
-                        s_Writer.WriteLine(l_TypeString);
-
-                    s_Writer.WriteLine("Generated TypeStrings:");
-                    foreach (var l_TypeString in s_Serialization.m_TypeStrings)
-                        s_Writer.WriteLine(l_TypeString);
-                }
-
-                /*var s_Serializer = new PartitionSerializer(new Fb2SerializationContext());
-                s_Serializer.SerializePartition(s_Partition);*/
             }
 #else
             var s_Ret = Parallel.ForEach(s_Partitions, p_Pair =>

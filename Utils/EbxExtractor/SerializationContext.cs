@@ -4,6 +4,7 @@ using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization.Containers;
 using RimeLib.Serialization.Ebx;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using RimeLib.Utils;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -63,6 +64,7 @@ namespace EbxExtractor
             m_StringTable = new StringTable();
             m_InstanceEntries = new List<InstanceEntry>();
             m_FieldDescriptors = new List<FieldDescriptor>();
+            m_TypeDescriptors = new List<TypeDescriptor>();
 
             // This is just used for internal tracking
             m_ReferencedPartitions = new List<FrostbitePartition>();
@@ -132,6 +134,7 @@ namespace EbxExtractor
             else if (s_ObjectType.IsGenericType && s_ObjectType.GetGenericTypeDefinition() == typeof(IList<>)) // Generic List<T>
             {
                 s_ObjectType = s_ObjectType.GetGenericArguments().First();
+                m_StringTable.AddString("array");
             }
             else if (s_ObjectType.IsGenericType && s_ObjectType.GetGenericTypeDefinition() == typeof(CtrRef<>))
             {
@@ -167,11 +170,24 @@ namespace EbxExtractor
             // Add this "main" type to our type strings
             m_TypeStrings.AddString(s_TypeName);
 
-
+            // Check to see if the type is an enum
+            if (s_ObjectType.IsEnum)
+            {
+                // If the type is an enum, we need to not only add the typestring name, but each of the values
+                var s_EnumNames = Enum.GetNames(s_ObjectType);
+                foreach (var l_EnumName in s_EnumNames)
+                {
+                    if (!m_StringTable.AddString(l_EnumName))
+                        throw new Exception("could not add enum name.");
+                }
+            }
             // Then do the exact same thing for each of the properties
 
-            // Get all properties
+            // Get all properties (EBX fields)
             PropertyInfo[] s_Properties = s_ObjectType.GetProperties();
+
+            // Hold the current ebx field count
+            byte s_ContainerTypeFieldCount = 0;
 
             // Iterate through all properties
             for (var l_PropertyIndex = 0; l_PropertyIndex < s_Properties.Length; ++l_PropertyIndex)
@@ -186,10 +202,10 @@ namespace EbxExtractor
                 Type l_PropertyType = l_PropertyInfo.PropertyType;
 
                 // Attempt to get our container field attribute which contains some data from Frostbite
-                var l_ContainerTypeAttribute = l_PropertyInfo.GetCustomAttribute<ContainerFieldAttribute>();
+                var l_ContainerFieldAttribute = l_PropertyInfo.GetCustomAttribute<ContainerFieldAttribute>();
 
                 // Validate that this field has "some" container field attribute, otherwise skip it (could be editor-only data, etc)
-                if (l_ContainerTypeAttribute is null)
+                if (l_ContainerFieldAttribute is null)
                     continue;
 
                 // "LinkedTo"
@@ -198,14 +214,50 @@ namespace EbxExtractor
                 // Add the field name to our string table
                 m_StringTable.AddString(l_FieldName);
 
+                // Increment our field count
+                s_ContainerTypeFieldCount++;
+                if (s_ContainerTypeFieldCount >= byte.MaxValue)
+                    throw new IndexOutOfRangeException("Too many contaianer type field count");
+
                 // Get the value of this property
                 dynamic l_Value = l_PropertyInfo.GetValue(p_ParentContainer);
                 if (l_Value is null)
                     continue;
 
+                // Create a new placeholder field descriptor
+                m_FieldDescriptors.Add(new FieldDescriptor
+                {
+                    CSharpType = l_PropertyType,
+                    Flags = new MemberInfoFlags(l_ContainerFieldAttribute.FieldFlags),
+                    Name = l_FieldName,
+                    NameHash = FbUtils.HashQuick(l_FieldName),
+                    FieldType = 0, // TODO: Implement this, This is the TypeDescriptor index (which has not been created/set yet)
+                    SecondaryOffset = 0,
+                    Offset = (int)l_ContainerFieldAttribute.FieldOffset
+                });
+
                 // Recursively parse this
                 ParseTypes(l_Value, p_ParentContainer);
             }
+
+            // Next we will need to create the TypeInstance for this paticular type
+            // we do this by getting the ContainerType information
+            var s_ContainerTypeAttribute = s_ObjectType.GetCustomAttribute<ContainerTypeAttribute>();
+            if (s_ContainerTypeAttribute is null)
+                throw new Exception("Parsing type missing ContainerType attribute.");
+
+            // Create a new dummy type descriptor
+            m_TypeDescriptors.Add(new TypeDescriptor
+            {
+                Alignment = s_ContainerTypeAttribute.DataAlignment,
+                FieldCount = s_ContainerTypeFieldCount,
+                Flags = new MemberInfoFlags(s_ContainerTypeAttribute.Flags),
+                LayoutDescriptor = 0, // TODO: Implement, this is an index to the start of the FieldDescriptor start + this types index, then we read FieldCount from that FieldDescriptor Start + this types index + fieldCount
+                Name = s_TypeName,
+                NameHash = FbUtils.HashQuick(s_TypeName),
+                SecondarySize = 0,
+                Size = s_ContainerTypeAttribute.Size
+            });
         }
 
         protected void ParseValues(dynamic p_Object, DataContainer p_ParentContainer)
