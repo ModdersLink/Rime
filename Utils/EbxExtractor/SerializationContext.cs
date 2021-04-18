@@ -53,6 +53,13 @@ namespace EbxExtractor
         protected List<KeyValuePair<GUID, GUID>> m_ExternalPartitionGuids;
         protected List<KeyValuePair<GUID, GUID>> m_InternalPartitionGuids;
 
+        protected List<string> m_BuiltinTypes = new List<string>
+        {
+            "String",
+            "UInt32",
+            "Boolean"
+        };
+
         /// <summary>
         /// Determines should there be new serialization contexts based on dependencies of this current partition
         /// </summary>
@@ -242,9 +249,18 @@ namespace EbxExtractor
 
             // Next we will need to create the TypeInstance for this paticular type
             // we do this by getting the ContainerType information
+
             var s_ContainerTypeAttribute = s_ObjectType.GetCustomAttribute<ContainerTypeAttribute>();
             if (s_ContainerTypeAttribute is null)
-                throw new Exception("Parsing type missing ContainerType attribute.");
+            {
+                // This is an expected failure case for builtin frostbite/pod types
+                if (m_BuiltinTypes.Contains(s_ObjectType.Name))
+                    return;
+
+                // Log skipped variables for our own good
+                Console.WriteLine($"Skipping: {s_ObjectType.Name}");
+                return;
+            }
 
             // Create a new dummy type descriptor
             m_TypeDescriptors.Add(new TypeDescriptor
