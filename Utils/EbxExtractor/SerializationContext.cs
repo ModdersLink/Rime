@@ -128,13 +128,12 @@ namespace EbxExtractor
 
         }
 
-        protected void IterateFrostbiteTypes(dynamic p_Object)
-        {
-
-        }
-
         protected void ParseTypes(dynamic p_Object, DataContainer p_ParentContainer)
         {
+            // TODO: We are mising $ for inheritance, {member} and {array}
+            // Then we will be 1:1 for type strings at least
+
+            
             // We need to do this first for the incoming type
             Type s_ObjectType = p_Object.GetType();
 
@@ -174,6 +173,15 @@ namespace EbxExtractor
             else if (s_ObjectType.IsGenericType)
                 throw new NotImplementedException("generic type not handled, contact a developer");
 
+            // Ding ding ding, we have frostbite inheritance
+            if (s_ObjectType.BaseType?.GetCustomAttribute<ContainerTypeAttribute>() is not null)
+            {
+#if DEBUG
+                Console.WriteLine($"Inherited Fb Class: {s_ObjectType.BaseType.Name}.");
+#endif
+                // TODO: Figure out what else needs to be done
+                m_TypeStrings.AddString("$");
+            }
             // Next we will need to create the TypeInstance for this paticular type
             // we do this by getting the ContainerType information
 
@@ -298,21 +306,10 @@ namespace EbxExtractor
                 if (l_Value is null)
                     continue;
 
-                // Create a new placeholder field descriptor
-                //m_FieldDescriptors.Add(new FieldDescriptor
-                //{
-                //    CSharpType = l_PropertyType,
-                //    Flags = new MemberInfoFlags(l_ContainerFieldAttribute.FieldFlags),
-                //    Name = l_FieldName,
-                //    NameHash = FbUtils.HashQuick(l_FieldName),
-                //    FieldType = s_PotentialTypeIndex, // TODO: Implement this, This is the TypeDescriptor index (which has not been created/set yet)
-                //    SecondaryOffset = 0,
-                //    Offset = (int)l_ContainerFieldAttribute.FieldOffset
-                //});
-
+                // Get the current field type index
                 var l_FieldTypeDescriptorIndex = m_TypeDescriptors.Count;
 
-                // Parse the value
+                // Parse the type for the field
                 ParseTypes(l_Value, p_ParentContainer);
 
                 m_FieldDescriptors[(int)s_FieldTypeStartIndex + (int)s_CurrentFieldCount] = new FieldDescriptor
@@ -326,42 +323,15 @@ namespace EbxExtractor
                     Offset = (int)l_ContainerFieldAttribute.FieldOffset
                 };
 
+                // Not all fields will be serialized so we update our current count
                 s_CurrentFieldCount++;
-
-                //// Recursively parse this
-                //ParseTypes(l_Value, p_ParentContainer);
             }
-
-            //// Create a new dummy type descriptor
-            //m_TypeDescriptors[s_TypeDescriptorIndex] = new TypeDescriptor
-            //{
-            //    Alignment = s_ContainerTypeAttribute.DataAlignment,
-            //    FieldCount = s_ContainerTypeFieldCount,
-            //    Flags = new MemberInfoFlags(s_ContainerTypeAttribute.Flags),
-            //    LayoutDescriptor = s_FieldTypeStartIndex, // TODO: Implement, this is an index to the start of the FieldDescriptor start + this types index, then we read FieldCount from that FieldDescriptor Start + this types index + fieldCount
-            //    Name = s_TypeName,
-            //    NameHash = FbUtils.HashQuick(s_TypeName),
-            //    SecondarySize = 0,
-            //    Size = s_ContainerTypeAttribute.Size
-            //};
-        }
-
-        protected void ParseLayout(dynamic p_Object, DataContainer p_ParentContainer)
-        {
-
-        }
-
-        protected void ParseValues(dynamic p_Object, DataContainer p_ParentContainer)
-        {
         }
 
         protected void ParseInstance(DataContainer p_DataContainer)
         {
             // This should go through and make sure all types are parsed. Need to confirm
             ParseTypes(p_DataContainer, p_DataContainer);
-
-            // Parse all of the internal values
-            ParseValues(p_DataContainer, p_DataContainer);
         }
     }
 }
