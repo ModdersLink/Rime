@@ -20,7 +20,7 @@ namespace EbxExtractor
         // Type string table
         protected StringTable m_TypeStrings;
 
-        // String table
+        // String table, this is used for CString and FileRef types only, everything else goes in m_TypeStrings
         protected StringTable m_StringTable;
 
         // Created InstanceEntries
@@ -130,9 +130,8 @@ namespace EbxExtractor
 
         protected void ParseTypes(dynamic p_Object, DataContainer p_ParentContainer)
         {
-            // TODO: We are mising $ for inheritance, {member} and {array}
-            // Then we will be 1:1 for type strings at least
-
+            if (p_Object is DataContainer)
+                m_TypeStrings.AddString("DataContainer");
             
             // We need to do this first for the incoming type
             Type s_ObjectType = p_Object.GetType();
@@ -147,7 +146,7 @@ namespace EbxExtractor
             else if (s_ObjectType.IsGenericType && s_ObjectType.GetGenericTypeDefinition() == typeof(IList<>)) // Generic List<T>
             {
                 s_ObjectType = s_ObjectType.GetGenericArguments().First();
-                m_StringTable.AddString("array");
+                m_TypeStrings.AddString("array");
             }
             else if (s_ObjectType.IsGenericType && s_ObjectType.GetGenericTypeDefinition() == typeof(CtrRef<>))
             {
@@ -212,9 +211,12 @@ namespace EbxExtractor
             {
                 // If the type is an enum, we need to not only add the typestring name, but each of the values
                 var s_EnumNames = Enum.GetNames(s_ObjectType);
+                if (s_EnumNames.Length > 0)
+                    m_TypeStrings.AddString("member");
+
                 foreach (var l_EnumName in s_EnumNames)
                 {
-                    if (!m_StringTable.AddString(l_EnumName))
+                    if (!m_TypeStrings.AddString(l_EnumName))
                         throw new Exception("could not add enum name.");
                 }
             }
@@ -299,7 +301,7 @@ namespace EbxExtractor
                 var l_FieldName = l_PropertyInfo.Name;
 
                 // Add the field name to our string table
-                m_StringTable.AddString(l_FieldName);
+                m_TypeStrings.AddString(l_FieldName);
 
                 // Get the value of this property
                 dynamic l_Value = l_PropertyInfo.GetValue(p_ParentContainer);
@@ -332,6 +334,59 @@ namespace EbxExtractor
         {
             // This should go through and make sure all types are parsed. Need to confirm
             ParseTypes(p_DataContainer, p_DataContainer);
+
+            var s_InstanceIndex = m_TypeDescriptors.FindIndex(p_TypeDescriptor => p_TypeDescriptor.Name == p_DataContainer.ContainerTypeName);
+            if (s_InstanceIndex == -1)
+                throw new Exception("could not find type index.");
+
+            /*
+             *                 for (var i = 0; i < s_Entry.ExportCount; ++i)
+                {
+                    var s_Guid = new GUID(m_Reader);
+                    m_InstanceGuiDs.Add(s_Guid);
+
+                    // Create our container used for binding.
+                    if (s_ContainerType != null)
+                    {
+                        m_CurrentContainer = (FrostbiteContainer)Activator.CreateInstance(s_ContainerType);
+                        ((DataContainer)m_CurrentContainer).InstanceGuid = s_Guid;
+                        ((DataContainer)m_CurrentContainer).PartitionGuid = m_Header.PartitionGuid;
+                    }
+                    else
+                    {
+                        m_CurrentContainer = new DataContainer()
+                        {
+                            ContainerAlignment = s_Descriptor.Alignment,
+                            ContainerFlags = s_Descriptor.Flags.FlagBits,
+                            ContainerTypeName = s_Descriptor.Name,
+                            InstanceGuid = s_Guid,
+                            PartitionGuid = m_Header.PartitionGuid
+                        };
+
+                    }
+
+                    m_Instances.Add(new Instance { Id = s_Guid, Type = ParseTypeInstance(s_Guid, s_Entry.TypeDescriptorIndex) });
+
+                    // Add our fully parsed container to the list of parsed containers.
+                    m_ParsingPartition.AddInstance((DataContainer)m_CurrentContainer, s_Guid == m_Header.PrimaryInstanceGuid);
+                    m_CurrentContainer = null;
+                }
+
+            */
+
+            // TODO: Figure out ExportCount and how the Instance GUID's are generated
+            m_InstanceEntries.Add(new InstanceEntry
+            {
+                ExportCount = 1, // 1, export count is a pair of partition/instance guids in a row
+                InternalCount = 0, // 0, we have an exception if it's not 0
+                TypeDescriptorIndex = (uint)s_InstanceIndex
+            });
+
+
+            // TODO: Generate all GUID's
+            // TODO: With generating new GUIDs read all GUIDs in the current game archives to prevent conflicts
+            // TODO: Also add overriding of GUID's from file so we can rebuild in place with same GUIDs
+
         }
     }
 }
