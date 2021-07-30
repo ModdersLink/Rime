@@ -1,0 +1,67 @@
+///////////////////////////////////////////////////////////////
+//                                                           //
+// This is an automatically generated file.                  //
+// Do *NOT* modify unless you really know what you're doing. //
+//                                                           //
+///////////////////////////////////////////////////////////////
+
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
+
+namespace fb
+{
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 64)]
+	public class UpdateColorData : 
+		ProcessorData
+	{
+		protected Vec3 m_Color = new Vec3();
+		[ContainerField(Name: "Color", Offset: 48, NameHash: 212387320, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
+		public Vec3 Color { get { return m_Color; } set { if (OnPropertyChanging("UpdateColorData." + nameof(Color), this, m_Color, value)) m_Color = value; } } // 0x30 (48)
+		
+		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		{
+			switch (p_Descriptor.NameHash)
+			{
+				case 212387320:
+					Color = (Vec3) p_Value;
+					break;
+
+				default:
+					base.Bind(p_Descriptor, p_Value);
+					break;
+			}
+		}
+
+		public override object GetFieldValueByHash(uint p_Hash)
+		{
+			switch (p_Hash)
+			{
+				case 212387320:
+					return Color;
+
+				default:
+					return base.GetFieldValueByHash(p_Hash);
+			}
+		}
+
+		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
+		{
+			switch (p_Hash)
+			{
+				case 212387320:
+					return typeof(UpdateColorData).GetProperty(nameof(Color));
+
+				default:
+					return base.GetFieldInfoByHash(p_Hash);
+			}
+		}
+	}
+}

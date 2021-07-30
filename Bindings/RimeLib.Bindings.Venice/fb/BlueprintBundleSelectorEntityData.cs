@@ -1,0 +1,67 @@
+///////////////////////////////////////////////////////////////
+//                                                           //
+// This is an automatically generated file.                  //
+// Do *NOT* modify unless you really know what you're doing. //
+//                                                           //
+///////////////////////////////////////////////////////////////
+
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
+
+namespace fb
+{
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 112)]
+	public class BlueprintBundleSelectorEntityData : 
+		GameEntityData
+	{
+		protected CtrRef<SpawnEntitySelector> m_BlueprintSelector = new CtrRef<SpawnEntitySelector>();
+		[ContainerField(Name: "BlueprintSelector", Offset: 96, NameHash: 4244087711, Flags: 53)]
+		public CtrRef<SpawnEntitySelector> BlueprintSelector { get { return m_BlueprintSelector; } set { if (OnPropertyChanging("BlueprintBundleSelectorEntityData." + nameof(BlueprintSelector), this, m_BlueprintSelector, value)) m_BlueprintSelector = value; } } // 0x60 (96)
+		
+		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		{
+			switch (p_Descriptor.NameHash)
+			{
+				case 4244087711:
+					BlueprintSelector = (CtrRef<SpawnEntitySelector>) p_Value;
+					break;
+
+				default:
+					base.Bind(p_Descriptor, p_Value);
+					break;
+			}
+		}
+
+		public override object GetFieldValueByHash(uint p_Hash)
+		{
+			switch (p_Hash)
+			{
+				case 4244087711:
+					return BlueprintSelector;
+
+				default:
+					return base.GetFieldValueByHash(p_Hash);
+			}
+		}
+
+		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
+		{
+			switch (p_Hash)
+			{
+				case 4244087711:
+					return typeof(BlueprintBundleSelectorEntityData).GetProperty(nameof(BlueprintSelector));
+
+				default:
+					return base.GetFieldInfoByHash(p_Hash);
+			}
+		}
+	}
+}

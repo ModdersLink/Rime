@@ -1,0 +1,67 @@
+///////////////////////////////////////////////////////////////
+//                                                           //
+// This is an automatically generated file.                  //
+// Do *NOT* modify unless you really know what you're doing. //
+//                                                           //
+///////////////////////////////////////////////////////////////
+
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
+
+namespace fb
+{
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
+	public class ShaderDatabaseAsset : 
+		Asset
+	{
+		protected string m_LevelName = string.Empty;
+		[ContainerField(Name: "LevelName", Offset: 12, NameHash: 1599082292, Flags: 16509), LayoutImmutable]
+		public string LevelName { get { return m_LevelName; } set { if (OnPropertyChanging("ShaderDatabaseAsset." + nameof(LevelName), this, m_LevelName, value)) m_LevelName = value; } } // 0xC (12)
+		
+		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		{
+			switch (p_Descriptor.NameHash)
+			{
+				case 1599082292:
+					LevelName = (string) p_Value;
+					break;
+
+				default:
+					base.Bind(p_Descriptor, p_Value);
+					break;
+			}
+		}
+
+		public override object GetFieldValueByHash(uint p_Hash)
+		{
+			switch (p_Hash)
+			{
+				case 1599082292:
+					return LevelName;
+
+				default:
+					return base.GetFieldValueByHash(p_Hash);
+			}
+		}
+
+		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
+		{
+			switch (p_Hash)
+			{
+				case 1599082292:
+					return typeof(ShaderDatabaseAsset).GetProperty(nameof(LevelName));
+
+				default:
+					return base.GetFieldInfoByHash(p_Hash);
+			}
+		}
+	}
+}

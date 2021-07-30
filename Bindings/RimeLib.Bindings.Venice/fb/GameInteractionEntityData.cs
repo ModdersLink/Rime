@@ -1,0 +1,263 @@
+///////////////////////////////////////////////////////////////
+//                                                           //
+// This is an automatically generated file.                  //
+// Do *NOT* modify unless you really know what you're doing. //
+//                                                           //
+///////////////////////////////////////////////////////////////
+
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
+
+namespace fb
+{
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 192)]
+	public class GameInteractionEntityData : 
+		InteractionEntityData
+	{
+		protected BlinkType m_Blink = new BlinkType();
+		[ContainerField(Name: "Blink", Offset: 128, NameHash: 211512871, Flags: 137)]
+		public BlinkType Blink { get { return m_Blink; } set { if (OnPropertyChanging("GameInteractionEntityData." + nameof(Blink), this, m_Blink, value)) m_Blink = value; } } // 0x80 (128)
+		
+		protected float m_CapturepointVerticalOffset = new float();
+		[ContainerField(Name: "CapturepointVerticalOffset", Offset: 132, NameHash: 3396848754, Flags: 49469), LayoutImmutable, Blittable]
+		public float CapturepointVerticalOffset { get { return m_CapturepointVerticalOffset; } set { if (OnPropertyChanging("GameInteractionEntityData." + nameof(CapturepointVerticalOffset), this, m_CapturepointVerticalOffset, value)) m_CapturepointVerticalOffset = value; } } // 0x84 (132)
+		
+		protected float m_DelayBetweenUses = new float();
+		[ContainerField(Name: "DelayBetweenUses", Offset: 136, NameHash: 2736691946, Flags: 49469), LayoutImmutable, Blittable]
+		public float DelayBetweenUses { get { return m_DelayBetweenUses; } set { if (OnPropertyChanging("GameInteractionEntityData." + nameof(DelayBetweenUses), this, m_DelayBetweenUses, value)) m_DelayBetweenUses = value; } } // 0x88 (136)
+		
+		protected TeamId m_TeamId = new TeamId();
+		[ContainerField(Name: "TeamId", Offset: 140, NameHash: 3220374101, Flags: 137)]
+		public TeamId TeamId { get { return m_TeamId; } set { if (OnPropertyChanging("GameInteractionEntityData." + nameof(TeamId), this, m_TeamId, value)) m_TeamId = value; } } // 0x8C (140)
+		
+		protected EntryInputActionEnum m_InputAction = new EntryInputActionEnum();
+		[ContainerField(Name: "InputAction", Offset: 144, NameHash: 1407707693, Flags: 137)]
+		public EntryInputActionEnum InputAction { get { return m_InputAction; } set { if (OnPropertyChanging("GameInteractionEntityData." + nameof(InputAction), this, m_InputAction, value)) m_InputAction = value; } } // 0x90 (144)
+		
+		protected float m_HoldToInteractTime = new float();
+		[ContainerField(Name: "HoldToInteractTime", Offset: 148, NameHash: 594026294, Flags: 49469), LayoutImmutable, Blittable]
+		public float HoldToInteractTime { get { return m_HoldToInteractTime; } set { if (OnPropertyChanging("GameInteractionEntityData." + nameof(HoldToInteractTime), this, m_HoldToInteractTime, value)) m_HoldToInteractTime = value; } } // 0x94 (148)
+		
+		protected InteractionEntityType m_InteractionEntityType = new InteractionEntityType();
+		[ContainerField(Name: "InteractionEntityType", Offset: 152, NameHash: 740392700, Flags: 137)]
+		public InteractionEntityType InteractionEntityType { get { return m_InteractionEntityType; } set { if (OnPropertyChanging("GameInteractionEntityData." + nameof(InteractionEntityType), this, m_InteractionEntityType, value)) m_InteractionEntityType = value; } } // 0x98 (152)
+		
+		protected string m_InteractionSid = string.Empty;
+		[ContainerField(Name: "InteractionSid", Offset: 156, NameHash: 3925445313, Flags: 16509), LayoutImmutable]
+		public string InteractionSid { get { return m_InteractionSid; } set { if (OnPropertyChanging("GameInteractionEntityData." + nameof(InteractionSid), this, m_InteractionSid, value)) m_InteractionSid = value; } } // 0x9C (156)
+		
+		protected string m_InteractingSid = string.Empty;
+		[ContainerField(Name: "InteractingSid", Offset: 160, NameHash: 3926175337, Flags: 16509), LayoutImmutable]
+		public string InteractingSid { get { return m_InteractingSid; } set { if (OnPropertyChanging("GameInteractionEntityData." + nameof(InteractingSid), this, m_InteractingSid, value)) m_InteractingSid = value; } } // 0xA0 (160)
+		
+		protected string m_FriendlyTextSid = string.Empty;
+		[ContainerField(Name: "FriendlyTextSid", Offset: 164, NameHash: 2455269025, Flags: 16509), LayoutImmutable]
+		public string FriendlyTextSid { get { return m_FriendlyTextSid; } set { if (OnPropertyChanging("GameInteractionEntityData." + nameof(FriendlyTextSid), this, m_FriendlyTextSid, value)) m_FriendlyTextSid = value; } } // 0xA4 (164)
+		
+		protected string m_NameSid = string.Empty;
+		[ContainerField(Name: "NameSid", Offset: 168, NameHash: 3153745340, Flags: 16509), LayoutImmutable]
+		public string NameSid { get { return m_NameSid; } set { if (OnPropertyChanging("GameInteractionEntityData." + nameof(NameSid), this, m_NameSid, value)) m_NameSid = value; } } // 0xA8 (168)
+		
+		protected float m_InteractionVerticalOffset = new float();
+		[ContainerField(Name: "InteractionVerticalOffset", Offset: 172, NameHash: 2621963328, Flags: 49469), LayoutImmutable, Blittable]
+		public float InteractionVerticalOffset { get { return m_InteractionVerticalOffset; } set { if (OnPropertyChanging("GameInteractionEntityData." + nameof(InteractionVerticalOffset), this, m_InteractionVerticalOffset, value)) m_InteractionVerticalOffset = value; } } // 0xAC (172)
+		
+		protected string m_EnemyTextSid = string.Empty;
+		[ContainerField(Name: "EnemyTextSid", Offset: 176, NameHash: 1333856348, Flags: 16509), LayoutImmutable]
+		public string EnemyTextSid { get { return m_EnemyTextSid; } set { if (OnPropertyChanging("GameInteractionEntityData." + nameof(EnemyTextSid), this, m_EnemyTextSid, value)) m_EnemyTextSid = value; } } // 0xB0 (176)
+		
+		protected bool m_ShrinkSnap = new bool();
+		[ContainerField(Name: "ShrinkSnap", Offset: 180, NameHash: 232640812, Flags: 49325), LayoutImmutable, Blittable]
+		public bool ShrinkSnap { get { return m_ShrinkSnap; } set { if (OnPropertyChanging("GameInteractionEntityData." + nameof(ShrinkSnap), this, m_ShrinkSnap, value)) m_ShrinkSnap = value; } } // 0xB4 (180)
+		
+		protected bool m_ShowAsCapturePoint = new bool();
+		[ContainerField(Name: "ShowAsCapturePoint", Offset: 181, NameHash: 2335255676, Flags: 49325), LayoutImmutable, Blittable]
+		public bool ShowAsCapturePoint { get { return m_ShowAsCapturePoint; } set { if (OnPropertyChanging("GameInteractionEntityData." + nameof(ShowAsCapturePoint), this, m_ShowAsCapturePoint, value)) m_ShowAsCapturePoint = value; } } // 0xB5 (181)
+		
+		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		{
+			switch (p_Descriptor.NameHash)
+			{
+				case 211512871:
+					Blink = (BlinkType) Enum.ToObject(typeof(BlinkType), p_Value);
+					break;
+
+				case 3396848754:
+					CapturepointVerticalOffset = (float) p_Value;
+					break;
+
+				case 2736691946:
+					DelayBetweenUses = (float) p_Value;
+					break;
+
+				case 3220374101:
+					TeamId = (TeamId) Enum.ToObject(typeof(TeamId), p_Value);
+					break;
+
+				case 1407707693:
+					InputAction = (EntryInputActionEnum) Enum.ToObject(typeof(EntryInputActionEnum), p_Value);
+					break;
+
+				case 594026294:
+					HoldToInteractTime = (float) p_Value;
+					break;
+
+				case 740392700:
+					InteractionEntityType = (InteractionEntityType) Enum.ToObject(typeof(InteractionEntityType), p_Value);
+					break;
+
+				case 3925445313:
+					InteractionSid = (string) p_Value;
+					break;
+
+				case 3926175337:
+					InteractingSid = (string) p_Value;
+					break;
+
+				case 2455269025:
+					FriendlyTextSid = (string) p_Value;
+					break;
+
+				case 3153745340:
+					NameSid = (string) p_Value;
+					break;
+
+				case 2621963328:
+					InteractionVerticalOffset = (float) p_Value;
+					break;
+
+				case 1333856348:
+					EnemyTextSid = (string) p_Value;
+					break;
+
+				case 232640812:
+					ShrinkSnap = (bool) p_Value;
+					break;
+
+				case 2335255676:
+					ShowAsCapturePoint = (bool) p_Value;
+					break;
+
+				default:
+					base.Bind(p_Descriptor, p_Value);
+					break;
+			}
+		}
+
+		public override object GetFieldValueByHash(uint p_Hash)
+		{
+			switch (p_Hash)
+			{
+				case 211512871:
+					return Blink;
+
+				case 3396848754:
+					return CapturepointVerticalOffset;
+
+				case 2736691946:
+					return DelayBetweenUses;
+
+				case 3220374101:
+					return TeamId;
+
+				case 1407707693:
+					return InputAction;
+
+				case 594026294:
+					return HoldToInteractTime;
+
+				case 740392700:
+					return InteractionEntityType;
+
+				case 3925445313:
+					return InteractionSid;
+
+				case 3926175337:
+					return InteractingSid;
+
+				case 2455269025:
+					return FriendlyTextSid;
+
+				case 3153745340:
+					return NameSid;
+
+				case 2621963328:
+					return InteractionVerticalOffset;
+
+				case 1333856348:
+					return EnemyTextSid;
+
+				case 232640812:
+					return ShrinkSnap;
+
+				case 2335255676:
+					return ShowAsCapturePoint;
+
+				default:
+					return base.GetFieldValueByHash(p_Hash);
+			}
+		}
+
+		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
+		{
+			switch (p_Hash)
+			{
+				case 211512871:
+					return typeof(GameInteractionEntityData).GetProperty(nameof(Blink));
+
+				case 3396848754:
+					return typeof(GameInteractionEntityData).GetProperty(nameof(CapturepointVerticalOffset));
+
+				case 2736691946:
+					return typeof(GameInteractionEntityData).GetProperty(nameof(DelayBetweenUses));
+
+				case 3220374101:
+					return typeof(GameInteractionEntityData).GetProperty(nameof(TeamId));
+
+				case 1407707693:
+					return typeof(GameInteractionEntityData).GetProperty(nameof(InputAction));
+
+				case 594026294:
+					return typeof(GameInteractionEntityData).GetProperty(nameof(HoldToInteractTime));
+
+				case 740392700:
+					return typeof(GameInteractionEntityData).GetProperty(nameof(InteractionEntityType));
+
+				case 3925445313:
+					return typeof(GameInteractionEntityData).GetProperty(nameof(InteractionSid));
+
+				case 3926175337:
+					return typeof(GameInteractionEntityData).GetProperty(nameof(InteractingSid));
+
+				case 2455269025:
+					return typeof(GameInteractionEntityData).GetProperty(nameof(FriendlyTextSid));
+
+				case 3153745340:
+					return typeof(GameInteractionEntityData).GetProperty(nameof(NameSid));
+
+				case 2621963328:
+					return typeof(GameInteractionEntityData).GetProperty(nameof(InteractionVerticalOffset));
+
+				case 1333856348:
+					return typeof(GameInteractionEntityData).GetProperty(nameof(EnemyTextSid));
+
+				case 232640812:
+					return typeof(GameInteractionEntityData).GetProperty(nameof(ShrinkSnap));
+
+				case 2335255676:
+					return typeof(GameInteractionEntityData).GetProperty(nameof(ShowAsCapturePoint));
+
+				default:
+					return base.GetFieldInfoByHash(p_Hash);
+			}
+		}
+	}
+}

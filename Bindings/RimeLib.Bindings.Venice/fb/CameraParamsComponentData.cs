@@ -1,0 +1,95 @@
+///////////////////////////////////////////////////////////////
+//                                                           //
+// This is an automatically generated file.                  //
+// Do *NOT* modify unless you really know what you're doing. //
+//                                                           //
+///////////////////////////////////////////////////////////////
+
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
+
+namespace fb
+{
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 112)]
+	public class CameraParamsComponentData : 
+		ComponentData
+	{
+		protected float m_ViewDistance = new float();
+		[ContainerField(Name: "ViewDistance", Offset: 96, NameHash: 2201945291, Flags: 49469), LayoutImmutable, Blittable]
+		public float ViewDistance { get { return m_ViewDistance; } set { if (OnPropertyChanging("CameraParamsComponentData." + nameof(ViewDistance), this, m_ViewDistance, value)) m_ViewDistance = value; } } // 0x60 (96)
+		
+		protected float m_NearPlane = new float();
+		[ContainerField(Name: "NearPlane", Offset: 100, NameHash: 3156145579, Flags: 49469), LayoutImmutable, Blittable]
+		public float NearPlane { get { return m_NearPlane; } set { if (OnPropertyChanging("CameraParamsComponentData." + nameof(NearPlane), this, m_NearPlane, value)) m_NearPlane = value; } } // 0x64 (100)
+		
+		protected float m_SunShadowmapViewDistance = new float();
+		[ContainerField(Name: "SunShadowmapViewDistance", Offset: 104, NameHash: 2626774393, Flags: 49469), LayoutImmutable, Blittable]
+		public float SunShadowmapViewDistance { get { return m_SunShadowmapViewDistance; } set { if (OnPropertyChanging("CameraParamsComponentData." + nameof(SunShadowmapViewDistance), this, m_SunShadowmapViewDistance, value)) m_SunShadowmapViewDistance = value; } } // 0x68 (104)
+		
+		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		{
+			switch (p_Descriptor.NameHash)
+			{
+				case 2201945291:
+					ViewDistance = (float) p_Value;
+					break;
+
+				case 3156145579:
+					NearPlane = (float) p_Value;
+					break;
+
+				case 2626774393:
+					SunShadowmapViewDistance = (float) p_Value;
+					break;
+
+				default:
+					base.Bind(p_Descriptor, p_Value);
+					break;
+			}
+		}
+
+		public override object GetFieldValueByHash(uint p_Hash)
+		{
+			switch (p_Hash)
+			{
+				case 2201945291:
+					return ViewDistance;
+
+				case 3156145579:
+					return NearPlane;
+
+				case 2626774393:
+					return SunShadowmapViewDistance;
+
+				default:
+					return base.GetFieldValueByHash(p_Hash);
+			}
+		}
+
+		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
+		{
+			switch (p_Hash)
+			{
+				case 2201945291:
+					return typeof(CameraParamsComponentData).GetProperty(nameof(ViewDistance));
+
+				case 3156145579:
+					return typeof(CameraParamsComponentData).GetProperty(nameof(NearPlane));
+
+				case 2626774393:
+					return typeof(CameraParamsComponentData).GetProperty(nameof(SunShadowmapViewDistance));
+
+				default:
+					return base.GetFieldInfoByHash(p_Hash);
+			}
+		}
+	}
+}

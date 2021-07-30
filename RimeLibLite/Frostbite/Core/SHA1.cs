@@ -77,7 +77,7 @@ namespace RimeLib.Frostbite.Core
         /// </summary>
         /// <param name="p_Obj">Object to compare to this hash</param>
         /// <returns>True if equal, false otherwise</returns>
-        public override bool Equals(object p_Obj)
+        public override bool Equals(object? p_Obj)
         {
             if (p_Obj is Sha1 s_Sha1)
                 return Hash.SequenceEqual(s_Sha1.Hash);

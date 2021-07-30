@@ -37,7 +37,9 @@ namespace RimeLib.Utils
             while (true);
 
             s_Sha1.TransformFinalBlock(new byte[0], 0, 0);
+#pragma warning disable CS8604 // Possible null reference argument.
             return new Sha1(s_Sha1.Hash);
+#pragma warning restore CS8604 // Possible null reference argument.
         }
     }
 }

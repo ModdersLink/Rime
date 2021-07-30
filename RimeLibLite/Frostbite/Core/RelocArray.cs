@@ -47,9 +47,9 @@ namespace RimeLib.Frostbite.Core
                 return;
 
             // Save current offset
-            var s_CurrentOffset = p_Reader.BaseStream.Position;
+            var s_CurOffset = p_Reader.Position;
 
-            p_Reader.BaseStream.Position = (long)BaseAddress;
+            p_Reader.Seek((long)BaseAddress, System.IO.SeekOrigin.Begin);
 
             for (var i = 0; i < Count; ++i)
             {
@@ -117,14 +117,15 @@ namespace RimeLib.Frostbite.Core
 
                     case TypeCode.Object:
                         // Check if IFbSerializable this is an IFbSerializable.
-                        if (!s_Type.IsSubclassOf(typeof(IFbSerializable)))
+                        if (!typeof(IFbSerializable).IsAssignableFrom(typeof(T)))
                         {
                             // TODO: Exception message
                             throw new NotImplementedException();
                         }
 
                         s_Object = (T) Activator.CreateInstance(typeof(T), new object[] { });
-                        ((IFbSerializable) s_Object).Deserialize(p_Reader);
+                        (s_Object as IFbSerializable)?.Deserialize(p_Reader);
+                        //((IFbSerializable) s_Object).Deserialize(p_Reader); // C# 9 refactoring
 
                         break;
 
@@ -133,11 +134,13 @@ namespace RimeLib.Frostbite.Core
                         throw new NotImplementedException();
                 }
 
-                m_Objects.Add(s_Object);
+                // C# 9 refactoring
+                if (s_Object != null)
+                    m_Objects.Add(s_Object);
             }
 
             // Reset the position
-            p_Reader.BaseStream.Position = s_CurrentOffset;
+            p_Reader.Seek(s_CurOffset, System.IO.SeekOrigin.Begin);
         }
 
         /// <summary>

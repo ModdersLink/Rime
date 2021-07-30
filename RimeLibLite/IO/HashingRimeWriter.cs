@@ -36,12 +36,16 @@ namespace RimeLib.IO
         public Sha1 GetHash()
         {
             if (m_Hashed)
+#pragma warning disable CS8604 // Possible null reference argument.
                 return new Sha1(m_Sha1.Hash);
+#pragma warning restore CS8604 // Possible null reference argument.
 
             m_Sha1.TransformFinalBlock(new byte[0], 0, 0);
             m_Hashed = true;
             
+#pragma warning disable CS8604 // Possible null reference argument.
             return new Sha1(m_Sha1.Hash);
+#pragma warning restore CS8604 // Possible null reference argument.
         }
     }
 }

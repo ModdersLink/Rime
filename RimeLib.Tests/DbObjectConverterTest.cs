@@ -3,7 +3,6 @@ using RimeLib.Frostbite.Db;
 using RimeLib.IO;
 using System;
 using System.IO;
-using Xunit;
 
 namespace RimeLib.Tests
 {
@@ -40,7 +39,6 @@ namespace RimeLib.Tests
             File.WriteAllText(p_Path + ".json", s_Json);
         }
 
-        [Fact]
         public void Test1()
         {
             Test(@"C:\Games\Battlefield 3\Data\layout.toc");

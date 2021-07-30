@@ -1,0 +1,112 @@
+///////////////////////////////////////////////////////////////
+//                                                           //
+// This is an automatically generated file.                  //
+// Do *NOT* modify unless you really know what you're doing. //
+//                                                           //
+///////////////////////////////////////////////////////////////
+
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
+
+namespace fb
+{
+	[ContainerType(Flags: 137, Size: 4  )]
+	public enum VertexElementUsage : int
+	{
+		VertexElementUsage_Unknown = 0,
+		VertexElementUsage_Pos = 1,
+		VertexElementUsage_BoneIndices = 2,
+		VertexElementUsage_BoneIndices2 = 3,
+		VertexElementUsage_BoneWeights = 4,
+		VertexElementUsage_BoneWeights2 = 5,
+		VertexElementUsage_Normal = 6,
+		VertexElementUsage_Tangent = 7,
+		VertexElementUsage_Binormal = 8,
+		VertexElementUsage_BinormalSign = 9,
+		VertexElementUsage_WorldTrans1 = 10,
+		VertexElementUsage_WorldTrans2 = 11,
+		VertexElementUsage_WorldTrans3 = 12,
+		VertexElementUsage_InstanceId = 13,
+		VertexElementUsage_InstanceUserData0 = 14,
+		VertexElementUsage_InstanceUserData1 = 15,
+		VertexElementUsage_XenonIndex = 16,
+		VertexElementUsage_XenonBarycentric = 17,
+		VertexElementUsage_XenonQuadID = 18,
+		VertexElementUsage_Index = 19,
+		VertexElementUsage_ViewIndex = 20,
+		VertexElementUsage_Color0 = 30,
+		VertexElementUsage_Color1 = 31,
+		VertexElementUsage_TexCoord0 = 33,
+		VertexElementUsage_TexCoord1 = 34,
+		VertexElementUsage_TexCoord2 = 35,
+		VertexElementUsage_TexCoord3 = 36,
+		VertexElementUsage_TexCoord4 = 37,
+		VertexElementUsage_TexCoord5 = 38,
+		VertexElementUsage_TexCoord6 = 39,
+		VertexElementUsage_TexCoord7 = 40,
+		VertexElementUsage_RadiosityTexCoord = 41,
+		VertexElementUsage_VisInfo = 42,
+		VertexElementUsage_SpriteSize = 43,
+		VertexElementUsage_PackedTexCoord0 = 44,
+		VertexElementUsage_PackedTexCoord1 = 45,
+		VertexElementUsage_PackedTexCoord2 = 46,
+		VertexElementUsage_PackedTexCoord3 = 47,
+		VertexElementUsage_ClipDistance0 = 48,
+		VertexElementUsage_ClipDistance1 = 49,
+		VertexElementUsage_SubMaterialIndex = 50,
+		VertexElementUsage_BranchInfo = 60,
+		VertexElementUsage_PosAndScale = 61,
+		VertexElementUsage_Rotation = 62,
+		VertexElementUsage_SpriteSizeAndUv = 63,
+		VertexElementUsage_FadePos = 90,
+		VertexElementUsage_SpawnTime = 91,
+		VertexElementUsage_PosAndSoftMul = 150,
+		VertexElementUsage_Alpha = 151,
+		VertexElementUsage_Misc0 = 152,
+		VertexElementUsage_Misc1 = 153,
+		VertexElementUsage_LeftAndRotation = 154,
+		VertexElementUsage_UpAndNormalBlend = 155,
+		VertexElementUsage_SH_R = 156,
+		VertexElementUsage_SH_G = 157,
+		VertexElementUsage_SH_B = 158,
+		VertexElementUsage_PosAndRejectCulling = 159,
+		VertexElementUsage_Shadow = 160,
+		VertexElementUsage_PatchUv = 180,
+		VertexElementUsage_Height = 181,
+		VertexElementUsage_MaskUVs0 = 182,
+		VertexElementUsage_MaskUVs1 = 183,
+		VertexElementUsage_MaskUVs2 = 184,
+		VertexElementUsage_MaskUVs3 = 185,
+		VertexElementUsage_UserMasks = 186,
+		VertexElementUsage_HeightfieldUv = 187,
+		VertexElementUsage_MaskUv = 188,
+		VertexElementUsage_GlobalColorUv = 189,
+		VertexElementUsage_HeightfieldPixelSizeAndAspect = 190,
+		VertexElementUsage_WorldPositionXz = 191,
+		VertexElementUsage_TerrainTextureNodeUv = 192,
+		VertexElementUsage_ParentTerrainTextureNodeUv = 193,
+		VertexElementUsage_Uv01 = 210,
+		VertexElementUsage_WorldPos = 211,
+		VertexElementUsage_EyeVector = 212,
+		VertexElementUsage_LightParams1 = 220,
+		VertexElementUsage_LightParams2 = 221,
+		VertexElementUsage_LightSubParams = 222,
+		VertexElementUsage_LightSideVector = 223,
+		VertexElementUsage_LightInnerAndOuterAngle = 224,
+		VertexElementUsage_LightDir = 225,
+		VertexElementUsage_LightMatrix1 = 226,
+		VertexElementUsage_LightMatrix2 = 227,
+		VertexElementUsage_LightMatrix3 = 228,
+		VertexElementUsage_LightMatrix4 = 229,
+		VertexElementUsage_Custom = 230
+	}
+
+}

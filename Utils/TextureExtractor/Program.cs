@@ -1,4 +1,4 @@
-﻿using CommandLine;
+using CommandLine;
 using RimeLib.Content.Mounting;
 using RimeLib.Frostbite;
 using RimeLib.IO;
@@ -33,6 +33,7 @@ namespace TextureExtractor
             public string GamePath { get; set; } = "";
 
             [Value(1, MetaName = "engineType", Required = true, HelpText = "The engine type of the game.")]
+
             public EngineType EngineType
             {
                 get; set;
@@ -246,9 +247,5 @@ namespace TextureExtractor
             s_SaveHandler?.Save(s_Texture, s_RimeWriter);
             
         }
-
-
-
-
     }
 }

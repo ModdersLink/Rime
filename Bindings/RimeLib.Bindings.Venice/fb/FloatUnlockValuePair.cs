@@ -1,0 +1,81 @@
+///////////////////////////////////////////////////////////////
+//                                                           //
+// This is an automatically generated file.                  //
+// Do *NOT* modify unless you really know what you're doing. //
+//                                                           //
+///////////////////////////////////////////////////////////////
+
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
+
+namespace fb
+{
+	[ContainerType(Alignment: 4,  Flags: 53, Size: 20)]
+	public class FloatUnlockValuePair : 
+		UnlockValuePair
+	{
+		protected float m_DefaultValue = new float();
+		[ContainerField(Name: "DefaultValue", Offset: 12, NameHash: 2066049125, Flags: 49469), LayoutImmutable, Blittable]
+		public float DefaultValue { get { return m_DefaultValue; } set { if (OnPropertyChanging("FloatUnlockValuePair." + nameof(DefaultValue), this, m_DefaultValue, value)) m_DefaultValue = value; } } // 0xC (12)
+		
+		protected float m_UnlockedValue = new float();
+		[ContainerField(Name: "UnlockedValue", Offset: 16, NameHash: 2493912799, Flags: 49469), LayoutImmutable, Blittable]
+		public float UnlockedValue { get { return m_UnlockedValue; } set { if (OnPropertyChanging("FloatUnlockValuePair." + nameof(UnlockedValue), this, m_UnlockedValue, value)) m_UnlockedValue = value; } } // 0x10 (16)
+		
+		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		{
+			switch (p_Descriptor.NameHash)
+			{
+				case 2066049125:
+					DefaultValue = (float) p_Value;
+					break;
+
+				case 2493912799:
+					UnlockedValue = (float) p_Value;
+					break;
+
+				default:
+					base.Bind(p_Descriptor, p_Value);
+					break;
+			}
+		}
+
+		public override object GetFieldValueByHash(uint p_Hash)
+		{
+			switch (p_Hash)
+			{
+				case 2066049125:
+					return DefaultValue;
+
+				case 2493912799:
+					return UnlockedValue;
+
+				default:
+					return base.GetFieldValueByHash(p_Hash);
+			}
+		}
+
+		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
+		{
+			switch (p_Hash)
+			{
+				case 2066049125:
+					return typeof(FloatUnlockValuePair).GetProperty(nameof(DefaultValue));
+
+				case 2493912799:
+					return typeof(FloatUnlockValuePair).GetProperty(nameof(UnlockedValue));
+
+				default:
+					return base.GetFieldInfoByHash(p_Hash);
+			}
+		}
+	}
+}

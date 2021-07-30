@@ -1,0 +1,143 @@
+///////////////////////////////////////////////////////////////
+//                                                           //
+// This is an automatically generated file.                  //
+// Do *NOT* modify unless you really know what you're doing. //
+//                                                           //
+///////////////////////////////////////////////////////////////
+
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
+
+namespace fb
+{
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 20)]
+	public class SmokeJammingData : FrostbiteContainer
+	{
+		[ContainerField(Name: "JammingTime", Offset: 0, NameHash: 46309755, Flags: 49469), LayoutImmutable, Blittable]
+		public float JammingTime { get; set; } // 0x0 (0)
+		
+		[ContainerField(Name: "MaxRadius", Offset: 4, NameHash: 439602313, Flags: 49469), LayoutImmutable, Blittable]
+		public float MaxRadius { get; set; } // 0x4 (4)
+		
+		[ContainerField(Name: "MinRadius", Offset: 8, NameHash: 4053568023, Flags: 49469), LayoutImmutable, Blittable]
+		public float MinRadius { get; set; } // 0x8 (8)
+		
+		[ContainerField(Name: "TargetUpdateTime", Offset: 12, NameHash: 18960400, Flags: 49469), LayoutImmutable, Blittable]
+		public float TargetUpdateTime { get; set; } // 0xC (12)
+		
+		[ContainerField(Name: "EnableSmokeJamming", Offset: 16, NameHash: 3034547280, Flags: 49325), LayoutImmutable, Blittable]
+		public bool EnableSmokeJamming { get; set; } // 0x10 (16)
+		
+		[ContainerField(Name: "JammingPositionIsLocationDependent", Offset: 17, NameHash: 3550251569, Flags: 49325), LayoutImmutable, Blittable]
+		public bool JammingPositionIsLocationDependent { get; set; } // 0x11 (17)
+		
+		[ContainerField(Name: "ReportJammedBasedOnStartPosition", Offset: 18, NameHash: 2195169576, Flags: 49325), LayoutImmutable, Blittable]
+		public bool ReportJammedBasedOnStartPosition { get; set; } // 0x12 (18)
+		
+		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		{
+			switch (p_Descriptor.NameHash)
+			{
+				case 46309755:
+					JammingTime = (float) p_Value;
+					break;
+
+				case 439602313:
+					MaxRadius = (float) p_Value;
+					break;
+
+				case 4053568023:
+					MinRadius = (float) p_Value;
+					break;
+
+				case 18960400:
+					TargetUpdateTime = (float) p_Value;
+					break;
+
+				case 3034547280:
+					EnableSmokeJamming = (bool) p_Value;
+					break;
+
+				case 3550251569:
+					JammingPositionIsLocationDependent = (bool) p_Value;
+					break;
+
+				case 2195169576:
+					ReportJammedBasedOnStartPosition = (bool) p_Value;
+					break;
+
+				default:
+					base.Bind(p_Descriptor, p_Value);
+					break;
+			}
+		}
+
+		public override object GetFieldValueByHash(uint p_Hash)
+		{
+			switch (p_Hash)
+			{
+				case 46309755:
+					return JammingTime;
+
+				case 439602313:
+					return MaxRadius;
+
+				case 4053568023:
+					return MinRadius;
+
+				case 18960400:
+					return TargetUpdateTime;
+
+				case 3034547280:
+					return EnableSmokeJamming;
+
+				case 3550251569:
+					return JammingPositionIsLocationDependent;
+
+				case 2195169576:
+					return ReportJammedBasedOnStartPosition;
+
+				default:
+					return base.GetFieldValueByHash(p_Hash);
+			}
+		}
+
+		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
+		{
+			switch (p_Hash)
+			{
+				case 46309755:
+					return typeof(SmokeJammingData).GetProperty(nameof(JammingTime));
+
+				case 439602313:
+					return typeof(SmokeJammingData).GetProperty(nameof(MaxRadius));
+
+				case 4053568023:
+					return typeof(SmokeJammingData).GetProperty(nameof(MinRadius));
+
+				case 18960400:
+					return typeof(SmokeJammingData).GetProperty(nameof(TargetUpdateTime));
+
+				case 3034547280:
+					return typeof(SmokeJammingData).GetProperty(nameof(EnableSmokeJamming));
+
+				case 3550251569:
+					return typeof(SmokeJammingData).GetProperty(nameof(JammingPositionIsLocationDependent));
+
+				case 2195169576:
+					return typeof(SmokeJammingData).GetProperty(nameof(ReportJammedBasedOnStartPosition));
+
+				default:
+					return base.GetFieldInfoByHash(p_Hash);
+			}
+		}
+	}
+}

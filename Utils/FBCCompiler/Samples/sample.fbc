@@ -1,0 +1,19 @@
+#include <Test.fbc>
+
+namespace fb::TestNamespace;
+
+// Test comment
+class align(16) TestClass : 
+	TestInheritance,
+	fb::TestScopedInheritance
+{
+	public SomeClass[] TestMember01 : 0;
+	public int64 TestMember02 : 4;
+}
+
+enum TestEnum : int8
+{
+	EnumA = 0x0230,
+	EnumB,
+	EnumC
+}

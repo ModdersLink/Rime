@@ -1,0 +1,515 @@
+///////////////////////////////////////////////////////////////
+//                                                           //
+// This is an automatically generated file.                  //
+// Do *NOT* modify unless you really know what you're doing. //
+//                                                           //
+///////////////////////////////////////////////////////////////
+
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
+
+namespace fb
+{
+	[ContainerType(Alignment: 16,  Flags: 53, Size: 192)]
+	public class CapturePointEntityData : 
+		GameEntityData
+	{
+		protected int m_EnemyTicketLossWhenCaptured = new int();
+		[ContainerField(Name: "EnemyTicketLossWhenCaptured", Offset: 96, NameHash: 564231500, Flags: 49405), LayoutImmutable, Blittable]
+		public int EnemyTicketLossWhenCaptured { get { return m_EnemyTicketLossWhenCaptured; } set { if (OnPropertyChanging("CapturePointEntityData." + nameof(EnemyTicketLossWhenCaptured), this, m_EnemyTicketLossWhenCaptured, value)) m_EnemyTicketLossWhenCaptured = value; } } // 0x60 (96)
+		
+		protected int m_MinNrToTakeControl = new int();
+		[ContainerField(Name: "MinNrToTakeControl", Offset: 100, NameHash: 3359967028, Flags: 49405), LayoutImmutable, Blittable]
+		public int MinNrToTakeControl { get { return m_MinNrToTakeControl; } set { if (OnPropertyChanging("CapturePointEntityData." + nameof(MinNrToTakeControl), this, m_MinNrToTakeControl, value)) m_MinNrToTakeControl = value; } } // 0x64 (100)
+		
+		protected RefArray<ObjectBlueprint> m_FlagTemplates = new RefArray<ObjectBlueprint>();
+		[ContainerField(Name: "FlagTemplates", Offset: 104, NameHash: 1208546634, Flags: 65)]
+		public RefArray<ObjectBlueprint> FlagTemplates { get { return m_FlagTemplates; } set { if (OnPropertyChanging("CapturePointEntityData." + nameof(FlagTemplates), this, m_FlagTemplates, value)) m_FlagTemplates = value; } } // 0x68 (104)
+		
+		protected CtrRef<ObjectBlueprint> m_CapturePoint = new CtrRef<ObjectBlueprint>();
+		[ContainerField(Name: "CapturePoint", Offset: 108, NameHash: 3548539661, Flags: 53)]
+		public CtrRef<ObjectBlueprint> CapturePoint { get { return m_CapturePoint; } set { if (OnPropertyChanging("CapturePointEntityData." + nameof(CapturePoint), this, m_CapturePoint, value)) m_CapturePoint = value; } } // 0x6C (108)
+		
+		protected TeamId m_InitialOwnerTeam = new TeamId();
+		[ContainerField(Name: "InitialOwnerTeam", Offset: 112, NameHash: 2819378919, Flags: 137)]
+		public TeamId InitialOwnerTeam { get { return m_InitialOwnerTeam; } set { if (OnPropertyChanging("CapturePointEntityData." + nameof(InitialOwnerTeam), this, m_InitialOwnerTeam, value)) m_InitialOwnerTeam = value; } } // 0x70 (112)
+		
+		protected float m_CaptureRadius = new float();
+		[ContainerField(Name: "CaptureRadius", Offset: 116, NameHash: 1043301209, Flags: 49469), LayoutImmutable, Blittable]
+		public float CaptureRadius { get { return m_CaptureRadius; } set { if (OnPropertyChanging("CapturePointEntityData." + nameof(CaptureRadius), this, m_CaptureRadius, value)) m_CaptureRadius = value; } } // 0x74 (116)
+		
+		protected int m_MaxCaptureMultiplier = new int();
+		[ContainerField(Name: "MaxCaptureMultiplier", Offset: 120, NameHash: 1211879326, Flags: 49405), LayoutImmutable, Blittable]
+		public int MaxCaptureMultiplier { get { return m_MaxCaptureMultiplier; } set { if (OnPropertyChanging("CapturePointEntityData." + nameof(MaxCaptureMultiplier), this, m_MaxCaptureMultiplier, value)) m_MaxCaptureMultiplier = value; } } // 0x78 (120)
+		
+		protected int m_AreaValue = new int();
+		[ContainerField(Name: "AreaValue", Offset: 124, NameHash: 4217799545, Flags: 49405), LayoutImmutable, Blittable]
+		public int AreaValue { get { return m_AreaValue; } set { if (OnPropertyChanging("CapturePointEntityData." + nameof(AreaValue), this, m_AreaValue, value)) m_AreaValue = value; } } // 0x7C (124)
+		
+		protected uint m_SpawnMenuListOrdinal = new uint();
+		[ContainerField(Name: "SpawnMenuListOrdinal", Offset: 128, NameHash: 316937852, Flags: 49421), LayoutImmutable, Blittable]
+		public uint SpawnMenuListOrdinal { get { return m_SpawnMenuListOrdinal; } set { if (OnPropertyChanging("CapturePointEntityData." + nameof(SpawnMenuListOrdinal), this, m_SpawnMenuListOrdinal, value)) m_SpawnMenuListOrdinal = value; } } // 0x80 (128)
+		
+		protected List<AreaValueTeam> m_AreaValues = new List<AreaValueTeam>();
+		[ContainerField(Name: "AreaValues", Offset: 132, NameHash: 1748431594, Flags: 65)]
+		public List<AreaValueTeam> AreaValues { get { return m_AreaValues; } set { if (OnPropertyChanging("CapturePointEntityData." + nameof(AreaValues), this, m_AreaValues, value)) m_AreaValues = value; } } // 0x84 (132)
+		
+		protected int m_TimeToGetControl = new int();
+		[ContainerField(Name: "TimeToGetControl", Offset: 136, NameHash: 1506679642, Flags: 49405), LayoutImmutable, Blittable]
+		public int TimeToGetControl { get { return m_TimeToGetControl; } set { if (OnPropertyChanging("CapturePointEntityData." + nameof(TimeToGetControl), this, m_TimeToGetControl, value)) m_TimeToGetControl = value; } } // 0x88 (136)
+		
+		protected int m_TimeToLoseControl = new int();
+		[ContainerField(Name: "TimeToLoseControl", Offset: 140, NameHash: 3830029753, Flags: 49405), LayoutImmutable, Blittable]
+		public int TimeToLoseControl { get { return m_TimeToLoseControl; } set { if (OnPropertyChanging("CapturePointEntityData." + nameof(TimeToLoseControl), this, m_TimeToLoseControl, value)) m_TimeToLoseControl = value; } } // 0x8C (140)
+		
+		protected float m_ReturnMultiplier = new float();
+		[ContainerField(Name: "ReturnMultiplier", Offset: 144, NameHash: 118486500, Flags: 49469), LayoutImmutable, Blittable]
+		public float ReturnMultiplier { get { return m_ReturnMultiplier; } set { if (OnPropertyChanging("CapturePointEntityData." + nameof(ReturnMultiplier), this, m_ReturnMultiplier, value)) m_ReturnMultiplier = value; } } // 0x90 (144)
+		
+		protected int m_OnlyTakeableByTeam = new int();
+		[ContainerField(Name: "OnlyTakeableByTeam", Offset: 148, NameHash: 282816006, Flags: 49405), LayoutImmutable, Blittable]
+		public int OnlyTakeableByTeam { get { return m_OnlyTakeableByTeam; } set { if (OnPropertyChanging("CapturePointEntityData." + nameof(OnlyTakeableByTeam), this, m_OnlyTakeableByTeam, value)) m_OnlyTakeableByTeam = value; } } // 0x94 (148)
+		
+		protected float m_ShowRadius = new float();
+		[ContainerField(Name: "ShowRadius", Offset: 152, NameHash: 2284771454, Flags: 49469), LayoutImmutable, Blittable]
+		public float ShowRadius { get { return m_ShowRadius; } set { if (OnPropertyChanging("CapturePointEntityData." + nameof(ShowRadius), this, m_ShowRadius, value)) m_ShowRadius = value; } } // 0x98 (152)
+		
+		protected float m_HideRadius = new float();
+		[ContainerField(Name: "HideRadius", Offset: 156, NameHash: 3315533693, Flags: 49469), LayoutImmutable, Blittable]
+		public float HideRadius { get { return m_HideRadius; } set { if (OnPropertyChanging("CapturePointEntityData." + nameof(HideRadius), this, m_HideRadius, value)) m_HideRadius = value; } } // 0x9C (156)
+		
+		protected float m_AddedMultiplierPerPlayer = new float();
+		[ContainerField(Name: "AddedMultiplierPerPlayer", Offset: 160, NameHash: 4214083802, Flags: 49469), LayoutImmutable, Blittable]
+		public float AddedMultiplierPerPlayer { get { return m_AddedMultiplierPerPlayer; } set { if (OnPropertyChanging("CapturePointEntityData." + nameof(AddedMultiplierPerPlayer), this, m_AddedMultiplierPerPlayer, value)) m_AddedMultiplierPerPlayer = value; } } // 0xA0 (160)
+		
+		protected float m_Modify3DIconVerticalOffset = new float();
+		[ContainerField(Name: "Modify3DIconVerticalOffset", Offset: 164, NameHash: 3848122358, Flags: 49469), LayoutImmutable, Blittable]
+		public float Modify3DIconVerticalOffset { get { return m_Modify3DIconVerticalOffset; } set { if (OnPropertyChanging("CapturePointEntityData." + nameof(Modify3DIconVerticalOffset), this, m_Modify3DIconVerticalOffset, value)) m_Modify3DIconVerticalOffset = value; } } // 0xA4 (164)
+		
+		protected CapturableType m_CapturableType = new CapturableType();
+		[ContainerField(Name: "CapturableType", Offset: 168, NameHash: 4032836214, Flags: 137)]
+		public CapturableType CapturableType { get { return m_CapturableType; } set { if (OnPropertyChanging("CapturePointEntityData." + nameof(CapturableType), this, m_CapturableType, value)) m_CapturableType = value; } } // 0xA8 (168)
+		
+		protected string m_IntruderWarningSID = string.Empty;
+		[ContainerField(Name: "IntruderWarningSID", Offset: 172, NameHash: 691558678, Flags: 16509), LayoutImmutable]
+		public string IntruderWarningSID { get { return m_IntruderWarningSID; } set { if (OnPropertyChanging("CapturePointEntityData." + nameof(IntruderWarningSID), this, m_IntruderWarningSID, value)) m_IntruderWarningSID = value; } } // 0xAC (172)
+		
+		protected bool m_IsCapturedInUpperSphere = new bool();
+		[ContainerField(Name: "IsCapturedInUpperSphere", Offset: 176, NameHash: 3699411299, Flags: 49325), LayoutImmutable, Blittable]
+		public bool IsCapturedInUpperSphere { get { return m_IsCapturedInUpperSphere; } set { if (OnPropertyChanging("CapturePointEntityData." + nameof(IsCapturedInUpperSphere), this, m_IsCapturedInUpperSphere, value)) m_IsCapturedInUpperSphere = value; } } // 0xB0 (176)
+		
+		protected bool m_DisableWhenLosingControl = new bool();
+		[ContainerField(Name: "DisableWhenLosingControl", Offset: 177, NameHash: 2397507634, Flags: 49325), LayoutImmutable, Blittable]
+		public bool DisableWhenLosingControl { get { return m_DisableWhenLosingControl; } set { if (OnPropertyChanging("CapturePointEntityData." + nameof(DisableWhenLosingControl), this, m_DisableWhenLosingControl, value)) m_DisableWhenLosingControl = value; } } // 0xB1 (177)
+		
+		protected bool m_LoseControlWhenNotClose = new bool();
+		[ContainerField(Name: "LoseControlWhenNotClose", Offset: 178, NameHash: 197053568, Flags: 49325), LayoutImmutable, Blittable]
+		public bool LoseControlWhenNotClose { get { return m_LoseControlWhenNotClose; } set { if (OnPropertyChanging("CapturePointEntityData." + nameof(LoseControlWhenNotClose), this, m_LoseControlWhenNotClose, value)) m_LoseControlWhenNotClose = value; } } // 0xB2 (178)
+		
+		protected bool m_DisableIfEnemyInside = new bool();
+		[ContainerField(Name: "DisableIfEnemyInside", Offset: 179, NameHash: 2095022840, Flags: 49325), LayoutImmutable, Blittable]
+		public bool DisableIfEnemyInside { get { return m_DisableIfEnemyInside; } set { if (OnPropertyChanging("CapturePointEntityData." + nameof(DisableIfEnemyInside), this, m_DisableIfEnemyInside, value)) m_DisableIfEnemyInside = value; } } // 0xB3 (179)
+		
+		protected bool m_IsVisible = new bool();
+		[ContainerField(Name: "IsVisible", Offset: 180, NameHash: 4174428017, Flags: 49325), LayoutImmutable, Blittable]
+		public bool IsVisible { get { return m_IsVisible; } set { if (OnPropertyChanging("CapturePointEntityData." + nameof(IsVisible), this, m_IsVisible, value)) m_IsVisible = value; } } // 0xB4 (180)
+		
+		protected bool m_ForceSnap = new bool();
+		[ContainerField(Name: "ForceSnap", Offset: 181, NameHash: 3675636116, Flags: 49325), LayoutImmutable, Blittable]
+		public bool ForceSnap { get { return m_ForceSnap; } set { if (OnPropertyChanging("CapturePointEntityData." + nameof(ForceSnap), this, m_ForceSnap, value)) m_ForceSnap = value; } } // 0xB5 (181)
+		
+		protected bool m_UseAreaValuesPerTeam = new bool();
+		[ContainerField(Name: "UseAreaValuesPerTeam", Offset: 182, NameHash: 404347571, Flags: 49325), LayoutImmutable, Blittable]
+		public bool UseAreaValuesPerTeam { get { return m_UseAreaValuesPerTeam; } set { if (OnPropertyChanging("CapturePointEntityData." + nameof(UseAreaValuesPerTeam), this, m_UseAreaValuesPerTeam, value)) m_UseAreaValuesPerTeam = value; } } // 0xB6 (182)
+		
+		protected bool m_IntruderWarning = new bool();
+		[ContainerField(Name: "IntruderWarning", Offset: 183, NameHash: 3522568872, Flags: 49325), LayoutImmutable, Blittable]
+		public bool IntruderWarning { get { return m_IntruderWarning; } set { if (OnPropertyChanging("CapturePointEntityData." + nameof(IntruderWarning), this, m_IntruderWarning, value)) m_IntruderWarning = value; } } // 0xB7 (183)
+		
+		protected bool m_ShowOnMinimap = new bool();
+		[ContainerField(Name: "ShowOnMinimap", Offset: 184, NameHash: 1450528952, Flags: 49325), LayoutImmutable, Blittable]
+		public bool ShowOnMinimap { get { return m_ShowOnMinimap; } set { if (OnPropertyChanging("CapturePointEntityData." + nameof(ShowOnMinimap), this, m_ShowOnMinimap, value)) m_ShowOnMinimap = value; } } // 0xB8 (184)
+		
+		protected bool m_HoistFlag = new bool();
+		[ContainerField(Name: "HoistFlag", Offset: 185, NameHash: 3775540640, Flags: 49325), LayoutImmutable, Blittable]
+		public bool HoistFlag { get { return m_HoistFlag; } set { if (OnPropertyChanging("CapturePointEntityData." + nameof(HoistFlag), this, m_HoistFlag, value)) m_HoistFlag = value; } } // 0xB9 (185)
+		
+		protected bool m_StartAtBottom = new bool();
+		[ContainerField(Name: "StartAtBottom", Offset: 186, NameHash: 4122129279, Flags: 49325), LayoutImmutable, Blittable]
+		public bool StartAtBottom { get { return m_StartAtBottom; } set { if (OnPropertyChanging("CapturePointEntityData." + nameof(StartAtBottom), this, m_StartAtBottom, value)) m_StartAtBottom = value; } } // 0xBA (186)
+		
+		protected bool m_RemoveWhenCaptured = new bool();
+		[ContainerField(Name: "RemoveWhenCaptured", Offset: 187, NameHash: 2265983223, Flags: 49325), LayoutImmutable, Blittable]
+		public bool RemoveWhenCaptured { get { return m_RemoveWhenCaptured; } set { if (OnPropertyChanging("CapturePointEntityData." + nameof(RemoveWhenCaptured), this, m_RemoveWhenCaptured, value)) m_RemoveWhenCaptured = value; } } // 0xBB (187)
+		
+		protected bool m_SeesawCapturing = new bool();
+		[ContainerField(Name: "SeesawCapturing", Offset: 188, NameHash: 3756225682, Flags: 49325), LayoutImmutable, Blittable]
+		public bool SeesawCapturing { get { return m_SeesawCapturing; } set { if (OnPropertyChanging("CapturePointEntityData." + nameof(SeesawCapturing), this, m_SeesawCapturing, value)) m_SeesawCapturing = value; } } // 0xBC (188)
+		
+		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		{
+			switch (p_Descriptor.NameHash)
+			{
+				case 564231500:
+					EnemyTicketLossWhenCaptured = (int) p_Value;
+					break;
+
+				case 3359967028:
+					MinNrToTakeControl = (int) p_Value;
+					break;
+
+				case 1208546634:
+					FlagTemplates = (RefArray<ObjectBlueprint>) p_Value;
+					break;
+
+				case 3548539661:
+					CapturePoint = (CtrRef<ObjectBlueprint>) p_Value;
+					break;
+
+				case 2819378919:
+					InitialOwnerTeam = (TeamId) Enum.ToObject(typeof(TeamId), p_Value);
+					break;
+
+				case 1043301209:
+					CaptureRadius = (float) p_Value;
+					break;
+
+				case 1211879326:
+					MaxCaptureMultiplier = (int) p_Value;
+					break;
+
+				case 4217799545:
+					AreaValue = (int) p_Value;
+					break;
+
+				case 316937852:
+					SpawnMenuListOrdinal = (uint) p_Value;
+					break;
+
+				case 1748431594:
+					AreaValues = (List<AreaValueTeam>) p_Value;
+					break;
+
+				case 1506679642:
+					TimeToGetControl = (int) p_Value;
+					break;
+
+				case 3830029753:
+					TimeToLoseControl = (int) p_Value;
+					break;
+
+				case 118486500:
+					ReturnMultiplier = (float) p_Value;
+					break;
+
+				case 282816006:
+					OnlyTakeableByTeam = (int) p_Value;
+					break;
+
+				case 2284771454:
+					ShowRadius = (float) p_Value;
+					break;
+
+				case 3315533693:
+					HideRadius = (float) p_Value;
+					break;
+
+				case 4214083802:
+					AddedMultiplierPerPlayer = (float) p_Value;
+					break;
+
+				case 3848122358:
+					Modify3DIconVerticalOffset = (float) p_Value;
+					break;
+
+				case 4032836214:
+					CapturableType = (CapturableType) Enum.ToObject(typeof(CapturableType), p_Value);
+					break;
+
+				case 691558678:
+					IntruderWarningSID = (string) p_Value;
+					break;
+
+				case 3699411299:
+					IsCapturedInUpperSphere = (bool) p_Value;
+					break;
+
+				case 2397507634:
+					DisableWhenLosingControl = (bool) p_Value;
+					break;
+
+				case 197053568:
+					LoseControlWhenNotClose = (bool) p_Value;
+					break;
+
+				case 2095022840:
+					DisableIfEnemyInside = (bool) p_Value;
+					break;
+
+				case 4174428017:
+					IsVisible = (bool) p_Value;
+					break;
+
+				case 3675636116:
+					ForceSnap = (bool) p_Value;
+					break;
+
+				case 404347571:
+					UseAreaValuesPerTeam = (bool) p_Value;
+					break;
+
+				case 3522568872:
+					IntruderWarning = (bool) p_Value;
+					break;
+
+				case 1450528952:
+					ShowOnMinimap = (bool) p_Value;
+					break;
+
+				case 3775540640:
+					HoistFlag = (bool) p_Value;
+					break;
+
+				case 4122129279:
+					StartAtBottom = (bool) p_Value;
+					break;
+
+				case 2265983223:
+					RemoveWhenCaptured = (bool) p_Value;
+					break;
+
+				case 3756225682:
+					SeesawCapturing = (bool) p_Value;
+					break;
+
+				default:
+					base.Bind(p_Descriptor, p_Value);
+					break;
+			}
+		}
+
+		public override object GetFieldValueByHash(uint p_Hash)
+		{
+			switch (p_Hash)
+			{
+				case 564231500:
+					return EnemyTicketLossWhenCaptured;
+
+				case 3359967028:
+					return MinNrToTakeControl;
+
+				case 1208546634:
+					return FlagTemplates;
+
+				case 3548539661:
+					return CapturePoint;
+
+				case 2819378919:
+					return InitialOwnerTeam;
+
+				case 1043301209:
+					return CaptureRadius;
+
+				case 1211879326:
+					return MaxCaptureMultiplier;
+
+				case 4217799545:
+					return AreaValue;
+
+				case 316937852:
+					return SpawnMenuListOrdinal;
+
+				case 1748431594:
+					return AreaValues;
+
+				case 1506679642:
+					return TimeToGetControl;
+
+				case 3830029753:
+					return TimeToLoseControl;
+
+				case 118486500:
+					return ReturnMultiplier;
+
+				case 282816006:
+					return OnlyTakeableByTeam;
+
+				case 2284771454:
+					return ShowRadius;
+
+				case 3315533693:
+					return HideRadius;
+
+				case 4214083802:
+					return AddedMultiplierPerPlayer;
+
+				case 3848122358:
+					return Modify3DIconVerticalOffset;
+
+				case 4032836214:
+					return CapturableType;
+
+				case 691558678:
+					return IntruderWarningSID;
+
+				case 3699411299:
+					return IsCapturedInUpperSphere;
+
+				case 2397507634:
+					return DisableWhenLosingControl;
+
+				case 197053568:
+					return LoseControlWhenNotClose;
+
+				case 2095022840:
+					return DisableIfEnemyInside;
+
+				case 4174428017:
+					return IsVisible;
+
+				case 3675636116:
+					return ForceSnap;
+
+				case 404347571:
+					return UseAreaValuesPerTeam;
+
+				case 3522568872:
+					return IntruderWarning;
+
+				case 1450528952:
+					return ShowOnMinimap;
+
+				case 3775540640:
+					return HoistFlag;
+
+				case 4122129279:
+					return StartAtBottom;
+
+				case 2265983223:
+					return RemoveWhenCaptured;
+
+				case 3756225682:
+					return SeesawCapturing;
+
+				default:
+					return base.GetFieldValueByHash(p_Hash);
+			}
+		}
+
+		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
+		{
+			switch (p_Hash)
+			{
+				case 564231500:
+					return typeof(CapturePointEntityData).GetProperty(nameof(EnemyTicketLossWhenCaptured));
+
+				case 3359967028:
+					return typeof(CapturePointEntityData).GetProperty(nameof(MinNrToTakeControl));
+
+				case 1208546634:
+					return typeof(CapturePointEntityData).GetProperty(nameof(FlagTemplates));
+
+				case 3548539661:
+					return typeof(CapturePointEntityData).GetProperty(nameof(CapturePoint));
+
+				case 2819378919:
+					return typeof(CapturePointEntityData).GetProperty(nameof(InitialOwnerTeam));
+
+				case 1043301209:
+					return typeof(CapturePointEntityData).GetProperty(nameof(CaptureRadius));
+
+				case 1211879326:
+					return typeof(CapturePointEntityData).GetProperty(nameof(MaxCaptureMultiplier));
+
+				case 4217799545:
+					return typeof(CapturePointEntityData).GetProperty(nameof(AreaValue));
+
+				case 316937852:
+					return typeof(CapturePointEntityData).GetProperty(nameof(SpawnMenuListOrdinal));
+
+				case 1748431594:
+					return typeof(CapturePointEntityData).GetProperty(nameof(AreaValues));
+
+				case 1506679642:
+					return typeof(CapturePointEntityData).GetProperty(nameof(TimeToGetControl));
+
+				case 3830029753:
+					return typeof(CapturePointEntityData).GetProperty(nameof(TimeToLoseControl));
+
+				case 118486500:
+					return typeof(CapturePointEntityData).GetProperty(nameof(ReturnMultiplier));
+
+				case 282816006:
+					return typeof(CapturePointEntityData).GetProperty(nameof(OnlyTakeableByTeam));
+
+				case 2284771454:
+					return typeof(CapturePointEntityData).GetProperty(nameof(ShowRadius));
+
+				case 3315533693:
+					return typeof(CapturePointEntityData).GetProperty(nameof(HideRadius));
+
+				case 4214083802:
+					return typeof(CapturePointEntityData).GetProperty(nameof(AddedMultiplierPerPlayer));
+
+				case 3848122358:
+					return typeof(CapturePointEntityData).GetProperty(nameof(Modify3DIconVerticalOffset));
+
+				case 4032836214:
+					return typeof(CapturePointEntityData).GetProperty(nameof(CapturableType));
+
+				case 691558678:
+					return typeof(CapturePointEntityData).GetProperty(nameof(IntruderWarningSID));
+
+				case 3699411299:
+					return typeof(CapturePointEntityData).GetProperty(nameof(IsCapturedInUpperSphere));
+
+				case 2397507634:
+					return typeof(CapturePointEntityData).GetProperty(nameof(DisableWhenLosingControl));
+
+				case 197053568:
+					return typeof(CapturePointEntityData).GetProperty(nameof(LoseControlWhenNotClose));
+
+				case 2095022840:
+					return typeof(CapturePointEntityData).GetProperty(nameof(DisableIfEnemyInside));
+
+				case 4174428017:
+					return typeof(CapturePointEntityData).GetProperty(nameof(IsVisible));
+
+				case 3675636116:
+					return typeof(CapturePointEntityData).GetProperty(nameof(ForceSnap));
+
+				case 404347571:
+					return typeof(CapturePointEntityData).GetProperty(nameof(UseAreaValuesPerTeam));
+
+				case 3522568872:
+					return typeof(CapturePointEntityData).GetProperty(nameof(IntruderWarning));
+
+				case 1450528952:
+					return typeof(CapturePointEntityData).GetProperty(nameof(ShowOnMinimap));
+
+				case 3775540640:
+					return typeof(CapturePointEntityData).GetProperty(nameof(HoistFlag));
+
+				case 4122129279:
+					return typeof(CapturePointEntityData).GetProperty(nameof(StartAtBottom));
+
+				case 2265983223:
+					return typeof(CapturePointEntityData).GetProperty(nameof(RemoveWhenCaptured));
+
+				case 3756225682:
+					return typeof(CapturePointEntityData).GetProperty(nameof(SeesawCapturing));
+
+				default:
+					return base.GetFieldInfoByHash(p_Hash);
+			}
+		}
+	}
+}
