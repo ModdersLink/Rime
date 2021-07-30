@@ -1,4 +1,4 @@
-Microsoft Visual Studio Solution File, Format Version 12.00
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28809.33
 MinimumVisualStudioVersion = 10.0.40219.1
@@ -59,6 +59,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RimeLib.UI", "Utils\RimeLib
 		{8C508EE5-C3B7-41BD-B6F1-1F731950F130} = {8C508EE5-C3B7-41BD-B6F1-1F731950F130}
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RimeLib.Shader.Frostbite2_0", "RimeLib.Shader.Frostbite2_0\RimeLib.Shader.Frostbite2_0.csproj", "{47AAF1D6-E1D2-4924-8E61-956E9F60751D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShaderInfo", "Utils\ShaderInfo\ShaderInfo.csproj", "{2853FEF7-3B3A-4581-8F0A-32F8A854097A}"
+EndProject
+
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -165,6 +170,14 @@ Global
 		{DAF03F99-0F3D-4B32-8171-37B09C120D99}.Debug|x64.Build.0 = Debug|x64
 		{DAF03F99-0F3D-4B32-8171-37B09C120D99}.Release|x64.ActiveCfg = Release|x64
 		{DAF03F99-0F3D-4B32-8171-37B09C120D99}.Release|x64.Build.0 = Release|x64
+		{47AAF1D6-E1D2-4924-8E61-956E9F60751D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47AAF1D6-E1D2-4924-8E61-956E9F60751D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47AAF1D6-E1D2-4924-8E61-956E9F60751D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47AAF1D6-E1D2-4924-8E61-956E9F60751D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2853FEF7-3B3A-4581-8F0A-32F8A854097A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2853FEF7-3B3A-4581-8F0A-32F8A854097A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2853FEF7-3B3A-4581-8F0A-32F8A854097A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2853FEF7-3B3A-4581-8F0A-32F8A854097A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -180,6 +193,8 @@ Global
 		{58C54B99-1A5F-432B-BAB7-96139C230DDE} = {A347138D-A422-46F7-BBC1-AC93AD056C01}
 		{BF6CA921-D80D-4A1E-B1E8-1C88ACA073B0} = {42E38905-976C-4506-98AE-DC35CA1A9925}
 		{DAF03F99-0F3D-4B32-8171-37B09C120D99} = {42E38905-976C-4506-98AE-DC35CA1A9925}
+		{2853FEF7-3B3A-4581-8F0A-32F8A854097A} = {42E38905-976C-4506-98AE-DC35CA1A9925}
+
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9D2A4DE6-648D-4971-AC81-A89F21154CD0}
