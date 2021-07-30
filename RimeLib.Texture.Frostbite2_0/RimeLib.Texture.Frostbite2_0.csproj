@@ -1,18 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
-    <LangVersion>8.0</LangVersion>
-    <Nullable>enable</Nullable>
-    <OutputPath>F:\rime\git\RimeLibLite\\bin\Debug</OutputPath>
-    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>F:\rime\git\RimeLibLite\bin\Debug\</OutputPath>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <WarningsAsErrors />
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>Library</OutputType>
+		<TargetFramework>net5.0</TargetFramework>
+		<Platforms>x64</Platforms>
+		<ApplicationIcon />
+		<Nullable>enable</Nullable>
+		<OutputPath>$(SolutionDir)\bin\$(Configuration)</OutputPath>
+		<StartupObject />
+	</PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\RimeLib.Texture\RimeLib.Texture.csproj" />

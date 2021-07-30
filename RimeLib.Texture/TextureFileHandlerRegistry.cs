@@ -54,7 +54,9 @@ namespace RimeLib.Texture
                     continue;
 
                 // Instantiate the loader.
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
                 var s_Loader = ( ITextureFileHandler )Activator.CreateInstance(s_FactoryType);
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
 
 
                 // Get class attribute
@@ -71,11 +73,15 @@ namespace RimeLib.Texture
 
                     if (m_Handlers.ContainsKey(s_Attribute.FormatType.ToLower()))
                     {
+#pragma warning disable CS8601 // Possible null reference assignment.
                         m_Handlers[s_Attribute.FormatType.ToLower()] = s_Loader;
+#pragma warning restore CS8601 // Possible null reference assignment.
                         continue;
                     }
                     // Otherwise just add it.
+#pragma warning disable CS8604 // Possible null reference argument.
                     m_Handlers.Add(s_Attribute.FormatType.ToLower(), s_Loader);
+#pragma warning restore CS8604 // Possible null reference argument.
                 }
             }
 
