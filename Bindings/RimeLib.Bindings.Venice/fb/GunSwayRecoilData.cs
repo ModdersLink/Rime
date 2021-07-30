@@ -1,0 +1,130 @@
+///////////////////////////////////////////////////////////////
+//                                                           //
+// This is an automatically generated file.                  //
+// Do *NOT* modify unless you really know what you're doing. //
+//                                                           //
+///////////////////////////////////////////////////////////////
+
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
+
+namespace fb
+{
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 24)]
+	public class GunSwayRecoilData : FrostbiteContainer
+	{
+		[ContainerField(Name: "RecoilAmplitudeMax", Offset: 0, NameHash: 2197654614, Flags: 49469), LayoutImmutable, Blittable]
+		public float RecoilAmplitudeMax { get; set; } // 0x0 (0)
+		
+		[ContainerField(Name: "RecoilAmplitudeIncPerShot", Offset: 4, NameHash: 2578458785, Flags: 49469), LayoutImmutable, Blittable]
+		public float RecoilAmplitudeIncPerShot { get; set; } // 0x4 (4)
+		
+		[ContainerField(Name: "HorizontalRecoilAmplitudeIncPerShotMin", Offset: 8, NameHash: 301051253, Flags: 49469), LayoutImmutable, Blittable]
+		public float HorizontalRecoilAmplitudeIncPerShotMin { get; set; } // 0x8 (8)
+		
+		[ContainerField(Name: "HorizontalRecoilAmplitudeIncPerShotMax", Offset: 12, NameHash: 301050987, Flags: 49469), LayoutImmutable, Blittable]
+		public float HorizontalRecoilAmplitudeIncPerShotMax { get; set; } // 0xC (12)
+		
+		[ContainerField(Name: "HorizontalRecoilAmplitudeMax", Offset: 16, NameHash: 3300506952, Flags: 49469), LayoutImmutable, Blittable]
+		public float HorizontalRecoilAmplitudeMax { get; set; } // 0x10 (16)
+		
+		[ContainerField(Name: "RecoilAmplitudeDecreaseFactor", Offset: 20, NameHash: 255021325, Flags: 49469), LayoutImmutable, Blittable]
+		public float RecoilAmplitudeDecreaseFactor { get; set; } // 0x14 (20)
+		
+		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		{
+			switch (p_Descriptor.NameHash)
+			{
+				case 2197654614:
+					RecoilAmplitudeMax = (float) p_Value;
+					break;
+
+				case 2578458785:
+					RecoilAmplitudeIncPerShot = (float) p_Value;
+					break;
+
+				case 301051253:
+					HorizontalRecoilAmplitudeIncPerShotMin = (float) p_Value;
+					break;
+
+				case 301050987:
+					HorizontalRecoilAmplitudeIncPerShotMax = (float) p_Value;
+					break;
+
+				case 3300506952:
+					HorizontalRecoilAmplitudeMax = (float) p_Value;
+					break;
+
+				case 255021325:
+					RecoilAmplitudeDecreaseFactor = (float) p_Value;
+					break;
+
+				default:
+					base.Bind(p_Descriptor, p_Value);
+					break;
+			}
+		}
+
+		public override object GetFieldValueByHash(uint p_Hash)
+		{
+			switch (p_Hash)
+			{
+				case 2197654614:
+					return RecoilAmplitudeMax;
+
+				case 2578458785:
+					return RecoilAmplitudeIncPerShot;
+
+				case 301051253:
+					return HorizontalRecoilAmplitudeIncPerShotMin;
+
+				case 301050987:
+					return HorizontalRecoilAmplitudeIncPerShotMax;
+
+				case 3300506952:
+					return HorizontalRecoilAmplitudeMax;
+
+				case 255021325:
+					return RecoilAmplitudeDecreaseFactor;
+
+				default:
+					return base.GetFieldValueByHash(p_Hash);
+			}
+		}
+
+		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
+		{
+			switch (p_Hash)
+			{
+				case 2197654614:
+					return typeof(GunSwayRecoilData).GetProperty(nameof(RecoilAmplitudeMax));
+
+				case 2578458785:
+					return typeof(GunSwayRecoilData).GetProperty(nameof(RecoilAmplitudeIncPerShot));
+
+				case 301051253:
+					return typeof(GunSwayRecoilData).GetProperty(nameof(HorizontalRecoilAmplitudeIncPerShotMin));
+
+				case 301050987:
+					return typeof(GunSwayRecoilData).GetProperty(nameof(HorizontalRecoilAmplitudeIncPerShotMax));
+
+				case 3300506952:
+					return typeof(GunSwayRecoilData).GetProperty(nameof(HorizontalRecoilAmplitudeMax));
+
+				case 255021325:
+					return typeof(GunSwayRecoilData).GetProperty(nameof(RecoilAmplitudeDecreaseFactor));
+
+				default:
+					return base.GetFieldInfoByHash(p_Hash);
+			}
+		}
+	}
+}

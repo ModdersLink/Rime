@@ -24,17 +24,25 @@ namespace RimeLib.Extensions
             if (s_Attribute == null)
                 return false;
 
+            if (s_Attribute.ConstructorArguments is null)
+                return false;
+
             // We found the attribute, check its parameters.
             if (s_Attribute.ConstructorArguments.Count != 1)
                 throw new NotImplementedException("Nullability checks are currently not supported on complex nullable types.");
 
             // Simple type!
-            if (s_Attribute.ConstructorArguments[0].Value is byte)
-                return (byte) s_Attribute.ConstructorArguments[0].Value == 2;
+            if (s_Attribute.ConstructorArguments == null)
+                throw new NullReferenceException(nameof(s_Attribute.ConstructorArguments));
+
+            byte? s_Value = s_Attribute.ConstructorArguments[0].Value as byte?;
+
+            if (s_Attribute.ConstructorArguments[0].Value is byte?)
+                return (s_Attribute.ConstructorArguments[0].Value as byte? ?? 0xFF) == 2; // C# 9, assumption here that this is never true
 
             // Primitive array type.
-            var s_Args = (IList<CustomAttributeTypedArgument>) s_Attribute.ConstructorArguments[0].Value;
-            return (byte) s_Args[0].Value == 2;
+            var s_Args = s_Attribute.ConstructorArguments[0].Value as IList<CustomAttributeTypedArgument>;
+            return s_Args?.ElementAt(0).Value as byte? == 2;
         }
     }
 }

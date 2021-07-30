@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <Platforms>x64</Platforms>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="SharpGLTF.Core" Version="1.0.0-alpha0015" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RimeLib.Content\RimeLib.Content.csproj" />
+    <ProjectReference Include="..\RimeLib.Mesh\RimeLib.Mesh.csproj" />
+  </ItemGroup>
+
+</Project>

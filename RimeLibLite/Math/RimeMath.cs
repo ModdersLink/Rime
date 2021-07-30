@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
+
 namespace RimeLib.Math
 {
     public static class RimeMath

@@ -2,8 +2,9 @@
 using RimeLib.Frostbite;
 using RimeLib.Frostbite.Core;
 using RimeLib.IO;
+using RimeLib.Serialization.Containers;
 
-namespace RimeLib.Mesh.Frostbite.Fb2
+namespace RimeLib.Mesh.Frostbite
 {
     /// <summary>
     /// Implementation for fb::MeshSetLayout
@@ -18,7 +19,7 @@ namespace RimeLib.Mesh.Frostbite.Fb2
         /// <summary>
         /// Flags
         /// </summary>
-        public MeshLayout.MeshLayoutFlags Flags { get; set; }
+        public MeshLayoutFlags Flags { get; set; }
 
         /// <summary>
         /// Level of detail count
@@ -33,22 +34,22 @@ namespace RimeLib.Mesh.Frostbite.Fb2
         /// <summary>
         /// Bounding box
         /// </summary>
-        public AxisAlignedBox BoundingBox { get; set; }
+        public AxisAlignedBox BoundingBox { get; set; } = new AxisAlignedBox();
 
         /// <summary>
         /// Level of details
         /// </summary>
-        public RelocPtr<MeshLayout>[] Lods { get; set; } // RelocPtr[5]
+        public RelocPtr<MeshLayout>[] Lods { get; set; } = new RelocPtr<MeshLayout>[5]; // RelocPtr[5]
 
         /// <summary>
         /// Mesh name
         /// </summary>
-        public RelocPtr<string> Name { get; set; } // RelocPtr
+        public RelocPtr<string> Name { get; set; } = new RelocPtr<string>(); // RelocPtr
 
         /// <summary>
         /// Mesh short name
         /// </summary>
-        public RelocPtr<string> ShortName { get; set; } // RelocPtr
+        public RelocPtr<string> ShortName { get; set; } = new RelocPtr<string>(); // RelocPtr
 
         /// <summary>
         /// Name hash
@@ -110,7 +111,7 @@ namespace RimeLib.Mesh.Frostbite.Fb2
         public void Deserialize(RimeReader p_Reader)
         {
             MeshType = (MeshType)p_Reader.ReadUInt32();
-            Flags = (MeshLayout.MeshLayoutFlags)p_Reader.ReadUInt32();
+            Flags = (MeshLayoutFlags)p_Reader.ReadUInt32();
             LodCount = p_Reader.ReadUInt32();
             TotalSubsetCount = p_Reader.ReadUInt32();
             BoundingBox = new AxisAlignedBox(p_Reader);

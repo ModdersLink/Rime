@@ -59,7 +59,11 @@ namespace RimeLib.Utils
                 // If that fails, try loading the file.
                 try
                 {
-                    Assembly.LoadFile(GetAssemblyPath(p_Name));
+                    var s_Path = GetAssemblyPath(p_Name);
+                    if (s_Path is null)
+                        return false;
+
+                    Assembly.LoadFile(s_Path);
                     return true;
                 }
                 catch

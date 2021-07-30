@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+    <Platforms>x64</Platforms>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommandLineParser" Version="2.6.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Bindings\RimeLib.Bindings.Venice\RimeLib.Bindings.Venice.csproj" />
+    <ProjectReference Include="..\..\RimeLib.Content.Frostbite2_0\RimeLib.Content.Frostbite2_0.csproj" />
+    <ProjectReference Include="..\..\RimeLib.Content\RimeLib.Content.csproj" />
+    <ProjectReference Include="..\..\RimeLib.Serialization.Frostbite2_0\RimeLib.Serialization.Frostbite2_0.csproj" />
+    <ProjectReference Include="..\..\RimeLib.Serialization\RimeLib.Serialization.csproj" />
+    <ProjectReference Include="..\..\RimeLibLite\RimeLibLite.csproj" />
+  </ItemGroup>
+
+</Project>

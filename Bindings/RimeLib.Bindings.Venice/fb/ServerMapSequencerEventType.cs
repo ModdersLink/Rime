@@ -1,0 +1,38 @@
+///////////////////////////////////////////////////////////////
+//                                                           //
+// This is an automatically generated file.                  //
+// Do *NOT* modify unless you really know what you're doing. //
+//                                                           //
+///////////////////////////////////////////////////////////////
+
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
+
+namespace fb
+{
+	[ContainerType(Flags: 137, Size: 4  )]
+	public enum ServerMapSequencerEventType : int
+	{
+		ServerMapSequencerEventType_Add = 0,
+		ServerMapSequencerEventType_Remove = 1,
+		ServerMapSequencerEventType_Clear = 2,
+		ServerMapSequencerEventType_List = 3,
+		ServerMapSequencerEventType_Load = 4,
+		ServerMapSequencerEventType_Save = 5,
+		ServerMapSequencerEventType_SetNextMapIndex = 6,
+		ServerMapSequencerEventType_GetMapIndices = 7,
+		ServerMapSequencerEventType_GetRounds = 8,
+		ServerMapSequencerEventType_RunNextRound = 9,
+		ServerMapSequencerEventType_RestartRound = 10,
+		ServerMapSequencerEventType_AvailableMaps = 11
+	}
+
+}

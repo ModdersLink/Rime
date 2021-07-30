@@ -1,0 +1,182 @@
+///////////////////////////////////////////////////////////////
+//                                                           //
+// This is an automatically generated file.                  //
+// Do *NOT* modify unless you really know what you're doing. //
+//                                                           //
+///////////////////////////////////////////////////////////////
+
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
+using System.Reflection;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization.Containers;
+using RimeLib.Serialization.Ebx;
+
+namespace fb
+{
+	[ContainerType(Alignment: 4,  Flags: 41, Size: 40)]
+	public class InspectViewPointData : FrostbiteContainer
+	{
+		[ContainerField(Name: "ViewPointID", Offset: 0, NameHash: 3058990665, Flags: 16509), LayoutImmutable]
+		public string ViewPointID { get; set; } // 0x0 (0)
+		
+		[ContainerField(Name: "AnimationTriggers", Offset: 4, NameHash: 870786648, Flags: 65)]
+		public List<InspectAnimationTriggerData> AnimationTriggers { get; set; } = new List<InspectAnimationTriggerData>(); // 0x4 (4)
+		
+		[ContainerField(Name: "ContinuousAnimationSignal", Offset: 8, NameHash: 2681825504, Flags: 65)]
+		public List<AntRef> ContinuousAnimationSignal { get; set; } = new List<AntRef>(); // 0x8 (8)
+		
+		[ContainerField(Name: "LookAtHeight", Offset: 12, NameHash: 11825096, Flags: 49469), LayoutImmutable, Blittable]
+		public float LookAtHeight { get; set; } // 0xC (12)
+		
+		[ContainerField(Name: "Yaw", Offset: 16, NameHash: 193468618, Flags: 49469), LayoutImmutable, Blittable]
+		public float Yaw { get; set; } // 0x10 (16)
+		
+		[ContainerField(Name: "Pitch", Offset: 20, NameHash: 232604323, Flags: 49469), LayoutImmutable, Blittable]
+		public float Pitch { get; set; } // 0x14 (20)
+		
+		[ContainerField(Name: "Distance", Offset: 24, NameHash: 408560070, Flags: 49469), LayoutImmutable, Blittable]
+		public float Distance { get; set; } // 0x18 (24)
+		
+		[ContainerField(Name: "FovOffset", Offset: 28, NameHash: 1171027895, Flags: 49469), LayoutImmutable, Blittable]
+		public float FovOffset { get; set; } // 0x1C (28)
+		
+		[ContainerField(Name: "AdjustmentYaw", Offset: 32, NameHash: 782014309, Flags: 49469), LayoutImmutable, Blittable]
+		public float AdjustmentYaw { get; set; } // 0x20 (32)
+		
+		[ContainerField(Name: "Fixed", Offset: 36, NameHash: 206684275, Flags: 49325), LayoutImmutable, Blittable]
+		public bool Fixed { get; set; } // 0x24 (36)
+		
+		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		{
+			switch (p_Descriptor.NameHash)
+			{
+				case 3058990665:
+					ViewPointID = (string) p_Value;
+					break;
+
+				case 870786648:
+					AnimationTriggers = (List<InspectAnimationTriggerData>) p_Value;
+					break;
+
+				case 2681825504:
+					ContinuousAnimationSignal = (List<AntRef>) p_Value;
+					break;
+
+				case 11825096:
+					LookAtHeight = (float) p_Value;
+					break;
+
+				case 193468618:
+					Yaw = (float) p_Value;
+					break;
+
+				case 232604323:
+					Pitch = (float) p_Value;
+					break;
+
+				case 408560070:
+					Distance = (float) p_Value;
+					break;
+
+				case 1171027895:
+					FovOffset = (float) p_Value;
+					break;
+
+				case 782014309:
+					AdjustmentYaw = (float) p_Value;
+					break;
+
+				case 206684275:
+					Fixed = (bool) p_Value;
+					break;
+
+				default:
+					base.Bind(p_Descriptor, p_Value);
+					break;
+			}
+		}
+
+		public override object GetFieldValueByHash(uint p_Hash)
+		{
+			switch (p_Hash)
+			{
+				case 3058990665:
+					return ViewPointID;
+
+				case 870786648:
+					return AnimationTriggers;
+
+				case 2681825504:
+					return ContinuousAnimationSignal;
+
+				case 11825096:
+					return LookAtHeight;
+
+				case 193468618:
+					return Yaw;
+
+				case 232604323:
+					return Pitch;
+
+				case 408560070:
+					return Distance;
+
+				case 1171027895:
+					return FovOffset;
+
+				case 782014309:
+					return AdjustmentYaw;
+
+				case 206684275:
+					return Fixed;
+
+				default:
+					return base.GetFieldValueByHash(p_Hash);
+			}
+		}
+
+		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
+		{
+			switch (p_Hash)
+			{
+				case 3058990665:
+					return typeof(InspectViewPointData).GetProperty(nameof(ViewPointID));
+
+				case 870786648:
+					return typeof(InspectViewPointData).GetProperty(nameof(AnimationTriggers));
+
+				case 2681825504:
+					return typeof(InspectViewPointData).GetProperty(nameof(ContinuousAnimationSignal));
+
+				case 11825096:
+					return typeof(InspectViewPointData).GetProperty(nameof(LookAtHeight));
+
+				case 193468618:
+					return typeof(InspectViewPointData).GetProperty(nameof(Yaw));
+
+				case 232604323:
+					return typeof(InspectViewPointData).GetProperty(nameof(Pitch));
+
+				case 408560070:
+					return typeof(InspectViewPointData).GetProperty(nameof(Distance));
+
+				case 1171027895:
+					return typeof(InspectViewPointData).GetProperty(nameof(FovOffset));
+
+				case 782014309:
+					return typeof(InspectViewPointData).GetProperty(nameof(AdjustmentYaw));
+
+				case 206684275:
+					return typeof(InspectViewPointData).GetProperty(nameof(Fixed));
+
+				default:
+					return base.GetFieldInfoByHash(p_Hash);
+			}
+		}
+	}
+}

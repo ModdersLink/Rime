@@ -30,7 +30,9 @@ namespace RimeLib.Frostbite.Db
         /// <returns>Object element by string in this object</returns>
         public DbObjectElement this[string p_Key]
         {
+#pragma warning disable CS8603 // Possible null reference return.
             get { return m_Elements.FirstOrDefault(p_T => StringComparer.InvariantCultureIgnoreCase.Equals(p_Key, p_T.FieldName)); }
+#pragma warning restore CS8603 // Possible null reference return.
         }
 
         /// <summary>
