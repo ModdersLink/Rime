@@ -1,4 +1,4 @@
-﻿namespace RimeLib.Texture.Frostbite.Fb2
+﻿namespace RimeLib.Texture.Frostbite
 {
     /// <summary>
     /// Texture format information
@@ -6,198 +6,235 @@
     public enum TextureFormat : uint
     {
         /// <summary>
-        /// DXT1
+        /// DXT1 = BC1
         /// </summary>
-        TextureFormatDxt1 = 0x0,
+        TextureFormat_Dxt1 = 0,
 
         /// <summary>
-        /// DXT1A
+        /// DXT1A 
         /// </summary>
-        TextureFormatDxt1A = 0x1,
+        TextureFormat_Dxt1A = 1,
 
         /// <summary>
-        /// DXT3
+        /// DXT3 = BC2
         /// </summary>
-        TextureFormatDxt3 = 0x2,
+        TextureFormat_Dxt3 = 2,
 
         /// <summary>
-        /// DXT5
+        /// DXT5 = BC3
         /// </summary>
-        TextureFormatDxt5 = 0x3,
+        TextureFormat_Dxt5 = 3,
 
         /// <summary>
-        /// DXT5A
+        /// DXT5A = BC4
         /// </summary>
-        TextureFormatDxt5A = 0x4,
+        TextureFormat_Dxt5A = 4,
 
         /// <summary>
-        /// DXN
+        /// DXN = BC5
         /// </summary>
-        TextureFormatDxn = 0x5,
+        TextureFormat_Dxn = 5,
 
         /// <summary>
         /// BC7
         /// </summary>
-        TextureFormatBc7 = 0x6,
+        TextureFormat_Bc7 = 6,
 
         /// <summary>
         /// RGB565
         /// </summary>
-        TextureFormatRgb565 = 0x7,
+        TextureFormat_Rgb565 = 7,
 
         /// <summary>
         /// RGB888
         /// </summary>
-        TextureFormatRgb888 = 0x8,
+        TextureFormat_Rgb888 = 8,
 
         /// <summary>
         /// ARGB1555
         /// </summary>
-        TextureFormatArgb1555 = 0x9,
+        TextureFormat_Argb1555 = 9,
 
         /// <summary>
         /// ARGB4444
         /// </summary>
-        TextureFormatArgb4444 = 0xA,
+        TextureFormat_Argb4444 = 10,
 
         /// <summary>
         /// ARGB8888
         /// </summary>
-        TextureFormatArgb8888 = 0xB,
+        TextureFormat_Argb8888 = 11,
 
         /// <summary>
         /// L8
         /// </summary>
-        TextureFormat_L8 = 0xC,
+        TextureFormat_L8 = 12,
 
         /// <summary>
         /// L16
         /// </summary>
-        TextureFormat_L16 = 0xD,
+        TextureFormat_L16 = 13,
 
         /// <summary>
         /// ABGR16
         /// </summary>
-        TextureFormatAbgr16 = 0xE,
+        TextureFormat_Abgr16 = 14,
 
         /// <summary>
         /// ABGR16 Floating Point
         /// </summary>
-        TextureFormatAbgr16F = 0xF,
+        TextureFormat_Abgr16F = 15,
 
         /// <summary>
         /// ABGR32 Floating Point
         /// </summary>
-        TextureFormatAbgr32F = 0x10,
+        TextureFormat_Abgr32F = 16,
 
         /// <summary>
         /// R16 Floating Point
         /// </summary>
-        TextureFormat_R16F = 0x11,
+        TextureFormat_R16F = 17,
 
         /// <summary>
         /// R32 Floating Point
         /// </summary>
-        TextureFormat_R32F = 0x12,
+        TextureFormat_R32F = 18,
 
         /// <summary>
         /// Normal DXN
         /// </summary>
-        TextureFormatNormalDxn = 0x13,
+        TextureFormat_NormalDxn = 19,
 
         /// <summary>
         /// Normal DXT1
         /// </summary>
-        TextureFormatNormalDxt1 = 0x14,
+        TextureFormat_NormalDxt1 = 20,
 
         /// <summary>
-        /// Normal DXT5
+        /// Normal DXT5 | BC3
         /// </summary>
-        TextureFormatNormalDxt5 = 0x15,
+        TextureFormat_NormalDxt5 = 21,
 
         /// <summary>
         /// Normal DXT5 RGA
         /// </summary>
-        TextureFormatNormalDxt5Rga = 0x16,
+        TextureFormat_NormalDxt5Rga = 22,
 
         /// <summary>
         /// RG8
         /// </summary>
-        TextureFormatRg8 = 0x17,
+        TextureFormat_Rg8 = 23,
 
         /// <summary>
         /// GR16
         /// </summary>
-        TextureFormatGr16 = 0x18,
+        TextureFormat_Gr16 = 24,
 
         /// <summary>
         /// GR16 Floating Point
         /// </summary>
-        TextureFormatGr16F = 0x19,
+        TextureFormat_Gr16F = 25,
 
         /// <summary>
         /// D16
         /// </summary>
-        TextureFormat_D16 = 0x1A,
+        TextureFormat_D16 = 26,
 
         /// <summary>
         /// D24S8
         /// </summary>
-        TextureFormat_D24S8 = 0x1B,
+        TextureFormat_D24S8 = 27,
 
         /// <summary>
         /// D24Fs8
         /// </summary>
-        TextureFormatD24Fs8 = 0x1C,
+        TextureFormat_D24Fs8 = 28,
 
         /// <summary>
-        /// D32F
+        /// D32 Floating Point
         /// </summary>
-        TextureFormat_D32F = 0x1D,
+        TextureFormat_D32F = 29,
 
         /// <summary>
         /// D32Fs8
         /// </summary>
-        TextureFormatD32Fs8 = 0x1E,
+        TextureFormat_D32Fs8 = 30,
 
         /// <summary>
         /// S8
         /// </summary>
-        TextureFormat_S8 = 0x1F,
+        TextureFormat_S8 = 31,
 
         /// <summary>
         /// ABGR32
         /// </summary>
-        TextureFormatAbgr32 = 0x20,
+        TextureFormat_Abgr32 = 32,
 
         /// <summary>
-        /// GR32F
+        /// GR32 Floating Point
         /// </summary>
-        TextureFormatGr32F = 0x21,
+        TextureFormat_Gr32F = 33,
 
         /// <summary>
         /// A2R10G10B10
         /// </summary>
-        TextureFormat_A2R10G10B10 = 0x22,
+        TextureFormat_A2R10G10B10 = 34,
 
         /// <summary>
-        /// R11G11B10F
+        /// R11G11B10 Floating Point
         /// </summary>
-        TextureFormat_R11G11B10F = 0x23,
+        TextureFormat_R11G11B10F = 35,
 
         /// <summary>
-        /// ABGR16Snorm
+        /// ABGR16 Snorm
         /// </summary>
-        TextureFormatAbgr16Snorm = 0x24,
+        TextureFormat_Abgr16_Snorm = 36,
 
         /// <summary>
         /// ABGR16 Unsigned Int
         /// </summary>
-        TextureFormatAbgr16Uint = 0x25,
+        TextureFormat_Abgr16_Uint = 37,
 
         /// <summary>
-        /// Unknown
+        /// !!!!! Unknown in fb2 !!!!!
+        /// L16 Unsigned Integer
         /// </summary>
-        TextureFormat_Unknown = 0x26,
+        TextureFormat_FB2_Unknown = 38,
+        TextureFormat_L16_Uint = 38,
+        
+
+        /// <summary>
+        /// Invalid in fb2
+        /// L32
+        /// </summary>
+        TextureFormat_L32 = 39,
+
+        /// <summary>
+        /// Invalid in fb2
+        /// GR16 Unsigned Integer
+        /// </summary>
+        TextureFormat_GR16_Uint = 40,
+
+        /// <summary>
+        /// Invalid in fb2
+        /// GR32 Unsigned Integer
+        /// </summary>
+        TextureFormat_GR32_Uint = 41,
+
+        /// <summary>
+        /// Invalid in fb2
+        /// L32
+        /// </summary>
+        TextureFormat_R9G9B9E5F = 42,
+
+        /// <summary>
+        /// Invalid in fb2
+        /// L32
+        /// </summary>
+        TextureFormat_Unknown = 43
     }
+
+
+
+    
 }

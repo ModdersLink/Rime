@@ -4,7 +4,7 @@
     <TargetFramework>net5.0</TargetFramework>
     <LangVersion>8.0</LangVersion>
     <Nullable>enable</Nullable>
-    <OutputPath>$(SolutionDir)\bin\$(Configuration)</OutputPath>
+    <OutputPath>F:\rime\git\RimeLibLite\\bin\Debug</OutputPath>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <Platforms>x64</Platforms>
   </PropertyGroup>

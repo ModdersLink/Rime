@@ -20,7 +20,7 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Sb
         public string[] FS { get; set; } = new string[0];
 
         [DbObjectField("head")]
-        public int Head { get; set; }
+        public int? Head { get; set; }
 
         [DbObjectField("base")]
         public int? Base { get; set; }

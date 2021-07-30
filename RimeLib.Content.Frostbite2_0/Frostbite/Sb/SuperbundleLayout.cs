@@ -23,7 +23,7 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Sb
         public long Size { get; set; }
 
         [DbObjectField("checksum")]
-        public Sha1 Checksum { get; set; } = new Sha1();
+        public Sha1? Checksum { get; set; } = null;
         
         [DbObjectField("base")]
         public bool? Base { get; set; }

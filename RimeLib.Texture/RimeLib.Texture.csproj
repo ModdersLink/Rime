@@ -22,6 +22,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\RimeLib.Content\RimeLib.Content.csproj" />
     <ProjectReference Include="..\RimeLibLite\RimeLibLite.csproj" />
   </ItemGroup>
 

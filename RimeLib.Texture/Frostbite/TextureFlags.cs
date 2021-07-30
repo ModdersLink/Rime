@@ -52,5 +52,22 @@ namespace RimeLib.Texture.Frostbite
         /// Rsx memory (PlayStation 3)
         /// </summary>
         Ps3MemoryRsx = 0x200,
+
+        /// <summary>
+        /// Streaming Always
+        /// </summary>
+        StreamingAlways = 0x400,
+
+        /// <summary>
+        /// Swizzled Data
+        /// </summary>
+        SwizzledData = 0x800,
+
+
+        /// <summary>
+        /// UnknownFlag | Only seen on consoles
+        /// </summary>
+        UnknownFlag = 0x1000,
+
     }
 }

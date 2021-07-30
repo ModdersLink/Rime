@@ -24,6 +24,9 @@ namespace Rime.Utils.ContentLister
             [Option('q', "quiet", Required = false, Default = false, HelpText = "Suppress console output.")]
             public bool Quiet { get; set; } = false;
 
+            [Option('r', "resources", Separator = ',', Required = false, HelpText = "The specific resource paths you want to dump.")]
+            public IEnumerable<string> ResourcePaths { get; set; } = new string[0];
+
             /*[Option("verify", Required = false, Default = false, HelpText = "Verify hashes of content while extracting, where available.")]
             public bool Verify { get; set; } = false;*/
 
@@ -31,7 +34,10 @@ namespace Rime.Utils.ContentLister
             public string GamePath { get; set; } = "";
 
             [Value(1, MetaName = "engineType", Required = true, HelpText = "The engine type of the game.")]
-            public EngineType EngineType { get; set; }
+            public EngineType EngineType
+            {
+                get; set;
+            }
 
             [Value(2, MetaName = "outPath", Required = true, HelpText = "The output directory where the extracted files will be put into.")]
             public string OutputPath { get; set; } = "";
@@ -108,32 +114,50 @@ namespace Rime.Utils.ContentLister
             if (!p_Options.Quiet)
                 Console.WriteLine($"Everything is now mounted! Starting content extraction.");
 
-            Parallel.ForEach(s_Mounter.GetChunks(), p_Pair =>
+            if (p_Options.ResourcePaths.Count() > 0)
             {
-                Dump(p_Options, "chunk", "_chunks/" + p_Pair.Key.ToString("D"), p_Pair.Value);
-            });
+                Parallel.ForEach(p_Options.ResourcePaths, p_Path =>
+               {
+                   if (!s_Mounter.GetResources().TryGetValue(p_Path, out var s_Object))
+                   {
+                       if (!p_Options.Quiet)
+                           Console.WriteLine($"Resource {p_Path} not found");
 
-            Parallel.ForEach(s_Mounter.GetResources(), p_Pair =>
-            {
-                Dump(p_Options, "resource", p_Pair.Key, p_Pair.Value);
-            });
+                       return;
+                   }
 
-            Parallel.ForEach(s_Mounter.GetPartitions(), p_Pair =>
+                   Dump(p_Options, "resource", p_Path, s_Object);
+               });
+            }
+            else
             {
-                Dump(p_Options, "partition", p_Pair.Key, p_Pair.Value);
-            });
+
+                Parallel.ForEach(s_Mounter.GetChunks(), p_Pair =>
+                {
+                    Dump(p_Options, "chunk", "_chunks/" + p_Pair.Key.ToString("D"), p_Pair.Value);
+                });
+
+                Parallel.ForEach(s_Mounter.GetResources(), p_Pair =>
+                {
+                    Dump(p_Options, "resource", p_Pair.Key, p_Pair.Value);
+                });
+
+                Parallel.ForEach(s_Mounter.GetPartitions(), p_Pair =>
+                {
+                    Dump(p_Options, "partition", p_Pair.Key, p_Pair.Value);
+                });
+            }
         }
 
         private static void Dump<T>(Options p_Options, string p_Type, string p_FilePath, IMountedObject<T> p_Object) where T : IObjectVariant
         {
             // Construct a full path to this object and make sure its directory exists.
             var s_Path = Path.Join(p_Options.OutputPath, p_FilePath + "." + p_Type).Normalize();
-         
+
             var s_Directory = Path.GetDirectoryName(s_Path);
 #pragma warning disable CS8604 // Possible null reference argument.
             Directory.CreateDirectory(s_Directory);
 #pragma warning restore CS8604 // Possible null reference argument.
-            
             if (!p_Options.Quiet)
                 Console.WriteLine("/" + p_FilePath + "." + p_Type);
 

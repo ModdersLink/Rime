@@ -43,5 +43,10 @@ namespace RimeLib.Texture.Frostbite
         /// 1D texture
         /// </summary>
         TextureType_1D = 0x5,
+
+        /// <summary>
+        /// Cube texture array
+        /// </summary>
+        TextureType_CubeArray = 0x6,
     }
 }
