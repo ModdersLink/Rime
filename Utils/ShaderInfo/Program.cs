@@ -92,7 +92,8 @@ namespace ShaderInfo
             if (!p_Options.Quiet)
                 Console.WriteLine($"Mounting game with engine '{p_Options.EngineType}' at path '{p_Options.GamePath}'. Please wait, this could take a while.");
 
-            await s_Mounter.Mount(p_Options.GamePath, s_MountSuperbundles.Count == 0 && s_MountBundles.Count == 0);
+            //await s_Mounter.Mount(p_Options.GamePath, s_MountSuperbundles.Count == 0 && s_MountBundles.Count == 0);
+            await s_Mounter.Mount(p_Options.GamePath, true, EngineType.Frostbite2_0);
 
             // Mount the requested superbundles.
             if (s_MountSuperbundles.Count > 0)
