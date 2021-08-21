@@ -9,9 +9,8 @@ using System.Reflection;
 using RimeLib.Utils;
 using System.Linq;
 using System.Collections;
-using TypeDescriptor = RimeLib.Serialization.Ebx.TypeDescriptor;
 
-namespace RimeLib.Serialization.Containers
+namespace RimeLib.Frostbite.Containers
 {
     /// <summary>
     /// A base container class for data bindings.

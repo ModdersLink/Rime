@@ -1,5 +1,5 @@
-﻿using RimeLib.Frostbite.Core;
-using RimeLib.Serialization.Containers;
+﻿using RimeLib.Frostbite.Containers;
+using RimeLib.Frostbite.Core;
 using System;
 using System.ComponentModel;
 
@@ -45,7 +45,7 @@ namespace RimeLib.Serialization.Ebx
 
             var s_Partition = PartitionRegistry.LookupPartition(PartitionGuid);
 
-            return (T0?)s_Partition?.LookupContainer(InstanceGuid);
+            return s_Partition?.LookupContainer(InstanceGuid) as T0;
         }
 
         /// <summary>
@@ -146,9 +146,9 @@ namespace RimeLib.Serialization.Ebx
             if (s_Partition is null)
                 return $"{PartitionGuid}/{InstanceGuid}";
 
-            var s_Container = s_Partition?.LookupContainer(InstanceGuid);
+            var s_Container = s_Partition.LookupContainer(InstanceGuid);
 
-            if (s_Container == null)
+            if (s_Container is null)
                 return $"{s_Partition?.Name}/{InstanceGuid}";
 
 #pragma warning disable IDE0059 // Unnecessary assignment of a value

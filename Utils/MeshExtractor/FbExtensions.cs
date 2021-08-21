@@ -1,5 +1,5 @@
 ﻿using RimeLib.Frostbite.Core;
-using RimeLib.Serialization.Containers;
+using RimeLib.Frostbite.Containers;
 using System.Numerics;
 
 namespace MeshExtractor

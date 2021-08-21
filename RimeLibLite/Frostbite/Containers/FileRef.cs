@@ -1,11 +1,7 @@
 ﻿using RimeLib.IO;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Serialization.Containers;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace RimeLib.Serialization.Containers
+namespace RimeLib.Frostbite.Containers
 {
     // TODO: Implement MemberInfoFlags
     [ContainerType(Alignment: 8)]

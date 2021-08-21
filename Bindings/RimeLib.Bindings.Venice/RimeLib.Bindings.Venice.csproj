@@ -9,4 +9,8 @@
     <ProjectReference Include="..\..\RimeLib.Serialization\RimeLib.Serialization.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="fb\" />
+  </ItemGroup>
+
 </Project>

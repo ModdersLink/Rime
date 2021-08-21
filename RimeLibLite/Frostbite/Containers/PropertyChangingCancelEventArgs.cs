@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace RimeLib.Serialization.Containers
+﻿namespace RimeLib.Frostbite.Containers
 {
     /// <summary>
     /// Base property change cancel arguments

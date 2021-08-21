@@ -1,11 +1,9 @@
-﻿using RimeLib.Frostbite.Core;
-using RimeLib.Serialization.Containers;
+﻿using RimeLib.Frostbite.Containers;
+using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Ebx;
-using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace RimeLib.Serialization
 {

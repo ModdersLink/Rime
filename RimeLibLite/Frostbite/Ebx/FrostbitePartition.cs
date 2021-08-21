@@ -1,6 +1,6 @@
-﻿using RimeLib.Frostbite.Core;
+﻿using RimeLib.Frostbite.Containers;
+using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Serialization.Containers;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

@@ -4,7 +4,7 @@ using RimeLib.IO;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization.Ebx;
 
-namespace RimeLib.Serialization.Containers
+namespace RimeLib.Frostbite.Containers
 {
     /// <summary>
     /// Frostbite's built in 2D Vector Library

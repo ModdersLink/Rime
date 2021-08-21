@@ -65,7 +65,7 @@ namespace FBCC.Generators
 			m_Writer.WriteLine("using System.ComponentModel;");
 			m_Writer.WriteLine("using System.Reflection;");
             m_Writer.WriteLine("using RimeLib.Serialization.Attributes;");
-            m_Writer.WriteLine("using RimeLib.Serialization.Containers;");
+            m_Writer.WriteLine("using RimeLib.Frostbite.Containers;");
             m_Writer.WriteLine("using RimeLib.Serialization.Ebx;");
 
             m_Writer.WriteLine(m_Indent);

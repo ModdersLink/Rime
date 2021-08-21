@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace RimeLib.Serialization.Containers
+namespace RimeLib.Frostbite.Containers
 {
     /// <summary>
     /// Cancel the property changing event

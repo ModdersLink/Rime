@@ -1,4 +1,4 @@
-﻿using RimeLib.Serialization.Containers;
+﻿using RimeLib.Frostbite.Containers;
 using System;
 using System.Collections.Generic;
 

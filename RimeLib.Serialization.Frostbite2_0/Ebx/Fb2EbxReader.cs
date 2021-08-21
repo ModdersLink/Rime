@@ -3,7 +3,7 @@ using RimeLib.Frostbite.Core;
 using RimeLib.IO;
 using RimeLib.IO.Conversion;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Serialization.Containers;
+using RimeLib.Frostbite.Containers;
 using RimeLib.Serialization.Ebx;
 using RimeLib.Utils;
 using System;

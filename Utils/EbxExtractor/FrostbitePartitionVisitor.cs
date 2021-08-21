@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Linq;
 using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Serialization.Containers;
+using RimeLib.Frostbite.Containers;
 using System.ComponentModel;
 
 namespace EbxExtractor

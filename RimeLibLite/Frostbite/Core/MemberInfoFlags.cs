@@ -1,7 +1,4 @@
 ﻿using RimeLib.IO;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace RimeLib.Frostbite.Core
 {

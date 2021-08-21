@@ -1,7 +1,7 @@
 ﻿using RimeLib.Frostbite;
 using RimeLib.Frostbite.Core;
 using RimeLib.IO;
-using RimeLib.Serialization.Containers;
+using RimeLib.Frostbite.Containers;
 using System;
 using System.Collections.Generic;
 using System.Linq;

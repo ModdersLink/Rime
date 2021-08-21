@@ -2,7 +2,7 @@
 using RimeLib.Serialization.Ebx;
 using System.Reflection;
 
-namespace RimeLib.Serialization.Containers
+namespace RimeLib.Frostbite.Containers
 {
     /// <summary>
     /// Implementation for fb::LinearTransform

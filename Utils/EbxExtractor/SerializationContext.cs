@@ -1,7 +1,7 @@
 ﻿using RimeLib.Frostbite.Core;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Serialization.Containers;
+using RimeLib.Frostbite.Containers;
 using RimeLib.Serialization.Ebx;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
 using RimeLib.Utils;

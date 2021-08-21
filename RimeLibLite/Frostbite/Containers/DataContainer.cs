@@ -2,7 +2,7 @@
 using RimeLib.Serialization.Attributes;
 using System.ComponentModel;
 
-namespace RimeLib.Serialization.Containers
+namespace RimeLib.Frostbite.Containers
 {
     /// <summary>
     /// Implementation for fb::DataContainer

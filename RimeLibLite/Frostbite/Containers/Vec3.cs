@@ -5,7 +5,7 @@ using RimeLib.Math;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization.Ebx;
 
-namespace RimeLib.Serialization.Containers
+namespace RimeLib.Frostbite.Containers
 {
     /// <summary>
     /// Implementation for fb::Vec3

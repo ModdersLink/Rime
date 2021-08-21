@@ -3,7 +3,7 @@ using fb;
 using RimeLib.Content.Mounting;
 using RimeLib.Frostbite;
 using RimeLib.Serialization;
-using RimeLib.Serialization.Containers;
+using RimeLib.Frostbite.Containers;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
 using System;
 using System.Collections.Generic;

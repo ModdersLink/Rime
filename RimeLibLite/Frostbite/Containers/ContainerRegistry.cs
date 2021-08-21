@@ -1,11 +1,9 @@
-﻿using RimeLib.Frostbite.Core;
-using RimeLib.Utils;
+﻿using RimeLib.Utils;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
 
-namespace RimeLib.Serialization.Containers
+namespace RimeLib.Frostbite.Containers
 {
     /// <summary>
     /// The container registry holds all of the specific types for each Frostbite type.

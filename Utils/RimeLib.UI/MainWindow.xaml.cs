@@ -1,4 +1,4 @@
-﻿using RimeLib.Serialization.Containers;
+﻿using RimeLib.Frostbite.Containers;
 using RimeLib.UI.Controls.Meta;
 using RimeLib.UI.ViewModels.fb;
 using System;

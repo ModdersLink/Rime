@@ -4,7 +4,6 @@ using RimeLib.Utils;
 using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
-using System.Text;
 
 namespace RimeLib.Serialization.Ebx
 {
