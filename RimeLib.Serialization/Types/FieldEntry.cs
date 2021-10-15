@@ -8,29 +8,30 @@ namespace RimeLib.Serialization.Types
 {
     public class FieldEntry
     {
-        // The type of the underlying data
-        private Type m_Type;
+        /// <summary>
+        /// C# type of this field
+        /// </summary>
+        public Type? FieldType { get; set; }
 
-        // Field name
-        private string m_Name;
+        /// <summary>
+        /// Name of field
+        /// </summary>
+        public string Name { get; set; } = string.Empty;
 
-        // Offset in the payload
-        private int m_OffsetInPayload;
+        /// <summary>
+        /// Offset in payload
+        /// </summary>
+        public uint Offset { get; set; }
 
 
-        // Rime specific things
-        private TypeEntry m_Parent;
+        /// <summary>
+        /// Parent who this field is apart of
+        /// </summary>
+        public TypeEntry? Parent { get; set; }
 
-        // MemberInfoFlags from frostbite
-        private ushort m_FrostbiteFlags;
-
-        public bool IsBlittable => m_FrostbiteFlags != 0; // TODO: Fix this
-
-        public FieldEntry(TypeEntry p_ParentEntry, dynamic p_Value)
-        {
-            m_Parent = p_ParentEntry;
-            m_Name = string.Empty;
-            m_Type = p_Value.GetType();
-        }
+        /// <summary>
+        /// Frostbite MemberInfoFlags
+        /// </summary>
+        public ushort Flags { get; set; }
     }
 }

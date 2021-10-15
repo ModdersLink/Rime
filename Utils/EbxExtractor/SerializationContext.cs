@@ -23,6 +23,8 @@ namespace EbxExtractor
         // String table, this is used for CString and FileRef types only, everything else goes in m_TypeStrings
         protected StringTable m_StringTable;
 
+        protected TypeTable m_TypeTable;
+
         // Created InstanceEntries
         protected List<InstanceEntry> m_InstanceEntries;
 
@@ -69,6 +71,7 @@ namespace EbxExtractor
         {
             m_TypeStrings = new StringTable();
             m_StringTable = new StringTable();
+            m_TypeTable = new TypeTable();
             m_InstanceEntries = new List<InstanceEntry>();
             m_FieldDescriptors = new List<FieldDescriptor>();
             m_TypeDescriptors = new List<TypeDescriptor>();
@@ -130,6 +133,7 @@ namespace EbxExtractor
 
         protected void ParseTypes(dynamic p_Object, DataContainer p_ParentContainer)
         {
+            
             if (p_Object is DataContainer)
                 m_TypeStrings.AddString("DataContainer");
             
@@ -187,6 +191,12 @@ namespace EbxExtractor
             var s_ContainerTypeAttribute = s_ObjectType.GetCustomAttribute<ContainerTypeAttribute>();
             if (s_ContainerTypeAttribute is null)
             {
+                if (s_ObjectType == typeof(string))
+                {
+                    m_StringTable.AddString(p_Object);
+                    return;
+                }
+
                 // This is an expected failure case for builtin frostbite/pod types
                 if (m_BuiltinTypes.Contains(s_ObjectType.Name))
                     return;

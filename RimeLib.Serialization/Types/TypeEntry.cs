@@ -8,14 +8,41 @@ namespace RimeLib.Serialization.Types
 {
     public class TypeEntry
     {
-        private TypeEntry m_InheritedType;
-        private int m_Alignment;
-        private int m_TypeSize;
-        private List<FieldEntry> m_Fields;
+        /// <summary>
+        /// Inherited type
+        /// </summary>
+        public TypeEntry? InheritedType { get; set; }
+
+        /// <summary>
+        /// Frostbite specific flags
+        /// </summary>
+        public ushort Flags { get; set; }
+
+        /// <summary>
+        /// Size of this type
+        /// </summary>
+        public int Size { get; set; }
+
+        /// <summary>
+        /// Alignment of this type
+        /// </summary>
+        public int Alignment { get; set; }
+
+        /// <summary>
+        /// Name of this type
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
+        /// Fields
+        /// </summary>
+        public List<FieldEntry> Fields { get; set; }
 
         public TypeEntry()
         {
-            m_Fields = new List<FieldEntry>();
+            Name = string.Empty;
+            InheritedType = null;
+            Fields = new List<FieldEntry>();
         }
     }
 }
