@@ -238,7 +238,7 @@ namespace EbxExtractor
             // Then do the exact same thing for each of the properties
 
             // Get all properties (EBX fields)
-            PropertyInfo[] s_Properties = s_ObjectType.GetProperties();
+            PropertyInfo[] s_Properties = s_ObjectType.GetProperties(BindingFlags.DeclaredOnly);
 
             var s_CalculatedFieldCount = 0;
             // Iterate through all properties, to calculate the field count
