@@ -44,5 +44,10 @@ namespace RimeLib.Serialization.Types
             InheritedType = null;
             Fields = new List<FieldEntry>();
         }
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }

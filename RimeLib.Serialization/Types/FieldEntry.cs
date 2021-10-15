@@ -33,5 +33,10 @@ namespace RimeLib.Serialization.Types
         /// Frostbite MemberInfoFlags
         /// </summary>
         public ushort Flags { get; set; }
+
+        public override string ToString()
+        {
+            return $"{FieldType?.Name} {Name}";
+        }
     }
 }

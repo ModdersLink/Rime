@@ -55,6 +55,8 @@ namespace EbxExtractor
         protected List<KeyValuePair<GUID, GUID>> m_ExternalPartitionGuids;
         protected List<KeyValuePair<GUID, GUID>> m_InternalPartitionGuids;
 
+        
+
         protected List<string> m_BuiltinTypes = new List<string>
         {
             "String",
@@ -129,11 +131,14 @@ namespace EbxExtractor
                 ParseInstance(l_InstanceContainer);
             }
 
+
+            m_TypeTable.Generate_FrostbiteTypes();
         }
 
         protected void ParseTypes(dynamic p_Object, DataContainer p_ParentContainer)
         {
-            
+            m_TypeTable.AddTypeByObject(p_Object);
+
             if (p_Object is DataContainer)
                 m_TypeStrings.AddString("DataContainer");
             

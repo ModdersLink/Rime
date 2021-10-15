@@ -115,6 +115,7 @@ namespace EbxExtractor
             await s_Mounter.MountSuperbundle("Win32/MpChunks", true);
             await s_Mounter.MountSuperbundle("Win32/Xp2Chunks", true);
             await s_Mounter.MountSuperbundle("Win32/Levels/XP2_Factory/XP2_Factory", true);
+            await s_Mounter.MountSuperbundle("Win32/Levels/FrontEnd/FrontEnd", true);
 
             if (!p_Options.Quiet)
                 Console.WriteLine($"Everything is now mounted! Starting audio conversion.");
@@ -125,7 +126,7 @@ namespace EbxExtractor
             foreach (var s_PartitionPair in s_Partitions)
             {
                 var s_PartitionName = s_PartitionPair.Key;
-                if (s_PartitionName != "Weapons/M1014/U_M1014_Flashlight".ToLower())
+                if (s_PartitionName != "Levels/FrontEnd/FrontEnd".ToLower())
                     continue;
 
                 var s_PartitionObject = s_PartitionPair.Value;

@@ -15,6 +15,8 @@ namespace RimeLib.Serialization
     {
         private List<TypeEntry> m_Types;
 
+        public IEnumerable<FieldEntry> Fields => m_Types.SelectMany(p_Type => p_Type.Fields);
+
         private List<TypeDescriptor> m_TypeDescriptors;
         private List<FieldDescriptor> m_FieldDescriptors;
 
@@ -108,12 +110,45 @@ namespace RimeLib.Serialization
             // Check if this is a RefArray
             if (s_ObjectType.IsGenericType && s_ObjectType.GetGenericTypeDefinition() == typeof(RefArray<>))
             {
+                // We will create a new array type to attach this field to
+                var s_ArrayType = new TypeEntry
+                {
+                    Alignment = 4,
+                    Name = "array",
+                    Flags = 65,
+                    Size = 4, // TODO: Verify this?
+                };
+
+                s_ArrayType.Fields.Add(new FieldEntry
+                {
+                    FieldType = typeof(Array),
+                    Flags = 53,
+                    Name = "member",
+                    Offset = 0,
+                    Parent = s_ArrayType
+                });
+
+                m_Types.Add(s_ArrayType);
+                //s_TypeEntry.Fields.Add(new FieldEntry
+                //{
+                //    FieldType = typeof(void),
+                //    Flags = s_ContainerTypeAttributeArray.Flags,
+                //    Name = "member",
+                //    Offset = 0,
+                //    Parent = null
+                //});
+                //m_Types.Add(new TypeEntry
+                //{
+                //    Alignment = 
+                //});
                 s_ObjectType = s_ObjectType.GetGenericArguments().First();
             }
-            else if (s_ObjectType.IsGenericType && s_ObjectType.GetGenericTypeDefinition() == typeof(IList<>)) // Generic List<T>
+            else if (s_ObjectType.IsGenericType && ( s_ObjectType.GetGenericTypeDefinition() == typeof(IList<>) || s_ObjectType.GetGenericTypeDefinition() == typeof(List<>))) // Generic List<T>
             {
                 s_ObjectType = s_ObjectType.GetGenericArguments().First();
             }
+            else if (s_ObjectType.IsGenericType && s_ObjectType.GetGenericTypeDefinition() == typeof(CtrRef<>))
+                return null;
             else if (s_ObjectType.IsGenericType)
                 throw new NotImplementedException("generic type not handled, contact a developer");
 
@@ -155,20 +190,23 @@ namespace RimeLib.Serialization
 
                 // TODO: Remove the code below
                 //// If the type is an enum, we need to not only add the typestring name, but each of the values
-                //var s_EnumNames = Enum.GetNames(s_ObjectType);
-                //if (s_EnumNames.Length > 0)
-                //    m_TypeStrings.AddString("member");
-
-                //foreach (var l_EnumName in s_EnumNames)
-                //{
-                //    if (!m_TypeStrings.AddString(l_EnumName))
-                //        throw new Exception("could not add enum name.");
-                //}
+                var s_EnumNames = Enum.GetNames(s_ObjectType);
+                for (var l_EnumIndex = 0; l_EnumIndex < s_EnumNames.Length; ++l_EnumIndex)
+                {
+                    s_TypeEntry.Fields.Add(new FieldEntry
+                    {
+                        FieldType = null,
+                        Flags = 0,
+                        Parent = s_TypeEntry,
+                        Name = s_EnumNames[l_EnumIndex],
+                        Offset = (uint)l_EnumIndex
+                    });
+                }
             }
             // Then do the exact same thing for each of the properties
 
             // Get all properties (EBX fields)
-            PropertyInfo[] s_Properties = s_ObjectType.GetProperties();
+            PropertyInfo[] s_Properties = s_ObjectType.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
 
             // Iterate through all properties, to calculate the field count
             for (var l_PropertyIndex = 0; l_PropertyIndex < s_Properties.Length; ++l_PropertyIndex)
@@ -200,7 +238,12 @@ namespace RimeLib.Serialization
                     Name = l_FieldName,
                     Offset = l_ContainerFieldAttribute.FieldOffset
                 });
+
+                AddType(l_PropertyType);
             }
+
+            m_Types.Add(s_TypeEntry);
+            Console.WriteLine($"Added {s_TypeEntry.Name}");
 
             // Ding ding ding, we have frostbite inheritance
             if (s_ObjectType.BaseType?.GetCustomAttribute<ContainerTypeAttribute>() is not null)
@@ -213,10 +256,20 @@ namespace RimeLib.Serialization
 
                 // Link up the inherited type
                 s_TypeEntry.InheritedType = s_InheritedType;
-            }
 
-            m_Types.Add(s_TypeEntry);
-            Console.WriteLine($"Added {s_TypeEntry.Name}");
+                //m_Types.Add(new TypeEntry
+                //{
+                //});
+
+                s_TypeEntry.Fields.Add(new FieldEntry
+                {
+                    FieldType = typeof(void),
+                    Flags = 0,
+                    Name = "$",
+                    Offset = 0,
+                    Parent = s_TypeEntry
+                });
+            }
 
             return s_TypeEntry;
         }

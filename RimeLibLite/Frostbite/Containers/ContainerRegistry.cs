@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace RimeLib.Frostbite.Containers
 {
@@ -38,8 +39,7 @@ namespace RimeLib.Frostbite.Containers
         public static Type GetContainerType(uint p_TypeNameHash)
         {
             if (!m_RegisteredTypes.TryGetValue(p_TypeNameHash, out Type? s_Type))
-                return Type.EmptyTypes[0];
-
+                return Type.EmptyTypes.FirstOrDefault();//[0];
             return s_Type;
         }
 
