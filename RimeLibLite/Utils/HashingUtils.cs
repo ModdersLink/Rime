@@ -8,7 +8,8 @@ namespace RimeLib.Utils
     {
         public static Sha1 HashFromStream(Stream p_Stream, long? p_Length = null)
         {
-            var s_Sha1 = new SHA1CryptoServiceProvider();
+            //var s_Sha1 = new SHA1CryptoServiceProvider();
+            var s_Sha1 = SHA1.Create();
 
             var s_TransferBuffer = new byte[32 * 1024];
             var s_LeftBytes = p_Length ?? 0;

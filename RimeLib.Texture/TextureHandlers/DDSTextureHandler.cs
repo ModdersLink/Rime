@@ -69,7 +69,7 @@ namespace RimeLib.Texture.TextureHandlers
            
 
             // TODO: Custom textures support?
-            var s_Texture = p_Handler.CreateTexture(ResourceType.DxTexture, s_Header.m_Width, s_Header.m_Height, s_TextureFormat, s_TextureType, s_Header.m_MipmapCount);
+            var s_Texture = p_Handler.CreateTexture(Content.Frostbite.ResourceType.DxTexture, s_Header.m_Width, s_Header.m_Height, s_TextureFormat, s_TextureType, s_Header.m_MipmapCount);
 
             if (s_Texture is null)
                 return false;

@@ -8,7 +8,7 @@ namespace RimeLib.IO
 {
     public class HashingRimeWriter : RimeWriter
     {
-        private readonly SHA1 m_Sha1 = new SHA1CryptoServiceProvider();
+        private readonly SHA1 m_Sha1 = SHA1.Create();
         private bool m_Hashed;
 
         public override bool CanSeek => false;

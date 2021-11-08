@@ -35,6 +35,7 @@ namespace RimeLib.Serialization.Types
         public ushort Flags { get; set; }
 
         public override string ToString()
+
         {
             return $"{FieldType?.Name} {Name}";
         }
