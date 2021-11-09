@@ -25,6 +25,8 @@ namespace EbxExtractor
 
         protected TypeTable m_TypeTable;
 
+        protected ArrayTable m_ArrayTable;
+
         // Created InstanceEntries
         protected List<InstanceEntry> m_InstanceEntries;
 
@@ -74,6 +76,7 @@ namespace EbxExtractor
             m_TypeStrings = new StringTable();
             m_StringTable = new StringTable();
             m_TypeTable = new TypeTable();
+            m_ArrayTable = new ArrayTable();
             m_InstanceEntries = new List<InstanceEntry>();
             m_FieldDescriptors = new List<FieldDescriptor>();
             m_TypeDescriptors = new List<TypeDescriptor>();
@@ -345,10 +348,17 @@ namespace EbxExtractor
             }
         }
 
+        protected void ParseArrays(DataContainer p_DataContainer)
+        {
+
+        }
+
         protected void ParseInstance(DataContainer p_DataContainer)
         {
             // This should go through and make sure all types are parsed. Need to confirm
             ParseTypes(p_DataContainer, p_DataContainer);
+
+            ParseArrays(p_DataContainer);
 
             var s_InstanceIndex = m_TypeDescriptors.FindIndex(p_TypeDescriptor => p_TypeDescriptor.Name == p_DataContainer.ContainerTypeName);
             if (s_InstanceIndex == -1)

@@ -126,7 +126,7 @@ namespace EbxExtractor
             foreach (var s_PartitionPair in s_Partitions)
             {
                 var s_PartitionName = s_PartitionPair.Key;
-                if (s_PartitionName != "Levels/FrontEnd/FrontEnd".ToLower())
+                if (s_PartitionName != "Weapons/M1014/U_M1014_Flashlight".ToLower())
                     continue;
 
                 var s_PartitionObject = s_PartitionPair.Value;
