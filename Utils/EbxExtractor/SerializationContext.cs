@@ -348,7 +348,190 @@ namespace EbxExtractor
             }
         }
 
-        protected void ParseArrays(DataContainer p_DataContainer)
+        protected void ParseArrays(DataContainer p_Object)
+        {
+            m_TypeTable.AddTypeByObject(p_Object);
+
+            if (p_Object is DataContainer)
+                m_TypeStrings.AddString("DataContainer");
+
+            // We need to do this first for the incoming type
+            Type s_ObjectType = p_Object.GetType();
+
+            var s_PotentialTypeIndex = (ushort)m_TypeDescriptors.Count;
+
+            // Check if this is a RefArray
+            cif (s_ObjectType.IsGenericType && s_ObjectType.GetGenericTypeDefinition() == typeof(RefArray<>))
+            {
+                s_ObjectType = s_ObjectType.GetGenericArguments().First();
+            }
+            else if (s_ObjectType.IsGenericType && s_ObjectType.GetGenericTypeDefinition() == typeof(IList<>)) // Generic List<T>
+            {
+                s_ObjectType = s_ObjectType.GetGenericArguments().First();
+                m_TypeStrings.AddString("array");
+            }
+
+            // Ding ding ding, we have frostbite inheritance
+            if (s_ObjectType.BaseType?.GetCustomAttribute<ContainerTypeAttribute>() is not null)
+            {
+#if DEBUG
+                Console.WriteLine($"Inherited Fb Class: {s_ObjectType.BaseType.Name}.");
+#endif
+                // TODO: Figure out what else needs to be done
+                m_TypeStrings.AddString("$");
+            }
+            // Next we will need to create the TypeInstance for this paticular type
+            // we do this by getting the ContainerType information
+
+            var s_ContainerTypeAttribute = s_ObjectType.GetCustomAttribute<ContainerTypeAttribute>();
+            if (s_ContainerTypeAttribute is null)
+            {
+                
+
+                // This is an expected failure case for builtin frostbite/pod types
+                if (m_BuiltinTypes.Contains(s_ObjectType.Name))
+                    return;
+
+                // Log skipped variables for our own good
+                Console.WriteLine($"Skipping: {s_ObjectType.Name}");
+                return;
+            }
+
+            // "UnlockAsset"
+            var s_TypeName = s_ObjectType.Name;
+
+            // Check to see if this type has already been added before
+            if (m_TypeStrings.GetOffset(s_TypeName) != -1)
+                return;
+
+            // Add this "main" type to our type strings
+            m_TypeStrings.AddString(s_TypeName);
+
+            // Check to see if the type is an enum
+            if (s_ObjectType.IsEnum)
+            {
+                // If the type is an enum, we need to not only add the typestring name, but each of the values
+                var s_EnumNames = Enum.GetNames(s_ObjectType);
+                if (s_EnumNames.Length > 0)
+                    m_TypeStrings.AddString("member");
+
+                foreach (var l_EnumName in s_EnumNames)
+                {
+                    if (!m_TypeStrings.AddString(l_EnumName))
+                        throw new Exception("could not add enum name.");
+                }
+            }
+            // Then do the exact same thing for each of the properties
+
+            // Get all properties (EBX fields)
+            PropertyInfo[] s_Properties = s_ObjectType.GetProperties(BindingFlags.DeclaredOnly);
+
+            var s_CalculatedFieldCount = 0;
+            // Iterate through all properties, to calculate the field count
+            for (var l_PropertyIndex = 0; l_PropertyIndex < s_Properties.Length; ++l_PropertyIndex)
+            {
+                // Check that the property length
+                if (l_PropertyIndex >= s_Properties.Length)
+                    throw new IndexOutOfRangeException("invalid property index");
+
+                // Get the C# property, which represents a field
+                PropertyInfo l_PropertyInfo = s_Properties[l_PropertyIndex];
+
+                Type l_PropertyType = l_PropertyInfo.PropertyType;
+
+                // Attempt to get our container field attribute which contains some data from Frostbite
+                var l_ContainerFieldAttribute = l_PropertyInfo.GetCustomAttribute<ContainerFieldAttribute>();
+
+                // Validate that this field has "some" container field attribute, otherwise skip it (could be editor-only data, etc)
+                if (l_ContainerFieldAttribute is null)
+                    continue;
+
+                // "LinkedTo"
+                var l_FieldName = l_PropertyInfo.Name;
+
+#if DEBUG
+                Console.WriteLine($"Parsing field: {l_FieldName}.");
+#endif
+
+                s_CalculatedFieldCount++;
+            }
+
+
+            // Save the current type descriptor index
+            var s_TypeDescriptorIndex = m_TypeDescriptors.Count;
+            var s_FieldTypeStartIndex = (uint)m_FieldDescriptors.Count;
+
+            // Add dummy field descriptors
+            for (var l_FieldIndex = 0; l_FieldIndex < s_CalculatedFieldCount; ++l_FieldIndex)
+                m_FieldDescriptors.Add(new FieldDescriptor());
+
+            // Add a "dummy" type descriptor
+            m_TypeDescriptors.Add(new TypeDescriptor
+            {
+                Alignment = s_ContainerTypeAttribute.DataAlignment,
+                FieldCount = (byte)s_CalculatedFieldCount, // TODO: Implement, this is the field count
+                Flags = new MemberInfoFlags(s_ContainerTypeAttribute.Flags),
+                LayoutDescriptor = (uint)s_FieldTypeStartIndex, // TODO: Implement, this is an index to the start of the FieldDescriptor start + this types index, then we read FieldCount from that FieldDescriptor Start + this types index + fieldCount
+                Name = s_TypeName,
+                NameHash = FbUtils.HashQuick(s_TypeName),
+                SecondarySize = 0,
+                Size = s_ContainerTypeAttribute.Size
+            });
+
+            // Iterate through all properties, to fill in information
+            //var s_CurrentFieldCount = 0;
+            //for (var l_PropertyIndex = 0; l_PropertyIndex < s_Properties.Length; ++l_PropertyIndex)
+            //{
+            //    // Check that the property length
+            //    if (l_PropertyIndex >= s_Properties.Length)
+            //        throw new IndexOutOfRangeException("invalid property index");
+
+            //    // Get the C# property, which represents a field
+            //    PropertyInfo l_PropertyInfo = s_Properties[l_PropertyIndex];
+
+            //    Type l_PropertyType = l_PropertyInfo.PropertyType;
+
+            //    // Attempt to get our container field attribute which contains some data from Frostbite
+            //    var l_ContainerFieldAttribute = l_PropertyInfo.GetCustomAttribute<ContainerFieldAttribute>();
+
+            //    // Validate that this field has "some" container field attribute, otherwise skip it (could be editor-only data, etc)
+            //    if (l_ContainerFieldAttribute is null)
+            //        continue;
+
+            //    // "LinkedTo"
+            //    var l_FieldName = l_PropertyInfo.Name;
+
+            //    // Add the field name to our string table
+            //    m_TypeStrings.AddString(l_FieldName);
+
+            //    // Get the value of this property
+            //    dynamic l_Value = l_PropertyInfo.GetValue(p_ParentContainer);
+            //    if (l_Value is null)
+            //        continue;
+
+            //    // Get the current field type index
+            //    var l_FieldTypeDescriptorIndex = m_TypeDescriptors.Count;
+
+            //    // Parse the type for the field
+            //    ParseTypes(l_Value, p_ParentContainer);
+
+            //    m_FieldDescriptors[(int)s_FieldTypeStartIndex + (int)s_CurrentFieldCount] = new FieldDescriptor
+            //    {
+            //        CSharpType = l_PropertyType,
+            //        Flags = new MemberInfoFlags(l_ContainerFieldAttribute.FieldFlags),
+            //        Name = l_FieldName,
+            //        NameHash = FbUtils.HashQuick(l_FieldName),
+            //        FieldType = (ushort)l_FieldTypeDescriptorIndex, // TODO: Implement this, This is the TypeDescriptor index (which has not been created/set yet)
+            //        SecondaryOffset = 0,
+            //        Offset = (int)l_ContainerFieldAttribute.FieldOffset
+            //    };
+
+            //    // Not all fields will be serialized so we update our current count
+            //    s_CurrentFieldCount++;
+            //}
+        }
+
+        protected void ParseData(DataContainer p_DataContainer)
         {
 
         }
@@ -359,6 +542,8 @@ namespace EbxExtractor
             ParseTypes(p_DataContainer, p_DataContainer);
 
             ParseArrays(p_DataContainer);
+
+            ParseData(p_DataContainer);
 
             var s_InstanceIndex = m_TypeDescriptors.FindIndex(p_TypeDescriptor => p_TypeDescriptor.Name == p_DataContainer.ContainerTypeName);
             if (s_InstanceIndex == -1)
