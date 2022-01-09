@@ -243,6 +243,29 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
             return m_MountedPartitions.ToDictionary(p_Pair => p_Pair.Key, p_Pair => p_Pair.Value as IMountedObject);
         }
 
+        public IEnumerable<string> GetBundlesInSuperbundle(string p_Superbundle)
+        {
+            // Check if we have this superbundle.
+            var s_Superbundle = m_Superbundles.FirstOrDefault(p_Sb =>
+                p_Sb.Name.Equals(p_Superbundle, StringComparison.InvariantCultureIgnoreCase));
+
+            if (s_Superbundle == null)
+                throw new ArgumentException($"Could not find a superbundle with the provided name '{p_Superbundle}'.", nameof(p_Superbundle));
+
+            var s_Bundles = new HashSet<string>();
+
+            foreach (var s_Bundle in s_Superbundle.Toc.Layout.Bundles)
+                s_Bundles.Add(s_Bundle.Id.ToLowerInvariant());
+
+            if (s_Superbundle.PatchToc != null)
+            {
+                foreach (var s_Bundle in s_Superbundle.PatchToc.Layout.Bundles)
+                    s_Bundles.Add(s_Bundle.Id.ToLowerInvariant());
+            }
+
+            return s_Bundles;
+        }
+
         protected string GetMainPackagePath()
         {
             return Path.Join(m_GamePath, "Data");
@@ -420,7 +443,7 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
 
             // Mount.
             var s_Variant = new ChunkVariant(s_ChunkEntry, 0, 0, null, p_SbEntry.Name, null);
-            var s_MountedObject = new MountedObject<IChunkVariant>(s_Variant);
+            var s_MountedObject = new MountedObject<IChunkVariant>(s_Variant, s_ChunkEntry.Id.ToString());
 
             // Here we always replace because patched chunks get registered after and they override old ones.
             m_MountedChunks.AddOrUpdate(s_ChunkEntry.Id, s_MountedObject, (p_GUID, p_MountedObject) => s_MountedObject);
@@ -545,7 +568,7 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
                         continue;
                     }
 
-                    ParseBundle(s_Reader, s_Bundle, p_Superbundle, p_AutoMount, false);
+                    ParseBundle(s_Reader, s_Bundle, p_Superbundle, false, p_AutoMount);
                     continue;
                 }
 
@@ -564,7 +587,7 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
                     continue;
                 }
 
-                ParseBundle(s_PatchReader!, s_PatchBundle, p_Superbundle, p_AutoMount, true);
+                ParseBundle(s_PatchReader!, s_PatchBundle, p_Superbundle, true, p_AutoMount);
             }
             
             // Now that we're done with the base bundles it's time to go over the patched ones.
@@ -608,7 +631,7 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
                     p_Bundle.ContainedSuperbundle.Name, p_Bundle.Bundle.Path);
 
                 // Mount.
-                var s_MountedObject = new MountedObject<IResourceVariant>(s_Variant);
+                var s_MountedObject = new MountedObject<IResourceVariant>(s_Variant, s_Resource.Name);
 
                 m_MountedResources.AddOrUpdate(s_Resource.Name.ToLowerInvariant(), s_MountedObject, (p_GUID, p_MountedObject) =>
                 {
@@ -634,7 +657,7 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
                     p_Bundle.Bundle.Path);
 
                 // Mount.
-                var s_MountedObject = new MountedObject<IChunkVariant>(s_Variant);
+                var s_MountedObject = new MountedObject<IChunkVariant>(s_Variant, s_Chunk.Id.ToString());
 
                 m_MountedChunks.AddOrUpdate(s_Chunk.Id, s_MountedObject, (p_GUID, p_MountedObject) =>
                 {
@@ -652,7 +675,7 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
                 var s_Variant = new ObjectVariant(s_Readable, p_Bundle.ContainedSuperbundle.Name, p_Bundle.Bundle.Path);
 
                 // Mount.
-                var s_MountedObject = new MountedObject(s_Variant);
+                var s_MountedObject = new MountedObject(s_Variant, s_Partition.Name);
 
                 m_MountedPartitions.AddOrUpdate(s_Partition.Name.ToLowerInvariant(), s_MountedObject, (p_GUID, p_MountedObject) =>
                 {
@@ -675,7 +698,7 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
                     p_Bundle.ContainedSuperbundle.Name, p_Bundle.ContainedBundle.Id);
 
                 // Mount.
-                var s_MountedObject = new MountedObject<IResourceVariant>(s_Variant);
+                var s_MountedObject = new MountedObject<IResourceVariant>(s_Variant, s_Resource.Name);
 
                 m_MountedResources.AddOrUpdate(s_Resource.Name.ToLowerInvariant(), s_MountedObject, (p_GUID, p_MountedObject) =>
                 {
@@ -693,7 +716,7 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
                     p_Bundle.ContainedSuperbundle.Name, p_Bundle.ContainedBundle.Id);
 
                 // Mount.
-                var s_MountedObject = new MountedObject<IChunkVariant>(s_Variant);
+                var s_MountedObject = new MountedObject<IChunkVariant>(s_Variant, s_Chunk.Id.ToString());
 
                 m_MountedChunks.AddOrUpdate(s_Chunk.Id, s_MountedObject, (p_GUID, p_MountedObject) =>
                 {
@@ -710,7 +733,7 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
                 var s_Variant = new ObjectVariant(s_Partition, p_Bundle.ContainedSuperbundle.Name, p_Bundle.ContainedBundle.Id);
 
                 // Mount.
-                var s_MountedObject = new MountedObject(s_Variant);
+                var s_MountedObject = new MountedObject(s_Variant, s_Partition.Name);
 
                 m_MountedPartitions.AddOrUpdate(s_Partition.Name.ToLowerInvariant(), s_MountedObject, (p_GUID, p_MountedObject) =>
                 {

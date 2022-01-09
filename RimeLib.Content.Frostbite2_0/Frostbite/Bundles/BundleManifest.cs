@@ -549,7 +549,7 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
                 // Get the data offset for this entry.
                 var s_Offset = p_Reader.Position;
 
-                var s_RealEntry = new BundleChunkEntry(s_Hash, s_ChunkEntry, s_Offset - m_StartPosition,
+                var s_RealEntry = new BundleChunkEntry(s_Hash, s_ChunkEntry, s_Offset - m_StartPosition, 
                     ContainedSuperbundle, this, s_ChunkMeta);
                 Chunks.Add(s_RealEntry);
 

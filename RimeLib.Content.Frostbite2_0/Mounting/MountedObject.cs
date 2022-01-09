@@ -8,12 +8,14 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
     {
         public IEnumerable<T> Variants => m_Variants;
         public T FirstVariant => m_Variants.First();
+        public string OriginalName { get; }
 
         protected List<T> m_Variants = new List<T>();
 
-        internal MountedObject(T p_Variant)
+        internal MountedObject(T p_Variant, string p_OriginalName)
         {
             m_Variants.Add(p_Variant);
+            OriginalName = p_OriginalName;
         }
 
         internal void AddVariant(T p_Variant)
@@ -31,12 +33,14 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
     {
         public IEnumerable<IObjectVariant> Variants => m_Variants;
         public IObjectVariant FirstVariant => m_Variants.First();
+        public string OriginalName { get; }
 
         protected List<IObjectVariant> m_Variants = new List<IObjectVariant>();
 
-        internal MountedObject(IObjectVariant p_Variant)
+        internal MountedObject(IObjectVariant p_Variant, string p_OriginalName)
         {
             m_Variants.Add(p_Variant);
+            OriginalName = p_OriginalName;
         }
 
         internal void AddVariant(IObjectVariant p_Variant)

@@ -30,6 +30,7 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<MountAllBundlesCommand>();
             RegisterCommand<ListMountedBundlesCommand>();
             RegisterCommand<ListChunksCommand>();
+            RegisterCommand<ListDuplicateChunksCommand>();
             RegisterCommand<ListResourcesCommand>();
             RegisterCommand<ListPartitionsCommand>();
             RegisterCommand<ListBundleChunksCommand>();
@@ -215,6 +216,11 @@ namespace RimeLib.Cmd.Contexts
         internal IEnumerable<string> GetMountedPartitions()
         {
             return m_Mounter.GetPartitions().Keys;
+        }
+
+        internal IReadOnlyDictionary<GUID, IMountedObject<IChunkVariant>> GetMountedChunkVariations()
+        {
+            return m_Mounter.GetChunks();
         }
     }
 }

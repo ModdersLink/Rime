@@ -40,6 +40,7 @@ namespace RimeLib.Content.Mounting
     {
         IEnumerable<T> Variants { get; }
         T FirstVariant { get; }
+        string OriginalName { get; }
     }
 
     public interface IMountedObject : IMountedObject<IObjectVariant> {}
@@ -164,5 +165,12 @@ namespace RimeLib.Content.Mounting
         /// </summary>
         /// <returns>A dictionary of partition name keys and mounted object values.</returns>
         IReadOnlyDictionary<string, IMountedObject> GetPartitions();
+
+        /// <summary>
+        /// Gets a list of bundles that are contained within a specific superbundle.
+        /// </summary>
+        /// <param name="p_Superbundle">The name of the superbundle.</param>
+        /// <returns>A list of bundle names.</returns>
+        IEnumerable<string> GetBundlesInSuperbundle(string p_Superbundle);
     }
 }

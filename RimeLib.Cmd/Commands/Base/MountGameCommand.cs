@@ -18,7 +18,7 @@ namespace RimeLib.Cmd.Commands.Base
         public EngineType Engine { get; set; }
 
         [CommandArgument(Description = "Whether to automatically mount all superbundles and their contained bundles. Defaults to false.", Optional = true)]
-        public bool AutoMount { get; set; }
+        public bool AutoMount { get; set; } = false;
 
         public override bool Execute(ref ExecutionContext p_Context, TextWriter p_Writer)
         {

@@ -12,7 +12,7 @@ namespace RimeLib.Cmd.Commands.Game
         public string? Name { get; set; }
 
         [CommandArgument(Description = "Whether to automatically mount all contained bundles or not. Defaults to false.", Optional = true)]
-        public bool AutoMount { get; set; }
+        public bool AutoMount { get; set; } = false;
 
         public override bool Execute(ref ExecutionContext p_Context, TextWriter p_Writer)
         {

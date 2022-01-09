@@ -39,6 +39,29 @@ namespace RimeLib.Tests
             File.WriteAllText(p_Path + ".json", s_Json);
         }
 
+        [Fact]
+        public void Test2()
+        {
+            var s_Path =
+                "C:\\Program Files (x86)\\Origin Games\\Battlefield 2042 Technical Playtest\\Data\\initfs_Win32";
+            using var s_Reader = new RimeReader(File.OpenRead(s_Path));
+
+            var s_Magic = s_Reader.ReadUInt32();
+
+            if (s_Magic == 0x00CED100 ||
+                s_Magic == 0x01CED100)
+            {
+                // Read the signature and enable de-obfuscation by reading the XOR table.
+                s_Reader.ReadUInt32();
+                var s_Signature = s_Reader.ReadBytes(292);
+                s_Reader.EnableDeobfuscation();
+            }
+            
+            var s_DecryptedData = s_Reader.ReadBytes((int) (s_Reader.BaseStream.Length - s_Reader.Position));
+            File.WriteAllBytes(s_Path + ".dec", s_DecryptedData);
+        }
+
+        [Fact]
         public void Test1()
         {
             Test(@"C:\Games\Battlefield 3\Data\layout.toc");
