@@ -19,10 +19,7 @@ namespace RimeLib.Serialization.Attributes
         /// </summary>
         public ushort Size { get; set; }
 
-        /// <summary>
-        /// Member information flags
-        /// </summary>
-        public ushort Flags { get; set; }
+        public ushort AlignedSize => (ushort)(Size + (DataAlignment - (Size % DataAlignment)));
 
         /// <summary>
         /// Default constructor that takes an alignment
@@ -31,11 +28,10 @@ namespace RimeLib.Serialization.Attributes
         /// <param name="Alignment">Default alignment: 0</param>
         /// <param name="p_Size">Size of this container</param>
         /// <param name="p_Flags">Member information flags of this container</param>
-        public ContainerTypeAttribute(byte Alignment = 0, ushort Size = 0, ushort Flags = 0)
+        public ContainerTypeAttribute(byte p_Alignment, ushort p_Size)
         {
-            DataAlignment = Alignment;
-            this.Size = Size;
-            this.Flags = Flags;
+            DataAlignment = p_Alignment;
+            Size = p_Size;
         }
     }
 
@@ -105,43 +101,13 @@ namespace RimeLib.Serialization.Attributes
         public uint FieldOffset { get; set; }
 
         /// <summary>
-        /// Name of this field
-        /// </summary>
-		public string FieldName { get; set; }
-
-        /// <summary>
-        /// Fnv hash of the name of this field
-        /// </summary>
-        public uint FieldNameHash { get; set; }
-
-        /// <summary>
-        /// Member info flags for this field
-        /// </summary>
-        public ushort FieldFlags { get; set; }
-
-        /// <summary>
-        /// Default constructor
-        /// </summary>
-        /// <param name="Offset">Offset of this field, default: 0</param>
-		//public ContainerFieldAttribute(uint Offset = 0)
-  //      {
-  //          FieldOffset = Offset;
-  //          FieldName = string.Empty;
-  //          FieldNameHash = 0;
-  //          FieldFlags = 0;
-  //      }
-
-        /// <summary>
         /// Constructor taking a name and offset
         /// </summary>
         /// <param name="Name">Name of this field</param>
         /// <param name="Offset">Offset of this field</param>
-	    public ContainerFieldAttribute(string Name, uint Offset = 0, uint NameHash = 0, ushort Flags = 0)
+	    public ContainerFieldAttribute(uint p_Offset)
         {
-            FieldOffset = Offset;
-            FieldName = Name;
-            FieldNameHash = NameHash;
-            FieldFlags = Flags;
+            FieldOffset = p_Offset;
         }
     }
 

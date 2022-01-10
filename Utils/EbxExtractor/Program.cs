@@ -164,7 +164,7 @@ namespace EbxExtractor
             });
 #endif
 
-            var s_Results = PartitionRegistry.Partitions.Where(p_Partition => p_Partition.PrimaryInstance.ContainerTypeName == "SoundWaveAsset");
+            //var s_Results = PartitionRegistry.Partitions.Where(p_Partition => p_Partition.PrimaryInstance.ContainerTypeName == "SoundWaveAsset");
         }
     }
 }

@@ -179,8 +179,8 @@ namespace RimeLib.Serialization.Frostbite2_0
                 m_TypeDescriptors.Add(s_TypeDescriptor);
 
                 // Save the primary type descriptor index
-                if (p_Instance.ContainerTypeName == s_CurrentType.Name)
-                    s_MainTypeDescriptorIndex = m_TypeDescriptors.Count() - 1;
+                /*if (p_Instance.ContainerTypeName == s_CurrentType.Name)
+                    s_MainTypeDescriptorIndex = m_TypeDescriptors.Count() - 1;*/
 
                 // Debug information for rattling off each of the fields within a specific type
                 Debug.WriteLine(s_CurrentType.Name);

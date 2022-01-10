@@ -1,5 +1,4 @@
 ﻿using System;
-using RimeLib.Frostbite.Containers;
 using RimeLib.IO;
 
 namespace RimeLib.Frostbite.Core
@@ -10,7 +9,7 @@ namespace RimeLib.Frostbite.Core
     /// </summary>
     public class Matrix44 : IFbSerializable
     {
-        public Vec4 this[int p_Index]
+        public Vector4 this[int p_Index]
         {
             get
             {
@@ -54,27 +53,27 @@ namespace RimeLib.Frostbite.Core
         /// <summary>
         /// X vector component
         /// </summary>
-        public Vec4 X { get; private set; } = new Vec4();
+        public Vector4 X { get; private set; } = new Vector4();
 
         /// <summary>
         /// Y vector component
         /// </summary>
-        public Vec4 Y { get; private set; } = new Vec4();
+        public Vector4 Y { get; private set; } = new Vector4();
 
         /// <summary>
         /// Z vector component
         /// </summary>
-        public Vec4 Z { get; private set; } = new Vec4();
+        public Vector4 Z { get; private set; } = new Vector4();
 
         /// <summary>
         /// W vector component
         /// </summary>
-        public Vec4 W { get; private set; } = new Vec4();
+        public Vector4 W { get; private set; } = new Vector4();
 
         /// <summary>
         /// Returns the matrix 4x4 array as an array of Vec4's
         /// </summary>
-        public Vec4[] Array
+        public Vector4[] Array
         {
             get => new[] { X, Y, Z, W };
             set
@@ -103,7 +102,7 @@ namespace RimeLib.Frostbite.Core
         /// <param name="p_V2">Y vector component</param>
         /// <param name="p_V3">Z vector component</param>
         /// <param name="p_V4">W vector component</param>
-        public Matrix44(Vec4 p_V1, Vec4 p_V2, Vec4 p_V3, Vec4 p_V4)
+        public Matrix44(Vector4 p_V1, Vector4 p_V2, Vector4 p_V3, Vector4 p_V4)
         {
             X = p_V1;
             Y = p_V2;
@@ -132,10 +131,10 @@ namespace RimeLib.Frostbite.Core
 
         public void Deserialize(RimeReader p_Reader)
         {
-            X = new Vec4(p_Reader);
-            Y = new Vec4(p_Reader);
-            Z = new Vec4(p_Reader);
-            W = new Vec4(p_Reader);
+            X = new Vector4(p_Reader);
+            Y = new Vector4(p_Reader);
+            Z = new Vector4(p_Reader);
+            W = new Vector4(p_Reader);
         }
 
         public void Deserialize(byte[] p_Data)

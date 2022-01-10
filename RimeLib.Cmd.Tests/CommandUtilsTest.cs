@@ -5,10 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RimeLib.Cmd.Contexts;
 using RimeLib.Content.Mounting;
 using RimeLib.Frostbite;
 using Xunit;
+using Assert = Xunit.Assert;
 
 namespace RimeLib.Cmd.Tests
 {

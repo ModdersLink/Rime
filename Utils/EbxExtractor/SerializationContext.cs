@@ -140,7 +140,7 @@ namespace EbxExtractor
 
         protected void ParseTypes(dynamic p_Object, DataContainer p_ParentContainer)
         {
-            m_TypeTable.AddTypeByObject(p_Object);
+            /*m_TypeTable.AddTypeByObject(p_Object);
 
             if (p_Object is DataContainer)
                 m_TypeStrings.AddString("DataContainer");
@@ -345,12 +345,12 @@ namespace EbxExtractor
 
                 // Not all fields will be serialized so we update our current count
                 s_CurrentFieldCount++;
-            }
+            }*/
         }
 
         protected void ParseArrays(DataContainer p_Object)
         {
-            m_TypeTable.AddTypeByObject(p_Object);
+            /*m_TypeTable.AddTypeByObject(p_Object);
 
             if (p_Object is DataContainer)
                 m_TypeStrings.AddString("DataContainer");
@@ -361,7 +361,7 @@ namespace EbxExtractor
             var s_PotentialTypeIndex = (ushort)m_TypeDescriptors.Count;
 
             // Check if this is a RefArray
-            cif (s_ObjectType.IsGenericType && s_ObjectType.GetGenericTypeDefinition() == typeof(RefArray<>))
+            if (s_ObjectType.IsGenericType && s_ObjectType.GetGenericTypeDefinition() == typeof(RefArray<>))
             {
                 s_ObjectType = s_ObjectType.GetGenericArguments().First();
             }
@@ -476,7 +476,7 @@ namespace EbxExtractor
                 NameHash = FbUtils.HashQuick(s_TypeName),
                 SecondarySize = 0,
                 Size = s_ContainerTypeAttribute.Size
-            });
+            });*/
 
             // Iterate through all properties, to fill in information
             //var s_CurrentFieldCount = 0;
@@ -538,7 +538,7 @@ namespace EbxExtractor
 
         protected void ParseInstance(DataContainer p_DataContainer)
         {
-            // This should go through and make sure all types are parsed. Need to confirm
+            /*// This should go through and make sure all types are parsed. Need to confirm
             ParseTypes(p_DataContainer, p_DataContainer);
 
             ParseArrays(p_DataContainer);
@@ -547,7 +547,7 @@ namespace EbxExtractor
 
             var s_InstanceIndex = m_TypeDescriptors.FindIndex(p_TypeDescriptor => p_TypeDescriptor.Name == p_DataContainer.ContainerTypeName);
             if (s_InstanceIndex == -1)
-                throw new Exception("could not find type index.");
+                throw new Exception("could not find type index.");*/
 
             /*
              *                 for (var i = 0; i < s_Entry.ExportCount; ++i)
@@ -585,12 +585,12 @@ namespace EbxExtractor
             */
 
             // TODO: Figure out ExportCount and how the Instance GUID's are generated
-            m_InstanceEntries.Add(new InstanceEntry
+            /*m_InstanceEntries.Add(new InstanceEntry
             {
                 ExportCount = 1, // 1, export count is a pair of partition/instance guids in a row
                 InternalCount = 0, // 0, we have an exception if it's not 0
                 TypeDescriptorIndex = (uint)s_InstanceIndex
-            });
+            });*/
 
 
             // TODO: Generate all GUID's

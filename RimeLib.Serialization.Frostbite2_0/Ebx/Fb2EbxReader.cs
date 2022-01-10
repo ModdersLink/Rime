@@ -21,26 +21,13 @@ namespace RimeLib.Serialization.Frostbite2_0.Ebx
     /// </summary>
     public class Fb2EbxReader : IEbxReader
     {
-        /// <summary>
-        /// Current state of the parser
-        /// </summary>
-        enum ParseState
-        {
-            ParseHeader,
-            ParseMetadata,
-            ParsePayloads,
-            ResolveReferences,
-            ParseFinished
-        }
-
         private FrostbitePartition m_ParsingPartition;
 
         /// <summary>
         /// Tracking for the current container we are parsing
         /// </summary>
         protected FrostbiteContainer m_CurrentContainer;
-
-        private ParseState m_ParseState;
+        
         private StreamingPartitionHeader m_Header;
         private RimeReader m_Reader;
         private List<ImportEntry> m_ImportEntries;
@@ -57,55 +44,6 @@ namespace RimeLib.Serialization.Frostbite2_0.Ebx
         private List<CtrRefBase> m_LateResolveReferences;
 
         /// <summary>
-        /// Parses a partition with the specified name and data
-        /// </summary>
-        /// <param name="p_Name">Name of the parition</param>
-        /// <param name="p_Data">Ebx partition data</param>
-        /// <returns>Partition object</returns>
-        public FrostbitePartition ParsePartition(string p_Name, byte[] p_Data)
-        {
-            if (p_Data == null || p_Data.Length < 4)
-                throw new InvalidDataException("Data is invalid for ebx.");
-
-            m_PopulatingArray = null;
-            m_CurrentContainer = null;
-            m_ParsingPartition = new FrostbitePartition() { Name = p_Name };
-            m_LateResolveReferences = new List<CtrRefBase>();
-
-            var s_Data = new byte[p_Data.Length];
-            Buffer.BlockCopy(p_Data, 0, s_Data, 0, p_Data.Length);
-
-            if (LittleEndian(s_Data))
-                m_Reader = new RimeReader(new MemoryStream(s_Data));
-            else if (BigEndian(s_Data))
-                m_Reader = new RimeReader(new MemoryStream(s_Data), Endianness.BigEndian);
-            else
-            {
-                // Try to resource decompress
-                if (p_Data.Length < 12)
-                    throw new Exception("The supplied file has an invalid magic header.");
-
-                var s_Header = BitConverter.ToUInt16(p_Data, 8);
-                if (s_Header != 0xDA78)
-                    throw new Exception("The supplied file has an invalid magic header.");
-
-                // It's a compressed resource
-                s_Data = Decoding.DecodeZlibSegmented(p_Data); //RimeHelper.ResourceDecompress(p_Data);
-
-                if (LittleEndian(s_Data))
-                    m_Reader = new RimeReader(new MemoryStream(s_Data));
-                else if (BigEndian(s_Data))
-                    m_Reader = new RimeReader(new MemoryStream(s_Data), Endianness.BigEndian);
-                else
-                    throw new Exception("The supplied file has an invalid magic header.");
-            }
-
-            ProcessHeader();
-
-            return m_ParsingPartition;
-        }
-
-        /// <summary>
         /// Parses a partition with specified name and opened reader to the position of the ebx data
         /// </summary>
         /// <param name="p_Name">Name of partition</param>
@@ -120,47 +58,20 @@ namespace RimeLib.Serialization.Frostbite2_0.Ebx
             m_CurrentContainer = null;
             m_ParsingPartition = new FrostbitePartition() { Name = p_Name };
             m_LateResolveReferences = new List<CtrRefBase>();
-
-            // Read out the binary ebx format
-            byte[] s_EbxData = p_Reader.ReadBytes((int)p_Reader.Length);
-            p_Reader.Seek(0, SeekOrigin.Begin);
-
+            
             var s_Magic = p_Reader.ReadBytes(4);
+            p_Reader.Seek(-4, SeekOrigin.Current);
 
             if (LittleEndian(s_Magic))
-                m_Reader = new RimeReader(new MemoryStream(s_EbxData), Endianness.LittleEndian);
+                m_Reader = new RimeReader(p_Reader, Endianness.LittleEndian);
             else if (BigEndian(s_Magic))
-                m_Reader = new RimeReader(new MemoryStream(s_EbxData), Endianness.BigEndian);
+                m_Reader = new RimeReader(p_Reader, Endianness.BigEndian);
             else
                 throw new Exception("The supplied file has an invalid magic header.");
 
             ProcessHeader();
 
             return m_ParsingPartition;
-        }
-
-        /// <summary>
-        /// Process the binary data of the loaded file.
-        /// </summary>
-        private void ProcessData()
-        {
-            switch (m_ParseState)
-            {
-                case ParseState.ParseHeader:
-                    ProcessHeader();
-                    break;
-                case ParseState.ParseMetadata:
-                    ProcessMetadata();
-                    break;
-                case ParseState.ParsePayloads:
-                    ProcessPayloads();
-                    break;
-                case ParseState.ResolveReferences:
-                    ProcessReferences();
-                    break;
-                case ParseState.ParseFinished:
-                    break;
-            }
         }
 
 
@@ -183,8 +94,7 @@ namespace RimeLib.Serialization.Frostbite2_0.Ebx
             m_ParsingPartition.PartitionGuid = m_Header.PartitionGuid;
 
             // Advance state
-            m_ParseState = ParseState.ParseMetadata;
-            ProcessData();
+            ProcessMetadata();
         }
 
         /// <summary>
@@ -201,7 +111,6 @@ namespace RimeLib.Serialization.Frostbite2_0.Ebx
             m_TypeStrings = new List<string>(Encoding.UTF8.GetString(m_Reader.ReadBytes((int)m_Header.TypeStringTableSize)).TrimEnd('\0').Split('\0'));
 
             m_HashedTypeStrings = new Dictionary<uint, string>();
-
 
             foreach (var s_TypeString in m_TypeStrings)
                 m_HashedTypeStrings[FbUtils.HashQuick(s_TypeString)] = s_TypeString;
@@ -246,8 +155,7 @@ namespace RimeLib.Serialization.Frostbite2_0.Ebx
             ProcessPadding();
 
             // Advance state
-            m_ParseState = ParseState.ParsePayloads;
-            ProcessData();
+            ProcessPayloads();
         }
 
         /// <summary>
@@ -277,7 +185,17 @@ namespace RimeLib.Serialization.Frostbite2_0.Ebx
                     var s_Guid = new GUID(m_Reader);
                     m_InstanceGuiDs.Add(s_Guid);
 
-                    // Create our container used for binding.
+                    var s_ContainerAttribute = s_ContainerType.GetCustomAttribute<ContainerTypeAttribute>();
+
+                    if (s_ContainerAttribute.AlignedSize != s_Descriptor.Size ||
+                        s_ContainerAttribute.DataAlignment != s_Descriptor.Alignment)
+                    {
+                        Debug.WriteLine("O m g bbq");
+                    }
+
+                    m_Reader.Seek(s_Descriptor.Size, SeekOrigin.Current);
+
+                    /*// Create our container used for binding.
                     if (s_ContainerType != null)
                     {
                         m_CurrentContainer = (FrostbiteContainer)Activator.CreateInstance(s_ContainerType);
@@ -301,12 +219,11 @@ namespace RimeLib.Serialization.Frostbite2_0.Ebx
 
                     // Add our fully parsed container to the list of parsed containers.
                     m_ParsingPartition.AddInstance((DataContainer)m_CurrentContainer, s_Guid == m_Header.PrimaryInstanceGuid);
-                    m_CurrentContainer = null;
+                    m_CurrentContainer = null;*/
                 }
             }
 
-            m_ParseState = ParseState.ResolveReferences;
-            ProcessData();
+            ProcessReferences();
         }
 
         private void ProcessReferences()
@@ -318,9 +235,6 @@ namespace RimeLib.Serialization.Frostbite2_0.Ebx
                 s_Reference.ImportIndex = 0;
                 s_Reference.SetValue(s_Container.PartitionGuid, s_Container.InstanceGuid);
             }
-
-            m_ParseState = ParseState.ParseFinished;
-            ProcessData();
         }
 
         /// <summary>
@@ -329,7 +243,7 @@ namespace RimeLib.Serialization.Frostbite2_0.Ebx
         /// <param name="p_InstanceGuid">Parent Instance Id.</param>
         /// <param name="p_DescriptorIndex">TypeDescriptor metadata Index.</param>
         /// <returns></returns>
-        private TypeInstance ParseTypeInstance(GUID p_InstanceGuid, uint p_DescriptorIndex)
+        /*private TypeInstance ParseTypeInstance(GUID p_InstanceGuid, uint p_DescriptorIndex)
         {
             var s_TypeInstance = new TypeInstance()
             {
@@ -350,7 +264,7 @@ namespace RimeLib.Serialization.Frostbite2_0.Ebx
             m_Reader.Seek((int)(s_StartOffset + s_TypeInstance.Descriptor.Size), SeekOrigin.Begin);
 
             return s_TypeInstance;
-        }
+        }*/
 
         /// <summary>
         /// Parse a FieldInstance using previously parsed metadata.
@@ -360,7 +274,7 @@ namespace RimeLib.Serialization.Frostbite2_0.Ebx
         /// <param name="p_TypeInstance"></param>
         /// <param name="p_ArrayType"></param>
         /// <returns></returns>
-        private FieldInstance ParseFieldInstance(GUID p_InstanceGuid, uint p_DescriptorIndex, TypeInstance p_TypeInstance, Type p_ArrayType)
+        /*private FieldInstance ParseFieldInstance(GUID p_InstanceGuid, uint p_DescriptorIndex, TypeInstance p_TypeInstance, Type p_ArrayType)
         {
             var s_Field = new FieldInstance()
             {
@@ -830,7 +744,7 @@ namespace RimeLib.Serialization.Frostbite2_0.Ebx
             //Debug.WriteLine("Finished parsing field '{0}' of type '{1}' with size {2}.", s_Field.Descriptor.Name, s_Field.Descriptor.Flags.GetFieldType(), m_Reader.BaseStream.Position - s_StartOffsetField);
 
             return s_Field;
-        }
+        }*/
 
         private static Type GetNativeType(FieldDescriptor p_Descriptor)
         {

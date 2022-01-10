@@ -104,7 +104,7 @@ namespace AudioExtractor
             if (!p_Options.Quiet)
                 Console.WriteLine($"Mounting game with engine '{p_Options.EngineType}' at path '{p_Options.GamePath}'. Please wait, this could take a while.");
 
-            await s_Mounter.Mount(p_Options.GamePath, false, EngineType.Frostbite2_0);
+            await s_Mounter.Mount(p_Options.GamePath, false, p_Options.EngineType);
             await s_Mounter.MountSuperbundle("Win32/Chunks0", true);
             await s_Mounter.MountSuperbundle("Win32/Chunks1", true);
             await s_Mounter.MountSuperbundle("Win32/Chunks2", true);

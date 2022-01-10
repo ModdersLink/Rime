@@ -1,16 +1,12 @@
-﻿using RimeLib.Frostbite.Containers;
-using RimeLib.Frostbite.Core;
+﻿using RimeLib.Frostbite.Core;
 using System;
-using System.ComponentModel;
 
 namespace RimeLib.Serialization.Ebx
 {
     /// <inheritdoc />
     public class CtrRef<T> : CtrRefBase
-        where T : DataContainer
+        where T : class
     {
-        public readonly Type BaseType = typeof(T);
-
         /// <inheritdoc />
         public CtrRef() : base()
         {
@@ -22,42 +18,7 @@ namespace RimeLib.Serialization.Ebx
         {
         }
 
-        /// <summary>
-        /// Gets the referenced instance
-        /// </summary>
-        /// <typeparam name="T">Type to cast the instance to</typeparam>
-        /// <returns>Casted instance, or default value</returns>
-        public T? Get()
-        {
-            return As<T>();
-        }
-
-        /// <summary>
-        /// Gets the referenced instance
-        /// </summary>
-        /// <typeparam name="T0">Type to cast the instance to</typeparam>
-        /// <returns>Casted instance, or default value</returns>
-        public T0? As<T0>()
-            where T0 : T
-        {
-            if (PartitionGuid == GUID.Empty || InstanceGuid == GUID.Empty)
-                return default;
-
-            var s_Partition = PartitionRegistry.LookupPartition(PartitionGuid);
-
-            return s_Partition?.LookupContainer(InstanceGuid) as T0;
-        }
-
-        /// <summary>
-        /// Gets the DataContainer of specified reference
-        /// </summary>
-        /// <param name="p_CtrRef">Reference</param>
-        public static implicit operator T(CtrRef<T> p_CtrRef)
-        {
-#pragma warning disable CS8603 // Possible null reference return.
-            return p_CtrRef.Get();
-#pragma warning restore CS8603 // Possible null reference return.
-        }
+        // TODO
     }
 
     /// <summary>
@@ -65,12 +26,6 @@ namespace RimeLib.Serialization.Ebx
     /// </summary>
     public abstract class CtrRefBase
     {
-        /// <summary>
-        /// This is used for late-resolution of internal class references.
-        /// </summary>
-        [Browsable(false)]
-        public uint ImportIndex { get; set; }
-
         /// <summary>
         /// The partition guid that the instance is found in
         /// </summary>
@@ -86,7 +41,6 @@ namespace RimeLib.Serialization.Ebx
         /// </summary>
         protected CtrRefBase()
         {
-            ImportIndex = 0;
             PartitionGuid = Guid.Empty;
             InstanceGuid = Guid.Empty;
         }
@@ -98,26 +52,8 @@ namespace RimeLib.Serialization.Ebx
         /// <param name="p_InstanceGuid">Instance guid</param>
         protected CtrRefBase(GUID p_PartitionGuid, GUID p_InstanceGuid)
         {
-            ImportIndex = 0;
             PartitionGuid = p_PartitionGuid == Guid.Empty ? Guid.Empty : p_PartitionGuid;
             InstanceGuid = p_InstanceGuid == Guid.Empty ? Guid.Empty : p_InstanceGuid;
-        }
-
-        /// <summary>
-        /// Sets the value of this ref to the specified DataContainer
-        /// </summary>
-        /// <param name="p_Container">Container to set this reference to</param>
-        public void SetValue(DataContainer p_Container)
-        {
-            if (p_Container.PartitionGuid == Guid.Empty || p_Container.InstanceGuid == Guid.Empty)
-            {
-                PartitionGuid = Guid.Empty;
-                InstanceGuid = Guid.Empty;
-                return;
-            }
-
-            PartitionGuid = p_Container.PartitionGuid == Guid.Empty ? Guid.Empty : p_Container.PartitionGuid;
-            InstanceGuid = p_Container.InstanceGuid == Guid.Empty ? Guid.Empty : p_Container.InstanceGuid;
         }
 
         /// <summary>
@@ -132,55 +68,11 @@ namespace RimeLib.Serialization.Ebx
             InstanceGuid = p_InstanceGuid == Guid.Empty ? Guid.Empty : p_InstanceGuid;
         }
 
-        /// <summary>
-        /// String conversion
-        /// </summary>
-        /// <returns>String</returns>
-        public override string ToString()
+        public void SetValue(CtrRefBase p_Other)
         {
-            if (PartitionGuid == Guid.Empty || InstanceGuid == Guid.Empty)
-                return "*null*";
-
-            var s_Partition = PartitionRegistry.LookupPartition(PartitionGuid);
-
-            if (s_Partition is null)
-                return $"{PartitionGuid}/{InstanceGuid}";
-
-            var s_Container = s_Partition.LookupContainer(InstanceGuid);
-
-            if (s_Container is null)
-                return $"{s_Partition?.Name}/{InstanceGuid}";
-
-#pragma warning disable IDE0059 // Unnecessary assignment of a value
-            var s_Name = "";
-#pragma warning restore IDE0059 // Unnecessary assignment of a value
-            var s_NameProperty = s_Container.GetType().GetProperty("Name");
-
-            if (s_NameProperty != null)
-            {
-                s_Name = s_NameProperty.GetValue(s_Container) as string;
-                s_Name += $" ({s_Container.InstanceGuid})";
-            }
-            else
-            {
-                s_Name = $"{s_Partition?.Name}/{s_Container.InstanceGuid}";
-            }
-
-            return s_Name;
+            PartitionGuid = p_Other.PartitionGuid;
+            InstanceGuid = p_Other.InstanceGuid;
         }
-
-        /// <summary>
-        /// Gets the DataContainer this reference points to
-        /// </summary>
-        public DataContainer? GetDataContainer()
-        {
-            if (PartitionGuid == Guid.Empty || InstanceGuid == Guid.Empty)
-                return null;
-
-            var s_Partition = PartitionRegistry.LookupPartition(PartitionGuid);
-            return s_Partition?.LookupContainer(InstanceGuid);
-        }
-
 
         /// <summary>
         /// Equals operator

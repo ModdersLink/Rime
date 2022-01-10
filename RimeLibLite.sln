@@ -74,6 +74,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RimeLib.Terrain.Frostbite2_
 		{4D596497-B3A1-4143-BE4B-D3D9DE3AF340} = {4D596497-B3A1-4143-BE4B-D3D9DE3AF340}
 	EndProjectSection
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RimeLib.CodeGen", "RimeLib.CodeGen\RimeLib.CodeGen.csproj", "{D8E0673D-5AC8-406E-8540-1C4AD08F8E5A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -261,6 +263,14 @@ Global
 		{A0B4C70A-C749-4FF4-BC90-381820A80685}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A0B4C70A-C749-4FF4-BC90-381820A80685}.Release|x64.ActiveCfg = Release|Any CPU
 		{A0B4C70A-C749-4FF4-BC90-381820A80685}.Release|x64.Build.0 = Release|Any CPU
+		{D8E0673D-5AC8-406E-8540-1C4AD08F8E5A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8E0673D-5AC8-406E-8540-1C4AD08F8E5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8E0673D-5AC8-406E-8540-1C4AD08F8E5A}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D8E0673D-5AC8-406E-8540-1C4AD08F8E5A}.Debug|x64.Build.0 = Debug|Any CPU
+		{D8E0673D-5AC8-406E-8540-1C4AD08F8E5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8E0673D-5AC8-406E-8540-1C4AD08F8E5A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8E0673D-5AC8-406E-8540-1C4AD08F8E5A}.Release|x64.ActiveCfg = Release|Any CPU
+		{D8E0673D-5AC8-406E-8540-1C4AD08F8E5A}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

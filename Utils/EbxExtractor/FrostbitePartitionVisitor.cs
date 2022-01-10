@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Linq;
 using System.Reflection;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Frostbite.Containers;
@@ -36,7 +35,7 @@ namespace EbxExtractor
 
         public void Iterate()
         {
-            var s_PartitionType = m_Partition.GetType();
+            /*var s_PartitionType = m_Partition.GetType();
             var s_Name = s_PartitionType.Name;
 
             var s_ContainerTypeAttribute = s_PartitionType.GetCustomAttribute<ContainerTypeAttribute>();
@@ -79,7 +78,7 @@ namespace EbxExtractor
                 Console.WriteLine($"\t{s_PropertyAttribute.FieldName}: Offset: {s_PropertyAttribute.FieldOffset} Flags: {s_PropertyAttribute.FieldFlags} Size: {s_ValueSize}");
 
                 
-            }
+            }*/
         }
     }
 }
