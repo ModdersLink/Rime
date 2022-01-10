@@ -5,20 +5,18 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Flags: 137, Size: 4  )]
+	[ContainerType(4, 4)]
 	public enum VoiceOverLabelCompareMode : int
 	{
 		VoiceOverLabelCompareMode_Any = 0,

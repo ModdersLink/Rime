@@ -5,100 +5,48 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 41, Size: 40)]
-	public class GameModeInformation : FrostbiteContainer
+	[ContainerType(4, 40)]
+	public class GameModeInformation
 	{
-		[ContainerField(Name: "Platform", Offset: 0, NameHash: 942751002, Flags: 137)]
-		public GamePlatform Platform { get; set; } = new GamePlatform(); // 0x0 (0)
+		[ContainerField(0)]
+		public GamePlatform Platform { get; set; } = new();
 		
-		[ContainerField(Name: "Sizes", Offset: 4, NameHash: 231688563, Flags: 65)]
-		public List<GameModeSize> Sizes { get; set; } = new List<GameModeSize>(); // 0x4 (4)
+		[ContainerField(4)]
+		public List<GameModeSize> Sizes { get; set; } = new();
 		
-		[ContainerField(Name: "DefaultSize", Offset: 8, NameHash: 2015239083, Flags: 41)]
-		public GameModeSize DefaultSize { get; set; } = new GameModeSize(); // 0x8 (8)
+		[ContainerField(8)]
+		public GameModeSize DefaultSize { get; set; } = new();
 		
-		[ContainerField(Name: "AllowFallbackToDefault", Offset: 36, NameHash: 1742608896, Flags: 49325), LayoutImmutable, Blittable]
-		public bool AllowFallbackToDefault { get; set; } // 0x24 (36)
+		[ContainerField(36), LayoutImmutable, Blittable]
+		public bool AllowFallbackToDefault { get; set; }
 		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		public static void Deserialize(GameModeInformation p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Instance.Platform = (GamePlatform) p_Reader.ReadInt32();
+			p_Instance.Sizes.Clear();
+			(RimeReader Reader, uint Count) s_Sizes = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_Sizes.Count; ++i)
 			{
-				case 942751002:
-						Platform = (GamePlatform) Enum.ToObject(typeof(GamePlatform), p_Value);
-					break;
-
-				case 231688563:
-					Sizes = (List<GameModeSize>) p_Value;
-					break;
-
-				case 2015239083:
-					DefaultSize = (GameModeSize) p_Value;
-					break;
-
-				case 1742608896:
-					AllowFallbackToDefault = (bool) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_Value = new GameModeSize();
+				fb.GameModeSize.Deserialize(s_Value, s_Sizes.Reader, p_Parser);
+				p_Instance.Sizes.Add(s_Value);
 			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 942751002:
-					return Platform;
-
-				case 231688563:
-					return Sizes;
-
-				case 2015239083:
-					return DefaultSize;
-
-				case 1742608896:
-					return AllowFallbackToDefault;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 942751002:
-					return typeof(GameModeInformation).GetProperty(nameof(Platform));
-
-				case 231688563:
-					return typeof(GameModeInformation).GetProperty(nameof(Sizes));
-
-				case 2015239083:
-					return typeof(GameModeInformation).GetProperty(nameof(DefaultSize));
-
-				case 1742608896:
-					return typeof(GameModeInformation).GetProperty(nameof(AllowFallbackToDefault));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
+			
+			s_Sizes.Reader.Dispose();
+			fb.GameModeSize.Deserialize(p_Instance.DefaultSize, p_Reader, p_Parser);
+			p_Instance.AllowFallbackToDefault = p_Reader.ReadBool();
+			p_Reader.Seek(3, SeekOrigin.Current);
 		}
 	}
 }

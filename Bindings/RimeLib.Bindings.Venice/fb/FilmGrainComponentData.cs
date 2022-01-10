@@ -5,147 +5,53 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 16,  Flags: 53, Size: 144)]
+	[ContainerType(16, 144)]
 	public class FilmGrainComponentData : 
 		ComponentData
 	{
-		protected Vec3 m_ColorScale = new Vec3();
-		[ContainerField(Name: "ColorScale", Offset: 96, NameHash: 4213919872, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 ColorScale { get { return m_ColorScale; } set { if (OnPropertyChanging("FilmGrainComponentData." + nameof(ColorScale), this, m_ColorScale, value)) m_ColorScale = value; } } // 0x60 (96)
-		
-		protected Vec2 m_TextureScale = new Vec2();
-		[ContainerField(Name: "TextureScale", Offset: 112, NameHash: 2137417890, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
-		public Vec2 TextureScale { get { return m_TextureScale; } set { if (OnPropertyChanging("FilmGrainComponentData." + nameof(TextureScale), this, m_TextureScale, value)) m_TextureScale = value; } } // 0x70 (112)
-		
-		protected Realm m_Realm = new Realm();
-		[ContainerField(Name: "Realm", Offset: 120, NameHash: 229961746, Flags: 137)]
-		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("FilmGrainComponentData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0x78 (120)
-		
-		protected CtrRef<TextureAsset> m_Texture = new CtrRef<TextureAsset>();
-		[ContainerField(Name: "Texture", Offset: 124, NameHash: 3185041626, Flags: 53)]
-		public CtrRef<TextureAsset> Texture { get { return m_Texture; } set { if (OnPropertyChanging("FilmGrainComponentData." + nameof(Texture), this, m_Texture, value)) m_Texture = value; } } // 0x7C (124)
-		
-		protected bool m_LinearFilteringEnable = new bool();
-		[ContainerField(Name: "LinearFilteringEnable", Offset: 128, NameHash: 1423958617, Flags: 49325), LayoutImmutable, Blittable]
-		public bool LinearFilteringEnable { get { return m_LinearFilteringEnable; } set { if (OnPropertyChanging("FilmGrainComponentData." + nameof(LinearFilteringEnable), this, m_LinearFilteringEnable, value)) m_LinearFilteringEnable = value; } } // 0x80 (128)
-		
-		protected bool m_RandomEnable = new bool();
-		[ContainerField(Name: "RandomEnable", Offset: 129, NameHash: 3235429567, Flags: 49325), LayoutImmutable, Blittable]
-		public bool RandomEnable { get { return m_RandomEnable; } set { if (OnPropertyChanging("FilmGrainComponentData." + nameof(RandomEnable), this, m_RandomEnable, value)) m_RandomEnable = value; } } // 0x81 (129)
-		
-		protected bool m_Enable = new bool();
-		[ContainerField(Name: "Enable", Offset: 130, NameHash: 2342790116, Flags: 49325), LayoutImmutable, Blittable]
-		public bool Enable { get { return m_Enable; } set { if (OnPropertyChanging("FilmGrainComponentData." + nameof(Enable), this, m_Enable, value)) m_Enable = value; } } // 0x82 (130)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable]
+		public Vec3 ColorScale { get; set; } = new();
+
+		[ContainerField(112), Homogeneous, LayoutImmutable, Blittable]
+		public Vec2 TextureScale { get; set; } = new();
+
+		[ContainerField(120)]
+		public Realm Realm { get; set; } = new();
+
+		[ContainerField(124)]
+		public CtrRef<TextureAsset> Texture { get; set; } = new();
+
+		[ContainerField(128), LayoutImmutable, Blittable]
+		public bool LinearFilteringEnable { get; set; }
+
+		[ContainerField(129), LayoutImmutable, Blittable]
+		public bool RandomEnable { get; set; }
+
+		[ContainerField(130), LayoutImmutable, Blittable]
+		public bool Enable { get; set; }
+
+		public static void Deserialize(FilmGrainComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 4213919872:
-					ColorScale = (Vec3) p_Value;
-					break;
-
-				case 2137417890:
-					TextureScale = (Vec2) p_Value;
-					break;
-
-				case 229961746:
-					Realm = (Realm) Enum.ToObject(typeof(Realm), p_Value);
-					break;
-
-				case 3185041626:
-					Texture = (CtrRef<TextureAsset>) p_Value;
-					break;
-
-				case 1423958617:
-					LinearFilteringEnable = (bool) p_Value;
-					break;
-
-				case 3235429567:
-					RandomEnable = (bool) p_Value;
-					break;
-
-				case 2342790116:
-					Enable = (bool) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
+			fb.Vec3.Deserialize(p_Instance.ColorScale, p_Reader, p_Parser);
+			fb.Vec2.Deserialize(p_Instance.TextureScale, p_Reader, p_Parser);
+			p_Instance.Realm = (Realm) p_Reader.ReadInt32();
+			p_Instance.Texture.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
+			p_Instance.LinearFilteringEnable = p_Reader.ReadBool();
+			p_Instance.RandomEnable = p_Reader.ReadBool();
+			p_Instance.Enable = p_Reader.ReadBool();
+			p_Reader.Seek(13, SeekOrigin.Current);
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 4213919872:
-					return ColorScale;
-
-				case 2137417890:
-					return TextureScale;
-
-				case 229961746:
-					return Realm;
-
-				case 3185041626:
-					return Texture;
-
-				case 1423958617:
-					return LinearFilteringEnable;
-
-				case 3235429567:
-					return RandomEnable;
-
-				case 2342790116:
-					return Enable;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 4213919872:
-					return typeof(FilmGrainComponentData).GetProperty(nameof(ColorScale));
-
-				case 2137417890:
-					return typeof(FilmGrainComponentData).GetProperty(nameof(TextureScale));
-
-				case 229961746:
-					return typeof(FilmGrainComponentData).GetProperty(nameof(Realm));
-
-				case 3185041626:
-					return typeof(FilmGrainComponentData).GetProperty(nameof(Texture));
-
-				case 1423958617:
-					return typeof(FilmGrainComponentData).GetProperty(nameof(LinearFilteringEnable));
-
-				case 3235429567:
-					return typeof(FilmGrainComponentData).GetProperty(nameof(RandomEnable));
-
-				case 2342790116:
-					return typeof(FilmGrainComponentData).GetProperty(nameof(Enable));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

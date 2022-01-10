@@ -5,525 +5,161 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 160)]
+	[ContainerType(4, 160)]
 	public class UI3dIconCompData : 
 		UIComponentData
 	{
-		protected Vec2 m_PixelOffset = new Vec2();
-		[ContainerField(Name: "PixelOffset", Offset: 28, NameHash: 1847759040, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
-		public Vec2 PixelOffset { get { return m_PixelOffset; } set { if (OnPropertyChanging("UI3dIconCompData." + nameof(PixelOffset), this, m_PixelOffset, value)) m_PixelOffset = value; } } // 0x1C (28)
-		
-		protected float m_IconSize = new float();
-		[ContainerField(Name: "IconSize", Offset: 36, NameHash: 269738667, Flags: 49469), LayoutImmutable, Blittable]
-		public float IconSize { get { return m_IconSize; } set { if (OnPropertyChanging("UI3dIconCompData." + nameof(IconSize), this, m_IconSize, value)) m_IconSize = value; } } // 0x24 (36)
-		
-		protected float m_MaxFarFade = new float();
-		[ContainerField(Name: "MaxFarFade", Offset: 40, NameHash: 1649290658, Flags: 49469), LayoutImmutable, Blittable]
-		public float MaxFarFade { get { return m_MaxFarFade; } set { if (OnPropertyChanging("UI3dIconCompData." + nameof(MaxFarFade), this, m_MaxFarFade, value)) m_MaxFarFade = value; } } // 0x28 (40)
-		
-		protected float m_MaxCloseFade = new float();
-		[ContainerField(Name: "MaxCloseFade", Offset: 44, NameHash: 539308577, Flags: 49469), LayoutImmutable, Blittable]
-		public float MaxCloseFade { get { return m_MaxCloseFade; } set { if (OnPropertyChanging("UI3dIconCompData." + nameof(MaxCloseFade), this, m_MaxCloseFade, value)) m_MaxCloseFade = value; } } // 0x2C (44)
-		
-		protected float m_SnapSafeZone = new float();
-		[ContainerField(Name: "SnapSafeZone", Offset: 48, NameHash: 1875567430, Flags: 49469), LayoutImmutable, Blittable]
-		public float SnapSafeZone { get { return m_SnapSafeZone; } set { if (OnPropertyChanging("UI3dIconCompData." + nameof(SnapSafeZone), this, m_SnapSafeZone, value)) m_SnapSafeZone = value; } } // 0x30 (48)
-		
-		protected float m_SnapCenterYOffset = new float();
-		[ContainerField(Name: "SnapCenterYOffset", Offset: 52, NameHash: 209674038, Flags: 49469), LayoutImmutable, Blittable]
-		public float SnapCenterYOffset { get { return m_SnapCenterYOffset; } set { if (OnPropertyChanging("UI3dIconCompData." + nameof(SnapCenterYOffset), this, m_SnapCenterYOffset, value)) m_SnapCenterYOffset = value; } } // 0x34 (52)
-		
-		protected float m_ShrinkSnapAnimationTime = new float();
-		[ContainerField(Name: "ShrinkSnapAnimationTime", Offset: 56, NameHash: 3817575151, Flags: 49469), LayoutImmutable, Blittable]
-		public float ShrinkSnapAnimationTime { get { return m_ShrinkSnapAnimationTime; } set { if (OnPropertyChanging("UI3dIconCompData." + nameof(ShrinkSnapAnimationTime), this, m_ShrinkSnapAnimationTime, value)) m_ShrinkSnapAnimationTime = value; } } // 0x38 (56)
-		
-		protected float m_TrackerHudRadiusX = new float();
-		[ContainerField(Name: "TrackerHudRadiusX", Offset: 60, NameHash: 494741604, Flags: 49469), LayoutImmutable, Blittable]
-		public float TrackerHudRadiusX { get { return m_TrackerHudRadiusX; } set { if (OnPropertyChanging("UI3dIconCompData." + nameof(TrackerHudRadiusX), this, m_TrackerHudRadiusX, value)) m_TrackerHudRadiusX = value; } } // 0x3C (60)
-		
-		protected float m_TrackerHudRadiusY = new float();
-		[ContainerField(Name: "TrackerHudRadiusY", Offset: 64, NameHash: 494741605, Flags: 49469), LayoutImmutable, Blittable]
-		public float TrackerHudRadiusY { get { return m_TrackerHudRadiusY; } set { if (OnPropertyChanging("UI3dIconCompData." + nameof(TrackerHudRadiusY), this, m_TrackerHudRadiusY, value)) m_TrackerHudRadiusY = value; } } // 0x40 (64)
-		
-		protected float m_MaxLookAtThreshold = new float();
-		[ContainerField(Name: "MaxLookAtThreshold", Offset: 68, NameHash: 3378079124, Flags: 49469), LayoutImmutable, Blittable]
-		public float MaxLookAtThreshold { get { return m_MaxLookAtThreshold; } set { if (OnPropertyChanging("UI3dIconCompData." + nameof(MaxLookAtThreshold), this, m_MaxLookAtThreshold, value)) m_MaxLookAtThreshold = value; } } // 0x44 (68)
-		
-		protected float m_MinLookAtThreshold = new float();
-		[ContainerField(Name: "MinLookAtThreshold", Offset: 72, NameHash: 1713249226, Flags: 49469), LayoutImmutable, Blittable]
-		public float MinLookAtThreshold { get { return m_MinLookAtThreshold; } set { if (OnPropertyChanging("UI3dIconCompData." + nameof(MinLookAtThreshold), this, m_MinLookAtThreshold, value)) m_MinLookAtThreshold = value; } } // 0x48 (72)
-		
-		protected float m_MinLookAtThresholdDistance = new float();
-		[ContainerField(Name: "MinLookAtThresholdDistance", Offset: 76, NameHash: 120312329, Flags: 49469), LayoutImmutable, Blittable]
-		public float MinLookAtThresholdDistance { get { return m_MinLookAtThresholdDistance; } set { if (OnPropertyChanging("UI3dIconCompData." + nameof(MinLookAtThresholdDistance), this, m_MinLookAtThresholdDistance, value)) m_MinLookAtThresholdDistance = value; } } // 0x4C (76)
-		
-		protected float m_DrawDistance = new float();
-		[ContainerField(Name: "DrawDistance", Offset: 80, NameHash: 3007537990, Flags: 49469), LayoutImmutable, Blittable]
-		public float DrawDistance { get { return m_DrawDistance; } set { if (OnPropertyChanging("UI3dIconCompData." + nameof(DrawDistance), this, m_DrawDistance, value)) m_DrawDistance = value; } } // 0x50 (80)
-		
-		protected float m_FadeDistance = new float();
-		[ContainerField(Name: "FadeDistance", Offset: 84, NameHash: 636128672, Flags: 49469), LayoutImmutable, Blittable]
-		public float FadeDistance { get { return m_FadeDistance; } set { if (OnPropertyChanging("UI3dIconCompData." + nameof(FadeDistance), this, m_FadeDistance, value)) m_FadeDistance = value; } } // 0x54 (84)
-		
-		protected float m_FadeEndDistance = new float();
-		[ContainerField(Name: "FadeEndDistance", Offset: 88, NameHash: 1525884495, Flags: 49469), LayoutImmutable, Blittable]
-		public float FadeEndDistance { get { return m_FadeEndDistance; } set { if (OnPropertyChanging("UI3dIconCompData." + nameof(FadeEndDistance), this, m_FadeEndDistance, value)) m_FadeEndDistance = value; } } // 0x58 (88)
-		
-		protected float m_MinimumDrawDistance = new float();
-		[ContainerField(Name: "MinimumDrawDistance", Offset: 92, NameHash: 3994158800, Flags: 49469), LayoutImmutable, Blittable]
-		public float MinimumDrawDistance { get { return m_MinimumDrawDistance; } set { if (OnPropertyChanging("UI3dIconCompData." + nameof(MinimumDrawDistance), this, m_MinimumDrawDistance, value)) m_MinimumDrawDistance = value; } } // 0x5C (92)
-		
-		protected float m_MinimumFadeDistance = new float();
-		[ContainerField(Name: "MinimumFadeDistance", Offset: 96, NameHash: 501224630, Flags: 49469), LayoutImmutable, Blittable]
-		public float MinimumFadeDistance { get { return m_MinimumFadeDistance; } set { if (OnPropertyChanging("UI3dIconCompData." + nameof(MinimumFadeDistance), this, m_MinimumFadeDistance, value)) m_MinimumFadeDistance = value; } } // 0x60 (96)
-		
-		protected int m_MaxTagUpdatesPerFrame = new int();
-		[ContainerField(Name: "MaxTagUpdatesPerFrame", Offset: 100, NameHash: 3828005979, Flags: 49405), LayoutImmutable, Blittable]
-		public int MaxTagUpdatesPerFrame { get { return m_MaxTagUpdatesPerFrame; } set { if (OnPropertyChanging("UI3dIconCompData." + nameof(MaxTagUpdatesPerFrame), this, m_MaxTagUpdatesPerFrame, value)) m_MaxTagUpdatesPerFrame = value; } } // 0x64 (100)
-		
-		protected float m_VerticalOffset = new float();
-		[ContainerField(Name: "VerticalOffset", Offset: 104, NameHash: 2125919898, Flags: 49469), LayoutImmutable, Blittable]
-		public float VerticalOffset { get { return m_VerticalOffset; } set { if (OnPropertyChanging("UI3dIconCompData." + nameof(VerticalOffset), this, m_VerticalOffset, value)) m_VerticalOffset = value; } } // 0x68 (104)
-		
-		protected float m_ShowLabelRange = new float();
-		[ContainerField(Name: "ShowLabelRange", Offset: 108, NameHash: 3915682047, Flags: 49469), LayoutImmutable, Blittable]
-		public float ShowLabelRange { get { return m_ShowLabelRange; } set { if (OnPropertyChanging("UI3dIconCompData." + nameof(ShowLabelRange), this, m_ShowLabelRange, value)) m_ShowLabelRange = value; } } // 0x6C (108)
-		
-		protected float m_TeamRadioDistance = new float();
-		[ContainerField(Name: "TeamRadioDistance", Offset: 112, NameHash: 2116216522, Flags: 49469), LayoutImmutable, Blittable]
-		public float TeamRadioDistance { get { return m_TeamRadioDistance; } set { if (OnPropertyChanging("UI3dIconCompData." + nameof(TeamRadioDistance), this, m_TeamRadioDistance, value)) m_TeamRadioDistance = value; } } // 0x70 (112)
-		
-		protected float m_ScaleDistance = new float();
-		[ContainerField(Name: "ScaleDistance", Offset: 116, NameHash: 2682964318, Flags: 49469), LayoutImmutable, Blittable]
-		public float ScaleDistance { get { return m_ScaleDistance; } set { if (OnPropertyChanging("UI3dIconCompData." + nameof(ScaleDistance), this, m_ScaleDistance, value)) m_ScaleDistance = value; } } // 0x74 (116)
-		
-		protected float m_MaxScaleMod = new float();
-		[ContainerField(Name: "MaxScaleMod", Offset: 120, NameHash: 3120961103, Flags: 49469), LayoutImmutable, Blittable]
-		public float MaxScaleMod { get { return m_MaxScaleMod; } set { if (OnPropertyChanging("UI3dIconCompData." + nameof(MaxScaleMod), this, m_MaxScaleMod, value)) m_MaxScaleMod = value; } } // 0x78 (120)
-		
-		protected float m_MaxXRotation = new float();
-		[ContainerField(Name: "MaxXRotation", Offset: 124, NameHash: 3351064765, Flags: 49469), LayoutImmutable, Blittable]
-		public float MaxXRotation { get { return m_MaxXRotation; } set { if (OnPropertyChanging("UI3dIconCompData." + nameof(MaxXRotation), this, m_MaxXRotation, value)) m_MaxXRotation = value; } } // 0x7C (124)
-		
-		protected float m_MaxYRotation = new float();
-		[ContainerField(Name: "MaxYRotation", Offset: 128, NameHash: 3559299260, Flags: 49469), LayoutImmutable, Blittable]
-		public float MaxYRotation { get { return m_MaxYRotation; } set { if (OnPropertyChanging("UI3dIconCompData." + nameof(MaxYRotation), this, m_MaxYRotation, value)) m_MaxYRotation = value; } } // 0x80 (128)
-		
-		protected float m_HorisontalOffset = new float();
-		[ContainerField(Name: "HorisontalOffset", Offset: 132, NameHash: 598230047, Flags: 49469), LayoutImmutable, Blittable]
-		public float HorisontalOffset { get { return m_HorisontalOffset; } set { if (OnPropertyChanging("UI3dIconCompData." + nameof(HorisontalOffset), this, m_HorisontalOffset, value)) m_HorisontalOffset = value; } } // 0x84 (132)
-		
-		protected float m_ShowSupportAmmoThreshold = new float();
-		[ContainerField(Name: "ShowSupportAmmoThreshold", Offset: 136, NameHash: 3095615152, Flags: 49469), LayoutImmutable, Blittable]
-		public float ShowSupportAmmoThreshold { get { return m_ShowSupportAmmoThreshold; } set { if (OnPropertyChanging("UI3dIconCompData." + nameof(ShowSupportAmmoThreshold), this, m_ShowSupportAmmoThreshold, value)) m_ShowSupportAmmoThreshold = value; } } // 0x88 (136)
-		
-		protected float m_VerticalOffsetMaxOffset = new float();
-		[ContainerField(Name: "VerticalOffsetMaxOffset", Offset: 140, NameHash: 1131008835, Flags: 49469), LayoutImmutable, Blittable]
-		public float VerticalOffsetMaxOffset { get { return m_VerticalOffsetMaxOffset; } set { if (OnPropertyChanging("UI3dIconCompData." + nameof(VerticalOffsetMaxOffset), this, m_VerticalOffsetMaxOffset, value)) m_VerticalOffsetMaxOffset = value; } } // 0x8C (140)
-		
-		protected float m_VerticalOffsetScaleFactor = new float();
-		[ContainerField(Name: "VerticalOffsetScaleFactor", Offset: 144, NameHash: 2621997839, Flags: 49469), LayoutImmutable, Blittable]
-		public float VerticalOffsetScaleFactor { get { return m_VerticalOffsetScaleFactor; } set { if (OnPropertyChanging("UI3dIconCompData." + nameof(VerticalOffsetScaleFactor), this, m_VerticalOffsetScaleFactor, value)) m_VerticalOffsetScaleFactor = value; } } // 0x90 (144)
-		
-		protected float m_ShowEngineerArmorThreshold = new float();
-		[ContainerField(Name: "ShowEngineerArmorThreshold", Offset: 148, NameHash: 2577691403, Flags: 49469), LayoutImmutable, Blittable]
-		public float ShowEngineerArmorThreshold { get { return m_ShowEngineerArmorThreshold; } set { if (OnPropertyChanging("UI3dIconCompData." + nameof(ShowEngineerArmorThreshold), this, m_ShowEngineerArmorThreshold, value)) m_ShowEngineerArmorThreshold = value; } } // 0x94 (148)
-		
-		protected float m_ShowMedicHealthThreshold = new float();
-		[ContainerField(Name: "ShowMedicHealthThreshold", Offset: 152, NameHash: 4256908171, Flags: 49469), LayoutImmutable, Blittable]
-		public float ShowMedicHealthThreshold { get { return m_ShowMedicHealthThreshold; } set { if (OnPropertyChanging("UI3dIconCompData." + nameof(ShowMedicHealthThreshold), this, m_ShowMedicHealthThreshold, value)) m_ShowMedicHealthThreshold = value; } } // 0x98 (152)
-		
-		protected bool m_SnapIcons = new bool();
-		[ContainerField(Name: "SnapIcons", Offset: 156, NameHash: 1728218737, Flags: 49325), LayoutImmutable, Blittable]
-		public bool SnapIcons { get { return m_SnapIcons; } set { if (OnPropertyChanging("UI3dIconCompData." + nameof(SnapIcons), this, m_SnapIcons, value)) m_SnapIcons = value; } } // 0x9C (156)
-		
-		protected bool m_CircularSnap = new bool();
-		[ContainerField(Name: "CircularSnap", Offset: 157, NameHash: 3894769784, Flags: 49325), LayoutImmutable, Blittable]
-		public bool CircularSnap { get { return m_CircularSnap; } set { if (OnPropertyChanging("UI3dIconCompData." + nameof(CircularSnap), this, m_CircularSnap, value)) m_CircularSnap = value; } } // 0x9D (157)
-		
-		protected bool m_OnlyShowSnapped = new bool();
-		[ContainerField(Name: "OnlyShowSnapped", Offset: 158, NameHash: 1611417039, Flags: 49325), LayoutImmutable, Blittable]
-		public bool OnlyShowSnapped { get { return m_OnlyShowSnapped; } set { if (OnPropertyChanging("UI3dIconCompData." + nameof(OnlyShowSnapped), this, m_OnlyShowSnapped, value)) m_OnlyShowSnapped = value; } } // 0x9E (158)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(28), Homogeneous, LayoutImmutable, Blittable]
+		public Vec2 PixelOffset { get; set; } = new();
+
+		[ContainerField(36), LayoutImmutable, Blittable]
+		public float IconSize { get; set; }
+
+		[ContainerField(40), LayoutImmutable, Blittable]
+		public float MaxFarFade { get; set; }
+
+		[ContainerField(44), LayoutImmutable, Blittable]
+		public float MaxCloseFade { get; set; }
+
+		[ContainerField(48), LayoutImmutable, Blittable]
+		public float SnapSafeZone { get; set; }
+
+		[ContainerField(52), LayoutImmutable, Blittable]
+		public float SnapCenterYOffset { get; set; }
+
+		[ContainerField(56), LayoutImmutable, Blittable]
+		public float ShrinkSnapAnimationTime { get; set; }
+
+		[ContainerField(60), LayoutImmutable, Blittable]
+		public float TrackerHudRadiusX { get; set; }
+
+		[ContainerField(64), LayoutImmutable, Blittable]
+		public float TrackerHudRadiusY { get; set; }
+
+		[ContainerField(68), LayoutImmutable, Blittable]
+		public float MaxLookAtThreshold { get; set; }
+
+		[ContainerField(72), LayoutImmutable, Blittable]
+		public float MinLookAtThreshold { get; set; }
+
+		[ContainerField(76), LayoutImmutable, Blittable]
+		public float MinLookAtThresholdDistance { get; set; }
+
+		[ContainerField(80), LayoutImmutable, Blittable]
+		public float DrawDistance { get; set; }
+
+		[ContainerField(84), LayoutImmutable, Blittable]
+		public float FadeDistance { get; set; }
+
+		[ContainerField(88), LayoutImmutable, Blittable]
+		public float FadeEndDistance { get; set; }
+
+		[ContainerField(92), LayoutImmutable, Blittable]
+		public float MinimumDrawDistance { get; set; }
+
+		[ContainerField(96), LayoutImmutable, Blittable]
+		public float MinimumFadeDistance { get; set; }
+
+		[ContainerField(100), LayoutImmutable, Blittable]
+		public int MaxTagUpdatesPerFrame { get; set; }
+
+		[ContainerField(104), LayoutImmutable, Blittable]
+		public float VerticalOffset { get; set; }
+
+		[ContainerField(108), LayoutImmutable, Blittable]
+		public float ShowLabelRange { get; set; }
+
+		[ContainerField(112), LayoutImmutable, Blittable]
+		public float TeamRadioDistance { get; set; }
+
+		[ContainerField(116), LayoutImmutable, Blittable]
+		public float ScaleDistance { get; set; }
+
+		[ContainerField(120), LayoutImmutable, Blittable]
+		public float MaxScaleMod { get; set; }
+
+		[ContainerField(124), LayoutImmutable, Blittable]
+		public float MaxXRotation { get; set; }
+
+		[ContainerField(128), LayoutImmutable, Blittable]
+		public float MaxYRotation { get; set; }
+
+		[ContainerField(132), LayoutImmutable, Blittable]
+		public float HorisontalOffset { get; set; }
+
+		[ContainerField(136), LayoutImmutable, Blittable]
+		public float ShowSupportAmmoThreshold { get; set; }
+
+		[ContainerField(140), LayoutImmutable, Blittable]
+		public float VerticalOffsetMaxOffset { get; set; }
+
+		[ContainerField(144), LayoutImmutable, Blittable]
+		public float VerticalOffsetScaleFactor { get; set; }
+
+		[ContainerField(148), LayoutImmutable, Blittable]
+		public float ShowEngineerArmorThreshold { get; set; }
+
+		[ContainerField(152), LayoutImmutable, Blittable]
+		public float ShowMedicHealthThreshold { get; set; }
+
+		[ContainerField(156), LayoutImmutable, Blittable]
+		public bool SnapIcons { get; set; }
+
+		[ContainerField(157), LayoutImmutable, Blittable]
+		public bool CircularSnap { get; set; }
+
+		[ContainerField(158), LayoutImmutable, Blittable]
+		public bool OnlyShowSnapped { get; set; }
+
+		public static void Deserialize(UI3dIconCompData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 1847759040:
-					PixelOffset = (Vec2) p_Value;
-					break;
-
-				case 269738667:
-					IconSize = (float) p_Value;
-					break;
-
-				case 1649290658:
-					MaxFarFade = (float) p_Value;
-					break;
-
-				case 539308577:
-					MaxCloseFade = (float) p_Value;
-					break;
-
-				case 1875567430:
-					SnapSafeZone = (float) p_Value;
-					break;
-
-				case 209674038:
-					SnapCenterYOffset = (float) p_Value;
-					break;
-
-				case 3817575151:
-					ShrinkSnapAnimationTime = (float) p_Value;
-					break;
-
-				case 494741604:
-					TrackerHudRadiusX = (float) p_Value;
-					break;
-
-				case 494741605:
-					TrackerHudRadiusY = (float) p_Value;
-					break;
-
-				case 3378079124:
-					MaxLookAtThreshold = (float) p_Value;
-					break;
-
-				case 1713249226:
-					MinLookAtThreshold = (float) p_Value;
-					break;
-
-				case 120312329:
-					MinLookAtThresholdDistance = (float) p_Value;
-					break;
-
-				case 3007537990:
-					DrawDistance = (float) p_Value;
-					break;
-
-				case 636128672:
-					FadeDistance = (float) p_Value;
-					break;
-
-				case 1525884495:
-					FadeEndDistance = (float) p_Value;
-					break;
-
-				case 3994158800:
-					MinimumDrawDistance = (float) p_Value;
-					break;
-
-				case 501224630:
-					MinimumFadeDistance = (float) p_Value;
-					break;
-
-				case 3828005979:
-					MaxTagUpdatesPerFrame = (int) p_Value;
-					break;
-
-				case 2125919898:
-					VerticalOffset = (float) p_Value;
-					break;
-
-				case 3915682047:
-					ShowLabelRange = (float) p_Value;
-					break;
-
-				case 2116216522:
-					TeamRadioDistance = (float) p_Value;
-					break;
-
-				case 2682964318:
-					ScaleDistance = (float) p_Value;
-					break;
-
-				case 3120961103:
-					MaxScaleMod = (float) p_Value;
-					break;
-
-				case 3351064765:
-					MaxXRotation = (float) p_Value;
-					break;
-
-				case 3559299260:
-					MaxYRotation = (float) p_Value;
-					break;
-
-				case 598230047:
-					HorisontalOffset = (float) p_Value;
-					break;
-
-				case 3095615152:
-					ShowSupportAmmoThreshold = (float) p_Value;
-					break;
-
-				case 1131008835:
-					VerticalOffsetMaxOffset = (float) p_Value;
-					break;
-
-				case 2621997839:
-					VerticalOffsetScaleFactor = (float) p_Value;
-					break;
-
-				case 2577691403:
-					ShowEngineerArmorThreshold = (float) p_Value;
-					break;
-
-				case 4256908171:
-					ShowMedicHealthThreshold = (float) p_Value;
-					break;
-
-				case 1728218737:
-					SnapIcons = (bool) p_Value;
-					break;
-
-				case 3894769784:
-					CircularSnap = (bool) p_Value;
-					break;
-
-				case 1611417039:
-					OnlyShowSnapped = (bool) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
+			fb.Vec2.Deserialize(p_Instance.PixelOffset, p_Reader, p_Parser);
+			p_Instance.IconSize = p_Reader.ReadSingle();
+			p_Instance.MaxFarFade = p_Reader.ReadSingle();
+			p_Instance.MaxCloseFade = p_Reader.ReadSingle();
+			p_Instance.SnapSafeZone = p_Reader.ReadSingle();
+			p_Instance.SnapCenterYOffset = p_Reader.ReadSingle();
+			p_Instance.ShrinkSnapAnimationTime = p_Reader.ReadSingle();
+			p_Instance.TrackerHudRadiusX = p_Reader.ReadSingle();
+			p_Instance.TrackerHudRadiusY = p_Reader.ReadSingle();
+			p_Instance.MaxLookAtThreshold = p_Reader.ReadSingle();
+			p_Instance.MinLookAtThreshold = p_Reader.ReadSingle();
+			p_Instance.MinLookAtThresholdDistance = p_Reader.ReadSingle();
+			p_Instance.DrawDistance = p_Reader.ReadSingle();
+			p_Instance.FadeDistance = p_Reader.ReadSingle();
+			p_Instance.FadeEndDistance = p_Reader.ReadSingle();
+			p_Instance.MinimumDrawDistance = p_Reader.ReadSingle();
+			p_Instance.MinimumFadeDistance = p_Reader.ReadSingle();
+			p_Instance.MaxTagUpdatesPerFrame = p_Reader.ReadInt32();
+			p_Instance.VerticalOffset = p_Reader.ReadSingle();
+			p_Instance.ShowLabelRange = p_Reader.ReadSingle();
+			p_Instance.TeamRadioDistance = p_Reader.ReadSingle();
+			p_Instance.ScaleDistance = p_Reader.ReadSingle();
+			p_Instance.MaxScaleMod = p_Reader.ReadSingle();
+			p_Instance.MaxXRotation = p_Reader.ReadSingle();
+			p_Instance.MaxYRotation = p_Reader.ReadSingle();
+			p_Instance.HorisontalOffset = p_Reader.ReadSingle();
+			p_Instance.ShowSupportAmmoThreshold = p_Reader.ReadSingle();
+			p_Instance.VerticalOffsetMaxOffset = p_Reader.ReadSingle();
+			p_Instance.VerticalOffsetScaleFactor = p_Reader.ReadSingle();
+			p_Instance.ShowEngineerArmorThreshold = p_Reader.ReadSingle();
+			p_Instance.ShowMedicHealthThreshold = p_Reader.ReadSingle();
+			p_Instance.SnapIcons = p_Reader.ReadBool();
+			p_Instance.CircularSnap = p_Reader.ReadBool();
+			p_Instance.OnlyShowSnapped = p_Reader.ReadBool();
+			p_Reader.Seek(1, SeekOrigin.Current);
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1847759040:
-					return PixelOffset;
-
-				case 269738667:
-					return IconSize;
-
-				case 1649290658:
-					return MaxFarFade;
-
-				case 539308577:
-					return MaxCloseFade;
-
-				case 1875567430:
-					return SnapSafeZone;
-
-				case 209674038:
-					return SnapCenterYOffset;
-
-				case 3817575151:
-					return ShrinkSnapAnimationTime;
-
-				case 494741604:
-					return TrackerHudRadiusX;
-
-				case 494741605:
-					return TrackerHudRadiusY;
-
-				case 3378079124:
-					return MaxLookAtThreshold;
-
-				case 1713249226:
-					return MinLookAtThreshold;
-
-				case 120312329:
-					return MinLookAtThresholdDistance;
-
-				case 3007537990:
-					return DrawDistance;
-
-				case 636128672:
-					return FadeDistance;
-
-				case 1525884495:
-					return FadeEndDistance;
-
-				case 3994158800:
-					return MinimumDrawDistance;
-
-				case 501224630:
-					return MinimumFadeDistance;
-
-				case 3828005979:
-					return MaxTagUpdatesPerFrame;
-
-				case 2125919898:
-					return VerticalOffset;
-
-				case 3915682047:
-					return ShowLabelRange;
-
-				case 2116216522:
-					return TeamRadioDistance;
-
-				case 2682964318:
-					return ScaleDistance;
-
-				case 3120961103:
-					return MaxScaleMod;
-
-				case 3351064765:
-					return MaxXRotation;
-
-				case 3559299260:
-					return MaxYRotation;
-
-				case 598230047:
-					return HorisontalOffset;
-
-				case 3095615152:
-					return ShowSupportAmmoThreshold;
-
-				case 1131008835:
-					return VerticalOffsetMaxOffset;
-
-				case 2621997839:
-					return VerticalOffsetScaleFactor;
-
-				case 2577691403:
-					return ShowEngineerArmorThreshold;
-
-				case 4256908171:
-					return ShowMedicHealthThreshold;
-
-				case 1728218737:
-					return SnapIcons;
-
-				case 3894769784:
-					return CircularSnap;
-
-				case 1611417039:
-					return OnlyShowSnapped;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1847759040:
-					return typeof(UI3dIconCompData).GetProperty(nameof(PixelOffset));
-
-				case 269738667:
-					return typeof(UI3dIconCompData).GetProperty(nameof(IconSize));
-
-				case 1649290658:
-					return typeof(UI3dIconCompData).GetProperty(nameof(MaxFarFade));
-
-				case 539308577:
-					return typeof(UI3dIconCompData).GetProperty(nameof(MaxCloseFade));
-
-				case 1875567430:
-					return typeof(UI3dIconCompData).GetProperty(nameof(SnapSafeZone));
-
-				case 209674038:
-					return typeof(UI3dIconCompData).GetProperty(nameof(SnapCenterYOffset));
-
-				case 3817575151:
-					return typeof(UI3dIconCompData).GetProperty(nameof(ShrinkSnapAnimationTime));
-
-				case 494741604:
-					return typeof(UI3dIconCompData).GetProperty(nameof(TrackerHudRadiusX));
-
-				case 494741605:
-					return typeof(UI3dIconCompData).GetProperty(nameof(TrackerHudRadiusY));
-
-				case 3378079124:
-					return typeof(UI3dIconCompData).GetProperty(nameof(MaxLookAtThreshold));
-
-				case 1713249226:
-					return typeof(UI3dIconCompData).GetProperty(nameof(MinLookAtThreshold));
-
-				case 120312329:
-					return typeof(UI3dIconCompData).GetProperty(nameof(MinLookAtThresholdDistance));
-
-				case 3007537990:
-					return typeof(UI3dIconCompData).GetProperty(nameof(DrawDistance));
-
-				case 636128672:
-					return typeof(UI3dIconCompData).GetProperty(nameof(FadeDistance));
-
-				case 1525884495:
-					return typeof(UI3dIconCompData).GetProperty(nameof(FadeEndDistance));
-
-				case 3994158800:
-					return typeof(UI3dIconCompData).GetProperty(nameof(MinimumDrawDistance));
-
-				case 501224630:
-					return typeof(UI3dIconCompData).GetProperty(nameof(MinimumFadeDistance));
-
-				case 3828005979:
-					return typeof(UI3dIconCompData).GetProperty(nameof(MaxTagUpdatesPerFrame));
-
-				case 2125919898:
-					return typeof(UI3dIconCompData).GetProperty(nameof(VerticalOffset));
-
-				case 3915682047:
-					return typeof(UI3dIconCompData).GetProperty(nameof(ShowLabelRange));
-
-				case 2116216522:
-					return typeof(UI3dIconCompData).GetProperty(nameof(TeamRadioDistance));
-
-				case 2682964318:
-					return typeof(UI3dIconCompData).GetProperty(nameof(ScaleDistance));
-
-				case 3120961103:
-					return typeof(UI3dIconCompData).GetProperty(nameof(MaxScaleMod));
-
-				case 3351064765:
-					return typeof(UI3dIconCompData).GetProperty(nameof(MaxXRotation));
-
-				case 3559299260:
-					return typeof(UI3dIconCompData).GetProperty(nameof(MaxYRotation));
-
-				case 598230047:
-					return typeof(UI3dIconCompData).GetProperty(nameof(HorisontalOffset));
-
-				case 3095615152:
-					return typeof(UI3dIconCompData).GetProperty(nameof(ShowSupportAmmoThreshold));
-
-				case 1131008835:
-					return typeof(UI3dIconCompData).GetProperty(nameof(VerticalOffsetMaxOffset));
-
-				case 2621997839:
-					return typeof(UI3dIconCompData).GetProperty(nameof(VerticalOffsetScaleFactor));
-
-				case 2577691403:
-					return typeof(UI3dIconCompData).GetProperty(nameof(ShowEngineerArmorThreshold));
-
-				case 4256908171:
-					return typeof(UI3dIconCompData).GetProperty(nameof(ShowMedicHealthThreshold));
-
-				case 1728218737:
-					return typeof(UI3dIconCompData).GetProperty(nameof(SnapIcons));
-
-				case 3894769784:
-					return typeof(UI3dIconCompData).GetProperty(nameof(CircularSnap));
-
-				case 1611417039:
-					return typeof(UI3dIconCompData).GetProperty(nameof(OnlyShowSnapped));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

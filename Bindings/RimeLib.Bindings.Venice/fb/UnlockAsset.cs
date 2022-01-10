@@ -5,63 +5,37 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 44)]
+	[ContainerType(4, 44)]
 	public class UnlockAsset : 
 		UnlockAssetBase
 	{
-		protected RefArray<Asset> m_LinkedTo = new RefArray<Asset>();
-		[ContainerField(Name: "LinkedTo", Offset: 40, NameHash: 2751058943, Flags: 65)]
-		public RefArray<Asset> LinkedTo { get { return m_LinkedTo; } set { if (OnPropertyChanging("UnlockAsset." + nameof(LinkedTo), this, m_LinkedTo, value)) m_LinkedTo = value; } } // 0x28 (40)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 2751058943:
-					LinkedTo = (RefArray<Asset>) p_Value;
-					break;
+		[ContainerField(40)]
+		public List<CtrRef<Asset>> LinkedTo { get; set; } = new();
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+		public static void Deserialize(UnlockAsset p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
+		{
+			p_Instance.LinkedTo.Clear();
+			(RimeReader Reader, uint Count) s_LinkedTo = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_LinkedTo.Count; ++i)
+			{
+				var s_CtrRef = new CtrRef<Asset>();
+				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_LinkedTo.Reader.ReadUInt32()));
+				p_Instance.LinkedTo.Add(s_CtrRef);
 			}
+			
+			s_LinkedTo.Reader.Dispose();
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2751058943:
-					return LinkedTo;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2751058943:
-					return typeof(UnlockAsset).GetProperty(nameof(LinkedTo));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

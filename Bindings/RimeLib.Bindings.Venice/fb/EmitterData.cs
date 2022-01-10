@@ -5,63 +5,38 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 16,  Flags: 53, Size: 64)]
+	[ContainerType(16, 64)]
 	public class EmitterData : 
 		ProcessorData
 	{
-		protected RefArray<EmitterDocument> m_EmitterAssets = new RefArray<EmitterDocument>();
-		[ContainerField(Name: "EmitterAssets", Offset: 48, NameHash: 3008282064, Flags: 65)]
-		public RefArray<EmitterDocument> EmitterAssets { get { return m_EmitterAssets; } set { if (OnPropertyChanging("EmitterData." + nameof(EmitterAssets), this, m_EmitterAssets, value)) m_EmitterAssets = value; } } // 0x30 (48)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 3008282064:
-					EmitterAssets = (RefArray<EmitterDocument>) p_Value;
-					break;
+		[ContainerField(48)]
+		public List<CtrRef<EmitterDocument>> EmitterAssets { get; set; } = new();
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+		public static void Deserialize(EmitterData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
+		{
+			p_Instance.EmitterAssets.Clear();
+			(RimeReader Reader, uint Count) s_EmitterAssets = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_EmitterAssets.Count; ++i)
+			{
+				var s_CtrRef = new CtrRef<EmitterDocument>();
+				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_EmitterAssets.Reader.ReadUInt32()));
+				p_Instance.EmitterAssets.Add(s_CtrRef);
 			}
+			
+			s_EmitterAssets.Reader.Dispose();
+			p_Reader.Seek(12, SeekOrigin.Current);
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3008282064:
-					return EmitterAssets;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3008282064:
-					return typeof(EmitterData).GetProperty(nameof(EmitterAssets));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

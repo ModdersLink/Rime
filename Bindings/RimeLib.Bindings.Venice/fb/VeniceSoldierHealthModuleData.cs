@@ -5,290 +5,114 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 164)]
+	[ContainerType(4, 164)]
 	public class VeniceSoldierHealthModuleData : 
 		SoldierHealthModuleData
 	{
-		protected float m_TimeForCorpse = new float();
-		[ContainerField(Name: "TimeForCorpse", Offset: 8, NameHash: 418744275, Flags: 49469), LayoutImmutable, Blittable]
-		public float TimeForCorpse { get { return m_TimeForCorpse; } set { if (OnPropertyChanging("VeniceSoldierHealthModuleData." + nameof(TimeForCorpse), this, m_TimeForCorpse, value)) m_TimeForCorpse = value; } } // 0x8 (8)
-		
-		protected float m_PostReviveResponseTime = new float();
-		[ContainerField(Name: "PostReviveResponseTime", Offset: 12, NameHash: 3260283824, Flags: 49469), LayoutImmutable, Blittable]
-		public float PostReviveResponseTime { get { return m_PostReviveResponseTime; } set { if (OnPropertyChanging("VeniceSoldierHealthModuleData." + nameof(PostReviveResponseTime), this, m_PostReviveResponseTime, value)) m_PostReviveResponseTime = value; } } // 0xC (12)
-		
-		protected float m_InteractiveManDownThreshold = new float();
-		[ContainerField(Name: "InteractiveManDownThreshold", Offset: 16, NameHash: 1025820778, Flags: 49469), LayoutImmutable, Blittable]
-		public float InteractiveManDownThreshold { get { return m_InteractiveManDownThreshold; } set { if (OnPropertyChanging("VeniceSoldierHealthModuleData." + nameof(InteractiveManDownThreshold), this, m_InteractiveManDownThreshold, value)) m_InteractiveManDownThreshold = value; } } // 0x10 (16)
-		
-		protected PoseConstraintsData m_InteractiveManDownPoseConstraints = new PoseConstraintsData();
-		[ContainerField(Name: "InteractiveManDownPoseConstraints", Offset: 20, NameHash: 815478402, Flags: 41)]
-		public PoseConstraintsData InteractiveManDownPoseConstraints { get { return m_InteractiveManDownPoseConstraints; } set { if (OnPropertyChanging("VeniceSoldierHealthModuleData." + nameof(InteractiveManDownPoseConstraints), this, m_InteractiveManDownPoseConstraints, value)) m_InteractiveManDownPoseConstraints = value; } } // 0x14 (20)
-		
-		protected float m_ManDownStateTime = new float();
-		[ContainerField(Name: "ManDownStateTime", Offset: 24, NameHash: 1512464055, Flags: 49469), LayoutImmutable, Blittable]
-		public float ManDownStateTime { get { return m_ManDownStateTime; } set { if (OnPropertyChanging("VeniceSoldierHealthModuleData." + nameof(ManDownStateTime), this, m_ManDownStateTime, value)) m_ManDownStateTime = value; } } // 0x18 (24)
-		
-		protected float m_ManDownStateHealthPoints = new float();
-		[ContainerField(Name: "ManDownStateHealthPoints", Offset: 28, NameHash: 213646753, Flags: 49469), LayoutImmutable, Blittable]
-		public float ManDownStateHealthPoints { get { return m_ManDownStateHealthPoints; } set { if (OnPropertyChanging("VeniceSoldierHealthModuleData." + nameof(ManDownStateHealthPoints), this, m_ManDownStateHealthPoints, value)) m_ManDownStateHealthPoints = value; } } // 0x1C (28)
-		
-		protected float m_ImmortalTimeAfterSpawn = new float();
-		[ContainerField(Name: "ImmortalTimeAfterSpawn", Offset: 32, NameHash: 3806880002, Flags: 49469), LayoutImmutable, Blittable]
-		public float ImmortalTimeAfterSpawn { get { return m_ImmortalTimeAfterSpawn; } set { if (OnPropertyChanging("VeniceSoldierHealthModuleData." + nameof(ImmortalTimeAfterSpawn), this, m_ImmortalTimeAfterSpawn, value)) m_ImmortalTimeAfterSpawn = value; } } // 0x20 (32)
-		
-		protected List<EntryInputActionEnum> m_AbortSpawnImmortalityInputs = new List<EntryInputActionEnum>();
-		[ContainerField(Name: "AbortSpawnImmortalityInputs", Offset: 36, NameHash: 1625311224, Flags: 65)]
-		public List<EntryInputActionEnum> AbortSpawnImmortalityInputs { get { return m_AbortSpawnImmortalityInputs; } set { if (OnPropertyChanging("VeniceSoldierHealthModuleData." + nameof(AbortSpawnImmortalityInputs), this, m_AbortSpawnImmortalityInputs, value)) m_AbortSpawnImmortalityInputs = value; } } // 0x24 (36)
-		
-		protected float m_PostReviveHealth = new float();
-		[ContainerField(Name: "PostReviveHealth", Offset: 40, NameHash: 690951482, Flags: 49469), LayoutImmutable, Blittable]
-		public float PostReviveHealth { get { return m_PostReviveHealth; } set { if (OnPropertyChanging("VeniceSoldierHealthModuleData." + nameof(PostReviveHealth), this, m_PostReviveHealth, value)) m_PostReviveHealth = value; } } // 0x28 (40)
-		
-		protected float m_CriticalFakeImmortalTime = new float();
-		[ContainerField(Name: "CriticalFakeImmortalTime", Offset: 44, NameHash: 1400664383, Flags: 49469), LayoutImmutable, Blittable]
-		public float CriticalFakeImmortalTime { get { return m_CriticalFakeImmortalTime; } set { if (OnPropertyChanging("VeniceSoldierHealthModuleData." + nameof(CriticalFakeImmortalTime), this, m_CriticalFakeImmortalTime, value)) m_CriticalFakeImmortalTime = value; } } // 0x2C (44)
-		
-		protected float m_RegenerationDelay = new float();
-		[ContainerField(Name: "RegenerationDelay", Offset: 48, NameHash: 778753505, Flags: 49469), LayoutImmutable, Blittable]
-		public float RegenerationDelay { get { return m_RegenerationDelay; } set { if (OnPropertyChanging("VeniceSoldierHealthModuleData." + nameof(RegenerationDelay), this, m_RegenerationDelay, value)) m_RegenerationDelay = value; } } // 0x30 (48)
-		
-		protected float m_RegenerationRate = new float();
-		[ContainerField(Name: "RegenerationRate", Offset: 52, NameHash: 3407288278, Flags: 49469), LayoutImmutable, Blittable]
-		public float RegenerationRate { get { return m_RegenerationRate; } set { if (OnPropertyChanging("VeniceSoldierHealthModuleData." + nameof(RegenerationRate), this, m_RegenerationRate, value)) m_RegenerationRate = value; } } // 0x34 (52)
-		
-		protected SoldierHealthModuleBinding m_Binding = new SoldierHealthModuleBinding();
-		[ContainerField(Name: "Binding", Offset: 56, NameHash: 2590060228, Flags: 41)]
-		public SoldierHealthModuleBinding Binding { get { return m_Binding; } set { if (OnPropertyChanging("VeniceSoldierHealthModuleData." + nameof(Binding), this, m_Binding, value)) m_Binding = value; } } // 0x38 (56)
-		
-		protected float m_SprintDisabledWhenDamagedTime = new float();
-		[ContainerField(Name: "SprintDisabledWhenDamagedTime", Offset: 148, NameHash: 261615897, Flags: 49469), LayoutImmutable, Blittable]
-		public float SprintDisabledWhenDamagedTime { get { return m_SprintDisabledWhenDamagedTime; } set { if (OnPropertyChanging("VeniceSoldierHealthModuleData." + nameof(SprintDisabledWhenDamagedTime), this, m_SprintDisabledWhenDamagedTime, value)) m_SprintDisabledWhenDamagedTime = value; } } // 0x94 (148)
-		
-		protected float m_SprintDisabledDamageThreshold = new float();
-		[ContainerField(Name: "SprintDisabledDamageThreshold", Offset: 152, NameHash: 2813834027, Flags: 49469), LayoutImmutable, Blittable]
-		public float SprintDisabledDamageThreshold { get { return m_SprintDisabledDamageThreshold; } set { if (OnPropertyChanging("VeniceSoldierHealthModuleData." + nameof(SprintDisabledDamageThreshold), this, m_SprintDisabledDamageThreshold, value)) m_SprintDisabledDamageThreshold = value; } } // 0x98 (152)
-		
-		protected RotateToHitData m_ManDownRotate = new RotateToHitData();
-		[ContainerField(Name: "ManDownRotate", Offset: 156, NameHash: 2801100780, Flags: 41)]
-		public RotateToHitData ManDownRotate { get { return m_ManDownRotate; } set { if (OnPropertyChanging("VeniceSoldierHealthModuleData." + nameof(ManDownRotate), this, m_ManDownRotate, value)) m_ManDownRotate = value; } } // 0x9C (156)
-		
-		protected bool m_InteractiveManDown = new bool();
-		[ContainerField(Name: "InteractiveManDown", Offset: 160, NameHash: 701073533, Flags: 49325), LayoutImmutable, Blittable]
-		public bool InteractiveManDown { get { return m_InteractiveManDown; } set { if (OnPropertyChanging("VeniceSoldierHealthModuleData." + nameof(InteractiveManDown), this, m_InteractiveManDown, value)) m_InteractiveManDown = value; } } // 0xA0 (160)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(8), LayoutImmutable, Blittable]
+		public float TimeForCorpse { get; set; }
+
+		[ContainerField(12), LayoutImmutable, Blittable]
+		public float PostReviveResponseTime { get; set; }
+
+		[ContainerField(16), LayoutImmutable, Blittable]
+		public float InteractiveManDownThreshold { get; set; }
+
+		[ContainerField(20)]
+		public PoseConstraintsData InteractiveManDownPoseConstraints { get; set; } = new();
+
+		[ContainerField(24), LayoutImmutable, Blittable]
+		public float ManDownStateTime { get; set; }
+
+		[ContainerField(28), LayoutImmutable, Blittable]
+		public float ManDownStateHealthPoints { get; set; }
+
+		[ContainerField(32), LayoutImmutable, Blittable]
+		public float ImmortalTimeAfterSpawn { get; set; }
+
+		[ContainerField(36)]
+		public List<EntryInputActionEnum> AbortSpawnImmortalityInputs { get; set; } = new();
+
+		[ContainerField(40), LayoutImmutable, Blittable]
+		public float PostReviveHealth { get; set; }
+
+		[ContainerField(44), LayoutImmutable, Blittable]
+		public float CriticalFakeImmortalTime { get; set; }
+
+		[ContainerField(48), LayoutImmutable, Blittable]
+		public float RegenerationDelay { get; set; }
+
+		[ContainerField(52), LayoutImmutable, Blittable]
+		public float RegenerationRate { get; set; }
+
+		[ContainerField(56)]
+		public SoldierHealthModuleBinding Binding { get; set; } = new();
+
+		[ContainerField(148), LayoutImmutable, Blittable]
+		public float SprintDisabledWhenDamagedTime { get; set; }
+
+		[ContainerField(152), LayoutImmutable, Blittable]
+		public float SprintDisabledDamageThreshold { get; set; }
+
+		[ContainerField(156)]
+		public RotateToHitData ManDownRotate { get; set; } = new();
+
+		[ContainerField(160), LayoutImmutable, Blittable]
+		public bool InteractiveManDown { get; set; }
+
+		public static void Deserialize(VeniceSoldierHealthModuleData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Instance.TimeForCorpse = p_Reader.ReadSingle();
+			p_Instance.PostReviveResponseTime = p_Reader.ReadSingle();
+			p_Instance.InteractiveManDownThreshold = p_Reader.ReadSingle();
+			fb.PoseConstraintsData.Deserialize(p_Instance.InteractiveManDownPoseConstraints, p_Reader, p_Parser);
+			p_Reader.Seek(1, SeekOrigin.Current);
+			p_Instance.ManDownStateTime = p_Reader.ReadSingle();
+			p_Reader.Seek(1, SeekOrigin.Current);
+			p_Instance.ManDownStateHealthPoints = p_Reader.ReadSingle();
+			p_Reader.Seek(1, SeekOrigin.Current);
+			p_Instance.ImmortalTimeAfterSpawn = p_Reader.ReadSingle();
+			p_Reader.Seek(1, SeekOrigin.Current);
+			p_Instance.AbortSpawnImmortalityInputs.Clear();
+			(RimeReader Reader, uint Count) s_AbortSpawnImmortalityInputs = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_AbortSpawnImmortalityInputs.Count; ++i)
 			{
-				case 418744275:
-					TimeForCorpse = (float) p_Value;
-					break;
-
-				case 3260283824:
-					PostReviveResponseTime = (float) p_Value;
-					break;
-
-				case 1025820778:
-					InteractiveManDownThreshold = (float) p_Value;
-					break;
-
-				case 815478402:
-					InteractiveManDownPoseConstraints = (PoseConstraintsData) p_Value;
-					break;
-
-				case 1512464055:
-					ManDownStateTime = (float) p_Value;
-					break;
-
-				case 213646753:
-					ManDownStateHealthPoints = (float) p_Value;
-					break;
-
-				case 3806880002:
-					ImmortalTimeAfterSpawn = (float) p_Value;
-					break;
-
-				case 1625311224:
-					if (p_Value.GetType() == typeof (List<uint>))
-						AbortSpawnImmortalityInputs = ((List<uint>) p_Value).Select(x => (EntryInputActionEnum) Enum.ToObject(typeof(EntryInputActionEnum), x)).ToList();
-					else
-						AbortSpawnImmortalityInputs = (List<EntryInputActionEnum>) p_Value;
-					break;
-
-				case 690951482:
-					PostReviveHealth = (float) p_Value;
-					break;
-
-				case 1400664383:
-					CriticalFakeImmortalTime = (float) p_Value;
-					break;
-
-				case 778753505:
-					RegenerationDelay = (float) p_Value;
-					break;
-
-				case 3407288278:
-					RegenerationRate = (float) p_Value;
-					break;
-
-				case 2590060228:
-					Binding = (SoldierHealthModuleBinding) p_Value;
-					break;
-
-				case 261615897:
-					SprintDisabledWhenDamagedTime = (float) p_Value;
-					break;
-
-				case 2813834027:
-					SprintDisabledDamageThreshold = (float) p_Value;
-					break;
-
-				case 2801100780:
-					ManDownRotate = (RotateToHitData) p_Value;
-					break;
-
-				case 701073533:
-					InteractiveManDown = (bool) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_Value = (EntryInputActionEnum) s_AbortSpawnImmortalityInputs.Reader.ReadInt32();
+				p_Instance.AbortSpawnImmortalityInputs.Add(s_Value);
 			}
+			
+			s_AbortSpawnImmortalityInputs.Reader.Dispose();
+			p_Reader.Seek(1, SeekOrigin.Current);
+			p_Instance.PostReviveHealth = p_Reader.ReadSingle();
+			p_Reader.Seek(1, SeekOrigin.Current);
+			p_Instance.CriticalFakeImmortalTime = p_Reader.ReadSingle();
+			p_Reader.Seek(1, SeekOrigin.Current);
+			p_Instance.RegenerationDelay = p_Reader.ReadSingle();
+			p_Reader.Seek(1, SeekOrigin.Current);
+			p_Instance.RegenerationRate = p_Reader.ReadSingle();
+			p_Reader.Seek(1, SeekOrigin.Current);
+			fb.SoldierHealthModuleBinding.Deserialize(p_Instance.Binding, p_Reader, p_Parser);
+			p_Reader.Seek(1, SeekOrigin.Current);
+			p_Instance.SprintDisabledWhenDamagedTime = p_Reader.ReadSingle();
+			p_Reader.Seek(1, SeekOrigin.Current);
+			p_Instance.SprintDisabledDamageThreshold = p_Reader.ReadSingle();
+			p_Reader.Seek(1, SeekOrigin.Current);
+			fb.RotateToHitData.Deserialize(p_Instance.ManDownRotate, p_Reader, p_Parser);
+			p_Reader.Seek(1, SeekOrigin.Current);
+			p_Instance.InteractiveManDown = p_Reader.ReadBool();
+			p_Reader.Seek(4, SeekOrigin.Current);
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 418744275:
-					return TimeForCorpse;
-
-				case 3260283824:
-					return PostReviveResponseTime;
-
-				case 1025820778:
-					return InteractiveManDownThreshold;
-
-				case 815478402:
-					return InteractiveManDownPoseConstraints;
-
-				case 1512464055:
-					return ManDownStateTime;
-
-				case 213646753:
-					return ManDownStateHealthPoints;
-
-				case 3806880002:
-					return ImmortalTimeAfterSpawn;
-
-				case 1625311224:
-					return AbortSpawnImmortalityInputs;
-
-				case 690951482:
-					return PostReviveHealth;
-
-				case 1400664383:
-					return CriticalFakeImmortalTime;
-
-				case 778753505:
-					return RegenerationDelay;
-
-				case 3407288278:
-					return RegenerationRate;
-
-				case 2590060228:
-					return Binding;
-
-				case 261615897:
-					return SprintDisabledWhenDamagedTime;
-
-				case 2813834027:
-					return SprintDisabledDamageThreshold;
-
-				case 2801100780:
-					return ManDownRotate;
-
-				case 701073533:
-					return InteractiveManDown;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 418744275:
-					return typeof(VeniceSoldierHealthModuleData).GetProperty(nameof(TimeForCorpse));
-
-				case 3260283824:
-					return typeof(VeniceSoldierHealthModuleData).GetProperty(nameof(PostReviveResponseTime));
-
-				case 1025820778:
-					return typeof(VeniceSoldierHealthModuleData).GetProperty(nameof(InteractiveManDownThreshold));
-
-				case 815478402:
-					return typeof(VeniceSoldierHealthModuleData).GetProperty(nameof(InteractiveManDownPoseConstraints));
-
-				case 1512464055:
-					return typeof(VeniceSoldierHealthModuleData).GetProperty(nameof(ManDownStateTime));
-
-				case 213646753:
-					return typeof(VeniceSoldierHealthModuleData).GetProperty(nameof(ManDownStateHealthPoints));
-
-				case 3806880002:
-					return typeof(VeniceSoldierHealthModuleData).GetProperty(nameof(ImmortalTimeAfterSpawn));
-
-				case 1625311224:
-					return typeof(VeniceSoldierHealthModuleData).GetProperty(nameof(AbortSpawnImmortalityInputs));
-
-				case 690951482:
-					return typeof(VeniceSoldierHealthModuleData).GetProperty(nameof(PostReviveHealth));
-
-				case 1400664383:
-					return typeof(VeniceSoldierHealthModuleData).GetProperty(nameof(CriticalFakeImmortalTime));
-
-				case 778753505:
-					return typeof(VeniceSoldierHealthModuleData).GetProperty(nameof(RegenerationDelay));
-
-				case 3407288278:
-					return typeof(VeniceSoldierHealthModuleData).GetProperty(nameof(RegenerationRate));
-
-				case 2590060228:
-					return typeof(VeniceSoldierHealthModuleData).GetProperty(nameof(Binding));
-
-				case 261615897:
-					return typeof(VeniceSoldierHealthModuleData).GetProperty(nameof(SprintDisabledWhenDamagedTime));
-
-				case 2813834027:
-					return typeof(VeniceSoldierHealthModuleData).GetProperty(nameof(SprintDisabledDamageThreshold));
-
-				case 2801100780:
-					return typeof(VeniceSoldierHealthModuleData).GetProperty(nameof(ManDownRotate));
-
-				case 701073533:
-					return typeof(VeniceSoldierHealthModuleData).GetProperty(nameof(InteractiveManDown));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

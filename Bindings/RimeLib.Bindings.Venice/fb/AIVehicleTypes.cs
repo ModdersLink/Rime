@@ -5,91 +5,63 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 24)]
+	[ContainerType(4, 24)]
 	public class AIVehicleTypes : 
 		Asset
 	{
-		protected RefArray<AIVehicleBehaviourData> m_VehicleTypes = new RefArray<AIVehicleBehaviourData>();
-		[ContainerField(Name: "VehicleTypes", Offset: 12, NameHash: 489934422, Flags: 65)]
-		public RefArray<AIVehicleBehaviourData> VehicleTypes { get { return m_VehicleTypes; } set { if (OnPropertyChanging("AIVehicleTypes." + nameof(VehicleTypes), this, m_VehicleTypes, value)) m_VehicleTypes = value; } } // 0xC (12)
-		
-		protected RefArray<BehaviourData> m_Goals = new RefArray<BehaviourData>();
-		[ContainerField(Name: "Goals", Offset: 16, NameHash: 207935763, Flags: 65)]
-		public RefArray<BehaviourData> Goals { get { return m_Goals; } set { if (OnPropertyChanging("AIVehicleTypes." + nameof(Goals), this, m_Goals, value)) m_Goals = value; } } // 0x10 (16)
-		
-		protected RefArray<BehaviourData> m_Intents = new RefArray<BehaviourData>();
-		[ContainerField(Name: "Intents", Offset: 20, NameHash: 1691535386, Flags: 65)]
-		public RefArray<BehaviourData> Intents { get { return m_Intents; } set { if (OnPropertyChanging("AIVehicleTypes." + nameof(Intents), this, m_Intents, value)) m_Intents = value; } } // 0x14 (20)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(12)]
+		public List<CtrRef<AIVehicleBehaviourData>> VehicleTypes { get; set; } = new();
+
+		[ContainerField(16)]
+		public List<CtrRef<BehaviourData>> Goals { get; set; } = new();
+
+		[ContainerField(20)]
+		public List<CtrRef<BehaviourData>> Intents { get; set; } = new();
+
+		public static void Deserialize(AIVehicleTypes p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Instance.VehicleTypes.Clear();
+			(RimeReader Reader, uint Count) s_VehicleTypes = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_VehicleTypes.Count; ++i)
 			{
-				case 489934422:
-					VehicleTypes = (RefArray<AIVehicleBehaviourData>) p_Value;
-					break;
-
-				case 207935763:
-					Goals = (RefArray<BehaviourData>) p_Value;
-					break;
-
-				case 1691535386:
-					Intents = (RefArray<BehaviourData>) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_CtrRef = new CtrRef<AIVehicleBehaviourData>();
+				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_VehicleTypes.Reader.ReadUInt32()));
+				p_Instance.VehicleTypes.Add(s_CtrRef);
 			}
+			
+			s_VehicleTypes.Reader.Dispose();
+			p_Instance.Goals.Clear();
+			(RimeReader Reader, uint Count) s_Goals = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_Goals.Count; ++i)
+			{
+				var s_CtrRef = new CtrRef<BehaviourData>();
+				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_Goals.Reader.ReadUInt32()));
+				p_Instance.Goals.Add(s_CtrRef);
+			}
+			
+			s_Goals.Reader.Dispose();
+			p_Instance.Intents.Clear();
+			(RimeReader Reader, uint Count) s_Intents = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_Intents.Count; ++i)
+			{
+				var s_CtrRef = new CtrRef<BehaviourData>();
+				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_Intents.Reader.ReadUInt32()));
+				p_Instance.Intents.Add(s_CtrRef);
+			}
+			
+			s_Intents.Reader.Dispose();
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 489934422:
-					return VehicleTypes;
-
-				case 207935763:
-					return Goals;
-
-				case 1691535386:
-					return Intents;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 489934422:
-					return typeof(AIVehicleTypes).GetProperty(nameof(VehicleTypes));
-
-				case 207935763:
-					return typeof(AIVehicleTypes).GetProperty(nameof(Goals));
-
-				case 1691535386:
-					return typeof(AIVehicleTypes).GetProperty(nameof(Intents));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

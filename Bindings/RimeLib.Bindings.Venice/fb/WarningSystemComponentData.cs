@@ -5,133 +5,49 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 16,  Flags: 53, Size: 128)]
+	[ContainerType(16, 128)]
 	public class WarningSystemComponentData : 
 		ComponentData
 	{
-		protected CtrRef<SoundAsset> m_AimWarnSoundEffect = new CtrRef<SoundAsset>();
-		[ContainerField(Name: "AimWarnSoundEffect", Offset: 96, NameHash: 2573535070, Flags: 53)]
-		public CtrRef<SoundAsset> AimWarnSoundEffect { get { return m_AimWarnSoundEffect; } set { if (OnPropertyChanging("WarningSystemComponentData." + nameof(AimWarnSoundEffect), this, m_AimWarnSoundEffect, value)) m_AimWarnSoundEffect = value; } } // 0x60 (96)
-		
-		protected CtrRef<SoundAsset> m_MissileWarnSoundEffect = new CtrRef<SoundAsset>();
-		[ContainerField(Name: "MissileWarnSoundEffect", Offset: 100, NameHash: 3117773919, Flags: 53)]
-		public CtrRef<SoundAsset> MissileWarnSoundEffect { get { return m_MissileWarnSoundEffect; } set { if (OnPropertyChanging("WarningSystemComponentData." + nameof(MissileWarnSoundEffect), this, m_MissileWarnSoundEffect, value)) m_MissileWarnSoundEffect = value; } } // 0x64 (100)
-		
-		protected CtrRef<SoundAsset> m_LowHealthWarnSoundEffect = new CtrRef<SoundAsset>();
-		[ContainerField(Name: "LowHealthWarnSoundEffect", Offset: 104, NameHash: 2886566771, Flags: 53)]
-		public CtrRef<SoundAsset> LowHealthWarnSoundEffect { get { return m_LowHealthWarnSoundEffect; } set { if (OnPropertyChanging("WarningSystemComponentData." + nameof(LowHealthWarnSoundEffect), this, m_LowHealthWarnSoundEffect, value)) m_LowHealthWarnSoundEffect = value; } } // 0x68 (104)
-		
-		protected CtrRef<SoundAsset> m_LockingWarnSoundEffect = new CtrRef<SoundAsset>();
-		[ContainerField(Name: "LockingWarnSoundEffect", Offset: 108, NameHash: 893923632, Flags: 53)]
-		public CtrRef<SoundAsset> LockingWarnSoundEffect { get { return m_LockingWarnSoundEffect; } set { if (OnPropertyChanging("WarningSystemComponentData." + nameof(LockingWarnSoundEffect), this, m_LockingWarnSoundEffect, value)) m_LockingWarnSoundEffect = value; } } // 0x6C (108)
-		
-		protected CtrRef<SoundAsset> m_LockedWarnSoundEffect = new CtrRef<SoundAsset>();
-		[ContainerField(Name: "LockedWarnSoundEffect", Offset: 112, NameHash: 1254781329, Flags: 53)]
-		public CtrRef<SoundAsset> LockedWarnSoundEffect { get { return m_LockedWarnSoundEffect; } set { if (OnPropertyChanging("WarningSystemComponentData." + nameof(LockedWarnSoundEffect), this, m_LockedWarnSoundEffect, value)) m_LockedWarnSoundEffect = value; } } // 0x70 (112)
-		
-		protected WarningPlayerType m_PlayerType = new WarningPlayerType();
-		[ContainerField(Name: "PlayerType", Offset: 116, NameHash: 774572558, Flags: 137)]
-		public WarningPlayerType PlayerType { get { return m_PlayerType; } set { if (OnPropertyChanging("WarningSystemComponentData." + nameof(PlayerType), this, m_PlayerType, value)) m_PlayerType = value; } } // 0x74 (116)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(96)]
+		public CtrRef<SoundAsset> AimWarnSoundEffect { get; set; } = new();
+
+		[ContainerField(100)]
+		public CtrRef<SoundAsset> MissileWarnSoundEffect { get; set; } = new();
+
+		[ContainerField(104)]
+		public CtrRef<SoundAsset> LowHealthWarnSoundEffect { get; set; } = new();
+
+		[ContainerField(108)]
+		public CtrRef<SoundAsset> LockingWarnSoundEffect { get; set; } = new();
+
+		[ContainerField(112)]
+		public CtrRef<SoundAsset> LockedWarnSoundEffect { get; set; } = new();
+
+		[ContainerField(116)]
+		public WarningPlayerType PlayerType { get; set; } = new();
+
+		public static void Deserialize(WarningSystemComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 2573535070:
-					AimWarnSoundEffect = (CtrRef<SoundAsset>) p_Value;
-					break;
-
-				case 3117773919:
-					MissileWarnSoundEffect = (CtrRef<SoundAsset>) p_Value;
-					break;
-
-				case 2886566771:
-					LowHealthWarnSoundEffect = (CtrRef<SoundAsset>) p_Value;
-					break;
-
-				case 893923632:
-					LockingWarnSoundEffect = (CtrRef<SoundAsset>) p_Value;
-					break;
-
-				case 1254781329:
-					LockedWarnSoundEffect = (CtrRef<SoundAsset>) p_Value;
-					break;
-
-				case 774572558:
-					PlayerType = (WarningPlayerType) Enum.ToObject(typeof(WarningPlayerType), p_Value);
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
+			p_Instance.AimWarnSoundEffect.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
+			p_Instance.MissileWarnSoundEffect.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
+			p_Instance.LowHealthWarnSoundEffect.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
+			p_Instance.LockingWarnSoundEffect.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
+			p_Instance.LockedWarnSoundEffect.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
+			p_Instance.PlayerType = (WarningPlayerType) p_Reader.ReadInt32();
+			p_Reader.Seek(8, SeekOrigin.Current);
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2573535070:
-					return AimWarnSoundEffect;
-
-				case 3117773919:
-					return MissileWarnSoundEffect;
-
-				case 2886566771:
-					return LowHealthWarnSoundEffect;
-
-				case 893923632:
-					return LockingWarnSoundEffect;
-
-				case 1254781329:
-					return LockedWarnSoundEffect;
-
-				case 774572558:
-					return PlayerType;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2573535070:
-					return typeof(WarningSystemComponentData).GetProperty(nameof(AimWarnSoundEffect));
-
-				case 3117773919:
-					return typeof(WarningSystemComponentData).GetProperty(nameof(MissileWarnSoundEffect));
-
-				case 2886566771:
-					return typeof(WarningSystemComponentData).GetProperty(nameof(LowHealthWarnSoundEffect));
-
-				case 893923632:
-					return typeof(WarningSystemComponentData).GetProperty(nameof(LockingWarnSoundEffect));
-
-				case 1254781329:
-					return typeof(WarningSystemComponentData).GetProperty(nameof(LockedWarnSoundEffect));
-
-				case 774572558:
-					return typeof(WarningSystemComponentData).GetProperty(nameof(PlayerType));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

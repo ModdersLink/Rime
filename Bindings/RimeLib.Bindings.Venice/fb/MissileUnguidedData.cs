@@ -5,100 +5,39 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 41, Size: 20)]
-	public class MissileUnguidedData : FrostbiteContainer
+	[ContainerType(4, 20)]
+	public class MissileUnguidedData
 	{
-		[ContainerField(Name: "StaticPosition", Offset: 0, NameHash: 242876836, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
-		public Vec2 StaticPosition { get; set; } = new Vec2(); // 0x0 (0)
+		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable]
+		public Vec2 StaticPosition { get; set; } = new();
 		
-		[ContainerField(Name: "TargetPositionOffset", Offset: 8, NameHash: 3190891072, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
-		public Vec2 TargetPositionOffset { get; set; } = new Vec2(); // 0x8 (8)
+		[ContainerField(8), Homogeneous, LayoutImmutable, Blittable]
+		public Vec2 TargetPositionOffset { get; set; } = new();
 		
-		[ContainerField(Name: "UseTargetPosition", Offset: 16, NameHash: 1827844270, Flags: 49325), LayoutImmutable, Blittable]
-		public bool UseTargetPosition { get; set; } // 0x10 (16)
+		[ContainerField(16), LayoutImmutable, Blittable]
+		public bool UseTargetPosition { get; set; }
 		
-		[ContainerField(Name: "UseStaticPosition", Offset: 17, NameHash: 753327591, Flags: 49325), LayoutImmutable, Blittable]
-		public bool UseStaticPosition { get; set; } // 0x11 (17)
+		[ContainerField(17), LayoutImmutable, Blittable]
+		public bool UseStaticPosition { get; set; }
 		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		public static void Deserialize(MissileUnguidedData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 242876836:
-					StaticPosition = (Vec2) p_Value;
-					break;
-
-				case 3190891072:
-					TargetPositionOffset = (Vec2) p_Value;
-					break;
-
-				case 1827844270:
-					UseTargetPosition = (bool) p_Value;
-					break;
-
-				case 753327591:
-					UseStaticPosition = (bool) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 242876836:
-					return StaticPosition;
-
-				case 3190891072:
-					return TargetPositionOffset;
-
-				case 1827844270:
-					return UseTargetPosition;
-
-				case 753327591:
-					return UseStaticPosition;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 242876836:
-					return typeof(MissileUnguidedData).GetProperty(nameof(StaticPosition));
-
-				case 3190891072:
-					return typeof(MissileUnguidedData).GetProperty(nameof(TargetPositionOffset));
-
-				case 1827844270:
-					return typeof(MissileUnguidedData).GetProperty(nameof(UseTargetPosition));
-
-				case 753327591:
-					return typeof(MissileUnguidedData).GetProperty(nameof(UseStaticPosition));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
+			fb.Vec2.Deserialize(p_Instance.StaticPosition, p_Reader, p_Parser);
+			fb.Vec2.Deserialize(p_Instance.TargetPositionOffset, p_Reader, p_Parser);
+			p_Instance.UseTargetPosition = p_Reader.ReadBool();
+			p_Instance.UseStaticPosition = p_Reader.ReadBool();
+			p_Reader.Seek(2, SeekOrigin.Current);
 		}
 	}
 }

@@ -5,119 +5,44 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 32)]
+	[ContainerType(4, 32)]
 	public class VersionData : 
 		Asset
 	{
-		protected string m_disclaimer = string.Empty;
-		[ContainerField(Name: "disclaimer", Offset: 12, NameHash: 33610342, Flags: 16509), LayoutImmutable]
-		public string disclaimer { get { return m_disclaimer; } set { if (OnPropertyChanging("VersionData." + nameof(disclaimer), this, m_disclaimer, value)) m_disclaimer = value; } } // 0xC (12)
-		
-		protected int m_Version = new int();
-		[ContainerField(Name: "Version", Offset: 16, NameHash: 747123679, Flags: 49405), LayoutImmutable, Blittable]
-		public int Version { get { return m_Version; } set { if (OnPropertyChanging("VersionData." + nameof(Version), this, m_Version, value)) m_Version = value; } } // 0x10 (16)
-		
-		protected string m_DateTime = string.Empty;
-		[ContainerField(Name: "DateTime", Offset: 20, NameHash: 3244533220, Flags: 16509), LayoutImmutable]
-		public string DateTime { get { return m_DateTime; } set { if (OnPropertyChanging("VersionData." + nameof(DateTime), this, m_DateTime, value)) m_DateTime = value; } } // 0x14 (20)
-		
-		protected string m_BranchId = string.Empty;
-		[ContainerField(Name: "BranchId", Offset: 24, NameHash: 2969494588, Flags: 16509), LayoutImmutable]
-		public string BranchId { get { return m_BranchId; } set { if (OnPropertyChanging("VersionData." + nameof(BranchId), this, m_BranchId, value)) m_BranchId = value; } } // 0x18 (24)
-		
-		protected string m_GameName = string.Empty;
-		[ContainerField(Name: "GameName", Offset: 28, NameHash: 509587500, Flags: 16509), LayoutImmutable]
-		public string GameName { get { return m_GameName; } set { if (OnPropertyChanging("VersionData." + nameof(GameName), this, m_GameName, value)) m_GameName = value; } } // 0x1C (28)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(12), LayoutImmutable]
+		public string disclaimer { get; set; } = string.Empty;
+
+		[ContainerField(16), LayoutImmutable, Blittable]
+		public int Version { get; set; }
+
+		[ContainerField(20), LayoutImmutable]
+		public string DateTime { get; set; } = string.Empty;
+
+		[ContainerField(24), LayoutImmutable]
+		public string BranchId { get; set; } = string.Empty;
+
+		[ContainerField(28), LayoutImmutable]
+		public string GameName { get; set; } = string.Empty;
+
+		public static void Deserialize(VersionData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 33610342:
-					disclaimer = (string) p_Value;
-					break;
-
-				case 747123679:
-					Version = (int) p_Value;
-					break;
-
-				case 3244533220:
-					DateTime = (string) p_Value;
-					break;
-
-				case 2969494588:
-					BranchId = (string) p_Value;
-					break;
-
-				case 509587500:
-					GameName = (string) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
+			p_Instance.disclaimer = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
+			p_Instance.Version = p_Reader.ReadInt32();
+			p_Instance.DateTime = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
+			p_Instance.BranchId = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
+			p_Instance.GameName = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 33610342:
-					return disclaimer;
-
-				case 747123679:
-					return Version;
-
-				case 3244533220:
-					return DateTime;
-
-				case 2969494588:
-					return BranchId;
-
-				case 509587500:
-					return GameName;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 33610342:
-					return typeof(VersionData).GetProperty(nameof(disclaimer));
-
-				case 747123679:
-					return typeof(VersionData).GetProperty(nameof(Version));
-
-				case 3244533220:
-					return typeof(VersionData).GetProperty(nameof(DateTime));
-
-				case 2969494588:
-					return typeof(VersionData).GetProperty(nameof(BranchId));
-
-				case 509587500:
-					return typeof(VersionData).GetProperty(nameof(GameName));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

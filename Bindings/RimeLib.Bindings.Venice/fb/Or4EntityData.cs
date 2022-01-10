@@ -5,119 +5,44 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 20)]
+	[ContainerType(4, 20)]
 	public class Or4EntityData : 
 		EntityData
 	{
-		protected Realm m_Realm = new Realm();
-		[ContainerField(Name: "Realm", Offset: 12, NameHash: 229961746, Flags: 137)]
-		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("Or4EntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0xC (12)
-		
-		protected bool m_In1 = new bool();
-		[ContainerField(Name: "In1", Offset: 16, NameHash: 193450867, Flags: 49325), LayoutImmutable, Blittable]
-		public bool In1 { get { return m_In1; } set { if (OnPropertyChanging("Or4EntityData." + nameof(In1), this, m_In1, value)) m_In1 = value; } } // 0x10 (16)
-		
-		protected bool m_In2 = new bool();
-		[ContainerField(Name: "In2", Offset: 17, NameHash: 193450864, Flags: 49325), LayoutImmutable, Blittable]
-		public bool In2 { get { return m_In2; } set { if (OnPropertyChanging("Or4EntityData." + nameof(In2), this, m_In2, value)) m_In2 = value; } } // 0x11 (17)
-		
-		protected bool m_In3 = new bool();
-		[ContainerField(Name: "In3", Offset: 18, NameHash: 193450865, Flags: 49325), LayoutImmutable, Blittable]
-		public bool In3 { get { return m_In3; } set { if (OnPropertyChanging("Or4EntityData." + nameof(In3), this, m_In3, value)) m_In3 = value; } } // 0x12 (18)
-		
-		protected bool m_In4 = new bool();
-		[ContainerField(Name: "In4", Offset: 19, NameHash: 193450870, Flags: 49325), LayoutImmutable, Blittable]
-		public bool In4 { get { return m_In4; } set { if (OnPropertyChanging("Or4EntityData." + nameof(In4), this, m_In4, value)) m_In4 = value; } } // 0x13 (19)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(12)]
+		public Realm Realm { get; set; } = new();
+
+		[ContainerField(16), LayoutImmutable, Blittable]
+		public bool In1 { get; set; }
+
+		[ContainerField(17), LayoutImmutable, Blittable]
+		public bool In2 { get; set; }
+
+		[ContainerField(18), LayoutImmutable, Blittable]
+		public bool In3 { get; set; }
+
+		[ContainerField(19), LayoutImmutable, Blittable]
+		public bool In4 { get; set; }
+
+		public static void Deserialize(Or4EntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 229961746:
-					Realm = (Realm) Enum.ToObject(typeof(Realm), p_Value);
-					break;
-
-				case 193450867:
-					In1 = (bool) p_Value;
-					break;
-
-				case 193450864:
-					In2 = (bool) p_Value;
-					break;
-
-				case 193450865:
-					In3 = (bool) p_Value;
-					break;
-
-				case 193450870:
-					In4 = (bool) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
+			p_Instance.Realm = (Realm) p_Reader.ReadInt32();
+			p_Instance.In1 = p_Reader.ReadBool();
+			p_Instance.In2 = p_Reader.ReadBool();
+			p_Instance.In3 = p_Reader.ReadBool();
+			p_Instance.In4 = p_Reader.ReadBool();
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 229961746:
-					return Realm;
-
-				case 193450867:
-					return In1;
-
-				case 193450864:
-					return In2;
-
-				case 193450865:
-					return In3;
-
-				case 193450870:
-					return In4;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 229961746:
-					return typeof(Or4EntityData).GetProperty(nameof(Realm));
-
-				case 193450867:
-					return typeof(Or4EntityData).GetProperty(nameof(In1));
-
-				case 193450864:
-					return typeof(Or4EntityData).GetProperty(nameof(In2));
-
-				case 193450865:
-					return typeof(Or4EntityData).GetProperty(nameof(In3));
-
-				case 193450870:
-					return typeof(Or4EntityData).GetProperty(nameof(In4));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

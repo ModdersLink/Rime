@@ -5,87 +5,43 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 41, Size: 12)]
-	public class UISettingsGroup : FrostbiteContainer
+	[ContainerType(4, 12)]
+	public class UISettingsGroup
 	{
-		[ContainerField(Name: "NameSid", Offset: 0, NameHash: 3153745340, Flags: 16509), LayoutImmutable]
-		public string NameSid { get; set; } // 0x0 (0)
+		[ContainerField(0), LayoutImmutable]
+		public string NameSid { get; set; } = string.Empty;
 		
-		[ContainerField(Name: "ScreenColumn", Offset: 4, NameHash: 1968887775, Flags: 49405), LayoutImmutable, Blittable]
-		public int ScreenColumn { get; set; } // 0x4 (4)
+		[ContainerField(4), LayoutImmutable, Blittable]
+		public int ScreenColumn { get; set; }
 		
-		[ContainerField(Name: "SettingsItems", Offset: 8, NameHash: 3468004518, Flags: 65)]
-		public List<UISettingsItem> SettingsItems { get; set; } = new List<UISettingsItem>(); // 0x8 (8)
+		[ContainerField(8)]
+		public List<UISettingsItem> SettingsItems { get; set; } = new();
 		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		public static void Deserialize(UISettingsGroup p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Instance.NameSid = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
+			p_Instance.ScreenColumn = p_Reader.ReadInt32();
+			p_Instance.SettingsItems.Clear();
+			(RimeReader Reader, uint Count) s_SettingsItems = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_SettingsItems.Count; ++i)
 			{
-				case 3153745340:
-					NameSid = (string) p_Value;
-					break;
-
-				case 1968887775:
-					ScreenColumn = (int) p_Value;
-					break;
-
-				case 3468004518:
-					SettingsItems = (List<UISettingsItem>) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_Value = new UISettingsItem();
+				fb.UISettingsItem.Deserialize(s_Value, s_SettingsItems.Reader, p_Parser);
+				p_Instance.SettingsItems.Add(s_Value);
 			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3153745340:
-					return NameSid;
-
-				case 1968887775:
-					return ScreenColumn;
-
-				case 3468004518:
-					return SettingsItems;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3153745340:
-					return typeof(UISettingsGroup).GetProperty(nameof(NameSid));
-
-				case 1968887775:
-					return typeof(UISettingsGroup).GetProperty(nameof(ScreenColumn));
-
-				case 3468004518:
-					return typeof(UISettingsGroup).GetProperty(nameof(SettingsItems));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
+			
+			s_SettingsItems.Reader.Dispose();
 		}
 	}
 }

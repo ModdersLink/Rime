@@ -5,63 +5,37 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 16,  Flags: 53, Size: 64)]
+	[ContainerType(16, 64)]
 	public class UpdateClipScaleData : 
 		ProcessorData
 	{
-		protected List<short> m_Lookup = new List<short>();
-		[ContainerField(Name: "Lookup", Offset: 48, NameHash: 2904698983, Flags: 65)]
-		public List<short> Lookup { get { return m_Lookup; } set { if (OnPropertyChanging("UpdateClipScaleData." + nameof(Lookup), this, m_Lookup, value)) m_Lookup = value; } } // 0x30 (48)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 2904698983:
-					Lookup = (List<short>) p_Value;
-					break;
+		[ContainerField(48)]
+		public List<short> Lookup { get; set; } = new();
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+		public static void Deserialize(UpdateClipScaleData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
+		{
+			p_Instance.Lookup.Clear();
+			(RimeReader Reader, uint Count) s_Lookup = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_Lookup.Count; ++i)
+			{
+				var s_Value = s_Lookup.Reader.ReadInt16();
+				p_Instance.Lookup.Add(s_Value);
 			}
+			
+			s_Lookup.Reader.Dispose();
+			p_Reader.Seek(12, SeekOrigin.Current);
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2904698983:
-					return Lookup;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2904698983:
-					return typeof(UpdateClipScaleData).GetProperty(nameof(Lookup));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

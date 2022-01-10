@@ -5,87 +5,50 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 41, Size: 16)]
-	public class BFServerConfigurationSchedule : FrostbiteContainer
+	[ContainerType(4, 16)]
+	public class BFServerConfigurationSchedule
 	{
-		[ContainerField(Name: "Licenses", Offset: 0, NameHash: 2259172461, Flags: 65)]
-		public List<string> Licenses { get; set; } = new List<string>(); // 0x0 (0)
+		[ContainerField(0)]
+		public List<string> Licenses { get; set; } = new();
 		
-		[ContainerField(Name: "Levels", Offset: 4, NameHash: 2907695648, Flags: 65)]
-		public List<string> Levels { get; set; } = new List<string>(); // 0x4 (4)
+		[ContainerField(4)]
+		public List<string> Levels { get; set; } = new();
 		
-		[ContainerField(Name: "Data", Offset: 8, NameHash: 2088730869, Flags: 41)]
-		public BFServerConfigurationData Data { get; set; } = new BFServerConfigurationData(); // 0x8 (8)
+		[ContainerField(8)]
+		public BFServerConfigurationData Data { get; set; } = new();
 		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		public static void Deserialize(BFServerConfigurationSchedule p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Instance.Licenses.Clear();
+			(RimeReader Reader, uint Count) s_Licenses = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_Licenses.Count; ++i)
 			{
-				case 2259172461:
-					Licenses = (List<string>) p_Value;
-					break;
-
-				case 2907695648:
-					Levels = (List<string>) p_Value;
-					break;
-
-				case 2088730869:
-					Data = (BFServerConfigurationData) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_Value = p_Parser.GetStringAtOffset(s_Licenses.Reader.ReadUInt32());
+				p_Instance.Licenses.Add(s_Value);
 			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
+			
+			s_Licenses.Reader.Dispose();
+			p_Instance.Levels.Clear();
+			(RimeReader Reader, uint Count) s_Levels = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_Levels.Count; ++i)
 			{
-				case 2259172461:
-					return Licenses;
-
-				case 2907695648:
-					return Levels;
-
-				case 2088730869:
-					return Data;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
+				var s_Value = p_Parser.GetStringAtOffset(s_Levels.Reader.ReadUInt32());
+				p_Instance.Levels.Add(s_Value);
 			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2259172461:
-					return typeof(BFServerConfigurationSchedule).GetProperty(nameof(Licenses));
-
-				case 2907695648:
-					return typeof(BFServerConfigurationSchedule).GetProperty(nameof(Levels));
-
-				case 2088730869:
-					return typeof(BFServerConfigurationSchedule).GetProperty(nameof(Data));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
+			
+			s_Levels.Reader.Dispose();
+			fb.BFServerConfigurationData.Deserialize(p_Instance.Data, p_Reader, p_Parser);
 		}
 	}
 }

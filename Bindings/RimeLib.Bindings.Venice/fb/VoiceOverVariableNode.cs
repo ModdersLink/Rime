@@ -5,77 +5,32 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
+	[ContainerType(4, 16)]
 	public class VoiceOverVariableNode : 
 		VoiceOverExpressionNode
 	{
-		protected CtrRef<VoiceOverValue> m_Value = new CtrRef<VoiceOverValue>();
-		[ContainerField(Name: "Value", Offset: 8, NameHash: 225375086, Flags: 53)]
-		public CtrRef<VoiceOverValue> Value { get { return m_Value; } set { if (OnPropertyChanging("VoiceOverVariableNode." + nameof(Value), this, m_Value, value)) m_Value = value; } } // 0x8 (8)
-		
-		protected CtrRef<VoiceOverNamedValue> m_Source = new CtrRef<VoiceOverNamedValue>();
-		[ContainerField(Name: "Source", Offset: 12, NameHash: 3339738264, Flags: 53)]
-		public CtrRef<VoiceOverNamedValue> Source { get { return m_Source; } set { if (OnPropertyChanging("VoiceOverVariableNode." + nameof(Source), this, m_Source, value)) m_Source = value; } } // 0xC (12)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(8)]
+		public CtrRef<VoiceOverValue> Value { get; set; } = new();
+
+		[ContainerField(12)]
+		public CtrRef<VoiceOverNamedValue> Source { get; set; } = new();
+
+		public static void Deserialize(VoiceOverVariableNode p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 225375086:
-					Value = (CtrRef<VoiceOverValue>) p_Value;
-					break;
-
-				case 3339738264:
-					Source = (CtrRef<VoiceOverNamedValue>) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
+			p_Instance.Value.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
+			p_Instance.Source.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 225375086:
-					return Value;
-
-				case 3339738264:
-					return Source;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 225375086:
-					return typeof(VoiceOverVariableNode).GetProperty(nameof(Value));
-
-				case 3339738264:
-					return typeof(VoiceOverVariableNode).GetProperty(nameof(Source));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

@@ -5,100 +5,39 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 41, Size: 16)]
-	public class UIPopupTextInput : FrostbiteContainer
+	[ContainerType(4, 16)]
+	public class UIPopupTextInput
 	{
-		[ContainerField(Name: "Id", Offset: 0, NameHash: 5862152, Flags: 16509), LayoutImmutable]
-		public string Id { get; set; } // 0x0 (0)
+		[ContainerField(0), LayoutImmutable]
+		public string Id { get; set; } = string.Empty;
 		
-		[ContainerField(Name: "Label", Offset: 4, NameHash: 218105699, Flags: 16509), LayoutImmutable]
-		public string Label { get; set; } // 0x4 (4)
+		[ContainerField(4), LayoutImmutable]
+		public string Label { get; set; } = string.Empty;
 		
-		[ContainerField(Name: "DefaultValue", Offset: 8, NameHash: 2066049125, Flags: 16509), LayoutImmutable]
-		public string DefaultValue { get; set; } // 0x8 (8)
+		[ContainerField(8), LayoutImmutable]
+		public string DefaultValue { get; set; } = string.Empty;
 		
-		[ContainerField(Name: "IsPassword", Offset: 12, NameHash: 1832244704, Flags: 49325), LayoutImmutable, Blittable]
-		public bool IsPassword { get; set; } // 0xC (12)
+		[ContainerField(12), LayoutImmutable, Blittable]
+		public bool IsPassword { get; set; }
 		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		public static void Deserialize(UIPopupTextInput p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 5862152:
-					Id = (string) p_Value;
-					break;
-
-				case 218105699:
-					Label = (string) p_Value;
-					break;
-
-				case 2066049125:
-					DefaultValue = (string) p_Value;
-					break;
-
-				case 1832244704:
-					IsPassword = (bool) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 5862152:
-					return Id;
-
-				case 218105699:
-					return Label;
-
-				case 2066049125:
-					return DefaultValue;
-
-				case 1832244704:
-					return IsPassword;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 5862152:
-					return typeof(UIPopupTextInput).GetProperty(nameof(Id));
-
-				case 218105699:
-					return typeof(UIPopupTextInput).GetProperty(nameof(Label));
-
-				case 2066049125:
-					return typeof(UIPopupTextInput).GetProperty(nameof(DefaultValue));
-
-				case 1832244704:
-					return typeof(UIPopupTextInput).GetProperty(nameof(IsPassword));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
+			p_Instance.Id = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
+			p_Instance.Label = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
+			p_Instance.DefaultValue = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
+			p_Instance.IsPassword = p_Reader.ReadBool();
+			p_Reader.Seek(3, SeekOrigin.Current);
 		}
 	}
 }

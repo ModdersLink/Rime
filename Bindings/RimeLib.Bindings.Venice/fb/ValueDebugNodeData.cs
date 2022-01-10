@@ -5,63 +5,37 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 12)]
+	[ContainerType(4, 12)]
 	public class ValueDebugNodeData : 
 		AudioGraphNodeData
 	{
-		protected RefArray<DebugValueInput> m_Values = new RefArray<DebugValueInput>();
-		[ContainerField(Name: "Values", Offset: 8, NameHash: 3142410589, Flags: 65)]
-		public RefArray<DebugValueInput> Values { get { return m_Values; } set { if (OnPropertyChanging("ValueDebugNodeData." + nameof(Values), this, m_Values, value)) m_Values = value; } } // 0x8 (8)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 3142410589:
-					Values = (RefArray<DebugValueInput>) p_Value;
-					break;
+		[ContainerField(8)]
+		public List<CtrRef<DebugValueInput>> Values { get; set; } = new();
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+		public static void Deserialize(ValueDebugNodeData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
+		{
+			p_Instance.Values.Clear();
+			(RimeReader Reader, uint Count) s_Values = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_Values.Count; ++i)
+			{
+				var s_CtrRef = new CtrRef<DebugValueInput>();
+				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_Values.Reader.ReadUInt32()));
+				p_Instance.Values.Add(s_CtrRef);
 			}
+			
+			s_Values.Reader.Dispose();
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3142410589:
-					return Values;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3142410589:
-					return typeof(ValueDebugNodeData).GetProperty(nameof(Values));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

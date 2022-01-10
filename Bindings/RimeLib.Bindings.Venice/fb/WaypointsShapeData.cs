@@ -5,63 +5,37 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 32)]
+	[ContainerType(4, 32)]
 	public class WaypointsShapeData : 
 		VectorShapeData
 	{
-		protected RefArray<WaypointData> m_Waypoints = new RefArray<WaypointData>();
-		[ContainerField(Name: "Waypoints", Offset: 28, NameHash: 1635609973, Flags: 65)]
-		public RefArray<WaypointData> Waypoints { get { return m_Waypoints; } set { if (OnPropertyChanging("WaypointsShapeData." + nameof(Waypoints), this, m_Waypoints, value)) m_Waypoints = value; } } // 0x1C (28)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 1635609973:
-					Waypoints = (RefArray<WaypointData>) p_Value;
-					break;
+		[ContainerField(28)]
+		public List<CtrRef<WaypointData>> Waypoints { get; set; } = new();
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+		public static void Deserialize(WaypointsShapeData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
+		{
+			p_Instance.Waypoints.Clear();
+			(RimeReader Reader, uint Count) s_Waypoints = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_Waypoints.Count; ++i)
+			{
+				var s_CtrRef = new CtrRef<WaypointData>();
+				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_Waypoints.Reader.ReadUInt32()));
+				p_Instance.Waypoints.Add(s_CtrRef);
 			}
+			
+			s_Waypoints.Reader.Dispose();
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1635609973:
-					return Waypoints;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1635609973:
-					return typeof(WaypointsShapeData).GetProperty(nameof(Waypoints));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

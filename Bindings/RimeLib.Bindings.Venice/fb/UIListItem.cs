@@ -5,139 +5,51 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 41, Size: 72)]
-	public class UIListItem : FrostbiteContainer
+	[ContainerType(4, 72)]
+	public class UIListItem
 	{
-		[ContainerField(Name: "Label", Offset: 0, NameHash: 218105699, Flags: 16509), LayoutImmutable]
-		public string Label { get; set; } // 0x0 (0)
+		[ContainerField(0), LayoutImmutable]
+		public string Label { get; set; } = string.Empty;
 		
-		[ContainerField(Name: "IsEnabled", Offset: 4, NameHash: 2323834330, Flags: 41)]
-		public UIDataSourceInfo IsEnabled { get; set; } = new UIDataSourceInfo(); // 0x4 (4)
+		[ContainerField(4)]
+		public UIDataSourceInfo IsEnabled { get; set; } = new();
 		
-		[ContainerField(Name: "IsVisible", Offset: 20, NameHash: 4174428017, Flags: 41)]
-		public UIDataSourceInfo IsVisible { get; set; } = new UIDataSourceInfo(); // 0x14 (20)
+		[ContainerField(20)]
+		public UIDataSourceInfo IsVisible { get; set; } = new();
 		
-		[ContainerField(Name: "ToggleItems", Offset: 36, NameHash: 1972979281, Flags: 41)]
-		public UIDataSourceInfo ToggleItems { get; set; } = new UIDataSourceInfo(); // 0x24 (36)
+		[ContainerField(36)]
+		public UIDataSourceInfo ToggleItems { get; set; } = new();
 		
-		[ContainerField(Name: "DataUpdate", Offset: 52, NameHash: 3436913316, Flags: 41)]
-		public UIDataSourceInfo DataUpdate { get; set; } = new UIDataSourceInfo(); // 0x34 (52)
+		[ContainerField(52)]
+		public UIDataSourceInfo DataUpdate { get; set; } = new();
 		
-		[ContainerField(Name: "DefaultIsVisible", Offset: 68, NameHash: 606137530, Flags: 49325), LayoutImmutable, Blittable]
-		public bool DefaultIsVisible { get; set; } // 0x44 (68)
+		[ContainerField(68), LayoutImmutable, Blittable]
+		public bool DefaultIsVisible { get; set; }
 		
-		[ContainerField(Name: "DefaultIsEnabled", Offset: 69, NameHash: 1109158225, Flags: 49325), LayoutImmutable, Blittable]
-		public bool DefaultIsEnabled { get; set; } // 0x45 (69)
+		[ContainerField(69), LayoutImmutable, Blittable]
+		public bool DefaultIsEnabled { get; set; }
 		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		public static void Deserialize(UIListItem p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 218105699:
-					Label = (string) p_Value;
-					break;
-
-				case 2323834330:
-					IsEnabled = (UIDataSourceInfo) p_Value;
-					break;
-
-				case 4174428017:
-					IsVisible = (UIDataSourceInfo) p_Value;
-					break;
-
-				case 1972979281:
-					ToggleItems = (UIDataSourceInfo) p_Value;
-					break;
-
-				case 3436913316:
-					DataUpdate = (UIDataSourceInfo) p_Value;
-					break;
-
-				case 606137530:
-					DefaultIsVisible = (bool) p_Value;
-					break;
-
-				case 1109158225:
-					DefaultIsEnabled = (bool) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 218105699:
-					return Label;
-
-				case 2323834330:
-					return IsEnabled;
-
-				case 4174428017:
-					return IsVisible;
-
-				case 1972979281:
-					return ToggleItems;
-
-				case 3436913316:
-					return DataUpdate;
-
-				case 606137530:
-					return DefaultIsVisible;
-
-				case 1109158225:
-					return DefaultIsEnabled;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 218105699:
-					return typeof(UIListItem).GetProperty(nameof(Label));
-
-				case 2323834330:
-					return typeof(UIListItem).GetProperty(nameof(IsEnabled));
-
-				case 4174428017:
-					return typeof(UIListItem).GetProperty(nameof(IsVisible));
-
-				case 1972979281:
-					return typeof(UIListItem).GetProperty(nameof(ToggleItems));
-
-				case 3436913316:
-					return typeof(UIListItem).GetProperty(nameof(DataUpdate));
-
-				case 606137530:
-					return typeof(UIListItem).GetProperty(nameof(DefaultIsVisible));
-
-				case 1109158225:
-					return typeof(UIListItem).GetProperty(nameof(DefaultIsEnabled));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
+			p_Instance.Label = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
+			fb.UIDataSourceInfo.Deserialize(p_Instance.IsEnabled, p_Reader, p_Parser);
+			fb.UIDataSourceInfo.Deserialize(p_Instance.IsVisible, p_Reader, p_Parser);
+			fb.UIDataSourceInfo.Deserialize(p_Instance.ToggleItems, p_Reader, p_Parser);
+			fb.UIDataSourceInfo.Deserialize(p_Instance.DataUpdate, p_Reader, p_Parser);
+			p_Instance.DefaultIsVisible = p_Reader.ReadBool();
+			p_Instance.DefaultIsEnabled = p_Reader.ReadBool();
+			p_Reader.Seek(2, SeekOrigin.Current);
 		}
 	}
 }

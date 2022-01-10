@@ -5,91 +5,63 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 24)]
+	[ContainerType(4, 24)]
 	public class CharacterSocketListAsset : 
 		Asset
 	{
-		protected RefArray<SocketData> m_GameplaySockets = new RefArray<SocketData>();
-		[ContainerField(Name: "GameplaySockets", Offset: 12, NameHash: 790257145, Flags: 65)]
-		public RefArray<SocketData> GameplaySockets { get { return m_GameplaySockets; } set { if (OnPropertyChanging("CharacterSocketListAsset." + nameof(GameplaySockets), this, m_GameplaySockets, value)) m_GameplaySockets = value; } } // 0xC (12)
-		
-		protected RefArray<SocketData> m_RigidVisualSockets = new RefArray<SocketData>();
-		[ContainerField(Name: "RigidVisualSockets", Offset: 16, NameHash: 2894846550, Flags: 65)]
-		public RefArray<SocketData> RigidVisualSockets { get { return m_RigidVisualSockets; } set { if (OnPropertyChanging("CharacterSocketListAsset." + nameof(RigidVisualSockets), this, m_RigidVisualSockets, value)) m_RigidVisualSockets = value; } } // 0x10 (16)
-		
-		protected RefArray<SocketData> m_SkinnedVisualSockets = new RefArray<SocketData>();
-		[ContainerField(Name: "SkinnedVisualSockets", Offset: 20, NameHash: 2310136503, Flags: 65)]
-		public RefArray<SocketData> SkinnedVisualSockets { get { return m_SkinnedVisualSockets; } set { if (OnPropertyChanging("CharacterSocketListAsset." + nameof(SkinnedVisualSockets), this, m_SkinnedVisualSockets, value)) m_SkinnedVisualSockets = value; } } // 0x14 (20)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(12)]
+		public List<CtrRef<SocketData>> GameplaySockets { get; set; } = new();
+
+		[ContainerField(16)]
+		public List<CtrRef<SocketData>> RigidVisualSockets { get; set; } = new();
+
+		[ContainerField(20)]
+		public List<CtrRef<SocketData>> SkinnedVisualSockets { get; set; } = new();
+
+		public static void Deserialize(CharacterSocketListAsset p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Instance.GameplaySockets.Clear();
+			(RimeReader Reader, uint Count) s_GameplaySockets = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_GameplaySockets.Count; ++i)
 			{
-				case 790257145:
-					GameplaySockets = (RefArray<SocketData>) p_Value;
-					break;
-
-				case 2894846550:
-					RigidVisualSockets = (RefArray<SocketData>) p_Value;
-					break;
-
-				case 2310136503:
-					SkinnedVisualSockets = (RefArray<SocketData>) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_CtrRef = new CtrRef<SocketData>();
+				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_GameplaySockets.Reader.ReadUInt32()));
+				p_Instance.GameplaySockets.Add(s_CtrRef);
 			}
+			
+			s_GameplaySockets.Reader.Dispose();
+			p_Instance.RigidVisualSockets.Clear();
+			(RimeReader Reader, uint Count) s_RigidVisualSockets = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_RigidVisualSockets.Count; ++i)
+			{
+				var s_CtrRef = new CtrRef<SocketData>();
+				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_RigidVisualSockets.Reader.ReadUInt32()));
+				p_Instance.RigidVisualSockets.Add(s_CtrRef);
+			}
+			
+			s_RigidVisualSockets.Reader.Dispose();
+			p_Instance.SkinnedVisualSockets.Clear();
+			(RimeReader Reader, uint Count) s_SkinnedVisualSockets = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_SkinnedVisualSockets.Count; ++i)
+			{
+				var s_CtrRef = new CtrRef<SocketData>();
+				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_SkinnedVisualSockets.Reader.ReadUInt32()));
+				p_Instance.SkinnedVisualSockets.Add(s_CtrRef);
+			}
+			
+			s_SkinnedVisualSockets.Reader.Dispose();
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 790257145:
-					return GameplaySockets;
-
-				case 2894846550:
-					return RigidVisualSockets;
-
-				case 2310136503:
-					return SkinnedVisualSockets;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 790257145:
-					return typeof(CharacterSocketListAsset).GetProperty(nameof(GameplaySockets));
-
-				case 2894846550:
-					return typeof(CharacterSocketListAsset).GetProperty(nameof(RigidVisualSockets));
-
-				case 2310136503:
-					return typeof(CharacterSocketListAsset).GetProperty(nameof(SkinnedVisualSockets));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

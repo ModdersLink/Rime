@@ -5,48 +5,23 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 1,  Flags: 41, Size: 1)]
-	public class RectangularCoverageData : FrostbiteContainer
+	[ContainerType(1, 1)]
+	public class RectangularCoverageData
 	{
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		public static void Deserialize(RectangularCoverageData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
-			{
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
+			p_Reader.Seek(1, SeekOrigin.Current);
 		}
 	}
 }

@@ -5,105 +5,40 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 36)]
+	[ContainerType(4, 36)]
 	public class ConditionGroup : 
 		AudioGraphNodePortGroup
 	{
-		protected AudioGraphNodePort m_X = new AudioGraphNodePort();
-		[ContainerField(Name: "X", Offset: 8, NameHash: 177661, Flags: 41)]
-		public AudioGraphNodePort X { get { return m_X; } set { if (OnPropertyChanging("ConditionGroup." + nameof(X), this, m_X, value)) m_X = value; } } // 0x8 (8)
-		
-		protected AudioGraphNodePort m_Y = new AudioGraphNodePort();
-		[ContainerField(Name: "Y", Offset: 16, NameHash: 177660, Flags: 41)]
-		public AudioGraphNodePort Y { get { return m_Y; } set { if (OnPropertyChanging("ConditionGroup." + nameof(Y), this, m_Y, value)) m_Y = value; } } // 0x10 (16)
-		
-		protected AudioGraphNodePort m_True = new AudioGraphNodePort();
-		[ContainerField(Name: "True", Offset: 24, NameHash: 2089293587, Flags: 41)]
-		public AudioGraphNodePort True { get { return m_True; } set { if (OnPropertyChanging("ConditionGroup." + nameof(True), this, m_True, value)) m_True = value; } } // 0x18 (24)
-		
-		protected ConditionType m_Condition = new ConditionType();
-		[ContainerField(Name: "Condition", Offset: 32, NameHash: 1800624758, Flags: 137)]
-		public ConditionType Condition { get { return m_Condition; } set { if (OnPropertyChanging("ConditionGroup." + nameof(Condition), this, m_Condition, value)) m_Condition = value; } } // 0x20 (32)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(8)]
+		public AudioGraphNodePort X { get; set; } = new();
+
+		[ContainerField(16)]
+		public AudioGraphNodePort Y { get; set; } = new();
+
+		[ContainerField(24)]
+		public AudioGraphNodePort True { get; set; } = new();
+
+		[ContainerField(32)]
+		public ConditionType Condition { get; set; } = new();
+
+		public static void Deserialize(ConditionGroup p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 177661:
-					X = (AudioGraphNodePort) p_Value;
-					break;
-
-				case 177660:
-					Y = (AudioGraphNodePort) p_Value;
-					break;
-
-				case 2089293587:
-					True = (AudioGraphNodePort) p_Value;
-					break;
-
-				case 1800624758:
-					Condition = (ConditionType) Enum.ToObject(typeof(ConditionType), p_Value);
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
+			fb.AudioGraphNodePort.Deserialize(p_Instance.X, p_Reader, p_Parser);
+			fb.AudioGraphNodePort.Deserialize(p_Instance.Y, p_Reader, p_Parser);
+			fb.AudioGraphNodePort.Deserialize(p_Instance.True, p_Reader, p_Parser);
+			p_Instance.Condition = (ConditionType) p_Reader.ReadInt32();
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 177661:
-					return X;
-
-				case 177660:
-					return Y;
-
-				case 2089293587:
-					return True;
-
-				case 1800624758:
-					return Condition;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 177661:
-					return typeof(ConditionGroup).GetProperty(nameof(X));
-
-				case 177660:
-					return typeof(ConditionGroup).GetProperty(nameof(Y));
-
-				case 2089293587:
-					return typeof(ConditionGroup).GetProperty(nameof(True));
-
-				case 1800624758:
-					return typeof(ConditionGroup).GetProperty(nameof(Condition));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

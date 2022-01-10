@@ -5,77 +5,41 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 28)]
+	[ContainerType(4, 28)]
 	public class NFSUIListDataBinding : 
 		UIDataBinding
 	{
-		protected UIDataSourceInfo m_Refresh = new UIDataSourceInfo();
-		[ContainerField(Name: "Refresh", Offset: 8, NameHash: 1327541432, Flags: 41)]
-		public UIDataSourceInfo Refresh { get { return m_Refresh; } set { if (OnPropertyChanging("NFSUIListDataBinding." + nameof(Refresh), this, m_Refresh, value)) m_Refresh = value; } } // 0x8 (8)
-		
-		protected List<UIListItem> m_Items = new List<UIListItem>();
-		[ContainerField(Name: "Items", Offset: 24, NameHash: 215446531, Flags: 65)]
-		public List<UIListItem> Items { get { return m_Items; } set { if (OnPropertyChanging("NFSUIListDataBinding." + nameof(Items), this, m_Items, value)) m_Items = value; } } // 0x18 (24)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(8)]
+		public UIDataSourceInfo Refresh { get; set; } = new();
+
+		[ContainerField(24)]
+		public List<UIListItem> Items { get; set; } = new();
+
+		public static void Deserialize(NFSUIListDataBinding p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			fb.UIDataSourceInfo.Deserialize(p_Instance.Refresh, p_Reader, p_Parser);
+			p_Instance.Items.Clear();
+			(RimeReader Reader, uint Count) s_Items = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_Items.Count; ++i)
 			{
-				case 1327541432:
-					Refresh = (UIDataSourceInfo) p_Value;
-					break;
-
-				case 215446531:
-					Items = (List<UIListItem>) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_Value = new UIListItem();
+				fb.UIListItem.Deserialize(s_Value, s_Items.Reader, p_Parser);
+				p_Instance.Items.Add(s_Value);
 			}
+			
+			s_Items.Reader.Dispose();
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1327541432:
-					return Refresh;
-
-				case 215446531:
-					return Items;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1327541432:
-					return typeof(NFSUIListDataBinding).GetProperty(nameof(Refresh));
-
-				case 215446531:
-					return typeof(NFSUIListDataBinding).GetProperty(nameof(Items));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

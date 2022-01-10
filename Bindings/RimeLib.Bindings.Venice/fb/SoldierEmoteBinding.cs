@@ -5,256 +5,86 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 41, Size: 64)]
-	public class SoldierEmoteBinding : FrostbiteContainer
+	[ContainerType(4, 64)]
+	public class SoldierEmoteBinding
 	{
-		[ContainerField(Name: "Speak", Offset: 0, NameHash: 230886921, Flags: 41)]
-		public AntRef Speak { get; set; } = new AntRef(); // 0x0 (0)
+		[ContainerField(0)]
+		public AntRef Speak { get; set; } = new();
 		
-		[ContainerField(Name: "IsSquadLeader", Offset: 4, NameHash: 215794326, Flags: 41)]
-		public AntRef IsSquadLeader { get; set; } = new AntRef(); // 0x4 (4)
+		[ContainerField(4)]
+		public AntRef IsSquadLeader { get; set; } = new();
 		
-		[ContainerField(Name: "EmoteSpot", Offset: 8, NameHash: 2461279019, Flags: 41)]
-		public AntRef EmoteSpot { get; set; } = new AntRef(); // 0x8 (8)
+		[ContainerField(8)]
+		public AntRef EmoteSpot { get; set; } = new();
 		
-		[ContainerField(Name: "EmoteOk", Offset: 12, NameHash: 25924759, Flags: 41)]
-		public AntRef EmoteOk { get; set; } = new AntRef(); // 0xC (12)
+		[ContainerField(12)]
+		public AntRef EmoteOk { get; set; } = new();
 		
-		[ContainerField(Name: "EmoteNeedARide", Offset: 16, NameHash: 1724790978, Flags: 41)]
-		public AntRef EmoteNeedARide { get; set; } = new AntRef(); // 0x10 (16)
+		[ContainerField(16)]
+		public AntRef EmoteNeedARide { get; set; } = new();
 		
-		[ContainerField(Name: "EmoteGoGoGo", Offset: 20, NameHash: 1039124251, Flags: 41)]
-		public AntRef EmoteGoGoGo { get; set; } = new AntRef(); // 0x14 (20)
+		[ContainerField(20)]
+		public AntRef EmoteGoGoGo { get; set; } = new();
 		
-		[ContainerField(Name: "EmoteNeedBackup", Offset: 24, NameHash: 1254362103, Flags: 41)]
-		public AntRef EmoteNeedBackup { get; set; } = new AntRef(); // 0x18 (24)
+		[ContainerField(24)]
+		public AntRef EmoteNeedBackup { get; set; } = new();
 		
-		[ContainerField(Name: "EmoteThanks", Offset: 28, NameHash: 613118968, Flags: 41)]
-		public AntRef EmoteThanks { get; set; } = new AntRef(); // 0x1C (28)
+		[ContainerField(28)]
+		public AntRef EmoteThanks { get; set; } = new();
 		
-		[ContainerField(Name: "EmoteNeedMedic", Offset: 32, NameHash: 1719165247, Flags: 41)]
-		public AntRef EmoteNeedMedic { get; set; } = new AntRef(); // 0x20 (32)
+		[ContainerField(32)]
+		public AntRef EmoteNeedMedic { get; set; } = new();
 		
-		[ContainerField(Name: "EmoteFollowMe", Offset: 36, NameHash: 1620732426, Flags: 41)]
-		public AntRef EmoteFollowMe { get; set; } = new AntRef(); // 0x24 (36)
+		[ContainerField(36)]
+		public AntRef EmoteFollowMe { get; set; } = new();
 		
-		[ContainerField(Name: "EmoteNeedAmmo", Offset: 40, NameHash: 2785400695, Flags: 41)]
-		public AntRef EmoteNeedAmmo { get; set; } = new AntRef(); // 0x28 (40)
+		[ContainerField(40)]
+		public AntRef EmoteNeedAmmo { get; set; } = new();
 		
-		[ContainerField(Name: "EmoteSorry", Offset: 44, NameHash: 3912552534, Flags: 41)]
-		public AntRef EmoteSorry { get; set; } = new AntRef(); // 0x2C (44)
+		[ContainerField(44)]
+		public AntRef EmoteSorry { get; set; } = new();
 		
-		[ContainerField(Name: "EmoteNo", Offset: 48, NameHash: 25924978, Flags: 41)]
-		public AntRef EmoteNo { get; set; } = new AntRef(); // 0x30 (48)
+		[ContainerField(48)]
+		public AntRef EmoteNo { get; set; } = new();
 		
-		[ContainerField(Name: "EmoteDefendCapturePoint", Offset: 52, NameHash: 3478388147, Flags: 41)]
-		public AntRef EmoteDefendCapturePoint { get; set; } = new AntRef(); // 0x34 (52)
+		[ContainerField(52)]
+		public AntRef EmoteDefendCapturePoint { get; set; } = new();
 		
-		[ContainerField(Name: "EmoteAttackCapturePoint", Offset: 56, NameHash: 534389299, Flags: 41)]
-		public AntRef EmoteAttackCapturePoint { get; set; } = new AntRef(); // 0x38 (56)
+		[ContainerField(56)]
+		public AntRef EmoteAttackCapturePoint { get; set; } = new();
 		
-		[ContainerField(Name: "EmoteMoveToPosition", Offset: 60, NameHash: 1059056960, Flags: 41)]
-		public AntRef EmoteMoveToPosition { get; set; } = new AntRef(); // 0x3C (60)
+		[ContainerField(60)]
+		public AntRef EmoteMoveToPosition { get; set; } = new();
 		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		public static void Deserialize(SoldierEmoteBinding p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 230886921:
-					Speak = (AntRef) p_Value;
-					break;
-
-				case 215794326:
-					IsSquadLeader = (AntRef) p_Value;
-					break;
-
-				case 2461279019:
-					EmoteSpot = (AntRef) p_Value;
-					break;
-
-				case 25924759:
-					EmoteOk = (AntRef) p_Value;
-					break;
-
-				case 1724790978:
-					EmoteNeedARide = (AntRef) p_Value;
-					break;
-
-				case 1039124251:
-					EmoteGoGoGo = (AntRef) p_Value;
-					break;
-
-				case 1254362103:
-					EmoteNeedBackup = (AntRef) p_Value;
-					break;
-
-				case 613118968:
-					EmoteThanks = (AntRef) p_Value;
-					break;
-
-				case 1719165247:
-					EmoteNeedMedic = (AntRef) p_Value;
-					break;
-
-				case 1620732426:
-					EmoteFollowMe = (AntRef) p_Value;
-					break;
-
-				case 2785400695:
-					EmoteNeedAmmo = (AntRef) p_Value;
-					break;
-
-				case 3912552534:
-					EmoteSorry = (AntRef) p_Value;
-					break;
-
-				case 25924978:
-					EmoteNo = (AntRef) p_Value;
-					break;
-
-				case 3478388147:
-					EmoteDefendCapturePoint = (AntRef) p_Value;
-					break;
-
-				case 534389299:
-					EmoteAttackCapturePoint = (AntRef) p_Value;
-					break;
-
-				case 1059056960:
-					EmoteMoveToPosition = (AntRef) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 230886921:
-					return Speak;
-
-				case 215794326:
-					return IsSquadLeader;
-
-				case 2461279019:
-					return EmoteSpot;
-
-				case 25924759:
-					return EmoteOk;
-
-				case 1724790978:
-					return EmoteNeedARide;
-
-				case 1039124251:
-					return EmoteGoGoGo;
-
-				case 1254362103:
-					return EmoteNeedBackup;
-
-				case 613118968:
-					return EmoteThanks;
-
-				case 1719165247:
-					return EmoteNeedMedic;
-
-				case 1620732426:
-					return EmoteFollowMe;
-
-				case 2785400695:
-					return EmoteNeedAmmo;
-
-				case 3912552534:
-					return EmoteSorry;
-
-				case 25924978:
-					return EmoteNo;
-
-				case 3478388147:
-					return EmoteDefendCapturePoint;
-
-				case 534389299:
-					return EmoteAttackCapturePoint;
-
-				case 1059056960:
-					return EmoteMoveToPosition;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 230886921:
-					return typeof(SoldierEmoteBinding).GetProperty(nameof(Speak));
-
-				case 215794326:
-					return typeof(SoldierEmoteBinding).GetProperty(nameof(IsSquadLeader));
-
-				case 2461279019:
-					return typeof(SoldierEmoteBinding).GetProperty(nameof(EmoteSpot));
-
-				case 25924759:
-					return typeof(SoldierEmoteBinding).GetProperty(nameof(EmoteOk));
-
-				case 1724790978:
-					return typeof(SoldierEmoteBinding).GetProperty(nameof(EmoteNeedARide));
-
-				case 1039124251:
-					return typeof(SoldierEmoteBinding).GetProperty(nameof(EmoteGoGoGo));
-
-				case 1254362103:
-					return typeof(SoldierEmoteBinding).GetProperty(nameof(EmoteNeedBackup));
-
-				case 613118968:
-					return typeof(SoldierEmoteBinding).GetProperty(nameof(EmoteThanks));
-
-				case 1719165247:
-					return typeof(SoldierEmoteBinding).GetProperty(nameof(EmoteNeedMedic));
-
-				case 1620732426:
-					return typeof(SoldierEmoteBinding).GetProperty(nameof(EmoteFollowMe));
-
-				case 2785400695:
-					return typeof(SoldierEmoteBinding).GetProperty(nameof(EmoteNeedAmmo));
-
-				case 3912552534:
-					return typeof(SoldierEmoteBinding).GetProperty(nameof(EmoteSorry));
-
-				case 25924978:
-					return typeof(SoldierEmoteBinding).GetProperty(nameof(EmoteNo));
-
-				case 3478388147:
-					return typeof(SoldierEmoteBinding).GetProperty(nameof(EmoteDefendCapturePoint));
-
-				case 534389299:
-					return typeof(SoldierEmoteBinding).GetProperty(nameof(EmoteAttackCapturePoint));
-
-				case 1059056960:
-					return typeof(SoldierEmoteBinding).GetProperty(nameof(EmoteMoveToPosition));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
+			fb.AntRef.Deserialize(p_Instance.Speak, p_Reader, p_Parser);
+			fb.AntRef.Deserialize(p_Instance.IsSquadLeader, p_Reader, p_Parser);
+			fb.AntRef.Deserialize(p_Instance.EmoteSpot, p_Reader, p_Parser);
+			fb.AntRef.Deserialize(p_Instance.EmoteOk, p_Reader, p_Parser);
+			fb.AntRef.Deserialize(p_Instance.EmoteNeedARide, p_Reader, p_Parser);
+			fb.AntRef.Deserialize(p_Instance.EmoteGoGoGo, p_Reader, p_Parser);
+			fb.AntRef.Deserialize(p_Instance.EmoteNeedBackup, p_Reader, p_Parser);
+			fb.AntRef.Deserialize(p_Instance.EmoteThanks, p_Reader, p_Parser);
+			fb.AntRef.Deserialize(p_Instance.EmoteNeedMedic, p_Reader, p_Parser);
+			fb.AntRef.Deserialize(p_Instance.EmoteFollowMe, p_Reader, p_Parser);
+			fb.AntRef.Deserialize(p_Instance.EmoteNeedAmmo, p_Reader, p_Parser);
+			fb.AntRef.Deserialize(p_Instance.EmoteSorry, p_Reader, p_Parser);
+			fb.AntRef.Deserialize(p_Instance.EmoteNo, p_Reader, p_Parser);
+			fb.AntRef.Deserialize(p_Instance.EmoteDefendCapturePoint, p_Reader, p_Parser);
+			fb.AntRef.Deserialize(p_Instance.EmoteAttackCapturePoint, p_Reader, p_Parser);
+			fb.AntRef.Deserialize(p_Instance.EmoteMoveToPosition, p_Reader, p_Parser);
 		}
 	}
 }

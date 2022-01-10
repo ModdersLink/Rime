@@ -5,178 +5,63 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 16,  Flags: 41, Size: 80)]
-	public class FireEffectData : FrostbiteContainer
+	[ContainerType(16, 80)]
+	public class FireEffectData
 	{
-		[ContainerField(Name: "Rotation", Offset: 0, NameHash: 48673745, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 Rotation { get; set; } = new Vec3(); // 0x0 (0)
+		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable]
+		public Vec3 Rotation { get; set; } = new();
 		
-		[ContainerField(Name: "Offset", Offset: 16, NameHash: 2871410728, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 Offset { get; set; } = new Vec3(); // 0x10 (16)
+		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable]
+		public Vec3 Offset { get; set; } = new();
 		
-		[ContainerField(Name: "ZoomRotation", Offset: 32, NameHash: 3320560134, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 ZoomRotation { get; set; } = new Vec3(); // 0x20 (32)
+		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable]
+		public Vec3 ZoomRotation { get; set; } = new();
 		
-		[ContainerField(Name: "ZoomOffset", Offset: 48, NameHash: 4245097407, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 ZoomOffset { get; set; } = new Vec3(); // 0x30 (48)
+		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable]
+		public Vec3 ZoomOffset { get; set; } = new();
 		
-		[ContainerField(Name: "Effect", Offset: 64, NameHash: 2332983090, Flags: 53)]
-		public CtrRef<EffectBlueprint> Effect { get; set; } = new CtrRef<EffectBlueprint>(); // 0x40 (64)
+		[ContainerField(64)]
+		public CtrRef<EffectBlueprint> Effect { get; set; } = new();
 		
-		[ContainerField(Name: "UseZoomOffset", Offset: 68, NameHash: 3904716028, Flags: 49325), LayoutImmutable, Blittable]
-		public bool UseZoomOffset { get; set; } // 0x44 (68)
+		[ContainerField(68), LayoutImmutable, Blittable]
+		public bool UseZoomOffset { get; set; }
 		
-		[ContainerField(Name: "UseZoomRotation", Offset: 69, NameHash: 3031914373, Flags: 49325), LayoutImmutable, Blittable]
-		public bool UseZoomRotation { get; set; } // 0x45 (69)
+		[ContainerField(69), LayoutImmutable, Blittable]
+		public bool UseZoomRotation { get; set; }
 		
-		[ContainerField(Name: "DisableDuringZoom", Offset: 70, NameHash: 3735365637, Flags: 49325), LayoutImmutable, Blittable]
-		public bool DisableDuringZoom { get; set; } // 0x46 (70)
+		[ContainerField(70), LayoutImmutable, Blittable]
+		public bool DisableDuringZoom { get; set; }
 		
-		[ContainerField(Name: "UpdateTransform", Offset: 71, NameHash: 2409007832, Flags: 49325), LayoutImmutable, Blittable]
-		public bool UpdateTransform { get; set; } // 0x47 (71)
+		[ContainerField(71), LayoutImmutable, Blittable]
+		public bool UpdateTransform { get; set; }
 		
-		[ContainerField(Name: "StopLoopingEffects", Offset: 72, NameHash: 3709447781, Flags: 49325), LayoutImmutable, Blittable]
-		public bool StopLoopingEffects { get; set; } // 0x48 (72)
+		[ContainerField(72), LayoutImmutable, Blittable]
+		public bool StopLoopingEffects { get; set; }
 		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		public static void Deserialize(FireEffectData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 48673745:
-					Rotation = (Vec3) p_Value;
-					break;
-
-				case 2871410728:
-					Offset = (Vec3) p_Value;
-					break;
-
-				case 3320560134:
-					ZoomRotation = (Vec3) p_Value;
-					break;
-
-				case 4245097407:
-					ZoomOffset = (Vec3) p_Value;
-					break;
-
-				case 2332983090:
-					Effect = (CtrRef<EffectBlueprint>) p_Value;
-					break;
-
-				case 3904716028:
-					UseZoomOffset = (bool) p_Value;
-					break;
-
-				case 3031914373:
-					UseZoomRotation = (bool) p_Value;
-					break;
-
-				case 3735365637:
-					DisableDuringZoom = (bool) p_Value;
-					break;
-
-				case 2409007832:
-					UpdateTransform = (bool) p_Value;
-					break;
-
-				case 3709447781:
-					StopLoopingEffects = (bool) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 48673745:
-					return Rotation;
-
-				case 2871410728:
-					return Offset;
-
-				case 3320560134:
-					return ZoomRotation;
-
-				case 4245097407:
-					return ZoomOffset;
-
-				case 2332983090:
-					return Effect;
-
-				case 3904716028:
-					return UseZoomOffset;
-
-				case 3031914373:
-					return UseZoomRotation;
-
-				case 3735365637:
-					return DisableDuringZoom;
-
-				case 2409007832:
-					return UpdateTransform;
-
-				case 3709447781:
-					return StopLoopingEffects;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 48673745:
-					return typeof(FireEffectData).GetProperty(nameof(Rotation));
-
-				case 2871410728:
-					return typeof(FireEffectData).GetProperty(nameof(Offset));
-
-				case 3320560134:
-					return typeof(FireEffectData).GetProperty(nameof(ZoomRotation));
-
-				case 4245097407:
-					return typeof(FireEffectData).GetProperty(nameof(ZoomOffset));
-
-				case 2332983090:
-					return typeof(FireEffectData).GetProperty(nameof(Effect));
-
-				case 3904716028:
-					return typeof(FireEffectData).GetProperty(nameof(UseZoomOffset));
-
-				case 3031914373:
-					return typeof(FireEffectData).GetProperty(nameof(UseZoomRotation));
-
-				case 3735365637:
-					return typeof(FireEffectData).GetProperty(nameof(DisableDuringZoom));
-
-				case 2409007832:
-					return typeof(FireEffectData).GetProperty(nameof(UpdateTransform));
-
-				case 3709447781:
-					return typeof(FireEffectData).GetProperty(nameof(StopLoopingEffects));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
+			fb.Vec3.Deserialize(p_Instance.Rotation, p_Reader, p_Parser);
+			fb.Vec3.Deserialize(p_Instance.Offset, p_Reader, p_Parser);
+			fb.Vec3.Deserialize(p_Instance.ZoomRotation, p_Reader, p_Parser);
+			fb.Vec3.Deserialize(p_Instance.ZoomOffset, p_Reader, p_Parser);
+			p_Instance.Effect.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
+			p_Instance.UseZoomOffset = p_Reader.ReadBool();
+			p_Instance.UseZoomRotation = p_Reader.ReadBool();
+			p_Instance.DisableDuringZoom = p_Reader.ReadBool();
+			p_Instance.UpdateTransform = p_Reader.ReadBool();
+			p_Instance.StopLoopingEffects = p_Reader.ReadBool();
+			p_Reader.Seek(7, SeekOrigin.Current);
 		}
 	}
 }

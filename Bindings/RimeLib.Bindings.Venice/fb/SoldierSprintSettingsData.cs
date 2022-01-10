@@ -5,164 +5,64 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 40)]
+	[ContainerType(4, 40)]
 	public class SoldierSprintSettingsData : 
 		DataContainer
 	{
-		protected float m_Fov = new float();
-		[ContainerField(Name: "Fov", Offset: 8, NameHash: 193443802, Flags: 49469), LayoutImmutable, Blittable]
-		public float Fov { get { return m_Fov; } set { if (OnPropertyChanging("SoldierSprintSettingsData." + nameof(Fov), this, m_Fov, value)) m_Fov = value; } } // 0x8 (8)
-		
-		protected float m_FovInDelay = new float();
-		[ContainerField(Name: "FovInDelay", Offset: 12, NameHash: 2914334632, Flags: 49469), LayoutImmutable, Blittable]
-		public float FovInDelay { get { return m_FovInDelay; } set { if (OnPropertyChanging("SoldierSprintSettingsData." + nameof(FovInDelay), this, m_FovInDelay, value)) m_FovInDelay = value; } } // 0xC (12)
-		
-		protected float m_FovInTime = new float();
-		[ContainerField(Name: "FovInTime", Offset: 16, NameHash: 1259080584, Flags: 49469), LayoutImmutable, Blittable]
-		public float FovInTime { get { return m_FovInTime; } set { if (OnPropertyChanging("SoldierSprintSettingsData." + nameof(FovInTime), this, m_FovInTime, value)) m_FovInTime = value; } } // 0x10 (16)
-		
-		protected float m_FovOutDelay = new float();
-		[ContainerField(Name: "FovOutDelay", Offset: 20, NameHash: 401599137, Flags: 49469), LayoutImmutable, Blittable]
-		public float FovOutDelay { get { return m_FovOutDelay; } set { if (OnPropertyChanging("SoldierSprintSettingsData." + nameof(FovOutDelay), this, m_FovOutDelay, value)) m_FovOutDelay = value; } } // 0x14 (20)
-		
-		protected float m_FovOutTime = new float();
-		[ContainerField(Name: "FovOutTime", Offset: 24, NameHash: 3785964001, Flags: 49469), LayoutImmutable, Blittable]
-		public float FovOutTime { get { return m_FovOutTime; } set { if (OnPropertyChanging("SoldierSprintSettingsData." + nameof(FovOutTime), this, m_FovOutTime, value)) m_FovOutTime = value; } } // 0x18 (24)
-		
-		protected float m_RecoverTime = new float();
-		[ContainerField(Name: "RecoverTime", Offset: 28, NameHash: 3786458634, Flags: 49469), LayoutImmutable, Blittable]
-		public float RecoverTime { get { return m_RecoverTime; } set { if (OnPropertyChanging("SoldierSprintSettingsData." + nameof(RecoverTime), this, m_RecoverTime, value)) m_RecoverTime = value; } } // 0x1C (28)
-		
-		protected float m_SprintToProneRecoverTime = new float();
-		[ContainerField(Name: "SprintToProneRecoverTime", Offset: 32, NameHash: 498825685, Flags: 49469), LayoutImmutable, Blittable]
-		public float SprintToProneRecoverTime { get { return m_SprintToProneRecoverTime; } set { if (OnPropertyChanging("SoldierSprintSettingsData." + nameof(SprintToProneRecoverTime), this, m_SprintToProneRecoverTime, value)) m_SprintToProneRecoverTime = value; } } // 0x20 (32)
-		
-		protected List<EntryInputActionEnum> m_InterruptingActions = new List<EntryInputActionEnum>();
-		[ContainerField(Name: "InterruptingActions", Offset: 36, NameHash: 1860467119, Flags: 65)]
-		public List<EntryInputActionEnum> InterruptingActions { get { return m_InterruptingActions; } set { if (OnPropertyChanging("SoldierSprintSettingsData." + nameof(InterruptingActions), this, m_InterruptingActions, value)) m_InterruptingActions = value; } } // 0x24 (36)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(8), LayoutImmutable, Blittable]
+		public float Fov { get; set; }
+
+		[ContainerField(12), LayoutImmutable, Blittable]
+		public float FovInDelay { get; set; }
+
+		[ContainerField(16), LayoutImmutable, Blittable]
+		public float FovInTime { get; set; }
+
+		[ContainerField(20), LayoutImmutable, Blittable]
+		public float FovOutDelay { get; set; }
+
+		[ContainerField(24), LayoutImmutable, Blittable]
+		public float FovOutTime { get; set; }
+
+		[ContainerField(28), LayoutImmutable, Blittable]
+		public float RecoverTime { get; set; }
+
+		[ContainerField(32), LayoutImmutable, Blittable]
+		public float SprintToProneRecoverTime { get; set; }
+
+		[ContainerField(36)]
+		public List<EntryInputActionEnum> InterruptingActions { get; set; } = new();
+
+		public static void Deserialize(SoldierSprintSettingsData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Instance.Fov = p_Reader.ReadSingle();
+			p_Instance.FovInDelay = p_Reader.ReadSingle();
+			p_Instance.FovInTime = p_Reader.ReadSingle();
+			p_Instance.FovOutDelay = p_Reader.ReadSingle();
+			p_Instance.FovOutTime = p_Reader.ReadSingle();
+			p_Instance.RecoverTime = p_Reader.ReadSingle();
+			p_Instance.SprintToProneRecoverTime = p_Reader.ReadSingle();
+			p_Instance.InterruptingActions.Clear();
+			(RimeReader Reader, uint Count) s_InterruptingActions = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_InterruptingActions.Count; ++i)
 			{
-				case 193443802:
-					Fov = (float) p_Value;
-					break;
-
-				case 2914334632:
-					FovInDelay = (float) p_Value;
-					break;
-
-				case 1259080584:
-					FovInTime = (float) p_Value;
-					break;
-
-				case 401599137:
-					FovOutDelay = (float) p_Value;
-					break;
-
-				case 3785964001:
-					FovOutTime = (float) p_Value;
-					break;
-
-				case 3786458634:
-					RecoverTime = (float) p_Value;
-					break;
-
-				case 498825685:
-					SprintToProneRecoverTime = (float) p_Value;
-					break;
-
-				case 1860467119:
-					if (p_Value.GetType() == typeof (List<uint>))
-						InterruptingActions = ((List<uint>) p_Value).Select(x => (EntryInputActionEnum) Enum.ToObject(typeof(EntryInputActionEnum), x)).ToList();
-					else
-						InterruptingActions = (List<EntryInputActionEnum>) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_Value = (EntryInputActionEnum) s_InterruptingActions.Reader.ReadInt32();
+				p_Instance.InterruptingActions.Add(s_Value);
 			}
+			
+			s_InterruptingActions.Reader.Dispose();
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 193443802:
-					return Fov;
-
-				case 2914334632:
-					return FovInDelay;
-
-				case 1259080584:
-					return FovInTime;
-
-				case 401599137:
-					return FovOutDelay;
-
-				case 3785964001:
-					return FovOutTime;
-
-				case 3786458634:
-					return RecoverTime;
-
-				case 498825685:
-					return SprintToProneRecoverTime;
-
-				case 1860467119:
-					return InterruptingActions;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 193443802:
-					return typeof(SoldierSprintSettingsData).GetProperty(nameof(Fov));
-
-				case 2914334632:
-					return typeof(SoldierSprintSettingsData).GetProperty(nameof(FovInDelay));
-
-				case 1259080584:
-					return typeof(SoldierSprintSettingsData).GetProperty(nameof(FovInTime));
-
-				case 401599137:
-					return typeof(SoldierSprintSettingsData).GetProperty(nameof(FovOutDelay));
-
-				case 3785964001:
-					return typeof(SoldierSprintSettingsData).GetProperty(nameof(FovOutTime));
-
-				case 3786458634:
-					return typeof(SoldierSprintSettingsData).GetProperty(nameof(RecoverTime));
-
-				case 498825685:
-					return typeof(SoldierSprintSettingsData).GetProperty(nameof(SprintToProneRecoverTime));
-
-				case 1860467119:
-					return typeof(SoldierSprintSettingsData).GetProperty(nameof(InterruptingActions));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

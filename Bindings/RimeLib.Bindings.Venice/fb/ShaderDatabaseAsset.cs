@@ -5,63 +5,28 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
+	[ContainerType(4, 16)]
 	public class ShaderDatabaseAsset : 
 		Asset
 	{
-		protected string m_LevelName = string.Empty;
-		[ContainerField(Name: "LevelName", Offset: 12, NameHash: 1599082292, Flags: 16509), LayoutImmutable]
-		public string LevelName { get { return m_LevelName; } set { if (OnPropertyChanging("ShaderDatabaseAsset." + nameof(LevelName), this, m_LevelName, value)) m_LevelName = value; } } // 0xC (12)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 1599082292:
-					LevelName = (string) p_Value;
-					break;
+		[ContainerField(12), LayoutImmutable]
+		public string LevelName { get; set; } = string.Empty;
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
+		public static void Deserialize(ShaderDatabaseAsset p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
+		{
+			p_Instance.LevelName = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1599082292:
-					return LevelName;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1599082292:
-					return typeof(ShaderDatabaseAsset).GetProperty(nameof(LevelName));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

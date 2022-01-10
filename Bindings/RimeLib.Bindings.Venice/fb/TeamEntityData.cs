@@ -5,77 +5,33 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 16,  Flags: 53, Size: 112)]
+	[ContainerType(16, 112)]
 	public class TeamEntityData : 
 		GameEntityData
 	{
-		protected CtrRef<TeamData> m_Team = new CtrRef<TeamData>();
-		[ContainerField(Name: "Team", Offset: 96, NameHash: 2089309528, Flags: 53)]
-		public CtrRef<TeamData> Team { get { return m_Team; } set { if (OnPropertyChanging("TeamEntityData." + nameof(Team), this, m_Team, value)) m_Team = value; } } // 0x60 (96)
-		
-		protected TeamId m_Id = new TeamId();
-		[ContainerField(Name: "Id", Offset: 100, NameHash: 5862152, Flags: 137)]
-		public TeamId Id { get { return m_Id; } set { if (OnPropertyChanging("TeamEntityData." + nameof(Id), this, m_Id, value)) m_Id = value; } } // 0x64 (100)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(96)]
+		public CtrRef<TeamData> Team { get; set; } = new();
+
+		[ContainerField(100)]
+		public TeamId Id { get; set; } = new();
+
+		public static void Deserialize(TeamEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 2089309528:
-					Team = (CtrRef<TeamData>) p_Value;
-					break;
-
-				case 5862152:
-					Id = (TeamId) Enum.ToObject(typeof(TeamId), p_Value);
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
+			p_Instance.Team.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
+			p_Instance.Id = (TeamId) p_Reader.ReadInt32();
+			p_Reader.Seek(8, SeekOrigin.Current);
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2089309528:
-					return Team;
-
-				case 5862152:
-					return Id;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2089309528:
-					return typeof(TeamEntityData).GetProperty(nameof(Team));
-
-				case 5862152:
-					return typeof(TeamEntityData).GetProperty(nameof(Id));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

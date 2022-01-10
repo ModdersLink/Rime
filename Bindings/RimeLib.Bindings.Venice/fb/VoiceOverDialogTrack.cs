@@ -5,189 +5,83 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 44)]
+	[ContainerType(4, 44)]
 	public class VoiceOverDialogTrack : 
 		DataContainer
 	{
-		protected CtrRef<VoiceOverValueConnection> m_Source = new CtrRef<VoiceOverValueConnection>();
-		[ContainerField(Name: "Source", Offset: 8, NameHash: 3339738264, Flags: 53)]
-		public CtrRef<VoiceOverValueConnection> Source { get { return m_Source; } set { if (OnPropertyChanging("VoiceOverDialogTrack." + nameof(Source), this, m_Source, value)) m_Source = value; } } // 0x8 (8)
-		
-		protected CtrRef<VoiceOverValueConnection> m_TakeControl = new CtrRef<VoiceOverValueConnection>();
-		[ContainerField(Name: "TakeControl", Offset: 12, NameHash: 777187609, Flags: 53)]
-		public CtrRef<VoiceOverValueConnection> TakeControl { get { return m_TakeControl; } set { if (OnPropertyChanging("VoiceOverDialogTrack." + nameof(TakeControl), this, m_TakeControl, value)) m_TakeControl = value; } } // 0xC (12)
-		
-		protected List<VoiceOverDialogTakeMapping> m_TakeIndexMapping = new List<VoiceOverDialogTakeMapping>();
-		[ContainerField(Name: "TakeIndexMapping", Offset: 16, NameHash: 1460629004, Flags: 65)]
-		public List<VoiceOverDialogTakeMapping> TakeIndexMapping { get { return m_TakeIndexMapping; } set { if (OnPropertyChanging("VoiceOverDialogTrack." + nameof(TakeIndexMapping), this, m_TakeIndexMapping, value)) m_TakeIndexMapping = value; } } // 0x10 (16)
-		
-		protected VoiceOverDialogTakeBehavior m_TakeSwitching = new VoiceOverDialogTakeBehavior();
-		[ContainerField(Name: "TakeSwitching", Offset: 20, NameHash: 1993728428, Flags: 137)]
-		public VoiceOverDialogTakeBehavior TakeSwitching { get { return m_TakeSwitching; } set { if (OnPropertyChanging("VoiceOverDialogTrack." + nameof(TakeSwitching), this, m_TakeSwitching, value)) m_TakeSwitching = value; } } // 0x14 (20)
-		
-		protected RefArray<VoiceOverDialogClip> m_Clips = new RefArray<VoiceOverDialogClip>();
-		[ContainerField(Name: "Clips", Offset: 24, NameHash: 212627296, Flags: 65)]
-		public RefArray<VoiceOverDialogClip> Clips { get { return m_Clips; } set { if (OnPropertyChanging("VoiceOverDialogTrack." + nameof(Clips), this, m_Clips, value)) m_Clips = value; } } // 0x18 (24)
-		
-		protected CtrRef<AudioGraphNodeData> m_SamplerNode = new CtrRef<AudioGraphNodeData>();
-		[ContainerField(Name: "SamplerNode", Offset: 28, NameHash: 2812102673, Flags: 53)]
-		public CtrRef<AudioGraphNodeData> SamplerNode { get { return m_SamplerNode; } set { if (OnPropertyChanging("VoiceOverDialogTrack." + nameof(SamplerNode), this, m_SamplerNode, value)) m_SamplerNode = value; } } // 0x1C (28)
-		
-		protected CtrRef<AudioGraphNodeData> m_Output = new CtrRef<AudioGraphNodeData>();
-		[ContainerField(Name: "Output", Offset: 32, NameHash: 2895736442, Flags: 53)]
-		public CtrRef<AudioGraphNodeData> Output { get { return m_Output; } set { if (OnPropertyChanging("VoiceOverDialogTrack." + nameof(Output), this, m_Output, value)) m_Output = value; } } // 0x20 (32)
-		
-		protected CtrRef<VoiceOverConversationQueueGroup> m_QueueGroup = new CtrRef<VoiceOverConversationQueueGroup>();
-		[ContainerField(Name: "QueueGroup", Offset: 36, NameHash: 2016027659, Flags: 53)]
-		public CtrRef<VoiceOverConversationQueueGroup> QueueGroup { get { return m_QueueGroup; } set { if (OnPropertyChanging("VoiceOverDialogTrack." + nameof(QueueGroup), this, m_QueueGroup, value)) m_QueueGroup = value; } } // 0x24 (36)
-		
-		protected sbyte m_ParentTrackIndex = new sbyte();
-		[ContainerField(Name: "ParentTrackIndex", Offset: 40, NameHash: 3800885128, Flags: 49341), LayoutImmutable, Blittable]
-		public sbyte ParentTrackIndex { get { return m_ParentTrackIndex; } set { if (OnPropertyChanging("VoiceOverDialogTrack." + nameof(ParentTrackIndex), this, m_ParentTrackIndex, value)) m_ParentTrackIndex = value; } } // 0x28 (40)
-		
-		protected bool m_TakeSwitchingOnResume = new bool();
-		[ContainerField(Name: "TakeSwitchingOnResume", Offset: 41, NameHash: 3503965716, Flags: 49325), LayoutImmutable, Blittable]
-		public bool TakeSwitchingOnResume { get { return m_TakeSwitchingOnResume; } set { if (OnPropertyChanging("VoiceOverDialogTrack." + nameof(TakeSwitchingOnResume), this, m_TakeSwitchingOnResume, value)) m_TakeSwitchingOnResume = value; } } // 0x29 (41)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(8)]
+		public CtrRef<VoiceOverValueConnection> Source { get; set; } = new();
+
+		[ContainerField(12)]
+		public CtrRef<VoiceOverValueConnection> TakeControl { get; set; } = new();
+
+		[ContainerField(16)]
+		public List<VoiceOverDialogTakeMapping> TakeIndexMapping { get; set; } = new();
+
+		[ContainerField(20)]
+		public VoiceOverDialogTakeBehavior TakeSwitching { get; set; } = new();
+
+		[ContainerField(24)]
+		public List<CtrRef<VoiceOverDialogClip>> Clips { get; set; } = new();
+
+		[ContainerField(28)]
+		public CtrRef<AudioGraphNodeData> SamplerNode { get; set; } = new();
+
+		[ContainerField(32)]
+		public CtrRef<AudioGraphNodeData> Output { get; set; } = new();
+
+		[ContainerField(36)]
+		public CtrRef<VoiceOverConversationQueueGroup> QueueGroup { get; set; } = new();
+
+		[ContainerField(40), LayoutImmutable, Blittable]
+		public sbyte ParentTrackIndex { get; set; }
+
+		[ContainerField(41), LayoutImmutable, Blittable]
+		public bool TakeSwitchingOnResume { get; set; }
+
+		public static void Deserialize(VoiceOverDialogTrack p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Instance.Source.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
+			p_Instance.TakeControl.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
+			p_Instance.TakeIndexMapping.Clear();
+			(RimeReader Reader, uint Count) s_TakeIndexMapping = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_TakeIndexMapping.Count; ++i)
 			{
-				case 3339738264:
-					Source = (CtrRef<VoiceOverValueConnection>) p_Value;
-					break;
-
-				case 777187609:
-					TakeControl = (CtrRef<VoiceOverValueConnection>) p_Value;
-					break;
-
-				case 1460629004:
-					TakeIndexMapping = (List<VoiceOverDialogTakeMapping>) p_Value;
-					break;
-
-				case 1993728428:
-					TakeSwitching = (VoiceOverDialogTakeBehavior) Enum.ToObject(typeof(VoiceOverDialogTakeBehavior), p_Value);
-					break;
-
-				case 212627296:
-					Clips = (RefArray<VoiceOverDialogClip>) p_Value;
-					break;
-
-				case 2812102673:
-					SamplerNode = (CtrRef<AudioGraphNodeData>) p_Value;
-					break;
-
-				case 2895736442:
-					Output = (CtrRef<AudioGraphNodeData>) p_Value;
-					break;
-
-				case 2016027659:
-					QueueGroup = (CtrRef<VoiceOverConversationQueueGroup>) p_Value;
-					break;
-
-				case 3800885128:
-					ParentTrackIndex = (sbyte) p_Value;
-					break;
-
-				case 3503965716:
-					TakeSwitchingOnResume = (bool) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_Value = new VoiceOverDialogTakeMapping();
+				fb.VoiceOverDialogTakeMapping.Deserialize(s_Value, s_TakeIndexMapping.Reader, p_Parser);
+				p_Instance.TakeIndexMapping.Add(s_Value);
 			}
+			
+			s_TakeIndexMapping.Reader.Dispose();
+			p_Instance.TakeSwitching = (VoiceOverDialogTakeBehavior) p_Reader.ReadInt32();
+			p_Instance.Clips.Clear();
+			(RimeReader Reader, uint Count) s_Clips = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_Clips.Count; ++i)
+			{
+				var s_CtrRef = new CtrRef<VoiceOverDialogClip>();
+				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_Clips.Reader.ReadUInt32()));
+				p_Instance.Clips.Add(s_CtrRef);
+			}
+			
+			s_Clips.Reader.Dispose();
+			p_Instance.SamplerNode.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
+			p_Instance.Output.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
+			p_Instance.QueueGroup.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
+			p_Instance.ParentTrackIndex = p_Reader.ReadSByte();
+			p_Instance.TakeSwitchingOnResume = p_Reader.ReadBool();
+			p_Reader.Seek(2, SeekOrigin.Current);
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3339738264:
-					return Source;
-
-				case 777187609:
-					return TakeControl;
-
-				case 1460629004:
-					return TakeIndexMapping;
-
-				case 1993728428:
-					return TakeSwitching;
-
-				case 212627296:
-					return Clips;
-
-				case 2812102673:
-					return SamplerNode;
-
-				case 2895736442:
-					return Output;
-
-				case 2016027659:
-					return QueueGroup;
-
-				case 3800885128:
-					return ParentTrackIndex;
-
-				case 3503965716:
-					return TakeSwitchingOnResume;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3339738264:
-					return typeof(VoiceOverDialogTrack).GetProperty(nameof(Source));
-
-				case 777187609:
-					return typeof(VoiceOverDialogTrack).GetProperty(nameof(TakeControl));
-
-				case 1460629004:
-					return typeof(VoiceOverDialogTrack).GetProperty(nameof(TakeIndexMapping));
-
-				case 1993728428:
-					return typeof(VoiceOverDialogTrack).GetProperty(nameof(TakeSwitching));
-
-				case 212627296:
-					return typeof(VoiceOverDialogTrack).GetProperty(nameof(Clips));
-
-				case 2812102673:
-					return typeof(VoiceOverDialogTrack).GetProperty(nameof(SamplerNode));
-
-				case 2895736442:
-					return typeof(VoiceOverDialogTrack).GetProperty(nameof(Output));
-
-				case 2016027659:
-					return typeof(VoiceOverDialogTrack).GetProperty(nameof(QueueGroup));
-
-				case 3800885128:
-					return typeof(VoiceOverDialogTrack).GetProperty(nameof(ParentTrackIndex));
-
-				case 3503965716:
-					return typeof(VoiceOverDialogTrack).GetProperty(nameof(TakeSwitchingOnResume));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

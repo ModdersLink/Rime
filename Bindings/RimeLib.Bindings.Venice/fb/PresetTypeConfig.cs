@@ -5,126 +5,56 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 41, Size: 24)]
-	public class PresetTypeConfig : FrostbiteContainer
+	[ContainerType(4, 24)]
+	public class PresetTypeConfig
 	{
-		[ContainerField(Name: "PresetId", Offset: 0, NameHash: 2625045485, Flags: 49405), LayoutImmutable, Blittable]
-		public int PresetId { get; set; } // 0x0 (0)
+		[ContainerField(0), LayoutImmutable, Blittable]
+		public int PresetId { get; set; }
 		
-		[ContainerField(Name: "Key", Offset: 4, NameHash: 193457490, Flags: 16509), LayoutImmutable]
-		public string Key { get; set; } // 0x4 (4)
+		[ContainerField(4), LayoutImmutable]
+		public string Key { get; set; } = string.Empty;
 		
-		[ContainerField(Name: "NameSid", Offset: 8, NameHash: 3153745340, Flags: 16509), LayoutImmutable]
-		public string NameSid { get; set; } // 0x8 (8)
+		[ContainerField(8), LayoutImmutable]
+		public string NameSid { get; set; } = string.Empty;
 		
-		[ContainerField(Name: "DescSid", Offset: 12, NameHash: 4021143274, Flags: 16509), LayoutImmutable]
-		public string DescSid { get; set; } // 0xC (12)
+		[ContainerField(12), LayoutImmutable]
+		public string DescSid { get; set; } = string.Empty;
 		
-		[ContainerField(Name: "LockedSettings", Offset: 16, NameHash: 3735643818, Flags: 65)]
-		public List<LockedSettingConfig> LockedSettings { get; set; } = new List<LockedSettingConfig>(); // 0x10 (16)
+		[ContainerField(16)]
+		public List<LockedSettingConfig> LockedSettings { get; set; } = new();
 		
-		[ContainerField(Name: "Predefined", Offset: 20, NameHash: 2934266467, Flags: 49325), LayoutImmutable, Blittable]
-		public bool Predefined { get; set; } // 0x14 (20)
+		[ContainerField(20), LayoutImmutable, Blittable]
+		public bool Predefined { get; set; }
 		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		public static void Deserialize(PresetTypeConfig p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Instance.PresetId = p_Reader.ReadInt32();
+			p_Instance.Key = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
+			p_Instance.NameSid = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
+			p_Instance.DescSid = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
+			p_Instance.LockedSettings.Clear();
+			(RimeReader Reader, uint Count) s_LockedSettings = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_LockedSettings.Count; ++i)
 			{
-				case 2625045485:
-					PresetId = (int) p_Value;
-					break;
-
-				case 193457490:
-					Key = (string) p_Value;
-					break;
-
-				case 3153745340:
-					NameSid = (string) p_Value;
-					break;
-
-				case 4021143274:
-					DescSid = (string) p_Value;
-					break;
-
-				case 3735643818:
-					LockedSettings = (List<LockedSettingConfig>) p_Value;
-					break;
-
-				case 2934266467:
-					Predefined = (bool) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_Value = new LockedSettingConfig();
+				fb.LockedSettingConfig.Deserialize(s_Value, s_LockedSettings.Reader, p_Parser);
+				p_Instance.LockedSettings.Add(s_Value);
 			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2625045485:
-					return PresetId;
-
-				case 193457490:
-					return Key;
-
-				case 3153745340:
-					return NameSid;
-
-				case 4021143274:
-					return DescSid;
-
-				case 3735643818:
-					return LockedSettings;
-
-				case 2934266467:
-					return Predefined;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2625045485:
-					return typeof(PresetTypeConfig).GetProperty(nameof(PresetId));
-
-				case 193457490:
-					return typeof(PresetTypeConfig).GetProperty(nameof(Key));
-
-				case 3153745340:
-					return typeof(PresetTypeConfig).GetProperty(nameof(NameSid));
-
-				case 4021143274:
-					return typeof(PresetTypeConfig).GetProperty(nameof(DescSid));
-
-				case 3735643818:
-					return typeof(PresetTypeConfig).GetProperty(nameof(LockedSettings));
-
-				case 2934266467:
-					return typeof(PresetTypeConfig).GetProperty(nameof(Predefined));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
+			
+			s_LockedSettings.Reader.Dispose();
+			p_Instance.Predefined = p_Reader.ReadBool();
+			p_Reader.Seek(3, SeekOrigin.Current);
 		}
 	}
 }

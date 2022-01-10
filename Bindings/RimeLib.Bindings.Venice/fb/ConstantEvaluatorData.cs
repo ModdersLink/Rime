@@ -5,63 +5,28 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
+	[ContainerType(4, 16)]
 	public class ConstantEvaluatorData : 
 		EvaluatorData
 	{
-		protected float m_Scale = new float();
-		[ContainerField(Name: "Scale", Offset: 12, NameHash: 231223453, Flags: 49469), LayoutImmutable, Blittable]
-		public float Scale { get { return m_Scale; } set { if (OnPropertyChanging("ConstantEvaluatorData." + nameof(Scale), this, m_Scale, value)) m_Scale = value; } } // 0xC (12)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 231223453:
-					Scale = (float) p_Value;
-					break;
+		[ContainerField(12), LayoutImmutable, Blittable]
+		public float Scale { get; set; }
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
+		public static void Deserialize(ConstantEvaluatorData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
+		{
+			p_Instance.Scale = p_Reader.ReadSingle();
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 231223453:
-					return Scale;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 231223453:
-					return typeof(ConstantEvaluatorData).GetProperty(nameof(Scale));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

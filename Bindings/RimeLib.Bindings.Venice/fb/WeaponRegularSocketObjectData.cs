@@ -5,77 +5,44 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 16,  Flags: 53, Size: 112)]
+	[ContainerType(16, 112)]
 	public class WeaponRegularSocketObjectData : 
 		WeaponSocketObjectData
 	{
-		protected LinearTransform m_Transform = new LinearTransform();
-		[ContainerField(Name: "Transform", Offset: 32, NameHash: 2270319721, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
-		public LinearTransform Transform { get { return m_Transform; } set { if (OnPropertyChanging("WeaponRegularSocketObjectData." + nameof(Transform), this, m_Transform, value)) m_Transform = value; } } // 0x20 (32)
-		
-		protected List<LinearTransform> m_Mesh3pTransforms = new List<LinearTransform>();
-		[ContainerField(Name: "Mesh3pTransforms", Offset: 96, NameHash: 1625436330, Flags: 65)]
-		public List<LinearTransform> Mesh3pTransforms { get { return m_Mesh3pTransforms; } set { if (OnPropertyChanging("WeaponRegularSocketObjectData." + nameof(Mesh3pTransforms), this, m_Mesh3pTransforms, value)) m_Mesh3pTransforms = value; } } // 0x60 (96)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable]
+		public LinearTransform Transform { get; set; } = new();
+
+		[ContainerField(96)]
+		public List<LinearTransform> Mesh3pTransforms { get; set; } = new();
+
+		public static void Deserialize(WeaponRegularSocketObjectData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Reader.Seek(8, SeekOrigin.Current);
+			fb.LinearTransform.Deserialize(p_Instance.Transform, p_Reader, p_Parser);
+			p_Reader.Seek(8, SeekOrigin.Current);
+			p_Instance.Mesh3pTransforms.Clear();
+			(RimeReader Reader, uint Count) s_Mesh3pTransforms = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_Mesh3pTransforms.Count; ++i)
 			{
-				case 2270319721:
-					Transform = (LinearTransform) p_Value;
-					break;
-
-				case 1625436330:
-					Mesh3pTransforms = (List<LinearTransform>) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_Value = new LinearTransform();
+				fb.LinearTransform.Deserialize(s_Value, s_Mesh3pTransforms.Reader, p_Parser);
+				p_Instance.Mesh3pTransforms.Add(s_Value);
 			}
+			
+			s_Mesh3pTransforms.Reader.Dispose();
+			p_Reader.Seek(20, SeekOrigin.Current);
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2270319721:
-					return Transform;
-
-				case 1625436330:
-					return Mesh3pTransforms;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2270319721:
-					return typeof(WeaponRegularSocketObjectData).GetProperty(nameof(Transform));
-
-				case 1625436330:
-					return typeof(WeaponRegularSocketObjectData).GetProperty(nameof(Mesh3pTransforms));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

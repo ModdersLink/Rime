@@ -5,139 +5,51 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 16,  Flags: 41, Size: 64)]
-	public class UIMinimapDistanceFieldParams : FrostbiteContainer
+	[ContainerType(16, 64)]
+	public class UIMinimapDistanceFieldParams
 	{
-		[ContainerField(Name: "ColorTint", Offset: 0, NameHash: 518108063, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
-		public Vec4 ColorTint { get; set; } = new Vec4(); // 0x0 (0)
+		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable]
+		public Vec4 ColorTint { get; set; } = new();
 		
-		[ContainerField(Name: "OutlineColor", Offset: 16, NameHash: 3944405112, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
-		public Vec4 OutlineColor { get; set; } = new Vec4(); // 0x10 (16)
+		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable]
+		public Vec4 OutlineColor { get; set; } = new();
 		
-		[ContainerField(Name: "DistanceScale", Offset: 32, NameHash: 773140030, Flags: 49469), LayoutImmutable, Blittable]
-		public float DistanceScale { get; set; } // 0x20 (32)
+		[ContainerField(32), LayoutImmutable, Blittable]
+		public float DistanceScale { get; set; }
 		
-		[ContainerField(Name: "AlphaThreshold", Offset: 36, NameHash: 2686813414, Flags: 49469), LayoutImmutable, Blittable]
-		public float AlphaThreshold { get; set; } // 0x24 (36)
+		[ContainerField(36), LayoutImmutable, Blittable]
+		public float AlphaThreshold { get; set; }
 		
-		[ContainerField(Name: "OutlineInner", Offset: 40, NameHash: 3946538011, Flags: 49469), LayoutImmutable, Blittable]
-		public float OutlineInner { get; set; } // 0x28 (40)
+		[ContainerField(40), LayoutImmutable, Blittable]
+		public float OutlineInner { get; set; }
 		
-		[ContainerField(Name: "OutlineOuter", Offset: 44, NameHash: 3949917564, Flags: 49469), LayoutImmutable, Blittable]
-		public float OutlineOuter { get; set; } // 0x2C (44)
+		[ContainerField(44), LayoutImmutable, Blittable]
+		public float OutlineOuter { get; set; }
 		
-		[ContainerField(Name: "DistanceField", Offset: 48, NameHash: 750822692, Flags: 53)]
-		public CtrRef<UIDistanceFieldAsset> DistanceField { get; set; } = new CtrRef<UIDistanceFieldAsset>(); // 0x30 (48)
+		[ContainerField(48)]
+		public CtrRef<UIDistanceFieldAsset> DistanceField { get; set; } = new();
 		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		public static void Deserialize(UIMinimapDistanceFieldParams p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 518108063:
-					ColorTint = (Vec4) p_Value;
-					break;
-
-				case 3944405112:
-					OutlineColor = (Vec4) p_Value;
-					break;
-
-				case 773140030:
-					DistanceScale = (float) p_Value;
-					break;
-
-				case 2686813414:
-					AlphaThreshold = (float) p_Value;
-					break;
-
-				case 3946538011:
-					OutlineInner = (float) p_Value;
-					break;
-
-				case 3949917564:
-					OutlineOuter = (float) p_Value;
-					break;
-
-				case 750822692:
-					DistanceField = (CtrRef<UIDistanceFieldAsset>) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 518108063:
-					return ColorTint;
-
-				case 3944405112:
-					return OutlineColor;
-
-				case 773140030:
-					return DistanceScale;
-
-				case 2686813414:
-					return AlphaThreshold;
-
-				case 3946538011:
-					return OutlineInner;
-
-				case 3949917564:
-					return OutlineOuter;
-
-				case 750822692:
-					return DistanceField;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 518108063:
-					return typeof(UIMinimapDistanceFieldParams).GetProperty(nameof(ColorTint));
-
-				case 3944405112:
-					return typeof(UIMinimapDistanceFieldParams).GetProperty(nameof(OutlineColor));
-
-				case 773140030:
-					return typeof(UIMinimapDistanceFieldParams).GetProperty(nameof(DistanceScale));
-
-				case 2686813414:
-					return typeof(UIMinimapDistanceFieldParams).GetProperty(nameof(AlphaThreshold));
-
-				case 3946538011:
-					return typeof(UIMinimapDistanceFieldParams).GetProperty(nameof(OutlineInner));
-
-				case 3949917564:
-					return typeof(UIMinimapDistanceFieldParams).GetProperty(nameof(OutlineOuter));
-
-				case 750822692:
-					return typeof(UIMinimapDistanceFieldParams).GetProperty(nameof(DistanceField));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
+			fb.Vec4.Deserialize(p_Instance.ColorTint, p_Reader, p_Parser);
+			fb.Vec4.Deserialize(p_Instance.OutlineColor, p_Reader, p_Parser);
+			p_Instance.DistanceScale = p_Reader.ReadSingle();
+			p_Instance.AlphaThreshold = p_Reader.ReadSingle();
+			p_Instance.OutlineInner = p_Reader.ReadSingle();
+			p_Instance.OutlineOuter = p_Reader.ReadSingle();
+			p_Instance.DistanceField.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
+			p_Reader.Seek(12, SeekOrigin.Current);
 		}
 	}
 }

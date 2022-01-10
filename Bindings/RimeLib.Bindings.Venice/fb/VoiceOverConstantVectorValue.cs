@@ -5,63 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 16,  Flags: 53, Size: 32)]
+	[ContainerType(16, 32)]
 	public class VoiceOverConstantVectorValue : 
 		VoiceOverConstantValue
 	{
-		protected Vec4 m_Value = new Vec4();
-		[ContainerField(Name: "Value", Offset: 16, NameHash: 225375086, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
-		public Vec4 Value { get { return m_Value; } set { if (OnPropertyChanging("VoiceOverConstantVectorValue." + nameof(Value), this, m_Value, value)) m_Value = value; } } // 0x10 (16)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 225375086:
-					Value = (Vec4) p_Value;
-					break;
+		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable]
+		public Vec4 Value { get; set; } = new();
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
+		public static void Deserialize(VoiceOverConstantVectorValue p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
+		{
+			p_Reader.Seek(8, SeekOrigin.Current);
+			fb.Vec4.Deserialize(p_Instance.Value, p_Reader, p_Parser);
+			p_Reader.Seek(8, SeekOrigin.Current);
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 225375086:
-					return Value;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 225375086:
-					return typeof(VoiceOverConstantVectorValue).GetProperty(nameof(Value));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

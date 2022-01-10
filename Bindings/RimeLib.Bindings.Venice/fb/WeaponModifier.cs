@@ -5,61 +5,27 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 41, Size: 232)]
-	public class WeaponModifier : FrostbiteContainer
+	[ContainerType(4, 232)]
+	public class WeaponModifier
 	{
-		[ContainerField(Name: "DummyToMakeFrostEDcompile", Offset: 0, NameHash: 1079843992, Flags: 49405), LayoutImmutable, Blittable]
-		public int DummyToMakeFrostEDcompile { get; set; } // 0x0 (0)
+		[ContainerField(0), LayoutImmutable, Blittable]
+		public int DummyToMakeFrostEDcompile { get; set; }
 		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		public static void Deserialize(WeaponModifier p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 1079843992:
-					DummyToMakeFrostEDcompile = (int) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1079843992:
-					return DummyToMakeFrostEDcompile;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1079843992:
-					return typeof(WeaponModifier).GetProperty(nameof(DummyToMakeFrostEDcompile));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
+			p_Instance.DummyToMakeFrostEDcompile = p_Reader.ReadInt32();
+			p_Reader.Seek(228, SeekOrigin.Current);
 		}
 	}
 }

@@ -5,77 +5,41 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 48)]
+	[ContainerType(4, 48)]
 	public class PersistentValueTemplate : 
 		DataContainer
 	{
-		protected PersistentValueTemplateData m_Data = new PersistentValueTemplateData();
-		[ContainerField(Name: "Data", Offset: 8, NameHash: 2088730869, Flags: 41)]
-		public PersistentValueTemplateData Data { get { return m_Data; } set { if (OnPropertyChanging("PersistentValueTemplate." + nameof(Data), this, m_Data, value)) m_Data = value; } } // 0x8 (8)
-		
-		protected RefArray<AbstractPersistentStatRef> m_DerivedFormulaRefs = new RefArray<AbstractPersistentStatRef>();
-		[ContainerField(Name: "DerivedFormulaRefs", Offset: 44, NameHash: 98984868, Flags: 65)]
-		public RefArray<AbstractPersistentStatRef> DerivedFormulaRefs { get { return m_DerivedFormulaRefs; } set { if (OnPropertyChanging("PersistentValueTemplate." + nameof(DerivedFormulaRefs), this, m_DerivedFormulaRefs, value)) m_DerivedFormulaRefs = value; } } // 0x2C (44)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(8)]
+		public PersistentValueTemplateData Data { get; set; } = new();
+
+		[ContainerField(44)]
+		public List<CtrRef<AbstractPersistentStatRef>> DerivedFormulaRefs { get; set; } = new();
+
+		public static void Deserialize(PersistentValueTemplate p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			fb.PersistentValueTemplateData.Deserialize(p_Instance.Data, p_Reader, p_Parser);
+			p_Instance.DerivedFormulaRefs.Clear();
+			(RimeReader Reader, uint Count) s_DerivedFormulaRefs = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_DerivedFormulaRefs.Count; ++i)
 			{
-				case 2088730869:
-					Data = (PersistentValueTemplateData) p_Value;
-					break;
-
-				case 98984868:
-					DerivedFormulaRefs = (RefArray<AbstractPersistentStatRef>) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_CtrRef = new CtrRef<AbstractPersistentStatRef>();
+				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_DerivedFormulaRefs.Reader.ReadUInt32()));
+				p_Instance.DerivedFormulaRefs.Add(s_CtrRef);
 			}
+			
+			s_DerivedFormulaRefs.Reader.Dispose();
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2088730869:
-					return Data;
-
-				case 98984868:
-					return DerivedFormulaRefs;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2088730869:
-					return typeof(PersistentValueTemplate).GetProperty(nameof(Data));
-
-				case 98984868:
-					return typeof(PersistentValueTemplate).GetProperty(nameof(DerivedFormulaRefs));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

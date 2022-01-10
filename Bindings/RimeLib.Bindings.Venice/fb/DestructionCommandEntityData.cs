@@ -5,77 +5,33 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 16,  Flags: 53, Size: 112)]
+	[ContainerType(16, 112)]
 	public class DestructionCommandEntityData : 
 		GameEntityData
 	{
-		protected uint m_InstanceCountDestroyedPerFrame = new uint();
-		[ContainerField(Name: "InstanceCountDestroyedPerFrame", Offset: 96, NameHash: 961630582, Flags: 49421), LayoutImmutable, Blittable]
-		public uint InstanceCountDestroyedPerFrame { get { return m_InstanceCountDestroyedPerFrame; } set { if (OnPropertyChanging("DestructionCommandEntityData." + nameof(InstanceCountDestroyedPerFrame), this, m_InstanceCountDestroyedPerFrame, value)) m_InstanceCountDestroyedPerFrame = value; } } // 0x60 (96)
-		
-		protected uint m_InstanceCountDestroyedPerType = new uint();
-		[ContainerField(Name: "InstanceCountDestroyedPerType", Offset: 100, NameHash: 1461542483, Flags: 49421), LayoutImmutable, Blittable]
-		public uint InstanceCountDestroyedPerType { get { return m_InstanceCountDestroyedPerType; } set { if (OnPropertyChanging("DestructionCommandEntityData." + nameof(InstanceCountDestroyedPerType), this, m_InstanceCountDestroyedPerType, value)) m_InstanceCountDestroyedPerType = value; } } // 0x64 (100)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(96), LayoutImmutable, Blittable]
+		public uint InstanceCountDestroyedPerFrame { get; set; }
+
+		[ContainerField(100), LayoutImmutable, Blittable]
+		public uint InstanceCountDestroyedPerType { get; set; }
+
+		public static void Deserialize(DestructionCommandEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 961630582:
-					InstanceCountDestroyedPerFrame = (uint) p_Value;
-					break;
-
-				case 1461542483:
-					InstanceCountDestroyedPerType = (uint) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
+			p_Instance.InstanceCountDestroyedPerFrame = p_Reader.ReadUInt32();
+			p_Instance.InstanceCountDestroyedPerType = p_Reader.ReadUInt32();
+			p_Reader.Seek(8, SeekOrigin.Current);
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 961630582:
-					return InstanceCountDestroyedPerFrame;
-
-				case 1461542483:
-					return InstanceCountDestroyedPerType;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 961630582:
-					return typeof(DestructionCommandEntityData).GetProperty(nameof(InstanceCountDestroyedPerFrame));
-
-				case 1461542483:
-					return typeof(DestructionCommandEntityData).GetProperty(nameof(InstanceCountDestroyedPerType));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

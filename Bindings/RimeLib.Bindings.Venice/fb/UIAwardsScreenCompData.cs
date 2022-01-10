@@ -5,77 +5,50 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 36)]
+	[ContainerType(4, 36)]
 	public class UIAwardsScreenCompData : 
 		UIComponentData
 	{
-		protected RefArray<StatsCategoryBaseData> m_TrackableAwardRow = new RefArray<StatsCategoryBaseData>();
-		[ContainerField(Name: "TrackableAwardRow", Offset: 28, NameHash: 383950411, Flags: 65)]
-		public RefArray<StatsCategoryBaseData> TrackableAwardRow { get { return m_TrackableAwardRow; } set { if (OnPropertyChanging("UIAwardsScreenCompData." + nameof(TrackableAwardRow), this, m_TrackableAwardRow, value)) m_TrackableAwardRow = value; } } // 0x1C (28)
-		
-		protected RefArray<StatsCategoryBaseData> m_TrackableAwardCol = new RefArray<StatsCategoryBaseData>();
-		[ContainerField(Name: "TrackableAwardCol", Offset: 32, NameHash: 383933953, Flags: 65)]
-		public RefArray<StatsCategoryBaseData> TrackableAwardCol { get { return m_TrackableAwardCol; } set { if (OnPropertyChanging("UIAwardsScreenCompData." + nameof(TrackableAwardCol), this, m_TrackableAwardCol, value)) m_TrackableAwardCol = value; } } // 0x20 (32)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(28)]
+		public List<CtrRef<StatsCategoryBaseData>> TrackableAwardRow { get; set; } = new();
+
+		[ContainerField(32)]
+		public List<CtrRef<StatsCategoryBaseData>> TrackableAwardCol { get; set; } = new();
+
+		public static void Deserialize(UIAwardsScreenCompData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Instance.TrackableAwardRow.Clear();
+			(RimeReader Reader, uint Count) s_TrackableAwardRow = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_TrackableAwardRow.Count; ++i)
 			{
-				case 383950411:
-					TrackableAwardRow = (RefArray<StatsCategoryBaseData>) p_Value;
-					break;
-
-				case 383933953:
-					TrackableAwardCol = (RefArray<StatsCategoryBaseData>) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_CtrRef = new CtrRef<StatsCategoryBaseData>();
+				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_TrackableAwardRow.Reader.ReadUInt32()));
+				p_Instance.TrackableAwardRow.Add(s_CtrRef);
 			}
+			
+			s_TrackableAwardRow.Reader.Dispose();
+			p_Instance.TrackableAwardCol.Clear();
+			(RimeReader Reader, uint Count) s_TrackableAwardCol = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_TrackableAwardCol.Count; ++i)
+			{
+				var s_CtrRef = new CtrRef<StatsCategoryBaseData>();
+				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_TrackableAwardCol.Reader.ReadUInt32()));
+				p_Instance.TrackableAwardCol.Add(s_CtrRef);
+			}
+			
+			s_TrackableAwardCol.Reader.Dispose();
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 383950411:
-					return TrackableAwardRow;
-
-				case 383933953:
-					return TrackableAwardCol;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 383950411:
-					return typeof(UIAwardsScreenCompData).GetProperty(nameof(TrackableAwardRow));
-
-				case 383933953:
-					return typeof(UIAwardsScreenCompData).GetProperty(nameof(TrackableAwardCol));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

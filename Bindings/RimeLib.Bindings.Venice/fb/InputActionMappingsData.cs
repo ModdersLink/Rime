@@ -5,63 +5,37 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 12)]
+	[ContainerType(4, 12)]
 	public class InputActionMappingsData : 
 		DataContainer
 	{
-		protected RefArray<InputActionMappingData> m_Mappings = new RefArray<InputActionMappingData>();
-		[ContainerField(Name: "Mappings", Offset: 8, NameHash: 673881690, Flags: 65)]
-		public RefArray<InputActionMappingData> Mappings { get { return m_Mappings; } set { if (OnPropertyChanging("InputActionMappingsData." + nameof(Mappings), this, m_Mappings, value)) m_Mappings = value; } } // 0x8 (8)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 673881690:
-					Mappings = (RefArray<InputActionMappingData>) p_Value;
-					break;
+		[ContainerField(8)]
+		public List<CtrRef<InputActionMappingData>> Mappings { get; set; } = new();
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+		public static void Deserialize(InputActionMappingsData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
+		{
+			p_Instance.Mappings.Clear();
+			(RimeReader Reader, uint Count) s_Mappings = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_Mappings.Count; ++i)
+			{
+				var s_CtrRef = new CtrRef<InputActionMappingData>();
+				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_Mappings.Reader.ReadUInt32()));
+				p_Instance.Mappings.Add(s_CtrRef);
 			}
+			
+			s_Mappings.Reader.Dispose();
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 673881690:
-					return Mappings;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 673881690:
-					return typeof(InputActionMappingsData).GetProperty(nameof(Mappings));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

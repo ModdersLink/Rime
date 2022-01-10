@@ -5,119 +5,54 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 32)]
+	[ContainerType(4, 32)]
 	public class UIGraphEntityData : 
 		EntityData
 	{
-		protected List<EventSpec> m_Events = new List<EventSpec>();
-		[ContainerField(Name: "Events", Offset: 12, NameHash: 2352146554, Flags: 65)]
-		public List<EventSpec> Events { get { return m_Events; } set { if (OnPropertyChanging("UIGraphEntityData." + nameof(Events), this, m_Events, value)) m_Events = value; } } // 0xC (12)
-		
-		protected CtrRef<UIGraphAsset> m_GraphAsset = new CtrRef<UIGraphAsset>();
-		[ContainerField(Name: "GraphAsset", Offset: 16, NameHash: 3545549337, Flags: 53)]
-		public CtrRef<UIGraphAsset> GraphAsset { get { return m_GraphAsset; } set { if (OnPropertyChanging("UIGraphEntityData." + nameof(GraphAsset), this, m_GraphAsset, value)) m_GraphAsset = value; } } // 0x10 (16)
-		
-		protected UIGraphPriority m_GraphPriority = new UIGraphPriority();
-		[ContainerField(Name: "GraphPriority", Offset: 20, NameHash: 2838537403, Flags: 137)]
-		public UIGraphPriority GraphPriority { get { return m_GraphPriority; } set { if (OnPropertyChanging("UIGraphEntityData." + nameof(GraphPriority), this, m_GraphPriority, value)) m_GraphPriority = value; } } // 0x14 (20)
-		
-		protected UIState m_State = new UIState();
-		[ContainerField(Name: "State", Offset: 24, NameHash: 230748402, Flags: 137)]
-		public UIState State { get { return m_State; } set { if (OnPropertyChanging("UIGraphEntityData." + nameof(State), this, m_State, value)) m_State = value; } } // 0x18 (24)
-		
-		protected bool m_PopPreviousGraph = new bool();
-		[ContainerField(Name: "PopPreviousGraph", Offset: 28, NameHash: 3277878647, Flags: 49325), LayoutImmutable, Blittable]
-		public bool PopPreviousGraph { get { return m_PopPreviousGraph; } set { if (OnPropertyChanging("UIGraphEntityData." + nameof(PopPreviousGraph), this, m_PopPreviousGraph, value)) m_PopPreviousGraph = value; } } // 0x1C (28)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(12)]
+		public List<EventSpec> Events { get; set; } = new();
+
+		[ContainerField(16)]
+		public CtrRef<UIGraphAsset> GraphAsset { get; set; } = new();
+
+		[ContainerField(20)]
+		public UIGraphPriority GraphPriority { get; set; } = new();
+
+		[ContainerField(24)]
+		public UIState State { get; set; } = new();
+
+		[ContainerField(28), LayoutImmutable, Blittable]
+		public bool PopPreviousGraph { get; set; }
+
+		public static void Deserialize(UIGraphEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Instance.Events.Clear();
+			(RimeReader Reader, uint Count) s_Events = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_Events.Count; ++i)
 			{
-				case 2352146554:
-					Events = (List<EventSpec>) p_Value;
-					break;
-
-				case 3545549337:
-					GraphAsset = (CtrRef<UIGraphAsset>) p_Value;
-					break;
-
-				case 2838537403:
-					GraphPriority = (UIGraphPriority) Enum.ToObject(typeof(UIGraphPriority), p_Value);
-					break;
-
-				case 230748402:
-					State = (UIState) Enum.ToObject(typeof(UIState), p_Value);
-					break;
-
-				case 3277878647:
-					PopPreviousGraph = (bool) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_Value = new EventSpec();
+				fb.EventSpec.Deserialize(s_Value, s_Events.Reader, p_Parser);
+				p_Instance.Events.Add(s_Value);
 			}
+			
+			s_Events.Reader.Dispose();
+			p_Instance.GraphAsset.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
+			p_Instance.GraphPriority = (UIGraphPriority) p_Reader.ReadInt32();
+			p_Instance.State = (UIState) p_Reader.ReadInt32();
+			p_Instance.PopPreviousGraph = p_Reader.ReadBool();
+			p_Reader.Seek(3, SeekOrigin.Current);
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2352146554:
-					return Events;
-
-				case 3545549337:
-					return GraphAsset;
-
-				case 2838537403:
-					return GraphPriority;
-
-				case 230748402:
-					return State;
-
-				case 3277878647:
-					return PopPreviousGraph;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2352146554:
-					return typeof(UIGraphEntityData).GetProperty(nameof(Events));
-
-				case 3545549337:
-					return typeof(UIGraphEntityData).GetProperty(nameof(GraphAsset));
-
-				case 2838537403:
-					return typeof(UIGraphEntityData).GetProperty(nameof(GraphPriority));
-
-				case 230748402:
-					return typeof(UIGraphEntityData).GetProperty(nameof(State));
-
-				case 3277878647:
-					return typeof(UIGraphEntityData).GetProperty(nameof(PopPreviousGraph));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

@@ -5,63 +5,37 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 32)]
+	[ContainerType(4, 32)]
 	public class UIOnDemandFontComponentData : 
 		UIComponentData
 	{
-		protected RefArray<UIFontCollection> m_FontCollections = new RefArray<UIFontCollection>();
-		[ContainerField(Name: "FontCollections", Offset: 28, NameHash: 2744963667, Flags: 65)]
-		public RefArray<UIFontCollection> FontCollections { get { return m_FontCollections; } set { if (OnPropertyChanging("UIOnDemandFontComponentData." + nameof(FontCollections), this, m_FontCollections, value)) m_FontCollections = value; } } // 0x1C (28)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 2744963667:
-					FontCollections = (RefArray<UIFontCollection>) p_Value;
-					break;
+		[ContainerField(28)]
+		public List<CtrRef<UIFontCollection>> FontCollections { get; set; } = new();
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+		public static void Deserialize(UIOnDemandFontComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
+		{
+			p_Instance.FontCollections.Clear();
+			(RimeReader Reader, uint Count) s_FontCollections = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_FontCollections.Count; ++i)
+			{
+				var s_CtrRef = new CtrRef<UIFontCollection>();
+				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_FontCollections.Reader.ReadUInt32()));
+				p_Instance.FontCollections.Add(s_CtrRef);
 			}
+			
+			s_FontCollections.Reader.Dispose();
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2744963667:
-					return FontCollections;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2744963667:
-					return typeof(UIOnDemandFontComponentData).GetProperty(nameof(FontCollections));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

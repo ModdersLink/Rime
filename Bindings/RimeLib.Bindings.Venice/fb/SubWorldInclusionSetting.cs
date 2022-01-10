@@ -5,77 +5,40 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
+	[ContainerType(4, 16)]
 	public class SubWorldInclusionSetting : 
 		DataContainer
 	{
-		protected CtrRef<SubWorldInclusionCriterion> m_Criterion = new CtrRef<SubWorldInclusionCriterion>();
-		[ContainerField(Name: "Criterion", Offset: 8, NameHash: 2480005462, Flags: 53)]
-		public CtrRef<SubWorldInclusionCriterion> Criterion { get { return m_Criterion; } set { if (OnPropertyChanging("SubWorldInclusionSetting." + nameof(Criterion), this, m_Criterion, value)) m_Criterion = value; } } // 0x8 (8)
-		
-		protected List<string> m_EnabledOptions = new List<string>();
-		[ContainerField(Name: "EnabledOptions", Offset: 12, NameHash: 2588709552, Flags: 65)]
-		public List<string> EnabledOptions { get { return m_EnabledOptions; } set { if (OnPropertyChanging("SubWorldInclusionSetting." + nameof(EnabledOptions), this, m_EnabledOptions, value)) m_EnabledOptions = value; } } // 0xC (12)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(8)]
+		public CtrRef<SubWorldInclusionCriterion> Criterion { get; set; } = new();
+
+		[ContainerField(12)]
+		public List<string> EnabledOptions { get; set; } = new();
+
+		public static void Deserialize(SubWorldInclusionSetting p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Instance.Criterion.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
+			p_Instance.EnabledOptions.Clear();
+			(RimeReader Reader, uint Count) s_EnabledOptions = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_EnabledOptions.Count; ++i)
 			{
-				case 2480005462:
-					Criterion = (CtrRef<SubWorldInclusionCriterion>) p_Value;
-					break;
-
-				case 2588709552:
-					EnabledOptions = (List<string>) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_Value = p_Parser.GetStringAtOffset(s_EnabledOptions.Reader.ReadUInt32());
+				p_Instance.EnabledOptions.Add(s_Value);
 			}
+			
+			s_EnabledOptions.Reader.Dispose();
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2480005462:
-					return Criterion;
-
-				case 2588709552:
-					return EnabledOptions;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2480005462:
-					return typeof(SubWorldInclusionSetting).GetProperty(nameof(Criterion));
-
-				case 2588709552:
-					return typeof(SubWorldInclusionSetting).GetProperty(nameof(EnabledOptions));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

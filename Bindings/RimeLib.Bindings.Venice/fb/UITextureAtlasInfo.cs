@@ -5,74 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 41, Size: 16)]
-	public class UITextureAtlasInfo : FrostbiteContainer
+	[ContainerType(4, 16)]
+	public class UITextureAtlasInfo
 	{
-		[ContainerField(Name: "MinUv", Offset: 0, NameHash: 209960012, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
-		public Vec2 MinUv { get; set; } = new Vec2(); // 0x0 (0)
+		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable]
+		public Vec2 MinUv { get; set; } = new();
 		
-		[ContainerField(Name: "MaxUv", Offset: 8, NameHash: 210235986, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
-		public Vec2 MaxUv { get; set; } = new Vec2(); // 0x8 (8)
+		[ContainerField(8), Homogeneous, LayoutImmutable, Blittable]
+		public Vec2 MaxUv { get; set; } = new();
 		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		public static void Deserialize(UITextureAtlasInfo p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 209960012:
-					MinUv = (Vec2) p_Value;
-					break;
-
-				case 210235986:
-					MaxUv = (Vec2) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 209960012:
-					return MinUv;
-
-				case 210235986:
-					return MaxUv;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 209960012:
-					return typeof(UITextureAtlasInfo).GetProperty(nameof(MinUv));
-
-				case 210235986:
-					return typeof(UITextureAtlasInfo).GetProperty(nameof(MaxUv));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
+			fb.Vec2.Deserialize(p_Instance.MinUv, p_Reader, p_Parser);
+			fb.Vec2.Deserialize(p_Instance.MaxUv, p_Reader, p_Parser);
 		}
 	}
 }

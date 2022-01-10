@@ -5,113 +5,61 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 41, Size: 20)]
-	public class OnlinePlatformConfiguration : FrostbiteContainer
+	[ContainerType(4, 20)]
+	public class OnlinePlatformConfiguration
 	{
-		[ContainerField(Name: "Platform", Offset: 0, NameHash: 942751002, Flags: 137)]
-		public GamePlatform Platform { get; set; } = new GamePlatform(); // 0x0 (0)
+		[ContainerField(0)]
+		public GamePlatform Platform { get; set; } = new();
 		
-		[ContainerField(Name: "Services", Offset: 4, NameHash: 270289867, Flags: 53)]
-		public CtrRef<OnlineServicesAsset> Services { get; set; } = new CtrRef<OnlineServicesAsset>(); // 0x4 (4)
+		[ContainerField(4)]
+		public CtrRef<OnlineServicesAsset> Services { get; set; } = new();
 		
-		[ContainerField(Name: "ClientBackends", Offset: 8, NameHash: 3444245387, Flags: 65)]
-		public RefArray<PresenceBackendData> ClientBackends { get; set; } = new RefArray<PresenceBackendData>(); // 0x8 (8)
+		[ContainerField(8)]
+		public List<CtrRef<PresenceBackendData>> ClientBackends { get; set; } = new();
 		
-		[ContainerField(Name: "ServerBackends", Offset: 12, NameHash: 2837482711, Flags: 65)]
-		public RefArray<ServerBackendData> ServerBackends { get; set; } = new RefArray<ServerBackendData>(); // 0xC (12)
+		[ContainerField(12)]
+		public List<CtrRef<ServerBackendData>> ServerBackends { get; set; } = new();
 		
-		[ContainerField(Name: "IsFallback", Offset: 16, NameHash: 72751187, Flags: 49325), LayoutImmutable, Blittable]
-		public bool IsFallback { get; set; } // 0x10 (16)
+		[ContainerField(16), LayoutImmutable, Blittable]
+		public bool IsFallback { get; set; }
 		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		public static void Deserialize(OnlinePlatformConfiguration p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Instance.Platform = (GamePlatform) p_Reader.ReadInt32();
+			p_Instance.Services.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
+			p_Instance.ClientBackends.Clear();
+			(RimeReader Reader, uint Count) s_ClientBackends = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_ClientBackends.Count; ++i)
 			{
-				case 942751002:
-						Platform = (GamePlatform) Enum.ToObject(typeof(GamePlatform), p_Value);
-					break;
-
-				case 270289867:
-					Services = (CtrRef<OnlineServicesAsset>) p_Value;
-					break;
-
-				case 3444245387:
-					ClientBackends = (RefArray<PresenceBackendData>) p_Value;
-					break;
-
-				case 2837482711:
-					ServerBackends = (RefArray<ServerBackendData>) p_Value;
-					break;
-
-				case 72751187:
-					IsFallback = (bool) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_CtrRef = new CtrRef<PresenceBackendData>();
+				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_ClientBackends.Reader.ReadUInt32()));
+				p_Instance.ClientBackends.Add(s_CtrRef);
 			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
+			
+			s_ClientBackends.Reader.Dispose();
+			p_Instance.ServerBackends.Clear();
+			(RimeReader Reader, uint Count) s_ServerBackends = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_ServerBackends.Count; ++i)
 			{
-				case 942751002:
-					return Platform;
-
-				case 270289867:
-					return Services;
-
-				case 3444245387:
-					return ClientBackends;
-
-				case 2837482711:
-					return ServerBackends;
-
-				case 72751187:
-					return IsFallback;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
+				var s_CtrRef = new CtrRef<ServerBackendData>();
+				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_ServerBackends.Reader.ReadUInt32()));
+				p_Instance.ServerBackends.Add(s_CtrRef);
 			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 942751002:
-					return typeof(OnlinePlatformConfiguration).GetProperty(nameof(Platform));
-
-				case 270289867:
-					return typeof(OnlinePlatformConfiguration).GetProperty(nameof(Services));
-
-				case 3444245387:
-					return typeof(OnlinePlatformConfiguration).GetProperty(nameof(ClientBackends));
-
-				case 2837482711:
-					return typeof(OnlinePlatformConfiguration).GetProperty(nameof(ServerBackends));
-
-				case 72751187:
-					return typeof(OnlinePlatformConfiguration).GetProperty(nameof(IsFallback));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
+			
+			s_ServerBackends.Reader.Dispose();
+			p_Instance.IsFallback = p_Reader.ReadBool();
+			p_Reader.Seek(3, SeekOrigin.Current);
 		}
 	}
 }

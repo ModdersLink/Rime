@@ -5,100 +5,47 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 41, Size: 16)]
-	public class MatchmakingRuleString : FrostbiteContainer
+	[ContainerType(4, 16)]
+	public class MatchmakingRuleString
 	{
-		[ContainerField(Name: "Value", Offset: 0, NameHash: 225375086, Flags: 16509), LayoutImmutable]
-		public string Value { get; set; } // 0x0 (0)
+		[ContainerField(0), LayoutImmutable]
+		public string Value { get; set; } = string.Empty;
 		
-		[ContainerField(Name: "Platform", Offset: 4, NameHash: 942751002, Flags: 137)]
-		public MatchmakingPlatform Platform { get; set; } = new MatchmakingPlatform(); // 0x4 (4)
+		[ContainerField(4)]
+		public MatchmakingPlatform Platform { get; set; } = new();
 		
-		[ContainerField(Name: "Licenses", Offset: 8, NameHash: 2259172461, Flags: 65)]
-		public List<string> Licenses { get; set; } = new List<string>(); // 0x8 (8)
+		[ContainerField(8)]
+		public List<string> Licenses { get; set; } = new();
 		
-		[ContainerField(Name: "UseOnlyIfEmpty", Offset: 12, NameHash: 601634056, Flags: 49325), LayoutImmutable, Blittable]
-		public bool UseOnlyIfEmpty { get; set; } // 0xC (12)
+		[ContainerField(12), LayoutImmutable, Blittable]
+		public bool UseOnlyIfEmpty { get; set; }
 		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		public static void Deserialize(MatchmakingRuleString p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Instance.Value = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
+			p_Instance.Platform = (MatchmakingPlatform) p_Reader.ReadInt32();
+			p_Instance.Licenses.Clear();
+			(RimeReader Reader, uint Count) s_Licenses = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_Licenses.Count; ++i)
 			{
-				case 225375086:
-					Value = (string) p_Value;
-					break;
-
-				case 942751002:
-						Platform = (MatchmakingPlatform) Enum.ToObject(typeof(MatchmakingPlatform), p_Value);
-					break;
-
-				case 2259172461:
-					Licenses = (List<string>) p_Value;
-					break;
-
-				case 601634056:
-					UseOnlyIfEmpty = (bool) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_Value = p_Parser.GetStringAtOffset(s_Licenses.Reader.ReadUInt32());
+				p_Instance.Licenses.Add(s_Value);
 			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 225375086:
-					return Value;
-
-				case 942751002:
-					return Platform;
-
-				case 2259172461:
-					return Licenses;
-
-				case 601634056:
-					return UseOnlyIfEmpty;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 225375086:
-					return typeof(MatchmakingRuleString).GetProperty(nameof(Value));
-
-				case 942751002:
-					return typeof(MatchmakingRuleString).GetProperty(nameof(Platform));
-
-				case 2259172461:
-					return typeof(MatchmakingRuleString).GetProperty(nameof(Licenses));
-
-				case 601634056:
-					return typeof(MatchmakingRuleString).GetProperty(nameof(UseOnlyIfEmpty));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
+			
+			s_Licenses.Reader.Dispose();
+			p_Instance.UseOnlyIfEmpty = p_Reader.ReadBool();
+			p_Reader.Seek(3, SeekOrigin.Current);
 		}
 	}
 }

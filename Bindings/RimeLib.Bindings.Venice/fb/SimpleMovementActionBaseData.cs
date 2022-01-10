@@ -5,77 +5,32 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 24)]
+	[ContainerType(4, 24)]
 	public class SimpleMovementActionBaseData : 
 		MovementActionData
 	{
-		protected SimpleMovementActionTimeData m_StartTimeInfo = new SimpleMovementActionTimeData();
-		[ContainerField(Name: "StartTimeInfo", Offset: 8, NameHash: 2015117886, Flags: 41)]
-		public SimpleMovementActionTimeData StartTimeInfo { get { return m_StartTimeInfo; } set { if (OnPropertyChanging("SimpleMovementActionBaseData." + nameof(StartTimeInfo), this, m_StartTimeInfo, value)) m_StartTimeInfo = value; } } // 0x8 (8)
-		
-		protected SimpleMovementActionTimeData m_RunTimeInfo = new SimpleMovementActionTimeData();
-		[ContainerField(Name: "RunTimeInfo", Offset: 16, NameHash: 3849518743, Flags: 41)]
-		public SimpleMovementActionTimeData RunTimeInfo { get { return m_RunTimeInfo; } set { if (OnPropertyChanging("SimpleMovementActionBaseData." + nameof(RunTimeInfo), this, m_RunTimeInfo, value)) m_RunTimeInfo = value; } } // 0x10 (16)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(8)]
+		public SimpleMovementActionTimeData StartTimeInfo { get; set; } = new();
+
+		[ContainerField(16)]
+		public SimpleMovementActionTimeData RunTimeInfo { get; set; } = new();
+
+		public static void Deserialize(SimpleMovementActionBaseData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 2015117886:
-					StartTimeInfo = (SimpleMovementActionTimeData) p_Value;
-					break;
-
-				case 3849518743:
-					RunTimeInfo = (SimpleMovementActionTimeData) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
+			fb.SimpleMovementActionTimeData.Deserialize(p_Instance.StartTimeInfo, p_Reader, p_Parser);
+			fb.SimpleMovementActionTimeData.Deserialize(p_Instance.RunTimeInfo, p_Reader, p_Parser);
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2015117886:
-					return StartTimeInfo;
-
-				case 3849518743:
-					return RunTimeInfo;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2015117886:
-					return typeof(SimpleMovementActionBaseData).GetProperty(nameof(StartTimeInfo));
-
-				case 3849518743:
-					return typeof(SimpleMovementActionBaseData).GetProperty(nameof(RunTimeInfo));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

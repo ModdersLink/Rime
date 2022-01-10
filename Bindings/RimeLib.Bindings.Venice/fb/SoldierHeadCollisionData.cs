@@ -5,77 +5,41 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
+	[ContainerType(4, 16)]
 	public class SoldierHeadCollisionData : 
 		DataContainer
 	{
-		protected float m_HeadRadius = new float();
-		[ContainerField(Name: "HeadRadius", Offset: 8, NameHash: 2199912853, Flags: 49469), LayoutImmutable, Blittable]
-		public float HeadRadius { get { return m_HeadRadius; } set { if (OnPropertyChanging("SoldierHeadCollisionData." + nameof(HeadRadius), this, m_HeadRadius, value)) m_HeadRadius = value; } } // 0x8 (8)
-		
-		protected List<SoldierHeadCollisionPoseData> m_PoseStates = new List<SoldierHeadCollisionPoseData>();
-		[ContainerField(Name: "PoseStates", Offset: 12, NameHash: 294615368, Flags: 65)]
-		public List<SoldierHeadCollisionPoseData> PoseStates { get { return m_PoseStates; } set { if (OnPropertyChanging("SoldierHeadCollisionData." + nameof(PoseStates), this, m_PoseStates, value)) m_PoseStates = value; } } // 0xC (12)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(8), LayoutImmutable, Blittable]
+		public float HeadRadius { get; set; }
+
+		[ContainerField(12)]
+		public List<SoldierHeadCollisionPoseData> PoseStates { get; set; } = new();
+
+		public static void Deserialize(SoldierHeadCollisionData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Instance.HeadRadius = p_Reader.ReadSingle();
+			p_Instance.PoseStates.Clear();
+			(RimeReader Reader, uint Count) s_PoseStates = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_PoseStates.Count; ++i)
 			{
-				case 2199912853:
-					HeadRadius = (float) p_Value;
-					break;
-
-				case 294615368:
-					PoseStates = (List<SoldierHeadCollisionPoseData>) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_Value = new SoldierHeadCollisionPoseData();
+				fb.SoldierHeadCollisionPoseData.Deserialize(s_Value, s_PoseStates.Reader, p_Parser);
+				p_Instance.PoseStates.Add(s_Value);
 			}
+			
+			s_PoseStates.Reader.Dispose();
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2199912853:
-					return HeadRadius;
-
-				case 294615368:
-					return PoseStates;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2199912853:
-					return typeof(SoldierHeadCollisionData).GetProperty(nameof(HeadRadius));
-
-				case 294615368:
-					return typeof(SoldierHeadCollisionData).GetProperty(nameof(PoseStates));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

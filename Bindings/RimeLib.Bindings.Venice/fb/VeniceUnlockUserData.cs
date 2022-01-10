@@ -5,63 +5,29 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
+	[ContainerType(4, 16)]
 	public class VeniceUnlockUserData : 
 		UnlockUserDataBase
 	{
-		protected bool m_CheckSquad = new bool();
-		[ContainerField(Name: "CheckSquad", Offset: 12, NameHash: 28509873, Flags: 49325), LayoutImmutable, Blittable]
-		public bool CheckSquad { get { return m_CheckSquad; } set { if (OnPropertyChanging("VeniceUnlockUserData." + nameof(CheckSquad), this, m_CheckSquad, value)) m_CheckSquad = value; } } // 0xC (12)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 28509873:
-					CheckSquad = (bool) p_Value;
-					break;
+		[ContainerField(12), LayoutImmutable, Blittable]
+		public bool CheckSquad { get; set; }
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
+		public static void Deserialize(VeniceUnlockUserData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
+		{
+			p_Instance.CheckSquad = p_Reader.ReadBool();
+			p_Reader.Seek(3, SeekOrigin.Current);
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 28509873:
-					return CheckSquad;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 28509873:
-					return typeof(VeniceUnlockUserData).GetProperty(nameof(CheckSquad));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

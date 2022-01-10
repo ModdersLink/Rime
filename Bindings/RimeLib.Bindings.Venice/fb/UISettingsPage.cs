@@ -5,74 +5,39 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 41, Size: 8)]
-	public class UISettingsPage : FrostbiteContainer
+	[ContainerType(4, 8)]
+	public class UISettingsPage
 	{
-		[ContainerField(Name: "NameSid", Offset: 0, NameHash: 3153745340, Flags: 16509), LayoutImmutable]
-		public string NameSid { get; set; } // 0x0 (0)
+		[ContainerField(0), LayoutImmutable]
+		public string NameSid { get; set; } = string.Empty;
 		
-		[ContainerField(Name: "SettingsGroups", Offset: 4, NameHash: 2837166892, Flags: 65)]
-		public List<UISettingsGroup> SettingsGroups { get; set; } = new List<UISettingsGroup>(); // 0x4 (4)
+		[ContainerField(4)]
+		public List<UISettingsGroup> SettingsGroups { get; set; } = new();
 		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		public static void Deserialize(UISettingsPage p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Instance.NameSid = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
+			p_Instance.SettingsGroups.Clear();
+			(RimeReader Reader, uint Count) s_SettingsGroups = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_SettingsGroups.Count; ++i)
 			{
-				case 3153745340:
-					NameSid = (string) p_Value;
-					break;
-
-				case 2837166892:
-					SettingsGroups = (List<UISettingsGroup>) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_Value = new UISettingsGroup();
+				fb.UISettingsGroup.Deserialize(s_Value, s_SettingsGroups.Reader, p_Parser);
+				p_Instance.SettingsGroups.Add(s_Value);
 			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3153745340:
-					return NameSid;
-
-				case 2837166892:
-					return SettingsGroups;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3153745340:
-					return typeof(UISettingsPage).GetProperty(nameof(NameSid));
-
-				case 2837166892:
-					return typeof(UISettingsPage).GetProperty(nameof(SettingsGroups));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
+			
+			s_SettingsGroups.Reader.Dispose();
 		}
 	}
 }

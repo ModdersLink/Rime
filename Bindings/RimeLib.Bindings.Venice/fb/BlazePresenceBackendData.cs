@@ -5,77 +5,42 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 24)]
+	[ContainerType(4, 24)]
 	public class BlazePresenceBackendData : 
 		PresenceBackendData
 	{
-		protected RefArray<MatchmakingSession> m_MatchmakingSessions = new RefArray<MatchmakingSession>();
-		[ContainerField(Name: "MatchmakingSessions", Offset: 16, NameHash: 971927356, Flags: 65)]
-		public RefArray<MatchmakingSession> MatchmakingSessions { get { return m_MatchmakingSessions; } set { if (OnPropertyChanging("BlazePresenceBackendData." + nameof(MatchmakingSessions), this, m_MatchmakingSessions, value)) m_MatchmakingSessions = value; } } // 0x10 (16)
-		
-		protected bool m_UseDemanglerService = new bool();
-		[ContainerField(Name: "UseDemanglerService", Offset: 20, NameHash: 1785911844, Flags: 49325), LayoutImmutable, Blittable]
-		public bool UseDemanglerService { get { return m_UseDemanglerService; } set { if (OnPropertyChanging("BlazePresenceBackendData." + nameof(UseDemanglerService), this, m_UseDemanglerService, value)) m_UseDemanglerService = value; } } // 0x14 (20)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(16)]
+		public List<CtrRef<MatchmakingSession>> MatchmakingSessions { get; set; } = new();
+
+		[ContainerField(20), LayoutImmutable, Blittable]
+		public bool UseDemanglerService { get; set; }
+
+		public static void Deserialize(BlazePresenceBackendData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Instance.MatchmakingSessions.Clear();
+			(RimeReader Reader, uint Count) s_MatchmakingSessions = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_MatchmakingSessions.Count; ++i)
 			{
-				case 971927356:
-					MatchmakingSessions = (RefArray<MatchmakingSession>) p_Value;
-					break;
-
-				case 1785911844:
-					UseDemanglerService = (bool) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_CtrRef = new CtrRef<MatchmakingSession>();
+				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_MatchmakingSessions.Reader.ReadUInt32()));
+				p_Instance.MatchmakingSessions.Add(s_CtrRef);
 			}
+			
+			s_MatchmakingSessions.Reader.Dispose();
+			p_Instance.UseDemanglerService = p_Reader.ReadBool();
+			p_Reader.Seek(3, SeekOrigin.Current);
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 971927356:
-					return MatchmakingSessions;
-
-				case 1785911844:
-					return UseDemanglerService;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 971927356:
-					return typeof(BlazePresenceBackendData).GetProperty(nameof(MatchmakingSessions));
-
-				case 1785911844:
-					return typeof(BlazePresenceBackendData).GetProperty(nameof(UseDemanglerService));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

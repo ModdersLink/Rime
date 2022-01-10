@@ -5,217 +5,84 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 16,  Flags: 41, Size: 80)]
-	public class ScenarioTaskData : FrostbiteContainer
+	[ContainerType(16, 80)]
+	public class ScenarioTaskData
 	{
-		[ContainerField(Name: "EndPointWorldOffset", Offset: 0, NameHash: 826674953, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 EndPointWorldOffset { get; set; } = new Vec3(); // 0x0 (0)
+		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable]
+		public Vec3 EndPointWorldOffset { get; set; } = new();
 		
-		[ContainerField(Name: "StartPoint", Offset: 16, NameHash: 2755831849, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 StartPoint { get; set; } = new Vec3(); // 0x10 (16)
+		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable]
+		public Vec3 StartPoint { get; set; } = new();
 		
-		[ContainerField(Name: "ScenarioId", Offset: 32, NameHash: 3278128294, Flags: 49405), LayoutImmutable, Blittable]
-		public int ScenarioId { get; set; } // 0x20 (32)
+		[ContainerField(32), LayoutImmutable, Blittable]
+		public int ScenarioId { get; set; }
 		
-		[ContainerField(Name: "ActorId", Offset: 36, NameHash: 373715747, Flags: 49405), LayoutImmutable, Blittable]
-		public int ActorId { get; set; } // 0x24 (36)
+		[ContainerField(36), LayoutImmutable, Blittable]
+		public int ActorId { get; set; }
 		
-		[ContainerField(Name: "PartId", Offset: 40, NameHash: 3371573631, Flags: 49405), LayoutImmutable, Blittable]
-		public int PartId { get; set; } // 0x28 (40)
+		[ContainerField(40), LayoutImmutable, Blittable]
+		public int PartId { get; set; }
 		
-		[ContainerField(Name: "LevelId", Offset: 44, NameHash: 1464675646, Flags: 49405), LayoutImmutable, Blittable]
-		public int LevelId { get; set; } // 0x2C (44)
+		[ContainerField(44), LayoutImmutable, Blittable]
+		public int LevelId { get; set; }
 		
-		[ContainerField(Name: "WorldAngle", Offset: 48, NameHash: 612547046, Flags: 49469), LayoutImmutable, Blittable]
-		public float WorldAngle { get; set; } // 0x30 (48)
+		[ContainerField(48), LayoutImmutable, Blittable]
+		public float WorldAngle { get; set; }
 		
-		[ContainerField(Name: "ConnectTransforms", Offset: 52, NameHash: 763624964, Flags: 65)]
-		public List<LinearTransform> ConnectTransforms { get; set; } = new List<LinearTransform>(); // 0x34 (52)
+		[ContainerField(52)]
+		public List<LinearTransform> ConnectTransforms { get; set; } = new();
 		
-		[ContainerField(Name: "StartTurnDistance", Offset: 56, NameHash: 432617307, Flags: 49469), LayoutImmutable, Blittable]
-		public float StartTurnDistance { get; set; } // 0x38 (56)
+		[ContainerField(56), LayoutImmutable, Blittable]
+		public float StartTurnDistance { get; set; }
 		
-		[ContainerField(Name: "StartTimerDistance", Offset: 60, NameHash: 1775830017, Flags: 49469), LayoutImmutable, Blittable]
-		public float StartTimerDistance { get; set; } // 0x3C (60)
+		[ContainerField(60), LayoutImmutable, Blittable]
+		public float StartTimerDistance { get; set; }
 		
-		[ContainerField(Name: "TriggerScenarioDelay", Offset: 64, NameHash: 2455523686, Flags: 49469), LayoutImmutable, Blittable]
-		public float TriggerScenarioDelay { get; set; } // 0x40 (64)
+		[ContainerField(64), LayoutImmutable, Blittable]
+		public float TriggerScenarioDelay { get; set; }
 		
-		[ContainerField(Name: "TriggerScenario", Offset: 68, NameHash: 3734607443, Flags: 49325), LayoutImmutable, Blittable]
-		public bool TriggerScenario { get; set; } // 0x44 (68)
+		[ContainerField(68), LayoutImmutable, Blittable]
+		public bool TriggerScenario { get; set; }
 		
-		[ContainerField(Name: "UseClientPosition", Offset: 69, NameHash: 430257222, Flags: 49325), LayoutImmutable, Blittable]
-		public bool UseClientPosition { get; set; } // 0x45 (69)
+		[ContainerField(69), LayoutImmutable, Blittable]
+		public bool UseClientPosition { get; set; }
 		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		public static void Deserialize(ScenarioTaskData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			fb.Vec3.Deserialize(p_Instance.EndPointWorldOffset, p_Reader, p_Parser);
+			fb.Vec3.Deserialize(p_Instance.StartPoint, p_Reader, p_Parser);
+			p_Instance.ScenarioId = p_Reader.ReadInt32();
+			p_Instance.ActorId = p_Reader.ReadInt32();
+			p_Instance.PartId = p_Reader.ReadInt32();
+			p_Instance.LevelId = p_Reader.ReadInt32();
+			p_Instance.WorldAngle = p_Reader.ReadSingle();
+			p_Instance.ConnectTransforms.Clear();
+			(RimeReader Reader, uint Count) s_ConnectTransforms = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_ConnectTransforms.Count; ++i)
 			{
-				case 826674953:
-					EndPointWorldOffset = (Vec3) p_Value;
-					break;
-
-				case 2755831849:
-					StartPoint = (Vec3) p_Value;
-					break;
-
-				case 3278128294:
-					ScenarioId = (int) p_Value;
-					break;
-
-				case 373715747:
-					ActorId = (int) p_Value;
-					break;
-
-				case 3371573631:
-					PartId = (int) p_Value;
-					break;
-
-				case 1464675646:
-					LevelId = (int) p_Value;
-					break;
-
-				case 612547046:
-					WorldAngle = (float) p_Value;
-					break;
-
-				case 763624964:
-					ConnectTransforms = (List<LinearTransform>) p_Value;
-					break;
-
-				case 432617307:
-					StartTurnDistance = (float) p_Value;
-					break;
-
-				case 1775830017:
-					StartTimerDistance = (float) p_Value;
-					break;
-
-				case 2455523686:
-					TriggerScenarioDelay = (float) p_Value;
-					break;
-
-				case 3734607443:
-					TriggerScenario = (bool) p_Value;
-					break;
-
-				case 430257222:
-					UseClientPosition = (bool) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_Value = new LinearTransform();
+				fb.LinearTransform.Deserialize(s_Value, s_ConnectTransforms.Reader, p_Parser);
+				p_Instance.ConnectTransforms.Add(s_Value);
 			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 826674953:
-					return EndPointWorldOffset;
-
-				case 2755831849:
-					return StartPoint;
-
-				case 3278128294:
-					return ScenarioId;
-
-				case 373715747:
-					return ActorId;
-
-				case 3371573631:
-					return PartId;
-
-				case 1464675646:
-					return LevelId;
-
-				case 612547046:
-					return WorldAngle;
-
-				case 763624964:
-					return ConnectTransforms;
-
-				case 432617307:
-					return StartTurnDistance;
-
-				case 1775830017:
-					return StartTimerDistance;
-
-				case 2455523686:
-					return TriggerScenarioDelay;
-
-				case 3734607443:
-					return TriggerScenario;
-
-				case 430257222:
-					return UseClientPosition;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 826674953:
-					return typeof(ScenarioTaskData).GetProperty(nameof(EndPointWorldOffset));
-
-				case 2755831849:
-					return typeof(ScenarioTaskData).GetProperty(nameof(StartPoint));
-
-				case 3278128294:
-					return typeof(ScenarioTaskData).GetProperty(nameof(ScenarioId));
-
-				case 373715747:
-					return typeof(ScenarioTaskData).GetProperty(nameof(ActorId));
-
-				case 3371573631:
-					return typeof(ScenarioTaskData).GetProperty(nameof(PartId));
-
-				case 1464675646:
-					return typeof(ScenarioTaskData).GetProperty(nameof(LevelId));
-
-				case 612547046:
-					return typeof(ScenarioTaskData).GetProperty(nameof(WorldAngle));
-
-				case 763624964:
-					return typeof(ScenarioTaskData).GetProperty(nameof(ConnectTransforms));
-
-				case 432617307:
-					return typeof(ScenarioTaskData).GetProperty(nameof(StartTurnDistance));
-
-				case 1775830017:
-					return typeof(ScenarioTaskData).GetProperty(nameof(StartTimerDistance));
-
-				case 2455523686:
-					return typeof(ScenarioTaskData).GetProperty(nameof(TriggerScenarioDelay));
-
-				case 3734607443:
-					return typeof(ScenarioTaskData).GetProperty(nameof(TriggerScenario));
-
-				case 430257222:
-					return typeof(ScenarioTaskData).GetProperty(nameof(UseClientPosition));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
+			
+			s_ConnectTransforms.Reader.Dispose();
+			p_Instance.StartTurnDistance = p_Reader.ReadSingle();
+			p_Instance.StartTimerDistance = p_Reader.ReadSingle();
+			p_Instance.TriggerScenarioDelay = p_Reader.ReadSingle();
+			p_Instance.TriggerScenario = p_Reader.ReadBool();
+			p_Instance.UseClientPosition = p_Reader.ReadBool();
+			p_Reader.Seek(10, SeekOrigin.Current);
 		}
 	}
 }

@@ -5,77 +5,32 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 28)]
+	[ContainerType(4, 28)]
 	public class OrderReadiness : 
 		UrgencyUserData
 	{
-		protected string m_OrderType = string.Empty;
-		[ContainerField(Name: "OrderType", Offset: 20, NameHash: 2615460339, Flags: 16509), LayoutImmutable]
-		public string OrderType { get { return m_OrderType; } set { if (OnPropertyChanging("OrderReadiness." + nameof(OrderType), this, m_OrderType, value)) m_OrderType = value; } } // 0x14 (20)
-		
-		protected ReadinessState m_MinimumReadiness = new ReadinessState();
-		[ContainerField(Name: "MinimumReadiness", Offset: 24, NameHash: 3511254371, Flags: 137)]
-		public ReadinessState MinimumReadiness { get { return m_MinimumReadiness; } set { if (OnPropertyChanging("OrderReadiness." + nameof(MinimumReadiness), this, m_MinimumReadiness, value)) m_MinimumReadiness = value; } } // 0x18 (24)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(20), LayoutImmutable]
+		public string OrderType { get; set; } = string.Empty;
+
+		[ContainerField(24)]
+		public ReadinessState MinimumReadiness { get; set; } = new();
+
+		public static void Deserialize(OrderReadiness p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 2615460339:
-					OrderType = (string) p_Value;
-					break;
-
-				case 3511254371:
-					MinimumReadiness = (ReadinessState) Enum.ToObject(typeof(ReadinessState), p_Value);
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
+			p_Instance.OrderType = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
+			p_Instance.MinimumReadiness = (ReadinessState) p_Reader.ReadInt32();
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2615460339:
-					return OrderType;
-
-				case 3511254371:
-					return MinimumReadiness;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2615460339:
-					return typeof(OrderReadiness).GetProperty(nameof(OrderType));
-
-				case 3511254371:
-					return typeof(OrderReadiness).GetProperty(nameof(MinimumReadiness));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

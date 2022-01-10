@@ -5,63 +5,29 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 16,  Flags: 53, Size: 128)]
+	[ContainerType(16, 128)]
 	public class CombatActionTriggerEntityData : 
 		TriggerEntityData
 	{
-		protected float m_TimeToTriggerOnNoAction = new float();
-		[ContainerField(Name: "TimeToTriggerOnNoAction", Offset: 112, NameHash: 1868121293, Flags: 49469), LayoutImmutable, Blittable]
-		public float TimeToTriggerOnNoAction { get { return m_TimeToTriggerOnNoAction; } set { if (OnPropertyChanging("CombatActionTriggerEntityData." + nameof(TimeToTriggerOnNoAction), this, m_TimeToTriggerOnNoAction, value)) m_TimeToTriggerOnNoAction = value; } } // 0x70 (112)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 1868121293:
-					TimeToTriggerOnNoAction = (float) p_Value;
-					break;
+		[ContainerField(112), LayoutImmutable, Blittable]
+		public float TimeToTriggerOnNoAction { get; set; }
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
+		public static void Deserialize(CombatActionTriggerEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
+		{
+			p_Instance.TimeToTriggerOnNoAction = p_Reader.ReadSingle();
+			p_Reader.Seek(12, SeekOrigin.Current);
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1868121293:
-					return TimeToTriggerOnNoAction;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1868121293:
-					return typeof(CombatActionTriggerEntityData).GetProperty(nameof(TimeToTriggerOnNoAction));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

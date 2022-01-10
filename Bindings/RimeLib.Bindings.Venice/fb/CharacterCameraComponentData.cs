@@ -5,77 +5,42 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 16,  Flags: 53, Size: 112)]
+	[ContainerType(16, 112)]
 	public class CharacterCameraComponentData : 
 		ComponentData
 	{
-		protected RefArray<TargetCameraData> m_Cameras = new RefArray<TargetCameraData>();
-		[ContainerField(Name: "Cameras", Offset: 96, NameHash: 3740512847, Flags: 65)]
-		public RefArray<TargetCameraData> Cameras { get { return m_Cameras; } set { if (OnPropertyChanging("CharacterCameraComponentData." + nameof(Cameras), this, m_Cameras, value)) m_Cameras = value; } } // 0x60 (96)
-		
-		protected string m_CameraBoneName = string.Empty;
-		[ContainerField(Name: "CameraBoneName", Offset: 100, NameHash: 771838749, Flags: 16509), LayoutImmutable]
-		public string CameraBoneName { get { return m_CameraBoneName; } set { if (OnPropertyChanging("CharacterCameraComponentData." + nameof(CameraBoneName), this, m_CameraBoneName, value)) m_CameraBoneName = value; } } // 0x64 (100)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(96)]
+		public List<CtrRef<TargetCameraData>> Cameras { get; set; } = new();
+
+		[ContainerField(100), LayoutImmutable]
+		public string CameraBoneName { get; set; } = string.Empty;
+
+		public static void Deserialize(CharacterCameraComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Instance.Cameras.Clear();
+			(RimeReader Reader, uint Count) s_Cameras = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_Cameras.Count; ++i)
 			{
-				case 3740512847:
-					Cameras = (RefArray<TargetCameraData>) p_Value;
-					break;
-
-				case 771838749:
-					CameraBoneName = (string) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_CtrRef = new CtrRef<TargetCameraData>();
+				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_Cameras.Reader.ReadUInt32()));
+				p_Instance.Cameras.Add(s_CtrRef);
 			}
+			
+			s_Cameras.Reader.Dispose();
+			p_Instance.CameraBoneName = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
+			p_Reader.Seek(8, SeekOrigin.Current);
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3740512847:
-					return Cameras;
-
-				case 771838749:
-					return CameraBoneName;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3740512847:
-					return typeof(CharacterCameraComponentData).GetProperty(nameof(Cameras));
-
-				case 771838749:
-					return typeof(CharacterCameraComponentData).GetProperty(nameof(CameraBoneName));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

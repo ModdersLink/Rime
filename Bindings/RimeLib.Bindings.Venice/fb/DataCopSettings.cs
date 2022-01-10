@@ -5,61 +5,35 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 41, Size: 4)]
-	public class DataCopSettings : FrostbiteContainer
+	[ContainerType(4, 4)]
+	public class DataCopSettings
 	{
-		[ContainerField(Name: "Values", Offset: 0, NameHash: 3142410589, Flags: 65)]
-		public List<DataCopValueSetting> Values { get; set; } = new List<DataCopValueSetting>(); // 0x0 (0)
+		[ContainerField(0)]
+		public List<DataCopValueSetting> Values { get; set; } = new();
 		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		public static void Deserialize(DataCopSettings p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Instance.Values.Clear();
+			(RimeReader Reader, uint Count) s_Values = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_Values.Count; ++i)
 			{
-				case 3142410589:
-					Values = (List<DataCopValueSetting>) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_Value = new DataCopValueSetting();
+				fb.DataCopValueSetting.Deserialize(s_Value, s_Values.Reader, p_Parser);
+				p_Instance.Values.Add(s_Value);
 			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3142410589:
-					return Values;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3142410589:
-					return typeof(DataCopSettings).GetProperty(nameof(Values));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
+			
+			s_Values.Reader.Dispose();
 		}
 	}
 }

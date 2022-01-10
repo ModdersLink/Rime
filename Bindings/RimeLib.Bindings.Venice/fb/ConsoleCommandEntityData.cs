@@ -5,77 +5,40 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 20)]
+	[ContainerType(4, 20)]
 	public class ConsoleCommandEntityData : 
 		EntityData
 	{
-		protected List<string> m_Commands = new List<string>();
-		[ContainerField(Name: "Commands", Offset: 12, NameHash: 442350353, Flags: 65)]
-		public List<string> Commands { get { return m_Commands; } set { if (OnPropertyChanging("ConsoleCommandEntityData." + nameof(Commands), this, m_Commands, value)) m_Commands = value; } } // 0xC (12)
-		
-		protected Realm m_Realm = new Realm();
-		[ContainerField(Name: "Realm", Offset: 16, NameHash: 229961746, Flags: 137)]
-		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("ConsoleCommandEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0x10 (16)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(12)]
+		public List<string> Commands { get; set; } = new();
+
+		[ContainerField(16)]
+		public Realm Realm { get; set; } = new();
+
+		public static void Deserialize(ConsoleCommandEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Instance.Commands.Clear();
+			(RimeReader Reader, uint Count) s_Commands = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_Commands.Count; ++i)
 			{
-				case 442350353:
-					Commands = (List<string>) p_Value;
-					break;
-
-				case 229961746:
-					Realm = (Realm) Enum.ToObject(typeof(Realm), p_Value);
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_Value = p_Parser.GetStringAtOffset(s_Commands.Reader.ReadUInt32());
+				p_Instance.Commands.Add(s_Value);
 			}
+			
+			s_Commands.Reader.Dispose();
+			p_Instance.Realm = (Realm) p_Reader.ReadInt32();
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 442350353:
-					return Commands;
-
-				case 229961746:
-					return Realm;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 442350353:
-					return typeof(ConsoleCommandEntityData).GetProperty(nameof(Commands));
-
-				case 229961746:
-					return typeof(ConsoleCommandEntityData).GetProperty(nameof(Realm));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

@@ -5,77 +5,41 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
+	[ContainerType(4, 16)]
 	public class FormationData : 
 		GameDataContainer
 	{
-		protected List<Vec3> m_Positions = new List<Vec3>();
-		[ContainerField(Name: "Positions", Offset: 8, NameHash: 616073487, Flags: 65)]
-		public List<Vec3> Positions { get { return m_Positions; } set { if (OnPropertyChanging("FormationData." + nameof(Positions), this, m_Positions, value)) m_Positions = value; } } // 0x8 (8)
-		
-		protected string m_Name = string.Empty;
-		[ContainerField(Name: "Name", Offset: 12, NameHash: 2088949890, Flags: 16509), LayoutImmutable]
-		public string Name { get { return m_Name; } set { if (OnPropertyChanging("FormationData." + nameof(Name), this, m_Name, value)) m_Name = value; } } // 0xC (12)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(8)]
+		public List<Vec3> Positions { get; set; } = new();
+
+		[ContainerField(12), LayoutImmutable]
+		public string Name { get; set; } = string.Empty;
+
+		public static void Deserialize(FormationData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Instance.Positions.Clear();
+			(RimeReader Reader, uint Count) s_Positions = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_Positions.Count; ++i)
 			{
-				case 616073487:
-					Positions = (List<Vec3>) p_Value;
-					break;
-
-				case 2088949890:
-					Name = (string) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_Value = new Vec3();
+				fb.Vec3.Deserialize(s_Value, s_Positions.Reader, p_Parser);
+				p_Instance.Positions.Add(s_Value);
 			}
+			
+			s_Positions.Reader.Dispose();
+			p_Instance.Name = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 616073487:
-					return Positions;
-
-				case 2088949890:
-					return Name;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 616073487:
-					return typeof(FormationData).GetProperty(nameof(Positions));
-
-				case 2088949890:
-					return typeof(FormationData).GetProperty(nameof(Name));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

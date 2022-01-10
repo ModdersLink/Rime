@@ -5,119 +5,45 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 16,  Flags: 53, Size: 112)]
+	[ContainerType(16, 112)]
 	public class SoldierBodyComponentData : 
 		ComponentData
 	{
-		protected float m_SprintMultiplier = new float();
-		[ContainerField(Name: "SprintMultiplier", Offset: 96, NameHash: 4088490892, Flags: 49469), LayoutImmutable, Blittable]
-		public float SprintMultiplier { get { return m_SprintMultiplier; } set { if (OnPropertyChanging("SoldierBodyComponentData." + nameof(SprintMultiplier), this, m_SprintMultiplier, value)) m_SprintMultiplier = value; } } // 0x60 (96)
-		
-		protected float m_OverrideGravityValue = new float();
-		[ContainerField(Name: "OverrideGravityValue", Offset: 100, NameHash: 1923054204, Flags: 49469), LayoutImmutable, Blittable]
-		public float OverrideGravityValue { get { return m_OverrideGravityValue; } set { if (OnPropertyChanging("SoldierBodyComponentData." + nameof(OverrideGravityValue), this, m_OverrideGravityValue, value)) m_OverrideGravityValue = value; } } // 0x64 (100)
-		
-		protected float m_OverrideVelocityY = new float();
-		[ContainerField(Name: "OverrideVelocityY", Offset: 104, NameHash: 3664501567, Flags: 49469), LayoutImmutable, Blittable]
-		public float OverrideVelocityY { get { return m_OverrideVelocityY; } set { if (OnPropertyChanging("SoldierBodyComponentData." + nameof(OverrideVelocityY), this, m_OverrideVelocityY, value)) m_OverrideVelocityY = value; } } // 0x68 (104)
-		
-		protected bool m_OverrideVelocity = new bool();
-		[ContainerField(Name: "OverrideVelocity", Offset: 108, NameHash: 3104507558, Flags: 49325), LayoutImmutable, Blittable]
-		public bool OverrideVelocity { get { return m_OverrideVelocity; } set { if (OnPropertyChanging("SoldierBodyComponentData." + nameof(OverrideVelocity), this, m_OverrideVelocity, value)) m_OverrideVelocity = value; } } // 0x6C (108)
-		
-		protected bool m_OverrideGravity = new bool();
-		[ContainerField(Name: "OverrideGravity", Offset: 109, NameHash: 2610853335, Flags: 49325), LayoutImmutable, Blittable]
-		public bool OverrideGravity { get { return m_OverrideGravity; } set { if (OnPropertyChanging("SoldierBodyComponentData." + nameof(OverrideGravity), this, m_OverrideGravity, value)) m_OverrideGravity = value; } } // 0x6D (109)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(96), LayoutImmutable, Blittable]
+		public float SprintMultiplier { get; set; }
+
+		[ContainerField(100), LayoutImmutable, Blittable]
+		public float OverrideGravityValue { get; set; }
+
+		[ContainerField(104), LayoutImmutable, Blittable]
+		public float OverrideVelocityY { get; set; }
+
+		[ContainerField(108), LayoutImmutable, Blittable]
+		public bool OverrideVelocity { get; set; }
+
+		[ContainerField(109), LayoutImmutable, Blittable]
+		public bool OverrideGravity { get; set; }
+
+		public static void Deserialize(SoldierBodyComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 4088490892:
-					SprintMultiplier = (float) p_Value;
-					break;
-
-				case 1923054204:
-					OverrideGravityValue = (float) p_Value;
-					break;
-
-				case 3664501567:
-					OverrideVelocityY = (float) p_Value;
-					break;
-
-				case 3104507558:
-					OverrideVelocity = (bool) p_Value;
-					break;
-
-				case 2610853335:
-					OverrideGravity = (bool) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
+			p_Instance.SprintMultiplier = p_Reader.ReadSingle();
+			p_Instance.OverrideGravityValue = p_Reader.ReadSingle();
+			p_Instance.OverrideVelocityY = p_Reader.ReadSingle();
+			p_Instance.OverrideVelocity = p_Reader.ReadBool();
+			p_Instance.OverrideGravity = p_Reader.ReadBool();
+			p_Reader.Seek(2, SeekOrigin.Current);
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 4088490892:
-					return SprintMultiplier;
-
-				case 1923054204:
-					return OverrideGravityValue;
-
-				case 3664501567:
-					return OverrideVelocityY;
-
-				case 3104507558:
-					return OverrideVelocity;
-
-				case 2610853335:
-					return OverrideGravity;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 4088490892:
-					return typeof(SoldierBodyComponentData).GetProperty(nameof(SprintMultiplier));
-
-				case 1923054204:
-					return typeof(SoldierBodyComponentData).GetProperty(nameof(OverrideGravityValue));
-
-				case 3664501567:
-					return typeof(SoldierBodyComponentData).GetProperty(nameof(OverrideVelocityY));
-
-				case 3104507558:
-					return typeof(SoldierBodyComponentData).GetProperty(nameof(OverrideVelocity));
-
-				case 2610853335:
-					return typeof(SoldierBodyComponentData).GetProperty(nameof(OverrideGravity));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

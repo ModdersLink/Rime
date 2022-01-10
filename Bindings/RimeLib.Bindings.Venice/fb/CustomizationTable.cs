@@ -5,63 +5,37 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 12)]
+	[ContainerType(4, 12)]
 	public class CustomizationTable : 
 		DataContainer
 	{
-		protected RefArray<CustomizationUnlockParts> m_UnlockParts = new RefArray<CustomizationUnlockParts>();
-		[ContainerField(Name: "UnlockParts", Offset: 8, NameHash: 4116003953, Flags: 65)]
-		public RefArray<CustomizationUnlockParts> UnlockParts { get { return m_UnlockParts; } set { if (OnPropertyChanging("CustomizationTable." + nameof(UnlockParts), this, m_UnlockParts, value)) m_UnlockParts = value; } } // 0x8 (8)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 4116003953:
-					UnlockParts = (RefArray<CustomizationUnlockParts>) p_Value;
-					break;
+		[ContainerField(8)]
+		public List<CtrRef<CustomizationUnlockParts>> UnlockParts { get; set; } = new();
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+		public static void Deserialize(CustomizationTable p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
+		{
+			p_Instance.UnlockParts.Clear();
+			(RimeReader Reader, uint Count) s_UnlockParts = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_UnlockParts.Count; ++i)
+			{
+				var s_CtrRef = new CtrRef<CustomizationUnlockParts>();
+				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_UnlockParts.Reader.ReadUInt32()));
+				p_Instance.UnlockParts.Add(s_CtrRef);
 			}
+			
+			s_UnlockParts.Reader.Dispose();
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 4116003953:
-					return UnlockParts;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 4116003953:
-					return typeof(CustomizationTable).GetProperty(nameof(UnlockParts));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

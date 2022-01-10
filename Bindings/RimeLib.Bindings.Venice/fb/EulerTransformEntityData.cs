@@ -5,105 +5,45 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 16,  Flags: 53, Size: 48)]
+	[ContainerType(16, 48)]
 	public class EulerTransformEntityData : 
 		EntityData
 	{
-		protected Vec3 m_In1 = new Vec3();
-		[ContainerField(Name: "In1", Offset: 16, NameHash: 193450867, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 In1 { get { return m_In1; } set { if (OnPropertyChanging("EulerTransformEntityData." + nameof(In1), this, m_In1, value)) m_In1 = value; } } // 0x10 (16)
-		
-		protected Realm m_Realm = new Realm();
-		[ContainerField(Name: "Realm", Offset: 32, NameHash: 229961746, Flags: 137)]
-		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("EulerTransformEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0x20 (32)
-		
-		protected float m_In = new float();
-		[ContainerField(Name: "In", Offset: 36, NameHash: 5862146, Flags: 49469), LayoutImmutable, Blittable]
-		public float In { get { return m_In; } set { if (OnPropertyChanging("EulerTransformEntityData." + nameof(In), this, m_In, value)) m_In = value; } } // 0x24 (36)
-		
-		protected ModifierEuler m_Euler = new ModifierEuler();
-		[ContainerField(Name: "Euler", Offset: 40, NameHash: 201462510, Flags: 137)]
-		public ModifierEuler Euler { get { return m_Euler; } set { if (OnPropertyChanging("EulerTransformEntityData." + nameof(Euler), this, m_Euler, value)) m_Euler = value; } } // 0x28 (40)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable]
+		public Vec3 In1 { get; set; } = new();
+
+		[ContainerField(32)]
+		public Realm Realm { get; set; } = new();
+
+		[ContainerField(36), LayoutImmutable, Blittable]
+		public float In { get; set; }
+
+		[ContainerField(40)]
+		public ModifierEuler Euler { get; set; } = new();
+
+		public static void Deserialize(EulerTransformEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 193450867:
-					In1 = (Vec3) p_Value;
-					break;
-
-				case 229961746:
-					Realm = (Realm) Enum.ToObject(typeof(Realm), p_Value);
-					break;
-
-				case 5862146:
-					In = (float) p_Value;
-					break;
-
-				case 201462510:
-					Euler = (ModifierEuler) Enum.ToObject(typeof(ModifierEuler), p_Value);
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
+			p_Reader.Seek(4, SeekOrigin.Current);
+			fb.Vec3.Deserialize(p_Instance.In1, p_Reader, p_Parser);
+			p_Reader.Seek(4, SeekOrigin.Current);
+			p_Instance.Realm = (Realm) p_Reader.ReadInt32();
+			p_Reader.Seek(4, SeekOrigin.Current);
+			p_Instance.In = p_Reader.ReadSingle();
+			p_Reader.Seek(4, SeekOrigin.Current);
+			p_Instance.Euler = (ModifierEuler) p_Reader.ReadInt32();
+			p_Reader.Seek(8, SeekOrigin.Current);
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 193450867:
-					return In1;
-
-				case 229961746:
-					return Realm;
-
-				case 5862146:
-					return In;
-
-				case 201462510:
-					return Euler;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 193450867:
-					return typeof(EulerTransformEntityData).GetProperty(nameof(In1));
-
-				case 229961746:
-					return typeof(EulerTransformEntityData).GetProperty(nameof(Realm));
-
-				case 5862146:
-					return typeof(EulerTransformEntityData).GetProperty(nameof(In));
-
-				case 201462510:
-					return typeof(EulerTransformEntityData).GetProperty(nameof(Euler));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

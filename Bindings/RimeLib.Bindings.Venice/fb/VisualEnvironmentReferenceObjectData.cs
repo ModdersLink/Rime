@@ -5,77 +5,33 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 16,  Flags: 53, Size: 112)]
+	[ContainerType(16, 112)]
 	public class VisualEnvironmentReferenceObjectData : 
 		ReferenceObjectData
 	{
-		protected int m_Priority = new int();
-		[ContainerField(Name: "Priority", Offset: 96, NameHash: 3062102871, Flags: 49405), LayoutImmutable, Blittable]
-		public int Priority { get { return m_Priority; } set { if (OnPropertyChanging("VisualEnvironmentReferenceObjectData." + nameof(Priority), this, m_Priority, value)) m_Priority = value; } } // 0x60 (96)
-		
-		protected bool m_OverrideVisibility = new bool();
-		[ContainerField(Name: "OverrideVisibility", Offset: 100, NameHash: 3611184311, Flags: 49325), LayoutImmutable, Blittable]
-		public bool OverrideVisibility { get { return m_OverrideVisibility; } set { if (OnPropertyChanging("VisualEnvironmentReferenceObjectData." + nameof(OverrideVisibility), this, m_OverrideVisibility, value)) m_OverrideVisibility = value; } } // 0x64 (100)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(96), LayoutImmutable, Blittable]
+		public int Priority { get; set; }
+
+		[ContainerField(100), LayoutImmutable, Blittable]
+		public bool OverrideVisibility { get; set; }
+
+		public static void Deserialize(VisualEnvironmentReferenceObjectData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 3062102871:
-					Priority = (int) p_Value;
-					break;
-
-				case 3611184311:
-					OverrideVisibility = (bool) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
+			p_Instance.Priority = p_Reader.ReadInt32();
+			p_Instance.OverrideVisibility = p_Reader.ReadBool();
+			p_Reader.Seek(11, SeekOrigin.Current);
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3062102871:
-					return Priority;
-
-				case 3611184311:
-					return OverrideVisibility;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3062102871:
-					return typeof(VisualEnvironmentReferenceObjectData).GetProperty(nameof(Priority));
-
-				case 3611184311:
-					return typeof(VisualEnvironmentReferenceObjectData).GetProperty(nameof(OverrideVisibility));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

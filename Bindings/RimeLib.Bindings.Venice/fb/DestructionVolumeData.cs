@@ -5,105 +5,62 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 16,  Flags: 53, Size: 64)]
+	[ContainerType(16, 64)]
 	public class DestructionVolumeData : 
 		DataContainer
 	{
-		protected AxisAlignedBox m_BoundingBox = new AxisAlignedBox();
-		[ContainerField(Name: "BoundingBox", Offset: 16, NameHash: 2648132290, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
-		public AxisAlignedBox BoundingBox { get { return m_BoundingBox; } set { if (OnPropertyChanging("DestructionVolumeData." + nameof(BoundingBox), this, m_BoundingBox, value)) m_BoundingBox = value; } } // 0x10 (16)
-		
-		protected CtrRef<DestructionVolumeAsset> m_Asset = new CtrRef<DestructionVolumeAsset>();
-		[ContainerField(Name: "Asset", Offset: 48, NameHash: 205976053, Flags: 53)]
-		public CtrRef<DestructionVolumeAsset> Asset { get { return m_Asset; } set { if (OnPropertyChanging("DestructionVolumeData." + nameof(Asset), this, m_Asset, value)) m_Asset = value; } } // 0x30 (48)
-		
-		protected List<Vec4> m_Impacts = new List<Vec4>();
-		[ContainerField(Name: "Impacts", Offset: 52, NameHash: 1723826932, Flags: 65)]
-		public List<Vec4> Impacts { get { return m_Impacts; } set { if (OnPropertyChanging("DestructionVolumeData." + nameof(Impacts), this, m_Impacts, value)) m_Impacts = value; } } // 0x34 (52)
-		
-		protected List<uint> m_PartToImpactIndices = new List<uint>();
-		[ContainerField(Name: "PartToImpactIndices", Offset: 56, NameHash: 4119124564, Flags: 65)]
-		public List<uint> PartToImpactIndices { get { return m_PartToImpactIndices; } set { if (OnPropertyChanging("DestructionVolumeData." + nameof(PartToImpactIndices), this, m_PartToImpactIndices, value)) m_PartToImpactIndices = value; } } // 0x38 (56)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable]
+		public AxisAlignedBox BoundingBox { get; set; } = new();
+
+		[ContainerField(48)]
+		public CtrRef<DestructionVolumeAsset> Asset { get; set; } = new();
+
+		[ContainerField(52)]
+		public List<Vec4> Impacts { get; set; } = new();
+
+		[ContainerField(56)]
+		public List<uint> PartToImpactIndices { get; set; } = new();
+
+		public static void Deserialize(DestructionVolumeData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Reader.Seek(8, SeekOrigin.Current);
+			fb.AxisAlignedBox.Deserialize(p_Instance.BoundingBox, p_Reader, p_Parser);
+			p_Reader.Seek(8, SeekOrigin.Current);
+			p_Instance.Asset.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
+			p_Reader.Seek(8, SeekOrigin.Current);
+			p_Instance.Impacts.Clear();
+			(RimeReader Reader, uint Count) s_Impacts = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_Impacts.Count; ++i)
 			{
-				case 2648132290:
-					BoundingBox = (AxisAlignedBox) p_Value;
-					break;
-
-				case 205976053:
-					Asset = (CtrRef<DestructionVolumeAsset>) p_Value;
-					break;
-
-				case 1723826932:
-					Impacts = (List<Vec4>) p_Value;
-					break;
-
-				case 4119124564:
-					PartToImpactIndices = (List<uint>) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_Value = new Vec4();
+				fb.Vec4.Deserialize(s_Value, s_Impacts.Reader, p_Parser);
+				p_Instance.Impacts.Add(s_Value);
 			}
+			
+			s_Impacts.Reader.Dispose();
+			p_Reader.Seek(8, SeekOrigin.Current);
+			p_Instance.PartToImpactIndices.Clear();
+			(RimeReader Reader, uint Count) s_PartToImpactIndices = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_PartToImpactIndices.Count; ++i)
+			{
+				var s_Value = s_PartToImpactIndices.Reader.ReadUInt32();
+				p_Instance.PartToImpactIndices.Add(s_Value);
+			}
+			
+			s_PartToImpactIndices.Reader.Dispose();
+			p_Reader.Seek(12, SeekOrigin.Current);
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2648132290:
-					return BoundingBox;
-
-				case 205976053:
-					return Asset;
-
-				case 1723826932:
-					return Impacts;
-
-				case 4119124564:
-					return PartToImpactIndices;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2648132290:
-					return typeof(DestructionVolumeData).GetProperty(nameof(BoundingBox));
-
-				case 205976053:
-					return typeof(DestructionVolumeData).GetProperty(nameof(Asset));
-
-				case 1723826932:
-					return typeof(DestructionVolumeData).GetProperty(nameof(Impacts));
-
-				case 4119124564:
-					return typeof(DestructionVolumeData).GetProperty(nameof(PartToImpactIndices));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

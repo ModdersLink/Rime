@@ -5,119 +5,45 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 16,  Flags: 53, Size: 160)]
+	[ContainerType(16, 160)]
 	public class DestructionMaskVolumeEntityData : 
 		GameEntityData
 	{
-		protected Vec4 m_DustAccumulationCurve = new Vec4();
-		[ContainerField(Name: "DustAccumulationCurve", Offset: 96, NameHash: 2881902809, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
-		public Vec4 DustAccumulationCurve { get { return m_DustAccumulationCurve; } set { if (OnPropertyChanging("DestructionMaskVolumeEntityData." + nameof(DustAccumulationCurve), this, m_DustAccumulationCurve, value)) m_DustAccumulationCurve = value; } } // 0x60 (96)
-		
-		protected Vec4 m_ShaderUserMasks = new Vec4();
-		[ContainerField(Name: "ShaderUserMasks", Offset: 112, NameHash: 739662234, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
-		public Vec4 ShaderUserMasks { get { return m_ShaderUserMasks; } set { if (OnPropertyChanging("DestructionMaskVolumeEntityData." + nameof(ShaderUserMasks), this, m_ShaderUserMasks, value)) m_ShaderUserMasks = value; } } // 0x70 (112)
-		
-		protected float m_DustAccumulationLifeTime = new float();
-		[ContainerField(Name: "DustAccumulationLifeTime", Offset: 128, NameHash: 3645148381, Flags: 49469), LayoutImmutable, Blittable]
-		public float DustAccumulationLifeTime { get { return m_DustAccumulationLifeTime; } set { if (OnPropertyChanging("DestructionMaskVolumeEntityData." + nameof(DustAccumulationLifeTime), this, m_DustAccumulationLifeTime, value)) m_DustAccumulationLifeTime = value; } } // 0x80 (128)
-		
-		protected SurfaceShaderInstanceDataStruct m_Shader = new SurfaceShaderInstanceDataStruct();
-		[ContainerField(Name: "Shader", Offset: 132, NameHash: 3352909900, Flags: 41)]
-		public SurfaceShaderInstanceDataStruct Shader { get { return m_Shader; } set { if (OnPropertyChanging("DestructionMaskVolumeEntityData." + nameof(Shader), this, m_Shader, value)) m_Shader = value; } } // 0x84 (132)
-		
-		protected float m_Radius = new float();
-		[ContainerField(Name: "Radius", Offset: 152, NameHash: 3298407133, Flags: 49469), LayoutImmutable, Blittable]
-		public float Radius { get { return m_Radius; } set { if (OnPropertyChanging("DestructionMaskVolumeEntityData." + nameof(Radius), this, m_Radius, value)) m_Radius = value; } } // 0x98 (152)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable]
+		public Vec4 DustAccumulationCurve { get; set; } = new();
+
+		[ContainerField(112), Homogeneous, LayoutImmutable, Blittable]
+		public Vec4 ShaderUserMasks { get; set; } = new();
+
+		[ContainerField(128), LayoutImmutable, Blittable]
+		public float DustAccumulationLifeTime { get; set; }
+
+		[ContainerField(132)]
+		public SurfaceShaderInstanceDataStruct Shader { get; set; } = new();
+
+		[ContainerField(152), LayoutImmutable, Blittable]
+		public float Radius { get; set; }
+
+		public static void Deserialize(DestructionMaskVolumeEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 2881902809:
-					DustAccumulationCurve = (Vec4) p_Value;
-					break;
-
-				case 739662234:
-					ShaderUserMasks = (Vec4) p_Value;
-					break;
-
-				case 3645148381:
-					DustAccumulationLifeTime = (float) p_Value;
-					break;
-
-				case 3352909900:
-					Shader = (SurfaceShaderInstanceDataStruct) p_Value;
-					break;
-
-				case 3298407133:
-					Radius = (float) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
+			fb.Vec4.Deserialize(p_Instance.DustAccumulationCurve, p_Reader, p_Parser);
+			fb.Vec4.Deserialize(p_Instance.ShaderUserMasks, p_Reader, p_Parser);
+			p_Instance.DustAccumulationLifeTime = p_Reader.ReadSingle();
+			fb.SurfaceShaderInstanceDataStruct.Deserialize(p_Instance.Shader, p_Reader, p_Parser);
+			p_Instance.Radius = p_Reader.ReadSingle();
+			p_Reader.Seek(4, SeekOrigin.Current);
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2881902809:
-					return DustAccumulationCurve;
-
-				case 739662234:
-					return ShaderUserMasks;
-
-				case 3645148381:
-					return DustAccumulationLifeTime;
-
-				case 3352909900:
-					return Shader;
-
-				case 3298407133:
-					return Radius;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2881902809:
-					return typeof(DestructionMaskVolumeEntityData).GetProperty(nameof(DustAccumulationCurve));
-
-				case 739662234:
-					return typeof(DestructionMaskVolumeEntityData).GetProperty(nameof(ShaderUserMasks));
-
-				case 3645148381:
-					return typeof(DestructionMaskVolumeEntityData).GetProperty(nameof(DustAccumulationLifeTime));
-
-				case 3352909900:
-					return typeof(DestructionMaskVolumeEntityData).GetProperty(nameof(Shader));
-
-				case 3298407133:
-					return typeof(DestructionMaskVolumeEntityData).GetProperty(nameof(Radius));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

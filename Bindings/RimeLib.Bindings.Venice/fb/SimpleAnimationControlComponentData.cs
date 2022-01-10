@@ -5,91 +5,37 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 16,  Flags: 53, Size: 112)]
+	[ContainerType(16, 112)]
 	public class SimpleAnimationControlComponentData : 
 		ComponentData
 	{
-		protected SimpleAnimationControlBinding m_Binding = new SimpleAnimationControlBinding();
-		[ContainerField(Name: "Binding", Offset: 96, NameHash: 2590060228, Flags: 41)]
-		public SimpleAnimationControlBinding Binding { get { return m_Binding; } set { if (OnPropertyChanging("SimpleAnimationControlComponentData." + nameof(Binding), this, m_Binding, value)) m_Binding = value; } } // 0x60 (96)
-		
-		protected int m_AnimationEntitySpacePriority = new int();
-		[ContainerField(Name: "AnimationEntitySpacePriority", Offset: 100, NameHash: 4041607518, Flags: 49405), LayoutImmutable, Blittable]
-		public int AnimationEntitySpacePriority { get { return m_AnimationEntitySpacePriority; } set { if (OnPropertyChanging("SimpleAnimationControlComponentData." + nameof(AnimationEntitySpacePriority), this, m_AnimationEntitySpacePriority, value)) m_AnimationEntitySpacePriority = value; } } // 0x64 (100)
-		
-		protected bool m_Run = new bool();
-		[ContainerField(Name: "Run", Offset: 104, NameHash: 193464460, Flags: 49325), LayoutImmutable, Blittable]
-		public bool Run { get { return m_Run; } set { if (OnPropertyChanging("SimpleAnimationControlComponentData." + nameof(Run), this, m_Run, value)) m_Run = value; } } // 0x68 (104)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(96)]
+		public SimpleAnimationControlBinding Binding { get; set; } = new();
+
+		[ContainerField(100), LayoutImmutable, Blittable]
+		public int AnimationEntitySpacePriority { get; set; }
+
+		[ContainerField(104), LayoutImmutable, Blittable]
+		public bool Run { get; set; }
+
+		public static void Deserialize(SimpleAnimationControlComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 2590060228:
-					Binding = (SimpleAnimationControlBinding) p_Value;
-					break;
-
-				case 4041607518:
-					AnimationEntitySpacePriority = (int) p_Value;
-					break;
-
-				case 193464460:
-					Run = (bool) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
+			fb.SimpleAnimationControlBinding.Deserialize(p_Instance.Binding, p_Reader, p_Parser);
+			p_Instance.AnimationEntitySpacePriority = p_Reader.ReadInt32();
+			p_Instance.Run = p_Reader.ReadBool();
+			p_Reader.Seek(7, SeekOrigin.Current);
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2590060228:
-					return Binding;
-
-				case 4041607518:
-					return AnimationEntitySpacePriority;
-
-				case 193464460:
-					return Run;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2590060228:
-					return typeof(SimpleAnimationControlComponentData).GetProperty(nameof(Binding));
-
-				case 4041607518:
-					return typeof(SimpleAnimationControlComponentData).GetProperty(nameof(AnimationEntitySpacePriority));
-
-				case 193464460:
-					return typeof(SimpleAnimationControlComponentData).GetProperty(nameof(Run));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

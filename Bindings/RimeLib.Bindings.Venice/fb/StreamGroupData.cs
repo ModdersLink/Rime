@@ -5,63 +5,37 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 12)]
+	[ContainerType(4, 12)]
 	public class StreamGroupData : 
 		DataContainer
 	{
-		protected RefArray<Asset> m_Assets = new RefArray<Asset>();
-		[ContainerField(Name: "Assets", Offset: 8, NameHash: 2502242534, Flags: 65)]
-		public RefArray<Asset> Assets { get { return m_Assets; } set { if (OnPropertyChanging("StreamGroupData." + nameof(Assets), this, m_Assets, value)) m_Assets = value; } } // 0x8 (8)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 2502242534:
-					Assets = (RefArray<Asset>) p_Value;
-					break;
+		[ContainerField(8)]
+		public List<CtrRef<Asset>> Assets { get; set; } = new();
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+		public static void Deserialize(StreamGroupData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
+		{
+			p_Instance.Assets.Clear();
+			(RimeReader Reader, uint Count) s_Assets = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_Assets.Count; ++i)
+			{
+				var s_CtrRef = new CtrRef<Asset>();
+				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_Assets.Reader.ReadUInt32()));
+				p_Instance.Assets.Add(s_CtrRef);
 			}
+			
+			s_Assets.Reader.Dispose();
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2502242534:
-					return Assets;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2502242534:
-					return typeof(StreamGroupData).GetProperty(nameof(Assets));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

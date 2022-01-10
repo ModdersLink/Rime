@@ -5,77 +5,41 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 20)]
+	[ContainerType(4, 20)]
 	public class MixerNodeData : 
 		AudioGraphNodeData
 	{
-		protected RefArray<MixerEntry> m_Entries = new RefArray<MixerEntry>();
-		[ContainerField(Name: "Entries", Offset: 8, NameHash: 8238103, Flags: 65)]
-		public RefArray<MixerEntry> Entries { get { return m_Entries; } set { if (OnPropertyChanging("MixerNodeData." + nameof(Entries), this, m_Entries, value)) m_Entries = value; } } // 0x8 (8)
-		
-		protected AudioGraphNodePort m_Out = new AudioGraphNodePort();
-		[ContainerField(Name: "Out", Offset: 12, NameHash: 193453899, Flags: 41)]
-		public AudioGraphNodePort Out { get { return m_Out; } set { if (OnPropertyChanging("MixerNodeData." + nameof(Out), this, m_Out, value)) m_Out = value; } } // 0xC (12)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(8)]
+		public List<CtrRef<MixerEntry>> Entries { get; set; } = new();
+
+		[ContainerField(12)]
+		public AudioGraphNodePort Out { get; set; } = new();
+
+		public static void Deserialize(MixerNodeData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Instance.Entries.Clear();
+			(RimeReader Reader, uint Count) s_Entries = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_Entries.Count; ++i)
 			{
-				case 8238103:
-					Entries = (RefArray<MixerEntry>) p_Value;
-					break;
-
-				case 193453899:
-					Out = (AudioGraphNodePort) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_CtrRef = new CtrRef<MixerEntry>();
+				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_Entries.Reader.ReadUInt32()));
+				p_Instance.Entries.Add(s_CtrRef);
 			}
+			
+			s_Entries.Reader.Dispose();
+			fb.AudioGraphNodePort.Deserialize(p_Instance.Out, p_Reader, p_Parser);
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 8238103:
-					return Entries;
-
-				case 193453899:
-					return Out;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 8238103:
-					return typeof(MixerNodeData).GetProperty(nameof(Entries));
-
-				case 193453899:
-					return typeof(MixerNodeData).GetProperty(nameof(Out));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

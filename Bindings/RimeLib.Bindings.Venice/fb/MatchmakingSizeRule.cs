@@ -5,74 +5,39 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 41, Size: 8)]
-	public class MatchmakingSizeRule : FrostbiteContainer
+	[ContainerType(4, 8)]
+	public class MatchmakingSizeRule
 	{
-		[ContainerField(Name: "Setting", Offset: 0, NameHash: 2752851091, Flags: 16509), LayoutImmutable]
-		public string Setting { get; set; } // 0x0 (0)
+		[ContainerField(0), LayoutImmutable]
+		public string Setting { get; set; } = string.Empty;
 		
-		[ContainerField(Name: "Configurations", Offset: 4, NameHash: 4211240070, Flags: 65)]
-		public List<MatchmakingSizeConfiguration> Configurations { get; set; } = new List<MatchmakingSizeConfiguration>(); // 0x4 (4)
+		[ContainerField(4)]
+		public List<MatchmakingSizeConfiguration> Configurations { get; set; } = new();
 		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		public static void Deserialize(MatchmakingSizeRule p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Instance.Setting = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
+			p_Instance.Configurations.Clear();
+			(RimeReader Reader, uint Count) s_Configurations = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_Configurations.Count; ++i)
 			{
-				case 2752851091:
-					Setting = (string) p_Value;
-					break;
-
-				case 4211240070:
-					Configurations = (List<MatchmakingSizeConfiguration>) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_Value = new MatchmakingSizeConfiguration();
+				fb.MatchmakingSizeConfiguration.Deserialize(s_Value, s_Configurations.Reader, p_Parser);
+				p_Instance.Configurations.Add(s_Value);
 			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2752851091:
-					return Setting;
-
-				case 4211240070:
-					return Configurations;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2752851091:
-					return typeof(MatchmakingSizeRule).GetProperty(nameof(Setting));
-
-				case 4211240070:
-					return typeof(MatchmakingSizeRule).GetProperty(nameof(Configurations));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
+			
+			s_Configurations.Reader.Dispose();
 		}
 	}
 }

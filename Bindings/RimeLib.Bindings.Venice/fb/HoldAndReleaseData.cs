@@ -5,139 +5,51 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 41, Size: 28)]
-	public class HoldAndReleaseData : FrostbiteContainer
+	[ContainerType(4, 28)]
+	public class HoldAndReleaseData
 	{
-		[ContainerField(Name: "MaxHoldTime", Offset: 0, NameHash: 2026966059, Flags: 49469), LayoutImmutable, Blittable]
-		public float MaxHoldTime { get; set; } // 0x0 (0)
+		[ContainerField(0), LayoutImmutable, Blittable]
+		public float MaxHoldTime { get; set; }
 		
-		[ContainerField(Name: "MinPowerModifier", Offset: 4, NameHash: 1396894279, Flags: 49469), LayoutImmutable, Blittable]
-		public float MinPowerModifier { get; set; } // 0x4 (4)
+		[ContainerField(4), LayoutImmutable, Blittable]
+		public float MinPowerModifier { get; set; }
 		
-		[ContainerField(Name: "MaxPowerModifier", Offset: 8, NameHash: 4200451609, Flags: 49469), LayoutImmutable, Blittable]
-		public float MaxPowerModifier { get; set; } // 0x8 (8)
+		[ContainerField(8), LayoutImmutable, Blittable]
+		public float MaxPowerModifier { get; set; }
 		
-		[ContainerField(Name: "PowerIncreasePerSecond", Offset: 12, NameHash: 1198568329, Flags: 49469), LayoutImmutable, Blittable]
-		public float PowerIncreasePerSecond { get; set; } // 0xC (12)
+		[ContainerField(12), LayoutImmutable, Blittable]
+		public float PowerIncreasePerSecond { get; set; }
 		
-		[ContainerField(Name: "Delay", Offset: 16, NameHash: 208768368, Flags: 49469), LayoutImmutable, Blittable]
-		public float Delay { get; set; } // 0x10 (16)
+		[ContainerField(16), LayoutImmutable, Blittable]
+		public float Delay { get; set; }
 		
-		[ContainerField(Name: "KilledHoldingPowerModifier", Offset: 20, NameHash: 1213290625, Flags: 49469), LayoutImmutable, Blittable]
-		public float KilledHoldingPowerModifier { get; set; } // 0x14 (20)
+		[ContainerField(20), LayoutImmutable, Blittable]
+		public float KilledHoldingPowerModifier { get; set; }
 		
-		[ContainerField(Name: "ForceFireWhenKilledHolding", Offset: 24, NameHash: 2172080088, Flags: 49325), LayoutImmutable, Blittable]
-		public bool ForceFireWhenKilledHolding { get; set; } // 0x18 (24)
+		[ContainerField(24), LayoutImmutable, Blittable]
+		public bool ForceFireWhenKilledHolding { get; set; }
 		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		public static void Deserialize(HoldAndReleaseData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 2026966059:
-					MaxHoldTime = (float) p_Value;
-					break;
-
-				case 1396894279:
-					MinPowerModifier = (float) p_Value;
-					break;
-
-				case 4200451609:
-					MaxPowerModifier = (float) p_Value;
-					break;
-
-				case 1198568329:
-					PowerIncreasePerSecond = (float) p_Value;
-					break;
-
-				case 208768368:
-					Delay = (float) p_Value;
-					break;
-
-				case 1213290625:
-					KilledHoldingPowerModifier = (float) p_Value;
-					break;
-
-				case 2172080088:
-					ForceFireWhenKilledHolding = (bool) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2026966059:
-					return MaxHoldTime;
-
-				case 1396894279:
-					return MinPowerModifier;
-
-				case 4200451609:
-					return MaxPowerModifier;
-
-				case 1198568329:
-					return PowerIncreasePerSecond;
-
-				case 208768368:
-					return Delay;
-
-				case 1213290625:
-					return KilledHoldingPowerModifier;
-
-				case 2172080088:
-					return ForceFireWhenKilledHolding;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2026966059:
-					return typeof(HoldAndReleaseData).GetProperty(nameof(MaxHoldTime));
-
-				case 1396894279:
-					return typeof(HoldAndReleaseData).GetProperty(nameof(MinPowerModifier));
-
-				case 4200451609:
-					return typeof(HoldAndReleaseData).GetProperty(nameof(MaxPowerModifier));
-
-				case 1198568329:
-					return typeof(HoldAndReleaseData).GetProperty(nameof(PowerIncreasePerSecond));
-
-				case 208768368:
-					return typeof(HoldAndReleaseData).GetProperty(nameof(Delay));
-
-				case 1213290625:
-					return typeof(HoldAndReleaseData).GetProperty(nameof(KilledHoldingPowerModifier));
-
-				case 2172080088:
-					return typeof(HoldAndReleaseData).GetProperty(nameof(ForceFireWhenKilledHolding));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
+			p_Instance.MaxHoldTime = p_Reader.ReadSingle();
+			p_Instance.MinPowerModifier = p_Reader.ReadSingle();
+			p_Instance.MaxPowerModifier = p_Reader.ReadSingle();
+			p_Instance.PowerIncreasePerSecond = p_Reader.ReadSingle();
+			p_Instance.Delay = p_Reader.ReadSingle();
+			p_Instance.KilledHoldingPowerModifier = p_Reader.ReadSingle();
+			p_Instance.ForceFireWhenKilledHolding = p_Reader.ReadBool();
+			p_Reader.Seek(3, SeekOrigin.Current);
 		}
 	}
 }

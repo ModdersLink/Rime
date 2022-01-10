@@ -5,105 +5,76 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 28)]
+	[ContainerType(4, 28)]
 	public class InterfaceDescriptorData : 
 		DynamicDataContainer
 	{
-		protected List<DynamicEvent> m_InputEvents = new List<DynamicEvent>();
-		[ContainerField(Name: "InputEvents", Offset: 12, NameHash: 1542460652, Flags: 65)]
-		public List<DynamicEvent> InputEvents { get { return m_InputEvents; } set { if (OnPropertyChanging("InterfaceDescriptorData." + nameof(InputEvents), this, m_InputEvents, value)) m_InputEvents = value; } } // 0xC (12)
-		
-		protected List<DynamicEvent> m_OutputEvents = new List<DynamicEvent>();
-		[ContainerField(Name: "OutputEvents", Offset: 16, NameHash: 3452448709, Flags: 65)]
-		public List<DynamicEvent> OutputEvents { get { return m_OutputEvents; } set { if (OnPropertyChanging("InterfaceDescriptorData." + nameof(OutputEvents), this, m_OutputEvents, value)) m_OutputEvents = value; } } // 0x10 (16)
-		
-		protected List<DynamicLink> m_InputLinks = new List<DynamicLink>();
-		[ContainerField(Name: "InputLinks", Offset: 20, NameHash: 1626510432, Flags: 65)]
-		public List<DynamicLink> InputLinks { get { return m_InputLinks; } set { if (OnPropertyChanging("InterfaceDescriptorData." + nameof(InputLinks), this, m_InputLinks, value)) m_InputLinks = value; } } // 0x14 (20)
-		
-		protected List<DynamicLink> m_OutputLinks = new List<DynamicLink>();
-		[ContainerField(Name: "OutputLinks", Offset: 24, NameHash: 748160425, Flags: 65)]
-		public List<DynamicLink> OutputLinks { get { return m_OutputLinks; } set { if (OnPropertyChanging("InterfaceDescriptorData." + nameof(OutputLinks), this, m_OutputLinks, value)) m_OutputLinks = value; } } // 0x18 (24)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(12)]
+		public List<DynamicEvent> InputEvents { get; set; } = new();
+
+		[ContainerField(16)]
+		public List<DynamicEvent> OutputEvents { get; set; } = new();
+
+		[ContainerField(20)]
+		public List<DynamicLink> InputLinks { get; set; } = new();
+
+		[ContainerField(24)]
+		public List<DynamicLink> OutputLinks { get; set; } = new();
+
+		public static void Deserialize(InterfaceDescriptorData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Instance.InputEvents.Clear();
+			(RimeReader Reader, uint Count) s_InputEvents = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_InputEvents.Count; ++i)
 			{
-				case 1542460652:
-					InputEvents = (List<DynamicEvent>) p_Value;
-					break;
-
-				case 3452448709:
-					OutputEvents = (List<DynamicEvent>) p_Value;
-					break;
-
-				case 1626510432:
-					InputLinks = (List<DynamicLink>) p_Value;
-					break;
-
-				case 748160425:
-					OutputLinks = (List<DynamicLink>) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_Value = new DynamicEvent();
+				fb.DynamicEvent.Deserialize(s_Value, s_InputEvents.Reader, p_Parser);
+				p_Instance.InputEvents.Add(s_Value);
 			}
+			
+			s_InputEvents.Reader.Dispose();
+			p_Instance.OutputEvents.Clear();
+			(RimeReader Reader, uint Count) s_OutputEvents = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_OutputEvents.Count; ++i)
+			{
+				var s_Value = new DynamicEvent();
+				fb.DynamicEvent.Deserialize(s_Value, s_OutputEvents.Reader, p_Parser);
+				p_Instance.OutputEvents.Add(s_Value);
+			}
+			
+			s_OutputEvents.Reader.Dispose();
+			p_Instance.InputLinks.Clear();
+			(RimeReader Reader, uint Count) s_InputLinks = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_InputLinks.Count; ++i)
+			{
+				var s_Value = new DynamicLink();
+				fb.DynamicLink.Deserialize(s_Value, s_InputLinks.Reader, p_Parser);
+				p_Instance.InputLinks.Add(s_Value);
+			}
+			
+			s_InputLinks.Reader.Dispose();
+			p_Instance.OutputLinks.Clear();
+			(RimeReader Reader, uint Count) s_OutputLinks = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_OutputLinks.Count; ++i)
+			{
+				var s_Value = new DynamicLink();
+				fb.DynamicLink.Deserialize(s_Value, s_OutputLinks.Reader, p_Parser);
+				p_Instance.OutputLinks.Add(s_Value);
+			}
+			
+			s_OutputLinks.Reader.Dispose();
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1542460652:
-					return InputEvents;
-
-				case 3452448709:
-					return OutputEvents;
-
-				case 1626510432:
-					return InputLinks;
-
-				case 748160425:
-					return OutputLinks;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1542460652:
-					return typeof(InterfaceDescriptorData).GetProperty(nameof(InputEvents));
-
-				case 3452448709:
-					return typeof(InterfaceDescriptorData).GetProperty(nameof(OutputEvents));
-
-				case 1626510432:
-					return typeof(InterfaceDescriptorData).GetProperty(nameof(InputLinks));
-
-				case 748160425:
-					return typeof(InterfaceDescriptorData).GetProperty(nameof(OutputLinks));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

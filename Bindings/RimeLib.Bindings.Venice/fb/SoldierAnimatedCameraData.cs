@@ -5,74 +5,31 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 41, Size: 8)]
-	public class SoldierAnimatedCameraData : FrostbiteContainer
+	[ContainerType(4, 8)]
+	public class SoldierAnimatedCameraData
 	{
-		[ContainerField(Name: "CameraTransitionTime", Offset: 0, NameHash: 1186593510, Flags: 49469), LayoutImmutable, Blittable]
-		public float CameraTransitionTime { get; set; } // 0x0 (0)
+		[ContainerField(0), LayoutImmutable, Blittable]
+		public float CameraTransitionTime { get; set; }
 		
-		[ContainerField(Name: "EnableFeature", Offset: 4, NameHash: 1110388304, Flags: 49325), LayoutImmutable, Blittable]
-		public bool EnableFeature { get; set; } // 0x4 (4)
+		[ContainerField(4), LayoutImmutable, Blittable]
+		public bool EnableFeature { get; set; }
 		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		public static void Deserialize(SoldierAnimatedCameraData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 1186593510:
-					CameraTransitionTime = (float) p_Value;
-					break;
-
-				case 1110388304:
-					EnableFeature = (bool) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1186593510:
-					return CameraTransitionTime;
-
-				case 1110388304:
-					return EnableFeature;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1186593510:
-					return typeof(SoldierAnimatedCameraData).GetProperty(nameof(CameraTransitionTime));
-
-				case 1110388304:
-					return typeof(SoldierAnimatedCameraData).GetProperty(nameof(EnableFeature));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
+			p_Instance.CameraTransitionTime = p_Reader.ReadSingle();
+			p_Instance.EnableFeature = p_Reader.ReadBool();
+			p_Reader.Seek(3, SeekOrigin.Current);
 		}
 	}
 }

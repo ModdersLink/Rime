@@ -5,77 +5,42 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 16,  Flags: 53, Size: 192)]
+	[ContainerType(16, 192)]
 	public class DynamicWeaponPickupEntityData : 
 		PickupEntityData
 	{
-		protected List<DynamicWeaponPickupSlotData> m_WeaponSlots = new List<DynamicWeaponPickupSlotData>();
-		[ContainerField(Name: "WeaponSlots", Offset: 176, NameHash: 730633648, Flags: 65)]
-		public List<DynamicWeaponPickupSlotData> WeaponSlots { get { return m_WeaponSlots; } set { if (OnPropertyChanging("DynamicWeaponPickupEntityData." + nameof(WeaponSlots), this, m_WeaponSlots, value)) m_WeaponSlots = value; } } // 0xB0 (176)
-		
-		protected bool m_KeepAmmoState = new bool();
-		[ContainerField(Name: "KeepAmmoState", Offset: 180, NameHash: 2997013959, Flags: 49325), LayoutImmutable, Blittable]
-		public bool KeepAmmoState { get { return m_KeepAmmoState; } set { if (OnPropertyChanging("DynamicWeaponPickupEntityData." + nameof(KeepAmmoState), this, m_KeepAmmoState, value)) m_KeepAmmoState = value; } } // 0xB4 (180)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(176)]
+		public List<DynamicWeaponPickupSlotData> WeaponSlots { get; set; } = new();
+
+		[ContainerField(180), LayoutImmutable, Blittable]
+		public bool KeepAmmoState { get; set; }
+
+		public static void Deserialize(DynamicWeaponPickupEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Instance.WeaponSlots.Clear();
+			(RimeReader Reader, uint Count) s_WeaponSlots = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_WeaponSlots.Count; ++i)
 			{
-				case 730633648:
-					WeaponSlots = (List<DynamicWeaponPickupSlotData>) p_Value;
-					break;
-
-				case 2997013959:
-					KeepAmmoState = (bool) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_Value = new DynamicWeaponPickupSlotData();
+				fb.DynamicWeaponPickupSlotData.Deserialize(s_Value, s_WeaponSlots.Reader, p_Parser);
+				p_Instance.WeaponSlots.Add(s_Value);
 			}
+			
+			s_WeaponSlots.Reader.Dispose();
+			p_Instance.KeepAmmoState = p_Reader.ReadBool();
+			p_Reader.Seek(11, SeekOrigin.Current);
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 730633648:
-					return WeaponSlots;
-
-				case 2997013959:
-					return KeepAmmoState;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 730633648:
-					return typeof(DynamicWeaponPickupEntityData).GetProperty(nameof(WeaponSlots));
-
-				case 2997013959:
-					return typeof(DynamicWeaponPickupEntityData).GetProperty(nameof(KeepAmmoState));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

@@ -5,119 +5,44 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 28)]
+	[ContainerType(4, 28)]
 	public class CTFScoringHandlerData : 
 		ScoringHandlerData
 	{
-		protected int m_MaxTeams = new int();
-		[ContainerField(Name: "MaxTeams", Offset: 8, NameHash: 401391615, Flags: 49405), LayoutImmutable, Blittable]
-		public int MaxTeams { get { return m_MaxTeams; } set { if (OnPropertyChanging("CTFScoringHandlerData." + nameof(MaxTeams), this, m_MaxTeams, value)) m_MaxTeams = value; } } // 0x8 (8)
-		
-		protected float m_PickUpAssistRadius = new float();
-		[ContainerField(Name: "PickUpAssistRadius", Offset: 12, NameHash: 1365389190, Flags: 49469), LayoutImmutable, Blittable]
-		public float PickUpAssistRadius { get { return m_PickUpAssistRadius; } set { if (OnPropertyChanging("CTFScoringHandlerData." + nameof(PickUpAssistRadius), this, m_PickUpAssistRadius, value)) m_PickUpAssistRadius = value; } } // 0xC (12)
-		
-		protected float m_CaptureAssistRadius = new float();
-		[ContainerField(Name: "CaptureAssistRadius", Offset: 16, NameHash: 2950263830, Flags: 49469), LayoutImmutable, Blittable]
-		public float CaptureAssistRadius { get { return m_CaptureAssistRadius; } set { if (OnPropertyChanging("CTFScoringHandlerData." + nameof(CaptureAssistRadius), this, m_CaptureAssistRadius, value)) m_CaptureAssistRadius = value; } } // 0x10 (16)
-		
-		protected float m_EnemyThreatRadius = new float();
-		[ContainerField(Name: "EnemyThreatRadius", Offset: 20, NameHash: 3061043225, Flags: 49469), LayoutImmutable, Blittable]
-		public float EnemyThreatRadius { get { return m_EnemyThreatRadius; } set { if (OnPropertyChanging("CTFScoringHandlerData." + nameof(EnemyThreatRadius), this, m_EnemyThreatRadius, value)) m_EnemyThreatRadius = value; } } // 0x14 (20)
-		
-		protected float m_EnemySuppressionTimeout = new float();
-		[ContainerField(Name: "EnemySuppressionTimeout", Offset: 24, NameHash: 1983551709, Flags: 49469), LayoutImmutable, Blittable]
-		public float EnemySuppressionTimeout { get { return m_EnemySuppressionTimeout; } set { if (OnPropertyChanging("CTFScoringHandlerData." + nameof(EnemySuppressionTimeout), this, m_EnemySuppressionTimeout, value)) m_EnemySuppressionTimeout = value; } } // 0x18 (24)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(8), LayoutImmutable, Blittable]
+		public int MaxTeams { get; set; }
+
+		[ContainerField(12), LayoutImmutable, Blittable]
+		public float PickUpAssistRadius { get; set; }
+
+		[ContainerField(16), LayoutImmutable, Blittable]
+		public float CaptureAssistRadius { get; set; }
+
+		[ContainerField(20), LayoutImmutable, Blittable]
+		public float EnemyThreatRadius { get; set; }
+
+		[ContainerField(24), LayoutImmutable, Blittable]
+		public float EnemySuppressionTimeout { get; set; }
+
+		public static void Deserialize(CTFScoringHandlerData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 401391615:
-					MaxTeams = (int) p_Value;
-					break;
-
-				case 1365389190:
-					PickUpAssistRadius = (float) p_Value;
-					break;
-
-				case 2950263830:
-					CaptureAssistRadius = (float) p_Value;
-					break;
-
-				case 3061043225:
-					EnemyThreatRadius = (float) p_Value;
-					break;
-
-				case 1983551709:
-					EnemySuppressionTimeout = (float) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
+			p_Instance.MaxTeams = p_Reader.ReadInt32();
+			p_Instance.PickUpAssistRadius = p_Reader.ReadSingle();
+			p_Instance.CaptureAssistRadius = p_Reader.ReadSingle();
+			p_Instance.EnemyThreatRadius = p_Reader.ReadSingle();
+			p_Instance.EnemySuppressionTimeout = p_Reader.ReadSingle();
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 401391615:
-					return MaxTeams;
-
-				case 1365389190:
-					return PickUpAssistRadius;
-
-				case 2950263830:
-					return CaptureAssistRadius;
-
-				case 3061043225:
-					return EnemyThreatRadius;
-
-				case 1983551709:
-					return EnemySuppressionTimeout;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 401391615:
-					return typeof(CTFScoringHandlerData).GetProperty(nameof(MaxTeams));
-
-				case 1365389190:
-					return typeof(CTFScoringHandlerData).GetProperty(nameof(PickUpAssistRadius));
-
-				case 2950263830:
-					return typeof(CTFScoringHandlerData).GetProperty(nameof(CaptureAssistRadius));
-
-				case 3061043225:
-					return typeof(CTFScoringHandlerData).GetProperty(nameof(EnemyThreatRadius));
-
-				case 1983551709:
-					return typeof(CTFScoringHandlerData).GetProperty(nameof(EnemySuppressionTimeout));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

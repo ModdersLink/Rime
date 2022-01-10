@@ -5,63 +5,28 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 16,  Flags: 53, Size: 96)]
+	[ContainerType(16, 96)]
 	public class VaultWaypointData : 
 		AbstractLocoWaypointData
 	{
-		protected AILocoVaultTaskData m_VaultTask = new AILocoVaultTaskData();
-		[ContainerField(Name: "VaultTask", Offset: 48, NameHash: 4073508114, Flags: 41)]
-		public AILocoVaultTaskData VaultTask { get { return m_VaultTask; } set { if (OnPropertyChanging("VaultWaypointData." + nameof(VaultTask), this, m_VaultTask, value)) m_VaultTask = value; } } // 0x30 (48)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 4073508114:
-					VaultTask = (AILocoVaultTaskData) p_Value;
-					break;
+		[ContainerField(48)]
+		public AILocoVaultTaskData VaultTask { get; set; } = new();
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
+		public static void Deserialize(VaultWaypointData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
+		{
+			fb.AILocoVaultTaskData.Deserialize(p_Instance.VaultTask, p_Reader, p_Parser);
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 4073508114:
-					return VaultTask;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 4073508114:
-					return typeof(VaultWaypointData).GetProperty(nameof(VaultTask));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

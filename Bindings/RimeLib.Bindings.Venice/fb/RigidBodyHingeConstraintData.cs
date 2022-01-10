@@ -5,105 +5,41 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 16,  Flags: 53, Size: 112)]
+	[ContainerType(16, 112)]
 	public class RigidBodyHingeConstraintData : 
 		RigidBodyConstraintData
 	{
-		protected float m_MinAngle = new float();
-		[ContainerField(Name: "MinAngle", Offset: 96, NameHash: 3356124462, Flags: 49469), LayoutImmutable, Blittable]
-		public float MinAngle { get { return m_MinAngle; } set { if (OnPropertyChanging("RigidBodyHingeConstraintData." + nameof(MinAngle), this, m_MinAngle, value)) m_MinAngle = value; } } // 0x60 (96)
-		
-		protected float m_AngularFriction = new float();
-		[ContainerField(Name: "AngularFriction", Offset: 100, NameHash: 1552731461, Flags: 49469), LayoutImmutable, Blittable]
-		public float AngularFriction { get { return m_AngularFriction; } set { if (OnPropertyChanging("RigidBodyHingeConstraintData." + nameof(AngularFriction), this, m_AngularFriction, value)) m_AngularFriction = value; } } // 0x64 (100)
-		
-		protected float m_MaxAngle = new float();
-		[ContainerField(Name: "MaxAngle", Offset: 104, NameHash: 417488496, Flags: 49469), LayoutImmutable, Blittable]
-		public float MaxAngle { get { return m_MaxAngle; } set { if (OnPropertyChanging("RigidBodyHingeConstraintData." + nameof(MaxAngle), this, m_MaxAngle, value)) m_MaxAngle = value; } } // 0x68 (104)
-		
-		protected bool m_HasLimits = new bool();
-		[ContainerField(Name: "HasLimits", Offset: 108, NameHash: 2421583705, Flags: 49325), LayoutImmutable, Blittable]
-		public bool HasLimits { get { return m_HasLimits; } set { if (OnPropertyChanging("RigidBodyHingeConstraintData." + nameof(HasLimits), this, m_HasLimits, value)) m_HasLimits = value; } } // 0x6C (108)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(96), LayoutImmutable, Blittable]
+		public float MinAngle { get; set; }
+
+		[ContainerField(100), LayoutImmutable, Blittable]
+		public float AngularFriction { get; set; }
+
+		[ContainerField(104), LayoutImmutable, Blittable]
+		public float MaxAngle { get; set; }
+
+		[ContainerField(108), LayoutImmutable, Blittable]
+		public bool HasLimits { get; set; }
+
+		public static void Deserialize(RigidBodyHingeConstraintData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 3356124462:
-					MinAngle = (float) p_Value;
-					break;
-
-				case 1552731461:
-					AngularFriction = (float) p_Value;
-					break;
-
-				case 417488496:
-					MaxAngle = (float) p_Value;
-					break;
-
-				case 2421583705:
-					HasLimits = (bool) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
+			p_Instance.MinAngle = p_Reader.ReadSingle();
+			p_Instance.AngularFriction = p_Reader.ReadSingle();
+			p_Instance.MaxAngle = p_Reader.ReadSingle();
+			p_Instance.HasLimits = p_Reader.ReadBool();
+			p_Reader.Seek(3, SeekOrigin.Current);
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3356124462:
-					return MinAngle;
-
-				case 1552731461:
-					return AngularFriction;
-
-				case 417488496:
-					return MaxAngle;
-
-				case 2421583705:
-					return HasLimits;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3356124462:
-					return typeof(RigidBodyHingeConstraintData).GetProperty(nameof(MinAngle));
-
-				case 1552731461:
-					return typeof(RigidBodyHingeConstraintData).GetProperty(nameof(AngularFriction));
-
-				case 417488496:
-					return typeof(RigidBodyHingeConstraintData).GetProperty(nameof(MaxAngle));
-
-				case 2421583705:
-					return typeof(RigidBodyHingeConstraintData).GetProperty(nameof(HasLimits));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

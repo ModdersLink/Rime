@@ -5,74 +5,46 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 41, Size: 8)]
-	public class StanceCameraData : FrostbiteContainer
+	[ContainerType(4, 8)]
+	public class StanceCameraData
 	{
-		[ContainerField(Name: "ValidStances", Offset: 0, NameHash: 4192498222, Flags: 65)]
-		public List<int> ValidStances { get; set; } = new List<int>(); // 0x0 (0)
+		[ContainerField(0)]
+		public List<int> ValidStances { get; set; } = new();
 		
-		[ContainerField(Name: "DefaultCameraForStances", Offset: 4, NameHash: 1972868017, Flags: 65)]
-		public List<int> DefaultCameraForStances { get; set; } = new List<int>(); // 0x4 (4)
+		[ContainerField(4)]
+		public List<int> DefaultCameraForStances { get; set; } = new();
 		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		public static void Deserialize(StanceCameraData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Instance.ValidStances.Clear();
+			(RimeReader Reader, uint Count) s_ValidStances = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_ValidStances.Count; ++i)
 			{
-				case 4192498222:
-					ValidStances = (List<int>) p_Value;
-					break;
-
-				case 1972868017:
-					DefaultCameraForStances = (List<int>) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_Value = s_ValidStances.Reader.ReadInt32();
+				p_Instance.ValidStances.Add(s_Value);
 			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
+			
+			s_ValidStances.Reader.Dispose();
+			p_Instance.DefaultCameraForStances.Clear();
+			(RimeReader Reader, uint Count) s_DefaultCameraForStances = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_DefaultCameraForStances.Count; ++i)
 			{
-				case 4192498222:
-					return ValidStances;
-
-				case 1972868017:
-					return DefaultCameraForStances;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
+				var s_Value = s_DefaultCameraForStances.Reader.ReadInt32();
+				p_Instance.DefaultCameraForStances.Add(s_Value);
 			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 4192498222:
-					return typeof(StanceCameraData).GetProperty(nameof(ValidStances));
-
-				case 1972868017:
-					return typeof(StanceCameraData).GetProperty(nameof(DefaultCameraForStances));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
+			
+			s_DefaultCameraForStances.Reader.Dispose();
 		}
 	}
 }

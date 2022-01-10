@@ -5,119 +5,53 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 44)]
+	[ContainerType(4, 44)]
 	public class MinMaxValueSelectorNodeData : 
 		AudioGraphNodeData
 	{
-		protected RefArray<MinMaxValueSelectorEntry> m_Inputs = new RefArray<MinMaxValueSelectorEntry>();
-		[ContainerField(Name: "Inputs", Offset: 8, NameHash: 2784267136, Flags: 65)]
-		public RefArray<MinMaxValueSelectorEntry> Inputs { get { return m_Inputs; } set { if (OnPropertyChanging("MinMaxValueSelectorNodeData." + nameof(Inputs), this, m_Inputs, value)) m_Inputs = value; } } // 0x8 (8)
-		
-		protected AudioGraphNodePort m_MaxValue = new AudioGraphNodePort();
-		[ContainerField(Name: "MaxValue", Offset: 12, NameHash: 408516922, Flags: 41)]
-		public AudioGraphNodePort MaxValue { get { return m_MaxValue; } set { if (OnPropertyChanging("MinMaxValueSelectorNodeData." + nameof(MaxValue), this, m_MaxValue, value)) m_MaxValue = value; } } // 0xC (12)
-		
-		protected AudioGraphNodePort m_MaxIndex = new AudioGraphNodePort();
-		[ContainerField(Name: "MaxIndex", Offset: 20, NameHash: 426400079, Flags: 41)]
-		public AudioGraphNodePort MaxIndex { get { return m_MaxIndex; } set { if (OnPropertyChanging("MinMaxValueSelectorNodeData." + nameof(MaxIndex), this, m_MaxIndex, value)) m_MaxIndex = value; } } // 0x14 (20)
-		
-		protected AudioGraphNodePort m_MinValue = new AudioGraphNodePort();
-		[ContainerField(Name: "MinValue", Offset: 28, NameHash: 3371854436, Flags: 41)]
-		public AudioGraphNodePort MinValue { get { return m_MinValue; } set { if (OnPropertyChanging("MinMaxValueSelectorNodeData." + nameof(MinValue), this, m_MinValue, value)) m_MinValue = value; } } // 0x1C (28)
-		
-		protected AudioGraphNodePort m_MinIndex = new AudioGraphNodePort();
-		[ContainerField(Name: "MinIndex", Offset: 36, NameHash: 3347206417, Flags: 41)]
-		public AudioGraphNodePort MinIndex { get { return m_MinIndex; } set { if (OnPropertyChanging("MinMaxValueSelectorNodeData." + nameof(MinIndex), this, m_MinIndex, value)) m_MinIndex = value; } } // 0x24 (36)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(8)]
+		public List<CtrRef<MinMaxValueSelectorEntry>> Inputs { get; set; } = new();
+
+		[ContainerField(12)]
+		public AudioGraphNodePort MaxValue { get; set; } = new();
+
+		[ContainerField(20)]
+		public AudioGraphNodePort MaxIndex { get; set; } = new();
+
+		[ContainerField(28)]
+		public AudioGraphNodePort MinValue { get; set; } = new();
+
+		[ContainerField(36)]
+		public AudioGraphNodePort MinIndex { get; set; } = new();
+
+		public static void Deserialize(MinMaxValueSelectorNodeData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Instance.Inputs.Clear();
+			(RimeReader Reader, uint Count) s_Inputs = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_Inputs.Count; ++i)
 			{
-				case 2784267136:
-					Inputs = (RefArray<MinMaxValueSelectorEntry>) p_Value;
-					break;
-
-				case 408516922:
-					MaxValue = (AudioGraphNodePort) p_Value;
-					break;
-
-				case 426400079:
-					MaxIndex = (AudioGraphNodePort) p_Value;
-					break;
-
-				case 3371854436:
-					MinValue = (AudioGraphNodePort) p_Value;
-					break;
-
-				case 3347206417:
-					MinIndex = (AudioGraphNodePort) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_CtrRef = new CtrRef<MinMaxValueSelectorEntry>();
+				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_Inputs.Reader.ReadUInt32()));
+				p_Instance.Inputs.Add(s_CtrRef);
 			}
+			
+			s_Inputs.Reader.Dispose();
+			fb.AudioGraphNodePort.Deserialize(p_Instance.MaxValue, p_Reader, p_Parser);
+			fb.AudioGraphNodePort.Deserialize(p_Instance.MaxIndex, p_Reader, p_Parser);
+			fb.AudioGraphNodePort.Deserialize(p_Instance.MinValue, p_Reader, p_Parser);
+			fb.AudioGraphNodePort.Deserialize(p_Instance.MinIndex, p_Reader, p_Parser);
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2784267136:
-					return Inputs;
-
-				case 408516922:
-					return MaxValue;
-
-				case 426400079:
-					return MaxIndex;
-
-				case 3371854436:
-					return MinValue;
-
-				case 3347206417:
-					return MinIndex;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2784267136:
-					return typeof(MinMaxValueSelectorNodeData).GetProperty(nameof(Inputs));
-
-				case 408516922:
-					return typeof(MinMaxValueSelectorNodeData).GetProperty(nameof(MaxValue));
-
-				case 426400079:
-					return typeof(MinMaxValueSelectorNodeData).GetProperty(nameof(MaxIndex));
-
-				case 3371854436:
-					return typeof(MinMaxValueSelectorNodeData).GetProperty(nameof(MinValue));
-
-				case 3347206417:
-					return typeof(MinMaxValueSelectorNodeData).GetProperty(nameof(MinIndex));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

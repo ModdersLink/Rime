@@ -5,63 +5,37 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
+	[ContainerType(4, 16)]
 	public class OnlineServicesAsset : 
 		Asset
 	{
-		protected RefArray<PresenceServiceData> m_OnlineServices = new RefArray<PresenceServiceData>();
-		[ContainerField(Name: "OnlineServices", Offset: 12, NameHash: 1539201604, Flags: 65)]
-		public RefArray<PresenceServiceData> OnlineServices { get { return m_OnlineServices; } set { if (OnPropertyChanging("OnlineServicesAsset." + nameof(OnlineServices), this, m_OnlineServices, value)) m_OnlineServices = value; } } // 0xC (12)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 1539201604:
-					OnlineServices = (RefArray<PresenceServiceData>) p_Value;
-					break;
+		[ContainerField(12)]
+		public List<CtrRef<PresenceServiceData>> OnlineServices { get; set; } = new();
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+		public static void Deserialize(OnlineServicesAsset p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
+		{
+			p_Instance.OnlineServices.Clear();
+			(RimeReader Reader, uint Count) s_OnlineServices = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_OnlineServices.Count; ++i)
+			{
+				var s_CtrRef = new CtrRef<PresenceServiceData>();
+				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_OnlineServices.Reader.ReadUInt32()));
+				p_Instance.OnlineServices.Add(s_CtrRef);
 			}
+			
+			s_OnlineServices.Reader.Dispose();
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1539201604:
-					return OnlineServices;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1539201604:
-					return typeof(OnlineServicesAsset).GetProperty(nameof(OnlineServices));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

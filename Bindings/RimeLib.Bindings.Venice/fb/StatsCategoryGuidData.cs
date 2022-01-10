@@ -5,63 +5,36 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 24)]
+	[ContainerType(4, 24)]
 	public class StatsCategoryGuidData : 
 		StatsCategoryBaseData
 	{
-		protected List<GUID> m_ObjectInstanceGuids = new List<GUID>();
-		[ContainerField(Name: "ObjectInstanceGuids", Offset: 20, NameHash: 409262485, Flags: 65)]
-		public List<GUID> ObjectInstanceGuids { get { return m_ObjectInstanceGuids; } set { if (OnPropertyChanging("StatsCategoryGuidData." + nameof(ObjectInstanceGuids), this, m_ObjectInstanceGuids, value)) m_ObjectInstanceGuids = value; } } // 0x14 (20)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 409262485:
-					ObjectInstanceGuids = (List<GUID>) p_Value;
-					break;
+		[ContainerField(20)]
+		public List<GUID> ObjectInstanceGuids { get; set; } = new();
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+		public static void Deserialize(StatsCategoryGuidData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
+		{
+			p_Instance.ObjectInstanceGuids.Clear();
+			(RimeReader Reader, uint Count) s_ObjectInstanceGuids = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_ObjectInstanceGuids.Count; ++i)
+			{
+				var s_Value = new GUID(s_ObjectInstanceGuids.Reader);
+				p_Instance.ObjectInstanceGuids.Add(s_Value);
 			}
+			
+			s_ObjectInstanceGuids.Reader.Dispose();
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 409262485:
-					return ObjectInstanceGuids;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 409262485:
-					return typeof(StatsCategoryGuidData).GetProperty(nameof(ObjectInstanceGuids));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

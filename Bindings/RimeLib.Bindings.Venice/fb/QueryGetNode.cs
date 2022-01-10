@@ -5,91 +5,36 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 44)]
+	[ContainerType(4, 44)]
 	public class QueryGetNode : 
 		UINodeData
 	{
-		protected CtrRef<UINodePort> m_In = new CtrRef<UINodePort>();
-		[ContainerField(Name: "In", Offset: 20, NameHash: 5862146, Flags: 53)]
-		public CtrRef<UINodePort> In { get { return m_In; } set { if (OnPropertyChanging("QueryGetNode." + nameof(In), this, m_In, value)) m_In = value; } } // 0x14 (20)
-		
-		protected CtrRef<UINodePort> m_Out = new CtrRef<UINodePort>();
-		[ContainerField(Name: "Out", Offset: 24, NameHash: 193453899, Flags: 53)]
-		public CtrRef<UINodePort> Out { get { return m_Out; } set { if (OnPropertyChanging("QueryGetNode." + nameof(Out), this, m_Out, value)) m_Out = value; } } // 0x18 (24)
-		
-		protected UIDataSourceInfo m_DataSource = new UIDataSourceInfo();
-		[ContainerField(Name: "DataSource", Offset: 28, NameHash: 3810860200, Flags: 41)]
-		public UIDataSourceInfo DataSource { get { return m_DataSource; } set { if (OnPropertyChanging("QueryGetNode." + nameof(DataSource), this, m_DataSource, value)) m_DataSource = value; } } // 0x1C (28)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(20)]
+		public CtrRef<UINodePort> In { get; set; } = new();
+
+		[ContainerField(24)]
+		public CtrRef<UINodePort> Out { get; set; } = new();
+
+		[ContainerField(28)]
+		public UIDataSourceInfo DataSource { get; set; } = new();
+
+		public static void Deserialize(QueryGetNode p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 5862146:
-					In = (CtrRef<UINodePort>) p_Value;
-					break;
-
-				case 193453899:
-					Out = (CtrRef<UINodePort>) p_Value;
-					break;
-
-				case 3810860200:
-					DataSource = (UIDataSourceInfo) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
+			p_Instance.In.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
+			p_Instance.Out.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
+			fb.UIDataSourceInfo.Deserialize(p_Instance.DataSource, p_Reader, p_Parser);
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 5862146:
-					return In;
-
-				case 193453899:
-					return Out;
-
-				case 3810860200:
-					return DataSource;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 5862146:
-					return typeof(QueryGetNode).GetProperty(nameof(In));
-
-				case 193453899:
-					return typeof(QueryGetNode).GetProperty(nameof(Out));
-
-				case 3810860200:
-					return typeof(QueryGetNode).GetProperty(nameof(DataSource));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

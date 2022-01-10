@@ -5,77 +5,50 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
+	[ContainerType(4, 16)]
 	public class AnimatedSkeletonDatabase : 
 		DataContainer
 	{
-		protected RefArray<RagdollAsset> m_Ragdolls = new RefArray<RagdollAsset>();
-		[ContainerField(Name: "Ragdolls", Offset: 8, NameHash: 1397195817, Flags: 65)]
-		public RefArray<RagdollAsset> Ragdolls { get { return m_Ragdolls; } set { if (OnPropertyChanging("AnimatedSkeletonDatabase." + nameof(Ragdolls), this, m_Ragdolls, value)) m_Ragdolls = value; } } // 0x8 (8)
-		
-		protected List<AnimatedSkeletonDatabaseItem> m_Items = new List<AnimatedSkeletonDatabaseItem>();
-		[ContainerField(Name: "Items", Offset: 12, NameHash: 215446531, Flags: 65)]
-		public List<AnimatedSkeletonDatabaseItem> Items { get { return m_Items; } set { if (OnPropertyChanging("AnimatedSkeletonDatabase." + nameof(Items), this, m_Items, value)) m_Items = value; } } // 0xC (12)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(8)]
+		public List<CtrRef<RagdollAsset>> Ragdolls { get; set; } = new();
+
+		[ContainerField(12)]
+		public List<AnimatedSkeletonDatabaseItem> Items { get; set; } = new();
+
+		public static void Deserialize(AnimatedSkeletonDatabase p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Instance.Ragdolls.Clear();
+			(RimeReader Reader, uint Count) s_Ragdolls = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_Ragdolls.Count; ++i)
 			{
-				case 1397195817:
-					Ragdolls = (RefArray<RagdollAsset>) p_Value;
-					break;
-
-				case 215446531:
-					Items = (List<AnimatedSkeletonDatabaseItem>) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_CtrRef = new CtrRef<RagdollAsset>();
+				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_Ragdolls.Reader.ReadUInt32()));
+				p_Instance.Ragdolls.Add(s_CtrRef);
 			}
+			
+			s_Ragdolls.Reader.Dispose();
+			p_Instance.Items.Clear();
+			(RimeReader Reader, uint Count) s_Items = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_Items.Count; ++i)
+			{
+				var s_Value = new AnimatedSkeletonDatabaseItem();
+				fb.AnimatedSkeletonDatabaseItem.Deserialize(s_Value, s_Items.Reader, p_Parser);
+				p_Instance.Items.Add(s_Value);
+			}
+			
+			s_Items.Reader.Dispose();
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1397195817:
-					return Ragdolls;
-
-				case 215446531:
-					return Items;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1397195817:
-					return typeof(AnimatedSkeletonDatabase).GetProperty(nameof(Ragdolls));
-
-				case 215446531:
-					return typeof(AnimatedSkeletonDatabase).GetProperty(nameof(Items));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

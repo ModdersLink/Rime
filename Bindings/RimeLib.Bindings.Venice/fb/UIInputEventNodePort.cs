@@ -5,63 +5,28 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 28)]
+	[ContainerType(4, 28)]
 	public class UIInputEventNodePort : 
 		UINodePort
 	{
-		protected UIInputAction m_InputEventType = new UIInputAction();
-		[ContainerField(Name: "InputEventType", Offset: 24, NameHash: 559387975, Flags: 137)]
-		public UIInputAction InputEventType { get { return m_InputEventType; } set { if (OnPropertyChanging("UIInputEventNodePort." + nameof(InputEventType), this, m_InputEventType, value)) m_InputEventType = value; } } // 0x18 (24)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 559387975:
-					InputEventType = (UIInputAction) Enum.ToObject(typeof(UIInputAction), p_Value);
-					break;
+		[ContainerField(24)]
+		public UIInputAction InputEventType { get; set; } = new();
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
+		public static void Deserialize(UIInputEventNodePort p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
+		{
+			p_Instance.InputEventType = (UIInputAction) p_Reader.ReadInt32();
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 559387975:
-					return InputEventType;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 559387975:
-					return typeof(UIInputEventNodePort).GetProperty(nameof(InputEventType));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

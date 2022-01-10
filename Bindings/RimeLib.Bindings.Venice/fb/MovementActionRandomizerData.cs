@@ -5,77 +5,42 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
+	[ContainerType(4, 16)]
 	public class MovementActionRandomizerData : 
 		MovementActionData
 	{
-		protected RefArray<MovementActionData> m_Actions = new RefArray<MovementActionData>();
-		[ContainerField(Name: "Actions", Offset: 8, NameHash: 373511656, Flags: 65)]
-		public RefArray<MovementActionData> Actions { get { return m_Actions; } set { if (OnPropertyChanging("MovementActionRandomizerData." + nameof(Actions), this, m_Actions, value)) m_Actions = value; } } // 0x8 (8)
-		
-		protected bool m_ReinsertIntoRandomizedListAfterUse = new bool();
-		[ContainerField(Name: "ReinsertIntoRandomizedListAfterUse", Offset: 12, NameHash: 201056821, Flags: 49325), LayoutImmutable, Blittable]
-		public bool ReinsertIntoRandomizedListAfterUse { get { return m_ReinsertIntoRandomizedListAfterUse; } set { if (OnPropertyChanging("MovementActionRandomizerData." + nameof(ReinsertIntoRandomizedListAfterUse), this, m_ReinsertIntoRandomizedListAfterUse, value)) m_ReinsertIntoRandomizedListAfterUse = value; } } // 0xC (12)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(8)]
+		public List<CtrRef<MovementActionData>> Actions { get; set; } = new();
+
+		[ContainerField(12), LayoutImmutable, Blittable]
+		public bool ReinsertIntoRandomizedListAfterUse { get; set; }
+
+		public static void Deserialize(MovementActionRandomizerData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Instance.Actions.Clear();
+			(RimeReader Reader, uint Count) s_Actions = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_Actions.Count; ++i)
 			{
-				case 373511656:
-					Actions = (RefArray<MovementActionData>) p_Value;
-					break;
-
-				case 201056821:
-					ReinsertIntoRandomizedListAfterUse = (bool) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_CtrRef = new CtrRef<MovementActionData>();
+				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_Actions.Reader.ReadUInt32()));
+				p_Instance.Actions.Add(s_CtrRef);
 			}
+			
+			s_Actions.Reader.Dispose();
+			p_Instance.ReinsertIntoRandomizedListAfterUse = p_Reader.ReadBool();
+			p_Reader.Seek(3, SeekOrigin.Current);
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 373511656:
-					return Actions;
-
-				case 201056821:
-					return ReinsertIntoRandomizedListAfterUse;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 373511656:
-					return typeof(MovementActionRandomizerData).GetProperty(nameof(Actions));
-
-				case 201056821:
-					return typeof(MovementActionRandomizerData).GetProperty(nameof(ReinsertIntoRandomizedListAfterUse));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

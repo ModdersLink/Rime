@@ -5,63 +5,28 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
+	[ContainerType(4, 16)]
 	public class DeMuxOutput : 
 		AudioGraphNodePortGroup
 	{
-		protected AudioGraphNodePort m_Trigger = new AudioGraphNodePort();
-		[ContainerField(Name: "Trigger", Offset: 8, NameHash: 2606354109, Flags: 41)]
-		public AudioGraphNodePort Trigger { get { return m_Trigger; } set { if (OnPropertyChanging("DeMuxOutput." + nameof(Trigger), this, m_Trigger, value)) m_Trigger = value; } } // 0x8 (8)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 2606354109:
-					Trigger = (AudioGraphNodePort) p_Value;
-					break;
+		[ContainerField(8)]
+		public AudioGraphNodePort Trigger { get; set; } = new();
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
+		public static void Deserialize(DeMuxOutput p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
+		{
+			fb.AudioGraphNodePort.Deserialize(p_Instance.Trigger, p_Reader, p_Parser);
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2606354109:
-					return Trigger;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2606354109:
-					return typeof(DeMuxOutput).GetProperty(nameof(Trigger));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

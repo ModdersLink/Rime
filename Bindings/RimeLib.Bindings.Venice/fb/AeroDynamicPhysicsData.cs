@@ -5,105 +5,45 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 16,  Flags: 53, Size: 80)]
+	[ContainerType(16, 80)]
 	public class AeroDynamicPhysicsData : 
 		DataContainer
 	{
-		protected Vec3 m_BodyDrag = new Vec3();
-		[ContainerField(Name: "BodyDrag", Offset: 16, NameHash: 1687378661, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 BodyDrag { get { return m_BodyDrag; } set { if (OnPropertyChanging("AeroDynamicPhysicsData." + nameof(BodyDrag), this, m_BodyDrag, value)) m_BodyDrag = value; } } // 0x10 (16)
-		
-		protected Vec3 m_BodyDragOffsetYZ = new Vec3();
-		[ContainerField(Name: "BodyDragOffsetYZ", Offset: 32, NameHash: 2051746155, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 BodyDragOffsetYZ { get { return m_BodyDragOffsetYZ; } set { if (OnPropertyChanging("AeroDynamicPhysicsData." + nameof(BodyDragOffsetYZ), this, m_BodyDragOffsetYZ, value)) m_BodyDragOffsetYZ = value; } } // 0x20 (32)
-		
-		protected Vec3 m_BodyDragOffsetXZ = new Vec3();
-		[ContainerField(Name: "BodyDragOffsetXZ", Offset: 48, NameHash: 2051746122, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 BodyDragOffsetXZ { get { return m_BodyDragOffsetXZ; } set { if (OnPropertyChanging("AeroDynamicPhysicsData." + nameof(BodyDragOffsetXZ), this, m_BodyDragOffsetXZ, value)) m_BodyDragOffsetXZ = value; } } // 0x30 (48)
-		
-		protected Vec3 m_BodyDragOffsetXY = new Vec3();
-		[ContainerField(Name: "BodyDragOffsetXY", Offset: 64, NameHash: 2051746121, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 BodyDragOffsetXY { get { return m_BodyDragOffsetXY; } set { if (OnPropertyChanging("AeroDynamicPhysicsData." + nameof(BodyDragOffsetXY), this, m_BodyDragOffsetXY, value)) m_BodyDragOffsetXY = value; } } // 0x40 (64)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable]
+		public Vec3 BodyDrag { get; set; } = new();
+
+		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable]
+		public Vec3 BodyDragOffsetYZ { get; set; } = new();
+
+		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable]
+		public Vec3 BodyDragOffsetXZ { get; set; } = new();
+
+		[ContainerField(64), Homogeneous, LayoutImmutable, Blittable]
+		public Vec3 BodyDragOffsetXY { get; set; } = new();
+
+		public static void Deserialize(AeroDynamicPhysicsData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 1687378661:
-					BodyDrag = (Vec3) p_Value;
-					break;
-
-				case 2051746155:
-					BodyDragOffsetYZ = (Vec3) p_Value;
-					break;
-
-				case 2051746122:
-					BodyDragOffsetXZ = (Vec3) p_Value;
-					break;
-
-				case 2051746121:
-					BodyDragOffsetXY = (Vec3) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
+			p_Reader.Seek(8, SeekOrigin.Current);
+			fb.Vec3.Deserialize(p_Instance.BodyDrag, p_Reader, p_Parser);
+			p_Reader.Seek(8, SeekOrigin.Current);
+			fb.Vec3.Deserialize(p_Instance.BodyDragOffsetYZ, p_Reader, p_Parser);
+			p_Reader.Seek(8, SeekOrigin.Current);
+			fb.Vec3.Deserialize(p_Instance.BodyDragOffsetXZ, p_Reader, p_Parser);
+			p_Reader.Seek(8, SeekOrigin.Current);
+			fb.Vec3.Deserialize(p_Instance.BodyDragOffsetXY, p_Reader, p_Parser);
+			p_Reader.Seek(8, SeekOrigin.Current);
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1687378661:
-					return BodyDrag;
-
-				case 2051746155:
-					return BodyDragOffsetYZ;
-
-				case 2051746122:
-					return BodyDragOffsetXZ;
-
-				case 2051746121:
-					return BodyDragOffsetXY;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1687378661:
-					return typeof(AeroDynamicPhysicsData).GetProperty(nameof(BodyDrag));
-
-				case 2051746155:
-					return typeof(AeroDynamicPhysicsData).GetProperty(nameof(BodyDragOffsetYZ));
-
-				case 2051746122:
-					return typeof(AeroDynamicPhysicsData).GetProperty(nameof(BodyDragOffsetXZ));
-
-				case 2051746121:
-					return typeof(AeroDynamicPhysicsData).GetProperty(nameof(BodyDragOffsetXY));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

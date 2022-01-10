@@ -5,77 +5,41 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
+	[ContainerType(4, 16)]
 	public class UIItemDescription : 
 		DataContainer
 	{
-		protected List<uint> m_ItemIds = new List<uint>();
-		[ContainerField(Name: "ItemIds", Offset: 8, NameHash: 2693096110, Flags: 65)]
-		public List<uint> ItemIds { get { return m_ItemIds; } set { if (OnPropertyChanging("UIItemDescription." + nameof(ItemIds), this, m_ItemIds, value)) m_ItemIds = value; } } // 0x8 (8)
-		
-		protected bool m_IgnoreBuild = new bool();
-		[ContainerField(Name: "IgnoreBuild", Offset: 12, NameHash: 1608120075, Flags: 49325), LayoutImmutable, Blittable]
-		public bool IgnoreBuild { get { return m_IgnoreBuild; } set { if (OnPropertyChanging("UIItemDescription." + nameof(IgnoreBuild), this, m_IgnoreBuild, value)) m_IgnoreBuild = value; } } // 0xC (12)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(8)]
+		public List<uint> ItemIds { get; set; } = new();
+
+		[ContainerField(12), LayoutImmutable, Blittable]
+		public bool IgnoreBuild { get; set; }
+
+		public static void Deserialize(UIItemDescription p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Instance.ItemIds.Clear();
+			(RimeReader Reader, uint Count) s_ItemIds = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_ItemIds.Count; ++i)
 			{
-				case 2693096110:
-					ItemIds = (List<uint>) p_Value;
-					break;
-
-				case 1608120075:
-					IgnoreBuild = (bool) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_Value = s_ItemIds.Reader.ReadUInt32();
+				p_Instance.ItemIds.Add(s_Value);
 			}
+			
+			s_ItemIds.Reader.Dispose();
+			p_Instance.IgnoreBuild = p_Reader.ReadBool();
+			p_Reader.Seek(3, SeekOrigin.Current);
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2693096110:
-					return ItemIds;
-
-				case 1608120075:
-					return IgnoreBuild;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2693096110:
-					return typeof(UIItemDescription).GetProperty(nameof(ItemIds));
-
-				case 1608120075:
-					return typeof(UIItemDescription).GetProperty(nameof(IgnoreBuild));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

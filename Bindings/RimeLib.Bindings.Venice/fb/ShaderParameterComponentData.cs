@@ -5,63 +5,38 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 16,  Flags: 53, Size: 112)]
+	[ContainerType(16, 112)]
 	public class ShaderParameterComponentData : 
 		ComponentData
 	{
-		protected List<ShaderParameterVector> m_ShaderParameterVectors = new List<ShaderParameterVector>();
-		[ContainerField(Name: "ShaderParameterVectors", Offset: 96, NameHash: 2124466895, Flags: 65)]
-		public List<ShaderParameterVector> ShaderParameterVectors { get { return m_ShaderParameterVectors; } set { if (OnPropertyChanging("ShaderParameterComponentData." + nameof(ShaderParameterVectors), this, m_ShaderParameterVectors, value)) m_ShaderParameterVectors = value; } } // 0x60 (96)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 2124466895:
-					ShaderParameterVectors = (List<ShaderParameterVector>) p_Value;
-					break;
+		[ContainerField(96)]
+		public List<ShaderParameterVector> ShaderParameterVectors { get; set; } = new();
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+		public static void Deserialize(ShaderParameterComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
+		{
+			p_Instance.ShaderParameterVectors.Clear();
+			(RimeReader Reader, uint Count) s_ShaderParameterVectors = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_ShaderParameterVectors.Count; ++i)
+			{
+				var s_Value = new ShaderParameterVector();
+				fb.ShaderParameterVector.Deserialize(s_Value, s_ShaderParameterVectors.Reader, p_Parser);
+				p_Instance.ShaderParameterVectors.Add(s_Value);
 			}
+			
+			s_ShaderParameterVectors.Reader.Dispose();
+			p_Reader.Seek(12, SeekOrigin.Current);
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2124466895:
-					return ShaderParameterVectors;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2124466895:
-					return typeof(ShaderParameterComponentData).GetProperty(nameof(ShaderParameterVectors));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

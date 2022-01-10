@@ -5,63 +5,28 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 32)]
+	[ContainerType(4, 32)]
 	public class UIVoiceCompData : 
 		UIComponentData
 	{
-		protected uint m_HudMaxSpeakers = new uint();
-		[ContainerField(Name: "HudMaxSpeakers", Offset: 28, NameHash: 2797323936, Flags: 49421), LayoutImmutable, Blittable]
-		public uint HudMaxSpeakers { get { return m_HudMaxSpeakers; } set { if (OnPropertyChanging("UIVoiceCompData." + nameof(HudMaxSpeakers), this, m_HudMaxSpeakers, value)) m_HudMaxSpeakers = value; } } // 0x1C (28)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 2797323936:
-					HudMaxSpeakers = (uint) p_Value;
-					break;
+		[ContainerField(28), LayoutImmutable, Blittable]
+		public uint HudMaxSpeakers { get; set; }
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
+		public static void Deserialize(UIVoiceCompData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
+		{
+			p_Instance.HudMaxSpeakers = p_Reader.ReadUInt32();
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2797323936:
-					return HudMaxSpeakers;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2797323936:
-					return typeof(UIVoiceCompData).GetProperty(nameof(HudMaxSpeakers));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

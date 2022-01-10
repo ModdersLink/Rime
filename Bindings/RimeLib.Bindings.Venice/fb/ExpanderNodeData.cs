@@ -5,161 +5,57 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 64)]
+	[ContainerType(4, 64)]
 	public class ExpanderNodeData : 
 		AudioGraphNodeData
 	{
-		protected AudioGraphNodePort m_In = new AudioGraphNodePort();
-		[ContainerField(Name: "In", Offset: 8, NameHash: 5862146, Flags: 41)]
-		public AudioGraphNodePort In { get { return m_In; } set { if (OnPropertyChanging("ExpanderNodeData." + nameof(In), this, m_In, value)) m_In = value; } } // 0x8 (8)
-		
-		protected AudioGraphNodePort m_Threshold = new AudioGraphNodePort();
-		[ContainerField(Name: "Threshold", Offset: 16, NameHash: 3768602130, Flags: 41)]
-		public AudioGraphNodePort Threshold { get { return m_Threshold; } set { if (OnPropertyChanging("ExpanderNodeData." + nameof(Threshold), this, m_Threshold, value)) m_Threshold = value; } } // 0x10 (16)
-		
-		protected AudioGraphNodePort m_Ratio = new AudioGraphNodePort();
-		[ContainerField(Name: "Ratio", Offset: 24, NameHash: 230084836, Flags: 41)]
-		public AudioGraphNodePort Ratio { get { return m_Ratio; } set { if (OnPropertyChanging("ExpanderNodeData." + nameof(Ratio), this, m_Ratio, value)) m_Ratio = value; } } // 0x18 (24)
-		
-		protected AudioGraphNodePort m_AttackTime = new AudioGraphNodePort();
-		[ContainerField(Name: "AttackTime", Offset: 32, NameHash: 1150936440, Flags: 41)]
-		public AudioGraphNodePort AttackTime { get { return m_AttackTime; } set { if (OnPropertyChanging("ExpanderNodeData." + nameof(AttackTime), this, m_AttackTime, value)) m_AttackTime = value; } } // 0x20 (32)
-		
-		protected AudioGraphNodePort m_ReleaseTime = new AudioGraphNodePort();
-		[ContainerField(Name: "ReleaseTime", Offset: 40, NameHash: 892319833, Flags: 41)]
-		public AudioGraphNodePort ReleaseTime { get { return m_ReleaseTime; } set { if (OnPropertyChanging("ExpanderNodeData." + nameof(ReleaseTime), this, m_ReleaseTime, value)) m_ReleaseTime = value; } } // 0x28 (40)
-		
-		protected AudioGraphNodePort m_Out = new AudioGraphNodePort();
-		[ContainerField(Name: "Out", Offset: 48, NameHash: 193453899, Flags: 41)]
-		public AudioGraphNodePort Out { get { return m_Out; } set { if (OnPropertyChanging("ExpanderNodeData." + nameof(Out), this, m_Out, value)) m_Out = value; } } // 0x30 (48)
-		
-		protected ExpanderChannelMode m_ChannelMode = new ExpanderChannelMode();
-		[ContainerField(Name: "ChannelMode", Offset: 56, NameHash: 2243633477, Flags: 137)]
-		public ExpanderChannelMode ChannelMode { get { return m_ChannelMode; } set { if (OnPropertyChanging("ExpanderNodeData." + nameof(ChannelMode), this, m_ChannelMode, value)) m_ChannelMode = value; } } // 0x38 (56)
-		
-		protected SoundGraphPluginRef m_Plugin = new SoundGraphPluginRef();
-		[ContainerField(Name: "Plugin", Offset: 60, NameHash: 3384353452, Flags: 41)]
-		public SoundGraphPluginRef Plugin { get { return m_Plugin; } set { if (OnPropertyChanging("ExpanderNodeData." + nameof(Plugin), this, m_Plugin, value)) m_Plugin = value; } } // 0x3C (60)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(8)]
+		public AudioGraphNodePort In { get; set; } = new();
+
+		[ContainerField(16)]
+		public AudioGraphNodePort Threshold { get; set; } = new();
+
+		[ContainerField(24)]
+		public AudioGraphNodePort Ratio { get; set; } = new();
+
+		[ContainerField(32)]
+		public AudioGraphNodePort AttackTime { get; set; } = new();
+
+		[ContainerField(40)]
+		public AudioGraphNodePort ReleaseTime { get; set; } = new();
+
+		[ContainerField(48)]
+		public AudioGraphNodePort Out { get; set; } = new();
+
+		[ContainerField(56)]
+		public ExpanderChannelMode ChannelMode { get; set; } = new();
+
+		[ContainerField(60)]
+		public SoundGraphPluginRef Plugin { get; set; } = new();
+
+		public static void Deserialize(ExpanderNodeData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 5862146:
-					In = (AudioGraphNodePort) p_Value;
-					break;
-
-				case 3768602130:
-					Threshold = (AudioGraphNodePort) p_Value;
-					break;
-
-				case 230084836:
-					Ratio = (AudioGraphNodePort) p_Value;
-					break;
-
-				case 1150936440:
-					AttackTime = (AudioGraphNodePort) p_Value;
-					break;
-
-				case 892319833:
-					ReleaseTime = (AudioGraphNodePort) p_Value;
-					break;
-
-				case 193453899:
-					Out = (AudioGraphNodePort) p_Value;
-					break;
-
-				case 2243633477:
-					ChannelMode = (ExpanderChannelMode) Enum.ToObject(typeof(ExpanderChannelMode), p_Value);
-					break;
-
-				case 3384353452:
-					Plugin = (SoundGraphPluginRef) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
+			fb.AudioGraphNodePort.Deserialize(p_Instance.In, p_Reader, p_Parser);
+			fb.AudioGraphNodePort.Deserialize(p_Instance.Threshold, p_Reader, p_Parser);
+			fb.AudioGraphNodePort.Deserialize(p_Instance.Ratio, p_Reader, p_Parser);
+			fb.AudioGraphNodePort.Deserialize(p_Instance.AttackTime, p_Reader, p_Parser);
+			fb.AudioGraphNodePort.Deserialize(p_Instance.ReleaseTime, p_Reader, p_Parser);
+			fb.AudioGraphNodePort.Deserialize(p_Instance.Out, p_Reader, p_Parser);
+			p_Instance.ChannelMode = (ExpanderChannelMode) p_Reader.ReadInt32();
+			fb.SoundGraphPluginRef.Deserialize(p_Instance.Plugin, p_Reader, p_Parser);
+			p_Reader.Seek(1, SeekOrigin.Current);
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 5862146:
-					return In;
-
-				case 3768602130:
-					return Threshold;
-
-				case 230084836:
-					return Ratio;
-
-				case 1150936440:
-					return AttackTime;
-
-				case 892319833:
-					return ReleaseTime;
-
-				case 193453899:
-					return Out;
-
-				case 2243633477:
-					return ChannelMode;
-
-				case 3384353452:
-					return Plugin;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 5862146:
-					return typeof(ExpanderNodeData).GetProperty(nameof(In));
-
-				case 3768602130:
-					return typeof(ExpanderNodeData).GetProperty(nameof(Threshold));
-
-				case 230084836:
-					return typeof(ExpanderNodeData).GetProperty(nameof(Ratio));
-
-				case 1150936440:
-					return typeof(ExpanderNodeData).GetProperty(nameof(AttackTime));
-
-				case 892319833:
-					return typeof(ExpanderNodeData).GetProperty(nameof(ReleaseTime));
-
-				case 193453899:
-					return typeof(ExpanderNodeData).GetProperty(nameof(Out));
-
-				case 2243633477:
-					return typeof(ExpanderNodeData).GetProperty(nameof(ChannelMode));
-
-				case 3384353452:
-					return typeof(ExpanderNodeData).GetProperty(nameof(Plugin));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

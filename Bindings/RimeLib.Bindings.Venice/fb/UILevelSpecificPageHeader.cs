@@ -5,87 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 41, Size: 12)]
-	public class UILevelSpecificPageHeader : FrostbiteContainer
+	[ContainerType(4, 12)]
+	public class UILevelSpecificPageHeader
 	{
-		[ContainerField(Name: "LevelNameSID", Offset: 0, NameHash: 3852928010, Flags: 16509), LayoutImmutable]
-		public string LevelNameSID { get; set; } // 0x0 (0)
+		[ContainerField(0), LayoutImmutable]
+		public string LevelNameSID { get; set; } = string.Empty;
 		
-		[ContainerField(Name: "Header", Offset: 4, NameHash: 3054345338, Flags: 16509), LayoutImmutable]
-		public string Header { get; set; } // 0x4 (4)
+		[ContainerField(4), LayoutImmutable]
+		public string Header { get; set; } = string.Empty;
 		
-		[ContainerField(Name: "SubHeader", Offset: 8, NameHash: 1300890558, Flags: 16509), LayoutImmutable]
-		public string SubHeader { get; set; } // 0x8 (8)
+		[ContainerField(8), LayoutImmutable]
+		public string SubHeader { get; set; } = string.Empty;
 		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		public static void Deserialize(UILevelSpecificPageHeader p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 3852928010:
-					LevelNameSID = (string) p_Value;
-					break;
-
-				case 3054345338:
-					Header = (string) p_Value;
-					break;
-
-				case 1300890558:
-					SubHeader = (string) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3852928010:
-					return LevelNameSID;
-
-				case 3054345338:
-					return Header;
-
-				case 1300890558:
-					return SubHeader;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3852928010:
-					return typeof(UILevelSpecificPageHeader).GetProperty(nameof(LevelNameSID));
-
-				case 3054345338:
-					return typeof(UILevelSpecificPageHeader).GetProperty(nameof(Header));
-
-				case 1300890558:
-					return typeof(UILevelSpecificPageHeader).GetProperty(nameof(SubHeader));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
+			p_Instance.LevelNameSID = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
+			p_Instance.Header = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
+			p_Instance.SubHeader = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
 		}
 	}
 }

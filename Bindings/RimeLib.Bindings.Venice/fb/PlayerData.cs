@@ -5,91 +5,36 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 24)]
+	[ContainerType(4, 24)]
 	public class PlayerData : 
 		Asset
 	{
-		protected CtrRef<PlayerViewData> m_PlayerView = new CtrRef<PlayerViewData>();
-		[ContainerField(Name: "PlayerView", Offset: 12, NameHash: 774623483, Flags: 53)]
-		public CtrRef<PlayerViewData> PlayerView { get { return m_PlayerView; } set { if (OnPropertyChanging("PlayerData." + nameof(PlayerView), this, m_PlayerView, value)) m_PlayerView = value; } } // 0xC (12)
-		
-		protected CtrRef<EntryInputActionMapsData> m_InputConceptDefinition = new CtrRef<EntryInputActionMapsData>();
-		[ContainerField(Name: "InputConceptDefinition", Offset: 16, NameHash: 1770668454, Flags: 53)]
-		public CtrRef<EntryInputActionMapsData> InputConceptDefinition { get { return m_InputConceptDefinition; } set { if (OnPropertyChanging("PlayerData." + nameof(InputConceptDefinition), this, m_InputConceptDefinition, value)) m_InputConceptDefinition = value; } } // 0x10 (16)
-		
-		protected CtrRef<InputActionMappingsData> m_InputMapping = new CtrRef<InputActionMappingsData>();
-		[ContainerField(Name: "InputMapping", Offset: 20, NameHash: 1744270687, Flags: 53)]
-		public CtrRef<InputActionMappingsData> InputMapping { get { return m_InputMapping; } set { if (OnPropertyChanging("PlayerData." + nameof(InputMapping), this, m_InputMapping, value)) m_InputMapping = value; } } // 0x14 (20)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(12)]
+		public CtrRef<PlayerViewData> PlayerView { get; set; } = new();
+
+		[ContainerField(16)]
+		public CtrRef<EntryInputActionMapsData> InputConceptDefinition { get; set; } = new();
+
+		[ContainerField(20)]
+		public CtrRef<InputActionMappingsData> InputMapping { get; set; } = new();
+
+		public static void Deserialize(PlayerData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 774623483:
-					PlayerView = (CtrRef<PlayerViewData>) p_Value;
-					break;
-
-				case 1770668454:
-					InputConceptDefinition = (CtrRef<EntryInputActionMapsData>) p_Value;
-					break;
-
-				case 1744270687:
-					InputMapping = (CtrRef<InputActionMappingsData>) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
+			p_Instance.PlayerView.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
+			p_Instance.InputConceptDefinition.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
+			p_Instance.InputMapping.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 774623483:
-					return PlayerView;
-
-				case 1770668454:
-					return InputConceptDefinition;
-
-				case 1744270687:
-					return InputMapping;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 774623483:
-					return typeof(PlayerData).GetProperty(nameof(PlayerView));
-
-				case 1770668454:
-					return typeof(PlayerData).GetProperty(nameof(InputConceptDefinition));
-
-				case 1744270687:
-					return typeof(PlayerData).GetProperty(nameof(InputMapping));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

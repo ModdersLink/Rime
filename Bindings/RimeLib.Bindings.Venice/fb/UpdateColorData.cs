@@ -5,63 +5,28 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 16,  Flags: 53, Size: 64)]
+	[ContainerType(16, 64)]
 	public class UpdateColorData : 
 		ProcessorData
 	{
-		protected Vec3 m_Color = new Vec3();
-		[ContainerField(Name: "Color", Offset: 48, NameHash: 212387320, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 Color { get { return m_Color; } set { if (OnPropertyChanging("UpdateColorData." + nameof(Color), this, m_Color, value)) m_Color = value; } } // 0x30 (48)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 212387320:
-					Color = (Vec3) p_Value;
-					break;
+		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable]
+		public Vec3 Color { get; set; } = new();
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
+		public static void Deserialize(UpdateColorData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
+		{
+			fb.Vec3.Deserialize(p_Instance.Color, p_Reader, p_Parser);
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 212387320:
-					return Color;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 212387320:
-					return typeof(UpdateColorData).GetProperty(nameof(Color));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

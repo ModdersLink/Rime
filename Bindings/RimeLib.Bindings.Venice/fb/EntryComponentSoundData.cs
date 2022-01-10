@@ -5,77 +5,41 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
+	[ContainerType(4, 16)]
 	public class EntryComponentSoundData : 
 		DataContainer
 	{
-		protected List<StanceSwitchSoundData> m_StanceSounds = new List<StanceSwitchSoundData>();
-		[ContainerField(Name: "StanceSounds", Offset: 8, NameHash: 3318640379, Flags: 65)]
-		public List<StanceSwitchSoundData> StanceSounds { get { return m_StanceSounds; } set { if (OnPropertyChanging("EntryComponentSoundData." + nameof(StanceSounds), this, m_StanceSounds, value)) m_StanceSounds = value; } } // 0x8 (8)
-		
-		protected CtrRef<SoundAsset> m_StanceSwitchSound = new CtrRef<SoundAsset>();
-		[ContainerField(Name: "StanceSwitchSound", Offset: 12, NameHash: 865104730, Flags: 53)]
-		public CtrRef<SoundAsset> StanceSwitchSound { get { return m_StanceSwitchSound; } set { if (OnPropertyChanging("EntryComponentSoundData." + nameof(StanceSwitchSound), this, m_StanceSwitchSound, value)) m_StanceSwitchSound = value; } } // 0xC (12)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(8)]
+		public List<StanceSwitchSoundData> StanceSounds { get; set; } = new();
+
+		[ContainerField(12)]
+		public CtrRef<SoundAsset> StanceSwitchSound { get; set; } = new();
+
+		public static void Deserialize(EntryComponentSoundData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Instance.StanceSounds.Clear();
+			(RimeReader Reader, uint Count) s_StanceSounds = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_StanceSounds.Count; ++i)
 			{
-				case 3318640379:
-					StanceSounds = (List<StanceSwitchSoundData>) p_Value;
-					break;
-
-				case 865104730:
-					StanceSwitchSound = (CtrRef<SoundAsset>) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_Value = new StanceSwitchSoundData();
+				fb.StanceSwitchSoundData.Deserialize(s_Value, s_StanceSounds.Reader, p_Parser);
+				p_Instance.StanceSounds.Add(s_Value);
 			}
+			
+			s_StanceSounds.Reader.Dispose();
+			p_Instance.StanceSwitchSound.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3318640379:
-					return StanceSounds;
-
-				case 865104730:
-					return StanceSwitchSound;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3318640379:
-					return typeof(EntryComponentSoundData).GetProperty(nameof(StanceSounds));
-
-				case 865104730:
-					return typeof(EntryComponentSoundData).GetProperty(nameof(StanceSwitchSound));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

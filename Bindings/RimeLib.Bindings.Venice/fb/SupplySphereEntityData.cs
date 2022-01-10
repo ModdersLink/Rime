@@ -5,63 +5,29 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 16,  Flags: 53, Size: 304)]
+	[ContainerType(16, 304)]
 	public class SupplySphereEntityData : 
 		ExplosionPackEntityData
 	{
-		protected SupplyData m_SupplyData = new SupplyData();
-		[ContainerField(Name: "SupplyData", Offset: 256, NameHash: 3973739366, Flags: 41)]
-		public SupplyData SupplyData { get { return m_SupplyData; } set { if (OnPropertyChanging("SupplySphereEntityData." + nameof(SupplyData), this, m_SupplyData, value)) m_SupplyData = value; } } // 0x100 (256)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 3973739366:
-					SupplyData = (SupplyData) p_Value;
-					break;
+		[ContainerField(256)]
+		public SupplyData SupplyData { get; set; } = new();
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
+		public static void Deserialize(SupplySphereEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
+		{
+			fb.SupplyData.Deserialize(p_Instance.SupplyData, p_Reader, p_Parser);
+			p_Reader.Seek(4, SeekOrigin.Current);
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3973739366:
-					return SupplyData;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3973739366:
-					return typeof(SupplySphereEntityData).GetProperty(nameof(SupplyData));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

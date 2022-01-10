@@ -5,77 +5,40 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
+	[ContainerType(4, 16)]
 	public class SubWorldInclusionCriterion : 
 		DataContainer
 	{
-		protected string m_Name = string.Empty;
-		[ContainerField(Name: "Name", Offset: 8, NameHash: 2088949890, Flags: 16509), LayoutImmutable]
-		public string Name { get { return m_Name; } set { if (OnPropertyChanging("SubWorldInclusionCriterion." + nameof(Name), this, m_Name, value)) m_Name = value; } } // 0x8 (8)
-		
-		protected List<string> m_Options = new List<string>();
-		[ContainerField(Name: "Options", Offset: 12, NameHash: 958915349, Flags: 65)]
-		public List<string> Options { get { return m_Options; } set { if (OnPropertyChanging("SubWorldInclusionCriterion." + nameof(Options), this, m_Options, value)) m_Options = value; } } // 0xC (12)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(8), LayoutImmutable]
+		public string Name { get; set; } = string.Empty;
+
+		[ContainerField(12)]
+		public List<string> Options { get; set; } = new();
+
+		public static void Deserialize(SubWorldInclusionCriterion p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Instance.Name = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
+			p_Instance.Options.Clear();
+			(RimeReader Reader, uint Count) s_Options = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_Options.Count; ++i)
 			{
-				case 2088949890:
-					Name = (string) p_Value;
-					break;
-
-				case 958915349:
-					Options = (List<string>) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_Value = p_Parser.GetStringAtOffset(s_Options.Reader.ReadUInt32());
+				p_Instance.Options.Add(s_Value);
 			}
+			
+			s_Options.Reader.Dispose();
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2088949890:
-					return Name;
-
-				case 958915349:
-					return Options;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2088949890:
-					return typeof(SubWorldInclusionCriterion).GetProperty(nameof(Name));
-
-				case 958915349:
-					return typeof(SubWorldInclusionCriterion).GetProperty(nameof(Options));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

@@ -5,175 +5,61 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 28)]
+	[ContainerType(4, 28)]
 	public class DecalSettings : 
 		SystemSettings
 	{
-		protected uint m_StaticBufferMaxVertexCount = new uint();
-		[ContainerField(Name: "StaticBufferMaxVertexCount", Offset: 12, NameHash: 2343369026, Flags: 49421), LayoutImmutable, Blittable]
-		public uint StaticBufferMaxVertexCount { get { return m_StaticBufferMaxVertexCount; } set { if (OnPropertyChanging("DecalSettings." + nameof(StaticBufferMaxVertexCount), this, m_StaticBufferMaxVertexCount, value)) m_StaticBufferMaxVertexCount = value; } } // 0xC (12)
-		
-		protected uint m_RingBufferMaxVertexCount = new uint();
-		[ContainerField(Name: "RingBufferMaxVertexCount", Offset: 16, NameHash: 3904589288, Flags: 49421), LayoutImmutable, Blittable]
-		public uint RingBufferMaxVertexCount { get { return m_RingBufferMaxVertexCount; } set { if (OnPropertyChanging("DecalSettings." + nameof(RingBufferMaxVertexCount), this, m_RingBufferMaxVertexCount, value)) m_RingBufferMaxVertexCount = value; } } // 0x10 (16)
-		
-		protected bool m_DrawEnable = new bool();
-		[ContainerField(Name: "DrawEnable", Offset: 20, NameHash: 1347356004, Flags: 49325), LayoutImmutable, Blittable]
-		public bool DrawEnable { get { return m_DrawEnable; } set { if (OnPropertyChanging("DecalSettings." + nameof(DrawEnable), this, m_DrawEnable, value)) m_DrawEnable = value; } } // 0x14 (20)
-		
-		protected bool m_SystemEnable2 = new bool();
-		[ContainerField(Name: "SystemEnable2", Offset: 21, NameHash: 360785139, Flags: 49325), LayoutImmutable, Blittable]
-		public bool SystemEnable2 { get { return m_SystemEnable2; } set { if (OnPropertyChanging("DecalSettings." + nameof(SystemEnable2), this, m_SystemEnable2, value)) m_SystemEnable2 = value; } } // 0x15 (21)
-		
-		protected bool m_SystemEnable = new bool();
-		[ContainerField(Name: "SystemEnable", Offset: 22, NameHash: 3785298081, Flags: 49325), LayoutImmutable, Blittable]
-		public bool SystemEnable { get { return m_SystemEnable; } set { if (OnPropertyChanging("DecalSettings." + nameof(SystemEnable), this, m_SystemEnable, value)) m_SystemEnable = value; } } // 0x16 (22)
-		
-		protected bool m_Enable = new bool();
-		[ContainerField(Name: "Enable", Offset: 23, NameHash: 2342790116, Flags: 49325), LayoutImmutable, Blittable]
-		public bool Enable { get { return m_Enable; } set { if (OnPropertyChanging("DecalSettings." + nameof(Enable), this, m_Enable, value)) m_Enable = value; } } // 0x17 (23)
-		
-		protected bool m_DebugMemUsageEnable = new bool();
-		[ContainerField(Name: "DebugMemUsageEnable", Offset: 24, NameHash: 284136405, Flags: 49325), LayoutImmutable, Blittable]
-		public bool DebugMemUsageEnable { get { return m_DebugMemUsageEnable; } set { if (OnPropertyChanging("DecalSettings." + nameof(DebugMemUsageEnable), this, m_DebugMemUsageEnable, value)) m_DebugMemUsageEnable = value; } } // 0x18 (24)
-		
-		protected bool m_DebugWarningsEnable = new bool();
-		[ContainerField(Name: "DebugWarningsEnable", Offset: 25, NameHash: 3949276556, Flags: 49325), LayoutImmutable, Blittable]
-		public bool DebugWarningsEnable { get { return m_DebugWarningsEnable; } set { if (OnPropertyChanging("DecalSettings." + nameof(DebugWarningsEnable), this, m_DebugWarningsEnable, value)) m_DebugWarningsEnable = value; } } // 0x19 (25)
-		
-		protected bool m_NvidiaStreamOutputWorkaroundEnable = new bool();
-		[ContainerField(Name: "NvidiaStreamOutputWorkaroundEnable", Offset: 26, NameHash: 2641376344, Flags: 49325), LayoutImmutable, Blittable]
-		public bool NvidiaStreamOutputWorkaroundEnable { get { return m_NvidiaStreamOutputWorkaroundEnable; } set { if (OnPropertyChanging("DecalSettings." + nameof(NvidiaStreamOutputWorkaroundEnable), this, m_NvidiaStreamOutputWorkaroundEnable, value)) m_NvidiaStreamOutputWorkaroundEnable = value; } } // 0x1A (26)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(12), LayoutImmutable, Blittable]
+		public uint StaticBufferMaxVertexCount { get; set; }
+
+		[ContainerField(16), LayoutImmutable, Blittable]
+		public uint RingBufferMaxVertexCount { get; set; }
+
+		[ContainerField(20), LayoutImmutable, Blittable]
+		public bool DrawEnable { get; set; }
+
+		[ContainerField(21), LayoutImmutable, Blittable]
+		public bool SystemEnable2 { get; set; }
+
+		[ContainerField(22), LayoutImmutable, Blittable]
+		public bool SystemEnable { get; set; }
+
+		[ContainerField(23), LayoutImmutable, Blittable]
+		public bool Enable { get; set; }
+
+		[ContainerField(24), LayoutImmutable, Blittable]
+		public bool DebugMemUsageEnable { get; set; }
+
+		[ContainerField(25), LayoutImmutable, Blittable]
+		public bool DebugWarningsEnable { get; set; }
+
+		[ContainerField(26), LayoutImmutable, Blittable]
+		public bool NvidiaStreamOutputWorkaroundEnable { get; set; }
+
+		public static void Deserialize(DecalSettings p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 2343369026:
-					StaticBufferMaxVertexCount = (uint) p_Value;
-					break;
-
-				case 3904589288:
-					RingBufferMaxVertexCount = (uint) p_Value;
-					break;
-
-				case 1347356004:
-					DrawEnable = (bool) p_Value;
-					break;
-
-				case 360785139:
-					SystemEnable2 = (bool) p_Value;
-					break;
-
-				case 3785298081:
-					SystemEnable = (bool) p_Value;
-					break;
-
-				case 2342790116:
-					Enable = (bool) p_Value;
-					break;
-
-				case 284136405:
-					DebugMemUsageEnable = (bool) p_Value;
-					break;
-
-				case 3949276556:
-					DebugWarningsEnable = (bool) p_Value;
-					break;
-
-				case 2641376344:
-					NvidiaStreamOutputWorkaroundEnable = (bool) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
+			p_Instance.StaticBufferMaxVertexCount = p_Reader.ReadUInt32();
+			p_Instance.RingBufferMaxVertexCount = p_Reader.ReadUInt32();
+			p_Instance.DrawEnable = p_Reader.ReadBool();
+			p_Instance.SystemEnable2 = p_Reader.ReadBool();
+			p_Instance.SystemEnable = p_Reader.ReadBool();
+			p_Instance.Enable = p_Reader.ReadBool();
+			p_Instance.DebugMemUsageEnable = p_Reader.ReadBool();
+			p_Instance.DebugWarningsEnable = p_Reader.ReadBool();
+			p_Instance.NvidiaStreamOutputWorkaroundEnable = p_Reader.ReadBool();
+			p_Reader.Seek(1, SeekOrigin.Current);
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2343369026:
-					return StaticBufferMaxVertexCount;
-
-				case 3904589288:
-					return RingBufferMaxVertexCount;
-
-				case 1347356004:
-					return DrawEnable;
-
-				case 360785139:
-					return SystemEnable2;
-
-				case 3785298081:
-					return SystemEnable;
-
-				case 2342790116:
-					return Enable;
-
-				case 284136405:
-					return DebugMemUsageEnable;
-
-				case 3949276556:
-					return DebugWarningsEnable;
-
-				case 2641376344:
-					return NvidiaStreamOutputWorkaroundEnable;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2343369026:
-					return typeof(DecalSettings).GetProperty(nameof(StaticBufferMaxVertexCount));
-
-				case 3904589288:
-					return typeof(DecalSettings).GetProperty(nameof(RingBufferMaxVertexCount));
-
-				case 1347356004:
-					return typeof(DecalSettings).GetProperty(nameof(DrawEnable));
-
-				case 360785139:
-					return typeof(DecalSettings).GetProperty(nameof(SystemEnable2));
-
-				case 3785298081:
-					return typeof(DecalSettings).GetProperty(nameof(SystemEnable));
-
-				case 2342790116:
-					return typeof(DecalSettings).GetProperty(nameof(Enable));
-
-				case 284136405:
-					return typeof(DecalSettings).GetProperty(nameof(DebugMemUsageEnable));
-
-				case 3949276556:
-					return typeof(DecalSettings).GetProperty(nameof(DebugWarningsEnable));
-
-				case 2641376344:
-					return typeof(DecalSettings).GetProperty(nameof(NvidiaStreamOutputWorkaroundEnable));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

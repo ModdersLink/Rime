@@ -5,105 +5,48 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 24)]
+	[ContainerType(4, 24)]
 	public class WeaponSocketObjectData : 
 		SocketObjectDataBase
 	{
-		protected List<uint> m_ReferencedAssetHashes = new List<uint>();
-		[ContainerField(Name: "ReferencedAssetHashes", Offset: 8, NameHash: 3589205886, Flags: 65)]
-		public List<uint> ReferencedAssetHashes { get { return m_ReferencedAssetHashes; } set { if (OnPropertyChanging("WeaponSocketObjectData." + nameof(ReferencedAssetHashes), this, m_ReferencedAssetHashes, value)) m_ReferencedAssetHashes = value; } } // 0x8 (8)
-		
-		protected CtrRef<Asset> m_Asset1p = new CtrRef<Asset>();
-		[ContainerField(Name: "Asset1p", Offset: 12, NameHash: 969622868, Flags: 53)]
-		public CtrRef<Asset> Asset1p { get { return m_Asset1p; } set { if (OnPropertyChanging("WeaponSocketObjectData." + nameof(Asset1p), this, m_Asset1p, value)) m_Asset1p = value; } } // 0xC (12)
-		
-		protected CtrRef<Asset> m_Asset1pzoom = new CtrRef<Asset>();
-		[ContainerField(Name: "Asset1pzoom", Offset: 16, NameHash: 230633315, Flags: 53)]
-		public CtrRef<Asset> Asset1pzoom { get { return m_Asset1pzoom; } set { if (OnPropertyChanging("WeaponSocketObjectData." + nameof(Asset1pzoom), this, m_Asset1pzoom, value)) m_Asset1pzoom = value; } } // 0x10 (16)
-		
-		protected CtrRef<Asset> m_Asset3p = new CtrRef<Asset>();
-		[ContainerField(Name: "Asset3p", Offset: 20, NameHash: 969622806, Flags: 53)]
-		public CtrRef<Asset> Asset3p { get { return m_Asset3p; } set { if (OnPropertyChanging("WeaponSocketObjectData." + nameof(Asset3p), this, m_Asset3p, value)) m_Asset3p = value; } } // 0x14 (20)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(8)]
+		public List<uint> ReferencedAssetHashes { get; set; } = new();
+
+		[ContainerField(12)]
+		public CtrRef<Asset> Asset1p { get; set; } = new();
+
+		[ContainerField(16)]
+		public CtrRef<Asset> Asset1pzoom { get; set; } = new();
+
+		[ContainerField(20)]
+		public CtrRef<Asset> Asset3p { get; set; } = new();
+
+		public static void Deserialize(WeaponSocketObjectData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Instance.ReferencedAssetHashes.Clear();
+			(RimeReader Reader, uint Count) s_ReferencedAssetHashes = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_ReferencedAssetHashes.Count; ++i)
 			{
-				case 3589205886:
-					ReferencedAssetHashes = (List<uint>) p_Value;
-					break;
-
-				case 969622868:
-					Asset1p = (CtrRef<Asset>) p_Value;
-					break;
-
-				case 230633315:
-					Asset1pzoom = (CtrRef<Asset>) p_Value;
-					break;
-
-				case 969622806:
-					Asset3p = (CtrRef<Asset>) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_Value = s_ReferencedAssetHashes.Reader.ReadUInt32();
+				p_Instance.ReferencedAssetHashes.Add(s_Value);
 			}
+			
+			s_ReferencedAssetHashes.Reader.Dispose();
+			p_Instance.Asset1p.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
+			p_Instance.Asset1pzoom.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
+			p_Instance.Asset3p.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3589205886:
-					return ReferencedAssetHashes;
-
-				case 969622868:
-					return Asset1p;
-
-				case 230633315:
-					return Asset1pzoom;
-
-				case 969622806:
-					return Asset3p;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3589205886:
-					return typeof(WeaponSocketObjectData).GetProperty(nameof(ReferencedAssetHashes));
-
-				case 969622868:
-					return typeof(WeaponSocketObjectData).GetProperty(nameof(Asset1p));
-
-				case 230633315:
-					return typeof(WeaponSocketObjectData).GetProperty(nameof(Asset1pzoom));
-
-				case 969622806:
-					return typeof(WeaponSocketObjectData).GetProperty(nameof(Asset3p));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

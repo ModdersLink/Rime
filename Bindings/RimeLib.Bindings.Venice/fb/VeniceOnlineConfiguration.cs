@@ -5,91 +5,55 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 40)]
+	[ContainerType(4, 40)]
 	public class VeniceOnlineConfiguration : 
 		OnlineConfiguration
 	{
-		protected List<OnlinePlatformConfiguration> m_Platforms = new List<OnlinePlatformConfiguration>();
-		[ContainerField(Name: "Platforms", Offset: 28, NameHash: 1046011945, Flags: 65)]
-		public List<OnlinePlatformConfiguration> Platforms { get { return m_Platforms; } set { if (OnPropertyChanging("VeniceOnlineConfiguration." + nameof(Platforms), this, m_Platforms, value)) m_Platforms = value; } } // 0x1C (28)
-		
-		protected RefArray<EntitlementQuery> m_EntitlementQueries = new RefArray<EntitlementQuery>();
-		[ContainerField(Name: "EntitlementQueries", Offset: 32, NameHash: 2121789744, Flags: 65)]
-		public RefArray<EntitlementQuery> EntitlementQueries { get { return m_EntitlementQueries; } set { if (OnPropertyChanging("VeniceOnlineConfiguration." + nameof(EntitlementQueries), this, m_EntitlementQueries, value)) m_EntitlementQueries = value; } } // 0x20 (32)
-		
-		protected bool m_UseFallback = new bool();
-		[ContainerField(Name: "UseFallback", Offset: 36, NameHash: 2260806602, Flags: 49325), LayoutImmutable, Blittable]
-		public bool UseFallback { get { return m_UseFallback; } set { if (OnPropertyChanging("VeniceOnlineConfiguration." + nameof(UseFallback), this, m_UseFallback, value)) m_UseFallback = value; } } // 0x24 (36)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(28)]
+		public List<OnlinePlatformConfiguration> Platforms { get; set; } = new();
+
+		[ContainerField(32)]
+		public List<CtrRef<EntitlementQuery>> EntitlementQueries { get; set; } = new();
+
+		[ContainerField(36), LayoutImmutable, Blittable]
+		public bool UseFallback { get; set; }
+
+		public static void Deserialize(VeniceOnlineConfiguration p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Instance.Platforms.Clear();
+			(RimeReader Reader, uint Count) s_Platforms = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_Platforms.Count; ++i)
 			{
-				case 1046011945:
-					Platforms = (List<OnlinePlatformConfiguration>) p_Value;
-					break;
-
-				case 2121789744:
-					EntitlementQueries = (RefArray<EntitlementQuery>) p_Value;
-					break;
-
-				case 2260806602:
-					UseFallback = (bool) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_Value = new OnlinePlatformConfiguration();
+				fb.OnlinePlatformConfiguration.Deserialize(s_Value, s_Platforms.Reader, p_Parser);
+				p_Instance.Platforms.Add(s_Value);
 			}
+			
+			s_Platforms.Reader.Dispose();
+			p_Instance.EntitlementQueries.Clear();
+			(RimeReader Reader, uint Count) s_EntitlementQueries = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_EntitlementQueries.Count; ++i)
+			{
+				var s_CtrRef = new CtrRef<EntitlementQuery>();
+				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_EntitlementQueries.Reader.ReadUInt32()));
+				p_Instance.EntitlementQueries.Add(s_CtrRef);
+			}
+			
+			s_EntitlementQueries.Reader.Dispose();
+			p_Instance.UseFallback = p_Reader.ReadBool();
+			p_Reader.Seek(3, SeekOrigin.Current);
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1046011945:
-					return Platforms;
-
-				case 2121789744:
-					return EntitlementQueries;
-
-				case 2260806602:
-					return UseFallback;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1046011945:
-					return typeof(VeniceOnlineConfiguration).GetProperty(nameof(Platforms));
-
-				case 2121789744:
-					return typeof(VeniceOnlineConfiguration).GetProperty(nameof(EntitlementQueries));
-
-				case 2260806602:
-					return typeof(VeniceOnlineConfiguration).GetProperty(nameof(UseFallback));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

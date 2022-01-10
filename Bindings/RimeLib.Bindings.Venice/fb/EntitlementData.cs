@@ -5,139 +5,51 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 41, Size: 28)]
-	public class EntitlementData : FrostbiteContainer
+	[ContainerType(4, 28)]
+	public class EntitlementData
 	{
-		[ContainerField(Name: "License", Offset: 0, NameHash: 979513438, Flags: 16509), LayoutImmutable]
-		public string License { get; set; } // 0x0 (0)
+		[ContainerField(0), LayoutImmutable]
+		public string License { get; set; } = string.Empty;
 		
-		[ContainerField(Name: "EntitlementTag", Offset: 4, NameHash: 1654763342, Flags: 16509), LayoutImmutable]
-		public string EntitlementTag { get; set; } // 0x4 (4)
+		[ContainerField(4), LayoutImmutable]
+		public string EntitlementTag { get; set; } = string.Empty;
 		
-		[ContainerField(Name: "GroupName", Offset: 8, NameHash: 3178263901, Flags: 16509), LayoutImmutable]
-		public string GroupName { get; set; } // 0x8 (8)
+		[ContainerField(8), LayoutImmutable]
+		public string GroupName { get; set; } = string.Empty;
 		
-		[ContainerField(Name: "ProductId", Offset: 12, NameHash: 106414083, Flags: 16509), LayoutImmutable]
-		public string ProductId { get; set; } // 0xC (12)
+		[ContainerField(12), LayoutImmutable]
+		public string ProductId { get; set; } = string.Empty;
 		
-		[ContainerField(Name: "ProjectId", Offset: 16, NameHash: 4152360413, Flags: 16509), LayoutImmutable]
-		public string ProjectId { get; set; } // 0x10 (16)
+		[ContainerField(16), LayoutImmutable]
+		public string ProjectId { get; set; } = string.Empty;
 		
-		[ContainerField(Name: "UsageType", Offset: 20, NameHash: 161626008, Flags: 137)]
-		public EntitlementType UsageType { get; set; } = new EntitlementType(); // 0x14 (20)
+		[ContainerField(20)]
+		public EntitlementType UsageType { get; set; } = new();
 		
-		[ContainerField(Name: "VerifyOwnership", Offset: 24, NameHash: 4151436721, Flags: 49325), LayoutImmutable, Blittable]
-		public bool VerifyOwnership { get; set; } // 0x18 (24)
+		[ContainerField(24), LayoutImmutable, Blittable]
+		public bool VerifyOwnership { get; set; }
 		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		public static void Deserialize(EntitlementData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 979513438:
-					License = (string) p_Value;
-					break;
-
-				case 1654763342:
-					EntitlementTag = (string) p_Value;
-					break;
-
-				case 3178263901:
-					GroupName = (string) p_Value;
-					break;
-
-				case 106414083:
-					ProductId = (string) p_Value;
-					break;
-
-				case 4152360413:
-					ProjectId = (string) p_Value;
-					break;
-
-				case 161626008:
-						UsageType = (EntitlementType) Enum.ToObject(typeof(EntitlementType), p_Value);
-					break;
-
-				case 4151436721:
-					VerifyOwnership = (bool) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 979513438:
-					return License;
-
-				case 1654763342:
-					return EntitlementTag;
-
-				case 3178263901:
-					return GroupName;
-
-				case 106414083:
-					return ProductId;
-
-				case 4152360413:
-					return ProjectId;
-
-				case 161626008:
-					return UsageType;
-
-				case 4151436721:
-					return VerifyOwnership;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 979513438:
-					return typeof(EntitlementData).GetProperty(nameof(License));
-
-				case 1654763342:
-					return typeof(EntitlementData).GetProperty(nameof(EntitlementTag));
-
-				case 3178263901:
-					return typeof(EntitlementData).GetProperty(nameof(GroupName));
-
-				case 106414083:
-					return typeof(EntitlementData).GetProperty(nameof(ProductId));
-
-				case 4152360413:
-					return typeof(EntitlementData).GetProperty(nameof(ProjectId));
-
-				case 161626008:
-					return typeof(EntitlementData).GetProperty(nameof(UsageType));
-
-				case 4151436721:
-					return typeof(EntitlementData).GetProperty(nameof(VerifyOwnership));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
+			p_Instance.License = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
+			p_Instance.EntitlementTag = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
+			p_Instance.GroupName = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
+			p_Instance.ProductId = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
+			p_Instance.ProjectId = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
+			p_Instance.UsageType = (EntitlementType) p_Reader.ReadInt32();
+			p_Instance.VerifyOwnership = p_Reader.ReadBool();
+			p_Reader.Seek(3, SeekOrigin.Current);
 		}
 	}
 }

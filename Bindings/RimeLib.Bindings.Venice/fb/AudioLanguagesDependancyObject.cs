@@ -5,63 +5,37 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 12)]
+	[ContainerType(4, 12)]
 	public class AudioLanguagesDependancyObject : 
 		DataContainer
 	{
-		protected RefArray<AudioLanguage> m_AudioLanguages = new RefArray<AudioLanguage>();
-		[ContainerField(Name: "AudioLanguages", Offset: 8, NameHash: 582937106, Flags: 65)]
-		public RefArray<AudioLanguage> AudioLanguages { get { return m_AudioLanguages; } set { if (OnPropertyChanging("AudioLanguagesDependancyObject." + nameof(AudioLanguages), this, m_AudioLanguages, value)) m_AudioLanguages = value; } } // 0x8 (8)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 582937106:
-					AudioLanguages = (RefArray<AudioLanguage>) p_Value;
-					break;
+		[ContainerField(8)]
+		public List<CtrRef<AudioLanguage>> AudioLanguages { get; set; } = new();
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+		public static void Deserialize(AudioLanguagesDependancyObject p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
+		{
+			p_Instance.AudioLanguages.Clear();
+			(RimeReader Reader, uint Count) s_AudioLanguages = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_AudioLanguages.Count; ++i)
+			{
+				var s_CtrRef = new CtrRef<AudioLanguage>();
+				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_AudioLanguages.Reader.ReadUInt32()));
+				p_Instance.AudioLanguages.Add(s_CtrRef);
 			}
+			
+			s_AudioLanguages.Reader.Dispose();
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 582937106:
-					return AudioLanguages;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 582937106:
-					return typeof(AudioLanguagesDependancyObject).GetProperty(nameof(AudioLanguages));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

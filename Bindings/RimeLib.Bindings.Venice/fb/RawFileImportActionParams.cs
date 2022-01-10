@@ -5,63 +5,28 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 12)]
+	[ContainerType(4, 12)]
 	public class RawFileImportActionParams : 
 		DataContainer
 	{
-		protected string m_SourceFile = string.Empty;
-		[ContainerField(Name: "SourceFile", Offset: 8, NameHash: 1522844286, Flags: 16509), LayoutImmutable]
-		public string SourceFile { get { return m_SourceFile; } set { if (OnPropertyChanging("RawFileImportActionParams." + nameof(SourceFile), this, m_SourceFile, value)) m_SourceFile = value; } } // 0x8 (8)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 1522844286:
-					SourceFile = (string) p_Value;
-					break;
+		[ContainerField(8), LayoutImmutable]
+		public string SourceFile { get; set; } = string.Empty;
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
+		public static void Deserialize(RawFileImportActionParams p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
+		{
+			p_Instance.SourceFile = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1522844286:
-					return SourceFile;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1522844286:
-					return typeof(RawFileImportActionParams).GetProperty(nameof(SourceFile));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

@@ -5,91 +5,36 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 20)]
+	[ContainerType(4, 20)]
 	public class BlueprintBundleMetadata : 
 		DataContainer
 	{
-		protected string m_BundlePathName = string.Empty;
-		[ContainerField(Name: "BundlePathName", Offset: 8, NameHash: 852575899, Flags: 16509), LayoutImmutable]
-		public string BundlePathName { get { return m_BundlePathName; } set { if (OnPropertyChanging("BlueprintBundleMetadata." + nameof(BundlePathName), this, m_BundlePathName, value)) m_BundlePathName = value; } } // 0x8 (8)
-		
-		protected string m_BundleName = string.Empty;
-		[ContainerField(Name: "BundleName", Offset: 12, NameHash: 461157046, Flags: 16509), LayoutImmutable]
-		public string BundleName { get { return m_BundleName; } set { if (OnPropertyChanging("BlueprintBundleMetadata." + nameof(BundleName), this, m_BundleName, value)) m_BundleName = value; } } // 0xC (12)
-		
-		protected string m_BlueprintName = string.Empty;
-		[ContainerField(Name: "BlueprintName", Offset: 16, NameHash: 289256909, Flags: 16509), LayoutImmutable]
-		public string BlueprintName { get { return m_BlueprintName; } set { if (OnPropertyChanging("BlueprintBundleMetadata." + nameof(BlueprintName), this, m_BlueprintName, value)) m_BlueprintName = value; } } // 0x10 (16)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(8), LayoutImmutable]
+		public string BundlePathName { get; set; } = string.Empty;
+
+		[ContainerField(12), LayoutImmutable]
+		public string BundleName { get; set; } = string.Empty;
+
+		[ContainerField(16), LayoutImmutable]
+		public string BlueprintName { get; set; } = string.Empty;
+
+		public static void Deserialize(BlueprintBundleMetadata p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 852575899:
-					BundlePathName = (string) p_Value;
-					break;
-
-				case 461157046:
-					BundleName = (string) p_Value;
-					break;
-
-				case 289256909:
-					BlueprintName = (string) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
+			p_Instance.BundlePathName = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
+			p_Instance.BundleName = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
+			p_Instance.BlueprintName = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 852575899:
-					return BundlePathName;
-
-				case 461157046:
-					return BundleName;
-
-				case 289256909:
-					return BlueprintName;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 852575899:
-					return typeof(BlueprintBundleMetadata).GetProperty(nameof(BundlePathName));
-
-				case 461157046:
-					return typeof(BlueprintBundleMetadata).GetProperty(nameof(BundleName));
-
-				case 289256909:
-					return typeof(BlueprintBundleMetadata).GetProperty(nameof(BlueprintName));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

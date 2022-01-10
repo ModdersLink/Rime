@@ -5,77 +5,40 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 20)]
+	[ContainerType(4, 20)]
 	public class UIEventAsset : 
 		Asset
 	{
-		protected string m_Category = string.Empty;
-		[ContainerField(Name: "Category", Offset: 12, NameHash: 3455858997, Flags: 16509), LayoutImmutable]
-		public string Category { get { return m_Category; } set { if (OnPropertyChanging("UIEventAsset." + nameof(Category), this, m_Category, value)) m_Category = value; } } // 0xC (12)
-		
-		protected List<string> m_EventList = new List<string>();
-		[ContainerField(Name: "EventList", Offset: 16, NameHash: 4132327979, Flags: 65)]
-		public List<string> EventList { get { return m_EventList; } set { if (OnPropertyChanging("UIEventAsset." + nameof(EventList), this, m_EventList, value)) m_EventList = value; } } // 0x10 (16)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(12), LayoutImmutable]
+		public string Category { get; set; } = string.Empty;
+
+		[ContainerField(16)]
+		public List<string> EventList { get; set; } = new();
+
+		public static void Deserialize(UIEventAsset p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Instance.Category = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
+			p_Instance.EventList.Clear();
+			(RimeReader Reader, uint Count) s_EventList = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_EventList.Count; ++i)
 			{
-				case 3455858997:
-					Category = (string) p_Value;
-					break;
-
-				case 4132327979:
-					EventList = (List<string>) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_Value = p_Parser.GetStringAtOffset(s_EventList.Reader.ReadUInt32());
+				p_Instance.EventList.Add(s_Value);
 			}
+			
+			s_EventList.Reader.Dispose();
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3455858997:
-					return Category;
-
-				case 4132327979:
-					return EventList;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3455858997:
-					return typeof(UIEventAsset).GetProperty(nameof(Category));
-
-				case 4132327979:
-					return typeof(UIEventAsset).GetProperty(nameof(EventList));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

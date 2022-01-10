@@ -5,100 +5,48 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 41, Size: 16)]
-	public class UIMinimapIconTextureState : FrostbiteContainer
+	[ContainerType(4, 16)]
+	public class UIMinimapIconTextureState
 	{
-		[ContainerField(Name: "State", Offset: 0, NameHash: 230748402, Flags: 137)]
-		public UIIconState State { get; set; } = new UIIconState(); // 0x0 (0)
+		[ContainerField(0)]
+		public UIIconState State { get; set; } = new();
 		
-		[ContainerField(Name: "FrameRate", Offset: 4, NameHash: 21928954, Flags: 49469), LayoutImmutable, Blittable]
-		public float FrameRate { get; set; } // 0x4 (4)
+		[ContainerField(4), LayoutImmutable, Blittable]
+		public float FrameRate { get; set; }
 		
-		[ContainerField(Name: "TextureInfos", Offset: 8, NameHash: 2154121191, Flags: 65)]
-		public List<UIMinimapIconUv> TextureInfos { get; set; } = new List<UIMinimapIconUv>(); // 0x8 (8)
+		[ContainerField(8)]
+		public List<UIMinimapIconUv> TextureInfos { get; set; } = new();
 		
-		[ContainerField(Name: "ShouldRotate", Offset: 12, NameHash: 1996765845, Flags: 49325), LayoutImmutable, Blittable]
-		public bool ShouldRotate { get; set; } // 0xC (12)
+		[ContainerField(12), LayoutImmutable, Blittable]
+		public bool ShouldRotate { get; set; }
 		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		public static void Deserialize(UIMinimapIconTextureState p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Instance.State = (UIIconState) p_Reader.ReadInt32();
+			p_Instance.FrameRate = p_Reader.ReadSingle();
+			p_Instance.TextureInfos.Clear();
+			(RimeReader Reader, uint Count) s_TextureInfos = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_TextureInfos.Count; ++i)
 			{
-				case 230748402:
-						State = (UIIconState) Enum.ToObject(typeof(UIIconState), p_Value);
-					break;
-
-				case 21928954:
-					FrameRate = (float) p_Value;
-					break;
-
-				case 2154121191:
-					TextureInfos = (List<UIMinimapIconUv>) p_Value;
-					break;
-
-				case 1996765845:
-					ShouldRotate = (bool) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_Value = new UIMinimapIconUv();
+				fb.UIMinimapIconUv.Deserialize(s_Value, s_TextureInfos.Reader, p_Parser);
+				p_Instance.TextureInfos.Add(s_Value);
 			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 230748402:
-					return State;
-
-				case 21928954:
-					return FrameRate;
-
-				case 2154121191:
-					return TextureInfos;
-
-				case 1996765845:
-					return ShouldRotate;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 230748402:
-					return typeof(UIMinimapIconTextureState).GetProperty(nameof(State));
-
-				case 21928954:
-					return typeof(UIMinimapIconTextureState).GetProperty(nameof(FrameRate));
-
-				case 2154121191:
-					return typeof(UIMinimapIconTextureState).GetProperty(nameof(TextureInfos));
-
-				case 1996765845:
-					return typeof(UIMinimapIconTextureState).GetProperty(nameof(ShouldRotate));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
+			
+			s_TextureInfos.Reader.Dispose();
+			p_Instance.ShouldRotate = p_Reader.ReadBool();
+			p_Reader.Seek(3, SeekOrigin.Current);
 		}
 	}
 }

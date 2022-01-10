@@ -5,63 +5,29 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 16,  Flags: 53, Size: 112)]
+	[ContainerType(16, 112)]
 	public class PredestructionEntityData : 
 		GameEntityData
 	{
-		protected float m_Radius = new float();
-		[ContainerField(Name: "Radius", Offset: 96, NameHash: 3298407133, Flags: 49469), LayoutImmutable, Blittable]
-		public float Radius { get { return m_Radius; } set { if (OnPropertyChanging("PredestructionEntityData." + nameof(Radius), this, m_Radius, value)) m_Radius = value; } } // 0x60 (96)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 3298407133:
-					Radius = (float) p_Value;
-					break;
+		[ContainerField(96), LayoutImmutable, Blittable]
+		public float Radius { get; set; }
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
+		public static void Deserialize(PredestructionEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
+		{
+			p_Instance.Radius = p_Reader.ReadSingle();
+			p_Reader.Seek(12, SeekOrigin.Current);
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3298407133:
-					return Radius;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3298407133:
-					return typeof(PredestructionEntityData).GetProperty(nameof(Radius));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

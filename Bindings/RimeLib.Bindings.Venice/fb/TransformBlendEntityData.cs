@@ -5,119 +5,50 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 16,  Flags: 53, Size: 160)]
+	[ContainerType(16, 160)]
 	public class TransformBlendEntityData : 
 		EntityData
 	{
-		protected LinearTransform m_In2 = new LinearTransform();
-		[ContainerField(Name: "In2", Offset: 16, NameHash: 193450864, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
-		public LinearTransform In2 { get { return m_In2; } set { if (OnPropertyChanging("TransformBlendEntityData." + nameof(In2), this, m_In2, value)) m_In2 = value; } } // 0x10 (16)
-		
-		protected LinearTransform m_In1 = new LinearTransform();
-		[ContainerField(Name: "In1", Offset: 80, NameHash: 193450867, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
-		public LinearTransform In1 { get { return m_In1; } set { if (OnPropertyChanging("TransformBlendEntityData." + nameof(In1), this, m_In1, value)) m_In1 = value; } } // 0x50 (80)
-		
-		protected float m_BlendValue = new float();
-		[ContainerField(Name: "BlendValue", Offset: 144, NameHash: 236872047, Flags: 49469), LayoutImmutable, Blittable]
-		public float BlendValue { get { return m_BlendValue; } set { if (OnPropertyChanging("TransformBlendEntityData." + nameof(BlendValue), this, m_BlendValue, value)) m_BlendValue = value; } } // 0x90 (144)
-		
-		protected float m_BlendValue2 = new float();
-		[ContainerField(Name: "BlendValue2", Offset: 148, NameHash: 3521810301, Flags: 49469), LayoutImmutable, Blittable]
-		public float BlendValue2 { get { return m_BlendValue2; } set { if (OnPropertyChanging("TransformBlendEntityData." + nameof(BlendValue2), this, m_BlendValue2, value)) m_BlendValue2 = value; } } // 0x94 (148)
-		
-		protected Realm m_Realm = new Realm();
-		[ContainerField(Name: "Realm", Offset: 152, NameHash: 229961746, Flags: 137)]
-		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("TransformBlendEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0x98 (152)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable]
+		public LinearTransform In2 { get; set; } = new();
+
+		[ContainerField(80), Homogeneous, LayoutImmutable, Blittable]
+		public LinearTransform In1 { get; set; } = new();
+
+		[ContainerField(144), LayoutImmutable, Blittable]
+		public float BlendValue { get; set; }
+
+		[ContainerField(148), LayoutImmutable, Blittable]
+		public float BlendValue2 { get; set; }
+
+		[ContainerField(152)]
+		public Realm Realm { get; set; } = new();
+
+		public static void Deserialize(TransformBlendEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 193450864:
-					In2 = (LinearTransform) p_Value;
-					break;
-
-				case 193450867:
-					In1 = (LinearTransform) p_Value;
-					break;
-
-				case 236872047:
-					BlendValue = (float) p_Value;
-					break;
-
-				case 3521810301:
-					BlendValue2 = (float) p_Value;
-					break;
-
-				case 229961746:
-					Realm = (Realm) Enum.ToObject(typeof(Realm), p_Value);
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
+			p_Reader.Seek(4, SeekOrigin.Current);
+			fb.LinearTransform.Deserialize(p_Instance.In2, p_Reader, p_Parser);
+			p_Reader.Seek(4, SeekOrigin.Current);
+			fb.LinearTransform.Deserialize(p_Instance.In1, p_Reader, p_Parser);
+			p_Reader.Seek(4, SeekOrigin.Current);
+			p_Instance.BlendValue = p_Reader.ReadSingle();
+			p_Reader.Seek(4, SeekOrigin.Current);
+			p_Instance.BlendValue2 = p_Reader.ReadSingle();
+			p_Reader.Seek(4, SeekOrigin.Current);
+			p_Instance.Realm = (Realm) p_Reader.ReadInt32();
+			p_Reader.Seek(8, SeekOrigin.Current);
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 193450864:
-					return In2;
-
-				case 193450867:
-					return In1;
-
-				case 236872047:
-					return BlendValue;
-
-				case 3521810301:
-					return BlendValue2;
-
-				case 229961746:
-					return Realm;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 193450864:
-					return typeof(TransformBlendEntityData).GetProperty(nameof(In2));
-
-				case 193450867:
-					return typeof(TransformBlendEntityData).GetProperty(nameof(In1));
-
-				case 236872047:
-					return typeof(TransformBlendEntityData).GetProperty(nameof(BlendValue));
-
-				case 3521810301:
-					return typeof(TransformBlendEntityData).GetProperty(nameof(BlendValue2));
-
-				case 229961746:
-					return typeof(TransformBlendEntityData).GetProperty(nameof(Realm));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

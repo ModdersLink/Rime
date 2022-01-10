@@ -5,63 +5,29 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 8,  Flags: 53, Size: 24)]
+	[ContainerType(8, 24)]
 	public class SurveySuppressedEvent : 
 		MetricEvent
 	{
-		protected string m_SuppressReason = string.Empty;
-		[ContainerField(Name: "SuppressReason", Offset: 16, NameHash: 422620368, Flags: 16509), LayoutImmutable]
-		public string SuppressReason { get { return m_SuppressReason; } set { if (OnPropertyChanging("SurveySuppressedEvent." + nameof(SuppressReason), this, m_SuppressReason, value)) m_SuppressReason = value; } } // 0x10 (16)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 422620368:
-					SuppressReason = (string) p_Value;
-					break;
+		[ContainerField(16), LayoutImmutable]
+		public string SuppressReason { get; set; } = string.Empty;
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
+		public static void Deserialize(SurveySuppressedEvent p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
+		{
+			p_Instance.SuppressReason = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
+			p_Reader.Seek(4, SeekOrigin.Current);
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 422620368:
-					return SuppressReason;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 422620368:
-					return typeof(SurveySuppressedEvent).GetProperty(nameof(SuppressReason));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

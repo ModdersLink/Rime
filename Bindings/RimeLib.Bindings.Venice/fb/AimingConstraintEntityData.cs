@@ -5,77 +5,33 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 20)]
+	[ContainerType(4, 20)]
 	public class AimingConstraintEntityData : 
 		EntityData
 	{
-		protected CtrRef<AimingConstraintEntityCommonData> m_CommonData = new CtrRef<AimingConstraintEntityCommonData>();
-		[ContainerField(Name: "CommonData", Offset: 12, NameHash: 760803064, Flags: 53)]
-		public CtrRef<AimingConstraintEntityCommonData> CommonData { get { return m_CommonData; } set { if (OnPropertyChanging("AimingConstraintEntityData." + nameof(CommonData), this, m_CommonData, value)) m_CommonData = value; } } // 0xC (12)
-		
-		protected bool m_EnabledInProne = new bool();
-		[ContainerField(Name: "EnabledInProne", Offset: 16, NameHash: 1941848993, Flags: 49325), LayoutImmutable, Blittable]
-		public bool EnabledInProne { get { return m_EnabledInProne; } set { if (OnPropertyChanging("AimingConstraintEntityData." + nameof(EnabledInProne), this, m_EnabledInProne, value)) m_EnabledInProne = value; } } // 0x10 (16)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(12)]
+		public CtrRef<AimingConstraintEntityCommonData> CommonData { get; set; } = new();
+
+		[ContainerField(16), LayoutImmutable, Blittable]
+		public bool EnabledInProne { get; set; }
+
+		public static void Deserialize(AimingConstraintEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 760803064:
-					CommonData = (CtrRef<AimingConstraintEntityCommonData>) p_Value;
-					break;
-
-				case 1941848993:
-					EnabledInProne = (bool) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
+			p_Instance.CommonData.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
+			p_Instance.EnabledInProne = p_Reader.ReadBool();
+			p_Reader.Seek(3, SeekOrigin.Current);
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 760803064:
-					return CommonData;
-
-				case 1941848993:
-					return EnabledInProne;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 760803064:
-					return typeof(AimingConstraintEntityData).GetProperty(nameof(CommonData));
-
-				case 1941848993:
-					return typeof(AimingConstraintEntityData).GetProperty(nameof(EnabledInProne));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

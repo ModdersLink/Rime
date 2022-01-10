@@ -5,91 +5,44 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 28)]
+	[ContainerType(4, 28)]
 	public class WeaponAnimationConfigurationModifier : 
 		WeaponModifierBase
 	{
-		protected List<float> m_ZoomInOutMeshTransitionFactors = new List<float>();
-		[ContainerField(Name: "ZoomInOutMeshTransitionFactors", Offset: 8, NameHash: 1322171705, Flags: 65)]
-		public List<float> ZoomInOutMeshTransitionFactors { get { return m_ZoomInOutMeshTransitionFactors; } set { if (OnPropertyChanging("WeaponAnimationConfigurationModifier." + nameof(ZoomInOutMeshTransitionFactors), this, m_ZoomInOutMeshTransitionFactors, value)) m_ZoomInOutMeshTransitionFactors = value; } } // 0x8 (8)
-		
-		protected AnimationConfigurationData m_AnimationConfiguration = new AnimationConfigurationData();
-		[ContainerField(Name: "AnimationConfiguration", Offset: 12, NameHash: 711248867, Flags: 41)]
-		public AnimationConfigurationData AnimationConfiguration { get { return m_AnimationConfiguration; } set { if (OnPropertyChanging("WeaponAnimationConfigurationModifier." + nameof(AnimationConfiguration), this, m_AnimationConfiguration, value)) m_AnimationConfiguration = value; } } // 0xC (12)
-		
-		protected AnimatedFireEnum m_AnimatedFireType = new AnimatedFireEnum();
-		[ContainerField(Name: "AnimatedFireType", Offset: 24, NameHash: 1066105722, Flags: 137)]
-		public AnimatedFireEnum AnimatedFireType { get { return m_AnimatedFireType; } set { if (OnPropertyChanging("WeaponAnimationConfigurationModifier." + nameof(AnimatedFireType), this, m_AnimatedFireType, value)) m_AnimatedFireType = value; } } // 0x18 (24)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(8)]
+		public List<float> ZoomInOutMeshTransitionFactors { get; set; } = new();
+
+		[ContainerField(12)]
+		public AnimationConfigurationData AnimationConfiguration { get; set; } = new();
+
+		[ContainerField(24)]
+		public AnimatedFireEnum AnimatedFireType { get; set; } = new();
+
+		public static void Deserialize(WeaponAnimationConfigurationModifier p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Instance.ZoomInOutMeshTransitionFactors.Clear();
+			(RimeReader Reader, uint Count) s_ZoomInOutMeshTransitionFactors = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_ZoomInOutMeshTransitionFactors.Count; ++i)
 			{
-				case 1322171705:
-					ZoomInOutMeshTransitionFactors = (List<float>) p_Value;
-					break;
-
-				case 711248867:
-					AnimationConfiguration = (AnimationConfigurationData) p_Value;
-					break;
-
-				case 1066105722:
-					AnimatedFireType = (AnimatedFireEnum) Enum.ToObject(typeof(AnimatedFireEnum), p_Value);
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_Value = s_ZoomInOutMeshTransitionFactors.Reader.ReadSingle();
+				p_Instance.ZoomInOutMeshTransitionFactors.Add(s_Value);
 			}
+			
+			s_ZoomInOutMeshTransitionFactors.Reader.Dispose();
+			fb.AnimationConfigurationData.Deserialize(p_Instance.AnimationConfiguration, p_Reader, p_Parser);
+			p_Instance.AnimatedFireType = (AnimatedFireEnum) p_Reader.ReadInt32();
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1322171705:
-					return ZoomInOutMeshTransitionFactors;
-
-				case 711248867:
-					return AnimationConfiguration;
-
-				case 1066105722:
-					return AnimatedFireType;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1322171705:
-					return typeof(WeaponAnimationConfigurationModifier).GetProperty(nameof(ZoomInOutMeshTransitionFactors));
-
-				case 711248867:
-					return typeof(WeaponAnimationConfigurationModifier).GetProperty(nameof(AnimationConfiguration));
-
-				case 1066105722:
-					return typeof(WeaponAnimationConfigurationModifier).GetProperty(nameof(AnimatedFireType));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

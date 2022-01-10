@@ -5,77 +5,33 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 48)]
+	[ContainerType(4, 48)]
 	public class FollowPlayerOrderEntityData : 
 		BFOrderEntityData
 	{
-		protected CtrRef<FormationData> m_Formation = new CtrRef<FormationData>();
-		[ContainerField(Name: "Formation", Offset: 40, NameHash: 3135990414, Flags: 53)]
-		public CtrRef<FormationData> Formation { get { return m_Formation; } set { if (OnPropertyChanging("FollowPlayerOrderEntityData." + nameof(Formation), this, m_Formation, value)) m_Formation = value; } } // 0x28 (40)
-		
-		protected bool m_CombatForbidden = new bool();
-		[ContainerField(Name: "CombatForbidden", Offset: 44, NameHash: 2646993448, Flags: 49325), LayoutImmutable, Blittable]
-		public bool CombatForbidden { get { return m_CombatForbidden; } set { if (OnPropertyChanging("FollowPlayerOrderEntityData." + nameof(CombatForbidden), this, m_CombatForbidden, value)) m_CombatForbidden = value; } } // 0x2C (44)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(40)]
+		public CtrRef<FormationData> Formation { get; set; } = new();
+
+		[ContainerField(44), LayoutImmutable, Blittable]
+		public bool CombatForbidden { get; set; }
+
+		public static void Deserialize(FollowPlayerOrderEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 3135990414:
-					Formation = (CtrRef<FormationData>) p_Value;
-					break;
-
-				case 2646993448:
-					CombatForbidden = (bool) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
+			p_Instance.Formation.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
+			p_Instance.CombatForbidden = p_Reader.ReadBool();
+			p_Reader.Seek(3, SeekOrigin.Current);
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3135990414:
-					return Formation;
-
-				case 2646993448:
-					return CombatForbidden;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3135990414:
-					return typeof(FollowPlayerOrderEntityData).GetProperty(nameof(Formation));
-
-				case 2646993448:
-					return typeof(FollowPlayerOrderEntityData).GetProperty(nameof(CombatForbidden));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

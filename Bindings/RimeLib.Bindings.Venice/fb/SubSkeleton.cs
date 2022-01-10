@@ -5,87 +5,51 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 41, Size: 12)]
-	public class SubSkeleton : FrostbiteContainer
+	[ContainerType(4, 12)]
+	public class SubSkeleton
 	{
-		[ContainerField(Name: "Skeleton", Offset: 0, NameHash: 291024164, Flags: 53)]
-		public CtrRef<SkeletonAsset> Skeleton { get; set; } = new CtrRef<SkeletonAsset>(); // 0x0 (0)
+		[ContainerField(0)]
+		public CtrRef<SkeletonAsset> Skeleton { get; set; } = new();
 		
-		[ContainerField(Name: "BoneMap", Offset: 4, NameHash: 2521060607, Flags: 65)]
-		public List<int> BoneMap { get; set; } = new List<int>(); // 0x4 (4)
+		[ContainerField(4)]
+		public List<int> BoneMap { get; set; } = new();
 		
-		[ContainerField(Name: "TransformMap", Offset: 8, NameHash: 1281121973, Flags: 65)]
-		public List<LinearTransform> TransformMap { get; set; } = new List<LinearTransform>(); // 0x8 (8)
+		[ContainerField(8)]
+		public List<LinearTransform> TransformMap { get; set; } = new();
 		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		public static void Deserialize(SubSkeleton p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Instance.Skeleton.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
+			p_Instance.BoneMap.Clear();
+			(RimeReader Reader, uint Count) s_BoneMap = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_BoneMap.Count; ++i)
 			{
-				case 291024164:
-					Skeleton = (CtrRef<SkeletonAsset>) p_Value;
-					break;
-
-				case 2521060607:
-					BoneMap = (List<int>) p_Value;
-					break;
-
-				case 1281121973:
-					TransformMap = (List<LinearTransform>) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_Value = s_BoneMap.Reader.ReadInt32();
+				p_Instance.BoneMap.Add(s_Value);
 			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
+			
+			s_BoneMap.Reader.Dispose();
+			p_Instance.TransformMap.Clear();
+			(RimeReader Reader, uint Count) s_TransformMap = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_TransformMap.Count; ++i)
 			{
-				case 291024164:
-					return Skeleton;
-
-				case 2521060607:
-					return BoneMap;
-
-				case 1281121973:
-					return TransformMap;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
+				var s_Value = new LinearTransform();
+				fb.LinearTransform.Deserialize(s_Value, s_TransformMap.Reader, p_Parser);
+				p_Instance.TransformMap.Add(s_Value);
 			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 291024164:
-					return typeof(SubSkeleton).GetProperty(nameof(Skeleton));
-
-				case 2521060607:
-					return typeof(SubSkeleton).GetProperty(nameof(BoneMap));
-
-				case 1281121973:
-					return typeof(SubSkeleton).GetProperty(nameof(TransformMap));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
+			
+			s_TransformMap.Reader.Dispose();
 		}
 	}
 }

@@ -5,63 +5,29 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 12)]
+	[ContainerType(4, 12)]
 	public class EnlightenPipelineParams : 
 		DataContainer
 	{
-		protected bool m_DynamicEnable = new bool();
-		[ContainerField(Name: "DynamicEnable", Offset: 8, NameHash: 2376411633, Flags: 49325), LayoutImmutable, Blittable]
-		public bool DynamicEnable { get { return m_DynamicEnable; } set { if (OnPropertyChanging("EnlightenPipelineParams." + nameof(DynamicEnable), this, m_DynamicEnable, value)) m_DynamicEnable = value; } } // 0x8 (8)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 2376411633:
-					DynamicEnable = (bool) p_Value;
-					break;
+		[ContainerField(8), LayoutImmutable, Blittable]
+		public bool DynamicEnable { get; set; }
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
+		public static void Deserialize(EnlightenPipelineParams p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
+		{
+			p_Instance.DynamicEnable = p_Reader.ReadBool();
+			p_Reader.Seek(3, SeekOrigin.Current);
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2376411633:
-					return DynamicEnable;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2376411633:
-					return typeof(EnlightenPipelineParams).GetProperty(nameof(DynamicEnable));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

@@ -5,203 +5,87 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 16,  Flags: 53, Size: 160)]
+	[ContainerType(16, 160)]
 	public class InspectEntityData : 
 		GameEntityData
 	{
-		protected Vec3 m_CenterOffset = new Vec3();
-		[ContainerField(Name: "CenterOffset", Offset: 96, NameHash: 362641347, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 CenterOffset { get { return m_CenterOffset; } set { if (OnPropertyChanging("InspectEntityData." + nameof(CenterOffset), this, m_CenterOffset, value)) m_CenterOffset = value; } } // 0x60 (96)
-		
-		protected string m_UIName = string.Empty;
-		[ContainerField(Name: "UIName", Offset: 112, NameHash: 2999506814, Flags: 16509), LayoutImmutable]
-		public string UIName { get { return m_UIName; } set { if (OnPropertyChanging("InspectEntityData." + nameof(UIName), this, m_UIName, value)) m_UIName = value; } } // 0x70 (112)
-		
-		protected float m_MaxLookAtHeight = new float();
-		[ContainerField(Name: "MaxLookAtHeight", Offset: 116, NameHash: 2912738716, Flags: 49469), LayoutImmutable, Blittable]
-		public float MaxLookAtHeight { get { return m_MaxLookAtHeight; } set { if (OnPropertyChanging("InspectEntityData." + nameof(MaxLookAtHeight), this, m_MaxLookAtHeight, value)) m_MaxLookAtHeight = value; } } // 0x74 (116)
-		
-		protected List<InspectViewPointData> m_ViewPoints = new List<InspectViewPointData>();
-		[ContainerField(Name: "ViewPoints", Offset: 120, NameHash: 92696663, Flags: 65)]
-		public List<InspectViewPointData> ViewPoints { get { return m_ViewPoints; } set { if (OnPropertyChanging("InspectEntityData." + nameof(ViewPoints), this, m_ViewPoints, value)) m_ViewPoints = value; } } // 0x78 (120)
-		
-		protected RefArray<TargetCameraData> m_Cameras = new RefArray<TargetCameraData>();
-		[ContainerField(Name: "Cameras", Offset: 124, NameHash: 3740512847, Flags: 65)]
-		public RefArray<TargetCameraData> Cameras { get { return m_Cameras; } set { if (OnPropertyChanging("InspectEntityData." + nameof(Cameras), this, m_Cameras, value)) m_Cameras = value; } } // 0x7C (124)
-		
-		protected float m_MinLookAtHeight = new float();
-		[ContainerField(Name: "MinLookAtHeight", Offset: 128, NameHash: 3192024578, Flags: 49469), LayoutImmutable, Blittable]
-		public float MinLookAtHeight { get { return m_MinLookAtHeight; } set { if (OnPropertyChanging("InspectEntityData." + nameof(MinLookAtHeight), this, m_MinLookAtHeight, value)) m_MinLookAtHeight = value; } } // 0x80 (128)
-		
-		protected float m_MinDistance = new float();
-		[ContainerField(Name: "MinDistance", Offset: 132, NameHash: 1885855628, Flags: 49469), LayoutImmutable, Blittable]
-		public float MinDistance { get { return m_MinDistance; } set { if (OnPropertyChanging("InspectEntityData." + nameof(MinDistance), this, m_MinDistance, value)) m_MinDistance = value; } } // 0x84 (132)
-		
-		protected float m_ZoomScrollSpeed = new float();
-		[ContainerField(Name: "ZoomScrollSpeed", Offset: 136, NameHash: 3969725080, Flags: 49469), LayoutImmutable, Blittable]
-		public float ZoomScrollSpeed { get { return m_ZoomScrollSpeed; } set { if (OnPropertyChanging("InspectEntityData." + nameof(ZoomScrollSpeed), this, m_ZoomScrollSpeed, value)) m_ZoomScrollSpeed = value; } } // 0x88 (136)
-		
-		protected float m_MaxDistance = new float();
-		[ContainerField(Name: "MaxDistance", Offset: 140, NameHash: 3520454034, Flags: 49469), LayoutImmutable, Blittable]
-		public float MaxDistance { get { return m_MaxDistance; } set { if (OnPropertyChanging("InspectEntityData." + nameof(MaxDistance), this, m_MaxDistance, value)) m_MaxDistance = value; } } // 0x8C (140)
-		
-		protected AntRef m_AnimationSignal = new AntRef();
-		[ContainerField(Name: "AnimationSignal", Offset: 144, NameHash: 2364599213, Flags: 41)]
-		public AntRef AnimationSignal { get { return m_AnimationSignal; } set { if (OnPropertyChanging("InspectEntityData." + nameof(AnimationSignal), this, m_AnimationSignal, value)) m_AnimationSignal = value; } } // 0x90 (144)
-		
-		protected float m_ZoomScrollAcceleration = new float();
-		[ContainerField(Name: "ZoomScrollAcceleration", Offset: 148, NameHash: 2121669405, Flags: 49469), LayoutImmutable, Blittable]
-		public float ZoomScrollAcceleration { get { return m_ZoomScrollAcceleration; } set { if (OnPropertyChanging("InspectEntityData." + nameof(ZoomScrollAcceleration), this, m_ZoomScrollAcceleration, value)) m_ZoomScrollAcceleration = value; } } // 0x94 (148)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable]
+		public Vec3 CenterOffset { get; set; } = new();
+
+		[ContainerField(112), LayoutImmutable]
+		public string UIName { get; set; } = string.Empty;
+
+		[ContainerField(116), LayoutImmutable, Blittable]
+		public float MaxLookAtHeight { get; set; }
+
+		[ContainerField(120)]
+		public List<InspectViewPointData> ViewPoints { get; set; } = new();
+
+		[ContainerField(124)]
+		public List<CtrRef<TargetCameraData>> Cameras { get; set; } = new();
+
+		[ContainerField(128), LayoutImmutable, Blittable]
+		public float MinLookAtHeight { get; set; }
+
+		[ContainerField(132), LayoutImmutable, Blittable]
+		public float MinDistance { get; set; }
+
+		[ContainerField(136), LayoutImmutable, Blittable]
+		public float ZoomScrollSpeed { get; set; }
+
+		[ContainerField(140), LayoutImmutable, Blittable]
+		public float MaxDistance { get; set; }
+
+		[ContainerField(144)]
+		public AntRef AnimationSignal { get; set; } = new();
+
+		[ContainerField(148), LayoutImmutable, Blittable]
+		public float ZoomScrollAcceleration { get; set; }
+
+		public static void Deserialize(InspectEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			fb.Vec3.Deserialize(p_Instance.CenterOffset, p_Reader, p_Parser);
+			p_Instance.UIName = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
+			p_Instance.MaxLookAtHeight = p_Reader.ReadSingle();
+			p_Instance.ViewPoints.Clear();
+			(RimeReader Reader, uint Count) s_ViewPoints = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_ViewPoints.Count; ++i)
 			{
-				case 362641347:
-					CenterOffset = (Vec3) p_Value;
-					break;
-
-				case 2999506814:
-					UIName = (string) p_Value;
-					break;
-
-				case 2912738716:
-					MaxLookAtHeight = (float) p_Value;
-					break;
-
-				case 92696663:
-					ViewPoints = (List<InspectViewPointData>) p_Value;
-					break;
-
-				case 3740512847:
-					Cameras = (RefArray<TargetCameraData>) p_Value;
-					break;
-
-				case 3192024578:
-					MinLookAtHeight = (float) p_Value;
-					break;
-
-				case 1885855628:
-					MinDistance = (float) p_Value;
-					break;
-
-				case 3969725080:
-					ZoomScrollSpeed = (float) p_Value;
-					break;
-
-				case 3520454034:
-					MaxDistance = (float) p_Value;
-					break;
-
-				case 2364599213:
-					AnimationSignal = (AntRef) p_Value;
-					break;
-
-				case 2121669405:
-					ZoomScrollAcceleration = (float) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_Value = new InspectViewPointData();
+				fb.InspectViewPointData.Deserialize(s_Value, s_ViewPoints.Reader, p_Parser);
+				p_Instance.ViewPoints.Add(s_Value);
 			}
+			
+			s_ViewPoints.Reader.Dispose();
+			p_Instance.Cameras.Clear();
+			(RimeReader Reader, uint Count) s_Cameras = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_Cameras.Count; ++i)
+			{
+				var s_CtrRef = new CtrRef<TargetCameraData>();
+				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_Cameras.Reader.ReadUInt32()));
+				p_Instance.Cameras.Add(s_CtrRef);
+			}
+			
+			s_Cameras.Reader.Dispose();
+			p_Instance.MinLookAtHeight = p_Reader.ReadSingle();
+			p_Instance.MinDistance = p_Reader.ReadSingle();
+			p_Instance.ZoomScrollSpeed = p_Reader.ReadSingle();
+			p_Instance.MaxDistance = p_Reader.ReadSingle();
+			fb.AntRef.Deserialize(p_Instance.AnimationSignal, p_Reader, p_Parser);
+			p_Instance.ZoomScrollAcceleration = p_Reader.ReadSingle();
+			p_Reader.Seek(8, SeekOrigin.Current);
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 362641347:
-					return CenterOffset;
-
-				case 2999506814:
-					return UIName;
-
-				case 2912738716:
-					return MaxLookAtHeight;
-
-				case 92696663:
-					return ViewPoints;
-
-				case 3740512847:
-					return Cameras;
-
-				case 3192024578:
-					return MinLookAtHeight;
-
-				case 1885855628:
-					return MinDistance;
-
-				case 3969725080:
-					return ZoomScrollSpeed;
-
-				case 3520454034:
-					return MaxDistance;
-
-				case 2364599213:
-					return AnimationSignal;
-
-				case 2121669405:
-					return ZoomScrollAcceleration;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 362641347:
-					return typeof(InspectEntityData).GetProperty(nameof(CenterOffset));
-
-				case 2999506814:
-					return typeof(InspectEntityData).GetProperty(nameof(UIName));
-
-				case 2912738716:
-					return typeof(InspectEntityData).GetProperty(nameof(MaxLookAtHeight));
-
-				case 92696663:
-					return typeof(InspectEntityData).GetProperty(nameof(ViewPoints));
-
-				case 3740512847:
-					return typeof(InspectEntityData).GetProperty(nameof(Cameras));
-
-				case 3192024578:
-					return typeof(InspectEntityData).GetProperty(nameof(MinLookAtHeight));
-
-				case 1885855628:
-					return typeof(InspectEntityData).GetProperty(nameof(MinDistance));
-
-				case 3969725080:
-					return typeof(InspectEntityData).GetProperty(nameof(ZoomScrollSpeed));
-
-				case 3520454034:
-					return typeof(InspectEntityData).GetProperty(nameof(MaxDistance));
-
-				case 2364599213:
-					return typeof(InspectEntityData).GetProperty(nameof(AnimationSignal));
-
-				case 2121669405:
-					return typeof(InspectEntityData).GetProperty(nameof(ZoomScrollAcceleration));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

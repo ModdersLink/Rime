@@ -5,105 +5,48 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 28)]
+	[ContainerType(4, 28)]
 	public class UIComponentData : 
 		Asset
 	{
-		protected string m_ShortName = string.Empty;
-		[ContainerField(Name: "ShortName", Offset: 12, NameHash: 1803010032, Flags: 16509), LayoutImmutable]
-		public string ShortName { get { return m_ShortName; } set { if (OnPropertyChanging("UIComponentData." + nameof(ShortName), this, m_ShortName, value)) m_ShortName = value; } } // 0xC (12)
-		
-		protected List<string> m_DataSources = new List<string>();
-		[ContainerField(Name: "DataSources", Offset: 16, NameHash: 1204335067, Flags: 65)]
-		public List<string> DataSources { get { return m_DataSources; } set { if (OnPropertyChanging("UIComponentData." + nameof(DataSources), this, m_DataSources, value)) m_DataSources = value; } } // 0x10 (16)
-		
-		protected UIUpdateType m_UpdateType = new UIUpdateType();
-		[ContainerField(Name: "UpdateType", Offset: 20, NameHash: 2270667052, Flags: 137)]
-		public UIUpdateType UpdateType { get { return m_UpdateType; } set { if (OnPropertyChanging("UIComponentData." + nameof(UpdateType), this, m_UpdateType, value)) m_UpdateType = value; } } // 0x14 (20)
-		
-		protected int m_UpdatesPerSecond = new int();
-		[ContainerField(Name: "UpdatesPerSecond", Offset: 24, NameHash: 2192548880, Flags: 49405), LayoutImmutable, Blittable]
-		public int UpdatesPerSecond { get { return m_UpdatesPerSecond; } set { if (OnPropertyChanging("UIComponentData." + nameof(UpdatesPerSecond), this, m_UpdatesPerSecond, value)) m_UpdatesPerSecond = value; } } // 0x18 (24)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(12), LayoutImmutable]
+		public string ShortName { get; set; } = string.Empty;
+
+		[ContainerField(16)]
+		public List<string> DataSources { get; set; } = new();
+
+		[ContainerField(20)]
+		public UIUpdateType UpdateType { get; set; } = new();
+
+		[ContainerField(24), LayoutImmutable, Blittable]
+		public int UpdatesPerSecond { get; set; }
+
+		public static void Deserialize(UIComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Instance.ShortName = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
+			p_Instance.DataSources.Clear();
+			(RimeReader Reader, uint Count) s_DataSources = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_DataSources.Count; ++i)
 			{
-				case 1803010032:
-					ShortName = (string) p_Value;
-					break;
-
-				case 1204335067:
-					DataSources = (List<string>) p_Value;
-					break;
-
-				case 2270667052:
-					UpdateType = (UIUpdateType) Enum.ToObject(typeof(UIUpdateType), p_Value);
-					break;
-
-				case 2192548880:
-					UpdatesPerSecond = (int) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_Value = p_Parser.GetStringAtOffset(s_DataSources.Reader.ReadUInt32());
+				p_Instance.DataSources.Add(s_Value);
 			}
+			
+			s_DataSources.Reader.Dispose();
+			p_Instance.UpdateType = (UIUpdateType) p_Reader.ReadInt32();
+			p_Instance.UpdatesPerSecond = p_Reader.ReadInt32();
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1803010032:
-					return ShortName;
-
-				case 1204335067:
-					return DataSources;
-
-				case 2270667052:
-					return UpdateType;
-
-				case 2192548880:
-					return UpdatesPerSecond;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1803010032:
-					return typeof(UIComponentData).GetProperty(nameof(ShortName));
-
-				case 1204335067:
-					return typeof(UIComponentData).GetProperty(nameof(DataSources));
-
-				case 2270667052:
-					return typeof(UIComponentData).GetProperty(nameof(UpdateType));
-
-				case 2192548880:
-					return typeof(UIComponentData).GetProperty(nameof(UpdatesPerSecond));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

@@ -5,77 +5,41 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 20)]
+	[ContainerType(4, 20)]
 	public class HavokAsset : 
 		Asset
 	{
-		protected float m_Scale = new float();
-		[ContainerField(Name: "Scale", Offset: 12, NameHash: 231223453, Flags: 49469), LayoutImmutable, Blittable]
-		public float Scale { get { return m_Scale; } set { if (OnPropertyChanging("HavokAsset." + nameof(Scale), this, m_Scale, value)) m_Scale = value; } } // 0xC (12)
-		
-		protected RefArray<DataContainer> m_ExternalAssets = new RefArray<DataContainer>();
-		[ContainerField(Name: "ExternalAssets", Offset: 16, NameHash: 1938270811, Flags: 65)]
-		public RefArray<DataContainer> ExternalAssets { get { return m_ExternalAssets; } set { if (OnPropertyChanging("HavokAsset." + nameof(ExternalAssets), this, m_ExternalAssets, value)) m_ExternalAssets = value; } } // 0x10 (16)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(12), LayoutImmutable, Blittable]
+		public float Scale { get; set; }
+
+		[ContainerField(16)]
+		public List<CtrRef<DataContainer>> ExternalAssets { get; set; } = new();
+
+		public static void Deserialize(HavokAsset p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Instance.Scale = p_Reader.ReadSingle();
+			p_Instance.ExternalAssets.Clear();
+			(RimeReader Reader, uint Count) s_ExternalAssets = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_ExternalAssets.Count; ++i)
 			{
-				case 231223453:
-					Scale = (float) p_Value;
-					break;
-
-				case 1938270811:
-					ExternalAssets = (RefArray<DataContainer>) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_CtrRef = new CtrRef<DataContainer>();
+				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_ExternalAssets.Reader.ReadUInt32()));
+				p_Instance.ExternalAssets.Add(s_CtrRef);
 			}
+			
+			s_ExternalAssets.Reader.Dispose();
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 231223453:
-					return Scale;
-
-				case 1938270811:
-					return ExternalAssets;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 231223453:
-					return typeof(HavokAsset).GetProperty(nameof(Scale));
-
-				case 1938270811:
-					return typeof(HavokAsset).GetProperty(nameof(ExternalAssets));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

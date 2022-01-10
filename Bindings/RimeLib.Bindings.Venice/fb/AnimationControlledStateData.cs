@@ -5,63 +5,28 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
+	[ContainerType(4, 16)]
 	public class AnimationControlledStateData : 
 		CharacterStateData
 	{
-		protected float m_UpNormalTolerance = new float();
-		[ContainerField(Name: "UpNormalTolerance", Offset: 12, NameHash: 4245736634, Flags: 49469), LayoutImmutable, Blittable]
-		public float UpNormalTolerance { get { return m_UpNormalTolerance; } set { if (OnPropertyChanging("AnimationControlledStateData." + nameof(UpNormalTolerance), this, m_UpNormalTolerance, value)) m_UpNormalTolerance = value; } } // 0xC (12)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 4245736634:
-					UpNormalTolerance = (float) p_Value;
-					break;
+		[ContainerField(12), LayoutImmutable, Blittable]
+		public float UpNormalTolerance { get; set; }
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
+		public static void Deserialize(AnimationControlledStateData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
+		{
+			p_Instance.UpNormalTolerance = p_Reader.ReadSingle();
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 4245736634:
-					return UpNormalTolerance;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 4245736634:
-					return typeof(AnimationControlledStateData).GetProperty(nameof(UpNormalTolerance));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

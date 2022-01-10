@@ -5,87 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 41, Size: 36)]
-	public class ReadinessLevels : FrostbiteContainer
+	[ContainerType(4, 36)]
+	public class ReadinessLevels
 	{
-		[ContainerField(Name: "Patrol", Offset: 0, NameHash: 3371506961, Flags: 41)]
-		public ReadinessLevelCharacteristics Patrol { get; set; } = new ReadinessLevelCharacteristics(); // 0x0 (0)
+		[ContainerField(0)]
+		public ReadinessLevelCharacteristics Patrol { get; set; } = new();
 		
-		[ContainerField(Name: "Ready", Offset: 12, NameHash: 229961486, Flags: 41)]
-		public ReadinessLevelCharacteristics Ready { get; set; } = new ReadinessLevelCharacteristics(); // 0xC (12)
+		[ContainerField(12)]
+		public ReadinessLevelCharacteristics Ready { get; set; } = new();
 		
-		[ContainerField(Name: "Combat", Offset: 24, NameHash: 2713842259, Flags: 41)]
-		public ReadinessLevelCharacteristics Combat { get; set; } = new ReadinessLevelCharacteristics(); // 0x18 (24)
+		[ContainerField(24)]
+		public ReadinessLevelCharacteristics Combat { get; set; } = new();
 		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		public static void Deserialize(ReadinessLevels p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 3371506961:
-					Patrol = (ReadinessLevelCharacteristics) p_Value;
-					break;
-
-				case 229961486:
-					Ready = (ReadinessLevelCharacteristics) p_Value;
-					break;
-
-				case 2713842259:
-					Combat = (ReadinessLevelCharacteristics) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3371506961:
-					return Patrol;
-
-				case 229961486:
-					return Ready;
-
-				case 2713842259:
-					return Combat;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3371506961:
-					return typeof(ReadinessLevels).GetProperty(nameof(Patrol));
-
-				case 229961486:
-					return typeof(ReadinessLevels).GetProperty(nameof(Ready));
-
-				case 2713842259:
-					return typeof(ReadinessLevels).GetProperty(nameof(Combat));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
+			fb.ReadinessLevelCharacteristics.Deserialize(p_Instance.Patrol, p_Reader, p_Parser);
+			fb.ReadinessLevelCharacteristics.Deserialize(p_Instance.Ready, p_Reader, p_Parser);
+			fb.ReadinessLevelCharacteristics.Deserialize(p_Instance.Combat, p_Reader, p_Parser);
 		}
 	}
 }

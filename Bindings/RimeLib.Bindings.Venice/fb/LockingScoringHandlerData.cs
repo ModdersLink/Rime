@@ -5,63 +5,28 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 12)]
+	[ContainerType(4, 12)]
 	public class LockingScoringHandlerData : 
 		ScoringHandlerData
 	{
-		protected float m_HotVehicleTimeout = new float();
-		[ContainerField(Name: "HotVehicleTimeout", Offset: 8, NameHash: 1202160117, Flags: 49469), LayoutImmutable, Blittable]
-		public float HotVehicleTimeout { get { return m_HotVehicleTimeout; } set { if (OnPropertyChanging("LockingScoringHandlerData." + nameof(HotVehicleTimeout), this, m_HotVehicleTimeout, value)) m_HotVehicleTimeout = value; } } // 0x8 (8)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 1202160117:
-					HotVehicleTimeout = (float) p_Value;
-					break;
+		[ContainerField(8), LayoutImmutable, Blittable]
+		public float HotVehicleTimeout { get; set; }
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
+		public static void Deserialize(LockingScoringHandlerData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
+		{
+			p_Instance.HotVehicleTimeout = p_Reader.ReadSingle();
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1202160117:
-					return HotVehicleTimeout;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1202160117:
-					return typeof(LockingScoringHandlerData).GetProperty(nameof(HotVehicleTimeout));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

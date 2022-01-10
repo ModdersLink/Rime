@@ -5,63 +5,29 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 16,  Flags: 53, Size: 96)]
+	[ContainerType(16, 96)]
 	public class OccluderVolumeEntityData : 
 		SpatialEntityData
 	{
-		protected bool m_OccluderHighPriority = new bool();
-		[ContainerField(Name: "OccluderHighPriority", Offset: 80, NameHash: 1133933052, Flags: 49325), LayoutImmutable, Blittable]
-		public bool OccluderHighPriority { get { return m_OccluderHighPriority; } set { if (OnPropertyChanging("OccluderVolumeEntityData." + nameof(OccluderHighPriority), this, m_OccluderHighPriority, value)) m_OccluderHighPriority = value; } } // 0x50 (80)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 1133933052:
-					OccluderHighPriority = (bool) p_Value;
-					break;
+		[ContainerField(80), LayoutImmutable, Blittable]
+		public bool OccluderHighPriority { get; set; }
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
+		public static void Deserialize(OccluderVolumeEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
+		{
+			p_Instance.OccluderHighPriority = p_Reader.ReadBool();
+			p_Reader.Seek(15, SeekOrigin.Current);
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1133933052:
-					return OccluderHighPriority;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1133933052:
-					return typeof(OccluderVolumeEntityData).GetProperty(nameof(OccluderHighPriority));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

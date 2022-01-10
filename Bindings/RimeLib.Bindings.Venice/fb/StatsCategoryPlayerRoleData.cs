@@ -5,66 +5,36 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 24)]
+	[ContainerType(4, 24)]
 	public class StatsCategoryPlayerRoleData : 
 		StatsCategoryBaseData
 	{
-		protected List<PlayerRole> m_Roles = new List<PlayerRole>();
-		[ContainerField(Name: "Roles", Offset: 20, NameHash: 230312994, Flags: 65)]
-		public List<PlayerRole> Roles { get { return m_Roles; } set { if (OnPropertyChanging("StatsCategoryPlayerRoleData." + nameof(Roles), this, m_Roles, value)) m_Roles = value; } } // 0x14 (20)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 230312994:
-					if (p_Value.GetType() == typeof (List<uint>))
-						Roles = ((List<uint>) p_Value).Select(x => (PlayerRole) Enum.ToObject(typeof(PlayerRole), x)).ToList();
-					else
-						Roles = (List<PlayerRole>) p_Value;
-					break;
+		[ContainerField(20)]
+		public List<PlayerRole> Roles { get; set; } = new();
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+		public static void Deserialize(StatsCategoryPlayerRoleData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
+		{
+			p_Instance.Roles.Clear();
+			(RimeReader Reader, uint Count) s_Roles = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_Roles.Count; ++i)
+			{
+				var s_Value = (PlayerRole) s_Roles.Reader.ReadInt32();
+				p_Instance.Roles.Add(s_Value);
 			}
+			
+			s_Roles.Reader.Dispose();
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 230312994:
-					return Roles;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 230312994:
-					return typeof(StatsCategoryPlayerRoleData).GetProperty(nameof(Roles));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

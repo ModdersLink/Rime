@@ -5,63 +5,37 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 12)]
+	[ContainerType(4, 12)]
 	public class DeltaNodeData : 
 		AudioGraphNodeData
 	{
-		protected RefArray<DeltaGroup> m_Deltas = new RefArray<DeltaGroup>();
-		[ContainerField(Name: "Deltas", Offset: 8, NameHash: 2594403022, Flags: 65)]
-		public RefArray<DeltaGroup> Deltas { get { return m_Deltas; } set { if (OnPropertyChanging("DeltaNodeData." + nameof(Deltas), this, m_Deltas, value)) m_Deltas = value; } } // 0x8 (8)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 2594403022:
-					Deltas = (RefArray<DeltaGroup>) p_Value;
-					break;
+		[ContainerField(8)]
+		public List<CtrRef<DeltaGroup>> Deltas { get; set; } = new();
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+		public static void Deserialize(DeltaNodeData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
+		{
+			p_Instance.Deltas.Clear();
+			(RimeReader Reader, uint Count) s_Deltas = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_Deltas.Count; ++i)
+			{
+				var s_CtrRef = new CtrRef<DeltaGroup>();
+				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_Deltas.Reader.ReadUInt32()));
+				p_Instance.Deltas.Add(s_CtrRef);
 			}
+			
+			s_Deltas.Reader.Dispose();
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2594403022:
-					return Deltas;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2594403022:
-					return typeof(DeltaNodeData).GetProperty(nameof(Deltas));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

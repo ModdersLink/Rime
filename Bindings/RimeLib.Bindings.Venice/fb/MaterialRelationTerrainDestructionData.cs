@@ -5,77 +5,32 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
+	[ContainerType(4, 16)]
 	public class MaterialRelationTerrainDestructionData : 
 		PhysicsPropertyRelationPropertyData
 	{
-		protected float m_Width = new float();
-		[ContainerField(Name: "Width", Offset: 8, NameHash: 226981187, Flags: 49469), LayoutImmutable, Blittable]
-		public float Width { get { return m_Width; } set { if (OnPropertyChanging("MaterialRelationTerrainDestructionData." + nameof(Width), this, m_Width, value)) m_Width = value; } } // 0x8 (8)
-		
-		protected float m_Depth = new float();
-		[ContainerField(Name: "Depth", Offset: 12, NameHash: 208780552, Flags: 49469), LayoutImmutable, Blittable]
-		public float Depth { get { return m_Depth; } set { if (OnPropertyChanging("MaterialRelationTerrainDestructionData." + nameof(Depth), this, m_Depth, value)) m_Depth = value; } } // 0xC (12)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(8), LayoutImmutable, Blittable]
+		public float Width { get; set; }
+
+		[ContainerField(12), LayoutImmutable, Blittable]
+		public float Depth { get; set; }
+
+		public static void Deserialize(MaterialRelationTerrainDestructionData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 226981187:
-					Width = (float) p_Value;
-					break;
-
-				case 208780552:
-					Depth = (float) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
+			p_Instance.Width = p_Reader.ReadSingle();
+			p_Instance.Depth = p_Reader.ReadSingle();
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 226981187:
-					return Width;
-
-				case 208780552:
-					return Depth;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 226981187:
-					return typeof(MaterialRelationTerrainDestructionData).GetProperty(nameof(Width));
-
-				case 208780552:
-					return typeof(MaterialRelationTerrainDestructionData).GetProperty(nameof(Depth));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

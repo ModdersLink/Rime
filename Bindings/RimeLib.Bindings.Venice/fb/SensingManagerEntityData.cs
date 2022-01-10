@@ -5,63 +5,37 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
+	[ContainerType(4, 16)]
 	public class SensingManagerEntityData : 
 		EntityData
 	{
-		protected List<SensingSphere> m_SenseTerrainAreas = new List<SensingSphere>();
-		[ContainerField(Name: "SenseTerrainAreas", Offset: 12, NameHash: 1470254904, Flags: 65)]
-		public List<SensingSphere> SenseTerrainAreas { get { return m_SenseTerrainAreas; } set { if (OnPropertyChanging("SensingManagerEntityData." + nameof(SenseTerrainAreas), this, m_SenseTerrainAreas, value)) m_SenseTerrainAreas = value; } } // 0xC (12)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 1470254904:
-					SenseTerrainAreas = (List<SensingSphere>) p_Value;
-					break;
+		[ContainerField(12)]
+		public List<SensingSphere> SenseTerrainAreas { get; set; } = new();
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+		public static void Deserialize(SensingManagerEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
+		{
+			p_Instance.SenseTerrainAreas.Clear();
+			(RimeReader Reader, uint Count) s_SenseTerrainAreas = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_SenseTerrainAreas.Count; ++i)
+			{
+				var s_Value = new SensingSphere();
+				fb.SensingSphere.Deserialize(s_Value, s_SenseTerrainAreas.Reader, p_Parser);
+				p_Instance.SenseTerrainAreas.Add(s_Value);
 			}
+			
+			s_SenseTerrainAreas.Reader.Dispose();
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1470254904:
-					return SenseTerrainAreas;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1470254904:
-					return typeof(SensingManagerEntityData).GetProperty(nameof(SenseTerrainAreas));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

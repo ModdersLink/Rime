@@ -5,63 +5,37 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
+	[ContainerType(4, 16)]
 	public class FormationHolder : 
 		Asset
 	{
-		protected RefArray<FormationData> m_Formations = new RefArray<FormationData>();
-		[ContainerField(Name: "Formations", Offset: 12, NameHash: 408468541, Flags: 65)]
-		public RefArray<FormationData> Formations { get { return m_Formations; } set { if (OnPropertyChanging("FormationHolder." + nameof(Formations), this, m_Formations, value)) m_Formations = value; } } // 0xC (12)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 408468541:
-					Formations = (RefArray<FormationData>) p_Value;
-					break;
+		[ContainerField(12)]
+		public List<CtrRef<FormationData>> Formations { get; set; } = new();
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+		public static void Deserialize(FormationHolder p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
+		{
+			p_Instance.Formations.Clear();
+			(RimeReader Reader, uint Count) s_Formations = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_Formations.Count; ++i)
+			{
+				var s_CtrRef = new CtrRef<FormationData>();
+				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_Formations.Reader.ReadUInt32()));
+				p_Instance.Formations.Add(s_CtrRef);
 			}
+			
+			s_Formations.Reader.Dispose();
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 408468541:
-					return Formations;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 408468541:
-					return typeof(FormationHolder).GetProperty(nameof(Formations));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

@@ -5,126 +5,47 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 41, Size: 24)]
-	public class MapRotationConfig : FrostbiteContainer
+	[ContainerType(4, 24)]
+	public class MapRotationConfig
 	{
-		[ContainerField(Name: "MapRotationId", Offset: 0, NameHash: 3190659456, Flags: 49405), LayoutImmutable, Blittable]
-		public int MapRotationId { get; set; } // 0x0 (0)
+		[ContainerField(0), LayoutImmutable, Blittable]
+		public int MapRotationId { get; set; }
 		
-		[ContainerField(Name: "NameSid", Offset: 4, NameHash: 3153745340, Flags: 16509), LayoutImmutable]
-		public string NameSid { get; set; } // 0x4 (4)
+		[ContainerField(4), LayoutImmutable]
+		public string NameSid { get; set; } = string.Empty;
 		
-		[ContainerField(Name: "DescSid", Offset: 8, NameHash: 4021143274, Flags: 16509), LayoutImmutable]
-		public string DescSid { get; set; } // 0x8 (8)
+		[ContainerField(8), LayoutImmutable]
+		public string DescSid { get; set; } = string.Empty;
 		
-		[ContainerField(Name: "Mod", Offset: 12, NameHash: 193446659, Flags: 16509), LayoutImmutable]
-		public string Mod { get; set; } // 0xC (12)
+		[ContainerField(12), LayoutImmutable]
+		public string Mod { get; set; } = string.Empty;
 		
-		[ContainerField(Name: "GameMode", Offset: 16, NameHash: 509558056, Flags: 16509), LayoutImmutable]
-		public string GameMode { get; set; } // 0x10 (16)
+		[ContainerField(16), LayoutImmutable]
+		public string GameMode { get; set; } = string.Empty;
 		
-		[ContainerField(Name: "RandomizeStartingMap", Offset: 20, NameHash: 514866356, Flags: 49325), LayoutImmutable, Blittable]
-		public bool RandomizeStartingMap { get; set; } // 0x14 (20)
+		[ContainerField(20), LayoutImmutable, Blittable]
+		public bool RandomizeStartingMap { get; set; }
 		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		public static void Deserialize(MapRotationConfig p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 3190659456:
-					MapRotationId = (int) p_Value;
-					break;
-
-				case 3153745340:
-					NameSid = (string) p_Value;
-					break;
-
-				case 4021143274:
-					DescSid = (string) p_Value;
-					break;
-
-				case 193446659:
-					Mod = (string) p_Value;
-					break;
-
-				case 509558056:
-					GameMode = (string) p_Value;
-					break;
-
-				case 514866356:
-					RandomizeStartingMap = (bool) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3190659456:
-					return MapRotationId;
-
-				case 3153745340:
-					return NameSid;
-
-				case 4021143274:
-					return DescSid;
-
-				case 193446659:
-					return Mod;
-
-				case 509558056:
-					return GameMode;
-
-				case 514866356:
-					return RandomizeStartingMap;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3190659456:
-					return typeof(MapRotationConfig).GetProperty(nameof(MapRotationId));
-
-				case 3153745340:
-					return typeof(MapRotationConfig).GetProperty(nameof(NameSid));
-
-				case 4021143274:
-					return typeof(MapRotationConfig).GetProperty(nameof(DescSid));
-
-				case 193446659:
-					return typeof(MapRotationConfig).GetProperty(nameof(Mod));
-
-				case 509558056:
-					return typeof(MapRotationConfig).GetProperty(nameof(GameMode));
-
-				case 514866356:
-					return typeof(MapRotationConfig).GetProperty(nameof(RandomizeStartingMap));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
+			p_Instance.MapRotationId = p_Reader.ReadInt32();
+			p_Instance.NameSid = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
+			p_Instance.DescSid = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
+			p_Instance.Mod = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
+			p_Instance.GameMode = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
+			p_Instance.RandomizeStartingMap = p_Reader.ReadBool();
+			p_Reader.Seek(3, SeekOrigin.Current);
 		}
 	}
 }

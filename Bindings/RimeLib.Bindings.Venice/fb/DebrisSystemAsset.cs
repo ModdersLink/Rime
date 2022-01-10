@@ -5,77 +5,41 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 20)]
+	[ContainerType(4, 20)]
 	public class DebrisSystemAsset : 
 		Asset
 	{
-		protected List<DebrisHavokInfo> m_HavokMeshes = new List<DebrisHavokInfo>();
-		[ContainerField(Name: "HavokMeshes", Offset: 12, NameHash: 3852503739, Flags: 65)]
-		public List<DebrisHavokInfo> HavokMeshes { get { return m_HavokMeshes; } set { if (OnPropertyChanging("DebrisSystemAsset." + nameof(HavokMeshes), this, m_HavokMeshes, value)) m_HavokMeshes = value; } } // 0xC (12)
-		
-		protected int m_HavokMeshCount = new int();
-		[ContainerField(Name: "HavokMeshCount", Offset: 16, NameHash: 3497183694, Flags: 49405), LayoutImmutable, Blittable]
-		public int HavokMeshCount { get { return m_HavokMeshCount; } set { if (OnPropertyChanging("DebrisSystemAsset." + nameof(HavokMeshCount), this, m_HavokMeshCount, value)) m_HavokMeshCount = value; } } // 0x10 (16)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(12)]
+		public List<DebrisHavokInfo> HavokMeshes { get; set; } = new();
+
+		[ContainerField(16), LayoutImmutable, Blittable]
+		public int HavokMeshCount { get; set; }
+
+		public static void Deserialize(DebrisSystemAsset p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Instance.HavokMeshes.Clear();
+			(RimeReader Reader, uint Count) s_HavokMeshes = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_HavokMeshes.Count; ++i)
 			{
-				case 3852503739:
-					HavokMeshes = (List<DebrisHavokInfo>) p_Value;
-					break;
-
-				case 3497183694:
-					HavokMeshCount = (int) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_Value = new DebrisHavokInfo();
+				fb.DebrisHavokInfo.Deserialize(s_Value, s_HavokMeshes.Reader, p_Parser);
+				p_Instance.HavokMeshes.Add(s_Value);
 			}
+			
+			s_HavokMeshes.Reader.Dispose();
+			p_Instance.HavokMeshCount = p_Reader.ReadInt32();
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3852503739:
-					return HavokMeshes;
-
-				case 3497183694:
-					return HavokMeshCount;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3852503739:
-					return typeof(DebrisSystemAsset).GetProperty(nameof(HavokMeshes));
-
-				case 3497183694:
-					return typeof(DebrisSystemAsset).GetProperty(nameof(HavokMeshCount));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

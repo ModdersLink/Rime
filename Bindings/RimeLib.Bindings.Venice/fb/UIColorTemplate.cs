@@ -5,77 +5,42 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 20)]
+	[ContainerType(4, 20)]
 	public class UIColorTemplate : 
 		Asset
 	{
-		protected RefArray<UIColor> m_Colors = new RefArray<UIColor>();
-		[ContainerField(Name: "Colors", Offset: 12, NameHash: 2713814155, Flags: 65)]
-		public RefArray<UIColor> Colors { get { return m_Colors; } set { if (OnPropertyChanging("UIColorTemplate." + nameof(Colors), this, m_Colors, value)) m_Colors = value; } } // 0xC (12)
-		
-		protected bool m_Active = new bool();
-		[ContainerField(Name: "Active", Offset: 16, NameHash: 2484178249, Flags: 49325), LayoutImmutable, Blittable]
-		public bool Active { get { return m_Active; } set { if (OnPropertyChanging("UIColorTemplate." + nameof(Active), this, m_Active, value)) m_Active = value; } } // 0x10 (16)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(12)]
+		public List<CtrRef<UIColor>> Colors { get; set; } = new();
+
+		[ContainerField(16), LayoutImmutable, Blittable]
+		public bool Active { get; set; }
+
+		public static void Deserialize(UIColorTemplate p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Instance.Colors.Clear();
+			(RimeReader Reader, uint Count) s_Colors = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_Colors.Count; ++i)
 			{
-				case 2713814155:
-					Colors = (RefArray<UIColor>) p_Value;
-					break;
-
-				case 2484178249:
-					Active = (bool) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_CtrRef = new CtrRef<UIColor>();
+				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_Colors.Reader.ReadUInt32()));
+				p_Instance.Colors.Add(s_CtrRef);
 			}
+			
+			s_Colors.Reader.Dispose();
+			p_Instance.Active = p_Reader.ReadBool();
+			p_Reader.Seek(3, SeekOrigin.Current);
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2713814155:
-					return Colors;
-
-				case 2484178249:
-					return Active;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2713814155:
-					return typeof(UIColorTemplate).GetProperty(nameof(Colors));
-
-				case 2484178249:
-					return typeof(UIColorTemplate).GetProperty(nameof(Active));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

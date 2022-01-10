@@ -5,91 +5,36 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 12)]
+	[ContainerType(4, 12)]
 	public class GameObjectData : 
 		GameDataContainer
 	{
-		protected ushort m_IndexInBlueprint = new ushort();
-		[ContainerField(Name: "IndexInBlueprint", Offset: 8, NameHash: 1440948467, Flags: 49389), LayoutImmutable, Blittable]
-		public ushort IndexInBlueprint { get { return m_IndexInBlueprint; } set { if (OnPropertyChanging("GameObjectData." + nameof(IndexInBlueprint), this, m_IndexInBlueprint, value)) m_IndexInBlueprint = value; } } // 0x8 (8)
-		
-		protected sbyte m_IsEventConnectionTarget = new sbyte();
-		[ContainerField(Name: "IsEventConnectionTarget", Offset: 10, NameHash: 443195188, Flags: 49341), LayoutImmutable, Blittable]
-		public sbyte IsEventConnectionTarget { get { return m_IsEventConnectionTarget; } set { if (OnPropertyChanging("GameObjectData." + nameof(IsEventConnectionTarget), this, m_IsEventConnectionTarget, value)) m_IsEventConnectionTarget = value; } } // 0xA (10)
-		
-		protected sbyte m_IsPropertyConnectionTarget = new sbyte();
-		[ContainerField(Name: "IsPropertyConnectionTarget", Offset: 11, NameHash: 3243963839, Flags: 49341), LayoutImmutable, Blittable]
-		public sbyte IsPropertyConnectionTarget { get { return m_IsPropertyConnectionTarget; } set { if (OnPropertyChanging("GameObjectData." + nameof(IsPropertyConnectionTarget), this, m_IsPropertyConnectionTarget, value)) m_IsPropertyConnectionTarget = value; } } // 0xB (11)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(8), LayoutImmutable, Blittable]
+		public ushort IndexInBlueprint { get; set; }
+
+		[ContainerField(10), LayoutImmutable, Blittable]
+		public sbyte IsEventConnectionTarget { get; set; }
+
+		[ContainerField(11), LayoutImmutable, Blittable]
+		public sbyte IsPropertyConnectionTarget { get; set; }
+
+		public static void Deserialize(GameObjectData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 1440948467:
-					IndexInBlueprint = (ushort) p_Value;
-					break;
-
-				case 443195188:
-					IsEventConnectionTarget = (sbyte) p_Value;
-					break;
-
-				case 3243963839:
-					IsPropertyConnectionTarget = (sbyte) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
+			p_Instance.IndexInBlueprint = p_Reader.ReadUInt16();
+			p_Instance.IsEventConnectionTarget = p_Reader.ReadSByte();
+			p_Instance.IsPropertyConnectionTarget = p_Reader.ReadSByte();
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1440948467:
-					return IndexInBlueprint;
-
-				case 443195188:
-					return IsEventConnectionTarget;
-
-				case 3243963839:
-					return IsPropertyConnectionTarget;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1440948467:
-					return typeof(GameObjectData).GetProperty(nameof(IndexInBlueprint));
-
-				case 443195188:
-					return typeof(GameObjectData).GetProperty(nameof(IsEventConnectionTarget));
-
-				case 3243963839:
-					return typeof(GameObjectData).GetProperty(nameof(IsPropertyConnectionTarget));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

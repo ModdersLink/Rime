@@ -5,63 +5,29 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 16,  Flags: 53, Size: 144)]
+	[ContainerType(16, 144)]
 	public class BoatFloatPhysicsData : 
 		HullFloatPhysicsData
 	{
-		protected float m_FrontRatio = new float();
-		[ContainerField(Name: "FrontRatio", Offset: 128, NameHash: 596576293, Flags: 49469), LayoutImmutable, Blittable]
-		public float FrontRatio { get { return m_FrontRatio; } set { if (OnPropertyChanging("BoatFloatPhysicsData." + nameof(FrontRatio), this, m_FrontRatio, value)) m_FrontRatio = value; } } // 0x80 (128)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 596576293:
-					FrontRatio = (float) p_Value;
-					break;
+		[ContainerField(128), LayoutImmutable, Blittable]
+		public float FrontRatio { get; set; }
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
+		public static void Deserialize(BoatFloatPhysicsData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
+		{
+			p_Instance.FrontRatio = p_Reader.ReadSingle();
+			p_Reader.Seek(12, SeekOrigin.Current);
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 596576293:
-					return FrontRatio;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 596576293:
-					return typeof(BoatFloatPhysicsData).GetProperty(nameof(FrontRatio));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

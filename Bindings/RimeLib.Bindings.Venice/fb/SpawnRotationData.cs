@@ -5,63 +5,29 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 16,  Flags: 53, Size: 64)]
+	[ContainerType(16, 64)]
 	public class SpawnRotationData : 
 		ProcessorData
 	{
-		protected float m_Rotation = new float();
-		[ContainerField(Name: "Rotation", Offset: 48, NameHash: 48673745, Flags: 49469), LayoutImmutable, Blittable]
-		public float Rotation { get { return m_Rotation; } set { if (OnPropertyChanging("SpawnRotationData." + nameof(Rotation), this, m_Rotation, value)) m_Rotation = value; } } // 0x30 (48)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 48673745:
-					Rotation = (float) p_Value;
-					break;
+		[ContainerField(48), LayoutImmutable, Blittable]
+		public float Rotation { get; set; }
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
+		public static void Deserialize(SpawnRotationData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
+		{
+			p_Instance.Rotation = p_Reader.ReadSingle();
+			p_Reader.Seek(12, SeekOrigin.Current);
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 48673745:
-					return Rotation;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 48673745:
-					return typeof(SpawnRotationData).GetProperty(nameof(Rotation));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

@@ -5,63 +5,28 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 12)]
+	[ContainerType(4, 12)]
 	public class PropertyRecordingData : 
 		DataContainer
 	{
-		protected int m_Id = new int();
-		[ContainerField(Name: "Id", Offset: 8, NameHash: 5862152, Flags: 49405), LayoutImmutable, Blittable]
-		public int Id { get { return m_Id; } set { if (OnPropertyChanging("PropertyRecordingData." + nameof(Id), this, m_Id, value)) m_Id = value; } } // 0x8 (8)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 5862152:
-					Id = (int) p_Value;
-					break;
+		[ContainerField(8), LayoutImmutable, Blittable]
+		public int Id { get; set; }
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
+		public static void Deserialize(PropertyRecordingData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
+		{
+			p_Instance.Id = p_Reader.ReadInt32();
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 5862152:
-					return Id;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 5862152:
-					return typeof(PropertyRecordingData).GetProperty(nameof(Id));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

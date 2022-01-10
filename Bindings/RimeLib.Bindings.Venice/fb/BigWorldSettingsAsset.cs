@@ -5,63 +5,37 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
+	[ContainerType(4, 16)]
 	public class BigWorldSettingsAsset : 
 		Asset
 	{
-		protected RefArray<BigWorldSetting> m_Settings = new RefArray<BigWorldSetting>();
-		[ContainerField(Name: "Settings", Offset: 12, NameHash: 649772672, Flags: 65)]
-		public RefArray<BigWorldSetting> Settings { get { return m_Settings; } set { if (OnPropertyChanging("BigWorldSettingsAsset." + nameof(Settings), this, m_Settings, value)) m_Settings = value; } } // 0xC (12)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 649772672:
-					Settings = (RefArray<BigWorldSetting>) p_Value;
-					break;
+		[ContainerField(12)]
+		public List<CtrRef<BigWorldSetting>> Settings { get; set; } = new();
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+		public static void Deserialize(BigWorldSettingsAsset p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
+		{
+			p_Instance.Settings.Clear();
+			(RimeReader Reader, uint Count) s_Settings = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_Settings.Count; ++i)
+			{
+				var s_CtrRef = new CtrRef<BigWorldSetting>();
+				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_Settings.Reader.ReadUInt32()));
+				p_Instance.Settings.Add(s_CtrRef);
 			}
+			
+			s_Settings.Reader.Dispose();
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 649772672:
-					return Settings;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 649772672:
-					return typeof(BigWorldSettingsAsset).GetProperty(nameof(Settings));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

@@ -5,77 +5,50 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 20)]
+	[ContainerType(4, 20)]
 	public class DataBusData : 
 		Asset
 	{
-		protected List<PropertyConnection> m_PropertyConnections = new List<PropertyConnection>();
-		[ContainerField(Name: "PropertyConnections", Offset: 12, NameHash: 1023567943, Flags: 65)]
-		public List<PropertyConnection> PropertyConnections { get { return m_PropertyConnections; } set { if (OnPropertyChanging("DataBusData." + nameof(PropertyConnections), this, m_PropertyConnections, value)) m_PropertyConnections = value; } } // 0xC (12)
-		
-		protected List<LinkConnection> m_LinkConnections = new List<LinkConnection>();
-		[ContainerField(Name: "LinkConnections", Offset: 16, NameHash: 1859919712, Flags: 65)]
-		public List<LinkConnection> LinkConnections { get { return m_LinkConnections; } set { if (OnPropertyChanging("DataBusData." + nameof(LinkConnections), this, m_LinkConnections, value)) m_LinkConnections = value; } } // 0x10 (16)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(12)]
+		public List<PropertyConnection> PropertyConnections { get; set; } = new();
+
+		[ContainerField(16)]
+		public List<LinkConnection> LinkConnections { get; set; } = new();
+
+		public static void Deserialize(DataBusData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Instance.PropertyConnections.Clear();
+			(RimeReader Reader, uint Count) s_PropertyConnections = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_PropertyConnections.Count; ++i)
 			{
-				case 1023567943:
-					PropertyConnections = (List<PropertyConnection>) p_Value;
-					break;
-
-				case 1859919712:
-					LinkConnections = (List<LinkConnection>) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_Value = new PropertyConnection();
+				fb.PropertyConnection.Deserialize(s_Value, s_PropertyConnections.Reader, p_Parser);
+				p_Instance.PropertyConnections.Add(s_Value);
 			}
+			
+			s_PropertyConnections.Reader.Dispose();
+			p_Instance.LinkConnections.Clear();
+			(RimeReader Reader, uint Count) s_LinkConnections = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_LinkConnections.Count; ++i)
+			{
+				var s_Value = new LinkConnection();
+				fb.LinkConnection.Deserialize(s_Value, s_LinkConnections.Reader, p_Parser);
+				p_Instance.LinkConnections.Add(s_Value);
+			}
+			
+			s_LinkConnections.Reader.Dispose();
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1023567943:
-					return PropertyConnections;
-
-				case 1859919712:
-					return LinkConnections;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1023567943:
-					return typeof(DataBusData).GetProperty(nameof(PropertyConnections));
-
-				case 1859919712:
-					return typeof(DataBusData).GetProperty(nameof(LinkConnections));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

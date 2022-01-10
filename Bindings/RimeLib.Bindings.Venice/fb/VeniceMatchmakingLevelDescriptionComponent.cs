@@ -5,77 +5,40 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
+	[ContainerType(4, 16)]
 	public class VeniceMatchmakingLevelDescriptionComponent : 
 		LevelDescriptionComponent
 	{
-		protected string m_Mod = string.Empty;
-		[ContainerField(Name: "Mod", Offset: 8, NameHash: 193446659, Flags: 16509), LayoutImmutable]
-		public string Mod { get { return m_Mod; } set { if (OnPropertyChanging("VeniceMatchmakingLevelDescriptionComponent." + nameof(Mod), this, m_Mod, value)) m_Mod = value; } } // 0x8 (8)
-		
-		protected List<string> m_Licenses = new List<string>();
-		[ContainerField(Name: "Licenses", Offset: 12, NameHash: 2259172461, Flags: 65)]
-		public List<string> Licenses { get { return m_Licenses; } set { if (OnPropertyChanging("VeniceMatchmakingLevelDescriptionComponent." + nameof(Licenses), this, m_Licenses, value)) m_Licenses = value; } } // 0xC (12)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(8), LayoutImmutable]
+		public string Mod { get; set; } = string.Empty;
+
+		[ContainerField(12)]
+		public List<string> Licenses { get; set; } = new();
+
+		public static void Deserialize(VeniceMatchmakingLevelDescriptionComponent p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Instance.Mod = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
+			p_Instance.Licenses.Clear();
+			(RimeReader Reader, uint Count) s_Licenses = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_Licenses.Count; ++i)
 			{
-				case 193446659:
-					Mod = (string) p_Value;
-					break;
-
-				case 2259172461:
-					Licenses = (List<string>) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_Value = p_Parser.GetStringAtOffset(s_Licenses.Reader.ReadUInt32());
+				p_Instance.Licenses.Add(s_Value);
 			}
+			
+			s_Licenses.Reader.Dispose();
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 193446659:
-					return Mod;
-
-				case 2259172461:
-					return Licenses;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 193446659:
-					return typeof(VeniceMatchmakingLevelDescriptionComponent).GetProperty(nameof(Mod));
-
-				case 2259172461:
-					return typeof(VeniceMatchmakingLevelDescriptionComponent).GetProperty(nameof(Licenses));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

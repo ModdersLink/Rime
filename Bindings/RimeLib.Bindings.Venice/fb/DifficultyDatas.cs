@@ -5,63 +5,37 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
+	[ContainerType(4, 16)]
 	public class DifficultyDatas : 
 		Asset
 	{
-		protected RefArray<DifficultyData> m_Difficulties = new RefArray<DifficultyData>();
-		[ContainerField(Name: "Difficulties", Offset: 12, NameHash: 850210768, Flags: 65)]
-		public RefArray<DifficultyData> Difficulties { get { return m_Difficulties; } set { if (OnPropertyChanging("DifficultyDatas." + nameof(Difficulties), this, m_Difficulties, value)) m_Difficulties = value; } } // 0xC (12)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 850210768:
-					Difficulties = (RefArray<DifficultyData>) p_Value;
-					break;
+		[ContainerField(12)]
+		public List<CtrRef<DifficultyData>> Difficulties { get; set; } = new();
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+		public static void Deserialize(DifficultyDatas p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
+		{
+			p_Instance.Difficulties.Clear();
+			(RimeReader Reader, uint Count) s_Difficulties = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_Difficulties.Count; ++i)
+			{
+				var s_CtrRef = new CtrRef<DifficultyData>();
+				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_Difficulties.Reader.ReadUInt32()));
+				p_Instance.Difficulties.Add(s_CtrRef);
 			}
+			
+			s_Difficulties.Reader.Dispose();
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 850210768:
-					return Difficulties;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 850210768:
-					return typeof(DifficultyDatas).GetProperty(nameof(Difficulties));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

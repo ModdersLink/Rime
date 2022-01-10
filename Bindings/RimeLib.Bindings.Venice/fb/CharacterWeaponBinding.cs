@@ -5,61 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 41, Size: 4)]
-	public class CharacterWeaponBinding : FrostbiteContainer
+	[ContainerType(4, 4)]
+	public class CharacterWeaponBinding
 	{
-		[ContainerField(Name: "WeaponId", Offset: 0, NameHash: 4189337098, Flags: 41)]
-		public AntRef WeaponId { get; set; } = new AntRef(); // 0x0 (0)
+		[ContainerField(0)]
+		public AntRef WeaponId { get; set; } = new();
 		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		public static void Deserialize(CharacterWeaponBinding p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 4189337098:
-					WeaponId = (AntRef) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 4189337098:
-					return WeaponId;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 4189337098:
-					return typeof(CharacterWeaponBinding).GetProperty(nameof(WeaponId));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
+			fb.AntRef.Deserialize(p_Instance.WeaponId, p_Reader, p_Parser);
 		}
 	}
 }

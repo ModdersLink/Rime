@@ -5,63 +5,29 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
+	[ContainerType(4, 16)]
 	public class NetworkableLoosePartPhysicsData : 
 		LoosePartPhysicsData
 	{
-		protected bool m_Networked = new bool();
-		[ContainerField(Name: "Networked", Offset: 12, NameHash: 1516563994, Flags: 49325), LayoutImmutable, Blittable]
-		public bool Networked { get { return m_Networked; } set { if (OnPropertyChanging("NetworkableLoosePartPhysicsData." + nameof(Networked), this, m_Networked, value)) m_Networked = value; } } // 0xC (12)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 1516563994:
-					Networked = (bool) p_Value;
-					break;
+		[ContainerField(12), LayoutImmutable, Blittable]
+		public bool Networked { get; set; }
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
+		public static void Deserialize(NetworkableLoosePartPhysicsData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
+		{
+			p_Instance.Networked = p_Reader.ReadBool();
+			p_Reader.Seek(3, SeekOrigin.Current);
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1516563994:
-					return Networked;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1516563994:
-					return typeof(NetworkableLoosePartPhysicsData).GetProperty(nameof(Networked));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

@@ -5,133 +5,58 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 36)]
+	[ContainerType(4, 36)]
 	public class MessageEntityData : 
 		EntityData
 	{
-		protected string m_MessageSid = string.Empty;
-		[ContainerField(Name: "MessageSid", Offset: 12, NameHash: 2895326256, Flags: 16509), LayoutImmutable]
-		public string MessageSid { get { return m_MessageSid; } set { if (OnPropertyChanging("MessageEntityData." + nameof(MessageSid), this, m_MessageSid, value)) m_MessageSid = value; } } // 0xC (12)
-		
-		protected List<MessageLineData> m_AdditionalMessages = new List<MessageLineData>();
-		[ContainerField(Name: "AdditionalMessages", Offset: 16, NameHash: 836911268, Flags: 65)]
-		public List<MessageLineData> AdditionalMessages { get { return m_AdditionalMessages; } set { if (OnPropertyChanging("MessageEntityData." + nameof(AdditionalMessages), this, m_AdditionalMessages, value)) m_AdditionalMessages = value; } } // 0x10 (16)
-		
-		protected UIMessageEntityType m_MessageType = new UIMessageEntityType();
-		[ContainerField(Name: "MessageType", Offset: 20, NameHash: 1056298038, Flags: 137)]
-		public UIMessageEntityType MessageType { get { return m_MessageType; } set { if (OnPropertyChanging("MessageEntityData." + nameof(MessageType), this, m_MessageType, value)) m_MessageType = value; } } // 0x14 (20)
-		
-		protected float m_DisplayTime = new float();
-		[ContainerField(Name: "DisplayTime", Offset: 24, NameHash: 1925139498, Flags: 49469), LayoutImmutable, Blittable]
-		public float DisplayTime { get { return m_DisplayTime; } set { if (OnPropertyChanging("MessageEntityData." + nameof(DisplayTime), this, m_DisplayTime, value)) m_DisplayTime = value; } } // 0x18 (24)
-		
-		protected EntryInputActionEnum m_EntryInputAction = new EntryInputActionEnum();
-		[ContainerField(Name: "EntryInputAction", Offset: 28, NameHash: 4156259417, Flags: 137)]
-		public EntryInputActionEnum EntryInputAction { get { return m_EntryInputAction; } set { if (OnPropertyChanging("MessageEntityData." + nameof(EntryInputAction), this, m_EntryInputAction, value)) m_EntryInputAction = value; } } // 0x1C (28)
-		
-		protected bool m_Enabled = new bool();
-		[ContainerField(Name: "Enabled", Offset: 32, NameHash: 2662400, Flags: 49325), LayoutImmutable, Blittable]
-		public bool Enabled { get { return m_Enabled; } set { if (OnPropertyChanging("MessageEntityData." + nameof(Enabled), this, m_Enabled, value)) m_Enabled = value; } } // 0x20 (32)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(12), LayoutImmutable]
+		public string MessageSid { get; set; } = string.Empty;
+
+		[ContainerField(16)]
+		public List<MessageLineData> AdditionalMessages { get; set; } = new();
+
+		[ContainerField(20)]
+		public UIMessageEntityType MessageType { get; set; } = new();
+
+		[ContainerField(24), LayoutImmutable, Blittable]
+		public float DisplayTime { get; set; }
+
+		[ContainerField(28)]
+		public EntryInputActionEnum EntryInputAction { get; set; } = new();
+
+		[ContainerField(32), LayoutImmutable, Blittable]
+		public bool Enabled { get; set; }
+
+		public static void Deserialize(MessageEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Instance.MessageSid = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
+			p_Instance.AdditionalMessages.Clear();
+			(RimeReader Reader, uint Count) s_AdditionalMessages = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_AdditionalMessages.Count; ++i)
 			{
-				case 2895326256:
-					MessageSid = (string) p_Value;
-					break;
-
-				case 836911268:
-					AdditionalMessages = (List<MessageLineData>) p_Value;
-					break;
-
-				case 1056298038:
-					MessageType = (UIMessageEntityType) Enum.ToObject(typeof(UIMessageEntityType), p_Value);
-					break;
-
-				case 1925139498:
-					DisplayTime = (float) p_Value;
-					break;
-
-				case 4156259417:
-					EntryInputAction = (EntryInputActionEnum) Enum.ToObject(typeof(EntryInputActionEnum), p_Value);
-					break;
-
-				case 2662400:
-					Enabled = (bool) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_Value = new MessageLineData();
+				fb.MessageLineData.Deserialize(s_Value, s_AdditionalMessages.Reader, p_Parser);
+				p_Instance.AdditionalMessages.Add(s_Value);
 			}
+			
+			s_AdditionalMessages.Reader.Dispose();
+			p_Instance.MessageType = (UIMessageEntityType) p_Reader.ReadInt32();
+			p_Instance.DisplayTime = p_Reader.ReadSingle();
+			p_Instance.EntryInputAction = (EntryInputActionEnum) p_Reader.ReadInt32();
+			p_Instance.Enabled = p_Reader.ReadBool();
+			p_Reader.Seek(3, SeekOrigin.Current);
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2895326256:
-					return MessageSid;
-
-				case 836911268:
-					return AdditionalMessages;
-
-				case 1056298038:
-					return MessageType;
-
-				case 1925139498:
-					return DisplayTime;
-
-				case 4156259417:
-					return EntryInputAction;
-
-				case 2662400:
-					return Enabled;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2895326256:
-					return typeof(MessageEntityData).GetProperty(nameof(MessageSid));
-
-				case 836911268:
-					return typeof(MessageEntityData).GetProperty(nameof(AdditionalMessages));
-
-				case 1056298038:
-					return typeof(MessageEntityData).GetProperty(nameof(MessageType));
-
-				case 1925139498:
-					return typeof(MessageEntityData).GetProperty(nameof(DisplayTime));
-
-				case 4156259417:
-					return typeof(MessageEntityData).GetProperty(nameof(EntryInputAction));
-
-				case 2662400:
-					return typeof(MessageEntityData).GetProperty(nameof(Enabled));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

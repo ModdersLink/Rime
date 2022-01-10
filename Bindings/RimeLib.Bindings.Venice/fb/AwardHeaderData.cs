@@ -5,77 +5,32 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 20)]
+	[ContainerType(4, 20)]
 	public class AwardHeaderData : 
 		AbstractAwardData
 	{
-		protected AwardGroup m_Group = new AwardGroup();
-		[ContainerField(Name: "Group", Offset: 12, NameHash: 208130522, Flags: 137)]
-		public AwardGroup Group { get { return m_Group; } set { if (OnPropertyChanging("AwardHeaderData." + nameof(Group), this, m_Group, value)) m_Group = value; } } // 0xC (12)
-		
-		protected StatsMultiplicity m_Multiplicity = new StatsMultiplicity();
-		[ContainerField(Name: "Multiplicity", Offset: 16, NameHash: 2648087582, Flags: 137)]
-		public StatsMultiplicity Multiplicity { get { return m_Multiplicity; } set { if (OnPropertyChanging("AwardHeaderData." + nameof(Multiplicity), this, m_Multiplicity, value)) m_Multiplicity = value; } } // 0x10 (16)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(12)]
+		public AwardGroup Group { get; set; } = new();
+
+		[ContainerField(16)]
+		public StatsMultiplicity Multiplicity { get; set; } = new();
+
+		public static void Deserialize(AwardHeaderData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 208130522:
-					Group = (AwardGroup) Enum.ToObject(typeof(AwardGroup), p_Value);
-					break;
-
-				case 2648087582:
-					Multiplicity = (StatsMultiplicity) Enum.ToObject(typeof(StatsMultiplicity), p_Value);
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
+			p_Instance.Group = (AwardGroup) p_Reader.ReadInt32();
+			p_Instance.Multiplicity = (StatsMultiplicity) p_Reader.ReadInt32();
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 208130522:
-					return Group;
-
-				case 2648087582:
-					return Multiplicity;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 208130522:
-					return typeof(AwardHeaderData).GetProperty(nameof(Group));
-
-				case 2648087582:
-					return typeof(AwardHeaderData).GetProperty(nameof(Multiplicity));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

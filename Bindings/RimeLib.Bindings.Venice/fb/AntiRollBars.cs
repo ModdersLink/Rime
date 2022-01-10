@@ -5,74 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 41, Size: 8)]
-	public class AntiRollBars : FrostbiteContainer
+	[ContainerType(4, 8)]
+	public class AntiRollBars
 	{
-		[ContainerField(Name: "Front", Offset: 0, NameHash: 207008228, Flags: 53)]
-		public CtrRef<AntiRollBar> Front { get; set; } = new CtrRef<AntiRollBar>(); // 0x0 (0)
+		[ContainerField(0)]
+		public CtrRef<AntiRollBar> Front { get; set; } = new();
 		
-		[ContainerField(Name: "Rear", Offset: 4, NameHash: 2089376897, Flags: 53)]
-		public CtrRef<AntiRollBar> Rear { get; set; } = new CtrRef<AntiRollBar>(); // 0x4 (4)
+		[ContainerField(4)]
+		public CtrRef<AntiRollBar> Rear { get; set; } = new();
 		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		public static void Deserialize(AntiRollBars p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 207008228:
-					Front = (CtrRef<AntiRollBar>) p_Value;
-					break;
-
-				case 2089376897:
-					Rear = (CtrRef<AntiRollBar>) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 207008228:
-					return Front;
-
-				case 2089376897:
-					return Rear;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 207008228:
-					return typeof(AntiRollBars).GetProperty(nameof(Front));
-
-				case 2089376897:
-					return typeof(AntiRollBars).GetProperty(nameof(Rear));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
+			p_Instance.Front.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
+			p_Instance.Rear.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
 		}
 	}
 }

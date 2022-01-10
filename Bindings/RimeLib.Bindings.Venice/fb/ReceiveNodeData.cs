@@ -5,63 +5,37 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 12)]
+	[ContainerType(4, 12)]
 	public class ReceiveNodeData : 
 		AudioGraphNodeData
 	{
-		protected RefArray<ReceiveEntry> m_Entries = new RefArray<ReceiveEntry>();
-		[ContainerField(Name: "Entries", Offset: 8, NameHash: 8238103, Flags: 65)]
-		public RefArray<ReceiveEntry> Entries { get { return m_Entries; } set { if (OnPropertyChanging("ReceiveNodeData." + nameof(Entries), this, m_Entries, value)) m_Entries = value; } } // 0x8 (8)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 8238103:
-					Entries = (RefArray<ReceiveEntry>) p_Value;
-					break;
+		[ContainerField(8)]
+		public List<CtrRef<ReceiveEntry>> Entries { get; set; } = new();
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+		public static void Deserialize(ReceiveNodeData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
+		{
+			p_Instance.Entries.Clear();
+			(RimeReader Reader, uint Count) s_Entries = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_Entries.Count; ++i)
+			{
+				var s_CtrRef = new CtrRef<ReceiveEntry>();
+				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_Entries.Reader.ReadUInt32()));
+				p_Instance.Entries.Add(s_CtrRef);
 			}
+			
+			s_Entries.Reader.Dispose();
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 8238103:
-					return Entries;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 8238103:
-					return typeof(ReceiveNodeData).GetProperty(nameof(Entries));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

@@ -5,63 +5,37 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 28)]
+	[ContainerType(4, 28)]
 	public class AwardDataTree : 
 		AwardableTreeBase
 	{
-		protected RefArray<AwardData> m_FilteredAwards = new RefArray<AwardData>();
-		[ContainerField(Name: "FilteredAwards", Offset: 24, NameHash: 3945417686, Flags: 65)]
-		public RefArray<AwardData> FilteredAwards { get { return m_FilteredAwards; } set { if (OnPropertyChanging("AwardDataTree." + nameof(FilteredAwards), this, m_FilteredAwards, value)) m_FilteredAwards = value; } } // 0x18 (24)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 3945417686:
-					FilteredAwards = (RefArray<AwardData>) p_Value;
-					break;
+		[ContainerField(24)]
+		public List<CtrRef<AwardData>> FilteredAwards { get; set; } = new();
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+		public static void Deserialize(AwardDataTree p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
+		{
+			p_Instance.FilteredAwards.Clear();
+			(RimeReader Reader, uint Count) s_FilteredAwards = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_FilteredAwards.Count; ++i)
+			{
+				var s_CtrRef = new CtrRef<AwardData>();
+				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_FilteredAwards.Reader.ReadUInt32()));
+				p_Instance.FilteredAwards.Add(s_CtrRef);
 			}
+			
+			s_FilteredAwards.Reader.Dispose();
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3945417686:
-					return FilteredAwards;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3945417686:
-					return typeof(AwardDataTree).GetProperty(nameof(FilteredAwards));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

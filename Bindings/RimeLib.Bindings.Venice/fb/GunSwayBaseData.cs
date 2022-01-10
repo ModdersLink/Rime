@@ -5,87 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 41, Size: 60)]
-	public class GunSwayBaseData : FrostbiteContainer
+	[ContainerType(4, 60)]
+	public class GunSwayBaseData
 	{
-		[ContainerField(Name: "BaseValue", Offset: 0, NameHash: 1681448475, Flags: 41)]
-		public GunSwayDispersionData BaseValue { get; set; } = new GunSwayDispersionData(); // 0x0 (0)
+		[ContainerField(0)]
+		public GunSwayDispersionData BaseValue { get; set; } = new();
 		
-		[ContainerField(Name: "Recoil", Offset: 16, NameHash: 3293845435, Flags: 41)]
-		public GunSwayRecoilData Recoil { get; set; } = new GunSwayRecoilData(); // 0x10 (16)
+		[ContainerField(16)]
+		public GunSwayRecoilData Recoil { get; set; } = new();
 		
-		[ContainerField(Name: "GunSwayLag", Offset: 40, NameHash: 938474159, Flags: 41)]
-		public GunSwayLagData GunSwayLag { get; set; } = new GunSwayLagData(); // 0x28 (40)
+		[ContainerField(40)]
+		public GunSwayLagData GunSwayLag { get; set; } = new();
 		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		public static void Deserialize(GunSwayBaseData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 1681448475:
-					BaseValue = (GunSwayDispersionData) p_Value;
-					break;
-
-				case 3293845435:
-					Recoil = (GunSwayRecoilData) p_Value;
-					break;
-
-				case 938474159:
-					GunSwayLag = (GunSwayLagData) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1681448475:
-					return BaseValue;
-
-				case 3293845435:
-					return Recoil;
-
-				case 938474159:
-					return GunSwayLag;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1681448475:
-					return typeof(GunSwayBaseData).GetProperty(nameof(BaseValue));
-
-				case 3293845435:
-					return typeof(GunSwayBaseData).GetProperty(nameof(Recoil));
-
-				case 938474159:
-					return typeof(GunSwayBaseData).GetProperty(nameof(GunSwayLag));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
+			fb.GunSwayDispersionData.Deserialize(p_Instance.BaseValue, p_Reader, p_Parser);
+			fb.GunSwayRecoilData.Deserialize(p_Instance.Recoil, p_Reader, p_Parser);
+			fb.GunSwayLagData.Deserialize(p_Instance.GunSwayLag, p_Reader, p_Parser);
 		}
 	}
 }

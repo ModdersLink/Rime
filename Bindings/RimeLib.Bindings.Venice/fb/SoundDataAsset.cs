@@ -5,77 +5,41 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 20)]
+	[ContainerType(4, 20)]
 	public class SoundDataAsset : 
 		Asset
 	{
-		protected uint m_NameHash = new uint();
-		[ContainerField(Name: "NameHash", Offset: 12, NameHash: 994057744, Flags: 49421), LayoutImmutable, Blittable]
-		public uint NameHash { get { return m_NameHash; } set { if (OnPropertyChanging("SoundDataAsset." + nameof(NameHash), this, m_NameHash, value)) m_NameHash = value; } } // 0xC (12)
-		
-		protected List<SoundDataChunk> m_Chunks = new List<SoundDataChunk>();
-		[ContainerField(Name: "Chunks", Offset: 16, NameHash: 2727168525, Flags: 65)]
-		public List<SoundDataChunk> Chunks { get { return m_Chunks; } set { if (OnPropertyChanging("SoundDataAsset." + nameof(Chunks), this, m_Chunks, value)) m_Chunks = value; } } // 0x10 (16)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(12), LayoutImmutable, Blittable]
+		public uint NameHash { get; set; }
+
+		[ContainerField(16)]
+		public List<SoundDataChunk> Chunks { get; set; } = new();
+
+		public static void Deserialize(SoundDataAsset p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Instance.NameHash = p_Reader.ReadUInt32();
+			p_Instance.Chunks.Clear();
+			(RimeReader Reader, uint Count) s_Chunks = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_Chunks.Count; ++i)
 			{
-				case 994057744:
-					NameHash = (uint) p_Value;
-					break;
-
-				case 2727168525:
-					Chunks = (List<SoundDataChunk>) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_Value = new SoundDataChunk();
+				fb.SoundDataChunk.Deserialize(s_Value, s_Chunks.Reader, p_Parser);
+				p_Instance.Chunks.Add(s_Value);
 			}
+			
+			s_Chunks.Reader.Dispose();
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 994057744:
-					return NameHash;
-
-				case 2727168525:
-					return Chunks;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 994057744:
-					return typeof(SoundDataAsset).GetProperty(nameof(NameHash));
-
-				case 2727168525:
-					return typeof(SoundDataAsset).GetProperty(nameof(Chunks));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

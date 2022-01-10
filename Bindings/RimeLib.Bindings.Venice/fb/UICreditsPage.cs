@@ -5,87 +5,43 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 41, Size: 12)]
-	public class UICreditsPage : FrostbiteContainer
+	[ContainerType(4, 12)]
+	public class UICreditsPage
 	{
-		[ContainerField(Name: "Header1", Offset: 0, NameHash: 2009148299, Flags: 16509), LayoutImmutable]
-		public string Header1 { get; set; } // 0x0 (0)
+		[ContainerField(0), LayoutImmutable]
+		public string Header1 { get; set; } = string.Empty;
 		
-		[ContainerField(Name: "Header2", Offset: 4, NameHash: 2009148296, Flags: 16509), LayoutImmutable]
-		public string Header2 { get; set; } // 0x4 (4)
+		[ContainerField(4), LayoutImmutable]
+		public string Header2 { get; set; } = string.Empty;
 		
-		[ContainerField(Name: "Lines", Offset: 8, NameHash: 217831032, Flags: 65)]
-		public List<UICreditsLine> Lines { get; set; } = new List<UICreditsLine>(); // 0x8 (8)
+		[ContainerField(8)]
+		public List<UICreditsLine> Lines { get; set; } = new();
 		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		public static void Deserialize(UICreditsPage p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Instance.Header1 = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
+			p_Instance.Header2 = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
+			p_Instance.Lines.Clear();
+			(RimeReader Reader, uint Count) s_Lines = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_Lines.Count; ++i)
 			{
-				case 2009148299:
-					Header1 = (string) p_Value;
-					break;
-
-				case 2009148296:
-					Header2 = (string) p_Value;
-					break;
-
-				case 217831032:
-					Lines = (List<UICreditsLine>) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_Value = new UICreditsLine();
+				fb.UICreditsLine.Deserialize(s_Value, s_Lines.Reader, p_Parser);
+				p_Instance.Lines.Add(s_Value);
 			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2009148299:
-					return Header1;
-
-				case 2009148296:
-					return Header2;
-
-				case 217831032:
-					return Lines;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2009148299:
-					return typeof(UICreditsPage).GetProperty(nameof(Header1));
-
-				case 2009148296:
-					return typeof(UICreditsPage).GetProperty(nameof(Header2));
-
-				case 217831032:
-					return typeof(UICreditsPage).GetProperty(nameof(Lines));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
+			
+			s_Lines.Reader.Dispose();
 		}
 	}
 }

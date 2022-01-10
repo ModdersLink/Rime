@@ -5,189 +5,65 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 24)]
+	[ContainerType(4, 24)]
 	public class ServerMetricsSettings : 
 		DataContainer
 	{
-		protected string m_ReportName = string.Empty;
-		[ContainerField(Name: "ReportName", Offset: 8, NameHash: 3796964268, Flags: 16509), LayoutImmutable]
-		public string ReportName { get { return m_ReportName; } set { if (OnPropertyChanging("ServerMetricsSettings." + nameof(ReportName), this, m_ReportName, value)) m_ReportName = value; } } // 0x8 (8)
-		
-		protected bool m_Enabled = new bool();
-		[ContainerField(Name: "Enabled", Offset: 12, NameHash: 2662400, Flags: 49325), LayoutImmutable, Blittable]
-		public bool Enabled { get { return m_Enabled; } set { if (OnPropertyChanging("ServerMetricsSettings." + nameof(Enabled), this, m_Enabled, value)) m_Enabled = value; } } // 0xC (12)
-		
-		protected bool m_DbxReportEnabled = new bool();
-		[ContainerField(Name: "DbxReportEnabled", Offset: 13, NameHash: 1024647888, Flags: 49325), LayoutImmutable, Blittable]
-		public bool DbxReportEnabled { get { return m_DbxReportEnabled; } set { if (OnPropertyChanging("ServerMetricsSettings." + nameof(DbxReportEnabled), this, m_DbxReportEnabled, value)) m_DbxReportEnabled = value; } } // 0xD (13)
-		
-		protected bool m_TickTelemetryEnabled = new bool();
-		[ContainerField(Name: "TickTelemetryEnabled", Offset: 14, NameHash: 1626619386, Flags: 49325), LayoutImmutable, Blittable]
-		public bool TickTelemetryEnabled { get { return m_TickTelemetryEnabled; } set { if (OnPropertyChanging("ServerMetricsSettings." + nameof(TickTelemetryEnabled), this, m_TickTelemetryEnabled, value)) m_TickTelemetryEnabled = value; } } // 0xE (14)
-		
-		protected bool m_DevelopmentTelemetryEnabled = new bool();
-		[ContainerField(Name: "DevelopmentTelemetryEnabled", Offset: 15, NameHash: 3737843804, Flags: 49325), LayoutImmutable, Blittable]
-		public bool DevelopmentTelemetryEnabled { get { return m_DevelopmentTelemetryEnabled; } set { if (OnPropertyChanging("ServerMetricsSettings." + nameof(DevelopmentTelemetryEnabled), this, m_DevelopmentTelemetryEnabled, value)) m_DevelopmentTelemetryEnabled = value; } } // 0xF (15)
-		
-		protected bool m_PerformanceTelemetryEnabled = new bool();
-		[ContainerField(Name: "PerformanceTelemetryEnabled", Offset: 16, NameHash: 4251590071, Flags: 49325), LayoutImmutable, Blittable]
-		public bool PerformanceTelemetryEnabled { get { return m_PerformanceTelemetryEnabled; } set { if (OnPropertyChanging("ServerMetricsSettings." + nameof(PerformanceTelemetryEnabled), this, m_PerformanceTelemetryEnabled, value)) m_PerformanceTelemetryEnabled = value; } } // 0x10 (16)
-		
-		protected bool m_JuiceTelemetryEnabled = new bool();
-		[ContainerField(Name: "JuiceTelemetryEnabled", Offset: 17, NameHash: 4037238111, Flags: 49325), LayoutImmutable, Blittable]
-		public bool JuiceTelemetryEnabled { get { return m_JuiceTelemetryEnabled; } set { if (OnPropertyChanging("ServerMetricsSettings." + nameof(JuiceTelemetryEnabled), this, m_JuiceTelemetryEnabled, value)) m_JuiceTelemetryEnabled = value; } } // 0x11 (17)
-		
-		protected bool m_PerformanceProfileStateEnabled = new bool();
-		[ContainerField(Name: "PerformanceProfileStateEnabled", Offset: 18, NameHash: 3999842340, Flags: 49325), LayoutImmutable, Blittable]
-		public bool PerformanceProfileStateEnabled { get { return m_PerformanceProfileStateEnabled; } set { if (OnPropertyChanging("ServerMetricsSettings." + nameof(PerformanceProfileStateEnabled), this, m_PerformanceProfileStateEnabled, value)) m_PerformanceProfileStateEnabled = value; } } // 0x12 (18)
-		
-		protected bool m_TransactionTelemetryEnabled = new bool();
-		[ContainerField(Name: "TransactionTelemetryEnabled", Offset: 19, NameHash: 2302981003, Flags: 49325), LayoutImmutable, Blittable]
-		public bool TransactionTelemetryEnabled { get { return m_TransactionTelemetryEnabled; } set { if (OnPropertyChanging("ServerMetricsSettings." + nameof(TransactionTelemetryEnabled), this, m_TransactionTelemetryEnabled, value)) m_TransactionTelemetryEnabled = value; } } // 0x13 (19)
-		
-		protected bool m_CompressTransactions = new bool();
-		[ContainerField(Name: "CompressTransactions", Offset: 20, NameHash: 1385035316, Flags: 49325), LayoutImmutable, Blittable]
-		public bool CompressTransactions { get { return m_CompressTransactions; } set { if (OnPropertyChanging("ServerMetricsSettings." + nameof(CompressTransactions), this, m_CompressTransactions, value)) m_CompressTransactions = value; } } // 0x14 (20)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(8), LayoutImmutable]
+		public string ReportName { get; set; } = string.Empty;
+
+		[ContainerField(12), LayoutImmutable, Blittable]
+		public bool Enabled { get; set; }
+
+		[ContainerField(13), LayoutImmutable, Blittable]
+		public bool DbxReportEnabled { get; set; }
+
+		[ContainerField(14), LayoutImmutable, Blittable]
+		public bool TickTelemetryEnabled { get; set; }
+
+		[ContainerField(15), LayoutImmutable, Blittable]
+		public bool DevelopmentTelemetryEnabled { get; set; }
+
+		[ContainerField(16), LayoutImmutable, Blittable]
+		public bool PerformanceTelemetryEnabled { get; set; }
+
+		[ContainerField(17), LayoutImmutable, Blittable]
+		public bool JuiceTelemetryEnabled { get; set; }
+
+		[ContainerField(18), LayoutImmutable, Blittable]
+		public bool PerformanceProfileStateEnabled { get; set; }
+
+		[ContainerField(19), LayoutImmutable, Blittable]
+		public bool TransactionTelemetryEnabled { get; set; }
+
+		[ContainerField(20), LayoutImmutable, Blittable]
+		public bool CompressTransactions { get; set; }
+
+		public static void Deserialize(ServerMetricsSettings p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 3796964268:
-					ReportName = (string) p_Value;
-					break;
-
-				case 2662400:
-					Enabled = (bool) p_Value;
-					break;
-
-				case 1024647888:
-					DbxReportEnabled = (bool) p_Value;
-					break;
-
-				case 1626619386:
-					TickTelemetryEnabled = (bool) p_Value;
-					break;
-
-				case 3737843804:
-					DevelopmentTelemetryEnabled = (bool) p_Value;
-					break;
-
-				case 4251590071:
-					PerformanceTelemetryEnabled = (bool) p_Value;
-					break;
-
-				case 4037238111:
-					JuiceTelemetryEnabled = (bool) p_Value;
-					break;
-
-				case 3999842340:
-					PerformanceProfileStateEnabled = (bool) p_Value;
-					break;
-
-				case 2302981003:
-					TransactionTelemetryEnabled = (bool) p_Value;
-					break;
-
-				case 1385035316:
-					CompressTransactions = (bool) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
+			p_Instance.ReportName = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
+			p_Instance.Enabled = p_Reader.ReadBool();
+			p_Instance.DbxReportEnabled = p_Reader.ReadBool();
+			p_Instance.TickTelemetryEnabled = p_Reader.ReadBool();
+			p_Instance.DevelopmentTelemetryEnabled = p_Reader.ReadBool();
+			p_Instance.PerformanceTelemetryEnabled = p_Reader.ReadBool();
+			p_Instance.JuiceTelemetryEnabled = p_Reader.ReadBool();
+			p_Instance.PerformanceProfileStateEnabled = p_Reader.ReadBool();
+			p_Instance.TransactionTelemetryEnabled = p_Reader.ReadBool();
+			p_Instance.CompressTransactions = p_Reader.ReadBool();
+			p_Reader.Seek(3, SeekOrigin.Current);
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3796964268:
-					return ReportName;
-
-				case 2662400:
-					return Enabled;
-
-				case 1024647888:
-					return DbxReportEnabled;
-
-				case 1626619386:
-					return TickTelemetryEnabled;
-
-				case 3737843804:
-					return DevelopmentTelemetryEnabled;
-
-				case 4251590071:
-					return PerformanceTelemetryEnabled;
-
-				case 4037238111:
-					return JuiceTelemetryEnabled;
-
-				case 3999842340:
-					return PerformanceProfileStateEnabled;
-
-				case 2302981003:
-					return TransactionTelemetryEnabled;
-
-				case 1385035316:
-					return CompressTransactions;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3796964268:
-					return typeof(ServerMetricsSettings).GetProperty(nameof(ReportName));
-
-				case 2662400:
-					return typeof(ServerMetricsSettings).GetProperty(nameof(Enabled));
-
-				case 1024647888:
-					return typeof(ServerMetricsSettings).GetProperty(nameof(DbxReportEnabled));
-
-				case 1626619386:
-					return typeof(ServerMetricsSettings).GetProperty(nameof(TickTelemetryEnabled));
-
-				case 3737843804:
-					return typeof(ServerMetricsSettings).GetProperty(nameof(DevelopmentTelemetryEnabled));
-
-				case 4251590071:
-					return typeof(ServerMetricsSettings).GetProperty(nameof(PerformanceTelemetryEnabled));
-
-				case 4037238111:
-					return typeof(ServerMetricsSettings).GetProperty(nameof(JuiceTelemetryEnabled));
-
-				case 3999842340:
-					return typeof(ServerMetricsSettings).GetProperty(nameof(PerformanceProfileStateEnabled));
-
-				case 2302981003:
-					return typeof(ServerMetricsSettings).GetProperty(nameof(TransactionTelemetryEnabled));
-
-				case 1385035316:
-					return typeof(ServerMetricsSettings).GetProperty(nameof(CompressTransactions));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

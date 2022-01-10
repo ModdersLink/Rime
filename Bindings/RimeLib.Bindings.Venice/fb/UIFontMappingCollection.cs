@@ -5,77 +5,50 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 20)]
+	[ContainerType(4, 20)]
 	public class UIFontMappingCollection : 
 		Asset
 	{
-		protected List<UIFontMapping> m_Fonts = new List<UIFontMapping>();
-		[ContainerField(Name: "Fonts", Offset: 12, NameHash: 206880581, Flags: 65)]
-		public List<UIFontMapping> Fonts { get { return m_Fonts; } set { if (OnPropertyChanging("UIFontMappingCollection." + nameof(Fonts), this, m_Fonts, value)) m_Fonts = value; } } // 0xC (12)
-		
-		protected RefArray<UITextDatabase> m_TextDatabase = new RefArray<UITextDatabase>();
-		[ContainerField(Name: "TextDatabase", Offset: 16, NameHash: 1951250813, Flags: 65)]
-		public RefArray<UITextDatabase> TextDatabase { get { return m_TextDatabase; } set { if (OnPropertyChanging("UIFontMappingCollection." + nameof(TextDatabase), this, m_TextDatabase, value)) m_TextDatabase = value; } } // 0x10 (16)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(12)]
+		public List<UIFontMapping> Fonts { get; set; } = new();
+
+		[ContainerField(16)]
+		public List<CtrRef<UITextDatabase>> TextDatabase { get; set; } = new();
+
+		public static void Deserialize(UIFontMappingCollection p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Instance.Fonts.Clear();
+			(RimeReader Reader, uint Count) s_Fonts = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_Fonts.Count; ++i)
 			{
-				case 206880581:
-					Fonts = (List<UIFontMapping>) p_Value;
-					break;
-
-				case 1951250813:
-					TextDatabase = (RefArray<UITextDatabase>) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_Value = new UIFontMapping();
+				fb.UIFontMapping.Deserialize(s_Value, s_Fonts.Reader, p_Parser);
+				p_Instance.Fonts.Add(s_Value);
 			}
+			
+			s_Fonts.Reader.Dispose();
+			p_Instance.TextDatabase.Clear();
+			(RimeReader Reader, uint Count) s_TextDatabase = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_TextDatabase.Count; ++i)
+			{
+				var s_CtrRef = new CtrRef<UITextDatabase>();
+				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_TextDatabase.Reader.ReadUInt32()));
+				p_Instance.TextDatabase.Add(s_CtrRef);
+			}
+			
+			s_TextDatabase.Reader.Dispose();
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 206880581:
-					return Fonts;
-
-				case 1951250813:
-					return TextDatabase;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 206880581:
-					return typeof(UIFontMappingCollection).GetProperty(nameof(Fonts));
-
-				case 1951250813:
-					return typeof(UIFontMappingCollection).GetProperty(nameof(TextDatabase));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

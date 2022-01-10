@@ -5,147 +5,53 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 8,  Flags: 53, Size: 56)]
+	[ContainerType(8, 56)]
 	public class PerformanceProfileState : 
 		MetricState
 	{
-		protected uint m_ProcessorCount = new uint();
-		[ContainerField(Name: "ProcessorCount", Offset: 24, NameHash: 391539216, Flags: 49421), LayoutImmutable, Blittable]
-		public uint ProcessorCount { get { return m_ProcessorCount; } set { if (OnPropertyChanging("PerformanceProfileState." + nameof(ProcessorCount), this, m_ProcessorCount, value)) m_ProcessorCount = value; } } // 0x18 (24)
-		
-		protected uint m_ProcessorCoreCount = new uint();
-		[ContainerField(Name: "ProcessorCoreCount", Offset: 28, NameHash: 2243702507, Flags: 49421), LayoutImmutable, Blittable]
-		public uint ProcessorCoreCount { get { return m_ProcessorCoreCount; } set { if (OnPropertyChanging("PerformanceProfileState." + nameof(ProcessorCoreCount), this, m_ProcessorCoreCount, value)) m_ProcessorCoreCount = value; } } // 0x1C (28)
-		
-		protected uint m_ProcessorClock = new uint();
-		[ContainerField(Name: "ProcessorClock", Offset: 32, NameHash: 391374875, Flags: 49421), LayoutImmutable, Blittable]
-		public uint ProcessorClock { get { return m_ProcessorClock; } set { if (OnPropertyChanging("PerformanceProfileState." + nameof(ProcessorClock), this, m_ProcessorClock, value)) m_ProcessorClock = value; } } // 0x20 (32)
-		
-		protected uint m_TotalMemMB = new uint();
-		[ContainerField(Name: "TotalMemMB", Offset: 36, NameHash: 4037894605, Flags: 49421), LayoutImmutable, Blittable]
-		public uint TotalMemMB { get { return m_TotalMemMB; } set { if (OnPropertyChanging("PerformanceProfileState." + nameof(TotalMemMB), this, m_TotalMemMB, value)) m_TotalMemMB = value; } } // 0x24 (36)
-		
-		protected uint m_GpuMemMB = new uint();
-		[ContainerField(Name: "GpuMemMB", Offset: 40, NameHash: 4164397837, Flags: 49421), LayoutImmutable, Blittable]
-		public uint GpuMemMB { get { return m_GpuMemMB; } set { if (OnPropertyChanging("PerformanceProfileState." + nameof(GpuMemMB), this, m_GpuMemMB, value)) m_GpuMemMB = value; } } // 0x28 (40)
-		
-		protected string m_GraphicAdapterName = string.Empty;
-		[ContainerField(Name: "GraphicAdapterName", Offset: 44, NameHash: 631166483, Flags: 16509), LayoutImmutable]
-		public string GraphicAdapterName { get { return m_GraphicAdapterName; } set { if (OnPropertyChanging("PerformanceProfileState." + nameof(GraphicAdapterName), this, m_GraphicAdapterName, value)) m_GraphicAdapterName = value; } } // 0x2C (44)
-		
-		protected string m_Platform = string.Empty;
-		[ContainerField(Name: "Platform", Offset: 48, NameHash: 942751002, Flags: 16509), LayoutImmutable]
-		public string Platform { get { return m_Platform; } set { if (OnPropertyChanging("PerformanceProfileState." + nameof(Platform), this, m_Platform, value)) m_Platform = value; } } // 0x30 (48)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(24), LayoutImmutable, Blittable]
+		public uint ProcessorCount { get; set; }
+
+		[ContainerField(28), LayoutImmutable, Blittable]
+		public uint ProcessorCoreCount { get; set; }
+
+		[ContainerField(32), LayoutImmutable, Blittable]
+		public uint ProcessorClock { get; set; }
+
+		[ContainerField(36), LayoutImmutable, Blittable]
+		public uint TotalMemMB { get; set; }
+
+		[ContainerField(40), LayoutImmutable, Blittable]
+		public uint GpuMemMB { get; set; }
+
+		[ContainerField(44), LayoutImmutable]
+		public string GraphicAdapterName { get; set; } = string.Empty;
+
+		[ContainerField(48), LayoutImmutable]
+		public string Platform { get; set; } = string.Empty;
+
+		public static void Deserialize(PerformanceProfileState p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 391539216:
-					ProcessorCount = (uint) p_Value;
-					break;
-
-				case 2243702507:
-					ProcessorCoreCount = (uint) p_Value;
-					break;
-
-				case 391374875:
-					ProcessorClock = (uint) p_Value;
-					break;
-
-				case 4037894605:
-					TotalMemMB = (uint) p_Value;
-					break;
-
-				case 4164397837:
-					GpuMemMB = (uint) p_Value;
-					break;
-
-				case 631166483:
-					GraphicAdapterName = (string) p_Value;
-					break;
-
-				case 942751002:
-					Platform = (string) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
+			p_Instance.ProcessorCount = p_Reader.ReadUInt32();
+			p_Instance.ProcessorCoreCount = p_Reader.ReadUInt32();
+			p_Instance.ProcessorClock = p_Reader.ReadUInt32();
+			p_Instance.TotalMemMB = p_Reader.ReadUInt32();
+			p_Instance.GpuMemMB = p_Reader.ReadUInt32();
+			p_Instance.GraphicAdapterName = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
+			p_Instance.Platform = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
+			p_Reader.Seek(4, SeekOrigin.Current);
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 391539216:
-					return ProcessorCount;
-
-				case 2243702507:
-					return ProcessorCoreCount;
-
-				case 391374875:
-					return ProcessorClock;
-
-				case 4037894605:
-					return TotalMemMB;
-
-				case 4164397837:
-					return GpuMemMB;
-
-				case 631166483:
-					return GraphicAdapterName;
-
-				case 942751002:
-					return Platform;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 391539216:
-					return typeof(PerformanceProfileState).GetProperty(nameof(ProcessorCount));
-
-				case 2243702507:
-					return typeof(PerformanceProfileState).GetProperty(nameof(ProcessorCoreCount));
-
-				case 391374875:
-					return typeof(PerformanceProfileState).GetProperty(nameof(ProcessorClock));
-
-				case 4037894605:
-					return typeof(PerformanceProfileState).GetProperty(nameof(TotalMemMB));
-
-				case 4164397837:
-					return typeof(PerformanceProfileState).GetProperty(nameof(GpuMemMB));
-
-				case 631166483:
-					return typeof(PerformanceProfileState).GetProperty(nameof(GraphicAdapterName));
-
-				case 942751002:
-					return typeof(PerformanceProfileState).GetProperty(nameof(Platform));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

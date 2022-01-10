@@ -5,74 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 41, Size: 20)]
-	public class Ps3ParentalLockAgeSettingsForCountry : FrostbiteContainer
+	[ContainerType(4, 20)]
+	public class Ps3ParentalLockAgeSettingsForCountry
 	{
-		[ContainerField(Name: "CountryCode", Offset: 0, NameHash: 2803199296, Flags: 16509), LayoutImmutable]
-		public string CountryCode { get; set; } // 0x0 (0)
+		[ContainerField(0), LayoutImmutable]
+		public string CountryCode { get; set; } = string.Empty;
 		
-		[ContainerField(Name: "AgeLevels", Offset: 4, NameHash: 2470460131, Flags: 41)]
-		public Ps3AgeLevels AgeLevels { get; set; } = new Ps3AgeLevels(); // 0x4 (4)
+		[ContainerField(4)]
+		public Ps3AgeLevels AgeLevels { get; set; } = new();
 		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		public static void Deserialize(Ps3ParentalLockAgeSettingsForCountry p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 2803199296:
-					CountryCode = (string) p_Value;
-					break;
-
-				case 2470460131:
-					AgeLevels = (Ps3AgeLevels) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2803199296:
-					return CountryCode;
-
-				case 2470460131:
-					return AgeLevels;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2803199296:
-					return typeof(Ps3ParentalLockAgeSettingsForCountry).GetProperty(nameof(CountryCode));
-
-				case 2470460131:
-					return typeof(Ps3ParentalLockAgeSettingsForCountry).GetProperty(nameof(AgeLevels));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
+			p_Instance.CountryCode = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
+			fb.Ps3AgeLevels.Deserialize(p_Instance.AgeLevels, p_Reader, p_Parser);
 		}
 	}
 }

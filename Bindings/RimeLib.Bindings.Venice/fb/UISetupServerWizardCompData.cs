@@ -5,63 +5,28 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 32)]
+	[ContainerType(4, 32)]
 	public class UISetupServerWizardCompData : 
 		UIComponentData
 	{
-		protected int m_PasswdMinLen = new int();
-		[ContainerField(Name: "PasswdMinLen", Offset: 28, NameHash: 3300371370, Flags: 49405), LayoutImmutable, Blittable]
-		public int PasswdMinLen { get { return m_PasswdMinLen; } set { if (OnPropertyChanging("UISetupServerWizardCompData." + nameof(PasswdMinLen), this, m_PasswdMinLen, value)) m_PasswdMinLen = value; } } // 0x1C (28)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 3300371370:
-					PasswdMinLen = (int) p_Value;
-					break;
+		[ContainerField(28), LayoutImmutable, Blittable]
+		public int PasswdMinLen { get; set; }
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
+		public static void Deserialize(UISetupServerWizardCompData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
+		{
+			p_Instance.PasswdMinLen = p_Reader.ReadInt32();
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3300371370:
-					return PasswdMinLen;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3300371370:
-					return typeof(UISetupServerWizardCompData).GetProperty(nameof(PasswdMinLen));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

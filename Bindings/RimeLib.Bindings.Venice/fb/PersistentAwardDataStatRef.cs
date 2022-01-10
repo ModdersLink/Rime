@@ -5,63 +5,28 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 12)]
+	[ContainerType(4, 12)]
 	public class PersistentAwardDataStatRef : 
 		AbstractPersistentStatRef
 	{
-		protected CtrRef<AwardData> m_Definition = new CtrRef<AwardData>();
-		[ContainerField(Name: "Definition", Offset: 8, NameHash: 2980331600, Flags: 53)]
-		public CtrRef<AwardData> Definition { get { return m_Definition; } set { if (OnPropertyChanging("PersistentAwardDataStatRef." + nameof(Definition), this, m_Definition, value)) m_Definition = value; } } // 0x8 (8)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 2980331600:
-					Definition = (CtrRef<AwardData>) p_Value;
-					break;
+		[ContainerField(8)]
+		public CtrRef<AwardData> Definition { get; set; } = new();
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
+		public static void Deserialize(PersistentAwardDataStatRef p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
+		{
+			p_Instance.Definition.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2980331600:
-					return Definition;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2980331600:
-					return typeof(PersistentAwardDataStatRef).GetProperty(nameof(Definition));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

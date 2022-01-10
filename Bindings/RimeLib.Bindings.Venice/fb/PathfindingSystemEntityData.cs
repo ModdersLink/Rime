@@ -5,63 +5,36 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
+	[ContainerType(4, 16)]
 	public class PathfindingSystemEntityData : 
 		EntityData
 	{
-		protected List<uint> m_PathfindingTypesOnLevel = new List<uint>();
-		[ContainerField(Name: "PathfindingTypesOnLevel", Offset: 12, NameHash: 2264269169, Flags: 65)]
-		public List<uint> PathfindingTypesOnLevel { get { return m_PathfindingTypesOnLevel; } set { if (OnPropertyChanging("PathfindingSystemEntityData." + nameof(PathfindingTypesOnLevel), this, m_PathfindingTypesOnLevel, value)) m_PathfindingTypesOnLevel = value; } } // 0xC (12)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 2264269169:
-					PathfindingTypesOnLevel = (List<uint>) p_Value;
-					break;
+		[ContainerField(12)]
+		public List<uint> PathfindingTypesOnLevel { get; set; } = new();
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+		public static void Deserialize(PathfindingSystemEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
+		{
+			p_Instance.PathfindingTypesOnLevel.Clear();
+			(RimeReader Reader, uint Count) s_PathfindingTypesOnLevel = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_PathfindingTypesOnLevel.Count; ++i)
+			{
+				var s_Value = s_PathfindingTypesOnLevel.Reader.ReadUInt32();
+				p_Instance.PathfindingTypesOnLevel.Add(s_Value);
 			}
+			
+			s_PathfindingTypesOnLevel.Reader.Dispose();
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2264269169:
-					return PathfindingTypesOnLevel;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2264269169:
-					return typeof(PathfindingSystemEntityData).GetProperty(nameof(PathfindingTypesOnLevel));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

@@ -5,165 +5,59 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 41, Size: 36)]
-	public class RecoilData : FrostbiteContainer
+	[ContainerType(4, 36)]
+	public class RecoilData
 	{
-		[ContainerField(Name: "MaxRecoilAngleX", Offset: 0, NameHash: 1566215510, Flags: 49469), LayoutImmutable, Blittable]
-		public float MaxRecoilAngleX { get; set; } // 0x0 (0)
+		[ContainerField(0), LayoutImmutable, Blittable]
+		public float MaxRecoilAngleX { get; set; }
 		
-		[ContainerField(Name: "MinRecoilAngleX", Offset: 4, NameHash: 2010820808, Flags: 49469), LayoutImmutable, Blittable]
-		public float MinRecoilAngleX { get; set; } // 0x4 (4)
+		[ContainerField(4), LayoutImmutable, Blittable]
+		public float MinRecoilAngleX { get; set; }
 		
-		[ContainerField(Name: "MaxRecoilAngleY", Offset: 8, NameHash: 1566215511, Flags: 49469), LayoutImmutable, Blittable]
-		public float MaxRecoilAngleY { get; set; } // 0x8 (8)
+		[ContainerField(8), LayoutImmutable, Blittable]
+		public float MaxRecoilAngleY { get; set; }
 		
-		[ContainerField(Name: "MinRecoilAngleY", Offset: 12, NameHash: 2010820809, Flags: 49469), LayoutImmutable, Blittable]
-		public float MinRecoilAngleY { get; set; } // 0xC (12)
+		[ContainerField(12), LayoutImmutable, Blittable]
+		public float MinRecoilAngleY { get; set; }
 		
-		[ContainerField(Name: "MaxRecoilAngleZ", Offset: 16, NameHash: 1566215508, Flags: 49469), LayoutImmutable, Blittable]
-		public float MaxRecoilAngleZ { get; set; } // 0x10 (16)
+		[ContainerField(16), LayoutImmutable, Blittable]
+		public float MaxRecoilAngleZ { get; set; }
 		
-		[ContainerField(Name: "MinRecoilAngleZ", Offset: 20, NameHash: 2010820810, Flags: 49469), LayoutImmutable, Blittable]
-		public float MinRecoilAngleZ { get; set; } // 0x14 (20)
+		[ContainerField(20), LayoutImmutable, Blittable]
+		public float MinRecoilAngleZ { get; set; }
 		
-		[ContainerField(Name: "MaxRecoilFov", Offset: 24, NameHash: 2812200304, Flags: 49469), LayoutImmutable, Blittable]
-		public float MaxRecoilFov { get; set; } // 0x18 (24)
+		[ContainerField(24), LayoutImmutable, Blittable]
+		public float MaxRecoilFov { get; set; }
 		
-		[ContainerField(Name: "MinRecoilFov", Offset: 28, NameHash: 3551417774, Flags: 49469), LayoutImmutable, Blittable]
-		public float MinRecoilFov { get; set; } // 0x1C (28)
+		[ContainerField(28), LayoutImmutable, Blittable]
+		public float MinRecoilFov { get; set; }
 		
-		[ContainerField(Name: "RecoilFollowsDispersion", Offset: 32, NameHash: 4254392955, Flags: 49325), LayoutImmutable, Blittable]
-		public bool RecoilFollowsDispersion { get; set; } // 0x20 (32)
+		[ContainerField(32), LayoutImmutable, Blittable]
+		public bool RecoilFollowsDispersion { get; set; }
 		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		public static void Deserialize(RecoilData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 1566215510:
-					MaxRecoilAngleX = (float) p_Value;
-					break;
-
-				case 2010820808:
-					MinRecoilAngleX = (float) p_Value;
-					break;
-
-				case 1566215511:
-					MaxRecoilAngleY = (float) p_Value;
-					break;
-
-				case 2010820809:
-					MinRecoilAngleY = (float) p_Value;
-					break;
-
-				case 1566215508:
-					MaxRecoilAngleZ = (float) p_Value;
-					break;
-
-				case 2010820810:
-					MinRecoilAngleZ = (float) p_Value;
-					break;
-
-				case 2812200304:
-					MaxRecoilFov = (float) p_Value;
-					break;
-
-				case 3551417774:
-					MinRecoilFov = (float) p_Value;
-					break;
-
-				case 4254392955:
-					RecoilFollowsDispersion = (bool) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1566215510:
-					return MaxRecoilAngleX;
-
-				case 2010820808:
-					return MinRecoilAngleX;
-
-				case 1566215511:
-					return MaxRecoilAngleY;
-
-				case 2010820809:
-					return MinRecoilAngleY;
-
-				case 1566215508:
-					return MaxRecoilAngleZ;
-
-				case 2010820810:
-					return MinRecoilAngleZ;
-
-				case 2812200304:
-					return MaxRecoilFov;
-
-				case 3551417774:
-					return MinRecoilFov;
-
-				case 4254392955:
-					return RecoilFollowsDispersion;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1566215510:
-					return typeof(RecoilData).GetProperty(nameof(MaxRecoilAngleX));
-
-				case 2010820808:
-					return typeof(RecoilData).GetProperty(nameof(MinRecoilAngleX));
-
-				case 1566215511:
-					return typeof(RecoilData).GetProperty(nameof(MaxRecoilAngleY));
-
-				case 2010820809:
-					return typeof(RecoilData).GetProperty(nameof(MinRecoilAngleY));
-
-				case 1566215508:
-					return typeof(RecoilData).GetProperty(nameof(MaxRecoilAngleZ));
-
-				case 2010820810:
-					return typeof(RecoilData).GetProperty(nameof(MinRecoilAngleZ));
-
-				case 2812200304:
-					return typeof(RecoilData).GetProperty(nameof(MaxRecoilFov));
-
-				case 3551417774:
-					return typeof(RecoilData).GetProperty(nameof(MinRecoilFov));
-
-				case 4254392955:
-					return typeof(RecoilData).GetProperty(nameof(RecoilFollowsDispersion));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
+			p_Instance.MaxRecoilAngleX = p_Reader.ReadSingle();
+			p_Instance.MinRecoilAngleX = p_Reader.ReadSingle();
+			p_Instance.MaxRecoilAngleY = p_Reader.ReadSingle();
+			p_Instance.MinRecoilAngleY = p_Reader.ReadSingle();
+			p_Instance.MaxRecoilAngleZ = p_Reader.ReadSingle();
+			p_Instance.MinRecoilAngleZ = p_Reader.ReadSingle();
+			p_Instance.MaxRecoilFov = p_Reader.ReadSingle();
+			p_Instance.MinRecoilFov = p_Reader.ReadSingle();
+			p_Instance.RecoilFollowsDispersion = p_Reader.ReadBool();
+			p_Reader.Seek(3, SeekOrigin.Current);
 		}
 	}
 }

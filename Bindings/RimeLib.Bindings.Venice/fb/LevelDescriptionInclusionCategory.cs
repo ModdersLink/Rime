@@ -5,74 +5,38 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 41, Size: 8)]
-	public class LevelDescriptionInclusionCategory : FrostbiteContainer
+	[ContainerType(4, 8)]
+	public class LevelDescriptionInclusionCategory
 	{
-		[ContainerField(Name: "Category", Offset: 0, NameHash: 3455858997, Flags: 16509), LayoutImmutable]
-		public string Category { get; set; } // 0x0 (0)
+		[ContainerField(0), LayoutImmutable]
+		public string Category { get; set; } = string.Empty;
 		
-		[ContainerField(Name: "Mode", Offset: 4, NameHash: 2088772358, Flags: 65)]
-		public List<string> Mode { get; set; } = new List<string>(); // 0x4 (4)
+		[ContainerField(4)]
+		public List<string> Mode { get; set; } = new();
 		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		public static void Deserialize(LevelDescriptionInclusionCategory p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Instance.Category = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
+			p_Instance.Mode.Clear();
+			(RimeReader Reader, uint Count) s_Mode = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_Mode.Count; ++i)
 			{
-				case 3455858997:
-					Category = (string) p_Value;
-					break;
-
-				case 2088772358:
-					Mode = (List<string>) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_Value = p_Parser.GetStringAtOffset(s_Mode.Reader.ReadUInt32());
+				p_Instance.Mode.Add(s_Value);
 			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3455858997:
-					return Category;
-
-				case 2088772358:
-					return Mode;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3455858997:
-					return typeof(LevelDescriptionInclusionCategory).GetProperty(nameof(Category));
-
-				case 2088772358:
-					return typeof(LevelDescriptionInclusionCategory).GetProperty(nameof(Mode));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
+			
+			s_Mode.Reader.Dispose();
 		}
 	}
 }

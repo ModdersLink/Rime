@@ -5,77 +5,42 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 16,  Flags: 53, Size: 96)]
+	[ContainerType(16, 96)]
 	public class MeshProxyEntityData : 
 		SpatialEntityData
 	{
-		protected CtrRef<MeshAsset> m_Mesh = new CtrRef<MeshAsset>();
-		[ContainerField(Name: "Mesh", Offset: 80, NameHash: 2088783990, Flags: 53)]
-		public CtrRef<MeshAsset> Mesh { get { return m_Mesh; } set { if (OnPropertyChanging("MeshProxyEntityData." + nameof(Mesh), this, m_Mesh, value)) m_Mesh = value; } } // 0x50 (80)
-		
-		protected List<LinearTransform> m_BasePoseTransforms = new List<LinearTransform>();
-		[ContainerField(Name: "BasePoseTransforms", Offset: 84, NameHash: 2949884966, Flags: 65)]
-		public List<LinearTransform> BasePoseTransforms { get { return m_BasePoseTransforms; } set { if (OnPropertyChanging("MeshProxyEntityData." + nameof(BasePoseTransforms), this, m_BasePoseTransforms, value)) m_BasePoseTransforms = value; } } // 0x54 (84)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(80)]
+		public CtrRef<MeshAsset> Mesh { get; set; } = new();
+
+		[ContainerField(84)]
+		public List<LinearTransform> BasePoseTransforms { get; set; } = new();
+
+		public static void Deserialize(MeshProxyEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Instance.Mesh.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
+			p_Instance.BasePoseTransforms.Clear();
+			(RimeReader Reader, uint Count) s_BasePoseTransforms = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_BasePoseTransforms.Count; ++i)
 			{
-				case 2088783990:
-					Mesh = (CtrRef<MeshAsset>) p_Value;
-					break;
-
-				case 2949884966:
-					BasePoseTransforms = (List<LinearTransform>) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_Value = new LinearTransform();
+				fb.LinearTransform.Deserialize(s_Value, s_BasePoseTransforms.Reader, p_Parser);
+				p_Instance.BasePoseTransforms.Add(s_Value);
 			}
+			
+			s_BasePoseTransforms.Reader.Dispose();
+			p_Reader.Seek(8, SeekOrigin.Current);
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2088783990:
-					return Mesh;
-
-				case 2949884966:
-					return BasePoseTransforms;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2088783990:
-					return typeof(MeshProxyEntityData).GetProperty(nameof(Mesh));
-
-				case 2949884966:
-					return typeof(MeshProxyEntityData).GetProperty(nameof(BasePoseTransforms));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

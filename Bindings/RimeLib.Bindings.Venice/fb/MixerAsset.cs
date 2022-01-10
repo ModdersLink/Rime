@@ -5,91 +5,45 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 24)]
+	[ContainerType(4, 24)]
 	public class MixerAsset : 
 		Asset
 	{
-		protected CtrRef<MixerGraphData> m_Graph = new CtrRef<MixerGraphData>();
-		[ContainerField(Name: "Graph", Offset: 12, NameHash: 208111145, Flags: 53)]
-		public CtrRef<MixerGraphData> Graph { get { return m_Graph; } set { if (OnPropertyChanging("MixerAsset." + nameof(Graph), this, m_Graph, value)) m_Graph = value; } } // 0xC (12)
-		
-		protected RefArray<MixerPreset> m_Presets = new RefArray<MixerPreset>();
-		[ContainerField(Name: "Presets", Offset: 16, NameHash: 3463460435, Flags: 65)]
-		public RefArray<MixerPreset> Presets { get { return m_Presets; } set { if (OnPropertyChanging("MixerAsset." + nameof(Presets), this, m_Presets, value)) m_Presets = value; } } // 0x10 (16)
-		
-		protected CtrRef<MixerPreset> m_DefaultPreset = new CtrRef<MixerPreset>();
-		[ContainerField(Name: "DefaultPreset", Offset: 20, NameHash: 4117030027, Flags: 53)]
-		public CtrRef<MixerPreset> DefaultPreset { get { return m_DefaultPreset; } set { if (OnPropertyChanging("MixerAsset." + nameof(DefaultPreset), this, m_DefaultPreset, value)) m_DefaultPreset = value; } } // 0x14 (20)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(12)]
+		public CtrRef<MixerGraphData> Graph { get; set; } = new();
+
+		[ContainerField(16)]
+		public List<CtrRef<MixerPreset>> Presets { get; set; } = new();
+
+		[ContainerField(20)]
+		public CtrRef<MixerPreset> DefaultPreset { get; set; } = new();
+
+		public static void Deserialize(MixerAsset p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Instance.Graph.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
+			p_Instance.Presets.Clear();
+			(RimeReader Reader, uint Count) s_Presets = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_Presets.Count; ++i)
 			{
-				case 208111145:
-					Graph = (CtrRef<MixerGraphData>) p_Value;
-					break;
-
-				case 3463460435:
-					Presets = (RefArray<MixerPreset>) p_Value;
-					break;
-
-				case 4117030027:
-					DefaultPreset = (CtrRef<MixerPreset>) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_CtrRef = new CtrRef<MixerPreset>();
+				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_Presets.Reader.ReadUInt32()));
+				p_Instance.Presets.Add(s_CtrRef);
 			}
+			
+			s_Presets.Reader.Dispose();
+			p_Instance.DefaultPreset.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 208111145:
-					return Graph;
-
-				case 3463460435:
-					return Presets;
-
-				case 4117030027:
-					return DefaultPreset;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 208111145:
-					return typeof(MixerAsset).GetProperty(nameof(Graph));
-
-				case 3463460435:
-					return typeof(MixerAsset).GetProperty(nameof(Presets));
-
-				case 4117030027:
-					return typeof(MixerAsset).GetProperty(nameof(DefaultPreset));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

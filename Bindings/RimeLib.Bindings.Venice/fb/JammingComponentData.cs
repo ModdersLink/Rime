@@ -5,77 +5,33 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 16,  Flags: 53, Size: 176)]
+	[ContainerType(16, 176)]
 	public class JammingComponentData : 
 		ComponentData
 	{
-		protected SmokeJammingData m_SmokeJamming = new SmokeJammingData();
-		[ContainerField(Name: "SmokeJamming", Offset: 96, NameHash: 1348728305, Flags: 41)]
-		public SmokeJammingData SmokeJamming { get { return m_SmokeJamming; } set { if (OnPropertyChanging("JammingComponentData." + nameof(SmokeJamming), this, m_SmokeJamming, value)) m_SmokeJamming = value; } } // 0x60 (96)
-		
-		protected AirMissileJammingData m_AirMissileJamming = new AirMissileJammingData();
-		[ContainerField(Name: "AirMissileJamming", Offset: 116, NameHash: 3537349392, Flags: 41)]
-		public AirMissileJammingData AirMissileJamming { get { return m_AirMissileJamming; } set { if (OnPropertyChanging("JammingComponentData." + nameof(AirMissileJamming), this, m_AirMissileJamming, value)) m_AirMissileJamming = value; } } // 0x74 (116)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(96)]
+		public SmokeJammingData SmokeJamming { get; set; } = new();
+
+		[ContainerField(116)]
+		public AirMissileJammingData AirMissileJamming { get; set; } = new();
+
+		public static void Deserialize(JammingComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 1348728305:
-					SmokeJamming = (SmokeJammingData) p_Value;
-					break;
-
-				case 3537349392:
-					AirMissileJamming = (AirMissileJammingData) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
+			fb.SmokeJammingData.Deserialize(p_Instance.SmokeJamming, p_Reader, p_Parser);
+			fb.AirMissileJammingData.Deserialize(p_Instance.AirMissileJamming, p_Reader, p_Parser);
+			p_Reader.Seek(12, SeekOrigin.Current);
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1348728305:
-					return SmokeJamming;
-
-				case 3537349392:
-					return AirMissileJamming;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1348728305:
-					return typeof(JammingComponentData).GetProperty(nameof(SmokeJamming));
-
-				case 3537349392:
-					return typeof(JammingComponentData).GetProperty(nameof(AirMissileJamming));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

@@ -5,74 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 41, Size: 40)]
-	public class ScoringBucketUnlockData : FrostbiteContainer
+	[ContainerType(4, 40)]
+	public class ScoringBucketUnlockData
 	{
-		[ContainerField(Name: "PointsNeeded", Offset: 0, NameHash: 4136222257, Flags: 49421), LayoutImmutable, Blittable]
-		public uint PointsNeeded { get; set; } // 0x0 (0)
+		[ContainerField(0), LayoutImmutable, Blittable]
+		public uint PointsNeeded { get; set; }
 		
-		[ContainerField(Name: "UnlockInfo", Offset: 4, NameHash: 1036660731, Flags: 41)]
-		public BasicUnlockInfo UnlockInfo { get; set; } = new BasicUnlockInfo(); // 0x4 (4)
+		[ContainerField(4)]
+		public BasicUnlockInfo UnlockInfo { get; set; } = new();
 		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		public static void Deserialize(ScoringBucketUnlockData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 4136222257:
-					PointsNeeded = (uint) p_Value;
-					break;
-
-				case 1036660731:
-					UnlockInfo = (BasicUnlockInfo) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 4136222257:
-					return PointsNeeded;
-
-				case 1036660731:
-					return UnlockInfo;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 4136222257:
-					return typeof(ScoringBucketUnlockData).GetProperty(nameof(PointsNeeded));
-
-				case 1036660731:
-					return typeof(ScoringBucketUnlockData).GetProperty(nameof(UnlockInfo));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
+			p_Instance.PointsNeeded = p_Reader.ReadUInt32();
+			fb.BasicUnlockInfo.Deserialize(p_Instance.UnlockInfo, p_Reader, p_Parser);
 		}
 	}
 }

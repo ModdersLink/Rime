@@ -5,74 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 41, Size: 8)]
-	public class UIntRange : FrostbiteContainer
+	[ContainerType(4, 8)]
+	public class UIntRange
 	{
-		[ContainerField(Name: "Min", Offset: 0, NameHash: 193446607, Flags: 49421), LayoutImmutable, Blittable]
-		public uint Min { get; set; } // 0x0 (0)
+		[ContainerField(0), LayoutImmutable, Blittable]
+		public uint Min { get; set; }
 		
-		[ContainerField(Name: "Max", Offset: 4, NameHash: 193446865, Flags: 49421), LayoutImmutable, Blittable]
-		public uint Max { get; set; } // 0x4 (4)
+		[ContainerField(4), LayoutImmutable, Blittable]
+		public uint Max { get; set; }
 		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		public static void Deserialize(UIntRange p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 193446607:
-					Min = (uint) p_Value;
-					break;
-
-				case 193446865:
-					Max = (uint) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 193446607:
-					return Min;
-
-				case 193446865:
-					return Max;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 193446607:
-					return typeof(UIntRange).GetProperty(nameof(Min));
-
-				case 193446865:
-					return typeof(UIntRange).GetProperty(nameof(Max));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
+			p_Instance.Min = p_Reader.ReadUInt32();
+			p_Instance.Max = p_Reader.ReadUInt32();
 		}
 	}
 }

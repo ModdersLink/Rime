@@ -5,63 +5,36 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
+	[ContainerType(4, 16)]
 	public class IntRecordingData : 
 		PropertyRecordingData
 	{
-		protected List<int> m_Values = new List<int>();
-		[ContainerField(Name: "Values", Offset: 12, NameHash: 3142410589, Flags: 65)]
-		public List<int> Values { get { return m_Values; } set { if (OnPropertyChanging("IntRecordingData." + nameof(Values), this, m_Values, value)) m_Values = value; } } // 0xC (12)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 3142410589:
-					Values = (List<int>) p_Value;
-					break;
+		[ContainerField(12)]
+		public List<int> Values { get; set; } = new();
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+		public static void Deserialize(IntRecordingData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
+		{
+			p_Instance.Values.Clear();
+			(RimeReader Reader, uint Count) s_Values = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_Values.Count; ++i)
+			{
+				var s_Value = s_Values.Reader.ReadInt32();
+				p_Instance.Values.Add(s_Value);
 			}
+			
+			s_Values.Reader.Dispose();
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3142410589:
-					return Values;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3142410589:
-					return typeof(IntRecordingData).GetProperty(nameof(Values));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

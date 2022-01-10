@@ -5,161 +5,66 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 16,  Flags: 53, Size: 112)]
+	[ContainerType(16, 112)]
 	public class EffectEntityData : 
 		SpatialEntityData
 	{
-		protected RefArray<GameObjectData> m_Components = new RefArray<GameObjectData>();
-		[ContainerField(Name: "Components", Offset: 80, NameHash: 3391050425, Flags: 65)]
-		public RefArray<GameObjectData> Components { get { return m_Components; } set { if (OnPropertyChanging("EffectEntityData." + nameof(Components), this, m_Components, value)) m_Components = value; } } // 0x50 (80)
-		
-		protected uint m_MaxInstanceCount = new uint();
-		[ContainerField(Name: "MaxInstanceCount", Offset: 84, NameHash: 3587631771, Flags: 49421), LayoutImmutable, Blittable]
-		public uint MaxInstanceCount { get { return m_MaxInstanceCount; } set { if (OnPropertyChanging("EffectEntityData." + nameof(MaxInstanceCount), this, m_MaxInstanceCount, value)) m_MaxInstanceCount = value; } } // 0x54 (84)
-		
-		protected float m_CullDistance = new float();
-		[ContainerField(Name: "CullDistance", Offset: 88, NameHash: 1000432400, Flags: 49469), LayoutImmutable, Blittable]
-		public float CullDistance { get { return m_CullDistance; } set { if (OnPropertyChanging("EffectEntityData." + nameof(CullDistance), this, m_CullDistance, value)) m_CullDistance = value; } } // 0x58 (88)
-		
-		protected float m_StartDelay = new float();
-		[ContainerField(Name: "StartDelay", Offset: 92, NameHash: 2731915920, Flags: 49469), LayoutImmutable, Blittable]
-		public float StartDelay { get { return m_StartDelay; } set { if (OnPropertyChanging("EffectEntityData." + nameof(StartDelay), this, m_StartDelay, value)) m_StartDelay = value; } } // 0x5C (92)
-		
-		protected bool m_HighEndPc = new bool();
-		[ContainerField(Name: "HighEndPc", Offset: 96, NameHash: 47851991, Flags: 49325), LayoutImmutable, Blittable]
-		public bool HighEndPc { get { return m_HighEndPc; } set { if (OnPropertyChanging("EffectEntityData." + nameof(HighEndPc), this, m_HighEndPc, value)) m_HighEndPc = value; } } // 0x60 (96)
-		
-		protected bool m_MediumPc = new bool();
-		[ContainerField(Name: "MediumPc", Offset: 97, NameHash: 773886027, Flags: 49325), LayoutImmutable, Blittable]
-		public bool MediumPc { get { return m_MediumPc; } set { if (OnPropertyChanging("EffectEntityData." + nameof(MediumPc), this, m_MediumPc, value)) m_MediumPc = value; } } // 0x61 (97)
-		
-		protected bool m_LowEndPc = new bool();
-		[ContainerField(Name: "LowEndPc", Offset: 98, NameHash: 2485938765, Flags: 49325), LayoutImmutable, Blittable]
-		public bool LowEndPc { get { return m_LowEndPc; } set { if (OnPropertyChanging("EffectEntityData." + nameof(LowEndPc), this, m_LowEndPc, value)) m_LowEndPc = value; } } // 0x62 (98)
-		
-		protected bool m_ResetInstanceWhenStarted = new bool();
-		[ContainerField(Name: "ResetInstanceWhenStarted", Offset: 99, NameHash: 1039558380, Flags: 49325), LayoutImmutable, Blittable]
-		public bool ResetInstanceWhenStarted { get { return m_ResetInstanceWhenStarted; } set { if (OnPropertyChanging("EffectEntityData." + nameof(ResetInstanceWhenStarted), this, m_ResetInstanceWhenStarted, value)) m_ResetInstanceWhenStarted = value; } } // 0x63 (99)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(80)]
+		public List<CtrRef<GameObjectData>> Components { get; set; } = new();
+
+		[ContainerField(84), LayoutImmutable, Blittable]
+		public uint MaxInstanceCount { get; set; }
+
+		[ContainerField(88), LayoutImmutable, Blittable]
+		public float CullDistance { get; set; }
+
+		[ContainerField(92), LayoutImmutable, Blittable]
+		public float StartDelay { get; set; }
+
+		[ContainerField(96), LayoutImmutable, Blittable]
+		public bool HighEndPc { get; set; }
+
+		[ContainerField(97), LayoutImmutable, Blittable]
+		public bool MediumPc { get; set; }
+
+		[ContainerField(98), LayoutImmutable, Blittable]
+		public bool LowEndPc { get; set; }
+
+		[ContainerField(99), LayoutImmutable, Blittable]
+		public bool ResetInstanceWhenStarted { get; set; }
+
+		public static void Deserialize(EffectEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Instance.Components.Clear();
+			(RimeReader Reader, uint Count) s_Components = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_Components.Count; ++i)
 			{
-				case 3391050425:
-					Components = (RefArray<GameObjectData>) p_Value;
-					break;
-
-				case 3587631771:
-					MaxInstanceCount = (uint) p_Value;
-					break;
-
-				case 1000432400:
-					CullDistance = (float) p_Value;
-					break;
-
-				case 2731915920:
-					StartDelay = (float) p_Value;
-					break;
-
-				case 47851991:
-					HighEndPc = (bool) p_Value;
-					break;
-
-				case 773886027:
-					MediumPc = (bool) p_Value;
-					break;
-
-				case 2485938765:
-					LowEndPc = (bool) p_Value;
-					break;
-
-				case 1039558380:
-					ResetInstanceWhenStarted = (bool) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_CtrRef = new CtrRef<GameObjectData>();
+				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_Components.Reader.ReadUInt32()));
+				p_Instance.Components.Add(s_CtrRef);
 			}
+			
+			s_Components.Reader.Dispose();
+			p_Instance.MaxInstanceCount = p_Reader.ReadUInt32();
+			p_Instance.CullDistance = p_Reader.ReadSingle();
+			p_Instance.StartDelay = p_Reader.ReadSingle();
+			p_Instance.HighEndPc = p_Reader.ReadBool();
+			p_Instance.MediumPc = p_Reader.ReadBool();
+			p_Instance.LowEndPc = p_Reader.ReadBool();
+			p_Instance.ResetInstanceWhenStarted = p_Reader.ReadBool();
+			p_Reader.Seek(12, SeekOrigin.Current);
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3391050425:
-					return Components;
-
-				case 3587631771:
-					return MaxInstanceCount;
-
-				case 1000432400:
-					return CullDistance;
-
-				case 2731915920:
-					return StartDelay;
-
-				case 47851991:
-					return HighEndPc;
-
-				case 773886027:
-					return MediumPc;
-
-				case 2485938765:
-					return LowEndPc;
-
-				case 1039558380:
-					return ResetInstanceWhenStarted;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3391050425:
-					return typeof(EffectEntityData).GetProperty(nameof(Components));
-
-				case 3587631771:
-					return typeof(EffectEntityData).GetProperty(nameof(MaxInstanceCount));
-
-				case 1000432400:
-					return typeof(EffectEntityData).GetProperty(nameof(CullDistance));
-
-				case 2731915920:
-					return typeof(EffectEntityData).GetProperty(nameof(StartDelay));
-
-				case 47851991:
-					return typeof(EffectEntityData).GetProperty(nameof(HighEndPc));
-
-				case 773886027:
-					return typeof(EffectEntityData).GetProperty(nameof(MediumPc));
-
-				case 2485938765:
-					return typeof(EffectEntityData).GetProperty(nameof(LowEndPc));
-
-				case 1039558380:
-					return typeof(EffectEntityData).GetProperty(nameof(ResetInstanceWhenStarted));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

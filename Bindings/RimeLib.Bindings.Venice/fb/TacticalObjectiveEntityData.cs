@@ -5,119 +5,45 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 16,  Flags: 53, Size: 128)]
+	[ContainerType(16, 128)]
 	public class TacticalObjectiveEntityData : 
 		GameEntityData
 	{
-		protected string m_MissionSid = string.Empty;
-		[ContainerField(Name: "MissionSid", Offset: 96, NameHash: 1231602263, Flags: 16509), LayoutImmutable]
-		public string MissionSid { get { return m_MissionSid; } set { if (OnPropertyChanging("TacticalObjectiveEntityData." + nameof(MissionSid), this, m_MissionSid, value)) m_MissionSid = value; } } // 0x60 (96)
-		
-		protected string m_BriefingSidTeam1 = string.Empty;
-		[ContainerField(Name: "BriefingSidTeam1", Offset: 100, NameHash: 3340727469, Flags: 16509), LayoutImmutable]
-		public string BriefingSidTeam1 { get { return m_BriefingSidTeam1; } set { if (OnPropertyChanging("TacticalObjectiveEntityData." + nameof(BriefingSidTeam1), this, m_BriefingSidTeam1, value)) m_BriefingSidTeam1 = value; } } // 0x64 (100)
-		
-		protected string m_BriefingSidTeam2 = string.Empty;
-		[ContainerField(Name: "BriefingSidTeam2", Offset: 104, NameHash: 3340727470, Flags: 16509), LayoutImmutable]
-		public string BriefingSidTeam2 { get { return m_BriefingSidTeam2; } set { if (OnPropertyChanging("TacticalObjectiveEntityData." + nameof(BriefingSidTeam2), this, m_BriefingSidTeam2, value)) m_BriefingSidTeam2 = value; } } // 0x68 (104)
-		
-		protected float m_Team1Timer = new float();
-		[ContainerField(Name: "Team1Timer", Offset: 108, NameHash: 2082003598, Flags: 49469), LayoutImmutable, Blittable]
-		public float Team1Timer { get { return m_Team1Timer; } set { if (OnPropertyChanging("TacticalObjectiveEntityData." + nameof(Team1Timer), this, m_Team1Timer, value)) m_Team1Timer = value; } } // 0x6C (108)
-		
-		protected float m_Team2Timer = new float();
-		[ContainerField(Name: "Team2Timer", Offset: 112, NameHash: 2125739053, Flags: 49469), LayoutImmutable, Blittable]
-		public float Team2Timer { get { return m_Team2Timer; } set { if (OnPropertyChanging("TacticalObjectiveEntityData." + nameof(Team2Timer), this, m_Team2Timer, value)) m_Team2Timer = value; } } // 0x70 (112)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(96), LayoutImmutable]
+		public string MissionSid { get; set; } = string.Empty;
+
+		[ContainerField(100), LayoutImmutable]
+		public string BriefingSidTeam1 { get; set; } = string.Empty;
+
+		[ContainerField(104), LayoutImmutable]
+		public string BriefingSidTeam2 { get; set; } = string.Empty;
+
+		[ContainerField(108), LayoutImmutable, Blittable]
+		public float Team1Timer { get; set; }
+
+		[ContainerField(112), LayoutImmutable, Blittable]
+		public float Team2Timer { get; set; }
+
+		public static void Deserialize(TacticalObjectiveEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 1231602263:
-					MissionSid = (string) p_Value;
-					break;
-
-				case 3340727469:
-					BriefingSidTeam1 = (string) p_Value;
-					break;
-
-				case 3340727470:
-					BriefingSidTeam2 = (string) p_Value;
-					break;
-
-				case 2082003598:
-					Team1Timer = (float) p_Value;
-					break;
-
-				case 2125739053:
-					Team2Timer = (float) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
+			p_Instance.MissionSid = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
+			p_Instance.BriefingSidTeam1 = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
+			p_Instance.BriefingSidTeam2 = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
+			p_Instance.Team1Timer = p_Reader.ReadSingle();
+			p_Instance.Team2Timer = p_Reader.ReadSingle();
+			p_Reader.Seek(12, SeekOrigin.Current);
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1231602263:
-					return MissionSid;
-
-				case 3340727469:
-					return BriefingSidTeam1;
-
-				case 3340727470:
-					return BriefingSidTeam2;
-
-				case 2082003598:
-					return Team1Timer;
-
-				case 2125739053:
-					return Team2Timer;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1231602263:
-					return typeof(TacticalObjectiveEntityData).GetProperty(nameof(MissionSid));
-
-				case 3340727469:
-					return typeof(TacticalObjectiveEntityData).GetProperty(nameof(BriefingSidTeam1));
-
-				case 3340727470:
-					return typeof(TacticalObjectiveEntityData).GetProperty(nameof(BriefingSidTeam2));
-
-				case 2082003598:
-					return typeof(TacticalObjectiveEntityData).GetProperty(nameof(Team1Timer));
-
-				case 2125739053:
-					return typeof(TacticalObjectiveEntityData).GetProperty(nameof(Team2Timer));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

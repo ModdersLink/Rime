@@ -5,94 +5,54 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 20)]
+	[ContainerType(4, 20)]
 	public class InputCurveData : 
 		DataContainer
 	{
-		protected List<EntryInputActionEnum> m_AffectedInputs = new List<EntryInputActionEnum>();
-		[ContainerField(Name: "AffectedInputs", Offset: 8, NameHash: 337107346, Flags: 65)]
-		public List<EntryInputActionEnum> AffectedInputs { get { return m_AffectedInputs; } set { if (OnPropertyChanging("InputCurveData." + nameof(AffectedInputs), this, m_AffectedInputs, value)) m_AffectedInputs = value; } } // 0x8 (8)
-		
-		protected List<Vec2> m_InputModifierCurve = new List<Vec2>();
-		[ContainerField(Name: "InputModifierCurve", Offset: 12, NameHash: 1217881747, Flags: 65)]
-		public List<Vec2> InputModifierCurve { get { return m_InputModifierCurve; } set { if (OnPropertyChanging("InputCurveData." + nameof(InputModifierCurve), this, m_InputModifierCurve, value)) m_InputModifierCurve = value; } } // 0xC (12)
-		
-		protected bool m_HandleMultipleInputsAsSquare = new bool();
-		[ContainerField(Name: "HandleMultipleInputsAsSquare", Offset: 16, NameHash: 1190597481, Flags: 49325), LayoutImmutable, Blittable]
-		public bool HandleMultipleInputsAsSquare { get { return m_HandleMultipleInputsAsSquare; } set { if (OnPropertyChanging("InputCurveData." + nameof(HandleMultipleInputsAsSquare), this, m_HandleMultipleInputsAsSquare, value)) m_HandleMultipleInputsAsSquare = value; } } // 0x10 (16)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(8)]
+		public List<EntryInputActionEnum> AffectedInputs { get; set; } = new();
+
+		[ContainerField(12)]
+		public List<Vec2> InputModifierCurve { get; set; } = new();
+
+		[ContainerField(16), LayoutImmutable, Blittable]
+		public bool HandleMultipleInputsAsSquare { get; set; }
+
+		public static void Deserialize(InputCurveData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Instance.AffectedInputs.Clear();
+			(RimeReader Reader, uint Count) s_AffectedInputs = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_AffectedInputs.Count; ++i)
 			{
-				case 337107346:
-					if (p_Value.GetType() == typeof (List<uint>))
-						AffectedInputs = ((List<uint>) p_Value).Select(x => (EntryInputActionEnum) Enum.ToObject(typeof(EntryInputActionEnum), x)).ToList();
-					else
-						AffectedInputs = (List<EntryInputActionEnum>) p_Value;
-					break;
-
-				case 1217881747:
-					InputModifierCurve = (List<Vec2>) p_Value;
-					break;
-
-				case 1190597481:
-					HandleMultipleInputsAsSquare = (bool) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_Value = (EntryInputActionEnum) s_AffectedInputs.Reader.ReadInt32();
+				p_Instance.AffectedInputs.Add(s_Value);
 			}
+			
+			s_AffectedInputs.Reader.Dispose();
+			p_Instance.InputModifierCurve.Clear();
+			(RimeReader Reader, uint Count) s_InputModifierCurve = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_InputModifierCurve.Count; ++i)
+			{
+				var s_Value = new Vec2();
+				fb.Vec2.Deserialize(s_Value, s_InputModifierCurve.Reader, p_Parser);
+				p_Instance.InputModifierCurve.Add(s_Value);
+			}
+			
+			s_InputModifierCurve.Reader.Dispose();
+			p_Instance.HandleMultipleInputsAsSquare = p_Reader.ReadBool();
+			p_Reader.Seek(3, SeekOrigin.Current);
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 337107346:
-					return AffectedInputs;
-
-				case 1217881747:
-					return InputModifierCurve;
-
-				case 1190597481:
-					return HandleMultipleInputsAsSquare;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 337107346:
-					return typeof(InputCurveData).GetProperty(nameof(AffectedInputs));
-
-				case 1217881747:
-					return typeof(InputCurveData).GetProperty(nameof(InputModifierCurve));
-
-				case 1190597481:
-					return typeof(InputCurveData).GetProperty(nameof(HandleMultipleInputsAsSquare));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

@@ -5,126 +5,62 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 41, Size: 36)]
-	public class BasicUnlockInfo : FrostbiteContainer
+	[ContainerType(4, 36)]
+	public class BasicUnlockInfo
 	{
-		[ContainerField(Name: "UnlockGuid", Offset: 0, NameHash: 1036441738, Flags: 49501), LayoutImmutable, Blittable]
-		public GUID UnlockGuid { get; set; } // 0x0 (0)
+		[ContainerField(0), LayoutImmutable, Blittable]
+		public GUID UnlockGuid { get; set; }
 		
-		[ContainerField(Name: "Identifier", Offset: 16, NameHash: 3512790342, Flags: 49421), LayoutImmutable, Blittable]
-		public uint Identifier { get; set; } // 0x10 (16)
+		[ContainerField(16), LayoutImmutable, Blittable]
+		public uint Identifier { get; set; }
 		
-		[ContainerField(Name: "UnlockScore", Offset: 20, NameHash: 4124076605, Flags: 49421), LayoutImmutable, Blittable]
-		public uint UnlockScore { get; set; } // 0x14 (20)
+		[ContainerField(20), LayoutImmutable, Blittable]
+		public uint UnlockScore { get; set; }
 		
-		[ContainerField(Name: "Licenses", Offset: 24, NameHash: 2259172461, Flags: 65)]
-		public List<string> Licenses { get; set; } = new List<string>(); // 0x18 (24)
+		[ContainerField(24)]
+		public List<string> Licenses { get; set; } = new();
 		
-		[ContainerField(Name: "AdditionalLicenses", Offset: 28, NameHash: 2557362420, Flags: 65)]
-		public List<string> AdditionalLicenses { get; set; } = new List<string>(); // 0x1C (28)
+		[ContainerField(28)]
+		public List<string> AdditionalLicenses { get; set; } = new();
 		
-		[ContainerField(Name: "StringId", Offset: 32, NameHash: 3536090717, Flags: 16509), LayoutImmutable]
-		public string StringId { get; set; } // 0x20 (32)
+		[ContainerField(32), LayoutImmutable]
+		public string StringId { get; set; } = string.Empty;
 		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		public static void Deserialize(BasicUnlockInfo p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Instance.UnlockGuid = new GUID(p_Reader);
+			p_Instance.Identifier = p_Reader.ReadUInt32();
+			p_Instance.UnlockScore = p_Reader.ReadUInt32();
+			p_Instance.Licenses.Clear();
+			(RimeReader Reader, uint Count) s_Licenses = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_Licenses.Count; ++i)
 			{
-				case 1036441738:
-					UnlockGuid = (GUID) p_Value;
-					break;
-
-				case 3512790342:
-					Identifier = (uint) p_Value;
-					break;
-
-				case 4124076605:
-					UnlockScore = (uint) p_Value;
-					break;
-
-				case 2259172461:
-					Licenses = (List<string>) p_Value;
-					break;
-
-				case 2557362420:
-					AdditionalLicenses = (List<string>) p_Value;
-					break;
-
-				case 3536090717:
-					StringId = (string) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_Value = p_Parser.GetStringAtOffset(s_Licenses.Reader.ReadUInt32());
+				p_Instance.Licenses.Add(s_Value);
 			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
+			
+			s_Licenses.Reader.Dispose();
+			p_Instance.AdditionalLicenses.Clear();
+			(RimeReader Reader, uint Count) s_AdditionalLicenses = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_AdditionalLicenses.Count; ++i)
 			{
-				case 1036441738:
-					return UnlockGuid;
-
-				case 3512790342:
-					return Identifier;
-
-				case 4124076605:
-					return UnlockScore;
-
-				case 2259172461:
-					return Licenses;
-
-				case 2557362420:
-					return AdditionalLicenses;
-
-				case 3536090717:
-					return StringId;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
+				var s_Value = p_Parser.GetStringAtOffset(s_AdditionalLicenses.Reader.ReadUInt32());
+				p_Instance.AdditionalLicenses.Add(s_Value);
 			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1036441738:
-					return typeof(BasicUnlockInfo).GetProperty(nameof(UnlockGuid));
-
-				case 3512790342:
-					return typeof(BasicUnlockInfo).GetProperty(nameof(Identifier));
-
-				case 4124076605:
-					return typeof(BasicUnlockInfo).GetProperty(nameof(UnlockScore));
-
-				case 2259172461:
-					return typeof(BasicUnlockInfo).GetProperty(nameof(Licenses));
-
-				case 2557362420:
-					return typeof(BasicUnlockInfo).GetProperty(nameof(AdditionalLicenses));
-
-				case 3536090717:
-					return typeof(BasicUnlockInfo).GetProperty(nameof(StringId));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
+			
+			s_AdditionalLicenses.Reader.Dispose();
+			p_Instance.StringId = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
 		}
 	}
 }

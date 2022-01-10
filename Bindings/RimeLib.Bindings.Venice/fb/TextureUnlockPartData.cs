@@ -5,63 +5,28 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 12)]
+	[ContainerType(4, 12)]
 	public class TextureUnlockPartData : 
 		DataContainer
 	{
-		protected CtrRef<TextureReference> m_TextureReference = new CtrRef<TextureReference>();
-		[ContainerField(Name: "TextureReference", Offset: 8, NameHash: 2751309329, Flags: 53)]
-		public CtrRef<TextureReference> TextureReference { get { return m_TextureReference; } set { if (OnPropertyChanging("TextureUnlockPartData." + nameof(TextureReference), this, m_TextureReference, value)) m_TextureReference = value; } } // 0x8 (8)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 2751309329:
-					TextureReference = (CtrRef<TextureReference>) p_Value;
-					break;
+		[ContainerField(8)]
+		public CtrRef<TextureReference> TextureReference { get; set; } = new();
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
+		public static void Deserialize(TextureUnlockPartData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
+		{
+			p_Instance.TextureReference.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2751309329:
-					return TextureReference;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2751309329:
-					return typeof(TextureUnlockPartData).GetProperty(nameof(TextureReference));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

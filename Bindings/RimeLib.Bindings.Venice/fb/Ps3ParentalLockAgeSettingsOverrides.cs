@@ -5,63 +5,37 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 12)]
+	[ContainerType(4, 12)]
 	public class Ps3ParentalLockAgeSettingsOverrides : 
 		DataContainer
 	{
-		protected List<Ps3ParentalLockAgeSettingsForCountry> m_Overrides = new List<Ps3ParentalLockAgeSettingsForCountry>();
-		[ContainerField(Name: "Overrides", Offset: 8, NameHash: 2465446370, Flags: 65)]
-		public List<Ps3ParentalLockAgeSettingsForCountry> Overrides { get { return m_Overrides; } set { if (OnPropertyChanging("Ps3ParentalLockAgeSettingsOverrides." + nameof(Overrides), this, m_Overrides, value)) m_Overrides = value; } } // 0x8 (8)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 2465446370:
-					Overrides = (List<Ps3ParentalLockAgeSettingsForCountry>) p_Value;
-					break;
+		[ContainerField(8)]
+		public List<Ps3ParentalLockAgeSettingsForCountry> Overrides { get; set; } = new();
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+		public static void Deserialize(Ps3ParentalLockAgeSettingsOverrides p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
+		{
+			p_Instance.Overrides.Clear();
+			(RimeReader Reader, uint Count) s_Overrides = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_Overrides.Count; ++i)
+			{
+				var s_Value = new Ps3ParentalLockAgeSettingsForCountry();
+				fb.Ps3ParentalLockAgeSettingsForCountry.Deserialize(s_Value, s_Overrides.Reader, p_Parser);
+				p_Instance.Overrides.Add(s_Value);
 			}
+			
+			s_Overrides.Reader.Dispose();
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2465446370:
-					return Overrides;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2465446370:
-					return typeof(Ps3ParentalLockAgeSettingsOverrides).GetProperty(nameof(Overrides));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

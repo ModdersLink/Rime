@@ -5,91 +5,54 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 20)]
+	[ContainerType(4, 20)]
 	public class ShaderCustomizationUnlockPartCollection : 
 		DataContainer
 	{
-		protected RefArray<ObjectBlueprint> m_MeshBlueprints = new RefArray<ObjectBlueprint>();
-		[ContainerField(Name: "MeshBlueprints", Offset: 8, NameHash: 3317903690, Flags: 65)]
-		public RefArray<ObjectBlueprint> MeshBlueprints { get { return m_MeshBlueprints; } set { if (OnPropertyChanging("ShaderCustomizationUnlockPartCollection." + nameof(MeshBlueprints), this, m_MeshBlueprints, value)) m_MeshBlueprints = value; } } // 0x8 (8)
-		
-		protected string m_ShaderNodeName = string.Empty;
-		[ContainerField(Name: "ShaderNodeName", Offset: 12, NameHash: 4213969131, Flags: 16509), LayoutImmutable]
-		public string ShaderNodeName { get { return m_ShaderNodeName; } set { if (OnPropertyChanging("ShaderCustomizationUnlockPartCollection." + nameof(ShaderNodeName), this, m_ShaderNodeName, value)) m_ShaderNodeName = value; } } // 0xC (12)
-		
-		protected List<CustomizedMeshMaterialsData> m_MeshMaterials = new List<CustomizedMeshMaterialsData>();
-		[ContainerField(Name: "MeshMaterials", Offset: 16, NameHash: 3833968526, Flags: 65)]
-		public List<CustomizedMeshMaterialsData> MeshMaterials { get { return m_MeshMaterials; } set { if (OnPropertyChanging("ShaderCustomizationUnlockPartCollection." + nameof(MeshMaterials), this, m_MeshMaterials, value)) m_MeshMaterials = value; } } // 0x10 (16)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(8)]
+		public List<CtrRef<ObjectBlueprint>> MeshBlueprints { get; set; } = new();
+
+		[ContainerField(12), LayoutImmutable]
+		public string ShaderNodeName { get; set; } = string.Empty;
+
+		[ContainerField(16)]
+		public List<CustomizedMeshMaterialsData> MeshMaterials { get; set; } = new();
+
+		public static void Deserialize(ShaderCustomizationUnlockPartCollection p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Instance.MeshBlueprints.Clear();
+			(RimeReader Reader, uint Count) s_MeshBlueprints = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_MeshBlueprints.Count; ++i)
 			{
-				case 3317903690:
-					MeshBlueprints = (RefArray<ObjectBlueprint>) p_Value;
-					break;
-
-				case 4213969131:
-					ShaderNodeName = (string) p_Value;
-					break;
-
-				case 3833968526:
-					MeshMaterials = (List<CustomizedMeshMaterialsData>) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_CtrRef = new CtrRef<ObjectBlueprint>();
+				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_MeshBlueprints.Reader.ReadUInt32()));
+				p_Instance.MeshBlueprints.Add(s_CtrRef);
 			}
+			
+			s_MeshBlueprints.Reader.Dispose();
+			p_Instance.ShaderNodeName = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
+			p_Instance.MeshMaterials.Clear();
+			(RimeReader Reader, uint Count) s_MeshMaterials = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_MeshMaterials.Count; ++i)
+			{
+				var s_Value = new CustomizedMeshMaterialsData();
+				fb.CustomizedMeshMaterialsData.Deserialize(s_Value, s_MeshMaterials.Reader, p_Parser);
+				p_Instance.MeshMaterials.Add(s_Value);
+			}
+			
+			s_MeshMaterials.Reader.Dispose();
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3317903690:
-					return MeshBlueprints;
-
-				case 4213969131:
-					return ShaderNodeName;
-
-				case 3833968526:
-					return MeshMaterials;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3317903690:
-					return typeof(ShaderCustomizationUnlockPartCollection).GetProperty(nameof(MeshBlueprints));
-
-				case 4213969131:
-					return typeof(ShaderCustomizationUnlockPartCollection).GetProperty(nameof(ShaderNodeName));
-
-				case 3833968526:
-					return typeof(ShaderCustomizationUnlockPartCollection).GetProperty(nameof(MeshMaterials));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

@@ -5,63 +5,37 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
+	[ContainerType(4, 16)]
 	public class StaticUnlockList : 
 		Asset
 	{
-		protected List<BasicUnlockInfo> m_UnlockInfos = new List<BasicUnlockInfo>();
-		[ContainerField(Name: "UnlockInfos", Offset: 12, NameHash: 4145033000, Flags: 65)]
-		public List<BasicUnlockInfo> UnlockInfos { get { return m_UnlockInfos; } set { if (OnPropertyChanging("StaticUnlockList." + nameof(UnlockInfos), this, m_UnlockInfos, value)) m_UnlockInfos = value; } } // 0xC (12)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 4145033000:
-					UnlockInfos = (List<BasicUnlockInfo>) p_Value;
-					break;
+		[ContainerField(12)]
+		public List<BasicUnlockInfo> UnlockInfos { get; set; } = new();
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+		public static void Deserialize(StaticUnlockList p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
+		{
+			p_Instance.UnlockInfos.Clear();
+			(RimeReader Reader, uint Count) s_UnlockInfos = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_UnlockInfos.Count; ++i)
+			{
+				var s_Value = new BasicUnlockInfo();
+				fb.BasicUnlockInfo.Deserialize(s_Value, s_UnlockInfos.Reader, p_Parser);
+				p_Instance.UnlockInfos.Add(s_Value);
 			}
+			
+			s_UnlockInfos.Reader.Dispose();
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 4145033000:
-					return UnlockInfos;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 4145033000:
-					return typeof(StaticUnlockList).GetProperty(nameof(UnlockInfos));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

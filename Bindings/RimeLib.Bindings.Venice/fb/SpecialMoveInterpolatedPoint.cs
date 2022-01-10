@@ -5,74 +5,31 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 16,  Flags: 41, Size: 32)]
-	public class SpecialMoveInterpolatedPoint : FrostbiteContainer
+	[ContainerType(16, 32)]
+	public class SpecialMoveInterpolatedPoint
 	{
-		[ContainerField(Name: "Value", Offset: 0, NameHash: 225375086, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 Value { get; set; } = new Vec3(); // 0x0 (0)
+		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable]
+		public Vec3 Value { get; set; } = new();
 		
-		[ContainerField(Name: "Time", Offset: 16, NameHash: 2089313744, Flags: 49469), LayoutImmutable, Blittable]
-		public float Time { get; set; } // 0x10 (16)
+		[ContainerField(16), LayoutImmutable, Blittable]
+		public float Time { get; set; }
 		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		public static void Deserialize(SpecialMoveInterpolatedPoint p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 225375086:
-					Value = (Vec3) p_Value;
-					break;
-
-				case 2089313744:
-					Time = (float) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 225375086:
-					return Value;
-
-				case 2089313744:
-					return Time;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 225375086:
-					return typeof(SpecialMoveInterpolatedPoint).GetProperty(nameof(Value));
-
-				case 2089313744:
-					return typeof(SpecialMoveInterpolatedPoint).GetProperty(nameof(Time));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
+			fb.Vec3.Deserialize(p_Instance.Value, p_Reader, p_Parser);
+			p_Instance.Time = p_Reader.ReadSingle();
+			p_Reader.Seek(12, SeekOrigin.Current);
 		}
 	}
 }

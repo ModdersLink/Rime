@@ -5,61 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 41, Size: 4)]
-	public class GameTipData : FrostbiteContainer
+	[ContainerType(4, 4)]
+	public class GameTipData
 	{
-		[ContainerField(Name: "Text", Offset: 0, NameHash: 2089309304, Flags: 16509), LayoutImmutable]
-		public string Text { get; set; } // 0x0 (0)
+		[ContainerField(0), LayoutImmutable]
+		public string Text { get; set; } = string.Empty;
 		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		public static void Deserialize(GameTipData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 2089309304:
-					Text = (string) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2089309304:
-					return Text;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2089309304:
-					return typeof(GameTipData).GetProperty(nameof(Text));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
+			p_Instance.Text = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
 		}
 	}
 }

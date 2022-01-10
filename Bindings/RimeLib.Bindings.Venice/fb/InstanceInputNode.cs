@@ -5,63 +5,28 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 24)]
+	[ContainerType(4, 24)]
 	public class InstanceInputNode : 
 		UINodeData
 	{
-		protected CtrRef<UINodePort> m_Out = new CtrRef<UINodePort>();
-		[ContainerField(Name: "Out", Offset: 20, NameHash: 193453899, Flags: 53)]
-		public CtrRef<UINodePort> Out { get { return m_Out; } set { if (OnPropertyChanging("InstanceInputNode." + nameof(Out), this, m_Out, value)) m_Out = value; } } // 0x14 (20)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 193453899:
-					Out = (CtrRef<UINodePort>) p_Value;
-					break;
+		[ContainerField(20)]
+		public CtrRef<UINodePort> Out { get; set; } = new();
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
+		public static void Deserialize(InstanceInputNode p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
+		{
+			p_Instance.Out.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 193453899:
-					return Out;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 193453899:
-					return typeof(InstanceInputNode).GetProperty(nameof(Out));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

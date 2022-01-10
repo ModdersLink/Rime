@@ -5,133 +5,84 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 28)]
+	[ContainerType(4, 28)]
 	public class AudioGraphData : 
 		DataContainer
 	{
-		protected RefArray<AudioGraphNodeData> m_Nodes = new RefArray<AudioGraphNodeData>();
-		[ContainerField(Name: "Nodes", Offset: 8, NameHash: 215794742, Flags: 65)]
-		public RefArray<AudioGraphNodeData> Nodes { get { return m_Nodes; } set { if (OnPropertyChanging("AudioGraphData." + nameof(Nodes), this, m_Nodes, value)) m_Nodes = value; } } // 0x8 (8)
-		
-		protected RefArray<AudioGraphParameter> m_PublicParameters = new RefArray<AudioGraphParameter>();
-		[ContainerField(Name: "PublicParameters", Offset: 12, NameHash: 3369464478, Flags: 65)]
-		public RefArray<AudioGraphParameter> PublicParameters { get { return m_PublicParameters; } set { if (OnPropertyChanging("AudioGraphData." + nameof(PublicParameters), this, m_PublicParameters, value)) m_PublicParameters = value; } } // 0xC (12)
-		
-		protected RefArray<AudioGraphEvent> m_PublicEvents = new RefArray<AudioGraphEvent>();
-		[ContainerField(Name: "PublicEvents", Offset: 16, NameHash: 3604259899, Flags: 65)]
-		public RefArray<AudioGraphEvent> PublicEvents { get { return m_PublicEvents; } set { if (OnPropertyChanging("AudioGraphData." + nameof(PublicEvents), this, m_PublicEvents, value)) m_PublicEvents = value; } } // 0x10 (16)
-		
-		protected RefArray<AudioGraphAssetParameter> m_PublicAssetParameters = new RefArray<AudioGraphAssetParameter>();
-		[ContainerField(Name: "PublicAssetParameters", Offset: 20, NameHash: 2006735054, Flags: 65)]
-		public RefArray<AudioGraphAssetParameter> PublicAssetParameters { get { return m_PublicAssetParameters; } set { if (OnPropertyChanging("AudioGraphData." + nameof(PublicAssetParameters), this, m_PublicAssetParameters, value)) m_PublicAssetParameters = value; } } // 0x14 (20)
-		
-		protected ushort m_PublicValueCount = new ushort();
-		[ContainerField(Name: "PublicValueCount", Offset: 24, NameHash: 4219205324, Flags: 49389), LayoutImmutable, Blittable]
-		public ushort PublicValueCount { get { return m_PublicValueCount; } set { if (OnPropertyChanging("AudioGraphData." + nameof(PublicValueCount), this, m_PublicValueCount, value)) m_PublicValueCount = value; } } // 0x18 (24)
-		
-		protected ushort m_ValueCount = new ushort();
-		[ContainerField(Name: "ValueCount", Offset: 26, NameHash: 2096746893, Flags: 49389), LayoutImmutable, Blittable]
-		public ushort ValueCount { get { return m_ValueCount; } set { if (OnPropertyChanging("AudioGraphData." + nameof(ValueCount), this, m_ValueCount, value)) m_ValueCount = value; } } // 0x1A (26)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(8)]
+		public List<CtrRef<AudioGraphNodeData>> Nodes { get; set; } = new();
+
+		[ContainerField(12)]
+		public List<CtrRef<AudioGraphParameter>> PublicParameters { get; set; } = new();
+
+		[ContainerField(16)]
+		public List<CtrRef<AudioGraphEvent>> PublicEvents { get; set; } = new();
+
+		[ContainerField(20)]
+		public List<CtrRef<AudioGraphAssetParameter>> PublicAssetParameters { get; set; } = new();
+
+		[ContainerField(24), LayoutImmutable, Blittable]
+		public ushort PublicValueCount { get; set; }
+
+		[ContainerField(26), LayoutImmutable, Blittable]
+		public ushort ValueCount { get; set; }
+
+		public static void Deserialize(AudioGraphData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Instance.Nodes.Clear();
+			(RimeReader Reader, uint Count) s_Nodes = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_Nodes.Count; ++i)
 			{
-				case 215794742:
-					Nodes = (RefArray<AudioGraphNodeData>) p_Value;
-					break;
-
-				case 3369464478:
-					PublicParameters = (RefArray<AudioGraphParameter>) p_Value;
-					break;
-
-				case 3604259899:
-					PublicEvents = (RefArray<AudioGraphEvent>) p_Value;
-					break;
-
-				case 2006735054:
-					PublicAssetParameters = (RefArray<AudioGraphAssetParameter>) p_Value;
-					break;
-
-				case 4219205324:
-					PublicValueCount = (ushort) p_Value;
-					break;
-
-				case 2096746893:
-					ValueCount = (ushort) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_CtrRef = new CtrRef<AudioGraphNodeData>();
+				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_Nodes.Reader.ReadUInt32()));
+				p_Instance.Nodes.Add(s_CtrRef);
 			}
+			
+			s_Nodes.Reader.Dispose();
+			p_Instance.PublicParameters.Clear();
+			(RimeReader Reader, uint Count) s_PublicParameters = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_PublicParameters.Count; ++i)
+			{
+				var s_CtrRef = new CtrRef<AudioGraphParameter>();
+				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_PublicParameters.Reader.ReadUInt32()));
+				p_Instance.PublicParameters.Add(s_CtrRef);
+			}
+			
+			s_PublicParameters.Reader.Dispose();
+			p_Instance.PublicEvents.Clear();
+			(RimeReader Reader, uint Count) s_PublicEvents = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_PublicEvents.Count; ++i)
+			{
+				var s_CtrRef = new CtrRef<AudioGraphEvent>();
+				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_PublicEvents.Reader.ReadUInt32()));
+				p_Instance.PublicEvents.Add(s_CtrRef);
+			}
+			
+			s_PublicEvents.Reader.Dispose();
+			p_Instance.PublicAssetParameters.Clear();
+			(RimeReader Reader, uint Count) s_PublicAssetParameters = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_PublicAssetParameters.Count; ++i)
+			{
+				var s_CtrRef = new CtrRef<AudioGraphAssetParameter>();
+				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_PublicAssetParameters.Reader.ReadUInt32()));
+				p_Instance.PublicAssetParameters.Add(s_CtrRef);
+			}
+			
+			s_PublicAssetParameters.Reader.Dispose();
+			p_Instance.PublicValueCount = p_Reader.ReadUInt16();
+			p_Instance.ValueCount = p_Reader.ReadUInt16();
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 215794742:
-					return Nodes;
-
-				case 3369464478:
-					return PublicParameters;
-
-				case 3604259899:
-					return PublicEvents;
-
-				case 2006735054:
-					return PublicAssetParameters;
-
-				case 4219205324:
-					return PublicValueCount;
-
-				case 2096746893:
-					return ValueCount;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 215794742:
-					return typeof(AudioGraphData).GetProperty(nameof(Nodes));
-
-				case 3369464478:
-					return typeof(AudioGraphData).GetProperty(nameof(PublicParameters));
-
-				case 3604259899:
-					return typeof(AudioGraphData).GetProperty(nameof(PublicEvents));
-
-				case 2006735054:
-					return typeof(AudioGraphData).GetProperty(nameof(PublicAssetParameters));
-
-				case 4219205324:
-					return typeof(AudioGraphData).GetProperty(nameof(PublicValueCount));
-
-				case 2096746893:
-					return typeof(AudioGraphData).GetProperty(nameof(ValueCount));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

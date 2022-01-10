@@ -5,74 +5,48 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 41, Size: 8)]
-	public class MaterialRelationPropertyPair : FrostbiteContainer
+	[ContainerType(4, 8)]
+	public class MaterialRelationPropertyPair
 	{
-		[ContainerField(Name: "PhysicsMaterialProperties", Offset: 0, NameHash: 1069720196, Flags: 65)]
-		public RefArray<PhysicsMaterialRelationPropertyData> PhysicsMaterialProperties { get; set; } = new RefArray<PhysicsMaterialRelationPropertyData>(); // 0x0 (0)
+		[ContainerField(0)]
+		public List<CtrRef<PhysicsMaterialRelationPropertyData>> PhysicsMaterialProperties { get; set; } = new();
 		
-		[ContainerField(Name: "PhysicsPropertyProperties", Offset: 4, NameHash: 1287888840, Flags: 65)]
-		public RefArray<PhysicsPropertyRelationPropertyData> PhysicsPropertyProperties { get; set; } = new RefArray<PhysicsPropertyRelationPropertyData>(); // 0x4 (4)
+		[ContainerField(4)]
+		public List<CtrRef<PhysicsPropertyRelationPropertyData>> PhysicsPropertyProperties { get; set; } = new();
 		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		public static void Deserialize(MaterialRelationPropertyPair p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Instance.PhysicsMaterialProperties.Clear();
+			(RimeReader Reader, uint Count) s_PhysicsMaterialProperties = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_PhysicsMaterialProperties.Count; ++i)
 			{
-				case 1069720196:
-					PhysicsMaterialProperties = (RefArray<PhysicsMaterialRelationPropertyData>) p_Value;
-					break;
-
-				case 1287888840:
-					PhysicsPropertyProperties = (RefArray<PhysicsPropertyRelationPropertyData>) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_CtrRef = new CtrRef<PhysicsMaterialRelationPropertyData>();
+				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_PhysicsMaterialProperties.Reader.ReadUInt32()));
+				p_Instance.PhysicsMaterialProperties.Add(s_CtrRef);
 			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
+			
+			s_PhysicsMaterialProperties.Reader.Dispose();
+			p_Instance.PhysicsPropertyProperties.Clear();
+			(RimeReader Reader, uint Count) s_PhysicsPropertyProperties = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_PhysicsPropertyProperties.Count; ++i)
 			{
-				case 1069720196:
-					return PhysicsMaterialProperties;
-
-				case 1287888840:
-					return PhysicsPropertyProperties;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
+				var s_CtrRef = new CtrRef<PhysicsPropertyRelationPropertyData>();
+				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_PhysicsPropertyProperties.Reader.ReadUInt32()));
+				p_Instance.PhysicsPropertyProperties.Add(s_CtrRef);
 			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1069720196:
-					return typeof(MaterialRelationPropertyPair).GetProperty(nameof(PhysicsMaterialProperties));
-
-				case 1287888840:
-					return typeof(MaterialRelationPropertyPair).GetProperty(nameof(PhysicsPropertyProperties));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
+			
+			s_PhysicsPropertyProperties.Reader.Dispose();
 		}
 	}
 }

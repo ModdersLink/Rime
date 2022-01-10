@@ -5,91 +5,40 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 16,  Flags: 53, Size: 48)]
+	[ContainerType(16, 48)]
 	public class RadiosityMaterial : 
 		DataContainer
 	{
-		protected Vec3 m_Color = new Vec3();
-		[ContainerField(Name: "Color", Offset: 16, NameHash: 212387320, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 Color { get { return m_Color; } set { if (OnPropertyChanging("RadiosityMaterial." + nameof(Color), this, m_Color, value)) m_Color = value; } } // 0x10 (16)
-		
-		protected string m_Name = string.Empty;
-		[ContainerField(Name: "Name", Offset: 32, NameHash: 2088949890, Flags: 16509), LayoutImmutable]
-		public string Name { get { return m_Name; } set { if (OnPropertyChanging("RadiosityMaterial." + nameof(Name), this, m_Name, value)) m_Name = value; } } // 0x20 (32)
-		
-		protected bool m_Emissive = new bool();
-		[ContainerField(Name: "Emissive", Offset: 36, NameHash: 782359646, Flags: 49325), LayoutImmutable, Blittable]
-		public bool Emissive { get { return m_Emissive; } set { if (OnPropertyChanging("RadiosityMaterial." + nameof(Emissive), this, m_Emissive, value)) m_Emissive = value; } } // 0x24 (36)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable]
+		public Vec3 Color { get; set; } = new();
+
+		[ContainerField(32), LayoutImmutable]
+		public string Name { get; set; } = string.Empty;
+
+		[ContainerField(36), LayoutImmutable, Blittable]
+		public bool Emissive { get; set; }
+
+		public static void Deserialize(RadiosityMaterial p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 212387320:
-					Color = (Vec3) p_Value;
-					break;
-
-				case 2088949890:
-					Name = (string) p_Value;
-					break;
-
-				case 782359646:
-					Emissive = (bool) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
+			p_Reader.Seek(8, SeekOrigin.Current);
+			fb.Vec3.Deserialize(p_Instance.Color, p_Reader, p_Parser);
+			p_Reader.Seek(8, SeekOrigin.Current);
+			p_Instance.Name = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
+			p_Reader.Seek(8, SeekOrigin.Current);
+			p_Instance.Emissive = p_Reader.ReadBool();
+			p_Reader.Seek(19, SeekOrigin.Current);
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 212387320:
-					return Color;
-
-				case 2088949890:
-					return Name;
-
-				case 782359646:
-					return Emissive;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 212387320:
-					return typeof(RadiosityMaterial).GetProperty(nameof(Color));
-
-				case 2088949890:
-					return typeof(RadiosityMaterial).GetProperty(nameof(Name));
-
-				case 782359646:
-					return typeof(RadiosityMaterial).GetProperty(nameof(Emissive));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

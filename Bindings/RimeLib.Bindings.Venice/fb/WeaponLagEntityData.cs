@@ -5,63 +5,28 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 32)]
+	[ContainerType(4, 32)]
 	public class WeaponLagEntityData : 
 		EntityData
 	{
-		protected WeaponLagBinding m_Binding = new WeaponLagBinding();
-		[ContainerField(Name: "Binding", Offset: 12, NameHash: 2590060228, Flags: 41)]
-		public WeaponLagBinding Binding { get { return m_Binding; } set { if (OnPropertyChanging("WeaponLagEntityData." + nameof(Binding), this, m_Binding, value)) m_Binding = value; } } // 0xC (12)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 2590060228:
-					Binding = (WeaponLagBinding) p_Value;
-					break;
+		[ContainerField(12)]
+		public WeaponLagBinding Binding { get; set; } = new();
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
+		public static void Deserialize(WeaponLagEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
+		{
+			fb.WeaponLagBinding.Deserialize(p_Instance.Binding, p_Reader, p_Parser);
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2590060228:
-					return Binding;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2590060228:
-					return typeof(WeaponLagEntityData).GetProperty(nameof(Binding));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

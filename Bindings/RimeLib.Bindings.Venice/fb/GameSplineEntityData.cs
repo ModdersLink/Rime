@@ -5,91 +5,55 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 16,  Flags: 53, Size: 112)]
+	[ContainerType(16, 112)]
 	public class GameSplineEntityData : 
 		GameEntityData
 	{
-		protected GameSplineType m_SplineType = new GameSplineType();
-		[ContainerField(Name: "SplineType", Offset: 96, NameHash: 3992327344, Flags: 137)]
-		public GameSplineType SplineType { get { return m_SplineType; } set { if (OnPropertyChanging("GameSplineEntityData." + nameof(SplineType), this, m_SplineType, value)) m_SplineType = value; } } // 0x60 (96)
-		
-		protected List<Vec3> m_LocalPoints = new List<Vec3>();
-		[ContainerField(Name: "LocalPoints", Offset: 100, NameHash: 168850167, Flags: 65)]
-		public List<Vec3> LocalPoints { get { return m_LocalPoints; } set { if (OnPropertyChanging("GameSplineEntityData." + nameof(LocalPoints), this, m_LocalPoints, value)) m_LocalPoints = value; } } // 0x64 (100)
-		
-		protected List<Vec3> m_Normals = new List<Vec3>();
-		[ContainerField(Name: "Normals", Offset: 104, NameHash: 3102907301, Flags: 65)]
-		public List<Vec3> Normals { get { return m_Normals; } set { if (OnPropertyChanging("GameSplineEntityData." + nameof(Normals), this, m_Normals, value)) m_Normals = value; } } // 0x68 (104)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(96)]
+		public GameSplineType SplineType { get; set; } = new();
+
+		[ContainerField(100)]
+		public List<Vec3> LocalPoints { get; set; } = new();
+
+		[ContainerField(104)]
+		public List<Vec3> Normals { get; set; } = new();
+
+		public static void Deserialize(GameSplineEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Instance.SplineType = (GameSplineType) p_Reader.ReadInt32();
+			p_Instance.LocalPoints.Clear();
+			(RimeReader Reader, uint Count) s_LocalPoints = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_LocalPoints.Count; ++i)
 			{
-				case 3992327344:
-					SplineType = (GameSplineType) Enum.ToObject(typeof(GameSplineType), p_Value);
-					break;
-
-				case 168850167:
-					LocalPoints = (List<Vec3>) p_Value;
-					break;
-
-				case 3102907301:
-					Normals = (List<Vec3>) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_Value = new Vec3();
+				fb.Vec3.Deserialize(s_Value, s_LocalPoints.Reader, p_Parser);
+				p_Instance.LocalPoints.Add(s_Value);
 			}
+			
+			s_LocalPoints.Reader.Dispose();
+			p_Instance.Normals.Clear();
+			(RimeReader Reader, uint Count) s_Normals = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_Normals.Count; ++i)
+			{
+				var s_Value = new Vec3();
+				fb.Vec3.Deserialize(s_Value, s_Normals.Reader, p_Parser);
+				p_Instance.Normals.Add(s_Value);
+			}
+			
+			s_Normals.Reader.Dispose();
+			p_Reader.Seek(4, SeekOrigin.Current);
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3992327344:
-					return SplineType;
-
-				case 168850167:
-					return LocalPoints;
-
-				case 3102907301:
-					return Normals;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3992327344:
-					return typeof(GameSplineEntityData).GetProperty(nameof(SplineType));
-
-				case 168850167:
-					return typeof(GameSplineEntityData).GetProperty(nameof(LocalPoints));
-
-				case 3102907301:
-					return typeof(GameSplineEntityData).GetProperty(nameof(Normals));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

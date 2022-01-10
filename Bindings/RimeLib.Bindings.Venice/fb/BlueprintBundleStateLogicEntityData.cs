@@ -5,63 +5,37 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 16,  Flags: 53, Size: 112)]
+	[ContainerType(16, 112)]
 	public class BlueprintBundleStateLogicEntityData : 
 		GameEntityData
 	{
-		protected List<string> m_BundleNames = new List<string>();
-		[ContainerField(Name: "BundleNames", Offset: 96, NameHash: 2333280517, Flags: 65)]
-		public List<string> BundleNames { get { return m_BundleNames; } set { if (OnPropertyChanging("BlueprintBundleStateLogicEntityData." + nameof(BundleNames), this, m_BundleNames, value)) m_BundleNames = value; } } // 0x60 (96)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 2333280517:
-					BundleNames = (List<string>) p_Value;
-					break;
+		[ContainerField(96)]
+		public List<string> BundleNames { get; set; } = new();
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+		public static void Deserialize(BlueprintBundleStateLogicEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
+		{
+			p_Instance.BundleNames.Clear();
+			(RimeReader Reader, uint Count) s_BundleNames = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_BundleNames.Count; ++i)
+			{
+				var s_Value = p_Parser.GetStringAtOffset(s_BundleNames.Reader.ReadUInt32());
+				p_Instance.BundleNames.Add(s_Value);
 			}
+			
+			s_BundleNames.Reader.Dispose();
+			p_Reader.Seek(12, SeekOrigin.Current);
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2333280517:
-					return BundleNames;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2333280517:
-					return typeof(BlueprintBundleStateLogicEntityData).GetProperty(nameof(BundleNames));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

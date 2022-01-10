@@ -5,63 +5,28 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 32)]
+	[ContainerType(4, 32)]
 	public class UICombatAreaCompData : 
 		UIComponentData
 	{
-		protected string m_OutOfAreaSidPrefix = string.Empty;
-		[ContainerField(Name: "OutOfAreaSidPrefix", Offset: 28, NameHash: 3191885467, Flags: 16509), LayoutImmutable]
-		public string OutOfAreaSidPrefix { get { return m_OutOfAreaSidPrefix; } set { if (OnPropertyChanging("UICombatAreaCompData." + nameof(OutOfAreaSidPrefix), this, m_OutOfAreaSidPrefix, value)) m_OutOfAreaSidPrefix = value; } } // 0x1C (28)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 3191885467:
-					OutOfAreaSidPrefix = (string) p_Value;
-					break;
+		[ContainerField(28), LayoutImmutable]
+		public string OutOfAreaSidPrefix { get; set; } = string.Empty;
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
+		public static void Deserialize(UICombatAreaCompData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
+		{
+			p_Instance.OutOfAreaSidPrefix = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3191885467:
-					return OutOfAreaSidPrefix;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3191885467:
-					return typeof(UICombatAreaCompData).GetProperty(nameof(OutOfAreaSidPrefix));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

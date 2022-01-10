@@ -5,119 +5,53 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 32)]
+	[ContainerType(4, 32)]
 	public class CharacterCustomizationAsset : 
 		Asset
 	{
-		protected string m_LabelSid = string.Empty;
-		[ContainerField(Name: "LabelSid", Offset: 12, NameHash: 4044105085, Flags: 16509), LayoutImmutable]
-		public string LabelSid { get { return m_LabelSid; } set { if (OnPropertyChanging("CharacterCustomizationAsset." + nameof(LabelSid), this, m_LabelSid, value)) m_LabelSid = value; } } // 0xC (12)
-		
-		protected UIHudIcon m_UIHudIcon = new UIHudIcon();
-		[ContainerField(Name: "UIHudIcon", Offset: 16, NameHash: 3556510859, Flags: 137)]
-		public UIHudIcon UIHudIcon { get { return m_UIHudIcon; } set { if (OnPropertyChanging("CharacterCustomizationAsset." + nameof(UIHudIcon), this, m_UIHudIcon, value)) m_UIHudIcon = value; } } // 0x10 (16)
-		
-		protected RefArray<VoiceOverLabel> m_VoiceOverLabels = new RefArray<VoiceOverLabel>();
-		[ContainerField(Name: "VoiceOverLabels", Offset: 20, NameHash: 2741340584, Flags: 65)]
-		public RefArray<VoiceOverLabel> VoiceOverLabels { get { return m_VoiceOverLabels; } set { if (OnPropertyChanging("CharacterCustomizationAsset." + nameof(VoiceOverLabels), this, m_VoiceOverLabels, value)) m_VoiceOverLabels = value; } } // 0x14 (20)
-		
-		protected CtrRef<CustomizationTable> m_VisualTable = new CtrRef<CustomizationTable>();
-		[ContainerField(Name: "VisualTable", Offset: 24, NameHash: 277951407, Flags: 53)]
-		public CtrRef<CustomizationTable> VisualTable { get { return m_VisualTable; } set { if (OnPropertyChanging("CharacterCustomizationAsset." + nameof(VisualTable), this, m_VisualTable, value)) m_VisualTable = value; } } // 0x18 (24)
-		
-		protected CtrRef<CustomizationTable> m_SpecializationTable = new CtrRef<CustomizationTable>();
-		[ContainerField(Name: "SpecializationTable", Offset: 28, NameHash: 1559267348, Flags: 53)]
-		public CtrRef<CustomizationTable> SpecializationTable { get { return m_SpecializationTable; } set { if (OnPropertyChanging("CharacterCustomizationAsset." + nameof(SpecializationTable), this, m_SpecializationTable, value)) m_SpecializationTable = value; } } // 0x1C (28)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(12), LayoutImmutable]
+		public string LabelSid { get; set; } = string.Empty;
+
+		[ContainerField(16)]
+		public UIHudIcon UIHudIcon { get; set; } = new();
+
+		[ContainerField(20)]
+		public List<CtrRef<VoiceOverLabel>> VoiceOverLabels { get; set; } = new();
+
+		[ContainerField(24)]
+		public CtrRef<CustomizationTable> VisualTable { get; set; } = new();
+
+		[ContainerField(28)]
+		public CtrRef<CustomizationTable> SpecializationTable { get; set; } = new();
+
+		public static void Deserialize(CharacterCustomizationAsset p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Instance.LabelSid = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
+			p_Instance.UIHudIcon = (UIHudIcon) p_Reader.ReadInt32();
+			p_Instance.VoiceOverLabels.Clear();
+			(RimeReader Reader, uint Count) s_VoiceOverLabels = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_VoiceOverLabels.Count; ++i)
 			{
-				case 4044105085:
-					LabelSid = (string) p_Value;
-					break;
-
-				case 3556510859:
-					UIHudIcon = (UIHudIcon) Enum.ToObject(typeof(UIHudIcon), p_Value);
-					break;
-
-				case 2741340584:
-					VoiceOverLabels = (RefArray<VoiceOverLabel>) p_Value;
-					break;
-
-				case 277951407:
-					VisualTable = (CtrRef<CustomizationTable>) p_Value;
-					break;
-
-				case 1559267348:
-					SpecializationTable = (CtrRef<CustomizationTable>) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_CtrRef = new CtrRef<VoiceOverLabel>();
+				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_VoiceOverLabels.Reader.ReadUInt32()));
+				p_Instance.VoiceOverLabels.Add(s_CtrRef);
 			}
+			
+			s_VoiceOverLabels.Reader.Dispose();
+			p_Instance.VisualTable.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
+			p_Instance.SpecializationTable.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 4044105085:
-					return LabelSid;
-
-				case 3556510859:
-					return UIHudIcon;
-
-				case 2741340584:
-					return VoiceOverLabels;
-
-				case 277951407:
-					return VisualTable;
-
-				case 1559267348:
-					return SpecializationTable;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 4044105085:
-					return typeof(CharacterCustomizationAsset).GetProperty(nameof(LabelSid));
-
-				case 3556510859:
-					return typeof(CharacterCustomizationAsset).GetProperty(nameof(UIHudIcon));
-
-				case 2741340584:
-					return typeof(CharacterCustomizationAsset).GetProperty(nameof(VoiceOverLabels));
-
-				case 277951407:
-					return typeof(CharacterCustomizationAsset).GetProperty(nameof(VisualTable));
-
-				case 1559267348:
-					return typeof(CharacterCustomizationAsset).GetProperty(nameof(SpecializationTable));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

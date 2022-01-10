@@ -5,74 +5,31 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 41, Size: 8)]
-	public class ProfileOptionDataEnumItem : FrostbiteContainer
+	[ContainerType(4, 8)]
+	public class ProfileOptionDataEnumItem
 	{
-		[ContainerField(Name: "DisplayName", Offset: 0, NameHash: 1925224568, Flags: 16509), LayoutImmutable]
-		public string DisplayName { get; set; } // 0x0 (0)
+		[ContainerField(0), LayoutImmutable]
+		public string DisplayName { get; set; } = string.Empty;
 		
-		[ContainerField(Name: "Default", Offset: 4, NameHash: 3998752238, Flags: 49325), LayoutImmutable, Blittable]
-		public bool Default { get; set; } // 0x4 (4)
+		[ContainerField(4), LayoutImmutable, Blittable]
+		public bool Default { get; set; }
 		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		public static void Deserialize(ProfileOptionDataEnumItem p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 1925224568:
-					DisplayName = (string) p_Value;
-					break;
-
-				case 3998752238:
-					Default = (bool) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1925224568:
-					return DisplayName;
-
-				case 3998752238:
-					return Default;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1925224568:
-					return typeof(ProfileOptionDataEnumItem).GetProperty(nameof(DisplayName));
-
-				case 3998752238:
-					return typeof(ProfileOptionDataEnumItem).GetProperty(nameof(Default));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
+			p_Instance.DisplayName = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
+			p_Instance.Default = p_Reader.ReadBool();
+			p_Reader.Seek(3, SeekOrigin.Current);
 		}
 	}
 }

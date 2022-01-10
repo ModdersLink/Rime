@@ -5,77 +5,32 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 20)]
+	[ContainerType(4, 20)]
 	public class FloatUnlockValuePair : 
 		UnlockValuePair
 	{
-		protected float m_DefaultValue = new float();
-		[ContainerField(Name: "DefaultValue", Offset: 12, NameHash: 2066049125, Flags: 49469), LayoutImmutable, Blittable]
-		public float DefaultValue { get { return m_DefaultValue; } set { if (OnPropertyChanging("FloatUnlockValuePair." + nameof(DefaultValue), this, m_DefaultValue, value)) m_DefaultValue = value; } } // 0xC (12)
-		
-		protected float m_UnlockedValue = new float();
-		[ContainerField(Name: "UnlockedValue", Offset: 16, NameHash: 2493912799, Flags: 49469), LayoutImmutable, Blittable]
-		public float UnlockedValue { get { return m_UnlockedValue; } set { if (OnPropertyChanging("FloatUnlockValuePair." + nameof(UnlockedValue), this, m_UnlockedValue, value)) m_UnlockedValue = value; } } // 0x10 (16)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(12), LayoutImmutable, Blittable]
+		public float DefaultValue { get; set; }
+
+		[ContainerField(16), LayoutImmutable, Blittable]
+		public float UnlockedValue { get; set; }
+
+		public static void Deserialize(FloatUnlockValuePair p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 2066049125:
-					DefaultValue = (float) p_Value;
-					break;
-
-				case 2493912799:
-					UnlockedValue = (float) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
+			p_Instance.DefaultValue = p_Reader.ReadSingle();
+			p_Instance.UnlockedValue = p_Reader.ReadSingle();
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2066049125:
-					return DefaultValue;
-
-				case 2493912799:
-					return UnlockedValue;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2066049125:
-					return typeof(FloatUnlockValuePair).GetProperty(nameof(DefaultValue));
-
-				case 2493912799:
-					return typeof(FloatUnlockValuePair).GetProperty(nameof(UnlockedValue));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

@@ -5,77 +5,50 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
+	[ContainerType(4, 16)]
 	public class CollisionData : 
 		DataContainer
 	{
-		protected List<ValueAtX> m_DamageAtVerticalVelocity = new List<ValueAtX>();
-		[ContainerField(Name: "DamageAtVerticalVelocity", Offset: 8, NameHash: 670681886, Flags: 65)]
-		public List<ValueAtX> DamageAtVerticalVelocity { get { return m_DamageAtVerticalVelocity; } set { if (OnPropertyChanging("CollisionData." + nameof(DamageAtVerticalVelocity), this, m_DamageAtVerticalVelocity, value)) m_DamageAtVerticalVelocity = value; } } // 0x8 (8)
-		
-		protected List<ValueAtX> m_DamageAtHorizVelocity = new List<ValueAtX>();
-		[ContainerField(Name: "DamageAtHorizVelocity", Offset: 12, NameHash: 3966259722, Flags: 65)]
-		public List<ValueAtX> DamageAtHorizVelocity { get { return m_DamageAtHorizVelocity; } set { if (OnPropertyChanging("CollisionData." + nameof(DamageAtHorizVelocity), this, m_DamageAtHorizVelocity, value)) m_DamageAtHorizVelocity = value; } } // 0xC (12)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(8)]
+		public List<ValueAtX> DamageAtVerticalVelocity { get; set; } = new();
+
+		[ContainerField(12)]
+		public List<ValueAtX> DamageAtHorizVelocity { get; set; } = new();
+
+		public static void Deserialize(CollisionData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Instance.DamageAtVerticalVelocity.Clear();
+			(RimeReader Reader, uint Count) s_DamageAtVerticalVelocity = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_DamageAtVerticalVelocity.Count; ++i)
 			{
-				case 670681886:
-					DamageAtVerticalVelocity = (List<ValueAtX>) p_Value;
-					break;
-
-				case 3966259722:
-					DamageAtHorizVelocity = (List<ValueAtX>) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_Value = new ValueAtX();
+				fb.ValueAtX.Deserialize(s_Value, s_DamageAtVerticalVelocity.Reader, p_Parser);
+				p_Instance.DamageAtVerticalVelocity.Add(s_Value);
 			}
+			
+			s_DamageAtVerticalVelocity.Reader.Dispose();
+			p_Instance.DamageAtHorizVelocity.Clear();
+			(RimeReader Reader, uint Count) s_DamageAtHorizVelocity = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_DamageAtHorizVelocity.Count; ++i)
+			{
+				var s_Value = new ValueAtX();
+				fb.ValueAtX.Deserialize(s_Value, s_DamageAtHorizVelocity.Reader, p_Parser);
+				p_Instance.DamageAtHorizVelocity.Add(s_Value);
+			}
+			
+			s_DamageAtHorizVelocity.Reader.Dispose();
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 670681886:
-					return DamageAtVerticalVelocity;
-
-				case 3966259722:
-					return DamageAtHorizVelocity;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 670681886:
-					return typeof(CollisionData).GetProperty(nameof(DamageAtVerticalVelocity));
-
-				case 3966259722:
-					return typeof(CollisionData).GetProperty(nameof(DamageAtHorizVelocity));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

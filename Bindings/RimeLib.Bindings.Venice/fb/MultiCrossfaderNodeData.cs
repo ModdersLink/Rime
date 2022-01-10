@@ -5,119 +5,54 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 40)]
+	[ContainerType(4, 40)]
 	public class MultiCrossfaderNodeData : 
 		AudioGraphNodeData
 	{
-		protected RefArray<MultiCrossfaderGroup> m_CrossfaderGroups = new RefArray<MultiCrossfaderGroup>();
-		[ContainerField(Name: "CrossfaderGroups", Offset: 8, NameHash: 521495907, Flags: 65)]
-		public RefArray<MultiCrossfaderGroup> CrossfaderGroups { get { return m_CrossfaderGroups; } set { if (OnPropertyChanging("MultiCrossfaderNodeData." + nameof(CrossfaderGroups), this, m_CrossfaderGroups, value)) m_CrossfaderGroups = value; } } // 0x8 (8)
-		
-		protected AudioGraphNodePort m_Start = new AudioGraphNodePort();
-		[ContainerField(Name: "Start", Offset: 12, NameHash: 230748069, Flags: 41)]
-		public AudioGraphNodePort Start { get { return m_Start; } set { if (OnPropertyChanging("MultiCrossfaderNodeData." + nameof(Start), this, m_Start, value)) m_Start = value; } } // 0xC (12)
-		
-		protected AudioGraphNodePort m_Stop = new AudioGraphNodePort();
-		[ContainerField(Name: "Stop", Offset: 20, NameHash: 2089401213, Flags: 41)]
-		public AudioGraphNodePort Stop { get { return m_Stop; } set { if (OnPropertyChanging("MultiCrossfaderNodeData." + nameof(Stop), this, m_Stop, value)) m_Stop = value; } } // 0x14 (20)
-		
-		protected AudioGraphNodePort m_Control = new AudioGraphNodePort();
-		[ContainerField(Name: "Control", Offset: 28, NameHash: 3654305890, Flags: 41)]
-		public AudioGraphNodePort Control { get { return m_Control; } set { if (OnPropertyChanging("MultiCrossfaderNodeData." + nameof(Control), this, m_Control, value)) m_Control = value; } } // 0x1C (28)
-		
-		protected bool m_LockControlValue = new bool();
-		[ContainerField(Name: "LockControlValue", Offset: 36, NameHash: 1905437282, Flags: 49325), LayoutImmutable, Blittable]
-		public bool LockControlValue { get { return m_LockControlValue; } set { if (OnPropertyChanging("MultiCrossfaderNodeData." + nameof(LockControlValue), this, m_LockControlValue, value)) m_LockControlValue = value; } } // 0x24 (36)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(8)]
+		public List<CtrRef<MultiCrossfaderGroup>> CrossfaderGroups { get; set; } = new();
+
+		[ContainerField(12)]
+		public AudioGraphNodePort Start { get; set; } = new();
+
+		[ContainerField(20)]
+		public AudioGraphNodePort Stop { get; set; } = new();
+
+		[ContainerField(28)]
+		public AudioGraphNodePort Control { get; set; } = new();
+
+		[ContainerField(36), LayoutImmutable, Blittable]
+		public bool LockControlValue { get; set; }
+
+		public static void Deserialize(MultiCrossfaderNodeData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Instance.CrossfaderGroups.Clear();
+			(RimeReader Reader, uint Count) s_CrossfaderGroups = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_CrossfaderGroups.Count; ++i)
 			{
-				case 521495907:
-					CrossfaderGroups = (RefArray<MultiCrossfaderGroup>) p_Value;
-					break;
-
-				case 230748069:
-					Start = (AudioGraphNodePort) p_Value;
-					break;
-
-				case 2089401213:
-					Stop = (AudioGraphNodePort) p_Value;
-					break;
-
-				case 3654305890:
-					Control = (AudioGraphNodePort) p_Value;
-					break;
-
-				case 1905437282:
-					LockControlValue = (bool) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_CtrRef = new CtrRef<MultiCrossfaderGroup>();
+				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_CrossfaderGroups.Reader.ReadUInt32()));
+				p_Instance.CrossfaderGroups.Add(s_CtrRef);
 			}
+			
+			s_CrossfaderGroups.Reader.Dispose();
+			fb.AudioGraphNodePort.Deserialize(p_Instance.Start, p_Reader, p_Parser);
+			fb.AudioGraphNodePort.Deserialize(p_Instance.Stop, p_Reader, p_Parser);
+			fb.AudioGraphNodePort.Deserialize(p_Instance.Control, p_Reader, p_Parser);
+			p_Instance.LockControlValue = p_Reader.ReadBool();
+			p_Reader.Seek(3, SeekOrigin.Current);
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 521495907:
-					return CrossfaderGroups;
-
-				case 230748069:
-					return Start;
-
-				case 2089401213:
-					return Stop;
-
-				case 3654305890:
-					return Control;
-
-				case 1905437282:
-					return LockControlValue;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 521495907:
-					return typeof(MultiCrossfaderNodeData).GetProperty(nameof(CrossfaderGroups));
-
-				case 230748069:
-					return typeof(MultiCrossfaderNodeData).GetProperty(nameof(Start));
-
-				case 2089401213:
-					return typeof(MultiCrossfaderNodeData).GetProperty(nameof(Stop));
-
-				case 3654305890:
-					return typeof(MultiCrossfaderNodeData).GetProperty(nameof(Control));
-
-				case 1905437282:
-					return typeof(MultiCrossfaderNodeData).GetProperty(nameof(LockControlValue));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

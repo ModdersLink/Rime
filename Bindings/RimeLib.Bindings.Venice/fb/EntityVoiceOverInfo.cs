@@ -5,77 +5,41 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
+	[ContainerType(4, 16)]
 	public class EntityVoiceOverInfo : 
 		DataContainer
 	{
-		protected CtrRef<VoiceOverObject> m_VoiceOverType = new CtrRef<VoiceOverObject>();
-		[ContainerField(Name: "VoiceOverType", Offset: 8, NameHash: 1260359781, Flags: 53)]
-		public CtrRef<VoiceOverObject> VoiceOverType { get { return m_VoiceOverType; } set { if (OnPropertyChanging("EntityVoiceOverInfo." + nameof(VoiceOverType), this, m_VoiceOverType, value)) m_VoiceOverType = value; } } // 0x8 (8)
-		
-		protected RefArray<VoiceOverLabel> m_Labels = new RefArray<VoiceOverLabel>();
-		[ContainerField(Name: "Labels", Offset: 12, NameHash: 2902520752, Flags: 65)]
-		public RefArray<VoiceOverLabel> Labels { get { return m_Labels; } set { if (OnPropertyChanging("EntityVoiceOverInfo." + nameof(Labels), this, m_Labels, value)) m_Labels = value; } } // 0xC (12)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(8)]
+		public CtrRef<VoiceOverObject> VoiceOverType { get; set; } = new();
+
+		[ContainerField(12)]
+		public List<CtrRef<VoiceOverLabel>> Labels { get; set; } = new();
+
+		public static void Deserialize(EntityVoiceOverInfo p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Instance.VoiceOverType.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
+			p_Instance.Labels.Clear();
+			(RimeReader Reader, uint Count) s_Labels = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_Labels.Count; ++i)
 			{
-				case 1260359781:
-					VoiceOverType = (CtrRef<VoiceOverObject>) p_Value;
-					break;
-
-				case 2902520752:
-					Labels = (RefArray<VoiceOverLabel>) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_CtrRef = new CtrRef<VoiceOverLabel>();
+				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_Labels.Reader.ReadUInt32()));
+				p_Instance.Labels.Add(s_CtrRef);
 			}
+			
+			s_Labels.Reader.Dispose();
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1260359781:
-					return VoiceOverType;
-
-				case 2902520752:
-					return Labels;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1260359781:
-					return typeof(EntityVoiceOverInfo).GetProperty(nameof(VoiceOverType));
-
-				case 2902520752:
-					return typeof(EntityVoiceOverInfo).GetProperty(nameof(Labels));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

@@ -5,66 +5,36 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 24)]
+	[ContainerType(4, 24)]
 	public class StatsCategoryScoreboardPositionData : 
 		StatsCategoryBaseData
 	{
-		protected List<ScoreboardPosition> m_Positions = new List<ScoreboardPosition>();
-		[ContainerField(Name: "Positions", Offset: 20, NameHash: 616073487, Flags: 65)]
-		public List<ScoreboardPosition> Positions { get { return m_Positions; } set { if (OnPropertyChanging("StatsCategoryScoreboardPositionData." + nameof(Positions), this, m_Positions, value)) m_Positions = value; } } // 0x14 (20)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 616073487:
-					if (p_Value.GetType() == typeof (List<uint>))
-						Positions = ((List<uint>) p_Value).Select(x => (ScoreboardPosition) Enum.ToObject(typeof(ScoreboardPosition), x)).ToList();
-					else
-						Positions = (List<ScoreboardPosition>) p_Value;
-					break;
+		[ContainerField(20)]
+		public List<ScoreboardPosition> Positions { get; set; } = new();
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+		public static void Deserialize(StatsCategoryScoreboardPositionData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
+		{
+			p_Instance.Positions.Clear();
+			(RimeReader Reader, uint Count) s_Positions = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_Positions.Count; ++i)
+			{
+				var s_Value = (ScoreboardPosition) s_Positions.Reader.ReadInt32();
+				p_Instance.Positions.Add(s_Value);
 			}
+			
+			s_Positions.Reader.Dispose();
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 616073487:
-					return Positions;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 616073487:
-					return typeof(StatsCategoryScoreboardPositionData).GetProperty(nameof(Positions));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

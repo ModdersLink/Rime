@@ -5,63 +5,28 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 32)]
+	[ContainerType(4, 32)]
 	public class UIVehicleCompData : 
 		UIComponentData
 	{
-		protected int m_RangeMeterUpdatesPerSecond = new int();
-		[ContainerField(Name: "RangeMeterUpdatesPerSecond", Offset: 28, NameHash: 2500462308, Flags: 49405), LayoutImmutable, Blittable]
-		public int RangeMeterUpdatesPerSecond { get { return m_RangeMeterUpdatesPerSecond; } set { if (OnPropertyChanging("UIVehicleCompData." + nameof(RangeMeterUpdatesPerSecond), this, m_RangeMeterUpdatesPerSecond, value)) m_RangeMeterUpdatesPerSecond = value; } } // 0x1C (28)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 2500462308:
-					RangeMeterUpdatesPerSecond = (int) p_Value;
-					break;
+		[ContainerField(28), LayoutImmutable, Blittable]
+		public int RangeMeterUpdatesPerSecond { get; set; }
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
+		public static void Deserialize(UIVehicleCompData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
+		{
+			p_Instance.RangeMeterUpdatesPerSecond = p_Reader.ReadInt32();
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2500462308:
-					return RangeMeterUpdatesPerSecond;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2500462308:
-					return typeof(UIVehicleCompData).GetProperty(nameof(RangeMeterUpdatesPerSecond));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

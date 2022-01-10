@@ -5,113 +5,43 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 16,  Flags: 41, Size: 80)]
-	public class AutoAimData : FrostbiteContainer
+	[ContainerType(16, 80)]
+	public class AutoAimData
 	{
-		[ContainerField(Name: "AutoAimOuterBoxOffset", Offset: 0, NameHash: 139244878, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 AutoAimOuterBoxOffset { get; set; } = new Vec3(); // 0x0 (0)
+		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable]
+		public Vec3 AutoAimOuterBoxOffset { get; set; } = new();
 		
-		[ContainerField(Name: "AutoAimOuterBoxExtends", Offset: 16, NameHash: 1265999350, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 AutoAimOuterBoxExtends { get; set; } = new Vec3(); // 0x10 (16)
+		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable]
+		public Vec3 AutoAimOuterBoxExtends { get; set; } = new();
 		
-		[ContainerField(Name: "AutoAimInnerBoxOffset", Offset: 32, NameHash: 2561090505, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 AutoAimInnerBoxOffset { get; set; } = new Vec3(); // 0x20 (32)
+		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable]
+		public Vec3 AutoAimInnerBoxOffset { get; set; } = new();
 		
-		[ContainerField(Name: "AutoAimInnerBoxExtends", Offset: 48, NameHash: 301487121, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 AutoAimInnerBoxExtends { get; set; } = new Vec3(); // 0x30 (48)
+		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable]
+		public Vec3 AutoAimInnerBoxExtends { get; set; } = new();
 		
-		[ContainerField(Name: "PoseType", Offset: 64, NameHash: 3415409588, Flags: 137)]
-		public CharacterPoseType PoseType { get; set; } = new CharacterPoseType(); // 0x40 (64)
+		[ContainerField(64)]
+		public CharacterPoseType PoseType { get; set; } = new();
 		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		public static void Deserialize(AutoAimData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 139244878:
-					AutoAimOuterBoxOffset = (Vec3) p_Value;
-					break;
-
-				case 1265999350:
-					AutoAimOuterBoxExtends = (Vec3) p_Value;
-					break;
-
-				case 2561090505:
-					AutoAimInnerBoxOffset = (Vec3) p_Value;
-					break;
-
-				case 301487121:
-					AutoAimInnerBoxExtends = (Vec3) p_Value;
-					break;
-
-				case 3415409588:
-						PoseType = (CharacterPoseType) Enum.ToObject(typeof(CharacterPoseType), p_Value);
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 139244878:
-					return AutoAimOuterBoxOffset;
-
-				case 1265999350:
-					return AutoAimOuterBoxExtends;
-
-				case 2561090505:
-					return AutoAimInnerBoxOffset;
-
-				case 301487121:
-					return AutoAimInnerBoxExtends;
-
-				case 3415409588:
-					return PoseType;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 139244878:
-					return typeof(AutoAimData).GetProperty(nameof(AutoAimOuterBoxOffset));
-
-				case 1265999350:
-					return typeof(AutoAimData).GetProperty(nameof(AutoAimOuterBoxExtends));
-
-				case 2561090505:
-					return typeof(AutoAimData).GetProperty(nameof(AutoAimInnerBoxOffset));
-
-				case 301487121:
-					return typeof(AutoAimData).GetProperty(nameof(AutoAimInnerBoxExtends));
-
-				case 3415409588:
-					return typeof(AutoAimData).GetProperty(nameof(PoseType));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
+			fb.Vec3.Deserialize(p_Instance.AutoAimOuterBoxOffset, p_Reader, p_Parser);
+			fb.Vec3.Deserialize(p_Instance.AutoAimOuterBoxExtends, p_Reader, p_Parser);
+			fb.Vec3.Deserialize(p_Instance.AutoAimInnerBoxOffset, p_Reader, p_Parser);
+			fb.Vec3.Deserialize(p_Instance.AutoAimInnerBoxExtends, p_Reader, p_Parser);
+			p_Instance.PoseType = (CharacterPoseType) p_Reader.ReadInt32();
+			p_Reader.Seek(12, SeekOrigin.Current);
 		}
 	}
 }

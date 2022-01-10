@@ -5,74 +5,39 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 41, Size: 8)]
-	public class WeaponModifierData : FrostbiteContainer
+	[ContainerType(4, 8)]
+	public class WeaponModifierData
 	{
-		[ContainerField(Name: "UnlockAsset", Offset: 0, NameHash: 4135652293, Flags: 53)]
-		public CtrRef<UnlockAssetBase> UnlockAsset { get; set; } = new CtrRef<UnlockAssetBase>(); // 0x0 (0)
+		[ContainerField(0)]
+		public CtrRef<UnlockAssetBase> UnlockAsset { get; set; } = new();
 		
-		[ContainerField(Name: "Modifiers", Offset: 4, NameHash: 105828545, Flags: 65)]
-		public RefArray<WeaponModifierBase> Modifiers { get; set; } = new RefArray<WeaponModifierBase>(); // 0x4 (4)
+		[ContainerField(4)]
+		public List<CtrRef<WeaponModifierBase>> Modifiers { get; set; } = new();
 		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		public static void Deserialize(WeaponModifierData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Instance.UnlockAsset.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
+			p_Instance.Modifiers.Clear();
+			(RimeReader Reader, uint Count) s_Modifiers = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_Modifiers.Count; ++i)
 			{
-				case 4135652293:
-					UnlockAsset = (CtrRef<UnlockAssetBase>) p_Value;
-					break;
-
-				case 105828545:
-					Modifiers = (RefArray<WeaponModifierBase>) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_CtrRef = new CtrRef<WeaponModifierBase>();
+				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_Modifiers.Reader.ReadUInt32()));
+				p_Instance.Modifiers.Add(s_CtrRef);
 			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 4135652293:
-					return UnlockAsset;
-
-				case 105828545:
-					return Modifiers;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 4135652293:
-					return typeof(WeaponModifierData).GetProperty(nameof(UnlockAsset));
-
-				case 105828545:
-					return typeof(WeaponModifierData).GetProperty(nameof(Modifiers));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
+			
+			s_Modifiers.Reader.Dispose();
 		}
 	}
 }

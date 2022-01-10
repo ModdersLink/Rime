@@ -5,61 +5,35 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 41, Size: 4)]
-	public class CustomizeVisual : FrostbiteContainer
+	[ContainerType(4, 4)]
+	public class CustomizeVisual
 	{
-		[ContainerField(Name: "Visual", Offset: 0, NameHash: 3150962481, Flags: 65)]
-		public RefArray<UnlockAsset> Visual { get; set; } = new RefArray<UnlockAsset>(); // 0x0 (0)
+		[ContainerField(0)]
+		public List<CtrRef<UnlockAsset>> Visual { get; set; } = new();
 		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		public static void Deserialize(CustomizeVisual p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Instance.Visual.Clear();
+			(RimeReader Reader, uint Count) s_Visual = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_Visual.Count; ++i)
 			{
-				case 3150962481:
-					Visual = (RefArray<UnlockAsset>) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_CtrRef = new CtrRef<UnlockAsset>();
+				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_Visual.Reader.ReadUInt32()));
+				p_Instance.Visual.Add(s_CtrRef);
 			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3150962481:
-					return Visual;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3150962481:
-					return typeof(CustomizeVisual).GetProperty(nameof(Visual));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
+			
+			s_Visual.Reader.Dispose();
 		}
 	}
 }

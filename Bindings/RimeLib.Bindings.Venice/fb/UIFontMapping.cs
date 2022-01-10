@@ -5,74 +5,38 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 41, Size: 8)]
-	public class UIFontMapping : FrostbiteContainer
+	[ContainerType(4, 8)]
+	public class UIFontMapping
 	{
-		[ContainerField(Name: "ScaleformFontName", Offset: 0, NameHash: 842040767, Flags: 65)]
-		public List<string> ScaleformFontName { get; set; } = new List<string>(); // 0x0 (0)
+		[ContainerField(0)]
+		public List<string> ScaleformFontName { get; set; } = new();
 		
-		[ContainerField(Name: "FontLongName", Offset: 4, NameHash: 1625526299, Flags: 16509), LayoutImmutable]
-		public string FontLongName { get; set; } // 0x4 (4)
+		[ContainerField(4), LayoutImmutable]
+		public string FontLongName { get; set; } = string.Empty;
 		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		public static void Deserialize(UIFontMapping p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Instance.ScaleformFontName.Clear();
+			(RimeReader Reader, uint Count) s_ScaleformFontName = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_ScaleformFontName.Count; ++i)
 			{
-				case 842040767:
-					ScaleformFontName = (List<string>) p_Value;
-					break;
-
-				case 1625526299:
-					FontLongName = (string) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_Value = p_Parser.GetStringAtOffset(s_ScaleformFontName.Reader.ReadUInt32());
+				p_Instance.ScaleformFontName.Add(s_Value);
 			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 842040767:
-					return ScaleformFontName;
-
-				case 1625526299:
-					return FontLongName;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 842040767:
-					return typeof(UIFontMapping).GetProperty(nameof(ScaleformFontName));
-
-				case 1625526299:
-					return typeof(UIFontMapping).GetProperty(nameof(FontLongName));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
+			
+			s_ScaleformFontName.Reader.Dispose();
+			p_Instance.FontLongName = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
 		}
 	}
 }

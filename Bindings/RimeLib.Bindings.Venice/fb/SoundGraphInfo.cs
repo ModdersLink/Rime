@@ -5,126 +5,82 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 41, Size: 24)]
-	public class SoundGraphInfo : FrostbiteContainer
+	[ContainerType(4, 24)]
+	public class SoundGraphInfo
 	{
-		[ContainerField(Name: "Voices", Offset: 0, NameHash: 3158134624, Flags: 65)]
-		public List<SoundGraphVoiceInfo> Voices { get; set; } = new List<SoundGraphVoiceInfo>(); // 0x0 (0)
+		[ContainerField(0)]
+		public List<SoundGraphVoiceInfo> Voices { get; set; } = new();
 		
-		[ContainerField(Name: "LinkedPluginAttributes", Offset: 4, NameHash: 307480642, Flags: 65)]
-		public List<SoundGraphLinkedPluginAttribute> LinkedPluginAttributes { get; set; } = new List<SoundGraphLinkedPluginAttribute>(); // 0x4 (4)
+		[ContainerField(4)]
+		public List<SoundGraphLinkedPluginAttribute> LinkedPluginAttributes { get; set; } = new();
 		
-		[ContainerField(Name: "Connections", Offset: 8, NameHash: 1202806848, Flags: 65)]
-		public List<SoundGraphPluginConnection> Connections { get; set; } = new List<SoundGraphPluginConnection>(); // 0x8 (8)
+		[ContainerField(8)]
+		public List<SoundGraphPluginConnection> Connections { get; set; } = new();
 		
-		[ContainerField(Name: "ConstructParams", Offset: 12, NameHash: 2981928268, Flags: 65)]
-		public List<SoundGraphPluginConstructParam> ConstructParams { get; set; } = new List<SoundGraphPluginConstructParam>(); // 0xC (12)
+		[ContainerField(12)]
+		public List<SoundGraphPluginConstructParam> ConstructParams { get; set; } = new();
 		
-		[ContainerField(Name: "PluginsParamCount", Offset: 16, NameHash: 1688877395, Flags: 49421), LayoutImmutable, Blittable]
-		public uint PluginsParamCount { get; set; } // 0x10 (16)
+		[ContainerField(16), LayoutImmutable, Blittable]
+		public uint PluginsParamCount { get; set; }
 		
-		[ContainerField(Name: "PluginCount", Offset: 20, NameHash: 2862163855, Flags: 49421), LayoutImmutable, Blittable]
-		public uint PluginCount { get; set; } // 0x14 (20)
+		[ContainerField(20), LayoutImmutable, Blittable]
+		public uint PluginCount { get; set; }
 		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		public static void Deserialize(SoundGraphInfo p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Instance.Voices.Clear();
+			(RimeReader Reader, uint Count) s_Voices = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_Voices.Count; ++i)
 			{
-				case 3158134624:
-					Voices = (List<SoundGraphVoiceInfo>) p_Value;
-					break;
-
-				case 307480642:
-					LinkedPluginAttributes = (List<SoundGraphLinkedPluginAttribute>) p_Value;
-					break;
-
-				case 1202806848:
-					Connections = (List<SoundGraphPluginConnection>) p_Value;
-					break;
-
-				case 2981928268:
-					ConstructParams = (List<SoundGraphPluginConstructParam>) p_Value;
-					break;
-
-				case 1688877395:
-					PluginsParamCount = (uint) p_Value;
-					break;
-
-				case 2862163855:
-					PluginCount = (uint) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_Value = new SoundGraphVoiceInfo();
+				fb.SoundGraphVoiceInfo.Deserialize(s_Value, s_Voices.Reader, p_Parser);
+				p_Instance.Voices.Add(s_Value);
 			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
+			
+			s_Voices.Reader.Dispose();
+			p_Instance.LinkedPluginAttributes.Clear();
+			(RimeReader Reader, uint Count) s_LinkedPluginAttributes = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_LinkedPluginAttributes.Count; ++i)
 			{
-				case 3158134624:
-					return Voices;
-
-				case 307480642:
-					return LinkedPluginAttributes;
-
-				case 1202806848:
-					return Connections;
-
-				case 2981928268:
-					return ConstructParams;
-
-				case 1688877395:
-					return PluginsParamCount;
-
-				case 2862163855:
-					return PluginCount;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
+				var s_Value = new SoundGraphLinkedPluginAttribute();
+				fb.SoundGraphLinkedPluginAttribute.Deserialize(s_Value, s_LinkedPluginAttributes.Reader, p_Parser);
+				p_Instance.LinkedPluginAttributes.Add(s_Value);
 			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
+			
+			s_LinkedPluginAttributes.Reader.Dispose();
+			p_Instance.Connections.Clear();
+			(RimeReader Reader, uint Count) s_Connections = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_Connections.Count; ++i)
 			{
-				case 3158134624:
-					return typeof(SoundGraphInfo).GetProperty(nameof(Voices));
-
-				case 307480642:
-					return typeof(SoundGraphInfo).GetProperty(nameof(LinkedPluginAttributes));
-
-				case 1202806848:
-					return typeof(SoundGraphInfo).GetProperty(nameof(Connections));
-
-				case 2981928268:
-					return typeof(SoundGraphInfo).GetProperty(nameof(ConstructParams));
-
-				case 1688877395:
-					return typeof(SoundGraphInfo).GetProperty(nameof(PluginsParamCount));
-
-				case 2862163855:
-					return typeof(SoundGraphInfo).GetProperty(nameof(PluginCount));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
+				var s_Value = new SoundGraphPluginConnection();
+				fb.SoundGraphPluginConnection.Deserialize(s_Value, s_Connections.Reader, p_Parser);
+				p_Instance.Connections.Add(s_Value);
 			}
+			
+			s_Connections.Reader.Dispose();
+			p_Instance.ConstructParams.Clear();
+			(RimeReader Reader, uint Count) s_ConstructParams = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_ConstructParams.Count; ++i)
+			{
+				var s_Value = new SoundGraphPluginConstructParam();
+				fb.SoundGraphPluginConstructParam.Deserialize(s_Value, s_ConstructParams.Reader, p_Parser);
+				p_Instance.ConstructParams.Add(s_Value);
+			}
+			
+			s_ConstructParams.Reader.Dispose();
+			p_Instance.PluginsParamCount = p_Reader.ReadUInt32();
+			p_Instance.PluginCount = p_Reader.ReadUInt32();
 		}
 	}
 }

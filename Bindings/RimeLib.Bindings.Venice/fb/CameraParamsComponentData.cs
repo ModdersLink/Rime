@@ -5,91 +5,37 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 16,  Flags: 53, Size: 112)]
+	[ContainerType(16, 112)]
 	public class CameraParamsComponentData : 
 		ComponentData
 	{
-		protected float m_ViewDistance = new float();
-		[ContainerField(Name: "ViewDistance", Offset: 96, NameHash: 2201945291, Flags: 49469), LayoutImmutable, Blittable]
-		public float ViewDistance { get { return m_ViewDistance; } set { if (OnPropertyChanging("CameraParamsComponentData." + nameof(ViewDistance), this, m_ViewDistance, value)) m_ViewDistance = value; } } // 0x60 (96)
-		
-		protected float m_NearPlane = new float();
-		[ContainerField(Name: "NearPlane", Offset: 100, NameHash: 3156145579, Flags: 49469), LayoutImmutable, Blittable]
-		public float NearPlane { get { return m_NearPlane; } set { if (OnPropertyChanging("CameraParamsComponentData." + nameof(NearPlane), this, m_NearPlane, value)) m_NearPlane = value; } } // 0x64 (100)
-		
-		protected float m_SunShadowmapViewDistance = new float();
-		[ContainerField(Name: "SunShadowmapViewDistance", Offset: 104, NameHash: 2626774393, Flags: 49469), LayoutImmutable, Blittable]
-		public float SunShadowmapViewDistance { get { return m_SunShadowmapViewDistance; } set { if (OnPropertyChanging("CameraParamsComponentData." + nameof(SunShadowmapViewDistance), this, m_SunShadowmapViewDistance, value)) m_SunShadowmapViewDistance = value; } } // 0x68 (104)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(96), LayoutImmutable, Blittable]
+		public float ViewDistance { get; set; }
+
+		[ContainerField(100), LayoutImmutable, Blittable]
+		public float NearPlane { get; set; }
+
+		[ContainerField(104), LayoutImmutable, Blittable]
+		public float SunShadowmapViewDistance { get; set; }
+
+		public static void Deserialize(CameraParamsComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 2201945291:
-					ViewDistance = (float) p_Value;
-					break;
-
-				case 3156145579:
-					NearPlane = (float) p_Value;
-					break;
-
-				case 2626774393:
-					SunShadowmapViewDistance = (float) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
+			p_Instance.ViewDistance = p_Reader.ReadSingle();
+			p_Instance.NearPlane = p_Reader.ReadSingle();
+			p_Instance.SunShadowmapViewDistance = p_Reader.ReadSingle();
+			p_Reader.Seek(4, SeekOrigin.Current);
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2201945291:
-					return ViewDistance;
-
-				case 3156145579:
-					return NearPlane;
-
-				case 2626774393:
-					return SunShadowmapViewDistance;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2201945291:
-					return typeof(CameraParamsComponentData).GetProperty(nameof(ViewDistance));
-
-				case 3156145579:
-					return typeof(CameraParamsComponentData).GetProperty(nameof(NearPlane));
-
-				case 2626774393:
-					return typeof(CameraParamsComponentData).GetProperty(nameof(SunShadowmapViewDistance));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

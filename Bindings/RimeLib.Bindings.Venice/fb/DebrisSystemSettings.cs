@@ -5,259 +5,85 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 44)]
+	[ContainerType(4, 44)]
 	public class DebrisSystemSettings : 
 		DataContainer
 	{
-		protected uint m_MeshDrawCountLimit = new uint();
-		[ContainerField(Name: "MeshDrawCountLimit", Offset: 8, NameHash: 3584341216, Flags: 49421), LayoutImmutable, Blittable]
-		public uint MeshDrawCountLimit { get { return m_MeshDrawCountLimit; } set { if (OnPropertyChanging("DebrisSystemSettings." + nameof(MeshDrawCountLimit), this, m_MeshDrawCountLimit, value)) m_MeshDrawCountLimit = value; } } // 0x8 (8)
-		
-		protected float m_TimeScale = new float();
-		[ContainerField(Name: "TimeScale", Offset: 12, NameHash: 169511528, Flags: 49469), LayoutImmutable, Blittable]
-		public float TimeScale { get { return m_TimeScale; } set { if (OnPropertyChanging("DebrisSystemSettings." + nameof(TimeScale), this, m_TimeScale, value)) m_TimeScale = value; } } // 0xC (12)
-		
-		protected float m_MeshCullingDistance = new float();
-		[ContainerField(Name: "MeshCullingDistance", Offset: 16, NameHash: 2057455619, Flags: 49469), LayoutImmutable, Blittable]
-		public float MeshCullingDistance { get { return m_MeshCullingDistance; } set { if (OnPropertyChanging("DebrisSystemSettings." + nameof(MeshCullingDistance), this, m_MeshCullingDistance, value)) m_MeshCullingDistance = value; } } // 0x10 (16)
-		
-		protected uint m_DrawStats = new uint();
-		[ContainerField(Name: "DrawStats", Offset: 20, NameHash: 2413142628, Flags: 49421), LayoutImmutable, Blittable]
-		public uint DrawStats { get { return m_DrawStats; } set { if (OnPropertyChanging("DebrisSystemSettings." + nameof(DrawStats), this, m_DrawStats, value)) m_DrawStats = value; } } // 0x14 (20)
-		
-		protected uint m_MeshBatchCountLimit = new uint();
-		[ContainerField(Name: "MeshBatchCountLimit", Offset: 24, NameHash: 1925711996, Flags: 49421), LayoutImmutable, Blittable]
-		public uint MeshBatchCountLimit { get { return m_MeshBatchCountLimit; } set { if (OnPropertyChanging("DebrisSystemSettings." + nameof(MeshBatchCountLimit), this, m_MeshBatchCountLimit, value)) m_MeshBatchCountLimit = value; } } // 0x18 (24)
-		
-		protected float m_MeshStreamingPriorityMultiplier = new float();
-		[ContainerField(Name: "MeshStreamingPriorityMultiplier", Offset: 28, NameHash: 1971206387, Flags: 49469), LayoutImmutable, Blittable]
-		public float MeshStreamingPriorityMultiplier { get { return m_MeshStreamingPriorityMultiplier; } set { if (OnPropertyChanging("DebrisSystemSettings." + nameof(MeshStreamingPriorityMultiplier), this, m_MeshStreamingPriorityMultiplier, value)) m_MeshStreamingPriorityMultiplier = value; } } // 0x1C (28)
-		
-		protected bool m_MeshRenderingEnable = new bool();
-		[ContainerField(Name: "MeshRenderingEnable", Offset: 32, NameHash: 2979790077, Flags: 49325), LayoutImmutable, Blittable]
-		public bool MeshRenderingEnable { get { return m_MeshRenderingEnable; } set { if (OnPropertyChanging("DebrisSystemSettings." + nameof(MeshRenderingEnable), this, m_MeshRenderingEnable, value)) m_MeshRenderingEnable = value; } } // 0x20 (32)
-		
-		protected bool m_EnableJobs = new bool();
-		[ContainerField(Name: "EnableJobs", Offset: 33, NameHash: 1190923856, Flags: 49325), LayoutImmutable, Blittable]
-		public bool EnableJobs { get { return m_EnableJobs; } set { if (OnPropertyChanging("DebrisSystemSettings." + nameof(EnableJobs), this, m_EnableJobs, value)) m_EnableJobs = value; } } // 0x21 (33)
-		
-		protected bool m_MeshShadowEnable = new bool();
-		[ContainerField(Name: "MeshShadowEnable", Offset: 34, NameHash: 418824849, Flags: 49325), LayoutImmutable, Blittable]
-		public bool MeshShadowEnable { get { return m_MeshShadowEnable; } set { if (OnPropertyChanging("DebrisSystemSettings." + nameof(MeshShadowEnable), this, m_MeshShadowEnable, value)) m_MeshShadowEnable = value; } } // 0x22 (34)
-		
-		protected bool m_MeshViewCullingEnable = new bool();
-		[ContainerField(Name: "MeshViewCullingEnable", Offset: 35, NameHash: 875555468, Flags: 49325), LayoutImmutable, Blittable]
-		public bool MeshViewCullingEnable { get { return m_MeshViewCullingEnable; } set { if (OnPropertyChanging("DebrisSystemSettings." + nameof(MeshViewCullingEnable), this, m_MeshViewCullingEnable, value)) m_MeshViewCullingEnable = value; } } // 0x23 (35)
-		
-		protected bool m_MeshHavokRenderingEnable = new bool();
-		[ContainerField(Name: "MeshHavokRenderingEnable", Offset: 36, NameHash: 1194385862, Flags: 49325), LayoutImmutable, Blittable]
-		public bool MeshHavokRenderingEnable { get { return m_MeshHavokRenderingEnable; } set { if (OnPropertyChanging("DebrisSystemSettings." + nameof(MeshHavokRenderingEnable), this, m_MeshHavokRenderingEnable, value)) m_MeshHavokRenderingEnable = value; } } // 0x24 (36)
-		
-		protected bool m_MeshDrawTransforms = new bool();
-		[ContainerField(Name: "MeshDrawTransforms", Offset: 37, NameHash: 67393161, Flags: 49325), LayoutImmutable, Blittable]
-		public bool MeshDrawTransforms { get { return m_MeshDrawTransforms; } set { if (OnPropertyChanging("DebrisSystemSettings." + nameof(MeshDrawTransforms), this, m_MeshDrawTransforms, value)) m_MeshDrawTransforms = value; } } // 0x25 (37)
-		
-		protected bool m_Enable = new bool();
-		[ContainerField(Name: "Enable", Offset: 38, NameHash: 2342790116, Flags: 49325), LayoutImmutable, Blittable]
-		public bool Enable { get { return m_Enable; } set { if (OnPropertyChanging("DebrisSystemSettings." + nameof(Enable), this, m_Enable, value)) m_Enable = value; } } // 0x26 (38)
-		
-		protected bool m_MeshDrawBoundingBoxes = new bool();
-		[ContainerField(Name: "MeshDrawBoundingBoxes", Offset: 39, NameHash: 1284065831, Flags: 49325), LayoutImmutable, Blittable]
-		public bool MeshDrawBoundingBoxes { get { return m_MeshDrawBoundingBoxes; } set { if (OnPropertyChanging("DebrisSystemSettings." + nameof(MeshDrawBoundingBoxes), this, m_MeshDrawBoundingBoxes, value)) m_MeshDrawBoundingBoxes = value; } } // 0x27 (39)
-		
-		protected bool m_MeshDrawCullStats = new bool();
-		[ContainerField(Name: "MeshDrawCullStats", Offset: 40, NameHash: 2146509665, Flags: 49325), LayoutImmutable, Blittable]
-		public bool MeshDrawCullStats { get { return m_MeshDrawCullStats; } set { if (OnPropertyChanging("DebrisSystemSettings." + nameof(MeshDrawCullStats), this, m_MeshDrawCullStats, value)) m_MeshDrawCullStats = value; } } // 0x28 (40)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(8), LayoutImmutable, Blittable]
+		public uint MeshDrawCountLimit { get; set; }
+
+		[ContainerField(12), LayoutImmutable, Blittable]
+		public float TimeScale { get; set; }
+
+		[ContainerField(16), LayoutImmutable, Blittable]
+		public float MeshCullingDistance { get; set; }
+
+		[ContainerField(20), LayoutImmutable, Blittable]
+		public uint DrawStats { get; set; }
+
+		[ContainerField(24), LayoutImmutable, Blittable]
+		public uint MeshBatchCountLimit { get; set; }
+
+		[ContainerField(28), LayoutImmutable, Blittable]
+		public float MeshStreamingPriorityMultiplier { get; set; }
+
+		[ContainerField(32), LayoutImmutable, Blittable]
+		public bool MeshRenderingEnable { get; set; }
+
+		[ContainerField(33), LayoutImmutable, Blittable]
+		public bool EnableJobs { get; set; }
+
+		[ContainerField(34), LayoutImmutable, Blittable]
+		public bool MeshShadowEnable { get; set; }
+
+		[ContainerField(35), LayoutImmutable, Blittable]
+		public bool MeshViewCullingEnable { get; set; }
+
+		[ContainerField(36), LayoutImmutable, Blittable]
+		public bool MeshHavokRenderingEnable { get; set; }
+
+		[ContainerField(37), LayoutImmutable, Blittable]
+		public bool MeshDrawTransforms { get; set; }
+
+		[ContainerField(38), LayoutImmutable, Blittable]
+		public bool Enable { get; set; }
+
+		[ContainerField(39), LayoutImmutable, Blittable]
+		public bool MeshDrawBoundingBoxes { get; set; }
+
+		[ContainerField(40), LayoutImmutable, Blittable]
+		public bool MeshDrawCullStats { get; set; }
+
+		public static void Deserialize(DebrisSystemSettings p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 3584341216:
-					MeshDrawCountLimit = (uint) p_Value;
-					break;
-
-				case 169511528:
-					TimeScale = (float) p_Value;
-					break;
-
-				case 2057455619:
-					MeshCullingDistance = (float) p_Value;
-					break;
-
-				case 2413142628:
-					DrawStats = (uint) p_Value;
-					break;
-
-				case 1925711996:
-					MeshBatchCountLimit = (uint) p_Value;
-					break;
-
-				case 1971206387:
-					MeshStreamingPriorityMultiplier = (float) p_Value;
-					break;
-
-				case 2979790077:
-					MeshRenderingEnable = (bool) p_Value;
-					break;
-
-				case 1190923856:
-					EnableJobs = (bool) p_Value;
-					break;
-
-				case 418824849:
-					MeshShadowEnable = (bool) p_Value;
-					break;
-
-				case 875555468:
-					MeshViewCullingEnable = (bool) p_Value;
-					break;
-
-				case 1194385862:
-					MeshHavokRenderingEnable = (bool) p_Value;
-					break;
-
-				case 67393161:
-					MeshDrawTransforms = (bool) p_Value;
-					break;
-
-				case 2342790116:
-					Enable = (bool) p_Value;
-					break;
-
-				case 1284065831:
-					MeshDrawBoundingBoxes = (bool) p_Value;
-					break;
-
-				case 2146509665:
-					MeshDrawCullStats = (bool) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
+			p_Instance.MeshDrawCountLimit = p_Reader.ReadUInt32();
+			p_Instance.TimeScale = p_Reader.ReadSingle();
+			p_Instance.MeshCullingDistance = p_Reader.ReadSingle();
+			p_Instance.DrawStats = p_Reader.ReadUInt32();
+			p_Instance.MeshBatchCountLimit = p_Reader.ReadUInt32();
+			p_Instance.MeshStreamingPriorityMultiplier = p_Reader.ReadSingle();
+			p_Instance.MeshRenderingEnable = p_Reader.ReadBool();
+			p_Instance.EnableJobs = p_Reader.ReadBool();
+			p_Instance.MeshShadowEnable = p_Reader.ReadBool();
+			p_Instance.MeshViewCullingEnable = p_Reader.ReadBool();
+			p_Instance.MeshHavokRenderingEnable = p_Reader.ReadBool();
+			p_Instance.MeshDrawTransforms = p_Reader.ReadBool();
+			p_Instance.Enable = p_Reader.ReadBool();
+			p_Instance.MeshDrawBoundingBoxes = p_Reader.ReadBool();
+			p_Instance.MeshDrawCullStats = p_Reader.ReadBool();
+			p_Reader.Seek(3, SeekOrigin.Current);
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3584341216:
-					return MeshDrawCountLimit;
-
-				case 169511528:
-					return TimeScale;
-
-				case 2057455619:
-					return MeshCullingDistance;
-
-				case 2413142628:
-					return DrawStats;
-
-				case 1925711996:
-					return MeshBatchCountLimit;
-
-				case 1971206387:
-					return MeshStreamingPriorityMultiplier;
-
-				case 2979790077:
-					return MeshRenderingEnable;
-
-				case 1190923856:
-					return EnableJobs;
-
-				case 418824849:
-					return MeshShadowEnable;
-
-				case 875555468:
-					return MeshViewCullingEnable;
-
-				case 1194385862:
-					return MeshHavokRenderingEnable;
-
-				case 67393161:
-					return MeshDrawTransforms;
-
-				case 2342790116:
-					return Enable;
-
-				case 1284065831:
-					return MeshDrawBoundingBoxes;
-
-				case 2146509665:
-					return MeshDrawCullStats;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3584341216:
-					return typeof(DebrisSystemSettings).GetProperty(nameof(MeshDrawCountLimit));
-
-				case 169511528:
-					return typeof(DebrisSystemSettings).GetProperty(nameof(TimeScale));
-
-				case 2057455619:
-					return typeof(DebrisSystemSettings).GetProperty(nameof(MeshCullingDistance));
-
-				case 2413142628:
-					return typeof(DebrisSystemSettings).GetProperty(nameof(DrawStats));
-
-				case 1925711996:
-					return typeof(DebrisSystemSettings).GetProperty(nameof(MeshBatchCountLimit));
-
-				case 1971206387:
-					return typeof(DebrisSystemSettings).GetProperty(nameof(MeshStreamingPriorityMultiplier));
-
-				case 2979790077:
-					return typeof(DebrisSystemSettings).GetProperty(nameof(MeshRenderingEnable));
-
-				case 1190923856:
-					return typeof(DebrisSystemSettings).GetProperty(nameof(EnableJobs));
-
-				case 418824849:
-					return typeof(DebrisSystemSettings).GetProperty(nameof(MeshShadowEnable));
-
-				case 875555468:
-					return typeof(DebrisSystemSettings).GetProperty(nameof(MeshViewCullingEnable));
-
-				case 1194385862:
-					return typeof(DebrisSystemSettings).GetProperty(nameof(MeshHavokRenderingEnable));
-
-				case 67393161:
-					return typeof(DebrisSystemSettings).GetProperty(nameof(MeshDrawTransforms));
-
-				case 2342790116:
-					return typeof(DebrisSystemSettings).GetProperty(nameof(Enable));
-
-				case 1284065831:
-					return typeof(DebrisSystemSettings).GetProperty(nameof(MeshDrawBoundingBoxes));
-
-				case 2146509665:
-					return typeof(DebrisSystemSettings).GetProperty(nameof(MeshDrawCullStats));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

@@ -5,189 +5,93 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 16,  Flags: 53, Size: 112)]
+	[ContainerType(16, 112)]
 	public class CharacterPoseData : 
 		DataContainer
 	{
-		protected Vec3 m_EyePosition = new Vec3();
-		[ContainerField(Name: "EyePosition", Offset: 16, NameHash: 2695753445, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 EyePosition { get { return m_EyePosition; } set { if (OnPropertyChanging("CharacterPoseData." + nameof(EyePosition), this, m_EyePosition, value)) m_EyePosition = value; } } // 0x10 (16)
-		
-		protected Vec3 m_CollisionBoxMaxExpand = new Vec3();
-		[ContainerField(Name: "CollisionBoxMaxExpand", Offset: 32, NameHash: 337502076, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 CollisionBoxMaxExpand { get { return m_CollisionBoxMaxExpand; } set { if (OnPropertyChanging("CharacterPoseData." + nameof(CollisionBoxMaxExpand), this, m_CollisionBoxMaxExpand, value)) m_CollisionBoxMaxExpand = value; } } // 0x20 (32)
-		
-		protected Vec3 m_CollisionBoxMinExpand = new Vec3();
-		[ContainerField(Name: "CollisionBoxMinExpand", Offset: 48, NameHash: 917028322, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 CollisionBoxMinExpand { get { return m_CollisionBoxMinExpand; } set { if (OnPropertyChanging("CharacterPoseData." + nameof(CollisionBoxMinExpand), this, m_CollisionBoxMinExpand, value)) m_CollisionBoxMinExpand = value; } } // 0x30 (48)
-		
-		protected float m_Height = new float();
-		[ContainerField(Name: "Height", Offset: 64, NameHash: 3054065626, Flags: 49469), LayoutImmutable, Blittable]
-		public float Height { get { return m_Height; } set { if (OnPropertyChanging("CharacterPoseData." + nameof(Height), this, m_Height, value)) m_Height = value; } } // 0x40 (64)
-		
-		protected float m_StepHeight = new float();
-		[ContainerField(Name: "StepHeight", Offset: 68, NameHash: 54303016, Flags: 49469), LayoutImmutable, Blittable]
-		public float StepHeight { get { return m_StepHeight; } set { if (OnPropertyChanging("CharacterPoseData." + nameof(StepHeight), this, m_StepHeight, value)) m_StepHeight = value; } } // 0x44 (68)
-		
-		protected List<Vec2> m_ThrottleModifierCurve = new List<Vec2>();
-		[ContainerField(Name: "ThrottleModifierCurve", Offset: 72, NameHash: 708363949, Flags: 65)]
-		public List<Vec2> ThrottleModifierCurve { get { return m_ThrottleModifierCurve; } set { if (OnPropertyChanging("CharacterPoseData." + nameof(ThrottleModifierCurve), this, m_ThrottleModifierCurve, value)) m_ThrottleModifierCurve = value; } } // 0x48 (72)
-		
-		protected CharacterPoseType m_PoseType = new CharacterPoseType();
-		[ContainerField(Name: "PoseType", Offset: 76, NameHash: 3415409588, Flags: 137)]
-		public CharacterPoseType PoseType { get { return m_PoseType; } set { if (OnPropertyChanging("CharacterPoseData." + nameof(PoseType), this, m_PoseType, value)) m_PoseType = value; } } // 0x4C (76)
-		
-		protected CharacterPoseCollisionType m_CollisionType = new CharacterPoseCollisionType();
-		[ContainerField(Name: "CollisionType", Offset: 80, NameHash: 2884836771, Flags: 137)]
-		public CharacterPoseCollisionType CollisionType { get { return m_CollisionType; } set { if (OnPropertyChanging("CharacterPoseData." + nameof(CollisionType), this, m_CollisionType, value)) m_CollisionType = value; } } // 0x50 (80)
-		
-		protected LookConstraintsData m_LookConstraints = new LookConstraintsData();
-		[ContainerField(Name: "LookConstraints", Offset: 84, NameHash: 2301802932, Flags: 41)]
-		public LookConstraintsData LookConstraints { get { return m_LookConstraints; } set { if (OnPropertyChanging("CharacterPoseData." + nameof(LookConstraints), this, m_LookConstraints, value)) m_LookConstraints = value; } } // 0x54 (84)
-		
-		protected List<PoseTransitionTime> m_TransitionTimes = new List<PoseTransitionTime>();
-		[ContainerField(Name: "TransitionTimes", Offset: 100, NameHash: 2389730764, Flags: 65)]
-		public List<PoseTransitionTime> TransitionTimes { get { return m_TransitionTimes; } set { if (OnPropertyChanging("CharacterPoseData." + nameof(TransitionTimes), this, m_TransitionTimes, value)) m_TransitionTimes = value; } } // 0x64 (100)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable]
+		public Vec3 EyePosition { get; set; } = new();
+
+		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable]
+		public Vec3 CollisionBoxMaxExpand { get; set; } = new();
+
+		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable]
+		public Vec3 CollisionBoxMinExpand { get; set; } = new();
+
+		[ContainerField(64), LayoutImmutable, Blittable]
+		public float Height { get; set; }
+
+		[ContainerField(68), LayoutImmutable, Blittable]
+		public float StepHeight { get; set; }
+
+		[ContainerField(72)]
+		public List<Vec2> ThrottleModifierCurve { get; set; } = new();
+
+		[ContainerField(76)]
+		public CharacterPoseType PoseType { get; set; } = new();
+
+		[ContainerField(80)]
+		public CharacterPoseCollisionType CollisionType { get; set; } = new();
+
+		[ContainerField(84)]
+		public LookConstraintsData LookConstraints { get; set; } = new();
+
+		[ContainerField(100)]
+		public List<PoseTransitionTime> TransitionTimes { get; set; } = new();
+
+		public static void Deserialize(CharacterPoseData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Reader.Seek(8, SeekOrigin.Current);
+			fb.Vec3.Deserialize(p_Instance.EyePosition, p_Reader, p_Parser);
+			p_Reader.Seek(8, SeekOrigin.Current);
+			fb.Vec3.Deserialize(p_Instance.CollisionBoxMaxExpand, p_Reader, p_Parser);
+			p_Reader.Seek(8, SeekOrigin.Current);
+			fb.Vec3.Deserialize(p_Instance.CollisionBoxMinExpand, p_Reader, p_Parser);
+			p_Reader.Seek(8, SeekOrigin.Current);
+			p_Instance.Height = p_Reader.ReadSingle();
+			p_Reader.Seek(8, SeekOrigin.Current);
+			p_Instance.StepHeight = p_Reader.ReadSingle();
+			p_Reader.Seek(8, SeekOrigin.Current);
+			p_Instance.ThrottleModifierCurve.Clear();
+			(RimeReader Reader, uint Count) s_ThrottleModifierCurve = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_ThrottleModifierCurve.Count; ++i)
 			{
-				case 2695753445:
-					EyePosition = (Vec3) p_Value;
-					break;
-
-				case 337502076:
-					CollisionBoxMaxExpand = (Vec3) p_Value;
-					break;
-
-				case 917028322:
-					CollisionBoxMinExpand = (Vec3) p_Value;
-					break;
-
-				case 3054065626:
-					Height = (float) p_Value;
-					break;
-
-				case 54303016:
-					StepHeight = (float) p_Value;
-					break;
-
-				case 708363949:
-					ThrottleModifierCurve = (List<Vec2>) p_Value;
-					break;
-
-				case 3415409588:
-					PoseType = (CharacterPoseType) Enum.ToObject(typeof(CharacterPoseType), p_Value);
-					break;
-
-				case 2884836771:
-					CollisionType = (CharacterPoseCollisionType) Enum.ToObject(typeof(CharacterPoseCollisionType), p_Value);
-					break;
-
-				case 2301802932:
-					LookConstraints = (LookConstraintsData) p_Value;
-					break;
-
-				case 2389730764:
-					TransitionTimes = (List<PoseTransitionTime>) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_Value = new Vec2();
+				fb.Vec2.Deserialize(s_Value, s_ThrottleModifierCurve.Reader, p_Parser);
+				p_Instance.ThrottleModifierCurve.Add(s_Value);
 			}
+			
+			s_ThrottleModifierCurve.Reader.Dispose();
+			p_Reader.Seek(8, SeekOrigin.Current);
+			p_Instance.PoseType = (CharacterPoseType) p_Reader.ReadInt32();
+			p_Reader.Seek(8, SeekOrigin.Current);
+			p_Instance.CollisionType = (CharacterPoseCollisionType) p_Reader.ReadInt32();
+			p_Reader.Seek(8, SeekOrigin.Current);
+			fb.LookConstraintsData.Deserialize(p_Instance.LookConstraints, p_Reader, p_Parser);
+			p_Reader.Seek(8, SeekOrigin.Current);
+			p_Instance.TransitionTimes.Clear();
+			(RimeReader Reader, uint Count) s_TransitionTimes = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_TransitionTimes.Count; ++i)
+			{
+				var s_Value = new PoseTransitionTime();
+				fb.PoseTransitionTime.Deserialize(s_Value, s_TransitionTimes.Reader, p_Parser);
+				p_Instance.TransitionTimes.Add(s_Value);
+			}
+			
+			s_TransitionTimes.Reader.Dispose();
+			p_Reader.Seek(16, SeekOrigin.Current);
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2695753445:
-					return EyePosition;
-
-				case 337502076:
-					return CollisionBoxMaxExpand;
-
-				case 917028322:
-					return CollisionBoxMinExpand;
-
-				case 3054065626:
-					return Height;
-
-				case 54303016:
-					return StepHeight;
-
-				case 708363949:
-					return ThrottleModifierCurve;
-
-				case 3415409588:
-					return PoseType;
-
-				case 2884836771:
-					return CollisionType;
-
-				case 2301802932:
-					return LookConstraints;
-
-				case 2389730764:
-					return TransitionTimes;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2695753445:
-					return typeof(CharacterPoseData).GetProperty(nameof(EyePosition));
-
-				case 337502076:
-					return typeof(CharacterPoseData).GetProperty(nameof(CollisionBoxMaxExpand));
-
-				case 917028322:
-					return typeof(CharacterPoseData).GetProperty(nameof(CollisionBoxMinExpand));
-
-				case 3054065626:
-					return typeof(CharacterPoseData).GetProperty(nameof(Height));
-
-				case 54303016:
-					return typeof(CharacterPoseData).GetProperty(nameof(StepHeight));
-
-				case 708363949:
-					return typeof(CharacterPoseData).GetProperty(nameof(ThrottleModifierCurve));
-
-				case 3415409588:
-					return typeof(CharacterPoseData).GetProperty(nameof(PoseType));
-
-				case 2884836771:
-					return typeof(CharacterPoseData).GetProperty(nameof(CollisionType));
-
-				case 2301802932:
-					return typeof(CharacterPoseData).GetProperty(nameof(LookConstraints));
-
-				case 2389730764:
-					return typeof(CharacterPoseData).GetProperty(nameof(TransitionTimes));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

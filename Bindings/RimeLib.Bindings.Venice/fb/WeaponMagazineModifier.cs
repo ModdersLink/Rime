@@ -5,77 +5,32 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
+	[ContainerType(4, 16)]
 	public class WeaponMagazineModifier : 
 		WeaponModifierBase
 	{
-		protected int m_MagazineCapacity = new int();
-		[ContainerField(Name: "MagazineCapacity", Offset: 8, NameHash: 1634670339, Flags: 49405), LayoutImmutable, Blittable]
-		public int MagazineCapacity { get { return m_MagazineCapacity; } set { if (OnPropertyChanging("WeaponMagazineModifier." + nameof(MagazineCapacity), this, m_MagazineCapacity, value)) m_MagazineCapacity = value; } } // 0x8 (8)
-		
-		protected int m_NumberOfMagazines = new int();
-		[ContainerField(Name: "NumberOfMagazines", Offset: 12, NameHash: 2684433166, Flags: 49405), LayoutImmutable, Blittable]
-		public int NumberOfMagazines { get { return m_NumberOfMagazines; } set { if (OnPropertyChanging("WeaponMagazineModifier." + nameof(NumberOfMagazines), this, m_NumberOfMagazines, value)) m_NumberOfMagazines = value; } } // 0xC (12)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(8), LayoutImmutable, Blittable]
+		public int MagazineCapacity { get; set; }
+
+		[ContainerField(12), LayoutImmutable, Blittable]
+		public int NumberOfMagazines { get; set; }
+
+		public static void Deserialize(WeaponMagazineModifier p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 1634670339:
-					MagazineCapacity = (int) p_Value;
-					break;
-
-				case 2684433166:
-					NumberOfMagazines = (int) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
+			p_Instance.MagazineCapacity = p_Reader.ReadInt32();
+			p_Instance.NumberOfMagazines = p_Reader.ReadInt32();
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1634670339:
-					return MagazineCapacity;
-
-				case 2684433166:
-					return NumberOfMagazines;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1634670339:
-					return typeof(WeaponMagazineModifier).GetProperty(nameof(MagazineCapacity));
-
-				case 2684433166:
-					return typeof(WeaponMagazineModifier).GetProperty(nameof(NumberOfMagazines));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

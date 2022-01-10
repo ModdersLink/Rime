@@ -5,63 +5,37 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 24)]
+	[ContainerType(4, 24)]
 	public class GlobalNode : 
 		UINodeData
 	{
-		protected RefArray<UINodePort> m_Outputs = new RefArray<UINodePort>();
-		[ContainerField(Name: "Outputs", Offset: 20, NameHash: 1070022089, Flags: 65)]
-		public RefArray<UINodePort> Outputs { get { return m_Outputs; } set { if (OnPropertyChanging("GlobalNode." + nameof(Outputs), this, m_Outputs, value)) m_Outputs = value; } } // 0x14 (20)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 1070022089:
-					Outputs = (RefArray<UINodePort>) p_Value;
-					break;
+		[ContainerField(20)]
+		public List<CtrRef<UINodePort>> Outputs { get; set; } = new();
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+		public static void Deserialize(GlobalNode p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
+		{
+			p_Instance.Outputs.Clear();
+			(RimeReader Reader, uint Count) s_Outputs = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_Outputs.Count; ++i)
+			{
+				var s_CtrRef = new CtrRef<UINodePort>();
+				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_Outputs.Reader.ReadUInt32()));
+				p_Instance.Outputs.Add(s_CtrRef);
 			}
+			
+			s_Outputs.Reader.Dispose();
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1070022089:
-					return Outputs;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1070022089:
-					return typeof(GlobalNode).GetProperty(nameof(Outputs));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

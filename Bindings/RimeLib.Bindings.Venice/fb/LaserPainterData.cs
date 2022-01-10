@@ -5,63 +5,28 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 36)]
+	[ContainerType(4, 36)]
 	public class LaserPainterData : 
 		LockingWeaponData
 	{
-		protected float m_TimeObjectIsPainted = new float();
-		[ContainerField(Name: "TimeObjectIsPainted", Offset: 32, NameHash: 641195484, Flags: 49469), LayoutImmutable, Blittable]
-		public float TimeObjectIsPainted { get { return m_TimeObjectIsPainted; } set { if (OnPropertyChanging("LaserPainterData." + nameof(TimeObjectIsPainted), this, m_TimeObjectIsPainted, value)) m_TimeObjectIsPainted = value; } } // 0x20 (32)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 641195484:
-					TimeObjectIsPainted = (float) p_Value;
-					break;
+		[ContainerField(32), LayoutImmutable, Blittable]
+		public float TimeObjectIsPainted { get; set; }
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
+		public static void Deserialize(LaserPainterData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
+		{
+			p_Instance.TimeObjectIsPainted = p_Reader.ReadSingle();
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 641195484:
-					return TimeObjectIsPainted;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 641195484:
-					return typeof(LaserPainterData).GetProperty(nameof(TimeObjectIsPainted));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

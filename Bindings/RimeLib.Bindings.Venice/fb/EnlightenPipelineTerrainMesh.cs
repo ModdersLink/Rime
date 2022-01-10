@@ -5,113 +5,47 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 16,  Flags: 41, Size: 80)]
-	public class EnlightenPipelineTerrainMesh : FrostbiteContainer
+	[ContainerType(16, 80)]
+	public class EnlightenPipelineTerrainMesh
 	{
-		[ContainerField(Name: "UvTranslation", Offset: 0, NameHash: 2805972397, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
-		public Vec2 UvTranslation { get; set; } = new Vec2(); // 0x0 (0)
+		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable]
+		public Vec2 UvTranslation { get; set; } = new();
 		
-		[ContainerField(Name: "BoundingBox", Offset: 16, NameHash: 2648132290, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
-		public AxisAlignedBox BoundingBox { get; set; } = new AxisAlignedBox(); // 0x10 (16)
+		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable]
+		public AxisAlignedBox BoundingBox { get; set; } = new();
 		
-		[ContainerField(Name: "UvTransform", Offset: 48, NameHash: 2858488202, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
-		public Vec4 UvTransform { get; set; } = new Vec4(); // 0x30 (48)
+		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable]
+		public Vec4 UvTransform { get; set; } = new();
 		
-		[ContainerField(Name: "LightMapResolution", Offset: 64, NameHash: 2797852905, Flags: 49421), LayoutImmutable, Blittable]
-		public uint LightMapResolution { get; set; } // 0x40 (64)
+		[ContainerField(64), LayoutImmutable, Blittable]
+		public uint LightMapResolution { get; set; }
 		
-		[ContainerField(Name: "TerrainMeshName", Offset: 68, NameHash: 1156977350, Flags: 16509), LayoutImmutable]
-		public string TerrainMeshName { get; set; } // 0x44 (68)
+		[ContainerField(68), LayoutImmutable]
+		public string TerrainMeshName { get; set; } = string.Empty;
 		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		public static void Deserialize(EnlightenPipelineTerrainMesh p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 2805972397:
-					UvTranslation = (Vec2) p_Value;
-					break;
-
-				case 2648132290:
-					BoundingBox = (AxisAlignedBox) p_Value;
-					break;
-
-				case 2858488202:
-					UvTransform = (Vec4) p_Value;
-					break;
-
-				case 2797852905:
-					LightMapResolution = (uint) p_Value;
-					break;
-
-				case 1156977350:
-					TerrainMeshName = (string) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2805972397:
-					return UvTranslation;
-
-				case 2648132290:
-					return BoundingBox;
-
-				case 2858488202:
-					return UvTransform;
-
-				case 2797852905:
-					return LightMapResolution;
-
-				case 1156977350:
-					return TerrainMeshName;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2805972397:
-					return typeof(EnlightenPipelineTerrainMesh).GetProperty(nameof(UvTranslation));
-
-				case 2648132290:
-					return typeof(EnlightenPipelineTerrainMesh).GetProperty(nameof(BoundingBox));
-
-				case 2858488202:
-					return typeof(EnlightenPipelineTerrainMesh).GetProperty(nameof(UvTransform));
-
-				case 2797852905:
-					return typeof(EnlightenPipelineTerrainMesh).GetProperty(nameof(LightMapResolution));
-
-				case 1156977350:
-					return typeof(EnlightenPipelineTerrainMesh).GetProperty(nameof(TerrainMeshName));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
+			fb.Vec2.Deserialize(p_Instance.UvTranslation, p_Reader, p_Parser);
+			p_Reader.Seek(8, SeekOrigin.Current);
+			fb.AxisAlignedBox.Deserialize(p_Instance.BoundingBox, p_Reader, p_Parser);
+			p_Reader.Seek(8, SeekOrigin.Current);
+			fb.Vec4.Deserialize(p_Instance.UvTransform, p_Reader, p_Parser);
+			p_Reader.Seek(8, SeekOrigin.Current);
+			p_Instance.LightMapResolution = p_Reader.ReadUInt32();
+			p_Reader.Seek(8, SeekOrigin.Current);
+			p_Instance.TerrainMeshName = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
+			p_Reader.Seek(16, SeekOrigin.Current);
 		}
 	}
 }

@@ -5,152 +5,73 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 41, Size: 48)]
-	public class AntAnimationHandlerData : FrostbiteContainer
+	[ContainerType(4, 48)]
+	public class AntAnimationHandlerData
 	{
-		[ContainerField(Name: "Animatable", Offset: 0, NameHash: 3208693873, Flags: 41)]
-		public AntAnimatableData Animatable { get; set; } = new AntAnimatableData(); // 0x0 (0)
+		[ContainerField(0)]
+		public AntAnimatableData Animatable { get; set; } = new();
 		
-		[ContainerField(Name: "RootController", Offset: 20, NameHash: 3403232383, Flags: 41)]
-		public AntRef RootController { get; set; } = new AntRef(); // 0x14 (20)
+		[ContainerField(20)]
+		public AntRef RootController { get; set; } = new();
 		
-		[ContainerField(Name: "LodBinding", Offset: 24, NameHash: 3718483171, Flags: 41)]
-		public LodBinding LodBinding { get; set; } = new LodBinding(); // 0x18 (24)
+		[ContainerField(24)]
+		public LodBinding LodBinding { get; set; } = new();
 		
-		[ContainerField(Name: "AntPackageData", Offset: 36, NameHash: 1530906868, Flags: 65)]
-		public RefArray<AntPackageAsset> AntPackageData { get; set; } = new RefArray<AntPackageAsset>(); // 0x24 (36)
+		[ContainerField(36)]
+		public List<CtrRef<AntPackageAsset>> AntPackageData { get; set; } = new();
 		
-		[ContainerField(Name: "BonesToMirror", Offset: 40, NameHash: 4237573170, Flags: 65)]
-		public List<GameplayBone> BonesToMirror { get; set; } = new List<GameplayBone>(); // 0x28 (40)
+		[ContainerField(40)]
+		public List<GameplayBone> BonesToMirror { get; set; } = new();
 		
-		[ContainerField(Name: "ReportBackFromAnt", Offset: 44, NameHash: 3577562349, Flags: 49325), LayoutImmutable, Blittable]
-		public bool ReportBackFromAnt { get; set; } // 0x2C (44)
+		[ContainerField(44), LayoutImmutable, Blittable]
+		public bool ReportBackFromAnt { get; set; }
 		
-		[ContainerField(Name: "EnableMasterSlaveCopy", Offset: 45, NameHash: 4006836336, Flags: 49325), LayoutImmutable, Blittable]
-		public bool EnableMasterSlaveCopy { get; set; } // 0x2D (45)
+		[ContainerField(45), LayoutImmutable, Blittable]
+		public bool EnableMasterSlaveCopy { get; set; }
 		
-		[ContainerField(Name: "IsProp", Offset: 46, NameHash: 2816600898, Flags: 49325), LayoutImmutable, Blittable]
-		public bool IsProp { get; set; } // 0x2E (46)
+		[ContainerField(46), LayoutImmutable, Blittable]
+		public bool IsProp { get; set; }
 		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		public static void Deserialize(AntAnimationHandlerData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			fb.AntAnimatableData.Deserialize(p_Instance.Animatable, p_Reader, p_Parser);
+			fb.AntRef.Deserialize(p_Instance.RootController, p_Reader, p_Parser);
+			fb.LodBinding.Deserialize(p_Instance.LodBinding, p_Reader, p_Parser);
+			p_Instance.AntPackageData.Clear();
+			(RimeReader Reader, uint Count) s_AntPackageData = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_AntPackageData.Count; ++i)
 			{
-				case 3208693873:
-					Animatable = (AntAnimatableData) p_Value;
-					break;
-
-				case 3403232383:
-					RootController = (AntRef) p_Value;
-					break;
-
-				case 3718483171:
-					LodBinding = (LodBinding) p_Value;
-					break;
-
-				case 1530906868:
-					AntPackageData = (RefArray<AntPackageAsset>) p_Value;
-					break;
-
-				case 4237573170:
-					BonesToMirror = (List<GameplayBone>) p_Value;
-					break;
-
-				case 3577562349:
-					ReportBackFromAnt = (bool) p_Value;
-					break;
-
-				case 4006836336:
-					EnableMasterSlaveCopy = (bool) p_Value;
-					break;
-
-				case 2816600898:
-					IsProp = (bool) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_CtrRef = new CtrRef<AntPackageAsset>();
+				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_AntPackageData.Reader.ReadUInt32()));
+				p_Instance.AntPackageData.Add(s_CtrRef);
 			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
+			
+			s_AntPackageData.Reader.Dispose();
+			p_Instance.BonesToMirror.Clear();
+			(RimeReader Reader, uint Count) s_BonesToMirror = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_BonesToMirror.Count; ++i)
 			{
-				case 3208693873:
-					return Animatable;
-
-				case 3403232383:
-					return RootController;
-
-				case 3718483171:
-					return LodBinding;
-
-				case 1530906868:
-					return AntPackageData;
-
-				case 4237573170:
-					return BonesToMirror;
-
-				case 3577562349:
-					return ReportBackFromAnt;
-
-				case 4006836336:
-					return EnableMasterSlaveCopy;
-
-				case 2816600898:
-					return IsProp;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
+				var s_Value = new GameplayBone();
+				fb.GameplayBone.Deserialize(s_Value, s_BonesToMirror.Reader, p_Parser);
+				p_Instance.BonesToMirror.Add(s_Value);
 			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3208693873:
-					return typeof(AntAnimationHandlerData).GetProperty(nameof(Animatable));
-
-				case 3403232383:
-					return typeof(AntAnimationHandlerData).GetProperty(nameof(RootController));
-
-				case 3718483171:
-					return typeof(AntAnimationHandlerData).GetProperty(nameof(LodBinding));
-
-				case 1530906868:
-					return typeof(AntAnimationHandlerData).GetProperty(nameof(AntPackageData));
-
-				case 4237573170:
-					return typeof(AntAnimationHandlerData).GetProperty(nameof(BonesToMirror));
-
-				case 3577562349:
-					return typeof(AntAnimationHandlerData).GetProperty(nameof(ReportBackFromAnt));
-
-				case 4006836336:
-					return typeof(AntAnimationHandlerData).GetProperty(nameof(EnableMasterSlaveCopy));
-
-				case 2816600898:
-					return typeof(AntAnimationHandlerData).GetProperty(nameof(IsProp));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
+			
+			s_BonesToMirror.Reader.Dispose();
+			p_Instance.ReportBackFromAnt = p_Reader.ReadBool();
+			p_Instance.EnableMasterSlaveCopy = p_Reader.ReadBool();
+			p_Instance.IsProp = p_Reader.ReadBool();
+			p_Reader.Seek(1, SeekOrigin.Current);
 		}
 	}
 }

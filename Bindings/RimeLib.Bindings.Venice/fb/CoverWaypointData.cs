@@ -5,63 +5,28 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 16,  Flags: 53, Size: 144)]
+	[ContainerType(16, 144)]
 	public class CoverWaypointData : 
 		AbstractLocoWaypointData
 	{
-		protected AILocoCoverTaskData m_CoverTask = new AILocoCoverTaskData();
-		[ContainerField(Name: "CoverTask", Offset: 48, NameHash: 2741662821, Flags: 41)]
-		public AILocoCoverTaskData CoverTask { get { return m_CoverTask; } set { if (OnPropertyChanging("CoverWaypointData." + nameof(CoverTask), this, m_CoverTask, value)) m_CoverTask = value; } } // 0x30 (48)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 2741662821:
-					CoverTask = (AILocoCoverTaskData) p_Value;
-					break;
+		[ContainerField(48)]
+		public AILocoCoverTaskData CoverTask { get; set; } = new();
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
+		public static void Deserialize(CoverWaypointData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
+		{
+			fb.AILocoCoverTaskData.Deserialize(p_Instance.CoverTask, p_Reader, p_Parser);
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2741662821:
-					return CoverTask;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2741662821:
-					return typeof(CoverWaypointData).GetProperty(nameof(CoverTask));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

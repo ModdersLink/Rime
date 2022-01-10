@@ -5,77 +5,41 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
+	[ContainerType(4, 16)]
 	public class AdvertisementLevelDescriptionComponent : 
 		LevelDescriptionComponent
 	{
-		protected string m_Identifier = string.Empty;
-		[ContainerField(Name: "Identifier", Offset: 8, NameHash: 3512790342, Flags: 16509), LayoutImmutable]
-		public string Identifier { get { return m_Identifier; } set { if (OnPropertyChanging("AdvertisementLevelDescriptionComponent." + nameof(Identifier), this, m_Identifier, value)) m_Identifier = value; } } // 0x8 (8)
-		
-		protected List<AdvertisementZoneMember> m_Members = new List<AdvertisementZoneMember>();
-		[ContainerField(Name: "Members", Offset: 12, NameHash: 1446896454, Flags: 65)]
-		public List<AdvertisementZoneMember> Members { get { return m_Members; } set { if (OnPropertyChanging("AdvertisementLevelDescriptionComponent." + nameof(Members), this, m_Members, value)) m_Members = value; } } // 0xC (12)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(8), LayoutImmutable]
+		public string Identifier { get; set; } = string.Empty;
+
+		[ContainerField(12)]
+		public List<AdvertisementZoneMember> Members { get; set; } = new();
+
+		public static void Deserialize(AdvertisementLevelDescriptionComponent p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Instance.Identifier = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
+			p_Instance.Members.Clear();
+			(RimeReader Reader, uint Count) s_Members = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_Members.Count; ++i)
 			{
-				case 3512790342:
-					Identifier = (string) p_Value;
-					break;
-
-				case 1446896454:
-					Members = (List<AdvertisementZoneMember>) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_Value = new AdvertisementZoneMember();
+				fb.AdvertisementZoneMember.Deserialize(s_Value, s_Members.Reader, p_Parser);
+				p_Instance.Members.Add(s_Value);
 			}
+			
+			s_Members.Reader.Dispose();
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3512790342:
-					return Identifier;
-
-				case 1446896454:
-					return Members;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3512790342:
-					return typeof(AdvertisementLevelDescriptionComponent).GetProperty(nameof(Identifier));
-
-				case 1446896454:
-					return typeof(AdvertisementLevelDescriptionComponent).GetProperty(nameof(Members));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

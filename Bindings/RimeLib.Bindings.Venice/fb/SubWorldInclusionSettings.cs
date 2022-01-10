@@ -5,63 +5,37 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 12)]
+	[ContainerType(4, 12)]
 	public class SubWorldInclusionSettings : 
 		DataContainer
 	{
-		protected RefArray<SubWorldInclusionSetting> m_Settings = new RefArray<SubWorldInclusionSetting>();
-		[ContainerField(Name: "Settings", Offset: 8, NameHash: 649772672, Flags: 65)]
-		public RefArray<SubWorldInclusionSetting> Settings { get { return m_Settings; } set { if (OnPropertyChanging("SubWorldInclusionSettings." + nameof(Settings), this, m_Settings, value)) m_Settings = value; } } // 0x8 (8)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 649772672:
-					Settings = (RefArray<SubWorldInclusionSetting>) p_Value;
-					break;
+		[ContainerField(8)]
+		public List<CtrRef<SubWorldInclusionSetting>> Settings { get; set; } = new();
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+		public static void Deserialize(SubWorldInclusionSettings p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
+		{
+			p_Instance.Settings.Clear();
+			(RimeReader Reader, uint Count) s_Settings = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_Settings.Count; ++i)
+			{
+				var s_CtrRef = new CtrRef<SubWorldInclusionSetting>();
+				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_Settings.Reader.ReadUInt32()));
+				p_Instance.Settings.Add(s_CtrRef);
 			}
+			
+			s_Settings.Reader.Dispose();
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 649772672:
-					return Settings;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 649772672:
-					return typeof(SubWorldInclusionSettings).GetProperty(nameof(Settings));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

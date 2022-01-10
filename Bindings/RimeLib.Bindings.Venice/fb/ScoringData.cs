@@ -5,91 +5,63 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 24)]
+	[ContainerType(4, 24)]
 	public class ScoringData : 
 		Asset
 	{
-		protected RefArray<ScoringTypeData> m_ScoringTypes = new RefArray<ScoringTypeData>();
-		[ContainerField(Name: "ScoringTypes", Offset: 12, NameHash: 1268919875, Flags: 65)]
-		public RefArray<ScoringTypeData> ScoringTypes { get { return m_ScoringTypes; } set { if (OnPropertyChanging("ScoringData." + nameof(ScoringTypes), this, m_ScoringTypes, value)) m_ScoringTypes = value; } } // 0xC (12)
-		
-		protected RefArray<ScoringHandlerData> m_ScoringHandlers = new RefArray<ScoringHandlerData>();
-		[ContainerField(Name: "ScoringHandlers", Offset: 16, NameHash: 3193568419, Flags: 65)]
-		public RefArray<ScoringHandlerData> ScoringHandlers { get { return m_ScoringHandlers; } set { if (OnPropertyChanging("ScoringData." + nameof(ScoringHandlers), this, m_ScoringHandlers, value)) m_ScoringHandlers = value; } } // 0x10 (16)
-		
-		protected RefArray<ScoringBucketData> m_Buckets = new RefArray<ScoringBucketData>();
-		[ContainerField(Name: "Buckets", Offset: 20, NameHash: 2760100856, Flags: 65)]
-		public RefArray<ScoringBucketData> Buckets { get { return m_Buckets; } set { if (OnPropertyChanging("ScoringData." + nameof(Buckets), this, m_Buckets, value)) m_Buckets = value; } } // 0x14 (20)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(12)]
+		public List<CtrRef<ScoringTypeData>> ScoringTypes { get; set; } = new();
+
+		[ContainerField(16)]
+		public List<CtrRef<ScoringHandlerData>> ScoringHandlers { get; set; } = new();
+
+		[ContainerField(20)]
+		public List<CtrRef<ScoringBucketData>> Buckets { get; set; } = new();
+
+		public static void Deserialize(ScoringData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Instance.ScoringTypes.Clear();
+			(RimeReader Reader, uint Count) s_ScoringTypes = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_ScoringTypes.Count; ++i)
 			{
-				case 1268919875:
-					ScoringTypes = (RefArray<ScoringTypeData>) p_Value;
-					break;
-
-				case 3193568419:
-					ScoringHandlers = (RefArray<ScoringHandlerData>) p_Value;
-					break;
-
-				case 2760100856:
-					Buckets = (RefArray<ScoringBucketData>) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_CtrRef = new CtrRef<ScoringTypeData>();
+				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_ScoringTypes.Reader.ReadUInt32()));
+				p_Instance.ScoringTypes.Add(s_CtrRef);
 			}
+			
+			s_ScoringTypes.Reader.Dispose();
+			p_Instance.ScoringHandlers.Clear();
+			(RimeReader Reader, uint Count) s_ScoringHandlers = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_ScoringHandlers.Count; ++i)
+			{
+				var s_CtrRef = new CtrRef<ScoringHandlerData>();
+				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_ScoringHandlers.Reader.ReadUInt32()));
+				p_Instance.ScoringHandlers.Add(s_CtrRef);
+			}
+			
+			s_ScoringHandlers.Reader.Dispose();
+			p_Instance.Buckets.Clear();
+			(RimeReader Reader, uint Count) s_Buckets = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_Buckets.Count; ++i)
+			{
+				var s_CtrRef = new CtrRef<ScoringBucketData>();
+				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_Buckets.Reader.ReadUInt32()));
+				p_Instance.Buckets.Add(s_CtrRef);
+			}
+			
+			s_Buckets.Reader.Dispose();
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1268919875:
-					return ScoringTypes;
-
-				case 3193568419:
-					return ScoringHandlers;
-
-				case 2760100856:
-					return Buckets;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1268919875:
-					return typeof(ScoringData).GetProperty(nameof(ScoringTypes));
-
-				case 3193568419:
-					return typeof(ScoringData).GetProperty(nameof(ScoringHandlers));
-
-				case 2760100856:
-					return typeof(ScoringData).GetProperty(nameof(Buckets));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

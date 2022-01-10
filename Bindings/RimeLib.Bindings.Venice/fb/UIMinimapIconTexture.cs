@@ -5,74 +5,39 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 41, Size: 8)]
-	public class UIMinimapIconTexture : FrostbiteContainer
+	[ContainerType(4, 8)]
+	public class UIMinimapIconTexture
 	{
-		[ContainerField(Name: "IconType", Offset: 0, NameHash: 269550934, Flags: 137)]
-		public UIHudIcon IconType { get; set; } = new UIHudIcon(); // 0x0 (0)
+		[ContainerField(0)]
+		public UIHudIcon IconType { get; set; } = new();
 		
-		[ContainerField(Name: "States", Offset: 4, NameHash: 3319729985, Flags: 65)]
-		public List<UIMinimapIconTextureState> States { get; set; } = new List<UIMinimapIconTextureState>(); // 0x4 (4)
+		[ContainerField(4)]
+		public List<UIMinimapIconTextureState> States { get; set; } = new();
 		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		public static void Deserialize(UIMinimapIconTexture p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Instance.IconType = (UIHudIcon) p_Reader.ReadInt32();
+			p_Instance.States.Clear();
+			(RimeReader Reader, uint Count) s_States = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_States.Count; ++i)
 			{
-				case 269550934:
-						IconType = (UIHudIcon) Enum.ToObject(typeof(UIHudIcon), p_Value);
-					break;
-
-				case 3319729985:
-					States = (List<UIMinimapIconTextureState>) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_Value = new UIMinimapIconTextureState();
+				fb.UIMinimapIconTextureState.Deserialize(s_Value, s_States.Reader, p_Parser);
+				p_Instance.States.Add(s_Value);
 			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 269550934:
-					return IconType;
-
-				case 3319729985:
-					return States;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 269550934:
-					return typeof(UIMinimapIconTexture).GetProperty(nameof(IconType));
-
-				case 3319729985:
-					return typeof(UIMinimapIconTexture).GetProperty(nameof(States));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
+			
+			s_States.Reader.Dispose();
 		}
 	}
 }

@@ -5,119 +5,63 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 28)]
+	[ContainerType(4, 28)]
 	public class VoiceOverDialogClip : 
 		DataContainer
 	{
-		protected float m_Offset = new float();
-		[ContainerField(Name: "Offset", Offset: 8, NameHash: 2871410728, Flags: 49469), LayoutImmutable, Blittable]
-		public float Offset { get { return m_Offset; } set { if (OnPropertyChanging("VoiceOverDialogClip." + nameof(Offset), this, m_Offset, value)) m_Offset = value; } } // 0x8 (8)
-		
-		protected List<VoiceOverDialogTake> m_Takes = new List<VoiceOverDialogTake>();
-		[ContainerField(Name: "Takes", Offset: 12, NameHash: 227600557, Flags: 65)]
-		public List<VoiceOverDialogTake> Takes { get { return m_Takes; } set { if (OnPropertyChanging("VoiceOverDialogClip." + nameof(Takes), this, m_Takes, value)) m_Takes = value; } } // 0xC (12)
-		
-		protected RefArray<VoiceOverDialogClip> m_OffsetReferences = new RefArray<VoiceOverDialogClip>();
-		[ContainerField(Name: "OffsetReferences", Offset: 16, NameHash: 1090086000, Flags: 65)]
-		public RefArray<VoiceOverDialogClip> OffsetReferences { get { return m_OffsetReferences; } set { if (OnPropertyChanging("VoiceOverDialogClip." + nameof(OffsetReferences), this, m_OffsetReferences, value)) m_OffsetReferences = value; } } // 0x10 (16)
-		
-		protected CtrRef<VoiceOverDialogClipEvents> m_Events = new CtrRef<VoiceOverDialogClipEvents>();
-		[ContainerField(Name: "Events", Offset: 20, NameHash: 2352146554, Flags: 53)]
-		public CtrRef<VoiceOverDialogClipEvents> Events { get { return m_Events; } set { if (OnPropertyChanging("VoiceOverDialogClip." + nameof(Events), this, m_Events, value)) m_Events = value; } } // 0x14 (20)
-		
-		protected sbyte m_SequenceIndex = new sbyte();
-		[ContainerField(Name: "SequenceIndex", Offset: 24, NameHash: 4101344388, Flags: 49341), LayoutImmutable, Blittable]
-		public sbyte SequenceIndex { get { return m_SequenceIndex; } set { if (OnPropertyChanging("VoiceOverDialogClip." + nameof(SequenceIndex), this, m_SequenceIndex, value)) m_SequenceIndex = value; } } // 0x18 (24)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(8), LayoutImmutable, Blittable]
+		public float Offset { get; set; }
+
+		[ContainerField(12)]
+		public List<VoiceOverDialogTake> Takes { get; set; } = new();
+
+		[ContainerField(16)]
+		public List<CtrRef<VoiceOverDialogClip>> OffsetReferences { get; set; } = new();
+
+		[ContainerField(20)]
+		public CtrRef<VoiceOverDialogClipEvents> Events { get; set; } = new();
+
+		[ContainerField(24), LayoutImmutable, Blittable]
+		public sbyte SequenceIndex { get; set; }
+
+		public static void Deserialize(VoiceOverDialogClip p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Instance.Offset = p_Reader.ReadSingle();
+			p_Instance.Takes.Clear();
+			(RimeReader Reader, uint Count) s_Takes = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_Takes.Count; ++i)
 			{
-				case 2871410728:
-					Offset = (float) p_Value;
-					break;
-
-				case 227600557:
-					Takes = (List<VoiceOverDialogTake>) p_Value;
-					break;
-
-				case 1090086000:
-					OffsetReferences = (RefArray<VoiceOverDialogClip>) p_Value;
-					break;
-
-				case 2352146554:
-					Events = (CtrRef<VoiceOverDialogClipEvents>) p_Value;
-					break;
-
-				case 4101344388:
-					SequenceIndex = (sbyte) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_Value = new VoiceOverDialogTake();
+				fb.VoiceOverDialogTake.Deserialize(s_Value, s_Takes.Reader, p_Parser);
+				p_Instance.Takes.Add(s_Value);
 			}
+			
+			s_Takes.Reader.Dispose();
+			p_Instance.OffsetReferences.Clear();
+			(RimeReader Reader, uint Count) s_OffsetReferences = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_OffsetReferences.Count; ++i)
+			{
+				var s_CtrRef = new CtrRef<VoiceOverDialogClip>();
+				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_OffsetReferences.Reader.ReadUInt32()));
+				p_Instance.OffsetReferences.Add(s_CtrRef);
+			}
+			
+			s_OffsetReferences.Reader.Dispose();
+			p_Instance.Events.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
+			p_Instance.SequenceIndex = p_Reader.ReadSByte();
+			p_Reader.Seek(3, SeekOrigin.Current);
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2871410728:
-					return Offset;
-
-				case 227600557:
-					return Takes;
-
-				case 1090086000:
-					return OffsetReferences;
-
-				case 2352146554:
-					return Events;
-
-				case 4101344388:
-					return SequenceIndex;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2871410728:
-					return typeof(VoiceOverDialogClip).GetProperty(nameof(Offset));
-
-				case 227600557:
-					return typeof(VoiceOverDialogClip).GetProperty(nameof(Takes));
-
-				case 1090086000:
-					return typeof(VoiceOverDialogClip).GetProperty(nameof(OffsetReferences));
-
-				case 2352146554:
-					return typeof(VoiceOverDialogClip).GetProperty(nameof(Events));
-
-				case 4101344388:
-					return typeof(VoiceOverDialogClip).GetProperty(nameof(SequenceIndex));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

@@ -5,77 +5,42 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 16,  Flags: 53, Size: 112)]
+	[ContainerType(16, 112)]
 	public class EdgeModelComponentData : 
 		DestructionEdgeModelComponentData
 	{
-		protected RefArray<RigidMeshAsset> m_RigidMeshes = new RefArray<RigidMeshAsset>();
-		[ContainerField(Name: "RigidMeshes", Offset: 96, NameHash: 3208409265, Flags: 65)]
-		public RefArray<RigidMeshAsset> RigidMeshes { get { return m_RigidMeshes; } set { if (OnPropertyChanging("EdgeModelComponentData." + nameof(RigidMeshes), this, m_RigidMeshes, value)) m_RigidMeshes = value; } } // 0x60 (96)
-		
-		protected uint m_MaxInstanceCount = new uint();
-		[ContainerField(Name: "MaxInstanceCount", Offset: 100, NameHash: 3587631771, Flags: 49421), LayoutImmutable, Blittable]
-		public uint MaxInstanceCount { get { return m_MaxInstanceCount; } set { if (OnPropertyChanging("EdgeModelComponentData." + nameof(MaxInstanceCount), this, m_MaxInstanceCount, value)) m_MaxInstanceCount = value; } } // 0x64 (100)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(96)]
+		public List<CtrRef<RigidMeshAsset>> RigidMeshes { get; set; } = new();
+
+		[ContainerField(100), LayoutImmutable, Blittable]
+		public uint MaxInstanceCount { get; set; }
+
+		public static void Deserialize(EdgeModelComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Instance.RigidMeshes.Clear();
+			(RimeReader Reader, uint Count) s_RigidMeshes = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_RigidMeshes.Count; ++i)
 			{
-				case 3208409265:
-					RigidMeshes = (RefArray<RigidMeshAsset>) p_Value;
-					break;
-
-				case 3587631771:
-					MaxInstanceCount = (uint) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_CtrRef = new CtrRef<RigidMeshAsset>();
+				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_RigidMeshes.Reader.ReadUInt32()));
+				p_Instance.RigidMeshes.Add(s_CtrRef);
 			}
+			
+			s_RigidMeshes.Reader.Dispose();
+			p_Instance.MaxInstanceCount = p_Reader.ReadUInt32();
+			p_Reader.Seek(8, SeekOrigin.Current);
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3208409265:
-					return RigidMeshes;
-
-				case 3587631771:
-					return MaxInstanceCount;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3208409265:
-					return typeof(EdgeModelComponentData).GetProperty(nameof(RigidMeshes));
-
-				case 3587631771:
-					return typeof(EdgeModelComponentData).GetProperty(nameof(MaxInstanceCount));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

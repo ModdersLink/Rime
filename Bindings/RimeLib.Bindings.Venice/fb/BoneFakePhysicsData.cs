@@ -5,91 +5,36 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 20)]
+	[ContainerType(4, 20)]
 	public class BoneFakePhysicsData : 
 		DataContainer
 	{
-		protected CtrRef<FakePhysicsData> m_FakePhysics = new CtrRef<FakePhysicsData>();
-		[ContainerField(Name: "FakePhysics", Offset: 8, NameHash: 3614234055, Flags: 53)]
-		public CtrRef<FakePhysicsData> FakePhysics { get { return m_FakePhysics; } set { if (OnPropertyChanging("BoneFakePhysicsData." + nameof(FakePhysics), this, m_FakePhysics, value)) m_FakePhysics = value; } } // 0x8 (8)
-		
-		protected string m_BoneName = string.Empty;
-		[ContainerField(Name: "BoneName", Offset: 12, NameHash: 1590647844, Flags: 16509), LayoutImmutable]
-		public string BoneName { get { return m_BoneName; } set { if (OnPropertyChanging("BoneFakePhysicsData." + nameof(BoneName), this, m_BoneName, value)) m_BoneName = value; } } // 0xC (12)
-		
-		protected int m_BoneId = new int();
-		[ContainerField(Name: "BoneId", Offset: 16, NameHash: 2679406126, Flags: 49405), LayoutImmutable, Blittable]
-		public int BoneId { get { return m_BoneId; } set { if (OnPropertyChanging("BoneFakePhysicsData." + nameof(BoneId), this, m_BoneId, value)) m_BoneId = value; } } // 0x10 (16)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(8)]
+		public CtrRef<FakePhysicsData> FakePhysics { get; set; } = new();
+
+		[ContainerField(12), LayoutImmutable]
+		public string BoneName { get; set; } = string.Empty;
+
+		[ContainerField(16), LayoutImmutable, Blittable]
+		public int BoneId { get; set; }
+
+		public static void Deserialize(BoneFakePhysicsData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 3614234055:
-					FakePhysics = (CtrRef<FakePhysicsData>) p_Value;
-					break;
-
-				case 1590647844:
-					BoneName = (string) p_Value;
-					break;
-
-				case 2679406126:
-					BoneId = (int) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
+			p_Instance.FakePhysics.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
+			p_Instance.BoneName = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
+			p_Instance.BoneId = p_Reader.ReadInt32();
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3614234055:
-					return FakePhysics;
-
-				case 1590647844:
-					return BoneName;
-
-				case 2679406126:
-					return BoneId;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3614234055:
-					return typeof(BoneFakePhysicsData).GetProperty(nameof(FakePhysics));
-
-				case 1590647844:
-					return typeof(BoneFakePhysicsData).GetProperty(nameof(BoneName));
-
-				case 2679406126:
-					return typeof(BoneFakePhysicsData).GetProperty(nameof(BoneId));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

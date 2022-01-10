@@ -5,77 +5,34 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 16,  Flags: 53, Size: 144)]
+	[ContainerType(16, 144)]
 	public class ScenarioWaypointData : 
 		AbstractLocoWaypointData
 	{
-		protected AntRef m_ScenarioAntRef = new AntRef();
-		[ContainerField(Name: "ScenarioAntRef", Offset: 48, NameHash: 3249359201, Flags: 41)]
-		public AntRef ScenarioAntRef { get { return m_ScenarioAntRef; } set { if (OnPropertyChanging("ScenarioWaypointData." + nameof(ScenarioAntRef), this, m_ScenarioAntRef, value)) m_ScenarioAntRef = value; } } // 0x30 (48)
-		
-		protected ScenarioTaskData m_ScenarioTask = new ScenarioTaskData();
-		[ContainerField(Name: "ScenarioTask", Offset: 64, NameHash: 764854566, Flags: 41)]
-		public ScenarioTaskData ScenarioTask { get { return m_ScenarioTask; } set { if (OnPropertyChanging("ScenarioWaypointData." + nameof(ScenarioTask), this, m_ScenarioTask, value)) m_ScenarioTask = value; } } // 0x40 (64)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(48)]
+		public AntRef ScenarioAntRef { get; set; } = new();
+
+		[ContainerField(64)]
+		public ScenarioTaskData ScenarioTask { get; set; } = new();
+
+		public static void Deserialize(ScenarioWaypointData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 3249359201:
-					ScenarioAntRef = (AntRef) p_Value;
-					break;
-
-				case 764854566:
-					ScenarioTask = (ScenarioTaskData) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
+			fb.AntRef.Deserialize(p_Instance.ScenarioAntRef, p_Reader, p_Parser);
+			p_Reader.Seek(12, SeekOrigin.Current);
+			fb.ScenarioTaskData.Deserialize(p_Instance.ScenarioTask, p_Reader, p_Parser);
+			p_Reader.Seek(12, SeekOrigin.Current);
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3249359201:
-					return ScenarioAntRef;
-
-				case 764854566:
-					return ScenarioTask;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3249359201:
-					return typeof(ScenarioWaypointData).GetProperty(nameof(ScenarioAntRef));
-
-				case 764854566:
-					return typeof(ScenarioWaypointData).GetProperty(nameof(ScenarioTask));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

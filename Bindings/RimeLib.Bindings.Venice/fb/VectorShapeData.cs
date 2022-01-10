@@ -5,119 +5,63 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 28)]
+	[ContainerType(4, 28)]
 	public class VectorShapeData : 
 		BaseShapeData
 	{
-		protected List<Vec3> m_Points = new List<Vec3>();
-		[ContainerField(Name: "Points", Offset: 12, NameHash: 3383606106, Flags: 65)]
-		public List<Vec3> Points { get { return m_Points; } set { if (OnPropertyChanging("VectorShapeData." + nameof(Points), this, m_Points, value)) m_Points = value; } } // 0xC (12)
-		
-		protected List<Vec3> m_Normals = new List<Vec3>();
-		[ContainerField(Name: "Normals", Offset: 16, NameHash: 3102907301, Flags: 65)]
-		public List<Vec3> Normals { get { return m_Normals; } set { if (OnPropertyChanging("VectorShapeData." + nameof(Normals), this, m_Normals, value)) m_Normals = value; } } // 0x10 (16)
-		
-		protected float m_Tension = new float();
-		[ContainerField(Name: "Tension", Offset: 20, NameHash: 3196074177, Flags: 49469), LayoutImmutable, Blittable]
-		public float Tension { get { return m_Tension; } set { if (OnPropertyChanging("VectorShapeData." + nameof(Tension), this, m_Tension, value)) m_Tension = value; } } // 0x14 (20)
-		
-		protected bool m_IsClosed = new bool();
-		[ContainerField(Name: "IsClosed", Offset: 24, NameHash: 1070153421, Flags: 49325), LayoutImmutable, Blittable]
-		public bool IsClosed { get { return m_IsClosed; } set { if (OnPropertyChanging("VectorShapeData." + nameof(IsClosed), this, m_IsClosed, value)) m_IsClosed = value; } } // 0x18 (24)
-		
-		protected bool m_AllowRoll = new bool();
-		[ContainerField(Name: "AllowRoll", Offset: 25, NameHash: 2314066145, Flags: 49325), LayoutImmutable, Blittable]
-		public bool AllowRoll { get { return m_AllowRoll; } set { if (OnPropertyChanging("VectorShapeData." + nameof(AllowRoll), this, m_AllowRoll, value)) m_AllowRoll = value; } } // 0x19 (25)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(12)]
+		public List<Vec3> Points { get; set; } = new();
+
+		[ContainerField(16)]
+		public List<Vec3> Normals { get; set; } = new();
+
+		[ContainerField(20), LayoutImmutable, Blittable]
+		public float Tension { get; set; }
+
+		[ContainerField(24), LayoutImmutable, Blittable]
+		public bool IsClosed { get; set; }
+
+		[ContainerField(25), LayoutImmutable, Blittable]
+		public bool AllowRoll { get; set; }
+
+		public static void Deserialize(VectorShapeData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Instance.Points.Clear();
+			(RimeReader Reader, uint Count) s_Points = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_Points.Count; ++i)
 			{
-				case 3383606106:
-					Points = (List<Vec3>) p_Value;
-					break;
-
-				case 3102907301:
-					Normals = (List<Vec3>) p_Value;
-					break;
-
-				case 3196074177:
-					Tension = (float) p_Value;
-					break;
-
-				case 1070153421:
-					IsClosed = (bool) p_Value;
-					break;
-
-				case 2314066145:
-					AllowRoll = (bool) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_Value = new Vec3();
+				fb.Vec3.Deserialize(s_Value, s_Points.Reader, p_Parser);
+				p_Instance.Points.Add(s_Value);
 			}
+			
+			s_Points.Reader.Dispose();
+			p_Instance.Normals.Clear();
+			(RimeReader Reader, uint Count) s_Normals = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_Normals.Count; ++i)
+			{
+				var s_Value = new Vec3();
+				fb.Vec3.Deserialize(s_Value, s_Normals.Reader, p_Parser);
+				p_Instance.Normals.Add(s_Value);
+			}
+			
+			s_Normals.Reader.Dispose();
+			p_Instance.Tension = p_Reader.ReadSingle();
+			p_Instance.IsClosed = p_Reader.ReadBool();
+			p_Instance.AllowRoll = p_Reader.ReadBool();
+			p_Reader.Seek(2, SeekOrigin.Current);
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3383606106:
-					return Points;
-
-				case 3102907301:
-					return Normals;
-
-				case 3196074177:
-					return Tension;
-
-				case 1070153421:
-					return IsClosed;
-
-				case 2314066145:
-					return AllowRoll;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3383606106:
-					return typeof(VectorShapeData).GetProperty(nameof(Points));
-
-				case 3102907301:
-					return typeof(VectorShapeData).GetProperty(nameof(Normals));
-
-				case 3196074177:
-					return typeof(VectorShapeData).GetProperty(nameof(Tension));
-
-				case 1070153421:
-					return typeof(VectorShapeData).GetProperty(nameof(IsClosed));
-
-				case 2314066145:
-					return typeof(VectorShapeData).GetProperty(nameof(AllowRoll));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

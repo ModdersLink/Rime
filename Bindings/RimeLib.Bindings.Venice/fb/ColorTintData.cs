@@ -5,100 +5,39 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 16,  Flags: 41, Size: 64)]
-	public class ColorTintData : FrostbiteContainer
+	[ContainerType(16, 64)]
+	public class ColorTintData
 	{
-		[ContainerField(Name: "Contrast", Offset: 0, NameHash: 332991719, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 Contrast { get; set; } = new Vec3(); // 0x0 (0)
+		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable]
+		public Vec3 Contrast { get; set; } = new();
 		
-		[ContainerField(Name: "Brightness", Offset: 16, NameHash: 2298333740, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 Brightness { get; set; } = new Vec3(); // 0x10 (16)
+		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable]
+		public Vec3 Brightness { get; set; } = new();
 		
-		[ContainerField(Name: "Saturation", Offset: 32, NameHash: 2572315705, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 Saturation { get; set; } = new Vec3(); // 0x20 (32)
+		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable]
+		public Vec3 Saturation { get; set; } = new();
 		
-		[ContainerField(Name: "Hue", Offset: 48, NameHash: 193458845, Flags: 49469), LayoutImmutable, Blittable]
-		public float Hue { get; set; } // 0x30 (48)
+		[ContainerField(48), LayoutImmutable, Blittable]
+		public float Hue { get; set; }
 		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		public static void Deserialize(ColorTintData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 332991719:
-					Contrast = (Vec3) p_Value;
-					break;
-
-				case 2298333740:
-					Brightness = (Vec3) p_Value;
-					break;
-
-				case 2572315705:
-					Saturation = (Vec3) p_Value;
-					break;
-
-				case 193458845:
-					Hue = (float) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 332991719:
-					return Contrast;
-
-				case 2298333740:
-					return Brightness;
-
-				case 2572315705:
-					return Saturation;
-
-				case 193458845:
-					return Hue;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 332991719:
-					return typeof(ColorTintData).GetProperty(nameof(Contrast));
-
-				case 2298333740:
-					return typeof(ColorTintData).GetProperty(nameof(Brightness));
-
-				case 2572315705:
-					return typeof(ColorTintData).GetProperty(nameof(Saturation));
-
-				case 193458845:
-					return typeof(ColorTintData).GetProperty(nameof(Hue));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
+			fb.Vec3.Deserialize(p_Instance.Contrast, p_Reader, p_Parser);
+			fb.Vec3.Deserialize(p_Instance.Brightness, p_Reader, p_Parser);
+			fb.Vec3.Deserialize(p_Instance.Saturation, p_Reader, p_Parser);
+			p_Instance.Hue = p_Reader.ReadSingle();
+			p_Reader.Seek(12, SeekOrigin.Current);
 		}
 	}
 }

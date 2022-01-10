@@ -5,91 +5,45 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 28)]
+	[ContainerType(4, 28)]
 	public class SoundPatchConfigurationAsset : 
 		SoundAsset
 	{
-		protected CtrRef<SoundPatchAsset> m_Sound = new CtrRef<SoundPatchAsset>();
-		[ContainerField(Name: "Sound", Offset: 16, NameHash: 231353798, Flags: 53)]
-		public CtrRef<SoundPatchAsset> Sound { get { return m_Sound; } set { if (OnPropertyChanging("SoundPatchConfigurationAsset." + nameof(Sound), this, m_Sound, value)) m_Sound = value; } } // 0x10 (16)
-		
-		protected RefArray<SoundPatchConfigurationEntry> m_Entries = new RefArray<SoundPatchConfigurationEntry>();
-		[ContainerField(Name: "Entries", Offset: 20, NameHash: 8238103, Flags: 65)]
-		public RefArray<SoundPatchConfigurationEntry> Entries { get { return m_Entries; } set { if (OnPropertyChanging("SoundPatchConfigurationAsset." + nameof(Entries), this, m_Entries, value)) m_Entries = value; } } // 0x14 (20)
-		
-		protected float m_Loudness = new float();
-		[ContainerField(Name: "Loudness", Offset: 24, NameHash: 2678891068, Flags: 49469), LayoutImmutable, Blittable]
-		public float Loudness { get { return m_Loudness; } set { if (OnPropertyChanging("SoundPatchConfigurationAsset." + nameof(Loudness), this, m_Loudness, value)) m_Loudness = value; } } // 0x18 (24)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(16)]
+		public CtrRef<SoundPatchAsset> Sound { get; set; } = new();
+
+		[ContainerField(20)]
+		public List<CtrRef<SoundPatchConfigurationEntry>> Entries { get; set; } = new();
+
+		[ContainerField(24), LayoutImmutable, Blittable]
+		public float Loudness { get; set; }
+
+		public static void Deserialize(SoundPatchConfigurationAsset p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Instance.Sound.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
+			p_Instance.Entries.Clear();
+			(RimeReader Reader, uint Count) s_Entries = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_Entries.Count; ++i)
 			{
-				case 231353798:
-					Sound = (CtrRef<SoundPatchAsset>) p_Value;
-					break;
-
-				case 8238103:
-					Entries = (RefArray<SoundPatchConfigurationEntry>) p_Value;
-					break;
-
-				case 2678891068:
-					Loudness = (float) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_CtrRef = new CtrRef<SoundPatchConfigurationEntry>();
+				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_Entries.Reader.ReadUInt32()));
+				p_Instance.Entries.Add(s_CtrRef);
 			}
+			
+			s_Entries.Reader.Dispose();
+			p_Instance.Loudness = p_Reader.ReadSingle();
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 231353798:
-					return Sound;
-
-				case 8238103:
-					return Entries;
-
-				case 2678891068:
-					return Loudness;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 231353798:
-					return typeof(SoundPatchConfigurationAsset).GetProperty(nameof(Sound));
-
-				case 8238103:
-					return typeof(SoundPatchConfigurationAsset).GetProperty(nameof(Entries));
-
-				case 2678891068:
-					return typeof(SoundPatchConfigurationAsset).GetProperty(nameof(Loudness));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

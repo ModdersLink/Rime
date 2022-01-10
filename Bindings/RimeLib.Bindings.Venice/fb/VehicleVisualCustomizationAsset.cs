@@ -5,77 +5,50 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 20)]
+	[ContainerType(4, 20)]
 	public class VehicleVisualCustomizationAsset : 
 		Asset
 	{
-		protected RefArray<ShaderTextureUnlockPartCollection> m_TextureUnlockPartCollections = new RefArray<ShaderTextureUnlockPartCollection>();
-		[ContainerField(Name: "TextureUnlockPartCollections", Offset: 12, NameHash: 3762069016, Flags: 65)]
-		public RefArray<ShaderTextureUnlockPartCollection> TextureUnlockPartCollections { get { return m_TextureUnlockPartCollections; } set { if (OnPropertyChanging("VehicleVisualCustomizationAsset." + nameof(TextureUnlockPartCollections), this, m_TextureUnlockPartCollections, value)) m_TextureUnlockPartCollections = value; } } // 0xC (12)
-		
-		protected RefArray<TextUnlockPartData> m_TextUnlockParts = new RefArray<TextUnlockPartData>();
-		[ContainerField(Name: "TextUnlockParts", Offset: 16, NameHash: 1176201452, Flags: 65)]
-		public RefArray<TextUnlockPartData> TextUnlockParts { get { return m_TextUnlockParts; } set { if (OnPropertyChanging("VehicleVisualCustomizationAsset." + nameof(TextUnlockParts), this, m_TextUnlockParts, value)) m_TextUnlockParts = value; } } // 0x10 (16)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(12)]
+		public List<CtrRef<ShaderTextureUnlockPartCollection>> TextureUnlockPartCollections { get; set; } = new();
+
+		[ContainerField(16)]
+		public List<CtrRef<TextUnlockPartData>> TextUnlockParts { get; set; } = new();
+
+		public static void Deserialize(VehicleVisualCustomizationAsset p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Instance.TextureUnlockPartCollections.Clear();
+			(RimeReader Reader, uint Count) s_TextureUnlockPartCollections = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_TextureUnlockPartCollections.Count; ++i)
 			{
-				case 3762069016:
-					TextureUnlockPartCollections = (RefArray<ShaderTextureUnlockPartCollection>) p_Value;
-					break;
-
-				case 1176201452:
-					TextUnlockParts = (RefArray<TextUnlockPartData>) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_CtrRef = new CtrRef<ShaderTextureUnlockPartCollection>();
+				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_TextureUnlockPartCollections.Reader.ReadUInt32()));
+				p_Instance.TextureUnlockPartCollections.Add(s_CtrRef);
 			}
+			
+			s_TextureUnlockPartCollections.Reader.Dispose();
+			p_Instance.TextUnlockParts.Clear();
+			(RimeReader Reader, uint Count) s_TextUnlockParts = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_TextUnlockParts.Count; ++i)
+			{
+				var s_CtrRef = new CtrRef<TextUnlockPartData>();
+				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_TextUnlockParts.Reader.ReadUInt32()));
+				p_Instance.TextUnlockParts.Add(s_CtrRef);
+			}
+			
+			s_TextUnlockParts.Reader.Dispose();
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3762069016:
-					return TextureUnlockPartCollections;
-
-				case 1176201452:
-					return TextUnlockParts;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3762069016:
-					return typeof(VehicleVisualCustomizationAsset).GetProperty(nameof(TextureUnlockPartCollections));
-
-				case 1176201452:
-					return typeof(VehicleVisualCustomizationAsset).GetProperty(nameof(TextUnlockParts));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

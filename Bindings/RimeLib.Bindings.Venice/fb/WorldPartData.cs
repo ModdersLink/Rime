@@ -5,91 +5,37 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 56)]
+	[ContainerType(4, 56)]
 	public class WorldPartData : 
 		SpatialPrefabBlueprint
 	{
-		protected GUID m_HackToSolveRealTimeTweakingIssue = new GUID();
-		[ContainerField(Name: "HackToSolveRealTimeTweakingIssue", Offset: 36, NameHash: 1452521702, Flags: 49501), LayoutImmutable, Blittable]
-		public GUID HackToSolveRealTimeTweakingIssue { get { return m_HackToSolveRealTimeTweakingIssue; } set { if (OnPropertyChanging("WorldPartData." + nameof(HackToSolveRealTimeTweakingIssue), this, m_HackToSolveRealTimeTweakingIssue, value)) m_HackToSolveRealTimeTweakingIssue = value; } } // 0x24 (36)
-		
-		protected bool m_UseDeferredEntityCreation = new bool();
-		[ContainerField(Name: "UseDeferredEntityCreation", Offset: 52, NameHash: 2224120471, Flags: 49325), LayoutImmutable, Blittable]
-		public bool UseDeferredEntityCreation { get { return m_UseDeferredEntityCreation; } set { if (OnPropertyChanging("WorldPartData." + nameof(UseDeferredEntityCreation), this, m_UseDeferredEntityCreation, value)) m_UseDeferredEntityCreation = value; } } // 0x34 (52)
-		
-		protected bool m_Enabled = new bool();
-		[ContainerField(Name: "Enabled", Offset: 53, NameHash: 2662400, Flags: 49325), LayoutImmutable, Blittable]
-		public bool Enabled { get { return m_Enabled; } set { if (OnPropertyChanging("WorldPartData." + nameof(Enabled), this, m_Enabled, value)) m_Enabled = value; } } // 0x35 (53)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(36), LayoutImmutable, Blittable]
+		public GUID HackToSolveRealTimeTweakingIssue { get; set; }
+
+		[ContainerField(52), LayoutImmutable, Blittable]
+		public bool UseDeferredEntityCreation { get; set; }
+
+		[ContainerField(53), LayoutImmutable, Blittable]
+		public bool Enabled { get; set; }
+
+		public static void Deserialize(WorldPartData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 1452521702:
-					HackToSolveRealTimeTweakingIssue = (GUID) p_Value;
-					break;
-
-				case 2224120471:
-					UseDeferredEntityCreation = (bool) p_Value;
-					break;
-
-				case 2662400:
-					Enabled = (bool) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
+			p_Instance.HackToSolveRealTimeTweakingIssue = new GUID(p_Reader);
+			p_Instance.UseDeferredEntityCreation = p_Reader.ReadBool();
+			p_Instance.Enabled = p_Reader.ReadBool();
+			p_Reader.Seek(2, SeekOrigin.Current);
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1452521702:
-					return HackToSolveRealTimeTweakingIssue;
-
-				case 2224120471:
-					return UseDeferredEntityCreation;
-
-				case 2662400:
-					return Enabled;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1452521702:
-					return typeof(WorldPartData).GetProperty(nameof(HackToSolveRealTimeTweakingIssue));
-
-				case 2224120471:
-					return typeof(WorldPartData).GetProperty(nameof(UseDeferredEntityCreation));
-
-				case 2662400:
-					return typeof(WorldPartData).GetProperty(nameof(Enabled));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

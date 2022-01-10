@@ -5,63 +5,37 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 12)]
+	[ContainerType(4, 12)]
 	public class PlayerViewData : 
 		DataContainer
 	{
-		protected RefArray<SubViewData> m_SubViews = new RefArray<SubViewData>();
-		[ContainerField(Name: "SubViews", Offset: 8, NameHash: 1752723775, Flags: 65)]
-		public RefArray<SubViewData> SubViews { get { return m_SubViews; } set { if (OnPropertyChanging("PlayerViewData." + nameof(SubViews), this, m_SubViews, value)) m_SubViews = value; } } // 0x8 (8)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 1752723775:
-					SubViews = (RefArray<SubViewData>) p_Value;
-					break;
+		[ContainerField(8)]
+		public List<CtrRef<SubViewData>> SubViews { get; set; } = new();
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+		public static void Deserialize(PlayerViewData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
+		{
+			p_Instance.SubViews.Clear();
+			(RimeReader Reader, uint Count) s_SubViews = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_SubViews.Count; ++i)
+			{
+				var s_CtrRef = new CtrRef<SubViewData>();
+				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_SubViews.Reader.ReadUInt32()));
+				p_Instance.SubViews.Add(s_CtrRef);
 			}
+			
+			s_SubViews.Reader.Dispose();
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1752723775:
-					return SubViews;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1752723775:
-					return typeof(PlayerViewData).GetProperty(nameof(SubViews));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

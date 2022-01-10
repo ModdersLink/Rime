@@ -5,175 +5,79 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 36)]
+	[ContainerType(4, 36)]
 	public class ScoringBucketData : 
 		DataContainer
 	{
-		protected ScoringBucket m_DestinationBucket = new ScoringBucket();
-		[ContainerField(Name: "DestinationBucket", Offset: 8, NameHash: 73096151, Flags: 137)]
-		public ScoringBucket DestinationBucket { get { return m_DestinationBucket; } set { if (OnPropertyChanging("ScoringBucketData." + nameof(DestinationBucket), this, m_DestinationBucket, value)) m_DestinationBucket = value; } } // 0x8 (8)
-		
-		protected ScoringBucketType m_BucketType = new ScoringBucketType();
-		[ContainerField(Name: "BucketType", Offset: 12, NameHash: 1768841171, Flags: 137)]
-		public ScoringBucketType BucketType { get { return m_BucketType; } set { if (OnPropertyChanging("ScoringBucketData." + nameof(BucketType), this, m_BucketType, value)) m_BucketType = value; } } // 0xC (12)
-		
-		protected string m_Name = string.Empty;
-		[ContainerField(Name: "Name", Offset: 16, NameHash: 2088949890, Flags: 16509), LayoutImmutable]
-		public string Name { get { return m_Name; } set { if (OnPropertyChanging("ScoringBucketData." + nameof(Name), this, m_Name, value)) m_Name = value; } } // 0x10 (16)
-		
-		protected CtrRef<ScoringBucketData> m_TeamTotalBucket = new CtrRef<ScoringBucketData>();
-		[ContainerField(Name: "TeamTotalBucket", Offset: 20, NameHash: 2559512116, Flags: 53)]
-		public CtrRef<ScoringBucketData> TeamTotalBucket { get { return m_TeamTotalBucket; } set { if (OnPropertyChanging("ScoringBucketData." + nameof(TeamTotalBucket), this, m_TeamTotalBucket, value)) m_TeamTotalBucket = value; } } // 0x14 (20)
-		
-		protected List<ScoringBucketUnlockData> m_Unlocks = new List<ScoringBucketUnlockData>();
-		[ContainerField(Name: "Unlocks", Offset: 24, NameHash: 3464375270, Flags: 65)]
-		public List<ScoringBucketUnlockData> Unlocks { get { return m_Unlocks; } set { if (OnPropertyChanging("ScoringBucketData." + nameof(Unlocks), this, m_Unlocks, value)) m_Unlocks = value; } } // 0x18 (24)
-		
-		protected RefArray<StatsCategoryBaseData> m_ConnectedCategories = new RefArray<StatsCategoryBaseData>();
-		[ContainerField(Name: "ConnectedCategories", Offset: 28, NameHash: 3286145740, Flags: 65)]
-		public RefArray<StatsCategoryBaseData> ConnectedCategories { get { return m_ConnectedCategories; } set { if (OnPropertyChanging("ScoringBucketData." + nameof(ConnectedCategories), this, m_ConnectedCategories, value)) m_ConnectedCategories = value; } } // 0x1C (28)
-		
-		protected bool m_AddToEntry = new bool();
-		[ContainerField(Name: "AddToEntry", Offset: 32, NameHash: 3429484907, Flags: 49325), LayoutImmutable, Blittable]
-		public bool AddToEntry { get { return m_AddToEntry; } set { if (OnPropertyChanging("ScoringBucketData." + nameof(AddToEntry), this, m_AddToEntry, value)) m_AddToEntry = value; } } // 0x20 (32)
-		
-		protected bool m_RoundScore = new bool();
-		[ContainerField(Name: "RoundScore", Offset: 33, NameHash: 228996879, Flags: 49325), LayoutImmutable, Blittable]
-		public bool RoundScore { get { return m_RoundScore; } set { if (OnPropertyChanging("ScoringBucketData." + nameof(RoundScore), this, m_RoundScore, value)) m_RoundScore = value; } } // 0x21 (33)
-		
-		protected bool m_GlobalScore = new bool();
-		[ContainerField(Name: "GlobalScore", Offset: 34, NameHash: 3863459110, Flags: 49325), LayoutImmutable, Blittable]
-		public bool GlobalScore { get { return m_GlobalScore; } set { if (OnPropertyChanging("ScoringBucketData." + nameof(GlobalScore), this, m_GlobalScore, value)) m_GlobalScore = value; } } // 0x22 (34)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(8)]
+		public ScoringBucket DestinationBucket { get; set; } = new();
+
+		[ContainerField(12)]
+		public ScoringBucketType BucketType { get; set; } = new();
+
+		[ContainerField(16), LayoutImmutable]
+		public string Name { get; set; } = string.Empty;
+
+		[ContainerField(20)]
+		public CtrRef<ScoringBucketData> TeamTotalBucket { get; set; } = new();
+
+		[ContainerField(24)]
+		public List<ScoringBucketUnlockData> Unlocks { get; set; } = new();
+
+		[ContainerField(28)]
+		public List<CtrRef<StatsCategoryBaseData>> ConnectedCategories { get; set; } = new();
+
+		[ContainerField(32), LayoutImmutable, Blittable]
+		public bool AddToEntry { get; set; }
+
+		[ContainerField(33), LayoutImmutable, Blittable]
+		public bool RoundScore { get; set; }
+
+		[ContainerField(34), LayoutImmutable, Blittable]
+		public bool GlobalScore { get; set; }
+
+		public static void Deserialize(ScoringBucketData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Instance.DestinationBucket = (ScoringBucket) p_Reader.ReadInt32();
+			p_Instance.BucketType = (ScoringBucketType) p_Reader.ReadInt32();
+			p_Instance.Name = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
+			p_Instance.TeamTotalBucket.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
+			p_Instance.Unlocks.Clear();
+			(RimeReader Reader, uint Count) s_Unlocks = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_Unlocks.Count; ++i)
 			{
-				case 73096151:
-					DestinationBucket = (ScoringBucket) Enum.ToObject(typeof(ScoringBucket), p_Value);
-					break;
-
-				case 1768841171:
-					BucketType = (ScoringBucketType) Enum.ToObject(typeof(ScoringBucketType), p_Value);
-					break;
-
-				case 2088949890:
-					Name = (string) p_Value;
-					break;
-
-				case 2559512116:
-					TeamTotalBucket = (CtrRef<ScoringBucketData>) p_Value;
-					break;
-
-				case 3464375270:
-					Unlocks = (List<ScoringBucketUnlockData>) p_Value;
-					break;
-
-				case 3286145740:
-					ConnectedCategories = (RefArray<StatsCategoryBaseData>) p_Value;
-					break;
-
-				case 3429484907:
-					AddToEntry = (bool) p_Value;
-					break;
-
-				case 228996879:
-					RoundScore = (bool) p_Value;
-					break;
-
-				case 3863459110:
-					GlobalScore = (bool) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_Value = new ScoringBucketUnlockData();
+				fb.ScoringBucketUnlockData.Deserialize(s_Value, s_Unlocks.Reader, p_Parser);
+				p_Instance.Unlocks.Add(s_Value);
 			}
+			
+			s_Unlocks.Reader.Dispose();
+			p_Instance.ConnectedCategories.Clear();
+			(RimeReader Reader, uint Count) s_ConnectedCategories = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_ConnectedCategories.Count; ++i)
+			{
+				var s_CtrRef = new CtrRef<StatsCategoryBaseData>();
+				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_ConnectedCategories.Reader.ReadUInt32()));
+				p_Instance.ConnectedCategories.Add(s_CtrRef);
+			}
+			
+			s_ConnectedCategories.Reader.Dispose();
+			p_Instance.AddToEntry = p_Reader.ReadBool();
+			p_Instance.RoundScore = p_Reader.ReadBool();
+			p_Instance.GlobalScore = p_Reader.ReadBool();
+			p_Reader.Seek(1, SeekOrigin.Current);
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 73096151:
-					return DestinationBucket;
-
-				case 1768841171:
-					return BucketType;
-
-				case 2088949890:
-					return Name;
-
-				case 2559512116:
-					return TeamTotalBucket;
-
-				case 3464375270:
-					return Unlocks;
-
-				case 3286145740:
-					return ConnectedCategories;
-
-				case 3429484907:
-					return AddToEntry;
-
-				case 228996879:
-					return RoundScore;
-
-				case 3863459110:
-					return GlobalScore;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 73096151:
-					return typeof(ScoringBucketData).GetProperty(nameof(DestinationBucket));
-
-				case 1768841171:
-					return typeof(ScoringBucketData).GetProperty(nameof(BucketType));
-
-				case 2088949890:
-					return typeof(ScoringBucketData).GetProperty(nameof(Name));
-
-				case 2559512116:
-					return typeof(ScoringBucketData).GetProperty(nameof(TeamTotalBucket));
-
-				case 3464375270:
-					return typeof(ScoringBucketData).GetProperty(nameof(Unlocks));
-
-				case 3286145740:
-					return typeof(ScoringBucketData).GetProperty(nameof(ConnectedCategories));
-
-				case 3429484907:
-					return typeof(ScoringBucketData).GetProperty(nameof(AddToEntry));
-
-				case 228996879:
-					return typeof(ScoringBucketData).GetProperty(nameof(RoundScore));
-
-				case 3863459110:
-					return typeof(ScoringBucketData).GetProperty(nameof(GlobalScore));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

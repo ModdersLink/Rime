@@ -5,100 +5,48 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 41, Size: 16)]
-	public class SoundGraphPluginConnection : FrostbiteContainer
+	[ContainerType(4, 16)]
+	public class SoundGraphPluginConnection
 	{
-		[ContainerField(Name: "ConnectionType", Offset: 0, NameHash: 720217643, Flags: 137)]
-		public SoundGraphPluginConnectionType ConnectionType { get; set; } = new SoundGraphPluginConnectionType(); // 0x0 (0)
+		[ContainerField(0)]
+		public SoundGraphPluginConnectionType ConnectionType { get; set; } = new();
 		
-		[ContainerField(Name: "Parameters", Offset: 4, NameHash: 3325515039, Flags: 65)]
-		public List<SoundGraphPluginConnectionParam> Parameters { get; set; } = new List<SoundGraphPluginConnectionParam>(); // 0x4 (4)
+		[ContainerField(4)]
+		public List<SoundGraphPluginConnectionParam> Parameters { get; set; } = new();
 		
-		[ContainerField(Name: "Bus", Offset: 8, NameHash: 193448065, Flags: 53)]
-		public CtrRef<SoundBusData> Bus { get; set; } = new CtrRef<SoundBusData>(); // 0x8 (8)
+		[ContainerField(8)]
+		public CtrRef<SoundBusData> Bus { get; set; } = new();
 		
-		[ContainerField(Name: "VoiceIndex", Offset: 12, NameHash: 785984109, Flags: 49341), LayoutImmutable, Blittable]
-		public sbyte VoiceIndex { get; set; } // 0xC (12)
+		[ContainerField(12), LayoutImmutable, Blittable]
+		public sbyte VoiceIndex { get; set; }
 		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		public static void Deserialize(SoundGraphPluginConnection p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Instance.ConnectionType = (SoundGraphPluginConnectionType) p_Reader.ReadInt32();
+			p_Instance.Parameters.Clear();
+			(RimeReader Reader, uint Count) s_Parameters = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_Parameters.Count; ++i)
 			{
-				case 720217643:
-						ConnectionType = (SoundGraphPluginConnectionType) Enum.ToObject(typeof(SoundGraphPluginConnectionType), p_Value);
-					break;
-
-				case 3325515039:
-					Parameters = (List<SoundGraphPluginConnectionParam>) p_Value;
-					break;
-
-				case 193448065:
-					Bus = (CtrRef<SoundBusData>) p_Value;
-					break;
-
-				case 785984109:
-					VoiceIndex = (sbyte) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_Value = new SoundGraphPluginConnectionParam();
+				fb.SoundGraphPluginConnectionParam.Deserialize(s_Value, s_Parameters.Reader, p_Parser);
+				p_Instance.Parameters.Add(s_Value);
 			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 720217643:
-					return ConnectionType;
-
-				case 3325515039:
-					return Parameters;
-
-				case 193448065:
-					return Bus;
-
-				case 785984109:
-					return VoiceIndex;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 720217643:
-					return typeof(SoundGraphPluginConnection).GetProperty(nameof(ConnectionType));
-
-				case 3325515039:
-					return typeof(SoundGraphPluginConnection).GetProperty(nameof(Parameters));
-
-				case 193448065:
-					return typeof(SoundGraphPluginConnection).GetProperty(nameof(Bus));
-
-				case 785984109:
-					return typeof(SoundGraphPluginConnection).GetProperty(nameof(VoiceIndex));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
+			
+			s_Parameters.Reader.Dispose();
+			p_Instance.Bus.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
+			p_Instance.VoiceIndex = p_Reader.ReadSByte();
+			p_Reader.Seek(3, SeekOrigin.Current);
 		}
 	}
 }

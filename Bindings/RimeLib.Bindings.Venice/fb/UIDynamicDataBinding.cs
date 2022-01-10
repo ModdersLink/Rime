@@ -5,77 +5,42 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
+	[ContainerType(4, 16)]
 	public class UIDynamicDataBinding : 
 		UIDataBinding
 	{
-		protected List<UIDataSourceInfo> m_Bindings = new List<UIDataSourceInfo>();
-		[ContainerField(Name: "Bindings", Offset: 8, NameHash: 3867608887, Flags: 65)]
-		public List<UIDataSourceInfo> Bindings { get { return m_Bindings; } set { if (OnPropertyChanging("UIDynamicDataBinding." + nameof(Bindings), this, m_Bindings, value)) m_Bindings = value; } } // 0x8 (8)
-		
-		protected bool m_Refresh = new bool();
-		[ContainerField(Name: "Refresh", Offset: 12, NameHash: 1327541432, Flags: 49325), LayoutImmutable, Blittable]
-		public bool Refresh { get { return m_Refresh; } set { if (OnPropertyChanging("UIDynamicDataBinding." + nameof(Refresh), this, m_Refresh, value)) m_Refresh = value; } } // 0xC (12)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(8)]
+		public List<UIDataSourceInfo> Bindings { get; set; } = new();
+
+		[ContainerField(12), LayoutImmutable, Blittable]
+		public bool Refresh { get; set; }
+
+		public static void Deserialize(UIDynamicDataBinding p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Instance.Bindings.Clear();
+			(RimeReader Reader, uint Count) s_Bindings = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_Bindings.Count; ++i)
 			{
-				case 3867608887:
-					Bindings = (List<UIDataSourceInfo>) p_Value;
-					break;
-
-				case 1327541432:
-					Refresh = (bool) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_Value = new UIDataSourceInfo();
+				fb.UIDataSourceInfo.Deserialize(s_Value, s_Bindings.Reader, p_Parser);
+				p_Instance.Bindings.Add(s_Value);
 			}
+			
+			s_Bindings.Reader.Dispose();
+			p_Instance.Refresh = p_Reader.ReadBool();
+			p_Reader.Seek(3, SeekOrigin.Current);
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3867608887:
-					return Bindings;
-
-				case 1327541432:
-					return Refresh;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3867608887:
-					return typeof(UIDynamicDataBinding).GetProperty(nameof(Bindings));
-
-				case 1327541432:
-					return typeof(UIDynamicDataBinding).GetProperty(nameof(Refresh));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

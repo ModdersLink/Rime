@@ -5,77 +5,32 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
+	[ContainerType(4, 16)]
 	public class AudioLanguage : 
 		DataContainer
 	{
-		protected string m_Name = string.Empty;
-		[ContainerField(Name: "Name", Offset: 8, NameHash: 2088949890, Flags: 16509), LayoutImmutable]
-		public string Name { get { return m_Name; } set { if (OnPropertyChanging("AudioLanguage." + nameof(Name), this, m_Name, value)) m_Name = value; } } // 0x8 (8)
-		
-		protected LanguageFormat m_LanguageMapping = new LanguageFormat();
-		[ContainerField(Name: "LanguageMapping", Offset: 12, NameHash: 1284921467, Flags: 137)]
-		public LanguageFormat LanguageMapping { get { return m_LanguageMapping; } set { if (OnPropertyChanging("AudioLanguage." + nameof(LanguageMapping), this, m_LanguageMapping, value)) m_LanguageMapping = value; } } // 0xC (12)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		[ContainerField(8), LayoutImmutable]
+		public string Name { get; set; } = string.Empty;
+
+		[ContainerField(12)]
+		public LanguageFormat LanguageMapping { get; set; } = new();
+
+		public static void Deserialize(AudioLanguage p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 2088949890:
-					Name = (string) p_Value;
-					break;
-
-				case 1284921467:
-					LanguageMapping = (LanguageFormat) Enum.ToObject(typeof(LanguageFormat), p_Value);
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
+			p_Instance.Name = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
+			p_Instance.LanguageMapping = (LanguageFormat) p_Reader.ReadInt32();
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2088949890:
-					return Name;
-
-				case 1284921467:
-					return LanguageMapping;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2088949890:
-					return typeof(AudioLanguage).GetProperty(nameof(Name));
-
-				case 1284921467:
-					return typeof(AudioLanguage).GetProperty(nameof(LanguageMapping));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

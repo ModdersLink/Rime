@@ -5,63 +5,28 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
+	[ContainerType(4, 16)]
 	public class SwimmingStateData : 
 		CharacterStateData
 	{
-		protected float m_BodyUnderWater = new float();
-		[ContainerField(Name: "BodyUnderWater", Offset: 12, NameHash: 1498497544, Flags: 49469), LayoutImmutable, Blittable]
-		public float BodyUnderWater { get { return m_BodyUnderWater; } set { if (OnPropertyChanging("SwimmingStateData." + nameof(BodyUnderWater), this, m_BodyUnderWater, value)) m_BodyUnderWater = value; } } // 0xC (12)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 1498497544:
-					BodyUnderWater = (float) p_Value;
-					break;
+		[ContainerField(12), LayoutImmutable, Blittable]
+		public float BodyUnderWater { get; set; }
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
+		public static void Deserialize(SwimmingStateData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
+		{
+			p_Instance.BodyUnderWater = p_Reader.ReadSingle();
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1498497544:
-					return BodyUnderWater;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1498497544:
-					return typeof(SwimmingStateData).GetProperty(nameof(BodyUnderWater));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

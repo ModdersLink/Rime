@@ -5,126 +5,54 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 41, Size: 24)]
-	public class MatchmakingSizeConfiguration : FrostbiteContainer
+	[ContainerType(4, 24)]
+	public class MatchmakingSizeConfiguration
 	{
-		[ContainerField(Name: "Platform", Offset: 0, NameHash: 942751002, Flags: 137)]
-		public MatchmakingPlatform Platform { get; set; } = new MatchmakingPlatform(); // 0x0 (0)
+		[ContainerField(0)]
+		public MatchmakingPlatform Platform { get; set; } = new();
 		
-		[ContainerField(Name: "Settings", Offset: 4, NameHash: 649772672, Flags: 65)]
-		public List<string> Settings { get; set; } = new List<string>(); // 0x4 (4)
+		[ContainerField(4)]
+		public List<string> Settings { get; set; } = new();
 		
-		[ContainerField(Name: "DesiredPlayerCount", Offset: 8, NameHash: 3876155997, Flags: 49421), LayoutImmutable, Blittable]
-		public uint DesiredPlayerCount { get; set; } // 0x8 (8)
+		[ContainerField(8), LayoutImmutable, Blittable]
+		public uint DesiredPlayerCount { get; set; }
 		
-		[ContainerField(Name: "MinPlayerCount", Offset: 12, NameHash: 891225311, Flags: 49421), LayoutImmutable, Blittable]
-		public uint MinPlayerCount { get; set; } // 0xC (12)
+		[ContainerField(12), LayoutImmutable, Blittable]
+		public uint MinPlayerCount { get; set; }
 		
-		[ContainerField(Name: "MaxPlayerCapacity", Offset: 16, NameHash: 4024578774, Flags: 49421), LayoutImmutable, Blittable]
-		public uint MaxPlayerCapacity { get; set; } // 0x10 (16)
+		[ContainerField(16), LayoutImmutable, Blittable]
+		public uint MaxPlayerCapacity { get; set; }
 		
-		[ContainerField(Name: "MinFitThreshold", Offset: 20, NameHash: 3350684067, Flags: 16509), LayoutImmutable]
-		public string MinFitThreshold { get; set; } // 0x14 (20)
+		[ContainerField(20), LayoutImmutable]
+		public string MinFitThreshold { get; set; } = string.Empty;
 		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		public static void Deserialize(MatchmakingSizeConfiguration p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
+			p_Instance.Platform = (MatchmakingPlatform) p_Reader.ReadInt32();
+			p_Instance.Settings.Clear();
+			(RimeReader Reader, uint Count) s_Settings = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_Settings.Count; ++i)
 			{
-				case 942751002:
-						Platform = (MatchmakingPlatform) Enum.ToObject(typeof(MatchmakingPlatform), p_Value);
-					break;
-
-				case 649772672:
-					Settings = (List<string>) p_Value;
-					break;
-
-				case 3876155997:
-					DesiredPlayerCount = (uint) p_Value;
-					break;
-
-				case 891225311:
-					MinPlayerCount = (uint) p_Value;
-					break;
-
-				case 4024578774:
-					MaxPlayerCapacity = (uint) p_Value;
-					break;
-
-				case 3350684067:
-					MinFitThreshold = (string) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+				var s_Value = p_Parser.GetStringAtOffset(s_Settings.Reader.ReadUInt32());
+				p_Instance.Settings.Add(s_Value);
 			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 942751002:
-					return Platform;
-
-				case 649772672:
-					return Settings;
-
-				case 3876155997:
-					return DesiredPlayerCount;
-
-				case 891225311:
-					return MinPlayerCount;
-
-				case 4024578774:
-					return MaxPlayerCapacity;
-
-				case 3350684067:
-					return MinFitThreshold;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 942751002:
-					return typeof(MatchmakingSizeConfiguration).GetProperty(nameof(Platform));
-
-				case 649772672:
-					return typeof(MatchmakingSizeConfiguration).GetProperty(nameof(Settings));
-
-				case 3876155997:
-					return typeof(MatchmakingSizeConfiguration).GetProperty(nameof(DesiredPlayerCount));
-
-				case 891225311:
-					return typeof(MatchmakingSizeConfiguration).GetProperty(nameof(MinPlayerCount));
-
-				case 4024578774:
-					return typeof(MatchmakingSizeConfiguration).GetProperty(nameof(MaxPlayerCapacity));
-
-				case 3350684067:
-					return typeof(MatchmakingSizeConfiguration).GetProperty(nameof(MinFitThreshold));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
+			
+			s_Settings.Reader.Dispose();
+			p_Instance.DesiredPlayerCount = p_Reader.ReadUInt32();
+			p_Instance.MinPlayerCount = p_Reader.ReadUInt32();
+			p_Instance.MaxPlayerCapacity = p_Reader.ReadUInt32();
+			p_Instance.MinFitThreshold = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
 		}
 	}
 }

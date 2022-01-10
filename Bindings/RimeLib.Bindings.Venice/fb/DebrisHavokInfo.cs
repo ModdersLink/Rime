@@ -5,74 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 41, Size: 8)]
-	public class DebrisHavokInfo : FrostbiteContainer
+	[ContainerType(4, 8)]
+	public class DebrisHavokInfo
 	{
-		[ContainerField(Name: "HavokAsset", Offset: 0, NameHash: 2342641198, Flags: 53)]
-		public CtrRef<HavokAsset> HavokAsset { get; set; } = new CtrRef<HavokAsset>(); // 0x0 (0)
+		[ContainerField(0)]
+		public CtrRef<HavokAsset> HavokAsset { get; set; } = new();
 		
-		[ContainerField(Name: "ReserveCount", Offset: 4, NameHash: 1845599910, Flags: 49405), LayoutImmutable, Blittable]
-		public int ReserveCount { get; set; } // 0x4 (4)
+		[ContainerField(4), LayoutImmutable, Blittable]
+		public int ReserveCount { get; set; }
 		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
+		public static void Deserialize(DebrisHavokInfo p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
 		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 2342641198:
-					HavokAsset = (CtrRef<HavokAsset>) p_Value;
-					break;
-
-				case 1845599910:
-					ReserveCount = (int) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2342641198:
-					return HavokAsset;
-
-				case 1845599910:
-					return ReserveCount;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2342641198:
-					return typeof(DebrisHavokInfo).GetProperty(nameof(HavokAsset));
-
-				case 1845599910:
-					return typeof(DebrisHavokInfo).GetProperty(nameof(ReserveCount));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
+			p_Instance.HavokAsset.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
+			p_Instance.ReserveCount = p_Reader.ReadInt32();
 		}
 	}
 }

@@ -5,63 +5,37 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 12)]
+	[ContainerType(4, 12)]
 	public class EdgeModelLightMapData : 
 		DataContainer
 	{
-		protected List<Vec4> m_LightMapUvs = new List<Vec4>();
-		[ContainerField(Name: "LightMapUvs", Offset: 8, NameHash: 397898871, Flags: 65)]
-		public List<Vec4> LightMapUvs { get { return m_LightMapUvs; } set { if (OnPropertyChanging("EdgeModelLightMapData." + nameof(LightMapUvs), this, m_LightMapUvs, value)) m_LightMapUvs = value; } } // 0x8 (8)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 397898871:
-					LightMapUvs = (List<Vec4>) p_Value;
-					break;
+		[ContainerField(8)]
+		public List<Vec4> LightMapUvs { get; set; } = new();
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
+		public static void Deserialize(EdgeModelLightMapData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
+		{
+			p_Instance.LightMapUvs.Clear();
+			(RimeReader Reader, uint Count) s_LightMapUvs = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
+			for (uint i = 0; i < s_LightMapUvs.Count; ++i)
+			{
+				var s_Value = new Vec4();
+				fb.Vec4.Deserialize(s_Value, s_LightMapUvs.Reader, p_Parser);
+				p_Instance.LightMapUvs.Add(s_Value);
 			}
+			
+			s_LightMapUvs.Reader.Dispose();
 		}
 
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 397898871:
-					return LightMapUvs;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 397898871:
-					return typeof(EdgeModelLightMapData).GetProperty(nameof(LightMapUvs));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }
