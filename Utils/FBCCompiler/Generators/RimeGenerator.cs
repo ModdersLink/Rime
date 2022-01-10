@@ -9,7 +9,7 @@ namespace FBCC.Generators
 {
     class RimeGenerator : IGenerator
     {
-        public string Name => "rime";
+        public string Name => "fb";
 
         private StringWriter m_Writer;
 
@@ -56,16 +56,13 @@ namespace FBCC.Generators
         {
             m_Indent = "";
 
+            m_Writer.WriteLine("using System;");
+            m_Writer.WriteLine("using System.IO;");
+            m_Writer.WriteLine("using System.Collections.Generic;");
             m_Writer.WriteLine("using RimeLib.IO;");
             m_Writer.WriteLine("using RimeLib.Frostbite.Core;");
-            m_Writer.WriteLine("using System;");
-            m_Writer.WriteLine("using System.Collections.Generic;");
-            m_Writer.WriteLine("using System.Linq;");
-			//m_Writer.WriteLine("using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;");
-			m_Writer.WriteLine("using System.ComponentModel;");
-			m_Writer.WriteLine("using System.Reflection;");
             m_Writer.WriteLine("using RimeLib.Serialization.Attributes;");
-            m_Writer.WriteLine("using RimeLib.Frostbite.Containers;");
+            m_Writer.WriteLine("using RimeLib.Serialization;");
             m_Writer.WriteLine("using RimeLib.Serialization.Ebx;");
 
             m_Writer.WriteLine(m_Indent);
@@ -131,6 +128,25 @@ namespace FBCC.Generators
         //    return s_Hash;
         //}
 
+        private ulong GetSizeOfContainerType(string p_Name)
+        {
+            switch (p_Name)
+            {
+                case "GUID":
+                    return 16;
+            }
+
+            var s_LastInheritedClass = ContainerManager.GetContainerByName(p_Name);
+
+            if (s_LastInheritedClass.GetEnums().Any())
+                return 4;
+
+            var s_Attributes = s_LastInheritedClass.GetClasses().Any() ? s_LastInheritedClass.GetClasses().First().Attributes : s_LastInheritedClass.GetStructs().First().Attributes;
+
+            var s_SizeAttribute = s_Attributes.FirstOrDefault(p_Attribute => p_Attribute.Attribute == "ContainerSize");
+            return ulong.Parse(s_SizeAttribute.Parameters[0].ToString());
+        }
+
         private void WriteClass(ContainerClass p_Class)
         {
             var s_SizeAttribute = p_Class.Attributes.FirstOrDefault(p_Attribute => p_Attribute.Attribute == "ContainerSize");
@@ -148,12 +164,11 @@ namespace FBCC.Generators
             if (s_SizeAttribute.Parameters.Count < 1)
                 throw new System.Exception("not enough size parameters.");
 
-            p_Class.Attributes.Remove(s_SizeAttribute);
-            p_Class.Attributes.Remove(s_ClassFlags);
+            var s_ClassAttributes = string.Join(", ", p_Class.Attributes.Except(new[] { s_SizeAttribute, s_ClassFlags }));
 
-            var s_ClassAttributes = string.Join(", ", p_Class.Attributes);
-
-            m_Writer.WriteLine($"{m_Indent}[ContainerType({ (p_Class.Alignment == 0 ? "" : "Alignment: " + p_Class.Alignment + ", ") } Flags: {s_ClassFlags.Parameters[0]}, Size: {s_SizeAttribute.Parameters[0]}){(s_ClassAttributes.Length > 0 ? ", " + s_ClassAttributes : "")}]");
+            m_Writer.WriteLine(m_Indent + "[ContainerType({0}, {1}){2}]",
+                p_Class.Alignment, s_SizeAttribute.Parameters[0],
+                s_ClassAttributes.Length > 0 ? ", " + s_ClassAttributes : "");
 
             m_Writer.Write(m_Indent + "public class {0}", p_Class.Name);
 
@@ -192,32 +207,19 @@ namespace FBCC.Generators
 
                 if (s_MemberFlagsAttribute.Parameters.Count < 1)
                     throw new System.Exception("Not enough member info flag parameters.");
+                
+                var s_FieldAttributes = string.Join(", ", s_Member.Attributes.Except(new[] { s_MemberFlagsAttribute }));
 
-                s_Member.Attributes.Remove(s_MemberFlagsAttribute);
-
-                var s_FieldAttributes = string.Join(", ", s_Member.Attributes);
+                m_Writer.WriteLine($"{m_Indent}[ContainerField({s_Member.Offset}){(s_FieldAttributes.Length > 0 ? ", " + s_FieldAttributes : "")}]");
 
                 if (s_Pointer && s_Member.Array)
                 {
-                    m_Writer.WriteLine($"{m_Indent}protected RefArray<{s_Type}> m_{s_Member.Name} = new RefArray<{s_Type}>();");
-
-                    m_Writer.WriteLine($"{m_Indent}[ContainerField(Name: \"{s_Member.Name}\", Offset: {s_Member.Offset}, NameHash: {fb_hashQuick(s_Member.Name)}, Flags: {s_MemberFlagsAttribute.Parameters[0]}){(s_FieldAttributes.Length > 0 ? ", " + s_FieldAttributes : "")}]");
-                    /*m_Writer.Write(m_Indent + "[ContainerField({0})", s_Member.Offset);
-                    m_Writer.Write(s_FieldAttributes.Length > 0 ? ", " + s_FieldAttributes : "");
-                    m_Writer.WriteLine("]");*/
-
-                    m_Writer.WriteLine(m_Indent + "public RefArray<{2}> {0} {{ get {{ return m_{0}; }} set {{ if (OnPropertyChanging(\"{3}.\" + nameof({0}), this, m_{0}, value)) m_{0} = value; }} }} // 0x{1:X} ({1})", s_Member.Name, s_Member.Offset, s_Type, p_Class.Name);
+                    m_Writer.WriteLine($"{m_Indent}public List<CtrRef<{s_Type}>> {s_Member.Name} {{ get; set; }} = new();");
                 }
                 else if (s_Pointer && !s_Member.Array)
                 {
-                    m_Writer.WriteLine($"{m_Indent}protected CtrRef<{s_Type}> m_{s_Member.Name} = new CtrRef<{s_Type}>();");
 
-                    m_Writer.WriteLine($"{m_Indent}[ContainerField(Name: \"{s_Member.Name}\", Offset: {s_Member.Offset}, NameHash: {fb_hashQuick(s_Member.Name)}, Flags: {s_MemberFlagsAttribute.Parameters[0]}){(s_FieldAttributes.Length > 0 ? ", " + s_FieldAttributes : "")}]");
-
-                    /*m_Writer.Write(m_Indent + "[ContainerField({0})", s_Member.Offset);
-                    m_Writer.Write(s_FieldAttributes.Length > 0 ? ", " + s_FieldAttributes : "");
-                    m_Writer.WriteLine("]");*/
-                    m_Writer.WriteLine(m_Indent + "public CtrRef<{2}> {0} {{ get {{ return m_{0}; }} set {{ if (OnPropertyChanging(\"{3}.\" + nameof({0}), this, m_{0}, value)) m_{0} = value; }} }} // 0x{1:X} ({1})", s_Member.Name, s_Member.Offset, s_Type, p_Class.Name);
+                    m_Writer.WriteLine($"{m_Indent}public CtrRef<{s_Type}> {s_Member.Name} {{ get; set; }} = new();");
                 }
                 else if (!s_Pointer && !s_Member.Array)
                 {
@@ -226,51 +228,33 @@ namespace FBCC.Generators
                         switch (s_Type)
                         {
                             case "string":
-                                m_Writer.WriteLine($"{m_Indent}protected {s_Type} m_{s_Member.Name} = string.Empty;");
+                                m_Writer.WriteLine($"{m_Indent}public {s_Type} {s_Member.Name} {{ get; set; }} = string.Empty;");
                                 break;
                             default:
-                                m_Writer.WriteLine($"{m_Indent}protected {s_Type} m_{s_Member.Name} = new {s_Type}();");
+                                m_Writer.WriteLine($"{m_Indent}public {s_Type} {s_Member.Name} {{ get; set; }}");
                                 break;
                         }
-
-
-
-                        /*m_Writer.Write(m_Indent + "[ContainerField({0})", s_Member.Offset);
-                        m_Writer.Write(s_FieldAttributes.Length > 0 ? ", " + s_FieldAttributes : "");
-                        m_Writer.WriteLine("]");*/
-                        m_Writer.WriteLine($"{m_Indent}[ContainerField(Name: \"{s_Member.Name}\", Offset: {s_Member.Offset}, NameHash: {fb_hashQuick(s_Member.Name)}, Flags: {s_MemberFlagsAttribute.Parameters[0]}){(s_FieldAttributes.Length > 0 ? ", " + s_FieldAttributes : "")}]");
-                        m_Writer.WriteLine(m_Indent + "public {0} {1} {{ get {{ return m_{1}; }} set {{ if (OnPropertyChanging(\"{3}.\" + nameof({1}), this, m_{1}, value)) m_{1} = value; }} }} // 0x{2:X} ({2})", s_Type, s_Member.Name, s_Member.Offset, p_Class.Name);
                     }
                     else
                     {
-                        m_Writer.WriteLine($"{m_Indent}protected {s_Type} m_{s_Member.Name} = new {s_Type}();");
-
-                        /*m_Writer.Write(m_Indent + "[ContainerField({0})", s_Member.Offset);
-                        m_Writer.Write(s_FieldAttributes.Length > 0 ? ", " + s_FieldAttributes : "");
-                        m_Writer.WriteLine("]");*/
-                        m_Writer.WriteLine($"{m_Indent}[ContainerField(Name: \"{s_Member.Name}\", Offset: {s_Member.Offset}, NameHash: {fb_hashQuick(s_Member.Name)}, Flags: {s_MemberFlagsAttribute.Parameters[0]}){(s_FieldAttributes.Length > 0 ? ", " + s_FieldAttributes : "")}]");
-
-                        m_Writer.WriteLine(m_Indent + "public {0} {1} {{ get {{ return m_{1}; }} set {{ if (OnPropertyChanging(\"{3}.\" + nameof({1}), this, m_{1}, value)) m_{1} = value; }} }} // 0x{2:X} ({2})", s_Type, s_Member.Name, s_Member.Offset, p_Class.Name);
+                        m_Writer.WriteLine($"{m_Indent}public {s_Type} {s_Member.Name} {{ get; set; }} = new();");
                     }
                 }
                 else if (!s_Pointer && s_Member.Array)
                 {
-                    m_Writer.WriteLine($"{m_Indent}protected List<{s_Type}> m_{s_Member.Name} = new List<{s_Type}>();");
-
-                    /*m_Writer.Write(m_Indent + "[ContainerField({0})", s_Member.Offset);
-                    m_Writer.Write(s_FieldAttributes.Length > 0 ? ", " + s_FieldAttributes : "");
-                    m_Writer.WriteLine("]");*/
-                    m_Writer.WriteLine($"{m_Indent}[ContainerField(Name: \"{s_Member.Name}\", Offset: {s_Member.Offset}, NameHash: {fb_hashQuick(s_Member.Name)}, Flags: {s_MemberFlagsAttribute.Parameters[0]}){(s_FieldAttributes.Length > 0 ? ", " + s_FieldAttributes : "")}]");
-
-                    m_Writer.WriteLine(m_Indent + "public List<{0}> {1} {{ get {{ return m_{1}; }} set {{ if (OnPropertyChanging(\"{3}.\" + nameof({1}), this, m_{1}, value)) m_{1} = value; }} }} // 0x{2:X} ({2})", s_Type, s_Member.Name, s_Member.Offset, p_Class.Name);
+                    m_Writer.WriteLine($"{m_Indent}public List<{s_Type}> {s_Member.Name} {{ get; set; }} = new();");
                 }
 
-                m_Writer.WriteLine(m_Indent);
+                m_Writer.WriteLine();
             }
             
+            var s_StartOffset = p_Class.InheritedClasses.Any() ? GetSizeOfContainerType(p_Class.InheritedClasses[0].ToString()) : 0;
+            WriteDeserializer(p_Class.Name, s_StartOffset, p_Class.Members, GetSizeOfContainerType(p_Class.Name));
+
+            m_Writer.WriteLine();
 
             // Write Bind
-            m_Writer.WriteLine(m_Indent + "public override void Bind(FieldDescriptor p_Descriptor, object p_Value)");
+            /*m_Writer.WriteLine(m_Indent + "public override void Bind(FieldDescriptor p_Descriptor, object p_Value)");
             m_Writer.WriteLine(m_Indent + "{");
             m_Indent += "\t";
 
@@ -317,7 +301,7 @@ namespace FBCC.Generators
                     if (p_Value.GetType() == typeof (List<uint>))
 			            AccumulateModes = ((List<uint>) p_Value).Select(x => (MixerValueAccumulateMode) ((int) x)).ToList();
 			        else
-					    AccumulateModes = (List<MixerValueAccumulateMode>) p_Value;*/
+					    AccumulateModes = (List<MixerValueAccumulateMode>) p_Value;#1#
 			        if (ContainerManager.HasEnum(s_Type))
 			        {
 				        m_Writer.WriteLine(m_Indent + "if (p_Value.GetType() == typeof (List<uint>))");
@@ -448,9 +432,212 @@ namespace FBCC.Generators
 
             // Write end of field info lookup
             m_Indent = m_Indent.Substring(0, m_Indent.Length - 1);
-            m_Writer.WriteLine(m_Indent + "}");
+            m_Writer.WriteLine(m_Indent + "}");*/
 
             // Write class body end
+            m_Indent = m_Indent.Substring(0, m_Indent.Length - 1);
+            m_Writer.WriteLine(m_Indent + "}");
+        }
+
+        private void WriteDeserializer(string p_ClassName, ulong p_StartOffset, List<ContainerMember> p_Members, ulong p_ClassSize)
+        {
+            m_Writer.WriteLine($"{m_Indent}public static void Deserialize({p_ClassName} p_Instance, RimeReader p_Reader, IEbxParser p_Parser)");
+            m_Writer.WriteLine($"{m_Indent}{{");
+            m_Indent += "\t";
+
+            var s_CurrentOffset = p_StartOffset;
+
+            foreach (var s_Member in p_Members)
+            {
+                var s_Pointer = s_Member.MemberType == ContainerMemberType.Container &&
+                                ContainerManager.HasClass(s_Member.ContainerType);
+
+                var s_Type = GetMemberType(s_Member);
+
+                if (string.IsNullOrWhiteSpace(s_Type))
+                    continue;
+
+                var s_BytesToSkip = s_Member.Offset - s_CurrentOffset;
+
+                if (s_BytesToSkip > 0)
+                    m_Writer.WriteLine($"{m_Indent}p_Reader.Seek({s_BytesToSkip}, SeekOrigin.Current);");
+
+                if (s_Pointer && s_Member.Array)
+                {
+                    m_Writer.WriteLine($"{m_Indent}p_Instance.{s_Member.Name}.Clear();");
+                    m_Writer.WriteLine($"{m_Indent}(RimeReader Reader, uint Count) s_{s_Member.Name} = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());");
+                    m_Writer.WriteLine($"{m_Indent}for (uint i = 0; i < s_{s_Member.Name}.Count; ++i)");
+                    m_Writer.WriteLine($"{m_Indent}{{");
+                    m_Indent += "\t";
+                    m_Writer.WriteLine($"{m_Indent}var s_CtrRef = new CtrRef<{s_Type}>();");
+                    m_Writer.WriteLine($"{m_Indent}s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_{s_Member.Name}.Reader.ReadUInt32()));");
+                    m_Writer.WriteLine($"{m_Indent}p_Instance.{s_Member.Name}.Add(s_CtrRef);");
+                    m_Indent = m_Indent.Substring(0, m_Indent.Length - 1);
+                    m_Writer.WriteLine($"{m_Indent}}}");
+                    m_Writer.WriteLine($"{m_Indent}");
+                    m_Writer.WriteLine($"{m_Indent}s_{s_Member.Name}.Reader.Dispose();");
+
+                    s_CurrentOffset += 4;
+                }
+                else if (s_Pointer && !s_Member.Array)
+                {
+                    m_Writer.WriteLine($"{m_Indent}p_Instance.{s_Member.Name}.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));");
+                    s_CurrentOffset += 4;
+                }
+                else if (!s_Pointer && !s_Member.Array)
+                {
+                    switch (s_Member.MemberType)
+                    {
+                        case ContainerMemberType.String:
+                            m_Writer.WriteLine(
+                                $"{m_Indent}p_Instance.{s_Member.Name} = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());"
+                            );
+                            s_CurrentOffset += 4;
+                            break;
+                        case ContainerMemberType.Float:
+                            m_Writer.WriteLine($"{m_Indent}p_Instance.{s_Member.Name} = p_Reader.ReadSingle();");
+                            s_CurrentOffset += 4;
+                            break;
+                        case ContainerMemberType.Double:
+                            m_Writer.WriteLine($"{m_Indent}p_Instance.{s_Member.Name} = p_Reader.ReadDouble();");
+                            s_CurrentOffset += 8;
+                            break;
+                        case ContainerMemberType.Bool:
+                            m_Writer.WriteLine($"{m_Indent}p_Instance.{s_Member.Name} = p_Reader.ReadBool();");
+                            s_CurrentOffset += 1;
+                            break;
+                        case ContainerMemberType.Int64:
+                            m_Writer.WriteLine($"{m_Indent}p_Instance.{s_Member.Name} = p_Reader.ReadInt64();");
+                            s_CurrentOffset += 8;
+                            break;
+                        case ContainerMemberType.UInt64:
+                            m_Writer.WriteLine($"{m_Indent}p_Instance.{s_Member.Name} = p_Reader.ReadUInt64();");
+                            s_CurrentOffset += 8;
+                            break;
+                        case ContainerMemberType.Int32:
+                            m_Writer.WriteLine($"{m_Indent}p_Instance.{s_Member.Name} = p_Reader.ReadInt32();");
+                            s_CurrentOffset += 4;
+                            break;
+                        case ContainerMemberType.UInt32:
+                            m_Writer.WriteLine($"{m_Indent}p_Instance.{s_Member.Name} = p_Reader.ReadUInt32();");
+                            s_CurrentOffset += 4;
+                            break;
+                        case ContainerMemberType.Int16:
+                            m_Writer.WriteLine($"{m_Indent}p_Instance.{s_Member.Name} = p_Reader.ReadInt16();");
+                            s_CurrentOffset += 2;
+                            break;
+                        case ContainerMemberType.UInt16:
+                            m_Writer.WriteLine($"{m_Indent}p_Instance.{s_Member.Name} = p_Reader.ReadUInt16();");
+                            s_CurrentOffset += 2;
+                            break;
+                        case ContainerMemberType.Int8:
+                            m_Writer.WriteLine($"{m_Indent}p_Instance.{s_Member.Name} = p_Reader.ReadSByte();");
+                            s_CurrentOffset += 1;
+                            break;
+                        case ContainerMemberType.UInt8:
+                            m_Writer.WriteLine($"{m_Indent}p_Instance.{s_Member.Name} = p_Reader.ReadUByte();");
+                            s_CurrentOffset += 1;
+                            break;
+                        case ContainerMemberType.GUID:
+                            m_Writer.WriteLine($"{m_Indent}p_Instance.{s_Member.Name} = new GUID(p_Reader);");
+                            s_CurrentOffset += 16;
+                            break;
+                        default:
+                            if (ContainerManager.HasEnum(s_Type))
+                            {
+                                m_Writer.WriteLine($"{m_Indent}p_Instance.{s_Member.Name} = ({s_Type}) p_Reader.ReadInt32();");
+                                s_CurrentOffset += 4;
+                            }
+                            else
+                            {
+                                m_Writer.WriteLine($"{m_Indent}fb.{s_Type}.Deserialize(p_Instance.{s_Member.Name}, p_Reader, p_Parser);");
+                                s_CurrentOffset += GetSizeOfContainerType(s_Type);
+                            }
+
+                            break;
+                    }
+                }
+                else
+                {
+                    m_Writer.WriteLine($"{m_Indent}p_Instance.{s_Member.Name}.Clear();");
+                    m_Writer.WriteLine($"{m_Indent}(RimeReader Reader, uint Count) s_{s_Member.Name} = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());");
+                    m_Writer.WriteLine($"{m_Indent}for (uint i = 0; i < s_{s_Member.Name}.Count; ++i)");
+                    m_Writer.WriteLine($"{m_Indent}{{");
+
+                    m_Indent += "\t";
+
+                    switch (s_Member.MemberType)
+                    {
+                        case ContainerMemberType.String:
+                            m_Writer.WriteLine(
+                                $"{m_Indent}var s_Value = p_Parser.GetStringAtOffset(s_{s_Member.Name}.Reader.ReadUInt32());"
+                            );
+                            break;
+                        case ContainerMemberType.Float:
+                            m_Writer.WriteLine($"{m_Indent}var s_Value = s_{s_Member.Name}.Reader.ReadSingle();");
+                            break;
+                        case ContainerMemberType.Double:
+                            m_Writer.WriteLine($"{m_Indent}var s_Value = s_{s_Member.Name}.Reader.ReadDouble();");
+                            break;
+                        case ContainerMemberType.Bool:
+                            m_Writer.WriteLine($"{m_Indent}var s_Value = s_{s_Member.Name}.Reader.ReadBool();");
+                            break;
+                        case ContainerMemberType.Int64:
+                            m_Writer.WriteLine($"{m_Indent}var s_Value = s_{s_Member.Name}.Reader.ReadInt64();");
+                            break;
+                        case ContainerMemberType.UInt64:
+                            m_Writer.WriteLine($"{m_Indent}var s_Value = s_{s_Member.Name}.Reader.ReadUInt64();");
+                            break;
+                        case ContainerMemberType.Int32:
+                            m_Writer.WriteLine($"{m_Indent}var s_Value = s_{s_Member.Name}.Reader.ReadInt32();");
+                            break;
+                        case ContainerMemberType.UInt32:
+                            m_Writer.WriteLine($"{m_Indent}var s_Value = s_{s_Member.Name}.Reader.ReadUInt32();");
+                            break;
+                        case ContainerMemberType.Int16:
+                            m_Writer.WriteLine($"{m_Indent}var s_Value = s_{s_Member.Name}.Reader.ReadInt16();");
+                            break;
+                        case ContainerMemberType.UInt16:
+                            m_Writer.WriteLine($"{m_Indent}var s_Value = s_{s_Member.Name}.Reader.ReadUInt16();");
+                            break;
+                        case ContainerMemberType.Int8:
+                            m_Writer.WriteLine($"{m_Indent}var s_Value = s_{s_Member.Name}.Reader.ReadSByte();");
+                            break;
+                        case ContainerMemberType.UInt8:
+                            m_Writer.WriteLine($"{m_Indent}var s_Value = s_{s_Member.Name}.Reader.ReadUByte();");
+                            break;
+                        case ContainerMemberType.GUID:
+                            m_Writer.WriteLine($"{m_Indent}var s_Value = new GUID(s_{s_Member.Name}.Reader);");
+                            break;
+                        default:
+                            if (ContainerManager.HasEnum(s_Type))
+                            {
+                                m_Writer.WriteLine($"{m_Indent}var s_Value = ({s_Type}) s_{s_Member.Name}.Reader.ReadInt32();");
+                            }
+                            else
+                            {
+                                m_Writer.WriteLine($"{m_Indent}var s_Value = new {s_Type}();");
+                                m_Writer.WriteLine($"{m_Indent}fb.{s_Type}.Deserialize(s_Value, s_{s_Member.Name}.Reader, p_Parser);");
+                            }
+
+                            break;
+                    }
+
+                    m_Writer.WriteLine($"{m_Indent}p_Instance.{s_Member.Name}.Add(s_Value);");
+                    m_Indent = m_Indent.Substring(0, m_Indent.Length - 1);
+                    m_Writer.WriteLine($"{m_Indent}}}");
+                    m_Writer.WriteLine($"{m_Indent}");
+                    m_Writer.WriteLine($"{m_Indent}s_{s_Member.Name}.Reader.Dispose();");
+
+                    s_CurrentOffset += 4;
+                }
+            }
+
+            var s_LeftClassBytes = p_ClassSize - s_CurrentOffset;
+
+            if (s_LeftClassBytes > 0)
+                m_Writer.WriteLine($"{m_Indent}p_Reader.Seek({s_LeftClassBytes}, SeekOrigin.Current);");
+
             m_Indent = m_Indent.Substring(0, m_Indent.Length - 1);
             m_Writer.WriteLine(m_Indent + "}");
         }
@@ -471,15 +658,12 @@ namespace FBCC.Generators
 
             if (s_SizeAttribute.Parameters.Count < 1)
                 throw new System.Exception("not enough size parameters.");
+            
+            var s_StructAttributes = string.Join(", ", p_Struct.Attributes.Except(new[] { s_SizeAttribute, s_MemberInfoFlagsAttribute }));
 
-            p_Struct.Attributes.Remove(s_SizeAttribute);
-            p_Struct.Attributes.Remove(s_MemberInfoFlagsAttribute);
+            m_Writer.WriteLine($"{m_Indent}[ContainerType({p_Struct.Alignment}, {s_SizeAttribute.Parameters[0]}){(s_StructAttributes.Length > 0 ? ", " + s_StructAttributes : "")}]");
 
-            var s_StructAttributes = string.Join(", ", p_Struct.Attributes);
-
-            m_Writer.WriteLine($"{m_Indent}[ContainerType({ (p_Struct.Alignment == 0 ? "" : "Alignment: " + p_Struct.Alignment + ", ") } Flags: {s_MemberInfoFlagsAttribute.Parameters.First()}, Size: {s_SizeAttribute.Parameters[0]}){(s_StructAttributes.Length > 0 ? ", " + s_StructAttributes : "")}]");
-
-            m_Writer.Write(m_Indent + "public class {0} : FrostbiteContainer", p_Struct.Name);
+            m_Writer.Write(m_Indent + "public class {0}", p_Struct.Name);
             m_Writer.WriteLine();
 
             // Write class body start
@@ -510,10 +694,8 @@ namespace FBCC.Generators
                 if (s_MemberFlagsAttribute.Parameters.Count < 1)
                     throw new System.Exception("not enough size parameters.");
 
-                s_Member.Attributes.Remove(s_MemberFlagsAttribute);
-
-                var s_FieldAttributes = string.Join(", ", s_Member.Attributes);
-                m_Writer.WriteLine($"{m_Indent}[ContainerField(Name: \"{s_Member.Name}\", Offset: {s_Member.Offset}, NameHash: {fb_hashQuick(s_Member.Name)}, Flags: {s_MemberFlagsAttribute.Parameters[0]}){(s_FieldAttributes.Length > 0 ? ", " + s_FieldAttributes : "")}]");
+                var s_FieldAttributes = string.Join(", ", s_Member.Attributes.Except(new [] {s_MemberFlagsAttribute }));
+                m_Writer.WriteLine($"{m_Indent}[ContainerField({s_Member.Offset}){(s_FieldAttributes.Length > 0 ? ", " + s_FieldAttributes : "")}]");
 
 
                 /*m_Writer.Write(m_Indent + "[ContainerField({0})", s_Member.Offset);
@@ -526,29 +708,43 @@ namespace FBCC.Generators
 
                 if (s_Pointer && s_Member.Array)
                 {
-                    m_Writer.WriteLine(m_Indent + "public RefArray<{2}> {0} {{ get; set; }} = new RefArray<{2}>(); // 0x{1:X} ({1})", s_Member.Name, s_Member.Offset, s_Type);
+                    m_Writer.WriteLine(m_Indent + "public List<CtrRef<{2}>> {0} {{ get; set; }} = new();", s_Member.Name, s_Member.Offset, s_Type);
                 }
                 else if (s_Pointer && !s_Member.Array)
                 {
-                    m_Writer.WriteLine(m_Indent + "public CtrRef<{2}> {0} {{ get; set; }} = new CtrRef<{2}>(); // 0x{1:X} ({1})", s_Member.Name, s_Member.Offset, s_Type);
+                    m_Writer.WriteLine(m_Indent + "public CtrRef<{2}> {0} {{ get; set; }} = new();", s_Member.Name, s_Member.Offset, s_Type);
                 }
                 else if (!s_Pointer && !s_Member.Array)
                 {
                     if (IsPrimitive(s_Member))
-                        m_Writer.WriteLine(m_Indent + "public {0} {1} {{ get; set; }} // 0x{2:X} ({2})", s_Type, s_Member.Name, s_Member.Offset);
+                    {
+                        switch (s_Type)
+                        {
+                            case "string":
+                                m_Writer.WriteLine($"{m_Indent}public {s_Type} {s_Member.Name} {{ get; set; }} = string.Empty;");
+                                break;
+                            default:
+                                m_Writer.WriteLine($"{m_Indent}public {s_Type} {s_Member.Name} {{ get; set; }}");
+                                break;
+                        }
+                    }
                     else
-                        m_Writer.WriteLine(m_Indent + "public {0} {1} {{ get; set; }} = new {0}(); // 0x{2:X} ({2})", s_Type, s_Member.Name, s_Member.Offset);
+                    {
+                        m_Writer.WriteLine(m_Indent + "public {0} {1} {{ get; set; }} = new();", s_Type, s_Member.Name, s_Member.Offset);
+                    }
                 }
                 else if (!s_Pointer && s_Member.Array)
                 {
-                    m_Writer.WriteLine(m_Indent + "public List<{0}> {1} {{ get; set; }} = new List<{0}>(); // 0x{2:X} ({2})", s_Type, s_Member.Name, s_Member.Offset);
+                    m_Writer.WriteLine(m_Indent + "public List<{0}> {1} {{ get; set; }} = new();", s_Type, s_Member.Name, s_Member.Offset);
                 }
 
                 m_Writer.WriteLine(m_Indent);
             }
+            
+            WriteDeserializer(p_Struct.Name, 0, p_Struct.Members, GetSizeOfContainerType(p_Struct.Name));
 
             // Write Bind
-            m_Writer.WriteLine(m_Indent + "public override void Bind(FieldDescriptor p_Descriptor, object p_Value)");
+            /*m_Writer.WriteLine(m_Indent + "public override void Bind(FieldDescriptor p_Descriptor, object p_Value)");
             m_Writer.WriteLine(m_Indent + "{");
             m_Indent += "\t";
 
@@ -594,7 +790,7 @@ namespace FBCC.Generators
                     if (p_Value.GetType() == typeof (List<uint>))
 			            AccumulateModes = ((List<uint>) p_Value).Select(x => (MixerValueAccumulateMode) ((int) x)).ToList();
 			        else
-					    AccumulateModes = (List<MixerValueAccumulateMode>) p_Value;*/
+					    AccumulateModes = (List<MixerValueAccumulateMode>) p_Value;#1#
 			        if (ContainerManager.HasEnum(s_Type))
 			        {
 				        m_Writer.WriteLine(m_Indent + "if (p_Value.GetType() == typeof (List<uint>))");
@@ -725,7 +921,7 @@ namespace FBCC.Generators
 
             // Write end of field info lookup
             m_Indent = m_Indent.Substring(0, m_Indent.Length - 1);
-            m_Writer.WriteLine(m_Indent + "}");
+            m_Writer.WriteLine(m_Indent + "}");*/
 
             // Write class body end
             m_Indent = m_Indent.Substring(0, m_Indent.Length - 1);
@@ -756,7 +952,7 @@ namespace FBCC.Generators
 
             var s_EnumAttributes = string.Join(", ", p_Enum.Attributes);
 
-            m_Writer.WriteLine($"{m_Indent}[ContainerType(Flags: {s_MemberInfoFlagsAttribute.Parameters.First()}, Size: {s_SizeAttribute.Parameters[0]} { (p_Enum.Attributes.Count > 0 ? s_EnumAttributes : "") } )]");
+            m_Writer.WriteLine($"{m_Indent}[ContainerType(4, 4){(s_EnumAttributes.Length > 0 ? ", " + s_EnumAttributes : "")}]");
 
 
             m_Writer.WriteLine(m_Indent + "public enum {0} : {1}", p_Enum.Name, s_Type);
