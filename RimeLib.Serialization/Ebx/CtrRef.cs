@@ -24,7 +24,7 @@ namespace RimeLib.Serialization.Ebx
     /// <summary>
     /// Reference to a game data instance
     /// </summary>
-    public abstract class CtrRefBase
+    public class CtrRefBase
     {
         /// <summary>
         /// The partition guid that the instance is found in
@@ -39,7 +39,7 @@ namespace RimeLib.Serialization.Ebx
         /// <summary>
         /// Default constructor
         /// </summary>
-        protected CtrRefBase()
+        public CtrRefBase()
         {
             PartitionGuid = Guid.Empty;
             InstanceGuid = Guid.Empty;
@@ -50,7 +50,7 @@ namespace RimeLib.Serialization.Ebx
         /// </summary>
         /// <param name="p_PartitionGuid">Partition guid</param>
         /// <param name="p_InstanceGuid">Instance guid</param>
-        protected CtrRefBase(GUID p_PartitionGuid, GUID p_InstanceGuid)
+        public CtrRefBase(GUID p_PartitionGuid, GUID p_InstanceGuid)
         {
             PartitionGuid = p_PartitionGuid == Guid.Empty ? Guid.Empty : p_PartitionGuid;
             InstanceGuid = p_InstanceGuid == Guid.Empty ? Guid.Empty : p_InstanceGuid;

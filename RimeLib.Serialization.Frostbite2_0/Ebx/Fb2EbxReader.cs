@@ -3,7 +3,6 @@ using RimeLib.Frostbite.Core;
 using RimeLib.IO;
 using RimeLib.IO.Conversion;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
 using RimeLib.Serialization.Ebx;
 using RimeLib.Utils;
 using System;
@@ -13,21 +12,15 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Text;
+using TypeCategory = RimeLib.Frostbite.Core.TypeCategory;
 
 namespace RimeLib.Serialization.Frostbite2_0.Ebx
 {
     /// <summary>
     /// Frostbite 2 ebx reader
     /// </summary>
-    public class Fb2EbxReader : IEbxReader
+    public class Fb2EbxReader : IEbxParser
     {
-        private FrostbitePartition m_ParsingPartition;
-
-        /// <summary>
-        /// Tracking for the current container we are parsing
-        /// </summary>
-        protected FrostbiteContainer m_CurrentContainer;
-        
         private StreamingPartitionHeader m_Header;
         private RimeReader m_Reader;
         private List<ImportEntry> m_ImportEntries;
@@ -38,10 +31,7 @@ namespace RimeLib.Serialization.Frostbite2_0.Ebx
         private List<InstanceEntry> m_InstanceEntries;
         private List<ArrayEntry> m_ArrayEntries;
         private List<GUID> m_InstanceGuiDs;
-        private List<Instance> m_Instances;
-        private Dictionary<ushort, EnumInstance> m_Enumerations;
         private IList m_PopulatingArray;
-        private List<CtrRefBase> m_LateResolveReferences;
 
         /// <summary>
         /// Parses a partition with specified name and opened reader to the position of the ebx data
@@ -49,15 +39,12 @@ namespace RimeLib.Serialization.Frostbite2_0.Ebx
         /// <param name="p_Name">Name of partition</param>
         /// <param name="p_Reader">Reader opened to the position of ebx data</param>
         /// <returns>Partition object</returns>
-        public FrostbitePartition ParsePartition(string p_Name, RimeReader p_Reader)
+        public void ParsePartition(string p_Name, RimeReader p_Reader)
         {
             if (p_Reader == null)
                 throw new InvalidDataException("Data is invalid for ebx.");
 
             m_PopulatingArray = null;
-            m_CurrentContainer = null;
-            m_ParsingPartition = new FrostbitePartition() { Name = p_Name };
-            m_LateResolveReferences = new List<CtrRefBase>();
             
             var s_Magic = p_Reader.ReadBytes(4);
             p_Reader.Seek(-4, SeekOrigin.Current);
@@ -70,8 +57,6 @@ namespace RimeLib.Serialization.Frostbite2_0.Ebx
                 throw new Exception("The supplied file has an invalid magic header.");
 
             ProcessHeader();
-
-            return m_ParsingPartition;
         }
 
 
@@ -90,8 +75,6 @@ namespace RimeLib.Serialization.Frostbite2_0.Ebx
         private void ProcessHeader()
         {
             m_Header = new StreamingPartitionHeader(m_Reader);
-
-            m_ParsingPartition.PartitionGuid = m_Header.PartitionGuid;
 
             // Advance state
             ProcessMetadata();
@@ -164,8 +147,6 @@ namespace RimeLib.Serialization.Frostbite2_0.Ebx
         private void ProcessPayloads()
         {
             m_InstanceGuiDs = new List<GUID>();
-            m_Instances = new List<Instance>();
-            m_Enumerations = new Dictionary<ushort, EnumInstance>();
 
             m_Reader.Seek((int)(m_Header.MetaSize + m_Header.StringTableSize), SeekOrigin.Begin);
 
@@ -175,25 +156,43 @@ namespace RimeLib.Serialization.Frostbite2_0.Ebx
                     throw new Exception("Unhandled Internal Data for Instance Entry.");
 
                 var s_Descriptor = m_TypeDescriptors[(int)s_Entry.TypeDescriptorIndex];
-                var s_ContainerType = ContainerRegistry.GetContainerType(s_Descriptor.NameHash);
+                var s_ContainerType = Type.GetType($"fb.{s_Descriptor.Name}, RimeLib.Bindings.Venice");
 
                 if (s_ContainerType == null)
-                    Debug.WriteLine($"Failed to find container of type '{s_Descriptor.Name}'.");
+                    Console.WriteLine($"Failed to find container of type '{s_Descriptor.Name}'.");
 
                 for (var i = 0; i < s_Entry.ExportCount; ++i)
                 {
                     var s_Guid = new GUID(m_Reader);
                     m_InstanceGuiDs.Add(s_Guid);
 
+                    Console.WriteLine($"Parsing {s_ContainerType} with GUID {s_Guid}.");
+
                     var s_ContainerAttribute = s_ContainerType.GetCustomAttribute<ContainerTypeAttribute>();
 
                     if (s_ContainerAttribute.AlignedSize != s_Descriptor.Size ||
                         s_ContainerAttribute.DataAlignment != s_Descriptor.Alignment)
                     {
-                        Debug.WriteLine("O m g bbq");
+                        Console.WriteLine($"Expected size of {s_ContainerType} of {s_ContainerAttribute.AlignedSize} bytes does not match in-file size of {s_Descriptor.Size} bytes. Probably means the game was updated but the data was not.");
                     }
 
-                    m_Reader.Seek(s_Descriptor.Size, SeekOrigin.Current);
+                    var s_Instance = Activator.CreateInstance(s_ContainerType);
+                    /*var s_DeserializeMethod = s_ContainerType.GetMethod("Deserialize", BindingFlags.Public | BindingFlags.Static);
+                    
+                    using (var s_LimitedReader = new LimitedRimeReader(m_Reader, s_ContainerAttribute.AlignedSize, false))
+                        s_DeserializeMethod.Invoke(null, new [] { s_Instance, s_LimitedReader, this });
+
+                    
+                    if (s_BytesLeftToRead != 0)
+                    {
+                        Console.WriteLine($"Finished reading type with {s_BytesLeftToRead} bytes left to read.");
+                        m_Reader.Seek(s_BytesLeftToRead, SeekOrigin.Current);
+                    }*/
+
+                    using (var s_LimitedReader = new LimitedRimeReader(m_Reader, s_Descriptor.Size, false))
+                        ParseTypeInstance(s_LimitedReader, s_Descriptor, s_Instance, s_ContainerType);
+
+                    //m_Reader.Seek(s_Descriptor.Size, SeekOrigin.Current);
 
                     /*// Create our container used for binding.
                     if (s_ContainerType != null)
@@ -228,13 +227,7 @@ namespace RimeLib.Serialization.Frostbite2_0.Ebx
 
         private void ProcessReferences()
         {
-            foreach (var s_Reference in m_LateResolveReferences)
-            {
-                var s_Container = m_ParsingPartition.Instances[(int)(s_Reference.ImportIndex - 1)];
-
-                s_Reference.ImportIndex = 0;
-                s_Reference.SetValue(s_Container.PartitionGuid, s_Container.InstanceGuid);
-            }
+            
         }
 
         /// <summary>
@@ -243,28 +236,162 @@ namespace RimeLib.Serialization.Frostbite2_0.Ebx
         /// <param name="p_InstanceGuid">Parent Instance Id.</param>
         /// <param name="p_DescriptorIndex">TypeDescriptor metadata Index.</param>
         /// <returns></returns>
-        /*private TypeInstance ParseTypeInstance(GUID p_InstanceGuid, uint p_DescriptorIndex)
+        private void ParseTypeInstance(RimeReader p_Reader, TypeDescriptor p_Descriptor, object p_Instance, Type p_InstanceType)
         {
-            var s_TypeInstance = new TypeInstance()
+            var s_StartPosition = p_Reader.Position;
+
+            for (var i = p_Descriptor.LayoutDescriptor; i < (p_Descriptor.LayoutDescriptor + p_Descriptor.FieldCount); ++i)
             {
-                Descriptor = m_TypeDescriptors[(int)p_DescriptorIndex],
-                Fields = new List<FieldInstance>()
-            };
+                var s_FieldDescriptor = m_FieldDescriptors[(int) i];
+                
+                p_Reader.Seek(s_FieldDescriptor.Offset, SeekOrigin.Begin);
 
-            //Debug.WriteLine("Parsing type '{0}' of type '{1}'.", s_TypeInstance.Descriptor.Name, s_TypeInstance.Descriptor.Flags.GetFieldType());
+                if (s_FieldDescriptor.Flags.GetFieldType() == FieldType.Void)
+                {
+                    ParseTypeInstance(p_Reader, m_TypeDescriptors[s_FieldDescriptor.FieldType], p_Instance, p_InstanceType);
+                    continue;
+                }
 
-            var s_StartOffset = m_Reader.Position;
+                // See if this field exists in the type binding.
+                // TODO: This will not work for types with duplicate property names.
+                var s_PropertyType = p_InstanceType.GetProperty(s_FieldDescriptor.Name);
 
-            for (var i = s_TypeInstance.Descriptor.LayoutDescriptor; i < (s_TypeInstance.Descriptor.LayoutDescriptor + s_TypeInstance.Descriptor.FieldCount); ++i)
-            {
-                m_Reader.Seek((int)(s_StartOffset + m_FieldDescriptors[(int)i].Offset), SeekOrigin.Begin);
-                s_TypeInstance.Fields.Add(ParseFieldInstance(p_InstanceGuid, i, s_TypeInstance, null));
+                if (s_PropertyType == null)
+                {
+                    Console.WriteLine($"Type {p_InstanceType.Name} has field {s_FieldDescriptor.Name} in data that no longer exists.");
+                    continue;
+                }
+
+                var s_ContainerFieldAttribute = s_PropertyType.GetCustomAttribute<ContainerFieldAttribute>();
+
+                if (s_ContainerFieldAttribute == null)
+                {
+                    Console.WriteLine($"Field {s_FieldDescriptor.Name} of type {p_InstanceType.Name} has no ContainerField attribute. Is this intentional?");
+                    continue;
+                }
+                
+                switch (s_FieldDescriptor.Flags.GetFieldType())
+                {
+                    case FieldType.ValueType:
+                        var s_StructDescriptor = m_TypeDescriptors[s_FieldDescriptor.FieldType];
+                        var s_StructType = Type.GetType($"fb.{s_StructDescriptor.Name}, RimeLib.Bindings.Venice");
+                        var s_Struct = Activator.CreateInstance(s_StructType);
+
+                        using (var s_Reader = new LimitedRimeReader(p_Reader, s_StructDescriptor.Size, false))
+                            ParseTypeInstance(s_Reader, s_StructDescriptor, s_Struct, s_StructType);
+
+                        s_PropertyType.SetValue(p_Instance, s_Struct);
+
+                        break;
+
+                    case FieldType.Class:
+                        var s_ImportIndex = p_Reader.ReadUInt32();
+                        var s_CtrRef = s_PropertyType.GetValue(p_Instance) as CtrRefBase;
+                        s_CtrRef.SetValue(GetImportAtIndex(s_ImportIndex));
+                        break;
+
+                    case FieldType.Array:
+                        var s_ArrayIndex = p_Reader.ReadUInt32();
+
+                        var s_ArrayEntry = m_ArrayEntries[(int)s_ArrayIndex];
+                        var s_ArrayDescriptor = m_TypeDescriptors[(int)s_ArrayEntry.TypeDescriptorIndex];
+                        var s_ArrayElementFieldDescriptor = m_FieldDescriptors[(int)s_ArrayDescriptor.LayoutDescriptor];
+                        var s_ArrayElementDescriptor = m_TypeDescriptors[s_ArrayElementFieldDescriptor.FieldType];
+                        var s_CurrentOffset = m_Reader.Position;
+
+                        m_Reader.Seek((int)(m_Header.MetaSize + m_Header.StringTableSize + m_Header.ArrayOffset + s_ArrayEntry.Offset), SeekOrigin.Begin);
+
+                        //Console.WriteLine($"Array field {s_FieldDescriptor.Name} with type {s_ArrayElementDescriptor.Name}");
+                        
+                        if (s_ArrayElementFieldDescriptor.Flags.GetFieldType() == FieldType.Class)
+                        {
+                            var s_List = s_PropertyType.GetValue(p_Instance);
+                            var s_AddRef = s_List.GetType().GetMethod("AddRef");
+
+                            for (var j = 0; j < s_ArrayEntry.ElementCount; ++j)
+                            {
+                                var s_Ref = GetImportAtIndex(m_Reader.ReadUInt32());
+                                s_AddRef.Invoke(s_List, new[] { s_Ref });
+                            }
+                        }
+                        else if (s_ArrayElementFieldDescriptor.Flags.GetFieldType() == FieldType.ValueType)
+                        {
+                            var s_List = s_PropertyType.GetValue(p_Instance) as IList;
+                            var s_ArrayStructType = Type.GetType($"fb.{s_ArrayElementDescriptor.Name}, RimeLib.Bindings.Venice");
+
+                            for (var j = 0; j < s_ArrayEntry.ElementCount; ++j)
+                            {
+                                var s_ArrayStruct = Activator.CreateInstance(s_ArrayStructType);
+
+                                using (var s_ArrayStructReader = new LimitedRimeReader(m_Reader, s_ArrayElementDescriptor.Size, false))
+                                {
+                                    ParseTypeInstance(s_ArrayStructReader, s_ArrayElementDescriptor, s_ArrayStruct, s_ArrayStructType);
+                                }
+
+                                s_List.Add(s_ArrayStruct);
+                            }
+                        }
+                        else
+                        {
+                            var s_List = s_PropertyType.GetValue(p_Instance) as IList;
+
+                            // TODO
+                        }
+
+                        m_Reader.Seek(s_CurrentOffset, SeekOrigin.Begin);
+
+                        break;
+                    case FieldType.CString:
+                        var s_StringIndex = p_Reader.ReadUInt32();
+                        break;
+                    case FieldType.Enum:
+                        var s_EnumValue = p_Reader.ReadInt32();
+                        break;
+                    case FieldType.Boolean:
+                        s_PropertyType.SetValue(p_Instance, p_Reader.ReadBool());
+                        break;
+                    case FieldType.Int8:
+                        s_PropertyType.SetValue(p_Instance, p_Reader.ReadSByte());
+                        break;
+                    case FieldType.UInt8:
+                        s_PropertyType.SetValue(p_Instance, p_Reader.ReadUByte());
+                        break;
+                    case FieldType.Int16:
+                        s_PropertyType.SetValue(p_Instance, p_Reader.ReadInt16());
+                        break;
+                    case FieldType.UInt16:
+                        s_PropertyType.SetValue(p_Instance, p_Reader.ReadUInt16());
+                        break;
+                    case FieldType.Int32:
+                        s_PropertyType.SetValue(p_Instance, p_Reader.ReadInt32());
+                        break;
+                    case FieldType.UInt32:
+                        s_PropertyType.SetValue(p_Instance, p_Reader.ReadUInt32());
+                        break;
+                    case FieldType.Int64:
+                        s_PropertyType.SetValue(p_Instance, p_Reader.ReadInt64());
+                        break;
+                    case FieldType.UInt64:
+                        s_PropertyType.SetValue(p_Instance, p_Reader.ReadUInt64());
+                        break;
+                    case FieldType.Float32:
+                        s_PropertyType.SetValue(p_Instance, p_Reader.ReadSingle());
+                        break;
+                    case FieldType.Float64:
+                        s_PropertyType.SetValue(p_Instance, p_Reader.ReadDouble());
+                        break;
+                    case FieldType.Guid:
+                        s_PropertyType.SetValue(p_Instance, new GUID(p_Reader));
+                        break;
+                    default:
+                        throw new Exception("Unknown field type.");
+                }
             }
 
-            m_Reader.Seek((int)(s_StartOffset + s_TypeInstance.Descriptor.Size), SeekOrigin.Begin);
-
-            return s_TypeInstance;
-        }*/
+            var s_BytesLeftToRead = p_Descriptor.Size - (p_Reader.Position - s_StartPosition);
+            //Console.Write($"Bytes left to read {s_BytesLeftToRead}");
+            p_Reader.Seek(s_BytesLeftToRead, SeekOrigin.Current);
+        }
 
         /// <summary>
         /// Parse a FieldInstance using previously parsed metadata.
@@ -274,7 +401,7 @@ namespace RimeLib.Serialization.Frostbite2_0.Ebx
         /// <param name="p_TypeInstance"></param>
         /// <param name="p_ArrayType"></param>
         /// <returns></returns>
-        /*private FieldInstance ParseFieldInstance(GUID p_InstanceGuid, uint p_DescriptorIndex, TypeInstance p_TypeInstance, Type p_ArrayType)
+        /*private FieldInstance ParseFieldInstance(GUID p_InstanceGuid, uint p_DescriptorIndex, TypeInstance p_TypeInstance, Type p_ArrayType, object p_Instance)
         {
             var s_Field = new FieldInstance()
             {
@@ -282,7 +409,7 @@ namespace RimeLib.Serialization.Frostbite2_0.Ebx
                 Value = null
             };
 
-            var s_ContainerType = ContainerRegistry.GetContainerType(p_TypeInstance.Descriptor.NameHash);
+
 
             var s_StartOffsetField = m_Reader.BaseStream.Position;
             //Debug.WriteLine("Parsing field '{0}' of type '{1:X04}' at offset {2} ({3}).", s_Field.Descriptor.Name, s_Field.Descriptor.Flags.FlagBits, s_Field.Descriptor.Offset, m_Reader.BaseStream.Position);
@@ -444,35 +571,8 @@ namespace RimeLib.Serialization.Frostbite2_0.Ebx
 
                 case FieldType.CString:
                     {
-                        var s_StartOffset = m_Reader.Position;
-
                         var s_StringOffset = m_Reader.ReadUInt32();
 
-                        string s_String = null;
-
-                        if (s_StringOffset != 0xFFFFFFFF)
-                        {
-                            s_String = "";
-
-                            m_Reader.Seek((int)(m_Header.MetaSize + s_StringOffset), SeekOrigin.Begin);
-
-                            while (true)
-                            {
-                                var s_Char = (char)m_Reader.ReadByte();
-
-                                if (s_Char == '\0')
-                                    break;
-
-                                s_String += s_Char;
-                            }
-
-                            m_Reader.Seek((int)(s_StartOffset + 4), SeekOrigin.Begin);
-                        }
-
-                        s_Field.Value = s_String;
-
-                        m_PopulatingArray?.Add(s_Field.Value);
-                        m_CurrentContainer?.Bind(s_Field.Descriptor, s_Field.Value);
                         break;
                     }
 
@@ -810,6 +910,28 @@ namespace RimeLib.Serialization.Frostbite2_0.Ebx
                    p_Data[2] == 0xD1 &&
                    p_Data[1] == 0xB2 &&
                    p_Data[0] == 0x0F;
+        }
+
+        public CtrRefBase GetImportAtIndex(uint p_Index)
+        {
+            // TODO
+            return new CtrRefBase();
+        }
+
+        public string GetStringAtOffset(uint p_Offset)
+        {
+            // TODO
+            return "";
+        }
+
+        public (RimeReader, uint) GetArrayReaderAndElementCount(uint p_Index)
+        {
+            var s_Entry = m_ArrayEntries[(int)p_Index];
+
+            m_Reader.Seek((int)(m_Header.MetaSize + m_Header.StringTableSize + m_Header.ArrayOffset + s_Entry.Offset), SeekOrigin.Begin);
+
+            // TODO
+            return (new RimeReader(m_Reader, p_ShouldDispose: false), s_Entry.ElementCount);
         }
     }
 }

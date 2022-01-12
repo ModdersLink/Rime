@@ -1,4 +1,5 @@
-﻿using RimeLib.Frostbite.Core;
+﻿/*
+using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Ebx;
 using System;
 using System.Collections.Generic;
@@ -78,7 +79,8 @@ namespace EbxExtractor
                 Console.WriteLine($"\t{s_PropertyAttribute.FieldName}: Offset: {s_PropertyAttribute.FieldOffset} Flags: {s_PropertyAttribute.FieldFlags} Size: {s_ValueSize}");
 
                 
-            }*/
+            }#1#
         }
     }
 }
+*/

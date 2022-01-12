@@ -1,4 +1,5 @@
-﻿using RimeLib.Frostbite.Containers;
+﻿/*
+using RimeLib.Frostbite.Containers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,3 +22,4 @@ namespace EbxExtractor
         }
     }
 }
+*/

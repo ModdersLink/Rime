@@ -1,4 +1,5 @@
-﻿using RimeLib.Frostbite.Core;
+﻿/*
+using RimeLib.Frostbite.Core;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Frostbite.Containers;
@@ -345,7 +346,7 @@ namespace EbxExtractor
 
                 // Not all fields will be serialized so we update our current count
                 s_CurrentFieldCount++;
-            }*/
+            }#1#
         }
 
         protected void ParseArrays(DataContainer p_Object)
@@ -476,7 +477,7 @@ namespace EbxExtractor
                 NameHash = FbUtils.HashQuick(s_TypeName),
                 SecondarySize = 0,
                 Size = s_ContainerTypeAttribute.Size
-            });*/
+            });#1#
 
             // Iterate through all properties, to fill in information
             //var s_CurrentFieldCount = 0;
@@ -538,7 +539,7 @@ namespace EbxExtractor
 
         protected void ParseInstance(DataContainer p_DataContainer)
         {
-            /*// This should go through and make sure all types are parsed. Need to confirm
+            /#1#/ This should go through and make sure all types are parsed. Need to confirm
             ParseTypes(p_DataContainer, p_DataContainer);
 
             ParseArrays(p_DataContainer);
@@ -547,7 +548,7 @@ namespace EbxExtractor
 
             var s_InstanceIndex = m_TypeDescriptors.FindIndex(p_TypeDescriptor => p_TypeDescriptor.Name == p_DataContainer.ContainerTypeName);
             if (s_InstanceIndex == -1)
-                throw new Exception("could not find type index.");*/
+                throw new Exception("could not find type index.");#1#
 
             /*
              *                 for (var i = 0; i < s_Entry.ExportCount; ++i)
@@ -582,7 +583,7 @@ namespace EbxExtractor
                     m_CurrentContainer = null;
                 }
 
-            */
+            #1#
 
             // TODO: Figure out ExportCount and how the Instance GUID's are generated
             /*m_InstanceEntries.Add(new InstanceEntry
@@ -590,7 +591,7 @@ namespace EbxExtractor
                 ExportCount = 1, // 1, export count is a pair of partition/instance guids in a row
                 InternalCount = 0, // 0, we have an exception if it's not 0
                 TypeDescriptorIndex = (uint)s_InstanceIndex
-            });*/
+            });#1#
 
 
             // TODO: Generate all GUID's
@@ -600,3 +601,4 @@ namespace EbxExtractor
         }
     }
 }
+*/

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using FBCC.Containers;
 using System.IO;
 using FBCC.Managers;
@@ -214,7 +215,7 @@ namespace FBCC.Generators
 
                 if (s_Pointer && s_Member.Array)
                 {
-                    m_Writer.WriteLine($"{m_Indent}public List<CtrRef<{s_Type}>> {s_Member.Name} {{ get; set; }} = new();");
+                    m_Writer.WriteLine($"{m_Indent}public RefArray<{s_Type}> {s_Member.Name} {{ get; set; }} = new();");
                 }
                 else if (s_Pointer && !s_Member.Array)
                 {
@@ -248,10 +249,10 @@ namespace FBCC.Generators
                 m_Writer.WriteLine();
             }
             
-            var s_StartOffset = p_Class.InheritedClasses.Any() ? GetSizeOfContainerType(p_Class.InheritedClasses[0].ToString()) : 0;
-            WriteDeserializer(p_Class.Name, s_StartOffset, p_Class.Members, GetSizeOfContainerType(p_Class.Name));
+            /*var s_StartOffset = p_Class.InheritedClasses.Any() ? GetSizeOfContainerType(p_Class.InheritedClasses[0].ToString()) : 0;
+            WriteDeserializer(p_Class.Name, s_StartOffset, p_Class.Members, GetSizeOfContainerType(p_Class.Name), p_Class.InheritedClasses.Any() ? p_Class.InheritedClasses[0].ToString() : "");*/
 
-            m_Writer.WriteLine();
+            //m_Writer.WriteLine();
 
             // Write Bind
             /*m_Writer.WriteLine(m_Indent + "public override void Bind(FieldDescriptor p_Descriptor, object p_Value)");
@@ -439,11 +440,16 @@ namespace FBCC.Generators
             m_Writer.WriteLine(m_Indent + "}");
         }
 
-        private void WriteDeserializer(string p_ClassName, ulong p_StartOffset, List<ContainerMember> p_Members, ulong p_ClassSize)
+        private void WriteDeserializer(string p_ClassName, ulong p_StartOffset, List<ContainerMember> p_Members, ulong p_ClassSize, string p_InheritedType)
         {
             m_Writer.WriteLine($"{m_Indent}public static void Deserialize({p_ClassName} p_Instance, RimeReader p_Reader, IEbxParser p_Parser)");
             m_Writer.WriteLine($"{m_Indent}{{");
             m_Indent += "\t";
+
+            if (!string.IsNullOrEmpty(p_InheritedType))
+            {
+                m_Writer.WriteLine($"{m_Indent}{p_InheritedType}.Deserialize(p_Instance, p_Reader, p_Parser);");
+            }
 
             var s_CurrentOffset = p_StartOffset;
 
@@ -457,11 +463,17 @@ namespace FBCC.Generators
                 if (string.IsNullOrWhiteSpace(s_Type))
                     continue;
 
+                if (s_CurrentOffset > s_Member.Offset)
+                    throw new Exception("Offset is off. Bad fbc probably.");
+
                 var s_BytesToSkip = s_Member.Offset - s_CurrentOffset;
 
                 if (s_BytesToSkip > 0)
+                {
                     m_Writer.WriteLine($"{m_Indent}p_Reader.Seek({s_BytesToSkip}, SeekOrigin.Current);");
-
+                    s_CurrentOffset += s_BytesToSkip;
+                }
+                
                 if (s_Pointer && s_Member.Array)
                 {
                     m_Writer.WriteLine($"{m_Indent}p_Instance.{s_Member.Name}.Clear();");
@@ -708,7 +720,7 @@ namespace FBCC.Generators
 
                 if (s_Pointer && s_Member.Array)
                 {
-                    m_Writer.WriteLine(m_Indent + "public List<CtrRef<{2}>> {0} {{ get; set; }} = new();", s_Member.Name, s_Member.Offset, s_Type);
+                    m_Writer.WriteLine(m_Indent + "public RefArray<{2}> {0} {{ get; set; }} = new();", s_Member.Name, s_Member.Offset, s_Type);
                 }
                 else if (s_Pointer && !s_Member.Array)
                 {
@@ -741,7 +753,7 @@ namespace FBCC.Generators
                 m_Writer.WriteLine(m_Indent);
             }
             
-            WriteDeserializer(p_Struct.Name, 0, p_Struct.Members, GetSizeOfContainerType(p_Struct.Name));
+            //WriteDeserializer(p_Struct.Name, 0, p_Struct.Members, GetSizeOfContainerType(p_Struct.Name), "");
 
             // Write Bind
             /*m_Writer.WriteLine(m_Indent + "public override void Bind(FieldDescriptor p_Descriptor, object p_Value)");

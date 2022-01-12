@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 
 namespace RimeLib.Serialization.Attributes
 {
@@ -19,7 +20,18 @@ namespace RimeLib.Serialization.Attributes
         /// </summary>
         public ushort Size { get; set; }
 
-        public ushort AlignedSize => (ushort)(Size + (DataAlignment - (Size % DataAlignment)));
+        public ushort AlignedSize
+        {
+            get
+            {
+                var s_BytesToAlign = Size % DataAlignment;
+
+                if (s_BytesToAlign == 0)
+                    return Size;
+
+                return (ushort) (Size + (DataAlignment - s_BytesToAlign));
+            }
+        }
 
         /// <summary>
         /// Default constructor that takes an alignment
@@ -35,60 +47,6 @@ namespace RimeLib.Serialization.Attributes
         }
     }
 
-    [AttributeUsage(AttributeTargets.Property)]
-    public class ContainerRefArray : Attribute
-    {
-    }
-
-    [AttributeUsage(AttributeTargets.Property)]
-    public class ContainerCtrRef : Attribute
-    {
-    }
-
-    [AttributeUsage(AttributeTargets.Property)]
-    public class ContainerArray : Attribute
-    {
-    }
-
-    /// <summary>
-    /// Attributes for name hash
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Property)]
-    public class ContainerFieldNameHash : Attribute
-    {
-        public uint NameHash { get; set; }
-
-        public ContainerFieldNameHash(uint p_NameHash = 0)
-        {
-            NameHash = 0;
-        }
-
-        public ContainerFieldNameHash(string p_Name)
-        {
-            NameHash = Frostbite.Utils.HashQuick(p_Name);
-        }
-    }
-
-    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Class | AttributeTargets.Struct | AttributeTargets.Enum)]
-    public class MemberInfoFlagAttribute : Attribute
-    {
-        public ushort Flag { get; set; }
-        public MemberInfoFlagAttribute(ushort p_Flags = 0)
-        {
-            Flag = p_Flags;
-        }
-    }
-
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct | AttributeTargets.Enum)]
-    public class ContainerSizeAttribute : Attribute
-    {
-        public ushort Size { get; set; }
-        public ContainerSizeAttribute(ushort p_Size = 0)
-        {
-            Size = p_Size;
-        }
-    }
-
     /// <summary>
     /// Attributes for container fields
     /// </summary>
@@ -98,25 +56,23 @@ namespace RimeLib.Serialization.Attributes
         /// <summary>
         /// Offset for this field
         /// </summary>
-        public uint FieldOffset { get; set; }
+        public uint Offset { get; }
+
+        public string Name { get; }
+
+        public uint NameHash { get; }
 
         /// <summary>
         /// Constructor taking a name and offset
         /// </summary>
         /// <param name="Name">Name of this field</param>
         /// <param name="Offset">Offset of this field</param>
-	    public ContainerFieldAttribute(uint p_Offset)
+	    public ContainerFieldAttribute(uint p_Offset, [CallerMemberName] string p_Name = "")
         {
-            FieldOffset = p_Offset;
+            Offset = p_Offset;
+            Name = p_Name;
+            NameHash = Frostbite.Utils.HashQuick(p_Name);
         }
-    }
-
-    /// <summary>
-    /// Attributes for metadata
-    /// </summary>
-	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Class | AttributeTargets.Enum | AttributeTargets.Struct)]
-    public class MetadataAttribute : Attribute
-    {
     }
 
     /// <summary>
@@ -124,22 +80,6 @@ namespace RimeLib.Serialization.Attributes
     /// </summary>
 	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Class | AttributeTargets.Enum | AttributeTargets.Struct)]
     public class HomogeneousAttribute : Attribute
-    {
-    }
-
-    /// <summary>
-    /// Attributes for objects that should always persist
-    /// </summary>
-	[AttributeUsage(AttributeTargets.Property)]
-    public class AlwaysPersistAttribute : Attribute
-    {
-    }
-
-    /// <summary>
-    /// Attributes for objects that should be exposed
-    /// </summary>
-	[AttributeUsage(AttributeTargets.Property)]
-    public class ExposedAttribute : Attribute
     {
     }
 

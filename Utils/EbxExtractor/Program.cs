@@ -1,17 +1,11 @@
 ﻿using CommandLine;
-using fb;
 using RimeLib.Content.Mounting;
 using RimeLib.Frostbite;
-using RimeLib.Serialization;
-using RimeLib.Frostbite.Containers;
-using RimeLib.Serialization.Ebx;
-using RimeLib.Serialization.Frostbite2_0;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
 using System;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
+using RimeLib.IO;
 
 namespace EbxExtractor
 {
@@ -38,7 +32,6 @@ namespace EbxExtractor
             Parser.Default.ParseArguments<Options>(p_Args).WithParsed(p_Options =>
             {
                 LoadContentAssembly(p_Options);
-                LoadBindingsAssembly(p_Options);
                 DumpFiles(p_Options);
 
                 Console.WriteLine("Audio content successfully extracted. Press any key to exit...");
@@ -70,40 +63,13 @@ namespace EbxExtractor
             }
         }
 
-        private static void LoadBindingsAssembly(Options p_Options)
-        {
-            var s_AssemblyName = "RimeLib.Bindings.Venice";
-
-            try
-            {
-                if (!p_Options.Quiet)
-                    Console.WriteLine("Loading engine bindings support assembly.");
-
-                var s_Bindings = Assembly.Load(s_AssemblyName);
-
-                var s_ExportedTypes = s_Bindings.GetExportedTypes();
-
-                foreach (var s_Type in s_ExportedTypes)
-                {
-                    if (!typeof(FrostbiteContainer).IsAssignableFrom(s_Type) &&
-                        !s_Type.IsEnum)
-                        continue;
-
-                    ContainerRegistry.RegisterType(s_Type);
-                }
-            }
-            catch
-            {
-                if (!p_Options.Quiet)
-                    Console.WriteLine($"Failed to load supporting engine assembly ({s_AssemblyName}.dll). This means that the engine is not supported or that you are missing required files.");
-
-                System.Environment.Exit(1);
-            }
-        }
-
         private static async void DumpFiles(Options p_Options)
         {
-            var s_Mounter = EngineMounterRegistry.Create(p_Options.EngineType);
+            var s_Reader = new Fb2EbxReader();
+            //using (var s_FileReader = new RimeReader(File.OpenRead("I:\\Research\\BF3\\Dump\\Files\\bundles\\ebx\\levels\\xp1_004\\xp1_004.ebx")))
+            using (var s_FileReader = new RimeReader(File.OpenRead("I:\\Research\\BF3\\Dump\\Files\\bundles\\ebx\\levels\\xp2_factory\\xp2_factory.ebx")))
+                s_Reader.ParsePartition("Test", s_FileReader);
+            /*var s_Mounter = EngineMounterRegistry.Create(p_Options.EngineType);
 
             if (!p_Options.Quiet)
                 Console.WriteLine($"Mounting game with engine '{p_Options.EngineType}' at path '{p_Options.GamePath}'. Please wait, this could take a while.");
@@ -115,7 +81,6 @@ namespace EbxExtractor
             await s_Mounter.MountSuperbundle("Win32/MpChunks", true);
             await s_Mounter.MountSuperbundle("Win32/Xp2Chunks", true);
             await s_Mounter.MountSuperbundle("Win32/Levels/XP2_Factory/XP2_Factory", true);
-            await s_Mounter.MountSuperbundle("Win32/Levels/FrontEnd/FrontEnd", true);
 
             if (!p_Options.Quiet)
                 Console.WriteLine($"Everything is now mounted! Starting audio conversion.");
@@ -126,7 +91,7 @@ namespace EbxExtractor
             foreach (var s_PartitionPair in s_Partitions)
             {
                 var s_PartitionName = s_PartitionPair.Key;
-                if (s_PartitionName != "Weapons/M1014/U_M1014_Flashlight".ToLower())
+                if (s_PartitionName != "Levels/XP2_Factory/XP2_Factory".ToLower())
                     continue;
 
                 var s_PartitionObject = s_PartitionPair.Value;
@@ -135,17 +100,7 @@ namespace EbxExtractor
 
                 var s_Reader = new Fb2EbxReader();
 
-                var s_Partition = s_Reader.ParsePartition(s_PartitionName, s_PartitionReader);
-                if (s_Partition == null)
-                    continue;
-
-                new FrostbitePartitionVisitor(s_Partition.PrimaryInstance).Iterate();
-
-                PartitionRegistry.RegisterPartition(s_Partition);
-
-                var s_SerializationContext = new SerializationContext(s_Partition);
-
-                s_SerializationContext.Parse();
+                s_Reader.ParsePartition(s_PartitionName, s_PartitionReader);
             }
 #else
             var s_Ret = Parallel.ForEach(s_Partitions, p_Pair =>
@@ -162,7 +117,7 @@ namespace EbxExtractor
                 if (s_Partition != null)
                     PartitionRegistry.RegisterPartition(s_Partition);
             });
-#endif
+#endif*/
 
             //var s_Results = PartitionRegistry.Partitions.Where(p_Partition => p_Partition.PrimaryInstance.ContainerTypeName == "SoundWaveAsset");
         }
