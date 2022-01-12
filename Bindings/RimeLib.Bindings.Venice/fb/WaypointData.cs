@@ -29,13 +29,5 @@ namespace fb
 		[ContainerField(14), LayoutImmutable, Blittable]
 		public bool UseClientsPosition { get; set; }
 
-		public static void Deserialize(WaypointData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.SchematicsNameHash = p_Reader.ReadInt32();
-			p_Instance.WaypointId = p_Reader.ReadUInt16();
-			p_Instance.UseClientsPosition = p_Reader.ReadBool();
-			p_Reader.Seek(1, SeekOrigin.Current);
-		}
-
 	}
 }

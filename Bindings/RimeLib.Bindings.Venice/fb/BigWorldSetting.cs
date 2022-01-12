@@ -35,14 +35,5 @@ namespace fb
 		[ContainerField(24), LayoutImmutable, Blittable]
 		public float MaxDelayTimeInMinutes { get; set; }
 
-		public static void Deserialize(BigWorldSetting p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Sound.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.MinDistance = p_Reader.ReadInt32();
-			p_Instance.MaxDistance = p_Reader.ReadInt32();
-			p_Instance.MinDelayTimeInMinutes = p_Reader.ReadSingle();
-			p_Instance.MaxDelayTimeInMinutes = p_Reader.ReadSingle();
-		}
-
 	}
 }

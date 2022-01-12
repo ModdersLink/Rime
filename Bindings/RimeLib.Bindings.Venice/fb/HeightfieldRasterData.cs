@@ -20,9 +20,5 @@ namespace fb
 	public class HeightfieldRasterData : 
 		RasterQuadtreeData
 	{
-		public static void Deserialize(HeightfieldRasterData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

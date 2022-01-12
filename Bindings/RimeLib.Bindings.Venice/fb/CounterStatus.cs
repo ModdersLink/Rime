@@ -25,10 +25,5 @@ namespace fb
 		[ContainerField(4), LayoutImmutable, Blittable]
 		public float OriginalValue { get; set; }
 		
-		public static void Deserialize(CounterStatus p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.CurrentValue = p_Reader.ReadSingle();
-			p_Instance.OriginalValue = p_Reader.ReadSingle();
-		}
 	}
 }

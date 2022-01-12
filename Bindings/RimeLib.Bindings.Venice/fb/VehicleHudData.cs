@@ -34,13 +34,5 @@ namespace fb
 		[ContainerField(28), LayoutImmutable, Blittable]
 		public uint VehicleItemHash { get; set; }
 		
-		public static void Deserialize(VehicleHudData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.Vec3.Deserialize(p_Instance.CustomizationOffset, p_Reader, p_Parser);
-			p_Instance.Customization.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.MinimapIcon = (UIHudIcon) p_Reader.ReadInt32();
-			p_Instance.Texture.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.VehicleItemHash = p_Reader.ReadUInt32();
-		}
 	}
 }

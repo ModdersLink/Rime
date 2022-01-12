@@ -24,22 +24,7 @@ namespace fb
 		public int DefaultValue { get; set; }
 
 		[ContainerField(12)]
-		public List<CtrRef<TextureSliceUnlockPartData>> PossibleValues { get; set; } = new();
-
-		public static void Deserialize(UnlockableTextureSliceCollection p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.DefaultValue = p_Reader.ReadInt32();
-			p_Instance.PossibleValues.Clear();
-			(RimeReader Reader, uint Count) s_PossibleValues = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_PossibleValues.Count; ++i)
-			{
-				var s_CtrRef = new CtrRef<TextureSliceUnlockPartData>();
-				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_PossibleValues.Reader.ReadUInt32()));
-				p_Instance.PossibleValues.Add(s_CtrRef);
-			}
-			
-			s_PossibleValues.Reader.Dispose();
-		}
+		public RefArray<TextureSliceUnlockPartData> PossibleValues { get; set; } = new();
 
 	}
 }

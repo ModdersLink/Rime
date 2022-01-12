@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(12), LayoutImmutable, Blittable]
 		public float BodyUnderWater { get; set; }
 
-		public static void Deserialize(SwimmingStateData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.BodyUnderWater = p_Reader.ReadSingle();
-		}
-
 	}
 }

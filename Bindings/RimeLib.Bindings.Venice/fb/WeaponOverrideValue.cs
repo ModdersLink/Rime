@@ -25,10 +25,5 @@ namespace fb
 		[ContainerField(4), LayoutImmutable, Blittable]
 		public float Value { get; set; }
 		
-		public static void Deserialize(WeaponOverrideValue p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.ValueType = (WeaponOverrideValueType) p_Reader.ReadInt32();
-			p_Instance.Value = p_Reader.ReadSingle();
-		}
 	}
 }

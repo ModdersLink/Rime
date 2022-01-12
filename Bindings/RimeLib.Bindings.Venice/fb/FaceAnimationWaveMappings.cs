@@ -29,21 +29,5 @@ namespace fb
 		[ContainerField(16)]
 		public List<FaceAnimationWaveMapping> Mappings { get; set; } = new();
 
-		public static void Deserialize(FaceAnimationWaveMappings p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AntRef.Deserialize(p_Instance.AntAsset, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.OnStartedTalking, p_Reader, p_Parser);
-			p_Instance.Mappings.Clear();
-			(RimeReader Reader, uint Count) s_Mappings = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_Mappings.Count; ++i)
-			{
-				var s_Value = new FaceAnimationWaveMapping();
-				fb.FaceAnimationWaveMapping.Deserialize(s_Value, s_Mappings.Reader, p_Parser);
-				p_Instance.Mappings.Add(s_Value);
-			}
-			
-			s_Mappings.Reader.Dispose();
-		}
-
 	}
 }

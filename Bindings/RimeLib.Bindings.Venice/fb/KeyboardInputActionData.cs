@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(12)]
 		public InputDeviceKeys Key { get; set; } = new();
 
-		public static void Deserialize(KeyboardInputActionData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Key = (InputDeviceKeys) p_Reader.ReadInt32();
-		}
-
 	}
 }

@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(20)]
 		public CtrRef<UINodePort> Out { get; set; } = new();
 
-		public static void Deserialize(InstanceInputNode p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Out.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-		}
-
 	}
 }

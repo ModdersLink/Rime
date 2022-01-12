@@ -74,28 +74,5 @@ namespace fb
 		[ContainerField(70), LayoutImmutable, Blittable]
 		public bool IncrementServerPortOnFail { get; set; }
 
-		public static void Deserialize(NetworkSettings p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.ProtocolVersion = p_Reader.ReadUInt32();
-			p_Instance.TitleId = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.ClientPort = p_Reader.ReadUInt32();
-			p_Instance.ServerPort = p_Reader.ReadUInt32();
-			p_Instance.MaxGhostCount = p_Reader.ReadUInt32();
-			p_Instance.MaxClientCount = p_Reader.ReadUInt32();
-			p_Instance.MaxClientFrameSize = p_Reader.ReadUInt32();
-			p_Instance.MaxServerFrameSize = p_Reader.ReadUInt32();
-			p_Instance.XlspAddress = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.ServerAddress = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.ClientConnectionDebugFilePrefix = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.ServerConnectionDebugFilePrefix = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.TimeNudgeGhostFrequencyFactor = p_Reader.ReadSingle();
-			p_Instance.TimeNudgeBias = p_Reader.ReadSingle();
-			p_Instance.ConnectTimeout = p_Reader.ReadSingle();
-			p_Instance.UseFrameManager = p_Reader.ReadBool();
-			p_Instance.TimeSyncEnabled = p_Reader.ReadBool();
-			p_Instance.IncrementServerPortOnFail = p_Reader.ReadBool();
-			p_Reader.Seek(1, SeekOrigin.Current);
-		}
-
 	}
 }

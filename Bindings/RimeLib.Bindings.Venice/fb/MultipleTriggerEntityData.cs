@@ -23,11 +23,5 @@ namespace fb
 		[ContainerField(112), LayoutImmutable, Blittable]
 		public int TriggerAmount { get; set; }
 
-		public static void Deserialize(MultipleTriggerEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.TriggerAmount = p_Reader.ReadInt32();
-			p_Reader.Seek(12, SeekOrigin.Current);
-		}
-
 	}
 }

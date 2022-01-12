@@ -20,9 +20,5 @@ namespace fb
 	public class SpawnEntitySelector : 
 		DataContainer
 	{
-		public static void Deserialize(SpawnEntitySelector p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

@@ -23,11 +23,5 @@ namespace fb
 		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable]
 		public Vec2 Pivot { get; set; } = new();
 
-		public static void Deserialize(UpdateSizeData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.Vec2.Deserialize(p_Instance.Pivot, p_Reader, p_Parser);
-			p_Reader.Seek(8, SeekOrigin.Current);
-		}
-
 	}
 }

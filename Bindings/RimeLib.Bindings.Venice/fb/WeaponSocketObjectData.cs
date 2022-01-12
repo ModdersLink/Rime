@@ -32,21 +32,5 @@ namespace fb
 		[ContainerField(20)]
 		public CtrRef<Asset> Asset3p { get; set; } = new();
 
-		public static void Deserialize(WeaponSocketObjectData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.ReferencedAssetHashes.Clear();
-			(RimeReader Reader, uint Count) s_ReferencedAssetHashes = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_ReferencedAssetHashes.Count; ++i)
-			{
-				var s_Value = s_ReferencedAssetHashes.Reader.ReadUInt32();
-				p_Instance.ReferencedAssetHashes.Add(s_Value);
-			}
-			
-			s_ReferencedAssetHashes.Reader.Dispose();
-			p_Instance.Asset1p.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.Asset1pzoom.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.Asset3p.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-		}
-
 	}
 }

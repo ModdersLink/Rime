@@ -20,9 +20,5 @@ namespace fb
 	public class SpectatorSubViewData : 
 		SubViewData
 	{
-		public static void Deserialize(SpectatorSubViewData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

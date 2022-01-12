@@ -116,41 +116,5 @@ namespace fb
 		[ContainerField(136), LayoutImmutable, Blittable]
 		public float ContinueMeleeFromCoverDistance { get; set; }
 
-		public static void Deserialize(CoverConstantData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.SlotSize = p_Reader.ReadSingle();
-			p_Instance.SlotSpacing = p_Reader.ReadSingle();
-			p_Instance.SlotEdgeDistance = p_Reader.ReadSingle();
-			p_Instance.SlotBlockedEdgeDistance = p_Reader.ReadSingle();
-			p_Instance.MinimumOpenCoverWidth = p_Reader.ReadSingle();
-			p_Instance.ProneHeight = p_Reader.ReadSingle();
-			p_Instance.CrouchHeight = p_Reader.ReadSingle();
-			p_Instance.MediumHeight = p_Reader.ReadSingle();
-			p_Instance.StandHeight = p_Reader.ReadSingle();
-			p_Instance.MaxCoversInMemory = p_Reader.ReadInt32();
-			p_Instance.SearchRadius = p_Reader.ReadSingle();
-			p_Instance.ProneCoverModifier = p_Reader.ReadSingle();
-			p_Instance.CrouchCoverModifier = p_Reader.ReadSingle();
-			p_Instance.MediumCoverModifier = p_Reader.ReadSingle();
-			p_Instance.StandCoverModifier = p_Reader.ReadSingle();
-			p_Instance.IntermediateCoverSlotModifier = p_Reader.ReadSingle();
-			p_Instance.DistanceEvaluationWeight = p_Reader.ReadSingle();
-			p_Instance.EnemiesEvaluationWeight = p_Reader.ReadSingle();
-			p_Instance.AttackPositionEvaluationWeight = p_Reader.ReadSingle();
-			p_Instance.OptimalWeaponDistanceEvaluationWeight = p_Reader.ReadSingle();
-			p_Instance.DislikePreviousCoverWeight = p_Reader.ReadSingle();
-			p_Instance.MaxHeightDifference = p_Reader.ReadSingle();
-			p_Instance.SwitchCoverUrgencyThreshold = p_Reader.ReadSingle();
-			p_Instance.ExtraCoverSize = p_Reader.ReadSingle();
-			p_Instance.ReevaluationTime = p_Reader.ReadSingle();
-			p_Instance.CoverSelectionMethod = (CoverSelectionMethod) p_Reader.ReadInt32();
-			p_Instance.ThreatRadius = p_Reader.ReadSingle();
-			p_Instance.InCoverDistance = p_Reader.ReadSingle();
-			p_Instance.MinAttackableEnemyDistance = p_Reader.ReadSingle();
-			p_Instance.CoverFailIgnoreTime = p_Reader.ReadSingle();
-			p_Instance.StartMeleeFromCoverDistance = p_Reader.ReadSingle();
-			p_Instance.ContinueMeleeFromCoverDistance = p_Reader.ReadSingle();
-		}
-
 	}
 }

@@ -50,20 +50,5 @@ namespace fb
 		[ContainerField(52), LayoutImmutable, Blittable]
 		public GUID PerformanceLink { get; set; }
 
-		public static void Deserialize(FramerateHistogramPerformanceEvent p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.SpikeAverage = p_Reader.ReadSingle();
-			p_Instance.Below5 = p_Reader.ReadSingle();
-			p_Instance.Below10 = p_Reader.ReadSingle();
-			p_Instance.Below15 = p_Reader.ReadSingle();
-			p_Instance.Below20 = p_Reader.ReadSingle();
-			p_Instance.Below25 = p_Reader.ReadSingle();
-			p_Instance.Below30 = p_Reader.ReadSingle();
-			p_Instance.Below60 = p_Reader.ReadSingle();
-			p_Instance.Above60 = p_Reader.ReadSingle();
-			p_Instance.PerformanceLink = new GUID(p_Reader);
-			p_Reader.Seek(4, SeekOrigin.Current);
-		}
-
 	}
 }

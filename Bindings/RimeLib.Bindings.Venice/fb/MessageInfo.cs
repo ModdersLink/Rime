@@ -31,12 +31,5 @@ namespace fb
 		[ContainerField(12), LayoutImmutable, Blittable]
 		public float ShortMessageTime { get; set; }
 		
-		public static void Deserialize(MessageInfo p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.RowTypeName = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.MessageQueueSize = p_Reader.ReadUInt32();
-			p_Instance.NormalMessageTime = p_Reader.ReadSingle();
-			p_Instance.ShortMessageTime = p_Reader.ReadSingle();
-		}
 	}
 }

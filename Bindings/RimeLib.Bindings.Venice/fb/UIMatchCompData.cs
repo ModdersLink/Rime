@@ -20,9 +20,5 @@ namespace fb
 	public class UIMatchCompData : 
 		UIComponentData
 	{
-		public static void Deserialize(UIMatchCompData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

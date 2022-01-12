@@ -32,14 +32,5 @@ namespace fb
 		[ContainerField(17), LayoutImmutable, Blittable]
 		public bool ParentIsScreen { get; set; }
 
-		public static void Deserialize(UINodeData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Name = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.ParentGraph.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.IsRootNode = p_Reader.ReadBool();
-			p_Instance.ParentIsScreen = p_Reader.ReadBool();
-			p_Reader.Seek(2, SeekOrigin.Current);
-		}
-
 	}
 }

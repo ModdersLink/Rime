@@ -20,9 +20,5 @@ namespace fb
 	public class LanPresenceBackendData : 
 		PresenceBackendData
 	{
-		public static void Deserialize(LanPresenceBackendData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

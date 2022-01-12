@@ -31,12 +31,5 @@ namespace fb
 		[ContainerField(12)]
 		public AntRef HideWeapon1p { get; set; } = new();
 		
-		public static void Deserialize(Animated1pOnlyWeaponBinding p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AntRef.Deserialize(p_Instance.UndeployFinished, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.CameraFreeWeight, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.Deploy1P, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.HideWeapon1p, p_Reader, p_Parser);
-		}
 	}
 }

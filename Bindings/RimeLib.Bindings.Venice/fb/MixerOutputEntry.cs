@@ -26,11 +26,5 @@ namespace fb
 		[ContainerField(16)]
 		public CtrRef<AudioGraphParameter> Target { get; set; } = new();
 
-		public static void Deserialize(MixerOutputEntry p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AudioGraphNodePort.Deserialize(p_Instance.In, p_Reader, p_Parser);
-			p_Instance.Target.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-		}
-
 	}
 }

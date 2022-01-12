@@ -41,17 +41,5 @@ namespace fb
 		[ContainerField(36), LayoutImmutable, Blittable]
 		public bool Bounded { get; set; }
 
-		public static void Deserialize(IntegratorOrDifferentiatorEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Realm = (Realm) p_Reader.ReadInt32();
-			p_Instance.UpdatePass = (EntityUpdateOrder) p_Reader.ReadInt32();
-			p_Instance.StartValue = p_Reader.ReadSingle();
-			p_Instance.Input = p_Reader.ReadSingle();
-			p_Instance.MaxValue = p_Reader.ReadSingle();
-			p_Instance.MinValue = p_Reader.ReadSingle();
-			p_Instance.Bounded = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
-
 	}
 }

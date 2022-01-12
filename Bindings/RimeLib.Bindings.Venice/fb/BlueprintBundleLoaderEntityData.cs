@@ -20,9 +20,5 @@ namespace fb
 	public class BlueprintBundleLoaderEntityData : 
 		GameEntityData
 	{
-		public static void Deserialize(BlueprintBundleLoaderEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

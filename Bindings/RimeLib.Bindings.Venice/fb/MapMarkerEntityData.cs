@@ -107,39 +107,5 @@ namespace fb
 		[ContainerField(199), LayoutImmutable, Blittable]
 		public bool IsFocusPoint { get; set; }
 
-		public static void Deserialize(MapMarkerEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.Vec3.Deserialize(p_Instance.BaseTransform, p_Reader, p_Parser);
-			p_Instance.ProgressMinTime = p_Reader.ReadSingle();
-			p_Instance.Sid = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.NrOfPassengers = p_Reader.ReadInt32();
-			p_Instance.NrOfEntries = p_Reader.ReadInt32();
-			p_Instance.ProgressTime1Player = p_Reader.ReadSingle();
-			p_Instance.ShowRadius = p_Reader.ReadSingle();
-			p_Instance.HideRadius = p_Reader.ReadSingle();
-			p_Instance.BlinkTime = p_Reader.ReadSingle();
-			p_Instance.MarkerType = (MapMarkerType) p_Reader.ReadInt32();
-			p_Instance.VisibleForTeam = (TeamId) p_Reader.ReadInt32();
-			p_Instance.OwnerTeam = (TeamId) p_Reader.ReadInt32();
-			p_Instance.HudIcon = (UIHudIcon) p_Reader.ReadInt32();
-			p_Instance.VerticalOffset = p_Reader.ReadSingle();
-			p_Instance.FocusPointRadius = p_Reader.ReadSingle();
-			p_Instance.InstantFlagReturnRadius = p_Reader.ReadSingle();
-			p_Instance.Progress = p_Reader.ReadSingle();
-			p_Instance.ProgressPlayerSpeedUpPercentage = p_Reader.ReadSingle();
-			p_Instance.TrackedPlayersInRange = p_Reader.ReadUInt32();
-			p_Instance.TrackingPlayerRange = p_Reader.ReadSingle();
-			p_Instance.ProgressTime = p_Reader.ReadSingle();
-			p_Instance.OnlyShowSnapped = p_Reader.ReadBool();
-			p_Instance.FlagControlMarker = p_Reader.ReadBool();
-			p_Instance.ShowProgress = p_Reader.ReadBool();
-			p_Instance.UseMarkerTransform = p_Reader.ReadBool();
-			p_Instance.IsVisible = p_Reader.ReadBool();
-			p_Instance.Snap = p_Reader.ReadBool();
-			p_Instance.ShowAirTargetBox = p_Reader.ReadBool();
-			p_Instance.IsFocusPoint = p_Reader.ReadBool();
-			p_Reader.Seek(8, SeekOrigin.Current);
-		}
-
 	}
 }

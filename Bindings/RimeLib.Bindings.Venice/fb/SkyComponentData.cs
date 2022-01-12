@@ -149,53 +149,5 @@ namespace fb
 		[ContainerField(300), LayoutImmutable, Blittable]
 		public bool Enable { get; set; }
 
-		public static void Deserialize(SkyComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.Vec3.Deserialize(p_Instance.CloudLayerSunColor, p_Reader, p_Parser);
-			fb.Vec3.Deserialize(p_Instance.CloudLayer2Color, p_Reader, p_Parser);
-			fb.Vec3.Deserialize(p_Instance.CloudLayer1Color, p_Reader, p_Parser);
-			p_Instance.SkyGradientTexture.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.SunSize = p_Reader.ReadSingle();
-			p_Instance.BrightnessScale = p_Reader.ReadSingle();
-			p_Instance.SunScale = p_Reader.ReadSingle();
-			p_Instance.PanoramicUVMaxX = p_Reader.ReadSingle();
-			p_Instance.PanoramicUVMinY = p_Reader.ReadSingle();
-			p_Instance.PanoramicUVMaxY = p_Reader.ReadSingle();
-			p_Instance.Realm = (Realm) p_Reader.ReadInt32();
-			p_Instance.PanoramicUVMinX = p_Reader.ReadSingle();
-			p_Instance.PanoramicTexture.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.PanoramicAlphaTexture.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.PanoramicTileFactor = p_Reader.ReadSingle();
-			p_Instance.CloudLayerMaskTexture.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.CloudLayer1Altitude = p_Reader.ReadSingle();
-			p_Instance.CloudLayer1TileFactor = p_Reader.ReadSingle();
-			p_Instance.CloudLayer1Rotation = p_Reader.ReadSingle();
-			p_Instance.CloudLayer1Speed = p_Reader.ReadSingle();
-			p_Instance.CloudLayer1SunLightIntensity = p_Reader.ReadSingle();
-			p_Instance.PanoramicRotation = p_Reader.ReadSingle();
-			p_Instance.CloudLayer1AmbientLightIntensity = p_Reader.ReadSingle();
-			p_Instance.CloudLayer1SunLightPower = p_Reader.ReadSingle();
-			p_Instance.CloudLayer1AlphaMul = p_Reader.ReadSingle();
-			p_Instance.CloudLayer1Texture.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.CloudLayer2Altitude = p_Reader.ReadSingle();
-			p_Instance.CloudLayer2TileFactor = p_Reader.ReadSingle();
-			p_Instance.CloudLayer2Rotation = p_Reader.ReadSingle();
-			p_Instance.CloudLayer2Speed = p_Reader.ReadSingle();
-			p_Instance.CloudLayer2SunLightIntensity = p_Reader.ReadSingle();
-			p_Instance.CloudLayer2SunLightPower = p_Reader.ReadSingle();
-			p_Instance.CloudLayer2AmbientLightIntensity = p_Reader.ReadSingle();
-			p_Instance.StaticEnvmapScale = p_Reader.ReadSingle();
-			p_Instance.CloudLayer2AlphaMul = p_Reader.ReadSingle();
-			p_Instance.CloudLayer2Texture.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.StaticEnvmapTexture.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.SkyVisibilityExponent = p_Reader.ReadSingle();
-			p_Instance.SkyEnvmap8BitTexScale = p_Reader.ReadSingle();
-			p_Instance.CustomEnvmapTexture.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.CustomEnvmapScale = p_Reader.ReadSingle();
-			p_Instance.CustomEnvmapAmbient = p_Reader.ReadSingle();
-			p_Instance.Enable = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
-
 	}
 }

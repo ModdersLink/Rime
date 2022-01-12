@@ -26,11 +26,5 @@ namespace fb
 		[ContainerField(12), LayoutImmutable, Blittable]
 		public float TimeSinceSuppressionLimit { get; set; }
 
-		public static void Deserialize(SuppressionScoringHandlerData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.SuppressionAmountLimit = p_Reader.ReadSingle();
-			p_Instance.TimeSinceSuppressionLimit = p_Reader.ReadSingle();
-		}
-
 	}
 }

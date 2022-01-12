@@ -28,19 +28,5 @@ namespace fb
 		[ContainerField(12)]
 		public List<ushort> Data { get; set; } = new();
 		
-		public static void Deserialize(GroundHeightData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.Vec2.Deserialize(p_Instance.HeightSpan, p_Reader, p_Parser);
-			p_Instance.WorldSize = p_Reader.ReadSingle();
-			p_Instance.Data.Clear();
-			(RimeReader Reader, uint Count) s_Data = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_Data.Count; ++i)
-			{
-				var s_Value = s_Data.Reader.ReadUInt16();
-				p_Instance.Data.Add(s_Value);
-			}
-			
-			s_Data.Reader.Dispose();
-		}
 	}
 }

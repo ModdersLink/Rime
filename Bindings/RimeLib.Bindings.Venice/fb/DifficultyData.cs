@@ -86,54 +86,5 @@ namespace fb
 		[ContainerField(124), LayoutImmutable, Blittable]
 		public bool UsePitchZoomSnap { get; set; }
 
-		public static void Deserialize(DifficultyData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Reader.Seek(8, SeekOrigin.Current);
-			fb.Vec3.Deserialize(p_Instance.StickyBoxModifier, p_Reader, p_Parser);
-			p_Reader.Seek(8, SeekOrigin.Current);
-			fb.Vec3.Deserialize(p_Instance.SnapBoxModifier, p_Reader, p_Parser);
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.HumanHealthModifier = p_Reader.ReadSingle();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.GameType = (PersistenceGameType) p_Reader.ReadInt32();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.FriendsHealthModifier = p_Reader.ReadSingle();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.FriendlyDamageModifier = p_Reader.ReadSingle();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.VehicleDamageModifier = p_Reader.ReadSingle();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.HumanInCriticalHealth = p_Reader.ReadSingle();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.EnemiesHealthModifier = p_Reader.ReadSingle();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.HumanRegenerationRateModifier = p_Reader.ReadSingle();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.HumanInCriticalHealthDamageModifier = p_Reader.ReadSingle();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.InteractiveManDownDamageModifier = p_Reader.ReadSingle();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.InteractiveManDownTimeMultiplier = p_Reader.ReadSingle();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.InteractiveManDownReviveTime = p_Reader.ReadSingle();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.AdrenalineKillLimit = p_Reader.ReadInt32();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.CriticalHealthJesusModeTimeModifier = p_Reader.ReadSingle();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.Difficulty = (Difficulty) p_Reader.ReadInt32();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.CriticalFakeImmortalModifier = p_Reader.ReadSingle();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.SuckZoomModifier = p_Reader.ReadSingle();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.AIData.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.AiBulletDamageHumanCooldown = p_Reader.ReadSingle();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.UsePitchZoomSnap = p_Reader.ReadBool();
-			p_Reader.Seek(11, SeekOrigin.Current);
-		}
-
 	}
 }

@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(12)]
 		public TerrainQuadDecalAtlasTile AtlasTile { get; set; } = new();
 
-		public static void Deserialize(TerrainQuadDecalAtlasTileTemplateData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.TerrainQuadDecalAtlasTile.Deserialize(p_Instance.AtlasTile, p_Reader, p_Parser);
-		}
-
 	}
 }

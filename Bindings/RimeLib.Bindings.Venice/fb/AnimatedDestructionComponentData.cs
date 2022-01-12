@@ -20,9 +20,5 @@ namespace fb
 	public class AnimatedDestructionComponentData : 
 		AntAnimatableComponentData
 	{
-		public static void Deserialize(AnimatedDestructionComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

@@ -20,9 +20,5 @@ namespace fb
 	public class UILeaderboardCompData : 
 		UIComponentData
 	{
-		public static void Deserialize(UILeaderboardCompData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

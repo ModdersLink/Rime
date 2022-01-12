@@ -26,11 +26,5 @@ namespace fb
 		[ContainerField(48)]
 		public UIHudIcon SpottedVehicleIcon { get; set; } = new();
 
-		public static void Deserialize(GunnerSpottingTrackerData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.SpottedInfantryIcon = (UIHudIcon) p_Reader.ReadInt32();
-			p_Instance.SpottedVehicleIcon = (UIHudIcon) p_Reader.ReadInt32();
-		}
-
 	}
 }

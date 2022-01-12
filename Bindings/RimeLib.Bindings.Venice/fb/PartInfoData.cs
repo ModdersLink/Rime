@@ -25,10 +25,5 @@ namespace fb
 		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 Translation { get; set; } = new();
 		
-		public static void Deserialize(PartInfoData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AxisAlignedBox.Deserialize(p_Instance.Aabb, p_Reader, p_Parser);
-			fb.Vec3.Deserialize(p_Instance.Translation, p_Reader, p_Parser);
-		}
 	}
 }

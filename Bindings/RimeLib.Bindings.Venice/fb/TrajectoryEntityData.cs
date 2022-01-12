@@ -23,12 +23,5 @@ namespace fb
 		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable]
 		public LinearTransform OutTransform { get; set; } = new();
 
-		public static void Deserialize(TrajectoryEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Reader.Seek(4, SeekOrigin.Current);
-			fb.LinearTransform.Deserialize(p_Instance.OutTransform, p_Reader, p_Parser);
-			p_Reader.Seek(4, SeekOrigin.Current);
-		}
-
 	}
 }

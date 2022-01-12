@@ -35,15 +35,5 @@ namespace fb
 		[ContainerField(106), LayoutImmutable, Blittable]
 		public bool UseWeaponTransform { get; set; }
 
-		public static void Deserialize(SensingComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Template.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.Settings.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.Enabled = p_Reader.ReadBool();
-			p_Instance.SharedPlayerMemory = p_Reader.ReadBool();
-			p_Instance.UseWeaponTransform = p_Reader.ReadBool();
-			p_Reader.Seek(5, SeekOrigin.Current);
-		}
-
 	}
 }

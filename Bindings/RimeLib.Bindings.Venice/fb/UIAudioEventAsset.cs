@@ -23,19 +23,5 @@ namespace fb
 		[ContainerField(12)]
 		public List<UIAudioEventMapping> AudioEventMappings { get; set; } = new();
 
-		public static void Deserialize(UIAudioEventAsset p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.AudioEventMappings.Clear();
-			(RimeReader Reader, uint Count) s_AudioEventMappings = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_AudioEventMappings.Count; ++i)
-			{
-				var s_Value = new UIAudioEventMapping();
-				fb.UIAudioEventMapping.Deserialize(s_Value, s_AudioEventMappings.Reader, p_Parser);
-				p_Instance.AudioEventMappings.Add(s_Value);
-			}
-			
-			s_AudioEventMappings.Reader.Dispose();
-		}
-
 	}
 }

@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(12)]
 		public CtrRef<SoundState> SoundState { get; set; } = new();
 
-		public static void Deserialize(SoundStateEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.SoundState.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-		}
-
 	}
 }

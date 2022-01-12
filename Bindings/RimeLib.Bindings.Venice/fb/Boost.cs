@@ -37,14 +37,5 @@ namespace fb
 		[ContainerField(20), LayoutImmutable, Blittable]
 		public float AccelerationScale { get; set; }
 		
-		public static void Deserialize(Boost p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.ForwardStrength = p_Reader.ReadSingle();
-			p_Instance.ReverseStrength = p_Reader.ReadSingle();
-			p_Instance.DissipationTime = p_Reader.ReadSingle();
-			p_Instance.RecoveryTime = p_Reader.ReadSingle();
-			p_Instance.CrawlStrength = p_Reader.ReadSingle();
-			p_Instance.AccelerationScale = p_Reader.ReadSingle();
-		}
 	}
 }

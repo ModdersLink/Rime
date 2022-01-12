@@ -34,13 +34,5 @@ namespace fb
 		[ContainerField(16), LayoutImmutable, Blittable]
 		public float Step { get; set; }
 		
-		public static void Deserialize(FloatOption p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Name = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Value = p_Reader.ReadSingle();
-			p_Instance.Min = p_Reader.ReadSingle();
-			p_Instance.Max = p_Reader.ReadSingle();
-			p_Instance.Step = p_Reader.ReadSingle();
-		}
 	}
 }

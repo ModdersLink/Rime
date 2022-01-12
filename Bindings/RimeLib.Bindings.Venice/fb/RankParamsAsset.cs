@@ -21,21 +21,7 @@ namespace fb
 		Asset
 	{
 		[ContainerField(12)]
-		public List<CtrRef<RankLevelData>> Ranks { get; set; } = new();
-
-		public static void Deserialize(RankParamsAsset p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Ranks.Clear();
-			(RimeReader Reader, uint Count) s_Ranks = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_Ranks.Count; ++i)
-			{
-				var s_CtrRef = new CtrRef<RankLevelData>();
-				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_Ranks.Reader.ReadUInt32()));
-				p_Instance.Ranks.Add(s_CtrRef);
-			}
-			
-			s_Ranks.Reader.Dispose();
-		}
+		public RefArray<RankLevelData> Ranks { get; set; } = new();
 
 	}
 }

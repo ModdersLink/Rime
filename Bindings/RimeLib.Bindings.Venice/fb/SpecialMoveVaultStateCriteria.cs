@@ -40,15 +40,5 @@ namespace fb
 		[ContainerField(24)]
 		public SpecialMoveStateData SpecialMoveState { get; set; } = new();
 		
-		public static void Deserialize(SpecialMoveVaultStateCriteria p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.DistToObject = p_Reader.ReadSingle();
-			p_Instance.DistToObjectTolerance = p_Reader.ReadSingle();
-			p_Instance.HeightOfObject = p_Reader.ReadSingle();
-			p_Instance.HeightOfObjectTolerance = p_Reader.ReadSingle();
-			p_Instance.LengthOfObject = p_Reader.ReadSingle();
-			p_Instance.LengthOfObjectTolerance = p_Reader.ReadSingle();
-			fb.SpecialMoveStateData.Deserialize(p_Instance.SpecialMoveState, p_Reader, p_Parser);
-		}
 	}
 }

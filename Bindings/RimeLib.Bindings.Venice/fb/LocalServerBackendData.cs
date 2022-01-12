@@ -20,9 +20,5 @@ namespace fb
 	public class LocalServerBackendData : 
 		ServerBackendData
 	{
-		public static void Deserialize(LocalServerBackendData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

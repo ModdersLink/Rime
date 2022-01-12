@@ -34,14 +34,5 @@ namespace fb
 		[ContainerField(13), LayoutImmutable, Blittable]
 		public bool HideInVehicleEntries { get; set; }
 		
-		public static void Deserialize(HidableSoldierMeshWeaponPart p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.WeaponMesh.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.WeaponMeshBlueprint.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.BoneName = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.HideAlways = p_Reader.ReadBool();
-			p_Instance.HideInVehicleEntries = p_Reader.ReadBool();
-			p_Reader.Seek(2, SeekOrigin.Current);
-		}
 	}
 }

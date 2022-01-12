@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(28), LayoutImmutable, Blittable]
 		public uint HudMaxSpeakers { get; set; }
 
-		public static void Deserialize(UIVoiceCompData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.HudMaxSpeakers = p_Reader.ReadUInt32();
-		}
-
 	}
 }

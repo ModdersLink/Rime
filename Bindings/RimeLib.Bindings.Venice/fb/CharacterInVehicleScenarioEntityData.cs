@@ -38,16 +38,5 @@ namespace fb
 		[ContainerField(116), LayoutImmutable, Blittable]
 		public int PartId { get; set; }
 
-		public static void Deserialize(CharacterInVehicleScenarioEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Realm = (Realm) p_Reader.ReadInt32();
-			fb.AntRef.Deserialize(p_Instance.ScenarioAntRef, p_Reader, p_Parser);
-			p_Instance.LevelId = p_Reader.ReadInt32();
-			p_Instance.ScenarioId = p_Reader.ReadInt32();
-			p_Instance.ActorId = p_Reader.ReadInt32();
-			p_Instance.PartId = p_Reader.ReadInt32();
-			p_Reader.Seek(8, SeekOrigin.Current);
-		}
-
 	}
 }

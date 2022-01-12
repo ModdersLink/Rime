@@ -35,15 +35,5 @@ namespace fb
 		[ContainerField(45), LayoutImmutable, Blittable]
 		public bool OverrideDirectAccess { get; set; }
 
-		public static void Deserialize(UITextDataBinding p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.StaticText = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			fb.UIDataSourceInfo.Deserialize(p_Instance.TextData, p_Reader, p_Parser);
-			fb.UIDataSourceInfo.Deserialize(p_Instance.Visibility, p_Reader, p_Parser);
-			p_Instance.Refresh = p_Reader.ReadBool();
-			p_Instance.OverrideDirectAccess = p_Reader.ReadBool();
-			p_Reader.Seek(2, SeekOrigin.Current);
-		}
-
 	}
 }

@@ -20,9 +20,5 @@ namespace fb
 	public class EnlightenBuildRadiosityParams : 
 		DataContainer
 	{
-		public static void Deserialize(EnlightenBuildRadiosityParams p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

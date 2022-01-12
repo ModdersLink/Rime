@@ -32,22 +32,5 @@ namespace fb
 		[ContainerField(24), LayoutImmutable, Blittable]
 		public float MaxRaycastDistanceSquared { get; set; }
 
-		public static void Deserialize(LevelAudioObstructionAsset p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.MaterialMap.Clear();
-			(RimeReader Reader, uint Count) s_MaterialMap = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_MaterialMap.Count; ++i)
-			{
-				var s_Value = new AudioObstructionMaterialInfo();
-				fb.AudioObstructionMaterialInfo.Deserialize(s_Value, s_MaterialMap.Reader, p_Parser);
-				p_Instance.MaterialMap.Add(s_Value);
-			}
-			
-			s_MaterialMap.Reader.Dispose();
-			p_Instance.FrequencySlewRate = p_Reader.ReadSingle();
-			p_Instance.GainSlewRate = p_Reader.ReadSingle();
-			p_Instance.MaxRaycastDistanceSquared = p_Reader.ReadSingle();
-		}
-
 	}
 }

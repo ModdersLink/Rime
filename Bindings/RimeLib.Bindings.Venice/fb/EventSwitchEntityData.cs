@@ -29,13 +29,5 @@ namespace fb
 		[ContainerField(20), LayoutImmutable, Blittable]
 		public bool AutoIncrement { get; set; }
 
-		public static void Deserialize(EventSwitchEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Realm = (Realm) p_Reader.ReadInt32();
-			p_Instance.OutEvents = p_Reader.ReadUInt32();
-			p_Instance.AutoIncrement = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
-
 	}
 }

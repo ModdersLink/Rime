@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(12), LayoutImmutable, Blittable]
 		public float UpNormalTolerance { get; set; }
 
-		public static void Deserialize(AnimationControlledStateData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.UpNormalTolerance = p_Reader.ReadSingle();
-		}
-
 	}
 }

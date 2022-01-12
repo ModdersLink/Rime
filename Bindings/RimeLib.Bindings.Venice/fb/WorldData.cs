@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(44)]
 		public CtrRef<MaterialGridData> RuntimeMaterialGrid { get; set; } = new();
 
-		public static void Deserialize(WorldData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.RuntimeMaterialGrid.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-		}
-
 	}
 }

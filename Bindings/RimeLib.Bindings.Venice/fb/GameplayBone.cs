@@ -25,10 +25,5 @@ namespace fb
 		[ContainerField(4)]
 		public GameplayBones Bone { get; set; } = new();
 		
-		public static void Deserialize(GameplayBone p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Name = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Bone = (GameplayBones) p_Reader.ReadInt32();
-		}
 	}
 }

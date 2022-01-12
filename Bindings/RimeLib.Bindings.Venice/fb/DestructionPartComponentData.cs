@@ -21,7 +21,7 @@ namespace fb
 		ComponentData
 	{
 		[ContainerField(96)]
-		public List<CtrRef<GameObjectData>> Objects { get; set; } = new();
+		public RefArray<GameObjectData> Objects { get; set; } = new();
 
 		[ContainerField(100), LayoutImmutable, Blittable]
 		public uint PartIndex { get; set; }
@@ -34,25 +34,6 @@ namespace fb
 
 		[ContainerField(109), LayoutImmutable, Blittable]
 		public bool Fragile { get; set; }
-
-		public static void Deserialize(DestructionPartComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Objects.Clear();
-			(RimeReader Reader, uint Count) s_Objects = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_Objects.Count; ++i)
-			{
-				var s_CtrRef = new CtrRef<GameObjectData>();
-				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_Objects.Reader.ReadUInt32()));
-				p_Instance.Objects.Add(s_CtrRef);
-			}
-			
-			s_Objects.Reader.Dispose();
-			p_Instance.PartIndex = p_Reader.ReadUInt32();
-			p_Instance.ConnectivityType = (DestructionConnectivityType) p_Reader.ReadInt32();
-			p_Instance.Fixed = p_Reader.ReadBool();
-			p_Instance.Fragile = p_Reader.ReadBool();
-			p_Reader.Seek(2, SeekOrigin.Current);
-		}
 
 	}
 }

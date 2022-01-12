@@ -31,12 +31,5 @@ namespace fb
 		[ContainerField(12), LayoutImmutable, Blittable]
 		public float Helicopter { get; set; }
 		
-		public static void Deserialize(Strengths p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Infantry = p_Reader.ReadSingle();
-			p_Instance.LightArmour = p_Reader.ReadSingle();
-			p_Instance.HeavyArmour = p_Reader.ReadSingle();
-			p_Instance.Helicopter = p_Reader.ReadSingle();
-		}
 	}
 }

@@ -35,15 +35,5 @@ namespace fb
 		[ContainerField(96), LayoutImmutable, Blittable]
 		public bool IsOneShotInput { get; set; }
 
-		public static void Deserialize(ChildMovingBodyData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.InputDelay = p_Reader.ReadSingle();
-			p_Instance.Speed = p_Reader.ReadSingle();
-			p_Instance.InputAction = (EntryInputActionEnum) p_Reader.ReadInt32();
-			p_Instance.TriggerImpulse = p_Reader.ReadSingle();
-			p_Instance.IsOneShotInput = p_Reader.ReadBool();
-			p_Reader.Seek(15, SeekOrigin.Current);
-		}
-
 	}
 }

@@ -22,9 +22,5 @@ namespace fb
 		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable]
 		public LinearTransform Transform { get; set; } = new();
 		
-		public static void Deserialize(EdgeModelInstance p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.LinearTransform.Deserialize(p_Instance.Transform, p_Reader, p_Parser);
-		}
 	}
 }

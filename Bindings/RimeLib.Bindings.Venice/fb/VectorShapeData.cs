@@ -35,33 +35,5 @@ namespace fb
 		[ContainerField(25), LayoutImmutable, Blittable]
 		public bool AllowRoll { get; set; }
 
-		public static void Deserialize(VectorShapeData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Points.Clear();
-			(RimeReader Reader, uint Count) s_Points = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_Points.Count; ++i)
-			{
-				var s_Value = new Vec3();
-				fb.Vec3.Deserialize(s_Value, s_Points.Reader, p_Parser);
-				p_Instance.Points.Add(s_Value);
-			}
-			
-			s_Points.Reader.Dispose();
-			p_Instance.Normals.Clear();
-			(RimeReader Reader, uint Count) s_Normals = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_Normals.Count; ++i)
-			{
-				var s_Value = new Vec3();
-				fb.Vec3.Deserialize(s_Value, s_Normals.Reader, p_Parser);
-				p_Instance.Normals.Add(s_Value);
-			}
-			
-			s_Normals.Reader.Dispose();
-			p_Instance.Tension = p_Reader.ReadSingle();
-			p_Instance.IsClosed = p_Reader.ReadBool();
-			p_Instance.AllowRoll = p_Reader.ReadBool();
-			p_Reader.Seek(2, SeekOrigin.Current);
-		}
-
 	}
 }

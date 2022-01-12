@@ -23,11 +23,5 @@ namespace fb
 		[ContainerField(16), LayoutImmutable, Blittable]
 		public bool IgnoreBuild { get; set; }
 
-		public static void Deserialize(UIDogTagDescription p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.IgnoreBuild = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
-
 	}
 }

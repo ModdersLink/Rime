@@ -26,29 +26,5 @@ namespace fb
 		[ContainerField(12)]
 		public List<FireEffectData> FireEffects3p { get; set; } = new();
 
-		public static void Deserialize(WeaponFiringEffectsModifier p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.FireEffects1p.Clear();
-			(RimeReader Reader, uint Count) s_FireEffects1p = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_FireEffects1p.Count; ++i)
-			{
-				var s_Value = new FireEffectData();
-				fb.FireEffectData.Deserialize(s_Value, s_FireEffects1p.Reader, p_Parser);
-				p_Instance.FireEffects1p.Add(s_Value);
-			}
-			
-			s_FireEffects1p.Reader.Dispose();
-			p_Instance.FireEffects3p.Clear();
-			(RimeReader Reader, uint Count) s_FireEffects3p = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_FireEffects3p.Count; ++i)
-			{
-				var s_Value = new FireEffectData();
-				fb.FireEffectData.Deserialize(s_Value, s_FireEffects3p.Reader, p_Parser);
-				p_Instance.FireEffects3p.Add(s_Value);
-			}
-			
-			s_FireEffects3p.Reader.Dispose();
-		}
-
 	}
 }

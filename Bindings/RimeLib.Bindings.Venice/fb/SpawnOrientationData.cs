@@ -20,9 +20,5 @@ namespace fb
 	public class SpawnOrientationData : 
 		ProcessorData
 	{
-		public static void Deserialize(SpawnOrientationData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

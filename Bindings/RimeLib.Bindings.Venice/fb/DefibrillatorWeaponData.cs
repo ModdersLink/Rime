@@ -26,11 +26,5 @@ namespace fb
 		[ContainerField(20), LayoutImmutable, Blittable]
 		public float AttackTime { get; set; }
 
-		public static void Deserialize(DefibrillatorWeaponData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.ReviveTime = p_Reader.ReadSingle();
-			p_Instance.AttackTime = p_Reader.ReadSingle();
-		}
-
 	}
 }

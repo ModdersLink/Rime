@@ -20,9 +20,5 @@ namespace fb
 	public class UISessionDataComponentData : 
 		UIComponentData
 	{
-		public static void Deserialize(UISessionDataComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

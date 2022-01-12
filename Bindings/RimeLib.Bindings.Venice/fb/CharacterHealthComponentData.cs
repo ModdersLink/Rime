@@ -32,14 +32,5 @@ namespace fb
 		[ContainerField(105), LayoutImmutable, Blittable]
 		public bool IsImmortal { get; set; }
 
-		public static void Deserialize(CharacterHealthComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.MaxHealth = p_Reader.ReadSingle();
-			p_Instance.RegenerateHealthPerSecond = p_Reader.ReadSingle();
-			p_Instance.RegenerateHealth = p_Reader.ReadBool();
-			p_Instance.IsImmortal = p_Reader.ReadBool();
-			p_Reader.Seek(6, SeekOrigin.Current);
-		}
-
 	}
 }

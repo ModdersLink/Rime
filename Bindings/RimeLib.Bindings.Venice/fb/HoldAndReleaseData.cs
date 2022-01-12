@@ -40,16 +40,5 @@ namespace fb
 		[ContainerField(24), LayoutImmutable, Blittable]
 		public bool ForceFireWhenKilledHolding { get; set; }
 		
-		public static void Deserialize(HoldAndReleaseData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.MaxHoldTime = p_Reader.ReadSingle();
-			p_Instance.MinPowerModifier = p_Reader.ReadSingle();
-			p_Instance.MaxPowerModifier = p_Reader.ReadSingle();
-			p_Instance.PowerIncreasePerSecond = p_Reader.ReadSingle();
-			p_Instance.Delay = p_Reader.ReadSingle();
-			p_Instance.KilledHoldingPowerModifier = p_Reader.ReadSingle();
-			p_Instance.ForceFireWhenKilledHolding = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
 	}
 }

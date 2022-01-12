@@ -26,11 +26,5 @@ namespace fb
 		[ContainerField(20), LayoutImmutable, Blittable]
 		public int JuiceSessionId { get; set; }
 
-		public static void Deserialize(RoundEvent p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.LevelName = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.JuiceSessionId = p_Reader.ReadInt32();
-		}
-
 	}
 }

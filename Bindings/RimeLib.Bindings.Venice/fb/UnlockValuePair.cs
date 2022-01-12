@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(8), LayoutImmutable]
 		public string Id { get; set; } = string.Empty;
 
-		public static void Deserialize(UnlockValuePair p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Id = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-		}
-
 	}
 }

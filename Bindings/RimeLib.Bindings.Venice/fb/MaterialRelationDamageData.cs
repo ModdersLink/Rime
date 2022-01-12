@@ -41,17 +41,5 @@ namespace fb
 		[ContainerField(32), LayoutImmutable, Blittable]
 		public bool InflictsDemolitionDamage { get; set; }
 
-		public static void Deserialize(MaterialRelationDamageData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.CollisionDamageMultiplier = p_Reader.ReadSingle();
-			p_Instance.CollisionDamageThreshold = p_Reader.ReadSingle();
-			p_Instance.DamageProtectionMultiplier = p_Reader.ReadSingle();
-			p_Instance.DamagePenetrationMultiplier = p_Reader.ReadSingle();
-			p_Instance.DamageProtectionThreshold = p_Reader.ReadSingle();
-			p_Instance.ExplosionCoverDamageModifier = p_Reader.ReadSingle();
-			p_Instance.InflictsDemolitionDamage = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
-
 	}
 }

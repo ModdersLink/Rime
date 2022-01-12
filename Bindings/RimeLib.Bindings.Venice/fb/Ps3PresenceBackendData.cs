@@ -32,31 +32,5 @@ namespace fb
 		[ContainerField(28)]
 		public List<Ps3ParentalLockAgeSettings> ParentalLockAgeSettings { get; set; } = new();
 
-		public static void Deserialize(Ps3PresenceBackendData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.CommunicationId = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.CommunicationSignature = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.SkuSettings.Clear();
-			(RimeReader Reader, uint Count) s_SkuSettings = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_SkuSettings.Count; ++i)
-			{
-				var s_Value = new Ps3SkuSettings();
-				fb.Ps3SkuSettings.Deserialize(s_Value, s_SkuSettings.Reader, p_Parser);
-				p_Instance.SkuSettings.Add(s_Value);
-			}
-			
-			s_SkuSettings.Reader.Dispose();
-			p_Instance.ParentalLockAgeSettings.Clear();
-			(RimeReader Reader, uint Count) s_ParentalLockAgeSettings = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_ParentalLockAgeSettings.Count; ++i)
-			{
-				var s_Value = new Ps3ParentalLockAgeSettings();
-				fb.Ps3ParentalLockAgeSettings.Deserialize(s_Value, s_ParentalLockAgeSettings.Reader, p_Parser);
-				p_Instance.ParentalLockAgeSettings.Add(s_Value);
-			}
-			
-			s_ParentalLockAgeSettings.Reader.Dispose();
-		}
-
 	}
 }

@@ -26,11 +26,5 @@ namespace fb
 		[ContainerField(20), LayoutImmutable]
 		public string PopupText { get; set; } = string.Empty;
 
-		public static void Deserialize(UILicenseDescription p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.LicenseId = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.PopupText = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-		}
-
 	}
 }

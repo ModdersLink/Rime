@@ -20,9 +20,5 @@ namespace fb
 	public class UIPersistenceCompData : 
 		UIComponentData
 	{
-		public static void Deserialize(UIPersistenceCompData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

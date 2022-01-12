@@ -20,9 +20,5 @@ namespace fb
 	public class RGBRasterData : 
 		RasterQuadtreeData
 	{
-		public static void Deserialize(RGBRasterData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

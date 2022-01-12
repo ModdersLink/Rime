@@ -25,10 +25,5 @@ namespace fb
 		[ContainerField(4)]
 		public MatchmakingVirtualizationMode VirtualizationMode { get; set; } = new();
 		
-		public static void Deserialize(MatchmakingVirtualizedRule p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.MinFitThreshold = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.VirtualizationMode = (MatchmakingVirtualizationMode) p_Reader.ReadInt32();
-		}
 	}
 }

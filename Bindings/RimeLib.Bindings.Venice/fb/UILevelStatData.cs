@@ -31,12 +31,5 @@ namespace fb
 		[ContainerField(12), LayoutImmutable]
 		public string StatHardcore { get; set; } = string.Empty;
 		
-		public static void Deserialize(UILevelStatData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.StatEasy = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.StatMedium = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.StatHard = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.StatHardcore = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-		}
 	}
 }

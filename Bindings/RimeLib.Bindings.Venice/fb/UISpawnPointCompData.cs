@@ -20,9 +20,5 @@ namespace fb
 	public class UISpawnPointCompData : 
 		UIComponentData
 	{
-		public static void Deserialize(UISpawnPointCompData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

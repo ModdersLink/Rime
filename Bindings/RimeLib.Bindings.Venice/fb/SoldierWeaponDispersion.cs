@@ -43,16 +43,5 @@ namespace fb
 		[ContainerField(64), LayoutImmutable, Blittable]
 		public float DecreasePerSecond { get; set; }
 		
-		public static void Deserialize(SoldierWeaponDispersion p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.FiringDispersionData.Deserialize(p_Instance.StandDispersion, p_Reader, p_Parser);
-			fb.FiringDispersionData.Deserialize(p_Instance.CrouchDispersion, p_Reader, p_Parser);
-			fb.FiringDispersionData.Deserialize(p_Instance.ProneDispersion, p_Reader, p_Parser);
-			p_Instance.JumpDispersionAngle = p_Reader.ReadSingle();
-			p_Instance.ProneTransitionDispersionAngle = p_Reader.ReadSingle();
-			p_Instance.MoveDispersionAngle = p_Reader.ReadSingle();
-			p_Instance.MoveZoomedDispersionAngle = p_Reader.ReadSingle();
-			p_Instance.DecreasePerSecond = p_Reader.ReadSingle();
-		}
 	}
 }

@@ -20,9 +20,5 @@ namespace fb
 	public class TargetEntityData : 
 		GamePhysicsEntityData
 	{
-		public static void Deserialize(TargetEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

@@ -23,19 +23,5 @@ namespace fb
 		[ContainerField(20)]
 		public List<ProfileOptionDataEnumItem> Items { get; set; } = new();
 
-		public static void Deserialize(ProfileOptionDataEnum p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Items.Clear();
-			(RimeReader Reader, uint Count) s_Items = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_Items.Count; ++i)
-			{
-				var s_Value = new ProfileOptionDataEnumItem();
-				fb.ProfileOptionDataEnumItem.Deserialize(s_Value, s_Items.Reader, p_Parser);
-				p_Instance.Items.Add(s_Value);
-			}
-			
-			s_Items.Reader.Dispose();
-		}
-
 	}
 }

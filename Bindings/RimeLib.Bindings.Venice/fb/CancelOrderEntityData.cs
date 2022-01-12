@@ -20,9 +20,5 @@ namespace fb
 	public class CancelOrderEntityData : 
 		BFOrderEntityData
 	{
-		public static void Deserialize(CancelOrderEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

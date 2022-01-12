@@ -20,9 +20,5 @@ namespace fb
 	public class VirtualRasterQuadtreeData : 
 		RasterQuadtreeData
 	{
-		public static void Deserialize(VirtualRasterQuadtreeData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

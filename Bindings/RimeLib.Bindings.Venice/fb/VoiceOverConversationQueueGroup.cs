@@ -29,12 +29,5 @@ namespace fb
 		[ContainerField(16), LayoutImmutable, Blittable]
 		public uint Polyphony { get; set; }
 
-		public static void Deserialize(VoiceOverConversationQueueGroup p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Name = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.PolyphonyMode = (VoiceOverConversationQueueGroupPolyphony) p_Reader.ReadInt32();
-			p_Instance.Polyphony = p_Reader.ReadUInt32();
-		}
-
 	}
 }

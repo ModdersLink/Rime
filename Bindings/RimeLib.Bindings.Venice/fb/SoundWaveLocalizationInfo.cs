@@ -28,11 +28,5 @@ namespace fb
 		[ContainerField(6), LayoutImmutable, Blittable]
 		public ushort VariationCount { get; set; }
 		
-		public static void Deserialize(SoundWaveLocalizationInfo p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Language.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.FirstVariationIndex = p_Reader.ReadUInt16();
-			p_Instance.VariationCount = p_Reader.ReadUInt16();
-		}
 	}
 }

@@ -119,43 +119,5 @@ namespace fb
 		[ContainerField(156), LayoutImmutable, Blittable]
 		public bool HideLocalSquadBoostData { get; set; }
 
-		public static void Deserialize(UISquadCompData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Squad15 = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Squad32 = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Squad1 = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Squad2 = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Squad3 = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Squad4 = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Squad5 = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Squad6 = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Squad7 = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Squad8 = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Squad9 = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Squad10 = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Squad11 = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Squad12 = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Squad13 = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Squad14 = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Squad16 = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Squad24 = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Squad17 = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Squad18 = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Squad19 = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Squad20 = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Squad21 = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Squad22 = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Squad23 = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Squad31 = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Squad25 = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Squad26 = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Squad27 = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Squad28 = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Squad29 = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Squad30 = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.HideLocalSquadBoostData = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
-
 	}
 }

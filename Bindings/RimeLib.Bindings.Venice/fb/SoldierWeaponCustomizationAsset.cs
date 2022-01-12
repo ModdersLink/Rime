@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(12)]
 		public CtrRef<CustomizationTable> Customization { get; set; } = new();
 
-		public static void Deserialize(SoldierWeaponCustomizationAsset p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Customization.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-		}
-
 	}
 }

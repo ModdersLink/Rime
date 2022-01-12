@@ -26,11 +26,5 @@ namespace fb
 		[ContainerField(12), LayoutImmutable, Blittable]
 		public uint PartComponentIndex2 { get; set; }
 
-		public static void Deserialize(PartLinkData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.PartComponentIndex1 = p_Reader.ReadUInt32();
-			p_Instance.PartComponentIndex2 = p_Reader.ReadUInt32();
-		}
-
 	}
 }

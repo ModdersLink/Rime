@@ -20,9 +20,5 @@ namespace fb
 	public class UICameraCompData : 
 		UIComponentData
 	{
-		public static void Deserialize(UICameraCompData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

@@ -29,13 +29,5 @@ namespace fb
 		[ContainerField(88), LayoutImmutable]
 		public string FovBone { get; set; } = string.Empty;
 
-		public static void Deserialize(AnimatedCameraData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Skeleton.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.CameraBone = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.FovBone = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Reader.Seek(4, SeekOrigin.Current);
-		}
-
 	}
 }

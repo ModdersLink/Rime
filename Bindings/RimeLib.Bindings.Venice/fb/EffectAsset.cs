@@ -20,9 +20,5 @@ namespace fb
 	public class EffectAsset : 
 		EffectBlueprint
 	{
-		public static void Deserialize(EffectAsset p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

@@ -61,42 +61,5 @@ namespace fb
 		[ContainerField(164), LayoutImmutable, Blittable]
 		public GUID CacheKey { get; set; }
 		
-		public static void Deserialize(EnlightenDbInstance p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AxisAlignedBox.Deserialize(p_Instance.WorldBoundingbox, p_Reader, p_Parser);
-			fb.LinearTransform.Deserialize(p_Instance.WorldTransform, p_Reader, p_Parser);
-			fb.Vec2.Deserialize(p_Instance.UvTranslation, p_Reader, p_Parser);
-			p_Reader.Seek(8, SeekOrigin.Current);
-			fb.Vec4.Deserialize(p_Instance.UvTransform, p_Reader, p_Parser);
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.GeometryId = p_Reader.ReadUInt32();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.ObjectVariation = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.GuidString = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.UvSizeX = p_Reader.ReadUInt32();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.UvSizeY = p_Reader.ReadUInt32();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.PixelSize = p_Reader.ReadSingle();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.EnlightenMeshName = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.MeshAsset = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.InstanceAlbedos.Clear();
-			(RimeReader Reader, uint Count) s_InstanceAlbedos = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_InstanceAlbedos.Count; ++i)
-			{
-				var s_Value = s_InstanceAlbedos.Reader.ReadUInt64();
-				p_Instance.InstanceAlbedos.Add(s_Value);
-			}
-			
-			s_InstanceAlbedos.Reader.Dispose();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.CacheKey = new GUID(p_Reader);
-			p_Reader.Seek(20, SeekOrigin.Current);
-		}
 	}
 }

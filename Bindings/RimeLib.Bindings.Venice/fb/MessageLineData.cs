@@ -25,10 +25,5 @@ namespace fb
 		[ContainerField(4)]
 		public EntryInputActionEnum EntryInputAction { get; set; } = new();
 		
-		public static void Deserialize(MessageLineData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.MessageSid = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.EntryInputAction = (EntryInputActionEnum) p_Reader.ReadInt32();
-		}
 	}
 }

@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(8), LayoutImmutable, Blittable]
 		public ulong Owner { get; set; }
 
-		public static void Deserialize(MetricEvent p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Owner = p_Reader.ReadUInt64();
-		}
-
 	}
 }

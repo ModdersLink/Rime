@@ -55,21 +55,5 @@ namespace fb
 		[ContainerField(44), LayoutImmutable, Blittable]
 		public bool EnableAirMissileJamming { get; set; }
 		
-		public static void Deserialize(AirMissileJammingData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.MinTurnSpeed = p_Reader.ReadSingle();
-			p_Instance.MaxRadius = p_Reader.ReadSingle();
-			p_Instance.MinRadius = p_Reader.ReadSingle();
-			p_Instance.Theta = p_Reader.ReadSingle();
-			p_Instance.Phi = p_Reader.ReadSingle();
-			p_Instance.UpdateJammingPositionTime = p_Reader.ReadSingle();
-			p_Instance.MaxTurnSpeed = p_Reader.ReadSingle();
-			p_Instance.QuietModeProbability = p_Reader.ReadSingle();
-			p_Instance.QuietModeTime = p_Reader.ReadSingle();
-			p_Instance.JammingTime = p_Reader.ReadSingle();
-			p_Instance.TurnCalculationTime = p_Reader.ReadSingle();
-			p_Instance.EnableAirMissileJamming = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
 	}
 }

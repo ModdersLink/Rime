@@ -20,9 +20,5 @@ namespace fb
 	public class UIKitCompData : 
 		UIComponentData
 	{
-		public static void Deserialize(UIKitCompData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

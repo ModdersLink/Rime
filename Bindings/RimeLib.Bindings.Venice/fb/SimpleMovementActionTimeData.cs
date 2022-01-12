@@ -25,10 +25,5 @@ namespace fb
 		[ContainerField(4), LayoutImmutable, Blittable]
 		public float MaxVariation { get; set; }
 		
-		public static void Deserialize(SimpleMovementActionTimeData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Time = p_Reader.ReadSingle();
-			p_Instance.MaxVariation = p_Reader.ReadSingle();
-		}
 	}
 }

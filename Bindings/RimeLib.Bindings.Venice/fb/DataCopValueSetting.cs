@@ -28,11 +28,5 @@ namespace fb
 		[ContainerField(8), LayoutImmutable, Blittable]
 		public int Offset { get; set; }
 		
-		public static void Deserialize(DataCopValueSetting p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.DataKey = p_Reader.ReadInt32();
-			p_Instance.FrameSpacing = p_Reader.ReadInt32();
-			p_Instance.Offset = p_Reader.ReadInt32();
-		}
 	}
 }

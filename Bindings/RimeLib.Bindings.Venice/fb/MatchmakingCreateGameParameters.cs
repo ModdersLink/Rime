@@ -37,23 +37,5 @@ namespace fb
 		[ContainerField(28), LayoutImmutable, Blittable]
 		public uint QueueCapacity { get; set; }
 		
-		public static void Deserialize(MatchmakingCreateGameParameters p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.GameTopology = (MatchmakingNetworkTopology) p_Reader.ReadInt32();
-			p_Instance.PeerMode = (MatchmakingPeer2PeerMode) p_Reader.ReadInt32();
-			p_Instance.VoipTopology = (MatchmakingNetworkTopology) p_Reader.ReadInt32();
-			fb.MatchmakingGameSettings.Deserialize(p_Instance.Settings, p_Reader, p_Parser);
-			p_Instance.Attributes.Clear();
-			(RimeReader Reader, uint Count) s_Attributes = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_Attributes.Count; ++i)
-			{
-				var s_Value = new MatchmakingGameAttribute();
-				fb.MatchmakingGameAttribute.Deserialize(s_Value, s_Attributes.Reader, p_Parser);
-				p_Instance.Attributes.Add(s_Value);
-			}
-			
-			s_Attributes.Reader.Dispose();
-			p_Instance.QueueCapacity = p_Reader.ReadUInt32();
-		}
 	}
 }

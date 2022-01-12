@@ -20,9 +20,5 @@ namespace fb
 	public class HudConfigAsset : 
 		Asset
 	{
-		public static void Deserialize(HudConfigAsset p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

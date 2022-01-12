@@ -32,14 +32,5 @@ namespace fb
 		[ContainerField(57), LayoutImmutable, Blittable]
 		public bool DistributeOverDistance { get; set; }
 
-		public static void Deserialize(SpawnRateData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.SpawnRate = p_Reader.ReadSingle();
-			p_Instance.TrailSegmentLength = p_Reader.ReadSingle();
-			p_Instance.DistributeOverTime = p_Reader.ReadBool();
-			p_Instance.DistributeOverDistance = p_Reader.ReadBool();
-			p_Reader.Seek(6, SeekOrigin.Current);
-		}
-
 	}
 }

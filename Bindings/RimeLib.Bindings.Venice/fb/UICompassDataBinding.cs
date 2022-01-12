@@ -35,14 +35,5 @@ namespace fb
 		[ContainerField(72)]
 		public UIDataSourceInfo RadarSweepDegree { get; set; } = new();
 
-		public static void Deserialize(UICompassDataBinding p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.UIDataSourceInfo.Deserialize(p_Instance.Heading, p_Reader, p_Parser);
-			fb.UIDataSourceInfo.Deserialize(p_Instance.Objectives, p_Reader, p_Parser);
-			fb.UIDataSourceInfo.Deserialize(p_Instance.Visibility, p_Reader, p_Parser);
-			fb.UIDataSourceInfo.Deserialize(p_Instance.ShowAirRadar, p_Reader, p_Parser);
-			fb.UIDataSourceInfo.Deserialize(p_Instance.RadarSweepDegree, p_Reader, p_Parser);
-		}
-
 	}
 }

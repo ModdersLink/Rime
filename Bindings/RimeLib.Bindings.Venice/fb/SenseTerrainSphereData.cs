@@ -20,9 +20,5 @@ namespace fb
 	public class SenseTerrainSphereData : 
 		SphereData
 	{
-		public static void Deserialize(SenseTerrainSphereData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

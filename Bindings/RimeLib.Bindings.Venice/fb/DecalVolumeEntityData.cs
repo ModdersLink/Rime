@@ -20,9 +20,5 @@ namespace fb
 	public class DecalVolumeEntityData : 
 		RenderVolumeEntityData
 	{
-		public static void Deserialize(DecalVolumeEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

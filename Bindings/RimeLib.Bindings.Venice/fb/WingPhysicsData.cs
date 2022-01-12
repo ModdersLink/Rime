@@ -68,25 +68,5 @@ namespace fb
 		[ContainerField(68)]
 		public CtrRef<LandingFlapData> LandingFlapLogic { get; set; } = new();
 
-		public static void Deserialize(WingPhysicsData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Lift = p_Reader.ReadSingle();
-			p_Instance.FlapLift = p_Reader.ReadSingle();
-			p_Instance.LiftCoefficient.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.Drag = p_Reader.ReadSingle();
-			p_Instance.FlapDrag = p_Reader.ReadSingle();
-			p_Instance.DragCoefficient.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.AngularVelocityLiftModifier = p_Reader.ReadSingle();
-			p_Instance.DragRotationModifier = p_Reader.ReadSingle();
-			p_Instance.BaseAngleOfAttack = p_Reader.ReadSingle();
-			p_Instance.InputForFlap = p_Reader.ReadInt32();
-			p_Instance.FlapTurnSpeed = p_Reader.ReadSingle();
-			p_Instance.VisualFlapTurnSpeed = p_Reader.ReadSingle();
-			p_Instance.VisualFlapAngleLimit = p_Reader.ReadSingle();
-			p_Instance.MaxFlapAngleScaleFactor.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.LandingFlapLift = p_Reader.ReadSingle();
-			p_Instance.LandingFlapLogic.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-		}
-
 	}
 }

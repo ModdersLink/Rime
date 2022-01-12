@@ -53,20 +53,5 @@ namespace fb
 		[ContainerField(68), LayoutImmutable, Blittable]
 		public float TailLength { get; set; }
 
-		public static void Deserialize(DialogSamplerNodeData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AudioGraphNodePort.Deserialize(p_Instance.Pitch, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.Amplitude, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.Continue, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.Output, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.Triggered, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.Finished, p_Reader, p_Parser);
-			fb.SoundGraphPluginRef.Deserialize(p_Instance.SndPlayerPlugin, p_Reader, p_Parser);
-			fb.SoundGraphPluginRef.Deserialize(p_Instance.ResamplePlugin, p_Reader, p_Parser);
-			fb.SoundGraphPluginRef.Deserialize(p_Instance.PausePlugin, p_Reader, p_Parser);
-			fb.SoundGraphPluginRef.Deserialize(p_Instance.GainPlugin, p_Reader, p_Parser);
-			p_Instance.TailLength = p_Reader.ReadSingle();
-		}
-
 	}
 }

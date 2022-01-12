@@ -28,11 +28,5 @@ namespace fb
 		[ContainerField(8), LayoutImmutable, Blittable]
 		public float Angle { get; set; }
 		
-		public static void Deserialize(LandingGearConditionData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Height = p_Reader.ReadSingle();
-			p_Instance.Velocity = p_Reader.ReadSingle();
-			p_Instance.Angle = p_Reader.ReadSingle();
-		}
 	}
 }

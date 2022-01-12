@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(12)]
 		public TeamId Team { get; set; } = new();
 
-		public static void Deserialize(RoundOverEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Team = (TeamId) p_Reader.ReadInt32();
-		}
-
 	}
 }

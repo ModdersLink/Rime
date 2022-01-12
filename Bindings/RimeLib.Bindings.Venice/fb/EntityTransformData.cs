@@ -23,19 +23,5 @@ namespace fb
 		[ContainerField(8)]
 		public List<LinearTransform> EntityTransforms { get; set; } = new();
 
-		public static void Deserialize(EntityTransformData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.EntityTransforms.Clear();
-			(RimeReader Reader, uint Count) s_EntityTransforms = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_EntityTransforms.Count; ++i)
-			{
-				var s_Value = new LinearTransform();
-				fb.LinearTransform.Deserialize(s_Value, s_EntityTransforms.Reader, p_Parser);
-				p_Instance.EntityTransforms.Add(s_Value);
-			}
-			
-			s_EntityTransforms.Reader.Dispose();
-		}
-
 	}
 }

@@ -23,19 +23,5 @@ namespace fb
 		[ContainerField(12)]
 		public List<UIBundleAssetState> UIBundleAssetStateList { get; set; } = new();
 
-		public static void Deserialize(UIBundlesAsset p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.UIBundleAssetStateList.Clear();
-			(RimeReader Reader, uint Count) s_UIBundleAssetStateList = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_UIBundleAssetStateList.Count; ++i)
-			{
-				var s_Value = new UIBundleAssetState();
-				fb.UIBundleAssetState.Deserialize(s_Value, s_UIBundleAssetStateList.Reader, p_Parser);
-				p_Instance.UIBundleAssetStateList.Add(s_Value);
-			}
-			
-			s_UIBundleAssetStateList.Reader.Dispose();
-		}
-
 	}
 }

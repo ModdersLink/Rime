@@ -25,10 +25,5 @@ namespace fb
 		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 max { get; set; } = new();
 		
-		public static void Deserialize(AxisAlignedBox p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.Vec3.Deserialize(p_Instance.min, p_Reader, p_Parser);
-			fb.Vec3.Deserialize(p_Instance.max, p_Reader, p_Parser);
-		}
 	}
 }

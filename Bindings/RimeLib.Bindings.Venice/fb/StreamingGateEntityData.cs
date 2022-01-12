@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(12), LayoutImmutable, Blittable]
 		public float Timeout { get; set; }
 
-		public static void Deserialize(StreamingGateEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Timeout = p_Reader.ReadSingle();
-		}
-
 	}
 }

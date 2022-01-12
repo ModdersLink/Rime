@@ -20,9 +20,5 @@ namespace fb
 	public class UIDataBinding : 
 		DataContainer
 	{
-		public static void Deserialize(UIDataBinding p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

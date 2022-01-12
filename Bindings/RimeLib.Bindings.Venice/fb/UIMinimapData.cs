@@ -85,52 +85,5 @@ namespace fb
 		[ContainerField(249), LayoutImmutable, Blittable]
 		public bool UseCombatAreaTexture { get; set; }
 		
-		public static void Deserialize(UIMinimapData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.Vec2.Deserialize(p_Instance.WorldCenter, p_Reader, p_Parser);
-			p_Reader.Seek(8, SeekOrigin.Current);
-			fb.Vec4.Deserialize(p_Instance.CombatAreaColor, p_Reader, p_Parser);
-			p_Reader.Seek(8, SeekOrigin.Current);
-			fb.Vec4.Deserialize(p_Instance.DetailTextureTint, p_Reader, p_Parser);
-			p_Reader.Seek(8, SeekOrigin.Current);
-			fb.Vec2.Deserialize(p_Instance.CombatAreaMultiplyWrapAmount, p_Reader, p_Parser);
-			p_Reader.Seek(16, SeekOrigin.Current);
-			fb.UIMinimapDistanceFieldParams.Deserialize(p_Instance.Vegetation, p_Reader, p_Parser);
-			p_Reader.Seek(16, SeekOrigin.Current);
-			p_Instance.FadeTexture.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Reader.Seek(16, SeekOrigin.Current);
-			p_Instance.StreamingMinimapDelay = p_Reader.ReadSingle();
-			p_Reader.Seek(16, SeekOrigin.Current);
-			p_Instance.AirRadarFadeTexture.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Reader.Seek(16, SeekOrigin.Current);
-			p_Instance.DetailTexture.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Reader.Seek(16, SeekOrigin.Current);
-			fb.UIMinimapDistanceFieldParams.Deserialize(p_Instance.Detail, p_Reader, p_Parser);
-			p_Reader.Seek(16, SeekOrigin.Current);
-			p_Instance.StreamingMinimapTransitionSpeed = p_Reader.ReadSingle();
-			p_Reader.Seek(16, SeekOrigin.Current);
-			p_Instance.WorldRotation = p_Reader.ReadSingle();
-			p_Reader.Seek(16, SeekOrigin.Current);
-			p_Instance.WorldRange = p_Reader.ReadSingle();
-			p_Reader.Seek(16, SeekOrigin.Current);
-			p_Instance.CombatAreaDistanceScale = p_Reader.ReadSingle();
-			p_Reader.Seek(16, SeekOrigin.Current);
-			p_Instance.CombatAreaFadeSpeed = p_Reader.ReadSingle();
-			p_Reader.Seek(16, SeekOrigin.Current);
-			p_Instance.CombatAreaAlphaThreshold = p_Reader.ReadSingle();
-			p_Reader.Seek(16, SeekOrigin.Current);
-			p_Instance.CombatAreaMultiplyTexture.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Reader.Seek(16, SeekOrigin.Current);
-			p_Instance.WorldSize = p_Reader.ReadSingle();
-			p_Reader.Seek(16, SeekOrigin.Current);
-			p_Instance.AirRadarRange = p_Reader.ReadSingle();
-			p_Reader.Seek(16, SeekOrigin.Current);
-			p_Instance.CombatAreaScale = p_Reader.ReadSingle();
-			p_Reader.Seek(16, SeekOrigin.Current);
-			p_Instance.UseStreamingMinimap = p_Reader.ReadBool();
-			p_Reader.Seek(16, SeekOrigin.Current);
-			p_Instance.UseCombatAreaTexture = p_Reader.ReadBool();
-			p_Reader.Seek(22, SeekOrigin.Current);
-		}
 	}
 }

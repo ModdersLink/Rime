@@ -35,14 +35,5 @@ namespace fb
 		[ContainerField(28)]
 		public AudioGraphNodePort Y { get; set; } = new();
 
-		public static void Deserialize(NumberGeneratorNodeData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AudioGraphNodePort.Deserialize(p_Instance.Trigger, p_Reader, p_Parser);
-			p_Instance.Min = p_Reader.ReadSingle();
-			p_Instance.Max = p_Reader.ReadSingle();
-			p_Instance.Mode = (NumberGeneratorMode) p_Reader.ReadInt32();
-			fb.AudioGraphNodePort.Deserialize(p_Instance.Y, p_Reader, p_Parser);
-		}
-
 	}
 }

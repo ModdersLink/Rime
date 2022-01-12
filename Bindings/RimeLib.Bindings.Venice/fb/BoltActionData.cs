@@ -40,16 +40,5 @@ namespace fb
 		[ContainerField(12), LayoutImmutable, Blittable]
 		public bool ReturnToZoomAfterBoltAction { get; set; }
 		
-		public static void Deserialize(BoltActionData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.BoltActionDelay = p_Reader.ReadSingle();
-			p_Instance.BoltActionTime = p_Reader.ReadSingle();
-			p_Instance.HoldBoltActionUntilFireRelease = p_Reader.ReadBool();
-			p_Instance.HoldBoltActionUntilZoomRelease = p_Reader.ReadBool();
-			p_Instance.ForceBoltActionOnFireTrigger = p_Reader.ReadBool();
-			p_Instance.UnZoomOnBoltAction = p_Reader.ReadBool();
-			p_Instance.ReturnToZoomAfterBoltAction = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
 	}
 }

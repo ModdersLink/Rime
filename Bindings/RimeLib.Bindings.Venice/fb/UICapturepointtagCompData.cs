@@ -20,9 +20,5 @@ namespace fb
 	public class UICapturepointtagCompData : 
 		UI3dIconCompData
 	{
-		public static void Deserialize(UICapturepointtagCompData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

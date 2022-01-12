@@ -32,14 +32,5 @@ namespace fb
 		[ContainerField(60), LayoutImmutable, Blittable]
 		public bool StickToTerrain { get; set; }
 
-		public static void Deserialize(RoadData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Shader2d.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.Shader3dZOnly.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.UvTileFactor = p_Reader.ReadSingle();
-			p_Instance.StickToTerrain = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
-
 	}
 }

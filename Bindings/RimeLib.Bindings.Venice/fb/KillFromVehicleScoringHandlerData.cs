@@ -20,9 +20,5 @@ namespace fb
 	public class KillFromVehicleScoringHandlerData : 
 		ScoringHandlerData
 	{
-		public static void Deserialize(KillFromVehicleScoringHandlerData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

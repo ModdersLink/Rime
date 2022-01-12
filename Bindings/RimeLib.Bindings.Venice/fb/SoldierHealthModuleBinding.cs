@@ -88,31 +88,5 @@ namespace fb
 		[ContainerField(88)]
 		public AntRef InteractiveManDown { get; set; } = new();
 		
-		public static void Deserialize(SoldierHealthModuleBinding p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AntRef.Deserialize(p_Instance.HeadShot, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.LeftArmHit, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.RightArmHit, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.LeftLegHit, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.RightLegHit, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.OnGround, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.DeathAnimationTriggered, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.RandomAnimationIndex, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.Sprinting, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.HitLeft, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.HitRight, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.HitFront, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.HitBack, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.DeathHitDirection, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.Explosion, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.Dead, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.Revived, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.RandomValue, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.Pose, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.RightSpeed, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.ForwardSpeed, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.CriticallyHit, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.InteractiveManDown, p_Reader, p_Parser);
-		}
 	}
 }

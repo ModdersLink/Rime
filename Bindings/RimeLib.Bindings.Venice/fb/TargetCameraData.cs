@@ -24,23 +24,7 @@ namespace fb
 		public HudData Hud { get; set; } = new();
 
 		[ContainerField(148)]
-		public List<CtrRef<UIPartData>> UIParts { get; set; } = new();
-
-		public static void Deserialize(TargetCameraData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.HudData.Deserialize(p_Instance.Hud, p_Reader, p_Parser);
-			p_Instance.UIParts.Clear();
-			(RimeReader Reader, uint Count) s_UIParts = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_UIParts.Count; ++i)
-			{
-				var s_CtrRef = new CtrRef<UIPartData>();
-				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_UIParts.Reader.ReadUInt32()));
-				p_Instance.UIParts.Add(s_CtrRef);
-			}
-			
-			s_UIParts.Reader.Dispose();
-			p_Reader.Seek(8, SeekOrigin.Current);
-		}
+		public RefArray<UIPartData> UIParts { get; set; } = new();
 
 	}
 }

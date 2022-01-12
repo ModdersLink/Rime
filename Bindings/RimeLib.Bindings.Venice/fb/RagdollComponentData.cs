@@ -38,16 +38,5 @@ namespace fb
 		[ContainerField(132), LayoutImmutable]
 		public string RightLegBoneName { get; set; } = string.Empty;
 
-		public static void Deserialize(RagdollComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.SkeletonAsset.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.RagdollAsset.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.SkeletonCollisionData.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			fb.RagdollBinding.Deserialize(p_Instance.Binding, p_Reader, p_Parser);
-			p_Instance.LeftLegBoneName = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.RightLegBoneName = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Reader.Seek(8, SeekOrigin.Current);
-		}
-
 	}
 }

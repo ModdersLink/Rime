@@ -20,9 +20,5 @@ namespace fb
 	public class PathfindingObjectCategoryAsset : 
 		Asset
 	{
-		public static void Deserialize(PathfindingObjectCategoryAsset p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

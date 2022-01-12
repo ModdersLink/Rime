@@ -31,13 +31,5 @@ namespace fb
 		[ContainerField(17), LayoutImmutable, Blittable]
 		public bool UseStaticPosition { get; set; }
 		
-		public static void Deserialize(MissileUnguidedData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.Vec2.Deserialize(p_Instance.StaticPosition, p_Reader, p_Parser);
-			fb.Vec2.Deserialize(p_Instance.TargetPositionOffset, p_Reader, p_Parser);
-			p_Instance.UseTargetPosition = p_Reader.ReadBool();
-			p_Instance.UseStaticPosition = p_Reader.ReadBool();
-			p_Reader.Seek(2, SeekOrigin.Current);
-		}
 	}
 }

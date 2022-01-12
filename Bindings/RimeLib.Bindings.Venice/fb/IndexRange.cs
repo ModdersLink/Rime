@@ -25,10 +25,5 @@ namespace fb
 		[ContainerField(4), LayoutImmutable, Blittable]
 		public uint Last { get; set; }
 		
-		public static void Deserialize(IndexRange p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.First = p_Reader.ReadUInt32();
-			p_Instance.Last = p_Reader.ReadUInt32();
-		}
 	}
 }

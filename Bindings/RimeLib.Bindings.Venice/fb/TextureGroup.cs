@@ -20,9 +20,5 @@ namespace fb
 	public class TextureGroup : 
 		Asset
 	{
-		public static void Deserialize(TextureGroup p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

@@ -20,9 +20,5 @@ namespace fb
 	public class VoiceOverRelationshipInput : 
 		DataContainer
 	{
-		public static void Deserialize(VoiceOverRelationshipInput p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

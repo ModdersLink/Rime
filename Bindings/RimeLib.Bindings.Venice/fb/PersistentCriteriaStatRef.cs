@@ -32,13 +32,5 @@ namespace fb
 		[ContainerField(20)]
 		public CtrRef<AwardData> CriteriaOwner { get; set; } = new();
 
-		public static void Deserialize(PersistentCriteriaStatRef p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Criteria.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.ParamX.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.ParamY.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.CriteriaOwner.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-		}
-
 	}
 }

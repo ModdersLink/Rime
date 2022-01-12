@@ -41,17 +41,5 @@ namespace fb
 		[ContainerField(133), LayoutImmutable, Blittable]
 		public bool CheckOcclusion { get; set; }
 
-		public static void Deserialize(LookAtTriggerEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.FOV = p_Reader.ReadSingle();
-			p_Instance.Weapon.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.ZoomLevel = p_Reader.ReadUInt32();
-			p_Instance.MinDistanceToObject = p_Reader.ReadSingle();
-			p_Instance.MaxDistanceToObject = p_Reader.ReadSingle();
-			p_Instance.StartTriggerLookingAt = p_Reader.ReadBool();
-			p_Instance.CheckOcclusion = p_Reader.ReadBool();
-			p_Reader.Seek(10, SeekOrigin.Current);
-		}
-
 	}
 }

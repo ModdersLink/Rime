@@ -44,18 +44,5 @@ namespace fb
 		[ContainerField(41), LayoutImmutable, Blittable]
 		public bool IsStatic { get; set; }
 
-		public static void Deserialize(TransformPartPropertyTrackData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.TransformPart = (TransformPart) p_Reader.ReadInt32();
-			p_Instance.PreInfinity = (CurveInfinityType) p_Reader.ReadInt32();
-			p_Instance.PostInfinity = (CurveInfinityType) p_Reader.ReadInt32();
-			p_Instance.KeyStartIndex = p_Reader.ReadUInt32();
-			p_Instance.ResourceName = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.KeyCount = p_Reader.ReadUInt32();
-			p_Instance.Weighted = p_Reader.ReadBool();
-			p_Instance.IsStatic = p_Reader.ReadBool();
-			p_Reader.Seek(2, SeekOrigin.Current);
-		}
-
 	}
 }

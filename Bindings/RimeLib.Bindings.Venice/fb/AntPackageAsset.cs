@@ -35,14 +35,5 @@ namespace fb
 		[ContainerField(40), LayoutImmutable, Blittable]
 		public uint ChunkSize { get; set; }
 
-		public static void Deserialize(AntPackageAsset p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Win32FileName = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.XePs3FileName = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.PackagingType = (AntPackagingType) p_Reader.ReadInt32();
-			p_Instance.StreamingGuid = new GUID(p_Reader);
-			p_Instance.ChunkSize = p_Reader.ReadUInt32();
-		}
-
 	}
 }

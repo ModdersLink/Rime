@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(8)]
 		public AudioGraphNodePort Trigger { get; set; } = new();
 
-		public static void Deserialize(LogicalExpressionEntry p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AudioGraphNodePort.Deserialize(p_Instance.Trigger, p_Reader, p_Parser);
-		}
-
 	}
 }

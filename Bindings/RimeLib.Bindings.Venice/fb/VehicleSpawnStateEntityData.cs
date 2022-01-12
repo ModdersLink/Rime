@@ -41,24 +41,5 @@ namespace fb
 		[ContainerField(52), LayoutImmutable, Blittable]
 		public float Radius { get; set; }
 
-		public static void Deserialize(VehicleSpawnStateEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Reader.Seek(4, SeekOrigin.Current);
-			fb.Vec3.Deserialize(p_Instance.InitialVelocity, p_Reader, p_Parser);
-			p_Reader.Seek(4, SeekOrigin.Current);
-			p_Instance.StartupDelayModifier = p_Reader.ReadSingle();
-			p_Reader.Seek(4, SeekOrigin.Current);
-			p_Instance.InitialThrottle = p_Reader.ReadSingle();
-			p_Reader.Seek(4, SeekOrigin.Current);
-			p_Instance.EngineIndex = p_Reader.ReadUInt32();
-			p_Reader.Seek(4, SeekOrigin.Current);
-			p_Instance.InitialRpmModifier = p_Reader.ReadSingle();
-			p_Reader.Seek(4, SeekOrigin.Current);
-			p_Instance.HeightOffset = p_Reader.ReadSingle();
-			p_Reader.Seek(4, SeekOrigin.Current);
-			p_Instance.Radius = p_Reader.ReadSingle();
-			p_Reader.Seek(12, SeekOrigin.Current);
-		}
-
 	}
 }

@@ -32,18 +32,5 @@ namespace fb
 		[ContainerField(80), LayoutImmutable, Blittable]
 		public float NetworkThrottleTimer { get; set; }
 
-		public static void Deserialize(UICustomizationCompData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Reader.Seek(4, SeekOrigin.Current);
-			fb.Vec3.Deserialize(p_Instance.SoldierOffset, p_Reader, p_Parser);
-			p_Reader.Seek(4, SeekOrigin.Current);
-			fb.Vec3.Deserialize(p_Instance.SoldierRotation, p_Reader, p_Parser);
-			p_Reader.Seek(4, SeekOrigin.Current);
-			fb.Vec3.Deserialize(p_Instance.VehicleRotation, p_Reader, p_Parser);
-			p_Reader.Seek(4, SeekOrigin.Current);
-			p_Instance.NetworkThrottleTimer = p_Reader.ReadSingle();
-			p_Reader.Seek(16, SeekOrigin.Current);
-		}
-
 	}
 }

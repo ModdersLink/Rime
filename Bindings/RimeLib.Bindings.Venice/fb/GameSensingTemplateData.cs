@@ -20,9 +20,5 @@ namespace fb
 	public class GameSensingTemplateData : 
 		Asset
 	{
-		public static void Deserialize(GameSensingTemplateData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

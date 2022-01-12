@@ -65,25 +65,5 @@ namespace fb
 		[ContainerField(200), LayoutImmutable, Blittable]
 		public bool DebugDamage { get; set; }
 
-		public static void Deserialize(DamageEffectComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.Vec4.Deserialize(p_Instance.RightDamage, p_Reader, p_Parser);
-			fb.Vec4.Deserialize(p_Instance.TopDamage, p_Reader, p_Parser);
-			fb.Vec4.Deserialize(p_Instance.LeftDamage, p_Reader, p_Parser);
-			fb.Vec4.Deserialize(p_Instance.BottomDamage, p_Reader, p_Parser);
-			p_Instance.OuterFrameOpacity = p_Reader.ReadSingle();
-			p_Instance.InnerFrameOpacity = p_Reader.ReadSingle();
-			p_Instance.FrameWidth = p_Reader.ReadSingle();
-			p_Instance.Shader.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.StartCriticalEffectHealthThreshold = p_Reader.ReadSingle();
-			p_Instance.EndCriticalEffectHealthThreshold = p_Reader.ReadSingle();
-			p_Instance.MinDamagePercentageThreshold = p_Reader.ReadSingle();
-			p_Instance.FallofTime = p_Reader.ReadSingle();
-			p_Instance.MaxOpacityDamagePercentage = p_Reader.ReadSingle();
-			p_Instance.Realm = (Realm) p_Reader.ReadInt32();
-			p_Instance.DebugDamage = p_Reader.ReadBool();
-			p_Reader.Seek(7, SeekOrigin.Current);
-		}
-
 	}
 }

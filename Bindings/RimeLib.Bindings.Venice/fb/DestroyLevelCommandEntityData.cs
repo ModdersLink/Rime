@@ -26,12 +26,5 @@ namespace fb
 		[ContainerField(100), LayoutImmutable, Blittable]
 		public uint DestroyDelay { get; set; }
 
-		public static void Deserialize(DestroyLevelCommandEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.InstanceCountDestroyedPerFrame = p_Reader.ReadUInt32();
-			p_Instance.DestroyDelay = p_Reader.ReadUInt32();
-			p_Reader.Seek(8, SeekOrigin.Current);
-		}
-
 	}
 }

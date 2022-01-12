@@ -46,18 +46,5 @@ namespace fb
 		[ContainerField(29), LayoutImmutable, Blittable]
 		public bool CropImage { get; set; }
 		
-		public static void Deserialize(ScreenshotInfo p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Name = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.CropImageY1 = p_Reader.ReadUInt32();
-			p_Instance.CropImageX1 = p_Reader.ReadUInt32();
-			p_Instance.CropImageX2 = p_Reader.ReadUInt32();
-			p_Instance.CropImageY2 = p_Reader.ReadUInt32();
-			p_Instance.ResizeOutputImageHeight = p_Reader.ReadUInt32();
-			p_Instance.ResizeOutputImageWidth = p_Reader.ReadUInt32();
-			p_Instance.ResizeOutputImage = p_Reader.ReadBool();
-			p_Instance.CropImage = p_Reader.ReadBool();
-			p_Reader.Seek(2, SeekOrigin.Current);
-		}
 	}
 }

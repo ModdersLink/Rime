@@ -29,20 +29,5 @@ namespace fb
 		[ContainerField(16)]
 		public List<string> UnlockedByLevels { get; set; } = new();
 
-		public static void Deserialize(UICoopLevelDescription p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Debriefing = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.DevTime = p_Reader.ReadInt32();
-			p_Instance.UnlockedByLevels.Clear();
-			(RimeReader Reader, uint Count) s_UnlockedByLevels = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_UnlockedByLevels.Count; ++i)
-			{
-				var s_Value = p_Parser.GetStringAtOffset(s_UnlockedByLevels.Reader.ReadUInt32());
-				p_Instance.UnlockedByLevels.Add(s_Value);
-			}
-			
-			s_UnlockedByLevels.Reader.Dispose();
-		}
-
 	}
 }

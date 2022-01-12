@@ -20,9 +20,5 @@ namespace fb
 	public class UITextureStreamingComponentData : 
 		UIComponentData
 	{
-		public static void Deserialize(UITextureStreamingComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

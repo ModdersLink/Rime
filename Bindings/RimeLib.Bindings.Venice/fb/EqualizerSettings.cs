@@ -35,14 +35,5 @@ namespace fb
 		[ContainerField(24), LayoutImmutable, Blittable]
 		public float HpCutoffFrequency { get; set; }
 
-		public static void Deserialize(EqualizerSettings p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.LowShelfFrequency = p_Reader.ReadSingle();
-			p_Instance.LowShelfGain = p_Reader.ReadSingle();
-			p_Instance.HighShelfFrequency = p_Reader.ReadSingle();
-			p_Instance.HighShelfGain = p_Reader.ReadSingle();
-			p_Instance.HpCutoffFrequency = p_Reader.ReadSingle();
-		}
-
 	}
 }

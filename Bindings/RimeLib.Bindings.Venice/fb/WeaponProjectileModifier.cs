@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(8)]
 		public CtrRef<ProjectileEntityData> ProjectileData { get; set; } = new();
 
-		public static void Deserialize(WeaponProjectileModifier p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.ProjectileData.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-		}
-
 	}
 }

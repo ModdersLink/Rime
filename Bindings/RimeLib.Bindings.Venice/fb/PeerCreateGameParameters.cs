@@ -25,10 +25,5 @@ namespace fb
 		[ContainerField(32), LayoutImmutable, Blittable]
 		public uint PlayerCapacity { get; set; }
 		
-		public static void Deserialize(PeerCreateGameParameters p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.MatchmakingCreateGameParameters.Deserialize(p_Instance.Base, p_Reader, p_Parser);
-			p_Instance.PlayerCapacity = p_Reader.ReadUInt32();
-		}
 	}
 }

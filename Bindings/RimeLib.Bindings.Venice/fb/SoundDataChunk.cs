@@ -25,10 +25,5 @@ namespace fb
 		[ContainerField(16), LayoutImmutable, Blittable]
 		public uint ChunkSize { get; set; }
 		
-		public static void Deserialize(SoundDataChunk p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.ChunkId = new GUID(p_Reader);
-			p_Instance.ChunkSize = p_Reader.ReadUInt32();
-		}
 	}
 }

@@ -28,11 +28,5 @@ namespace fb
 		[ContainerField(8), LayoutImmutable]
 		public string Sid { get; set; } = string.Empty;
 		
-		public static void Deserialize(CriteriaAward p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Award.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.Count = p_Reader.ReadUInt32();
-			p_Instance.Sid = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-		}
 	}
 }

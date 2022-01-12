@@ -20,9 +20,5 @@ namespace fb
 	public class DestructionEdgeModelComponentData : 
 		ComponentData
 	{
-		public static void Deserialize(DestructionEdgeModelComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

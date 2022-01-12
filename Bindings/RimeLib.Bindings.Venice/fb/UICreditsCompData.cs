@@ -20,9 +20,5 @@ namespace fb
 	public class UICreditsCompData : 
 		UIComponentData
 	{
-		public static void Deserialize(UICreditsCompData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

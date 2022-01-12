@@ -34,13 +34,5 @@ namespace fb
 		[ContainerField(28), LayoutImmutable, Blittable]
 		public float LagPitchMod { get; set; }
 		
-		public static void Deserialize(GunSwayStanceZoomModifierData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.GunSwayDispersionModData.Deserialize(p_Instance.DispersionMod, p_Reader, p_Parser);
-			p_Instance.RecoilMagnitudeMod = p_Reader.ReadSingle();
-			p_Instance.RecoilAngleMod = p_Reader.ReadSingle();
-			p_Instance.LagYawMod = p_Reader.ReadSingle();
-			p_Instance.LagPitchMod = p_Reader.ReadSingle();
-		}
 	}
 }

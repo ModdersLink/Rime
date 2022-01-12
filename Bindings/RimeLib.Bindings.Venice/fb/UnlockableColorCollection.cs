@@ -24,22 +24,7 @@ namespace fb
 		public CtrRef<ColorReference> DefaultValue { get; set; } = new();
 
 		[ContainerField(12)]
-		public List<CtrRef<ColorUnlockPartData>> PossibleValues { get; set; } = new();
-
-		public static void Deserialize(UnlockableColorCollection p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.DefaultValue.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.PossibleValues.Clear();
-			(RimeReader Reader, uint Count) s_PossibleValues = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_PossibleValues.Count; ++i)
-			{
-				var s_CtrRef = new CtrRef<ColorUnlockPartData>();
-				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_PossibleValues.Reader.ReadUInt32()));
-				p_Instance.PossibleValues.Add(s_CtrRef);
-			}
-			
-			s_PossibleValues.Reader.Dispose();
-		}
+		public RefArray<ColorUnlockPartData> PossibleValues { get; set; } = new();
 
 	}
 }

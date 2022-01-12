@@ -68,33 +68,5 @@ namespace fb
 		[ContainerField(126), LayoutImmutable, Blittable]
 		public bool UseCameraComponentTransform { get; set; }
 
-		public static void Deserialize(AirRadarData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.RadarRange = p_Reader.ReadSingle();
-			p_Instance.RadarSensitivity = p_Reader.ReadSingle();
-			p_Instance.HeatSensitivity = p_Reader.ReadSingle();
-			p_Instance.MissileIcon = (UIHudIcon) p_Reader.ReadInt32();
-			p_Instance.CenterIcon = (UIHudIcon) p_Reader.ReadInt32();
-			p_Instance.FriendlyIcon = (UIHudIcon) p_Reader.ReadInt32();
-			p_Instance.EnemyIcon = (UIHudIcon) p_Reader.ReadInt32();
-			p_Instance.LaserPaintedIcon = (UIHudIcon) p_Reader.ReadInt32();
-			p_Instance.NorthIcon = (UIHudIcon) p_Reader.ReadInt32();
-			p_Reader.Seek(4, SeekOrigin.Current);
-			fb.SubScreenData.Deserialize(p_Instance.SubScreen, p_Reader, p_Parser);
-			p_Reader.Seek(4, SeekOrigin.Current);
-			p_Instance.WestIcon = (UIHudIcon) p_Reader.ReadInt32();
-			p_Reader.Seek(4, SeekOrigin.Current);
-			p_Instance.SouthIcon = (UIHudIcon) p_Reader.ReadInt32();
-			p_Reader.Seek(4, SeekOrigin.Current);
-			p_Instance.EastIcon = (UIHudIcon) p_Reader.ReadInt32();
-			p_Reader.Seek(4, SeekOrigin.Current);
-			p_Instance.TrackLaserPaintedObjects = p_Reader.ReadBool();
-			p_Reader.Seek(4, SeekOrigin.Current);
-			p_Instance.TrackOnlyUsedVehicles = p_Reader.ReadBool();
-			p_Reader.Seek(4, SeekOrigin.Current);
-			p_Instance.UseCameraComponentTransform = p_Reader.ReadBool();
-			p_Reader.Seek(5, SeekOrigin.Current);
-		}
-
 	}
 }

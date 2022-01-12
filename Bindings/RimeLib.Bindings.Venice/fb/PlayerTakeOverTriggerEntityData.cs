@@ -26,12 +26,5 @@ namespace fb
 		[ContainerField(100), LayoutImmutable, Blittable]
 		public float TimeToLoseControl { get; set; }
 
-		public static void Deserialize(PlayerTakeOverTriggerEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.TeamId = (TeamId) p_Reader.ReadInt32();
-			p_Instance.TimeToLoseControl = p_Reader.ReadSingle();
-			p_Reader.Seek(8, SeekOrigin.Current);
-		}
-
 	}
 }

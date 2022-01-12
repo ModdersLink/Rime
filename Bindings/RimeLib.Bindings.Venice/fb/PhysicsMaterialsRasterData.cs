@@ -20,9 +20,5 @@ namespace fb
 	public class PhysicsMaterialsRasterData : 
 		RasterQuadtreeData
 	{
-		public static void Deserialize(PhysicsMaterialsRasterData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

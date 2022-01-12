@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(16), LayoutImmutable, Blittable]
 		public GUID SurveyMetricLink { get; set; }
 
-		public static void Deserialize(StatSurveyEvent p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.SurveyMetricLink = new GUID(p_Reader);
-		}
-
 	}
 }

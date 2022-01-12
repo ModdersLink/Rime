@@ -32,13 +32,5 @@ namespace fb
 		[ContainerField(20), LayoutImmutable, Blittable]
 		public float Release { get; set; }
 
-		public static void Deserialize(CompressorSettings p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Ratio = p_Reader.ReadSingle();
-			p_Instance.Threshold = p_Reader.ReadSingle();
-			p_Instance.Attack = p_Reader.ReadSingle();
-			p_Instance.Release = p_Reader.ReadSingle();
-		}
-
 	}
 }

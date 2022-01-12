@@ -22,9 +22,5 @@ namespace fb
 		[ContainerField(0), LayoutImmutable, Blittable]
 		public uint Value { get; set; }
 		
-		public static void Deserialize(NetworkDataId p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Value = p_Reader.ReadUInt32();
-		}
 	}
 }

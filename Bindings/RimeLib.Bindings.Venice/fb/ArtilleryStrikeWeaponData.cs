@@ -86,31 +86,5 @@ namespace fb
 		[ContainerField(91), LayoutImmutable, Blittable]
 		public bool FireProjectileFromWeapon { get; set; }
 
-		public static void Deserialize(ArtilleryStrikeWeaponData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.MaxStrikeDistance = p_Reader.ReadSingle();
-			p_Instance.StrikeRadius = p_Reader.ReadSingle();
-			p_Instance.SpawnHeight = p_Reader.ReadSingle();
-			p_Instance.MaxRandomSpawnHeight = p_Reader.ReadSingle();
-			p_Instance.StrikeCameraOffset = p_Reader.ReadSingle();
-			p_Instance.SpawnHeightMultiplier = p_Reader.ReadSingle();
-			p_Instance.Camera.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.AimingCameraHeight = p_Reader.ReadSingle();
-			p_Instance.StrikeCameraHeight = p_Reader.ReadSingle();
-			p_Instance.AimingCameraOffset = p_Reader.ReadSingle();
-			p_Instance.StrikeCameraFov = p_Reader.ReadSingle();
-			p_Instance.AimingCameraFov = p_Reader.ReadSingle();
-			p_Instance.DelayBeforeAimingCamera = p_Reader.ReadSingle();
-			p_Instance.ValidMinDistance = p_Reader.ReadSingle();
-			p_Instance.FireCameraTime = p_Reader.ReadSingle();
-			p_Instance.StrikeCameraTime = p_Reader.ReadSingle();
-			p_Instance.ValidMaxDistance = p_Reader.ReadSingle();
-			p_Instance.ValidMaxAngle = p_Reader.ReadSingle();
-			p_Instance.IncreaseSpawnHeightWithDistance = p_Reader.ReadBool();
-			p_Instance.EnableProjectileTrails = p_Reader.ReadBool();
-			p_Instance.EnableCameraRotation = p_Reader.ReadBool();
-			p_Instance.FireProjectileFromWeapon = p_Reader.ReadBool();
-		}
-
 	}
 }

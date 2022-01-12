@@ -35,15 +35,5 @@ namespace fb
 		[ContainerField(32), LayoutImmutable, Blittable]
 		public bool PlayFireEffectOnRepairOnly { get; set; }
 
-		public static void Deserialize(PowerToolWeaponData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.RepairSound.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.RepairCompletedSound.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.DamageSound.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.RepairMaterialPair.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.PlayFireEffectOnRepairOnly = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
-
 	}
 }

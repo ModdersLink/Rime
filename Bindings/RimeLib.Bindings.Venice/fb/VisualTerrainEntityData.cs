@@ -26,11 +26,5 @@ namespace fb
 		[ContainerField(16)]
 		public CtrRef<VisualTerrainSettings> Settings { get; set; } = new();
 
-		public static void Deserialize(VisualTerrainEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Terrain.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.Settings.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-		}
-
 	}
 }

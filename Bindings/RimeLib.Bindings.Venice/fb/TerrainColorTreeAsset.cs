@@ -20,9 +20,5 @@ namespace fb
 	public class TerrainColorTreeAsset : 
 		RasterTreeAsset
 	{
-		public static void Deserialize(TerrainColorTreeAsset p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

@@ -31,12 +31,5 @@ namespace fb
 		[ContainerField(9)]
 		public SoundGraphPluginRef Gain { get; set; } = new();
 		
-		public static void Deserialize(SamplerPlugins p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.SoundGraphPluginRef.Deserialize(p_Instance.SndPlayer, p_Reader, p_Parser);
-			fb.SoundGraphPluginRef.Deserialize(p_Instance.Resample, p_Reader, p_Parser);
-			fb.SoundGraphPluginRef.Deserialize(p_Instance.Pause, p_Reader, p_Parser);
-			fb.SoundGraphPluginRef.Deserialize(p_Instance.Gain, p_Reader, p_Parser);
-		}
 	}
 }

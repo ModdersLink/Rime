@@ -20,9 +20,5 @@ namespace fb
 	public class UIDelayedCommandsCompData : 
 		UIComponentData
 	{
-		public static void Deserialize(UIDelayedCommandsCompData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

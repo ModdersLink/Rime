@@ -44,18 +44,5 @@ namespace fb
 		[ContainerField(37), LayoutImmutable, Blittable]
 		public bool HiddenInProgression { get; set; }
 
-		public static void Deserialize(UnlockAssetBase p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.UnlockScore = p_Reader.ReadUInt32();
-			p_Instance.UnlockUserData.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.DebugUnlockId = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Identifier = p_Reader.ReadUInt32();
-			p_Instance.AvailableForPlayer = (UnlockAvailability) p_Reader.ReadInt32();
-			p_Instance.NextLevelUnlockAsset.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.AutoAvailable = p_Reader.ReadBool();
-			p_Instance.HiddenInProgression = p_Reader.ReadBool();
-			p_Reader.Seek(2, SeekOrigin.Current);
-		}
-
 	}
 }

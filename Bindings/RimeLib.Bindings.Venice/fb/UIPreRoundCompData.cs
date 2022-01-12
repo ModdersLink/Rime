@@ -20,9 +20,5 @@ namespace fb
 	public class UIPreRoundCompData : 
 		UIComponentData
 	{
-		public static void Deserialize(UIPreRoundCompData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

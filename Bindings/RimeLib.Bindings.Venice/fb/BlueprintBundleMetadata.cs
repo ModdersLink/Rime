@@ -29,12 +29,5 @@ namespace fb
 		[ContainerField(16), LayoutImmutable]
 		public string BlueprintName { get; set; } = string.Empty;
 
-		public static void Deserialize(BlueprintBundleMetadata p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.BundlePathName = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.BundleName = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.BlueprintName = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-		}
-
 	}
 }

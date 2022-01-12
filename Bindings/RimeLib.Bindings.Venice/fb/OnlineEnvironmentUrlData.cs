@@ -25,10 +25,5 @@ namespace fb
 		[ContainerField(4)]
 		public OnlineEnvironment Environment { get; set; } = new();
 		
-		public static void Deserialize(OnlineEnvironmentUrlData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Url = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Environment = (OnlineEnvironment) p_Reader.ReadInt32();
-		}
 	}
 }

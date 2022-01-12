@@ -29,13 +29,5 @@ namespace fb
 		[ContainerField(120), LayoutImmutable, Blittable]
 		public float EffectClampVelocity { get; set; }
 
-		public static void Deserialize(WheelComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Config.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.PhysicsType = (WheelPhysicsType) p_Reader.ReadInt32();
-			p_Instance.EffectClampVelocity = p_Reader.ReadSingle();
-			p_Reader.Seek(4, SeekOrigin.Current);
-		}
-
 	}
 }

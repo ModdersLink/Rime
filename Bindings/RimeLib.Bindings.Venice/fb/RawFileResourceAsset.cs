@@ -20,9 +20,5 @@ namespace fb
 	public class RawFileResourceAsset : 
 		RawFileAsset
 	{
-		public static void Deserialize(RawFileResourceAsset p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

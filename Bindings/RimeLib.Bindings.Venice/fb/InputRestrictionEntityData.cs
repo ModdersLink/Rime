@@ -167,59 +167,5 @@ namespace fb
 		[ContainerField(144), LayoutImmutable, Blittable]
 		public bool OverridePreviousInputRestriction { get; set; }
 
-		public static void Deserialize(InputRestrictionEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.ApplyRestrictionsToSpecificPlayer = p_Reader.ReadBool();
-			p_Instance.Throttle = p_Reader.ReadBool();
-			p_Instance.Strafe = p_Reader.ReadBool();
-			p_Instance.Brake = p_Reader.ReadBool();
-			p_Instance.HandBrake = p_Reader.ReadBool();
-			p_Instance.Clutch = p_Reader.ReadBool();
-			p_Instance.Yaw = p_Reader.ReadBool();
-			p_Instance.Pitch = p_Reader.ReadBool();
-			p_Instance.Roll = p_Reader.ReadBool();
-			p_Instance.Fire = p_Reader.ReadBool();
-			p_Instance.FireCountermeasure = p_Reader.ReadBool();
-			p_Instance.AltFire = p_Reader.ReadBool();
-			p_Instance.CycleRadioChannel = p_Reader.ReadBool();
-			p_Instance.SelectMeleeWeapon = p_Reader.ReadBool();
-			p_Instance.Zoom = p_Reader.ReadBool();
-			p_Instance.Jump = p_Reader.ReadBool();
-			p_Instance.ChangeVehicle = p_Reader.ReadBool();
-			p_Instance.ChangeEntry = p_Reader.ReadBool();
-			p_Instance.ChangePose = p_Reader.ReadBool();
-			p_Instance.ToggleParachute = p_Reader.ReadBool();
-			p_Instance.ChangeWeapon = p_Reader.ReadBool();
-			p_Instance.Reload = p_Reader.ReadBool();
-			p_Instance.ToggleCamera = p_Reader.ReadBool();
-			p_Instance.Sprint = p_Reader.ReadBool();
-			p_Instance.ScoreboardMenu = p_Reader.ReadBool();
-			p_Instance.MapZoom = p_Reader.ReadBool();
-			p_Instance.GearUp = p_Reader.ReadBool();
-			p_Instance.GearDown = p_Reader.ReadBool();
-			p_Instance.ThreeDimensionalMap = p_Reader.ReadBool();
-			p_Instance.GiveOrder = p_Reader.ReadBool();
-			p_Instance.Prone = p_Reader.ReadBool();
-			p_Instance.SwitchPrimaryInventory = p_Reader.ReadBool();
-			p_Instance.SwitchPrimaryWeapon = p_Reader.ReadBool();
-			p_Instance.GrenadeLauncher = p_Reader.ReadBool();
-			p_Instance.StaticGadget = p_Reader.ReadBool();
-			p_Instance.DynamicGadget1 = p_Reader.ReadBool();
-			p_Instance.DynamicGadget2 = p_Reader.ReadBool();
-			p_Instance.MeleeAttack = p_Reader.ReadBool();
-			p_Instance.ThrowGrenade = p_Reader.ReadBool();
-			p_Instance.SelectWeapon1 = p_Reader.ReadBool();
-			p_Instance.SelectWeapon2 = p_Reader.ReadBool();
-			p_Instance.SelectWeapon3 = p_Reader.ReadBool();
-			p_Instance.SelectWeapon4 = p_Reader.ReadBool();
-			p_Instance.SelectWeapon5 = p_Reader.ReadBool();
-			p_Instance.SelectWeapon6 = p_Reader.ReadBool();
-			p_Instance.SelectWeapon7 = p_Reader.ReadBool();
-			p_Instance.SelectWeapon8 = p_Reader.ReadBool();
-			p_Instance.SelectWeapon9 = p_Reader.ReadBool();
-			p_Instance.OverridePreviousInputRestriction = p_Reader.ReadBool();
-			p_Reader.Seek(15, SeekOrigin.Current);
-		}
-
 	}
 }

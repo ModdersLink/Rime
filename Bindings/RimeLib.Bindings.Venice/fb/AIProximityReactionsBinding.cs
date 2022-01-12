@@ -61,22 +61,5 @@ namespace fb
 		[ContainerField(52)]
 		public AntRef PlayerInitiatedRagdoll { get; set; } = new();
 		
-		public static void Deserialize(AIProximityReactionsBinding p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AntRef.Deserialize(p_Instance.AIReaction, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.AIExplosionReaction, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.AIExplosionForce, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.AIStunReaction, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.AIStunReactionRandomFactor, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.AIReactionDirection, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.FireNearby, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.AimUpAndDown, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.FocusAimScale, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.FocusAiming, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.EnableProceduralHeadAim, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.KillFromAnimation, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.PlayerAnimationKill, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.PlayerInitiatedRagdoll, p_Reader, p_Parser);
-		}
 	}
 }

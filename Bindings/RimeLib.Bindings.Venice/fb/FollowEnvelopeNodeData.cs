@@ -35,14 +35,5 @@ namespace fb
 		[ContainerField(32), LayoutImmutable, Blittable]
 		public float Pivot { get; set; }
 
-		public static void Deserialize(FollowEnvelopeNodeData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AudioGraphNodePort.Deserialize(p_Instance.X, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.Y, p_Reader, p_Parser);
-			p_Instance.Base = p_Reader.ReadSingle();
-			p_Instance.Scale = p_Reader.ReadSingle();
-			p_Instance.Pivot = p_Reader.ReadSingle();
-		}
-
 	}
 }

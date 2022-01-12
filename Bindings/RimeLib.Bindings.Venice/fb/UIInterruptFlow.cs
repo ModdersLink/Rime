@@ -23,19 +23,5 @@ namespace fb
 		[ContainerField(12)]
 		public List<InterruptFlow> interruptFlow { get; set; } = new();
 
-		public static void Deserialize(UIInterruptFlow p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.interruptFlow.Clear();
-			(RimeReader Reader, uint Count) s_interruptFlow = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_interruptFlow.Count; ++i)
-			{
-				var s_Value = new InterruptFlow();
-				fb.InterruptFlow.Deserialize(s_Value, s_interruptFlow.Reader, p_Parser);
-				p_Instance.interruptFlow.Add(s_Value);
-			}
-			
-			s_interruptFlow.Reader.Dispose();
-		}
-
 	}
 }

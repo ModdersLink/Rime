@@ -20,9 +20,5 @@ namespace fb
 	public class RasterQuadtreeNodeData : 
 		DataContainer
 	{
-		public static void Deserialize(RasterQuadtreeNodeData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

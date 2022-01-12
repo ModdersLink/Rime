@@ -31,12 +31,5 @@ namespace fb
 		[ContainerField(12), LayoutImmutable, Blittable]
 		public float PickUpDelay { get; set; }
 		
-		public static void Deserialize(HealerData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Radius = p_Reader.ReadSingle();
-			p_Instance.Health = p_Reader.ReadSingle();
-			p_Instance.HealingTime = p_Reader.ReadSingle();
-			p_Instance.PickUpDelay = p_Reader.ReadSingle();
-		}
 	}
 }

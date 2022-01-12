@@ -25,10 +25,5 @@ namespace fb
 		[ContainerField(4), LayoutImmutable, Blittable]
 		public float DisplayTime { get; set; }
 		
-		public static void Deserialize(UINetworkTextInfo p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.StringId = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.DisplayTime = p_Reader.ReadSingle();
-		}
 	}
 }

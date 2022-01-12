@@ -35,14 +35,5 @@ namespace fb
 		[ContainerField(24), LayoutImmutable, Blittable]
 		public float AngularConstraintMax { get; set; }
 
-		public static void Deserialize(ExtendedConstraintsData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Heading = p_Reader.ReadSingle();
-			p_Instance.Width = p_Reader.ReadSingle();
-			p_Instance.Falloff = p_Reader.ReadSingle();
-			p_Instance.AngularConstraintMin = p_Reader.ReadSingle();
-			p_Instance.AngularConstraintMax = p_Reader.ReadSingle();
-		}
-
 	}
 }

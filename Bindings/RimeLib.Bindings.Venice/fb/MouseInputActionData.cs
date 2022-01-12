@@ -32,14 +32,5 @@ namespace fb
 		[ContainerField(26), LayoutImmutable, Blittable]
 		public bool ScaleScrollWheelAxisInput { get; set; }
 
-		public static void Deserialize(MouseInputActionData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Button = (InputDeviceMouseButtons) p_Reader.ReadInt32();
-			p_Instance.SimulateJoystickAxis = p_Reader.ReadBool();
-			p_Instance.RememberExcessInput = p_Reader.ReadBool();
-			p_Instance.ScaleScrollWheelAxisInput = p_Reader.ReadBool();
-			p_Reader.Seek(1, SeekOrigin.Current);
-		}
-
 	}
 }

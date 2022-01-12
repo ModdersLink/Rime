@@ -41,16 +41,5 @@ namespace fb
 		[ContainerField(32)]
 		public SpeedModifierData SpeedModifier { get; set; } = new();
 
-		public static void Deserialize(CharacterStatePoseInfo p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.PoseType = (CharacterPoseType) p_Reader.ReadInt32();
-			p_Instance.Velocity = p_Reader.ReadSingle();
-			p_Instance.AccelerationGain = p_Reader.ReadSingle();
-			p_Instance.DecelerationGain = p_Reader.ReadSingle();
-			p_Instance.SprintGain = p_Reader.ReadSingle();
-			p_Instance.SprintMultiplier = p_Reader.ReadSingle();
-			fb.SpeedModifierData.Deserialize(p_Instance.SpeedModifier, p_Reader, p_Parser);
-		}
-
 	}
 }

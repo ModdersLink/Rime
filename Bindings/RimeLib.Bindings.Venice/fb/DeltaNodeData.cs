@@ -21,21 +21,7 @@ namespace fb
 		AudioGraphNodeData
 	{
 		[ContainerField(8)]
-		public List<CtrRef<DeltaGroup>> Deltas { get; set; } = new();
-
-		public static void Deserialize(DeltaNodeData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Deltas.Clear();
-			(RimeReader Reader, uint Count) s_Deltas = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_Deltas.Count; ++i)
-			{
-				var s_CtrRef = new CtrRef<DeltaGroup>();
-				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_Deltas.Reader.ReadUInt32()));
-				p_Instance.Deltas.Add(s_CtrRef);
-			}
-			
-			s_Deltas.Reader.Dispose();
-		}
+		public RefArray<DeltaGroup> Deltas { get; set; } = new();
 
 	}
 }

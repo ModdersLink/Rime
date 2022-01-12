@@ -35,15 +35,5 @@ namespace fb
 		[ContainerField(112), LayoutImmutable, Blittable]
 		public bool FullFootplantingEnabled { get; set; }
 
-		public static void Deserialize(SoldierFootplantEffectComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.FootMaterialPair.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.HeightOverGroundThreshold = p_Reader.ReadSingle();
-			p_Instance.FootVelocityThreshold = p_Reader.ReadSingle();
-			p_Instance.LodDistance = p_Reader.ReadSingle();
-			p_Instance.FullFootplantingEnabled = p_Reader.ReadBool();
-			p_Reader.Seek(15, SeekOrigin.Current);
-		}
-
 	}
 }

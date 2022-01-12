@@ -26,14 +26,5 @@ namespace fb
 		[ContainerField(32), LayoutImmutable, Blittable]
 		public int NumberOfBulletsPerShell { get; set; }
 
-		public static void Deserialize(WeaponShotModifier p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Reader.Seek(8, SeekOrigin.Current);
-			fb.Vec3.Deserialize(p_Instance.InitialSpeed, p_Reader, p_Parser);
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.NumberOfBulletsPerShell = p_Reader.ReadInt32();
-			p_Reader.Seek(20, SeekOrigin.Current);
-		}
-
 	}
 }

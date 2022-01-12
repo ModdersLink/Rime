@@ -47,18 +47,5 @@ namespace fb
 		[ContainerField(40), LayoutImmutable, Blittable]
 		public float AngularDamping { get; set; }
 
-		public static void Deserialize(BangerSpawnImpulseParams p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.MinHorizontalAngle = p_Reader.ReadSingle();
-			p_Instance.MaxHorizontalAngle = p_Reader.ReadSingle();
-			p_Instance.MinVerticalAngle = p_Reader.ReadSingle();
-			p_Instance.MaxVerticalAngle = p_Reader.ReadSingle();
-			p_Instance.MinStrength = p_Reader.ReadSingle();
-			p_Instance.MaxStrength = p_Reader.ReadSingle();
-			p_Instance.WaterStrengthModifier = p_Reader.ReadSingle();
-			p_Instance.LinearDamping = p_Reader.ReadSingle();
-			p_Instance.AngularDamping = p_Reader.ReadSingle();
-		}
-
 	}
 }

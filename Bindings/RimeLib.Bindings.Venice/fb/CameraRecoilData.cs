@@ -29,12 +29,5 @@ namespace fb
 		[ContainerField(16), LayoutImmutable, Blittable]
 		public float SpringMinThresholdAngle { get; set; }
 
-		public static void Deserialize(CameraRecoilData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.SpringConstant = p_Reader.ReadSingle();
-			p_Instance.SpringDamping = p_Reader.ReadSingle();
-			p_Instance.SpringMinThresholdAngle = p_Reader.ReadSingle();
-		}
-
 	}
 }

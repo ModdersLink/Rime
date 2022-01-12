@@ -20,9 +20,5 @@ namespace fb
 	public class RemoteEntryComponentData : 
 		EntryComponentData
 	{
-		public static void Deserialize(RemoteEntryComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

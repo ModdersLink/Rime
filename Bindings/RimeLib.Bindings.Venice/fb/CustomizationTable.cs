@@ -21,21 +21,7 @@ namespace fb
 		DataContainer
 	{
 		[ContainerField(8)]
-		public List<CtrRef<CustomizationUnlockParts>> UnlockParts { get; set; } = new();
-
-		public static void Deserialize(CustomizationTable p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.UnlockParts.Clear();
-			(RimeReader Reader, uint Count) s_UnlockParts = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_UnlockParts.Count; ++i)
-			{
-				var s_CtrRef = new CtrRef<CustomizationUnlockParts>();
-				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_UnlockParts.Reader.ReadUInt32()));
-				p_Instance.UnlockParts.Add(s_CtrRef);
-			}
-			
-			s_UnlockParts.Reader.Dispose();
-		}
+		public RefArray<CustomizationUnlockParts> UnlockParts { get; set; } = new();
 
 	}
 }

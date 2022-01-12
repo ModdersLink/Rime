@@ -29,12 +29,5 @@ namespace fb
 		[ContainerField(16)]
 		public CtrRef<SoundAsset> LandSound { get; set; } = new();
 
-		public static void Deserialize(MaterialSoldierSoundSettings p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.FootStepSound.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.ProneSound.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.LandSound.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-		}
-
 	}
 }

@@ -20,9 +20,5 @@ namespace fb
 	public class NoiseTextureAsset : 
 		TextureBaseAsset
 	{
-		public static void Deserialize(NoiseTextureAsset p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

@@ -38,16 +38,5 @@ namespace fb
 		[ContainerField(43)]
 		public SoundGraphPluginRef Plugin2 { get; set; } = new();
 
-		public static void Deserialize(CrossfaderNodeData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AudioGraphNodePort.Deserialize(p_Instance.In1, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.In2, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.Ctrl, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.Out, p_Reader, p_Parser);
-			fb.SoundGraphPluginRef.Deserialize(p_Instance.Plugin1, p_Reader, p_Parser);
-			fb.SoundGraphPluginRef.Deserialize(p_Instance.Plugin2, p_Reader, p_Parser);
-			p_Reader.Seek(2, SeekOrigin.Current);
-		}
-
 	}
 }

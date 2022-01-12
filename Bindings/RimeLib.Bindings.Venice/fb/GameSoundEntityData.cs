@@ -26,12 +26,5 @@ namespace fb
 		[ContainerField(100), LayoutImmutable, Blittable]
 		public bool PlayOnCreation { get; set; }
 
-		public static void Deserialize(GameSoundEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Sound.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.PlayOnCreation = p_Reader.ReadBool();
-			p_Reader.Seek(11, SeekOrigin.Current);
-		}
-
 	}
 }

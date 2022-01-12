@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(28), LayoutImmutable, Blittable]
 		public float MaxUpdateTime { get; set; }
 
-		public static void Deserialize(UIDamageIndicatorCompData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.MaxUpdateTime = p_Reader.ReadSingle();
-		}
-
 	}
 }

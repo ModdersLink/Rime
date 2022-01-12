@@ -59,23 +59,5 @@ namespace fb
 		[ContainerField(96), LayoutImmutable, Blittable]
 		public bool EnableAbortPossibility { get; set; }
 
-		public static void Deserialize(MeleeEntityCommonData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.CharacterMeleeBinding.Deserialize(p_Instance.MeleeBinding, p_Reader, p_Parser);
-			fb.CharacterMeleeCommonBinding.Deserialize(p_Instance.MeleeCommonBinding, p_Reader, p_Parser);
-			p_Instance.TriggerDelay = p_Reader.ReadSingle();
-			p_Instance.DefendWindow = p_Reader.ReadSingle();
-			p_Instance.KillDelay = p_Reader.ReadSingle();
-			p_Instance.MeleeEndDelay = p_Reader.ReadSingle();
-			p_Instance.InvalidMeleeAttackZone = p_Reader.ReadSingle();
-			p_Instance.MeleeAttackDistance = p_Reader.ReadSingle();
-			p_Instance.MaxAttackHeightDifference = p_Reader.ReadSingle();
-			p_Instance.KillDamage = p_Reader.ReadSingle();
-			p_Instance.ProneAttackType.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.CrouchAttackType.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.EnableAbortPossibility = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
-
 	}
 }

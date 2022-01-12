@@ -26,11 +26,5 @@ namespace fb
 		[ContainerField(12), LayoutImmutable, Blittable]
 		public float Value { get; set; }
 
-		public static void Deserialize(SoundPatchConfigurationParameterEntry p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.NameHash = p_Reader.ReadUInt32();
-			p_Instance.Value = p_Reader.ReadSingle();
-		}
-
 	}
 }

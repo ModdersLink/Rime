@@ -34,13 +34,5 @@ namespace fb
 		[ContainerField(16)]
 		public EventConnectionTargetType TargetType { get; set; } = new();
 		
-		public static void Deserialize(EventConnection p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Source.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.Target.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			fb.EventSpec.Deserialize(p_Instance.SourceEvent, p_Reader, p_Parser);
-			fb.EventSpec.Deserialize(p_Instance.TargetEvent, p_Reader, p_Parser);
-			p_Instance.TargetType = (EventConnectionTargetType) p_Reader.ReadInt32();
-		}
 	}
 }

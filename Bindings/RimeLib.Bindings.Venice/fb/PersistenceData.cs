@@ -59,50 +59,5 @@ namespace fb
 		[ContainerField(48), LayoutImmutable, Blittable]
 		public bool DeltaGameReports { get; set; }
 
-		public static void Deserialize(PersistenceData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.PersistenceName = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.ClubPersistenceName = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.ClientDefaultGroup.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.Values.Clear();
-			(RimeReader Reader, uint Count) s_Values = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_Values.Count; ++i)
-			{
-				var s_Value = new PersistentValueTemplateData();
-				fb.PersistentValueTemplateData.Deserialize(s_Value, s_Values.Reader, p_Parser);
-				p_Instance.Values.Add(s_Value);
-			}
-			
-			s_Values.Reader.Dispose();
-			p_Instance.CustomReportValues.Clear();
-			(RimeReader Reader, uint Count) s_CustomReportValues = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_CustomReportValues.Count; ++i)
-			{
-				var s_Value = new CustomReportValueData();
-				fb.CustomReportValueData.Deserialize(s_Value, s_CustomReportValues.Reader, p_Parser);
-				p_Instance.CustomReportValues.Add(s_Value);
-			}
-			
-			s_CustomReportValues.Reader.Dispose();
-			p_Instance.ServerDefaultGroup.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.RetentionPolicy.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.ConsumableMappings.Clear();
-			(RimeReader Reader, uint Count) s_ConsumableMappings = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_ConsumableMappings.Count; ++i)
-			{
-				var s_Value = new PersistenceConsumableMapping();
-				fb.PersistenceConsumableMapping.Deserialize(s_Value, s_ConsumableMappings.Reader, p_Parser);
-				p_Instance.ConsumableMappings.Add(s_Value);
-			}
-			
-			s_ConsumableMappings.Reader.Dispose();
-			p_Instance.HistoryDaily = p_Reader.ReadBool();
-			p_Instance.HistoryWeekly = p_Reader.ReadBool();
-			p_Instance.HistoryMonthly = p_Reader.ReadBool();
-			p_Instance.OutputProperties = p_Reader.ReadBool();
-			p_Instance.DeltaGameReports = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
-
 	}
 }

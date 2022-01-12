@@ -61,29 +61,5 @@ namespace fb
 		[ContainerField(131), LayoutImmutable, Blittable]
 		public bool DeactivateIfBehindWall { get; set; }
 		
-		public static void Deserialize(BoneCollisionData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.Vec4.Deserialize(p_Instance.DebugDrawColor, p_Reader, p_Parser);
-			fb.Vec3.Deserialize(p_Instance.CapsuleOffset, p_Reader, p_Parser);
-			p_Instance.BoneName = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.AnimationHitReactionType = (HitReactionType) p_Reader.ReadInt32();
-			p_Instance.MaterialPair.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.BoneAxis = p_Reader.ReadInt32();
-			p_Instance.CapsuleLength = p_Reader.ReadSingle();
-			p_Instance.CapsuleRadius = p_Reader.ReadSingle();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			fb.PitchModifier.Deserialize(p_Instance.MinPitch, p_Reader, p_Parser);
-			p_Reader.Seek(8, SeekOrigin.Current);
-			fb.PitchModifier.Deserialize(p_Instance.MaxPitch, p_Reader, p_Parser);
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.ValidInHiLod = p_Reader.ReadBool();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.ValidInLowLod = p_Reader.ReadBool();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.UsePhysicsRotation = p_Reader.ReadBool();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.DeactivateIfBehindWall = p_Reader.ReadBool();
-			p_Reader.Seek(20, SeekOrigin.Current);
-		}
 	}
 }

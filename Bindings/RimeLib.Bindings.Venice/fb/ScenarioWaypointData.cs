@@ -26,13 +26,5 @@ namespace fb
 		[ContainerField(64)]
 		public ScenarioTaskData ScenarioTask { get; set; } = new();
 
-		public static void Deserialize(ScenarioWaypointData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AntRef.Deserialize(p_Instance.ScenarioAntRef, p_Reader, p_Parser);
-			p_Reader.Seek(12, SeekOrigin.Current);
-			fb.ScenarioTaskData.Deserialize(p_Instance.ScenarioTask, p_Reader, p_Parser);
-			p_Reader.Seek(12, SeekOrigin.Current);
-		}
-
 	}
 }

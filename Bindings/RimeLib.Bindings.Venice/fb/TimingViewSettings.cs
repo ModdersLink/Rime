@@ -119,43 +119,5 @@ namespace fb
 		[ContainerField(107), LayoutImmutable, Blittable]
 		public bool Enable { get; set; }
 
-		public static void Deserialize(TimingViewSettings p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.MaxFrameEventCount = p_Reader.ReadUInt32();
-			p_Instance.FrameCount = p_Reader.ReadUInt32();
-			p_Instance.FrameDelayCount = p_Reader.ReadUInt32();
-			p_Instance.TimeRange = p_Reader.ReadSingle();
-			p_Instance.TimeOffset = p_Reader.ReadSingle();
-			p_Instance.AutolockThreshold = p_Reader.ReadSingle();
-			p_Instance.AutolockNameFilter = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.LegendScreenOffset = p_Reader.ReadInt32();
-			p_Instance.LegendColumnWidth = p_Reader.ReadInt32();
-			p_Instance.LegendDisplayMode = p_Reader.ReadInt32();
-			p_Instance.AverageFrameCount = p_Reader.ReadInt32();
-			p_Instance.MaxGpuLegendColumnCount = p_Reader.ReadInt32();
-			p_Instance.SnoopEventName = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.GpuBarFrameOffset = p_Reader.ReadInt32();
-			p_Instance.MaxCpuLegendColumnCount = p_Reader.ReadInt32();
-			p_Instance.BarPad = p_Reader.ReadUInt32();
-			p_Instance.MaxSpuLegendColumnCount = p_Reader.ReadInt32();
-			p_Instance.BarSyncProcessor = p_Reader.ReadInt32();
-			p_Instance.BarMinTime = p_Reader.ReadDouble();
-			p_Instance.BarHeight = p_Reader.ReadUInt32();
-			p_Instance.FilterEventName = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.SnoopOnly = p_Reader.ReadBool();
-			p_Instance.DrawEnable = p_Reader.ReadBool();
-			p_Instance.DrawSpuLegendEnable = p_Reader.ReadBool();
-			p_Instance.SnoopEnable = p_Reader.ReadBool();
-			p_Instance.FilterEnable = p_Reader.ReadBool();
-			p_Instance.DrawBarsEnable = p_Reader.ReadBool();
-			p_Instance.DrawLegendEnable = p_Reader.ReadBool();
-			p_Instance.DrawOnlySummaryEnable = p_Reader.ReadBool();
-			p_Instance.SortByTime = p_Reader.ReadBool();
-			p_Instance.DrawCpuLegendEnable = p_Reader.ReadBool();
-			p_Instance.DrawGpuLegendEnable = p_Reader.ReadBool();
-			p_Instance.Enable = p_Reader.ReadBool();
-			p_Reader.Seek(4, SeekOrigin.Current);
-		}
-
 	}
 }

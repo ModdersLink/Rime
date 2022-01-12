@@ -32,13 +32,5 @@ namespace fb
 		[ContainerField(24), LayoutImmutable, Blittable]
 		public float SavedValue { get; set; }
 
-		public static void Deserialize(ReceiveEntry p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AudioGraphNodePort.Deserialize(p_Instance.Out, p_Reader, p_Parser);
-			p_Instance.Source.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.Parameter = p_Reader.ReadSingle();
-			p_Instance.SavedValue = p_Reader.ReadSingle();
-		}
-
 	}
 }

@@ -26,11 +26,5 @@ namespace fb
 		[ContainerField(16), LayoutImmutable, Blittable]
 		public float JumpEffectSize { get; set; }
 
-		public static void Deserialize(JumpStateData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.JumpHeight = p_Reader.ReadSingle();
-			p_Instance.JumpEffectSize = p_Reader.ReadSingle();
-		}
-
 	}
 }

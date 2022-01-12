@@ -104,38 +104,5 @@ namespace fb
 		[ContainerField(198), LayoutImmutable, Blittable]
 		public bool SprintInputVal { get; set; }
 
-		public static void Deserialize(SoldierTestEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.TestSoldier.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.Template.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.TestVehicle.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.SpecialAnimationIndex = p_Reader.ReadSingle();
-			p_Instance.UnlocksProfile.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.Team = (TeamId) p_Reader.ReadInt32();
-			p_Instance.RandomSeed = p_Reader.ReadInt32();
-			p_Instance.StartSequence.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.StartSequenceRoot.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.YawInputVal = p_Reader.ReadSingle();
-			p_Instance.CameraMovementsFilename = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.InputRecorder.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.ThrottleInputVal = p_Reader.ReadSingle();
-			p_Instance.FireInputVal = p_Reader.ReadSingle();
-			p_Instance.StrafeInputVal = p_Reader.ReadSingle();
-			p_Instance.ProneInputVal = p_Reader.ReadSingle();
-			p_Instance.PitchInputVal = p_Reader.ReadSingle();
-			p_Instance.RollInputVal = p_Reader.ReadSingle();
-			p_Instance.ZoomInputVal = p_Reader.ReadSingle();
-			p_Instance.JumpInputVal = p_Reader.ReadSingle();
-			p_Instance.ActiveInputRecording = p_Reader.ReadSingle();
-			p_Instance.AuthoritativeAimingActive = p_Reader.ReadSingle();
-			p_Instance.FireCounterMeasure = p_Reader.ReadSingle();
-			p_Instance.AuthoritativeYaw = p_Reader.ReadSingle();
-			p_Instance.AuthoritativePitch = p_Reader.ReadSingle();
-			p_Instance.RunAutomatically = p_Reader.ReadBool();
-			p_Instance.UseUnlocksProfile = p_Reader.ReadBool();
-			p_Instance.SprintInputVal = p_Reader.ReadBool();
-			p_Reader.Seek(9, SeekOrigin.Current);
-		}
-
 	}
 }

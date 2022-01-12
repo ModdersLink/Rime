@@ -62,38 +62,5 @@ namespace fb
 		[ContainerField(105), LayoutImmutable, Blittable]
 		public bool Enable { get; set; }
 
-		public static void Deserialize(OutdoorLightEffectState p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Reader.Seek(8, SeekOrigin.Current);
-			fb.Vec3.Deserialize(p_Instance.SkyColor, p_Reader, p_Parser);
-			p_Reader.Seek(8, SeekOrigin.Current);
-			fb.Vec3.Deserialize(p_Instance.GroundColor, p_Reader, p_Parser);
-			p_Reader.Seek(8, SeekOrigin.Current);
-			fb.Vec3.Deserialize(p_Instance.SunColor, p_Reader, p_Parser);
-			p_Reader.Seek(8, SeekOrigin.Current);
-			fb.Vec2.Deserialize(p_Instance.CloudShadowSpeed, p_Reader, p_Parser);
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.SunRotationX = p_Reader.ReadSingle();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.SunRotationY = p_Reader.ReadSingle();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.SkyLightAngleFactor = p_Reader.ReadSingle();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.SunShadowHeightScale = p_Reader.ReadSingle();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.CloudShadowTexture.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.CloudShadowSize = p_Reader.ReadSingle();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.CloudShadowExponent = p_Reader.ReadSingle();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.CloudShadowCoverage = p_Reader.ReadSingle();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.CloudShadowEnable = p_Reader.ReadBool();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.Enable = p_Reader.ReadBool();
-			p_Reader.Seek(14, SeekOrigin.Current);
-		}
-
 	}
 }

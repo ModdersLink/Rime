@@ -38,16 +38,5 @@ namespace fb
 		[ContainerField(113), LayoutImmutable, Blittable]
 		public bool TestIfOccluded { get; set; }
 
-		public static void Deserialize(InteractionEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.UseWithinRadius = p_Reader.ReadSingle();
-			p_Instance.UseWithinAngle = p_Reader.ReadSingle();
-			p_Instance.PreInteractionSoundEffect.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.MaxUses = p_Reader.ReadUInt32();
-			p_Instance.AllowInteractionViaRemoteEntry = p_Reader.ReadBool();
-			p_Instance.TestIfOccluded = p_Reader.ReadBool();
-			p_Reader.Seek(14, SeekOrigin.Current);
-		}
-
 	}
 }

@@ -20,9 +20,5 @@ namespace fb
 	public class EmitterAsset : 
 		Asset
 	{
-		public static void Deserialize(EmitterAsset p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

@@ -47,19 +47,5 @@ namespace fb
 		[ContainerField(40), LayoutImmutable, Blittable]
 		public bool FadeSound { get; set; }
 
-		public static void Deserialize(SoundState p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Name = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.LpCutoffFrequency = p_Reader.ReadSingle();
-			p_Instance.Duration = p_Reader.ReadSingle();
-			p_Instance.FadeInTime = p_Reader.ReadSingle();
-			p_Instance.FadeOutTime = p_Reader.ReadSingle();
-			p_Instance.BypassSound.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.HdrSetting.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.Mixer.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.FadeSound = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
-
 	}
 }

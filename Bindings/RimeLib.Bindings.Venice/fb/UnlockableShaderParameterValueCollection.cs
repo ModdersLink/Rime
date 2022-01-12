@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(8), LayoutImmutable]
 		public string ShaderParameterName { get; set; } = string.Empty;
 
-		public static void Deserialize(UnlockableShaderParameterValueCollection p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.ShaderParameterName = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-		}
-
 	}
 }

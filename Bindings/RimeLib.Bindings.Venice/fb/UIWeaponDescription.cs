@@ -62,23 +62,5 @@ namespace fb
 		[ContainerField(59), LayoutImmutable, Blittable]
 		public bool HiddenInProgression { get; set; }
 
-		public static void Deserialize(UIWeaponDescription p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Name = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.UnlockName = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Description = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Category = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.TexturePath = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.IconTexturePath = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.UnlockTexturePath = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Ammo = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.RateOfFire = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Range = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.FireModeSingle = p_Reader.ReadBool();
-			p_Instance.FireModeBurst = p_Reader.ReadBool();
-			p_Instance.FireModeAuto = p_Reader.ReadBool();
-			p_Instance.HiddenInProgression = p_Reader.ReadBool();
-		}
-
 	}
 }

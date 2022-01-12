@@ -41,17 +41,5 @@ namespace fb
 		[ContainerField(45), LayoutImmutable, Blittable]
 		public bool PredictedByOthers { get; set; }
 
-		public static void Deserialize(DynamicAvoidanceEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.RepelOthers = (DynamicAvoidanceMode) p_Reader.ReadInt32();
-			p_Instance.ReportPredictedCollision = (DynamicAvoidanceMode) p_Reader.ReadInt32();
-			p_Instance.CollisionRadius = p_Reader.ReadSingle();
-			p_Instance.Realm = (Realm) p_Reader.ReadInt32();
-			fb.AntDynamicAvoidanceBinding.Deserialize(p_Instance.AntBinding, p_Reader, p_Parser);
-			p_Instance.AffectedByRepellingForce = p_Reader.ReadBool();
-			p_Instance.PredictedByOthers = p_Reader.ReadBool();
-			p_Reader.Seek(2, SeekOrigin.Current);
-		}
-
 	}
 }

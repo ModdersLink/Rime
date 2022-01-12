@@ -23,11 +23,5 @@ namespace fb
 		[ContainerField(12), LayoutImmutable, Blittable]
 		public bool CheckSquad { get; set; }
 
-		public static void Deserialize(VeniceUnlockUserData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.CheckSquad = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
-
 	}
 }

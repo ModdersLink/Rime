@@ -50,19 +50,5 @@ namespace fb
 		[ContainerField(80)]
 		public AudioGraphNodePort Out { get; set; } = new();
 
-		public static void Deserialize(MatrixPannerNodeData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AudioGraphNodePort.Deserialize(p_Instance.In, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.FrontLeft, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.Center, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.FrontRight, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.RearLeft, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.Lfe, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.RearRight, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.FarRearLeft, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.FarRearRight, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.Out, p_Reader, p_Parser);
-		}
-
 	}
 }

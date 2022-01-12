@@ -38,16 +38,5 @@ namespace fb
 		[ContainerField(28), LayoutImmutable, Blittable]
 		public bool ModifiersEnable { get; set; }
 
-		public static void Deserialize(TerrainSettings p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.HeightQueryCacheSize = p_Reader.ReadUInt32();
-			p_Instance.ModifiersCapacity = p_Reader.ReadUInt32();
-			p_Instance.IntersectingModifiersMax = p_Reader.ReadUInt32();
-			p_Instance.ModifierDepthFactor = p_Reader.ReadSingle();
-			p_Instance.ModifierSlopeMax = p_Reader.ReadSingle();
-			p_Instance.ModifiersEnable = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
-
 	}
 }

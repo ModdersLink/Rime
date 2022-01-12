@@ -40,16 +40,5 @@ namespace fb
 		[ContainerField(69), LayoutImmutable, Blittable]
 		public bool DefaultIsEnabled { get; set; }
 		
-		public static void Deserialize(UIListItem p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Label = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			fb.UIDataSourceInfo.Deserialize(p_Instance.IsEnabled, p_Reader, p_Parser);
-			fb.UIDataSourceInfo.Deserialize(p_Instance.IsVisible, p_Reader, p_Parser);
-			fb.UIDataSourceInfo.Deserialize(p_Instance.ToggleItems, p_Reader, p_Parser);
-			fb.UIDataSourceInfo.Deserialize(p_Instance.DataUpdate, p_Reader, p_Parser);
-			p_Instance.DefaultIsVisible = p_Reader.ReadBool();
-			p_Instance.DefaultIsEnabled = p_Reader.ReadBool();
-			p_Reader.Seek(2, SeekOrigin.Current);
-		}
 	}
 }

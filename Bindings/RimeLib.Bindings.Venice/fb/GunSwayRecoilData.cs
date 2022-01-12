@@ -37,14 +37,5 @@ namespace fb
 		[ContainerField(20), LayoutImmutable, Blittable]
 		public float RecoilAmplitudeDecreaseFactor { get; set; }
 		
-		public static void Deserialize(GunSwayRecoilData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.RecoilAmplitudeMax = p_Reader.ReadSingle();
-			p_Instance.RecoilAmplitudeIncPerShot = p_Reader.ReadSingle();
-			p_Instance.HorizontalRecoilAmplitudeIncPerShotMin = p_Reader.ReadSingle();
-			p_Instance.HorizontalRecoilAmplitudeIncPerShotMax = p_Reader.ReadSingle();
-			p_Instance.HorizontalRecoilAmplitudeMax = p_Reader.ReadSingle();
-			p_Instance.RecoilAmplitudeDecreaseFactor = p_Reader.ReadSingle();
-		}
 	}
 }

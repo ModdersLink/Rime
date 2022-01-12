@@ -37,14 +37,5 @@ namespace fb
 		[ContainerField(20)]
 		public AntRef FallHigh { get; set; } = new();
 		
-		public static void Deserialize(ClimbLadderBinding p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AntRef.Deserialize(p_Instance.ClimbLadderPhase, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.ClimbLadderConnectPhase, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.ClimbLadderTransitionPhase, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.OnLadder, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.LadderTopTransition, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.FallHigh, p_Reader, p_Parser);
-		}
 	}
 }

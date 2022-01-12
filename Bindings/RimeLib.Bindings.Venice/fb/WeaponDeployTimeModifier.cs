@@ -32,13 +32,5 @@ namespace fb
 		[ContainerField(20), LayoutImmutable, Blittable]
 		public int AltDeployId { get; set; }
 
-		public static void Deserialize(WeaponDeployTimeModifier p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.DeployTime = p_Reader.ReadSingle();
-			p_Instance.DisableZoomOnDeployTime = p_Reader.ReadSingle();
-			p_Instance.AltDeployTime = p_Reader.ReadSingle();
-			p_Instance.AltDeployId = p_Reader.ReadInt32();
-		}
-
 	}
 }

@@ -25,10 +25,5 @@ namespace fb
 		[ContainerField(4)]
 		public Ps3AgeLevels AgeLevels { get; set; } = new();
 		
-		public static void Deserialize(Ps3ParentalLockAgeSettingsForCountry p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.CountryCode = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			fb.Ps3AgeLevels.Deserialize(p_Instance.AgeLevels, p_Reader, p_Parser);
-		}
 	}
 }

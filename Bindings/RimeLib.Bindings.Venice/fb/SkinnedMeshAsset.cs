@@ -26,14 +26,5 @@ namespace fb
 		[ContainerField(64), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 BoundingBoxSizeOffset { get; set; } = new();
 
-		public static void Deserialize(SkinnedMeshAsset p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Reader.Seek(8, SeekOrigin.Current);
-			fb.Vec3.Deserialize(p_Instance.BoundingBoxPositionOffset, p_Reader, p_Parser);
-			p_Reader.Seek(8, SeekOrigin.Current);
-			fb.Vec3.Deserialize(p_Instance.BoundingBoxSizeOffset, p_Reader, p_Parser);
-			p_Reader.Seek(8, SeekOrigin.Current);
-		}
-
 	}
 }

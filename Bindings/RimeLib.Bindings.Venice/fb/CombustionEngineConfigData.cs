@@ -20,9 +20,5 @@ namespace fb
 	public class CombustionEngineConfigData : 
 		EngineConfigData
 	{
-		public static void Deserialize(CombustionEngineConfigData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

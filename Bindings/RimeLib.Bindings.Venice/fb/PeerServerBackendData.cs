@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(16)]
 		public PeerCreateGameParameters CreateParameters { get; set; } = new();
 
-		public static void Deserialize(PeerServerBackendData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.PeerCreateGameParameters.Deserialize(p_Instance.CreateParameters, p_Reader, p_Parser);
-		}
-
 	}
 }

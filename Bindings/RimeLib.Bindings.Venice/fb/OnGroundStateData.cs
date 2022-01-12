@@ -35,15 +35,5 @@ namespace fb
 		[ContainerField(25), LayoutImmutable, Blittable]
 		public bool LimitDownwardVelocity { get; set; }
 
-		public static void Deserialize(OnGroundStateData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.JumpDelay = p_Reader.ReadSingle();
-			p_Instance.JumpStaminaPenalty = p_Reader.ReadSingle();
-			p_Instance.AllowedDistanceFromGround = p_Reader.ReadSingle();
-			p_Instance.GroundHugging = p_Reader.ReadBool();
-			p_Instance.LimitDownwardVelocity = p_Reader.ReadBool();
-			p_Reader.Seek(2, SeekOrigin.Current);
-		}
-
 	}
 }

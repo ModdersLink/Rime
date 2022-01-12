@@ -47,27 +47,5 @@ namespace fb
 		[ContainerField(122), LayoutImmutable, Blittable]
 		public bool RequireWeaponSlotEmpty { get; set; }
 
-		public static void Deserialize(DropWeaponComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.DeathPickup.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.ActionIdentifier = (EntryInputActionEnum) p_Reader.ReadInt32();
-			p_Instance.DropWeaponAfterTime = p_Reader.ReadSingle();
-			p_Instance.Pickup.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.ExcludedWeaponSlots.Clear();
-			(RimeReader Reader, uint Count) s_ExcludedWeaponSlots = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_ExcludedWeaponSlots.Count; ++i)
-			{
-				var s_Value = (WeaponSlot) s_ExcludedWeaponSlots.Reader.ReadInt32();
-				p_Instance.ExcludedWeaponSlots.Add(s_Value);
-			}
-			
-			s_ExcludedWeaponSlots.Reader.Dispose();
-			p_Instance.WeaponDropTime = p_Reader.ReadSingle();
-			p_Instance.ListenToAnimationWeaponDropSignal = p_Reader.ReadBool();
-			p_Instance.AllowDropWeaponOnAction = p_Reader.ReadBool();
-			p_Instance.RequireWeaponSlotEmpty = p_Reader.ReadBool();
-			p_Reader.Seek(5, SeekOrigin.Current);
-		}
-
 	}
 }

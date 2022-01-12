@@ -25,10 +25,5 @@ namespace fb
 		[ContainerField(4)]
 		public BasicUnlockInfo UnlockInfo { get; set; } = new();
 		
-		public static void Deserialize(ScoringBucketUnlockData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.PointsNeeded = p_Reader.ReadUInt32();
-			fb.BasicUnlockInfo.Deserialize(p_Instance.UnlockInfo, p_Reader, p_Parser);
-		}
 	}
 }

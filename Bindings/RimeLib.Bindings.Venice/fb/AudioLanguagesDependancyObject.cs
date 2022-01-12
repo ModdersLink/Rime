@@ -21,21 +21,7 @@ namespace fb
 		DataContainer
 	{
 		[ContainerField(8)]
-		public List<CtrRef<AudioLanguage>> AudioLanguages { get; set; } = new();
-
-		public static void Deserialize(AudioLanguagesDependancyObject p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.AudioLanguages.Clear();
-			(RimeReader Reader, uint Count) s_AudioLanguages = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_AudioLanguages.Count; ++i)
-			{
-				var s_CtrRef = new CtrRef<AudioLanguage>();
-				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_AudioLanguages.Reader.ReadUInt32()));
-				p_Instance.AudioLanguages.Add(s_CtrRef);
-			}
-			
-			s_AudioLanguages.Reader.Dispose();
-		}
+		public RefArray<AudioLanguage> AudioLanguages { get; set; } = new();
 
 	}
 }

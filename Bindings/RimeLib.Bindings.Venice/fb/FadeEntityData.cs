@@ -44,18 +44,5 @@ namespace fb
 		[ContainerField(25), LayoutImmutable, Blittable]
 		public bool StartFaded { get; set; }
 
-		public static void Deserialize(FadeEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.FadeTime = p_Reader.ReadSingle();
-			p_Instance.MaxWaitFadedWhileStreamingTime = p_Reader.ReadSingle();
-			p_Instance.FadeScreen = p_Reader.ReadBool();
-			p_Instance.FadeUI = p_Reader.ReadBool();
-			p_Instance.FadeRumble = p_Reader.ReadBool();
-			p_Instance.FadeAudio = p_Reader.ReadBool();
-			p_Instance.FadeMovie = p_Reader.ReadBool();
-			p_Instance.StartFaded = p_Reader.ReadBool();
-			p_Reader.Seek(2, SeekOrigin.Current);
-		}
-
 	}
 }

@@ -20,9 +20,5 @@ namespace fb
 	public class VeniceSoldierCustomizationAsset : 
 		SoldierCustomizationAsset
 	{
-		public static void Deserialize(VeniceSoldierCustomizationAsset p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

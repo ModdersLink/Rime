@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(8)]
 		public CtrRef<ColorReference> ColorReference { get; set; } = new();
 
-		public static void Deserialize(ColorUnlockPartData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.ColorReference.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-		}
-
 	}
 }

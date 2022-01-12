@@ -31,13 +31,5 @@ namespace fb
 		[ContainerField(12), LayoutImmutable, Blittable]
 		public bool PlayerToPlayer { get; set; }
 		
-		public static void Deserialize(StatSpamSetting p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Event = (StatEvent) p_Reader.ReadInt32();
-			p_Instance.AmountLimit = p_Reader.ReadUInt32();
-			p_Instance.TimeLimit = p_Reader.ReadSingle();
-			p_Instance.PlayerToPlayer = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
 	}
 }

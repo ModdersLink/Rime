@@ -20,9 +20,5 @@ namespace fb
 	public class UIGunMasterCompData : 
 		UIComponentData
 	{
-		public static void Deserialize(UIGunMasterCompData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

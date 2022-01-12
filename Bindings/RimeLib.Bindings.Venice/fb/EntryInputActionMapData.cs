@@ -20,9 +20,5 @@ namespace fb
 	public class EntryInputActionMapData : 
 		InputActionMapData
 	{
-		public static void Deserialize(EntryInputActionMapData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

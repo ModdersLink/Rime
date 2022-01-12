@@ -44,17 +44,5 @@ namespace fb
 		[ContainerField(36), LayoutImmutable, Blittable]
 		public int RTPoolTransparentControllers { get; set; }
 
-		public static void Deserialize(AntMemorySettings p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.RTPoolLayersControllers = p_Reader.ReadInt32();
-			p_Instance.RTPoolStateflowControllers = p_Reader.ReadInt32();
-			p_Instance.RTPoolStateflowNodeControllers = p_Reader.ReadInt32();
-			p_Instance.RTPoolTransitionControllers = p_Reader.ReadInt32();
-			p_Instance.RTPoolClipControllers = p_Reader.ReadInt32();
-			p_Instance.RTPoolChooserControllers = p_Reader.ReadInt32();
-			p_Instance.RTPoolLoopingControllers = p_Reader.ReadInt32();
-			p_Instance.RTPoolTransparentControllers = p_Reader.ReadInt32();
-		}
-
 	}
 }

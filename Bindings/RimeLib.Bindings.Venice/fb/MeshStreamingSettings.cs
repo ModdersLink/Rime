@@ -143,50 +143,5 @@ namespace fb
 		[ContainerField(87), LayoutImmutable, Blittable]
 		public bool UseConditionalStreaming { get; set; }
 
-		public static void Deserialize(MeshStreamingSettings p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.DefragTransferLimit = p_Reader.ReadUInt32();
-			p_Instance.ListViewPageIndex = p_Reader.ReadUInt32();
-			p_Instance.PoolSize = p_Reader.ReadUInt32();
-			p_Instance.ForceLod = p_Reader.ReadInt32();
-			p_Instance.PoolHeadroomSize = p_Reader.ReadUInt32();
-			p_Instance.ListViewSortOrder = p_Reader.ReadUInt32();
-			p_Instance.Ps3CellDefragTransferLimit = p_Reader.ReadUInt32();
-			p_Instance.XenonFinalPoolSizeAdjustment = p_Reader.ReadUInt32();
-			p_Instance.MaxUnloadCountPerFrame = p_Reader.ReadUInt32();
-			p_Instance.XenonRetailPoolSizeAdjustment = p_Reader.ReadUInt32();
-			p_Instance.MaxPendingLoadCount = p_Reader.ReadUInt32();
-			p_Instance.Ps3CellPoolSize = p_Reader.ReadUInt32();
-			p_Instance.Ps3CellPoolHeadroomSize = p_Reader.ReadUInt32();
-			p_Instance.InstantUnloadingEnable = p_Reader.ReadBool();
-			p_Instance.AsyncCreatesEnable = p_Reader.ReadBool();
-			p_Instance.DxImmutableUsageEnable = p_Reader.ReadBool();
-			p_Instance.OverridePoolSizes = p_Reader.ReadBool();
-			p_Instance.UseSlowTexturePrio = p_Reader.ReadBool();
-			p_Instance.UpdateEnable = p_Reader.ReadBool();
-			p_Instance.DynamicLoadingEnable = p_Reader.ReadBool();
-			p_Instance.PriorityJobEnable = p_Reader.ReadBool();
-			p_Instance.PrioritySpuJobEnable = p_Reader.ReadBool();
-			p_Instance.UpdateJobEnable = p_Reader.ReadBool();
-			p_Instance.DefragTransfersEnable = p_Reader.ReadBool();
-			p_Instance.PrioritizeVisibleMeshesFirstEnable = p_Reader.ReadBool();
-			p_Instance.PrioritizeVisibleLodsFirstEnable = p_Reader.ReadBool();
-			p_Instance.PrioritizeVisibleLoadsEnable = p_Reader.ReadBool();
-			p_Instance.PrioritizeTexturesEnable = p_Reader.ReadBool();
-			p_Instance.HighestPriorityEnable = p_Reader.ReadBool();
-			p_Instance.PrioritizeNearestPointEnable = p_Reader.ReadBool();
-			p_Instance.DrawInstanceBoxesEnable = p_Reader.ReadBool();
-			p_Instance.DrawStatsEnable = p_Reader.ReadBool();
-			p_Instance.DrawMissingListEnable = p_Reader.ReadBool();
-			p_Instance.DrawPriorityListEnable = p_Reader.ReadBool();
-			p_Instance.DrawLoadingListEnable = p_Reader.ReadBool();
-			p_Instance.DrawMeshListEnable = p_Reader.ReadBool();
-			p_Instance.DrawNonStreamedListEnable = p_Reader.ReadBool();
-			p_Instance.DefragEnable = p_Reader.ReadBool();
-			p_Instance.Enable = p_Reader.ReadBool();
-			p_Instance.DumpLoadedList = p_Reader.ReadBool();
-			p_Instance.UseConditionalStreaming = p_Reader.ReadBool();
-		}
-
 	}
 }

@@ -50,20 +50,5 @@ namespace fb
 		[ContainerField(20), LayoutImmutable, Blittable]
 		public bool CompressTransactions { get; set; }
 
-		public static void Deserialize(ServerMetricsSettings p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.ReportName = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Enabled = p_Reader.ReadBool();
-			p_Instance.DbxReportEnabled = p_Reader.ReadBool();
-			p_Instance.TickTelemetryEnabled = p_Reader.ReadBool();
-			p_Instance.DevelopmentTelemetryEnabled = p_Reader.ReadBool();
-			p_Instance.PerformanceTelemetryEnabled = p_Reader.ReadBool();
-			p_Instance.JuiceTelemetryEnabled = p_Reader.ReadBool();
-			p_Instance.PerformanceProfileStateEnabled = p_Reader.ReadBool();
-			p_Instance.TransactionTelemetryEnabled = p_Reader.ReadBool();
-			p_Instance.CompressTransactions = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
-
 	}
 }

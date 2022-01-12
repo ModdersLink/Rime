@@ -26,19 +26,5 @@ namespace fb
 		[ContainerField(12)]
 		public List<string> EnabledOptions { get; set; } = new();
 
-		public static void Deserialize(SubWorldInclusionSetting p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Criterion.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.EnabledOptions.Clear();
-			(RimeReader Reader, uint Count) s_EnabledOptions = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_EnabledOptions.Count; ++i)
-			{
-				var s_Value = p_Parser.GetStringAtOffset(s_EnabledOptions.Reader.ReadUInt32());
-				p_Instance.EnabledOptions.Add(s_Value);
-			}
-			
-			s_EnabledOptions.Reader.Dispose();
-		}
-
 	}
 }

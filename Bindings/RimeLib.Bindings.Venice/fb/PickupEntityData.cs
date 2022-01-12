@@ -89,33 +89,5 @@ namespace fb
 		[ContainerField(164), LayoutImmutable, Blittable]
 		public bool SendPlayerInEventOnPickup { get; set; }
 
-		public static void Deserialize(PickupEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.RandomizeAmmoOnDropForPlayer = (PickupPlayerEnum) p_Reader.ReadInt32();
-			p_Instance.MinRandomClipAmmoPercent = p_Reader.ReadInt32();
-			p_Instance.PhysicsBlueprint.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.Mesh.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.MaxRandomClipAmmoPercent = p_Reader.ReadInt32();
-			p_Instance.PreferredWeaponSlot = p_Reader.ReadUInt32();
-			p_Instance.TimeToLive = p_Reader.ReadSingle();
-			p_Instance.MinRandomSpareAmmoPercent = p_Reader.ReadInt32();
-			p_Instance.InteractionRadius = p_Reader.ReadSingle();
-			p_Instance.MaxRandomSpareAmmoPercent = p_Reader.ReadInt32();
-			p_Instance.UnspawnOnPickup = p_Reader.ReadBool();
-			p_Instance.UnspawnOnAmmoPickup = p_Reader.ReadBool();
-			p_Instance.ForceWeaponSlotSelection = p_Reader.ReadBool();
-			p_Instance.DisplayInMiniMap = p_Reader.ReadBool();
-			p_Instance.HasAutomaticAmmoPickup = p_Reader.ReadBool();
-			p_Instance.UseWeaponMesh = p_Reader.ReadBool();
-			p_Instance.AllowPickup = p_Reader.ReadBool();
-			p_Instance.ContentIsStatic = p_Reader.ReadBool();
-			p_Instance.PositionIsStatic = p_Reader.ReadBool();
-			p_Instance.IgnoreNullWeaponSlots = p_Reader.ReadBool();
-			p_Instance.ReplaceAllContent = p_Reader.ReadBool();
-			p_Instance.RemoveWeaponOnDrop = p_Reader.ReadBool();
-			p_Instance.SendPlayerInEventOnPickup = p_Reader.ReadBool();
-			p_Reader.Seek(11, SeekOrigin.Current);
-		}
-
 	}
 }

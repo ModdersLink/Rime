@@ -28,12 +28,5 @@ namespace fb
 		[ContainerField(8), LayoutImmutable, Blittable]
 		public bool GrantsOnlinePass { get; set; }
 		
-		public static void Deserialize(Ps3SkuSettings p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.TitleId = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.SpId = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.GrantsOnlinePass = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
 	}
 }

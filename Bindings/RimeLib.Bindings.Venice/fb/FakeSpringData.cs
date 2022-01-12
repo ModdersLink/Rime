@@ -35,20 +35,5 @@ namespace fb
 		[ContainerField(76), LayoutImmutable, Blittable]
 		public float Damping { get; set; }
 
-		public static void Deserialize(FakeSpringData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Reader.Seek(8, SeekOrigin.Current);
-			fb.Vec3.Deserialize(p_Instance.Direction, p_Reader, p_Parser);
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.Length = p_Reader.ReadSingle();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.Acceleration = p_Reader.ReadSingle();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.ProgressiveExponent = p_Reader.ReadSingle();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.Damping = p_Reader.ReadSingle();
-			p_Reader.Seek(8, SeekOrigin.Current);
-		}
-
 	}
 }

@@ -28,11 +28,5 @@ namespace fb
 		[ContainerField(8), LayoutImmutable, Blittable]
 		public float PhaseShift { get; set; }
 		
-		public static void Deserialize(CameraSineCurveData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Frequency = p_Reader.ReadSingle();
-			p_Instance.Amplitude = p_Reader.ReadSingle();
-			p_Instance.PhaseShift = p_Reader.ReadSingle();
-		}
 	}
 }

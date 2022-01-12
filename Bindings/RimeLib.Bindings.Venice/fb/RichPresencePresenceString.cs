@@ -29,13 +29,5 @@ namespace fb
 		[ContainerField(13), LayoutImmutable, Blittable]
 		public sbyte Index { get; set; }
 
-		public static void Deserialize(RichPresencePresenceString p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.SID = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Interpolated = p_Reader.ReadBool();
-			p_Instance.Index = p_Reader.ReadSByte();
-			p_Reader.Seek(2, SeekOrigin.Current);
-		}
-
 	}
 }

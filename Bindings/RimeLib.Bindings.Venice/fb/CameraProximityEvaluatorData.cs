@@ -35,20 +35,5 @@ namespace fb
 		[ContainerField(68), LayoutImmutable, Blittable]
 		public float ForwardOffset { get; set; }
 
-		public static void Deserialize(CameraProximityEvaluatorData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Reader.Seek(4, SeekOrigin.Current);
-			fb.Vec3.Deserialize(p_Instance.Size, p_Reader, p_Parser);
-			p_Reader.Seek(4, SeekOrigin.Current);
-			fb.Vec3.Deserialize(p_Instance.Offset, p_Reader, p_Parser);
-			p_Reader.Seek(4, SeekOrigin.Current);
-			fb.Vec3.Deserialize(p_Instance.InnerRadiusDirection, p_Reader, p_Parser);
-			p_Reader.Seek(4, SeekOrigin.Current);
-			p_Instance.InnerRadius = p_Reader.ReadSingle();
-			p_Reader.Seek(4, SeekOrigin.Current);
-			p_Instance.ForwardOffset = p_Reader.ReadSingle();
-			p_Reader.Seek(12, SeekOrigin.Current);
-		}
-
 	}
 }

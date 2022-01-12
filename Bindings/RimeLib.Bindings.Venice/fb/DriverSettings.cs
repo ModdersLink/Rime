@@ -137,49 +137,5 @@ namespace fb
 		[ContainerField(149), LayoutImmutable, Blittable]
 		public bool UseSquareAccDiffCurveAcc { get; set; }
 
-		public static void Deserialize(DriverSettings p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.MinRadius = p_Reader.ReadSingle();
-			p_Instance.RadiusGrowthSpeed = p_Reader.ReadSingle();
-			p_Instance.StoppingDeceleration = p_Reader.ReadSingle();
-			p_Instance.SteeringSensitivity = p_Reader.ReadSingle();
-			p_Instance.MaxBrakeOutput = p_Reader.ReadSingle();
-			p_Instance.MaxDec = p_Reader.ReadSingle();
-			p_Instance.LookAheadTime = p_Reader.ReadSingle();
-			p_Instance.AngleDiffForNoSlowdown = p_Reader.ReadSingle();
-			p_Instance.AngleDiffForFullSlowdown = p_Reader.ReadSingle();
-			p_Instance.VelocityAtFullSlowdown = p_Reader.ReadSingle();
-			p_Instance.VelDiffAtMinAcc = p_Reader.ReadSingle();
-			p_Instance.VelDiffAtMaxAcc = p_Reader.ReadSingle();
-			p_Instance.MaxYawToApplySprint = p_Reader.ReadSingle();
-			p_Instance.MinAcc = p_Reader.ReadSingle();
-			p_Instance.MaxAcc = p_Reader.ReadSingle();
-			p_Instance.VelDiffAtMinDec = p_Reader.ReadSingle();
-			p_Instance.VelDiffAtMaxDec = p_Reader.ReadSingle();
-			p_Instance.AccDiffAtMinThrottleVelocityDecelerating = p_Reader.ReadSingle();
-			p_Instance.MinDec = p_Reader.ReadSingle();
-			p_Instance.MinThrottleVelocityDecelerating = p_Reader.ReadSingle();
-			p_Instance.AccDiffAtMinThrottleVelocityAccelerating = p_Reader.ReadSingle();
-			p_Instance.AccDiffAtMaxThrottleVelocityAccelerating = p_Reader.ReadSingle();
-			p_Instance.MaxThrottleVelocityDecelerating = p_Reader.ReadSingle();
-			p_Instance.MinThrottleVelocityAccelerating = p_Reader.ReadSingle();
-			p_Instance.MaxThrottleVelocityAccelerating = p_Reader.ReadSingle();
-			p_Instance.MaxPTerm = p_Reader.ReadSingle();
-			p_Instance.AccDiffAtMaxThrottleVelocityDecelerating = p_Reader.ReadSingle();
-			p_Instance.P = p_Reader.ReadSingle();
-			p_Instance.I = p_Reader.ReadSingle();
-			p_Instance.MaxError = p_Reader.ReadSingle();
-			p_Instance.MaxITerm = p_Reader.ReadSingle();
-			p_Instance.MaxSumError = p_Reader.ReadSingle();
-			p_Instance.D = p_Reader.ReadSingle();
-			p_Instance.UseSquareVelDiffCurveDec = p_Reader.ReadBool();
-			p_Instance.UseSquareAccDiffCurveDec = p_Reader.ReadBool();
-			p_Instance.SquareBrakeOutput = p_Reader.ReadBool();
-			p_Instance.UseSquareVelDiffCurveAcc = p_Reader.ReadBool();
-			p_Instance.UsePIDRegulator = p_Reader.ReadBool();
-			p_Instance.UseSquareAccDiffCurveAcc = p_Reader.ReadBool();
-			p_Reader.Seek(2, SeekOrigin.Current);
-		}
-
 	}
 }

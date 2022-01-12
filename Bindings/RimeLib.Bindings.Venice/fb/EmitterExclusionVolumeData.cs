@@ -20,9 +20,5 @@ namespace fb
 	public class EmitterExclusionVolumeData : 
 		OBBData
 	{
-		public static void Deserialize(EmitterExclusionVolumeData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

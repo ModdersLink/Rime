@@ -56,34 +56,5 @@ namespace fb
 		[ContainerField(108), LayoutImmutable, Blittable]
 		public bool SkyBoxEnable { get; set; }
 
-		public static void Deserialize(EnlightenState p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Reader.Seek(8, SeekOrigin.Current);
-			fb.Vec3.Deserialize(p_Instance.SkyBoxGroundColor, p_Reader, p_Parser);
-			p_Reader.Seek(8, SeekOrigin.Current);
-			fb.Vec3.Deserialize(p_Instance.SkyBoxSunLightColor, p_Reader, p_Parser);
-			p_Reader.Seek(8, SeekOrigin.Current);
-			fb.Vec3.Deserialize(p_Instance.SkyBoxBackLightColor, p_Reader, p_Parser);
-			p_Reader.Seek(8, SeekOrigin.Current);
-			fb.Vec3.Deserialize(p_Instance.SkyBoxSkyColor, p_Reader, p_Parser);
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.SunScale = p_Reader.ReadSingle();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.OutputScale = p_Reader.ReadSingle();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.BounceScale = p_Reader.ReadSingle();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.SkyBoxSunLightColorSize = p_Reader.ReadSingle();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.SkyBoxBackLightRotationY = p_Reader.ReadSingle();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.SkyBoxBackLightColorSize = p_Reader.ReadSingle();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.SkyBoxBackLightRotationX = p_Reader.ReadSingle();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.SkyBoxEnable = p_Reader.ReadBool();
-			p_Reader.Seek(11, SeekOrigin.Current);
-		}
-
 	}
 }

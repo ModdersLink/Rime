@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(8)]
 		public UIHudIcon Icon { get; set; } = new();
 
-		public static void Deserialize(VeniceMapMarkerHudData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Icon = (UIHudIcon) p_Reader.ReadInt32();
-		}
-
 	}
 }

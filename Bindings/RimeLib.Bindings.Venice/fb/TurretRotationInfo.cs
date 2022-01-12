@@ -40,16 +40,5 @@ namespace fb
 		[ContainerField(21), LayoutImmutable, Blittable]
 		public bool InvertRotation { get; set; }
 		
-		public static void Deserialize(TurretRotationInfo p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.RotationAxis = (RotationAxis) p_Reader.ReadInt32();
-			p_Instance.Channel = (RotationChannel) p_Reader.ReadInt32();
-			p_Instance.MaxRotation = p_Reader.ReadSingle();
-			p_Instance.MinRotation = p_Reader.ReadSingle();
-			p_Instance.PhaseOffset = p_Reader.ReadSingle();
-			p_Instance.NormalizeRotation = p_Reader.ReadBool();
-			p_Instance.InvertRotation = p_Reader.ReadBool();
-			p_Reader.Seek(2, SeekOrigin.Current);
-		}
 	}
 }

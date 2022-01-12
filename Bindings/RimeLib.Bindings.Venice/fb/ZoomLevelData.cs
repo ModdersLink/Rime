@@ -89,33 +89,5 @@ namespace fb
 		[ContainerField(90), LayoutImmutable, Blittable]
 		public bool AllowFieldOfViewScaling { get; set; }
 
-		public static void Deserialize(ZoomLevelData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.FieldOfView = p_Reader.ReadSingle();
-			p_Instance.DispersionMultiplier = p_Reader.ReadSingle();
-			p_Instance.LookSpeedMultiplier = p_Reader.ReadSingle();
-			p_Instance.SprintLookSpeedMultiplier = p_Reader.ReadSingle();
-			p_Instance.MoveSpeedMultiplier = p_Reader.ReadSingle();
-			p_Instance.SwayPitchMultiplier = p_Reader.ReadSingle();
-			p_Instance.SwayYawMultiplier = p_Reader.ReadSingle();
-			p_Instance.SupportedSwayPitchMultiplier = p_Reader.ReadSingle();
-			p_Instance.SupportedSwayYawMultiplier = p_Reader.ReadSingle();
-			p_Instance.TimePitchMultiplier = p_Reader.ReadSingle();
-			p_Instance.TimeYawMultiplier = p_Reader.ReadSingle();
-			p_Instance.RecoilMultiplier = p_Reader.ReadSingle();
-			p_Instance.FadeToBlackDuration = p_Reader.ReadSingle();
-			p_Instance.RecoilFovMultiplier = p_Reader.ReadSingle();
-			p_Instance.CameraImpulseMultiplier = p_Reader.ReadSingle();
-			p_Instance.OnActivateEventType = (ZoomLevelActivateEventType) p_Reader.ReadInt32();
-			p_Instance.StartFadeToBlackAtTime = p_Reader.ReadSingle();
-			p_Instance.FadeFromBlackDuration = p_Reader.ReadSingle();
-			p_Instance.StartFadeFromBlackAtTime = p_Reader.ReadSingle();
-			p_Instance.ScreenExposureAreaScale = p_Reader.ReadSingle();
-			p_Instance.FadeToBlackInZoomTransition = p_Reader.ReadBool();
-			p_Instance.UseFovSpecialisation = p_Reader.ReadBool();
-			p_Instance.AllowFieldOfViewScaling = p_Reader.ReadBool();
-			p_Reader.Seek(1, SeekOrigin.Current);
-		}
-
 	}
 }

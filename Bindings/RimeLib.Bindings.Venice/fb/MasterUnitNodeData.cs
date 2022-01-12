@@ -81,41 +81,7 @@ namespace fb
 		public AudioGraphNodePort ParallelDistortionGain { get; set; } = new();
 
 		[ContainerField(168)]
-		public List<CtrRef<MasterUnitSettings>> Settings { get; set; } = new();
-
-		public static void Deserialize(MasterUnitNodeData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AudioGraphNodePort.Deserialize(p_Instance.SettingsIndex, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.Amplitude, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.MasterGain, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.MasterLfeGain, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.MasterDialogGain, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.MainMixGain, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.PostEffectsGain, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.ReverbGain, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.FadeTime, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.HighPassFreq, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.LowShelfFreq, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.LowShelfGain, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.HighShelfFreq, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.HighShelfGain, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.CompThreshold, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.CompRatio, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.CompAttack, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.CompRelease, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.DistClipLevel, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.ParallelDistortionGain, p_Reader, p_Parser);
-			p_Instance.Settings.Clear();
-			(RimeReader Reader, uint Count) s_Settings = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_Settings.Count; ++i)
-			{
-				var s_CtrRef = new CtrRef<MasterUnitSettings>();
-				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_Settings.Reader.ReadUInt32()));
-				p_Instance.Settings.Add(s_CtrRef);
-			}
-			
-			s_Settings.Reader.Dispose();
-		}
+		public RefArray<MasterUnitSettings> Settings { get; set; } = new();
 
 	}
 }

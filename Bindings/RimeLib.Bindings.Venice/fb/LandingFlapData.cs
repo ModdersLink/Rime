@@ -32,13 +32,5 @@ namespace fb
 		[ContainerField(20), LayoutImmutable, Blittable]
 		public float VelocityTolerance { get; set; }
 
-		public static void Deserialize(LandingFlapData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.ActivationHeight = p_Reader.ReadSingle();
-			p_Instance.HeightTolerance = p_Reader.ReadSingle();
-			p_Instance.ActivationVelocity = p_Reader.ReadSingle();
-			p_Instance.VelocityTolerance = p_Reader.ReadSingle();
-		}
-
 	}
 }

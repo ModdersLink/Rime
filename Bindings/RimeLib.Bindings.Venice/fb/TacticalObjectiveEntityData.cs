@@ -35,15 +35,5 @@ namespace fb
 		[ContainerField(112), LayoutImmutable, Blittable]
 		public float Team2Timer { get; set; }
 
-		public static void Deserialize(TacticalObjectiveEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.MissionSid = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.BriefingSidTeam1 = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.BriefingSidTeam2 = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Team1Timer = p_Reader.ReadSingle();
-			p_Instance.Team2Timer = p_Reader.ReadSingle();
-			p_Reader.Seek(12, SeekOrigin.Current);
-		}
-
 	}
 }

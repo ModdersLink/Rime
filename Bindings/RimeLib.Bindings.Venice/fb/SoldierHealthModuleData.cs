@@ -20,9 +20,5 @@ namespace fb
 	public class SoldierHealthModuleData : 
 		DataContainer
 	{
-		public static void Deserialize(SoldierHealthModuleData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

@@ -71,58 +71,5 @@ namespace fb
 		[ContainerField(63), LayoutImmutable, Blittable]
 		public bool UseAutoClutch { get; set; }
 
-		public static void Deserialize(GearboxConfigData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.ForwardGearRatios.Clear();
-			(RimeReader Reader, uint Count) s_ForwardGearRatios = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_ForwardGearRatios.Count; ++i)
-			{
-				var s_Value = s_ForwardGearRatios.Reader.ReadSingle();
-				p_Instance.ForwardGearRatios.Add(s_Value);
-			}
-			
-			s_ForwardGearRatios.Reader.Dispose();
-			p_Instance.ForwardGearSpeeds.Clear();
-			(RimeReader Reader, uint Count) s_ForwardGearSpeeds = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_ForwardGearSpeeds.Count; ++i)
-			{
-				var s_Value = s_ForwardGearSpeeds.Reader.ReadSingle();
-				p_Instance.ForwardGearSpeeds.Add(s_Value);
-			}
-			
-			s_ForwardGearSpeeds.Reader.Dispose();
-			p_Instance.ReverseGearRatios.Clear();
-			(RimeReader Reader, uint Count) s_ReverseGearRatios = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_ReverseGearRatios.Count; ++i)
-			{
-				var s_Value = s_ReverseGearRatios.Reader.ReadSingle();
-				p_Instance.ReverseGearRatios.Add(s_Value);
-			}
-			
-			s_ReverseGearRatios.Reader.Dispose();
-			p_Instance.ReverseGearSpeeds.Clear();
-			(RimeReader Reader, uint Count) s_ReverseGearSpeeds = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_ReverseGearSpeeds.Count; ++i)
-			{
-				var s_Value = s_ReverseGearSpeeds.Reader.ReadSingle();
-				p_Instance.ReverseGearSpeeds.Add(s_Value);
-			}
-			
-			s_ReverseGearSpeeds.Reader.Dispose();
-			p_Instance.GearboxType = p_Reader.ReadInt32();
-			p_Instance.GearboxMode = p_Reader.ReadInt32();
-			p_Instance.GearChangeTime = p_Reader.ReadSingle();
-			p_Instance.GearDownSpeedFactor = p_Reader.ReadSingle();
-			p_Instance.OppositeDirGearChangeMaxSpeed = p_Reader.ReadSingle();
-			p_Instance.OppositeDirGearChangeTime = p_Reader.ReadSingle();
-			p_Instance.ClutchSpeedFactor = p_Reader.ReadSingle();
-			p_Instance.TransmissionEfficiency = p_Reader.ReadSingle();
-			p_Instance.BackwardThrottleLimit = p_Reader.ReadSingle();
-			p_Instance.UseClassicGearBoxAutoClutch = p_Reader.ReadBool();
-			p_Instance.UseNeutralGear = p_Reader.ReadBool();
-			p_Instance.LimitBackwardThrottle = p_Reader.ReadBool();
-			p_Instance.UseAutoClutch = p_Reader.ReadBool();
-		}
-
 	}
 }

@@ -20,9 +20,5 @@ namespace fb
 	public class UIAssignmentsCompData : 
 		UIComponentData
 	{
-		public static void Deserialize(UIAssignmentsCompData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

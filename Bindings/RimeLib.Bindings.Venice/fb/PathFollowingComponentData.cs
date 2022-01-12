@@ -32,21 +32,5 @@ namespace fb
 		[ContainerField(108), LayoutImmutable, Blittable]
 		public float MovementCorridorRadius { get; set; }
 
-		public static void Deserialize(PathFollowingComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.UpdatePathAtDistancePercent = p_Reader.ReadSingle();
-			p_Instance.PreferredPathfindingIndex = p_Reader.ReadUInt32();
-			p_Instance.AlternatePathfindingIndices.Clear();
-			(RimeReader Reader, uint Count) s_AlternatePathfindingIndices = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_AlternatePathfindingIndices.Count; ++i)
-			{
-				var s_Value = s_AlternatePathfindingIndices.Reader.ReadUInt32();
-				p_Instance.AlternatePathfindingIndices.Add(s_Value);
-			}
-			
-			s_AlternatePathfindingIndices.Reader.Dispose();
-			p_Instance.MovementCorridorRadius = p_Reader.ReadSingle();
-		}
-
 	}
 }

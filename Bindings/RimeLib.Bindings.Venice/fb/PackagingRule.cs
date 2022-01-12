@@ -26,14 +26,5 @@ namespace fb
 		[ContainerField(32), LayoutImmutable, Blittable]
 		public bool CanTargetSelf { get; set; }
 
-		public static void Deserialize(PackagingRule p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Reader.Seek(4, SeekOrigin.Current);
-			fb.Vec3.Deserialize(p_Instance.DebugColor, p_Reader, p_Parser);
-			p_Reader.Seek(4, SeekOrigin.Current);
-			p_Instance.CanTargetSelf = p_Reader.ReadBool();
-			p_Reader.Seek(19, SeekOrigin.Current);
-		}
-
 	}
 }

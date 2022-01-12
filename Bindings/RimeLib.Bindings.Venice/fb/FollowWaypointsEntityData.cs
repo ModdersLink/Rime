@@ -29,13 +29,5 @@ namespace fb
 		[ContainerField(17), LayoutImmutable, Blittable]
 		public bool StartAtGeometricallyClosestWaypoint { get; set; }
 
-		public static void Deserialize(FollowWaypointsEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.TypeOfRoute = (RouteType) p_Reader.ReadInt32();
-			p_Instance.UsePathFinding = p_Reader.ReadBool();
-			p_Instance.StartAtGeometricallyClosestWaypoint = p_Reader.ReadBool();
-			p_Reader.Seek(2, SeekOrigin.Current);
-		}
-
 	}
 }

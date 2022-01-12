@@ -44,18 +44,5 @@ namespace fb
 		[ContainerField(136)]
 		public Realm Realm { get; set; } = new();
 
-		public static void Deserialize(ScreenEffectComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.Vec4.Deserialize(p_Instance.ScreenEffectParams, p_Reader, p_Parser);
-			p_Instance.FrameType = (ScreenEffectFrameType) p_Reader.ReadInt32();
-			p_Instance.Shader.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.FrameWidth = p_Reader.ReadSingle();
-			p_Instance.OuterFrameOpacity = p_Reader.ReadSingle();
-			p_Instance.InnerFrameOpacity = p_Reader.ReadSingle();
-			p_Instance.Angle = p_Reader.ReadSingle();
-			p_Instance.Realm = (Realm) p_Reader.ReadInt32();
-			p_Reader.Seek(4, SeekOrigin.Current);
-		}
-
 	}
 }

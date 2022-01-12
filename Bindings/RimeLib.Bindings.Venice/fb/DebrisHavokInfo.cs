@@ -25,10 +25,5 @@ namespace fb
 		[ContainerField(4), LayoutImmutable, Blittable]
 		public int ReserveCount { get; set; }
 		
-		public static void Deserialize(DebrisHavokInfo p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.HavokAsset.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.ReserveCount = p_Reader.ReadInt32();
-		}
 	}
 }

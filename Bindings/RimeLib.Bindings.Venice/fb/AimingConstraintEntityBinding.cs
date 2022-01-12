@@ -25,10 +25,5 @@ namespace fb
 		[ContainerField(4)]
 		public AntRef ProneAimDistance { get; set; } = new();
 		
-		public static void Deserialize(AimingConstraintEntityBinding p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AntRef.Deserialize(p_Instance.ProneAimLimit, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.ProneAimDistance, p_Reader, p_Parser);
-		}
 	}
 }

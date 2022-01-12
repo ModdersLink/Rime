@@ -36,26 +36,7 @@ namespace fb
 		public float Duration { get; set; }
 
 		[ContainerField(28)]
-		public List<CtrRef<SoundTestTask>> Tasks { get; set; } = new();
-
-		public static void Deserialize(SoundTestSpec p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Name = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Description = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.MainStartTask.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.MainStopTask.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.Duration = p_Reader.ReadSingle();
-			p_Instance.Tasks.Clear();
-			(RimeReader Reader, uint Count) s_Tasks = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_Tasks.Count; ++i)
-			{
-				var s_CtrRef = new CtrRef<SoundTestTask>();
-				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_Tasks.Reader.ReadUInt32()));
-				p_Instance.Tasks.Add(s_CtrRef);
-			}
-			
-			s_Tasks.Reader.Dispose();
-		}
+		public RefArray<SoundTestTask> Tasks { get; set; } = new();
 
 	}
 }

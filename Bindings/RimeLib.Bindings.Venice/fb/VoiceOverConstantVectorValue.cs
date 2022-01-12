@@ -23,12 +23,5 @@ namespace fb
 		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable]
 		public Vec4 Value { get; set; } = new();
 
-		public static void Deserialize(VoiceOverConstantVectorValue p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Reader.Seek(8, SeekOrigin.Current);
-			fb.Vec4.Deserialize(p_Instance.Value, p_Reader, p_Parser);
-			p_Reader.Seek(8, SeekOrigin.Current);
-		}
-
 	}
 }

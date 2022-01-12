@@ -50,19 +50,5 @@ namespace fb
 		[ContainerField(44), LayoutImmutable, Blittable]
 		public float HotVehicleTimeout { get; set; }
 
-		public static void Deserialize(DamageScoringHandlerData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.RepairVehicleLimit = p_Reader.ReadSingle();
-			p_Instance.DamageTeamVehicleLimit = p_Reader.ReadSingle();
-			p_Instance.TeamHealingLimit = p_Reader.ReadSingle();
-			p_Instance.TeamDamageLimit = p_Reader.ReadSingle();
-			p_Instance.KillAssistLimit = p_Reader.ReadSingle();
-			p_Instance.KillAssistTimeout = p_Reader.ReadSingle();
-			p_Instance.VehicleDestroyAssistLimit = p_Reader.ReadSingle();
-			p_Instance.SaviorKillTimeout = p_Reader.ReadSingle();
-			p_Instance.SaviorDamageLimit = p_Reader.ReadSingle();
-			p_Instance.HotVehicleTimeout = p_Reader.ReadSingle();
-		}
-
 	}
 }

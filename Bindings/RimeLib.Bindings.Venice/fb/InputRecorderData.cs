@@ -32,14 +32,5 @@ namespace fb
 		[ContainerField(20), LayoutImmutable, Blittable]
 		public bool AutoIncrementFileName { get; set; }
 
-		public static void Deserialize(InputRecorderData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.FileNamePrefix = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.FileName = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.ToggleRecordAction = (EntryInputActionEnum) p_Reader.ReadInt32();
-			p_Instance.AutoIncrementFileName = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
-
 	}
 }

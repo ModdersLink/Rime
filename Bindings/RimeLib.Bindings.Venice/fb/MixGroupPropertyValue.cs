@@ -25,10 +25,5 @@ namespace fb
 		[ContainerField(4), LayoutImmutable, Blittable]
 		public float Value { get; set; }
 		
-		public static void Deserialize(MixGroupPropertyValue p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Property = p_Reader.ReadUInt32();
-			p_Instance.Value = p_Reader.ReadSingle();
-		}
 	}
 }

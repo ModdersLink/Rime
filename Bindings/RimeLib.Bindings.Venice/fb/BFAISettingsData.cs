@@ -35,14 +35,5 @@ namespace fb
 		[ContainerField(96)]
 		public CtrRef<CombatConstantData> CombatConstants { get; set; } = new();
 
-		public static void Deserialize(BFAISettingsData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.MovementConstants.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.TurretControlConstants.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.SearchAndDestroyConstants.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.FollowConstants.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.CombatConstants.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-		}
-
 	}
 }

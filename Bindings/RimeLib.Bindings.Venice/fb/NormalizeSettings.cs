@@ -37,15 +37,5 @@ namespace fb
 		[ContainerField(20), LayoutImmutable, Blittable]
 		public bool Normalize { get; set; }
 		
-		public static void Deserialize(NormalizeSettings p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Maximum = p_Reader.ReadSingle();
-			p_Instance.Minimum = p_Reader.ReadSingle();
-			p_Instance.Velocity = p_Reader.ReadSingle();
-			p_Instance.Lower = p_Reader.ReadSingle();
-			p_Instance.Upper = p_Reader.ReadSingle();
-			p_Instance.Normalize = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
 	}
 }

@@ -23,11 +23,5 @@ namespace fb
 		[ContainerField(96), LayoutImmutable, Blittable]
 		public bool KillAllHumanSoldiers { get; set; }
 
-		public static void Deserialize(KillAllEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.KillAllHumanSoldiers = p_Reader.ReadBool();
-			p_Reader.Seek(15, SeekOrigin.Current);
-		}
-
 	}
 }

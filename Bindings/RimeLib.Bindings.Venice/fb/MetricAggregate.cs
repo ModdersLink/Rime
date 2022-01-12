@@ -20,9 +20,5 @@ namespace fb
 	public class MetricAggregate : 
 		MetricEvent
 	{
-		public static void Deserialize(MetricAggregate p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

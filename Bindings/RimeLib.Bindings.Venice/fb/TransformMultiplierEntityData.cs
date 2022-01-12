@@ -29,16 +29,5 @@ namespace fb
 		[ContainerField(144)]
 		public Realm Realm { get; set; } = new();
 
-		public static void Deserialize(TransformMultiplierEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Reader.Seek(4, SeekOrigin.Current);
-			fb.LinearTransform.Deserialize(p_Instance.In1, p_Reader, p_Parser);
-			p_Reader.Seek(4, SeekOrigin.Current);
-			fb.LinearTransform.Deserialize(p_Instance.In2, p_Reader, p_Parser);
-			p_Reader.Seek(4, SeekOrigin.Current);
-			p_Instance.Realm = (Realm) p_Reader.ReadInt32();
-			p_Reader.Seek(16, SeekOrigin.Current);
-		}
-
 	}
 }

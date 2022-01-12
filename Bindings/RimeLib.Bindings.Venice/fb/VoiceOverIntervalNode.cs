@@ -35,14 +35,5 @@ namespace fb
 		[ContainerField(24)]
 		public CtrRef<VoiceOverInterval> Interval { get; set; } = new();
 
-		public static void Deserialize(VoiceOverIntervalNode p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Threshold.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.Time.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.False.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.True.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.Interval.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-		}
-
 	}
 }

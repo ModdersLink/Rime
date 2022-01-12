@@ -39,7 +39,7 @@ namespace fb
 		public EntryInputActionEnum YawInputAction { get; set; } = new();
 
 		[ContainerField(184)]
-		public List<CtrRef<CameraLoosePartPhysicsData>> LoosePartPhysics { get; set; } = new();
+		public RefArray<CameraLoosePartPhysicsData> LoosePartPhysics { get; set; } = new();
 
 		[ContainerField(188), LayoutImmutable, Blittable]
 		public float LeftYawAngle { get; set; }
@@ -79,76 +79,6 @@ namespace fb
 
 		[ContainerField(227), LayoutImmutable, Blittable]
 		public bool MirrorVerticalCurves { get; set; }
-
-		public static void Deserialize(StaticCameraData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.LeftCurve.Clear();
-			(RimeReader Reader, uint Count) s_LeftCurve = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_LeftCurve.Count; ++i)
-			{
-				var s_Value = new Vec3();
-				fb.Vec3.Deserialize(s_Value, s_LeftCurve.Reader, p_Parser);
-				p_Instance.LeftCurve.Add(s_Value);
-			}
-			
-			s_LeftCurve.Reader.Dispose();
-			p_Instance.RightCurve.Clear();
-			(RimeReader Reader, uint Count) s_RightCurve = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_RightCurve.Count; ++i)
-			{
-				var s_Value = new Vec3();
-				fb.Vec3.Deserialize(s_Value, s_RightCurve.Reader, p_Parser);
-				p_Instance.RightCurve.Add(s_Value);
-			}
-			
-			s_RightCurve.Reader.Dispose();
-			p_Instance.UpCurve.Clear();
-			(RimeReader Reader, uint Count) s_UpCurve = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_UpCurve.Count; ++i)
-			{
-				var s_Value = new Vec3();
-				fb.Vec3.Deserialize(s_Value, s_UpCurve.Reader, p_Parser);
-				p_Instance.UpCurve.Add(s_Value);
-			}
-			
-			s_UpCurve.Reader.Dispose();
-			p_Instance.DownCurve.Clear();
-			(RimeReader Reader, uint Count) s_DownCurve = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_DownCurve.Count; ++i)
-			{
-				var s_Value = new Vec3();
-				fb.Vec3.Deserialize(s_Value, s_DownCurve.Reader, p_Parser);
-				p_Instance.DownCurve.Add(s_Value);
-			}
-			
-			s_DownCurve.Reader.Dispose();
-			p_Instance.UpPitchAngle = p_Reader.ReadSingle();
-			p_Instance.YawInputAction = (EntryInputActionEnum) p_Reader.ReadInt32();
-			p_Instance.LoosePartPhysics.Clear();
-			(RimeReader Reader, uint Count) s_LoosePartPhysics = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_LoosePartPhysics.Count; ++i)
-			{
-				var s_CtrRef = new CtrRef<CameraLoosePartPhysicsData>();
-				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_LoosePartPhysics.Reader.ReadUInt32()));
-				p_Instance.LoosePartPhysics.Add(s_CtrRef);
-			}
-			
-			s_LoosePartPhysics.Reader.Dispose();
-			p_Instance.LeftYawAngle = p_Reader.ReadSingle();
-			p_Instance.RightYawAngle = p_Reader.ReadSingle();
-			p_Instance.PitchSensitivityZoomed = p_Reader.ReadSingle();
-			p_Instance.DownPitchAngle = p_Reader.ReadSingle();
-			p_Instance.AverageFilterFrames = p_Reader.ReadInt32();
-			p_Instance.PitchInputAction = (EntryInputActionEnum) p_Reader.ReadInt32();
-			p_Instance.YawSensitivityZoomed = p_Reader.ReadSingle();
-			p_Instance.PitchSensitivityNonZoomed = p_Reader.ReadSingle();
-			p_Instance.YawSensitivityNonZoomed = p_Reader.ReadSingle();
-			p_Instance.ResetAccumulatedInputOnViewChange = p_Reader.ReadBool();
-			p_Instance.MirrorHorizontalCurves = p_Reader.ReadBool();
-			p_Instance.AccumulateInput = p_Reader.ReadBool();
-			p_Instance.MirrorVerticalCurves = p_Reader.ReadBool();
-			p_Reader.Seek(12, SeekOrigin.Current);
-		}
 
 	}
 }

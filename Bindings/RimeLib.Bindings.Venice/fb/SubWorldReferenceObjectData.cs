@@ -38,16 +38,5 @@ namespace fb
 		[ContainerField(107), LayoutImmutable, Blittable]
 		public bool IsPs3SubLevel { get; set; }
 
-		public static void Deserialize(SubWorldReferenceObjectData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.BundleName = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.InclusionSettings.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.AutoLoad = p_Reader.ReadBool();
-			p_Instance.IsWin32SubLevel = p_Reader.ReadBool();
-			p_Instance.IsXenonSubLevel = p_Reader.ReadBool();
-			p_Instance.IsPs3SubLevel = p_Reader.ReadBool();
-			p_Reader.Seek(4, SeekOrigin.Current);
-		}
-
 	}
 }

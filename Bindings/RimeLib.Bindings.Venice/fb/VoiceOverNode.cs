@@ -20,9 +20,5 @@ namespace fb
 	public class VoiceOverNode : 
 		DataContainer
 	{
-		public static void Deserialize(VoiceOverNode p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

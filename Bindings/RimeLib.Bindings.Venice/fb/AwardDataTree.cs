@@ -21,21 +21,7 @@ namespace fb
 		AwardableTreeBase
 	{
 		[ContainerField(24)]
-		public List<CtrRef<AwardData>> FilteredAwards { get; set; } = new();
-
-		public static void Deserialize(AwardDataTree p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.FilteredAwards.Clear();
-			(RimeReader Reader, uint Count) s_FilteredAwards = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_FilteredAwards.Count; ++i)
-			{
-				var s_CtrRef = new CtrRef<AwardData>();
-				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_FilteredAwards.Reader.ReadUInt32()));
-				p_Instance.FilteredAwards.Add(s_CtrRef);
-			}
-			
-			s_FilteredAwards.Reader.Dispose();
-		}
+		public RefArray<AwardData> FilteredAwards { get; set; } = new();
 
 	}
 }

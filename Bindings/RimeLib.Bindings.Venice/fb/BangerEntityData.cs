@@ -38,24 +38,5 @@ namespace fb
 		[ContainerField(132), LayoutImmutable, Blittable]
 		public bool UseVariableNetworkFrequency { get; set; }
 
-		public static void Deserialize(BangerEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Scales.Clear();
-			(RimeReader Reader, uint Count) s_Scales = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_Scales.Count; ++i)
-			{
-				var s_Value = s_Scales.Reader.ReadSingle();
-				p_Instance.Scales.Add(s_Value);
-			}
-			
-			s_Scales.Reader.Dispose();
-			p_Instance.Mesh.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.Explosion.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.TimeToLive = p_Reader.ReadSingle();
-			p_Instance.DestructiblePartCount = p_Reader.ReadUInt32();
-			p_Instance.UseVariableNetworkFrequency = p_Reader.ReadBool();
-			p_Reader.Seek(11, SeekOrigin.Current);
-		}
-
 	}
 }

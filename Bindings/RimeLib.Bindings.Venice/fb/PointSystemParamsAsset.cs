@@ -35,14 +35,5 @@ namespace fb
 		[ContainerField(28), LayoutImmutable, Blittable]
 		public float FreefallHeight { get; set; }
 
-		public static void Deserialize(PointSystemParamsAsset p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.MultiKillTimeLimit = p_Reader.ReadSingle();
-			p_Instance.DnfTimeout = p_Reader.ReadSingle();
-			p_Instance.KillStreakX = p_Reader.ReadUInt32();
-			p_Instance.NemesisKillX = p_Reader.ReadUInt32();
-			p_Instance.FreefallHeight = p_Reader.ReadSingle();
-		}
-
 	}
 }

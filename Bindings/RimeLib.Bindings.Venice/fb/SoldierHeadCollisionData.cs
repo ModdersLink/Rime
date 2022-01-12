@@ -26,20 +26,5 @@ namespace fb
 		[ContainerField(12)]
 		public List<SoldierHeadCollisionPoseData> PoseStates { get; set; } = new();
 
-		public static void Deserialize(SoldierHeadCollisionData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.HeadRadius = p_Reader.ReadSingle();
-			p_Instance.PoseStates.Clear();
-			(RimeReader Reader, uint Count) s_PoseStates = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_PoseStates.Count; ++i)
-			{
-				var s_Value = new SoldierHeadCollisionPoseData();
-				fb.SoldierHeadCollisionPoseData.Deserialize(s_Value, s_PoseStates.Reader, p_Parser);
-				p_Instance.PoseStates.Add(s_Value);
-			}
-			
-			s_PoseStates.Reader.Dispose();
-		}
-
 	}
 }

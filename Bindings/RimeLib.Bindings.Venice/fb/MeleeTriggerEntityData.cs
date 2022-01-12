@@ -29,16 +29,5 @@ namespace fb
 		[ContainerField(84), LayoutImmutable, Blittable]
 		public bool MeleeEnabled { get; set; }
 
-		public static void Deserialize(MeleeTriggerEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Reader.Seek(4, SeekOrigin.Current);
-			fb.LinearTransform.Deserialize(p_Instance.ConnectTransform, p_Reader, p_Parser);
-			p_Reader.Seek(4, SeekOrigin.Current);
-			p_Instance.MeleeType.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Reader.Seek(4, SeekOrigin.Current);
-			p_Instance.MeleeEnabled = p_Reader.ReadBool();
-			p_Reader.Seek(15, SeekOrigin.Current);
-		}
-
 	}
 }

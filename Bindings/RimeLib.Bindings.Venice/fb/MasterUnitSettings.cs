@@ -56,21 +56,5 @@ namespace fb
 		[ContainerField(52), LayoutImmutable, Blittable]
 		public float FadeTime { get; set; }
 
-		public static void Deserialize(MasterUnitSettings p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Name = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Equalizer.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.Compressor.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.MasterVolume = p_Reader.ReadSingle();
-			p_Instance.MasterLfeGain = p_Reader.ReadSingle();
-			p_Instance.MasterDialogGain = p_Reader.ReadSingle();
-			p_Instance.ReverbVolume = p_Reader.ReadSingle();
-			p_Instance.MainMixVolume = p_Reader.ReadSingle();
-			p_Instance.DistortionClipLevel = p_Reader.ReadSingle();
-			p_Instance.ParallelDistortionGain = p_Reader.ReadSingle();
-			p_Instance.PostEffectsGain = p_Reader.ReadSingle();
-			p_Instance.FadeTime = p_Reader.ReadSingle();
-		}
-
 	}
 }

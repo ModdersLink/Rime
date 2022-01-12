@@ -31,12 +31,5 @@ namespace fb
 		[ContainerField(12), LayoutImmutable, Blittable]
 		public float MaxLookPitch { get; set; }
 		
-		public static void Deserialize(LookConstraintsData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.MinLookYaw = p_Reader.ReadSingle();
-			p_Instance.MaxLookYaw = p_Reader.ReadSingle();
-			p_Instance.MinLookPitch = p_Reader.ReadSingle();
-			p_Instance.MaxLookPitch = p_Reader.ReadSingle();
-		}
 	}
 }

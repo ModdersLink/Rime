@@ -44,18 +44,5 @@ namespace fb
 		[ContainerField(60)]
 		public SoundGraphPluginRef ReverbPlugin { get; set; } = new();
 
-		public static void Deserialize(IrReverbNodeData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AudioGraphNodePort.Deserialize(p_Instance.In, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.Out, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.Reverb0, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.Amplitude0, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.Reverb1, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.Amplitude1, p_Reader, p_Parser);
-			p_Instance.MaxReverbLength = p_Reader.ReadSingle();
-			fb.SoundGraphPluginRef.Deserialize(p_Instance.ReverbPlugin, p_Reader, p_Parser);
-			p_Reader.Seek(1, SeekOrigin.Current);
-		}
-
 	}
 }

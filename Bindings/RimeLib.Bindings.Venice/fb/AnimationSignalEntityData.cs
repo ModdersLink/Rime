@@ -44,18 +44,5 @@ namespace fb
 		[ContainerField(37), LayoutImmutable, Blittable]
 		public bool Continuous { get; set; }
 
-		public static void Deserialize(AnimationSignalEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Realm = (Realm) p_Reader.ReadInt32();
-			fb.AntRef.Deserialize(p_Instance.Signal, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.IntGameState, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.FloatGameState, p_Reader, p_Parser);
-			p_Instance.ValueInt = p_Reader.ReadInt32();
-			p_Instance.ValueFloat = p_Reader.ReadSingle();
-			p_Instance.Reset = p_Reader.ReadBool();
-			p_Instance.Continuous = p_Reader.ReadBool();
-			p_Reader.Seek(2, SeekOrigin.Current);
-		}
-
 	}
 }

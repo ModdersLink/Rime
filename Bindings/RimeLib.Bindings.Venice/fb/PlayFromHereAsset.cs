@@ -29,12 +29,5 @@ namespace fb
 		[ContainerField(20)]
 		public CtrRef<AntProjectAsset> AntProject { get; set; } = new();
 
-		public static void Deserialize(PlayFromHereAsset p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Soldier.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.AnimatedSkeletonDatabase.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.AntProject.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-		}
-
 	}
 }

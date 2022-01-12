@@ -26,14 +26,5 @@ namespace fb
 		[ContainerField(80), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 HalfExtents { get; set; } = new();
 
-		public static void Deserialize(OBBData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Reader.Seek(4, SeekOrigin.Current);
-			fb.LinearTransform.Deserialize(p_Instance.Transform, p_Reader, p_Parser);
-			p_Reader.Seek(4, SeekOrigin.Current);
-			fb.Vec3.Deserialize(p_Instance.HalfExtents, p_Reader, p_Parser);
-			p_Reader.Seek(4, SeekOrigin.Current);
-		}
-
 	}
 }

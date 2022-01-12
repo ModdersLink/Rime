@@ -71,27 +71,5 @@ namespace fb
 		[ContainerField(72), LayoutImmutable, Blittable]
 		public bool AudioCoreMultipleMixJobsEnabled { get; set; }
 
-		public static void Deserialize(AudioSettings p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.WaveCacheSize = p_Reader.ReadUInt32();
-			p_Instance.WaveCacheHeadroom = p_Reader.ReadUInt32();
-			p_Instance.WaveCachePruneTimeLimit = p_Reader.ReadSingle();
-			p_Instance.WaveCacheRsxSize = p_Reader.ReadUInt32();
-			p_Instance.WaveCacheRsxPruneTimeLimit = p_Reader.ReadSingle();
-			p_Instance.WaveCacheMaxReadIssueCount = p_Reader.ReadUInt32();
-			p_Instance.WaveCacheMaxReadActiveCount = p_Reader.ReadUInt32();
-			p_Instance.AudioCoreCpuLoadLimit = p_Reader.ReadSingle();
-			p_Instance.AudioCoreCpuLoadRecovery = p_Reader.ReadSingle();
-			p_Instance.AudioCoreThread = p_Reader.ReadInt32();
-			p_Instance.AudioCoreMixJobThreadCount = p_Reader.ReadInt32();
-			p_Instance.AudioCoreMaxMixJobThreadCount = p_Reader.ReadInt32();
-			p_Instance.MaxAudibleSoundCount = p_Reader.ReadUInt32();
-			p_Instance.AudioCoreMinProcStageVoicesToGoWide = p_Reader.ReadInt32();
-			p_Instance.DelayLineAllocSize = p_Reader.ReadUInt32();
-			p_Instance.ReverbAllocSize = p_Reader.ReadUInt32();
-			p_Instance.AudioCoreMultipleMixJobsEnabled = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
-
 	}
 }

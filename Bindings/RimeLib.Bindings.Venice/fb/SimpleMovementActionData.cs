@@ -35,15 +35,5 @@ namespace fb
 		[ContainerField(37), LayoutImmutable, Blittable]
 		public bool Teleport { get; set; }
 
-		public static void Deserialize(SimpleMovementActionData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Level = p_Reader.ReadSingle();
-			p_Instance.Action = (EntryInputActionEnum) p_Reader.ReadInt32();
-			p_Instance.SpecialAnimationIndex = p_Reader.ReadInt32();
-			p_Instance.Respawn = p_Reader.ReadBool();
-			p_Instance.Teleport = p_Reader.ReadBool();
-			p_Reader.Seek(2, SeekOrigin.Current);
-		}
-
 	}
 }

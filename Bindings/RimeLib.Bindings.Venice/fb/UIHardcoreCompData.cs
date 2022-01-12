@@ -20,9 +20,5 @@ namespace fb
 	public class UIHardcoreCompData : 
 		UIComponentData
 	{
-		public static void Deserialize(UIHardcoreCompData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

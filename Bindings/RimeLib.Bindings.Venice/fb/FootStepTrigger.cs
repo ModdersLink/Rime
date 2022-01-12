@@ -22,9 +22,5 @@ namespace fb
 		[ContainerField(0), LayoutImmutable, Blittable]
 		public float Time { get; set; }
 		
-		public static void Deserialize(FootStepTrigger p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Time = p_Reader.ReadSingle();
-		}
 	}
 }

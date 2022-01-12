@@ -25,10 +25,5 @@ namespace fb
 		[ContainerField(16), LayoutImmutable, Blittable]
 		public float CoolDown { get; set; }
 		
-		public static void Deserialize(GunSwayStanceTransition p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.GunSwayDispersionData.Deserialize(p_Instance.MaxPenaltyValue, p_Reader, p_Parser);
-			p_Instance.CoolDown = p_Reader.ReadSingle();
-		}
 	}
 }

@@ -20,9 +20,5 @@ namespace fb
 	public class WorldPartReferenceObjectData : 
 		ReferenceObjectData
 	{
-		public static void Deserialize(WorldPartReferenceObjectData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

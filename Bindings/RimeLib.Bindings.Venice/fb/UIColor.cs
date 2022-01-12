@@ -26,14 +26,5 @@ namespace fb
 		[ContainerField(32)]
 		public UIColorType ColorType { get; set; } = new();
 
-		public static void Deserialize(UIColor p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Reader.Seek(8, SeekOrigin.Current);
-			fb.Vec4.Deserialize(p_Instance.Color, p_Reader, p_Parser);
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.ColorType = (UIColorType) p_Reader.ReadInt32();
-			p_Reader.Seek(20, SeekOrigin.Current);
-		}
-
 	}
 }

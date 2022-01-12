@@ -20,9 +20,5 @@ namespace fb
 	public class WaterData : 
 		Asset
 	{
-		public static void Deserialize(WaterData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

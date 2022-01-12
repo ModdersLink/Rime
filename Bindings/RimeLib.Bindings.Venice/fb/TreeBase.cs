@@ -20,9 +20,5 @@ namespace fb
 	public class TreeBase : 
 		Asset
 	{
-		public static void Deserialize(TreeBase p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

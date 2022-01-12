@@ -26,11 +26,5 @@ namespace fb
 		[ContainerField(12)]
 		public InputConceptIdentifiers ConceptIdentifier { get; set; } = new();
 
-		public static void Deserialize(EntryInputActionMappingData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.ActionIdentifier = (EntryInputActionEnum) p_Reader.ReadInt32();
-			p_Instance.ConceptIdentifier = (InputConceptIdentifiers) p_Reader.ReadInt32();
-		}
-
 	}
 }

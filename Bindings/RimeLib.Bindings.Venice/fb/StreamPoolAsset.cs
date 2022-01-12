@@ -53,20 +53,5 @@ namespace fb
 		[ContainerField(52)]
 		public StreamStarveMode StreamStarveMode { get; set; } = new();
 
-		public static void Deserialize(StreamPoolAsset p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.StreamPoolId = p_Reader.ReadUInt32();
-			p_Instance.StreamBufferSizeXenon = p_Reader.ReadUInt32();
-			p_Instance.StreamBufferSizePs3 = p_Reader.ReadUInt32();
-			p_Instance.StreamBufferSizeWin32 = p_Reader.ReadUInt32();
-			p_Instance.StreamCountXenon = p_Reader.ReadUInt32();
-			p_Instance.StreamCountPs3 = p_Reader.ReadUInt32();
-			p_Instance.StreamCountWin32 = p_Reader.ReadUInt32();
-			p_Instance.StreamReadBlockSizeXenon = p_Reader.ReadUInt32();
-			p_Instance.StreamReadBlockSizePs3 = p_Reader.ReadUInt32();
-			p_Instance.StreamReadBlockSizeWin32 = p_Reader.ReadUInt32();
-			p_Instance.StreamStarveMode = (StreamStarveMode) p_Reader.ReadInt32();
-		}
-
 	}
 }

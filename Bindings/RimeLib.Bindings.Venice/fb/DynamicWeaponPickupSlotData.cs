@@ -28,11 +28,5 @@ namespace fb
 		[ContainerField(8), LayoutImmutable, Blittable]
 		public int LinkedToWeaponSlot { get; set; }
 		
-		public static void Deserialize(DynamicWeaponPickupSlotData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.WeaponSlot = p_Reader.ReadUInt32();
-			p_Instance.AltWeaponSlot = p_Reader.ReadInt32();
-			p_Instance.LinkedToWeaponSlot = p_Reader.ReadInt32();
-		}
 	}
 }

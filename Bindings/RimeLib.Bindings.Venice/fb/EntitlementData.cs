@@ -40,16 +40,5 @@ namespace fb
 		[ContainerField(24), LayoutImmutable, Blittable]
 		public bool VerifyOwnership { get; set; }
 		
-		public static void Deserialize(EntitlementData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.License = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.EntitlementTag = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.GroupName = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.ProductId = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.ProjectId = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.UsageType = (EntitlementType) p_Reader.ReadInt32();
-			p_Instance.VerifyOwnership = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
 	}
 }

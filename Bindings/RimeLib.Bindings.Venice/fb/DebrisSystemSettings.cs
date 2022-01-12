@@ -65,25 +65,5 @@ namespace fb
 		[ContainerField(40), LayoutImmutable, Blittable]
 		public bool MeshDrawCullStats { get; set; }
 
-		public static void Deserialize(DebrisSystemSettings p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.MeshDrawCountLimit = p_Reader.ReadUInt32();
-			p_Instance.TimeScale = p_Reader.ReadSingle();
-			p_Instance.MeshCullingDistance = p_Reader.ReadSingle();
-			p_Instance.DrawStats = p_Reader.ReadUInt32();
-			p_Instance.MeshBatchCountLimit = p_Reader.ReadUInt32();
-			p_Instance.MeshStreamingPriorityMultiplier = p_Reader.ReadSingle();
-			p_Instance.MeshRenderingEnable = p_Reader.ReadBool();
-			p_Instance.EnableJobs = p_Reader.ReadBool();
-			p_Instance.MeshShadowEnable = p_Reader.ReadBool();
-			p_Instance.MeshViewCullingEnable = p_Reader.ReadBool();
-			p_Instance.MeshHavokRenderingEnable = p_Reader.ReadBool();
-			p_Instance.MeshDrawTransforms = p_Reader.ReadBool();
-			p_Instance.Enable = p_Reader.ReadBool();
-			p_Instance.MeshDrawBoundingBoxes = p_Reader.ReadBool();
-			p_Instance.MeshDrawCullStats = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
-
 	}
 }

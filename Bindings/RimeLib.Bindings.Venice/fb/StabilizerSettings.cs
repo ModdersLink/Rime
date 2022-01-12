@@ -28,12 +28,5 @@ namespace fb
 		[ContainerField(8), LayoutImmutable, Blittable]
 		public bool Advanced { get; set; }
 		
-		public static void Deserialize(StabilizerSettings p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Property = (StabilizerProperty) p_Reader.ReadInt32();
-			p_Instance.Strength = p_Reader.ReadSingle();
-			p_Instance.Advanced = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
 	}
 }

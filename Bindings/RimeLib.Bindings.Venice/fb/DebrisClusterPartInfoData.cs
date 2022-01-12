@@ -43,17 +43,5 @@ namespace fb
 		[ContainerField(46), LayoutImmutable, Blittable]
 		public bool SyncContinous { get; set; }
 		
-		public static void Deserialize(DebrisClusterPartInfoData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.Vec3.Deserialize(p_Instance.AngularVelocity, p_Reader, p_Parser);
-			fb.Vec3.Deserialize(p_Instance.LinearVelocity, p_Reader, p_Parser);
-			p_Instance.NumberOfChildren = p_Reader.ReadInt32();
-			p_Instance.PartIndex = p_Reader.ReadInt32();
-			p_Instance.SplitSpeedThreshold = p_Reader.ReadSingle();
-			p_Instance.InEffectWorldOnly = p_Reader.ReadBool();
-			p_Instance.SyncRestPosition = p_Reader.ReadBool();
-			p_Instance.SyncContinous = p_Reader.ReadBool();
-			p_Reader.Seek(1, SeekOrigin.Current);
-		}
 	}
 }

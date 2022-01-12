@@ -28,11 +28,5 @@ namespace fb
 		[ContainerField(8), LayoutImmutable, Blittable]
 		public int Z { get; set; }
 		
-		public static void Deserialize(StreamGridCell p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.ReferenceData.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.X = p_Reader.ReadInt32();
-			p_Instance.Z = p_Reader.ReadInt32();
-		}
 	}
 }

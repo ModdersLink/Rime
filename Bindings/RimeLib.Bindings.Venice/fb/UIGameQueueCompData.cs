@@ -20,9 +20,5 @@ namespace fb
 	public class UIGameQueueCompData : 
 		UIComponentData
 	{
-		public static void Deserialize(UIGameQueueCompData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

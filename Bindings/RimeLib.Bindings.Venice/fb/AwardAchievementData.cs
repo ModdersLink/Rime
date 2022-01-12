@@ -20,9 +20,5 @@ namespace fb
 	public class AwardAchievementData : 
 		AwardData
 	{
-		public static void Deserialize(AwardAchievementData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

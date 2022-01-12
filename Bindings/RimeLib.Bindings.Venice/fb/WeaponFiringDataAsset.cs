@@ -20,9 +20,5 @@ namespace fb
 	public class WeaponFiringDataAsset : 
 		GameDataContainerAsset
 	{
-		public static void Deserialize(WeaponFiringDataAsset p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

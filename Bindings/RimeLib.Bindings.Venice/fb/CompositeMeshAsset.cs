@@ -20,9 +20,5 @@ namespace fb
 	public class CompositeMeshAsset : 
 		MeshAsset
 	{
-		public static void Deserialize(CompositeMeshAsset p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

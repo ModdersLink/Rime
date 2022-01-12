@@ -29,13 +29,5 @@ namespace fb
 		[ContainerField(104)]
 		public CtrRef<SkeletonAsset> WeaponSkeleton { get; set; } = new();
 
-		public static void Deserialize(CharacterWeaponComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.DefaultWeaponBlueprint.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.AimBoneName = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.WeaponSkeleton.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Reader.Seek(4, SeekOrigin.Current);
-		}
-
 	}
 }

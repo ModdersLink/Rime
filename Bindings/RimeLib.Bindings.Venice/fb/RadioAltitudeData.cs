@@ -29,12 +29,5 @@ namespace fb
 		[ContainerField(16)]
 		public CollisionMethodEnum CollisionMethod { get; set; } = new();
 
-		public static void Deserialize(RadioAltitudeData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Range = p_Reader.ReadSingle();
-			p_Instance.UpdateFrequency = p_Reader.ReadSingle();
-			p_Instance.CollisionMethod = (CollisionMethodEnum) p_Reader.ReadInt32();
-		}
-
 	}
 }

@@ -26,12 +26,5 @@ namespace fb
 		[ContainerField(97), LayoutImmutable, Blittable]
 		public bool StartState { get; set; }
 
-		public static void Deserialize(EventIfSwitchEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.RunOnce = p_Reader.ReadBool();
-			p_Instance.StartState = p_Reader.ReadBool();
-			p_Reader.Seek(14, SeekOrigin.Current);
-		}
-
 	}
 }

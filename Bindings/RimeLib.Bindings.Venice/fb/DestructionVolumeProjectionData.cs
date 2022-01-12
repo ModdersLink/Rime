@@ -25,11 +25,5 @@ namespace fb
 		[ContainerField(16), LayoutImmutable, Blittable]
 		public float TangentAngle { get; set; }
 		
-		public static void Deserialize(DestructionVolumeProjectionData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.Vec3.Deserialize(p_Instance.Normal, p_Reader, p_Parser);
-			p_Instance.TangentAngle = p_Reader.ReadSingle();
-			p_Reader.Seek(12, SeekOrigin.Current);
-		}
 	}
 }

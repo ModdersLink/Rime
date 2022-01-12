@@ -21,7 +21,7 @@ namespace fb
 		AudioGraphNodeData
 	{
 		[ContainerField(8)]
-		public List<CtrRef<SwitcherEntry>> Outputs { get; set; } = new();
+		public RefArray<SwitcherEntry> Outputs { get; set; } = new();
 
 		[ContainerField(12)]
 		public AudioGraphNodePort Trigger { get; set; } = new();
@@ -31,23 +31,6 @@ namespace fb
 
 		[ContainerField(28), LayoutImmutable, Blittable]
 		public float DefaultCaseValue { get; set; }
-
-		public static void Deserialize(SwitcherNodeData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Outputs.Clear();
-			(RimeReader Reader, uint Count) s_Outputs = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_Outputs.Count; ++i)
-			{
-				var s_CtrRef = new CtrRef<SwitcherEntry>();
-				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_Outputs.Reader.ReadUInt32()));
-				p_Instance.Outputs.Add(s_CtrRef);
-			}
-			
-			s_Outputs.Reader.Dispose();
-			fb.AudioGraphNodePort.Deserialize(p_Instance.Trigger, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.Value, p_Reader, p_Parser);
-			p_Instance.DefaultCaseValue = p_Reader.ReadSingle();
-		}
 
 	}
 }

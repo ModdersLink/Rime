@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(12)]
 		public Realm Realm { get; set; } = new();
 
-		public static void Deserialize(UIMessageTriggerData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Realm = (Realm) p_Reader.ReadInt32();
-		}
-
 	}
 }

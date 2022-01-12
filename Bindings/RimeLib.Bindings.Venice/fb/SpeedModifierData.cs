@@ -31,12 +31,5 @@ namespace fb
 		[ContainerField(12), LayoutImmutable, Blittable]
 		public float RightConstant { get; set; }
 		
-		public static void Deserialize(SpeedModifierData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.ForwardConstant = p_Reader.ReadSingle();
-			p_Instance.BackwardConstant = p_Reader.ReadSingle();
-			p_Instance.LeftConstant = p_Reader.ReadSingle();
-			p_Instance.RightConstant = p_Reader.ReadSingle();
-		}
 	}
 }

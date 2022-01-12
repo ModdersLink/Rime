@@ -28,11 +28,5 @@ namespace fb
 		[ContainerField(8), LayoutImmutable, Blittable]
 		public float SegmentLength { get; set; }
 		
-		public static void Deserialize(SoundWaveVariationSegment p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.SamplesOffset = p_Reader.ReadUInt32();
-			p_Instance.SeekTableOffset = p_Reader.ReadUInt32();
-			p_Instance.SegmentLength = p_Reader.ReadSingle();
-		}
 	}
 }

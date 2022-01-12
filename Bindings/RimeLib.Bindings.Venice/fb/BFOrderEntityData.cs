@@ -23,11 +23,5 @@ namespace fb
 		[ContainerField(36), LayoutImmutable, Blittable]
 		public bool ForbiddenToFire { get; set; }
 
-		public static void Deserialize(BFOrderEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.ForbiddenToFire = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
-
 	}
 }

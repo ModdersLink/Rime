@@ -32,13 +32,5 @@ namespace fb
 		[ContainerField(32)]
 		public AudioGraphNodePort Enable { get; set; } = new();
 
-		public static void Deserialize(EventGateNodeData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AudioGraphNodePort.Deserialize(p_Instance.In, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.Out, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.CoolDownTime, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.Enable, p_Reader, p_Parser);
-		}
-
 	}
 }

@@ -32,13 +32,5 @@ namespace fb
 		[ContainerField(40), LayoutImmutable, Blittable]
 		public float TessellationTriangleSize { get; set; }
 
-		public static void Deserialize(VisualVectorShapeData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.ErrorTolerance = p_Reader.ReadSingle();
-			p_Instance.Shader3d.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.DrawOrderIndex = p_Reader.ReadUInt32();
-			p_Instance.TessellationTriangleSize = p_Reader.ReadSingle();
-		}
-
 	}
 }

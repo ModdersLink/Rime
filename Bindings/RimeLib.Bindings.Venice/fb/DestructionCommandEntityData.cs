@@ -26,12 +26,5 @@ namespace fb
 		[ContainerField(100), LayoutImmutable, Blittable]
 		public uint InstanceCountDestroyedPerType { get; set; }
 
-		public static void Deserialize(DestructionCommandEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.InstanceCountDestroyedPerFrame = p_Reader.ReadUInt32();
-			p_Instance.InstanceCountDestroyedPerType = p_Reader.ReadUInt32();
-			p_Reader.Seek(8, SeekOrigin.Current);
-		}
-
 	}
 }

@@ -41,17 +41,5 @@ namespace fb
 		[ContainerField(117), LayoutImmutable, Blittable]
 		public bool Enable { get; set; }
 
-		public static void Deserialize(PlanarReflectionComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.VerticalBlurFilter = (BlurFilter) p_Reader.ReadInt32();
-			p_Instance.HorizontalDeviation = p_Reader.ReadSingle();
-			p_Instance.GroundHeight = p_Reader.ReadSingle();
-			p_Instance.VerticalDeviation = p_Reader.ReadSingle();
-			p_Instance.HorizontalBlurFilter = (BlurFilter) p_Reader.ReadInt32();
-			p_Instance.SkyRenderEnable = p_Reader.ReadBool();
-			p_Instance.Enable = p_Reader.ReadBool();
-			p_Reader.Seek(10, SeekOrigin.Current);
-		}
-
 	}
 }

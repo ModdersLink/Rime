@@ -20,9 +20,5 @@ namespace fb
 	public class UIMapmarkertagCompData : 
 		UI3dIconCompData
 	{
-		public static void Deserialize(UIMapmarkertagCompData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

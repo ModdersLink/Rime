@@ -23,19 +23,5 @@ namespace fb
 		[ContainerField(8)]
 		public List<Vec2> Curve { get; set; } = new();
 
-		public static void Deserialize(Curve2D p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Curve.Clear();
-			(RimeReader Reader, uint Count) s_Curve = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_Curve.Count; ++i)
-			{
-				var s_Value = new Vec2();
-				fb.Vec2.Deserialize(s_Value, s_Curve.Reader, p_Parser);
-				p_Instance.Curve.Add(s_Value);
-			}
-			
-			s_Curve.Reader.Dispose();
-		}
-
 	}
 }

@@ -25,10 +25,5 @@ namespace fb
 		[ContainerField(4), LayoutImmutable, Blittable]
 		public int HavokParticlePartCount { get; set; }
 		
-		public static void Deserialize(DebrisSystemMetrics p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.HavokParticleCount = p_Reader.ReadInt32();
-			p_Instance.HavokParticlePartCount = p_Reader.ReadInt32();
-		}
 	}
 }

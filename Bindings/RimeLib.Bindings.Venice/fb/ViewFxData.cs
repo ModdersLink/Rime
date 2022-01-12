@@ -35,19 +35,5 @@ namespace fb
 		[ContainerField(101), LayoutImmutable, Blittable]
 		public bool PoissonRadialBlurEnable { get; set; }
 
-		public static void Deserialize(ViewFxData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.PoissonRadialBlurData.Deserialize(p_Instance.PoissonRadialBlur, p_Reader, p_Parser);
-			p_Reader.Seek(4, SeekOrigin.Current);
-			fb.ColorTintData.Deserialize(p_Instance.ColorTint, p_Reader, p_Parser);
-			p_Reader.Seek(4, SeekOrigin.Current);
-			p_Instance.BlurAdd = p_Reader.ReadSingle();
-			p_Reader.Seek(4, SeekOrigin.Current);
-			p_Instance.ColorTintEnable = p_Reader.ReadBool();
-			p_Reader.Seek(4, SeekOrigin.Current);
-			p_Instance.PoissonRadialBlurEnable = p_Reader.ReadBool();
-			p_Reader.Seek(14, SeekOrigin.Current);
-		}
-
 	}
 }

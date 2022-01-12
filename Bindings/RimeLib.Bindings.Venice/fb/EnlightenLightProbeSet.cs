@@ -58,47 +58,5 @@ namespace fb
 		[ContainerField(156), LayoutImmutable, Blittable]
 		public bool StaticProbeSet { get; set; }
 		
-		public static void Deserialize(EnlightenLightProbeSet p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.LinearTransform.Deserialize(p_Instance.Transform, p_Reader, p_Parser);
-			fb.AxisAlignedBox.Deserialize(p_Instance.BoundingBox, p_Reader, p_Parser);
-			p_Instance.SizeX = p_Reader.ReadUInt32();
-			p_Instance.SizeZ = p_Reader.ReadUInt32();
-			p_Instance.SizeY = p_Reader.ReadUInt32();
-			p_Instance.SystemId = p_Reader.ReadInt32();
-			p_Instance.BlendDistance = p_Reader.ReadSingle();
-			p_Instance.Priority = p_Reader.ReadInt32();
-			p_Instance.Positions.Clear();
-			(RimeReader Reader, uint Count) s_Positions = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_Positions.Count; ++i)
-			{
-				var s_Value = new Vec3();
-				fb.Vec3.Deserialize(s_Value, s_Positions.Reader, p_Parser);
-				p_Instance.Positions.Add(s_Value);
-			}
-			
-			s_Positions.Reader.Dispose();
-			p_Instance.ValidIndices.Clear();
-			(RimeReader Reader, uint Count) s_ValidIndices = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_ValidIndices.Count; ++i)
-			{
-				var s_Value = s_ValidIndices.Reader.ReadUInt32();
-				p_Instance.ValidIndices.Add(s_Value);
-			}
-			
-			s_ValidIndices.Reader.Dispose();
-			p_Instance.InputSystems.Clear();
-			(RimeReader Reader, uint Count) s_InputSystems = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_InputSystems.Count; ++i)
-			{
-				var s_Value = s_InputSystems.Reader.ReadInt32();
-				p_Instance.InputSystems.Add(s_Value);
-			}
-			
-			s_InputSystems.Reader.Dispose();
-			fb.PrecomputeCache.Deserialize(p_Instance.Cache, p_Reader, p_Parser);
-			p_Instance.StaticProbeSet = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
 	}
 }

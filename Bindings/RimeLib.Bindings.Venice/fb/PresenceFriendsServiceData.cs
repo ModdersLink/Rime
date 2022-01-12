@@ -20,9 +20,5 @@ namespace fb
 	public class PresenceFriendsServiceData : 
 		PresenceServiceData
 	{
-		public static void Deserialize(PresenceFriendsServiceData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

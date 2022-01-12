@@ -32,13 +32,5 @@ namespace fb
 		[ContainerField(56), LayoutImmutable, Blittable]
 		public float DispersionBaseOffset { get; set; }
 
-		public static void Deserialize(UICrosshairDataBinding p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.UIDataSourceInfo.Deserialize(p_Instance.Dispersion, p_Reader, p_Parser);
-			fb.UIDataSourceInfo.Deserialize(p_Instance.Zoomed, p_Reader, p_Parser);
-			fb.UIDataSourceInfo.Deserialize(p_Instance.Visibility, p_Reader, p_Parser);
-			p_Instance.DispersionBaseOffset = p_Reader.ReadSingle();
-		}
-
 	}
 }

@@ -23,18 +23,5 @@ namespace fb
 		[ContainerField(20)]
 		public List<VehicleStateType> States { get; set; } = new();
 
-		public static void Deserialize(StatsCategoryVehicleStateTypeData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.States.Clear();
-			(RimeReader Reader, uint Count) s_States = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_States.Count; ++i)
-			{
-				var s_Value = (VehicleStateType) s_States.Reader.ReadInt32();
-				p_Instance.States.Add(s_Value);
-			}
-			
-			s_States.Reader.Dispose();
-		}
-
 	}
 }

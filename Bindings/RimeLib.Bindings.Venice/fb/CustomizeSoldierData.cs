@@ -35,24 +35,5 @@ namespace fb
 		[ContainerField(45), LayoutImmutable, Blittable]
 		public bool DisableDeathPickup { get; set; }
 
-		public static void Deserialize(CustomizeSoldierData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Weapons.Clear();
-			(RimeReader Reader, uint Count) s_Weapons = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_Weapons.Count; ++i)
-			{
-				var s_Value = new UnlockWeaponAndSlot();
-				fb.UnlockWeaponAndSlot.Deserialize(s_Value, s_Weapons.Reader, p_Parser);
-				p_Instance.Weapons.Add(s_Value);
-			}
-			
-			s_Weapons.Reader.Dispose();
-			p_Instance.ActiveSlot = (WeaponSlot) p_Reader.ReadInt32();
-			p_Instance.DeathPickup.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.RemoveAllExistingWeapons = p_Reader.ReadBool();
-			p_Instance.DisableDeathPickup = p_Reader.ReadBool();
-			p_Reader.Seek(2, SeekOrigin.Current);
-		}
-
 	}
 }

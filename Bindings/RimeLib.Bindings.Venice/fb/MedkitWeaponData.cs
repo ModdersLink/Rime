@@ -20,9 +20,5 @@ namespace fb
 	public class MedkitWeaponData : 
 		WeaponData
 	{
-		public static void Deserialize(MedkitWeaponData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

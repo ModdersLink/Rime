@@ -71,43 +71,5 @@ namespace fb
 		[ContainerField(154), LayoutImmutable, Blittable]
 		public bool SimpleReinforce { get; set; }
 
-		public static void Deserialize(LifeCounterEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.StartingLifeCount = p_Reader.ReadInt32();
-			p_Instance.DisplayTime = p_Reader.ReadSingle();
-			p_Instance.TeamId = (TeamId) p_Reader.ReadInt32();
-			p_Instance.LifeTresholdValues.Clear();
-			(RimeReader Reader, uint Count) s_LifeTresholdValues = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_LifeTresholdValues.Count; ++i)
-			{
-				var s_Value = s_LifeTresholdValues.Reader.ReadInt32();
-				p_Instance.LifeTresholdValues.Add(s_Value);
-			}
-			
-			s_LifeTresholdValues.Reader.Dispose();
-			p_Instance.UiShowCountLowerThreshold = p_Reader.ReadInt32();
-			p_Instance.UiShowCountUpperThreshold = p_Reader.ReadInt32();
-			p_Instance.BaseCount = p_Reader.ReadInt32();
-			p_Instance.ReinforceTable.Clear();
-			(RimeReader Reader, uint Count) s_ReinforceTable = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_ReinforceTable.Count; ++i)
-			{
-				var s_Value = s_ReinforceTable.Reader.ReadSingle();
-				p_Instance.ReinforceTable.Add(s_Value);
-			}
-			
-			s_ReinforceTable.Reader.Dispose();
-			p_Instance.ReinforceThreshold = p_Reader.ReadInt32();
-			p_Instance.ReinforceMessageSid = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.FightHarderTreshold = p_Reader.ReadSingle();
-			p_Instance.DefensiveKillRadius = p_Reader.ReadSingle();
-			p_Instance.FallbackTime = p_Reader.ReadSingle();
-			p_Instance.FightHarderMessageSid = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Attacker = p_Reader.ReadBool();
-			p_Instance.SetBestSquadSpawner = p_Reader.ReadBool();
-			p_Instance.SimpleReinforce = p_Reader.ReadBool();
-			p_Reader.Seek(5, SeekOrigin.Current);
-		}
-
 	}
 }

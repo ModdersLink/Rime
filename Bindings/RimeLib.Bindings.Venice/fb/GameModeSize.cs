@@ -40,25 +40,5 @@ namespace fb
 		[ContainerField(24), LayoutImmutable, Blittable]
 		public bool ForceSquad { get; set; }
 		
-		public static void Deserialize(GameModeSize p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Name = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.ShortName = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.MetaIdentifier = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.PlayerCount = p_Reader.ReadUInt32();
-			p_Instance.Teams.Clear();
-			(RimeReader Reader, uint Count) s_Teams = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_Teams.Count; ++i)
-			{
-				var s_Value = new GameModeTeamSize();
-				fb.GameModeTeamSize.Deserialize(s_Value, s_Teams.Reader, p_Parser);
-				p_Instance.Teams.Add(s_Value);
-			}
-			
-			s_Teams.Reader.Dispose();
-			p_Instance.RoundsPerMap = p_Reader.ReadUInt32();
-			p_Instance.ForceSquad = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
 	}
 }

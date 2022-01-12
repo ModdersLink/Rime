@@ -20,9 +20,5 @@ namespace fb
 	public class MovementActionData : 
 		DataContainer
 	{
-		public static void Deserialize(MovementActionData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

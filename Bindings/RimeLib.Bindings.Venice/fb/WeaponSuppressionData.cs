@@ -32,13 +32,5 @@ namespace fb
 		[ContainerField(20), LayoutImmutable, Blittable]
 		public float MaxDistance { get; set; }
 
-		public static void Deserialize(WeaponSuppressionData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.MaxMultiplier = p_Reader.ReadSingle();
-			p_Instance.MinMultiplier = p_Reader.ReadSingle();
-			p_Instance.MinDistance = p_Reader.ReadSingle();
-			p_Instance.MaxDistance = p_Reader.ReadSingle();
-		}
-
 	}
 }

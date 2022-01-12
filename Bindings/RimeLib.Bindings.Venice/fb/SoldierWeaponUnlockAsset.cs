@@ -29,12 +29,5 @@ namespace fb
 		[ContainerField(48), LayoutImmutable, Blittable]
 		public uint WeaponIdentifier { get; set; }
 
-		public static void Deserialize(SoldierWeaponUnlockAsset p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Weapon.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.Extra.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.WeaponIdentifier = p_Reader.ReadUInt32();
-		}
-
 	}
 }

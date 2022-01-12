@@ -25,10 +25,5 @@ namespace fb
 		[ContainerField(4), LayoutImmutable, Blittable]
 		public float Damping { get; set; }
 		
-		public static void Deserialize(WeaponLagEffectSpringData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Constant = p_Reader.ReadSingle();
-			p_Instance.Damping = p_Reader.ReadSingle();
-		}
 	}
 }

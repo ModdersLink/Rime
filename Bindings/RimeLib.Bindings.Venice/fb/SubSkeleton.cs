@@ -28,28 +28,5 @@ namespace fb
 		[ContainerField(8)]
 		public List<LinearTransform> TransformMap { get; set; } = new();
 		
-		public static void Deserialize(SubSkeleton p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Skeleton.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.BoneMap.Clear();
-			(RimeReader Reader, uint Count) s_BoneMap = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_BoneMap.Count; ++i)
-			{
-				var s_Value = s_BoneMap.Reader.ReadInt32();
-				p_Instance.BoneMap.Add(s_Value);
-			}
-			
-			s_BoneMap.Reader.Dispose();
-			p_Instance.TransformMap.Clear();
-			(RimeReader Reader, uint Count) s_TransformMap = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_TransformMap.Count; ++i)
-			{
-				var s_Value = new LinearTransform();
-				fb.LinearTransform.Deserialize(s_Value, s_TransformMap.Reader, p_Parser);
-				p_Instance.TransformMap.Add(s_Value);
-			}
-			
-			s_TransformMap.Reader.Dispose();
-		}
 	}
 }

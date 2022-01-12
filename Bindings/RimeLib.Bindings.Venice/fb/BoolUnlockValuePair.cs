@@ -26,12 +26,5 @@ namespace fb
 		[ContainerField(13), LayoutImmutable, Blittable]
 		public bool UnlockedValue { get; set; }
 
-		public static void Deserialize(BoolUnlockValuePair p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.DefaultValue = p_Reader.ReadBool();
-			p_Instance.UnlockedValue = p_Reader.ReadBool();
-			p_Reader.Seek(2, SeekOrigin.Current);
-		}
-
 	}
 }

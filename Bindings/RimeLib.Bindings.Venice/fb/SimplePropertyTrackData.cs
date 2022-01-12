@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(16)]
 		public InterpolationType InterpolationType { get; set; } = new();
 
-		public static void Deserialize(SimplePropertyTrackData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.InterpolationType = (InterpolationType) p_Reader.ReadInt32();
-		}
-
 	}
 }

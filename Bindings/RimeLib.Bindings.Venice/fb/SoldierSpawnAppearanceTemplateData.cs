@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(12), LayoutImmutable, Blittable]
 		public uint Body { get; set; }
 
-		public static void Deserialize(SoldierSpawnAppearanceTemplateData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Body = p_Reader.ReadUInt32();
-		}
-
 	}
 }

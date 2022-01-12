@@ -22,9 +22,5 @@ namespace fb
 		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 Position { get; set; } = new();
 		
-		public static void Deserialize(CoverSlot p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.Vec3.Deserialize(p_Instance.Position, p_Reader, p_Parser);
-		}
 	}
 }

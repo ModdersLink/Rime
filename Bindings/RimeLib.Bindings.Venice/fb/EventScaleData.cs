@@ -25,10 +25,5 @@ namespace fb
 		[ContainerField(4), LayoutImmutable, Blittable]
 		public float Scale { get; set; }
 		
-		public static void Deserialize(EventScaleData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Event = (StatEvent) p_Reader.ReadInt32();
-			p_Instance.Scale = p_Reader.ReadSingle();
-		}
 	}
 }

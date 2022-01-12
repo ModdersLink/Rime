@@ -29,12 +29,5 @@ namespace fb
 		[ContainerField(20), LayoutImmutable, Blittable]
 		public int IncDecValue { get; set; }
 
-		public static void Deserialize(IntEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Realm = (Realm) p_Reader.ReadInt32();
-			p_Instance.DefaultValue = p_Reader.ReadInt32();
-			p_Instance.IncDecValue = p_Reader.ReadInt32();
-		}
-
 	}
 }

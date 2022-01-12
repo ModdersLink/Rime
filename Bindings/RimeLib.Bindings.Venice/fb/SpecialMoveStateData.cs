@@ -67,43 +67,5 @@ namespace fb
 		[ContainerField(57), LayoutImmutable, Blittable]
 		public bool ScaleWithDistanceToObject { get; set; }
 		
-		public static void Deserialize(SpecialMoveStateData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.MinHeightScale = p_Reader.ReadSingle();
-			p_Instance.OptimumDistanceFromObject = p_Reader.ReadSingle();
-			p_Instance.OptimumHeightOfObject = p_Reader.ReadSingle();
-			p_Instance.OptimumLengthOfObject = p_Reader.ReadSingle();
-			p_Instance.MaxDistanceScale = p_Reader.ReadSingle();
-			p_Instance.MinDistanceScale = p_Reader.ReadSingle();
-			p_Instance.MaxHeightScale = p_Reader.ReadSingle();
-			p_Instance.MotionPoints.Clear();
-			(RimeReader Reader, uint Count) s_MotionPoints = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_MotionPoints.Count; ++i)
-			{
-				var s_Value = new SpecialMoveInterpolatedPoint();
-				fb.SpecialMoveInterpolatedPoint.Deserialize(s_Value, s_MotionPoints.Reader, p_Parser);
-				p_Instance.MotionPoints.Add(s_Value);
-			}
-			
-			s_MotionPoints.Reader.Dispose();
-			p_Instance.MaxObjectLengthScale = p_Reader.ReadSingle();
-			p_Instance.MinObjectLengthScale = p_Reader.ReadSingle();
-			p_Instance.ExitAnimationDrivenStateVelocity = p_Reader.ReadSingle();
-			p_Instance.ResetPose = (SpecialMovesPoseType) p_Reader.ReadInt32();
-			p_Instance.OverridePose = (SpecialMovesPoseType) p_Reader.ReadInt32();
-			p_Instance.GravityPoints.Clear();
-			(RimeReader Reader, uint Count) s_GravityPoints = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_GravityPoints.Count; ++i)
-			{
-				var s_Value = new SpecialMoveInterpolatedPoint();
-				fb.SpecialMoveInterpolatedPoint.Deserialize(s_Value, s_GravityPoints.Reader, p_Parser);
-				p_Instance.GravityPoints.Add(s_Value);
-			}
-			
-			s_GravityPoints.Reader.Dispose();
-			p_Instance.KeepInitialSoldierDirection = p_Reader.ReadBool();
-			p_Instance.ScaleWithDistanceToObject = p_Reader.ReadBool();
-			p_Reader.Seek(2, SeekOrigin.Current);
-		}
 	}
 }

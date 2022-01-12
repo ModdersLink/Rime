@@ -26,11 +26,5 @@ namespace fb
 		[ContainerField(12), LayoutImmutable, Blittable]
 		public float TorqueActivationLimit { get; set; }
 
-		public static void Deserialize(AntiRollBar p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Stiffness = p_Reader.ReadSingle();
-			p_Instance.TorqueActivationLimit = p_Reader.ReadSingle();
-		}
-
 	}
 }

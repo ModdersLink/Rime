@@ -26,11 +26,5 @@ namespace fb
 		[ContainerField(12), LayoutImmutable, Blittable]
 		public uint FinishedNameHash { get; set; }
 
-		public static void Deserialize(VoiceOverDialogClipEvents p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.StartedNameHash = p_Reader.ReadUInt32();
-			p_Instance.FinishedNameHash = p_Reader.ReadUInt32();
-		}
-
 	}
 }

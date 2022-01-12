@@ -26,12 +26,5 @@ namespace fb
 		[ContainerField(16), LayoutImmutable, Blittable]
 		public bool ActivateOnCreation { get; set; }
 
-		public static void Deserialize(MixerEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Mixer.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.ActivateOnCreation = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
-
 	}
 }

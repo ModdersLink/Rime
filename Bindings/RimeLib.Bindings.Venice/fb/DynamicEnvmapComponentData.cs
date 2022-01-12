@@ -32,14 +32,5 @@ namespace fb
 		[ContainerField(144), LayoutImmutable, Blittable]
 		public bool Enable { get; set; }
 
-		public static void Deserialize(DynamicEnvmapComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.Vec3.Deserialize(p_Instance.KeyColorEnvmap, p_Reader, p_Parser);
-			fb.Vec3.Deserialize(p_Instance.GroundColorEnvmap, p_Reader, p_Parser);
-			fb.Vec3.Deserialize(p_Instance.SkyColorEnvmap, p_Reader, p_Parser);
-			p_Instance.Enable = p_Reader.ReadBool();
-			p_Reader.Seek(15, SeekOrigin.Current);
-		}
-
 	}
 }

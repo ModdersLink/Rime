@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(8), LayoutImmutable, Blittable]
 		public float SquadCappingBonus { get; set; }
 
-		public static void Deserialize(CapturePointScoringHandlerData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.SquadCappingBonus = p_Reader.ReadSingle();
-		}
-
 	}
 }

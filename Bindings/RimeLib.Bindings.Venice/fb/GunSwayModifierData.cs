@@ -47,19 +47,5 @@ namespace fb
 		[ContainerField(209), LayoutImmutable, Blittable]
 		public bool OnlyOnWeaponLightEnabled { get; set; }
 
-		public static void Deserialize(GunSwayModifierData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.UnlockAsset.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			fb.GunSwayStanceZoomModifierData.Deserialize(p_Instance.StandZoomModifier, p_Reader, p_Parser);
-			fb.GunSwayStanceZoomModifierData.Deserialize(p_Instance.StandNoZoomModifier, p_Reader, p_Parser);
-			fb.GunSwayStanceZoomModifierData.Deserialize(p_Instance.CrouchZoomModifier, p_Reader, p_Parser);
-			fb.GunSwayStanceZoomModifierData.Deserialize(p_Instance.CrouchNoZoomModifier, p_Reader, p_Parser);
-			fb.GunSwayStanceZoomModifierData.Deserialize(p_Instance.ProneZoomModifier, p_Reader, p_Parser);
-			fb.GunSwayStanceZoomModifierData.Deserialize(p_Instance.ProneNoZoomModifier, p_Reader, p_Parser);
-			p_Instance.OnlyInSupportedShooting = p_Reader.ReadBool();
-			p_Instance.OnlyOnWeaponLightEnabled = p_Reader.ReadBool();
-			p_Reader.Seek(2, SeekOrigin.Current);
-		}
-
 	}
 }

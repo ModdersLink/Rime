@@ -29,12 +29,5 @@ namespace fb
 		[ContainerField(52)]
 		public UIHudIcon MoveToIcon { get; set; } = new();
 
-		public static void Deserialize(PlayerOrderTrackerData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.AttackIcon = (UIHudIcon) p_Reader.ReadInt32();
-			p_Instance.DefendIcon = (UIHudIcon) p_Reader.ReadInt32();
-			p_Instance.MoveToIcon = (UIHudIcon) p_Reader.ReadInt32();
-		}
-
 	}
 }

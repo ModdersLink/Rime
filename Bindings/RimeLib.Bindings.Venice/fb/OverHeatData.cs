@@ -34,13 +34,5 @@ namespace fb
 		[ContainerField(16)]
 		public FireEffectData OverHeatEffect { get; set; } = new();
 		
-		public static void Deserialize(OverHeatData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.HeatPerBullet = p_Reader.ReadSingle();
-			p_Instance.HeatDropPerSecond = p_Reader.ReadSingle();
-			p_Instance.OverHeatPenaltyTime = p_Reader.ReadSingle();
-			p_Instance.OverHeatThreshold = p_Reader.ReadSingle();
-			fb.FireEffectData.Deserialize(p_Instance.OverHeatEffect, p_Reader, p_Parser);
-		}
 	}
 }

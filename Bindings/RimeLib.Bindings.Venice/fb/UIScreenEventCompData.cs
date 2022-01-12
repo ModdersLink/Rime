@@ -20,9 +20,5 @@ namespace fb
 	public class UIScreenEventCompData : 
 		UIComponentData
 	{
-		public static void Deserialize(UIScreenEventCompData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

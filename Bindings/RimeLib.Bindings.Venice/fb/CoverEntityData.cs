@@ -38,25 +38,5 @@ namespace fb
 		[ContainerField(94), LayoutImmutable, Blittable]
 		public bool LeftEdgeBlocked { get; set; }
 
-		public static void Deserialize(CoverEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Width = p_Reader.ReadSingle();
-			p_Instance.CoverType = (CoverType) p_Reader.ReadInt32();
-			p_Instance.Slots.Clear();
-			(RimeReader Reader, uint Count) s_Slots = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_Slots.Count; ++i)
-			{
-				var s_Value = new CoverSlot();
-				fb.CoverSlot.Deserialize(s_Value, s_Slots.Reader, p_Parser);
-				p_Instance.Slots.Add(s_Value);
-			}
-			
-			s_Slots.Reader.Dispose();
-			p_Instance.RightEdgeBlocked = p_Reader.ReadBool();
-			p_Instance.TopBlocked = p_Reader.ReadBool();
-			p_Instance.LeftEdgeBlocked = p_Reader.ReadBool();
-			p_Reader.Seek(1, SeekOrigin.Current);
-		}
-
 	}
 }

@@ -23,19 +23,5 @@ namespace fb
 		[ContainerField(8)]
 		public List<Consumable> Consumables { get; set; } = new();
 
-		public static void Deserialize(ConsumablesLevelDescriptionComponent p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Consumables.Clear();
-			(RimeReader Reader, uint Count) s_Consumables = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_Consumables.Count; ++i)
-			{
-				var s_Value = new Consumable();
-				fb.Consumable.Deserialize(s_Value, s_Consumables.Reader, p_Parser);
-				p_Instance.Consumables.Add(s_Value);
-			}
-			
-			s_Consumables.Reader.Dispose();
-		}
-
 	}
 }

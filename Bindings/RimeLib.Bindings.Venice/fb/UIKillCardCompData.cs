@@ -20,9 +20,5 @@ namespace fb
 	public class UIKillCardCompData : 
 		UIComponentData
 	{
-		public static void Deserialize(UIKillCardCompData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

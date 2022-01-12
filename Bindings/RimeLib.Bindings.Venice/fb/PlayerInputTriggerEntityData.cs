@@ -41,17 +41,5 @@ namespace fb
 		[ContainerField(33), LayoutImmutable, Blittable]
 		public bool EnabledFromStart { get; set; }
 
-		public static void Deserialize(PlayerInputTriggerEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Realm = (Realm) p_Reader.ReadInt32();
-			p_Instance.EntryInputActions = (EntryInputActionEnum) p_Reader.ReadInt32();
-			p_Instance.ValueModifier = p_Reader.ReadSingle();
-			p_Instance.TrailingValueAtStart = p_Reader.ReadSingle();
-			p_Instance.AccumulatedValueAtStart = p_Reader.ReadSingle();
-			p_Instance.SendTriggerEvents = p_Reader.ReadBool();
-			p_Instance.EnabledFromStart = p_Reader.ReadBool();
-			p_Reader.Seek(2, SeekOrigin.Current);
-		}
-
 	}
 }

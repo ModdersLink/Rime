@@ -20,9 +20,5 @@ namespace fb
 	public class UIPremiumCompData : 
 		UIComponentData
 	{
-		public static void Deserialize(UIPremiumCompData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

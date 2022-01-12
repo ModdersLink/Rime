@@ -55,20 +55,5 @@ namespace fb
 		[ContainerField(44)]
 		public AntRef CancelAnimation { get; set; } = new();
 		
-		public static void Deserialize(SpecialMovesBinding p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AntRef.Deserialize(p_Instance.TriggerHighVault, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.TriggerUpVault, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.TriggerLowVault, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.TriggerSlideIntoProne, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.TriggerSpecialAnimation, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.SpecialAnimationIndex, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.ObjectHeight, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.ObjectDistance, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.StartObjectDistanceTimer, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.VaultObjectPositionX, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.VaultObjectPositionZ, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.CancelAnimation, p_Reader, p_Parser);
-		}
 	}
 }

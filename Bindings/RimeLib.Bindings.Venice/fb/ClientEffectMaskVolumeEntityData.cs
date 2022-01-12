@@ -32,14 +32,5 @@ namespace fb
 		[ContainerField(120), LayoutImmutable, Blittable]
 		public float Radius { get; set; }
 
-		public static void Deserialize(ClientEffectMaskVolumeEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.Vec4.Deserialize(p_Instance.ApplyEffectCurve, p_Reader, p_Parser);
-			p_Instance.LifeTimeInSeconds = p_Reader.ReadSingle();
-			p_Instance.UpdatePeriodInSeconds = p_Reader.ReadSingle();
-			p_Instance.Radius = p_Reader.ReadSingle();
-			p_Reader.Seek(4, SeekOrigin.Current);
-		}
-
 	}
 }

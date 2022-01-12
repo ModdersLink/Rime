@@ -32,18 +32,5 @@ namespace fb
 		[ContainerField(88), LayoutImmutable, Blittable]
 		public bool PlayOnCreation { get; set; }
 
-		public static void Deserialize(SoundEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Reader.Seek(4, SeekOrigin.Current);
-			fb.LinearTransform.Deserialize(p_Instance.Transform, p_Reader, p_Parser);
-			p_Reader.Seek(4, SeekOrigin.Current);
-			p_Instance.Sound.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Reader.Seek(4, SeekOrigin.Current);
-			p_Instance.ObstructionHandle = p_Reader.ReadInt32();
-			p_Reader.Seek(4, SeekOrigin.Current);
-			p_Instance.PlayOnCreation = p_Reader.ReadBool();
-			p_Reader.Seek(11, SeekOrigin.Current);
-		}
-
 	}
 }

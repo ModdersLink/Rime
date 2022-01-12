@@ -20,9 +20,5 @@ namespace fb
 	public class AbstractPersistenceData : 
 		Asset
 	{
-		public static void Deserialize(AbstractPersistenceData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

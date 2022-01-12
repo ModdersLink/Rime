@@ -38,16 +38,5 @@ namespace fb
 		[ContainerField(125), LayoutImmutable, Blittable]
 		public bool CheckForVehicleOverrun { get; set; }
 
-		public static void Deserialize(VehicleExitPointComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.Vec3.Deserialize(p_Instance.Impulse, p_Reader, p_Parser);
-			p_Instance.TerrainHeight = p_Reader.ReadSingle();
-			p_Instance.Ordinal = p_Reader.ReadInt32();
-			p_Instance.Velocity = p_Reader.ReadSingle();
-			p_Instance.InheritCameraDirection = p_Reader.ReadBool();
-			p_Instance.CheckForVehicleOverrun = p_Reader.ReadBool();
-			p_Reader.Seek(2, SeekOrigin.Current);
-		}
-
 	}
 }

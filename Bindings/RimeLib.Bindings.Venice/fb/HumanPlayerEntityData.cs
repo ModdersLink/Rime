@@ -29,13 +29,5 @@ namespace fb
 		[ContainerField(104), LayoutImmutable, Blittable]
 		public float DisplayTime { get; set; }
 
-		public static void Deserialize(HumanPlayerEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.PlayerKilledDelay = p_Reader.ReadSingle();
-			p_Instance.LastManStandingSid = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.DisplayTime = p_Reader.ReadSingle();
-			p_Reader.Seek(4, SeekOrigin.Current);
-		}
-
 	}
 }

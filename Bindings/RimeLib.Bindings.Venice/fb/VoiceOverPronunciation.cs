@@ -32,13 +32,5 @@ namespace fb
 		[ContainerField(20)]
 		public VoiceOverPronunciationFallback SecondaryFallback { get; set; } = new();
 
-		public static void Deserialize(VoiceOverPronunciation p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Name = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.PrimaryLanguage.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.SecondaryLanguage.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.SecondaryFallback = (VoiceOverPronunciationFallback) p_Reader.ReadInt32();
-		}
-
 	}
 }

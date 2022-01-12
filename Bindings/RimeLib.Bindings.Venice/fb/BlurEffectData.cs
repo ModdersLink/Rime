@@ -37,14 +37,5 @@ namespace fb
 		[ContainerField(20), LayoutImmutable, Blittable]
 		public float BulletFalloffSpeed { get; set; }
 		
-		public static void Deserialize(BlurEffectData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.DispersionStrength = p_Reader.ReadSingle();
-			p_Instance.DispersionThreshhold = p_Reader.ReadSingle();
-			p_Instance.ExplosionStrength = p_Reader.ReadSingle();
-			p_Instance.BulletStrength = p_Reader.ReadSingle();
-			p_Instance.ExplosionFalloffSpeed = p_Reader.ReadSingle();
-			p_Instance.BulletFalloffSpeed = p_Reader.ReadSingle();
-		}
 	}
 }

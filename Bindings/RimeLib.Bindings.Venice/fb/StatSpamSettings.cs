@@ -23,19 +23,5 @@ namespace fb
 		[ContainerField(12)]
 		public List<StatSpamSetting> SpamList { get; set; } = new();
 
-		public static void Deserialize(StatSpamSettings p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.SpamList.Clear();
-			(RimeReader Reader, uint Count) s_SpamList = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_SpamList.Count; ++i)
-			{
-				var s_Value = new StatSpamSetting();
-				fb.StatSpamSetting.Deserialize(s_Value, s_SpamList.Reader, p_Parser);
-				p_Instance.SpamList.Add(s_Value);
-			}
-			
-			s_SpamList.Reader.Dispose();
-		}
-
 	}
 }

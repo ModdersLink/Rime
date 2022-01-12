@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(8)]
 		public SurfaceShaderInstanceDataStruct Shader { get; set; } = new();
 
-		public static void Deserialize(MeshMaterialVariation p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.SurfaceShaderInstanceDataStruct.Deserialize(p_Instance.Shader, p_Reader, p_Parser);
-		}
-
 	}
 }

@@ -32,13 +32,5 @@ namespace fb
 		[ContainerField(204), LayoutImmutable, Blittable]
 		public float MinBounceSpeed { get; set; }
 
-		public static void Deserialize(GrenadeEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.CollisionSpeedMultiplier = p_Reader.ReadSingle();
-			p_Instance.Gravity = p_Reader.ReadSingle();
-			p_Instance.GrenadeType = (GrenadeType) p_Reader.ReadInt32();
-			p_Instance.MinBounceSpeed = p_Reader.ReadSingle();
-		}
-
 	}
 }

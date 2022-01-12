@@ -26,11 +26,5 @@ namespace fb
 		[ContainerField(20), LayoutImmutable, Blittable]
 		public float SecondsAsKit { get; set; }
 
-		public static void Deserialize(KitStateEvent p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Kit = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.SecondsAsKit = p_Reader.ReadSingle();
-		}
-
 	}
 }

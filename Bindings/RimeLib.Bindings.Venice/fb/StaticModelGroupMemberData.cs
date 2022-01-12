@@ -55,53 +55,5 @@ namespace fb
 		[ContainerField(52), LayoutImmutable, Blittable]
 		public uint NetworkIdCountPerInstance { get; set; }
 		
-		public static void Deserialize(StaticModelGroupMemberData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.InstanceTransforms.Clear();
-			(RimeReader Reader, uint Count) s_InstanceTransforms = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_InstanceTransforms.Count; ++i)
-			{
-				var s_Value = new LinearTransform();
-				fb.LinearTransform.Deserialize(s_Value, s_InstanceTransforms.Reader, p_Parser);
-				p_Instance.InstanceTransforms.Add(s_Value);
-			}
-			
-			s_InstanceTransforms.Reader.Dispose();
-			p_Instance.InstanceScale.Clear();
-			(RimeReader Reader, uint Count) s_InstanceScale = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_InstanceScale.Count; ++i)
-			{
-				var s_Value = s_InstanceScale.Reader.ReadSingle();
-				p_Instance.InstanceScale.Add(s_Value);
-			}
-			
-			s_InstanceScale.Reader.Dispose();
-			p_Instance.InstanceObjectVariation.Clear();
-			(RimeReader Reader, uint Count) s_InstanceObjectVariation = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_InstanceObjectVariation.Count; ++i)
-			{
-				var s_Value = s_InstanceObjectVariation.Reader.ReadUInt32();
-				p_Instance.InstanceObjectVariation.Add(s_Value);
-			}
-			
-			s_InstanceObjectVariation.Reader.Dispose();
-			p_Instance.InstanceCastSunShadow.Clear();
-			(RimeReader Reader, uint Count) s_InstanceCastSunShadow = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_InstanceCastSunShadow.Count; ++i)
-			{
-				var s_Value = s_InstanceCastSunShadow.Reader.ReadBool();
-				p_Instance.InstanceCastSunShadow.Add(s_Value);
-			}
-			
-			s_InstanceCastSunShadow.Reader.Dispose();
-			p_Instance.MemberType.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.MeshEntityType.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.InstanceCount = p_Reader.ReadUInt32();
-			p_Instance.HealthStateEntityManagerId = p_Reader.ReadUInt32();
-			fb.IndexRange.Deserialize(p_Instance.PhysicsPartRange, p_Reader, p_Parser);
-			p_Instance.PhysicsPartCountPerInstance = p_Reader.ReadUInt32();
-			fb.IndexRange.Deserialize(p_Instance.NetworkIdRange, p_Reader, p_Parser);
-			p_Instance.NetworkIdCountPerInstance = p_Reader.ReadUInt32();
-		}
 	}
 }

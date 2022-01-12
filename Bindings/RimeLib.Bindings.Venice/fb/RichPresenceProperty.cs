@@ -25,10 +25,5 @@ namespace fb
 		[ContainerField(4)]
 		public RichPresencePropertyType PropertyType { get; set; } = new();
 		
-		public static void Deserialize(RichPresenceProperty p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Name = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.PropertyType = (RichPresencePropertyType) p_Reader.ReadInt32();
-		}
 	}
 }

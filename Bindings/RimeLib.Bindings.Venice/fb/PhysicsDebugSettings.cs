@@ -29,13 +29,5 @@ namespace fb
 		[ContainerField(13), LayoutImmutable, Blittable]
 		public bool DebugHingeConstraints { get; set; }
 
-		public static void Deserialize(PhysicsDebugSettings p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.TimingRecursionDepth = p_Reader.ReadUInt32();
-			p_Instance.UsePhysicsCpuTimers = p_Reader.ReadBool();
-			p_Instance.DebugHingeConstraints = p_Reader.ReadBool();
-			p_Reader.Seek(2, SeekOrigin.Current);
-		}
-
 	}
 }

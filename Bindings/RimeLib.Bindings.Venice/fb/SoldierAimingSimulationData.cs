@@ -21,7 +21,7 @@ namespace fb
 		GameDataContainer
 	{
 		[ContainerField(8)]
-		public List<CtrRef<ZoomLevelData>> ZoomLevels { get; set; } = new();
+		public RefArray<ZoomLevelData> ZoomLevels { get; set; } = new();
 
 		[ContainerField(12), LayoutImmutable, Blittable]
 		public float ZoomTransitionTime { get; set; }
@@ -48,7 +48,7 @@ namespace fb
 		public float FovDelayTime { get; set; }
 
 		[ContainerField(104)]
-		public List<CtrRef<AimerModifierData>> Modifiers { get; set; } = new();
+		public RefArray<AimerModifierData> Modifiers { get; set; } = new();
 
 		[ContainerField(108), LayoutImmutable, Blittable]
 		public float AimingRange { get; set; }
@@ -58,51 +58,6 @@ namespace fb
 
 		[ContainerField(116), LayoutImmutable, Blittable]
 		public bool ReturnToZoomAfterReload { get; set; }
-
-		public static void Deserialize(SoldierAimingSimulationData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.ZoomLevels.Clear();
-			(RimeReader Reader, uint Count) s_ZoomLevels = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_ZoomLevels.Count; ++i)
-			{
-				var s_CtrRef = new CtrRef<ZoomLevelData>();
-				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_ZoomLevels.Reader.ReadUInt32()));
-				p_Instance.ZoomLevels.Add(s_CtrRef);
-			}
-			
-			s_ZoomLevels.Reader.Dispose();
-			p_Instance.ZoomTransitionTime = p_Reader.ReadSingle();
-			p_Instance.AimAssist.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			fb.AimingPoseData.Deserialize(p_Instance.StandPose, p_Reader, p_Parser);
-			fb.AimingPoseData.Deserialize(p_Instance.CrouchPose, p_Reader, p_Parser);
-			fb.AimingPoseData.Deserialize(p_Instance.PronePose, p_Reader, p_Parser);
-			p_Instance.ZoomTransitionTimeArray.Clear();
-			(RimeReader Reader, uint Count) s_ZoomTransitionTimeArray = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_ZoomTransitionTimeArray.Count; ++i)
-			{
-				var s_Value = new ZoomLevelSpecificTransitionTime();
-				fb.ZoomLevelSpecificTransitionTime.Deserialize(s_Value, s_ZoomTransitionTimeArray.Reader, p_Parser);
-				p_Instance.ZoomTransitionTimeArray.Add(s_Value);
-			}
-			
-			s_ZoomTransitionTimeArray.Reader.Dispose();
-			p_Instance.FovTransitionTime = p_Reader.ReadSingle();
-			p_Instance.FovDelayTime = p_Reader.ReadSingle();
-			p_Instance.Modifiers.Clear();
-			(RimeReader Reader, uint Count) s_Modifiers = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_Modifiers.Count; ++i)
-			{
-				var s_CtrRef = new CtrRef<AimerModifierData>();
-				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_Modifiers.Reader.ReadUInt32()));
-				p_Instance.Modifiers.Add(s_CtrRef);
-			}
-			
-			s_Modifiers.Reader.Dispose();
-			p_Instance.AimingRange = p_Reader.ReadSingle();
-			p_Instance.LockAimToTargetSpeed = p_Reader.ReadSingle();
-			p_Instance.ReturnToZoomAfterReload = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
 
 	}
 }

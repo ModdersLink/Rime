@@ -125,45 +125,5 @@ namespace fb
 		[ContainerField(373), LayoutImmutable, Blittable]
 		public bool IsDynamicSpawn { get; set; }
 
-		public static void Deserialize(SpawnReferenceObjectData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.LinearTransform.Deserialize(p_Instance.AirdropTransform, p_Reader, p_Parser);
-			fb.LinearTransform.Deserialize(p_Instance.ControllableInput, p_Reader, p_Parser);
-			fb.LinearTransform.Deserialize(p_Instance.ControllableTransform, p_Reader, p_Parser);
-			p_Instance.LocationNameSid = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.LocationTextSid = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Team = (TeamId) p_Reader.ReadInt32();
-			p_Instance.SpawnProtectionFriendlyKilledCount = p_Reader.ReadUInt32();
-			p_Instance.SpawnProtectionFriendlyKilledTime = p_Reader.ReadSingle();
-			p_Instance.RotationRoll = p_Reader.ReadSingle();
-			p_Instance.Throttle = p_Reader.ReadSingle();
-			p_Instance.InitialSpawnDelay = p_Reader.ReadSingle();
-			p_Instance.SpawnDelay = p_Reader.ReadSingle();
-			p_Instance.MaxCount = p_Reader.ReadInt32();
-			p_Instance.MaxCountSimultaneously = p_Reader.ReadInt32();
-			p_Instance.TotalCountSimultaneouslyOfType = p_Reader.ReadInt32();
-			p_Instance.SpawnAreaRadius = p_Reader.ReadSingle();
-			p_Instance.SpawnProtectionRadius = p_Reader.ReadSingle();
-			p_Instance.RotationYaw = p_Reader.ReadSingle();
-			p_Instance.RotationPitch = p_Reader.ReadSingle();
-			p_Instance.InitialVelocity = p_Reader.ReadSingle();
-			p_Instance.TakeControlEntryIndex = p_Reader.ReadInt32();
-			p_Instance.SpawnProtectionCheckAllTeams = p_Reader.ReadBool();
-			p_Instance.ClearBangersOnSpawn = p_Reader.ReadBool();
-			p_Instance.TryToSpawnOutOfSight = p_Reader.ReadBool();
-			p_Instance.SendWeaponEvents = p_Reader.ReadBool();
-			p_Instance.TakeControlOnTransformChange = p_Reader.ReadBool();
-			p_Instance.ReturnControlOnIdle = p_Reader.ReadBool();
-			p_Instance.AutoSpawn = p_Reader.ReadBool();
-			p_Instance.UseAsSpawnPoint = p_Reader.ReadBool();
-			p_Instance.LockedTeam = p_Reader.ReadBool();
-			p_Instance.InitialAutoSpawn = p_Reader.ReadBool();
-			p_Instance.OverwriteThrottle = p_Reader.ReadBool();
-			p_Instance.OnlySendEventForHumanPlayers = p_Reader.ReadBool();
-			p_Instance.Enabled = p_Reader.ReadBool();
-			p_Instance.IsDynamicSpawn = p_Reader.ReadBool();
-			p_Reader.Seek(10, SeekOrigin.Current);
-		}
-
 	}
 }

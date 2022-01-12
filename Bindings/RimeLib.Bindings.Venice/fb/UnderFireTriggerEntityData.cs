@@ -41,17 +41,5 @@ namespace fb
 		[ContainerField(130), LayoutImmutable, Blittable]
 		public bool IndicateHit { get; set; }
 
-		public static void Deserialize(UnderFireTriggerEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Radius = p_Reader.ReadSingle();
-			p_Instance.CoolDownTime = p_Reader.ReadSingle();
-			p_Instance.TriggerOnMaterialOnly.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.TriggeredBy = (AreaTriggerInclude) p_Reader.ReadInt32();
-			p_Instance.DisableIfTrackEntityIsLost = p_Reader.ReadBool();
-			p_Instance.RandomYaw = p_Reader.ReadBool();
-			p_Instance.IndicateHit = p_Reader.ReadBool();
-			p_Reader.Seek(13, SeekOrigin.Current);
-		}
-
 	}
 }

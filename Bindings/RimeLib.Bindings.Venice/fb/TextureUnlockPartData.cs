@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(8)]
 		public CtrRef<TextureReference> TextureReference { get; set; } = new();
 
-		public static void Deserialize(TextureUnlockPartData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.TextureReference.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-		}
-
 	}
 }

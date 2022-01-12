@@ -35,14 +35,5 @@ namespace fb
 		[ContainerField(28), LayoutImmutable]
 		public string GameName { get; set; } = string.Empty;
 
-		public static void Deserialize(VersionData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.disclaimer = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Version = p_Reader.ReadInt32();
-			p_Instance.DateTime = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.BranchId = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.GameName = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-		}
-
 	}
 }

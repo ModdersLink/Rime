@@ -28,11 +28,5 @@ namespace fb
 		[ContainerField(8), LayoutImmutable, Blittable]
 		public float K { get; set; }
 		
-		public static void Deserialize(AudioCurvePoint p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.X = p_Reader.ReadSingle();
-			p_Instance.Y = p_Reader.ReadSingle();
-			p_Instance.K = p_Reader.ReadSingle();
-		}
 	}
 }

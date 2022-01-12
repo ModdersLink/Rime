@@ -49,19 +49,5 @@ namespace fb
 		[ContainerField(48)]
 		public CtrRef<TextureAsset> Texture { get; set; } = new();
 		
-		public static void Deserialize(SkyCloudLayer p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.Vec3.Deserialize(p_Instance.Color, p_Reader, p_Parser);
-			p_Instance.TileFactor = p_Reader.ReadSingle();
-			p_Instance.Rotation = p_Reader.ReadSingle();
-			p_Instance.Altitude = p_Reader.ReadSingle();
-			p_Instance.Speed = p_Reader.ReadSingle();
-			p_Instance.SunLightPower = p_Reader.ReadSingle();
-			p_Instance.AmbientLightIntensity = p_Reader.ReadSingle();
-			p_Instance.SunLightIntensity = p_Reader.ReadSingle();
-			p_Instance.AlphaMul = p_Reader.ReadSingle();
-			p_Instance.Texture.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Reader.Seek(12, SeekOrigin.Current);
-		}
 	}
 }

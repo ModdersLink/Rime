@@ -34,13 +34,5 @@ namespace fb
 		[ContainerField(16)]
 		public CtrRef<MasterSkeletonAsset> MasterSkeletonAsset { get; set; } = new();
 		
-		public static void Deserialize(AntAnimatableData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AntRef.Deserialize(p_Instance.Actor, p_Reader, p_Parser);
-			p_Instance.ProceduralAwareness.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			fb.AntRef.Deserialize(p_Instance.RightHandEffectorDisableOverride, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.LeftHandEffectorDisableOverride, p_Reader, p_Parser);
-			p_Instance.MasterSkeletonAsset.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-		}
 	}
 }

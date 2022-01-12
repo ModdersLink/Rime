@@ -20,9 +20,5 @@ namespace fb
 	public class Blueprint : 
 		EntityBusData
 	{
-		public static void Deserialize(Blueprint p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

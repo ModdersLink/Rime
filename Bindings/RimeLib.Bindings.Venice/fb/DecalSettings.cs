@@ -47,19 +47,5 @@ namespace fb
 		[ContainerField(26), LayoutImmutable, Blittable]
 		public bool NvidiaStreamOutputWorkaroundEnable { get; set; }
 
-		public static void Deserialize(DecalSettings p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.StaticBufferMaxVertexCount = p_Reader.ReadUInt32();
-			p_Instance.RingBufferMaxVertexCount = p_Reader.ReadUInt32();
-			p_Instance.DrawEnable = p_Reader.ReadBool();
-			p_Instance.SystemEnable2 = p_Reader.ReadBool();
-			p_Instance.SystemEnable = p_Reader.ReadBool();
-			p_Instance.Enable = p_Reader.ReadBool();
-			p_Instance.DebugMemUsageEnable = p_Reader.ReadBool();
-			p_Instance.DebugWarningsEnable = p_Reader.ReadBool();
-			p_Instance.NvidiaStreamOutputWorkaroundEnable = p_Reader.ReadBool();
-			p_Reader.Seek(1, SeekOrigin.Current);
-		}
-
 	}
 }

@@ -74,35 +74,5 @@ namespace fb
 		[ContainerField(71), LayoutImmutable, Blittable]
 		public bool UseAnimationDrivenCharacter { get; set; }
 
-		public static void Deserialize(GameAnimationSettings p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.TemporalLoddingFourthDeltaTime = p_Reader.ReadSingle();
-			p_Instance.AntOnClientOnlyGamemodes.Clear();
-			(RimeReader Reader, uint Count) s_AntOnClientOnlyGamemodes = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_AntOnClientOnlyGamemodes.Count; ++i)
-			{
-				var s_Value = p_Parser.GetStringAtOffset(s_AntOnClientOnlyGamemodes.Reader.ReadUInt32());
-				p_Instance.AntOnClientOnlyGamemodes.Add(s_Value);
-			}
-			
-			s_AntOnClientOnlyGamemodes.Reader.Dispose();
-			p_Instance.TemporalLoddingFarDistance = p_Reader.ReadSingle();
-			p_Instance.TemporalLoddingSixthDeltaTime = p_Reader.ReadSingle();
-			p_Instance.TemporalLoddingFifthDeltaTime = p_Reader.ReadSingle();
-			p_Instance.TemporalLoddingFirstDeltaTime = p_Reader.ReadSingle();
-			p_Instance.TemporalLoddingSecondDeltaTime = p_Reader.ReadSingle();
-			p_Instance.TemporalLoddingThirdDeltaTime = p_Reader.ReadSingle();
-			p_Instance.TemporalLoddingSixthDistance = p_Reader.ReadSingle();
-			p_Instance.TemporalLoddingSecondDistance = p_Reader.ReadSingle();
-			p_Instance.TemporalLoddingFifthDistance = p_Reader.ReadSingle();
-			p_Instance.TemporalLoddingFirstDistance = p_Reader.ReadSingle();
-			p_Instance.TemporalLoddingThirdDistance = p_Reader.ReadSingle();
-			p_Instance.TemporalLoddingFourthDistance = p_Reader.ReadSingle();
-			p_Instance.ServerEnable = p_Reader.ReadBool();
-			p_Instance.UseRawGamepadInput = p_Reader.ReadBool();
-			p_Instance.ClientEnable = p_Reader.ReadBool();
-			p_Instance.UseAnimationDrivenCharacter = p_Reader.ReadBool();
-		}
-
 	}
 }

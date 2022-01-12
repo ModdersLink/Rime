@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(12), LayoutImmutable, Blittable]
 		public float In { get; set; }
 
-		public static void Deserialize(SyncedFloatEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.In = p_Reader.ReadSingle();
-		}
-
 	}
 }

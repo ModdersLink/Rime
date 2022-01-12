@@ -32,14 +32,5 @@ namespace fb
 		[ContainerField(120), LayoutImmutable, Blittable]
 		public bool Enabled { get; set; }
 
-		public static void Deserialize(RenderVolumeEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.Vec4.Deserialize(p_Instance.UserMasks, p_Reader, p_Parser);
-			fb.SurfaceShaderInstanceDataStruct.Deserialize(p_Instance.Shader, p_Reader, p_Parser);
-			p_Instance.TransformType = (RenderVolumeTransformType) p_Reader.ReadInt32();
-			p_Instance.Enabled = p_Reader.ReadBool();
-			p_Reader.Seek(7, SeekOrigin.Current);
-		}
-
 	}
 }

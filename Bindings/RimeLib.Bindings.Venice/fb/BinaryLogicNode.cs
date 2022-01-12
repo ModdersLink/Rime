@@ -32,13 +32,5 @@ namespace fb
 		[ContainerField(32)]
 		public UIDataSourceInfo DataSourceInfo { get; set; } = new();
 
-		public static void Deserialize(BinaryLogicNode p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.In.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.True.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.False.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			fb.UIDataSourceInfo.Deserialize(p_Instance.DataSourceInfo, p_Reader, p_Parser);
-		}
-
 	}
 }

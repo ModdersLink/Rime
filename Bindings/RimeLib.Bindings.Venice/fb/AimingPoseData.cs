@@ -37,14 +37,5 @@ namespace fb
 		[ContainerField(20), LayoutImmutable, Blittable]
 		public float RecoilMultiplier { get; set; }
 		
-		public static void Deserialize(AimingPoseData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.MinimumPitch = p_Reader.ReadSingle();
-			p_Instance.MaximumPitch = p_Reader.ReadSingle();
-			p_Instance.TargetingFov = p_Reader.ReadSingle();
-			p_Instance.AimSteadiness = p_Reader.ReadSingle();
-			p_Instance.SpeedMultiplier = p_Reader.ReadSingle();
-			p_Instance.RecoilMultiplier = p_Reader.ReadSingle();
-		}
 	}
 }

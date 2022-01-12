@@ -38,16 +38,5 @@ namespace fb
 		[ContainerField(116)]
 		public WarningPlayerType PlayerType { get; set; } = new();
 
-		public static void Deserialize(WarningSystemComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.AimWarnSoundEffect.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.MissileWarnSoundEffect.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.LowHealthWarnSoundEffect.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.LockingWarnSoundEffect.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.LockedWarnSoundEffect.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.PlayerType = (WarningPlayerType) p_Reader.ReadInt32();
-			p_Reader.Seek(8, SeekOrigin.Current);
-		}
-
 	}
 }

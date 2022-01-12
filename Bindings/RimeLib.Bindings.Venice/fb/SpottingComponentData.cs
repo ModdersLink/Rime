@@ -65,25 +65,5 @@ namespace fb
 		[ContainerField(152), LayoutImmutable, Blittable]
 		public bool OnlyAllowedToHaveOneSpottedPlayer { get; set; }
 
-		public static void Deserialize(SpottingComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.SpottingFov = p_Reader.ReadSingle();
-			p_Instance.TeamOrderFov = p_Reader.ReadSingle();
-			p_Instance.SpottingDistance = p_Reader.ReadSingle();
-			p_Instance.PassiveSpottingTimeInterval = p_Reader.ReadSingle();
-			p_Instance.TimeRequiredToPassiveSpot = p_Reader.ReadSingle();
-			p_Instance.OrderNeedAmmoPercentage = p_Reader.ReadSingle();
-			p_Instance.OrderHealPercentage = p_Reader.ReadSingle();
-			p_Instance.OrderRepairPercentage = p_Reader.ReadSingle();
-			p_Instance.PickupOrderDistance = p_Reader.ReadSingle();
-			p_Instance.HealOrderDistance = p_Reader.ReadSingle();
-			p_Instance.AmmoOrderDistance = p_Reader.ReadSingle();
-			p_Instance.RepairOrderDistance = p_Reader.ReadSingle();
-			p_Instance.CoolDownHistoryTime = p_Reader.ReadSingle();
-			p_Instance.CoolDownAllowedSpotsWithinHistory = p_Reader.ReadInt32();
-			p_Instance.OnlyAllowedToHaveOneSpottedPlayer = p_Reader.ReadBool();
-			p_Reader.Seek(7, SeekOrigin.Current);
-		}
-
 	}
 }

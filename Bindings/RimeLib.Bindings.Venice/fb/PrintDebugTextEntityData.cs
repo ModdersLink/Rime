@@ -32,18 +32,5 @@ namespace fb
 		[ContainerField(40), LayoutImmutable, Blittable]
 		public bool Enabled { get; set; }
 
-		public static void Deserialize(PrintDebugTextEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Reader.Seek(4, SeekOrigin.Current);
-			fb.Vec3.Deserialize(p_Instance.TextColor, p_Reader, p_Parser);
-			p_Reader.Seek(4, SeekOrigin.Current);
-			p_Instance.Realm = (Realm) p_Reader.ReadInt32();
-			p_Reader.Seek(4, SeekOrigin.Current);
-			p_Instance.Text = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Reader.Seek(4, SeekOrigin.Current);
-			p_Instance.Enabled = p_Reader.ReadBool();
-			p_Reader.Seek(11, SeekOrigin.Current);
-		}
-
 	}
 }

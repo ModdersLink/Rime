@@ -46,18 +46,5 @@ namespace fb
 		[ContainerField(32), LayoutImmutable, Blittable]
 		public bool AutoReplenishMagazine { get; set; }
 		
-		public static void Deserialize(AmmoConfigData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.MagazineCapacity = p_Reader.ReadInt32();
-			p_Instance.NumberOfMagazines = p_Reader.ReadInt32();
-			p_Instance.TraceFrequency = p_Reader.ReadUInt32();
-			p_Instance.AmmoPickupMinAmount = p_Reader.ReadUInt32();
-			p_Instance.AmmoPickupMaxAmount = p_Reader.ReadUInt32();
-			p_Instance.AutoReplenishDelay = p_Reader.ReadSingle();
-			p_Instance.AmmoBagPickupAmount = p_Reader.ReadInt32();
-			p_Instance.AmmoBagPickupDelayMultiplier = p_Reader.ReadSingle();
-			p_Instance.AutoReplenishMagazine = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
 	}
 }

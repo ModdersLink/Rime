@@ -37,14 +37,5 @@ namespace fb
 		[ContainerField(5), LayoutImmutable, Blittable]
 		public bool SoldierEntity { get; set; }
 		
-		public static void Deserialize(InteractionTypesData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.InteractionEntity = p_Reader.ReadBool();
-			p_Instance.PickupEntity = p_Reader.ReadBool();
-			p_Instance.AmmoCrateEntity = p_Reader.ReadBool();
-			p_Instance.VehicleEntity = p_Reader.ReadBool();
-			p_Instance.ExplosionPackEntity = p_Reader.ReadBool();
-			p_Instance.SoldierEntity = p_Reader.ReadBool();
-		}
 	}
 }

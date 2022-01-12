@@ -25,10 +25,5 @@ namespace fb
 		[ContainerField(4), LayoutImmutable, Blittable]
 		public int KillsNeeded { get; set; }
 		
-		public static void Deserialize(GunMasterLevelInfo p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.CustomizeData.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.KillsNeeded = p_Reader.ReadInt32();
-		}
 	}
 }

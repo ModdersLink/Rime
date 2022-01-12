@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(16), LayoutImmutable]
 		public string Name { get; set; } = string.Empty;
 
-		public static void Deserialize(UIVehicleWeaponDescription p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Name = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-		}
-
 	}
 }

@@ -36,7 +36,7 @@ namespace fb
 		public CtrRef<InputActionMappingsData> InputMapping { get; set; } = new();
 
 		[ContainerField(128)]
-		public List<CtrRef<InputCurveData>> InputCurves { get; set; } = new();
+		public RefArray<InputCurveData> InputCurves { get; set; } = new();
 
 		[ContainerField(132)]
 		public EntryComponentHudData HudData { get; set; } = new();
@@ -103,63 +103,6 @@ namespace fb
 
 		[ContainerField(191), LayoutImmutable, Blittable]
 		public bool ShowSoldierInEntry { get; set; }
-
-		public static void Deserialize(EntryComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.Vec3.Deserialize(p_Instance.SoldierOffset, p_Reader, p_Parser);
-			p_Instance.AIData.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.EntryClass = (EntryClass) p_Reader.ReadInt32();
-			p_Instance.InputConceptDefinition.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.InputMapping.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.InputCurves.Clear();
-			(RimeReader Reader, uint Count) s_InputCurves = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_InputCurves.Count; ++i)
-			{
-				var s_CtrRef = new CtrRef<InputCurveData>();
-				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_InputCurves.Reader.ReadUInt32()));
-				p_Instance.InputCurves.Add(s_CtrRef);
-			}
-			
-			s_InputCurves.Reader.Dispose();
-			fb.EntryComponentHudData.Deserialize(p_Instance.HudData, p_Reader, p_Parser);
-			p_Instance.EntryOrderNumber = p_Reader.ReadInt32();
-			p_Instance.EnterImpulse = p_Reader.ReadSingle();
-			p_Instance.EntryRadius = p_Reader.ReadSingle();
-			p_Instance.TriggerEventOnKey = (EntryInputActionEnum) p_Reader.ReadInt32();
-			p_Instance.EntrySpottingSettings = (EntrySpottingSettings) p_Reader.ReadInt32();
-			fb.PoseConstraintsData.Deserialize(p_Instance.PoseConstraints, p_Reader, p_Parser);
-			p_Reader.Seek(1, SeekOrigin.Current);
-			p_Instance.SoldierTransitionInvisbleTime = p_Reader.ReadSingle();
-			p_Reader.Seek(1, SeekOrigin.Current);
-			p_Instance.NumberOfStances = p_Reader.ReadInt32();
-			p_Reader.Seek(1, SeekOrigin.Current);
-			p_Instance.EntryComponentSound.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Reader.Seek(1, SeekOrigin.Current);
-			p_Instance.LockSoldierAimingToEntry = p_Reader.ReadBool();
-			p_Reader.Seek(1, SeekOrigin.Current);
-			p_Instance.IsAllowedToExitInAir = p_Reader.ReadBool();
-			p_Reader.Seek(1, SeekOrigin.Current);
-			p_Instance.Show1pSoldierInEntry = p_Reader.ReadBool();
-			p_Reader.Seek(1, SeekOrigin.Current);
-			p_Instance.StancesEnabled = p_Reader.ReadBool();
-			p_Reader.Seek(1, SeekOrigin.Current);
-			p_Instance.Show1pSoldierInEntryForPlayerOnly = p_Reader.ReadBool();
-			p_Reader.Seek(1, SeekOrigin.Current);
-			p_Instance.HideSoldierForPassengers = p_Reader.ReadBool();
-			p_Reader.Seek(1, SeekOrigin.Current);
-			p_Instance.Show3pSoldierWeaponInEntry = p_Reader.ReadBool();
-			p_Reader.Seek(1, SeekOrigin.Current);
-			p_Instance.ShowSoldierGearInEntry = p_Reader.ReadBool();
-			p_Reader.Seek(1, SeekOrigin.Current);
-			p_Instance.IsShielded = p_Reader.ReadBool();
-			p_Reader.Seek(1, SeekOrigin.Current);
-			p_Instance.ForbiddenForHuman = p_Reader.ReadBool();
-			p_Reader.Seek(1, SeekOrigin.Current);
-			p_Instance.ShowSoldierWeaponInEntry = p_Reader.ReadBool();
-			p_Reader.Seek(1, SeekOrigin.Current);
-			p_Instance.ShowSoldierInEntry = p_Reader.ReadBool();
-			p_Reader.Seek(1, SeekOrigin.Current);
-		}
 
 	}
 }

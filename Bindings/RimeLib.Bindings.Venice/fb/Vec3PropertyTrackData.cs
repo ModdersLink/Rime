@@ -23,19 +23,5 @@ namespace fb
 		[ContainerField(20)]
 		public List<Vec3> Values { get; set; } = new();
 
-		public static void Deserialize(Vec3PropertyTrackData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Values.Clear();
-			(RimeReader Reader, uint Count) s_Values = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_Values.Count; ++i)
-			{
-				var s_Value = new Vec3();
-				fb.Vec3.Deserialize(s_Value, s_Values.Reader, p_Parser);
-				p_Instance.Values.Add(s_Value);
-			}
-			
-			s_Values.Reader.Dispose();
-		}
-
 	}
 }

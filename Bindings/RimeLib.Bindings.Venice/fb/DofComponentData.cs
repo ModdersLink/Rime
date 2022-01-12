@@ -56,22 +56,5 @@ namespace fb
 		[ContainerField(137), LayoutImmutable, Blittable]
 		public bool Enable { get; set; }
 
-		public static void Deserialize(DofComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Realm = (Realm) p_Reader.ReadInt32();
-			p_Instance.NearDistanceScale = p_Reader.ReadSingle();
-			p_Instance.FocusDistance = p_Reader.ReadSingle();
-			p_Instance.BlurFilter = (BlurFilter) p_Reader.ReadInt32();
-			p_Instance.BlurFilterDeviation = p_Reader.ReadSingle();
-			p_Instance.FarDistanceScale = p_Reader.ReadSingle();
-			p_Instance.BlurAdd = p_Reader.ReadSingle();
-			p_Instance.Scale = p_Reader.ReadSingle();
-			p_Instance.DiffusionDofFocalLength = p_Reader.ReadSingle();
-			p_Instance.DiffusionDofAperture = p_Reader.ReadSingle();
-			p_Instance.DiffusionDofEnable = p_Reader.ReadBool();
-			p_Instance.Enable = p_Reader.ReadBool();
-			p_Reader.Seek(6, SeekOrigin.Current);
-		}
-
 	}
 }

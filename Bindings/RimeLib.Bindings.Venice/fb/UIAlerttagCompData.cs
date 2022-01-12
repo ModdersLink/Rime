@@ -20,9 +20,5 @@ namespace fb
 	public class UIAlerttagCompData : 
 		UI3dIconCompData
 	{
-		public static void Deserialize(UIAlerttagCompData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

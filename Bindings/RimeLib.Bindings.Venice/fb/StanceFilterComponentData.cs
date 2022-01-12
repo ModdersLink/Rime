@@ -35,32 +35,5 @@ namespace fb
 		[ContainerField(109), LayoutImmutable, Blittable]
 		public bool UndoParentStanceFilter { get; set; }
 
-		public static void Deserialize(StanceFilterComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.ValidStances.Clear();
-			(RimeReader Reader, uint Count) s_ValidStances = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_ValidStances.Count; ++i)
-			{
-				var s_Value = s_ValidStances.Reader.ReadInt32();
-				p_Instance.ValidStances.Add(s_Value);
-			}
-			
-			s_ValidStances.Reader.Dispose();
-			p_Instance.StanceChangeTime = p_Reader.ReadSingle();
-			p_Instance.ActionsToFilter.Clear();
-			(RimeReader Reader, uint Count) s_ActionsToFilter = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_ActionsToFilter.Count; ++i)
-			{
-				var s_Value = new ActionSuppressor();
-				fb.ActionSuppressor.Deserialize(s_Value, s_ActionsToFilter.Reader, p_Parser);
-				p_Instance.ActionsToFilter.Add(s_Value);
-			}
-			
-			s_ActionsToFilter.Reader.Dispose();
-			p_Instance.FilterSpecificActions = p_Reader.ReadBool();
-			p_Instance.UndoParentStanceFilter = p_Reader.ReadBool();
-			p_Reader.Seek(2, SeekOrigin.Current);
-		}
-
 	}
 }

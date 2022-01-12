@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(48)]
 		public AILocoCoverTaskData CoverTask { get; set; } = new();
 
-		public static void Deserialize(CoverWaypointData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AILocoCoverTaskData.Deserialize(p_Instance.CoverTask, p_Reader, p_Parser);
-		}
-
 	}
 }

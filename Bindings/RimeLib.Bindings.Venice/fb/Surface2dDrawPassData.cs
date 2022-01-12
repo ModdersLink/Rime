@@ -19,9 +19,5 @@ namespace fb
 	[ContainerType(1, 1)]
 	public class Surface2dDrawPassData
 	{
-		public static void Deserialize(Surface2dDrawPassData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Reader.Seek(1, SeekOrigin.Current);
-		}
 	}
 }

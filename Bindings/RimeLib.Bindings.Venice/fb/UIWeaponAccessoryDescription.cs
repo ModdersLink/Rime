@@ -47,19 +47,5 @@ namespace fb
 		[ContainerField(45), LayoutImmutable, Blittable]
 		public bool HiddenInProgression { get; set; }
 
-		public static void Deserialize(UIWeaponAccessoryDescription p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Name = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Description = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Category = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.TexturePath = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.IconTexturePath = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.UnlockTexturePath = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.MiscTexturePath = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.CoreAccessory = p_Reader.ReadBool();
-			p_Instance.HiddenInProgression = p_Reader.ReadBool();
-			p_Reader.Seek(2, SeekOrigin.Current);
-		}
-
 	}
 }

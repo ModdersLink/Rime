@@ -38,16 +38,5 @@ namespace fb
 		[ContainerField(116), LayoutImmutable, Blittable]
 		public bool TargetBoundingBoxCenter { get; set; }
 
-		public static void Deserialize(SpottingTargetComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.ActiveSpottedTime = p_Reader.ReadSingle();
-			p_Instance.PassiveSpottedTime = p_Reader.ReadSingle();
-			p_Instance.ActiveSpottedTimeMultiplier = p_Reader.ReadSingle();
-			p_Instance.PassiveSpottedTimeMultiplier = p_Reader.ReadSingle();
-			p_Instance.SpotOnFireMultiplier = p_Reader.ReadSingle();
-			p_Instance.TargetBoundingBoxCenter = p_Reader.ReadBool();
-			p_Reader.Seek(11, SeekOrigin.Current);
-		}
-
 	}
 }

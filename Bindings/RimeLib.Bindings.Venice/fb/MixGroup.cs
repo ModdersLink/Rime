@@ -29,12 +29,5 @@ namespace fb
 		[ContainerField(14), LayoutImmutable, Blittable]
 		public ushort ParentGroupIndex { get; set; }
 
-		public static void Deserialize(MixGroup p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Name = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.GroupIndex = p_Reader.ReadUInt16();
-			p_Instance.ParentGroupIndex = p_Reader.ReadUInt16();
-		}
-
 	}
 }

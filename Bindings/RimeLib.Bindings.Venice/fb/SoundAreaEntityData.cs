@@ -35,14 +35,5 @@ namespace fb
 		[ContainerField(28)]
 		public FadeCurveType FadeCurve { get; set; } = new();
 
-		public static void Deserialize(SoundAreaEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Sound.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.BigWorld.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.FadeWidth = p_Reader.ReadSingle();
-			p_Instance.ProximityMultiplier = p_Reader.ReadSingle();
-			p_Instance.FadeCurve = (FadeCurveType) p_Reader.ReadInt32();
-		}
-
 	}
 }

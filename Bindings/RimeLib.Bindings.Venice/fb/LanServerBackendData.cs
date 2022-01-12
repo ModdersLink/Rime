@@ -20,9 +20,5 @@ namespace fb
 	public class LanServerBackendData : 
 		ServerBackendData
 	{
-		public static void Deserialize(LanServerBackendData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

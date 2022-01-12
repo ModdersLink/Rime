@@ -35,15 +35,5 @@ namespace fb
 		[ContainerField(24), LayoutImmutable, Blittable]
 		public bool ResumeAtEnd { get; set; }
 
-		public static void Deserialize(AntTrackItemData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AntRef.Deserialize(p_Instance.Controller, p_Reader, p_Parser);
-			p_Instance.SequenceTrackIndex = p_Reader.ReadInt32();
-			p_Instance.StartTime = p_Reader.ReadInt32();
-			p_Instance.NumTicks = p_Reader.ReadUInt32();
-			p_Instance.ResumeAtEnd = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
-
 	}
 }

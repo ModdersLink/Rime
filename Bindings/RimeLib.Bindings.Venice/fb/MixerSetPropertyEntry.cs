@@ -35,14 +35,5 @@ namespace fb
 		[ContainerField(28), LayoutImmutable, Blittable]
 		public float ReleaseTime { get; set; }
 
-		public static void Deserialize(MixerSetPropertyEntry p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AudioGraphNodePort.Deserialize(p_Instance.In, p_Reader, p_Parser);
-			p_Instance.Target = p_Reader.ReadUInt32();
-			p_Instance.Group.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.AttackTime = p_Reader.ReadSingle();
-			p_Instance.ReleaseTime = p_Reader.ReadSingle();
-		}
-
 	}
 }

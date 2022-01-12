@@ -26,11 +26,5 @@ namespace fb
 		[ContainerField(12), LayoutImmutable, Blittable]
 		public float Duration { get; set; }
 
-		public static void Deserialize(SoundTestTaskSpec p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Description = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Duration = p_Reader.ReadSingle();
-		}
-
 	}
 }

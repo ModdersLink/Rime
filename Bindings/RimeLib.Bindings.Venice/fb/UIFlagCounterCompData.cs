@@ -20,9 +20,5 @@ namespace fb
 	public class UIFlagCounterCompData : 
 		UIComponentData
 	{
-		public static void Deserialize(UIFlagCounterCompData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(28), LayoutImmutable, Blittable]
 		public int RangeMeterUpdatesPerSecond { get; set; }
 
-		public static void Deserialize(UIVehicleCompData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.RangeMeterUpdatesPerSecond = p_Reader.ReadInt32();
-		}
-
 	}
 }

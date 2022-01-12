@@ -20,9 +20,5 @@ namespace fb
 	public class UpdateSizeXData : 
 		ProcessorData
 	{
-		public static void Deserialize(UpdateSizeXData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

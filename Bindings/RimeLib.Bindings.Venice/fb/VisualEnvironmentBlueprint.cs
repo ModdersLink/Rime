@@ -20,9 +20,5 @@ namespace fb
 	public class VisualEnvironmentBlueprint : 
 		ObjectBlueprint
 	{
-		public static void Deserialize(VisualEnvironmentBlueprint p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

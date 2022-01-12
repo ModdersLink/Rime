@@ -26,11 +26,5 @@ namespace fb
 		[ContainerField(16)]
 		public ProfileOptionsType Category { get; set; } = new();
 
-		public static void Deserialize(ProfileOptionData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.UniqueId = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Category = (ProfileOptionsType) p_Reader.ReadInt32();
-		}
-
 	}
 }

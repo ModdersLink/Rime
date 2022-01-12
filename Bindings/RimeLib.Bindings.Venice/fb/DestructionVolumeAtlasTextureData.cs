@@ -25,10 +25,5 @@ namespace fb
 		[ContainerField(4), LayoutImmutable, Blittable]
 		public float MaskEdgeThickness { get; set; }
 		
-		public static void Deserialize(DestructionVolumeAtlasTextureData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.AtlasAlphaInfluence = p_Reader.ReadSingle();
-			p_Instance.MaskEdgeThickness = p_Reader.ReadSingle();
-		}
 	}
 }

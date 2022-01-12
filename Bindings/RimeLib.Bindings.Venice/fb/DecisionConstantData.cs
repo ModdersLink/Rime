@@ -29,13 +29,5 @@ namespace fb
 		[ContainerField(17), LayoutImmutable, Blittable]
 		public bool AllowUninterruptibleBehaviours { get; set; }
 
-		public static void Deserialize(DecisionConstantData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.NewEnemyDecideMaxDistance = p_Reader.ReadSingle();
-			p_Instance.AllowEmergencyGoalInterrupt = p_Reader.ReadBool();
-			p_Instance.AllowUninterruptibleBehaviours = p_Reader.ReadBool();
-			p_Reader.Seek(2, SeekOrigin.Current);
-		}
-
 	}
 }

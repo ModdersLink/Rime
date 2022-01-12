@@ -59,23 +59,5 @@ namespace fb
 		[ContainerField(154), LayoutImmutable, Blittable]
 		public bool SuppressOwnerVehicleDamage { get; set; }
 
-		public static void Deserialize(ProjectileEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.VisualConvergeDistance = p_Reader.ReadSingle();
-			p_Instance.InitialSpeed = p_Reader.ReadSingle();
-			p_Instance.TimeToLive = p_Reader.ReadSingle();
-			p_Instance.MaxCount = p_Reader.ReadUInt32();
-			p_Instance.InitMeshHideTime = p_Reader.ReadSingle();
-			p_Instance.MaterialPair.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.HitReactionWeaponType = (AntHitReactionWeaponType) p_Reader.ReadInt32();
-			p_Instance.Explosion.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.SuppressionData.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.AmmunitionType = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.ServerProjectileDisabled = p_Reader.ReadBool();
-			p_Instance.DetonateOnTimeout = p_Reader.ReadBool();
-			p_Instance.SuppressOwnerVehicleDamage = p_Reader.ReadBool();
-			p_Reader.Seek(5, SeekOrigin.Current);
-		}
-
 	}
 }

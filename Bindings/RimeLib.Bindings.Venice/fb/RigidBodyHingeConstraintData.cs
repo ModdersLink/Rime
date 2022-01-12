@@ -32,14 +32,5 @@ namespace fb
 		[ContainerField(108), LayoutImmutable, Blittable]
 		public bool HasLimits { get; set; }
 
-		public static void Deserialize(RigidBodyHingeConstraintData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.MinAngle = p_Reader.ReadSingle();
-			p_Instance.AngularFriction = p_Reader.ReadSingle();
-			p_Instance.MaxAngle = p_Reader.ReadSingle();
-			p_Instance.HasLimits = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
-
 	}
 }

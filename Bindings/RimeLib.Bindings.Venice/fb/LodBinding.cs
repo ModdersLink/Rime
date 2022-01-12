@@ -28,11 +28,5 @@ namespace fb
 		[ContainerField(8)]
 		public AntRef DistanceFromCamera { get; set; } = new();
 		
-		public static void Deserialize(LodBinding p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AntRef.Deserialize(p_Instance.DisableControllerUpdate, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.DisablePoseUpdate, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.DistanceFromCamera, p_Reader, p_Parser);
-		}
 	}
 }

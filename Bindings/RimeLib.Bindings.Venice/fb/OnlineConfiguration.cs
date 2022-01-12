@@ -32,13 +32,5 @@ namespace fb
 		[ContainerField(24)]
 		public CtrRef<ChatSettings> Chat { get; set; } = new();
 
-		public static void Deserialize(OnlineConfiguration p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Backend = (BackendType) p_Reader.ReadInt32();
-			p_Instance.Provider.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.RichPresence.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.Chat.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-		}
-
 	}
 }

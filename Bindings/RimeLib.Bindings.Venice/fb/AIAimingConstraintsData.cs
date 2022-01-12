@@ -32,13 +32,5 @@ namespace fb
 		[ContainerField(20), LayoutImmutable, Blittable]
 		public float MaxPitch { get; set; }
 
-		public static void Deserialize(AIAimingConstraintsData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.MinYaw = p_Reader.ReadSingle();
-			p_Instance.MaxYaw = p_Reader.ReadSingle();
-			p_Instance.MinPitch = p_Reader.ReadSingle();
-			p_Instance.MaxPitch = p_Reader.ReadSingle();
-		}
-
 	}
 }

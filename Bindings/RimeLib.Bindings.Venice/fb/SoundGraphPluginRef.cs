@@ -28,11 +28,5 @@ namespace fb
 		[ContainerField(2), LayoutImmutable, Blittable]
 		public sbyte PluginIndex { get; set; }
 		
-		public static void Deserialize(SoundGraphPluginRef p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.IsValid = p_Reader.ReadBool();
-			p_Instance.VoiceIndex = p_Reader.ReadSByte();
-			p_Instance.PluginIndex = p_Reader.ReadSByte();
-		}
 	}
 }

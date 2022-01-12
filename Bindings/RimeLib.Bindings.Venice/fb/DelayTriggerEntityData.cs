@@ -23,11 +23,5 @@ namespace fb
 		[ContainerField(112), LayoutImmutable, Blittable]
 		public bool AutoTriggerEvent { get; set; }
 
-		public static void Deserialize(DelayTriggerEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.AutoTriggerEvent = p_Reader.ReadBool();
-			p_Reader.Seek(15, SeekOrigin.Current);
-		}
-
 	}
 }

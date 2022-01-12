@@ -35,14 +35,5 @@ namespace fb
 		[ContainerField(24)]
 		public VoiceOverCompareExpressionType Operation { get; set; } = new();
 
-		public static void Deserialize(VoiceOverCompareNode p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.A.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.B.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.False.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.True.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.Operation = (VoiceOverCompareExpressionType) p_Reader.ReadInt32();
-		}
-
 	}
 }

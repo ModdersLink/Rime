@@ -22,9 +22,5 @@ namespace fb
 		[ContainerField(0)]
 		public AntRef LocoTarget { get; set; } = new();
 		
-		public static void Deserialize(SimpleAnimationControlBinding p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AntRef.Deserialize(p_Instance.LocoTarget, p_Reader, p_Parser);
-		}
 	}
 }

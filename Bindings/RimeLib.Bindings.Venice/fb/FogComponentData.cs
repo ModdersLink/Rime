@@ -80,30 +80,5 @@ namespace fb
 		[ContainerField(199), LayoutImmutable, Blittable]
 		public bool FogColorEnable { get; set; }
 
-		public static void Deserialize(FogComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.Vec4.Deserialize(p_Instance.Curve, p_Reader, p_Parser);
-			fb.Vec4.Deserialize(p_Instance.FogColorCurve, p_Reader, p_Parser);
-			fb.Vec3.Deserialize(p_Instance.FogColor, p_Reader, p_Parser);
-			p_Instance.FogColorStart = p_Reader.ReadSingle();
-			p_Instance.FogDistanceMultiplier = p_Reader.ReadSingle();
-			p_Instance.Realm = (Realm) p_Reader.ReadInt32();
-			p_Instance.End = p_Reader.ReadSingle();
-			p_Instance.TransparencyFadeStart = p_Reader.ReadSingle();
-			p_Instance.Start = p_Reader.ReadSingle();
-			p_Instance.TransparencyFadeEnd = p_Reader.ReadSingle();
-			p_Instance.FogColorEnd = p_Reader.ReadSingle();
-			p_Instance.TransparencyFadeClamp = p_Reader.ReadSingle();
-			p_Instance.HeightFogVisibilityRange = p_Reader.ReadSingle();
-			p_Instance.HeightFogAltitude = p_Reader.ReadSingle();
-			p_Instance.HeightFogDepth = p_Reader.ReadSingle();
-			p_Instance.HeightFogFollowCamera = p_Reader.ReadSingle();
-			p_Instance.FogGradientEnable = p_Reader.ReadBool();
-			p_Instance.Enable = p_Reader.ReadBool();
-			p_Instance.HeightFogEnable = p_Reader.ReadBool();
-			p_Instance.FogColorEnable = p_Reader.ReadBool();
-			p_Reader.Seek(8, SeekOrigin.Current);
-		}
-
 	}
 }

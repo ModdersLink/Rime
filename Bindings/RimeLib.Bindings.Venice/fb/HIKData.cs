@@ -31,12 +31,5 @@ namespace fb
 		[ContainerField(12), LayoutImmutable, Blittable]
 		public float Resist { get; set; }
 		
-		public static void Deserialize(HIKData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.ReachT = p_Reader.ReadSingle();
-			p_Instance.ReachR = p_Reader.ReadSingle();
-			p_Instance.Pull = p_Reader.ReadSingle();
-			p_Instance.Resist = p_Reader.ReadSingle();
-		}
 	}
 }

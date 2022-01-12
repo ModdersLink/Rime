@@ -56,31 +56,5 @@ namespace fb
 		[ContainerField(131), LayoutImmutable, Blittable]
 		public bool SpawnAlwaysAllowed { get; set; }
 
-		public static void Deserialize(TicketCounterEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.TicketPercentages.Clear();
-			(RimeReader Reader, uint Count) s_TicketPercentages = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_TicketPercentages.Count; ++i)
-			{
-				var s_Value = new TicketCountPercentage();
-				fb.TicketCountPercentage.Deserialize(s_Value, s_TicketPercentages.Reader, p_Parser);
-				p_Instance.TicketPercentages.Add(s_Value);
-			}
-			
-			s_TicketPercentages.Reader.Dispose();
-			p_Instance.TicketLossPerMin = p_Reader.ReadInt32();
-			p_Instance.DecreaseTickets = (TicketDecreaseType) p_Reader.ReadInt32();
-			p_Instance.TeamId = (TeamId) p_Reader.ReadInt32();
-			p_Instance.TicketLossWhenLostAll = p_Reader.ReadInt32();
-			p_Instance.TicketLossWhenLostAllControlsPoint = p_Reader.ReadInt32();
-			p_Instance.InitialTicketCount = p_Reader.ReadInt32();
-			p_Instance.TicketLossStart = p_Reader.ReadInt32();
-			p_Instance.SetBestSquadSpawner = p_Reader.ReadBool();
-			p_Instance.HaltTicketLossOnEqualPointCount = p_Reader.ReadBool();
-			p_Instance.ResetCapturePointsOnReset = p_Reader.ReadBool();
-			p_Instance.SpawnAlwaysAllowed = p_Reader.ReadBool();
-			p_Reader.Seek(12, SeekOrigin.Current);
-		}
-
 	}
 }

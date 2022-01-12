@@ -41,16 +41,5 @@ namespace fb
 		[ContainerField(44)]
 		public FaderType FadeType { get; set; } = new();
 
-		public static void Deserialize(MultiCrossfaderGroup p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AudioGraphNodePort.Deserialize(p_Instance.Amplitude, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.Start, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.Stop, p_Reader, p_Parser);
-			p_Instance.FadeAmplitude = p_Reader.ReadSingle();
-			p_Instance.FadeBegin = p_Reader.ReadSingle();
-			p_Instance.FadeEnd = p_Reader.ReadSingle();
-			p_Instance.FadeType = (FaderType) p_Reader.ReadInt32();
-		}
-
 	}
 }

@@ -31,13 +31,5 @@ namespace fb
 		[ContainerField(9), LayoutImmutable, Blittable]
 		public bool ClientOnly { get; set; }
 		
-		public static void Deserialize(LicenseInfo p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Name = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.StagingPlatform = (GamePlatform) p_Reader.ReadInt32();
-			p_Instance.AllowStaging = p_Reader.ReadBool();
-			p_Instance.ClientOnly = p_Reader.ReadBool();
-			p_Reader.Seek(2, SeekOrigin.Current);
-		}
 	}
 }

@@ -47,18 +47,5 @@ namespace fb
 		[ContainerField(35), LayoutImmutable, Blittable]
 		public bool InvalidForAI { get; set; }
 
-		public static void Deserialize(AIEntryData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.EquipmentType.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.Armament.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.Mobility.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.StrengthType = (StrengthType) p_Reader.ReadInt32();
-			p_Instance.ReuseTime = p_Reader.ReadSingle();
-			p_Instance.Forbidden = p_Reader.ReadBool();
-			p_Instance.HasExposedSoldier = p_Reader.ReadBool();
-			p_Instance.InterludeOnly = p_Reader.ReadBool();
-			p_Instance.InvalidForAI = p_Reader.ReadBool();
-		}
-
 	}
 }

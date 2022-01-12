@@ -28,12 +28,5 @@ namespace fb
 		[ContainerField(20), LayoutImmutable, Blittable]
 		public bool CachedDataEnable { get; set; }
 		
-		public static void Deserialize(PrecomputeCache p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Guid = new GUID(p_Reader);
-			p_Instance.Key = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.CachedDataEnable = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
 	}
 }

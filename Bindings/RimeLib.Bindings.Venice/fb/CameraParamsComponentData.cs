@@ -29,13 +29,5 @@ namespace fb
 		[ContainerField(104), LayoutImmutable, Blittable]
 		public float SunShadowmapViewDistance { get; set; }
 
-		public static void Deserialize(CameraParamsComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.ViewDistance = p_Reader.ReadSingle();
-			p_Instance.NearPlane = p_Reader.ReadSingle();
-			p_Instance.SunShadowmapViewDistance = p_Reader.ReadSingle();
-			p_Reader.Seek(4, SeekOrigin.Current);
-		}
-
 	}
 }

@@ -64,23 +64,5 @@ namespace fb
 		[ContainerField(56)]
 		public AntRef VehicleEntryChooserIndex { get; set; } = new();
 		
-		public static void Deserialize(VehicleEntryListenerBinding p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AntRef.Deserialize(p_Instance.InVehicle, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.InOpenEntry, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.VehicleEntryFire, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.VehicleEntryYaw, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.VehicleEntryPitch, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.VehicleEntryRoll, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.VehicleEntryRotation, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.VehicleEntryForceX, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.VehicleEntryForceY, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.VehicleEntryForceZ, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.VehicleEntryIndex, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.VehicleEntryIndexUpdated, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.VehicleOpenEntryIndex, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.InVehicleRetrigger, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.VehicleEntryChooserIndex, p_Reader, p_Parser);
-		}
 	}
 }

@@ -20,9 +20,5 @@ namespace fb
 	public class UISpawnLogicCompData : 
 		UIComponentData
 	{
-		public static void Deserialize(UISpawnLogicCompData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

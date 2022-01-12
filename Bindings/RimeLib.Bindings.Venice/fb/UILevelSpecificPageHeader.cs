@@ -28,11 +28,5 @@ namespace fb
 		[ContainerField(8), LayoutImmutable]
 		public string SubHeader { get; set; } = string.Empty;
 		
-		public static void Deserialize(UILevelSpecificPageHeader p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.LevelNameSID = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Header = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.SubHeader = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-		}
 	}
 }

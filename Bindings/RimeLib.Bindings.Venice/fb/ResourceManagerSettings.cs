@@ -35,15 +35,5 @@ namespace fb
 		[ContainerField(25), LayoutImmutable, Blittable]
 		public bool SPUDecompressEnable { get; set; }
 
-		public static void Deserialize(ResourceManagerSettings p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.CasBundleReadBufferSizeKb = p_Reader.ReadInt32();
-			p_Instance.CasBundleDecompressBufferSizeKb = p_Reader.ReadInt32();
-			p_Instance.CasBundleDecompressBufferCount = p_Reader.ReadInt32();
-			p_Instance.BundleProfilingEnable = p_Reader.ReadBool();
-			p_Instance.SPUDecompressEnable = p_Reader.ReadBool();
-			p_Reader.Seek(2, SeekOrigin.Current);
-		}
-
 	}
 }

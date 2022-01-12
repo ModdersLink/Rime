@@ -38,16 +38,5 @@ namespace fb
 		[ContainerField(28), LayoutImmutable, Blittable]
 		public bool LoadingEnabled { get; set; }
 
-		public static void Deserialize(MeshSettings p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.OverrideShadersShaderName = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.OverrideShadersMeshName = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.ForceLod = p_Reader.ReadInt32();
-			p_Instance.GlobalLodScale = p_Reader.ReadSingle();
-			p_Instance.ShadowDistanceScale = p_Reader.ReadSingle();
-			p_Instance.LoadingEnabled = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
-
 	}
 }

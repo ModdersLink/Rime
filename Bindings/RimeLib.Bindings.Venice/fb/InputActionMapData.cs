@@ -21,7 +21,7 @@ namespace fb
 		DataContainer
 	{
 		[ContainerField(8)]
-		public List<CtrRef<InputActionsData>> Actions { get; set; } = new();
+		public RefArray<InputActionsData> Actions { get; set; } = new();
 
 		[ContainerField(12)]
 		public InputActionMapPlatform PlatformSpecific { get; set; } = new();
@@ -31,23 +31,6 @@ namespace fb
 
 		[ContainerField(20), LayoutImmutable]
 		public string CopyKeyBindingsFrom { get; set; } = string.Empty;
-
-		public static void Deserialize(InputActionMapData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Actions.Clear();
-			(RimeReader Reader, uint Count) s_Actions = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_Actions.Count; ++i)
-			{
-				var s_CtrRef = new CtrRef<InputActionsData>();
-				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_Actions.Reader.ReadUInt32()));
-				p_Instance.Actions.Add(s_CtrRef);
-			}
-			
-			s_Actions.Reader.Dispose();
-			p_Instance.PlatformSpecific = (InputActionMapPlatform) p_Reader.ReadInt32();
-			p_Instance.Slot = (InputActionMapSlot) p_Reader.ReadInt32();
-			p_Instance.CopyKeyBindingsFrom = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-		}
 
 	}
 }

@@ -69,7 +69,7 @@ namespace fb
 		public float WeaponFloatParam { get; set; }
 
 		[ContainerField(308)]
-		public List<CtrRef<SocketData>> Sockets { get; set; } = new();
+		public RefArray<SocketData> Sockets { get; set; } = new();
 
 		[ContainerField(312)]
 		public EntryInputActionEnum SwitchWeaponStateInputAction { get; set; } = new();
@@ -112,85 +112,6 @@ namespace fb
 
 		[ContainerField(334), LayoutImmutable, Blittable]
 		public bool IsSilenced { get; set; }
-
-		public static void Deserialize(SoldierWeaponData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.Vec3.Deserialize(p_Instance.InteractionOffset, p_Reader, p_Parser);
-			p_Instance.WeaponModifierData.Clear();
-			(RimeReader Reader, uint Count) s_WeaponModifierData = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_WeaponModifierData.Count; ++i)
-			{
-				var s_Value = new WeaponModifierData();
-				fb.WeaponModifierData.Deserialize(s_Value, s_WeaponModifierData.Reader, p_Parser);
-				p_Instance.WeaponModifierData.Add(s_Value);
-			}
-			
-			s_WeaponModifierData.Reader.Dispose();
-			p_Instance.AimingController.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.FirstPersonCamera.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			fb.HudData.Deserialize(p_Instance.Hud, p_Reader, p_Parser);
-			p_Instance.DamageGiverName = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Reader.Seek(12, SeekOrigin.Current);
-			fb.PickupSettingsData.Deserialize(p_Instance.PickupSettings, p_Reader, p_Parser);
-			p_Reader.Seek(12, SeekOrigin.Current);
-			p_Instance.AnimBaseSet = (WeaponAnimBaseSetEnum) p_Reader.ReadInt32();
-			p_Reader.Seek(12, SeekOrigin.Current);
-			p_Instance.AnimationData.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Reader.Seek(12, SeekOrigin.Current);
-			p_Instance.RenderFov = p_Reader.ReadSingle();
-			p_Reader.Seek(12, SeekOrigin.Current);
-			p_Instance.ZoomRenderFov = p_Reader.ReadSingle();
-			p_Reader.Seek(12, SeekOrigin.Current);
-			p_Instance.StreamGroup1p.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Reader.Seek(12, SeekOrigin.Current);
-			p_Instance.VoiceOverInfo.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Reader.Seek(12, SeekOrigin.Current);
-			p_Instance.QuickThrowType = (QuickThrowTypeEnum) p_Reader.ReadInt32();
-			p_Reader.Seek(12, SeekOrigin.Current);
-			p_Instance.Customization.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Reader.Seek(12, SeekOrigin.Current);
-			p_Instance.WeaponFloatParam = p_Reader.ReadSingle();
-			p_Reader.Seek(12, SeekOrigin.Current);
-			p_Instance.Sockets.Clear();
-			(RimeReader Reader, uint Count) s_Sockets = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_Sockets.Count; ++i)
-			{
-				var s_CtrRef = new CtrRef<SocketData>();
-				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_Sockets.Reader.ReadUInt32()));
-				p_Instance.Sockets.Add(s_CtrRef);
-			}
-			
-			s_Sockets.Reader.Dispose();
-			p_Reader.Seek(12, SeekOrigin.Current);
-			p_Instance.SwitchWeaponStateInputAction = (EntryInputActionEnum) p_Reader.ReadInt32();
-			p_Reader.Seek(12, SeekOrigin.Current);
-			p_Instance.SoldierWeaponBlueprint.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Reader.Seek(12, SeekOrigin.Current);
-			p_Instance.PersistenceId = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Reader.Seek(12, SeekOrigin.Current);
-			p_Instance.AllowSwitchingToWeaponOutOfAmmo = p_Reader.ReadBool();
-			p_Reader.Seek(12, SeekOrigin.Current);
-			p_Instance.HideWhenOutOfAmmo = p_Reader.ReadBool();
-			p_Reader.Seek(12, SeekOrigin.Current);
-			p_Instance.LowerOnOwnTeam = p_Reader.ReadBool();
-			p_Reader.Seek(12, SeekOrigin.Current);
-			p_Instance.RedeployWhenSwitchingWeaponStates = p_Reader.ReadBool();
-			p_Reader.Seek(12, SeekOrigin.Current);
-			p_Instance.UseQuickThrowOnAutomaticSwitchback = p_Reader.ReadBool();
-			p_Reader.Seek(12, SeekOrigin.Current);
-			p_Instance.EnableBreathControl = p_Reader.ReadBool();
-			p_Reader.Seek(12, SeekOrigin.Current);
-			p_Instance.CanBeInSupportedShooting = p_Reader.ReadBool();
-			p_Reader.Seek(12, SeekOrigin.Current);
-			p_Instance.AllowSwitchingToWeaponReloading = p_Reader.ReadBool();
-			p_Reader.Seek(12, SeekOrigin.Current);
-			p_Instance.SwitchToPrimaryWhenOutOfAmmo = p_Reader.ReadBool();
-			p_Reader.Seek(12, SeekOrigin.Current);
-			p_Instance.AllowSwitchingToWeaponInVehicles = p_Reader.ReadBool();
-			p_Reader.Seek(12, SeekOrigin.Current);
-			p_Instance.IsSilenced = p_Reader.ReadBool();
-			p_Reader.Seek(13, SeekOrigin.Current);
-		}
 
 	}
 }

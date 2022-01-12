@@ -25,10 +25,5 @@ namespace fb
 		[ContainerField(4)]
 		public AntRef ForceRender1pInForeground { get; set; } = new();
 		
-		public static void Deserialize(CameraBinding p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AntRef.Deserialize(p_Instance.Render1pInBackground, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.ForceRender1pInForeground, p_Reader, p_Parser);
-		}
 	}
 }

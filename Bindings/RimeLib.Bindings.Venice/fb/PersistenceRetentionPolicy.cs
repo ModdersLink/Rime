@@ -29,12 +29,5 @@ namespace fb
 		[ContainerField(20), LayoutImmutable, Blittable]
 		public int MonthlyHistoryCount { get; set; }
 
-		public static void Deserialize(PersistenceRetentionPolicy p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.DailyHistoryCount = p_Reader.ReadInt32();
-			p_Instance.WeeklyHistoryCount = p_Reader.ReadInt32();
-			p_Instance.MonthlyHistoryCount = p_Reader.ReadInt32();
-		}
-
 	}
 }

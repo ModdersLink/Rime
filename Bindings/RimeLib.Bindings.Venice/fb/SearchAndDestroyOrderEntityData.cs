@@ -32,14 +32,5 @@ namespace fb
 		[ContainerField(49), LayoutImmutable, Blittable]
 		public bool Aggressive { get; set; }
 
-		public static void Deserialize(SearchAndDestroyOrderEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.TargetPosKnowledge = (TargetPosKnowledgeType) p_Reader.ReadInt32();
-			p_Instance.FindTargetTime = p_Reader.ReadSingle();
-			p_Instance.TargetAreaFollowsTarget = p_Reader.ReadBool();
-			p_Instance.Aggressive = p_Reader.ReadBool();
-			p_Reader.Seek(2, SeekOrigin.Current);
-		}
-
 	}
 }

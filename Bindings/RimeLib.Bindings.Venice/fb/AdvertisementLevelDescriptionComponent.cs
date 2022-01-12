@@ -26,20 +26,5 @@ namespace fb
 		[ContainerField(12)]
 		public List<AdvertisementZoneMember> Members { get; set; } = new();
 
-		public static void Deserialize(AdvertisementLevelDescriptionComponent p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Identifier = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Members.Clear();
-			(RimeReader Reader, uint Count) s_Members = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_Members.Count; ++i)
-			{
-				var s_Value = new AdvertisementZoneMember();
-				fb.AdvertisementZoneMember.Deserialize(s_Value, s_Members.Reader, p_Parser);
-				p_Instance.Members.Add(s_Value);
-			}
-			
-			s_Members.Reader.Dispose();
-		}
-
 	}
 }

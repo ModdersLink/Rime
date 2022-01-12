@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(28), LayoutImmutable, Blittable]
 		public float Height { get; set; }
 
-		public static void Deserialize(VolumeVectorShapeData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Height = p_Reader.ReadSingle();
-		}
-
 	}
 }

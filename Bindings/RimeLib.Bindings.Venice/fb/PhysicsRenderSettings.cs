@@ -131,47 +131,5 @@ namespace fb
 		[ContainerField(50), LayoutImmutable, Blittable]
 		public bool RenderServer { get; set; }
 
-		public static void Deserialize(PhysicsRenderSettings p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.RenderSpecificPart = p_Reader.ReadInt32();
-			p_Instance.ViewDistance = p_Reader.ReadSingle();
-			p_Instance.RenderClient = p_Reader.ReadBool();
-			p_Instance.RenderEffectWorld = p_Reader.ReadBool();
-			p_Instance.RenderDetail = p_Reader.ReadBool();
-			p_Instance.RenderStatic = p_Reader.ReadBool();
-			p_Instance.RenderUngrouped = p_Reader.ReadBool();
-			p_Instance.RenderRagdoll = p_Reader.ReadBool();
-			p_Instance.RenderGroup = p_Reader.ReadBool();
-			p_Instance.RenderPhantoms = p_Reader.ReadBool();
-			p_Instance.RenderCharacterCollision = p_Reader.ReadBool();
-			p_Instance.RenderWater = p_Reader.ReadBool();
-			p_Instance.RenderSolidGeometry = p_Reader.ReadBool();
-			p_Instance.UseShapeCache = p_Reader.ReadBool();
-			p_Instance.RenderConstraints = p_Reader.ReadBool();
-			p_Instance.RenderOnlyContactConstraints = p_Reader.ReadBool();
-			p_Instance.RenderConstraintCount = p_Reader.ReadBool();
-			p_Instance.RenderActiveConstraintCount = p_Reader.ReadBool();
-			p_Instance.RenderSimulationIslands = p_Reader.ReadBool();
-			p_Instance.RenderBroadphaseHandles = p_Reader.ReadBool();
-			p_Instance.RenderDestructionConnections = p_Reader.ReadBool();
-			p_Instance.RenderPartBoundingBoxes = p_Reader.ReadBool();
-			p_Instance.RenderOnlyBoundingBoxes = p_Reader.ReadBool();
-			p_Instance.RenderInertia = p_Reader.ReadBool();
-			p_Instance.RenderCenterOfMass = p_Reader.ReadBool();
-			p_Instance.RenderLinearVelocity = p_Reader.ReadBool();
-			p_Instance.RenderCollidesWithTerrain = p_Reader.ReadBool();
-			p_Instance.RenderCollisionSpheres = p_Reader.ReadBool();
-			p_Instance.RenderEntityStats = p_Reader.ReadBool();
-			p_Instance.RenderWorldStats = p_Reader.ReadBool();
-			p_Instance.ShowContactsInWorldStats = p_Reader.ReadBool();
-			p_Instance.ShowInactiveContactsInWorldStats = p_Reader.ReadBool();
-			p_Instance.ShowPhantomsInWorldStats = p_Reader.ReadBool();
-			p_Instance.ShowFixedObjectsInWorldStats = p_Reader.ReadBool();
-			p_Instance.RenderMemoryUsed = p_Reader.ReadBool();
-			p_Instance.CollisionSpawnDebug = p_Reader.ReadBool();
-			p_Instance.RenderServer = p_Reader.ReadBool();
-			p_Reader.Seek(1, SeekOrigin.Current);
-		}
-
 	}
 }

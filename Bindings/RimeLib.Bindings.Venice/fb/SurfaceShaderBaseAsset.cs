@@ -20,9 +20,5 @@ namespace fb
 	public class SurfaceShaderBaseAsset : 
 		Asset
 	{
-		public static void Deserialize(SurfaceShaderBaseAsset p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

@@ -20,9 +20,5 @@ namespace fb
 	public class TerrainMaterialTreeAsset : 
 		RasterTreeAsset
 	{
-		public static void Deserialize(TerrainMaterialTreeAsset p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

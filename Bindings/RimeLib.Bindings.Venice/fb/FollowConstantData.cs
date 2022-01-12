@@ -44,17 +44,5 @@ namespace fb
 		[ContainerField(40), LayoutImmutable, Blittable]
 		public float LookAwayAngle { get; set; }
 
-		public static void Deserialize(FollowConstantData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.DistanceFromPlayerBeforeTeleport = p_Reader.ReadSingle();
-			p_Instance.FollowHumanMaxDistance = p_Reader.ReadSingle();
-			p_Instance.FollowHumanInCombatMaxDistance = p_Reader.ReadSingle();
-			p_Instance.FollowAiMaxDistance = p_Reader.ReadSingle();
-			p_Instance.FollowAiInCombatMaxDistance = p_Reader.ReadSingle();
-			p_Instance.FollowMimicPoseDistance = p_Reader.ReadSingle();
-			p_Instance.FollowInertia = p_Reader.ReadSingle();
-			p_Instance.LookAwayAngle = p_Reader.ReadSingle();
-		}
-
 	}
 }

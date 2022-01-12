@@ -26,11 +26,5 @@ namespace fb
 		[ContainerField(12), LayoutImmutable, Blittable]
 		public int NumberOfMagazines { get; set; }
 
-		public static void Deserialize(WeaponMagazineModifier p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.MagazineCapacity = p_Reader.ReadInt32();
-			p_Instance.NumberOfMagazines = p_Reader.ReadInt32();
-		}
-
 	}
 }

@@ -20,9 +20,5 @@ namespace fb
 	public class UINametagSPCompData : 
 		UINametagCompData
 	{
-		public static void Deserialize(UINametagSPCompData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

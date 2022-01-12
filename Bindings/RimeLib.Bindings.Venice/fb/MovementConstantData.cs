@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(12), LayoutImmutable, Blittable]
 		public float MaxCrouchWalkDistance { get; set; }
 
-		public static void Deserialize(MovementConstantData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.MaxCrouchWalkDistance = p_Reader.ReadSingle();
-		}
-
 	}
 }

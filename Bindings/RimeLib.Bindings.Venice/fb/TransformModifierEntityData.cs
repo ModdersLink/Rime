@@ -44,26 +44,5 @@ namespace fb
 		[ContainerField(98), LayoutImmutable, Blittable]
 		public bool InvertForward { get; set; }
 
-		public static void Deserialize(TransformModifierEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Reader.Seek(4, SeekOrigin.Current);
-			fb.LinearTransform.Deserialize(p_Instance.In, p_Reader, p_Parser);
-			p_Reader.Seek(4, SeekOrigin.Current);
-			p_Instance.Realm = (Realm) p_Reader.ReadInt32();
-			p_Reader.Seek(4, SeekOrigin.Current);
-			p_Instance.Left = (ModifierAxis) p_Reader.ReadInt32();
-			p_Reader.Seek(4, SeekOrigin.Current);
-			p_Instance.Up = (ModifierAxis) p_Reader.ReadInt32();
-			p_Reader.Seek(4, SeekOrigin.Current);
-			p_Instance.Forward = (ModifierAxis) p_Reader.ReadInt32();
-			p_Reader.Seek(4, SeekOrigin.Current);
-			p_Instance.InvertLeft = p_Reader.ReadBool();
-			p_Reader.Seek(4, SeekOrigin.Current);
-			p_Instance.InvertUp = p_Reader.ReadBool();
-			p_Reader.Seek(4, SeekOrigin.Current);
-			p_Instance.InvertForward = p_Reader.ReadBool();
-			p_Reader.Seek(17, SeekOrigin.Current);
-		}
-
 	}
 }

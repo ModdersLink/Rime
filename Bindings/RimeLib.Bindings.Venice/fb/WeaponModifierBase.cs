@@ -20,9 +20,5 @@ namespace fb
 	public class WeaponModifierBase : 
 		DataContainer
 	{
-		public static void Deserialize(WeaponModifierBase p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

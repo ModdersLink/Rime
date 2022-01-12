@@ -46,17 +46,5 @@ namespace fb
 		[ContainerField(32)]
 		public AntRef EnableProceduralHeadAim { get; set; } = new();
 		
-		public static void Deserialize(AILocoBinding p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AntRef.Deserialize(p_Instance.LocoTarget, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.AttentionState, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.EndPoseEnum, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.CurrentPoseEnum, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.EnterExitPoseEnum, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.RunStyle, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.TargetWaypointPosition, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.TargetSpeedLevel, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.EnableProceduralHeadAim, p_Reader, p_Parser);
-		}
 	}
 }

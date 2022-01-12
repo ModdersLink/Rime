@@ -26,11 +26,5 @@ namespace fb
 		[ContainerField(48)]
 		public CtrRef<SurfaceShaderBaseAsset> Shader3dZOnly { get; set; } = new();
 
-		public static void Deserialize(TerrainFillDecalData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Shader2d.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.Shader3dZOnly.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-		}
-
 	}
 }

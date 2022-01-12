@@ -23,18 +23,5 @@ namespace fb
 		[ContainerField(12)]
 		public List<float> CriteriaGates { get; set; } = new();
 
-		public static void Deserialize(CriteriaGateList p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.CriteriaGates.Clear();
-			(RimeReader Reader, uint Count) s_CriteriaGates = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_CriteriaGates.Count; ++i)
-			{
-				var s_Value = s_CriteriaGates.Reader.ReadSingle();
-				p_Instance.CriteriaGates.Add(s_Value);
-			}
-			
-			s_CriteriaGates.Reader.Dispose();
-		}
-
 	}
 }

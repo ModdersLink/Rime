@@ -25,10 +25,5 @@ namespace fb
 		[ContainerField(4), LayoutImmutable, Blittable]
 		public float SuppressingValue { get; set; }
 		
-		public static void Deserialize(ActionSuppressor p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.ActionToSuppress = (EntryInputActionEnum) p_Reader.ReadInt32();
-			p_Instance.SuppressingValue = p_Reader.ReadSingle();
-		}
 	}
 }

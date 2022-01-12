@@ -26,12 +26,5 @@ namespace fb
 		[ContainerField(116), LayoutImmutable, Blittable]
 		public float RotationScale { get; set; }
 
-		public static void Deserialize(FlapComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.RotationAxis = (RotationAxisEnum) p_Reader.ReadInt32();
-			p_Instance.RotationScale = p_Reader.ReadSingle();
-			p_Reader.Seek(8, SeekOrigin.Current);
-		}
-
 	}
 }

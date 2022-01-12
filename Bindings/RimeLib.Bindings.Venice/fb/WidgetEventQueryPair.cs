@@ -31,13 +31,5 @@ namespace fb
 		[ContainerField(12), LayoutImmutable, Blittable]
 		public bool IsOutput { get; set; }
 		
-		public static void Deserialize(WidgetEventQueryPair p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Name = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Query = (UIWidgetEventID) p_Reader.ReadInt32();
-			p_Instance.InstanceName = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.IsOutput = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
 	}
 }

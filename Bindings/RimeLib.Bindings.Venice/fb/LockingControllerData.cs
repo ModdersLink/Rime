@@ -71,36 +71,5 @@ namespace fb
 		[ContainerField(60), LayoutImmutable, Blittable]
 		public bool IgnoreHeigthLockDistance { get; set; }
 
-		public static void Deserialize(LockingControllerData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.ZoomLevelLock.Clear();
-			(RimeReader Reader, uint Count) s_ZoomLevelLock = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_ZoomLevelLock.Count; ++i)
-			{
-				var s_Value = new ZoomLevelLockData();
-				fb.ZoomLevelLockData.Deserialize(s_Value, s_ZoomLevelLock.Reader, p_Parser);
-				p_Instance.ZoomLevelLock.Add(s_Value);
-			}
-			
-			s_ZoomLevelLock.Reader.Dispose();
-			p_Instance.LockTime = p_Reader.ReadSingle();
-			p_Instance.ReleaseTime = p_Reader.ReadSingle();
-			p_Instance.ReleaseOnNewTargetTime = p_Reader.ReadSingle();
-			p_Instance.SampleRate = p_Reader.ReadSingle();
-			p_Instance.HoldStillThreshold = p_Reader.ReadSingle();
-			p_Instance.RayLength = p_Reader.ReadSingle();
-			p_Instance.AcceptanceAngle = p_Reader.ReadSingle();
-			p_Instance.MinimumLockTime = p_Reader.ReadSingle();
-			p_Instance.Sensitivity = p_Reader.ReadSingle();
-			p_Instance.AngleConstant = p_Reader.ReadSingle();
-			p_Instance.DistanceConstant = p_Reader.ReadSingle();
-			p_Instance.LockOnWorldSpacePos = p_Reader.ReadBool();
-			p_Instance.LockOnVisibleTargetsOnly = p_Reader.ReadBool();
-			p_Instance.PositionOnly = p_Reader.ReadBool();
-			p_Instance.LockOnEmptyVehicles = p_Reader.ReadBool();
-			p_Instance.IgnoreHeigthLockDistance = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
-
 	}
 }

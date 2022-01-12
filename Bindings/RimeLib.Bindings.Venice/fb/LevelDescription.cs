@@ -26,7 +26,7 @@ namespace fb
 		public string Description { get; set; } = string.Empty;
 		
 		[ContainerField(8)]
-		public List<CtrRef<LevelDescriptionComponent>> Components { get; set; } = new();
+		public RefArray<LevelDescriptionComponent> Components { get; set; } = new();
 		
 		[ContainerField(12), LayoutImmutable, Blittable]
 		public bool IsCoop { get; set; }
@@ -37,24 +37,5 @@ namespace fb
 		[ContainerField(14), LayoutImmutable, Blittable]
 		public bool IsMultiplayer { get; set; }
 		
-		public static void Deserialize(LevelDescription p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Name = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Description = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Components.Clear();
-			(RimeReader Reader, uint Count) s_Components = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_Components.Count; ++i)
-			{
-				var s_CtrRef = new CtrRef<LevelDescriptionComponent>();
-				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_Components.Reader.ReadUInt32()));
-				p_Instance.Components.Add(s_CtrRef);
-			}
-			
-			s_Components.Reader.Dispose();
-			p_Instance.IsCoop = p_Reader.ReadBool();
-			p_Instance.IsMenu = p_Reader.ReadBool();
-			p_Instance.IsMultiplayer = p_Reader.ReadBool();
-			p_Reader.Seek(1, SeekOrigin.Current);
-		}
 	}
 }

@@ -21,21 +21,7 @@ namespace fb
 		EntityData
 	{
 		[ContainerField(12)]
-		public List<CtrRef<SoundDataAsset>> DataAssets { get; set; } = new();
-
-		public static void Deserialize(SoundPrimeEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.DataAssets.Clear();
-			(RimeReader Reader, uint Count) s_DataAssets = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_DataAssets.Count; ++i)
-			{
-				var s_CtrRef = new CtrRef<SoundDataAsset>();
-				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_DataAssets.Reader.ReadUInt32()));
-				p_Instance.DataAssets.Add(s_CtrRef);
-			}
-			
-			s_DataAssets.Reader.Dispose();
-		}
+		public RefArray<SoundDataAsset> DataAssets { get; set; } = new();
 
 	}
 }

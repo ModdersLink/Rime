@@ -25,10 +25,5 @@ namespace fb
 		[ContainerField(4), LayoutImmutable, Blittable]
 		public uint PartIndex { get; set; }
 		
-		public static void Deserialize(RotorModelData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.RotationRpm = p_Reader.ReadSingle();
-			p_Instance.PartIndex = p_Reader.ReadUInt32();
-		}
 	}
 }

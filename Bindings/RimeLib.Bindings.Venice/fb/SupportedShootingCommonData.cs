@@ -35,14 +35,5 @@ namespace fb
 		[ContainerField(84)]
 		public SupportedShootingProximityChecking Crouch { get; set; } = new();
 
-		public static void Deserialize(SupportedShootingCommonData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AimingConstraintsData.Deserialize(p_Instance.AimingConstraints, p_Reader, p_Parser);
-			p_Instance.EnterSupportedShootingAction = (EntryInputActionEnum) p_Reader.ReadInt32();
-			fb.SupportedShootingBinding.Deserialize(p_Instance.Binding, p_Reader, p_Parser);
-			fb.SupportedShootingProximityChecking.Deserialize(p_Instance.Stand, p_Reader, p_Parser);
-			fb.SupportedShootingProximityChecking.Deserialize(p_Instance.Crouch, p_Reader, p_Parser);
-		}
-
 	}
 }

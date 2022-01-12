@@ -20,9 +20,5 @@ namespace fb
 	public class SpatialPrefabBlueprint : 
 		PrefabBlueprint
 	{
-		public static void Deserialize(SpatialPrefabBlueprint p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

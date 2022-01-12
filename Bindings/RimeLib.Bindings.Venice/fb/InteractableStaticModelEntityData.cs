@@ -20,9 +20,5 @@ namespace fb
 	public class InteractableStaticModelEntityData : 
 		StaticModelEntityData
 	{
-		public static void Deserialize(InteractableStaticModelEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

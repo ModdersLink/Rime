@@ -29,13 +29,5 @@ namespace fb
 		[ContainerField(88), LayoutImmutable, Blittable]
 		public bool Enabled { get; set; }
 
-		public static void Deserialize(AlternateSpawnEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Team = (TeamId) p_Reader.ReadInt32();
-			p_Instance.Priority = p_Reader.ReadSingle();
-			p_Instance.Enabled = p_Reader.ReadBool();
-			p_Reader.Seek(7, SeekOrigin.Current);
-		}
-
 	}
 }

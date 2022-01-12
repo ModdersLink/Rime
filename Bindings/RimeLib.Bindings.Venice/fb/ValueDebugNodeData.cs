@@ -21,21 +21,7 @@ namespace fb
 		AudioGraphNodeData
 	{
 		[ContainerField(8)]
-		public List<CtrRef<DebugValueInput>> Values { get; set; } = new();
-
-		public static void Deserialize(ValueDebugNodeData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Values.Clear();
-			(RimeReader Reader, uint Count) s_Values = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_Values.Count; ++i)
-			{
-				var s_CtrRef = new CtrRef<DebugValueInput>();
-				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_Values.Reader.ReadUInt32()));
-				p_Instance.Values.Add(s_CtrRef);
-			}
-			
-			s_Values.Reader.Dispose();
-		}
+		public RefArray<DebugValueInput> Values { get; set; } = new();
 
 	}
 }

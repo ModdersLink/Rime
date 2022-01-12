@@ -35,14 +35,5 @@ namespace fb
 		[ContainerField(24), LayoutImmutable, Blittable]
 		public int NumScreensToPop { get; set; }
 
-		public static void Deserialize(UINodeConnection p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.SourceNode.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.TargetNode.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.SourcePort.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.TargetPort.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.NumScreensToPop = p_Reader.ReadInt32();
-		}
-
 	}
 }

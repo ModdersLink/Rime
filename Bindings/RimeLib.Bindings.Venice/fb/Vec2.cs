@@ -25,10 +25,5 @@ namespace fb
 		[ContainerField(4), LayoutImmutable, Blittable]
 		public float y { get; set; }
 		
-		public static void Deserialize(Vec2 p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.x = p_Reader.ReadSingle();
-			p_Instance.y = p_Reader.ReadSingle();
-		}
 	}
 }

@@ -20,9 +20,5 @@ namespace fb
 	public class UIMinimapCompData : 
 		UIComponentData
 	{
-		public static void Deserialize(UIMinimapCompData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

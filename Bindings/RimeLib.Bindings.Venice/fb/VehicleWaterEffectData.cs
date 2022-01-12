@@ -26,14 +26,5 @@ namespace fb
 		[ContainerField(32)]
 		public CtrRef<EffectBlueprint> Effect { get; set; } = new();
 
-		public static void Deserialize(VehicleWaterEffectData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Reader.Seek(8, SeekOrigin.Current);
-			fb.Vec3.Deserialize(p_Instance.Position, p_Reader, p_Parser);
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.Effect.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Reader.Seek(20, SeekOrigin.Current);
-		}
-
 	}
 }

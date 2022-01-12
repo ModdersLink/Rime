@@ -38,15 +38,5 @@ namespace fb
 		[ContainerField(48)]
 		public AudioGraphNodePort Out { get; set; } = new();
 
-		public static void Deserialize(ScaleClampNodeData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AudioGraphNodePort.Deserialize(p_Instance.In, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.InMin, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.InMax, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.OutMin, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.OutMax, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.Out, p_Reader, p_Parser);
-		}
-
 	}
 }

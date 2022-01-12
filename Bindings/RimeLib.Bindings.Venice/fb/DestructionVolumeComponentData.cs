@@ -23,11 +23,5 @@ namespace fb
 		[ContainerField(96)]
 		public CtrRef<DestructionVolumeData> DestructionVolumeData { get; set; } = new();
 
-		public static void Deserialize(DestructionVolumeComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.DestructionVolumeData.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Reader.Seek(12, SeekOrigin.Current);
-		}
-
 	}
 }

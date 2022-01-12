@@ -35,14 +35,5 @@ namespace fb
 		[ContainerField(60), LayoutImmutable]
 		public string Weapon { get; set; } = string.Empty;
 
-		public static void Deserialize(DeathEvent p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.Vec3.Deserialize(p_Instance.Position, p_Reader, p_Parser);
-			fb.Vec3.Deserialize(p_Instance.KillerPosition, p_Reader, p_Parser);
-			p_Instance.KillerId = p_Reader.ReadUInt64();
-			p_Instance.Time = p_Reader.ReadSingle();
-			p_Instance.Weapon = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-		}
-
 	}
 }

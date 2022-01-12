@@ -46,18 +46,5 @@ namespace fb
 		[ContainerField(32), LayoutImmutable, Blittable]
 		public bool RecoilFollowsDispersion { get; set; }
 		
-		public static void Deserialize(RecoilData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.MaxRecoilAngleX = p_Reader.ReadSingle();
-			p_Instance.MinRecoilAngleX = p_Reader.ReadSingle();
-			p_Instance.MaxRecoilAngleY = p_Reader.ReadSingle();
-			p_Instance.MinRecoilAngleY = p_Reader.ReadSingle();
-			p_Instance.MaxRecoilAngleZ = p_Reader.ReadSingle();
-			p_Instance.MinRecoilAngleZ = p_Reader.ReadSingle();
-			p_Instance.MaxRecoilFov = p_Reader.ReadSingle();
-			p_Instance.MinRecoilFov = p_Reader.ReadSingle();
-			p_Instance.RecoilFollowsDispersion = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
 	}
 }

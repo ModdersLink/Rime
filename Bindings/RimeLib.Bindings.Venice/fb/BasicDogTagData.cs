@@ -20,9 +20,5 @@ namespace fb
 	public class BasicDogTagData : 
 		DogTagData
 	{
-		public static void Deserialize(BasicDogTagData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

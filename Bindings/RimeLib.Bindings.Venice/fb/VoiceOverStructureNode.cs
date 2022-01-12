@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(8)]
 		public VoiceOverLogicFlowMode FlowMode { get; set; } = new();
 
-		public static void Deserialize(VoiceOverStructureNode p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.FlowMode = (VoiceOverLogicFlowMode) p_Reader.ReadInt32();
-		}
-
 	}
 }

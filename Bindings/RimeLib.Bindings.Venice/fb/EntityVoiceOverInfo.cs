@@ -24,22 +24,7 @@ namespace fb
 		public CtrRef<VoiceOverObject> VoiceOverType { get; set; } = new();
 
 		[ContainerField(12)]
-		public List<CtrRef<VoiceOverLabel>> Labels { get; set; } = new();
-
-		public static void Deserialize(EntityVoiceOverInfo p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.VoiceOverType.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.Labels.Clear();
-			(RimeReader Reader, uint Count) s_Labels = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_Labels.Count; ++i)
-			{
-				var s_CtrRef = new CtrRef<VoiceOverLabel>();
-				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_Labels.Reader.ReadUInt32()));
-				p_Instance.Labels.Add(s_CtrRef);
-			}
-			
-			s_Labels.Reader.Dispose();
-		}
+		public RefArray<VoiceOverLabel> Labels { get; set; } = new();
 
 	}
 }

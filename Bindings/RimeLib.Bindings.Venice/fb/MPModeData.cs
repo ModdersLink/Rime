@@ -22,9 +22,5 @@ namespace fb
 		[ContainerField(0), LayoutImmutable, Blittable]
 		public int VehiclePoints { get; set; }
 		
-		public static void Deserialize(MPModeData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.VehiclePoints = p_Reader.ReadInt32();
-		}
 	}
 }

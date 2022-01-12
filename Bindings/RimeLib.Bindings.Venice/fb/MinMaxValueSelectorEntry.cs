@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(8)]
 		public AudioGraphNodePort Input { get; set; } = new();
 
-		public static void Deserialize(MinMaxValueSelectorEntry p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AudioGraphNodePort.Deserialize(p_Instance.Input, p_Reader, p_Parser);
-		}
-
 	}
 }

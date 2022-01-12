@@ -44,26 +44,5 @@ namespace fb
 		[ContainerField(125), LayoutImmutable, Blittable]
 		public bool Default { get; set; }
 
-		public static void Deserialize(PropertyGateEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Reader.Seek(4, SeekOrigin.Current);
-			fb.LinearTransform.Deserialize(p_Instance.TransformIn, p_Reader, p_Parser);
-			p_Reader.Seek(4, SeekOrigin.Current);
-			fb.Vec4.Deserialize(p_Instance.Vec4In, p_Reader, p_Parser);
-			p_Reader.Seek(4, SeekOrigin.Current);
-			fb.Vec3.Deserialize(p_Instance.Vec3In, p_Reader, p_Parser);
-			p_Reader.Seek(4, SeekOrigin.Current);
-			p_Instance.Realm = (Realm) p_Reader.ReadInt32();
-			p_Reader.Seek(4, SeekOrigin.Current);
-			p_Instance.FloatIn = p_Reader.ReadSingle();
-			p_Reader.Seek(4, SeekOrigin.Current);
-			p_Instance.IntIn = p_Reader.ReadInt32();
-			p_Reader.Seek(4, SeekOrigin.Current);
-			p_Instance.BoolIn = p_Reader.ReadBool();
-			p_Reader.Seek(4, SeekOrigin.Current);
-			p_Instance.Default = p_Reader.ReadBool();
-			p_Reader.Seek(6, SeekOrigin.Current);
-		}
-
 	}
 }

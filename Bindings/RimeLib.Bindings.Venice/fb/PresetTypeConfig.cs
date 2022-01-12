@@ -37,24 +37,5 @@ namespace fb
 		[ContainerField(20), LayoutImmutable, Blittable]
 		public bool Predefined { get; set; }
 		
-		public static void Deserialize(PresetTypeConfig p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.PresetId = p_Reader.ReadInt32();
-			p_Instance.Key = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.NameSid = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.DescSid = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.LockedSettings.Clear();
-			(RimeReader Reader, uint Count) s_LockedSettings = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_LockedSettings.Count; ++i)
-			{
-				var s_Value = new LockedSettingConfig();
-				fb.LockedSettingConfig.Deserialize(s_Value, s_LockedSettings.Reader, p_Parser);
-				p_Instance.LockedSettings.Add(s_Value);
-			}
-			
-			s_LockedSettings.Reader.Dispose();
-			p_Instance.Predefined = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
 	}
 }

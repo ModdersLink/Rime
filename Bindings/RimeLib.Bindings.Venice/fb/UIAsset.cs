@@ -20,9 +20,5 @@ namespace fb
 	public class UIAsset : 
 		Asset
 	{
-		public static void Deserialize(UIAsset p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

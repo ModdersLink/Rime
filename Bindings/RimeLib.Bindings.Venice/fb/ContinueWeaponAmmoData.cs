@@ -25,10 +25,5 @@ namespace fb
 		[ContainerField(4), LayoutImmutable, Blittable]
 		public int WeaponSlot { get; set; }
 		
-		public static void Deserialize(ContinueWeaponAmmoData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.MinMags = p_Reader.ReadInt32();
-			p_Instance.WeaponSlot = p_Reader.ReadInt32();
-		}
 	}
 }

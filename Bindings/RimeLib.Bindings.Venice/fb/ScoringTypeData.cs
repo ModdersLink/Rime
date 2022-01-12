@@ -50,20 +50,5 @@ namespace fb
 		[ContainerField(44), LayoutImmutable, Blittable]
 		public bool ShowForTeam { get; set; }
 
-		public static void Deserialize(ScoringTypeData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Measuring = (StatEvent) p_Reader.ReadInt32();
-			p_Instance.ParamX.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.ParamY.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.Limit = p_Reader.ReadSingle();
-			p_Instance.DescriptionSid = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.VisibilityType = (ScoringVisibilityType) p_Reader.ReadInt32();
-			p_Instance.Bucket = (ScoringBucket) p_Reader.ReadInt32();
-			p_Instance.Score = p_Reader.ReadSingle();
-			p_Instance.AdditionalValueMultiplier = p_Reader.ReadSingle();
-			p_Instance.ShowForTeam = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
-
 	}
 }

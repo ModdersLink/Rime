@@ -38,15 +38,5 @@ namespace fb
 		[ContainerField(48)]
 		public AudioGraphNodePort BButton { get; set; } = new();
 
-		public static void Deserialize(JoypadNodeData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AudioGraphNodePort.Deserialize(p_Instance.LeftAnalogX, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.LeftAnalogY, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.RightAnalogX, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.RightAnalogY, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.AButton, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.BButton, p_Reader, p_Parser);
-		}
-
 	}
 }

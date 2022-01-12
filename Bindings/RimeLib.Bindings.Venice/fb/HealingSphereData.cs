@@ -25,10 +25,5 @@ namespace fb
 		[ContainerField(4), LayoutImmutable, Blittable]
 		public float HealthIncSpeed { get; set; }
 		
-		public static void Deserialize(HealingSphereData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Radius = p_Reader.ReadSingle();
-			p_Instance.HealthIncSpeed = p_Reader.ReadSingle();
-		}
 	}
 }

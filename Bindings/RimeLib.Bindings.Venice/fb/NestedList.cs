@@ -52,27 +52,5 @@ namespace fb
 		[ContainerField(71), LayoutImmutable, Blittable]
 		public bool HighLightOnUpdate { get; set; }
 		
-		public static void Deserialize(NestedList p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Label = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Index = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			fb.UIDataSourceInfo.Deserialize(p_Instance.ListDataSource, p_Reader, p_Parser);
-			fb.UIDataSourceInfo.Deserialize(p_Instance.DynamicShowList, p_Reader, p_Parser);
-			p_Instance.StaticItems.Clear();
-			(RimeReader Reader, uint Count) s_StaticItems = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_StaticItems.Count; ++i)
-			{
-				var s_Value = p_Parser.GetStringAtOffset(s_StaticItems.Reader.ReadUInt32());
-				p_Instance.StaticItems.Add(s_Value);
-			}
-			
-			s_StaticItems.Reader.Dispose();
-			fb.DefaultSelectionItem.Deserialize(p_Instance.DefaultHighlighted, p_Reader, p_Parser);
-			p_Instance.RowType = (UIListRowType) p_Reader.ReadInt32();
-			p_Instance.UseAsNormalListRows = p_Reader.ReadBool();
-			p_Instance.HiddenOnPC = p_Reader.ReadBool();
-			p_Instance.HiddenOnXenon = p_Reader.ReadBool();
-			p_Instance.HighLightOnUpdate = p_Reader.ReadBool();
-		}
 	}
 }

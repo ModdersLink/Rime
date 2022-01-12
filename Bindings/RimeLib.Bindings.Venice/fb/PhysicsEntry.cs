@@ -32,13 +32,5 @@ namespace fb
 		[ContainerField(32)]
 		public CtrRef<OutputNodeData> Output { get; set; } = new();
 
-		public static void Deserialize(PhysicsEntry p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AudioGraphNodePort.Deserialize(p_Instance.Distance, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.Azimuth, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.ElevationAngle, p_Reader, p_Parser);
-			p_Instance.Output.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-		}
-
 	}
 }

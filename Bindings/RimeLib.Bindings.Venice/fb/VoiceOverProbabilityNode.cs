@@ -29,12 +29,5 @@ namespace fb
 		[ContainerField(16), LayoutImmutable, Blittable]
 		public float Probability { get; set; }
 
-		public static void Deserialize(VoiceOverProbabilityNode p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.False.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.True.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.Probability = p_Reader.ReadSingle();
-		}
-
 	}
 }

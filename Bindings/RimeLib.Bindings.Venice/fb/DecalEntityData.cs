@@ -35,15 +35,5 @@ namespace fb
 		[ContainerField(122), LayoutImmutable, Blittable]
 		public bool Projected { get; set; }
 
-		public static void Deserialize(DecalEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Shader.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			fb.DecalAtlasTile.Deserialize(p_Instance.AtlasTile, p_Reader, p_Parser);
-			p_Instance.MaterialIndex = p_Reader.ReadSByte();
-			p_Instance.SortingPriority = p_Reader.ReadSByte();
-			p_Instance.Projected = p_Reader.ReadBool();
-			p_Reader.Seek(5, SeekOrigin.Current);
-		}
-
 	}
 }

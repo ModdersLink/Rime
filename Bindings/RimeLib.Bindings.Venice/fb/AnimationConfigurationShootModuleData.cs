@@ -22,9 +22,5 @@ namespace fb
 		[ContainerField(0), LayoutImmutable, Blittable]
 		public float ZoomedKickbackFactor { get; set; }
 		
-		public static void Deserialize(AnimationConfigurationShootModuleData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.ZoomedKickbackFactor = p_Reader.ReadSingle();
-		}
 	}
 }

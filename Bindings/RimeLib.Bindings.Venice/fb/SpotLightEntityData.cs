@@ -50,20 +50,5 @@ namespace fb
 		[ContainerField(196), LayoutImmutable, Blittable]
 		public bool CastShadowsEnable { get; set; }
 
-		public static void Deserialize(SpotLightEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Shape = (SpotLightShape) p_Reader.ReadInt32();
-			p_Instance.ConeInnerAngle = p_Reader.ReadSingle();
-			p_Instance.ConeOuterAngle = p_Reader.ReadSingle();
-			p_Instance.FrustumFov = p_Reader.ReadSingle();
-			p_Instance.FrustumAspect = p_Reader.ReadSingle();
-			p_Instance.OrthoWidth = p_Reader.ReadSingle();
-			p_Instance.OrthoHeight = p_Reader.ReadSingle();
-			p_Instance.Texture.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.CastShadowsMinLevel = (QualityLevel) p_Reader.ReadInt32();
-			p_Instance.CastShadowsEnable = p_Reader.ReadBool();
-			p_Reader.Seek(11, SeekOrigin.Current);
-		}
-
 	}
 }

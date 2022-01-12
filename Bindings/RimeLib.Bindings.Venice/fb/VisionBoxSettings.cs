@@ -31,12 +31,5 @@ namespace fb
 		[ContainerField(12), LayoutImmutable, Blittable]
 		public float RaiseBottomHuman { get; set; }
 		
-		public static void Deserialize(VisionBoxSettings p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.DecreaseXz = p_Reader.ReadSingle();
-			p_Instance.LowerTop = p_Reader.ReadSingle();
-			p_Instance.RaiseBottom = p_Reader.ReadSingle();
-			p_Instance.RaiseBottomHuman = p_Reader.ReadSingle();
-		}
 	}
 }

@@ -32,13 +32,5 @@ namespace fb
 		[ContainerField(20), LayoutImmutable, Blittable]
 		public float DeploySpeed { get; set; }
 
-		public static void Deserialize(WeaponSpeedData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.ZoomOutSpeed = p_Reader.ReadSingle();
-			p_Instance.ZoomInSpeed = p_Reader.ReadSingle();
-			p_Instance.UnDeploySpeed = p_Reader.ReadSingle();
-			p_Instance.DeploySpeed = p_Reader.ReadSingle();
-		}
-
 	}
 }

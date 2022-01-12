@@ -34,14 +34,5 @@ namespace fb
 		[ContainerField(10), LayoutImmutable, Blittable]
 		public bool MaximizeMiniMapOnEntry { get; set; }
 		
-		public static void Deserialize(EntryComponentHudData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Index = p_Reader.ReadInt32();
-			p_Instance.SeatType = (EntrySeatType) p_Reader.ReadInt32();
-			p_Instance.Frustum = p_Reader.ReadBool();
-			p_Instance.Visible = p_Reader.ReadBool();
-			p_Instance.MaximizeMiniMapOnEntry = p_Reader.ReadBool();
-			p_Reader.Seek(1, SeekOrigin.Current);
-		}
 	}
 }

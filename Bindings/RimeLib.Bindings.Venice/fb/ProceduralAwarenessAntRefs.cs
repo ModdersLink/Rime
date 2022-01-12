@@ -29,12 +29,5 @@ namespace fb
 		[ContainerField(16)]
 		public AntRef ProceduralAwarenessData { get; set; } = new();
 
-		public static void Deserialize(ProceduralAwarenessAntRefs p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AntRef.Deserialize(p_Instance.ProceduralAwarenessActive, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.ProceduralAwarenessHumanIKActive, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.ProceduralAwarenessData, p_Reader, p_Parser);
-		}
-
 	}
 }

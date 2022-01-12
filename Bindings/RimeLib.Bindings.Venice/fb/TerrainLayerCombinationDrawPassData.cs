@@ -19,9 +19,5 @@ namespace fb
 	[ContainerType(1, 1)]
 	public class TerrainLayerCombinationDrawPassData
 	{
-		public static void Deserialize(TerrainLayerCombinationDrawPassData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Reader.Seek(1, SeekOrigin.Current);
-		}
 	}
 }

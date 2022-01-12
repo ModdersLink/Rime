@@ -20,9 +20,5 @@ namespace fb
 	public class VoiceOverConstantValue : 
 		DataContainer
 	{
-		public static void Deserialize(VoiceOverConstantValue p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

@@ -25,10 +25,5 @@ namespace fb
 		[ContainerField(4), LayoutImmutable, Blittable]
 		public int AntEnumValue { get; set; }
 		
-		public static void Deserialize(FaceAnimationWaveMapping p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.WaveNameHash = p_Reader.ReadInt32();
-			p_Instance.AntEnumValue = p_Reader.ReadInt32();
-		}
 	}
 }

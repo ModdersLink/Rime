@@ -34,13 +34,5 @@ namespace fb
 		[ContainerField(16), LayoutImmutable, Blittable]
 		public float ReleaseModifier { get; set; }
 		
-		public static void Deserialize(GunSwayLagData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.MoveStrafeModifier = p_Reader.ReadSingle();
-			p_Instance.MoveForwardModifier = p_Reader.ReadSingle();
-			p_Instance.RotateYawModifier = p_Reader.ReadSingle();
-			p_Instance.RotatePitchModifier = p_Reader.ReadSingle();
-			p_Instance.ReleaseModifier = p_Reader.ReadSingle();
-		}
 	}
 }

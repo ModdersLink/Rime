@@ -68,26 +68,5 @@ namespace fb
 		[ContainerField(60), LayoutImmutable, Blittable]
 		public bool VariableSimTickTimeEnable { get; set; }
 
-		public static void Deserialize(GameTimeSettings p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.VSyncSubtractTime = p_Reader.ReadSingle();
-			p_Instance.JoinJobsTimeLimit = p_Reader.ReadSingle();
-			p_Instance.YieldTimeLimit = p_Reader.ReadSingle();
-			p_Instance.YieldTime = p_Reader.ReadInt32();
-			p_Instance.MaxInactiveVariableFps = p_Reader.ReadSingle();
-			p_Instance.MaxSimFps = p_Reader.ReadSingle();
-			p_Instance.MaxVariableFps = p_Reader.ReadSingle();
-			p_Instance.ClampTicks = p_Reader.ReadInt32();
-			p_Instance.ForceDeltaTime = p_Reader.ReadSingle();
-			p_Instance.ForceDeltaTickCount = p_Reader.ReadInt32();
-			p_Instance.TimeScale = p_Reader.ReadSingle();
-			p_Instance.UseWaitableTimers = p_Reader.ReadBool();
-			p_Instance.ForceUseSleepTimer = p_Reader.ReadBool();
-			p_Instance.ForceSinglePlayerFixedTick = p_Reader.ReadBool();
-			p_Instance.ForceMultiplayerOneTickMin = p_Reader.ReadBool();
-			p_Instance.VariableSimTickTimeEnable = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
-
 	}
 }

@@ -44,18 +44,5 @@ namespace fb
 		[ContainerField(224), LayoutImmutable, Blittable]
 		public float NameGlowSize { get; set; }
 
-		public static void Deserialize(UINametagCompData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.Vec4.Deserialize(p_Instance.SquadTint, p_Reader, p_Parser);
-			fb.Vec4.Deserialize(p_Instance.EnemyTint, p_Reader, p_Parser);
-			fb.Vec4.Deserialize(p_Instance.FriendlyTint, p_Reader, p_Parser);
-			p_Instance.OrderCooldown = p_Reader.ReadInt32();
-			p_Instance.TooltipCooldown = p_Reader.ReadInt32();
-			p_Instance.HealthBarSize = p_Reader.ReadSingle();
-			p_Instance.NameFontSize = p_Reader.ReadSingle();
-			p_Instance.NameGlowSize = p_Reader.ReadSingle();
-			p_Reader.Seek(12, SeekOrigin.Current);
-		}
-
 	}
 }

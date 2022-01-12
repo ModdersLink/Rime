@@ -62,23 +62,5 @@ namespace fb
 		[ContainerField(71), LayoutImmutable, Blittable]
 		public sbyte MaterialIndex { get; set; }
 
-		public static void Deserialize(DecalTemplateData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Size = p_Reader.ReadSingle();
-			p_Instance.RandomSize = p_Reader.ReadSingle();
-			p_Instance.Rotation = p_Reader.ReadSingle();
-			p_Instance.RandomRotation = p_Reader.ReadSingle();
-			p_Instance.ClipAngle = p_Reader.ReadSingle();
-			p_Instance.ProximityRadiusFactor = p_Reader.ReadSingle();
-			p_Instance.NormalOffset = p_Reader.ReadSingle();
-			p_Instance.Shader.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.MeshUVIndex = p_Reader.ReadInt32();
-			fb.DecalAtlasTile.Deserialize(p_Instance.AtlasTile, p_Reader, p_Parser);
-			p_Instance.SortingPriority = p_Reader.ReadSByte();
-			p_Instance.Projected = p_Reader.ReadBool();
-			p_Instance.ProjectMultiple = p_Reader.ReadBool();
-			p_Instance.MaterialIndex = p_Reader.ReadSByte();
-		}
-
 	}
 }

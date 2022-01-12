@@ -38,16 +38,5 @@ namespace fb
 		[ContainerField(32), LayoutImmutable, Blittable]
 		public bool RunOnce { get; set; }
 
-		public static void Deserialize(VoiceOverEventEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.EventPlayer.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.VoEvent.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.FinishedDelay = p_Reader.ReadSingle();
-			p_Instance.ExtraEventPlayer.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.TriggerDelay = p_Reader.ReadSingle();
-			p_Instance.RunOnce = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
-
 	}
 }

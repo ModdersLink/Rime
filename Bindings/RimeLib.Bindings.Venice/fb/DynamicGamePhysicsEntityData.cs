@@ -20,9 +20,5 @@ namespace fb
 	public class DynamicGamePhysicsEntityData : 
 		GamePhysicsEntityData
 	{
-		public static void Deserialize(DynamicGamePhysicsEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

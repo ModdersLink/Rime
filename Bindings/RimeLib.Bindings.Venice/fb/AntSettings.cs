@@ -110,39 +110,5 @@ namespace fb
 		[ContainerField(67), LayoutImmutable, Blittable]
 		public bool UsePA { get; set; }
 
-		public static void Deserialize(AntSettings p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.DetailedCollisionSpeedLimit = p_Reader.ReadSingle();
-			p_Instance.LeanSignalScale = p_Reader.ReadSingle();
-			p_Instance.LeanSignalClamp = p_Reader.ReadSingle();
-			p_Instance.MaxInterpolationSlots = p_Reader.ReadInt32();
-			p_Instance.MaxSingleBoneInterpolationSlots = p_Reader.ReadInt32();
-			p_Instance.ReducedInterpolationDistance = p_Reader.ReadSingle();
-			p_Instance.TrajectoryInterpolationDistance = p_Reader.ReadSingle();
-			p_Instance.ForceLodDistance = p_Reader.ReadSingle();
-			p_Instance.MaxAnimatablesPerPoseJob = p_Reader.ReadInt32();
-			p_Instance.CheckGiantSoldiers = p_Reader.ReadSingle();
-			p_Instance.ClientEmulatesServer = p_Reader.ReadBool();
-			p_Instance.UseCameraFov = p_Reader.ReadBool();
-			p_Instance.UpdateEnable = p_Reader.ReadBool();
-			p_Instance.EnablePA = p_Reader.ReadBool();
-			p_Instance.UseWeaponFov = p_Reader.ReadBool();
-			p_Instance.DisableAnimManagerSceneOps = p_Reader.ReadBool();
-			p_Instance.DisableAILodFeature = p_Reader.ReadBool();
-			p_Instance.DisableModelAnimationCulling = p_Reader.ReadBool();
-			p_Instance.EnableJobs = p_Reader.ReadBool();
-			p_Instance.ForcePoseUpdate = p_Reader.ReadBool();
-			p_Instance.RunAsHighPriority = p_Reader.ReadBool();
-			p_Instance.InterpolatePoses = p_Reader.ReadBool();
-			p_Instance.AllowVariableTickLength = p_Reader.ReadBool();
-			p_Instance.EnablePackageCache = p_Reader.ReadBool();
-			p_Instance.UseHIK = p_Reader.ReadBool();
-			p_Instance.UpdateLoddingEnable = p_Reader.ReadBool();
-			p_Instance.BlockOnJobs = p_Reader.ReadBool();
-			p_Instance.EnableDebugLogFile = p_Reader.ReadBool();
-			p_Instance.EnablePoseJobs = p_Reader.ReadBool();
-			p_Instance.UsePA = p_Reader.ReadBool();
-		}
-
 	}
 }

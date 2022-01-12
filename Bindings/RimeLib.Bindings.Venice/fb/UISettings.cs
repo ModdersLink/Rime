@@ -41,17 +41,5 @@ namespace fb
 		[ContainerField(33), LayoutImmutable, Blittable]
 		public bool DrawEnable { get; set; }
 
-		public static void Deserialize(UISettings p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.System = (UISystemType) p_Reader.ReadInt32();
-			p_Instance.Bundles.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.ProfileOptions.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.Language = (LanguageFormat) p_Reader.ReadInt32();
-			fb.DataCopSettings.Deserialize(p_Instance.DataCop, p_Reader, p_Parser);
-			p_Instance.OneBundlePerGraph = p_Reader.ReadBool();
-			p_Instance.DrawEnable = p_Reader.ReadBool();
-			p_Reader.Seek(2, SeekOrigin.Current);
-		}
-
 	}
 }

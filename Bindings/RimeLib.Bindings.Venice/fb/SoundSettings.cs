@@ -44,18 +44,5 @@ namespace fb
 		[ContainerField(40), LayoutImmutable, Blittable]
 		public bool Enable { get; set; }
 
-		public static void Deserialize(SoundSettings p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.VOEnglish = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.AudioSystemUri = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.VOCommon = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.VOItalian = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.VOSpanish = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.VOFrench = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.VOGerman = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Enable = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
-
 	}
 }

@@ -38,16 +38,5 @@ namespace fb
 		[ContainerField(29), LayoutImmutable, Blittable]
 		public bool InitialZoneRandomized { get; set; }
 
-		public static void Deserialize(FriendZoneEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.EnemyWeight = p_Reader.ReadInt32();
-			p_Instance.FriendlyWeight = p_Reader.ReadInt32();
-			p_Instance.CorpsTimeout = p_Reader.ReadInt32();
-			p_Instance.CorpsWeight = p_Reader.ReadInt32();
-			p_Instance.CountCorpsesForAllTeams = p_Reader.ReadBool();
-			p_Instance.InitialZoneRandomized = p_Reader.ReadBool();
-			p_Reader.Seek(2, SeekOrigin.Current);
-		}
-
 	}
 }

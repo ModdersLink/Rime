@@ -20,9 +20,5 @@ namespace fb
 	public class UINametagCoopCompData : 
 		UINametagCompData
 	{
-		public static void Deserialize(UINametagCoopCompData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

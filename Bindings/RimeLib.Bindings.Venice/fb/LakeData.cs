@@ -20,9 +20,5 @@ namespace fb
 	public class LakeData : 
 		VisualVectorShapeData
 	{
-		public static void Deserialize(LakeData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

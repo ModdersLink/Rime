@@ -32,13 +32,5 @@ namespace fb
 		[ContainerField(163), LayoutImmutable, Blittable]
 		public bool ShowUnlockedLockOnLaserPainted { get; set; }
 
-		public static void Deserialize(UITrackingtagCompData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.ShowUnlockedLockAlways = p_Reader.ReadBool();
-			p_Instance.ShowUnlockedLockOnRadar = p_Reader.ReadBool();
-			p_Instance.ShowUnlockedLockOnHeat = p_Reader.ReadBool();
-			p_Instance.ShowUnlockedLockOnLaserPainted = p_Reader.ReadBool();
-		}
-
 	}
 }

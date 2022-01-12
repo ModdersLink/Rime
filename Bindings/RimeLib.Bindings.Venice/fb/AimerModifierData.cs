@@ -26,12 +26,5 @@ namespace fb
 		[ContainerField(16), LayoutImmutable, Blittable]
 		public bool OnlyInSupportedShooting { get; set; }
 
-		public static void Deserialize(AimerModifierData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.LookSpeedMultiplier = p_Reader.ReadSingle();
-			p_Instance.OnlyInSupportedShooting = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
-
 	}
 }

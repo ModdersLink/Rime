@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(28), LayoutImmutable]
 		public string OutOfAreaSidPrefix { get; set; } = string.Empty;
 
-		public static void Deserialize(UICombatAreaCompData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.OutOfAreaSidPrefix = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-		}
-
 	}
 }

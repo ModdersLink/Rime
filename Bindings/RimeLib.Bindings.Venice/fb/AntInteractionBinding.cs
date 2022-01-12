@@ -22,9 +22,5 @@ namespace fb
 		[ContainerField(0)]
 		public AntRef OtherAnimatableID { get; set; } = new();
 		
-		public static void Deserialize(AntInteractionBinding p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AntRef.Deserialize(p_Instance.OtherAnimatableID, p_Reader, p_Parser);
-		}
 	}
 }

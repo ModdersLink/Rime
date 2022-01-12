@@ -56,22 +56,5 @@ namespace fb
 		[ContainerField(243), LayoutImmutable, Blittable]
 		public bool ReceivesExplosionDamage { get; set; }
 
-		public static void Deserialize(ExplosionPackEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.TimeToLiveOnPlayerDeath = p_Reader.ReadSingle();
-			fb.SoldierDetonationData.Deserialize(p_Instance.SoldierDetonationData, p_Reader, p_Parser);
-			p_Instance.VehicleDetonationActivationDelay = p_Reader.ReadSingle();
-			p_Instance.VehicleDetonationRadius = p_Reader.ReadSingle();
-			p_Instance.Icon = (UIHudIcon) p_Reader.ReadInt32();
-			p_Instance.SpottedTime = p_Reader.ReadSingle();
-			p_Instance.DefuseRadius = p_Reader.ReadSingle();
-			p_Instance.Health = p_Reader.ReadSingle();
-			p_Instance.HasRemoteDetonator = p_Reader.ReadBool();
-			p_Instance.IsDestructible = p_Reader.ReadBool();
-			p_Instance.HasVehicleDetonation = p_Reader.ReadBool();
-			p_Instance.ReceivesExplosionDamage = p_Reader.ReadBool();
-			p_Reader.Seek(12, SeekOrigin.Current);
-		}
-
 	}
 }

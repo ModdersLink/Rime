@@ -38,15 +38,5 @@ namespace fb
 		[ContainerField(48)]
 		public TimerMode Mode { get; set; } = new();
 
-		public static void Deserialize(TimerNodeData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AudioGraphNodePort.Deserialize(p_Instance.Start, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.Stop, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.Period, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.Tick, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.Progress, p_Reader, p_Parser);
-			p_Instance.Mode = (TimerMode) p_Reader.ReadInt32();
-		}
-
 	}
 }

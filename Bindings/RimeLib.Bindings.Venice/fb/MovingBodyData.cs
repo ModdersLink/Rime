@@ -26,11 +26,5 @@ namespace fb
 		[ContainerField(12), LayoutImmutable, Blittable]
 		public float Inertia { get; set; }
 
-		public static void Deserialize(MovingBodyData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Mass = p_Reader.ReadSingle();
-			p_Instance.Inertia = p_Reader.ReadSingle();
-		}
-
 	}
 }

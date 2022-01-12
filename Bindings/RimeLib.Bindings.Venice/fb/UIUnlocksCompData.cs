@@ -20,9 +20,5 @@ namespace fb
 	public class UIUnlocksCompData : 
 		UIComponentData
 	{
-		public static void Deserialize(UIUnlocksCompData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

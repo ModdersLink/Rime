@@ -20,9 +20,5 @@ namespace fb
 	public class TerrainStreamingTreeAsset : 
 		Asset
 	{
-		public static void Deserialize(TerrainStreamingTreeAsset p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

@@ -26,19 +26,5 @@ namespace fb
 		[ContainerField(12)]
 		public List<string> Licenses { get; set; } = new();
 
-		public static void Deserialize(VeniceMatchmakingLevelDescriptionComponent p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Mod = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Licenses.Clear();
-			(RimeReader Reader, uint Count) s_Licenses = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_Licenses.Count; ++i)
-			{
-				var s_Value = p_Parser.GetStringAtOffset(s_Licenses.Reader.ReadUInt32());
-				p_Instance.Licenses.Add(s_Value);
-			}
-			
-			s_Licenses.Reader.Dispose();
-		}
-
 	}
 }

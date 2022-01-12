@@ -65,25 +65,5 @@ namespace fb
 		[ContainerField(61), LayoutImmutable, Blittable]
 		public bool LoadOccluderDataEnable { get; set; }
 
-		public static void Deserialize(TerrainStreamingSettings p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.DataLoadJobCount = p_Reader.ReadUInt32();
-			p_Instance.ActiveFreeStreamingDataLoadJobCount = p_Reader.ReadUInt32();
-			p_Instance.HeightfieldAtlasSampleCountXFactor = p_Reader.ReadUInt32();
-			p_Instance.AdditionalBlurriness = p_Reader.ReadUInt32();
-			p_Instance.InvisibleDetailReductionFactor = p_Reader.ReadSingle();
-			p_Instance.OccludedDetailReductionFactor = p_Reader.ReadSingle();
-			p_Instance.HeightfieldAtlasSampleCountYFactor = p_Reader.ReadUInt32();
-			p_Instance.MaskAtlasSampleCountYFactor = p_Reader.ReadUInt32();
-			p_Instance.ColorAdditionalBlurriness = p_Reader.ReadUInt32();
-			p_Instance.MaskAtlasSampleCountXFactor = p_Reader.ReadUInt32();
-			p_Instance.MaskAdditionalBlurriness = p_Reader.ReadUInt32();
-			p_Instance.ColorAtlasSampleCountXFactor = p_Reader.ReadUInt32();
-			p_Instance.ColorAtlasSampleCountYFactor = p_Reader.ReadUInt32();
-			p_Instance.KeepPoolFullEnable = p_Reader.ReadBool();
-			p_Instance.LoadOccluderDataEnable = p_Reader.ReadBool();
-			p_Reader.Seek(2, SeekOrigin.Current);
-		}
-
 	}
 }

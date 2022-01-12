@@ -25,10 +25,5 @@ namespace fb
 		[ContainerField(4)]
 		public EventSpec Event { get; set; } = new();
 		
-		public static void Deserialize(AntEventData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.TagId = p_Reader.ReadInt32();
-			fb.EventSpec.Deserialize(p_Instance.Event, p_Reader, p_Parser);
-		}
 	}
 }

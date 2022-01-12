@@ -32,14 +32,5 @@ namespace fb
 		[ContainerField(108)]
 		public ClimbLadderBinding Binding { get; set; } = new();
 
-		public static void Deserialize(ClimbLadderComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.ClimbPhase = p_Reader.ReadInt32();
-			p_Instance.ConnectPhase = p_Reader.ReadInt32();
-			p_Instance.ConnectJointDisplacement = p_Reader.ReadSingle();
-			fb.ClimbLadderBinding.Deserialize(p_Instance.Binding, p_Reader, p_Parser);
-			p_Reader.Seek(12, SeekOrigin.Current);
-		}
-
 	}
 }

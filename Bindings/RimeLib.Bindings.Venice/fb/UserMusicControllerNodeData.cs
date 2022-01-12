@@ -29,13 +29,5 @@ namespace fb
 		[ContainerField(24), LayoutImmutable, Blittable]
 		public bool RestoreOnDeactivated { get; set; }
 
-		public static void Deserialize(UserMusicControllerNodeData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AudioGraphNodePort.Deserialize(p_Instance.Override, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.Restore, p_Reader, p_Parser);
-			p_Instance.RestoreOnDeactivated = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
-
 	}
 }

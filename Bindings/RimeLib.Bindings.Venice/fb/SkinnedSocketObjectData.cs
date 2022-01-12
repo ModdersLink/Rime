@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(72), LayoutImmutable, Blittable]
 		public int FaceposerLibraryIndex { get; set; }
 
-		public static void Deserialize(SkinnedSocketObjectData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.FaceposerLibraryIndex = p_Reader.ReadInt32();
-		}
-
 	}
 }

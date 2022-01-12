@@ -28,11 +28,5 @@ namespace fb
 		[ContainerField(8)]
 		public CtrRef<ProfileOptionData> Setting { get; set; } = new();
 		
-		public static void Deserialize(UISettingsItem p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.NameSid = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.StartEndSymbols = (UISettingSymbols) p_Reader.ReadInt32();
-			p_Instance.Setting.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-		}
 	}
 }

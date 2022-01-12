@@ -25,10 +25,5 @@ namespace fb
 		[ContainerField(4)]
 		public AntRef EnableCollision { get; set; } = new();
 		
-		public static void Deserialize(AnimationDrivenBinding p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AntRef.Deserialize(p_Instance.Velocity, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.EnableCollision, p_Reader, p_Parser);
-		}
 	}
 }

@@ -26,12 +26,5 @@ namespace fb
 		[ContainerField(116), LayoutImmutable, Blittable]
 		public float SpawnProbability { get; set; }
 
-		public static void Deserialize(EmitterEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Emitter.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.SpawnProbability = p_Reader.ReadSingle();
-			p_Reader.Seek(8, SeekOrigin.Current);
-		}
-
 	}
 }

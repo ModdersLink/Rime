@@ -20,9 +20,5 @@ namespace fb
 	public class TerrainLayerData : 
 		DataContainer
 	{
-		public static void Deserialize(TerrainLayerData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

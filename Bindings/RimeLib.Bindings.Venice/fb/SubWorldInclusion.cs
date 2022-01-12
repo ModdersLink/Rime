@@ -21,21 +21,7 @@ namespace fb
 		Asset
 	{
 		[ContainerField(12)]
-		public List<CtrRef<SubWorldInclusionCriterion>> Criteria { get; set; } = new();
-
-		public static void Deserialize(SubWorldInclusion p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Criteria.Clear();
-			(RimeReader Reader, uint Count) s_Criteria = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_Criteria.Count; ++i)
-			{
-				var s_CtrRef = new CtrRef<SubWorldInclusionCriterion>();
-				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_Criteria.Reader.ReadUInt32()));
-				p_Instance.Criteria.Add(s_CtrRef);
-			}
-			
-			s_Criteria.Reader.Dispose();
-		}
+		public RefArray<SubWorldInclusionCriterion> Criteria { get; set; } = new();
 
 	}
 }

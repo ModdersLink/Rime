@@ -19,10 +19,5 @@ namespace fb
 	[ContainerType(4, 8)]
 	public class DataContainer
 	{
-		public static void Deserialize(DataContainer p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Reader.Seek(8, SeekOrigin.Current);
-		}
-
 	}
 }

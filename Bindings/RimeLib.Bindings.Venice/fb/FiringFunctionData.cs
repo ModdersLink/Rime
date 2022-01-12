@@ -59,58 +59,5 @@ namespace fb
 		[ContainerField(489), LayoutImmutable, Blittable]
 		public bool UsePrimaryAmmo { get; set; }
 
-		public static void Deserialize(FiringFunctionData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Dispersion.Clear();
-			(RimeReader Reader, uint Count) s_Dispersion = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_Dispersion.Count; ++i)
-			{
-				var s_Value = new FiringDispersionData();
-				fb.FiringDispersionData.Deserialize(s_Value, s_Dispersion.Reader, p_Parser);
-				p_Instance.Dispersion.Add(s_Value);
-			}
-			
-			s_Dispersion.Reader.Dispose();
-			fb.SoldierWeaponDispersion.Deserialize(p_Instance.WeaponDispersion, p_Reader, p_Parser);
-			p_Instance.FireEffects1p.Clear();
-			(RimeReader Reader, uint Count) s_FireEffects1p = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_FireEffects1p.Count; ++i)
-			{
-				var s_Value = new FireEffectData();
-				fb.FireEffectData.Deserialize(s_Value, s_FireEffects1p.Reader, p_Parser);
-				p_Instance.FireEffects1p.Add(s_Value);
-			}
-			
-			s_FireEffects1p.Reader.Dispose();
-			p_Instance.FireEffects3p.Clear();
-			(RimeReader Reader, uint Count) s_FireEffects3p = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_FireEffects3p.Count; ++i)
-			{
-				var s_Value = new FireEffectData();
-				fb.FireEffectData.Deserialize(s_Value, s_FireEffects3p.Reader, p_Parser);
-				p_Instance.FireEffects3p.Add(s_Value);
-			}
-			
-			s_FireEffects3p.Reader.Dispose();
-			p_Instance.Sound.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Reader.Seek(4, SeekOrigin.Current);
-			fb.ShotConfigData.Deserialize(p_Instance.Shot, p_Reader, p_Parser);
-			p_Reader.Seek(4, SeekOrigin.Current);
-			fb.FireLogicData.Deserialize(p_Instance.FireLogic, p_Reader, p_Parser);
-			p_Reader.Seek(4, SeekOrigin.Current);
-			fb.AmmoConfigData.Deserialize(p_Instance.Ammo, p_Reader, p_Parser);
-			p_Reader.Seek(8, SeekOrigin.Current);
-			fb.OverHeatData.Deserialize(p_Instance.OverHeat, p_Reader, p_Parser);
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.SelfHealTimeWhenDeployed = p_Reader.ReadSingle();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.AmmoCrateReloadDelay = p_Reader.ReadSingle();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.UnlimitedAmmoForAI = p_Reader.ReadBool();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.UsePrimaryAmmo = p_Reader.ReadBool();
-			p_Reader.Seek(14, SeekOrigin.Current);
-		}
-
 	}
 }

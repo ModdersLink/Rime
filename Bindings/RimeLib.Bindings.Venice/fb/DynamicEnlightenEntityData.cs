@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(24)]
 		public CtrRef<EnlightenDataAsset> EnlightenData { get; set; } = new();
 
-		public static void Deserialize(DynamicEnlightenEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.EnlightenData.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-		}
-
 	}
 }

@@ -23,18 +23,5 @@ namespace fb
 		[ContainerField(12)]
 		public List<uint> PathfindingTypesOnLevel { get; set; } = new();
 
-		public static void Deserialize(PathfindingSystemEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.PathfindingTypesOnLevel.Clear();
-			(RimeReader Reader, uint Count) s_PathfindingTypesOnLevel = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_PathfindingTypesOnLevel.Count; ++i)
-			{
-				var s_Value = s_PathfindingTypesOnLevel.Reader.ReadUInt32();
-				p_Instance.PathfindingTypesOnLevel.Add(s_Value);
-			}
-			
-			s_PathfindingTypesOnLevel.Reader.Dispose();
-		}
-
 	}
 }

@@ -25,10 +25,5 @@ namespace fb
 		[ContainerField(4), LayoutImmutable, Blittable]
 		public float Max { get; set; }
 		
-		public static void Deserialize(FloatRange p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Min = p_Reader.ReadSingle();
-			p_Instance.Max = p_Reader.ReadSingle();
-		}
 	}
 }

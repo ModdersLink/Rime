@@ -38,15 +38,5 @@ namespace fb
 		[ContainerField(28), LayoutImmutable, Blittable]
 		public float MaterialSoundId { get; set; }
 
-		public static void Deserialize(MaterialPropertySoundData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.ImpactSound.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.ScrapeSound.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.ScrapeLength = p_Reader.ReadSingle();
-			p_Instance.SoldierSettings.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.Softness = p_Reader.ReadSingle();
-			p_Instance.MaterialSoundId = p_Reader.ReadSingle();
-		}
-
 	}
 }

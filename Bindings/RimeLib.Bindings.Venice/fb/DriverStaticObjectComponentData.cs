@@ -35,15 +35,5 @@ namespace fb
 		[ContainerField(125), LayoutImmutable, Blittable]
 		public bool AlignWithGroundNormal { get; set; }
 
-		public static void Deserialize(DriverStaticObjectComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Acceleration = p_Reader.ReadSingle();
-			p_Instance.Deceleration = p_Reader.ReadSingle();
-			p_Instance.TurningRadius = p_Reader.ReadSingle();
-			p_Instance.TurnWhileStill = p_Reader.ReadBool();
-			p_Instance.AlignWithGroundNormal = p_Reader.ReadBool();
-			p_Reader.Seek(2, SeekOrigin.Current);
-		}
-
 	}
 }

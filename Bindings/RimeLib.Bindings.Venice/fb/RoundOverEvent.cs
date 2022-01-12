@@ -26,11 +26,5 @@ namespace fb
 		[ContainerField(20), LayoutImmutable, Blittable]
 		public int TicketsLeft { get; set; }
 
-		public static void Deserialize(RoundOverEvent p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.WinningTeam = p_Reader.ReadInt32();
-			p_Instance.TicketsLeft = p_Reader.ReadInt32();
-		}
-
 	}
 }

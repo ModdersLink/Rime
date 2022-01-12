@@ -28,20 +28,5 @@ namespace fb
 		[ContainerField(8)]
 		public List<Vec4> Values { get; set; } = new();
 		
-		public static void Deserialize(VectorArrayShaderParameter p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.ParameterName = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.ParameterType = (ShaderParameterType) p_Reader.ReadInt32();
-			p_Instance.Values.Clear();
-			(RimeReader Reader, uint Count) s_Values = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_Values.Count; ++i)
-			{
-				var s_Value = new Vec4();
-				fb.Vec4.Deserialize(s_Value, s_Values.Reader, p_Parser);
-				p_Instance.Values.Add(s_Value);
-			}
-			
-			s_Values.Reader.Dispose();
-		}
 	}
 }

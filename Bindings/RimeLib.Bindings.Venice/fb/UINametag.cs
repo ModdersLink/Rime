@@ -50,30 +50,5 @@ namespace fb
 		[ContainerField(64), LayoutImmutable, Blittable]
 		public float TargetOutTimer { get; set; }
 
-		public static void Deserialize(UINametag p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Reader.Seek(8, SeekOrigin.Current);
-			fb.Vec3.Deserialize(p_Instance.TextColor, p_Reader, p_Parser);
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.IconFadeDistance = p_Reader.ReadSingle();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.IconMaxDistance = p_Reader.ReadSingle();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.Icon = (UIHudIcon) p_Reader.ReadInt32();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.TextFadeDistance = p_Reader.ReadSingle();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.HealthFadeDistance = p_Reader.ReadSingle();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.HealthMaxDistance = p_Reader.ReadSingle();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.TextMaxDistance = p_Reader.ReadSingle();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.TargetInTimer = p_Reader.ReadSingle();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.TargetOutTimer = p_Reader.ReadSingle();
-			p_Reader.Seek(20, SeekOrigin.Current);
-		}
-
 	}
 }

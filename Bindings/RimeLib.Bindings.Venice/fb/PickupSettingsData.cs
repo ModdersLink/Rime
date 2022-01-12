@@ -25,10 +25,5 @@ namespace fb
 		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 MeshRenderRotation { get; set; } = new();
 		
-		public static void Deserialize(PickupSettingsData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.Vec3.Deserialize(p_Instance.MeshRenderOffset, p_Reader, p_Parser);
-			fb.Vec3.Deserialize(p_Instance.MeshRenderRotation, p_Reader, p_Parser);
-		}
 	}
 }

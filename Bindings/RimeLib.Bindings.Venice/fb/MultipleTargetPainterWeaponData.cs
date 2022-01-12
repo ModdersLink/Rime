@@ -41,17 +41,5 @@ namespace fb
 		[ContainerField(37), LayoutImmutable, Blittable]
 		public bool UseLaserPainting { get; set; }
 
-		public static void Deserialize(MultipleTargetPainterWeaponData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.SpottingBehavior = (SpottingType) p_Reader.ReadInt32();
-			p_Instance.TimeObjectIsPainted = p_Reader.ReadSingle();
-			p_Instance.Angle = p_Reader.ReadSingle();
-			p_Instance.TimeObjectIsSpotted = p_Reader.ReadSingle();
-			p_Instance.Range = p_Reader.ReadSingle();
-			p_Instance.UseSpotting = p_Reader.ReadBool();
-			p_Instance.UseLaserPainting = p_Reader.ReadBool();
-			p_Reader.Seek(2, SeekOrigin.Current);
-		}
-
 	}
 }

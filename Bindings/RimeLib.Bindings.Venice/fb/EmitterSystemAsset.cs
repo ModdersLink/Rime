@@ -29,21 +29,5 @@ namespace fb
 		[ContainerField(20)]
 		public CtrRef<TextureAsset> NormalAtlasTexture { get; set; } = new();
 
-		public static void Deserialize(EmitterSystemAsset p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.TextureInfos.Clear();
-			(RimeReader Reader, uint Count) s_TextureInfos = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_TextureInfos.Count; ++i)
-			{
-				var s_Value = new EmitterTextureAtlasInfo();
-				fb.EmitterTextureAtlasInfo.Deserialize(s_Value, s_TextureInfos.Reader, p_Parser);
-				p_Instance.TextureInfos.Add(s_Value);
-			}
-			
-			s_TextureInfos.Reader.Dispose();
-			p_Instance.BaseAtlasTexture.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.NormalAtlasTexture.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-		}
-
 	}
 }

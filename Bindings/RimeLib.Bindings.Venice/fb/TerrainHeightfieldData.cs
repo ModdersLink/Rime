@@ -20,9 +20,5 @@ namespace fb
 	public class TerrainHeightfieldData : 
 		DataContainer
 	{
-		public static void Deserialize(TerrainHeightfieldData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

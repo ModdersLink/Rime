@@ -122,44 +122,5 @@ namespace fb
 		[ContainerField(158), LayoutImmutable, Blittable]
 		public bool OnlyShowSnapped { get; set; }
 
-		public static void Deserialize(UI3dIconCompData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.Vec2.Deserialize(p_Instance.PixelOffset, p_Reader, p_Parser);
-			p_Instance.IconSize = p_Reader.ReadSingle();
-			p_Instance.MaxFarFade = p_Reader.ReadSingle();
-			p_Instance.MaxCloseFade = p_Reader.ReadSingle();
-			p_Instance.SnapSafeZone = p_Reader.ReadSingle();
-			p_Instance.SnapCenterYOffset = p_Reader.ReadSingle();
-			p_Instance.ShrinkSnapAnimationTime = p_Reader.ReadSingle();
-			p_Instance.TrackerHudRadiusX = p_Reader.ReadSingle();
-			p_Instance.TrackerHudRadiusY = p_Reader.ReadSingle();
-			p_Instance.MaxLookAtThreshold = p_Reader.ReadSingle();
-			p_Instance.MinLookAtThreshold = p_Reader.ReadSingle();
-			p_Instance.MinLookAtThresholdDistance = p_Reader.ReadSingle();
-			p_Instance.DrawDistance = p_Reader.ReadSingle();
-			p_Instance.FadeDistance = p_Reader.ReadSingle();
-			p_Instance.FadeEndDistance = p_Reader.ReadSingle();
-			p_Instance.MinimumDrawDistance = p_Reader.ReadSingle();
-			p_Instance.MinimumFadeDistance = p_Reader.ReadSingle();
-			p_Instance.MaxTagUpdatesPerFrame = p_Reader.ReadInt32();
-			p_Instance.VerticalOffset = p_Reader.ReadSingle();
-			p_Instance.ShowLabelRange = p_Reader.ReadSingle();
-			p_Instance.TeamRadioDistance = p_Reader.ReadSingle();
-			p_Instance.ScaleDistance = p_Reader.ReadSingle();
-			p_Instance.MaxScaleMod = p_Reader.ReadSingle();
-			p_Instance.MaxXRotation = p_Reader.ReadSingle();
-			p_Instance.MaxYRotation = p_Reader.ReadSingle();
-			p_Instance.HorisontalOffset = p_Reader.ReadSingle();
-			p_Instance.ShowSupportAmmoThreshold = p_Reader.ReadSingle();
-			p_Instance.VerticalOffsetMaxOffset = p_Reader.ReadSingle();
-			p_Instance.VerticalOffsetScaleFactor = p_Reader.ReadSingle();
-			p_Instance.ShowEngineerArmorThreshold = p_Reader.ReadSingle();
-			p_Instance.ShowMedicHealthThreshold = p_Reader.ReadSingle();
-			p_Instance.SnapIcons = p_Reader.ReadBool();
-			p_Instance.CircularSnap = p_Reader.ReadBool();
-			p_Instance.OnlyShowSnapped = p_Reader.ReadBool();
-			p_Reader.Seek(1, SeekOrigin.Current);
-		}
-
 	}
 }

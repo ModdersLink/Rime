@@ -47,26 +47,5 @@ namespace fb
 		[ContainerField(96)]
 		public ColorTintData ColorTintData { get; set; } = new();
 
-		public static void Deserialize(SniperLensScopeFilterData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.Vec2.Deserialize(p_Instance.ChromaticAberrationStrengths, p_Reader, p_Parser);
-			fb.Vec2.Deserialize(p_Instance.BlurCenter, p_Reader, p_Parser);
-			p_Reader.Seek(4, SeekOrigin.Current);
-			fb.Vec3.Deserialize(p_Instance.ChromaticAberrationColor1, p_Reader, p_Parser);
-			p_Reader.Seek(4, SeekOrigin.Current);
-			fb.Vec3.Deserialize(p_Instance.ChromaticAberrationColor2, p_Reader, p_Parser);
-			p_Reader.Seek(4, SeekOrigin.Current);
-			fb.Vec2.Deserialize(p_Instance.RadialBlendDistanceCoefficients, p_Reader, p_Parser);
-			p_Reader.Seek(4, SeekOrigin.Current);
-			fb.Vec2.Deserialize(p_Instance.ChromaticAberrationDisplacement1, p_Reader, p_Parser);
-			p_Reader.Seek(4, SeekOrigin.Current);
-			fb.Vec2.Deserialize(p_Instance.ChromaticAberrationDisplacement2, p_Reader, p_Parser);
-			p_Reader.Seek(4, SeekOrigin.Current);
-			p_Instance.BlurScale = p_Reader.ReadSingle();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			fb.ColorTintData.Deserialize(p_Instance.ColorTintData, p_Reader, p_Parser);
-			p_Reader.Seek(8, SeekOrigin.Current);
-		}
-
 	}
 }

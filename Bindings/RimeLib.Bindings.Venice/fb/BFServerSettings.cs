@@ -146,52 +146,5 @@ namespace fb
 		[ContainerField(158), LayoutImmutable, Blittable]
 		public bool AutoBalance { get; set; }
 
-		public static void Deserialize(BFServerSettings p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.ServerMessage = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.CTFRoundTimeModifier = p_Reader.ReadSingle();
-			p_Instance.ForceTeamForPlayerTag = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.ForceTeamForPlayerTagTeam = p_Reader.ReadInt32();
-			p_Instance.NoInteractivityTimeoutTime = p_Reader.ReadSingle();
-			p_Instance.NoInteractivityThresholdLimit = p_Reader.ReadSingle();
-			p_Instance.NoInteractivityBanRoundCount = p_Reader.ReadUInt32();
-			p_Instance.TeamKillCountForKick = p_Reader.ReadUInt32();
-			p_Instance.TeamKillValueForKick = p_Reader.ReadSingle();
-			p_Instance.TeamKillValueIncrease = p_Reader.ReadSingle();
-			p_Instance.TeamKillValueDecreasePerSecond = p_Reader.ReadSingle();
-			p_Instance.TeamKillKickForBan = p_Reader.ReadUInt32();
-			p_Instance.RoundMaxPlayerCount = p_Reader.ReadInt32();
-			p_Instance.RoundMinPlayerCount = p_Reader.ReadInt32();
-			p_Instance.RoundLockdownCountdown = p_Reader.ReadInt32();
-			p_Instance.RoundRestartCountdown = p_Reader.ReadInt32();
-			p_Instance.RoundWarmupTimeout = p_Reader.ReadInt32();
-			p_Instance.BannerUrl = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.ServerPreset = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.ServerDescription = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.ServerAdministrationSettings = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.GameSize = p_Reader.ReadUInt32();
-			p_Instance.ServerAdministrationMapRotation = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.ServerAdministrationMapRotationInformation = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.ServerAdministrationRoundsPerMap = p_Reader.ReadUInt32();
-			p_Instance.Spectators = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.PunkBusterVersion = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.TeamSwitchImbalanceLimit = p_Reader.ReadUInt32();
-			p_Instance.GameMod = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.PingSite = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.OverrideServerConfigurationStartTime = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.GunMasterWeaponsPresetIndex = p_Reader.ReadUInt32();
-			p_Instance.ServerConfigurationRefreshInterval = p_Reader.ReadInt32();
-			p_Instance.DeathmatchFriendZoneFallbackCount = p_Reader.ReadInt32();
-			p_Instance.DefaultVoiceChannel = (VoiceChannel) p_Reader.ReadInt32();
-			p_Instance.MapSequencerEnabled = p_Reader.ReadBool();
-			p_Instance.KickAPlayerOnVIPJoin = p_Reader.ReadBool();
-			p_Instance.IsManDownRotationEnabled = p_Reader.ReadBool();
-			p_Instance.IsKillerCameraEnabled = p_Reader.ReadBool();
-			p_Instance.PremiumStatus = p_Reader.ReadBool();
-			p_Instance.OverrideAutoBalance = p_Reader.ReadBool();
-			p_Instance.AutoBalance = p_Reader.ReadBool();
-			p_Reader.Seek(1, SeekOrigin.Current);
-		}
-
 	}
 }

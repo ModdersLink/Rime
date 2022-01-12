@@ -55,20 +55,5 @@ namespace fb
 		[ContainerField(11), LayoutImmutable, Blittable]
 		public bool AllowSameTeamId { get; set; }
 		
-		public static void Deserialize(MatchmakingGameSettings p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.OpenToBrowsing = p_Reader.ReadBool();
-			p_Instance.OpenToInvites = p_Reader.ReadBool();
-			p_Instance.OpenToMatchmaking = p_Reader.ReadBool();
-			p_Instance.OpenToJoinByPlayer = p_Reader.ReadBool();
-			p_Instance.HostMigratable = p_Reader.ReadBool();
-			p_Instance.Ranked = p_Reader.ReadBool();
-			p_Instance.AdminOnlyInvites = p_Reader.ReadBool();
-			p_Instance.EnforceSingleGroupJoin = p_Reader.ReadBool();
-			p_Instance.JoinInProgressSupported = p_Reader.ReadBool();
-			p_Instance.AdminInvitesOnlyIgnoreEntryChecks = p_Reader.ReadBool();
-			p_Instance.EnablePersistedGameId = p_Reader.ReadBool();
-			p_Instance.AllowSameTeamId = p_Reader.ReadBool();
-		}
 	}
 }

@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(28), LayoutImmutable, Blittable]
 		public float MaxUpdateInterval { get; set; }
 
-		public static void Deserialize(UIScoreboardCompData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.MaxUpdateInterval = p_Reader.ReadSingle();
-		}
-
 	}
 }

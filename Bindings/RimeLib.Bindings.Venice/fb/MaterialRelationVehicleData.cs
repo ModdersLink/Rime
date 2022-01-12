@@ -32,13 +32,5 @@ namespace fb
 		[ContainerField(20)]
 		public CtrRef<EffectBlueprint> GroundEffect { get; set; } = new();
 
-		public static void Deserialize(MaterialRelationVehicleData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.ChassiEffect.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.TrackEffect.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.WheelEffect.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.GroundEffect.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-		}
-
 	}
 }

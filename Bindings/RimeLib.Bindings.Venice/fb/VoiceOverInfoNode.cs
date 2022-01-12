@@ -32,13 +32,5 @@ namespace fb
 		[ContainerField(20)]
 		public CtrRef<VoiceOverObject> ExpectedType { get; set; } = new();
 
-		public static void Deserialize(VoiceOverInfoNode p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Object.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.Value.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.Field.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.ExpectedType.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-		}
-
 	}
 }

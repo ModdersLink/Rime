@@ -23,11 +23,5 @@ namespace fb
 		[ContainerField(12), LayoutImmutable, Blittable]
 		public bool Networked { get; set; }
 
-		public static void Deserialize(NetworkableLoosePartPhysicsData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Networked = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
-
 	}
 }

@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(8)]
 		public CtrRef<SoldierAimingSimulationData> AimingController { get; set; } = new();
 
-		public static void Deserialize(WeaponAimingSimulationModifier p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.AimingController.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-		}
-
 	}
 }

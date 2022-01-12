@@ -29,13 +29,5 @@ namespace fb
 		[ContainerField(13), LayoutImmutable, Blittable]
 		public sbyte PhysicsMaterialIndex { get; set; }
 
-		public static void Deserialize(MaterialContainerPair p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.FlagsAndIndex = p_Reader.ReadUInt32();
-			p_Instance.PhysicsPropertyIndex = p_Reader.ReadSByte();
-			p_Instance.PhysicsMaterialIndex = p_Reader.ReadSByte();
-			p_Reader.Seek(2, SeekOrigin.Current);
-		}
-
 	}
 }

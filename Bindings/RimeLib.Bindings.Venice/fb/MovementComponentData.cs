@@ -23,11 +23,5 @@ namespace fb
 		[ContainerField(96)]
 		public MovementComponentBinding MovementBinding { get; set; } = new();
 
-		public static void Deserialize(MovementComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.MovementComponentBinding.Deserialize(p_Instance.MovementBinding, p_Reader, p_Parser);
-			p_Reader.Seek(12, SeekOrigin.Current);
-		}
-
 	}
 }

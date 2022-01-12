@@ -20,9 +20,5 @@ namespace fb
 	public class ImpulseResponseAsset : 
 		SoundDataAsset
 	{
-		public static void Deserialize(ImpulseResponseAsset p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

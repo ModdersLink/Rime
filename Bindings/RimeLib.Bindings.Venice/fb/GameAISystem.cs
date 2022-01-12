@@ -20,9 +20,5 @@ namespace fb
 	public class GameAISystem : 
 		Asset
 	{
-		public static void Deserialize(GameAISystem p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

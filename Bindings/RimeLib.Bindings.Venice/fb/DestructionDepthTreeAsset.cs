@@ -20,9 +20,5 @@ namespace fb
 	public class DestructionDepthTreeAsset : 
 		RasterTreeAsset
 	{
-		public static void Deserialize(DestructionDepthTreeAsset p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

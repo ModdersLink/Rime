@@ -46,17 +46,5 @@ namespace fb
 		[ContainerField(32)]
 		public AntRef AnimatedCamera { get; set; } = new();
 		
-		public static void Deserialize(SupportedShootingBinding p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AntRef.Deserialize(p_Instance.Supported, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.SupportedPos, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.ForwardVector, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.Yaw, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.Pitch, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.DistToObject, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.HeightOfObject, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.Undeploying, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.AnimatedCamera, p_Reader, p_Parser);
-		}
 	}
 }

@@ -34,13 +34,5 @@ namespace fb
 		[ContainerField(16), LayoutImmutable, Blittable]
 		public float SpringDamping { get; set; }
 		
-		public static void Deserialize(EndPointData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Pos = p_Reader.ReadSingle();
-			p_Instance.EndDamping = p_Reader.ReadSingle();
-			p_Instance.SpringLength = p_Reader.ReadSingle();
-			p_Instance.SpringAcceleration = p_Reader.ReadSingle();
-			p_Instance.SpringDamping = p_Reader.ReadSingle();
-		}
 	}
 }

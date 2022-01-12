@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(24)]
 		public CameraMovementActionMode ActionMode { get; set; } = new();
 
-		public static void Deserialize(CameraActionData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.ActionMode = (CameraMovementActionMode) p_Reader.ReadInt32();
-		}
-
 	}
 }

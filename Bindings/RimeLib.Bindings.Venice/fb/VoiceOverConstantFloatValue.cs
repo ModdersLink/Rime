@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(8), LayoutImmutable, Blittable]
 		public float Value { get; set; }
 
-		public static void Deserialize(VoiceOverConstantFloatValue p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Value = p_Reader.ReadSingle();
-		}
-
 	}
 }

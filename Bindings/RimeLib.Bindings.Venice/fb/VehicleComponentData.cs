@@ -20,9 +20,5 @@ namespace fb
 	public class VehicleComponentData : 
 		ChassisComponentData
 	{
-		public static void Deserialize(VehicleComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

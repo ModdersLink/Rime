@@ -20,9 +20,5 @@ namespace fb
 	public class SocketObjectDataBase : 
 		DataContainer
 	{
-		public static void Deserialize(SocketObjectDataBase p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

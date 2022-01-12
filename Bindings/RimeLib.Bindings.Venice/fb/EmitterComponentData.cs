@@ -20,9 +20,5 @@ namespace fb
 	public class EmitterComponentData : 
 		DataContainer
 	{
-		public static void Deserialize(EmitterComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

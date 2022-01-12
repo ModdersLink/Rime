@@ -20,9 +20,5 @@ namespace fb
 	public class VeniceMissionObjectiveHudData : 
 		MissionObjectiveHudData
 	{
-		public static void Deserialize(VeniceMissionObjectiveHudData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

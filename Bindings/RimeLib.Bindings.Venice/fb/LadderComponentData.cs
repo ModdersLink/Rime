@@ -20,9 +20,5 @@ namespace fb
 	public class LadderComponentData : 
 		ComponentData
 	{
-		public static void Deserialize(LadderComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

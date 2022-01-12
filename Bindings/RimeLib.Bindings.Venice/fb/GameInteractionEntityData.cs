@@ -65,25 +65,5 @@ namespace fb
 		[ContainerField(181), LayoutImmutable, Blittable]
 		public bool ShowAsCapturePoint { get; set; }
 
-		public static void Deserialize(GameInteractionEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Blink = (BlinkType) p_Reader.ReadInt32();
-			p_Instance.CapturepointVerticalOffset = p_Reader.ReadSingle();
-			p_Instance.DelayBetweenUses = p_Reader.ReadSingle();
-			p_Instance.TeamId = (TeamId) p_Reader.ReadInt32();
-			p_Instance.InputAction = (EntryInputActionEnum) p_Reader.ReadInt32();
-			p_Instance.HoldToInteractTime = p_Reader.ReadSingle();
-			p_Instance.InteractionEntityType = (InteractionEntityType) p_Reader.ReadInt32();
-			p_Instance.InteractionSid = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.InteractingSid = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.FriendlyTextSid = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.NameSid = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.InteractionVerticalOffset = p_Reader.ReadSingle();
-			p_Instance.EnemyTextSid = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.ShrinkSnap = p_Reader.ReadBool();
-			p_Instance.ShowAsCapturePoint = p_Reader.ReadBool();
-			p_Reader.Seek(10, SeekOrigin.Current);
-		}
-
 	}
 }

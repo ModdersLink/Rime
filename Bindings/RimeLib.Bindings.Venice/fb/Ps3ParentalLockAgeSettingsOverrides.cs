@@ -23,19 +23,5 @@ namespace fb
 		[ContainerField(8)]
 		public List<Ps3ParentalLockAgeSettingsForCountry> Overrides { get; set; } = new();
 
-		public static void Deserialize(Ps3ParentalLockAgeSettingsOverrides p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Overrides.Clear();
-			(RimeReader Reader, uint Count) s_Overrides = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_Overrides.Count; ++i)
-			{
-				var s_Value = new Ps3ParentalLockAgeSettingsForCountry();
-				fb.Ps3ParentalLockAgeSettingsForCountry.Deserialize(s_Value, s_Overrides.Reader, p_Parser);
-				p_Instance.Overrides.Add(s_Value);
-			}
-			
-			s_Overrides.Reader.Dispose();
-		}
-
 	}
 }

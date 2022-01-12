@@ -44,18 +44,5 @@ namespace fb
 		[ContainerField(44), LayoutImmutable, Blittable]
 		public GUID SurveyMetricLink { get; set; }
 
-		public static void Deserialize(SurveyEvent p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.SurveyName = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.AnswerQuestion1 = p_Reader.ReadInt32();
-			p_Instance.AnswerQuestion2 = p_Reader.ReadInt32();
-			p_Instance.AnswerQuestion3 = p_Reader.ReadInt32();
-			p_Instance.AnswerQuestion4 = p_Reader.ReadInt32();
-			p_Instance.AnswerQuestion5 = p_Reader.ReadInt32();
-			p_Instance.FreeTextField = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.SurveyMetricLink = new GUID(p_Reader);
-			p_Reader.Seek(4, SeekOrigin.Current);
-		}
-
 	}
 }

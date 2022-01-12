@@ -29,13 +29,5 @@ namespace fb
 		[ContainerField(56), LayoutImmutable, Blittable]
 		public bool AlwaysClearEntitySpaceWhenInScenario { get; set; }
 
-		public static void Deserialize(CannedScenarioEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.CannedAnimationBinding.Deserialize(p_Instance.CannedAnimBinding, p_Reader, p_Parser);
-			p_Instance.AnimationEntitySpacePriority = p_Reader.ReadInt32();
-			p_Instance.AlwaysClearEntitySpaceWhenInScenario = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
-
 	}
 }

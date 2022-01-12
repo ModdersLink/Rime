@@ -29,12 +29,5 @@ namespace fb
 		[ContainerField(20)]
 		public CtrRef<MixerAsset> Mixer { get; set; } = new();
 
-		public static void Deserialize(MixerReceiveEntry p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AudioGraphNodePort.Deserialize(p_Instance.Out, p_Reader, p_Parser);
-			p_Instance.Source.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.Mixer.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-		}
-
 	}
 }

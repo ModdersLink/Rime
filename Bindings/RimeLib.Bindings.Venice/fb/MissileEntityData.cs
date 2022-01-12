@@ -92,34 +92,5 @@ namespace fb
 		[ContainerField(313), LayoutImmutable, Blittable]
 		public bool ApplyGravityWhenGuided { get; set; }
 
-		public static void Deserialize(MissileEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Gravity = p_Reader.ReadSingle();
-			p_Instance.EngineEffect.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.DudExplosion.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.FlyBySound.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.EngineStrength = p_Reader.ReadSingle();
-			p_Instance.MaxSpeed = p_Reader.ReadSingle();
-			p_Instance.EngineTimeToIgnition = p_Reader.ReadSingle();
-			p_Instance.EngineTimeToLive = p_Reader.ReadSingle();
-			p_Instance.TimeToActivateGuidingSystem = p_Reader.ReadSingle();
-			p_Instance.TimeToArm = p_Reader.ReadSingle();
-			p_Instance.MaxTurnAngle = p_Reader.ReadSingle();
-			p_Instance.Drag = p_Reader.ReadSingle();
-			fb.NearTargetDetonationData.Deserialize(p_Instance.NearTargetDetonation, p_Reader, p_Parser);
-			p_Instance.DefaultTeam = (TeamId) p_Reader.ReadInt32();
-			p_Instance.FlyBySoundRadius = p_Reader.ReadSingle();
-			p_Instance.FlyBySoundSpeed = p_Reader.ReadSingle();
-			p_Instance.ImpactImpulse = p_Reader.ReadSingle();
-			p_Instance.Damage = p_Reader.ReadSingle();
-			fb.MissileUnguidedData.Deserialize(p_Instance.UnguidedData, p_Reader, p_Parser);
-			p_Instance.WarnTarget = (WarnTarget) p_Reader.ReadInt32();
-			fb.MissileLockableInfoData.Deserialize(p_Instance.LockableInfo, p_Reader, p_Parser);
-			p_Instance.LockingController.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.WarnOnPointingMissile = p_Reader.ReadBool();
-			p_Instance.ApplyGravityWhenGuided = p_Reader.ReadBool();
-			p_Reader.Seek(6, SeekOrigin.Current);
-		}
-
 	}
 }

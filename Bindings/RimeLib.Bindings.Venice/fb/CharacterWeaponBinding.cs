@@ -22,9 +22,5 @@ namespace fb
 		[ContainerField(0)]
 		public AntRef WeaponId { get; set; } = new();
 		
-		public static void Deserialize(CharacterWeaponBinding p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AntRef.Deserialize(p_Instance.WeaponId, p_Reader, p_Parser);
-		}
 	}
 }

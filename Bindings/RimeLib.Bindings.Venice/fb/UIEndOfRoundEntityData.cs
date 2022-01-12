@@ -26,12 +26,5 @@ namespace fb
 		[ContainerField(100), LayoutImmutable, Blittable]
 		public float EorTime { get; set; }
 
-		public static void Deserialize(UIEndOfRoundEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.PreEorTime = p_Reader.ReadSingle();
-			p_Instance.EorTime = p_Reader.ReadSingle();
-			p_Reader.Seek(8, SeekOrigin.Current);
-		}
-
 	}
 }

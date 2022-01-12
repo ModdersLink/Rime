@@ -25,10 +25,5 @@ namespace fb
 		[ContainerField(4), LayoutImmutable, Blittable]
 		public int Value { get; set; }
 		
-		public static void Deserialize(DataSource p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Category.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.Value = p_Reader.ReadInt32();
-		}
 	}
 }

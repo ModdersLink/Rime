@@ -53,21 +53,5 @@ namespace fb
 		[ContainerField(68), LayoutImmutable, Blittable]
 		public GUID PerformanceLink { get; set; }
 
-		public static void Deserialize(PerformanceEvent p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.Vec3.Deserialize(p_Instance.Position, p_Reader, p_Parser);
-			p_Instance.FreeCPUMemory = p_Reader.ReadSingle();
-			p_Instance.CPUAverage = p_Reader.ReadSingle();
-			p_Instance.AllocCPUMemory = p_Reader.ReadSingle();
-			p_Instance.FreeGPUMemory = p_Reader.ReadSingle();
-			p_Instance.GPUAverage = p_Reader.ReadSingle();
-			p_Instance.DrawCallCount = p_Reader.ReadInt32();
-			p_Instance.PrimitiveCount = p_Reader.ReadInt32();
-			p_Instance.AllocGPUMemory = p_Reader.ReadSingle();
-			p_Instance.PerformanceLocation = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.PerformanceLink = new GUID(p_Reader);
-			p_Reader.Seek(12, SeekOrigin.Current);
-		}
-
 	}
 }

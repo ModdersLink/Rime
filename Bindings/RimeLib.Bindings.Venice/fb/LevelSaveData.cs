@@ -26,19 +26,5 @@ namespace fb
 		[ContainerField(12)]
 		public List<string> SaveNames { get; set; } = new();
 
-		public static void Deserialize(LevelSaveData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.SaveSize = p_Reader.ReadUInt32();
-			p_Instance.SaveNames.Clear();
-			(RimeReader Reader, uint Count) s_SaveNames = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_SaveNames.Count; ++i)
-			{
-				var s_Value = p_Parser.GetStringAtOffset(s_SaveNames.Reader.ReadUInt32());
-				p_Instance.SaveNames.Add(s_Value);
-			}
-			
-			s_SaveNames.Reader.Dispose();
-		}
-
 	}
 }

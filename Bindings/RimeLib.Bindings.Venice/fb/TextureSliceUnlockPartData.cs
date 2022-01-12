@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(8), LayoutImmutable, Blittable]
 		public int SliceIndex { get; set; }
 
-		public static void Deserialize(TextureSliceUnlockPartData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.SliceIndex = p_Reader.ReadInt32();
-		}
-
 	}
 }

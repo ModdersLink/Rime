@@ -122,44 +122,5 @@ namespace fb
 		[ContainerField(245), LayoutImmutable, Blittable]
 		public bool ClientSideOnly { get; set; }
 
-		public static void Deserialize(VegetationTreeEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.GroundImpactEffect.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.StemRipEffect.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.StemPhysicsWidth = p_Reader.ReadSingle();
-			p_Instance.ColiPlaneDepth = p_Reader.ReadSingle();
-			p_Instance.StemHitpoints = p_Reader.ReadSingle();
-			p_Instance.BranchHitpoints = p_Reader.ReadSingle();
-			p_Instance.BranchL2Hitpoints = p_Reader.ReadSingle();
-			p_Instance.StemStiffness = p_Reader.ReadSingle();
-			p_Instance.StemStiffnessSpread = p_Reader.ReadSingle();
-			p_Instance.BranchStiffness = p_Reader.ReadSingle();
-			p_Instance.BranchStiffnessL2 = p_Reader.ReadSingle();
-			p_Instance.StemBoneCount = p_Reader.ReadInt32();
-			p_Instance.WindStem = p_Reader.ReadSingle();
-			p_Instance.WindBranch = p_Reader.ReadSingle();
-			p_Instance.WindBranchL2 = p_Reader.ReadSingle();
-			p_Instance.TreeFallEffect.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.BreakableJointThreshold = p_Reader.ReadSingle();
-			p_Instance.FallDirectionEnd = p_Reader.ReadSingle();
-			p_Instance.LocalWindEffect.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.ImpactThreshold = p_Reader.ReadSingle();
-			p_Instance.CollisionImpactMultiplier = p_Reader.ReadSingle();
-			p_Instance.FallDirectionStart = p_Reader.ReadSingle();
-			p_Instance.SplashDistantEffect.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.BulletImpactEffect.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.PartsTimeToLive = p_Reader.ReadSingle();
-			p_Instance.ShadowLODOffset = p_Reader.ReadUInt32();
-			p_Instance.SplashNearEffect.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.CollisionEffect.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.ForceFullSim = p_Reader.ReadBool();
-			p_Instance.UseImpactThreshold = p_Reader.ReadBool();
-			p_Instance.UsePhysicsShapes = p_Reader.ReadBool();
-			p_Instance.ConstraintStemB1 = p_Reader.ReadBool();
-			p_Instance.ConstraintStemB2 = p_Reader.ReadBool();
-			p_Instance.ClientSideOnly = p_Reader.ReadBool();
-			p_Reader.Seek(10, SeekOrigin.Current);
-		}
-
 	}
 }

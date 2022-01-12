@@ -46,27 +46,5 @@ namespace fb
 		[ContainerField(32), LayoutImmutable, Blittable]
 		public bool DisableDefaultState { get; set; }
 		
-		public static void Deserialize(UIMinimapConfig p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.CombatAreaCameraDelay = p_Reader.ReadSingle();
-			p_Instance.CameraInterpolationTime = p_Reader.ReadSingle();
-			p_Instance.CombatAreaFadeSpeed = p_Reader.ReadSingle();
-			p_Instance.ZoomStates.Clear();
-			(RimeReader Reader, uint Count) s_ZoomStates = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_ZoomStates.Count; ++i)
-			{
-				var s_Value = new UIMinimapZoomConfig();
-				fb.UIMinimapZoomConfig.Deserialize(s_Value, s_ZoomStates.Reader, p_Parser);
-				p_Instance.ZoomStates.Add(s_Value);
-			}
-			
-			s_ZoomStates.Reader.Dispose();
-			p_Instance.CameraPanSensitivity = p_Reader.ReadSingle();
-			p_Instance.MinVelocity = p_Reader.ReadSingle();
-			p_Instance.MaxVelocity = p_Reader.ReadSingle();
-			p_Instance.VelocityModifier = p_Reader.ReadSingle();
-			p_Instance.DisableDefaultState = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
 	}
 }

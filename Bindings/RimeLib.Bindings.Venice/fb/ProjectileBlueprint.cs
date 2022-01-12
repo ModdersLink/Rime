@@ -20,9 +20,5 @@ namespace fb
 	public class ProjectileBlueprint : 
 		ObjectBlueprint
 	{
-		public static void Deserialize(ProjectileBlueprint p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

@@ -34,13 +34,5 @@ namespace fb
 		[ContainerField(16)]
 		public AntRef RagdollFullyBlendedIn { get; set; } = new();
 		
-		public static void Deserialize(RagdollBinding p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AntRef.Deserialize(p_Instance.RagdollOnBack, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.RagdollBlend, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.RagdollForceBlendDisabled, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.RagdollActiveTime, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.RagdollFullyBlendedIn, p_Reader, p_Parser);
-		}
 	}
 }

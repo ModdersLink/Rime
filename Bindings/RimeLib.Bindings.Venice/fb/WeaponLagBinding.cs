@@ -34,13 +34,5 @@ namespace fb
 		[ContainerField(16)]
 		public AntRef RollResult { get; set; } = new();
 		
-		public static void Deserialize(WeaponLagBinding p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AntRef.Deserialize(p_Instance.EntityPitch, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.EntityYaw, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.PitchResult, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.YawResult, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.RollResult, p_Reader, p_Parser);
-		}
 	}
 }

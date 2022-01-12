@@ -50,20 +50,5 @@ namespace fb
 		[ContainerField(193), LayoutImmutable, Blittable]
 		public bool TriggerOnLeaveOnDisable { get; set; }
 
-		public static void Deserialize(AreaTriggerEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.LinearTransform.Deserialize(p_Instance.GeometryTransform, p_Reader, p_Parser);
-			p_Instance.Include = (AreaTriggerInclude) p_Reader.ReadInt32();
-			p_Instance.InsideAreaEventRepeatTime = p_Reader.ReadSingle();
-			p_Instance.Radius = p_Reader.ReadSingle();
-			p_Instance.UseCharacterEntity = p_Reader.ReadBool();
-			p_Instance.OneInsideAreaEventPerSoldier = p_Reader.ReadBool();
-			p_Instance.TriggerOnlyOnLeave = p_Reader.ReadBool();
-			p_Instance.ResetOnEnable = p_Reader.ReadBool();
-			p_Instance.TriggerOnLeaveOnDeath = p_Reader.ReadBool();
-			p_Instance.TriggerOnLeaveOnDisable = p_Reader.ReadBool();
-			p_Reader.Seek(14, SeekOrigin.Current);
-		}
-
 	}
 }

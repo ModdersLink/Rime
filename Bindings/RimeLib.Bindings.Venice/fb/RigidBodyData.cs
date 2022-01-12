@@ -57,47 +57,7 @@ namespace fb
 		public CtrRef<FloatPhysicsData> FloatPhysics { get; set; } = new();
 
 		[ContainerField(76)]
-		public List<CtrRef<RigidBodyConstraintData>> Constraints { get; set; } = new();
-
-		public static void Deserialize(RigidBodyData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Reader.Seek(8, SeekOrigin.Current);
-			fb.Vec3.Deserialize(p_Instance.InertiaModifier, p_Reader, p_Parser);
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.RigidBodyType = (RigidBodyType) p_Reader.ReadInt32();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.Mass = p_Reader.ReadSingle();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.Restitution = p_Reader.ReadSingle();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.Friction = p_Reader.ReadSingle();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.AngularVelocityDamping = p_Reader.ReadSingle();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.LinearVelocityDamping = p_Reader.ReadSingle();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.InteractionToolkitCollisionVolumeId = p_Reader.ReadUInt32();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.MotionType = (RigidBodyMotionType) p_Reader.ReadInt32();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.QualityType = (RigidBodyQualityType) p_Reader.ReadInt32();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.CollisionLayer = (RigidBodyCollisionLayer) p_Reader.ReadInt32();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.FloatPhysics.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.Constraints.Clear();
-			(RimeReader Reader, uint Count) s_Constraints = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_Constraints.Count; ++i)
-			{
-				var s_CtrRef = new CtrRef<RigidBodyConstraintData>();
-				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_Constraints.Reader.ReadUInt32()));
-				p_Instance.Constraints.Add(s_CtrRef);
-			}
-			
-			s_Constraints.Reader.Dispose();
-			p_Reader.Seek(8, SeekOrigin.Current);
-		}
+		public RefArray<RigidBodyConstraintData> Constraints { get; set; } = new();
 
 	}
 }

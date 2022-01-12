@@ -20,9 +20,5 @@ namespace fb
 	public class BFAISystem : 
 		AISystemAsset
 	{
-		public static void Deserialize(BFAISystem p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

@@ -40,16 +40,5 @@ namespace fb
 		[ContainerField(24), LayoutImmutable, Blittable]
 		public bool IsServer { get; set; }
 		
-		public static void Deserialize(OnlineProviderConfiguration p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Platform = (GamePlatform) p_Reader.ReadInt32();
-			p_Instance.Client = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.ServiceName = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.SKU = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Version = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.ServerSocketPacketSize = p_Reader.ReadUInt32();
-			p_Instance.IsServer = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
 	}
 }

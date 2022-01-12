@@ -31,13 +31,5 @@ namespace fb
 		[ContainerField(24), LayoutImmutable, Blittable]
 		public float MaxClamp { get; set; }
 		
-		public static void Deserialize(PolynomialTempData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.Vec4.Deserialize(p_Instance.Coefficients, p_Reader, p_Parser);
-			p_Instance.ScaleValue = p_Reader.ReadSingle();
-			p_Instance.MinClamp = p_Reader.ReadSingle();
-			p_Instance.MaxClamp = p_Reader.ReadSingle();
-			p_Reader.Seek(4, SeekOrigin.Current);
-		}
 	}
 }

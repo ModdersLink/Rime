@@ -20,9 +20,5 @@ namespace fb
 	public class PresenceServiceData : 
 		Asset
 	{
-		public static void Deserialize(PresenceServiceData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

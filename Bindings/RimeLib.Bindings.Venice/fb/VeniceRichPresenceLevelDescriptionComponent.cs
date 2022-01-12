@@ -26,20 +26,5 @@ namespace fb
 		[ContainerField(12)]
 		public List<RichPresenceContextSetting> ContextValues { get; set; } = new();
 
-		public static void Deserialize(VeniceRichPresenceLevelDescriptionComponent p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.PresenceMode.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.ContextValues.Clear();
-			(RimeReader Reader, uint Count) s_ContextValues = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_ContextValues.Count; ++i)
-			{
-				var s_Value = new RichPresenceContextSetting();
-				fb.RichPresenceContextSetting.Deserialize(s_Value, s_ContextValues.Reader, p_Parser);
-				p_Instance.ContextValues.Add(s_Value);
-			}
-			
-			s_ContextValues.Reader.Dispose();
-		}
-
 	}
 }

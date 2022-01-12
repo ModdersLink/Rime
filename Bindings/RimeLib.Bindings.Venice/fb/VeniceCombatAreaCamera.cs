@@ -20,9 +20,5 @@ namespace fb
 	public class VeniceCombatAreaCamera : 
 		DataContainer
 	{
-		public static void Deserialize(VeniceCombatAreaCamera p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

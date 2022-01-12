@@ -20,9 +20,5 @@ namespace fb
 	public class TerrainMeshScatteringType : 
 		DataContainer
 	{
-		public static void Deserialize(TerrainMeshScatteringType p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

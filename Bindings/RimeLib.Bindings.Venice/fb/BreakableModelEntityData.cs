@@ -35,15 +35,5 @@ namespace fb
 		[ContainerField(128)]
 		public CtrRef<EdgeModelLightMapData> EdgeModelLightMapData { get; set; } = new();
 
-		public static void Deserialize(BreakableModelEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.DecalVolumeShader.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.DecalVolumeScaleFactor = p_Reader.ReadSingle();
-			p_Instance.Mesh.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.BoneCount = p_Reader.ReadUInt32();
-			p_Instance.EdgeModelLightMapData.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Reader.Seek(12, SeekOrigin.Current);
-		}
-
 	}
 }

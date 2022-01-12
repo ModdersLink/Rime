@@ -26,11 +26,5 @@ namespace fb
 		[ContainerField(16), LayoutImmutable, Blittable]
 		public float Min { get; set; }
 
-		public static void Deserialize(RandomEvaluatorData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Max = p_Reader.ReadSingle();
-			p_Instance.Min = p_Reader.ReadSingle();
-		}
-
 	}
 }

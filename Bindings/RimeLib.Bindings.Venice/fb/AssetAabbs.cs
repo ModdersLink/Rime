@@ -22,18 +22,5 @@ namespace fb
 		[ContainerField(0)]
 		public List<AxisAlignedBox> PartAabb { get; set; } = new();
 		
-		public static void Deserialize(AssetAabbs p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.PartAabb.Clear();
-			(RimeReader Reader, uint Count) s_PartAabb = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_PartAabb.Count; ++i)
-			{
-				var s_Value = new AxisAlignedBox();
-				fb.AxisAlignedBox.Deserialize(s_Value, s_PartAabb.Reader, p_Parser);
-				p_Instance.PartAabb.Add(s_Value);
-			}
-			
-			s_PartAabb.Reader.Dispose();
-		}
 	}
 }

@@ -37,15 +37,5 @@ namespace fb
 		[ContainerField(20), LayoutImmutable, Blittable]
 		public bool Enabled { get; set; }
 		
-		public static void Deserialize(AngleOfImpactData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Zone12Delimiter = p_Reader.ReadSingle();
-			p_Instance.Zone23Delimiter = p_Reader.ReadSingle();
-			p_Instance.Zone1Multiplier = p_Reader.ReadSingle();
-			p_Instance.Zone2Multiplier = p_Reader.ReadSingle();
-			p_Instance.Zone3Multiplier = p_Reader.ReadSingle();
-			p_Instance.Enabled = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
 	}
 }

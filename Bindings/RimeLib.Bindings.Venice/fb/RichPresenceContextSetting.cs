@@ -25,10 +25,5 @@ namespace fb
 		[ContainerField(4)]
 		public CtrRef<RichPresenceContextValue> Value { get; set; } = new();
 		
-		public static void Deserialize(RichPresenceContextSetting p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Context.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.Value.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-		}
 	}
 }

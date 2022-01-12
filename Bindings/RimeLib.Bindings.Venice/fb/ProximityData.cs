@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(8)]
 		public ProximityObjectType ProximityType { get; set; } = new();
 
-		public static void Deserialize(ProximityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.ProximityType = (ProximityObjectType) p_Reader.ReadInt32();
-		}
-
 	}
 }

@@ -20,9 +20,5 @@ namespace fb
 	public class HudCapturePointTrackerData : 
 		HudTrackerData
 	{
-		public static void Deserialize(HudCapturePointTrackerData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

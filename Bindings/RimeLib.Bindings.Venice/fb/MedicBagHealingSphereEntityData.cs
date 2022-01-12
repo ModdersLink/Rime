@@ -23,11 +23,5 @@ namespace fb
 		[ContainerField(256)]
 		public HealingSphereData Healer { get; set; } = new();
 
-		public static void Deserialize(MedicBagHealingSphereEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.HealingSphereData.Deserialize(p_Instance.Healer, p_Reader, p_Parser);
-			p_Reader.Seek(8, SeekOrigin.Current);
-		}
-
 	}
 }

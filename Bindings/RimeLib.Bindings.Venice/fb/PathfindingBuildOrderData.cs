@@ -20,9 +20,5 @@ namespace fb
 	public class PathfindingBuildOrderData : 
 		VolumeVectorShapeData
 	{
-		public static void Deserialize(PathfindingBuildOrderData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

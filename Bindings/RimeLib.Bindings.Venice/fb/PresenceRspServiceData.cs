@@ -20,9 +20,5 @@ namespace fb
 	public class PresenceRspServiceData : 
 		PresenceServiceData
 	{
-		public static void Deserialize(PresenceRspServiceData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

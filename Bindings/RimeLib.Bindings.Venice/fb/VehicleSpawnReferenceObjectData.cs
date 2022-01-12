@@ -71,27 +71,5 @@ namespace fb
 		[ContainerField(496), LayoutImmutable, Blittable]
 		public bool AffectedByImpulse { get; set; }
 
-		public static void Deserialize(VehicleSpawnReferenceObjectData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.LinearTransform.Deserialize(p_Instance.AirDropCarrierTransform, p_Reader, p_Parser);
-			p_Instance.TimeUntilAbandoned = p_Reader.ReadSingle();
-			p_Instance.TimeUntilAbandonedIsDestroyed = p_Reader.ReadSingle();
-			p_Instance.EnterRestriction = (EntryEnterRestriction) p_Reader.ReadInt32();
-			p_Instance.BotBailWhenHealthBelow = p_Reader.ReadSingle();
-			p_Instance.BotBailOutDelay = p_Reader.ReadSingle();
-			p_Instance.WreckDuration = p_Reader.ReadSingle();
-			p_Instance.RespawnRange = p_Reader.ReadSingle();
-			p_Instance.ActiveStanceEntryIndex = p_Reader.ReadInt32();
-			p_Instance.ActiveStance = p_Reader.ReadInt32();
-			p_Instance.KeepAliveRadius = p_Reader.ReadSingle();
-			p_Instance.VehicleIsNearDistance = p_Reader.ReadSingle();
-			p_Instance.SetTeamOnSpawn = p_Reader.ReadBool();
-			p_Instance.ApplyDamageToAbandonedVehicles = p_Reader.ReadBool();
-			p_Instance.EnableAvailableSeatOutput = p_Reader.ReadBool();
-			p_Instance.DisregardSpawnAllowedSetting = p_Reader.ReadBool();
-			p_Instance.AffectedByImpulse = p_Reader.ReadBool();
-			p_Reader.Seek(15, SeekOrigin.Current);
-		}
-
 	}
 }

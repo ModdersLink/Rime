@@ -38,15 +38,5 @@ namespace fb
 		[ContainerField(48), LayoutImmutable, Blittable]
 		public float ShuffleAnimationDelay { get; set; }
 
-		public static void Deserialize(AimingConstraintEntityCommonData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AimingConstraintEntityBinding.Deserialize(p_Instance.AimingConstraintsBinding, p_Reader, p_Parser);
-			fb.AimingConstraintsData.Deserialize(p_Instance.AimingConstraints, p_Reader, p_Parser);
-			p_Instance.DisableAimingConstraintsDelay = p_Reader.ReadSingle();
-			p_Instance.ConstraintMoveSpeedMultiplier = p_Reader.ReadSingle();
-			p_Instance.ShuffleAnimationThreshold = p_Reader.ReadSingle();
-			p_Instance.ShuffleAnimationDelay = p_Reader.ReadSingle();
-		}
-
 	}
 }

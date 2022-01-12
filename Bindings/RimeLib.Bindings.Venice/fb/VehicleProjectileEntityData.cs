@@ -44,18 +44,5 @@ namespace fb
 		[ContainerField(179), LayoutImmutable, Blittable]
 		public bool DeployInsideNeutralCombatAreaOnly { get; set; }
 
-		public static void Deserialize(VehicleProjectileEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Vehicle.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.EnterDelay = p_Reader.ReadSingle();
-			p_Instance.NoVehicleCollisionTime = p_Reader.ReadSingle();
-			p_Instance.AlignWithGroundRayLength = p_Reader.ReadSingle();
-			p_Instance.AutoEnter = p_Reader.ReadBool();
-			p_Instance.AlignWithGround = p_Reader.ReadBool();
-			p_Instance.CheckGroundWhenSpawned = p_Reader.ReadBool();
-			p_Instance.DeployInsideNeutralCombatAreaOnly = p_Reader.ReadBool();
-			p_Reader.Seek(12, SeekOrigin.Current);
-		}
-
 	}
 }

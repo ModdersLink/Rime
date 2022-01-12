@@ -62,24 +62,5 @@ namespace fb
 		[ContainerField(470), LayoutImmutable, Blittable]
 		public bool UnlimitedMags { get; set; }
 
-		public static void Deserialize(SoldierWeaponsComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.LinearTransform.Deserialize(p_Instance.AimDir, p_Reader, p_Parser);
-			p_Instance.WeaponSkeleton.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.PrimaryWeaponId = p_Reader.ReadInt32();
-			fb.AnimatedWeaponBinding.Deserialize(p_Instance.AnimatedWeaponBinding, p_Reader, p_Parser);
-			fb.Animated1pOnlyWeaponBinding.Deserialize(p_Instance.Animated1pOnlyWeaponBinding, p_Reader, p_Parser);
-			fb.Animated3pOnlyWeaponBinding.Deserialize(p_Instance.Animated3pOnlyWeaponBinding, p_Reader, p_Parser);
-			p_Instance.LockTimeMultiplier = p_Reader.ReadSingle();
-			p_Instance.GrenadeIncrease = p_Reader.ReadInt32();
-			p_Instance.AmmoClipIncreaseMultiplier = p_Reader.ReadSingle();
-			p_Instance.ExplosiveIncreaseMultiplier = p_Reader.ReadSingle();
-			p_Instance.UnderslungGrenadeIncrease = p_Reader.ReadInt32();
-			p_Instance.UseExternalAimDir = p_Reader.ReadBool();
-			p_Instance.UnlimitedAmmo = p_Reader.ReadBool();
-			p_Instance.UnlimitedMags = p_Reader.ReadBool();
-			p_Reader.Seek(9, SeekOrigin.Current);
-		}
-
 	}
 }

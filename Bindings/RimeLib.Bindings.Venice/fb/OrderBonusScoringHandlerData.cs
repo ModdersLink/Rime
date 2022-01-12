@@ -20,9 +20,5 @@ namespace fb
 	public class OrderBonusScoringHandlerData : 
 		ScoringHandlerData
 	{
-		public static void Deserialize(OrderBonusScoringHandlerData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

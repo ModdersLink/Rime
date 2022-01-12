@@ -32,14 +32,5 @@ namespace fb
 		[ContainerField(17), LayoutImmutable, Blittable]
 		public bool ReportWhenFinished { get; set; }
 
-		public static void Deserialize(SoldierMovementSequenceData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.RecordedInput.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.InputRecordingIndex = p_Reader.ReadInt32();
-			p_Instance.IgnoreRecordingIndexFilter = p_Reader.ReadBool();
-			p_Instance.ReportWhenFinished = p_Reader.ReadBool();
-			p_Reader.Seek(2, SeekOrigin.Current);
-		}
-
 	}
 }

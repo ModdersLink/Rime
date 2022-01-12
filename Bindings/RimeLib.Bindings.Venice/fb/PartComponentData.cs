@@ -21,10 +21,10 @@ namespace fb
 		ComponentData
 	{
 		[ContainerField(96)]
-		public List<CtrRef<HealthStateData>> HealthStates { get; set; } = new();
+		public RefArray<HealthStateData> HealthStates { get; set; } = new();
 
 		[ContainerField(100)]
-		public List<CtrRef<PartLinkData>> PartLinks { get; set; } = new();
+		public RefArray<PartLinkData> PartLinks { get; set; } = new();
 
 		[ContainerField(104), LayoutImmutable, Blittable]
 		public bool IsSupported { get; set; }
@@ -40,36 +40,6 @@ namespace fb
 
 		[ContainerField(108), LayoutImmutable, Blittable]
 		public bool AnimatePhysics { get; set; }
-
-		public static void Deserialize(PartComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.HealthStates.Clear();
-			(RimeReader Reader, uint Count) s_HealthStates = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_HealthStates.Count; ++i)
-			{
-				var s_CtrRef = new CtrRef<HealthStateData>();
-				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_HealthStates.Reader.ReadUInt32()));
-				p_Instance.HealthStates.Add(s_CtrRef);
-			}
-			
-			s_HealthStates.Reader.Dispose();
-			p_Instance.PartLinks.Clear();
-			(RimeReader Reader, uint Count) s_PartLinks = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_PartLinks.Count; ++i)
-			{
-				var s_CtrRef = new CtrRef<PartLinkData>();
-				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_PartLinks.Reader.ReadUInt32()));
-				p_Instance.PartLinks.Add(s_CtrRef);
-			}
-			
-			s_PartLinks.Reader.Dispose();
-			p_Instance.IsSupported = p_Reader.ReadBool();
-			p_Instance.IsFragile = p_Reader.ReadBool();
-			p_Instance.IsNetworkable = p_Reader.ReadBool();
-			p_Instance.IsWindow = p_Reader.ReadBool();
-			p_Instance.AnimatePhysics = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
 
 	}
 }

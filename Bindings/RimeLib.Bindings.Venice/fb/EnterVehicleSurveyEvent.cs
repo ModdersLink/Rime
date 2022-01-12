@@ -26,12 +26,5 @@ namespace fb
 		[ContainerField(20), LayoutImmutable, Blittable]
 		public GUID SurveyMetricLink { get; set; }
 
-		public static void Deserialize(EnterVehicleSurveyEvent p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.VehicleName = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.SurveyMetricLink = new GUID(p_Reader);
-			p_Reader.Seek(4, SeekOrigin.Current);
-		}
-
 	}
 }

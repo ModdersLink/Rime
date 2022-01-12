@@ -21,21 +21,7 @@ namespace fb
 		PhysicsMaterialRelationPropertyData
 	{
 		[ContainerField(8)]
-		public List<CtrRef<EffectBlueprint>> ImpactEffects { get; set; } = new();
-
-		public static void Deserialize(MaterialPropertyEffectData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.ImpactEffects.Clear();
-			(RimeReader Reader, uint Count) s_ImpactEffects = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_ImpactEffects.Count; ++i)
-			{
-				var s_CtrRef = new CtrRef<EffectBlueprint>();
-				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_ImpactEffects.Reader.ReadUInt32()));
-				p_Instance.ImpactEffects.Add(s_CtrRef);
-			}
-			
-			s_ImpactEffects.Reader.Dispose();
-		}
+		public RefArray<EffectBlueprint> ImpactEffects { get; set; } = new();
 
 	}
 }

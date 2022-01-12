@@ -34,49 +34,5 @@ namespace fb
 		[ContainerField(16)]
 		public List<TextureShaderParameter> TextureParameters { get; set; } = new();
 		
-		public static void Deserialize(SurfaceShaderInstanceDataStruct p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Shader.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.BoolParameters.Clear();
-			(RimeReader Reader, uint Count) s_BoolParameters = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_BoolParameters.Count; ++i)
-			{
-				var s_Value = new BoolShaderParameter();
-				fb.BoolShaderParameter.Deserialize(s_Value, s_BoolParameters.Reader, p_Parser);
-				p_Instance.BoolParameters.Add(s_Value);
-			}
-			
-			s_BoolParameters.Reader.Dispose();
-			p_Instance.VectorParameters.Clear();
-			(RimeReader Reader, uint Count) s_VectorParameters = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_VectorParameters.Count; ++i)
-			{
-				var s_Value = new VectorShaderParameter();
-				fb.VectorShaderParameter.Deserialize(s_Value, s_VectorParameters.Reader, p_Parser);
-				p_Instance.VectorParameters.Add(s_Value);
-			}
-			
-			s_VectorParameters.Reader.Dispose();
-			p_Instance.VectorArrayParameters.Clear();
-			(RimeReader Reader, uint Count) s_VectorArrayParameters = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_VectorArrayParameters.Count; ++i)
-			{
-				var s_Value = new VectorArrayShaderParameter();
-				fb.VectorArrayShaderParameter.Deserialize(s_Value, s_VectorArrayParameters.Reader, p_Parser);
-				p_Instance.VectorArrayParameters.Add(s_Value);
-			}
-			
-			s_VectorArrayParameters.Reader.Dispose();
-			p_Instance.TextureParameters.Clear();
-			(RimeReader Reader, uint Count) s_TextureParameters = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_TextureParameters.Count; ++i)
-			{
-				var s_Value = new TextureShaderParameter();
-				fb.TextureShaderParameter.Deserialize(s_Value, s_TextureParameters.Reader, p_Parser);
-				p_Instance.TextureParameters.Add(s_Value);
-			}
-			
-			s_TextureParameters.Reader.Dispose();
-		}
 	}
 }

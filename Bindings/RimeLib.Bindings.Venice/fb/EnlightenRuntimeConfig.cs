@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(12), LayoutImmutable, Blittable]
 		public uint JobCount { get; set; }
 
-		public static void Deserialize(EnlightenRuntimeConfig p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.JobCount = p_Reader.ReadUInt32();
-		}
-
 	}
 }

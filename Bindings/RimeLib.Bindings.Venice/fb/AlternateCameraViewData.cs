@@ -74,46 +74,5 @@ namespace fb
 		[ContainerField(145), LayoutImmutable, Blittable]
 		public bool FadeToBlack { get; set; }
 
-		public static void Deserialize(AlternateCameraViewData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Reader.Seek(8, SeekOrigin.Current);
-			fb.Vec3.Deserialize(p_Instance.MeshOffset, p_Reader, p_Parser);
-			p_Reader.Seek(8, SeekOrigin.Current);
-			fb.HudData.Deserialize(p_Instance.Hud, p_Reader, p_Parser);
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.FieldOfView = p_Reader.ReadSingle();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.WorldSpaceLockEfficiency = p_Reader.ReadSingle();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.Mesh.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.MaskMeshBlueprint.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.FadeInDuration = p_Reader.ReadSingle();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.FovTransitionTime = p_Reader.ReadSingle();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.BlackDuration = p_Reader.ReadSingle();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			fb.InputSuppressionData.Deserialize(p_Instance.InputSuppression, p_Reader, p_Parser);
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.ScreenExposureAreaScale = p_Reader.ReadSingle();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.FadeOutDuration = p_Reader.ReadSingle();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.AllowFieldOfViewScaling = p_Reader.ReadBool();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.LockMeshToRenderView = p_Reader.ReadBool();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.ToggleViewChange = p_Reader.ReadBool();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.UseProfileOptionForToggleViewChange = p_Reader.ReadBool();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.FLIREnabled = p_Reader.ReadBool();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.FadeToBlack = p_Reader.ReadBool();
-			p_Reader.Seek(22, SeekOrigin.Current);
-		}
-
 	}
 }

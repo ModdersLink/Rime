@@ -20,9 +20,5 @@ namespace fb
 	public class UIManageServerPresetsCompData : 
 		UIComponentData
 	{
-		public static void Deserialize(UIManageServerPresetsCompData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

@@ -29,12 +29,5 @@ namespace fb
 		[ContainerField(20), LayoutImmutable, Blittable]
 		public float DefaultSearchAndDestroyRadius { get; set; }
 
-		public static void Deserialize(SearchAndDestroyConstantData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.TimeToWaitMin = p_Reader.ReadSingle();
-			p_Instance.TimeToWaitMax = p_Reader.ReadSingle();
-			p_Instance.DefaultSearchAndDestroyRadius = p_Reader.ReadSingle();
-		}
-
 	}
 }

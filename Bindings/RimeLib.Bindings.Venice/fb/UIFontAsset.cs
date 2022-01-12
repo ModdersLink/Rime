@@ -41,24 +41,5 @@ namespace fb
 		[ContainerField(27), LayoutImmutable, Blittable]
 		public bool CompleteTraditionalChinese { get; set; }
 
-		public static void Deserialize(UIFontAsset p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.SourceFile = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.TextDatabase.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.ScaleformFontName.Clear();
-			(RimeReader Reader, uint Count) s_ScaleformFontName = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_ScaleformFontName.Count; ++i)
-			{
-				var s_Value = p_Parser.GetStringAtOffset(s_ScaleformFontName.Reader.ReadUInt32());
-				p_Instance.ScaleformFontName.Add(s_Value);
-			}
-			
-			s_ScaleformFontName.Reader.Dispose();
-			p_Instance.NumericsOnly = p_Reader.ReadBool();
-			p_Instance.CompleteKorean = p_Reader.ReadBool();
-			p_Instance.CompleteJapanese = p_Reader.ReadBool();
-			p_Instance.CompleteTraditionalChinese = p_Reader.ReadBool();
-		}
-
 	}
 }

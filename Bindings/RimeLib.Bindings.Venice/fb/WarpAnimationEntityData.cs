@@ -41,24 +41,5 @@ namespace fb
 		[ContainerField(110), LayoutImmutable, Blittable]
 		public bool ExternalConnectTransform { get; set; }
 
-		public static void Deserialize(WarpAnimationEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Reader.Seek(4, SeekOrigin.Current);
-			fb.LinearTransform.Deserialize(p_Instance.ConnectTransform, p_Reader, p_Parser);
-			p_Reader.Seek(4, SeekOrigin.Current);
-			p_Instance.AnimationEntitySpacePriority = p_Reader.ReadInt32();
-			p_Reader.Seek(4, SeekOrigin.Current);
-			fb.WarpAnimationBinding.Deserialize(p_Instance.WarpBinding, p_Reader, p_Parser);
-			p_Reader.Seek(4, SeekOrigin.Current);
-			p_Instance.BoneToAlign = (GameplayBones) p_Reader.ReadInt32();
-			p_Reader.Seek(4, SeekOrigin.Current);
-			p_Instance.ForceAnimationTransform = p_Reader.ReadBool();
-			p_Reader.Seek(4, SeekOrigin.Current);
-			p_Instance.RequireAnimationWeight = p_Reader.ReadBool();
-			p_Reader.Seek(4, SeekOrigin.Current);
-			p_Instance.ExternalConnectTransform = p_Reader.ReadBool();
-			p_Reader.Seek(5, SeekOrigin.Current);
-		}
-
 	}
 }

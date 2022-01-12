@@ -38,16 +38,5 @@ namespace fb
 		[ContainerField(189), LayoutImmutable, Blittable]
 		public bool IsAttachable { get; set; }
 
-		public static void Deserialize(MeshProjectileEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.Vec3.Deserialize(p_Instance.InitialAngularVelocity, p_Reader, p_Parser);
-			p_Instance.TrailEffect.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.Mesh.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.MaxAttachableInclination = p_Reader.ReadSingle();
-			p_Instance.ExtraDamping = p_Reader.ReadBool();
-			p_Instance.IsAttachable = p_Reader.ReadBool();
-			p_Reader.Seek(2, SeekOrigin.Current);
-		}
-
 	}
 }

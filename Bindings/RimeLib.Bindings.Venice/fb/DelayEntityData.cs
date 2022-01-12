@@ -35,15 +35,5 @@ namespace fb
 		[ContainerField(22), LayoutImmutable, Blittable]
 		public bool RemoveDuplicateEvents { get; set; }
 
-		public static void Deserialize(DelayEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Delay = p_Reader.ReadSingle();
-			p_Instance.Realm = (Realm) p_Reader.ReadInt32();
-			p_Instance.AutoStart = p_Reader.ReadBool();
-			p_Instance.RunOnce = p_Reader.ReadBool();
-			p_Instance.RemoveDuplicateEvents = p_Reader.ReadBool();
-			p_Reader.Seek(1, SeekOrigin.Current);
-		}
-
 	}
 }

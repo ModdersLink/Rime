@@ -47,18 +47,5 @@ namespace fb
 		[ContainerField(76)]
 		public CtrRef<AIVehicleBehaviourData> DefaultVehicleType { get; set; } = new();
 
-		public static void Deserialize(AISettingsData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.SoundEnvironmentConstants.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.CoverConstants.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.DecisionConstants.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.PositionEvaluationConstants.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.TimingConstants.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.DebugConstants.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			fb.ReadinessLevels.Deserialize(p_Instance.ReadinessLevels, p_Reader, p_Parser);
-			p_Instance.DefaultBehaviourTemplate.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.DefaultVehicleType.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-		}
-
 	}
 }

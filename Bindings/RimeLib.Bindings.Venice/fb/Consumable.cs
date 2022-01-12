@@ -25,10 +25,5 @@ namespace fb
 		[ContainerField(16)]
 		public ConsumableGroup Group { get; set; } = new();
 		
-		public static void Deserialize(Consumable p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Instance = new GUID(p_Reader);
-			p_Instance.Group = (ConsumableGroup) p_Reader.ReadInt32();
-		}
 	}
 }

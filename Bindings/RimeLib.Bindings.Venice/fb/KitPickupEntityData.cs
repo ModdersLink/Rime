@@ -26,12 +26,5 @@ namespace fb
 		[ContainerField(177), LayoutImmutable, Blittable]
 		public bool KeepAmmoState { get; set; }
 
-		public static void Deserialize(KitPickupEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.KeepAdditionalWeapons = p_Reader.ReadBool();
-			p_Instance.KeepAmmoState = p_Reader.ReadBool();
-			p_Reader.Seek(14, SeekOrigin.Current);
-		}
-
 	}
 }

@@ -50,20 +50,5 @@ namespace fb
 		[ContainerField(150), LayoutImmutable, Blittable]
 		public bool CharacterLightEnable { get; set; }
 
-		public static void Deserialize(CharacterLightingComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.Vec3.Deserialize(p_Instance.BottomLight, p_Reader, p_Parser);
-			fb.Vec3.Deserialize(p_Instance.TopLight, p_Reader, p_Parser);
-			p_Instance.CharacterLightingMode = (CharacterLightingMode) p_Reader.ReadInt32();
-			p_Instance.CameraUpRotation = p_Reader.ReadSingle();
-			p_Instance.TopLightDirY = p_Reader.ReadSingle();
-			p_Instance.BlendFactor = p_Reader.ReadSingle();
-			p_Instance.TopLightDirX = p_Reader.ReadSingle();
-			p_Instance.LockToCameraDirection = p_Reader.ReadBool();
-			p_Instance.FirstPersonEnable = p_Reader.ReadBool();
-			p_Instance.CharacterLightEnable = p_Reader.ReadBool();
-			p_Reader.Seek(9, SeekOrigin.Current);
-		}
-
 	}
 }

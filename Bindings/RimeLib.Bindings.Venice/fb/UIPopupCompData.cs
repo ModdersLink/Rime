@@ -20,9 +20,5 @@ namespace fb
 	public class UIPopupCompData : 
 		UIComponentData
 	{
-		public static void Deserialize(UIPopupCompData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

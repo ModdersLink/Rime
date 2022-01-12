@@ -82,30 +82,5 @@ namespace fb
 		[ContainerField(68), LayoutImmutable, Blittable]
 		public bool CrashOnFatalErrors { get; set; }
 		
-		public static void Deserialize(CoreSettings p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.RandomTickSeed = p_Reader.ReadInt32();
-			p_Instance.AvailableLanguages = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.RandomSessionId = p_Reader.ReadInt32();
-			p_Instance.RandomTimeSeed = p_Reader.ReadInt32();
-			p_Instance.HardwareGpuBias = p_Reader.ReadSingle();
-			p_Instance.HardwareProfile = (HardwareProfile) p_Reader.ReadInt32();
-			p_Instance.JobProcessorCount = p_Reader.ReadInt32();
-			p_Instance.MaxJobThreadCount = p_Reader.ReadInt32();
-			p_Instance.Host = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.HostUser = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.HostUserDomain = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.InitSeed = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.LogLevel = (CoreLogLevel) p_Reader.ReadInt32();
-			p_Instance.HardwareCpuBias = p_Reader.ReadSingle();
-			p_Instance.GameConfigurationName = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.ProfileDirectoryName = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.DisplayAsserts = p_Reader.ReadBool();
-			p_Instance.LiveEditingEnable = p_Reader.ReadBool();
-			p_Instance.UseStorageServer = p_Reader.ReadBool();
-			p_Instance.UseDiskCaching = p_Reader.ReadBool();
-			p_Instance.CrashOnFatalErrors = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
 	}
 }

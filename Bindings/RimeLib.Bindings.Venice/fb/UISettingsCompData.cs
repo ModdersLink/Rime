@@ -23,19 +23,5 @@ namespace fb
 		[ContainerField(28)]
 		public List<UISettingsPage> SettingsPages { get; set; } = new();
 
-		public static void Deserialize(UISettingsCompData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.SettingsPages.Clear();
-			(RimeReader Reader, uint Count) s_SettingsPages = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_SettingsPages.Count; ++i)
-			{
-				var s_Value = new UISettingsPage();
-				fb.UISettingsPage.Deserialize(s_Value, s_SettingsPages.Reader, p_Parser);
-				p_Instance.SettingsPages.Add(s_Value);
-			}
-			
-			s_SettingsPages.Reader.Dispose();
-		}
-
 	}
 }

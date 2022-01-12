@@ -23,19 +23,5 @@ namespace fb
 		[ContainerField(96)]
 		public List<string> BundleNames { get; set; } = new();
 
-		public static void Deserialize(BlueprintBundleStateLogicEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.BundleNames.Clear();
-			(RimeReader Reader, uint Count) s_BundleNames = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_BundleNames.Count; ++i)
-			{
-				var s_Value = p_Parser.GetStringAtOffset(s_BundleNames.Reader.ReadUInt32());
-				p_Instance.BundleNames.Add(s_Value);
-			}
-			
-			s_BundleNames.Reader.Dispose();
-			p_Reader.Seek(12, SeekOrigin.Current);
-		}
-
 	}
 }

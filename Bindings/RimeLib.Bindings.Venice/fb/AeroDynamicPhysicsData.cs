@@ -32,18 +32,5 @@ namespace fb
 		[ContainerField(64), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 BodyDragOffsetXY { get; set; } = new();
 
-		public static void Deserialize(AeroDynamicPhysicsData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Reader.Seek(8, SeekOrigin.Current);
-			fb.Vec3.Deserialize(p_Instance.BodyDrag, p_Reader, p_Parser);
-			p_Reader.Seek(8, SeekOrigin.Current);
-			fb.Vec3.Deserialize(p_Instance.BodyDragOffsetYZ, p_Reader, p_Parser);
-			p_Reader.Seek(8, SeekOrigin.Current);
-			fb.Vec3.Deserialize(p_Instance.BodyDragOffsetXZ, p_Reader, p_Parser);
-			p_Reader.Seek(8, SeekOrigin.Current);
-			fb.Vec3.Deserialize(p_Instance.BodyDragOffsetXY, p_Reader, p_Parser);
-			p_Reader.Seek(8, SeekOrigin.Current);
-		}
-
 	}
 }

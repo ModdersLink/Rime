@@ -41,22 +41,5 @@ namespace fb
 		[ContainerField(192), LayoutImmutable, Blittable]
 		public float ZoomForceModifier { get; set; }
 
-		public static void Deserialize(WeaponLagSpringEffectData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.WeaponLagEffectSpringVector.Deserialize(p_Instance.OffsetSprings, p_Reader, p_Parser);
-			fb.WeaponLagEffectSpringVector.Deserialize(p_Instance.RotationSprings, p_Reader, p_Parser);
-			p_Reader.Seek(8, SeekOrigin.Current);
-			fb.WeaponLagEffectForceData.Deserialize(p_Instance.JumpForces, p_Reader, p_Parser);
-			p_Reader.Seek(8, SeekOrigin.Current);
-			fb.WeaponLagEffectForceData.Deserialize(p_Instance.LandForces, p_Reader, p_Parser);
-			p_Reader.Seek(8, SeekOrigin.Current);
-			fb.WeaponLagEffectForceData.Deserialize(p_Instance.PoseUpForces, p_Reader, p_Parser);
-			p_Reader.Seek(8, SeekOrigin.Current);
-			fb.WeaponLagEffectForceData.Deserialize(p_Instance.PoseDownForces, p_Reader, p_Parser);
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.ZoomForceModifier = p_Reader.ReadSingle();
-			p_Reader.Seek(20, SeekOrigin.Current);
-		}
-
 	}
 }

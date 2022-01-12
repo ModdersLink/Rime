@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(8)]
 		public WeaponClassEnum WeaponClass { get; set; } = new();
 
-		public static void Deserialize(WeaponClassModifier p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.WeaponClass = (WeaponClassEnum) p_Reader.ReadInt32();
-		}
-
 	}
 }

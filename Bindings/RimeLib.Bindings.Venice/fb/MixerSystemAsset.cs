@@ -21,21 +21,7 @@ namespace fb
 		Asset
 	{
 		[ContainerField(12)]
-		public List<CtrRef<MixGroup>> Groups { get; set; } = new();
-
-		public static void Deserialize(MixerSystemAsset p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Groups.Clear();
-			(RimeReader Reader, uint Count) s_Groups = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_Groups.Count; ++i)
-			{
-				var s_CtrRef = new CtrRef<MixGroup>();
-				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_Groups.Reader.ReadUInt32()));
-				p_Instance.Groups.Add(s_CtrRef);
-			}
-			
-			s_Groups.Reader.Dispose();
-		}
+		public RefArray<MixGroup> Groups { get; set; } = new();
 
 	}
 }

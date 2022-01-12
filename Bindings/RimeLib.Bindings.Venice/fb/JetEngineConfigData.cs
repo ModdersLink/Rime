@@ -44,18 +44,5 @@ namespace fb
 		[ContainerField(125), LayoutImmutable, Blittable]
 		public bool IsTurnable { get; set; }
 
-		public static void Deserialize(JetEngineConfigData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.Vec2.Deserialize(p_Instance.PowerFadeOutRange, p_Reader, p_Parser);
-			p_Instance.ForceMagnitudeMultiplier = p_Reader.ReadSingle();
-			p_Instance.AngleInputYMultiplier = p_Reader.ReadSingle();
-			p_Instance.AngleInputPitchMultiplier = p_Reader.ReadSingle();
-			p_Instance.MaxVelocity = p_Reader.ReadSingle();
-			p_Instance.DirectionVectorIndex = p_Reader.ReadUInt32();
-			p_Instance.IsWaterJetEngine = p_Reader.ReadBool();
-			p_Instance.IsTurnable = p_Reader.ReadBool();
-			p_Reader.Seek(2, SeekOrigin.Current);
-		}
-
 	}
 }

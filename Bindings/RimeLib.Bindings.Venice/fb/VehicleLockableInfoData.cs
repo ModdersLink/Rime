@@ -31,12 +31,5 @@ namespace fb
 		[ContainerField(12), LayoutImmutable, Blittable]
 		public float LowAltitudeHeatSignature { get; set; }
 		
-		public static void Deserialize(VehicleLockableInfoData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.HeatSignature = p_Reader.ReadSingle();
-			p_Instance.RadarSignature = p_Reader.ReadSingle();
-			p_Instance.LowAltitudeHeight = p_Reader.ReadSingle();
-			p_Instance.LowAltitudeHeatSignature = p_Reader.ReadSingle();
-		}
 	}
 }

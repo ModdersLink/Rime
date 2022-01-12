@@ -28,12 +28,5 @@ namespace fb
 		[ContainerField(6), LayoutImmutable, Blittable]
 		public bool IsConnected { get; set; }
 		
-		public static void Deserialize(AudioGraphNodePort p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.UnconnectedValue = p_Reader.ReadSingle();
-			p_Instance.ValueIndex = p_Reader.ReadUInt16();
-			p_Instance.IsConnected = p_Reader.ReadBool();
-			p_Reader.Seek(1, SeekOrigin.Current);
-		}
 	}
 }

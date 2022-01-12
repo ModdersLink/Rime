@@ -20,9 +20,5 @@ namespace fb
 	public class SuppressionSettings : 
 		DataContainer
 	{
-		public static void Deserialize(SuppressionSettings p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

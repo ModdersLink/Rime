@@ -20,9 +20,5 @@ namespace fb
 	public class DestructionDepthRasterData : 
 		RasterQuadtreeData
 	{
-		public static void Deserialize(DestructionDepthRasterData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

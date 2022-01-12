@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(12), LayoutImmutable, Blittable]
 		public float Scale { get; set; }
 
-		public static void Deserialize(CameraLoosePartPhysicsData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Scale = p_Reader.ReadSingle();
-		}
-
 	}
 }

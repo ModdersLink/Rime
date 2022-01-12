@@ -20,9 +20,5 @@ namespace fb
 	public class ScoringHandlerData : 
 		DataContainer
 	{
-		public static void Deserialize(ScoringHandlerData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

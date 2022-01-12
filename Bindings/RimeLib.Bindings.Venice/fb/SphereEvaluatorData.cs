@@ -29,16 +29,5 @@ namespace fb
 		[ContainerField(48), LayoutImmutable, Blittable]
 		public float Radius { get; set; }
 
-		public static void Deserialize(SphereEvaluatorData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Reader.Seek(4, SeekOrigin.Current);
-			fb.Vec3.Deserialize(p_Instance.Scale, p_Reader, p_Parser);
-			p_Reader.Seek(4, SeekOrigin.Current);
-			fb.Vec3.Deserialize(p_Instance.Pivot, p_Reader, p_Parser);
-			p_Reader.Seek(4, SeekOrigin.Current);
-			p_Instance.Radius = p_Reader.ReadSingle();
-			p_Reader.Seek(16, SeekOrigin.Current);
-		}
-
 	}
 }

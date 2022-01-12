@@ -20,9 +20,5 @@ namespace fb
 	public class PhysicsMaterialRelationPropertyData : 
 		MaterialRelationPropertyData
 	{
-		public static void Deserialize(PhysicsMaterialRelationPropertyData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

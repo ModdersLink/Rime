@@ -20,9 +20,5 @@ namespace fb
 	public class DiscComponentData : 
 		UIComponentData
 	{
-		public static void Deserialize(DiscComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

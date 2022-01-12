@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(12)]
 		public CtrRef<SoundScopeData> Scope { get; set; } = new();
 
-		public static void Deserialize(SoundAsset p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Scope.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-		}
-
 	}
 }

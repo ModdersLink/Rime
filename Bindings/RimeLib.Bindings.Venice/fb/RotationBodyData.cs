@@ -59,22 +59,5 @@ namespace fb
 		[ContainerField(55), LayoutImmutable, Blittable]
 		public bool UseAngularConstraint { get; set; }
 
-		public static void Deserialize(RotationBodyData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.AngularMomentumMultiplier = p_Reader.ReadSingle();
-			p_Instance.AngularMomentumThreshold = p_Reader.ReadSingle();
-			p_Instance.AngularMomentumDamping = p_Reader.ReadSingle();
-			p_Instance.AngularMomentumDampingAcc = p_Reader.ReadSingle();
-			p_Instance.AngularMomentumDampingDeacc = p_Reader.ReadSingle();
-			p_Instance.AngularConstraintMin = p_Reader.ReadSingle();
-			p_Instance.ExtendedConstraints.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.AngularConstraintMax = p_Reader.ReadSingle();
-			p_Instance.RotationAxis = p_Reader.ReadInt32();
-			p_Instance.UsePostSatisfyConstraints = p_Reader.ReadBool();
-			p_Instance.UseAngularMomentumThreshold = p_Reader.ReadBool();
-			p_Instance.UseAngularMomentumDamping = p_Reader.ReadBool();
-			p_Instance.UseAngularConstraint = p_Reader.ReadBool();
-		}
-
 	}
 }

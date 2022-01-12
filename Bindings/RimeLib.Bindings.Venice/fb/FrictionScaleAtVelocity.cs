@@ -25,10 +25,5 @@ namespace fb
 		[ContainerField(4), LayoutImmutable, Blittable]
 		public float Velocity { get; set; }
 		
-		public static void Deserialize(FrictionScaleAtVelocity p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.FrictionScale = p_Reader.ReadSingle();
-			p_Instance.Velocity = p_Reader.ReadSingle();
-		}
 	}
 }

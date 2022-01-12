@@ -32,14 +32,5 @@ namespace fb
 		[ContainerField(105), LayoutImmutable, Blittable]
 		public bool GenerateEventForEveryMatchingTeamMember { get; set; }
 
-		public static void Deserialize(TeamFilterEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Realm = (Realm) p_Reader.ReadInt32();
-			p_Instance.Team = (TeamId) p_Reader.ReadInt32();
-			p_Instance.InvertFilter = p_Reader.ReadBool();
-			p_Instance.GenerateEventForEveryMatchingTeamMember = p_Reader.ReadBool();
-			p_Reader.Seek(6, SeekOrigin.Current);
-		}
-
 	}
 }

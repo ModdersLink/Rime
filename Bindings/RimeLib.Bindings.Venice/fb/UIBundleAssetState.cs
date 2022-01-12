@@ -28,11 +28,5 @@ namespace fb
 		[ContainerField(8), LayoutImmutable]
 		public string ResourceBundleName { get; set; } = string.Empty;
 		
-		public static void Deserialize(UIBundleAssetState p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.StateName = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.UIState = (UIState) p_Reader.ReadInt32();
-			p_Instance.ResourceBundleName = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-		}
 	}
 }

@@ -20,9 +20,5 @@ namespace fb
 	public class SoldierWeaponAsset : 
 		SoldierWeaponBlueprint
 	{
-		public static void Deserialize(SoldierWeaponAsset p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

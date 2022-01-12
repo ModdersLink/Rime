@@ -149,53 +149,5 @@ namespace fb
 		[ContainerField(104), LayoutImmutable, Blittable]
 		public bool UseConditionalStreaming { get; set; }
 
-		public static void Deserialize(TextureStreamingSettings p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.FadeMipmapTime = p_Reader.ReadSingle();
-			p_Instance.MipmapBias = p_Reader.ReadSingle();
-			p_Instance.MaxTextureSizeKb = p_Reader.ReadUInt32();
-			p_Instance.MaxFrameTextureCreateCount = p_Reader.ReadUInt32();
-			p_Instance.MaxPendingLoadCount = p_Reader.ReadUInt32();
-			p_Instance.MinMipmapCount = p_Reader.ReadUInt32();
-			p_Instance.MaxMipmapCount = p_Reader.ReadUInt32();
-			p_Instance.XenonFinalPoolSizeAdjustment = p_Reader.ReadUInt32();
-			p_Instance.XenonRetailPoolSizeAdjustment = p_Reader.ReadUInt32();
-			p_Instance.PoolHeadroomSize = p_Reader.ReadUInt32();
-			p_Instance.OnDemandPoolSize = p_Reader.ReadUInt32();
-			p_Instance.ListViewPageIndex = p_Reader.ReadUInt32();
-			p_Instance.PoolSize = p_Reader.ReadUInt32();
-			p_Instance.ForceMipmap = p_Reader.ReadInt32();
-			p_Instance.PriorityThreshold = p_Reader.ReadSingle();
-			p_Instance.DefragFrameTransferLimit = p_Reader.ReadUInt32();
-			p_Instance.MinTextureSize = p_Reader.ReadUInt32();
-			p_Instance.MaxFrameTextureCreateSize = p_Reader.ReadUInt32();
-			p_Instance.OnlyWantedInPool = p_Reader.ReadBool();
-			p_Instance.DxImmutableUsageEnable = p_Reader.ReadBool();
-			p_Instance.MipmapsEnable = p_Reader.ReadBool();
-			p_Instance.UploadMipmapsEnable = p_Reader.ReadBool();
-			p_Instance.TextureUpdateEnable = p_Reader.ReadBool();
-			p_Instance.AsyncCreatesEnable = p_Reader.ReadBool();
-			p_Instance.LoadMipmapsEnable = p_Reader.ReadBool();
-			p_Instance.ForceWantedEnable = p_Reader.ReadBool();
-			p_Instance.UpdateEnable = p_Reader.ReadBool();
-			p_Instance.PoolEnable = p_Reader.ReadBool();
-			p_Instance.DefragEnable = p_Reader.ReadBool();
-			p_Instance.DefragTransfersEnable = p_Reader.ReadBool();
-			p_Instance.ChunkLoadEnable = p_Reader.ReadBool();
-			p_Instance.InstantUnloadingEnable = p_Reader.ReadBool();
-			p_Instance.FadeMipmapsEnable = p_Reader.ReadBool();
-			p_Instance.DynamicLoadingEnable = p_Reader.ReadBool();
-			p_Instance.Enable = p_Reader.ReadBool();
-			p_Instance.DrawStatsEnable = p_Reader.ReadBool();
-			p_Instance.DrawTextureGroupStatsEnable = p_Reader.ReadBool();
-			p_Instance.DrawTextureFormatStatsEnable = p_Reader.ReadBool();
-			p_Instance.DrawLoadingListEnable = p_Reader.ReadBool();
-			p_Instance.DrawPriorityListEnable = p_Reader.ReadBool();
-			p_Instance.OverridePoolSize = p_Reader.ReadBool();
-			p_Instance.DumpLoadedList = p_Reader.ReadBool();
-			p_Instance.UseConditionalStreaming = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
-
 	}
 }

@@ -20,9 +20,5 @@ namespace fb
 	public class UIServerListFilterBarCompData : 
 		UIComponentData
 	{
-		public static void Deserialize(UIServerListFilterBarCompData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

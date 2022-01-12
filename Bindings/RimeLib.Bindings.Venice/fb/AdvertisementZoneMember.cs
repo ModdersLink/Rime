@@ -25,10 +25,5 @@ namespace fb
 		[ContainerField(4), LayoutImmutable]
 		public string Filename { get; set; } = string.Empty;
 		
-		public static void Deserialize(AdvertisementZoneMember p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Identifier = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Filename = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-		}
 	}
 }

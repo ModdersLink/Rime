@@ -26,11 +26,5 @@ namespace fb
 		[ContainerField(20)]
 		public CtrRef<UIDistanceFieldAsset> SurroundingDistanceField { get; set; } = new();
 
-		public static void Deserialize(VeniceUICombatAreaAsset p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.DistanceField.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.SurroundingDistanceField.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-		}
-
 	}
 }

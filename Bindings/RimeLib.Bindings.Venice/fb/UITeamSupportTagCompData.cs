@@ -20,9 +20,5 @@ namespace fb
 	public class UITeamSupportTagCompData : 
 		UI3dIconCompData
 	{
-		public static void Deserialize(UITeamSupportTagCompData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

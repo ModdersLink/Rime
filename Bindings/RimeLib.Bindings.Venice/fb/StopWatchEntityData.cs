@@ -32,13 +32,5 @@ namespace fb
 		[ContainerField(24), LayoutImmutable, Blittable]
 		public float TriggerOnTime { get; set; }
 
-		public static void Deserialize(StopWatchEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Realm = (Realm) p_Reader.ReadInt32();
-			p_Instance.UpdatePass = (UpdatePass) p_Reader.ReadInt32();
-			p_Instance.Multiplier = p_Reader.ReadSingle();
-			p_Instance.TriggerOnTime = p_Reader.ReadSingle();
-		}
-
 	}
 }

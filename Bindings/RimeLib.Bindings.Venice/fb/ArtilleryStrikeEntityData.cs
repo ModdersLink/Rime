@@ -62,24 +62,5 @@ namespace fb
 		[ContainerField(148), LayoutImmutable, Blittable]
 		public bool FollowSoldier { get; set; }
 
-		public static void Deserialize(ArtilleryStrikeEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.MissileData.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.MissileSpawnRadius = p_Reader.ReadSingle();
-			p_Instance.DurationOfArtilleryStrike = p_Reader.ReadSingle();
-			p_Instance.MaxDelayBetweenProjectiles = p_Reader.ReadSingle();
-			p_Instance.MinDelayBetweenProjectiles = p_Reader.ReadSingle();
-			p_Instance.MaxDelayBetweenStrikes = p_Reader.ReadSingle();
-			p_Instance.MinDelayBetweenStrikes = p_Reader.ReadSingle();
-			p_Instance.MinRadiusToSoldier = p_Reader.ReadSingle();
-			p_Instance.RadiusWhenFollowingSoldier = p_Reader.ReadSingle();
-			p_Instance.HeightOffsetWhenFollowingSoldier = p_Reader.ReadSingle();
-			p_Instance.NumberOfStrikes = p_Reader.ReadUInt32();
-			p_Instance.MaxProjectilesPerStrike = p_Reader.ReadUInt32();
-			p_Instance.MinProjectilesPerStrike = p_Reader.ReadUInt32();
-			p_Instance.FollowSoldier = p_Reader.ReadBool();
-			p_Reader.Seek(11, SeekOrigin.Current);
-		}
-
 	}
 }

@@ -32,14 +32,5 @@ namespace fb
 		[ContainerField(21), LayoutImmutable, Blittable]
 		public bool AutoStart { get; set; }
 
-		public static void Deserialize(RandomEventEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Realm = (Realm) p_Reader.ReadInt32();
-			p_Instance.Probability = p_Reader.ReadInt32();
-			p_Instance.RandomizeFirstOnly = p_Reader.ReadBool();
-			p_Instance.AutoStart = p_Reader.ReadBool();
-			p_Reader.Seek(2, SeekOrigin.Current);
-		}
-
 	}
 }

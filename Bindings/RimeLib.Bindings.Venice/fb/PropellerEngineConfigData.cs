@@ -137,49 +137,5 @@ namespace fb
 		[ContainerField(254), LayoutImmutable, Blittable]
 		public bool SPAllowed { get; set; }
 
-		public static void Deserialize(PropellerEngineConfigData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.Vec3.Deserialize(p_Instance.HorisontalForceOffset, p_Reader, p_Parser);
-			p_Instance.PropellerType = (PropellerType) p_Reader.ReadInt32();
-			p_Instance.RotorConfig.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.ForceMagnitudeInputType = (ForceMagnitudeInputType) p_Reader.ReadInt32();
-			p_Instance.DirectionVectorIndex = p_Reader.ReadUInt32();
-			p_Instance.ForceMagnitudeMultiplier = p_Reader.ReadSingle();
-			p_Instance.LiftForceSpringConstant = p_Reader.ReadSingle();
-			p_Instance.LiftForceDampingConstant = p_Reader.ReadSingle();
-			p_Instance.CyclicInputScaleRoll = p_Reader.ReadSingle();
-			p_Instance.CyclicRollLiftMod = p_Reader.ReadSingle();
-			p_Instance.CyclicRollStrafeMod = p_Reader.ReadSingle();
-			p_Instance.CyclicInputScalePitch = p_Reader.ReadSingle();
-			p_Instance.CyclicPitchLiftMod = p_Reader.ReadSingle();
-			p_Instance.CyclicPitchStrafeMod = p_Reader.ReadSingle();
-			p_Instance.CyclicPitchStrafeBrakeMod = p_Reader.ReadSingle();
-			p_Instance.CollectiveInputIdle = p_Reader.ReadSingle();
-			p_Instance.CollectiveThrottleInputScale = p_Reader.ReadSingle();
-			p_Instance.CollectiveBrakeInputScale = p_Reader.ReadSingle();
-			p_Instance.DefaultAngleOfAttack = p_Reader.ReadSingle();
-			p_Instance.AttackAngleMod = p_Reader.ReadSingle();
-			p_Instance.StabilizerMod = p_Reader.ReadSingle();
-			p_Instance.HorisontalMinEffectVelocity = p_Reader.ReadSingle();
-			p_Instance.HorisontalMinEffectMod = p_Reader.ReadSingle();
-			p_Instance.PitchStrength = p_Reader.ReadSingle();
-			p_Instance.PitchFromVel = p_Reader.ReadSingle();
-			p_Instance.GravityMod = p_Reader.ReadSingle();
-			p_Instance.SPForwardStrength = p_Reader.ReadSingle();
-			p_Instance.SPSidewaysStrength = p_Reader.ReadSingle();
-			p_Instance.SPVerticalStrength = p_Reader.ReadSingle();
-			p_Instance.VelocityFromPitch = p_Reader.ReadSingle();
-			p_Instance.PitchLimit = p_Reader.ReadSingle();
-			p_Instance.BankingStrength = p_Reader.ReadSingle();
-			p_Instance.BankingLimit = p_Reader.ReadSingle();
-			p_Instance.RollStrength = p_Reader.ReadSingle();
-			p_Instance.PitchUpWhenBankStrength = p_Reader.ReadSingle();
-			p_Instance.PitchUpWhenBankLimit = p_Reader.ReadSingle();
-			p_Instance.SPDefault = p_Reader.ReadBool();
-			p_Instance.EnableNewHelicopter = p_Reader.ReadBool();
-			p_Instance.SPAllowed = p_Reader.ReadBool();
-			p_Reader.Seek(1, SeekOrigin.Current);
-		}
-
 	}
 }

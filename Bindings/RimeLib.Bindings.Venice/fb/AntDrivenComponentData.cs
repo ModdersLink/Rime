@@ -23,11 +23,5 @@ namespace fb
 		[ContainerField(96)]
 		public AnimationDrivenBinding CharacterGameState { get; set; } = new();
 
-		public static void Deserialize(AntDrivenComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AnimationDrivenBinding.Deserialize(p_Instance.CharacterGameState, p_Reader, p_Parser);
-			p_Reader.Seek(8, SeekOrigin.Current);
-		}
-
 	}
 }

@@ -40,15 +40,5 @@ namespace fb
 		[ContainerField(24), LayoutImmutable, Blittable]
 		public float PeripheralMovementCutoff { get; set; }
 		
-		public static void Deserialize(SensingLimits p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.HearingDistance = p_Reader.ReadSingle();
-			p_Instance.HearingCutoff = p_Reader.ReadSingle();
-			p_Instance.ViewAngle = p_Reader.ReadSingle();
-			p_Instance.ViewDistance = p_Reader.ReadSingle();
-			p_Instance.PeripheralViewAngle = p_Reader.ReadSingle();
-			p_Instance.PeripheralViewDistance = p_Reader.ReadSingle();
-			p_Instance.PeripheralMovementCutoff = p_Reader.ReadSingle();
-		}
 	}
 }

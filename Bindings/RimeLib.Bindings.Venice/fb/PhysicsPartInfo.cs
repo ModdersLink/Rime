@@ -25,10 +25,5 @@ namespace fb
 		[ContainerField(4), LayoutImmutable, Blittable]
 		public uint HealthStateIndex { get; set; }
 		
-		public static void Deserialize(PhysicsPartInfo p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.PartComponentIndex = p_Reader.ReadUInt32();
-			p_Instance.HealthStateIndex = p_Reader.ReadUInt32();
-		}
 	}
 }

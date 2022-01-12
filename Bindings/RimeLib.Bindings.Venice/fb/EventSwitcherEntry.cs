@@ -26,11 +26,5 @@ namespace fb
 		[ContainerField(16), LayoutImmutable, Blittable]
 		public float Value { get; set; }
 
-		public static void Deserialize(EventSwitcherEntry p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AudioGraphNodePort.Deserialize(p_Instance.CaseTrigger, p_Reader, p_Parser);
-			p_Instance.Value = p_Reader.ReadSingle();
-		}
-
 	}
 }

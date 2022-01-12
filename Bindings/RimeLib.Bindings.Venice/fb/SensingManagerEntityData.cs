@@ -23,19 +23,5 @@ namespace fb
 		[ContainerField(12)]
 		public List<SensingSphere> SenseTerrainAreas { get; set; } = new();
 
-		public static void Deserialize(SensingManagerEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.SenseTerrainAreas.Clear();
-			(RimeReader Reader, uint Count) s_SenseTerrainAreas = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_SenseTerrainAreas.Count; ++i)
-			{
-				var s_Value = new SensingSphere();
-				fb.SensingSphere.Deserialize(s_Value, s_SenseTerrainAreas.Reader, p_Parser);
-				p_Instance.SenseTerrainAreas.Add(s_Value);
-			}
-			
-			s_SenseTerrainAreas.Reader.Dispose();
-		}
-
 	}
 }

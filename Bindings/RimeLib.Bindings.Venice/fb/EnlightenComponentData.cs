@@ -65,25 +65,5 @@ namespace fb
 		[ContainerField(209), LayoutImmutable, Blittable]
 		public bool Enable { get; set; }
 
-		public static void Deserialize(EnlightenComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.Vec3.Deserialize(p_Instance.SkyBoxSkyColor, p_Reader, p_Parser);
-			fb.Vec3.Deserialize(p_Instance.SkyBoxBackLightColor, p_Reader, p_Parser);
-			fb.Vec3.Deserialize(p_Instance.SkyBoxGroundColor, p_Reader, p_Parser);
-			fb.Vec3.Deserialize(p_Instance.TerrainColor, p_Reader, p_Parser);
-			fb.Vec3.Deserialize(p_Instance.SkyBoxSunLightColor, p_Reader, p_Parser);
-			p_Instance.BounceScale = p_Reader.ReadSingle();
-			p_Instance.CullDistance = p_Reader.ReadSingle();
-			p_Instance.SunScale = p_Reader.ReadSingle();
-			p_Instance.Realm = (Realm) p_Reader.ReadInt32();
-			p_Instance.SkyBoxBackLightRotationY = p_Reader.ReadSingle();
-			p_Instance.SkyBoxSunLightColorSize = p_Reader.ReadSingle();
-			p_Instance.SkyBoxBackLightColorSize = p_Reader.ReadSingle();
-			p_Instance.SkyBoxBackLightRotationX = p_Reader.ReadSingle();
-			p_Instance.SkyBoxEnable = p_Reader.ReadBool();
-			p_Instance.Enable = p_Reader.ReadBool();
-			p_Reader.Seek(14, SeekOrigin.Current);
-		}
-
 	}
 }

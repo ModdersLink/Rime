@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(12)]
 		public WeaponLagBinding Binding { get; set; } = new();
 
-		public static void Deserialize(WeaponLagEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.WeaponLagBinding.Deserialize(p_Instance.Binding, p_Reader, p_Parser);
-		}
-
 	}
 }

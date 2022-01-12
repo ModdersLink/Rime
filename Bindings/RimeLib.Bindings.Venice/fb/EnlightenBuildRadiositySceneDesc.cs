@@ -56,49 +56,5 @@ namespace fb
 		[ContainerField(46), LayoutImmutable, Blittable]
 		public bool CacheEnable { get; set; }
 
-		public static void Deserialize(EnlightenBuildRadiositySceneDesc p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.LightProbeSets.Clear();
-			(RimeReader Reader, uint Count) s_LightProbeSets = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_LightProbeSets.Count; ++i)
-			{
-				var s_Value = new EnlightenLightProbeSet();
-				fb.EnlightenLightProbeSet.Deserialize(s_Value, s_LightProbeSets.Reader, p_Parser);
-				p_Instance.LightProbeSets.Add(s_Value);
-			}
-			
-			s_LightProbeSets.Reader.Dispose();
-			p_Instance.Instances.Clear();
-			(RimeReader Reader, uint Count) s_Instances = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_Instances.Count; ++i)
-			{
-				var s_Value = new EnlightenInputInstance();
-				fb.EnlightenInputInstance.Deserialize(s_Value, s_Instances.Reader, p_Parser);
-				p_Instance.Instances.Add(s_Value);
-			}
-			
-			s_Instances.Reader.Dispose();
-			p_Instance.StaticLightProbes.Clear();
-			(RimeReader Reader, uint Count) s_StaticLightProbes = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_StaticLightProbes.Count; ++i)
-			{
-				var s_Value = new Vec3();
-				fb.Vec3.Deserialize(s_Value, s_StaticLightProbes.Reader, p_Parser);
-				p_Instance.StaticLightProbes.Add(s_Value);
-			}
-			
-			s_StaticLightProbes.Reader.Dispose();
-			p_Instance.Terrain = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.SamplesPerCluster = p_Reader.ReadUInt32();
-			p_Instance.SystemInfluenceRadius = p_Reader.ReadSingle();
-			p_Instance.SystemSize = p_Reader.ReadUInt32();
-			p_Instance.IrBudget = p_Reader.ReadUInt32();
-			p_Instance.ClusterSize = p_Reader.ReadSingle();
-			p_Instance.SaveDebugData = p_Reader.ReadBool();
-			p_Instance.DistributedBuild = p_Reader.ReadBool();
-			p_Instance.CacheEnable = p_Reader.ReadBool();
-			p_Reader.Seek(1, SeekOrigin.Current);
-		}
-
 	}
 }

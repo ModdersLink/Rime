@@ -41,17 +41,5 @@ namespace fb
 		[ContainerField(48), LayoutImmutable]
 		public string Platform { get; set; } = string.Empty;
 
-		public static void Deserialize(PerformanceProfileState p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.ProcessorCount = p_Reader.ReadUInt32();
-			p_Instance.ProcessorCoreCount = p_Reader.ReadUInt32();
-			p_Instance.ProcessorClock = p_Reader.ReadUInt32();
-			p_Instance.TotalMemMB = p_Reader.ReadUInt32();
-			p_Instance.GpuMemMB = p_Reader.ReadUInt32();
-			p_Instance.GraphicAdapterName = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Platform = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Reader.Seek(4, SeekOrigin.Current);
-		}
-
 	}
 }

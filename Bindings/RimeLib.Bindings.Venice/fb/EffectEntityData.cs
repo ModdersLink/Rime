@@ -21,7 +21,7 @@ namespace fb
 		SpatialEntityData
 	{
 		[ContainerField(80)]
-		public List<CtrRef<GameObjectData>> Components { get; set; } = new();
+		public RefArray<GameObjectData> Components { get; set; } = new();
 
 		[ContainerField(84), LayoutImmutable, Blittable]
 		public uint MaxInstanceCount { get; set; }
@@ -43,28 +43,6 @@ namespace fb
 
 		[ContainerField(99), LayoutImmutable, Blittable]
 		public bool ResetInstanceWhenStarted { get; set; }
-
-		public static void Deserialize(EffectEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Components.Clear();
-			(RimeReader Reader, uint Count) s_Components = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_Components.Count; ++i)
-			{
-				var s_CtrRef = new CtrRef<GameObjectData>();
-				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_Components.Reader.ReadUInt32()));
-				p_Instance.Components.Add(s_CtrRef);
-			}
-			
-			s_Components.Reader.Dispose();
-			p_Instance.MaxInstanceCount = p_Reader.ReadUInt32();
-			p_Instance.CullDistance = p_Reader.ReadSingle();
-			p_Instance.StartDelay = p_Reader.ReadSingle();
-			p_Instance.HighEndPc = p_Reader.ReadBool();
-			p_Instance.MediumPc = p_Reader.ReadBool();
-			p_Instance.LowEndPc = p_Reader.ReadBool();
-			p_Instance.ResetInstanceWhenStarted = p_Reader.ReadBool();
-			p_Reader.Seek(12, SeekOrigin.Current);
-		}
 
 	}
 }

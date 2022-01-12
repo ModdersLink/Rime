@@ -80,39 +80,5 @@ namespace fb
 		[ContainerField(144), LayoutImmutable, Blittable]
 		public bool ShuffleSegments { get; set; }
 
-		public static void Deserialize(SamplerNodeData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AudioGraphNodePort.Deserialize(p_Instance.ExternalWave, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.Variation, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.Offset, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.Delay, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.Pitch, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.Amplitude, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.EnableStep, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.Buffer, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.Trigger, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.Release, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.Step, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.Output, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.Finished, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.Buffered, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.Position, p_Reader, p_Parser);
-			p_Instance.Wave.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.BasePitch = p_Reader.ReadSingle();
-			p_Instance.Loop = (LoopType) p_Reader.ReadInt32();
-			p_Instance.Plugins.Clear();
-			(RimeReader Reader, uint Count) s_Plugins = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_Plugins.Count; ++i)
-			{
-				var s_Value = new SamplerPlugins();
-				fb.SamplerPlugins.Deserialize(s_Value, s_Plugins.Reader, p_Parser);
-				p_Instance.Plugins.Add(s_Value);
-			}
-			
-			s_Plugins.Reader.Dispose();
-			p_Instance.ShuffleSegments = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
-
 	}
 }

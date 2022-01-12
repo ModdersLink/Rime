@@ -28,11 +28,5 @@ namespace fb
 		[ContainerField(8), LayoutImmutable, Blittable]
 		public int RandomGroup { get; set; }
 		
-		public static void Deserialize(SoldierMeshData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Mesh.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.MeshBlueprint.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.RandomGroup = p_Reader.ReadInt32();
-		}
 	}
 }

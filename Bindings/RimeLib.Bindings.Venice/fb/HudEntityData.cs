@@ -20,9 +20,5 @@ namespace fb
 	public class HudEntityData : 
 		GameEntityData
 	{
-		public static void Deserialize(HudEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

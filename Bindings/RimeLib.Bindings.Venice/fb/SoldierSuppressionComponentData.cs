@@ -47,19 +47,5 @@ namespace fb
 		[ContainerField(133), LayoutImmutable, Blittable]
 		public bool CheckLineOfSight { get; set; }
 
-		public static void Deserialize(SoldierSuppressionComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.SuppressionReactionData.Deserialize(p_Instance.ReactionToSuppression, p_Reader, p_Parser);
-			p_Instance.SuppressionResistModifier = p_Reader.ReadSingle();
-			p_Instance.SuppressionBoostModifier = p_Reader.ReadSingle();
-			p_Instance.SuppressionDecay = p_Reader.ReadSingle();
-			p_Instance.SuppressionSphereRadius = p_Reader.ReadSingle();
-			p_Instance.FallOffDelay = p_Reader.ReadSingle();
-			p_Instance.FallOffMultiplier = p_Reader.ReadSingle();
-			p_Instance.SuppressionAbortsHealthRegeneration = p_Reader.ReadBool();
-			p_Instance.CheckLineOfSight = p_Reader.ReadBool();
-			p_Reader.Seek(10, SeekOrigin.Current);
-		}
-
 	}
 }

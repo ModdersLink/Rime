@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(12), LayoutImmutable]
 		public string ShortName { get; set; } = string.Empty;
 
-		public static void Deserialize(MenuIdAsset p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.ShortName = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-		}
-
 	}
 }

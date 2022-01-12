@@ -22,18 +22,5 @@ namespace fb
 		[ContainerField(0)]
 		public List<ActionSuppressor> SuppressVehicleInput { get; set; } = new();
 		
-		public static void Deserialize(InputSuppressionData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.SuppressVehicleInput.Clear();
-			(RimeReader Reader, uint Count) s_SuppressVehicleInput = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_SuppressVehicleInput.Count; ++i)
-			{
-				var s_Value = new ActionSuppressor();
-				fb.ActionSuppressor.Deserialize(s_Value, s_SuppressVehicleInput.Reader, p_Parser);
-				p_Instance.SuppressVehicleInput.Add(s_Value);
-			}
-			
-			s_SuppressVehicleInput.Reader.Dispose();
-		}
 	}
 }

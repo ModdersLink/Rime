@@ -28,11 +28,5 @@ namespace fb
 		[ContainerField(8), LayoutImmutable, Blittable]
 		public float CoolDownTime { get; set; }
 		
-		public static void Deserialize(KillWeight p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.LowIntenseWeight = p_Reader.ReadSingle();
-			p_Instance.HighIntenseWeight = p_Reader.ReadSingle();
-			p_Instance.CoolDownTime = p_Reader.ReadSingle();
-		}
 	}
 }

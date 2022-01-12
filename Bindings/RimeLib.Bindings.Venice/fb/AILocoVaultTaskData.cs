@@ -46,18 +46,5 @@ namespace fb
 		[ContainerField(44), LayoutImmutable, Blittable]
 		public bool UseClientPosition { get; set; }
 		
-		public static void Deserialize(AILocoVaultTaskData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.Vec3.Deserialize(p_Instance.StartPoint, p_Reader, p_Parser);
-			p_Instance.DistanceBeforeVault = p_Reader.ReadSingle();
-			p_Instance.HeightBeforeVault = p_Reader.ReadSingle();
-			p_Instance.HeightAfterVault = p_Reader.ReadSingle();
-			p_Instance.LengthOfVaultableObject = p_Reader.ReadSingle();
-			p_Instance.WorldAngle = p_Reader.ReadSingle();
-			p_Instance.DistanceAfterVault = p_Reader.ReadSingle();
-			p_Instance.VaultType = (WaypointVaultType) p_Reader.ReadInt32();
-			p_Instance.UseClientPosition = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
 	}
 }

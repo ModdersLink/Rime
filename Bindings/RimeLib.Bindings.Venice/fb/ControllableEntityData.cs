@@ -44,18 +44,5 @@ namespace fb
 		[ContainerField(128), LayoutImmutable, Blittable]
 		public bool ForceForegroundRendering { get; set; }
 
-		public static void Deserialize(ControllableEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.LowHealthThreshold = p_Reader.ReadSingle();
-			p_Instance.DefaultTeam = (TeamId) p_Reader.ReadInt32();
-			p_Instance.MaterialPair.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.ResetTeamOnLastPlayerExits = p_Reader.ReadBool();
-			p_Instance.FakeImmortal = p_Reader.ReadBool();
-			p_Instance.UsePrediction = p_Reader.ReadBool();
-			p_Instance.Immortal = p_Reader.ReadBool();
-			p_Instance.ForceForegroundRendering = p_Reader.ReadBool();
-			p_Reader.Seek(15, SeekOrigin.Current);
-		}
-
 	}
 }

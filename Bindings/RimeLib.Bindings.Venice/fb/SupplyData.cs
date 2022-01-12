@@ -37,14 +37,5 @@ namespace fb
 		[ContainerField(43), LayoutImmutable, Blittable]
 		public bool ExcludeSelf { get; set; }
 		
-		public static void Deserialize(SupplyData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.SupplyUnitSphereData.Deserialize(p_Instance.Healing, p_Reader, p_Parser);
-			fb.SupplyUnitSphereData.Deserialize(p_Instance.Ammo, p_Reader, p_Parser);
-			p_Instance.SupplyVehicles = p_Reader.ReadBool();
-			p_Instance.SupplySoldiers = p_Reader.ReadBool();
-			p_Instance.TeamSpecific = p_Reader.ReadBool();
-			p_Instance.ExcludeSelf = p_Reader.ReadBool();
-		}
 	}
 }

@@ -38,15 +38,5 @@ namespace fb
 		[ContainerField(36), LayoutImmutable, Blittable]
 		public float SentAverage { get; set; }
 
-		public static void Deserialize(ServerPerformanceEvent p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.CPUAverage = p_Reader.ReadSingle();
-			p_Instance.CPUMemory = p_Reader.ReadSingle();
-			p_Instance.Received = p_Reader.ReadUInt32();
-			p_Instance.Sent = p_Reader.ReadUInt32();
-			p_Instance.ReceivedAverage = p_Reader.ReadSingle();
-			p_Instance.SentAverage = p_Reader.ReadSingle();
-		}
-
 	}
 }

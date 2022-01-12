@@ -28,11 +28,5 @@ namespace fb
 		[ContainerField(8), LayoutImmutable]
 		public string SubtitleOffsetColumn { get; set; } = string.Empty;
 		
-		public static void Deserialize(VoiceOverManuscriptLanguageColumns p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Language.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.TextColumn = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.SubtitleOffsetColumn = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-		}
 	}
 }

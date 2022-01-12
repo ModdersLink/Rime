@@ -26,11 +26,5 @@ namespace fb
 		[ContainerField(16)]
 		public SimpleMovementActionTimeData RunTimeInfo { get; set; } = new();
 
-		public static void Deserialize(SimpleMovementActionBaseData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.SimpleMovementActionTimeData.Deserialize(p_Instance.StartTimeInfo, p_Reader, p_Parser);
-			fb.SimpleMovementActionTimeData.Deserialize(p_Instance.RunTimeInfo, p_Reader, p_Parser);
-		}
-
 	}
 }

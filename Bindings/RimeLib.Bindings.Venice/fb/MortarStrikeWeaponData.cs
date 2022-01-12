@@ -32,13 +32,5 @@ namespace fb
 		[ContainerField(28), LayoutImmutable, Blittable]
 		public float MaxRandomSpawnHeight { get; set; }
 
-		public static void Deserialize(MortarStrikeWeaponData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.HoldingTolerance = p_Reader.ReadSingle();
-			p_Instance.MaxStrikeDistance = p_Reader.ReadSingle();
-			p_Instance.StrikeRadius = p_Reader.ReadSingle();
-			p_Instance.MaxRandomSpawnHeight = p_Reader.ReadSingle();
-		}
-
 	}
 }

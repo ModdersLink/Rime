@@ -28,11 +28,5 @@ namespace fb
 		[ContainerField(24)]
 		public ReadinessLevelCharacteristics Combat { get; set; } = new();
 		
-		public static void Deserialize(ReadinessLevels p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.ReadinessLevelCharacteristics.Deserialize(p_Instance.Patrol, p_Reader, p_Parser);
-			fb.ReadinessLevelCharacteristics.Deserialize(p_Instance.Ready, p_Reader, p_Parser);
-			fb.ReadinessLevelCharacteristics.Deserialize(p_Instance.Combat, p_Reader, p_Parser);
-		}
 	}
 }

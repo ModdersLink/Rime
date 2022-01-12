@@ -23,11 +23,5 @@ namespace fb
 		[ContainerField(16), LayoutImmutable, Blittable]
 		public bool IsSet { get; set; }
 
-		public static void Deserialize(MetricState p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.IsSet = p_Reader.ReadBool();
-			p_Reader.Seek(7, SeekOrigin.Current);
-		}
-
 	}
 }

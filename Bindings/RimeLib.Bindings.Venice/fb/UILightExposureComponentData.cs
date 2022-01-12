@@ -20,9 +20,5 @@ namespace fb
 	public class UILightExposureComponentData : 
 		UIComponentData
 	{
-		public static void Deserialize(UILightExposureComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

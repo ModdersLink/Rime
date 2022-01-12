@@ -19,9 +19,5 @@ namespace fb
 	[ContainerType(1, 1)]
 	public class MeshScatteringMaskScaleDrawMethodData
 	{
-		public static void Deserialize(MeshScatteringMaskScaleDrawMethodData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Reader.Seek(1, SeekOrigin.Current);
-		}
 	}
 }

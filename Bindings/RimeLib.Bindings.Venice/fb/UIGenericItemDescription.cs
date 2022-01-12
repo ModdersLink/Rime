@@ -26,11 +26,5 @@ namespace fb
 		[ContainerField(20), LayoutImmutable]
 		public string ImagePath { get; set; } = string.Empty;
 
-		public static void Deserialize(UIGenericItemDescription p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Identifier = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.ImagePath = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-		}
-
 	}
 }

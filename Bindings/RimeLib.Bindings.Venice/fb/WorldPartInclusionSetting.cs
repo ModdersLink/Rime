@@ -20,9 +20,5 @@ namespace fb
 	public class WorldPartInclusionSetting : 
 		SubWorldInclusionSetting
 	{
-		public static void Deserialize(WorldPartInclusionSetting p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

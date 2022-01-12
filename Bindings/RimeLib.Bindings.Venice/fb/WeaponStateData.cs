@@ -23,7 +23,7 @@ namespace fb
 		public List<uint> ReferencedAssetHashes { get; set; } = new();
 		
 		[ContainerField(4)]
-		public List<CtrRef<BoneFakePhysicsData>> BoneFakePhysics { get; set; } = new();
+		public RefArray<BoneFakePhysicsData> BoneFakePhysics { get; set; } = new();
 		
 		[ContainerField(8)]
 		public CtrRef<SkinnedMeshAsset> Mesh1p { get; set; } = new();
@@ -94,77 +94,5 @@ namespace fb
 		[ContainerField(89), LayoutImmutable, Blittable]
 		public bool AlwaysAimHead { get; set; }
 		
-		public static void Deserialize(WeaponStateData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.ReferencedAssetHashes.Clear();
-			(RimeReader Reader, uint Count) s_ReferencedAssetHashes = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_ReferencedAssetHashes.Count; ++i)
-			{
-				var s_Value = s_ReferencedAssetHashes.Reader.ReadUInt32();
-				p_Instance.ReferencedAssetHashes.Add(s_Value);
-			}
-			
-			s_ReferencedAssetHashes.Reader.Dispose();
-			p_Instance.BoneFakePhysics.Clear();
-			(RimeReader Reader, uint Count) s_BoneFakePhysics = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_BoneFakePhysics.Count; ++i)
-			{
-				var s_CtrRef = new CtrRef<BoneFakePhysicsData>();
-				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_BoneFakePhysics.Reader.ReadUInt32()));
-				p_Instance.BoneFakePhysics.Add(s_CtrRef);
-			}
-			
-			s_BoneFakePhysics.Reader.Dispose();
-			p_Instance.Mesh1p.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.MeshZoom1p.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.Mesh3p.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			fb.AntRef.Deserialize(p_Instance.Weapon, p_Reader, p_Parser);
-			p_Instance.ZoomMeshTransitionFactor = p_Reader.ReadSingle();
-			p_Instance.ZoomScaleFactor = p_Reader.ReadSingle();
-			p_Instance.ZoomInOutMeshTransitionFactors.Clear();
-			(RimeReader Reader, uint Count) s_ZoomInOutMeshTransitionFactors = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_ZoomInOutMeshTransitionFactors.Count; ++i)
-			{
-				var s_Value = s_ZoomInOutMeshTransitionFactors.Reader.ReadSingle();
-				p_Instance.ZoomInOutMeshTransitionFactors.Add(s_Value);
-			}
-			
-			s_ZoomInOutMeshTransitionFactors.Reader.Dispose();
-			p_Instance.ZoomedScopeFilter.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.NonZoomedScopeFilter.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.KeepAimingTime = p_Reader.ReadSingle();
-			fb.AnimationConfigurationData.Deserialize(p_Instance.AnimationConfiguration, p_Reader, p_Parser);
-			p_Instance.AnimatedFireType = (AnimatedFireEnum) p_Reader.ReadInt32();
-			p_Instance.AnimatedAimingType = (AnimatedAimingEnum) p_Reader.ReadInt32();
-			p_Instance.Mesh3pTransforms.Clear();
-			(RimeReader Reader, uint Count) s_Mesh3pTransforms = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_Mesh3pTransforms.Count; ++i)
-			{
-				var s_Value = new LinearTransform();
-				fb.LinearTransform.Deserialize(s_Value, s_Mesh3pTransforms.Reader, p_Parser);
-				p_Instance.Mesh3pTransforms.Add(s_Value);
-			}
-			
-			s_Mesh3pTransforms.Reader.Dispose();
-			p_Instance.Mesh3pRigidMeshSocketObjectTransforms.Clear();
-			(RimeReader Reader, uint Count) s_Mesh3pRigidMeshSocketObjectTransforms = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_Mesh3pRigidMeshSocketObjectTransforms.Count; ++i)
-			{
-				var s_Value = new RigidMeshSocketTransform();
-				fb.RigidMeshSocketTransform.Deserialize(s_Value, s_Mesh3pRigidMeshSocketObjectTransforms.Reader, p_Parser);
-				p_Instance.Mesh3pRigidMeshSocketObjectTransforms.Add(s_Value);
-			}
-			
-			s_Mesh3pRigidMeshSocketObjectTransforms.Reader.Dispose();
-			p_Instance.HideProjectileAfterFireTime = p_Reader.ReadSingle();
-			p_Instance.ProjectileBoneName = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.IsOneHanded = p_Reader.ReadBool();
-			p_Instance.PlayDeployAfterFire = p_Reader.ReadBool();
-			p_Instance.SkipFireAnimation = p_Reader.ReadBool();
-			p_Instance.SkipDeployAnimation = p_Reader.ReadBool();
-			p_Instance.SkipReloadAnimation = p_Reader.ReadBool();
-			p_Instance.AlwaysAimHead = p_Reader.ReadBool();
-			p_Reader.Seek(2, SeekOrigin.Current);
-		}
 	}
 }

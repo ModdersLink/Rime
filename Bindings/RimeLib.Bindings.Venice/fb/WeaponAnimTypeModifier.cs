@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(8)]
 		public WeaponAnimType WeaponAnimType { get; set; } = new();
 
-		public static void Deserialize(WeaponAnimTypeModifier p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.WeaponAnimType = (WeaponAnimType) p_Reader.ReadInt32();
-		}
-
 	}
 }

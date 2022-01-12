@@ -38,22 +38,5 @@ namespace fb
 		[ContainerField(45), LayoutImmutable, Blittable]
 		public bool AppliesToDecisions { get; set; }
 
-		public static void Deserialize(BotPriorityConfigData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Reader.Seek(8, SeekOrigin.Current);
-			fb.Vec3.Deserialize(p_Instance.DebugColor, p_Reader, p_Parser);
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.Distance = p_Reader.ReadSingle();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.Period = p_Reader.ReadInt32();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.AngleOffset = p_Reader.ReadSingle();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.AppliesToExecution = p_Reader.ReadBool();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.AppliesToDecisions = p_Reader.ReadBool();
-			p_Reader.Seek(10, SeekOrigin.Current);
-		}
-
 	}
 }

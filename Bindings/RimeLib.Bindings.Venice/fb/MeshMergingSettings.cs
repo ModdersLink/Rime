@@ -47,19 +47,5 @@ namespace fb
 		[ContainerField(25), LayoutImmutable, Blittable]
 		public bool ClearMergeReport { get; set; }
 
-		public static void Deserialize(MeshMergingSettings p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.StatsSeedIndex = p_Reader.ReadInt32();
-			p_Instance.StatsLodIndex = p_Reader.ReadInt32();
-			p_Instance.TextureAtlasWidth = p_Reader.ReadUInt32();
-			p_Instance.DrawStatsEnable = p_Reader.ReadBool();
-			p_Instance.DrawDebugTexturesEnable = p_Reader.ReadBool();
-			p_Instance.VirtualTextureArrayStreamingEnable = p_Reader.ReadBool();
-			p_Instance.Enable = p_Reader.ReadBool();
-			p_Instance.TextureAtlasMergeEnable = p_Reader.ReadBool();
-			p_Instance.ClearMergeReport = p_Reader.ReadBool();
-			p_Reader.Seek(2, SeekOrigin.Current);
-		}
-
 	}
 }

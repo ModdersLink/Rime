@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(8)]
 		public CtrRef<DecalTemplateData> Decal { get; set; } = new();
 
-		public static void Deserialize(MaterialRelationDecalData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Decal.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-		}
-
 	}
 }

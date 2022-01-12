@@ -20,9 +20,5 @@ namespace fb
 	public class AllowedVehiclesData : 
 		DataContainer
 	{
-		public static void Deserialize(AllowedVehiclesData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

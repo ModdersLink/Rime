@@ -77,44 +77,5 @@ namespace fb
 		[ContainerField(292)]
 		public List<string> ForceSubtitlesOffForTheseLevels { get; set; } = new();
 
-		public static void Deserialize(UIMessageCompData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.ScoreAggregateTime = p_Reader.ReadSingle();
-			fb.MessageInfo.Deserialize(p_Instance.ChatMessageInfo, p_Reader, p_Parser);
-			fb.MessageInfo.Deserialize(p_Instance.KillMessageInfo, p_Reader, p_Parser);
-			fb.MessageInfo.Deserialize(p_Instance.ScoreMessageInfo, p_Reader, p_Parser);
-			fb.MessageInfo.Deserialize(p_Instance.ScoreMinorMessageInfo, p_Reader, p_Parser);
-			fb.MessageInfo.Deserialize(p_Instance.ScoreMajorMessageInfo, p_Reader, p_Parser);
-			fb.MessageInfo.Deserialize(p_Instance.GameMessageInfo, p_Reader, p_Parser);
-			fb.MessageInfo.Deserialize(p_Instance.StaticMessageInfo, p_Reader, p_Parser);
-			fb.MessageInfo.Deserialize(p_Instance.OutOfBoundsMessageInfo, p_Reader, p_Parser);
-			fb.MessageInfo.Deserialize(p_Instance.KillScoreMessageInfo, p_Reader, p_Parser);
-			fb.MessageInfo.Deserialize(p_Instance.LogLinesMessageInfo, p_Reader, p_Parser);
-			fb.MessageInfo.Deserialize(p_Instance.TooltipMessageInfo, p_Reader, p_Parser);
-			fb.MessageInfo.Deserialize(p_Instance.SubtitleMessageInfo, p_Reader, p_Parser);
-			fb.MessageInfo.Deserialize(p_Instance.RewardMessageInfo, p_Reader, p_Parser);
-			fb.MessageInfo.Deserialize(p_Instance.LocalKillMessageInfo, p_Reader, p_Parser);
-			fb.MessageInfo.Deserialize(p_Instance.ServerAdminYellMessageInfo, p_Reader, p_Parser);
-			fb.MessageInfo.Deserialize(p_Instance.GunMasterMessageInfo, p_Reader, p_Parser);
-			p_Instance.ForceSubtitlesForTheseLevels.Clear();
-			(RimeReader Reader, uint Count) s_ForceSubtitlesForTheseLevels = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_ForceSubtitlesForTheseLevels.Count; ++i)
-			{
-				var s_Value = p_Parser.GetStringAtOffset(s_ForceSubtitlesForTheseLevels.Reader.ReadUInt32());
-				p_Instance.ForceSubtitlesForTheseLevels.Add(s_Value);
-			}
-			
-			s_ForceSubtitlesForTheseLevels.Reader.Dispose();
-			p_Instance.ForceSubtitlesOffForTheseLevels.Clear();
-			(RimeReader Reader, uint Count) s_ForceSubtitlesOffForTheseLevels = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_ForceSubtitlesOffForTheseLevels.Count; ++i)
-			{
-				var s_Value = p_Parser.GetStringAtOffset(s_ForceSubtitlesOffForTheseLevels.Reader.ReadUInt32());
-				p_Instance.ForceSubtitlesOffForTheseLevels.Add(s_Value);
-			}
-			
-			s_ForceSubtitlesOffForTheseLevels.Reader.Dispose();
-		}
-
 	}
 }

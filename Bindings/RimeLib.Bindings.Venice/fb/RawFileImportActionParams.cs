@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(8), LayoutImmutable]
 		public string SourceFile { get; set; } = string.Empty;
 
-		public static void Deserialize(RawFileImportActionParams p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.SourceFile = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-		}
-
 	}
 }

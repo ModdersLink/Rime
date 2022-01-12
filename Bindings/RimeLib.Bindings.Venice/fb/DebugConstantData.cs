@@ -35,15 +35,5 @@ namespace fb
 		[ContainerField(28), LayoutImmutable, Blittable]
 		public bool InaccuracyEnabled { get; set; }
 
-		public static void Deserialize(DebugConstantData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.BotDebugDistance = p_Reader.ReadSingle();
-			p_Instance.InViewModeFOV = p_Reader.ReadSingle();
-			p_Instance.GraphDataBuffer = p_Reader.ReadUInt32();
-			p_Instance.MinDecisionTime = p_Reader.ReadSingle();
-			p_Instance.InaccuracyEnabled = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
-
 	}
 }

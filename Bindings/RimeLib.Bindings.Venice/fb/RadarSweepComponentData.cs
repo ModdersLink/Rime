@@ -41,17 +41,5 @@ namespace fb
 		[ContainerField(117), LayoutImmutable, Blittable]
 		public bool SweepForControllables { get; set; }
 
-		public static void Deserialize(RadarSweepComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.ControllableSpeedThreshold = p_Reader.ReadSingle();
-			p_Instance.ControllableSweepRadius = p_Reader.ReadSingle();
-			p_Instance.ControllableSweepInterval = p_Reader.ReadSingle();
-			p_Instance.MineSweepInterval = p_Reader.ReadSingle();
-			p_Instance.MineSweepRadius = p_Reader.ReadSingle();
-			p_Instance.SweepForMines = p_Reader.ReadBool();
-			p_Instance.SweepForControllables = p_Reader.ReadBool();
-			p_Reader.Seek(10, SeekOrigin.Current);
-		}
-
 	}
 }

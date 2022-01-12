@@ -103,37 +103,5 @@ namespace fb
 		[ContainerField(66), LayoutImmutable, Blittable]
 		public bool UseRenderTarget { get; set; }
 		
-		public static void Deserialize(HudData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.CrosshairScaleMin = p_Reader.ReadSingle();
-			p_Instance.CrosshairScaleMax = p_Reader.ReadSingle();
-			p_Instance.CrosshairOpacityMin = p_Reader.ReadSingle();
-			p_Instance.CrosshairOpacityMax = p_Reader.ReadSingle();
-			p_Instance.CrosshairOpacityModifier = p_Reader.ReadSingle();
-			p_Instance.CrosshairTypeId = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.WeaponClass = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.CameraShakeModifier = p_Reader.ReadSingle();
-			p_Instance.SeaLevelAltFreq = p_Reader.ReadSingle();
-			p_Instance.LowAmmoWarning = p_Reader.ReadSingle();
-			p_Instance.ReloadPrompt = p_Reader.ReadSingle();
-			p_Instance.RenderTargetIndex = p_Reader.ReadInt32();
-			p_Instance.HudPropertyList.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.ShowMinimap = p_Reader.ReadBool();
-			p_Instance.InfiniteAmmo = p_Reader.ReadBool();
-			p_Instance.HideCrosshairWhenAimOnFriend = p_Reader.ReadBool();
-			p_Instance.HideAmmo = p_Reader.ReadBool();
-			p_Instance.UseRangeMeter = p_Reader.ReadBool();
-			p_Instance.UsePredictedSight = p_Reader.ReadBool();
-			p_Instance.UseWeaponOrientations = p_Reader.ReadBool();
-			p_Instance.UseVelocityVectorMarker = p_Reader.ReadBool();
-			p_Instance.UseLockingController = p_Reader.ReadBool();
-			p_Instance.UseThrust = p_Reader.ReadBool();
-			p_Instance.UseGForce = p_Reader.ReadBool();
-			p_Instance.UseSkidSlip = p_Reader.ReadBool();
-			p_Instance.UseClimbRate = p_Reader.ReadBool();
-			p_Instance.UseAimWarning = p_Reader.ReadBool();
-			p_Instance.UseRenderTarget = p_Reader.ReadBool();
-			p_Reader.Seek(1, SeekOrigin.Current);
-		}
 	}
 }

@@ -23,11 +23,5 @@ namespace fb
 		[ContainerField(80), LayoutImmutable, Blittable]
 		public bool OccluderHighPriority { get; set; }
 
-		public static void Deserialize(OccluderVolumeEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.OccluderHighPriority = p_Reader.ReadBool();
-			p_Reader.Seek(15, SeekOrigin.Current);
-		}
-
 	}
 }

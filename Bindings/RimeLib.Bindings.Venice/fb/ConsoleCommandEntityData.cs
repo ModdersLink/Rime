@@ -26,19 +26,5 @@ namespace fb
 		[ContainerField(16)]
 		public Realm Realm { get; set; } = new();
 
-		public static void Deserialize(ConsoleCommandEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Commands.Clear();
-			(RimeReader Reader, uint Count) s_Commands = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_Commands.Count; ++i)
-			{
-				var s_Value = p_Parser.GetStringAtOffset(s_Commands.Reader.ReadUInt32());
-				p_Instance.Commands.Add(s_Value);
-			}
-			
-			s_Commands.Reader.Dispose();
-			p_Instance.Realm = (Realm) p_Reader.ReadInt32();
-		}
-
 	}
 }

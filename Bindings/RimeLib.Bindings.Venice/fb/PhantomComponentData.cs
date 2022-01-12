@@ -32,14 +32,5 @@ namespace fb
 		[ContainerField(120)]
 		public AntRef TrajectoryOverride { get; set; } = new();
 
-		public static void Deserialize(PhantomComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.Vec3.Deserialize(p_Instance.BoxSize, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.AsyncQueryPointerAsset, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.EnableTrajectoryOverride, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.TrajectoryOverride, p_Reader, p_Parser);
-			p_Reader.Seek(4, SeekOrigin.Current);
-		}
-
 	}
 }

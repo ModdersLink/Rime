@@ -67,24 +67,5 @@ namespace fb
 		[ContainerField(60)]
 		public AntRef EmoteMoveToPosition { get; set; } = new();
 		
-		public static void Deserialize(SoldierEmoteBinding p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AntRef.Deserialize(p_Instance.Speak, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.IsSquadLeader, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.EmoteSpot, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.EmoteOk, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.EmoteNeedARide, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.EmoteGoGoGo, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.EmoteNeedBackup, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.EmoteThanks, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.EmoteNeedMedic, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.EmoteFollowMe, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.EmoteNeedAmmo, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.EmoteSorry, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.EmoteNo, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.EmoteDefendCapturePoint, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.EmoteAttackCapturePoint, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.EmoteMoveToPosition, p_Reader, p_Parser);
-		}
 	}
 }

@@ -29,13 +29,5 @@ namespace fb
 		[ContainerField(48), LayoutImmutable, Blittable]
 		public bool AllowDecrease { get; set; }
 
-		public static void Deserialize(ChangeReadinessOrderEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Pulse = (ReadinessLevel) p_Reader.ReadInt32();
-			p_Instance.Minimum = (ReadinessLevel) p_Reader.ReadInt32();
-			p_Instance.AllowDecrease = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
-
 	}
 }

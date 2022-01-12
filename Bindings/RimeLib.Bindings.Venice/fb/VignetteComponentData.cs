@@ -38,21 +38,5 @@ namespace fb
 		[ContainerField(140), LayoutImmutable, Blittable]
 		public bool Enable { get; set; }
 
-		public static void Deserialize(VignetteComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.Vec2.Deserialize(p_Instance.Scale, p_Reader, p_Parser);
-			p_Reader.Seek(8, SeekOrigin.Current);
-			fb.Vec3.Deserialize(p_Instance.Color, p_Reader, p_Parser);
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.Realm = (Realm) p_Reader.ReadInt32();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.Exponent = p_Reader.ReadSingle();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.Opacity = p_Reader.ReadSingle();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.Enable = p_Reader.ReadBool();
-			p_Reader.Seek(11, SeekOrigin.Current);
-		}
-
 	}
 }

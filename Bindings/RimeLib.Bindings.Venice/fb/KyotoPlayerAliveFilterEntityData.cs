@@ -20,9 +20,5 @@ namespace fb
 	public class KyotoPlayerAliveFilterEntityData : 
 		EntityData
 	{
-		public static void Deserialize(KyotoPlayerAliveFilterEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

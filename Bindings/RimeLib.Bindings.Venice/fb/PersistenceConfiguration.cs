@@ -38,15 +38,5 @@ namespace fb
 		[ContainerField(32)]
 		public CtrRef<LicenseConfiguration> LicenseConfig { get; set; } = new();
 
-		public static void Deserialize(PersistenceConfiguration p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.StatCategoryTreeCollection.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.MPProfile.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.SPProfile.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.CoopProfile.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.PointSystemParams.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.LicenseConfig.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-		}
-
 	}
 }

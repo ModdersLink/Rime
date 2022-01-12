@@ -29,13 +29,5 @@ namespace fb
 		[ContainerField(212), LayoutImmutable, Blittable]
 		public bool AlignConstraintsToEntity { get; set; }
 
-		public static void Deserialize(SoldierEntryComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AimingConstraintsData.Deserialize(p_Instance.AimingConstraints, p_Reader, p_Parser);
-			p_Instance.AntEntryEnumeration.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.AlignConstraintsToEntity = p_Reader.ReadBool();
-			p_Reader.Seek(11, SeekOrigin.Current);
-		}
-
 	}
 }

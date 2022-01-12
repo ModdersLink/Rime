@@ -35,14 +35,5 @@ namespace fb
 		[ContainerField(28), LayoutImmutable, Blittable]
 		public float Max { get; set; }
 
-		public static void Deserialize(DebugValueInput p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AudioGraphNodePort.Deserialize(p_Instance.V, p_Reader, p_Parser);
-			p_Instance.Name = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.RenderType = (DebugRenderType) p_Reader.ReadInt32();
-			p_Instance.Min = p_Reader.ReadSingle();
-			p_Instance.Max = p_Reader.ReadSingle();
-		}
-
 	}
 }

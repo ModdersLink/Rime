@@ -35,15 +35,5 @@ namespace fb
 		[ContainerField(109), LayoutImmutable, Blittable]
 		public bool OverrideGravity { get; set; }
 
-		public static void Deserialize(SoldierBodyComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.SprintMultiplier = p_Reader.ReadSingle();
-			p_Instance.OverrideGravityValue = p_Reader.ReadSingle();
-			p_Instance.OverrideVelocityY = p_Reader.ReadSingle();
-			p_Instance.OverrideVelocity = p_Reader.ReadBool();
-			p_Instance.OverrideGravity = p_Reader.ReadBool();
-			p_Reader.Seek(2, SeekOrigin.Current);
-		}
-
 	}
 }

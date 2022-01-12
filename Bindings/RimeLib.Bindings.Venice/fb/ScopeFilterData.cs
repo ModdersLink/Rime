@@ -20,9 +20,5 @@ namespace fb
 	public class ScopeFilterData : 
 		Asset
 	{
-		public static void Deserialize(ScopeFilterData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

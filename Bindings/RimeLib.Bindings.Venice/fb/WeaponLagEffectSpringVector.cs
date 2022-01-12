@@ -28,11 +28,5 @@ namespace fb
 		[ContainerField(16)]
 		public WeaponLagEffectSpringData SpringZ { get; set; } = new();
 		
-		public static void Deserialize(WeaponLagEffectSpringVector p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.WeaponLagEffectSpringData.Deserialize(p_Instance.SpringX, p_Reader, p_Parser);
-			fb.WeaponLagEffectSpringData.Deserialize(p_Instance.SpringY, p_Reader, p_Parser);
-			fb.WeaponLagEffectSpringData.Deserialize(p_Instance.SpringZ, p_Reader, p_Parser);
-		}
 	}
 }

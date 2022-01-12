@@ -20,9 +20,5 @@ namespace fb
 	public class UIPartData : 
 		DataContainer
 	{
-		public static void Deserialize(UIPartData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

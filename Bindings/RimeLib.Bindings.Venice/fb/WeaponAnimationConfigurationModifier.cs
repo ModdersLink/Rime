@@ -29,20 +29,5 @@ namespace fb
 		[ContainerField(24)]
 		public AnimatedFireEnum AnimatedFireType { get; set; } = new();
 
-		public static void Deserialize(WeaponAnimationConfigurationModifier p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.ZoomInOutMeshTransitionFactors.Clear();
-			(RimeReader Reader, uint Count) s_ZoomInOutMeshTransitionFactors = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_ZoomInOutMeshTransitionFactors.Count; ++i)
-			{
-				var s_Value = s_ZoomInOutMeshTransitionFactors.Reader.ReadSingle();
-				p_Instance.ZoomInOutMeshTransitionFactors.Add(s_Value);
-			}
-			
-			s_ZoomInOutMeshTransitionFactors.Reader.Dispose();
-			fb.AnimationConfigurationData.Deserialize(p_Instance.AnimationConfiguration, p_Reader, p_Parser);
-			p_Instance.AnimatedFireType = (AnimatedFireEnum) p_Reader.ReadInt32();
-		}
-
 	}
 }

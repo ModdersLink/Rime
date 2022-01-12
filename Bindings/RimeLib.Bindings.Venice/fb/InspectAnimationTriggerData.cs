@@ -25,10 +25,5 @@ namespace fb
 		[ContainerField(4), LayoutImmutable, Blittable]
 		public float Probability { get; set; }
 		
-		public static void Deserialize(InspectAnimationTriggerData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AntRef.Deserialize(p_Instance.Animation, p_Reader, p_Parser);
-			p_Instance.Probability = p_Reader.ReadSingle();
-		}
 	}
 }

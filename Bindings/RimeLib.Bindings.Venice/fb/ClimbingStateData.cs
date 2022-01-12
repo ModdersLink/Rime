@@ -50,19 +50,5 @@ namespace fb
 		[ContainerField(48), LayoutImmutable, Blittable]
 		public float ClimbOffHorizontalTime { get; set; }
 
-		public static void Deserialize(ClimbingStateData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.LateralInputScale = p_Reader.ReadSingle();
-			p_Instance.DownAngleLimit = p_Reader.ReadSingle();
-			p_Instance.DropOffAngle = p_Reader.ReadSingle();
-			p_Instance.AttractionVelocity = p_Reader.ReadSingle();
-			p_Instance.PushAwayVelocity = p_Reader.ReadSingle();
-			p_Instance.ClimbHeightOffset = p_Reader.ReadSingle();
-			p_Instance.ClimbOffVerticalDistance = p_Reader.ReadSingle();
-			p_Instance.ClimbOffVerticalTime = p_Reader.ReadSingle();
-			p_Instance.ClimbOffHorizontalDistance = p_Reader.ReadSingle();
-			p_Instance.ClimbOffHorizontalTime = p_Reader.ReadSingle();
-		}
-
 	}
 }

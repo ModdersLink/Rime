@@ -46,17 +46,5 @@ namespace fb
 		[ContainerField(32), LayoutImmutable, Blittable]
 		public float DisabledStrenghModifier { get; set; }
 		
-		public static void Deserialize(SpringData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Length = p_Reader.ReadSingle();
-			p_Instance.Stiffness = p_Reader.ReadSingle();
-			p_Instance.Damping = p_Reader.ReadSingle();
-			p_Instance.MaxSpringForce = p_Reader.ReadSingle();
-			p_Instance.ProgressiveStartRatio = p_Reader.ReadSingle();
-			p_Instance.ProgressiveExponent = p_Reader.ReadSingle();
-			p_Instance.VisualClipOffset = p_Reader.ReadSingle();
-			p_Instance.AttachOffsetY = p_Reader.ReadSingle();
-			p_Instance.DisabledStrenghModifier = p_Reader.ReadSingle();
-		}
 	}
 }

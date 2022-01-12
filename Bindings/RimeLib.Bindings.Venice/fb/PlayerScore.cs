@@ -46,17 +46,5 @@ namespace fb
 		[ContainerField(32), LayoutImmutable, Blittable]
 		public uint GunMasterLevel { get; set; }
 		
-		public static void Deserialize(PlayerScore p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Rank = p_Reader.ReadInt32();
-			p_Instance.Kills = p_Reader.ReadUInt32();
-			p_Instance.Deaths = p_Reader.ReadUInt32();
-			p_Instance.ScoreMultiplier = p_Reader.ReadUInt32();
-			p_Instance.Score = p_Reader.ReadInt32();
-			p_Instance.GlobalScoreOriginal = p_Reader.ReadInt32();
-			p_Instance.GlobalScoreUpdated = p_Reader.ReadInt32();
-			p_Instance.Time = p_Reader.ReadSingle();
-			p_Instance.GunMasterLevel = p_Reader.ReadUInt32();
-		}
 	}
 }

@@ -26,11 +26,5 @@ namespace fb
 		[ContainerField(16), LayoutImmutable, Blittable]
 		public float GravityScale { get; set; }
 
-		public static void Deserialize(SlidingStateData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.HorizontalInputScale = p_Reader.ReadSingle();
-			p_Instance.GravityScale = p_Reader.ReadSingle();
-		}
-
 	}
 }

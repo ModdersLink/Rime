@@ -47,19 +47,5 @@ namespace fb
 		[ContainerField(123), LayoutImmutable, Blittable]
 		public bool RemoveSoldiers { get; set; }
 
-		public static void Deserialize(ClearAreaTriggerEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.TeamOfImmortalSoldiers = (TeamId) p_Reader.ReadInt32();
-			p_Instance.RemoveBangers = p_Reader.ReadBool();
-			p_Instance.RemoveVehicles = p_Reader.ReadBool();
-			p_Instance.RemoveEffects = p_Reader.ReadBool();
-			p_Instance.RemoveStaticModels = p_Reader.ReadBool();
-			p_Instance.RemoveDebrisClusters = p_Reader.ReadBool();
-			p_Instance.ExcludeImmortalSoldiersInTeam = p_Reader.ReadBool();
-			p_Instance.RemoveMeshProxies = p_Reader.ReadBool();
-			p_Instance.RemoveSoldiers = p_Reader.ReadBool();
-			p_Reader.Seek(4, SeekOrigin.Current);
-		}
-
 	}
 }

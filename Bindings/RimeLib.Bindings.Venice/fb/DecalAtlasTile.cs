@@ -37,15 +37,5 @@ namespace fb
 		[ContainerField(17), LayoutImmutable, Blittable]
 		public bool FlipY { get; set; }
 		
-		public static void Deserialize(DecalAtlasTile p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.TileIndexX = p_Reader.ReadSingle();
-			p_Instance.TileIndexY = p_Reader.ReadSingle();
-			p_Instance.TileCountX = p_Reader.ReadSingle();
-			p_Instance.TileCountY = p_Reader.ReadSingle();
-			p_Instance.FlipX = p_Reader.ReadBool();
-			p_Instance.FlipY = p_Reader.ReadBool();
-			p_Reader.Seek(2, SeekOrigin.Current);
-		}
 	}
 }

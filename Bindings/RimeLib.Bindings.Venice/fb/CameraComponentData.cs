@@ -74,28 +74,5 @@ namespace fb
 		[ContainerField(213), LayoutImmutable, Blittable]
 		public bool IgnoreOwnerOrientation { get; set; }
 
-		public static void Deserialize(CameraComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.Vec3.Deserialize(p_Instance.CameraTransitionPos, p_Reader, p_Parser);
-			p_Instance.FieldOfView = p_Reader.ReadSingle();
-			p_Instance.ForceFieldOfView = p_Reader.ReadSingle();
-			p_Instance.Camera.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.AlternateView.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			fb.RegularCameraViewData.Deserialize(p_Instance.RegularView, p_Reader, p_Parser);
-			p_Instance.FreezeHeight = p_Reader.ReadSingle();
-			fb.StanceCameraData.Deserialize(p_Instance.StanceData, p_Reader, p_Parser);
-			p_Instance.CameraSoundData.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			fb.SoldierAnimatedCameraData.Deserialize(p_Instance.SoldierAnimatedCamera, p_Reader, p_Parser);
-			p_Instance.CameraTransitionTime = p_Reader.ReadSingle();
-			p_Instance.MeshParentComponentNumber = p_Reader.ReadUInt32();
-			p_Instance.EnableCameraMesh = p_Reader.ReadBool();
-			p_Instance.ReceiveImpulsesAsThirdPerson = p_Reader.ReadBool();
-			p_Instance.UseCameraTransition = p_Reader.ReadBool();
-			p_Instance.AlternateViewEnabled = p_Reader.ReadBool();
-			p_Instance.IsFirstPerson = p_Reader.ReadBool();
-			p_Instance.IgnoreOwnerOrientation = p_Reader.ReadBool();
-			p_Reader.Seek(10, SeekOrigin.Current);
-		}
-
 	}
 }

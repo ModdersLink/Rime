@@ -32,13 +32,5 @@ namespace fb
 		[ContainerField(108), LayoutImmutable, Blittable]
 		public float RunPeriod { get; set; }
 
-		public static void Deserialize(SoldierSoundComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.WalkVelocityThreshold = p_Reader.ReadSingle();
-			p_Instance.RunVelocityThreshold = p_Reader.ReadSingle();
-			p_Instance.WalkPeriod = p_Reader.ReadSingle();
-			p_Instance.RunPeriod = p_Reader.ReadSingle();
-		}
-
 	}
 }

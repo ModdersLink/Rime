@@ -20,9 +20,5 @@ namespace fb
 	public class InputActionMappingData : 
 		DataContainer
 	{
-		public static void Deserialize(InputActionMappingData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

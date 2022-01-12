@@ -20,9 +20,5 @@ namespace fb
 	public class CharacterBlueprint : 
 		ObjectBlueprint
 	{
-		public static void Deserialize(CharacterBlueprint p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

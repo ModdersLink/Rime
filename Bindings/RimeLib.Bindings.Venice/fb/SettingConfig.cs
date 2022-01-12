@@ -40,16 +40,5 @@ namespace fb
 		[ContainerField(24), LayoutImmutable, Blittable]
 		public bool Ranked { get; set; }
 		
-		public static void Deserialize(SettingConfig p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Key = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.NameSid = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.DescSid = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Max = p_Reader.ReadUInt32();
-			p_Instance.Default = p_Reader.ReadUInt32();
-			p_Instance.Min = p_Reader.ReadUInt32();
-			p_Instance.Ranked = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
 	}
 }

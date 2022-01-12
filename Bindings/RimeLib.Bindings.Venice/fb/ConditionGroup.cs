@@ -32,13 +32,5 @@ namespace fb
 		[ContainerField(32)]
 		public ConditionType Condition { get; set; } = new();
 
-		public static void Deserialize(ConditionGroup p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AudioGraphNodePort.Deserialize(p_Instance.X, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.Y, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.True, p_Reader, p_Parser);
-			p_Instance.Condition = (ConditionType) p_Reader.ReadInt32();
-		}
-
 	}
 }

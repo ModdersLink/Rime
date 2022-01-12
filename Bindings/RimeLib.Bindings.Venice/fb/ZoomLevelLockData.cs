@@ -25,10 +25,5 @@ namespace fb
 		[ContainerField(4)]
 		public LockType LockType { get; set; } = new();
 		
-		public static void Deserialize(ZoomLevelLockData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.OutlineTaggedDistance = p_Reader.ReadSingle();
-			p_Instance.LockType = (LockType) p_Reader.ReadInt32();
-		}
 	}
 }

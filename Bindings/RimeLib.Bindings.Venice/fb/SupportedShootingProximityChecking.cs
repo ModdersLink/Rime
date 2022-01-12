@@ -31,12 +31,5 @@ namespace fb
 		[ContainerField(12), LayoutImmutable, Blittable]
 		public float RayBelowLength { get; set; }
 		
-		public static void Deserialize(SupportedShootingProximityChecking p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.RayAboveGunHeightOffset = p_Reader.ReadSingle();
-			p_Instance.RayAboveLength = p_Reader.ReadSingle();
-			p_Instance.RayBelowGunHeightOffset = p_Reader.ReadSingle();
-			p_Instance.RayBelowLength = p_Reader.ReadSingle();
-		}
 	}
 }

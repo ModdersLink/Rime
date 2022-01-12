@@ -44,18 +44,5 @@ namespace fb
 		[ContainerField(128), LayoutImmutable, Blittable]
 		public bool ExcludeShieldedSoldiers { get; set; }
 
-		public static void Deserialize(DamageAreaTriggerEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.DamagePerSecond = p_Reader.ReadSingle();
-			p_Instance.TeamOfImmortalCharacters = (TeamId) p_Reader.ReadInt32();
-			p_Instance.DamageTime = p_Reader.ReadSingle();
-			p_Instance.DamageVehicles = p_Reader.ReadBool();
-			p_Instance.DamageBangers = p_Reader.ReadBool();
-			p_Instance.ExcludeImmortalCharactersInTeam = p_Reader.ReadBool();
-			p_Instance.DamageCharacters = p_Reader.ReadBool();
-			p_Instance.ExcludeShieldedSoldiers = p_Reader.ReadBool();
-			p_Reader.Seek(15, SeekOrigin.Current);
-		}
-
 	}
 }

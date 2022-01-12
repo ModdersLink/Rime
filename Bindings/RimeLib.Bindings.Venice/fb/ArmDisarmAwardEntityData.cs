@@ -20,9 +20,5 @@ namespace fb
 	public class ArmDisarmAwardEntityData : 
 		GameEntityData
 	{
-		public static void Deserialize(ArmDisarmAwardEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

@@ -20,9 +20,5 @@ namespace fb
 	public class SoundPatchConfigurationEntry : 
 		DataContainer
 	{
-		public static void Deserialize(SoundPatchConfigurationEntry p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

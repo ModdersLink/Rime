@@ -21,21 +21,7 @@ namespace fb
 		Asset
 	{
 		[ContainerField(12)]
-		public List<CtrRef<TimingViewCategory>> TimingCategories { get; set; } = new();
-
-		public static void Deserialize(TimingViewCategories p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.TimingCategories.Clear();
-			(RimeReader Reader, uint Count) s_TimingCategories = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_TimingCategories.Count; ++i)
-			{
-				var s_CtrRef = new CtrRef<TimingViewCategory>();
-				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_TimingCategories.Reader.ReadUInt32()));
-				p_Instance.TimingCategories.Add(s_CtrRef);
-			}
-			
-			s_TimingCategories.Reader.Dispose();
-		}
+		public RefArray<TimingViewCategory> TimingCategories { get; set; } = new();
 
 	}
 }

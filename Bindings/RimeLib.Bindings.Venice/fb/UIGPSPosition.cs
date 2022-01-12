@@ -28,11 +28,5 @@ namespace fb
 		[ContainerField(16), LayoutImmutable, Blittable]
 		public double SeaLevelOffset { get; set; }
 		
-		public static void Deserialize(UIGPSPosition p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Latitude = p_Reader.ReadDouble();
-			p_Instance.Longitude = p_Reader.ReadDouble();
-			p_Instance.SeaLevelOffset = p_Reader.ReadDouble();
-		}
 	}
 }

@@ -20,9 +20,5 @@ namespace fb
 	public class AbstractPersistentStatRef : 
 		DataContainer
 	{
-		public static void Deserialize(AbstractPersistentStatRef p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

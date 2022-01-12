@@ -38,15 +38,5 @@ namespace fb
 		[ContainerField(32), LayoutImmutable, Blittable]
 		public float MinZ { get; set; }
 
-		public static void Deserialize(RandomXYZEvaluatorData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.MaxX = p_Reader.ReadSingle();
-			p_Instance.MinX = p_Reader.ReadSingle();
-			p_Instance.MaxY = p_Reader.ReadSingle();
-			p_Instance.MinY = p_Reader.ReadSingle();
-			p_Instance.MaxZ = p_Reader.ReadSingle();
-			p_Instance.MinZ = p_Reader.ReadSingle();
-		}
-
 	}
 }

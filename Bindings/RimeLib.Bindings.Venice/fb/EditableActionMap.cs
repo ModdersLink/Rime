@@ -31,12 +31,5 @@ namespace fb
 		[ContainerField(12)]
 		public EditableActions ConfigurationLayout { get; set; } = new();
 		
-		public static void Deserialize(EditableActionMap p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Id = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.NameId = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.ActionMap.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			fb.EditableActions.Deserialize(p_Instance.ConfigurationLayout, p_Reader, p_Parser);
-		}
 	}
 }

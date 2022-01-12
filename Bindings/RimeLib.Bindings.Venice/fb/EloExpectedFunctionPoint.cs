@@ -25,10 +25,5 @@ namespace fb
 		[ContainerField(4), LayoutImmutable, Blittable]
 		public float YValue { get; set; }
 		
-		public static void Deserialize(EloExpectedFunctionPoint p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.XValue = p_Reader.ReadSingle();
-			p_Instance.YValue = p_Reader.ReadSingle();
-		}
 	}
 }

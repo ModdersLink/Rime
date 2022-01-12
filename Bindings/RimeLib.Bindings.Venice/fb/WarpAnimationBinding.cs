@@ -34,13 +34,5 @@ namespace fb
 		[ContainerField(16)]
 		public AntRef TranslationYWarpTolerance { get; set; } = new();
 		
-		public static void Deserialize(WarpAnimationBinding p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AntRef.Deserialize(p_Instance.ConnectJointGroup, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.ConnectJointWeight, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.EnableAlign, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.DisableCulling, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.TranslationYWarpTolerance, p_Reader, p_Parser);
-		}
 	}
 }

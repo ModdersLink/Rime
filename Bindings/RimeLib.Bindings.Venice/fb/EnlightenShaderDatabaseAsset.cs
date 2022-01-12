@@ -20,9 +20,5 @@ namespace fb
 	public class EnlightenShaderDatabaseAsset : 
 		Asset
 	{
-		public static void Deserialize(EnlightenShaderDatabaseAsset p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

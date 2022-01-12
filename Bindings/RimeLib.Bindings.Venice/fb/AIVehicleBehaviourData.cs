@@ -35,47 +35,5 @@ namespace fb
 		[ContainerField(24)]
 		public List<IntentData> Intents { get; set; } = new();
 
-		public static void Deserialize(AIVehicleBehaviourData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Name = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Controls.Clear();
-			(RimeReader Reader, uint Count) s_Controls = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_Controls.Count; ++i)
-			{
-				var s_Value = p_Parser.GetStringAtOffset(s_Controls.Reader.ReadUInt32());
-				p_Instance.Controls.Add(s_Value);
-			}
-			
-			s_Controls.Reader.Dispose();
-			p_Instance.Behaviours.Clear();
-			(RimeReader Reader, uint Count) s_Behaviours = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_Behaviours.Count; ++i)
-			{
-				var s_Value = p_Parser.GetStringAtOffset(s_Behaviours.Reader.ReadUInt32());
-				p_Instance.Behaviours.Add(s_Value);
-			}
-			
-			s_Behaviours.Reader.Dispose();
-			p_Instance.Goals.Clear();
-			(RimeReader Reader, uint Count) s_Goals = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_Goals.Count; ++i)
-			{
-				var s_Value = p_Parser.GetStringAtOffset(s_Goals.Reader.ReadUInt32());
-				p_Instance.Goals.Add(s_Value);
-			}
-			
-			s_Goals.Reader.Dispose();
-			p_Instance.Intents.Clear();
-			(RimeReader Reader, uint Count) s_Intents = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_Intents.Count; ++i)
-			{
-				var s_Value = new IntentData();
-				fb.IntentData.Deserialize(s_Value, s_Intents.Reader, p_Parser);
-				p_Instance.Intents.Add(s_Value);
-			}
-			
-			s_Intents.Reader.Dispose();
-		}
-
 	}
 }

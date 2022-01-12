@@ -26,20 +26,5 @@ namespace fb
 		[ContainerField(16)]
 		public List<SubSkeleton> SubSkeletons { get; set; } = new();
 
-		public static void Deserialize(MasterSkeletonAsset p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.MasterSkeleton.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.SubSkeletons.Clear();
-			(RimeReader Reader, uint Count) s_SubSkeletons = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_SubSkeletons.Count; ++i)
-			{
-				var s_Value = new SubSkeleton();
-				fb.SubSkeleton.Deserialize(s_Value, s_SubSkeletons.Reader, p_Parser);
-				p_Instance.SubSkeletons.Add(s_Value);
-			}
-			
-			s_SubSkeletons.Reader.Dispose();
-		}
-
 	}
 }

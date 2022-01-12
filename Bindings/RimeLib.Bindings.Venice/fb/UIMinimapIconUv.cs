@@ -25,10 +25,5 @@ namespace fb
 		[ContainerField(8), Homogeneous, LayoutImmutable, Blittable]
 		public Vec2 MaxUv { get; set; } = new();
 		
-		public static void Deserialize(UIMinimapIconUv p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.Vec2.Deserialize(p_Instance.MinUv, p_Reader, p_Parser);
-			fb.Vec2.Deserialize(p_Instance.MaxUv, p_Reader, p_Parser);
-		}
 	}
 }

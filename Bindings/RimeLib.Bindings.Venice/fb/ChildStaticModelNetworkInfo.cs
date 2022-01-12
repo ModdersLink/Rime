@@ -31,12 +31,5 @@ namespace fb
 		[ContainerField(16), LayoutImmutable, Blittable]
 		public uint InstanceIndex { get; set; }
 		
-		public static void Deserialize(ChildStaticModelNetworkInfo p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.IndexRange.Deserialize(p_Instance.NetworkRange, p_Reader, p_Parser);
-			p_Instance.ParentPartComponentIndex = p_Reader.ReadUInt32();
-			p_Instance.ParentHealthStateIndex = p_Reader.ReadUInt32();
-			p_Instance.InstanceIndex = p_Reader.ReadUInt32();
-		}
 	}
 }

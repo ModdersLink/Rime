@@ -20,9 +20,5 @@ namespace fb
 	public class StatsCategoryKitData : 
 		StatsCategoryGuidData
 	{
-		public static void Deserialize(StatsCategoryKitData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

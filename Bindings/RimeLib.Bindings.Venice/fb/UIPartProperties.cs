@@ -31,13 +31,5 @@ namespace fb
 		[ContainerField(12), LayoutImmutable, Blittable]
 		public bool CompensateFreelook { get; set; }
 		
-		public static void Deserialize(UIPartProperties p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Identifier = (UIPartIdentifier) p_Reader.ReadInt32();
-			p_Instance.Range = p_Reader.ReadSingle();
-			p_Instance.Frequency = p_Reader.ReadSingle();
-			p_Instance.CompensateFreelook = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
 	}
 }

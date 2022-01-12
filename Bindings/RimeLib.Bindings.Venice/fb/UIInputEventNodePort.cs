@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(24)]
 		public UIInputAction InputEventType { get; set; } = new();
 
-		public static void Deserialize(UIInputEventNodePort p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.InputEventType = (UIInputAction) p_Reader.ReadInt32();
-		}
-
 	}
 }

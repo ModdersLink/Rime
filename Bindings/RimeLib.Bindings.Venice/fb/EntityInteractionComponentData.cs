@@ -47,24 +47,5 @@ namespace fb
 		[ContainerField(129), LayoutImmutable, Blittable]
 		public bool OnlyAllowInteractionWithManDownSoldiers { get; set; }
 
-		public static void Deserialize(EntityInteractionComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.PickupRadius = p_Reader.ReadSingle();
-			p_Instance.MaxAmmoPickupTimer = p_Reader.ReadSingle();
-			p_Instance.MaxAmmoCrateTimer = p_Reader.ReadSingle();
-			fb.InteractionTypesData.Deserialize(p_Instance.InteractWithTypes, p_Reader, p_Parser);
-			p_Reader.Seek(2, SeekOrigin.Current);
-			p_Instance.MaxLookAtAngle = p_Reader.ReadSingle();
-			p_Reader.Seek(2, SeekOrigin.Current);
-			p_Instance.SoldierInteractRadius = p_Reader.ReadSingle();
-			p_Reader.Seek(2, SeekOrigin.Current);
-			p_Instance.SoldierInteractInputAction = (EntryInputActionEnum) p_Reader.ReadInt32();
-			p_Reader.Seek(2, SeekOrigin.Current);
-			p_Instance.AllowInteractionWithSoldiers = p_Reader.ReadBool();
-			p_Reader.Seek(2, SeekOrigin.Current);
-			p_Instance.OnlyAllowInteractionWithManDownSoldiers = p_Reader.ReadBool();
-			p_Reader.Seek(16, SeekOrigin.Current);
-		}
-
 	}
 }

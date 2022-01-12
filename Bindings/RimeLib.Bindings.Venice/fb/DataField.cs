@@ -31,12 +31,5 @@ namespace fb
 		[ContainerField(12)]
 		public FieldAccessType AccessType { get; set; } = new();
 		
-		public static void Deserialize(DataField p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Value = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.ValueRef.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.Id = p_Reader.ReadInt32();
-			p_Instance.AccessType = (FieldAccessType) p_Reader.ReadInt32();
-		}
 	}
 }

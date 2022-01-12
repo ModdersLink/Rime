@@ -29,13 +29,5 @@ namespace fb
 		[ContainerField(152), LayoutImmutable, Blittable]
 		public bool CharacterLightingEnable { get; set; }
 
-		public static void Deserialize(CharacterEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.DefaultViewMode = (PersonViewMode) p_Reader.ReadInt32();
-			p_Instance.PlayerSpawnType = (PlayerSpawnType) p_Reader.ReadInt32();
-			p_Instance.CharacterLightingEnable = p_Reader.ReadBool();
-			p_Reader.Seek(7, SeekOrigin.Current);
-		}
-
 	}
 }

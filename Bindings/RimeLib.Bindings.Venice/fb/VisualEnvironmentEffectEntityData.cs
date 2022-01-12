@@ -38,16 +38,5 @@ namespace fb
 		[ContainerField(168), LayoutImmutable, Blittable]
 		public bool SampleOnStartOnly { get; set; }
 
-		public static void Deserialize(VisualEnvironmentEffectEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.Vec4.Deserialize(p_Instance.LifetimeCurve, p_Reader, p_Parser);
-			fb.Vec4.Deserialize(p_Instance.CullDistanceCurve, p_Reader, p_Parser);
-			fb.Vec4.Deserialize(p_Instance.CullAngleCurve, p_Reader, p_Parser);
-			p_Instance.Lifetime = p_Reader.ReadSingle();
-			p_Instance.VisualEnvironment.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.SampleOnStartOnly = p_Reader.ReadBool();
-			p_Reader.Seek(7, SeekOrigin.Current);
-		}
-
 	}
 }

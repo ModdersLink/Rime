@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(8)]
 		public AnimatedFireEnum AnimatedFireType { get; set; } = new();
 
-		public static void Deserialize(WeaponAnimatedFireTypeModifier p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.AnimatedFireType = (AnimatedFireEnum) p_Reader.ReadInt32();
-		}
-
 	}
 }

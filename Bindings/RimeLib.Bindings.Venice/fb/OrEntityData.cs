@@ -29,13 +29,5 @@ namespace fb
 		[ContainerField(17), LayoutImmutable, Blittable]
 		public bool In2 { get; set; }
 
-		public static void Deserialize(OrEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Realm = (Realm) p_Reader.ReadInt32();
-			p_Instance.In1 = p_Reader.ReadBool();
-			p_Instance.In2 = p_Reader.ReadBool();
-			p_Reader.Seek(2, SeekOrigin.Current);
-		}
-
 	}
 }

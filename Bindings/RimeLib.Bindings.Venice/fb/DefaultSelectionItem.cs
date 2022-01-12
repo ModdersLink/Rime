@@ -25,10 +25,5 @@ namespace fb
 		[ContainerField(16), LayoutImmutable, Blittable]
 		public int DefaultSelectionIndex { get; set; }
 		
-		public static void Deserialize(DefaultSelectionItem p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.UIDataSourceInfo.Deserialize(p_Instance.DefaultSelectionQuery, p_Reader, p_Parser);
-			p_Instance.DefaultSelectionIndex = p_Reader.ReadInt32();
-		}
 	}
 }

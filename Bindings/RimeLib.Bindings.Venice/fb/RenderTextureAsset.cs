@@ -20,9 +20,5 @@ namespace fb
 	public class RenderTextureAsset : 
 		TextureBaseAsset
 	{
-		public static void Deserialize(RenderTextureAsset p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

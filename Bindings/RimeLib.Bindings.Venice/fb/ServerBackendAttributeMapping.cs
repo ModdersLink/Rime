@@ -28,11 +28,5 @@ namespace fb
 		[ContainerField(8), LayoutImmutable]
 		public string DefaultValue { get; set; } = string.Empty;
 		
-		public static void Deserialize(ServerBackendAttributeMapping p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Attribute = (ServerBackendAttribute) p_Reader.ReadInt32();
-			p_Instance.Setting = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.DefaultValue = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-		}
 	}
 }

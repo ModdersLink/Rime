@@ -34,14 +34,5 @@ namespace fb
 		[ContainerField(64)]
 		public CharacterPoseType PoseType { get; set; } = new();
 		
-		public static void Deserialize(AutoAimData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.Vec3.Deserialize(p_Instance.AutoAimOuterBoxOffset, p_Reader, p_Parser);
-			fb.Vec3.Deserialize(p_Instance.AutoAimOuterBoxExtends, p_Reader, p_Parser);
-			fb.Vec3.Deserialize(p_Instance.AutoAimInnerBoxOffset, p_Reader, p_Parser);
-			fb.Vec3.Deserialize(p_Instance.AutoAimInnerBoxExtends, p_Reader, p_Parser);
-			p_Instance.PoseType = (CharacterPoseType) p_Reader.ReadInt32();
-			p_Reader.Seek(12, SeekOrigin.Current);
-		}
 	}
 }

@@ -22,9 +22,5 @@ namespace fb
 		[ContainerField(0), LayoutImmutable]
 		public string Value { get; set; } = string.Empty;
 		
-		public static void Deserialize(DataVisualizerValue p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Value = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-		}
 	}
 }

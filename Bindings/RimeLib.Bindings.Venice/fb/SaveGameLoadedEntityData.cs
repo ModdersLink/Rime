@@ -20,9 +20,5 @@ namespace fb
 	public class SaveGameLoadedEntityData : 
 		EntityData
 	{
-		public static void Deserialize(SaveGameLoadedEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

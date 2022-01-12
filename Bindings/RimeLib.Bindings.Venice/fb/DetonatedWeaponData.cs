@@ -26,11 +26,5 @@ namespace fb
 		[ContainerField(20), LayoutImmutable, Blittable]
 		public float Range { get; set; }
 
-		public static void Deserialize(DetonatedWeaponData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.LockingController.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.Range = p_Reader.ReadSingle();
-		}
-
 	}
 }

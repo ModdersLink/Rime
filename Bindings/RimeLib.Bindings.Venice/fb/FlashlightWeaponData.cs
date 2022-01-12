@@ -29,12 +29,5 @@ namespace fb
 		[ContainerField(24), LayoutImmutable, Blittable]
 		public float Angle { get; set; }
 
-		public static void Deserialize(FlashlightWeaponData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.UpdateFrequency = p_Reader.ReadSingle();
-			p_Instance.Range = p_Reader.ReadSingle();
-			p_Instance.Angle = p_Reader.ReadSingle();
-		}
-
 	}
 }

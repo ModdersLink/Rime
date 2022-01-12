@@ -62,23 +62,5 @@ namespace fb
 		[ContainerField(64), LayoutImmutable, Blittable]
 		public float AllowedOvershoot { get; set; }
 
-		public static void Deserialize(HdrSetting p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.WindowMinTop = p_Reader.ReadSingle();
-			p_Instance.WindowMinBottom = p_Reader.ReadSingle();
-			p_Instance.WindowTopMinReleaseTime = p_Reader.ReadSingle();
-			p_Instance.WindowTopMaxReleaseTime = p_Reader.ReadSingle();
-			p_Instance.WindowTopAttackTime = p_Reader.ReadSingle();
-			p_Instance.WindowBottomReleaseTime = p_Reader.ReadSingle();
-			fb.AudioCurve.Deserialize(p_Instance.WindowTopReleaseTimeCurve, p_Reader, p_Parser);
-			p_Instance.DischargeFactor = p_Reader.ReadSingle();
-			p_Instance.MaxAllowedEnergy = p_Reader.ReadSingle();
-			p_Instance.WindowBottomAttackTime = p_Reader.ReadSingle();
-			p_Instance.WindowSize = p_Reader.ReadSingle();
-			p_Instance.CompressFactor = p_Reader.ReadSingle();
-			p_Instance.Headroom = p_Reader.ReadSingle();
-			p_Instance.AllowedOvershoot = p_Reader.ReadSingle();
-		}
-
 	}
 }

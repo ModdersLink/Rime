@@ -22,9 +22,5 @@ namespace fb
 		[ContainerField(0), LayoutImmutable, Blittable]
 		public uint Id { get; set; }
 		
-		public static void Deserialize(EntityUid p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Id = p_Reader.ReadUInt32();
-		}
 	}
 }

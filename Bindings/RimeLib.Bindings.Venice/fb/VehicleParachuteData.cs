@@ -68,25 +68,5 @@ namespace fb
 		[ContainerField(68), LayoutImmutable, Blittable]
 		public float RampLength { get; set; }
 
-		public static void Deserialize(VehicleParachuteData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.TerminalVelocity = p_Reader.ReadSingle();
-			p_Instance.FreefallGravityMultiplier = p_Reader.ReadSingle();
-			p_Instance.DragCoefficient = p_Reader.ReadSingle();
-			p_Instance.MaxRollVelocity = p_Reader.ReadSingle();
-			p_Instance.MaxPitchVelocity = p_Reader.ReadSingle();
-			p_Instance.MaxYawVelocity = p_Reader.ReadSingle();
-			p_Instance.DeployTime = p_Reader.ReadSingle();
-			p_Instance.UndeployGroundHeight = p_Reader.ReadSingle();
-			p_Instance.AngularDescentDamping = p_Reader.ReadSingle();
-			p_Instance.AngularDeployDamping = p_Reader.ReadSingle();
-			p_Instance.DeployPhysicsStart = p_Reader.ReadSingle();
-			p_Instance.DeployInitialDragStart = p_Reader.ReadSingle();
-			p_Instance.InitialDragStartVelocityScale = p_Reader.ReadSingle();
-			p_Instance.InitialDragAngularVelocityPitch = p_Reader.ReadSingle();
-			p_Instance.InitialDragRandomAngularVelocityRollMax = p_Reader.ReadSingle();
-			p_Instance.RampLength = p_Reader.ReadSingle();
-		}
-
 	}
 }

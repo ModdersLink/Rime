@@ -26,12 +26,5 @@ namespace fb
 		[ContainerField(52), LayoutImmutable, Blittable]
 		public bool InheritSpeedAndDirectionFromEmitter { get; set; }
 
-		public static void Deserialize(SpawnDirectionData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.DirectionFromEmitterOrigin = p_Reader.ReadSingle();
-			p_Instance.InheritSpeedAndDirectionFromEmitter = p_Reader.ReadBool();
-			p_Reader.Seek(11, SeekOrigin.Current);
-		}
-
 	}
 }

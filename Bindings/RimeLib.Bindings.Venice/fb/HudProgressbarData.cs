@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(8)]
 		public ProgressType ProgressType { get; set; } = new();
 
-		public static void Deserialize(HudProgressbarData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.ProgressType = (ProgressType) p_Reader.ReadInt32();
-		}
-
 	}
 }

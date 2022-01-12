@@ -37,14 +37,5 @@ namespace fb
 		[ContainerField(11), LayoutImmutable, Blittable]
 		public sbyte ConstructParamCount { get; set; }
 		
-		public static void Deserialize(SoundGraphPluginInfo p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Id = p_Reader.ReadUInt32();
-			p_Instance.EnableAttributeReadMask = p_Reader.ReadUInt32();
-			p_Instance.ConnectionIndex = p_Reader.ReadSByte();
-			p_Instance.OutputChannelCount = p_Reader.ReadSByte();
-			p_Instance.ConstructParamsIndex = p_Reader.ReadSByte();
-			p_Instance.ConstructParamCount = p_Reader.ReadSByte();
-		}
 	}
 }

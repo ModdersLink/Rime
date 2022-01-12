@@ -20,9 +20,5 @@ namespace fb
 	public class UIManageMapsCompData : 
 		UIComponentData
 	{
-		public static void Deserialize(UIManageMapsCompData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

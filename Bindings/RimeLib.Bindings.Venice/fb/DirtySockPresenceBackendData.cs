@@ -20,9 +20,5 @@ namespace fb
 	public class DirtySockPresenceBackendData : 
 		PresenceBackendData
 	{
-		public static void Deserialize(DirtySockPresenceBackendData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

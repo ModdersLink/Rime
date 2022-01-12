@@ -34,14 +34,5 @@ namespace fb
 		[ContainerField(20), LayoutImmutable, Blittable]
 		public bool UseRenderTarget { get; set; }
 		
-		public static void Deserialize(VehicleTrackerRenderTargetData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.Vec2.Deserialize(p_Instance.PositionOffset, p_Reader, p_Parser);
-			p_Instance.RenderTargetIndex = p_Reader.ReadInt32();
-			p_Instance.RenderTargetApectRatio = p_Reader.ReadSingle();
-			p_Instance.ScaleSize = p_Reader.ReadSingle();
-			p_Instance.UseRenderTarget = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
 	}
 }

@@ -27,7 +27,7 @@ namespace fb
 		public int MinNrToTakeControl { get; set; }
 
 		[ContainerField(104)]
-		public List<CtrRef<ObjectBlueprint>> FlagTemplates { get; set; } = new();
+		public RefArray<ObjectBlueprint> FlagTemplates { get; set; } = new();
 
 		[ContainerField(108)]
 		public CtrRef<ObjectBlueprint> CapturePoint { get; set; } = new();
@@ -118,62 +118,6 @@ namespace fb
 
 		[ContainerField(188), LayoutImmutable, Blittable]
 		public bool SeesawCapturing { get; set; }
-
-		public static void Deserialize(CapturePointEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.EnemyTicketLossWhenCaptured = p_Reader.ReadInt32();
-			p_Instance.MinNrToTakeControl = p_Reader.ReadInt32();
-			p_Instance.FlagTemplates.Clear();
-			(RimeReader Reader, uint Count) s_FlagTemplates = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_FlagTemplates.Count; ++i)
-			{
-				var s_CtrRef = new CtrRef<ObjectBlueprint>();
-				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_FlagTemplates.Reader.ReadUInt32()));
-				p_Instance.FlagTemplates.Add(s_CtrRef);
-			}
-			
-			s_FlagTemplates.Reader.Dispose();
-			p_Instance.CapturePoint.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.InitialOwnerTeam = (TeamId) p_Reader.ReadInt32();
-			p_Instance.CaptureRadius = p_Reader.ReadSingle();
-			p_Instance.MaxCaptureMultiplier = p_Reader.ReadInt32();
-			p_Instance.AreaValue = p_Reader.ReadInt32();
-			p_Instance.SpawnMenuListOrdinal = p_Reader.ReadUInt32();
-			p_Instance.AreaValues.Clear();
-			(RimeReader Reader, uint Count) s_AreaValues = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_AreaValues.Count; ++i)
-			{
-				var s_Value = new AreaValueTeam();
-				fb.AreaValueTeam.Deserialize(s_Value, s_AreaValues.Reader, p_Parser);
-				p_Instance.AreaValues.Add(s_Value);
-			}
-			
-			s_AreaValues.Reader.Dispose();
-			p_Instance.TimeToGetControl = p_Reader.ReadInt32();
-			p_Instance.TimeToLoseControl = p_Reader.ReadInt32();
-			p_Instance.ReturnMultiplier = p_Reader.ReadSingle();
-			p_Instance.OnlyTakeableByTeam = p_Reader.ReadInt32();
-			p_Instance.ShowRadius = p_Reader.ReadSingle();
-			p_Instance.HideRadius = p_Reader.ReadSingle();
-			p_Instance.AddedMultiplierPerPlayer = p_Reader.ReadSingle();
-			p_Instance.Modify3DIconVerticalOffset = p_Reader.ReadSingle();
-			p_Instance.CapturableType = (CapturableType) p_Reader.ReadInt32();
-			p_Instance.IntruderWarningSID = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.IsCapturedInUpperSphere = p_Reader.ReadBool();
-			p_Instance.DisableWhenLosingControl = p_Reader.ReadBool();
-			p_Instance.LoseControlWhenNotClose = p_Reader.ReadBool();
-			p_Instance.DisableIfEnemyInside = p_Reader.ReadBool();
-			p_Instance.IsVisible = p_Reader.ReadBool();
-			p_Instance.ForceSnap = p_Reader.ReadBool();
-			p_Instance.UseAreaValuesPerTeam = p_Reader.ReadBool();
-			p_Instance.IntruderWarning = p_Reader.ReadBool();
-			p_Instance.ShowOnMinimap = p_Reader.ReadBool();
-			p_Instance.HoistFlag = p_Reader.ReadBool();
-			p_Instance.StartAtBottom = p_Reader.ReadBool();
-			p_Instance.RemoveWhenCaptured = p_Reader.ReadBool();
-			p_Instance.SeesawCapturing = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
 
 	}
 }

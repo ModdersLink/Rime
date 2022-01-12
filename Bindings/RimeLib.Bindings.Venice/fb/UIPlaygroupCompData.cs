@@ -20,9 +20,5 @@ namespace fb
 	public class UIPlaygroupCompData : 
 		UIComponentData
 	{
-		public static void Deserialize(UIPlaygroupCompData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

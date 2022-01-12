@@ -31,12 +31,5 @@ namespace fb
 		[ContainerField(12), LayoutImmutable, Blittable]
 		public int MaxSize { get; set; }
 		
-		public static void Deserialize(UITaggedVehicleCrosshair p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.MinDistance = p_Reader.ReadSingle();
-			p_Instance.MaxDistance = p_Reader.ReadSingle();
-			p_Instance.MinSize = p_Reader.ReadInt32();
-			p_Instance.MaxSize = p_Reader.ReadInt32();
-		}
 	}
 }

@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(8), LayoutImmutable, Blittable]
 		public float AvengerKillTimeout { get; set; }
 
-		public static void Deserialize(AvengerScoringHandlerData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.AvengerKillTimeout = p_Reader.ReadSingle();
-		}
-
 	}
 }

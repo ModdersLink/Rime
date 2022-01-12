@@ -34,14 +34,5 @@ namespace fb
 		[ContainerField(16), LayoutImmutable, Blittable]
 		public bool EnableAnimation { get; set; }
 		
-		public static void Deserialize(EmitterTextureInfo p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.TextureName = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.NormalmapName = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.AnimationFrameCount = p_Reader.ReadSingle();
-			p_Instance.AnimationFrameColumnCount = p_Reader.ReadSingle();
-			p_Instance.EnableAnimation = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
 	}
 }

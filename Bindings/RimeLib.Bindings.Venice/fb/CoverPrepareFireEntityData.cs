@@ -20,9 +20,5 @@ namespace fb
 	public class CoverPrepareFireEntityData : 
 		EntityData
 	{
-		public static void Deserialize(CoverPrepareFireEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

@@ -37,32 +37,5 @@ namespace fb
 		[ContainerField(28)]
 		public List<MatchmakingUserExtendedDataRule> UEDRules { get; set; } = new();
 		
-		public static void Deserialize(MatchmakingCriteria p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.MatchmakingSizeRule.Deserialize(p_Instance.SizeRule, p_Reader, p_Parser);
-			fb.MatchmakingPingSiteRule.Deserialize(p_Instance.PingSiteRule, p_Reader, p_Parser);
-			fb.MatchmakingRankedRule.Deserialize(p_Instance.RankedRule, p_Reader, p_Parser);
-			p_Instance.GenericRules.Clear();
-			(RimeReader Reader, uint Count) s_GenericRules = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_GenericRules.Count; ++i)
-			{
-				var s_Value = new MatchmakingGenericRule();
-				fb.MatchmakingGenericRule.Deserialize(s_Value, s_GenericRules.Reader, p_Parser);
-				p_Instance.GenericRules.Add(s_Value);
-			}
-			
-			s_GenericRules.Reader.Dispose();
-			fb.MatchmakingVirtualizedRule.Deserialize(p_Instance.VirtualizedRule, p_Reader, p_Parser);
-			p_Instance.UEDRules.Clear();
-			(RimeReader Reader, uint Count) s_UEDRules = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_UEDRules.Count; ++i)
-			{
-				var s_Value = new MatchmakingUserExtendedDataRule();
-				fb.MatchmakingUserExtendedDataRule.Deserialize(s_Value, s_UEDRules.Reader, p_Parser);
-				p_Instance.UEDRules.Add(s_Value);
-			}
-			
-			s_UEDRules.Reader.Dispose();
-		}
 	}
 }

@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(12)]
 		public CtrRef<PathfindingSystemEntityData> System { get; set; } = new();
 
-		public static void Deserialize(PathfindingSandboxAsset p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.System.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-		}
-
 	}
 }

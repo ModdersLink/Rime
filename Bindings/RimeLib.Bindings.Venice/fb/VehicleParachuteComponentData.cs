@@ -35,15 +35,5 @@ namespace fb
 		[ContainerField(116), LayoutImmutable, Blittable]
 		public bool DropParachuteOnUndeploy { get; set; }
 
-		public static void Deserialize(VehicleParachuteComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.VehicleParachuteBinding.Deserialize(p_Instance.Binding, p_Reader, p_Parser);
-			p_Instance.UndeployTime = p_Reader.ReadSingle();
-			p_Instance.TimeInvisibleAfterSpawn = p_Reader.ReadSingle();
-			p_Instance.VehicleType = p_Reader.ReadInt32();
-			p_Instance.DropParachuteOnUndeploy = p_Reader.ReadBool();
-			p_Reader.Seek(11, SeekOrigin.Current);
-		}
-
 	}
 }

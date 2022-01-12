@@ -40,15 +40,5 @@ namespace fb
 		[ContainerField(24)]
 		public AntRef VaultType { get; set; } = new();
 		
-		public static void Deserialize(AILocoVaultBinding p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AntRef.Deserialize(p_Instance.Vault, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.DistanceBeforeVault, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.HeightBeforeVault, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.LengthOfVaultableObject, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.HeightAfterVault, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.DistanceAfterVault, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.VaultType, p_Reader, p_Parser);
-		}
 	}
 }

@@ -41,16 +41,5 @@ namespace fb
 		[ContainerField(31), LayoutImmutable, Blittable]
 		public bool IsGuided { get; set; }
 
-		public static void Deserialize(LockingWeaponData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.LockingController.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.SecondaryLockingController.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.WarnLock = (WarnTarget) p_Reader.ReadInt32();
-			p_Instance.IsHoming = p_Reader.ReadBool();
-			p_Instance.IsGuidedWhenZoomed = p_Reader.ReadBool();
-			p_Instance.FireOnlyWhenLockedOn = p_Reader.ReadBool();
-			p_Instance.IsGuided = p_Reader.ReadBool();
-		}
-
 	}
 }

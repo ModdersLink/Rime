@@ -20,9 +20,5 @@ namespace fb
 	public class PointTargetData : 
 		SpatialEntityData
 	{
-		public static void Deserialize(PointTargetData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

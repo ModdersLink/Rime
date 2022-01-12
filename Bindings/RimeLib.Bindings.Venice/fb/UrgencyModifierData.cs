@@ -25,10 +25,5 @@ namespace fb
 		[ContainerField(4), LayoutImmutable, Blittable]
 		public float Modifier { get; set; }
 		
-		public static void Deserialize(UrgencyModifierData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Name = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Modifier = p_Reader.ReadSingle();
-		}
 	}
 }

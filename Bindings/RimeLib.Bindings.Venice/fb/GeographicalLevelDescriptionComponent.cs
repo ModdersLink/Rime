@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(8)]
 		public CtrRef<GeographicalData> GeographicalData { get; set; } = new();
 
-		public static void Deserialize(GeographicalLevelDescriptionComponent p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.GeographicalData.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-		}
-
 	}
 }

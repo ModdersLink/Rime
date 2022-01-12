@@ -38,16 +38,5 @@ namespace fb
 		[ContainerField(110), LayoutImmutable, Blittable]
 		public bool AutoBalance { get; set; }
 
-		public static void Deserialize(AutoTeamEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.TeamDifferenceToAutoBalance = p_Reader.ReadUInt32();
-			p_Instance.TeamAssignMode = (TeamAssignMode) p_Reader.ReadInt32();
-			p_Instance.PlayerCountNeededToAutoBalance = p_Reader.ReadUInt32();
-			p_Instance.ForceIntoSquad = p_Reader.ReadBool();
-			p_Instance.RotateTeamOnNewRound = p_Reader.ReadBool();
-			p_Instance.AutoBalance = p_Reader.ReadBool();
-			p_Reader.Seek(1, SeekOrigin.Current);
-		}
-
 	}
 }

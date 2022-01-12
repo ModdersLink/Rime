@@ -50,20 +50,5 @@ namespace fb
 		[ContainerField(250), LayoutImmutable, Blittable]
 		public bool UseTerrainAdjustment { get; set; }
 
-		public static void Deserialize(VehicleCameraData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.Vec3.Deserialize(p_Instance.MoveToPosition, p_Reader, p_Parser);
-			fb.Vec3.Deserialize(p_Instance.MoveToPositionSlopeFactor, p_Reader, p_Parser);
-			fb.Vec3.Deserialize(p_Instance.TargetOffset, p_Reader, p_Parser);
-			fb.Vec3.Deserialize(p_Instance.TargetOffsetSlopeFactor, p_Reader, p_Parser);
-			fb.Vec3.Deserialize(p_Instance.RotationFactor, p_Reader, p_Parser);
-			p_Instance.PositionFactor = p_Reader.ReadSingle();
-			p_Instance.ResetDistance = p_Reader.ReadSingle();
-			p_Instance.FixedPosition = p_Reader.ReadBool();
-			p_Instance.FixedAngleZ = p_Reader.ReadBool();
-			p_Instance.UseTerrainAdjustment = p_Reader.ReadBool();
-			p_Reader.Seek(5, SeekOrigin.Current);
-		}
-
 	}
 }

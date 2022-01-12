@@ -26,12 +26,5 @@ namespace fb
 		[ContainerField(116)]
 		public AirMissileJammingData AirMissileJamming { get; set; } = new();
 
-		public static void Deserialize(JammingComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.SmokeJammingData.Deserialize(p_Instance.SmokeJamming, p_Reader, p_Parser);
-			fb.AirMissileJammingData.Deserialize(p_Instance.AirMissileJamming, p_Reader, p_Parser);
-			p_Reader.Seek(12, SeekOrigin.Current);
-		}
-
 	}
 }

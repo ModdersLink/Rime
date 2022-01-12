@@ -25,10 +25,5 @@ namespace fb
 		[ContainerField(4), LayoutImmutable, Blittable]
 		public float RadarSignature { get; set; }
 		
-		public static void Deserialize(MissileLockableInfoData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.HeatSignature = p_Reader.ReadSingle();
-			p_Instance.RadarSignature = p_Reader.ReadSingle();
-		}
 	}
 }

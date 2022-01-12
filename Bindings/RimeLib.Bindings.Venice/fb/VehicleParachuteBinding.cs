@@ -25,10 +25,5 @@ namespace fb
 		[ContainerField(4)]
 		public AntRef VehicleType { get; set; } = new();
 		
-		public static void Deserialize(VehicleParachuteBinding p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AntRef.Deserialize(p_Instance.Enabled, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.VehicleType, p_Reader, p_Parser);
-		}
 	}
 }

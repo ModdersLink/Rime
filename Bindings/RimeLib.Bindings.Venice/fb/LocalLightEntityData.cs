@@ -50,20 +50,5 @@ namespace fb
 		[ContainerField(146), LayoutImmutable, Blittable]
 		public bool SpecularEnable { get; set; }
 
-		public static void Deserialize(LocalLightEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.Vec3.Deserialize(p_Instance.Color, p_Reader, p_Parser);
-			fb.Vec3.Deserialize(p_Instance.ParticleColorScale, p_Reader, p_Parser);
-			fb.Vec3.Deserialize(p_Instance.EnlightenColorScale, p_Reader, p_Parser);
-			p_Instance.Radius = p_Reader.ReadSingle();
-			p_Instance.Intensity = p_Reader.ReadSingle();
-			p_Instance.AttenuationOffset = p_Reader.ReadSingle();
-			p_Instance.EnlightenColorMode = (EnlightenColorMode) p_Reader.ReadInt32();
-			p_Instance.EnlightenEnable = p_Reader.ReadBool();
-			p_Instance.Visible = p_Reader.ReadBool();
-			p_Instance.SpecularEnable = p_Reader.ReadBool();
-			p_Reader.Seek(13, SeekOrigin.Current);
-		}
-
 	}
 }

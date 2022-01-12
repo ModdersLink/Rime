@@ -38,16 +38,5 @@ namespace fb
 		[ContainerField(49), LayoutImmutable, Blittable]
 		public bool ForceUpdate { get; set; }
 
-		public static void Deserialize(DataSetNode p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.In.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.Out.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.Param = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			fb.UIDataSourceInfo.Deserialize(p_Instance.DataSource, p_Reader, p_Parser);
-			p_Instance.SetToEmptyString = p_Reader.ReadBool();
-			p_Instance.ForceUpdate = p_Reader.ReadBool();
-			p_Reader.Seek(2, SeekOrigin.Current);
-		}
-
 	}
 }

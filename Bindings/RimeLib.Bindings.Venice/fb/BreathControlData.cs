@@ -32,13 +32,5 @@ namespace fb
 		[ContainerField(20), LayoutImmutable, Blittable]
 		public float BreathControlPenaltyTimeout { get; set; }
 
-		public static void Deserialize(BreathControlData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.BreathControlTime = p_Reader.ReadSingle();
-			p_Instance.BreathControlReleaseTime = p_Reader.ReadSingle();
-			p_Instance.BreathControlPenaltyMultiplier = p_Reader.ReadSingle();
-			p_Instance.BreathControlPenaltyTimeout = p_Reader.ReadSingle();
-		}
-
 	}
 }

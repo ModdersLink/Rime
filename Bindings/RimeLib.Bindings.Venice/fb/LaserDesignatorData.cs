@@ -32,13 +32,5 @@ namespace fb
 		[ContainerField(44)]
 		public CtrRef<SoundAsset> BomberSound { get; set; } = new();
 
-		public static void Deserialize(LaserDesignatorData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.PostLockTime = p_Reader.ReadSingle();
-			p_Instance.BomberTime = p_Reader.ReadSingle();
-			p_Instance.BombWarnTime = p_Reader.ReadSingle();
-			p_Instance.BomberSound.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-		}
-
 	}
 }

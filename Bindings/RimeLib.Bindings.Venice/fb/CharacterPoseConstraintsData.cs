@@ -28,11 +28,5 @@ namespace fb
 		[ContainerField(2), LayoutImmutable, Blittable]
 		public bool PronePose { get; set; }
 		
-		public static void Deserialize(CharacterPoseConstraintsData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.StandPose = p_Reader.ReadBool();
-			p_Instance.CrouchPose = p_Reader.ReadBool();
-			p_Instance.PronePose = p_Reader.ReadBool();
-		}
 	}
 }

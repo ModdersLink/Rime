@@ -47,19 +47,5 @@ namespace fb
 		[ContainerField(125), LayoutImmutable, Blittable]
 		public bool IsTeamSpecific { get; set; }
 
-		public static void Deserialize(CombatAreaTriggerEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.MaxRandomSpawnHeight = p_Reader.ReadSingle();
-			p_Instance.SpawnHeight = p_Reader.ReadSingle();
-			p_Instance.TimeToReturn = p_Reader.ReadUInt32();
-			p_Instance.DeserterProjectile.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.Team = (TeamId) p_Reader.ReadInt32();
-			p_Instance.StrikeRadius = p_Reader.ReadSingle();
-			p_Instance.InitalSpeed = p_Reader.ReadSingle();
-			p_Instance.IsAiAllowedOutside = p_Reader.ReadBool();
-			p_Instance.IsTeamSpecific = p_Reader.ReadBool();
-			p_Reader.Seek(2, SeekOrigin.Current);
-		}
-
 	}
 }

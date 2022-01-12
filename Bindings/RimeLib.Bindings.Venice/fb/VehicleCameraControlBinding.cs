@@ -22,9 +22,5 @@ namespace fb
 		[ContainerField(0)]
 		public AntRef EnableAnimatedVehicleCamera { get; set; } = new();
 		
-		public static void Deserialize(VehicleCameraControlBinding p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AntRef.Deserialize(p_Instance.EnableAnimatedVehicleCamera, p_Reader, p_Parser);
-		}
 	}
 }

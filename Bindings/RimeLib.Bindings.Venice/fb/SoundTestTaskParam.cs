@@ -20,9 +20,5 @@ namespace fb
 	public class SoundTestTaskParam : 
 		DataContainer
 	{
-		public static void Deserialize(SoundTestTaskParam p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

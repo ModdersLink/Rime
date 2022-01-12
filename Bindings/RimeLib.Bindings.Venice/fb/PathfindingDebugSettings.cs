@@ -65,25 +65,5 @@ namespace fb
 		[ContainerField(37), LayoutImmutable, Blittable]
 		public bool PotentialObstacles { get; set; }
 
-		public static void Deserialize(PathfindingDebugSettings p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.TypesToDrawMask = p_Reader.ReadInt32();
-			p_Instance.TextOffsetY = p_Reader.ReadInt32();
-			p_Instance.TextStartX = p_Reader.ReadInt32();
-			p_Instance.TextStartY = p_Reader.ReadInt32();
-			p_Instance.ReplayMode = (PathfindingReplayMode) p_Reader.ReadInt32();
-			p_Instance.DrawConnections = p_Reader.ReadBool();
-			p_Instance.DrawObstacles = p_Reader.ReadBool();
-			p_Instance.DrawPolygonOutline = p_Reader.ReadBool();
-			p_Instance.DrawFilledPolygons = p_Reader.ReadBool();
-			p_Instance.DrawMemory = p_Reader.ReadBool();
-			p_Instance.DrawStats = p_Reader.ReadBool();
-			p_Instance.DrawTimings = p_Reader.ReadBool();
-			p_Instance.OriginalPaths = p_Reader.ReadBool();
-			p_Instance.RandomPositions = p_Reader.ReadBool();
-			p_Instance.PotentialObstacles = p_Reader.ReadBool();
-			p_Reader.Seek(2, SeekOrigin.Current);
-		}
-
 	}
 }

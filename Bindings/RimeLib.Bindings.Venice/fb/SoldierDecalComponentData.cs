@@ -35,15 +35,5 @@ namespace fb
 		[ContainerField(112), LayoutImmutable, Blittable]
 		public float PoolRayLength { get; set; }
 
-		public static void Deserialize(SoldierDecalComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.SplashDecal.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.SplashRayLength = p_Reader.ReadSingle();
-			p_Instance.PoolDecal.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.PoolRayYOffset = p_Reader.ReadSingle();
-			p_Instance.PoolRayLength = p_Reader.ReadSingle();
-			p_Reader.Seek(12, SeekOrigin.Current);
-		}
-
 	}
 }

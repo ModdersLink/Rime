@@ -26,12 +26,5 @@ namespace fb
 		[ContainerField(116), LayoutImmutable]
 		public string AdTexture { get; set; } = string.Empty;
 
-		public static void Deserialize(AdvertisementComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Identifier = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.AdTexture = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Reader.Seek(8, SeekOrigin.Current);
-		}
-
 	}
 }

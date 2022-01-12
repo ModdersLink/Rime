@@ -25,11 +25,5 @@ namespace fb
 		[ContainerField(64)]
 		public CtrRef<WeaponRegularSocketObjectData> SocketObject { get; set; } = new();
 		
-		public static void Deserialize(RigidMeshSocketTransform p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.LinearTransform.Deserialize(p_Instance.Transform, p_Reader, p_Parser);
-			p_Instance.SocketObject.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Reader.Seek(12, SeekOrigin.Current);
-		}
 	}
 }

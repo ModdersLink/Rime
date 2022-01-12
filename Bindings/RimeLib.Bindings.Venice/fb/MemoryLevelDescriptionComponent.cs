@@ -38,15 +38,5 @@ namespace fb
 		[ContainerField(28), LayoutImmutable, Blittable]
 		public int MeshPoolSizeXenon { get; set; }
 
-		public static void Deserialize(MemoryLevelDescriptionComponent p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.TexturePoolSize = p_Reader.ReadInt32();
-			p_Instance.TexturePoolSizeXenon = p_Reader.ReadInt32();
-			p_Instance.TexturePoolSizePs3 = p_Reader.ReadInt32();
-			p_Instance.MeshPoolSizePs3 = p_Reader.ReadInt32();
-			p_Instance.MeshPoolSizePs3Cell = p_Reader.ReadInt32();
-			p_Instance.MeshPoolSizeXenon = p_Reader.ReadInt32();
-		}
-
 	}
 }

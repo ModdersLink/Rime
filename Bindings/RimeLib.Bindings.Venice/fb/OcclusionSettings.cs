@@ -29,13 +29,5 @@ namespace fb
 		[ContainerField(10), LayoutImmutable, Blittable]
 		public bool DrawBinaryBuffer { get; set; }
 
-		public static void Deserialize(OcclusionSettings p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Enable = p_Reader.ReadBool();
-			p_Instance.DrawZbuffer = p_Reader.ReadBool();
-			p_Instance.DrawBinaryBuffer = p_Reader.ReadBool();
-			p_Reader.Seek(1, SeekOrigin.Current);
-		}
-
 	}
 }

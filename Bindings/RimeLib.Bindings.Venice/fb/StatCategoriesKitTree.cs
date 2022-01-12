@@ -20,9 +20,5 @@ namespace fb
 	public class StatCategoriesKitTree : 
 		StatCategoriesGuidTree
 	{
-		public static void Deserialize(StatCategoriesKitTree p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

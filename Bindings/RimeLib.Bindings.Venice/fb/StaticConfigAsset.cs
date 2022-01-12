@@ -20,9 +20,5 @@ namespace fb
 	public class StaticConfigAsset : 
 		Asset
 	{
-		public static void Deserialize(StaticConfigAsset p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

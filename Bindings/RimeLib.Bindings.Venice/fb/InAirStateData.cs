@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(12), LayoutImmutable, Blittable]
 		public float FreeFallVelocity { get; set; }
 
-		public static void Deserialize(InAirStateData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.FreeFallVelocity = p_Reader.ReadSingle();
-		}
-
 	}
 }

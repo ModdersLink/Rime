@@ -71,48 +71,5 @@ namespace fb
 		[ContainerField(160), LayoutImmutable, Blittable]
 		public bool InteractiveManDown { get; set; }
 
-		public static void Deserialize(VeniceSoldierHealthModuleData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.TimeForCorpse = p_Reader.ReadSingle();
-			p_Instance.PostReviveResponseTime = p_Reader.ReadSingle();
-			p_Instance.InteractiveManDownThreshold = p_Reader.ReadSingle();
-			fb.PoseConstraintsData.Deserialize(p_Instance.InteractiveManDownPoseConstraints, p_Reader, p_Parser);
-			p_Reader.Seek(1, SeekOrigin.Current);
-			p_Instance.ManDownStateTime = p_Reader.ReadSingle();
-			p_Reader.Seek(1, SeekOrigin.Current);
-			p_Instance.ManDownStateHealthPoints = p_Reader.ReadSingle();
-			p_Reader.Seek(1, SeekOrigin.Current);
-			p_Instance.ImmortalTimeAfterSpawn = p_Reader.ReadSingle();
-			p_Reader.Seek(1, SeekOrigin.Current);
-			p_Instance.AbortSpawnImmortalityInputs.Clear();
-			(RimeReader Reader, uint Count) s_AbortSpawnImmortalityInputs = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_AbortSpawnImmortalityInputs.Count; ++i)
-			{
-				var s_Value = (EntryInputActionEnum) s_AbortSpawnImmortalityInputs.Reader.ReadInt32();
-				p_Instance.AbortSpawnImmortalityInputs.Add(s_Value);
-			}
-			
-			s_AbortSpawnImmortalityInputs.Reader.Dispose();
-			p_Reader.Seek(1, SeekOrigin.Current);
-			p_Instance.PostReviveHealth = p_Reader.ReadSingle();
-			p_Reader.Seek(1, SeekOrigin.Current);
-			p_Instance.CriticalFakeImmortalTime = p_Reader.ReadSingle();
-			p_Reader.Seek(1, SeekOrigin.Current);
-			p_Instance.RegenerationDelay = p_Reader.ReadSingle();
-			p_Reader.Seek(1, SeekOrigin.Current);
-			p_Instance.RegenerationRate = p_Reader.ReadSingle();
-			p_Reader.Seek(1, SeekOrigin.Current);
-			fb.SoldierHealthModuleBinding.Deserialize(p_Instance.Binding, p_Reader, p_Parser);
-			p_Reader.Seek(1, SeekOrigin.Current);
-			p_Instance.SprintDisabledWhenDamagedTime = p_Reader.ReadSingle();
-			p_Reader.Seek(1, SeekOrigin.Current);
-			p_Instance.SprintDisabledDamageThreshold = p_Reader.ReadSingle();
-			p_Reader.Seek(1, SeekOrigin.Current);
-			fb.RotateToHitData.Deserialize(p_Instance.ManDownRotate, p_Reader, p_Parser);
-			p_Reader.Seek(1, SeekOrigin.Current);
-			p_Instance.InteractiveManDown = p_Reader.ReadBool();
-			p_Reader.Seek(4, SeekOrigin.Current);
-		}
-
 	}
 }

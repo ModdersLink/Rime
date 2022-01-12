@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(8), LayoutImmutable]
 		public string GroupName { get; set; } = string.Empty;
 
-		public static void Deserialize(PersistenceStatGroup p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.GroupName = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-		}
-
 	}
 }

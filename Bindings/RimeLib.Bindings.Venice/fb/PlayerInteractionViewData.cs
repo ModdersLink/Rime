@@ -20,9 +20,5 @@ namespace fb
 	public class PlayerInteractionViewData : 
 		SubViewData
 	{
-		public static void Deserialize(PlayerInteractionViewData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

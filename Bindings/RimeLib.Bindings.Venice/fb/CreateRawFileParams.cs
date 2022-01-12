@@ -29,13 +29,5 @@ namespace fb
 		[ContainerField(16), LayoutImmutable, Blittable]
 		public bool CreateResource { get; set; }
 
-		public static void Deserialize(CreateRawFileParams p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.AssetName = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.SourceFile = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.CreateResource = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
-
 	}
 }

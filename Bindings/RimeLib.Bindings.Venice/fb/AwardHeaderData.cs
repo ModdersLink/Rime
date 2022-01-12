@@ -26,11 +26,5 @@ namespace fb
 		[ContainerField(16)]
 		public StatsMultiplicity Multiplicity { get; set; } = new();
 
-		public static void Deserialize(AwardHeaderData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Group = (AwardGroup) p_Reader.ReadInt32();
-			p_Instance.Multiplicity = (StatsMultiplicity) p_Reader.ReadInt32();
-		}
-
 	}
 }

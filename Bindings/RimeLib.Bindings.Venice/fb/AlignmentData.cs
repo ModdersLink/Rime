@@ -29,12 +29,5 @@ namespace fb
 		[ContainerField(16), LayoutImmutable, Blittable]
 		public float Speed { get; set; }
 
-		public static void Deserialize(AlignmentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.AlignAction = (EntryInputActionEnum) p_Reader.ReadInt32();
-			p_Instance.StopTolerance = p_Reader.ReadSingle();
-			p_Instance.Speed = p_Reader.ReadSingle();
-		}
-
 	}
 }

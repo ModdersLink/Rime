@@ -21,21 +21,7 @@ namespace fb
 		Asset
 	{
 		[ContainerField(12)]
-		public List<CtrRef<SystemSettings>> Settings { get; set; } = new();
-
-		public static void Deserialize(SettingsBundleAsset p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Settings.Clear();
-			(RimeReader Reader, uint Count) s_Settings = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_Settings.Count; ++i)
-			{
-				var s_CtrRef = new CtrRef<SystemSettings>();
-				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_Settings.Reader.ReadUInt32()));
-				p_Instance.Settings.Add(s_CtrRef);
-			}
-			
-			s_Settings.Reader.Dispose();
-		}
+		public RefArray<SystemSettings> Settings { get; set; } = new();
 
 	}
 }

@@ -25,10 +25,5 @@ namespace fb
 		[ContainerField(4), LayoutImmutable, Blittable]
 		public int TicketLossPerMin { get; set; }
 		
-		public static void Deserialize(TicketCountPercentage p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.MaxPercentOfTicketsLeft = p_Reader.ReadInt32();
-			p_Instance.TicketLossPerMin = p_Reader.ReadInt32();
-		}
 	}
 }

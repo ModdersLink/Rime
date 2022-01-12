@@ -28,11 +28,5 @@ namespace fb
 		[ContainerField(8), LayoutImmutable, Blittable]
 		public float SuppressionUIThreshold { get; set; }
 		
-		public static void Deserialize(SuppressionReactionData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.SuppressionHighThreshold = p_Reader.ReadSingle();
-			p_Instance.SuppressionLowThreshold = p_Reader.ReadSingle();
-			p_Instance.SuppressionUIThreshold = p_Reader.ReadSingle();
-		}
 	}
 }

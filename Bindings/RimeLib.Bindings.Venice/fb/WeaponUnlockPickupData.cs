@@ -37,15 +37,5 @@ namespace fb
 		[ContainerField(28), LayoutImmutable, Blittable]
 		public bool DefaultToFullAmmo { get; set; }
 		
-		public static void Deserialize(WeaponUnlockPickupData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.UnlockWeaponAndSlot.Deserialize(p_Instance.UnlockWeaponAndSlot, p_Reader, p_Parser);
-			p_Instance.AltWeaponSlot = p_Reader.ReadInt32();
-			p_Instance.LinkedToWeaponSlot = p_Reader.ReadInt32();
-			p_Instance.MinAmmo = p_Reader.ReadUInt32();
-			p_Instance.MaxAmmo = p_Reader.ReadUInt32();
-			p_Instance.DefaultToFullAmmo = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
 	}
 }

@@ -92,33 +92,5 @@ namespace fb
 		[ContainerField(67), LayoutImmutable, Blittable]
 		public bool UseShadowLodOffset { get; set; }
 
-		public static void Deserialize(VegetationSystemSettings p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.WindVariation = p_Reader.ReadSingle();
-			p_Instance.WindVariationRate = p_Reader.ReadSingle();
-			p_Instance.WindStrength = p_Reader.ReadSingle();
-			p_Instance.JointTensionLimit = p_Reader.ReadSingle();
-			p_Instance.ForceShadowLod = p_Reader.ReadInt32();
-			p_Instance.MaxPreSimsPerJob = p_Reader.ReadUInt32();
-			p_Instance.SimulationMemKbClient = p_Reader.ReadUInt32();
-			p_Instance.MaxActiveDistance = p_Reader.ReadSingle();
-			p_Instance.SimulationMemKbServer = p_Reader.ReadUInt32();
-			p_Instance.JobCount = p_Reader.ReadUInt32();
-			p_Instance.JointTensionLimitIndex = p_Reader.ReadInt32();
-			p_Instance.TimeScale = p_Reader.ReadSingle();
-			p_Instance.LocalInfluencesEnabled = p_Reader.ReadBool();
-			p_Instance.SubDestructionEnabled = p_Reader.ReadBool();
-			p_Instance.DissolveEnable = p_Reader.ReadBool();
-			p_Instance.Enable = p_Reader.ReadBool();
-			p_Instance.SimulateServerSide = p_Reader.ReadBool();
-			p_Instance.EnableJobs = p_Reader.ReadBool();
-			p_Instance.ShadowMeshEnable = p_Reader.ReadBool();
-			p_Instance.DrawNodes = p_Reader.ReadBool();
-			p_Instance.DrawEnable = p_Reader.ReadBool();
-			p_Instance.BatchDrawEnable = p_Reader.ReadBool();
-			p_Instance.DestructionEnabled = p_Reader.ReadBool();
-			p_Instance.UseShadowLodOffset = p_Reader.ReadBool();
-		}
-
 	}
 }

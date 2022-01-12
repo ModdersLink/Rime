@@ -56,22 +56,5 @@ namespace fb
 		[ContainerField(37), LayoutImmutable, Blittable]
 		public bool DxLine3dAntialiasingEnable { get; set; }
 
-		public static void Deserialize(DebugRenderSettings p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.TextQueueTimeVisible = p_Reader.ReadSingle();
-			p_Instance.Ps3SpuFrameBufferSize = p_Reader.ReadUInt32();
-			p_Instance.TextViewDistance = p_Reader.ReadSingle();
-			p_Instance.TextQueueMaxLineCount = p_Reader.ReadUInt32();
-			p_Instance.DxMaxVertexCount = p_Reader.ReadUInt32();
-			p_Instance.ProcessJobCount = p_Reader.ReadInt32();
-			p_Instance.DrawStatsEnable = p_Reader.ReadBool();
-			p_Instance.Ps3SpuEnable = p_Reader.ReadBool();
-			p_Instance.Enable = p_Reader.ReadBool();
-			p_Instance.TextQueueLocationTop = p_Reader.ReadBool();
-			p_Instance.DxLine2dAntialiasingEnable = p_Reader.ReadBool();
-			p_Instance.DxLine3dAntialiasingEnable = p_Reader.ReadBool();
-			p_Reader.Seek(2, SeekOrigin.Current);
-		}
-
 	}
 }

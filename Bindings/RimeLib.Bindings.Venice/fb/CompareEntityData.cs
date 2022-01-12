@@ -38,15 +38,5 @@ namespace fb
 		[ContainerField(32), LayoutImmutable, Blittable]
 		public int IntIn1 { get; set; }
 
-		public static void Deserialize(CompareEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Realm = (Realm) p_Reader.ReadInt32();
-			p_Instance.Operator = (CompareOp) p_Reader.ReadInt32();
-			p_Instance.FloatIn0 = p_Reader.ReadSingle();
-			p_Instance.FloatIn1 = p_Reader.ReadSingle();
-			p_Instance.IntIn0 = p_Reader.ReadInt32();
-			p_Instance.IntIn1 = p_Reader.ReadInt32();
-		}
-
 	}
 }

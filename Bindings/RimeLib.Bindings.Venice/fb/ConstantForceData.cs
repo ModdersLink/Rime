@@ -31,13 +31,5 @@ namespace fb
 		[ContainerField(24)]
 		public SpaceType Space { get; set; } = new();
 		
-		public static void Deserialize(ConstantForceData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.Vec3.Deserialize(p_Instance.Value, p_Reader, p_Parser);
-			p_Instance.Condition = (ForceCondition) p_Reader.ReadInt32();
-			p_Instance.TypeOfForce = (ForceType) p_Reader.ReadInt32();
-			p_Instance.Space = (SpaceType) p_Reader.ReadInt32();
-			p_Reader.Seek(4, SeekOrigin.Current);
-		}
 	}
 }

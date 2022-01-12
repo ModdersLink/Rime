@@ -26,12 +26,5 @@ namespace fb
 		[ContainerField(128), LayoutImmutable, Blittable]
 		public bool Enabled { get; set; }
 
-		public static void Deserialize(HitReactionComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.HitReactionComponentBinding.Deserialize(p_Instance.HitReactionBinding, p_Reader, p_Parser);
-			p_Instance.Enabled = p_Reader.ReadBool();
-			p_Reader.Seek(15, SeekOrigin.Current);
-		}
-
 	}
 }

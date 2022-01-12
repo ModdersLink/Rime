@@ -67,25 +67,5 @@ namespace fb
 		[ContainerField(81), LayoutImmutable, Blittable]
 		public bool UseClientPosition { get; set; }
 		
-		public static void Deserialize(AILocoCoverTaskData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.Vec3.Deserialize(p_Instance.WantedPos, p_Reader, p_Parser);
-			fb.Vec3.Deserialize(p_Instance.ThreatPosition, p_Reader, p_Parser);
-			p_Instance.CoverPose = (AntPoseEnum) p_Reader.ReadInt32();
-			p_Instance.WaitTime = p_Reader.ReadSingle();
-			p_Instance.PeekOut = (CoverPeekType) p_Reader.ReadInt32();
-			p_Instance.WorldAngle = p_Reader.ReadSingle();
-			p_Instance.OffsetLength = p_Reader.ReadSingle();
-			p_Instance.ExitPose = (AntPoseEnum) p_Reader.ReadInt32();
-			p_Instance.ExitAngle = p_Reader.ReadSingle();
-			p_Instance.DistanceToNextWaypoint = p_Reader.ReadSingle();
-			p_Instance.CoverType = (AntCoverEnum) p_Reader.ReadInt32();
-			p_Instance.EnterStrategy = (CoverEnterStrategy) p_Reader.ReadInt32();
-			p_Instance.ExitStyle = (CoverExitStyle) p_Reader.ReadInt32();
-			p_Instance.PrepareFireType = (CoverFireType) p_Reader.ReadInt32();
-			p_Instance.ForceExitCover = p_Reader.ReadBool();
-			p_Instance.UseClientPosition = p_Reader.ReadBool();
-			p_Reader.Seek(14, SeekOrigin.Current);
-		}
 	}
 }

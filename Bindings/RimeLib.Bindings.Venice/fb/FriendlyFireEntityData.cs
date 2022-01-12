@@ -38,23 +38,5 @@ namespace fb
 		[ContainerField(32), LayoutImmutable, Blittable]
 		public float DecayRate { get; set; }
 
-		public static void Deserialize(FriendlyFireEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Teams.Clear();
-			(RimeReader Reader, uint Count) s_Teams = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_Teams.Count; ++i)
-			{
-				var s_Value = (TeamId) s_Teams.Reader.ReadInt32();
-				p_Instance.Teams.Add(s_Value);
-			}
-			
-			s_Teams.Reader.Dispose();
-			p_Instance.EnemyCommitmentAllocation = p_Reader.ReadSingle();
-			p_Instance.FriendlyCommitmentAllocation = p_Reader.ReadSingle();
-			p_Instance.MaxCommitment = p_Reader.ReadSingle();
-			p_Instance.FailureThreshold = p_Reader.ReadSingle();
-			p_Instance.DecayRate = p_Reader.ReadSingle();
-		}
-
 	}
 }

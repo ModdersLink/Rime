@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(20)]
 		public ExampleVehicleType ExampleVehicleType { get; set; } = new();
 
-		public static void Deserialize(ExampleVehicleBlueprintBundleMetadata p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.ExampleVehicleType = (ExampleVehicleType) p_Reader.ReadInt32();
-		}
-
 	}
 }

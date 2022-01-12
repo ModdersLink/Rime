@@ -68,26 +68,5 @@ namespace fb
 		[ContainerField(184), LayoutImmutable, Blittable]
 		public bool SequentialFiring { get; set; }
 
-		public static void Deserialize(WeaponComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.Vec3.Deserialize(p_Instance.ProjectileSpawnOffset, p_Reader, p_Parser);
-			p_Instance.ImpulseStrength = p_Reader.ReadSingle();
-			p_Instance.WeaponMesh.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.WeaponFiring.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.DamageGiverName = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.AIData.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.CustomWeaponType.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.Classification = (WeaponClassification) p_Reader.ReadInt32();
-			p_Instance.ExplosionDamageMultiplier = p_Reader.ReadSingle();
-			p_Instance.ReloadTimeMultiplier = p_Reader.ReadSingle();
-			p_Instance.DamageMultiplier = p_Reader.ReadSingle();
-			p_Instance.WeaponItemHash = p_Reader.ReadUInt32();
-			p_Instance.OverheatDropPerSecondMultiplier = p_Reader.ReadSingle();
-			p_Instance.LockTimeMultiplier = p_Reader.ReadSingle();
-			p_Instance.LockingAcceptanceAngleMultiplier = p_Reader.ReadSingle();
-			p_Instance.SequentialFiring = p_Reader.ReadBool();
-			p_Reader.Seek(7, SeekOrigin.Current);
-		}
-
 	}
 }

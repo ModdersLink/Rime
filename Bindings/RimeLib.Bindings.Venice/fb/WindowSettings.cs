@@ -59,23 +59,5 @@ namespace fb
 		[ContainerField(36), LayoutImmutable, Blittable]
 		public bool Minimized { get; set; }
 
-		public static void Deserialize(WindowSettings p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.PosX = p_Reader.ReadInt32();
-			p_Instance.PosY = p_Reader.ReadInt32();
-			p_Instance.Width = p_Reader.ReadUInt32();
-			p_Instance.Height = p_Reader.ReadUInt32();
-			p_Instance.BordersEnable = p_Reader.ReadBool();
-			p_Instance.AutoSize = p_Reader.ReadBool();
-			p_Instance.FullscreenAutoSize = p_Reader.ReadBool();
-			p_Instance.FullscreenWhenJoiningServer = p_Reader.ReadBool();
-			p_Instance.EnableEscape = p_Reader.ReadBool();
-			p_Instance.EnableInputOnActivate = p_Reader.ReadBool();
-			p_Instance.HibernateOnClose = p_Reader.ReadBool();
-			p_Instance.Hidden = p_Reader.ReadBool();
-			p_Instance.Minimized = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
-
 	}
 }

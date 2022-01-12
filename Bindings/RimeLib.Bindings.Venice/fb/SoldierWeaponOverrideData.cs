@@ -21,21 +21,7 @@ namespace fb
 		DataContainer
 	{
 		[ContainerField(8)]
-		public List<CtrRef<WeaponOverrideData>> Overrides { get; set; } = new();
-
-		public static void Deserialize(SoldierWeaponOverrideData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Overrides.Clear();
-			(RimeReader Reader, uint Count) s_Overrides = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_Overrides.Count; ++i)
-			{
-				var s_CtrRef = new CtrRef<WeaponOverrideData>();
-				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_Overrides.Reader.ReadUInt32()));
-				p_Instance.Overrides.Add(s_CtrRef);
-			}
-			
-			s_Overrides.Reader.Dispose();
-		}
+		public RefArray<WeaponOverrideData> Overrides { get; set; } = new();
 
 	}
 }

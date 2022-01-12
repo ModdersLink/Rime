@@ -65,25 +65,5 @@ namespace fb
 		[ContainerField(147), LayoutImmutable, Blittable]
 		public bool ShouldDestroyBangers { get; set; }
 
-		public static void Deserialize(VehicleStateTriggerEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.LockAmount = p_Reader.ReadSingle();
-			p_Instance.BulletCount = p_Reader.ReadUInt32();
-			p_Instance.HealthToSet = p_Reader.ReadUInt32();
-			p_Instance.SeatSpecificIndexForHuman = p_Reader.ReadUInt32();
-			p_Instance.SeatSpecificIndexForAi = p_Reader.ReadUInt32();
-			p_Instance.DestructionRadius = p_Reader.ReadSingle();
-			p_Instance.HealthToCheck = p_Reader.ReadUInt32();
-			p_Instance.AllowHumanToEnterAllSeats = p_Reader.ReadBool();
-			p_Instance.AllowAiToEnterAllSeats = p_Reader.ReadBool();
-			p_Instance.BanAiFromSpecificSeat = p_Reader.ReadBool();
-			p_Instance.TriggerCriticalOnHealthSet = p_Reader.ReadBool();
-			p_Instance.CheckHealthGreaterOrEqual = p_Reader.ReadBool();
-			p_Instance.RestrictHumanToSpecificSeat = p_Reader.ReadBool();
-			p_Instance.ShouldDestroyVehicles = p_Reader.ReadBool();
-			p_Instance.ShouldDestroyBangers = p_Reader.ReadBool();
-			p_Reader.Seek(12, SeekOrigin.Current);
-		}
-
 	}
 }

@@ -32,13 +32,5 @@ namespace fb
 		[ContainerField(32)]
 		public AudioGraphNodePort Amplitude1 { get; set; } = new();
 
-		public static void Deserialize(IrReverbControllerNodeData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AudioGraphNodePort.Deserialize(p_Instance.Reverb0, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.Amplitude0, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.Reverb1, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.Amplitude1, p_Reader, p_Parser);
-		}
-
 	}
 }

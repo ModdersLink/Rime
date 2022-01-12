@@ -40,25 +40,5 @@ namespace fb
 		[ContainerField(18), LayoutImmutable, Blittable]
 		public bool SortValues { get; set; }
 		
-		public static void Deserialize(MatchmakingGenericRule p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Rule = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.MinFitThresHold = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Setting = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.DesiredValues.Clear();
-			(RimeReader Reader, uint Count) s_DesiredValues = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_DesiredValues.Count; ++i)
-			{
-				var s_Value = new MatchmakingRuleString();
-				fb.MatchmakingRuleString.Deserialize(s_Value, s_DesiredValues.Reader, p_Parser);
-				p_Instance.DesiredValues.Add(s_Value);
-			}
-			
-			s_DesiredValues.Reader.Dispose();
-			p_Instance.IgnoreIfDefault = p_Reader.ReadBool();
-			p_Instance.MergeValues = p_Reader.ReadBool();
-			p_Instance.SortValues = p_Reader.ReadBool();
-			p_Reader.Seek(1, SeekOrigin.Current);
-		}
 	}
 }

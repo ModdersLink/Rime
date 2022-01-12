@@ -26,19 +26,5 @@ namespace fb
 		[ContainerField(12)]
 		public List<int> Times { get; set; } = new();
 
-		public static void Deserialize(PropertyTrackData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Id = p_Reader.ReadInt32();
-			p_Instance.Times.Clear();
-			(RimeReader Reader, uint Count) s_Times = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_Times.Count; ++i)
-			{
-				var s_Value = s_Times.Reader.ReadInt32();
-				p_Instance.Times.Add(s_Value);
-			}
-			
-			s_Times.Reader.Dispose();
-		}
-
 	}
 }

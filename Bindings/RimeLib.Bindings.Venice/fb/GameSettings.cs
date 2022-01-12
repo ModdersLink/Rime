@@ -42,7 +42,7 @@ namespace fb
 		public string DefaultLayerInclusion { get; set; } = string.Empty;
 
 		[ContainerField(40)]
-		public List<CtrRef<InputConfigurationAsset>> InputConfiguration { get; set; } = new();
+		public RefArray<InputConfigurationAsset> InputConfiguration { get; set; } = new();
 
 		[ContainerField(44)]
 		public TeamId DefaultTeamId { get; set; } = new();
@@ -78,7 +78,7 @@ namespace fb
 		public CtrRef<DifficultyDatas> DifficultySettings { get; set; } = new();
 
 		[ContainerField(88)]
-		public List<CtrRef<BlueprintBundleMetadataContainer>> MetadataContainers { get; set; } = new();
+		public RefArray<BlueprintBundleMetadataContainer> MetadataContainers { get; set; } = new();
 
 		[ContainerField(92)]
 		public SKU CurrentSKU { get; set; } = new();
@@ -142,70 +142,6 @@ namespace fb
 
 		[ContainerField(118), LayoutImmutable, Blittable]
 		public bool AllowDestructionOutsideCombatArea { get; set; }
-
-		public static void Deserialize(GameSettings p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.MaxPlayerCount = p_Reader.ReadUInt32();
-			p_Instance.MaxSpectatorCount = p_Reader.ReadUInt32();
-			p_Instance.LayerInclusionTable.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.LogFileCollisionMode = (LogFileCollisionMode) p_Reader.ReadInt32();
-			p_Instance.LogFileRotationHistoryLength = p_Reader.ReadUInt32();
-			p_Instance.Level = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.DefaultLayerInclusion = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.InputConfiguration.Clear();
-			(RimeReader Reader, uint Count) s_InputConfiguration = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_InputConfiguration.Count; ++i)
-			{
-				var s_CtrRef = new CtrRef<InputConfigurationAsset>();
-				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_InputConfiguration.Reader.ReadUInt32()));
-				p_Instance.InputConfiguration.Add(s_CtrRef);
-			}
-			
-			s_InputConfiguration.Reader.Dispose();
-			p_Instance.DefaultTeamId = (TeamId) p_Reader.ReadInt32();
-			p_Instance.LevelWarmUpTime = p_Reader.ReadSingle();
-			p_Instance.TimeToWaitForQuitTaskCompletion = p_Reader.ReadSingle();
-			p_Instance.Platform = (GamePlatform) p_Reader.ReadInt32();
-			p_Instance.Version.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.PS3ContentRatingAge = p_Reader.ReadUInt32();
-			p_Instance.DifficultyIndex = p_Reader.ReadInt32();
-			p_Instance.TimeBeforeSpawnIsAllowed = p_Reader.ReadSingle();
-			p_Instance.SoldierWeaponSwitching.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.LogHistory = p_Reader.ReadUInt32();
-			p_Instance.DifficultySettings.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.MetadataContainers.Clear();
-			(RimeReader Reader, uint Count) s_MetadataContainers = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_MetadataContainers.Count; ++i)
-			{
-				var s_CtrRef = new CtrRef<BlueprintBundleMetadataContainer>();
-				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_MetadataContainers.Reader.ReadUInt32()));
-				p_Instance.MetadataContainers.Add(s_CtrRef);
-			}
-			
-			s_MetadataContainers.Reader.Dispose();
-			p_Instance.CurrentSKU = (SKU) p_Reader.ReadInt32();
-			p_Instance.Player.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.LogFileEnable = p_Reader.ReadBool();
-			p_Instance.RotateLogs = p_Reader.ReadBool();
-			p_Instance.EnableLoadingProfile = p_Reader.ReadBool();
-			p_Instance.AdjustVehicleCenterOfMass = p_Reader.ReadBool();
-			p_Instance.AutoAimEnabled = p_Reader.ReadBool();
-			p_Instance.HasUnlimitedAmmo = p_Reader.ReadBool();
-			p_Instance.HasUnlimitedMags = p_Reader.ReadBool();
-			p_Instance.ResourceRefreshAlwaysAllowed = p_Reader.ReadBool();
-			p_Instance.UseSpeedBasedDetailedCollision = p_Reader.ReadBool();
-			p_Instance.AimAssistEnabled = p_Reader.ReadBool();
-			p_Instance.AimAssistUsePolynomials = p_Reader.ReadBool();
-			p_Instance.ForceFreeStreaming = p_Reader.ReadBool();
-			p_Instance.ForceDisableFreeStreaming = p_Reader.ReadBool();
-			p_Instance.IsGodMode = p_Reader.ReadBool();
-			p_Instance.IsJesusMode = p_Reader.ReadBool();
-			p_Instance.IsJesusModeAi = p_Reader.ReadBool();
-			p_Instance.UseSingleWeaponSelector = p_Reader.ReadBool();
-			p_Instance.GameAdministrationEnabled = p_Reader.ReadBool();
-			p_Instance.AllowDestructionOutsideCombatArea = p_Reader.ReadBool();
-			p_Reader.Seek(1, SeekOrigin.Current);
-		}
 
 	}
 }

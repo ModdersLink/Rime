@@ -28,11 +28,5 @@ namespace fb
 		[ContainerField(8)]
 		public PointCloudAttributeQuantization DFrameQuantization { get; set; } = new();
 		
-		public static void Deserialize(AnimatedPointCloudAttributeDesc p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Usage = (PointCloudAttributeUsage) p_Reader.ReadInt32();
-			p_Instance.IFrameQuantization = (PointCloudAttributeQuantization) p_Reader.ReadInt32();
-			p_Instance.DFrameQuantization = (PointCloudAttributeQuantization) p_Reader.ReadInt32();
-		}
 	}
 }

@@ -23,19 +23,5 @@ namespace fb
 		[ContainerField(44)]
 		public List<RibbonPointData> RibbonPoints { get; set; } = new();
 
-		public static void Deserialize(RibbonData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.RibbonPoints.Clear();
-			(RimeReader Reader, uint Count) s_RibbonPoints = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_RibbonPoints.Count; ++i)
-			{
-				var s_Value = new RibbonPointData();
-				fb.RibbonPointData.Deserialize(s_Value, s_RibbonPoints.Reader, p_Parser);
-				p_Instance.RibbonPoints.Add(s_Value);
-			}
-			
-			s_RibbonPoints.Reader.Dispose();
-		}
-
 	}
 }

@@ -35,14 +35,5 @@ namespace fb
 		[ContainerField(36)]
 		public AngleUnit AngleUnit { get; set; } = new();
 
-		public static void Deserialize(SimpleTransformNodeData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AudioGraphNodePort.Deserialize(p_Instance.X, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.Y, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.Z, p_Reader, p_Parser);
-			p_Instance.Operation = (SimpleTransformOperation) p_Reader.ReadInt32();
-			p_Instance.AngleUnit = (AngleUnit) p_Reader.ReadInt32();
-		}
-
 	}
 }

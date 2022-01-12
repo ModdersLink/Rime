@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(12)]
 		public CtrRef<MovementActionData> StartSequence { get; set; } = new();
 
-		public static void Deserialize(MovementActionRoot p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.StartSequence.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-		}
-
 	}
 }

@@ -20,9 +20,5 @@ namespace fb
 	public class UIPresenceCompData : 
 		UIComponentData
 	{
-		public static void Deserialize(UIPresenceCompData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

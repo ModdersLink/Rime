@@ -41,25 +41,5 @@ namespace fb
 		[ContainerField(40)]
 		public List<GameModeVariation> Variations { get; set; } = new();
 
-		public static void Deserialize(UIGameModeDescription p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Identifier = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Name = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Abbreviation = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Desc = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.BattlelogId = p_Reader.ReadInt32();
-			p_Instance.TexturePath = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Variations.Clear();
-			(RimeReader Reader, uint Count) s_Variations = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_Variations.Count; ++i)
-			{
-				var s_Value = new GameModeVariation();
-				fb.GameModeVariation.Deserialize(s_Value, s_Variations.Reader, p_Parser);
-				p_Instance.Variations.Add(s_Value);
-			}
-			
-			s_Variations.Reader.Dispose();
-		}
-
 	}
 }

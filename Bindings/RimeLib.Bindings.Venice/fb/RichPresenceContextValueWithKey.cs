@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(16), LayoutImmutable]
 		public string Key { get; set; } = string.Empty;
 
-		public static void Deserialize(RichPresenceContextValueWithKey p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Key = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-		}
-
 	}
 }

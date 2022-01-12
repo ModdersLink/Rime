@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(28), LayoutImmutable, Blittable]
 		public int PasswdMinLen { get; set; }
 
-		public static void Deserialize(UISetupServerWizardCompData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.PasswdMinLen = p_Reader.ReadInt32();
-		}
-
 	}
 }

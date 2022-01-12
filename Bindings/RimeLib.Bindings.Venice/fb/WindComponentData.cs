@@ -29,13 +29,5 @@ namespace fb
 		[ContainerField(104), LayoutImmutable, Blittable]
 		public float WindStrength { get; set; }
 
-		public static void Deserialize(WindComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Realm = (Realm) p_Reader.ReadInt32();
-			p_Instance.WindDirection = p_Reader.ReadSingle();
-			p_Instance.WindStrength = p_Reader.ReadSingle();
-			p_Reader.Seek(4, SeekOrigin.Current);
-		}
-
 	}
 }

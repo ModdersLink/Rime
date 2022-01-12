@@ -106,37 +106,5 @@ namespace fb
 		[ContainerField(112)]
 		public AntRef LockArmsToCameraWeight { get; set; } = new();
 		
-		public static void Deserialize(PhysicsDrivenAnimationEntityBinding p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AntRef.Deserialize(p_Instance.AimLeftRight, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.AimUpDown, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.Crouch, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.ForceSetTrajectory, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.InAir, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.Skydive, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.Parachute, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.Swim, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.InputBackward, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.InputForward, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.InputLeft, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.InputRight, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.IsEnemy, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.Jump, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.LeanLeftRight, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.Prone, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.Sprint, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.GroundSupported, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.GroundNormal, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.GroundDistance, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.GroundAngleZ, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.GroundAngleX, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.GroundAngleFromNormal, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.IsClientAnimatable, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.CustomizationScreen, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.Minimal3pServer, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.VerticalImpact, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.FalseSignal, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.LockArmsToCameraWeight, p_Reader, p_Parser);
-		}
 	}
 }

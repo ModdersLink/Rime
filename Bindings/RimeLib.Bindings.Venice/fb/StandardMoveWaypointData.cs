@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(48)]
 		public AILocoMoveTaskData MoveTask { get; set; } = new();
 
-		public static void Deserialize(StandardMoveWaypointData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AILocoMoveTaskData.Deserialize(p_Instance.MoveTask, p_Reader, p_Parser);
-		}
-
 	}
 }

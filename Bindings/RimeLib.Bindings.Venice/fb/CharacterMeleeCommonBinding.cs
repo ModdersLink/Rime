@@ -40,15 +40,5 @@ namespace fb
 		[ContainerField(24)]
 		public AntRef MeleeType { get; set; } = new();
 		
-		public static void Deserialize(CharacterMeleeCommonBinding p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AntRef.Deserialize(p_Instance.MeleeDistance, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.MeleeAngle, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.MeleeDefenceTime, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.MeleeSequenceTime, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.MeleeAborted, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.CloseToTarget, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.MeleeType, p_Reader, p_Parser);
-		}
 	}
 }

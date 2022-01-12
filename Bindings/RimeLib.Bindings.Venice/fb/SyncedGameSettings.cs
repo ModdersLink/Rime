@@ -44,17 +44,5 @@ namespace fb
 		[ContainerField(31), LayoutImmutable, Blittable]
 		public bool DisableToggleEntryCamera { get; set; }
 
-		public static void Deserialize(SyncedGameSettings p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.MaxAllowedLatency = p_Reader.ReadSingle();
-			p_Instance.ManDownTimeModifier = p_Reader.ReadSingle();
-			p_Instance.BulletDamageModifier = p_Reader.ReadSingle();
-			p_Instance.DifficultyIndex = p_Reader.ReadUInt32();
-			p_Instance.DisableRegenerateHealth = p_Reader.ReadBool();
-			p_Instance.EnableFriendlyFire = p_Reader.ReadBool();
-			p_Instance.AllowClientSideDamageArbitration = p_Reader.ReadBool();
-			p_Instance.DisableToggleEntryCamera = p_Reader.ReadBool();
-		}
-
 	}
 }

@@ -32,13 +32,5 @@ namespace fb
 		[ContainerField(24), LayoutImmutable]
 		public string BoneName { get; set; } = string.Empty;
 
-		public static void Deserialize(AnimatedTransformEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AntRef.Deserialize(p_Instance.Animatable, p_Reader, p_Parser);
-			p_Instance.ExternalTime = p_Reader.ReadSingle();
-			fb.AntRef.Deserialize(p_Instance.Controller, p_Reader, p_Parser);
-			p_Instance.BoneName = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-		}
-
 	}
 }

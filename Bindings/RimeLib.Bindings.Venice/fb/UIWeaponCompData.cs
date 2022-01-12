@@ -29,12 +29,5 @@ namespace fb
 		[ContainerField(36), LayoutImmutable, Blittable]
 		public float NormalHitIndicatorLimit { get; set; }
 
-		public static void Deserialize(UIWeaponCompData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.MinHitIndicatorLimit = p_Reader.ReadSingle();
-			p_Instance.MaxHitIndicatorLimit = p_Reader.ReadSingle();
-			p_Instance.NormalHitIndicatorLimit = p_Reader.ReadSingle();
-		}
-
 	}
 }

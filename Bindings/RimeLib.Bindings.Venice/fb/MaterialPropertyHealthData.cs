@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(8), LayoutImmutable, Blittable]
 		public float Health { get; set; }
 
-		public static void Deserialize(MaterialPropertyHealthData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Health = p_Reader.ReadSingle();
-		}
-
 	}
 }

@@ -92,43 +92,5 @@ namespace fb
 		[ContainerField(200), LayoutImmutable, Blittable]
 		public bool SpawnExplosionOnFirstImpactOnly { get; set; }
 
-		public static void Deserialize(DebrisClusterData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.Vec3.Deserialize(p_Instance.PushVelocityMul, p_Reader, p_Parser);
-			fb.Vec3.Deserialize(p_Instance.PushVelocityRndMul, p_Reader, p_Parser);
-			fb.Vec3.Deserialize(p_Instance.InitRotationRndMul, p_Reader, p_Parser);
-			p_Instance.ClusterLifetime = p_Reader.ReadSingle();
-			p_Instance.Mesh.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.CompositePartCount = p_Reader.ReadUInt32();
-			p_Instance.MaxActivePartsCount = p_Reader.ReadUInt32();
-			p_Instance.PartHierarchy.Clear();
-			(RimeReader Reader, uint Count) s_PartHierarchy = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_PartHierarchy.Count; ++i)
-			{
-				var s_Value = new DebrisClusterPartInfoData();
-				fb.DebrisClusterPartInfoData.Deserialize(s_Value, s_PartHierarchy.Reader, p_Parser);
-				p_Instance.PartHierarchy.Add(s_Value);
-			}
-			
-			s_PartHierarchy.Reader.Dispose();
-			p_Instance.ActivationPushForceMul = p_Reader.ReadSingle();
-			p_Instance.ProjectileForceTransferMul = p_Reader.ReadSingle();
-			p_Instance.PhysicsData.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.Explosion.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.ActivationEffect.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.Effect.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.OnPartCollisionSpeedThreshold = p_Reader.ReadSingle();
-			p_Instance.PartialDestruction = p_Reader.ReadBool();
-			p_Instance.ClientSideOnly = p_Reader.ReadBool();
-			p_Instance.OnPartCollisionEnable = p_Reader.ReadBool();
-			p_Instance.NoCollision = p_Reader.ReadBool();
-			p_Instance.KillPartsOnCollision = p_Reader.ReadBool();
-			p_Instance.DeactivatePartsOnSleep = p_Reader.ReadBool();
-			p_Instance.ActivateOnSpawn = p_Reader.ReadBool();
-			p_Instance.InEffectWorldOnly = p_Reader.ReadBool();
-			p_Instance.SpawnExplosionOnFirstImpactOnly = p_Reader.ReadBool();
-			p_Reader.Seek(7, SeekOrigin.Current);
-		}
-
 	}
 }

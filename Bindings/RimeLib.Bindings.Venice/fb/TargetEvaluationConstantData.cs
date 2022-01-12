@@ -32,13 +32,5 @@ namespace fb
 		[ContainerField(24), LayoutImmutable, Blittable]
 		public float TargetFlipFactorUsage { get; set; }
 
-		public static void Deserialize(TargetEvaluationConstantData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.MaxBattleStrength = p_Reader.ReadSingle();
-			p_Instance.DefaultHumanTargetPreference = p_Reader.ReadSingle();
-			p_Instance.OtherSquadAttackerFactorUsage = p_Reader.ReadSingle();
-			p_Instance.TargetFlipFactorUsage = p_Reader.ReadSingle();
-		}
-
 	}
 }

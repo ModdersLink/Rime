@@ -28,11 +28,5 @@ namespace fb
 		[ContainerField(8)]
 		public PersistentValueDataType DataType { get; set; } = new();
 		
-		public static void Deserialize(CustomReportValueData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Name = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Kind = (CustomReportValueKind) p_Reader.ReadInt32();
-			p_Instance.DataType = (PersistentValueDataType) p_Reader.ReadInt32();
-		}
 	}
 }

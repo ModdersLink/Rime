@@ -26,11 +26,5 @@ namespace fb
 		[ContainerField(16), LayoutImmutable, Blittable]
 		public float DefaultValue { get; set; }
 
-		public static void Deserialize(MixerValueNodeData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AudioGraphNodePort.Deserialize(p_Instance.Out, p_Reader, p_Parser);
-			p_Instance.DefaultValue = p_Reader.ReadSingle();
-		}
-
 	}
 }

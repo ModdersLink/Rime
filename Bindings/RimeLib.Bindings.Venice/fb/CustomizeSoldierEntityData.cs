@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(16)]
 		public CtrRef<CustomizeSoldierData> CustomizeSoldierData { get; set; } = new();
 
-		public static void Deserialize(CustomizeSoldierEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.CustomizeSoldierData.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-		}
-
 	}
 }

@@ -20,9 +20,5 @@ namespace fb
 	public class SequenceData : 
 		SequenceEntityData
 	{
-		public static void Deserialize(SequenceData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

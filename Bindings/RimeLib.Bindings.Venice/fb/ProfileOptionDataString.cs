@@ -26,11 +26,5 @@ namespace fb
 		[ContainerField(24), LayoutImmutable]
 		public string Value { get; set; } = string.Empty;
 
-		public static void Deserialize(ProfileOptionDataString p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.MaxLength = p_Reader.ReadInt32();
-			p_Instance.Value = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-		}
-
 	}
 }

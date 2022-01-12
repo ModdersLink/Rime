@@ -56,22 +56,5 @@ namespace fb
 		[ContainerField(140), LayoutImmutable, Blittable]
 		public bool Enable { get; set; }
 
-		public static void Deserialize(DynamicAOComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Realm = (Realm) p_Reader.ReadInt32();
-			p_Instance.SsaoMaxDistanceOuter = p_Reader.ReadSingle();
-			p_Instance.SsaoFade = p_Reader.ReadSingle();
-			p_Instance.SsaoRadius = p_Reader.ReadSingle();
-			p_Instance.SsaoMaxDistanceInner = p_Reader.ReadSingle();
-			p_Instance.HbaoRadius = p_Reader.ReadSingle();
-			p_Instance.HbaoAttenuation = p_Reader.ReadSingle();
-			p_Instance.HbaoAngleBias = p_Reader.ReadSingle();
-			p_Instance.HbaoPowerExponent = p_Reader.ReadSingle();
-			p_Instance.HbaoContrast = p_Reader.ReadSingle();
-			p_Instance.HbaoMaxFootprintRadius = p_Reader.ReadSingle();
-			p_Instance.Enable = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
-
 	}
 }

@@ -91,40 +91,5 @@ namespace fb
 		[ContainerField(151), LayoutImmutable, Blittable]
 		public bool AlwaysAutoReload { get; set; }
 		
-		public static void Deserialize(FireLogicData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.HoldAndReleaseData.Deserialize(p_Instance.HoldAndRelease, p_Reader, p_Parser);
-			fb.BoltActionData.Deserialize(p_Instance.BoltAction, p_Reader, p_Parser);
-			fb.RecoilData.Deserialize(p_Instance.Recoil, p_Reader, p_Parser);
-			p_Instance.FireInputAction = (EntryInputActionEnum) p_Reader.ReadInt32();
-			p_Instance.ReloadInputAction = (EntryInputActionEnum) p_Reader.ReadInt32();
-			p_Instance.CycleFireModeInputAction = (EntryInputActionEnum) p_Reader.ReadInt32();
-			p_Instance.TriggerPullWeight = p_Reader.ReadSingle();
-			p_Instance.RateOfFire = p_Reader.ReadSingle();
-			p_Instance.RateOfFireForBurst = p_Reader.ReadSingle();
-			p_Instance.ClientFireRateMultiplier = p_Reader.ReadSingle();
-			p_Instance.ReloadDelay = p_Reader.ReadSingle();
-			p_Instance.FireLogicTypeArray.Clear();
-			(RimeReader Reader, uint Count) s_FireLogicTypeArray = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_FireLogicTypeArray.Count; ++i)
-			{
-				var s_Value = (FireLogicType) s_FireLogicTypeArray.Reader.ReadInt32();
-				p_Instance.FireLogicTypeArray.Add(s_Value);
-			}
-			
-			s_FireLogicTypeArray.Reader.Dispose();
-			p_Instance.ReloadThreshold = p_Reader.ReadSingle();
-			p_Instance.PreFireDelay = p_Reader.ReadSingle();
-			p_Instance.ReloadTime = p_Reader.ReadSingle();
-			p_Instance.ReloadTimeBulletsLeft = p_Reader.ReadSingle();
-			p_Instance.FireLogicType = (FireLogicType) p_Reader.ReadInt32();
-			p_Instance.ReloadLogic = (ReloadLogic) p_Reader.ReadInt32();
-			p_Instance.AutomaticDelay = p_Reader.ReadSingle();
-			p_Instance.ReloadType = (ReloadType) p_Reader.ReadInt32();
-			p_Instance.HoldOffReloadUntilZoomRelease = p_Reader.ReadBool();
-			p_Instance.ForceReloadActionOnFireTrigger = p_Reader.ReadBool();
-			p_Instance.HoldOffReloadUntilFireRelease = p_Reader.ReadBool();
-			p_Instance.AlwaysAutoReload = p_Reader.ReadBool();
-		}
 	}
 }

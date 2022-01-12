@@ -23,12 +23,5 @@ namespace fb
 		[ContainerField(16)]
 		public ColorTintData ColorTintData { get; set; } = new();
 
-		public static void Deserialize(ColorTintScopeFilterData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Reader.Seek(4, SeekOrigin.Current);
-			fb.ColorTintData.Deserialize(p_Instance.ColorTintData, p_Reader, p_Parser);
-			p_Reader.Seek(4, SeekOrigin.Current);
-		}
-
 	}
 }

@@ -26,11 +26,5 @@ namespace fb
 		[ContainerField(12), LayoutImmutable, Blittable]
 		public int MinHeightSamplesPerSide { get; set; }
 
-		public static void Deserialize(HeightfieldTreeAsset p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.MinHeightWidth = p_Reader.ReadSingle();
-			p_Instance.MinHeightSamplesPerSide = p_Reader.ReadInt32();
-		}
-
 	}
 }

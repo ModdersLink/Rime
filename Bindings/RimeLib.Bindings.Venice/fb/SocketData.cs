@@ -36,7 +36,7 @@ namespace fb
 		public string BoneName { get; set; } = string.Empty;
 
 		[ContainerField(156)]
-		public List<CtrRef<SocketObjectDataBase>> AvailableObjects { get; set; } = new();
+		public RefArray<SocketObjectDataBase> AvailableObjects { get; set; } = new();
 
 		[ContainerField(160)]
 		public GearSlot GearSlot { get; set; } = new();
@@ -61,48 +61,6 @@ namespace fb
 
 		[ContainerField(173), LayoutImmutable, Blittable]
 		public bool HideByLightToggle { get; set; }
-
-		public static void Deserialize(SocketData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Reader.Seek(8, SeekOrigin.Current);
-			fb.LinearTransform.Deserialize(p_Instance.BoneRigidTransform, p_Reader, p_Parser);
-			p_Reader.Seek(8, SeekOrigin.Current);
-			fb.LinearTransform.Deserialize(p_Instance.Transform, p_Reader, p_Parser);
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.UnlockAsset.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.BoneId = p_Reader.ReadInt32();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.BoneName = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.AvailableObjects.Clear();
-			(RimeReader Reader, uint Count) s_AvailableObjects = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_AvailableObjects.Count; ++i)
-			{
-				var s_CtrRef = new CtrRef<SocketObjectDataBase>();
-				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_AvailableObjects.Reader.ReadUInt32()));
-				p_Instance.AvailableObjects.Add(s_CtrRef);
-			}
-			
-			s_AvailableObjects.Reader.Dispose();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.GearSlot = (GearSlot) p_Reader.ReadInt32();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.SocketType = (SocketType) p_Reader.ReadInt32();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.UsesDefaultObject = p_Reader.ReadBool();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.Excluded = p_Reader.ReadBool();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.DefaultEnableSocketEntities = p_Reader.ReadBool();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.ForceSocketEntitiesEnabled = p_Reader.ReadBool();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.HideByZoomTransition = p_Reader.ReadBool();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.HideByLightToggle = p_Reader.ReadBool();
-			p_Reader.Seek(10, SeekOrigin.Current);
-		}
 
 	}
 }

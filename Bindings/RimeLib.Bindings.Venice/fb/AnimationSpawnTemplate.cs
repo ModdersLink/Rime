@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(8)]
 		public CtrRef<AntEnumeration> RunStyle { get; set; } = new();
 
-		public static void Deserialize(AnimationSpawnTemplate p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.RunStyle.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-		}
-
 	}
 }

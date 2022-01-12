@@ -25,10 +25,5 @@ namespace fb
 		[ContainerField(4), LayoutImmutable]
 		public string Licenses { get; set; } = string.Empty;
 		
-		public static void Deserialize(BFServerConfigurationData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.ScoreMultiplier = p_Reader.ReadUInt32();
-			p_Instance.Licenses = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-		}
 	}
 }

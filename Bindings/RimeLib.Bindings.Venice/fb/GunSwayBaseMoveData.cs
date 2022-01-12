@@ -31,12 +31,5 @@ namespace fb
 		[ContainerField(56)]
 		public GunSwayLagData GunSwayLag { get; set; } = new();
 		
-		public static void Deserialize(GunSwayBaseMoveData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.GunSwayDispersionData.Deserialize(p_Instance.BaseValue, p_Reader, p_Parser);
-			fb.GunSwayDispersionData.Deserialize(p_Instance.Moving, p_Reader, p_Parser);
-			fb.GunSwayRecoilData.Deserialize(p_Instance.Recoil, p_Reader, p_Parser);
-			fb.GunSwayLagData.Deserialize(p_Instance.GunSwayLag, p_Reader, p_Parser);
-		}
 	}
 }

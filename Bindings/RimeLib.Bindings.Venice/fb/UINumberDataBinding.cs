@@ -29,13 +29,5 @@ namespace fb
 		[ContainerField(28), LayoutImmutable, Blittable]
 		public bool Refresh { get; set; }
 
-		public static void Deserialize(UINumberDataBinding p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.UIDataSourceInfo.Deserialize(p_Instance.Value, p_Reader, p_Parser);
-			p_Instance.NumValue = p_Reader.ReadInt32();
-			p_Instance.Refresh = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
-
 	}
 }

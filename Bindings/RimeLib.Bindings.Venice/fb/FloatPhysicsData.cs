@@ -26,11 +26,5 @@ namespace fb
 		[ContainerField(12), LayoutImmutable, Blittable]
 		public float FilledDensity { get; set; }
 
-		public static void Deserialize(FloatPhysicsData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Density = p_Reader.ReadSingle();
-			p_Instance.FilledDensity = p_Reader.ReadSingle();
-		}
-
 	}
 }

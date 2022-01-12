@@ -68,26 +68,5 @@ namespace fb
 		[ContainerField(50), LayoutImmutable, Blittable]
 		public bool PauseOnStartup { get; set; }
 
-		public static void Deserialize(DemoSettings p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.RecordDemoFileName = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.PlaybackDemoFileName = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.TimeDemo = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.LockToPlayerName = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.ChangePlayerInterval = p_Reader.ReadUInt32();
-			p_Instance.ForcedDeltaTickCount = p_Reader.ReadUInt32();
-			p_Instance.StartProfilingOnFrame = p_Reader.ReadUInt32();
-			p_Instance.StopProfilingOnFrame = p_Reader.ReadUInt32();
-			p_Instance.TakeScreenshotOnFrame = p_Reader.ReadUInt32();
-			p_Instance.AllowOverwrite = p_Reader.ReadBool();
-			p_Instance.LogPerformance = p_Reader.ReadBool();
-			p_Instance.SuppressDebugLog = p_Reader.ReadBool();
-			p_Instance.ShutdownOnDemoComplete = p_Reader.ReadBool();
-			p_Instance.LoopingDemo = p_Reader.ReadBool();
-			p_Instance.LockToRandomPlayer = p_Reader.ReadBool();
-			p_Instance.PauseOnStartup = p_Reader.ReadBool();
-			p_Reader.Seek(1, SeekOrigin.Current);
-		}
-
 	}
 }

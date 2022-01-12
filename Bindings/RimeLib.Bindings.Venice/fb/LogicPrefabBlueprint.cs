@@ -20,9 +20,5 @@ namespace fb
 	public class LogicPrefabBlueprint : 
 		PrefabBlueprint
 	{
-		public static void Deserialize(LogicPrefabBlueprint p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

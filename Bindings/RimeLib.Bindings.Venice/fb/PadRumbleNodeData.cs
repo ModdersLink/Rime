@@ -26,11 +26,5 @@ namespace fb
 		[ContainerField(16)]
 		public AudioGraphNodePort RumbleLow { get; set; } = new();
 
-		public static void Deserialize(PadRumbleNodeData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AudioGraphNodePort.Deserialize(p_Instance.RumbleHigh, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.RumbleLow, p_Reader, p_Parser);
-		}
-
 	}
 }

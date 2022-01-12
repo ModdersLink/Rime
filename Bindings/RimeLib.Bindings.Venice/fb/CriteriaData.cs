@@ -36,7 +36,7 @@ namespace fb
 		public CtrRef<StatsCategoryBaseData> ParamY { get; set; } = new();
 
 		[ContainerField(28)]
-		public List<CtrRef<StatsCategoryBaseData>> OrParamsX { get; set; } = new();
+		public RefArray<StatsCategoryBaseData> OrParamsX { get; set; } = new();
 
 		[ContainerField(32)]
 		public CriteriaType CriteriaType { get; set; } = new();
@@ -58,33 +58,6 @@ namespace fb
 
 		[ContainerField(50), LayoutImmutable, Blittable]
 		public bool CountEvents { get; set; }
-
-		public static void Deserialize(CriteriaData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.CompletionValue = p_Reader.ReadSingle();
-			p_Instance.GateList.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.Measuring = (StatEvent) p_Reader.ReadInt32();
-			p_Instance.ParamX.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.ParamY.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.OrParamsX.Clear();
-			(RimeReader Reader, uint Count) s_OrParamsX = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_OrParamsX.Count; ++i)
-			{
-				var s_CtrRef = new CtrRef<StatsCategoryBaseData>();
-				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_OrParamsX.Reader.ReadUInt32()));
-				p_Instance.OrParamsX.Add(s_CtrRef);
-			}
-			
-			s_OrParamsX.Reader.Dispose();
-			p_Instance.CriteriaType = (CriteriaType) p_Reader.ReadInt32();
-			p_Instance.DescriptionSid = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.ScaleFactor = p_Reader.ReadSingle();
-			p_Instance.Scale = p_Reader.ReadSingle();
-			p_Instance.ShouldSummarize = p_Reader.ReadBool();
-			p_Instance.ShouldHide = p_Reader.ReadBool();
-			p_Instance.CountEvents = p_Reader.ReadBool();
-			p_Reader.Seek(1, SeekOrigin.Current);
-		}
 
 	}
 }

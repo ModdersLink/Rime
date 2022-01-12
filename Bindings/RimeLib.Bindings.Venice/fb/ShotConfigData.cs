@@ -73,35 +73,5 @@ namespace fb
 		[ContainerField(95), LayoutImmutable, Blittable]
 		public bool ActiveForceSpawnToCamera { get; set; }
 		
-		public static void Deserialize(ShotConfigData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.Vec3.Deserialize(p_Instance.InitialPosition, p_Reader, p_Parser);
-			fb.Vec3.Deserialize(p_Instance.InitialDirection, p_Reader, p_Parser);
-			fb.Vec3.Deserialize(p_Instance.InitialSpeed, p_Reader, p_Parser);
-			p_Instance.InheritWeaponSpeedAmount = p_Reader.ReadSingle();
-			p_Instance.MuzzleExplosion.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.ProjectileData.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.SecondaryProjectileData.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.Projectile.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.SecondaryProjectile.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.AlternateProjectiles.Clear();
-			(RimeReader Reader, uint Count) s_AlternateProjectiles = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_AlternateProjectiles.Count; ++i)
-			{
-				var s_Value = new UnlockableProjectile();
-				fb.UnlockableProjectile.Deserialize(s_Value, s_AlternateProjectiles.Reader, p_Parser);
-				p_Instance.AlternateProjectiles.Add(s_Value);
-			}
-			
-			s_AlternateProjectiles.Reader.Dispose();
-			p_Instance.SpawnDelay = p_Reader.ReadSingle();
-			p_Instance.NumberOfBulletsPerShell = p_Reader.ReadUInt32();
-			p_Instance.NumberOfBulletsPerShot = p_Reader.ReadUInt32();
-			p_Instance.NumberOfBulletsPerBurst = p_Reader.ReadUInt32();
-			p_Instance.RelativeTargetAiming = p_Reader.ReadBool();
-			p_Instance.ForceSpawnToCamera = p_Reader.ReadBool();
-			p_Instance.SpawnVisualAtWeaponBone = p_Reader.ReadBool();
-			p_Instance.ActiveForceSpawnToCamera = p_Reader.ReadBool();
-		}
 	}
 }

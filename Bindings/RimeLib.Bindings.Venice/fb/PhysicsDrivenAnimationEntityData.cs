@@ -29,12 +29,5 @@ namespace fb
 		[ContainerField(132), LayoutImmutable, Blittable]
 		public int AnimationEntitySpacePriority { get; set; }
 
-		public static void Deserialize(PhysicsDrivenAnimationEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Realm = (Realm) p_Reader.ReadInt32();
-			fb.PhysicsDrivenAnimationEntityBinding.Deserialize(p_Instance.Binding, p_Reader, p_Parser);
-			p_Instance.AnimationEntitySpacePriority = p_Reader.ReadInt32();
-		}
-
 	}
 }

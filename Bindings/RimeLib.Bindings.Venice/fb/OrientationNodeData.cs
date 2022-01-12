@@ -29,12 +29,5 @@ namespace fb
 		[ContainerField(24)]
 		public AudioGraphNodePort ListenerRelativeRoll { get; set; } = new();
 
-		public static void Deserialize(OrientationNodeData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AudioGraphNodePort.Deserialize(p_Instance.ListenerRelativeYaw, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.ListenerRelativePitch, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.ListenerRelativeRoll, p_Reader, p_Parser);
-		}
-
 	}
 }

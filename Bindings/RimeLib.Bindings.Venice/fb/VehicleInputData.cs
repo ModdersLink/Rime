@@ -79,28 +79,5 @@ namespace fb
 		[ContainerField(76), LayoutImmutable, Blittable]
 		public float RollInertiaMinRatio { get; set; }
 		
-		public static void Deserialize(VehicleInputData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.ThrottleDeadzone = p_Reader.ReadSingle();
-			p_Instance.BrakeDeadzone = p_Reader.ReadSingle();
-			p_Instance.YawDeadzone = p_Reader.ReadSingle();
-			p_Instance.PitchDeadzone = p_Reader.ReadSingle();
-			p_Instance.RollDeadzone = p_Reader.ReadSingle();
-			p_Instance.ThrottleInertiaOutDuration = p_Reader.ReadSingle();
-			p_Instance.ThrottleInertiaInDuration = p_Reader.ReadSingle();
-			p_Instance.ThrottleInertiaMinRatio = p_Reader.ReadSingle();
-			p_Instance.BrakeInertiaOutDuration = p_Reader.ReadSingle();
-			p_Instance.BrakeInertiaInDuration = p_Reader.ReadSingle();
-			p_Instance.BrakeInertiaMinRatio = p_Reader.ReadSingle();
-			p_Instance.YawInertiaOutDuration = p_Reader.ReadSingle();
-			p_Instance.YawInertiaInDuration = p_Reader.ReadSingle();
-			p_Instance.YawInertiaMinRatio = p_Reader.ReadSingle();
-			p_Instance.PitchInertiaOutDuration = p_Reader.ReadSingle();
-			p_Instance.PitchInertiaInDuration = p_Reader.ReadSingle();
-			p_Instance.PitchInertiaMinRatio = p_Reader.ReadSingle();
-			p_Instance.RollInertiaOutDuration = p_Reader.ReadSingle();
-			p_Instance.RollInertiaInDuration = p_Reader.ReadSingle();
-			p_Instance.RollInertiaMinRatio = p_Reader.ReadSingle();
-		}
 	}
 }

@@ -38,22 +38,5 @@ namespace fb
 		[ContainerField(96), LayoutImmutable, Blittable]
 		public bool AlignWithGroundNormal { get; set; }
 
-		public static void Deserialize(TransformSnapToGroundEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Reader.Seek(4, SeekOrigin.Current);
-			fb.LinearTransform.Deserialize(p_Instance.In, p_Reader, p_Parser);
-			p_Reader.Seek(4, SeekOrigin.Current);
-			p_Instance.Realm = (Realm) p_Reader.ReadInt32();
-			p_Reader.Seek(4, SeekOrigin.Current);
-			p_Instance.DistanceToGround = p_Reader.ReadSingle();
-			p_Reader.Seek(4, SeekOrigin.Current);
-			p_Instance.RayCastLength = p_Reader.ReadSingle();
-			p_Reader.Seek(4, SeekOrigin.Current);
-			p_Instance.RayCastUpOffset = p_Reader.ReadSingle();
-			p_Reader.Seek(4, SeekOrigin.Current);
-			p_Instance.AlignWithGroundNormal = p_Reader.ReadBool();
-			p_Reader.Seek(19, SeekOrigin.Current);
-		}
-
 	}
 }

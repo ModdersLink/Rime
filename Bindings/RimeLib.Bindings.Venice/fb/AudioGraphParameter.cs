@@ -29,13 +29,5 @@ namespace fb
 		[ContainerField(16), LayoutImmutable, Blittable]
 		public ushort ValueIndex { get; set; }
 
-		public static void Deserialize(AudioGraphParameter p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.DefaultValue = p_Reader.ReadSingle();
-			p_Instance.NameHash = p_Reader.ReadUInt32();
-			p_Instance.ValueIndex = p_Reader.ReadUInt16();
-			p_Reader.Seek(2, SeekOrigin.Current);
-		}
-
 	}
 }

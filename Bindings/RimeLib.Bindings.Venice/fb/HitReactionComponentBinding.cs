@@ -43,16 +43,5 @@ namespace fb
 		[ContainerField(28)]
 		public AntRef RandomAnimationIndex { get; set; } = new();
 		
-		public static void Deserialize(HitReactionComponentBinding p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AntRef.Deserialize(p_Instance.Hit, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.AllowKillFromAnimation, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.Direction, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.FiringDistance, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.BoneType, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.ImpactType, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.Immortal, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.RandomAnimationIndex, p_Reader, p_Parser);
-		}
 	}
 }

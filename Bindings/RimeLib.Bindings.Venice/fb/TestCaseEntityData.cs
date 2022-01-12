@@ -35,15 +35,5 @@ namespace fb
 		[ContainerField(25), LayoutImmutable, Blittable]
 		public bool Enabled { get; set; }
 
-		public static void Deserialize(TestCaseEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.TimeOut = p_Reader.ReadSingle();
-			p_Instance.TestGroup = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.TestCaseName = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Stable = p_Reader.ReadBool();
-			p_Instance.Enabled = p_Reader.ReadBool();
-			p_Reader.Seek(2, SeekOrigin.Current);
-		}
-
 	}
 }

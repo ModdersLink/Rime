@@ -20,9 +20,5 @@ namespace fb
 	public class UILocalizeCompData : 
 		UIComponentData
 	{
-		public static void Deserialize(UILocalizeCompData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

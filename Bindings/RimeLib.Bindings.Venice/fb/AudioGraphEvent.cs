@@ -20,9 +20,5 @@ namespace fb
 	public class AudioGraphEvent : 
 		AudioGraphParameter
 	{
-		public static void Deserialize(AudioGraphEvent p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

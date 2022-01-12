@@ -26,20 +26,5 @@ namespace fb
 		[ContainerField(12)]
 		public List<SoundScopeStrategyMapping> Mappings { get; set; } = new();
 
-		public static void Deserialize(SoundScopeSetupData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Name = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Mappings.Clear();
-			(RimeReader Reader, uint Count) s_Mappings = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_Mappings.Count; ++i)
-			{
-				var s_Value = new SoundScopeStrategyMapping();
-				fb.SoundScopeStrategyMapping.Deserialize(s_Value, s_Mappings.Reader, p_Parser);
-				p_Instance.Mappings.Add(s_Value);
-			}
-			
-			s_Mappings.Reader.Dispose();
-		}
-
 	}
 }

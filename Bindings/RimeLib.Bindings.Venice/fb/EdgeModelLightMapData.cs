@@ -23,19 +23,5 @@ namespace fb
 		[ContainerField(8)]
 		public List<Vec4> LightMapUvs { get; set; } = new();
 
-		public static void Deserialize(EdgeModelLightMapData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.LightMapUvs.Clear();
-			(RimeReader Reader, uint Count) s_LightMapUvs = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_LightMapUvs.Count; ++i)
-			{
-				var s_Value = new Vec4();
-				fb.Vec4.Deserialize(s_Value, s_LightMapUvs.Reader, p_Parser);
-				p_Instance.LightMapUvs.Add(s_Value);
-			}
-			
-			s_LightMapUvs.Reader.Dispose();
-		}
-
 	}
 }

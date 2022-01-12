@@ -20,9 +20,5 @@ namespace fb
 	public class StatCategoriesVehicleStateTypeTree : 
 		StatCategoriesBaseTree
 	{
-		public static void Deserialize(StatCategoriesVehicleStateTypeTree p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

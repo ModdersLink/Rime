@@ -37,14 +37,5 @@ namespace fb
 		[ContainerField(11), LayoutImmutable, Blittable]
 		public bool IncludeTextures { get; set; }
 		
-		public static void Deserialize(PackagingDetailInfo p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.MipsToSkip = p_Reader.ReadInt32();
-			p_Instance.LodsToSkip = p_Reader.ReadInt32();
-			p_Instance.IncludeAnimation = p_Reader.ReadBool();
-			p_Instance.IncludeMeshes = p_Reader.ReadBool();
-			p_Instance.IncludeSounds = p_Reader.ReadBool();
-			p_Instance.IncludeTextures = p_Reader.ReadBool();
-		}
 	}
 }

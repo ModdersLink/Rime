@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(8), LayoutImmutable, Blittable]
 		public float HotVehicleTimeout { get; set; }
 
-		public static void Deserialize(LockingScoringHandlerData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.HotVehicleTimeout = p_Reader.ReadSingle();
-		}
-
 	}
 }

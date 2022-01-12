@@ -29,13 +29,5 @@ namespace fb
 		[ContainerField(14), LayoutImmutable, Blittable]
 		public bool UseRawGamepadInput { get; set; }
 
-		public static void Deserialize(GameAnimationConfig p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.ServerEnable = p_Reader.ReadBool();
-			p_Instance.ClientEnable = p_Reader.ReadBool();
-			p_Instance.UseRawGamepadInput = p_Reader.ReadBool();
-			p_Reader.Seek(1, SeekOrigin.Current);
-		}
-
 	}
 }

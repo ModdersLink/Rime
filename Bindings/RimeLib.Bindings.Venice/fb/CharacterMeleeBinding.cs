@@ -31,12 +31,5 @@ namespace fb
 		[ContainerField(12)]
 		public AntRef MeleeActive { get; set; } = new();
 		
-		public static void Deserialize(CharacterMeleeBinding p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AntRef.Deserialize(p_Instance.TriggerMelee, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.SelfActor, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.OtherActor, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.MeleeActive, p_Reader, p_Parser);
-		}
 	}
 }

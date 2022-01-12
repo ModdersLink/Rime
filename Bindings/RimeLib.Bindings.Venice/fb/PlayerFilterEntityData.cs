@@ -29,13 +29,5 @@ namespace fb
 		[ContainerField(17), LayoutImmutable, Blittable]
 		public bool ForwardToSpectators { get; set; }
 
-		public static void Deserialize(PlayerFilterEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Realm = (Realm) p_Reader.ReadInt32();
-			p_Instance.InvertFilter = p_Reader.ReadBool();
-			p_Instance.ForwardToSpectators = p_Reader.ReadBool();
-			p_Reader.Seek(2, SeekOrigin.Current);
-		}
-
 	}
 }

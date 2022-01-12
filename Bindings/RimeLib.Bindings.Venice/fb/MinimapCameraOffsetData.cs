@@ -25,10 +25,5 @@ namespace fb
 		[ContainerField(8), LayoutImmutable, Blittable]
 		public float CameraFov { get; set; }
 		
-		public static void Deserialize(MinimapCameraOffsetData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.Vec2.Deserialize(p_Instance.Position, p_Reader, p_Parser);
-			p_Instance.CameraFov = p_Reader.ReadSingle();
-		}
 	}
 }

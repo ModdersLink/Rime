@@ -28,12 +28,5 @@ namespace fb
 		[ContainerField(8), LayoutImmutable, Blittable]
 		public bool IsBool { get; set; }
 		
-		public static void Deserialize(ServerInfoSetting p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Key = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Name = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.IsBool = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
 	}
 }

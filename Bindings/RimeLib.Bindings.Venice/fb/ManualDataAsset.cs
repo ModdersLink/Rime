@@ -23,19 +23,5 @@ namespace fb
 		[ContainerField(12)]
 		public List<ManualDataEntry> Entries { get; set; } = new();
 
-		public static void Deserialize(ManualDataAsset p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Entries.Clear();
-			(RimeReader Reader, uint Count) s_Entries = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_Entries.Count; ++i)
-			{
-				var s_Value = new ManualDataEntry();
-				fb.ManualDataEntry.Deserialize(s_Value, s_Entries.Reader, p_Parser);
-				p_Instance.Entries.Add(s_Value);
-			}
-			
-			s_Entries.Reader.Dispose();
-		}
-
 	}
 }

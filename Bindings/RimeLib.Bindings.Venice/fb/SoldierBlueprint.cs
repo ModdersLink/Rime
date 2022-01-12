@@ -20,9 +20,5 @@ namespace fb
 	public class SoldierBlueprint : 
 		CharacterBlueprint
 	{
-		public static void Deserialize(SoldierBlueprint p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

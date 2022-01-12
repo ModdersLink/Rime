@@ -50,20 +50,5 @@ namespace fb
 		[ContainerField(144), LayoutImmutable, Blittable]
 		public bool ChromostereopsisEnable { get; set; }
 
-		public static void Deserialize(TonemapComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.Vec3.Deserialize(p_Instance.BloomScale, p_Reader, p_Parser);
-			p_Instance.Realm = (Realm) p_Reader.ReadInt32();
-			p_Instance.TonemapMethod = (TonemapMethod) p_Reader.ReadInt32();
-			p_Instance.MinExposure = p_Reader.ReadSingle();
-			p_Instance.MiddleGray = p_Reader.ReadSingle();
-			p_Instance.ExposureAdjustTime = p_Reader.ReadSingle();
-			p_Instance.MaxExposure = p_Reader.ReadSingle();
-			p_Instance.ChromostereopsisOffset = p_Reader.ReadSingle();
-			p_Instance.ChromostereopsisScale = p_Reader.ReadSingle();
-			p_Instance.ChromostereopsisEnable = p_Reader.ReadBool();
-			p_Reader.Seek(15, SeekOrigin.Current);
-		}
-
 	}
 }

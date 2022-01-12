@@ -41,16 +41,5 @@ namespace fb
 		[ContainerField(36), LayoutImmutable, Blittable]
 		public float CullScreenArea { get; set; }
 
-		public static void Deserialize(MeshLodGroup p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Lod1Distance = p_Reader.ReadSingle();
-			p_Instance.Lod2Distance = p_Reader.ReadSingle();
-			p_Instance.Lod3Distance = p_Reader.ReadSingle();
-			p_Instance.Lod4Distance = p_Reader.ReadSingle();
-			p_Instance.Lod5Distance = p_Reader.ReadSingle();
-			p_Instance.ShadowDistance = p_Reader.ReadSingle();
-			p_Instance.CullScreenArea = p_Reader.ReadSingle();
-		}
-
 	}
 }

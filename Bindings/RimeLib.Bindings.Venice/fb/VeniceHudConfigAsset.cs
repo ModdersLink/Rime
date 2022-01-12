@@ -69,7 +69,7 @@ namespace fb
 		public CtrRef<SoundWaveAsset> LaserDesignatorLocking { get; set; } = new();
 
 		[ContainerField(72)]
-		public List<CtrRef<UINametag>> Nametags { get; set; } = new();
+		public RefArray<UINametag> Nametags { get; set; } = new();
 
 		[ContainerField(76)]
 		public List<SpawnScreenWeaponData> SpawnScreenWeapons { get; set; } = new();
@@ -97,55 +97,6 @@ namespace fb
 
 		[ContainerField(149), LayoutImmutable, Blittable]
 		public bool NametagHealthVisibleForAll { get; set; }
-
-		public static void Deserialize(VeniceHudConfigAsset p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.AmmoPickupSound.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.WeaponPickupSound.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.NewObjectiveSound.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.ObjectiveCompletedSound.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.ObjectiveUpdatedSound.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.MPVictorySoundMec.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.MPVictorySoundUs.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.MPVictorySoundRu.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.MPDefeatSoundMec.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.MPDefeatSoundUs.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.MPDefeatSoundRu.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.ArtilleryAiming.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.ArtilleryAimingOOA.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.MortarStrikeLocking.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.LaserDesignatorLocked.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.LaserDesignatorLocking.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.Nametags.Clear();
-			(RimeReader Reader, uint Count) s_Nametags = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_Nametags.Count; ++i)
-			{
-				var s_CtrRef = new CtrRef<UINametag>();
-				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_Nametags.Reader.ReadUInt32()));
-				p_Instance.Nametags.Add(s_CtrRef);
-			}
-			
-			s_Nametags.Reader.Dispose();
-			p_Instance.SpawnScreenWeapons.Clear();
-			(RimeReader Reader, uint Count) s_SpawnScreenWeapons = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_SpawnScreenWeapons.Count; ++i)
-			{
-				var s_Value = new SpawnScreenWeaponData();
-				fb.SpawnScreenWeaponData.Deserialize(s_Value, s_SpawnScreenWeapons.Reader, p_Parser);
-				p_Instance.SpawnScreenWeapons.Add(s_Value);
-			}
-			
-			s_SpawnScreenWeapons.Reader.Dispose();
-			p_Instance.MaxOrderIconDistance = p_Reader.ReadSingle();
-			p_Instance.InnerNametagRadius = p_Reader.ReadSingle();
-			p_Instance.OuterNametagRadius = p_Reader.ReadSingle();
-			p_Instance.CriticalHealthThreshold = p_Reader.ReadSingle();
-			fb.UITaggedVehicleCrosshair.Deserialize(p_Instance.TaggedVehicleCrosshair, p_Reader, p_Parser);
-			fb.UIMinimapConfig.Deserialize(p_Instance.Minimap, p_Reader, p_Parser);
-			p_Instance.ShowSpawnPointsOnMinimap = p_Reader.ReadBool();
-			p_Instance.NametagHealthVisibleForAll = p_Reader.ReadBool();
-			p_Reader.Seek(2, SeekOrigin.Current);
-		}
 
 	}
 }

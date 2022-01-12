@@ -43,17 +43,5 @@ namespace fb
 		[ContainerField(28), LayoutImmutable, Blittable]
 		public bool IsScripted { get; set; }
 		
-		public static void Deserialize(AILocoBaseTaskData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.PoseChangeMovingTowards = (AntPoseEnum) p_Reader.ReadInt32();
-			p_Instance.AttentionChangeMovingTowards = (AntAttentionStateEnum) p_Reader.ReadInt32();
-			p_Instance.SpeedChangeMovingTowards = (AntSpeedLevel) p_Reader.ReadInt32();
-			p_Instance.PoseChange = (AntPoseEnum) p_Reader.ReadInt32();
-			p_Instance.AttentionStateChange = (AntAttentionStateEnum) p_Reader.ReadInt32();
-			p_Instance.SpeedLevelChange = (AntSpeedLevel) p_Reader.ReadInt32();
-			p_Instance.Radius = p_Reader.ReadSingle();
-			p_Instance.IsScripted = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
 	}
 }

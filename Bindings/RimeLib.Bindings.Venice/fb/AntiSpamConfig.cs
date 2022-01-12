@@ -43,16 +43,5 @@ namespace fb
 		[ContainerField(28)]
 		public CtrRef<SoundWaveAsset> WarningSound { get; set; } = new();
 		
-		public static void Deserialize(AntiSpamConfig p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.DetectionInterval = p_Reader.ReadSingle();
-			p_Instance.DetectionIntervalMaxMessageCount = p_Reader.ReadUInt32();
-			p_Instance.ServerSideMessageCountTolerance = p_Reader.ReadUInt32();
-			p_Instance.SecondsBlocked = p_Reader.ReadUInt32();
-			p_Instance.ServerSideSecondsBlockedTolerance = p_Reader.ReadUInt32();
-			p_Instance.NotificationSid = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.StillBlockedSid = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.WarningSound.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-		}
 	}
 }

@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(80)]
 		public GroundHeightData Data { get; set; } = new();
 
-		public static void Deserialize(GroundHeightEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.GroundHeightData.Deserialize(p_Instance.Data, p_Reader, p_Parser);
-		}
-
 	}
 }

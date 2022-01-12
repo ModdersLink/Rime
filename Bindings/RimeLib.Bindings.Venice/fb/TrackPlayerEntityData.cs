@@ -44,18 +44,5 @@ namespace fb
 		[ContainerField(106), LayoutImmutable, Blittable]
 		public bool Reseted { get; set; }
 
-		public static void Deserialize(TrackPlayerEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.SnapHeightOffsetY = p_Reader.ReadSingle();
-			p_Instance.RandomizeTracker = p_Reader.ReadBool();
-			p_Instance.SnapHeightOnKilledDestroyed = p_Reader.ReadBool();
-			p_Instance.CheckPlayerAlive = p_Reader.ReadBool();
-			p_Instance.EnforceSharedCombatArea = p_Reader.ReadBool();
-			p_Instance.UpdateFlagComponent = p_Reader.ReadBool();
-			p_Instance.TrackMultiplePlayers = p_Reader.ReadBool();
-			p_Instance.Reseted = p_Reader.ReadBool();
-			p_Reader.Seek(5, SeekOrigin.Current);
-		}
-
 	}
 }

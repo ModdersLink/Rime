@@ -29,12 +29,5 @@ namespace fb
 		[ContainerField(24)]
 		public AudioGraphNodePort CtrlOut2 { get; set; } = new();
 
-		public static void Deserialize(Crossfader2NodeData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AudioGraphNodePort.Deserialize(p_Instance.Ctrl, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.CtrlOut1, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.CtrlOut2, p_Reader, p_Parser);
-		}
-
 	}
 }

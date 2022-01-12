@@ -44,18 +44,5 @@ namespace fb
 		[ContainerField(115), LayoutImmutable, Blittable]
 		public bool ShouldTargetExtraPlayerInDoublePlayerEvent { get; set; }
 
-		public static void Deserialize(PlayerCameraEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.SoldierTargetMode = (TargetMode) p_Reader.ReadInt32();
-			p_Instance.SoldierCameraIndex = p_Reader.ReadUInt32();
-			p_Instance.VehicleTargetMode = (TargetMode) p_Reader.ReadInt32();
-			p_Instance.VehicleCameraIndex = p_Reader.ReadUInt32();
-			p_Instance.ReleaseControlIfTargetLost = p_Reader.ReadBool();
-			p_Instance.ShouldTargetControllable = p_Reader.ReadBool();
-			p_Instance.ShouldTargetVehicleDriverEntry = p_Reader.ReadBool();
-			p_Instance.ShouldTargetExtraPlayerInDoublePlayerEvent = p_Reader.ReadBool();
-			p_Reader.Seek(12, SeekOrigin.Current);
-		}
-
 	}
 }

@@ -28,12 +28,5 @@ namespace fb
 		[ContainerField(68), LayoutImmutable, Blittable]
 		public float FovModifier { get; set; }
 		
-		public static void Deserialize(CameraLeapData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.LinearTransform.Deserialize(p_Instance.Transform, p_Reader, p_Parser);
-			p_Instance.Time = p_Reader.ReadSingle();
-			p_Instance.FovModifier = p_Reader.ReadSingle();
-			p_Reader.Seek(8, SeekOrigin.Current);
-		}
 	}
 }

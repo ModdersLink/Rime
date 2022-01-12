@@ -37,15 +37,5 @@ namespace fb
 		[ContainerField(17), LayoutImmutable, Blittable]
 		public bool HasSoldierDetonation { get; set; }
 		
-		public static void Deserialize(SoldierDetonationData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Angle = p_Reader.ReadSingle();
-			p_Instance.MinSpeedForActivation = p_Reader.ReadSingle();
-			p_Instance.Radius = p_Reader.ReadSingle();
-			p_Instance.SoldierDetonationActivationDelay = p_Reader.ReadSingle();
-			p_Instance.UseAngle = p_Reader.ReadBool();
-			p_Instance.HasSoldierDetonation = p_Reader.ReadBool();
-			p_Reader.Seek(2, SeekOrigin.Current);
-		}
 	}
 }

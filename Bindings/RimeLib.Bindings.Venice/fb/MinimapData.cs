@@ -70,42 +70,5 @@ namespace fb
 		[ContainerField(106), LayoutImmutable, Blittable]
 		public bool PositionFromPlayer { get; set; }
 		
-		public static void Deserialize(MinimapData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.Vec2.Deserialize(p_Instance.Position, p_Reader, p_Parser);
-			p_Reader.Seek(8, SeekOrigin.Current);
-			fb.Vec3.Deserialize(p_Instance.CameraPosition, p_Reader, p_Parser);
-			p_Reader.Seek(8, SeekOrigin.Current);
-			fb.Vec2.Deserialize(p_Instance.Size, p_Reader, p_Parser);
-			p_Reader.Seek(16, SeekOrigin.Current);
-			fb.Vec3.Deserialize(p_Instance.OverlayColor, p_Reader, p_Parser);
-			p_Reader.Seek(16, SeekOrigin.Current);
-			p_Instance.AnchorPosVertical = p_Reader.ReadSingle();
-			p_Reader.Seek(16, SeekOrigin.Current);
-			p_Instance.AnchorPosHorizontal = p_Reader.ReadSingle();
-			p_Reader.Seek(16, SeekOrigin.Current);
-			p_Instance.CameraLookDistance = p_Reader.ReadSingle();
-			p_Reader.Seek(16, SeekOrigin.Current);
-			p_Instance.CameraDistance = p_Reader.ReadSingle();
-			p_Reader.Seek(16, SeekOrigin.Current);
-			p_Instance.CameraFov = p_Reader.ReadSingle();
-			p_Reader.Seek(16, SeekOrigin.Current);
-			p_Instance.OverlayAlpha = p_Reader.ReadSingle();
-			p_Reader.Seek(16, SeekOrigin.Current);
-			p_Instance.CameraRotation = p_Reader.ReadSingle();
-			p_Reader.Seek(16, SeekOrigin.Current);
-			p_Instance.StartZoomLevel = p_Reader.ReadInt32();
-			p_Reader.Seek(16, SeekOrigin.Current);
-			p_Instance.InnerZoomFactor = p_Reader.ReadInt32();
-			p_Reader.Seek(16, SeekOrigin.Current);
-			p_Instance.MaxZoomLevels = p_Reader.ReadInt32();
-			p_Reader.Seek(16, SeekOrigin.Current);
-			p_Instance.CenterOnCombatArea = p_Reader.ReadBool();
-			p_Reader.Seek(16, SeekOrigin.Current);
-			p_Instance.RotationFromPlayer = p_Reader.ReadBool();
-			p_Reader.Seek(16, SeekOrigin.Current);
-			p_Instance.PositionFromPlayer = p_Reader.ReadBool();
-			p_Reader.Seek(21, SeekOrigin.Current);
-		}
 	}
 }

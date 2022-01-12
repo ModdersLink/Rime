@@ -26,12 +26,5 @@ namespace fb
 		[ContainerField(116), LayoutImmutable, Blittable]
 		public bool Persistent { get; set; }
 
-		public static void Deserialize(ConsumableTriggerEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.ConsumableGroup = (ConsumableGroup) p_Reader.ReadInt32();
-			p_Instance.Persistent = p_Reader.ReadBool();
-			p_Reader.Seek(11, SeekOrigin.Current);
-		}
-
 	}
 }

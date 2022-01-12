@@ -20,9 +20,5 @@ namespace fb
 	public class DirectOutputNodeData : 
 		OutputNodeData
 	{
-		public static void Deserialize(DirectOutputNodeData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

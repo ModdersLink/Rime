@@ -20,9 +20,5 @@ namespace fb
 	public class SpectatorReplayEntityData : 
 		EntityData
 	{
-		public static void Deserialize(SpectatorReplayEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

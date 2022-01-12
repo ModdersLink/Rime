@@ -20,9 +20,5 @@ namespace fb
 	public class WorldObjectListData : 
 		DataContainer
 	{
-		public static void Deserialize(WorldObjectListData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

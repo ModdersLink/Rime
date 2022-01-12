@@ -20,9 +20,5 @@ namespace fb
 	public class MaterialRelationPropertyData : 
 		DataContainer
 	{
-		public static void Deserialize(MaterialRelationPropertyData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

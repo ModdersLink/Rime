@@ -22,18 +22,5 @@ namespace fb
 		[ContainerField(0)]
 		public List<OnlineEnvironmentConsoleUrlData> Urls { get; set; } = new();
 		
-		public static void Deserialize(OnlineEnvironmentConsoleUrl p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Urls.Clear();
-			(RimeReader Reader, uint Count) s_Urls = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_Urls.Count; ++i)
-			{
-				var s_Value = new OnlineEnvironmentConsoleUrlData();
-				fb.OnlineEnvironmentConsoleUrlData.Deserialize(s_Value, s_Urls.Reader, p_Parser);
-				p_Instance.Urls.Add(s_Value);
-			}
-			
-			s_Urls.Reader.Dispose();
-		}
 	}
 }

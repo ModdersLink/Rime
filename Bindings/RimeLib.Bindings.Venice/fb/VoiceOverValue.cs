@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(8)]
 		public VoiceOverValueType ValueType { get; set; } = new();
 
-		public static void Deserialize(VoiceOverValue p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.ValueType = (VoiceOverValueType) p_Reader.ReadInt32();
-		}
-
 	}
 }

@@ -20,9 +20,5 @@ namespace fb
 	public class GeometryTriggerEntityData : 
 		AreaTriggerEntityData
 	{
-		public static void Deserialize(GeometryTriggerEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

@@ -35,15 +35,5 @@ namespace fb
 		[ContainerField(112), LayoutImmutable, Blittable]
 		public bool EnableReplenish { get; set; }
 
-		public static void Deserialize(AmmoCrateEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Marker.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.Model.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.RefillDelay = p_Reader.ReadSingle();
-			p_Instance.Radius = p_Reader.ReadSingle();
-			p_Instance.EnableReplenish = p_Reader.ReadBool();
-			p_Reader.Seek(15, SeekOrigin.Current);
-		}
-
 	}
 }

@@ -21,21 +21,7 @@ namespace fb
 		Asset
 	{
 		[ContainerField(12)]
-		public List<CtrRef<OrderReadiness>> Orders { get; set; } = new();
-
-		public static void Deserialize(OrderSettings p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Orders.Clear();
-			(RimeReader Reader, uint Count) s_Orders = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_Orders.Count; ++i)
-			{
-				var s_CtrRef = new CtrRef<OrderReadiness>();
-				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_Orders.Reader.ReadUInt32()));
-				p_Instance.Orders.Add(s_CtrRef);
-			}
-			
-			s_Orders.Reader.Dispose();
-		}
+		public RefArray<OrderReadiness> Orders { get; set; } = new();
 
 	}
 }

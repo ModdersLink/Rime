@@ -22,10 +22,5 @@ namespace fb
 		[ContainerField(0), LayoutImmutable, Blittable]
 		public int DummyToMakeFrostEDcompile { get; set; }
 		
-		public static void Deserialize(WeaponModifier p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.DummyToMakeFrostEDcompile = p_Reader.ReadInt32();
-			p_Reader.Seek(228, SeekOrigin.Current);
-		}
 	}
 }

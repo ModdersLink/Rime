@@ -29,12 +29,5 @@ namespace fb
 		[ContainerField(20), LayoutImmutable, Blittable]
 		public float AtlasTextureScale { get; set; }
 
-		public static void Deserialize(DestructionVolumeAsset p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.DiffuseAtlas.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.NormalmapAtlas.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.AtlasTextureScale = p_Reader.ReadSingle();
-		}
-
 	}
 }

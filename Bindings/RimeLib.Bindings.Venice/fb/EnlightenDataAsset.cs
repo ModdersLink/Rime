@@ -44,18 +44,5 @@ namespace fb
 		[ContainerField(37), LayoutImmutable, Blittable]
 		public bool DynamicEnable { get; set; }
 
-		public static void Deserialize(EnlightenDataAsset p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.DebugBackFaceTexture.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.MaxResolutionY = p_Reader.ReadInt32();
-			p_Instance.DebugChartTexture.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.SkyVisibilityTexture.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.VisibilityThreshold = p_Reader.ReadSingle();
-			p_Instance.MaxResolutionX = p_Reader.ReadInt32();
-			p_Instance.LoadDebugData = p_Reader.ReadBool();
-			p_Instance.DynamicEnable = p_Reader.ReadBool();
-			p_Reader.Seek(2, SeekOrigin.Current);
-		}
-
 	}
 }

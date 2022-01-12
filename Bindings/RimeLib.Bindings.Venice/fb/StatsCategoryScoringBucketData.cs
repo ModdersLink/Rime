@@ -20,9 +20,5 @@ namespace fb
 	public class StatsCategoryScoringBucketData : 
 		StatsCategoryGuidData
 	{
-		public static void Deserialize(StatsCategoryScoringBucketData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

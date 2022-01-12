@@ -50,28 +50,5 @@ namespace fb
 		[ContainerField(184), LayoutImmutable, Blittable]
 		public bool Enable { get; set; }
 
-		public static void Deserialize(LensScopeComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.Vec3.Deserialize(p_Instance.ChromaticAberrationColor1, p_Reader, p_Parser);
-			fb.Vec2.Deserialize(p_Instance.RadialBlendDistanceCoefficients, p_Reader, p_Parser);
-			p_Reader.Seek(8, SeekOrigin.Current);
-			fb.Vec3.Deserialize(p_Instance.ChromaticAberrationColor2, p_Reader, p_Parser);
-			p_Reader.Seek(8, SeekOrigin.Current);
-			fb.Vec2.Deserialize(p_Instance.BlurCenter, p_Reader, p_Parser);
-			p_Reader.Seek(8, SeekOrigin.Current);
-			fb.Vec2.Deserialize(p_Instance.ChromaticAberrationDisplacement2, p_Reader, p_Parser);
-			p_Reader.Seek(8, SeekOrigin.Current);
-			fb.Vec2.Deserialize(p_Instance.ChromaticAberrationDisplacement1, p_Reader, p_Parser);
-			p_Reader.Seek(8, SeekOrigin.Current);
-			fb.Vec2.Deserialize(p_Instance.ChromaticAberrationStrengths, p_Reader, p_Parser);
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.BlurScale = p_Reader.ReadSingle();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.Realm = (Realm) p_Reader.ReadInt32();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.Enable = p_Reader.ReadBool();
-			p_Reader.Seek(15, SeekOrigin.Current);
-		}
-
 	}
 }

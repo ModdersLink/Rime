@@ -20,9 +20,5 @@ namespace fb
 	public class UIDynamicTextureCompData : 
 		UIComponentData
 	{
-		public static void Deserialize(UIDynamicTextureCompData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

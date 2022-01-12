@@ -38,16 +38,5 @@ namespace fb
 		[ContainerField(46), LayoutImmutable, Blittable]
 		public bool InputOnRelease { get; set; }
 
-		public static void Deserialize(UIButtonDataBinding p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.UIDataSourceInfo.Deserialize(p_Instance.ButtonsDatasource, p_Reader, p_Parser);
-			fb.UIButtonSet.Deserialize(p_Instance.DefaultButtonSet, p_Reader, p_Parser);
-			fb.UIDataSourceInfo.Deserialize(p_Instance.Visibility, p_Reader, p_Parser);
-			p_Instance.InvertVisible = p_Reader.ReadBool();
-			p_Instance.Visible = p_Reader.ReadBool();
-			p_Instance.InputOnRelease = p_Reader.ReadBool();
-			p_Reader.Seek(1, SeekOrigin.Current);
-		}
-
 	}
 }

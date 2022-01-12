@@ -25,10 +25,5 @@ namespace fb
 		[ContainerField(140)]
 		public GunSwayBaseMoveJumpData Zoom { get; set; } = new();
 		
-		public static void Deserialize(GunSwayStandData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.GunSwayBaseMoveJumpData.Deserialize(p_Instance.NoZoom, p_Reader, p_Parser);
-			fb.GunSwayBaseMoveJumpData.Deserialize(p_Instance.Zoom, p_Reader, p_Parser);
-		}
 	}
 }

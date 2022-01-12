@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(12), LayoutImmutable]
 		public string MetaDataAssetPath { get; set; } = string.Empty;
 
-		public static void Deserialize(VeniceUIConfiguration p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.MetaDataAssetPath = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-		}
-
 	}
 }

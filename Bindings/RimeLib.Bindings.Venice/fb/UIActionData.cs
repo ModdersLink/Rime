@@ -23,18 +23,5 @@ namespace fb
 		[ContainerField(12)]
 		public List<string> ActionKeys { get; set; } = new();
 
-		public static void Deserialize(UIActionData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.ActionKeys.Clear();
-			(RimeReader Reader, uint Count) s_ActionKeys = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_ActionKeys.Count; ++i)
-			{
-				var s_Value = p_Parser.GetStringAtOffset(s_ActionKeys.Reader.ReadUInt32());
-				p_Instance.ActionKeys.Add(s_Value);
-			}
-			
-			s_ActionKeys.Reader.Dispose();
-		}
-
 	}
 }

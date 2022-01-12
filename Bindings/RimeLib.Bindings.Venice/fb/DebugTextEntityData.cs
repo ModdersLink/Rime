@@ -44,17 +44,5 @@ namespace fb
 		[ContainerField(111), LayoutImmutable, Blittable]
 		public bool ScaleWithDistance { get; set; }
 
-		public static void Deserialize(DebugTextEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.Vec3.Deserialize(p_Instance.TextColor, p_Reader, p_Parser);
-			p_Instance.DebugText = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Realm = (Realm) p_Reader.ReadInt32();
-			p_Instance.Scale = p_Reader.ReadSingle();
-			p_Instance.Visible = p_Reader.ReadBool();
-			p_Instance.Centered = p_Reader.ReadBool();
-			p_Instance.DepthTest = p_Reader.ReadBool();
-			p_Instance.ScaleWithDistance = p_Reader.ReadBool();
-		}
-
 	}
 }

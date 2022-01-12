@@ -49,19 +49,5 @@ namespace fb
 		[ContainerField(33), LayoutImmutable, Blittable]
 		public bool ForceIntoTemplate { get; set; }
 		
-		public static void Deserialize(PersistentValueTemplateData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Name = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.DefaultValue = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.DefaultFloatValue = p_Reader.ReadSingle();
-			p_Instance.DefaultIntValue = p_Reader.ReadInt32();
-			p_Instance.ValueType = (PersistentValueType) p_Reader.ReadInt32();
-			p_Instance.DataType = (PersistentValueDataType) p_Reader.ReadInt32();
-			p_Instance.HistoryType = (PersistentValueHistoryType) p_Reader.ReadInt32();
-			p_Instance.Group = (AwardGroup) p_Reader.ReadInt32();
-			p_Instance.ClubStat = p_Reader.ReadBool();
-			p_Instance.ForceIntoTemplate = p_Reader.ReadBool();
-			p_Reader.Seek(2, SeekOrigin.Current);
-		}
 	}
 }

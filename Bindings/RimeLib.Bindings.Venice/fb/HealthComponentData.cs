@@ -26,12 +26,5 @@ namespace fb
 		[ContainerField(100)]
 		public CtrRef<MaterialContainerPair> MaterialPair { get; set; } = new();
 
-		public static void Deserialize(HealthComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Health = p_Reader.ReadSingle();
-			p_Instance.MaterialPair.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Reader.Seek(8, SeekOrigin.Current);
-		}
-
 	}
 }

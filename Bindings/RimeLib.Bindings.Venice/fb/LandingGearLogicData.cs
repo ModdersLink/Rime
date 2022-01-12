@@ -26,11 +26,5 @@ namespace fb
 		[ContainerField(20)]
 		public LandingGearConditionData DeployCondition { get; set; } = new();
 
-		public static void Deserialize(LandingGearLogicData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.LandingGearConditionData.Deserialize(p_Instance.RetractCondition, p_Reader, p_Parser);
-			fb.LandingGearConditionData.Deserialize(p_Instance.DeployCondition, p_Reader, p_Parser);
-		}
-
 	}
 }

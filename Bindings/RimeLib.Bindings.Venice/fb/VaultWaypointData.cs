@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(48)]
 		public AILocoVaultTaskData VaultTask { get; set; } = new();
 
-		public static void Deserialize(VaultWaypointData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AILocoVaultTaskData.Deserialize(p_Instance.VaultTask, p_Reader, p_Parser);
-		}
-
 	}
 }

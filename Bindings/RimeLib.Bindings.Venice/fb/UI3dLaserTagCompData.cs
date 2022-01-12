@@ -20,9 +20,5 @@ namespace fb
 	public class UI3dLaserTagCompData : 
 		UI3dIconCompData
 	{
-		public static void Deserialize(UI3dLaserTagCompData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

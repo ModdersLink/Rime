@@ -23,11 +23,5 @@ namespace fb
 		[ContainerField(208), LayoutImmutable, Blittable]
 		public float FlareRange { get; set; }
 
-		public static void Deserialize(FlareEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.FlareRange = p_Reader.ReadSingle();
-			p_Reader.Seek(12, SeekOrigin.Current);
-		}
-
 	}
 }

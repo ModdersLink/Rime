@@ -26,20 +26,5 @@ namespace fb
 		[ContainerField(16), LayoutImmutable, Blittable]
 		public int HavokMeshCount { get; set; }
 
-		public static void Deserialize(DebrisSystemAsset p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.HavokMeshes.Clear();
-			(RimeReader Reader, uint Count) s_HavokMeshes = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_HavokMeshes.Count; ++i)
-			{
-				var s_Value = new DebrisHavokInfo();
-				fb.DebrisHavokInfo.Deserialize(s_Value, s_HavokMeshes.Reader, p_Parser);
-				p_Instance.HavokMeshes.Add(s_Value);
-			}
-			
-			s_HavokMeshes.Reader.Dispose();
-			p_Instance.HavokMeshCount = p_Reader.ReadInt32();
-		}
-
 	}
 }

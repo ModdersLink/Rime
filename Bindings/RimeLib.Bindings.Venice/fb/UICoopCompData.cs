@@ -20,9 +20,5 @@ namespace fb
 	public class UICoopCompData : 
 		UIComponentData
 	{
-		public static void Deserialize(UICoopCompData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

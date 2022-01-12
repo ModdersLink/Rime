@@ -26,11 +26,5 @@ namespace fb
 		[ContainerField(24)]
 		public UIDataSourceInfo Visibility { get; set; } = new();
 
-		public static void Deserialize(UIWidgetPathBinding p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.UIDataSourceInfo.Deserialize(p_Instance.WidgetPathQuery, p_Reader, p_Parser);
-			fb.UIDataSourceInfo.Deserialize(p_Instance.Visibility, p_Reader, p_Parser);
-		}
-
 	}
 }

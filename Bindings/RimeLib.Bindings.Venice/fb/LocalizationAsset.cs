@@ -21,21 +21,7 @@ namespace fb
 		Asset
 	{
 		[ContainerField(12)]
-		public List<CtrRef<UITextDatabase>> LocalizedTexts { get; set; } = new();
-
-		public static void Deserialize(LocalizationAsset p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.LocalizedTexts.Clear();
-			(RimeReader Reader, uint Count) s_LocalizedTexts = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_LocalizedTexts.Count; ++i)
-			{
-				var s_CtrRef = new CtrRef<UITextDatabase>();
-				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_LocalizedTexts.Reader.ReadUInt32()));
-				p_Instance.LocalizedTexts.Add(s_CtrRef);
-			}
-			
-			s_LocalizedTexts.Reader.Dispose();
-		}
+		public RefArray<UITextDatabase> LocalizedTexts { get; set; } = new();
 
 	}
 }

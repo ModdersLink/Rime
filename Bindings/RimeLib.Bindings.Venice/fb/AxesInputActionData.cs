@@ -26,12 +26,5 @@ namespace fb
 		[ContainerField(16), LayoutImmutable, Blittable]
 		public bool NormalizeInput { get; set; }
 
-		public static void Deserialize(AxesInputActionData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Axis = (InputDeviceAxes) p_Reader.ReadInt32();
-			p_Instance.NormalizeInput = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
-
 	}
 }

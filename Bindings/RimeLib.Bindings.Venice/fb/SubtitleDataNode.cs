@@ -32,13 +32,5 @@ namespace fb
 		[ContainerField(24), LayoutImmutable]
 		public string SID2 { get; set; } = string.Empty;
 
-		public static void Deserialize(SubtitleDataNode p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Time = p_Reader.ReadSingle();
-			p_Instance.DisplayTime = p_Reader.ReadSingle();
-			p_Instance.SID1 = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.SID2 = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-		}
-
 	}
 }

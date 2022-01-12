@@ -29,12 +29,5 @@ namespace fb
 		[ContainerField(24)]
 		public AudioGraphNodePort Hz { get; set; } = new();
 
-		public static void Deserialize(ParameterFilterLpNodeData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AudioGraphNodePort.Deserialize(p_Instance.In, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.Out, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.Hz, p_Reader, p_Parser);
-		}
-
 	}
 }

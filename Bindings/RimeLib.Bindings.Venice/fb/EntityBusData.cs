@@ -38,24 +38,5 @@ namespace fb
 		[ContainerField(31), LayoutImmutable, Blittable]
 		public bool AlwaysCreateEntityBusServer { get; set; }
 
-		public static void Deserialize(EntityBusData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.EventConnections.Clear();
-			(RimeReader Reader, uint Count) s_EventConnections = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_EventConnections.Count; ++i)
-			{
-				var s_Value = new EventConnection();
-				fb.EventConnection.Deserialize(s_Value, s_EventConnections.Reader, p_Parser);
-				p_Instance.EventConnections.Add(s_Value);
-			}
-			
-			s_EventConnections.Reader.Dispose();
-			p_Instance.Descriptor.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.NeedNetworkId = p_Reader.ReadBool();
-			p_Instance.InterfaceHasConnections = p_Reader.ReadBool();
-			p_Instance.AlwaysCreateEntityBusClient = p_Reader.ReadBool();
-			p_Instance.AlwaysCreateEntityBusServer = p_Reader.ReadBool();
-		}
-
 	}
 }

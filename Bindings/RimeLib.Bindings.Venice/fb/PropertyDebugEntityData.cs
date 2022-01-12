@@ -62,38 +62,5 @@ namespace fb
 		[ContainerField(162), LayoutImmutable, Blittable]
 		public bool Multiline { get; set; }
 
-		public static void Deserialize(PropertyDebugEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Reader.Seek(4, SeekOrigin.Current);
-			fb.Vec3.Deserialize(p_Instance.Vec3Value, p_Reader, p_Parser);
-			p_Reader.Seek(4, SeekOrigin.Current);
-			fb.Vec3.Deserialize(p_Instance.TextColor, p_Reader, p_Parser);
-			p_Reader.Seek(4, SeekOrigin.Current);
-			fb.Vec2.Deserialize(p_Instance.ScreenPosition, p_Reader, p_Parser);
-			p_Reader.Seek(12, SeekOrigin.Current);
-			fb.LinearTransform.Deserialize(p_Instance.TransformValue, p_Reader, p_Parser);
-			p_Reader.Seek(12, SeekOrigin.Current);
-			fb.Vec2.Deserialize(p_Instance.Vec2Value, p_Reader, p_Parser);
-			p_Reader.Seek(12, SeekOrigin.Current);
-			p_Instance.ValuePrefix = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Reader.Seek(12, SeekOrigin.Current);
-			p_Instance.Realm = (Realm) p_Reader.ReadInt32();
-			p_Reader.Seek(12, SeekOrigin.Current);
-			p_Instance.FloatValue = p_Reader.ReadSingle();
-			p_Reader.Seek(12, SeekOrigin.Current);
-			p_Instance.IntValue = p_Reader.ReadInt32();
-			p_Reader.Seek(12, SeekOrigin.Current);
-			p_Instance.TextScale = p_Reader.ReadSingle();
-			p_Reader.Seek(12, SeekOrigin.Current);
-			p_Instance.StringValue = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Reader.Seek(12, SeekOrigin.Current);
-			p_Instance.DefaultVisible = p_Reader.ReadBool();
-			p_Reader.Seek(12, SeekOrigin.Current);
-			p_Instance.BoolValue = p_Reader.ReadBool();
-			p_Reader.Seek(12, SeekOrigin.Current);
-			p_Instance.Multiline = p_Reader.ReadBool();
-			p_Reader.Seek(25, SeekOrigin.Current);
-		}
-
 	}
 }

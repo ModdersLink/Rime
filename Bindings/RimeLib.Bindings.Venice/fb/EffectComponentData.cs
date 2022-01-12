@@ -38,16 +38,5 @@ namespace fb
 		[ContainerField(113), LayoutImmutable, Blittable]
 		public bool SnapToWaterSurface { get; set; }
 
-		public static void Deserialize(EffectComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Effect.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.EmitterParameter1 = p_Reader.ReadSingle();
-			p_Instance.EmitterParameter3 = p_Reader.ReadSingle();
-			p_Instance.EmitterParameter2 = p_Reader.ReadSingle();
-			p_Instance.AutoStart = p_Reader.ReadBool();
-			p_Instance.SnapToWaterSurface = p_Reader.ReadBool();
-			p_Reader.Seek(14, SeekOrigin.Current);
-		}
-
 	}
 }

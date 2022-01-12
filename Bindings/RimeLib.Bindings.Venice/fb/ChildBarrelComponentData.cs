@@ -20,9 +20,5 @@ namespace fb
 	public class ChildBarrelComponentData : 
 		ChildComponentData
 	{
-		public static void Deserialize(ChildBarrelComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

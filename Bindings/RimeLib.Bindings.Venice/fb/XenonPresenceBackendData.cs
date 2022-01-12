@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(16), LayoutImmutable, Blittable]
 		public uint TitleId { get; set; }
 
-		public static void Deserialize(XenonPresenceBackendData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.TitleId = p_Reader.ReadUInt32();
-		}
-
 	}
 }

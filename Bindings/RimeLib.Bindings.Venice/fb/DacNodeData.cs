@@ -38,16 +38,5 @@ namespace fb
 		[ContainerField(38)]
 		public SoundGraphPluginRef DacPlugin { get; set; } = new();
 
-		public static void Deserialize(DacNodeData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AudioGraphNodePort.Deserialize(p_Instance.In, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.SpeakerCount, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.SampleRate, p_Reader, p_Parser);
-			fb.SoundGraphPluginRef.Deserialize(p_Instance.VuPlugin, p_Reader, p_Parser);
-			fb.SoundGraphPluginRef.Deserialize(p_Instance.GainPlugin, p_Reader, p_Parser);
-			fb.SoundGraphPluginRef.Deserialize(p_Instance.DacPlugin, p_Reader, p_Parser);
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
-
 	}
 }

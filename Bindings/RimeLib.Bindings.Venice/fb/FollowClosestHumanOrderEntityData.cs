@@ -20,9 +20,5 @@ namespace fb
 	public class FollowClosestHumanOrderEntityData : 
 		FollowPlayerOrderEntityData
 	{
-		public static void Deserialize(FollowClosestHumanOrderEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

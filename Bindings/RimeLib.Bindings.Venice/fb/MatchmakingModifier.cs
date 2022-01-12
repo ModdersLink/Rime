@@ -20,9 +20,5 @@ namespace fb
 	public class MatchmakingModifier : 
 		DataContainer
 	{
-		public static void Deserialize(MatchmakingModifier p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

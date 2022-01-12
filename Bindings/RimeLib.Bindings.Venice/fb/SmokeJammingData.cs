@@ -40,16 +40,5 @@ namespace fb
 		[ContainerField(18), LayoutImmutable, Blittable]
 		public bool ReportJammedBasedOnStartPosition { get; set; }
 		
-		public static void Deserialize(SmokeJammingData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.JammingTime = p_Reader.ReadSingle();
-			p_Instance.MaxRadius = p_Reader.ReadSingle();
-			p_Instance.MinRadius = p_Reader.ReadSingle();
-			p_Instance.TargetUpdateTime = p_Reader.ReadSingle();
-			p_Instance.EnableSmokeJamming = p_Reader.ReadBool();
-			p_Instance.JammingPositionIsLocationDependent = p_Reader.ReadBool();
-			p_Instance.ReportJammedBasedOnStartPosition = p_Reader.ReadBool();
-			p_Reader.Seek(1, SeekOrigin.Current);
-		}
 	}
 }

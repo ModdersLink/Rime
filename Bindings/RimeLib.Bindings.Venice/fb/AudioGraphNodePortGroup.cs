@@ -20,9 +20,5 @@ namespace fb
 	public class AudioGraphNodePortGroup : 
 		DataContainer
 	{
-		public static void Deserialize(AudioGraphNodePortGroup p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

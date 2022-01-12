@@ -92,34 +92,5 @@ namespace fb
 		[ContainerField(170), LayoutImmutable, Blittable]
 		public bool ShowOnMinimap { get; set; }
 
-		public static void Deserialize(ExplosionEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.DetonationEffect.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.BlastImpulse = p_Reader.ReadSingle();
-			p_Instance.MaskVolume.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.DestructionMaskVolume.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.MaterialPair.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.DamageIndicationType = (DamageIndicationType) p_Reader.ReadInt32();
-			p_Instance.EmpTime = p_Reader.ReadSingle();
-			p_Instance.MaxOcclusionRaycastRadius = p_Reader.ReadSingle();
-			p_Instance.InnerBlastRadius = p_Reader.ReadSingle();
-			p_Instance.BlastDamage = p_Reader.ReadSingle();
-			p_Instance.BlastRadius = p_Reader.ReadSingle();
-			p_Instance.ShockwaveImpulse = p_Reader.ReadSingle();
-			p_Instance.SpawnDelay = p_Reader.ReadSingle();
-			p_Instance.ShockwaveDamage = p_Reader.ReadSingle();
-			p_Instance.ShockwaveRadius = p_Reader.ReadSingle();
-			p_Instance.CameraShockwaveRadius = p_Reader.ReadSingle();
-			p_Instance.ShockwaveTime = p_Reader.ReadSingle();
-			p_Instance.DisableOcclusion = p_Reader.ReadBool();
-			p_Instance.DisableStaticEntityOcclusion = p_Reader.ReadBool();
-			p_Instance.UseEntityTransformForDetonationEffect = p_Reader.ReadBool();
-			p_Instance.HasStunEffect = p_Reader.ReadBool();
-			p_Instance.TriggerImpairedHearing = p_Reader.ReadBool();
-			p_Instance.DetonateOnce = p_Reader.ReadBool();
-			p_Instance.ShowOnMinimap = p_Reader.ReadBool();
-			p_Reader.Seek(5, SeekOrigin.Current);
-		}
-
 	}
 }

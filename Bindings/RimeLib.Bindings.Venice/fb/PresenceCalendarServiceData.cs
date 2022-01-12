@@ -20,9 +20,5 @@ namespace fb
 	public class PresenceCalendarServiceData : 
 		PresenceServiceData
 	{
-		public static void Deserialize(PresenceCalendarServiceData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

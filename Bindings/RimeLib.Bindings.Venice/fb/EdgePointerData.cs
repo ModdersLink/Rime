@@ -31,12 +31,5 @@ namespace fb
 		[ContainerField(12), LayoutImmutable, Blittable]
 		public float PositiveYLimit { get; set; }
 		
-		public static void Deserialize(EdgePointerData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.NegativeXLimit = p_Reader.ReadSingle();
-			p_Instance.PositiveXLimit = p_Reader.ReadSingle();
-			p_Instance.NegativeYLimit = p_Reader.ReadSingle();
-			p_Instance.PositiveYLimit = p_Reader.ReadSingle();
-		}
 	}
 }

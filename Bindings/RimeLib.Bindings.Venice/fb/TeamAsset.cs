@@ -20,9 +20,5 @@ namespace fb
 	public class TeamAsset : 
 		Asset
 	{
-		public static void Deserialize(TeamAsset p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

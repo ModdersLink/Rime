@@ -35,14 +35,5 @@ namespace fb
 		[ContainerField(32), LayoutImmutable, Blittable]
 		public float InitialValue { get; set; }
 
-		public static void Deserialize(SoundTestParamTask p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.ParamName = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Behavior = (SoundTestParamBehavior) p_Reader.ReadInt32();
-			p_Instance.RangeMin = p_Reader.ReadSingle();
-			p_Instance.RangeMax = p_Reader.ReadSingle();
-			p_Instance.InitialValue = p_Reader.ReadSingle();
-		}
-
 	}
 }

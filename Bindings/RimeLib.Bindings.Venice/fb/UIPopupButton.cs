@@ -25,10 +25,5 @@ namespace fb
 		[ContainerField(4), LayoutImmutable]
 		public string Label { get; set; } = string.Empty;
 		
-		public static void Deserialize(UIPopupButton p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.InputConcept = (UIInputAction) p_Reader.ReadInt32();
-			p_Instance.Label = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-		}
 	}
 }

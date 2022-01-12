@@ -20,9 +20,5 @@ namespace fb
 	public class UIStatsCompData : 
 		UIComponentData
 	{
-		public static void Deserialize(UIStatsCompData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

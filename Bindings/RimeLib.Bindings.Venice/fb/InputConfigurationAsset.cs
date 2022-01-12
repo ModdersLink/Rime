@@ -89,58 +89,5 @@ namespace fb
 		[ContainerField(64), LayoutImmutable, Blittable]
 		public bool DisableCrawlingWhileFiring { get; set; }
 
-		public static void Deserialize(InputConfigurationAsset p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.DefaultInputConceptDefinition.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.DefaultExclusiveInputConcepts.Clear();
-			(RimeReader Reader, uint Count) s_DefaultExclusiveInputConcepts = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_DefaultExclusiveInputConcepts.Count; ++i)
-			{
-				var s_Value = (InputConceptIdentifiers) s_DefaultExclusiveInputConcepts.Reader.ReadInt32();
-				p_Instance.DefaultExclusiveInputConcepts.Add(s_Value);
-			}
-			
-			s_DefaultExclusiveInputConcepts.Reader.Dispose();
-			p_Instance.UserConfigurableActionMaps.Clear();
-			(RimeReader Reader, uint Count) s_UserConfigurableActionMaps = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_UserConfigurableActionMaps.Count; ++i)
-			{
-				var s_Value = new EditableActionMap();
-				fb.EditableActionMap.Deserialize(s_Value, s_UserConfigurableActionMaps.Reader, p_Parser);
-				p_Instance.UserConfigurableActionMaps.Add(s_Value);
-			}
-			
-			s_UserConfigurableActionMaps.Reader.Dispose();
-			p_Instance.TogglePoseAction = (EntryInputActionEnum) p_Reader.ReadInt32();
-			p_Instance.CrouchAction = (EntryInputActionEnum) p_Reader.ReadInt32();
-			p_Instance.CrouchAndHoldAction = (EntryInputActionEnum) p_Reader.ReadInt32();
-			p_Instance.PickupInteractionAction = (EntryInputActionEnum) p_Reader.ReadInt32();
-			p_Instance.FiringDisablingTransitions.Clear();
-			(RimeReader Reader, uint Count) s_FiringDisablingTransitions = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_FiringDisablingTransitions.Count; ++i)
-			{
-				var s_Value = (PoseTransition) s_FiringDisablingTransitions.Reader.ReadInt32();
-				p_Instance.FiringDisablingTransitions.Add(s_Value);
-			}
-			
-			s_FiringDisablingTransitions.Reader.Dispose();
-			p_Instance.SprintReleaseTime = p_Reader.ReadSingle();
-			p_Instance.ThrottleInputRequiredForSprint = p_Reader.ReadSingle();
-			p_Instance.StandAutomaticallyIfSprinting = p_Reader.ReadBool();
-			p_Instance.ProneToStandOnJump = p_Reader.ReadBool();
-			p_Instance.DisableCrawlingWhileReloading = p_Reader.ReadBool();
-			p_Instance.DisableFiringWhileDeployingBipod = p_Reader.ReadBool();
-			p_Instance.DisableFiringWhileJumping = p_Reader.ReadBool();
-			p_Instance.DisableSprintingWhileReloading = p_Reader.ReadBool();
-			p_Instance.EnableSprintToCrouchTransition = p_Reader.ReadBool();
-			p_Instance.StopSprintingWhenReleasingThrottle = p_Reader.ReadBool();
-			p_Instance.StopSprintingWhenReleasingSprint = p_Reader.ReadBool();
-			p_Instance.WaitForSprintReleaseBeforeSprintAgain = p_Reader.ReadBool();
-			p_Instance.VehicleBoostIsToggle = p_Reader.ReadBool();
-			p_Instance.InputCurvesEnabled = p_Reader.ReadBool();
-			p_Instance.DisableCrawlingWhileFiring = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
-
 	}
 }

@@ -28,12 +28,5 @@ namespace fb
 		[ContainerField(8), LayoutImmutable, Blittable]
 		public sbyte TakeIndex { get; set; }
 		
-		public static void Deserialize(VoiceOverDialogTakeMapping p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.TakeControlMin = p_Reader.ReadSingle();
-			p_Instance.TakeControlMax = p_Reader.ReadSingle();
-			p_Instance.TakeIndex = p_Reader.ReadSByte();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
 	}
 }

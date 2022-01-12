@@ -23,11 +23,5 @@ namespace fb
 		[ContainerField(16), LayoutImmutable, Blittable]
 		public float TotalScore { get; set; }
 
-		public static void Deserialize(ScoreAggregate p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.TotalScore = p_Reader.ReadSingle();
-			p_Reader.Seek(4, SeekOrigin.Current);
-		}
-
 	}
 }

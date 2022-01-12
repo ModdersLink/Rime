@@ -26,21 +26,5 @@ namespace fb
 		[ContainerField(12), LayoutImmutable, Blittable]
 		public bool Refresh { get; set; }
 
-		public static void Deserialize(UIDynamicDataBinding p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Bindings.Clear();
-			(RimeReader Reader, uint Count) s_Bindings = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_Bindings.Count; ++i)
-			{
-				var s_Value = new UIDataSourceInfo();
-				fb.UIDataSourceInfo.Deserialize(s_Value, s_Bindings.Reader, p_Parser);
-				p_Instance.Bindings.Add(s_Value);
-			}
-			
-			s_Bindings.Reader.Dispose();
-			p_Instance.Refresh = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
-
 	}
 }

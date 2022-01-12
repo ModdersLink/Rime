@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(32), LayoutImmutable, Blittable]
 		public float TimeObjectIsPainted { get; set; }
 
-		public static void Deserialize(LaserPainterData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.TimeObjectIsPainted = p_Reader.ReadSingle();
-		}
-
 	}
 }

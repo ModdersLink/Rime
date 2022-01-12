@@ -23,19 +23,5 @@ namespace fb
 		[ContainerField(28)]
 		public List<ServerInfoSetting> Settings { get; set; } = new();
 
-		public static void Deserialize(UIDetailedServerInfoCompData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Settings.Clear();
-			(RimeReader Reader, uint Count) s_Settings = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_Settings.Count; ++i)
-			{
-				var s_Value = new ServerInfoSetting();
-				fb.ServerInfoSetting.Deserialize(s_Value, s_Settings.Reader, p_Parser);
-				p_Instance.Settings.Add(s_Value);
-			}
-			
-			s_Settings.Reader.Dispose();
-		}
-
 	}
 }

@@ -21,21 +21,7 @@ namespace fb
 		Asset
 	{
 		[ContainerField(12)]
-		public List<CtrRef<FormationData>> Formations { get; set; } = new();
-
-		public static void Deserialize(FormationHolder p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Formations.Clear();
-			(RimeReader Reader, uint Count) s_Formations = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_Formations.Count; ++i)
-			{
-				var s_CtrRef = new CtrRef<FormationData>();
-				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_Formations.Reader.ReadUInt32()));
-				p_Instance.Formations.Add(s_CtrRef);
-			}
-			
-			s_Formations.Reader.Dispose();
-		}
+		public RefArray<FormationData> Formations { get; set; } = new();
 
 	}
 }

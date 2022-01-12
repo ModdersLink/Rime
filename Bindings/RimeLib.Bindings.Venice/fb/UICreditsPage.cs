@@ -28,20 +28,5 @@ namespace fb
 		[ContainerField(8)]
 		public List<UICreditsLine> Lines { get; set; } = new();
 		
-		public static void Deserialize(UICreditsPage p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Header1 = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Header2 = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Lines.Clear();
-			(RimeReader Reader, uint Count) s_Lines = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_Lines.Count; ++i)
-			{
-				var s_Value = new UICreditsLine();
-				fb.UICreditsLine.Deserialize(s_Value, s_Lines.Reader, p_Parser);
-				p_Instance.Lines.Add(s_Value);
-			}
-			
-			s_Lines.Reader.Dispose();
-		}
 	}
 }

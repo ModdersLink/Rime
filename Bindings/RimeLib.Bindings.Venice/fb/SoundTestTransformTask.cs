@@ -29,13 +29,5 @@ namespace fb
 		[ContainerField(36), LayoutImmutable, Blittable]
 		public bool RelativeListener { get; set; }
 
-		public static void Deserialize(SoundTestTransformTask p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.Vec3.Deserialize(p_Instance.InitialPosition, p_Reader, p_Parser);
-			p_Instance.Behavior = (SoundTestTransformBehavior) p_Reader.ReadInt32();
-			p_Instance.RelativeListener = p_Reader.ReadBool();
-			p_Reader.Seek(11, SeekOrigin.Current);
-		}
-
 	}
 }

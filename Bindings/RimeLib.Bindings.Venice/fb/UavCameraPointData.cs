@@ -31,12 +31,5 @@ namespace fb
 		[ContainerField(12), LayoutImmutable, Blittable]
 		public float AccelerationTime { get; set; }
 		
-		public static void Deserialize(UavCameraPointData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.MinTime = p_Reader.ReadSingle();
-			p_Instance.MaxTime = p_Reader.ReadSingle();
-			p_Instance.Speed = p_Reader.ReadSingle();
-			p_Instance.AccelerationTime = p_Reader.ReadSingle();
-		}
 	}
 }

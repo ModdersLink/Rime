@@ -29,12 +29,5 @@ namespace fb
 		[ContainerField(36), LayoutImmutable, Blittable]
 		public float HealthPointsPerBag { get; set; }
 
-		public static void Deserialize(MedicBagWeaponData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.HealerData.Deserialize(p_Instance.Healer, p_Reader, p_Parser);
-			p_Instance.HealthPointsRefillSpeed = p_Reader.ReadSingle();
-			p_Instance.HealthPointsPerBag = p_Reader.ReadSingle();
-		}
-
 	}
 }

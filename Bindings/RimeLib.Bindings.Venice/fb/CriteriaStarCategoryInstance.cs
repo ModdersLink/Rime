@@ -28,11 +28,5 @@ namespace fb
 		[ContainerField(8)]
 		public CtrRef<StatsCategoryBaseData> ParamY { get; set; } = new();
 		
-		public static void Deserialize(CriteriaStarCategoryInstance p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Name = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.ParamX.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.ParamY.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-		}
 	}
 }

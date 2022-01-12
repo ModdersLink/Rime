@@ -21,21 +21,7 @@ namespace fb
 		Asset
 	{
 		[ContainerField(12)]
-		public List<CtrRef<BlueprintContainerItem>> Items { get; set; } = new();
-
-		public static void Deserialize(BlueprintBundleMetadataContainer p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Items.Clear();
-			(RimeReader Reader, uint Count) s_Items = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_Items.Count; ++i)
-			{
-				var s_CtrRef = new CtrRef<BlueprintContainerItem>();
-				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_Items.Reader.ReadUInt32()));
-				p_Instance.Items.Add(s_CtrRef);
-			}
-			
-			s_Items.Reader.Dispose();
-		}
+		public RefArray<BlueprintContainerItem> Items { get; set; } = new();
 
 	}
 }

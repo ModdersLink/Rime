@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(8)]
 		public CtrRef<PersistentValueTemplate> Definition { get; set; } = new();
 
-		public static void Deserialize(PersistentValueTemplateStatRef p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Definition.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-		}
-
 	}
 }

@@ -20,9 +20,5 @@ namespace fb
 	public class PathfindingExclusionVolumeData : 
 		OBBData
 	{
-		public static void Deserialize(PathfindingExclusionVolumeData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

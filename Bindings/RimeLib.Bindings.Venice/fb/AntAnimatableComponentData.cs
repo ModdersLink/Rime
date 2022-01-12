@@ -41,17 +41,5 @@ namespace fb
 		[ContainerField(158), LayoutImmutable, Blittable]
 		public bool ForceDisableCulling { get; set; }
 
-		public static void Deserialize(AntAnimatableComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Realm = (Realm) p_Reader.ReadInt32();
-			p_Instance.SubRealm = (SubRealm) p_Reader.ReadInt32();
-			fb.AntAnimationHandlerData.Deserialize(p_Instance.AnimationData, p_Reader, p_Parser);
-			p_Instance.Mesh.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.AutoActivate = p_Reader.ReadBool();
-			p_Instance.AnimationControlledFromStart = p_Reader.ReadBool();
-			p_Instance.ForceDisableCulling = p_Reader.ReadBool();
-			p_Reader.Seek(1, SeekOrigin.Current);
-		}
-
 	}
 }

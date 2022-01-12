@@ -26,11 +26,5 @@ namespace fb
 		[ContainerField(12)]
 		public SurfaceShaderInstanceDataStruct Shader { get; set; } = new();
 
-		public static void Deserialize(MeshMaterial p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.ShaderInstance.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			fb.SurfaceShaderInstanceDataStruct.Deserialize(p_Instance.Shader, p_Reader, p_Parser);
-		}
-
 	}
 }

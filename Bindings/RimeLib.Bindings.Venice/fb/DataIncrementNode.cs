@@ -38,15 +38,5 @@ namespace fb
 		[ContainerField(40)]
 		public UIDataSourceInfo DataSource { get; set; } = new();
 
-		public static void Deserialize(DataIncrementNode p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.In.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.Out.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.Max = p_Reader.ReadSingle();
-			p_Instance.Min = p_Reader.ReadSingle();
-			p_Instance.IncrementSize = p_Reader.ReadSingle();
-			fb.UIDataSourceInfo.Deserialize(p_Instance.DataSource, p_Reader, p_Parser);
-		}
-
 	}
 }

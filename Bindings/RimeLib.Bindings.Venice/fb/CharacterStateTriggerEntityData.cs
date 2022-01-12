@@ -74,28 +74,5 @@ namespace fb
 		[ContainerField(156), LayoutImmutable, Blittable]
 		public bool UsePitch { get; set; }
 
-		public static void Deserialize(CharacterStateTriggerEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.ActiveWeaponSlot = p_Reader.ReadUInt32();
-			p_Instance.Pitch = p_Reader.ReadSingle();
-			p_Instance.CharacterPose = (CharacterPoseAction) p_Reader.ReadInt32();
-			p_Instance.AmmoToSet = p_Reader.ReadUInt32();
-			p_Instance.PoseToCheck = (CharacterPoseAction) p_Reader.ReadInt32();
-			p_Instance.Weapon.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.HealthToSet = p_Reader.ReadUInt32();
-			p_Instance.HealthToCheck = p_Reader.ReadUInt32();
-			p_Instance.SeatIndex = p_Reader.ReadUInt32();
-			p_Instance.ExcludeConnectedVehicles = p_Reader.ReadBool();
-			p_Instance.ContinueToCheckIfHoldingWrongWeapon = p_Reader.ReadBool();
-			p_Instance.StayInVehicleOnMove = p_Reader.ReadBool();
-			p_Instance.CheckHealthGreaterOrEqual = p_Reader.ReadBool();
-			p_Instance.CheckAllWeapons = p_Reader.ReadBool();
-			p_Instance.ShouldCheckSeatIndex = p_Reader.ReadBool();
-			p_Instance.UseExitPointWhenLeavingVehicle = p_Reader.ReadBool();
-			p_Instance.DisablePhysicsWhenLeavingVehicle = p_Reader.ReadBool();
-			p_Instance.UsePitch = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
-
 	}
 }

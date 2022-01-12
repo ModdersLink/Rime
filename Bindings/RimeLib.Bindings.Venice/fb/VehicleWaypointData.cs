@@ -41,17 +41,5 @@ namespace fb
 		[ContainerField(40), LayoutImmutable, Blittable]
 		public bool StopHere { get; set; }
 
-		public static void Deserialize(VehicleWaypointData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Speed = p_Reader.ReadSingle();
-			p_Instance.SpeedOverrideMovingTowards = p_Reader.ReadSingle();
-			p_Instance.Angleoffset = p_Reader.ReadSingle();
-			p_Instance.StopHereRadius = p_Reader.ReadSingle();
-			p_Instance.StoppingDeceleration = p_Reader.ReadSingle();
-			p_Instance.MinSlowdownSpeed = p_Reader.ReadSingle();
-			p_Instance.StopHere = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
-
 	}
 }

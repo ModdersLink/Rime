@@ -155,55 +155,5 @@ namespace fb
 		[ContainerField(100), LayoutImmutable, Blittable]
 		public bool MeshDrawCullStats { get; set; }
 
-		public static void Deserialize(EmitterSystemSettings p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.MeshDrawCountLimit = p_Reader.ReadUInt32();
-			p_Instance.TimeScale = p_Reader.ReadSingle();
-			p_Instance.GlobalResetStartTimeInterval = p_Reader.ReadSingle();
-			p_Instance.QuadHalfResSlice2ThresholdLow = p_Reader.ReadSingle();
-			p_Instance.QuadHalfResSlice2ThresholdHigh = p_Reader.ReadSingle();
-			p_Instance.QuadHalfResSlice1ThresholdLow = p_Reader.ReadSingle();
-			p_Instance.QuadHalfResSlice1ThresholdHigh = p_Reader.ReadSingle();
-			p_Instance.DebugOverdrawCount = p_Reader.ReadInt32();
-			p_Instance.DrawStats = p_Reader.ReadUInt32();
-			p_Instance.MeshStreamingPriorityMultiplier = p_Reader.ReadSingle();
-			p_Instance.QuadZOcclusionBias = p_Reader.ReadSingle();
-			p_Instance.DrawBoundingBoxes = p_Reader.ReadUInt32();
-			p_Instance.MinScreenArea = p_Reader.ReadSingle();
-			p_Instance.QuadNearFadeDistance = p_Reader.ReadSingle();
-			p_Instance.QuadTechnique = p_Reader.ReadInt32();
-			p_Instance.MeshCullingDistance = p_Reader.ReadSingle();
-			p_Instance.EnableFixedTimeStep = p_Reader.ReadBool();
-			p_Instance.ZBufferCullEnable = p_Reader.ReadBool();
-			p_Instance.QuadEnableOverdrawRendering = p_Reader.ReadBool();
-			p_Instance.QuadColorShaderCostsEnable = p_Reader.ReadBool();
-			p_Instance.DrawProjectedBoxes = p_Reader.ReadBool();
-			p_Instance.QuadSimpleRenderingEnable = p_Reader.ReadBool();
-			p_Instance.EnableJobs = p_Reader.ReadBool();
-			p_Instance.EnableRendering = p_Reader.ReadBool();
-			p_Instance.QuadHalfResEnable = p_Reader.ReadBool();
-			p_Instance.QuadEnableRendering = p_Reader.ReadBool();
-			p_Instance.EnableFixedDelta = p_Reader.ReadBool();
-			p_Instance.QuadClipScaleEnable = p_Reader.ReadBool();
-			p_Instance.QuadNiceRenderingEnable = p_Reader.ReadBool();
-			p_Instance.QuadGroupsJoinAll = p_Reader.ReadBool();
-			p_Instance.QuadGroupsJoinNone = p_Reader.ReadBool();
-			p_Instance.QuadGroupsJoinNiceAndSimple = p_Reader.ReadBool();
-			p_Instance.QuadEnableOpaque = p_Reader.ReadBool();
-			p_Instance.QuadVertexShadowsEnable = p_Reader.ReadBool();
-			p_Instance.QuadPointLightsEnable = p_Reader.ReadBool();
-			p_Instance.QuadSpotLightsEnable = p_Reader.ReadBool();
-			p_Instance.QuadEnableSorting = p_Reader.ReadBool();
-			p_Instance.MeshRenderingEnable = p_Reader.ReadBool();
-			p_Instance.MeshDrawTransforms = p_Reader.ReadBool();
-			p_Instance.MeshDrawBoundingBoxes = p_Reader.ReadBool();
-			p_Instance.MeshShadowEnable = p_Reader.ReadBool();
-			p_Instance.QuadEnableWireframe = p_Reader.ReadBool();
-			p_Instance.Enable = p_Reader.ReadBool();
-			p_Instance.QuadEnableZOcclusion = p_Reader.ReadBool();
-			p_Instance.MeshDrawCullStats = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
-
 	}
 }

@@ -20,9 +20,5 @@ namespace fb
 	public class UIInputCompData : 
 		UIComponentData
 	{
-		public static void Deserialize(UIInputCompData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

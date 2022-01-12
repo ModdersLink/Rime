@@ -20,9 +20,5 @@ namespace fb
 	public class UILifeCounterCompData : 
 		UIComponentData
 	{
-		public static void Deserialize(UILifeCounterCompData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

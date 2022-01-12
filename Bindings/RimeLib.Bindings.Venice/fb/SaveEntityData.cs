@@ -35,15 +35,5 @@ namespace fb
 		[ContainerField(28), LayoutImmutable, Blittable]
 		public bool CheckForHumanPlayer { get; set; }
 
-		public static void Deserialize(SaveEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.SaveScreenTexture.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.LevelName = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.SaveFileName = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.SaveNameSID = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.CheckForHumanPlayer = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
-
 	}
 }

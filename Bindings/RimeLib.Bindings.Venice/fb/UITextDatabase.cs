@@ -35,14 +35,5 @@ namespace fb
 		[ContainerField(52), LayoutImmutable, Blittable]
 		public uint HistogramChunkSize { get; set; }
 
-		public static void Deserialize(UITextDatabase p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Language = (LanguageFormat) p_Reader.ReadInt32();
-			p_Instance.BinaryChunk = new GUID(p_Reader);
-			p_Instance.BinaryChunkSize = p_Reader.ReadUInt32();
-			p_Instance.HistogramChunk = new GUID(p_Reader);
-			p_Instance.HistogramChunkSize = p_Reader.ReadUInt32();
-		}
-
 	}
 }

@@ -50,19 +50,5 @@ namespace fb
 		[ContainerField(48), LayoutImmutable, Blittable]
 		public float MaxYawVelocity { get; set; }
 
-		public static void Deserialize(ParachuteStateData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.DeployTime = p_Reader.ReadSingle();
-			p_Instance.TerminalVelocity = p_Reader.ReadSingle();
-			p_Instance.ForwardDragCoefficient = p_Reader.ReadSingle();
-			p_Instance.AngleOfAttack = p_Reader.ReadSingle();
-			p_Instance.BankOffset = p_Reader.ReadSingle();
-			p_Instance.ThrottleOffset = p_Reader.ReadSingle();
-			p_Instance.BrakeOffset = p_Reader.ReadSingle();
-			p_Instance.MaxRollVelocity = p_Reader.ReadSingle();
-			p_Instance.MaxPitchVelocity = p_Reader.ReadSingle();
-			p_Instance.MaxYawVelocity = p_Reader.ReadSingle();
-		}
-
 	}
 }

@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(8), LayoutImmutable, Blittable]
 		public float ZoomRenderFov { get; set; }
 
-		public static void Deserialize(WeaponZoomModifier p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.ZoomRenderFov = p_Reader.ReadSingle();
-		}
-
 	}
 }

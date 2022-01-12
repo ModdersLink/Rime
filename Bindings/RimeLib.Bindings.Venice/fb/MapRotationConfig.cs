@@ -37,15 +37,5 @@ namespace fb
 		[ContainerField(20), LayoutImmutable, Blittable]
 		public bool RandomizeStartingMap { get; set; }
 		
-		public static void Deserialize(MapRotationConfig p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.MapRotationId = p_Reader.ReadInt32();
-			p_Instance.NameSid = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.DescSid = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Mod = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.GameMode = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.RandomizeStartingMap = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
 	}
 }

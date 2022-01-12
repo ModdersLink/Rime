@@ -26,12 +26,5 @@ namespace fb
 		[ContainerField(24)]
 		public SoundGraphPluginRef VuPlugin { get; set; } = new();
 
-		public static void Deserialize(BusNodeData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AudioGraphNodePort.Deserialize(p_Instance.Out, p_Reader, p_Parser);
-			fb.SoundGraphPluginRef.Deserialize(p_Instance.VuPlugin, p_Reader, p_Parser);
-			p_Reader.Seek(1, SeekOrigin.Current);
-		}
-
 	}
 }

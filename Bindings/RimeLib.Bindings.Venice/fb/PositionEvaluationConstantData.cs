@@ -26,11 +26,5 @@ namespace fb
 		[ContainerField(16), LayoutImmutable, Blittable]
 		public float LeaderRandomPositionsRadius { get; set; }
 
-		public static void Deserialize(PositionEvaluationConstantData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.OwnRandomPositionsRadius = p_Reader.ReadSingle();
-			p_Instance.LeaderRandomPositionsRadius = p_Reader.ReadSingle();
-		}
-
 	}
 }

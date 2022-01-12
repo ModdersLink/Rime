@@ -22,9 +22,5 @@ namespace fb
 		[ContainerField(0), LayoutImmutable, Blittable]
 		public int AssetId { get; set; }
 		
-		public static void Deserialize(AntRef p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.AssetId = p_Reader.ReadInt32();
-		}
 	}
 }

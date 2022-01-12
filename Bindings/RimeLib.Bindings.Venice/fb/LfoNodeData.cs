@@ -38,16 +38,5 @@ namespace fb
 		[ContainerField(40), LayoutImmutable, Blittable]
 		public bool StartAtRandomValue { get; set; }
 
-		public static void Deserialize(LfoNodeData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AudioGraphNodePort.Deserialize(p_Instance.Hz, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.Amplitude, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.Out, p_Reader, p_Parser);
-			p_Instance.Min = p_Reader.ReadSingle();
-			p_Instance.Max = p_Reader.ReadSingle();
-			p_Instance.StartAtRandomValue = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
-
 	}
 }

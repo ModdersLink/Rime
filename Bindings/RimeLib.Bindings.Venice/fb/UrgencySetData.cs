@@ -26,20 +26,5 @@ namespace fb
 		[ContainerField(12)]
 		public List<UrgencyModifierData> UrgencyModifiers { get; set; } = new();
 
-		public static void Deserialize(UrgencySetData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Name = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.UrgencyModifiers.Clear();
-			(RimeReader Reader, uint Count) s_UrgencyModifiers = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_UrgencyModifiers.Count; ++i)
-			{
-				var s_Value = new UrgencyModifierData();
-				fb.UrgencyModifierData.Deserialize(s_Value, s_UrgencyModifiers.Reader, p_Parser);
-				p_Instance.UrgencyModifiers.Add(s_Value);
-			}
-			
-			s_UrgencyModifiers.Reader.Dispose();
-		}
-
 	}
 }

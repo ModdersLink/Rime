@@ -125,53 +125,5 @@ namespace fb
 		[ContainerField(85), LayoutImmutable, Blittable]
 		public bool MultiGpuValidationEnable { get; set; }
 
-		public static void Deserialize(DxDisplaySettings p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.FullscreenWidth = p_Reader.ReadUInt32();
-			p_Instance.FullscreenHeight = p_Reader.ReadUInt32();
-			p_Instance.AmdMinDriverVersion = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.NvidiaMinDriverVersion = p_Reader.ReadUInt32();
-			p_Instance.FullscreenRefreshRate = p_Reader.ReadSingle();
-			p_Instance.StereoSeparationScale = p_Reader.ReadSingle();
-			p_Instance.StereoDepth = p_Reader.ReadSingle();
-			p_Instance.FullscreenOutputIndex = p_Reader.ReadInt32();
-			p_Instance.DebugBreakIgnoredIDs.Clear();
-			(RimeReader Reader, uint Count) s_DebugBreakIgnoredIDs = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_DebugBreakIgnoredIDs.Count; ++i)
-			{
-				var s_Value = s_DebugBreakIgnoredIDs.Reader.ReadInt32();
-				p_Instance.DebugBreakIgnoredIDs.Add(s_Value);
-			}
-			
-			s_DebugBreakIgnoredIDs.Reader.Dispose();
-			p_Instance.StereoConvergenceScale = p_Reader.ReadSingle();
-			p_Instance.StereoSoldierZoomConvergenceScale = p_Reader.ReadSingle();
-			p_Instance.ForceRenderAheadLimit = p_Reader.ReadInt32();
-			p_Instance.PresentInterval = p_Reader.ReadInt32();
-			p_Instance.DebugBreakOnWarningEnable = p_Reader.ReadBool();
-			p_Instance.DebugInfoEnable = p_Reader.ReadBool();
-			p_Instance.Fullscreen = p_Reader.ReadBool();
-			p_Instance.DebugBreakOnErrorEnable = p_Reader.ReadBool();
-			p_Instance.CreateMinimalWindow = p_Reader.ReadBool();
-			p_Instance.DriverInternalThreadingEnable = p_Reader.ReadBool();
-			p_Instance.DebugBreakOnInfoEnable = p_Reader.ReadBool();
-			p_Instance.FullscreenModeEnable = p_Reader.ReadBool();
-			p_Instance.VSyncEnable = p_Reader.ReadBool();
-			p_Instance.TripleBufferingEnable = p_Reader.ReadBool();
-			p_Instance.Dx10PlusEnable = p_Reader.ReadBool();
-			p_Instance.NvApiEnable = p_Reader.ReadBool();
-			p_Instance.NvPerfHudEnable = p_Reader.ReadBool();
-			p_Instance.StereoEnable = p_Reader.ReadBool();
-			p_Instance.Dx11Enable = p_Reader.ReadBool();
-			p_Instance.Dx10Dot0Enable = p_Reader.ReadBool();
-			p_Instance.RefDriverEnable = p_Reader.ReadBool();
-			p_Instance.Dx10Dot1Enable = p_Reader.ReadBool();
-			p_Instance.MinDriverRequired = p_Reader.ReadBool();
-			p_Instance.WarpDriverEnable = p_Reader.ReadBool();
-			p_Instance.NullDriverEnable = p_Reader.ReadBool();
-			p_Instance.MultiGpuValidationEnable = p_Reader.ReadBool();
-			p_Reader.Seek(2, SeekOrigin.Current);
-		}
-
 	}
 }

@@ -35,14 +35,5 @@ namespace fb
 		[ContainerField(220), LayoutImmutable, Blittable]
 		public float ShieldedTransitionExitTime { get; set; }
 
-		public static void Deserialize(PlayerEntryComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.Vec3.Deserialize(p_Instance.AnimationAccelerationMultiplier, p_Reader, p_Parser);
-			p_Instance.AntEntryId = (AntEntryIdEnum) p_Reader.ReadInt32();
-			p_Instance.AntEntryID = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.AntEntryEnumeration.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.ShieldedTransitionExitTime = p_Reader.ReadSingle();
-		}
-
 	}
 }

@@ -35,15 +35,5 @@ namespace fb
 		[ContainerField(36)]
 		public SoundGraphPluginRef Plugin { get; set; } = new();
 
-		public static void Deserialize(FrequencyShiftSsbNodeData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AudioGraphNodePort.Deserialize(p_Instance.In, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.Frequency, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.Out, p_Reader, p_Parser);
-			p_Instance.Filter = (FrequencyShiftSsbFilter) p_Reader.ReadInt32();
-			fb.SoundGraphPluginRef.Deserialize(p_Instance.Plugin, p_Reader, p_Parser);
-			p_Reader.Seek(1, SeekOrigin.Current);
-		}
-
 	}
 }

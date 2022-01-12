@@ -20,9 +20,5 @@ namespace fb
 	public class EnvmapEntityData : 
 		EntityData
 	{
-		public static void Deserialize(EnvmapEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

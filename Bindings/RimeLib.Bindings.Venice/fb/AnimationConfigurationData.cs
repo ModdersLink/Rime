@@ -28,11 +28,5 @@ namespace fb
 		[ContainerField(8)]
 		public CtrRef<WeaponSpeedData> WeaponSpeedModuleData { get; set; } = new();
 		
-		public static void Deserialize(AnimationConfigurationData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AnimationConfigurationShootModuleData.Deserialize(p_Instance.ShootModuleData, p_Reader, p_Parser);
-			p_Instance.WeaponOffsetModuleData.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.WeaponSpeedModuleData.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-		}
 	}
 }

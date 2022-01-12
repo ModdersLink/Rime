@@ -37,14 +37,5 @@ namespace fb
 		[ContainerField(20), LayoutImmutable, Blittable]
 		public float BehaviourExecution { get; set; }
 		
-		public static void Deserialize(SubsystemTimingConfigData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Sensing = p_Reader.ReadSingle();
-			p_Instance.Evaluation = p_Reader.ReadSingle();
-			p_Instance.GoalUpdates = p_Reader.ReadSingle();
-			p_Instance.IntentUpdates = p_Reader.ReadSingle();
-			p_Instance.BehaviourSelection = p_Reader.ReadSingle();
-			p_Instance.BehaviourExecution = p_Reader.ReadSingle();
-		}
 	}
 }

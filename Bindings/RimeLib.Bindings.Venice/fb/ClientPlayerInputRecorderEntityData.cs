@@ -26,11 +26,5 @@ namespace fb
 		[ContainerField(16), LayoutImmutable]
 		public string FileNameBase { get; set; } = string.Empty;
 
-		public static void Deserialize(ClientPlayerInputRecorderEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Realm = (Realm) p_Reader.ReadInt32();
-			p_Instance.FileNameBase = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-		}
-
 	}
 }

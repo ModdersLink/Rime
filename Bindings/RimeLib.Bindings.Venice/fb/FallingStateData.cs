@@ -20,9 +20,5 @@ namespace fb
 	public class FallingStateData : 
 		CharacterStateData
 	{
-		public static void Deserialize(FallingStateData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

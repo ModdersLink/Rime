@@ -22,9 +22,5 @@ namespace fb
 		[ContainerField(0), LayoutImmutable, Blittable]
 		public bool dummy { get; set; }
 		
-		public static void Deserialize(CounterHelper p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.dummy = p_Reader.ReadBool();
-		}
 	}
 }

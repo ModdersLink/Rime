@@ -20,9 +20,5 @@ namespace fb
 	public class SoldierEntityInteractionComponentData : 
 		EntityInteractionComponentData
 	{
-		public static void Deserialize(SoldierEntityInteractionComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

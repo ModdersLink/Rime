@@ -74,27 +74,5 @@ namespace fb
 		[ContainerField(96), LayoutImmutable, Blittable]
 		public float MaxDisplacement { get; set; }
 
-		public static void Deserialize(HudCameraShakeData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.WeaponDispersionMin = p_Reader.ReadSingle();
-			p_Instance.WeaponDispersionMax = p_Reader.ReadSingle();
-			p_Instance.WeaponDispersionOffsetScale = p_Reader.ReadSingle();
-			p_Instance.JumpEffectDurationMin = p_Reader.ReadSingle();
-			p_Instance.JumpEffectDurationMax = p_Reader.ReadSingle();
-			p_Instance.JumpEffectMin = p_Reader.ReadSingle();
-			p_Instance.JumpEffectMax = p_Reader.ReadSingle();
-			p_Instance.LandEffectDurationMin = p_Reader.ReadSingle();
-			p_Instance.LandEffectDurationMax = p_Reader.ReadSingle();
-			p_Instance.LandEffectMin = p_Reader.ReadSingle();
-			p_Instance.LandEffectMax = p_Reader.ReadSingle();
-			p_Instance.CameraShakeMinAngle = p_Reader.ReadSingle();
-			p_Instance.CameraShakeMaxAngle = p_Reader.ReadSingle();
-			p_Instance.CameraShakeScale = p_Reader.ReadSingle();
-			p_Instance.WeaponLagXScale = p_Reader.ReadSingle();
-			p_Instance.WeaponLagYScale = p_Reader.ReadSingle();
-			p_Instance.FilterSize = p_Reader.ReadUInt32();
-			p_Instance.MaxDisplacement = p_Reader.ReadSingle();
-		}
-
 	}
 }

@@ -23,11 +23,5 @@ namespace fb
 		[ContainerField(256)]
 		public SupplyData SupplyData { get; set; } = new();
 
-		public static void Deserialize(SupplySphereEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.SupplyData.Deserialize(p_Instance.SupplyData, p_Reader, p_Parser);
-			p_Reader.Seek(4, SeekOrigin.Current);
-		}
-
 	}
 }

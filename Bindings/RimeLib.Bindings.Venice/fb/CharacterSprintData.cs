@@ -32,14 +32,5 @@ namespace fb
 		[ContainerField(20), LayoutImmutable, Blittable]
 		public bool AllowContinousSprinting { get; set; }
 
-		public static void Deserialize(CharacterSprintData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.SprintPowerDecreasePerSecond = p_Reader.ReadSingle();
-			p_Instance.SprintPowerIncreasePerSecond = p_Reader.ReadSingle();
-			p_Instance.SprintMinimumPower = p_Reader.ReadSingle();
-			p_Instance.AllowContinousSprinting = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
-
 	}
 }

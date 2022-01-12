@@ -73,26 +73,5 @@ namespace fb
 		[ContainerField(68)]
 		public AntRef ExitStyle { get; set; } = new();
 		
-		public static void Deserialize(AILocoCoverBinding p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AntRef.Deserialize(p_Instance.PrepareFire, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.ThrowGrenade, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.PeekOut, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.IdleBehindCover, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.PeekType, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.CoverTypeEnum, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.CoverFireStyle, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.EnterCover, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.ExitCover, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.IsCloseCover, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.DistanceScale, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.AbsoluteDistance, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.AngleToNormal, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.OutAngle, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.ThreatAngle, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.StopExitCoverOutAround, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.EnterStrategy, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.ExitStyle, p_Reader, p_Parser);
-		}
 	}
 }

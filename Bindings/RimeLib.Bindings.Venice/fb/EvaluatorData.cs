@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(8)]
 		public EmitterParameter EmitterParameter { get; set; } = new();
 
-		public static void Deserialize(EvaluatorData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.EmitterParameter = (EmitterParameter) p_Reader.ReadInt32();
-		}
-
 	}
 }

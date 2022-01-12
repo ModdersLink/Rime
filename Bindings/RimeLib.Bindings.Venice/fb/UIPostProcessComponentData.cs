@@ -56,22 +56,5 @@ namespace fb
 		[ContainerField(69), LayoutImmutable, Blittable]
 		public bool Enabled { get; set; }
 
-		public static void Deserialize(UIPostProcessComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.HighlightThreshold = p_Reader.ReadSingle();
-			p_Instance.XPower = p_Reader.ReadSingle();
-			p_Instance.YPower = p_Reader.ReadSingle();
-			p_Instance.Distort = p_Reader.ReadSingle();
-			p_Instance.TimeScale = p_Reader.ReadSingle();
-			p_Instance.NoiseTexture.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.Highlight = p_Reader.ReadSingle();
-			p_Instance.RShift = p_Reader.ReadSingle();
-			p_Instance.GShift = p_Reader.ReadSingle();
-			p_Instance.BShift = p_Reader.ReadSingle();
-			p_Instance.TweakMode = p_Reader.ReadBool();
-			p_Instance.Enabled = p_Reader.ReadBool();
-			p_Reader.Seek(2, SeekOrigin.Current);
-		}
-
 	}
 }

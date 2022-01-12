@@ -29,12 +29,5 @@ namespace fb
 		[ContainerField(24), LayoutImmutable]
 		public string TexturePath { get; set; } = string.Empty;
 
-		public static void Deserialize(UIVehicleDescription p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Name = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Description = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.TexturePath = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-		}
-
 	}
 }

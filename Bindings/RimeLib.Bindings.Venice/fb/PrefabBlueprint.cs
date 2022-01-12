@@ -21,21 +21,7 @@ namespace fb
 		Blueprint
 	{
 		[ContainerField(32)]
-		public List<CtrRef<GameObjectData>> Objects { get; set; } = new();
-
-		public static void Deserialize(PrefabBlueprint p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Objects.Clear();
-			(RimeReader Reader, uint Count) s_Objects = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_Objects.Count; ++i)
-			{
-				var s_CtrRef = new CtrRef<GameObjectData>();
-				s_CtrRef.SetValue(p_Parser.GetImportAtIndex(s_Objects.Reader.ReadUInt32()));
-				p_Instance.Objects.Add(s_CtrRef);
-			}
-			
-			s_Objects.Reader.Dispose();
-		}
+		public RefArray<GameObjectData> Objects { get; set; } = new();
 
 	}
 }

@@ -26,11 +26,5 @@ namespace fb
 		[ContainerField(12), LayoutImmutable, Blittable]
 		public int SequenceLinkID { get; set; }
 
-		public static void Deserialize(CustomSequenceTrackLinkMapping p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.TrackLinkID = p_Reader.ReadInt32();
-			p_Instance.SequenceLinkID = p_Reader.ReadInt32();
-		}
-
 	}
 }

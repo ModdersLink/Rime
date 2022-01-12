@@ -28,11 +28,5 @@ namespace fb
 		[ContainerField(8), LayoutImmutable, Blittable]
 		public float GainReduction { get; set; }
 		
-		public static void Deserialize(AudioObstructionMaterialInfo p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Material.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.ObstructionFrequency = p_Reader.ReadSingle();
-			p_Instance.GainReduction = p_Reader.ReadSingle();
-		}
 	}
 }

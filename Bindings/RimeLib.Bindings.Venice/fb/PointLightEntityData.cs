@@ -35,15 +35,5 @@ namespace fb
 		[ContainerField(176), LayoutImmutable, Blittable]
 		public float TranslucencyDistortion { get; set; }
 
-		public static void Deserialize(PointLightEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Width = p_Reader.ReadSingle();
-			p_Instance.TranslucencyAmbient = p_Reader.ReadSingle();
-			p_Instance.TranslucencyScale = p_Reader.ReadSingle();
-			p_Instance.TranslucencyPower = p_Reader.ReadUInt32();
-			p_Instance.TranslucencyDistortion = p_Reader.ReadSingle();
-			p_Reader.Seek(12, SeekOrigin.Current);
-		}
-
 	}
 }

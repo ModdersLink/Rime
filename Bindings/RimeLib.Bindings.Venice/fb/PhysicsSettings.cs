@@ -77,29 +77,5 @@ namespace fb
 		[ContainerField(41), LayoutImmutable, Blittable]
 		public bool SuppressDebrisSpawnUntilReady { get; set; }
 
-		public static void Deserialize(PhysicsSettings p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.IntegrateJobCount = p_Reader.ReadUInt32();
-			p_Instance.ClientEffectWorldThreadCount = p_Reader.ReadUInt32();
-			p_Instance.ClientWorldThreadCount = p_Reader.ReadUInt32();
-			p_Instance.ServerWorldThreadCount = p_Reader.ReadUInt32();
-			p_Instance.CollideJobCount = p_Reader.ReadUInt32();
-			p_Instance.Enable = p_Reader.ReadBool();
-			p_Instance.EnableAIRigidBody = p_Reader.ReadBool();
-			p_Instance.ForestEnable = p_Reader.ReadBool();
-			p_Instance.EnableJobs = p_Reader.ReadBool();
-			p_Instance.RemoveRagdollWhenWoken = p_Reader.ReadBool();
-			p_Instance.RemoveFromWorldOnCollisionOverflow = p_Reader.ReadBool();
-			p_Instance.SingleStepCharacter = p_Reader.ReadBool();
-			p_Instance.ForceSingleStepCharacterInSP = p_Reader.ReadBool();
-			p_Instance.EnableFollowWheelRaycasts = p_Reader.ReadBool();
-			p_Instance.EnableClientWheelRaycasts = p_Reader.ReadBool();
-			p_Instance.EnableASyncWheelRaycasts = p_Reader.ReadBool();
-			p_Instance.UseDelayedWakeUpClient = p_Reader.ReadBool();
-			p_Instance.UseDelayedWakeUpServer = p_Reader.ReadBool();
-			p_Instance.SuppressDebrisSpawnUntilReady = p_Reader.ReadBool();
-			p_Reader.Seek(2, SeekOrigin.Current);
-		}
-
 	}
 }

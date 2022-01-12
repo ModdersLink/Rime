@@ -23,11 +23,5 @@ namespace fb
 		[ContainerField(96)]
 		public AntInteractionBinding AntBindings { get; set; } = new();
 
-		public static void Deserialize(AntInteractionData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AntInteractionBinding.Deserialize(p_Instance.AntBindings, p_Reader, p_Parser);
-			p_Reader.Seek(12, SeekOrigin.Current);
-		}
-
 	}
 }

@@ -28,12 +28,5 @@ namespace fb
 		[ContainerField(8), LayoutImmutable, Blittable]
 		public bool IsPremium { get; set; }
 		
-		public static void Deserialize(UIButton p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.ButtonLabel = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.ButtonId = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.IsPremium = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
 	}
 }

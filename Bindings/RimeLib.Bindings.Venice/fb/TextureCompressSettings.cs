@@ -32,14 +32,5 @@ namespace fb
 		[ContainerField(20), LayoutImmutable, Blittable]
 		public bool DebugDrawEnable { get; set; }
 
-		public static void Deserialize(TextureCompressSettings p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.ViewMode = (TextureCompressQualityMode) p_Reader.ReadInt32();
-			p_Instance.TextureCompressJobPoolSize = p_Reader.ReadUInt32();
-			p_Instance.DebugDrawAlphaOverlayScale = p_Reader.ReadSingle();
-			p_Instance.DebugDrawEnable = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
-
 	}
 }

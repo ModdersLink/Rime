@@ -20,9 +20,5 @@ namespace fb
 	public class StatsCategoryWeaponAccessoryData : 
 		StatsCategoryGuidData
 	{
-		public static void Deserialize(StatsCategoryWeaponAccessoryData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

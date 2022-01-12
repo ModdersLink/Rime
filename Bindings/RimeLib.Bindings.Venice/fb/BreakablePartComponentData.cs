@@ -29,13 +29,5 @@ namespace fb
 		[ContainerField(117), LayoutImmutable, Blittable]
 		public bool DestroyNearbyStaticEntities { get; set; }
 
-		public static void Deserialize(BreakablePartComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.HealthPercentage = p_Reader.ReadUInt32();
-			p_Instance.Collapsable = p_Reader.ReadBool();
-			p_Instance.DestroyNearbyStaticEntities = p_Reader.ReadBool();
-			p_Reader.Seek(10, SeekOrigin.Current);
-		}
-
 	}
 }

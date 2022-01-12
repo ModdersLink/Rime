@@ -77,48 +77,5 @@ namespace fb
 		[ContainerField(228), LayoutImmutable, Blittable]
 		public bool Enable { get; set; }
 
-		public static void Deserialize(SkyEffectState p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Reader.Seek(8, SeekOrigin.Current);
-			fb.Vec3.Deserialize(p_Instance.CloudLayerSunColor, p_Reader, p_Parser);
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.PanoramicTileFactor = p_Reader.ReadSingle();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.SunSize = p_Reader.ReadSingle();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.SkyGradientScale = p_Reader.ReadSingle();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.SunScale = p_Reader.ReadSingle();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.PanoramicUVMinX = p_Reader.ReadSingle();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.SkyGradientTexture.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.PanoramicUVMinY = p_Reader.ReadSingle();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.PanoramicUVMaxY = p_Reader.ReadSingle();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.PanoramicUVMaxX = p_Reader.ReadSingle();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.PanoramicRotation = p_Reader.ReadSingle();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.PanoramicTexture.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.PanoramicAlphaTexture.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.WindDirection = p_Reader.ReadSingle();
-			p_Reader.Seek(8, SeekOrigin.Current);
-			p_Instance.CloudLayerMaskTexture.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Reader.Seek(16, SeekOrigin.Current);
-			fb.SkyCloudLayer.Deserialize(p_Instance.CloudLayer1, p_Reader, p_Parser);
-			p_Reader.Seek(16, SeekOrigin.Current);
-			fb.SkyCloudLayer.Deserialize(p_Instance.CloudLayer2, p_Reader, p_Parser);
-			p_Reader.Seek(16, SeekOrigin.Current);
-			p_Instance.StaticEnvmapTexture.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Reader.Seek(16, SeekOrigin.Current);
-			p_Instance.Enable = p_Reader.ReadBool();
-			p_Reader.Seek(27, SeekOrigin.Current);
-		}
-
 	}
 }

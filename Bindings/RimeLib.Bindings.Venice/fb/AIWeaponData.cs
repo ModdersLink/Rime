@@ -149,52 +149,5 @@ namespace fb
 		[ContainerField(155), LayoutImmutable, Blittable]
 		public bool IsAiAllowed { get; set; }
 
-		public static void Deserialize(AIWeaponData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.Strengths.Deserialize(p_Instance.Strengths, p_Reader, p_Parser);
-			p_Instance.MaxBurstCoolDownTime = p_Reader.ReadSingle();
-			p_Instance.LostTargetBurstCoolDownModifier = p_Reader.ReadSingle();
-			p_Instance.FinalAccuracyPercentage = p_Reader.ReadSingle();
-			p_Instance.AimTransitionFireDelay = p_Reader.ReadSingle();
-			p_Instance.MinRange = p_Reader.ReadSingle();
-			p_Instance.MaxRange = p_Reader.ReadSingle();
-			p_Instance.OptimalRangePercentage = p_Reader.ReadSingle();
-			p_Instance.ReloadBehavior = (ReloadBehavior) p_Reader.ReadInt32();
-			p_Instance.MinExtraReloadTime = p_Reader.ReadSingle();
-			p_Instance.MaxExtraReloadTime = p_Reader.ReadSingle();
-			p_Instance.MinBurstCoolDownTime = p_Reader.ReadSingle();
-			p_Instance.AimAngularVelocity = p_Reader.ReadSingle();
-			p_Instance.InnerInaccurateDistance = p_Reader.ReadSingle();
-			p_Instance.AngleToTargetSnap = p_Reader.ReadSingle();
-			p_Instance.SweepDistance = p_Reader.ReadSingle();
-			p_Instance.SweepTime = p_Reader.ReadSingle();
-			p_Instance.WaitTimeBeforeFire = p_Reader.ReadSingle();
-			fb.BurstLimit.Deserialize(p_Instance.BurstLimitNear, p_Reader, p_Parser);
-			fb.BurstLimit.Deserialize(p_Instance.BurstLimitFar, p_Reader, p_Parser);
-			p_Instance.StartAccuracyPercentage = p_Reader.ReadSingle();
-			p_Instance.MinimumAccuracyBeforeFiring = p_Reader.ReadSingle();
-			p_Instance.OuterInaccurateDistance = p_Reader.ReadSingle();
-			p_Instance.AdditionalMinimumAccuracyAtMinRange = p_Reader.ReadSingle();
-			p_Instance.GravityModifier = p_Reader.ReadSingle();
-			p_Instance.SweepType = (SweepSelectionType) p_Reader.ReadInt32();
-			p_Instance.AimOrigin = (AimOrigin) p_Reader.ReadInt32();
-			p_Instance.UseZoom = p_Reader.ReadBool();
-			p_Instance.AllowedAgainstImmortals = p_Reader.ReadBool();
-			p_Instance.AimWhileReloading = p_Reader.ReadBool();
-			p_Instance.AimHighIndirectPath = p_Reader.ReadBool();
-			p_Instance.Indirect = p_Reader.ReadBool();
-			p_Instance.IsMelee = p_Reader.ReadBool();
-			p_Instance.SweepFirstAttack = p_Reader.ReadBool();
-			p_Instance.IsBlindFireAllowed = p_Reader.ReadBool();
-			p_Instance.CanAltAttack = p_Reader.ReadBool();
-			p_Instance.IsStandStill = p_Reader.ReadBool();
-			p_Instance.CanSuppress = p_Reader.ReadBool();
-			p_Instance.UseFromCover = p_Reader.ReadBool();
-			p_Instance.InaccuracyFollowsTarget = p_Reader.ReadBool();
-			p_Instance.UseInaccuracyAtCloseRange = p_Reader.ReadBool();
-			p_Instance.DisableWeaponSway = p_Reader.ReadBool();
-			p_Instance.IsAiAllowed = p_Reader.ReadBool();
-		}
-
 	}
 }

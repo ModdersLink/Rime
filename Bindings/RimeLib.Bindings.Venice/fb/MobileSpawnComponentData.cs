@@ -35,15 +35,5 @@ namespace fb
 		[ContainerField(112), LayoutImmutable, Blittable]
 		public bool EnterMobileSpawnPoint { get; set; }
 
-		public static void Deserialize(MobileSpawnComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.ParachuteSpawnRadiusMin = p_Reader.ReadSingle();
-			p_Instance.ParachuteSpawnDistance = p_Reader.ReadSingle();
-			p_Instance.NameSid = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.ParachuteSpawnRadiusMax = p_Reader.ReadSingle();
-			p_Instance.EnterMobileSpawnPoint = p_Reader.ReadBool();
-			p_Reader.Seek(15, SeekOrigin.Current);
-		}
-
 	}
 }

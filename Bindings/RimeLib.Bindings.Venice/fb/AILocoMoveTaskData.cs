@@ -40,16 +40,5 @@ namespace fb
 		[ContainerField(33), LayoutImmutable, Blittable]
 		public bool UseClientPosition { get; set; }
 		
-		public static void Deserialize(AILocoMoveTaskData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.Vec3.Deserialize(p_Instance.WantedPos, p_Reader, p_Parser);
-			p_Instance.WorldAngle = p_Reader.ReadSingle();
-			p_Instance.WaitTime = p_Reader.ReadSingle();
-			p_Instance.EnterPose = (AntPoseEnum) p_Reader.ReadInt32();
-			p_Instance.ExitPose = (AntPoseEnum) p_Reader.ReadInt32();
-			p_Instance.OverrideAngle = p_Reader.ReadBool();
-			p_Instance.UseClientPosition = p_Reader.ReadBool();
-			p_Reader.Seek(14, SeekOrigin.Current);
-		}
 	}
 }

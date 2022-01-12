@@ -26,11 +26,5 @@ namespace fb
 		[ContainerField(48)]
 		public OnlineEnvironmentConsoleUrl ConfigUrl { get; set; } = new();
 
-		public static void Deserialize(BlazeServerBackendData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.BlazeCreateGameParameters.Deserialize(p_Instance.CreateParameters, p_Reader, p_Parser);
-			fb.OnlineEnvironmentConsoleUrl.Deserialize(p_Instance.ConfigUrl, p_Reader, p_Parser);
-		}
-
 	}
 }

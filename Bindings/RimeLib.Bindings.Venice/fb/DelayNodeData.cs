@@ -38,16 +38,5 @@ namespace fb
 		[ContainerField(44)]
 		public SoundGraphPluginRef Plugin { get; set; } = new();
 
-		public static void Deserialize(DelayNodeData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AudioGraphNodePort.Deserialize(p_Instance.In, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.DelayTime, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.Feedback, p_Reader, p_Parser);
-			fb.AudioGraphNodePort.Deserialize(p_Instance.Out, p_Reader, p_Parser);
-			p_Instance.MaxDelayTime = p_Reader.ReadSingle();
-			fb.SoundGraphPluginRef.Deserialize(p_Instance.Plugin, p_Reader, p_Parser);
-			p_Reader.Seek(1, SeekOrigin.Current);
-		}
-
 	}
 }

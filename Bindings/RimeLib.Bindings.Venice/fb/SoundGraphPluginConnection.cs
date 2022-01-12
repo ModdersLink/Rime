@@ -31,22 +31,5 @@ namespace fb
 		[ContainerField(12), LayoutImmutable, Blittable]
 		public sbyte VoiceIndex { get; set; }
 		
-		public static void Deserialize(SoundGraphPluginConnection p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.ConnectionType = (SoundGraphPluginConnectionType) p_Reader.ReadInt32();
-			p_Instance.Parameters.Clear();
-			(RimeReader Reader, uint Count) s_Parameters = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_Parameters.Count; ++i)
-			{
-				var s_Value = new SoundGraphPluginConnectionParam();
-				fb.SoundGraphPluginConnectionParam.Deserialize(s_Value, s_Parameters.Reader, p_Parser);
-				p_Instance.Parameters.Add(s_Value);
-			}
-			
-			s_Parameters.Reader.Dispose();
-			p_Instance.Bus.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.VoiceIndex = p_Reader.ReadSByte();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
 	}
 }

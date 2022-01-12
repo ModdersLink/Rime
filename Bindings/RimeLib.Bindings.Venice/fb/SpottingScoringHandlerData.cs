@@ -20,9 +20,5 @@ namespace fb
 	public class SpottingScoringHandlerData : 
 		ScoringHandlerData
 	{
-		public static void Deserialize(SpottingScoringHandlerData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

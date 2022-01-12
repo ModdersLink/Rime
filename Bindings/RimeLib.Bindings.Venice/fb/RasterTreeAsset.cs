@@ -20,9 +20,5 @@ namespace fb
 	public class RasterTreeAsset : 
 		DataContainer
 	{
-		public static void Deserialize(RasterTreeAsset p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

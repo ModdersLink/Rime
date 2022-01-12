@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(100)]
 		public CtrRef<AwardStarNameData> StarTemplate { get; set; } = new();
 
-		public static void Deserialize(AwardStarData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.StarTemplate.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-		}
-
 	}
 }

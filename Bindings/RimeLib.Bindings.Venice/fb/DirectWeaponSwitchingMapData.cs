@@ -37,15 +37,5 @@ namespace fb
 		[ContainerField(17), LayoutImmutable, Blittable]
 		public bool FireAndSwitchBackToPrev { get; set; }
 		
-		public static void Deserialize(DirectWeaponSwitchingMapData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Action = (EntryInputActionEnum) p_Reader.ReadInt32();
-			p_Instance.ToWeapon = (WeaponSwitchingEnum) p_Reader.ReadInt32();
-			p_Instance.PreventMeleeRepeatTime = p_Reader.ReadSingle();
-			p_Instance.SwitchBackToPrevMaxTimePressed = p_Reader.ReadSingle();
-			p_Instance.UseQuickSwitch = p_Reader.ReadBool();
-			p_Instance.FireAndSwitchBackToPrev = p_Reader.ReadBool();
-			p_Reader.Seek(2, SeekOrigin.Current);
-		}
 	}
 }

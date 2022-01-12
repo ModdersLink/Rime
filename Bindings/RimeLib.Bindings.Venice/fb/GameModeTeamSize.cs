@@ -25,10 +25,5 @@ namespace fb
 		[ContainerField(4), LayoutImmutable, Blittable]
 		public uint SquadSize { get; set; }
 		
-		public static void Deserialize(GameModeTeamSize p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.PlayerCount = p_Reader.ReadUInt32();
-			p_Instance.SquadSize = p_Reader.ReadUInt32();
-		}
 	}
 }

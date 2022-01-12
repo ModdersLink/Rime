@@ -32,14 +32,5 @@ namespace fb
 		[ContainerField(105), LayoutImmutable, Blittable]
 		public bool InvertUnlockTest { get; set; }
 
-		public static void Deserialize(UnlockComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.UnlockAsset.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.UnlockDataKey = p_Reader.ReadUInt32();
-			p_Instance.UnlockableFromAllEntries = p_Reader.ReadBool();
-			p_Instance.InvertUnlockTest = p_Reader.ReadBool();
-			p_Reader.Seek(6, SeekOrigin.Current);
-		}
-
 	}
 }

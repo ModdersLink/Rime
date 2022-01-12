@@ -35,14 +35,5 @@ namespace fb
 		[ContainerField(24), LayoutImmutable, Blittable]
 		public float EnemySuppressionTimeout { get; set; }
 
-		public static void Deserialize(CTFScoringHandlerData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.MaxTeams = p_Reader.ReadInt32();
-			p_Instance.PickUpAssistRadius = p_Reader.ReadSingle();
-			p_Instance.CaptureAssistRadius = p_Reader.ReadSingle();
-			p_Instance.EnemyThreatRadius = p_Reader.ReadSingle();
-			p_Instance.EnemySuppressionTimeout = p_Reader.ReadSingle();
-		}
-
 	}
 }

@@ -32,14 +32,5 @@ namespace fb
 		[ContainerField(21), LayoutImmutable, Blittable]
 		public bool EditorGameViewEnable { get; set; }
 
-		public static void Deserialize(EntitySettings p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.OutOfEntityBusNetworkIdThreshold = p_Reader.ReadUInt32();
-			p_Instance.ExecutionMode = (ExecutionModeType) p_Reader.ReadInt32();
-			p_Instance.SpawnSubLevelsFromLogic = p_Reader.ReadBool();
-			p_Instance.EditorGameViewEnable = p_Reader.ReadBool();
-			p_Reader.Seek(2, SeekOrigin.Current);
-		}
-
 	}
 }

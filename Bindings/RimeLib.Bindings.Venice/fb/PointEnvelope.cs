@@ -23,19 +23,5 @@ namespace fb
 		[ContainerField(8)]
 		public List<PointEnvelopePoint> Points { get; set; } = new();
 
-		public static void Deserialize(PointEnvelope p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Points.Clear();
-			(RimeReader Reader, uint Count) s_Points = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_Points.Count; ++i)
-			{
-				var s_Value = new PointEnvelopePoint();
-				fb.PointEnvelopePoint.Deserialize(s_Value, s_Points.Reader, p_Parser);
-				p_Instance.Points.Add(s_Value);
-			}
-			
-			s_Points.Reader.Dispose();
-		}
-
 	}
 }

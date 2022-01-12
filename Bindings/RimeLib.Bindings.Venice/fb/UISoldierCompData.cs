@@ -62,24 +62,5 @@ namespace fb
 		[ContainerField(74), LayoutImmutable, Blittable]
 		public bool SpawnOnSquadLeaders { get; set; }
 
-		public static void Deserialize(UISoldierCompData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.CriticalHealthThreshold = p_Reader.ReadSingle();
-			p_Instance.HitShaderDamageMultiplier = p_Reader.ReadSingle();
-			p_Instance.HitShaderMinDamage = p_Reader.ReadSingle();
-			p_Instance.EKGLineThickness = p_Reader.ReadSingle();
-			p_Instance.ShockTraumaAbilityIndex = p_Reader.ReadInt32();
-			p_Instance.RangerPTProgramAbilityIndex = p_Reader.ReadInt32();
-			p_Instance.FocusAbilityIndex = p_Reader.ReadInt32();
-			p_Instance.EKGLineAlpha = p_Reader.ReadSingle();
-			p_Instance.HitShaderGradientDurationMultiplier = p_Reader.ReadSingle();
-			p_Instance.HitShaderMaxDamage = p_Reader.ReadSingle();
-			p_Instance.HitShaderIndicatorDurationMultiplier = p_Reader.ReadSingle();
-			p_Instance.UseVehicleTeamSpawn = p_Reader.ReadBool();
-			p_Instance.UseSquadSpawn = p_Reader.ReadBool();
-			p_Instance.SpawnOnSquadLeaders = p_Reader.ReadBool();
-			p_Reader.Seek(1, SeekOrigin.Current);
-		}
-
 	}
 }

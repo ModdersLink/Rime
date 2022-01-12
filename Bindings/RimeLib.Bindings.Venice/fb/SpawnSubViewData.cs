@@ -20,9 +20,5 @@ namespace fb
 	public class SpawnSubViewData : 
 		SubViewData
 	{
-		public static void Deserialize(SpawnSubViewData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

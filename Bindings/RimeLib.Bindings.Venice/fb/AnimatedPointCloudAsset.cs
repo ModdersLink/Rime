@@ -20,9 +20,5 @@ namespace fb
 	public class AnimatedPointCloudAsset : 
 		Asset
 	{
-		public static void Deserialize(AnimatedPointCloudAsset p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

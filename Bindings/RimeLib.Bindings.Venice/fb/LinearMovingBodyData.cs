@@ -29,13 +29,5 @@ namespace fb
 		[ContainerField(52)]
 		public EndPointData End { get; set; } = new();
 
-		public static void Deserialize(LinearMovingBodyData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.Vec3.Deserialize(p_Instance.Axis, p_Reader, p_Parser);
-			fb.EndPointData.Deserialize(p_Instance.Start, p_Reader, p_Parser);
-			fb.EndPointData.Deserialize(p_Instance.End, p_Reader, p_Parser);
-			p_Reader.Seek(8, SeekOrigin.Current);
-		}
-
 	}
 }

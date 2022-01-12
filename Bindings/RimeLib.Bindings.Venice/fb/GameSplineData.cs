@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(28)]
 		public GameSplineType SplineType { get; set; } = new();
 
-		public static void Deserialize(GameSplineData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.SplineType = (GameSplineType) p_Reader.ReadInt32();
-		}
-
 	}
 }

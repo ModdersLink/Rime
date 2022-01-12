@@ -20,9 +20,5 @@ namespace fb
 	public class SpatialReferenceObjectData : 
 		ReferenceObjectData
 	{
-		public static void Deserialize(SpatialReferenceObjectData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

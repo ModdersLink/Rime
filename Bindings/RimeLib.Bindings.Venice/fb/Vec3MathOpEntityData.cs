@@ -26,19 +26,5 @@ namespace fb
 		[ContainerField(16)]
 		public List<Vec3MathOp> Operators { get; set; } = new();
 
-		public static void Deserialize(Vec3MathOpEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Realm = (Realm) p_Reader.ReadInt32();
-			p_Instance.Operators.Clear();
-			(RimeReader Reader, uint Count) s_Operators = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_Operators.Count; ++i)
-			{
-				var s_Value = (Vec3MathOp) s_Operators.Reader.ReadInt32();
-				p_Instance.Operators.Add(s_Value);
-			}
-			
-			s_Operators.Reader.Dispose();
-		}
-
 	}
 }

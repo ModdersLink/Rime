@@ -56,34 +56,5 @@ namespace fb
 		[ContainerField(141), LayoutImmutable, Blittable]
 		public bool NoticeBullets { get; set; }
 
-		public static void Deserialize(SensingTemplateData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Reader.Seek(4, SeekOrigin.Current);
-			p_Instance.AwareForgetTime = p_Reader.ReadDouble();
-			p_Reader.Seek(4, SeekOrigin.Current);
-			p_Instance.LostForgetTime = p_Reader.ReadDouble();
-			p_Reader.Seek(4, SeekOrigin.Current);
-			p_Instance.TimeUntilUnseenIsLost = p_Reader.ReadDouble();
-			p_Reader.Seek(4, SeekOrigin.Current);
-			p_Instance.MaximumMergeDistance = p_Reader.ReadSingle();
-			p_Reader.Seek(4, SeekOrigin.Current);
-			p_Instance.MaximumAlertDistance = p_Reader.ReadSingle();
-			p_Reader.Seek(4, SeekOrigin.Current);
-			p_Instance.MaximumReadinessRaiseDistance = p_Reader.ReadSingle();
-			p_Reader.Seek(4, SeekOrigin.Current);
-			fb.SensingLimits.Deserialize(p_Instance.ReadyLimits, p_Reader, p_Parser);
-			p_Reader.Seek(4, SeekOrigin.Current);
-			fb.SensingLimits.Deserialize(p_Instance.RelaxedLimits, p_Reader, p_Parser);
-			p_Reader.Seek(4, SeekOrigin.Current);
-			p_Instance.DebugText = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Reader.Seek(4, SeekOrigin.Current);
-			fb.SensingLimits.Deserialize(p_Instance.CombatLimits, p_Reader, p_Parser);
-			p_Reader.Seek(4, SeekOrigin.Current);
-			p_Instance.UseSenseSharing = p_Reader.ReadBool();
-			p_Reader.Seek(4, SeekOrigin.Current);
-			p_Instance.NoticeBullets = p_Reader.ReadBool();
-			p_Reader.Seek(6, SeekOrigin.Current);
-		}
-
 	}
 }

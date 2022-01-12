@@ -20,9 +20,5 @@ namespace fb
 	public class LevelDescriptionComponent : 
 		DataContainer
 	{
-		public static void Deserialize(LevelDescriptionComponent p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

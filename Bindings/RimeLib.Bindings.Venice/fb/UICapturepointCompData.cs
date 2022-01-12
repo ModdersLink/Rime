@@ -20,9 +20,5 @@ namespace fb
 	public class UICapturepointCompData : 
 		UIComponentData
 	{
-		public static void Deserialize(UICapturepointCompData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable]
 		public Vec3 LocalForce { get; set; } = new();
 
-		public static void Deserialize(LocalForceData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.Vec3.Deserialize(p_Instance.LocalForce, p_Reader, p_Parser);
-		}
-
 	}
 }

@@ -35,14 +35,5 @@ namespace fb
 		[ContainerField(43), LayoutImmutable, Blittable]
 		public bool RememberStateOnStreamOut { get; set; }
 
-		public static void Deserialize(SubWorldData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.RegistryContainer.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.IsWin32SubLevel = p_Reader.ReadBool();
-			p_Instance.IsXenonSubLevel = p_Reader.ReadBool();
-			p_Instance.IsPs3SubLevel = p_Reader.ReadBool();
-			p_Instance.RememberStateOnStreamOut = p_Reader.ReadBool();
-		}
-
 	}
 }

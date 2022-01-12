@@ -38,15 +38,5 @@ namespace fb
 		[ContainerField(28), LayoutImmutable, Blittable]
 		public float WeaponZoomedOffsetZ { get; set; }
 
-		public static void Deserialize(WeaponOffsetData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.WeaponOffsetX = p_Reader.ReadSingle();
-			p_Instance.WeaponOffsetY = p_Reader.ReadSingle();
-			p_Instance.WeaponOffsetZ = p_Reader.ReadSingle();
-			p_Instance.WeaponZoomedOffsetX = p_Reader.ReadSingle();
-			p_Instance.WeaponZoomedOffsetY = p_Reader.ReadSingle();
-			p_Instance.WeaponZoomedOffsetZ = p_Reader.ReadSingle();
-		}
-
 	}
 }

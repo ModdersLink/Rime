@@ -20,9 +20,5 @@ namespace fb
 	public class UICoopEndOfRoundCompData : 
 		UIComponentData
 	{
-		public static void Deserialize(UICoopEndOfRoundCompData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

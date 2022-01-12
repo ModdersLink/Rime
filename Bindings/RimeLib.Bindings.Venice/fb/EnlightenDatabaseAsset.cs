@@ -38,33 +38,5 @@ namespace fb
 		[ContainerField(32)]
 		public List<EnlightenLightProbeSet> LightProbeSets { get; set; } = new();
 
-		public static void Deserialize(EnlightenDatabaseAsset p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.DataVersion = p_Reader.ReadUInt32();
-			p_Instance.DebugMeshDataVersion = p_Reader.ReadUInt32();
-			p_Instance.OutputSizeX = p_Reader.ReadUInt32();
-			p_Instance.OutputSizeY = p_Reader.ReadUInt32();
-			p_Instance.Systems.Clear();
-			(RimeReader Reader, uint Count) s_Systems = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_Systems.Count; ++i)
-			{
-				var s_Value = new EnlightenDbSystem();
-				fb.EnlightenDbSystem.Deserialize(s_Value, s_Systems.Reader, p_Parser);
-				p_Instance.Systems.Add(s_Value);
-			}
-			
-			s_Systems.Reader.Dispose();
-			p_Instance.LightProbeSets.Clear();
-			(RimeReader Reader, uint Count) s_LightProbeSets = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_LightProbeSets.Count; ++i)
-			{
-				var s_Value = new EnlightenLightProbeSet();
-				fb.EnlightenLightProbeSet.Deserialize(s_Value, s_LightProbeSets.Reader, p_Parser);
-				p_Instance.LightProbeSets.Add(s_Value);
-			}
-			
-			s_LightProbeSets.Reader.Dispose();
-		}
-
 	}
 }

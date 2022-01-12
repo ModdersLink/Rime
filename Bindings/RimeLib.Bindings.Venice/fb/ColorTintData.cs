@@ -31,13 +31,5 @@ namespace fb
 		[ContainerField(48), LayoutImmutable, Blittable]
 		public float Hue { get; set; }
 		
-		public static void Deserialize(ColorTintData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.Vec3.Deserialize(p_Instance.Contrast, p_Reader, p_Parser);
-			fb.Vec3.Deserialize(p_Instance.Brightness, p_Reader, p_Parser);
-			fb.Vec3.Deserialize(p_Instance.Saturation, p_Reader, p_Parser);
-			p_Instance.Hue = p_Reader.ReadSingle();
-			p_Reader.Seek(12, SeekOrigin.Current);
-		}
 	}
 }

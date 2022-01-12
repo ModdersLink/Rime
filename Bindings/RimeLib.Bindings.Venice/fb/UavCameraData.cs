@@ -59,50 +59,5 @@ namespace fb
 		[ContainerField(232), LayoutImmutable, Blittable]
 		public float UpWeightDistance { get; set; }
 
-		public static void Deserialize(UavCameraData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.ViewDistance = p_Reader.ReadSingle();
-			p_Instance.ViewDistanceCurve.Clear();
-			(RimeReader Reader, uint Count) s_ViewDistanceCurve = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_ViewDistanceCurve.Count; ++i)
-			{
-				var s_Value = new CameraSineCurveData();
-				fb.CameraSineCurveData.Deserialize(s_Value, s_ViewDistanceCurve.Reader, p_Parser);
-				p_Instance.ViewDistanceCurve.Add(s_Value);
-			}
-			
-			s_ViewDistanceCurve.Reader.Dispose();
-			p_Instance.ViewAngle = p_Reader.ReadSingle();
-			p_Instance.ViewAngleCurve.Clear();
-			(RimeReader Reader, uint Count) s_ViewAngleCurve = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_ViewAngleCurve.Count; ++i)
-			{
-				var s_Value = new CameraSineCurveData();
-				fb.CameraSineCurveData.Deserialize(s_Value, s_ViewAngleCurve.Reader, p_Parser);
-				p_Instance.ViewAngleCurve.Add(s_Value);
-			}
-			
-			s_ViewAngleCurve.Reader.Dispose();
-			p_Instance.RotationSpeed = p_Reader.ReadSingle();
-			p_Instance.RotationSpeedCurve.Clear();
-			(RimeReader Reader, uint Count) s_RotationSpeedCurve = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_RotationSpeedCurve.Count; ++i)
-			{
-				var s_Value = new CameraSineCurveData();
-				fb.CameraSineCurveData.Deserialize(s_Value, s_RotationSpeedCurve.Reader, p_Parser);
-				p_Instance.RotationSpeedCurve.Add(s_Value);
-			}
-			
-			s_RotationSpeedCurve.Reader.Dispose();
-			p_Instance.ZoomFov = p_Reader.ReadSingle();
-			p_Instance.ZoomDelay = p_Reader.ReadSingle();
-			p_Instance.ZoomTransitionTime = p_Reader.ReadSingle();
-			p_Instance.Fov = p_Reader.ReadSingle();
-			fb.UavCameraPointData.Deserialize(p_Instance.FocusPoint, p_Reader, p_Parser);
-			fb.UavCameraPointData.Deserialize(p_Instance.CenterPoint, p_Reader, p_Parser);
-			p_Instance.UpWeightDistance = p_Reader.ReadSingle();
-			p_Reader.Seek(4, SeekOrigin.Current);
-		}
-
 	}
 }

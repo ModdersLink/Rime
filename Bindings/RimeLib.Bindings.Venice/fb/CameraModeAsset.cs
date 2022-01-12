@@ -20,9 +20,5 @@ namespace fb
 	public class CameraModeAsset : 
 		Asset
 	{
-		public static void Deserialize(CameraModeAsset p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

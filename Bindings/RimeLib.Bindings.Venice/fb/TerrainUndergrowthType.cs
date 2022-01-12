@@ -20,9 +20,5 @@ namespace fb
 	public class TerrainUndergrowthType : 
 		DataContainer
 	{
-		public static void Deserialize(TerrainUndergrowthType p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

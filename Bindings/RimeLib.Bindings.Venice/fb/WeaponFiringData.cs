@@ -68,26 +68,5 @@ namespace fb
 		[ContainerField(61), LayoutImmutable, Blittable]
 		public bool AbortReloadOnSprint { get; set; }
 
-		public static void Deserialize(WeaponFiringData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.PrimaryFire.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.DeployTime = p_Reader.ReadSingle();
-			p_Instance.ReactivateCooldownTime = p_Reader.ReadSingle();
-			p_Instance.DisableZoomOnDeployTime = p_Reader.ReadSingle();
-			p_Instance.AltDeployTime = p_Reader.ReadSingle();
-			p_Instance.AltDeployId = p_Reader.ReadInt32();
-			p_Instance.WeaponSway.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.SupportDelayProne = p_Reader.ReadSingle();
-			p_Instance.SupportDelayStand = p_Reader.ReadSingle();
-			fb.RumbleFiringData.Deserialize(p_Instance.Rumble, p_Reader, p_Parser);
-			p_Instance.InflictSelfDamage = p_Reader.ReadBool();
-			p_Instance.UseAutoAiming = p_Reader.ReadBool();
-			p_Instance.ShowEnemyNametagOnAim = p_Reader.ReadBool();
-			p_Instance.ReloadWholeMags = p_Reader.ReadBool();
-			p_Instance.DisableReloadWhileSprinting = p_Reader.ReadBool();
-			p_Instance.AbortReloadOnSprint = p_Reader.ReadBool();
-			p_Reader.Seek(2, SeekOrigin.Current);
-		}
-
 	}
 }

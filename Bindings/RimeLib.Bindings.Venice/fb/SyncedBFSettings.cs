@@ -59,22 +59,5 @@ namespace fb
 		[ContainerField(27), LayoutImmutable, Blittable]
 		public bool AllUnlocksUnlocked { get; set; }
 
-		public static void Deserialize(SyncedBFSettings p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.GameModeCounterModifier = p_Reader.ReadSingle();
-			p_Instance.UnlicensedUnlocksUnlocked = p_Reader.ReadBool();
-			p_Instance.NoMinimap = p_Reader.ReadBool();
-			p_Instance.NoHud = p_Reader.ReadBool();
-			p_Instance.NoMinimapSpotting = p_Reader.ReadBool();
-			p_Instance.No3dSpotting = p_Reader.ReadBool();
-			p_Instance.NoNameTag = p_Reader.ReadBool();
-			p_Instance.OnlySquadLeaderSpawn = p_Reader.ReadBool();
-			p_Instance.TeamSwitchingAllowed = p_Reader.ReadBool();
-			p_Instance.MemoryDefragUI = p_Reader.ReadBool();
-			p_Instance.MemoryGarbageCollectHavok = p_Reader.ReadBool();
-			p_Instance.MemoryDefragGlobal = p_Reader.ReadBool();
-			p_Instance.AllUnlocksUnlocked = p_Reader.ReadBool();
-		}
-
 	}
 }

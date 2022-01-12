@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(8)]
 		public AimingConstraintsData SwimmingConstraints { get; set; } = new();
 
-		public static void Deserialize(SoldierAimingConstraintsData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AimingConstraintsData.Deserialize(p_Instance.SwimmingConstraints, p_Reader, p_Parser);
-		}
-
 	}
 }

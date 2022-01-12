@@ -49,19 +49,5 @@ namespace fb
 		[ContainerField(48), LayoutImmutable, Blittable]
 		public bool UseRenderTarget { get; set; }
 		
-		public static void Deserialize(SubScreenData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.Vec3.Deserialize(p_Instance.ScreenPosition, p_Reader, p_Parser);
-			p_Instance.ProjectionAngleY = p_Reader.ReadSingle();
-			p_Instance.ProjectionAngleZ = p_Reader.ReadSingle();
-			p_Instance.ProjectionAngleX = p_Reader.ReadSingle();
-			p_Instance.ScreenSize = p_Reader.ReadSingle();
-			p_Instance.IconSize = p_Reader.ReadSingle();
-			p_Instance.ScaleIconSizeByDepthStrength = p_Reader.ReadSingle();
-			p_Instance.RenderTargetApectRatio = p_Reader.ReadSingle();
-			p_Instance.RenderTargetIndex = p_Reader.ReadInt32();
-			p_Instance.UseRenderTarget = p_Reader.ReadBool();
-			p_Reader.Seek(15, SeekOrigin.Current);
-		}
 	}
 }

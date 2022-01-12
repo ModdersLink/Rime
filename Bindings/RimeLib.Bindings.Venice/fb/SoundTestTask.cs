@@ -32,13 +32,5 @@ namespace fb
 		[ContainerField(20), LayoutImmutable, Blittable]
 		public uint Repetitions { get; set; }
 
-		public static void Deserialize(SoundTestTask p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Spec.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.Param.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.StartTime = p_Reader.ReadSingle();
-			p_Instance.Repetitions = p_Reader.ReadUInt32();
-		}
-
 	}
 }

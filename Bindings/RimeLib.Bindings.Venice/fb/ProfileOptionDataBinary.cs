@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(20), LayoutImmutable, Blittable]
 		public int MaxLength { get; set; }
 
-		public static void Deserialize(ProfileOptionDataBinary p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.MaxLength = p_Reader.ReadInt32();
-		}
-
 	}
 }

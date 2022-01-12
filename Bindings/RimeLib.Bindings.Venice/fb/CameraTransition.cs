@@ -20,9 +20,5 @@ namespace fb
 	public class CameraTransition : 
 		DataContainer
 	{
-		public static void Deserialize(CameraTransition p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

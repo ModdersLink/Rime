@@ -65,25 +65,5 @@ namespace fb
 		[ContainerField(62), LayoutImmutable, Blittable]
 		public bool MatchmakeImmediately { get; set; }
 
-		public static void Deserialize(OnlineSettings p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Backend = (BackendType) p_Reader.ReadInt32();
-			p_Instance.PeerBackend = (BackendType) p_Reader.ReadInt32();
-			p_Instance.Environment = (OnlineEnvironment) p_Reader.ReadInt32();
-			p_Instance.MatchmakingToken = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Provider.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.RichPresence.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.ChatSettings.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.MatchmakingOptions = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Region = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.NegativeUserCacheRefreshPeriod = p_Reader.ReadUInt32();
-			p_Instance.MatchmakingMode = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Country = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.IsSecure = p_Reader.ReadBool();
-			p_Instance.SupportHostMigration = p_Reader.ReadBool();
-			p_Instance.MatchmakeImmediately = p_Reader.ReadBool();
-			p_Reader.Seek(1, SeekOrigin.Current);
-		}
-
 	}
 }

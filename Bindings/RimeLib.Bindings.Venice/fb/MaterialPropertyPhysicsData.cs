@@ -32,13 +32,5 @@ namespace fb
 		[ContainerField(20), LayoutImmutable, Blittable]
 		public float Resistance { get; set; }
 
-		public static void Deserialize(MaterialPropertyPhysicsData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.DynamicFrictionModifier = p_Reader.ReadSingle();
-			p_Instance.StaticFrictionModifier = p_Reader.ReadSingle();
-			p_Instance.RestitutionModifier = p_Reader.ReadSingle();
-			p_Instance.Resistance = p_Reader.ReadSingle();
-		}
-
 	}
 }

@@ -29,21 +29,5 @@ namespace fb
 		[ContainerField(32)]
 		public List<BasicUnlockInfo> UnlocksInfo { get; set; } = new();
 
-		public static void Deserialize(StatsCategoryWeaponData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.SoldierWeaponId = p_Reader.ReadUInt32();
-			p_Instance.AccessoryUnlockGates.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.UnlocksInfo.Clear();
-			(RimeReader Reader, uint Count) s_UnlocksInfo = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_UnlocksInfo.Count; ++i)
-			{
-				var s_Value = new BasicUnlockInfo();
-				fb.BasicUnlockInfo.Deserialize(s_Value, s_UnlocksInfo.Reader, p_Parser);
-				p_Instance.UnlocksInfo.Add(s_Value);
-			}
-			
-			s_UnlocksInfo.Reader.Dispose();
-		}
-
 	}
 }

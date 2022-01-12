@@ -67,42 +67,5 @@ namespace fb
 		[ContainerField(188), LayoutImmutable, Blittable]
 		public bool TerrainSystem { get; set; }
 		
-		public static void Deserialize(EnlightenDbSystem p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AxisAlignedBox.Deserialize(p_Instance.BoundingBox, p_Reader, p_Parser);
-			p_Instance.AtlasStartX = p_Reader.ReadUInt32();
-			p_Instance.AtlasStartY = p_Reader.ReadUInt32();
-			p_Instance.OutputWidth = p_Reader.ReadUInt32();
-			p_Instance.OutputHeight = p_Reader.ReadUInt32();
-			p_Instance.PixelCount = p_Reader.ReadUInt32();
-			p_Instance.PixelSize = p_Reader.ReadSingle();
-			p_Instance.SystemId = p_Reader.ReadInt32();
-			p_Instance.Instances.Clear();
-			(RimeReader Reader, uint Count) s_Instances = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_Instances.Count; ++i)
-			{
-				var s_Value = new EnlightenDbInstance();
-				fb.EnlightenDbInstance.Deserialize(s_Value, s_Instances.Reader, p_Parser);
-				p_Instance.Instances.Add(s_Value);
-			}
-			
-			s_Instances.Reader.Dispose();
-			p_Instance.InputSystems.Clear();
-			(RimeReader Reader, uint Count) s_InputSystems = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_InputSystems.Count; ++i)
-			{
-				var s_Value = s_InputSystems.Reader.ReadInt32();
-				p_Instance.InputSystems.Add(s_Value);
-			}
-			
-			s_InputSystems.Reader.Dispose();
-			fb.PrecomputeCache.Deserialize(p_Instance.SystemCache, p_Reader, p_Parser);
-			fb.PrecomputeCache.Deserialize(p_Instance.ClusteringCache, p_Reader, p_Parser);
-			fb.PrecomputeCache.Deserialize(p_Instance.PreClusteringCache, p_Reader, p_Parser);
-			fb.PrecomputeCache.Deserialize(p_Instance.LightTransportCache, p_Reader, p_Parser);
-			fb.PrecomputeCache.Deserialize(p_Instance.VisibilityCache, p_Reader, p_Parser);
-			p_Instance.TerrainSystem = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
 	}
 }

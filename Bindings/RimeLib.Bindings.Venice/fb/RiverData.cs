@@ -20,9 +20,5 @@ namespace fb
 	public class RiverData : 
 		RibbonData
 	{
-		public static void Deserialize(RiverData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

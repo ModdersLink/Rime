@@ -28,11 +28,5 @@ namespace fb
 		[ContainerField(16), LayoutImmutable]
 		public string TextureName { get; set; } = string.Empty;
 		
-		public static void Deserialize(EmitterTextureAtlasInfo p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.Vec2.Deserialize(p_Instance.MinUv, p_Reader, p_Parser);
-			fb.Vec2.Deserialize(p_Instance.MaxUv, p_Reader, p_Parser);
-			p_Instance.TextureName = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-		}
 	}
 }

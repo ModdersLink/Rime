@@ -22,9 +22,5 @@ namespace fb
 		[ContainerField(0)]
 		public AntRef AnimationControlled { get; set; } = new();
 		
-		public static void Deserialize(MovementComponentBinding p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.AntRef.Deserialize(p_Instance.AnimationControlled, p_Reader, p_Parser);
-		}
 	}
 }

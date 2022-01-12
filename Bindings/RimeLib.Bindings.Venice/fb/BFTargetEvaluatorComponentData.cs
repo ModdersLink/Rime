@@ -23,11 +23,5 @@ namespace fb
 		[ContainerField(112)]
 		public CtrRef<TargetEvaluationConstantData> Settings { get; set; } = new();
 
-		public static void Deserialize(BFTargetEvaluatorComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Settings.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Reader.Seek(12, SeekOrigin.Current);
-		}
-
 	}
 }

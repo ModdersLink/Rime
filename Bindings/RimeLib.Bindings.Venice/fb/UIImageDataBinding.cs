@@ -32,14 +32,5 @@ namespace fb
 		[ContainerField(44), LayoutImmutable, Blittable]
 		public bool Visible { get; set; }
 
-		public static void Deserialize(UIImageDataBinding p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.StaticImageUrl = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			fb.UIDataSourceInfo.Deserialize(p_Instance.ImageData, p_Reader, p_Parser);
-			fb.UIDataSourceInfo.Deserialize(p_Instance.Visibility, p_Reader, p_Parser);
-			p_Instance.Visible = p_Reader.ReadBool();
-			p_Reader.Seek(3, SeekOrigin.Current);
-		}
-
 	}
 }

@@ -26,11 +26,5 @@ namespace fb
 		[ContainerField(24)]
 		public ReadinessState MinimumReadiness { get; set; } = new();
 
-		public static void Deserialize(OrderReadiness p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.OrderType = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.MinimumReadiness = (ReadinessState) p_Reader.ReadInt32();
-		}
-
 	}
 }

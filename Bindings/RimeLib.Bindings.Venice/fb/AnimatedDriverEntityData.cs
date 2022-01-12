@@ -53,21 +53,5 @@ namespace fb
 		[ContainerField(256), LayoutImmutable, Blittable]
 		public bool DelayAnimationWheelTransform { get; set; }
 
-		public static void Deserialize(AnimatedDriverEntityData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.LinearTransform.Deserialize(p_Instance.InputTransform, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.VehicleBoost, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.VehicleSpeed, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.VehicleMovementState, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.VehicleClutch, p_Reader, p_Parser);
-			fb.AntRef.Deserialize(p_Instance.VehicleBrake, p_Reader, p_Parser);
-			p_Instance.MovementStateStandThreshold = p_Reader.ReadSingle();
-			fb.NormalizeSettings.Deserialize(p_Instance.Yaw, p_Reader, p_Parser);
-			fb.NormalizeSettings.Deserialize(p_Instance.Roll, p_Reader, p_Parser);
-			fb.NormalizeSettings.Deserialize(p_Instance.Pitch, p_Reader, p_Parser);
-			p_Instance.DelayAnimationWheelTransform = p_Reader.ReadBool();
-			p_Reader.Seek(15, SeekOrigin.Current);
-		}
-
 	}
 }

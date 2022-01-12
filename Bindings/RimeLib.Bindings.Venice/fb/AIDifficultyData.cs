@@ -41,16 +41,5 @@ namespace fb
 		[ContainerField(32), LayoutImmutable, Blittable]
 		public float ReadinessReactionTimeMultiplier { get; set; }
 
-		public static void Deserialize(AIDifficultyData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Name = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.AccuracyIncreaseTimeModifier = p_Reader.ReadSingle();
-			p_Instance.StartAccuracyModifierStanding = p_Reader.ReadSingle();
-			p_Instance.StartAccuracyModifierCrouching = p_Reader.ReadSingle();
-			p_Instance.FinalAccuracyModifierStanding = p_Reader.ReadSingle();
-			p_Instance.FinalAccuracyModifierCrouching = p_Reader.ReadSingle();
-			p_Instance.ReadinessReactionTimeMultiplier = p_Reader.ReadSingle();
-		}
-
 	}
 }

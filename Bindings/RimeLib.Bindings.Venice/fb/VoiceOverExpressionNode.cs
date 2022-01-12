@@ -20,9 +20,5 @@ namespace fb
 	public class VoiceOverExpressionNode : 
 		VoiceOverNode
 	{
-		public static void Deserialize(VoiceOverExpressionNode p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

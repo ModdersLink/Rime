@@ -20,9 +20,5 @@ namespace fb
 	public class UpdateOrientationData : 
 		ProcessorData
 	{
-		public static void Deserialize(UpdateOrientationData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

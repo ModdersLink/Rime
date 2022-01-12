@@ -37,22 +37,5 @@ namespace fb
 		[ContainerField(20), LayoutImmutable]
 		public string MinFitThreshold { get; set; } = string.Empty;
 		
-		public static void Deserialize(MatchmakingSizeConfiguration p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Platform = (MatchmakingPlatform) p_Reader.ReadInt32();
-			p_Instance.Settings.Clear();
-			(RimeReader Reader, uint Count) s_Settings = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_Settings.Count; ++i)
-			{
-				var s_Value = p_Parser.GetStringAtOffset(s_Settings.Reader.ReadUInt32());
-				p_Instance.Settings.Add(s_Value);
-			}
-			
-			s_Settings.Reader.Dispose();
-			p_Instance.DesiredPlayerCount = p_Reader.ReadUInt32();
-			p_Instance.MinPlayerCount = p_Reader.ReadUInt32();
-			p_Instance.MaxPlayerCapacity = p_Reader.ReadUInt32();
-			p_Instance.MinFitThreshold = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-		}
 	}
 }

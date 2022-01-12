@@ -26,11 +26,5 @@ namespace fb
 		[ContainerField(44), LayoutImmutable, Blittable]
 		public uint ListCapacity { get; set; }
 
-		public static void Deserialize(PresenceServerBrowserServiceData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.MatchmakingCriteria.Deserialize(p_Instance.FilterCriterias, p_Reader, p_Parser);
-			p_Instance.ListCapacity = p_Reader.ReadUInt32();
-		}
-
 	}
 }

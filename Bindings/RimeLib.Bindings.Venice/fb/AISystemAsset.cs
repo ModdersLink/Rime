@@ -29,12 +29,5 @@ namespace fb
 		[ContainerField(20)]
 		public CtrRef<AISettingsData> Settings { get; set; } = new();
 
-		public static void Deserialize(AISystemAsset p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Behaviours.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.Orders.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.Settings.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-		}
-
 	}
 }

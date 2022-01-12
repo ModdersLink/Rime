@@ -46,18 +46,5 @@ namespace fb
 		[ContainerField(38), LayoutImmutable, Blittable]
 		public bool FLIREnabled { get; set; }
 		
-		public static void Deserialize(RegularCameraViewData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.Vec3.Deserialize(p_Instance.MeshOffset, p_Reader, p_Parser);
-			fb.InputSuppressionData.Deserialize(p_Instance.InputSuppression, p_Reader, p_Parser);
-			p_Instance.FieldOfView = p_Reader.ReadSingle();
-			p_Instance.Mesh.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.ScreenExposureAreaScale = p_Reader.ReadSingle();
-			p_Instance.MaskMeshBlueprint.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.LockMeshToRenderView = p_Reader.ReadBool();
-			p_Instance.AllowFieldOfViewScaling = p_Reader.ReadBool();
-			p_Instance.FLIREnabled = p_Reader.ReadBool();
-			p_Reader.Seek(9, SeekOrigin.Current);
-		}
 	}
 }

@@ -20,9 +20,5 @@ namespace fb
 	public class CharacterAsset : 
 		CharacterBlueprint
 	{
-		public static void Deserialize(CharacterAsset p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

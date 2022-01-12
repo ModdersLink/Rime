@@ -25,19 +25,5 @@ namespace fb
 		[ContainerField(4)]
 		public List<UIMinimapIconTextureState> States { get; set; } = new();
 		
-		public static void Deserialize(UIMinimapIconTexture p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.IconType = (UIHudIcon) p_Reader.ReadInt32();
-			p_Instance.States.Clear();
-			(RimeReader Reader, uint Count) s_States = p_Parser.GetArrayReaderAndElementCount(p_Reader.ReadUInt32());
-			for (uint i = 0; i < s_States.Count; ++i)
-			{
-				var s_Value = new UIMinimapIconTextureState();
-				fb.UIMinimapIconTextureState.Deserialize(s_Value, s_States.Reader, p_Parser);
-				p_Instance.States.Add(s_Value);
-			}
-			
-			s_States.Reader.Dispose();
-		}
 	}
 }

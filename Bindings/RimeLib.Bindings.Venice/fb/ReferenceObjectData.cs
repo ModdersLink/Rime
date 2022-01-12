@@ -38,22 +38,5 @@ namespace fb
 		[ContainerField(93), LayoutImmutable, Blittable]
 		public bool Excluded { get; set; }
 
-		public static void Deserialize(ReferenceObjectData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Reader.Seek(4, SeekOrigin.Current);
-			fb.LinearTransform.Deserialize(p_Instance.BlueprintTransform, p_Reader, p_Parser);
-			p_Reader.Seek(4, SeekOrigin.Current);
-			p_Instance.Blueprint.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Reader.Seek(4, SeekOrigin.Current);
-			p_Instance.ObjectVariation.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Reader.Seek(4, SeekOrigin.Current);
-			p_Instance.StreamRealm = (StreamRealm) p_Reader.ReadInt32();
-			p_Reader.Seek(4, SeekOrigin.Current);
-			p_Instance.CastSunShadowEnable = p_Reader.ReadBool();
-			p_Reader.Seek(4, SeekOrigin.Current);
-			p_Instance.Excluded = p_Reader.ReadBool();
-			p_Reader.Seek(6, SeekOrigin.Current);
-		}
-
 	}
 }

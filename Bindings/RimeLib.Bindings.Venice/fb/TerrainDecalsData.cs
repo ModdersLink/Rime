@@ -20,9 +20,5 @@ namespace fb
 	public class TerrainDecalsData : 
 		Asset
 	{
-		public static void Deserialize(TerrainDecalsData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

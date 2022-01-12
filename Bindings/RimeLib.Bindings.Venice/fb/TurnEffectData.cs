@@ -43,16 +43,5 @@ namespace fb
 		[ContainerField(28), LayoutImmutable, Blittable]
 		public float EndTime { get; set; }
 		
-		public static void Deserialize(TurnEffectData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.MaxRollAngle = p_Reader.ReadSingle();
-			p_Instance.MaxPitchAngle = p_Reader.ReadSingle();
-			p_Instance.YawVelocityThreshhold = p_Reader.ReadSingle();
-			p_Instance.VelocityThreshhold = p_Reader.ReadSingle();
-			p_Instance.SafeTime = p_Reader.ReadSingle();
-			p_Instance.BeginTime = p_Reader.ReadSingle();
-			p_Instance.HoldTime = p_Reader.ReadSingle();
-			p_Instance.EndTime = p_Reader.ReadSingle();
-		}
 	}
 }

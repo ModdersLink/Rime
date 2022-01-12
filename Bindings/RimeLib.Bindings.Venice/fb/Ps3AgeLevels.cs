@@ -31,12 +31,5 @@ namespace fb
 		[ContainerField(12), LayoutImmutable, Blittable]
 		public int AgeLevel10 { get; set; }
 		
-		public static void Deserialize(Ps3AgeLevels p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.AgeLevel7 = p_Reader.ReadInt32();
-			p_Instance.AgeLevel8 = p_Reader.ReadInt32();
-			p_Instance.AgeLevel9 = p_Reader.ReadInt32();
-			p_Instance.AgeLevel10 = p_Reader.ReadInt32();
-		}
 	}
 }

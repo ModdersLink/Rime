@@ -53,21 +53,5 @@ namespace fb
 		[ContainerField(138), LayoutImmutable, Blittable]
 		public bool CriticalDamage { get; set; }
 
-		public static void Deserialize(RotorComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.RotorModelData.Deserialize(p_Instance.LowRpmModel, p_Reader, p_Parser);
-			fb.RotorModelData.Deserialize(p_Instance.HighRpmModel, p_Reader, p_Parser);
-			p_Instance.RotationAxis = (RotationAxis) p_Reader.ReadInt32();
-			p_Instance.RotationMultiplier = p_Reader.ReadSingle();
-			p_Instance.ChangeModelRpm = p_Reader.ReadSingle();
-			p_Instance.BlowEffect.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.TriggerGroundEffectHeight = p_Reader.ReadSingle();
-			p_Instance.CriticallyDamagedRotationForce = p_Reader.ReadSingle();
-			p_Instance.OnlyTriggerBlowEffectInWater = p_Reader.ReadBool();
-			p_Instance.GroundEffectOnTerrainOnly = p_Reader.ReadBool();
-			p_Instance.CriticalDamage = p_Reader.ReadBool();
-			p_Reader.Seek(5, SeekOrigin.Current);
-		}
-
 	}
 }

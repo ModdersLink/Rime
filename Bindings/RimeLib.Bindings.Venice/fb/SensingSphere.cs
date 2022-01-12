@@ -25,11 +25,5 @@ namespace fb
 		[ContainerField(16), LayoutImmutable, Blittable]
 		public float RadiusSqr { get; set; }
 		
-		public static void Deserialize(SensingSphere p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.Vec3.Deserialize(p_Instance.Position, p_Reader, p_Parser);
-			p_Instance.RadiusSqr = p_Reader.ReadSingle();
-			p_Reader.Seek(12, SeekOrigin.Current);
-		}
 	}
 }

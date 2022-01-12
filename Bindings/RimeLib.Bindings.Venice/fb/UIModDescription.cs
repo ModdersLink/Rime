@@ -32,13 +32,5 @@ namespace fb
 		[ContainerField(28), LayoutImmutable]
 		public string Desc { get; set; } = string.Empty;
 
-		public static void Deserialize(UIModDescription p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Identifier = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.ShortName = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.FullName = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-			p_Instance.Desc = p_Parser.GetStringAtOffset(p_Reader.ReadUInt32());
-		}
-
 	}
 }

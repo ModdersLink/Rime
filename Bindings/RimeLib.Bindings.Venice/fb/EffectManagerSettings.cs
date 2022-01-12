@@ -29,12 +29,5 @@ namespace fb
 		[ContainerField(20), LayoutImmutable, Blittable]
 		public uint EffectQuality { get; set; }
 
-		public static void Deserialize(EffectManagerSettings p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.MaxNewEffectsPerFrameCount = p_Reader.ReadUInt32();
-			p_Instance.SizeToGrowNewEffectsContainer = p_Reader.ReadUInt32();
-			p_Instance.EffectQuality = p_Reader.ReadUInt32();
-		}
-
 	}
 }

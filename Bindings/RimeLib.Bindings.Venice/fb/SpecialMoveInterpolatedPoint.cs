@@ -25,11 +25,5 @@ namespace fb
 		[ContainerField(16), LayoutImmutable, Blittable]
 		public float Time { get; set; }
 		
-		public static void Deserialize(SpecialMoveInterpolatedPoint p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.Vec3.Deserialize(p_Instance.Value, p_Reader, p_Parser);
-			p_Instance.Time = p_Reader.ReadSingle();
-			p_Reader.Seek(12, SeekOrigin.Current);
-		}
 	}
 }

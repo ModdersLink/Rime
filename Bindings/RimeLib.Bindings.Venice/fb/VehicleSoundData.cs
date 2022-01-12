@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(8)]
 		public CtrRef<SoundAsset> BulletImpact { get; set; } = new();
 
-		public static void Deserialize(VehicleSoundData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.BulletImpact.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-		}
-
 	}
 }

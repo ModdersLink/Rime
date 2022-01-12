@@ -23,11 +23,5 @@ namespace fb
 		[ContainerField(96)]
 		public Realm Realm { get; set; } = new();
 
-		public static void Deserialize(LocatorComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Realm = (Realm) p_Reader.ReadInt32();
-			p_Reader.Seek(12, SeekOrigin.Current);
-		}
-
 	}
 }

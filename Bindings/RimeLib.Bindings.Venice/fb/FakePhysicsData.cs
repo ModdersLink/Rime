@@ -44,17 +44,5 @@ namespace fb
 		[ContainerField(36), LayoutImmutable, Blittable]
 		public float Mass { get; set; }
 
-		public static void Deserialize(FakePhysicsData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.ChildFakePhysics.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.StartSpeed = p_Reader.ReadSingle();
-			p_Instance.GravityModifier = p_Reader.ReadSingle();
-			p_Instance.StartDampening = p_Reader.ReadSingle();
-			p_Instance.EndDampening = p_Reader.ReadSingle();
-			p_Instance.MinSpeed = p_Reader.ReadSingle();
-			p_Instance.MaxSpeed = p_Reader.ReadSingle();
-			p_Instance.Mass = p_Reader.ReadSingle();
-		}
-
 	}
 }

@@ -35,14 +35,5 @@ namespace fb
 		[ContainerField(32), LayoutImmutable, Blittable]
 		public GUID PerformanceLink { get; set; }
 
-		public static void Deserialize(NetworkPerformanceEvent p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Received = p_Reader.ReadUInt32();
-			p_Instance.Sent = p_Reader.ReadUInt32();
-			p_Instance.ReceivedAverage = p_Reader.ReadSingle();
-			p_Instance.SentAverage = p_Reader.ReadSingle();
-			p_Instance.PerformanceLink = new GUID(p_Reader);
-		}
-
 	}
 }

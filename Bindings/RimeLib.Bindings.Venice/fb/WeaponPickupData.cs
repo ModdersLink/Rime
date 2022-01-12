@@ -37,14 +37,5 @@ namespace fb
 		[ContainerField(20), LayoutImmutable, Blittable]
 		public uint MaxAmmo { get; set; }
 		
-		public static void Deserialize(WeaponPickupData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Weapon.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.WeaponSlot = p_Reader.ReadUInt32();
-			p_Instance.AltWeaponSlot = p_Reader.ReadInt32();
-			p_Instance.LinkedToWeaponSlot = p_Reader.ReadInt32();
-			p_Instance.MinAmmo = p_Reader.ReadUInt32();
-			p_Instance.MaxAmmo = p_Reader.ReadUInt32();
-		}
 	}
 }

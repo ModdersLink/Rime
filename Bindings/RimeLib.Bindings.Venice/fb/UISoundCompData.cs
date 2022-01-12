@@ -20,9 +20,5 @@ namespace fb
 	public class UISoundCompData : 
 		UIComponentData
 	{
-		public static void Deserialize(UISoundCompData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

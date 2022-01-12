@@ -23,11 +23,5 @@ namespace fb
 		[ContainerField(48)]
 		public PackagingDetailLevel Detail { get; set; } = new();
 
-		public static void Deserialize(CellDetailSelectionRule p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Detail = (PackagingDetailLevel) p_Reader.ReadInt32();
-			p_Reader.Seek(12, SeekOrigin.Current);
-		}
-
 	}
 }

@@ -20,9 +20,5 @@ namespace fb
 	public class FrontEndComponentData : 
 		UIComponentData
 	{
-		public static void Deserialize(FrontEndComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-		}
-
 	}
 }

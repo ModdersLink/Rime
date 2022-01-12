@@ -26,12 +26,5 @@ namespace fb
 		[ContainerField(228), LayoutImmutable, Blittable]
 		public float SuppressionBlurSizeMultiplier { get; set; }
 
-		public static void Deserialize(VeniceFPSCameraData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.SuppressionBlurAmountMultiplier = p_Reader.ReadSingle();
-			p_Instance.SuppressionBlurSizeMultiplier = p_Reader.ReadSingle();
-			p_Reader.Seek(8, SeekOrigin.Current);
-		}
-
 	}
 }

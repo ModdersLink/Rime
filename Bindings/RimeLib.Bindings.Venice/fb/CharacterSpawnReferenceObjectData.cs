@@ -50,20 +50,5 @@ namespace fb
 		[ContainerField(408), LayoutImmutable, Blittable]
 		public bool IgnoreVehicleIcon { get; set; }
 
-		public static void Deserialize(CharacterSpawnReferenceObjectData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.PlayerType = (PlayerSpawnType) p_Reader.ReadInt32();
-			p_Instance.VehicleEntryIndex = p_Reader.ReadUInt32();
-			p_Instance.Template.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.HumanTargetPreference = p_Reader.ReadSingle();
-			p_Instance.MinimapIcon = (UIHudIcon) p_Reader.ReadInt32();
-			p_Instance.AllowFallbackOnNextAvailabeVehicleEntry = p_Reader.ReadBool();
-			p_Instance.CheckMaxPlayersInVehicle = p_Reader.ReadBool();
-			p_Instance.AffectMinimapPosition = p_Reader.ReadBool();
-			p_Instance.IsTarget = p_Reader.ReadBool();
-			p_Instance.IgnoreVehicleIcon = p_Reader.ReadBool();
-			p_Reader.Seek(7, SeekOrigin.Current);
-		}
-
 	}
 }

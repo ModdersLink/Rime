@@ -22,9 +22,5 @@ namespace fb
 		[ContainerField(0)]
 		public MatchmakingCreateGameParameters Base { get; set; } = new();
 		
-		public static void Deserialize(BlazeCreateGameParameters p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.MatchmakingCreateGameParameters.Deserialize(p_Instance.Base, p_Reader, p_Parser);
-		}
 	}
 }

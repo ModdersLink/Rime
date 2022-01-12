@@ -41,17 +41,5 @@ namespace fb
 		[ContainerField(130), LayoutImmutable, Blittable]
 		public bool Enable { get; set; }
 
-		public static void Deserialize(FilmGrainComponentData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			fb.Vec3.Deserialize(p_Instance.ColorScale, p_Reader, p_Parser);
-			fb.Vec2.Deserialize(p_Instance.TextureScale, p_Reader, p_Parser);
-			p_Instance.Realm = (Realm) p_Reader.ReadInt32();
-			p_Instance.Texture.SetValue(p_Parser.GetImportAtIndex(p_Reader.ReadUInt32()));
-			p_Instance.LinearFilteringEnable = p_Reader.ReadBool();
-			p_Instance.RandomEnable = p_Reader.ReadBool();
-			p_Instance.Enable = p_Reader.ReadBool();
-			p_Reader.Seek(13, SeekOrigin.Current);
-		}
-
 	}
 }

@@ -23,10 +23,5 @@ namespace fb
 		[ContainerField(8), LayoutImmutable, Blittable]
 		public int Id { get; set; }
 
-		public static void Deserialize(PropertyRecordingData p_Instance, RimeReader p_Reader, IEbxParser p_Parser)
-		{
-			p_Instance.Id = p_Reader.ReadInt32();
-		}
-
 	}
 }
