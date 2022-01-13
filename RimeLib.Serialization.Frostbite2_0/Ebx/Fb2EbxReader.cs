@@ -1,5 +1,4 @@
-﻿using RimeLib.Extensions;
-using RimeLib.Frostbite.Core;
+﻿using RimeLib.Frostbite.Core;
 using RimeLib.IO;
 using RimeLib.IO.Conversion;
 using RimeLib.Serialization.Attributes;
@@ -8,18 +7,13 @@ using RimeLib.Utils;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Text;
-using TypeCategory = RimeLib.Frostbite.Core.TypeCategory;
 
 namespace RimeLib.Serialization.Frostbite2_0.Ebx
 {
-    /// <summary>
-    /// Frostbite 2 ebx reader
-    /// </summary>
-    public class Fb2EbxReader : IEbxParser
+    public class Fb2EbxReader
     {
         private StreamingPartitionHeader m_Header;
         private RimeReader m_Reader;
@@ -30,8 +24,7 @@ namespace RimeLib.Serialization.Frostbite2_0.Ebx
         private List<TypeDescriptor> m_TypeDescriptors;
         private List<InstanceEntry> m_InstanceEntries;
         private List<ArrayEntry> m_ArrayEntries;
-        private List<GUID> m_InstanceGuiDs;
-        private IList m_PopulatingArray;
+        private List<GUID> m_InternalInstanceGuids;
 
         /// <summary>
         /// Parses a partition with specified name and opened reader to the position of the ebx data
@@ -43,35 +36,26 @@ namespace RimeLib.Serialization.Frostbite2_0.Ebx
         {
             if (p_Reader == null)
                 throw new InvalidDataException("Data is invalid for ebx.");
-
-            m_PopulatingArray = null;
             
             var s_Magic = p_Reader.ReadBytes(4);
             p_Reader.Seek(-4, SeekOrigin.Current);
 
-            if (LittleEndian(s_Magic))
+            if (IsLittleEndian(s_Magic))
                 m_Reader = new RimeReader(p_Reader, Endianness.LittleEndian);
-            else if (BigEndian(s_Magic))
+            else if (IsBigEndian(s_Magic))
                 m_Reader = new RimeReader(p_Reader, Endianness.BigEndian);
             else
                 throw new Exception("The supplied file has an invalid magic header.");
 
             ProcessHeader();
         }
-
-
-        /// <summary>
-        /// If needed, skip alignment-based padded bytes.
-        /// </summary>
+        
         private void ProcessPadding()
         {
             while (m_Reader.Position % 16 != 0)
                 m_Reader.Seek(1, SeekOrigin.Current);
         }
-
-        /// <summary>
-        /// Parse the header of the provided file.
-        /// </summary>
+        
         private void ProcessHeader()
         {
             m_Header = new StreamingPartitionHeader(m_Reader);
@@ -79,10 +63,7 @@ namespace RimeLib.Serialization.Frostbite2_0.Ebx
             // Advance state
             ProcessMetadata();
         }
-
-        /// <summary>
-        /// Parse the metadata of the provided file.
-        /// </summary>
+        
         private void ProcessMetadata()
         {
             // Parse imports.
@@ -122,32 +103,38 @@ namespace RimeLib.Serialization.Frostbite2_0.Ebx
             for (var i = 0; i < m_Header.ArrayCount; ++i)
                 m_ArrayEntries.Add(new ArrayEntry(m_Reader));
 
-            /*Debug.WriteLine($"Strings: {m_HashedTypeStrings.Count}");
-            Debug.WriteLine($"Imports: {m_ImportEntries.Count}");
-            Debug.WriteLine($"Fields: {m_FieldDescriptors.Count}");
-            Debug.WriteLine($"Types: {m_TypeDescriptors.Count}");
-            Debug.WriteLine($"Instances: {m_InstanceEntries.Count}");
-            Debug.WriteLine($"Arrays: {m_ArrayEntries.Count}");
-
-            foreach (var s_Descriptor in m_TypeDescriptors)
-                Debug.WriteLine($"Type '{s_Descriptor.Name} (sz: {s_Descriptor.Size}, al: {s_Descriptor.Alignment}) Flags: 0x{s_Descriptor.Flags.FlagBits:X04}");
-
-            foreach (var s_Descriptor in m_FieldDescriptors)
-                Debug.WriteLine($"Field '{s_Descriptor.Name} (+{s_Descriptor.Offset}) Flags: 0x{s_Descriptor.Flags.FlagBits:X04}");*/
-
             ProcessPadding();
-
-            // Advance state
-            ProcessPayloads();
+            ProcessInstanceGuids();
         }
 
-        /// <summary>
-        /// Process the payload data of the provided file and parse all the Instances, their Types, and their Fields.
-        /// </summary>
+        private void ProcessInstanceGuids()
+        {
+            m_InternalInstanceGuids = new List<GUID>();
+
+            m_Reader.Seek((int)(m_Header.MetaSize + m_Header.StringTableSize), SeekOrigin.Begin);
+
+            // Here we go and read only the instance guids, since we will need those for internal instance references (CtrRef).
+            foreach (var s_Entry in m_InstanceEntries)
+            {
+                if (s_Entry.InternalCount > 0)
+                    throw new Exception("Unhandled Internal Data for Instance Entry.");
+
+                var s_Descriptor = m_TypeDescriptors[(int)s_Entry.TypeDescriptorIndex];
+
+                for (var i = 0; i < s_Entry.ExportCount; ++i)
+                {
+                    var s_Guid = new GUID(m_Reader);
+                    m_InternalInstanceGuids.Add(s_Guid);
+                    m_Reader.Seek(s_Descriptor.Size, SeekOrigin.Current);
+
+                }
+            }
+
+            ProcessPayloads();
+        }
+        
         private void ProcessPayloads()
         {
-            m_InstanceGuiDs = new List<GUID>();
-
             m_Reader.Seek((int)(m_Header.MetaSize + m_Header.StringTableSize), SeekOrigin.Begin);
 
             foreach (var s_Entry in m_InstanceEntries)
@@ -159,83 +146,30 @@ namespace RimeLib.Serialization.Frostbite2_0.Ebx
                 var s_ContainerType = Type.GetType($"fb.{s_Descriptor.Name}, RimeLib.Bindings.Venice");
 
                 if (s_ContainerType == null)
-                    Console.WriteLine($"Failed to find container of type '{s_Descriptor.Name}'.");
+                    throw new Exception($"Could not find container of type {s_Descriptor.Name}.");
 
                 for (var i = 0; i < s_Entry.ExportCount; ++i)
                 {
                     var s_Guid = new GUID(m_Reader);
-                    m_InstanceGuiDs.Add(s_Guid);
 
-                    Console.WriteLine($"Parsing {s_ContainerType} with GUID {s_Guid}.");
+                    //Console.WriteLine($"Parsing {s_ContainerType} with GUID {s_Guid}.");
 
                     var s_ContainerAttribute = s_ContainerType.GetCustomAttribute<ContainerTypeAttribute>();
 
                     if (s_ContainerAttribute.AlignedSize != s_Descriptor.Size ||
                         s_ContainerAttribute.DataAlignment != s_Descriptor.Alignment)
                     {
-                        Console.WriteLine($"Expected size of {s_ContainerType} of {s_ContainerAttribute.AlignedSize} bytes does not match in-file size of {s_Descriptor.Size} bytes. Probably means the game was updated but the data was not.");
+                        //Console.WriteLine($"Expected size of {s_ContainerType} of {s_ContainerAttribute.AlignedSize} bytes does not match in-file size of {s_Descriptor.Size} bytes. Probably means the game was updated but the data was not.");
                     }
 
                     var s_Instance = Activator.CreateInstance(s_ContainerType);
-                    /*var s_DeserializeMethod = s_ContainerType.GetMethod("Deserialize", BindingFlags.Public | BindingFlags.Static);
-                    
-                    using (var s_LimitedReader = new LimitedRimeReader(m_Reader, s_ContainerAttribute.AlignedSize, false))
-                        s_DeserializeMethod.Invoke(null, new [] { s_Instance, s_LimitedReader, this });
 
-                    
-                    if (s_BytesLeftToRead != 0)
-                    {
-                        Console.WriteLine($"Finished reading type with {s_BytesLeftToRead} bytes left to read.");
-                        m_Reader.Seek(s_BytesLeftToRead, SeekOrigin.Current);
-                    }*/
-
-                    using (var s_LimitedReader = new LimitedRimeReader(m_Reader, s_Descriptor.Size, false))
-                        ParseTypeInstance(s_LimitedReader, s_Descriptor, s_Instance, s_ContainerType);
-
-                    //m_Reader.Seek(s_Descriptor.Size, SeekOrigin.Current);
-
-                    /*// Create our container used for binding.
-                    if (s_ContainerType != null)
-                    {
-                        m_CurrentContainer = (FrostbiteContainer)Activator.CreateInstance(s_ContainerType);
-                        ((DataContainer)m_CurrentContainer).InstanceGuid = s_Guid;
-                        ((DataContainer)m_CurrentContainer).PartitionGuid = m_Header.PartitionGuid;
-                    }
-                    else
-                    {
-                        m_CurrentContainer = new DataContainer()
-                        {
-                            ContainerAlignment = s_Descriptor.Alignment,
-                            ContainerFlags = s_Descriptor.Flags.FlagBits,
-                            ContainerTypeName = s_Descriptor.Name,
-                            InstanceGuid = s_Guid,
-                            PartitionGuid = m_Header.PartitionGuid
-                        };
-
-                    }
-
-                    m_Instances.Add(new Instance { Id = s_Guid, Type = ParseTypeInstance(s_Guid, s_Entry.TypeDescriptorIndex) });
-
-                    // Add our fully parsed container to the list of parsed containers.
-                    m_ParsingPartition.AddInstance((DataContainer)m_CurrentContainer, s_Guid == m_Header.PrimaryInstanceGuid);
-                    m_CurrentContainer = null;*/
+                    using var s_LimitedReader = new LimitedRimeReader(m_Reader, s_Descriptor.Size, false);
+                    ParseTypeInstance(s_LimitedReader, s_Descriptor, s_Instance, s_ContainerType);
                 }
             }
-
-            ProcessReferences();
         }
-
-        private void ProcessReferences()
-        {
-            
-        }
-
-        /// <summary>
-        /// Parse a TypeInstance using previously parsed metadata.
-        /// </summary>
-        /// <param name="p_InstanceGuid">Parent Instance Id.</param>
-        /// <param name="p_DescriptorIndex">TypeDescriptor metadata Index.</param>
-        /// <returns></returns>
+        
         private void ParseTypeInstance(RimeReader p_Reader, TypeDescriptor p_Descriptor, object p_Instance, Type p_InstanceType)
         {
             var s_StartPosition = p_Reader.Position;
@@ -258,7 +192,7 @@ namespace RimeLib.Serialization.Frostbite2_0.Ebx
 
                 if (s_PropertyType == null)
                 {
-                    Console.WriteLine($"Type {p_InstanceType.Name} has field {s_FieldDescriptor.Name} in data that no longer exists.");
+                    //Console.WriteLine($"Type {p_InstanceType.Name} has field {s_FieldDescriptor.Name} in data that no longer exists.");
                     continue;
                 }
 
@@ -275,636 +209,161 @@ namespace RimeLib.Serialization.Frostbite2_0.Ebx
                     case FieldType.ValueType:
                         var s_StructDescriptor = m_TypeDescriptors[s_FieldDescriptor.FieldType];
                         var s_StructType = Type.GetType($"fb.{s_StructDescriptor.Name}, RimeLib.Bindings.Venice");
+
+                        if (s_StructType == null)
+                            throw new Exception($"Could not find container of type {s_StructDescriptor.Name}.");
+
                         var s_Struct = Activator.CreateInstance(s_StructType);
 
                         using (var s_Reader = new LimitedRimeReader(p_Reader, s_StructDescriptor.Size, false))
                             ParseTypeInstance(s_Reader, s_StructDescriptor, s_Struct, s_StructType);
 
                         s_PropertyType.SetValue(p_Instance, s_Struct);
-
                         break;
-
                     case FieldType.Class:
                         var s_ImportIndex = p_Reader.ReadUInt32();
                         var s_CtrRef = s_PropertyType.GetValue(p_Instance) as CtrRefBase;
                         s_CtrRef.SetValue(GetImportAtIndex(s_ImportIndex));
                         break;
-
                     case FieldType.Array:
                         var s_ArrayIndex = p_Reader.ReadUInt32();
-
-                        var s_ArrayEntry = m_ArrayEntries[(int)s_ArrayIndex];
-                        var s_ArrayDescriptor = m_TypeDescriptors[(int)s_ArrayEntry.TypeDescriptorIndex];
-                        var s_ArrayElementFieldDescriptor = m_FieldDescriptors[(int)s_ArrayDescriptor.LayoutDescriptor];
-                        var s_ArrayElementDescriptor = m_TypeDescriptors[s_ArrayElementFieldDescriptor.FieldType];
-                        var s_CurrentOffset = m_Reader.Position;
-
-                        m_Reader.Seek((int)(m_Header.MetaSize + m_Header.StringTableSize + m_Header.ArrayOffset + s_ArrayEntry.Offset), SeekOrigin.Begin);
-
-                        //Console.WriteLine($"Array field {s_FieldDescriptor.Name} with type {s_ArrayElementDescriptor.Name}");
-                        
-                        if (s_ArrayElementFieldDescriptor.Flags.GetFieldType() == FieldType.Class)
-                        {
-                            var s_List = s_PropertyType.GetValue(p_Instance);
-                            var s_AddRef = s_List.GetType().GetMethod("AddRef");
-
-                            for (var j = 0; j < s_ArrayEntry.ElementCount; ++j)
-                            {
-                                var s_Ref = GetImportAtIndex(m_Reader.ReadUInt32());
-                                s_AddRef.Invoke(s_List, new[] { s_Ref });
-                            }
-                        }
-                        else if (s_ArrayElementFieldDescriptor.Flags.GetFieldType() == FieldType.ValueType)
-                        {
-                            var s_List = s_PropertyType.GetValue(p_Instance) as IList;
-                            var s_ArrayStructType = Type.GetType($"fb.{s_ArrayElementDescriptor.Name}, RimeLib.Bindings.Venice");
-
-                            for (var j = 0; j < s_ArrayEntry.ElementCount; ++j)
-                            {
-                                var s_ArrayStruct = Activator.CreateInstance(s_ArrayStructType);
-
-                                using (var s_ArrayStructReader = new LimitedRimeReader(m_Reader, s_ArrayElementDescriptor.Size, false))
-                                {
-                                    ParseTypeInstance(s_ArrayStructReader, s_ArrayElementDescriptor, s_ArrayStruct, s_ArrayStructType);
-                                }
-
-                                s_List.Add(s_ArrayStruct);
-                            }
-                        }
-                        else
-                        {
-                            var s_List = s_PropertyType.GetValue(p_Instance) as IList;
-
-                            // TODO
-                        }
-
-                        m_Reader.Seek(s_CurrentOffset, SeekOrigin.Begin);
-
-                        break;
-                    case FieldType.CString:
-                        var s_StringIndex = p_Reader.ReadUInt32();
+                        ParseArray((int) s_ArrayIndex, s_PropertyType, p_Instance);
                         break;
                     case FieldType.Enum:
-                        var s_EnumValue = p_Reader.ReadInt32();
-                        break;
-                    case FieldType.Boolean:
-                        s_PropertyType.SetValue(p_Instance, p_Reader.ReadBool());
-                        break;
-                    case FieldType.Int8:
-                        s_PropertyType.SetValue(p_Instance, p_Reader.ReadSByte());
-                        break;
-                    case FieldType.UInt8:
-                        s_PropertyType.SetValue(p_Instance, p_Reader.ReadUByte());
-                        break;
-                    case FieldType.Int16:
-                        s_PropertyType.SetValue(p_Instance, p_Reader.ReadInt16());
-                        break;
-                    case FieldType.UInt16:
-                        s_PropertyType.SetValue(p_Instance, p_Reader.ReadUInt16());
-                        break;
-                    case FieldType.Int32:
-                        s_PropertyType.SetValue(p_Instance, p_Reader.ReadInt32());
-                        break;
-                    case FieldType.UInt32:
-                        s_PropertyType.SetValue(p_Instance, p_Reader.ReadUInt32());
-                        break;
-                    case FieldType.Int64:
-                        s_PropertyType.SetValue(p_Instance, p_Reader.ReadInt64());
-                        break;
-                    case FieldType.UInt64:
-                        s_PropertyType.SetValue(p_Instance, p_Reader.ReadUInt64());
-                        break;
-                    case FieldType.Float32:
-                        s_PropertyType.SetValue(p_Instance, p_Reader.ReadSingle());
-                        break;
-                    case FieldType.Float64:
-                        s_PropertyType.SetValue(p_Instance, p_Reader.ReadDouble());
-                        break;
-                    case FieldType.Guid:
-                        s_PropertyType.SetValue(p_Instance, new GUID(p_Reader));
+                        var s_EnumValue = GetEnumForValue(m_Reader.ReadInt32(), m_TypeDescriptors[s_FieldDescriptor.FieldType], s_PropertyType.PropertyType);
+                        s_PropertyType.SetValue(p_Instance, s_EnumValue);
                         break;
                     default:
-                        throw new Exception("Unknown field type.");
+                        var s_Value = ParseSimpleType(p_Reader, s_FieldDescriptor.Flags.GetFieldType());
+                        s_PropertyType.SetValue(p_Instance, s_Value);
+                        break;
                 }
             }
 
             var s_BytesLeftToRead = p_Descriptor.Size - (p_Reader.Position - s_StartPosition);
-            //Console.Write($"Bytes left to read {s_BytesLeftToRead}");
             p_Reader.Seek(s_BytesLeftToRead, SeekOrigin.Current);
         }
 
-        /// <summary>
-        /// Parse a FieldInstance using previously parsed metadata.
-        /// </summary>
-        /// <param name="p_InstanceGuid">Parent Instance Id.</param>
-        /// <param name="p_DescriptorIndex">FieldDescriptor metadata Index.</param>
-        /// <param name="p_TypeInstance"></param>
-        /// <param name="p_ArrayType"></param>
-        /// <returns></returns>
-        /*private FieldInstance ParseFieldInstance(GUID p_InstanceGuid, uint p_DescriptorIndex, TypeInstance p_TypeInstance, Type p_ArrayType, object p_Instance)
+        private void ParseArray(int p_ArrayIndex, PropertyInfo p_PropertyType, object p_Instance)
         {
-            var s_Field = new FieldInstance()
+            var s_ArrayEntry = m_ArrayEntries[p_ArrayIndex];
+            var s_ArrayDescriptor = m_TypeDescriptors[(int)s_ArrayEntry.TypeDescriptorIndex];
+            var s_ArrayElementFieldDescriptor = m_FieldDescriptors[(int)s_ArrayDescriptor.LayoutDescriptor];
+            var s_ArrayElementDescriptor = m_TypeDescriptors[s_ArrayElementFieldDescriptor.FieldType];
+            var s_CurrentOffset = m_Reader.Position;
+
+            m_Reader.Seek((int)(m_Header.MetaSize + m_Header.StringTableSize + m_Header.ArrayOffset + s_ArrayEntry.Offset), SeekOrigin.Begin);
+
+            switch (s_ArrayElementFieldDescriptor.Flags.GetFieldType())
             {
-                Descriptor = m_FieldDescriptors[(int)p_DescriptorIndex],
-                Value = null
-            };
-
-
-
-            var s_StartOffsetField = m_Reader.BaseStream.Position;
-            //Debug.WriteLine("Parsing field '{0}' of type '{1:X04}' at offset {2} ({3}).", s_Field.Descriptor.Name, s_Field.Descriptor.Flags.FlagBits, s_Field.Descriptor.Offset, m_Reader.BaseStream.Position);
-
-            if (s_Field.Descriptor.Flags.GetFieldType() >= FieldType.FieldTypeCount)
-                throw new Exception($"Tried to parse field with unknown type '{(int)s_Field.Descriptor.Flags.GetFieldType()}'.");
-
-            switch (s_Field.Descriptor.Flags.GetFieldType())
-            {
-                case FieldType.Void:
-                    {
-                        // This is class inheritance.
-                        // This will never exist ever in a struct.
-                        // We don't need to bind anything here; everything will happen automagically™.
-                        s_Field.Value = ParseTypeInstance(p_InstanceGuid, s_Field.Descriptor.FieldType);
-                        break;
-                    }
-
-                case FieldType.ValueType:
-                    {
-                        // Create our struct type.
-                        var s_StructDescriptor = m_TypeDescriptors[s_Field.Descriptor.FieldType];
-                        var s_StructType = ContainerRegistry.GetContainerType(s_StructDescriptor.NameHash);
-
-                        if (s_StructType == null)
-                            Debug.WriteLine($"Failed to find value container of type '{s_StructDescriptor.Name}'.");
-
-                        var s_PreviouslyParsingContainer = m_CurrentContainer;
-
-                        var s_PreviouslyPopulatingArray = m_PopulatingArray;
-                        m_PopulatingArray = null;
-
-                        if (s_StructType != null)
-                        {
-                            m_CurrentContainer = (FrostbiteContainer)Activator.CreateInstance(s_StructType);
-                        }
-                        else
-                        {
-                            m_CurrentContainer = new FrostbiteContainer()
-                            {
-                                ContainerAlignment = s_StructDescriptor.Alignment,
-                                ContainerFlags = s_StructDescriptor.Flags.FlagBits,
-                                ContainerTypeName = s_StructDescriptor.Name
-                            };
-                        }
-
-                        s_Field.Value = ParseTypeInstance(p_InstanceGuid, s_Field.Descriptor.FieldType);
-
-                        // Bind our value type.
-                        s_PreviouslyPopulatingArray?.Add(m_CurrentContainer);
-                        s_PreviouslyParsingContainer?.Bind(s_Field.Descriptor, m_CurrentContainer);
-
-                        m_CurrentContainer = s_PreviouslyParsingContainer;
-                        m_PopulatingArray = s_PreviouslyPopulatingArray;
-                        break;
-                    }
-
-                case FieldType.Array:
-                    {
-                        var s_ArrayEntryIndex = m_Reader.ReadUInt32();
-                        var s_Entry = m_ArrayEntries[(int)s_ArrayEntryIndex];
-
-                        m_Reader.Seek((int)(m_Header.MetaSize + m_Header.StringTableSize + m_Header.ArrayOffset + s_Entry.Offset), SeekOrigin.Begin);
-
-                        if (s_Entry.ElementCount > 0)
-                        {
-                            var s_TypeInstance = new TypeInstance()
-                            {
-                                Descriptor = m_TypeDescriptors[(int)s_Entry.TypeDescriptorIndex],
-                                Fields = new List<FieldInstance>(),
-                                ArrayEntryIndex = s_ArrayEntryIndex
-                            };
-
-                            var s_LastPopulatingArray = m_PopulatingArray;
-                            var s_CreatedWithType = false;
-                            Type s_ArrayType = null;
-
-                            // If we have a container type we will get the specific array type from there.
-                            // If not, we will create a generic array based on limited typeinfo data.
-                            if (s_ContainerType != null)
-                            {
-                                var s_Property = s_ContainerType.GetProperty(s_Field.Descriptor.Name);
-
-                                if (s_Property != null)
-                                {
-                                    // Make sure this is a Container Field.
-                                    var s_Attr = s_Property.GetCustomAttribute<ContainerFieldAttribute>();
-
-                                    if (s_Attr != null)
-                                    {
-                                        // Make sure this is an array.
-                                        if (!typeof(IList).IsAssignableFrom(s_Property.PropertyType))
-                                            throw new Exception($"Tried parsing an EBX array ({s_Field.Descriptor.Name}) that doesn't match the bound data structure ({p_TypeInstance.Descriptor.Name}).");
-
-                                        s_CreatedWithType = true;
-                                        s_ArrayType = s_Property.PropertyType;
-                                    }
-                                }
-                            }
-
-                            if (!s_CreatedWithType)
-                            {
-                                var s_ArrayFieldDescriptor = m_FieldDescriptors[(int)s_TypeInstance.Descriptor.LayoutDescriptor];
-
-                                var s_NativeType = GetNativeType(s_ArrayFieldDescriptor);
-
-                                if (s_NativeType == null)
-                                {
-                                    var s_InternalTypeDescriptor = m_TypeDescriptors[s_ArrayFieldDescriptor.FieldType];
-                                    var s_ArrayFieldType =
-                                        ContainerRegistry.GetContainerType(s_InternalTypeDescriptor.NameHash);
-
-                                    if (s_ArrayFieldType == null)
-                                        Debug.WriteLine($"Failed to find array container of type '{s_InternalTypeDescriptor.Name}'.");
-
-                                    if (s_ArrayFieldDescriptor.Flags.GetFieldType() == FieldType.Enum)
-                                        s_ArrayFieldType = typeof(uint);
-
-                                    if (s_ArrayFieldDescriptor.Flags.GetFieldType() == FieldType.Class && s_ArrayFieldType == null)
-                                        s_ArrayFieldType = typeof(DataContainer);
-
-                                    if (s_ArrayFieldDescriptor.Flags.GetFieldType() == FieldType.ValueType &&
-                                        s_ArrayFieldType == null)
-                                        s_ArrayFieldType = typeof(FrostbiteContainer);
-
-                                    s_NativeType = s_ArrayFieldType;
-                                }
-
-                                s_ArrayType = s_ArrayFieldDescriptor.Flags.GetFieldType() == FieldType.Class
-                                    ? typeof(RefArray<>).MakeGenericType(s_NativeType)
-                                    : typeof(List<>).MakeGenericType(s_NativeType);
-                            }
-
-                            m_PopulatingArray = (IList)Activator.CreateInstance(s_ArrayType);
-
-                            var s_LastParsingContainer = m_CurrentContainer;
-                            m_CurrentContainer = null;
-
-                            for (var i = 0; i < s_Entry.ElementCount; ++i)
-                            {
-                                s_TypeInstance.Fields.Add(ParseFieldInstance(
-                                    p_InstanceGuid,
-                                    s_TypeInstance.Descriptor.LayoutDescriptor,
-                                    s_TypeInstance,
-                                    s_ArrayType
-                                ));
-                            }
-
-                            s_Field.Value = s_TypeInstance;
-
-                            s_LastPopulatingArray?.Add(m_PopulatingArray);
-                            s_LastParsingContainer?.Bind(s_Field.Descriptor, m_PopulatingArray);
-
-                            m_PopulatingArray = s_LastPopulatingArray;
-                            m_CurrentContainer = s_LastParsingContainer;
-                        }
-                        break;
-                    }
-
-                case FieldType.CString:
-                    {
-                        var s_StringOffset = m_Reader.ReadUInt32();
-
-                        break;
-                    }
-
-                case FieldType.Boolean:
-                    {
-                        s_Field.Value = m_Reader.ReadBool();
-
-                        m_PopulatingArray?.Add(s_Field.Value);
-                        m_CurrentContainer?.Bind(s_Field.Descriptor, s_Field.Value);
-                        break;
-                    }
-
-                case FieldType.Int8:
-                    {
-                        s_Field.Value = m_Reader.ReadSByte();
-
-                        m_PopulatingArray?.Add(s_Field.Value);
-                        m_CurrentContainer?.Bind(s_Field.Descriptor, s_Field.Value);
-                        break;
-                    }
-
-                case FieldType.UInt8:
-                    {
-                        s_Field.Value = m_Reader.ReadByte();
-
-                        m_PopulatingArray?.Add(s_Field.Value);
-                        m_CurrentContainer?.Bind(s_Field.Descriptor, s_Field.Value);
-                        break;
-                    }
-
-                case FieldType.Int16:
-                    {
-                        s_Field.Value = m_Reader.ReadInt16();
-
-                        m_PopulatingArray?.Add(s_Field.Value);
-                        m_CurrentContainer?.Bind(s_Field.Descriptor, s_Field.Value);
-                        break;
-                    }
-
-                case FieldType.UInt16:
-                    {
-                        s_Field.Value = m_Reader.ReadUInt16();
-
-                        m_PopulatingArray?.Add(s_Field.Value);
-                        m_CurrentContainer?.Bind(s_Field.Descriptor, s_Field.Value);
-                        break;
-                    }
-
-                case FieldType.Int32:
-                    {
-                        s_Field.Value = m_Reader.ReadInt32();
-
-                        m_PopulatingArray?.Add(s_Field.Value);
-                        m_CurrentContainer?.Bind(s_Field.Descriptor, s_Field.Value);
-                        break;
-                    }
-
-                case FieldType.UInt32:
-                    {
-                        s_Field.Value = m_Reader.ReadUInt32();
-
-                        m_PopulatingArray?.Add(s_Field.Value);
-                        m_CurrentContainer?.Bind(s_Field.Descriptor, s_Field.Value);
-                        break;
-                    }
-
-                case FieldType.Int64:
-                    {
-                        s_Field.Value = m_Reader.ReadInt16();
-
-                        m_PopulatingArray?.Add(s_Field.Value);
-                        m_CurrentContainer?.Bind(s_Field.Descriptor, s_Field.Value);
-                        break;
-                    }
-
-                case FieldType.UInt64:
-                    {
-                        s_Field.Value = m_Reader.ReadUInt64();
-
-                        m_PopulatingArray?.Add(s_Field.Value);
-                        m_CurrentContainer?.Bind(s_Field.Descriptor, s_Field.Value);
-                        break;
-                    }
-
-                case FieldType.Float32:
-                    {
-                        s_Field.Value = m_Reader.ReadSingle();
-
-                        m_PopulatingArray?.Add(s_Field.Value);
-                        m_CurrentContainer?.Bind(s_Field.Descriptor, s_Field.Value);
-                        break;
-                    }
-
-                case FieldType.Float64:
-                    {
-                        s_Field.Value = m_Reader.ReadDouble();
-
-                        m_PopulatingArray?.Add(s_Field.Value);
-                        m_CurrentContainer?.Bind(s_Field.Descriptor, s_Field.Value);
-                        break;
-                    }
-
-                case FieldType.Guid:
-                    {
-                        s_Field.Value = new GUID(m_Reader);
-
-                        m_PopulatingArray?.Add(s_Field.Value);
-                        m_CurrentContainer?.Bind(s_Field.Descriptor, s_Field.Value);
-                        break;
-                    }
-
-                case FieldType.Sha1:
-                    {
-                        s_Field.Value = new Sha1(m_Reader);
-
-                        m_PopulatingArray?.Add(s_Field.Value);
-                        m_CurrentContainer?.Bind(s_Field.Descriptor, s_Field.Value);
-                        break;
-                    }
-
-                case FieldType.Enum:
-                    {
-                        var s_CompareValue = m_Reader.ReadUInt32();
-
-                        var s_Descriptor = m_TypeDescriptors[s_Field.Descriptor.FieldType];
-
-                        if (!m_Enumerations.ContainsKey(s_Field.Descriptor.FieldType))
-                        {
-                            // Create a new Enumeration
-                            var s_Enumeration = new EnumInstance { Type = s_Field.Descriptor.FieldType };
-
-                            for (var i = s_Descriptor.LayoutDescriptor; i < (s_Descriptor.LayoutDescriptor + s_Descriptor.FieldCount); ++i)
-                                s_Enumeration.Values[m_FieldDescriptors[(int)i].Offset] = m_FieldDescriptors[(int)i].Name;
-
-                            m_Enumerations[s_Field.Descriptor.FieldType] = s_Enumeration;
-                        }
-
-                        s_Field.Value = new EnumValue()
-                        {
-                            Type = s_Field.Descriptor.FieldType,
-                            Value = s_CompareValue
-                        };
-
-                        var s_EnumType = ContainerRegistry.GetContainerType(s_Descriptor.NameHash);
-                        if (s_EnumType == null)
-                            break;
-                        
-                        if ((!s_EnumType?.IsEnum ?? false) && p_ArrayType != null)
-                            s_EnumType = p_ArrayType.GetGenericArguments()[0];
-
-                        if (!s_EnumType.IsEnum)
-                            s_EnumType = null;
-
-                        // If we have a bound enum type then cast it appropriately.
-                        if (s_EnumType != null)
-                        {
-                            var s_RealValue = Enum.ToObject(s_EnumType, s_CompareValue);
-
-                            m_PopulatingArray?.Add(s_RealValue);
-                            m_CurrentContainer?.Bind(s_Field.Descriptor, s_RealValue);
-                        }
-                        else
-                        {
-                            m_PopulatingArray?.Add(s_CompareValue);
-                            m_CurrentContainer?.Bind(s_Field.Descriptor, s_CompareValue);
-                        }
-
-                        break;
-                    }
-
                 case FieldType.Class:
+                {
+                    var s_List = p_PropertyType.GetValue(p_Instance);
+                    var s_AddRef = s_List.GetType().GetMethod("AddRef");
+
+                    for (var j = 0; j < s_ArrayEntry.ElementCount; ++j)
                     {
-                        // External (or internal) class reference
-                        var s_ImportIndex = m_Reader.ReadUInt32();
-
-                        var s_TypeDescriptor = m_TypeDescriptors[s_Field.Descriptor.FieldType];
-                        var s_FieldType = ContainerRegistry.GetContainerType(s_TypeDescriptor.NameHash);
-
-                        if (s_FieldType == null)
-                            Debug.WriteLine($"Failed to find container of type '{s_TypeDescriptor.Name}'.");
-
-                        CtrRefBase s_CtrRef = null;
-                        var s_CreatedWithType = false;
-
-                        // If we have a container type we will get the reference type from there.
-                        // If not, we will create a generic reference based on limited typeinfo data.
-                        if (s_ContainerType != null)
-                        {
-                            var s_Property = s_ContainerType.GetProperty(s_Field.Descriptor.Name);
-
-                            if (s_Property != null)
-                            {
-                                // Make sure this is a Container Field.
-                                var s_Attr = s_Property.GetCustomAttribute<ContainerFieldAttribute>();
-
-                                if (s_Attr != null)
-                                {
-                                    //typeof(CtrRef<>).IsAssignableFrom(s_Property.PropertyType);
-                                    // Make sure this is an array.
-                                    if (!typeof(CtrRef<>).IsGenericAssignableFrom(s_Property.PropertyType))
-                                    {
-                                        throw new Exception($"Tried parsing an EBX reference ({s_Field.Descriptor.Name}) that doesn't match the bound data structure ({p_TypeInstance.Descriptor.Name}).");
-                                    }
-
-                                    s_CreatedWithType = true;
-                                    s_CtrRef = (CtrRefBase)Activator.CreateInstance(s_Property.PropertyType);
-                                }
-                            }
-                        }
-                        else
-                        {
-                            if (p_ArrayType != null)
-                            {
-                                s_CreatedWithType = true;
-
-                                var s_RefType = p_ArrayType.GetGenericArguments()[0];
-                                s_CtrRef = (CtrRefBase)Activator.CreateInstance(typeof(CtrRef<>).MakeGenericType(s_RefType));
-                            }
-                        }
-
-                        if (!s_CreatedWithType)
-                        {
-                            s_CtrRef = s_FieldType != null
-                                ? (CtrRefBase)Activator.CreateInstance(typeof(CtrRef<>).MakeGenericType(s_FieldType))
-                                : new CtrRef<DataContainer>();
-                        }
-
-                        if ((s_ImportIndex & 0x80000000) != 0)
-                        {
-                            // External reference.
-                            s_ImportIndex &= 0x7FFFFFFF;
-
-                            var s_Import = m_ImportEntries[(int)s_ImportIndex];
-                            s_Field.Value = s_Import;
-
-                            s_CtrRef.SetValue(s_Import.PartitionGuid, s_Import.InstanceGuid);
-                        }
-                        else if (s_ImportIndex != 0)
-                        {
-                            if (s_ImportIndex > m_ParsingPartition.Instances.Count)
-                            {
-                                // Store for later resolution.
-                                s_CtrRef.ImportIndex = s_ImportIndex;
-                                m_LateResolveReferences.Add(s_CtrRef);
-                            }
-                            else
-                            {
-                                var s_Container = m_ParsingPartition.Instances[(int)(s_ImportIndex - 1)];
-                                s_CtrRef.SetValue(s_Container.PartitionGuid, s_Container.InstanceGuid);
-                            }
-                        }
-                        else
-                        {
-                            // We don't need to do anything here. This is a null pointer.
-                        }
-
-                        m_PopulatingArray?.Add(s_CtrRef);
-                        m_CurrentContainer?.Bind(s_Field.Descriptor, s_CtrRef);
-                        break;
+                        var s_Ref = GetImportAtIndex(m_Reader.ReadUInt32());
+                        s_AddRef.Invoke(s_List, new[] { s_Ref });
                     }
 
-                default:
+                    break;
+                }
+                case FieldType.ValueType:
+                {
+                    var s_List = p_PropertyType.GetValue(p_Instance) as IList;
+                    var s_ArrayStructType = Type.GetType($"fb.{s_ArrayElementDescriptor.Name}, RimeLib.Bindings.Venice");
+
+                    if (s_ArrayStructType == null)
+                        throw new Exception($"Could not find container of type {s_ArrayElementDescriptor.Name}.");
+
+                    for (var j = 0; j < s_ArrayEntry.ElementCount; ++j)
                     {
-                        Console.WriteLine("Unhandled FieldType: {0} ({1:X04})", s_Field.Descriptor.Flags.GetFieldType(), s_Field.Descriptor.Flags.FlagBits);
-                        break;
+                        var s_ArrayStruct = Activator.CreateInstance(s_ArrayStructType);
+
+                        using (var s_ArrayStructReader = new LimitedRimeReader(m_Reader, s_ArrayElementDescriptor.Size, false))
+                        {
+                            ParseTypeInstance(
+                                s_ArrayStructReader,
+                                s_ArrayElementDescriptor,
+                                s_ArrayStruct,
+                                s_ArrayStructType
+                            );
+                        }
+
+                        s_List.Add(s_ArrayStruct);
                     }
-            }
 
-            //Debug.WriteLine("Finished parsing field '{0}' of type '{1}' with size {2}.", s_Field.Descriptor.Name, s_Field.Descriptor.Flags.GetFieldType(), m_Reader.BaseStream.Position - s_StartOffsetField);
+                    break;
+                }
+                case FieldType.Enum:
+                {
+                    var s_List = p_PropertyType.GetValue(p_Instance) as IList;
+                    var s_Value = GetEnumForValue(m_Reader.ReadInt32(), s_ArrayElementDescriptor, p_PropertyType.PropertyType.GetGenericArguments()[0]);
+                    s_List.Add(s_Value);
 
-            return s_Field;
-        }*/
-
-        private static Type GetNativeType(FieldDescriptor p_Descriptor)
-        {
-            switch (p_Descriptor.Flags.GetFieldType())
-            {
+                    break;
+                }
                 case FieldType.Array:
-                    throw new Exception("Encountered array inside an array. Is this even supported?");
-                //return typeof(IList);
-                case FieldType.Boolean:
-                    return typeof(bool);
-                case FieldType.CString:
-                    return typeof(string);
-                case FieldType.Float32:
-                    return typeof(float);
-                case FieldType.Float64:
-                    return typeof(double);
-                case FieldType.Int8:
-                    return typeof(sbyte);
-                case FieldType.UInt8:
-                    return typeof(byte);
-                case FieldType.Int16:
-                    return typeof(short);
-                case FieldType.UInt16:
-                    return typeof(ushort);
-                case FieldType.Int32:
-                    return typeof(int);
-                case FieldType.UInt32:
-                    return typeof(uint);
-                case FieldType.Int64:
-                    return typeof(long);
-                case FieldType.UInt64:
-                    return typeof(ulong);
-                case FieldType.Guid:
-                    return typeof(GUID);
-                case FieldType.Sha1:
-                    return typeof(Sha1);
+                {
+                    throw new Exception("Found an array nested in another array. This is currently unsupported.");
+                }
                 default:
-                    return null;
+                {
+                    var s_List = p_PropertyType.GetValue(p_Instance) as IList;
+                    s_List.Add(ParseSimpleType(m_Reader, s_ArrayElementFieldDescriptor.Flags.GetFieldType()));
+
+                    break;
+                }
             }
+
+            m_Reader.Seek(s_CurrentOffset, SeekOrigin.Begin);
         }
 
-        /// <summary>
-        /// Check whether the provided file follows the Little Endian order.
-        /// </summary>
-        /// <param name="p_Data">File data</param>
-        /// <returns></returns>
-        private static bool LittleEndian(byte[] p_Data)
+        private object ParseSimpleType(RimeReader p_Reader, FieldType p_Type)
+        {
+            switch (p_Type)
+            {
+                case FieldType.CString:
+                    return GetStringAtOffset(p_Reader.ReadUInt32());
+                case FieldType.Boolean:
+                    return p_Reader.ReadBool();
+                case FieldType.Int8:
+                    return p_Reader.ReadSByte();
+                case FieldType.UInt8:
+                    return p_Reader.ReadUByte();
+                case FieldType.Int16:
+                    return p_Reader.ReadInt16();
+                case FieldType.UInt16:
+                    return p_Reader.ReadUInt16();
+                case FieldType.Int32:
+                    return p_Reader.ReadInt32();
+                case FieldType.UInt32:
+                    return p_Reader.ReadUInt32();
+                case FieldType.Int64:
+                    return p_Reader.ReadInt64();
+                case FieldType.UInt64:
+                    return p_Reader.ReadUInt64();
+                case FieldType.Float32:
+                    return p_Reader.ReadSingle();
+                case FieldType.Float64:
+                    return p_Reader.ReadDouble();
+                case FieldType.Guid:
+                    return new GUID(p_Reader);
+                default:
+                    throw new Exception($"Unsupported field type {p_Type}.");
+            }
+        }
+        
+        private static bool IsLittleEndian(byte[] p_Data)
         {
             return p_Data[0] == 0xCE &&
                    p_Data[1] == 0xD1 &&
                    p_Data[2] == 0xB2 &&
                    p_Data[3] == 0x0F;
         }
-
-        /// <summary>
-        /// Check whether the provided file follows the Big Endian order.
-        /// </summary>
-        /// <param name="p_Data"></param>
-        /// <returns></returns>
-        private static bool BigEndian(byte[] p_Data)
+        
+        private static bool IsBigEndian(byte[] p_Data)
         {
             return p_Data[3] == 0xCE &&
                    p_Data[2] == 0xD1 &&
@@ -912,26 +371,64 @@ namespace RimeLib.Serialization.Frostbite2_0.Ebx
                    p_Data[0] == 0x0F;
         }
 
+        public object GetEnumForValue(int p_Value, TypeDescriptor p_Descriptor, Type p_EnumType)
+        {
+            // TODO: Enum remapping.
+            return Enum.ToObject(p_EnumType, p_Value);
+        }
+
         public CtrRefBase GetImportAtIndex(uint p_Index)
         {
-            // TODO
-            return new CtrRefBase();
+            // External reference.
+            if ((p_Index & 0x80000000) != 0)
+            {
+                p_Index &= 0x7FFFFFFF;
+                var s_Import = m_ImportEntries[(int)p_Index];
+                return new CtrRefBase(s_Import.PartitionGuid, s_Import.InstanceGuid);
+            }
+
+            // Null reference.
+            if (p_Index == 0)
+                return new CtrRefBase();
+
+            var s_ActualIndex = p_Index - 1;
+            
+            if (s_ActualIndex >= m_InternalInstanceGuids.Count)
+            {
+                throw new Exception(
+                    $"Found an internal instance reference for instance at index {s_ActualIndex} but this partition only has {m_InternalInstanceGuids.Count} instances."
+                );
+            }
+
+            return new CtrRefBase(m_Header.PartitionGuid, m_InternalInstanceGuids[(int) s_ActualIndex]);
         }
 
         public string GetStringAtOffset(uint p_Offset)
         {
-            // TODO
-            return "";
-        }
+            string s_String = null;
 
-        public (RimeReader, uint) GetArrayReaderAndElementCount(uint p_Index)
-        {
-            var s_Entry = m_ArrayEntries[(int)p_Index];
+            var s_CurrentOffset = m_Reader.Position;
 
-            m_Reader.Seek((int)(m_Header.MetaSize + m_Header.StringTableSize + m_Header.ArrayOffset + s_Entry.Offset), SeekOrigin.Begin);
+            if (p_Offset != 0xFFFFFFFF)
+            {
+                s_String = "";
 
-            // TODO
-            return (new RimeReader(m_Reader, p_ShouldDispose: false), s_Entry.ElementCount);
+                m_Reader.Seek((int) (m_Header.MetaSize + p_Offset), SeekOrigin.Begin);
+
+                while (true)
+                {
+                    var s_Char = (char) m_Reader.ReadByte();
+
+                    if (s_Char == '\0')
+                        break;
+
+                    s_String += s_Char;
+                }
+            }
+
+            m_Reader.Seek(s_CurrentOffset, SeekOrigin.Begin);
+
+            return s_String;
         }
     }
 }
