@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,10 +21,10 @@ namespace fb
 	public class DynamicWeaponPickupEntityData : 
 		PickupEntityData
 	{
-		[ContainerField(176)]
+		[ContainerField(176), JsonProperty(Order = 176)]
 		public List<DynamicWeaponPickupSlotData> WeaponSlots { get; set; } = new();
 
-		[ContainerField(180), LayoutImmutable, Blittable]
+		[ContainerField(180), LayoutImmutable, Blittable, JsonProperty(Order = 180)]
 		public bool KeepAmmoState { get; set; }
 
 	}

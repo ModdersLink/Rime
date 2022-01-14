@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,13 +21,13 @@ namespace fb
 	public class FloatHubEntityData : 
 		EntityData
 	{
-		[ContainerField(12)]
+		[ContainerField(12), JsonProperty(Order = 12)]
 		public Realm Realm { get; set; } = new();
 
-		[ContainerField(16), LayoutImmutable, Blittable]
+		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
 		public int InputCount { get; set; }
 
-		[ContainerField(20), LayoutImmutable, Blittable]
+		[ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
 		public int InputSelect { get; set; }
 
 	}

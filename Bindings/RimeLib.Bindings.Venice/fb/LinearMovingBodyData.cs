@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,13 +21,13 @@ namespace fb
 	public class LinearMovingBodyData : 
 		MovingBodyData
 	{
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable]
+		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
 		public Vec3 Axis { get; set; } = new();
 
-		[ContainerField(32)]
+		[ContainerField(32), JsonProperty(Order = 32)]
 		public EndPointData Start { get; set; } = new();
 
-		[ContainerField(52)]
+		[ContainerField(52), JsonProperty(Order = 52)]
 		public EndPointData End { get; set; } = new();
 
 	}

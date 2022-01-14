@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,7 +21,7 @@ namespace fb
 	public class UICombatAreaAsset : 
 		Asset
 	{
-		[ContainerField(12), LayoutImmutable]
+		[ContainerField(12), LayoutImmutable, JsonProperty(Order = 12)]
 		public string Prefix { get; set; } = string.Empty;
 
 	}

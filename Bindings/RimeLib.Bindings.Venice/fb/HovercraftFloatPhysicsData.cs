@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,16 +21,16 @@ namespace fb
 	public class HovercraftFloatPhysicsData : 
 		HullFloatPhysicsData
 	{
-		[ContainerField(128), Homogeneous, LayoutImmutable, Blittable]
+		[ContainerField(128), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 128)]
 		public Vec3 LandResistanceAxisMod { get; set; } = new();
 
-		[ContainerField(144), Homogeneous, LayoutImmutable, Blittable]
+		[ContainerField(144), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 144)]
 		public Vec3 LandFrictionAxisMod { get; set; } = new();
 
-		[ContainerField(160), LayoutImmutable, Blittable]
+		[ContainerField(160), LayoutImmutable, Blittable, JsonProperty(Order = 160)]
 		public float FrontLength { get; set; }
 
-		[ContainerField(164), LayoutImmutable, Blittable]
+		[ContainerField(164), LayoutImmutable, Blittable, JsonProperty(Order = 164)]
 		public float SideLength { get; set; }
 
 	}

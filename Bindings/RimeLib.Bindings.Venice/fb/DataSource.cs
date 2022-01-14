@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -19,10 +20,10 @@ namespace fb
 	[ContainerType(4, 8)]
 	public class DataSource
 	{
-		[ContainerField(0)]
+		[ContainerField(0), JsonProperty(Order = 0)]
 		public CtrRef<UIComponentData> Category { get; set; } = new();
 		
-		[ContainerField(4), LayoutImmutable, Blittable]
+		[ContainerField(4), LayoutImmutable, Blittable, JsonProperty(Order = 4)]
 		public int Value { get; set; }
 		
 	}

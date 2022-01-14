@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,19 +21,19 @@ namespace fb
 	public class SaveEntityData : 
 		EntityData
 	{
-		[ContainerField(12)]
+		[ContainerField(12), JsonProperty(Order = 12)]
 		public CtrRef<TextureAsset> SaveScreenTexture { get; set; } = new();
 
-		[ContainerField(16), LayoutImmutable]
+		[ContainerField(16), LayoutImmutable, JsonProperty(Order = 16)]
 		public string LevelName { get; set; } = string.Empty;
 
-		[ContainerField(20), LayoutImmutable]
+		[ContainerField(20), LayoutImmutable, JsonProperty(Order = 20)]
 		public string SaveFileName { get; set; } = string.Empty;
 
-		[ContainerField(24), LayoutImmutable]
+		[ContainerField(24), LayoutImmutable, JsonProperty(Order = 24)]
 		public string SaveNameSID { get; set; } = string.Empty;
 
-		[ContainerField(28), LayoutImmutable, Blittable]
+		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
 		public bool CheckForHumanPlayer { get; set; }
 
 	}

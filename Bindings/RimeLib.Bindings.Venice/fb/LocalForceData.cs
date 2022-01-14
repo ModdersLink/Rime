@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,7 +21,7 @@ namespace fb
 	public class LocalForceData : 
 		ProcessorData
 	{
-		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable]
+		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 48)]
 		public Vec3 LocalForce { get; set; } = new();
 
 	}

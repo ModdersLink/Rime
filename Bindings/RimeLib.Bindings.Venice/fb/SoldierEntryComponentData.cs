@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,13 +21,13 @@ namespace fb
 	public class SoldierEntryComponentData : 
 		EntryComponentData
 	{
-		[ContainerField(192)]
+		[ContainerField(192), JsonProperty(Order = 192)]
 		public AimingConstraintsData AimingConstraints { get; set; } = new();
 
-		[ContainerField(208)]
+		[ContainerField(208), JsonProperty(Order = 208)]
 		public CtrRef<AntEnumeration> AntEntryEnumeration { get; set; } = new();
 
-		[ContainerField(212), LayoutImmutable, Blittable]
+		[ContainerField(212), LayoutImmutable, Blittable, JsonProperty(Order = 212)]
 		public bool AlignConstraintsToEntity { get; set; }
 
 	}

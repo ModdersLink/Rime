@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,10 +21,10 @@ namespace fb
 	public class JammingComponentData : 
 		ComponentData
 	{
-		[ContainerField(96)]
+		[ContainerField(96), JsonProperty(Order = 96)]
 		public SmokeJammingData SmokeJamming { get; set; } = new();
 
-		[ContainerField(116)]
+		[ContainerField(116), JsonProperty(Order = 116)]
 		public AirMissileJammingData AirMissileJamming { get; set; } = new();
 
 	}

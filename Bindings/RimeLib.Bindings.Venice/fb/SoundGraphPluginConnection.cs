@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -19,16 +20,16 @@ namespace fb
 	[ContainerType(4, 16)]
 	public class SoundGraphPluginConnection
 	{
-		[ContainerField(0)]
+		[ContainerField(0), JsonProperty(Order = 0)]
 		public SoundGraphPluginConnectionType ConnectionType { get; set; } = new();
 		
-		[ContainerField(4)]
+		[ContainerField(4), JsonProperty(Order = 4)]
 		public List<SoundGraphPluginConnectionParam> Parameters { get; set; } = new();
 		
-		[ContainerField(8)]
+		[ContainerField(8), JsonProperty(Order = 8)]
 		public CtrRef<SoundBusData> Bus { get; set; } = new();
 		
-		[ContainerField(12), LayoutImmutable, Blittable]
+		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
 		public sbyte VoiceIndex { get; set; }
 		
 	}

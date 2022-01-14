@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -19,13 +20,13 @@ namespace fb
 	[ContainerType(4, 12)]
 	public class UICreditsPage
 	{
-		[ContainerField(0), LayoutImmutable]
+		[ContainerField(0), LayoutImmutable, JsonProperty(Order = 0)]
 		public string Header1 { get; set; } = string.Empty;
 		
-		[ContainerField(4), LayoutImmutable]
+		[ContainerField(4), LayoutImmutable, JsonProperty(Order = 4)]
 		public string Header2 { get; set; } = string.Empty;
 		
-		[ContainerField(8)]
+		[ContainerField(8), JsonProperty(Order = 8)]
 		public List<UICreditsLine> Lines { get; set; } = new();
 		
 	}

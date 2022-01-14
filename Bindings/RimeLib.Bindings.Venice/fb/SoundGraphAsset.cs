@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,10 +21,10 @@ namespace fb
 	public class SoundGraphAsset : 
 		SoundAsset
 	{
-		[ContainerField(16)]
+		[ContainerField(16), JsonProperty(Order = 16)]
 		public CtrRef<SoundGraphData> Graph { get; set; } = new();
 
-		[ContainerField(20)]
+		[ContainerField(20), JsonProperty(Order = 20)]
 		public CtrRef<MixerAsset> Mixer { get; set; } = new();
 
 	}

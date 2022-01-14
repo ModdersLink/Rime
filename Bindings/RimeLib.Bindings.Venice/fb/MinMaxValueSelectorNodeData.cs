@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,19 +21,19 @@ namespace fb
 	public class MinMaxValueSelectorNodeData : 
 		AudioGraphNodeData
 	{
-		[ContainerField(8)]
+		[ContainerField(8), JsonProperty(Order = 8)]
 		public RefArray<MinMaxValueSelectorEntry> Inputs { get; set; } = new();
 
-		[ContainerField(12)]
+		[ContainerField(12), JsonProperty(Order = 12)]
 		public AudioGraphNodePort MaxValue { get; set; } = new();
 
-		[ContainerField(20)]
+		[ContainerField(20), JsonProperty(Order = 20)]
 		public AudioGraphNodePort MaxIndex { get; set; } = new();
 
-		[ContainerField(28)]
+		[ContainerField(28), JsonProperty(Order = 28)]
 		public AudioGraphNodePort MinValue { get; set; } = new();
 
-		[ContainerField(36)]
+		[ContainerField(36), JsonProperty(Order = 36)]
 		public AudioGraphNodePort MinIndex { get; set; } = new();
 
 	}

@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,7 +21,7 @@ namespace fb
 	public class SyncedSequenceEntityData : 
 		SequenceEntityData
 	{
-		[ContainerField(52), LayoutImmutable, Blittable]
+		[ContainerField(52), LayoutImmutable, Blittable, JsonProperty(Order = 52)]
 		public bool InterpolateTime { get; set; }
 
 	}

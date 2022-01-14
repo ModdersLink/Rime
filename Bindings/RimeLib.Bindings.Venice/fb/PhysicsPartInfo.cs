@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -19,10 +20,10 @@ namespace fb
 	[ContainerType(4, 8)]
 	public class PhysicsPartInfo
 	{
-		[ContainerField(0), LayoutImmutable, Blittable]
+		[ContainerField(0), LayoutImmutable, Blittable, JsonProperty(Order = 0)]
 		public uint PartComponentIndex { get; set; }
 		
-		[ContainerField(4), LayoutImmutable, Blittable]
+		[ContainerField(4), LayoutImmutable, Blittable, JsonProperty(Order = 4)]
 		public uint HealthStateIndex { get; set; }
 		
 	}

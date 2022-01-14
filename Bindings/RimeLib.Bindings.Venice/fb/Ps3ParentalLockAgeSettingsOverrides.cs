@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,7 +21,7 @@ namespace fb
 	public class Ps3ParentalLockAgeSettingsOverrides : 
 		DataContainer
 	{
-		[ContainerField(8)]
+		[ContainerField(8), JsonProperty(Order = 8)]
 		public List<Ps3ParentalLockAgeSettingsForCountry> Overrides { get; set; } = new();
 
 	}

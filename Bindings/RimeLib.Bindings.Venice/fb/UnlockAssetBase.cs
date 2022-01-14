@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,28 +21,28 @@ namespace fb
 	public class UnlockAssetBase : 
 		Asset
 	{
-		[ContainerField(12), LayoutImmutable, Blittable]
+		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
 		public uint UnlockScore { get; set; }
 
-		[ContainerField(16)]
+		[ContainerField(16), JsonProperty(Order = 16)]
 		public CtrRef<UnlockUserDataBase> UnlockUserData { get; set; } = new();
 
-		[ContainerField(20), LayoutImmutable]
+		[ContainerField(20), LayoutImmutable, JsonProperty(Order = 20)]
 		public string DebugUnlockId { get; set; } = string.Empty;
 
-		[ContainerField(24), LayoutImmutable, Blittable]
+		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
 		public uint Identifier { get; set; }
 
-		[ContainerField(28)]
+		[ContainerField(28), JsonProperty(Order = 28)]
 		public UnlockAvailability AvailableForPlayer { get; set; } = new();
 
-		[ContainerField(32)]
+		[ContainerField(32), JsonProperty(Order = 32)]
 		public CtrRef<UnlockAssetBase> NextLevelUnlockAsset { get; set; } = new();
 
-		[ContainerField(36), LayoutImmutable, Blittable]
+		[ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
 		public bool AutoAvailable { get; set; }
 
-		[ContainerField(37), LayoutImmutable, Blittable]
+		[ContainerField(37), LayoutImmutable, Blittable, JsonProperty(Order = 37)]
 		public bool HiddenInProgression { get; set; }
 
 	}

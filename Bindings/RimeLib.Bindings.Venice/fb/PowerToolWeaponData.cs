@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,19 +21,19 @@ namespace fb
 	public class PowerToolWeaponData : 
 		WeaponData
 	{
-		[ContainerField(16)]
+		[ContainerField(16), JsonProperty(Order = 16)]
 		public CtrRef<SoundAsset> RepairSound { get; set; } = new();
 
-		[ContainerField(20)]
+		[ContainerField(20), JsonProperty(Order = 20)]
 		public CtrRef<SoundAsset> RepairCompletedSound { get; set; } = new();
 
-		[ContainerField(24)]
+		[ContainerField(24), JsonProperty(Order = 24)]
 		public CtrRef<SoundAsset> DamageSound { get; set; } = new();
 
-		[ContainerField(28)]
+		[ContainerField(28), JsonProperty(Order = 28)]
 		public CtrRef<MaterialContainerPair> RepairMaterialPair { get; set; } = new();
 
-		[ContainerField(32), LayoutImmutable, Blittable]
+		[ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
 		public bool PlayFireEffectOnRepairOnly { get; set; }
 
 	}

@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,7 +21,7 @@ namespace fb
 	public class UICombatAreaCompData : 
 		UIComponentData
 	{
-		[ContainerField(28), LayoutImmutable]
+		[ContainerField(28), LayoutImmutable, JsonProperty(Order = 28)]
 		public string OutOfAreaSidPrefix { get; set; } = string.Empty;
 
 	}

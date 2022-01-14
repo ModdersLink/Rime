@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,19 +21,19 @@ namespace fb
 	public class CharacterCustomizationAsset : 
 		Asset
 	{
-		[ContainerField(12), LayoutImmutable]
+		[ContainerField(12), LayoutImmutable, JsonProperty(Order = 12)]
 		public string LabelSid { get; set; } = string.Empty;
 
-		[ContainerField(16)]
+		[ContainerField(16), JsonProperty(Order = 16)]
 		public UIHudIcon UIHudIcon { get; set; } = new();
 
-		[ContainerField(20)]
+		[ContainerField(20), JsonProperty(Order = 20)]
 		public RefArray<VoiceOverLabel> VoiceOverLabels { get; set; } = new();
 
-		[ContainerField(24)]
+		[ContainerField(24), JsonProperty(Order = 24)]
 		public CtrRef<CustomizationTable> VisualTable { get; set; } = new();
 
-		[ContainerField(28)]
+		[ContainerField(28), JsonProperty(Order = 28)]
 		public CtrRef<CustomizationTable> SpecializationTable { get; set; } = new();
 
 	}

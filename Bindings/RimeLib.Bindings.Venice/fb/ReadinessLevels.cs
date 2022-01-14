@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -19,13 +20,13 @@ namespace fb
 	[ContainerType(4, 36)]
 	public class ReadinessLevels
 	{
-		[ContainerField(0)]
+		[ContainerField(0), JsonProperty(Order = 0)]
 		public ReadinessLevelCharacteristics Patrol { get; set; } = new();
 		
-		[ContainerField(12)]
+		[ContainerField(12), JsonProperty(Order = 12)]
 		public ReadinessLevelCharacteristics Ready { get; set; } = new();
 		
-		[ContainerField(24)]
+		[ContainerField(24), JsonProperty(Order = 24)]
 		public ReadinessLevelCharacteristics Combat { get; set; } = new();
 		
 	}

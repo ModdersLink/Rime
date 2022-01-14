@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,22 +21,22 @@ namespace fb
 	public class SubWorldReferenceObjectData : 
 		ReferenceObjectData
 	{
-		[ContainerField(96), LayoutImmutable]
+		[ContainerField(96), LayoutImmutable, JsonProperty(Order = 96)]
 		public string BundleName { get; set; } = string.Empty;
 
-		[ContainerField(100)]
+		[ContainerField(100), JsonProperty(Order = 100)]
 		public CtrRef<SubWorldInclusionSettings> InclusionSettings { get; set; } = new();
 
-		[ContainerField(104), LayoutImmutable, Blittable]
+		[ContainerField(104), LayoutImmutable, Blittable, JsonProperty(Order = 104)]
 		public bool AutoLoad { get; set; }
 
-		[ContainerField(105), LayoutImmutable, Blittable]
+		[ContainerField(105), LayoutImmutable, Blittable, JsonProperty(Order = 105)]
 		public bool IsWin32SubLevel { get; set; }
 
-		[ContainerField(106), LayoutImmutable, Blittable]
+		[ContainerField(106), LayoutImmutable, Blittable, JsonProperty(Order = 106)]
 		public bool IsXenonSubLevel { get; set; }
 
-		[ContainerField(107), LayoutImmutable, Blittable]
+		[ContainerField(107), LayoutImmutable, Blittable, JsonProperty(Order = 107)]
 		public bool IsPs3SubLevel { get; set; }
 
 	}

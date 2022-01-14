@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,16 +21,16 @@ namespace fb
 	public class DynamicEnvmapComponentData : 
 		ComponentData
 	{
-		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable]
+		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 96)]
 		public Vec3 KeyColorEnvmap { get; set; } = new();
 
-		[ContainerField(112), Homogeneous, LayoutImmutable, Blittable]
+		[ContainerField(112), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 112)]
 		public Vec3 GroundColorEnvmap { get; set; } = new();
 
-		[ContainerField(128), Homogeneous, LayoutImmutable, Blittable]
+		[ContainerField(128), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 128)]
 		public Vec3 SkyColorEnvmap { get; set; } = new();
 
-		[ContainerField(144), LayoutImmutable, Blittable]
+		[ContainerField(144), LayoutImmutable, Blittable, JsonProperty(Order = 144)]
 		public bool Enable { get; set; }
 
 	}

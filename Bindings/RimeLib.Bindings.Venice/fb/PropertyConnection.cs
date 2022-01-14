@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -19,16 +20,16 @@ namespace fb
 	[ContainerType(4, 16)]
 	public class PropertyConnection
 	{
-		[ContainerField(0)]
+		[ContainerField(0), JsonProperty(Order = 0)]
 		public CtrRef<DataContainer> Source { get; set; } = new();
 		
-		[ContainerField(4)]
+		[ContainerField(4), JsonProperty(Order = 4)]
 		public CtrRef<DataContainer> Target { get; set; } = new();
 		
-		[ContainerField(8), LayoutImmutable, Blittable]
+		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
 		public int SourceFieldId { get; set; }
 		
-		[ContainerField(12), LayoutImmutable, Blittable]
+		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
 		public int TargetFieldId { get; set; }
 		
 	}

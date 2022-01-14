@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,19 +21,19 @@ namespace fb
 	public class RandomMultiEventEntityData : 
 		EntityData
 	{
-		[ContainerField(12)]
+		[ContainerField(12), JsonProperty(Order = 12)]
 		public Realm Realm { get; set; } = new();
 
-		[ContainerField(16)]
+		[ContainerField(16), JsonProperty(Order = 16)]
 		public List<float> RandomEventWeight { get; set; } = new();
 
-		[ContainerField(20), LayoutImmutable, Blittable]
+		[ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
 		public bool UniformDistribution { get; set; }
 
-		[ContainerField(21), LayoutImmutable, Blittable]
+		[ContainerField(21), LayoutImmutable, Blittable, JsonProperty(Order = 21)]
 		public bool ResetOutputsWhenAllHasTriggered { get; set; }
 
-		[ContainerField(22), LayoutImmutable, Blittable]
+		[ContainerField(22), LayoutImmutable, Blittable, JsonProperty(Order = 22)]
 		public bool DisableOutputOnTrigger { get; set; }
 
 	}

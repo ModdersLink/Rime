@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,10 +21,10 @@ namespace fb
 	public class GameSoundEntityData : 
 		GameEntityData
 	{
-		[ContainerField(96)]
+		[ContainerField(96), JsonProperty(Order = 96)]
 		public CtrRef<SoundAsset> Sound { get; set; } = new();
 
-		[ContainerField(100), LayoutImmutable, Blittable]
+		[ContainerField(100), LayoutImmutable, Blittable, JsonProperty(Order = 100)]
 		public bool PlayOnCreation { get; set; }
 
 	}

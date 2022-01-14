@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,10 +21,10 @@ namespace fb
 	public class SoundScopeSetupData : 
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable]
+		[ContainerField(8), LayoutImmutable, JsonProperty(Order = 8)]
 		public string Name { get; set; } = string.Empty;
 
-		[ContainerField(12)]
+		[ContainerField(12), JsonProperty(Order = 12)]
 		public List<SoundScopeStrategyMapping> Mappings { get; set; } = new();
 
 	}

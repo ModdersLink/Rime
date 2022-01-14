@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,13 +21,13 @@ namespace fb
 	public class DebugEventInput : 
 		AudioGraphNodePortGroup
 	{
-		[ContainerField(8)]
+		[ContainerField(8), JsonProperty(Order = 8)]
 		public AudioGraphNodePort E { get; set; } = new();
 
-		[ContainerField(16), LayoutImmutable]
+		[ContainerField(16), LayoutImmutable, JsonProperty(Order = 16)]
 		public string Name { get; set; } = string.Empty;
 
-		[ContainerField(20), LayoutImmutable, Blittable]
+		[ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
 		public bool RequireTriggeredAndSet { get; set; }
 
 	}

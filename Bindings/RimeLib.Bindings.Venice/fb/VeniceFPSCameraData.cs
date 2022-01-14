@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,10 +21,10 @@ namespace fb
 	public class VeniceFPSCameraData : 
 		FPSCameraData
 	{
-		[ContainerField(224), LayoutImmutable, Blittable]
+		[ContainerField(224), LayoutImmutable, Blittable, JsonProperty(Order = 224)]
 		public float SuppressionBlurAmountMultiplier { get; set; }
 
-		[ContainerField(228), LayoutImmutable, Blittable]
+		[ContainerField(228), LayoutImmutable, Blittable, JsonProperty(Order = 228)]
 		public float SuppressionBlurSizeMultiplier { get; set; }
 
 	}

@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,28 +21,28 @@ namespace fb
 	public class TransformModifierEntityData : 
 		EntityData
 	{
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable]
+		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
 		public LinearTransform In { get; set; } = new();
 
-		[ContainerField(80)]
+		[ContainerField(80), JsonProperty(Order = 80)]
 		public Realm Realm { get; set; } = new();
 
-		[ContainerField(84)]
+		[ContainerField(84), JsonProperty(Order = 84)]
 		public ModifierAxis Left { get; set; } = new();
 
-		[ContainerField(88)]
+		[ContainerField(88), JsonProperty(Order = 88)]
 		public ModifierAxis Up { get; set; } = new();
 
-		[ContainerField(92)]
+		[ContainerField(92), JsonProperty(Order = 92)]
 		public ModifierAxis Forward { get; set; } = new();
 
-		[ContainerField(96), LayoutImmutable, Blittable]
+		[ContainerField(96), LayoutImmutable, Blittable, JsonProperty(Order = 96)]
 		public bool InvertLeft { get; set; }
 
-		[ContainerField(97), LayoutImmutable, Blittable]
+		[ContainerField(97), LayoutImmutable, Blittable, JsonProperty(Order = 97)]
 		public bool InvertUp { get; set; }
 
-		[ContainerField(98), LayoutImmutable, Blittable]
+		[ContainerField(98), LayoutImmutable, Blittable, JsonProperty(Order = 98)]
 		public bool InvertForward { get; set; }
 
 	}

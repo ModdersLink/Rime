@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,133 +21,133 @@ namespace fb
 	public class SkyComponentData : 
 		ComponentData
 	{
-		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable]
+		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 96)]
 		public Vec3 CloudLayerSunColor { get; set; } = new();
 
-		[ContainerField(112), Homogeneous, LayoutImmutable, Blittable]
+		[ContainerField(112), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 112)]
 		public Vec3 CloudLayer2Color { get; set; } = new();
 
-		[ContainerField(128), Homogeneous, LayoutImmutable, Blittable]
+		[ContainerField(128), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 128)]
 		public Vec3 CloudLayer1Color { get; set; } = new();
 
-		[ContainerField(144)]
+		[ContainerField(144), JsonProperty(Order = 144)]
 		public CtrRef<TextureAsset> SkyGradientTexture { get; set; } = new();
 
-		[ContainerField(148), LayoutImmutable, Blittable]
+		[ContainerField(148), LayoutImmutable, Blittable, JsonProperty(Order = 148)]
 		public float SunSize { get; set; }
 
-		[ContainerField(152), LayoutImmutable, Blittable]
+		[ContainerField(152), LayoutImmutable, Blittable, JsonProperty(Order = 152)]
 		public float BrightnessScale { get; set; }
 
-		[ContainerField(156), LayoutImmutable, Blittable]
+		[ContainerField(156), LayoutImmutable, Blittable, JsonProperty(Order = 156)]
 		public float SunScale { get; set; }
 
-		[ContainerField(160), LayoutImmutable, Blittable]
+		[ContainerField(160), LayoutImmutable, Blittable, JsonProperty(Order = 160)]
 		public float PanoramicUVMaxX { get; set; }
 
-		[ContainerField(164), LayoutImmutable, Blittable]
+		[ContainerField(164), LayoutImmutable, Blittable, JsonProperty(Order = 164)]
 		public float PanoramicUVMinY { get; set; }
 
-		[ContainerField(168), LayoutImmutable, Blittable]
+		[ContainerField(168), LayoutImmutable, Blittable, JsonProperty(Order = 168)]
 		public float PanoramicUVMaxY { get; set; }
 
-		[ContainerField(172)]
+		[ContainerField(172), JsonProperty(Order = 172)]
 		public Realm Realm { get; set; } = new();
 
-		[ContainerField(176), LayoutImmutable, Blittable]
+		[ContainerField(176), LayoutImmutable, Blittable, JsonProperty(Order = 176)]
 		public float PanoramicUVMinX { get; set; }
 
-		[ContainerField(180)]
+		[ContainerField(180), JsonProperty(Order = 180)]
 		public CtrRef<TextureAsset> PanoramicTexture { get; set; } = new();
 
-		[ContainerField(184)]
+		[ContainerField(184), JsonProperty(Order = 184)]
 		public CtrRef<TextureAsset> PanoramicAlphaTexture { get; set; } = new();
 
-		[ContainerField(188), LayoutImmutable, Blittable]
+		[ContainerField(188), LayoutImmutable, Blittable, JsonProperty(Order = 188)]
 		public float PanoramicTileFactor { get; set; }
 
-		[ContainerField(192)]
+		[ContainerField(192), JsonProperty(Order = 192)]
 		public CtrRef<TextureAsset> CloudLayerMaskTexture { get; set; } = new();
 
-		[ContainerField(196), LayoutImmutable, Blittable]
+		[ContainerField(196), LayoutImmutable, Blittable, JsonProperty(Order = 196)]
 		public float CloudLayer1Altitude { get; set; }
 
-		[ContainerField(200), LayoutImmutable, Blittable]
+		[ContainerField(200), LayoutImmutable, Blittable, JsonProperty(Order = 200)]
 		public float CloudLayer1TileFactor { get; set; }
 
-		[ContainerField(204), LayoutImmutable, Blittable]
+		[ContainerField(204), LayoutImmutable, Blittable, JsonProperty(Order = 204)]
 		public float CloudLayer1Rotation { get; set; }
 
-		[ContainerField(208), LayoutImmutable, Blittable]
+		[ContainerField(208), LayoutImmutable, Blittable, JsonProperty(Order = 208)]
 		public float CloudLayer1Speed { get; set; }
 
-		[ContainerField(212), LayoutImmutable, Blittable]
+		[ContainerField(212), LayoutImmutable, Blittable, JsonProperty(Order = 212)]
 		public float CloudLayer1SunLightIntensity { get; set; }
 
-		[ContainerField(216), LayoutImmutable, Blittable]
+		[ContainerField(216), LayoutImmutable, Blittable, JsonProperty(Order = 216)]
 		public float PanoramicRotation { get; set; }
 
-		[ContainerField(220), LayoutImmutable, Blittable]
+		[ContainerField(220), LayoutImmutable, Blittable, JsonProperty(Order = 220)]
 		public float CloudLayer1AmbientLightIntensity { get; set; }
 
-		[ContainerField(224), LayoutImmutable, Blittable]
+		[ContainerField(224), LayoutImmutable, Blittable, JsonProperty(Order = 224)]
 		public float CloudLayer1SunLightPower { get; set; }
 
-		[ContainerField(228), LayoutImmutable, Blittable]
+		[ContainerField(228), LayoutImmutable, Blittable, JsonProperty(Order = 228)]
 		public float CloudLayer1AlphaMul { get; set; }
 
-		[ContainerField(232)]
+		[ContainerField(232), JsonProperty(Order = 232)]
 		public CtrRef<TextureAsset> CloudLayer1Texture { get; set; } = new();
 
-		[ContainerField(236), LayoutImmutable, Blittable]
+		[ContainerField(236), LayoutImmutable, Blittable, JsonProperty(Order = 236)]
 		public float CloudLayer2Altitude { get; set; }
 
-		[ContainerField(240), LayoutImmutable, Blittable]
+		[ContainerField(240), LayoutImmutable, Blittable, JsonProperty(Order = 240)]
 		public float CloudLayer2TileFactor { get; set; }
 
-		[ContainerField(244), LayoutImmutable, Blittable]
+		[ContainerField(244), LayoutImmutable, Blittable, JsonProperty(Order = 244)]
 		public float CloudLayer2Rotation { get; set; }
 
-		[ContainerField(248), LayoutImmutable, Blittable]
+		[ContainerField(248), LayoutImmutable, Blittable, JsonProperty(Order = 248)]
 		public float CloudLayer2Speed { get; set; }
 
-		[ContainerField(252), LayoutImmutable, Blittable]
+		[ContainerField(252), LayoutImmutable, Blittable, JsonProperty(Order = 252)]
 		public float CloudLayer2SunLightIntensity { get; set; }
 
-		[ContainerField(256), LayoutImmutable, Blittable]
+		[ContainerField(256), LayoutImmutable, Blittable, JsonProperty(Order = 256)]
 		public float CloudLayer2SunLightPower { get; set; }
 
-		[ContainerField(260), LayoutImmutable, Blittable]
+		[ContainerField(260), LayoutImmutable, Blittable, JsonProperty(Order = 260)]
 		public float CloudLayer2AmbientLightIntensity { get; set; }
 
-		[ContainerField(264), LayoutImmutable, Blittable]
+		[ContainerField(264), LayoutImmutable, Blittable, JsonProperty(Order = 264)]
 		public float StaticEnvmapScale { get; set; }
 
-		[ContainerField(268), LayoutImmutable, Blittable]
+		[ContainerField(268), LayoutImmutable, Blittable, JsonProperty(Order = 268)]
 		public float CloudLayer2AlphaMul { get; set; }
 
-		[ContainerField(272)]
+		[ContainerField(272), JsonProperty(Order = 272)]
 		public CtrRef<TextureAsset> CloudLayer2Texture { get; set; } = new();
 
-		[ContainerField(276)]
+		[ContainerField(276), JsonProperty(Order = 276)]
 		public CtrRef<TextureAsset> StaticEnvmapTexture { get; set; } = new();
 
-		[ContainerField(280), LayoutImmutable, Blittable]
+		[ContainerField(280), LayoutImmutable, Blittable, JsonProperty(Order = 280)]
 		public float SkyVisibilityExponent { get; set; }
 
-		[ContainerField(284), LayoutImmutable, Blittable]
+		[ContainerField(284), LayoutImmutable, Blittable, JsonProperty(Order = 284)]
 		public float SkyEnvmap8BitTexScale { get; set; }
 
-		[ContainerField(288)]
+		[ContainerField(288), JsonProperty(Order = 288)]
 		public CtrRef<TextureAsset> CustomEnvmapTexture { get; set; } = new();
 
-		[ContainerField(292), LayoutImmutable, Blittable]
+		[ContainerField(292), LayoutImmutable, Blittable, JsonProperty(Order = 292)]
 		public float CustomEnvmapScale { get; set; }
 
-		[ContainerField(296), LayoutImmutable, Blittable]
+		[ContainerField(296), LayoutImmutable, Blittable, JsonProperty(Order = 296)]
 		public float CustomEnvmapAmbient { get; set; }
 
-		[ContainerField(300), LayoutImmutable, Blittable]
+		[ContainerField(300), LayoutImmutable, Blittable, JsonProperty(Order = 300)]
 		public bool Enable { get; set; }
 
 	}

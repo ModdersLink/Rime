@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,22 +21,22 @@ namespace fb
 	public class VehicleExitPointComponentData : 
 		ComponentData
 	{
-		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable]
+		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 96)]
 		public Vec3 Impulse { get; set; } = new();
 
-		[ContainerField(112), LayoutImmutable, Blittable]
+		[ContainerField(112), LayoutImmutable, Blittable, JsonProperty(Order = 112)]
 		public float TerrainHeight { get; set; }
 
-		[ContainerField(116), LayoutImmutable, Blittable]
+		[ContainerField(116), LayoutImmutable, Blittable, JsonProperty(Order = 116)]
 		public int Ordinal { get; set; }
 
-		[ContainerField(120), LayoutImmutable, Blittable]
+		[ContainerField(120), LayoutImmutable, Blittable, JsonProperty(Order = 120)]
 		public float Velocity { get; set; }
 
-		[ContainerField(124), LayoutImmutable, Blittable]
+		[ContainerField(124), LayoutImmutable, Blittable, JsonProperty(Order = 124)]
 		public bool InheritCameraDirection { get; set; }
 
-		[ContainerField(125), LayoutImmutable, Blittable]
+		[ContainerField(125), LayoutImmutable, Blittable, JsonProperty(Order = 125)]
 		public bool CheckForVehicleOverrun { get; set; }
 
 	}

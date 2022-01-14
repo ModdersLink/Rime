@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,7 +21,7 @@ namespace fb
 	public class KitState : 
 		MetricState
 	{
-		[ContainerField(24), LayoutImmutable]
+		[ContainerField(24), LayoutImmutable, JsonProperty(Order = 24)]
 		public string Kit { get; set; } = string.Empty;
 
 	}

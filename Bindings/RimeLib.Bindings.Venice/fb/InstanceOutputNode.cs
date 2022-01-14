@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,13 +21,13 @@ namespace fb
 	public class InstanceOutputNode : 
 		UINodeData
 	{
-		[ContainerField(20)]
+		[ContainerField(20), JsonProperty(Order = 20)]
 		public CtrRef<UINodePort> In { get; set; } = new();
 
-		[ContainerField(24), LayoutImmutable, Blittable]
+		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
 		public int Id { get; set; }
 
-		[ContainerField(28), LayoutImmutable, Blittable]
+		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
 		public bool DestroyGraph { get; set; }
 
 	}

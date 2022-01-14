@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -19,13 +20,13 @@ namespace fb
 	[ContainerType(4, 8)]
 	public class SoundWaveLocalizationInfo
 	{
-		[ContainerField(0)]
+		[ContainerField(0), JsonProperty(Order = 0)]
 		public CtrRef<AudioLanguage> Language { get; set; } = new();
 		
-		[ContainerField(4), LayoutImmutable, Blittable]
+		[ContainerField(4), LayoutImmutable, Blittable, JsonProperty(Order = 4)]
 		public ushort FirstVariationIndex { get; set; }
 		
-		[ContainerField(6), LayoutImmutable, Blittable]
+		[ContainerField(6), LayoutImmutable, Blittable, JsonProperty(Order = 6)]
 		public ushort VariationCount { get; set; }
 		
 	}

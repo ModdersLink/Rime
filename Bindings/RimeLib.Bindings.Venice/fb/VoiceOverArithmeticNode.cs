@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,16 +21,16 @@ namespace fb
 	public class VoiceOverArithmeticNode : 
 		VoiceOverExpressionNode
 	{
-		[ContainerField(8)]
+		[ContainerField(8), JsonProperty(Order = 8)]
 		public CtrRef<VoiceOverValueConnection> A { get; set; } = new();
 
-		[ContainerField(12)]
+		[ContainerField(12), JsonProperty(Order = 12)]
 		public CtrRef<VoiceOverValueConnection> B { get; set; } = new();
 
-		[ContainerField(16)]
+		[ContainerField(16), JsonProperty(Order = 16)]
 		public CtrRef<VoiceOverValue> Result { get; set; } = new();
 
-		[ContainerField(20)]
+		[ContainerField(20), JsonProperty(Order = 20)]
 		public VoiceOverArithmeticExpressionType Operation { get; set; } = new();
 
 	}

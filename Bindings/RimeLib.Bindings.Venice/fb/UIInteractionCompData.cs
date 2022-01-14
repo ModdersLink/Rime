@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,13 +21,13 @@ namespace fb
 	public class UIInteractionCompData : 
 		UI3dIconCompData
 	{
-		[ContainerField(160), LayoutImmutable, Blittable]
+		[ContainerField(160), LayoutImmutable, Blittable, JsonProperty(Order = 160)]
 		public float RepairSnapDistance { get; set; }
 
-		[ContainerField(164), LayoutImmutable, Blittable]
+		[ContainerField(164), LayoutImmutable, Blittable, JsonProperty(Order = 164)]
 		public bool RepairSnapCircle { get; set; }
 
-		[ContainerField(165), LayoutImmutable, Blittable]
+		[ContainerField(165), LayoutImmutable, Blittable, JsonProperty(Order = 165)]
 		public bool PickupShrinkSnap { get; set; }
 
 	}

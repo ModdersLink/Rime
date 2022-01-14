@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,16 +21,16 @@ namespace fb
 	public class OnlineConfiguration : 
 		Asset
 	{
-		[ContainerField(12)]
+		[ContainerField(12), JsonProperty(Order = 12)]
 		public BackendType Backend { get; set; } = new();
 
-		[ContainerField(16)]
+		[ContainerField(16), JsonProperty(Order = 16)]
 		public CtrRef<OnlineProviderAsset> Provider { get; set; } = new();
 
-		[ContainerField(20)]
+		[ContainerField(20), JsonProperty(Order = 20)]
 		public CtrRef<RichPresenceData> RichPresence { get; set; } = new();
 
-		[ContainerField(24)]
+		[ContainerField(24), JsonProperty(Order = 24)]
 		public CtrRef<ChatSettings> Chat { get; set; } = new();
 
 	}

@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,10 +21,10 @@ namespace fb
 	public class MeshProxyEntityData : 
 		SpatialEntityData
 	{
-		[ContainerField(80)]
+		[ContainerField(80), JsonProperty(Order = 80)]
 		public CtrRef<MeshAsset> Mesh { get; set; } = new();
 
-		[ContainerField(84)]
+		[ContainerField(84), JsonProperty(Order = 84)]
 		public List<LinearTransform> BasePoseTransforms { get; set; } = new();
 
 	}

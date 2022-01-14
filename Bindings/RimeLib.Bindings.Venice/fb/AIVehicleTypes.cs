@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,13 +21,13 @@ namespace fb
 	public class AIVehicleTypes : 
 		Asset
 	{
-		[ContainerField(12)]
+		[ContainerField(12), JsonProperty(Order = 12)]
 		public RefArray<AIVehicleBehaviourData> VehicleTypes { get; set; } = new();
 
-		[ContainerField(16)]
+		[ContainerField(16), JsonProperty(Order = 16)]
 		public RefArray<BehaviourData> Goals { get; set; } = new();
 
-		[ContainerField(20)]
+		[ContainerField(20), JsonProperty(Order = 20)]
 		public RefArray<BehaviourData> Intents { get; set; } = new();
 
 	}

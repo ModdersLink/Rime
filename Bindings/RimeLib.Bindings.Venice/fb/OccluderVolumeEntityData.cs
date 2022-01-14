@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,7 +21,7 @@ namespace fb
 	public class OccluderVolumeEntityData : 
 		SpatialEntityData
 	{
-		[ContainerField(80), LayoutImmutable, Blittable]
+		[ContainerField(80), LayoutImmutable, Blittable, JsonProperty(Order = 80)]
 		public bool OccluderHighPriority { get; set; }
 
 	}

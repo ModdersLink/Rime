@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,10 +21,10 @@ namespace fb
 	public class ConsumableTriggerEntityData : 
 		TriggerEntityData
 	{
-		[ContainerField(112)]
+		[ContainerField(112), JsonProperty(Order = 112)]
 		public ConsumableGroup ConsumableGroup { get; set; } = new();
 
-		[ContainerField(116), LayoutImmutable, Blittable]
+		[ContainerField(116), LayoutImmutable, Blittable, JsonProperty(Order = 116)]
 		public bool Persistent { get; set; }
 
 	}

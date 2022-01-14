@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -19,13 +20,13 @@ namespace fb
 	[ContainerType(4, 24)]
 	public class PrecomputeCache
 	{
-		[ContainerField(0), LayoutImmutable, Blittable]
+		[ContainerField(0), LayoutImmutable, Blittable, JsonProperty(Order = 0)]
 		public GUID Guid { get; set; }
 		
-		[ContainerField(16), LayoutImmutable]
+		[ContainerField(16), LayoutImmutable, JsonProperty(Order = 16)]
 		public string Key { get; set; } = string.Empty;
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
+		[ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
 		public bool CachedDataEnable { get; set; }
 		
 	}

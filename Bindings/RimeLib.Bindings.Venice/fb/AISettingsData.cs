@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,31 +21,31 @@ namespace fb
 	public class AISettingsData : 
 		Asset
 	{
-		[ContainerField(12)]
+		[ContainerField(12), JsonProperty(Order = 12)]
 		public CtrRef<SoundEnvironmentConstantData> SoundEnvironmentConstants { get; set; } = new();
 
-		[ContainerField(16)]
+		[ContainerField(16), JsonProperty(Order = 16)]
 		public CtrRef<CoverConstantData> CoverConstants { get; set; } = new();
 
-		[ContainerField(20)]
+		[ContainerField(20), JsonProperty(Order = 20)]
 		public CtrRef<DecisionConstantData> DecisionConstants { get; set; } = new();
 
-		[ContainerField(24)]
+		[ContainerField(24), JsonProperty(Order = 24)]
 		public CtrRef<PositionEvaluationConstantData> PositionEvaluationConstants { get; set; } = new();
 
-		[ContainerField(28)]
+		[ContainerField(28), JsonProperty(Order = 28)]
 		public CtrRef<TimingConstantData> TimingConstants { get; set; } = new();
 
-		[ContainerField(32)]
+		[ContainerField(32), JsonProperty(Order = 32)]
 		public CtrRef<DebugConstantData> DebugConstants { get; set; } = new();
 
-		[ContainerField(36)]
+		[ContainerField(36), JsonProperty(Order = 36)]
 		public ReadinessLevels ReadinessLevels { get; set; } = new();
 
-		[ContainerField(72)]
+		[ContainerField(72), JsonProperty(Order = 72)]
 		public CtrRef<BehaviourTemplateData> DefaultBehaviourTemplate { get; set; } = new();
 
-		[ContainerField(76)]
+		[ContainerField(76), JsonProperty(Order = 76)]
 		public CtrRef<AIVehicleBehaviourData> DefaultVehicleType { get; set; } = new();
 
 	}

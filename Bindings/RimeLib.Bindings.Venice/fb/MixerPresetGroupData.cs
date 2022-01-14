@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -19,22 +20,22 @@ namespace fb
 	[ContainerType(4, 24)]
 	public class MixerPresetGroupData
 	{
-		[ContainerField(0)]
+		[ContainerField(0), JsonProperty(Order = 0)]
 		public CtrRef<MixGroup> Group { get; set; } = new();
 		
-		[ContainerField(4)]
+		[ContainerField(4), JsonProperty(Order = 4)]
 		public MixGroupState State { get; set; } = new();
 		
-		[ContainerField(8), LayoutImmutable, Blittable]
+		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
 		public float AttackTime { get; set; }
 		
-		[ContainerField(12), LayoutImmutable, Blittable]
+		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
 		public float ReleaseTime { get; set; }
 		
-		[ContainerField(16)]
+		[ContainerField(16), JsonProperty(Order = 16)]
 		public List<MixGroupPropertyValue> Properties { get; set; } = new();
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
+		[ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
 		public bool IsDominant { get; set; }
 		
 	}

@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,19 +21,19 @@ namespace fb
 	public class AntPackageAsset : 
 		Asset
 	{
-		[ContainerField(12), LayoutImmutable]
+		[ContainerField(12), LayoutImmutable, JsonProperty(Order = 12)]
 		public string Win32FileName { get; set; } = string.Empty;
 
-		[ContainerField(16), LayoutImmutable]
+		[ContainerField(16), LayoutImmutable, JsonProperty(Order = 16)]
 		public string XePs3FileName { get; set; } = string.Empty;
 
-		[ContainerField(20)]
+		[ContainerField(20), JsonProperty(Order = 20)]
 		public AntPackagingType PackagingType { get; set; } = new();
 
-		[ContainerField(24), LayoutImmutable, Blittable]
+		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
 		public GUID StreamingGuid { get; set; }
 
-		[ContainerField(40), LayoutImmutable, Blittable]
+		[ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
 		public uint ChunkSize { get; set; }
 
 	}

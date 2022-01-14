@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,19 +21,19 @@ namespace fb
 	public class BreakableModelEntityData : 
 		GamePhysicsEntityData
 	{
-		[ContainerField(112)]
+		[ContainerField(112), JsonProperty(Order = 112)]
 		public CtrRef<SurfaceShaderBaseAsset> DecalVolumeShader { get; set; } = new();
 
-		[ContainerField(116), LayoutImmutable, Blittable]
+		[ContainerField(116), LayoutImmutable, Blittable, JsonProperty(Order = 116)]
 		public float DecalVolumeScaleFactor { get; set; }
 
-		[ContainerField(120)]
+		[ContainerField(120), JsonProperty(Order = 120)]
 		public CtrRef<MeshAsset> Mesh { get; set; } = new();
 
-		[ContainerField(124), LayoutImmutable, Blittable]
+		[ContainerField(124), LayoutImmutable, Blittable, JsonProperty(Order = 124)]
 		public uint BoneCount { get; set; }
 
-		[ContainerField(128)]
+		[ContainerField(128), JsonProperty(Order = 128)]
 		public CtrRef<EdgeModelLightMapData> EdgeModelLightMapData { get; set; } = new();
 
 	}

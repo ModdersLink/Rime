@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,19 +21,19 @@ namespace fb
 	public class UITextDatabase : 
 		Asset
 	{
-		[ContainerField(12)]
+		[ContainerField(12), JsonProperty(Order = 12)]
 		public LanguageFormat Language { get; set; } = new();
 
-		[ContainerField(16), LayoutImmutable, Blittable]
+		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
 		public GUID BinaryChunk { get; set; }
 
-		[ContainerField(32), LayoutImmutable, Blittable]
+		[ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
 		public uint BinaryChunkSize { get; set; }
 
-		[ContainerField(36), LayoutImmutable, Blittable]
+		[ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
 		public GUID HistogramChunk { get; set; }
 
-		[ContainerField(52), LayoutImmutable, Blittable]
+		[ContainerField(52), LayoutImmutable, Blittable, JsonProperty(Order = 52)]
 		public uint HistogramChunkSize { get; set; }
 
 	}

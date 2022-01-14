@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,10 +21,10 @@ namespace fb
 	public class StatsCategoryData : 
 		StatsCategoryBaseData
 	{
-		[ContainerField(20)]
+		[ContainerField(20), JsonProperty(Order = 20)]
 		public RefArray<StatsCategoryData> Categories { get; set; } = new();
 
-		[ContainerField(24)]
+		[ContainerField(24), JsonProperty(Order = 24)]
 		public List<string> Members { get; set; } = new();
 
 	}

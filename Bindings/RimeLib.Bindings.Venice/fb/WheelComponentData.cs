@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,13 +21,13 @@ namespace fb
 	public class WheelComponentData : 
 		PartComponentData
 	{
-		[ContainerField(112)]
+		[ContainerField(112), JsonProperty(Order = 112)]
 		public CtrRef<WheelConfigData> Config { get; set; } = new();
 
-		[ContainerField(116)]
+		[ContainerField(116), JsonProperty(Order = 116)]
 		public WheelPhysicsType PhysicsType { get; set; } = new();
 
-		[ContainerField(120), LayoutImmutable, Blittable]
+		[ContainerField(120), LayoutImmutable, Blittable, JsonProperty(Order = 120)]
 		public float EffectClampVelocity { get; set; }
 
 	}

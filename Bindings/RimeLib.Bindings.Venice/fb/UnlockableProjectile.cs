@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -19,16 +20,16 @@ namespace fb
 	[ContainerType(16, 32)]
 	public class UnlockableProjectile
 	{
-		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable]
+		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 0)]
 		public Vec3 InitialSpeed { get; set; } = new();
 		
-		[ContainerField(16)]
+		[ContainerField(16), JsonProperty(Order = 16)]
 		public CtrRef<ProjectileEntityData> ProjectileData { get; set; } = new();
 		
-		[ContainerField(20)]
+		[ContainerField(20), JsonProperty(Order = 20)]
 		public CtrRef<ProjectileBlueprint> Projectile { get; set; } = new();
 		
-		[ContainerField(24)]
+		[ContainerField(24), JsonProperty(Order = 24)]
 		public CtrRef<UnlockAssetBase> Unlock { get; set; } = new();
 		
 	}

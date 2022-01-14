@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,19 +21,19 @@ namespace fb
 	public class BFAISettingsData : 
 		AISettingsData
 	{
-		[ContainerField(80)]
+		[ContainerField(80), JsonProperty(Order = 80)]
 		public CtrRef<MovementConstantData> MovementConstants { get; set; } = new();
 
-		[ContainerField(84)]
+		[ContainerField(84), JsonProperty(Order = 84)]
 		public CtrRef<TurretControlConstantData> TurretControlConstants { get; set; } = new();
 
-		[ContainerField(88)]
+		[ContainerField(88), JsonProperty(Order = 88)]
 		public CtrRef<SearchAndDestroyConstantData> SearchAndDestroyConstants { get; set; } = new();
 
-		[ContainerField(92)]
+		[ContainerField(92), JsonProperty(Order = 92)]
 		public CtrRef<FollowConstantData> FollowConstants { get; set; } = new();
 
-		[ContainerField(96)]
+		[ContainerField(96), JsonProperty(Order = 96)]
 		public CtrRef<CombatConstantData> CombatConstants { get; set; } = new();
 
 	}

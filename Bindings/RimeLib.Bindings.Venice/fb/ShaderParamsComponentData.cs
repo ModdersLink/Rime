@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,10 +21,10 @@ namespace fb
 	public class ShaderParamsComponentData : 
 		ComponentData
 	{
-		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable]
+		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 96)]
 		public Vec4 Value { get; set; } = new();
 
-		[ContainerField(112), LayoutImmutable]
+		[ContainerField(112), LayoutImmutable, JsonProperty(Order = 112)]
 		public string ParameterName { get; set; } = string.Empty;
 
 	}

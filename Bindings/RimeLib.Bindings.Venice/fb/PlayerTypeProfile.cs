@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,31 +21,31 @@ namespace fb
 	public class PlayerTypeProfile : 
 		Asset
 	{
-		[ContainerField(12)]
+		[ContainerField(12), JsonProperty(Order = 12)]
 		public CtrRef<PersistenceData> Values { get; set; } = new();
 
-		[ContainerField(16)]
+		[ContainerField(16), JsonProperty(Order = 16)]
 		public CtrRef<AwardDataTree> Awards { get; set; } = new();
 
-		[ContainerField(20)]
+		[ContainerField(20), JsonProperty(Order = 20)]
 		public CtrRef<RankParamsAsset> RankParams { get; set; } = new();
 
-		[ContainerField(24)]
+		[ContainerField(24), JsonProperty(Order = 24)]
 		public CtrRef<ScoringData> Scoring { get; set; } = new();
 
-		[ContainerField(28)]
+		[ContainerField(28), JsonProperty(Order = 28)]
 		public CtrRef<DogTagsAsset> DogTags { get; set; } = new();
 
-		[ContainerField(32)]
+		[ContainerField(32), JsonProperty(Order = 32)]
 		public EloParameters EloParams { get; set; } = new();
 
-		[ContainerField(52)]
+		[ContainerField(52), JsonProperty(Order = 52)]
 		public CtrRef<StaticUnlockList> StaticUnlocks { get; set; } = new();
 
-		[ContainerField(56)]
+		[ContainerField(56), JsonProperty(Order = 56)]
 		public CtrRef<StatSpamSettings> SpamSettings { get; set; } = new();
 
-		[ContainerField(60)]
+		[ContainerField(60), JsonProperty(Order = 60)]
 		public List<string> OrderedUnlockNames { get; set; } = new();
 
 	}

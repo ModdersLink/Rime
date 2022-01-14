@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,19 +21,19 @@ namespace fb
 	public class UISetValueData : 
 		EntityData
 	{
-		[ContainerField(12)]
+		[ContainerField(12), JsonProperty(Order = 12)]
 		public UIDataSourceInfo DataSource { get; set; } = new();
 
-		[ContainerField(28), LayoutImmutable, Blittable]
+		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
 		public int IntValue { get; set; }
 
-		[ContainerField(32), LayoutImmutable, Blittable]
+		[ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
 		public float FloatValue { get; set; }
 
-		[ContainerField(36), LayoutImmutable]
+		[ContainerField(36), LayoutImmutable, JsonProperty(Order = 36)]
 		public string StringValue { get; set; } = string.Empty;
 
-		[ContainerField(40), LayoutImmutable, Blittable]
+		[ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
 		public bool BoolValue { get; set; }
 
 	}

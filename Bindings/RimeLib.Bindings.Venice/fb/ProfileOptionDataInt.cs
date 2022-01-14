@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,16 +21,16 @@ namespace fb
 	public class ProfileOptionDataInt : 
 		ProfileOptionData
 	{
-		[ContainerField(20), LayoutImmutable, Blittable]
+		[ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
 		public int Min { get; set; }
 
-		[ContainerField(24), LayoutImmutable, Blittable]
+		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
 		public int Max { get; set; }
 
-		[ContainerField(28), LayoutImmutable, Blittable]
+		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
 		public int Value { get; set; }
 
-		[ContainerField(32), LayoutImmutable, Blittable]
+		[ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
 		public int Step { get; set; }
 
 	}

@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -19,19 +20,19 @@ namespace fb
 	[ContainerType(4, 32)]
 	public class GunSwayStanceZoomModifierData
 	{
-		[ContainerField(0)]
+		[ContainerField(0), JsonProperty(Order = 0)]
 		public GunSwayDispersionModData DispersionMod { get; set; } = new();
 		
-		[ContainerField(16), LayoutImmutable, Blittable]
+		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
 		public float RecoilMagnitudeMod { get; set; }
 		
-		[ContainerField(20), LayoutImmutable, Blittable]
+		[ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
 		public float RecoilAngleMod { get; set; }
 		
-		[ContainerField(24), LayoutImmutable, Blittable]
+		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
 		public float LagYawMod { get; set; }
 		
-		[ContainerField(28), LayoutImmutable, Blittable]
+		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
 		public float LagPitchMod { get; set; }
 		
 	}

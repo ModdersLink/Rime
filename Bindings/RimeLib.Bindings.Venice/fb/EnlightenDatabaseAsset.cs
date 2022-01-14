@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,22 +21,22 @@ namespace fb
 	public class EnlightenDatabaseAsset : 
 		Asset
 	{
-		[ContainerField(12), LayoutImmutable, Blittable]
+		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
 		public uint DataVersion { get; set; }
 
-		[ContainerField(16), LayoutImmutable, Blittable]
+		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
 		public uint DebugMeshDataVersion { get; set; }
 
-		[ContainerField(20), LayoutImmutable, Blittable]
+		[ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
 		public uint OutputSizeX { get; set; }
 
-		[ContainerField(24), LayoutImmutable, Blittable]
+		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
 		public uint OutputSizeY { get; set; }
 
-		[ContainerField(28)]
+		[ContainerField(28), JsonProperty(Order = 28)]
 		public List<EnlightenDbSystem> Systems { get; set; } = new();
 
-		[ContainerField(32)]
+		[ContainerField(32), JsonProperty(Order = 32)]
 		public List<EnlightenLightProbeSet> LightProbeSets { get; set; } = new();
 
 	}

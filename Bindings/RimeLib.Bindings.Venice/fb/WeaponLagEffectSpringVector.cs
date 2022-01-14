@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -19,13 +20,13 @@ namespace fb
 	[ContainerType(4, 24)]
 	public class WeaponLagEffectSpringVector
 	{
-		[ContainerField(0)]
+		[ContainerField(0), JsonProperty(Order = 0)]
 		public WeaponLagEffectSpringData SpringX { get; set; } = new();
 		
-		[ContainerField(8)]
+		[ContainerField(8), JsonProperty(Order = 8)]
 		public WeaponLagEffectSpringData SpringY { get; set; } = new();
 		
-		[ContainerField(16)]
+		[ContainerField(16), JsonProperty(Order = 16)]
 		public WeaponLagEffectSpringData SpringZ { get; set; } = new();
 		
 	}

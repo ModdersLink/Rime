@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,13 +21,13 @@ namespace fb
 	public class LookAtEntityData : 
 		SpatialEntityData
 	{
-		[ContainerField(80), LayoutImmutable, Blittable]
+		[ContainerField(80), LayoutImmutable, Blittable, JsonProperty(Order = 80)]
 		public bool RunOnce { get; set; }
 
-		[ContainerField(81), LayoutImmutable, Blittable]
+		[ContainerField(81), LayoutImmutable, Blittable, JsonProperty(Order = 81)]
 		public bool UseStaticDirection { get; set; }
 
-		[ContainerField(82), LayoutImmutable, Blittable]
+		[ContainerField(82), LayoutImmutable, Blittable, JsonProperty(Order = 82)]
 		public bool Enabled { get; set; }
 
 	}

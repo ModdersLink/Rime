@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,16 +21,16 @@ namespace fb
 	public class SubtitleDataNode : 
 		TreeNodeBase
 	{
-		[ContainerField(12), LayoutImmutable, Blittable]
+		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
 		public float Time { get; set; }
 
-		[ContainerField(16), LayoutImmutable, Blittable]
+		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
 		public float DisplayTime { get; set; }
 
-		[ContainerField(20), LayoutImmutable]
+		[ContainerField(20), LayoutImmutable, JsonProperty(Order = 20)]
 		public string SID1 { get; set; } = string.Empty;
 
-		[ContainerField(24), LayoutImmutable]
+		[ContainerField(24), LayoutImmutable, JsonProperty(Order = 24)]
 		public string SID2 { get; set; } = string.Empty;
 
 	}

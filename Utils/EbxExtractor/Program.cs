@@ -5,6 +5,8 @@ using RimeLib.Serialization.Frostbite2_0.Ebx;
 using System;
 using System.IO;
 using System.Reflection;
+using System.Threading.Tasks;
+using fb;
 using Newtonsoft.Json;
 using RimeLib.IO;
 
@@ -66,67 +68,54 @@ namespace EbxExtractor
 
         private static async void DumpFiles(Options p_Options)
         {
-            var s_Reader = new Fb2EbxReader();
-            //using (var s_FileReader = new RimeReader(File.OpenRead("I:\\Research\\BF3\\Dump\\Files\\bundles\\ebx\\levels\\xp1_004\\xp1_004.ebx")))
-            using var s_FileReader = new RimeReader(File.OpenRead("I:\\Research\\BF3\\Dump\\Files\\bundles\\ebx\\levels\\xp2_factory\\xp2_factory.ebx"));
-            var s_Partition = s_Reader.ParsePartition("Test", s_FileReader);
+            /*using var s_Reader = new RimeReader(File.OpenRead(
+                @"I:\Research\BF3\Dump\Files\bundles\ebx\ui\flow\graph\spawn\customizationgraph.ebx"
+            ));
 
-            s_Partition.ToJsonFile(@"B:\ebx.json", Formatting.Indented);
+            var s_EbxReader = new Fb2EbxReader();
+            s_EbxReader.ParsePartition("Test", s_Reader);*/
 
-            var s_ParsedPartition = DatabasePartition.FromJsonFile(@"B:\ebx.json");
-            Console.WriteLine(s_ParsedPartition);
-
-            /*var s_Mounter = EngineMounterRegistry.Create(p_Options.EngineType);
+            var s_Mounter = EngineMounterRegistry.Create(p_Options.EngineType);
 
             if (!p_Options.Quiet)
                 Console.WriteLine($"Mounting game with engine '{p_Options.EngineType}' at path '{p_Options.GamePath}'. Please wait, this could take a while.");
 
-            await s_Mounter.Mount(p_Options.GamePath, false, EngineType.Frostbite2_0);
+            await s_Mounter.Mount(p_Options.GamePath, true, EngineType.Frostbite2_0);/*
             await s_Mounter.MountSuperbundle("Win32/Chunks0", true);
             await s_Mounter.MountSuperbundle("Win32/Chunks1", true);
             await s_Mounter.MountSuperbundle("Win32/Chunks2", true);
             await s_Mounter.MountSuperbundle("Win32/MpChunks", true);
             await s_Mounter.MountSuperbundle("Win32/Xp2Chunks", true);
-            await s_Mounter.MountSuperbundle("Win32/Levels/XP2_Factory/XP2_Factory", true);
+            await s_Mounter.MountSuperbundle("Win32/Levels/XP2_Factory/XP2_Factory", true);*/
 
             if (!p_Options.Quiet)
                 Console.WriteLine($"Everything is now mounted! Starting audio conversion.");
 
             var s_Partitions = s_Mounter.GetPartitions();
-
-#if !_SLOW_CODE
-            foreach (var s_PartitionPair in s_Partitions)
-            {
-                var s_PartitionName = s_PartitionPair.Key;
-                if (s_PartitionName != "Levels/XP2_Factory/XP2_Factory".ToLower())
-                    continue;
-
-                var s_PartitionObject = s_PartitionPair.Value;
-
-                using var s_PartitionReader = s_PartitionObject.FirstVariant.GetReader();
-
-                var s_Reader = new Fb2EbxReader();
-
-                s_Reader.ParsePartition(s_PartitionName, s_PartitionReader);
-            }
-#else
-            var s_Ret = Parallel.ForEach(s_Partitions, p_Pair =>
+            
+            //foreach (var s_PartitionPair in s_Partitions)
+            Parallel.ForEach(s_Partitions, (p_Pair) => 
             {
                 var s_PartitionName = p_Pair.Key;
-
                 var s_PartitionObject = p_Pair.Value;
 
                 using var s_PartitionReader = s_PartitionObject.FirstVariant.GetReader();
-
                 var s_Reader = new Fb2EbxReader();
-
                 var s_Partition = s_Reader.ParsePartition(s_PartitionName, s_PartitionReader);
-                if (s_Partition != null)
-                    PartitionRegistry.RegisterPartition(s_Partition);
-            });
-#endif*/
 
-            //var s_Results = PartitionRegistry.Partitions.Where(p_Partition => p_Partition.PrimaryInstance.ContainerTypeName == "SoundWaveAsset");
+                var s_NameProperty = s_Partition.PrimaryInstance.GetType().GetProperty("Name");
+
+                if (s_NameProperty != null)
+                    s_PartitionName = (string) s_NameProperty.GetValue(s_Partition.PrimaryInstance);
+
+                var s_TargetPath = Path.Join(@"B:\ebx-dump", s_PartitionName + ".json");
+                var s_TargetDir = Path.GetDirectoryName(s_TargetPath);
+
+                if (!Directory.Exists(s_TargetDir))
+                    Directory.CreateDirectory(s_TargetDir);
+
+                s_Partition.ToJsonFile(s_TargetPath, Formatting.Indented);
+            });
         }
     }
 }

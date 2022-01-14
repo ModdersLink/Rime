@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,7 +21,7 @@ namespace fb
 	public class AntTrackData : 
 		CustomSequenceTrackData
 	{
-		[ContainerField(40)]
+		[ContainerField(40), JsonProperty(Order = 40)]
 		public RefArray<AntTrackItemData> AntTrackItemDatas { get; set; } = new();
 
 	}

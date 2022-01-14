@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,10 +21,10 @@ namespace fb
 	public class SubWorldInclusionSetting : 
 		DataContainer
 	{
-		[ContainerField(8)]
+		[ContainerField(8), JsonProperty(Order = 8)]
 		public CtrRef<SubWorldInclusionCriterion> Criterion { get; set; } = new();
 
-		[ContainerField(12)]
+		[ContainerField(12), JsonProperty(Order = 12)]
 		public List<string> EnabledOptions { get; set; } = new();
 
 	}

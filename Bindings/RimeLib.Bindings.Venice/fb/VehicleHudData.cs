@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -19,19 +20,19 @@ namespace fb
 	[ContainerType(16, 32)]
 	public class VehicleHudData
 	{
-		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable]
+		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 0)]
 		public Vec3 CustomizationOffset { get; set; } = new();
 		
-		[ContainerField(16)]
+		[ContainerField(16), JsonProperty(Order = 16)]
 		public CtrRef<VehicleCustomizationAsset> Customization { get; set; } = new();
 		
-		[ContainerField(20)]
+		[ContainerField(20), JsonProperty(Order = 20)]
 		public UIHudIcon MinimapIcon { get; set; } = new();
 		
-		[ContainerField(24)]
+		[ContainerField(24), JsonProperty(Order = 24)]
 		public CtrRef<TextureAsset> Texture { get; set; } = new();
 		
-		[ContainerField(28), LayoutImmutable, Blittable]
+		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
 		public uint VehicleItemHash { get; set; }
 		
 	}

@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,28 +21,28 @@ namespace fb
 	public class AnimationSignalEntityData : 
 		EntityData
 	{
-		[ContainerField(12)]
+		[ContainerField(12), JsonProperty(Order = 12)]
 		public Realm Realm { get; set; } = new();
 
-		[ContainerField(16)]
+		[ContainerField(16), JsonProperty(Order = 16)]
 		public AntRef Signal { get; set; } = new();
 
-		[ContainerField(20)]
+		[ContainerField(20), JsonProperty(Order = 20)]
 		public AntRef IntGameState { get; set; } = new();
 
-		[ContainerField(24)]
+		[ContainerField(24), JsonProperty(Order = 24)]
 		public AntRef FloatGameState { get; set; } = new();
 
-		[ContainerField(28), LayoutImmutable, Blittable]
+		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
 		public int ValueInt { get; set; }
 
-		[ContainerField(32), LayoutImmutable, Blittable]
+		[ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
 		public float ValueFloat { get; set; }
 
-		[ContainerField(36), LayoutImmutable, Blittable]
+		[ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
 		public bool Reset { get; set; }
 
-		[ContainerField(37), LayoutImmutable, Blittable]
+		[ContainerField(37), LayoutImmutable, Blittable, JsonProperty(Order = 37)]
 		public bool Continuous { get; set; }
 
 	}

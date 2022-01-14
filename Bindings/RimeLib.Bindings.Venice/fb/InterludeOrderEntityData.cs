@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,10 +21,10 @@ namespace fb
 	public class InterludeOrderEntityData : 
 		BFOrderEntityData
 	{
-		[ContainerField(40), LayoutImmutable, Blittable]
+		[ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
 		public bool IsCutscene { get; set; }
 
-		[ContainerField(41), LayoutImmutable, Blittable]
+		[ContainerField(41), LayoutImmutable, Blittable, JsonProperty(Order = 41)]
 		public bool Crouch { get; set; }
 
 	}

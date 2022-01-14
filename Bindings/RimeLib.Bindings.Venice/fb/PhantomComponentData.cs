@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,16 +21,16 @@ namespace fb
 	public class PhantomComponentData : 
 		ComponentData
 	{
-		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable]
+		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 96)]
 		public Vec3 BoxSize { get; set; } = new();
 
-		[ContainerField(112)]
+		[ContainerField(112), JsonProperty(Order = 112)]
 		public AntRef AsyncQueryPointerAsset { get; set; } = new();
 
-		[ContainerField(116)]
+		[ContainerField(116), JsonProperty(Order = 116)]
 		public AntRef EnableTrajectoryOverride { get; set; } = new();
 
-		[ContainerField(120)]
+		[ContainerField(120), JsonProperty(Order = 120)]
 		public AntRef TrajectoryOverride { get; set; } = new();
 
 	}

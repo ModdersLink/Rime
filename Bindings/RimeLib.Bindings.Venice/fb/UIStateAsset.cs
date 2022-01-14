@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,19 +21,19 @@ namespace fb
 	public class UIStateAsset : 
 		Asset
 	{
-		[ContainerField(12)]
+		[ContainerField(12), JsonProperty(Order = 12)]
 		public RefArray<UIComponentData> UIComponents { get; set; } = new();
 
-		[ContainerField(16)]
+		[ContainerField(16), JsonProperty(Order = 16)]
 		public RefArray<UIAsset> ActionscriptLibraries { get; set; } = new();
 
-		[ContainerField(20)]
+		[ContainerField(20), JsonProperty(Order = 20)]
 		public List<string> ActionscriptNames { get; set; } = new();
 
-		[ContainerField(24), LayoutImmutable]
+		[ContainerField(24), LayoutImmutable, JsonProperty(Order = 24)]
 		public string StateName { get; set; } = string.Empty;
 
-		[ContainerField(28), LayoutImmutable]
+		[ContainerField(28), LayoutImmutable, JsonProperty(Order = 28)]
 		public string StatePath { get; set; } = string.Empty;
 
 	}

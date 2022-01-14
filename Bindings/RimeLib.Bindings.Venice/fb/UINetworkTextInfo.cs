@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -19,10 +20,10 @@ namespace fb
 	[ContainerType(4, 8)]
 	public class UINetworkTextInfo
 	{
-		[ContainerField(0), LayoutImmutable]
+		[ContainerField(0), LayoutImmutable, JsonProperty(Order = 0)]
 		public string StringId { get; set; } = string.Empty;
 		
-		[ContainerField(4), LayoutImmutable, Blittable]
+		[ContainerField(4), LayoutImmutable, Blittable, JsonProperty(Order = 4)]
 		public float DisplayTime { get; set; }
 		
 	}

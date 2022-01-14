@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,13 +21,13 @@ namespace fb
 	public class MedicBagHealingSphereWeaponData : 
 		WeaponData
 	{
-		[ContainerField(16)]
+		[ContainerField(16), JsonProperty(Order = 16)]
 		public HealingSphereData Healer { get; set; } = new();
 
-		[ContainerField(24), LayoutImmutable, Blittable]
+		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
 		public float HealthPointsRefillSpeed { get; set; }
 
-		[ContainerField(28), LayoutImmutable, Blittable]
+		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
 		public float HealthPointsPerBag { get; set; }
 
 	}

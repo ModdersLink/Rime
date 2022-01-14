@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,13 +21,13 @@ namespace fb
 	public class CameraParamsComponentData : 
 		ComponentData
 	{
-		[ContainerField(96), LayoutImmutable, Blittable]
+		[ContainerField(96), LayoutImmutable, Blittable, JsonProperty(Order = 96)]
 		public float ViewDistance { get; set; }
 
-		[ContainerField(100), LayoutImmutable, Blittable]
+		[ContainerField(100), LayoutImmutable, Blittable, JsonProperty(Order = 100)]
 		public float NearPlane { get; set; }
 
-		[ContainerField(104), LayoutImmutable, Blittable]
+		[ContainerField(104), LayoutImmutable, Blittable, JsonProperty(Order = 104)]
 		public float SunShadowmapViewDistance { get; set; }
 
 	}

@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,13 +21,13 @@ namespace fb
 	public class PreRoundEntityData : 
 		GameEntityData
 	{
-		[ContainerField(96), LayoutImmutable, Blittable]
+		[ContainerField(96), LayoutImmutable, Blittable, JsonProperty(Order = 96)]
 		public int RoundMaxPlayerCount { get; set; }
 
-		[ContainerField(100), LayoutImmutable, Blittable]
+		[ContainerField(100), LayoutImmutable, Blittable, JsonProperty(Order = 100)]
 		public uint RoundRestartCountdown { get; set; }
 
-		[ContainerField(104), LayoutImmutable, Blittable]
+		[ContainerField(104), LayoutImmutable, Blittable, JsonProperty(Order = 104)]
 		public int RoundMinPlayerCount { get; set; }
 
 	}

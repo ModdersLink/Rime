@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -19,7 +20,7 @@ namespace fb
 	[ContainerType(4, 4)]
 	public class AssetAabbs
 	{
-		[ContainerField(0)]
+		[ContainerField(0), JsonProperty(Order = 0)]
 		public List<AxisAlignedBox> PartAabb { get; set; } = new();
 		
 	}

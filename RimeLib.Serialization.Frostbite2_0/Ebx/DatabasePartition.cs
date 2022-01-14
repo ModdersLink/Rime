@@ -3,6 +3,7 @@ using System.IO;
 using fb;
 using Newtonsoft.Json;
 using RimeLib.Frostbite.Core;
+using RimeLib.Serialization.Frostbite2_0.Json;
 using RimeLib.Serialization.Json;
 
 namespace RimeLib.Serialization.Frostbite2_0.Ebx
@@ -15,7 +16,7 @@ namespace RimeLib.Serialization.Frostbite2_0.Ebx
 
         public GUID PrimaryInstanceGuid { get; set; } = new();
 
-        public Dictionary<GUID, DataContainer> Instances { get; set; } = new();
+        public SortedDictionary<GUID, DataContainer> Instances { get; set; } = new();
 
         [JsonIgnore]
         public DataContainer PrimaryInstance => Instances[PrimaryInstanceGuid];

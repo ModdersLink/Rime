@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,19 +21,19 @@ namespace fb
 	public class DestructionMaskVolumeEntityData : 
 		GameEntityData
 	{
-		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable]
+		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 96)]
 		public Vec4 DustAccumulationCurve { get; set; } = new();
 
-		[ContainerField(112), Homogeneous, LayoutImmutable, Blittable]
+		[ContainerField(112), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 112)]
 		public Vec4 ShaderUserMasks { get; set; } = new();
 
-		[ContainerField(128), LayoutImmutable, Blittable]
+		[ContainerField(128), LayoutImmutable, Blittable, JsonProperty(Order = 128)]
 		public float DustAccumulationLifeTime { get; set; }
 
-		[ContainerField(132)]
+		[ContainerField(132), JsonProperty(Order = 132)]
 		public SurfaceShaderInstanceDataStruct Shader { get; set; } = new();
 
-		[ContainerField(152), LayoutImmutable, Blittable]
+		[ContainerField(152), LayoutImmutable, Blittable, JsonProperty(Order = 152)]
 		public float Radius { get; set; }
 
 	}

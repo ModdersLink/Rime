@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,13 +21,13 @@ namespace fb
 	public class PhysicsDebugSettings : 
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable, Blittable]
+		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
 		public uint TimingRecursionDepth { get; set; }
 
-		[ContainerField(12), LayoutImmutable, Blittable]
+		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
 		public bool UsePhysicsCpuTimers { get; set; }
 
-		[ContainerField(13), LayoutImmutable, Blittable]
+		[ContainerField(13), LayoutImmutable, Blittable, JsonProperty(Order = 13)]
 		public bool DebugHingeConstraints { get; set; }
 
 	}

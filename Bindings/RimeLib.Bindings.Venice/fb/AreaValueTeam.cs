@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -19,10 +20,10 @@ namespace fb
 	[ContainerType(4, 8)]
 	public class AreaValueTeam
 	{
-		[ContainerField(0), LayoutImmutable, Blittable]
+		[ContainerField(0), LayoutImmutable, Blittable, JsonProperty(Order = 0)]
 		public int AreaValue { get; set; }
 		
-		[ContainerField(4)]
+		[ContainerField(4), JsonProperty(Order = 4)]
 		public TeamId Team { get; set; } = new();
 		
 	}

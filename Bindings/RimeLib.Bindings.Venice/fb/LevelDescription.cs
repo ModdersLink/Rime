@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -19,22 +20,22 @@ namespace fb
 	[ContainerType(4, 16)]
 	public class LevelDescription
 	{
-		[ContainerField(0), LayoutImmutable]
+		[ContainerField(0), LayoutImmutable, JsonProperty(Order = 0)]
 		public string Name { get; set; } = string.Empty;
 		
-		[ContainerField(4), LayoutImmutable]
+		[ContainerField(4), LayoutImmutable, JsonProperty(Order = 4)]
 		public string Description { get; set; } = string.Empty;
 		
-		[ContainerField(8)]
+		[ContainerField(8), JsonProperty(Order = 8)]
 		public RefArray<LevelDescriptionComponent> Components { get; set; } = new();
 		
-		[ContainerField(12), LayoutImmutable, Blittable]
+		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
 		public bool IsCoop { get; set; }
 		
-		[ContainerField(13), LayoutImmutable, Blittable]
+		[ContainerField(13), LayoutImmutable, Blittable, JsonProperty(Order = 13)]
 		public bool IsMenu { get; set; }
 		
-		[ContainerField(14), LayoutImmutable, Blittable]
+		[ContainerField(14), LayoutImmutable, Blittable, JsonProperty(Order = 14)]
 		public bool IsMultiplayer { get; set; }
 		
 	}

@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,10 +21,10 @@ namespace fb
 	public class PS3StoreImageSD : 
 		UIItemDescription
 	{
-		[ContainerField(16), LayoutImmutable]
+		[ContainerField(16), LayoutImmutable, JsonProperty(Order = 16)]
 		public string Identifier { get; set; } = string.Empty;
 
-		[ContainerField(20), LayoutImmutable]
+		[ContainerField(20), LayoutImmutable, JsonProperty(Order = 20)]
 		public string ImagePath { get; set; } = string.Empty;
 
 	}

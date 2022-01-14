@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,10 +21,10 @@ namespace fb
 	public class OneOptionAxisEditableAction : 
 		EditableAction
 	{
-		[ContainerField(12), LayoutImmutable]
+		[ContainerField(12), LayoutImmutable, JsonProperty(Order = 12)]
 		public string Header { get; set; } = string.Empty;
 
-		[ContainerField(16), LayoutImmutable, Blittable]
+		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
 		public bool Invert { get; set; }
 
 	}

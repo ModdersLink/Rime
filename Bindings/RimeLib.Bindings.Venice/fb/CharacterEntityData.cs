@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,13 +21,13 @@ namespace fb
 	public class CharacterEntityData : 
 		ControllableEntityData
 	{
-		[ContainerField(144)]
+		[ContainerField(144), JsonProperty(Order = 144)]
 		public PersonViewMode DefaultViewMode { get; set; } = new();
 
-		[ContainerField(148)]
+		[ContainerField(148), JsonProperty(Order = 148)]
 		public PlayerSpawnType PlayerSpawnType { get; set; } = new();
 
-		[ContainerField(152), LayoutImmutable, Blittable]
+		[ContainerField(152), LayoutImmutable, Blittable, JsonProperty(Order = 152)]
 		public bool CharacterLightingEnable { get; set; }
 
 	}

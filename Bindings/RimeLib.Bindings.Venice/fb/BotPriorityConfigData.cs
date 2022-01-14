@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,22 +21,22 @@ namespace fb
 	public class BotPriorityConfigData : 
 		DataContainer
 	{
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable]
+		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
 		public Vec3 DebugColor { get; set; } = new();
 
-		[ContainerField(32), LayoutImmutable, Blittable]
+		[ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
 		public float Distance { get; set; }
 
-		[ContainerField(36), LayoutImmutable, Blittable]
+		[ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
 		public int Period { get; set; }
 
-		[ContainerField(40), LayoutImmutable, Blittable]
+		[ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
 		public float AngleOffset { get; set; }
 
-		[ContainerField(44), LayoutImmutable, Blittable]
+		[ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
 		public bool AppliesToExecution { get; set; }
 
-		[ContainerField(45), LayoutImmutable, Blittable]
+		[ContainerField(45), LayoutImmutable, Blittable, JsonProperty(Order = 45)]
 		public bool AppliesToDecisions { get; set; }
 
 	}

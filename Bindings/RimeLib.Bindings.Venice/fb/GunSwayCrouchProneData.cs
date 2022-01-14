@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -19,10 +20,10 @@ namespace fb
 	[ContainerType(4, 152)]
 	public class GunSwayCrouchProneData
 	{
-		[ContainerField(0)]
+		[ContainerField(0), JsonProperty(Order = 0)]
 		public GunSwayBaseMoveData NoZoom { get; set; } = new();
 		
-		[ContainerField(76)]
+		[ContainerField(76), JsonProperty(Order = 76)]
 		public GunSwayBaseMoveData Zoom { get; set; } = new();
 		
 	}

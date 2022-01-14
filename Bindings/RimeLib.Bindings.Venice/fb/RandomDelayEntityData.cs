@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,19 +21,19 @@ namespace fb
 	public class RandomDelayEntityData : 
 		EntityData
 	{
-		[ContainerField(12), LayoutImmutable, Blittable]
+		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
 		public float MinDelay { get; set; }
 
-		[ContainerField(16), LayoutImmutable, Blittable]
+		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
 		public float MaxDelay { get; set; }
 
-		[ContainerField(20)]
+		[ContainerField(20), JsonProperty(Order = 20)]
 		public Realm Realm { get; set; } = new();
 
-		[ContainerField(24), LayoutImmutable, Blittable]
+		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
 		public bool AutoStart { get; set; }
 
-		[ContainerField(25), LayoutImmutable, Blittable]
+		[ContainerField(25), LayoutImmutable, Blittable, JsonProperty(Order = 25)]
 		public bool RunOnce { get; set; }
 
 	}

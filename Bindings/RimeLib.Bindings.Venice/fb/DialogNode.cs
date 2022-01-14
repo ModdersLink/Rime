@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,13 +21,13 @@ namespace fb
 	public class DialogNode : 
 		StateNode
 	{
-		[ContainerField(48), LayoutImmutable]
+		[ContainerField(48), LayoutImmutable, JsonProperty(Order = 48)]
 		public string DialogTitle { get; set; } = string.Empty;
 
-		[ContainerField(52), LayoutImmutable]
+		[ContainerField(52), LayoutImmutable, JsonProperty(Order = 52)]
 		public string DialogText { get; set; } = string.Empty;
 
-		[ContainerField(56)]
+		[ContainerField(56), JsonProperty(Order = 56)]
 		public List<UIPopupButton> Buttons { get; set; } = new();
 
 	}

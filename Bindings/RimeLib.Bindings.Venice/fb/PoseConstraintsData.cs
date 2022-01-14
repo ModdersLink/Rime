@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -19,13 +20,13 @@ namespace fb
 	[ContainerType(1, 3)]
 	public class PoseConstraintsData
 	{
-		[ContainerField(0), LayoutImmutable, Blittable]
+		[ContainerField(0), LayoutImmutable, Blittable, JsonProperty(Order = 0)]
 		public bool StandPose { get; set; }
 		
-		[ContainerField(1), LayoutImmutable, Blittable]
+		[ContainerField(1), LayoutImmutable, Blittable, JsonProperty(Order = 1)]
 		public bool CrouchPose { get; set; }
 		
-		[ContainerField(2), LayoutImmutable, Blittable]
+		[ContainerField(2), LayoutImmutable, Blittable, JsonProperty(Order = 2)]
 		public bool PronePose { get; set; }
 		
 	}

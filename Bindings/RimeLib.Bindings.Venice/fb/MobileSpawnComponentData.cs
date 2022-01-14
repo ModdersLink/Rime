@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,19 +21,19 @@ namespace fb
 	public class MobileSpawnComponentData : 
 		ComponentData
 	{
-		[ContainerField(96), LayoutImmutable, Blittable]
+		[ContainerField(96), LayoutImmutable, Blittable, JsonProperty(Order = 96)]
 		public float ParachuteSpawnRadiusMin { get; set; }
 
-		[ContainerField(100), LayoutImmutable, Blittable]
+		[ContainerField(100), LayoutImmutable, Blittable, JsonProperty(Order = 100)]
 		public float ParachuteSpawnDistance { get; set; }
 
-		[ContainerField(104), LayoutImmutable]
+		[ContainerField(104), LayoutImmutable, JsonProperty(Order = 104)]
 		public string NameSid { get; set; } = string.Empty;
 
-		[ContainerField(108), LayoutImmutable, Blittable]
+		[ContainerField(108), LayoutImmutable, Blittable, JsonProperty(Order = 108)]
 		public float ParachuteSpawnRadiusMax { get; set; }
 
-		[ContainerField(112), LayoutImmutable, Blittable]
+		[ContainerField(112), LayoutImmutable, Blittable, JsonProperty(Order = 112)]
 		public bool EnterMobileSpawnPoint { get; set; }
 
 	}

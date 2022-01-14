@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,34 +21,34 @@ namespace fb
 	public class TonemapComponentData : 
 		ComponentData
 	{
-		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable]
+		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 96)]
 		public Vec3 BloomScale { get; set; } = new();
 
-		[ContainerField(112)]
+		[ContainerField(112), JsonProperty(Order = 112)]
 		public Realm Realm { get; set; } = new();
 
-		[ContainerField(116)]
+		[ContainerField(116), JsonProperty(Order = 116)]
 		public TonemapMethod TonemapMethod { get; set; } = new();
 
-		[ContainerField(120), LayoutImmutable, Blittable]
+		[ContainerField(120), LayoutImmutable, Blittable, JsonProperty(Order = 120)]
 		public float MinExposure { get; set; }
 
-		[ContainerField(124), LayoutImmutable, Blittable]
+		[ContainerField(124), LayoutImmutable, Blittable, JsonProperty(Order = 124)]
 		public float MiddleGray { get; set; }
 
-		[ContainerField(128), LayoutImmutable, Blittable]
+		[ContainerField(128), LayoutImmutable, Blittable, JsonProperty(Order = 128)]
 		public float ExposureAdjustTime { get; set; }
 
-		[ContainerField(132), LayoutImmutable, Blittable]
+		[ContainerField(132), LayoutImmutable, Blittable, JsonProperty(Order = 132)]
 		public float MaxExposure { get; set; }
 
-		[ContainerField(136), LayoutImmutable, Blittable]
+		[ContainerField(136), LayoutImmutable, Blittable, JsonProperty(Order = 136)]
 		public float ChromostereopsisOffset { get; set; }
 
-		[ContainerField(140), LayoutImmutable, Blittable]
+		[ContainerField(140), LayoutImmutable, Blittable, JsonProperty(Order = 140)]
 		public float ChromostereopsisScale { get; set; }
 
-		[ContainerField(144), LayoutImmutable, Blittable]
+		[ContainerField(144), LayoutImmutable, Blittable, JsonProperty(Order = 144)]
 		public bool ChromostereopsisEnable { get; set; }
 
 	}

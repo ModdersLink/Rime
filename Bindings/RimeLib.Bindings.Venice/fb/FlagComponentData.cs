@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,13 +21,13 @@ namespace fb
 	public class FlagComponentData : 
 		ComponentData
 	{
-		[ContainerField(96)]
+		[ContainerField(96), JsonProperty(Order = 96)]
 		public Realm Realm { get; set; } = new();
 
-		[ContainerField(100)]
+		[ContainerField(100), JsonProperty(Order = 100)]
 		public CtrRef<ObjectBlueprint> Flag_Team1 { get; set; } = new();
 
-		[ContainerField(104)]
+		[ContainerField(104), JsonProperty(Order = 104)]
 		public CtrRef<ObjectBlueprint> Flag_Team2 { get; set; } = new();
 
 	}

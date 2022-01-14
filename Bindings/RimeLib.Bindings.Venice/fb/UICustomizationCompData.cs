@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,16 +21,16 @@ namespace fb
 	public class UICustomizationCompData : 
 		UIComponentData
 	{
-		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable]
+		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 32)]
 		public Vec3 SoldierOffset { get; set; } = new();
 
-		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable]
+		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 48)]
 		public Vec3 SoldierRotation { get; set; } = new();
 
-		[ContainerField(64), Homogeneous, LayoutImmutable, Blittable]
+		[ContainerField(64), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 64)]
 		public Vec3 VehicleRotation { get; set; } = new();
 
-		[ContainerField(80), LayoutImmutable, Blittable]
+		[ContainerField(80), LayoutImmutable, Blittable, JsonProperty(Order = 80)]
 		public float NetworkThrottleTimer { get; set; }
 
 	}

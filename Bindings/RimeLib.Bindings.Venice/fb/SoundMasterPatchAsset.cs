@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,10 +21,10 @@ namespace fb
 	public class SoundMasterPatchAsset : 
 		SoundGraphAsset
 	{
-		[ContainerField(24)]
+		[ContainerField(24), JsonProperty(Order = 24)]
 		public RefArray<SoundBusData> Busses { get; set; } = new();
 
-		[ContainerField(28)]
+		[ContainerField(28), JsonProperty(Order = 28)]
 		public CtrRef<SoundBusData> RwMovieBus { get; set; } = new();
 
 	}

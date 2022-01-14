@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,16 +21,16 @@ namespace fb
 	public class UIImageDataBinding : 
 		UIDataBinding
 	{
-		[ContainerField(8), LayoutImmutable]
+		[ContainerField(8), LayoutImmutable, JsonProperty(Order = 8)]
 		public string StaticImageUrl { get; set; } = string.Empty;
 
-		[ContainerField(12)]
+		[ContainerField(12), JsonProperty(Order = 12)]
 		public UIDataSourceInfo ImageData { get; set; } = new();
 
-		[ContainerField(28)]
+		[ContainerField(28), JsonProperty(Order = 28)]
 		public UIDataSourceInfo Visibility { get; set; } = new();
 
-		[ContainerField(44), LayoutImmutable, Blittable]
+		[ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
 		public bool Visible { get; set; }
 
 	}

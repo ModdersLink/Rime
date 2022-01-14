@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,28 +21,28 @@ namespace fb
 	public class IrReverbNodeData : 
 		AudioGraphNodeData
 	{
-		[ContainerField(8)]
+		[ContainerField(8), JsonProperty(Order = 8)]
 		public AudioGraphNodePort In { get; set; } = new();
 
-		[ContainerField(16)]
+		[ContainerField(16), JsonProperty(Order = 16)]
 		public AudioGraphNodePort Out { get; set; } = new();
 
-		[ContainerField(24)]
+		[ContainerField(24), JsonProperty(Order = 24)]
 		public AudioGraphNodePort Reverb0 { get; set; } = new();
 
-		[ContainerField(32)]
+		[ContainerField(32), JsonProperty(Order = 32)]
 		public AudioGraphNodePort Amplitude0 { get; set; } = new();
 
-		[ContainerField(40)]
+		[ContainerField(40), JsonProperty(Order = 40)]
 		public AudioGraphNodePort Reverb1 { get; set; } = new();
 
-		[ContainerField(48)]
+		[ContainerField(48), JsonProperty(Order = 48)]
 		public AudioGraphNodePort Amplitude1 { get; set; } = new();
 
-		[ContainerField(56), LayoutImmutable, Blittable]
+		[ContainerField(56), LayoutImmutable, Blittable, JsonProperty(Order = 56)]
 		public float MaxReverbLength { get; set; }
 
-		[ContainerField(60)]
+		[ContainerField(60), JsonProperty(Order = 60)]
 		public SoundGraphPluginRef ReverbPlugin { get; set; } = new();
 
 	}

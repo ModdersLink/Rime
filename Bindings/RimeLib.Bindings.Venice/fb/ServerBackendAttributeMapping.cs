@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -19,13 +20,13 @@ namespace fb
 	[ContainerType(4, 12)]
 	public class ServerBackendAttributeMapping
 	{
-		[ContainerField(0)]
+		[ContainerField(0), JsonProperty(Order = 0)]
 		public ServerBackendAttribute Attribute { get; set; } = new();
 		
-		[ContainerField(4), LayoutImmutable]
+		[ContainerField(4), LayoutImmutable, JsonProperty(Order = 4)]
 		public string Setting { get; set; } = string.Empty;
 		
-		[ContainerField(8), LayoutImmutable]
+		[ContainerField(8), LayoutImmutable, JsonProperty(Order = 8)]
 		public string DefaultValue { get; set; } = string.Empty;
 		
 	}

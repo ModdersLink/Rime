@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,10 +21,10 @@ namespace fb
 	public class SoldierEmoteComponentData : 
 		ComponentData
 	{
-		[ContainerField(96)]
+		[ContainerField(96), JsonProperty(Order = 96)]
 		public SoldierEmoteBinding Binding { get; set; } = new();
 
-		[ContainerField(160)]
+		[ContainerField(160), JsonProperty(Order = 160)]
 		public RefArray<SoldierEmoteNetworkedMessageMapping> NetworkedMessageMappings { get; set; } = new();
 
 	}

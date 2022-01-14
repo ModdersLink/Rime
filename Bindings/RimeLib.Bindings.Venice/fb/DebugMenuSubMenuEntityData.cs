@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,7 +21,7 @@ namespace fb
 	public class DebugMenuSubMenuEntityData : 
 		GameEntityData
 	{
-		[ContainerField(96), LayoutImmutable]
+		[ContainerField(96), LayoutImmutable, JsonProperty(Order = 96)]
 		public string Text { get; set; } = string.Empty;
 
 	}

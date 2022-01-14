@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,22 +21,22 @@ namespace fb
 	public class SoundTestSpec : 
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable]
+		[ContainerField(8), LayoutImmutable, JsonProperty(Order = 8)]
 		public string Name { get; set; } = string.Empty;
 
-		[ContainerField(12), LayoutImmutable]
+		[ContainerField(12), LayoutImmutable, JsonProperty(Order = 12)]
 		public string Description { get; set; } = string.Empty;
 
-		[ContainerField(16)]
+		[ContainerField(16), JsonProperty(Order = 16)]
 		public CtrRef<SoundTestTask> MainStartTask { get; set; } = new();
 
-		[ContainerField(20)]
+		[ContainerField(20), JsonProperty(Order = 20)]
 		public CtrRef<SoundTestTask> MainStopTask { get; set; } = new();
 
-		[ContainerField(24), LayoutImmutable, Blittable]
+		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
 		public float Duration { get; set; }
 
-		[ContainerField(28)]
+		[ContainerField(28), JsonProperty(Order = 28)]
 		public RefArray<SoundTestTask> Tasks { get; set; } = new();
 
 	}

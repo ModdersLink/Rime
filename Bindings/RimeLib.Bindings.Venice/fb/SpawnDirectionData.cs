@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,10 +21,10 @@ namespace fb
 	public class SpawnDirectionData : 
 		ProcessorData
 	{
-		[ContainerField(48), LayoutImmutable, Blittable]
+		[ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
 		public float DirectionFromEmitterOrigin { get; set; }
 
-		[ContainerField(52), LayoutImmutable, Blittable]
+		[ContainerField(52), LayoutImmutable, Blittable, JsonProperty(Order = 52)]
 		public bool InheritSpeedAndDirectionFromEmitter { get; set; }
 
 	}

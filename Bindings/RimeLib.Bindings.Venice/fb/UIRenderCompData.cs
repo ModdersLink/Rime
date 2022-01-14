@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,28 +21,28 @@ namespace fb
 	public class UIRenderCompData : 
 		UIComponentData
 	{
-		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable]
+		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 32)]
 		public Vec4 BackgroundRect1 { get; set; } = new();
 
-		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable]
+		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 48)]
 		public Vec4 BackgroundRect0 { get; set; } = new();
 
-		[ContainerField(64)]
+		[ContainerField(64), JsonProperty(Order = 64)]
 		public CtrRef<TextureAsset> BgTexture2 { get; set; } = new();
 
-		[ContainerField(68)]
+		[ContainerField(68), JsonProperty(Order = 68)]
 		public CtrRef<TextureAsset> BgTexture1 { get; set; } = new();
 
-		[ContainerField(72), LayoutImmutable, Blittable]
+		[ContainerField(72), LayoutImmutable, Blittable, JsonProperty(Order = 72)]
 		public float AlphaMin { get; set; }
 
-		[ContainerField(76), LayoutImmutable, Blittable]
+		[ContainerField(76), LayoutImmutable, Blittable, JsonProperty(Order = 76)]
 		public float AlphaAnimationSpeed { get; set; }
 
-		[ContainerField(80), LayoutImmutable, Blittable]
+		[ContainerField(80), LayoutImmutable, Blittable, JsonProperty(Order = 80)]
 		public float AlphaOffset { get; set; }
 
-		[ContainerField(84), LayoutImmutable, Blittable]
+		[ContainerField(84), LayoutImmutable, Blittable, JsonProperty(Order = 84)]
 		public float AlphaMax { get; set; }
 
 	}

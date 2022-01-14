@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,49 +21,49 @@ namespace fb
 	public class TerrainStreamingSettings : 
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable, Blittable]
+		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
 		public uint DataLoadJobCount { get; set; }
 
-		[ContainerField(12), LayoutImmutable, Blittable]
+		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
 		public uint ActiveFreeStreamingDataLoadJobCount { get; set; }
 
-		[ContainerField(16), LayoutImmutable, Blittable]
+		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
 		public uint HeightfieldAtlasSampleCountXFactor { get; set; }
 
-		[ContainerField(20), LayoutImmutable, Blittable]
+		[ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
 		public uint AdditionalBlurriness { get; set; }
 
-		[ContainerField(24), LayoutImmutable, Blittable]
+		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
 		public float InvisibleDetailReductionFactor { get; set; }
 
-		[ContainerField(28), LayoutImmutable, Blittable]
+		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
 		public float OccludedDetailReductionFactor { get; set; }
 
-		[ContainerField(32), LayoutImmutable, Blittable]
+		[ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
 		public uint HeightfieldAtlasSampleCountYFactor { get; set; }
 
-		[ContainerField(36), LayoutImmutable, Blittable]
+		[ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
 		public uint MaskAtlasSampleCountYFactor { get; set; }
 
-		[ContainerField(40), LayoutImmutable, Blittable]
+		[ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
 		public uint ColorAdditionalBlurriness { get; set; }
 
-		[ContainerField(44), LayoutImmutable, Blittable]
+		[ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
 		public uint MaskAtlasSampleCountXFactor { get; set; }
 
-		[ContainerField(48), LayoutImmutable, Blittable]
+		[ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
 		public uint MaskAdditionalBlurriness { get; set; }
 
-		[ContainerField(52), LayoutImmutable, Blittable]
+		[ContainerField(52), LayoutImmutable, Blittable, JsonProperty(Order = 52)]
 		public uint ColorAtlasSampleCountXFactor { get; set; }
 
-		[ContainerField(56), LayoutImmutable, Blittable]
+		[ContainerField(56), LayoutImmutable, Blittable, JsonProperty(Order = 56)]
 		public uint ColorAtlasSampleCountYFactor { get; set; }
 
-		[ContainerField(60), LayoutImmutable, Blittable]
+		[ContainerField(60), LayoutImmutable, Blittable, JsonProperty(Order = 60)]
 		public bool KeepPoolFullEnable { get; set; }
 
-		[ContainerField(61), LayoutImmutable, Blittable]
+		[ContainerField(61), LayoutImmutable, Blittable, JsonProperty(Order = 61)]
 		public bool LoadOccluderDataEnable { get; set; }
 
 	}

@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,13 +21,13 @@ namespace fb
 	public class ChangeReadinessOrderEntityData : 
 		BFOrderEntityData
 	{
-		[ContainerField(40)]
+		[ContainerField(40), JsonProperty(Order = 40)]
 		public ReadinessLevel Pulse { get; set; } = new();
 
-		[ContainerField(44)]
+		[ContainerField(44), JsonProperty(Order = 44)]
 		public ReadinessLevel Minimum { get; set; } = new();
 
-		[ContainerField(48), LayoutImmutable, Blittable]
+		[ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
 		public bool AllowDecrease { get; set; }
 
 	}

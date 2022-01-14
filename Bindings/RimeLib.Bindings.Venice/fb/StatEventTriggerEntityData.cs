@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,16 +21,16 @@ namespace fb
 	public class StatEventTriggerEntityData : 
 		GameEntityData
 	{
-		[ContainerField(96)]
+		[ContainerField(96), JsonProperty(Order = 96)]
 		public StatEvent StatEvent { get; set; } = new();
 
-		[ContainerField(100), LayoutImmutable]
+		[ContainerField(100), LayoutImmutable, JsonProperty(Order = 100)]
 		public string MiscParamX { get; set; } = string.Empty;
 
-		[ContainerField(104), LayoutImmutable]
+		[ContainerField(104), LayoutImmutable, JsonProperty(Order = 104)]
 		public string MiscParamY { get; set; } = string.Empty;
 
-		[ContainerField(108), LayoutImmutable, Blittable]
+		[ContainerField(108), LayoutImmutable, Blittable, JsonProperty(Order = 108)]
 		public bool SendToAll { get; set; }
 
 	}

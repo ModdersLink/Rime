@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,16 +21,16 @@ namespace fb
 	public class UIBarDataBinding : 
 		UIDataBinding
 	{
-		[ContainerField(8)]
+		[ContainerField(8), JsonProperty(Order = 8)]
 		public UIDataSourceInfo Visibility { get; set; } = new();
 
-		[ContainerField(24)]
+		[ContainerField(24), JsonProperty(Order = 24)]
 		public UIDataSourceInfo Value { get; set; } = new();
 
-		[ContainerField(40)]
+		[ContainerField(40), JsonProperty(Order = 40)]
 		public UIDataSourceInfo Color { get; set; } = new();
 
-		[ContainerField(56), LayoutImmutable, Blittable]
+		[ContainerField(56), LayoutImmutable, Blittable, JsonProperty(Order = 56)]
 		public bool Refresh { get; set; }
 
 	}

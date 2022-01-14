@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,7 +21,7 @@ namespace fb
 	public class Vec3PropertyTrackData : 
 		SimplePropertyTrackData
 	{
-		[ContainerField(20)]
+		[ContainerField(20), JsonProperty(Order = 20)]
 		public List<Vec3> Values { get; set; } = new();
 
 	}

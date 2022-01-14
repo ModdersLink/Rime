@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,19 +21,19 @@ namespace fb
 	public class TransformBlendEntityData : 
 		EntityData
 	{
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable]
+		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
 		public LinearTransform In2 { get; set; } = new();
 
-		[ContainerField(80), Homogeneous, LayoutImmutable, Blittable]
+		[ContainerField(80), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 80)]
 		public LinearTransform In1 { get; set; } = new();
 
-		[ContainerField(144), LayoutImmutable, Blittable]
+		[ContainerField(144), LayoutImmutable, Blittable, JsonProperty(Order = 144)]
 		public float BlendValue { get; set; }
 
-		[ContainerField(148), LayoutImmutable, Blittable]
+		[ContainerField(148), LayoutImmutable, Blittable, JsonProperty(Order = 148)]
 		public float BlendValue2 { get; set; }
 
-		[ContainerField(152)]
+		[ContainerField(152), JsonProperty(Order = 152)]
 		public Realm Realm { get; set; } = new();
 
 	}

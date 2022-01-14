@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -19,19 +20,19 @@ namespace fb
 	[ContainerType(1, 5)]
 	public class WeaponMiscModifierSettings
 	{
-		[ContainerField(0), LayoutImmutable, Blittable]
+		[ContainerField(0), LayoutImmutable, Blittable, JsonProperty(Order = 0)]
 		public bool EnableBreathControl { get; set; }
 		
-		[ContainerField(1), LayoutImmutable, Blittable]
+		[ContainerField(1), LayoutImmutable, Blittable, JsonProperty(Order = 1)]
 		public bool CanBeInSupportedShooting { get; set; }
 		
-		[ContainerField(2), LayoutImmutable, Blittable]
+		[ContainerField(2), LayoutImmutable, Blittable, JsonProperty(Order = 2)]
 		public bool UnZoomOnBoltAction { get; set; }
 		
-		[ContainerField(3), LayoutImmutable, Blittable]
+		[ContainerField(3), LayoutImmutable, Blittable, JsonProperty(Order = 3)]
 		public bool HoldBoltActionUntilZoomRelease { get; set; }
 		
-		[ContainerField(4), LayoutImmutable, Blittable]
+		[ContainerField(4), LayoutImmutable, Blittable, JsonProperty(Order = 4)]
 		public bool IsSilenced { get; set; }
 		
 	}

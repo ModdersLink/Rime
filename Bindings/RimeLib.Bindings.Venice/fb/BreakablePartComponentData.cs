@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,13 +21,13 @@ namespace fb
 	public class BreakablePartComponentData : 
 		DestructionPartComponentData
 	{
-		[ContainerField(112), LayoutImmutable, Blittable]
+		[ContainerField(112), LayoutImmutable, Blittable, JsonProperty(Order = 112)]
 		public uint HealthPercentage { get; set; }
 
-		[ContainerField(116), LayoutImmutable, Blittable]
+		[ContainerField(116), LayoutImmutable, Blittable, JsonProperty(Order = 116)]
 		public bool Collapsable { get; set; }
 
-		[ContainerField(117), LayoutImmutable, Blittable]
+		[ContainerField(117), LayoutImmutable, Blittable, JsonProperty(Order = 117)]
 		public bool DestroyNearbyStaticEntities { get; set; }
 
 	}

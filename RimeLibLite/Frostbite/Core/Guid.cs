@@ -12,7 +12,7 @@ namespace RimeLib.Frostbite.Core
     /// Implementation of fb::Guid
     /// </summary>
     [Serializable, JsonConverter(typeof(GuidJsonConverter)), TypeConverter(typeof(GuidTypeConverter))]
-    public class GUID : ISerializable, IFbSerializable
+    public class GUID : ISerializable, IFbSerializable, IComparable<GUID>
     {
         /// <summary>
         /// Internal size of the structure.
@@ -116,10 +116,16 @@ namespace RimeLib.Frostbite.Core
         /// <param name="p_G1">First guid</param>
         /// <param name="p_G2">Second guid</param>
         /// <returns>True if equal, false otherwise</returns>
-		public static bool operator ==(GUID p_G1, GUID p_G2)
+		public static bool operator ==(GUID? p_G1, GUID? p_G2)
         {
             if (ReferenceEquals(p_G1, p_G2))
                 return true;
+
+            if (p_G1 is null && p_G2 is null)
+                return true;
+
+            if (p_G1 is null || p_G2 is null)
+                return false;
 
             return p_G1.m_Guid == p_G2.m_Guid;
         }
@@ -155,6 +161,15 @@ namespace RimeLib.Frostbite.Core
         public static bool operator !=(GUID p_G1, Guid p_G2)
         {
             return p_G1.m_Guid != p_G2;
+        }
+
+        public int CompareTo(GUID? p_Other)
+        {
+            if (p_Other == null)
+                return 1;
+
+            // ReSharper disable once StringCompareToIsCultureSpecific
+            return m_Guid.CompareTo(p_Other.m_Guid);
         }
 
         /// <summary>

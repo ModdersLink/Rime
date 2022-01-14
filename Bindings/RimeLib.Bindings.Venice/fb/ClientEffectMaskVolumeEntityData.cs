@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,16 +21,16 @@ namespace fb
 	public class ClientEffectMaskVolumeEntityData : 
 		GameEntityData
 	{
-		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable]
+		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 96)]
 		public Vec4 ApplyEffectCurve { get; set; } = new();
 
-		[ContainerField(112), LayoutImmutable, Blittable]
+		[ContainerField(112), LayoutImmutable, Blittable, JsonProperty(Order = 112)]
 		public float LifeTimeInSeconds { get; set; }
 
-		[ContainerField(116), LayoutImmutable, Blittable]
+		[ContainerField(116), LayoutImmutable, Blittable, JsonProperty(Order = 116)]
 		public float UpdatePeriodInSeconds { get; set; }
 
-		[ContainerField(120), LayoutImmutable, Blittable]
+		[ContainerField(120), LayoutImmutable, Blittable, JsonProperty(Order = 120)]
 		public float Radius { get; set; }
 
 	}

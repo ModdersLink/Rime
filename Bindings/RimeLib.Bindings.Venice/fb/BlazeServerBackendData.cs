@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,10 +21,10 @@ namespace fb
 	public class BlazeServerBackendData : 
 		ServerBackendData
 	{
-		[ContainerField(16)]
+		[ContainerField(16), JsonProperty(Order = 16)]
 		public BlazeCreateGameParameters CreateParameters { get; set; } = new();
 
-		[ContainerField(48)]
+		[ContainerField(48), JsonProperty(Order = 48)]
 		public OnlineEnvironmentConsoleUrl ConfigUrl { get; set; } = new();
 
 	}

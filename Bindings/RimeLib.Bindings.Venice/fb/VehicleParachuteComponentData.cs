@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,19 +21,19 @@ namespace fb
 	public class VehicleParachuteComponentData : 
 		ComponentData
 	{
-		[ContainerField(96)]
+		[ContainerField(96), JsonProperty(Order = 96)]
 		public VehicleParachuteBinding Binding { get; set; } = new();
 
-		[ContainerField(104), LayoutImmutable, Blittable]
+		[ContainerField(104), LayoutImmutable, Blittable, JsonProperty(Order = 104)]
 		public float UndeployTime { get; set; }
 
-		[ContainerField(108), LayoutImmutable, Blittable]
+		[ContainerField(108), LayoutImmutable, Blittable, JsonProperty(Order = 108)]
 		public float TimeInvisibleAfterSpawn { get; set; }
 
-		[ContainerField(112), LayoutImmutable, Blittable]
+		[ContainerField(112), LayoutImmutable, Blittable, JsonProperty(Order = 112)]
 		public int VehicleType { get; set; }
 
-		[ContainerField(116), LayoutImmutable, Blittable]
+		[ContainerField(116), LayoutImmutable, Blittable, JsonProperty(Order = 116)]
 		public bool DropParachuteOnUndeploy { get; set; }
 
 	}

@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,37 +21,37 @@ namespace fb
 	public class DialogSamplerNodeData : 
 		AudioGraphNodeData
 	{
-		[ContainerField(8)]
+		[ContainerField(8), JsonProperty(Order = 8)]
 		public AudioGraphNodePort Pitch { get; set; } = new();
 
-		[ContainerField(16)]
+		[ContainerField(16), JsonProperty(Order = 16)]
 		public AudioGraphNodePort Amplitude { get; set; } = new();
 
-		[ContainerField(24)]
+		[ContainerField(24), JsonProperty(Order = 24)]
 		public AudioGraphNodePort Continue { get; set; } = new();
 
-		[ContainerField(32)]
+		[ContainerField(32), JsonProperty(Order = 32)]
 		public AudioGraphNodePort Output { get; set; } = new();
 
-		[ContainerField(40)]
+		[ContainerField(40), JsonProperty(Order = 40)]
 		public AudioGraphNodePort Triggered { get; set; } = new();
 
-		[ContainerField(48)]
+		[ContainerField(48), JsonProperty(Order = 48)]
 		public AudioGraphNodePort Finished { get; set; } = new();
 
-		[ContainerField(56)]
+		[ContainerField(56), JsonProperty(Order = 56)]
 		public SoundGraphPluginRef SndPlayerPlugin { get; set; } = new();
 
-		[ContainerField(59)]
+		[ContainerField(59), JsonProperty(Order = 59)]
 		public SoundGraphPluginRef ResamplePlugin { get; set; } = new();
 
-		[ContainerField(62)]
+		[ContainerField(62), JsonProperty(Order = 62)]
 		public SoundGraphPluginRef PausePlugin { get; set; } = new();
 
-		[ContainerField(65)]
+		[ContainerField(65), JsonProperty(Order = 65)]
 		public SoundGraphPluginRef GainPlugin { get; set; } = new();
 
-		[ContainerField(68), LayoutImmutable, Blittable]
+		[ContainerField(68), LayoutImmutable, Blittable, JsonProperty(Order = 68)]
 		public float TailLength { get; set; }
 
 	}

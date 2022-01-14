@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,7 +21,7 @@ namespace fb
 	public class WorldData : 
 		SubWorldData
 	{
-		[ContainerField(44)]
+		[ContainerField(44), JsonProperty(Order = 44)]
 		public CtrRef<MaterialGridData> RuntimeMaterialGrid { get; set; } = new();
 
 	}

@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,7 +21,7 @@ namespace fb
 	public class RawFileImportActionParams : 
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable]
+		[ContainerField(8), LayoutImmutable, JsonProperty(Order = 8)]
 		public string SourceFile { get; set; } = string.Empty;
 
 	}

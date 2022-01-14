@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,19 +21,19 @@ namespace fb
 	public class AiffWriterNodeData : 
 		AudioGraphNodeData
 	{
-		[ContainerField(8)]
+		[ContainerField(8), JsonProperty(Order = 8)]
 		public AudioGraphNodePort In { get; set; } = new();
 
-		[ContainerField(16)]
+		[ContainerField(16), JsonProperty(Order = 16)]
 		public AudioGraphNodePort Start { get; set; } = new();
 
-		[ContainerField(24)]
+		[ContainerField(24), JsonProperty(Order = 24)]
 		public AudioGraphNodePort Stop { get; set; } = new();
 
-		[ContainerField(32)]
+		[ContainerField(32), JsonProperty(Order = 32)]
 		public SoundGraphPluginRef Plugin { get; set; } = new();
 
-		[ContainerField(36), LayoutImmutable]
+		[ContainerField(36), LayoutImmutable, JsonProperty(Order = 36)]
 		public string FileName { get; set; } = string.Empty;
 
 	}

@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,19 +21,19 @@ namespace fb
 	public class SubWorldData : 
 		SpatialPrefabBlueprint
 	{
-		[ContainerField(36)]
+		[ContainerField(36), JsonProperty(Order = 36)]
 		public CtrRef<RegistryContainer> RegistryContainer { get; set; } = new();
 
-		[ContainerField(40), LayoutImmutable, Blittable]
+		[ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
 		public bool IsWin32SubLevel { get; set; }
 
-		[ContainerField(41), LayoutImmutable, Blittable]
+		[ContainerField(41), LayoutImmutable, Blittable, JsonProperty(Order = 41)]
 		public bool IsXenonSubLevel { get; set; }
 
-		[ContainerField(42), LayoutImmutable, Blittable]
+		[ContainerField(42), LayoutImmutable, Blittable, JsonProperty(Order = 42)]
 		public bool IsPs3SubLevel { get; set; }
 
-		[ContainerField(43), LayoutImmutable, Blittable]
+		[ContainerField(43), LayoutImmutable, Blittable, JsonProperty(Order = 43)]
 		public bool RememberStateOnStreamOut { get; set; }
 
 	}

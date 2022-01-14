@@ -60,6 +60,7 @@ namespace FBCC.Generators
             m_Writer.WriteLine("using System;");
             m_Writer.WriteLine("using System.IO;");
             m_Writer.WriteLine("using System.Collections.Generic;");
+            m_Writer.WriteLine("using Newtonsoft.Json;");
             m_Writer.WriteLine("using RimeLib.IO;");
             m_Writer.WriteLine("using RimeLib.Frostbite.Core;");
             m_Writer.WriteLine("using RimeLib.Serialization.Attributes;");
@@ -191,7 +192,7 @@ namespace FBCC.Generators
 
             if (p_Class.Name == "DataContainer")
             {
-                m_Writer.WriteLine($"{m_Indent}[Newtonsoft.Json.JsonProperty(\"$type\", Order = -2)]");
+                m_Writer.WriteLine($"{m_Indent}[JsonProperty(\"$type\", Order = -2)]");
                 m_Writer.WriteLine($"{m_Indent}public string TypeName => GetType().Name;");
             }
 
@@ -220,7 +221,7 @@ namespace FBCC.Generators
                 
                 var s_FieldAttributes = string.Join(", ", s_Member.Attributes.Except(new[] { s_MemberFlagsAttribute }));
 
-                m_Writer.WriteLine($"{m_Indent}[ContainerField({s_Member.Offset}){(s_FieldAttributes.Length > 0 ? ", " + s_FieldAttributes : "")}]");
+                m_Writer.WriteLine($"{m_Indent}[ContainerField({s_Member.Offset}){(s_FieldAttributes.Length > 0 ? ", " + s_FieldAttributes : "")}, JsonProperty(Order = {s_Member.Offset})]");
 
                 if (s_Pointer && s_Member.Array)
                 {
@@ -716,7 +717,7 @@ namespace FBCC.Generators
                     throw new System.Exception("not enough size parameters.");
 
                 var s_FieldAttributes = string.Join(", ", s_Member.Attributes.Except(new [] {s_MemberFlagsAttribute }));
-                m_Writer.WriteLine($"{m_Indent}[ContainerField({s_Member.Offset}){(s_FieldAttributes.Length > 0 ? ", " + s_FieldAttributes : "")}]");
+                m_Writer.WriteLine($"{m_Indent}[ContainerField({s_Member.Offset}){(s_FieldAttributes.Length > 0 ? ", " + s_FieldAttributes : "")}, JsonProperty(Order = {s_Member.Offset})]");
 
 
                 /*m_Writer.Write(m_Indent + "[ContainerField({0})", s_Member.Offset);

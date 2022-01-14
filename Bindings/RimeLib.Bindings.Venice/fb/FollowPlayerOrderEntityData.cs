@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,10 +21,10 @@ namespace fb
 	public class FollowPlayerOrderEntityData : 
 		BFOrderEntityData
 	{
-		[ContainerField(40)]
+		[ContainerField(40), JsonProperty(Order = 40)]
 		public CtrRef<FormationData> Formation { get; set; } = new();
 
-		[ContainerField(44), LayoutImmutable, Blittable]
+		[ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
 		public bool CombatForbidden { get; set; }
 
 	}

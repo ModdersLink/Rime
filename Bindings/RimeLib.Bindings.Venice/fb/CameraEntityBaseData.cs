@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,13 +21,13 @@ namespace fb
 	public class CameraEntityBaseData : 
 		SpatialEntityData
 	{
-		[ContainerField(80), LayoutImmutable]
+		[ContainerField(80), LayoutImmutable, JsonProperty(Order = 80)]
 		public string NameId { get; set; } = string.Empty;
 
-		[ContainerField(84), LayoutImmutable, Blittable]
+		[ContainerField(84), LayoutImmutable, Blittable, JsonProperty(Order = 84)]
 		public int Priority { get; set; }
 
-		[ContainerField(88), LayoutImmutable, Blittable]
+		[ContainerField(88), LayoutImmutable, Blittable, JsonProperty(Order = 88)]
 		public bool Enabled { get; set; }
 
 	}

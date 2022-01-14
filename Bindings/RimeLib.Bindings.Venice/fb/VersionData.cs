@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,19 +21,19 @@ namespace fb
 	public class VersionData : 
 		Asset
 	{
-		[ContainerField(12), LayoutImmutable]
+		[ContainerField(12), LayoutImmutable, JsonProperty(Order = 12)]
 		public string disclaimer { get; set; } = string.Empty;
 
-		[ContainerField(16), LayoutImmutable, Blittable]
+		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
 		public int Version { get; set; }
 
-		[ContainerField(20), LayoutImmutable]
+		[ContainerField(20), LayoutImmutable, JsonProperty(Order = 20)]
 		public string DateTime { get; set; } = string.Empty;
 
-		[ContainerField(24), LayoutImmutable]
+		[ContainerField(24), LayoutImmutable, JsonProperty(Order = 24)]
 		public string BranchId { get; set; } = string.Empty;
 
-		[ContainerField(28), LayoutImmutable]
+		[ContainerField(28), LayoutImmutable, JsonProperty(Order = 28)]
 		public string GameName { get; set; } = string.Empty;
 
 	}

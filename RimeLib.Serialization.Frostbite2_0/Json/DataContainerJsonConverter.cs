@@ -3,7 +3,7 @@ using fb;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace RimeLib.Serialization.Frostbite2_0
+namespace RimeLib.Serialization.Frostbite2_0.Json
 {
     public class DataContainerJsonConverter : JsonConverter<DataContainer>
     {

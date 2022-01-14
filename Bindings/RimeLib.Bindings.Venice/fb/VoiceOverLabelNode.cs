@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,28 +21,28 @@ namespace fb
 	public class VoiceOverLabelNode : 
 		VoiceOverExpressionNode
 	{
-		[ContainerField(8)]
+		[ContainerField(8), JsonProperty(Order = 8)]
 		public RefArray<VoiceOverLabelSource> Sources { get; set; } = new();
 
-		[ContainerField(12)]
+		[ContainerField(12), JsonProperty(Order = 12)]
 		public CtrRef<VoiceOverValue> False { get; set; } = new();
 
-		[ContainerField(16)]
+		[ContainerField(16), JsonProperty(Order = 16)]
 		public CtrRef<VoiceOverValue> True { get; set; } = new();
 
-		[ContainerField(20)]
+		[ContainerField(20), JsonProperty(Order = 20)]
 		public RefArray<VoiceOverLabel> WantedLabels { get; set; } = new();
 
-		[ContainerField(24)]
+		[ContainerField(24), JsonProperty(Order = 24)]
 		public RefArray<VoiceOverLabel> UnwantedLabels { get; set; } = new();
 
-		[ContainerField(28)]
+		[ContainerField(28), JsonProperty(Order = 28)]
 		public VoiceOverLabelSourceMode SourceMode { get; set; } = new();
 
-		[ContainerField(32)]
+		[ContainerField(32), JsonProperty(Order = 32)]
 		public VoiceOverLabelCompareMode WantedCompareMode { get; set; } = new();
 
-		[ContainerField(36)]
+		[ContainerField(36), JsonProperty(Order = 36)]
 		public VoiceOverLabelCompareMode UnwantedCompareMode { get; set; } = new();
 
 	}

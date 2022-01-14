@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,49 +21,49 @@ namespace fb
 	public class GameInteractionEntityData : 
 		InteractionEntityData
 	{
-		[ContainerField(128)]
+		[ContainerField(128), JsonProperty(Order = 128)]
 		public BlinkType Blink { get; set; } = new();
 
-		[ContainerField(132), LayoutImmutable, Blittable]
+		[ContainerField(132), LayoutImmutable, Blittable, JsonProperty(Order = 132)]
 		public float CapturepointVerticalOffset { get; set; }
 
-		[ContainerField(136), LayoutImmutable, Blittable]
+		[ContainerField(136), LayoutImmutable, Blittable, JsonProperty(Order = 136)]
 		public float DelayBetweenUses { get; set; }
 
-		[ContainerField(140)]
+		[ContainerField(140), JsonProperty(Order = 140)]
 		public TeamId TeamId { get; set; } = new();
 
-		[ContainerField(144)]
+		[ContainerField(144), JsonProperty(Order = 144)]
 		public EntryInputActionEnum InputAction { get; set; } = new();
 
-		[ContainerField(148), LayoutImmutable, Blittable]
+		[ContainerField(148), LayoutImmutable, Blittable, JsonProperty(Order = 148)]
 		public float HoldToInteractTime { get; set; }
 
-		[ContainerField(152)]
+		[ContainerField(152), JsonProperty(Order = 152)]
 		public InteractionEntityType InteractionEntityType { get; set; } = new();
 
-		[ContainerField(156), LayoutImmutable]
+		[ContainerField(156), LayoutImmutable, JsonProperty(Order = 156)]
 		public string InteractionSid { get; set; } = string.Empty;
 
-		[ContainerField(160), LayoutImmutable]
+		[ContainerField(160), LayoutImmutable, JsonProperty(Order = 160)]
 		public string InteractingSid { get; set; } = string.Empty;
 
-		[ContainerField(164), LayoutImmutable]
+		[ContainerField(164), LayoutImmutable, JsonProperty(Order = 164)]
 		public string FriendlyTextSid { get; set; } = string.Empty;
 
-		[ContainerField(168), LayoutImmutable]
+		[ContainerField(168), LayoutImmutable, JsonProperty(Order = 168)]
 		public string NameSid { get; set; } = string.Empty;
 
-		[ContainerField(172), LayoutImmutable, Blittable]
+		[ContainerField(172), LayoutImmutable, Blittable, JsonProperty(Order = 172)]
 		public float InteractionVerticalOffset { get; set; }
 
-		[ContainerField(176), LayoutImmutable]
+		[ContainerField(176), LayoutImmutable, JsonProperty(Order = 176)]
 		public string EnemyTextSid { get; set; } = string.Empty;
 
-		[ContainerField(180), LayoutImmutable, Blittable]
+		[ContainerField(180), LayoutImmutable, Blittable, JsonProperty(Order = 180)]
 		public bool ShrinkSnap { get; set; }
 
-		[ContainerField(181), LayoutImmutable, Blittable]
+		[ContainerField(181), LayoutImmutable, Blittable, JsonProperty(Order = 181)]
 		public bool ShowAsCapturePoint { get; set; }
 
 	}

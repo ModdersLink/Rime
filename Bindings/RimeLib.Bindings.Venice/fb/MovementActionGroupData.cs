@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,13 +21,13 @@ namespace fb
 	public class MovementActionGroupData : 
 		MovementActionData
 	{
-		[ContainerField(8)]
+		[ContainerField(8), JsonProperty(Order = 8)]
 		public RefArray<MovementActionData> Actions { get; set; } = new();
 
-		[ContainerField(12), LayoutImmutable, Blittable]
+		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
 		public bool RunSimultaneously { get; set; }
 
-		[ContainerField(13), LayoutImmutable, Blittable]
+		[ContainerField(13), LayoutImmutable, Blittable, JsonProperty(Order = 13)]
 		public bool RestartChildren { get; set; }
 
 	}

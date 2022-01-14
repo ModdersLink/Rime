@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,7 +21,7 @@ namespace fb
 	public class GameSplineData : 
 		CustomSplineData
 	{
-		[ContainerField(28)]
+		[ContainerField(28), JsonProperty(Order = 28)]
 		public GameSplineType SplineType { get; set; } = new();
 
 	}

@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,10 +21,10 @@ namespace fb
 	public class MeleeWeaponData : 
 		WeaponData
 	{
-		[ContainerField(16), LayoutImmutable, Blittable]
+		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
 		public bool UseCannedAnimation { get; set; }
 
-		[ContainerField(17), LayoutImmutable, Blittable]
+		[ContainerField(17), LayoutImmutable, Blittable, JsonProperty(Order = 17)]
 		public bool UseSphereDamage { get; set; }
 
 	}

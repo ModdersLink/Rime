@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,13 +21,13 @@ namespace fb
 	public class OcclusionSettings : 
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable, Blittable]
+		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
 		public bool Enable { get; set; }
 
-		[ContainerField(9), LayoutImmutable, Blittable]
+		[ContainerField(9), LayoutImmutable, Blittable, JsonProperty(Order = 9)]
 		public bool DrawZbuffer { get; set; }
 
-		[ContainerField(10), LayoutImmutable, Blittable]
+		[ContainerField(10), LayoutImmutable, Blittable, JsonProperty(Order = 10)]
 		public bool DrawBinaryBuffer { get; set; }
 
 	}

@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,16 +21,16 @@ namespace fb
 	public class PadInputActionData : 
 		AxesInputActionData
 	{
-		[ContainerField(20)]
+		[ContainerField(20), JsonProperty(Order = 20)]
 		public InputDevicePadButtons Button { get; set; } = new();
 
-		[ContainerField(24)]
+		[ContainerField(24), JsonProperty(Order = 24)]
 		public InputDevicePOVs Pov { get; set; } = new();
 
-		[ContainerField(28)]
+		[ContainerField(28), JsonProperty(Order = 28)]
 		public InputDevicePadButtons PS3AlternativeButton { get; set; } = new();
 
-		[ContainerField(32), LayoutImmutable, Blittable]
+		[ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
 		public bool UseSquareInput { get; set; }
 
 	}

@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,16 +21,16 @@ namespace fb
 	public class UINodeData : 
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable]
+		[ContainerField(8), LayoutImmutable, JsonProperty(Order = 8)]
 		public string Name { get; set; } = string.Empty;
 
-		[ContainerField(12)]
+		[ContainerField(12), JsonProperty(Order = 12)]
 		public CtrRef<UIGraphAsset> ParentGraph { get; set; } = new();
 
-		[ContainerField(16), LayoutImmutable, Blittable]
+		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
 		public bool IsRootNode { get; set; }
 
-		[ContainerField(17), LayoutImmutable, Blittable]
+		[ContainerField(17), LayoutImmutable, Blittable, JsonProperty(Order = 17)]
 		public bool ParentIsScreen { get; set; }
 
 	}

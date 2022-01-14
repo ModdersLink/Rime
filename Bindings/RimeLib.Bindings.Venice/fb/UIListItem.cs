@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -19,25 +20,25 @@ namespace fb
 	[ContainerType(4, 72)]
 	public class UIListItem
 	{
-		[ContainerField(0), LayoutImmutable]
+		[ContainerField(0), LayoutImmutable, JsonProperty(Order = 0)]
 		public string Label { get; set; } = string.Empty;
 		
-		[ContainerField(4)]
+		[ContainerField(4), JsonProperty(Order = 4)]
 		public UIDataSourceInfo IsEnabled { get; set; } = new();
 		
-		[ContainerField(20)]
+		[ContainerField(20), JsonProperty(Order = 20)]
 		public UIDataSourceInfo IsVisible { get; set; } = new();
 		
-		[ContainerField(36)]
+		[ContainerField(36), JsonProperty(Order = 36)]
 		public UIDataSourceInfo ToggleItems { get; set; } = new();
 		
-		[ContainerField(52)]
+		[ContainerField(52), JsonProperty(Order = 52)]
 		public UIDataSourceInfo DataUpdate { get; set; } = new();
 		
-		[ContainerField(68), LayoutImmutable, Blittable]
+		[ContainerField(68), LayoutImmutable, Blittable, JsonProperty(Order = 68)]
 		public bool DefaultIsVisible { get; set; }
 		
-		[ContainerField(69), LayoutImmutable, Blittable]
+		[ContainerField(69), LayoutImmutable, Blittable, JsonProperty(Order = 69)]
 		public bool DefaultIsEnabled { get; set; }
 		
 	}

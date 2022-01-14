@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,43 +21,43 @@ namespace fb
 	public class WindowSettings : 
 		SystemSettings
 	{
-		[ContainerField(12), LayoutImmutable, Blittable]
+		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
 		public int PosX { get; set; }
 
-		[ContainerField(16), LayoutImmutable, Blittable]
+		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
 		public int PosY { get; set; }
 
-		[ContainerField(20), LayoutImmutable, Blittable]
+		[ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
 		public uint Width { get; set; }
 
-		[ContainerField(24), LayoutImmutable, Blittable]
+		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
 		public uint Height { get; set; }
 
-		[ContainerField(28), LayoutImmutable, Blittable]
+		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
 		public bool BordersEnable { get; set; }
 
-		[ContainerField(29), LayoutImmutable, Blittable]
+		[ContainerField(29), LayoutImmutable, Blittable, JsonProperty(Order = 29)]
 		public bool AutoSize { get; set; }
 
-		[ContainerField(30), LayoutImmutable, Blittable]
+		[ContainerField(30), LayoutImmutable, Blittable, JsonProperty(Order = 30)]
 		public bool FullscreenAutoSize { get; set; }
 
-		[ContainerField(31), LayoutImmutable, Blittable]
+		[ContainerField(31), LayoutImmutable, Blittable, JsonProperty(Order = 31)]
 		public bool FullscreenWhenJoiningServer { get; set; }
 
-		[ContainerField(32), LayoutImmutable, Blittable]
+		[ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
 		public bool EnableEscape { get; set; }
 
-		[ContainerField(33), LayoutImmutable, Blittable]
+		[ContainerField(33), LayoutImmutable, Blittable, JsonProperty(Order = 33)]
 		public bool EnableInputOnActivate { get; set; }
 
-		[ContainerField(34), LayoutImmutable, Blittable]
+		[ContainerField(34), LayoutImmutable, Blittable, JsonProperty(Order = 34)]
 		public bool HibernateOnClose { get; set; }
 
-		[ContainerField(35), LayoutImmutable, Blittable]
+		[ContainerField(35), LayoutImmutable, Blittable, JsonProperty(Order = 35)]
 		public bool Hidden { get; set; }
 
-		[ContainerField(36), LayoutImmutable, Blittable]
+		[ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
 		public bool Minimized { get; set; }
 
 	}

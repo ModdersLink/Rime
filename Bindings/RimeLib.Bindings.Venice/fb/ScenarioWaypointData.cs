@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,10 +21,10 @@ namespace fb
 	public class ScenarioWaypointData : 
 		AbstractLocoWaypointData
 	{
-		[ContainerField(48)]
+		[ContainerField(48), JsonProperty(Order = 48)]
 		public AntRef ScenarioAntRef { get; set; } = new();
 
-		[ContainerField(64)]
+		[ContainerField(64), JsonProperty(Order = 64)]
 		public ScenarioTaskData ScenarioTask { get; set; } = new();
 
 	}

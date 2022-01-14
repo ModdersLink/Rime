@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,28 +21,28 @@ namespace fb
 	public class TransformPartPropertyTrackData : 
 		PropertyTrackData
 	{
-		[ContainerField(16)]
+		[ContainerField(16), JsonProperty(Order = 16)]
 		public TransformPart TransformPart { get; set; } = new();
 
-		[ContainerField(20)]
+		[ContainerField(20), JsonProperty(Order = 20)]
 		public CurveInfinityType PreInfinity { get; set; } = new();
 
-		[ContainerField(24)]
+		[ContainerField(24), JsonProperty(Order = 24)]
 		public CurveInfinityType PostInfinity { get; set; } = new();
 
-		[ContainerField(28), LayoutImmutable, Blittable]
+		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
 		public uint KeyStartIndex { get; set; }
 
-		[ContainerField(32), LayoutImmutable]
+		[ContainerField(32), LayoutImmutable, JsonProperty(Order = 32)]
 		public string ResourceName { get; set; } = string.Empty;
 
-		[ContainerField(36), LayoutImmutable, Blittable]
+		[ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
 		public uint KeyCount { get; set; }
 
-		[ContainerField(40), LayoutImmutable, Blittable]
+		[ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
 		public bool Weighted { get; set; }
 
-		[ContainerField(41), LayoutImmutable, Blittable]
+		[ContainerField(41), LayoutImmutable, Blittable, JsonProperty(Order = 41)]
 		public bool IsStatic { get; set; }
 
 	}

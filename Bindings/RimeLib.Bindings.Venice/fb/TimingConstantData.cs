@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,13 +21,13 @@ namespace fb
 	public class TimingConstantData : 
 		Asset
 	{
-		[ContainerField(12), LayoutImmutable, Blittable]
+		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
 		public float UpdateTimePerFrame { get; set; }
 
-		[ContainerField(16)]
+		[ContainerField(16), JsonProperty(Order = 16)]
 		public SubsystemTimingConfigData SubsystemTimeParts { get; set; } = new();
 
-		[ContainerField(40)]
+		[ContainerField(40), JsonProperty(Order = 40)]
 		public RefArray<BotPriorityConfigData> PriorityClasses { get; set; } = new();
 
 	}

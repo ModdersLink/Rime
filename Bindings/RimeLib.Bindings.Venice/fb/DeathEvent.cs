@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,19 +21,19 @@ namespace fb
 	public class DeathEvent : 
 		MetricEvent
 	{
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable]
+		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
 		public Vec3 Position { get; set; } = new();
 
-		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable]
+		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 32)]
 		public Vec3 KillerPosition { get; set; } = new();
 
-		[ContainerField(48), LayoutImmutable, Blittable]
+		[ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
 		public ulong KillerId { get; set; }
 
-		[ContainerField(56), LayoutImmutable, Blittable]
+		[ContainerField(56), LayoutImmutable, Blittable, JsonProperty(Order = 56)]
 		public float Time { get; set; }
 
-		[ContainerField(60), LayoutImmutable]
+		[ContainerField(60), LayoutImmutable, JsonProperty(Order = 60)]
 		public string Weapon { get; set; } = string.Empty;
 
 	}

@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,22 +21,22 @@ namespace fb
 	public class ChildRotationBodyData : 
 		RotationBodyData
 	{
-		[ContainerField(56), LayoutImmutable, Blittable]
+		[ContainerField(56), LayoutImmutable, Blittable, JsonProperty(Order = 56)]
 		public float ForceModifier { get; set; }
 
-		[ContainerField(60), LayoutImmutable, Blittable]
+		[ContainerField(60), LayoutImmutable, Blittable, JsonProperty(Order = 60)]
 		public float ResetForceModifier { get; set; }
 
-		[ContainerField(64), LayoutImmutable, Blittable]
+		[ContainerField(64), LayoutImmutable, Blittable, JsonProperty(Order = 64)]
 		public float ResetForceInputThreshold { get; set; }
 
-		[ContainerField(68)]
+		[ContainerField(68), JsonProperty(Order = 68)]
 		public EntryInputActionEnum RotationInput { get; set; } = new();
 
-		[ContainerField(72), LayoutImmutable, Blittable]
+		[ContainerField(72), LayoutImmutable, Blittable, JsonProperty(Order = 72)]
 		public float WorldSpaceLockEfficiency { get; set; }
 
-		[ContainerField(76), LayoutImmutable, Blittable]
+		[ContainerField(76), LayoutImmutable, Blittable, JsonProperty(Order = 76)]
 		public bool UseLinearInput { get; set; }
 
 	}

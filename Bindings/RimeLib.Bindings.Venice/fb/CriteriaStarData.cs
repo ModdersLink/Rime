@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,7 +21,7 @@ namespace fb
 	public class CriteriaStarData : 
 		CriteriaData
 	{
-		[ContainerField(52)]
+		[ContainerField(52), JsonProperty(Order = 52)]
 		public CtrRef<CriteriaStarCategoryData> StarTemplate { get; set; } = new();
 
 	}

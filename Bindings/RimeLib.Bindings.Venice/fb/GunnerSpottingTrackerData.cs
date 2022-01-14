@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,10 +21,10 @@ namespace fb
 	public class GunnerSpottingTrackerData : 
 		HudTrackerData
 	{
-		[ContainerField(44)]
+		[ContainerField(44), JsonProperty(Order = 44)]
 		public UIHudIcon SpottedInfantryIcon { get; set; } = new();
 
-		[ContainerField(48)]
+		[ContainerField(48), JsonProperty(Order = 48)]
 		public UIHudIcon SpottedVehicleIcon { get; set; } = new();
 
 	}

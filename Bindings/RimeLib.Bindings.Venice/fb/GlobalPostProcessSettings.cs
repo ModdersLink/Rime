@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,334 +21,334 @@ namespace fb
 	public class GlobalPostProcessSettings : 
 		DataContainer
 	{
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable]
+		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
 		public Vec3 Brightness { get; set; } = new();
 
-		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable]
+		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 32)]
 		public Vec3 ForceBloomScale { get; set; } = new();
 
-		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable]
+		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 48)]
 		public Vec4 ForceVignetteColor { get; set; } = new();
 
-		[ContainerField(64), Homogeneous, LayoutImmutable, Blittable]
+		[ContainerField(64), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 64)]
 		public Vec3 Contrast { get; set; } = new();
 
-		[ContainerField(80), Homogeneous, LayoutImmutable, Blittable]
+		[ContainerField(80), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 80)]
 		public Vec3 Saturation { get; set; } = new();
 
-		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable]
+		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 96)]
 		public Vec2 FilmGrainTextureScale { get; set; } = new();
 
-		[ContainerField(104), Homogeneous, LayoutImmutable, Blittable]
+		[ContainerField(104), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 104)]
 		public Vec2 ForceVignetteScale { get; set; } = new();
 
-		[ContainerField(112), Homogeneous, LayoutImmutable, Blittable]
+		[ContainerField(112), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 112)]
 		public Vec3 FilmGrainColorScale { get; set; } = new();
 
-		[ContainerField(128), LayoutImmutable, Blittable]
+		[ContainerField(128), LayoutImmutable, Blittable, JsonProperty(Order = 128)]
 		public uint Ps3EdgeMlaaJobPriority { get; set; }
 
-		[ContainerField(132), LayoutImmutable, Blittable]
+		[ContainerField(132), LayoutImmutable, Blittable, JsonProperty(Order = 132)]
 		public uint BloomBlurIterationCount { get; set; }
 
-		[ContainerField(136), LayoutImmutable, Blittable]
+		[ContainerField(136), LayoutImmutable, Blittable, JsonProperty(Order = 136)]
 		public uint DebugModeStep { get; set; }
 
-		[ContainerField(140)]
+		[ContainerField(140), JsonProperty(Order = 140)]
 		public BlurFilter BloomBlurFilter { get; set; } = new();
 
-		[ContainerField(144), LayoutImmutable, Blittable]
+		[ContainerField(144), LayoutImmutable, Blittable, JsonProperty(Order = 144)]
 		public float LdrBloomRange { get; set; }
 
-		[ContainerField(148)]
+		[ContainerField(148), JsonProperty(Order = 148)]
 		public PostProcessDebugMode DebugMode { get; set; } = new();
 
-		[ContainerField(152), LayoutImmutable, Blittable]
+		[ContainerField(152), LayoutImmutable, Blittable, JsonProperty(Order = 152)]
 		public float UserBrightnessMin { get; set; }
 
-		[ContainerField(156), LayoutImmutable, Blittable]
+		[ContainerField(156), LayoutImmutable, Blittable, JsonProperty(Order = 156)]
 		public float UIBrightnessNorm { get; set; }
 
-		[ContainerField(160), LayoutImmutable, Blittable]
+		[ContainerField(160), LayoutImmutable, Blittable, JsonProperty(Order = 160)]
 		public uint Ps3EdgeMlaaJobCount { get; set; }
 
-		[ContainerField(164), LayoutImmutable, Blittable]
+		[ContainerField(164), LayoutImmutable, Blittable, JsonProperty(Order = 164)]
 		public uint Ps3EdgeMlaaAbsoluteThreshold { get; set; }
 
-		[ContainerField(168), LayoutImmutable, Blittable]
+		[ContainerField(168), LayoutImmutable, Blittable, JsonProperty(Order = 168)]
 		public uint BloomPyramidLevelCount { get; set; }
 
-		[ContainerField(172), LayoutImmutable, Blittable]
+		[ContainerField(172), LayoutImmutable, Blittable, JsonProperty(Order = 172)]
 		public uint BloomPyramidFinalLevel { get; set; }
 
-		[ContainerField(176), LayoutImmutable, Blittable]
+		[ContainerField(176), LayoutImmutable, Blittable, JsonProperty(Order = 176)]
 		public float UserBrightnessMax { get; set; }
 
-		[ContainerField(180), LayoutImmutable, Blittable]
+		[ContainerField(180), LayoutImmutable, Blittable, JsonProperty(Order = 180)]
 		public float UserBrightnessMulScale { get; set; }
 
-		[ContainerField(184), LayoutImmutable, Blittable]
+		[ContainerField(184), LayoutImmutable, Blittable, JsonProperty(Order = 184)]
 		public float UserBrightnessAddScale { get; set; }
 
-		[ContainerField(188), LayoutImmutable, Blittable]
+		[ContainerField(188), LayoutImmutable, Blittable, JsonProperty(Order = 188)]
 		public uint DownsampleAverageStartMipmap { get; set; }
 
-		[ContainerField(192), LayoutImmutable, Blittable]
+		[ContainerField(192), LayoutImmutable, Blittable, JsonProperty(Order = 192)]
 		public uint Ps3EdgeMlaaThresholdFactor { get; set; }
 
-		[ContainerField(196), LayoutImmutable, Blittable]
+		[ContainerField(196), LayoutImmutable, Blittable, JsonProperty(Order = 196)]
 		public uint Ps3EdgeMlaaThresholdBase { get; set; }
 
-		[ContainerField(200), LayoutImmutable, Blittable]
+		[ContainerField(200), LayoutImmutable, Blittable, JsonProperty(Order = 200)]
 		public uint Ps3TiledLdrMipmapCount { get; set; }
 
-		[ContainerField(204), LayoutImmutable, Blittable]
+		[ContainerField(204), LayoutImmutable, Blittable, JsonProperty(Order = 204)]
 		public uint Ps3TiledFloatMipmapCount { get; set; }
 
-		[ContainerField(208), LayoutImmutable, Blittable]
+		[ContainerField(208), LayoutImmutable, Blittable, JsonProperty(Order = 208)]
 		public uint Ps3TiledBloomMipmapCount { get; set; }
 
-		[ContainerField(212)]
+		[ContainerField(212), JsonProperty(Order = 212)]
 		public BlurFilter HbaoGaussianBlurSize { get; set; } = new();
 
-		[ContainerField(216), LayoutImmutable, Blittable]
+		[ContainerField(216), LayoutImmutable, Blittable, JsonProperty(Order = 216)]
 		public float ForceExposure { get; set; }
 
-		[ContainerField(220), LayoutImmutable, Blittable]
+		[ContainerField(220), LayoutImmutable, Blittable, JsonProperty(Order = 220)]
 		public float ForceBlurAdd { get; set; }
 
-		[ContainerField(224), LayoutImmutable, Blittable]
+		[ContainerField(224), LayoutImmutable, Blittable, JsonProperty(Order = 224)]
 		public int ForceDofEnable { get; set; }
 
-		[ContainerField(228), LayoutImmutable, Blittable]
+		[ContainerField(228), LayoutImmutable, Blittable, JsonProperty(Order = 228)]
 		public float ForceDofFocusDistance { get; set; }
 
-		[ContainerField(232), LayoutImmutable, Blittable]
+		[ContainerField(232), LayoutImmutable, Blittable, JsonProperty(Order = 232)]
 		public float ForceDofNearDistanceScale { get; set; }
 
-		[ContainerField(236), LayoutImmutable, Blittable]
+		[ContainerField(236), LayoutImmutable, Blittable, JsonProperty(Order = 236)]
 		public float ForceDofFarDistanceScale { get; set; }
 
-		[ContainerField(240), LayoutImmutable, Blittable]
+		[ContainerField(240), LayoutImmutable, Blittable, JsonProperty(Order = 240)]
 		public float ForceDofScale { get; set; }
 
-		[ContainerField(244), LayoutImmutable, Blittable]
+		[ContainerField(244), LayoutImmutable, Blittable, JsonProperty(Order = 244)]
 		public float ForceDofBlurFilterDeviation { get; set; }
 
-		[ContainerField(248), LayoutImmutable, Blittable]
+		[ContainerField(248), LayoutImmutable, Blittable, JsonProperty(Order = 248)]
 		public uint HbaoTemporalFilterMaxNumFrames { get; set; }
 
-		[ContainerField(252), LayoutImmutable, Blittable]
+		[ContainerField(252), LayoutImmutable, Blittable, JsonProperty(Order = 252)]
 		public int HbaoForceVendor { get; set; }
 
-		[ContainerField(256), LayoutImmutable, Blittable]
+		[ContainerField(256), LayoutImmutable, Blittable, JsonProperty(Order = 256)]
 		public float ForceVignetteExponent { get; set; }
 
-		[ContainerField(260), LayoutImmutable, Blittable]
+		[ContainerField(260), LayoutImmutable, Blittable, JsonProperty(Order = 260)]
 		public float HbaoTemporalFilterThreshold { get; set; }
 
-		[ContainerField(264), LayoutImmutable, Blittable]
+		[ContainerField(264), LayoutImmutable, Blittable, JsonProperty(Order = 264)]
 		public int ForceTonemapMethod { get; set; }
 
-		[ContainerField(268), LayoutImmutable, Blittable]
+		[ContainerField(268), LayoutImmutable, Blittable, JsonProperty(Order = 268)]
 		public float LUTGammaR { get; set; }
 
-		[ContainerField(272), LayoutImmutable, Blittable]
+		[ContainerField(272), LayoutImmutable, Blittable, JsonProperty(Order = 272)]
 		public float LUTGammaG { get; set; }
 
-		[ContainerField(276), LayoutImmutable, Blittable]
+		[ContainerField(276), LayoutImmutable, Blittable, JsonProperty(Order = 276)]
 		public float HbaoTemporalFilterThreshold2 { get; set; }
 
-		[ContainerField(280), LayoutImmutable, Blittable]
+		[ContainerField(280), LayoutImmutable, Blittable, JsonProperty(Order = 280)]
 		public int ForceChromostereopsisEnable { get; set; }
 
-		[ContainerField(284), LayoutImmutable, Blittable]
+		[ContainerField(284), LayoutImmutable, Blittable, JsonProperty(Order = 284)]
 		public int ForceChromostereopsisOffset { get; set; }
 
-		[ContainerField(288), LayoutImmutable, Blittable]
+		[ContainerField(288), LayoutImmutable, Blittable, JsonProperty(Order = 288)]
 		public float ForceChromostereopsisScale { get; set; }
 
-		[ContainerField(292), LayoutImmutable, Blittable]
+		[ContainerField(292), LayoutImmutable, Blittable, JsonProperty(Order = 292)]
 		public uint HbaoBilateralBlurRadius { get; set; }
 
-		[ContainerField(296), LayoutImmutable, Blittable]
+		[ContainerField(296), LayoutImmutable, Blittable, JsonProperty(Order = 296)]
 		public float ForceMiddleGray { get; set; }
 
-		[ContainerField(300), LayoutImmutable, Blittable]
+		[ContainerField(300), LayoutImmutable, Blittable, JsonProperty(Order = 300)]
 		public float LUTGammaB { get; set; }
 
-		[ContainerField(304), LayoutImmutable, Blittable]
+		[ContainerField(304), LayoutImmutable, Blittable, JsonProperty(Order = 304)]
 		public float LUTGammaCurbOffset { get; set; }
 
-		[ContainerField(308), LayoutImmutable, Blittable]
+		[ContainerField(308), LayoutImmutable, Blittable, JsonProperty(Order = 308)]
 		public float HbaoBilateralBlurSharpness { get; set; }
 
-		[ContainerField(312), LayoutImmutable, Blittable]
+		[ContainerField(312), LayoutImmutable, Blittable, JsonProperty(Order = 312)]
 		public uint HbaoRandomTextureWidth { get; set; }
 
-		[ContainerField(316), LayoutImmutable, Blittable]
+		[ContainerField(316), LayoutImmutable, Blittable, JsonProperty(Order = 316)]
 		public float LensScopeFilterColorScale { get; set; }
 
-		[ContainerField(320), LayoutImmutable, Blittable]
+		[ContainerField(320), LayoutImmutable, Blittable, JsonProperty(Order = 320)]
 		public float HbaoStepCount { get; set; }
 
-		[ContainerField(324), LayoutImmutable, Blittable]
+		[ContainerField(324), LayoutImmutable, Blittable, JsonProperty(Order = 324)]
 		public float HbaoMaxFootprintRadius { get; set; }
 
-		[ContainerField(328), LayoutImmutable, Blittable]
+		[ContainerField(328), LayoutImmutable, Blittable, JsonProperty(Order = 328)]
 		public float HbaoDirCount { get; set; }
 
-		[ContainerField(332), LayoutImmutable, Blittable]
+		[ContainerField(332), LayoutImmutable, Blittable, JsonProperty(Order = 332)]
 		public float Hue { get; set; }
 
-		[ContainerField(336), LayoutImmutable, Blittable]
+		[ContainerField(336), LayoutImmutable, Blittable, JsonProperty(Order = 336)]
 		public uint HbaoQuality { get; set; }
 
-		[ContainerField(340), LayoutImmutable, Blittable]
+		[ContainerField(340), LayoutImmutable, Blittable, JsonProperty(Order = 340)]
 		public uint HbaoRandomDirVariationCount { get; set; }
 
-		[ContainerField(344), LayoutImmutable, Blittable]
+		[ContainerField(344), LayoutImmutable, Blittable, JsonProperty(Order = 344)]
 		public float ForceDiffusionDofPlaneInFocus { get; set; }
 
-		[ContainerField(348), LayoutImmutable, Blittable]
+		[ContainerField(348), LayoutImmutable, Blittable, JsonProperty(Order = 348)]
 		public float DiffusionDofLuminance { get; set; }
 
-		[ContainerField(352), LayoutImmutable, Blittable]
+		[ContainerField(352), LayoutImmutable, Blittable, JsonProperty(Order = 352)]
 		public uint HbaoTemporalFilterDebugMode { get; set; }
 
-		[ContainerField(356), LayoutImmutable, Blittable]
+		[ContainerField(356), LayoutImmutable, Blittable, JsonProperty(Order = 356)]
 		public float ForceDiffusionDofAperture { get; set; }
 
-		[ContainerField(360), LayoutImmutable, Blittable]
+		[ContainerField(360), LayoutImmutable, Blittable, JsonProperty(Order = 360)]
 		public float ForceDiffusionDofFocalLength { get; set; }
 
-		[ContainerField(364)]
+		[ContainerField(364), JsonProperty(Order = 364)]
 		public DynamicAOMethod DynamicAOMethod { get; set; } = new();
 
-		[ContainerField(368), LayoutImmutable, Blittable]
+		[ContainerField(368), LayoutImmutable, Blittable, JsonProperty(Order = 368)]
 		public bool DrawDebugInfo { get; set; }
 
-		[ContainerField(369), LayoutImmutable, Blittable]
+		[ContainerField(369), LayoutImmutable, Blittable, JsonProperty(Order = 369)]
 		public bool ColorGradingForceUpdateAlways { get; set; }
 
-		[ContainerField(370), LayoutImmutable, Blittable]
+		[ContainerField(370), LayoutImmutable, Blittable, JsonProperty(Order = 370)]
 		public bool BloomBlurEnable { get; set; }
 
-		[ContainerField(371), LayoutImmutable, Blittable]
+		[ContainerField(371), LayoutImmutable, Blittable, JsonProperty(Order = 371)]
 		public bool HdrBlurEnable { get; set; }
 
-		[ContainerField(372), LayoutImmutable, Blittable]
+		[ContainerField(372), LayoutImmutable, Blittable, JsonProperty(Order = 372)]
 		public bool BlurBlendEnable { get; set; }
 
-		[ContainerField(373), LayoutImmutable, Blittable]
+		[ContainerField(373), LayoutImmutable, Blittable, JsonProperty(Order = 373)]
 		public bool DownsampleAverageFromBloomEnable { get; set; }
 
-		[ContainerField(374), LayoutImmutable, Blittable]
+		[ContainerField(374), LayoutImmutable, Blittable, JsonProperty(Order = 374)]
 		public bool FilmGrainEnable { get; set; }
 
-		[ContainerField(375), LayoutImmutable, Blittable]
+		[ContainerField(375), LayoutImmutable, Blittable, JsonProperty(Order = 375)]
 		public bool Ldr16BitBloomEnable { get; set; }
 
-		[ContainerField(376), LayoutImmutable, Blittable]
+		[ContainerField(376), LayoutImmutable, Blittable, JsonProperty(Order = 376)]
 		public bool DynamicAOEnable { get; set; }
 
-		[ContainerField(377), LayoutImmutable, Blittable]
+		[ContainerField(377), LayoutImmutable, Blittable, JsonProperty(Order = 377)]
 		public bool DiffusionDofEnable { get; set; }
 
-		[ContainerField(378), LayoutImmutable, Blittable]
+		[ContainerField(378), LayoutImmutable, Blittable, JsonProperty(Order = 378)]
 		public bool HbaoHalfResEnable { get; set; }
 
-		[ContainerField(379), LayoutImmutable, Blittable]
+		[ContainerField(379), LayoutImmutable, Blittable, JsonProperty(Order = 379)]
 		public bool HbaoHalfResDepthEnable { get; set; }
 
-		[ContainerField(380), LayoutImmutable, Blittable]
+		[ContainerField(380), LayoutImmutable, Blittable, JsonProperty(Order = 380)]
 		public bool HbaoVectorizedEnable { get; set; }
 
-		[ContainerField(381), LayoutImmutable, Blittable]
+		[ContainerField(381), LayoutImmutable, Blittable, JsonProperty(Order = 381)]
 		public bool Ps3CompressedRenderTargetsEnable { get; set; }
 
-		[ContainerField(382), LayoutImmutable, Blittable]
+		[ContainerField(382), LayoutImmutable, Blittable, JsonProperty(Order = 382)]
 		public bool HdrBloomEnable { get; set; }
 
-		[ContainerField(383), LayoutImmutable, Blittable]
+		[ContainerField(383), LayoutImmutable, Blittable, JsonProperty(Order = 383)]
 		public bool FilmGrainRandomEnable { get; set; }
 
-		[ContainerField(384), LayoutImmutable, Blittable]
+		[ContainerField(384), LayoutImmutable, Blittable, JsonProperty(Order = 384)]
 		public bool DirectExposureEnable { get; set; }
 
-		[ContainerField(385), LayoutImmutable, Blittable]
+		[ContainerField(385), LayoutImmutable, Blittable, JsonProperty(Order = 385)]
 		public bool ExposureClampEnable { get; set; }
 
-		[ContainerField(386), LayoutImmutable, Blittable]
+		[ContainerField(386), LayoutImmutable, Blittable, JsonProperty(Order = 386)]
 		public bool FilmGrainLinearFilteringEnable { get; set; }
 
-		[ContainerField(387), LayoutImmutable, Blittable]
+		[ContainerField(387), LayoutImmutable, Blittable, JsonProperty(Order = 387)]
 		public bool HbaoBilateralBlurEnable { get; set; }
 
-		[ContainerField(388), LayoutImmutable, Blittable]
+		[ContainerField(388), LayoutImmutable, Blittable, JsonProperty(Order = 388)]
 		public bool ColorGradingEnable { get; set; }
 
-		[ContainerField(389), LayoutImmutable, Blittable]
+		[ContainerField(389), LayoutImmutable, Blittable, JsonProperty(Order = 389)]
 		public bool ColorTransformEnable { get; set; }
 
-		[ContainerField(390), LayoutImmutable, Blittable]
+		[ContainerField(390), LayoutImmutable, Blittable, JsonProperty(Order = 390)]
 		public bool HbaoBilateralBlurCsEnable { get; set; }
 
-		[ContainerField(391), LayoutImmutable, Blittable]
+		[ContainerField(391), LayoutImmutable, Blittable, JsonProperty(Order = 391)]
 		public bool HbaoTemporalFilterEnable { get; set; }
 
-		[ContainerField(392), LayoutImmutable, Blittable]
+		[ContainerField(392), LayoutImmutable, Blittable, JsonProperty(Order = 392)]
 		public bool QuarterDownsamplingEnable { get; set; }
 
-		[ContainerField(393), LayoutImmutable, Blittable]
+		[ContainerField(393), LayoutImmutable, Blittable, JsonProperty(Order = 393)]
 		public bool DrawDebugUserBrightnessLUT { get; set; }
 
-		[ContainerField(394), LayoutImmutable, Blittable]
+		[ContainerField(394), LayoutImmutable, Blittable, JsonProperty(Order = 394)]
 		public bool BloomPyramidAttenuateEnable { get; set; }
 
-		[ContainerField(395), LayoutImmutable, Blittable]
+		[ContainerField(395), LayoutImmutable, Blittable, JsonProperty(Order = 395)]
 		public bool DownsampleBeforeBlurEnable { get; set; }
 
-		[ContainerField(396), LayoutImmutable, Blittable]
+		[ContainerField(396), LayoutImmutable, Blittable, JsonProperty(Order = 396)]
 		public bool HbaoGaussianBlurEnable { get; set; }
 
-		[ContainerField(397), LayoutImmutable, Blittable]
+		[ContainerField(397), LayoutImmutable, Blittable, JsonProperty(Order = 397)]
 		public bool HbaoGaussianBlurHalfResEnable { get; set; }
 
-		[ContainerField(398), LayoutImmutable, Blittable]
+		[ContainerField(398), LayoutImmutable, Blittable, JsonProperty(Order = 398)]
 		public bool BloomPyramidEnable { get; set; }
 
-		[ContainerField(399), LayoutImmutable, Blittable]
+		[ContainerField(399), LayoutImmutable, Blittable, JsonProperty(Order = 399)]
 		public bool UserBrightnessLUTEnable { get; set; }
 
-		[ContainerField(400), LayoutImmutable, Blittable]
+		[ContainerField(400), LayoutImmutable, Blittable, JsonProperty(Order = 400)]
 		public bool Ps3EdgeMlaaEnable { get; set; }
 
-		[ContainerField(401), LayoutImmutable, Blittable]
+		[ContainerField(401), LayoutImmutable, Blittable, JsonProperty(Order = 401)]
 		public bool Ps3EdgeMlaaCopyOnly { get; set; }
 
-		[ContainerField(402), LayoutImmutable, Blittable]
+		[ContainerField(402), LayoutImmutable, Blittable, JsonProperty(Order = 402)]
 		public bool Ps3EdgeMlaaShowEdges { get; set; }
 
-		[ContainerField(403), LayoutImmutable, Blittable]
+		[ContainerField(403), LayoutImmutable, Blittable, JsonProperty(Order = 403)]
 		public bool Ps3EdgeMlaaRelativeEdgeDetection { get; set; }
 
-		[ContainerField(404), LayoutImmutable, Blittable]
+		[ContainerField(404), LayoutImmutable, Blittable, JsonProperty(Order = 404)]
 		public bool Ps3EdgeMlaaGpuBlockEnable { get; set; }
 
-		[ContainerField(405), LayoutImmutable, Blittable]
+		[ContainerField(405), LayoutImmutable, Blittable, JsonProperty(Order = 405)]
 		public bool Ps3BackBufferAsLdrTargetEnable { get; set; }
 
-		[ContainerField(406), LayoutImmutable, Blittable]
+		[ContainerField(406), LayoutImmutable, Blittable, JsonProperty(Order = 406)]
 		public bool DownsampleLogAverageEnable { get; set; }
 
-		[ContainerField(407), LayoutImmutable, Blittable]
+		[ContainerField(407), LayoutImmutable, Blittable, JsonProperty(Order = 407)]
 		public bool BloomQuarterResEnable { get; set; }
 
-		[ContainerField(408), LayoutImmutable, Blittable]
+		[ContainerField(408), LayoutImmutable, Blittable, JsonProperty(Order = 408)]
 		public bool BloomEnable { get; set; }
 
-		[ContainerField(409), LayoutImmutable, Blittable]
+		[ContainerField(409), LayoutImmutable, Blittable, JsonProperty(Order = 409)]
 		public bool LensScopeFilterEnable { get; set; }
 
 	}

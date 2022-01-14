@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,13 +21,13 @@ namespace fb
 	public class WorldPartData : 
 		SpatialPrefabBlueprint
 	{
-		[ContainerField(36), LayoutImmutable, Blittable]
+		[ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
 		public GUID HackToSolveRealTimeTweakingIssue { get; set; }
 
-		[ContainerField(52), LayoutImmutable, Blittable]
+		[ContainerField(52), LayoutImmutable, Blittable, JsonProperty(Order = 52)]
 		public bool UseDeferredEntityCreation { get; set; }
 
-		[ContainerField(53), LayoutImmutable, Blittable]
+		[ContainerField(53), LayoutImmutable, Blittable, JsonProperty(Order = 53)]
 		public bool Enabled { get; set; }
 
 	}

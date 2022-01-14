@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,25 +21,25 @@ namespace fb
 	public class UIGameModeDescription : 
 		UIItemDescription
 	{
-		[ContainerField(16), LayoutImmutable]
+		[ContainerField(16), LayoutImmutable, JsonProperty(Order = 16)]
 		public string Identifier { get; set; } = string.Empty;
 
-		[ContainerField(20), LayoutImmutable]
+		[ContainerField(20), LayoutImmutable, JsonProperty(Order = 20)]
 		public string Name { get; set; } = string.Empty;
 
-		[ContainerField(24), LayoutImmutable]
+		[ContainerField(24), LayoutImmutable, JsonProperty(Order = 24)]
 		public string Abbreviation { get; set; } = string.Empty;
 
-		[ContainerField(28), LayoutImmutable]
+		[ContainerField(28), LayoutImmutable, JsonProperty(Order = 28)]
 		public string Desc { get; set; } = string.Empty;
 
-		[ContainerField(32), LayoutImmutable, Blittable]
+		[ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
 		public int BattlelogId { get; set; }
 
-		[ContainerField(36), LayoutImmutable]
+		[ContainerField(36), LayoutImmutable, JsonProperty(Order = 36)]
 		public string TexturePath { get; set; } = string.Empty;
 
-		[ContainerField(40)]
+		[ContainerField(40), JsonProperty(Order = 40)]
 		public List<GameModeVariation> Variations { get; set; } = new();
 
 	}

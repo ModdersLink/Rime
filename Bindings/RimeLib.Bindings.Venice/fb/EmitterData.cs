@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -20,7 +21,7 @@ namespace fb
 	public class EmitterData : 
 		ProcessorData
 	{
-		[ContainerField(48)]
+		[ContainerField(48), JsonProperty(Order = 48)]
 		public RefArray<EmitterDocument> EmitterAssets { get; set; } = new();
 
 	}
