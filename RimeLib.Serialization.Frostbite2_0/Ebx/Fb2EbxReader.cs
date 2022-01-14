@@ -308,8 +308,17 @@ namespace RimeLib.Serialization.Frostbite2_0.Ebx
                 case FieldType.Enum:
                 {
                     var s_List = p_PropertyType.GetValue(p_Instance) as IList;
-                    var s_Value = GetEnumForValue(m_Reader.ReadInt32(), s_ArrayElementDescriptor, p_PropertyType.PropertyType.GetGenericArguments()[0]);
-                    s_List.Add(s_Value);
+
+                    for (var j = 0; j < s_ArrayEntry.ElementCount; ++j)
+                    {
+                        var s_Value = GetEnumForValue(
+                            m_Reader.ReadInt32(),
+                            s_ArrayElementDescriptor,
+                            p_PropertyType.PropertyType.GetGenericArguments()[0]
+                        );
+                     
+                        s_List.Add(s_Value);
+                    }
 
                     break;
                 }
@@ -320,7 +329,11 @@ namespace RimeLib.Serialization.Frostbite2_0.Ebx
                 default:
                 {
                     var s_List = p_PropertyType.GetValue(p_Instance) as IList;
-                    s_List.Add(ParseSimpleType(m_Reader, s_ArrayElementFieldDescriptor.Flags.GetFieldType()));
+
+                    for (var j = 0; j < s_ArrayEntry.ElementCount; ++j)
+                    {
+                        s_List.Add(ParseSimpleType(m_Reader, s_ArrayElementFieldDescriptor.Flags.GetFieldType()));
+                    }
 
                     break;
                 }

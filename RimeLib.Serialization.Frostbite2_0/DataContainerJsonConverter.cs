@@ -11,7 +11,9 @@ namespace RimeLib.Serialization.Frostbite2_0
 
         public override void WriteJson(JsonWriter p_Writer, DataContainer p_Value, JsonSerializer p_Serializer)
         {
-            
+            throw new Exception(
+                "Tried serializing DataContainer with the custom converter. This isn't supported. The converter should only be used for reading."
+            );
         }
 
         public override DataContainer ReadJson(

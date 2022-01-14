@@ -8,7 +8,6 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
-using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
@@ -18,9 +17,9 @@ using RimeLib.Serialization.Ebx;
 namespace fb
 {
 	[ContainerType(4, 8)]
-	public class DataContainer
-    {
-        [JsonProperty("$type", Order = -2)]
-        public string TypeName => GetType().Name;
-    }
+	public abstract class DataContainer
+	{
+		[Newtonsoft.Json.JsonProperty("$type", Order = -2)]
+		public string TypeName => GetType().Name;
+	}
 }

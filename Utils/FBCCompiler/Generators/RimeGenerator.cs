@@ -171,7 +171,10 @@ namespace FBCC.Generators
                 p_Class.Alignment, s_SizeAttribute.Parameters[0],
                 s_ClassAttributes.Length > 0 ? ", " + s_ClassAttributes : "");
 
-            m_Writer.Write(m_Indent + "public class {0}", p_Class.Name);
+            if (p_Class.Name == "DataContainer")
+                m_Writer.Write(m_Indent + "public abstract class {0}", p_Class.Name);
+            else
+                m_Writer.Write(m_Indent + "public class {0}", p_Class.Name);
 
             if (p_Class.InheritedClasses.Count > 0)
                 m_Writer.Write(" : ");
@@ -185,6 +188,12 @@ namespace FBCC.Generators
             // Write class body start
             m_Writer.WriteLine(m_Indent + "{");
             m_Indent += "\t";
+
+            if (p_Class.Name == "DataContainer")
+            {
+                m_Writer.WriteLine($"{m_Indent}[Newtonsoft.Json.JsonProperty(\"$type\", Order = -2)]");
+                m_Writer.WriteLine($"{m_Indent}public string TypeName => GetType().Name;");
+            }
 
             // Write members
             foreach (var s_Member in p_Class.Members)
