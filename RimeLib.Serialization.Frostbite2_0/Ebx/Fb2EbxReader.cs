@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Text;
+using fb;
 
 namespace RimeLib.Serialization.Frostbite2_0.Ebx
 {
@@ -26,17 +27,18 @@ namespace RimeLib.Serialization.Frostbite2_0.Ebx
         private List<ArrayEntry> m_ArrayEntries;
         private List<GUID> m_InternalInstanceGuids;
 
-        /// <summary>
-        /// Parses a partition with specified name and opened reader to the position of the ebx data
-        /// </summary>
-        /// <param name="p_Name">Name of partition</param>
-        /// <param name="p_Reader">Reader opened to the position of ebx data</param>
-        /// <returns>Partition object</returns>
-        public void ParsePartition(string p_Name, RimeReader p_Reader)
+        private DatabasePartition m_Partition;
+
+        public DatabasePartition ParsePartition(string p_Name, RimeReader p_Reader)
         {
             if (p_Reader == null)
                 throw new InvalidDataException("Data is invalid for ebx.");
-            
+
+            m_Partition = new DatabasePartition
+            {
+                Name = p_Name
+            };
+
             var s_Magic = p_Reader.ReadBytes(4);
             p_Reader.Seek(-4, SeekOrigin.Current);
 
@@ -48,6 +50,8 @@ namespace RimeLib.Serialization.Frostbite2_0.Ebx
                 throw new Exception("The supplied file has an invalid magic header.");
 
             ProcessHeader();
+
+            return m_Partition;
         }
         
         private void ProcessPadding()
@@ -59,6 +63,9 @@ namespace RimeLib.Serialization.Frostbite2_0.Ebx
         private void ProcessHeader()
         {
             m_Header = new StreamingPartitionHeader(m_Reader);
+
+            m_Partition.PartitionGuid = m_Header.PartitionGuid;
+            m_Partition.PrimaryInstanceGuid = m_Header.PrimaryInstanceGuid;
 
             // Advance state
             ProcessMetadata();
@@ -166,6 +173,8 @@ namespace RimeLib.Serialization.Frostbite2_0.Ebx
 
                     using var s_LimitedReader = new LimitedRimeReader(m_Reader, s_Descriptor.Size, false);
                     ParseTypeInstance(s_LimitedReader, s_Descriptor, s_Instance, s_ContainerType);
+
+                    m_Partition.Instances.Add(s_Guid, s_Instance as DataContainer);
                 }
             }
         }

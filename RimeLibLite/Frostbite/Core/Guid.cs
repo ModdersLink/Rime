@@ -1,27 +1,25 @@
 ﻿using System;
+using System.ComponentModel;
 using System.IO;
 using System.Runtime.Serialization;
+using Newtonsoft.Json;
 using RimeLib.IO;
+using RimeLib.Json;
 
 namespace RimeLib.Frostbite.Core
 {
     /// <summary>
     /// Implementation of fb::Guid
     /// </summary>
-    [Serializable]
+    [Serializable, JsonConverter(typeof(GuidJsonConverter)), TypeConverter(typeof(GuidTypeConverter))]
     public class GUID : ISerializable, IFbSerializable
     {
         /// <summary>
         /// Internal size of the structure.
         /// </summary>
         public static int SizeOf => 16;
-
-        /// <summary>
-        /// Internal guid structure
-        /// </summary>
-        public Guid InternalGUID => m_Guid;
-
-        public static GUID Empty = new GUID();
+        
+        public static GUID Empty = new();
 
         private Guid m_Guid;
 

@@ -5,6 +5,7 @@ using RimeLib.Serialization.Frostbite2_0.Ebx;
 using System;
 using System.IO;
 using System.Reflection;
+using Newtonsoft.Json;
 using RimeLib.IO;
 
 namespace EbxExtractor
@@ -67,8 +68,14 @@ namespace EbxExtractor
         {
             var s_Reader = new Fb2EbxReader();
             //using (var s_FileReader = new RimeReader(File.OpenRead("I:\\Research\\BF3\\Dump\\Files\\bundles\\ebx\\levels\\xp1_004\\xp1_004.ebx")))
-            using (var s_FileReader = new RimeReader(File.OpenRead("I:\\Research\\BF3\\Dump\\Files\\bundles\\ebx\\levels\\xp2_factory\\xp2_factory.ebx")))
-                s_Reader.ParsePartition("Test", s_FileReader);
+            using var s_FileReader = new RimeReader(File.OpenRead("I:\\Research\\BF3\\Dump\\Files\\bundles\\ebx\\levels\\xp2_factory\\xp2_factory.ebx"));
+            var s_Partition = s_Reader.ParsePartition("Test", s_FileReader);
+
+            s_Partition.ToJsonFile(@"B:\ebx.json", Formatting.Indented);
+
+            var s_ParsedPartition = DatabasePartition.FromJsonFile(@"B:\ebx.json");
+            Console.WriteLine(s_ParsedPartition);
+
             /*var s_Mounter = EngineMounterRegistry.Create(p_Options.EngineType);
 
             if (!p_Options.Quiet)
