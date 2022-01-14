@@ -1,0 +1,34 @@
+///////////////////////////////////////////////////////////////
+//                                                           //
+// This is an automatically generated file.                  //
+// Do *NOT* modify unless you really know what you're doing. //
+//                                                           //
+///////////////////////////////////////////////////////////////
+
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization;
+using RimeLib.Serialization.Ebx;
+
+namespace fb
+{
+	[ContainerType(4, 24)]
+	public class EffectManagerSettings : 
+		SystemSettings
+	{
+		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
+		public uint MaxNewEffectsPerFrameCount { get; set; }
+
+		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		public uint SizeToGrowNewEffectsContainer { get; set; }
+
+		[ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
+		public uint EffectQuality { get; set; }
+
+	}
+}

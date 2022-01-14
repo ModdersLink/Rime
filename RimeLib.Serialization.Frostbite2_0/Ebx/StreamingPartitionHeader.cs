@@ -15,7 +15,6 @@ namespace RimeLib.Serialization.Frostbite2_0.Ebx
         public uint MetaSize { get; set; }
         public uint PayloadSize { get; set; }
         public uint ImportCount { get; set; }
-        public uint Pad { get; set; }
         public uint TypeCount { get; set; }
         public uint TypeDescriptorCount { get; set; }
         public uint FieldDescriptorCount { get; set; }
@@ -42,7 +41,7 @@ namespace RimeLib.Serialization.Frostbite2_0.Ebx
             p_Writer.Write(MetaSize);
             p_Writer.Write(PayloadSize);
             p_Writer.Write(ImportCount);
-            p_Writer.Write(Pad);
+            p_Writer.Write(0u);
             p_Writer.Write(TypeCount);
             p_Writer.Write(TypeDescriptorCount);
             p_Writer.Write(FieldDescriptorCount);
@@ -67,7 +66,7 @@ namespace RimeLib.Serialization.Frostbite2_0.Ebx
             MetaSize = p_Reader.ReadUInt32();
             PayloadSize = p_Reader.ReadUInt32();
             ImportCount = p_Reader.ReadUInt32(); //
-            Pad = p_Reader.ReadUInt32();
+            p_Reader.ReadUInt32();
             TypeCount = p_Reader.ReadUInt32();
             TypeDescriptorCount = p_Reader.ReadUInt32(); //
             FieldDescriptorCount = p_Reader.ReadUInt32(); //

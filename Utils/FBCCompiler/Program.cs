@@ -22,7 +22,7 @@ namespace FBCC
             {
                 "--gen-rime",
                 @"--in=B:\Games\Battlefield 3\__fbc__\gen2",
-                @"--out=C:\Code\OrfeasZ\RimeLibLite\Bindings\RimeLib.Bindings.Venice",
+                @"--out=C:\Code\OrfeasZ\RimeLibLite\RimeLib.Serialization.Frostbite2_0",
                 //"--gen-bindings",
                 //"--gen-native",
                 //"--gen-vext-docs",

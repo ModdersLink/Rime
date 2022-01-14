@@ -12,7 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Bindings\RimeLib.Bindings.Venice\RimeLib.Bindings.Venice.csproj" />
     <ProjectReference Include="..\..\RimeLib.Content.Frostbite2_0\RimeLib.Content.Frostbite2_0.csproj" />
     <ProjectReference Include="..\..\RimeLib.Content\RimeLib.Content.csproj" />
     <ProjectReference Include="..\..\RimeLib.Mesh\RimeLib.Mesh.csproj" />

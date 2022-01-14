@@ -150,7 +150,7 @@ namespace RimeLib.Serialization.Frostbite2_0.Ebx
                     throw new Exception("Unhandled Internal Data for Instance Entry.");
 
                 var s_Descriptor = m_TypeDescriptors[(int)s_Entry.TypeDescriptorIndex];
-                var s_ContainerType = Type.GetType($"fb.{s_Descriptor.Name}, RimeLib.Bindings.Venice");
+                var s_ContainerType = Type.GetType($"fb.{s_Descriptor.Name}");
 
                 if (s_ContainerType == null)
                     throw new Exception($"Could not find container of type {s_Descriptor.Name}.");
@@ -217,7 +217,7 @@ namespace RimeLib.Serialization.Frostbite2_0.Ebx
                 {
                     case FieldType.ValueType:
                         var s_StructDescriptor = m_TypeDescriptors[s_FieldDescriptor.FieldType];
-                        var s_StructType = Type.GetType($"fb.{s_StructDescriptor.Name}, RimeLib.Bindings.Venice");
+                        var s_StructType = Type.GetType($"fb.{s_StructDescriptor.Name}");
 
                         if (s_StructType == null)
                             throw new Exception($"Could not find container of type {s_StructDescriptor.Name}.");
@@ -281,7 +281,7 @@ namespace RimeLib.Serialization.Frostbite2_0.Ebx
                 case FieldType.ValueType:
                 {
                     var s_List = p_PropertyType.GetValue(p_Instance) as IList;
-                    var s_ArrayStructType = Type.GetType($"fb.{s_ArrayElementDescriptor.Name}, RimeLib.Bindings.Venice");
+                    var s_ArrayStructType = Type.GetType($"fb.{s_ArrayElementDescriptor.Name}");
 
                     if (s_ArrayStructType == null)
                         throw new Exception($"Could not find container of type {s_ArrayElementDescriptor.Name}.");

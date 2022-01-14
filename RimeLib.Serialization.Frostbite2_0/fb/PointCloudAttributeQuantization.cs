@@ -1,0 +1,31 @@
+///////////////////////////////////////////////////////////////
+//                                                           //
+// This is an automatically generated file.                  //
+// Do *NOT* modify unless you really know what you're doing. //
+//                                                           //
+///////////////////////////////////////////////////////////////
+
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization;
+using RimeLib.Serialization.Ebx;
+
+namespace fb
+{
+	[ContainerType(4, 4)]
+	public enum PointCloudAttributeQuantization : int
+	{
+		PointCloudAttributeQuantization_s5e5 = 0,
+		PointCloudAttributeQuantization_s7e5 = 1,
+		PointCloudAttributeQuantization_s10e5 = 2,
+		PointCloudAttributeQuantization_s16e7 = 3,
+		PointCloudAttributeQuantization_None = 4,
+		PointCloudAttributeQuantization_Count = 5
+	}
+
+}
