@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 68)]
-	public class VegetationSystemSettings : 
+	public class VegetationSystemSettings :
 		DataContainer
 	{
 		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
@@ -93,5 +94,33 @@ namespace fb
 		[ContainerField(67), LayoutImmutable, Blittable, JsonProperty(Order = 67)]
 		public bool UseShadowLodOffset { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(WindVariation);
+			p_Writer.Write(WindVariationRate);
+			p_Writer.Write(WindStrength);
+			p_Writer.Write(JointTensionLimit);
+			p_Writer.Write(ForceShadowLod);
+			p_Writer.Write(MaxPreSimsPerJob);
+			p_Writer.Write(SimulationMemKbClient);
+			p_Writer.Write(MaxActiveDistance);
+			p_Writer.Write(SimulationMemKbServer);
+			p_Writer.Write(JobCount);
+			p_Writer.Write(JointTensionLimitIndex);
+			p_Writer.Write(TimeScale);
+			p_Writer.Write(LocalInfluencesEnabled);
+			p_Writer.Write(SubDestructionEnabled);
+			p_Writer.Write(DissolveEnable);
+			p_Writer.Write(Enable);
+			p_Writer.Write(SimulateServerSide);
+			p_Writer.Write(EnableJobs);
+			p_Writer.Write(ShadowMeshEnable);
+			p_Writer.Write(DrawNodes);
+			p_Writer.Write(DrawEnable);
+			p_Writer.Write(BatchDrawEnable);
+			p_Writer.Write(DestructionEnabled);
+			p_Writer.Write(UseShadowLodOffset);
+		}
 	}
 }

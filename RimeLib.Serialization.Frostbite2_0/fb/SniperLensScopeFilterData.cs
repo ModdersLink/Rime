@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 160)]
-	public class SniperLensScopeFilterData : 
+	public class SniperLensScopeFilterData :
 		ScopeFilterData
 	{
 		[ContainerField(12), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 12)]
@@ -48,5 +49,20 @@ namespace fb
 		[ContainerField(96), JsonProperty(Order = 96)]
 		public ColorTintData ColorTintData { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			ChromaticAberrationStrengths.Serialize(p_Writer, p_EbxWriter);
+			BlurCenter.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(4);
+			ChromaticAberrationColor1.Serialize(p_Writer, p_EbxWriter);
+			ChromaticAberrationColor2.Serialize(p_Writer, p_EbxWriter);
+			RadialBlendDistanceCoefficients.Serialize(p_Writer, p_EbxWriter);
+			ChromaticAberrationDisplacement1.Serialize(p_Writer, p_EbxWriter);
+			ChromaticAberrationDisplacement2.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(BlurScale);
+			p_Writer.WriteNullBytes(4);
+			ColorTintData.Serialize(p_Writer, p_EbxWriter);
+		}
 	}
 }

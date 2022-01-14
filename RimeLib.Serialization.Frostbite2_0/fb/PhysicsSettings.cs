@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 44)]
-	public class PhysicsSettings : 
+	public class PhysicsSettings :
 		DataContainer
 	{
 		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
@@ -78,5 +79,29 @@ namespace fb
 		[ContainerField(41), LayoutImmutable, Blittable, JsonProperty(Order = 41)]
 		public bool SuppressDebrisSpawnUntilReady { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(IntegrateJobCount);
+			p_Writer.Write(ClientEffectWorldThreadCount);
+			p_Writer.Write(ClientWorldThreadCount);
+			p_Writer.Write(ServerWorldThreadCount);
+			p_Writer.Write(CollideJobCount);
+			p_Writer.Write(Enable);
+			p_Writer.Write(EnableAIRigidBody);
+			p_Writer.Write(ForestEnable);
+			p_Writer.Write(EnableJobs);
+			p_Writer.Write(RemoveRagdollWhenWoken);
+			p_Writer.Write(RemoveFromWorldOnCollisionOverflow);
+			p_Writer.Write(SingleStepCharacter);
+			p_Writer.Write(ForceSingleStepCharacterInSP);
+			p_Writer.Write(EnableFollowWheelRaycasts);
+			p_Writer.Write(EnableClientWheelRaycasts);
+			p_Writer.Write(EnableASyncWheelRaycasts);
+			p_Writer.Write(UseDelayedWakeUpClient);
+			p_Writer.Write(UseDelayedWakeUpServer);
+			p_Writer.Write(SuppressDebrisSpawnUntilReady);
+			p_Writer.WriteNullBytes(2);
+		}
 	}
 }

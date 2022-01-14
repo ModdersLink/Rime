@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 36)]
-	public class ScoringBucketData : 
+	public class ScoringBucketData :
 		DataContainer
 	{
 		[ContainerField(8), JsonProperty(Order = 8)]
@@ -48,5 +49,29 @@ namespace fb
 		[ContainerField(34), LayoutImmutable, Blittable, JsonProperty(Order = 34)]
 		public bool GlobalScore { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write((int) DestinationBucket);
+			p_Writer.Write((int) BucketType);
+			p_Writer.Write(p_EbxWriter.WriteString(Name));
+			p_Writer.Write(p_EbxWriter.WriteImport(TeamTotalBucket));
+			(RimeWriter Writer, uint ArrayIndex) s_Unlocks = p_EbxWriter.GetArrayWriter(Unlocks.GetType(), Unlocks.Count);
+			p_Writer.Write(s_Unlocks.ArrayIndex);
+			foreach (var s_Entry in Unlocks)
+			{
+				s_Entry.Serialize(s_Unlocks.Writer, p_EbxWriter);
+			}
+			(RimeWriter Writer, uint ArrayIndex) s_ConnectedCategories = p_EbxWriter.GetArrayWriter(ConnectedCategories.GetType(), ConnectedCategories.Count);
+			p_Writer.Write(s_ConnectedCategories.ArrayIndex);
+			foreach (var s_Entry in ConnectedCategories)
+			{
+				s_ConnectedCategories.Writer.Write(p_EbxWriter.WriteImport(s_Entry));
+			}
+			p_Writer.Write(AddToEntry);
+			p_Writer.Write(RoundScore);
+			p_Writer.Write(GlobalScore);
+			p_Writer.WriteNullBytes(1);
+		}
 	}
 }

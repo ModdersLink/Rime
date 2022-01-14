@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 208)]
-	public class SoldierTestEntityData : 
+	public class SoldierTestEntityData :
 		GameEntityData
 	{
 		[ContainerField(96), JsonProperty(Order = 96)]
@@ -105,5 +106,38 @@ namespace fb
 		[ContainerField(198), LayoutImmutable, Blittable, JsonProperty(Order = 198)]
 		public bool SprintInputVal { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(TestSoldier));
+			p_Writer.Write(p_EbxWriter.WriteImport(Template));
+			p_Writer.Write(p_EbxWriter.WriteImport(TestVehicle));
+			p_Writer.Write(SpecialAnimationIndex);
+			p_Writer.Write(p_EbxWriter.WriteImport(UnlocksProfile));
+			p_Writer.Write((int) Team);
+			p_Writer.Write(RandomSeed);
+			p_Writer.Write(p_EbxWriter.WriteImport(StartSequence));
+			p_Writer.Write(p_EbxWriter.WriteImport(StartSequenceRoot));
+			p_Writer.Write(YawInputVal);
+			p_Writer.Write(p_EbxWriter.WriteString(CameraMovementsFilename));
+			p_Writer.Write(p_EbxWriter.WriteImport(InputRecorder));
+			p_Writer.Write(ThrottleInputVal);
+			p_Writer.Write(FireInputVal);
+			p_Writer.Write(StrafeInputVal);
+			p_Writer.Write(ProneInputVal);
+			p_Writer.Write(PitchInputVal);
+			p_Writer.Write(RollInputVal);
+			p_Writer.Write(ZoomInputVal);
+			p_Writer.Write(JumpInputVal);
+			p_Writer.Write(ActiveInputRecording);
+			p_Writer.Write(AuthoritativeAimingActive);
+			p_Writer.Write(FireCounterMeasure);
+			p_Writer.Write(AuthoritativeYaw);
+			p_Writer.Write(AuthoritativePitch);
+			p_Writer.Write(RunAutomatically);
+			p_Writer.Write(UseUnlocksProfile);
+			p_Writer.Write(SprintInputVal);
+			p_Writer.WriteNullBytes(9);
+		}
 	}
 }

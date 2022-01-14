@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 152)]
-	public class DriverSettings : 
+	public class DriverSettings :
 		Asset
 	{
 		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
@@ -138,5 +139,49 @@ namespace fb
 		[ContainerField(149), LayoutImmutable, Blittable, JsonProperty(Order = 149)]
 		public bool UseSquareAccDiffCurveAcc { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(MinRadius);
+			p_Writer.Write(RadiusGrowthSpeed);
+			p_Writer.Write(StoppingDeceleration);
+			p_Writer.Write(SteeringSensitivity);
+			p_Writer.Write(MaxBrakeOutput);
+			p_Writer.Write(MaxDec);
+			p_Writer.Write(LookAheadTime);
+			p_Writer.Write(AngleDiffForNoSlowdown);
+			p_Writer.Write(AngleDiffForFullSlowdown);
+			p_Writer.Write(VelocityAtFullSlowdown);
+			p_Writer.Write(VelDiffAtMinAcc);
+			p_Writer.Write(VelDiffAtMaxAcc);
+			p_Writer.Write(MaxYawToApplySprint);
+			p_Writer.Write(MinAcc);
+			p_Writer.Write(MaxAcc);
+			p_Writer.Write(VelDiffAtMinDec);
+			p_Writer.Write(VelDiffAtMaxDec);
+			p_Writer.Write(AccDiffAtMinThrottleVelocityDecelerating);
+			p_Writer.Write(MinDec);
+			p_Writer.Write(MinThrottleVelocityDecelerating);
+			p_Writer.Write(AccDiffAtMinThrottleVelocityAccelerating);
+			p_Writer.Write(AccDiffAtMaxThrottleVelocityAccelerating);
+			p_Writer.Write(MaxThrottleVelocityDecelerating);
+			p_Writer.Write(MinThrottleVelocityAccelerating);
+			p_Writer.Write(MaxThrottleVelocityAccelerating);
+			p_Writer.Write(MaxPTerm);
+			p_Writer.Write(AccDiffAtMaxThrottleVelocityDecelerating);
+			p_Writer.Write(P);
+			p_Writer.Write(I);
+			p_Writer.Write(MaxError);
+			p_Writer.Write(MaxITerm);
+			p_Writer.Write(MaxSumError);
+			p_Writer.Write(D);
+			p_Writer.Write(UseSquareVelDiffCurveDec);
+			p_Writer.Write(UseSquareAccDiffCurveDec);
+			p_Writer.Write(SquareBrakeOutput);
+			p_Writer.Write(UseSquareVelDiffCurveAcc);
+			p_Writer.Write(UsePIDRegulator);
+			p_Writer.Write(UseSquareAccDiffCurveAcc);
+			p_Writer.WriteNullBytes(2);
+		}
 	}
 }

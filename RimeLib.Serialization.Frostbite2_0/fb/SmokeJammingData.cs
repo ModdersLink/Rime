@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 20)]
-	public class SmokeJammingData
+	public class SmokeJammingData :
+		EbxSerializable
 	{
 		[ContainerField(0), LayoutImmutable, Blittable, JsonProperty(Order = 0)]
 		public float JammingTime { get; set; }
@@ -41,5 +43,17 @@ namespace fb
 		[ContainerField(18), LayoutImmutable, Blittable, JsonProperty(Order = 18)]
 		public bool ReportJammedBasedOnStartPosition { get; set; }
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(JammingTime);
+			p_Writer.Write(MaxRadius);
+			p_Writer.Write(MinRadius);
+			p_Writer.Write(TargetUpdateTime);
+			p_Writer.Write(EnableSmokeJamming);
+			p_Writer.Write(JammingPositionIsLocationDependent);
+			p_Writer.Write(ReportJammedBasedOnStartPosition);
+			p_Writer.WriteNullBytes(1);
+		}
 	}
 }

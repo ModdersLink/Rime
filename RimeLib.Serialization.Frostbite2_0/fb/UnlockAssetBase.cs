@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 40)]
-	public class UnlockAssetBase : 
+	public class UnlockAssetBase :
 		Asset
 	{
 		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
@@ -45,5 +46,18 @@ namespace fb
 		[ContainerField(37), LayoutImmutable, Blittable, JsonProperty(Order = 37)]
 		public bool HiddenInProgression { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(UnlockScore);
+			p_Writer.Write(p_EbxWriter.WriteImport(UnlockUserData));
+			p_Writer.Write(p_EbxWriter.WriteString(DebugUnlockId));
+			p_Writer.Write(Identifier);
+			p_Writer.Write((int) AvailableForPlayer);
+			p_Writer.Write(p_EbxWriter.WriteImport(NextLevelUnlockAsset));
+			p_Writer.Write(AutoAvailable);
+			p_Writer.Write(HiddenInProgression);
+			p_Writer.WriteNullBytes(2);
+		}
 	}
 }

@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 128)]
-	public class InteractionEntityData : 
+	public class InteractionEntityData :
 		GameEntityData
 	{
 		[ContainerField(96), LayoutImmutable, Blittable, JsonProperty(Order = 96)]
@@ -39,5 +40,16 @@ namespace fb
 		[ContainerField(113), LayoutImmutable, Blittable, JsonProperty(Order = 113)]
 		public bool TestIfOccluded { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(UseWithinRadius);
+			p_Writer.Write(UseWithinAngle);
+			p_Writer.Write(p_EbxWriter.WriteImport(PreInteractionSoundEffect));
+			p_Writer.Write(MaxUses);
+			p_Writer.Write(AllowInteractionViaRemoteEntry);
+			p_Writer.Write(TestIfOccluded);
+			p_Writer.WriteNullBytes(14);
+		}
 	}
 }

@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 96)]
-	public class EngineConfigData : 
+	public class EngineConfigData :
 		DataContainer
 	{
 		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
@@ -51,5 +52,31 @@ namespace fb
 		[ContainerField(64), JsonProperty(Order = 64)]
 		public Boost Boost { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(8);
+			Position.Serialize(p_Writer, p_EbxWriter);
+			(RimeWriter Writer, uint ArrayIndex) s_RpmCurvePoints = p_EbxWriter.GetArrayWriter(RpmCurvePoints.GetType(), RpmCurvePoints.Count);
+			p_Writer.Write(s_RpmCurvePoints.ArrayIndex);
+			foreach (var s_Entry in RpmCurvePoints)
+			{
+				s_RpmCurvePoints.Writer.Write(s_Entry);
+			}
+			(RimeWriter Writer, uint ArrayIndex) s_TorqueCurvePoints = p_EbxWriter.GetArrayWriter(TorqueCurvePoints.GetType(), TorqueCurvePoints.Count);
+			p_Writer.Write(s_TorqueCurvePoints.ArrayIndex);
+			foreach (var s_Entry in TorqueCurvePoints)
+			{
+				s_TorqueCurvePoints.Writer.Write(s_Entry);
+			}
+			p_Writer.Write(RpmMin);
+			p_Writer.Write(RpmMax);
+			p_Writer.Write(RpmCut);
+			p_Writer.Write(EnginePowerMultiplier);
+			p_Writer.Write(InternalAccelerationFactor);
+			p_Writer.Write(InternalDeaccelerationFactor);
+			Boost.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(8);
+		}
 	}
 }

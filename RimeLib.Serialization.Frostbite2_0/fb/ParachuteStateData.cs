@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 52)]
-	public class ParachuteStateData : 
+	public class ParachuteStateData :
 		CharacterStateData
 	{
 		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
@@ -51,5 +52,19 @@ namespace fb
 		[ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
 		public float MaxYawVelocity { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(DeployTime);
+			p_Writer.Write(TerminalVelocity);
+			p_Writer.Write(ForwardDragCoefficient);
+			p_Writer.Write(AngleOfAttack);
+			p_Writer.Write(BankOffset);
+			p_Writer.Write(ThrottleOffset);
+			p_Writer.Write(BrakeOffset);
+			p_Writer.Write(MaxRollVelocity);
+			p_Writer.Write(MaxPitchVelocity);
+			p_Writer.Write(MaxYawVelocity);
+		}
 	}
 }

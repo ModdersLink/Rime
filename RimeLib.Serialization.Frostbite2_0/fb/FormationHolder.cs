@@ -14,15 +14,26 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 16)]
-	public class FormationHolder : 
+	public class FormationHolder :
 		Asset
 	{
 		[ContainerField(12), JsonProperty(Order = 12)]
 		public RefArray<FormationData> Formations { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			(RimeWriter Writer, uint ArrayIndex) s_Formations = p_EbxWriter.GetArrayWriter(Formations.GetType(), Formations.Count);
+			p_Writer.Write(s_Formations.ArrayIndex);
+			foreach (var s_Entry in Formations)
+			{
+				s_Formations.Writer.Write(p_EbxWriter.WriteImport(s_Entry));
+			}
+		}
 	}
 }

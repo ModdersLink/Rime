@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 28)]
-	public class CTFScoringHandlerData : 
+	public class CTFScoringHandlerData :
 		ScoringHandlerData
 	{
 		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
@@ -36,5 +37,14 @@ namespace fb
 		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
 		public float EnemySuppressionTimeout { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(MaxTeams);
+			p_Writer.Write(PickUpAssistRadius);
+			p_Writer.Write(CaptureAssistRadius);
+			p_Writer.Write(EnemyThreatRadius);
+			p_Writer.Write(EnemySuppressionTimeout);
+		}
 	}
 }

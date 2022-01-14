@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 224)]
-	public class OutdoorLightComponentData : 
+	public class OutdoorLightComponentData :
 		ComponentData
 	{
 		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 96)]
@@ -84,5 +85,32 @@ namespace fb
 		[ContainerField(221), LayoutImmutable, Blittable, JsonProperty(Order = 221)]
 		public bool CloudShadowEnable { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			SunColor.Serialize(p_Writer, p_EbxWriter);
+			CloudShadowSpeed.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(8);
+			SkyColor.Serialize(p_Writer, p_EbxWriter);
+			GroundColor.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(SunRotationY);
+			p_Writer.Write(SunRotationX);
+			p_Writer.Write((int) Realm);
+			p_Writer.Write(SkyLightAngleFactor);
+			p_Writer.Write(SunSpecularScale);
+			p_Writer.Write(SkyEnvmapShadowScale);
+			p_Writer.Write(SunShadowHeightScale);
+			p_Writer.Write(CloudShadowCoverage);
+			p_Writer.Write(p_EbxWriter.WriteImport(CloudShadowTexture));
+			p_Writer.Write(TranslucencyDistortion);
+			p_Writer.Write(CloudShadowSize);
+			p_Writer.Write(TranslucencyAmbient);
+			p_Writer.Write(CloudShadowExponent);
+			p_Writer.Write(TranslucencyScale);
+			p_Writer.Write(TranslucencyPower);
+			p_Writer.Write(Enable);
+			p_Writer.Write(CloudShadowEnable);
+			p_Writer.WriteNullBytes(2);
+		}
 	}
 }

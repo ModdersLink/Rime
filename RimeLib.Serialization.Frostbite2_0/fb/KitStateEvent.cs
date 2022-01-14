@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(8, 24)]
-	public class KitStateEvent : 
+	public class KitStateEvent :
 		MetricEvent
 	{
 		[ContainerField(16), LayoutImmutable, JsonProperty(Order = 16)]
@@ -27,5 +28,11 @@ namespace fb
 		[ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
 		public float SecondsAsKit { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteString(Kit));
+			p_Writer.Write(SecondsAsKit);
+		}
 	}
 }

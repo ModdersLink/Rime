@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 56)]
-	public class JoypadNodeData : 
+	public class JoypadNodeData :
 		AudioGraphNodeData
 	{
 		[ContainerField(8), JsonProperty(Order = 8)]
@@ -39,5 +40,15 @@ namespace fb
 		[ContainerField(48), JsonProperty(Order = 48)]
 		public AudioGraphNodePort BButton { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			LeftAnalogX.Serialize(p_Writer, p_EbxWriter);
+			LeftAnalogY.Serialize(p_Writer, p_EbxWriter);
+			RightAnalogX.Serialize(p_Writer, p_EbxWriter);
+			RightAnalogY.Serialize(p_Writer, p_EbxWriter);
+			AButton.Serialize(p_Writer, p_EbxWriter);
+			BButton.Serialize(p_Writer, p_EbxWriter);
+		}
 	}
 }

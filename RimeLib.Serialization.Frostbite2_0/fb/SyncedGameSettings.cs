@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 32)]
-	public class SyncedGameSettings : 
+	public class SyncedGameSettings :
 		SystemSettings
 	{
 		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
@@ -45,5 +46,17 @@ namespace fb
 		[ContainerField(31), LayoutImmutable, Blittable, JsonProperty(Order = 31)]
 		public bool DisableToggleEntryCamera { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(MaxAllowedLatency);
+			p_Writer.Write(ManDownTimeModifier);
+			p_Writer.Write(BulletDamageModifier);
+			p_Writer.Write(DifficultyIndex);
+			p_Writer.Write(DisableRegenerateHealth);
+			p_Writer.Write(EnableFriendlyFire);
+			p_Writer.Write(AllowClientSideDamageArbitration);
+			p_Writer.Write(DisableToggleEntryCamera);
+		}
 	}
 }

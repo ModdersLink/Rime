@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 128)]
-	public class SoldierFootplantEffectComponentData : 
+	public class SoldierFootplantEffectComponentData :
 		ComponentData
 	{
 		[ContainerField(96), JsonProperty(Order = 96)]
@@ -36,5 +37,15 @@ namespace fb
 		[ContainerField(112), LayoutImmutable, Blittable, JsonProperty(Order = 112)]
 		public bool FullFootplantingEnabled { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(FootMaterialPair));
+			p_Writer.Write(HeightOverGroundThreshold);
+			p_Writer.Write(FootVelocityThreshold);
+			p_Writer.Write(LodDistance);
+			p_Writer.Write(FullFootplantingEnabled);
+			p_Writer.WriteNullBytes(15);
+		}
 	}
 }

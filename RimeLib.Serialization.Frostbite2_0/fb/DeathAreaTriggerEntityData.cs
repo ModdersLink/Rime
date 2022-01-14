@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 112)]
-	public class DeathAreaTriggerEntityData : 
+	public class DeathAreaTriggerEntityData :
 		GameEntityData
 	{
 		[ContainerField(96), LayoutImmutable, Blittable, JsonProperty(Order = 96)]
@@ -27,5 +28,12 @@ namespace fb
 		[ContainerField(100), LayoutImmutable, Blittable, JsonProperty(Order = 100)]
 		public float TimeToReturn { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(Damage);
+			p_Writer.Write(TimeToReturn);
+			p_Writer.WriteNullBytes(8);
+		}
 	}
 }

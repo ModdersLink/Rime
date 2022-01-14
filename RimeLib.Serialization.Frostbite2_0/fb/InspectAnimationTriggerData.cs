@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 8)]
-	public class InspectAnimationTriggerData
+	public class InspectAnimationTriggerData :
+		EbxSerializable
 	{
 		[ContainerField(0), JsonProperty(Order = 0)]
 		public AntRef Animation { get; set; } = new();
@@ -26,5 +28,11 @@ namespace fb
 		[ContainerField(4), LayoutImmutable, Blittable, JsonProperty(Order = 4)]
 		public float Probability { get; set; }
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			Animation.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(Probability);
+		}
 	}
 }

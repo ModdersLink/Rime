@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 112)]
-	public class GameSplineEntityData : 
+	public class GameSplineEntityData :
 		GameEntityData
 	{
 		[ContainerField(96), JsonProperty(Order = 96)]
@@ -30,5 +31,23 @@ namespace fb
 		[ContainerField(104), JsonProperty(Order = 104)]
 		public List<Vec3> Normals { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write((int) SplineType);
+			(RimeWriter Writer, uint ArrayIndex) s_LocalPoints = p_EbxWriter.GetArrayWriter(LocalPoints.GetType(), LocalPoints.Count);
+			p_Writer.Write(s_LocalPoints.ArrayIndex);
+			foreach (var s_Entry in LocalPoints)
+			{
+				s_Entry.Serialize(s_LocalPoints.Writer, p_EbxWriter);
+			}
+			(RimeWriter Writer, uint ArrayIndex) s_Normals = p_EbxWriter.GetArrayWriter(Normals.GetType(), Normals.Count);
+			p_Writer.Write(s_Normals.ArrayIndex);
+			foreach (var s_Entry in Normals)
+			{
+				s_Entry.Serialize(s_Normals.Writer, p_EbxWriter);
+			}
+			p_Writer.WriteNullBytes(4);
+		}
 	}
 }

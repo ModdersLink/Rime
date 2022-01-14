@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 8)]
-	public class LevelDescriptionInclusionCategory
+	public class LevelDescriptionInclusionCategory :
+		EbxSerializable
 	{
 		[ContainerField(0), LayoutImmutable, JsonProperty(Order = 0)]
 		public string Category { get; set; } = string.Empty;
@@ -26,5 +28,16 @@ namespace fb
 		[ContainerField(4), JsonProperty(Order = 4)]
 		public List<string> Mode { get; set; } = new();
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteString(Category));
+			(RimeWriter Writer, uint ArrayIndex) s_Mode = p_EbxWriter.GetArrayWriter(Mode.GetType(), Mode.Count);
+			p_Writer.Write(s_Mode.ArrayIndex);
+			foreach (var s_Entry in Mode)
+			{
+				s_Mode.Writer.Write(p_EbxWriter.WriteString(s_Entry));
+			}
+		}
 	}
 }

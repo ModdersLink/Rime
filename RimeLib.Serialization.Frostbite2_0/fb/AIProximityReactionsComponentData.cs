@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 176)]
-	public class AIProximityReactionsComponentData : 
+	public class AIProximityReactionsComponentData :
 		ComponentData
 	{
 		[ContainerField(96), JsonProperty(Order = 96)]
@@ -36,5 +37,15 @@ namespace fb
 		[ContainerField(164), LayoutImmutable, Blittable, JsonProperty(Order = 164)]
 		public bool Enabled { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			Binding.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(MinExplosionImpulseForce);
+			p_Writer.Write(MaxExplosionLookDistance);
+			p_Writer.Write(FireReactionDistance);
+			p_Writer.Write(Enabled);
+			p_Writer.WriteNullBytes(11);
+		}
 	}
 }

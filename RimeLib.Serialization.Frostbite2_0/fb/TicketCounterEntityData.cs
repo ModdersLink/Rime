@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 144)]
-	public class TicketCounterEntityData : 
+	public class TicketCounterEntityData :
 		GameEntityData
 	{
 		[ContainerField(96), JsonProperty(Order = 96)]
@@ -57,5 +58,27 @@ namespace fb
 		[ContainerField(131), LayoutImmutable, Blittable, JsonProperty(Order = 131)]
 		public bool SpawnAlwaysAllowed { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			(RimeWriter Writer, uint ArrayIndex) s_TicketPercentages = p_EbxWriter.GetArrayWriter(TicketPercentages.GetType(), TicketPercentages.Count);
+			p_Writer.Write(s_TicketPercentages.ArrayIndex);
+			foreach (var s_Entry in TicketPercentages)
+			{
+				s_Entry.Serialize(s_TicketPercentages.Writer, p_EbxWriter);
+			}
+			p_Writer.Write(TicketLossPerMin);
+			p_Writer.Write((int) DecreaseTickets);
+			p_Writer.Write((int) TeamId);
+			p_Writer.Write(TicketLossWhenLostAll);
+			p_Writer.Write(TicketLossWhenLostAllControlsPoint);
+			p_Writer.Write(InitialTicketCount);
+			p_Writer.Write(TicketLossStart);
+			p_Writer.Write(SetBestSquadSpawner);
+			p_Writer.Write(HaltTicketLossOnEqualPointCount);
+			p_Writer.Write(ResetCapturePointsOnReset);
+			p_Writer.Write(SpawnAlwaysAllowed);
+			p_Writer.WriteNullBytes(12);
+		}
 	}
 }

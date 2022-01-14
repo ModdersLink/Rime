@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 96)]
-	public class TerrainQuadDecalData : 
+	public class TerrainQuadDecalData :
 		VisualVectorShapeData
 	{
 		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 48)]
@@ -36,5 +37,15 @@ namespace fb
 		[ContainerField(76), JsonProperty(Order = 76)]
 		public TerrainQuadDecalAtlasTile AtlasTile { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(4);
+			UserMasks.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(Shader3dZOnly));
+			p_Writer.Write(p_EbxWriter.WriteImport(Shader2d));
+			p_Writer.Write(p_EbxWriter.WriteImport(AtlasTileTemplate));
+			AtlasTile.Serialize(p_Writer, p_EbxWriter);
+		}
 	}
 }

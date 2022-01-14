@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 384)]
-	public class WheelConfigData : 
+	public class WheelConfigData :
 		DataContainer
 	{
 		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
@@ -258,5 +259,110 @@ namespace fb
 		[ContainerField(368), LayoutImmutable, Blittable, JsonProperty(Order = 368)]
 		public bool UseRollingResistanceVelocityFactor { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(8);
+			Offset.Serialize(p_Writer, p_EbxWriter);
+			Inertia.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(RotationBody));
+			SphereCollision.Serialize(p_Writer, p_EbxWriter);
+			Spring.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(Mass);
+			p_Writer.Write(Radius);
+			p_Writer.Write(Width);
+			p_Writer.Write(RollingResistanceInternalBaseFactor);
+			p_Writer.Write(RollingResistanceBaseFactor);
+			p_Writer.Write(RollingResistanceVelocityFactor);
+			p_Writer.Write(EngineBrakeVelocityFactor);
+			p_Writer.Write(EngineBrakeMinFactor);
+			p_Writer.Write(EngineBrakeMaxFactor);
+			(RimeWriter Writer, uint ArrayIndex) s_TransmissionLoss = p_EbxWriter.GetArrayWriter(TransmissionLoss.GetType(), TransmissionLoss.Count);
+			p_Writer.Write(s_TransmissionLoss.ArrayIndex);
+			foreach (var s_Entry in TransmissionLoss)
+			{
+				s_Entry.Serialize(s_TransmissionLoss.Writer, p_EbxWriter);
+			}
+			p_Writer.Write(DiffGearRatio);
+			p_Writer.Write(LowSpeedSteeringSensitivity);
+			p_Writer.Write(MidSpeedSteeringSensitivity);
+			p_Writer.Write(HighSpeedSteeringSensitivity);
+			p_Writer.Write(SensitivityRangeScale);
+			p_Writer.Write(LowSpeedSteeringSensitivityLimit);
+			p_Writer.Write(MidSpeedSteeringSensitivityLimit);
+			p_Writer.Write(HighSpeedSteeringSensitivityLimit);
+			p_Writer.Write(TrackedTurnSpeedLimit);
+			p_Writer.Write(TrackedForwardSpeedLimit);
+			p_Writer.Write(p_EbxWriter.WriteImport(SteerInertia));
+			(RimeWriter Writer, uint ArrayIndex) s_SteeringSensitivity = p_EbxWriter.GetArrayWriter(SteeringSensitivity.GetType(), SteeringSensitivity.Count);
+			p_Writer.Write(s_SteeringSensitivity.ArrayIndex);
+			foreach (var s_Entry in SteeringSensitivity)
+			{
+				s_Entry.Serialize(s_SteeringSensitivity.Writer, p_EbxWriter);
+			}
+			p_Writer.Write(SlopeGripMinAngle);
+			p_Writer.Write(SlopeGripMaxAngle);
+			p_Writer.Write(SlopeGripExponent);
+			p_Writer.Write(OffGroundGravityModifier);
+			p_Writer.Write(SideSlipAngleMaxSlipCondition);
+			p_Writer.Write(AngularVelocityMinSlipCondition);
+			p_Writer.Write(WheelVelocityXMinSlipCondition);
+			p_Writer.Write(WheelSlipRatioMaxSlipCondition);
+			p_Writer.Write(LongitudinalFrictionForceMaxFactor);
+			p_Writer.Write(LateralFrictionForceMaxFactor);
+			(RimeWriter Writer, uint ArrayIndex) s_LongitudeFrictionScale = p_EbxWriter.GetArrayWriter(LongitudeFrictionScale.GetType(), LongitudeFrictionScale.Count);
+			p_Writer.Write(s_LongitudeFrictionScale.ArrayIndex);
+			foreach (var s_Entry in LongitudeFrictionScale)
+			{
+				s_Entry.Serialize(s_LongitudeFrictionScale.Writer, p_EbxWriter);
+			}
+			(RimeWriter Writer, uint ArrayIndex) s_LattitudeFrictionScale = p_EbxWriter.GetArrayWriter(LattitudeFrictionScale.GetType(), LattitudeFrictionScale.Count);
+			p_Writer.Write(s_LattitudeFrictionScale.ArrayIndex);
+			foreach (var s_Entry in LattitudeFrictionScale)
+			{
+				s_Entry.Serialize(s_LattitudeFrictionScale.Writer, p_EbxWriter);
+			}
+			p_Writer.Write(WheelFrictionLattitudeBrakeScale);
+			p_Writer.Write(MaxSlipRatio);
+			p_Writer.Write(Resistance);
+			p_Writer.Write(FxTorqueRadiusMultiplier);
+			p_Writer.Write(FrictionMomentVelocityMin);
+			p_Writer.Write(FrictionMomentVelocityMax);
+			p_Writer.Write(FrictionMomentMultiplier);
+			p_Writer.Write(FrictionMomentMaxFactor);
+			p_Writer.Write(BrakeFactor);
+			p_Writer.Write(BrakeForce);
+			p_Writer.Write(HandBrakeFactor);
+			p_Writer.Write(HandBrakeForce);
+			p_Writer.Write(LateralPosK);
+			p_Writer.Write(LateralNegK);
+			p_Writer.Write(LongitudinalPosK);
+			p_Writer.Write(LongitudinalNegK);
+			p_Writer.Write(AlignMomScale);
+			p_Writer.Write(WheelBaseLateral);
+			p_Writer.Write(WheelBaseLongitudinal);
+			p_Writer.Write(DrivingType);
+			p_Writer.Write(SteeringType);
+			p_Writer.Write(FrictionMethod);
+			p_Writer.Write(AckermanDeviceType);
+			p_Writer.Write(CollisionYawDampeningDuration);
+			p_Writer.Write(CollisionYawDampening);
+			p_Writer.Write(ConstantSpringForceFrictionScale);
+			p_Writer.Write(RotationDirectionIndex);
+			p_Writer.Write(SteeringAngleIndex);
+			p_Writer.Write(PacejkaConfigIndex);
+			p_Writer.Write(EngineIndex);
+			p_Writer.Write(p_EbxWriter.WriteImport(CollisionMaterialPair));
+			p_Writer.Write(AlwaysGrip);
+			p_Writer.Write(UseRollingResistanceBaseFactor);
+			p_Writer.Write(UseEngineBrake);
+			p_Writer.Write(IsAllowedToSpin);
+			p_Writer.Write(HasSteeringInverted);
+			p_Writer.Write(UseFrictionMoment);
+			p_Writer.Write(UseLowSpeedAutoBrake);
+			p_Writer.Write(AdjustWheelRotation);
+			p_Writer.Write(UseRollingResistanceVelocityFactor);
+			p_Writer.WriteNullBytes(15);
+		}
 	}
 }

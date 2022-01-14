@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 96)]
-	public class AILocoCoverTaskData
+	public class AILocoCoverTaskData :
+		EbxSerializable
 	{
 		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 0)]
 		public Vec3 WantedPos { get; set; } = new();
@@ -68,5 +70,26 @@ namespace fb
 		[ContainerField(81), LayoutImmutable, Blittable, JsonProperty(Order = 81)]
 		public bool UseClientPosition { get; set; }
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			WantedPos.Serialize(p_Writer, p_EbxWriter);
+			ThreatPosition.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write((int) CoverPose);
+			p_Writer.Write(WaitTime);
+			p_Writer.Write((int) PeekOut);
+			p_Writer.Write(WorldAngle);
+			p_Writer.Write(OffsetLength);
+			p_Writer.Write((int) ExitPose);
+			p_Writer.Write(ExitAngle);
+			p_Writer.Write(DistanceToNextWaypoint);
+			p_Writer.Write((int) CoverType);
+			p_Writer.Write((int) EnterStrategy);
+			p_Writer.Write((int) ExitStyle);
+			p_Writer.Write((int) PrepareFireType);
+			p_Writer.Write(ForceExitCover);
+			p_Writer.Write(UseClientPosition);
+			p_Writer.WriteNullBytes(14);
+		}
 	}
 }

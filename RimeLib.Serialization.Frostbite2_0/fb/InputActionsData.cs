@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 28)]
-	public class InputActionsData : 
+	public class InputActionsData :
 		DataContainer
 	{
 		[ContainerField(8), LayoutImmutable, JsonProperty(Order = 8)]
@@ -36,5 +37,20 @@ namespace fb
 		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
 		public bool HideInKeyBindings { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteString(NameSid));
+			p_Writer.Write((int) ConceptIdentifier);
+			p_Writer.Write((int) CopyKeyBindingFrom);
+			(RimeWriter Writer, uint ArrayIndex) s_InputActions = p_EbxWriter.GetArrayWriter(InputActions.GetType(), InputActions.Count);
+			p_Writer.Write(s_InputActions.ArrayIndex);
+			foreach (var s_Entry in InputActions)
+			{
+				s_InputActions.Writer.Write(p_EbxWriter.WriteImport(s_Entry));
+			}
+			p_Writer.Write(HideInKeyBindings);
+			p_Writer.WriteNullBytes(3);
+		}
 	}
 }

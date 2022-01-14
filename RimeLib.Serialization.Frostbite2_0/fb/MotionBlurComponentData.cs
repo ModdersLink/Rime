@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 112)]
-	public class MotionBlurComponentData : 
+	public class MotionBlurComponentData :
 		ComponentData
 	{
 		[ContainerField(96), JsonProperty(Order = 96)]
@@ -33,5 +34,14 @@ namespace fb
 		[ContainerField(108), LayoutImmutable, Blittable, JsonProperty(Order = 108)]
 		public bool MotionBlurEnable { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write((int) Realm);
+			p_Writer.Write(CutoffGradientScale);
+			p_Writer.Write(MotionBlurCutoffRadius);
+			p_Writer.Write(MotionBlurEnable);
+			p_Writer.WriteNullBytes(3);
+		}
 	}
 }

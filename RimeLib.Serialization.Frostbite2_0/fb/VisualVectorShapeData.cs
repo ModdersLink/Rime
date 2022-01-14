@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 44)]
-	public class VisualVectorShapeData : 
+	public class VisualVectorShapeData :
 		VectorShapeData
 	{
 		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
@@ -33,5 +34,13 @@ namespace fb
 		[ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
 		public float TessellationTriangleSize { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(ErrorTolerance);
+			p_Writer.Write(p_EbxWriter.WriteImport(Shader3d));
+			p_Writer.Write(DrawOrderIndex);
+			p_Writer.Write(TessellationTriangleSize);
+		}
 	}
 }

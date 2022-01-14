@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 256)]
-	public class UIMinimapData
+	public class UIMinimapData :
+		EbxSerializable
 	{
 		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 0)]
 		public Vec2 WorldCenter { get; set; } = new();
@@ -86,5 +88,34 @@ namespace fb
 		[ContainerField(249), LayoutImmutable, Blittable, JsonProperty(Order = 249)]
 		public bool UseCombatAreaTexture { get; set; }
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			WorldCenter.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(8);
+			CombatAreaColor.Serialize(p_Writer, p_EbxWriter);
+			DetailTextureTint.Serialize(p_Writer, p_EbxWriter);
+			CombatAreaMultiplyWrapAmount.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(8);
+			Vegetation.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(FadeTexture));
+			p_Writer.Write(StreamingMinimapDelay);
+			p_Writer.Write(p_EbxWriter.WriteImport(AirRadarFadeTexture));
+			p_Writer.Write(p_EbxWriter.WriteImport(DetailTexture));
+			Detail.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(StreamingMinimapTransitionSpeed);
+			p_Writer.Write(WorldRotation);
+			p_Writer.Write(WorldRange);
+			p_Writer.Write(CombatAreaDistanceScale);
+			p_Writer.Write(CombatAreaFadeSpeed);
+			p_Writer.Write(CombatAreaAlphaThreshold);
+			p_Writer.Write(p_EbxWriter.WriteImport(CombatAreaMultiplyTexture));
+			p_Writer.Write(WorldSize);
+			p_Writer.Write(AirRadarRange);
+			p_Writer.Write(CombatAreaScale);
+			p_Writer.Write(UseStreamingMinimap);
+			p_Writer.Write(UseCombatAreaTexture);
+			p_Writer.WriteNullBytes(6);
+		}
 	}
 }

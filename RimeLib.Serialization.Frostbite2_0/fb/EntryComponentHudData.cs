@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 12)]
-	public class EntryComponentHudData
+	public class EntryComponentHudData :
+		EbxSerializable
 	{
 		[ContainerField(0), LayoutImmutable, Blittable, JsonProperty(Order = 0)]
 		public int Index { get; set; }
@@ -35,5 +37,15 @@ namespace fb
 		[ContainerField(10), LayoutImmutable, Blittable, JsonProperty(Order = 10)]
 		public bool MaximizeMiniMapOnEntry { get; set; }
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(Index);
+			p_Writer.Write((int) SeatType);
+			p_Writer.Write(Frustum);
+			p_Writer.Write(Visible);
+			p_Writer.Write(MaximizeMiniMapOnEntry);
+			p_Writer.WriteNullBytes(1);
+		}
 	}
 }

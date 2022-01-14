@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 164)]
-	public class VeniceSoldierHealthModuleData : 
+	public class VeniceSoldierHealthModuleData :
 		SoldierHealthModuleData
 	{
 		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
@@ -72,5 +73,33 @@ namespace fb
 		[ContainerField(160), LayoutImmutable, Blittable, JsonProperty(Order = 160)]
 		public bool InteractiveManDown { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(TimeForCorpse);
+			p_Writer.Write(PostReviveResponseTime);
+			p_Writer.Write(InteractiveManDownThreshold);
+			InteractiveManDownPoseConstraints.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(1);
+			p_Writer.Write(ManDownStateTime);
+			p_Writer.Write(ManDownStateHealthPoints);
+			p_Writer.Write(ImmortalTimeAfterSpawn);
+			(RimeWriter Writer, uint ArrayIndex) s_AbortSpawnImmortalityInputs = p_EbxWriter.GetArrayWriter(AbortSpawnImmortalityInputs.GetType(), AbortSpawnImmortalityInputs.Count);
+			p_Writer.Write(s_AbortSpawnImmortalityInputs.ArrayIndex);
+			foreach (var s_Entry in AbortSpawnImmortalityInputs)
+			{
+				s_AbortSpawnImmortalityInputs.Writer.Write((int) s_Entry);
+			}
+			p_Writer.Write(PostReviveHealth);
+			p_Writer.Write(CriticalFakeImmortalTime);
+			p_Writer.Write(RegenerationDelay);
+			p_Writer.Write(RegenerationRate);
+			Binding.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(SprintDisabledWhenDamagedTime);
+			p_Writer.Write(SprintDisabledDamageThreshold);
+			ManDownRotate.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(InteractiveManDown);
+			p_Writer.WriteNullBytes(3);
+		}
 	}
 }

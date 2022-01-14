@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 32)]
-	public class WeaponOffsetData : 
+	public class WeaponOffsetData :
 		DataContainer
 	{
 		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
@@ -39,5 +40,15 @@ namespace fb
 		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
 		public float WeaponZoomedOffsetZ { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(WeaponOffsetX);
+			p_Writer.Write(WeaponOffsetY);
+			p_Writer.Write(WeaponOffsetZ);
+			p_Writer.Write(WeaponZoomedOffsetX);
+			p_Writer.Write(WeaponZoomedOffsetY);
+			p_Writer.Write(WeaponZoomedOffsetZ);
+		}
 	}
 }

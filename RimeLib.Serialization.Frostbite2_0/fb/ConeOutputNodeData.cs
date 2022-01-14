@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 192)]
-	public class ConeOutputNodeData : 
+	public class ConeOutputNodeData :
 		OutputNodeData
 	{
 		[ContainerField(80), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 80)]
@@ -66,5 +67,25 @@ namespace fb
 		[ContainerField(175), JsonProperty(Order = 175)]
 		public SoundGraphPluginRef ReverbSendPlugin { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			Direction.Serialize(p_Writer, p_EbxWriter);
+			PositionY.Serialize(p_Writer, p_EbxWriter);
+			PositionX.Serialize(p_Writer, p_EbxWriter);
+			PositionZ.Serialize(p_Writer, p_EbxWriter);
+			OuterAngle.Serialize(p_Writer, p_EbxWriter);
+			InnerAngle.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(OutsideGain);
+			p_Writer.Write(PanSize);
+			CenterLevel.Serialize(p_Writer, p_EbxWriter);
+			LfeLevel.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(HFDampingAngle);
+			p_Writer.Write(ReverbGain);
+			p_Writer.Write(p_EbxWriter.WriteImport(ReverbSend));
+			PanPlugin.Serialize(p_Writer, p_EbxWriter);
+			ReverbSendPlugin.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(14);
+		}
 	}
 }

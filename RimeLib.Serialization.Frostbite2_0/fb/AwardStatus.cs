@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 20)]
-	public class AwardStatus
+	public class AwardStatus :
+		EbxSerializable
 	{
 		[ContainerField(0), LayoutImmutable, JsonProperty(Order = 0)]
 		public string Code { get; set; } = string.Empty;
@@ -35,5 +37,20 @@ namespace fb
 		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
 		public bool IsCounting { get; set; }
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteString(Code));
+			p_Writer.Write(CurrentValue);
+			p_Writer.Write(OriginalValue);
+			(RimeWriter Writer, uint ArrayIndex) s_Counters = p_EbxWriter.GetArrayWriter(Counters.GetType(), Counters.Count);
+			p_Writer.Write(s_Counters.ArrayIndex);
+			foreach (var s_Entry in Counters)
+			{
+				s_Entry.Serialize(s_Counters.Writer, p_EbxWriter);
+			}
+			p_Writer.Write(IsCounting);
+			p_Writer.WriteNullBytes(3);
+		}
 	}
 }

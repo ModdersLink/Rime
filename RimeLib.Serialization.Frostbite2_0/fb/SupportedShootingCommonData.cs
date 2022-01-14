@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 100)]
-	public class SupportedShootingCommonData : 
+	public class SupportedShootingCommonData :
 		Asset
 	{
 		[ContainerField(12), JsonProperty(Order = 12)]
@@ -36,5 +37,14 @@ namespace fb
 		[ContainerField(84), JsonProperty(Order = 84)]
 		public SupportedShootingProximityChecking Crouch { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			AimingConstraints.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write((int) EnterSupportedShootingAction);
+			Binding.Serialize(p_Writer, p_EbxWriter);
+			Stand.Serialize(p_Writer, p_EbxWriter);
+			Crouch.Serialize(p_Writer, p_EbxWriter);
+		}
 	}
 }

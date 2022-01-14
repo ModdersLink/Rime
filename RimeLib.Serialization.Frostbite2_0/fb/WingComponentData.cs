@@ -14,15 +14,22 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 128)]
-	public class WingComponentData : 
+	public class WingComponentData :
 		PartComponentData
 	{
 		[ContainerField(112), JsonProperty(Order = 112)]
 		public CtrRef<WingPhysicsData> Config { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(Config));
+			p_Writer.WriteNullBytes(12);
+		}
 	}
 }

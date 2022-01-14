@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 224)]
-	public class ChildComponentData : 
+	public class ChildComponentData :
 		PartComponentData
 	{
 		[ContainerField(112), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 112)]
@@ -48,5 +49,19 @@ namespace fb
 		[ContainerField(217), LayoutImmutable, Blittable, JsonProperty(Order = 217)]
 		public bool WorldSpacePositionLock { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			AlignTransform.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(MovingBody));
+			HealthZone.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(SoundEffectStartRpm);
+			p_Writer.Write(SoundEffectStopRpm);
+			p_Writer.Write(p_EbxWriter.WriteImport(AlignmentSettings));
+			p_Writer.Write(p_EbxWriter.WriteImport(SoundEffect));
+			p_Writer.Write(EnableAlignToCamera);
+			p_Writer.Write(WorldSpacePositionLock);
+			p_Writer.WriteNullBytes(6);
+		}
 	}
 }

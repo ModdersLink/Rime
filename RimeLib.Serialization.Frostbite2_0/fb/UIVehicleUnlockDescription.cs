@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 44)]
-	public class UIVehicleUnlockDescription : 
+	public class UIVehicleUnlockDescription :
 		UIItemDescription
 	{
 		[ContainerField(16), LayoutImmutable, JsonProperty(Order = 16)]
@@ -45,5 +46,18 @@ namespace fb
 		[ContainerField(41), LayoutImmutable, Blittable, JsonProperty(Order = 41)]
 		public bool NotExplicitelySelectable { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteString(Name));
+			p_Writer.Write(p_EbxWriter.WriteString(Description));
+			p_Writer.Write(p_EbxWriter.WriteString(Category));
+			p_Writer.Write(p_EbxWriter.WriteString(TexturePath));
+			p_Writer.Write(p_EbxWriter.WriteString(IconTexturePath));
+			p_Writer.Write(p_EbxWriter.WriteString(UnlockTexturePath));
+			p_Writer.Write(HiddenInProgression);
+			p_Writer.Write(NotExplicitelySelectable);
+			p_Writer.WriteNullBytes(2);
+		}
 	}
 }

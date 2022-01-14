@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 84)]
-	public class SpecialMoveVaultStateCriteria
+	public class SpecialMoveVaultStateCriteria :
+		EbxSerializable
 	{
 		[ContainerField(0), LayoutImmutable, Blittable, JsonProperty(Order = 0)]
 		public float DistToObject { get; set; }
@@ -41,5 +43,16 @@ namespace fb
 		[ContainerField(24), JsonProperty(Order = 24)]
 		public SpecialMoveStateData SpecialMoveState { get; set; } = new();
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(DistToObject);
+			p_Writer.Write(DistToObjectTolerance);
+			p_Writer.Write(HeightOfObject);
+			p_Writer.Write(HeightOfObjectTolerance);
+			p_Writer.Write(LengthOfObject);
+			p_Writer.Write(LengthOfObjectTolerance);
+			SpecialMoveState.Serialize(p_Writer, p_EbxWriter);
+		}
 	}
 }

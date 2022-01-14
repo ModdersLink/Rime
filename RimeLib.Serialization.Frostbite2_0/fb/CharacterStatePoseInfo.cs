@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 48)]
-	public class CharacterStatePoseInfo : 
+	public class CharacterStatePoseInfo :
 		DataContainer
 	{
 		[ContainerField(8), JsonProperty(Order = 8)]
@@ -42,5 +43,16 @@ namespace fb
 		[ContainerField(32), JsonProperty(Order = 32)]
 		public SpeedModifierData SpeedModifier { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write((int) PoseType);
+			p_Writer.Write(Velocity);
+			p_Writer.Write(AccelerationGain);
+			p_Writer.Write(DecelerationGain);
+			p_Writer.Write(SprintGain);
+			p_Writer.Write(SprintMultiplier);
+			SpeedModifier.Serialize(p_Writer, p_EbxWriter);
+		}
 	}
 }

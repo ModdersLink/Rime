@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 28)]
-	public class VehicleInputTweakData : 
+	public class VehicleInputTweakData :
 		DataContainer
 	{
 		[ContainerField(8), JsonProperty(Order = 8)]
@@ -36,5 +37,14 @@ namespace fb
 		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
 		public float MaxSpeedScale { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write((int) InputTweakType);
+			p_Writer.Write(MinSpeed);
+			p_Writer.Write(MaxSpeed);
+			p_Writer.Write(MinSpeedScale);
+			p_Writer.Write(MaxSpeedScale);
+		}
 	}
 }

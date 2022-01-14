@@ -14,15 +14,22 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 304)]
-	public class SupplySphereEntityData : 
+	public class SupplySphereEntityData :
 		ExplosionPackEntityData
 	{
 		[ContainerField(256), JsonProperty(Order = 256)]
 		public SupplyData SupplyData { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			SupplyData.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(4);
+		}
 	}
 }

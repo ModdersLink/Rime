@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 80)]
-	public class EnlightenPipelineTerrainMesh
+	public class EnlightenPipelineTerrainMesh :
+		EbxSerializable
 	{
 		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 0)]
 		public Vec2 UvTranslation { get; set; } = new();
@@ -35,5 +37,16 @@ namespace fb
 		[ContainerField(68), LayoutImmutable, JsonProperty(Order = 68)]
 		public string TerrainMeshName { get; set; } = string.Empty;
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			UvTranslation.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(8);
+			BoundingBox.Serialize(p_Writer, p_EbxWriter);
+			UvTransform.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(LightMapResolution);
+			p_Writer.Write(p_EbxWriter.WriteString(TerrainMeshName));
+			p_Writer.WriteNullBytes(8);
+		}
 	}
 }

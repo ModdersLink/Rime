@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 448)]
-	public class SunFlareEffectState : 
+	public class SunFlareEffectState :
 		DataContainer
 	{
 		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
@@ -150,5 +151,55 @@ namespace fb
 		[ContainerField(434), LayoutImmutable, Blittable, JsonProperty(Order = 434)]
 		public bool Enable { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(8);
+			Element5AlphaScreenPosCurve.Serialize(p_Writer, p_EbxWriter);
+			Element5AlphaOccluderCurve.Serialize(p_Writer, p_EbxWriter);
+			Element2SizeScreenPosCurve.Serialize(p_Writer, p_EbxWriter);
+			Element5SizeScreenPosCurve.Serialize(p_Writer, p_EbxWriter);
+			Element2AlphaOccluderCurve.Serialize(p_Writer, p_EbxWriter);
+			Element2AlphaScreenPosCurve.Serialize(p_Writer, p_EbxWriter);
+			Element1Size.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(8);
+			Element1SizeOccluderCurve.Serialize(p_Writer, p_EbxWriter);
+			Element1SizeScreenPosCurve.Serialize(p_Writer, p_EbxWriter);
+			Element1AlphaOccluderCurve.Serialize(p_Writer, p_EbxWriter);
+			Element1AlphaScreenPosCurve.Serialize(p_Writer, p_EbxWriter);
+			Element5SizeOccluderCurve.Serialize(p_Writer, p_EbxWriter);
+			Element4SizeScreenPosCurve.Serialize(p_Writer, p_EbxWriter);
+			Element3Size.Serialize(p_Writer, p_EbxWriter);
+			Element2Size.Serialize(p_Writer, p_EbxWriter);
+			Element2SizeOccluderCurve.Serialize(p_Writer, p_EbxWriter);
+			Element4AlphaScreenPosCurve.Serialize(p_Writer, p_EbxWriter);
+			Element3SizeOccluderCurve.Serialize(p_Writer, p_EbxWriter);
+			Element4Size.Serialize(p_Writer, p_EbxWriter);
+			Element5Size.Serialize(p_Writer, p_EbxWriter);
+			Element3SizeScreenPosCurve.Serialize(p_Writer, p_EbxWriter);
+			Element3AlphaOccluderCurve.Serialize(p_Writer, p_EbxWriter);
+			Element4SizeOccluderCurve.Serialize(p_Writer, p_EbxWriter);
+			Element3AlphaScreenPosCurve.Serialize(p_Writer, p_EbxWriter);
+			Element4AlphaOccluderCurve.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(Element3Shader));
+			p_Writer.Write(p_EbxWriter.WriteImport(Element2Shader));
+			p_Writer.Write(OccluderSize);
+			p_Writer.Write(p_EbxWriter.WriteImport(Element4Shader));
+			p_Writer.Write(Element4RayDistance);
+			p_Writer.Write(p_EbxWriter.WriteImport(Element1Shader));
+			p_Writer.Write(Element2RayDistance);
+			p_Writer.Write(Element1RayDistance);
+			p_Writer.Write(Element5RayDistance);
+			p_Writer.Write(Element3RayDistance);
+			p_Writer.Write(p_EbxWriter.WriteImport(Element5Shader));
+			p_Writer.Write(Element5Enable);
+			p_Writer.Write(Element4Enable);
+			p_Writer.Write(Element3Enable);
+			p_Writer.Write(Element2Enable);
+			p_Writer.Write(Element1Enable);
+			p_Writer.Write(DebugDrawOccluder);
+			p_Writer.Write(Enable);
+			p_Writer.WriteNullBytes(13);
+		}
 	}
 }

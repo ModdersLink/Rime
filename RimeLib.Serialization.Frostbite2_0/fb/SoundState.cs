@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 44)]
-	public class SoundState : 
+	public class SoundState :
 		DataContainer
 	{
 		[ContainerField(8), LayoutImmutable, JsonProperty(Order = 8)]
@@ -48,5 +49,19 @@ namespace fb
 		[ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
 		public bool FadeSound { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteString(Name));
+			p_Writer.Write(LpCutoffFrequency);
+			p_Writer.Write(Duration);
+			p_Writer.Write(FadeInTime);
+			p_Writer.Write(FadeOutTime);
+			p_Writer.Write(p_EbxWriter.WriteImport(BypassSound));
+			p_Writer.Write(p_EbxWriter.WriteImport(HdrSetting));
+			p_Writer.Write(p_EbxWriter.WriteImport(Mixer));
+			p_Writer.Write(FadeSound);
+			p_Writer.WriteNullBytes(3);
+		}
 	}
 }

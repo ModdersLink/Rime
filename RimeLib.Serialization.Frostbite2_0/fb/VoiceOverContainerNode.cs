@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 36)]
-	public class VoiceOverContainerNode : 
+	public class VoiceOverContainerNode :
 		VoiceOverStructureNode
 	{
 		[ContainerField(12), JsonProperty(Order = 12)]
@@ -39,5 +40,30 @@ namespace fb
 		[ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
 		public float Probability { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			(RimeWriter Writer, uint ArrayIndex) s_Condition = p_EbxWriter.GetArrayWriter(Condition.GetType(), Condition.Count);
+			p_Writer.Write(s_Condition.ArrayIndex);
+			foreach (var s_Entry in Condition)
+			{
+				s_Condition.Writer.Write(p_EbxWriter.WriteImport(s_Entry));
+			}
+			p_Writer.Write(p_EbxWriter.WriteImport(Interval));
+			(RimeWriter Writer, uint ArrayIndex) s_TrueRelationship = p_EbxWriter.GetArrayWriter(TrueRelationship.GetType(), TrueRelationship.Count);
+			p_Writer.Write(s_TrueRelationship.ArrayIndex);
+			foreach (var s_Entry in TrueRelationship)
+			{
+				s_TrueRelationship.Writer.Write(p_EbxWriter.WriteImport(s_Entry));
+			}
+			(RimeWriter Writer, uint ArrayIndex) s_FalseRelationship = p_EbxWriter.GetArrayWriter(FalseRelationship.GetType(), FalseRelationship.Count);
+			p_Writer.Write(s_FalseRelationship.ArrayIndex);
+			foreach (var s_Entry in FalseRelationship)
+			{
+				s_FalseRelationship.Writer.Write(p_EbxWriter.WriteImport(s_Entry));
+			}
+			p_Writer.Write((int) ConditionMode);
+			p_Writer.Write(Probability);
+		}
 	}
 }

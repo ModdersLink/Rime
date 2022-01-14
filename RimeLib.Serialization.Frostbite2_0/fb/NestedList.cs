@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 72)]
-	public class NestedList
+	public class NestedList :
+		EbxSerializable
 	{
 		[ContainerField(0), LayoutImmutable, JsonProperty(Order = 0)]
 		public string Label { get; set; } = string.Empty;
@@ -53,5 +55,25 @@ namespace fb
 		[ContainerField(71), LayoutImmutable, Blittable, JsonProperty(Order = 71)]
 		public bool HighLightOnUpdate { get; set; }
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteString(Label));
+			p_Writer.Write(p_EbxWriter.WriteString(Index));
+			ListDataSource.Serialize(p_Writer, p_EbxWriter);
+			DynamicShowList.Serialize(p_Writer, p_EbxWriter);
+			(RimeWriter Writer, uint ArrayIndex) s_StaticItems = p_EbxWriter.GetArrayWriter(StaticItems.GetType(), StaticItems.Count);
+			p_Writer.Write(s_StaticItems.ArrayIndex);
+			foreach (var s_Entry in StaticItems)
+			{
+				s_StaticItems.Writer.Write(p_EbxWriter.WriteString(s_Entry));
+			}
+			DefaultHighlighted.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write((int) RowType);
+			p_Writer.Write(UseAsNormalListRows);
+			p_Writer.Write(HiddenOnPC);
+			p_Writer.Write(HiddenOnXenon);
+			p_Writer.Write(HighLightOnUpdate);
+		}
 	}
 }

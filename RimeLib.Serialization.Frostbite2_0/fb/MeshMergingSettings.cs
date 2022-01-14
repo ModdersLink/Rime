@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 28)]
-	public class MeshMergingSettings : 
+	public class MeshMergingSettings :
 		DataContainer
 	{
 		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
@@ -48,5 +49,19 @@ namespace fb
 		[ContainerField(25), LayoutImmutable, Blittable, JsonProperty(Order = 25)]
 		public bool ClearMergeReport { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(StatsSeedIndex);
+			p_Writer.Write(StatsLodIndex);
+			p_Writer.Write(TextureAtlasWidth);
+			p_Writer.Write(DrawStatsEnable);
+			p_Writer.Write(DrawDebugTexturesEnable);
+			p_Writer.Write(VirtualTextureArrayStreamingEnable);
+			p_Writer.Write(Enable);
+			p_Writer.Write(TextureAtlasMergeEnable);
+			p_Writer.Write(ClearMergeReport);
+			p_Writer.WriteNullBytes(2);
+		}
 	}
 }

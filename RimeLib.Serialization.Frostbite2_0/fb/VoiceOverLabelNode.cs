@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 40)]
-	public class VoiceOverLabelNode : 
+	public class VoiceOverLabelNode :
 		VoiceOverExpressionNode
 	{
 		[ContainerField(8), JsonProperty(Order = 8)]
@@ -45,5 +46,32 @@ namespace fb
 		[ContainerField(36), JsonProperty(Order = 36)]
 		public VoiceOverLabelCompareMode UnwantedCompareMode { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			(RimeWriter Writer, uint ArrayIndex) s_Sources = p_EbxWriter.GetArrayWriter(Sources.GetType(), Sources.Count);
+			p_Writer.Write(s_Sources.ArrayIndex);
+			foreach (var s_Entry in Sources)
+			{
+				s_Sources.Writer.Write(p_EbxWriter.WriteImport(s_Entry));
+			}
+			p_Writer.Write(p_EbxWriter.WriteImport(False));
+			p_Writer.Write(p_EbxWriter.WriteImport(True));
+			(RimeWriter Writer, uint ArrayIndex) s_WantedLabels = p_EbxWriter.GetArrayWriter(WantedLabels.GetType(), WantedLabels.Count);
+			p_Writer.Write(s_WantedLabels.ArrayIndex);
+			foreach (var s_Entry in WantedLabels)
+			{
+				s_WantedLabels.Writer.Write(p_EbxWriter.WriteImport(s_Entry));
+			}
+			(RimeWriter Writer, uint ArrayIndex) s_UnwantedLabels = p_EbxWriter.GetArrayWriter(UnwantedLabels.GetType(), UnwantedLabels.Count);
+			p_Writer.Write(s_UnwantedLabels.ArrayIndex);
+			foreach (var s_Entry in UnwantedLabels)
+			{
+				s_UnwantedLabels.Writer.Write(p_EbxWriter.WriteImport(s_Entry));
+			}
+			p_Writer.Write((int) SourceMode);
+			p_Writer.Write((int) WantedCompareMode);
+			p_Writer.Write((int) UnwantedCompareMode);
+		}
 	}
 }

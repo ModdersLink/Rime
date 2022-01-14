@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 112)]
-	public class SoldierSoundComponentData : 
+	public class SoldierSoundComponentData :
 		ComponentData
 	{
 		[ContainerField(96), LayoutImmutable, Blittable, JsonProperty(Order = 96)]
@@ -33,5 +34,13 @@ namespace fb
 		[ContainerField(108), LayoutImmutable, Blittable, JsonProperty(Order = 108)]
 		public float RunPeriod { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(WalkVelocityThreshold);
+			p_Writer.Write(RunVelocityThreshold);
+			p_Writer.Write(WalkPeriod);
+			p_Writer.Write(RunPeriod);
+		}
 	}
 }

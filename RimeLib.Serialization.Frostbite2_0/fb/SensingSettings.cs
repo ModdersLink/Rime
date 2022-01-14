@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(8, 168)]
-	public class SensingSettings : 
+	public class SensingSettings :
 		Asset
 	{
 		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
@@ -105,5 +106,39 @@ namespace fb
 		[ContainerField(160), JsonProperty(Order = 160)]
 		public CtrRef<SensingTemplateData> DefaultTemplate { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(4);
+			p_Writer.Write(SensingTimeSpan);
+			p_Writer.Write(AttackerTrackTime);
+			p_Writer.Write(LineOfSightTestTime);
+			p_Writer.Write(MaxRays);
+			CharacterVisionBoxSettings.Serialize(p_Writer, p_EbxWriter);
+			VehicleVisionBoxSettings.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(CloseFireImpactDistance);
+			p_Writer.Write(CloseExplosiveImpactDistance);
+			p_Writer.Write(CloseTrajectoryDistance);
+			p_Writer.Write(ImpactSenseDistance);
+			p_Writer.Write(MaxVolume);
+			p_Writer.Write(MaxSize);
+			p_Writer.Write(MaxSpeed);
+			p_Writer.Write(VolumeModifier);
+			p_Writer.Write(MovementModifier);
+			p_Writer.Write(LuckModifier);
+			p_Writer.Write(BackgroundLoudnessFactor);
+			p_Writer.Write(MotionSizeFactor);
+			p_Writer.Write(MotionSpeedFactor);
+			p_Writer.Write(MotionPeripheralityFactor);
+			p_Writer.Write(MotionDistanceFactor);
+			p_Writer.Write(SmokeSphereRadius);
+			p_Writer.Write(SmokeSphereDuration);
+			p_Writer.Write(SpawnOutOfLOSRaycastHeight);
+			p_Writer.Write(SpawnOutOfLOSTraceDistance);
+			p_Writer.Write(SpawnOutOfLOSRaycastDistance);
+			p_Writer.Write(SpawnOutOfLOSRadius);
+			p_Writer.Write(p_EbxWriter.WriteImport(DefaultTemplate));
+			p_Writer.WriteNullBytes(4);
+		}
 	}
 }

@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 112)]
-	public class HealthComponentData : 
+	public class HealthComponentData :
 		ComponentData
 	{
 		[ContainerField(96), LayoutImmutable, Blittable, JsonProperty(Order = 96)]
@@ -27,5 +28,12 @@ namespace fb
 		[ContainerField(100), JsonProperty(Order = 100)]
 		public CtrRef<MaterialContainerPair> MaterialPair { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(Health);
+			p_Writer.Write(p_EbxWriter.WriteImport(MaterialPair));
+			p_Writer.WriteNullBytes(8);
+		}
 	}
 }

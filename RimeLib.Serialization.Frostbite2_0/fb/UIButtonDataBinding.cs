@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 48)]
-	public class UIButtonDataBinding : 
+	public class UIButtonDataBinding :
 		UIDataBinding
 	{
 		[ContainerField(8), JsonProperty(Order = 8)]
@@ -39,5 +40,16 @@ namespace fb
 		[ContainerField(46), LayoutImmutable, Blittable, JsonProperty(Order = 46)]
 		public bool InputOnRelease { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			ButtonsDatasource.Serialize(p_Writer, p_EbxWriter);
+			DefaultButtonSet.Serialize(p_Writer, p_EbxWriter);
+			Visibility.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(InvertVisible);
+			p_Writer.Write(Visible);
+			p_Writer.Write(InputOnRelease);
+			p_Writer.WriteNullBytes(1);
+		}
 	}
 }

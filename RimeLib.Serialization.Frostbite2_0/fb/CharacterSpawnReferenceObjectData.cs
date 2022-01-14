@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 416)]
-	public class CharacterSpawnReferenceObjectData : 
+	public class CharacterSpawnReferenceObjectData :
 		SpawnReferenceObjectData
 	{
 		[ContainerField(384), JsonProperty(Order = 384)]
@@ -51,5 +52,20 @@ namespace fb
 		[ContainerField(408), LayoutImmutable, Blittable, JsonProperty(Order = 408)]
 		public bool IgnoreVehicleIcon { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write((int) PlayerType);
+			p_Writer.Write(VehicleEntryIndex);
+			p_Writer.Write(p_EbxWriter.WriteImport(Template));
+			p_Writer.Write(HumanTargetPreference);
+			p_Writer.Write((int) MinimapIcon);
+			p_Writer.Write(AllowFallbackOnNextAvailabeVehicleEntry);
+			p_Writer.Write(CheckMaxPlayersInVehicle);
+			p_Writer.Write(AffectMinimapPosition);
+			p_Writer.Write(IsTarget);
+			p_Writer.Write(IgnoreVehicleIcon);
+			p_Writer.WriteNullBytes(7);
+		}
 	}
 }

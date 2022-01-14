@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 24)]
-	public class VoiceOverLogicFlow : 
+	public class VoiceOverLogicFlow :
 		DataContainer
 	{
 		[ContainerField(8), LayoutImmutable, JsonProperty(Order = 8)]
@@ -33,5 +34,23 @@ namespace fb
 		[ContainerField(20), JsonProperty(Order = 20)]
 		public RefArray<VoiceOverEventNode> Roots { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteString(Name));
+			p_Writer.Write(p_EbxWriter.WriteImport(Group));
+			(RimeWriter Writer, uint ArrayIndex) s_Locals = p_EbxWriter.GetArrayWriter(Locals.GetType(), Locals.Count);
+			p_Writer.Write(s_Locals.ArrayIndex);
+			foreach (var s_Entry in Locals)
+			{
+				s_Locals.Writer.Write(p_EbxWriter.WriteImport(s_Entry));
+			}
+			(RimeWriter Writer, uint ArrayIndex) s_Roots = p_EbxWriter.GetArrayWriter(Roots.GetType(), Roots.Count);
+			p_Writer.Write(s_Roots.ArrayIndex);
+			foreach (var s_Entry in Roots)
+			{
+				s_Roots.Writer.Write(p_EbxWriter.WriteImport(s_Entry));
+			}
+		}
 	}
 }

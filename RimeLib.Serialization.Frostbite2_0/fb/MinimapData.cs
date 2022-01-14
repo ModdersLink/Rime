@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 112)]
-	public class MinimapData
+	public class MinimapData :
+		EbxSerializable
 	{
 		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 0)]
 		public Vec2 Position { get; set; } = new();
@@ -71,5 +73,29 @@ namespace fb
 		[ContainerField(106), LayoutImmutable, Blittable, JsonProperty(Order = 106)]
 		public bool PositionFromPlayer { get; set; }
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			Position.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(8);
+			CameraPosition.Serialize(p_Writer, p_EbxWriter);
+			Size.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(8);
+			OverlayColor.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(AnchorPosVertical);
+			p_Writer.Write(AnchorPosHorizontal);
+			p_Writer.Write(CameraLookDistance);
+			p_Writer.Write(CameraDistance);
+			p_Writer.Write(CameraFov);
+			p_Writer.Write(OverlayAlpha);
+			p_Writer.Write(CameraRotation);
+			p_Writer.Write(StartZoomLevel);
+			p_Writer.Write(InnerZoomFactor);
+			p_Writer.Write(MaxZoomLevels);
+			p_Writer.Write(CenterOnCombatArea);
+			p_Writer.Write(RotationFromPlayer);
+			p_Writer.Write(PositionFromPlayer);
+			p_Writer.WriteNullBytes(5);
+		}
 	}
 }

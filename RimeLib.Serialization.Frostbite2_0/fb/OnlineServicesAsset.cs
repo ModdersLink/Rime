@@ -14,15 +14,26 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 16)]
-	public class OnlineServicesAsset : 
+	public class OnlineServicesAsset :
 		Asset
 	{
 		[ContainerField(12), JsonProperty(Order = 12)]
 		public RefArray<PresenceServiceData> OnlineServices { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			(RimeWriter Writer, uint ArrayIndex) s_OnlineServices = p_EbxWriter.GetArrayWriter(OnlineServices.GetType(), OnlineServices.Count);
+			p_Writer.Write(s_OnlineServices.ArrayIndex);
+			foreach (var s_Entry in OnlineServices)
+			{
+				s_OnlineServices.Writer.Write(p_EbxWriter.WriteImport(s_Entry));
+			}
+		}
 	}
 }

@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 28)]
-	public class MouseInputActionData : 
+	public class MouseInputActionData :
 		AxesInputActionData
 	{
 		[ContainerField(20), JsonProperty(Order = 20)]
@@ -33,5 +34,14 @@ namespace fb
 		[ContainerField(26), LayoutImmutable, Blittable, JsonProperty(Order = 26)]
 		public bool ScaleScrollWheelAxisInput { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write((int) Button);
+			p_Writer.Write(SimulateJoystickAxis);
+			p_Writer.Write(RememberExcessInput);
+			p_Writer.Write(ScaleScrollWheelAxisInput);
+			p_Writer.WriteNullBytes(1);
+		}
 	}
 }

@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 124)]
-	public class VeniceOnlineSettings : 
+	public class VeniceOnlineSettings :
 		SystemSettings
 	{
 		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
@@ -117,5 +118,52 @@ namespace fb
 		[ContainerField(121), LayoutImmutable, Blittable, JsonProperty(Order = 121)]
 		public bool UseFallback { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(WebFeedMaxFetchAttempts);
+			(RimeWriter Writer, uint ArrayIndex) s_Platforms = p_EbxWriter.GetArrayWriter(Platforms.GetType(), Platforms.Count);
+			p_Writer.Write(s_Platforms.ArrayIndex);
+			foreach (var s_Entry in Platforms)
+			{
+				s_Entry.Serialize(s_Platforms.Writer, p_EbxWriter);
+			}
+			p_Writer.Write(p_EbxWriter.WriteString(ServiceNameOverride));
+			p_Writer.Write(p_EbxWriter.WriteString(ClientGameConfigurationOverride));
+			p_Writer.Write(BlazeLogLevel);
+			p_Writer.Write(DirtySockLogLevel);
+			p_Writer.Write(p_EbxWriter.WriteString(BattlelogReportURL));
+			(RimeWriter Writer, uint ArrayIndex) s_EntitlementQueries = p_EbxWriter.GetArrayWriter(EntitlementQueries.GetType(), EntitlementQueries.Count);
+			p_Writer.Write(s_EntitlementQueries.ArrayIndex);
+			foreach (var s_Entry in EntitlementQueries)
+			{
+				s_EntitlementQueries.Writer.Write(p_EbxWriter.WriteImport(s_Entry));
+			}
+			p_Writer.Write(p_EbxWriter.WriteString(WebFeedUrlPrefix));
+			p_Writer.Write(SnowrollerOrphanTimeout);
+			p_Writer.Write(QueueCapacityOverride);
+			p_Writer.Write(p_EbxWriter.WriteString(WebFeedCountUrlPrefix));
+			p_Writer.Write(MatchFeedMaxFetchAttempts);
+			p_Writer.Write((int) DogTagUploadPolicy);
+			p_Writer.Write(WebFeedUnreadCountFetchPeriod);
+			p_Writer.Write(p_EbxWriter.WriteString(MatchImagesUrlPrefix));
+			p_Writer.Write(WebFeedMaxItems);
+			p_Writer.Write(WebFeedMinimumMillisecondsBetweenRequests);
+			p_Writer.Write(WebFeedMillisecondsBetweenNewRequestAttempt);
+			p_Writer.Write(MatchFeedMinimumMillisecondsBetweenRequests);
+			p_Writer.Write(MatchFeedMinimumMillisecondsBetweenMatchRequests);
+			p_Writer.Write(PingPeriod);
+			p_Writer.Write(MatchFeedMinimumMillisecondsBetweenNewRequestAttempt);
+			p_Writer.Write(p_EbxWriter.WriteString(MatchFeedDetailsUrlPrefix));
+			p_Writer.Write(p_EbxWriter.WriteString(MatchFeedListUrlPrefix));
+			p_Writer.Write(MatchFeedMinimumMillisecondsBetweenMatchReloads);
+			p_Writer.Write(EnableSnowroller);
+			p_Writer.Write(EnableQoS);
+			p_Writer.Write(PunkBusterActivateClient);
+			p_Writer.Write(PunkBusterActivateServer);
+			p_Writer.Write(BattlelogReport);
+			p_Writer.Write(UseFallback);
+			p_Writer.WriteNullBytes(2);
+		}
 	}
 }

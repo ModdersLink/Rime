@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 16)]
-	public class LinkConnection
+	public class LinkConnection :
+		EbxSerializable
 	{
 		[ContainerField(0), JsonProperty(Order = 0)]
 		public CtrRef<DataContainer> Source { get; set; } = new();
@@ -32,5 +34,13 @@ namespace fb
 		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
 		public int TargetFieldId { get; set; }
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(Source));
+			p_Writer.Write(p_EbxWriter.WriteImport(Target));
+			p_Writer.Write(SourceFieldId);
+			p_Writer.Write(TargetFieldId);
+		}
 	}
 }

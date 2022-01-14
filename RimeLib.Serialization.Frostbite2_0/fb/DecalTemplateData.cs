@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 72)]
-	public class DecalTemplateData : 
+	public class DecalTemplateData :
 		Asset
 	{
 		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
@@ -63,5 +64,23 @@ namespace fb
 		[ContainerField(71), LayoutImmutable, Blittable, JsonProperty(Order = 71)]
 		public sbyte MaterialIndex { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(Size);
+			p_Writer.Write(RandomSize);
+			p_Writer.Write(Rotation);
+			p_Writer.Write(RandomRotation);
+			p_Writer.Write(ClipAngle);
+			p_Writer.Write(ProximityRadiusFactor);
+			p_Writer.Write(NormalOffset);
+			p_Writer.Write(p_EbxWriter.WriteImport(Shader));
+			p_Writer.Write(MeshUVIndex);
+			AtlasTile.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(SortingPriority);
+			p_Writer.Write(Projected);
+			p_Writer.Write(ProjectMultiple);
+			p_Writer.Write(MaterialIndex);
+		}
 	}
 }

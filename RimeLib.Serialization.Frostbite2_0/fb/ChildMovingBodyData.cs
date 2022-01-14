@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 112)]
-	public class ChildMovingBodyData : 
+	public class ChildMovingBodyData :
 		LinearMovingBodyData
 	{
 		[ContainerField(80), LayoutImmutable, Blittable, JsonProperty(Order = 80)]
@@ -36,5 +37,15 @@ namespace fb
 		[ContainerField(96), LayoutImmutable, Blittable, JsonProperty(Order = 96)]
 		public bool IsOneShotInput { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(InputDelay);
+			p_Writer.Write(Speed);
+			p_Writer.Write((int) InputAction);
+			p_Writer.Write(TriggerImpulse);
+			p_Writer.Write(IsOneShotInput);
+			p_Writer.WriteNullBytes(15);
+		}
 	}
 }

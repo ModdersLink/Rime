@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 808)]
-	public class GunSwayData : 
+	public class GunSwayData :
 		WeaponSwayData
 	{
 		[ContainerField(8), JsonProperty(Order = 8)]
@@ -78,5 +79,33 @@ namespace fb
 		[ContainerField(804), JsonProperty(Order = 804)]
 		public CtrRef<CameraRecoilData> CameraRecoil { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			Stand.Serialize(p_Writer, p_EbxWriter);
+			Crouch.Serialize(p_Writer, p_EbxWriter);
+			Prone.Serialize(p_Writer, p_EbxWriter);
+			ProneToCrouch.Serialize(p_Writer, p_EbxWriter);
+			ProneToStand.Serialize(p_Writer, p_EbxWriter);
+			CrouchToProne.Serialize(p_Writer, p_EbxWriter);
+			CrouchToStand.Serialize(p_Writer, p_EbxWriter);
+			StandToProne.Serialize(p_Writer, p_EbxWriter);
+			StandToCrouch.Serialize(p_Writer, p_EbxWriter);
+			SuppressionModifierUnzoomed.Serialize(p_Writer, p_EbxWriter);
+			SuppressionModifierZoomed.Serialize(p_Writer, p_EbxWriter);
+			(RimeWriter Writer, uint ArrayIndex) s_Modifiers = p_EbxWriter.GetArrayWriter(Modifiers.GetType(), Modifiers.Count);
+			p_Writer.Write(s_Modifiers.ArrayIndex);
+			foreach (var s_Entry in Modifiers)
+			{
+				s_Modifiers.Writer.Write(p_EbxWriter.WriteImport(s_Entry));
+			}
+			p_Writer.Write(DeviationScaleFactorZoom);
+			p_Writer.Write(GameplayDeviationScaleFactorZoom);
+			p_Writer.Write(DeviationScaleFactorNoZoom);
+			p_Writer.Write(GameplayDeviationScaleFactorNoZoom);
+			p_Writer.Write(ShootingRecoilDecreaseScale);
+			p_Writer.Write(FirstShotRecoilMultiplier);
+			p_Writer.Write(p_EbxWriter.WriteImport(CameraRecoil));
+		}
 	}
 }

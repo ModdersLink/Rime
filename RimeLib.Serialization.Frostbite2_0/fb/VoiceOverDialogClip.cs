@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 28)]
-	public class VoiceOverDialogClip : 
+	public class VoiceOverDialogClip :
 		DataContainer
 	{
 		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
@@ -36,5 +37,25 @@ namespace fb
 		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
 		public sbyte SequenceIndex { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(Offset);
+			(RimeWriter Writer, uint ArrayIndex) s_Takes = p_EbxWriter.GetArrayWriter(Takes.GetType(), Takes.Count);
+			p_Writer.Write(s_Takes.ArrayIndex);
+			foreach (var s_Entry in Takes)
+			{
+				s_Entry.Serialize(s_Takes.Writer, p_EbxWriter);
+			}
+			(RimeWriter Writer, uint ArrayIndex) s_OffsetReferences = p_EbxWriter.GetArrayWriter(OffsetReferences.GetType(), OffsetReferences.Count);
+			p_Writer.Write(s_OffsetReferences.ArrayIndex);
+			foreach (var s_Entry in OffsetReferences)
+			{
+				s_OffsetReferences.Writer.Write(p_EbxWriter.WriteImport(s_Entry));
+			}
+			p_Writer.Write(p_EbxWriter.WriteImport(Events));
+			p_Writer.Write(SequenceIndex);
+			p_Writer.WriteNullBytes(3);
+		}
 	}
 }

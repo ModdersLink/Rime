@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 40)]
-	public class EnlightenDataAsset : 
+	public class EnlightenDataAsset :
 		Asset
 	{
 		[ContainerField(12), JsonProperty(Order = 12)]
@@ -45,5 +46,18 @@ namespace fb
 		[ContainerField(37), LayoutImmutable, Blittable, JsonProperty(Order = 37)]
 		public bool DynamicEnable { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(DebugBackFaceTexture));
+			p_Writer.Write(MaxResolutionY);
+			p_Writer.Write(p_EbxWriter.WriteImport(DebugChartTexture));
+			p_Writer.Write(p_EbxWriter.WriteImport(SkyVisibilityTexture));
+			p_Writer.Write(VisibilityThreshold);
+			p_Writer.Write(MaxResolutionX);
+			p_Writer.Write(LoadDebugData);
+			p_Writer.Write(DynamicEnable);
+			p_Writer.WriteNullBytes(2);
+		}
 	}
 }

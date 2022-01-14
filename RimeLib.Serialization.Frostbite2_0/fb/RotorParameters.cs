@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 56)]
-	public class RotorParameters : 
+	public class RotorParameters :
 		DataContainer
 	{
 		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
@@ -60,5 +61,28 @@ namespace fb
 		[ContainerField(53), LayoutImmutable, Blittable, JsonProperty(Order = 53)]
 		public bool ReverseThrottle { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(CyclicInputScaleRoll);
+			p_Writer.Write(CyclicInputScalePitch);
+			p_Writer.Write(CollectiveThrottleInputScale);
+			p_Writer.Write(CollectiveBrakeInputScale);
+			p_Writer.Write(CollectiveInputIdle);
+			p_Writer.Write(HorizontalForceModifier);
+			(RimeWriter Writer, uint ArrayIndex) s_AngleOfAttack = p_EbxWriter.GetArrayWriter(AngleOfAttack.GetType(), AngleOfAttack.Count);
+			p_Writer.Write(s_AngleOfAttack.ArrayIndex);
+			foreach (var s_Entry in AngleOfAttack)
+			{
+				s_Entry.Serialize(s_AngleOfAttack.Writer, p_EbxWriter);
+			}
+			p_Writer.Write(CyclicFadeOutOffset);
+			p_Writer.Write(AdditionalGravityModifier);
+			p_Writer.Write(HorisontalMinEffectMod);
+			p_Writer.Write(HorisontalMinEffectVelocity);
+			p_Writer.Write(EnableHorisontalMinEffect);
+			p_Writer.Write(ReverseThrottle);
+			p_Writer.WriteNullBytes(2);
+		}
 	}
 }

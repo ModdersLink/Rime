@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 160)]
-	public class VehicleStateTriggerEntityData : 
+	public class VehicleStateTriggerEntityData :
 		TriggerEntityData
 	{
 		[ContainerField(112), LayoutImmutable, Blittable, JsonProperty(Order = 112)]
@@ -66,5 +67,25 @@ namespace fb
 		[ContainerField(147), LayoutImmutable, Blittable, JsonProperty(Order = 147)]
 		public bool ShouldDestroyBangers { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(LockAmount);
+			p_Writer.Write(BulletCount);
+			p_Writer.Write(HealthToSet);
+			p_Writer.Write(SeatSpecificIndexForHuman);
+			p_Writer.Write(SeatSpecificIndexForAi);
+			p_Writer.Write(DestructionRadius);
+			p_Writer.Write(HealthToCheck);
+			p_Writer.Write(AllowHumanToEnterAllSeats);
+			p_Writer.Write(AllowAiToEnterAllSeats);
+			p_Writer.Write(BanAiFromSpecificSeat);
+			p_Writer.Write(TriggerCriticalOnHealthSet);
+			p_Writer.Write(CheckHealthGreaterOrEqual);
+			p_Writer.Write(RestrictHumanToSpecificSeat);
+			p_Writer.Write(ShouldDestroyVehicles);
+			p_Writer.Write(ShouldDestroyBangers);
+			p_Writer.WriteNullBytes(12);
+		}
 	}
 }

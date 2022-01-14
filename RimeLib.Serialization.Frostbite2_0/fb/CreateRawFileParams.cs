@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 20)]
-	public class CreateRawFileParams : 
+	public class CreateRawFileParams :
 		DataContainer
 	{
 		[ContainerField(8), LayoutImmutable, JsonProperty(Order = 8)]
@@ -30,5 +31,13 @@ namespace fb
 		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
 		public bool CreateResource { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteString(AssetName));
+			p_Writer.Write(p_EbxWriter.WriteString(SourceFile));
+			p_Writer.Write(CreateResource);
+			p_Writer.WriteNullBytes(3);
+		}
 	}
 }

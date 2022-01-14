@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 80)]
-	public class PhysicsEntityData : 
+	public class PhysicsEntityData :
 		EntityData
 	{
 		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
@@ -63,5 +64,40 @@ namespace fb
 		[ContainerField(77), LayoutImmutable, Blittable, JsonProperty(Order = 77)]
 		public bool MovableParts { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(4);
+			InertiaModifier.Serialize(p_Writer, p_EbxWriter);
+			(RimeWriter Writer, uint ArrayIndex) s_ScaledAssets = p_EbxWriter.GetArrayWriter(ScaledAssets.GetType(), ScaledAssets.Count);
+			p_Writer.Write(s_ScaledAssets.ArrayIndex);
+			foreach (var s_Entry in ScaledAssets)
+			{
+				s_ScaledAssets.Writer.Write(p_EbxWriter.WriteImport(s_Entry));
+			}
+			(RimeWriter Writer, uint ArrayIndex) s_RigidBodies = p_EbxWriter.GetArrayWriter(RigidBodies.GetType(), RigidBodies.Count);
+			p_Writer.Write(s_RigidBodies.ArrayIndex);
+			foreach (var s_Entry in RigidBodies)
+			{
+				s_RigidBodies.Writer.Write(p_EbxWriter.WriteImport(s_Entry));
+			}
+			p_Writer.Write(p_EbxWriter.WriteImport(Asset));
+			p_Writer.Write(p_EbxWriter.WriteImport(FloatPhysics));
+			p_Writer.Write(Mass);
+			p_Writer.Write(Restitution);
+			p_Writer.Write(Friction);
+			p_Writer.Write(LinearVelocityDamping);
+			p_Writer.Write(AngularVelocityDamping);
+			p_Writer.Write(p_EbxWriter.WriteImport(Proximity));
+			(RimeWriter Writer, uint ArrayIndex) s_Constraints = p_EbxWriter.GetArrayWriter(Constraints.GetType(), Constraints.Count);
+			p_Writer.Write(s_Constraints.ArrayIndex);
+			foreach (var s_Entry in Constraints)
+			{
+				s_Constraints.Writer.Write(p_EbxWriter.WriteImport(s_Entry));
+			}
+			p_Writer.Write(EncapsulatePartsInLists);
+			p_Writer.Write(MovableParts);
+			p_Writer.WriteNullBytes(2);
+		}
 	}
 }

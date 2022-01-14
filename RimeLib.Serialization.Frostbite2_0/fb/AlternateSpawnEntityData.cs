@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 96)]
-	public class AlternateSpawnEntityData : 
+	public class AlternateSpawnEntityData :
 		SpatialEntityData
 	{
 		[ContainerField(80), JsonProperty(Order = 80)]
@@ -30,5 +31,13 @@ namespace fb
 		[ContainerField(88), LayoutImmutable, Blittable, JsonProperty(Order = 88)]
 		public bool Enabled { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write((int) Team);
+			p_Writer.Write(Priority);
+			p_Writer.Write(Enabled);
+			p_Writer.WriteNullBytes(7);
+		}
 	}
 }

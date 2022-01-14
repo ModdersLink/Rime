@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 40)]
-	public class InspectViewPointData
+	public class InspectViewPointData :
+		EbxSerializable
 	{
 		[ContainerField(0), LayoutImmutable, JsonProperty(Order = 0)]
 		public string ViewPointID { get; set; } = string.Empty;
@@ -50,5 +52,30 @@ namespace fb
 		[ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
 		public bool Fixed { get; set; }
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteString(ViewPointID));
+			(RimeWriter Writer, uint ArrayIndex) s_AnimationTriggers = p_EbxWriter.GetArrayWriter(AnimationTriggers.GetType(), AnimationTriggers.Count);
+			p_Writer.Write(s_AnimationTriggers.ArrayIndex);
+			foreach (var s_Entry in AnimationTriggers)
+			{
+				s_Entry.Serialize(s_AnimationTriggers.Writer, p_EbxWriter);
+			}
+			(RimeWriter Writer, uint ArrayIndex) s_ContinuousAnimationSignal = p_EbxWriter.GetArrayWriter(ContinuousAnimationSignal.GetType(), ContinuousAnimationSignal.Count);
+			p_Writer.Write(s_ContinuousAnimationSignal.ArrayIndex);
+			foreach (var s_Entry in ContinuousAnimationSignal)
+			{
+				s_Entry.Serialize(s_ContinuousAnimationSignal.Writer, p_EbxWriter);
+			}
+			p_Writer.Write(LookAtHeight);
+			p_Writer.Write(Yaw);
+			p_Writer.Write(Pitch);
+			p_Writer.Write(Distance);
+			p_Writer.Write(FovOffset);
+			p_Writer.Write(AdjustmentYaw);
+			p_Writer.Write(Fixed);
+			p_Writer.WriteNullBytes(3);
+		}
 	}
 }

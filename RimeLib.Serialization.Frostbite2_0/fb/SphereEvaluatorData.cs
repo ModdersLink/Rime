@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 64)]
-	public class SphereEvaluatorData : 
+	public class SphereEvaluatorData :
 		EvaluatorData
 	{
 		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
@@ -30,5 +31,14 @@ namespace fb
 		[ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
 		public float Radius { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(4);
+			Scale.Serialize(p_Writer, p_EbxWriter);
+			Pivot.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(Radius);
+			p_Writer.WriteNullBytes(12);
+		}
 	}
 }

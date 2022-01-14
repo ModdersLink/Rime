@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 48)]
-	public class MultiCrossfaderGroup : 
+	public class MultiCrossfaderGroup :
 		AudioGraphNodePortGroup
 	{
 		[ContainerField(8), JsonProperty(Order = 8)]
@@ -42,5 +43,16 @@ namespace fb
 		[ContainerField(44), JsonProperty(Order = 44)]
 		public FaderType FadeType { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			Amplitude.Serialize(p_Writer, p_EbxWriter);
+			Start.Serialize(p_Writer, p_EbxWriter);
+			Stop.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(FadeAmplitude);
+			p_Writer.Write(FadeBegin);
+			p_Writer.Write(FadeEnd);
+			p_Writer.Write((int) FadeType);
+		}
 	}
 }

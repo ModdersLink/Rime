@@ -14,15 +14,26 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 44)]
-	public class UnlockAsset : 
+	public class UnlockAsset :
 		UnlockAssetBase
 	{
 		[ContainerField(40), JsonProperty(Order = 40)]
 		public RefArray<Asset> LinkedTo { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			(RimeWriter Writer, uint ArrayIndex) s_LinkedTo = p_EbxWriter.GetArrayWriter(LinkedTo.GetType(), LinkedTo.Count);
+			p_Writer.Write(s_LinkedTo.ArrayIndex);
+			foreach (var s_Entry in LinkedTo)
+			{
+				s_LinkedTo.Writer.Write(p_EbxWriter.WriteImport(s_Entry));
+			}
+		}
 	}
 }

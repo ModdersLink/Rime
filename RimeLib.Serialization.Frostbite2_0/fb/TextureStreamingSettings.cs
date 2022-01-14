@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 108)]
-	public class TextureStreamingSettings : 
+	public class TextureStreamingSettings :
 		DataContainer
 	{
 		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
@@ -150,5 +151,53 @@ namespace fb
 		[ContainerField(104), LayoutImmutable, Blittable, JsonProperty(Order = 104)]
 		public bool UseConditionalStreaming { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(FadeMipmapTime);
+			p_Writer.Write(MipmapBias);
+			p_Writer.Write(MaxTextureSizeKb);
+			p_Writer.Write(MaxFrameTextureCreateCount);
+			p_Writer.Write(MaxPendingLoadCount);
+			p_Writer.Write(MinMipmapCount);
+			p_Writer.Write(MaxMipmapCount);
+			p_Writer.Write(XenonFinalPoolSizeAdjustment);
+			p_Writer.Write(XenonRetailPoolSizeAdjustment);
+			p_Writer.Write(PoolHeadroomSize);
+			p_Writer.Write(OnDemandPoolSize);
+			p_Writer.Write(ListViewPageIndex);
+			p_Writer.Write(PoolSize);
+			p_Writer.Write(ForceMipmap);
+			p_Writer.Write(PriorityThreshold);
+			p_Writer.Write(DefragFrameTransferLimit);
+			p_Writer.Write(MinTextureSize);
+			p_Writer.Write(MaxFrameTextureCreateSize);
+			p_Writer.Write(OnlyWantedInPool);
+			p_Writer.Write(DxImmutableUsageEnable);
+			p_Writer.Write(MipmapsEnable);
+			p_Writer.Write(UploadMipmapsEnable);
+			p_Writer.Write(TextureUpdateEnable);
+			p_Writer.Write(AsyncCreatesEnable);
+			p_Writer.Write(LoadMipmapsEnable);
+			p_Writer.Write(ForceWantedEnable);
+			p_Writer.Write(UpdateEnable);
+			p_Writer.Write(PoolEnable);
+			p_Writer.Write(DefragEnable);
+			p_Writer.Write(DefragTransfersEnable);
+			p_Writer.Write(ChunkLoadEnable);
+			p_Writer.Write(InstantUnloadingEnable);
+			p_Writer.Write(FadeMipmapsEnable);
+			p_Writer.Write(DynamicLoadingEnable);
+			p_Writer.Write(Enable);
+			p_Writer.Write(DrawStatsEnable);
+			p_Writer.Write(DrawTextureGroupStatsEnable);
+			p_Writer.Write(DrawTextureFormatStatsEnable);
+			p_Writer.Write(DrawLoadingListEnable);
+			p_Writer.Write(DrawPriorityListEnable);
+			p_Writer.Write(OverridePoolSize);
+			p_Writer.Write(DumpLoadedList);
+			p_Writer.Write(UseConditionalStreaming);
+			p_Writer.WriteNullBytes(3);
+		}
 	}
 }

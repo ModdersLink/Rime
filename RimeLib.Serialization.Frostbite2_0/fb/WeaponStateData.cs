@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 92)]
-	public class WeaponStateData
+	public class WeaponStateData :
+		EbxSerializable
 	{
 		[ContainerField(0), JsonProperty(Order = 0)]
 		public List<uint> ReferencedAssetHashes { get; set; } = new();
@@ -95,5 +97,60 @@ namespace fb
 		[ContainerField(89), LayoutImmutable, Blittable, JsonProperty(Order = 89)]
 		public bool AlwaysAimHead { get; set; }
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			(RimeWriter Writer, uint ArrayIndex) s_ReferencedAssetHashes = p_EbxWriter.GetArrayWriter(ReferencedAssetHashes.GetType(), ReferencedAssetHashes.Count);
+			p_Writer.Write(s_ReferencedAssetHashes.ArrayIndex);
+			foreach (var s_Entry in ReferencedAssetHashes)
+			{
+				s_ReferencedAssetHashes.Writer.Write(s_Entry);
+			}
+			(RimeWriter Writer, uint ArrayIndex) s_BoneFakePhysics = p_EbxWriter.GetArrayWriter(BoneFakePhysics.GetType(), BoneFakePhysics.Count);
+			p_Writer.Write(s_BoneFakePhysics.ArrayIndex);
+			foreach (var s_Entry in BoneFakePhysics)
+			{
+				s_BoneFakePhysics.Writer.Write(p_EbxWriter.WriteImport(s_Entry));
+			}
+			p_Writer.Write(p_EbxWriter.WriteImport(Mesh1p));
+			p_Writer.Write(p_EbxWriter.WriteImport(MeshZoom1p));
+			p_Writer.Write(p_EbxWriter.WriteImport(Mesh3p));
+			Weapon.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(ZoomMeshTransitionFactor);
+			p_Writer.Write(ZoomScaleFactor);
+			(RimeWriter Writer, uint ArrayIndex) s_ZoomInOutMeshTransitionFactors = p_EbxWriter.GetArrayWriter(ZoomInOutMeshTransitionFactors.GetType(), ZoomInOutMeshTransitionFactors.Count);
+			p_Writer.Write(s_ZoomInOutMeshTransitionFactors.ArrayIndex);
+			foreach (var s_Entry in ZoomInOutMeshTransitionFactors)
+			{
+				s_ZoomInOutMeshTransitionFactors.Writer.Write(s_Entry);
+			}
+			p_Writer.Write(p_EbxWriter.WriteImport(ZoomedScopeFilter));
+			p_Writer.Write(p_EbxWriter.WriteImport(NonZoomedScopeFilter));
+			p_Writer.Write(KeepAimingTime);
+			AnimationConfiguration.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write((int) AnimatedFireType);
+			p_Writer.Write((int) AnimatedAimingType);
+			(RimeWriter Writer, uint ArrayIndex) s_Mesh3pTransforms = p_EbxWriter.GetArrayWriter(Mesh3pTransforms.GetType(), Mesh3pTransforms.Count);
+			p_Writer.Write(s_Mesh3pTransforms.ArrayIndex);
+			foreach (var s_Entry in Mesh3pTransforms)
+			{
+				s_Entry.Serialize(s_Mesh3pTransforms.Writer, p_EbxWriter);
+			}
+			(RimeWriter Writer, uint ArrayIndex) s_Mesh3pRigidMeshSocketObjectTransforms = p_EbxWriter.GetArrayWriter(Mesh3pRigidMeshSocketObjectTransforms.GetType(), Mesh3pRigidMeshSocketObjectTransforms.Count);
+			p_Writer.Write(s_Mesh3pRigidMeshSocketObjectTransforms.ArrayIndex);
+			foreach (var s_Entry in Mesh3pRigidMeshSocketObjectTransforms)
+			{
+				s_Entry.Serialize(s_Mesh3pRigidMeshSocketObjectTransforms.Writer, p_EbxWriter);
+			}
+			p_Writer.Write(HideProjectileAfterFireTime);
+			p_Writer.Write(p_EbxWriter.WriteString(ProjectileBoneName));
+			p_Writer.Write(IsOneHanded);
+			p_Writer.Write(PlayDeployAfterFire);
+			p_Writer.Write(SkipFireAnimation);
+			p_Writer.Write(SkipDeployAnimation);
+			p_Writer.Write(SkipReloadAnimation);
+			p_Writer.Write(AlwaysAimHead);
+			p_Writer.WriteNullBytes(2);
+		}
 	}
 }

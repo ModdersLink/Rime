@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 48)]
-	public class EnlightenBuildRadiositySceneDesc : 
+	public class EnlightenBuildRadiositySceneDesc :
 		DataContainer
 	{
 		[ContainerField(8), JsonProperty(Order = 8)]
@@ -57,5 +58,37 @@ namespace fb
 		[ContainerField(46), LayoutImmutable, Blittable, JsonProperty(Order = 46)]
 		public bool CacheEnable { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			(RimeWriter Writer, uint ArrayIndex) s_LightProbeSets = p_EbxWriter.GetArrayWriter(LightProbeSets.GetType(), LightProbeSets.Count);
+			p_Writer.Write(s_LightProbeSets.ArrayIndex);
+			foreach (var s_Entry in LightProbeSets)
+			{
+				s_Entry.Serialize(s_LightProbeSets.Writer, p_EbxWriter);
+			}
+			(RimeWriter Writer, uint ArrayIndex) s_Instances = p_EbxWriter.GetArrayWriter(Instances.GetType(), Instances.Count);
+			p_Writer.Write(s_Instances.ArrayIndex);
+			foreach (var s_Entry in Instances)
+			{
+				s_Entry.Serialize(s_Instances.Writer, p_EbxWriter);
+			}
+			(RimeWriter Writer, uint ArrayIndex) s_StaticLightProbes = p_EbxWriter.GetArrayWriter(StaticLightProbes.GetType(), StaticLightProbes.Count);
+			p_Writer.Write(s_StaticLightProbes.ArrayIndex);
+			foreach (var s_Entry in StaticLightProbes)
+			{
+				s_Entry.Serialize(s_StaticLightProbes.Writer, p_EbxWriter);
+			}
+			p_Writer.Write(p_EbxWriter.WriteString(Terrain));
+			p_Writer.Write(SamplesPerCluster);
+			p_Writer.Write(SystemInfluenceRadius);
+			p_Writer.Write(SystemSize);
+			p_Writer.Write(IrBudget);
+			p_Writer.Write(ClusterSize);
+			p_Writer.Write(SaveDebugData);
+			p_Writer.Write(DistributedBuild);
+			p_Writer.Write(CacheEnable);
+			p_Writer.WriteNullBytes(1);
+		}
 	}
 }

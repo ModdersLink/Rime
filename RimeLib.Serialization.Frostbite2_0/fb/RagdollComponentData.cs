@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 144)]
-	public class RagdollComponentData : 
+	public class RagdollComponentData :
 		ComponentData
 	{
 		[ContainerField(96), JsonProperty(Order = 96)]
@@ -39,5 +40,16 @@ namespace fb
 		[ContainerField(132), LayoutImmutable, JsonProperty(Order = 132)]
 		public string RightLegBoneName { get; set; } = string.Empty;
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(SkeletonAsset));
+			p_Writer.Write(p_EbxWriter.WriteImport(RagdollAsset));
+			p_Writer.Write(p_EbxWriter.WriteImport(SkeletonCollisionData));
+			Binding.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteString(LeftLegBoneName));
+			p_Writer.Write(p_EbxWriter.WriteString(RightLegBoneName));
+			p_Writer.WriteNullBytes(8);
+		}
 	}
 }

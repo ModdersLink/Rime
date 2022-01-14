@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 128)]
-	public class DifficultyData : 
+	public class DifficultyData :
 		DataContainer
 	{
 		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
@@ -87,5 +88,33 @@ namespace fb
 		[ContainerField(124), LayoutImmutable, Blittable, JsonProperty(Order = 124)]
 		public bool UsePitchZoomSnap { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(8);
+			StickyBoxModifier.Serialize(p_Writer, p_EbxWriter);
+			SnapBoxModifier.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(HumanHealthModifier);
+			p_Writer.Write((int) GameType);
+			p_Writer.Write(FriendsHealthModifier);
+			p_Writer.Write(FriendlyDamageModifier);
+			p_Writer.Write(VehicleDamageModifier);
+			p_Writer.Write(HumanInCriticalHealth);
+			p_Writer.Write(EnemiesHealthModifier);
+			p_Writer.Write(HumanRegenerationRateModifier);
+			p_Writer.Write(HumanInCriticalHealthDamageModifier);
+			p_Writer.Write(InteractiveManDownDamageModifier);
+			p_Writer.Write(InteractiveManDownTimeMultiplier);
+			p_Writer.Write(InteractiveManDownReviveTime);
+			p_Writer.Write(AdrenalineKillLimit);
+			p_Writer.Write(CriticalHealthJesusModeTimeModifier);
+			p_Writer.Write((int) Difficulty);
+			p_Writer.Write(CriticalFakeImmortalModifier);
+			p_Writer.Write(SuckZoomModifier);
+			p_Writer.Write(p_EbxWriter.WriteImport(AIData));
+			p_Writer.Write(AiBulletDamageHumanCooldown);
+			p_Writer.Write(UsePitchZoomSnap);
+			p_Writer.WriteNullBytes(3);
+		}
 	}
 }

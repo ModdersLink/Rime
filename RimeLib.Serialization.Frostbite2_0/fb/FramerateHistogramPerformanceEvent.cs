@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(8, 72)]
-	public class FramerateHistogramPerformanceEvent : 
+	public class FramerateHistogramPerformanceEvent :
 		MetricEvent
 	{
 		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
@@ -51,5 +52,20 @@ namespace fb
 		[ContainerField(52), LayoutImmutable, Blittable, JsonProperty(Order = 52)]
 		public GUID PerformanceLink { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(SpikeAverage);
+			p_Writer.Write(Below5);
+			p_Writer.Write(Below10);
+			p_Writer.Write(Below15);
+			p_Writer.Write(Below20);
+			p_Writer.Write(Below25);
+			p_Writer.Write(Below30);
+			p_Writer.Write(Below60);
+			p_Writer.Write(Above60);
+			PerformanceLink.Serialize(p_Writer);
+			p_Writer.WriteNullBytes(4);
+		}
 	}
 }

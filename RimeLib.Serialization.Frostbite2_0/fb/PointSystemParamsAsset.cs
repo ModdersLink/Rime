@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 32)]
-	public class PointSystemParamsAsset : 
+	public class PointSystemParamsAsset :
 		Asset
 	{
 		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
@@ -36,5 +37,14 @@ namespace fb
 		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
 		public float FreefallHeight { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(MultiKillTimeLimit);
+			p_Writer.Write(DnfTimeout);
+			p_Writer.Write(KillStreakX);
+			p_Writer.Write(NemesisKillX);
+			p_Writer.Write(FreefallHeight);
+		}
 	}
 }

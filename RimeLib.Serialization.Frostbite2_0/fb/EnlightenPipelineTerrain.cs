@@ -14,15 +14,26 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 16)]
-	public class EnlightenPipelineTerrain : 
+	public class EnlightenPipelineTerrain :
 		Asset
 	{
 		[ContainerField(12), JsonProperty(Order = 12)]
 		public List<EnlightenPipelineTerrainMesh> Meshes { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			(RimeWriter Writer, uint ArrayIndex) s_Meshes = p_EbxWriter.GetArrayWriter(Meshes.GetType(), Meshes.Count);
+			p_Writer.Write(s_Meshes.ArrayIndex);
+			foreach (var s_Entry in Meshes)
+			{
+				s_Entry.Serialize(s_Meshes.Writer, p_EbxWriter);
+			}
+		}
 	}
 }

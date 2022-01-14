@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 28)]
-	public class ExtendedConstraintsData : 
+	public class ExtendedConstraintsData :
 		DataContainer
 	{
 		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
@@ -36,5 +37,14 @@ namespace fb
 		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
 		public float AngularConstraintMax { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(Heading);
+			p_Writer.Write(Width);
+			p_Writer.Write(Falloff);
+			p_Writer.Write(AngularConstraintMin);
+			p_Writer.Write(AngularConstraintMax);
+		}
 	}
 }

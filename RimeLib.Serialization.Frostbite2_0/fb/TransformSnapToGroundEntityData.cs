@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 112)]
-	public class TransformSnapToGroundEntityData : 
+	public class TransformSnapToGroundEntityData :
 		EntityData
 	{
 		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
@@ -39,5 +40,17 @@ namespace fb
 		[ContainerField(96), LayoutImmutable, Blittable, JsonProperty(Order = 96)]
 		public bool AlignWithGroundNormal { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(4);
+			In.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write((int) Realm);
+			p_Writer.Write(DistanceToGround);
+			p_Writer.Write(RayCastLength);
+			p_Writer.Write(RayCastUpOffset);
+			p_Writer.Write(AlignWithGroundNormal);
+			p_Writer.WriteNullBytes(15);
+		}
 	}
 }

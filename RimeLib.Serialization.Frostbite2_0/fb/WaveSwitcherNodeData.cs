@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 52)]
-	public class WaveSwitcherNodeData : 
+	public class WaveSwitcherNodeData :
 		AudioGraphNodeData
 	{
 		[ContainerField(8), JsonProperty(Order = 8)]
@@ -45,5 +46,23 @@ namespace fb
 		[ContainerField(49), LayoutImmutable, Blittable, JsonProperty(Order = 49)]
 		public bool RandomStartIndex { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			Index.Serialize(p_Writer, p_EbxWriter);
+			Advance.Serialize(p_Writer, p_EbxWriter);
+			Wave.Serialize(p_Writer, p_EbxWriter);
+			IndexChanged.Serialize(p_Writer, p_EbxWriter);
+			(RimeWriter Writer, uint ArrayIndex) s_Waves = p_EbxWriter.GetArrayWriter(Waves.GetType(), Waves.Count);
+			p_Writer.Write(s_Waves.ArrayIndex);
+			foreach (var s_Entry in Waves)
+			{
+				s_Waves.Writer.Write(p_EbxWriter.WriteImport(s_Entry));
+			}
+			p_Writer.Write(DefaultIndex);
+			p_Writer.Write(IsRandom);
+			p_Writer.Write(RandomStartIndex);
+			p_Writer.WriteNullBytes(2);
+		}
 	}
 }

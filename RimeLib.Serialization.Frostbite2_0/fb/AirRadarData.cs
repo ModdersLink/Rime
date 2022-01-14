@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 128)]
-	public class AirRadarData : 
+	public class AirRadarData :
 		UIPartData
 	{
 		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
@@ -69,5 +70,27 @@ namespace fb
 		[ContainerField(126), LayoutImmutable, Blittable, JsonProperty(Order = 126)]
 		public bool UseCameraComponentTransform { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(RadarRange);
+			p_Writer.Write(RadarSensitivity);
+			p_Writer.Write(HeatSensitivity);
+			p_Writer.Write((int) MissileIcon);
+			p_Writer.Write((int) CenterIcon);
+			p_Writer.Write((int) FriendlyIcon);
+			p_Writer.Write((int) EnemyIcon);
+			p_Writer.Write((int) LaserPaintedIcon);
+			p_Writer.Write((int) NorthIcon);
+			p_Writer.WriteNullBytes(4);
+			SubScreen.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write((int) WestIcon);
+			p_Writer.Write((int) SouthIcon);
+			p_Writer.Write((int) EastIcon);
+			p_Writer.Write(TrackLaserPaintedObjects);
+			p_Writer.Write(TrackOnlyUsedVehicles);
+			p_Writer.Write(UseCameraComponentTransform);
+			p_Writer.WriteNullBytes(1);
+		}
 	}
 }

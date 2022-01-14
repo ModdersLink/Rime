@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 356)]
-	public class VisualTerrainSettings : 
+	public class VisualTerrainSettings :
 		DataContainer
 	{
 		[ContainerField(8), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 8)]
@@ -477,5 +478,162 @@ namespace fb
 		[ContainerField(352), LayoutImmutable, Blittable, JsonProperty(Order = 352)]
 		public bool Ps3MeshScatteringInstanceCellMemoryEnable { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			DebugOverlayBrushCoverageMin.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write((int) RenderMode);
+			p_Writer.Write(MeshScatteringInstanceCullJobCount);
+			p_Writer.Write(PatchErrorFov);
+			p_Writer.Write(TriangleSizeMin);
+			p_Writer.Write(LodScale);
+			p_Writer.Write(LodCenterExtrapolationDistanceMax);
+			p_Writer.Write(LodCenterExtrapolationTime);
+			p_Writer.Write(MeshScatteringDensityScaleFactor);
+			p_Writer.Write(DxTessellatedTriWidth);
+			p_Writer.Write(DxTessellationPatchShrink);
+			p_Writer.Write(DxTessellationPatchFacesPerSide);
+			p_Writer.Write(ZPassDistance);
+			p_Writer.Write(DebugOverlayGridSize);
+			p_Writer.Write(TextureAtlasSampleCountXFactor);
+			p_Writer.Write(TextureAtlasSampleCountYFactor);
+			p_Writer.Write(TextureSamplesPerMeterMax);
+			p_Writer.Write(TextureDetailFalloffFactor);
+			p_Writer.Write(TextureDetailFalloffDistance);
+			p_Writer.Write(TextureDetailFalloffCurve);
+			p_Writer.Write(TextureInvisibleDetailReductionFactor);
+			p_Writer.Write(TextureOccludedDetailReductionFactor);
+			p_Writer.Write(TextureRenderJobCount);
+			p_Writer.Write(MeshScatteringDistanceScaleFactor);
+			p_Writer.Write(DebugOverlayIsolineSpacing);
+			p_Writer.Write(TextureRenderJobsLaunchedPerFrameCountMax);
+			p_Writer.Write(TextureTileSamplesPerSide);
+			p_Writer.Write(TextureTileBorderWidth);
+			p_Writer.Write(TextureLevelOffset);
+			p_Writer.Write(TextureClodFrameCount);
+			p_Writer.Write(MeshScatteringDensityMarginFactor);
+			p_Writer.Write(TextureClodCutoffPriority);
+			p_Writer.Write(MeshScatteringWindSpeed);
+			p_Writer.Write(TextureCompressJobCount);
+			p_Writer.Write(MeshScatteringInstancesPerCellMax);
+			p_Writer.Write(TextureCompressionQuality);
+			p_Writer.Write(TextureDetailSlopeBoost);
+			p_Writer.Write(TextureGenerationMipBias);
+			p_Writer.Write(DebugOverlayBrushSize);
+			p_Writer.Write(MeshScatteringBuildChannelCount);
+			p_Writer.Write(MeshScatteringTreeNodePoolCapacity);
+			p_Writer.Write(MeshScatteringInvisibleCellFovFactor);
+			p_Writer.Write(MeshScatteringInstanceCullListCount);
+			p_Writer.Write(MeshScatteringPregenerationDistanceRatio);
+			p_Writer.Write(TessellationFacesPerSideMin);
+			p_Writer.Write(MaxNonVisibleTextureUpdateCount);
+			p_Writer.Write(TextureQuadsPerTileLevel);
+			p_Writer.Write(WaterDepthMetersPerSample);
+			p_Writer.Write(DynamicMaskDecalWidthScale);
+			p_Writer.Write(DrawQuadtreeZoomIndex);
+			p_Writer.Write(MeshScatteringClodFrameCount);
+			p_Writer.Write(MeshScatteringBuildChannelsLaunchedPerFrameCountMax);
+			p_Writer.Write(SlotReuseWaitCount);
+			p_Writer.Write(MeshScatteringCellPoolCapacity);
+			p_Writer.Write(MeshScatteringCullRecordCount);
+			p_Writer.Write(PatchSlotCount);
+			p_Writer.Write(BuildJobCount);
+			p_Writer.Write(OccluderLodBoostLevelCount);
+			p_Writer.Write(DecalZPassDrawDistance);
+			p_Writer.Write(DecalOffsetY);
+			p_Writer.Write(Decal3dFarDrawDistanceScaleFactor);
+			p_Writer.Write(OccludedMinDistance);
+			p_Writer.Write(PatchFacesPerSide);
+			p_Writer.Write(DrawOnlyDecalZPassEnable);
+			p_Writer.Write(DrawDecal3dEnable);
+			p_Writer.Write(DrawTextureTileBoxesEnable);
+			p_Writer.Write(DrawEnable);
+			p_Writer.Write(DrawPatchBoxesEnable);
+			p_Writer.Write(DrawDebugTextEnable);
+			p_Writer.Write(DrawWaterEnable);
+			p_Writer.Write(PrioritizationSpuJobEnable);
+			p_Writer.Write(DrawDecalZPassEnable);
+			p_Writer.Write(DrawQuadtreesEnable);
+			p_Writer.Write(TextureVtIndirectionJobEnable);
+			p_Writer.Write(VertexBufferHeightsEnable);
+			p_Writer.Write(DrawDebugTexturesEnable);
+			p_Writer.Write(ForceDecalReducedQuality);
+			p_Writer.Write(DebugOverlayIsolinesEnable);
+			p_Writer.Write(TextureClodEnable);
+			p_Writer.Write(DebugOverlayWireframeEnable);
+			p_Writer.Write(DebugOverlaySketchTextureEnable);
+			p_Writer.Write(DrawDecal2dEnable);
+			p_Writer.Write(DetailOverlayEnable);
+			p_Writer.Write(DecalEnable);
+			p_Writer.Write(DrawPatchesEnable);
+			p_Writer.Write(DrawQuadtreeStatsEnable);
+			p_Writer.Write(DestroyAll);
+			p_Writer.Write(DrawQuadtreeAtlasTexturesEnable);
+			p_Writer.Write(SlotDebugOutputEnable);
+			p_Writer.Write(UpdateJobsEnable);
+			p_Writer.Write(PrioritizationOcclusionEnable);
+			p_Writer.Write(CullSpuJobEnable);
+			p_Writer.Write(PrepareBuildSpuJobEnable);
+			p_Writer.Write(BuildSpuJobEnable);
+			p_Writer.Write(RegenerateTexturesEnable);
+			p_Writer.Write(DynamicMaskEnable);
+			p_Writer.Write(GpuTextureCompressionEnable);
+			p_Writer.Write(TextureBlockOnStreamingEnable);
+			p_Writer.Write(PatchErrorFovEnable);
+			p_Writer.Write(DxDisplacementMappingEnable);
+			p_Writer.Write(TextureKeepPoolFullEnable);
+			p_Writer.Write(PatchLodTransitionsEnable);
+			p_Writer.Write(PatchMaterialSortingEnable);
+			p_Writer.Write(CullSampleBoundingBoxHeightEnable);
+			p_Writer.Write(CastShadowsEnable);
+			p_Writer.Write(GlobalColormapEnable);
+			p_Writer.Write(OccluderEnable);
+			p_Writer.Write(OccluderJobEnable);
+			p_Writer.Write(OccluderSpuJobEnable);
+			p_Writer.Write(TextureLayerCullingEnable);
+			p_Writer.Write(OccludedEnable);
+			p_Writer.Write(DrawTextureDebugDepthComplexity);
+			p_Writer.Write(MeshScatteringEnable);
+			p_Writer.Write(MeshScatteringJobsEnable);
+			p_Writer.Write(MeshScatteringCastShadowsEnable);
+			p_Writer.Write(DrawMeshScatteringEnable);
+			p_Writer.Write(DrawMeshScatteringCellBoxesEnable);
+			p_Writer.Write(DrawMeshScatteringNodeBoxesEnable);
+			p_Writer.Write(DrawMeshScatteringCulledCellBoxesEnable);
+			p_Writer.Write(DrawMeshScatteringDebugMaskScaleTexturesEnable);
+			p_Writer.Write(DrawMeshScatteringStatsEnable);
+			p_Writer.Write(DrawMeshScatteringQuadtreeEnable);
+			p_Writer.Write(TextureDrawTerrainLayersEnable);
+			p_Writer.Write(TextureForceUpdateEnable);
+			p_Writer.Write(TextureCompressFastAlgorithmEnable);
+			p_Writer.Write(MeshScatteringForceUpdateEnable);
+			p_Writer.Write(TextureCompressSpuJobsEnable);
+			p_Writer.Write(DrawTextureDebugColors);
+			p_Writer.Write(ForceGraphicsDriverCrash);
+			p_Writer.Write(MeshScatteringBuildVisibleFirst);
+			p_Writer.Write(ForcePatchRebuildEnable);
+			p_Writer.Write(DebugOverlayBrushEnable);
+			p_Writer.Write(WireframeEnable);
+			p_Writer.Write(TextureVtIndirectionSpuJobEnable);
+			p_Writer.Write(DrawVertexYTextureEnable);
+			p_Writer.Write(MeshScatteringInstanceCountLodEnable);
+			p_Writer.Write(MeshScatteringCullSpuJobEnable);
+			p_Writer.Write(MeshScatteringInstanceCullSpuJobEnable);
+			p_Writer.Write(MeshScatteringPrioritizationSpuJobEnable);
+			p_Writer.Write(MeshScatteringSpuJobEnable);
+			p_Writer.Write(Enable);
+			p_Writer.Write(EditServiceEnable);
+			p_Writer.Write(MeshScatteringInstanceCullEnable);
+			p_Writer.Write(ZeroViewportEnable);
+			p_Writer.Write(DebugOverlayGridEnable);
+			p_Writer.Write(MeshScatteringInstanceCullBoxTestEnable);
+			p_Writer.Write(MeshScatteringInstanceFrustumCullEnable);
+			p_Writer.Write(MeshScatteringInstanceOcclusionCullEnable);
+			p_Writer.Write(MeshScatteringInstanceAdditionalCullEnable);
+			p_Writer.Write(DrawMeshScatteringInstanceBoxesEnable);
+			p_Writer.Write(MeshScatteringInstanceCullDynamicAllocEnable);
+			p_Writer.Write(Ps3MeshScatteringInstanceCellMemoryEnable);
+			p_Writer.WriteNullBytes(3);
+		}
 	}
 }

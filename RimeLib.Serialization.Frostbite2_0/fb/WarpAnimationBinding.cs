@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 20)]
-	public class WarpAnimationBinding
+	public class WarpAnimationBinding :
+		EbxSerializable
 	{
 		[ContainerField(0), JsonProperty(Order = 0)]
 		public AntRef ConnectJointGroup { get; set; } = new();
@@ -35,5 +37,14 @@ namespace fb
 		[ContainerField(16), JsonProperty(Order = 16)]
 		public AntRef TranslationYWarpTolerance { get; set; } = new();
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			ConnectJointGroup.Serialize(p_Writer, p_EbxWriter);
+			ConnectJointWeight.Serialize(p_Writer, p_EbxWriter);
+			EnableAlign.Serialize(p_Writer, p_EbxWriter);
+			DisableCulling.Serialize(p_Writer, p_EbxWriter);
+			TranslationYWarpTolerance.Serialize(p_Writer, p_EbxWriter);
+		}
 	}
 }

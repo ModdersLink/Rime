@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 48)]
-	public class SoundWaveAsset : 
+	public class SoundWaveAsset :
 		SoundDataAsset
 	{
 		[ContainerField(20), JsonProperty(Order = 20)]
@@ -57,5 +58,37 @@ namespace fb
 		[ContainerField(46), LayoutImmutable, Blittable, JsonProperty(Order = 46)]
 		public sbyte RequestPriority { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			(RimeWriter Writer, uint ArrayIndex) s_Variations = p_EbxWriter.GetArrayWriter(Variations.GetType(), Variations.Count);
+			p_Writer.Write(s_Variations.ArrayIndex);
+			foreach (var s_Entry in Variations)
+			{
+				s_Variations.Writer.Write(p_EbxWriter.WriteImport(s_Entry));
+			}
+			(RimeWriter Writer, uint ArrayIndex) s_Localization = p_EbxWriter.GetArrayWriter(Localization.GetType(), Localization.Count);
+			p_Writer.Write(s_Localization.ArrayIndex);
+			foreach (var s_Entry in Localization)
+			{
+				s_Entry.Serialize(s_Localization.Writer, p_EbxWriter);
+			}
+			(RimeWriter Writer, uint ArrayIndex) s_SubtitleStringIds = p_EbxWriter.GetArrayWriter(SubtitleStringIds.GetType(), SubtitleStringIds.Count);
+			p_Writer.Write(s_SubtitleStringIds.ArrayIndex);
+			foreach (var s_Entry in SubtitleStringIds)
+			{
+				s_SubtitleStringIds.Writer.Write(p_EbxWriter.WriteString(s_Entry));
+			}
+			p_Writer.Write((int) Selection);
+			p_Writer.Write(p_EbxWriter.WriteImport(StreamPool));
+			p_Writer.Write(Seekable);
+			p_Writer.Write(PreferAvailableVariations);
+			p_Writer.Write(PersistentVariationCount);
+			p_Writer.Write(ChannelCount);
+			p_Writer.Write(VoicePriority);
+			p_Writer.Write(PrimePriority);
+			p_Writer.Write(RequestPriority);
+			p_Writer.WriteNullBytes(1);
+		}
 	}
 }

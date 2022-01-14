@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 28)]
-	public class FadeEntityData : 
+	public class FadeEntityData :
 		EntityData
 	{
 		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
@@ -45,5 +46,18 @@ namespace fb
 		[ContainerField(25), LayoutImmutable, Blittable, JsonProperty(Order = 25)]
 		public bool StartFaded { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(FadeTime);
+			p_Writer.Write(MaxWaitFadedWhileStreamingTime);
+			p_Writer.Write(FadeScreen);
+			p_Writer.Write(FadeUI);
+			p_Writer.Write(FadeRumble);
+			p_Writer.Write(FadeAudio);
+			p_Writer.Write(FadeMovie);
+			p_Writer.Write(StartFaded);
+			p_Writer.WriteNullBytes(2);
+		}
 	}
 }

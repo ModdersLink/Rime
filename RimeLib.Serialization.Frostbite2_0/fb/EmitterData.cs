@@ -14,15 +14,27 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 64)]
-	public class EmitterData : 
+	public class EmitterData :
 		ProcessorData
 	{
 		[ContainerField(48), JsonProperty(Order = 48)]
 		public RefArray<EmitterDocument> EmitterAssets { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			(RimeWriter Writer, uint ArrayIndex) s_EmitterAssets = p_EbxWriter.GetArrayWriter(EmitterAssets.GetType(), EmitterAssets.Count);
+			p_Writer.Write(s_EmitterAssets.ArrayIndex);
+			foreach (var s_Entry in EmitterAssets)
+			{
+				s_EmitterAssets.Writer.Write(p_EbxWriter.WriteImport(s_Entry));
+			}
+			p_Writer.WriteNullBytes(12);
+		}
 	}
 }

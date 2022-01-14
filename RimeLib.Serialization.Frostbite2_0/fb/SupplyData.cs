@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 44)]
-	public class SupplyData
+	public class SupplyData :
+		EbxSerializable
 	{
 		[ContainerField(0), JsonProperty(Order = 0)]
 		public SupplyUnitSphereData Healing { get; set; } = new();
@@ -38,5 +40,15 @@ namespace fb
 		[ContainerField(43), LayoutImmutable, Blittable, JsonProperty(Order = 43)]
 		public bool ExcludeSelf { get; set; }
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			Healing.Serialize(p_Writer, p_EbxWriter);
+			Ammo.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(SupplyVehicles);
+			p_Writer.Write(SupplySoldiers);
+			p_Writer.Write(TeamSpecific);
+			p_Writer.Write(ExcludeSelf);
+		}
 	}
 }

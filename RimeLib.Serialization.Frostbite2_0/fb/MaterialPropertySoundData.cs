@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 32)]
-	public class MaterialPropertySoundData : 
+	public class MaterialPropertySoundData :
 		PhysicsMaterialRelationPropertyData
 	{
 		[ContainerField(8), JsonProperty(Order = 8)]
@@ -39,5 +40,15 @@ namespace fb
 		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
 		public float MaterialSoundId { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(ImpactSound));
+			p_Writer.Write(p_EbxWriter.WriteImport(ScrapeSound));
+			p_Writer.Write(ScrapeLength);
+			p_Writer.Write(p_EbxWriter.WriteImport(SoldierSettings));
+			p_Writer.Write(Softness);
+			p_Writer.Write(MaterialSoundId);
+		}
 	}
 }

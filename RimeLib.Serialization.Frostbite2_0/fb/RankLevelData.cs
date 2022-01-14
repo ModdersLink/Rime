@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 36)]
-	public class RankLevelData : 
+	public class RankLevelData :
 		DataContainer
 	{
 		[ContainerField(8), LayoutImmutable, JsonProperty(Order = 8)]
@@ -42,5 +43,21 @@ namespace fb
 		[ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
 		public int RankNumber { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteString(RankName));
+			p_Writer.Write(PointsNeeded);
+			p_Writer.Write(p_EbxWriter.WriteString(ImageName));
+			p_Writer.Write(p_EbxWriter.WriteString(IconName));
+			p_Writer.Write(p_EbxWriter.WriteString(SoundName));
+			(RimeWriter Writer, uint ArrayIndex) s_UnlockInfos = p_EbxWriter.GetArrayWriter(UnlockInfos.GetType(), UnlockInfos.Count);
+			p_Writer.Write(s_UnlockInfos.ArrayIndex);
+			foreach (var s_Entry in UnlockInfos)
+			{
+				s_Entry.Serialize(s_UnlockInfos.Writer, p_EbxWriter);
+			}
+			p_Writer.Write(RankNumber);
+		}
 	}
 }

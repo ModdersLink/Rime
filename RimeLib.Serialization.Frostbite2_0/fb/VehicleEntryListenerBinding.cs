@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 60)]
-	public class VehicleEntryListenerBinding
+	public class VehicleEntryListenerBinding :
+		EbxSerializable
 	{
 		[ContainerField(0), JsonProperty(Order = 0)]
 		public AntRef InVehicle { get; set; } = new();
@@ -65,5 +67,24 @@ namespace fb
 		[ContainerField(56), JsonProperty(Order = 56)]
 		public AntRef VehicleEntryChooserIndex { get; set; } = new();
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			InVehicle.Serialize(p_Writer, p_EbxWriter);
+			InOpenEntry.Serialize(p_Writer, p_EbxWriter);
+			VehicleEntryFire.Serialize(p_Writer, p_EbxWriter);
+			VehicleEntryYaw.Serialize(p_Writer, p_EbxWriter);
+			VehicleEntryPitch.Serialize(p_Writer, p_EbxWriter);
+			VehicleEntryRoll.Serialize(p_Writer, p_EbxWriter);
+			VehicleEntryRotation.Serialize(p_Writer, p_EbxWriter);
+			VehicleEntryForceX.Serialize(p_Writer, p_EbxWriter);
+			VehicleEntryForceY.Serialize(p_Writer, p_EbxWriter);
+			VehicleEntryForceZ.Serialize(p_Writer, p_EbxWriter);
+			VehicleEntryIndex.Serialize(p_Writer, p_EbxWriter);
+			VehicleEntryIndexUpdated.Serialize(p_Writer, p_EbxWriter);
+			VehicleOpenEntryIndex.Serialize(p_Writer, p_EbxWriter);
+			InVehicleRetrigger.Serialize(p_Writer, p_EbxWriter);
+			VehicleEntryChooserIndex.Serialize(p_Writer, p_EbxWriter);
+		}
 	}
 }

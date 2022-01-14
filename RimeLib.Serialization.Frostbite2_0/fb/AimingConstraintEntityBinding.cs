@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 8)]
-	public class AimingConstraintEntityBinding
+	public class AimingConstraintEntityBinding :
+		EbxSerializable
 	{
 		[ContainerField(0), JsonProperty(Order = 0)]
 		public AntRef ProneAimLimit { get; set; } = new();
@@ -26,5 +28,11 @@ namespace fb
 		[ContainerField(4), JsonProperty(Order = 4)]
 		public AntRef ProneAimDistance { get; set; } = new();
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			ProneAimLimit.Serialize(p_Writer, p_EbxWriter);
+			ProneAimDistance.Serialize(p_Writer, p_EbxWriter);
+		}
 	}
 }

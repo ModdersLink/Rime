@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 40)]
-	public class MeshAsset : 
+	public class MeshAsset :
 		Asset
 	{
 		[ContainerField(12), JsonProperty(Order = 12)]
@@ -51,5 +52,24 @@ namespace fb
 		[ContainerField(39), LayoutImmutable, Blittable, JsonProperty(Order = 39)]
 		public bool OccluderMeshEnable { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(LodGroup));
+			p_Writer.Write(LodScale);
+			p_Writer.Write(CullScale);
+			p_Writer.Write(NameHash);
+			p_Writer.Write((int) EnlightenType);
+			(RimeWriter Writer, uint ArrayIndex) s_Materials = p_EbxWriter.GetArrayWriter(Materials.GetType(), Materials.Count);
+			p_Writer.Write(s_Materials.ArrayIndex);
+			foreach (var s_Entry in Materials)
+			{
+				s_Materials.Writer.Write(p_EbxWriter.WriteImport(s_Entry));
+			}
+			p_Writer.Write(OccluderHighPriority);
+			p_Writer.Write(StreamingEnable);
+			p_Writer.Write(DestructionMaterialEnable);
+			p_Writer.Write(OccluderMeshEnable);
+		}
 	}
 }

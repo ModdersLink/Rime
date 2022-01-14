@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 112)]
-	public class TeamEntityData : 
+	public class TeamEntityData :
 		GameEntityData
 	{
 		[ContainerField(96), JsonProperty(Order = 96)]
@@ -27,5 +28,12 @@ namespace fb
 		[ContainerField(100), JsonProperty(Order = 100)]
 		public TeamId Id { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(Team));
+			p_Writer.Write((int) Id);
+			p_Writer.WriteNullBytes(8);
+		}
 	}
 }

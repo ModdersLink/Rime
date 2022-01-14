@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 28)]
-	public class TargetEvaluationConstantData : 
+	public class TargetEvaluationConstantData :
 		Asset
 	{
 		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
@@ -33,5 +34,13 @@ namespace fb
 		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
 		public float TargetFlipFactorUsage { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(MaxBattleStrength);
+			p_Writer.Write(DefaultHumanTargetPreference);
+			p_Writer.Write(OtherSquadAttackerFactorUsage);
+			p_Writer.Write(TargetFlipFactorUsage);
+		}
 	}
 }

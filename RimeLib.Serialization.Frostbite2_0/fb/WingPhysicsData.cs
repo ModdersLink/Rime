@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 72)]
-	public class WingPhysicsData : 
+	public class WingPhysicsData :
 		DataContainer
 	{
 		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
@@ -69,5 +70,25 @@ namespace fb
 		[ContainerField(68), JsonProperty(Order = 68)]
 		public CtrRef<LandingFlapData> LandingFlapLogic { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(Lift);
+			p_Writer.Write(FlapLift);
+			p_Writer.Write(p_EbxWriter.WriteImport(LiftCoefficient));
+			p_Writer.Write(Drag);
+			p_Writer.Write(FlapDrag);
+			p_Writer.Write(p_EbxWriter.WriteImport(DragCoefficient));
+			p_Writer.Write(AngularVelocityLiftModifier);
+			p_Writer.Write(DragRotationModifier);
+			p_Writer.Write(BaseAngleOfAttack);
+			p_Writer.Write(InputForFlap);
+			p_Writer.Write(FlapTurnSpeed);
+			p_Writer.Write(VisualFlapTurnSpeed);
+			p_Writer.Write(VisualFlapAngleLimit);
+			p_Writer.Write(p_EbxWriter.WriteImport(MaxFlapAngleScaleFactor));
+			p_Writer.Write(LandingFlapLift);
+			p_Writer.Write(p_EbxWriter.WriteImport(LandingFlapLogic));
+		}
 	}
 }

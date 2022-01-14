@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 240)]
-	public class UavCameraData : 
+	public class UavCameraData :
 		TargetCameraData
 	{
 		[ContainerField(160), LayoutImmutable, Blittable, JsonProperty(Order = 160)]
@@ -60,5 +61,38 @@ namespace fb
 		[ContainerField(232), LayoutImmutable, Blittable, JsonProperty(Order = 232)]
 		public float UpWeightDistance { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(ViewDistance);
+			(RimeWriter Writer, uint ArrayIndex) s_ViewDistanceCurve = p_EbxWriter.GetArrayWriter(ViewDistanceCurve.GetType(), ViewDistanceCurve.Count);
+			p_Writer.Write(s_ViewDistanceCurve.ArrayIndex);
+			foreach (var s_Entry in ViewDistanceCurve)
+			{
+				s_Entry.Serialize(s_ViewDistanceCurve.Writer, p_EbxWriter);
+			}
+			p_Writer.Write(ViewAngle);
+			(RimeWriter Writer, uint ArrayIndex) s_ViewAngleCurve = p_EbxWriter.GetArrayWriter(ViewAngleCurve.GetType(), ViewAngleCurve.Count);
+			p_Writer.Write(s_ViewAngleCurve.ArrayIndex);
+			foreach (var s_Entry in ViewAngleCurve)
+			{
+				s_Entry.Serialize(s_ViewAngleCurve.Writer, p_EbxWriter);
+			}
+			p_Writer.Write(RotationSpeed);
+			(RimeWriter Writer, uint ArrayIndex) s_RotationSpeedCurve = p_EbxWriter.GetArrayWriter(RotationSpeedCurve.GetType(), RotationSpeedCurve.Count);
+			p_Writer.Write(s_RotationSpeedCurve.ArrayIndex);
+			foreach (var s_Entry in RotationSpeedCurve)
+			{
+				s_Entry.Serialize(s_RotationSpeedCurve.Writer, p_EbxWriter);
+			}
+			p_Writer.Write(ZoomFov);
+			p_Writer.Write(ZoomDelay);
+			p_Writer.Write(ZoomTransitionTime);
+			p_Writer.Write(Fov);
+			FocusPoint.Serialize(p_Writer, p_EbxWriter);
+			CenterPoint.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(UpWeightDistance);
+			p_Writer.WriteNullBytes(4);
+		}
 	}
 }

@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 144)]
-	public class ModelAnimationEntityData : 
+	public class ModelAnimationEntityData :
 		EntityData
 	{
 		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
@@ -93,5 +94,40 @@ namespace fb
 		[ContainerField(141), LayoutImmutable, Blittable, JsonProperty(Order = 141)]
 		public bool DisableCulling { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(4);
+			AnimationEntitySpace.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write((int) BoneToPlace);
+			p_Writer.Write((int) Realm);
+			p_Writer.Write((int) ModelAnimationTransformType);
+			p_Writer.Write(InstanceSeed);
+			p_Writer.Write(p_EbxWriter.WriteString(DefaultAnimation));
+			p_Writer.Write(AnimationIndex);
+			p_Writer.Write(p_EbxWriter.WriteImport(AnimationSet));
+			p_Writer.Write(ExternalTime);
+			p_Writer.Write(p_EbxWriter.WriteString(RootMeshBoneName));
+			p_Writer.Write((int) JointWorldTransformUpdateOrder);
+			p_Writer.Write(p_EbxWriter.WriteString(ConnectBoneName));
+			(RimeWriter Writer, uint ArrayIndex) s_JointOutputPropertyIds = p_EbxWriter.GetArrayWriter(JointOutputPropertyIds.GetType(), JointOutputPropertyIds.Count);
+			p_Writer.Write(s_JointOutputPropertyIds.ArrayIndex);
+			foreach (var s_Entry in JointOutputPropertyIds)
+			{
+				s_JointOutputPropertyIds.Writer.Write(s_Entry);
+			}
+			p_Writer.Write(p_EbxWriter.WriteString(TrajectoryBoneName));
+			p_Writer.Write(AnimationEntitySpaceActive);
+			p_Writer.Write(PlayFirstFrame);
+			p_Writer.Write(Looping);
+			p_Writer.Write(EnableJointWorldTransformOutput);
+			p_Writer.Write(ResetAfterStop);
+			p_Writer.Write(AutoStart);
+			p_Writer.Write(ShowDebugTransforms);
+			p_Writer.Write(ApplyRotationCompensation);
+			p_Writer.Write(ApplyPreTransformation);
+			p_Writer.Write(DisableCulling);
+			p_Writer.WriteNullBytes(2);
+		}
 	}
 }

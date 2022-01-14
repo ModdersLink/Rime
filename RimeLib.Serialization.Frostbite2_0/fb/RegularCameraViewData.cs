@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 48)]
-	public class RegularCameraViewData
+	public class RegularCameraViewData :
+		EbxSerializable
 	{
 		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 0)]
 		public Vec3 MeshOffset { get; set; } = new();
@@ -47,5 +49,19 @@ namespace fb
 		[ContainerField(38), LayoutImmutable, Blittable, JsonProperty(Order = 38)]
 		public bool FLIREnabled { get; set; }
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			MeshOffset.Serialize(p_Writer, p_EbxWriter);
+			InputSuppression.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(FieldOfView);
+			p_Writer.Write(p_EbxWriter.WriteImport(Mesh));
+			p_Writer.Write(ScreenExposureAreaScale);
+			p_Writer.Write(p_EbxWriter.WriteImport(MaskMeshBlueprint));
+			p_Writer.Write(LockMeshToRenderView);
+			p_Writer.Write(AllowFieldOfViewScaling);
+			p_Writer.Write(FLIREnabled);
+			p_Writer.WriteNullBytes(9);
+		}
 	}
 }

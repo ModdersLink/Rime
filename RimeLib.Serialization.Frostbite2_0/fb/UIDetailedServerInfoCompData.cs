@@ -14,15 +14,26 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 32)]
-	public class UIDetailedServerInfoCompData : 
+	public class UIDetailedServerInfoCompData :
 		UIComponentData
 	{
 		[ContainerField(28), JsonProperty(Order = 28)]
 		public List<ServerInfoSetting> Settings { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			(RimeWriter Writer, uint ArrayIndex) s_Settings = p_EbxWriter.GetArrayWriter(Settings.GetType(), Settings.Count);
+			p_Writer.Write(s_Settings.ArrayIndex);
+			foreach (var s_Entry in Settings)
+			{
+				s_Entry.Serialize(s_Settings.Writer, p_EbxWriter);
+			}
+		}
 	}
 }

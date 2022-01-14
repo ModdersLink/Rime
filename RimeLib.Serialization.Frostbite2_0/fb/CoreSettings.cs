@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 72)]
-	public class CoreSettings
+	public class CoreSettings :
+		EbxSerializable
 	{
 		[ContainerField(0), LayoutImmutable, Blittable, JsonProperty(Order = 0)]
 		public int RandomTickSeed { get; set; }
@@ -83,5 +85,31 @@ namespace fb
 		[ContainerField(68), LayoutImmutable, Blittable, JsonProperty(Order = 68)]
 		public bool CrashOnFatalErrors { get; set; }
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(RandomTickSeed);
+			p_Writer.Write(p_EbxWriter.WriteString(AvailableLanguages));
+			p_Writer.Write(RandomSessionId);
+			p_Writer.Write(RandomTimeSeed);
+			p_Writer.Write(HardwareGpuBias);
+			p_Writer.Write((int) HardwareProfile);
+			p_Writer.Write(JobProcessorCount);
+			p_Writer.Write(MaxJobThreadCount);
+			p_Writer.Write(p_EbxWriter.WriteString(Host));
+			p_Writer.Write(p_EbxWriter.WriteString(HostUser));
+			p_Writer.Write(p_EbxWriter.WriteString(HostUserDomain));
+			p_Writer.Write(p_EbxWriter.WriteString(InitSeed));
+			p_Writer.Write((int) LogLevel);
+			p_Writer.Write(HardwareCpuBias);
+			p_Writer.Write(p_EbxWriter.WriteString(GameConfigurationName));
+			p_Writer.Write(p_EbxWriter.WriteString(ProfileDirectoryName));
+			p_Writer.Write(DisplayAsserts);
+			p_Writer.Write(LiveEditingEnable);
+			p_Writer.Write(UseStorageServer);
+			p_Writer.Write(UseDiskCaching);
+			p_Writer.Write(CrashOnFatalErrors);
+			p_Writer.WriteNullBytes(3);
+		}
 	}
 }

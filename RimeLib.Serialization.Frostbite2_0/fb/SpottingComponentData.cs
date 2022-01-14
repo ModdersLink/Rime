@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 160)]
-	public class SpottingComponentData : 
+	public class SpottingComponentData :
 		ComponentData
 	{
 		[ContainerField(96), LayoutImmutable, Blittable, JsonProperty(Order = 96)]
@@ -66,5 +67,25 @@ namespace fb
 		[ContainerField(152), LayoutImmutable, Blittable, JsonProperty(Order = 152)]
 		public bool OnlyAllowedToHaveOneSpottedPlayer { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(SpottingFov);
+			p_Writer.Write(TeamOrderFov);
+			p_Writer.Write(SpottingDistance);
+			p_Writer.Write(PassiveSpottingTimeInterval);
+			p_Writer.Write(TimeRequiredToPassiveSpot);
+			p_Writer.Write(OrderNeedAmmoPercentage);
+			p_Writer.Write(OrderHealPercentage);
+			p_Writer.Write(OrderRepairPercentage);
+			p_Writer.Write(PickupOrderDistance);
+			p_Writer.Write(HealOrderDistance);
+			p_Writer.Write(AmmoOrderDistance);
+			p_Writer.Write(RepairOrderDistance);
+			p_Writer.Write(CoolDownHistoryTime);
+			p_Writer.Write(CoolDownAllowedSpotsWithinHistory);
+			p_Writer.Write(OnlyAllowedToHaveOneSpottedPlayer);
+			p_Writer.WriteNullBytes(7);
+		}
 	}
 }

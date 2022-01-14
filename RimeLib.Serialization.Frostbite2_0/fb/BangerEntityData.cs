@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 144)]
-	public class BangerEntityData : 
+	public class BangerEntityData :
 		DynamicGamePhysicsEntityData
 	{
 		[ContainerField(112), JsonProperty(Order = 112)]
@@ -39,5 +40,21 @@ namespace fb
 		[ContainerField(132), LayoutImmutable, Blittable, JsonProperty(Order = 132)]
 		public bool UseVariableNetworkFrequency { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			(RimeWriter Writer, uint ArrayIndex) s_Scales = p_EbxWriter.GetArrayWriter(Scales.GetType(), Scales.Count);
+			p_Writer.Write(s_Scales.ArrayIndex);
+			foreach (var s_Entry in Scales)
+			{
+				s_Scales.Writer.Write(s_Entry);
+			}
+			p_Writer.Write(p_EbxWriter.WriteImport(Mesh));
+			p_Writer.Write(p_EbxWriter.WriteImport(Explosion));
+			p_Writer.Write(TimeToLive);
+			p_Writer.Write(DestructiblePartCount);
+			p_Writer.Write(UseVariableNetworkFrequency);
+			p_Writer.WriteNullBytes(11);
+		}
 	}
 }

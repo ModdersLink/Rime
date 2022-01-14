@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 72)]
-	public class DivisibleLoopPlayerNodeData : 
+	public class DivisibleLoopPlayerNodeData :
 		AudioGraphNodeData
 	{
 		[ContainerField(8), JsonProperty(Order = 8)]
@@ -51,5 +52,25 @@ namespace fb
 		[ContainerField(68), LayoutImmutable, Blittable, JsonProperty(Order = 68)]
 		public bool StartAtRandomPosition { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			Start.Serialize(p_Writer, p_EbxWriter);
+			Stop.Serialize(p_Writer, p_EbxWriter);
+			Amplitude.Serialize(p_Writer, p_EbxWriter);
+			FreezeSegment.Serialize(p_Writer, p_EbxWriter);
+			Output.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(Wave));
+			ExternalWave.Serialize(p_Writer, p_EbxWriter);
+			(RimeWriter Writer, uint ArrayIndex) s_Plugins = p_EbxWriter.GetArrayWriter(Plugins.GetType(), Plugins.Count);
+			p_Writer.Write(s_Plugins.ArrayIndex);
+			foreach (var s_Entry in Plugins)
+			{
+				s_Entry.Serialize(s_Plugins.Writer, p_EbxWriter);
+			}
+			p_Writer.Write(CrossFadeLength);
+			p_Writer.Write(StartAtRandomPosition);
+			p_Writer.WriteNullBytes(3);
+		}
 	}
 }

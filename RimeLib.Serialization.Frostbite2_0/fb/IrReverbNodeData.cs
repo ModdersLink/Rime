@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 64)]
-	public class IrReverbNodeData : 
+	public class IrReverbNodeData :
 		AudioGraphNodeData
 	{
 		[ContainerField(8), JsonProperty(Order = 8)]
@@ -45,5 +46,18 @@ namespace fb
 		[ContainerField(60), JsonProperty(Order = 60)]
 		public SoundGraphPluginRef ReverbPlugin { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			In.Serialize(p_Writer, p_EbxWriter);
+			Out.Serialize(p_Writer, p_EbxWriter);
+			Reverb0.Serialize(p_Writer, p_EbxWriter);
+			Amplitude0.Serialize(p_Writer, p_EbxWriter);
+			Reverb1.Serialize(p_Writer, p_EbxWriter);
+			Amplitude1.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(MaxReverbLength);
+			ReverbPlugin.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(1);
+		}
 	}
 }

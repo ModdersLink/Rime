@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 272)]
-	public class AnimatedDriverEntityData : 
+	public class AnimatedDriverEntityData :
 		GameEntityData
 	{
 		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 96)]
@@ -54,5 +55,21 @@ namespace fb
 		[ContainerField(256), LayoutImmutable, Blittable, JsonProperty(Order = 256)]
 		public bool DelayAnimationWheelTransform { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			InputTransform.Serialize(p_Writer, p_EbxWriter);
+			VehicleBoost.Serialize(p_Writer, p_EbxWriter);
+			VehicleSpeed.Serialize(p_Writer, p_EbxWriter);
+			VehicleMovementState.Serialize(p_Writer, p_EbxWriter);
+			VehicleClutch.Serialize(p_Writer, p_EbxWriter);
+			VehicleBrake.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(MovementStateStandThreshold);
+			Yaw.Serialize(p_Writer, p_EbxWriter);
+			Roll.Serialize(p_Writer, p_EbxWriter);
+			Pitch.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(DelayAnimationWheelTransform);
+			p_Writer.WriteNullBytes(15);
+		}
 	}
 }

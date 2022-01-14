@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 28)]
-	public class VoiceOverEventNode : 
+	public class VoiceOverEventNode :
 		VoiceOverStructureNode
 	{
 		[ContainerField(12), JsonProperty(Order = 12)]
@@ -33,5 +34,23 @@ namespace fb
 		[ContainerField(24), JsonProperty(Order = 24)]
 		public CtrRef<VoiceOverEvent> Event { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(Interval));
+			(RimeWriter Writer, uint ArrayIndex) s_Relationship = p_EbxWriter.GetArrayWriter(Relationship.GetType(), Relationship.Count);
+			p_Writer.Write(s_Relationship.ArrayIndex);
+			foreach (var s_Entry in Relationship)
+			{
+				s_Relationship.Writer.Write(p_EbxWriter.WriteImport(s_Entry));
+			}
+			(RimeWriter Writer, uint ArrayIndex) s_Redirects = p_EbxWriter.GetArrayWriter(Redirects.GetType(), Redirects.Count);
+			p_Writer.Write(s_Redirects.ArrayIndex);
+			foreach (var s_Entry in Redirects)
+			{
+				s_Redirects.Writer.Write(p_EbxWriter.WriteImport(s_Entry));
+			}
+			p_Writer.Write(p_EbxWriter.WriteImport(Event));
+		}
 	}
 }

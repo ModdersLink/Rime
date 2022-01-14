@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 48)]
-	public class UIImageDataBinding : 
+	public class UIImageDataBinding :
 		UIDataBinding
 	{
 		[ContainerField(8), LayoutImmutable, JsonProperty(Order = 8)]
@@ -33,5 +34,14 @@ namespace fb
 		[ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
 		public bool Visible { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteString(StaticImageUrl));
+			ImageData.Serialize(p_Writer, p_EbxWriter);
+			Visibility.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(Visible);
+			p_Writer.WriteNullBytes(3);
+		}
 	}
 }

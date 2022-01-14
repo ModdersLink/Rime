@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 156)]
-	public class AIWeaponData : 
+	public class AIWeaponData :
 		GameAIWeaponData
 	{
 		[ContainerField(12), JsonProperty(Order = 12)]
@@ -150,5 +151,52 @@ namespace fb
 		[ContainerField(155), LayoutImmutable, Blittable, JsonProperty(Order = 155)]
 		public bool IsAiAllowed { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			Strengths.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(MaxBurstCoolDownTime);
+			p_Writer.Write(LostTargetBurstCoolDownModifier);
+			p_Writer.Write(FinalAccuracyPercentage);
+			p_Writer.Write(AimTransitionFireDelay);
+			p_Writer.Write(MinRange);
+			p_Writer.Write(MaxRange);
+			p_Writer.Write(OptimalRangePercentage);
+			p_Writer.Write((int) ReloadBehavior);
+			p_Writer.Write(MinExtraReloadTime);
+			p_Writer.Write(MaxExtraReloadTime);
+			p_Writer.Write(MinBurstCoolDownTime);
+			p_Writer.Write(AimAngularVelocity);
+			p_Writer.Write(InnerInaccurateDistance);
+			p_Writer.Write(AngleToTargetSnap);
+			p_Writer.Write(SweepDistance);
+			p_Writer.Write(SweepTime);
+			p_Writer.Write(WaitTimeBeforeFire);
+			BurstLimitNear.Serialize(p_Writer, p_EbxWriter);
+			BurstLimitFar.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(StartAccuracyPercentage);
+			p_Writer.Write(MinimumAccuracyBeforeFiring);
+			p_Writer.Write(OuterInaccurateDistance);
+			p_Writer.Write(AdditionalMinimumAccuracyAtMinRange);
+			p_Writer.Write(GravityModifier);
+			p_Writer.Write((int) SweepType);
+			p_Writer.Write((int) AimOrigin);
+			p_Writer.Write(UseZoom);
+			p_Writer.Write(AllowedAgainstImmortals);
+			p_Writer.Write(AimWhileReloading);
+			p_Writer.Write(AimHighIndirectPath);
+			p_Writer.Write(Indirect);
+			p_Writer.Write(IsMelee);
+			p_Writer.Write(SweepFirstAttack);
+			p_Writer.Write(IsBlindFireAllowed);
+			p_Writer.Write(CanAltAttack);
+			p_Writer.Write(IsStandStill);
+			p_Writer.Write(CanSuppress);
+			p_Writer.Write(UseFromCover);
+			p_Writer.Write(InaccuracyFollowsTarget);
+			p_Writer.Write(UseInaccuracyAtCloseRange);
+			p_Writer.Write(DisableWeaponSway);
+			p_Writer.Write(IsAiAllowed);
+		}
 	}
 }

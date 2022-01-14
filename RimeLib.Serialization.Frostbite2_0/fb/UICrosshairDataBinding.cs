@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 60)]
-	public class UICrosshairDataBinding : 
+	public class UICrosshairDataBinding :
 		UIDataBinding
 	{
 		[ContainerField(8), JsonProperty(Order = 8)]
@@ -33,5 +34,13 @@ namespace fb
 		[ContainerField(56), LayoutImmutable, Blittable, JsonProperty(Order = 56)]
 		public float DispersionBaseOffset { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			Dispersion.Serialize(p_Writer, p_EbxWriter);
+			Zoomed.Serialize(p_Writer, p_EbxWriter);
+			Visibility.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(DispersionBaseOffset);
+		}
 	}
 }

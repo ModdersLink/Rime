@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 36)]
-	public class AILocoBinding
+	public class AILocoBinding :
+		EbxSerializable
 	{
 		[ContainerField(0), JsonProperty(Order = 0)]
 		public AntRef LocoTarget { get; set; } = new();
@@ -47,5 +49,18 @@ namespace fb
 		[ContainerField(32), JsonProperty(Order = 32)]
 		public AntRef EnableProceduralHeadAim { get; set; } = new();
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			LocoTarget.Serialize(p_Writer, p_EbxWriter);
+			AttentionState.Serialize(p_Writer, p_EbxWriter);
+			EndPoseEnum.Serialize(p_Writer, p_EbxWriter);
+			CurrentPoseEnum.Serialize(p_Writer, p_EbxWriter);
+			EnterExitPoseEnum.Serialize(p_Writer, p_EbxWriter);
+			RunStyle.Serialize(p_Writer, p_EbxWriter);
+			TargetWaypointPosition.Serialize(p_Writer, p_EbxWriter);
+			TargetSpeedLevel.Serialize(p_Writer, p_EbxWriter);
+			EnableProceduralHeadAim.Serialize(p_Writer, p_EbxWriter);
+		}
 	}
 }

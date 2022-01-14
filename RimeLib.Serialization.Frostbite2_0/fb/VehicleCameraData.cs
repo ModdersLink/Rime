@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 256)]
-	public class VehicleCameraData : 
+	public class VehicleCameraData :
 		TargetCameraData
 	{
 		[ContainerField(160), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 160)]
@@ -51,5 +52,20 @@ namespace fb
 		[ContainerField(250), LayoutImmutable, Blittable, JsonProperty(Order = 250)]
 		public bool UseTerrainAdjustment { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			MoveToPosition.Serialize(p_Writer, p_EbxWriter);
+			MoveToPositionSlopeFactor.Serialize(p_Writer, p_EbxWriter);
+			TargetOffset.Serialize(p_Writer, p_EbxWriter);
+			TargetOffsetSlopeFactor.Serialize(p_Writer, p_EbxWriter);
+			RotationFactor.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(PositionFactor);
+			p_Writer.Write(ResetDistance);
+			p_Writer.Write(FixedPosition);
+			p_Writer.Write(FixedAngleZ);
+			p_Writer.Write(UseTerrainAdjustment);
+			p_Writer.WriteNullBytes(5);
+		}
 	}
 }

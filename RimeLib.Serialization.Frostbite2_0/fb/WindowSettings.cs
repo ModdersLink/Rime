@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 40)]
-	public class WindowSettings : 
+	public class WindowSettings :
 		SystemSettings
 	{
 		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
@@ -60,5 +61,23 @@ namespace fb
 		[ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
 		public bool Minimized { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(PosX);
+			p_Writer.Write(PosY);
+			p_Writer.Write(Width);
+			p_Writer.Write(Height);
+			p_Writer.Write(BordersEnable);
+			p_Writer.Write(AutoSize);
+			p_Writer.Write(FullscreenAutoSize);
+			p_Writer.Write(FullscreenWhenJoiningServer);
+			p_Writer.Write(EnableEscape);
+			p_Writer.Write(EnableInputOnActivate);
+			p_Writer.Write(HibernateOnClose);
+			p_Writer.Write(Hidden);
+			p_Writer.Write(Minimized);
+			p_Writer.WriteNullBytes(3);
+		}
 	}
 }

@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 68)]
-	public class DogTagData : 
+	public class DogTagData :
 		UnlockAssetBase
 	{
 		[ContainerField(40), LayoutImmutable, JsonProperty(Order = 40)]
@@ -51,5 +52,20 @@ namespace fb
 		[ContainerField(64), LayoutImmutable, Blittable, JsonProperty(Order = 64)]
 		public bool ExcludedOnWin32 { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteString(NameSID));
+			p_Writer.Write(p_EbxWriter.WriteString(DescriptionSID));
+			p_Writer.Write(p_EbxWriter.WriteString(ImageName));
+			p_Writer.Write(p_EbxWriter.WriteString(SmallImageName));
+			p_Writer.Write((int) Category);
+			p_Writer.Write(InvertText);
+			p_Writer.Write(IsAlwaysAvailable);
+			p_Writer.Write(ExcludedOnXenon);
+			p_Writer.Write(ExcludedOnPs3);
+			p_Writer.Write(ExcludedOnWin32);
+			p_Writer.WriteNullBytes(3);
+		}
 	}
 }

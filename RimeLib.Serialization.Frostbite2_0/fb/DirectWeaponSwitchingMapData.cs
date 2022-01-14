@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 20)]
-	public class DirectWeaponSwitchingMapData
+	public class DirectWeaponSwitchingMapData :
+		EbxSerializable
 	{
 		[ContainerField(0), JsonProperty(Order = 0)]
 		public EntryInputActionEnum Action { get; set; } = new();
@@ -38,5 +40,16 @@ namespace fb
 		[ContainerField(17), LayoutImmutable, Blittable, JsonProperty(Order = 17)]
 		public bool FireAndSwitchBackToPrev { get; set; }
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write((int) Action);
+			p_Writer.Write((int) ToWeapon);
+			p_Writer.Write(PreventMeleeRepeatTime);
+			p_Writer.Write(SwitchBackToPrevMaxTimePressed);
+			p_Writer.Write(UseQuickSwitch);
+			p_Writer.Write(FireAndSwitchBackToPrev);
+			p_Writer.WriteNullBytes(2);
+		}
 	}
 }

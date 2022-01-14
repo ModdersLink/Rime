@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 80)]
-	public class CameraProximityEvaluatorData : 
+	public class CameraProximityEvaluatorData :
 		EvaluatorData
 	{
 		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
@@ -36,5 +37,16 @@ namespace fb
 		[ContainerField(68), LayoutImmutable, Blittable, JsonProperty(Order = 68)]
 		public float ForwardOffset { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(4);
+			Size.Serialize(p_Writer, p_EbxWriter);
+			Offset.Serialize(p_Writer, p_EbxWriter);
+			InnerRadiusDirection.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(InnerRadius);
+			p_Writer.Write(ForwardOffset);
+			p_Writer.WriteNullBytes(8);
+		}
 	}
 }

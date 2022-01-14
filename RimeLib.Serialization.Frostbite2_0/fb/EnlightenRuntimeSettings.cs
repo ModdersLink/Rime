@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 96)]
-	public class EnlightenRuntimeSettings : 
+	public class EnlightenRuntimeSettings :
 		SystemSettings
 	{
 		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
@@ -135,5 +136,48 @@ namespace fb
 		[ContainerField(95), LayoutImmutable, Blittable, JsonProperty(Order = 95)]
 		public bool EmissiveEnable { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(4);
+			AlbedoDefaultColor.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(LocalLightForceRadius);
+			p_Writer.Write(DrawDebugSystemDependenciesEnable);
+			p_Writer.Write(TemporalCoherenceThreshold);
+			p_Writer.Write(SkyBoxScale);
+			p_Writer.Write(MinSystemUpdateCount);
+			p_Writer.Write(JobCount);
+			p_Writer.Write(DrawDebugSystemBoundingBoxEnable);
+			p_Writer.Write(LightProbeMaxUpdateSolveCount);
+			p_Writer.Write(DrawDebugLightProbeSize);
+			p_Writer.Write(CompensateSunShadowHeightScale);
+			p_Writer.Write(SaveRadiosityTexturesEnable);
+			p_Writer.Write(ShadowsEnable);
+			p_Writer.Write(LightMapsEnable);
+			p_Writer.Write(LocalLightsEnable);
+			p_Writer.Write(LocalLightCullingEnable);
+			p_Writer.Write(LocalLightCustumFalloff);
+			p_Writer.Write(LightProbeForceUpdate);
+			p_Writer.Write(ForceDynamic);
+			p_Writer.Write(DrawDebugSystemsEnable);
+			p_Writer.Write(LightProbeEnable);
+			p_Writer.Write(LightProbeJobsEnable);
+			p_Writer.Write(DrawDebugLightProbes);
+			p_Writer.Write(DrawDebugLightProbeOcclusion);
+			p_Writer.Write(DrawDebugLightProbeStats);
+			p_Writer.Write(DrawDebugLightProbeBoundingBoxes);
+			p_Writer.Write(Enable);
+			p_Writer.Write(DrawSolveTaskPerformance);
+			p_Writer.Write(DrawDebugColoringEnable);
+			p_Writer.Write(DrawDebugTextures);
+			p_Writer.Write(DrawDebugBackFaces);
+			p_Writer.Write(DrawDebugTargetMeshes);
+			p_Writer.Write(DrawWarningsEnable);
+			p_Writer.Write(AlbedoForceUpdateEnable);
+			p_Writer.Write(AlbedoForceColorEnable);
+			p_Writer.Write(DrawDebugEntities);
+			p_Writer.Write(TerrainMapEnable);
+			p_Writer.Write(EmissiveEnable);
+		}
 	}
 }

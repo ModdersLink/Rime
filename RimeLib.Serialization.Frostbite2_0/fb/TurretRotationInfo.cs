@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 24)]
-	public class TurretRotationInfo
+	public class TurretRotationInfo :
+		EbxSerializable
 	{
 		[ContainerField(0), JsonProperty(Order = 0)]
 		public RotationAxis RotationAxis { get; set; } = new();
@@ -41,5 +43,17 @@ namespace fb
 		[ContainerField(21), LayoutImmutable, Blittable, JsonProperty(Order = 21)]
 		public bool InvertRotation { get; set; }
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write((int) RotationAxis);
+			p_Writer.Write((int) Channel);
+			p_Writer.Write(MaxRotation);
+			p_Writer.Write(MinRotation);
+			p_Writer.Write(PhaseOffset);
+			p_Writer.Write(NormalizeRotation);
+			p_Writer.Write(InvertRotation);
+			p_Writer.WriteNullBytes(2);
+		}
 	}
 }

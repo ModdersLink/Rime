@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 52)]
-	public class CriteriaData : 
+	public class CriteriaData :
 		DataContainer
 	{
 		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
@@ -60,5 +61,28 @@ namespace fb
 		[ContainerField(50), LayoutImmutable, Blittable, JsonProperty(Order = 50)]
 		public bool CountEvents { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(CompletionValue);
+			p_Writer.Write(p_EbxWriter.WriteImport(GateList));
+			p_Writer.Write((int) Measuring);
+			p_Writer.Write(p_EbxWriter.WriteImport(ParamX));
+			p_Writer.Write(p_EbxWriter.WriteImport(ParamY));
+			(RimeWriter Writer, uint ArrayIndex) s_OrParamsX = p_EbxWriter.GetArrayWriter(OrParamsX.GetType(), OrParamsX.Count);
+			p_Writer.Write(s_OrParamsX.ArrayIndex);
+			foreach (var s_Entry in OrParamsX)
+			{
+				s_OrParamsX.Writer.Write(p_EbxWriter.WriteImport(s_Entry));
+			}
+			p_Writer.Write((int) CriteriaType);
+			p_Writer.Write(p_EbxWriter.WriteString(DescriptionSid));
+			p_Writer.Write(ScaleFactor);
+			p_Writer.Write(Scale);
+			p_Writer.Write(ShouldSummarize);
+			p_Writer.Write(ShouldHide);
+			p_Writer.Write(CountEvents);
+			p_Writer.WriteNullBytes(1);
+		}
 	}
 }

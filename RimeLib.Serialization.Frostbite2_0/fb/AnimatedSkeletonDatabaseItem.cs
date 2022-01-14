@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 32)]
-	public class AnimatedSkeletonDatabaseItem
+	public class AnimatedSkeletonDatabaseItem :
+		EbxSerializable
 	{
 		[ContainerField(0), JsonProperty(Order = 0)]
 		public CtrRef<SkeletonAsset> Asset { get; set; } = new();
@@ -44,5 +46,27 @@ namespace fb
 		[ContainerField(28), LayoutImmutable, JsonProperty(Order = 28)]
 		public string HeadBone { get; set; } = string.Empty;
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(Asset));
+			(RimeWriter Writer, uint ArrayIndex) s_Names = p_EbxWriter.GetArrayWriter(Names.GetType(), Names.Count);
+			p_Writer.Write(s_Names.ArrayIndex);
+			foreach (var s_Entry in Names)
+			{
+				s_Names.Writer.Write(s_Entry);
+			}
+			p_Writer.Write(p_EbxWriter.WriteImport(SoldierCollision));
+			p_Writer.Write(p_EbxWriter.WriteImport(RagdollCollision));
+			p_Writer.Write(p_EbxWriter.WriteImport(Ragdoll));
+			(RimeWriter Writer, uint ArrayIndex) s_SpecialBones = p_EbxWriter.GetArrayWriter(SpecialBones.GetType(), SpecialBones.Count);
+			p_Writer.Write(s_SpecialBones.ArrayIndex);
+			foreach (var s_Entry in SpecialBones)
+			{
+				s_SpecialBones.Writer.Write(p_EbxWriter.WriteString(s_Entry));
+			}
+			p_Writer.Write(p_EbxWriter.WriteString(HipBone));
+			p_Writer.Write(p_EbxWriter.WriteString(HeadBone));
+		}
 	}
 }

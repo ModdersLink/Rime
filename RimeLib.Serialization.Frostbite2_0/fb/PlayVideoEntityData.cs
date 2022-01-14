@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 20)]
-	public class PlayVideoEntityData : 
+	public class PlayVideoEntityData :
 		EntityData
 	{
 		[ContainerField(12), JsonProperty(Order = 12)]
@@ -30,5 +31,13 @@ namespace fb
 		[ContainerField(17), LayoutImmutable, Blittable, JsonProperty(Order = 17)]
 		public bool AllowSkip { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(Movie));
+			p_Writer.Write(KeepBlackScreen);
+			p_Writer.Write(AllowSkip);
+			p_Writer.WriteNullBytes(2);
+		}
 	}
 }

@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 88)]
-	public class MeshStreamingSettings : 
+	public class MeshStreamingSettings :
 		DataContainer
 	{
 		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
@@ -144,5 +145,50 @@ namespace fb
 		[ContainerField(87), LayoutImmutable, Blittable, JsonProperty(Order = 87)]
 		public bool UseConditionalStreaming { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(DefragTransferLimit);
+			p_Writer.Write(ListViewPageIndex);
+			p_Writer.Write(PoolSize);
+			p_Writer.Write(ForceLod);
+			p_Writer.Write(PoolHeadroomSize);
+			p_Writer.Write(ListViewSortOrder);
+			p_Writer.Write(Ps3CellDefragTransferLimit);
+			p_Writer.Write(XenonFinalPoolSizeAdjustment);
+			p_Writer.Write(MaxUnloadCountPerFrame);
+			p_Writer.Write(XenonRetailPoolSizeAdjustment);
+			p_Writer.Write(MaxPendingLoadCount);
+			p_Writer.Write(Ps3CellPoolSize);
+			p_Writer.Write(Ps3CellPoolHeadroomSize);
+			p_Writer.Write(InstantUnloadingEnable);
+			p_Writer.Write(AsyncCreatesEnable);
+			p_Writer.Write(DxImmutableUsageEnable);
+			p_Writer.Write(OverridePoolSizes);
+			p_Writer.Write(UseSlowTexturePrio);
+			p_Writer.Write(UpdateEnable);
+			p_Writer.Write(DynamicLoadingEnable);
+			p_Writer.Write(PriorityJobEnable);
+			p_Writer.Write(PrioritySpuJobEnable);
+			p_Writer.Write(UpdateJobEnable);
+			p_Writer.Write(DefragTransfersEnable);
+			p_Writer.Write(PrioritizeVisibleMeshesFirstEnable);
+			p_Writer.Write(PrioritizeVisibleLodsFirstEnable);
+			p_Writer.Write(PrioritizeVisibleLoadsEnable);
+			p_Writer.Write(PrioritizeTexturesEnable);
+			p_Writer.Write(HighestPriorityEnable);
+			p_Writer.Write(PrioritizeNearestPointEnable);
+			p_Writer.Write(DrawInstanceBoxesEnable);
+			p_Writer.Write(DrawStatsEnable);
+			p_Writer.Write(DrawMissingListEnable);
+			p_Writer.Write(DrawPriorityListEnable);
+			p_Writer.Write(DrawLoadingListEnable);
+			p_Writer.Write(DrawMeshListEnable);
+			p_Writer.Write(DrawNonStreamedListEnable);
+			p_Writer.Write(DefragEnable);
+			p_Writer.Write(Enable);
+			p_Writer.Write(DumpLoadedList);
+			p_Writer.Write(UseConditionalStreaming);
+		}
 	}
 }

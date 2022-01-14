@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 40)]
-	public class PathfindingDebugSettings : 
+	public class PathfindingDebugSettings :
 		DataContainer
 	{
 		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
@@ -66,5 +67,25 @@ namespace fb
 		[ContainerField(37), LayoutImmutable, Blittable, JsonProperty(Order = 37)]
 		public bool PotentialObstacles { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(TypesToDrawMask);
+			p_Writer.Write(TextOffsetY);
+			p_Writer.Write(TextStartX);
+			p_Writer.Write(TextStartY);
+			p_Writer.Write((int) ReplayMode);
+			p_Writer.Write(DrawConnections);
+			p_Writer.Write(DrawObstacles);
+			p_Writer.Write(DrawPolygonOutline);
+			p_Writer.Write(DrawFilledPolygons);
+			p_Writer.Write(DrawMemory);
+			p_Writer.Write(DrawStats);
+			p_Writer.Write(DrawTimings);
+			p_Writer.Write(OriginalPaths);
+			p_Writer.Write(RandomPositions);
+			p_Writer.Write(PotentialObstacles);
+			p_Writer.WriteNullBytes(2);
+		}
 	}
 }

@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 160)]
-	public class DestructionMaskVolumeEntityData : 
+	public class DestructionMaskVolumeEntityData :
 		GameEntityData
 	{
 		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 96)]
@@ -36,5 +37,15 @@ namespace fb
 		[ContainerField(152), LayoutImmutable, Blittable, JsonProperty(Order = 152)]
 		public float Radius { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			DustAccumulationCurve.Serialize(p_Writer, p_EbxWriter);
+			ShaderUserMasks.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(DustAccumulationLifeTime);
+			Shader.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(Radius);
+			p_Writer.WriteNullBytes(4);
+		}
 	}
 }

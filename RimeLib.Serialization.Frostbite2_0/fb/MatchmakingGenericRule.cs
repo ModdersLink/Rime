@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 20)]
-	public class MatchmakingGenericRule
+	public class MatchmakingGenericRule :
+		EbxSerializable
 	{
 		[ContainerField(0), LayoutImmutable, JsonProperty(Order = 0)]
 		public string Rule { get; set; } = string.Empty;
@@ -41,5 +43,22 @@ namespace fb
 		[ContainerField(18), LayoutImmutable, Blittable, JsonProperty(Order = 18)]
 		public bool SortValues { get; set; }
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteString(Rule));
+			p_Writer.Write(p_EbxWriter.WriteString(MinFitThresHold));
+			p_Writer.Write(p_EbxWriter.WriteString(Setting));
+			(RimeWriter Writer, uint ArrayIndex) s_DesiredValues = p_EbxWriter.GetArrayWriter(DesiredValues.GetType(), DesiredValues.Count);
+			p_Writer.Write(s_DesiredValues.ArrayIndex);
+			foreach (var s_Entry in DesiredValues)
+			{
+				s_Entry.Serialize(s_DesiredValues.Writer, p_EbxWriter);
+			}
+			p_Writer.Write(IgnoreIfDefault);
+			p_Writer.Write(MergeValues);
+			p_Writer.Write(SortValues);
+			p_Writer.WriteNullBytes(1);
+		}
 	}
 }

@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 160)]
-	public class AlternateCameraViewData : 
+	public class AlternateCameraViewData :
 		DataContainer
 	{
 		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
@@ -75,5 +76,29 @@ namespace fb
 		[ContainerField(145), LayoutImmutable, Blittable, JsonProperty(Order = 145)]
 		public bool FadeToBlack { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(8);
+			MeshOffset.Serialize(p_Writer, p_EbxWriter);
+			Hud.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(FieldOfView);
+			p_Writer.Write(WorldSpaceLockEfficiency);
+			p_Writer.Write(p_EbxWriter.WriteImport(Mesh));
+			p_Writer.Write(p_EbxWriter.WriteImport(MaskMeshBlueprint));
+			p_Writer.Write(FadeInDuration);
+			p_Writer.Write(FovTransitionTime);
+			p_Writer.Write(BlackDuration);
+			InputSuppression.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(ScreenExposureAreaScale);
+			p_Writer.Write(FadeOutDuration);
+			p_Writer.Write(AllowFieldOfViewScaling);
+			p_Writer.Write(LockMeshToRenderView);
+			p_Writer.Write(ToggleViewChange);
+			p_Writer.Write(UseProfileOptionForToggleViewChange);
+			p_Writer.Write(FLIREnabled);
+			p_Writer.Write(FadeToBlack);
+			p_Writer.WriteNullBytes(14);
+		}
 	}
 }

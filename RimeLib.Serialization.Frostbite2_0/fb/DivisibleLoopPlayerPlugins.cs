@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(1, 12)]
-	public class DivisibleLoopPlayerPlugins
+	public class DivisibleLoopPlayerPlugins :
+		EbxSerializable
 	{
 		[ContainerField(0), JsonProperty(Order = 0)]
 		public SoundGraphPluginRef SndPlayer { get; set; } = new();
@@ -32,5 +34,13 @@ namespace fb
 		[ContainerField(9), JsonProperty(Order = 9)]
 		public SoundGraphPluginRef GainFader { get; set; } = new();
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			SndPlayer.Serialize(p_Writer, p_EbxWriter);
+			Pause.Serialize(p_Writer, p_EbxWriter);
+			Gain.Serialize(p_Writer, p_EbxWriter);
+			GainFader.Serialize(p_Writer, p_EbxWriter);
+		}
 	}
 }

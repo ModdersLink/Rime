@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 192)]
-	public class EmitterTemplateData : 
+	public class EmitterTemplateData :
 		DataContainer
 	{
 		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
@@ -144,5 +145,57 @@ namespace fb
 		[ContainerField(182), LayoutImmutable, Blittable, JsonProperty(Order = 182)]
 		public bool ForceNiceSorting { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(8);
+			PointLightIntensity.Serialize(p_Writer, p_EbxWriter);
+			PointLightPivot.Serialize(p_Writer, p_EbxWriter);
+			PointLightColor.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(MaxCount);
+			p_Writer.Write(p_EbxWriter.WriteString(Name));
+			p_Writer.Write(TimeScale);
+			p_Writer.Write(LifetimeFrameCount);
+			p_Writer.Write(Lifetime);
+			p_Writer.Write(p_EbxWriter.WriteImport(RootProcessor));
+			p_Writer.Write(VisibleAfterDistance);
+			(RimeWriter Writer, uint ArrayIndex) s_ZOcclusionLookup = p_EbxWriter.GetArrayWriter(ZOcclusionLookup.GetType(), ZOcclusionLookup.Count);
+			p_Writer.Write(s_ZOcclusionLookup.ArrayIndex);
+			foreach (var s_Entry in ZOcclusionLookup)
+			{
+				s_ZOcclusionLookup.Writer.Write(s_Entry);
+			}
+			p_Writer.Write((int) EmittableType);
+			p_Writer.Write(p_EbxWriter.WriteImport(Mesh));
+			p_Writer.Write(DistanceScaleNearValue);
+			p_Writer.Write(PointLightRadius);
+			p_Writer.Write(VertexPixelLightingBlendFactor);
+			p_Writer.Write(GlobalLocalNormalBlendFactor);
+			p_Writer.Write(SoftParticlesFadeDistanceMultiplier);
+			p_Writer.Write(LightWrapAroundFactor);
+			p_Writer.Write(LightMultiplier);
+			p_Writer.Write(DistanceScaleFarValue);
+			p_Writer.Write(PointLightRandomIntensityMin);
+			p_Writer.Write(MeshCullingDistance);
+			p_Writer.Write(PointLightRandomIntensityMax);
+			p_Writer.Write(MaxSpawnDistance);
+			p_Writer.Write(MinScreenArea);
+			p_Writer.Write(DistanceScaleLength);
+			p_Writer.Write(PointLightMaxClamp);
+			p_Writer.Write(ParticleCullingFactor);
+			p_Writer.Write(PointLightMinClamp);
+			p_Writer.Write(FollowSpawnSource);
+			p_Writer.Write(RepeatParticleSpawning);
+			p_Writer.Write(Emissive);
+			p_Writer.Write(ExclusionVolumeCullEnable);
+			p_Writer.Write(TransparencySunShadowEnable);
+			p_Writer.Write(ForceFullRes);
+			p_Writer.Write(LocalSpace);
+			p_Writer.Write(Opaque);
+			p_Writer.Write(ActAsPointLight);
+			p_Writer.Write(KillParticlesWithEmitter);
+			p_Writer.Write(ForceNiceSorting);
+			p_Writer.WriteNullBytes(9);
+		}
 	}
 }

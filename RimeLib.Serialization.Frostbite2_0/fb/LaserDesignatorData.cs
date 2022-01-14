@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 48)]
-	public class LaserDesignatorData : 
+	public class LaserDesignatorData :
 		LockingWeaponData
 	{
 		[ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
@@ -33,5 +34,13 @@ namespace fb
 		[ContainerField(44), JsonProperty(Order = 44)]
 		public CtrRef<SoundAsset> BomberSound { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(PostLockTime);
+			p_Writer.Write(BomberTime);
+			p_Writer.Write(BombWarnTime);
+			p_Writer.Write(p_EbxWriter.WriteImport(BomberSound));
+		}
 	}
 }

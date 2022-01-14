@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 16)]
-	public class UIPopupTextInput
+	public class UIPopupTextInput :
+		EbxSerializable
 	{
 		[ContainerField(0), LayoutImmutable, JsonProperty(Order = 0)]
 		public string Id { get; set; } = string.Empty;
@@ -32,5 +34,14 @@ namespace fb
 		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
 		public bool IsPassword { get; set; }
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteString(Id));
+			p_Writer.Write(p_EbxWriter.WriteString(Label));
+			p_Writer.Write(p_EbxWriter.WriteString(DefaultValue));
+			p_Writer.Write(IsPassword);
+			p_Writer.WriteNullBytes(3);
+		}
 	}
 }

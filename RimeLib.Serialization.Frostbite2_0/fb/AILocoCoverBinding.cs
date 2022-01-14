@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 72)]
-	public class AILocoCoverBinding
+	public class AILocoCoverBinding :
+		EbxSerializable
 	{
 		[ContainerField(0), JsonProperty(Order = 0)]
 		public AntRef PrepareFire { get; set; } = new();
@@ -74,5 +76,27 @@ namespace fb
 		[ContainerField(68), JsonProperty(Order = 68)]
 		public AntRef ExitStyle { get; set; } = new();
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			PrepareFire.Serialize(p_Writer, p_EbxWriter);
+			ThrowGrenade.Serialize(p_Writer, p_EbxWriter);
+			PeekOut.Serialize(p_Writer, p_EbxWriter);
+			IdleBehindCover.Serialize(p_Writer, p_EbxWriter);
+			PeekType.Serialize(p_Writer, p_EbxWriter);
+			CoverTypeEnum.Serialize(p_Writer, p_EbxWriter);
+			CoverFireStyle.Serialize(p_Writer, p_EbxWriter);
+			EnterCover.Serialize(p_Writer, p_EbxWriter);
+			ExitCover.Serialize(p_Writer, p_EbxWriter);
+			IsCloseCover.Serialize(p_Writer, p_EbxWriter);
+			DistanceScale.Serialize(p_Writer, p_EbxWriter);
+			AbsoluteDistance.Serialize(p_Writer, p_EbxWriter);
+			AngleToNormal.Serialize(p_Writer, p_EbxWriter);
+			OutAngle.Serialize(p_Writer, p_EbxWriter);
+			ThreatAngle.Serialize(p_Writer, p_EbxWriter);
+			StopExitCoverOutAround.Serialize(p_Writer, p_EbxWriter);
+			EnterStrategy.Serialize(p_Writer, p_EbxWriter);
+			ExitStyle.Serialize(p_Writer, p_EbxWriter);
+		}
 	}
 }

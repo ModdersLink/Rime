@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 36)]
-	public class AIDifficultyData : 
+	public class AIDifficultyData :
 		GameAIDifficultyData
 	{
 		[ContainerField(8), LayoutImmutable, JsonProperty(Order = 8)]
@@ -42,5 +43,16 @@ namespace fb
 		[ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
 		public float ReadinessReactionTimeMultiplier { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteString(Name));
+			p_Writer.Write(AccuracyIncreaseTimeModifier);
+			p_Writer.Write(StartAccuracyModifierStanding);
+			p_Writer.Write(StartAccuracyModifierCrouching);
+			p_Writer.Write(FinalAccuracyModifierStanding);
+			p_Writer.Write(FinalAccuracyModifierCrouching);
+			p_Writer.Write(ReadinessReactionTimeMultiplier);
+		}
 	}
 }

@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 164)]
-	public class UITrackingtagCompData : 
+	public class UITrackingtagCompData :
 		UI3dIconCompData
 	{
 		[ContainerField(160), LayoutImmutable, Blittable, JsonProperty(Order = 160)]
@@ -33,5 +34,13 @@ namespace fb
 		[ContainerField(163), LayoutImmutable, Blittable, JsonProperty(Order = 163)]
 		public bool ShowUnlockedLockOnLaserPainted { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(ShowUnlockedLockAlways);
+			p_Writer.Write(ShowUnlockedLockOnRadar);
+			p_Writer.Write(ShowUnlockedLockOnHeat);
+			p_Writer.Write(ShowUnlockedLockOnLaserPainted);
+		}
 	}
 }

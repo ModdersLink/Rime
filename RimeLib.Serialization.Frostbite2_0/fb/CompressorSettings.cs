@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 24)]
-	public class CompressorSettings : 
+	public class CompressorSettings :
 		DataContainer
 	{
 		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
@@ -33,5 +34,13 @@ namespace fb
 		[ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
 		public float Release { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(Ratio);
+			p_Writer.Write(Threshold);
+			p_Writer.Write(Attack);
+			p_Writer.Write(Release);
+		}
 	}
 }

@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 128)]
-	public class SoldierDecalComponentData : 
+	public class SoldierDecalComponentData :
 		ComponentData
 	{
 		[ContainerField(96), JsonProperty(Order = 96)]
@@ -36,5 +37,15 @@ namespace fb
 		[ContainerField(112), LayoutImmutable, Blittable, JsonProperty(Order = 112)]
 		public float PoolRayLength { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(SplashDecal));
+			p_Writer.Write(SplashRayLength);
+			p_Writer.Write(p_EbxWriter.WriteImport(PoolDecal));
+			p_Writer.Write(PoolRayYOffset);
+			p_Writer.Write(PoolRayLength);
+			p_Writer.WriteNullBytes(12);
+		}
 	}
 }

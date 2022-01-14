@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 128)]
-	public class RenderVolumeEntityData : 
+	public class RenderVolumeEntityData :
 		SpatialEntityData
 	{
 		[ContainerField(80), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 80)]
@@ -33,5 +34,14 @@ namespace fb
 		[ContainerField(120), LayoutImmutable, Blittable, JsonProperty(Order = 120)]
 		public bool Enabled { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			UserMasks.Serialize(p_Writer, p_EbxWriter);
+			Shader.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write((int) TransformType);
+			p_Writer.Write(Enabled);
+			p_Writer.WriteNullBytes(7);
+		}
 	}
 }

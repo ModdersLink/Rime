@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 72)]
-	public class DialogSamplerNodeData : 
+	public class DialogSamplerNodeData :
 		AudioGraphNodeData
 	{
 		[ContainerField(8), JsonProperty(Order = 8)]
@@ -54,5 +55,20 @@ namespace fb
 		[ContainerField(68), LayoutImmutable, Blittable, JsonProperty(Order = 68)]
 		public float TailLength { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			Pitch.Serialize(p_Writer, p_EbxWriter);
+			Amplitude.Serialize(p_Writer, p_EbxWriter);
+			Continue.Serialize(p_Writer, p_EbxWriter);
+			Output.Serialize(p_Writer, p_EbxWriter);
+			Triggered.Serialize(p_Writer, p_EbxWriter);
+			Finished.Serialize(p_Writer, p_EbxWriter);
+			SndPlayerPlugin.Serialize(p_Writer, p_EbxWriter);
+			ResamplePlugin.Serialize(p_Writer, p_EbxWriter);
+			PausePlugin.Serialize(p_Writer, p_EbxWriter);
+			GainPlugin.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(TailLength);
+		}
 	}
 }

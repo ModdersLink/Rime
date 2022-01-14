@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 32)]
-	public class AntiSpamConfig
+	public class AntiSpamConfig :
+		EbxSerializable
 	{
 		[ContainerField(0), LayoutImmutable, Blittable, JsonProperty(Order = 0)]
 		public float DetectionInterval { get; set; }
@@ -44,5 +46,17 @@ namespace fb
 		[ContainerField(28), JsonProperty(Order = 28)]
 		public CtrRef<SoundWaveAsset> WarningSound { get; set; } = new();
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(DetectionInterval);
+			p_Writer.Write(DetectionIntervalMaxMessageCount);
+			p_Writer.Write(ServerSideMessageCountTolerance);
+			p_Writer.Write(SecondsBlocked);
+			p_Writer.Write(ServerSideSecondsBlockedTolerance);
+			p_Writer.Write(p_EbxWriter.WriteString(NotificationSid));
+			p_Writer.Write(p_EbxWriter.WriteString(StillBlockedSid));
+			p_Writer.Write(p_EbxWriter.WriteImport(WarningSound));
+		}
 	}
 }

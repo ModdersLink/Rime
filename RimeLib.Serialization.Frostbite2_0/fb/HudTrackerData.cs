@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 44)]
-	public class HudTrackerData : 
+	public class HudTrackerData :
 		UIPartData
 	{
 		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
@@ -51,5 +52,20 @@ namespace fb
 		[ContainerField(41), LayoutImmutable, Blittable, JsonProperty(Order = 41)]
 		public bool DisplayExtraInfo { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(MaxDistance);
+			p_Writer.Write(StartFadeDistance);
+			p_Writer.Write(SecondFadeDistance);
+			p_Writer.Write(FadeMinAlpha);
+			p_Writer.Write(IconSize);
+			p_Writer.Write(TrackerHudRadiusX);
+			p_Writer.Write(TrackerHudRadiusY);
+			p_Writer.Write(DistanceTextOffsetY);
+			p_Writer.Write(ShowDistance);
+			p_Writer.Write(DisplayExtraInfo);
+			p_Writer.WriteNullBytes(2);
+		}
 	}
 }

@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 48)]
-	public class CrossfaderNodeData : 
+	public class CrossfaderNodeData :
 		AudioGraphNodeData
 	{
 		[ContainerField(8), JsonProperty(Order = 8)]
@@ -39,5 +40,16 @@ namespace fb
 		[ContainerField(43), JsonProperty(Order = 43)]
 		public SoundGraphPluginRef Plugin2 { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			In1.Serialize(p_Writer, p_EbxWriter);
+			In2.Serialize(p_Writer, p_EbxWriter);
+			Ctrl.Serialize(p_Writer, p_EbxWriter);
+			Out.Serialize(p_Writer, p_EbxWriter);
+			Plugin1.Serialize(p_Writer, p_EbxWriter);
+			Plugin2.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(2);
+		}
 	}
 }

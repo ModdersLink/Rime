@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 240)]
-	public class UINametagCompData : 
+	public class UINametagCompData :
 		UI3dIconCompData
 	{
 		[ContainerField(160), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 160)]
@@ -45,5 +46,18 @@ namespace fb
 		[ContainerField(224), LayoutImmutable, Blittable, JsonProperty(Order = 224)]
 		public float NameGlowSize { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			SquadTint.Serialize(p_Writer, p_EbxWriter);
+			EnemyTint.Serialize(p_Writer, p_EbxWriter);
+			FriendlyTint.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(OrderCooldown);
+			p_Writer.Write(TooltipCooldown);
+			p_Writer.Write(HealthBarSize);
+			p_Writer.Write(NameFontSize);
+			p_Writer.Write(NameGlowSize);
+			p_Writer.WriteNullBytes(12);
+		}
 	}
 }

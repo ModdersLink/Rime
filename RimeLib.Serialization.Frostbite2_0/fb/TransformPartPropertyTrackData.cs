@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 44)]
-	public class TransformPartPropertyTrackData : 
+	public class TransformPartPropertyTrackData :
 		PropertyTrackData
 	{
 		[ContainerField(16), JsonProperty(Order = 16)]
@@ -45,5 +46,18 @@ namespace fb
 		[ContainerField(41), LayoutImmutable, Blittable, JsonProperty(Order = 41)]
 		public bool IsStatic { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write((int) TransformPart);
+			p_Writer.Write((int) PreInfinity);
+			p_Writer.Write((int) PostInfinity);
+			p_Writer.Write(KeyStartIndex);
+			p_Writer.Write(p_EbxWriter.WriteString(ResourceName));
+			p_Writer.Write(KeyCount);
+			p_Writer.Write(Weighted);
+			p_Writer.Write(IsStatic);
+			p_Writer.WriteNullBytes(2);
+		}
 	}
 }

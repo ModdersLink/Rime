@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 64)]
-	public class LockingControllerData : 
+	public class LockingControllerData :
 		DataContainer
 	{
 		[ContainerField(8), JsonProperty(Order = 8)]
@@ -72,5 +73,32 @@ namespace fb
 		[ContainerField(60), LayoutImmutable, Blittable, JsonProperty(Order = 60)]
 		public bool IgnoreHeigthLockDistance { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			(RimeWriter Writer, uint ArrayIndex) s_ZoomLevelLock = p_EbxWriter.GetArrayWriter(ZoomLevelLock.GetType(), ZoomLevelLock.Count);
+			p_Writer.Write(s_ZoomLevelLock.ArrayIndex);
+			foreach (var s_Entry in ZoomLevelLock)
+			{
+				s_Entry.Serialize(s_ZoomLevelLock.Writer, p_EbxWriter);
+			}
+			p_Writer.Write(LockTime);
+			p_Writer.Write(ReleaseTime);
+			p_Writer.Write(ReleaseOnNewTargetTime);
+			p_Writer.Write(SampleRate);
+			p_Writer.Write(HoldStillThreshold);
+			p_Writer.Write(RayLength);
+			p_Writer.Write(AcceptanceAngle);
+			p_Writer.Write(MinimumLockTime);
+			p_Writer.Write(Sensitivity);
+			p_Writer.Write(AngleConstant);
+			p_Writer.Write(DistanceConstant);
+			p_Writer.Write(LockOnWorldSpacePos);
+			p_Writer.Write(LockOnVisibleTargetsOnly);
+			p_Writer.Write(PositionOnly);
+			p_Writer.Write(LockOnEmptyVehicles);
+			p_Writer.Write(IgnoreHeigthLockDistance);
+			p_Writer.WriteNullBytes(3);
+		}
 	}
 }

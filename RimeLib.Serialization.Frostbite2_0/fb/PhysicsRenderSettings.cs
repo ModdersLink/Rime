@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 52)]
-	public class PhysicsRenderSettings : 
+	public class PhysicsRenderSettings :
 		DataContainer
 	{
 		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
@@ -132,5 +133,47 @@ namespace fb
 		[ContainerField(50), LayoutImmutable, Blittable, JsonProperty(Order = 50)]
 		public bool RenderServer { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(RenderSpecificPart);
+			p_Writer.Write(ViewDistance);
+			p_Writer.Write(RenderClient);
+			p_Writer.Write(RenderEffectWorld);
+			p_Writer.Write(RenderDetail);
+			p_Writer.Write(RenderStatic);
+			p_Writer.Write(RenderUngrouped);
+			p_Writer.Write(RenderRagdoll);
+			p_Writer.Write(RenderGroup);
+			p_Writer.Write(RenderPhantoms);
+			p_Writer.Write(RenderCharacterCollision);
+			p_Writer.Write(RenderWater);
+			p_Writer.Write(RenderSolidGeometry);
+			p_Writer.Write(UseShapeCache);
+			p_Writer.Write(RenderConstraints);
+			p_Writer.Write(RenderOnlyContactConstraints);
+			p_Writer.Write(RenderConstraintCount);
+			p_Writer.Write(RenderActiveConstraintCount);
+			p_Writer.Write(RenderSimulationIslands);
+			p_Writer.Write(RenderBroadphaseHandles);
+			p_Writer.Write(RenderDestructionConnections);
+			p_Writer.Write(RenderPartBoundingBoxes);
+			p_Writer.Write(RenderOnlyBoundingBoxes);
+			p_Writer.Write(RenderInertia);
+			p_Writer.Write(RenderCenterOfMass);
+			p_Writer.Write(RenderLinearVelocity);
+			p_Writer.Write(RenderCollidesWithTerrain);
+			p_Writer.Write(RenderCollisionSpheres);
+			p_Writer.Write(RenderEntityStats);
+			p_Writer.Write(RenderWorldStats);
+			p_Writer.Write(ShowContactsInWorldStats);
+			p_Writer.Write(ShowInactiveContactsInWorldStats);
+			p_Writer.Write(ShowPhantomsInWorldStats);
+			p_Writer.Write(ShowFixedObjectsInWorldStats);
+			p_Writer.Write(RenderMemoryUsed);
+			p_Writer.Write(CollisionSpawnDebug);
+			p_Writer.Write(RenderServer);
+			p_Writer.WriteNullBytes(1);
+		}
 	}
 }

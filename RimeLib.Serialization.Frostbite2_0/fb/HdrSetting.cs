@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 68)]
-	public class HdrSetting : 
+	public class HdrSetting :
 		DataContainer
 	{
 		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
@@ -63,5 +64,23 @@ namespace fb
 		[ContainerField(64), LayoutImmutable, Blittable, JsonProperty(Order = 64)]
 		public float AllowedOvershoot { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(WindowMinTop);
+			p_Writer.Write(WindowMinBottom);
+			p_Writer.Write(WindowTopMinReleaseTime);
+			p_Writer.Write(WindowTopMaxReleaseTime);
+			p_Writer.Write(WindowTopAttackTime);
+			p_Writer.Write(WindowBottomReleaseTime);
+			WindowTopReleaseTimeCurve.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(DischargeFactor);
+			p_Writer.Write(MaxAllowedEnergy);
+			p_Writer.Write(WindowBottomAttackTime);
+			p_Writer.Write(WindowSize);
+			p_Writer.Write(CompressFactor);
+			p_Writer.Write(Headroom);
+			p_Writer.Write(AllowedOvershoot);
+		}
 	}
 }

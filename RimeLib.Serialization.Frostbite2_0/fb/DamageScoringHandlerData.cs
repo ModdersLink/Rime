@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 48)]
-	public class DamageScoringHandlerData : 
+	public class DamageScoringHandlerData :
 		ScoringHandlerData
 	{
 		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
@@ -51,5 +52,19 @@ namespace fb
 		[ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
 		public float HotVehicleTimeout { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(RepairVehicleLimit);
+			p_Writer.Write(DamageTeamVehicleLimit);
+			p_Writer.Write(TeamHealingLimit);
+			p_Writer.Write(TeamDamageLimit);
+			p_Writer.Write(KillAssistLimit);
+			p_Writer.Write(KillAssistTimeout);
+			p_Writer.Write(VehicleDestroyAssistLimit);
+			p_Writer.Write(SaviorKillTimeout);
+			p_Writer.Write(SaviorDamageLimit);
+			p_Writer.Write(HotVehicleTimeout);
+		}
 	}
 }

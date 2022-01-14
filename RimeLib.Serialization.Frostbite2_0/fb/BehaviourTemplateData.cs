@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 344)]
-	public class BehaviourTemplateData : 
+	public class BehaviourTemplateData :
 		GameBehaviourTemplateData
 	{
 		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
@@ -246,5 +247,85 @@ namespace fb
 		[ContainerField(340), LayoutImmutable, Blittable, JsonProperty(Order = 340)]
 		public bool DisableMissileGravity { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(StandProbability);
+			p_Writer.Write(CrouchProbability);
+			p_Writer.Write(TurnAgainstTargetDistance);
+			p_Writer.Write(InvestigateStopDelay);
+			p_Writer.Write(ExplosiveObjectChance);
+			p_Writer.Write(MinAttackBursts);
+			p_Writer.Write(MaxAttackBursts);
+			p_Writer.Write(AttackUrgencyModifier);
+			p_Writer.Write(AltAttackProbability);
+			p_Writer.Write(ReadinessReactionTimeMultiplier);
+			FireBlindOverBurstCount.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(CloseRangeAccuracyDistanceOverride);
+			p_Writer.Write(MeleeRange);
+			p_Writer.Write(MeleeMaxTime);
+			p_Writer.Write(MeleeProbability);
+			CoverSwitchTime.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(FireStyleTimeout);
+			p_Writer.Write(FireLeanChance);
+			FireLeanBurstCount.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(FireStepOutChance);
+			FireStepOutBurstCount.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(FireStepOutSlowChance);
+			FireStepOutSlowBurstCount.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(FireStepOutUrgentChance);
+			FireStepOutUrgentBurstCount.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(FireStepOutFireFromHipChance);
+			FireStepOutFireFromHipBurstCount.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(FireStepOutStandToCrouchChance);
+			FireStepOutStandToCrouchBurstCount.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write((int) AlwaysInFirePose);
+			p_Writer.Write(FireGrenadeStepOutChance);
+			FireGrenadeStepOutBurstCount.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(FireOverChance);
+			FireOverBurstCount.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(FireBlindOutChance);
+			FireBlindOutBurstCount.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(FireBlindOverChance);
+			p_Writer.Write(SuppressingBurstCount);
+			p_Writer.Write(FireGrenadeBlindOverChance);
+			FireGrenadeBlindOverBurstCount.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(FireLmgChance);
+			FireLmgBurstCount.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(ShotAtFireGrenadeBlindOverChance);
+			p_Writer.Write(SuppressingBurstCountMin);
+			p_Writer.Write(SuppressingBurstCountMax);
+			CoverWaitTime.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(MaxAngleDiffForBlindFire);
+			p_Writer.Write(StrafeToCoverProbablity);
+			p_Writer.Write(MaxSuppressTime);
+			p_Writer.Write(InvestigateVisualTestDist);
+			p_Writer.Write(AlwaysStrafeToCoversWithinDistance);
+			p_Writer.Write(ChargeSurpriseVelocity);
+			p_Writer.Write(ChargeSurpriseNearDistance);
+			p_Writer.Write(ChargeSurpriseFlankedDistance);
+			p_Writer.Write(ShotAtFireBlindOutChance);
+			p_Writer.Write(ShotAtFireBlindOverChance);
+			p_Writer.Write(AccuracyIncreaseTime);
+			p_Writer.Write(TargetStrengthFactor);
+			p_Writer.Write(ReloadBelowPercent);
+			p_Writer.Write(TargetDistanceFactor);
+			p_Writer.Write(SuppressIndirectProbability);
+			p_Writer.Write(TargetDangerFactor);
+			p_Writer.Write(TargetIsAttackingFactor);
+			p_Writer.Write(AccuracyModifierVsNonHumans);
+			p_Writer.Write(AccuracyModifier);
+			p_Writer.Write(SoldierMovementVolumeOverride);
+			p_Writer.Write(AlwaysUpdate);
+			p_Writer.Write(LeaveVehicleOnSearchAndDestroyOrder);
+			p_Writer.Write(ShouldFireThroughSmoke);
+			p_Writer.Write(AlwaysStrafeToFirstCover);
+			p_Writer.Write(CanMeleeFromScriptedCover);
+			p_Writer.Write(AlwaysStrafeToCoversBehindMe);
+			p_Writer.Write(UseShotAtSettings);
+			p_Writer.Write(StepBackIfBeingShot);
+			p_Writer.Write(DisableMissileGravity);
+			p_Writer.WriteNullBytes(3);
+		}
 	}
 }

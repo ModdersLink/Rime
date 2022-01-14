@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 24)]
-	public class MaterialPropertyPhysicsData : 
+	public class MaterialPropertyPhysicsData :
 		PhysicsMaterialRelationPropertyData
 	{
 		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
@@ -33,5 +34,13 @@ namespace fb
 		[ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
 		public float Resistance { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(DynamicFrictionModifier);
+			p_Writer.Write(StaticFrictionModifier);
+			p_Writer.Write(RestitutionModifier);
+			p_Writer.Write(Resistance);
+		}
 	}
 }

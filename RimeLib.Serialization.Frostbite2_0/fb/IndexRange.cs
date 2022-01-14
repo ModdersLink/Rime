@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 8)]
-	public class IndexRange
+	public class IndexRange :
+		EbxSerializable
 	{
 		[ContainerField(0), LayoutImmutable, Blittable, JsonProperty(Order = 0)]
 		public uint First { get; set; }
@@ -26,5 +28,11 @@ namespace fb
 		[ContainerField(4), LayoutImmutable, Blittable, JsonProperty(Order = 4)]
 		public uint Last { get; set; }
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(First);
+			p_Writer.Write(Last);
+		}
 	}
 }

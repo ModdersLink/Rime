@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 28)]
-	public class ResourceManagerSettings : 
+	public class ResourceManagerSettings :
 		SystemSettings
 	{
 		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
@@ -36,5 +37,15 @@ namespace fb
 		[ContainerField(25), LayoutImmutable, Blittable, JsonProperty(Order = 25)]
 		public bool SPUDecompressEnable { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(CasBundleReadBufferSizeKb);
+			p_Writer.Write(CasBundleDecompressBufferSizeKb);
+			p_Writer.Write(CasBundleDecompressBufferCount);
+			p_Writer.Write(BundleProfilingEnable);
+			p_Writer.Write(SPUDecompressEnable);
+			p_Writer.WriteNullBytes(2);
+		}
 	}
 }

@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 16)]
-	public class LevelDescription
+	public class LevelDescription :
+		EbxSerializable
 	{
 		[ContainerField(0), LayoutImmutable, JsonProperty(Order = 0)]
 		public string Name { get; set; } = string.Empty;
@@ -38,5 +40,21 @@ namespace fb
 		[ContainerField(14), LayoutImmutable, Blittable, JsonProperty(Order = 14)]
 		public bool IsMultiplayer { get; set; }
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteString(Name));
+			p_Writer.Write(p_EbxWriter.WriteString(Description));
+			(RimeWriter Writer, uint ArrayIndex) s_Components = p_EbxWriter.GetArrayWriter(Components.GetType(), Components.Count);
+			p_Writer.Write(s_Components.ArrayIndex);
+			foreach (var s_Entry in Components)
+			{
+				s_Components.Writer.Write(p_EbxWriter.WriteImport(s_Entry));
+			}
+			p_Writer.Write(IsCoop);
+			p_Writer.Write(IsMenu);
+			p_Writer.Write(IsMultiplayer);
+			p_Writer.WriteNullBytes(1);
+		}
 	}
 }

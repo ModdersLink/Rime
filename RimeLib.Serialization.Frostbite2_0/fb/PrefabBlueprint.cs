@@ -14,15 +14,26 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 36)]
-	public class PrefabBlueprint : 
+	public class PrefabBlueprint :
 		Blueprint
 	{
 		[ContainerField(32), JsonProperty(Order = 32)]
 		public RefArray<GameObjectData> Objects { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			(RimeWriter Writer, uint ArrayIndex) s_Objects = p_EbxWriter.GetArrayWriter(Objects.GetType(), Objects.Count);
+			p_Writer.Write(s_Objects.ArrayIndex);
+			foreach (var s_Entry in Objects)
+			{
+				s_Objects.Writer.Write(p_EbxWriter.WriteImport(s_Entry));
+			}
+		}
 	}
 }

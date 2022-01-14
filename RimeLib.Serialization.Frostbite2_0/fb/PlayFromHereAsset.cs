@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 24)]
-	public class PlayFromHereAsset : 
+	public class PlayFromHereAsset :
 		Asset
 	{
 		[ContainerField(12), JsonProperty(Order = 12)]
@@ -30,5 +31,12 @@ namespace fb
 		[ContainerField(20), JsonProperty(Order = 20)]
 		public CtrRef<AntProjectAsset> AntProject { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(Soldier));
+			p_Writer.Write(p_EbxWriter.WriteImport(AnimatedSkeletonDatabase));
+			p_Writer.Write(p_EbxWriter.WriteImport(AntProject));
+		}
 	}
 }

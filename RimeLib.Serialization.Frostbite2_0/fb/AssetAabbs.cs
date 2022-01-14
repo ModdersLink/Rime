@@ -14,14 +14,26 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 4)]
-	public class AssetAabbs
+	public class AssetAabbs :
+		EbxSerializable
 	{
 		[ContainerField(0), JsonProperty(Order = 0)]
 		public List<AxisAlignedBox> PartAabb { get; set; } = new();
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			(RimeWriter Writer, uint ArrayIndex) s_PartAabb = p_EbxWriter.GetArrayWriter(PartAabb.GetType(), PartAabb.Count);
+			p_Writer.Write(s_PartAabb.ArrayIndex);
+			foreach (var s_Entry in PartAabb)
+			{
+				s_Entry.Serialize(s_PartAabb.Writer, p_EbxWriter);
+			}
+		}
 	}
 }

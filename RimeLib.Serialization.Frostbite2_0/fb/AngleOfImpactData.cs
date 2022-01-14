@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 24)]
-	public class AngleOfImpactData
+	public class AngleOfImpactData :
+		EbxSerializable
 	{
 		[ContainerField(0), LayoutImmutable, Blittable, JsonProperty(Order = 0)]
 		public float Zone12Delimiter { get; set; }
@@ -38,5 +40,16 @@ namespace fb
 		[ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
 		public bool Enabled { get; set; }
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(Zone12Delimiter);
+			p_Writer.Write(Zone23Delimiter);
+			p_Writer.Write(Zone1Multiplier);
+			p_Writer.Write(Zone2Multiplier);
+			p_Writer.Write(Zone3Multiplier);
+			p_Writer.Write(Enabled);
+			p_Writer.WriteNullBytes(3);
+		}
 	}
 }

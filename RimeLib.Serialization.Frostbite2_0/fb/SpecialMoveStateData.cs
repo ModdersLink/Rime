@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 60)]
-	public class SpecialMoveStateData
+	public class SpecialMoveStateData :
+		EbxSerializable
 	{
 		[ContainerField(0), LayoutImmutable, Blittable, JsonProperty(Order = 0)]
 		public float MinHeightScale { get; set; }
@@ -68,5 +70,36 @@ namespace fb
 		[ContainerField(57), LayoutImmutable, Blittable, JsonProperty(Order = 57)]
 		public bool ScaleWithDistanceToObject { get; set; }
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(MinHeightScale);
+			p_Writer.Write(OptimumDistanceFromObject);
+			p_Writer.Write(OptimumHeightOfObject);
+			p_Writer.Write(OptimumLengthOfObject);
+			p_Writer.Write(MaxDistanceScale);
+			p_Writer.Write(MinDistanceScale);
+			p_Writer.Write(MaxHeightScale);
+			(RimeWriter Writer, uint ArrayIndex) s_MotionPoints = p_EbxWriter.GetArrayWriter(MotionPoints.GetType(), MotionPoints.Count);
+			p_Writer.Write(s_MotionPoints.ArrayIndex);
+			foreach (var s_Entry in MotionPoints)
+			{
+				s_Entry.Serialize(s_MotionPoints.Writer, p_EbxWriter);
+			}
+			p_Writer.Write(MaxObjectLengthScale);
+			p_Writer.Write(MinObjectLengthScale);
+			p_Writer.Write(ExitAnimationDrivenStateVelocity);
+			p_Writer.Write((int) ResetPose);
+			p_Writer.Write((int) OverridePose);
+			(RimeWriter Writer, uint ArrayIndex) s_GravityPoints = p_EbxWriter.GetArrayWriter(GravityPoints.GetType(), GravityPoints.Count);
+			p_Writer.Write(s_GravityPoints.ArrayIndex);
+			foreach (var s_Entry in GravityPoints)
+			{
+				s_Entry.Serialize(s_GravityPoints.Writer, p_EbxWriter);
+			}
+			p_Writer.Write(KeepInitialSoldierDirection);
+			p_Writer.Write(ScaleWithDistanceToObject);
+			p_Writer.WriteNullBytes(2);
+		}
 	}
 }

@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 28)]
-	public class GameModeSize
+	public class GameModeSize :
+		EbxSerializable
 	{
 		[ContainerField(0), LayoutImmutable, JsonProperty(Order = 0)]
 		public string Name { get; set; } = string.Empty;
@@ -41,5 +43,22 @@ namespace fb
 		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
 		public bool ForceSquad { get; set; }
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteString(Name));
+			p_Writer.Write(p_EbxWriter.WriteString(ShortName));
+			p_Writer.Write(p_EbxWriter.WriteString(MetaIdentifier));
+			p_Writer.Write(PlayerCount);
+			(RimeWriter Writer, uint ArrayIndex) s_Teams = p_EbxWriter.GetArrayWriter(Teams.GetType(), Teams.Count);
+			p_Writer.Write(s_Teams.ArrayIndex);
+			foreach (var s_Entry in Teams)
+			{
+				s_Entry.Serialize(s_Teams.Writer, p_EbxWriter);
+			}
+			p_Writer.Write(RoundsPerMap);
+			p_Writer.Write(ForceSquad);
+			p_Writer.WriteNullBytes(3);
+		}
 	}
 }

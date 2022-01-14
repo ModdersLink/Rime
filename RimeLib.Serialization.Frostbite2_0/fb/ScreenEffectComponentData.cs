@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 144)]
-	public class ScreenEffectComponentData : 
+	public class ScreenEffectComponentData :
 		ComponentData
 	{
 		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 96)]
@@ -45,5 +46,18 @@ namespace fb
 		[ContainerField(136), JsonProperty(Order = 136)]
 		public Realm Realm { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			ScreenEffectParams.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write((int) FrameType);
+			p_Writer.Write(p_EbxWriter.WriteImport(Shader));
+			p_Writer.Write(FrameWidth);
+			p_Writer.Write(OuterFrameOpacity);
+			p_Writer.Write(InnerFrameOpacity);
+			p_Writer.Write(Angle);
+			p_Writer.Write((int) Realm);
+			p_Writer.WriteNullBytes(4);
+		}
 	}
 }

@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 160)]
-	public class CharacterStateTriggerEntityData : 
+	public class CharacterStateTriggerEntityData :
 		TriggerEntityData
 	{
 		[ContainerField(112), LayoutImmutable, Blittable, JsonProperty(Order = 112)]
@@ -75,5 +76,28 @@ namespace fb
 		[ContainerField(156), LayoutImmutable, Blittable, JsonProperty(Order = 156)]
 		public bool UsePitch { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(ActiveWeaponSlot);
+			p_Writer.Write(Pitch);
+			p_Writer.Write((int) CharacterPose);
+			p_Writer.Write(AmmoToSet);
+			p_Writer.Write((int) PoseToCheck);
+			p_Writer.Write(p_EbxWriter.WriteImport(Weapon));
+			p_Writer.Write(HealthToSet);
+			p_Writer.Write(HealthToCheck);
+			p_Writer.Write(SeatIndex);
+			p_Writer.Write(ExcludeConnectedVehicles);
+			p_Writer.Write(ContinueToCheckIfHoldingWrongWeapon);
+			p_Writer.Write(StayInVehicleOnMove);
+			p_Writer.Write(CheckHealthGreaterOrEqual);
+			p_Writer.Write(CheckAllWeapons);
+			p_Writer.Write(ShouldCheckSeatIndex);
+			p_Writer.Write(UseExitPointWhenLeavingVehicle);
+			p_Writer.Write(DisablePhysicsWhenLeavingVehicle);
+			p_Writer.Write(UsePitch);
+			p_Writer.WriteNullBytes(3);
+		}
 	}
 }

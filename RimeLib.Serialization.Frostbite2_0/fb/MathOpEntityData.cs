@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 20)]
-	public class MathOpEntityData : 
+	public class MathOpEntityData :
 		EntityData
 	{
 		[ContainerField(12), JsonProperty(Order = 12)]
@@ -27,5 +28,16 @@ namespace fb
 		[ContainerField(16), JsonProperty(Order = 16)]
 		public List<MathOp> Operators { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write((int) Realm);
+			(RimeWriter Writer, uint ArrayIndex) s_Operators = p_EbxWriter.GetArrayWriter(Operators.GetType(), Operators.Count);
+			p_Writer.Write(s_Operators.ArrayIndex);
+			foreach (var s_Entry in Operators)
+			{
+				s_Operators.Writer.Write((int) s_Entry);
+			}
+		}
 	}
 }

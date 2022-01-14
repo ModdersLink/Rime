@@ -1,7 +1,9 @@
 ﻿using System;
 using fb;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
+using RimeLib.Serialization.Json;
 
 namespace RimeLib.Serialization.Frostbite2_0.Json
 {
@@ -31,12 +33,19 @@ namespace RimeLib.Serialization.Frostbite2_0.Json
 
             var s_Type = s_Object["$type"].Value<string>();
 
-            var s_ContainerType = Type.GetType($"fb.{s_Type}, RimeLib.Bindings.Venice");
+            var s_ContainerType = Type.GetType($"fb.{s_Type}");
 
             if (s_ContainerType == null)
                 throw new Exception($"Could not find container type '{s_Type}'.");
 
-            return s_Object.ToObject(s_ContainerType) as DataContainer;
+            var s_Serializer = new JsonSerializer();
+            s_Serializer.Converters.Add(new StringEnumConverter());
+            s_Serializer.Converters.Add(new CtrRefJsonConverter());
+            s_Serializer.NullValueHandling = NullValueHandling.Include;
+            s_Serializer.MissingMemberHandling = MissingMemberHandling.Error;
+            s_Serializer.TypeNameHandling = TypeNameHandling.None;
+
+            return s_Object.ToObject(s_ContainerType, s_Serializer) as DataContainer;
         }
     }
 }

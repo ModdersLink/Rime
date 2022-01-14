@@ -124,5 +124,11 @@ namespace RimeLib.IO
 
             base.WriteInternal(p_Value, p_Offset, p_Count);
         }
+
+        public void WriteNullBytes(uint p_NumberOfBytes)
+        {
+            var s_Bytes = new byte[p_NumberOfBytes];
+            Write(s_Bytes);
+        }
     }
 }

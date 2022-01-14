@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 36)]
-	public class AIEntryData : 
+	public class AIEntryData :
 		GameAIEntryData
 	{
 		[ContainerField(12), JsonProperty(Order = 12)]
@@ -48,5 +49,18 @@ namespace fb
 		[ContainerField(35), LayoutImmutable, Blittable, JsonProperty(Order = 35)]
 		public bool InvalidForAI { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(EquipmentType));
+			p_Writer.Write(p_EbxWriter.WriteImport(Armament));
+			p_Writer.Write(p_EbxWriter.WriteImport(Mobility));
+			p_Writer.Write((int) StrengthType);
+			p_Writer.Write(ReuseTime);
+			p_Writer.Write(Forbidden);
+			p_Writer.Write(HasExposedSoldier);
+			p_Writer.Write(InterludeOnly);
+			p_Writer.Write(InvalidForAI);
+		}
 	}
 }

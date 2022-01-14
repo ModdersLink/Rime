@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 48)]
-	public class EulerTransformEntityData : 
+	public class EulerTransformEntityData :
 		EntityData
 	{
 		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
@@ -33,5 +34,15 @@ namespace fb
 		[ContainerField(40), JsonProperty(Order = 40)]
 		public ModifierEuler Euler { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(4);
+			In1.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write((int) Realm);
+			p_Writer.Write(In);
+			p_Writer.Write((int) Euler);
+			p_Writer.WriteNullBytes(4);
+		}
 	}
 }

@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 12)]
-	public class LandingGearConditionData
+	public class LandingGearConditionData :
+		EbxSerializable
 	{
 		[ContainerField(0), LayoutImmutable, Blittable, JsonProperty(Order = 0)]
 		public float Height { get; set; }
@@ -29,5 +31,12 @@ namespace fb
 		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
 		public float Angle { get; set; }
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(Height);
+			p_Writer.Write(Velocity);
+			p_Writer.Write(Angle);
+		}
 	}
 }

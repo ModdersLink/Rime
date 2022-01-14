@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 144)]
-	public class EntityInteractionComponentData : 
+	public class EntityInteractionComponentData :
 		ComponentData
 	{
 		[ContainerField(96), LayoutImmutable, Blittable, JsonProperty(Order = 96)]
@@ -48,5 +49,20 @@ namespace fb
 		[ContainerField(129), LayoutImmutable, Blittable, JsonProperty(Order = 129)]
 		public bool OnlyAllowInteractionWithManDownSoldiers { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(PickupRadius);
+			p_Writer.Write(MaxAmmoPickupTimer);
+			p_Writer.Write(MaxAmmoCrateTimer);
+			InteractWithTypes.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(2);
+			p_Writer.Write(MaxLookAtAngle);
+			p_Writer.Write(SoldierInteractRadius);
+			p_Writer.Write((int) SoldierInteractInputAction);
+			p_Writer.Write(AllowInteractionWithSoldiers);
+			p_Writer.Write(OnlyAllowInteractionWithManDownSoldiers);
+			p_Writer.WriteNullBytes(14);
+		}
 	}
 }

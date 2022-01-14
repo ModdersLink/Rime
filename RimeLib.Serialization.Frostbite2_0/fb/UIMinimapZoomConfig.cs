@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 128)]
-	public class UIMinimapZoomConfig
+	public class UIMinimapZoomConfig :
+		EbxSerializable
 	{
 		[ContainerField(0), JsonProperty(Order = 0)]
 		public UIMinimapZoomState State { get; set; } = new();
@@ -26,5 +28,12 @@ namespace fb
 		[ContainerField(16), JsonProperty(Order = 16)]
 		public MinimapData Data { get; set; } = new();
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write((int) State);
+			p_Writer.WriteNullBytes(12);
+			Data.Serialize(p_Writer, p_EbxWriter);
+		}
 	}
 }

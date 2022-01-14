@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 80)]
-	public class CameraLeapData
+	public class CameraLeapData :
+		EbxSerializable
 	{
 		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 0)]
 		public LinearTransform Transform { get; set; } = new();
@@ -29,5 +31,13 @@ namespace fb
 		[ContainerField(68), LayoutImmutable, Blittable, JsonProperty(Order = 68)]
 		public float FovModifier { get; set; }
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			Transform.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(Time);
+			p_Writer.Write(FovModifier);
+			p_Writer.WriteNullBytes(8);
+		}
 	}
 }

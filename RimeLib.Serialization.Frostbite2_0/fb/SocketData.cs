@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 176)]
-	public class SocketData : 
+	public class SocketData :
 		DataContainer
 	{
 		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
@@ -63,5 +64,30 @@ namespace fb
 		[ContainerField(173), LayoutImmutable, Blittable, JsonProperty(Order = 173)]
 		public bool HideByLightToggle { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(8);
+			BoneRigidTransform.Serialize(p_Writer, p_EbxWriter);
+			Transform.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(UnlockAsset));
+			p_Writer.Write(BoneId);
+			p_Writer.Write(p_EbxWriter.WriteString(BoneName));
+			(RimeWriter Writer, uint ArrayIndex) s_AvailableObjects = p_EbxWriter.GetArrayWriter(AvailableObjects.GetType(), AvailableObjects.Count);
+			p_Writer.Write(s_AvailableObjects.ArrayIndex);
+			foreach (var s_Entry in AvailableObjects)
+			{
+				s_AvailableObjects.Writer.Write(p_EbxWriter.WriteImport(s_Entry));
+			}
+			p_Writer.Write((int) GearSlot);
+			p_Writer.Write((int) SocketType);
+			p_Writer.Write(UsesDefaultObject);
+			p_Writer.Write(Excluded);
+			p_Writer.Write(DefaultEnableSocketEntities);
+			p_Writer.Write(ForceSocketEntitiesEnabled);
+			p_Writer.Write(HideByZoomTransition);
+			p_Writer.Write(HideByLightToggle);
+			p_Writer.WriteNullBytes(2);
+		}
 	}
 }

@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 56)]
-	public class StreamPoolAsset : 
+	public class StreamPoolAsset :
 		Asset
 	{
 		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
@@ -54,5 +55,20 @@ namespace fb
 		[ContainerField(52), JsonProperty(Order = 52)]
 		public StreamStarveMode StreamStarveMode { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(StreamPoolId);
+			p_Writer.Write(StreamBufferSizeXenon);
+			p_Writer.Write(StreamBufferSizePs3);
+			p_Writer.Write(StreamBufferSizeWin32);
+			p_Writer.Write(StreamCountXenon);
+			p_Writer.Write(StreamCountPs3);
+			p_Writer.Write(StreamCountWin32);
+			p_Writer.Write(StreamReadBlockSizeXenon);
+			p_Writer.Write(StreamReadBlockSizePs3);
+			p_Writer.Write(StreamReadBlockSizeWin32);
+			p_Writer.Write((int) StreamStarveMode);
+		}
 	}
 }

@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 40)]
-	public class AnimationSignalEntityData : 
+	public class AnimationSignalEntityData :
 		EntityData
 	{
 		[ContainerField(12), JsonProperty(Order = 12)]
@@ -45,5 +46,18 @@ namespace fb
 		[ContainerField(37), LayoutImmutable, Blittable, JsonProperty(Order = 37)]
 		public bool Continuous { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write((int) Realm);
+			Signal.Serialize(p_Writer, p_EbxWriter);
+			IntGameState.Serialize(p_Writer, p_EbxWriter);
+			FloatGameState.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(ValueInt);
+			p_Writer.Write(ValueFloat);
+			p_Writer.Write(Reset);
+			p_Writer.Write(Continuous);
+			p_Writer.WriteNullBytes(2);
+		}
 	}
 }

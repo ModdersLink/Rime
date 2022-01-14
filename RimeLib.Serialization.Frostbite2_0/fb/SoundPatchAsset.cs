@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 72)]
-	public class SoundPatchAsset : 
+	public class SoundPatchAsset :
 		SoundGraphAsset
 	{
 		[ContainerField(24), JsonProperty(Order = 24)]
@@ -60,5 +61,28 @@ namespace fb
 		[ContainerField(69), LayoutImmutable, Blittable, JsonProperty(Order = 69)]
 		public bool IsLooping { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			(RimeWriter Writer, uint ArrayIndex) s_OutputNodes = p_EbxWriter.GetArrayWriter(OutputNodes.GetType(), OutputNodes.Count);
+			p_Writer.Write(s_OutputNodes.ArrayIndex);
+			foreach (var s_Entry in OutputNodes)
+			{
+				s_OutputNodes.Writer.Write(p_EbxWriter.WriteImport(s_Entry));
+			}
+			p_Writer.Write(Loudness);
+			p_Writer.Write(AILoudness);
+			p_Writer.Write(Radius);
+			p_Writer.Write(DopplerFactor);
+			p_Writer.Write(MasterPitch);
+			p_Writer.Write(p_EbxWriter.WriteImport(MixGroup));
+			p_Writer.Write(p_EbxWriter.WriteImport(DefaultStopEvent));
+			p_Writer.Write(p_EbxWriter.WriteImport(DefaultStartEvent));
+			p_Writer.Write(p_EbxWriter.WriteImport(DefaultForceInitEvent));
+			p_Writer.Write(p_EbxWriter.WriteImport(DefaultEnterScopeEvent));
+			p_Writer.Write(IsPersistent);
+			p_Writer.Write(IsLooping);
+			p_Writer.WriteNullBytes(2);
+		}
 	}
 }

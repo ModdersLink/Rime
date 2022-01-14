@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 112)]
-	public class CharacterAnimationEntityData : 
+	public class CharacterAnimationEntityData :
 		EntityData
 	{
 		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
@@ -39,5 +40,17 @@ namespace fb
 		[ContainerField(96), LayoutImmutable, Blittable, JsonProperty(Order = 96)]
 		public bool RestoreControllerOnFinish { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(4);
+			EntitySpaceTransform.Serialize(p_Writer, p_EbxWriter);
+			Controller.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(TrackLength);
+			p_Writer.Write(ExternalTime);
+			p_Writer.Write(WarpAnimationBlendTime);
+			p_Writer.Write(RestoreControllerOnFinish);
+			p_Writer.WriteNullBytes(15);
+		}
 	}
 }

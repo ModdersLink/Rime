@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 544)]
-	public class VehicleEntityData : 
+	public class VehicleEntityData :
 		ControllableEntityData
 	{
 		[ContainerField(144), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 144)]
@@ -237,5 +238,81 @@ namespace fb
 		[ContainerField(543), LayoutImmutable, Blittable, JsonProperty(Order = 543)]
 		public bool ExplosionPacksAttachable { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			CriticallyDamagedEffectPosition.Serialize(p_Writer, p_EbxWriter);
+			FLIRKeyColor.Serialize(p_Writer, p_EbxWriter);
+			PreExplosionEffectPosition.Serialize(p_Writer, p_EbxWriter);
+			InteractionOffset.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(DisabledDamageThreshold);
+			p_Writer.Write(p_EbxWriter.WriteString(ControllableType));
+			p_Writer.Write(PreDestructionDamageThreshold);
+			RearHealthZone.Serialize(p_Writer, p_EbxWriter);
+			LeftHealthZone.Serialize(p_Writer, p_EbxWriter);
+			RightHealthZone.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(MinSpeedForMineActivation);
+			FrontHealthZone.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(UpsideDownDamage);
+			p_Writer.Write(WaterDamageOffset);
+			p_Writer.Write(ArmorMultiplier);
+			p_Writer.Write(RegenerationDelayMultiplier);
+			p_Writer.Write(RegenerationRateMultiplier);
+			p_Writer.Write(EmergencyRepairHealth);
+			p_Writer.Write(DecayDelay);
+			p_Writer.Write(DecayRate);
+			p_Writer.Write(BelowWaterDamageDelay);
+			p_Writer.Write(p_EbxWriter.WriteImport(CriticallyDamagedEffect));
+			p_Writer.Write(RegenerationRate);
+			p_Writer.Write(CriticalDamageTime);
+			p_Writer.Write(p_EbxWriter.WriteImport(PreExplosionEffect));
+			p_Writer.Write(RegenerationDelay);
+			p_Writer.Write(PreExplosionTime);
+			p_Writer.Write(p_EbxWriter.WriteImport(Explosion));
+			p_Writer.Write(p_EbxWriter.WriteImport(Mesh));
+			p_Writer.Write(p_EbxWriter.WriteImport(CockpitMesh));
+			p_Writer.Write(VelocityDamageMagnifier);
+			p_Writer.Write(ExitSpeedThreshold);
+			HudData.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteString(NameSid));
+			p_Writer.Write(MaxPlayersInVehicle);
+			p_Writer.Write(NametagHeightScale);
+			p_Writer.Write(p_EbxWriter.WriteImport(Sound));
+			p_Writer.Write(UpsideDownDamageDelay);
+			p_Writer.Write(UpsideDownAngle);
+			p_Writer.Write(WaterDamage);
+			p_Writer.Write(LockingTimeMultiplier);
+			p_Writer.Write(NametagHeightOffset);
+			p_Writer.Write(HighAltitudeLockHeight);
+			p_Writer.Write(VelocityDamageThreshold);
+			p_Writer.Write(p_EbxWriter.WriteImport(VoiceOverInfo));
+			p_Writer.Write(ExitCameraSwitchDelay);
+			p_Writer.Write(KillSoldierCollisionSpeedThreshold);
+			p_Writer.Write(ExitDirectionSpeedThreshold);
+			AngleOfImpact.Serialize(p_Writer, p_EbxWriter);
+			VehicleLockableInfo.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(FLIRValue);
+			MPMode.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(IgnoreSoldierCollisionNormal);
+			p_Writer.Write(ShowPlayerHealth);
+			p_Writer.Write(ForegroundRenderCockpitMesh);
+			p_Writer.Write(RenderVehicleMesh);
+			p_Writer.Write(IsAffectedByEMP);
+			p_Writer.Write(ThrowOutSoldierInsideOnWaterDamage);
+			p_Writer.Write(UseAsTeamSpawner);
+			p_Writer.Write(IsLockable);
+			p_Writer.Write(ChoseExitPointByDirection);
+			p_Writer.Write(HealthZonesShareDamage);
+			p_Writer.Write(NeverReportVehicleAsEmpty);
+			p_Writer.Write(ExitAllowed);
+			p_Writer.Write(UseLowAltitudeHeatSignature);
+			p_Writer.Write(AllowVehicleOutsideCombatAreas);
+			p_Writer.Write(EnableGroundmapLighting);
+			p_Writer.Write(MotionBlurMask);
+			p_Writer.Write(UseProtectedShields);
+			p_Writer.Write(UseDriverEyePosForNametagPos);
+			p_Writer.Write(EquipmentFakeVehicle);
+			p_Writer.Write(ExplosionPacksAttachable);
+		}
 	}
 }

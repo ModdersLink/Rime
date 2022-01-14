@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 36)]
-	public class AmmoConfigData
+	public class AmmoConfigData :
+		EbxSerializable
 	{
 		[ContainerField(0), LayoutImmutable, Blittable, JsonProperty(Order = 0)]
 		public int MagazineCapacity { get; set; }
@@ -47,5 +49,19 @@ namespace fb
 		[ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
 		public bool AutoReplenishMagazine { get; set; }
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(MagazineCapacity);
+			p_Writer.Write(NumberOfMagazines);
+			p_Writer.Write(TraceFrequency);
+			p_Writer.Write(AmmoPickupMinAmount);
+			p_Writer.Write(AmmoPickupMaxAmount);
+			p_Writer.Write(AutoReplenishDelay);
+			p_Writer.Write(AmmoBagPickupAmount);
+			p_Writer.Write(AmmoBagPickupDelayMultiplier);
+			p_Writer.Write(AutoReplenishMagazine);
+			p_Writer.WriteNullBytes(3);
+		}
 	}
 }

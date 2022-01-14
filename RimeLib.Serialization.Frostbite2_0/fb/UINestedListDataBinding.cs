@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 84)]
-	public class UINestedListDataBinding : 
+	public class UINestedListDataBinding :
 		UIDataBinding
 	{
 		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
@@ -78,5 +79,34 @@ namespace fb
 		[ContainerField(81), LayoutImmutable, Blittable, JsonProperty(Order = 81)]
 		public bool KeepScrollOffset { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(ListIndex);
+			(RimeWriter Writer, uint ArrayIndex) s_NestedLists = p_EbxWriter.GetArrayWriter(NestedLists.GetType(), NestedLists.Count);
+			p_Writer.Write(s_NestedLists.ArrayIndex);
+			foreach (var s_Entry in NestedLists)
+			{
+				s_Entry.Serialize(s_NestedLists.Writer, p_EbxWriter);
+			}
+			p_Writer.Write(RowSpacing);
+			DefaultHighlightedRow.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write((int) NavigationType);
+			p_Writer.Write((int) RowType);
+			p_Writer.Write((int) EmptyRowType);
+			p_Writer.Write(SelectorWidth);
+			Visibility.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(SendIndexWithEvent);
+			p_Writer.Write(UseScrollBar);
+			p_Writer.Write(DataIncludesButtonLayout);
+			p_Writer.Write(ClearListAtNavigationEvent);
+			p_Writer.Write(Use3DSelection);
+			p_Writer.Write(InvertVisible);
+			p_Writer.Write(Visible);
+			p_Writer.Write(ScreenRotationEnabled);
+			p_Writer.Write(HighLightOnUpdate);
+			p_Writer.Write(KeepScrollOffset);
+			p_Writer.WriteNullBytes(2);
+		}
 	}
 }

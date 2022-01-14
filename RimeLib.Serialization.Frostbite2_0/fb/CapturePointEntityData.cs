@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 192)]
-	public class CapturePointEntityData : 
+	public class CapturePointEntityData :
 		GameEntityData
 	{
 		[ContainerField(96), LayoutImmutable, Blittable, JsonProperty(Order = 96)]
@@ -120,5 +121,53 @@ namespace fb
 		[ContainerField(188), LayoutImmutable, Blittable, JsonProperty(Order = 188)]
 		public bool SeesawCapturing { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(EnemyTicketLossWhenCaptured);
+			p_Writer.Write(MinNrToTakeControl);
+			(RimeWriter Writer, uint ArrayIndex) s_FlagTemplates = p_EbxWriter.GetArrayWriter(FlagTemplates.GetType(), FlagTemplates.Count);
+			p_Writer.Write(s_FlagTemplates.ArrayIndex);
+			foreach (var s_Entry in FlagTemplates)
+			{
+				s_FlagTemplates.Writer.Write(p_EbxWriter.WriteImport(s_Entry));
+			}
+			p_Writer.Write(p_EbxWriter.WriteImport(CapturePoint));
+			p_Writer.Write((int) InitialOwnerTeam);
+			p_Writer.Write(CaptureRadius);
+			p_Writer.Write(MaxCaptureMultiplier);
+			p_Writer.Write(AreaValue);
+			p_Writer.Write(SpawnMenuListOrdinal);
+			(RimeWriter Writer, uint ArrayIndex) s_AreaValues = p_EbxWriter.GetArrayWriter(AreaValues.GetType(), AreaValues.Count);
+			p_Writer.Write(s_AreaValues.ArrayIndex);
+			foreach (var s_Entry in AreaValues)
+			{
+				s_Entry.Serialize(s_AreaValues.Writer, p_EbxWriter);
+			}
+			p_Writer.Write(TimeToGetControl);
+			p_Writer.Write(TimeToLoseControl);
+			p_Writer.Write(ReturnMultiplier);
+			p_Writer.Write(OnlyTakeableByTeam);
+			p_Writer.Write(ShowRadius);
+			p_Writer.Write(HideRadius);
+			p_Writer.Write(AddedMultiplierPerPlayer);
+			p_Writer.Write(Modify3DIconVerticalOffset);
+			p_Writer.Write((int) CapturableType);
+			p_Writer.Write(p_EbxWriter.WriteString(IntruderWarningSID));
+			p_Writer.Write(IsCapturedInUpperSphere);
+			p_Writer.Write(DisableWhenLosingControl);
+			p_Writer.Write(LoseControlWhenNotClose);
+			p_Writer.Write(DisableIfEnemyInside);
+			p_Writer.Write(IsVisible);
+			p_Writer.Write(ForceSnap);
+			p_Writer.Write(UseAreaValuesPerTeam);
+			p_Writer.Write(IntruderWarning);
+			p_Writer.Write(ShowOnMinimap);
+			p_Writer.Write(HoistFlag);
+			p_Writer.Write(StartAtBottom);
+			p_Writer.Write(RemoveWhenCaptured);
+			p_Writer.Write(SeesawCapturing);
+			p_Writer.WriteNullBytes(3);
+		}
 	}
 }

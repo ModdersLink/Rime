@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 48)]
-	public class SpecialMovesBinding
+	public class SpecialMovesBinding :
+		EbxSerializable
 	{
 		[ContainerField(0), JsonProperty(Order = 0)]
 		public AntRef TriggerHighVault { get; set; } = new();
@@ -56,5 +58,21 @@ namespace fb
 		[ContainerField(44), JsonProperty(Order = 44)]
 		public AntRef CancelAnimation { get; set; } = new();
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			TriggerHighVault.Serialize(p_Writer, p_EbxWriter);
+			TriggerUpVault.Serialize(p_Writer, p_EbxWriter);
+			TriggerLowVault.Serialize(p_Writer, p_EbxWriter);
+			TriggerSlideIntoProne.Serialize(p_Writer, p_EbxWriter);
+			TriggerSpecialAnimation.Serialize(p_Writer, p_EbxWriter);
+			SpecialAnimationIndex.Serialize(p_Writer, p_EbxWriter);
+			ObjectHeight.Serialize(p_Writer, p_EbxWriter);
+			ObjectDistance.Serialize(p_Writer, p_EbxWriter);
+			StartObjectDistanceTimer.Serialize(p_Writer, p_EbxWriter);
+			VaultObjectPositionX.Serialize(p_Writer, p_EbxWriter);
+			VaultObjectPositionZ.Serialize(p_Writer, p_EbxWriter);
+			CancelAnimation.Serialize(p_Writer, p_EbxWriter);
+		}
 	}
 }

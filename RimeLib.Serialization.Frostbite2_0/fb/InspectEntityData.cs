@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 160)]
-	public class InspectEntityData : 
+	public class InspectEntityData :
 		GameEntityData
 	{
 		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 96)]
@@ -54,5 +55,31 @@ namespace fb
 		[ContainerField(148), LayoutImmutable, Blittable, JsonProperty(Order = 148)]
 		public float ZoomScrollAcceleration { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			CenterOffset.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteString(UIName));
+			p_Writer.Write(MaxLookAtHeight);
+			(RimeWriter Writer, uint ArrayIndex) s_ViewPoints = p_EbxWriter.GetArrayWriter(ViewPoints.GetType(), ViewPoints.Count);
+			p_Writer.Write(s_ViewPoints.ArrayIndex);
+			foreach (var s_Entry in ViewPoints)
+			{
+				s_Entry.Serialize(s_ViewPoints.Writer, p_EbxWriter);
+			}
+			(RimeWriter Writer, uint ArrayIndex) s_Cameras = p_EbxWriter.GetArrayWriter(Cameras.GetType(), Cameras.Count);
+			p_Writer.Write(s_Cameras.ArrayIndex);
+			foreach (var s_Entry in Cameras)
+			{
+				s_Cameras.Writer.Write(p_EbxWriter.WriteImport(s_Entry));
+			}
+			p_Writer.Write(MinLookAtHeight);
+			p_Writer.Write(MinDistance);
+			p_Writer.Write(ZoomScrollSpeed);
+			p_Writer.Write(MaxDistance);
+			AnimationSignal.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(ZoomScrollAcceleration);
+			p_Writer.WriteNullBytes(8);
+		}
 	}
 }

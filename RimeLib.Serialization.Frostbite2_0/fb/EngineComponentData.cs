@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 112)]
-	public class EngineComponentData : 
+	public class EngineComponentData :
 		ComponentData
 	{
 		[ContainerField(96), JsonProperty(Order = 96)]
@@ -36,5 +37,15 @@ namespace fb
 		[ContainerField(109), LayoutImmutable, Blittable, JsonProperty(Order = 109)]
 		public bool OutputIsEngineInWater { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(Config));
+			p_Writer.Write(p_EbxWriter.WriteImport(SoundEffect));
+			p_Writer.Write(p_EbxWriter.WriteImport(SurfaceSoundEffect));
+			p_Writer.Write(UseFirstPersonSounds);
+			p_Writer.Write(OutputIsEngineInWater);
+			p_Writer.WriteNullBytes(2);
+		}
 	}
 }

@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 36)]
-	public class GearBagSpec : 
+	public class GearBagSpec :
 		Asset
 	{
 		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
@@ -39,5 +40,20 @@ namespace fb
 		[ContainerField(32), JsonProperty(Order = 32)]
 		public RefArray<GearBagSpec> ChildSpecs { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(MaxPrimaryWeapons);
+			p_Writer.Write(MaxSecondaryWeapons);
+			p_Writer.Write(MaxSidearms);
+			p_Writer.Write(MaxGadgetsPerSlot);
+			p_Writer.Write(GadgetSlots);
+			(RimeWriter Writer, uint ArrayIndex) s_ChildSpecs = p_EbxWriter.GetArrayWriter(ChildSpecs.GetType(), ChildSpecs.Count);
+			p_Writer.Write(s_ChildSpecs.ArrayIndex);
+			foreach (var s_Entry in ChildSpecs)
+			{
+				s_ChildSpecs.Writer.Write(p_EbxWriter.WriteImport(s_Entry));
+			}
+		}
 	}
 }

@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 64)]
-	public class PolynomialColorInterpData : 
+	public class PolynomialColorInterpData :
 		EvaluatorData
 	{
 		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
@@ -30,5 +31,13 @@ namespace fb
 		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 48)]
 		public Vec4 Coefficients { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(4);
+			Color0.Serialize(p_Writer, p_EbxWriter);
+			Color1.Serialize(p_Writer, p_EbxWriter);
+			Coefficients.Serialize(p_Writer, p_EbxWriter);
+		}
 	}
 }

@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 36)]
-	public class MessageEntityData : 
+	public class MessageEntityData :
 		EntityData
 	{
 		[ContainerField(12), LayoutImmutable, JsonProperty(Order = 12)]
@@ -39,5 +40,21 @@ namespace fb
 		[ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
 		public bool Enabled { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteString(MessageSid));
+			(RimeWriter Writer, uint ArrayIndex) s_AdditionalMessages = p_EbxWriter.GetArrayWriter(AdditionalMessages.GetType(), AdditionalMessages.Count);
+			p_Writer.Write(s_AdditionalMessages.ArrayIndex);
+			foreach (var s_Entry in AdditionalMessages)
+			{
+				s_Entry.Serialize(s_AdditionalMessages.Writer, p_EbxWriter);
+			}
+			p_Writer.Write((int) MessageType);
+			p_Writer.Write(DisplayTime);
+			p_Writer.Write((int) EntryInputAction);
+			p_Writer.Write(Enabled);
+			p_Writer.WriteNullBytes(3);
+		}
 	}
 }

@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 32)]
-	public class LandingGearLogicData : 
+	public class LandingGearLogicData :
 		DataContainer
 	{
 		[ContainerField(8), JsonProperty(Order = 8)]
@@ -27,5 +28,11 @@ namespace fb
 		[ContainerField(20), JsonProperty(Order = 20)]
 		public LandingGearConditionData DeployCondition { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			RetractCondition.Serialize(p_Writer, p_EbxWriter);
+			DeployCondition.Serialize(p_Writer, p_EbxWriter);
+		}
 	}
 }

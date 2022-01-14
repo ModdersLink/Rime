@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 104)]
-	public class EmitterSystemSettings : 
+	public class EmitterSystemSettings :
 		DataContainer
 	{
 		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
@@ -156,5 +157,55 @@ namespace fb
 		[ContainerField(100), LayoutImmutable, Blittable, JsonProperty(Order = 100)]
 		public bool MeshDrawCullStats { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(MeshDrawCountLimit);
+			p_Writer.Write(TimeScale);
+			p_Writer.Write(GlobalResetStartTimeInterval);
+			p_Writer.Write(QuadHalfResSlice2ThresholdLow);
+			p_Writer.Write(QuadHalfResSlice2ThresholdHigh);
+			p_Writer.Write(QuadHalfResSlice1ThresholdLow);
+			p_Writer.Write(QuadHalfResSlice1ThresholdHigh);
+			p_Writer.Write(DebugOverdrawCount);
+			p_Writer.Write(DrawStats);
+			p_Writer.Write(MeshStreamingPriorityMultiplier);
+			p_Writer.Write(QuadZOcclusionBias);
+			p_Writer.Write(DrawBoundingBoxes);
+			p_Writer.Write(MinScreenArea);
+			p_Writer.Write(QuadNearFadeDistance);
+			p_Writer.Write(QuadTechnique);
+			p_Writer.Write(MeshCullingDistance);
+			p_Writer.Write(EnableFixedTimeStep);
+			p_Writer.Write(ZBufferCullEnable);
+			p_Writer.Write(QuadEnableOverdrawRendering);
+			p_Writer.Write(QuadColorShaderCostsEnable);
+			p_Writer.Write(DrawProjectedBoxes);
+			p_Writer.Write(QuadSimpleRenderingEnable);
+			p_Writer.Write(EnableJobs);
+			p_Writer.Write(EnableRendering);
+			p_Writer.Write(QuadHalfResEnable);
+			p_Writer.Write(QuadEnableRendering);
+			p_Writer.Write(EnableFixedDelta);
+			p_Writer.Write(QuadClipScaleEnable);
+			p_Writer.Write(QuadNiceRenderingEnable);
+			p_Writer.Write(QuadGroupsJoinAll);
+			p_Writer.Write(QuadGroupsJoinNone);
+			p_Writer.Write(QuadGroupsJoinNiceAndSimple);
+			p_Writer.Write(QuadEnableOpaque);
+			p_Writer.Write(QuadVertexShadowsEnable);
+			p_Writer.Write(QuadPointLightsEnable);
+			p_Writer.Write(QuadSpotLightsEnable);
+			p_Writer.Write(QuadEnableSorting);
+			p_Writer.Write(MeshRenderingEnable);
+			p_Writer.Write(MeshDrawTransforms);
+			p_Writer.Write(MeshDrawBoundingBoxes);
+			p_Writer.Write(MeshShadowEnable);
+			p_Writer.Write(QuadEnableWireframe);
+			p_Writer.Write(Enable);
+			p_Writer.Write(QuadEnableZOcclusion);
+			p_Writer.Write(MeshDrawCullStats);
+			p_Writer.WriteNullBytes(3);
+		}
 	}
 }

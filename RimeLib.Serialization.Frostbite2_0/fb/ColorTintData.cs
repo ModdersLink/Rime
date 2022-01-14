@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 64)]
-	public class ColorTintData
+	public class ColorTintData :
+		EbxSerializable
 	{
 		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 0)]
 		public Vec3 Contrast { get; set; } = new();
@@ -32,5 +34,14 @@ namespace fb
 		[ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
 		public float Hue { get; set; }
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			Contrast.Serialize(p_Writer, p_EbxWriter);
+			Brightness.Serialize(p_Writer, p_EbxWriter);
+			Saturation.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(Hue);
+			p_Writer.WriteNullBytes(12);
+		}
 	}
 }

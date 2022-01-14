@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 32)]
-	public class StaticEnlightenEntityData : 
+	public class StaticEnlightenEntityData :
 		EnlightenEntityData
 	{
 		[ContainerField(24), JsonProperty(Order = 24)]
@@ -27,5 +28,11 @@ namespace fb
 		[ContainerField(28), JsonProperty(Order = 28)]
 		public CtrRef<EnlightenDataAsset> DynamicEnlightenData { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(EnlightenData));
+			p_Writer.Write(p_EbxWriter.WriteImport(DynamicEnlightenData));
+		}
 	}
 }

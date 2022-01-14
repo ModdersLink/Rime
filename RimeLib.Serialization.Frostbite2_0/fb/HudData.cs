@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 68)]
-	public class HudData
+	public class HudData :
+		EbxSerializable
 	{
 		[ContainerField(0), LayoutImmutable, Blittable, JsonProperty(Order = 0)]
 		public float CrosshairScaleMin { get; set; }
@@ -104,5 +106,38 @@ namespace fb
 		[ContainerField(66), LayoutImmutable, Blittable, JsonProperty(Order = 66)]
 		public bool UseRenderTarget { get; set; }
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(CrosshairScaleMin);
+			p_Writer.Write(CrosshairScaleMax);
+			p_Writer.Write(CrosshairOpacityMin);
+			p_Writer.Write(CrosshairOpacityMax);
+			p_Writer.Write(CrosshairOpacityModifier);
+			p_Writer.Write(p_EbxWriter.WriteString(CrosshairTypeId));
+			p_Writer.Write(p_EbxWriter.WriteString(WeaponClass));
+			p_Writer.Write(CameraShakeModifier);
+			p_Writer.Write(SeaLevelAltFreq);
+			p_Writer.Write(LowAmmoWarning);
+			p_Writer.Write(ReloadPrompt);
+			p_Writer.Write(RenderTargetIndex);
+			p_Writer.Write(p_EbxWriter.WriteImport(HudPropertyList));
+			p_Writer.Write(ShowMinimap);
+			p_Writer.Write(InfiniteAmmo);
+			p_Writer.Write(HideCrosshairWhenAimOnFriend);
+			p_Writer.Write(HideAmmo);
+			p_Writer.Write(UseRangeMeter);
+			p_Writer.Write(UsePredictedSight);
+			p_Writer.Write(UseWeaponOrientations);
+			p_Writer.Write(UseVelocityVectorMarker);
+			p_Writer.Write(UseLockingController);
+			p_Writer.Write(UseThrust);
+			p_Writer.Write(UseGForce);
+			p_Writer.Write(UseSkidSlip);
+			p_Writer.Write(UseClimbRate);
+			p_Writer.Write(UseAimWarning);
+			p_Writer.Write(UseRenderTarget);
+			p_Writer.WriteNullBytes(1);
+		}
 	}
 }

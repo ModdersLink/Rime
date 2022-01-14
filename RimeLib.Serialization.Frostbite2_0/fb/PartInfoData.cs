@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 48)]
-	public class PartInfoData
+	public class PartInfoData :
+		EbxSerializable
 	{
 		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 0)]
 		public AxisAlignedBox Aabb { get; set; } = new();
@@ -26,5 +28,11 @@ namespace fb
 		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 32)]
 		public Vec3 Translation { get; set; } = new();
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			Aabb.Serialize(p_Writer, p_EbxWriter);
+			Translation.Serialize(p_Writer, p_EbxWriter);
+		}
 	}
 }

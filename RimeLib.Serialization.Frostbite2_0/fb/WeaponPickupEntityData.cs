@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 192)]
-	public class WeaponPickupEntityData : 
+	public class WeaponPickupEntityData :
 		PickupEntityData
 	{
 		[ContainerField(176), JsonProperty(Order = 176)]
@@ -27,5 +28,17 @@ namespace fb
 		[ContainerField(180), LayoutImmutable, Blittable, JsonProperty(Order = 180)]
 		public bool UseForPersistence { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			(RimeWriter Writer, uint ArrayIndex) s_Weapons = p_EbxWriter.GetArrayWriter(Weapons.GetType(), Weapons.Count);
+			p_Writer.Write(s_Weapons.ArrayIndex);
+			foreach (var s_Entry in Weapons)
+			{
+				s_Entry.Serialize(s_Weapons.Writer, p_EbxWriter);
+			}
+			p_Writer.Write(UseForPersistence);
+			p_Writer.WriteNullBytes(11);
+		}
 	}
 }

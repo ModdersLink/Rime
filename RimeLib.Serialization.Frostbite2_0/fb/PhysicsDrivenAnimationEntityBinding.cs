@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 116)]
-	public class PhysicsDrivenAnimationEntityBinding
+	public class PhysicsDrivenAnimationEntityBinding :
+		EbxSerializable
 	{
 		[ContainerField(0), JsonProperty(Order = 0)]
 		public AntRef AimLeftRight { get; set; } = new();
@@ -107,5 +109,38 @@ namespace fb
 		[ContainerField(112), JsonProperty(Order = 112)]
 		public AntRef LockArmsToCameraWeight { get; set; } = new();
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			AimLeftRight.Serialize(p_Writer, p_EbxWriter);
+			AimUpDown.Serialize(p_Writer, p_EbxWriter);
+			Crouch.Serialize(p_Writer, p_EbxWriter);
+			ForceSetTrajectory.Serialize(p_Writer, p_EbxWriter);
+			InAir.Serialize(p_Writer, p_EbxWriter);
+			Skydive.Serialize(p_Writer, p_EbxWriter);
+			Parachute.Serialize(p_Writer, p_EbxWriter);
+			Swim.Serialize(p_Writer, p_EbxWriter);
+			InputBackward.Serialize(p_Writer, p_EbxWriter);
+			InputForward.Serialize(p_Writer, p_EbxWriter);
+			InputLeft.Serialize(p_Writer, p_EbxWriter);
+			InputRight.Serialize(p_Writer, p_EbxWriter);
+			IsEnemy.Serialize(p_Writer, p_EbxWriter);
+			Jump.Serialize(p_Writer, p_EbxWriter);
+			LeanLeftRight.Serialize(p_Writer, p_EbxWriter);
+			Prone.Serialize(p_Writer, p_EbxWriter);
+			Sprint.Serialize(p_Writer, p_EbxWriter);
+			GroundSupported.Serialize(p_Writer, p_EbxWriter);
+			GroundNormal.Serialize(p_Writer, p_EbxWriter);
+			GroundDistance.Serialize(p_Writer, p_EbxWriter);
+			GroundAngleZ.Serialize(p_Writer, p_EbxWriter);
+			GroundAngleX.Serialize(p_Writer, p_EbxWriter);
+			GroundAngleFromNormal.Serialize(p_Writer, p_EbxWriter);
+			IsClientAnimatable.Serialize(p_Writer, p_EbxWriter);
+			CustomizationScreen.Serialize(p_Writer, p_EbxWriter);
+			Minimal3pServer.Serialize(p_Writer, p_EbxWriter);
+			VerticalImpact.Serialize(p_Writer, p_EbxWriter);
+			FalseSignal.Serialize(p_Writer, p_EbxWriter);
+			LockArmsToCameraWeight.Serialize(p_Writer, p_EbxWriter);
+		}
 	}
 }

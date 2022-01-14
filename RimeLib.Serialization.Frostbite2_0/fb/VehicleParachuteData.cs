@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 72)]
-	public class VehicleParachuteData : 
+	public class VehicleParachuteData :
 		DataContainer
 	{
 		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
@@ -69,5 +70,25 @@ namespace fb
 		[ContainerField(68), LayoutImmutable, Blittable, JsonProperty(Order = 68)]
 		public float RampLength { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(TerminalVelocity);
+			p_Writer.Write(FreefallGravityMultiplier);
+			p_Writer.Write(DragCoefficient);
+			p_Writer.Write(MaxRollVelocity);
+			p_Writer.Write(MaxPitchVelocity);
+			p_Writer.Write(MaxYawVelocity);
+			p_Writer.Write(DeployTime);
+			p_Writer.Write(UndeployGroundHeight);
+			p_Writer.Write(AngularDescentDamping);
+			p_Writer.Write(AngularDeployDamping);
+			p_Writer.Write(DeployPhysicsStart);
+			p_Writer.Write(DeployInitialDragStart);
+			p_Writer.Write(InitialDragStartVelocityScale);
+			p_Writer.Write(InitialDragAngularVelocityPitch);
+			p_Writer.Write(InitialDragRandomAngularVelocityRollMax);
+			p_Writer.Write(RampLength);
+		}
 	}
 }

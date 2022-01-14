@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 76)]
-	public class VoiceOverManuscriptAsset : 
+	public class VoiceOverManuscriptAsset :
 		Asset
 	{
 		[ContainerField(12), JsonProperty(Order = 12)]
@@ -75,5 +76,38 @@ namespace fb
 		[ContainerField(74), LayoutImmutable, Blittable, JsonProperty(Order = 74)]
 		public bool AllowDelete { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(MasterLanguage));
+			(RimeWriter Writer, uint ArrayIndex) s_Languages = p_EbxWriter.GetArrayWriter(Languages.GetType(), Languages.Count);
+			p_Writer.Write(s_Languages.ArrayIndex);
+			foreach (var s_Entry in Languages)
+			{
+				s_Languages.Writer.Write(p_EbxWriter.WriteImport(s_Entry));
+			}
+			p_Writer.Write((int) NameTranslation);
+			p_Writer.Write(p_EbxWriter.WriteString(SheetName));
+			p_Writer.Write(p_EbxWriter.WriteString(StringIdColumn));
+			p_Writer.Write(p_EbxWriter.WriteString(FileNameColumn));
+			p_Writer.Write(p_EbxWriter.WriteString(PathColumn));
+			p_Writer.Write(p_EbxWriter.WriteString(WaveAssetStatusColumn));
+			p_Writer.Write(p_EbxWriter.WriteString(CharacterColumn));
+			p_Writer.Write(p_EbxWriter.WriteString(VoiceColumn));
+			p_Writer.Write(p_EbxWriter.WriteString(StringIdPrefix));
+			(RimeWriter Writer, uint ArrayIndex) s_LanguageColumns = p_EbxWriter.GetArrayWriter(LanguageColumns.GetType(), LanguageColumns.Count);
+			p_Writer.Write(s_LanguageColumns.ArrayIndex);
+			foreach (var s_Entry in LanguageColumns)
+			{
+				s_Entry.Serialize(s_LanguageColumns.Writer, p_EbxWriter);
+			}
+			p_Writer.Write(FirstContentRow);
+			p_Writer.Write(p_EbxWriter.WriteString(OutputPath));
+			p_Writer.Write(p_EbxWriter.WriteImport(StreamPool));
+			p_Writer.Write(KeepPath);
+			p_Writer.Write(StringIdUpperCase);
+			p_Writer.Write(AllowDelete);
+			p_Writer.WriteNullBytes(1);
+		}
 	}
 }

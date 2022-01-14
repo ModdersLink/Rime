@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 180)]
-	public class GameRenderSettings : 
+	public class GameRenderSettings :
 		DataContainer
 	{
 		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
@@ -276,5 +277,95 @@ namespace fb
 		[ContainerField(176), LayoutImmutable, Blittable, JsonProperty(Order = 176)]
 		public bool Enable { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(StereoCrosshairDampingFactor);
+			p_Writer.Write(InactiveSkipFrameCount);
+			p_Writer.Write(ForceOrthoViewSize);
+			p_Writer.Write(StereoCrosshairRadius);
+			p_Writer.Write(StereoCrosshairMaxHitDepth);
+			p_Writer.Write(ForceBlurAmount);
+			p_Writer.Write(DrawFpsMethod);
+			p_Writer.Write(ForceFov);
+			p_Writer.Write(FovMultiplier);
+			p_Writer.Write(StaticModelPartOcclusionMaxScreenArea);
+			p_Writer.Write(StaticModelCullJobCount);
+			p_Writer.Write(EdgeModelLodScale);
+			p_Writer.Write(EdgeModelScreenAreaScale);
+			p_Writer.Write(XenonRingBufferSize);
+			p_Writer.Write(SplitScreenTestViewCount);
+			p_Writer.Write(XenonPresentImmediateThreshold);
+			p_Writer.Write(XenonGammaRampType);
+			p_Writer.Write(Ps3VSyncMethod);
+			p_Writer.Write(Ps3VideoGamma);
+			p_Writer.Write(Ps3FrameMainBufferSize);
+			p_Writer.Write(Ps3FrameLocalBufferSize);
+			p_Writer.Write(ViewDistance);
+			p_Writer.Write(CameraCutMaxFrameTranslation);
+			p_Writer.Write(NearPlane);
+			p_Writer.Write(ForceWorldFadeAmount);
+			p_Writer.Write(EdgeModelMaxVisibleInstanceCount);
+			p_Writer.Write(EdgeModelForceLod);
+			p_Writer.Write(EdgeModelViewDistance);
+			p_Writer.Write(Ps3LinearFrameCmdBufEnable);
+			p_Writer.Write(XenonRes1280x704Enable);
+			p_Writer.Write(PerfOverlayEnable);
+			p_Writer.Write(GcmHudEnable);
+			p_Writer.Write(MovieVSyncEnable);
+			p_Writer.Write(Ps3Res1280x704Enable);
+			p_Writer.Write(InitialClearEnable);
+			p_Writer.Write(GpuProfilerEnable);
+			p_Writer.Write(Ps3CellMemoryTexturesEnable);
+			p_Writer.Write(XenonBufferTwoFramesEnable);
+			p_Writer.Write(DrawFpsHistogram);
+			p_Writer.Write(Fullscreen);
+			p_Writer.Write(PerfOverlayLatestFrameTimeEnable);
+			p_Writer.Write(JobEnable);
+			p_Writer.Write(PerfOverlayVisible);
+			p_Writer.Write(EmittersEnable);
+			p_Writer.Write(EdgeModelsEnable);
+			p_Writer.Write(EdgeModelCastShadowsEnable);
+			p_Writer.Write(EdgeModelDepthBiasEnable);
+			p_Writer.Write(EdgeModelShadowDepthBiasEnable);
+			p_Writer.Write(VSyncFlashTestEnable);
+			p_Writer.Write(EntityRenderEnable);
+			p_Writer.Write(EdgeModelSpuInstancingEnable);
+			p_Writer.Write(EdgeModelUseMainLodEnable);
+			p_Writer.Write(DebugRenderServiceEnable);
+			p_Writer.Write(EdgeModelUseLodBox);
+			p_Writer.Write(DebugRendererEnable);
+			p_Writer.Write(ForceVSyncEnable);
+			p_Writer.Write(EdgeModelCullEnable);
+			p_Writer.Write(EdgeModelFrustumCullEnable);
+			p_Writer.Write(EdgeModelOcclusionCullEnable);
+			p_Writer.Write(EdgeModelAdditionalCullEnable);
+			p_Writer.Write(EdgeModelDrawBoxes);
+			p_Writer.Write(EdgeModelDrawStats);
+			p_Writer.Write(StaticModelEnable);
+			p_Writer.Write(StaticModelMeshesEnable);
+			p_Writer.Write(StaticModelZPassEnable);
+			p_Writer.Write(StaticModelPartCullEnable);
+			p_Writer.Write(StaticModelPartFrustumCullEnable);
+			p_Writer.Write(StaticModelPartOcclusionCullEnable);
+			p_Writer.Write(StaticModelPartShadowCullEnable);
+			p_Writer.Write(StaticModelDrawBoxes);
+			p_Writer.Write(StaticModelDrawStats);
+			p_Writer.Write(DrawScreenInfo);
+			p_Writer.Write(ForceOrthoViewEnable);
+			p_Writer.Write(StaticModelCullSpuJobEnable);
+			p_Writer.Write(LockView);
+			p_Writer.Write(ResetLockedView);
+			p_Writer.Write(DrawInfo);
+			p_Writer.Write(FadeEnable);
+			p_Writer.Write(FadeWaitingEnable);
+			p_Writer.Write(DrawFps);
+			p_Writer.Write(DestructionVolumeDrawEnable);
+			p_Writer.Write(BlurEnable);
+			p_Writer.Write(BuildJobSyncEnable);
+			p_Writer.Write(ForceSquareOrthoView);
+			p_Writer.Write(Enable);
+			p_Writer.WriteNullBytes(3);
+		}
 	}
 }

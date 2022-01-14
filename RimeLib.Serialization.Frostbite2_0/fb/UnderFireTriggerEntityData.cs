@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 144)]
-	public class UnderFireTriggerEntityData : 
+	public class UnderFireTriggerEntityData :
 		TriggerEntityData
 	{
 		[ContainerField(112), LayoutImmutable, Blittable, JsonProperty(Order = 112)]
@@ -42,5 +43,17 @@ namespace fb
 		[ContainerField(130), LayoutImmutable, Blittable, JsonProperty(Order = 130)]
 		public bool IndicateHit { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(Radius);
+			p_Writer.Write(CoolDownTime);
+			p_Writer.Write(p_EbxWriter.WriteImport(TriggerOnMaterialOnly));
+			p_Writer.Write((int) TriggeredBy);
+			p_Writer.Write(DisableIfTrackEntityIsLost);
+			p_Writer.Write(RandomYaw);
+			p_Writer.Write(IndicateHit);
+			p_Writer.WriteNullBytes(13);
+		}
 	}
 }

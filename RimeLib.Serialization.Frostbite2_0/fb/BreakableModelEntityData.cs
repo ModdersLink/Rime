@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 144)]
-	public class BreakableModelEntityData : 
+	public class BreakableModelEntityData :
 		GamePhysicsEntityData
 	{
 		[ContainerField(112), JsonProperty(Order = 112)]
@@ -36,5 +37,15 @@ namespace fb
 		[ContainerField(128), JsonProperty(Order = 128)]
 		public CtrRef<EdgeModelLightMapData> EdgeModelLightMapData { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(DecalVolumeShader));
+			p_Writer.Write(DecalVolumeScaleFactor);
+			p_Writer.Write(p_EbxWriter.WriteImport(Mesh));
+			p_Writer.Write(BoneCount);
+			p_Writer.Write(p_EbxWriter.WriteImport(EdgeModelLightMapData));
+			p_Writer.WriteNullBytes(12);
+		}
 	}
 }

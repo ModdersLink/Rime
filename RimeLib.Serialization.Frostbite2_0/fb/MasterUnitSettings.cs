@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 56)]
-	public class MasterUnitSettings : 
+	public class MasterUnitSettings :
 		DataContainer
 	{
 		[ContainerField(8), LayoutImmutable, JsonProperty(Order = 8)]
@@ -57,5 +58,21 @@ namespace fb
 		[ContainerField(52), LayoutImmutable, Blittable, JsonProperty(Order = 52)]
 		public float FadeTime { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteString(Name));
+			p_Writer.Write(p_EbxWriter.WriteImport(Equalizer));
+			p_Writer.Write(p_EbxWriter.WriteImport(Compressor));
+			p_Writer.Write(MasterVolume);
+			p_Writer.Write(MasterLfeGain);
+			p_Writer.Write(MasterDialogGain);
+			p_Writer.Write(ReverbVolume);
+			p_Writer.Write(MainMixVolume);
+			p_Writer.Write(DistortionClipLevel);
+			p_Writer.Write(ParallelDistortionGain);
+			p_Writer.Write(PostEffectsGain);
+			p_Writer.Write(FadeTime);
+		}
 	}
 }

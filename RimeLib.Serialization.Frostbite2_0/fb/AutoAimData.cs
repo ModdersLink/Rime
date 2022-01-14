@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 80)]
-	public class AutoAimData
+	public class AutoAimData :
+		EbxSerializable
 	{
 		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 0)]
 		public Vec3 AutoAimOuterBoxOffset { get; set; } = new();
@@ -35,5 +37,15 @@ namespace fb
 		[ContainerField(64), JsonProperty(Order = 64)]
 		public CharacterPoseType PoseType { get; set; } = new();
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			AutoAimOuterBoxOffset.Serialize(p_Writer, p_EbxWriter);
+			AutoAimOuterBoxExtends.Serialize(p_Writer, p_EbxWriter);
+			AutoAimInnerBoxOffset.Serialize(p_Writer, p_EbxWriter);
+			AutoAimInnerBoxExtends.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write((int) PoseType);
+			p_Writer.WriteNullBytes(12);
+		}
 	}
 }

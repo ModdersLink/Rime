@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 16)]
-	public class RichPresencePresenceString : 
+	public class RichPresencePresenceString :
 		DataContainer
 	{
 		[ContainerField(8), LayoutImmutable, JsonProperty(Order = 8)]
@@ -30,5 +31,13 @@ namespace fb
 		[ContainerField(13), LayoutImmutable, Blittable, JsonProperty(Order = 13)]
 		public sbyte Index { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteString(SID));
+			p_Writer.Write(Interpolated);
+			p_Writer.Write(Index);
+			p_Writer.WriteNullBytes(2);
+		}
 	}
 }

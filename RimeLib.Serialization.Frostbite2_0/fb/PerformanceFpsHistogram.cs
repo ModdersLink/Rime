@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 32)]
-	public class PerformanceFpsHistogram
+	public class PerformanceFpsHistogram :
+		EbxSerializable
 	{
 		[ContainerField(0), LayoutImmutable, Blittable, JsonProperty(Order = 0)]
 		public float Below5 { get; set; }
@@ -44,5 +46,17 @@ namespace fb
 		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
 		public float Above60 { get; set; }
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(Below5);
+			p_Writer.Write(Below10);
+			p_Writer.Write(Below15);
+			p_Writer.Write(Below20);
+			p_Writer.Write(Below25);
+			p_Writer.Write(Below30);
+			p_Writer.Write(Below60);
+			p_Writer.Write(Above60);
+		}
 	}
 }

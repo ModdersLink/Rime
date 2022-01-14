@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 120)]
-	public class GameSettings : 
+	public class GameSettings :
 		SystemSettings
 	{
 		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
@@ -144,5 +145,61 @@ namespace fb
 		[ContainerField(118), LayoutImmutable, Blittable, JsonProperty(Order = 118)]
 		public bool AllowDestructionOutsideCombatArea { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(MaxPlayerCount);
+			p_Writer.Write(MaxSpectatorCount);
+			p_Writer.Write(p_EbxWriter.WriteImport(LayerInclusionTable));
+			p_Writer.Write((int) LogFileCollisionMode);
+			p_Writer.Write(LogFileRotationHistoryLength);
+			p_Writer.Write(p_EbxWriter.WriteString(Level));
+			p_Writer.Write(p_EbxWriter.WriteString(DefaultLayerInclusion));
+			(RimeWriter Writer, uint ArrayIndex) s_InputConfiguration = p_EbxWriter.GetArrayWriter(InputConfiguration.GetType(), InputConfiguration.Count);
+			p_Writer.Write(s_InputConfiguration.ArrayIndex);
+			foreach (var s_Entry in InputConfiguration)
+			{
+				s_InputConfiguration.Writer.Write(p_EbxWriter.WriteImport(s_Entry));
+			}
+			p_Writer.Write((int) DefaultTeamId);
+			p_Writer.Write(LevelWarmUpTime);
+			p_Writer.Write(TimeToWaitForQuitTaskCompletion);
+			p_Writer.Write((int) Platform);
+			p_Writer.Write(p_EbxWriter.WriteImport(Version));
+			p_Writer.Write(PS3ContentRatingAge);
+			p_Writer.Write(DifficultyIndex);
+			p_Writer.Write(TimeBeforeSpawnIsAllowed);
+			p_Writer.Write(p_EbxWriter.WriteImport(SoldierWeaponSwitching));
+			p_Writer.Write(LogHistory);
+			p_Writer.Write(p_EbxWriter.WriteImport(DifficultySettings));
+			(RimeWriter Writer, uint ArrayIndex) s_MetadataContainers = p_EbxWriter.GetArrayWriter(MetadataContainers.GetType(), MetadataContainers.Count);
+			p_Writer.Write(s_MetadataContainers.ArrayIndex);
+			foreach (var s_Entry in MetadataContainers)
+			{
+				s_MetadataContainers.Writer.Write(p_EbxWriter.WriteImport(s_Entry));
+			}
+			p_Writer.Write((int) CurrentSKU);
+			p_Writer.Write(p_EbxWriter.WriteImport(Player));
+			p_Writer.Write(LogFileEnable);
+			p_Writer.Write(RotateLogs);
+			p_Writer.Write(EnableLoadingProfile);
+			p_Writer.Write(AdjustVehicleCenterOfMass);
+			p_Writer.Write(AutoAimEnabled);
+			p_Writer.Write(HasUnlimitedAmmo);
+			p_Writer.Write(HasUnlimitedMags);
+			p_Writer.Write(ResourceRefreshAlwaysAllowed);
+			p_Writer.Write(UseSpeedBasedDetailedCollision);
+			p_Writer.Write(AimAssistEnabled);
+			p_Writer.Write(AimAssistUsePolynomials);
+			p_Writer.Write(ForceFreeStreaming);
+			p_Writer.Write(ForceDisableFreeStreaming);
+			p_Writer.Write(IsGodMode);
+			p_Writer.Write(IsJesusMode);
+			p_Writer.Write(IsJesusModeAi);
+			p_Writer.Write(UseSingleWeaponSelector);
+			p_Writer.Write(GameAdministrationEnabled);
+			p_Writer.Write(AllowDestructionOutsideCombatArea);
+			p_Writer.WriteNullBytes(1);
+		}
 	}
 }

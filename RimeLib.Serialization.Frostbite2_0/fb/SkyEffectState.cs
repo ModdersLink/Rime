@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 240)]
-	public class SkyEffectState : 
+	public class SkyEffectState :
 		DataContainer
 	{
 		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
@@ -78,5 +79,31 @@ namespace fb
 		[ContainerField(228), LayoutImmutable, Blittable, JsonProperty(Order = 228)]
 		public bool Enable { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(8);
+			CloudLayerSunColor.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(PanoramicTileFactor);
+			p_Writer.Write(SunSize);
+			p_Writer.Write(SkyGradientScale);
+			p_Writer.Write(SunScale);
+			p_Writer.Write(PanoramicUVMinX);
+			p_Writer.Write(p_EbxWriter.WriteImport(SkyGradientTexture));
+			p_Writer.Write(PanoramicUVMinY);
+			p_Writer.Write(PanoramicUVMaxY);
+			p_Writer.Write(PanoramicUVMaxX);
+			p_Writer.Write(PanoramicRotation);
+			p_Writer.Write(p_EbxWriter.WriteImport(PanoramicTexture));
+			p_Writer.Write(p_EbxWriter.WriteImport(PanoramicAlphaTexture));
+			p_Writer.Write(WindDirection);
+			p_Writer.Write(p_EbxWriter.WriteImport(CloudLayerMaskTexture));
+			p_Writer.WriteNullBytes(8);
+			CloudLayer1.Serialize(p_Writer, p_EbxWriter);
+			CloudLayer2.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(StaticEnvmapTexture));
+			p_Writer.Write(Enable);
+			p_Writer.WriteNullBytes(11);
+		}
 	}
 }

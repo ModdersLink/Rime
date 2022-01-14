@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 96)]
-	public class SoundEntityData : 
+	public class SoundEntityData :
 		EntityData
 	{
 		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
@@ -33,5 +34,15 @@ namespace fb
 		[ContainerField(88), LayoutImmutable, Blittable, JsonProperty(Order = 88)]
 		public bool PlayOnCreation { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(4);
+			Transform.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(Sound));
+			p_Writer.Write(ObstructionHandle);
+			p_Writer.Write(PlayOnCreation);
+			p_Writer.WriteNullBytes(7);
+		}
 	}
 }

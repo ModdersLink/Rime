@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 40)]
-	public class SoldierSprintSettingsData : 
+	public class SoldierSprintSettingsData :
 		DataContainer
 	{
 		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
@@ -45,5 +46,22 @@ namespace fb
 		[ContainerField(36), JsonProperty(Order = 36)]
 		public List<EntryInputActionEnum> InterruptingActions { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(Fov);
+			p_Writer.Write(FovInDelay);
+			p_Writer.Write(FovInTime);
+			p_Writer.Write(FovOutDelay);
+			p_Writer.Write(FovOutTime);
+			p_Writer.Write(RecoverTime);
+			p_Writer.Write(SprintToProneRecoverTime);
+			(RimeWriter Writer, uint ArrayIndex) s_InterruptingActions = p_EbxWriter.GetArrayWriter(InterruptingActions.GetType(), InterruptingActions.Count);
+			p_Writer.Write(s_InterruptingActions.ArrayIndex);
+			foreach (var s_Entry in InterruptingActions)
+			{
+				s_InterruptingActions.Writer.Write((int) s_Entry);
+			}
+		}
 	}
 }

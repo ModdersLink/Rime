@@ -14,15 +14,21 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 144)]
-	public class CoverWaypointData : 
+	public class CoverWaypointData :
 		AbstractLocoWaypointData
 	{
 		[ContainerField(48), JsonProperty(Order = 48)]
 		public AILocoCoverTaskData CoverTask { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			CoverTask.Serialize(p_Writer, p_EbxWriter);
+		}
 	}
 }

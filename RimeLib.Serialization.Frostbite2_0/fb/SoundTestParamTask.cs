@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 36)]
-	public class SoundTestParamTask : 
+	public class SoundTestParamTask :
 		SoundTestTaskSpec
 	{
 		[ContainerField(16), LayoutImmutable, JsonProperty(Order = 16)]
@@ -36,5 +37,14 @@ namespace fb
 		[ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
 		public float InitialValue { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteString(ParamName));
+			p_Writer.Write((int) Behavior);
+			p_Writer.Write(RangeMin);
+			p_Writer.Write(RangeMax);
+			p_Writer.Write(InitialValue);
+		}
 	}
 }

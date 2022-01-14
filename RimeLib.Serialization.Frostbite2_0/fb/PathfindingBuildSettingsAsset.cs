@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 52)]
-	public class PathfindingBuildSettingsAsset : 
+	public class PathfindingBuildSettingsAsset :
 		Asset
 	{
 		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
@@ -60,5 +61,22 @@ namespace fb
 		[ContainerField(51), LayoutImmutable, Blittable, JsonProperty(Order = 51)]
 		public bool LeaveSmallIslandsTouchingPortals { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(EntityRadius);
+			p_Writer.Write(EntityHeight);
+			p_Writer.Write(MaxWalkableSlope);
+			p_Writer.Write(MaxStep);
+			p_Writer.Write(MinIslandSurfaceArea);
+			p_Writer.Write(VoxSize);
+			p_Writer.Write(GridSideLength);
+			p_Writer.Write(AdditionalInwardsSmoothingDist);
+			p_Writer.Write(TerrainSamplingStep);
+			p_Writer.Write(TesselateForPathingAccuracy);
+			p_Writer.Write(UseEnhancedTerrainTracking);
+			p_Writer.Write(OptimizeForAxisAligned);
+			p_Writer.Write(LeaveSmallIslandsTouchingPortals);
+		}
 	}
 }

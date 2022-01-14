@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 144)]
-	public class Minimap2DEntityData : 
+	public class Minimap2DEntityData :
 		GameEntityData
 	{
 		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 96)]
@@ -39,5 +40,16 @@ namespace fb
 		[ContainerField(128), LayoutImmutable, Blittable, JsonProperty(Order = 128)]
 		public uint Fov { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			CameraTransform.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(ImageHeight);
+			p_Writer.Write(ImageWidth);
+			p_Writer.Write(AntialiasMultiplier);
+			p_Writer.Write(TerrainHeight);
+			p_Writer.Write(Fov);
+			p_Writer.WriteNullBytes(12);
+		}
 	}
 }

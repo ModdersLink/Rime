@@ -14,15 +14,22 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 224)]
-	public class FlareEntityData : 
+	public class FlareEntityData :
 		GrenadeEntityData
 	{
 		[ContainerField(208), LayoutImmutable, Blittable, JsonProperty(Order = 208)]
 		public float FlareRange { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(FlareRange);
+			p_Writer.WriteNullBytes(12);
+		}
 	}
 }

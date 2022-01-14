@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 32)]
-	public class GunSwayStanceZoomModifierData
+	public class GunSwayStanceZoomModifierData :
+		EbxSerializable
 	{
 		[ContainerField(0), JsonProperty(Order = 0)]
 		public GunSwayDispersionModData DispersionMod { get; set; } = new();
@@ -35,5 +37,14 @@ namespace fb
 		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
 		public float LagPitchMod { get; set; }
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			DispersionMod.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(RecoilMagnitudeMod);
+			p_Writer.Write(RecoilAngleMod);
+			p_Writer.Write(LagYawMod);
+			p_Writer.Write(LagPitchMod);
+		}
 	}
 }

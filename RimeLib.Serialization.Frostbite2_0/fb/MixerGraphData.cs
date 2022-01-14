@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 40)]
-	public class MixerGraphData : 
+	public class MixerGraphData :
 		AudioGraphData
 	{
 		[ContainerField(28), JsonProperty(Order = 28)]
@@ -30,5 +31,27 @@ namespace fb
 		[ContainerField(36), JsonProperty(Order = 36)]
 		public RefArray<AudioGraphParameter> Outputs { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			(RimeWriter Writer, uint ArrayIndex) s_Inputs = p_EbxWriter.GetArrayWriter(Inputs.GetType(), Inputs.Count);
+			p_Writer.Write(s_Inputs.ArrayIndex);
+			foreach (var s_Entry in Inputs)
+			{
+				s_Inputs.Writer.Write(p_EbxWriter.WriteImport(s_Entry));
+			}
+			(RimeWriter Writer, uint ArrayIndex) s_AccumulateModes = p_EbxWriter.GetArrayWriter(AccumulateModes.GetType(), AccumulateModes.Count);
+			p_Writer.Write(s_AccumulateModes.ArrayIndex);
+			foreach (var s_Entry in AccumulateModes)
+			{
+				s_AccumulateModes.Writer.Write((int) s_Entry);
+			}
+			(RimeWriter Writer, uint ArrayIndex) s_Outputs = p_EbxWriter.GetArrayWriter(Outputs.GetType(), Outputs.Count);
+			p_Writer.Write(s_Outputs.ArrayIndex);
+			foreach (var s_Entry in Outputs)
+			{
+				s_Outputs.Writer.Write(p_EbxWriter.WriteImport(s_Entry));
+			}
+		}
 	}
 }

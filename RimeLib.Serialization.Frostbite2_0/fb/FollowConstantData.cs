@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 44)]
-	public class FollowConstantData : 
+	public class FollowConstantData :
 		Asset
 	{
 		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
@@ -45,5 +46,17 @@ namespace fb
 		[ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
 		public float LookAwayAngle { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(DistanceFromPlayerBeforeTeleport);
+			p_Writer.Write(FollowHumanMaxDistance);
+			p_Writer.Write(FollowHumanInCombatMaxDistance);
+			p_Writer.Write(FollowAiMaxDistance);
+			p_Writer.Write(FollowAiInCombatMaxDistance);
+			p_Writer.Write(FollowMimicPoseDistance);
+			p_Writer.Write(FollowInertia);
+			p_Writer.Write(LookAwayAngle);
+		}
 	}
 }

@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 28)]
-	public class SyncedBFSettings : 
+	public class SyncedBFSettings :
 		SystemSettings
 	{
 		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
@@ -60,5 +61,22 @@ namespace fb
 		[ContainerField(27), LayoutImmutable, Blittable, JsonProperty(Order = 27)]
 		public bool AllUnlocksUnlocked { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(GameModeCounterModifier);
+			p_Writer.Write(UnlicensedUnlocksUnlocked);
+			p_Writer.Write(NoMinimap);
+			p_Writer.Write(NoHud);
+			p_Writer.Write(NoMinimapSpotting);
+			p_Writer.Write(No3dSpotting);
+			p_Writer.Write(NoNameTag);
+			p_Writer.Write(OnlySquadLeaderSpawn);
+			p_Writer.Write(TeamSwitchingAllowed);
+			p_Writer.Write(MemoryDefragUI);
+			p_Writer.Write(MemoryGarbageCollectHavok);
+			p_Writer.Write(MemoryDefragGlobal);
+			p_Writer.Write(AllUnlocksUnlocked);
+		}
 	}
 }

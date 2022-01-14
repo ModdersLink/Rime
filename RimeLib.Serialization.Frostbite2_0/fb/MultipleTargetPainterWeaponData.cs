@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 40)]
-	public class MultipleTargetPainterWeaponData : 
+	public class MultipleTargetPainterWeaponData :
 		WeaponData
 	{
 		[ContainerField(16), JsonProperty(Order = 16)]
@@ -42,5 +43,17 @@ namespace fb
 		[ContainerField(37), LayoutImmutable, Blittable, JsonProperty(Order = 37)]
 		public bool UseLaserPainting { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write((int) SpottingBehavior);
+			p_Writer.Write(TimeObjectIsPainted);
+			p_Writer.Write(Angle);
+			p_Writer.Write(TimeObjectIsSpotted);
+			p_Writer.Write(Range);
+			p_Writer.Write(UseSpotting);
+			p_Writer.Write(UseLaserPainting);
+			p_Writer.WriteNullBytes(2);
+		}
 	}
 }

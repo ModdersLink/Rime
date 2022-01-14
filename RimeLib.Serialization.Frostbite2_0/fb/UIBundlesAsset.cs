@@ -14,15 +14,26 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 16)]
-	public class UIBundlesAsset : 
+	public class UIBundlesAsset :
 		Asset
 	{
 		[ContainerField(12), JsonProperty(Order = 12)]
 		public List<UIBundleAssetState> UIBundleAssetStateList { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			(RimeWriter Writer, uint ArrayIndex) s_UIBundleAssetStateList = p_EbxWriter.GetArrayWriter(UIBundleAssetStateList.GetType(), UIBundleAssetStateList.Count);
+			p_Writer.Write(s_UIBundleAssetStateList.ArrayIndex);
+			foreach (var s_Entry in UIBundleAssetStateList)
+			{
+				s_Entry.Serialize(s_UIBundleAssetStateList.Writer, p_EbxWriter);
+			}
+		}
 	}
 }

@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 24)]
-	public class DeltaGroup : 
+	public class DeltaGroup :
 		AudioGraphNodePortGroup
 	{
 		[ContainerField(8), JsonProperty(Order = 8)]
@@ -27,5 +28,11 @@ namespace fb
 		[ContainerField(16), JsonProperty(Order = 16)]
 		public AudioGraphNodePort Delta { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			In.Serialize(p_Writer, p_EbxWriter);
+			Delta.Serialize(p_Writer, p_EbxWriter);
+		}
 	}
 }

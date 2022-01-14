@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 32)]
-	public class UnlockableProjectile
+	public class UnlockableProjectile :
+		EbxSerializable
 	{
 		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 0)]
 		public Vec3 InitialSpeed { get; set; } = new();
@@ -32,5 +34,14 @@ namespace fb
 		[ContainerField(24), JsonProperty(Order = 24)]
 		public CtrRef<UnlockAssetBase> Unlock { get; set; } = new();
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			InitialSpeed.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(ProjectileData));
+			p_Writer.Write(p_EbxWriter.WriteImport(Projectile));
+			p_Writer.Write(p_EbxWriter.WriteImport(Unlock));
+			p_Writer.WriteNullBytes(4);
+		}
 	}
 }

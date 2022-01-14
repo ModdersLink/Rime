@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 256)]
-	public class VegetationTreeEntityData : 
+	public class VegetationTreeEntityData :
 		VegetationBaseEntityData
 	{
 		[ContainerField(128), JsonProperty(Order = 128)]
@@ -123,5 +124,44 @@ namespace fb
 		[ContainerField(245), LayoutImmutable, Blittable, JsonProperty(Order = 245)]
 		public bool ClientSideOnly { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(GroundImpactEffect));
+			p_Writer.Write(p_EbxWriter.WriteImport(StemRipEffect));
+			p_Writer.Write(StemPhysicsWidth);
+			p_Writer.Write(ColiPlaneDepth);
+			p_Writer.Write(StemHitpoints);
+			p_Writer.Write(BranchHitpoints);
+			p_Writer.Write(BranchL2Hitpoints);
+			p_Writer.Write(StemStiffness);
+			p_Writer.Write(StemStiffnessSpread);
+			p_Writer.Write(BranchStiffness);
+			p_Writer.Write(BranchStiffnessL2);
+			p_Writer.Write(StemBoneCount);
+			p_Writer.Write(WindStem);
+			p_Writer.Write(WindBranch);
+			p_Writer.Write(WindBranchL2);
+			p_Writer.Write(p_EbxWriter.WriteImport(TreeFallEffect));
+			p_Writer.Write(BreakableJointThreshold);
+			p_Writer.Write(FallDirectionEnd);
+			p_Writer.Write(p_EbxWriter.WriteImport(LocalWindEffect));
+			p_Writer.Write(ImpactThreshold);
+			p_Writer.Write(CollisionImpactMultiplier);
+			p_Writer.Write(FallDirectionStart);
+			p_Writer.Write(p_EbxWriter.WriteImport(SplashDistantEffect));
+			p_Writer.Write(p_EbxWriter.WriteImport(BulletImpactEffect));
+			p_Writer.Write(PartsTimeToLive);
+			p_Writer.Write(ShadowLODOffset);
+			p_Writer.Write(p_EbxWriter.WriteImport(SplashNearEffect));
+			p_Writer.Write(p_EbxWriter.WriteImport(CollisionEffect));
+			p_Writer.Write(ForceFullSim);
+			p_Writer.Write(UseImpactThreshold);
+			p_Writer.Write(UsePhysicsShapes);
+			p_Writer.Write(ConstraintStemB1);
+			p_Writer.Write(ConstraintStemB2);
+			p_Writer.Write(ClientSideOnly);
+			p_Writer.WriteNullBytes(10);
+		}
 	}
 }

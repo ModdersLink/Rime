@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 56)]
-	public class UITextDatabase : 
+	public class UITextDatabase :
 		Asset
 	{
 		[ContainerField(12), JsonProperty(Order = 12)]
@@ -36,5 +37,14 @@ namespace fb
 		[ContainerField(52), LayoutImmutable, Blittable, JsonProperty(Order = 52)]
 		public uint HistogramChunkSize { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write((int) Language);
+			BinaryChunk.Serialize(p_Writer);
+			p_Writer.Write(BinaryChunkSize);
+			HistogramChunk.Serialize(p_Writer);
+			p_Writer.Write(HistogramChunkSize);
+		}
 	}
 }

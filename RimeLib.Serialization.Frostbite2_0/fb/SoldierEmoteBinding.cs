@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 64)]
-	public class SoldierEmoteBinding
+	public class SoldierEmoteBinding :
+		EbxSerializable
 	{
 		[ContainerField(0), JsonProperty(Order = 0)]
 		public AntRef Speak { get; set; } = new();
@@ -68,5 +70,25 @@ namespace fb
 		[ContainerField(60), JsonProperty(Order = 60)]
 		public AntRef EmoteMoveToPosition { get; set; } = new();
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			Speak.Serialize(p_Writer, p_EbxWriter);
+			IsSquadLeader.Serialize(p_Writer, p_EbxWriter);
+			EmoteSpot.Serialize(p_Writer, p_EbxWriter);
+			EmoteOk.Serialize(p_Writer, p_EbxWriter);
+			EmoteNeedARide.Serialize(p_Writer, p_EbxWriter);
+			EmoteGoGoGo.Serialize(p_Writer, p_EbxWriter);
+			EmoteNeedBackup.Serialize(p_Writer, p_EbxWriter);
+			EmoteThanks.Serialize(p_Writer, p_EbxWriter);
+			EmoteNeedMedic.Serialize(p_Writer, p_EbxWriter);
+			EmoteFollowMe.Serialize(p_Writer, p_EbxWriter);
+			EmoteNeedAmmo.Serialize(p_Writer, p_EbxWriter);
+			EmoteSorry.Serialize(p_Writer, p_EbxWriter);
+			EmoteNo.Serialize(p_Writer, p_EbxWriter);
+			EmoteDefendCapturePoint.Serialize(p_Writer, p_EbxWriter);
+			EmoteAttackCapturePoint.Serialize(p_Writer, p_EbxWriter);
+			EmoteMoveToPosition.Serialize(p_Writer, p_EbxWriter);
+		}
 	}
 }

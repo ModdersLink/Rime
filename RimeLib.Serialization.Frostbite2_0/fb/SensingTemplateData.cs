@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(8, 144)]
-	public class SensingTemplateData : 
+	public class SensingTemplateData :
 		GameSensingTemplateData
 	{
 		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
@@ -57,5 +58,23 @@ namespace fb
 		[ContainerField(141), LayoutImmutable, Blittable, JsonProperty(Order = 141)]
 		public bool NoticeBullets { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(4);
+			p_Writer.Write(AwareForgetTime);
+			p_Writer.Write(LostForgetTime);
+			p_Writer.Write(TimeUntilUnseenIsLost);
+			p_Writer.Write(MaximumMergeDistance);
+			p_Writer.Write(MaximumAlertDistance);
+			p_Writer.Write(MaximumReadinessRaiseDistance);
+			ReadyLimits.Serialize(p_Writer, p_EbxWriter);
+			RelaxedLimits.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteString(DebugText));
+			CombatLimits.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(UseSenseSharing);
+			p_Writer.Write(NoticeBullets);
+			p_Writer.WriteNullBytes(2);
+		}
 	}
 }

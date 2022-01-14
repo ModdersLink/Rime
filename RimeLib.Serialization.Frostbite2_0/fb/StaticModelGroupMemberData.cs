@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 56)]
-	public class StaticModelGroupMemberData
+	public class StaticModelGroupMemberData :
+		EbxSerializable
 	{
 		[ContainerField(0), JsonProperty(Order = 0)]
 		public List<LinearTransform> InstanceTransforms { get; set; } = new();
@@ -56,5 +58,41 @@ namespace fb
 		[ContainerField(52), LayoutImmutable, Blittable, JsonProperty(Order = 52)]
 		public uint NetworkIdCountPerInstance { get; set; }
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			(RimeWriter Writer, uint ArrayIndex) s_InstanceTransforms = p_EbxWriter.GetArrayWriter(InstanceTransforms.GetType(), InstanceTransforms.Count);
+			p_Writer.Write(s_InstanceTransforms.ArrayIndex);
+			foreach (var s_Entry in InstanceTransforms)
+			{
+				s_Entry.Serialize(s_InstanceTransforms.Writer, p_EbxWriter);
+			}
+			(RimeWriter Writer, uint ArrayIndex) s_InstanceScale = p_EbxWriter.GetArrayWriter(InstanceScale.GetType(), InstanceScale.Count);
+			p_Writer.Write(s_InstanceScale.ArrayIndex);
+			foreach (var s_Entry in InstanceScale)
+			{
+				s_InstanceScale.Writer.Write(s_Entry);
+			}
+			(RimeWriter Writer, uint ArrayIndex) s_InstanceObjectVariation = p_EbxWriter.GetArrayWriter(InstanceObjectVariation.GetType(), InstanceObjectVariation.Count);
+			p_Writer.Write(s_InstanceObjectVariation.ArrayIndex);
+			foreach (var s_Entry in InstanceObjectVariation)
+			{
+				s_InstanceObjectVariation.Writer.Write(s_Entry);
+			}
+			(RimeWriter Writer, uint ArrayIndex) s_InstanceCastSunShadow = p_EbxWriter.GetArrayWriter(InstanceCastSunShadow.GetType(), InstanceCastSunShadow.Count);
+			p_Writer.Write(s_InstanceCastSunShadow.ArrayIndex);
+			foreach (var s_Entry in InstanceCastSunShadow)
+			{
+				s_InstanceCastSunShadow.Writer.Write(s_Entry);
+			}
+			p_Writer.Write(p_EbxWriter.WriteImport(MemberType));
+			p_Writer.Write(p_EbxWriter.WriteImport(MeshEntityType));
+			p_Writer.Write(InstanceCount);
+			p_Writer.Write(HealthStateEntityManagerId);
+			PhysicsPartRange.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(PhysicsPartCountPerInstance);
+			NetworkIdRange.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(NetworkIdCountPerInstance);
+		}
 	}
 }

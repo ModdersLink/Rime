@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(8, 80)]
-	public class OperandLogicNode : 
+	public class OperandLogicNode :
 		UINodeData
 	{
 		[ContainerField(20), JsonProperty(Order = 20)]
@@ -42,5 +43,17 @@ namespace fb
 		[ContainerField(72), JsonProperty(Order = 72)]
 		public CtrRef<UINodePort> False { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			LeftDataSourceInfo.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write((int) Operator);
+			RightDataSourceInfo.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(RightLiteralOperand);
+			p_Writer.Write(p_EbxWriter.WriteImport(In));
+			p_Writer.Write(p_EbxWriter.WriteImport(True));
+			p_Writer.Write(p_EbxWriter.WriteImport(False));
+			p_Writer.WriteNullBytes(4);
+		}
 	}
 }

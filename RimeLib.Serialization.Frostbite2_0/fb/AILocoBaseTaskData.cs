@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 32)]
-	public class AILocoBaseTaskData
+	public class AILocoBaseTaskData :
+		EbxSerializable
 	{
 		[ContainerField(0), JsonProperty(Order = 0)]
 		public AntPoseEnum PoseChangeMovingTowards { get; set; } = new();
@@ -44,5 +46,18 @@ namespace fb
 		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
 		public bool IsScripted { get; set; }
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write((int) PoseChangeMovingTowards);
+			p_Writer.Write((int) AttentionChangeMovingTowards);
+			p_Writer.Write((int) SpeedChangeMovingTowards);
+			p_Writer.Write((int) PoseChange);
+			p_Writer.Write((int) AttentionStateChange);
+			p_Writer.Write((int) SpeedLevelChange);
+			p_Writer.Write(Radius);
+			p_Writer.Write(IsScripted);
+			p_Writer.WriteNullBytes(3);
+		}
 	}
 }

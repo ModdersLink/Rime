@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 68)]
-	public class SoldierWeaponDispersion
+	public class SoldierWeaponDispersion :
+		EbxSerializable
 	{
 		[ContainerField(0), JsonProperty(Order = 0)]
 		public FiringDispersionData StandDispersion { get; set; } = new();
@@ -44,5 +46,17 @@ namespace fb
 		[ContainerField(64), LayoutImmutable, Blittable, JsonProperty(Order = 64)]
 		public float DecreasePerSecond { get; set; }
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			StandDispersion.Serialize(p_Writer, p_EbxWriter);
+			CrouchDispersion.Serialize(p_Writer, p_EbxWriter);
+			ProneDispersion.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(JumpDispersionAngle);
+			p_Writer.Write(ProneTransitionDispersionAngle);
+			p_Writer.Write(MoveDispersionAngle);
+			p_Writer.Write(MoveZoomedDispersionAngle);
+			p_Writer.Write(DecreasePerSecond);
+		}
 	}
 }

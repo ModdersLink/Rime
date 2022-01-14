@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 36)]
-	public class PlayerScore
+	public class PlayerScore :
+		EbxSerializable
 	{
 		[ContainerField(0), LayoutImmutable, Blittable, JsonProperty(Order = 0)]
 		public int Rank { get; set; }
@@ -47,5 +49,18 @@ namespace fb
 		[ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
 		public uint GunMasterLevel { get; set; }
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(Rank);
+			p_Writer.Write(Kills);
+			p_Writer.Write(Deaths);
+			p_Writer.Write(ScoreMultiplier);
+			p_Writer.Write(Score);
+			p_Writer.Write(GlobalScoreOriginal);
+			p_Writer.Write(GlobalScoreUpdated);
+			p_Writer.Write(Time);
+			p_Writer.Write(GunMasterLevel);
+		}
 	}
 }

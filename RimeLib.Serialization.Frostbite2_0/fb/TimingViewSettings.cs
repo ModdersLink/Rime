@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(8, 112)]
-	public class TimingViewSettings : 
+	public class TimingViewSettings :
 		DataContainer
 	{
 		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
@@ -120,5 +121,43 @@ namespace fb
 		[ContainerField(107), LayoutImmutable, Blittable, JsonProperty(Order = 107)]
 		public bool Enable { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(MaxFrameEventCount);
+			p_Writer.Write(FrameCount);
+			p_Writer.Write(FrameDelayCount);
+			p_Writer.Write(TimeRange);
+			p_Writer.Write(TimeOffset);
+			p_Writer.Write(AutolockThreshold);
+			p_Writer.Write(p_EbxWriter.WriteString(AutolockNameFilter));
+			p_Writer.Write(LegendScreenOffset);
+			p_Writer.Write(LegendColumnWidth);
+			p_Writer.Write(LegendDisplayMode);
+			p_Writer.Write(AverageFrameCount);
+			p_Writer.Write(MaxGpuLegendColumnCount);
+			p_Writer.Write(p_EbxWriter.WriteString(SnoopEventName));
+			p_Writer.Write(GpuBarFrameOffset);
+			p_Writer.Write(MaxCpuLegendColumnCount);
+			p_Writer.Write(BarPad);
+			p_Writer.Write(MaxSpuLegendColumnCount);
+			p_Writer.Write(BarSyncProcessor);
+			p_Writer.Write(BarMinTime);
+			p_Writer.Write(BarHeight);
+			p_Writer.Write(p_EbxWriter.WriteString(FilterEventName));
+			p_Writer.Write(SnoopOnly);
+			p_Writer.Write(DrawEnable);
+			p_Writer.Write(DrawSpuLegendEnable);
+			p_Writer.Write(SnoopEnable);
+			p_Writer.Write(FilterEnable);
+			p_Writer.Write(DrawBarsEnable);
+			p_Writer.Write(DrawLegendEnable);
+			p_Writer.Write(DrawOnlySummaryEnable);
+			p_Writer.Write(SortByTime);
+			p_Writer.Write(DrawCpuLegendEnable);
+			p_Writer.Write(DrawGpuLegendEnable);
+			p_Writer.Write(Enable);
+			p_Writer.WriteNullBytes(4);
+		}
 	}
 }

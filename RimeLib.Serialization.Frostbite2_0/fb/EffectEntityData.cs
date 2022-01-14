@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 112)]
-	public class EffectEntityData : 
+	public class EffectEntityData :
 		SpatialEntityData
 	{
 		[ContainerField(80), JsonProperty(Order = 80)]
@@ -45,5 +46,23 @@ namespace fb
 		[ContainerField(99), LayoutImmutable, Blittable, JsonProperty(Order = 99)]
 		public bool ResetInstanceWhenStarted { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			(RimeWriter Writer, uint ArrayIndex) s_Components = p_EbxWriter.GetArrayWriter(Components.GetType(), Components.Count);
+			p_Writer.Write(s_Components.ArrayIndex);
+			foreach (var s_Entry in Components)
+			{
+				s_Components.Writer.Write(p_EbxWriter.WriteImport(s_Entry));
+			}
+			p_Writer.Write(MaxInstanceCount);
+			p_Writer.Write(CullDistance);
+			p_Writer.Write(StartDelay);
+			p_Writer.Write(HighEndPc);
+			p_Writer.Write(MediumPc);
+			p_Writer.Write(LowEndPc);
+			p_Writer.Write(ResetInstanceWhenStarted);
+			p_Writer.WriteNullBytes(12);
+		}
 	}
 }

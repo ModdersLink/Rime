@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 20)]
-	public class VisualEnvironmentSettings : 
+	public class VisualEnvironmentSettings :
 		DataContainer
 	{
 		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
@@ -30,5 +31,13 @@ namespace fb
 		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
 		public bool DrawStats { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(SunRotationX);
+			p_Writer.Write(SunRotationY);
+			p_Writer.Write(DrawStats);
+			p_Writer.WriteNullBytes(3);
+		}
 	}
 }

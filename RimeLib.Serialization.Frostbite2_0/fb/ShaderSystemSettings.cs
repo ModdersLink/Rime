@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 288)]
-	public class ShaderSystemSettings : 
+	public class ShaderSystemSettings :
 		DataContainer
 	{
 		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
@@ -441,5 +442,150 @@ namespace fb
 		[ContainerField(287), LayoutImmutable, Blittable, JsonProperty(Order = 287)]
 		public bool XenonDispatchBlockOnCmdBufEnable { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(8);
+			DebugNonFiniteColor.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(DxInstancingBufferHandlingMethod);
+			p_Writer.Write(FrameMemoryBufferSize);
+			p_Writer.Write(XenonDispatchCmdBufferSize);
+			p_Writer.Write(XenonDispatchCmdBufferSegmentSize);
+			p_Writer.Write(DxDispatchJobBlocksPerCommandList);
+			p_Writer.Write(DxDispatchJobMinBlockCount);
+			p_Writer.Write(DxFrameVertexBufferPoolSize);
+			p_Writer.Write(XenonDispatchOnlyJob);
+			p_Writer.Write(DxVsExternalConstantBufferSize);
+			p_Writer.Write(DxVsFunctionConstantBufferSize);
+			p_Writer.Write(DxPsFunctionConstantBufferSize);
+			p_Writer.Write(Ps3GeometryYieldGranularity);
+			p_Writer.Write(XenonDispatchJobCount);
+			p_Writer.Write(DispatchPrepareJobCount);
+			p_Writer.Write(Ps3MinMipmap);
+			p_Writer.Write(Ps3ZCullInFrontLimit);
+			p_Writer.Write(Ps3ZCullBehindLimit);
+			p_Writer.Write(Ps3DispatchOnlyJob);
+			p_Writer.Write(Ps3DispatchJobSpuCount);
+			p_Writer.Write(DxMaxInstructionCount);
+			p_Writer.Write(OverdrawMaxLayerCount);
+			p_Writer.Write(Ps3GeometryJobCount);
+			p_Writer.Write(DxMaxInstanceCount);
+			p_Writer.Write(Ps3DispatchYieldGranularity);
+			p_Writer.Write(DxPsExternalConstantBufferSize);
+			p_Writer.Write(XenonDispatchBlocksPerJob);
+			p_Writer.Write(Ps3DispatchJobCount);
+			p_Writer.Write(DxDispatchJobCount);
+			p_Writer.Write(DrawCallMultiplier);
+			p_Writer.Write(Ps3MaxMipmap);
+			p_Writer.Write(MipmapBias);
+			p_Writer.Write(MaxAnisotropy);
+			p_Writer.Write(ZOnlyMaxAnisotropy);
+			p_Writer.Write(XenonTrilinearThreshold);
+			p_Writer.Write(Ps3DispatchJobPriority);
+			p_Writer.Write(XenonDispatchMinJobBlockCount);
+			p_Writer.Write(Ps3GeometryJobSpuCount);
+			p_Writer.Write(Ps3DispatchBlocksPerJob);
+			p_Writer.Write(Ps3GeometryJobPriority);
+			p_Writer.Write(SinglePrimitiveEnable);
+			p_Writer.Write(SortBlocksEnable);
+			p_Writer.Write(DrawCallEnable);
+			p_Writer.Write(GcmReplayMarkersEnable);
+			p_Writer.Write(ClipPlanesEnable);
+			p_Writer.Write(DepthTestEnable);
+			p_Writer.Write(StencilEnable);
+			p_Writer.Write(ShaderPixScopeEnable);
+			p_Writer.Write(SingleFrameBlockLogEnable);
+			p_Writer.Write(AlphaBlendEnable);
+			p_Writer.Write(PixBlockEventsEnable);
+			p_Writer.Write(SimpleTexturesEnable);
+			p_Writer.Write(SimpleVertexShaderEnable);
+			p_Writer.Write(PseudoInstancingEnable);
+			p_Writer.Write(StatesEnable);
+			p_Writer.Write(PixelConstantsEnable);
+			p_Writer.Write(VertexConstantsEnable);
+			p_Writer.Write(PixelConstantRedundancyCheckingEnable);
+			p_Writer.Write(VertexConstantRedundancyCheckingEnable);
+			p_Writer.Write(SimpleTextureFilteringEnable);
+			p_Writer.Write(DepthWriteEnable);
+			p_Writer.Write(DispatchDirectEnable);
+			p_Writer.Write(DrawTileClassifiedBlocks);
+			p_Writer.Write(DepthEnable);
+			p_Writer.Write(DrawStreamedTextureBlocks);
+			p_Writer.Write(ForcePointFiltering);
+			p_Writer.Write(LogEnable);
+			p_Writer.Write(ZeroViewportEnable);
+			p_Writer.Write(DrawTransparentDecal);
+			p_Writer.Write(SingleFrameLogEnable);
+			p_Writer.Write(SingleFrameLogOverwrite);
+			p_Writer.Write(ForceDoubleSided);
+			p_Writer.Write(OnDemandMonitoringEnable);
+			p_Writer.Write(Ps3PixelShaderRedundancyCheckingEnable);
+			p_Writer.Write(Ps3PixelShaderHashStoreEnable);
+			p_Writer.Write(Ps3DispatchPrepareSpuJobEnable);
+			p_Writer.Write(Ps3DispatchSetupSpuJobEnable);
+			p_Writer.Write(Ps3GeometryJobEnable);
+			p_Writer.Write(DatabaseLoadingEnable);
+			p_Writer.Write(SimplePixelShaderEnable);
+			p_Writer.Write(Ps3GeometryJobWithoutDispatchJobEnable);
+			p_Writer.Write(Ps3GeometryDebugRenderEnable);
+			p_Writer.Write(BoneConstantOptimizationEnable);
+			p_Writer.Write(Ps3DrawEdgeGeometryEnable);
+			p_Writer.Write(Ps3DrawNonEdgeGeometryEnable);
+			p_Writer.Write(Ps3TriangleCullEnable);
+			p_Writer.Write(Ps3TriangleFrustumCullEnable);
+			p_Writer.Write(Ps3TriangleBackfaceCullEnable);
+			p_Writer.Write(Ps3TriangleCullZPassEnable);
+			p_Writer.Write(Ps3TriangleCullDoubleSidedEnable);
+			p_Writer.Write(Ps3TriangleCull1BoneSkinningEnable);
+			p_Writer.Write(Ps3TriangleCull4BoneSkinningEnable);
+			p_Writer.Write(Ps3TrianglePartCullEnable);
+			p_Writer.Write(Ps3DrawBlockCullEnable);
+			p_Writer.Write(Ps3PartitionFrustumCullEnable);
+			p_Writer.Write(Ps3PartitionClipPlaneCullEnable);
+			p_Writer.Write(Ps3PartitionVolumeCullEnable);
+			p_Writer.Write(Ps3SpuInstancingEnable);
+			p_Writer.Write(Ps3SpuClipPlaneRejectEnable);
+			p_Writer.Write(Ps3SpuCullVolumesEnable);
+			p_Writer.Write(Ps3DispatchJobEnable);
+			p_Writer.Write(OnDemandBuildingEnable);
+			p_Writer.Write(OnDemandPrimingEnable);
+			p_Writer.Write(DispatchExecuteEnable);
+			p_Writer.Write(TextureGammaCorrectionEnable);
+			p_Writer.Write(TileClassificationEnable);
+			p_Writer.Write(Ps3DispatchSpuBufferLinkingEnable);
+			p_Writer.Write(Ps3DispatchFrameBlockEnable);
+			p_Writer.Write(Ps3SCullEnable);
+			p_Writer.Write(Ps3ZCullEnable);
+			p_Writer.Write(DrawInstancedBlocks);
+			p_Writer.Write(DispatchPrepareBlockEnable);
+			p_Writer.Write(DrawNonInstancedBlocks);
+			p_Writer.Write(DrawNonStreamedTextureBlocks);
+			p_Writer.Write(Ps3TxpDemotionEnable);
+			p_Writer.Write(Ps3CmdBufVertexShaderInlineEnable);
+			p_Writer.Write(Ps3CmdBufClearEnable);
+			p_Writer.Write(Ps3SpuYieldingEnable);
+			p_Writer.Write(XenonDispatchJobEnable);
+			p_Writer.Write(DrawInlineBlocks);
+			p_Writer.Write(Ps3FlushEnable);
+			p_Writer.Write(Ps3FinishEnable);
+			p_Writer.Write(DxMultisampleEnable);
+			p_Writer.Write(DxTransparencySupersamplingEnable);
+			p_Writer.Write(DxSamplerStatesEnable);
+			p_Writer.Write(DxBatchedSamplerStatesEnable);
+			p_Writer.Write(DxBatchedTexturesEnable);
+			p_Writer.Write(DxStatesEnable);
+			p_Writer.Write(DrawOpaqueAlphaTestSimple);
+			p_Writer.Write(FlushEnable);
+			p_Writer.Write(DrawTransparent);
+			p_Writer.Write(DrawAdvancedStats);
+			p_Writer.Write(DxParallelShaderLoadingEnable);
+			p_Writer.Write(DxDelayedShaderLoadingEnable);
+			p_Writer.Write(DrawOpaque);
+			p_Writer.Write(DrawOpaqueAlphaTest);
+			p_Writer.Write(XenonHiZEnable);
+			p_Writer.Write(DrawZOnly);
+			p_Writer.Write(DrawStats);
+			p_Writer.Write(XenonDispatchBlockOnCmdBufEnable);
+		}
 	}
 }

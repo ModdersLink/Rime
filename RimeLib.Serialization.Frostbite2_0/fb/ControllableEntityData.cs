@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 144)]
-	public class ControllableEntityData : 
+	public class ControllableEntityData :
 		GamePhysicsEntityData
 	{
 		[ContainerField(112), LayoutImmutable, Blittable, JsonProperty(Order = 112)]
@@ -45,5 +46,18 @@ namespace fb
 		[ContainerField(128), LayoutImmutable, Blittable, JsonProperty(Order = 128)]
 		public bool ForceForegroundRendering { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(LowHealthThreshold);
+			p_Writer.Write((int) DefaultTeam);
+			p_Writer.Write(p_EbxWriter.WriteImport(MaterialPair));
+			p_Writer.Write(ResetTeamOnLastPlayerExits);
+			p_Writer.Write(FakeImmortal);
+			p_Writer.Write(UsePrediction);
+			p_Writer.Write(Immortal);
+			p_Writer.Write(ForceForegroundRendering);
+			p_Writer.WriteNullBytes(15);
+		}
 	}
 }

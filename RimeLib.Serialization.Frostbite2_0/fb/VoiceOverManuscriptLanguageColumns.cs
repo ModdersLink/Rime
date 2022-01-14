@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 12)]
-	public class VoiceOverManuscriptLanguageColumns
+	public class VoiceOverManuscriptLanguageColumns :
+		EbxSerializable
 	{
 		[ContainerField(0), JsonProperty(Order = 0)]
 		public CtrRef<AudioLanguage> Language { get; set; } = new();
@@ -29,5 +31,12 @@ namespace fb
 		[ContainerField(8), LayoutImmutable, JsonProperty(Order = 8)]
 		public string SubtitleOffsetColumn { get; set; } = string.Empty;
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(Language));
+			p_Writer.Write(p_EbxWriter.WriteString(TextColumn));
+			p_Writer.Write(p_EbxWriter.WriteString(SubtitleOffsetColumn));
+		}
 	}
 }

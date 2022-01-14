@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 96)]
-	public class PolynomialOperatorData : 
+	public class PolynomialOperatorData :
 		EvaluatorData
 	{
 		[ContainerField(16), JsonProperty(Order = 16)]
@@ -36,5 +37,16 @@ namespace fb
 		[ContainerField(88), LayoutImmutable, Blittable, JsonProperty(Order = 88)]
 		public float MaxClampResult { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(4);
+			FirstOperand.Serialize(p_Writer, p_EbxWriter);
+			SecondOperand.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write((int) Operation);
+			p_Writer.Write(MinClampResult);
+			p_Writer.Write(MaxClampResult);
+			p_Writer.WriteNullBytes(4);
+		}
 	}
 }

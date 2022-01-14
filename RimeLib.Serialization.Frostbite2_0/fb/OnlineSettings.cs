@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 64)]
-	public class OnlineSettings : 
+	public class OnlineSettings :
 		SystemSettings
 	{
 		[ContainerField(12), JsonProperty(Order = 12)]
@@ -66,5 +67,25 @@ namespace fb
 		[ContainerField(62), LayoutImmutable, Blittable, JsonProperty(Order = 62)]
 		public bool MatchmakeImmediately { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write((int) Backend);
+			p_Writer.Write((int) PeerBackend);
+			p_Writer.Write((int) Environment);
+			p_Writer.Write(p_EbxWriter.WriteString(MatchmakingToken));
+			p_Writer.Write(p_EbxWriter.WriteImport(Provider));
+			p_Writer.Write(p_EbxWriter.WriteImport(RichPresence));
+			p_Writer.Write(p_EbxWriter.WriteImport(ChatSettings));
+			p_Writer.Write(p_EbxWriter.WriteString(MatchmakingOptions));
+			p_Writer.Write(p_EbxWriter.WriteString(Region));
+			p_Writer.Write(NegativeUserCacheRefreshPeriod);
+			p_Writer.Write(p_EbxWriter.WriteString(MatchmakingMode));
+			p_Writer.Write(p_EbxWriter.WriteString(Country));
+			p_Writer.Write(IsSecure);
+			p_Writer.Write(SupportHostMigration);
+			p_Writer.Write(MatchmakeImmediately);
+			p_Writer.WriteNullBytes(1);
+		}
 	}
 }

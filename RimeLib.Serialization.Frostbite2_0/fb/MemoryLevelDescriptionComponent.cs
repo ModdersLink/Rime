@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 32)]
-	public class MemoryLevelDescriptionComponent : 
+	public class MemoryLevelDescriptionComponent :
 		LevelDescriptionComponent
 	{
 		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
@@ -39,5 +40,15 @@ namespace fb
 		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
 		public int MeshPoolSizeXenon { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(TexturePoolSize);
+			p_Writer.Write(TexturePoolSizeXenon);
+			p_Writer.Write(TexturePoolSizePs3);
+			p_Writer.Write(MeshPoolSizePs3);
+			p_Writer.Write(MeshPoolSizePs3Cell);
+			p_Writer.Write(MeshPoolSizeXenon);
+		}
 	}
 }

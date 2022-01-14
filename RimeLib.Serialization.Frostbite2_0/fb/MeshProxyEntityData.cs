@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 96)]
-	public class MeshProxyEntityData : 
+	public class MeshProxyEntityData :
 		SpatialEntityData
 	{
 		[ContainerField(80), JsonProperty(Order = 80)]
@@ -27,5 +28,17 @@ namespace fb
 		[ContainerField(84), JsonProperty(Order = 84)]
 		public List<LinearTransform> BasePoseTransforms { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(Mesh));
+			(RimeWriter Writer, uint ArrayIndex) s_BasePoseTransforms = p_EbxWriter.GetArrayWriter(BasePoseTransforms.GetType(), BasePoseTransforms.Count);
+			p_Writer.Write(s_BasePoseTransforms.ArrayIndex);
+			foreach (var s_Entry in BasePoseTransforms)
+			{
+				s_Entry.Serialize(s_BasePoseTransforms.Writer, p_EbxWriter);
+			}
+			p_Writer.WriteNullBytes(8);
+		}
 	}
 }

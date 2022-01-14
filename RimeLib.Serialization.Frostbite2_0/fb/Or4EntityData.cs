@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 20)]
-	public class Or4EntityData : 
+	public class Or4EntityData :
 		EntityData
 	{
 		[ContainerField(12), JsonProperty(Order = 12)]
@@ -36,5 +37,14 @@ namespace fb
 		[ContainerField(19), LayoutImmutable, Blittable, JsonProperty(Order = 19)]
 		public bool In4 { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write((int) Realm);
+			p_Writer.Write(In1);
+			p_Writer.Write(In2);
+			p_Writer.Write(In3);
+			p_Writer.Write(In4);
+		}
 	}
 }

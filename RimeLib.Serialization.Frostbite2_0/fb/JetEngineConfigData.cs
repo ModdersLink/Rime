@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 128)]
-	public class JetEngineConfigData : 
+	public class JetEngineConfigData :
 		EngineConfigData
 	{
 		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 96)]
@@ -45,5 +46,18 @@ namespace fb
 		[ContainerField(125), LayoutImmutable, Blittable, JsonProperty(Order = 125)]
 		public bool IsTurnable { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			PowerFadeOutRange.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(ForceMagnitudeMultiplier);
+			p_Writer.Write(AngleInputYMultiplier);
+			p_Writer.Write(AngleInputPitchMultiplier);
+			p_Writer.Write(MaxVelocity);
+			p_Writer.Write(DirectionVectorIndex);
+			p_Writer.Write(IsWaterJetEngine);
+			p_Writer.Write(IsTurnable);
+			p_Writer.WriteNullBytes(2);
+		}
 	}
 }

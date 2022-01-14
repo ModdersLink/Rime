@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 20)]
-	public class SlidingStateData : 
+	public class SlidingStateData :
 		CharacterStateData
 	{
 		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
@@ -27,5 +28,11 @@ namespace fb
 		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
 		public float GravityScale { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(HorizontalInputScale);
+			p_Writer.Write(GravityScale);
+		}
 	}
 }

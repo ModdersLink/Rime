@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 96)]
-	public class PerformanceEvent : 
+	public class PerformanceEvent :
 		MetricEvent
 	{
 		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
@@ -54,5 +55,21 @@ namespace fb
 		[ContainerField(68), LayoutImmutable, Blittable, JsonProperty(Order = 68)]
 		public GUID PerformanceLink { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			Position.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(FreeCPUMemory);
+			p_Writer.Write(CPUAverage);
+			p_Writer.Write(AllocCPUMemory);
+			p_Writer.Write(FreeGPUMemory);
+			p_Writer.Write(GPUAverage);
+			p_Writer.Write(DrawCallCount);
+			p_Writer.Write(PrimitiveCount);
+			p_Writer.Write(AllocGPUMemory);
+			p_Writer.Write(p_EbxWriter.WriteString(PerformanceLocation));
+			PerformanceLink.Serialize(p_Writer);
+			p_Writer.WriteNullBytes(12);
+		}
 	}
 }

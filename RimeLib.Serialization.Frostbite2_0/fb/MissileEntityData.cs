@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 320)]
-	public class MissileEntityData : 
+	public class MissileEntityData :
 		MeshProjectileEntityData
 	{
 		[ContainerField(192), LayoutImmutable, Blittable, JsonProperty(Order = 192)]
@@ -93,5 +94,34 @@ namespace fb
 		[ContainerField(313), LayoutImmutable, Blittable, JsonProperty(Order = 313)]
 		public bool ApplyGravityWhenGuided { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(Gravity);
+			p_Writer.Write(p_EbxWriter.WriteImport(EngineEffect));
+			p_Writer.Write(p_EbxWriter.WriteImport(DudExplosion));
+			p_Writer.Write(p_EbxWriter.WriteImport(FlyBySound));
+			p_Writer.Write(EngineStrength);
+			p_Writer.Write(MaxSpeed);
+			p_Writer.Write(EngineTimeToIgnition);
+			p_Writer.Write(EngineTimeToLive);
+			p_Writer.Write(TimeToActivateGuidingSystem);
+			p_Writer.Write(TimeToArm);
+			p_Writer.Write(MaxTurnAngle);
+			p_Writer.Write(Drag);
+			NearTargetDetonation.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write((int) DefaultTeam);
+			p_Writer.Write(FlyBySoundRadius);
+			p_Writer.Write(FlyBySoundSpeed);
+			p_Writer.Write(ImpactImpulse);
+			p_Writer.Write(Damage);
+			UnguidedData.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write((int) WarnTarget);
+			LockableInfo.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(LockingController));
+			p_Writer.Write(WarnOnPointingMissile);
+			p_Writer.Write(ApplyGravityWhenGuided);
+			p_Writer.WriteNullBytes(6);
+		}
 	}
 }

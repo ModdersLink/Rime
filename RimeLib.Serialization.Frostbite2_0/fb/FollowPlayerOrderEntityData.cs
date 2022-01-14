@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 48)]
-	public class FollowPlayerOrderEntityData : 
+	public class FollowPlayerOrderEntityData :
 		BFOrderEntityData
 	{
 		[ContainerField(40), JsonProperty(Order = 40)]
@@ -27,5 +28,12 @@ namespace fb
 		[ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
 		public bool CombatForbidden { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(Formation));
+			p_Writer.Write(CombatForbidden);
+			p_Writer.WriteNullBytes(3);
+		}
 	}
 }

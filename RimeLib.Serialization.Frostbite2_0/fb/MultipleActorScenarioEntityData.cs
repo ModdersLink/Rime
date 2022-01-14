@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 256)]
-	public class MultipleActorScenarioEntityData : 
+	public class MultipleActorScenarioEntityData :
 		SpatialEntityData
 	{
 		[ContainerField(80), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 80)]
@@ -144,5 +145,51 @@ namespace fb
 		[ContainerField(252), LayoutImmutable, Blittable, JsonProperty(Order = 252)]
 		public bool WorldSpace { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			WorldSpaceConnectTransform.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(Actor5Part);
+			ScenarioAntRef.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(LevelChoice);
+			p_Writer.Write(ScenarioChoice);
+			p_Writer.Write((int) Realm);
+			p_Writer.Write(Actor6Part);
+			p_Writer.Write(Actor1);
+			p_Writer.Write(Actor1Part);
+			p_Writer.Write(Actor1SecondPart);
+			p_Writer.Write(Actor2);
+			p_Writer.Write(Actor2Part);
+			p_Writer.Write(Actor2SecondPart);
+			p_Writer.Write(Actor3);
+			p_Writer.Write(Actor3Part);
+			p_Writer.Write(Actor3SecondPart);
+			p_Writer.Write(Actor4);
+			p_Writer.Write(Actor4Part);
+			p_Writer.Write(Actor4SecondPart);
+			p_Writer.Write(Actor5);
+			p_Writer.Write(Actor5SecondPart);
+			p_Writer.Write(Actor6SecondPart);
+			p_Writer.Write(Actor6);
+			p_Writer.Write(ExternalTime);
+			p_Writer.Write(AligningEnabled);
+			p_Writer.Write(ScenarioActive);
+			p_Writer.Write(Actor1Prepared);
+			p_Writer.Write(Actor2Prepared);
+			p_Writer.Write(Actor3Prepared);
+			p_Writer.Write(Actor4Prepared);
+			p_Writer.Write(Actor5Prepared);
+			p_Writer.Write(Actor6Prepared);
+			p_Writer.Write(CheckActor1Finished);
+			p_Writer.Write(CheckActor2Finished);
+			p_Writer.Write(CheckActor3Finished);
+			p_Writer.Write(CheckActor4Finished);
+			p_Writer.Write(CheckActor5Finished);
+			p_Writer.Write(CheckActor6Finished);
+			p_Writer.Write(UseInputEventPlayerAsPlayer1);
+			p_Writer.Write(UseExternalTime);
+			p_Writer.Write(WorldSpace);
+			p_Writer.WriteNullBytes(3);
+		}
 	}
 }

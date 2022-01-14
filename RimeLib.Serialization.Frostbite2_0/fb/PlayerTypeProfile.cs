@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 64)]
-	public class PlayerTypeProfile : 
+	public class PlayerTypeProfile :
 		Asset
 	{
 		[ContainerField(12), JsonProperty(Order = 12)]
@@ -48,5 +49,23 @@ namespace fb
 		[ContainerField(60), JsonProperty(Order = 60)]
 		public List<string> OrderedUnlockNames { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(Values));
+			p_Writer.Write(p_EbxWriter.WriteImport(Awards));
+			p_Writer.Write(p_EbxWriter.WriteImport(RankParams));
+			p_Writer.Write(p_EbxWriter.WriteImport(Scoring));
+			p_Writer.Write(p_EbxWriter.WriteImport(DogTags));
+			EloParams.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(StaticUnlocks));
+			p_Writer.Write(p_EbxWriter.WriteImport(SpamSettings));
+			(RimeWriter Writer, uint ArrayIndex) s_OrderedUnlockNames = p_EbxWriter.GetArrayWriter(OrderedUnlockNames.GetType(), OrderedUnlockNames.Count);
+			p_Writer.Write(s_OrderedUnlockNames.ArrayIndex);
+			foreach (var s_Entry in OrderedUnlockNames)
+			{
+				s_OrderedUnlockNames.Writer.Write(p_EbxWriter.WriteString(s_Entry));
+			}
+		}
 	}
 }

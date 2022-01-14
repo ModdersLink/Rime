@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 64)]
-	public class TerrainStreamingSettings : 
+	public class TerrainStreamingSettings :
 		DataContainer
 	{
 		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
@@ -66,5 +67,25 @@ namespace fb
 		[ContainerField(61), LayoutImmutable, Blittable, JsonProperty(Order = 61)]
 		public bool LoadOccluderDataEnable { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(DataLoadJobCount);
+			p_Writer.Write(ActiveFreeStreamingDataLoadJobCount);
+			p_Writer.Write(HeightfieldAtlasSampleCountXFactor);
+			p_Writer.Write(AdditionalBlurriness);
+			p_Writer.Write(InvisibleDetailReductionFactor);
+			p_Writer.Write(OccludedDetailReductionFactor);
+			p_Writer.Write(HeightfieldAtlasSampleCountYFactor);
+			p_Writer.Write(MaskAtlasSampleCountYFactor);
+			p_Writer.Write(ColorAdditionalBlurriness);
+			p_Writer.Write(MaskAtlasSampleCountXFactor);
+			p_Writer.Write(MaskAdditionalBlurriness);
+			p_Writer.Write(ColorAtlasSampleCountXFactor);
+			p_Writer.Write(ColorAtlasSampleCountYFactor);
+			p_Writer.Write(KeepPoolFullEnable);
+			p_Writer.Write(LoadOccluderDataEnable);
+			p_Writer.WriteNullBytes(2);
+		}
 	}
 }

@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 76)]
-	public class UISoldierCompData : 
+	public class UISoldierCompData :
 		UIComponentData
 	{
 		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
@@ -63,5 +64,24 @@ namespace fb
 		[ContainerField(74), LayoutImmutable, Blittable, JsonProperty(Order = 74)]
 		public bool SpawnOnSquadLeaders { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(CriticalHealthThreshold);
+			p_Writer.Write(HitShaderDamageMultiplier);
+			p_Writer.Write(HitShaderMinDamage);
+			p_Writer.Write(EKGLineThickness);
+			p_Writer.Write(ShockTraumaAbilityIndex);
+			p_Writer.Write(RangerPTProgramAbilityIndex);
+			p_Writer.Write(FocusAbilityIndex);
+			p_Writer.Write(EKGLineAlpha);
+			p_Writer.Write(HitShaderGradientDurationMultiplier);
+			p_Writer.Write(HitShaderMaxDamage);
+			p_Writer.Write(HitShaderIndicatorDurationMultiplier);
+			p_Writer.Write(UseVehicleTeamSpawn);
+			p_Writer.Write(UseSquadSpawn);
+			p_Writer.Write(SpawnOnSquadLeaders);
+			p_Writer.WriteNullBytes(1);
+		}
 	}
 }

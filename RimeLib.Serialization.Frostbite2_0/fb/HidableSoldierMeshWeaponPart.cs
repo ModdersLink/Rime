@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 16)]
-	public class HidableSoldierMeshWeaponPart
+	public class HidableSoldierMeshWeaponPart :
+		EbxSerializable
 	{
 		[ContainerField(0), JsonProperty(Order = 0)]
 		public CtrRef<SkinnedMeshAsset> WeaponMesh { get; set; } = new();
@@ -35,5 +37,15 @@ namespace fb
 		[ContainerField(13), LayoutImmutable, Blittable, JsonProperty(Order = 13)]
 		public bool HideInVehicleEntries { get; set; }
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(WeaponMesh));
+			p_Writer.Write(p_EbxWriter.WriteImport(WeaponMeshBlueprint));
+			p_Writer.Write(p_EbxWriter.WriteString(BoneName));
+			p_Writer.Write(HideAlways);
+			p_Writer.Write(HideInVehicleEntries);
+			p_Writer.WriteNullBytes(2);
+		}
 	}
 }

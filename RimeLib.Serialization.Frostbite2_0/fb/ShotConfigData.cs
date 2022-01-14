@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 96)]
-	public class ShotConfigData
+	public class ShotConfigData :
+		EbxSerializable
 	{
 		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 0)]
 		public Vec3 InitialPosition { get; set; } = new();
@@ -74,5 +76,32 @@ namespace fb
 		[ContainerField(95), LayoutImmutable, Blittable, JsonProperty(Order = 95)]
 		public bool ActiveForceSpawnToCamera { get; set; }
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			InitialPosition.Serialize(p_Writer, p_EbxWriter);
+			InitialDirection.Serialize(p_Writer, p_EbxWriter);
+			InitialSpeed.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(InheritWeaponSpeedAmount);
+			p_Writer.Write(p_EbxWriter.WriteImport(MuzzleExplosion));
+			p_Writer.Write(p_EbxWriter.WriteImport(ProjectileData));
+			p_Writer.Write(p_EbxWriter.WriteImport(SecondaryProjectileData));
+			p_Writer.Write(p_EbxWriter.WriteImport(Projectile));
+			p_Writer.Write(p_EbxWriter.WriteImport(SecondaryProjectile));
+			(RimeWriter Writer, uint ArrayIndex) s_AlternateProjectiles = p_EbxWriter.GetArrayWriter(AlternateProjectiles.GetType(), AlternateProjectiles.Count);
+			p_Writer.Write(s_AlternateProjectiles.ArrayIndex);
+			foreach (var s_Entry in AlternateProjectiles)
+			{
+				s_Entry.Serialize(s_AlternateProjectiles.Writer, p_EbxWriter);
+			}
+			p_Writer.Write(SpawnDelay);
+			p_Writer.Write(NumberOfBulletsPerShell);
+			p_Writer.Write(NumberOfBulletsPerShot);
+			p_Writer.Write(NumberOfBulletsPerBurst);
+			p_Writer.Write(RelativeTargetAiming);
+			p_Writer.Write(ForceSpawnToCamera);
+			p_Writer.Write(SpawnVisualAtWeaponBone);
+			p_Writer.Write(ActiveForceSpawnToCamera);
+		}
 	}
 }

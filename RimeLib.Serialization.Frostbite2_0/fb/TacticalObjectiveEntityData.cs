@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 128)]
-	public class TacticalObjectiveEntityData : 
+	public class TacticalObjectiveEntityData :
 		GameEntityData
 	{
 		[ContainerField(96), LayoutImmutable, JsonProperty(Order = 96)]
@@ -36,5 +37,15 @@ namespace fb
 		[ContainerField(112), LayoutImmutable, Blittable, JsonProperty(Order = 112)]
 		public float Team2Timer { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteString(MissionSid));
+			p_Writer.Write(p_EbxWriter.WriteString(BriefingSidTeam1));
+			p_Writer.Write(p_EbxWriter.WriteString(BriefingSidTeam2));
+			p_Writer.Write(Team1Timer);
+			p_Writer.Write(Team2Timer);
+			p_Writer.WriteNullBytes(12);
+		}
 	}
 }

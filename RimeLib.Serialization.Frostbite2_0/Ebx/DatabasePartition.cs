@@ -55,9 +55,9 @@ namespace RimeLib.Serialization.Frostbite2_0.Ebx
         public static DatabasePartition FromJsonStream(TextReader p_Reader)
         {
             var s_Serializer = new JsonSerializer();
-            s_Serializer.Converters.Add(new CtrRefJsonConverter());
             s_Serializer.Converters.Add(new DataContainerJsonConverter());
             s_Serializer.Converters.Add(new StringEnumConverter());
+            s_Serializer.Converters.Add(new CtrRefJsonConverter());
             s_Serializer.NullValueHandling = NullValueHandling.Include;
             s_Serializer.MissingMemberHandling = MissingMemberHandling.Error;
             s_Serializer.TypeNameHandling = TypeNameHandling.None;

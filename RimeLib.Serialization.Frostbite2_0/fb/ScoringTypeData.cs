@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 48)]
-	public class ScoringTypeData : 
+	public class ScoringTypeData :
 		DataContainer
 	{
 		[ContainerField(8), JsonProperty(Order = 8)]
@@ -51,5 +52,20 @@ namespace fb
 		[ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
 		public bool ShowForTeam { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write((int) Measuring);
+			p_Writer.Write(p_EbxWriter.WriteImport(ParamX));
+			p_Writer.Write(p_EbxWriter.WriteImport(ParamY));
+			p_Writer.Write(Limit);
+			p_Writer.Write(p_EbxWriter.WriteString(DescriptionSid));
+			p_Writer.Write((int) VisibilityType);
+			p_Writer.Write((int) Bucket);
+			p_Writer.Write(Score);
+			p_Writer.Write(AdditionalValueMultiplier);
+			p_Writer.Write(ShowForTeam);
+			p_Writer.WriteNullBytes(3);
+		}
 	}
 }

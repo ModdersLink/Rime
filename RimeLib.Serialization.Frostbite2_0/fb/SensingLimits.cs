@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 28)]
-	public class SensingLimits
+	public class SensingLimits :
+		EbxSerializable
 	{
 		[ContainerField(0), LayoutImmutable, Blittable, JsonProperty(Order = 0)]
 		public float HearingDistance { get; set; }
@@ -41,5 +43,16 @@ namespace fb
 		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
 		public float PeripheralMovementCutoff { get; set; }
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(HearingDistance);
+			p_Writer.Write(HearingCutoff);
+			p_Writer.Write(ViewAngle);
+			p_Writer.Write(ViewDistance);
+			p_Writer.Write(PeripheralViewAngle);
+			p_Writer.Write(PeripheralViewDistance);
+			p_Writer.Write(PeripheralMovementCutoff);
+		}
 	}
 }

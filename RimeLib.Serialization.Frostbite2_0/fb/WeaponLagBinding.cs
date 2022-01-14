@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 20)]
-	public class WeaponLagBinding
+	public class WeaponLagBinding :
+		EbxSerializable
 	{
 		[ContainerField(0), JsonProperty(Order = 0)]
 		public AntRef EntityPitch { get; set; } = new();
@@ -35,5 +37,14 @@ namespace fb
 		[ContainerField(16), JsonProperty(Order = 16)]
 		public AntRef RollResult { get; set; } = new();
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			EntityPitch.Serialize(p_Writer, p_EbxWriter);
+			EntityYaw.Serialize(p_Writer, p_EbxWriter);
+			PitchResult.Serialize(p_Writer, p_EbxWriter);
+			YawResult.Serialize(p_Writer, p_EbxWriter);
+			RollResult.Serialize(p_Writer, p_EbxWriter);
+		}
 	}
 }

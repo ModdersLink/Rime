@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 112)]
-	public class EnlightenState : 
+	public class EnlightenState :
 		DataContainer
 	{
 		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
@@ -57,5 +58,23 @@ namespace fb
 		[ContainerField(108), LayoutImmutable, Blittable, JsonProperty(Order = 108)]
 		public bool SkyBoxEnable { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(8);
+			SkyBoxGroundColor.Serialize(p_Writer, p_EbxWriter);
+			SkyBoxSunLightColor.Serialize(p_Writer, p_EbxWriter);
+			SkyBoxBackLightColor.Serialize(p_Writer, p_EbxWriter);
+			SkyBoxSkyColor.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(SunScale);
+			p_Writer.Write(OutputScale);
+			p_Writer.Write(BounceScale);
+			p_Writer.Write(SkyBoxSunLightColorSize);
+			p_Writer.Write(SkyBoxBackLightRotationY);
+			p_Writer.Write(SkyBoxBackLightColorSize);
+			p_Writer.Write(SkyBoxBackLightRotationX);
+			p_Writer.Write(SkyBoxEnable);
+			p_Writer.WriteNullBytes(3);
+		}
 	}
 }

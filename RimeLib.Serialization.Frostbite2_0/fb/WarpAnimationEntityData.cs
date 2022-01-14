@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 112)]
-	public class WarpAnimationEntityData : 
+	public class WarpAnimationEntityData :
 		EntityData
 	{
 		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
@@ -42,5 +43,18 @@ namespace fb
 		[ContainerField(110), LayoutImmutable, Blittable, JsonProperty(Order = 110)]
 		public bool ExternalConnectTransform { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(4);
+			ConnectTransform.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(AnimationEntitySpacePriority);
+			WarpBinding.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write((int) BoneToAlign);
+			p_Writer.Write(ForceAnimationTransform);
+			p_Writer.Write(RequireAnimationWeight);
+			p_Writer.Write(ExternalConnectTransform);
+			p_Writer.WriteNullBytes(1);
+		}
 	}
 }

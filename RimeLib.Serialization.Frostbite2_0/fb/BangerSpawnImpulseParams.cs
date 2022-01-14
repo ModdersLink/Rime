@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 44)]
-	public class BangerSpawnImpulseParams : 
+	public class BangerSpawnImpulseParams :
 		DataContainer
 	{
 		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
@@ -48,5 +49,18 @@ namespace fb
 		[ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
 		public float AngularDamping { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(MinHorizontalAngle);
+			p_Writer.Write(MaxHorizontalAngle);
+			p_Writer.Write(MinVerticalAngle);
+			p_Writer.Write(MaxVerticalAngle);
+			p_Writer.Write(MinStrength);
+			p_Writer.Write(MaxStrength);
+			p_Writer.Write(WaterStrengthModifier);
+			p_Writer.Write(LinearDamping);
+			p_Writer.Write(AngularDamping);
+		}
 	}
 }

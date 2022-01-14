@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 128)]
-	public class WarningSystemComponentData : 
+	public class WarningSystemComponentData :
 		ComponentData
 	{
 		[ContainerField(96), JsonProperty(Order = 96)]
@@ -39,5 +40,16 @@ namespace fb
 		[ContainerField(116), JsonProperty(Order = 116)]
 		public WarningPlayerType PlayerType { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(AimWarnSoundEffect));
+			p_Writer.Write(p_EbxWriter.WriteImport(MissileWarnSoundEffect));
+			p_Writer.Write(p_EbxWriter.WriteImport(LowHealthWarnSoundEffect));
+			p_Writer.Write(p_EbxWriter.WriteImport(LockingWarnSoundEffect));
+			p_Writer.Write(p_EbxWriter.WriteImport(LockedWarnSoundEffect));
+			p_Writer.Write((int) PlayerType);
+			p_Writer.WriteNullBytes(8);
+		}
 	}
 }

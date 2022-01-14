@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 288)]
-	public class SoldierEntityData : 
+	public class SoldierEntityData :
 		CharacterEntityData
 	{
 		[ContainerField(160), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 160)]
@@ -129,5 +130,76 @@ namespace fb
 		[ContainerField(279), LayoutImmutable, Blittable, JsonProperty(Order = 279)]
 		public bool ShowNametag { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			FLIRKeyColor.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(HeadMaterialPair));
+			(RimeWriter Writer, uint ArrayIndex) s_BoneFakePhysics = p_EbxWriter.GetArrayWriter(BoneFakePhysics.GetType(), BoneFakePhysics.Count);
+			p_Writer.Write(s_BoneFakePhysics.ArrayIndex);
+			foreach (var s_Entry in BoneFakePhysics)
+			{
+				s_BoneFakePhysics.Writer.Write(p_EbxWriter.WriteImport(s_Entry));
+			}
+			p_Writer.Write(p_EbxWriter.WriteImport(AutoAim));
+			p_Writer.Write(p_EbxWriter.WriteImport(AimingConstraints));
+			p_Writer.Write(p_EbxWriter.WriteImport(HeadCollision));
+			p_Writer.Write(p_EbxWriter.WriteImport(CharacterPhysics));
+			p_Writer.Write(p_EbxWriter.WriteImport(FootMaterialPair));
+			p_Writer.Write(p_EbxWriter.WriteImport(SprintSettings));
+			(RimeWriter Writer, uint ArrayIndex) s_Meshes1p = p_EbxWriter.GetArrayWriter(Meshes1p.GetType(), Meshes1p.Count);
+			p_Writer.Write(s_Meshes1p.ArrayIndex);
+			foreach (var s_Entry in Meshes1p)
+			{
+				s_Entry.Serialize(s_Meshes1p.Writer, p_EbxWriter);
+			}
+			(RimeWriter Writer, uint ArrayIndex) s_Meshes3p = p_EbxWriter.GetArrayWriter(Meshes3p.GetType(), Meshes3p.Count);
+			p_Writer.Write(s_Meshes3p.ArrayIndex);
+			foreach (var s_Entry in Meshes3p)
+			{
+				s_Entry.Serialize(s_Meshes3p.Writer, p_EbxWriter);
+			}
+			(RimeWriter Writer, uint ArrayIndex) s_HidableMeshParts = p_EbxWriter.GetArrayWriter(HidableMeshParts.GetType(), HidableMeshParts.Count);
+			p_Writer.Write(s_HidableMeshParts.ArrayIndex);
+			foreach (var s_Entry in HidableMeshParts)
+			{
+				s_Entry.Serialize(s_HidableMeshParts.Writer, p_EbxWriter);
+			}
+			p_Writer.Write(p_EbxWriter.WriteImport(Sound));
+			p_Writer.Write(p_EbxWriter.WriteImport(StreamGroup1p));
+			p_Writer.Write(ImpulseReactionTime);
+			p_Writer.Write(p_EbxWriter.WriteImport(HealthModule));
+			p_Writer.Write(MaxHealth);
+			p_Writer.Write(p_EbxWriter.WriteImport(CollisionInfo));
+			p_Writer.Write(p_EbxWriter.WriteImport(VoiceOverInfo));
+			p_Writer.Write(FLIRValue);
+			(RimeWriter Writer, uint ArrayIndex) s_BreathControl = p_EbxWriter.GetArrayWriter(BreathControl.GetType(), BreathControl.Count);
+			p_Writer.Write(s_BreathControl.ArrayIndex);
+			foreach (var s_Entry in BreathControl)
+			{
+				s_BreathControl.Writer.Write(p_EbxWriter.WriteImport(s_Entry));
+			}
+			p_Writer.Write(ExplosionDamageModifier);
+			(RimeWriter Writer, uint ArrayIndex) s_UIParts = p_EbxWriter.GetArrayWriter(UIParts.GetType(), UIParts.Count);
+			p_Writer.Write(s_UIParts.ArrayIndex);
+			foreach (var s_Entry in UIParts)
+			{
+				s_UIParts.Writer.Write(p_EbxWriter.WriteImport(s_Entry));
+			}
+			p_Writer.Write(RegenerationDelayModifier);
+			p_Writer.Write(FreeSpaceCheck);
+			p_Writer.Write(ProximityCheck);
+			p_Writer.Write(EnableGroundmapLighting);
+			p_Writer.Write(ShowWeaponWhenDead);
+			p_Writer.Write(LowerGunOnOwnTeam);
+			p_Writer.Write(UseSpineXRotation);
+			p_Writer.Write(CollisionEnabled);
+			p_Writer.Write(PhysicsControlled);
+			p_Writer.Write(IsPushable);
+			p_Writer.Write(HumanPlayerControlled);
+			p_Writer.Write(InteractiveManDownAllowed);
+			p_Writer.Write(ShowNametag);
+			p_Writer.WriteNullBytes(8);
+		}
 	}
 }

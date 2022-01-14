@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 80)]
-	public class AISettingsData : 
+	public class AISettingsData :
 		Asset
 	{
 		[ContainerField(12), JsonProperty(Order = 12)]
@@ -48,5 +49,18 @@ namespace fb
 		[ContainerField(76), JsonProperty(Order = 76)]
 		public CtrRef<AIVehicleBehaviourData> DefaultVehicleType { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(SoundEnvironmentConstants));
+			p_Writer.Write(p_EbxWriter.WriteImport(CoverConstants));
+			p_Writer.Write(p_EbxWriter.WriteImport(DecisionConstants));
+			p_Writer.Write(p_EbxWriter.WriteImport(PositionEvaluationConstants));
+			p_Writer.Write(p_EbxWriter.WriteImport(TimingConstants));
+			p_Writer.Write(p_EbxWriter.WriteImport(DebugConstants));
+			ReadinessLevels.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(DefaultBehaviourTemplate));
+			p_Writer.Write(p_EbxWriter.WriteImport(DefaultVehicleType));
+		}
 	}
 }

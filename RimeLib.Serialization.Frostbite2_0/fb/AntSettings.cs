@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 68)]
-	public class AntSettings : 
+	public class AntSettings :
 		DataContainer
 	{
 		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
@@ -111,5 +112,39 @@ namespace fb
 		[ContainerField(67), LayoutImmutable, Blittable, JsonProperty(Order = 67)]
 		public bool UsePA { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(DetailedCollisionSpeedLimit);
+			p_Writer.Write(LeanSignalScale);
+			p_Writer.Write(LeanSignalClamp);
+			p_Writer.Write(MaxInterpolationSlots);
+			p_Writer.Write(MaxSingleBoneInterpolationSlots);
+			p_Writer.Write(ReducedInterpolationDistance);
+			p_Writer.Write(TrajectoryInterpolationDistance);
+			p_Writer.Write(ForceLodDistance);
+			p_Writer.Write(MaxAnimatablesPerPoseJob);
+			p_Writer.Write(CheckGiantSoldiers);
+			p_Writer.Write(ClientEmulatesServer);
+			p_Writer.Write(UseCameraFov);
+			p_Writer.Write(UpdateEnable);
+			p_Writer.Write(EnablePA);
+			p_Writer.Write(UseWeaponFov);
+			p_Writer.Write(DisableAnimManagerSceneOps);
+			p_Writer.Write(DisableAILodFeature);
+			p_Writer.Write(DisableModelAnimationCulling);
+			p_Writer.Write(EnableJobs);
+			p_Writer.Write(ForcePoseUpdate);
+			p_Writer.Write(RunAsHighPriority);
+			p_Writer.Write(InterpolatePoses);
+			p_Writer.Write(AllowVariableTickLength);
+			p_Writer.Write(EnablePackageCache);
+			p_Writer.Write(UseHIK);
+			p_Writer.Write(UpdateLoddingEnable);
+			p_Writer.Write(BlockOnJobs);
+			p_Writer.Write(EnableDebugLogFile);
+			p_Writer.Write(EnablePoseJobs);
+			p_Writer.Write(UsePA);
+		}
 	}
 }

@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 160)]
-	public class StaticModelEntityData : 
+	public class StaticModelEntityData :
 		GamePhysicsEntityData
 	{
 		[ContainerField(112), JsonProperty(Order = 112)]
@@ -48,5 +49,34 @@ namespace fb
 		[ContainerField(150), LayoutImmutable, Blittable, JsonProperty(Order = 150)]
 		public bool Visible { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			(RimeWriter Writer, uint ArrayIndex) s_PartLinks = p_EbxWriter.GetArrayWriter(PartLinks.GetType(), PartLinks.Count);
+			p_Writer.Write(s_PartLinks.ArrayIndex);
+			foreach (var s_Entry in PartLinks)
+			{
+				s_PartLinks.Writer.Write(p_EbxWriter.WriteImport(s_Entry));
+			}
+			p_Writer.Write(p_EbxWriter.WriteImport(Mesh));
+			p_Writer.Write(BoneCount);
+			(RimeWriter Writer, uint ArrayIndex) s_BasePoseTransforms = p_EbxWriter.GetArrayWriter(BasePoseTransforms.GetType(), BasePoseTransforms.Count);
+			p_Writer.Write(s_BasePoseTransforms.ArrayIndex);
+			foreach (var s_Entry in BasePoseTransforms)
+			{
+				s_Entry.Serialize(s_BasePoseTransforms.Writer, p_EbxWriter);
+			}
+			NetworkInfo.Serialize(p_Writer, p_EbxWriter);
+			(RimeWriter Writer, uint ArrayIndex) s_PhysicsPartInfos = p_EbxWriter.GetArrayWriter(PhysicsPartInfos.GetType(), PhysicsPartInfos.Count);
+			p_Writer.Write(s_PhysicsPartInfos.ArrayIndex);
+			foreach (var s_Entry in PhysicsPartInfos)
+			{
+				s_Entry.Serialize(s_PhysicsPartInfos.Writer, p_EbxWriter);
+			}
+			p_Writer.Write(ExcludeFromNearbyObjectDestruction);
+			p_Writer.Write(AnimatePhysics);
+			p_Writer.Write(Visible);
+			p_Writer.WriteNullBytes(9);
+		}
 	}
 }

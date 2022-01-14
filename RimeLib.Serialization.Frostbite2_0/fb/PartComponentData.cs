@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 112)]
-	public class PartComponentData : 
+	public class PartComponentData :
 		ComponentData
 	{
 		[ContainerField(96), JsonProperty(Order = 96)]
@@ -42,5 +43,27 @@ namespace fb
 		[ContainerField(108), LayoutImmutable, Blittable, JsonProperty(Order = 108)]
 		public bool AnimatePhysics { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			(RimeWriter Writer, uint ArrayIndex) s_HealthStates = p_EbxWriter.GetArrayWriter(HealthStates.GetType(), HealthStates.Count);
+			p_Writer.Write(s_HealthStates.ArrayIndex);
+			foreach (var s_Entry in HealthStates)
+			{
+				s_HealthStates.Writer.Write(p_EbxWriter.WriteImport(s_Entry));
+			}
+			(RimeWriter Writer, uint ArrayIndex) s_PartLinks = p_EbxWriter.GetArrayWriter(PartLinks.GetType(), PartLinks.Count);
+			p_Writer.Write(s_PartLinks.ArrayIndex);
+			foreach (var s_Entry in PartLinks)
+			{
+				s_PartLinks.Writer.Write(p_EbxWriter.WriteImport(s_Entry));
+			}
+			p_Writer.Write(IsSupported);
+			p_Writer.Write(IsFragile);
+			p_Writer.Write(IsNetworkable);
+			p_Writer.Write(IsWindow);
+			p_Writer.Write(AnimatePhysics);
+			p_Writer.WriteNullBytes(3);
+		}
 	}
 }

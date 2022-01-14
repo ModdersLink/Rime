@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 544)]
-	public class TransformHubEntityData : 
+	public class TransformHubEntityData :
 		EntityData
 	{
 		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
@@ -48,5 +49,20 @@ namespace fb
 		[ContainerField(528), JsonProperty(Order = 528)]
 		public Realm Realm { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(4);
+			In4.Serialize(p_Writer, p_EbxWriter);
+			In1.Serialize(p_Writer, p_EbxWriter);
+			In2.Serialize(p_Writer, p_EbxWriter);
+			In3.Serialize(p_Writer, p_EbxWriter);
+			In8.Serialize(p_Writer, p_EbxWriter);
+			In5.Serialize(p_Writer, p_EbxWriter);
+			In6.Serialize(p_Writer, p_EbxWriter);
+			In7.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write((int) Realm);
+			p_Writer.WriteNullBytes(12);
+		}
 	}
 }

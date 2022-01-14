@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 512)]
-	public class VehicleSpawnReferenceObjectData : 
+	public class VehicleSpawnReferenceObjectData :
 		SpawnReferenceObjectData
 	{
 		[ContainerField(384), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 384)]
@@ -72,5 +73,27 @@ namespace fb
 		[ContainerField(496), LayoutImmutable, Blittable, JsonProperty(Order = 496)]
 		public bool AffectedByImpulse { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			AirDropCarrierTransform.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(TimeUntilAbandoned);
+			p_Writer.Write(TimeUntilAbandonedIsDestroyed);
+			p_Writer.Write((int) EnterRestriction);
+			p_Writer.Write(BotBailWhenHealthBelow);
+			p_Writer.Write(BotBailOutDelay);
+			p_Writer.Write(WreckDuration);
+			p_Writer.Write(RespawnRange);
+			p_Writer.Write(ActiveStanceEntryIndex);
+			p_Writer.Write(ActiveStance);
+			p_Writer.Write(KeepAliveRadius);
+			p_Writer.Write(VehicleIsNearDistance);
+			p_Writer.Write(SetTeamOnSpawn);
+			p_Writer.Write(ApplyDamageToAbandonedVehicles);
+			p_Writer.Write(EnableAvailableSeatOutput);
+			p_Writer.Write(DisregardSpawnAllowedSetting);
+			p_Writer.Write(AffectedByImpulse);
+			p_Writer.WriteNullBytes(15);
+		}
 	}
 }

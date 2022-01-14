@@ -14,15 +14,26 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 16)]
-	public class GunMasterKillCounterEntityData : 
+	public class GunMasterKillCounterEntityData :
 		EntityData
 	{
 		[ContainerField(12), JsonProperty(Order = 12)]
 		public List<GunMasterWeaponsPreset> WeaponsPreset { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			(RimeWriter Writer, uint ArrayIndex) s_WeaponsPreset = p_EbxWriter.GetArrayWriter(WeaponsPreset.GetType(), WeaponsPreset.Count);
+			p_Writer.Write(s_WeaponsPreset.ArrayIndex);
+			foreach (var s_Entry in WeaponsPreset)
+			{
+				s_Entry.Serialize(s_WeaponsPreset.Writer, p_EbxWriter);
+			}
+		}
 	}
 }

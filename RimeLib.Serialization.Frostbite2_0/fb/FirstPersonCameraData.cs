@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 176)]
-	public class FirstPersonCameraData : 
+	public class FirstPersonCameraData :
 		DataContainer
 	{
 		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
@@ -99,5 +100,37 @@ namespace fb
 		[ContainerField(164), LayoutImmutable, Blittable, JsonProperty(Order = 164)]
 		public float RotationAdditionToOffset { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(8);
+			Offset.Serialize(p_Writer, p_EbxWriter);
+			WeaponBaseOffset.Serialize(p_Writer, p_EbxWriter);
+			WeaponLagRotationOffset.Serialize(p_Writer, p_EbxWriter);
+			Rotation.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(WeaponSpringEffect));
+			p_Writer.Write(p_EbxWriter.WriteImport(CameraSpringEffect));
+			p_Writer.Write(MoveStrafeModifier);
+			p_Writer.Write(MoveForwardModifier);
+			p_Writer.Write(RotateYawModifier);
+			p_Writer.Write(RotatePitchModifier);
+			p_Writer.Write(RotateRollModifier);
+			p_Writer.Write(ZoomMoveStrafeModifier);
+			p_Writer.Write(ZoomMoveForwardModifier);
+			p_Writer.Write(ZoomRotateYawModifier);
+			p_Writer.Write(ZoomRotatePitchModifier);
+			p_Writer.Write(ZoomRotateRollModifier);
+			p_Writer.Write(ReleaseModifier);
+			p_Writer.Write(ReleaseModifierPitch);
+			p_Writer.Write(ReleaseModifierYaw);
+			p_Writer.Write(ReleaseModifierRoll);
+			p_Writer.Write(OffsetReleaseModifier);
+			p_Writer.Write(ZoomReleaseModifierPitch);
+			p_Writer.Write(ZoomReleaseModifierYaw);
+			p_Writer.Write(ZoomReleaseModifierRoll);
+			p_Writer.Write(ZoomOffsetReleaseModifier);
+			p_Writer.Write(RotationAdditionToOffset);
+			p_Writer.WriteNullBytes(8);
+		}
 	}
 }

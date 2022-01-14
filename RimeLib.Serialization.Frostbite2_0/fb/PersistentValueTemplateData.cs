@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 36)]
-	public class PersistentValueTemplateData
+	public class PersistentValueTemplateData :
+		EbxSerializable
 	{
 		[ContainerField(0), LayoutImmutable, JsonProperty(Order = 0)]
 		public string Name { get; set; } = string.Empty;
@@ -50,5 +52,20 @@ namespace fb
 		[ContainerField(33), LayoutImmutable, Blittable, JsonProperty(Order = 33)]
 		public bool ForceIntoTemplate { get; set; }
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteString(Name));
+			p_Writer.Write(p_EbxWriter.WriteString(DefaultValue));
+			p_Writer.Write(DefaultFloatValue);
+			p_Writer.Write(DefaultIntValue);
+			p_Writer.Write((int) ValueType);
+			p_Writer.Write((int) DataType);
+			p_Writer.Write((int) HistoryType);
+			p_Writer.Write((int) Group);
+			p_Writer.Write(ClubStat);
+			p_Writer.Write(ForceIntoTemplate);
+			p_Writer.WriteNullBytes(2);
+		}
 	}
 }

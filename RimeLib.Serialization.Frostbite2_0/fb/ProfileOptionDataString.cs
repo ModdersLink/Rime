@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 28)]
-	public class ProfileOptionDataString : 
+	public class ProfileOptionDataString :
 		ProfileOptionData
 	{
 		[ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
@@ -27,5 +28,11 @@ namespace fb
 		[ContainerField(24), LayoutImmutable, JsonProperty(Order = 24)]
 		public string Value { get; set; } = string.Empty;
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(MaxLength);
+			p_Writer.Write(p_EbxWriter.WriteString(Value));
+		}
 	}
 }

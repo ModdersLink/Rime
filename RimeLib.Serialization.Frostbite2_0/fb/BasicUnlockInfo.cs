@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 36)]
-	public class BasicUnlockInfo
+	public class BasicUnlockInfo :
+		EbxSerializable
 	{
 		[ContainerField(0), LayoutImmutable, Blittable, JsonProperty(Order = 0)]
 		public GUID UnlockGuid { get; set; }
@@ -38,5 +40,25 @@ namespace fb
 		[ContainerField(32), LayoutImmutable, JsonProperty(Order = 32)]
 		public string StringId { get; set; } = string.Empty;
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			UnlockGuid.Serialize(p_Writer);
+			p_Writer.Write(Identifier);
+			p_Writer.Write(UnlockScore);
+			(RimeWriter Writer, uint ArrayIndex) s_Licenses = p_EbxWriter.GetArrayWriter(Licenses.GetType(), Licenses.Count);
+			p_Writer.Write(s_Licenses.ArrayIndex);
+			foreach (var s_Entry in Licenses)
+			{
+				s_Licenses.Writer.Write(p_EbxWriter.WriteString(s_Entry));
+			}
+			(RimeWriter Writer, uint ArrayIndex) s_AdditionalLicenses = p_EbxWriter.GetArrayWriter(AdditionalLicenses.GetType(), AdditionalLicenses.Count);
+			p_Writer.Write(s_AdditionalLicenses.ArrayIndex);
+			foreach (var s_Entry in AdditionalLicenses)
+			{
+				s_AdditionalLicenses.Writer.Write(p_EbxWriter.WriteString(s_Entry));
+			}
+			p_Writer.Write(p_EbxWriter.WriteString(StringId));
+		}
 	}
 }

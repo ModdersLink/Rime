@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 40)]
-	public class UIWeaponCompData : 
+	public class UIWeaponCompData :
 		UIComponentData
 	{
 		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
@@ -30,5 +31,12 @@ namespace fb
 		[ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
 		public float NormalHitIndicatorLimit { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(MinHitIndicatorLimit);
+			p_Writer.Write(MaxHitIndicatorLimit);
+			p_Writer.Write(NormalHitIndicatorLimit);
+		}
 	}
 }

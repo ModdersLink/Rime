@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 112)]
-	public class AnimationTurretRotationComponentData : 
+	public class AnimationTurretRotationComponentData :
 		ComponentData
 	{
 		[ContainerField(96), JsonProperty(Order = 96)]
@@ -33,5 +34,19 @@ namespace fb
 		[ContainerField(105), LayoutImmutable, Blittable, JsonProperty(Order = 105)]
 		public bool OutputWorldTransform { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			(RimeWriter Writer, uint ArrayIndex) s_Rotations = p_EbxWriter.GetArrayWriter(Rotations.GetType(), Rotations.Count);
+			p_Writer.Write(s_Rotations.ArrayIndex);
+			foreach (var s_Entry in Rotations)
+			{
+				s_Entry.Serialize(s_Rotations.Writer, p_EbxWriter);
+			}
+			p_Writer.Write(SoldierBaseIndex);
+			p_Writer.Write(UseVehicleWorldTransform);
+			p_Writer.Write(OutputWorldTransform);
+			p_Writer.WriteNullBytes(6);
+		}
 	}
 }

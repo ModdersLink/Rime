@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 80)]
-	public class UpdateTextureCoordsData : 
+	public class UpdateTextureCoordsData :
 		ProcessorData
 	{
 		[ContainerField(48), JsonProperty(Order = 48)]
@@ -27,5 +28,12 @@ namespace fb
 		[ContainerField(68), LayoutImmutable, Blittable, JsonProperty(Order = 68)]
 		public float TextureBlendValue { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			TextureInfo1.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(TextureBlendValue);
+			p_Writer.WriteNullBytes(8);
+		}
 	}
 }

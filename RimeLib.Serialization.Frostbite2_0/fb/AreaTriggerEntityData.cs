@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 208)]
-	public class AreaTriggerEntityData : 
+	public class AreaTriggerEntityData :
 		TriggerEntityData
 	{
 		[ContainerField(112), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 112)]
@@ -51,5 +52,20 @@ namespace fb
 		[ContainerField(193), LayoutImmutable, Blittable, JsonProperty(Order = 193)]
 		public bool TriggerOnLeaveOnDisable { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			GeometryTransform.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write((int) Include);
+			p_Writer.Write(InsideAreaEventRepeatTime);
+			p_Writer.Write(Radius);
+			p_Writer.Write(UseCharacterEntity);
+			p_Writer.Write(OneInsideAreaEventPerSoldier);
+			p_Writer.Write(TriggerOnlyOnLeave);
+			p_Writer.Write(ResetOnEnable);
+			p_Writer.Write(TriggerOnLeaveOnDeath);
+			p_Writer.Write(TriggerOnLeaveOnDisable);
+			p_Writer.WriteNullBytes(14);
+		}
 	}
 }

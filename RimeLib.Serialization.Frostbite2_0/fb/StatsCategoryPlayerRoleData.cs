@@ -14,15 +14,26 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 24)]
-	public class StatsCategoryPlayerRoleData : 
+	public class StatsCategoryPlayerRoleData :
 		StatsCategoryBaseData
 	{
 		[ContainerField(20), JsonProperty(Order = 20)]
 		public List<PlayerRole> Roles { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			(RimeWriter Writer, uint ArrayIndex) s_Roles = p_EbxWriter.GetArrayWriter(Roles.GetType(), Roles.Count);
+			p_Writer.Write(s_Roles.ArrayIndex);
+			foreach (var s_Entry in Roles)
+			{
+				s_Roles.Writer.Write((int) s_Entry);
+			}
+		}
 	}
 }

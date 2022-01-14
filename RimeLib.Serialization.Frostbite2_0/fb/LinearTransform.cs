@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 64)]
-	public class LinearTransform
+	public class LinearTransform :
+		EbxSerializable
 	{
 		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 0)]
 		public Vec3 right { get; set; } = new();
@@ -32,5 +34,13 @@ namespace fb
 		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 48)]
 		public Vec3 trans { get; set; } = new();
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			right.Serialize(p_Writer, p_EbxWriter);
+			up.Serialize(p_Writer, p_EbxWriter);
+			forward.Serialize(p_Writer, p_EbxWriter);
+			trans.Serialize(p_Writer, p_EbxWriter);
+		}
 	}
 }

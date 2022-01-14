@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 96)]
-	public class LensFlareEntityData : 
+	public class LensFlareEntityData :
 		SpatialEntityData
 	{
 		[ContainerField(80), JsonProperty(Order = 80)]
@@ -36,5 +37,20 @@ namespace fb
 		[ContainerField(90), LayoutImmutable, Blittable, JsonProperty(Order = 90)]
 		public bool DebugDrawOccluder { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			(RimeWriter Writer, uint ArrayIndex) s_Elements = p_EbxWriter.GetArrayWriter(Elements.GetType(), Elements.Count);
+			p_Writer.Write(s_Elements.ArrayIndex);
+			foreach (var s_Entry in Elements)
+			{
+				s_Entry.Serialize(s_Elements.Writer, p_EbxWriter);
+			}
+			p_Writer.Write(OccluderSize);
+			p_Writer.Write(Visible);
+			p_Writer.Write(HalfRes);
+			p_Writer.Write(DebugDrawOccluder);
+			p_Writer.WriteNullBytes(5);
+		}
 	}
 }

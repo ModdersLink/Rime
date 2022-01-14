@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 24)]
-	public class ClimbLadderBinding
+	public class ClimbLadderBinding :
+		EbxSerializable
 	{
 		[ContainerField(0), JsonProperty(Order = 0)]
 		public AntRef ClimbLadderPhase { get; set; } = new();
@@ -38,5 +40,15 @@ namespace fb
 		[ContainerField(20), JsonProperty(Order = 20)]
 		public AntRef FallHigh { get; set; } = new();
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			ClimbLadderPhase.Serialize(p_Writer, p_EbxWriter);
+			ClimbLadderConnectPhase.Serialize(p_Writer, p_EbxWriter);
+			ClimbLadderTransitionPhase.Serialize(p_Writer, p_EbxWriter);
+			OnLadder.Serialize(p_Writer, p_EbxWriter);
+			LadderTopTransition.Serialize(p_Writer, p_EbxWriter);
+			FallHigh.Serialize(p_Writer, p_EbxWriter);
+		}
 	}
 }

@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 28)]
-	public class OnlineProviderConfiguration
+	public class OnlineProviderConfiguration :
+		EbxSerializable
 	{
 		[ContainerField(0), JsonProperty(Order = 0)]
 		public GamePlatform Platform { get; set; } = new();
@@ -41,5 +43,17 @@ namespace fb
 		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
 		public bool IsServer { get; set; }
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write((int) Platform);
+			p_Writer.Write(p_EbxWriter.WriteString(Client));
+			p_Writer.Write(p_EbxWriter.WriteString(ServiceName));
+			p_Writer.Write(p_EbxWriter.WriteString(SKU));
+			p_Writer.Write(p_EbxWriter.WriteString(Version));
+			p_Writer.Write(ServerSocketPacketSize);
+			p_Writer.Write(IsServer);
+			p_Writer.WriteNullBytes(3);
+		}
 	}
 }

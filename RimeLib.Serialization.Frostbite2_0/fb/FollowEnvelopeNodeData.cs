@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 36)]
-	public class FollowEnvelopeNodeData : 
+	public class FollowEnvelopeNodeData :
 		AudioGraphNodeData
 	{
 		[ContainerField(8), JsonProperty(Order = 8)]
@@ -36,5 +37,14 @@ namespace fb
 		[ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
 		public float Pivot { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			X.Serialize(p_Writer, p_EbxWriter);
+			Y.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(Base);
+			p_Writer.Write(Scale);
+			p_Writer.Write(Pivot);
+		}
 	}
 }

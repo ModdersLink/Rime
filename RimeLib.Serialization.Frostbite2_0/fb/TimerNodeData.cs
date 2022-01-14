@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 52)]
-	public class TimerNodeData : 
+	public class TimerNodeData :
 		AudioGraphNodeData
 	{
 		[ContainerField(8), JsonProperty(Order = 8)]
@@ -39,5 +40,15 @@ namespace fb
 		[ContainerField(48), JsonProperty(Order = 48)]
 		public TimerMode Mode { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			Start.Serialize(p_Writer, p_EbxWriter);
+			Stop.Serialize(p_Writer, p_EbxWriter);
+			Period.Serialize(p_Writer, p_EbxWriter);
+			Tick.Serialize(p_Writer, p_EbxWriter);
+			Progress.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write((int) Mode);
+		}
 	}
 }

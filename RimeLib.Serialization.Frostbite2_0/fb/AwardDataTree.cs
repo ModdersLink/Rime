@@ -14,15 +14,26 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 28)]
-	public class AwardDataTree : 
+	public class AwardDataTree :
 		AwardableTreeBase
 	{
 		[ContainerField(24), JsonProperty(Order = 24)]
 		public RefArray<AwardData> FilteredAwards { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			(RimeWriter Writer, uint ArrayIndex) s_FilteredAwards = p_EbxWriter.GetArrayWriter(FilteredAwards.GetType(), FilteredAwards.Count);
+			p_Writer.Write(s_FilteredAwards.ArrayIndex);
+			foreach (var s_Entry in FilteredAwards)
+			{
+				s_FilteredAwards.Writer.Write(p_EbxWriter.WriteImport(s_Entry));
+			}
+		}
 	}
 }

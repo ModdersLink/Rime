@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(1, 5)]
-	public class WeaponMiscModifierSettings
+	public class WeaponMiscModifierSettings :
+		EbxSerializable
 	{
 		[ContainerField(0), LayoutImmutable, Blittable, JsonProperty(Order = 0)]
 		public bool EnableBreathControl { get; set; }
@@ -35,5 +37,14 @@ namespace fb
 		[ContainerField(4), LayoutImmutable, Blittable, JsonProperty(Order = 4)]
 		public bool IsSilenced { get; set; }
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(EnableBreathControl);
+			p_Writer.Write(CanBeInSupportedShooting);
+			p_Writer.Write(UnZoomOnBoltAction);
+			p_Writer.Write(HoldBoltActionUntilZoomRelease);
+			p_Writer.Write(IsSilenced);
+		}
 	}
 }

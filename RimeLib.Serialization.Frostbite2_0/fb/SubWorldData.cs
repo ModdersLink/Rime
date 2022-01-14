@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 44)]
-	public class SubWorldData : 
+	public class SubWorldData :
 		SpatialPrefabBlueprint
 	{
 		[ContainerField(36), JsonProperty(Order = 36)]
@@ -36,5 +37,14 @@ namespace fb
 		[ContainerField(43), LayoutImmutable, Blittable, JsonProperty(Order = 43)]
 		public bool RememberStateOnStreamOut { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(RegistryContainer));
+			p_Writer.Write(IsWin32SubLevel);
+			p_Writer.Write(IsXenonSubLevel);
+			p_Writer.Write(IsPs3SubLevel);
+			p_Writer.Write(RememberStateOnStreamOut);
+		}
 	}
 }

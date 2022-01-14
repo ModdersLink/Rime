@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 36)]
-	public class AntAnimationSetAsset : 
+	public class AntAnimationSetAsset :
 		Asset
 	{
 		[ContainerField(12), JsonProperty(Order = 12)]
@@ -42,5 +43,27 @@ namespace fb
 		[ContainerField(33), LayoutImmutable, Blittable, JsonProperty(Order = 33)]
 		public bool AllowAnimationCulling { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(SkeletonAsset));
+			p_Writer.Write(ActorAssetIndex);
+			(RimeWriter Writer, uint ArrayIndex) s_ClipAssetIndices = p_EbxWriter.GetArrayWriter(ClipAssetIndices.GetType(), ClipAssetIndices.Count);
+			p_Writer.Write(s_ClipAssetIndices.ArrayIndex);
+			foreach (var s_Entry in ClipAssetIndices)
+			{
+				s_ClipAssetIndices.Writer.Write(s_Entry);
+			}
+			(RimeWriter Writer, uint ArrayIndex) s_LoopingClipAssetIndices = p_EbxWriter.GetArrayWriter(LoopingClipAssetIndices.GetType(), LoopingClipAssetIndices.Count);
+			p_Writer.Write(s_LoopingClipAssetIndices.ArrayIndex);
+			foreach (var s_Entry in LoopingClipAssetIndices)
+			{
+				s_LoopingClipAssetIndices.Writer.Write(s_Entry);
+			}
+			p_Writer.Write(SceneOpMatrixAssetIndex);
+			p_Writer.Write(UseTraj2Ref);
+			p_Writer.Write(AllowAnimationCulling);
+			p_Writer.WriteNullBytes(2);
+		}
 	}
 }

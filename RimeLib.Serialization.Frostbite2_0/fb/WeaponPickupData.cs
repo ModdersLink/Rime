@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 24)]
-	public class WeaponPickupData
+	public class WeaponPickupData :
+		EbxSerializable
 	{
 		[ContainerField(0), JsonProperty(Order = 0)]
 		public CtrRef<SoldierWeaponBlueprint> Weapon { get; set; } = new();
@@ -38,5 +40,15 @@ namespace fb
 		[ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
 		public uint MaxAmmo { get; set; }
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(Weapon));
+			p_Writer.Write(WeaponSlot);
+			p_Writer.Write(AltWeaponSlot);
+			p_Writer.Write(LinkedToWeaponSlot);
+			p_Writer.Write(MinAmmo);
+			p_Writer.Write(MaxAmmo);
+		}
 	}
 }

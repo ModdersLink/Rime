@@ -14,15 +14,21 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 12)]
-	public class AnimationSpawnTemplate : 
+	public class AnimationSpawnTemplate :
 		DataContainer
 	{
 		[ContainerField(8), JsonProperty(Order = 8)]
 		public CtrRef<AntEnumeration> RunStyle { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(RunStyle));
+		}
 	}
 }

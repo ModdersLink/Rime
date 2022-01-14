@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 160)]
-	public class ProjectileEntityData : 
+	public class ProjectileEntityData :
 		GamePhysicsEntityData
 	{
 		[ContainerField(112), LayoutImmutable, Blittable, JsonProperty(Order = 112)]
@@ -60,5 +61,23 @@ namespace fb
 		[ContainerField(154), LayoutImmutable, Blittable, JsonProperty(Order = 154)]
 		public bool SuppressOwnerVehicleDamage { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(VisualConvergeDistance);
+			p_Writer.Write(InitialSpeed);
+			p_Writer.Write(TimeToLive);
+			p_Writer.Write(MaxCount);
+			p_Writer.Write(InitMeshHideTime);
+			p_Writer.Write(p_EbxWriter.WriteImport(MaterialPair));
+			p_Writer.Write((int) HitReactionWeaponType);
+			p_Writer.Write(p_EbxWriter.WriteImport(Explosion));
+			p_Writer.Write(p_EbxWriter.WriteImport(SuppressionData));
+			p_Writer.Write(p_EbxWriter.WriteString(AmmunitionType));
+			p_Writer.Write(ServerProjectileDisabled);
+			p_Writer.Write(DetonateOnTimeout);
+			p_Writer.Write(SuppressOwnerVehicleDamage);
+			p_Writer.WriteNullBytes(5);
+		}
 	}
 }

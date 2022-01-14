@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 160)]
-	public class UI3dIconCompData : 
+	public class UI3dIconCompData :
 		UIComponentData
 	{
 		[ContainerField(28), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 28)]
@@ -123,5 +124,44 @@ namespace fb
 		[ContainerField(158), LayoutImmutable, Blittable, JsonProperty(Order = 158)]
 		public bool OnlyShowSnapped { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			PixelOffset.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(IconSize);
+			p_Writer.Write(MaxFarFade);
+			p_Writer.Write(MaxCloseFade);
+			p_Writer.Write(SnapSafeZone);
+			p_Writer.Write(SnapCenterYOffset);
+			p_Writer.Write(ShrinkSnapAnimationTime);
+			p_Writer.Write(TrackerHudRadiusX);
+			p_Writer.Write(TrackerHudRadiusY);
+			p_Writer.Write(MaxLookAtThreshold);
+			p_Writer.Write(MinLookAtThreshold);
+			p_Writer.Write(MinLookAtThresholdDistance);
+			p_Writer.Write(DrawDistance);
+			p_Writer.Write(FadeDistance);
+			p_Writer.Write(FadeEndDistance);
+			p_Writer.Write(MinimumDrawDistance);
+			p_Writer.Write(MinimumFadeDistance);
+			p_Writer.Write(MaxTagUpdatesPerFrame);
+			p_Writer.Write(VerticalOffset);
+			p_Writer.Write(ShowLabelRange);
+			p_Writer.Write(TeamRadioDistance);
+			p_Writer.Write(ScaleDistance);
+			p_Writer.Write(MaxScaleMod);
+			p_Writer.Write(MaxXRotation);
+			p_Writer.Write(MaxYRotation);
+			p_Writer.Write(HorisontalOffset);
+			p_Writer.Write(ShowSupportAmmoThreshold);
+			p_Writer.Write(VerticalOffsetMaxOffset);
+			p_Writer.Write(VerticalOffsetScaleFactor);
+			p_Writer.Write(ShowEngineerArmorThreshold);
+			p_Writer.Write(ShowMedicHealthThreshold);
+			p_Writer.Write(SnapIcons);
+			p_Writer.Write(CircularSnap);
+			p_Writer.Write(OnlyShowSnapped);
+			p_Writer.WriteNullBytes(1);
+		}
 	}
 }

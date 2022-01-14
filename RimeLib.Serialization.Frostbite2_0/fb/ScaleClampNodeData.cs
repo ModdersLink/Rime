@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 56)]
-	public class ScaleClampNodeData : 
+	public class ScaleClampNodeData :
 		AudioGraphNodeData
 	{
 		[ContainerField(8), JsonProperty(Order = 8)]
@@ -39,5 +40,15 @@ namespace fb
 		[ContainerField(48), JsonProperty(Order = 48)]
 		public AudioGraphNodePort Out { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			In.Serialize(p_Writer, p_EbxWriter);
+			InMin.Serialize(p_Writer, p_EbxWriter);
+			InMax.Serialize(p_Writer, p_EbxWriter);
+			OutMin.Serialize(p_Writer, p_EbxWriter);
+			OutMax.Serialize(p_Writer, p_EbxWriter);
+			Out.Serialize(p_Writer, p_EbxWriter);
+		}
 	}
 }

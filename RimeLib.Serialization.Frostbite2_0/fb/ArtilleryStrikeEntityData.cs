@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 160)]
-	public class ArtilleryStrikeEntityData : 
+	public class ArtilleryStrikeEntityData :
 		GameEntityData
 	{
 		[ContainerField(96), JsonProperty(Order = 96)]
@@ -63,5 +64,24 @@ namespace fb
 		[ContainerField(148), LayoutImmutable, Blittable, JsonProperty(Order = 148)]
 		public bool FollowSoldier { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(MissileData));
+			p_Writer.Write(MissileSpawnRadius);
+			p_Writer.Write(DurationOfArtilleryStrike);
+			p_Writer.Write(MaxDelayBetweenProjectiles);
+			p_Writer.Write(MinDelayBetweenProjectiles);
+			p_Writer.Write(MaxDelayBetweenStrikes);
+			p_Writer.Write(MinDelayBetweenStrikes);
+			p_Writer.Write(MinRadiusToSoldier);
+			p_Writer.Write(RadiusWhenFollowingSoldier);
+			p_Writer.Write(HeightOffsetWhenFollowingSoldier);
+			p_Writer.Write(NumberOfStrikes);
+			p_Writer.Write(MaxProjectilesPerStrike);
+			p_Writer.Write(MinProjectilesPerStrike);
+			p_Writer.Write(FollowSoldier);
+			p_Writer.WriteNullBytes(11);
+		}
 	}
 }

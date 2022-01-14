@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 36)]
-	public class SupportedShootingBinding
+	public class SupportedShootingBinding :
+		EbxSerializable
 	{
 		[ContainerField(0), JsonProperty(Order = 0)]
 		public AntRef Supported { get; set; } = new();
@@ -47,5 +49,18 @@ namespace fb
 		[ContainerField(32), JsonProperty(Order = 32)]
 		public AntRef AnimatedCamera { get; set; } = new();
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			Supported.Serialize(p_Writer, p_EbxWriter);
+			SupportedPos.Serialize(p_Writer, p_EbxWriter);
+			ForwardVector.Serialize(p_Writer, p_EbxWriter);
+			Yaw.Serialize(p_Writer, p_EbxWriter);
+			Pitch.Serialize(p_Writer, p_EbxWriter);
+			DistToObject.Serialize(p_Writer, p_EbxWriter);
+			HeightOfObject.Serialize(p_Writer, p_EbxWriter);
+			Undeploying.Serialize(p_Writer, p_EbxWriter);
+			AnimatedCamera.Serialize(p_Writer, p_EbxWriter);
+		}
 	}
 }

@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 112)]
-	public class RigidBodyHingeConstraintData : 
+	public class RigidBodyHingeConstraintData :
 		RigidBodyConstraintData
 	{
 		[ContainerField(96), LayoutImmutable, Blittable, JsonProperty(Order = 96)]
@@ -33,5 +34,14 @@ namespace fb
 		[ContainerField(108), LayoutImmutable, Blittable, JsonProperty(Order = 108)]
 		public bool HasLimits { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(MinAngle);
+			p_Writer.Write(AngularFriction);
+			p_Writer.Write(MaxAngle);
+			p_Writer.Write(HasLimits);
+			p_Writer.WriteNullBytes(3);
+		}
 	}
 }

@@ -14,15 +14,22 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 80)]
-	public class ColorTintScopeFilterData : 
+	public class ColorTintScopeFilterData :
 		ScopeFilterData
 	{
 		[ContainerField(16), JsonProperty(Order = 16)]
 		public ColorTintData ColorTintData { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(4);
+			ColorTintData.Serialize(p_Writer, p_EbxWriter);
+		}
 	}
 }

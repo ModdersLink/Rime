@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 128)]
-	public class CharacterInVehicleScenarioEntityData : 
+	public class CharacterInVehicleScenarioEntityData :
 		GameEntityData
 	{
 		[ContainerField(96), JsonProperty(Order = 96)]
@@ -39,5 +40,16 @@ namespace fb
 		[ContainerField(116), LayoutImmutable, Blittable, JsonProperty(Order = 116)]
 		public int PartId { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write((int) Realm);
+			ScenarioAntRef.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(LevelId);
+			p_Writer.Write(ScenarioId);
+			p_Writer.Write(ActorId);
+			p_Writer.Write(PartId);
+			p_Writer.WriteNullBytes(8);
+		}
 	}
 }

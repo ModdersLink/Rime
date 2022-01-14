@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 64)]
-	public class GameTimeSettings : 
+	public class GameTimeSettings :
 		SystemSettings
 	{
 		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
@@ -69,5 +70,26 @@ namespace fb
 		[ContainerField(60), LayoutImmutable, Blittable, JsonProperty(Order = 60)]
 		public bool VariableSimTickTimeEnable { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(VSyncSubtractTime);
+			p_Writer.Write(JoinJobsTimeLimit);
+			p_Writer.Write(YieldTimeLimit);
+			p_Writer.Write(YieldTime);
+			p_Writer.Write(MaxInactiveVariableFps);
+			p_Writer.Write(MaxSimFps);
+			p_Writer.Write(MaxVariableFps);
+			p_Writer.Write(ClampTicks);
+			p_Writer.Write(ForceDeltaTime);
+			p_Writer.Write(ForceDeltaTickCount);
+			p_Writer.Write(TimeScale);
+			p_Writer.Write(UseWaitableTimers);
+			p_Writer.Write(ForceUseSleepTimer);
+			p_Writer.Write(ForceSinglePlayerFixedTick);
+			p_Writer.Write(ForceMultiplayerOneTickMin);
+			p_Writer.Write(VariableSimTickTimeEnable);
+			p_Writer.WriteNullBytes(3);
+		}
 	}
 }

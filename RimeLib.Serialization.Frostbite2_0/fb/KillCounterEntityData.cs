@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 144)]
-	public class KillCounterEntityData : 
+	public class KillCounterEntityData :
 		GameEntityData
 	{
 		[ContainerField(96), JsonProperty(Order = 96)]
@@ -39,5 +40,16 @@ namespace fb
 		[ContainerField(132), LayoutImmutable, Blittable, JsonProperty(Order = 132)]
 		public bool IgnoreAI { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			TeamKillWeight.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write((int) TeamId);
+			NeutralTeamWeight.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(EnemyWeight);
+			p_Writer.Write(MaxKillCount);
+			p_Writer.Write(IgnoreAI);
+			p_Writer.WriteNullBytes(11);
+		}
 	}
 }

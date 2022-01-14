@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 52)]
-	public class SoldierSoundData : 
+	public class SoldierSoundData :
 		DataContainer
 	{
 		[ContainerField(8), JsonProperty(Order = 8)]
@@ -54,5 +55,20 @@ namespace fb
 		[ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
 		public float MinHealSoundTime { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(Movement));
+			p_Writer.Write(p_EbxWriter.WriteImport(Death));
+			p_Writer.Write(p_EbxWriter.WriteImport(BulletImpact));
+			p_Writer.Write(p_EbxWriter.WriteImport(Healing));
+			p_Writer.Write(p_EbxWriter.WriteImport(BreathControl));
+			p_Writer.Write(p_EbxWriter.WriteImport(HitIndicator));
+			p_Writer.Write(p_EbxWriter.WriteImport(PickupKit));
+			p_Writer.Write(p_EbxWriter.WriteImport(PickupAmmo));
+			p_Writer.Write(SprintTimeForRecovery);
+			p_Writer.Write(MovementThreshold);
+			p_Writer.Write(MinHealSoundTime);
+		}
 	}
 }

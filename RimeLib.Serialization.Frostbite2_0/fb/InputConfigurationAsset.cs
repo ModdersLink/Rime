@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 68)]
-	public class InputConfigurationAsset : 
+	public class InputConfigurationAsset :
 		Asset
 	{
 		[ContainerField(12), JsonProperty(Order = 12)]
@@ -90,5 +91,48 @@ namespace fb
 		[ContainerField(64), LayoutImmutable, Blittable, JsonProperty(Order = 64)]
 		public bool DisableCrawlingWhileFiring { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(DefaultInputConceptDefinition));
+			(RimeWriter Writer, uint ArrayIndex) s_DefaultExclusiveInputConcepts = p_EbxWriter.GetArrayWriter(DefaultExclusiveInputConcepts.GetType(), DefaultExclusiveInputConcepts.Count);
+			p_Writer.Write(s_DefaultExclusiveInputConcepts.ArrayIndex);
+			foreach (var s_Entry in DefaultExclusiveInputConcepts)
+			{
+				s_DefaultExclusiveInputConcepts.Writer.Write((int) s_Entry);
+			}
+			(RimeWriter Writer, uint ArrayIndex) s_UserConfigurableActionMaps = p_EbxWriter.GetArrayWriter(UserConfigurableActionMaps.GetType(), UserConfigurableActionMaps.Count);
+			p_Writer.Write(s_UserConfigurableActionMaps.ArrayIndex);
+			foreach (var s_Entry in UserConfigurableActionMaps)
+			{
+				s_Entry.Serialize(s_UserConfigurableActionMaps.Writer, p_EbxWriter);
+			}
+			p_Writer.Write((int) TogglePoseAction);
+			p_Writer.Write((int) CrouchAction);
+			p_Writer.Write((int) CrouchAndHoldAction);
+			p_Writer.Write((int) PickupInteractionAction);
+			(RimeWriter Writer, uint ArrayIndex) s_FiringDisablingTransitions = p_EbxWriter.GetArrayWriter(FiringDisablingTransitions.GetType(), FiringDisablingTransitions.Count);
+			p_Writer.Write(s_FiringDisablingTransitions.ArrayIndex);
+			foreach (var s_Entry in FiringDisablingTransitions)
+			{
+				s_FiringDisablingTransitions.Writer.Write((int) s_Entry);
+			}
+			p_Writer.Write(SprintReleaseTime);
+			p_Writer.Write(ThrottleInputRequiredForSprint);
+			p_Writer.Write(StandAutomaticallyIfSprinting);
+			p_Writer.Write(ProneToStandOnJump);
+			p_Writer.Write(DisableCrawlingWhileReloading);
+			p_Writer.Write(DisableFiringWhileDeployingBipod);
+			p_Writer.Write(DisableFiringWhileJumping);
+			p_Writer.Write(DisableSprintingWhileReloading);
+			p_Writer.Write(EnableSprintToCrouchTransition);
+			p_Writer.Write(StopSprintingWhenReleasingThrottle);
+			p_Writer.Write(StopSprintingWhenReleasingSprint);
+			p_Writer.Write(WaitForSprintReleaseBeforeSprintAgain);
+			p_Writer.Write(VehicleBoostIsToggle);
+			p_Writer.Write(InputCurvesEnabled);
+			p_Writer.Write(DisableCrawlingWhileFiring);
+			p_Writer.WriteNullBytes(3);
+		}
 	}
 }

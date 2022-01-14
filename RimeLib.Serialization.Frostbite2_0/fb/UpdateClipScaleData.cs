@@ -14,15 +14,27 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 64)]
-	public class UpdateClipScaleData : 
+	public class UpdateClipScaleData :
 		ProcessorData
 	{
 		[ContainerField(48), JsonProperty(Order = 48)]
 		public List<short> Lookup { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			(RimeWriter Writer, uint ArrayIndex) s_Lookup = p_EbxWriter.GetArrayWriter(Lookup.GetType(), Lookup.Count);
+			p_Writer.Write(s_Lookup.ArrayIndex);
+			foreach (var s_Entry in Lookup)
+			{
+				s_Lookup.Writer.Write(s_Entry);
+			}
+			p_Writer.WriteNullBytes(12);
+		}
 	}
 }

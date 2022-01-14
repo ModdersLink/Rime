@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 128)]
-	public class FakeHingeData : 
+	public class FakeHingeData :
 		FakePhysicsData
 	{
 		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 48)]
@@ -48,5 +49,20 @@ namespace fb
 		[ContainerField(116), LayoutImmutable, Blittable, JsonProperty(Order = 116)]
 		public float InertiaModifier { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(8);
+			Pivot.Serialize(p_Writer, p_EbxWriter);
+			RotationAxis.Serialize(p_Writer, p_EbxWriter);
+			ExtensionAxis.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(MinAngle);
+			p_Writer.Write(MaxAngle);
+			p_Writer.Write(AngularDampening);
+			p_Writer.Write(PullbackAcceleration);
+			p_Writer.Write(ProgressiveExponent);
+			p_Writer.Write(InertiaModifier);
+			p_Writer.WriteNullBytes(8);
+		}
 	}
 }

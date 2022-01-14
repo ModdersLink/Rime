@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 296)]
-	public class UIMessageCompData : 
+	public class UIMessageCompData :
 		UIComponentData
 	{
 		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
@@ -78,5 +79,38 @@ namespace fb
 		[ContainerField(292), JsonProperty(Order = 292)]
 		public List<string> ForceSubtitlesOffForTheseLevels { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(ScoreAggregateTime);
+			ChatMessageInfo.Serialize(p_Writer, p_EbxWriter);
+			KillMessageInfo.Serialize(p_Writer, p_EbxWriter);
+			ScoreMessageInfo.Serialize(p_Writer, p_EbxWriter);
+			ScoreMinorMessageInfo.Serialize(p_Writer, p_EbxWriter);
+			ScoreMajorMessageInfo.Serialize(p_Writer, p_EbxWriter);
+			GameMessageInfo.Serialize(p_Writer, p_EbxWriter);
+			StaticMessageInfo.Serialize(p_Writer, p_EbxWriter);
+			OutOfBoundsMessageInfo.Serialize(p_Writer, p_EbxWriter);
+			KillScoreMessageInfo.Serialize(p_Writer, p_EbxWriter);
+			LogLinesMessageInfo.Serialize(p_Writer, p_EbxWriter);
+			TooltipMessageInfo.Serialize(p_Writer, p_EbxWriter);
+			SubtitleMessageInfo.Serialize(p_Writer, p_EbxWriter);
+			RewardMessageInfo.Serialize(p_Writer, p_EbxWriter);
+			LocalKillMessageInfo.Serialize(p_Writer, p_EbxWriter);
+			ServerAdminYellMessageInfo.Serialize(p_Writer, p_EbxWriter);
+			GunMasterMessageInfo.Serialize(p_Writer, p_EbxWriter);
+			(RimeWriter Writer, uint ArrayIndex) s_ForceSubtitlesForTheseLevels = p_EbxWriter.GetArrayWriter(ForceSubtitlesForTheseLevels.GetType(), ForceSubtitlesForTheseLevels.Count);
+			p_Writer.Write(s_ForceSubtitlesForTheseLevels.ArrayIndex);
+			foreach (var s_Entry in ForceSubtitlesForTheseLevels)
+			{
+				s_ForceSubtitlesForTheseLevels.Writer.Write(p_EbxWriter.WriteString(s_Entry));
+			}
+			(RimeWriter Writer, uint ArrayIndex) s_ForceSubtitlesOffForTheseLevels = p_EbxWriter.GetArrayWriter(ForceSubtitlesOffForTheseLevels.GetType(), ForceSubtitlesOffForTheseLevels.Count);
+			p_Writer.Write(s_ForceSubtitlesOffForTheseLevels.ArrayIndex);
+			foreach (var s_Entry in ForceSubtitlesOffForTheseLevels)
+			{
+				s_ForceSubtitlesOffForTheseLevels.Writer.Write(p_EbxWriter.WriteString(s_Entry));
+			}
+		}
 	}
 }

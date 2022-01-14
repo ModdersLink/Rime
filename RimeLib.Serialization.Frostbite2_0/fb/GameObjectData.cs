@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 12)]
-	public class GameObjectData : 
+	public class GameObjectData :
 		GameDataContainer
 	{
 		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
@@ -30,5 +31,12 @@ namespace fb
 		[ContainerField(11), LayoutImmutable, Blittable, JsonProperty(Order = 11)]
 		public sbyte IsPropertyConnectionTarget { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(IndexInBlueprint);
+			p_Writer.Write(IsEventConnectionTarget);
+			p_Writer.Write(IsPropertyConnectionTarget);
+		}
 	}
 }

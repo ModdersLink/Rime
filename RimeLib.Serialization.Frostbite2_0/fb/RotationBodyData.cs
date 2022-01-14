@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 56)]
-	public class RotationBodyData : 
+	public class RotationBodyData :
 		MovingBodyData
 	{
 		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
@@ -60,5 +61,22 @@ namespace fb
 		[ContainerField(55), LayoutImmutable, Blittable, JsonProperty(Order = 55)]
 		public bool UseAngularConstraint { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(AngularMomentumMultiplier);
+			p_Writer.Write(AngularMomentumThreshold);
+			p_Writer.Write(AngularMomentumDamping);
+			p_Writer.Write(AngularMomentumDampingAcc);
+			p_Writer.Write(AngularMomentumDampingDeacc);
+			p_Writer.Write(AngularConstraintMin);
+			p_Writer.Write(p_EbxWriter.WriteImport(ExtendedConstraints));
+			p_Writer.Write(AngularConstraintMax);
+			p_Writer.Write(RotationAxis);
+			p_Writer.Write(UsePostSatisfyConstraints);
+			p_Writer.Write(UseAngularMomentumThreshold);
+			p_Writer.Write(UseAngularMomentumDamping);
+			p_Writer.Write(UseAngularConstraint);
+		}
 	}
 }

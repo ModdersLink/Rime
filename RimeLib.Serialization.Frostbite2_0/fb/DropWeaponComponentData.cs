@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 128)]
-	public class DropWeaponComponentData : 
+	public class DropWeaponComponentData :
 		ComponentData
 	{
 		[ContainerField(96), JsonProperty(Order = 96)]
@@ -48,5 +49,24 @@ namespace fb
 		[ContainerField(122), LayoutImmutable, Blittable, JsonProperty(Order = 122)]
 		public bool RequireWeaponSlotEmpty { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(DeathPickup));
+			p_Writer.Write((int) ActionIdentifier);
+			p_Writer.Write(DropWeaponAfterTime);
+			p_Writer.Write(p_EbxWriter.WriteImport(Pickup));
+			(RimeWriter Writer, uint ArrayIndex) s_ExcludedWeaponSlots = p_EbxWriter.GetArrayWriter(ExcludedWeaponSlots.GetType(), ExcludedWeaponSlots.Count);
+			p_Writer.Write(s_ExcludedWeaponSlots.ArrayIndex);
+			foreach (var s_Entry in ExcludedWeaponSlots)
+			{
+				s_ExcludedWeaponSlots.Writer.Write((int) s_Entry);
+			}
+			p_Writer.Write(WeaponDropTime);
+			p_Writer.Write(ListenToAnimationWeaponDropSignal);
+			p_Writer.Write(AllowDropWeaponOnAction);
+			p_Writer.Write(RequireWeaponSlotEmpty);
+			p_Writer.WriteNullBytes(5);
+		}
 	}
 }

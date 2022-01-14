@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 56)]
-	public class ShootOrderEntityData : 
+	public class ShootOrderEntityData :
 		BFOrderEntityData
 	{
 		[ContainerField(40), JsonProperty(Order = 40)]
@@ -42,5 +43,16 @@ namespace fb
 		[ContainerField(55), LayoutImmutable, Blittable, JsonProperty(Order = 55)]
 		public bool RandomTargetOrder { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write((int) StrengthType);
+			p_Writer.Write((int) Pose);
+			p_Writer.Write((int) ShootType);
+			p_Writer.Write(PreferAlternativeWeapon);
+			p_Writer.Write(CompleteWhenHumanIsSensed);
+			p_Writer.Write(CycleTargets);
+			p_Writer.Write(RandomTargetOrder);
+		}
 	}
 }

@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 8)]
-	public class AnimationDrivenBinding
+	public class AnimationDrivenBinding :
+		EbxSerializable
 	{
 		[ContainerField(0), JsonProperty(Order = 0)]
 		public AntRef Velocity { get; set; } = new();
@@ -26,5 +28,11 @@ namespace fb
 		[ContainerField(4), JsonProperty(Order = 4)]
 		public AntRef EnableCollision { get; set; } = new();
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			Velocity.Serialize(p_Writer, p_EbxWriter);
+			EnableCollision.Serialize(p_Writer, p_EbxWriter);
+		}
 	}
 }

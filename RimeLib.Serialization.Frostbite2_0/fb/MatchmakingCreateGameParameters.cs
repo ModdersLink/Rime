@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 32)]
-	public class MatchmakingCreateGameParameters
+	public class MatchmakingCreateGameParameters :
+		EbxSerializable
 	{
 		[ContainerField(0), JsonProperty(Order = 0)]
 		public MatchmakingNetworkTopology GameTopology { get; set; } = new();
@@ -38,5 +40,20 @@ namespace fb
 		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
 		public uint QueueCapacity { get; set; }
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write((int) GameTopology);
+			p_Writer.Write((int) PeerMode);
+			p_Writer.Write((int) VoipTopology);
+			Settings.Serialize(p_Writer, p_EbxWriter);
+			(RimeWriter Writer, uint ArrayIndex) s_Attributes = p_EbxWriter.GetArrayWriter(Attributes.GetType(), Attributes.Count);
+			p_Writer.Write(s_Attributes.ArrayIndex);
+			foreach (var s_Entry in Attributes)
+			{
+				s_Entry.Serialize(s_Attributes.Writer, p_EbxWriter);
+			}
+			p_Writer.Write(QueueCapacity);
+		}
 	}
 }

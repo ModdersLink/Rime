@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 272)]
-	public class BulletEntityData : 
+	public class BulletEntityData :
 		MeshProjectileEntityData
 	{
 		[ContainerField(192), LayoutImmutable, Blittable, JsonProperty(Order = 192)]
@@ -81,5 +82,30 @@ namespace fb
 		[ContainerField(262), LayoutImmutable, Blittable, JsonProperty(Order = 262)]
 		public bool StopTrailEffectOnUnspawn { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(Stamina);
+			p_Writer.Write(p_EbxWriter.WriteImport(FlyBySound));
+			p_Writer.Write(p_EbxWriter.WriteImport(DudExplosion));
+			p_Writer.Write(Gravity);
+			p_Writer.Write(ImpactImpulse);
+			p_Writer.Write(DetonationTimeVariation);
+			p_Writer.Write(VehicleDetonationRadius);
+			p_Writer.Write(VehicleDetonationActivationDelay);
+			p_Writer.Write(FlyBySoundRadius);
+			p_Writer.Write(FlyBySoundSpeed);
+			p_Writer.Write(FirstFrameTravelDistance);
+			p_Writer.Write(DistributeDamageOverTime);
+			p_Writer.Write(StartDamage);
+			p_Writer.Write(EndDamage);
+			p_Writer.Write(DamageFalloffStartDistance);
+			p_Writer.Write(DamageFalloffEndDistance);
+			p_Writer.Write(TimeToArmExplosion);
+			p_Writer.Write(HasVehicleDetonation);
+			p_Writer.Write(InstantHit);
+			p_Writer.Write(StopTrailEffectOnUnspawn);
+			p_Writer.WriteNullBytes(9);
+		}
 	}
 }

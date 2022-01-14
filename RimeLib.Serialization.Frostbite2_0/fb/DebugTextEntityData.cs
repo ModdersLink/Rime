@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 112)]
-	public class DebugTextEntityData : 
+	public class DebugTextEntityData :
 		SpatialEntityData
 	{
 		[ContainerField(80), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 80)]
@@ -45,5 +46,17 @@ namespace fb
 		[ContainerField(111), LayoutImmutable, Blittable, JsonProperty(Order = 111)]
 		public bool ScaleWithDistance { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			TextColor.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteString(DebugText));
+			p_Writer.Write((int) Realm);
+			p_Writer.Write(Scale);
+			p_Writer.Write(Visible);
+			p_Writer.Write(Centered);
+			p_Writer.Write(DepthTest);
+			p_Writer.Write(ScaleWithDistance);
+		}
 	}
 }

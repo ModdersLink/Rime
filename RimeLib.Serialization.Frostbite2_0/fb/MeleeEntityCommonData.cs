@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 100)]
-	public class MeleeEntityCommonData : 
+	public class MeleeEntityCommonData :
 		Asset
 	{
 		[ContainerField(12), JsonProperty(Order = 12)]
@@ -60,5 +61,23 @@ namespace fb
 		[ContainerField(96), LayoutImmutable, Blittable, JsonProperty(Order = 96)]
 		public bool EnableAbortPossibility { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			MeleeBinding.Serialize(p_Writer, p_EbxWriter);
+			MeleeCommonBinding.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(TriggerDelay);
+			p_Writer.Write(DefendWindow);
+			p_Writer.Write(KillDelay);
+			p_Writer.Write(MeleeEndDelay);
+			p_Writer.Write(InvalidMeleeAttackZone);
+			p_Writer.Write(MeleeAttackDistance);
+			p_Writer.Write(MaxAttackHeightDifference);
+			p_Writer.Write(KillDamage);
+			p_Writer.Write(p_EbxWriter.WriteImport(ProneAttackType));
+			p_Writer.Write(p_EbxWriter.WriteImport(CrouchAttackType));
+			p_Writer.Write(EnableAbortPossibility);
+			p_Writer.WriteNullBytes(3);
+		}
 	}
 }

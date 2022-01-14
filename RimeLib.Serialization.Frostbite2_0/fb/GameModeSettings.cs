@@ -14,15 +14,26 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 16)]
-	public class GameModeSettings : 
+	public class GameModeSettings :
 		SystemSettings
 	{
 		[ContainerField(12), JsonProperty(Order = 12)]
 		public List<GameModeInformation> Information { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			(RimeWriter Writer, uint ArrayIndex) s_Information = p_EbxWriter.GetArrayWriter(Information.GetType(), Information.Count);
+			p_Writer.Write(s_Information.ArrayIndex);
+			foreach (var s_Entry in Information)
+			{
+				s_Entry.Serialize(s_Information.Writer, p_EbxWriter);
+			}
+		}
 	}
 }

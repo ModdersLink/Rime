@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 32)]
-	public class FriendZoneEntityData : 
+	public class FriendZoneEntityData :
 		EntityData
 	{
 		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
@@ -39,5 +40,16 @@ namespace fb
 		[ContainerField(29), LayoutImmutable, Blittable, JsonProperty(Order = 29)]
 		public bool InitialZoneRandomized { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(EnemyWeight);
+			p_Writer.Write(FriendlyWeight);
+			p_Writer.Write(CorpsTimeout);
+			p_Writer.Write(CorpsWeight);
+			p_Writer.Write(CountCorpsesForAllTeams);
+			p_Writer.Write(InitialZoneRandomized);
+			p_Writer.WriteNullBytes(2);
+		}
 	}
 }

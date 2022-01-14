@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 20)]
-	public class SupplyUnitSphereData
+	public class SupplyUnitSphereData :
+		EbxSerializable
 	{
 		[ContainerField(0), LayoutImmutable, Blittable, JsonProperty(Order = 0)]
 		public float Radius { get; set; }
@@ -35,5 +37,15 @@ namespace fb
 		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
 		public bool InfiniteCapacity { get; set; }
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(Radius);
+			p_Writer.Write(SupplyIncSpeed);
+			p_Writer.Write(SupplyPointsCapacity);
+			p_Writer.Write(SupplyPointsRefillSpeed);
+			p_Writer.Write(InfiniteCapacity);
+			p_Writer.WriteNullBytes(3);
+		}
 	}
 }

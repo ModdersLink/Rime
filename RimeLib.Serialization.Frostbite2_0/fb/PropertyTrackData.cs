@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 16)]
-	public class PropertyTrackData : 
+	public class PropertyTrackData :
 		DataContainer
 	{
 		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
@@ -27,5 +28,16 @@ namespace fb
 		[ContainerField(12), JsonProperty(Order = 12)]
 		public List<int> Times { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(Id);
+			(RimeWriter Writer, uint ArrayIndex) s_Times = p_EbxWriter.GetArrayWriter(Times.GetType(), Times.Count);
+			p_Writer.Write(s_Times.ArrayIndex);
+			foreach (var s_Entry in Times)
+			{
+				s_Times.Writer.Write(s_Entry);
+			}
+		}
 	}
 }

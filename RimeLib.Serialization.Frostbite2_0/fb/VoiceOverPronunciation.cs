@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 24)]
-	public class VoiceOverPronunciation : 
+	public class VoiceOverPronunciation :
 		DataContainer
 	{
 		[ContainerField(8), LayoutImmutable, JsonProperty(Order = 8)]
@@ -33,5 +34,13 @@ namespace fb
 		[ContainerField(20), JsonProperty(Order = 20)]
 		public VoiceOverPronunciationFallback SecondaryFallback { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteString(Name));
+			p_Writer.Write(p_EbxWriter.WriteImport(PrimaryLanguage));
+			p_Writer.Write(p_EbxWriter.WriteImport(SecondaryLanguage));
+			p_Writer.Write((int) SecondaryFallback);
+		}
 	}
 }

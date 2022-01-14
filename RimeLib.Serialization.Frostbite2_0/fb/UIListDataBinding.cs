@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 104)]
-	public class UIListDataBinding : 
+	public class UIListDataBinding :
 		UIDataBinding
 	{
 		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
@@ -87,5 +88,37 @@ namespace fb
 		[ContainerField(102), LayoutImmutable, Blittable, JsonProperty(Order = 102)]
 		public bool KeepScrollOffset { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(ListIndex);
+			ListQuery.Serialize(p_Writer, p_EbxWriter);
+			(RimeWriter Writer, uint ArrayIndex) s_StaticItems = p_EbxWriter.GetArrayWriter(StaticItems.GetType(), StaticItems.Count);
+			p_Writer.Write(s_StaticItems.ArrayIndex);
+			foreach (var s_Entry in StaticItems)
+			{
+				s_Entry.Serialize(s_StaticItems.Writer, p_EbxWriter);
+			}
+			p_Writer.Write((int) EmptyRowType);
+			DefaultHighlightedRow.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write((int) RowType);
+			p_Writer.Write((int) NavigationType);
+			NavigationTypeSource.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(RowSpacing);
+			p_Writer.Write((int) UnFocusMode);
+			p_Writer.Write(p_EbxWriter.WriteString(DisabledRows));
+			p_Writer.Write(ClearListAtNavigationEvent);
+			p_Writer.Write(SendIndexWithEvent);
+			p_Writer.Write(ScreenRotationEnabled);
+			p_Writer.Write(Use3DSelection);
+			p_Writer.Write(FireHighlightOnMouseOut);
+			p_Writer.Write(DataIncludesButtonLayout);
+			p_Writer.Write(Visible);
+			p_Writer.Write(SpinnerEnabled);
+			p_Writer.Write(UseScrollBar);
+			p_Writer.Write(HighLightOnUpdate);
+			p_Writer.Write(KeepScrollOffset);
+			p_Writer.WriteNullBytes(1);
+		}
 	}
 }

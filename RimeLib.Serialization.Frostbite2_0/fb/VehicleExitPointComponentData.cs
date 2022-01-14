@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 128)]
-	public class VehicleExitPointComponentData : 
+	public class VehicleExitPointComponentData :
 		ComponentData
 	{
 		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 96)]
@@ -39,5 +40,16 @@ namespace fb
 		[ContainerField(125), LayoutImmutable, Blittable, JsonProperty(Order = 125)]
 		public bool CheckForVehicleOverrun { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			Impulse.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(TerrainHeight);
+			p_Writer.Write(Ordinal);
+			p_Writer.Write(Velocity);
+			p_Writer.Write(InheritCameraDirection);
+			p_Writer.Write(CheckForVehicleOverrun);
+			p_Writer.WriteNullBytes(2);
+		}
 	}
 }

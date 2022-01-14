@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 96)]
-	public class UIRenderCompData : 
+	public class UIRenderCompData :
 		UIComponentData
 	{
 		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 32)]
@@ -45,5 +46,19 @@ namespace fb
 		[ContainerField(84), LayoutImmutable, Blittable, JsonProperty(Order = 84)]
 		public float AlphaMax { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(4);
+			BackgroundRect1.Serialize(p_Writer, p_EbxWriter);
+			BackgroundRect0.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(BgTexture2));
+			p_Writer.Write(p_EbxWriter.WriteImport(BgTexture1));
+			p_Writer.Write(AlphaMin);
+			p_Writer.Write(AlphaAnimationSpeed);
+			p_Writer.Write(AlphaOffset);
+			p_Writer.Write(AlphaMax);
+			p_Writer.WriteNullBytes(8);
+		}
 	}
 }

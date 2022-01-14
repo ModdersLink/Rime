@@ -14,15 +14,22 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 56)]
-	public class SyncedSequenceEntityData : 
+	public class SyncedSequenceEntityData :
 		SequenceEntityData
 	{
 		[ContainerField(52), LayoutImmutable, Blittable, JsonProperty(Order = 52)]
 		public bool InterpolateTime { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(InterpolateTime);
+			p_Writer.WriteNullBytes(3);
+		}
 	}
 }

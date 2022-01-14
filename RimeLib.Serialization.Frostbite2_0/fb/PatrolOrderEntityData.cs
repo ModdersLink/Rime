@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 56)]
-	public class PatrolOrderEntityData : 
+	public class PatrolOrderEntityData :
 		BFOrderEntityData
 	{
 		[ContainerField(40), JsonProperty(Order = 40)]
@@ -36,5 +37,15 @@ namespace fb
 		[ContainerField(53), LayoutImmutable, Blittable, JsonProperty(Order = 53)]
 		public bool UsePathFinding { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write((int) TypeOfRoute);
+			p_Writer.Write((int) CombatMode);
+			p_Writer.Write(p_EbxWriter.WriteImport(StartingWaypoint));
+			p_Writer.Write(StartAtGeometricallyClosestWaypoint);
+			p_Writer.Write(UsePathFinding);
+			p_Writer.WriteNullBytes(2);
+		}
 	}
 }

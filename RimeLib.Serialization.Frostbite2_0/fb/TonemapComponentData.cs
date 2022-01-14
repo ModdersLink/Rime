@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 160)]
-	public class TonemapComponentData : 
+	public class TonemapComponentData :
 		ComponentData
 	{
 		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 96)]
@@ -51,5 +52,20 @@ namespace fb
 		[ContainerField(144), LayoutImmutable, Blittable, JsonProperty(Order = 144)]
 		public bool ChromostereopsisEnable { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			BloomScale.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write((int) Realm);
+			p_Writer.Write((int) TonemapMethod);
+			p_Writer.Write(MinExposure);
+			p_Writer.Write(MiddleGray);
+			p_Writer.Write(ExposureAdjustTime);
+			p_Writer.Write(MaxExposure);
+			p_Writer.Write(ChromostereopsisOffset);
+			p_Writer.Write(ChromostereopsisScale);
+			p_Writer.Write(ChromostereopsisEnable);
+			p_Writer.WriteNullBytes(15);
+		}
 	}
 }

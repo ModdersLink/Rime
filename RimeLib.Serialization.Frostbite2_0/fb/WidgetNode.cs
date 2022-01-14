@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 64)]
-	public class WidgetNode : 
+	public class WidgetNode :
 		UINodeData
 	{
 		[ContainerField(20), JsonProperty(Order = 20)]
@@ -54,5 +55,36 @@ namespace fb
 		[ContainerField(60), LayoutImmutable, Blittable, JsonProperty(Order = 60)]
 		public bool AlwaysInFocus { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(WidgetAsset));
+			p_Writer.Write(FocusIndex);
+			p_Writer.Write(ZDepthLevel);
+			p_Writer.Write((int) VerticalAlign);
+			p_Writer.Write((int) HorisontalAlign);
+			p_Writer.Write(p_EbxWriter.WriteImport(DataBinding));
+			(RimeWriter Writer, uint ArrayIndex) s_WidgetProperties = p_EbxWriter.GetArrayWriter(WidgetProperties.GetType(), WidgetProperties.Count);
+			p_Writer.Write(s_WidgetProperties.ArrayIndex);
+			foreach (var s_Entry in WidgetProperties)
+			{
+				s_Entry.Serialize(s_WidgetProperties.Writer, p_EbxWriter);
+			}
+			p_Writer.Write(p_EbxWriter.WriteString(InstanceName));
+			(RimeWriter Writer, uint ArrayIndex) s_Inputs = p_EbxWriter.GetArrayWriter(Inputs.GetType(), Inputs.Count);
+			p_Writer.Write(s_Inputs.ArrayIndex);
+			foreach (var s_Entry in Inputs)
+			{
+				s_Inputs.Writer.Write(p_EbxWriter.WriteImport(s_Entry));
+			}
+			(RimeWriter Writer, uint ArrayIndex) s_Outputs = p_EbxWriter.GetArrayWriter(Outputs.GetType(), Outputs.Count);
+			p_Writer.Write(s_Outputs.ArrayIndex);
+			foreach (var s_Entry in Outputs)
+			{
+				s_Outputs.Writer.Write(p_EbxWriter.WriteImport(s_Entry));
+			}
+			p_Writer.Write(AlwaysInFocus);
+			p_Writer.WriteNullBytes(3);
+		}
 	}
 }

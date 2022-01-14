@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 288)]
-	public class VehicleConfigData : 
+	public class VehicleConfigData :
 		DataContainer
 	{
 		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
@@ -150,5 +151,64 @@ namespace fb
 		[ContainerField(276), LayoutImmutable, Blittable, JsonProperty(Order = 276)]
 		public bool UseDownForce { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(8);
+			CenterOfMass.Serialize(p_Writer, p_EbxWriter);
+			CenterOfMassHandlingOffset.Serialize(p_Writer, p_EbxWriter);
+			InertiaModifier.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(AeroDynamicPhysics));
+			p_Writer.Write(p_EbxWriter.WriteImport(ParachutePhysics));
+			p_Writer.Write(p_EbxWriter.WriteImport(MotorbikePhysics));
+			p_Writer.Write(p_EbxWriter.WriteImport(MotionDamping));
+			Input.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(FloatPhysics));
+			p_Writer.Write(p_EbxWriter.WriteImport(Stabilizer));
+			(RimeWriter Writer, uint ArrayIndex) s_Stabilizers = p_EbxWriter.GetArrayWriter(Stabilizers.GetType(), Stabilizers.Count);
+			p_Writer.Write(s_Stabilizers.ArrayIndex);
+			foreach (var s_Entry in Stabilizers)
+			{
+				s_Entry.Serialize(s_Stabilizers.Writer, p_EbxWriter);
+			}
+			(RimeWriter Writer, uint ArrayIndex) s_ConstantForce = p_EbxWriter.GetArrayWriter(ConstantForce.GetType(), ConstantForce.Count);
+			p_Writer.Write(s_ConstantForce.ArrayIndex);
+			foreach (var s_Entry in ConstantForce)
+			{
+				s_Entry.Serialize(s_ConstantForce.Writer, p_EbxWriter);
+			}
+			p_Writer.Write((int) VehicleModeAtReset);
+			p_Writer.Write(BodyMass);
+			p_Writer.Write(GravityModifier);
+			p_Writer.Write(YawMin);
+			p_Writer.Write(YawMax);
+			p_Writer.Write(DownForceBaseFactor);
+			p_Writer.Write(DownForceWheelFactor);
+			p_Writer.Write(VehicleModeChangeEnteringTime);
+			p_Writer.Write(VehicleModeChangeStartingTime);
+			p_Writer.Write(VehicleModeChangeStoppingTime);
+			p_Writer.Write(VehicleModeChangeLeavingTime);
+			p_Writer.Write(StandStillLowSpeedTimeLimit);
+			p_Writer.Write(StaticFrictionBreakCollisionMod);
+			p_Writer.Write(StaticFrictionBreakVelocityMod);
+			p_Writer.Write(CoefficientOfAirFriction);
+			p_Writer.Write(AirDensity);
+			p_Writer.Write(AirDragArea);
+			p_Writer.Write(WindResistanceBaseFactor);
+			p_Writer.Write(WindResistanceVelocityFactor);
+			p_Writer.Write(WindResistanceVelocityFactorMin);
+			p_Writer.Write(WindResistanceVelocityFactorMax);
+			AntiRollBars.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(UseDownForceWheelFactor);
+			p_Writer.Write(UseGearbox);
+			p_Writer.Write(UseStandStillBrake);
+			p_Writer.Write(UseStandStillSleep);
+			p_Writer.Write(UseTurnAroundForce);
+			p_Writer.Write(UseMotorcycleControl);
+			p_Writer.Write(InvertPitchAllowed);
+			p_Writer.Write(UseWindResistance);
+			p_Writer.Write(UseDownForce);
+			p_Writer.WriteNullBytes(11);
+		}
 	}
 }

@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 192)]
-	public class SoldierAimAssistData : 
+	public class SoldierAimAssistData :
 		GameDataContainer
 	{
 		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
@@ -105,5 +106,54 @@ namespace fb
 		[ContainerField(185), LayoutImmutable, Blittable, JsonProperty(Order = 185)]
 		public bool UsePitchAcceleration { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(8);
+			EyePosOffset.Serialize(p_Writer, p_EbxWriter);
+			StickyBoxScale.Serialize(p_Writer, p_EbxWriter);
+			SnapDistanceScale.Serialize(p_Writer, p_EbxWriter);
+			SnapBoxScale.Serialize(p_Writer, p_EbxWriter);
+			StickyDistanceScale.Serialize(p_Writer, p_EbxWriter);
+			MaxAcceleration.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(AccelerationDamping);
+			p_Writer.Write(AccelerationInputThreshold);
+			p_Writer.Write(AccelerationMultiplier);
+			p_Writer.Write(SquaredAcceleration);
+			p_Writer.Write(YawSpeedStrength);
+			(RimeWriter Writer, uint ArrayIndex) s_ZoomedInputPolynomial = p_EbxWriter.GetArrayWriter(ZoomedInputPolynomial.GetType(), ZoomedInputPolynomial.Count);
+			p_Writer.Write(s_ZoomedInputPolynomial.ArrayIndex);
+			foreach (var s_Entry in ZoomedInputPolynomial)
+			{
+				s_ZoomedInputPolynomial.Writer.Write(s_Entry);
+			}
+			p_Writer.Write(AccelerationTimeThreshold);
+			(RimeWriter Writer, uint ArrayIndex) s_AttractDistanceFallOff = p_EbxWriter.GetArrayWriter(AttractDistanceFallOff.GetType(), AttractDistanceFallOff.Count);
+			p_Writer.Write(s_AttractDistanceFallOff.ArrayIndex);
+			foreach (var s_Entry in AttractDistanceFallOff)
+			{
+				s_AttractDistanceFallOff.Writer.Write(s_Entry);
+			}
+			p_Writer.Write(AttractUserInputMultiplier);
+			p_Writer.Write(AttractOwnSpeedInfluence);
+			p_Writer.Write(AttractTargetSpeedInfluence);
+			p_Writer.Write(AttractOwnRequiredMovementForMaximumAttract);
+			p_Writer.Write(AttractStartInputThreshold);
+			p_Writer.Write(AttractZoomingMultiplier);
+			p_Writer.Write(AttractZoomingPostTime);
+			p_Writer.Write(AttractYawStrength);
+			p_Writer.Write(AttractPitchStrength);
+			p_Writer.Write(PitchSpeedStrength);
+			p_Writer.Write(AttractSoftZone);
+			(RimeWriter Writer, uint ArrayIndex) s_InputPolynomial = p_EbxWriter.GetArrayWriter(InputPolynomial.GetType(), InputPolynomial.Count);
+			p_Writer.Write(s_InputPolynomial.ArrayIndex);
+			foreach (var s_Entry in InputPolynomial)
+			{
+				s_InputPolynomial.Writer.Write(s_Entry);
+			}
+			p_Writer.Write(UseYawAcceleration);
+			p_Writer.Write(UsePitchAcceleration);
+			p_Writer.WriteNullBytes(6);
+		}
 	}
 }

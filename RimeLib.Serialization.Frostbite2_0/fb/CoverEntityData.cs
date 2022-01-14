@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 96)]
-	public class CoverEntityData : 
+	public class CoverEntityData :
 		SpatialEntityData
 	{
 		[ContainerField(80), LayoutImmutable, Blittable, JsonProperty(Order = 80)]
@@ -39,5 +40,21 @@ namespace fb
 		[ContainerField(94), LayoutImmutable, Blittable, JsonProperty(Order = 94)]
 		public bool LeftEdgeBlocked { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(Width);
+			p_Writer.Write((int) CoverType);
+			(RimeWriter Writer, uint ArrayIndex) s_Slots = p_EbxWriter.GetArrayWriter(Slots.GetType(), Slots.Count);
+			p_Writer.Write(s_Slots.ArrayIndex);
+			foreach (var s_Entry in Slots)
+			{
+				s_Entry.Serialize(s_Slots.Writer, p_EbxWriter);
+			}
+			p_Writer.Write(RightEdgeBlocked);
+			p_Writer.Write(TopBlocked);
+			p_Writer.Write(LeftEdgeBlocked);
+			p_Writer.WriteNullBytes(1);
+		}
 	}
 }

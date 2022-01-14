@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 100)]
-	public class BFAISettingsData : 
+	public class BFAISettingsData :
 		AISettingsData
 	{
 		[ContainerField(80), JsonProperty(Order = 80)]
@@ -36,5 +37,14 @@ namespace fb
 		[ContainerField(96), JsonProperty(Order = 96)]
 		public CtrRef<CombatConstantData> CombatConstants { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(MovementConstants));
+			p_Writer.Write(p_EbxWriter.WriteImport(TurretControlConstants));
+			p_Writer.Write(p_EbxWriter.WriteImport(SearchAndDestroyConstants));
+			p_Writer.Write(p_EbxWriter.WriteImport(FollowConstants));
+			p_Writer.Write(p_EbxWriter.WriteImport(CombatConstants));
+		}
 	}
 }

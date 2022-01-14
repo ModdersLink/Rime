@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 8)]
-	public class PathfindingObjectCategoryRepresentation
+	public class PathfindingObjectCategoryRepresentation :
+		EbxSerializable
 	{
 		[ContainerField(0), JsonProperty(Order = 0)]
 		public CtrRef<PathfindingObjectCategoryAsset> Category { get; set; } = new();
@@ -26,5 +28,11 @@ namespace fb
 		[ContainerField(4), JsonProperty(Order = 4)]
 		public PathfindingRepresentation Representation { get; set; } = new();
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(Category));
+			p_Writer.Write((int) Representation);
+		}
 	}
 }

@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 28)]
-	public class OnlineConfiguration : 
+	public class OnlineConfiguration :
 		Asset
 	{
 		[ContainerField(12), JsonProperty(Order = 12)]
@@ -33,5 +34,13 @@ namespace fb
 		[ContainerField(24), JsonProperty(Order = 24)]
 		public CtrRef<ChatSettings> Chat { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write((int) Backend);
+			p_Writer.Write(p_EbxWriter.WriteImport(Provider));
+			p_Writer.Write(p_EbxWriter.WriteImport(RichPresence));
+			p_Writer.Write(p_EbxWriter.WriteImport(Chat));
+		}
 	}
 }

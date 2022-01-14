@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 416)]
-	public class GlobalPostProcessSettings : 
+	public class GlobalPostProcessSettings :
 		DataContainer
 	{
 		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
@@ -351,5 +352,121 @@ namespace fb
 		[ContainerField(409), LayoutImmutable, Blittable, JsonProperty(Order = 409)]
 		public bool LensScopeFilterEnable { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(8);
+			Brightness.Serialize(p_Writer, p_EbxWriter);
+			ForceBloomScale.Serialize(p_Writer, p_EbxWriter);
+			ForceVignetteColor.Serialize(p_Writer, p_EbxWriter);
+			Contrast.Serialize(p_Writer, p_EbxWriter);
+			Saturation.Serialize(p_Writer, p_EbxWriter);
+			FilmGrainTextureScale.Serialize(p_Writer, p_EbxWriter);
+			ForceVignetteScale.Serialize(p_Writer, p_EbxWriter);
+			FilmGrainColorScale.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(Ps3EdgeMlaaJobPriority);
+			p_Writer.Write(BloomBlurIterationCount);
+			p_Writer.Write(DebugModeStep);
+			p_Writer.Write((int) BloomBlurFilter);
+			p_Writer.Write(LdrBloomRange);
+			p_Writer.Write((int) DebugMode);
+			p_Writer.Write(UserBrightnessMin);
+			p_Writer.Write(UIBrightnessNorm);
+			p_Writer.Write(Ps3EdgeMlaaJobCount);
+			p_Writer.Write(Ps3EdgeMlaaAbsoluteThreshold);
+			p_Writer.Write(BloomPyramidLevelCount);
+			p_Writer.Write(BloomPyramidFinalLevel);
+			p_Writer.Write(UserBrightnessMax);
+			p_Writer.Write(UserBrightnessMulScale);
+			p_Writer.Write(UserBrightnessAddScale);
+			p_Writer.Write(DownsampleAverageStartMipmap);
+			p_Writer.Write(Ps3EdgeMlaaThresholdFactor);
+			p_Writer.Write(Ps3EdgeMlaaThresholdBase);
+			p_Writer.Write(Ps3TiledLdrMipmapCount);
+			p_Writer.Write(Ps3TiledFloatMipmapCount);
+			p_Writer.Write(Ps3TiledBloomMipmapCount);
+			p_Writer.Write((int) HbaoGaussianBlurSize);
+			p_Writer.Write(ForceExposure);
+			p_Writer.Write(ForceBlurAdd);
+			p_Writer.Write(ForceDofEnable);
+			p_Writer.Write(ForceDofFocusDistance);
+			p_Writer.Write(ForceDofNearDistanceScale);
+			p_Writer.Write(ForceDofFarDistanceScale);
+			p_Writer.Write(ForceDofScale);
+			p_Writer.Write(ForceDofBlurFilterDeviation);
+			p_Writer.Write(HbaoTemporalFilterMaxNumFrames);
+			p_Writer.Write(HbaoForceVendor);
+			p_Writer.Write(ForceVignetteExponent);
+			p_Writer.Write(HbaoTemporalFilterThreshold);
+			p_Writer.Write(ForceTonemapMethod);
+			p_Writer.Write(LUTGammaR);
+			p_Writer.Write(LUTGammaG);
+			p_Writer.Write(HbaoTemporalFilterThreshold2);
+			p_Writer.Write(ForceChromostereopsisEnable);
+			p_Writer.Write(ForceChromostereopsisOffset);
+			p_Writer.Write(ForceChromostereopsisScale);
+			p_Writer.Write(HbaoBilateralBlurRadius);
+			p_Writer.Write(ForceMiddleGray);
+			p_Writer.Write(LUTGammaB);
+			p_Writer.Write(LUTGammaCurbOffset);
+			p_Writer.Write(HbaoBilateralBlurSharpness);
+			p_Writer.Write(HbaoRandomTextureWidth);
+			p_Writer.Write(LensScopeFilterColorScale);
+			p_Writer.Write(HbaoStepCount);
+			p_Writer.Write(HbaoMaxFootprintRadius);
+			p_Writer.Write(HbaoDirCount);
+			p_Writer.Write(Hue);
+			p_Writer.Write(HbaoQuality);
+			p_Writer.Write(HbaoRandomDirVariationCount);
+			p_Writer.Write(ForceDiffusionDofPlaneInFocus);
+			p_Writer.Write(DiffusionDofLuminance);
+			p_Writer.Write(HbaoTemporalFilterDebugMode);
+			p_Writer.Write(ForceDiffusionDofAperture);
+			p_Writer.Write(ForceDiffusionDofFocalLength);
+			p_Writer.Write((int) DynamicAOMethod);
+			p_Writer.Write(DrawDebugInfo);
+			p_Writer.Write(ColorGradingForceUpdateAlways);
+			p_Writer.Write(BloomBlurEnable);
+			p_Writer.Write(HdrBlurEnable);
+			p_Writer.Write(BlurBlendEnable);
+			p_Writer.Write(DownsampleAverageFromBloomEnable);
+			p_Writer.Write(FilmGrainEnable);
+			p_Writer.Write(Ldr16BitBloomEnable);
+			p_Writer.Write(DynamicAOEnable);
+			p_Writer.Write(DiffusionDofEnable);
+			p_Writer.Write(HbaoHalfResEnable);
+			p_Writer.Write(HbaoHalfResDepthEnable);
+			p_Writer.Write(HbaoVectorizedEnable);
+			p_Writer.Write(Ps3CompressedRenderTargetsEnable);
+			p_Writer.Write(HdrBloomEnable);
+			p_Writer.Write(FilmGrainRandomEnable);
+			p_Writer.Write(DirectExposureEnable);
+			p_Writer.Write(ExposureClampEnable);
+			p_Writer.Write(FilmGrainLinearFilteringEnable);
+			p_Writer.Write(HbaoBilateralBlurEnable);
+			p_Writer.Write(ColorGradingEnable);
+			p_Writer.Write(ColorTransformEnable);
+			p_Writer.Write(HbaoBilateralBlurCsEnable);
+			p_Writer.Write(HbaoTemporalFilterEnable);
+			p_Writer.Write(QuarterDownsamplingEnable);
+			p_Writer.Write(DrawDebugUserBrightnessLUT);
+			p_Writer.Write(BloomPyramidAttenuateEnable);
+			p_Writer.Write(DownsampleBeforeBlurEnable);
+			p_Writer.Write(HbaoGaussianBlurEnable);
+			p_Writer.Write(HbaoGaussianBlurHalfResEnable);
+			p_Writer.Write(BloomPyramidEnable);
+			p_Writer.Write(UserBrightnessLUTEnable);
+			p_Writer.Write(Ps3EdgeMlaaEnable);
+			p_Writer.Write(Ps3EdgeMlaaCopyOnly);
+			p_Writer.Write(Ps3EdgeMlaaShowEdges);
+			p_Writer.Write(Ps3EdgeMlaaRelativeEdgeDetection);
+			p_Writer.Write(Ps3EdgeMlaaGpuBlockEnable);
+			p_Writer.Write(Ps3BackBufferAsLdrTargetEnable);
+			p_Writer.Write(DownsampleLogAverageEnable);
+			p_Writer.Write(BloomQuarterResEnable);
+			p_Writer.Write(BloomEnable);
+			p_Writer.Write(LensScopeFilterEnable);
+			p_Writer.WriteNullBytes(6);
+		}
 	}
 }

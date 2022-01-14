@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 128)]
-	public class ClearAreaTriggerEntityData : 
+	public class ClearAreaTriggerEntityData :
 		TriggerEntityData
 	{
 		[ContainerField(112), JsonProperty(Order = 112)]
@@ -48,5 +49,19 @@ namespace fb
 		[ContainerField(123), LayoutImmutable, Blittable, JsonProperty(Order = 123)]
 		public bool RemoveSoldiers { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write((int) TeamOfImmortalSoldiers);
+			p_Writer.Write(RemoveBangers);
+			p_Writer.Write(RemoveVehicles);
+			p_Writer.Write(RemoveEffects);
+			p_Writer.Write(RemoveStaticModels);
+			p_Writer.Write(RemoveDebrisClusters);
+			p_Writer.Write(ExcludeImmortalSoldiersInTeam);
+			p_Writer.Write(RemoveMeshProxies);
+			p_Writer.Write(RemoveSoldiers);
+			p_Writer.WriteNullBytes(4);
+		}
 	}
 }

@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 16)]
-	public class SkeletonCollisionData : 
+	public class SkeletonCollisionData :
 		DataContainer
 	{
 		[ContainerField(8), JsonProperty(Order = 8)]
@@ -27,5 +28,16 @@ namespace fb
 		[ContainerField(12), JsonProperty(Order = 12)]
 		public List<BoneCollisionData> BoneCollisionData { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(SkeletonAsset));
+			(RimeWriter Writer, uint ArrayIndex) s_BoneCollisionData = p_EbxWriter.GetArrayWriter(BoneCollisionData.GetType(), BoneCollisionData.Count);
+			p_Writer.Write(s_BoneCollisionData.ArrayIndex);
+			foreach (var s_Entry in BoneCollisionData)
+			{
+				s_Entry.Serialize(s_BoneCollisionData.Writer, p_EbxWriter);
+			}
+		}
 	}
 }

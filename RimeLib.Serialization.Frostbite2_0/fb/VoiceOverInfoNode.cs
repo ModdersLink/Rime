@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 24)]
-	public class VoiceOverInfoNode : 
+	public class VoiceOverInfoNode :
 		VoiceOverExpressionNode
 	{
 		[ContainerField(8), JsonProperty(Order = 8)]
@@ -33,5 +34,13 @@ namespace fb
 		[ContainerField(20), JsonProperty(Order = 20)]
 		public CtrRef<VoiceOverObject> ExpectedType { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(Object));
+			p_Writer.Write(p_EbxWriter.WriteImport(Value));
+			p_Writer.Write(p_EbxWriter.WriteImport(Field));
+			p_Writer.Write(p_EbxWriter.WriteImport(ExpectedType));
+		}
 	}
 }

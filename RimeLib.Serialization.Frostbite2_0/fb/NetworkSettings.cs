@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 72)]
-	public class NetworkSettings : 
+	public class NetworkSettings :
 		DataContainer
 	{
 		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
@@ -75,5 +76,28 @@ namespace fb
 		[ContainerField(70), LayoutImmutable, Blittable, JsonProperty(Order = 70)]
 		public bool IncrementServerPortOnFail { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(ProtocolVersion);
+			p_Writer.Write(p_EbxWriter.WriteString(TitleId));
+			p_Writer.Write(ClientPort);
+			p_Writer.Write(ServerPort);
+			p_Writer.Write(MaxGhostCount);
+			p_Writer.Write(MaxClientCount);
+			p_Writer.Write(MaxClientFrameSize);
+			p_Writer.Write(MaxServerFrameSize);
+			p_Writer.Write(p_EbxWriter.WriteString(XlspAddress));
+			p_Writer.Write(p_EbxWriter.WriteString(ServerAddress));
+			p_Writer.Write(p_EbxWriter.WriteString(ClientConnectionDebugFilePrefix));
+			p_Writer.Write(p_EbxWriter.WriteString(ServerConnectionDebugFilePrefix));
+			p_Writer.Write(TimeNudgeGhostFrequencyFactor);
+			p_Writer.Write(TimeNudgeBias);
+			p_Writer.Write(ConnectTimeout);
+			p_Writer.Write(UseFrameManager);
+			p_Writer.Write(TimeSyncEnabled);
+			p_Writer.Write(IncrementServerPortOnFail);
+			p_Writer.WriteNullBytes(1);
+		}
 	}
 }

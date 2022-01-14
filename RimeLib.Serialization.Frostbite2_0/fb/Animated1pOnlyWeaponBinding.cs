@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 16)]
-	public class Animated1pOnlyWeaponBinding
+	public class Animated1pOnlyWeaponBinding :
+		EbxSerializable
 	{
 		[ContainerField(0), JsonProperty(Order = 0)]
 		public AntRef UndeployFinished { get; set; } = new();
@@ -32,5 +34,13 @@ namespace fb
 		[ContainerField(12), JsonProperty(Order = 12)]
 		public AntRef HideWeapon1p { get; set; } = new();
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			UndeployFinished.Serialize(p_Writer, p_EbxWriter);
+			CameraFreeWeight.Serialize(p_Writer, p_EbxWriter);
+			Deploy1P.Serialize(p_Writer, p_EbxWriter);
+			HideWeapon1p.Serialize(p_Writer, p_EbxWriter);
+		}
 	}
 }

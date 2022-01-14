@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 160)]
-	public class EnlightenLightProbeSet
+	public class EnlightenLightProbeSet :
+		EbxSerializable
 	{
 		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 0)]
 		public LinearTransform Transform { get; set; } = new();
@@ -59,5 +61,38 @@ namespace fb
 		[ContainerField(156), LayoutImmutable, Blittable, JsonProperty(Order = 156)]
 		public bool StaticProbeSet { get; set; }
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			Transform.Serialize(p_Writer, p_EbxWriter);
+			BoundingBox.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(SizeX);
+			p_Writer.Write(SizeZ);
+			p_Writer.Write(SizeY);
+			p_Writer.Write(SystemId);
+			p_Writer.Write(BlendDistance);
+			p_Writer.Write(Priority);
+			(RimeWriter Writer, uint ArrayIndex) s_Positions = p_EbxWriter.GetArrayWriter(Positions.GetType(), Positions.Count);
+			p_Writer.Write(s_Positions.ArrayIndex);
+			foreach (var s_Entry in Positions)
+			{
+				s_Entry.Serialize(s_Positions.Writer, p_EbxWriter);
+			}
+			(RimeWriter Writer, uint ArrayIndex) s_ValidIndices = p_EbxWriter.GetArrayWriter(ValidIndices.GetType(), ValidIndices.Count);
+			p_Writer.Write(s_ValidIndices.ArrayIndex);
+			foreach (var s_Entry in ValidIndices)
+			{
+				s_ValidIndices.Writer.Write(s_Entry);
+			}
+			(RimeWriter Writer, uint ArrayIndex) s_InputSystems = p_EbxWriter.GetArrayWriter(InputSystems.GetType(), InputSystems.Count);
+			p_Writer.Write(s_InputSystems.ArrayIndex);
+			foreach (var s_Entry in InputSystems)
+			{
+				s_InputSystems.Writer.Write(s_Entry);
+			}
+			Cache.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(StaticProbeSet);
+			p_Writer.WriteNullBytes(3);
+		}
 	}
 }

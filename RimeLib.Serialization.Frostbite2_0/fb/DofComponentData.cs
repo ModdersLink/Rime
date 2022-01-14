@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 144)]
-	public class DofComponentData : 
+	public class DofComponentData :
 		ComponentData
 	{
 		[ContainerField(96), JsonProperty(Order = 96)]
@@ -57,5 +58,22 @@ namespace fb
 		[ContainerField(137), LayoutImmutable, Blittable, JsonProperty(Order = 137)]
 		public bool Enable { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write((int) Realm);
+			p_Writer.Write(NearDistanceScale);
+			p_Writer.Write(FocusDistance);
+			p_Writer.Write((int) BlurFilter);
+			p_Writer.Write(BlurFilterDeviation);
+			p_Writer.Write(FarDistanceScale);
+			p_Writer.Write(BlurAdd);
+			p_Writer.Write(Scale);
+			p_Writer.Write(DiffusionDofFocalLength);
+			p_Writer.Write(DiffusionDofAperture);
+			p_Writer.Write(DiffusionDofEnable);
+			p_Writer.Write(Enable);
+			p_Writer.WriteNullBytes(6);
+		}
 	}
 }

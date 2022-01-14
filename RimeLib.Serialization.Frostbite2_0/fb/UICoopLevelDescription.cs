@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 20)]
-	public class UICoopLevelDescription : 
+	public class UICoopLevelDescription :
 		LevelDescriptionComponent
 	{
 		[ContainerField(8), LayoutImmutable, JsonProperty(Order = 8)]
@@ -30,5 +31,17 @@ namespace fb
 		[ContainerField(16), JsonProperty(Order = 16)]
 		public List<string> UnlockedByLevels { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteString(Debriefing));
+			p_Writer.Write(DevTime);
+			(RimeWriter Writer, uint ArrayIndex) s_UnlockedByLevels = p_EbxWriter.GetArrayWriter(UnlockedByLevels.GetType(), UnlockedByLevels.Count);
+			p_Writer.Write(s_UnlockedByLevels.ArrayIndex);
+			foreach (var s_Entry in UnlockedByLevels)
+			{
+				s_UnlockedByLevels.Writer.Write(p_EbxWriter.WriteString(s_Entry));
+			}
+		}
 	}
 }

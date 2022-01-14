@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 56)]
-	public class SequenceGeneratorNodeData : 
+	public class SequenceGeneratorNodeData :
 		AudioGraphNodeData
 	{
 		[ContainerField(8), JsonProperty(Order = 8)]
@@ -39,5 +40,15 @@ namespace fb
 		[ContainerField(48), JsonProperty(Order = 48)]
 		public AudioGraphNodePort Value { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			Trigger.Serialize(p_Writer, p_EbxWriter);
+			Reset.Serialize(p_Writer, p_EbxWriter);
+			Min.Serialize(p_Writer, p_EbxWriter);
+			Max.Serialize(p_Writer, p_EbxWriter);
+			Step.Serialize(p_Writer, p_EbxWriter);
+			Value.Serialize(p_Writer, p_EbxWriter);
+		}
 	}
 }

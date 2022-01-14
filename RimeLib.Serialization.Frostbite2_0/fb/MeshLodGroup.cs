@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 40)]
-	public class MeshLodGroup : 
+	public class MeshLodGroup :
 		Asset
 	{
 		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
@@ -42,5 +43,16 @@ namespace fb
 		[ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
 		public float CullScreenArea { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(Lod1Distance);
+			p_Writer.Write(Lod2Distance);
+			p_Writer.Write(Lod3Distance);
+			p_Writer.Write(Lod4Distance);
+			p_Writer.Write(Lod5Distance);
+			p_Writer.Write(ShadowDistance);
+			p_Writer.Write(CullScreenArea);
+		}
 	}
 }

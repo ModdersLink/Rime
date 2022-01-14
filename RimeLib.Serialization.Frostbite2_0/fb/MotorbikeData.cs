@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 224)]
-	public class MotorbikeData : 
+	public class MotorbikeData :
 		DataContainer
 	{
 		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
@@ -138,5 +139,50 @@ namespace fb
 		[ContainerField(216), LayoutImmutable, Blittable, JsonProperty(Order = 216)]
 		public bool DampBigJumpImpact { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(8);
+			WheelieForceBodyOffset.Serialize(p_Writer, p_EbxWriter);
+			WheelieForce.Serialize(p_Writer, p_EbxWriter);
+			DampBigJumpImpactCounterForce.Serialize(p_Writer, p_EbxWriter);
+			ProximityExtScale.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(JumpForwardLeanMinAngle);
+			p_Writer.Write(JumpForwardLeanMomentum);
+			p_Writer.Write(KickstandRoll);
+			p_Writer.Write(KickstandLinearDamping);
+			p_Writer.Write(LeanForceMaxVel);
+			p_Writer.Write(CounterLeanForce);
+			p_Writer.Write(StandStillRoll);
+			p_Writer.Write(DampBigJumpImpactVelocity);
+			p_Writer.Write(YawBrakeDampingLerpStartScale);
+			p_Writer.Write(YawBrakeDampingLerpEndScale);
+			p_Writer.Write(StoppieActivationVelocity);
+			p_Writer.Write(StoppieStartVelocity);
+			p_Writer.Write(LeanForce);
+			p_Writer.Write(StoppieMomentum);
+			p_Writer.Write(ShortOffgroundGravityMultiplier);
+			p_Writer.Write(MaxLeaningRoll);
+			p_Writer.Write(StoppieStopVelocity);
+			p_Writer.Write(ProximityHeightTranslation);
+			p_Writer.Write(WheelieMaxNoDownForceContactTime);
+			p_Writer.Write(WheelieMaxNoContactTime);
+			p_Writer.Write(WheelieSteeringFactor);
+			p_Writer.Write(WheelieInertia);
+			p_Writer.Write(WheelieStartVelocity);
+			p_Writer.Write(WheelieMaxVelocityUndamped);
+			p_Writer.Write(WheelieMaxVelocityDampRange);
+			p_Writer.Write(WheelieOutAngularMomentum);
+			p_Writer.Write(WheelieSpringDamping);
+			p_Writer.Write(WheelieAngularDamping);
+			p_Writer.Write(WheelieAngularDampingSpeed);
+			p_Writer.Write(ShortOffgroundPeriod);
+			p_Writer.Write(WheelieMaxAngle);
+			p_Writer.Write(WheelieAngularStartMomentum);
+			p_Writer.Write(WheelieMaxVelocity);
+			p_Writer.Write(WheelieVelocityForceScale);
+			p_Writer.Write(DampBigJumpImpact);
+			p_Writer.WriteNullBytes(7);
+		}
 	}
 }

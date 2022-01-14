@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 304)]
-	public class SkyComponentData : 
+	public class SkyComponentData :
 		ComponentData
 	{
 		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 96)]
@@ -150,5 +151,53 @@ namespace fb
 		[ContainerField(300), LayoutImmutable, Blittable, JsonProperty(Order = 300)]
 		public bool Enable { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			CloudLayerSunColor.Serialize(p_Writer, p_EbxWriter);
+			CloudLayer2Color.Serialize(p_Writer, p_EbxWriter);
+			CloudLayer1Color.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(SkyGradientTexture));
+			p_Writer.Write(SunSize);
+			p_Writer.Write(BrightnessScale);
+			p_Writer.Write(SunScale);
+			p_Writer.Write(PanoramicUVMaxX);
+			p_Writer.Write(PanoramicUVMinY);
+			p_Writer.Write(PanoramicUVMaxY);
+			p_Writer.Write((int) Realm);
+			p_Writer.Write(PanoramicUVMinX);
+			p_Writer.Write(p_EbxWriter.WriteImport(PanoramicTexture));
+			p_Writer.Write(p_EbxWriter.WriteImport(PanoramicAlphaTexture));
+			p_Writer.Write(PanoramicTileFactor);
+			p_Writer.Write(p_EbxWriter.WriteImport(CloudLayerMaskTexture));
+			p_Writer.Write(CloudLayer1Altitude);
+			p_Writer.Write(CloudLayer1TileFactor);
+			p_Writer.Write(CloudLayer1Rotation);
+			p_Writer.Write(CloudLayer1Speed);
+			p_Writer.Write(CloudLayer1SunLightIntensity);
+			p_Writer.Write(PanoramicRotation);
+			p_Writer.Write(CloudLayer1AmbientLightIntensity);
+			p_Writer.Write(CloudLayer1SunLightPower);
+			p_Writer.Write(CloudLayer1AlphaMul);
+			p_Writer.Write(p_EbxWriter.WriteImport(CloudLayer1Texture));
+			p_Writer.Write(CloudLayer2Altitude);
+			p_Writer.Write(CloudLayer2TileFactor);
+			p_Writer.Write(CloudLayer2Rotation);
+			p_Writer.Write(CloudLayer2Speed);
+			p_Writer.Write(CloudLayer2SunLightIntensity);
+			p_Writer.Write(CloudLayer2SunLightPower);
+			p_Writer.Write(CloudLayer2AmbientLightIntensity);
+			p_Writer.Write(StaticEnvmapScale);
+			p_Writer.Write(CloudLayer2AlphaMul);
+			p_Writer.Write(p_EbxWriter.WriteImport(CloudLayer2Texture));
+			p_Writer.Write(p_EbxWriter.WriteImport(StaticEnvmapTexture));
+			p_Writer.Write(SkyVisibilityExponent);
+			p_Writer.Write(SkyEnvmap8BitTexScale);
+			p_Writer.Write(p_EbxWriter.WriteImport(CustomEnvmapTexture));
+			p_Writer.Write(CustomEnvmapScale);
+			p_Writer.Write(CustomEnvmapAmbient);
+			p_Writer.Write(Enable);
+			p_Writer.WriteNullBytes(3);
+		}
 	}
 }

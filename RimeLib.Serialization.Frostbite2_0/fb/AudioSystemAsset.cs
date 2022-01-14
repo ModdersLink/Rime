@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 68)]
-	public class AudioSystemAsset : 
+	public class AudioSystemAsset :
 		Asset
 	{
 		[ContainerField(12), JsonProperty(Order = 12)]
@@ -63,5 +64,53 @@ namespace fb
 		[ContainerField(64), JsonProperty(Order = 64)]
 		public RefArray<SoundScopeSetupData> ScopeSetups { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(MasterPatch));
+			p_Writer.Write(p_EbxWriter.WriteImport(DefaultWave));
+			(RimeWriter Writer, uint ArrayIndex) s_StreamPools = p_EbxWriter.GetArrayWriter(StreamPools.GetType(), StreamPools.Count);
+			p_Writer.Write(s_StreamPools.ArrayIndex);
+			foreach (var s_Entry in StreamPools)
+			{
+				s_StreamPools.Writer.Write(p_EbxWriter.WriteImport(s_Entry));
+			}
+			p_Writer.Write(SampleRate);
+			p_Writer.Write(SoundSpeed);
+			p_Writer.Write(DopplerFactor);
+			p_Writer.Write(p_EbxWriter.WriteImport(Tests));
+			p_Writer.Write(p_EbxWriter.WriteImport(MixerSystem));
+			(RimeWriter Writer, uint ArrayIndex) s_Languages = p_EbxWriter.GetArrayWriter(Languages.GetType(), Languages.Count);
+			p_Writer.Write(s_Languages.ArrayIndex);
+			foreach (var s_Entry in Languages)
+			{
+				s_Languages.Writer.Write(p_EbxWriter.WriteImport(s_Entry));
+			}
+			(RimeWriter Writer, uint ArrayIndex) s_LanguageSettings = p_EbxWriter.GetArrayWriter(LanguageSettings.GetType(), LanguageSettings.Count);
+			p_Writer.Write(s_LanguageSettings.ArrayIndex);
+			foreach (var s_Entry in LanguageSettings)
+			{
+				s_LanguageSettings.Writer.Write(p_EbxWriter.WriteImport(s_Entry));
+			}
+			p_Writer.Write(p_EbxWriter.WriteImport(DefaultLanguage));
+			(RimeWriter Writer, uint ArrayIndex) s_Scopes = p_EbxWriter.GetArrayWriter(Scopes.GetType(), Scopes.Count);
+			p_Writer.Write(s_Scopes.ArrayIndex);
+			foreach (var s_Entry in Scopes)
+			{
+				s_Scopes.Writer.Write(p_EbxWriter.WriteImport(s_Entry));
+			}
+			(RimeWriter Writer, uint ArrayIndex) s_ScopeStrategies = p_EbxWriter.GetArrayWriter(ScopeStrategies.GetType(), ScopeStrategies.Count);
+			p_Writer.Write(s_ScopeStrategies.ArrayIndex);
+			foreach (var s_Entry in ScopeStrategies)
+			{
+				s_ScopeStrategies.Writer.Write(p_EbxWriter.WriteImport(s_Entry));
+			}
+			(RimeWriter Writer, uint ArrayIndex) s_ScopeSetups = p_EbxWriter.GetArrayWriter(ScopeSetups.GetType(), ScopeSetups.Count);
+			p_Writer.Write(s_ScopeSetups.ArrayIndex);
+			foreach (var s_Entry in ScopeSetups)
+			{
+				s_ScopeSetups.Writer.Write(p_EbxWriter.WriteImport(s_Entry));
+			}
+		}
 	}
 }

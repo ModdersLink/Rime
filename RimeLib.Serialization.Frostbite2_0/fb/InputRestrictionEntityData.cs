@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 160)]
-	public class InputRestrictionEntityData : 
+	public class InputRestrictionEntityData :
 		GameEntityData
 	{
 		[ContainerField(96), LayoutImmutable, Blittable, JsonProperty(Order = 96)]
@@ -168,5 +169,59 @@ namespace fb
 		[ContainerField(144), LayoutImmutable, Blittable, JsonProperty(Order = 144)]
 		public bool OverridePreviousInputRestriction { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(ApplyRestrictionsToSpecificPlayer);
+			p_Writer.Write(Throttle);
+			p_Writer.Write(Strafe);
+			p_Writer.Write(Brake);
+			p_Writer.Write(HandBrake);
+			p_Writer.Write(Clutch);
+			p_Writer.Write(Yaw);
+			p_Writer.Write(Pitch);
+			p_Writer.Write(Roll);
+			p_Writer.Write(Fire);
+			p_Writer.Write(FireCountermeasure);
+			p_Writer.Write(AltFire);
+			p_Writer.Write(CycleRadioChannel);
+			p_Writer.Write(SelectMeleeWeapon);
+			p_Writer.Write(Zoom);
+			p_Writer.Write(Jump);
+			p_Writer.Write(ChangeVehicle);
+			p_Writer.Write(ChangeEntry);
+			p_Writer.Write(ChangePose);
+			p_Writer.Write(ToggleParachute);
+			p_Writer.Write(ChangeWeapon);
+			p_Writer.Write(Reload);
+			p_Writer.Write(ToggleCamera);
+			p_Writer.Write(Sprint);
+			p_Writer.Write(ScoreboardMenu);
+			p_Writer.Write(MapZoom);
+			p_Writer.Write(GearUp);
+			p_Writer.Write(GearDown);
+			p_Writer.Write(ThreeDimensionalMap);
+			p_Writer.Write(GiveOrder);
+			p_Writer.Write(Prone);
+			p_Writer.Write(SwitchPrimaryInventory);
+			p_Writer.Write(SwitchPrimaryWeapon);
+			p_Writer.Write(GrenadeLauncher);
+			p_Writer.Write(StaticGadget);
+			p_Writer.Write(DynamicGadget1);
+			p_Writer.Write(DynamicGadget2);
+			p_Writer.Write(MeleeAttack);
+			p_Writer.Write(ThrowGrenade);
+			p_Writer.Write(SelectWeapon1);
+			p_Writer.Write(SelectWeapon2);
+			p_Writer.Write(SelectWeapon3);
+			p_Writer.Write(SelectWeapon4);
+			p_Writer.Write(SelectWeapon5);
+			p_Writer.Write(SelectWeapon6);
+			p_Writer.Write(SelectWeapon7);
+			p_Writer.Write(SelectWeapon8);
+			p_Writer.Write(SelectWeapon9);
+			p_Writer.Write(OverridePreviousInputRestriction);
+			p_Writer.WriteNullBytes(15);
+		}
 	}
 }

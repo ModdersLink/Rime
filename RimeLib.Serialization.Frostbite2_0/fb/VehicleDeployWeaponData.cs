@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 36)]
-	public class VehicleDeployWeaponData : 
+	public class VehicleDeployWeaponData :
 		WeaponData
 	{
 		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
@@ -42,5 +43,17 @@ namespace fb
 		[ContainerField(34), LayoutImmutable, Blittable, JsonProperty(Order = 34)]
 		public bool CanRemoteEnterVehicle { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(DeployAreaRadius);
+			p_Writer.Write(p_EbxWriter.WriteImport(PreviewObject));
+			p_Writer.Write(DeployAreaGroundRayLength);
+			p_Writer.Write(DeployAreaGroundFlatness);
+			p_Writer.Write(UsePreview);
+			p_Writer.Write(CheckClearSky);
+			p_Writer.Write(CanRemoteEnterVehicle);
+			p_Writer.WriteNullBytes(1);
+		}
 	}
 }

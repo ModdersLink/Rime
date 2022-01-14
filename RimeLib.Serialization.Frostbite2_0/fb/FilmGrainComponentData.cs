@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 144)]
-	public class FilmGrainComponentData : 
+	public class FilmGrainComponentData :
 		ComponentData
 	{
 		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 96)]
@@ -42,5 +43,17 @@ namespace fb
 		[ContainerField(130), LayoutImmutable, Blittable, JsonProperty(Order = 130)]
 		public bool Enable { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			ColorScale.Serialize(p_Writer, p_EbxWriter);
+			TextureScale.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write((int) Realm);
+			p_Writer.Write(p_EbxWriter.WriteImport(Texture));
+			p_Writer.Write(LinearFilteringEnable);
+			p_Writer.Write(RandomEnable);
+			p_Writer.Write(Enable);
+			p_Writer.WriteNullBytes(13);
+		}
 	}
 }

@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 256)]
-	public class PropellerEngineConfigData : 
+	public class PropellerEngineConfigData :
 		EngineConfigData
 	{
 		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 96)]
@@ -138,5 +139,49 @@ namespace fb
 		[ContainerField(254), LayoutImmutable, Blittable, JsonProperty(Order = 254)]
 		public bool SPAllowed { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			HorisontalForceOffset.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write((int) PropellerType);
+			p_Writer.Write(p_EbxWriter.WriteImport(RotorConfig));
+			p_Writer.Write((int) ForceMagnitudeInputType);
+			p_Writer.Write(DirectionVectorIndex);
+			p_Writer.Write(ForceMagnitudeMultiplier);
+			p_Writer.Write(LiftForceSpringConstant);
+			p_Writer.Write(LiftForceDampingConstant);
+			p_Writer.Write(CyclicInputScaleRoll);
+			p_Writer.Write(CyclicRollLiftMod);
+			p_Writer.Write(CyclicRollStrafeMod);
+			p_Writer.Write(CyclicInputScalePitch);
+			p_Writer.Write(CyclicPitchLiftMod);
+			p_Writer.Write(CyclicPitchStrafeMod);
+			p_Writer.Write(CyclicPitchStrafeBrakeMod);
+			p_Writer.Write(CollectiveInputIdle);
+			p_Writer.Write(CollectiveThrottleInputScale);
+			p_Writer.Write(CollectiveBrakeInputScale);
+			p_Writer.Write(DefaultAngleOfAttack);
+			p_Writer.Write(AttackAngleMod);
+			p_Writer.Write(StabilizerMod);
+			p_Writer.Write(HorisontalMinEffectVelocity);
+			p_Writer.Write(HorisontalMinEffectMod);
+			p_Writer.Write(PitchStrength);
+			p_Writer.Write(PitchFromVel);
+			p_Writer.Write(GravityMod);
+			p_Writer.Write(SPForwardStrength);
+			p_Writer.Write(SPSidewaysStrength);
+			p_Writer.Write(SPVerticalStrength);
+			p_Writer.Write(VelocityFromPitch);
+			p_Writer.Write(PitchLimit);
+			p_Writer.Write(BankingStrength);
+			p_Writer.Write(BankingLimit);
+			p_Writer.Write(RollStrength);
+			p_Writer.Write(PitchUpWhenBankStrength);
+			p_Writer.Write(PitchUpWhenBankLimit);
+			p_Writer.Write(SPDefault);
+			p_Writer.Write(EnableNewHelicopter);
+			p_Writer.Write(SPAllowed);
+			p_Writer.WriteNullBytes(1);
+		}
 	}
 }

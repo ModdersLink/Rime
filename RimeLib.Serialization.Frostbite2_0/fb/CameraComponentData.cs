@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 224)]
-	public class CameraComponentData : 
+	public class CameraComponentData :
 		ComponentData
 	{
 		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 96)]
@@ -75,5 +76,28 @@ namespace fb
 		[ContainerField(213), LayoutImmutable, Blittable, JsonProperty(Order = 213)]
 		public bool IgnoreOwnerOrientation { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			CameraTransitionPos.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(FieldOfView);
+			p_Writer.Write(ForceFieldOfView);
+			p_Writer.Write(p_EbxWriter.WriteImport(Camera));
+			p_Writer.Write(p_EbxWriter.WriteImport(AlternateView));
+			RegularView.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(FreezeHeight);
+			StanceData.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(CameraSoundData));
+			SoldierAnimatedCamera.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(CameraTransitionTime);
+			p_Writer.Write(MeshParentComponentNumber);
+			p_Writer.Write(EnableCameraMesh);
+			p_Writer.Write(ReceiveImpulsesAsThirdPerson);
+			p_Writer.Write(UseCameraTransition);
+			p_Writer.Write(AlternateViewEnabled);
+			p_Writer.Write(IsFirstPerson);
+			p_Writer.Write(IgnoreOwnerOrientation);
+			p_Writer.WriteNullBytes(10);
+		}
 	}
 }

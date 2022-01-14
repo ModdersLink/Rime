@@ -14,15 +14,26 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 16)]
-	public class RecordedInputData : 
+	public class RecordedInputData :
 		Asset
 	{
 		[ContainerField(12), JsonProperty(Order = 12)]
 		public List<InputRecorderTrackData> TrackData { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			(RimeWriter Writer, uint ArrayIndex) s_TrackData = p_EbxWriter.GetArrayWriter(TrackData.GetType(), TrackData.Count);
+			p_Writer.Write(s_TrackData.ArrayIndex);
+			foreach (var s_Entry in TrackData)
+			{
+				s_Entry.Serialize(s_TrackData.Writer, p_EbxWriter);
+			}
+		}
 	}
 }

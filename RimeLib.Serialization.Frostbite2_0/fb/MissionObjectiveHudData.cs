@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 64)]
-	public class MissionObjectiveHudData : 
+	public class MissionObjectiveHudData :
 		DataContainer
 	{
 		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
@@ -42,5 +43,17 @@ namespace fb
 		[ContainerField(60), LayoutImmutable, Blittable, JsonProperty(Order = 60)]
 		public float CameraDistance { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(8);
+			CameraPosition.Serialize(p_Writer, p_EbxWriter);
+			HorizontalBoundaries.Serialize(p_Writer, p_EbxWriter);
+			VerticalBoundaries.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(CameraRotation);
+			p_Writer.Write(CameraFov);
+			p_Writer.Write(CameraLookDistance);
+			p_Writer.Write(CameraDistance);
+		}
 	}
 }

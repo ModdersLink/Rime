@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 80)]
-	public class CameraData : 
+	public class CameraData :
 		GameObjectData
 	{
 		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
@@ -54,5 +55,22 @@ namespace fb
 		[ContainerField(68), LayoutImmutable, Blittable, JsonProperty(Order = 68)]
 		public bool StayFadedWhileStreaming { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(4);
+			OcclusionRayOffset.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(ShakeFactor);
+			p_Writer.Write(PreFadeTime);
+			p_Writer.Write(FadeTime);
+			p_Writer.Write(FadeWaitTime);
+			p_Writer.Write(SoundListenerRadius);
+			p_Writer.Write(p_EbxWriter.WriteImport(ViewFx));
+			p_Writer.Write(NearPlane);
+			p_Writer.Write(ShadowViewDistanceScale);
+			p_Writer.Write(SoundOcclusion);
+			p_Writer.Write(StayFadedWhileStreaming);
+			p_Writer.WriteNullBytes(11);
+		}
 	}
 }

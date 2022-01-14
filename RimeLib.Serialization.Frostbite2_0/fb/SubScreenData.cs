@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 64)]
-	public class SubScreenData
+	public class SubScreenData :
+		EbxSerializable
 	{
 		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 0)]
 		public Vec3 ScreenPosition { get; set; } = new();
@@ -50,5 +52,20 @@ namespace fb
 		[ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
 		public bool UseRenderTarget { get; set; }
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			ScreenPosition.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(ProjectionAngleY);
+			p_Writer.Write(ProjectionAngleZ);
+			p_Writer.Write(ProjectionAngleX);
+			p_Writer.Write(ScreenSize);
+			p_Writer.Write(IconSize);
+			p_Writer.Write(ScaleIconSizeByDepthStrength);
+			p_Writer.Write(RenderTargetApectRatio);
+			p_Writer.Write(RenderTargetIndex);
+			p_Writer.Write(UseRenderTarget);
+			p_Writer.WriteNullBytes(15);
+		}
 	}
 }

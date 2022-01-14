@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 140)]
-	public class CoverConstantData : 
+	public class CoverConstantData :
 		Asset
 	{
 		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
@@ -117,5 +118,41 @@ namespace fb
 		[ContainerField(136), LayoutImmutable, Blittable, JsonProperty(Order = 136)]
 		public float ContinueMeleeFromCoverDistance { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(SlotSize);
+			p_Writer.Write(SlotSpacing);
+			p_Writer.Write(SlotEdgeDistance);
+			p_Writer.Write(SlotBlockedEdgeDistance);
+			p_Writer.Write(MinimumOpenCoverWidth);
+			p_Writer.Write(ProneHeight);
+			p_Writer.Write(CrouchHeight);
+			p_Writer.Write(MediumHeight);
+			p_Writer.Write(StandHeight);
+			p_Writer.Write(MaxCoversInMemory);
+			p_Writer.Write(SearchRadius);
+			p_Writer.Write(ProneCoverModifier);
+			p_Writer.Write(CrouchCoverModifier);
+			p_Writer.Write(MediumCoverModifier);
+			p_Writer.Write(StandCoverModifier);
+			p_Writer.Write(IntermediateCoverSlotModifier);
+			p_Writer.Write(DistanceEvaluationWeight);
+			p_Writer.Write(EnemiesEvaluationWeight);
+			p_Writer.Write(AttackPositionEvaluationWeight);
+			p_Writer.Write(OptimalWeaponDistanceEvaluationWeight);
+			p_Writer.Write(DislikePreviousCoverWeight);
+			p_Writer.Write(MaxHeightDifference);
+			p_Writer.Write(SwitchCoverUrgencyThreshold);
+			p_Writer.Write(ExtraCoverSize);
+			p_Writer.Write(ReevaluationTime);
+			p_Writer.Write((int) CoverSelectionMethod);
+			p_Writer.Write(ThreatRadius);
+			p_Writer.Write(InCoverDistance);
+			p_Writer.Write(MinAttackableEnemyDistance);
+			p_Writer.Write(CoverFailIgnoreTime);
+			p_Writer.Write(StartMeleeFromCoverDistance);
+			p_Writer.Write(ContinueMeleeFromCoverDistance);
+		}
 	}
 }

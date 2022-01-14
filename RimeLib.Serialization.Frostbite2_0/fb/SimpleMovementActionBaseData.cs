@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 24)]
-	public class SimpleMovementActionBaseData : 
+	public class SimpleMovementActionBaseData :
 		MovementActionData
 	{
 		[ContainerField(8), JsonProperty(Order = 8)]
@@ -27,5 +28,11 @@ namespace fb
 		[ContainerField(16), JsonProperty(Order = 16)]
 		public SimpleMovementActionTimeData RunTimeInfo { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			StartTimeInfo.Serialize(p_Writer, p_EbxWriter);
+			RunTimeInfo.Serialize(p_Writer, p_EbxWriter);
+		}
 	}
 }

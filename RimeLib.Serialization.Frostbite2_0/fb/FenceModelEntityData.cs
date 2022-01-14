@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 176)]
-	public class FenceModelEntityData : 
+	public class FenceModelEntityData :
 		StaticModelEntityData
 	{
 		[ContainerField(160), LayoutImmutable, Blittable, JsonProperty(Order = 160)]
@@ -27,5 +28,12 @@ namespace fb
 		[ContainerField(164), LayoutImmutable, Blittable, JsonProperty(Order = 164)]
 		public float Angle { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(Width);
+			p_Writer.Write(Angle);
+			p_Writer.WriteNullBytes(8);
+		}
 	}
 }

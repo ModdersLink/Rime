@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 24)]
-	public class MixerPresetGroupData
+	public class MixerPresetGroupData :
+		EbxSerializable
 	{
 		[ContainerField(0), JsonProperty(Order = 0)]
 		public CtrRef<MixGroup> Group { get; set; } = new();
@@ -38,5 +40,21 @@ namespace fb
 		[ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
 		public bool IsDominant { get; set; }
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(Group));
+			p_Writer.Write((int) State);
+			p_Writer.Write(AttackTime);
+			p_Writer.Write(ReleaseTime);
+			(RimeWriter Writer, uint ArrayIndex) s_Properties = p_EbxWriter.GetArrayWriter(Properties.GetType(), Properties.Count);
+			p_Writer.Write(s_Properties.ArrayIndex);
+			foreach (var s_Entry in Properties)
+			{
+				s_Entry.Serialize(s_Properties.Writer, p_EbxWriter);
+			}
+			p_Writer.Write(IsDominant);
+			p_Writer.WriteNullBytes(3);
+		}
 	}
 }

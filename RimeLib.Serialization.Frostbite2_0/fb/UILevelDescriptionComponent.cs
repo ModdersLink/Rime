@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 368)]
-	public class UILevelDescriptionComponent : 
+	public class UILevelDescriptionComponent :
 		LevelDescriptionComponent
 	{
 		[ContainerField(8), LayoutImmutable, JsonProperty(Order = 8)]
@@ -63,5 +64,29 @@ namespace fb
 		[ContainerField(356), LayoutImmutable, Blittable, JsonProperty(Order = 356)]
 		public bool IsMenuLevel { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteString(MPLoadingAssetPath));
+			p_Writer.Write(p_EbxWriter.WriteImport(LoadingMusic));
+			p_Writer.Write(p_EbxWriter.WriteString(LoadingMusicPath));
+			p_Writer.Write(p_EbxWriter.WriteString(LevelImagePath));
+			p_Writer.Write(p_EbxWriter.WriteString(LoadingImagePath));
+			p_Writer.Write(p_EbxWriter.WriteString(SPLoadingAssetPath));
+			GPSPosition.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(HintAsset));
+			(RimeWriter Writer, uint ArrayIndex) s_CreditsAssets = p_EbxWriter.GetArrayWriter(CreditsAssets.GetType(), CreditsAssets.Count);
+			p_Writer.Write(s_CreditsAssets.ArrayIndex);
+			foreach (var s_Entry in CreditsAssets)
+			{
+				s_CreditsAssets.Writer.Write(p_EbxWriter.WriteImport(s_Entry));
+			}
+			MinimapData.Serialize(p_Writer, p_EbxWriter);
+			LevelCompledStatData.Serialize(p_Writer, p_EbxWriter);
+			LevelScoreStatData.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(SortIndex);
+			p_Writer.Write(IsMenuLevel);
+			p_Writer.WriteNullBytes(11);
+		}
 	}
 }

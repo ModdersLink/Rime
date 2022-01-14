@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 112)]
-	public class FogEffectState : 
+	public class FogEffectState :
 		DataContainer
 	{
 		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
@@ -69,5 +70,27 @@ namespace fb
 		[ContainerField(109), LayoutImmutable, Blittable, JsonProperty(Order = 109)]
 		public bool Enable { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(8);
+			FogColorCurve.Serialize(p_Writer, p_EbxWriter);
+			Curve.Serialize(p_Writer, p_EbxWriter);
+			FogColor.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(Start);
+			p_Writer.Write(End);
+			p_Writer.Write(FogColorStart);
+			p_Writer.Write(FogColorEnd);
+			p_Writer.Write(HeightFogVisibilityRange);
+			p_Writer.Write(TransparencyFadeStart);
+			p_Writer.Write(TransparencyFadeEnd);
+			p_Writer.Write(TransparencyFadeClamp);
+			p_Writer.Write(HeightFogDepth);
+			p_Writer.Write(HeightFogFollowCamera);
+			p_Writer.Write(HeightFogAltitude);
+			p_Writer.Write(HeightFogEnable);
+			p_Writer.Write(Enable);
+			p_Writer.WriteNullBytes(2);
+		}
 	}
 }

@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 32)]
-	public class SoundTestSpec : 
+	public class SoundTestSpec :
 		DataContainer
 	{
 		[ContainerField(8), LayoutImmutable, JsonProperty(Order = 8)]
@@ -39,5 +40,20 @@ namespace fb
 		[ContainerField(28), JsonProperty(Order = 28)]
 		public RefArray<SoundTestTask> Tasks { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteString(Name));
+			p_Writer.Write(p_EbxWriter.WriteString(Description));
+			p_Writer.Write(p_EbxWriter.WriteImport(MainStartTask));
+			p_Writer.Write(p_EbxWriter.WriteImport(MainStopTask));
+			p_Writer.Write(Duration);
+			(RimeWriter Writer, uint ArrayIndex) s_Tasks = p_EbxWriter.GetArrayWriter(Tasks.GetType(), Tasks.Count);
+			p_Writer.Write(s_Tasks.ArrayIndex);
+			foreach (var s_Entry in Tasks)
+			{
+				s_Tasks.Writer.Write(p_EbxWriter.WriteImport(s_Entry));
+			}
+		}
 	}
 }

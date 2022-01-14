@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 528)]
-	public class SpecialMovesComponentData : 
+	public class SpecialMovesComponentData :
 		ComponentData
 	{
 		[ContainerField(96), JsonProperty(Order = 96)]
@@ -57,5 +58,47 @@ namespace fb
 		[ContainerField(476), JsonProperty(Order = 476)]
 		public SpecialMovesBinding Binding { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			VaultOverHighState.Serialize(p_Writer, p_EbxWriter);
+			VaultUpHighState.Serialize(p_Writer, p_EbxWriter);
+			VaultOverLowState.Serialize(p_Writer, p_EbxWriter);
+			SprintToProneState.Serialize(p_Writer, p_EbxWriter);
+			DeathState.Serialize(p_Writer, p_EbxWriter);
+			SpecialAnimationState.Serialize(p_Writer, p_EbxWriter);
+			(RimeWriter Writer, uint ArrayIndex) s_IndexedDeathStates = p_EbxWriter.GetArrayWriter(IndexedDeathStates.GetType(), IndexedDeathStates.Count);
+			p_Writer.Write(s_IndexedDeathStates.ArrayIndex);
+			foreach (var s_Entry in IndexedDeathStates)
+			{
+				s_Entry.Serialize(s_IndexedDeathStates.Writer, p_EbxWriter);
+			}
+			(RimeWriter Writer, uint ArrayIndex) s_IndexedSpecialAnimationStates = p_EbxWriter.GetArrayWriter(IndexedSpecialAnimationStates.GetType(), IndexedSpecialAnimationStates.Count);
+			p_Writer.Write(s_IndexedSpecialAnimationStates.ArrayIndex);
+			foreach (var s_Entry in IndexedSpecialAnimationStates)
+			{
+				s_Entry.Serialize(s_IndexedSpecialAnimationStates.Writer, p_EbxWriter);
+			}
+			(RimeWriter Writer, uint ArrayIndex) s_IndexedVaultOverHighStates = p_EbxWriter.GetArrayWriter(IndexedVaultOverHighStates.GetType(), IndexedVaultOverHighStates.Count);
+			p_Writer.Write(s_IndexedVaultOverHighStates.ArrayIndex);
+			foreach (var s_Entry in IndexedVaultOverHighStates)
+			{
+				s_Entry.Serialize(s_IndexedVaultOverHighStates.Writer, p_EbxWriter);
+			}
+			(RimeWriter Writer, uint ArrayIndex) s_IndexedVaultUpStates = p_EbxWriter.GetArrayWriter(IndexedVaultUpStates.GetType(), IndexedVaultUpStates.Count);
+			p_Writer.Write(s_IndexedVaultUpStates.ArrayIndex);
+			foreach (var s_Entry in IndexedVaultUpStates)
+			{
+				s_Entry.Serialize(s_IndexedVaultUpStates.Writer, p_EbxWriter);
+			}
+			(RimeWriter Writer, uint ArrayIndex) s_IndexedVaultOverLowStates = p_EbxWriter.GetArrayWriter(IndexedVaultOverLowStates.GetType(), IndexedVaultOverLowStates.Count);
+			p_Writer.Write(s_IndexedVaultOverLowStates.ArrayIndex);
+			foreach (var s_Entry in IndexedVaultOverLowStates)
+			{
+				s_Entry.Serialize(s_IndexedVaultOverLowStates.Writer, p_EbxWriter);
+			}
+			Binding.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(4);
+		}
 	}
 }

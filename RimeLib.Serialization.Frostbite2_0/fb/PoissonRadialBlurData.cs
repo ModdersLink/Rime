@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 20)]
-	public class PoissonRadialBlurData
+	public class PoissonRadialBlurData :
+		EbxSerializable
 	{
 		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 0)]
 		public Vec2 PoissonDiscScale { get; set; } = new();
@@ -32,5 +34,13 @@ namespace fb
 		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
 		public float RadialExponent { get; set; }
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			PoissonDiscScale.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(BlendFactor);
+			p_Writer.Write(RadialScale);
+			p_Writer.Write(RadialExponent);
+		}
 	}
 }

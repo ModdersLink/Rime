@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 208)]
-	public class DebrisClusterData : 
+	public class DebrisClusterData :
 		GameEntityData
 	{
 		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 96)]
@@ -93,5 +94,39 @@ namespace fb
 		[ContainerField(200), LayoutImmutable, Blittable, JsonProperty(Order = 200)]
 		public bool SpawnExplosionOnFirstImpactOnly { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			PushVelocityMul.Serialize(p_Writer, p_EbxWriter);
+			PushVelocityRndMul.Serialize(p_Writer, p_EbxWriter);
+			InitRotationRndMul.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(ClusterLifetime);
+			p_Writer.Write(p_EbxWriter.WriteImport(Mesh));
+			p_Writer.Write(CompositePartCount);
+			p_Writer.Write(MaxActivePartsCount);
+			(RimeWriter Writer, uint ArrayIndex) s_PartHierarchy = p_EbxWriter.GetArrayWriter(PartHierarchy.GetType(), PartHierarchy.Count);
+			p_Writer.Write(s_PartHierarchy.ArrayIndex);
+			foreach (var s_Entry in PartHierarchy)
+			{
+				s_Entry.Serialize(s_PartHierarchy.Writer, p_EbxWriter);
+			}
+			p_Writer.Write(ActivationPushForceMul);
+			p_Writer.Write(ProjectileForceTransferMul);
+			p_Writer.Write(p_EbxWriter.WriteImport(PhysicsData));
+			p_Writer.Write(p_EbxWriter.WriteImport(Explosion));
+			p_Writer.Write(p_EbxWriter.WriteImport(ActivationEffect));
+			p_Writer.Write(p_EbxWriter.WriteImport(Effect));
+			p_Writer.Write(OnPartCollisionSpeedThreshold);
+			p_Writer.Write(PartialDestruction);
+			p_Writer.Write(ClientSideOnly);
+			p_Writer.Write(OnPartCollisionEnable);
+			p_Writer.Write(NoCollision);
+			p_Writer.Write(KillPartsOnCollision);
+			p_Writer.Write(DeactivatePartsOnSleep);
+			p_Writer.Write(ActivateOnSpawn);
+			p_Writer.Write(InEffectWorldOnly);
+			p_Writer.Write(SpawnExplosionOnFirstImpactOnly);
+			p_Writer.WriteNullBytes(7);
+		}
 	}
 }

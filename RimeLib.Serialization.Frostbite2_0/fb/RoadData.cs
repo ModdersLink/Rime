@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 64)]
-	public class RoadData : 
+	public class RoadData :
 		RibbonData
 	{
 		[ContainerField(48), JsonProperty(Order = 48)]
@@ -33,5 +34,14 @@ namespace fb
 		[ContainerField(60), LayoutImmutable, Blittable, JsonProperty(Order = 60)]
 		public bool StickToTerrain { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(Shader2d));
+			p_Writer.Write(p_EbxWriter.WriteImport(Shader3dZOnly));
+			p_Writer.Write(UvTileFactor);
+			p_Writer.Write(StickToTerrain);
+			p_Writer.WriteNullBytes(3);
+		}
 	}
 }

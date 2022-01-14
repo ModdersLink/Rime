@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 40)]
-	public class DebugRenderSettings : 
+	public class DebugRenderSettings :
 		DataContainer
 	{
 		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
@@ -57,5 +58,22 @@ namespace fb
 		[ContainerField(37), LayoutImmutable, Blittable, JsonProperty(Order = 37)]
 		public bool DxLine3dAntialiasingEnable { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(TextQueueTimeVisible);
+			p_Writer.Write(Ps3SpuFrameBufferSize);
+			p_Writer.Write(TextViewDistance);
+			p_Writer.Write(TextQueueMaxLineCount);
+			p_Writer.Write(DxMaxVertexCount);
+			p_Writer.Write(ProcessJobCount);
+			p_Writer.Write(DrawStatsEnable);
+			p_Writer.Write(Ps3SpuEnable);
+			p_Writer.Write(Enable);
+			p_Writer.Write(TextQueueLocationTop);
+			p_Writer.Write(DxLine2dAntialiasingEnable);
+			p_Writer.Write(DxLine3dAntialiasingEnable);
+			p_Writer.WriteNullBytes(2);
+		}
 	}
 }

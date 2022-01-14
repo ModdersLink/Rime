@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 144)]
-	public class BoneCollisionData
+	public class BoneCollisionData :
+		EbxSerializable
 	{
 		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 0)]
 		public Vec4 DebugDrawColor { get; set; } = new();
@@ -62,5 +64,25 @@ namespace fb
 		[ContainerField(131), LayoutImmutable, Blittable, JsonProperty(Order = 131)]
 		public bool DeactivateIfBehindWall { get; set; }
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			DebugDrawColor.Serialize(p_Writer, p_EbxWriter);
+			CapsuleOffset.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteString(BoneName));
+			p_Writer.Write((int) AnimationHitReactionType);
+			p_Writer.Write(p_EbxWriter.WriteImport(MaterialPair));
+			p_Writer.Write(BoneAxis);
+			p_Writer.Write(CapsuleLength);
+			p_Writer.Write(CapsuleRadius);
+			p_Writer.WriteNullBytes(8);
+			MinPitch.Serialize(p_Writer, p_EbxWriter);
+			MaxPitch.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(ValidInHiLod);
+			p_Writer.Write(ValidInLowLod);
+			p_Writer.Write(UsePhysicsRotation);
+			p_Writer.Write(DeactivateIfBehindWall);
+			p_Writer.WriteNullBytes(12);
+		}
 	}
 }

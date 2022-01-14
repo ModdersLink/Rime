@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 92)]
-	public class SoldierHealthModuleBinding
+	public class SoldierHealthModuleBinding :
+		EbxSerializable
 	{
 		[ContainerField(0), JsonProperty(Order = 0)]
 		public AntRef HeadShot { get; set; } = new();
@@ -89,5 +91,32 @@ namespace fb
 		[ContainerField(88), JsonProperty(Order = 88)]
 		public AntRef InteractiveManDown { get; set; } = new();
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			HeadShot.Serialize(p_Writer, p_EbxWriter);
+			LeftArmHit.Serialize(p_Writer, p_EbxWriter);
+			RightArmHit.Serialize(p_Writer, p_EbxWriter);
+			LeftLegHit.Serialize(p_Writer, p_EbxWriter);
+			RightLegHit.Serialize(p_Writer, p_EbxWriter);
+			OnGround.Serialize(p_Writer, p_EbxWriter);
+			DeathAnimationTriggered.Serialize(p_Writer, p_EbxWriter);
+			RandomAnimationIndex.Serialize(p_Writer, p_EbxWriter);
+			Sprinting.Serialize(p_Writer, p_EbxWriter);
+			HitLeft.Serialize(p_Writer, p_EbxWriter);
+			HitRight.Serialize(p_Writer, p_EbxWriter);
+			HitFront.Serialize(p_Writer, p_EbxWriter);
+			HitBack.Serialize(p_Writer, p_EbxWriter);
+			DeathHitDirection.Serialize(p_Writer, p_EbxWriter);
+			Explosion.Serialize(p_Writer, p_EbxWriter);
+			Dead.Serialize(p_Writer, p_EbxWriter);
+			Revived.Serialize(p_Writer, p_EbxWriter);
+			RandomValue.Serialize(p_Writer, p_EbxWriter);
+			Pose.Serialize(p_Writer, p_EbxWriter);
+			RightSpeed.Serialize(p_Writer, p_EbxWriter);
+			ForwardSpeed.Serialize(p_Writer, p_EbxWriter);
+			CriticallyHit.Serialize(p_Writer, p_EbxWriter);
+			InteractiveManDown.Serialize(p_Writer, p_EbxWriter);
+		}
 	}
 }

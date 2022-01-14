@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 36)]
-	public class UIMinimapConfig
+	public class UIMinimapConfig :
+		EbxSerializable
 	{
 		[ContainerField(0), LayoutImmutable, Blittable, JsonProperty(Order = 0)]
 		public float CombatAreaCameraDelay { get; set; }
@@ -47,5 +49,24 @@ namespace fb
 		[ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
 		public bool DisableDefaultState { get; set; }
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(CombatAreaCameraDelay);
+			p_Writer.Write(CameraInterpolationTime);
+			p_Writer.Write(CombatAreaFadeSpeed);
+			(RimeWriter Writer, uint ArrayIndex) s_ZoomStates = p_EbxWriter.GetArrayWriter(ZoomStates.GetType(), ZoomStates.Count);
+			p_Writer.Write(s_ZoomStates.ArrayIndex);
+			foreach (var s_Entry in ZoomStates)
+			{
+				s_Entry.Serialize(s_ZoomStates.Writer, p_EbxWriter);
+			}
+			p_Writer.Write(CameraPanSensitivity);
+			p_Writer.Write(MinVelocity);
+			p_Writer.Write(MaxVelocity);
+			p_Writer.Write(VelocityModifier);
+			p_Writer.Write(DisableDefaultState);
+			p_Writer.WriteNullBytes(3);
+		}
 	}
 }

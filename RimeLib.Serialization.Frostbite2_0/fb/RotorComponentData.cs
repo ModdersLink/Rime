@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 144)]
-	public class RotorComponentData : 
+	public class RotorComponentData :
 		ComponentData
 	{
 		[ContainerField(96), JsonProperty(Order = 96)]
@@ -54,5 +55,21 @@ namespace fb
 		[ContainerField(138), LayoutImmutable, Blittable, JsonProperty(Order = 138)]
 		public bool CriticalDamage { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			LowRpmModel.Serialize(p_Writer, p_EbxWriter);
+			HighRpmModel.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write((int) RotationAxis);
+			p_Writer.Write(RotationMultiplier);
+			p_Writer.Write(ChangeModelRpm);
+			p_Writer.Write(p_EbxWriter.WriteImport(BlowEffect));
+			p_Writer.Write(TriggerGroundEffectHeight);
+			p_Writer.Write(CriticallyDamagedRotationForce);
+			p_Writer.Write(OnlyTriggerBlowEffectInWater);
+			p_Writer.Write(GroundEffectOnTerrainOnly);
+			p_Writer.Write(CriticalDamage);
+			p_Writer.WriteNullBytes(5);
+		}
 	}
 }

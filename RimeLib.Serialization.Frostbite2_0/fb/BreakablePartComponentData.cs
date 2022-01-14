@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 128)]
-	public class BreakablePartComponentData : 
+	public class BreakablePartComponentData :
 		DestructionPartComponentData
 	{
 		[ContainerField(112), LayoutImmutable, Blittable, JsonProperty(Order = 112)]
@@ -30,5 +31,13 @@ namespace fb
 		[ContainerField(117), LayoutImmutable, Blittable, JsonProperty(Order = 117)]
 		public bool DestroyNearbyStaticEntities { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(HealthPercentage);
+			p_Writer.Write(Collapsable);
+			p_Writer.Write(DestroyNearbyStaticEntities);
+			p_Writer.WriteNullBytes(10);
+		}
 	}
 }

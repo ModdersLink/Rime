@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 20)]
-	public class ValueSelectorEntry : 
+	public class ValueSelectorEntry :
 		AudioGraphNodePortGroup
 	{
 		[ContainerField(8), JsonProperty(Order = 8)]
@@ -27,5 +28,11 @@ namespace fb
 		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
 		public float CaseValue { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			Input.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(CaseValue);
+		}
 	}
 }

@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 80)]
-	public class UINametag : 
+	public class UINametag :
 		DataContainer
 	{
 		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
@@ -51,5 +52,21 @@ namespace fb
 		[ContainerField(64), LayoutImmutable, Blittable, JsonProperty(Order = 64)]
 		public float TargetOutTimer { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(8);
+			TextColor.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(IconFadeDistance);
+			p_Writer.Write(IconMaxDistance);
+			p_Writer.Write((int) Icon);
+			p_Writer.Write(TextFadeDistance);
+			p_Writer.Write(HealthFadeDistance);
+			p_Writer.Write(HealthMaxDistance);
+			p_Writer.Write(TextMaxDistance);
+			p_Writer.Write(TargetInTimer);
+			p_Writer.Write(TargetOutTimer);
+			p_Writer.WriteNullBytes(12);
+		}
 	}
 }

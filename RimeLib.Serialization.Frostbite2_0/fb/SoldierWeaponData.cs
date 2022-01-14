@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 336)]
-	public class SoldierWeaponData : 
+	public class SoldierWeaponData :
 		WeaponEntityData
 	{
 		[ContainerField(128), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 128)]
@@ -114,5 +115,52 @@ namespace fb
 		[ContainerField(334), LayoutImmutable, Blittable, JsonProperty(Order = 334)]
 		public bool IsSilenced { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			InteractionOffset.Serialize(p_Writer, p_EbxWriter);
+			(RimeWriter Writer, uint ArrayIndex) s_WeaponModifierData = p_EbxWriter.GetArrayWriter(WeaponModifierData.GetType(), WeaponModifierData.Count);
+			p_Writer.Write(s_WeaponModifierData.ArrayIndex);
+			foreach (var s_Entry in WeaponModifierData)
+			{
+				s_Entry.Serialize(s_WeaponModifierData.Writer, p_EbxWriter);
+			}
+			p_Writer.Write(p_EbxWriter.WriteImport(AimingController));
+			p_Writer.Write(p_EbxWriter.WriteImport(FirstPersonCamera));
+			Hud.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteString(DamageGiverName));
+			p_Writer.WriteNullBytes(12);
+			PickupSettings.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write((int) AnimBaseSet);
+			p_Writer.Write(p_EbxWriter.WriteImport(AnimationData));
+			p_Writer.Write(RenderFov);
+			p_Writer.Write(ZoomRenderFov);
+			p_Writer.Write(p_EbxWriter.WriteImport(StreamGroup1p));
+			p_Writer.Write(p_EbxWriter.WriteImport(VoiceOverInfo));
+			p_Writer.Write((int) QuickThrowType);
+			p_Writer.Write(p_EbxWriter.WriteImport(Customization));
+			p_Writer.Write(WeaponFloatParam);
+			(RimeWriter Writer, uint ArrayIndex) s_Sockets = p_EbxWriter.GetArrayWriter(Sockets.GetType(), Sockets.Count);
+			p_Writer.Write(s_Sockets.ArrayIndex);
+			foreach (var s_Entry in Sockets)
+			{
+				s_Sockets.Writer.Write(p_EbxWriter.WriteImport(s_Entry));
+			}
+			p_Writer.Write((int) SwitchWeaponStateInputAction);
+			p_Writer.Write(p_EbxWriter.WriteImport(SoldierWeaponBlueprint));
+			p_Writer.Write(p_EbxWriter.WriteString(PersistenceId));
+			p_Writer.Write(AllowSwitchingToWeaponOutOfAmmo);
+			p_Writer.Write(HideWhenOutOfAmmo);
+			p_Writer.Write(LowerOnOwnTeam);
+			p_Writer.Write(RedeployWhenSwitchingWeaponStates);
+			p_Writer.Write(UseQuickThrowOnAutomaticSwitchback);
+			p_Writer.Write(EnableBreathControl);
+			p_Writer.Write(CanBeInSupportedShooting);
+			p_Writer.Write(AllowSwitchingToWeaponReloading);
+			p_Writer.Write(SwitchToPrimaryWhenOutOfAmmo);
+			p_Writer.Write(AllowSwitchingToWeaponInVehicles);
+			p_Writer.Write(IsSilenced);
+			p_Writer.WriteNullBytes(1);
+		}
 	}
 }

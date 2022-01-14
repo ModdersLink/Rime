@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 92)]
-	public class ArtilleryStrikeWeaponData : 
+	public class ArtilleryStrikeWeaponData :
 		WeaponData
 	{
 		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
@@ -87,5 +88,31 @@ namespace fb
 		[ContainerField(91), LayoutImmutable, Blittable, JsonProperty(Order = 91)]
 		public bool FireProjectileFromWeapon { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(MaxStrikeDistance);
+			p_Writer.Write(StrikeRadius);
+			p_Writer.Write(SpawnHeight);
+			p_Writer.Write(MaxRandomSpawnHeight);
+			p_Writer.Write(StrikeCameraOffset);
+			p_Writer.Write(SpawnHeightMultiplier);
+			p_Writer.Write(p_EbxWriter.WriteImport(Camera));
+			p_Writer.Write(AimingCameraHeight);
+			p_Writer.Write(StrikeCameraHeight);
+			p_Writer.Write(AimingCameraOffset);
+			p_Writer.Write(StrikeCameraFov);
+			p_Writer.Write(AimingCameraFov);
+			p_Writer.Write(DelayBeforeAimingCamera);
+			p_Writer.Write(ValidMinDistance);
+			p_Writer.Write(FireCameraTime);
+			p_Writer.Write(StrikeCameraTime);
+			p_Writer.Write(ValidMaxDistance);
+			p_Writer.Write(ValidMaxAngle);
+			p_Writer.Write(IncreaseSpawnHeightWithDistance);
+			p_Writer.Write(EnableProjectileTrails);
+			p_Writer.Write(EnableCameraRotation);
+			p_Writer.Write(FireProjectileFromWeapon);
+		}
 	}
 }

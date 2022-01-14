@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 20)]
-	public class SoldierWeaponMultiUnlock : 
+	public class SoldierWeaponMultiUnlock :
 		UnlockUserDataBase
 	{
 		[ContainerField(12), JsonProperty(Order = 12)]
@@ -27,5 +28,16 @@ namespace fb
 		[ContainerField(16), JsonProperty(Order = 16)]
 		public List<UnlockAssetPair> UnlockAssetPairs { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(First));
+			(RimeWriter Writer, uint ArrayIndex) s_UnlockAssetPairs = p_EbxWriter.GetArrayWriter(UnlockAssetPairs.GetType(), UnlockAssetPairs.Count);
+			p_Writer.Write(s_UnlockAssetPairs.ArrayIndex);
+			foreach (var s_Entry in UnlockAssetPairs)
+			{
+				s_Entry.Serialize(s_UnlockAssetPairs.Writer, p_EbxWriter);
+			}
+		}
 	}
 }

@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 52)]
-	public class DataSetNode : 
+	public class DataSetNode :
 		UINodeData
 	{
 		[ContainerField(20), JsonProperty(Order = 20)]
@@ -39,5 +40,16 @@ namespace fb
 		[ContainerField(49), LayoutImmutable, Blittable, JsonProperty(Order = 49)]
 		public bool ForceUpdate { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(In));
+			p_Writer.Write(p_EbxWriter.WriteImport(Out));
+			p_Writer.Write(p_EbxWriter.WriteString(Param));
+			DataSource.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(SetToEmptyString);
+			p_Writer.Write(ForceUpdate);
+			p_Writer.WriteNullBytes(2);
+		}
 	}
 }

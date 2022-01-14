@@ -14,15 +14,26 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 12)]
-	public class CriteriaStarCategoryData : 
+	public class CriteriaStarCategoryData :
 		DataContainer
 	{
 		[ContainerField(8), JsonProperty(Order = 8)]
 		public List<CriteriaStarCategoryInstance> CriteriaInstances { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			(RimeWriter Writer, uint ArrayIndex) s_CriteriaInstances = p_EbxWriter.GetArrayWriter(CriteriaInstances.GetType(), CriteriaInstances.Count);
+			p_Writer.Write(s_CriteriaInstances.ArrayIndex);
+			foreach (var s_Entry in CriteriaInstances)
+			{
+				s_Entry.Serialize(s_CriteriaInstances.Writer, p_EbxWriter);
+			}
+		}
 	}
 }

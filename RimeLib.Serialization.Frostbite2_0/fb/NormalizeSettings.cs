@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 24)]
-	public class NormalizeSettings
+	public class NormalizeSettings :
+		EbxSerializable
 	{
 		[ContainerField(0), LayoutImmutable, Blittable, JsonProperty(Order = 0)]
 		public float Maximum { get; set; }
@@ -38,5 +40,16 @@ namespace fb
 		[ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
 		public bool Normalize { get; set; }
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(Maximum);
+			p_Writer.Write(Minimum);
+			p_Writer.Write(Velocity);
+			p_Writer.Write(Lower);
+			p_Writer.Write(Upper);
+			p_Writer.Write(Normalize);
+			p_Writer.WriteNullBytes(3);
+		}
 	}
 }

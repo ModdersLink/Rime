@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 160)]
-	public class AntAnimatableComponentData : 
+	public class AntAnimatableComponentData :
 		ComponentData
 	{
 		[ContainerField(96), JsonProperty(Order = 96)]
@@ -42,5 +43,17 @@ namespace fb
 		[ContainerField(158), LayoutImmutable, Blittable, JsonProperty(Order = 158)]
 		public bool ForceDisableCulling { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write((int) Realm);
+			p_Writer.Write((int) SubRealm);
+			AnimationData.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(Mesh));
+			p_Writer.Write(AutoActivate);
+			p_Writer.Write(AnimationControlledFromStart);
+			p_Writer.Write(ForceDisableCulling);
+			p_Writer.WriteNullBytes(1);
+		}
 	}
 }

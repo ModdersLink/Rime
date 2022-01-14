@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 16)]
-	public class EditableActionMap
+	public class EditableActionMap :
+		EbxSerializable
 	{
 		[ContainerField(0), LayoutImmutable, JsonProperty(Order = 0)]
 		public string Id { get; set; } = string.Empty;
@@ -32,5 +34,13 @@ namespace fb
 		[ContainerField(12), JsonProperty(Order = 12)]
 		public EditableActions ConfigurationLayout { get; set; } = new();
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteString(Id));
+			p_Writer.Write(p_EbxWriter.WriteString(NameId));
+			p_Writer.Write(p_EbxWriter.WriteImport(ActionMap));
+			ConfigurationLayout.Serialize(p_Writer, p_EbxWriter);
+		}
 	}
 }

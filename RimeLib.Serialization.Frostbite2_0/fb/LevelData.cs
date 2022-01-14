@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 180)]
-	public class LevelData : 
+	public class LevelData :
 		WorldData
 	{
 		[ContainerField(48), JsonProperty(Order = 48)]
@@ -99,5 +100,61 @@ namespace fb
 		[ContainerField(177), LayoutImmutable, Blittable, JsonProperty(Order = 177)]
 		public bool FreeStreamingEnable { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(LevelReference));
+			PathfindingBlobInfo.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(AISystem));
+			p_Writer.Write(WorldSizeXZ);
+			LevelDescription.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteString(GameConfigurationName));
+			p_Writer.Write(p_EbxWriter.WriteImport(EmitterSystemAsset));
+			(RimeWriter Writer, uint ArrayIndex) s_EmitterExclusionVolumes = p_EbxWriter.GetArrayWriter(EmitterExclusionVolumes.GetType(), EmitterExclusionVolumes.Count);
+			p_Writer.Write(s_EmitterExclusionVolumes.ArrayIndex);
+			foreach (var s_Entry in EmitterExclusionVolumes)
+			{
+				s_EmitterExclusionVolumes.Writer.Write(p_EbxWriter.WriteImport(s_Entry));
+			}
+			p_Writer.Write(DefaultFOV);
+			p_Writer.Write(InfantryFOVMultiplier);
+			p_Writer.Write(MaxEntityBusNetworkCount);
+			p_Writer.Write(p_EbxWriter.WriteImport(SoundStates));
+			p_Writer.Write(p_EbxWriter.WriteImport(VoiceOverSystem));
+			(RimeWriter Writer, uint ArrayIndex) s_VoiceOverLogic = p_EbxWriter.GetArrayWriter(VoiceOverLogic.GetType(), VoiceOverLogic.Count);
+			p_Writer.Write(s_VoiceOverLogic.ArrayIndex);
+			foreach (var s_Entry in VoiceOverLogic)
+			{
+				s_VoiceOverLogic.Writer.Write(p_EbxWriter.WriteImport(s_Entry));
+			}
+			p_Writer.Write(MaxVehicleHeight);
+			p_Writer.Write(p_EbxWriter.WriteImport(AnimatedSkeletonDatabase));
+			p_Writer.Write(p_EbxWriter.WriteImport(EnlightenShaderDatabase));
+			(RimeWriter Writer, uint ArrayIndex) s_AntProjectAssets = p_EbxWriter.GetArrayWriter(AntProjectAssets.GetType(), AntProjectAssets.Count);
+			p_Writer.Write(s_AntProjectAssets.ArrayIndex);
+			foreach (var s_Entry in AntProjectAssets)
+			{
+				s_AntProjectAssets.Writer.Write(p_EbxWriter.WriteImport(s_Entry));
+			}
+			p_Writer.Write(p_EbxWriter.WriteString(AerialHeightmapData));
+			p_Writer.Write(p_EbxWriter.WriteImport(AudioObstructionInfo));
+			(RimeWriter Writer, uint ArrayIndex) s_CameraTransitions = p_EbxWriter.GetArrayWriter(CameraTransitions.GetType(), CameraTransitions.Count);
+			p_Writer.Write(s_CameraTransitions.ArrayIndex);
+			foreach (var s_Entry in CameraTransitions)
+			{
+				s_CameraTransitions.Writer.Write(p_EbxWriter.WriteImport(s_Entry));
+			}
+			(RimeWriter Writer, uint ArrayIndex) s_CameraModes = p_EbxWriter.GetArrayWriter(CameraModes.GetType(), CameraModes.Count);
+			p_Writer.Write(s_CameraModes.ArrayIndex);
+			foreach (var s_Entry in CameraModes)
+			{
+				s_CameraModes.Writer.Write(p_EbxWriter.WriteImport(s_Entry));
+			}
+			p_Writer.Write(p_EbxWriter.WriteImport(FaceAnimationsWaveMappings));
+			p_Writer.Write(p_EbxWriter.WriteImport(HackForceBuild));
+			p_Writer.Write(HugeBroadPhase);
+			p_Writer.Write(FreeStreamingEnable);
+			p_Writer.WriteNullBytes(2);
+		}
 	}
 }

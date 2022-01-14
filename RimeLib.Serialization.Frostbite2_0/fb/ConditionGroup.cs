@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 36)]
-	public class ConditionGroup : 
+	public class ConditionGroup :
 		AudioGraphNodePortGroup
 	{
 		[ContainerField(8), JsonProperty(Order = 8)]
@@ -33,5 +34,13 @@ namespace fb
 		[ContainerField(32), JsonProperty(Order = 32)]
 		public ConditionType Condition { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			X.Serialize(p_Writer, p_EbxWriter);
+			Y.Serialize(p_Writer, p_EbxWriter);
+			True.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write((int) Condition);
+		}
 	}
 }

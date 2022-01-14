@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 48)]
-	public class AntAnimationHandlerData
+	public class AntAnimationHandlerData :
+		EbxSerializable
 	{
 		[ContainerField(0), JsonProperty(Order = 0)]
 		public AntAnimatableData Animatable { get; set; } = new();
@@ -44,5 +46,28 @@ namespace fb
 		[ContainerField(46), LayoutImmutable, Blittable, JsonProperty(Order = 46)]
 		public bool IsProp { get; set; }
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			Animatable.Serialize(p_Writer, p_EbxWriter);
+			RootController.Serialize(p_Writer, p_EbxWriter);
+			LodBinding.Serialize(p_Writer, p_EbxWriter);
+			(RimeWriter Writer, uint ArrayIndex) s_AntPackageData = p_EbxWriter.GetArrayWriter(AntPackageData.GetType(), AntPackageData.Count);
+			p_Writer.Write(s_AntPackageData.ArrayIndex);
+			foreach (var s_Entry in AntPackageData)
+			{
+				s_AntPackageData.Writer.Write(p_EbxWriter.WriteImport(s_Entry));
+			}
+			(RimeWriter Writer, uint ArrayIndex) s_BonesToMirror = p_EbxWriter.GetArrayWriter(BonesToMirror.GetType(), BonesToMirror.Count);
+			p_Writer.Write(s_BonesToMirror.ArrayIndex);
+			foreach (var s_Entry in BonesToMirror)
+			{
+				s_Entry.Serialize(s_BonesToMirror.Writer, p_EbxWriter);
+			}
+			p_Writer.Write(ReportBackFromAnt);
+			p_Writer.Write(EnableMasterSlaveCopy);
+			p_Writer.Write(IsProp);
+			p_Writer.WriteNullBytes(1);
+		}
 	}
 }

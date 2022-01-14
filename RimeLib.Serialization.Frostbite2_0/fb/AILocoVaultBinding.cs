@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 28)]
-	public class AILocoVaultBinding
+	public class AILocoVaultBinding :
+		EbxSerializable
 	{
 		[ContainerField(0), JsonProperty(Order = 0)]
 		public AntRef Vault { get; set; } = new();
@@ -41,5 +43,16 @@ namespace fb
 		[ContainerField(24), JsonProperty(Order = 24)]
 		public AntRef VaultType { get; set; } = new();
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			Vault.Serialize(p_Writer, p_EbxWriter);
+			DistanceBeforeVault.Serialize(p_Writer, p_EbxWriter);
+			HeightBeforeVault.Serialize(p_Writer, p_EbxWriter);
+			LengthOfVaultableObject.Serialize(p_Writer, p_EbxWriter);
+			HeightAfterVault.Serialize(p_Writer, p_EbxWriter);
+			DistanceAfterVault.Serialize(p_Writer, p_EbxWriter);
+			VaultType.Serialize(p_Writer, p_EbxWriter);
+		}
 	}
 }

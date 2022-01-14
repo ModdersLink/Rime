@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 52)]
-	public class DemoSettings : 
+	public class DemoSettings :
 		DataContainer
 	{
 		[ContainerField(8), LayoutImmutable, JsonProperty(Order = 8)]
@@ -69,5 +70,26 @@ namespace fb
 		[ContainerField(50), LayoutImmutable, Blittable, JsonProperty(Order = 50)]
 		public bool PauseOnStartup { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteString(RecordDemoFileName));
+			p_Writer.Write(p_EbxWriter.WriteString(PlaybackDemoFileName));
+			p_Writer.Write(p_EbxWriter.WriteString(TimeDemo));
+			p_Writer.Write(p_EbxWriter.WriteString(LockToPlayerName));
+			p_Writer.Write(ChangePlayerInterval);
+			p_Writer.Write(ForcedDeltaTickCount);
+			p_Writer.Write(StartProfilingOnFrame);
+			p_Writer.Write(StopProfilingOnFrame);
+			p_Writer.Write(TakeScreenshotOnFrame);
+			p_Writer.Write(AllowOverwrite);
+			p_Writer.Write(LogPerformance);
+			p_Writer.Write(SuppressDebugLog);
+			p_Writer.Write(ShutdownOnDemoComplete);
+			p_Writer.Write(LoopingDemo);
+			p_Writer.Write(LockToRandomPlayer);
+			p_Writer.Write(PauseOnStartup);
+			p_Writer.WriteNullBytes(1);
+		}
 	}
 }

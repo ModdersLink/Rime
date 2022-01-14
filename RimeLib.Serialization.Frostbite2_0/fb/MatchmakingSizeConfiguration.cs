@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 24)]
-	public class MatchmakingSizeConfiguration
+	public class MatchmakingSizeConfiguration :
+		EbxSerializable
 	{
 		[ContainerField(0), JsonProperty(Order = 0)]
 		public MatchmakingPlatform Platform { get; set; } = new();
@@ -38,5 +40,20 @@ namespace fb
 		[ContainerField(20), LayoutImmutable, JsonProperty(Order = 20)]
 		public string MinFitThreshold { get; set; } = string.Empty;
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write((int) Platform);
+			(RimeWriter Writer, uint ArrayIndex) s_Settings = p_EbxWriter.GetArrayWriter(Settings.GetType(), Settings.Count);
+			p_Writer.Write(s_Settings.ArrayIndex);
+			foreach (var s_Entry in Settings)
+			{
+				s_Settings.Writer.Write(p_EbxWriter.WriteString(s_Entry));
+			}
+			p_Writer.Write(DesiredPlayerCount);
+			p_Writer.Write(MinPlayerCount);
+			p_Writer.Write(MaxPlayerCapacity);
+			p_Writer.Write(p_EbxWriter.WriteString(MinFitThreshold));
+		}
 	}
 }

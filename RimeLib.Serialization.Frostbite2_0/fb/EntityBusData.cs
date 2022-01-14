@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 32)]
-	public class EntityBusData : 
+	public class EntityBusData :
 		DataBusData
 	{
 		[ContainerField(20), JsonProperty(Order = 20)]
@@ -39,5 +40,20 @@ namespace fb
 		[ContainerField(31), LayoutImmutable, Blittable, JsonProperty(Order = 31)]
 		public bool AlwaysCreateEntityBusServer { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			(RimeWriter Writer, uint ArrayIndex) s_EventConnections = p_EbxWriter.GetArrayWriter(EventConnections.GetType(), EventConnections.Count);
+			p_Writer.Write(s_EventConnections.ArrayIndex);
+			foreach (var s_Entry in EventConnections)
+			{
+				s_Entry.Serialize(s_EventConnections.Writer, p_EbxWriter);
+			}
+			p_Writer.Write(p_EbxWriter.WriteImport(Descriptor));
+			p_Writer.Write(NeedNetworkId);
+			p_Writer.Write(InterfaceHasConnections);
+			p_Writer.Write(AlwaysCreateEntityBusClient);
+			p_Writer.Write(AlwaysCreateEntityBusServer);
+		}
 	}
 }

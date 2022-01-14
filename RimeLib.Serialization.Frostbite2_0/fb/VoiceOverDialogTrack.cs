@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 44)]
-	public class VoiceOverDialogTrack : 
+	public class VoiceOverDialogTrack :
 		DataContainer
 	{
 		[ContainerField(8), JsonProperty(Order = 8)]
@@ -51,5 +52,30 @@ namespace fb
 		[ContainerField(41), LayoutImmutable, Blittable, JsonProperty(Order = 41)]
 		public bool TakeSwitchingOnResume { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(Source));
+			p_Writer.Write(p_EbxWriter.WriteImport(TakeControl));
+			(RimeWriter Writer, uint ArrayIndex) s_TakeIndexMapping = p_EbxWriter.GetArrayWriter(TakeIndexMapping.GetType(), TakeIndexMapping.Count);
+			p_Writer.Write(s_TakeIndexMapping.ArrayIndex);
+			foreach (var s_Entry in TakeIndexMapping)
+			{
+				s_Entry.Serialize(s_TakeIndexMapping.Writer, p_EbxWriter);
+			}
+			p_Writer.Write((int) TakeSwitching);
+			(RimeWriter Writer, uint ArrayIndex) s_Clips = p_EbxWriter.GetArrayWriter(Clips.GetType(), Clips.Count);
+			p_Writer.Write(s_Clips.ArrayIndex);
+			foreach (var s_Entry in Clips)
+			{
+				s_Clips.Writer.Write(p_EbxWriter.WriteImport(s_Entry));
+			}
+			p_Writer.Write(p_EbxWriter.WriteImport(SamplerNode));
+			p_Writer.Write(p_EbxWriter.WriteImport(Output));
+			p_Writer.Write(p_EbxWriter.WriteImport(QueueGroup));
+			p_Writer.Write(ParentTrackIndex);
+			p_Writer.Write(TakeSwitchingOnResume);
+			p_Writer.WriteNullBytes(2);
+		}
 	}
 }

@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 128)]
-	public class VehicleParachuteComponentData : 
+	public class VehicleParachuteComponentData :
 		ComponentData
 	{
 		[ContainerField(96), JsonProperty(Order = 96)]
@@ -36,5 +37,15 @@ namespace fb
 		[ContainerField(116), LayoutImmutable, Blittable, JsonProperty(Order = 116)]
 		public bool DropParachuteOnUndeploy { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			Binding.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(UndeployTime);
+			p_Writer.Write(TimeInvisibleAfterSpawn);
+			p_Writer.Write(VehicleType);
+			p_Writer.Write(DropParachuteOnUndeploy);
+			p_Writer.WriteNullBytes(11);
+		}
 	}
 }

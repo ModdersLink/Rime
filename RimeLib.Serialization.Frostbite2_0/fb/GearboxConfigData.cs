@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 64)]
-	public class GearboxConfigData : 
+	public class GearboxConfigData :
 		DataContainer
 	{
 		[ContainerField(8), JsonProperty(Order = 8)]
@@ -72,5 +73,46 @@ namespace fb
 		[ContainerField(63), LayoutImmutable, Blittable, JsonProperty(Order = 63)]
 		public bool UseAutoClutch { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			(RimeWriter Writer, uint ArrayIndex) s_ForwardGearRatios = p_EbxWriter.GetArrayWriter(ForwardGearRatios.GetType(), ForwardGearRatios.Count);
+			p_Writer.Write(s_ForwardGearRatios.ArrayIndex);
+			foreach (var s_Entry in ForwardGearRatios)
+			{
+				s_ForwardGearRatios.Writer.Write(s_Entry);
+			}
+			(RimeWriter Writer, uint ArrayIndex) s_ForwardGearSpeeds = p_EbxWriter.GetArrayWriter(ForwardGearSpeeds.GetType(), ForwardGearSpeeds.Count);
+			p_Writer.Write(s_ForwardGearSpeeds.ArrayIndex);
+			foreach (var s_Entry in ForwardGearSpeeds)
+			{
+				s_ForwardGearSpeeds.Writer.Write(s_Entry);
+			}
+			(RimeWriter Writer, uint ArrayIndex) s_ReverseGearRatios = p_EbxWriter.GetArrayWriter(ReverseGearRatios.GetType(), ReverseGearRatios.Count);
+			p_Writer.Write(s_ReverseGearRatios.ArrayIndex);
+			foreach (var s_Entry in ReverseGearRatios)
+			{
+				s_ReverseGearRatios.Writer.Write(s_Entry);
+			}
+			(RimeWriter Writer, uint ArrayIndex) s_ReverseGearSpeeds = p_EbxWriter.GetArrayWriter(ReverseGearSpeeds.GetType(), ReverseGearSpeeds.Count);
+			p_Writer.Write(s_ReverseGearSpeeds.ArrayIndex);
+			foreach (var s_Entry in ReverseGearSpeeds)
+			{
+				s_ReverseGearSpeeds.Writer.Write(s_Entry);
+			}
+			p_Writer.Write(GearboxType);
+			p_Writer.Write(GearboxMode);
+			p_Writer.Write(GearChangeTime);
+			p_Writer.Write(GearDownSpeedFactor);
+			p_Writer.Write(OppositeDirGearChangeMaxSpeed);
+			p_Writer.Write(OppositeDirGearChangeTime);
+			p_Writer.Write(ClutchSpeedFactor);
+			p_Writer.Write(TransmissionEfficiency);
+			p_Writer.Write(BackwardThrottleLimit);
+			p_Writer.Write(UseClassicGearBoxAutoClutch);
+			p_Writer.Write(UseNeutralGear);
+			p_Writer.Write(LimitBackwardThrottle);
+			p_Writer.Write(UseAutoClutch);
+		}
 	}
 }

@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 44)]
-	public class DebrisSystemSettings : 
+	public class DebrisSystemSettings :
 		DataContainer
 	{
 		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
@@ -66,5 +67,25 @@ namespace fb
 		[ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
 		public bool MeshDrawCullStats { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(MeshDrawCountLimit);
+			p_Writer.Write(TimeScale);
+			p_Writer.Write(MeshCullingDistance);
+			p_Writer.Write(DrawStats);
+			p_Writer.Write(MeshBatchCountLimit);
+			p_Writer.Write(MeshStreamingPriorityMultiplier);
+			p_Writer.Write(MeshRenderingEnable);
+			p_Writer.Write(EnableJobs);
+			p_Writer.Write(MeshShadowEnable);
+			p_Writer.Write(MeshViewCullingEnable);
+			p_Writer.Write(MeshHavokRenderingEnable);
+			p_Writer.Write(MeshDrawTransforms);
+			p_Writer.Write(Enable);
+			p_Writer.Write(MeshDrawBoundingBoxes);
+			p_Writer.Write(MeshDrawCullStats);
+			p_Writer.WriteNullBytes(3);
+		}
 	}
 }

@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 176)]
-	public class PropertyDebugEntityData : 
+	public class PropertyDebugEntityData :
 		EntityData
 	{
 		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
@@ -63,5 +64,26 @@ namespace fb
 		[ContainerField(162), LayoutImmutable, Blittable, JsonProperty(Order = 162)]
 		public bool Multiline { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(4);
+			Vec3Value.Serialize(p_Writer, p_EbxWriter);
+			TextColor.Serialize(p_Writer, p_EbxWriter);
+			ScreenPosition.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(8);
+			TransformValue.Serialize(p_Writer, p_EbxWriter);
+			Vec2Value.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteString(ValuePrefix));
+			p_Writer.Write((int) Realm);
+			p_Writer.Write(FloatValue);
+			p_Writer.Write(IntValue);
+			p_Writer.Write(TextScale);
+			p_Writer.Write(p_EbxWriter.WriteString(StringValue));
+			p_Writer.Write(DefaultVisible);
+			p_Writer.Write(BoolValue);
+			p_Writer.Write(Multiline);
+			p_Writer.WriteNullBytes(13);
+		}
 	}
 }

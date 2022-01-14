@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 156)]
-	public class ClientSettings : 
+	public class ClientSettings :
 		SystemSettings
 	{
 		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
@@ -228,5 +229,79 @@ namespace fb
 		[ContainerField(152), LayoutImmutable, Blittable, JsonProperty(Order = 152)]
 		public bool QuitGameOnServerDisconnect { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(LoadedTimeout);
+			p_Writer.Write(OutgoingRate);
+			p_Writer.Write(LoadingTimeout);
+			p_Writer.Write(IncomingFrequency);
+			p_Writer.Write(IncomingRate);
+			p_Writer.Write(DuplicationChance);
+			p_Writer.Write(Team);
+			p_Writer.Write(MaxDropDuration);
+			p_Writer.Write(ReorderingChance);
+			p_Writer.Write(DropSpikeChance);
+			p_Writer.Write(MinDropDuration);
+			p_Writer.Write(MaxIncomingLatency);
+			p_Writer.Write(PacketDrops);
+			p_Writer.Write(MaxLatency);
+			p_Writer.Write(MinIncomingLatency);
+			p_Writer.Write(CorruptionChance);
+			p_Writer.Write(p_EbxWriter.WriteString(ServerIp));
+			p_Writer.Write(p_EbxWriter.WriteString(ScreenshotSuffix));
+			p_Writer.Write(SpawnPointIndex);
+			p_Writer.Write(MinLatency);
+			p_Writer.Write(p_EbxWriter.WriteString(ScreenshotFilename));
+			p_Writer.Write(IngameTimeout);
+			p_Writer.Write(AimScale);
+			p_Writer.Write(p_EbxWriter.WriteString(SecondaryServerIp));
+			p_Writer.Write(SkipFastLevelLoad);
+			p_Writer.Write(ScreenshotToFile);
+			p_Writer.Write(IgnoreClientFireRateMultiplier);
+			p_Writer.Write(InputEnable);
+			p_Writer.Write(LoadMenu);
+			p_Writer.Write(PauseGameOnStartUp);
+			p_Writer.Write(DebugMenuOnLThumb);
+			p_Writer.Write(InvertPitch);
+			p_Writer.Write(OccludersEnabled);
+			p_Writer.Write(IsPresenceEnabled);
+			p_Writer.Write(InvertFreeCamera);
+			p_Writer.Write(Scheme2FlipY);
+			p_Writer.Write(InvertYaw);
+			p_Writer.Write(LipSyncEnabled);
+			p_Writer.Write(IsInternetSimulationEnabled);
+			p_Writer.Write(OnDamageSpottingEnabled);
+			p_Writer.Write(EmittersEnabled);
+			p_Writer.Write(PadRumbleEnabled);
+			p_Writer.Write(OvergrowthEnabled);
+			p_Writer.Write(EffectsEnabled);
+			p_Writer.Write(TerrainEnabled);
+			p_Writer.Write(WaterPhysicsEnabled);
+			p_Writer.Write(VegetationEnabled);
+			p_Writer.Write(WorldRenderEnabled);
+			p_Writer.Write(RenderTags);
+			p_Writer.Write(DebrisClusterEnabled);
+			p_Writer.Write(HavokVisualDebugger);
+			p_Writer.Write(HavokVDBShowsEffectsWorld);
+			p_Writer.Write(HavokCaptureToFile);
+			p_Writer.Write(UseMouseAndKeyboardSystem);
+			p_Writer.Write(UseGlobalGamePadInput);
+			p_Writer.Write(ThreadedLoadingEnable);
+			p_Writer.Write(ShowBuildId);
+			p_Writer.Write(ExtractPersistenceInformation);
+			p_Writer.Write(EnableRestTool);
+			p_Writer.Write(LocalVehicleSimulationEnabled);
+			p_Writer.Write(AsyncClientBulletEntity);
+			p_Writer.Write(AutoUnspawnDynamicObjects);
+			p_Writer.Write(VsyncEnable);
+			p_Writer.Write(VisualFrameInterpolation);
+			p_Writer.Write(InvertPadPcRightStick);
+			p_Writer.Write(Scheme0FlipY);
+			p_Writer.Write(IsSpectator);
+			p_Writer.Write(Scheme1FlipY);
+			p_Writer.Write(QuitGameOnServerDisconnect);
+			p_Writer.WriteNullBytes(3);
+		}
 	}
 }

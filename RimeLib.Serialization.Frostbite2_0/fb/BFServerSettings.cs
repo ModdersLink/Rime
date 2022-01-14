@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 160)]
-	public class BFServerSettings : 
+	public class BFServerSettings :
 		SystemSettings
 	{
 		[ContainerField(12), LayoutImmutable, JsonProperty(Order = 12)]
@@ -147,5 +148,52 @@ namespace fb
 		[ContainerField(158), LayoutImmutable, Blittable, JsonProperty(Order = 158)]
 		public bool AutoBalance { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteString(ServerMessage));
+			p_Writer.Write(CTFRoundTimeModifier);
+			p_Writer.Write(p_EbxWriter.WriteString(ForceTeamForPlayerTag));
+			p_Writer.Write(ForceTeamForPlayerTagTeam);
+			p_Writer.Write(NoInteractivityTimeoutTime);
+			p_Writer.Write(NoInteractivityThresholdLimit);
+			p_Writer.Write(NoInteractivityBanRoundCount);
+			p_Writer.Write(TeamKillCountForKick);
+			p_Writer.Write(TeamKillValueForKick);
+			p_Writer.Write(TeamKillValueIncrease);
+			p_Writer.Write(TeamKillValueDecreasePerSecond);
+			p_Writer.Write(TeamKillKickForBan);
+			p_Writer.Write(RoundMaxPlayerCount);
+			p_Writer.Write(RoundMinPlayerCount);
+			p_Writer.Write(RoundLockdownCountdown);
+			p_Writer.Write(RoundRestartCountdown);
+			p_Writer.Write(RoundWarmupTimeout);
+			p_Writer.Write(p_EbxWriter.WriteString(BannerUrl));
+			p_Writer.Write(p_EbxWriter.WriteString(ServerPreset));
+			p_Writer.Write(p_EbxWriter.WriteString(ServerDescription));
+			p_Writer.Write(p_EbxWriter.WriteString(ServerAdministrationSettings));
+			p_Writer.Write(GameSize);
+			p_Writer.Write(p_EbxWriter.WriteString(ServerAdministrationMapRotation));
+			p_Writer.Write(p_EbxWriter.WriteString(ServerAdministrationMapRotationInformation));
+			p_Writer.Write(ServerAdministrationRoundsPerMap);
+			p_Writer.Write(p_EbxWriter.WriteString(Spectators));
+			p_Writer.Write(p_EbxWriter.WriteString(PunkBusterVersion));
+			p_Writer.Write(TeamSwitchImbalanceLimit);
+			p_Writer.Write(p_EbxWriter.WriteString(GameMod));
+			p_Writer.Write(p_EbxWriter.WriteString(PingSite));
+			p_Writer.Write(p_EbxWriter.WriteString(OverrideServerConfigurationStartTime));
+			p_Writer.Write(GunMasterWeaponsPresetIndex);
+			p_Writer.Write(ServerConfigurationRefreshInterval);
+			p_Writer.Write(DeathmatchFriendZoneFallbackCount);
+			p_Writer.Write((int) DefaultVoiceChannel);
+			p_Writer.Write(MapSequencerEnabled);
+			p_Writer.Write(KickAPlayerOnVIPJoin);
+			p_Writer.Write(IsManDownRotationEnabled);
+			p_Writer.Write(IsKillerCameraEnabled);
+			p_Writer.Write(PremiumStatus);
+			p_Writer.Write(OverrideAutoBalance);
+			p_Writer.Write(AutoBalance);
+			p_Writer.WriteNullBytes(1);
+		}
 	}
 }

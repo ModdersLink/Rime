@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 24)]
-	public class LevelSetup
+	public class LevelSetup :
+		EbxSerializable
 	{
 		[ContainerField(0), LayoutImmutable, JsonProperty(Order = 0)]
 		public string Name { get; set; } = string.Empty;
@@ -41,5 +43,32 @@ namespace fb
 		[ContainerField(21), LayoutImmutable, Blittable, JsonProperty(Order = 21)]
 		public bool ForceReloadResources { get; set; }
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteString(Name));
+			(RimeWriter Writer, uint ArrayIndex) s_InclusionOptions = p_EbxWriter.GetArrayWriter(InclusionOptions.GetType(), InclusionOptions.Count);
+			p_Writer.Write(s_InclusionOptions.ArrayIndex);
+			foreach (var s_Entry in InclusionOptions)
+			{
+				s_Entry.Serialize(s_InclusionOptions.Writer, p_EbxWriter);
+			}
+			p_Writer.Write(DifficultyIndex);
+			(RimeWriter Writer, uint ArrayIndex) s_SubLevelNames = p_EbxWriter.GetArrayWriter(SubLevelNames.GetType(), SubLevelNames.Count);
+			p_Writer.Write(s_SubLevelNames.ArrayIndex);
+			foreach (var s_Entry in SubLevelNames)
+			{
+				s_SubLevelNames.Writer.Write(p_EbxWriter.WriteString(s_Entry));
+			}
+			(RimeWriter Writer, uint ArrayIndex) s_SubLevelStates = p_EbxWriter.GetArrayWriter(SubLevelStates.GetType(), SubLevelStates.Count);
+			p_Writer.Write(s_SubLevelStates.ArrayIndex);
+			foreach (var s_Entry in SubLevelStates)
+			{
+				s_SubLevelStates.Writer.Write(s_Entry);
+			}
+			p_Writer.Write(IsSaveGame);
+			p_Writer.Write(ForceReloadResources);
+			p_Writer.WriteNullBytes(2);
+		}
 	}
 }

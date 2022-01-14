@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 96)]
-	public class GameEntityData : 
+	public class GameEntityData :
 		SpatialEntityData
 	{
 		[ContainerField(80), JsonProperty(Order = 80)]
@@ -30,5 +31,18 @@ namespace fb
 		[ContainerField(85), LayoutImmutable, Blittable, JsonProperty(Order = 85)]
 		public sbyte RuntimeComponentCount { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			(RimeWriter Writer, uint ArrayIndex) s_Components = p_EbxWriter.GetArrayWriter(Components.GetType(), Components.Count);
+			p_Writer.Write(s_Components.ArrayIndex);
+			foreach (var s_Entry in Components)
+			{
+				s_Components.Writer.Write(p_EbxWriter.WriteImport(s_Entry));
+			}
+			p_Writer.Write(Enabled);
+			p_Writer.Write(RuntimeComponentCount);
+			p_Writer.WriteNullBytes(10);
+		}
 	}
 }

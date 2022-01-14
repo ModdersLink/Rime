@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 32)]
-	public class LockingWeaponData : 
+	public class LockingWeaponData :
 		WeaponData
 	{
 		[ContainerField(16), JsonProperty(Order = 16)]
@@ -42,5 +43,16 @@ namespace fb
 		[ContainerField(31), LayoutImmutable, Blittable, JsonProperty(Order = 31)]
 		public bool IsGuided { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(LockingController));
+			p_Writer.Write(p_EbxWriter.WriteImport(SecondaryLockingController));
+			p_Writer.Write((int) WarnLock);
+			p_Writer.Write(IsHoming);
+			p_Writer.Write(IsGuidedWhenZoomed);
+			p_Writer.Write(FireOnlyWhenLockedOn);
+			p_Writer.Write(IsGuided);
+		}
 	}
 }

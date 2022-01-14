@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 152)]
-	public class VeniceHudConfigAsset : 
+	public class VeniceHudConfigAsset :
 		DataContainer
 	{
 		[ContainerField(8), JsonProperty(Order = 8)]
@@ -99,5 +100,46 @@ namespace fb
 		[ContainerField(149), LayoutImmutable, Blittable, JsonProperty(Order = 149)]
 		public bool NametagHealthVisibleForAll { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(AmmoPickupSound));
+			p_Writer.Write(p_EbxWriter.WriteImport(WeaponPickupSound));
+			p_Writer.Write(p_EbxWriter.WriteImport(NewObjectiveSound));
+			p_Writer.Write(p_EbxWriter.WriteImport(ObjectiveCompletedSound));
+			p_Writer.Write(p_EbxWriter.WriteImport(ObjectiveUpdatedSound));
+			p_Writer.Write(p_EbxWriter.WriteImport(MPVictorySoundMec));
+			p_Writer.Write(p_EbxWriter.WriteImport(MPVictorySoundUs));
+			p_Writer.Write(p_EbxWriter.WriteImport(MPVictorySoundRu));
+			p_Writer.Write(p_EbxWriter.WriteImport(MPDefeatSoundMec));
+			p_Writer.Write(p_EbxWriter.WriteImport(MPDefeatSoundUs));
+			p_Writer.Write(p_EbxWriter.WriteImport(MPDefeatSoundRu));
+			p_Writer.Write(p_EbxWriter.WriteImport(ArtilleryAiming));
+			p_Writer.Write(p_EbxWriter.WriteImport(ArtilleryAimingOOA));
+			p_Writer.Write(p_EbxWriter.WriteImport(MortarStrikeLocking));
+			p_Writer.Write(p_EbxWriter.WriteImport(LaserDesignatorLocked));
+			p_Writer.Write(p_EbxWriter.WriteImport(LaserDesignatorLocking));
+			(RimeWriter Writer, uint ArrayIndex) s_Nametags = p_EbxWriter.GetArrayWriter(Nametags.GetType(), Nametags.Count);
+			p_Writer.Write(s_Nametags.ArrayIndex);
+			foreach (var s_Entry in Nametags)
+			{
+				s_Nametags.Writer.Write(p_EbxWriter.WriteImport(s_Entry));
+			}
+			(RimeWriter Writer, uint ArrayIndex) s_SpawnScreenWeapons = p_EbxWriter.GetArrayWriter(SpawnScreenWeapons.GetType(), SpawnScreenWeapons.Count);
+			p_Writer.Write(s_SpawnScreenWeapons.ArrayIndex);
+			foreach (var s_Entry in SpawnScreenWeapons)
+			{
+				s_Entry.Serialize(s_SpawnScreenWeapons.Writer, p_EbxWriter);
+			}
+			p_Writer.Write(MaxOrderIconDistance);
+			p_Writer.Write(InnerNametagRadius);
+			p_Writer.Write(OuterNametagRadius);
+			p_Writer.Write(CriticalHealthThreshold);
+			TaggedVehicleCrosshair.Serialize(p_Writer, p_EbxWriter);
+			Minimap.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(ShowSpawnPointsOnMinimap);
+			p_Writer.Write(NametagHealthVisibleForAll);
+			p_Writer.WriteNullBytes(2);
+		}
 	}
 }

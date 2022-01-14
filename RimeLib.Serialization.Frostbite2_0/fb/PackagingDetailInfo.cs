@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 12)]
-	public class PackagingDetailInfo
+	public class PackagingDetailInfo :
+		EbxSerializable
 	{
 		[ContainerField(0), LayoutImmutable, Blittable, JsonProperty(Order = 0)]
 		public int MipsToSkip { get; set; }
@@ -38,5 +40,15 @@ namespace fb
 		[ContainerField(11), LayoutImmutable, Blittable, JsonProperty(Order = 11)]
 		public bool IncludeTextures { get; set; }
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(MipsToSkip);
+			p_Writer.Write(LodsToSkip);
+			p_Writer.Write(IncludeAnimation);
+			p_Writer.Write(IncludeMeshes);
+			p_Writer.Write(IncludeSounds);
+			p_Writer.Write(IncludeTextures);
+		}
 	}
 }

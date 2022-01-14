@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 112)]
-	public class StreamGridEntityData : 
+	public class StreamGridEntityData :
 		SpatialEntityData
 	{
 		[ContainerField(80), LayoutImmutable, Blittable, JsonProperty(Order = 80)]
@@ -36,5 +37,20 @@ namespace fb
 		[ContainerField(96), JsonProperty(Order = 96)]
 		public List<StreamGridCell> Cells { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(CellSize);
+			p_Writer.Write(ViewDistance);
+			p_Writer.Write(MaxStreamInCountPerFrame);
+			p_Writer.Write(MaxStreamOutCountPerFrame);
+			(RimeWriter Writer, uint ArrayIndex) s_Cells = p_EbxWriter.GetArrayWriter(Cells.GetType(), Cells.Count);
+			p_Writer.Write(s_Cells.ArrayIndex);
+			foreach (var s_Entry in Cells)
+			{
+				s_Entry.Serialize(s_Cells.Writer, p_EbxWriter);
+			}
+			p_Writer.WriteNullBytes(12);
+		}
 	}
 }

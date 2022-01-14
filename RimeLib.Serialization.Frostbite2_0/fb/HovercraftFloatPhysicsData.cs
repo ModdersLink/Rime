@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 176)]
-	public class HovercraftFloatPhysicsData : 
+	public class HovercraftFloatPhysicsData :
 		HullFloatPhysicsData
 	{
 		[ContainerField(128), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 128)]
@@ -33,5 +34,14 @@ namespace fb
 		[ContainerField(164), LayoutImmutable, Blittable, JsonProperty(Order = 164)]
 		public float SideLength { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			LandResistanceAxisMod.Serialize(p_Writer, p_EbxWriter);
+			LandFrictionAxisMod.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(FrontLength);
+			p_Writer.Write(SideLength);
+			p_Writer.WriteNullBytes(8);
+		}
 	}
 }

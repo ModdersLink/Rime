@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 60)]
-	public class UIWeaponDescription : 
+	public class UIWeaponDescription :
 		UIItemDescription
 	{
 		[ContainerField(16), LayoutImmutable, JsonProperty(Order = 16)]
@@ -63,5 +64,23 @@ namespace fb
 		[ContainerField(59), LayoutImmutable, Blittable, JsonProperty(Order = 59)]
 		public bool HiddenInProgression { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteString(Name));
+			p_Writer.Write(p_EbxWriter.WriteString(UnlockName));
+			p_Writer.Write(p_EbxWriter.WriteString(Description));
+			p_Writer.Write(p_EbxWriter.WriteString(Category));
+			p_Writer.Write(p_EbxWriter.WriteString(TexturePath));
+			p_Writer.Write(p_EbxWriter.WriteString(IconTexturePath));
+			p_Writer.Write(p_EbxWriter.WriteString(UnlockTexturePath));
+			p_Writer.Write(p_EbxWriter.WriteString(Ammo));
+			p_Writer.Write(p_EbxWriter.WriteString(RateOfFire));
+			p_Writer.Write(p_EbxWriter.WriteString(Range));
+			p_Writer.Write(FireModeSingle);
+			p_Writer.Write(FireModeBurst);
+			p_Writer.Write(FireModeAuto);
+			p_Writer.Write(HiddenInProgression);
+		}
 	}
 }

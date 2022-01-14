@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 240)]
-	public class StaticCameraData : 
+	public class StaticCameraData :
 		TargetCameraData
 	{
 		[ContainerField(160), JsonProperty(Order = 160)]
@@ -81,5 +82,55 @@ namespace fb
 		[ContainerField(227), LayoutImmutable, Blittable, JsonProperty(Order = 227)]
 		public bool MirrorVerticalCurves { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			(RimeWriter Writer, uint ArrayIndex) s_LeftCurve = p_EbxWriter.GetArrayWriter(LeftCurve.GetType(), LeftCurve.Count);
+			p_Writer.Write(s_LeftCurve.ArrayIndex);
+			foreach (var s_Entry in LeftCurve)
+			{
+				s_Entry.Serialize(s_LeftCurve.Writer, p_EbxWriter);
+			}
+			(RimeWriter Writer, uint ArrayIndex) s_RightCurve = p_EbxWriter.GetArrayWriter(RightCurve.GetType(), RightCurve.Count);
+			p_Writer.Write(s_RightCurve.ArrayIndex);
+			foreach (var s_Entry in RightCurve)
+			{
+				s_Entry.Serialize(s_RightCurve.Writer, p_EbxWriter);
+			}
+			(RimeWriter Writer, uint ArrayIndex) s_UpCurve = p_EbxWriter.GetArrayWriter(UpCurve.GetType(), UpCurve.Count);
+			p_Writer.Write(s_UpCurve.ArrayIndex);
+			foreach (var s_Entry in UpCurve)
+			{
+				s_Entry.Serialize(s_UpCurve.Writer, p_EbxWriter);
+			}
+			(RimeWriter Writer, uint ArrayIndex) s_DownCurve = p_EbxWriter.GetArrayWriter(DownCurve.GetType(), DownCurve.Count);
+			p_Writer.Write(s_DownCurve.ArrayIndex);
+			foreach (var s_Entry in DownCurve)
+			{
+				s_Entry.Serialize(s_DownCurve.Writer, p_EbxWriter);
+			}
+			p_Writer.Write(UpPitchAngle);
+			p_Writer.Write((int) YawInputAction);
+			(RimeWriter Writer, uint ArrayIndex) s_LoosePartPhysics = p_EbxWriter.GetArrayWriter(LoosePartPhysics.GetType(), LoosePartPhysics.Count);
+			p_Writer.Write(s_LoosePartPhysics.ArrayIndex);
+			foreach (var s_Entry in LoosePartPhysics)
+			{
+				s_LoosePartPhysics.Writer.Write(p_EbxWriter.WriteImport(s_Entry));
+			}
+			p_Writer.Write(LeftYawAngle);
+			p_Writer.Write(RightYawAngle);
+			p_Writer.Write(PitchSensitivityZoomed);
+			p_Writer.Write(DownPitchAngle);
+			p_Writer.Write(AverageFilterFrames);
+			p_Writer.Write((int) PitchInputAction);
+			p_Writer.Write(YawSensitivityZoomed);
+			p_Writer.Write(PitchSensitivityNonZoomed);
+			p_Writer.Write(YawSensitivityNonZoomed);
+			p_Writer.Write(ResetAccumulatedInputOnViewChange);
+			p_Writer.Write(MirrorHorizontalCurves);
+			p_Writer.Write(AccumulateInput);
+			p_Writer.Write(MirrorVerticalCurves);
+			p_Writer.WriteNullBytes(12);
+		}
 	}
 }

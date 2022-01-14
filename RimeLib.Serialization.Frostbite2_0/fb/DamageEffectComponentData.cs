@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 208)]
-	public class DamageEffectComponentData : 
+	public class DamageEffectComponentData :
 		ComponentData
 	{
 		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 96)]
@@ -66,5 +67,25 @@ namespace fb
 		[ContainerField(200), LayoutImmutable, Blittable, JsonProperty(Order = 200)]
 		public bool DebugDamage { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			RightDamage.Serialize(p_Writer, p_EbxWriter);
+			TopDamage.Serialize(p_Writer, p_EbxWriter);
+			LeftDamage.Serialize(p_Writer, p_EbxWriter);
+			BottomDamage.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(OuterFrameOpacity);
+			p_Writer.Write(InnerFrameOpacity);
+			p_Writer.Write(FrameWidth);
+			p_Writer.Write(p_EbxWriter.WriteImport(Shader));
+			p_Writer.Write(StartCriticalEffectHealthThreshold);
+			p_Writer.Write(EndCriticalEffectHealthThreshold);
+			p_Writer.Write(MinDamagePercentageThreshold);
+			p_Writer.Write(FallofTime);
+			p_Writer.Write(MaxOpacityDamagePercentage);
+			p_Writer.Write((int) Realm);
+			p_Writer.Write(DebugDamage);
+			p_Writer.WriteNullBytes(7);
+		}
 	}
 }

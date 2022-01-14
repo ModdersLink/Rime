@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 52)]
-	public class PeakingIir2NodeData : 
+	public class PeakingIir2NodeData :
 		AudioGraphNodeData
 	{
 		[ContainerField(8), JsonProperty(Order = 8)]
@@ -39,5 +40,16 @@ namespace fb
 		[ContainerField(48), JsonProperty(Order = 48)]
 		public SoundGraphPluginRef Plugin { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			In.Serialize(p_Writer, p_EbxWriter);
+			Frequency.Serialize(p_Writer, p_EbxWriter);
+			Amplitude.Serialize(p_Writer, p_EbxWriter);
+			Q.Serialize(p_Writer, p_EbxWriter);
+			Out.Serialize(p_Writer, p_EbxWriter);
+			Plugin.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(1);
+		}
 	}
 }

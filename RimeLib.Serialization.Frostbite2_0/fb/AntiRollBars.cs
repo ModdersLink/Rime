@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 8)]
-	public class AntiRollBars
+	public class AntiRollBars :
+		EbxSerializable
 	{
 		[ContainerField(0), JsonProperty(Order = 0)]
 		public CtrRef<AntiRollBar> Front { get; set; } = new();
@@ -26,5 +28,11 @@ namespace fb
 		[ContainerField(4), JsonProperty(Order = 4)]
 		public CtrRef<AntiRollBar> Rear { get; set; } = new();
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(Front));
+			p_Writer.Write(p_EbxWriter.WriteImport(Rear));
+		}
 	}
 }

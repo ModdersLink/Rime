@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 384)]
-	public class SpawnReferenceObjectData : 
+	public class SpawnReferenceObjectData :
 		ReferenceObjectData
 	{
 		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 96)]
@@ -126,5 +127,45 @@ namespace fb
 		[ContainerField(373), LayoutImmutable, Blittable, JsonProperty(Order = 373)]
 		public bool IsDynamicSpawn { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			AirdropTransform.Serialize(p_Writer, p_EbxWriter);
+			ControllableInput.Serialize(p_Writer, p_EbxWriter);
+			ControllableTransform.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteString(LocationNameSid));
+			p_Writer.Write(p_EbxWriter.WriteString(LocationTextSid));
+			p_Writer.Write((int) Team);
+			p_Writer.Write(SpawnProtectionFriendlyKilledCount);
+			p_Writer.Write(SpawnProtectionFriendlyKilledTime);
+			p_Writer.Write(RotationRoll);
+			p_Writer.Write(Throttle);
+			p_Writer.Write(InitialSpawnDelay);
+			p_Writer.Write(SpawnDelay);
+			p_Writer.Write(MaxCount);
+			p_Writer.Write(MaxCountSimultaneously);
+			p_Writer.Write(TotalCountSimultaneouslyOfType);
+			p_Writer.Write(SpawnAreaRadius);
+			p_Writer.Write(SpawnProtectionRadius);
+			p_Writer.Write(RotationYaw);
+			p_Writer.Write(RotationPitch);
+			p_Writer.Write(InitialVelocity);
+			p_Writer.Write(TakeControlEntryIndex);
+			p_Writer.Write(SpawnProtectionCheckAllTeams);
+			p_Writer.Write(ClearBangersOnSpawn);
+			p_Writer.Write(TryToSpawnOutOfSight);
+			p_Writer.Write(SendWeaponEvents);
+			p_Writer.Write(TakeControlOnTransformChange);
+			p_Writer.Write(ReturnControlOnIdle);
+			p_Writer.Write(AutoSpawn);
+			p_Writer.Write(UseAsSpawnPoint);
+			p_Writer.Write(LockedTeam);
+			p_Writer.Write(InitialAutoSpawn);
+			p_Writer.Write(OverwriteThrottle);
+			p_Writer.Write(OnlySendEventForHumanPlayers);
+			p_Writer.Write(Enabled);
+			p_Writer.Write(IsDynamicSpawn);
+			p_Writer.WriteNullBytes(10);
+		}
 	}
 }

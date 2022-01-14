@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 20)]
-	public class RagdollBinding
+	public class RagdollBinding :
+		EbxSerializable
 	{
 		[ContainerField(0), JsonProperty(Order = 0)]
 		public AntRef RagdollOnBack { get; set; } = new();
@@ -35,5 +37,14 @@ namespace fb
 		[ContainerField(16), JsonProperty(Order = 16)]
 		public AntRef RagdollFullyBlendedIn { get; set; } = new();
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			RagdollOnBack.Serialize(p_Writer, p_EbxWriter);
+			RagdollBlend.Serialize(p_Writer, p_EbxWriter);
+			RagdollForceBlendDisabled.Serialize(p_Writer, p_EbxWriter);
+			RagdollActiveTime.Serialize(p_Writer, p_EbxWriter);
+			RagdollFullyBlendedIn.Serialize(p_Writer, p_EbxWriter);
+		}
 	}
 }

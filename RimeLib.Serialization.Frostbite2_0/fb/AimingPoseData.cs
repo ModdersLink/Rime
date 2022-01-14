@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 24)]
-	public class AimingPoseData
+	public class AimingPoseData :
+		EbxSerializable
 	{
 		[ContainerField(0), LayoutImmutable, Blittable, JsonProperty(Order = 0)]
 		public float MinimumPitch { get; set; }
@@ -38,5 +40,15 @@ namespace fb
 		[ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
 		public float RecoilMultiplier { get; set; }
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(MinimumPitch);
+			p_Writer.Write(MaximumPitch);
+			p_Writer.Write(TargetingFov);
+			p_Writer.Write(AimSteadiness);
+			p_Writer.Write(SpeedMultiplier);
+			p_Writer.Write(RecoilMultiplier);
+		}
 	}
 }

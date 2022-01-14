@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 64)]
-	public class VehicleSpawnStateEntityData : 
+	public class VehicleSpawnStateEntityData :
 		EntityData
 	{
 		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
@@ -42,5 +43,18 @@ namespace fb
 		[ContainerField(52), LayoutImmutable, Blittable, JsonProperty(Order = 52)]
 		public float Radius { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(4);
+			InitialVelocity.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(StartupDelayModifier);
+			p_Writer.Write(InitialThrottle);
+			p_Writer.Write(EngineIndex);
+			p_Writer.Write(InitialRpmModifier);
+			p_Writer.Write(HeightOffset);
+			p_Writer.Write(Radius);
+			p_Writer.WriteNullBytes(8);
+		}
 	}
 }

@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 96)]
-	public class RigidBodyConstraintData : 
+	public class RigidBodyConstraintData :
 		GameObjectData
 	{
 		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
@@ -33,5 +34,15 @@ namespace fb
 		[ContainerField(88), LayoutImmutable, Blittable, JsonProperty(Order = 88)]
 		public bool IsBreakable { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(4);
+			Transform.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(ParentBody));
+			p_Writer.Write(BreakThreshold);
+			p_Writer.Write(IsBreakable);
+			p_Writer.WriteNullBytes(7);
+		}
 	}
 }

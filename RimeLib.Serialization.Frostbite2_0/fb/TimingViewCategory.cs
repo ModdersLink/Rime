@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 28)]
-	public class TimingViewCategory : 
+	public class TimingViewCategory :
 		DataContainer
 	{
 		[ContainerField(8), LayoutImmutable, JsonProperty(Order = 8)]
@@ -36,5 +37,19 @@ namespace fb
 		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
 		public float GpuBudget { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteString(CategoryName));
+			(RimeWriter Writer, uint ArrayIndex) s_Keywords = p_EbxWriter.GetArrayWriter(Keywords.GetType(), Keywords.Count);
+			p_Writer.Write(s_Keywords.ArrayIndex);
+			foreach (var s_Entry in Keywords)
+			{
+				s_Keywords.Writer.Write(p_EbxWriter.WriteString(s_Entry));
+			}
+			p_Writer.Write(SpuBudget);
+			p_Writer.Write(CpuBudget);
+			p_Writer.Write(GpuBudget);
+		}
 	}
 }

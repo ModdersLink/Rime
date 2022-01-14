@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 80)]
-	public class ScenarioTaskData
+	public class ScenarioTaskData :
+		EbxSerializable
 	{
 		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 0)]
 		public Vec3 EndPointWorldOffset { get; set; } = new();
@@ -59,5 +61,28 @@ namespace fb
 		[ContainerField(69), LayoutImmutable, Blittable, JsonProperty(Order = 69)]
 		public bool UseClientPosition { get; set; }
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			EndPointWorldOffset.Serialize(p_Writer, p_EbxWriter);
+			StartPoint.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(ScenarioId);
+			p_Writer.Write(ActorId);
+			p_Writer.Write(PartId);
+			p_Writer.Write(LevelId);
+			p_Writer.Write(WorldAngle);
+			(RimeWriter Writer, uint ArrayIndex) s_ConnectTransforms = p_EbxWriter.GetArrayWriter(ConnectTransforms.GetType(), ConnectTransforms.Count);
+			p_Writer.Write(s_ConnectTransforms.ArrayIndex);
+			foreach (var s_Entry in ConnectTransforms)
+			{
+				s_Entry.Serialize(s_ConnectTransforms.Writer, p_EbxWriter);
+			}
+			p_Writer.Write(StartTurnDistance);
+			p_Writer.Write(StartTimerDistance);
+			p_Writer.Write(TriggerScenarioDelay);
+			p_Writer.Write(TriggerScenario);
+			p_Writer.Write(UseClientPosition);
+			p_Writer.WriteNullBytes(10);
+		}
 	}
 }

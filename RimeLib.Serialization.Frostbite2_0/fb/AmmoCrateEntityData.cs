@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 128)]
-	public class AmmoCrateEntityData : 
+	public class AmmoCrateEntityData :
 		GameEntityData
 	{
 		[ContainerField(96), JsonProperty(Order = 96)]
@@ -36,5 +37,15 @@ namespace fb
 		[ContainerField(112), LayoutImmutable, Blittable, JsonProperty(Order = 112)]
 		public bool EnableReplenish { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(Marker));
+			p_Writer.Write(p_EbxWriter.WriteImport(Model));
+			p_Writer.Write(RefillDelay);
+			p_Writer.Write(Radius);
+			p_Writer.Write(EnableReplenish);
+			p_Writer.WriteNullBytes(15);
+		}
 	}
 }

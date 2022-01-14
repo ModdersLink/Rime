@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 112)]
-	public class LightProbeVolumeData : 
+	public class LightProbeVolumeData :
 		SpatialEntityData
 	{
 		[ContainerField(80), LayoutImmutable, Blittable, JsonProperty(Order = 80)]
@@ -36,5 +37,15 @@ namespace fb
 		[ContainerField(96), LayoutImmutable, Blittable, JsonProperty(Order = 96)]
 		public int Priority { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(Xres);
+			p_Writer.Write(Yres);
+			p_Writer.Write(Zres);
+			p_Writer.Write(BlendDistance);
+			p_Writer.Write(Priority);
+			p_Writer.WriteNullBytes(12);
+		}
 	}
 }

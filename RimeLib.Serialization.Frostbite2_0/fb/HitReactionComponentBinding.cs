@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 32)]
-	public class HitReactionComponentBinding
+	public class HitReactionComponentBinding :
+		EbxSerializable
 	{
 		[ContainerField(0), JsonProperty(Order = 0)]
 		public AntRef Hit { get; set; } = new();
@@ -44,5 +46,17 @@ namespace fb
 		[ContainerField(28), JsonProperty(Order = 28)]
 		public AntRef RandomAnimationIndex { get; set; } = new();
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			Hit.Serialize(p_Writer, p_EbxWriter);
+			AllowKillFromAnimation.Serialize(p_Writer, p_EbxWriter);
+			Direction.Serialize(p_Writer, p_EbxWriter);
+			FiringDistance.Serialize(p_Writer, p_EbxWriter);
+			BoneType.Serialize(p_Writer, p_EbxWriter);
+			ImpactType.Serialize(p_Writer, p_EbxWriter);
+			Immortal.Serialize(p_Writer, p_EbxWriter);
+			RandomAnimationIndex.Serialize(p_Writer, p_EbxWriter);
+		}
 	}
 }

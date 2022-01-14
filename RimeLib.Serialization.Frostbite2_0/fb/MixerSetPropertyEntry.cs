@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 32)]
-	public class MixerSetPropertyEntry : 
+	public class MixerSetPropertyEntry :
 		AudioGraphNodePortGroup
 	{
 		[ContainerField(8), JsonProperty(Order = 8)]
@@ -36,5 +37,14 @@ namespace fb
 		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
 		public float ReleaseTime { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			In.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(Target);
+			p_Writer.Write(p_EbxWriter.WriteImport(Group));
+			p_Writer.Write(AttackTime);
+			p_Writer.Write(ReleaseTime);
+		}
 	}
 }

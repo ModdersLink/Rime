@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 48)]
-	public class DebrisClusterPartInfoData
+	public class DebrisClusterPartInfoData :
+		EbxSerializable
 	{
 		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 0)]
 		public Vec3 AngularVelocity { get; set; } = new();
@@ -44,5 +46,18 @@ namespace fb
 		[ContainerField(46), LayoutImmutable, Blittable, JsonProperty(Order = 46)]
 		public bool SyncContinous { get; set; }
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			AngularVelocity.Serialize(p_Writer, p_EbxWriter);
+			LinearVelocity.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(NumberOfChildren);
+			p_Writer.Write(PartIndex);
+			p_Writer.Write(SplitSpeedThreshold);
+			p_Writer.Write(InEffectWorldOnly);
+			p_Writer.Write(SyncRestPosition);
+			p_Writer.Write(SyncContinous);
+			p_Writer.WriteNullBytes(1);
+		}
 	}
 }

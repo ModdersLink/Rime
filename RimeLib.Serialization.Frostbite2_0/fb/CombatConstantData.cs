@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 120)]
-	public class CombatConstantData : 
+	public class CombatConstantData :
 		Asset
 	{
 		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
@@ -102,5 +103,36 @@ namespace fb
 		[ContainerField(116), LayoutImmutable, Blittable, JsonProperty(Order = 116)]
 		public float MeleeCooldown { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(PoseTransitionFireDelay);
+			p_Writer.Write(ChangePoseStopDelay);
+			p_Writer.Write(AllowCrouchFiringWaterLevel);
+			p_Writer.Write(PoseChangeLockoutTime);
+			p_Writer.Write(ExplosionInterestRange);
+			p_Writer.Write(ExplosiveObjectSearchRadius);
+			p_Writer.Write(ExplosiveBlastMultiplier);
+			p_Writer.Write(MaxSuppressDistance);
+			p_Writer.Write(MaxSuppressorsRatio);
+			p_Writer.Write(SuppressOffsetXz);
+			p_Writer.Write(SuppressOffsetY);
+			p_Writer.Write(SuppressMinLOFDistance);
+			p_Writer.Write(SuppressMinLOFOffsetDistance);
+			p_Writer.Write(InvestigateCoverSearchWidth);
+			p_Writer.Write(InvestigateAroundTargetRadius);
+			p_Writer.Write(InvestigateFreeLookRadius);
+			p_Writer.Write(InvestigatePauseTimeMin);
+			p_Writer.Write(InvestigatePauseTimeMax);
+			p_Writer.Write(AvoidC4Time);
+			p_Writer.Write(StandStillMinTime);
+			p_Writer.Write(StationaryBailDistance);
+			p_Writer.Write(PrecisionTimeout);
+			p_Writer.Write(CloseRangeAccuracyDistance);
+			p_Writer.Write(FightFromPathRadius);
+			p_Writer.Write(SmokeRadius);
+			p_Writer.Write(SmokeLifeTime);
+			p_Writer.Write(MeleeCooldown);
+		}
 	}
 }

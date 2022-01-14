@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(8, 48)]
-	public class NetworkPerformanceEvent : 
+	public class NetworkPerformanceEvent :
 		MetricEvent
 	{
 		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
@@ -36,5 +37,14 @@ namespace fb
 		[ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
 		public GUID PerformanceLink { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(Received);
+			p_Writer.Write(Sent);
+			p_Writer.Write(ReceivedAverage);
+			p_Writer.Write(SentAverage);
+			PerformanceLink.Serialize(p_Writer);
+		}
 	}
 }

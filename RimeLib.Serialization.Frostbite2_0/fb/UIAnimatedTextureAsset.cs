@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 24)]
-	public class UIAnimatedTextureAsset : 
+	public class UIAnimatedTextureAsset :
 		Asset
 	{
 		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
@@ -30,5 +31,17 @@ namespace fb
 		[ContainerField(20), JsonProperty(Order = 20)]
 		public List<UITextureAtlasInfo> TextureInfos { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(FrameRate);
+			p_Writer.Write(p_EbxWriter.WriteImport(TextureAtlas));
+			(RimeWriter Writer, uint ArrayIndex) s_TextureInfos = p_EbxWriter.GetArrayWriter(TextureInfos.GetType(), TextureInfos.Count);
+			p_Writer.Write(s_TextureInfos.ArrayIndex);
+			foreach (var s_Entry in TextureInfos)
+			{
+				s_Entry.Serialize(s_TextureInfos.Writer, p_EbxWriter);
+			}
+		}
 	}
 }

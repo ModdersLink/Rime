@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 192)]
-	public class EntryComponentData : 
+	public class EntryComponentData :
 		ComponentData
 	{
 		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 96)]
@@ -105,5 +106,43 @@ namespace fb
 		[ContainerField(191), LayoutImmutable, Blittable, JsonProperty(Order = 191)]
 		public bool ShowSoldierInEntry { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			SoldierOffset.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(AIData));
+			p_Writer.Write((int) EntryClass);
+			p_Writer.Write(p_EbxWriter.WriteImport(InputConceptDefinition));
+			p_Writer.Write(p_EbxWriter.WriteImport(InputMapping));
+			(RimeWriter Writer, uint ArrayIndex) s_InputCurves = p_EbxWriter.GetArrayWriter(InputCurves.GetType(), InputCurves.Count);
+			p_Writer.Write(s_InputCurves.ArrayIndex);
+			foreach (var s_Entry in InputCurves)
+			{
+				s_InputCurves.Writer.Write(p_EbxWriter.WriteImport(s_Entry));
+			}
+			HudData.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(EntryOrderNumber);
+			p_Writer.Write(EnterImpulse);
+			p_Writer.Write(EntryRadius);
+			p_Writer.Write((int) TriggerEventOnKey);
+			p_Writer.Write((int) EntrySpottingSettings);
+			PoseConstraints.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(1);
+			p_Writer.Write(SoldierTransitionInvisbleTime);
+			p_Writer.Write(NumberOfStances);
+			p_Writer.Write(p_EbxWriter.WriteImport(EntryComponentSound));
+			p_Writer.Write(LockSoldierAimingToEntry);
+			p_Writer.Write(IsAllowedToExitInAir);
+			p_Writer.Write(Show1pSoldierInEntry);
+			p_Writer.Write(StancesEnabled);
+			p_Writer.Write(Show1pSoldierInEntryForPlayerOnly);
+			p_Writer.Write(HideSoldierForPassengers);
+			p_Writer.Write(Show3pSoldierWeaponInEntry);
+			p_Writer.Write(ShowSoldierGearInEntry);
+			p_Writer.Write(IsShielded);
+			p_Writer.Write(ForbiddenForHuman);
+			p_Writer.Write(ShowSoldierWeaponInEntry);
+			p_Writer.Write(ShowSoldierInEntry);
+		}
 	}
 }

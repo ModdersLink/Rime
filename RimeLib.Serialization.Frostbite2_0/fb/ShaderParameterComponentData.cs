@@ -14,15 +14,27 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 112)]
-	public class ShaderParameterComponentData : 
+	public class ShaderParameterComponentData :
 		ComponentData
 	{
 		[ContainerField(96), JsonProperty(Order = 96)]
 		public List<ShaderParameterVector> ShaderParameterVectors { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			(RimeWriter Writer, uint ArrayIndex) s_ShaderParameterVectors = p_EbxWriter.GetArrayWriter(ShaderParameterVectors.GetType(), ShaderParameterVectors.Count);
+			p_Writer.Write(s_ShaderParameterVectors.ArrayIndex);
+			foreach (var s_Entry in ShaderParameterVectors)
+			{
+				s_Entry.Serialize(s_ShaderParameterVectors.Writer, p_EbxWriter);
+			}
+			p_Writer.WriteNullBytes(12);
+		}
 	}
 }

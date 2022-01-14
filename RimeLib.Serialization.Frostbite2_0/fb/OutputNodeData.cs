@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 80)]
-	public class OutputNodeData : 
+	public class OutputNodeData :
 		AudioGraphNodeData
 	{
 		[ContainerField(8), JsonProperty(Order = 8)]
@@ -72,5 +73,27 @@ namespace fb
 		[ContainerField(79), LayoutImmutable, Blittable, JsonProperty(Order = 79)]
 		public bool EnableHdr { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			In.Serialize(p_Writer, p_EbxWriter);
+			BypassHeadroom.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(MinDistance);
+			AttenuationCurve.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(Gain);
+			p_Writer.Write(HFDampingDistance);
+			p_Writer.Write(HFDampingObstruction);
+			p_Writer.Write(HFDampingOcclusion);
+			MainSendPlugin.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(1);
+			p_Writer.Write(p_EbxWriter.WriteImport(MainSend));
+			p_Writer.Write(p_EbxWriter.WriteString(OutputName));
+			p_Writer.Write((int) TransformSource);
+			p_Writer.Write(OutputNameHash);
+			LowPassPlugin.Serialize(p_Writer, p_EbxWriter);
+			VuPlugin.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(Solo);
+			p_Writer.Write(EnableHdr);
+		}
 	}
 }

@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 44)]
-	public class TimingConstantData : 
+	public class TimingConstantData :
 		Asset
 	{
 		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
@@ -30,5 +31,17 @@ namespace fb
 		[ContainerField(40), JsonProperty(Order = 40)]
 		public RefArray<BotPriorityConfigData> PriorityClasses { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(UpdateTimePerFrame);
+			SubsystemTimeParts.Serialize(p_Writer, p_EbxWriter);
+			(RimeWriter Writer, uint ArrayIndex) s_PriorityClasses = p_EbxWriter.GetArrayWriter(PriorityClasses.GetType(), PriorityClasses.Count);
+			p_Writer.Write(s_PriorityClasses.ArrayIndex);
+			foreach (var s_Entry in PriorityClasses)
+			{
+				s_PriorityClasses.Writer.Write(p_EbxWriter.WriteImport(s_Entry));
+			}
+		}
 	}
 }

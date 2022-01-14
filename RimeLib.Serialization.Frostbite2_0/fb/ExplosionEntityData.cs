@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 176)]
-	public class ExplosionEntityData : 
+	public class ExplosionEntityData :
 		GameEntityData
 	{
 		[ContainerField(96), JsonProperty(Order = 96)]
@@ -93,5 +94,34 @@ namespace fb
 		[ContainerField(170), LayoutImmutable, Blittable, JsonProperty(Order = 170)]
 		public bool ShowOnMinimap { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(DetonationEffect));
+			p_Writer.Write(BlastImpulse);
+			p_Writer.Write(p_EbxWriter.WriteImport(MaskVolume));
+			p_Writer.Write(p_EbxWriter.WriteImport(DestructionMaskVolume));
+			p_Writer.Write(p_EbxWriter.WriteImport(MaterialPair));
+			p_Writer.Write((int) DamageIndicationType);
+			p_Writer.Write(EmpTime);
+			p_Writer.Write(MaxOcclusionRaycastRadius);
+			p_Writer.Write(InnerBlastRadius);
+			p_Writer.Write(BlastDamage);
+			p_Writer.Write(BlastRadius);
+			p_Writer.Write(ShockwaveImpulse);
+			p_Writer.Write(SpawnDelay);
+			p_Writer.Write(ShockwaveDamage);
+			p_Writer.Write(ShockwaveRadius);
+			p_Writer.Write(CameraShockwaveRadius);
+			p_Writer.Write(ShockwaveTime);
+			p_Writer.Write(DisableOcclusion);
+			p_Writer.Write(DisableStaticEntityOcclusion);
+			p_Writer.Write(UseEntityTransformForDetonationEffect);
+			p_Writer.Write(HasStunEffect);
+			p_Writer.Write(TriggerImpairedHearing);
+			p_Writer.Write(DetonateOnce);
+			p_Writer.Write(ShowOnMinimap);
+			p_Writer.WriteNullBytes(5);
+		}
 	}
 }

@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 176)]
-	public class PickupEntityData : 
+	public class PickupEntityData :
 		GamePhysicsEntityData
 	{
 		[ContainerField(112), JsonProperty(Order = 112)]
@@ -90,5 +91,33 @@ namespace fb
 		[ContainerField(164), LayoutImmutable, Blittable, JsonProperty(Order = 164)]
 		public bool SendPlayerInEventOnPickup { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write((int) RandomizeAmmoOnDropForPlayer);
+			p_Writer.Write(MinRandomClipAmmoPercent);
+			p_Writer.Write(p_EbxWriter.WriteImport(PhysicsBlueprint));
+			p_Writer.Write(p_EbxWriter.WriteImport(Mesh));
+			p_Writer.Write(MaxRandomClipAmmoPercent);
+			p_Writer.Write(PreferredWeaponSlot);
+			p_Writer.Write(TimeToLive);
+			p_Writer.Write(MinRandomSpareAmmoPercent);
+			p_Writer.Write(InteractionRadius);
+			p_Writer.Write(MaxRandomSpareAmmoPercent);
+			p_Writer.Write(UnspawnOnPickup);
+			p_Writer.Write(UnspawnOnAmmoPickup);
+			p_Writer.Write(ForceWeaponSlotSelection);
+			p_Writer.Write(DisplayInMiniMap);
+			p_Writer.Write(HasAutomaticAmmoPickup);
+			p_Writer.Write(UseWeaponMesh);
+			p_Writer.Write(AllowPickup);
+			p_Writer.Write(ContentIsStatic);
+			p_Writer.Write(PositionIsStatic);
+			p_Writer.Write(IgnoreNullWeaponSlots);
+			p_Writer.Write(ReplaceAllContent);
+			p_Writer.Write(RemoveWeaponOnDrop);
+			p_Writer.Write(SendPlayerInEventOnPickup);
+			p_Writer.WriteNullBytes(11);
+		}
 	}
 }

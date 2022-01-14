@@ -14,15 +14,26 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 16)]
-	public class UIInterruptFlow : 
+	public class UIInterruptFlow :
 		Asset
 	{
 		[ContainerField(12), JsonProperty(Order = 12)]
 		public List<InterruptFlow> interruptFlow { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			(RimeWriter Writer, uint ArrayIndex) s_interruptFlow = p_EbxWriter.GetArrayWriter(interruptFlow.GetType(), interruptFlow.Count);
+			p_Writer.Write(s_interruptFlow.ArrayIndex);
+			foreach (var s_Entry in interruptFlow)
+			{
+				s_Entry.Serialize(s_interruptFlow.Writer, p_EbxWriter);
+			}
+		}
 	}
 }

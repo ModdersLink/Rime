@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 16)]
-	public class EdgePointerData
+	public class EdgePointerData :
+		EbxSerializable
 	{
 		[ContainerField(0), LayoutImmutable, Blittable, JsonProperty(Order = 0)]
 		public float NegativeXLimit { get; set; }
@@ -32,5 +34,13 @@ namespace fb
 		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
 		public float PositiveYLimit { get; set; }
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(NegativeXLimit);
+			p_Writer.Write(PositiveXLimit);
+			p_Writer.Write(NegativeYLimit);
+			p_Writer.Write(PositiveYLimit);
+		}
 	}
 }

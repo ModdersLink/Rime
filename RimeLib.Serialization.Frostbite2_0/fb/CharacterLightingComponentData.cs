@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 160)]
-	public class CharacterLightingComponentData : 
+	public class CharacterLightingComponentData :
 		ComponentData
 	{
 		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 96)]
@@ -51,5 +52,20 @@ namespace fb
 		[ContainerField(150), LayoutImmutable, Blittable, JsonProperty(Order = 150)]
 		public bool CharacterLightEnable { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			BottomLight.Serialize(p_Writer, p_EbxWriter);
+			TopLight.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write((int) CharacterLightingMode);
+			p_Writer.Write(CameraUpRotation);
+			p_Writer.Write(TopLightDirY);
+			p_Writer.Write(BlendFactor);
+			p_Writer.Write(TopLightDirX);
+			p_Writer.Write(LockToCameraDirection);
+			p_Writer.Write(FirstPersonEnable);
+			p_Writer.Write(CharacterLightEnable);
+			p_Writer.WriteNullBytes(9);
+		}
 	}
 }

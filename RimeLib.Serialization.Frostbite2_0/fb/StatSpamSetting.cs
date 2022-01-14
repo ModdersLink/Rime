@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 16)]
-	public class StatSpamSetting
+	public class StatSpamSetting :
+		EbxSerializable
 	{
 		[ContainerField(0), JsonProperty(Order = 0)]
 		public StatEvent Event { get; set; } = new();
@@ -32,5 +34,14 @@ namespace fb
 		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
 		public bool PlayerToPlayer { get; set; }
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write((int) Event);
+			p_Writer.Write(AmountLimit);
+			p_Writer.Write(TimeLimit);
+			p_Writer.Write(PlayerToPlayer);
+			p_Writer.WriteNullBytes(3);
+		}
 	}
 }

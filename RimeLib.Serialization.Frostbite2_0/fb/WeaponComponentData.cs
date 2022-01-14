@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 192)]
-	public class WeaponComponentData : 
+	public class WeaponComponentData :
 		PartComponentData
 	{
 		[ContainerField(112), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 112)]
@@ -69,5 +70,26 @@ namespace fb
 		[ContainerField(184), LayoutImmutable, Blittable, JsonProperty(Order = 184)]
 		public bool SequentialFiring { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			ProjectileSpawnOffset.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(ImpulseStrength);
+			p_Writer.Write(p_EbxWriter.WriteImport(WeaponMesh));
+			p_Writer.Write(p_EbxWriter.WriteImport(WeaponFiring));
+			p_Writer.Write(p_EbxWriter.WriteString(DamageGiverName));
+			p_Writer.Write(p_EbxWriter.WriteImport(AIData));
+			p_Writer.Write(p_EbxWriter.WriteImport(CustomWeaponType));
+			p_Writer.Write((int) Classification);
+			p_Writer.Write(ExplosionDamageMultiplier);
+			p_Writer.Write(ReloadTimeMultiplier);
+			p_Writer.Write(DamageMultiplier);
+			p_Writer.Write(WeaponItemHash);
+			p_Writer.Write(OverheatDropPerSecondMultiplier);
+			p_Writer.Write(LockTimeMultiplier);
+			p_Writer.Write(LockingAcceptanceAngleMultiplier);
+			p_Writer.Write(SequentialFiring);
+			p_Writer.WriteNullBytes(7);
+		}
 	}
 }

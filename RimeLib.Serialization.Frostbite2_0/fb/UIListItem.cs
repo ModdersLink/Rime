@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 72)]
-	public class UIListItem
+	public class UIListItem :
+		EbxSerializable
 	{
 		[ContainerField(0), LayoutImmutable, JsonProperty(Order = 0)]
 		public string Label { get; set; } = string.Empty;
@@ -41,5 +43,17 @@ namespace fb
 		[ContainerField(69), LayoutImmutable, Blittable, JsonProperty(Order = 69)]
 		public bool DefaultIsEnabled { get; set; }
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteString(Label));
+			IsEnabled.Serialize(p_Writer, p_EbxWriter);
+			IsVisible.Serialize(p_Writer, p_EbxWriter);
+			ToggleItems.Serialize(p_Writer, p_EbxWriter);
+			DataUpdate.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(DefaultIsVisible);
+			p_Writer.Write(DefaultIsEnabled);
+			p_Writer.WriteNullBytes(2);
+		}
 	}
 }

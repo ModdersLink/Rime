@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 100)]
-	public class HudVehicleTrackerData : 
+	public class HudVehicleTrackerData :
 		UIPartData
 	{
 		[ContainerField(8), JsonProperty(Order = 8)]
@@ -78,5 +79,29 @@ namespace fb
 		[ContainerField(97), LayoutImmutable, Blittable, JsonProperty(Order = 97)]
 		public bool ShowTracker { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			EdgePointer.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write((int) EnemyTrackerIcon);
+			p_Writer.Write((int) OutsideScreenTrackerIcon);
+			RenderTargetData.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write((int) MissileTrackerIcon);
+			p_Writer.Write(IconSize);
+			p_Writer.Write(RadarSensitivity);
+			p_Writer.Write(HeatSensitivity);
+			p_Writer.Write((int) FriendlyTrackerIcon);
+			p_Writer.Write((int) LaserPaintedVehicleTrackerIcon);
+			p_Writer.Write(MaxDistance);
+			p_Writer.Write(DistanceIconShrinkFactor);
+			p_Writer.Write((int) MissileLockTrackerIcon);
+			p_Writer.Write(TrackOnlyUsedVehicles);
+			p_Writer.Write(UseTrackerSignatures);
+			p_Writer.Write(EnableEdgePointers);
+			p_Writer.Write(TrackLaserPaintedObjects);
+			p_Writer.Write(UseCameraComponentTransform);
+			p_Writer.Write(ShowTracker);
+			p_Writer.WriteNullBytes(2);
+		}
 	}
 }

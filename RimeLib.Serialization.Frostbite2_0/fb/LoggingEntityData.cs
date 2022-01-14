@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 144)]
-	public class LoggingEntityData : 
+	public class LoggingEntityData :
 		EntityData
 	{
 		[ContainerField(12), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 12)]
@@ -45,5 +46,24 @@ namespace fb
 		[ContainerField(128), LayoutImmutable, Blittable, JsonProperty(Order = 128)]
 		public bool BoolValue { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			Vec2Value.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(12);
+			Vec3Value.Serialize(p_Writer, p_EbxWriter);
+			TransformValue.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write((int) Realm);
+			p_Writer.Write(FloatValue);
+			(RimeWriter Writer, uint ArrayIndex) s_Strings = p_EbxWriter.GetArrayWriter(Strings.GetType(), Strings.Count);
+			p_Writer.Write(s_Strings.ArrayIndex);
+			foreach (var s_Entry in Strings)
+			{
+				s_Strings.Writer.Write(p_EbxWriter.WriteString(s_Entry));
+			}
+			p_Writer.Write(IntValue);
+			p_Writer.Write(BoolValue);
+			p_Writer.WriteNullBytes(15);
+		}
 	}
 }

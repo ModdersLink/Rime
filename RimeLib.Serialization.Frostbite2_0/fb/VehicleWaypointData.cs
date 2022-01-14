@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 44)]
-	public class VehicleWaypointData : 
+	public class VehicleWaypointData :
 		WaypointData
 	{
 		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
@@ -42,5 +43,17 @@ namespace fb
 		[ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
 		public bool StopHere { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(Speed);
+			p_Writer.Write(SpeedOverrideMovingTowards);
+			p_Writer.Write(Angleoffset);
+			p_Writer.Write(StopHereRadius);
+			p_Writer.Write(StoppingDeceleration);
+			p_Writer.Write(MinSlowdownSpeed);
+			p_Writer.Write(StopHere);
+			p_Writer.WriteNullBytes(3);
+		}
 	}
 }

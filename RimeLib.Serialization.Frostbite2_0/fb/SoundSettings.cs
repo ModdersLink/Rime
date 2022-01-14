@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 44)]
-	public class SoundSettings : 
+	public class SoundSettings :
 		SystemSettings
 	{
 		[ContainerField(12), LayoutImmutable, JsonProperty(Order = 12)]
@@ -45,5 +46,18 @@ namespace fb
 		[ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
 		public bool Enable { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteString(VOEnglish));
+			p_Writer.Write(p_EbxWriter.WriteString(AudioSystemUri));
+			p_Writer.Write(p_EbxWriter.WriteString(VOCommon));
+			p_Writer.Write(p_EbxWriter.WriteString(VOItalian));
+			p_Writer.Write(p_EbxWriter.WriteString(VOSpanish));
+			p_Writer.Write(p_EbxWriter.WriteString(VOFrench));
+			p_Writer.Write(p_EbxWriter.WriteString(VOGerman));
+			p_Writer.Write(Enable);
+			p_Writer.WriteNullBytes(3);
+		}
 	}
 }

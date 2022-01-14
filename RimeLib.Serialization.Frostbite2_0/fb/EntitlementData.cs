@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 28)]
-	public class EntitlementData
+	public class EntitlementData :
+		EbxSerializable
 	{
 		[ContainerField(0), LayoutImmutable, JsonProperty(Order = 0)]
 		public string License { get; set; } = string.Empty;
@@ -41,5 +43,17 @@ namespace fb
 		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
 		public bool VerifyOwnership { get; set; }
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteString(License));
+			p_Writer.Write(p_EbxWriter.WriteString(EntitlementTag));
+			p_Writer.Write(p_EbxWriter.WriteString(GroupName));
+			p_Writer.Write(p_EbxWriter.WriteString(ProductId));
+			p_Writer.Write(p_EbxWriter.WriteString(ProjectId));
+			p_Writer.Write((int) UsageType);
+			p_Writer.Write(VerifyOwnership);
+			p_Writer.WriteNullBytes(3);
+		}
 	}
 }

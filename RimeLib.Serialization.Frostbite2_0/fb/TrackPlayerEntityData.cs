@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 112)]
-	public class TrackPlayerEntityData : 
+	public class TrackPlayerEntityData :
 		GameEntityData
 	{
 		[ContainerField(96), LayoutImmutable, Blittable, JsonProperty(Order = 96)]
@@ -45,5 +46,18 @@ namespace fb
 		[ContainerField(106), LayoutImmutable, Blittable, JsonProperty(Order = 106)]
 		public bool Reseted { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(SnapHeightOffsetY);
+			p_Writer.Write(RandomizeTracker);
+			p_Writer.Write(SnapHeightOnKilledDestroyed);
+			p_Writer.Write(CheckPlayerAlive);
+			p_Writer.Write(EnforceSharedCombatArea);
+			p_Writer.Write(UpdateFlagComponent);
+			p_Writer.Write(TrackMultiplePlayers);
+			p_Writer.Write(Reseted);
+			p_Writer.WriteNullBytes(5);
+		}
 	}
 }

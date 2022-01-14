@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(1, 12)]
-	public class MatchmakingGameSettings
+	public class MatchmakingGameSettings :
+		EbxSerializable
 	{
 		[ContainerField(0), LayoutImmutable, Blittable, JsonProperty(Order = 0)]
 		public bool OpenToBrowsing { get; set; }
@@ -56,5 +58,21 @@ namespace fb
 		[ContainerField(11), LayoutImmutable, Blittable, JsonProperty(Order = 11)]
 		public bool AllowSameTeamId { get; set; }
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(OpenToBrowsing);
+			p_Writer.Write(OpenToInvites);
+			p_Writer.Write(OpenToMatchmaking);
+			p_Writer.Write(OpenToJoinByPlayer);
+			p_Writer.Write(HostMigratable);
+			p_Writer.Write(Ranked);
+			p_Writer.Write(AdminOnlyInvites);
+			p_Writer.Write(EnforceSingleGroupJoin);
+			p_Writer.Write(JoinInProgressSupported);
+			p_Writer.Write(AdminInvitesOnlyIgnoreEntryChecks);
+			p_Writer.Write(EnablePersistedGameId);
+			p_Writer.Write(AllowSameTeamId);
+		}
 	}
 }

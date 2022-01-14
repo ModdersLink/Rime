@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 44)]
-	public class AntPackageAsset : 
+	public class AntPackageAsset :
 		Asset
 	{
 		[ContainerField(12), LayoutImmutable, JsonProperty(Order = 12)]
@@ -36,5 +37,14 @@ namespace fb
 		[ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
 		public uint ChunkSize { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteString(Win32FileName));
+			p_Writer.Write(p_EbxWriter.WriteString(XePs3FileName));
+			p_Writer.Write((int) PackagingType);
+			StreamingGuid.Serialize(p_Writer);
+			p_Writer.Write(ChunkSize);
+		}
 	}
 }

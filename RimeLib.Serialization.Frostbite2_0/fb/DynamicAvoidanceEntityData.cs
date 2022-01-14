@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 48)]
-	public class DynamicAvoidanceEntityData : 
+	public class DynamicAvoidanceEntityData :
 		EntityData
 	{
 		[ContainerField(12), JsonProperty(Order = 12)]
@@ -42,5 +43,17 @@ namespace fb
 		[ContainerField(45), LayoutImmutable, Blittable, JsonProperty(Order = 45)]
 		public bool PredictedByOthers { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write((int) RepelOthers);
+			p_Writer.Write((int) ReportPredictedCollision);
+			p_Writer.Write(CollisionRadius);
+			p_Writer.Write((int) Realm);
+			AntBinding.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(AffectedByRepellingForce);
+			p_Writer.Write(PredictedByOthers);
+			p_Writer.WriteNullBytes(2);
+		}
 	}
 }

@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 16)]
-	public class FormationData : 
+	public class FormationData :
 		GameDataContainer
 	{
 		[ContainerField(8), JsonProperty(Order = 8)]
@@ -27,5 +28,16 @@ namespace fb
 		[ContainerField(12), LayoutImmutable, JsonProperty(Order = 12)]
 		public string Name { get; set; } = string.Empty;
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			(RimeWriter Writer, uint ArrayIndex) s_Positions = p_EbxWriter.GetArrayWriter(Positions.GetType(), Positions.Count);
+			p_Writer.Write(s_Positions.ArrayIndex);
+			foreach (var s_Entry in Positions)
+			{
+				s_Entry.Serialize(s_Positions.Writer, p_EbxWriter);
+			}
+			p_Writer.Write(p_EbxWriter.WriteString(Name));
+		}
 	}
 }

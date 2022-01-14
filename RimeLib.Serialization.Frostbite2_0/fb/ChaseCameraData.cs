@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 272)]
-	public class ChaseCameraData : 
+	public class ChaseCameraData :
 		TargetCameraData
 	{
 		[ContainerField(160), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 160)]
@@ -96,5 +97,34 @@ namespace fb
 		[ContainerField(271), LayoutImmutable, Blittable, JsonProperty(Order = 271)]
 		public bool HasCollision { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			TargetOffset.Serialize(p_Writer, p_EbxWriter);
+			ToWantedPositionScale.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(AwayFromTargetForceScale);
+			p_Writer.Write(TargetRotationOffset);
+			p_Writer.Write(MaxViewRotationAngleDeg);
+			p_Writer.Write(WantedAngleDeg);
+			p_Writer.Write(WantedDistance);
+			p_Writer.Write(MaxDistance);
+			p_Writer.Write(SnapDistance);
+			p_Writer.Write(ForceFieldRadius);
+			p_Writer.Write(CollisionRadius);
+			p_Writer.Write(ForceFieldForceScale);
+			p_Writer.Write(MaxVelocity);
+			p_Writer.Write(VelocityDrag);
+			p_Writer.Write(PillExpandSizeSpeedAcceleration);
+			p_Writer.Write(PillMinimumCollisionRadius);
+			p_Writer.Write(PillMaximumCollisionRadius);
+			p_Writer.Write(PillMinimumCollisionLength);
+			p_Writer.Write(LookDistanceScale);
+			p_Writer.Write(LookDistanceInFrontOfTarget);
+			p_Writer.Write(UpdateRate);
+			p_Writer.Write(KeepTargetPitch);
+			p_Writer.Write(InheritTargetVelocity);
+			p_Writer.Write(ShouldRollWithTarget);
+			p_Writer.Write(HasCollision);
+		}
 	}
 }

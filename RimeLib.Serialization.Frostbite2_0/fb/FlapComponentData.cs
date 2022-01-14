@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 128)]
-	public class FlapComponentData : 
+	public class FlapComponentData :
 		PartComponentData
 	{
 		[ContainerField(112), JsonProperty(Order = 112)]
@@ -27,5 +28,12 @@ namespace fb
 		[ContainerField(116), LayoutImmutable, Blittable, JsonProperty(Order = 116)]
 		public float RotationScale { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write((int) RotationAxis);
+			p_Writer.Write(RotationScale);
+			p_Writer.WriteNullBytes(8);
+		}
 	}
 }

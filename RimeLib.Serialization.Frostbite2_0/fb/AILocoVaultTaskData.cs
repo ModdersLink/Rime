@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 48)]
-	public class AILocoVaultTaskData
+	public class AILocoVaultTaskData :
+		EbxSerializable
 	{
 		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 0)]
 		public Vec3 StartPoint { get; set; } = new();
@@ -47,5 +49,19 @@ namespace fb
 		[ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
 		public bool UseClientPosition { get; set; }
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			StartPoint.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(DistanceBeforeVault);
+			p_Writer.Write(HeightBeforeVault);
+			p_Writer.Write(HeightAfterVault);
+			p_Writer.Write(LengthOfVaultableObject);
+			p_Writer.Write(WorldAngle);
+			p_Writer.Write(DistanceAfterVault);
+			p_Writer.Write((int) VaultType);
+			p_Writer.Write(UseClientPosition);
+			p_Writer.WriteNullBytes(3);
+		}
 	}
 }

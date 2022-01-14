@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 256)]
-	public class AnimatedWeaponBinding
+	public class AnimatedWeaponBinding :
+		EbxSerializable
 	{
 		[ContainerField(0), JsonProperty(Order = 0)]
 		public AntRef Deploy { get; set; } = new();
@@ -212,5 +214,73 @@ namespace fb
 		[ContainerField(252), JsonProperty(Order = 252)]
 		public AntRef AIAltFireFromAnt { get; set; } = new();
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			Deploy.Serialize(p_Writer, p_EbxWriter);
+			AltDeploy.Serialize(p_Writer, p_EbxWriter);
+			Undeploy.Serialize(p_Writer, p_EbxWriter);
+			QuickSwitch.Serialize(p_Writer, p_EbxWriter);
+			Reload.Serialize(p_Writer, p_EbxWriter);
+			ReloadShotgun.Serialize(p_Writer, p_EbxWriter);
+			Fire.Serialize(p_Writer, p_EbxWriter);
+			FireSingle.Serialize(p_Writer, p_EbxWriter);
+			FireHoldAndRelease.Serialize(p_Writer, p_EbxWriter);
+			FireSimple.Serialize(p_Writer, p_EbxWriter);
+			FirstShotSpawned.Serialize(p_Writer, p_EbxWriter);
+			BoltAction.Serialize(p_Writer, p_EbxWriter);
+			PumpAction.Serialize(p_Writer, p_EbxWriter);
+			MeleeAttack.Serialize(p_Writer, p_EbxWriter);
+			QuickThrow.Serialize(p_Writer, p_EbxWriter);
+			QuickThrowType.Serialize(p_Writer, p_EbxWriter);
+			AimBody.Serialize(p_Writer, p_EbxWriter);
+			AlwaysAimHead.Serialize(p_Writer, p_EbxWriter);
+			OneHanded.Serialize(p_Writer, p_EbxWriter);
+			OneHandedAiming.Serialize(p_Writer, p_EbxWriter);
+			AimingEnabled.Serialize(p_Writer, p_EbxWriter);
+			LowerGun.Serialize(p_Writer, p_EbxWriter);
+			BreathControl.Serialize(p_Writer, p_EbxWriter);
+			RflType.Serialize(p_Writer, p_EbxWriter);
+			PstlType.Serialize(p_Writer, p_EbxWriter);
+			HgrType.Serialize(p_Writer, p_EbxWriter);
+			ATType.Serialize(p_Writer, p_EbxWriter);
+			ShgType.Serialize(p_Writer, p_EbxWriter);
+			LMGType.Serialize(p_Writer, p_EbxWriter);
+			BagType.Serialize(p_Writer, p_EbxWriter);
+			SnpType.Serialize(p_Writer, p_EbxWriter);
+			Zoom.Serialize(p_Writer, p_EbxWriter);
+			AimBodyWeight.Serialize(p_Writer, p_EbxWriter);
+			DisableZoomToggleWeight.Serialize(p_Writer, p_EbxWriter);
+			ZoomParameter.Serialize(p_Writer, p_EbxWriter);
+			ZoomScaleFactor.Serialize(p_Writer, p_EbxWriter);
+			Dispersion.Serialize(p_Writer, p_EbxWriter);
+			AimTargetPosBody.Serialize(p_Writer, p_EbxWriter);
+			ZoomOutSpeed.Serialize(p_Writer, p_EbxWriter);
+			ZoomInSpeed.Serialize(p_Writer, p_EbxWriter);
+			UnDeploySpeed.Serialize(p_Writer, p_EbxWriter);
+			DeploySpeed.Serialize(p_Writer, p_EbxWriter);
+			LightEnabled.Serialize(p_Writer, p_EbxWriter);
+			FireModeChanged.Serialize(p_Writer, p_EbxWriter);
+			AnimType.Serialize(p_Writer, p_EbxWriter);
+			GunDown.Serialize(p_Writer, p_EbxWriter);
+			NumberOfBulletsLeftInGun.Serialize(p_Writer, p_EbxWriter);
+			BulletsLeftInGun.Serialize(p_Writer, p_EbxWriter);
+			AbortVehicleDeploy.Serialize(p_Writer, p_EbxWriter);
+			CurrentProjectileIndex.Serialize(p_Writer, p_EbxWriter);
+			WeaponActionESIG.Serialize(p_Writer, p_EbxWriter);
+			IsSprinting.Serialize(p_Writer, p_EbxWriter);
+			PreparingToBash.Serialize(p_Writer, p_EbxWriter);
+			JustStartedSprinting.Serialize(p_Writer, p_EbxWriter);
+			KickBackInIronSight.Serialize(p_Writer, p_EbxWriter);
+			ZoomingTime.Serialize(p_Writer, p_EbxWriter);
+			TriggerZoomGunTwitch.Serialize(p_Writer, p_EbxWriter);
+			WeaponChooserSignal.Serialize(p_Writer, p_EbxWriter);
+			WeaponClassSignal.Serialize(p_Writer, p_EbxWriter);
+			OffsetX.Serialize(p_Writer, p_EbxWriter);
+			OffsetY.Serialize(p_Writer, p_EbxWriter);
+			OffsetZ.Serialize(p_Writer, p_EbxWriter);
+			AIAllowFire.Serialize(p_Writer, p_EbxWriter);
+			AIAltFireFromAnt.Serialize(p_Writer, p_EbxWriter);
+		}
 	}
 }

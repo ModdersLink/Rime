@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 40)]
-	public class CannedAnimationBinding
+	public class CannedAnimationBinding :
+		EbxSerializable
 	{
 		[ContainerField(0), JsonProperty(Order = 0)]
 		public AntRef LevelIndex { get; set; } = new();
@@ -50,5 +52,19 @@ namespace fb
 		[ContainerField(36), JsonProperty(Order = 36)]
 		public AntRef EnteredLoop { get; set; } = new();
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			LevelIndex.Serialize(p_Writer, p_EbxWriter);
+			ScenarioIndex.Serialize(p_Writer, p_EbxWriter);
+			ActorIndex.Serialize(p_Writer, p_EbxWriter);
+			PartIndex.Serialize(p_Writer, p_EbxWriter);
+			TriggerCannedAnimation.Serialize(p_Writer, p_EbxWriter);
+			ExitCannedAnimation.Serialize(p_Writer, p_EbxWriter);
+			ExternalTime.Serialize(p_Writer, p_EbxWriter);
+			BlendValue.Serialize(p_Writer, p_EbxWriter);
+			AdvanceScenario.Serialize(p_Writer, p_EbxWriter);
+			EnteredLoop.Serialize(p_Writer, p_EbxWriter);
+		}
 	}
 }

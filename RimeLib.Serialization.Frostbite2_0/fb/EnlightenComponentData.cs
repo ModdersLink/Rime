@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 224)]
-	public class EnlightenComponentData : 
+	public class EnlightenComponentData :
 		ComponentData
 	{
 		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 96)]
@@ -66,5 +67,25 @@ namespace fb
 		[ContainerField(209), LayoutImmutable, Blittable, JsonProperty(Order = 209)]
 		public bool Enable { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			SkyBoxSkyColor.Serialize(p_Writer, p_EbxWriter);
+			SkyBoxBackLightColor.Serialize(p_Writer, p_EbxWriter);
+			SkyBoxGroundColor.Serialize(p_Writer, p_EbxWriter);
+			TerrainColor.Serialize(p_Writer, p_EbxWriter);
+			SkyBoxSunLightColor.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(BounceScale);
+			p_Writer.Write(CullDistance);
+			p_Writer.Write(SunScale);
+			p_Writer.Write((int) Realm);
+			p_Writer.Write(SkyBoxBackLightRotationY);
+			p_Writer.Write(SkyBoxSunLightColorSize);
+			p_Writer.Write(SkyBoxBackLightColorSize);
+			p_Writer.Write(SkyBoxBackLightRotationX);
+			p_Writer.Write(SkyBoxEnable);
+			p_Writer.Write(Enable);
+			p_Writer.WriteNullBytes(14);
+		}
 	}
 }

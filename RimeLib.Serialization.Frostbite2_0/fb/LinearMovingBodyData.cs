@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 80)]
-	public class LinearMovingBodyData : 
+	public class LinearMovingBodyData :
 		MovingBodyData
 	{
 		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
@@ -30,5 +31,13 @@ namespace fb
 		[ContainerField(52), JsonProperty(Order = 52)]
 		public EndPointData End { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			Axis.Serialize(p_Writer, p_EbxWriter);
+			Start.Serialize(p_Writer, p_EbxWriter);
+			End.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(8);
+		}
 	}
 }

@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 20)]
-	public class MissileUnguidedData
+	public class MissileUnguidedData :
+		EbxSerializable
 	{
 		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 0)]
 		public Vec2 StaticPosition { get; set; } = new();
@@ -32,5 +34,14 @@ namespace fb
 		[ContainerField(17), LayoutImmutable, Blittable, JsonProperty(Order = 17)]
 		public bool UseStaticPosition { get; set; }
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			StaticPosition.Serialize(p_Writer, p_EbxWriter);
+			TargetPositionOffset.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(UseTargetPosition);
+			p_Writer.Write(UseStaticPosition);
+			p_Writer.WriteNullBytes(2);
+		}
 	}
 }

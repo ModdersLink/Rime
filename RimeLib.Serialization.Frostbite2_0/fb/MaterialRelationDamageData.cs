@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 36)]
-	public class MaterialRelationDamageData : 
+	public class MaterialRelationDamageData :
 		PhysicsPropertyRelationPropertyData
 	{
 		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
@@ -42,5 +43,17 @@ namespace fb
 		[ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
 		public bool InflictsDemolitionDamage { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(CollisionDamageMultiplier);
+			p_Writer.Write(CollisionDamageThreshold);
+			p_Writer.Write(DamageProtectionMultiplier);
+			p_Writer.Write(DamagePenetrationMultiplier);
+			p_Writer.Write(DamageProtectionThreshold);
+			p_Writer.Write(ExplosionCoverDamageModifier);
+			p_Writer.Write(InflictsDemolitionDamage);
+			p_Writer.WriteNullBytes(3);
+		}
 	}
 }

@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 36)]
-	public class EntitlementQuery : 
+	public class EntitlementQuery :
 		Asset
 	{
 		[ContainerField(12), JsonProperty(Order = 12)]
@@ -39,5 +40,25 @@ namespace fb
 		[ContainerField(32), LayoutImmutable, JsonProperty(Order = 32)]
 		public string ProjectId { get; set; } = string.Empty;
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			(RimeWriter Writer, uint ArrayIndex) s_EntitlementsData = p_EbxWriter.GetArrayWriter(EntitlementsData.GetType(), EntitlementsData.Count);
+			p_Writer.Write(s_EntitlementsData.ArrayIndex);
+			foreach (var s_Entry in EntitlementsData)
+			{
+				s_Entry.Serialize(s_EntitlementsData.Writer, p_EbxWriter);
+			}
+			(RimeWriter Writer, uint ArrayIndex) s_GroupNames = p_EbxWriter.GetArrayWriter(GroupNames.GetType(), GroupNames.Count);
+			p_Writer.Write(s_GroupNames.ArrayIndex);
+			foreach (var s_Entry in GroupNames)
+			{
+				s_GroupNames.Writer.Write(p_EbxWriter.WriteString(s_Entry));
+			}
+			p_Writer.Write((int) Platform);
+			p_Writer.Write(p_EbxWriter.WriteString(EntitlementTag));
+			p_Writer.Write(p_EbxWriter.WriteString(ProductId));
+			p_Writer.Write(p_EbxWriter.WriteString(ProjectId));
+		}
 	}
 }

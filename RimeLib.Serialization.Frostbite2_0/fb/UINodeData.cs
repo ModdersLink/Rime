@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 20)]
-	public class UINodeData : 
+	public class UINodeData :
 		DataContainer
 	{
 		[ContainerField(8), LayoutImmutable, JsonProperty(Order = 8)]
@@ -33,5 +34,14 @@ namespace fb
 		[ContainerField(17), LayoutImmutable, Blittable, JsonProperty(Order = 17)]
 		public bool ParentIsScreen { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteString(Name));
+			p_Writer.Write(p_EbxWriter.WriteImport(ParentGraph));
+			p_Writer.Write(IsRootNode);
+			p_Writer.Write(ParentIsScreen);
+			p_Writer.WriteNullBytes(2);
+		}
 	}
 }

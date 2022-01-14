@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 192)]
-	public class LensScopeComponentData : 
+	public class LensScopeComponentData :
 		ComponentData
 	{
 		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 96)]
@@ -51,5 +52,21 @@ namespace fb
 		[ContainerField(184), LayoutImmutable, Blittable, JsonProperty(Order = 184)]
 		public bool Enable { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			ChromaticAberrationColor1.Serialize(p_Writer, p_EbxWriter);
+			RadialBlendDistanceCoefficients.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(8);
+			ChromaticAberrationColor2.Serialize(p_Writer, p_EbxWriter);
+			BlurCenter.Serialize(p_Writer, p_EbxWriter);
+			ChromaticAberrationDisplacement2.Serialize(p_Writer, p_EbxWriter);
+			ChromaticAberrationDisplacement1.Serialize(p_Writer, p_EbxWriter);
+			ChromaticAberrationStrengths.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(BlurScale);
+			p_Writer.Write((int) Realm);
+			p_Writer.Write(Enable);
+			p_Writer.WriteNullBytes(7);
+		}
 	}
 }

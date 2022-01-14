@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 52)]
-	public class PersistenceData : 
+	public class PersistenceData :
 		AbstractPersistenceData
 	{
 		[ContainerField(12), LayoutImmutable, JsonProperty(Order = 12)]
@@ -60,5 +61,38 @@ namespace fb
 		[ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
 		public bool DeltaGameReports { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteString(PersistenceName));
+			p_Writer.Write(p_EbxWriter.WriteString(ClubPersistenceName));
+			p_Writer.Write(p_EbxWriter.WriteImport(ClientDefaultGroup));
+			(RimeWriter Writer, uint ArrayIndex) s_Values = p_EbxWriter.GetArrayWriter(Values.GetType(), Values.Count);
+			p_Writer.Write(s_Values.ArrayIndex);
+			foreach (var s_Entry in Values)
+			{
+				s_Entry.Serialize(s_Values.Writer, p_EbxWriter);
+			}
+			(RimeWriter Writer, uint ArrayIndex) s_CustomReportValues = p_EbxWriter.GetArrayWriter(CustomReportValues.GetType(), CustomReportValues.Count);
+			p_Writer.Write(s_CustomReportValues.ArrayIndex);
+			foreach (var s_Entry in CustomReportValues)
+			{
+				s_Entry.Serialize(s_CustomReportValues.Writer, p_EbxWriter);
+			}
+			p_Writer.Write(p_EbxWriter.WriteImport(ServerDefaultGroup));
+			p_Writer.Write(p_EbxWriter.WriteImport(RetentionPolicy));
+			(RimeWriter Writer, uint ArrayIndex) s_ConsumableMappings = p_EbxWriter.GetArrayWriter(ConsumableMappings.GetType(), ConsumableMappings.Count);
+			p_Writer.Write(s_ConsumableMappings.ArrayIndex);
+			foreach (var s_Entry in ConsumableMappings)
+			{
+				s_Entry.Serialize(s_ConsumableMappings.Writer, p_EbxWriter);
+			}
+			p_Writer.Write(HistoryDaily);
+			p_Writer.Write(HistoryWeekly);
+			p_Writer.Write(HistoryMonthly);
+			p_Writer.Write(OutputProperties);
+			p_Writer.Write(DeltaGameReports);
+			p_Writer.WriteNullBytes(3);
+		}
 	}
 }

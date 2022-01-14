@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 24)]
-	public class SubsystemTimingConfigData
+	public class SubsystemTimingConfigData :
+		EbxSerializable
 	{
 		[ContainerField(0), LayoutImmutable, Blittable, JsonProperty(Order = 0)]
 		public float Sensing { get; set; }
@@ -38,5 +40,15 @@ namespace fb
 		[ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
 		public float BehaviourExecution { get; set; }
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(Sensing);
+			p_Writer.Write(Evaluation);
+			p_Writer.Write(GoalUpdates);
+			p_Writer.Write(IntentUpdates);
+			p_Writer.Write(BehaviourSelection);
+			p_Writer.Write(BehaviourExecution);
+		}
 	}
 }

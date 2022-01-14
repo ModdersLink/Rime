@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 92)]
-	public class ZoomLevelData : 
+	public class ZoomLevelData :
 		DataContainer
 	{
 		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
@@ -90,5 +91,33 @@ namespace fb
 		[ContainerField(90), LayoutImmutable, Blittable, JsonProperty(Order = 90)]
 		public bool AllowFieldOfViewScaling { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(FieldOfView);
+			p_Writer.Write(DispersionMultiplier);
+			p_Writer.Write(LookSpeedMultiplier);
+			p_Writer.Write(SprintLookSpeedMultiplier);
+			p_Writer.Write(MoveSpeedMultiplier);
+			p_Writer.Write(SwayPitchMultiplier);
+			p_Writer.Write(SwayYawMultiplier);
+			p_Writer.Write(SupportedSwayPitchMultiplier);
+			p_Writer.Write(SupportedSwayYawMultiplier);
+			p_Writer.Write(TimePitchMultiplier);
+			p_Writer.Write(TimeYawMultiplier);
+			p_Writer.Write(RecoilMultiplier);
+			p_Writer.Write(FadeToBlackDuration);
+			p_Writer.Write(RecoilFovMultiplier);
+			p_Writer.Write(CameraImpulseMultiplier);
+			p_Writer.Write((int) OnActivateEventType);
+			p_Writer.Write(StartFadeToBlackAtTime);
+			p_Writer.Write(FadeFromBlackDuration);
+			p_Writer.Write(StartFadeFromBlackAtTime);
+			p_Writer.Write(ScreenExposureAreaScale);
+			p_Writer.Write(FadeToBlackInZoomTransition);
+			p_Writer.Write(UseFovSpecialisation);
+			p_Writer.Write(AllowFieldOfViewScaling);
+			p_Writer.WriteNullBytes(1);
+		}
 	}
 }

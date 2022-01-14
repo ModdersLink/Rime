@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 76)]
-	public class AudioSettings : 
+	public class AudioSettings :
 		DataContainer
 	{
 		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
@@ -72,5 +73,27 @@ namespace fb
 		[ContainerField(72), LayoutImmutable, Blittable, JsonProperty(Order = 72)]
 		public bool AudioCoreMultipleMixJobsEnabled { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(WaveCacheSize);
+			p_Writer.Write(WaveCacheHeadroom);
+			p_Writer.Write(WaveCachePruneTimeLimit);
+			p_Writer.Write(WaveCacheRsxSize);
+			p_Writer.Write(WaveCacheRsxPruneTimeLimit);
+			p_Writer.Write(WaveCacheMaxReadIssueCount);
+			p_Writer.Write(WaveCacheMaxReadActiveCount);
+			p_Writer.Write(AudioCoreCpuLoadLimit);
+			p_Writer.Write(AudioCoreCpuLoadRecovery);
+			p_Writer.Write(AudioCoreThread);
+			p_Writer.Write(AudioCoreMixJobThreadCount);
+			p_Writer.Write(AudioCoreMaxMixJobThreadCount);
+			p_Writer.Write(MaxAudibleSoundCount);
+			p_Writer.Write(AudioCoreMinProcStageVoicesToGoWide);
+			p_Writer.Write(DelayLineAllocSize);
+			p_Writer.Write(ReverbAllocSize);
+			p_Writer.Write(AudioCoreMultipleMixJobsEnabled);
+			p_Writer.WriteNullBytes(3);
+		}
 	}
 }

@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 212)]
-	public class GunSwayModifierData : 
+	public class GunSwayModifierData :
 		Asset
 	{
 		[ContainerField(12), JsonProperty(Order = 12)]
@@ -48,5 +49,19 @@ namespace fb
 		[ContainerField(209), LayoutImmutable, Blittable, JsonProperty(Order = 209)]
 		public bool OnlyOnWeaponLightEnabled { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(UnlockAsset));
+			StandZoomModifier.Serialize(p_Writer, p_EbxWriter);
+			StandNoZoomModifier.Serialize(p_Writer, p_EbxWriter);
+			CrouchZoomModifier.Serialize(p_Writer, p_EbxWriter);
+			CrouchNoZoomModifier.Serialize(p_Writer, p_EbxWriter);
+			ProneZoomModifier.Serialize(p_Writer, p_EbxWriter);
+			ProneNoZoomModifier.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(OnlyInSupportedShooting);
+			p_Writer.Write(OnlyOnWeaponLightEnabled);
+			p_Writer.WriteNullBytes(2);
+		}
 	}
 }

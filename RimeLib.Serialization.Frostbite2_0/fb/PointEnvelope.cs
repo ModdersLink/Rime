@@ -14,15 +14,26 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 12)]
-	public class PointEnvelope : 
+	public class PointEnvelope :
 		DataContainer
 	{
 		[ContainerField(8), JsonProperty(Order = 8)]
 		public List<PointEnvelopePoint> Points { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			(RimeWriter Writer, uint ArrayIndex) s_Points = p_EbxWriter.GetArrayWriter(Points.GetType(), Points.Count);
+			p_Writer.Write(s_Points.ArrayIndex);
+			foreach (var s_Entry in Points)
+			{
+				s_Entry.Serialize(s_Points.Writer, p_EbxWriter);
+			}
+		}
 	}
 }

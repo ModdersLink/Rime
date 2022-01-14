@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 208)]
-	public class MapMarkerEntityData : 
+	public class MapMarkerEntityData :
 		GameEntityData
 	{
 		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 96)]
@@ -108,5 +109,39 @@ namespace fb
 		[ContainerField(199), LayoutImmutable, Blittable, JsonProperty(Order = 199)]
 		public bool IsFocusPoint { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			BaseTransform.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(ProgressMinTime);
+			p_Writer.Write(p_EbxWriter.WriteString(Sid));
+			p_Writer.Write(NrOfPassengers);
+			p_Writer.Write(NrOfEntries);
+			p_Writer.Write(ProgressTime1Player);
+			p_Writer.Write(ShowRadius);
+			p_Writer.Write(HideRadius);
+			p_Writer.Write(BlinkTime);
+			p_Writer.Write((int) MarkerType);
+			p_Writer.Write((int) VisibleForTeam);
+			p_Writer.Write((int) OwnerTeam);
+			p_Writer.Write((int) HudIcon);
+			p_Writer.Write(VerticalOffset);
+			p_Writer.Write(FocusPointRadius);
+			p_Writer.Write(InstantFlagReturnRadius);
+			p_Writer.Write(Progress);
+			p_Writer.Write(ProgressPlayerSpeedUpPercentage);
+			p_Writer.Write(TrackedPlayersInRange);
+			p_Writer.Write(TrackingPlayerRange);
+			p_Writer.Write(ProgressTime);
+			p_Writer.Write(OnlyShowSnapped);
+			p_Writer.Write(FlagControlMarker);
+			p_Writer.Write(ShowProgress);
+			p_Writer.Write(UseMarkerTransform);
+			p_Writer.Write(IsVisible);
+			p_Writer.Write(Snap);
+			p_Writer.Write(ShowAirTargetBox);
+			p_Writer.Write(IsFocusPoint);
+			p_Writer.WriteNullBytes(8);
+		}
 	}
 }

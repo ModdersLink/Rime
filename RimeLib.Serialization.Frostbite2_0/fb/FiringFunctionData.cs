@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 496)]
-	public class FiringFunctionData : 
+	public class FiringFunctionData :
 		GameDataContainer
 	{
 		[ContainerField(8), JsonProperty(Order = 8)]
@@ -60,5 +61,40 @@ namespace fb
 		[ContainerField(489), LayoutImmutable, Blittable, JsonProperty(Order = 489)]
 		public bool UsePrimaryAmmo { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			(RimeWriter Writer, uint ArrayIndex) s_Dispersion = p_EbxWriter.GetArrayWriter(Dispersion.GetType(), Dispersion.Count);
+			p_Writer.Write(s_Dispersion.ArrayIndex);
+			foreach (var s_Entry in Dispersion)
+			{
+				s_Entry.Serialize(s_Dispersion.Writer, p_EbxWriter);
+			}
+			WeaponDispersion.Serialize(p_Writer, p_EbxWriter);
+			(RimeWriter Writer, uint ArrayIndex) s_FireEffects1p = p_EbxWriter.GetArrayWriter(FireEffects1p.GetType(), FireEffects1p.Count);
+			p_Writer.Write(s_FireEffects1p.ArrayIndex);
+			foreach (var s_Entry in FireEffects1p)
+			{
+				s_Entry.Serialize(s_FireEffects1p.Writer, p_EbxWriter);
+			}
+			(RimeWriter Writer, uint ArrayIndex) s_FireEffects3p = p_EbxWriter.GetArrayWriter(FireEffects3p.GetType(), FireEffects3p.Count);
+			p_Writer.Write(s_FireEffects3p.ArrayIndex);
+			foreach (var s_Entry in FireEffects3p)
+			{
+				s_Entry.Serialize(s_FireEffects3p.Writer, p_EbxWriter);
+			}
+			p_Writer.Write(p_EbxWriter.WriteImport(Sound));
+			p_Writer.WriteNullBytes(4);
+			Shot.Serialize(p_Writer, p_EbxWriter);
+			FireLogic.Serialize(p_Writer, p_EbxWriter);
+			Ammo.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(4);
+			OverHeat.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(SelfHealTimeWhenDeployed);
+			p_Writer.Write(AmmoCrateReloadDelay);
+			p_Writer.Write(UnlimitedAmmoForAI);
+			p_Writer.Write(UsePrimaryAmmo);
+			p_Writer.WriteNullBytes(6);
+		}
 	}
 }

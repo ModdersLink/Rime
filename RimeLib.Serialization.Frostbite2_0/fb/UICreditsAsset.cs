@@ -14,15 +14,26 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 16)]
-	public class UICreditsAsset : 
+	public class UICreditsAsset :
 		Asset
 	{
 		[ContainerField(12), JsonProperty(Order = 12)]
 		public List<UICreditsPage> Pages { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			(RimeWriter Writer, uint ArrayIndex) s_Pages = p_EbxWriter.GetArrayWriter(Pages.GetType(), Pages.Count);
+			p_Writer.Write(s_Pages.ArrayIndex);
+			foreach (var s_Entry in Pages)
+			{
+				s_Entry.Serialize(s_Pages.Writer, p_EbxWriter);
+			}
+		}
 	}
 }

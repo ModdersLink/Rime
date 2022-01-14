@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 80)]
-	public class CharacterPhysicsData : 
+	public class CharacterPhysicsData :
 		Asset
 	{
 		[ContainerField(12), JsonProperty(Order = 12)]
@@ -72,5 +73,37 @@ namespace fb
 		[ContainerField(76), LayoutImmutable, Blittable, JsonProperty(Order = 76)]
 		public bool AllowPoseChangeDuringTransition { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			(RimeWriter Writer, uint ArrayIndex) s_Poses = p_EbxWriter.GetArrayWriter(Poses.GetType(), Poses.Count);
+			p_Writer.Write(s_Poses.ArrayIndex);
+			foreach (var s_Entry in Poses)
+			{
+				s_Poses.Writer.Write(p_EbxWriter.WriteImport(s_Entry));
+			}
+			(RimeWriter Writer, uint ArrayIndex) s_States = p_EbxWriter.GetArrayWriter(States.GetType(), States.Count);
+			p_Writer.Write(s_States.ArrayIndex);
+			foreach (var s_Entry in States)
+			{
+				s_States.Writer.Write(p_EbxWriter.WriteImport(s_Entry));
+			}
+			p_Writer.Write((int) DefaultState);
+			p_Writer.Write(p_EbxWriter.WriteImport(Sprint));
+			p_Writer.Write(p_EbxWriter.WriteImport(MaterialPair));
+			p_Writer.Write(PushableObjectWeight);
+			p_Writer.Write(Mass);
+			p_Writer.Write(MaxAscendAngle);
+			p_Writer.Write(PhysicalRadius);
+			p_Writer.Write(WaterDepthLimit);
+			p_Writer.Write(InputAcceleration);
+			p_Writer.Write(LadderAcceptAngle);
+			p_Writer.Write(LadderAcceptAnglePitch);
+			p_Writer.Write(JumpPenaltyTime);
+			p_Writer.Write(JumpPenaltyFactor);
+			p_Writer.Write(RadiusToPredictCollisionOnCharacters);
+			p_Writer.Write(AllowPoseChangeDuringTransition);
+			p_Writer.WriteNullBytes(3);
+		}
 	}
 }

@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 112)]
-	public class SoldierBodyComponentData : 
+	public class SoldierBodyComponentData :
 		ComponentData
 	{
 		[ContainerField(96), LayoutImmutable, Blittable, JsonProperty(Order = 96)]
@@ -36,5 +37,15 @@ namespace fb
 		[ContainerField(109), LayoutImmutable, Blittable, JsonProperty(Order = 109)]
 		public bool OverrideGravity { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(SprintMultiplier);
+			p_Writer.Write(OverrideGravityValue);
+			p_Writer.Write(OverrideVelocityY);
+			p_Writer.Write(OverrideVelocity);
+			p_Writer.Write(OverrideGravity);
+			p_Writer.WriteNullBytes(2);
+		}
 	}
 }

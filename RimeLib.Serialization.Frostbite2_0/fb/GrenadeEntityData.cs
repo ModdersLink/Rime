@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 208)]
-	public class GrenadeEntityData : 
+	public class GrenadeEntityData :
 		MeshProjectileEntityData
 	{
 		[ContainerField(192), LayoutImmutable, Blittable, JsonProperty(Order = 192)]
@@ -33,5 +34,13 @@ namespace fb
 		[ContainerField(204), LayoutImmutable, Blittable, JsonProperty(Order = 204)]
 		public float MinBounceSpeed { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(CollisionSpeedMultiplier);
+			p_Writer.Write(Gravity);
+			p_Writer.Write((int) GrenadeType);
+			p_Writer.Write(MinBounceSpeed);
+		}
 	}
 }

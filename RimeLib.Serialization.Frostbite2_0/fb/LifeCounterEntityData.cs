@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 160)]
-	public class LifeCounterEntityData : 
+	public class LifeCounterEntityData :
 		GameEntityData
 	{
 		[ContainerField(96), LayoutImmutable, Blittable, JsonProperty(Order = 96)]
@@ -72,5 +73,37 @@ namespace fb
 		[ContainerField(154), LayoutImmutable, Blittable, JsonProperty(Order = 154)]
 		public bool SimpleReinforce { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(StartingLifeCount);
+			p_Writer.Write(DisplayTime);
+			p_Writer.Write((int) TeamId);
+			(RimeWriter Writer, uint ArrayIndex) s_LifeTresholdValues = p_EbxWriter.GetArrayWriter(LifeTresholdValues.GetType(), LifeTresholdValues.Count);
+			p_Writer.Write(s_LifeTresholdValues.ArrayIndex);
+			foreach (var s_Entry in LifeTresholdValues)
+			{
+				s_LifeTresholdValues.Writer.Write(s_Entry);
+			}
+			p_Writer.Write(UiShowCountLowerThreshold);
+			p_Writer.Write(UiShowCountUpperThreshold);
+			p_Writer.Write(BaseCount);
+			(RimeWriter Writer, uint ArrayIndex) s_ReinforceTable = p_EbxWriter.GetArrayWriter(ReinforceTable.GetType(), ReinforceTable.Count);
+			p_Writer.Write(s_ReinforceTable.ArrayIndex);
+			foreach (var s_Entry in ReinforceTable)
+			{
+				s_ReinforceTable.Writer.Write(s_Entry);
+			}
+			p_Writer.Write(ReinforceThreshold);
+			p_Writer.Write(p_EbxWriter.WriteString(ReinforceMessageSid));
+			p_Writer.Write(FightHarderTreshold);
+			p_Writer.Write(DefensiveKillRadius);
+			p_Writer.Write(FallbackTime);
+			p_Writer.Write(p_EbxWriter.WriteString(FightHarderMessageSid));
+			p_Writer.Write(Attacker);
+			p_Writer.Write(SetBestSquadSpawner);
+			p_Writer.Write(SimpleReinforce);
+			p_Writer.WriteNullBytes(5);
+		}
 	}
 }

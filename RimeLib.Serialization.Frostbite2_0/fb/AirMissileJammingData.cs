@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 48)]
-	public class AirMissileJammingData
+	public class AirMissileJammingData :
+		EbxSerializable
 	{
 		[ContainerField(0), LayoutImmutable, Blittable, JsonProperty(Order = 0)]
 		public float MinTurnSpeed { get; set; }
@@ -56,5 +58,22 @@ namespace fb
 		[ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
 		public bool EnableAirMissileJamming { get; set; }
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(MinTurnSpeed);
+			p_Writer.Write(MaxRadius);
+			p_Writer.Write(MinRadius);
+			p_Writer.Write(Theta);
+			p_Writer.Write(Phi);
+			p_Writer.Write(UpdateJammingPositionTime);
+			p_Writer.Write(MaxTurnSpeed);
+			p_Writer.Write(QuietModeProbability);
+			p_Writer.Write(QuietModeTime);
+			p_Writer.Write(JammingTime);
+			p_Writer.Write(TurnCalculationTime);
+			p_Writer.Write(EnableAirMissileJamming);
+			p_Writer.WriteNullBytes(3);
+		}
 	}
 }

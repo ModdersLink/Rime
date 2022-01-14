@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 32)]
-	public class UIGraphEntityData : 
+	public class UIGraphEntityData :
 		EntityData
 	{
 		[ContainerField(12), JsonProperty(Order = 12)]
@@ -36,5 +37,20 @@ namespace fb
 		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
 		public bool PopPreviousGraph { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			(RimeWriter Writer, uint ArrayIndex) s_Events = p_EbxWriter.GetArrayWriter(Events.GetType(), Events.Count);
+			p_Writer.Write(s_Events.ArrayIndex);
+			foreach (var s_Entry in Events)
+			{
+				s_Entry.Serialize(s_Events.Writer, p_EbxWriter);
+			}
+			p_Writer.Write(p_EbxWriter.WriteImport(GraphAsset));
+			p_Writer.Write((int) GraphPriority);
+			p_Writer.Write((int) State);
+			p_Writer.Write(PopPreviousGraph);
+			p_Writer.WriteNullBytes(3);
+		}
 	}
 }

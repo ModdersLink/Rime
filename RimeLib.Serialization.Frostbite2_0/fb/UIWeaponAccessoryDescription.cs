@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 48)]
-	public class UIWeaponAccessoryDescription : 
+	public class UIWeaponAccessoryDescription :
 		UIItemDescription
 	{
 		[ContainerField(16), LayoutImmutable, JsonProperty(Order = 16)]
@@ -48,5 +49,19 @@ namespace fb
 		[ContainerField(45), LayoutImmutable, Blittable, JsonProperty(Order = 45)]
 		public bool HiddenInProgression { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteString(Name));
+			p_Writer.Write(p_EbxWriter.WriteString(Description));
+			p_Writer.Write(p_EbxWriter.WriteString(Category));
+			p_Writer.Write(p_EbxWriter.WriteString(TexturePath));
+			p_Writer.Write(p_EbxWriter.WriteString(IconTexturePath));
+			p_Writer.Write(p_EbxWriter.WriteString(UnlockTexturePath));
+			p_Writer.Write(p_EbxWriter.WriteString(MiscTexturePath));
+			p_Writer.Write(CoreAccessory);
+			p_Writer.Write(HiddenInProgression);
+			p_Writer.WriteNullBytes(2);
+		}
 	}
 }

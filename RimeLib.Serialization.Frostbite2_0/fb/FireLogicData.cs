@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 152)]
-	public class FireLogicData
+	public class FireLogicData :
+		EbxSerializable
 	{
 		[ContainerField(0), JsonProperty(Order = 0)]
 		public HoldAndReleaseData HoldAndRelease { get; set; } = new();
@@ -92,5 +94,38 @@ namespace fb
 		[ContainerField(151), LayoutImmutable, Blittable, JsonProperty(Order = 151)]
 		public bool AlwaysAutoReload { get; set; }
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			HoldAndRelease.Serialize(p_Writer, p_EbxWriter);
+			BoltAction.Serialize(p_Writer, p_EbxWriter);
+			Recoil.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write((int) FireInputAction);
+			p_Writer.Write((int) ReloadInputAction);
+			p_Writer.Write((int) CycleFireModeInputAction);
+			p_Writer.Write(TriggerPullWeight);
+			p_Writer.Write(RateOfFire);
+			p_Writer.Write(RateOfFireForBurst);
+			p_Writer.Write(ClientFireRateMultiplier);
+			p_Writer.Write(ReloadDelay);
+			(RimeWriter Writer, uint ArrayIndex) s_FireLogicTypeArray = p_EbxWriter.GetArrayWriter(FireLogicTypeArray.GetType(), FireLogicTypeArray.Count);
+			p_Writer.Write(s_FireLogicTypeArray.ArrayIndex);
+			foreach (var s_Entry in FireLogicTypeArray)
+			{
+				s_FireLogicTypeArray.Writer.Write((int) s_Entry);
+			}
+			p_Writer.Write(ReloadThreshold);
+			p_Writer.Write(PreFireDelay);
+			p_Writer.Write(ReloadTime);
+			p_Writer.Write(ReloadTimeBulletsLeft);
+			p_Writer.Write((int) FireLogicType);
+			p_Writer.Write((int) ReloadLogic);
+			p_Writer.Write(AutomaticDelay);
+			p_Writer.Write((int) ReloadType);
+			p_Writer.Write(HoldOffReloadUntilZoomRelease);
+			p_Writer.Write(ForceReloadActionOnFireTrigger);
+			p_Writer.Write(HoldOffReloadUntilFireRelease);
+			p_Writer.Write(AlwaysAutoReload);
+		}
 	}
 }

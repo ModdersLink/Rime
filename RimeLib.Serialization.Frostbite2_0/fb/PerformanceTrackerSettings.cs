@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 20)]
-	public class PerformanceTrackerSettings : 
+	public class PerformanceTrackerSettings :
 		SystemSettings
 	{
 		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
@@ -36,5 +37,14 @@ namespace fb
 		[ContainerField(19), LayoutImmutable, Blittable, JsonProperty(Order = 19)]
 		public bool JuiceLogPerformance { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(Interval);
+			p_Writer.Write(Enabled);
+			p_Writer.Write(SupressPerformanceStatsOnIdle);
+			p_Writer.Write(SupressPerformanceStatsUntilSpawned);
+			p_Writer.Write(JuiceLogPerformance);
+		}
 	}
 }

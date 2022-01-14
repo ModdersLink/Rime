@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 128)]
-	public class DriverStaticObjectComponentData : 
+	public class DriverStaticObjectComponentData :
 		DriverComponentData
 	{
 		[ContainerField(112), LayoutImmutable, Blittable, JsonProperty(Order = 112)]
@@ -36,5 +37,15 @@ namespace fb
 		[ContainerField(125), LayoutImmutable, Blittable, JsonProperty(Order = 125)]
 		public bool AlignWithGroundNormal { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(Acceleration);
+			p_Writer.Write(Deceleration);
+			p_Writer.Write(TurningRadius);
+			p_Writer.Write(TurnWhileStill);
+			p_Writer.Write(AlignWithGroundNormal);
+			p_Writer.WriteNullBytes(2);
+		}
 	}
 }

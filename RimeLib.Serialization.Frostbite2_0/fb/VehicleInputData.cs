@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 80)]
-	public class VehicleInputData
+	public class VehicleInputData :
+		EbxSerializable
 	{
 		[ContainerField(0), LayoutImmutable, Blittable, JsonProperty(Order = 0)]
 		public float ThrottleDeadzone { get; set; }
@@ -80,5 +82,29 @@ namespace fb
 		[ContainerField(76), LayoutImmutable, Blittable, JsonProperty(Order = 76)]
 		public float RollInertiaMinRatio { get; set; }
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(ThrottleDeadzone);
+			p_Writer.Write(BrakeDeadzone);
+			p_Writer.Write(YawDeadzone);
+			p_Writer.Write(PitchDeadzone);
+			p_Writer.Write(RollDeadzone);
+			p_Writer.Write(ThrottleInertiaOutDuration);
+			p_Writer.Write(ThrottleInertiaInDuration);
+			p_Writer.Write(ThrottleInertiaMinRatio);
+			p_Writer.Write(BrakeInertiaOutDuration);
+			p_Writer.Write(BrakeInertiaInDuration);
+			p_Writer.Write(BrakeInertiaMinRatio);
+			p_Writer.Write(YawInertiaOutDuration);
+			p_Writer.Write(YawInertiaInDuration);
+			p_Writer.Write(YawInertiaMinRatio);
+			p_Writer.Write(PitchInertiaOutDuration);
+			p_Writer.Write(PitchInertiaInDuration);
+			p_Writer.Write(PitchInertiaMinRatio);
+			p_Writer.Write(RollInertiaOutDuration);
+			p_Writer.Write(RollInertiaInDuration);
+			p_Writer.Write(RollInertiaMinRatio);
+		}
 	}
 }

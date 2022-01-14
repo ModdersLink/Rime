@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 72)]
-	public class UIPageHeaderBinding : 
+	public class UIPageHeaderBinding :
 		UIDataBinding
 	{
 		[ContainerField(8), JsonProperty(Order = 8)]
@@ -42,5 +43,21 @@ namespace fb
 		[ContainerField(68), JsonProperty(Order = 68)]
 		public List<UILevelSpecificPageHeader> LevelSpecificHeaders { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			Header.Serialize(p_Writer, p_EbxWriter);
+			SubHeader.Serialize(p_Writer, p_EbxWriter);
+			Icon.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteString(StaticHeader));
+			p_Writer.Write(p_EbxWriter.WriteString(StaticSubHeader));
+			p_Writer.Write(p_EbxWriter.WriteString(StaticIcon));
+			(RimeWriter Writer, uint ArrayIndex) s_LevelSpecificHeaders = p_EbxWriter.GetArrayWriter(LevelSpecificHeaders.GetType(), LevelSpecificHeaders.Count);
+			p_Writer.Write(s_LevelSpecificHeaders.ArrayIndex);
+			foreach (var s_Entry in LevelSpecificHeaders)
+			{
+				s_Entry.Serialize(s_LevelSpecificHeaders.Writer, p_EbxWriter);
+			}
+		}
 	}
 }

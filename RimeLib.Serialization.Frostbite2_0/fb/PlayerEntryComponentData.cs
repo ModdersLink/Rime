@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 224)]
-	public class PlayerEntryComponentData : 
+	public class PlayerEntryComponentData :
 		EntryComponentData
 	{
 		[ContainerField(192), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 192)]
@@ -36,5 +37,14 @@ namespace fb
 		[ContainerField(220), LayoutImmutable, Blittable, JsonProperty(Order = 220)]
 		public float ShieldedTransitionExitTime { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			AnimationAccelerationMultiplier.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write((int) AntEntryId);
+			p_Writer.Write(p_EbxWriter.WriteString(AntEntryID));
+			p_Writer.Write(p_EbxWriter.WriteImport(AntEntryEnumeration));
+			p_Writer.Write(ShieldedTransitionExitTime);
+		}
 	}
 }

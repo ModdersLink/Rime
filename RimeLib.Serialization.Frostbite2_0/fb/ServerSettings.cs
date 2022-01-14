@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 180)]
-	public class ServerSettings : 
+	public class ServerSettings :
 		SystemSettings
 	{
 		[ContainerField(12), LayoutImmutable, JsonProperty(Order = 12)]
@@ -246,5 +247,84 @@ namespace fb
 		[ContainerField(179), LayoutImmutable, Blittable, JsonProperty(Order = 179)]
 		public bool VegetationEnabled { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteString(InstancePath));
+			p_Writer.Write(RemoteControlPort);
+			p_Writer.Write(DuplicationChance);
+			p_Writer.Write(MaxQueriesPerSecond);
+			p_Writer.Write(CorruptionChance);
+			p_Writer.Write(p_EbxWriter.WriteString(RemoteAdministrationPort));
+			p_Writer.Write(MaxDropDuration);
+			p_Writer.Write(ReorderingChance);
+			p_Writer.Write(HumanHealthMultiplier);
+			p_Writer.Write(p_EbxWriter.WriteString(ServerName));
+			p_Writer.Write(MinDropDuration);
+			p_Writer.Write(SaveGameVersion);
+			p_Writer.Write(PacketDrops);
+			p_Writer.Write(DropSpikeChance);
+			p_Writer.Write(MaxLatency);
+			p_Writer.Write(OutgoingRate);
+			p_Writer.Write(IncomingRate);
+			p_Writer.Write(p_EbxWriter.WriteString(Playlist));
+			p_Writer.Write(p_EbxWriter.WriteString(SavePoint));
+			p_Writer.Write(IngameTimeout);
+			p_Writer.Write(OutgoingFrequency);
+			p_Writer.Write(RespawnTimeModifier);
+			p_Writer.Write(MinLatency);
+			p_Writer.Write(p_EbxWriter.WriteString(ServerPassword));
+			p_Writer.Write(TimeoutTime);
+			p_Writer.Write(PlayerCountNeededForMultiplayer);
+			p_Writer.Write(VehicleSpawnDelayModifier);
+			p_Writer.Write(p_EbxWriter.WriteString(DebugMenuClick));
+			p_Writer.Write(p_EbxWriter.WriteString(AdministrationPassword));
+			p_Writer.Write(LoadingTimeout);
+			p_Writer.Write(DedicatedServerCpu);
+			p_Writer.Write(DeathmatchDebugInfo);
+			p_Writer.Write(TimeoutGame);
+			p_Writer.Write(AILooksIntoCamera);
+			p_Writer.Write(IsStatsEnabled);
+			p_Writer.Write(IsTreeDestructionEnabled);
+			p_Writer.Write(HavokCaptureToFile);
+			p_Writer.Write(ShowTriggerDebugText);
+			p_Writer.Write(IsInternetSimulationEnabled);
+			p_Writer.Write(DisableCutscenes);
+			p_Writer.Write(JobEnable);
+			p_Writer.Write(ThreadingEnable);
+			p_Writer.Write(DrawActivePhysicsObjects);
+			p_Writer.Write(IsRanked);
+			p_Writer.Write(UnlockResolver);
+			p_Writer.Write(ScoringLogEnabled);
+			p_Writer.Write(HavokVisualDebugger);
+			p_Writer.Write(IsSoldierDetailedCollisionEnabled);
+			p_Writer.Write(LoadSavePoint);
+			p_Writer.Write(IsSoldierAnimationEnabled);
+			p_Writer.Write(IsAiEnabled);
+			p_Writer.Write(IsReconfigurable);
+			p_Writer.Write(IsDestructionEnabled);
+			p_Writer.Write(ForcePlaylist);
+			p_Writer.Write(IsNetworkStatsEnabled);
+			p_Writer.Write(AutoUnspawnBangers);
+			p_Writer.Write(RegulatedAIThrottle);
+			p_Writer.Write(EnableAnimationCulling);
+			p_Writer.Write(FallBackToSquadSpawn);
+			p_Writer.Write(AllowIndestructibleParts);
+			p_Writer.Write(IsPresenceEnabled);
+			p_Writer.Write(WaterPhysicsEnabled);
+			p_Writer.Write(RespawnOnDeathPosition);
+			p_Writer.Write(IsRenderDamageEvents);
+			p_Writer.Write(VehicleSpawnAllowed);
+			p_Writer.Write(QueryProviderEnabled);
+			p_Writer.Write(IsDesertingAllowed);
+			p_Writer.Write(DebrisClusterEnabled);
+			p_Writer.Write(AdministrationEnabled);
+			p_Writer.Write(AdministrationLogEnabled);
+			p_Writer.Write(AdministrationTimeStampLogNames);
+			p_Writer.Write(AdministrationEventsEnabled);
+			p_Writer.Write(AdministrationServerNameRestricted);
+			p_Writer.Write(ThreadedLoadingEnable);
+			p_Writer.Write(VegetationEnabled);
+		}
 	}
 }

@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 52)]
-	public class SearchAndDestroyOrderEntityData : 
+	public class SearchAndDestroyOrderEntityData :
 		BFOrderEntityData
 	{
 		[ContainerField(40), JsonProperty(Order = 40)]
@@ -33,5 +34,14 @@ namespace fb
 		[ContainerField(49), LayoutImmutable, Blittable, JsonProperty(Order = 49)]
 		public bool Aggressive { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write((int) TargetPosKnowledge);
+			p_Writer.Write(FindTargetTime);
+			p_Writer.Write(TargetAreaFollowsTarget);
+			p_Writer.Write(Aggressive);
+			p_Writer.WriteNullBytes(2);
+		}
 	}
 }

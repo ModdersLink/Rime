@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 24)]
-	public class InputRecorderData : 
+	public class InputRecorderData :
 		DataContainer
 	{
 		[ContainerField(8), LayoutImmutable, JsonProperty(Order = 8)]
@@ -33,5 +34,14 @@ namespace fb
 		[ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
 		public bool AutoIncrementFileName { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteString(FileNamePrefix));
+			p_Writer.Write(p_EbxWriter.WriteString(FileName));
+			p_Writer.Write((int) ToggleRecordAction);
+			p_Writer.Write(AutoIncrementFileName);
+			p_Writer.WriteNullBytes(3);
+		}
 	}
 }

@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 480)]
-	public class SoldierWeaponsComponentData : 
+	public class SoldierWeaponsComponentData :
 		ComponentData
 	{
 		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 96)]
@@ -63,5 +64,24 @@ namespace fb
 		[ContainerField(470), LayoutImmutable, Blittable, JsonProperty(Order = 470)]
 		public bool UnlimitedMags { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			AimDir.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(WeaponSkeleton));
+			p_Writer.Write(PrimaryWeaponId);
+			AnimatedWeaponBinding.Serialize(p_Writer, p_EbxWriter);
+			Animated1pOnlyWeaponBinding.Serialize(p_Writer, p_EbxWriter);
+			Animated3pOnlyWeaponBinding.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(LockTimeMultiplier);
+			p_Writer.Write(GrenadeIncrease);
+			p_Writer.Write(AmmoClipIncreaseMultiplier);
+			p_Writer.Write(ExplosiveIncreaseMultiplier);
+			p_Writer.Write(UnderslungGrenadeIncrease);
+			p_Writer.Write(UseExternalAimDir);
+			p_Writer.Write(UnlimitedAmmo);
+			p_Writer.Write(UnlimitedMags);
+			p_Writer.WriteNullBytes(9);
+		}
 	}
 }

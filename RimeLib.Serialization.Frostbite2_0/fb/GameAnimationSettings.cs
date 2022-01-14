@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 72)]
-	public class GameAnimationSettings : 
+	public class GameAnimationSettings :
 		SystemSettings
 	{
 		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
@@ -75,5 +76,32 @@ namespace fb
 		[ContainerField(71), LayoutImmutable, Blittable, JsonProperty(Order = 71)]
 		public bool UseAnimationDrivenCharacter { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(TemporalLoddingFourthDeltaTime);
+			(RimeWriter Writer, uint ArrayIndex) s_AntOnClientOnlyGamemodes = p_EbxWriter.GetArrayWriter(AntOnClientOnlyGamemodes.GetType(), AntOnClientOnlyGamemodes.Count);
+			p_Writer.Write(s_AntOnClientOnlyGamemodes.ArrayIndex);
+			foreach (var s_Entry in AntOnClientOnlyGamemodes)
+			{
+				s_AntOnClientOnlyGamemodes.Writer.Write(p_EbxWriter.WriteString(s_Entry));
+			}
+			p_Writer.Write(TemporalLoddingFarDistance);
+			p_Writer.Write(TemporalLoddingSixthDeltaTime);
+			p_Writer.Write(TemporalLoddingFifthDeltaTime);
+			p_Writer.Write(TemporalLoddingFirstDeltaTime);
+			p_Writer.Write(TemporalLoddingSecondDeltaTime);
+			p_Writer.Write(TemporalLoddingThirdDeltaTime);
+			p_Writer.Write(TemporalLoddingSixthDistance);
+			p_Writer.Write(TemporalLoddingSecondDistance);
+			p_Writer.Write(TemporalLoddingFifthDistance);
+			p_Writer.Write(TemporalLoddingFirstDistance);
+			p_Writer.Write(TemporalLoddingThirdDistance);
+			p_Writer.Write(TemporalLoddingFourthDistance);
+			p_Writer.Write(ServerEnable);
+			p_Writer.Write(UseRawGamepadInput);
+			p_Writer.Write(ClientEnable);
+			p_Writer.Write(UseAnimationDrivenCharacter);
+		}
 	}
 }

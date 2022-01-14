@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 36)]
-	public class PlayerInputTriggerEntityData : 
+	public class PlayerInputTriggerEntityData :
 		EntityData
 	{
 		[ContainerField(12), JsonProperty(Order = 12)]
@@ -42,5 +43,17 @@ namespace fb
 		[ContainerField(33), LayoutImmutable, Blittable, JsonProperty(Order = 33)]
 		public bool EnabledFromStart { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write((int) Realm);
+			p_Writer.Write((int) EntryInputActions);
+			p_Writer.Write(ValueModifier);
+			p_Writer.Write(TrailingValueAtStart);
+			p_Writer.Write(AccumulatedValueAtStart);
+			p_Writer.Write(SendTriggerEvents);
+			p_Writer.Write(EnabledFromStart);
+			p_Writer.WriteNullBytes(2);
+		}
 	}
 }

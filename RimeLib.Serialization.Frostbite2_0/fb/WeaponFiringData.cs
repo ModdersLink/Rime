@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 64)]
-	public class WeaponFiringData : 
+	public class WeaponFiringData :
 		GameDataContainer
 	{
 		[ContainerField(8), JsonProperty(Order = 8)]
@@ -69,5 +70,26 @@ namespace fb
 		[ContainerField(61), LayoutImmutable, Blittable, JsonProperty(Order = 61)]
 		public bool AbortReloadOnSprint { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(PrimaryFire));
+			p_Writer.Write(DeployTime);
+			p_Writer.Write(ReactivateCooldownTime);
+			p_Writer.Write(DisableZoomOnDeployTime);
+			p_Writer.Write(AltDeployTime);
+			p_Writer.Write(AltDeployId);
+			p_Writer.Write(p_EbxWriter.WriteImport(WeaponSway));
+			p_Writer.Write(SupportDelayProne);
+			p_Writer.Write(SupportDelayStand);
+			Rumble.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(InflictSelfDamage);
+			p_Writer.Write(UseAutoAiming);
+			p_Writer.Write(ShowEnemyNametagOnAim);
+			p_Writer.Write(ReloadWholeMags);
+			p_Writer.Write(DisableReloadWhileSprinting);
+			p_Writer.Write(AbortReloadOnSprint);
+			p_Writer.WriteNullBytes(2);
+		}
 	}
 }

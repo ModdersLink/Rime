@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 192)]
-	public class EnlightenDbInstance
+	public class EnlightenDbInstance :
+		EbxSerializable
 	{
 		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 0)]
 		public AxisAlignedBox WorldBoundingbox { get; set; } = new();
@@ -62,5 +64,30 @@ namespace fb
 		[ContainerField(164), LayoutImmutable, Blittable, JsonProperty(Order = 164)]
 		public GUID CacheKey { get; set; }
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			WorldBoundingbox.Serialize(p_Writer, p_EbxWriter);
+			WorldTransform.Serialize(p_Writer, p_EbxWriter);
+			UvTranslation.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(8);
+			UvTransform.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(GeometryId);
+			p_Writer.Write(p_EbxWriter.WriteString(ObjectVariation));
+			p_Writer.Write(p_EbxWriter.WriteString(GuidString));
+			p_Writer.Write(UvSizeX);
+			p_Writer.Write(UvSizeY);
+			p_Writer.Write(PixelSize);
+			p_Writer.Write(p_EbxWriter.WriteString(EnlightenMeshName));
+			p_Writer.Write(p_EbxWriter.WriteString(MeshAsset));
+			(RimeWriter Writer, uint ArrayIndex) s_InstanceAlbedos = p_EbxWriter.GetArrayWriter(InstanceAlbedos.GetType(), InstanceAlbedos.Count);
+			p_Writer.Write(s_InstanceAlbedos.ArrayIndex);
+			foreach (var s_Entry in InstanceAlbedos)
+			{
+				s_InstanceAlbedos.Writer.Write(s_Entry);
+			}
+			CacheKey.Serialize(p_Writer);
+			p_Writer.WriteNullBytes(12);
+		}
 	}
 }

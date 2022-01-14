@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 172)]
-	public class MasterUnitNodeData : 
+	public class MasterUnitNodeData :
 		AudioGraphNodeData
 	{
 		[ContainerField(8), JsonProperty(Order = 8)]
@@ -84,5 +85,35 @@ namespace fb
 		[ContainerField(168), JsonProperty(Order = 168)]
 		public RefArray<MasterUnitSettings> Settings { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			SettingsIndex.Serialize(p_Writer, p_EbxWriter);
+			Amplitude.Serialize(p_Writer, p_EbxWriter);
+			MasterGain.Serialize(p_Writer, p_EbxWriter);
+			MasterLfeGain.Serialize(p_Writer, p_EbxWriter);
+			MasterDialogGain.Serialize(p_Writer, p_EbxWriter);
+			MainMixGain.Serialize(p_Writer, p_EbxWriter);
+			PostEffectsGain.Serialize(p_Writer, p_EbxWriter);
+			ReverbGain.Serialize(p_Writer, p_EbxWriter);
+			FadeTime.Serialize(p_Writer, p_EbxWriter);
+			HighPassFreq.Serialize(p_Writer, p_EbxWriter);
+			LowShelfFreq.Serialize(p_Writer, p_EbxWriter);
+			LowShelfGain.Serialize(p_Writer, p_EbxWriter);
+			HighShelfFreq.Serialize(p_Writer, p_EbxWriter);
+			HighShelfGain.Serialize(p_Writer, p_EbxWriter);
+			CompThreshold.Serialize(p_Writer, p_EbxWriter);
+			CompRatio.Serialize(p_Writer, p_EbxWriter);
+			CompAttack.Serialize(p_Writer, p_EbxWriter);
+			CompRelease.Serialize(p_Writer, p_EbxWriter);
+			DistClipLevel.Serialize(p_Writer, p_EbxWriter);
+			ParallelDistortionGain.Serialize(p_Writer, p_EbxWriter);
+			(RimeWriter Writer, uint ArrayIndex) s_Settings = p_EbxWriter.GetArrayWriter(Settings.GetType(), Settings.Count);
+			p_Writer.Write(s_Settings.ArrayIndex);
+			foreach (var s_Entry in Settings)
+			{
+				s_Settings.Writer.Write(p_EbxWriter.WriteImport(s_Entry));
+			}
+		}
 	}
 }

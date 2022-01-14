@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 148)]
-	public class SamplerNodeData : 
+	public class SamplerNodeData :
 		AudioGraphNodeData
 	{
 		[ContainerField(8), JsonProperty(Order = 8)]
@@ -81,5 +82,35 @@ namespace fb
 		[ContainerField(144), LayoutImmutable, Blittable, JsonProperty(Order = 144)]
 		public bool ShuffleSegments { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			ExternalWave.Serialize(p_Writer, p_EbxWriter);
+			Variation.Serialize(p_Writer, p_EbxWriter);
+			Offset.Serialize(p_Writer, p_EbxWriter);
+			Delay.Serialize(p_Writer, p_EbxWriter);
+			Pitch.Serialize(p_Writer, p_EbxWriter);
+			Amplitude.Serialize(p_Writer, p_EbxWriter);
+			EnableStep.Serialize(p_Writer, p_EbxWriter);
+			Buffer.Serialize(p_Writer, p_EbxWriter);
+			Trigger.Serialize(p_Writer, p_EbxWriter);
+			Release.Serialize(p_Writer, p_EbxWriter);
+			Step.Serialize(p_Writer, p_EbxWriter);
+			Output.Serialize(p_Writer, p_EbxWriter);
+			Finished.Serialize(p_Writer, p_EbxWriter);
+			Buffered.Serialize(p_Writer, p_EbxWriter);
+			Position.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(Wave));
+			p_Writer.Write(BasePitch);
+			p_Writer.Write((int) Loop);
+			(RimeWriter Writer, uint ArrayIndex) s_Plugins = p_EbxWriter.GetArrayWriter(Plugins.GetType(), Plugins.Count);
+			p_Writer.Write(s_Plugins.ArrayIndex);
+			foreach (var s_Entry in Plugins)
+			{
+				s_Entry.Serialize(s_Plugins.Writer, p_EbxWriter);
+			}
+			p_Writer.Write(ShuffleSegments);
+			p_Writer.WriteNullBytes(3);
+		}
 	}
 }

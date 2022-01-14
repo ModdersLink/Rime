@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 192)]
-	public class EnlightenDbSystem
+	public class EnlightenDbSystem :
+		EbxSerializable
 	{
 		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 0)]
 		public AxisAlignedBox BoundingBox { get; set; } = new();
@@ -68,5 +70,36 @@ namespace fb
 		[ContainerField(188), LayoutImmutable, Blittable, JsonProperty(Order = 188)]
 		public bool TerrainSystem { get; set; }
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			BoundingBox.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(AtlasStartX);
+			p_Writer.Write(AtlasStartY);
+			p_Writer.Write(OutputWidth);
+			p_Writer.Write(OutputHeight);
+			p_Writer.Write(PixelCount);
+			p_Writer.Write(PixelSize);
+			p_Writer.Write(SystemId);
+			(RimeWriter Writer, uint ArrayIndex) s_Instances = p_EbxWriter.GetArrayWriter(Instances.GetType(), Instances.Count);
+			p_Writer.Write(s_Instances.ArrayIndex);
+			foreach (var s_Entry in Instances)
+			{
+				s_Entry.Serialize(s_Instances.Writer, p_EbxWriter);
+			}
+			(RimeWriter Writer, uint ArrayIndex) s_InputSystems = p_EbxWriter.GetArrayWriter(InputSystems.GetType(), InputSystems.Count);
+			p_Writer.Write(s_InputSystems.ArrayIndex);
+			foreach (var s_Entry in InputSystems)
+			{
+				s_InputSystems.Writer.Write(s_Entry);
+			}
+			SystemCache.Serialize(p_Writer, p_EbxWriter);
+			ClusteringCache.Serialize(p_Writer, p_EbxWriter);
+			PreClusteringCache.Serialize(p_Writer, p_EbxWriter);
+			LightTransportCache.Serialize(p_Writer, p_EbxWriter);
+			VisibilityCache.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(TerrainSystem);
+			p_Writer.WriteNullBytes(3);
+		}
 	}
 }

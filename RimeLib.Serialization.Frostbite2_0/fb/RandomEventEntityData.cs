@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 24)]
-	public class RandomEventEntityData : 
+	public class RandomEventEntityData :
 		EntityData
 	{
 		[ContainerField(12), JsonProperty(Order = 12)]
@@ -33,5 +34,14 @@ namespace fb
 		[ContainerField(21), LayoutImmutable, Blittable, JsonProperty(Order = 21)]
 		public bool AutoStart { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write((int) Realm);
+			p_Writer.Write(Probability);
+			p_Writer.Write(RandomizeFirstOnly);
+			p_Writer.Write(AutoStart);
+			p_Writer.WriteNullBytes(2);
+		}
 	}
 }

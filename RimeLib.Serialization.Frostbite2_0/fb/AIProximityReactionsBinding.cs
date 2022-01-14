@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 56)]
-	public class AIProximityReactionsBinding
+	public class AIProximityReactionsBinding :
+		EbxSerializable
 	{
 		[ContainerField(0), JsonProperty(Order = 0)]
 		public AntRef AIReaction { get; set; } = new();
@@ -62,5 +64,23 @@ namespace fb
 		[ContainerField(52), JsonProperty(Order = 52)]
 		public AntRef PlayerInitiatedRagdoll { get; set; } = new();
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			AIReaction.Serialize(p_Writer, p_EbxWriter);
+			AIExplosionReaction.Serialize(p_Writer, p_EbxWriter);
+			AIExplosionForce.Serialize(p_Writer, p_EbxWriter);
+			AIStunReaction.Serialize(p_Writer, p_EbxWriter);
+			AIStunReactionRandomFactor.Serialize(p_Writer, p_EbxWriter);
+			AIReactionDirection.Serialize(p_Writer, p_EbxWriter);
+			FireNearby.Serialize(p_Writer, p_EbxWriter);
+			AimUpAndDown.Serialize(p_Writer, p_EbxWriter);
+			FocusAimScale.Serialize(p_Writer, p_EbxWriter);
+			FocusAiming.Serialize(p_Writer, p_EbxWriter);
+			EnableProceduralHeadAim.Serialize(p_Writer, p_EbxWriter);
+			KillFromAnimation.Serialize(p_Writer, p_EbxWriter);
+			PlayerAnimationKill.Serialize(p_Writer, p_EbxWriter);
+			PlayerInitiatedRagdoll.Serialize(p_Writer, p_EbxWriter);
+		}
 	}
 }

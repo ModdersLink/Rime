@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 176)]
-	public class VisualEnvironmentEffectEntityData : 
+	public class VisualEnvironmentEffectEntityData :
 		EffectEntityData
 	{
 		[ContainerField(112), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 112)]
@@ -39,5 +40,16 @@ namespace fb
 		[ContainerField(168), LayoutImmutable, Blittable, JsonProperty(Order = 168)]
 		public bool SampleOnStartOnly { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			LifetimeCurve.Serialize(p_Writer, p_EbxWriter);
+			CullDistanceCurve.Serialize(p_Writer, p_EbxWriter);
+			CullAngleCurve.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(Lifetime);
+			p_Writer.Write(p_EbxWriter.WriteImport(VisualEnvironment));
+			p_Writer.Write(SampleOnStartOnly);
+			p_Writer.WriteNullBytes(7);
+		}
 	}
 }

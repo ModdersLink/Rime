@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 24)]
-	public class ServerMetricsSettings : 
+	public class ServerMetricsSettings :
 		DataContainer
 	{
 		[ContainerField(8), LayoutImmutable, JsonProperty(Order = 8)]
@@ -51,5 +52,20 @@ namespace fb
 		[ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
 		public bool CompressTransactions { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteString(ReportName));
+			p_Writer.Write(Enabled);
+			p_Writer.Write(DbxReportEnabled);
+			p_Writer.Write(TickTelemetryEnabled);
+			p_Writer.Write(DevelopmentTelemetryEnabled);
+			p_Writer.Write(PerformanceTelemetryEnabled);
+			p_Writer.Write(JuiceTelemetryEnabled);
+			p_Writer.Write(PerformanceProfileStateEnabled);
+			p_Writer.Write(TransactionTelemetryEnabled);
+			p_Writer.Write(CompressTransactions);
+			p_Writer.WriteNullBytes(3);
+		}
 	}
 }

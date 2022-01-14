@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 240)]
-	public class VeniceFPSCameraData : 
+	public class VeniceFPSCameraData :
 		FPSCameraData
 	{
 		[ContainerField(224), LayoutImmutable, Blittable, JsonProperty(Order = 224)]
@@ -27,5 +28,12 @@ namespace fb
 		[ContainerField(228), LayoutImmutable, Blittable, JsonProperty(Order = 228)]
 		public float SuppressionBlurSizeMultiplier { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(SuppressionBlurAmountMultiplier);
+			p_Writer.Write(SuppressionBlurSizeMultiplier);
+			p_Writer.WriteNullBytes(8);
+		}
 	}
 }

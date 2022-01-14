@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 40)]
-	public class FakePhysicsData : 
+	public class FakePhysicsData :
 		DataContainer
 	{
 		[ContainerField(8), JsonProperty(Order = 8)]
@@ -45,5 +46,17 @@ namespace fb
 		[ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
 		public float Mass { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(ChildFakePhysics));
+			p_Writer.Write(StartSpeed);
+			p_Writer.Write(GravityModifier);
+			p_Writer.Write(StartDampening);
+			p_Writer.Write(EndDampening);
+			p_Writer.Write(MinSpeed);
+			p_Writer.Write(MaxSpeed);
+			p_Writer.Write(Mass);
+		}
 	}
 }

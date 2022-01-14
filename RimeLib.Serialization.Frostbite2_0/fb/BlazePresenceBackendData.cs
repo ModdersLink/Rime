@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 24)]
-	public class BlazePresenceBackendData : 
+	public class BlazePresenceBackendData :
 		PresenceBackendData
 	{
 		[ContainerField(16), JsonProperty(Order = 16)]
@@ -27,5 +28,17 @@ namespace fb
 		[ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
 		public bool UseDemanglerService { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			(RimeWriter Writer, uint ArrayIndex) s_MatchmakingSessions = p_EbxWriter.GetArrayWriter(MatchmakingSessions.GetType(), MatchmakingSessions.Count);
+			p_Writer.Write(s_MatchmakingSessions.ArrayIndex);
+			foreach (var s_Entry in MatchmakingSessions)
+			{
+				s_MatchmakingSessions.Writer.Write(p_EbxWriter.WriteImport(s_Entry));
+			}
+			p_Writer.Write(UseDemanglerService);
+			p_Writer.WriteNullBytes(3);
+		}
 	}
 }

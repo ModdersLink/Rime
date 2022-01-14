@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 16)]
-	public class BoltActionData
+	public class BoltActionData :
+		EbxSerializable
 	{
 		[ContainerField(0), LayoutImmutable, Blittable, JsonProperty(Order = 0)]
 		public float BoltActionDelay { get; set; }
@@ -41,5 +43,17 @@ namespace fb
 		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
 		public bool ReturnToZoomAfterBoltAction { get; set; }
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(BoltActionDelay);
+			p_Writer.Write(BoltActionTime);
+			p_Writer.Write(HoldBoltActionUntilFireRelease);
+			p_Writer.Write(HoldBoltActionUntilZoomRelease);
+			p_Writer.Write(ForceBoltActionOnFireTrigger);
+			p_Writer.Write(UnZoomOnBoltAction);
+			p_Writer.Write(ReturnToZoomAfterBoltAction);
+			p_Writer.WriteNullBytes(3);
+		}
 	}
 }

@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 56)]
-	public class MovieTextureAsset : 
+	public class MovieTextureAsset :
 		Asset
 	{
 		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
@@ -39,5 +40,16 @@ namespace fb
 		[ContainerField(53), LayoutImmutable, Blittable, JsonProperty(Order = 53)]
 		public bool OverrideBackgroundMusic { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			ChunkGuid.Serialize(p_Writer);
+			p_Writer.Write(ChunkSize);
+			SubtitleChunkGuid.Serialize(p_Writer);
+			p_Writer.Write(SubtitleChunkSize);
+			p_Writer.Write(HasLocalizedAudioTracks);
+			p_Writer.Write(OverrideBackgroundMusic);
+			p_Writer.WriteNullBytes(2);
+		}
 	}
 }

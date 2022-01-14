@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 32)]
-	public class TerrainSettings : 
+	public class TerrainSettings :
 		DataContainer
 	{
 		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
@@ -39,5 +40,16 @@ namespace fb
 		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
 		public bool ModifiersEnable { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(HeightQueryCacheSize);
+			p_Writer.Write(ModifiersCapacity);
+			p_Writer.Write(IntersectingModifiersMax);
+			p_Writer.Write(ModifierDepthFactor);
+			p_Writer.Write(ModifierSlopeMax);
+			p_Writer.Write(ModifiersEnable);
+			p_Writer.WriteNullBytes(3);
+		}
 	}
 }

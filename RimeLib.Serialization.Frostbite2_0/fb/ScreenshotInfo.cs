@@ -14,11 +14,13 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 32)]
-	public class ScreenshotInfo
+	public class ScreenshotInfo :
+		EbxSerializable
 	{
 		[ContainerField(0), LayoutImmutable, JsonProperty(Order = 0)]
 		public string Name { get; set; } = string.Empty;
@@ -47,5 +49,19 @@ namespace fb
 		[ContainerField(29), LayoutImmutable, Blittable, JsonProperty(Order = 29)]
 		public bool CropImage { get; set; }
 		
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteString(Name));
+			p_Writer.Write(CropImageY1);
+			p_Writer.Write(CropImageX1);
+			p_Writer.Write(CropImageX2);
+			p_Writer.Write(CropImageY2);
+			p_Writer.Write(ResizeOutputImageHeight);
+			p_Writer.Write(ResizeOutputImageWidth);
+			p_Writer.Write(ResizeOutputImage);
+			p_Writer.Write(CropImage);
+			p_Writer.WriteNullBytes(2);
+		}
 	}
 }

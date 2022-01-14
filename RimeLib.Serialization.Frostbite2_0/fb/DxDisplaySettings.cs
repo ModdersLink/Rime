@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 88)]
-	public class DxDisplaySettings : 
+	public class DxDisplaySettings :
 		SystemSettings
 	{
 		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
@@ -126,5 +127,50 @@ namespace fb
 		[ContainerField(85), LayoutImmutable, Blittable, JsonProperty(Order = 85)]
 		public bool MultiGpuValidationEnable { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(FullscreenWidth);
+			p_Writer.Write(FullscreenHeight);
+			p_Writer.Write(p_EbxWriter.WriteString(AmdMinDriverVersion));
+			p_Writer.Write(NvidiaMinDriverVersion);
+			p_Writer.Write(FullscreenRefreshRate);
+			p_Writer.Write(StereoSeparationScale);
+			p_Writer.Write(StereoDepth);
+			p_Writer.Write(FullscreenOutputIndex);
+			(RimeWriter Writer, uint ArrayIndex) s_DebugBreakIgnoredIDs = p_EbxWriter.GetArrayWriter(DebugBreakIgnoredIDs.GetType(), DebugBreakIgnoredIDs.Count);
+			p_Writer.Write(s_DebugBreakIgnoredIDs.ArrayIndex);
+			foreach (var s_Entry in DebugBreakIgnoredIDs)
+			{
+				s_DebugBreakIgnoredIDs.Writer.Write(s_Entry);
+			}
+			p_Writer.Write(StereoConvergenceScale);
+			p_Writer.Write(StereoSoldierZoomConvergenceScale);
+			p_Writer.Write(ForceRenderAheadLimit);
+			p_Writer.Write(PresentInterval);
+			p_Writer.Write(DebugBreakOnWarningEnable);
+			p_Writer.Write(DebugInfoEnable);
+			p_Writer.Write(Fullscreen);
+			p_Writer.Write(DebugBreakOnErrorEnable);
+			p_Writer.Write(CreateMinimalWindow);
+			p_Writer.Write(DriverInternalThreadingEnable);
+			p_Writer.Write(DebugBreakOnInfoEnable);
+			p_Writer.Write(FullscreenModeEnable);
+			p_Writer.Write(VSyncEnable);
+			p_Writer.Write(TripleBufferingEnable);
+			p_Writer.Write(Dx10PlusEnable);
+			p_Writer.Write(NvApiEnable);
+			p_Writer.Write(NvPerfHudEnable);
+			p_Writer.Write(StereoEnable);
+			p_Writer.Write(Dx11Enable);
+			p_Writer.Write(Dx10Dot0Enable);
+			p_Writer.Write(RefDriverEnable);
+			p_Writer.Write(Dx10Dot1Enable);
+			p_Writer.Write(MinDriverRequired);
+			p_Writer.Write(WarpDriverEnable);
+			p_Writer.Write(NullDriverEnable);
+			p_Writer.Write(MultiGpuValidationEnable);
+			p_Writer.WriteNullBytes(2);
+		}
 	}
 }

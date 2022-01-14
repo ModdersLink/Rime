@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(8, 56)]
-	public class PerformanceProfileState : 
+	public class PerformanceProfileState :
 		MetricState
 	{
 		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
@@ -42,5 +43,17 @@ namespace fb
 		[ContainerField(48), LayoutImmutable, JsonProperty(Order = 48)]
 		public string Platform { get; set; } = string.Empty;
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(ProcessorCount);
+			p_Writer.Write(ProcessorCoreCount);
+			p_Writer.Write(ProcessorClock);
+			p_Writer.Write(TotalMemMB);
+			p_Writer.Write(GpuMemMB);
+			p_Writer.Write(p_EbxWriter.WriteString(GraphicAdapterName));
+			p_Writer.Write(p_EbxWriter.WriteString(Platform));
+			p_Writer.WriteNullBytes(4);
+		}
 	}
 }

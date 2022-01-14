@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 64)]
-	public class DeathEvent : 
+	public class DeathEvent :
 		MetricEvent
 	{
 		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
@@ -36,5 +37,14 @@ namespace fb
 		[ContainerField(60), LayoutImmutable, JsonProperty(Order = 60)]
 		public string Weapon { get; set; } = string.Empty;
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			Position.Serialize(p_Writer, p_EbxWriter);
+			KillerPosition.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(KillerId);
+			p_Writer.Write(Time);
+			p_Writer.Write(p_EbxWriter.WriteString(Weapon));
+		}
 	}
 }

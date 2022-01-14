@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 144)]
-	public class ObjectiveEntityData : 
+	public class ObjectiveEntityData :
 		GameEntityData
 	{
 		[ContainerField(96), LayoutImmutable, JsonProperty(Order = 96)]
@@ -60,5 +61,23 @@ namespace fb
 		[ContainerField(138), LayoutImmutable, Blittable, JsonProperty(Order = 138)]
 		public bool DisplaySuccess { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteString(ObjectiveBriefSid));
+			p_Writer.Write(p_EbxWriter.WriteString(ObjectiveSid));
+			p_Writer.Write(p_EbxWriter.WriteImport(HudData));
+			p_Writer.Write((int) ObjectiveType);
+			p_Writer.Write(DisplayTime);
+			p_Writer.Write(DelayTime);
+			p_Writer.Write((int) SquadId);
+			p_Writer.Write((int) TeamId);
+			p_Writer.Write(p_EbxWriter.WriteString(SuccessSid));
+			p_Writer.Write((int) Reciever);
+			p_Writer.Write(RetriggerSuccessOnShowObjective);
+			p_Writer.Write(Tutorial);
+			p_Writer.Write(DisplaySuccess);
+			p_Writer.WriteNullBytes(5);
+		}
 	}
 }

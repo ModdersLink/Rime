@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 20)]
-	public class HavokAsset : 
+	public class HavokAsset :
 		Asset
 	{
 		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
@@ -27,5 +28,16 @@ namespace fb
 		[ContainerField(16), JsonProperty(Order = 16)]
 		public RefArray<DataContainer> ExternalAssets { get; set; } = new();
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(Scale);
+			(RimeWriter Writer, uint ArrayIndex) s_ExternalAssets = p_EbxWriter.GetArrayWriter(ExternalAssets.GetType(), ExternalAssets.Count);
+			p_Writer.Write(s_ExternalAssets.ArrayIndex);
+			foreach (var s_Entry in ExternalAssets)
+			{
+				s_ExternalAssets.Writer.Write(p_EbxWriter.WriteImport(s_Entry));
+			}
+		}
 	}
 }

@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(16, 128)]
-	public class HullFloatPhysicsData : 
+	public class HullFloatPhysicsData :
 		FloatPhysicsData
 	{
 		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
@@ -72,5 +73,27 @@ namespace fb
 		[ContainerField(116), LayoutImmutable, Blittable, JsonProperty(Order = 116)]
 		public float FrictionThrottleModifier { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			WaterResistanceAxisMod.Serialize(p_Writer, p_EbxWriter);
+			WaterFrictionAxisMod.Serialize(p_Writer, p_EbxWriter);
+			Offset.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(SubSurfaceSplits);
+			p_Writer.Write(Depth);
+			p_Writer.Write(Width);
+			p_Writer.Write(Length);
+			p_Writer.Write(FrontCurveDegree);
+			p_Writer.Write(SideCurveDegree);
+			p_Writer.Write(NonEngineSteer);
+			p_Writer.Write(NonEngineSteerMinSpeed);
+			p_Writer.Write(NonEngineSteerMaxSpeed);
+			p_Writer.Write(WaterDampeningMod);
+			p_Writer.Write(LiftModifier);
+			p_Writer.Write(SupportSizeMod);
+			p_Writer.Write(AngularDampening);
+			p_Writer.Write(FrictionThrottleModifier);
+			p_Writer.WriteNullBytes(8);
+		}
 	}
 }

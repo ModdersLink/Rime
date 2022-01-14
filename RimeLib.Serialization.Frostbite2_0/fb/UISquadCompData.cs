@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
 	[ContainerType(4, 160)]
-	public class UISquadCompData : 
+	public class UISquadCompData :
 		UIComponentData
 	{
 		[ContainerField(28), LayoutImmutable, JsonProperty(Order = 28)]
@@ -120,5 +121,43 @@ namespace fb
 		[ContainerField(156), LayoutImmutable, Blittable, JsonProperty(Order = 156)]
 		public bool HideLocalSquadBoostData { get; set; }
 
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteString(Squad15));
+			p_Writer.Write(p_EbxWriter.WriteString(Squad32));
+			p_Writer.Write(p_EbxWriter.WriteString(Squad1));
+			p_Writer.Write(p_EbxWriter.WriteString(Squad2));
+			p_Writer.Write(p_EbxWriter.WriteString(Squad3));
+			p_Writer.Write(p_EbxWriter.WriteString(Squad4));
+			p_Writer.Write(p_EbxWriter.WriteString(Squad5));
+			p_Writer.Write(p_EbxWriter.WriteString(Squad6));
+			p_Writer.Write(p_EbxWriter.WriteString(Squad7));
+			p_Writer.Write(p_EbxWriter.WriteString(Squad8));
+			p_Writer.Write(p_EbxWriter.WriteString(Squad9));
+			p_Writer.Write(p_EbxWriter.WriteString(Squad10));
+			p_Writer.Write(p_EbxWriter.WriteString(Squad11));
+			p_Writer.Write(p_EbxWriter.WriteString(Squad12));
+			p_Writer.Write(p_EbxWriter.WriteString(Squad13));
+			p_Writer.Write(p_EbxWriter.WriteString(Squad14));
+			p_Writer.Write(p_EbxWriter.WriteString(Squad16));
+			p_Writer.Write(p_EbxWriter.WriteString(Squad24));
+			p_Writer.Write(p_EbxWriter.WriteString(Squad17));
+			p_Writer.Write(p_EbxWriter.WriteString(Squad18));
+			p_Writer.Write(p_EbxWriter.WriteString(Squad19));
+			p_Writer.Write(p_EbxWriter.WriteString(Squad20));
+			p_Writer.Write(p_EbxWriter.WriteString(Squad21));
+			p_Writer.Write(p_EbxWriter.WriteString(Squad22));
+			p_Writer.Write(p_EbxWriter.WriteString(Squad23));
+			p_Writer.Write(p_EbxWriter.WriteString(Squad31));
+			p_Writer.Write(p_EbxWriter.WriteString(Squad25));
+			p_Writer.Write(p_EbxWriter.WriteString(Squad26));
+			p_Writer.Write(p_EbxWriter.WriteString(Squad27));
+			p_Writer.Write(p_EbxWriter.WriteString(Squad28));
+			p_Writer.Write(p_EbxWriter.WriteString(Squad29));
+			p_Writer.Write(p_EbxWriter.WriteString(Squad30));
+			p_Writer.Write(HideLocalSquadBoostData);
+			p_Writer.WriteNullBytes(3);
+		}
 	}
 }
