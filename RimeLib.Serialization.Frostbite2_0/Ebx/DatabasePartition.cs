@@ -2,6 +2,7 @@
 using System.IO;
 using fb;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Frostbite2_0.Json;
 using RimeLib.Serialization.Json;
@@ -23,7 +24,7 @@ namespace RimeLib.Serialization.Frostbite2_0.Ebx
 
         public string ToJsonString(Formatting p_Formatting = Formatting.None)
         {
-            return JsonConvert.SerializeObject(this, p_Formatting, new CtrRefJsonConverter());
+            return JsonConvert.SerializeObject(this, p_Formatting, new CtrRefJsonConverter(), new StringEnumConverter());
         }
 
         public void ToJsonFile(string p_FilePath, Formatting p_Formatting = Formatting.None)
@@ -36,6 +37,7 @@ namespace RimeLib.Serialization.Frostbite2_0.Ebx
         {
             var s_Serializer = new JsonSerializer();
             s_Serializer.Converters.Add(new CtrRefJsonConverter());
+            s_Serializer.Converters.Add(new StringEnumConverter());
             s_Serializer.NullValueHandling = NullValueHandling.Include;
             s_Serializer.MissingMemberHandling = MissingMemberHandling.Error;
             s_Serializer.TypeNameHandling = TypeNameHandling.None;
@@ -55,6 +57,7 @@ namespace RimeLib.Serialization.Frostbite2_0.Ebx
             var s_Serializer = new JsonSerializer();
             s_Serializer.Converters.Add(new CtrRefJsonConverter());
             s_Serializer.Converters.Add(new DataContainerJsonConverter());
+            s_Serializer.Converters.Add(new StringEnumConverter());
             s_Serializer.NullValueHandling = NullValueHandling.Include;
             s_Serializer.MissingMemberHandling = MissingMemberHandling.Error;
             s_Serializer.TypeNameHandling = TypeNameHandling.None;

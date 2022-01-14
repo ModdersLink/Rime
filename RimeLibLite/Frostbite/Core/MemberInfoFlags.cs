@@ -153,24 +153,9 @@ namespace RimeLib.Frostbite.Core
             return !Equals(left, right);
         }
 
-        public void Serialize(RimeWriter p_Writer)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public byte[] Serialize()
-        {
-            throw new System.NotImplementedException();
-        }
-
         public void Deserialize(RimeReader p_Reader)
         {
             FlagBits = p_Reader.ReadUInt16();
-        }
-
-        public void Deserialize(byte[] p_Data)
-        {
-            throw new System.NotImplementedException();
         }
     }
 }

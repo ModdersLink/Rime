@@ -239,7 +239,7 @@ namespace RimeLib.Serialization.Frostbite2_0.Ebx
                         ParseArray((int) s_ArrayIndex, s_PropertyType, p_Instance);
                         break;
                     case FieldType.Enum:
-                        var s_EnumValue = GetEnumForValue(m_Reader.ReadInt32(), m_TypeDescriptors[s_FieldDescriptor.FieldType], s_PropertyType.PropertyType);
+                        var s_EnumValue = GetEnumForValue(m_Reader.ReadInt32(), m_TypeDescriptors[s_FieldDescriptor.FieldType], s_PropertyType.PropertyType, false);
                         s_PropertyType.SetValue(p_Instance, s_EnumValue);
                         break;
                     default:
@@ -314,7 +314,8 @@ namespace RimeLib.Serialization.Frostbite2_0.Ebx
                         var s_Value = GetEnumForValue(
                             m_Reader.ReadInt32(),
                             s_ArrayElementDescriptor,
-                            p_PropertyType.PropertyType.GetGenericArguments()[0]
+                            p_PropertyType.PropertyType.GetGenericArguments()[0],
+                            true
                         );
                      
                         s_List.Add(s_Value);
@@ -393,10 +394,29 @@ namespace RimeLib.Serialization.Frostbite2_0.Ebx
                    p_Data[0] == 0x0F;
         }
 
-        public object GetEnumForValue(int p_Value, TypeDescriptor p_Descriptor, Type p_EnumType)
+        public object GetEnumForValue(int p_Value, TypeDescriptor p_Descriptor, Type p_EnumType, bool p_InArray)
         {
-            // TODO: Enum remapping.
-            return Enum.ToObject(p_EnumType, p_Value);
+            if (p_InArray)
+                return Enum.ToObject(p_EnumType, p_Value);
+
+            string s_EnumValueName = null;
+
+            for (var i = p_Descriptor.LayoutDescriptor; i < (p_Descriptor.LayoutDescriptor + p_Descriptor.FieldCount); ++i)
+            {
+                if (p_Value == m_FieldDescriptors[(int) i].Offset)
+                {
+                    s_EnumValueName = m_FieldDescriptors[(int) i].Name;
+                    break;
+                }
+            }
+               
+            if (s_EnumValueName == null)
+                throw new Exception($"Could not find value '{p_Value}' in enum '{p_Descriptor.Name}'. This probably means the EBX was corrupted.");
+
+            if (!Enum.IsDefined(p_EnumType, s_EnumValueName))
+                throw new Exception($"Value '{s_EnumValueName}' no longer exists in enum '{p_Descriptor.Name}'.");
+
+            return Enum.Parse(p_EnumType, s_EnumValueName);
         }
 
         public CtrRefBase GetImportAtIndex(uint p_Index)
