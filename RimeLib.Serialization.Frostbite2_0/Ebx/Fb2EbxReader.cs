@@ -78,7 +78,7 @@ namespace RimeLib.Serialization.Frostbite2_0.Ebx
             for (var i = 0; i < m_Header.ImportCount; ++i)
                 m_ImportEntries.Add(new ImportEntry(m_Reader));
 
-            // Parse strings.r
+            // Parse type strings.
             m_TypeStrings = new List<string>(Encoding.UTF8.GetString(m_Reader.ReadBytes((int)m_Header.TypeStringTableSize)).TrimEnd('\0').Split('\0'));
 
             m_HashedTypeStrings = new Dictionary<uint, string>();

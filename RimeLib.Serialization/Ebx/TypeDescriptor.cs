@@ -65,8 +65,6 @@ namespace RimeLib.Serialization.Ebx
 
         public void Serialize(EndianBinaryWriter p_Writer)
         {
-            NameHash = FbUtils.HashQuick(Name);
-
             p_Writer.Write(NameHash);
             p_Writer.Write(LayoutDescriptor);
             p_Writer.Write(FieldCount);

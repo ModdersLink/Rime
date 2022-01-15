@@ -130,5 +130,16 @@ namespace RimeLib.IO
             var s_Bytes = new byte[p_NumberOfBytes];
             Write(s_Bytes);
         }
+
+        public void Write(RimeWriter p_Writer)
+        {
+            var s_StartPosition = p_Writer.Position;
+            p_Writer.Flush();
+            p_Writer.Seek(0, SeekOrigin.Begin);
+
+            p_Writer.CopyTo(this);
+
+            p_Writer.Seek(s_StartPosition, SeekOrigin.Begin);
+        }
     }
 }

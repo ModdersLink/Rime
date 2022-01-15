@@ -68,16 +68,23 @@ namespace EbxExtractor
 
         private static async void DumpFiles(Options p_Options)
         {
-            /*using var s_Reader = new RimeReader(File.OpenRead(
-                @"I:\Research\BF3\Dump\Files\bundles\ebx\levels\coop_002\coop_002\layer20_sound_schematic.ebx"
-            ));
+            /*using (var s_Reader = new RimeReader(File.OpenRead(@"I:\Research\BF3\Dump\Files\bundles\ebx\levels\xp2_factory\xp2_factory.ebx")))
+            {
+                var s_EbxReader = new Fb2EbxReader();
+                s_EbxReader.ParsePartition("Test", s_Reader).ToJsonFile(@"B:\ebx-test\xp2_factory.json", Formatting.Indented);
+            }*/
 
-            var s_EbxReader = new Fb2EbxReader();
-            s_EbxReader.ParsePartition("Test", s_Reader);*/
+            var s_Partition = DatabasePartition.FromJsonFile(@"B:\ebx-test\xp2_factory.json");
+            var s_EbxWriter = new EbxWriter();
 
-            var s_Partition = DatabasePartition.FromJsonFile(@"B:\ebx-dump\levels\xp2_factory\xp2_factory.json");
-            var s_Writer = new EbxWriter();
-            s_Writer.Serialize(new RimeWriter(new MemoryStream()), s_Partition);
+            using (var s_Writer = new RimeWriter(File.OpenWrite(@"B:\ebx-test\xp2_factory.ebx")))
+                s_EbxWriter.Serialize(s_Writer, s_Partition);
+
+            using (var s_Reader = new RimeReader(File.OpenRead(@"B:\ebx-test\xp2_factory.ebx")))
+            {
+                var s_EbxReader = new Fb2EbxReader();
+                s_EbxReader.ParsePartition("Test", s_Reader).ToJsonFile(@"B:\ebx-test\xp2_factory2.json", Formatting.Indented);
+            }
 
             /*var s_Mounter = EngineMounterRegistry.Create(p_Options.EngineType);
 
