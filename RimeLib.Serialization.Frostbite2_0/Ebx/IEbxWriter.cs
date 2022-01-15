@@ -4,7 +4,7 @@ using RimeLib.Serialization.Ebx;
 
 namespace RimeLib.Serialization.Frostbite2_0.Ebx
 {
-    public interface IEbxWriter
+    public interface IEbxWriter : IDisposable
     {
         uint WriteImport(CtrRefBase p_CtrRef);
         uint WriteString(string p_String);

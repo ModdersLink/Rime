@@ -178,7 +178,7 @@ namespace MeshExtractor
                 using var s_PartitionReader = s_PartitionObject.FirstVariant.GetReader();
                 
 
-                var s_Reader = new Fb2EbxReader();
+                var s_Reader = new EbxReader();
 
                 var s_Partition = s_Reader.ParsePartition(s_PartitionName, s_PartitionReader);
                 if (s_Partition == null)

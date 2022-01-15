@@ -14,7 +14,7 @@ using fb;
 
 namespace RimeLib.Serialization.Frostbite2_0.Ebx
 {
-    public class Fb2EbxReader
+    public class EbxReader : IDisposable
     {
         private StreamingPartitionHeader m_Header;
         private RimeReader m_Reader;
@@ -43,9 +43,9 @@ namespace RimeLib.Serialization.Frostbite2_0.Ebx
             p_Reader.Seek(-4, SeekOrigin.Current);
 
             if (IsLittleEndian(s_Magic))
-                m_Reader = new RimeReader(p_Reader, Endianness.LittleEndian);
+                m_Reader = new RimeReader(p_Reader, Endianness.LittleEndian, false);
             else if (IsBigEndian(s_Magic))
-                m_Reader = new RimeReader(p_Reader, Endianness.BigEndian);
+                m_Reader = new RimeReader(p_Reader, Endianness.BigEndian, false);
             else
                 throw new Exception("The supplied file has an invalid magic header.");
 
@@ -453,24 +453,32 @@ namespace RimeLib.Serialization.Frostbite2_0.Ebx
 
             if (p_Offset != 0xFFFFFFFF)
             {
-                s_String = "";
-
                 m_Reader.Seek((int) (m_Header.MetaSize + p_Offset), SeekOrigin.Begin);
+
+                using var s_TempStream = new RimeWriter(new MemoryStream());
 
                 while (true)
                 {
-                    var s_Char = (char) m_Reader.ReadByte();
+                    var s_Byte = m_Reader.ReadUByte();
 
-                    if (s_Char == '\0')
+                    if (s_Byte == 0x00)
                         break;
 
-                    s_String += s_Char;
+                    s_TempStream.Write(s_Byte);
                 }
+
+                s_TempStream.Flush();
+                s_String = Encoding.UTF8.GetString(((MemoryStream) s_TempStream.BaseStream).ToArray());
             }
 
             m_Reader.Seek(s_CurrentOffset, SeekOrigin.Begin);
 
             return s_String;
+        }
+
+        public void Dispose()
+        {
+            m_Reader?.Dispose();
         }
     }
 }

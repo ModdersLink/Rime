@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;using System.Threading.Tasks;
+using System.Text;
 using fb;
 using RimeLib.Frostbite.Core;
 using RimeLib.IO;
@@ -15,48 +15,30 @@ namespace RimeLib.Serialization.Frostbite2_0.Ebx
 {
     public class EbxWriter : IEbxWriter
     {
-        private RimeWriter m_PayloadWriter;
-        private RimeWriter m_TypeStringWriter;
-        private RimeWriter m_StringWriter;
-        private RimeWriter m_ArrayPayloadWriter;
-        private RimeWriter m_MetaWriter;
+        private readonly RimeWriter m_PayloadWriter = new(new MemoryStream());
+        private readonly RimeWriter m_TypeStringWriter = new(new MemoryStream());
+        private readonly RimeWriter m_StringWriter = new(new MemoryStream());
+        private readonly RimeWriter m_ArrayPayloadWriter = new(new MemoryStream());
+        private readonly RimeWriter m_MetaWriter = new(new MemoryStream());
 
-        private List<ImportEntry> m_ImportEntries;
-        private List<FieldDescriptor> m_FieldDescriptors;
-        private List<TypeDescriptor> m_TypeDescriptors;
-        private List<InstanceEntry> m_InstanceEntries;
-        private List<ArrayEntry> m_ArrayEntries;
+        private readonly List<ImportEntry> m_ImportEntries = new();
+        private readonly List<FieldDescriptor> m_FieldDescriptors = new();
+        private readonly List<TypeDescriptor> m_TypeDescriptors = new();
+        private readonly List<InstanceEntry> m_InstanceEntries = new();
+        private readonly List<ArrayEntry> m_ArrayEntries = new();
+
+        private readonly Dictionary<GUID, uint> m_InternalInstanceGuids = new();
+        private readonly Dictionary<string, uint> m_StringIndices = new();
+        private readonly Dictionary<string, uint> m_TypeStringHashes = new();
+        private readonly Dictionary<string, uint> m_TypeIndices = new();
+
+        private readonly List<RimeWriter> m_ArrayWriters = new();
 
         private DatabasePartition m_Partition;
-        
-        private Dictionary<GUID, uint> m_InternalInstanceGuids;
-        private Dictionary<string, uint> m_StringIndices;
-        private Dictionary<string, uint> m_TypeStringHashes;
-        private Dictionary<string, uint> m_TypeIndices;
-
-        private List<RimeWriter> m_ArrayWriters;
 
         public void Serialize(RimeWriter p_Writer, DatabasePartition p_Partition)
         {
             m_Partition = p_Partition;
-
-            m_ImportEntries = new List<ImportEntry>();
-            m_FieldDescriptors = new List<FieldDescriptor>();
-            m_TypeDescriptors = new List<TypeDescriptor>();
-            m_InstanceEntries = new List<InstanceEntry>();
-            m_ArrayEntries = new List<ArrayEntry>();
-
-            m_PayloadWriter = new RimeWriter(new MemoryStream());
-            m_TypeStringWriter = new RimeWriter(new MemoryStream());
-            m_StringWriter = new RimeWriter(new MemoryStream());
-            m_ArrayPayloadWriter = new RimeWriter(new MemoryStream());
-            m_MetaWriter = new RimeWriter(new MemoryStream());
-
-            m_StringIndices = new Dictionary<string, uint>();
-            m_TypeStringHashes = new Dictionary<string, uint>();
-            m_TypeIndices = new Dictionary<string, uint>();
-
-            m_ArrayWriters = new List<RimeWriter>();
 
             // Group instances by type.
             var s_GroupedInstances = p_Partition.Instances.GroupBy((p_Pair) => p_Pair.Value.GetType());
@@ -75,7 +57,6 @@ namespace RimeLib.Serialization.Frostbite2_0.Ebx
 
             // Calculate internal instance indices.
             // Since everything is grouped and sorted, the indices won't change while we are serializing.
-            m_InternalInstanceGuids = new Dictionary<GUID, uint>();
             var s_InstanceIndex = 0u;
 
             foreach (var (_, s_Group) in s_SortedInstances)
@@ -113,11 +94,8 @@ namespace RimeLib.Serialization.Frostbite2_0.Ebx
                 var s_ArrayEntry = m_ArrayEntries[i];
                 s_ArrayEntry.Offset = (uint) m_ArrayPayloadWriter.Position;
                 m_ArrayPayloadWriter.Write(s_ArrayWriter);
-                s_ArrayWriter.Dispose();
             }
-
-            m_ArrayWriters.Clear();
-
+            
             // Align payloads.
             m_StringWriter.Align(16);
             m_TypeStringWriter.Align(16);
@@ -468,6 +446,20 @@ namespace RimeLib.Serialization.Frostbite2_0.Ebx
             m_ArrayWriters.Add(s_Writer);
 
             return (s_Writer, (uint) s_ArrayIndex);
+        }
+
+        public void Dispose()
+        {
+            m_PayloadWriter.Dispose();
+            m_TypeStringWriter.Dispose();
+            m_StringWriter.Dispose();
+            m_ArrayPayloadWriter.Dispose();
+            m_MetaWriter.Dispose();
+
+            foreach (var s_Writer in m_ArrayWriters)
+                s_Writer.Dispose();
+
+            m_ArrayWriters.Clear();
         }
     }
 }

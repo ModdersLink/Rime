@@ -1,13 +1,13 @@
 ﻿using CommandLine;
-using RimeLib.Content.Mounting;
 using RimeLib.Frostbite;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
 using System;
 using System.IO;
 using System.Reflection;
+using System.Text;
 using System.Threading.Tasks;
-using fb;
 using Newtonsoft.Json;
+using RimeLib.Content.Mounting;
 using RimeLib.IO;
 
 namespace EbxExtractor
@@ -70,11 +70,11 @@ namespace EbxExtractor
         {
             /*using (var s_Reader = new RimeReader(File.OpenRead(@"I:\Research\BF3\Dump\Files\bundles\ebx\levels\xp2_factory\xp2_factory.ebx")))
             {
-                var s_EbxReader = new Fb2EbxReader();
+                var s_EbxReader = new EbxReader();
                 s_EbxReader.ParsePartition("Test", s_Reader).ToJsonFile(@"B:\ebx-test\xp2_factory.json", Formatting.Indented);
             }*/
 
-            var s_Partition = DatabasePartition.FromJsonFile(@"B:\ebx-test\xp2_factory.json");
+            /*var s_Partition = DatabasePartition.FromJsonFile(@"B:\ebx-test\xp2_factory.json");
             var s_EbxWriter = new EbxWriter();
 
             using (var s_Writer = new RimeWriter(File.OpenWrite(@"B:\ebx-test\xp2_factory.ebx")))
@@ -82,11 +82,11 @@ namespace EbxExtractor
 
             using (var s_Reader = new RimeReader(File.OpenRead(@"B:\ebx-test\xp2_factory.ebx")))
             {
-                var s_EbxReader = new Fb2EbxReader();
+                var s_EbxReader = new EbxReader();
                 s_EbxReader.ParsePartition("Test", s_Reader).ToJsonFile(@"B:\ebx-test\xp2_factory2.json", Formatting.Indented);
-            }
+            }*/
 
-            /*var s_Mounter = EngineMounterRegistry.Create(p_Options.EngineType);
+            var s_Mounter = EngineMounterRegistry.Create(p_Options.EngineType);
 
             if (!p_Options.Quiet)
                 Console.WriteLine($"Mounting game with engine '{p_Options.EngineType}' at path '{p_Options.GamePath}'. Please wait, this could take a while.");
@@ -111,9 +111,10 @@ namespace EbxExtractor
                 var s_PartitionObject = p_Pair.Value;
 
                 using var s_PartitionReader = s_PartitionObject.FirstVariant.GetReader();
-                var s_Reader = new Fb2EbxReader();
-                var s_Partition = s_Reader.ParsePartition(s_PartitionName, s_PartitionReader);
-
+                
+                using var s_EbxReader = new EbxReader();
+                var s_Partition = s_EbxReader.ParsePartition(s_PartitionName, s_PartitionReader);
+                
                 var s_TargetPath = Path.Join(@"B:\ebx-dump", s_PartitionName + ".json");
                 var s_TargetDir = Path.GetDirectoryName(s_TargetPath);
 
@@ -121,7 +122,7 @@ namespace EbxExtractor
                     Directory.CreateDirectory(s_TargetDir);
 
                 s_Partition.ToJsonFile(s_TargetPath, Formatting.Indented);
-            });*/
+            });
         }
     }
 }

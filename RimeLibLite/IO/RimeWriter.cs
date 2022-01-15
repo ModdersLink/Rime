@@ -41,7 +41,7 @@ namespace RimeLib.IO
 
         public void WriteNullTerminatedString(string p_Value)
         {
-            var s_Data = Encoding.ASCII.GetBytes(p_Value);
+            var s_Data = Encoding.UTF8.GetBytes(p_Value);
             Write(s_Data);
             Write((byte) 0x00);
         }
