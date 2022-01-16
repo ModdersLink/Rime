@@ -177,21 +177,21 @@ namespace RimeLib.Serialization.Frostbite2_0.Ebx
 
             if (typeof(DataContainer).IsAssignableFrom(s_ElementType))
             {
-                s_FieldDescriptor.Flags.SetIsClass(true);
+                s_FieldDescriptor.Flags.SetIsClass(false);
             }
             else if (typeof(EbxSerializable).IsAssignableFrom(s_ElementType))
             {
-                s_FieldDescriptor.Flags.SetIsValueType(true);
+                s_FieldDescriptor.Flags.SetIsValueType(false);
                 s_FieldDescriptor.FieldType = (ushort)WriteTypeDescriptor(s_ElementType);
             }
             else if (s_ElementType.IsEnum)
             {
-                s_FieldDescriptor.Flags.SetIsPrimitive(true, s_ElementType);
+                s_FieldDescriptor.Flags.SetIsPrimitive(false, s_ElementType);
                 s_FieldDescriptor.FieldType = (ushort)WriteTypeDescriptor(s_ElementType);
             }
             else
             {
-                s_FieldDescriptor.Flags.SetIsPrimitive(true, s_ElementType);
+                s_FieldDescriptor.Flags.SetIsPrimitive(false, s_ElementType);
             }
 
             s_Descriptor.LayoutDescriptor = (uint) m_FieldDescriptors.Count;
@@ -244,6 +244,18 @@ namespace RimeLib.Serialization.Frostbite2_0.Ebx
             return (uint) s_TypeIndex;
         }
 
+        private void ApplyTypeFlags(MemberInfoFlags p_Flags, IEnumerable<Attribute> p_Attributes)
+        {
+            if (p_Attributes.Any((p_Attr) => p_Attr is HomogeneousAttribute))
+                p_Flags.SetHomogenous();
+
+            if (p_Attributes.Any((p_Attr) => p_Attr is LayoutImmutableAttribute))
+                p_Flags.SetLayoutImmutable();
+
+            if (p_Attributes.Any((p_Attr) => p_Attr is BlittableAttribute))
+                p_Flags.SetBlittable();
+        }
+
         private uint WriteTypeDescriptor(Type p_Type)
         {
             if (m_TypeDescriptors.Count >= ushort.MaxValue)
@@ -286,6 +298,8 @@ namespace RimeLib.Serialization.Frostbite2_0.Ebx
                 s_Descriptor.Flags.SetIsClass(false);
             else
                 s_Descriptor.Flags.SetIsValueType(false);
+
+            ApplyTypeFlags(s_Descriptor.Flags, p_Type.GetCustomAttributes());
 
             // Write inheritance.
             if (s_BaseTypeIndex != null)
@@ -337,27 +351,29 @@ namespace RimeLib.Serialization.Frostbite2_0.Ebx
 
                 if (typeof(CtrRefBase).IsAssignableFrom(s_Property.PropertyType))
                 {
-                    s_FieldDescriptor.Flags.SetIsClass(true);
+                    s_FieldDescriptor.Flags.SetIsClass(false);
                 }
                 else if (typeof(EbxSerializable).IsAssignableFrom(s_Property.PropertyType))
                 {
-                    s_FieldDescriptor.Flags.SetIsValueType(true);
+                    s_FieldDescriptor.Flags.SetIsValueType(false);
                     s_FieldDescriptor.FieldType = (ushort)WriteTypeDescriptor(s_Property.PropertyType);
                 }
                 else if (s_Property.PropertyType.IsGenericType)
                 {
-                    s_FieldDescriptor.Flags.SetIsArray(true);
+                    s_FieldDescriptor.Flags.SetIsArray(false);
                     s_FieldDescriptor.FieldType = (ushort)WriteTypeDescriptor(s_Property.PropertyType);
                 }
                 else if (s_Property.PropertyType.IsEnum)
                 {
-                    s_FieldDescriptor.Flags.SetIsPrimitive(true, s_Property.PropertyType);
+                    s_FieldDescriptor.Flags.SetIsPrimitive(false, s_Property.PropertyType);
                     s_FieldDescriptor.FieldType = (ushort)WriteTypeDescriptor(s_Property.PropertyType);
                 }
                 else
                 {
-                    s_FieldDescriptor.Flags.SetIsPrimitive(true, s_Property.PropertyType);
+                    s_FieldDescriptor.Flags.SetIsPrimitive(false, s_Property.PropertyType);
                 }
+
+                ApplyTypeFlags(s_FieldDescriptor.Flags, s_Property.GetCustomAttributes());
             }
 
             var s_Index = m_TypeDescriptors.Count;

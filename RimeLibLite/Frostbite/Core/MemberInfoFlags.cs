@@ -115,11 +115,16 @@ namespace RimeLib.Frostbite.Core
             else
                 FlagBits = (ushort)MemberType.TypeInfo;
 
+            if (p_PrimitiveType.IsEnum)
+            {
+                FlagBits |= (ushort)TypeCategory.ValueType << (ushort)MemberInfoFlagsEnum.TypeCategoryShift;
+                FlagBits |= (ushort)FieldType.Enum << (ushort)MemberInfoFlagsEnum.TypeCodeShift;
+                return;
+            }
+
             FlagBits |= (ushort)TypeCategory.PrimitiveType << (ushort)MemberInfoFlagsEnum.TypeCategoryShift;
 
-            if (p_PrimitiveType.IsEnum)
-                FlagBits |= (ushort)FieldType.Enum << (ushort)MemberInfoFlagsEnum.TypeCodeShift;
-            else if (p_PrimitiveType == typeof(bool))
+            if (p_PrimitiveType == typeof(bool))
                 FlagBits |= (ushort)FieldType.Boolean << (ushort)MemberInfoFlagsEnum.TypeCodeShift;
             else if (p_PrimitiveType == typeof(sbyte))
                 FlagBits |= (ushort)FieldType.Int8 << (ushort)MemberInfoFlagsEnum.TypeCodeShift;
@@ -163,8 +168,23 @@ namespace RimeLib.Frostbite.Core
             else
                 FlagBits = (ushort)MemberType.TypeInfo;
 
-            FlagBits |= (ushort)TypeCategory.PrimitiveType << (ushort)MemberInfoFlagsEnum.TypeCategoryShift;
+            FlagBits |= (ushort)TypeCategory.NotApplicable << (ushort)MemberInfoFlagsEnum.TypeCategoryShift;
             FlagBits |= (ushort)FieldType.Array << (ushort)MemberInfoFlagsEnum.TypeCodeShift;
+        }
+
+        public void SetHomogenous()
+        {
+            FlagBits |= (ushort)MemberInfoFlagsEnum.Homogeneous;
+        }
+
+        public void SetLayoutImmutable()
+        {
+            FlagBits |= (ushort)MemberInfoFlagsEnum.LayoutImmutable;
+        }
+
+        public void SetBlittable()
+        {
+            FlagBits |= (ushort)MemberInfoFlagsEnum.Blittable;
         }
 
         /// <summary>
