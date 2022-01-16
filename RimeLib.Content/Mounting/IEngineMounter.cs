@@ -172,5 +172,14 @@ namespace RimeLib.Content.Mounting
         /// <param name="p_Superbundle">The name of the superbundle.</param>
         /// <returns>A list of bundle names.</returns>
         IEnumerable<string> GetBundlesInSuperbundle(string p_Superbundle);
+
+        /// <summary>
+        /// Mount a standalone superbundle that's not described in the game's manifest.
+        /// </summary>
+        /// <param name="p_Name">The name of the superbundle.</param>
+        /// <param name="p_Path">The full path to the superbundle file.</param>
+        /// <param name="p_AutoMount">Whether to automatically mount the contained bundles.</param>
+        /// <returns></returns>
+        Task MountStandaloneSuperbundle(string p_Name, string p_Path, bool p_AutoMount);
     }
 }

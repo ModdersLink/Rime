@@ -266,6 +266,37 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
             return s_Bundles;
         }
 
+        public async Task MountStandaloneSuperbundle(string p_Name, string p_Path, bool p_AutoMount)
+        {
+            if (string.IsNullOrWhiteSpace(p_Name))
+                throw new ArgumentException("Superbundle name cannot be empty.", nameof(p_Name));
+
+            if (!p_Path.EndsWith(".sb"))
+                throw new ArgumentException("Superbundle file must have a '.sb' extension.", nameof(p_Path));
+
+            if (!File.Exists(p_Path))
+                throw new ArgumentException("The specified superbundle file does not exist.", nameof(p_Path));
+
+            var s_TocPath = p_Path.Replace(".sb", ".toc");
+
+            if (!File.Exists(s_TocPath))
+                throw new Exception("Could not find corresponding toc file for superbundle.");
+
+            TableOfContents<SuperbundleLayout> s_Toc;
+
+            // Parse the superbundle layout.
+            using (var s_Reader = new RimeReader(File.Open(s_TocPath, FileMode.Open, FileAccess.Read, FileShare.Read)))
+                s_Toc = new TableOfContents<SuperbundleLayout>(s_Reader);
+
+            // Create a superbundle entry for this superbundle.
+            var s_SbEntry = new SuperbundleEntry(p_Name.ToLowerInvariant(), p_Path.Replace(".sb", ""), s_Toc);
+
+            // Add to the list of discovered superbundles.
+            m_Superbundles.Add(s_SbEntry);
+
+            await MountSuperbundle(p_Name, p_AutoMount);
+        }
+
         protected string GetMainPackagePath()
         {
             return Path.Join(m_GamePath, "Data");
