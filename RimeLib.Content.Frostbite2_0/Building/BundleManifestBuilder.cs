@@ -105,7 +105,7 @@ namespace RimeLib.Content.Frostbite2_0.Building
             s_TextWriter.CopyTo(p_Writer);
 
             // Record the manifest size.
-            var s_ManifestSize = p_Writer.Position - (s_StartOffset + 4);
+            var s_ManifestSize = p_Writer.Position - s_StartOffset;
 
             // Update manifest size and header.
             p_Writer.Seek(s_StartOffset, SeekOrigin.Begin);
@@ -113,7 +113,7 @@ namespace RimeLib.Content.Frostbite2_0.Building
             m_Header.Serialize(p_Writer);
 
             // Get ready to start writing our actual entries.
-            p_Writer.Seek(s_StartOffset + 4 + s_ManifestSize, SeekOrigin.Begin);
+            p_Writer.Seek(s_StartOffset + s_ManifestSize + 4, SeekOrigin.Begin);
 
             WriteEntries(p_Writer, s_HashOffset);
         }
