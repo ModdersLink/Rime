@@ -29,7 +29,7 @@ namespace RimeLib.Content.Frostbite2_0.Building
             m_Bundles = new List<BundleInfo>();
 
             // Set up an sb writer to use.
-            using var s_SbWriter = new RimeWriter(p_OutputSbStream, Endianness.LittleEndian, false);
+            using var s_SbWriter = new RimeWriter(p_OutputSbStream, Endianness.BigEndian, false);
 
             // Set basic layout properties.
             m_Toc.Layout.Name = p_Descriptor.SuperbundleName;
@@ -89,7 +89,8 @@ namespace RimeLib.Content.Frostbite2_0.Building
             s_BundleInfo.Size = p_SbWriter.Position - s_BundleInfo.Offset;
 
             // Calculate hash.
-            p_SbWriter.Seek(p_SbWriter.Position, SeekOrigin.Begin);
+            p_SbWriter.Flush();
+            p_SbWriter.Seek(s_BundleInfo.Offset, SeekOrigin.Begin);
             s_BundleInfo.Checksum = HashingUtils.HashFromStream(p_SbWriter, (int) s_BundleInfo.Size);
 
             // Add bundle to layout.

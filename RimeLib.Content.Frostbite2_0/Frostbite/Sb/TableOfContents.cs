@@ -42,7 +42,7 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Sb
         public bool Serialize(RimeWriter p_Writer)
         {
             // Write the header and an empty signature.
-            p_Writer.Write((uint) 0x00CED100);
+            p_Writer.Write((uint) 0x01CED100);
             p_Writer.Write(new byte[292]);
 
             // Enable obfuscation.
