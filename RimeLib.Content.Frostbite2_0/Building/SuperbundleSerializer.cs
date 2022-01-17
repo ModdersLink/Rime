@@ -87,11 +87,7 @@ namespace RimeLib.Content.Frostbite2_0.Building
 
             // Calculate size.
             s_BundleInfo.Size = p_SbWriter.Position - s_BundleInfo.Offset;
-
-            // Calculate hash.
-            p_SbWriter.Flush();
-            p_SbWriter.Seek(s_BundleInfo.Offset, SeekOrigin.Begin);
-            s_BundleInfo.Checksum = HashingUtils.HashFromStream(p_SbWriter, (int) s_BundleInfo.Size);
+            s_BundleInfo.Checksum = s_Builder.Checksum;
 
             // Add bundle to layout.
             m_Bundles.Add(s_BundleInfo);

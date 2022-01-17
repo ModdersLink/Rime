@@ -12,14 +12,18 @@ namespace RimeLib.Content.Frostbite2_0.Building
 {
     class BundleManifestBuilder
     {
-        private readonly BundleManifest.Header m_Header = new BundleManifest.Header();
+        private readonly BundleManifest.Header m_Header = new();
 
         private readonly BundleDescriptor m_Descriptor;
+
+        public Sha1 Checksum { get; private set; }
 
         public BundleManifestBuilder(BundleDescriptor p_Descriptor)
         {
             if (p_Descriptor.Chunks.Any())
                 throw new Exception("Creating bundles with chunks in them is not currently supported. Please add these chunks to the superbundle instead.");
+
+            Checksum = new Sha1();
 
             // Populate the header.
             m_Header.Magic = BundleManifest.c_ManifestEbx ^ 0x7A11F1AB;
@@ -124,6 +128,8 @@ namespace RimeLib.Content.Frostbite2_0.Building
 
             p_Writer.Align(16);
 
+            using var s_ChecksumWriter = new HashingRimeWriter(new MemoryStream());
+
             foreach (var s_Partition in m_Descriptor.Partitions)
             {
                 using var s_PartitionReader = s_Partition.Value.GetReader();
@@ -131,7 +137,11 @@ namespace RimeLib.Content.Frostbite2_0.Building
 
                 s_PartitionReader.CopyTo(s_HashWriter);
 
-                s_Hashes.Add(s_HashWriter.GetHash());
+                var s_Hash = s_HashWriter.GetHash();
+                s_Hashes.Add(s_Hash);
+
+                s_Hash.Serialize(s_ChecksumWriter);
+
                 p_Writer.Align(16);
             }
 
@@ -142,7 +152,11 @@ namespace RimeLib.Content.Frostbite2_0.Building
 
                 s_ResourceReader.CopyTo(s_HashWriter);
 
-                s_Hashes.Add(s_HashWriter.GetHash());
+                var s_Hash = s_HashWriter.GetHash();
+                s_Hashes.Add(s_Hash);
+
+                s_Hash.Serialize(s_ChecksumWriter);
+
                 p_Writer.Align(16);
             }
 
@@ -157,9 +171,16 @@ namespace RimeLib.Content.Frostbite2_0.Building
 
                 s_ChunkReader.CopyTo(s_HashWriter);
 
-                s_Hashes.Add(s_HashWriter.GetHash());
+                var s_Hash = s_HashWriter.GetHash();
+                s_Hashes.Add(s_Hash);
+
+                s_Hash.Serialize(s_ChecksumWriter);
+
                 p_Writer.Align(16);
             }
+
+            // Store final checksum, which is a sha1 of all the sha1s.
+            Checksum = s_ChecksumWriter.GetHash();
 
             // Patch the hashes.
             var s_FinalOffset = p_Writer.Position;
