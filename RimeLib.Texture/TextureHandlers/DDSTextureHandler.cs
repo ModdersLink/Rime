@@ -82,31 +82,7 @@ namespace RimeLib.Texture.TextureHandlers
 
 
         public bool Save(TextureBase p_Texture, RimeWriter p_Writer)
-        {
-            switch (p_Texture.Format)
-            {
-                case TextureFormat.TextureFormat_R16F:
-                case TextureFormat.TextureFormat_R32F:
-                case TextureFormat.TextureFormat_L16:
-                    //Console.WriteLine($"skipping {p_Texture.Format}");
-                    return false;
-            }
-            /*if (!GenerateDDSHeader(p_Texture, out var s_Header, out var s_ExtendedHeader))
-                return false;
-
-            s_Header.Serialize(p_Writer);
-
-            if (!(s_ExtendedHeader is null))
-            {
-                //Align
-                if (p_Writer.Position % 0x10 != 0)
-                    p_Writer.Seek(0x10 - (p_Writer.Position % 0x10), SeekOrigin.Current);
-
-                s_ExtendedHeader.Serialize(p_Writer);
-            }
-
-            p_Texture.Provider?.GetReader()?.CopyTo(p_Writer);*/
-
+        {            
             SaveDDS(p_Writer, p_Texture, p_Texture.Provider!.GetReader()!.BaseStream);
 
             return true;
@@ -237,8 +213,8 @@ namespace RimeLib.Texture.TextureHandlers
             if (p_TextureHeader.Depth > 1)
                 s_Flags |= DDSFlags.Depth;
 
-            if (p_TextureHeader.Flags.HasFlag(TextureFlags.SrgbGamma))
-                s_Flags |= DDSFlags.Srgb;
+            /*if (p_TextureHeader.Flags.HasFlag(TextureFlags.SrgbGamma))
+                s_Flags |= DDSFlags.Srgb;*/
 
             return s_Flags;
         }
@@ -265,7 +241,7 @@ namespace RimeLib.Texture.TextureHandlers
                 Height = p_TextureHeader.Height,
                 Width = p_TextureHeader.Width,
                 PitchOrLinearSize = (uint)(TextureUtils.IsCompressed(p_TextureHeader.Format) ? s_SlicePitch : s_RowPitch), // TODO: Verify
-                Depth = p_TextureHeader.Depth,
+                Depth = (p_TextureHeader.Depth > 1 ? p_TextureHeader.Depth : 0),
                 MipMapCount = p_TextureHeader.MipmapCount,
                 Reserved = new uint[11] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, DDSUtils.MakeFourCC("RIME") },
                 PixelFormat = (s_Format != null ? s_Format : new DDSPixelFormat
@@ -284,14 +260,14 @@ namespace RimeLib.Texture.TextureHandlers
                 Caps3 = 0,
                 Caps4 = 0,
                 Reserved2 = 0,
-                Dx10Header = new DDSDX10Header
+                Dx10Header = (s_Format != null ? (s_Format.FourCC == DDSUtils.MakeFourCC("DX10") ? new DDSDX10Header
                 {
                     DxgiFormat = s_DXGIFormat,
                     ResourceDimension = ResourceDimensionFromTextureHeader(p_TextureHeader),
                     MiscFlag = MiscFlag1FromTextureHeader(p_TextureHeader),
                     ArraySize = ArraySizeFromTextureHeader(p_TextureHeader),
                     MiscFlags2 = MiscFlag2FromTextureHeader(p_TextureHeader),
-                }
+                } : null) : null)
             };
         }
 

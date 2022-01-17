@@ -131,8 +131,12 @@ namespace EbxExtractor
                 var s_Name = p_Pair.Key;
                 var s_Resource = p_Pair.Value;
 
+                if (!s_Name.EndsWith("signbackside_n"))
+                    continue;
+
                 if (s_Resource.FirstVariant.GetResourceType() == RimeLib.Content.Frostbite.ResourceType.DxTexture)
                 {
+
                     var s_TargetPath = $@"D:\Rime\Textures\{s_Name}.dds";
 
                     if (!Directory.Exists(Path.GetDirectoryName(s_TargetPath)))
