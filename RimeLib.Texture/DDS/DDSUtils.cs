@@ -16,7 +16,7 @@ namespace RimeLib.Texture.DDS
             { TextureFormat.TextureFormat_Dxt5A, new DDSPixelFormat("ATI1") }, //ATI1N
             { TextureFormat.TextureFormat_Dxn, new DDSPixelFormat("ATI2") }, //BC5, ATI2
 
-            { TextureFormat.TextureFormat_Bc7, new DDSPixelFormat("BC7") },
+            { TextureFormat.TextureFormat_Bc7, new DDSPixelFormat("DX10") },
 
             { TextureFormat.TextureFormat_NormalDxn, new DDSPixelFormat("DXT5") }, //ATI2
 
@@ -124,6 +124,9 @@ namespace RimeLib.Texture.DDS
         /// <returns></returns>
         public static uint MakeFourCC(string p_FourCC)
         {
+            if (p_FourCC.Length != 4)
+                throw new System.Exception("invalid 4cc");
+
             return (uint)(((uint)p_FourCC[0] & 0xFF) | (((uint)p_FourCC[1] & 0xFF) << 8) | (((uint)p_FourCC[2] & 0xFF) << 16) | ((uint)p_FourCC[3] & 0xFF) << 24);
         }
     }
