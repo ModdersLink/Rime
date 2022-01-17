@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using RimeLib.Content.Mounting;
 using RimeLib.IO;
+using RimeLib.Texture;
 
 namespace EbxExtractor
 {
@@ -35,6 +36,7 @@ namespace EbxExtractor
             Parser.Default.ParseArguments<Options>(p_Args).WithParsed(p_Options =>
             {
                 LoadContentAssembly(p_Options);
+                LoadTextureAssembly(p_Options);
                 DumpFiles(p_Options);
 
                 Console.WriteLine("Audio content successfully extracted. Press any key to exit...");
@@ -49,6 +51,26 @@ namespace EbxExtractor
         private static void LoadContentAssembly(Options p_Options)
         {
             var s_AssemblyName = "RimeLib.Content." + p_Options.EngineType;
+
+            try
+            {
+                if (!p_Options.Quiet)
+                    Console.WriteLine("Loading engine content support assembly.");
+
+                Assembly.Load(s_AssemblyName);
+            }
+            catch
+            {
+                if (!p_Options.Quiet)
+                    Console.WriteLine($"Failed to load supporting engine assembly ({s_AssemblyName}.dll). This means that the engine is not supported or that you are missing required files.");
+
+                System.Environment.Exit(1);
+            }
+        }
+
+        private static void LoadTextureAssembly(Options p_Options)
+        {
+            var s_AssemblyName = "RimeLib.Texture." + p_Options.EngineType;
 
             try
             {
@@ -102,6 +124,31 @@ namespace EbxExtractor
             if (!p_Options.Quiet)
                 Console.WriteLine($"Everything is now mounted! Starting audio conversion.");
 
+            var s_Resources = s_Mounter.GetResources();
+            //Parallel.ForEach(s_Resources, (p_Pair) =>
+            foreach (var p_Pair in s_Resources)
+            {
+                var s_Name = p_Pair.Key;
+                var s_Resource = p_Pair.Value;
+
+                if (s_Resource.FirstVariant.GetResourceType() == RimeLib.Content.Frostbite.ResourceType.DxTexture)
+                {
+                    var s_TargetPath = $@"D:\Rime\Textures\{s_Name}.dds";
+
+                    if (!Directory.Exists(Path.GetDirectoryName(s_TargetPath)))
+                        Directory.CreateDirectory(Path.GetDirectoryName(s_TargetPath));
+
+                    if (!TextureHelper.LoadTexture(s_Mounter, s_Resource!.FirstVariant, out var s_Texture))
+                        throw new Exception($"Could not load resource with name '{s_Name}'.");
+
+                    using var s_FileStream = File.Create(s_TargetPath);
+
+                    var s_TextureFileHandler = TextureFileHandlerRegistry.FindHandler("dds");
+
+                    s_TextureFileHandler?.Save(s_Texture!, new RimeWriter(s_FileStream));
+
+                }
+            }/*)*/;
             var s_Partitions = s_Mounter.GetPartitions();
             
             //foreach (var s_PartitionPair in s_Partitions)

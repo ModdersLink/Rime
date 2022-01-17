@@ -1,4 +1,5 @@
-﻿using RimeLib.Frostbite.Containers;
+﻿
+using fb;
 using RimeLib.IO;
 using System;
 
@@ -15,7 +16,7 @@ namespace RimeLib.Terrain
 
         public uint NodeSamplesPerSidePot { get; set; }
 
-        private void LoadNodes(RimeReader p_Reader, uint p_NodeIndex, ref uint p_FirstFreeNodeIndex, QuadtreeNodeId p_NodeId, AxisAlignedBox2 p_NodeCoverage)
+        private void LoadNodes(RimeReader p_Reader, uint p_NodeIndex, ref uint p_FirstFreeNodeIndex, QuadtreeNodeId p_NodeId, AxisAlignedBox p_NodeCoverage)
         {
             var s_NodeHasData = p_Reader.ReadBool();
 
@@ -43,6 +44,7 @@ namespace RimeLib.Terrain
 
             if (s_HasChildren)
             {
+                /*
                 // s_Node.m_FirstChildIndex = p_FirstFreeNodeIndex;
                 var s_FirstChildIndex = p_FirstFreeNodeIndex;
                 p_FirstFreeNodeIndex += 4;
@@ -60,12 +62,15 @@ namespace RimeLib.Terrain
                     s_ChildNodeId.IndexX = (ushort)(QuadtreeNodeId.m_QuadtreeNodeChildOffsetX[s_V14] + 2 * s_ChildNodeId.IndexX);
                     s_ChildNodeId.IndexY = (ushort)(QuadtreeNodeId.m_QuadtreeNodeChildOffsetY[s_V14] + 2 * s_ChildNodeId.IndexY);
 
-                    var s_ChildCoverage = new AxisAlignedBox2();
+                    
+                    var s_ChildCoverage = new AxisAlignedBox;
 
                     // TODO: Verify these are correct.
-                    s_ChildCoverage.Min = new Vec2(
-                            QuadtreeNodeId.m_QuadtreeNodeChildOffsetX[s_V14] * s_ChildNodeWidth + p_NodeCoverage.Min.X,
-                            QuadtreeNodeId.m_QuadtreeNodeChildOffsetY[s_V14] * s_ChildNodeWidth + p_NodeCoverage.Min.Y);
+                    s_ChildCoverage.Min = new Vec2
+                    {
+                            .x = QuadtreeNodeId.m_QuadtreeNodeChildOffsetX[s_V14] * s_ChildNodeWidth + p_NodeCoverage.Min.X,
+                            .y = QuadtreeNodeId.m_QuadtreeNodeChildOffsetY[s_V14] * s_ChildNodeWidth + p_NodeCoverage.Min.Y)
+                     };
 
                     s_ChildCoverage.Max = new Vec2(
                         s_ChildCoverage.Min.X + s_ChildNodeWidth,
@@ -73,7 +78,10 @@ namespace RimeLib.Terrain
 
                     LoadNodes(p_Reader, (uint)(s_V14 + s_FirstChildIndex), ref p_FirstFreeNodeIndex, s_ChildNodeId, s_ChildCoverage);
                     ++s_V14;
+                    throw new Exception("TODO: Fixme");
                 } while (s_V14 < 4);
+
+                    */
             }
         }
 
@@ -89,6 +97,8 @@ namespace RimeLib.Terrain
             var s_Blurriness = p_Reader.ReadInt32();
             BlurrinessFactor = (uint)(1 << s_Blurriness);
 
+            throw new Exception("TODO: fixme");
+            /*
             var s_TreeCoverage = new AxisAlignedBox2(p_Reader);
 
             NodeCount = p_Reader.ReadUInt32();
@@ -107,7 +117,7 @@ namespace RimeLib.Terrain
 
             uint s_FirstFreeNodeIndex = 1;
 
-            LoadNodes(p_Reader, 0, ref s_FirstFreeNodeIndex, s_RootNodeId, s_TreeCoverage);
+            LoadNodes(p_Reader, 0, ref s_FirstFreeNodeIndex, s_RootNodeId, s_TreeCoverage);*/
         }
 
         public override void Deserialize(byte[] p_Data)

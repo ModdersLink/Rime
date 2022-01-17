@@ -3,6 +3,7 @@ using RimeLib.Frostbite.Db;
 using RimeLib.IO;
 using System;
 using System.IO;
+using Xunit;
 
 namespace RimeLib.Tests
 {

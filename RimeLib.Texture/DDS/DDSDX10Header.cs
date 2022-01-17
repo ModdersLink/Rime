@@ -28,6 +28,7 @@ namespace RimeLib.Texture.DDS
 
     public class DDSDX10Header : IFbSerializable
     {
+        public const uint c_HeaderSize = 20;
         public DDSDX10Header()
         {
         }

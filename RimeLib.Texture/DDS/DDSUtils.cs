@@ -1,13 +1,11 @@
-﻿using RimeLib.Texture.DDS;
-using System;
+﻿using RimeLib.Texture.Frostbite;
 using System.Collections.Generic;
-using System.Text;
 
-namespace RimeLib.Texture.Frostbite.DDS
+namespace RimeLib.Texture.DDS
 {
     public static class DDSUtils
     {
-        public static readonly Dictionary<TextureFormat, DDSPixelFormat> c_DDSFormatMap = new Dictionary<TextureFormat, DDSPixelFormat>( )
+        public static readonly Dictionary<TextureFormat, DDSPixelFormat> c_DDSFormatMap = new Dictionary<TextureFormat, DDSPixelFormat>()
         {
             { TextureFormat.TextureFormat_Dxt1, new DDSPixelFormat("DXT1") },
             { TextureFormat.TextureFormat_Dxt1A, new DDSPixelFormat("DXT1") },
@@ -50,7 +48,7 @@ namespace RimeLib.Texture.Frostbite.DDS
         };
 
 
-        public static readonly Dictionary<TextureFormat, DXGIFormat> c_DDSDXFormatMap = new Dictionary<TextureFormat, DXGIFormat>( )
+        public static readonly Dictionary<TextureFormat, DXGIFormat> c_DDSDXFormatMap = new Dictionary<TextureFormat, DXGIFormat>()
         {
             // Formats that is imported
 
@@ -116,5 +114,17 @@ namespace RimeLib.Texture.Frostbite.DDS
             { TextureFormat.TextureFormat_D32F, DXGIFormat.D32_FLOAT },
             { TextureFormat.TextureFormat_D32Fs8, DXGIFormat.D32_FLOAT_S8X24_UINT },
         };
+
+        /// <summary>
+        /// Gets the integer representation of the foucc string.
+        /// 
+        /// Credits: Grimdoomer
+        /// </summary>
+        /// <param name="p_FourCC"></param>
+        /// <returns></returns>
+        public static uint MakeFourCC(string p_FourCC)
+        {
+            return (uint)(((uint)p_FourCC[0] & 0xFF) | (((uint)p_FourCC[1] & 0xFF) << 8) | (((uint)p_FourCC[2] & 0xFF) << 16) | ((uint)p_FourCC[3] & 0xFF) << 24);
+        }
     }
 }

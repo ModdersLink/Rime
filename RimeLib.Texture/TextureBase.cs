@@ -55,42 +55,42 @@ namespace RimeLib.Texture
             var s_Header = new DDSHeader( );
 
             //Signature, not needed
-            s_Header.m_Reserved1[9] = DDSPixelFormat.MakeFourCC("RIME");
+            s_Header.Reserved[9] = DDSUtils.MakeFourCC("RIME");
 
-            s_Header.m_Flags = DDSFlags.Texture;
+            s_Header.Flags = DDSFlags.Texture;
 
-            s_Header.m_Caps = DDSCaps.Texture;
+            s_Header.Caps = DDSCaps.Texture;
 
-            s_Header.m_Height = this.Height;
-            s_Header.m_Width = this.Width;
-            s_Header.m_Depth = this.Depth;
+            s_Header.Height = this.Height;
+            s_Header.Width = this.Width;
+            s_Header.Depth = this.Depth;
 
-            s_Header.m_MipmapCount = this.MipmapCount;
+            s_Header.MipMapCount = this.MipmapCount;
 
-            if (s_Header.m_MipmapCount > 0)
+            if (s_Header.MipMapCount > 0)
             {
-                s_Header.m_Flags |= DDSFlags.MipmapCount;
+                s_Header.Flags |= DDSFlags.MipmapCount;
 
-                if (s_Header.m_MipmapCount > 1)
-                    s_Header.m_Caps |= DDSCaps.MipmapFlags;
+                if (s_Header.MipMapCount > 1)
+                    s_Header.Caps |= DDSCaps.MipmapFlags;
             }
 
             switch (Type)
             {
             case TextureType.TextureType_Cube:
             case TextureType.TextureType_CubeArray:
-                s_Header.m_Caps |= DDSCaps.Complex;
-                s_Header.m_Caps2 |= DDSCaps2.AllFaces;
+                s_Header.Caps |= DDSCaps.Complex;
+                s_Header.Caps2 |= DDSCaps2.AllFaces;
                 break;
 
             case TextureType.TextureType_3D:
-                s_Header.m_Flags |= DDSFlags.Depth;
-                s_Header.m_Caps2 |= DDSCaps2.Volume;
+                s_Header.Flags |= DDSFlags.Depth;
+                s_Header.Caps2 |= DDSCaps2.Volume;
                 break;
             }
 
             if (Flags.HasFlag(TextureFlags.SrgbGamma))  //NVIDIA format | some loaders might require this? (DirectXTex)
-                s_Header.m_Flags |= DDSFlags.Srgb;
+                s_Header.Flags |= DDSFlags.Srgb;
 
 
             if (!TextureUtils.ComputePitch(Format, Width, Height, out var s_RowPitch, out var s_SlicePitch))
@@ -98,29 +98,29 @@ namespace RimeLib.Texture
 
             if (TextureUtils.IsCompressed(Format))
             {
-                s_Header.m_Flags |= DDSFlags.LinearSize;
-                s_Header.m_PitchOrLinearSize = s_SlicePitch;
+                s_Header.Flags |= DDSFlags.LinearSize;
+                s_Header.PitchOrLinearSize = s_SlicePitch;
             }
             else
             {
-                s_Header.m_Flags |= DDSFlags.Pitch;
-                s_Header.m_PitchOrLinearSize = s_RowPitch;
+                s_Header.Flags |= DDSFlags.Pitch;
+                s_Header.PitchOrLinearSize = s_RowPitch;
             }
 
             DDSDX10Header? s_ExtendedHeader = null;
 
             if (DDSUtils.c_DDSFormatMap.TryGetValue(this.Format, out var s_Format))
             {
-                s_Format.m_RGBBitCount = TextureUtils.BitsPerPixel(this.Format);
+                s_Format.RGBBitCount = TextureUtils.BitsPerPixel(this.Format);
 
-                s_Header.m_PixelFormat = s_Format;
+                s_Header.PixelFormat = s_Format;
             }
             else
             {
                 if (!DDSUtils.c_DDSDXFormatMap.TryGetValue(this.Format, out var s_DXGIFormat))
                     throw new Exception($"Invalid textureformat {this.Format}");
 
-                s_Header.m_PixelFormat = DDSPixelFormat.s_DXExtFormat;
+                s_Header.PixelFormat = DDSPixelFormat.s_DXExtFormat;
 
                 s_ExtendedHeader = new DDSDX10Header();
 

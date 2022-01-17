@@ -1,7 +1,7 @@
-﻿using RimeLib.Frostbite;
+﻿using fb;
+using RimeLib.Frostbite;
 using RimeLib.Frostbite.Core;
 using RimeLib.IO;
-using RimeLib.Frostbite.Containers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -45,10 +45,10 @@ namespace RimeLib.Shader.Frostbite2_0.Frostbite.ShaderConstants
             p_Writer.Seek(2, System.IO.SeekOrigin.Current);
 
             //Vec4
-            p_Writer.Write(m_DefaultValue.X);
-            p_Writer.Write(m_DefaultValue.Y);
-            p_Writer.Write(m_DefaultValue.Z);
-            p_Writer.Write(m_DefaultValue.W);
+            p_Writer.Write(m_DefaultValue.x);
+            p_Writer.Write(m_DefaultValue.y);
+            p_Writer.Write(m_DefaultValue.z);
+            p_Writer.Write(m_DefaultValue.w);
         }
 
        
@@ -68,7 +68,7 @@ namespace RimeLib.Shader.Frostbite2_0.Frostbite.ShaderConstants
 
             p_Reader.Seek(2, System.IO.SeekOrigin.Current);
 
-            m_DefaultValue = new Vec4(p_Reader);
+            m_DefaultValue = new ();
         }
 
         public bool Serialize(out byte[] p_Data)

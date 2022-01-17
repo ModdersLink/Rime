@@ -1,8 +1,8 @@
 ﻿using System.IO;
+using fb;
 using RimeLib.Frostbite;
 using RimeLib.Frostbite.Core;
 using RimeLib.IO;
-using RimeLib.Frostbite.Containers;
 
 namespace RimeLib.Mesh.Frostbite
 {

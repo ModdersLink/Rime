@@ -111,7 +111,7 @@ namespace RimeLib.Texture.Frostbite2_0.Engine
         /// <summary>
         /// Mip map sizes (uint32 * 15)
         /// </summary>
-        public uint[] MipmapSizes { get; set; } = new uint[0]; // DWORD[15];
+        public uint[] MipmapSizes { get; set; } = new uint[15]; // DWORD[15];
 
         /// <summary>
         /// Mip map chain size
@@ -154,7 +154,32 @@ namespace RimeLib.Texture.Frostbite2_0.Engine
 
         public bool Serialize(RimeWriter p_Writer)
         {
-            throw new System.NotImplementedException();
+            p_Writer.Write(Version);
+            p_Writer.Write((uint)Type);
+            p_Writer.Write((uint)Format);
+            p_Writer.Write((uint)Flags);
+            p_Writer.Write(Width);
+            p_Writer.Write(Height);
+            p_Writer.Write(Depth);
+            p_Writer.Write(SliceCount);
+            p_Writer.Write(Unused0);
+            p_Writer.Write(MipmapCount);
+            p_Writer.Write(MipmapBaseIndex);
+            StreamingChunkId.Serialize(p_Writer);
+
+            foreach (var s_MipMapSize in MipmapSizes)
+                p_Writer.Write(s_MipMapSize);
+
+            p_Writer.Write(MipmapChainSize);
+            p_Writer.Write(ResourceNamehash);
+
+            var s_TextureGroupData = Encoding.UTF8.GetBytes(TextureGroup);
+            p_Writer.Write(s_TextureGroupData, 0, System.Math.Min(s_TextureGroupData.Length, 16));
+
+            if (s_TextureGroupData.Length < 16)
+                p_Writer.WriteNullBytes(16 - (uint)s_TextureGroupData.Length);
+
+            return true;
         }
 
         public bool Serialize(out byte[] p_Data)
