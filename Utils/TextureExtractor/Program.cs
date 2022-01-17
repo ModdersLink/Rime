@@ -243,8 +243,9 @@ namespace TextureExtractor
             using var s_FileStream = new FileStream(s_SavePath, FileMode.OpenOrCreate);
             using var s_RimeWriter = new RimeWriter(s_FileStream);
 
+            FB2DDSExporter.SaveDDS(s_RimeWriter, s_Texture, )
 
-            s_SaveHandler?.Save(s_Texture, s_RimeWriter);
+            //s_SaveHandler?.Save(s_Texture, s_RimeWriter);
             
         }
     }

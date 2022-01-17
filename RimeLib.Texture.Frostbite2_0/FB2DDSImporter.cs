@@ -78,25 +78,25 @@ namespace RimeLib.Texture.Frostbite2_0
 
                 var s_ExtendedHeader = new DDSDX10Header(p_Reader);
 
-                if (s_ExtendedHeader.m_DxgiFormat == DXGIFormat.UNKNOWN)
+                if (s_ExtendedHeader.DxgiFormat == DXGIFormat.UNKNOWN)
                     throw new Exception("Invalid format for dx10 texture!");
 
                 //TODO: rgb formats, typeless formats!!
-                var s_TextureFormat = DDSUtils.c_DDSDXFormatMap.Where( x => x.Value == s_ExtendedHeader.m_DxgiFormat ).Select( x => x.Key ).FirstOrDefault( );
+                var s_TextureFormat = DDSUtils.c_DDSDXFormatMap.Where( x => x.Value == s_ExtendedHeader.DxgiFormat ).Select( x => x.Key ).FirstOrDefault( );
                 p_Header.Format = s_TextureFormat;
 
 
                 //Read type from extendedheader
-                if (s_ExtendedHeader.m_MiscFlag.HasFlag(DDSMiscFlag1.TextureCube))
+                if (s_ExtendedHeader.MiscFlag.HasFlag(DDSMiscFlag1.TextureCube))
                 {
                     p_Header.Type = TextureType.TextureType_Cube;
 
-                    if (s_ExtendedHeader.m_ArraySize != 6)
+                    if (s_ExtendedHeader.ArraySize != 6)
                         throw new Exception("This cube is not a full cube");
                 }
                 else
                 {
-                    switch (s_ExtendedHeader.m_ResourceDimension)
+                    switch (s_ExtendedHeader.ResourceDimension)
                     {
                     case DDSResoruceDimension.Texture1D:
                         p_Header.Type = TextureType.TextureType_1D;

@@ -100,6 +100,5 @@ namespace RimeLib.Texture.Frostbite2_0
 
             m_Texture.MipmapChainSize = s_ChainSize;
         }
-
     }
 }

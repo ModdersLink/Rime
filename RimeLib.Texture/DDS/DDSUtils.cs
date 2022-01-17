@@ -51,9 +51,14 @@ namespace RimeLib.Texture.DDS
         public static readonly Dictionary<TextureFormat, DXGIFormat> c_DDSDXFormatMap = new Dictionary<TextureFormat, DXGIFormat>()
         {
             // Formats that is imported
-
+            { TextureFormat.TextureFormat_Dxt1, DXGIFormat.BC1_UNORM },
             { TextureFormat.TextureFormat_Dxt1A, DXGIFormat.BC1_UNORM },
+            { TextureFormat.TextureFormat_NormalDxt1, DXGIFormat.BC1_UNORM },
+            { TextureFormat.TextureFormat_Dxt3, DXGIFormat.BC2_UNORM },
+            { TextureFormat.TextureFormat_Dxt5, DXGIFormat.BC3_UNORM },
             { TextureFormat.TextureFormat_Dxt5A, DXGIFormat.BC4_UNORM },
+            { TextureFormat.TextureFormat_NormalDxt5, DXGIFormat.BC3_UNORM },
+            { TextureFormat.TextureFormat_NormalDxt5Rga, DXGIFormat.BC4_UNORM },
             { TextureFormat.TextureFormat_Dxn, DXGIFormat.BC5_UNORM },
             { TextureFormat.TextureFormat_NormalDxn, DXGIFormat.BC5_UNORM},
 

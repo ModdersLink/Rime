@@ -90,7 +90,7 @@ namespace RimeLib.Texture.DDS
         public const uint c_DDSHeaderSize = 0x7C; //TODO
 
         public uint Magic { get; set; } = c_DDSMagic;
-        public uint Size { get; protected set; } = c_DDSHeaderSize;
+        public uint Size { get; protected set; } =c_DDSHeaderSize;
         public DDSFlags Flags { get; set; } = 0;
         public uint Height { get; set; } = 0;
         public uint Width { get; set; } = 0;

@@ -125,31 +125,31 @@ namespace RimeLib.Texture
                 s_ExtendedHeader = new DDSDX10Header();
 
 
-                s_ExtendedHeader.m_DxgiFormat = s_DXGIFormat;
+                s_ExtendedHeader.DxgiFormat = s_DXGIFormat;
 
 
                 switch (this.Type)
                 {
                 case TextureType.TextureType_1D:
                 case TextureType.TextureType_1DArray:
-                    s_ExtendedHeader.m_ResourceDimension = DDSResoruceDimension.Texture1D;
+                    s_ExtendedHeader.ResourceDimension = DDSResoruceDimension.Texture1D;
                     break;
 
                 case TextureType.TextureType_2D:
                 case TextureType.TextureType_2DArray:
-                    s_ExtendedHeader.m_ResourceDimension = DDSResoruceDimension.Texture2D;
+                    s_ExtendedHeader.ResourceDimension = DDSResoruceDimension.Texture2D;
                     break;
 
                 case TextureType.TextureType_3D:
-                    s_ExtendedHeader.m_ResourceDimension = DDSResoruceDimension.Texture3D;
+                    s_ExtendedHeader.ResourceDimension = DDSResoruceDimension.Texture3D;
                     break;
 
                 case TextureType.TextureType_Cube:
                 case TextureType.TextureType_CubeArray:
-                    s_ExtendedHeader.m_ResourceDimension = DDSResoruceDimension.Texture2D;
+                    s_ExtendedHeader.ResourceDimension = DDSResoruceDimension.Texture2D;
 
-                    s_ExtendedHeader.m_MiscFlag = DDSMiscFlag1.TextureCube;
-                    s_ExtendedHeader.m_ArraySize = 6;
+                    s_ExtendedHeader.MiscFlag = DDSMiscFlag1.TextureCube;
+                    s_ExtendedHeader.ArraySize = 6;
                     break;
                 }
             }

@@ -98,31 +98,31 @@ namespace RimeLib.Texture.Frostbite.DDS
                 m_ExtendedHeader = new DDSDX10Header();
 
 
-                m_ExtendedHeader.m_DxgiFormat = s_DXGIFormat;
+                m_ExtendedHeader.DxgiFormat = s_DXGIFormat;
 
 
                 switch (p_Texture.Type)
                 {
                 case TextureType.TextureType_1D:
                 case TextureType.TextureType_1DArray:
-                    m_ExtendedHeader.m_ResourceDimension = DDSResoruceDimension.Texture1D;
+                    m_ExtendedHeader.ResourceDimension = DDSResoruceDimension.Texture1D;
                     break;
 
                 case TextureType.TextureType_2D:
                 case TextureType.TextureType_2DArray:
-                    m_ExtendedHeader.m_ResourceDimension = DDSResoruceDimension.Texture2D;
+                    m_ExtendedHeader.ResourceDimension = DDSResoruceDimension.Texture2D;
                     break;
 
                 case TextureType.TextureType_3D:
-                    m_ExtendedHeader.m_ResourceDimension = DDSResoruceDimension.Texture3D;
+                    m_ExtendedHeader.ResourceDimension = DDSResoruceDimension.Texture3D;
                     break;
 
                 case TextureType.TextureType_Cube:
                 case TextureType.TextureType_CubeArray:
-                    m_ExtendedHeader.m_ResourceDimension = DDSResoruceDimension.Texture2D;
+                    m_ExtendedHeader.ResourceDimension = DDSResoruceDimension.Texture2D;
 
-                    m_ExtendedHeader.m_MiscFlag = DDSMiscFlag1.TextureCube;
-                    m_ExtendedHeader.m_ArraySize = 6;
+                    m_ExtendedHeader.MiscFlag = DDSMiscFlag1.TextureCube;
+                    m_ExtendedHeader.ArraySize = 6;
                     break;
                 }
             }
