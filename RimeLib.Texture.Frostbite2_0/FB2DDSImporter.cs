@@ -82,7 +82,8 @@ namespace RimeLib.Texture.Frostbite2_0
                     throw new Exception("Invalid format for dx10 texture!");
 
                 //TODO: rgb formats, typeless formats!!
-                var s_TextureFormat = DDSUtils.c_DDSDXFormatMap.Where( x => x.Value == s_ExtendedHeader.DxgiFormat ).Select( x => x.Key ).FirstOrDefault( );
+                throw new Exception();
+                var s_TextureFormat = TextureFormat.TextureFormat_FB2_Unknown; //DDSUtils.c_DDSDXFormatMap.Where( x => x.Value == s_ExtendedHeader.DxgiFormat ).Select( x => x.Key ).FirstOrDefault( );
                 p_Header.Format = s_TextureFormat;
 
 

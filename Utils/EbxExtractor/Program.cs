@@ -137,7 +137,7 @@ namespace EbxExtractor
                 if (s_Resource.FirstVariant.GetResourceType() == RimeLib.Content.Frostbite.ResourceType.DxTexture)
                 {
 
-                    var s_TargetPath = $@"D:\Rime\Textures\{s_Name}.dds";
+                    var s_TargetPath = $@"Textures\{s_Name}.dds";
 
                     if (!Directory.Exists(Path.GetDirectoryName(s_TargetPath)))
                         Directory.CreateDirectory(Path.GetDirectoryName(s_TargetPath));

@@ -5,6 +5,7 @@ using RimeLib.IO;
 using RimeLib.Texture.DDS;
 using RimeLib.Texture.Frostbite;
 using RimeLib.Texture.Attributes;
+using System.Collections.Generic;
 
 namespace RimeLib.Texture.TextureHandlers
 {
@@ -58,13 +59,13 @@ namespace RimeLib.Texture.TextureHandlers
 
         public static void SaveDDS(RimeWriter p_Writer, TextureBase p_TextureHeader, Stream p_ImageData)
         {
-            var s_DDSHeader = FromTextureHeader(p_TextureHeader);
+            var s_DDSHeader = FromTexture(p_TextureHeader);
 
             s_DDSHeader.Serialize(p_Writer);
             p_Writer.Write(new RimeReader(p_ImageData, p_ShouldDispose: false).ReadBytes((int)p_ImageData.Length));
         }
 
-        public static DDSFormatFlags PixelFormatFlagsFromTextureHeader(TextureBase p_TextureHeader)
+        public static DDSFormatFlags PixelFormatFlagsFromTexture(TextureBase p_TextureHeader)
         {
             if (!TextureUtils.s_FormatFlags.TryGetValue(p_TextureHeader.Format, out DDSFormatFlags s_Format))
                 return DDSFormatFlags.None;
@@ -72,7 +73,7 @@ namespace RimeLib.Texture.TextureHandlers
             return s_Format;
         }
 
-        public static DDSCaps CapsFromTextureHeader(TextureBase p_TextureHeader)
+        public static DDSCaps CapsFromTexture(TextureBase p_TextureHeader)
         {
             DDSCaps s_Caps = DDSCaps.Texture;
             switch (p_TextureHeader.Type)
@@ -89,12 +90,12 @@ namespace RimeLib.Texture.TextureHandlers
             }
 
             if (p_TextureHeader.MipmapCount > 1)
-                s_Caps |= DDSCaps.MipmapFlags;
+                s_Caps |= DDSCaps.Mipmap;
 
             return s_Caps;
         }
 
-        public static DDSCaps2 Caps2FromTextureHeader(TextureBase p_TextureHeader)
+        public static DDSCaps2 Caps2FromTexture(TextureBase p_TextureHeader)
         {
             DDSCaps2 s_Caps = 0;
             switch (p_TextureHeader.Type)
@@ -111,7 +112,7 @@ namespace RimeLib.Texture.TextureHandlers
             return s_Caps;
         }
 
-        public static DDSResoruceDimension ResourceDimensionFromTextureHeader(TextureBase p_TextureHeader)
+        public static DDSResoruceDimension ResourceDimensionFromTexture(TextureBase p_TextureHeader)
         {
             switch (p_TextureHeader.Type)
             {
@@ -133,7 +134,7 @@ namespace RimeLib.Texture.TextureHandlers
             return 0;
         }
 
-        public static DDSMiscFlag1 MiscFlag1FromTextureHeader(TextureBase p_TextureHeader)
+        public static DDSMiscFlag1 MiscFlag1FromTexture(TextureBase p_TextureHeader)
         {
             switch (p_TextureHeader.Type)
             {
@@ -145,7 +146,7 @@ namespace RimeLib.Texture.TextureHandlers
             return 0;
         }
 
-        public static uint ArraySizeFromTextureHeader(TextureBase p_TextureHeader)
+        public static uint ArraySizeFromTexture(TextureBase p_TextureHeader)
         {
             switch (p_TextureHeader.Type)
             {
@@ -157,13 +158,14 @@ namespace RimeLib.Texture.TextureHandlers
             return 0;
         }
 
-        public static DDSMiscFlag2 MiscFlag2FromTextureHeader(TextureBase p_TextureHeader)
+        public static DDSMiscFlag2 MiscFlag2FromTexture(TextureBase p_TextureHeader)
         {
             // The legacy D3DX 10 and D3DX 11 utility libraries will fail to load any .DDS file with miscFlags2 not equal to zero.
+
             return 0;
         }
 
-        public static DDSFlags DDSFlagsFromTextureHeader(TextureBase p_TextureHeader)
+        public static DDSFlags DDSFlagsFromTexture(TextureBase p_TextureHeader)
         {
             // Start with the required flags for all textures
             DDSFlags s_Flags = DDSFlags.Caps | DDSFlags.Height | DDSFlags.Width | DDSFlags.PixelFormat;
@@ -175,7 +177,7 @@ namespace RimeLib.Texture.TextureHandlers
                 s_Flags |= DDSFlags.LinearSize;
 
             // Check to see if we have any mipmaps
-            if (p_TextureHeader.MipmapCount > 0)
+            if (p_TextureHeader.MipmapCount > 1)
                 s_Flags |= DDSFlags.MipmapCount;
 
             if (p_TextureHeader.Depth > 1)
@@ -184,54 +186,91 @@ namespace RimeLib.Texture.TextureHandlers
             return s_Flags;
         }
 
-        public static DDSHeader FromTextureHeader(TextureBase p_TextureHeader)
+        static Dictionary<TextureFormat, DXGIFormat> g_TextureFormatToDxgiFormat = new Dictionary<TextureFormat, DXGIFormat>
         {
-            if (!DDSUtils.c_DDSDXFormatMap.TryGetValue(p_TextureHeader.Format, out var s_DXGIFormat))
+            { TextureFormat.TextureFormat_R16F, DXGIFormat.R16_FLOAT }
+
+        };
+
+        public static DXGIFormat DXGIFormatFromTexture(TextureBase p_Texture)
+        {
+            if (g_TextureFormatToDxgiFormat.TryGetValue(p_Texture.Format, out DXGIFormat s_Value))
+                return s_Value;
+
+            return DXGIFormat.UNKNOWN;
+        }
+
+        public static uint FourCCFromTexture(TextureBase p_Texture)
+        {
+            switch (p_Texture.Format)
             {
-                throw new Exception($"Invalid textureformat {p_TextureHeader.Format}");
+                default:
+                    break;
             }
 
-            if (!DDSUtils.c_DDSFormatMap.TryGetValue(p_TextureHeader.Format, out var s_Format))
+            return 0;
+        }
+
+        public static DDSPixelFormat PixelFormatFromTexture(TextureBase p_Texture)
+        {
+            if (DDSUtils.c_DDSFormatMap.TryGetValue(p_Texture.Format, out var s_Format))
+                return s_Format;
+
+            return new DDSPixelFormat
             {
-                Console.WriteLine($"could not get dds format map for format {p_TextureHeader.Format}.");
+                Size = 32,
+                Flags = 0,
+                FourCC = 0,
+                RGBBitCount = 0,
+                ABitMask = 0,
+                BBitMask = 0,
+                GBitMask = 0,
+                RBitMask = 0
+            };
+        }
+
+        public static uint DepthFromTexture(TextureBase p_Texture)
+        {
+            return p_Texture.Depth;
+        }
+
+        public static DDSHeader FromTexture(TextureBase p_Texture)
+        {
+            var s_DXGIFormat = DXGIFormatFromTexture(p_Texture);
+
+            var s_PixelFormat = PixelFormatFromTexture(p_Texture);
+
+            if (!DDSUtils.c_DDSFormatMap.TryGetValue(p_Texture.Format, out var s_Format))
+            {
+                Console.WriteLine($"could not get dds format map for format {p_Texture.Format}.");
             }
             
-            TextureUtils.ComputePitch(s_DXGIFormat, p_TextureHeader.Width, p_TextureHeader.Height, out long s_RowPitch, out long s_SlicePitch, TextureUtils.CPFLAGS.NONE);
+            TextureUtils.ComputePitch(s_DXGIFormat, p_Texture.Width, p_Texture.Height, out long s_RowPitch, out long s_SlicePitch, TextureUtils.CPFLAGS.NONE);
 
             return new DDSHeader
             {
                 Magic = DDSHeader.c_DDSMagic,
                 // https://docs.microsoft.com/en-us/windows/win32/direct3ddds/dds-header
-                Flags = DDSFlagsFromTextureHeader(p_TextureHeader),
-                Height = p_TextureHeader.Height,
-                Width = p_TextureHeader.Width,
-                PitchOrLinearSize = (uint)(TextureUtils.IsCompressed(p_TextureHeader.Format) ? s_SlicePitch : s_RowPitch), // TODO: Verify
-                Depth = (p_TextureHeader.Depth > 1 ? p_TextureHeader.Depth : 0),
-                MipMapCount = p_TextureHeader.MipmapCount,
+                Flags = DDSFlagsFromTexture(p_Texture),
+                Height = p_Texture.Height,
+                Width = p_Texture.Width,
+                PitchOrLinearSize = (uint)(TextureUtils.IsCompressed(p_Texture.Format) ? s_SlicePitch : s_RowPitch), // TODO: Verify
+                Depth = DepthFromTexture(p_Texture),
+                MipMapCount = p_Texture.MipmapCount,
                 Reserved = new uint[11] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, DDSUtils.MakeFourCC("RIME") },
-                PixelFormat = (s_Format != null ? s_Format : new DDSPixelFormat
-                {
-                    Size = 32,
-                    Flags = DDSFormatFlags.FourCC,
-                    FourCC = DDSUtils.MakeFourCC("DX10"),
-                    RGBBitCount = 0,
-                    RBitMask = 0,
-                    GBitMask = 0,
-                    BBitMask = 0,
-                    ABitMask = 0
-                }),
-                Caps = CapsFromTextureHeader(p_TextureHeader),
-                Caps2 = Caps2FromTextureHeader(p_TextureHeader),
+                PixelFormat = s_PixelFormat,
+                Caps = CapsFromTexture(p_Texture),
+                Caps2 = Caps2FromTexture(p_Texture),
                 Caps3 = 0,
                 Caps4 = 0,
                 Reserved2 = 0,
                 Dx10Header = (s_Format != null ? (s_Format.FourCC == DDSUtils.MakeFourCC("DX10") ? new DDSDX10Header
                 {
                     DxgiFormat = s_DXGIFormat,
-                    ResourceDimension = ResourceDimensionFromTextureHeader(p_TextureHeader),
-                    MiscFlag = MiscFlag1FromTextureHeader(p_TextureHeader),
-                    ArraySize = ArraySizeFromTextureHeader(p_TextureHeader),
-                    MiscFlags2 = MiscFlag2FromTextureHeader(p_TextureHeader),
+                    ResourceDimension = ResourceDimensionFromTexture(p_Texture),
+                    MiscFlag = MiscFlag1FromTexture(p_Texture),
+                    ArraySize = ArraySizeFromTexture(p_Texture),
+                    MiscFlags2 = MiscFlag2FromTexture(p_Texture),
                 } : null) : null)
             };
         }
