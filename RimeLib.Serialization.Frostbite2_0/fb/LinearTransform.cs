@@ -18,7 +18,7 @@ using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
 {
-	[ContainerType(16, 64)]
+	[ContainerType(16, 64), Homogeneous, LayoutImmutable, Blittable]
 	public class LinearTransform :
 		EbxSerializable
 	{

@@ -4,10 +4,14 @@ using RimeLib.Serialization.Frostbite2_0.Ebx;
 using System;
 using System.IO;
 using System.Reflection;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using RimeLib.Content.Building;
+using RimeLib.Content.Frostbite2_0.Frostbite.Sb;
 using RimeLib.Content.Mounting;
+using RimeLib.Frostbite.Core;
 using RimeLib.IO;
 using RimeLib.Texture;
 
@@ -67,6 +71,26 @@ namespace EbxExtractor
                 System.Environment.Exit(1);
             }
         }
+        internal class FileReader : IReadableObject
+        {
+            private readonly string m_Path;
+
+            public FileReader(string p_Path)
+            {
+                m_Path = p_Path;
+            }
+
+            public RimeReader GetReader()
+            {
+                var s_FileStream = File.Open(m_Path, FileMode.Open, FileAccess.Read);
+                return new RimeReader(s_FileStream);
+            }
+
+            public long GetSize()
+            {
+                return new FileInfo(m_Path).Length;
+            }
+        }
 
         private static void LoadTextureAssembly(Options p_Options)
         {
@@ -90,11 +114,38 @@ namespace EbxExtractor
 
         private static async void DumpFiles(Options p_Options)
         {
-            /*using (var s_Reader = new RimeReader(File.OpenRead(@"I:\Research\BF3\Dump\Files\bundles\ebx\levels\xp2_factory\xp2_factory.ebx")))
+            var s_Partition = DatabasePartition.FromJsonFile(@"B:\ebx-test\vu_test.json");
+            var s_EbxWriter = new EbxWriter();
+
+            using (var s_Writer = new RimeWriter(File.OpenWrite(@"B:\ebx-test\vu_test.ebx")))
+                s_EbxWriter.Serialize(s_Writer, s_Partition);
+
+            var s_SbBuilder = SuperbundleBuilder.Create(p_Options.EngineType, "VuTest");
+            var s_BundleBuilder = BundleBuilder.Create("Win32/VuTest/Main");
+
+            s_BundleBuilder.WithPartition("vu_test", new FileReader(@"B:\ebx-test\vu_test.ebx"));
+
+            s_SbBuilder.WithBundle(s_BundleBuilder.Build());
+
+            using var s_SbStream = File.Open(@"B:\Games\Battlefield 3\vu\Data\VuTest.sb", FileMode.Create, FileAccess.ReadWrite);
+            using var s_TocStream = File.Open(@"B:\Games\Battlefield 3\vu\Data\VuTest.toc", FileMode.Create, FileAccess.ReadWrite);
+
+            s_SbBuilder.Build(s_SbStream, s_TocStream);
+
+            using var s_ContentManifestReader = new RimeReader(File.Open(@"B:\Games\Battlefield 3\Update\Xpack2\Data\Win32\Levels\XP2_Skybar\XP2_Skybar.toc", FileMode.Open, FileAccess.Read, FileShare.Read));
+            var s_ManifestToc = new TableOfContents<SuperbundleLayout>(s_ContentManifestReader);
+
+            using (var s_Reader = new RimeReader(File.OpenRead(@"I:\Research\BF3\Dump\Files\bundles\ebx\levels\xp2_factory\xp2_factory.ebx")))
             {
                 var s_EbxReader = new EbxReader();
                 s_EbxReader.ParsePartition("Test", s_Reader).ToJsonFile(@"B:\ebx-test\xp2_factory.json", Formatting.Indented);
-            }*/
+            }
+
+            using (var s_Reader = new RimeReader(File.OpenRead(@"B:\ebx-test\vu_test.ebx")))
+            {
+                var s_EbxReader = new EbxReader();
+                s_EbxReader.ParsePartition("Test", s_Reader);//.ToJsonFile(@"B:\ebx-test\xp2_factory.json", Formatting.Indented);
+            }
 
             /*var s_Partition = DatabasePartition.FromJsonFile(@"B:\ebx-test\xp2_factory.json");
             var s_EbxWriter = new EbxWriter();
@@ -108,12 +159,13 @@ namespace EbxExtractor
                 s_EbxReader.ParsePartition("Test", s_Reader).ToJsonFile(@"B:\ebx-test\xp2_factory2.json", Formatting.Indented);
             }*/
 
-            var s_Mounter = EngineMounterRegistry.Create(p_Options.EngineType);
+            /*var s_Mounter = EngineMounterRegistry.Create(p_Options.EngineType);
 
             if (!p_Options.Quiet)
                 Console.WriteLine($"Mounting game with engine '{p_Options.EngineType}' at path '{p_Options.GamePath}'. Please wait, this could take a while.");
 
-            await s_Mounter.Mount(p_Options.GamePath, true, EngineType.Frostbite2_0);
+            await s_Mounter.MountStandaloneSuperbundle("VuTest", @"B:\Games\Battlefield 3\vu\Data\VuTest.sb", true);
+            //await s_Mounter.Mount(p_Options.GamePath, true, EngineType.Frostbite2_0);
             //await s_Mounter.MountSuperbundle("Win32/Chunks0", true);
             //await s_Mounter.MountSuperbundle("Win32/Chunks1", true);
             //await s_Mounter.MountSuperbundle("Win32/Chunks2", true);
@@ -166,14 +218,14 @@ namespace EbxExtractor
                 using var s_EbxReader = new EbxReader();
                 var s_Partition = s_EbxReader.ParsePartition(s_PartitionName, s_PartitionReader);
                 
-                var s_TargetPath = Path.Join(@"B:\ebx-dump", s_PartitionName + ".json");
+                var s_TargetPath = Path.Join(@"B:\ebx-dump2", s_PartitionName + ".json");
                 var s_TargetDir = Path.GetDirectoryName(s_TargetPath);
 
                 if (!Directory.Exists(s_TargetDir))
                     Directory.CreateDirectory(s_TargetDir);
 
                 s_Partition.ToJsonFile(s_TargetPath, Formatting.Indented);
-            });
+            });*/
         }
     }
 }
