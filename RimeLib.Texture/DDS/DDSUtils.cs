@@ -19,7 +19,7 @@ namespace RimeLib.Texture.DDS
 
             //{ TextureFormat.TextureFormat_Bc7, new DDSPixelFormat("DX10") },
 
-            { TextureFormat.TextureFormat_NormalDXN, new DDSPixelFormat("DXT5") }, //ATI2
+            { TextureFormat.TextureFormat_NormalDXN, new DDSPixelFormat("DX10") }, //ATI2
 
             { TextureFormat.TextureFormat_NormalDXT1, new DDSPixelFormat("DXT1") },
             { TextureFormat.TextureFormat_NormalDXT5, new DDSPixelFormat("ATI1") },

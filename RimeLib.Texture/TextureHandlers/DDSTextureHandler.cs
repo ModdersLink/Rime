@@ -188,16 +188,43 @@ namespace RimeLib.Texture.TextureHandlers
 
         static Dictionary<TextureFormat, DXGIFormat> g_TextureFormatToDxgiFormat = new Dictionary<TextureFormat, DXGIFormat>
         {
-            { TextureFormat.TextureFormat_R16F, DXGIFormat.R16_FLOAT }
+            { TextureFormat.TextureFormat_DXT1, DXGIFormat.BC1_UNORM },
+            { TextureFormat.TextureFormat_NormalDXT1, DXGIFormat.BC1_UNORM },
+            { TextureFormat.TextureFormat_R16F, DXGIFormat.R16_FLOAT },
 
         };
 
         public static DXGIFormat DXGIFormatFromTexture(TextureBase p_Texture)
         {
-            if (g_TextureFormatToDxgiFormat.TryGetValue(p_Texture.Format, out DXGIFormat s_Value))
-                return s_Value;
+            var s_IsSrgb = (p_Texture.Flags & TextureFlags.SrgbGamma) != 0;
 
-            return DXGIFormat.UNKNOWN;
+            return p_Texture.Format switch
+            {
+                TextureFormat.TextureFormat_DXT1 or TextureFormat.TextureFormat_NormalDXT1 => s_IsSrgb ? DXGIFormat.BC1_UNORM_SRGB : DXGIFormat.BC1_UNORM,
+                TextureFormat.TextureFormat_DXT3 => s_IsSrgb ? DXGIFormat.BC2_UNORM_SRGB : DXGIFormat.BC2_UNORM,
+                TextureFormat.TextureFormat_DXT5 or TextureFormat.TextureFormat_NormalDXT5 or TextureFormat.TextureFormat_NormalDXT5RGA => s_IsSrgb ? DXGIFormat.BC3_UNORM_SRGB : DXGIFormat.BC3_UNORM,
+                TextureFormat.TextureFormat_DXT5A => DXGIFormat.BC4_UNORM,
+                TextureFormat.TextureFormat_DXN or TextureFormat.TextureFormat_NormalDXN => DXGIFormat.BC5_UNORM,
+                TextureFormat.TextureFormat_RGB565 => DXGIFormat.B5G6R5_UNORM,
+                TextureFormat.TextureFormat_ARGB1555 => DXGIFormat.B5G5R5A1_UNORM,
+                TextureFormat.TextureFormat_ARGB4444 => DXGIFormat.B4G4R4A4_UNORM,
+                TextureFormat.TextureFormat_ARGB8888 => s_IsSrgb ? DXGIFormat.R8G8B8A8_UNORM_SRGB : DXGIFormat.R8G8B8A8_UNORM,
+                TextureFormat.TextureFormat_L8 => DXGIFormat.R8_UNORM,
+                TextureFormat.TextureFormat_L16 or TextureFormat.TextureFormat_D16 => DXGIFormat.R16_UNORM,
+                TextureFormat.TextureFormat_ABGR16 => DXGIFormat.R16G16B16A16_UNORM,
+                TextureFormat.TextureFormat_ABGR16F => DXGIFormat.R16G16B16A16_FLOAT,
+                TextureFormat.TextureFormat_ABGR32F => DXGIFormat.R32G32B32A32_FLOAT,
+                TextureFormat.TextureFormat_R16F => DXGIFormat.R16_FLOAT,
+                TextureFormat.TextureFormat_R32F => DXGIFormat.D32_FLOAT,
+                TextureFormat.TextureFormat_GR16 => DXGIFormat.R16G16_UNORM,
+                TextureFormat.TextureFormat_GR16F => DXGIFormat.R16G16_FLOAT,
+                TextureFormat.TextureFormat_D24S8 => DXGIFormat.D24_UNORM_S8_UINT,
+                TextureFormat.TextureFormat_D32F => DXGIFormat.D32_FLOAT,
+                TextureFormat.TextureFormat_ABGR32 => DXGIFormat.R32G32B32A32_UINT,
+                TextureFormat.TextureFormat_GR32F => DXGIFormat.R32G32_FLOAT,
+                TextureFormat.TextureFormat_A2R10G10B10 => DXGIFormat.R10G10B10A2_UNORM,
+                _ => DXGIFormat.UNKNOWN
+            };
         }
 
         public static uint FourCCFromTexture(TextureBase p_Texture)
