@@ -9,21 +9,14 @@ namespace RimeLib.Texture.DDS
         public static readonly Dictionary<TextureFormat, DDSPixelFormat> c_DDSFormatMap = new Dictionary<TextureFormat, DDSPixelFormat>()
         {
             { TextureFormat.TextureFormat_DXT1, new DDSPixelFormat("DXT1") },
-
-            // TODO: Fixme, this exports with missing "lines", swap the format to DXT5 shows up 100% accurate, headers match 100% with GIMP so idk wtf is going on
             { TextureFormat.TextureFormat_DXT3, new DDSPixelFormat("DXT3") },
-
             { TextureFormat.TextureFormat_DXT5, new DDSPixelFormat("DXT5") }, //ATI1
-            { TextureFormat.TextureFormat_DXT5A, new DDSPixelFormat("ATI1") }, //ATI1N
-            { TextureFormat.TextureFormat_DXN, new DDSPixelFormat("ATI2") }, //BC5, ATI2
-
-            //{ TextureFormat.TextureFormat_Bc7, new DDSPixelFormat("DX10") },
-
+            { TextureFormat.TextureFormat_DXT5A, new DDSPixelFormat("DX10") }, //ATI1N
+            { TextureFormat.TextureFormat_DXN, new DDSPixelFormat("DX10") }, //BC5, ATI2
             { TextureFormat.TextureFormat_NormalDXN, new DDSPixelFormat("DX10") }, //ATI2
-
             { TextureFormat.TextureFormat_NormalDXT1, new DDSPixelFormat("DXT1") },
-            { TextureFormat.TextureFormat_NormalDXT5, new DDSPixelFormat("ATI1") },
-            { TextureFormat.TextureFormat_NormalDXT5RGA, new DDSPixelFormat("ATI1") }, //Not sure about this one
+            { TextureFormat.TextureFormat_NormalDXT5, new DDSPixelFormat("DXT5") },
+            { TextureFormat.TextureFormat_NormalDXT5RGA, new DDSPixelFormat("DX10") }, //Not sure about this one
 
             /*{ TextureFormat.TextureFormat_Rgb565, new DDSPixelFormat(DDSFormatFlags.Rgb, 0, 0x0000f800, 0x000007e0, 0x0000001f) },
             { TextureFormat.TextureFormat_Rgb888, new DDSPixelFormat(DDSFormatFlags.Rgb, 0, 0x00ff0000, 0x0000ff00, 0x000000ff) },
