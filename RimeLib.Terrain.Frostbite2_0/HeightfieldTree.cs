@@ -8,74 +8,76 @@ namespace RimeLib.Terrain.Frostbite2_0
     {
         private HeightfieldTreeNode LoadNodes(RimeReader p_Reader, ref uint p_FirstFreeNodeIndex, QuadtreeNodeId p_NodeId)
         {
-            var s_Node = new HeightfieldTreeNode(p_Reader)
-            {
-                ID = p_NodeId
-            };
+            // TODO: Fix below
+            throw new NotImplementedException();
+            //var s_Node = new HeightfieldTreeNode(p_Reader)
+            //{
+            //    ID = p_NodeId
+            //};
 
-            s_Node.SamplesPerMeter = DensityMapNodeSamplesPerSidePot / (s_Node.BoundingBox.Max.X - s_Node.BoundingBox.Min.X);
+            //s_Node.SamplesPerMeter = DensityMapNodeSamplesPerSidePot / (s_Node.BoundingBox.Max.X - s_Node.BoundingBox.Min.X);
 
-            LevelMax = System.Math.Max(p_NodeId.Level, LevelMax);
+            //LevelMax = System.Math.Max(p_NodeId.Level, LevelMax);
 
-            var s_NodeDisabled = p_Reader.ReadBool();
-            if (s_NodeDisabled)
-            {
-                s_Node.Flags |= 8; // What the fuck is this shit
-                return s_Node;
-            }
+            //var s_NodeDisabled = p_Reader.ReadBool();
+            //if (s_NodeDisabled)
+            //{
+            //    s_Node.Flags |= 8; // What the fuck is this shit
+            //    return s_Node;
+            //}
 
-            var s_HasData1 = p_Reader.ReadBool();
-            var s_HasData2 = p_Reader.ReadBool();
+            //var s_HasData1 = p_Reader.ReadBool();
+            //var s_HasData2 = p_Reader.ReadBool();
 
-            if (s_HasData2)
-                s_Node.Flags |= 16;
-            else if (s_HasData1)
-                s_Node.Flags |= 256;
-            else
-                return s_Node;
+            //if (s_HasData2)
+            //    s_Node.Flags |= 16;
+            //else if (s_HasData1)
+            //    s_Node.Flags |= 256;
+            //else
+            //    return s_Node;
 
-            var s_TempFlag1 = p_Reader.ReadBool();
-            if (s_HasData2 && s_TempFlag1)
-            {
-                Debug.WriteLine("Has HeightfieldTree Data!");
+            //var s_TempFlag1 = p_Reader.ReadBool();
+            //if (s_HasData2 && s_TempFlag1)
+            //{
+            //    Debug.WriteLine("Has HeightfieldTree Data!");
 
-                // TODO: Properly read data because this is just nonsense.
+            //    // TODO: Properly read data because this is just nonsense.
 
-                s_Node.EmbeddedData = p_Reader.ReadBytes((int)(NodeSamplesPerSide * NodeSamplesPerSide * 2));
+            //    s_Node.EmbeddedData = p_Reader.ReadBytes((int)(NodeSamplesPerSide * NodeSamplesPerSide * 2));
 
-                if (MinMaxStackSize > 0)
-                {
-                    p_Reader.ReadBytes((int)(MinMaxStackSize * 2));
-                }
+            //    if (MinMaxStackSize > 0)
+            //    {
+            //        p_Reader.ReadBytes((int)(MinMaxStackSize * 2));
+            //    }
 
-                if (true) // if (m_LoadOccluderGridEnable)
-                {
-                    p_Reader.ReadBytes((int)(OccluderGridStackSize * 2));
-                }
-            }
+            //    if (true) // if (m_LoadOccluderGridEnable)
+            //    {
+            //        p_Reader.ReadBytes((int)(OccluderGridStackSize * 2));
+            //    }
+            //}
 
-            var s_HasChildren = p_Reader.ReadBool();
+            //var s_HasChildren = p_Reader.ReadBool();
 
-            if (!s_HasChildren)
-                return s_Node;
+            //if (!s_HasChildren)
+            //    return s_Node;
 
-            s_Node.Children = new RasterTreeNode[4];
+            //s_Node.Children = new RasterTreeNode[4];
 
-            s_Node.FirstChildIndex = (ushort)p_FirstFreeNodeIndex;
-            p_FirstFreeNodeIndex += 4;
+            //s_Node.FirstChildIndex = (ushort)p_FirstFreeNodeIndex;
+            //p_FirstFreeNodeIndex += 4;
 
-            for (var i = 0; i < 4; ++i)
-            {
-                var s_ChildNodeId = new QuadtreeNodeId(p_NodeId);
-                ++s_ChildNodeId.Level;
+            //for (var i = 0; i < 4; ++i)
+            //{
+            //    var s_ChildNodeId = new QuadtreeNodeId(p_NodeId);
+            //    ++s_ChildNodeId.Level;
 
-                s_ChildNodeId.IndexX = (ushort)(QuadtreeNodeId.m_QuadtreeNodeChildOffsetX[i] + 2 * s_ChildNodeId.IndexX);
-                s_ChildNodeId.IndexY = (ushort)(QuadtreeNodeId.m_QuadtreeNodeChildOffsetY[i] + 2 * s_ChildNodeId.IndexY);
+            //    s_ChildNodeId.IndexX = (ushort)(QuadtreeNodeId.m_QuadtreeNodeChildOffsetX[i] + 2 * s_ChildNodeId.IndexX);
+            //    s_ChildNodeId.IndexY = (ushort)(QuadtreeNodeId.m_QuadtreeNodeChildOffsetY[i] + 2 * s_ChildNodeId.IndexY);
 
-                s_Node.Children[i] = LoadNodes(p_Reader, ref p_FirstFreeNodeIndex, s_ChildNodeId);
-            }
+            //    s_Node.Children[i] = LoadNodes(p_Reader, ref p_FirstFreeNodeIndex, s_ChildNodeId);
+            //}
 
-            return s_Node;
+            //return s_Node;
         }
 
         public HeightfieldTreeNode FindNode(QuadtreeNodeId p_ID)

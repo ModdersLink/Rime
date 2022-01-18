@@ -7,7 +7,6 @@ using RimeLib.Frostbite.Core;
 using RimeLib.IO;
 using RimeLib.Texture;
 using RimeLib.Texture.Frostbite;
-using RimeLib.Texture.Frostbite.DDS;
 
 namespace RimeLib.Cmd.Contexts
 {
@@ -158,21 +157,23 @@ namespace RimeLib.Cmd.Contexts
                 if (s_Texture!.MipmapCount < 1)
                     continue;
 
-                TextureUtils.ComputePitch(s_Texture!.Format, s_Texture!.Width, s_Texture!.Height, out var _, out var s_SlicePitch);
+                throw new NotImplementedException();
+                // TODO: fix the code below
+                //TextureUtils.ComputePitch(s_Texture!.Format, s_Texture!.Width, s_Texture!.Height, out var _, out var s_SlicePitch);
 
-                if (s_Texture!.GetMipmapSize(0) == s_SlicePitch)
-                    continue;
+                //if (s_Texture!.GetMipmapSize(0) == s_SlicePitch)
+                //    continue;
 
                 
                 
 
-                p_Writer.WriteLine($"Texture with format {s_Texture!.Format} W:H {s_Texture!.Width}:{s_Texture!.Height} has invalid bit size! Generated {s_SlicePitch} but original has {s_Texture!.GetMipmapSize(0)}");
+                //p_Writer.WriteLine($"Texture with format {s_Texture!.Format} W:H {s_Texture!.Width}:{s_Texture!.Height} has invalid bit size! Generated {s_SlicePitch} but original has {s_Texture!.GetMipmapSize(0)}");
 
 
-                TextureUtils.ComputePitch(s_Texture!.Format, s_Texture!.Width, s_Texture!.Height, out var _, out var _);
+                //TextureUtils.ComputePitch(s_Texture!.Format, s_Texture!.Width, s_Texture!.Height, out var _, out var _);
 
 
-                s_FoundList[s_Texture!.Format] = s_Texture!.Format;
+                //s_FoundList[s_Texture!.Format] = s_Texture!.Format;
             }
         }
 #endif

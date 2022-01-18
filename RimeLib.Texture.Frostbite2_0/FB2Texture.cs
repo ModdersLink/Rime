@@ -87,11 +87,13 @@ namespace RimeLib.Texture.Frostbite2_0
             for (var i = 0; i < m_Texture.MipmapCount; i++)
             {
                 //TODO: Custom bpp for diffrnet formats!
-                TextureUtils.ComputePitch(this.Format, s_CurrentWidth, s_CurrentHeight, out var _, out var s_SlicePitch);
+                // TODO: Fix commented out below
+                throw new NotImplementedException();
+                //TextureUtils.ComputePitch(this.Format, s_CurrentWidth, s_CurrentHeight, out var _, out var s_SlicePitch);
 
-                m_Texture.MipmapSizes[i] = s_SlicePitch;
+                //m_Texture.MipmapSizes[i] = s_SlicePitch;
 
-                s_ChainSize += s_SlicePitch;
+                //s_ChainSize += s_SlicePitch;
 
                 s_CurrentWidth /= 2;
                 s_CurrentHeight /= 2;

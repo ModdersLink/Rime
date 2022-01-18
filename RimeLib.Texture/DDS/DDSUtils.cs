@@ -10,6 +10,7 @@ namespace RimeLib.Texture.DDS
             { TextureFormat.TextureFormat_Dxt1, new DDSPixelFormat("DXT1") },
             { TextureFormat.TextureFormat_Dxt1A, new DDSPixelFormat("DXT1") },
 
+            // TODO: Fixme, this exports with missing "lines", swap the format to DXT5 shows up 100% accurate, headers match 100% with GIMP so idk wtf is going on
             { TextureFormat.TextureFormat_Dxt3, new DDSPixelFormat("DXT3") },
 
             { TextureFormat.TextureFormat_Dxt5, new DDSPixelFormat("DXT5") }, //ATI1
@@ -35,6 +36,7 @@ namespace RimeLib.Texture.DDS
             { TextureFormat.TextureFormat_L16_Uint, new DDSPixelFormat(DDSFormatFlags.Luminance, 16,  0xFFFF) }, //not sure about this one
             { TextureFormat.TextureFormat_L32, new DDSPixelFormat(DDSFormatFlags.Luminance, 32, 0xFFFFFFFF) },
 
+            // TODO: Fixme this one is broken, will need to get the NVIDIA tools from developer forum to create a test texture and compare data
             { TextureFormat.TextureFormat_R16F, new DDSPixelFormat(DDSFormatFlags.Rgb, 64, 0xFFFF) },
 
 

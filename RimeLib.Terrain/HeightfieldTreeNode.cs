@@ -1,4 +1,4 @@
-﻿using RimeLib.Frostbite.Containers;
+﻿using fb;
 using RimeLib.IO;
 using System;
 
@@ -23,13 +23,15 @@ namespace RimeLib.Terrain
             BoundingBox = new AxisAlignedBox();
 
             // The padding isn't actually in the file so we have to read them out separately
-            BoundingBox.Min.X = p_Reader.ReadSingle();
-            BoundingBox.Min.Y = p_Reader.ReadSingle();
-            BoundingBox.Min.Z = p_Reader.ReadSingle();
+            // TODO: Fix below
+            throw new NotImplementedException();
+            //BoundingBox.Min.X = p_Reader.ReadSingle();
+            //BoundingBox.Min.Y = p_Reader.ReadSingle();
+            //BoundingBox.Min.Z = p_Reader.ReadSingle();
 
-            BoundingBox.Max.X = p_Reader.ReadSingle();
-            BoundingBox.Max.Y = p_Reader.ReadSingle();
-            BoundingBox.Max.Z = p_Reader.ReadSingle();
+            //BoundingBox.Max.X = p_Reader.ReadSingle();
+            //BoundingBox.Max.Y = p_Reader.ReadSingle();
+            //BoundingBox.Max.Z = p_Reader.ReadSingle();
         }
     }
 

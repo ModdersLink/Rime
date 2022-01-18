@@ -1,21 +1,5 @@
-﻿using RimeLib.Frostbite.Containers;
-using RimeLib.UI.Controls.Meta;
-using RimeLib.UI.ViewModels.fb;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace RimeLib.UI
 {
@@ -33,25 +17,28 @@ namespace RimeLib.UI
         {
             InitializeComponent();
 
-            dockingManager.DocumentsSource = new[] 
-            {
-                new Vec2ViewModel
-                {
-                    Value = new Vec2(1337, 1338)
-                },
-                new Vec2ViewModel
-                {
-                    Value = new Vec2(1337, 1338)
-                },
-                new Vec2ViewModel
-                {
-                    Value = new Vec2(1337, 1338)
-                },
-                new Vec2ViewModel
-                {
-                    Value = new Vec2(1337, 1338)
-                }
-            };
+            // TODO: Fix code below
+            throw new NotImplementedException();
+            //dockingManager.DocumentsSource = new[]
+            //{
+
+            //    new Vec2ViewModel
+            //    {
+            //        Value = new Vec2(1337, 1338)
+            //    },
+            //    new Vec2ViewModel
+            //    {
+            //        Value = new Vec2(1337, 1338)
+            //    },
+            //    new Vec2ViewModel
+            //    {
+            //        Value = new Vec2(1337, 1338)
+            //    },
+            //    new Vec2ViewModel
+            //    {
+            //        Value = new Vec2(1337, 1338)
+            //    }
+            //};
         }
     }
 }

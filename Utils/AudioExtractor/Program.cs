@@ -2,8 +2,6 @@
 using fb;
 using RimeLib.Content.Mounting;
 using RimeLib.Frostbite;
-using RimeLib.Serialization;
-using RimeLib.Frostbite.Containers;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
 using System;
 using System.Collections.Generic;
@@ -81,11 +79,13 @@ namespace AudioExtractor
 
                 foreach (var s_Type in s_ExportedTypes)
                 {
-                    if (!typeof(FrostbiteContainer).IsAssignableFrom(s_Type) &&
-                        !s_Type.IsEnum)
-                        continue;
+                    throw new NotImplementedException();
+                    // TODO: Fix the old code below
+                    //if (!typeof(FrostbiteContainer).IsAssignableFrom(s_Type) &&
+                    //    !s_Type.IsEnum)
+                    //    continue;
 
-                    ContainerRegistry.RegisterType(s_Type);
+                    //ContainerRegistry.RegisterType(s_Type);
                 }
             }
             catch
@@ -147,12 +147,14 @@ namespace AudioExtractor
                 if (s_Partition == null)
                     continue;
 
-                // Register the partition for future usage
-                PartitionRegistry.RegisterPartition(s_Partition);
+                throw new NotImplementedException();
+                // TODO: Fix code below
+                //// Register the partition for future usage
+                //PartitionRegistry.RegisterPartition(s_Partition);
 
-                // Bail if this is not a SoundWaveAsset
-                if (s_Partition.PrimaryInstance.ContainerTypeName != "SoundWaveAsset")
-                    continue;
+                //// Bail if this is not a SoundWaveAsset
+                //if (s_Partition.PrimaryInstance.ContainerTypeName != "SoundWaveAsset")
+                //    continue;
 
                 // Read out all of the chunks
                 var s_ChunkList = new List<byte[]>();
@@ -175,7 +177,9 @@ namespace AudioExtractor
                 var s_VariationList = new List<SoundWaveVariation>();
                 for (var s_VariationIndex = 0; s_VariationIndex < s_Asset.Variations.Count; ++s_VariationIndex)
                 {
-                    s_VariationList.Add(s_Asset.Variations[s_VariationIndex]);
+                    throw new NotImplementedException();
+                    // TODO: Fix code below
+                    //s_VariationList.Add(s_Asset.Variations[s_VariationIndex]);
                 }
 
                 // Check our assumptions
@@ -198,7 +202,9 @@ namespace AudioExtractor
             }
 #endif
 
-            var s_Results = PartitionRegistry.Partitions.Where(p_Partition => p_Partition.PrimaryInstance.ContainerTypeName == "SoundWaveAsset");
+            throw new NotImplementedException();
+            // TODO: Fix code below
+            //var s_Results = PartitionRegistry.Partitions.Where(p_Partition => p_Partition.PrimaryInstance.ContainerTypeName == "SoundWaveAsset");
         }
     }
 }

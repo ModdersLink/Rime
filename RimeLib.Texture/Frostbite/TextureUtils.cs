@@ -480,77 +480,77 @@ namespace RimeLib.Texture.Frostbite
         /// <param name="p_RowPitch"></param>
         /// <param name="p_SlicePitch"></param>
         /// <returns></returns>
-        public static bool ComputePitch(TextureFormat p_Format, uint p_Width, uint p_Height, out uint p_RowPitch, out uint p_SlicePitch)
-        {
-            uint s_Pitch = 0;
-            uint s_Slice = 0;
+        //public static bool ComputePitch(TextureFormat p_Format, uint p_Width, uint p_Height, out uint p_RowPitch, out uint p_SlicePitch)
+        //{
+        //    uint s_Pitch = 0;
+        //    uint s_Slice = 0;
 
-            var s_BitsPerPixel = BitsPerPixel(p_Format);
+        //    var s_BitsPerPixel = BitsPerPixel(p_Format);
 
-            switch (p_Format)
-            {
-            case TextureFormat.TextureFormat_Dxt1:
+        //    switch (p_Format)
+        //    {
+        //    case TextureFormat.TextureFormat_Dxt1:
             
-            case TextureFormat.TextureFormat_Dxt5A:
-            {
-                //aligns to nearest 4 bits
-                var s_Nbw = System.Math.Max(1, (p_Width + 3) / 4);
-                var s_Nbh = System.Math.Max(1, (p_Height + 3) / 4);
+        //    case TextureFormat.TextureFormat_Dxt5A:
+        //    {
+        //        //aligns to nearest 4 bits
+        //        var s_Nbw = System.Math.Max(1, (p_Width + 3) / 4);
+        //        var s_Nbh = System.Math.Max(1, (p_Height + 3) / 4);
 
-                s_Pitch = s_Nbw * 8; //uint8?
-                s_Slice = s_Pitch * s_Nbh;
-                break;
-            }
+        //        s_Pitch = s_Nbw * 8; //uint8?
+        //        s_Slice = s_Pitch * s_Nbh;
+        //        break;
+        //    }
 
-            //This fixes stuff
-            case TextureFormat.TextureFormat_NormalDxt1:
-            case TextureFormat.TextureFormat_Dxt1A:
-
-
-            case TextureFormat.TextureFormat_Dxt3:
-            case TextureFormat.TextureFormat_Dxt5:
-            case TextureFormat.TextureFormat_NormalDxt5:
-            case TextureFormat.TextureFormat_NormalDxt5Rga:
-            case TextureFormat.TextureFormat_Dxn:
-            case TextureFormat.TextureFormat_NormalDxn:
-            case TextureFormat.TextureFormat_Bc7:
-            {
-
-                //aligns to nearest 4 bits
-                var s_Nbw = System.Math.Max(1, (p_Width + 3) / 4);
-                var s_Nbh = System.Math.Max(1, (p_Height + 3) / 4);
-
-                s_Pitch = s_Nbw * 16; //uint16?
-                s_Slice = s_Pitch * s_Nbh;
-                break;
-            }
+        //    //This fixes stuff
+        //    case TextureFormat.TextureFormat_NormalDxt1:
+        //    case TextureFormat.TextureFormat_Dxt1A:
 
 
-            case TextureFormat.TextureFormat_R32F:
-            {
-                s_Pitch = (p_Width * s_BitsPerPixel + 7u) / (8u * 8u);
-                s_Slice = s_Pitch * p_Height;
-                break;
-            }
+        //    case TextureFormat.TextureFormat_Dxt3:
+        //    case TextureFormat.TextureFormat_Dxt5:
+        //    case TextureFormat.TextureFormat_NormalDxt5:
+        //    case TextureFormat.TextureFormat_NormalDxt5Rga:
+        //    case TextureFormat.TextureFormat_Dxn:
+        //    case TextureFormat.TextureFormat_NormalDxn:
+        //    case TextureFormat.TextureFormat_Bc7:
+        //    {
+
+        //        //aligns to nearest 4 bits
+        //        var s_Nbw = System.Math.Max(1, (p_Width + 3) / 4);
+        //        var s_Nbh = System.Math.Max(1, (p_Height + 3) / 4);
+
+        //        s_Pitch = s_Nbw * 16; //uint16?
+        //        s_Slice = s_Pitch * s_Nbh;
+        //        break;
+        //    }
 
 
-            default:
-            {
+        //    case TextureFormat.TextureFormat_R32F:
+        //    {
+        //        s_Pitch = (p_Width * s_BitsPerPixel + 7u) / (8u * 8u);
+        //        s_Slice = s_Pitch * p_Height;
+        //        break;
+        //    }
+
+
+        //    default:
+        //    {
 
                 
 
-                //aligns to nearest 8 bits
-                s_Pitch = (p_Width * s_BitsPerPixel + 7u) / 8u;
-                s_Slice = s_Pitch * p_Height;
-                break;
-            }
-            }
+        //        //aligns to nearest 8 bits
+        //        s_Pitch = (p_Width * s_BitsPerPixel + 7u) / 8u;
+        //        s_Slice = s_Pitch * p_Height;
+        //        break;
+        //    }
+        //    }
 
-            p_RowPitch = s_Pitch;
-            p_SlicePitch = s_Slice;
+        //    p_RowPitch = s_Pitch;
+        //    p_SlicePitch = s_Slice;
 
-            return s_Pitch != 0;
-        }
+        //    return s_Pitch != 0;
+        //}
 
 
 

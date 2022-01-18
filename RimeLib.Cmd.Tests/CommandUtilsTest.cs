@@ -50,55 +50,55 @@ namespace RimeLib.Cmd.Tests
 
     public class CommandUtilsTest
     {
-        [TestMethod]
+        [Fact]
         public void TestParseArguments()
         {
-            Assert.AreEqual(
+            Assert.Equal(
                 CommandUtils.ParseArguments("one"),
                 new[] { "one" }
             );
 
-            Assert.AreEqual(
+            Assert.Equal(
                 CommandUtils.ParseArguments("one two"),
                 new[] { "one", "two" }
             );
 
-            Assert.AreEqual(
+            Assert.Equal(
                 CommandUtils.ParseArguments("one    two"),
                 new[] { "one", "two" }
             );
 
-            Assert.AreEqual(
+            Assert.Equal(
                 CommandUtils.ParseArguments("one \"two\""),
                 new[] { "one", "two" }
             );
 
-            Assert.AreEqual(
+            Assert.Equal(
                 CommandUtils.ParseArguments("one \"two\" \"three spaced\""),
                 new[] { "one", "two", "three spaced" }
             );
 
-            Assert.AreEqual(
+            Assert.Equal(
                 CommandUtils.ParseArguments("one \"two\" \"three \\\"spaced\\\"\""),
                 new[] { "one", "two", "three \"spaced\"" }
             );
 
-            Assert.AreEqual(
+            Assert.Equal(
                 CommandUtils.ParseArguments("one\"two\""),
                 new[] { "one", "two" }
             );
 
-            Assert.AreEqual(
+            Assert.Equal(
                 CommandUtils.ParseArguments("one\"two"),
                 new[] { "one", "two" }
             );
 
-            Assert.AreEqual(
+            Assert.Equal(
                 CommandUtils.ParseArguments("one\"two\"three"),
                 new[] { "one", "two", "three" }
             );
 
-            Assert.AreEqual(
+            Assert.Equal(
                 CommandUtils.ParseArguments("one t\\wo"),
                 new[] { "one", "t\\wo" }
             );
@@ -147,7 +147,7 @@ namespace RimeLib.Cmd.Tests
 
                 Debug.WriteLine(s_Path);
 
-                Directory.CreateDirectory(s_Dir);
+                Directory.CreateDirectory(s_Dir!);
                 using var s_File = File.Create(s_Path);
                 using var s_EbxReader = p_Partition.Value.FirstVariant.GetReader();
 

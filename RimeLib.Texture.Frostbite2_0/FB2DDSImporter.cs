@@ -1,14 +1,11 @@
 ﻿using RimeLib.IO;
 using RimeLib.Texture.DDS;
 using RimeLib.Texture.Frostbite;
-using RimeLib.Texture.Frostbite.DDS;
 using RimeLib.Texture.Frostbite2_0.Engine;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace RimeLib.Texture.Frostbite2_0
 {
@@ -46,11 +43,14 @@ namespace RimeLib.Texture.Frostbite2_0
 
                 for (var i = 0; i < p_Header.MipmapCount; i++)
                 {
-                    TextureUtils.ComputePitch(p_Header.Format, s_CurrentWidth, s_CurrentHeight, out var _, out var s_SlicePitch);
+                    // TODO: Fix line below
+                    uint s_SlicePitch = 0;
+                    throw new NotImplementedException();
+                    //TextureUtils.ComputePitch(s_DDSHeader., s_CurrentWidth, s_CurrentHeight, out var _, out var s_SlicePitch, TextureUtils.CPFLAGS.NONE);
 
-                    p_Header.MipmapSizes[i] = s_SlicePitch;
+                    p_Header.MipmapSizes[i] = (uint)s_SlicePitch;
 
-                    s_ChainSize += s_SlicePitch;
+                    s_ChainSize += (uint)s_SlicePitch;
 
                     s_CurrentWidth /= 2;
                     s_CurrentHeight /= 2;

@@ -1,6 +1,6 @@
 ﻿using RimeLib.Frostbite.Core;
-using RimeLib.Frostbite.Containers;
 using System.Numerics;
+using fb;
 
 namespace MeshExtractor
 {
@@ -18,10 +18,10 @@ namespace MeshExtractor
         public static Matrix4x4 ToMatrix4x4 (this LinearTransform p_Transform)
         {
             return new Matrix4x4(
-                p_Transform.Right.X, p_Transform.Right.Y, p_Transform.Right.Z, 0,
-                p_Transform.Up.X, p_Transform.Up.Y, p_Transform.Up.Z, 0,
-                p_Transform.Forward.X, p_Transform.Forward.Y, p_Transform.Forward.Z, 0,
-                p_Transform.Trans.X, p_Transform.Trans.Y, p_Transform.Trans.Z, 0);
+                p_Transform.right.x, p_Transform.right.y, p_Transform.right.z, 0,
+                p_Transform.up.x, p_Transform.up.y, p_Transform.up.z, 0,
+                p_Transform.forward.x, p_Transform.forward.y, p_Transform.forward.z, 0,
+                p_Transform.trans.x, p_Transform.trans.y, p_Transform.trans.z, 0);
         }
     }
 }

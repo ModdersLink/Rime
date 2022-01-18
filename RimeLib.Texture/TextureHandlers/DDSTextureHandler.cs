@@ -1,11 +1,9 @@
 ﻿
 using System;
 using System.IO;
-using System.Linq;
 using RimeLib.IO;
 using RimeLib.Texture.DDS;
 using RimeLib.Texture.Frostbite;
-using RimeLib.Texture.Frostbite.DDS;
 using RimeLib.Texture.Attributes;
 
 namespace RimeLib.Texture.TextureHandlers
@@ -16,36 +14,6 @@ namespace RimeLib.Texture.TextureHandlers
         public DDSTextureHandler()
         {
         }
-
-        /*
-        public bool Save(RimeReader p_Reader, TextureBase p_Texture)
-        {
-            
-            if (!ReadHeaders(p_Reader, out var s_Header, out var s_ExtendedHeader))
-                return false;
-
-            if (s_Header.m_Width != p_Texture.Width ||
-                s_Header.m_Height != p_Texture.Height)
-            {
-                throw new Exception("Cannot load texture into buffer that doesnt match");
-                return false;
-            }
-
-
-            FindTextureInfo(s_Header, s_ExtendedHeader, out var s_TextureFormat, out var s_TextureType);
-
-            //TODO: Move to create texture
-            CalculateMipmaps(s_Header, s_TextureFormat, out var s_MipmapSizes, out var s_ChainSize);
-
-            var s_TextureData = p_Reader.ReadBytes((int) s_ChainSize);
-
-
-            p_Texture.WriteData(s_TextureData);
-            
-
-            return true;
-        }*/
-
 
         public bool Load(ITextureHandler p_Handler, RimeReader p_Reader, out TextureBase? p_Texture)
         {
@@ -213,9 +181,6 @@ namespace RimeLib.Texture.TextureHandlers
             if (p_TextureHeader.Depth > 1)
                 s_Flags |= DDSFlags.Depth;
 
-            /*if (p_TextureHeader.Flags.HasFlag(TextureFlags.SrgbGamma))
-                s_Flags |= DDSFlags.Srgb;*/
-
             return s_Flags;
         }
 
@@ -269,180 +234,6 @@ namespace RimeLib.Texture.TextureHandlers
                     MiscFlags2 = MiscFlag2FromTextureHeader(p_TextureHeader),
                 } : null) : null)
             };
-        }
-
-        static uint CalculateBlockCompressedPitch(uint p_Width, uint p_BlockSize)
-        {
-            return System.Math.Max(1, ((p_Width + 3) / 4)) * p_BlockSize;
-        }
-
-        static uint CalculateLegacyPitch(uint p_Width)
-        {
-            return ((p_Width + 1) >> 1) * 4;
-        }
-
-        static uint CalculateOtherPitch(uint p_Width, uint p_BitsPerPixel)
-        {
-            return (p_Width * p_BitsPerPixel + 7) / 8;
-        }
-
-        static uint CalculatePitch(TextureFormat p_Format, uint p_Width, uint p_BitsPerPixel = 0)
-        {
-            // https://docs.microsoft.com/en-us/windows/win32/direct3ddds/dx-graphics-dds-pguide
-            switch (p_Format)
-            {
-                // For block-compressed formats, compute the pitch as:
-                // The block-size is 8 bytes for DXT1, BC1 and BC4 formats
-                // 16 bytes for other block-compressed formats.
-
-                // BC1
-                case TextureFormat.TextureFormat_Dxt1:
-                case TextureFormat.TextureFormat_Dxt1A:
-                case TextureFormat.TextureFormat_NormalDxt1:
-
-                // BC2
-                case TextureFormat.TextureFormat_Dxt3:
-                // BC3
-                case TextureFormat.TextureFormat_Dxt5:
-                case TextureFormat.TextureFormat_NormalDxt5:
-                case TextureFormat.TextureFormat_NormalDxt5Rga:
-                // BC4
-                case TextureFormat.TextureFormat_Dxt5A:
-                // BC5
-                case TextureFormat.TextureFormat_Dxn:
-                case TextureFormat.TextureFormat_NormalDxn:
-                // BC 7
-                case TextureFormat.TextureFormat_Bc7:
-                    return CalculateBlockCompressedPitch(p_Width, 8);
-                case TextureFormat.TextureFormat_Rgb888:
-                    return CalculateLegacyPitch(p_Width);
-                default:
-                    return CalculateOtherPitch(p_Width, TextureUtils.BitsPerPixel(p_Format));
-                    //throw new Exception($"unsupported type {p_Format}.");
-            }
-        }
-
-        bool GenerateDDSHeader(TextureBase p_Texture, out DDSHeader p_Header, out DDSDX10Header? p_ExtendedHeader)
-        {
-            p_ExtendedHeader = null;
-            p_Header = new DDSHeader( );
-
-            // Signature, not needed
-            p_Header.Reserved[9] = DDS.DDSUtils.MakeFourCC("RIME");
-
-            // Set texture
-            p_Header.Flags = DDSFlags.Texture;
-            p_Header.Caps = DDSCaps.Texture;
-
-            // Set texture info
-            p_Header.Height = p_Texture.Height;
-            p_Header.Width = p_Texture.Width;
-            p_Header.Depth = p_Texture.Depth;
-
-            // Mipmap
-            p_Header.MipMapCount = p_Texture.MipmapCount;
-
-            if (p_Header.MipMapCount > 0)
-            {
-                p_Header.Flags |= DDSFlags.MipmapCount;
-
-                if (p_Header.MipMapCount > 1)
-                    p_Header.Caps |= DDSCaps.MipmapFlags;
-            }
-
-            // Texture type
-            switch (p_Texture.Type)
-            {
-            case TextureType.TextureType_Cube:
-            case TextureType.TextureType_CubeArray:
-                p_Header.Caps |= DDSCaps.Complex;
-                p_Header.Caps2 |= DDSCaps2.AllFaces;
-                break;
-
-            case TextureType.TextureType_3D:
-                p_Header.Flags |= DDSFlags.Depth;
-                p_Header.Caps2 |= DDSCaps2.Volume;
-                break;
-            }
-
-            // SRGB texture
-            if (p_Texture.Flags.HasFlag(TextureFlags.SrgbGamma))  //NVIDIA format | some loaders might require this? (DirectXTex)
-                p_Header.Flags |= DDSFlags.Srgb;
-
-            if (!DDSUtils.c_DDSDXFormatMap.TryGetValue(p_Texture.Format, out var s_DXGIFormat))
-                throw new Exception($"Invalid textureformat {p_Texture.Format}");
-
-            TextureUtils.ComputePitch(s_DXGIFormat, p_Texture.Width, p_Texture.Height, out long s_RowPitch, out long s_SlicePitch, TextureUtils.CPFLAGS.NONE);
-
-
-            // TODO: Fix pitch with proper bpp
-            //if (!TextureUtils.ComputePitch(p_Texture.Format, p_Texture.Width, p_Texture.Height, out var s_RowPitch, out var s_SlicePitch))
-            //{
-            //    throw new Exception("Failed to compute pitch!");
-            //    //return false;
-            //}
-
-            if (TextureUtils.IsCompressed(p_Texture.Format))
-            {
-                p_Header.Flags |= DDSFlags.LinearSize;
-                p_Header.PitchOrLinearSize = (uint)s_SlicePitch;
-            }
-            else
-            {
-                p_Header.Flags |= DDSFlags.Pitch;
-                p_Header.PitchOrLinearSize = (uint)s_RowPitch;
-            }
-
-            if (DDSUtils.c_DDSFormatMap.TryGetValue(p_Texture.Format, out var s_Format))
-            {
-                s_Format.RGBBitCount = TextureUtils.BitsPerPixel(p_Texture.Format);
-
-                p_Header.PixelFormat = s_Format;
-            }
-            else
-            {
-                if (!DDSUtils.c_DDSDXFormatMap.TryGetValue(p_Texture.Format, out s_DXGIFormat))
-                {
-                    throw new Exception($"Invalid textureformat {p_Texture.Format}");
-                    //return false;
-                }
-
-                // Set extended header
-                p_Header.PixelFormat = DDSPixelFormat.s_DXExtFormat;
-
-                p_ExtendedHeader = new DDSDX10Header();
-
-
-                p_ExtendedHeader.DxgiFormat = s_DXGIFormat;
-
-                // Texture type
-                switch (p_Texture.Type)
-                {
-                case TextureType.TextureType_1D:
-                case TextureType.TextureType_1DArray:
-                    p_ExtendedHeader.ResourceDimension = DDSResoruceDimension.Texture1D;
-                    break;
-
-                case TextureType.TextureType_2D:
-                case TextureType.TextureType_2DArray:
-                    p_ExtendedHeader.ResourceDimension = DDSResoruceDimension.Texture2D;
-                    break;
-
-                case TextureType.TextureType_3D:
-                    p_ExtendedHeader.ResourceDimension = DDSResoruceDimension.Texture3D;
-                    break;
-
-                case TextureType.TextureType_Cube:
-                case TextureType.TextureType_CubeArray:
-                    p_ExtendedHeader.ResourceDimension = DDSResoruceDimension.Texture2D;
-
-                    p_ExtendedHeader.MiscFlag = DDSMiscFlag1.TextureCube;
-                    p_ExtendedHeader.ArraySize = 6;
-                    break;
-                }
-            }
-
-            return true;
         }
 
         bool ReadHeaders(RimeReader p_Reader, out DDSHeader p_Header, out DDSDX10Header? p_ExtendedHeader)
@@ -540,42 +331,5 @@ namespace RimeLib.Texture.TextureHandlers
                     p_Type = TextureType.TextureType_1D; //if the height is 1, load as texture1d
             }*/
         }
-
-        void CalculateMipmaps(DDSHeader p_Header, TextureFormat p_Format, out uint[] p_MipmapSizes, out uint p_ChainSize)
-        {
-            p_MipmapSizes = new uint[0];
-            p_ChainSize = 0;
-
-            //Calculate mipmap slices, format needs to be set before this
-
-            //This needs to be recalculated for specific consoles, take note
-
-            if (p_Header.Flags.HasFlag(DDSFlags.MipmapCount))
-            {
-                p_MipmapSizes = new uint[p_Header.MipMapCount];
-
-                //Calculate mimap sizes and chain size
-                var s_CurrentWidth = (uint) p_Header.Width;
-                var s_CurrentHeight = (uint) p_Header.Height;
-
-                uint s_ChainSize = 0;
-
-                for (var i = 0; i < p_Header.MipMapCount; i++)
-                {
-                    TextureUtils.ComputePitch(p_Format, s_CurrentWidth, s_CurrentHeight, out var _, out var s_SlicePitch);
-
-                    p_MipmapSizes[i] = s_SlicePitch;
-
-                    s_ChainSize += s_SlicePitch;
-
-                    s_CurrentWidth /= 2;
-                    s_CurrentHeight /= 2;
-
-                }
-
-                p_ChainSize = s_ChainSize;
-            }
-        }
-
     }
 }

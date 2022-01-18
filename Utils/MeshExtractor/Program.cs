@@ -17,18 +17,13 @@ using System.Threading.Tasks;
 using System.Linq;
 using System.Numerics;
 using System.Runtime.InteropServices;
-using RimeLib.Frostbite.Containers;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
-using RimeLib.Serialization;
-using RimeLib.Serialization.Ebx;
 using fb;
 using VertexElementUsage = RimeLib.Mesh.Frostbite.VertexElementUsage;
 using VertexElementFormat = RimeLib.Mesh.Frostbite.VertexElementFormat;
 using MeshSubsetCategory = RimeLib.Mesh.Frostbite.Fb2.MeshSubsetCategory;
 using MeshType = RimeLib.Mesh.Frostbite.MeshType;
-using SharpGLTF.Scenes;
 using SharpGLTF.Transforms;
-using System.Data.SqlTypes;
 
 namespace MeshExtractor
 {
@@ -111,11 +106,13 @@ namespace MeshExtractor
 
                 foreach (var s_Type in s_ExportedTypes)
                 {
-                    if (!typeof(FrostbiteContainer).IsAssignableFrom(s_Type) &&
-                        !s_Type.IsEnum)
-                        continue;
+                    throw new NotImplementedException();
+                    // TODO: Fix below
+                    //if (!typeof(FrostbiteContainer).IsAssignableFrom(s_Type) &&
+                    //    !s_Type.IsEnum)
+                    //    continue;
 
-                    ContainerRegistry.RegisterType(s_Type);
+                    //ContainerRegistry.RegisterType(s_Type);
                 }
             }
             catch
@@ -164,7 +161,7 @@ namespace MeshExtractor
                 Console.WriteLine($"Everythingis now mounted! Starting model conversion.");
         }
 
-        private static List<FrostbitePartition> m_FoundPartitions = new List<FrostbitePartition>();
+        private static List<DatabasePartition> m_FoundPartitions = new List<DatabasePartition>();
         private static void LoadEbx(Options p_Options, IEngineMounter p_Mounter)
         {
             var s_Partitions = p_Mounter.GetPartitions();
@@ -184,14 +181,16 @@ namespace MeshExtractor
                 if (s_Partition == null)
                     return;
 
-                PartitionRegistry.RegisterPartition(s_Partition);
+                // TODO: Fix the single line below
+                throw new NotImplementedException();
+                //PartitionRegistry.RegisterPartition(s_Partition);
 
                 //if (s_Partition.PrimaryInstance.ContainerTypeName == "LevelData")
                 //{
                 //    s_PartitionReader.Seek(0, SeekOrigin.Begin);
                 //    File.WriteAllBytes(s_PartitionName.Replace('/', '-'), s_PartitionReader.ReadBytes((int)s_PartitionReader.Length));
                 //}
-                if (s_Partition.PrimaryInstance.ContainerTypeName == "SkeletonAsset")
+                if (s_Partition.PrimaryInstance.TypeName == "SkeletonAsset")
 
                 {
                     if (!p_Options.Quiet)
@@ -309,9 +308,11 @@ namespace MeshExtractor
 
                 // Otherwise we continue on creating the skeleton
                 var s_BoneNode = s_RootNode.CreateNode(s_Bone.Name);
-                s_BoneNode.LocalTransform = AffineTransform.Create(s_Bone.ModelPose.ToMatrix4x4() * 39);
+                throw new NotImplementedException();
+                // TODO: Fix the lines below
+                //s_BoneNode.LocalTransform = AffineTransform.Create(s_Bone.ModelPose.ToMatrix4x4() * 39);
 
-                Console.WriteLine($"Parsing {s_Bone.Name} at model: {s_Bone.ModelPose.Trans} local: {s_Bone.LocalPose.Trans}.\n");
+                //Console.WriteLine($"Parsing {s_Bone.Name} at model: {s_Bone.ModelPose.Trans} local: {s_Bone.LocalPose.Trans}.\n");
             }
 
             s_Model.SaveGLTF("./out.bin", new WriteSettings
@@ -322,52 +323,55 @@ namespace MeshExtractor
 
         private static async void DumpSkeletons(Options p_Options, IEngineMounter p_Mounter)
         {
-            var s_Model = ModelRoot.CreateModel();
+            // TODO: Fixme whole function
+            throw new NotImplementedException();
 
-            var s_Node = s_Model.CreateLogicalNode();
-            s_Node.Name = "Skinned mesh node";
-            //s_Node.Skin = new Skin();
+            //var s_Model = ModelRoot.CreateModel();
 
-            // B3A18B07-B794-4C3F-98C6-3A0C13E0EC47
-            //var s_StaticModelEntityData = PartitionRegistry.LookupPartition(new GUID("B3A18B07-B794-4C3F-98C6-3A0C13E0EC47"));
-            var s_WeaponBluerint = m_FoundPartitions.FirstOrDefault(p_Partition => p_Partition.Name.Contains("AN94")).PrimaryInstance as SoldierWeaponBlueprint;
+            //var s_Node = s_Model.CreateLogicalNode();
+            //s_Node.Name = "Skinned mesh node";
+            ////s_Node.Skin = new Skin();
 
-            var s_SoldierWeaponDataPartition = PartitionRegistry.LookupPartition(s_WeaponBluerint.Object.PartitionGuid);
+            //// B3A18B07-B794-4C3F-98C6-3A0C13E0EC47
+            ////var s_StaticModelEntityData = PartitionRegistry.LookupPartition(new GUID("B3A18B07-B794-4C3F-98C6-3A0C13E0EC47"));
+            //var s_WeaponBluerint = m_FoundPartitions.FirstOrDefault(p_Partition => p_Partition.Name.Contains("AN94")).PrimaryInstance as SoldierWeaponBlueprint;
 
-            var s_SoldierWeaponData = s_SoldierWeaponDataPartition.Instances.FirstOrDefault(p_Instance => p_Instance.InstanceGuid == s_WeaponBluerint.Object.InstanceGuid) as SoldierWeaponData;
+            //var s_SoldierWeaponDataPartition = PartitionRegistry.LookupPartition(s_WeaponBluerint.Object.PartitionGuid);
 
-            
-            var s_WeaponStates = s_SoldierWeaponData.WeaponStates;
-
-            var s_AnimationData = PartitionRegistry.GetPartitionContainer(s_SoldierWeaponData.AnimationData) as AntPackageAsset;
+            //var s_SoldierWeaponData = s_SoldierWeaponDataPartition.Instances.FirstOrDefault(p_Instance => p_Instance.InstanceGuid == s_WeaponBluerint.Object.InstanceGuid) as SoldierWeaponData;
 
             
-            if (!p_Mounter.TryGetChunk(s_AnimationData.StreamingGuid, out IMountedObject<IChunkVariant> p_Chunk))
-            {
-                Debug.WriteLine("could not get chunk");
-                return; 
-            }
+            //var s_WeaponStates = s_SoldierWeaponData.WeaponStates;
 
-            // WorldPartData 15E8F838-BD58-4515-89CE-970BC57C33ED #primary instance
-            //  member D0FA1E68-9BF4-495D-92B3-8856F30EDCB0
-            // AnimationSet animations/characters/coop/d2_buildings/coopsign_rig_animset/09D8973D-8BF3-E39E-8022-209D364753FD
-            // SkeletonAsset animations/characters/coop/d2_buildings/coopsign_skeleton/4A18D3F3-EC16-CAB3-E2EF-B048F9126B80
+            //var s_AnimationData = PartitionRegistry.GetPartitionContainer(s_SoldierWeaponData.AnimationData) as AntPackageAsset;
 
-            using var s_Reader = p_Chunk.FirstVariant.GetReader();
-            var s_ReaderData = s_Reader.ReadBytes((int)s_Reader.Length);
+            
+            //if (!p_Mounter.TryGetChunk(s_AnimationData.StreamingGuid, out IMountedObject<IChunkVariant> p_Chunk))
+            //{
+            //    Debug.WriteLine("could not get chunk");
+            //    return; 
+            //}
 
-            for (var s_WeaponStateIndex = 0; s_WeaponStateIndex < s_WeaponStates.Count; ++s_WeaponStateIndex)
-            {
-                var s_WeaponState = s_WeaponStates[s_WeaponStateIndex];
+            //// WorldPartData 15E8F838-BD58-4515-89CE-970BC57C33ED #primary instance
+            ////  member D0FA1E68-9BF4-495D-92B3-8856F30EDCB0
+            //// AnimationSet animations/characters/coop/d2_buildings/coopsign_rig_animset/09D8973D-8BF3-E39E-8022-209D364753FD
+            //// SkeletonAsset animations/characters/coop/d2_buildings/coopsign_skeleton/4A18D3F3-EC16-CAB3-E2EF-B048F9126B80
 
-                var s_SkinnedMeshAsset = PartitionRegistry.GetPartitionContainer(s_WeaponState.Mesh1p) as SkinnedMeshAsset;
+            //using var s_Reader = p_Chunk.FirstVariant.GetReader();
+            //var s_ReaderData = s_Reader.ReadBytes((int)s_Reader.Length);
 
-                var s_SkinnedMeshAssetName = s_SkinnedMeshAsset.Name;
+            //for (var s_WeaponStateIndex = 0; s_WeaponStateIndex < s_WeaponStates.Count; ++s_WeaponStateIndex)
+            //{
+            //    var s_WeaponState = s_WeaponStates[s_WeaponStateIndex];
+
+            //    var s_SkinnedMeshAsset = PartitionRegistry.GetPartitionContainer(s_WeaponState.Mesh1p) as SkinnedMeshAsset;
+
+            //    var s_SkinnedMeshAssetName = s_SkinnedMeshAsset.Name;
 
 
-                var s_AnimationConfiguration = s_WeaponState.AnimationConfiguration;
+            //    var s_AnimationConfiguration = s_WeaponState.AnimationConfiguration;
 
-            }
+            //}
             //s_SoldierWeaponData.PrimaryInstance;
         }
 
