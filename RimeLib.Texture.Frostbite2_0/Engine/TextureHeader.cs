@@ -197,7 +197,7 @@ namespace RimeLib.Texture.Frostbite2_0.Engine
             Type = (TextureType) p_Reader.ReadUInt32();
             Format = (TextureFormat) p_Reader.ReadUInt32();
 
-            if (Format >= TextureFormat.TextureFormat_FB2_Unknown)
+            if (Format >= TextureFormat.TextureFormat_Unknown)
                 return;
 
             Flags = (TextureFlags) p_Reader.ReadUInt32();

@@ -38,20 +38,17 @@ namespace RimeLib.Texture.Xbox
         */
         public static readonly Dictionary<TextureFormat, XboxFormatInformation> c_XboxFormat = new Dictionary<TextureFormat, XboxFormatInformation>( )
         {
-            { TextureFormat.TextureFormat_Dxt1, new XboxFormatInformation(4, 4, 128, 128) },
-            { TextureFormat.TextureFormat_Dxt1A, new XboxFormatInformation(4, 4, 128, 128) }, //not sure
-            { TextureFormat.TextureFormat_Dxt3, new XboxFormatInformation(4, 4, 128, 128) },
-            { TextureFormat.TextureFormat_Dxt5, new XboxFormatInformation(4, 4, 128, 128) },
-            { TextureFormat.TextureFormat_Dxt5A, new XboxFormatInformation(4, 4) },
-            { TextureFormat.TextureFormat_Dxn, new XboxFormatInformation(4, 4)},
+            { TextureFormat.TextureFormat_DXT1, new XboxFormatInformation(4, 4, 128, 128) },
+            { TextureFormat.TextureFormat_DXT3, new XboxFormatInformation(4, 4, 128, 128) },
+            { TextureFormat.TextureFormat_DXT5, new XboxFormatInformation(4, 4, 128, 128) },
+            { TextureFormat.TextureFormat_DXT5A, new XboxFormatInformation(4, 4) },
+            { TextureFormat.TextureFormat_DXN, new XboxFormatInformation(4, 4)},
+            
+            { TextureFormat.TextureFormat_NormalDXN, new XboxFormatInformation(4, 4) },
 
-            { TextureFormat.TextureFormat_Bc7, new XboxFormatInformation(4, 4) },
-
-            { TextureFormat.TextureFormat_NormalDxn, new XboxFormatInformation(4, 4) },
-
-            { TextureFormat.TextureFormat_NormalDxt1, new XboxFormatInformation(4, 4, 128, 128) },
-            { TextureFormat.TextureFormat_NormalDxt5, new XboxFormatInformation(4, 4, 128, 128) },
-            { TextureFormat.TextureFormat_NormalDxt5Rga, new XboxFormatInformation(4, 4, 128, 128) }, //Not sure
+            { TextureFormat.TextureFormat_NormalDXT1, new XboxFormatInformation(4, 4, 128, 128) },
+            { TextureFormat.TextureFormat_NormalDXT5, new XboxFormatInformation(4, 4, 128, 128) },
+            { TextureFormat.TextureFormat_NormalDXT5RGA, new XboxFormatInformation(4, 4, 128, 128) }, //Not sure
         };
 
 
@@ -67,31 +64,27 @@ namespace RimeLib.Texture.Xbox
 
         public static readonly Dictionary<TextureFormat, uint> c_EndianByteSize = new Dictionary<TextureFormat, uint>( )
         {
-            { TextureFormat.TextureFormat_Dxt1,         2 },
-            { TextureFormat.TextureFormat_Dxt1A,        2 },
-            { TextureFormat.TextureFormat_NormalDxt1,   2 },
+            { TextureFormat.TextureFormat_DXT1,         2 },
+            { TextureFormat.TextureFormat_NormalDXT1,   2 },
 
-            { TextureFormat.TextureFormat_Dxn,          2 },
-
+            { TextureFormat.TextureFormat_DXN,          2 },
 
 
-            { TextureFormat.TextureFormat_NormalDxn,    2 },
+
+            { TextureFormat.TextureFormat_NormalDXN,    2 },
 
             { TextureFormat.TextureFormat_R16F,         2 }, // this is just a test
 
 
-            { TextureFormat.TextureFormat_Gr16,         2 },
-            { TextureFormat.TextureFormat_Gr16F,         2 },
+            { TextureFormat.TextureFormat_GR16,         2 },
+            { TextureFormat.TextureFormat_GR16F,         2 },
 
 
-            { TextureFormat.TextureFormat_Rgb565,        2 },
+            { TextureFormat.TextureFormat_RGB565,        2 },
 
 
-            { TextureFormat.TextureFormat_Gr32F,         4 },
-            { TextureFormat.TextureFormat_R11G11B10F,    4 }, //GPUTEXTUREFORMAT_10_11_11
+            { TextureFormat.TextureFormat_GR32F,         4 },
 
-
-            
         };
 
     }

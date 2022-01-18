@@ -83,7 +83,7 @@ namespace RimeLib.Texture.Frostbite2_0
 
                 //TODO: rgb formats, typeless formats!!
                 throw new Exception();
-                var s_TextureFormat = TextureFormat.TextureFormat_FB2_Unknown; //DDSUtils.c_DDSDXFormatMap.Where( x => x.Value == s_ExtendedHeader.DxgiFormat ).Select( x => x.Key ).FirstOrDefault( );
+                var s_TextureFormat = TextureFormat.TextureFormat_Unknown; //DDSUtils.c_DDSDXFormatMap.Where( x => x.Value == s_ExtendedHeader.DxgiFormat ).Select( x => x.Key ).FirstOrDefault( );
                 p_Header.Format = s_TextureFormat;
 
 

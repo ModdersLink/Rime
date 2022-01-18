@@ -9,122 +9,97 @@ namespace RimeLib.Texture.Frostbite
     {
         public static readonly Dictionary<TextureFormat, DDSFormatFlags> s_FormatFlags = new Dictionary<TextureFormat, DDSFormatFlags>()
         {
-            { TextureFormat.TextureFormat_Dxt1,          DDSFormatFlags.FourCC },
-            { TextureFormat.TextureFormat_Dxt1A,         DDSFormatFlags.FourCC },
+            { TextureFormat.TextureFormat_DXT1,          DDSFormatFlags.FourCC },
+            { TextureFormat.TextureFormat_NormalDXT1,    DDSFormatFlags.FourCC },
 
-            { TextureFormat.TextureFormat_NormalDxt1,    DDSFormatFlags.FourCC },
-
-            { TextureFormat.TextureFormat_Dxt3,          DDSFormatFlags.FourCC },
-            { TextureFormat.TextureFormat_Dxt5,          DDSFormatFlags.FourCC },
-            { TextureFormat.TextureFormat_Dxt5A,         DDSFormatFlags.FourCC },
+            { TextureFormat.TextureFormat_DXT3,          DDSFormatFlags.FourCC },
+            { TextureFormat.TextureFormat_DXT5,          DDSFormatFlags.FourCC },
+            { TextureFormat.TextureFormat_DXT5A,         DDSFormatFlags.FourCC },
 
 
-            { TextureFormat.TextureFormat_NormalDxt5,    DDSFormatFlags.FourCC },
-            { TextureFormat.TextureFormat_NormalDxt5Rga, DDSFormatFlags.FourCC },
+            { TextureFormat.TextureFormat_NormalDXT5,    DDSFormatFlags.FourCC },
+            { TextureFormat.TextureFormat_NormalDXT5RGA, DDSFormatFlags.FourCC },
 
-            { TextureFormat.TextureFormat_Dxn,           DDSFormatFlags.FourCC },
-            { TextureFormat.TextureFormat_NormalDxn,     DDSFormatFlags.FourCC },
-            { TextureFormat.TextureFormat_Bc7,           DDSFormatFlags.FourCC },
+            { TextureFormat.TextureFormat_DXN,           DDSFormatFlags.FourCC },
+            { TextureFormat.TextureFormat_NormalDXN,     DDSFormatFlags.FourCC },
 
-            { TextureFormat.TextureFormat_Rgb565,        DDSFormatFlags.AlphaPixels | DDSFormatFlags.Rgb }, //Check
-            { TextureFormat.TextureFormat_Rgb888,        DDSFormatFlags.AlphaPixels | DDSFormatFlags.Rgb },
-            { TextureFormat.TextureFormat_Argb1555,      DDSFormatFlags.AlphaPixels | DDSFormatFlags.Rgb | DDSFormatFlags.Alpha }, //1 + 5 + 5 + 5 + 5
-            { TextureFormat.TextureFormat_Argb4444,      DDSFormatFlags.AlphaPixels | DDSFormatFlags.Rgb | DDSFormatFlags.Alpha },  //this is really 16, but calcualted as 8???
+            { TextureFormat.TextureFormat_RGB565,        DDSFormatFlags.AlphaPixels | DDSFormatFlags.Rgb }, //Check
+            { TextureFormat.TextureFormat_RGB888,        DDSFormatFlags.AlphaPixels | DDSFormatFlags.Rgb },
+            { TextureFormat.TextureFormat_ARGB1555,      DDSFormatFlags.AlphaPixels | DDSFormatFlags.Rgb | DDSFormatFlags.Alpha }, //1 + 5 + 5 + 5 + 5
+            { TextureFormat.TextureFormat_ARGB4444,      DDSFormatFlags.AlphaPixels | DDSFormatFlags.Rgb | DDSFormatFlags.Alpha },  //this is really 16, but calcualted as 8???
                                                          
-            { TextureFormat.TextureFormat_Argb8888,      DDSFormatFlags.AlphaPixels | DDSFormatFlags.Rgb | DDSFormatFlags.Alpha }, //this is really 32, but calcualted as 16???
+            { TextureFormat.TextureFormat_ARGB8888,      DDSFormatFlags.AlphaPixels | DDSFormatFlags.Rgb | DDSFormatFlags.Alpha }, //this is really 32, but calcualted as 16???
                                                          
             { TextureFormat.TextureFormat_L8,            DDSFormatFlags.FourCC },
             { TextureFormat.TextureFormat_L16,           DDSFormatFlags.FourCC }, //check?
                                                          
-            { TextureFormat.TextureFormat_Abgr16,        DDSFormatFlags.AlphaPixels | DDSFormatFlags.Rgb | DDSFormatFlags.Alpha },
-            { TextureFormat.TextureFormat_Abgr16F,       DDSFormatFlags.AlphaPixels | DDSFormatFlags.Rgb | DDSFormatFlags.Alpha },
+            { TextureFormat.TextureFormat_ABGR16,        DDSFormatFlags.AlphaPixels | DDSFormatFlags.Rgb | DDSFormatFlags.Alpha },
+            { TextureFormat.TextureFormat_ABGR16F,       DDSFormatFlags.AlphaPixels | DDSFormatFlags.Rgb | DDSFormatFlags.Alpha },
 
-            { TextureFormat.TextureFormat_Abgr32F,       DDSFormatFlags.AlphaPixels | DDSFormatFlags.Rgb | DDSFormatFlags.Alpha },
+            { TextureFormat.TextureFormat_ABGR32F,       DDSFormatFlags.AlphaPixels | DDSFormatFlags.Rgb | DDSFormatFlags.Alpha },
             { TextureFormat.TextureFormat_R16F,          DDSFormatFlags.FourCC },
             { TextureFormat.TextureFormat_R32F,          DDSFormatFlags.FourCC }, //this has 32 bitcount, but is calculated as 4 
-            { TextureFormat.TextureFormat_Rg8,           DDSFormatFlags.FourCC },
-            { TextureFormat.TextureFormat_Gr16,          DDSFormatFlags.FourCC },
-            { TextureFormat.TextureFormat_Gr16F,         DDSFormatFlags.FourCC }, // not sure
+            { TextureFormat.TextureFormat_RG8,           DDSFormatFlags.FourCC },
+            { TextureFormat.TextureFormat_GR16,          DDSFormatFlags.FourCC },
+            { TextureFormat.TextureFormat_GR16F,         DDSFormatFlags.FourCC }, // not sure
             { TextureFormat.TextureFormat_D16,           DDSFormatFlags.FourCC }, // not sure
             { TextureFormat.TextureFormat_D24S8,         DDSFormatFlags.FourCC },
-            { TextureFormat.TextureFormat_D24Fs8,        DDSFormatFlags.FourCC }, // not sure
+            { TextureFormat.TextureFormat_D24FS8,        DDSFormatFlags.FourCC }, // not sure
 
 
             { TextureFormat.TextureFormat_D32F,          DDSFormatFlags.FourCC },
-            { TextureFormat.TextureFormat_D32Fs8,        DDSFormatFlags.FourCC },
-
-            { TextureFormat.TextureFormat_S8,            DDSFormatFlags.FourCC },
-            { TextureFormat.TextureFormat_Abgr32,        DDSFormatFlags.FourCC },
-            { TextureFormat.TextureFormat_Gr32F,         DDSFormatFlags.FourCC },
+            
+            { TextureFormat.TextureFormat_ABGR32,        DDSFormatFlags.FourCC },
+            { TextureFormat.TextureFormat_GR32F,         DDSFormatFlags.FourCC },
             { TextureFormat.TextureFormat_A2R10G10B10,   DDSFormatFlags.FourCC },
-            { TextureFormat.TextureFormat_R11G11B10F,    DDSFormatFlags.FourCC },
-            { TextureFormat.TextureFormat_Abgr16_Snorm,  DDSFormatFlags.FourCC },
-            { TextureFormat.TextureFormat_Abgr16_Uint,   DDSFormatFlags.FourCC },
-            { TextureFormat.TextureFormat_L16_Uint,      DDSFormatFlags.FourCC }, // not sure
-            { TextureFormat.TextureFormat_L32,           DDSFormatFlags.FourCC },
-            { TextureFormat.TextureFormat_GR16_Uint,     DDSFormatFlags.FourCC },
-            { TextureFormat.TextureFormat_GR32_Uint,     DDSFormatFlags.FourCC },
-            { TextureFormat.TextureFormat_R9G9B9E5F,     DDSFormatFlags.FourCC },
         };
 
         public static readonly Dictionary<TextureFormat, uint> s_FormatBits = new Dictionary<TextureFormat, uint>()
         {
-            { TextureFormat.TextureFormat_Dxt1,          4 }, 
-            { TextureFormat.TextureFormat_Dxt1A,         4 }, 
+            { TextureFormat.TextureFormat_DXT1,          4 }, 
                                                          
-            { TextureFormat.TextureFormat_NormalDxt1,    4 }, 
+            { TextureFormat.TextureFormat_NormalDXT1,    4 }, 
                                                          
-            { TextureFormat.TextureFormat_Dxt3,          8 }, 
-            { TextureFormat.TextureFormat_Dxt5,          4 }, 
-            { TextureFormat.TextureFormat_Dxt5A,         4 }, 
+            { TextureFormat.TextureFormat_DXT3,          8 }, 
+            { TextureFormat.TextureFormat_DXT5,          4 }, 
+            { TextureFormat.TextureFormat_DXT5A,         4 }, 
                                                          
                                                          
-            { TextureFormat.TextureFormat_NormalDxt5,    8 }, 
-            { TextureFormat.TextureFormat_NormalDxt5Rga, 8 }, 
+            { TextureFormat.TextureFormat_NormalDXT5,    8 }, 
+            { TextureFormat.TextureFormat_NormalDXT5RGA, 8 }, 
                                                          
-            { TextureFormat.TextureFormat_Dxn,           8 },
-            { TextureFormat.TextureFormat_NormalDxn,     8 },
-            { TextureFormat.TextureFormat_Bc7,           8 },
+            { TextureFormat.TextureFormat_DXN,           8 },
+            { TextureFormat.TextureFormat_NormalDXN,     8 },
                                                          
-            { TextureFormat.TextureFormat_Rgb565,        16 }, //Check
-            { TextureFormat.TextureFormat_Rgb888,        24 },
-            { TextureFormat.TextureFormat_Argb1555,      32 }, //1 + 5 + 5 + 5 + 5
-            { TextureFormat.TextureFormat_Argb4444,      16 },  //this is really 16, but calcualted as 8???
+            { TextureFormat.TextureFormat_RGB565,        16 }, //Check
+            { TextureFormat.TextureFormat_RGB888,        24 },
+            { TextureFormat.TextureFormat_ARGB1555,      32 }, //1 + 5 + 5 + 5 + 5
+            { TextureFormat.TextureFormat_ARGB4444,      16 },  //this is really 16, but calcualted as 8???
                                                          
-            { TextureFormat.TextureFormat_Argb8888,      32 }, //this is really 32, but calcualted as 16???
+            { TextureFormat.TextureFormat_ARGB8888,      32 }, //this is really 32, but calcualted as 16???
                                                          
             { TextureFormat.TextureFormat_L8,            8 },
             { TextureFormat.TextureFormat_L16,           16 }, //check?
                                                          
-            { TextureFormat.TextureFormat_Abgr16,        64 },
-            { TextureFormat.TextureFormat_Abgr16F,       64 },
+            { TextureFormat.TextureFormat_ABGR16,        64 },
+            { TextureFormat.TextureFormat_ABGR16F,       64 },
                                                          
-            { TextureFormat.TextureFormat_Abgr32F,       128 },
+            { TextureFormat.TextureFormat_ABGR32F,       128 },
             { TextureFormat.TextureFormat_R16F,          16 }, 
             { TextureFormat.TextureFormat_R32F,          32 }, //this has 32 bitcount, but is calculated as 4 
-            { TextureFormat.TextureFormat_Rg8,           16 },
-            { TextureFormat.TextureFormat_Gr16,          32 },
-            { TextureFormat.TextureFormat_Gr16F,         32 }, // not sure
+            { TextureFormat.TextureFormat_RG8,           16 },
+            { TextureFormat.TextureFormat_GR16,          32 },
+            { TextureFormat.TextureFormat_GR16F,         32 }, // not sure
             { TextureFormat.TextureFormat_D16,           16 }, // not sure
             { TextureFormat.TextureFormat_D24S8,         32 },
-            { TextureFormat.TextureFormat_D24Fs8,        24 + 8 }, // not sure
+            { TextureFormat.TextureFormat_D24FS8,        24 + 8 }, // not sure
 
 
             { TextureFormat.TextureFormat_D32F,          32 },
-            { TextureFormat.TextureFormat_D32Fs8,        32 + 8 },
             
-            { TextureFormat.TextureFormat_S8,            8 },
-            { TextureFormat.TextureFormat_Abgr32,        32 * 4 },
-            { TextureFormat.TextureFormat_Gr32F,         32 * 2 },
+            { TextureFormat.TextureFormat_ABGR32,        32 * 4 },
+            { TextureFormat.TextureFormat_GR32F,         32 * 2 },
             { TextureFormat.TextureFormat_A2R10G10B10,   32 },
-            { TextureFormat.TextureFormat_R11G11B10F,    32 },
-            { TextureFormat.TextureFormat_Abgr16_Snorm,  64 },
-            { TextureFormat.TextureFormat_Abgr16_Uint,   64 },
-            { TextureFormat.TextureFormat_L16_Uint,      16 }, // not sure
-            { TextureFormat.TextureFormat_L32,           32 },
-            { TextureFormat.TextureFormat_GR16_Uint,     32 },
-            { TextureFormat.TextureFormat_GR32_Uint,     64 },
-            { TextureFormat.TextureFormat_R9G9B9E5F,     32 },
         };
 
         public static uint BitsPerPixel(TextureFormat p_Format)
@@ -138,17 +113,15 @@ namespace RimeLib.Texture.Frostbite
         public static bool IsCompressed(TextureFormat p_Format) =>
             p_Format switch
             {
-                TextureFormat.TextureFormat_Dxt1 => true,
-                TextureFormat.TextureFormat_NormalDxt1 => true,
-                TextureFormat.TextureFormat_Dxt1A => true,
-                TextureFormat.TextureFormat_Dxt3 => true,
-                TextureFormat.TextureFormat_Dxn => true,
-                TextureFormat.TextureFormat_NormalDxn => true,
-                TextureFormat.TextureFormat_Dxt5 => true,
-                TextureFormat.TextureFormat_NormalDxt5 => true,
-                TextureFormat.TextureFormat_NormalDxt5Rga => true,
-                TextureFormat.TextureFormat_Dxt5A => true,
-                TextureFormat.TextureFormat_Bc7 => true,
+                TextureFormat.TextureFormat_DXT1 => true,
+                TextureFormat.TextureFormat_NormalDXT1 => true,
+                TextureFormat.TextureFormat_DXT3 => true,
+                TextureFormat.TextureFormat_DXN => true,
+                TextureFormat.TextureFormat_NormalDXN => true,
+                TextureFormat.TextureFormat_DXT5 => true,
+                TextureFormat.TextureFormat_NormalDXT5 => true,
+                TextureFormat.TextureFormat_NormalDXT5RGA => true,
+                TextureFormat.TextureFormat_DXT5A => true,
 
                 _ => false
             };
