@@ -35,7 +35,7 @@ namespace RimeLib.Texture.DDS
             { TextureFormat.TextureFormat_L16_Uint, new DDSPixelFormat(DDSFormatFlags.Luminance, 16,  0xFFFF) }, //not sure about this one
             { TextureFormat.TextureFormat_L32, new DDSPixelFormat(DDSFormatFlags.Luminance, 32, 0xFFFFFFFF) },
 
-
+            { TextureFormat.TextureFormat_R16F, new DDSPixelFormat(DDSFormatFlags.Rgb, 64, 0xFFFF) },
 
 
             { TextureFormat.TextureFormat_Rg8, new DDSPixelFormat(DDSFormatFlags.Rgb, 0, 0xFF00, 0xFF) },
