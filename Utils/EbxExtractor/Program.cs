@@ -159,8 +159,8 @@ namespace EbxExtractor
                 s_EbxReader.ParsePartition("Test", s_Reader).ToJsonFile(@"B:\ebx-test\xp2_factory2.json", Formatting.Indented);
             }*/
 
-            /*var s_Mounter = EngineMounterRegistry.Create(p_Options.EngineType);
-
+            var s_Mounter = EngineMounterRegistry.Create(p_Options.EngineType);
+            /*
             if (!p_Options.Quiet)
                 Console.WriteLine($"Mounting game with engine '{p_Options.EngineType}' at path '{p_Options.GamePath}'. Please wait, this could take a while.");
 
@@ -225,7 +225,7 @@ namespace EbxExtractor
                     Directory.CreateDirectory(s_TargetDir);
 
                 s_Partition.ToJsonFile(s_TargetPath, Formatting.Indented);
-            });*/
+            });
         }
     }
 }

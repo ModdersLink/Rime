@@ -1,4 +1,5 @@
 using CommandLine;
+using RimeLib.Content.Frostbite;
 using RimeLib.Content.Mounting;
 using RimeLib.Frostbite;
 using RimeLib.IO;
@@ -35,7 +36,7 @@ namespace TextureExtractor
                 get; set;
             }
 
-            [Option('t', "textures", Separator = ',', Required = true, HelpText = "The game texture paths you want to dump. !!This is required!!")]
+            [Option('t', "textures", Separator = ',', Required = true, HelpText = "The game texture paths you want to dump. or (*) for all, !!This is required!!")]
             public IEnumerable<string> TexturePaths { get; set; } = new string[0];
 
 
@@ -46,14 +47,6 @@ namespace TextureExtractor
 
         static void Main(string[] p_Args)
         {
-            /*
-            {
-                using var s_Reader = new RimeReader(new FileStream(@"F:\Program Files (x86)\Ubisoft\Tom Clancy's The Division Beta\rogue\sdfout\rogue\baked\art\[cinematic]\[_dev]\textures\burnt_wood_n.dds",FileMode.Open, FileAccess.Read, FileShare.Read));
-
-                FB2DDSImporter.LoadDDS(s_Reader, out var s_Header, out var s_Stream);
-            }
-            */
-
             Parser.Default.ParseArguments<Options>(p_Args).WithParsed(p_Options =>
             {
                 LoadEngineAssemblies(p_Options);
@@ -138,10 +131,47 @@ namespace TextureExtractor
                 TestImportTexture(s_Mounter, p_Path, p_Options);
             });
              */
-            Parallel.ForEach(p_Options.TexturePaths, p_Path =>
+            // Multi-texture export
+            if (p_Options.TexturePaths.FirstOrDefault() == "*")
             {
-                DumpTexture(s_Mounter, p_Path, p_Options);
-            });
+                // Get all of the resources
+                var s_Resources = s_Mounter.GetResources();
+                Parallel.ForEach(s_Resources, (p_Pair) =>
+                {
+                    var s_Name = p_Pair.Key;
+                    var s_Resource = p_Pair.Value;
+
+                    switch (s_Resource.FirstVariant.GetResourceType())
+                    {
+                        case ResourceType.DxTexture:
+                            DumpTexture(s_Mounter, s_Name, p_Options);
+                            break;
+                        case ResourceType.ITexture:
+                        case ResourceType.AtlasTexture:
+                        case ResourceType.Dx11Texture:
+                        case ResourceType.Dx12Texture:
+                        case ResourceType.MovieTexture:
+                        case ResourceType.Ps3Texture:
+                        case ResourceType.RenderTexture:
+                        case ResourceType.XenonTexture:
+                            throw new NotImplementedException($"Unknown Texture Type {s_Resource.FirstVariant.GetResourceType()}");
+                        //DumpTexture(s_Mounter, s_Name, p_Options);
+                        //break;
+                        
+                        default:
+                            break;
+                    }
+                });
+
+            }
+            else 
+            {
+                // Single texture export
+                Parallel.ForEach(p_Options.TexturePaths, p_Path =>
+                {
+                    DumpTexture(s_Mounter, p_Path, p_Options);
+                });
+            }
         }
 
 
@@ -229,7 +259,12 @@ namespace TextureExtractor
                 return;
             }
 
-            var s_SavePath = $"{p_Options.OutputPath}/{Path.GetFileName( p_Path )}.{p_Extension}";
+            var s_SavePath = $"{p_Options.OutputPath}/{p_Path}.{p_Extension}";
+
+            var s_DirectoryPath = Path.GetDirectoryName(s_SavePath)!;
+            if (!Directory.Exists(s_DirectoryPath))
+                Directory.CreateDirectory(s_DirectoryPath);
+
 
             if (!p_Options.Quiet)
                 Console.WriteLine($"Dumping texture {p_Path} to {s_SavePath}");

@@ -1,6 +1,7 @@
 ﻿using RimeLib.Texture.Attributes;
 using RimeLib.Utils;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +10,7 @@ namespace RimeLib.Texture
 {
     public class TextureFileHandlerRegistry
     {
-        private static Dictionary<string, ITextureFileHandler> m_Handlers = new Dictionary<string, ITextureFileHandler>( );
+        private static ConcurrentDictionary<string, ITextureFileHandler> m_Handlers = new ConcurrentDictionary<string, ITextureFileHandler>( );
 
 
         public static ITextureFileHandler? FindHandler(string p_Type)
@@ -37,8 +38,6 @@ namespace RimeLib.Texture
                 .Where( t => typeof( ITextureFileHandler ).IsAssignableFrom(t) && t.IsClass );
 
 
-
-
             // Clear the list of currently registered factories.
             m_Handlers.Clear();
 
@@ -54,10 +53,7 @@ namespace RimeLib.Texture
                     continue;
 
                 // Instantiate the loader.
-#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
-                var s_Loader = ( ITextureFileHandler )Activator.CreateInstance(s_FactoryType);
-#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
-
+                var s_Loader = ( ITextureFileHandler )Activator.CreateInstance(s_FactoryType)!;
 
                 // Get class attribute
                 var s_Attributes = s_FactoryType.GetCustomAttributes(typeof(TextureHandlerAttribute), true) as TextureHandlerAttribute[];
@@ -71,17 +67,7 @@ namespace RimeLib.Texture
                     if (s_Attribute.FormatType.ToLower() == p_Type.ToLower())
                         s_FoundLoader = s_Loader;
 
-                    if (m_Handlers.ContainsKey(s_Attribute.FormatType.ToLower()))
-                    {
-#pragma warning disable CS8601 // Possible null reference assignment.
-                        m_Handlers[s_Attribute.FormatType.ToLower()] = s_Loader;
-#pragma warning restore CS8601 // Possible null reference assignment.
-                        continue;
-                    }
-                    // Otherwise just add it.
-#pragma warning disable CS8604 // Possible null reference argument.
-                    m_Handlers.Add(s_Attribute.FormatType.ToLower(), s_Loader);
-#pragma warning restore CS8604 // Possible null reference argument.
+                    m_Handlers.AddOrUpdate(s_Attribute.FormatType.ToLower(), s_Loader!, (p_Key, p_OldValue) => s_Loader!);
                 }
             }
 

@@ -18,17 +18,34 @@ namespace RimeLib.Texture.DDS
             { TextureFormat.TextureFormat_NormalDXT5, new DDSPixelFormat("DXT5") },
             { TextureFormat.TextureFormat_NormalDXT5RGA, new DDSPixelFormat("DX10") }, //Not sure about this one
 
-            /*{ TextureFormat.TextureFormat_Rgb565, new DDSPixelFormat(DDSFormatFlags.Rgb, 0, 0x0000f800, 0x000007e0, 0x0000001f) },
-            { TextureFormat.TextureFormat_Rgb888, new DDSPixelFormat(DDSFormatFlags.Rgb, 0, 0x00ff0000, 0x0000ff00, 0x000000ff) },
-            { TextureFormat.TextureFormat_Argb1555, new DDSPixelFormat(DDSFormatFlags.Rgba, 0, 0x00007c00, 0x000003e0, 0x0000001f, 0x00008000) },
-            { TextureFormat.TextureFormat_Argb4444, new DDSPixelFormat(DDSFormatFlags.Rgba, 0, 0xF000, 0x0F00, 0x00F0, 0x000F) },
-            { TextureFormat.TextureFormat_Argb8888, new DDSPixelFormat(DDSFormatFlags.Rgba, 0, 0xFF0000, 0xFF00, 0xFF, 0xFF000000 ) },
-
+            { TextureFormat.TextureFormat_RGB565, new DDSPixelFormat(DDSFormatFlags.Rgb, 0, 0x0000f800, 0x000007e0, 0x0000001f) },
+            { TextureFormat.TextureFormat_RGB888, new DDSPixelFormat(DDSFormatFlags.Rgb, 0, 0x00ff0000, 0x0000ff00, 0x000000ff) },
+            { TextureFormat.TextureFormat_ARGB1555, new DDSPixelFormat(DDSFormatFlags.Rgba, 0, 0x00007c00, 0x000003e0, 0x0000001f, 0x00008000) },
+            { TextureFormat.TextureFormat_ARGB4444, new DDSPixelFormat(DDSFormatFlags.Rgba, 0, 0xF000, 0x0F00, 0x00F0, 0x000F) },
+            { TextureFormat.TextureFormat_ARGB8888, new DDSPixelFormat(DDSFormatFlags.Rgba, 0, 0xFF0000, 0xFF00, 0xFF, 0xFF000000 ) },
+            /*
             { TextureFormat.TextureFormat_L8, new DDSPixelFormat(DDSFormatFlags.Luminance, 8, 0xFF) },
             { TextureFormat.TextureFormat_L16, new DDSPixelFormat("DX10") { Flags = DDSFormatFlags.FourCC } },
             { TextureFormat.TextureFormat_L16_Uint, new DDSPixelFormat(DDSFormatFlags.Luminance, 16,  0xFFFF) }, //not sure about this one
             { TextureFormat.TextureFormat_L32, new DDSPixelFormat(DDSFormatFlags.Luminance, 32, 0xFFFFFFFF) },
             */
+            {
+                TextureFormat.TextureFormat_L8,
+                new DDSPixelFormat
+                {
+                    Size = 32,
+                    Flags = DDSFormatFlags.Rgb,
+                    FourCC = 0,
+                    RBitMask = 0x000000FF,
+                    GBitMask = 0x00000000,
+                    BBitMask = 0x00000000,
+                    ABitMask = 0x00000000
+                }
+            },
+            {
+                // TODO: Verify this is correct
+                TextureFormat.TextureFormat_L16, new DDSPixelFormat { Size = 32, Flags = DDSFormatFlags.Rgb, RBitMask = 0x0000FFFF }
+            },
             {
                 TextureFormat.TextureFormat_R16F,
                 new DDSPixelFormat
@@ -38,6 +55,7 @@ namespace RimeLib.Texture.DDS
                     FourCC = 111,
                 }
             },
+            { TextureFormat.TextureFormat_ABGR16F, new DDSPixelFormat { Size = 32, Flags = DDSFormatFlags.FourCC, FourCC = 113} },
             /*
 
             { TextureFormat.TextureFormat_Rg8, new DDSPixelFormat(DDSFormatFlags.Rgb, 0, 0xFF00, 0xFF) },
