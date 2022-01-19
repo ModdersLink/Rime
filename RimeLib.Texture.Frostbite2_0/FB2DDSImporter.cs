@@ -2,6 +2,7 @@
 using RimeLib.Texture.DDS;
 using RimeLib.Texture.Frostbite;
 using RimeLib.Texture.Frostbite2_0.Engine;
+using RimeLib.Utils;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -11,6 +12,74 @@ namespace RimeLib.Texture.Frostbite2_0
 {
     public static class FB2DDSImporter
     {
+        public static TextureType TextureTypeFromDDSHeader(DDSHeader p_Header)
+        {
+            // TODO: Implement
+#if DEBUG
+            throw new NotImplementedException();
+#else
+
+            return TextureType.TextureType_2D;
+#endif
+        }
+
+        public static TextureFormat TextureFormatFromDDSHeader(DDSHeader p_Header)
+        {
+#if DEBUG
+            throw new NotImplementedException();
+#else
+
+            return TextureFormat.TextureFormat_Unknown;
+#endif
+        }
+
+        public static TextureFlags TextureFlagsFromDDSHeader(DDSHeader p_Header)
+        {
+#if DEBUG
+            throw new NotImplementedException();
+#else
+            return 0;
+#endif
+        }
+
+        public static TextureHeader TextureHeaderFromDDSHeader(DDSHeader p_Header, string p_Name = "", string p_TextureGroup = "")
+        {
+            return new TextureHeader
+            {
+                Type = TextureTypeFromDDSHeader(p_Header),
+                Format = TextureFormatFromDDSHeader(p_Header),
+                Flags = TextureFlagsFromDDSHeader(p_Header),
+                Width = (short)p_Header.Width,
+                Height = (short)p_Header.Height,
+                Depth = (short)p_Header.Depth,
+                Unused0 = 0,
+                MipmapCount = (byte)p_Header.MipMapCount,
+                MipmapBaseIndex = 0,
+                StreamingChunkId = Guid.Empty,
+                MipmapSizes = new uint[15], // TODO: Calculate
+                MipmapChainSize = 0, // TODO: Calculate
+                ResourceNamehash = (string.IsNullOrWhiteSpace(p_Name) ? 0 : FbUtils.HashQuick(p_Name)),
+                TextureGroup = "Default"
+            };
+        }
+        public static void LoadDDS2(RimeReader p_Reader, out TextureHeader p_Header, out Stream p_Data)
+        {
+            
+            var s_StartPosition = p_Reader.Position;
+
+            var s_DDSHeader = new DDSHeader(p_Reader);
+
+            var s_TextureDataStart = s_StartPosition + 4 + DDSHeader.c_DDSHeaderSize;
+            if (s_DDSHeader.Dx10Header != null)
+                s_TextureDataStart += DDSDX10Header.c_HeaderSize;
+
+            p_Header = TextureHeaderFromDDSHeader(s_DDSHeader);
+
+            p_Data = new MemoryStream();
+            using (var s_Writer = new RimeWriter(p_Data, p_ShouldDispose: false))
+                s_Writer.Write(p_Reader.ReadBytes((int)(p_Reader.Length - p_Reader.Position)));
+        }
+
         public static void LoadDDS(RimeReader p_Reader, out TextureHeader p_Header, out Stream p_Data)
         {
             var s_StartPosition = p_Reader.Position;
