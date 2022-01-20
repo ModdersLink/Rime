@@ -35,11 +35,45 @@ namespace RimeLib.Texture.Frostbite2_0
 
         public static TextureFlags TextureFlagsFromDDSHeader(DDSHeader p_Header)
         {
+            if (p_Header.Dx10Header is not null)
+            {
+                p_Header.Dx10Header.DxgiFormat;
+            }
 #if DEBUG
             throw new NotImplementedException();
 #else
             return 0;
 #endif
+        }
+
+        public static void ree()
+        {
+            /*inline int CDDSImage::size_dxtc(int width, int height)
+{
+                return ((width + 3) / 4) * ((height + 3) / 4) *
+                    (format == GL_COMPRESSED_RGBA_S3TC_DXT1_EXT ? 8 : 16);
+            }
+
+            // calculates size of uncompressed RGB texture in bytes
+            inline int CDDSImage::size_rgb(int width, int height)
+{
+                return width * height * components;
+            }*/
+        }
+
+        public static int CalculateDXTSizeFromHeader(DDSHeader p_Header, int p_Width, int p_Height, int p_MipMap = 0)
+        {
+            var s_MipMapSize = ((p_Width + 3) / 4) * ((p_Height + 3) / 4) * (TextureUtils.IsCompressed(TextureFormat.TextureFormat_DXT1) ? 8 : 16));
+            for (var i = 0; i < p_MipMap; ++i)
+            {
+                s_MipMapSize = (s_MipMapSize / 4);
+            }
+            return s_MipMapSize;
+        }
+
+        public static int CalcualteRGBSizeFromHeader(int p_Width, int p_Height, int p_Components)
+        {
+            return p_Width * p_Height * p_Components;
         }
 
         public static TextureHeader TextureHeaderFromDDSHeader(DDSHeader p_Header, string p_Name = "", string p_TextureGroup = "")
