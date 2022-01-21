@@ -186,14 +186,6 @@ namespace RimeLib.Texture.TextureHandlers
             return s_Flags;
         }
 
-        static Dictionary<TextureFormat, DXGIFormat> g_TextureFormatToDxgiFormat = new Dictionary<TextureFormat, DXGIFormat>
-        {
-            { TextureFormat.TextureFormat_DXT1, DXGIFormat.BC1_UNORM },
-            { TextureFormat.TextureFormat_NormalDXT1, DXGIFormat.BC1_UNORM },
-            { TextureFormat.TextureFormat_R16F, DXGIFormat.R16_FLOAT },
-
-        };
-
         public static DXGIFormat DXGIFormatFromTexture(TextureBase p_Texture)
         {
             var s_IsSrgb = (p_Texture.Flags & TextureFlags.SrgbGamma) != 0;

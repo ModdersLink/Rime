@@ -14,17 +14,68 @@ namespace RimeLib.Texture.Frostbite2_0
     {
         public static TextureType TextureTypeFromDDSHeader(DDSHeader p_Header)
         {
-            // TODO: Implement
-#if DEBUG
-            throw new NotImplementedException();
-#else
 
+            // TODO: Implement
+            // TODO: Do we allow this to be user selectable? There's no real way to know from DDS
             return TextureType.TextureType_2D;
-#endif
         }
 
         public static TextureFormat TextureFormatFromDDSHeader(DDSHeader p_Header)
         {
+            var s_IsNormal = false;
+            if (p_Header.PixelFormat.Flags.HasFlag(DDSFormatFlags.FourCC))
+            {
+                if (p_Header.PixelFormat.FourCC == DDSUtils.MakeFourCC("DXT1"))
+                {
+                    return s_IsNormal ? TextureFormat.TextureFormat_NormalDXT1 : TextureFormat.TextureFormat_DXT1;
+                }
+                else if (p_Header.PixelFormat.FourCC == DDSUtils.MakeFourCC("DXT3"))
+                {
+                    return TextureFormat.TextureFormat_DXT3;
+                }
+                else if (p_Header.PixelFormat.FourCC == DDSUtils.MakeFourCC("DXT5"))
+                {
+                    return s_IsNormal ? TextureFormat.TextureFormat_NormalDXT5 : TextureFormat.TextureFormat_DXT5;
+                }
+                else if (p_Header.PixelFormat.FourCC == DDSUtils.MakeFourCC("DX10"))
+                {
+                    // Read the DX10Header
+                    var s_Dx10Header = p_Header.Dx10Header;
+
+                    return s_Dx10Header.DxgiFormat switch
+                    {
+                        DXGIFormat.BC1_UNORM or DXGIFormat.BC1_UNORM_SRGB => TextureFormat.TextureFormat_DXT1,
+                        DXGIFormat.BC2_UNORM_SRGB or DXGIFormat.BC2_UNORM => TextureFormat.TextureFormat_DXT3,
+                        DXGIFormat.BC3_UNORM_SRGB or DXGIFormat.BC3_UNORM => TextureFormat.TextureFormat_DXT5,
+                        DXGIFormat.BC4_UNORM => TextureFormat.TextureFormat_DXT5A,
+                        DXGIFormat.BC5_UNORM => TextureFormat.TextureFormat_DXN,
+                        DXGIFormat.B5G6R5_UNORM => TextureFormat.TextureFormat_RGB565,
+                        DXGIFormat.B5G5R5A1_UNORM => TextureFormat.TextureFormat_ARGB1555,
+                        DXGIFormat.B4G4R4A4_UNORM => TextureFormat.TextureFormat_ARGB4444,
+                        DXGIFormat.R8G8B8A8_UNORM_SRGB or DXGIFormat.R8G8B8A8_UNORM => TextureFormat.TextureFormat_ARGB8888,
+                        DXGIFormat.R8_UNORM => TextureFormat.TextureFormat_L8,
+                        DXGIFormat.R16_UNORM => TextureFormat.TextureFormat_L16,
+                        DXGIFormat.R16G16B16A16_UNORM => TextureFormat.TextureFormat_ABGR16,
+                        DXGIFormat.R16G16B16A16_FLOAT => TextureFormat.TextureFormat_ABGR16F,
+                        DXGIFormat.R32G32B32A32_FLOAT => TextureFormat.TextureFormat_ABGR32F,
+                        DXGIFormat.R16_FLOAT => TextureFormat.TextureFormat_R16F,
+                        DXGIFormat.D32_FLOAT => TextureFormat.TextureFormat_R32F, // or TextureFormat_D32F, need to check ARGBFlagBits to determine?
+                        DXGIFormat.R16G16_UNORM => TextureFormat.TextureFormat_GR16,
+                        DXGIFormat.R16G16_FLOAT => TextureFormat.TextureFormat_GR16F,
+                        DXGIFormat.D24_UNORM_S8_UINT => TextureFormat.TextureFormat_D24S8,
+                        //DXGIFormat.D32_FLOAT => TextureFormat.TextureFormat_D32F,
+                        DXGIFormat.R32G32B32A32_UINT => TextureFormat.TextureFormat_ABGR32,
+                        DXGIFormat.R32G32_FLOAT => TextureFormat.TextureFormat_GR32F,
+                        DXGIFormat.R10G10B10A2_UNORM => TextureFormat.TextureFormat_A2R10G10B10,
+                        _ => TextureFormat.TextureFormat_Unknown
+                    };
+                }
+                else if (p_Header.PixelFormat.FourCC == 111)
+                {
+                    return TextureFormat.TextureFormat_R16F;
+                }
+            }
+
 #if DEBUG
             throw new NotImplementedException();
 #else
@@ -35,10 +86,7 @@ namespace RimeLib.Texture.Frostbite2_0
 
         public static TextureFlags TextureFlagsFromDDSHeader(DDSHeader p_Header)
         {
-            if (p_Header.Dx10Header is not null)
-            {
-                p_Header.Dx10Header.DxgiFormat;
-            }
+            
 #if DEBUG
             throw new NotImplementedException();
 #else
@@ -46,34 +94,47 @@ namespace RimeLib.Texture.Frostbite2_0
 #endif
         }
 
-        public static void ree()
+        public static uint CalculateDXTSizeFromHeader(DDSHeader p_Header, uint p_MipMap = 0)
         {
-            /*inline int CDDSImage::size_dxtc(int width, int height)
-{
-                return ((width + 3) / 4) * ((height + 3) / 4) *
-                    (format == GL_COMPRESSED_RGBA_S3TC_DXT1_EXT ? 8 : 16);
-            }
+            var s_Format = TextureFormatFromDDSHeader(p_Header);
+            var s_Width = p_Header.Width;
+            var s_Height = p_Header.Height;
 
-            // calculates size of uncompressed RGB texture in bytes
-            inline int CDDSImage::size_rgb(int width, int height)
-{
-                return width * height * components;
-            }*/
-        }
-
-        public static int CalculateDXTSizeFromHeader(DDSHeader p_Header, int p_Width, int p_Height, int p_MipMap = 0)
-        {
-            var s_MipMapSize = ((p_Width + 3) / 4) * ((p_Height + 3) / 4) * (TextureUtils.IsCompressed(TextureFormat.TextureFormat_DXT1) ? 8 : 16));
+            var s_MipMapSize = ((s_Width + 3) / 4) * ((s_Height + 3) / 4) * ((s_Format == TextureFormat.TextureFormat_NormalDXT1 || s_Format == TextureFormat.TextureFormat_DXT1 ) ? 8 : 16);
             for (var i = 0; i < p_MipMap; ++i)
             {
                 s_MipMapSize = (s_MipMapSize / 4);
             }
-            return s_MipMapSize;
+            return (uint)s_MipMapSize;
         }
 
-        public static int CalcualteRGBSizeFromHeader(int p_Width, int p_Height, int p_Components)
+        public static uint CalcualteRGBSizeFromHeader(uint p_Width, uint p_Height, uint p_Components, uint p_MipMap = 0)
         {
-            return p_Width * p_Height * p_Components;
+            var s_Size = p_Width * p_Height * p_Components;
+            
+            for (var i = 0; i < p_MipMap; ++i)
+            {
+                s_Size /= 4;
+            }
+
+            return s_Size;
+        }
+
+        public static uint[] CalculateMipMapSizes(DDSHeader p_Header)
+        {
+            var s_Chain = new uint[15];
+            var s_Format = TextureFormatFromDDSHeader(p_Header);
+            var s_Compressed = TextureUtils.IsCompressed(s_Format);
+
+            for (uint i = 0; i < p_Header.MipMapCount; ++i)
+            {
+                if (s_Compressed)
+                    s_Chain[i] = CalculateDXTSizeFromHeader(p_Header, i);
+                else
+                    s_Chain[i] = CalcualteRGBSizeFromHeader(p_Header.Width, p_Header.Height, 4, i);
+            }
+
+            return s_Chain;
         }
 
         public static TextureHeader TextureHeaderFromDDSHeader(DDSHeader p_Header, string p_Name = "", string p_TextureGroup = "")
@@ -90,7 +151,7 @@ namespace RimeLib.Texture.Frostbite2_0
                 MipmapCount = (byte)p_Header.MipMapCount,
                 MipmapBaseIndex = 0,
                 StreamingChunkId = Guid.Empty,
-                MipmapSizes = new uint[15], // TODO: Calculate
+                MipmapSizes = CalculateMipMapSizes(p_Header),
                 MipmapChainSize = 0, // TODO: Calculate
                 ResourceNamehash = (string.IsNullOrWhiteSpace(p_Name) ? 0 : FbUtils.HashQuick(p_Name)),
                 TextureGroup = "Default"
