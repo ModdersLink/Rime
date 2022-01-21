@@ -86,12 +86,7 @@ namespace RimeLib.Texture.Frostbite2_0
 
         public static TextureFlags TextureFlagsFromDDSHeader(DDSHeader p_Header)
         {
-            
-#if DEBUG
-            throw new NotImplementedException();
-#else
             return 0;
-#endif
         }
 
         public static uint CalculateDXTSizeFromHeader(DDSHeader p_Header, uint p_MipMap = 0)
@@ -157,7 +152,7 @@ namespace RimeLib.Texture.Frostbite2_0
                 TextureGroup = "Default"
             };
         }
-        public static void LoadDDS2(RimeReader p_Reader, out TextureHeader p_Header, out Stream p_Data)
+        public static void LoadDDS(RimeReader p_Reader, out TextureHeader p_Header, out Stream p_Data)
         {
             
             var s_StartPosition = p_Reader.Position;
@@ -175,7 +170,7 @@ namespace RimeLib.Texture.Frostbite2_0
                 s_Writer.Write(p_Reader.ReadBytes((int)(p_Reader.Length - p_Reader.Position)));
         }
 
-        public static void LoadDDS(RimeReader p_Reader, out TextureHeader p_Header, out Stream p_Data)
+        public static void LoadDDS2(RimeReader p_Reader, out TextureHeader p_Header, out Stream p_Data)
         {
             var s_StartPosition = p_Reader.Position;
 

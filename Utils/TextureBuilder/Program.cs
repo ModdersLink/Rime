@@ -175,8 +175,6 @@ namespace TextureExtractor // Note: actual namespace depends on the project name
             {
                 FB2DDSImporter.LoadDDS(s_Reader, out var s_Header, out var s_Stream);
 
-                s_Header.TextureGroup = "Default";
-
                 // Write out the texture data
                 using (var s_OutData = new FileStream($"{p_Options.InputImage}.texturedata", FileMode.Create, FileAccess.ReadWrite))
                     s_OutData.Write(new RimeReader(s_Stream).ReadBytes((int)s_Stream.Length));
