@@ -183,6 +183,9 @@ namespace RimeLib.Texture.TextureHandlers
             if (p_TextureHeader.Depth > 1)
                 s_Flags |= DDSFlags.Depth;
 
+            if (p_TextureHeader.Flags.HasFlag(TextureFlags.SrgbGamma))
+                s_Flags |= DDSFlags.Srgb;
+
             return s_Flags;
         }
 

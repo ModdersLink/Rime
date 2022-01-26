@@ -86,7 +86,14 @@ namespace RimeLib.Texture.Frostbite2_0
 
         public static TextureFlags TextureFlagsFromDDSHeader(DDSHeader p_Header)
         {
-            return 0;
+            // Default to all textures being streamable
+            var s_Flags = TextureFlags.Streaming;
+
+            // Add SRGB support
+            if (p_Header.Flags.HasFlag(DDSFlags.Srgb))
+                s_Flags |= TextureFlags.SrgbGamma;
+
+            return s_Flags;
         }
 
         public static uint CalculateDXTSizeFromHeader(DDSHeader p_Header, uint p_MipMap = 0)
@@ -94,11 +101,13 @@ namespace RimeLib.Texture.Frostbite2_0
             var s_Format = TextureFormatFromDDSHeader(p_Header);
             var s_Width = p_Header.Width;
             var s_Height = p_Header.Height;
+            var s_BlockSize = ((s_Format == TextureFormat.TextureFormat_NormalDXT1 || s_Format == TextureFormat.TextureFormat_DXT1) ? 8 : 16);
 
-            var s_MipMapSize = ((s_Width + 3) / 4) * ((s_Height + 3) / 4) * ((s_Format == TextureFormat.TextureFormat_NormalDXT1 || s_Format == TextureFormat.TextureFormat_DXT1 ) ? 8 : 16);
+            var s_MipMapSize = ((s_Width + 3) / 4) * ((s_Height + 3) / 4) * s_BlockSize;
             for (var i = 0; i < p_MipMap; ++i)
             {
-                s_MipMapSize = (s_MipMapSize / 4);
+                // TODOD: Verify this is correct
+                s_MipMapSize = System.Math.Max(s_BlockSize, (s_MipMapSize / 4));
             }
             return (uint)s_MipMapSize;
         }
@@ -132,8 +141,18 @@ namespace RimeLib.Texture.Frostbite2_0
             return s_Chain;
         }
 
-        public static TextureHeader TextureHeaderFromDDSHeader(DDSHeader p_Header, string p_Name = "", string p_TextureGroup = "")
+        public static TextureHeader TextureHeaderFromDDSHeader(DDSHeader p_Header, string p_Name = "", string p_TextureGroup = "", short p_SliceCount = 1)
         {
+            /*
+             * SliceCount seems to be how many "objects" are on this texture
+             * as in if it's a TextureType.Cube then sliceCount will be 6
+             * 
+             * Sometimes things like 2DArray also show up with slice count != 1
+             * In the cases I looked they were 2, 6
+             */
+
+            var s_MipMapSizes = CalculateMipMapSizes(p_Header);
+
             return new TextureHeader
             {
                 Type = TextureTypeFromDDSHeader(p_Header),
@@ -142,12 +161,13 @@ namespace RimeLib.Texture.Frostbite2_0
                 Width = (short)p_Header.Width,
                 Height = (short)p_Header.Height,
                 Depth = (short)p_Header.Depth,
+                SliceCount = p_SliceCount,
                 Unused0 = 0,
                 MipmapCount = (byte)p_Header.MipMapCount,
-                MipmapBaseIndex = 0,
+                MipmapBaseIndex = 0, // Should this be user settable??
                 StreamingChunkId = Guid.Empty,
-                MipmapSizes = CalculateMipMapSizes(p_Header),
-                MipmapChainSize = 0, // TODO: Calculate
+                MipmapSizes = s_MipMapSizes,
+                MipmapChainSize = (uint)s_MipMapSizes.Sum(x => x),
                 ResourceNamehash = (string.IsNullOrWhiteSpace(p_Name) ? 0 : FbUtils.HashQuick(p_Name)),
                 TextureGroup = "Default"
             };

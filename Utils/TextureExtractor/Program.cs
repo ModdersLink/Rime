@@ -141,6 +141,9 @@ namespace TextureExtractor
                     var s_Name = p_Pair.Key;
                     var s_Resource = p_Pair.Value;
 
+                    if (!s_Name.Contains("bigradiotower_sp_jet"))
+                        return;
+
                     switch (s_Resource.FirstVariant.GetResourceType())
                     {
                         case ResourceType.DxTexture:
@@ -249,10 +252,7 @@ namespace TextureExtractor
                 return;
             }
 
-
-            TextureBase s_Texture = null;
-
-            if (!TextureHelper.LoadTexture(p_Mounter, s_TextureObject.FirstVariant, out s_Texture))
+            if (!TextureHelper.LoadTexture(p_Mounter, s_TextureObject.FirstVariant, out TextureBase s_Texture))
             {
                 if (!p_Options.Quiet)
                     Console.WriteLine($"Error loading texture {p_Path}!");
