@@ -141,7 +141,7 @@ namespace RimeLib.Texture.Frostbite2_0
             return s_Chain;
         }
 
-        public static TextureHeader TextureHeaderFromDDSHeader(DDSHeader p_Header, string p_Name = "", string p_TextureGroup = "", short p_SliceCount = 1)
+        public static TextureHeader TextureHeaderFromDDSHeader(DDSHeader p_Header, string p_Name = "", string p_TextureGroup = "Default", byte p_MipMapBaseIndex = 0, short p_SliceCount = 1)
         {
             /*
              * SliceCount seems to be how many "objects" are on this texture
@@ -155,6 +155,7 @@ namespace RimeLib.Texture.Frostbite2_0
 
             return new TextureHeader
             {
+                // TODO: Make this user settable and handle accordingly
                 Type = TextureTypeFromDDSHeader(p_Header),
                 Format = TextureFormatFromDDSHeader(p_Header),
                 Flags = TextureFlagsFromDDSHeader(p_Header),
@@ -164,15 +165,15 @@ namespace RimeLib.Texture.Frostbite2_0
                 SliceCount = p_SliceCount,
                 Unused0 = 0,
                 MipmapCount = (byte)p_Header.MipMapCount,
-                MipmapBaseIndex = 0, // Should this be user settable??
+                MipmapBaseIndex = p_MipMapBaseIndex,
                 StreamingChunkId = Guid.Empty,
                 MipmapSizes = s_MipMapSizes,
                 MipmapChainSize = (uint)s_MipMapSizes.Sum(x => x),
                 ResourceNamehash = (string.IsNullOrWhiteSpace(p_Name) ? 0 : FbUtils.HashQuick(p_Name)),
-                TextureGroup = "Default"
+                TextureGroup = p_TextureGroup
             };
         }
-        public static void LoadDDS(RimeReader p_Reader, out TextureHeader p_Header, out Stream p_Data)
+        public static void LoadDDS(RimeReader p_Reader, out TextureHeader p_Header, out Stream p_Data, string p_Name = "", string p_TextureGroup = "Default", byte p_MipMapBaseIndex = 0, short p_SliceCount = 1)
         {
             
             var s_StartPosition = p_Reader.Position;
@@ -183,11 +184,13 @@ namespace RimeLib.Texture.Frostbite2_0
             if (s_DDSHeader.Dx10Header != null)
                 s_TextureDataStart += DDSDX10Header.c_HeaderSize;
 
-            p_Header = TextureHeaderFromDDSHeader(s_DDSHeader);
+            p_Header = TextureHeaderFromDDSHeader(s_DDSHeader, p_Name, p_TextureGroup, p_MipMapBaseIndex, p_SliceCount);
 
             p_Data = new MemoryStream();
             using (var s_Writer = new RimeWriter(p_Data, p_ShouldDispose: false))
                 s_Writer.Write(p_Reader.ReadBytes((int)(p_Reader.Length - p_Reader.Position)));
+
+            p_Data.Seek(0, SeekOrigin.Begin);
         }
 
         public static void LoadDDS2(RimeReader p_Reader, out TextureHeader p_Header, out Stream p_Data)

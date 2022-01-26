@@ -141,7 +141,7 @@ namespace TextureExtractor
                     var s_Name = p_Pair.Key;
                     var s_Resource = p_Pair.Value;
 
-                    if (!s_Name.Contains("bigradiotower_sp_jet"))
+                    if (!s_Name.Contains("asval_s"))
                         return;
 
                     switch (s_Resource.FirstVariant.GetResourceType())

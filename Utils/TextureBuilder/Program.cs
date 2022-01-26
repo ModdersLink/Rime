@@ -108,20 +108,29 @@ namespace TextureExtractor // Note: actual namespace depends on the project name
 
         public class Options
         {
-            [Option('q', "quiet", Required = false, Default = false, HelpText = "Suppress console output.")]
+            [Option('q', "quiet", Required = false, Default = false, HelpText = "Suppress console output")]
             public bool Quiet { get; set; } = false;
 
-            [Value(0, MetaName = "gamePath", Required = true, HelpText = "")]
+            [Option("sliceCount", Default = (short)1, Required = false, HelpText = "For Cube/2DArray textures set the slice count")]
+            public short SliceCount { get; set; } = (short)1;
+
+            [Option("textureName", Default = "", Required = false, HelpText = "Texture name (resource hash lookup)")]
+            public string TextureName { get; set; } = string.Empty;
+
+            [Option("textureGroup", Default = "Default", Required = false, HelpText = "Texture group name")]
+            public string TextureGroup { get; set; } = "Default";
+
+            [Option("mipMapBaseIndex", Default = (byte)1, Required = false, HelpText = "A mip map base index (Default: 0, Max: 14)")]
+            public byte MipMapBaseIndex { get; set; } = 1;
+
+            [Value(0, MetaName = "gamePath", Required = true, HelpText = "Path to game files")]
             public string GamePath { get; set; } = string.Empty;
 
-            [Value(1, MetaName = "engineType", Required = true, HelpText = "The engine type of the game.")]
+            [Value(1, MetaName = "engineType", Required = true, HelpText = "The engine type of the game")]
             public EngineType EngineType { get; set; }
 
-            [Value(2, MetaName = "inputImage", Required = true, HelpText = "Input *.dds image format.")]
+            [Value(2, MetaName = "inputImage", Required = true, HelpText = "Input *.dds image format")]
             public string InputImage { get; set; } = string.Empty;
-
-            [Value(3, MetaName = "gameImagePath", Required = true, HelpText = "Path to place image (ex: Textures/Advertisement/Advertisement_1024x512_01).")]
-            public string GameImagePath { get; set; } = string.Empty;
         }
 
         private static void LoadEngineAssemblies(Options p_Options)
@@ -173,7 +182,7 @@ namespace TextureExtractor // Note: actual namespace depends on the project name
 
             using (var s_Reader = new RimeReader(new FileStream(p_Options.InputImage, FileMode.Open, FileAccess.Read)))
             {
-                FB2DDSImporter.LoadDDS(s_Reader, out var s_Header, out var s_Stream);
+                FB2DDSImporter.LoadDDS(s_Reader, out var s_Header, out var s_Stream, p_Options.TextureName, p_Options.TextureGroup, p_Options.MipMapBaseIndex, p_Options.SliceCount);
 
                 // Write out the texture data
                 using (var s_OutData = new FileStream($"{p_Options.InputImage}.texturedata", FileMode.Create, FileAccess.ReadWrite))
