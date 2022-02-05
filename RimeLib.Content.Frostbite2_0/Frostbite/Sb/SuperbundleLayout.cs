@@ -62,7 +62,7 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Sb
         public string? Name { get; set; }
 
         [DbObjectField("cas", DefaultValue = false)]
-        public bool Cas { get; set; }
+        public bool? Cas { get; set; }
 
         [DbObjectField("alwaysEmitSuperbundle")]
         public bool? AlwaysEmitSuperbundle { get; set; }

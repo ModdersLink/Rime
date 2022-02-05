@@ -52,17 +52,17 @@ namespace RimeLib.Texture.TextureHandlers
 
         public bool Save(TextureBase p_Texture, RimeWriter p_Writer)
         {            
-            SaveDDS(p_Writer, p_Texture, p_Texture.Provider!.GetReader()!.BaseStream);
+            SaveDDS(p_Writer, p_Texture, p_Texture.Provider!.GetReader()!);
 
             return true;
         }
 
-        public static void SaveDDS(RimeWriter p_Writer, TextureBase p_TextureHeader, Stream p_ImageData)
+        public static void SaveDDS(RimeWriter p_Writer, TextureBase p_TextureHeader, RimeReader p_ImageData)
         {
             var s_DDSHeader = FromTexture(p_TextureHeader);
 
             s_DDSHeader.Serialize(p_Writer);
-            p_Writer.Write(new RimeReader(p_ImageData, p_ShouldDispose: false).ReadBytes((int)p_ImageData.Length));
+            p_Writer.Write(p_ImageData);
         }
 
         public static DDSFormatFlags PixelFormatFlagsFromTexture(TextureBase p_TextureHeader)

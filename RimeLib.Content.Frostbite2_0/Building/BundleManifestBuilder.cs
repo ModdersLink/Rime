@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using ICSharpCode.SharpZipLib.Zip.Compression;
+using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 using RimeLib.Content.Building;
+using RimeLib.Content.Frostbite;
 using RimeLib.Content.Frostbite2_0.Frostbite.Bundles;
 using RimeLib.Frostbite;
 using RimeLib.Frostbite.Core;
@@ -17,6 +20,8 @@ namespace RimeLib.Content.Frostbite2_0.Building
         private readonly BundleDescriptor m_Descriptor;
 
         public Sha1 Checksum { get; private set; }
+
+        private long m_ResourceEntriesOffset = 0;
 
         public BundleManifestBuilder(BundleDescriptor p_Descriptor)
         {
@@ -56,7 +61,9 @@ namespace RimeLib.Content.Frostbite2_0.Building
             // Write records.
             foreach (var s_Partition in m_Descriptor.Partitions)
                 SerializeEntry(s_Partition.Key, s_Partition.Value, s_TextWriter, p_Writer);
-            
+
+            m_ResourceEntriesOffset = p_Writer.Position;
+
             foreach (var s_Resource in m_Descriptor.Resources)
                 SerializeEntry(s_Resource.Key, s_Resource.Value, s_TextWriter, p_Writer);
 
@@ -98,18 +105,20 @@ namespace RimeLib.Content.Frostbite2_0.Building
             }
 
             // TODO: Chunk meta.
-            m_Header.ChunkMetaOffset = (int) p_Writer.Position;
+            m_Header.ChunkMetaOffset = (int) (p_Writer.Position - 4); // -4 because the manifest size is not accounted for.
             m_Header.ChunkMetaSize = 0;
 
             // Write the text block.
-            m_Header.StringBlockOffset = (int) p_Writer.Position;
+            m_Header.StringBlockOffset = (int) (p_Writer.Position - 4); // -4 because the manifest size is not accounted for.
 
             s_TextWriter.Flush();
             s_TextWriter.Seek(0, SeekOrigin.Begin);
             s_TextWriter.CopyTo(p_Writer);
 
+            p_Writer.Align(16);
+
             // Record the manifest size.
-            var s_ManifestSize = p_Writer.Position - s_StartOffset;
+            var s_ManifestSize = p_Writer.Position - s_StartOffset - 4; // -4 because the manifest size is not accounted for.
 
             // Update manifest size and header.
             p_Writer.Seek(s_StartOffset, SeekOrigin.Begin);
@@ -117,6 +126,7 @@ namespace RimeLib.Content.Frostbite2_0.Building
             m_Header.Serialize(p_Writer);
 
             // Get ready to start writing our actual entries.
+            // +4 to account for the manifest size.
             p_Writer.Seek(s_StartOffset + s_ManifestSize + 4, SeekOrigin.Begin);
 
             WriteEntries(p_Writer, s_HashOffset);
@@ -145,11 +155,19 @@ namespace RimeLib.Content.Frostbite2_0.Building
                 p_Writer.Align(16);
             }
 
+            var s_ResourceIndex = 0;
+
             foreach (var s_Resource in m_Descriptor.Resources)
             {
-                using var s_ResourceReader = s_Resource.Value.GetReader();
-                using var s_HashWriter = new HashingRimeWriter(p_Writer, false);
+                var s_ShouldCompress = false;
 
+                if (s_Resource.Value.GetResourceType() == ResourceType.DxTexture)
+                {
+                    s_ShouldCompress = true;
+                }
+
+                using var s_ResourceReader = s_Resource.Value.GetReader();
+                using var s_HashWriter = new HashingRimeWriter(new MemoryStream());
                 s_ResourceReader.CopyTo(s_HashWriter);
 
                 var s_Hash = s_HashWriter.GetHash();
@@ -157,7 +175,42 @@ namespace RimeLib.Content.Frostbite2_0.Building
 
                 s_Hash.Serialize(s_ChecksumWriter);
 
+                if (s_ShouldCompress)
+                {
+                    // TODO: Support this properly for multiple segments.
+                    p_Writer.Write((uint) s_Resource.Value.GetSize());
+
+                    var s_CompressedSizeOffset = p_Writer.Position;
+                    p_Writer.Write((uint) 0);
+
+                    using (var s_CompressionStream = new DeflaterOutputStream(p_Writer, new Deflater(Deflater.DEFAULT_COMPRESSION), 4096))
+                    {
+                        s_CompressionStream.IsStreamOwner = false;
+                        s_ResourceReader.Seek(0, SeekOrigin.Begin);
+                        s_ResourceReader.CopyTo(s_CompressionStream);
+                    }
+
+                    var s_CompressedSize = (uint) (p_Writer.Position - s_CompressedSizeOffset - 4);
+
+                    p_Writer.Seek(s_CompressedSizeOffset, SeekOrigin.Begin);
+                    p_Writer.Write(s_CompressedSize);
+                    p_Writer.Seek(s_CompressedSize, SeekOrigin.Current);
+
+                    // Go back and patch the entry sizes.
+                    var s_CurrentOffset = p_Writer.Position;
+
+                    p_Writer.Seek(m_ResourceEntriesOffset + (12 * s_ResourceIndex) + 4, SeekOrigin.Begin);
+                    p_Writer.Write(s_CompressedSize + 8); // +8 for the zlib segment info
+                    p_Writer.Seek(s_CurrentOffset, SeekOrigin.Begin);
+                }
+                else
+                {
+                    s_ResourceReader.Seek(0, SeekOrigin.Begin);
+                    p_Writer.Write(s_ResourceReader);
+                }
+
                 p_Writer.Align(16);
+                ++s_ResourceIndex;
             }
 
             foreach (var s_Chunk in m_Descriptor.Chunks)

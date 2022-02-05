@@ -34,14 +34,15 @@ namespace RimeLib.Content.Frostbite2_0.Building
             // Set basic layout properties.
             m_Toc.Layout.Name = p_Descriptor.SuperbundleName;
             m_Toc.Layout.Tag = Guid.NewGuid();
-
-            // Serialize chunks.
-            foreach (var s_Pair in p_Descriptor.Chunks)
-                SerializeChunk(s_Pair.Key, s_Pair.Value, s_SbWriter);
+            m_Toc.Layout.AlwaysEmitSuperbundle = true;
 
             // Serialize bundles.
             foreach (var s_Pair in p_Descriptor.Bundles)
                 SerializeBundle(s_Pair.Key, s_Pair.Value, s_SbWriter);
+
+            // Serialize chunks.
+            foreach (var s_Pair in p_Descriptor.Chunks)
+                SerializeChunk(s_Pair.Key, s_Pair.Value, s_SbWriter);
 
             // Assign final chunk and bundle info.
             m_Toc.Layout.Chunks = m_Chunks.ToArray();

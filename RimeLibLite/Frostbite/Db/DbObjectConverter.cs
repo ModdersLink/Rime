@@ -67,9 +67,10 @@ namespace RimeLib.Frostbite.Db
                     continue;
 
                 var s_Attribute = (DbObjectFieldAttribute) s_PropertyAttributes[0];
-#pragma warning disable CS8604 // Possible null reference argument.
-                s_Object.AddElement(ConvertObject(s_Property.GetValue(p_Object), s_Attribute.FieldName, s_Attribute.VariableLength));
-#pragma warning restore CS8604 // Possible null reference argument.
+                var s_Value = s_Property.GetValue(p_Object);
+                
+                if (s_Value != null)
+                    s_Object.AddElement(ConvertObject(s_Value, s_Attribute.FieldName, s_Attribute.VariableLength));
             }
 
             return s_Object;

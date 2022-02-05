@@ -568,7 +568,8 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
         protected void ParseBundles(SuperbundleEntry p_Superbundle, SuperbundleLayout p_Toc, SuperbundleLayout? p_PatchToc, bool p_AutoMount)
         {
             // Figure out which endianness our readers should have.
-            var s_Endianness = p_Toc.Cas ? Endianness.LittleEndian : Endianness.BigEndian;
+            var s_Cas = (p_Toc.Cas.HasValue && p_Toc.Cas.Value);
+            var s_Endianness = s_Cas ? Endianness.LittleEndian : Endianness.BigEndian;
 
             if (!File.Exists(p_Superbundle.Path + ".sb"))
                 return;
@@ -593,7 +594,7 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
                 // parse straight away!
                 if (p_PatchToc == null || !p_PatchToc.TryGetBundle(s_Bundle.Id, out var s_PatchBundle) || (s_PatchBundle!.Base.HasValue && s_PatchBundle.Base.Value))
                 {
-                    if (p_Toc.Cas)
+                    if (s_Cas)
                     {
                         ParseCasBundle(s_Reader, s_Bundle, p_Superbundle, p_AutoMount);
                         continue;
@@ -612,7 +613,7 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
                 }
 
                 // If this wasn't a delta entry then parse as we normally would.
-                if (p_Toc.Cas)
+                if (s_Cas)
                 {
                     ParseCasBundle(s_PatchReader!, s_PatchBundle, p_Superbundle, p_AutoMount);
                     continue;
@@ -636,7 +637,7 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
                     if (s_Bundle.Delta.HasValue && s_Bundle.Delta.Value)
                         throw new Exception($"Found a delta bundle ({s_Bundle.Id}) without a base bundle entry. This probably means you're missing some content.");
                     
-                    if (p_PatchToc.Cas)
+                    if (p_PatchToc.Cas.HasValue && p_PatchToc.Cas.Value)
                     {
                         ParseCasBundle(s_PatchReader!, s_Bundle, p_Superbundle, p_AutoMount);
                         continue;

@@ -42,7 +42,7 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
         public RimeReader GetReader()
         {
             // Figure out which endianness our readers should have.
-            var s_Endianness = ContainedSuperbundle.Toc.Layout.Cas ? Endianness.LittleEndian : Endianness.BigEndian;
+            var s_Endianness = (ContainedSuperbundle.Toc.Layout.Cas.HasValue && ContainedSuperbundle.Toc.Layout.Cas.Value) ? Endianness.LittleEndian : Endianness.BigEndian;
 
             var s_SbPath = ContainedSuperbundle.Path + ".sb";
 
@@ -130,7 +130,7 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
         public RimeReader GetReader()
         {
             // Figure out which endianness our readers should have.
-            var s_Endianness = ContainedSuperbundle.Toc.Layout.Cas ? Endianness.LittleEndian : Endianness.BigEndian;
+            var s_Endianness = (ContainedSuperbundle.Toc.Layout.Cas.HasValue && ContainedSuperbundle.Toc.Layout.Cas.Value) ? Endianness.LittleEndian : Endianness.BigEndian;
             
             var s_SbPath = ContainedSuperbundle.Path + ".sb";
 
@@ -193,6 +193,8 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
 
         public uint RangeStart { get; set; }
 
+        public uint RangeEnd { get; set; }
+
         public uint LogicalOffset { get; set; }
 
         private long m_SeekOffset;
@@ -214,6 +216,7 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
             // TODO: Range and logical range have something to do with textures and mip-maps.
             // I still have no idea what, need to investigate. We also need to pull firstMip
             // info from meta as that's somehow relevant.
+            RangeEnd = p_Entry.RangeEnd;
             RangeStart = p_Entry.RangeStart;
             LogicalOffset = p_Entry.LogicalOffset;
         }
@@ -221,7 +224,7 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
         public override RimeReader GetReader()
         {
             // Figure out which endianness our readers should have.
-            var s_Endianness = ContainedSuperbundle.Toc.Layout.Cas ? Endianness.LittleEndian : Endianness.BigEndian;
+            var s_Endianness = (ContainedSuperbundle.Toc.Layout.Cas.HasValue && ContainedSuperbundle.Toc.Layout.Cas.Value) ? Endianness.LittleEndian : Endianness.BigEndian;
 
             var s_SbPath = ContainedSuperbundle.Path + ".sb";
 

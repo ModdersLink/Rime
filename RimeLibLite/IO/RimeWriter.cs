@@ -141,5 +141,15 @@ namespace RimeLib.IO
 
             p_Writer.Seek(s_StartPosition, SeekOrigin.Begin);
         }
+
+        public void Write(RimeReader p_Reader)
+        {
+            var s_StartPosition = p_Reader.Position;
+            p_Reader.Seek(0, SeekOrigin.Begin);
+
+            p_Reader.CopyTo(this);
+
+            p_Reader.Seek(s_StartPosition, SeekOrigin.Begin);
+        }
     }
 }
