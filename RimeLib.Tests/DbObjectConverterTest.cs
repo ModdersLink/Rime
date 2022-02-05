@@ -65,23 +65,23 @@ namespace RimeLib.Tests
         [Fact]
         public void Test1()
         {
-            Test(@"C:\Games\Battlefield 3\Data\layout.toc");
-            Test(@"C:\Games\Battlefield 3\Data\Win32\default_settings_Win32.toc");
-            Test(@"C:\Games\Battlefield 3\Update\Patch\Data\Win32\Chunks0.toc");
-            Test(@"C:\Games\Battlefield 3\Update\Patch\Data\Win32\default_settings_Win32.toc");
-            Test(@"C:\Games\Battlefield 3\Update\Patch\Data\Win32\Xp2Chunks.toc");
-            Test(@"C:\Games\Battlefield 3\Update\Patch\Data\Win32\Loc\en.toc");
-            Test(@"C:\Games\Battlefield 3\Update\Patch\Data\Win32\Levels\MP_Subway\MP_Subway.toc");
-            Test(@"C:\Games\Battlefield 3\Update\Patch\Data\Win32\Levels\XP4_Rubble\XP4_Rubble.toc");
-            Test(@"C:\Games\Battlefield 3\Update\Xpack1\Data\Win32\Xp1Chunks.toc");
-            Test(@"C:\Games\Battlefield 3\Update\Xpack2\Data\Win32\Xp2Chunks.toc");
-            Test(@"C:\Games\Battlefield 3\Update\Xpack5\Data\Win32\Xp5Chunks.toc");
-            Test(@"C:\Games\Battlefield 3\Update\Xpack1\Data\Win32\Levels\XP1_002\XP1_002.toc");
-            Test(@"C:\Games\Battlefield 3\Update\Xpack4\Data\Win32\Levels\XP4_Rubble\XP4_Rubble.toc");
-            Test(@"C:\Games\Battlefield 3\Update\Xpack5\Data\Win32\Levels\XP5_001\XP5_001.toc");
-            Test(@"C:\Games\Battlefield 3\Update\Patch\Data\Win32\Levels\XP3_Valley\XP3_Valley.toc");
-            Test(@"D:\Games\Battlefield 3 - Server\R38\Data\Linux\default_settings_Linux.toc");
-            Test(@"C:\Games\Battlefield 3\Update\Patch\Data\Win32\Levels\XP2_Factory\XP2_Factory.toc");
+            Test(@"B:\Games\Battlefield 3\Data\layout.toc");
+            Test(@"B:\Games\Battlefield 3\vu\Data\VuTest.toc");
+            Test(@"B:\Games\Battlefield 3\Data\Win32\default_settings_Win32.toc");
+            Test(@"B:\Games\Battlefield 3\Update\Patch\Data\Win32\Chunks0.toc");
+            Test(@"B:\Games\Battlefield 3\Update\Patch\Data\Win32\default_settings_Win32.toc");
+            Test(@"B:\Games\Battlefield 3\Update\Patch\Data\Win32\Xp2Chunks.toc");
+            Test(@"B:\Games\Battlefield 3\Update\Patch\Data\Win32\Loc\en.toc");
+            Test(@"B:\Games\Battlefield 3\Update\Patch\Data\Win32\Levels\MP_Subway\MP_Subway.toc");
+            Test(@"B:\Games\Battlefield 3\Update\Patch\Data\Win32\Levels\XP4_Rubble\XP4_Rubble.toc");
+            Test(@"B:\Games\Battlefield 3\Update\Xpack1\Data\Win32\Xp1Chunks.toc");
+            Test(@"B:\Games\Battlefield 3\Update\Xpack2\Data\Win32\Xp2Chunks.toc");
+            Test(@"B:\Games\Battlefield 3\Update\Xpack5\Data\Win32\Xp5Chunks.toc");
+            Test(@"B:\Games\Battlefield 3\Update\Xpack1\Data\Win32\Levels\XP1_002\XP1_002.toc");
+            Test(@"B:\Games\Battlefield 3\Update\Xpack4\Data\Win32\Levels\XP4_Rubble\XP4_Rubble.toc");
+            Test(@"B:\Games\Battlefield 3\Update\Xpack5\Data\Win32\Levels\XP5_001\XP5_001.toc");
+            Test(@"B:\Games\Battlefield 3\Update\Patch\Data\Win32\Levels\XP3_Valley\XP3_Valley.toc");
+            Test(@"B:\Games\Battlefield 3\Update\Patch\Data\Win32\Levels\XP2_Factory\XP2_Factory.toc");
         }
     }
 }
