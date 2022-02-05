@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using RimeLib.Content.Building;
 using RimeLib.Content.Frostbite;
+using RimeLib.Content.Frostbite2_0.Frostbite.Chunks;
 using RimeLib.Content.Frostbite2_0.Frostbite.Sb;
 using RimeLib.Content.Mounting;
 using RimeLib.Frostbite.Core;
@@ -98,17 +99,31 @@ namespace EbxExtractor
 
         internal class ChunkStreamReader : IChunkObject
         {
-            private Stream m_Stream;
+            private readonly Stream m_Stream;
+            private readonly int m_AssetNameHash;
+            private readonly int? m_FirstMip;
 
-            public ChunkStreamReader(Stream p_Stream)
+            public ChunkStreamReader(Stream p_Stream, uint p_AssetNameHash, int? p_FirstMip)
             {
                 m_Stream = p_Stream;
+                m_AssetNameHash = (int) p_AssetNameHash;
+                m_FirstMip = p_FirstMip;
             }
 
             public bool TryGetMeta(out DbObject? p_Meta)
             {
-                p_Meta = null;
-                return false;
+                var s_Meta = new ChunkEntry.ChunkMetaEntry()
+                {
+                    AssetNameHash = m_AssetNameHash,
+                    Payload = new ChunkEntry.ChunkMetaPayload()
+                    {
+                        FirstMip = m_FirstMip,
+                    },
+                };
+
+                p_Meta = DbObjectConverter.ToDbObject(s_Meta);
+
+                return true;
             }
 
             public uint GetRangeStart()
@@ -208,7 +223,7 @@ namespace EbxExtractor
 
                 // Write out the texture data
                 s_ChunkStream.Seek(0, SeekOrigin.Begin);
-                //s_SbBuilder.WithChunk(s_Header.StreamingChunkId, new ChunkStreamReader(s_ChunkStream));
+                s_BundleBuilder.WithChunk(s_Header.StreamingChunkId, new ChunkStreamReader(s_ChunkStream, Utils.HashQuickLowerCase("weapons/xp2_knife_razorblade/knife_razorblade_d2"), null));
 
                 using (var s_ChunkWriter = new RimeWriter(File.OpenWrite(@"B:\ebx-test\chunk.bin")))
                 {
@@ -217,11 +232,11 @@ namespace EbxExtractor
                     s_ChunkStream.Seek(0, SeekOrigin.Begin);
                 };
 
-                var s_ResourceReader = File.OpenRead(@"I:\Research\BF3\Dump\Files\bundles\res\weapons\xp2_knife_razorblade\knife_razorblade_d2.DxTexture");
-                var s_ChunkReader = File.OpenRead(@"I:\Research\BF3\Dump\Files\chunks - Copy\8a88f084aa35689b38e89957dd412ea5.chunk");
+                //var s_ResourceReader = File.OpenRead(@"I:\Research\BF3\Dump\Files\bundles\res\weapons\xp2_knife_razorblade\knife_razorblade_d2.DxTexture");
+                //var s_ChunkReader = File.OpenRead(@"I:\Research\BF3\Dump\Files\chunks - Copy\8a88f084aa35689b38e89957dd412ea5.chunk");
 
                 //s_SbChunksBuilder.WithChunk(new GUID("4525e261-bfc8-4906-8459-52b76bbabbee"), new ChunkStreamReader(s_ChunkStream));
-                s_SbBuilder.WithChunk(new GUID("4525e261-bfc8-4906-8459-52b76bbabbee"), new ChunkStreamReader(s_ChunkReader));
+                //s_BundleBuilder.WithChunk(new GUID("4525e261-bfc8-4906-8459-52b76bbabbee"), new ChunkStreamReader(s_ChunkReader, Utils.HashQuickLowerCase("weapons/xp2_knife_razorblade/knife_razorblade_d2"), null));
 
                 var s_HeaderStream = new MemoryStream();
 
@@ -230,8 +245,8 @@ namespace EbxExtractor
 
                 s_HeaderStream.Seek(0, SeekOrigin.Begin);
 
-                //s_BundleBuilder.WithResource("weapons/xp2_knife_razorblade/knife_razorblade_d2", new ResourceStreamReader(s_HeaderStream, ResourceType.DxTexture));
-                s_BundleBuilder.WithResource("weapons/xp2_knife_razorblade/knife_razorblade_d2", new ResourceStreamReader(s_ResourceReader, ResourceType.DxTexture));
+                s_BundleBuilder.WithResource("weapons/xp2_knife_razorblade/knife_razorblade_d2", new ResourceStreamReader(s_HeaderStream, ResourceType.DxTexture));
+                //s_BundleBuilder.WithResource("weapons/xp2_knife_razorblade/knife_razorblade_d2", new ResourceStreamReader(s_ResourceReader, ResourceType.DxTexture));
 
                 using (var s_ResWriter = new RimeWriter(File.OpenWrite(@"B:\ebx-test\resource.bin")))
                 {
@@ -275,8 +290,8 @@ namespace EbxExtractor
             if (!p_Options.Quiet)
                 Console.WriteLine($"Mounting game with engine '{p_Options.EngineType}' at path '{p_Options.GamePath}'. Please wait, this could take a while.");
 
-            //await s_Mounter.MountStandaloneSuperbundle("VuTest", @"B:\Games\Battlefield 3\vu\Data\VuTest.sb", true);
-            await s_Mounter.MountStandaloneSuperbundle("Win32/Levels/XP5_001/XP5_001", @"B:\Games\Battlefield 3\Update\Xpack5\Data\Win32\Levels\XP5_001\XP5_001.sb", true);
+            await s_Mounter.MountStandaloneSuperbundle("VuTest", @"B:\Games\Battlefield 3\vu\Data\VuTest.sb", true);
+            //await s_Mounter.MountStandaloneSuperbundle("Win32/Levels/XP5_001/XP5_001", @"B:\Games\Battlefield 3\Update\Xpack5\Data\Win32\Levels\XP5_001\XP5_001.sb", true);
             //await s_Mounter.Mount(p_Options.GamePath, true, EngineType.Frostbite2_0);
             //await s_Mounter.MountSuperbundle("Win32/Chunks0", true);
             //await s_Mounter.MountSuperbundle("Win32/Chunks1", true);
