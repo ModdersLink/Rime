@@ -4,6 +4,7 @@ using System.IO;
 using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using RimeLib.IO;
+using RimeLib.IO.Conversion;
 using RimeLib.Json;
 
 namespace RimeLib.Frostbite.Core
@@ -221,8 +222,23 @@ namespace RimeLib.Frostbite.Core
         /// <returns>True on success, false otherwise</returns>
         public bool Serialize(RimeWriter p_Writer)
         {
-            // TODO: This is invalid due to endianness. ToByteArray() always encodes in little-endian.
-            p_Writer.Write(m_Guid.ToByteArray());
+            var s_LEData = m_Guid.ToByteArray();
+
+            if (p_Writer.Endianness == Endianness.LittleEndian)
+            {
+                p_Writer.Write(s_LEData);
+                return true;
+            }
+
+            // Writer is in big endian. We need to parse and write again (bleh).
+            using (var s_Reader = new RimeReader(new MemoryStream(s_LEData)))
+            {
+                p_Writer.Write(s_Reader.ReadInt32());
+                p_Writer.Write(s_Reader.ReadInt16());
+                p_Writer.Write(s_Reader.ReadInt16());
+                p_Writer.Write(s_Reader.ReadBytes(8));
+            }
+
             return true;
         }
 
