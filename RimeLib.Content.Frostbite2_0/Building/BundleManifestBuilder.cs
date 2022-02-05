@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using ICSharpCode.SharpZipLib.Zip.Compression;
 using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 using RimeLib.Content.Building;
 using RimeLib.Content.Frostbite;
 using RimeLib.Content.Frostbite2_0.Frostbite.Bundles;
+using RimeLib.Content.Frostbite2_0.Frostbite.Chunks;
 using RimeLib.Frostbite;
 using RimeLib.Frostbite.Core;
+using RimeLib.Frostbite.Db;
 using RimeLib.IO;
 
 namespace RimeLib.Content.Frostbite2_0.Building
@@ -25,9 +26,6 @@ namespace RimeLib.Content.Frostbite2_0.Building
 
         public BundleManifestBuilder(BundleDescriptor p_Descriptor)
         {
-            if (p_Descriptor.Chunks.Any())
-                throw new Exception("Creating bundles with chunks in them is not currently supported. Please add these chunks to the superbundle instead.");
-
             Checksum = new Sha1();
 
             // Populate the header.
@@ -104,9 +102,26 @@ namespace RimeLib.Content.Frostbite2_0.Building
                 s_ChunkEntry.Serialize(p_Writer);
             }
 
-            // TODO: Chunk meta.
-            m_Header.ChunkMetaOffset = (int) (p_Writer.Position - 4); // -4 because the manifest size is not accounted for.
-            m_Header.ChunkMetaSize = 0;
+            // Write chunk meta.
+            var s_ChunkMetaStart = p_Writer.Position;
+
+            var s_ChunkMeta = new DbObject();
+            var s_ChunkMetaArray = new DbObject();
+            
+            foreach (var s_Chunk in m_Descriptor.Chunks)
+            {
+                if (!s_Chunk.Value.TryGetMeta(out var s_ChunkMetaEntry))
+                    throw new Exception($"Tried serializing chunk with ID '{s_Chunk.Key}' with no chunk meta.");
+
+                s_ChunkMetaArray.AddElement(new DbObjectElement("", s_ChunkMetaEntry!, false));
+            }
+
+            s_ChunkMeta.AddElement(new DbObjectElement("chunkMeta", s_ChunkMetaArray, true));
+
+            s_ChunkMeta.Serialize(p_Writer);
+
+            m_Header.ChunkMetaOffset = (int) (s_ChunkMetaStart - 4); // -4 because the manifest size is not accounted for.
+            m_Header.ChunkMetaSize = (int) (p_Writer.Position - s_ChunkMetaStart);
 
             // Write the text block.
             m_Header.StringBlockOffset = (int) (p_Writer.Position - 4); // -4 because the manifest size is not accounted for.
@@ -161,6 +176,7 @@ namespace RimeLib.Content.Frostbite2_0.Building
             {
                 var s_ShouldCompress = false;
 
+                // TODO: Figure out what other resources need to be compressed.
                 if (s_Resource.Value.GetResourceType() == ResourceType.DxTexture)
                 {
                     s_ShouldCompress = true;

@@ -92,7 +92,7 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
         public Chunk[] ChunkEntries { get; set; } = new Chunk[0];
 
         [DbObjectField("chunkMeta")]
-        public ChunkEntry.ChunkMeta[] ChunkMeta { get; set; } = new ChunkEntry.ChunkMeta[0];
+        public ChunkEntry.ChunkMetaEntry[] ChunkMeta { get; set; } = new ChunkEntry.ChunkMetaEntry[0];
     }
 
     public class CasBundleEntry

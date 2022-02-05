@@ -1,6 +1,7 @@
 ﻿using RimeLib.Frostbite.Core;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using RimeLib.Extensions;
 using RimeLib.IO;
 
@@ -136,7 +137,7 @@ namespace RimeLib.Frostbite.Db
 
             return s_ManagedObject;
         }
-
+        
         public static (T, DbObject) FromDbObjectReader<T>(RimeReader p_Reader) where T : DbObjectSerializable, new()
         {
             var s_DbObject = new DbObject(p_Reader);
@@ -147,12 +148,10 @@ namespace RimeLib.Frostbite.Db
             // Get the contained object.
             var s_Element = s_DbObject[0];
 
-            if (s_Element.Type != DbObjectType.Object)
-                throw new Exception("The parsed DbObject has a non-object contained element.");
-
-            var s_Object = (DbObject) s_Element.Value;
-
-            return (FromDbObject<T>(s_Object), s_Object);
+            if (s_Element.Type == DbObjectType.Object)
+                return (FromDbObject<T>((DbObject) s_DbObject[0].Value), s_DbObject);
+            
+            return (FromDbObject<T>(s_DbObject), s_DbObject);
         }
 
         public static (T, DbObject) FromDbObjectReader<T>(RimeReader p_Reader, long p_Length) where T : DbObjectSerializable, new()

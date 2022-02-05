@@ -1,4 +1,5 @@
-﻿using RimeLib.Content.Frostbite2_0.Mounting;
+﻿using System;
+using RimeLib.Content.Frostbite2_0.Mounting;
 using RimeLib.Frostbite.Core;
 using RimeLib.Frostbite.Db;
 using RimeLib.IO;
@@ -13,13 +14,19 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Chunks
             public int? FirstMip { get; set; }
         }
 
-        public class ChunkMeta : DbObjectSerializable
+        public class ChunkMetaEntry : DbObjectSerializable
         {
             [DbObjectField("h32")]
             public int AssetNameHash { get; set; }
             
             [DbObjectField("meta")]
-            public ChunkMetaPayload Payload { get; set; } = new ChunkMetaPayload();
+            public ChunkMetaPayload Payload { get; set; } = new();
+        }
+
+        public class ChunkMetaContainer : DbObjectSerializable
+        {
+            [DbObjectField("chunkMeta")]
+            public ChunkMetaEntry[] ChunkMeta { get; set; } = Array.Empty<ChunkMetaEntry>();
         }
 
         public GUID Id { get; set; }

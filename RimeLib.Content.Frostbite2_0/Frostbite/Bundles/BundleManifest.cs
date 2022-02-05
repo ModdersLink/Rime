@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using RimeLib.Content.Frostbite2_0.Frostbite.Chunks;
 using RimeLib.Content.Frostbite2_0.Frostbite.Sb;
 using RimeLib.Content.Frostbite2_0.IO;
@@ -189,7 +190,7 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
         
         public BundleManifest ContainedBundle { get; set; }
 
-        public ChunkMeta Meta { get; set; }
+        public ChunkMetaEntry Meta { get; set; }
 
         public uint RangeStart { get; set; }
 
@@ -200,7 +201,7 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
         private long m_SeekOffset;
         private long m_Size;
 
-        internal BundleChunkEntry(Sha1 p_Hash, BundleManifest.ChunkEntry p_Entry, long p_SeekOffset, SuperbundleEntry p_Superbundle, BundleManifest p_Bundle, ChunkMeta p_Meta) :
+        internal BundleChunkEntry(Sha1 p_Hash, BundleManifest.ChunkEntry p_Entry, long p_SeekOffset, SuperbundleEntry p_Superbundle, BundleManifest p_Bundle, ChunkMetaEntry p_Meta) :
             base(p_Entry.Id)
         {
             Hash = p_Hash;
@@ -389,7 +390,7 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
         private readonly List<uint> m_ResourceTypeHashes = new List<uint>();
         private readonly List<byte[]> m_ResourceMeta = new List<byte[]>();
         private readonly List<ChunkEntry> m_Chunks = new List<ChunkEntry>();
-        private readonly Chunks.ChunkEntry.ChunkMeta[] m_ChunkMeta = new Chunks.ChunkEntry.ChunkMeta[0];
+        private readonly Chunks.ChunkEntry.ChunkMetaEntry[] m_ChunkMeta = new Chunks.ChunkEntry.ChunkMetaEntry[0];
         private readonly byte[] m_TextBlock;
         private readonly long m_StartPosition;
 
@@ -442,21 +443,13 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
             // Read the chunk meta
             if (m_Header.ChunkMetaSize > 0)
             {
-                var s_Stream = new MemoryStream();
-                s_Stream.Write(p_Reader.ReadBytes(m_Header.ChunkMetaSize), 0, m_Header.ChunkMetaSize);
-                s_Stream.Position = 0;
+                using var s_ChunkMetaReader = new LimitedRimeReader(p_Reader, m_Header.ChunkMetaSize, false);
+                var (s_ChunkMeta, _) = DbObjectConverter.FromDbObjectReader<Chunks.ChunkEntry.ChunkMetaContainer>(s_ChunkMetaReader);
 
-                // Create a new reader and get a DbObject from it
-                var s_ObjectReader = new RimeReader(s_Stream);
-                var s_Object = new DbObject(s_ObjectReader);
-                var s_RealObject = s_Object[0].Value as DbObject;
-                s_ObjectReader.Dispose();
-
-                // Parse the chunk meta.
-                m_ChunkMeta = new Chunks.ChunkEntry.ChunkMeta[m_Header.ChunkCount];
-
-                for (var i = 0; i < m_Header.ChunkCount; ++i)
-                    m_ChunkMeta[i] = DbObjectConverter.FromDbObject<Chunks.ChunkEntry.ChunkMeta>((s_RealObject![i].Value as DbObject)!);
+                if (s_ChunkMeta.ChunkMeta.Length != m_Header.ChunkCount)
+                    throw new Exception($"Bundle missing chunk meta. Expected {m_Header.ChunkCount}, found {s_ChunkMeta.ChunkMeta.Length}.");
+                
+                m_ChunkMeta = s_ChunkMeta.ChunkMeta;
             }
 
             // Read the text block (can be used later to associate EntryRecords).
