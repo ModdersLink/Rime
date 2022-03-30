@@ -1,6 +1,7 @@
 ﻿using RimeLib.IO;
 using System;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 
 namespace RimeLib.Terrain.Frostbite2_0
 {
@@ -114,8 +115,9 @@ namespace RimeLib.Terrain.Frostbite2_0
             throw new System.NotImplementedException();
         }
 
-        public override bool Serialize(out byte[] p_Data)
+        public override bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
         {
+            p_Data = null;
             throw new System.NotImplementedException();
         }
 

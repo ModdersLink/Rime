@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Runtime.Serialization;
 using Newtonsoft.Json;
@@ -246,9 +247,9 @@ namespace RimeLib.Frostbite.Core
         /// Serializes the guid to a byte array
         /// </summary>
         /// <returns>Byte array containing the data of this guid</returns>
-        public bool Serialize(out byte[] p_Data)
+        public bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
         {
-            p_Data = new byte[0];
+            p_Data = null;
 
             using (var s_Writer = new RimeWriter(new MemoryStream()))
             {

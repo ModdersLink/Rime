@@ -1,6 +1,4 @@
-﻿#pragma warning disable 1591
-
-namespace RimeLib.Content.Frostbite
+﻿namespace RimeLib.Content.Frostbite
 {
     /// <summary>
     /// Data Resource Types

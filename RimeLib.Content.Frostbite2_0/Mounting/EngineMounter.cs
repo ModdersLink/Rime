@@ -2,10 +2,10 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using RimeLib.Attributes;
 using RimeLib.Content.Frostbite;
 using RimeLib.Content.Mounting;
 using RimeLib.Content.Frostbite2_0.Frostbite.Bundles;
@@ -22,7 +22,6 @@ using PackageManifest = RimeLib.Content.Frostbite2_0.Frostbite.PackageManifest;
 
 namespace RimeLib.Content.Frostbite2_0.Mounting
 {
-    [EngineSupport(EngineType.Frostbite2_0)]
     public class EngineMounter : IEngineMounter
     {
         protected string m_GamePath = "";
@@ -33,13 +32,13 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
         protected List<SuperbundleEntry> m_Superbundles = new List<SuperbundleEntry>();
         protected Catalog? m_Catalog;
 
-        protected ConcurrentDictionary<GUID, ChunkEntry> m_Chunks = new ConcurrentDictionary<GUID, ChunkEntry>();
-        protected ConcurrentDictionary<string, BundleManifest> m_Bundles = new ConcurrentDictionary<string, BundleManifest>();
-        protected ConcurrentDictionary<string, CasBundleEntry> m_CasBundles = new ConcurrentDictionary<string, CasBundleEntry>();
+        protected ConcurrentDictionary<GUID, ChunkEntry> m_Chunks = new();
+        protected ConcurrentDictionary<string, BundleManifest> m_Bundles = new();
+        protected ConcurrentDictionary<string, CasBundleEntry> m_CasBundles = new();
 
-        private readonly ConcurrentDictionary<string, MountedObject<IResourceVariant>> m_MountedResources = new ConcurrentDictionary<string, MountedObject<IResourceVariant>>();
-        private readonly ConcurrentDictionary<GUID, MountedObject<IChunkVariant>> m_MountedChunks = new ConcurrentDictionary<GUID, MountedObject<IChunkVariant>>();
-        private readonly ConcurrentDictionary<string, MountedObject> m_MountedPartitions = new ConcurrentDictionary<string, MountedObject>();
+        private readonly ConcurrentDictionary<string, MountedObject<IResourceVariant>> m_MountedResources = new();
+        private readonly ConcurrentDictionary<GUID, MountedObject<IChunkVariant>> m_MountedChunks = new();
+        private readonly ConcurrentDictionary<string, MountedObject> m_MountedPartitions = new();
 
         private readonly HashSet<string> m_MountedSuperbundles = new HashSet<string>();
         private readonly HashSet<string> m_MountedBundles = new HashSet<string>();
@@ -192,7 +191,7 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
             }
         }
 
-        public bool TryGetResource(string p_Path, out IMountedObject<IResourceVariant>? p_Resource)
+        public bool TryGetResource(string p_Path, [NotNullWhen(true)] out IMountedObject<IResourceVariant>? p_Resource)
         {
             if (m_MountedResources.TryGetValue(p_Path.ToLowerInvariant(), out var s_Resource))
             {
@@ -204,7 +203,7 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
             return false;
         }
 
-        public bool TryGetChunk(GUID p_GUID, out IMountedObject<IChunkVariant>? p_Chunk)
+        public bool TryGetChunk(GUID p_GUID, [NotNullWhen(true)] out IMountedObject<IChunkVariant>? p_Chunk)
         {
             if (m_MountedChunks.TryGetValue(p_GUID, out var s_Chunk))
             {
@@ -216,7 +215,7 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
             return false;
         }
 
-        public bool TryGetPartition(string p_Path, out IMountedObject? p_Partition)
+        public bool TryGetPartition(string p_Path, [NotNullWhen(true)] out IMountedObject? p_Partition)
         {
             if (m_MountedPartitions.TryGetValue(p_Path.ToLowerInvariant(), out var s_Partition))
             {
@@ -776,6 +775,11 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
             }
 
             return true;
+        }
+
+        public EngineType[] GetSupportedEngines()
+        {
+            return new[] { EngineType.Frostbite2_0 };
         }
     }
 }

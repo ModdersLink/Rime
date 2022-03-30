@@ -1,9 +1,8 @@
 ﻿using RimeLib.Frostbite;
 using RimeLib.IO;
 using System;
-using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
-using System.Text;
 
 namespace RimeLib.Texture.DDS
 {
@@ -88,8 +87,9 @@ namespace RimeLib.Texture.DDS
         /// Serialize to a byte array
         /// </summary>
         /// <returns>byte[]</returns>
-        public bool Serialize(out byte[] p_Data)
+        public bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
         {
+            p_Data = null;
             var s_Result = false;
             using (var s_Stream = new MemoryStream())
             {

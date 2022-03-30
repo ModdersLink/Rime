@@ -2,6 +2,7 @@
 using RimeLib.IO;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
 namespace Rimelib.Shader.Frostbite2_0.Frostbite.Functions
@@ -43,8 +44,9 @@ namespace Rimelib.Shader.Frostbite2_0.Frostbite.Functions
                 m_Parameter = p_Reader.ReadUByte();
             }
 
-            public bool Serialize(out byte[] p_Data)
+            public bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
             {
+                p_Data = null;
                 throw new System.NotImplementedException();
             }
 
@@ -96,8 +98,9 @@ namespace Rimelib.Shader.Frostbite2_0.Frostbite.Functions
                 m_Textures[i] = new Texture(p_Reader);
         }
 
-        public bool Serialize(out byte[] p_Data)
+        public bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
         {
+            p_Data = null;
             throw new System.NotImplementedException();
         }
 

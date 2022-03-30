@@ -2,6 +2,7 @@
 using RimeLib.IO;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using AxisAlignedBox2 = fb.AxisAlignedBox;
 
 namespace RimeLib.Terrain
@@ -91,8 +92,9 @@ namespace RimeLib.Terrain
             throw new System.NotImplementedException();
         }
 
-        public override bool Serialize(out byte[] p_Data)
+        public override bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
         {
+            p_Data = null;
             throw new System.NotImplementedException();
         }
 

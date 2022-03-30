@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using RimeLib.Frostbite;
 using RimeLib.IO;
@@ -48,8 +49,9 @@ namespace RimeLib.Mesh.Frostbite
                 throw new NotImplementedException();
             }
 
-            public bool Serialize(out byte[] p_Data)
+            public bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
             {
+                p_Data = null;
                 throw new NotImplementedException();
             }
 
@@ -128,8 +130,9 @@ namespace RimeLib.Mesh.Frostbite
             /// Serializes a element
             /// </summary>
             /// <returns>byte[] containing the data of an element</returns>
-            public bool Serialize(out byte[] p_Data)
+            public bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
             {
+                p_Data = null;
                 var s_Stream = new MemoryStream();
                 using (var s_Writer = new RimeWriter(new MemoryStream()))
                 {
@@ -201,8 +204,9 @@ namespace RimeLib.Mesh.Frostbite
             return true;
         }
 
-        public bool Serialize(out byte[] p_Data)
+        public bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
         {
+            p_Data = null;
             throw new System.NotImplementedException();
         }
 

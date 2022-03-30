@@ -1,4 +1,5 @@
-﻿using RimeLib.Frostbite;
+﻿using System.Diagnostics.CodeAnalysis;
+using RimeLib.Frostbite;
 using RimeLib.IO;
 
 namespace RimeLib.Terrain
@@ -18,7 +19,7 @@ namespace RimeLib.Terrain
         };
 
         public abstract bool Serialize(RimeWriter p_Writer);
-        public abstract bool Serialize(out byte[] p_Data);
+        public abstract bool Serialize([NotNullWhen(true)] out byte[]? p_Data);
         public abstract void Deserialize(RimeReader p_Reader);
         public abstract void Deserialize(byte[] p_Data);
     }

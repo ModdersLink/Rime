@@ -136,17 +136,13 @@ namespace RimeLib.Cmd
             // and sort them by their order.
             var s_Properties = from s_Property in p_Type.GetProperties()
                 where Attribute.IsDefined(s_Property, typeof(CommandArgumentAttribute))
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
-                orderby s_Property.GetCustomAttribute<CommandArgumentAttribute>().Order
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
+                orderby s_Property.GetCustomAttribute<CommandArgumentAttribute>()!.Order
                 select s_Property;
 
             foreach (var s_Property in s_Properties)
             {
                 var s_Attribute = s_Property.GetCustomAttribute<CommandArgumentAttribute>();
-#pragma warning disable CS8604 // Possible null reference argument.
-                yield return new Tuple<PropertyInfo, CommandArgumentAttribute>(s_Property, s_Attribute);
-#pragma warning restore CS8604 // Possible null reference argument.
+                yield return new Tuple<PropertyInfo, CommandArgumentAttribute>(s_Property, s_Attribute!);
             }
         }
 

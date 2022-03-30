@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using CommandLine;
+using RimeLib;
 using RimeLib.Content.Mounting;
 using RimeLib.Frostbite;
 using Environment = System.Environment;
@@ -77,7 +78,7 @@ namespace Rime.Utils.ContentLister
 
         private static async void DumpFiles(Options p_Options)
         {
-            var s_Mounter = EngineMounterRegistry.Create(p_Options.EngineType);
+            var s_Mounter = EngineInterfaceRegistry.Create<IEngineMounter>(p_Options.EngineType);
 
             var s_MountSuperbundles = p_Options.MountSuperbundles.ToList();
             var s_MountBundles = p_Options.MountBundles.ToList();
@@ -117,53 +118,51 @@ namespace Rime.Utils.ContentLister
             if (p_Options.ResourcePaths.Count() > 0)
             {
                 Parallel.ForEach(p_Options.ResourcePaths, p_Path =>
-               {
-                   if (!s_Mounter.GetResources().TryGetValue(p_Path, out var s_Object))
-                   {
-                       if (!p_Options.Quiet)
-                           Console.WriteLine($"Resource {p_Path} not found");
+                {
+                    if (!s_Mounter.GetResources().TryGetValue(p_Path, out var s_Object))
+                    {
+                        if (!p_Options.Quiet)
+                            Console.WriteLine($"Resource {p_Path} not found");
 
-                       return;
-                   }
+                        return;
+                    }
 
-                   Dump(p_Options, "resource", p_Path, s_Object);
-               });
+                    Dump(p_Options, "resource", p_Path, s_Object.FirstVariant);
+                });
             }
             else
             {
 
                 Parallel.ForEach(s_Mounter.GetChunks(), p_Pair =>
                 {
-                    Dump(p_Options, "chunk", "_chunks/" + p_Pair.Key.ToString("D"), p_Pair.Value);
+                    Dump(p_Options, "chunk", "_chunks/" + p_Pair.Key.ToString("D"), p_Pair.Value.Variants.First(p_Variant => p_Variant.GetLogicalOffset() == 0));
                 });
 
                 Parallel.ForEach(s_Mounter.GetResources(), p_Pair =>
                 {
-                    Dump(p_Options, "resource", p_Pair.Key, p_Pair.Value);
+                    Dump(p_Options, "resource", p_Pair.Key, p_Pair.Value.FirstVariant);
                 });
 
                 Parallel.ForEach(s_Mounter.GetPartitions(), p_Pair =>
                 {
-                    Dump(p_Options, "partition", p_Pair.Key, p_Pair.Value);
+                    Dump(p_Options, "partition", p_Pair.Key, p_Pair.Value.FirstVariant);
                 });
             }
         }
 
-        private static void Dump<T>(Options p_Options, string p_Type, string p_FilePath, IMountedObject<T> p_Object) where T : IObjectVariant
+        private static void Dump<T>(Options p_Options, string p_Type, string p_FilePath, T p_Variant) where T : IObjectVariant
         {
             // Construct a full path to this object and make sure its directory exists.
             var s_Path = Path.Join(p_Options.OutputPath, p_FilePath + "." + p_Type).Normalize();
 
             var s_Directory = Path.GetDirectoryName(s_Path);
-#pragma warning disable CS8604 // Possible null reference argument.
-            Directory.CreateDirectory(s_Directory);
-#pragma warning restore CS8604 // Possible null reference argument.
+            Directory.CreateDirectory(s_Directory!);
+            
             if (!p_Options.Quiet)
                 Console.WriteLine("/" + p_FilePath + "." + p_Type);
 
             // Get a reader to the object.
-            var s_Variant = p_Object.FirstVariant;
-            using var s_Reader = s_Variant.GetReader();
+            using var s_Reader = p_Variant.GetReader();
 
             // TODO: Re-add support for hash verification. This is currently disabled because it's very inefficient.
             // Ideally we want to be calculating the hash on the fly by piping the data to both the output file and a hasher.

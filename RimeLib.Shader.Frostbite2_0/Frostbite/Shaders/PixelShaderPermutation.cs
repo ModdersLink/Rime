@@ -3,6 +3,7 @@ using RimeLib.Frostbite.Core;
 using RimeLib.IO;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
 namespace RimeLib.Shader.Frostbite2_0.Frostbite.Shaders
@@ -44,10 +45,12 @@ namespace RimeLib.Shader.Frostbite2_0.Frostbite.Shaders
             m_Metrics = p_Reader.ReadUInt32();
         }
 
-        public bool Serialize(out byte[] p_Data)
+        public bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
         {
+            p_Data = null;
             throw new System.NotImplementedException();
         }
+        
         public void Deserialize(byte[] p_Data)
         {
             throw new System.NotImplementedException();

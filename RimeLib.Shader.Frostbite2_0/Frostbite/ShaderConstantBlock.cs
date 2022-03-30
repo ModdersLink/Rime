@@ -3,6 +3,7 @@ using RimeLib.IO;
 using RimeLib.Shader.Frostbite2_0.Frostbite.ShaderConstants;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Text;
 
@@ -105,14 +106,14 @@ namespace RimeLib.Shader.Frostbite2_0.Frostbite
                 for (var i = 0; i < s_SamplerStateCount; i++)
                     m_Samplers[i] = new SamplerState(p_Reader);
             }
-
-
         }
 
-        public bool Serialize(out byte[] p_Data)
+        public bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
         {
+            p_Data = null;
             throw new System.NotImplementedException();
         }
+        
         public void Deserialize(byte[] p_Data)
         {
             throw new System.NotImplementedException();

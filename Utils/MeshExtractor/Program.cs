@@ -19,6 +19,7 @@ using System.Numerics;
 using System.Runtime.InteropServices;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
 using fb;
+using RimeLib;
 using VertexElementUsage = RimeLib.Mesh.Frostbite.VertexElementUsage;
 using VertexElementFormat = RimeLib.Mesh.Frostbite.VertexElementFormat;
 using MeshSubsetCategory = RimeLib.Mesh.Frostbite.Fb2.MeshSubsetCategory;
@@ -126,7 +127,7 @@ namespace MeshExtractor
 
         private static void Mount(Options p_Options, out IEngineMounter p_Mounter)
         {
-            p_Mounter = EngineMounterRegistry.Create(p_Options.EngineType);
+            p_Mounter = EngineInterfaceRegistry.Create<IEngineMounter>(p_Options.EngineType);
 
             if (!p_Options.Quiet)
                 Console.WriteLine($"Mounting game with engine '{p_Options.EngineType}' at path '{p_Options.GamePath}'. Please wait, this could take a while.");

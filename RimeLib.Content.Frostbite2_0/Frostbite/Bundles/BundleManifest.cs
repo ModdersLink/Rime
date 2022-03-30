@@ -282,16 +282,17 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
 
     public class BundleManifest
     {
+        // Size = 32
         public class Header
         {
-            public uint Magic { get; set; }
-            public int EntryCount { get; set; }
-            public int EbxCount { get; set; }
-            public int ResourceCount { get; set; }
-            public int ChunkCount { get; set; }
-            public int StringBlockOffset { get; set; }
-            public int ChunkMetaOffset { get; set; }
-            public int ChunkMetaSize { get; set; }
+            public uint Magic { get; set; } // 0
+            public int EntryCount { get; set; } // 4
+            public int EbxCount { get; set; } // 8
+            public int ResourceCount { get; set; } // 12
+            public int ChunkCount { get; set; } // 16
+            public int StringBlockOffset { get; set; } // 20
+            public int ChunkMetaOffset { get; set; } // 24
+            public int ChunkMetaSize { get; set; } // 28
 
             public Header(RimeReader p_Reader)
             {
@@ -322,6 +323,7 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
             }
         }
 
+        // Size = 12
         public class EntryRecord
         {
             public uint NameOffset { get; set; }
@@ -349,15 +351,16 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
             }
         }
 
+        // Size = 28
         public class ChunkEntry
         {
-            public GUID Id { get; set; }
+            public GUID Id { get; set; } // 0
 
-            public uint RangeStart { get; set; }
+            public uint RangeStart { get; set; } // 16
 
-            public uint RangeEnd { get; set; }
+            public uint RangeEnd { get; set; } // 20
 
-            public uint LogicalOffset { get; set; }
+            public uint LogicalOffset { get; set; } // 24
 
             public ChunkEntry(RimeReader p_Reader)
             {

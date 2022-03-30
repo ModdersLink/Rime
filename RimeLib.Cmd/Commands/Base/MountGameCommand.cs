@@ -40,7 +40,7 @@ namespace RimeLib.Cmd.Commands.Base
 
             try
             {
-                var s_Mounter = EngineMounterRegistry.Create(Engine);
+                var s_Mounter = EngineInterfaceRegistry.Create<IEngineMounter>(Engine);
                 s_Mounter.Mount(Path.FullName, AutoMount, Engine).Wait();
 
                 // Register the mounter with the context.

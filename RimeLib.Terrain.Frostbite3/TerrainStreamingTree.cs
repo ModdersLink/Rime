@@ -4,6 +4,7 @@ using RimeLib.IO;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 
 namespace RimeLib.Terrain.Frostbite3
@@ -135,8 +136,9 @@ namespace RimeLib.Terrain.Frostbite3
             throw new NotImplementedException();
         }
 
-        public bool Serialize(out byte[] p_Data)
+        public bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
         {
+            p_Data = null;
             throw new NotImplementedException();
         }
     }

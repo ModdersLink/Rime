@@ -5,9 +5,6 @@
  * https://github.com/grimdoomer/DeadRisingArcTool/blob/master/DeadRisingArcTool/FileFormats/Bitmaps/Color.cs
  */
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace RimeLib.Texture.Bitmaps
 {

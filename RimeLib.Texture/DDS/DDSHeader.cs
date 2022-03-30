@@ -1,9 +1,8 @@
 ﻿using RimeLib.Frostbite;
 using RimeLib.IO;
 using System;
-using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
-using System.Text;
 
 namespace RimeLib.Texture.DDS
 {
@@ -25,7 +24,6 @@ namespace RimeLib.Texture.DDS
         Texture = Caps | Height | Width | PixelFormat,
     };
 
-
     [Flags]
     public enum DDSCaps : uint
     {
@@ -33,15 +31,12 @@ namespace RimeLib.Texture.DDS
         Texture = 0x1000,
         Mipmap = 0x400000,
 
-
         MipmapFlags = Complex | Mipmap
     };
 
     [Flags]
     public enum DDSCaps2 : uint
     {
-        
-
         Cubemap = 0x0200,
 
         Cubemap_Face_PositiveX = 0x0400,
@@ -53,9 +48,7 @@ namespace RimeLib.Texture.DDS
         Cubemap_Face_PositiveZ = 0x4000,
         Cubemap_Face_NegativeZ = 0x8000,
 
-
         Volume = 0x200000, //3d texture
-
 
         Cubemap_PositiveX = Cubemap | Cubemap_Face_PositiveX,
         Cubemap_NegativeX = Cubemap | Cubemap_Face_NegativeX,
@@ -66,15 +59,11 @@ namespace RimeLib.Texture.DDS
         Cubemap_PositiveZ = Cubemap | Cubemap_Face_PositiveZ,
         Cubemap_NegativeZ = Cubemap | Cubemap_Face_NegativeZ,
 
-
-
         AllFaces = Cubemap_PositiveX | Cubemap_NegativeX |
-                    Cubemap_PositiveY | Cubemap_NegativeY |
-                    Cubemap_PositiveZ | Cubemap_NegativeZ,
-
+                   Cubemap_PositiveY | Cubemap_NegativeY |
+                   Cubemap_PositiveZ | Cubemap_NegativeZ,
     };
-
-
+    
     public class DDSHeader : IFbSerializable
     {
         public DDSHeader()
@@ -146,9 +135,7 @@ namespace RimeLib.Texture.DDS
             // Determine if we have a DX10 header to read after the end of this
             if (PixelFormat.FourCC == DDSUtils.MakeFourCC("DX10"))
                 Dx10Header = new DDSDX10Header(p_Reader);
-
         }
-
 
         /// <summary>
         /// Serialize to an open writer
@@ -184,19 +171,20 @@ namespace RimeLib.Texture.DDS
             return true;
         }
 
-
         /// <summary>
         /// Serialize to a byte array
         /// </summary>
         /// <returns>byte[]</returns>
-        public bool Serialize(out byte[] p_Data)
+        public bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
         {
-            var s_Result = false;
+            p_Data = null;
+            
+            bool s_Result;
             using (var s_Stream = new MemoryStream())
             {
                 using (var s_RimeStream = new RimeWriter(s_Stream))
                 {
-                    s_Result = this.Serialize(s_RimeStream);
+                    s_Result = Serialize(s_RimeStream);
                 }
                 p_Data = s_Stream.ToArray();
             }
@@ -207,25 +195,6 @@ namespace RimeLib.Texture.DDS
         /// Deserialize from an byte array
         /// </summary>
         /// <param name="p_Data">Input byte array</param>
-        public void Deserialize(byte[] p_Data)
-        {
-            this.Deserialize(new RimeReader(new MemoryStream(p_Data)));
-        }
-
-        public static uint FourCCFromDXGIFormat(DXGIFormat p_Format)
-        {
-            switch (p_Format)
-            {
-                case DXGIFormat.BC1_UNORM:
-                    return DDSUtils.MakeFourCC("DXT1");
-                case DXGIFormat.BC3_UNORM:
-                    return DDSUtils.MakeFourCC("DXT3");
-                case DXGIFormat.BC5_UNORM:
-                    return DDSUtils.MakeFourCC("DXT5");
-                default:
-                    return 0;
-            }
-        }
-
+        public void Deserialize(byte[] p_Data) => Deserialize(new RimeReader(new MemoryStream(p_Data)));
     }
 }

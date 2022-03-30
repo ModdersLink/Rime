@@ -47,14 +47,8 @@ namespace RimeLib.Serialization.Ebx
             SecondarySize = p_Reader.ReadUInt16();
             m_Name = string.Empty;
 
-#pragma warning disable IDE0059 // Unnecessary assignment of a value
-            var s_Name = string.Empty;
-#pragma warning restore IDE0059 // Unnecessary assignment of a value
-            p_HashedTypeNames.TryGetValue(NameHash, out s_Name);
-
-#pragma warning disable CS8601 // Possible null reference assignment.
-            Name = s_Name;
-#pragma warning restore CS8601 // Possible null reference assignment.
+            if (p_HashedTypeNames.TryGetValue(NameHash, out var s_Name))
+                 Name = s_Name;
         }
 
         public TypeDescriptor()

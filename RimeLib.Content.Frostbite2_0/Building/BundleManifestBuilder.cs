@@ -11,6 +11,7 @@ using RimeLib.Frostbite;
 using RimeLib.Frostbite.Core;
 using RimeLib.Frostbite.Db;
 using RimeLib.IO;
+using RimeLib.IO.Conversion;
 
 namespace RimeLib.Content.Frostbite2_0.Building
 {
@@ -23,6 +24,7 @@ namespace RimeLib.Content.Frostbite2_0.Building
         public Sha1 Checksum { get; private set; }
 
         private long m_ResourceEntriesOffset = 0;
+        private long m_ChunkEntriesOffset = 0;
 
         public BundleManifestBuilder(BundleDescriptor p_Descriptor)
         {
@@ -41,6 +43,16 @@ namespace RimeLib.Content.Frostbite2_0.Building
 
         public void Serialize(RimeWriter p_Writer)
         {
+            // Structure:
+            // Header
+            // Sha1[]
+            // Entries[]
+            // ResourceTypes[]
+            // ResourceMeta[] 
+            // ChunkEntries[]
+            // ChunkMeta at ChunkMetaOffset, 4-aligned
+            // StringBlock at StringBlockOffset, 4-aligned
+            
             var s_StartOffset = p_Writer.Position;
 
             // Write temp position. Will update after.
@@ -83,12 +95,11 @@ namespace RimeLib.Content.Frostbite2_0.Building
                 p_Writer.Write(s_Meta);
             }
 
+            m_ChunkEntriesOffset = p_Writer.Position;
+            
             // Write chunk entries.
             foreach (var s_Chunk in m_Descriptor.Chunks)
             {
-                if (s_Chunk.Key.HasCompressionFlag())
-                    throw new Exception($"Tried serializing compressed chunk with ID '{s_Chunk.Key.ToString("D")}' but we don't currently support compression.");
-
                 var s_RangeStart = s_Chunk.Value.GetRangeStart();
                 var s_Size = (uint) s_Chunk.Value.GetSize();
 
@@ -103,6 +114,7 @@ namespace RimeLib.Content.Frostbite2_0.Building
             }
 
             // Write chunk meta.
+            p_Writer.Align(4);
             var s_ChunkMetaStart = p_Writer.Position;
 
             var s_ChunkMeta = new DbObject();
@@ -124,6 +136,7 @@ namespace RimeLib.Content.Frostbite2_0.Building
             m_Header.ChunkMetaSize = (int) (p_Writer.Position - s_ChunkMetaStart);
 
             // Write the text block.
+            p_Writer.Align(4);
             m_Header.StringBlockOffset = (int) (p_Writer.Position - 4); // -4 because the manifest size is not accounted for.
 
             s_TextWriter.Flush();
@@ -151,12 +164,12 @@ namespace RimeLib.Content.Frostbite2_0.Building
         {
             var s_Hashes = new List<Sha1>();
 
-            p_Writer.Align(16);
-
             using var s_ChecksumWriter = new HashingRimeWriter(new MemoryStream());
 
             foreach (var s_Partition in m_Descriptor.Partitions)
             {
+                p_Writer.Align(16);
+                
                 using var s_PartitionReader = s_Partition.Value.GetReader();
                 using var s_HashWriter = new HashingRimeWriter(p_Writer, false);
 
@@ -166,14 +179,14 @@ namespace RimeLib.Content.Frostbite2_0.Building
                 s_Hashes.Add(s_Hash);
 
                 s_Hash.Serialize(s_ChecksumWriter);
-
-                p_Writer.Align(16);
             }
 
             var s_ResourceIndex = 0;
 
             foreach (var s_Resource in m_Descriptor.Resources)
             {
+                p_Writer.Align(16);
+                
                 var s_ShouldCompress = false;
 
                 // TODO: Figure out what other resources need to be compressed.
@@ -224,29 +237,66 @@ namespace RimeLib.Content.Frostbite2_0.Building
                     s_ResourceReader.Seek(0, SeekOrigin.Begin);
                     p_Writer.Write(s_ResourceReader);
                 }
-
-                p_Writer.Align(16);
+                
                 ++s_ResourceIndex;
             }
+            
+            var s_ChunkIndex = 0;
 
             foreach (var s_Chunk in m_Descriptor.Chunks)
             {
-                // TODO: Compression support.
-                if (s_Chunk.Key.HasCompressionFlag())
-                    throw new Exception("Serializing compressed chunks is not supported.");
-
+                p_Writer.Align(16);
+                
                 using var s_ChunkReader = s_Chunk.Value.GetReader();
-                using var s_HashWriter = new HashingRimeWriter(p_Writer, false);
 
-                s_ChunkReader.CopyTo(s_HashWriter);
+                Sha1 s_Hash;
+                
+                /*if (s_Chunk.Key.HasCompressionFlag())
+                {
+                    p_Writer.Write((uint) s_Chunk.Value.GetSize());
 
-                var s_Hash = s_HashWriter.GetHash();
+                    var s_CompressedSizeOffset = p_Writer.Position;
+                    p_Writer.Write((uint) 0);
+
+                    using (var s_CompressionStream = new DeflaterOutputStream(p_Writer, new Deflater(Deflater.DEFAULT_COMPRESSION), 4096))
+                    {
+                        s_CompressionStream.IsStreamOwner = false;
+                        using var s_HashWriter = new HashingRimeWriter(s_CompressionStream, Endianness.BigEndian, false);
+                        s_ChunkReader.CopyTo(s_HashWriter);
+                        s_Hash = s_HashWriter.GetHash();
+                    }
+
+                    var s_CompressedSize = (uint) (p_Writer.Position - s_CompressedSizeOffset - 4);
+
+                    p_Writer.Seek(s_CompressedSizeOffset, SeekOrigin.Begin);
+                    p_Writer.Write(s_CompressedSize);
+                    p_Writer.Seek(s_CompressedSize, SeekOrigin.Current);
+                    
+                    // Go back and patch the entry sizes.
+                    var s_CurrentOffset = p_Writer.Position;
+
+                    var s_RangeStart = s_Chunk.Value.GetRangeStart();
+                    
+                    p_Writer.Seek(m_ChunkEntriesOffset + (28 * s_ChunkIndex) + 20, SeekOrigin.Begin);
+                    p_Writer.Write(s_RangeStart + s_CompressedSize + 8); // +8 for the zlib segment info
+                    p_Writer.Seek(s_CurrentOffset, SeekOrigin.Begin);
+                }
+                else*/
+                {
+                    using var s_HashWriter = new HashingRimeWriter(p_Writer, false);
+                    s_ChunkReader.CopyTo(s_HashWriter);
+
+                    s_Hash = s_HashWriter.GetHash();
+                }
+
                 s_Hashes.Add(s_Hash);
 
                 s_Hash.Serialize(s_ChecksumWriter);
 
-                p_Writer.Align(16);
+                ++s_ChunkIndex;
             }
+            
+            p_Writer.Align(16);
 
             // Store final checksum, which is a sha1 of all the sha1s.
             Checksum = s_ChecksumWriter.GetHash();

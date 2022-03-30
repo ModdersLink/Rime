@@ -242,9 +242,7 @@ namespace RimeLib.Frostbite.Db
                 EnsureElementType(p_Element, DbObjectType.Object);
 
                 // Call ConvertFrom with the property type as the generic parameter.
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
                 var s_Method = typeof(DbObjectConverter).GetMethod("FromDbObject").MakeGenericMethod(s_FieldType);
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
                 return s_Method.Invoke(null, new[] { p_Element.Value });
             }
 

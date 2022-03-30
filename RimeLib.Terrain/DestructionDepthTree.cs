@@ -2,6 +2,7 @@
 using fb;
 using RimeLib.IO;
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace RimeLib.Terrain
 {
@@ -85,8 +86,9 @@ namespace RimeLib.Terrain
             }
         }
 
-        public override bool Serialize(out byte[] p_Data)
+        public override bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
         {
+            p_Data = null;
             throw new System.NotImplementedException();
         }
 

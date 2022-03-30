@@ -11,7 +11,7 @@ namespace RimeLib.Serialization.Frostbite2_0.Ebx
 {
     public class DatabasePartition
     {
-        public string Name { get; set; } = null;
+        public string Name { get; set; }
 
         public GUID PartitionGuid { get; set; } = new();
 

@@ -1,4 +1,5 @@
-﻿using RimeLib.Frostbite;
+﻿using System.Diagnostics.CodeAnalysis;
+using RimeLib.Frostbite;
 using RimeLib.IO;
 
 namespace RimeLib.Terrain
@@ -35,8 +36,9 @@ namespace RimeLib.Terrain
             throw new System.NotImplementedException();
         }
 
-        public bool Serialize(out byte[] p_Data)
+        public bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
         {
+            p_Data = null;
             throw new System.NotImplementedException();
         }
 
@@ -57,9 +59,7 @@ namespace RimeLib.Terrain
             return IndexX == other.IndexX && IndexY == other.IndexY && Level == other.Level;
         }
 
-#pragma warning disable CS8765 // Nullability of type of parameter doesn't match overridden member (possibly because of nullability attributes).
-        public override bool Equals(object obj)
-#pragma warning restore CS8765 // Nullability of type of parameter doesn't match overridden member (possibly because of nullability attributes).
+        public override bool Equals(object? obj)
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;

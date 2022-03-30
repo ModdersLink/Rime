@@ -10,7 +10,7 @@ namespace RimeLib.Content.Building
     {
         public static SuperbundleBuilder Create(EngineType p_Type, string p_SbName)
         {
-            return new SuperbundleBuilder(p_Type, SuperbundleSerializerRegistry.Create(p_Type), p_SbName);
+            return new SuperbundleBuilder(p_Type, EngineInterfaceRegistry.Create<ISuperbundleSerializer>(p_Type), p_SbName);
         }
 
         private readonly ISuperbundleSerializer m_Serializer;

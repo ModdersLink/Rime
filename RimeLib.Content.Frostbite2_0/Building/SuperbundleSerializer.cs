@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using RimeLib.Attributes;
 using RimeLib.Content.Building;
 using RimeLib.Content.Frostbite2_0.Frostbite.Sb;
 using RimeLib.Content.Mounting;
@@ -9,11 +8,9 @@ using RimeLib.Frostbite;
 using RimeLib.Frostbite.Core;
 using RimeLib.IO;
 using RimeLib.IO.Conversion;
-using RimeLib.Utils;
 
 namespace RimeLib.Content.Frostbite2_0.Building
 {
-    [EngineSupport(EngineType.Frostbite2_0)]
     public class SuperbundleSerializer : ISuperbundleSerializer
     {
         private TableOfContents<SuperbundleLayout> m_Toc = new TableOfContents<SuperbundleLayout>(new SuperbundleLayout());
@@ -92,6 +89,11 @@ namespace RimeLib.Content.Frostbite2_0.Building
 
             // Add bundle to layout.
             m_Bundles.Add(s_BundleInfo);
+        }
+
+        public EngineType[] GetSupportedEngines()
+        {
+            return new[] { EngineType.Frostbite2_0 };
         }
     }
 }

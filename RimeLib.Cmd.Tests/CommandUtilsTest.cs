@@ -132,7 +132,7 @@ namespace RimeLib.Cmd.Tests
         [Fact]
         public void TestThing2()
         {
-            var s_Mounter = EngineMounterRegistry.Create(EngineType.Frostbite2_0);
+            var s_Mounter = EngineInterfaceRegistry.Create<IEngineMounter>(EngineType.Frostbite2_0);
             s_Mounter.Mount("B:\\Games\\Battlefield 3", true, EngineType.Frostbite2_0).Wait();
 
             Parallel.ForEach(s_Mounter.GetPartitions(), (p_Partition) =>

@@ -7,11 +7,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Frostbite.Db;
 using RimeLib.IO;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
-using RimeLib.Texture.Frostbite;
 using RimeLib.Texture.Frostbite2_0;
 using RimeLib.Utils;
 using System;
 using System.Reflection;
+using RimeLib;
+using RimeLib.Texture.Generation;
 
 namespace TextureExtractor // Note: actual namespace depends on the project name.
 {
@@ -180,20 +181,24 @@ namespace TextureExtractor // Note: actual namespace depends on the project name
                 return;
             }
 
-            using (var s_Reader = new RimeReader(new FileStream(p_Options.InputImage, FileMode.Open, FileAccess.Read)))
+            using var s_Reader = new RimeReader(new FileStream(p_Options.InputImage, FileMode.Open, FileAccess.Read));
+            using var s_HeaderWriter = new RimeWriter(new FileStream($"{p_Options.InputImage}.DxTexture", FileMode.Create));
+
+            var s_Attributes = new TextureAttributes()
             {
-                FB2DDSImporter.LoadDDS(s_Reader, out var s_Header, out var s_Stream, p_Options.TextureName, p_Options.TextureGroup, p_Options.MipMapBaseIndex, p_Options.SliceCount);
-
-                // Write out the texture data
-                using (var s_OutData = new FileStream($"{p_Options.InputImage}.texturedata", FileMode.Create, FileAccess.ReadWrite))
-                    s_OutData.Write(new RimeReader(s_Stream).ReadBytes((int)s_Stream.Length));
-
-                // Write out the header with the placeholder information
-                using (var s_HeaderStream = new RimeWriter(new FileStream($"{p_Options.InputImage}.headerdata", FileMode.Create, FileAccess.ReadWrite)))
-                    s_Header.Serialize(s_HeaderStream);
+                Name = p_Options.TextureName,
+                TextureGroup = p_Options.TextureGroup,
+            };
                 
+            var s_Generator = EngineInterfaceRegistry.Create<ITextureGenerator>(p_Options.EngineType);
+            s_Generator.GenerateFromDDS(s_Reader, s_Attributes, s_HeaderWriter, out var s_Chunks);
+
+            foreach (var (s_ChunkId, s_ChunkStream) in s_Chunks)
+            {
+                using var s_ChunkWriter = new FileStream($"{p_Options.InputImage}.{s_ChunkId}.chunk", FileMode.Create);
+                s_ChunkStream.CopyTo(s_ChunkWriter);
+                s_ChunkStream.Dispose();
             }
-            
         }
     }
 }
