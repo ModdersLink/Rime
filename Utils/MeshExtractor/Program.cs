@@ -191,7 +191,7 @@ namespace MeshExtractor
                 //    s_PartitionReader.Seek(0, SeekOrigin.Begin);
                 //    File.WriteAllBytes(s_PartitionName.Replace('/', '-'), s_PartitionReader.ReadBytes((int)s_PartitionReader.Length));
                 //}
-                if (s_Partition.PrimaryInstance.TypeName == "SkeletonAsset")
+                if (s_Partition.PrimaryInstanceCtr.TypeName == "SkeletonAsset")
 
                 {
                     if (!p_Options.Quiet)

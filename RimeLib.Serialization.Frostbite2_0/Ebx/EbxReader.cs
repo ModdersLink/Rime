@@ -174,7 +174,7 @@ namespace RimeLib.Serialization.Frostbite2_0.Ebx
                     using var s_LimitedReader = new LimitedRimeReader(m_Reader, s_Descriptor.Size, false);
                     ParseTypeInstance(s_LimitedReader, s_Descriptor, s_Instance, s_ContainerType);
 
-                    m_Partition.Instances.Add(s_Guid, s_Instance as DataContainer);
+                    m_Partition.InstanceMap.Add(s_Guid, s_Instance as DataContainer);
                 }
             }
         }

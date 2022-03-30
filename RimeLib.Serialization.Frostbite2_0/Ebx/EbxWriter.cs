@@ -41,7 +41,7 @@ namespace RimeLib.Serialization.Frostbite2_0.Ebx
             m_Partition = p_Partition;
 
             // Group instances by type.
-            var s_GroupedInstances = p_Partition.Instances.GroupBy((p_Pair) => p_Pair.Value.GetType());
+            var s_GroupedInstances = p_Partition.InstanceMap.GroupBy((p_Pair) => p_Pair.Value.GetType());
 
             var s_SortedInstances = new SortedDictionary<string, SortedDictionary<GUID, DataContainer>>();
 

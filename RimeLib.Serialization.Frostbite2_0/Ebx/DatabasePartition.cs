@@ -9,31 +9,28 @@ using RimeLib.Serialization.Json;
 
 namespace RimeLib.Serialization.Frostbite2_0.Ebx
 {
-    public class DatabasePartition
+    public class DatabasePartition : DatabasePartitionBase
     {
-        public string Name { get; set; }
-
-        public GUID PartitionGuid { get; set; } = GUID.Empty;
-
         public GUID PrimaryInstanceGuid { get; set; } = GUID.Empty;
 
-        public SortedDictionary<GUID, DataContainer> Instances { get; set; } = new();
+        [JsonProperty("Instances")]
+        public SortedDictionary<GUID, DataContainer> InstanceMap { get; set; } = new();
 
         [JsonIgnore]
-        public DataContainer PrimaryInstance => Instances[PrimaryInstanceGuid];
+        public override IEnumerable<object> Instances => InstanceMap.Values;
 
-        public string ToJsonString(Formatting p_Formatting = Formatting.None)
+        [JsonIgnore]
+        public override object PrimaryInstance => InstanceMap[PrimaryInstanceGuid];
+        
+        [JsonIgnore]
+        public DataContainer PrimaryInstanceCtr => InstanceMap[PrimaryInstanceGuid];
+
+        public override string ToJsonString(Formatting p_Formatting = Formatting.None)
         {
             return JsonConvert.SerializeObject(this, p_Formatting, new CtrRefJsonConverter(), new StringEnumConverter());
         }
 
-        public void ToJsonFile(string p_FilePath, Formatting p_Formatting = Formatting.None)
-        {
-            using var s_Writer = new StreamWriter(p_FilePath);
-            ToJsonStream(s_Writer, p_Formatting);
-        }
-
-        public void ToJsonStream(TextWriter p_Writer, Formatting p_Formatting = Formatting.None)
+        public override void ToJsonStream(TextWriter p_Writer, Formatting p_Formatting = Formatting.None)
         {
             var s_Serializer = new JsonSerializer();
             s_Serializer.Converters.Add(new CtrRefJsonConverter());
@@ -44,6 +41,12 @@ namespace RimeLib.Serialization.Frostbite2_0.Ebx
             s_Serializer.Formatting = p_Formatting;
 
             s_Serializer.Serialize(p_Writer, this);
+        }
+
+        public static DatabasePartition FromJsonString(string p_Json)
+        {
+            using var s_Reader = new StringReader(p_Json);
+            return FromJsonStream(s_Reader);
         }
 
         public static DatabasePartition FromJsonFile(string p_FilePath)
