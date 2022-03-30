@@ -138,6 +138,10 @@ public class TextureGenerator : ITextureGenerator
 
         var s_MipMapSizes = DDSUtils.CalculateMipMapSizes(p_Header);
 
+        // Textures must always be compressed so set the flag in the GUID.
+        var s_ChunkGuid = new GUID(Guid.NewGuid());
+        s_ChunkGuid.SetCompressionFlag(true);
+        
         return new DxTexture
         {
             // TODO: Make this user settable and handle accordingly
@@ -151,7 +155,7 @@ public class TextureGenerator : ITextureGenerator
             Unused0 = 0,
             MipmapCount = (byte)p_Header.MipMapCount,
             MipmapBaseIndex = p_MipMapBaseIndex,
-            StreamingChunkId = Guid.Empty,
+            StreamingChunkId = s_ChunkGuid,
             MipmapSizes = s_MipMapSizes,
             MipmapChainSize = (uint)s_MipMapSizes.Sum(x => x),
             ResourceNameHash = (string.IsNullOrWhiteSpace(p_Name) ? 0 : FbUtils.HashQuick(p_Name)),
