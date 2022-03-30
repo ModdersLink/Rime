@@ -13,9 +13,9 @@ namespace RimeLib.Serialization.Frostbite2_0.Ebx
     {
         public string Name { get; set; }
 
-        public GUID PartitionGuid { get; set; } = new();
+        public GUID PartitionGuid { get; set; } = GUID.Empty;
 
-        public GUID PrimaryInstanceGuid { get; set; } = new();
+        public GUID PrimaryInstanceGuid { get; set; } = GUID.Empty;
 
         public SortedDictionary<GUID, DataContainer> Instances { get; set; } = new();
 

@@ -58,7 +58,7 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
         public class Chunk : DbObjectSerializable
         {
             [DbObjectField("id")]
-            public GUID Id { get; set; } = new GUID();
+            public GUID Id { get; set; } = GUID.Empty;
             
             [DbObjectField("sha1")]
             public Sha1 Hash { get; set; } = new Sha1();

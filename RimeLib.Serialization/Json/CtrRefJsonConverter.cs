@@ -36,8 +36,8 @@ namespace RimeLib.Serialization.Json
             JsonSerializer p_Serializer
         )
         {
-            var s_PartitionGuid = new GUID();
-            var s_InstanceGuid = new GUID();
+            var s_PartitionGuid = GUID.Empty;
+            var s_InstanceGuid = GUID.Empty;
 
             if (p_Reader.TokenType != JsonToken.Null)
             {

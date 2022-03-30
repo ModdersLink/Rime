@@ -142,10 +142,7 @@ namespace ShaderInfo
 
         private static void PrintShader(IEngineMounter p_Mounter, string p_Path, Options p_Options)
         {
-
-            IMountedObject<IResourceVariant> s_ShaderObject = null;
-
-            if (!p_Mounter.TryGetResource(p_Path, out s_ShaderObject))
+            if (!p_Mounter.TryGetResource(p_Path, out var s_ShaderObject))
             {
                 if (!p_Options.Quiet)
                     Console.WriteLine($"Error finding shader resoruce {p_Path}!");

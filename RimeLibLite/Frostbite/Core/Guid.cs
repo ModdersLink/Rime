@@ -21,17 +21,9 @@ namespace RimeLib.Frostbite.Core
         /// </summary>
         public static int SizeOf => 16;
         
-        public static GUID Empty = new();
+        public static GUID Empty = Guid.Empty;
 
         private Guid m_Guid;
-
-        /// <summary>
-        /// Default constructor
-        /// </summary>
-        public GUID()
-        {
-            m_Guid = Guid.Empty;
-        }
 
         /// <summary>
         /// Constructor that reads a guid from an opened reader
