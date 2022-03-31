@@ -1,4 +1,7 @@
-﻿using RimeLib.Content.Mounting;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
+using RimeLib.Content.Frostbite2_0.Frostbite.Chunks;
+using RimeLib.Content.Mounting;
 using RimeLib.Frostbite.Db;
 
 namespace RimeLib.Content.Frostbite2_0.Mounting
@@ -17,7 +20,7 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
             m_LogicalOffset = p_LogicalOffset;
         }
 
-        public bool TryGetMeta(out DbObject? p_Meta)
+        public bool TryGetMeta([NotNullWhen(true)] out DbObject? p_Meta)
         {
             p_Meta = m_Meta;
             return m_Meta != null;
@@ -31,6 +34,22 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
         public uint GetLogicalOffset()
         {
             return m_LogicalOffset;
+        }
+
+        public int? GetAssetNameHash()
+        {
+            if (m_Meta == null)
+                return null;
+            
+            try
+            {
+                var s_Meta = DbObjectConverter.FromDbObject<ChunkEntry.ChunkMetaEntry>(m_Meta);
+                return s_Meta.AssetNameHash;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
     }
 }

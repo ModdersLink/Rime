@@ -14,6 +14,9 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
         [CommandArgument(Description = "The path to the file containing the chunk data.")]
         public FileInfo? FilePath { get; set; }
 
+        [CommandArgument(Description = "The name of the asset this chunk is for.")]
+        public string? AssetName { get; set; }
+
         public override bool Execute(ref ExecutionContext p_Context, TextWriter p_Writer)
         {
             if (!FilePath!.Exists)
@@ -22,7 +25,7 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                 return false;
             }
 
-            ((BundleBuildingContext) p_Context).AddChunk(Guid!, FilePath);
+            ((BundleBuildingContext) p_Context).AddChunk(Guid!, FilePath, AssetName!);
 
             return true;
         }

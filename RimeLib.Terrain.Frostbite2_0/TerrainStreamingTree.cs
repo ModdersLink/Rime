@@ -4,6 +4,7 @@ using RimeLib.IO;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -21,7 +22,7 @@ namespace RimeLib.Terrain.Frostbite2_0
             s_Node.ID = p_NodeId;
             s_Node.Lod0ChunkSize = p_Reader.ReadUInt32();
             s_Node.Lod0ChunkID = new GUID(p_Reader);
-            s_Node.TreeNode = (GetHeightfieldTree() as HeightfieldTree).FindNode(p_NodeId);
+            s_Node.TreeNode = (GetHeightfieldTree() as HeightfieldTree)!.FindNode(p_NodeId);
 
             var s_Lod1Enabled = p_Reader.ReadBool();
 
@@ -63,8 +64,9 @@ namespace RimeLib.Terrain.Frostbite2_0
             throw new System.NotImplementedException();
         }
 
-        public bool Serialize(out byte[] p_Data)
+        public bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
         {
+            p_Data = null;
             throw new System.NotImplementedException();
         }
 
@@ -80,10 +82,7 @@ namespace RimeLib.Terrain.Frostbite2_0
             NodeCount = p_Reader.ReadUInt32();
             FreeStreamingEnabled = p_Reader.ReadBool();
 
-            RasterTrees = new List<RasterTree>();
-
-            for (var i = 0; i < (int)RasterTree.RasterTreeTypes.RasterTreeTypeCount; ++i)
-                RasterTrees.Add(null);
+            RasterTrees = new List<RasterTree>((int)RasterTree.RasterTreeTypes.RasterTreeTypeCount);
 
             for (; ; )
             {

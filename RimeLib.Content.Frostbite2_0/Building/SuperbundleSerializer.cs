@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using RimeLib.Attributes;
 using RimeLib.Content.Building;
 using RimeLib.Content.Frostbite2_0.Frostbite.Sb;
 using RimeLib.Content.Mounting;
@@ -9,11 +8,9 @@ using RimeLib.Frostbite;
 using RimeLib.Frostbite.Core;
 using RimeLib.IO;
 using RimeLib.IO.Conversion;
-using RimeLib.Utils;
 
 namespace RimeLib.Content.Frostbite2_0.Building
 {
-    [EngineSupport(EngineType.Frostbite2_0)]
     public class SuperbundleSerializer : ISuperbundleSerializer
     {
         private TableOfContents<SuperbundleLayout> m_Toc = new TableOfContents<SuperbundleLayout>(new SuperbundleLayout());
@@ -29,19 +26,20 @@ namespace RimeLib.Content.Frostbite2_0.Building
             m_Bundles = new List<BundleInfo>();
 
             // Set up an sb writer to use.
-            using var s_SbWriter = new RimeWriter(p_OutputSbStream, Endianness.LittleEndian, false);
+            using var s_SbWriter = new RimeWriter(p_OutputSbStream, Endianness.BigEndian, false);
 
             // Set basic layout properties.
             m_Toc.Layout.Name = p_Descriptor.SuperbundleName;
             m_Toc.Layout.Tag = Guid.NewGuid();
-
-            // Serialize chunks.
-            foreach (var s_Pair in p_Descriptor.Chunks)
-                SerializeChunk(s_Pair.Key, s_Pair.Value, s_SbWriter);
+            m_Toc.Layout.AlwaysEmitSuperbundle = true;
 
             // Serialize bundles.
             foreach (var s_Pair in p_Descriptor.Bundles)
                 SerializeBundle(s_Pair.Key, s_Pair.Value, s_SbWriter);
+
+            // Serialize chunks.
+            foreach (var s_Pair in p_Descriptor.Chunks)
+                SerializeChunk(s_Pair.Key, s_Pair.Value, s_SbWriter);
 
             // Assign final chunk and bundle info.
             m_Toc.Layout.Chunks = m_Chunks.ToArray();
@@ -87,13 +85,15 @@ namespace RimeLib.Content.Frostbite2_0.Building
 
             // Calculate size.
             s_BundleInfo.Size = p_SbWriter.Position - s_BundleInfo.Offset;
-
-            // Calculate hash.
-            p_SbWriter.Seek(p_SbWriter.Position, SeekOrigin.Begin);
-            s_BundleInfo.Checksum = HashingUtils.HashFromStream(p_SbWriter, (int) s_BundleInfo.Size);
+            s_BundleInfo.Checksum = s_Builder.Checksum;
 
             // Add bundle to layout.
             m_Bundles.Add(s_BundleInfo);
+        }
+
+        public EngineType[] GetSupportedEngines()
+        {
+            return new[] { EngineType.Frostbite2_0 };
         }
     }
 }

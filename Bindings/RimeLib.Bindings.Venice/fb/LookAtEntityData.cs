@@ -5,91 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 16,  Flags: 53, Size: 96)]
+	[ContainerType(16, 96)]
 	public class LookAtEntityData : 
 		SpatialEntityData
 	{
-		protected bool m_RunOnce = new bool();
-		[ContainerField(Name: "RunOnce", Offset: 80, NameHash: 709901739, Flags: 49325), LayoutImmutable, Blittable]
-		public bool RunOnce { get { return m_RunOnce; } set { if (OnPropertyChanging("LookAtEntityData." + nameof(RunOnce), this, m_RunOnce, value)) m_RunOnce = value; } } // 0x50 (80)
-		
-		protected bool m_UseStaticDirection = new bool();
-		[ContainerField(Name: "UseStaticDirection", Offset: 81, NameHash: 597626235, Flags: 49325), LayoutImmutable, Blittable]
-		public bool UseStaticDirection { get { return m_UseStaticDirection; } set { if (OnPropertyChanging("LookAtEntityData." + nameof(UseStaticDirection), this, m_UseStaticDirection, value)) m_UseStaticDirection = value; } } // 0x51 (81)
-		
-		protected bool m_Enabled = new bool();
-		[ContainerField(Name: "Enabled", Offset: 82, NameHash: 2662400, Flags: 49325), LayoutImmutable, Blittable]
-		public bool Enabled { get { return m_Enabled; } set { if (OnPropertyChanging("LookAtEntityData." + nameof(Enabled), this, m_Enabled, value)) m_Enabled = value; } } // 0x52 (82)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 709901739:
-					RunOnce = (bool) p_Value;
-					break;
+		[ContainerField(80), LayoutImmutable, Blittable, JsonProperty(Order = 80)]
+		public bool RunOnce { get; set; }
 
-				case 597626235:
-					UseStaticDirection = (bool) p_Value;
-					break;
+		[ContainerField(81), LayoutImmutable, Blittable, JsonProperty(Order = 81)]
+		public bool UseStaticDirection { get; set; }
 
-				case 2662400:
-					Enabled = (bool) p_Value;
-					break;
+		[ContainerField(82), LayoutImmutable, Blittable, JsonProperty(Order = 82)]
+		public bool Enabled { get; set; }
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 709901739:
-					return RunOnce;
-
-				case 597626235:
-					return UseStaticDirection;
-
-				case 2662400:
-					return Enabled;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 709901739:
-					return typeof(LookAtEntityData).GetProperty(nameof(RunOnce));
-
-				case 597626235:
-					return typeof(LookAtEntityData).GetProperty(nameof(UseStaticDirection));
-
-				case 2662400:
-					return typeof(LookAtEntityData).GetProperty(nameof(Enabled));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

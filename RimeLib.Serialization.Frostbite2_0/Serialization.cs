@@ -1,4 +1,5 @@
-﻿using RimeLib.Frostbite.Containers;
+﻿/*
+using RimeLib.Frostbite.Containers;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization.Ebx;
@@ -179,8 +180,8 @@ namespace RimeLib.Serialization.Frostbite2_0
                 m_TypeDescriptors.Add(s_TypeDescriptor);
 
                 // Save the primary type descriptor index
-                if (p_Instance.ContainerTypeName == s_CurrentType.Name)
-                    s_MainTypeDescriptorIndex = m_TypeDescriptors.Count() - 1;
+                /*if (p_Instance.ContainerTypeName == s_CurrentType.Name)
+                    s_MainTypeDescriptorIndex = m_TypeDescriptors.Count() - 1;#1#
 
                 // Debug information for rattling off each of the fields within a specific type
                 Debug.WriteLine(s_CurrentType.Name);
@@ -268,3 +269,4 @@ namespace RimeLib.Serialization.Frostbite2_0
         }
     }
 }
+*/

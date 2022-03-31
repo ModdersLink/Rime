@@ -5,231 +5,60 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 16,  Flags: 53, Size: 240)]
+	[ContainerType(16, 240)]
 	public class UavCameraData : 
 		TargetCameraData
 	{
-		protected float m_ViewDistance = new float();
-		[ContainerField(Name: "ViewDistance", Offset: 160, NameHash: 2201945291, Flags: 49469), LayoutImmutable, Blittable]
-		public float ViewDistance { get { return m_ViewDistance; } set { if (OnPropertyChanging("UavCameraData." + nameof(ViewDistance), this, m_ViewDistance, value)) m_ViewDistance = value; } } // 0xA0 (160)
-		
-		protected List<CameraSineCurveData> m_ViewDistanceCurve = new List<CameraSineCurveData>();
-		[ContainerField(Name: "ViewDistanceCurve", Offset: 164, NameHash: 2498741148, Flags: 65)]
-		public List<CameraSineCurveData> ViewDistanceCurve { get { return m_ViewDistanceCurve; } set { if (OnPropertyChanging("UavCameraData." + nameof(ViewDistanceCurve), this, m_ViewDistanceCurve, value)) m_ViewDistanceCurve = value; } } // 0xA4 (164)
-		
-		protected float m_ViewAngle = new float();
-		[ContainerField(Name: "ViewAngle", Offset: 168, NameHash: 4017129097, Flags: 49469), LayoutImmutable, Blittable]
-		public float ViewAngle { get { return m_ViewAngle; } set { if (OnPropertyChanging("UavCameraData." + nameof(ViewAngle), this, m_ViewAngle, value)) m_ViewAngle = value; } } // 0xA8 (168)
-		
-		protected List<CameraSineCurveData> m_ViewAngleCurve = new List<CameraSineCurveData>();
-		[ContainerField(Name: "ViewAngleCurve", Offset: 172, NameHash: 3975970206, Flags: 65)]
-		public List<CameraSineCurveData> ViewAngleCurve { get { return m_ViewAngleCurve; } set { if (OnPropertyChanging("UavCameraData." + nameof(ViewAngleCurve), this, m_ViewAngleCurve, value)) m_ViewAngleCurve = value; } } // 0xAC (172)
-		
-		protected float m_RotationSpeed = new float();
-		[ContainerField(Name: "RotationSpeed", Offset: 176, NameHash: 802351446, Flags: 49469), LayoutImmutable, Blittable]
-		public float RotationSpeed { get { return m_RotationSpeed; } set { if (OnPropertyChanging("UavCameraData." + nameof(RotationSpeed), this, m_RotationSpeed, value)) m_RotationSpeed = value; } } // 0xB0 (176)
-		
-		protected List<CameraSineCurveData> m_RotationSpeedCurve = new List<CameraSineCurveData>();
-		[ContainerField(Name: "RotationSpeedCurve", Offset: 180, NameHash: 836629921, Flags: 65)]
-		public List<CameraSineCurveData> RotationSpeedCurve { get { return m_RotationSpeedCurve; } set { if (OnPropertyChanging("UavCameraData." + nameof(RotationSpeedCurve), this, m_RotationSpeedCurve, value)) m_RotationSpeedCurve = value; } } // 0xB4 (180)
-		
-		protected float m_ZoomFov = new float();
-		[ContainerField(Name: "ZoomFov", Offset: 184, NameHash: 2842985581, Flags: 49469), LayoutImmutable, Blittable]
-		public float ZoomFov { get { return m_ZoomFov; } set { if (OnPropertyChanging("UavCameraData." + nameof(ZoomFov), this, m_ZoomFov, value)) m_ZoomFov = value; } } // 0xB8 (184)
-		
-		protected float m_ZoomDelay = new float();
-		[ContainerField(Name: "ZoomDelay", Offset: 188, NameHash: 3641349063, Flags: 49469), LayoutImmutable, Blittable]
-		public float ZoomDelay { get { return m_ZoomDelay; } set { if (OnPropertyChanging("UavCameraData." + nameof(ZoomDelay), this, m_ZoomDelay, value)) m_ZoomDelay = value; } } // 0xBC (188)
-		
-		protected float m_ZoomTransitionTime = new float();
-		[ContainerField(Name: "ZoomTransitionTime", Offset: 192, NameHash: 1414605576, Flags: 49469), LayoutImmutable, Blittable]
-		public float ZoomTransitionTime { get { return m_ZoomTransitionTime; } set { if (OnPropertyChanging("UavCameraData." + nameof(ZoomTransitionTime), this, m_ZoomTransitionTime, value)) m_ZoomTransitionTime = value; } } // 0xC0 (192)
-		
-		protected float m_Fov = new float();
-		[ContainerField(Name: "Fov", Offset: 196, NameHash: 193443802, Flags: 49469), LayoutImmutable, Blittable]
-		public float Fov { get { return m_Fov; } set { if (OnPropertyChanging("UavCameraData." + nameof(Fov), this, m_Fov, value)) m_Fov = value; } } // 0xC4 (196)
-		
-		protected UavCameraPointData m_FocusPoint = new UavCameraPointData();
-		[ContainerField(Name: "FocusPoint", Offset: 200, NameHash: 2983182053, Flags: 41)]
-		public UavCameraPointData FocusPoint { get { return m_FocusPoint; } set { if (OnPropertyChanging("UavCameraData." + nameof(FocusPoint), this, m_FocusPoint, value)) m_FocusPoint = value; } } // 0xC8 (200)
-		
-		protected UavCameraPointData m_CenterPoint = new UavCameraPointData();
-		[ContainerField(Name: "CenterPoint", Offset: 216, NameHash: 3946853250, Flags: 41)]
-		public UavCameraPointData CenterPoint { get { return m_CenterPoint; } set { if (OnPropertyChanging("UavCameraData." + nameof(CenterPoint), this, m_CenterPoint, value)) m_CenterPoint = value; } } // 0xD8 (216)
-		
-		protected float m_UpWeightDistance = new float();
-		[ContainerField(Name: "UpWeightDistance", Offset: 232, NameHash: 427137187, Flags: 49469), LayoutImmutable, Blittable]
-		public float UpWeightDistance { get { return m_UpWeightDistance; } set { if (OnPropertyChanging("UavCameraData." + nameof(UpWeightDistance), this, m_UpWeightDistance, value)) m_UpWeightDistance = value; } } // 0xE8 (232)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 2201945291:
-					ViewDistance = (float) p_Value;
-					break;
+		[ContainerField(160), LayoutImmutable, Blittable, JsonProperty(Order = 160)]
+		public float ViewDistance { get; set; }
 
-				case 2498741148:
-					ViewDistanceCurve = (List<CameraSineCurveData>) p_Value;
-					break;
+		[ContainerField(164), JsonProperty(Order = 164)]
+		public List<CameraSineCurveData> ViewDistanceCurve { get; set; } = new();
 
-				case 4017129097:
-					ViewAngle = (float) p_Value;
-					break;
+		[ContainerField(168), LayoutImmutable, Blittable, JsonProperty(Order = 168)]
+		public float ViewAngle { get; set; }
 
-				case 3975970206:
-					ViewAngleCurve = (List<CameraSineCurveData>) p_Value;
-					break;
+		[ContainerField(172), JsonProperty(Order = 172)]
+		public List<CameraSineCurveData> ViewAngleCurve { get; set; } = new();
 
-				case 802351446:
-					RotationSpeed = (float) p_Value;
-					break;
+		[ContainerField(176), LayoutImmutable, Blittable, JsonProperty(Order = 176)]
+		public float RotationSpeed { get; set; }
 
-				case 836629921:
-					RotationSpeedCurve = (List<CameraSineCurveData>) p_Value;
-					break;
+		[ContainerField(180), JsonProperty(Order = 180)]
+		public List<CameraSineCurveData> RotationSpeedCurve { get; set; } = new();
 
-				case 2842985581:
-					ZoomFov = (float) p_Value;
-					break;
+		[ContainerField(184), LayoutImmutable, Blittable, JsonProperty(Order = 184)]
+		public float ZoomFov { get; set; }
 
-				case 3641349063:
-					ZoomDelay = (float) p_Value;
-					break;
+		[ContainerField(188), LayoutImmutable, Blittable, JsonProperty(Order = 188)]
+		public float ZoomDelay { get; set; }
 
-				case 1414605576:
-					ZoomTransitionTime = (float) p_Value;
-					break;
+		[ContainerField(192), LayoutImmutable, Blittable, JsonProperty(Order = 192)]
+		public float ZoomTransitionTime { get; set; }
 
-				case 193443802:
-					Fov = (float) p_Value;
-					break;
+		[ContainerField(196), LayoutImmutable, Blittable, JsonProperty(Order = 196)]
+		public float Fov { get; set; }
 
-				case 2983182053:
-					FocusPoint = (UavCameraPointData) p_Value;
-					break;
+		[ContainerField(200), JsonProperty(Order = 200)]
+		public UavCameraPointData FocusPoint { get; set; } = new();
 
-				case 3946853250:
-					CenterPoint = (UavCameraPointData) p_Value;
-					break;
+		[ContainerField(216), JsonProperty(Order = 216)]
+		public UavCameraPointData CenterPoint { get; set; } = new();
 
-				case 427137187:
-					UpWeightDistance = (float) p_Value;
-					break;
+		[ContainerField(232), LayoutImmutable, Blittable, JsonProperty(Order = 232)]
+		public float UpWeightDistance { get; set; }
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2201945291:
-					return ViewDistance;
-
-				case 2498741148:
-					return ViewDistanceCurve;
-
-				case 4017129097:
-					return ViewAngle;
-
-				case 3975970206:
-					return ViewAngleCurve;
-
-				case 802351446:
-					return RotationSpeed;
-
-				case 836629921:
-					return RotationSpeedCurve;
-
-				case 2842985581:
-					return ZoomFov;
-
-				case 3641349063:
-					return ZoomDelay;
-
-				case 1414605576:
-					return ZoomTransitionTime;
-
-				case 193443802:
-					return Fov;
-
-				case 2983182053:
-					return FocusPoint;
-
-				case 3946853250:
-					return CenterPoint;
-
-				case 427137187:
-					return UpWeightDistance;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2201945291:
-					return typeof(UavCameraData).GetProperty(nameof(ViewDistance));
-
-				case 2498741148:
-					return typeof(UavCameraData).GetProperty(nameof(ViewDistanceCurve));
-
-				case 4017129097:
-					return typeof(UavCameraData).GetProperty(nameof(ViewAngle));
-
-				case 3975970206:
-					return typeof(UavCameraData).GetProperty(nameof(ViewAngleCurve));
-
-				case 802351446:
-					return typeof(UavCameraData).GetProperty(nameof(RotationSpeed));
-
-				case 836629921:
-					return typeof(UavCameraData).GetProperty(nameof(RotationSpeedCurve));
-
-				case 2842985581:
-					return typeof(UavCameraData).GetProperty(nameof(ZoomFov));
-
-				case 3641349063:
-					return typeof(UavCameraData).GetProperty(nameof(ZoomDelay));
-
-				case 1414605576:
-					return typeof(UavCameraData).GetProperty(nameof(ZoomTransitionTime));
-
-				case 193443802:
-					return typeof(UavCameraData).GetProperty(nameof(Fov));
-
-				case 2983182053:
-					return typeof(UavCameraData).GetProperty(nameof(FocusPoint));
-
-				case 3946853250:
-					return typeof(UavCameraData).GetProperty(nameof(CenterPoint));
-
-				case 427137187:
-					return typeof(UavCameraData).GetProperty(nameof(UpWeightDistance));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

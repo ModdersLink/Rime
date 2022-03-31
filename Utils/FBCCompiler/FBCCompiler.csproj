@@ -5,6 +5,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <AssemblyName>fbcc</AssemblyName>
     <Platforms>x64</Platforms>
+    <LangVersion>default</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>

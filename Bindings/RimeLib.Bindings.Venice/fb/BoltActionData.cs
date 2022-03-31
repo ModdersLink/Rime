@@ -5,139 +5,41 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 41, Size: 16)]
-	public class BoltActionData : FrostbiteContainer
+	[ContainerType(4, 16)]
+	public class BoltActionData
 	{
-		[ContainerField(Name: "BoltActionDelay", Offset: 0, NameHash: 322896091, Flags: 49469), LayoutImmutable, Blittable]
-		public float BoltActionDelay { get; set; } // 0x0 (0)
+		[ContainerField(0), LayoutImmutable, Blittable, JsonProperty(Order = 0)]
+		public float BoltActionDelay { get; set; }
 		
-		[ContainerField(Name: "BoltActionTime", Offset: 4, NameHash: 1832454555, Flags: 49469), LayoutImmutable, Blittable]
-		public float BoltActionTime { get; set; } // 0x4 (4)
+		[ContainerField(4), LayoutImmutable, Blittable, JsonProperty(Order = 4)]
+		public float BoltActionTime { get; set; }
 		
-		[ContainerField(Name: "HoldBoltActionUntilFireRelease", Offset: 8, NameHash: 832817818, Flags: 49325), LayoutImmutable, Blittable]
-		public bool HoldBoltActionUntilFireRelease { get; set; } // 0x8 (8)
+		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
+		public bool HoldBoltActionUntilFireRelease { get; set; }
 		
-		[ContainerField(Name: "HoldBoltActionUntilZoomRelease", Offset: 9, NameHash: 3133940949, Flags: 49325), LayoutImmutable, Blittable]
-		public bool HoldBoltActionUntilZoomRelease { get; set; } // 0x9 (9)
+		[ContainerField(9), LayoutImmutable, Blittable, JsonProperty(Order = 9)]
+		public bool HoldBoltActionUntilZoomRelease { get; set; }
 		
-		[ContainerField(Name: "ForceBoltActionOnFireTrigger", Offset: 10, NameHash: 1053477586, Flags: 49325), LayoutImmutable, Blittable]
-		public bool ForceBoltActionOnFireTrigger { get; set; } // 0xA (10)
+		[ContainerField(10), LayoutImmutable, Blittable, JsonProperty(Order = 10)]
+		public bool ForceBoltActionOnFireTrigger { get; set; }
 		
-		[ContainerField(Name: "UnZoomOnBoltAction", Offset: 11, NameHash: 1438634691, Flags: 49325), LayoutImmutable, Blittable]
-		public bool UnZoomOnBoltAction { get; set; } // 0xB (11)
+		[ContainerField(11), LayoutImmutable, Blittable, JsonProperty(Order = 11)]
+		public bool UnZoomOnBoltAction { get; set; }
 		
-		[ContainerField(Name: "ReturnToZoomAfterBoltAction", Offset: 12, NameHash: 3074155596, Flags: 49325), LayoutImmutable, Blittable]
-		public bool ReturnToZoomAfterBoltAction { get; set; } // 0xC (12)
+		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
+		public bool ReturnToZoomAfterBoltAction { get; set; }
 		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 322896091:
-					BoltActionDelay = (float) p_Value;
-					break;
-
-				case 1832454555:
-					BoltActionTime = (float) p_Value;
-					break;
-
-				case 832817818:
-					HoldBoltActionUntilFireRelease = (bool) p_Value;
-					break;
-
-				case 3133940949:
-					HoldBoltActionUntilZoomRelease = (bool) p_Value;
-					break;
-
-				case 1053477586:
-					ForceBoltActionOnFireTrigger = (bool) p_Value;
-					break;
-
-				case 1438634691:
-					UnZoomOnBoltAction = (bool) p_Value;
-					break;
-
-				case 3074155596:
-					ReturnToZoomAfterBoltAction = (bool) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 322896091:
-					return BoltActionDelay;
-
-				case 1832454555:
-					return BoltActionTime;
-
-				case 832817818:
-					return HoldBoltActionUntilFireRelease;
-
-				case 3133940949:
-					return HoldBoltActionUntilZoomRelease;
-
-				case 1053477586:
-					return ForceBoltActionOnFireTrigger;
-
-				case 1438634691:
-					return UnZoomOnBoltAction;
-
-				case 3074155596:
-					return ReturnToZoomAfterBoltAction;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 322896091:
-					return typeof(BoltActionData).GetProperty(nameof(BoltActionDelay));
-
-				case 1832454555:
-					return typeof(BoltActionData).GetProperty(nameof(BoltActionTime));
-
-				case 832817818:
-					return typeof(BoltActionData).GetProperty(nameof(HoldBoltActionUntilFireRelease));
-
-				case 3133940949:
-					return typeof(BoltActionData).GetProperty(nameof(HoldBoltActionUntilZoomRelease));
-
-				case 1053477586:
-					return typeof(BoltActionData).GetProperty(nameof(ForceBoltActionOnFireTrigger));
-
-				case 1438634691:
-					return typeof(BoltActionData).GetProperty(nameof(UnZoomOnBoltAction));
-
-				case 3074155596:
-					return typeof(BoltActionData).GetProperty(nameof(ReturnToZoomAfterBoltAction));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

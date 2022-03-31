@@ -2,13 +2,12 @@
 using fb;
 using RimeLib.Content.Mounting;
 using RimeLib.Frostbite;
-using RimeLib.Serialization;
-using RimeLib.Frostbite.Containers;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using RimeLib;
 
 namespace AudioExtractor
 {
@@ -81,11 +80,13 @@ namespace AudioExtractor
 
                 foreach (var s_Type in s_ExportedTypes)
                 {
-                    if (!typeof(FrostbiteContainer).IsAssignableFrom(s_Type) &&
-                        !s_Type.IsEnum)
-                        continue;
+                    throw new NotImplementedException();
+                    // TODO: Fix the old code below
+                    //if (!typeof(FrostbiteContainer).IsAssignableFrom(s_Type) &&
+                    //    !s_Type.IsEnum)
+                    //    continue;
 
-                    ContainerRegistry.RegisterType(s_Type);
+                    //ContainerRegistry.RegisterType(s_Type);
                 }
             }
             catch
@@ -99,12 +100,12 @@ namespace AudioExtractor
 
         private static async void DumpFiles(Options p_Options)
         {
-            var s_Mounter = EngineMounterRegistry.Create(p_Options.EngineType);
+            var s_Mounter = EngineInterfaceRegistry.Create<IEngineMounter>(p_Options.EngineType);
 
             if (!p_Options.Quiet)
                 Console.WriteLine($"Mounting game with engine '{p_Options.EngineType}' at path '{p_Options.GamePath}'. Please wait, this could take a while.");
 
-            await s_Mounter.Mount(p_Options.GamePath, false, EngineType.Frostbite2_0);
+            await s_Mounter.Mount(p_Options.GamePath, false, p_Options.EngineType);
             await s_Mounter.MountSuperbundle("Win32/Chunks0", true);
             await s_Mounter.MountSuperbundle("Win32/Chunks1", true);
             await s_Mounter.MountSuperbundle("Win32/Chunks2", true);
@@ -125,7 +126,7 @@ namespace AudioExtractor
 
             //    using var s_PartitionReader = s_PartitionObject.FirstVariant.GetReader();
 
-            //    var s_Reader = new Fb2EbxReader();
+            //    var s_Reader = new EbxReader();
 
             //    var s_Partition = s_Reader.ParsePartition(s_PartitionName, s_PartitionReader);
             //    if (s_Partition != null)
@@ -141,18 +142,20 @@ namespace AudioExtractor
 
                 using var s_PartitionReader = s_PartitionObject.FirstVariant.GetReader();
 
-                var s_Reader = new Fb2EbxReader();
+                var s_Reader = new EbxReader();
 
                 var s_Partition = s_Reader.ParsePartition(s_PartitionName, s_PartitionReader);
                 if (s_Partition == null)
                     continue;
 
-                // Register the partition for future usage
-                PartitionRegistry.RegisterPartition(s_Partition);
+                throw new NotImplementedException();
+                // TODO: Fix code below
+                //// Register the partition for future usage
+                //PartitionRegistry.RegisterPartition(s_Partition);
 
-                // Bail if this is not a SoundWaveAsset
-                if (s_Partition.PrimaryInstance.ContainerTypeName != "SoundWaveAsset")
-                    continue;
+                //// Bail if this is not a SoundWaveAsset
+                //if (s_Partition.PrimaryInstance.ContainerTypeName != "SoundWaveAsset")
+                //    continue;
 
                 // Read out all of the chunks
                 var s_ChunkList = new List<byte[]>();
@@ -175,7 +178,9 @@ namespace AudioExtractor
                 var s_VariationList = new List<SoundWaveVariation>();
                 for (var s_VariationIndex = 0; s_VariationIndex < s_Asset.Variations.Count; ++s_VariationIndex)
                 {
-                    s_VariationList.Add(s_Asset.Variations[s_VariationIndex]);
+                    throw new NotImplementedException();
+                    // TODO: Fix code below
+                    //s_VariationList.Add(s_Asset.Variations[s_VariationIndex]);
                 }
 
                 // Check our assumptions
@@ -198,7 +203,9 @@ namespace AudioExtractor
             }
 #endif
 
-            var s_Results = PartitionRegistry.Partitions.Where(p_Partition => p_Partition.PrimaryInstance.ContainerTypeName == "SoundWaveAsset");
+            throw new NotImplementedException();
+            // TODO: Fix code below
+            //var s_Results = PartitionRegistry.Partitions.Where(p_Partition => p_Partition.PrimaryInstance.ContainerTypeName == "SoundWaveAsset");
         }
     }
 }

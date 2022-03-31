@@ -5,217 +5,57 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 48)]
+	[ContainerType(4, 48)]
 	public class SoundWaveAsset : 
 		SoundDataAsset
 	{
-		protected RefArray<SoundWaveVariation> m_Variations = new RefArray<SoundWaveVariation>();
-		[ContainerField(Name: "Variations", Offset: 20, NameHash: 2728063271, Flags: 65)]
-		public RefArray<SoundWaveVariation> Variations { get { return m_Variations; } set { if (OnPropertyChanging("SoundWaveAsset." + nameof(Variations), this, m_Variations, value)) m_Variations = value; } } // 0x14 (20)
-		
-		protected List<SoundWaveLocalizationInfo> m_Localization = new List<SoundWaveLocalizationInfo>();
-		[ContainerField(Name: "Localization", Offset: 24, NameHash: 13208870, Flags: 65)]
-		public List<SoundWaveLocalizationInfo> Localization { get { return m_Localization; } set { if (OnPropertyChanging("SoundWaveAsset." + nameof(Localization), this, m_Localization, value)) m_Localization = value; } } // 0x18 (24)
-		
-		protected List<string> m_SubtitleStringIds = new List<string>();
-		[ContainerField(Name: "SubtitleStringIds", Offset: 28, NameHash: 2609603178, Flags: 65)]
-		public List<string> SubtitleStringIds { get { return m_SubtitleStringIds; } set { if (OnPropertyChanging("SoundWaveAsset." + nameof(SubtitleStringIds), this, m_SubtitleStringIds, value)) m_SubtitleStringIds = value; } } // 0x1C (28)
-		
-		protected SoundWaveVariationSelection m_Selection = new SoundWaveVariationSelection();
-		[ContainerField(Name: "Selection", Offset: 32, NameHash: 299217285, Flags: 137)]
-		public SoundWaveVariationSelection Selection { get { return m_Selection; } set { if (OnPropertyChanging("SoundWaveAsset." + nameof(Selection), this, m_Selection, value)) m_Selection = value; } } // 0x20 (32)
-		
-		protected CtrRef<StreamPoolAsset> m_StreamPool = new CtrRef<StreamPoolAsset>();
-		[ContainerField(Name: "StreamPool", Offset: 36, NameHash: 1617753829, Flags: 53)]
-		public CtrRef<StreamPoolAsset> StreamPool { get { return m_StreamPool; } set { if (OnPropertyChanging("SoundWaveAsset." + nameof(StreamPool), this, m_StreamPool, value)) m_StreamPool = value; } } // 0x24 (36)
-		
-		protected bool m_Seekable = new bool();
-		[ContainerField(Name: "Seekable", Offset: 40, NameHash: 1308586775, Flags: 49325), LayoutImmutable, Blittable]
-		public bool Seekable { get { return m_Seekable; } set { if (OnPropertyChanging("SoundWaveAsset." + nameof(Seekable), this, m_Seekable, value)) m_Seekable = value; } } // 0x28 (40)
-		
-		protected bool m_PreferAvailableVariations = new bool();
-		[ContainerField(Name: "PreferAvailableVariations", Offset: 41, NameHash: 4104064296, Flags: 49325), LayoutImmutable, Blittable]
-		public bool PreferAvailableVariations { get { return m_PreferAvailableVariations; } set { if (OnPropertyChanging("SoundWaveAsset." + nameof(PreferAvailableVariations), this, m_PreferAvailableVariations, value)) m_PreferAvailableVariations = value; } } // 0x29 (41)
-		
-		protected sbyte m_PersistentVariationCount = new sbyte();
-		[ContainerField(Name: "PersistentVariationCount", Offset: 42, NameHash: 1921308722, Flags: 49341), LayoutImmutable, Blittable]
-		public sbyte PersistentVariationCount { get { return m_PersistentVariationCount; } set { if (OnPropertyChanging("SoundWaveAsset." + nameof(PersistentVariationCount), this, m_PersistentVariationCount, value)) m_PersistentVariationCount = value; } } // 0x2A (42)
-		
-		protected sbyte m_ChannelCount = new sbyte();
-		[ContainerField(Name: "ChannelCount", Offset: 43, NameHash: 1014205285, Flags: 49341), LayoutImmutable, Blittable]
-		public sbyte ChannelCount { get { return m_ChannelCount; } set { if (OnPropertyChanging("SoundWaveAsset." + nameof(ChannelCount), this, m_ChannelCount, value)) m_ChannelCount = value; } } // 0x2B (43)
-		
-		protected sbyte m_VoicePriority = new sbyte();
-		[ContainerField(Name: "VoicePriority", Offset: 44, NameHash: 662714529, Flags: 49341), LayoutImmutable, Blittable]
-		public sbyte VoicePriority { get { return m_VoicePriority; } set { if (OnPropertyChanging("SoundWaveAsset." + nameof(VoicePriority), this, m_VoicePriority, value)) m_VoicePriority = value; } } // 0x2C (44)
-		
-		protected sbyte m_PrimePriority = new sbyte();
-		[ContainerField(Name: "PrimePriority", Offset: 45, NameHash: 3821472468, Flags: 49341), LayoutImmutable, Blittable]
-		public sbyte PrimePriority { get { return m_PrimePriority; } set { if (OnPropertyChanging("SoundWaveAsset." + nameof(PrimePriority), this, m_PrimePriority, value)) m_PrimePriority = value; } } // 0x2D (45)
-		
-		protected sbyte m_RequestPriority = new sbyte();
-		[ContainerField(Name: "RequestPriority", Offset: 46, NameHash: 3706845382, Flags: 49341), LayoutImmutable, Blittable]
-		public sbyte RequestPriority { get { return m_RequestPriority; } set { if (OnPropertyChanging("SoundWaveAsset." + nameof(RequestPriority), this, m_RequestPriority, value)) m_RequestPriority = value; } } // 0x2E (46)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 2728063271:
-					Variations = (RefArray<SoundWaveVariation>) p_Value;
-					break;
+		[ContainerField(20), JsonProperty(Order = 20)]
+		public RefArray<SoundWaveVariation> Variations { get; set; } = new();
 
-				case 13208870:
-					Localization = (List<SoundWaveLocalizationInfo>) p_Value;
-					break;
+		[ContainerField(24), JsonProperty(Order = 24)]
+		public List<SoundWaveLocalizationInfo> Localization { get; set; } = new();
 
-				case 2609603178:
-					SubtitleStringIds = (List<string>) p_Value;
-					break;
+		[ContainerField(28), JsonProperty(Order = 28)]
+		public List<string> SubtitleStringIds { get; set; } = new();
 
-				case 299217285:
-					Selection = (SoundWaveVariationSelection) Enum.ToObject(typeof(SoundWaveVariationSelection), p_Value);
-					break;
+		[ContainerField(32), JsonProperty(Order = 32)]
+		public SoundWaveVariationSelection Selection { get; set; } = new();
 
-				case 1617753829:
-					StreamPool = (CtrRef<StreamPoolAsset>) p_Value;
-					break;
+		[ContainerField(36), JsonProperty(Order = 36)]
+		public CtrRef<StreamPoolAsset> StreamPool { get; set; } = new();
 
-				case 1308586775:
-					Seekable = (bool) p_Value;
-					break;
+		[ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
+		public bool Seekable { get; set; }
 
-				case 4104064296:
-					PreferAvailableVariations = (bool) p_Value;
-					break;
+		[ContainerField(41), LayoutImmutable, Blittable, JsonProperty(Order = 41)]
+		public bool PreferAvailableVariations { get; set; }
 
-				case 1921308722:
-					PersistentVariationCount = (sbyte) p_Value;
-					break;
+		[ContainerField(42), LayoutImmutable, Blittable, JsonProperty(Order = 42)]
+		public sbyte PersistentVariationCount { get; set; }
 
-				case 1014205285:
-					ChannelCount = (sbyte) p_Value;
-					break;
+		[ContainerField(43), LayoutImmutable, Blittable, JsonProperty(Order = 43)]
+		public sbyte ChannelCount { get; set; }
 
-				case 662714529:
-					VoicePriority = (sbyte) p_Value;
-					break;
+		[ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
+		public sbyte VoicePriority { get; set; }
 
-				case 3821472468:
-					PrimePriority = (sbyte) p_Value;
-					break;
+		[ContainerField(45), LayoutImmutable, Blittable, JsonProperty(Order = 45)]
+		public sbyte PrimePriority { get; set; }
 
-				case 3706845382:
-					RequestPriority = (sbyte) p_Value;
-					break;
+		[ContainerField(46), LayoutImmutable, Blittable, JsonProperty(Order = 46)]
+		public sbyte RequestPriority { get; set; }
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2728063271:
-					return Variations;
-
-				case 13208870:
-					return Localization;
-
-				case 2609603178:
-					return SubtitleStringIds;
-
-				case 299217285:
-					return Selection;
-
-				case 1617753829:
-					return StreamPool;
-
-				case 1308586775:
-					return Seekable;
-
-				case 4104064296:
-					return PreferAvailableVariations;
-
-				case 1921308722:
-					return PersistentVariationCount;
-
-				case 1014205285:
-					return ChannelCount;
-
-				case 662714529:
-					return VoicePriority;
-
-				case 3821472468:
-					return PrimePriority;
-
-				case 3706845382:
-					return RequestPriority;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2728063271:
-					return typeof(SoundWaveAsset).GetProperty(nameof(Variations));
-
-				case 13208870:
-					return typeof(SoundWaveAsset).GetProperty(nameof(Localization));
-
-				case 2609603178:
-					return typeof(SoundWaveAsset).GetProperty(nameof(SubtitleStringIds));
-
-				case 299217285:
-					return typeof(SoundWaveAsset).GetProperty(nameof(Selection));
-
-				case 1617753829:
-					return typeof(SoundWaveAsset).GetProperty(nameof(StreamPool));
-
-				case 1308586775:
-					return typeof(SoundWaveAsset).GetProperty(nameof(Seekable));
-
-				case 4104064296:
-					return typeof(SoundWaveAsset).GetProperty(nameof(PreferAvailableVariations));
-
-				case 1921308722:
-					return typeof(SoundWaveAsset).GetProperty(nameof(PersistentVariationCount));
-
-				case 1014205285:
-					return typeof(SoundWaveAsset).GetProperty(nameof(ChannelCount));
-
-				case 662714529:
-					return typeof(SoundWaveAsset).GetProperty(nameof(VoicePriority));
-
-				case 3821472468:
-					return typeof(SoundWaveAsset).GetProperty(nameof(PrimePriority));
-
-				case 3706845382:
-					return typeof(SoundWaveAsset).GetProperty(nameof(RequestPriority));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

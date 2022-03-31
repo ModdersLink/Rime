@@ -4,6 +4,7 @@ using RimeLib.IO;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 
 namespace RimeLib.Terrain.Frostbite3
@@ -62,10 +63,7 @@ namespace RimeLib.Terrain.Frostbite3
             NodeCount = p_Reader.ReadUInt32();
             FreeStreamingEnabled = p_Reader.ReadBool();
 
-            RasterTrees = new List<RasterTree>();
-
-            for (var i = 0; i < (int)RasterTree.RasterTreeTypes.RasterTreeTypeCount; ++i)
-                RasterTrees.Add(null);
+            RasterTrees = new List<RasterTree>((int)RasterTree.RasterTreeTypes.RasterTreeTypeCount);
 
             for (; ; )
             {
@@ -135,8 +133,9 @@ namespace RimeLib.Terrain.Frostbite3
             throw new NotImplementedException();
         }
 
-        public bool Serialize(out byte[] p_Data)
+        public bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
         {
+            p_Data = null;
             throw new NotImplementedException();
         }
     }

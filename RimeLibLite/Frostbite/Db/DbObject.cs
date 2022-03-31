@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
@@ -30,9 +31,7 @@ namespace RimeLib.Frostbite.Db
         /// <returns>Object element by string in this object</returns>
         public DbObjectElement this[string p_Key]
         {
-#pragma warning disable CS8603 // Possible null reference return.
             get { return m_Elements.FirstOrDefault(p_T => StringComparer.InvariantCultureIgnoreCase.Equals(p_Key, p_T.FieldName)); }
-#pragma warning restore CS8603 // Possible null reference return.
         }
 
         /// <summary>
@@ -162,9 +161,9 @@ namespace RimeLib.Frostbite.Db
             return true;
         }
 
-        public bool Serialize(out byte[] p_Data)
+        public bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
         {
-            p_Data = new byte[0];
+            p_Data = null;
 
             var s_Stream = new MemoryStream();
 

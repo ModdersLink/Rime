@@ -1,4 +1,5 @@
-﻿using RimeLib.IO;
+﻿using System.Diagnostics.CodeAnalysis;
+using RimeLib.IO;
 
 namespace RimeLib.Frostbite.Core
 {
@@ -50,8 +51,9 @@ namespace RimeLib.Frostbite.Core
             throw new System.NotImplementedException();
         }
 
-        public bool Serialize(out byte[] p_Data)
+        public bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
         {
+            p_Data = null;
             throw new System.NotImplementedException();
         }
 

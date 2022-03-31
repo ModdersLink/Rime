@@ -5,63 +5,24 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 16,  Flags: 53, Size: 224)]
+	[ContainerType(16, 224)]
 	public class FlareEntityData : 
 		GrenadeEntityData
 	{
-		protected float m_FlareRange = new float();
-		[ContainerField(Name: "FlareRange", Offset: 208, NameHash: 1082869702, Flags: 49469), LayoutImmutable, Blittable]
-		public float FlareRange { get { return m_FlareRange; } set { if (OnPropertyChanging("FlareEntityData." + nameof(FlareRange), this, m_FlareRange, value)) m_FlareRange = value; } } // 0xD0 (208)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 1082869702:
-					FlareRange = (float) p_Value;
-					break;
+		[ContainerField(208), LayoutImmutable, Blittable, JsonProperty(Order = 208)]
+		public float FlareRange { get; set; }
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1082869702:
-					return FlareRange;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1082869702:
-					return typeof(FlareEntityData).GetProperty(nameof(FlareRange));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

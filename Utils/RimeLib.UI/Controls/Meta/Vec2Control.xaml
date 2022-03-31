@@ -7,9 +7,9 @@
              xmlns:rui="clr-namespace:RimeLib.UI.ViewModels.fb"
              mc:Ignorable="d" Height="21" Width="738">
     <UserControl.Resources>
-        <DataTemplate DataType="{x:Type rui:Vec2ViewModel}">
+        <!-- <DataTemplate DataType="{x:Type rui:Vec2ViewModel}"> 
             
-        </DataTemplate>
+        </DataTemplate>-->
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>

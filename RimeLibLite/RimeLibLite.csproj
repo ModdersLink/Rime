@@ -4,7 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <AssemblyName>RimeLib</AssemblyName>
     <RootNamespace>RimeLib</RootNamespace>
-    <LangVersion>9.0</LangVersion>
+    <LangVersion>default</LangVersion>
     <Nullable>annotations</Nullable>
     <OutputPath>$(SolutionDir)\bin\$(Configuration)</OutputPath>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>

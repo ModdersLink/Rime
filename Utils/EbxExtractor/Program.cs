@@ -1,17 +1,15 @@
 ﻿using CommandLine;
-using fb;
-using RimeLib.Content.Mounting;
 using RimeLib.Frostbite;
-using RimeLib.Serialization;
-using RimeLib.Frostbite.Containers;
-using RimeLib.Serialization.Ebx;
-using RimeLib.Serialization.Frostbite2_0;
-using RimeLib.Serialization.Frostbite2_0.Ebx;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
+using RimeLib;
+using RimeLib.Content.Frostbite;
+using RimeLib.Content.Mounting;
+using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.IO.Conversion;
 
 namespace EbxExtractor
 {
@@ -34,15 +32,14 @@ namespace EbxExtractor
 
         static void Main(string[] p_Args)
         {
-
             Parser.Default.ParseArguments<Options>(p_Args).WithParsed(p_Options =>
             {
                 LoadContentAssembly(p_Options);
-                LoadBindingsAssembly(p_Options);
+                LoadTextureAssembly(p_Options);
                 DumpFiles(p_Options);
 
-                Console.WriteLine("Audio content successfully extracted. Press any key to exit...");
-                Console.ReadKey();
+                //Console.WriteLine("Audio content successfully extracted. Press any key to exit...");
+                //Console.ReadKey();
             }).WithNotParsed(p_Error =>
             {
                 System.Environment.Exit(1);
@@ -69,28 +66,17 @@ namespace EbxExtractor
                 System.Environment.Exit(1);
             }
         }
-
-        private static void LoadBindingsAssembly(Options p_Options)
+        
+        private static void LoadTextureAssembly(Options p_Options)
         {
-            var s_AssemblyName = "RimeLib.Bindings.Venice";
+            var s_AssemblyName = "RimeLib.Texture." + p_Options.EngineType;
 
             try
             {
                 if (!p_Options.Quiet)
-                    Console.WriteLine("Loading engine bindings support assembly.");
+                    Console.WriteLine("Loading engine content support assembly.");
 
-                var s_Bindings = Assembly.Load(s_AssemblyName);
-
-                var s_ExportedTypes = s_Bindings.GetExportedTypes();
-
-                foreach (var s_Type in s_ExportedTypes)
-                {
-                    if (!typeof(FrostbiteContainer).IsAssignableFrom(s_Type) &&
-                        !s_Type.IsEnum)
-                        continue;
-
-                    ContainerRegistry.RegisterType(s_Type);
-                }
+                Assembly.Load(s_AssemblyName);
             }
             catch
             {
@@ -100,71 +86,91 @@ namespace EbxExtractor
                 System.Environment.Exit(1);
             }
         }
+        
+        internal class ResourceStreamReader : IResourceObject
+        {
+            private readonly ResourceType m_ResourceType;
+            private Stream m_Stream;
+
+            public ResourceStreamReader(Stream p_Stream, ResourceType p_ResourceType)
+            {
+                m_ResourceType = p_ResourceType;
+                m_Stream = p_Stream;
+            }
+
+            public ResourceType GetResourceType()
+            {
+                return m_ResourceType;
+            }
+
+            public bool TryGetMeta([NotNullWhen(true)] out byte[]? p_Meta)
+            {
+                p_Meta = null;
+                return false;
+            }
+
+            public RimeReader GetReader()
+            {
+                return new RimeReader(m_Stream, Endianness.LittleEndian, false);
+            }
+
+            public long GetSize()
+            {
+                return m_Stream.Length;
+            }
+        }
 
         private static async void DumpFiles(Options p_Options)
         {
-            var s_Mounter = EngineMounterRegistry.Create(p_Options.EngineType);
-
+            var s_Mounter = EngineInterfaceRegistry.Create<IEngineMounter>(p_Options.EngineType);
+            
             if (!p_Options.Quiet)
                 Console.WriteLine($"Mounting game with engine '{p_Options.EngineType}' at path '{p_Options.GamePath}'. Please wait, this could take a while.");
 
-            await s_Mounter.Mount(p_Options.GamePath, false, EngineType.Frostbite2_0);
-            await s_Mounter.MountSuperbundle("Win32/Chunks0", true);
-            await s_Mounter.MountSuperbundle("Win32/Chunks1", true);
-            await s_Mounter.MountSuperbundle("Win32/Chunks2", true);
-            await s_Mounter.MountSuperbundle("Win32/MpChunks", true);
-            await s_Mounter.MountSuperbundle("Win32/Xp2Chunks", true);
-            await s_Mounter.MountSuperbundle("Win32/Levels/XP2_Factory/XP2_Factory", true);
-            await s_Mounter.MountSuperbundle("Win32/Levels/FrontEnd/FrontEnd", true);
+            //await s_Mounter.MountStandaloneSuperbundle("Win32/VuTest", @"B:\Games\Battlefield 3\Update\Patch\Data\Win32\VuTest.sb", true);
+            //await s_Mounter.MountStandaloneSuperbundle("Win32/Levels/XP5_001/XP5_001", @"B:\Games\Battlefield 3\Update\Xpack5\Data\Win32\Levels\XP5_001\XP5_001.sb", true);
+            //await s_Mounter.Mount(p_Options.GamePath, true, EngineType.Frostbite2_0);
+            //await s_Mounter.MountSuperbundle("Win32/Chunks0", true);
+            //await s_Mounter.MountSuperbundle("Win32/Chunks1", true);
+            //await s_Mounter.MountSuperbundle("Win32/Chunks2", true);
+            //await s_Mounter.MountSuperbundle("Win32/MpChunks", true);
+            //await s_Mounter.MountSuperbundle("Win32/Xp2Chunks", true);
+            //await s_Mounter.MountSuperbundle("Win32/Levels/XP2_Factory/XP2_Factory", true);
 
-            if (!p_Options.Quiet)
-                Console.WriteLine($"Everything is now mounted! Starting audio conversion.");
-
-            var s_Partitions = s_Mounter.GetPartitions();
-
-#if !_SLOW_CODE
-            foreach (var s_PartitionPair in s_Partitions)
+            //if (s_Mounter.TryGetChunk(new GUID("313a4d6fe0dc10d7421fea9fdf78de4f"), out var chunk))
+            if (s_Mounter.TryGetChunk(new GUID("84F0888A-35AA-9B68-38E8-9957DD412EA5"), out var chunk))
+            //if (s_Mounter.TryGetChunk(new GUID("478e7037-4abf-451a-928a-d6b5cb684d2b"), out var chunk))
             {
-                var s_PartitionName = s_PartitionPair.Key;
-                if (s_PartitionName != "Weapons/M1014/U_M1014_Flashlight".ToLower())
-                    continue;
+                chunk.FirstVariant.GetSize();
 
-                var s_PartitionObject = s_PartitionPair.Value;
-
-                using var s_PartitionReader = s_PartitionObject.FirstVariant.GetReader();
-
-                var s_Reader = new Fb2EbxReader();
-
-                var s_Partition = s_Reader.ParsePartition(s_PartitionName, s_PartitionReader);
-                if (s_Partition == null)
-                    continue;
-
-                new FrostbitePartitionVisitor(s_Partition.PrimaryInstance).Iterate();
-
-                PartitionRegistry.RegisterPartition(s_Partition);
-
-                var s_SerializationContext = new SerializationContext(s_Partition);
-
-                s_SerializationContext.Parse();
+                using var s_TempThing2 = File.OpenWrite(@"B:\ebx-test\post-comp-chunk.bin");
+                using var s_ChunkReaderThing = chunk.FirstVariant.GetReader();
+                s_ChunkReaderThing.CopyTo(s_TempThing2);
             }
-#else
-            var s_Ret = Parallel.ForEach(s_Partitions, p_Pair =>
+
+            Console.WriteLine("DId shit");
+
+            /*var s_Partitions = s_Mounter.GetPartitions();
+            
+            //foreach (var s_PartitionPair in s_Partitions)
+            Parallel.ForEach(s_Partitions, (p_Pair) => 
             {
                 var s_PartitionName = p_Pair.Key;
-
                 var s_PartitionObject = p_Pair.Value;
 
                 using var s_PartitionReader = s_PartitionObject.FirstVariant.GetReader();
+                
+                using var s_EbxReader = new EbxReader();
+                var s_Partition = s_EbxReader.ParsePartition(s_PartitionName, s_PartitionReader);
+                
+                var s_TargetPath = Path.Join(@"B:\ebx-dump2", s_PartitionName + ".json");
+                var s_TargetDir = Path.GetDirectoryName(s_TargetPath);
 
-                var s_Reader = new Fb2EbxReader();
+                if (!Directory.Exists(s_TargetDir))
+                    Directory.CreateDirectory(s_TargetDir);
 
-                var s_Partition = s_Reader.ParsePartition(s_PartitionName, s_PartitionReader);
-                if (s_Partition != null)
-                    PartitionRegistry.RegisterPartition(s_Partition);
-            });
-#endif
-
-            var s_Results = PartitionRegistry.Partitions.Where(p_Partition => p_Partition.PrimaryInstance.ContainerTypeName == "SoundWaveAsset");
+                s_Partition.ToJsonFile(s_TargetPath, Formatting.Indented);
+            });*/
         }
     }
 }

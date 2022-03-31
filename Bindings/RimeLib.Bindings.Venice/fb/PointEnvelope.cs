@@ -5,63 +5,24 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 12)]
+	[ContainerType(4, 12)]
 	public class PointEnvelope : 
 		DataContainer
 	{
-		protected List<PointEnvelopePoint> m_Points = new List<PointEnvelopePoint>();
-		[ContainerField(Name: "Points", Offset: 8, NameHash: 3383606106, Flags: 65)]
-		public List<PointEnvelopePoint> Points { get { return m_Points; } set { if (OnPropertyChanging("PointEnvelope." + nameof(Points), this, m_Points, value)) m_Points = value; } } // 0x8 (8)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 3383606106:
-					Points = (List<PointEnvelopePoint>) p_Value;
-					break;
+		[ContainerField(8), JsonProperty(Order = 8)]
+		public List<PointEnvelopePoint> Points { get; set; } = new();
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3383606106:
-					return Points;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3383606106:
-					return typeof(PointEnvelope).GetProperty(nameof(Points));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

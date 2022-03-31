@@ -21,8 +21,8 @@ namespace FBCC
             var s_Args = new List<string>()
             {
                 "--gen-rime",
-                @"--in=C:\Users\godiwik\Documents\_bins\pc\fbcgen",
-                @"--out=C:\Users\godiwik\Documents\_bins\pc\fbcgen_rime",
+                @"--in=B:\Games\Battlefield 3\__fbc__\gen2",
+                @"--out=C:\Code\OrfeasZ\RimeLibLite\RimeLib.Serialization.Frostbite2_0",
                 //"--gen-bindings",
                 //"--gen-native",
                 //"--gen-vext-docs",

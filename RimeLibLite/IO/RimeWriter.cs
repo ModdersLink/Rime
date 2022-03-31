@@ -41,7 +41,7 @@ namespace RimeLib.IO
 
         public void WriteNullTerminatedString(string p_Value)
         {
-            var s_Data = Encoding.ASCII.GetBytes(p_Value);
+            var s_Data = Encoding.UTF8.GetBytes(p_Value);
             Write(s_Data);
             Write((byte) 0x00);
         }
@@ -123,6 +123,33 @@ namespace RimeLib.IO
             }
 
             base.WriteInternal(p_Value, p_Offset, p_Count);
+        }
+
+        public void WriteNullBytes(uint p_NumberOfBytes)
+        {
+            var s_Bytes = new byte[p_NumberOfBytes];
+            Write(s_Bytes);
+        }
+
+        public void Write(RimeWriter p_Writer)
+        {
+            var s_StartPosition = p_Writer.Position;
+            p_Writer.Flush();
+            p_Writer.Seek(0, SeekOrigin.Begin);
+
+            p_Writer.CopyTo(this);
+
+            p_Writer.Seek(s_StartPosition, SeekOrigin.Begin);
+        }
+
+        public void Write(RimeReader p_Reader)
+        {
+            var s_StartPosition = p_Reader.Position;
+            p_Reader.Seek(0, SeekOrigin.Begin);
+
+            p_Reader.CopyTo(this);
+
+            p_Reader.Seek(s_StartPosition, SeekOrigin.Begin);
         }
     }
 }

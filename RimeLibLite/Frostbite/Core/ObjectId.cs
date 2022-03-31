@@ -9,13 +9,6 @@ namespace RimeLib.Frostbite.Core
     public class ObjectId : GUID
     {
         /// <summary>
-        /// Default constructor
-        /// </summary>
-        public ObjectId()
-        {
-        }
-
-        /// <summary>
         /// Constructor for reading an ObjectId from an opened reader
         /// </summary>
         /// <param name="p_Reader">Reader opened to the position of a ObjectId</param>

@@ -5,100 +5,32 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 41, Size: 16)]
-	public class AntDynamicAvoidanceBinding : FrostbiteContainer
+	[ContainerType(4, 16)]
+	public class AntDynamicAvoidanceBinding
 	{
-		[ContainerField(Name: "TimeUntilCollision", Offset: 0, NameHash: 3142481924, Flags: 41)]
-		public AntRef TimeUntilCollision { get; set; } = new AntRef(); // 0x0 (0)
+		[ContainerField(0), JsonProperty(Order = 0)]
+		public AntRef TimeUntilCollision { get; set; } = new();
 		
-		[ContainerField(Name: "DistanceUntilCollision", Offset: 4, NameHash: 1945583762, Flags: 41)]
-		public AntRef DistanceUntilCollision { get; set; } = new AntRef(); // 0x4 (4)
+		[ContainerField(4), JsonProperty(Order = 4)]
+		public AntRef DistanceUntilCollision { get; set; } = new();
 		
-		[ContainerField(Name: "NormalizedVelocity", Offset: 8, NameHash: 113203091, Flags: 41)]
-		public AntRef NormalizedVelocity { get; set; } = new AntRef(); // 0x8 (8)
+		[ContainerField(8), JsonProperty(Order = 8)]
+		public AntRef NormalizedVelocity { get; set; } = new();
 		
-		[ContainerField(Name: "Speed", Offset: 12, NameHash: 230887042, Flags: 41)]
-		public AntRef Speed { get; set; } = new AntRef(); // 0xC (12)
+		[ContainerField(12), JsonProperty(Order = 12)]
+		public AntRef Speed { get; set; } = new();
 		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 3142481924:
-					TimeUntilCollision = (AntRef) p_Value;
-					break;
-
-				case 1945583762:
-					DistanceUntilCollision = (AntRef) p_Value;
-					break;
-
-				case 113203091:
-					NormalizedVelocity = (AntRef) p_Value;
-					break;
-
-				case 230887042:
-					Speed = (AntRef) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3142481924:
-					return TimeUntilCollision;
-
-				case 1945583762:
-					return DistanceUntilCollision;
-
-				case 113203091:
-					return NormalizedVelocity;
-
-				case 230887042:
-					return Speed;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3142481924:
-					return typeof(AntDynamicAvoidanceBinding).GetProperty(nameof(TimeUntilCollision));
-
-				case 1945583762:
-					return typeof(AntDynamicAvoidanceBinding).GetProperty(nameof(DistanceUntilCollision));
-
-				case 113203091:
-					return typeof(AntDynamicAvoidanceBinding).GetProperty(nameof(NormalizedVelocity));
-
-				case 230887042:
-					return typeof(AntDynamicAvoidanceBinding).GetProperty(nameof(Speed));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

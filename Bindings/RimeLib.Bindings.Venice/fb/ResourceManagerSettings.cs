@@ -5,119 +5,36 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 28)]
+	[ContainerType(4, 28)]
 	public class ResourceManagerSettings : 
 		SystemSettings
 	{
-		protected int m_CasBundleReadBufferSizeKb = new int();
-		[ContainerField(Name: "CasBundleReadBufferSizeKb", Offset: 12, NameHash: 1627350526, Flags: 49405), LayoutImmutable, Blittable]
-		public int CasBundleReadBufferSizeKb { get { return m_CasBundleReadBufferSizeKb; } set { if (OnPropertyChanging("ResourceManagerSettings." + nameof(CasBundleReadBufferSizeKb), this, m_CasBundleReadBufferSizeKb, value)) m_CasBundleReadBufferSizeKb = value; } } // 0xC (12)
-		
-		protected int m_CasBundleDecompressBufferSizeKb = new int();
-		[ContainerField(Name: "CasBundleDecompressBufferSizeKb", Offset: 16, NameHash: 4137626923, Flags: 49405), LayoutImmutable, Blittable]
-		public int CasBundleDecompressBufferSizeKb { get { return m_CasBundleDecompressBufferSizeKb; } set { if (OnPropertyChanging("ResourceManagerSettings." + nameof(CasBundleDecompressBufferSizeKb), this, m_CasBundleDecompressBufferSizeKb, value)) m_CasBundleDecompressBufferSizeKb = value; } } // 0x10 (16)
-		
-		protected int m_CasBundleDecompressBufferCount = new int();
-		[ContainerField(Name: "CasBundleDecompressBufferCount", Offset: 20, NameHash: 2318797924, Flags: 49405), LayoutImmutable, Blittable]
-		public int CasBundleDecompressBufferCount { get { return m_CasBundleDecompressBufferCount; } set { if (OnPropertyChanging("ResourceManagerSettings." + nameof(CasBundleDecompressBufferCount), this, m_CasBundleDecompressBufferCount, value)) m_CasBundleDecompressBufferCount = value; } } // 0x14 (20)
-		
-		protected bool m_BundleProfilingEnable = new bool();
-		[ContainerField(Name: "BundleProfilingEnable", Offset: 24, NameHash: 2207788158, Flags: 49325), LayoutImmutable, Blittable]
-		public bool BundleProfilingEnable { get { return m_BundleProfilingEnable; } set { if (OnPropertyChanging("ResourceManagerSettings." + nameof(BundleProfilingEnable), this, m_BundleProfilingEnable, value)) m_BundleProfilingEnable = value; } } // 0x18 (24)
-		
-		protected bool m_SPUDecompressEnable = new bool();
-		[ContainerField(Name: "SPUDecompressEnable", Offset: 25, NameHash: 2656801749, Flags: 49325), LayoutImmutable, Blittable]
-		public bool SPUDecompressEnable { get { return m_SPUDecompressEnable; } set { if (OnPropertyChanging("ResourceManagerSettings." + nameof(SPUDecompressEnable), this, m_SPUDecompressEnable, value)) m_SPUDecompressEnable = value; } } // 0x19 (25)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 1627350526:
-					CasBundleReadBufferSizeKb = (int) p_Value;
-					break;
+		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
+		public int CasBundleReadBufferSizeKb { get; set; }
 
-				case 4137626923:
-					CasBundleDecompressBufferSizeKb = (int) p_Value;
-					break;
+		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		public int CasBundleDecompressBufferSizeKb { get; set; }
 
-				case 2318797924:
-					CasBundleDecompressBufferCount = (int) p_Value;
-					break;
+		[ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
+		public int CasBundleDecompressBufferCount { get; set; }
 
-				case 2207788158:
-					BundleProfilingEnable = (bool) p_Value;
-					break;
+		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
+		public bool BundleProfilingEnable { get; set; }
 
-				case 2656801749:
-					SPUDecompressEnable = (bool) p_Value;
-					break;
+		[ContainerField(25), LayoutImmutable, Blittable, JsonProperty(Order = 25)]
+		public bool SPUDecompressEnable { get; set; }
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1627350526:
-					return CasBundleReadBufferSizeKb;
-
-				case 4137626923:
-					return CasBundleDecompressBufferSizeKb;
-
-				case 2318797924:
-					return CasBundleDecompressBufferCount;
-
-				case 2207788158:
-					return BundleProfilingEnable;
-
-				case 2656801749:
-					return SPUDecompressEnable;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1627350526:
-					return typeof(ResourceManagerSettings).GetProperty(nameof(CasBundleReadBufferSizeKb));
-
-				case 4137626923:
-					return typeof(ResourceManagerSettings).GetProperty(nameof(CasBundleDecompressBufferSizeKb));
-
-				case 2318797924:
-					return typeof(ResourceManagerSettings).GetProperty(nameof(CasBundleDecompressBufferCount));
-
-				case 2207788158:
-					return typeof(ResourceManagerSettings).GetProperty(nameof(BundleProfilingEnable));
-
-				case 2656801749:
-					return typeof(ResourceManagerSettings).GetProperty(nameof(SPUDecompressEnable));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

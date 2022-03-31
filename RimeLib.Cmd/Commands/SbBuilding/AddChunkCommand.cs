@@ -13,6 +13,9 @@ namespace RimeLib.Cmd.Commands.SbBuilding
 
         [CommandArgument(Description = "The path to the file containing the chunk data.")]
         public FileInfo? FilePath { get; set; }
+        
+        [CommandArgument(Description = "The name of the asset this chunk is for. Optional.", Optional = true)]
+        public string? AssetName { get; set; }
 
         public override bool Execute(ref ExecutionContext p_Context, TextWriter p_Writer)
         {
@@ -22,7 +25,7 @@ namespace RimeLib.Cmd.Commands.SbBuilding
                 return false;
             }
 
-            ((SbBuildingContext) p_Context).AddChunk(Guid!, FilePath);
+            ((SbBuildingContext) p_Context).AddChunk(Guid!, FilePath, AssetName);
 
             return true;
         }

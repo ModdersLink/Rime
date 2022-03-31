@@ -5,77 +5,27 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
+	[ContainerType(4, 16)]
 	public class UIItemDescription : 
 		DataContainer
 	{
-		protected List<uint> m_ItemIds = new List<uint>();
-		[ContainerField(Name: "ItemIds", Offset: 8, NameHash: 2693096110, Flags: 65)]
-		public List<uint> ItemIds { get { return m_ItemIds; } set { if (OnPropertyChanging("UIItemDescription." + nameof(ItemIds), this, m_ItemIds, value)) m_ItemIds = value; } } // 0x8 (8)
-		
-		protected bool m_IgnoreBuild = new bool();
-		[ContainerField(Name: "IgnoreBuild", Offset: 12, NameHash: 1608120075, Flags: 49325), LayoutImmutable, Blittable]
-		public bool IgnoreBuild { get { return m_IgnoreBuild; } set { if (OnPropertyChanging("UIItemDescription." + nameof(IgnoreBuild), this, m_IgnoreBuild, value)) m_IgnoreBuild = value; } } // 0xC (12)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 2693096110:
-					ItemIds = (List<uint>) p_Value;
-					break;
+		[ContainerField(8), JsonProperty(Order = 8)]
+		public List<uint> ItemIds { get; set; } = new();
 
-				case 1608120075:
-					IgnoreBuild = (bool) p_Value;
-					break;
+		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
+		public bool IgnoreBuild { get; set; }
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2693096110:
-					return ItemIds;
-
-				case 1608120075:
-					return IgnoreBuild;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2693096110:
-					return typeof(UIItemDescription).GetProperty(nameof(ItemIds));
-
-				case 1608120075:
-					return typeof(UIItemDescription).GetProperty(nameof(IgnoreBuild));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

@@ -5,100 +5,32 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 41, Size: 16)]
-	public class EditableActionMap : FrostbiteContainer
+	[ContainerType(4, 16)]
+	public class EditableActionMap
 	{
-		[ContainerField(Name: "Id", Offset: 0, NameHash: 5862152, Flags: 16509), LayoutImmutable]
-		public string Id { get; set; } // 0x0 (0)
+		[ContainerField(0), LayoutImmutable, JsonProperty(Order = 0)]
+		public string Id { get; set; } = string.Empty;
 		
-		[ContainerField(Name: "NameId", Offset: 4, NameHash: 2828728719, Flags: 16509), LayoutImmutable]
-		public string NameId { get; set; } // 0x4 (4)
+		[ContainerField(4), LayoutImmutable, JsonProperty(Order = 4)]
+		public string NameId { get; set; } = string.Empty;
 		
-		[ContainerField(Name: "ActionMap", Offset: 8, NameHash: 3027251111, Flags: 53)]
-		public CtrRef<EntryInputActionMapsData> ActionMap { get; set; } = new CtrRef<EntryInputActionMapsData>(); // 0x8 (8)
+		[ContainerField(8), JsonProperty(Order = 8)]
+		public CtrRef<EntryInputActionMapsData> ActionMap { get; set; } = new();
 		
-		[ContainerField(Name: "ConfigurationLayout", Offset: 12, NameHash: 3332287471, Flags: 41)]
-		public EditableActions ConfigurationLayout { get; set; } = new EditableActions(); // 0xC (12)
+		[ContainerField(12), JsonProperty(Order = 12)]
+		public EditableActions ConfigurationLayout { get; set; } = new();
 		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 5862152:
-					Id = (string) p_Value;
-					break;
-
-				case 2828728719:
-					NameId = (string) p_Value;
-					break;
-
-				case 3027251111:
-					ActionMap = (CtrRef<EntryInputActionMapsData>) p_Value;
-					break;
-
-				case 3332287471:
-					ConfigurationLayout = (EditableActions) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 5862152:
-					return Id;
-
-				case 2828728719:
-					return NameId;
-
-				case 3027251111:
-					return ActionMap;
-
-				case 3332287471:
-					return ConfigurationLayout;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 5862152:
-					return typeof(EditableActionMap).GetProperty(nameof(Id));
-
-				case 2828728719:
-					return typeof(EditableActionMap).GetProperty(nameof(NameId));
-
-				case 3027251111:
-					return typeof(EditableActionMap).GetProperty(nameof(ActionMap));
-
-				case 3332287471:
-					return typeof(EditableActionMap).GetProperty(nameof(ConfigurationLayout));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

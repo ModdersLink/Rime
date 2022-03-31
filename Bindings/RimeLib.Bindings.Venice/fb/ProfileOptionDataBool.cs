@@ -5,63 +5,24 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 24)]
+	[ContainerType(4, 24)]
 	public class ProfileOptionDataBool : 
 		ProfileOptionData
 	{
-		protected bool m_Value = new bool();
-		[ContainerField(Name: "Value", Offset: 20, NameHash: 225375086, Flags: 49325), LayoutImmutable, Blittable]
-		public bool Value { get { return m_Value; } set { if (OnPropertyChanging("ProfileOptionDataBool." + nameof(Value), this, m_Value, value)) m_Value = value; } } // 0x14 (20)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 225375086:
-					Value = (bool) p_Value;
-					break;
+		[ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
+		public bool Value { get; set; }
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 225375086:
-					return Value;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 225375086:
-					return typeof(ProfileOptionDataBool).GetProperty(nameof(Value));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

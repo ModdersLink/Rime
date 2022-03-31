@@ -5,63 +5,24 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 20)]
+	[ContainerType(4, 20)]
 	public class XenonPresenceBackendData : 
 		PresenceBackendData
 	{
-		protected uint m_TitleId = new uint();
-		[ContainerField(Name: "TitleId", Offset: 16, NameHash: 3335995016, Flags: 49421), LayoutImmutable, Blittable]
-		public uint TitleId { get { return m_TitleId; } set { if (OnPropertyChanging("XenonPresenceBackendData." + nameof(TitleId), this, m_TitleId, value)) m_TitleId = value; } } // 0x10 (16)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 3335995016:
-					TitleId = (uint) p_Value;
-					break;
+		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		public uint TitleId { get; set; }
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3335995016:
-					return TitleId;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3335995016:
-					return typeof(XenonPresenceBackendData).GetProperty(nameof(TitleId));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

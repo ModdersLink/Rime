@@ -5,91 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 20)]
+	[ContainerType(4, 20)]
 	public class UICoopLevelDescription : 
 		LevelDescriptionComponent
 	{
-		protected string m_Debriefing = string.Empty;
-		[ContainerField(Name: "Debriefing", Offset: 8, NameHash: 1664834078, Flags: 16509), LayoutImmutable]
-		public string Debriefing { get { return m_Debriefing; } set { if (OnPropertyChanging("UICoopLevelDescription." + nameof(Debriefing), this, m_Debriefing, value)) m_Debriefing = value; } } // 0x8 (8)
-		
-		protected int m_DevTime = new int();
-		[ContainerField(Name: "DevTime", Offset: 12, NameHash: 4015961031, Flags: 49405), LayoutImmutable, Blittable]
-		public int DevTime { get { return m_DevTime; } set { if (OnPropertyChanging("UICoopLevelDescription." + nameof(DevTime), this, m_DevTime, value)) m_DevTime = value; } } // 0xC (12)
-		
-		protected List<string> m_UnlockedByLevels = new List<string>();
-		[ContainerField(Name: "UnlockedByLevels", Offset: 16, NameHash: 2749335882, Flags: 65)]
-		public List<string> UnlockedByLevels { get { return m_UnlockedByLevels; } set { if (OnPropertyChanging("UICoopLevelDescription." + nameof(UnlockedByLevels), this, m_UnlockedByLevels, value)) m_UnlockedByLevels = value; } } // 0x10 (16)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 1664834078:
-					Debriefing = (string) p_Value;
-					break;
+		[ContainerField(8), LayoutImmutable, JsonProperty(Order = 8)]
+		public string Debriefing { get; set; } = string.Empty;
 
-				case 4015961031:
-					DevTime = (int) p_Value;
-					break;
+		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
+		public int DevTime { get; set; }
 
-				case 2749335882:
-					UnlockedByLevels = (List<string>) p_Value;
-					break;
+		[ContainerField(16), JsonProperty(Order = 16)]
+		public List<string> UnlockedByLevels { get; set; } = new();
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1664834078:
-					return Debriefing;
-
-				case 4015961031:
-					return DevTime;
-
-				case 2749335882:
-					return UnlockedByLevels;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1664834078:
-					return typeof(UICoopLevelDescription).GetProperty(nameof(Debriefing));
-
-				case 4015961031:
-					return typeof(UICoopLevelDescription).GetProperty(nameof(DevTime));
-
-				case 2749335882:
-					return typeof(UICoopLevelDescription).GetProperty(nameof(UnlockedByLevels));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

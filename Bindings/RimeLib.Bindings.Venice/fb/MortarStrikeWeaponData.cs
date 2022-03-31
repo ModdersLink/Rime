@@ -5,105 +5,33 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 32)]
+	[ContainerType(4, 32)]
 	public class MortarStrikeWeaponData : 
 		WeaponData
 	{
-		protected float m_HoldingTolerance = new float();
-		[ContainerField(Name: "HoldingTolerance", Offset: 16, NameHash: 1278440067, Flags: 49469), LayoutImmutable, Blittable]
-		public float HoldingTolerance { get { return m_HoldingTolerance; } set { if (OnPropertyChanging("MortarStrikeWeaponData." + nameof(HoldingTolerance), this, m_HoldingTolerance, value)) m_HoldingTolerance = value; } } // 0x10 (16)
-		
-		protected float m_MaxStrikeDistance = new float();
-		[ContainerField(Name: "MaxStrikeDistance", Offset: 20, NameHash: 3419412896, Flags: 49469), LayoutImmutable, Blittable]
-		public float MaxStrikeDistance { get { return m_MaxStrikeDistance; } set { if (OnPropertyChanging("MortarStrikeWeaponData." + nameof(MaxStrikeDistance), this, m_MaxStrikeDistance, value)) m_MaxStrikeDistance = value; } } // 0x14 (20)
-		
-		protected float m_StrikeRadius = new float();
-		[ContainerField(Name: "StrikeRadius", Offset: 24, NameHash: 4030357871, Flags: 49469), LayoutImmutable, Blittable]
-		public float StrikeRadius { get { return m_StrikeRadius; } set { if (OnPropertyChanging("MortarStrikeWeaponData." + nameof(StrikeRadius), this, m_StrikeRadius, value)) m_StrikeRadius = value; } } // 0x18 (24)
-		
-		protected float m_MaxRandomSpawnHeight = new float();
-		[ContainerField(Name: "MaxRandomSpawnHeight", Offset: 28, NameHash: 2881356526, Flags: 49469), LayoutImmutable, Blittable]
-		public float MaxRandomSpawnHeight { get { return m_MaxRandomSpawnHeight; } set { if (OnPropertyChanging("MortarStrikeWeaponData." + nameof(MaxRandomSpawnHeight), this, m_MaxRandomSpawnHeight, value)) m_MaxRandomSpawnHeight = value; } } // 0x1C (28)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 1278440067:
-					HoldingTolerance = (float) p_Value;
-					break;
+		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		public float HoldingTolerance { get; set; }
 
-				case 3419412896:
-					MaxStrikeDistance = (float) p_Value;
-					break;
+		[ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
+		public float MaxStrikeDistance { get; set; }
 
-				case 4030357871:
-					StrikeRadius = (float) p_Value;
-					break;
+		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
+		public float StrikeRadius { get; set; }
 
-				case 2881356526:
-					MaxRandomSpawnHeight = (float) p_Value;
-					break;
+		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
+		public float MaxRandomSpawnHeight { get; set; }
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1278440067:
-					return HoldingTolerance;
-
-				case 3419412896:
-					return MaxStrikeDistance;
-
-				case 4030357871:
-					return StrikeRadius;
-
-				case 2881356526:
-					return MaxRandomSpawnHeight;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1278440067:
-					return typeof(MortarStrikeWeaponData).GetProperty(nameof(HoldingTolerance));
-
-				case 3419412896:
-					return typeof(MortarStrikeWeaponData).GetProperty(nameof(MaxStrikeDistance));
-
-				case 4030357871:
-					return typeof(MortarStrikeWeaponData).GetProperty(nameof(StrikeRadius));
-
-				case 2881356526:
-					return typeof(MortarStrikeWeaponData).GetProperty(nameof(MaxRandomSpawnHeight));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

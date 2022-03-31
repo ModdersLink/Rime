@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using RimeLib.Frostbite;
 using RimeLib.Frostbite.Core;
 using RimeLib.IO;
@@ -41,9 +42,9 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Cas
             return true;
         }
 
-        public bool Serialize(out byte[] p_Data)
+        public bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
         {
-            p_Data = new byte[0];
+            p_Data = null;
 
             using (var s_Writer = new RimeWriter(new MemoryStream()))
             {

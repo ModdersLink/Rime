@@ -5,100 +5,32 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 41, Size: 16)]
-	public class SupportedShootingProximityChecking : FrostbiteContainer
+	[ContainerType(4, 16)]
+	public class SupportedShootingProximityChecking
 	{
-		[ContainerField(Name: "RayAboveGunHeightOffset", Offset: 0, NameHash: 3036253694, Flags: 49469), LayoutImmutable, Blittable]
-		public float RayAboveGunHeightOffset { get; set; } // 0x0 (0)
+		[ContainerField(0), LayoutImmutable, Blittable, JsonProperty(Order = 0)]
+		public float RayAboveGunHeightOffset { get; set; }
 		
-		[ContainerField(Name: "RayAboveLength", Offset: 4, NameHash: 3860297932, Flags: 49469), LayoutImmutable, Blittable]
-		public float RayAboveLength { get; set; } // 0x4 (4)
+		[ContainerField(4), LayoutImmutable, Blittable, JsonProperty(Order = 4)]
+		public float RayAboveLength { get; set; }
 		
-		[ContainerField(Name: "RayBelowGunHeightOffset", Offset: 8, NameHash: 2261799346, Flags: 49469), LayoutImmutable, Blittable]
-		public float RayBelowGunHeightOffset { get; set; } // 0x8 (8)
+		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
+		public float RayBelowGunHeightOffset { get; set; }
 		
-		[ContainerField(Name: "RayBelowLength", Offset: 12, NameHash: 421914752, Flags: 49469), LayoutImmutable, Blittable]
-		public float RayBelowLength { get; set; } // 0xC (12)
+		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
+		public float RayBelowLength { get; set; }
 		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 3036253694:
-					RayAboveGunHeightOffset = (float) p_Value;
-					break;
-
-				case 3860297932:
-					RayAboveLength = (float) p_Value;
-					break;
-
-				case 2261799346:
-					RayBelowGunHeightOffset = (float) p_Value;
-					break;
-
-				case 421914752:
-					RayBelowLength = (float) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3036253694:
-					return RayAboveGunHeightOffset;
-
-				case 3860297932:
-					return RayAboveLength;
-
-				case 2261799346:
-					return RayBelowGunHeightOffset;
-
-				case 421914752:
-					return RayBelowLength;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3036253694:
-					return typeof(SupportedShootingProximityChecking).GetProperty(nameof(RayAboveGunHeightOffset));
-
-				case 3860297932:
-					return typeof(SupportedShootingProximityChecking).GetProperty(nameof(RayAboveLength));
-
-				case 2261799346:
-					return typeof(SupportedShootingProximityChecking).GetProperty(nameof(RayBelowGunHeightOffset));
-
-				case 421914752:
-					return typeof(SupportedShootingProximityChecking).GetProperty(nameof(RayBelowLength));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

@@ -1,9 +1,8 @@
 ﻿using RimeLib.Frostbite;
 using RimeLib.IO;
 using System;
-using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
-using System.Text;
 
 namespace RimeLib.Texture.DDS
 {
@@ -25,7 +24,6 @@ namespace RimeLib.Texture.DDS
         Texture = Caps | Height | Width | PixelFormat,
     };
 
-
     [Flags]
     public enum DDSCaps : uint
     {
@@ -33,15 +31,12 @@ namespace RimeLib.Texture.DDS
         Texture = 0x1000,
         Mipmap = 0x400000,
 
-
         MipmapFlags = Complex | Mipmap
     };
 
     [Flags]
     public enum DDSCaps2 : uint
     {
-        
-
         Cubemap = 0x0200,
 
         Cubemap_Face_PositiveX = 0x0400,
@@ -53,9 +48,7 @@ namespace RimeLib.Texture.DDS
         Cubemap_Face_PositiveZ = 0x4000,
         Cubemap_Face_NegativeZ = 0x8000,
 
-
         Volume = 0x200000, //3d texture
-
 
         Cubemap_PositiveX = Cubemap | Cubemap_Face_PositiveX,
         Cubemap_NegativeX = Cubemap | Cubemap_Face_NegativeX,
@@ -66,15 +59,11 @@ namespace RimeLib.Texture.DDS
         Cubemap_PositiveZ = Cubemap | Cubemap_Face_PositiveZ,
         Cubemap_NegativeZ = Cubemap | Cubemap_Face_NegativeZ,
 
-
-
         AllFaces = Cubemap_PositiveX | Cubemap_NegativeX |
-                    Cubemap_PositiveY | Cubemap_NegativeY |
-                    Cubemap_PositiveZ | Cubemap_NegativeZ,
-
+                   Cubemap_PositiveY | Cubemap_NegativeY |
+                   Cubemap_PositiveZ | Cubemap_NegativeZ,
     };
-
-
+    
     public class DDSHeader : IFbSerializable
     {
         public DDSHeader()
@@ -89,21 +78,24 @@ namespace RimeLib.Texture.DDS
         public const uint c_DDSMagic = 0x20534444; // "DDS "
         public const uint c_DDSHeaderSize = 0x7C; //TODO
 
+        public uint Magic { get; set; } = c_DDSMagic;
+        public uint Size { get; protected set; } =c_DDSHeaderSize;
+        public DDSFlags Flags { get; set; } = 0;
+        public uint Height { get; set; } = 0;
+        public uint Width { get; set; } = 0;
+        public uint PitchOrLinearSize { get; set; } = 0;
+        public uint Depth { get; set; } = 0; // only if DDS_HEADER_FLAGS_VOLUME is set in flags
+        public uint MipMapCount { get; set; } = 0;
+        public uint[] Reserved { get; set; } = new uint[11];
+        public DDSPixelFormat PixelFormat { get; set; } = new DDSPixelFormat( );
+        public DDSCaps Caps { get; set; } = 0;
+        public DDSCaps2 Caps2 { get; set; } = 0;
+        public uint Caps3 { get; set; } = 0;
+        public uint Caps4 { get; set; } = 0;
+        public uint Reserved2 { get; set; } = 0;
 
-        public uint m_Size = c_DDSHeaderSize;
-        public DDSFlags m_Flags = 0;
-        public uint m_Height = 0;
-        public uint m_Width = 0;
-        public uint m_PitchOrLinearSize = 0;
-        public uint m_Depth = 0; // only if DDS_HEADER_FLAGS_VOLUME is set in flags
-        public uint m_MipmapCount = 0;
-        public uint[] m_Reserved1 = new uint[11];
-        public DDSPixelFormat m_PixelFormat = new DDSPixelFormat( );
-        public DDSCaps m_Caps = 0;
-        public DDSCaps2 m_Caps2 = 0;
-        public uint m_Caps3 = 0;
-        public uint m_Caps4 = 0;
-        public uint m_Reserved2 = 0;
+        // DX10 Support
+        public DDSDX10Header? Dx10Header { get; set; } = null;
 
 
         /// <summary>
@@ -112,38 +104,38 @@ namespace RimeLib.Texture.DDS
         /// <param name="p_Reader">Reader opened to the position</param>
         public void Deserialize(RimeReader p_Reader)
         {
-            var s_Magic = p_Reader.ReadUInt32( );
+            Magic = p_Reader.ReadUInt32( );
 
-            if (s_Magic != c_DDSMagic)
-            {
-                throw new Exception("Not valid dds magic");
-                //return;
-            }
+            if (Magic != c_DDSMagic)
+                throw new Exception($"Invalid DDS header magic {Magic}.");
 
-            m_Size = p_Reader.ReadUInt32();
+            Size = p_Reader.ReadUInt32();
 
-            if (m_Size < c_DDSHeaderSize)
+            if (Size < c_DDSHeaderSize)
                 throw new Exception("Something is wrong with this dds");
 
-            m_Flags = (DDSFlags) p_Reader.ReadUInt32();
-            m_Height = p_Reader.ReadUInt32();
-            m_Width = p_Reader.ReadUInt32();
-            m_PitchOrLinearSize = p_Reader.ReadUInt32();
-            m_Depth = p_Reader.ReadUInt32();
-            m_MipmapCount = p_Reader.ReadUInt32();
+            Flags = (DDSFlags) p_Reader.ReadUInt32();
+            Height = p_Reader.ReadUInt32();
+            Width = p_Reader.ReadUInt32();
+            PitchOrLinearSize = p_Reader.ReadUInt32();
+            Depth = p_Reader.ReadUInt32();
+            MipMapCount = p_Reader.ReadUInt32();
 
-            for (var i = 0; i < m_Reserved1.Length; i++)
-                m_Reserved1[i] = p_Reader.ReadUInt32();
+            for (var i = 0; i < Reserved.Length; i++)
+                Reserved[i] = p_Reader.ReadUInt32();
 
-            m_PixelFormat.Deserialize(p_Reader);
+            PixelFormat.Deserialize(p_Reader);
 
-            m_Caps = (DDSCaps) p_Reader.ReadUInt32();
-            m_Caps2 = (DDSCaps2) p_Reader.ReadUInt32();
-            m_Caps3 = p_Reader.ReadUInt32();
-            m_Caps4 = p_Reader.ReadUInt32();
-            m_Reserved2 = p_Reader.ReadUInt32();
+            Caps = (DDSCaps) p_Reader.ReadUInt32();
+            Caps2 = (DDSCaps2) p_Reader.ReadUInt32();
+            Caps3 = p_Reader.ReadUInt32();
+            Caps4 = p_Reader.ReadUInt32();
+            Reserved2 = p_Reader.ReadUInt32();
+
+            // Determine if we have a DX10 header to read after the end of this
+            if (PixelFormat.FourCC == DDSUtils.MakeFourCC("DX10"))
+                Dx10Header = new DDSDX10Header(p_Reader);
         }
-
 
         /// <summary>
         /// Serialize to an open writer
@@ -152,44 +144,47 @@ namespace RimeLib.Texture.DDS
         /// <returns>True on success, false otherwise</returns>
         public bool Serialize(RimeWriter p_Writer)
         {
-            p_Writer.Write(c_DDSMagic);
+            p_Writer.Write(Magic);
+            p_Writer.Write(Size);
+            p_Writer.Write((uint) Flags);
+            p_Writer.Write(Height);
+            p_Writer.Write(Width);
+            p_Writer.Write(PitchOrLinearSize);
+            p_Writer.Write(Depth);
+            p_Writer.Write(MipMapCount);
 
+            for (var i = 0; i < Reserved.Length; i++)
+                p_Writer.Write(Reserved[i]);
 
+            PixelFormat.Serialize(p_Writer);
 
-            p_Writer.Write(m_Size);
-            p_Writer.Write((uint) m_Flags);
-            p_Writer.Write(m_Height);
-            p_Writer.Write(m_Width);
-            p_Writer.Write(m_PitchOrLinearSize);
-            p_Writer.Write(m_Depth);
-            p_Writer.Write(m_MipmapCount);
+            p_Writer.Write((uint) Caps);
+            p_Writer.Write((uint) Caps2);
+            p_Writer.Write(Caps3);
+            p_Writer.Write(Caps4);
+            p_Writer.Write(Reserved2);
 
-            for (var i = 0; i < m_Reserved1.Length; i++)
-                p_Writer.Write(m_Reserved1[i]);
-
-            m_PixelFormat.Serialize(p_Writer);
-
-            p_Writer.Write((uint) m_Caps);
-            p_Writer.Write((uint) m_Caps2);
-            p_Writer.Write(m_Caps3);
-            p_Writer.Write(m_Caps4);
-            p_Writer.Write(m_Reserved2);
+            if (PixelFormat.FourCC == DDSUtils.MakeFourCC("DX10"))
+                Dx10Header?.Serialize(p_Writer);
+            
+            // After this is pixel data
             return true;
         }
-
 
         /// <summary>
         /// Serialize to a byte array
         /// </summary>
         /// <returns>byte[]</returns>
-        public bool Serialize(out byte[] p_Data)
+        public bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
         {
-            var s_Result = false;
+            p_Data = null;
+            
+            bool s_Result;
             using (var s_Stream = new MemoryStream())
             {
                 using (var s_RimeStream = new RimeWriter(s_Stream))
                 {
-                    s_Result = this.Serialize(s_RimeStream);
+                    s_Result = Serialize(s_RimeStream);
                 }
                 p_Data = s_Stream.ToArray();
             }
@@ -200,9 +195,6 @@ namespace RimeLib.Texture.DDS
         /// Deserialize from an byte array
         /// </summary>
         /// <param name="p_Data">Input byte array</param>
-        public void Deserialize(byte[] p_Data)
-        {
-            this.Deserialize(new RimeReader(new MemoryStream(p_Data)));
-        }
+        public void Deserialize(byte[] p_Data) => Deserialize(new RimeReader(new MemoryStream(p_Data)));
     }
 }

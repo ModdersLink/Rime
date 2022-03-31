@@ -5,91 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 52)]
+	[ContainerType(4, 52)]
 	public class ChangeReadinessOrderEntityData : 
 		BFOrderEntityData
 	{
-		protected ReadinessLevel m_Pulse = new ReadinessLevel();
-		[ContainerField(Name: "Pulse", Offset: 40, NameHash: 231633466, Flags: 137)]
-		public ReadinessLevel Pulse { get { return m_Pulse; } set { if (OnPropertyChanging("ChangeReadinessOrderEntityData." + nameof(Pulse), this, m_Pulse, value)) m_Pulse = value; } } // 0x28 (40)
-		
-		protected ReadinessLevel m_Minimum = new ReadinessLevel();
-		[ContainerField(Name: "Minimum", Offset: 44, NameHash: 1011407507, Flags: 137)]
-		public ReadinessLevel Minimum { get { return m_Minimum; } set { if (OnPropertyChanging("ChangeReadinessOrderEntityData." + nameof(Minimum), this, m_Minimum, value)) m_Minimum = value; } } // 0x2C (44)
-		
-		protected bool m_AllowDecrease = new bool();
-		[ContainerField(Name: "AllowDecrease", Offset: 48, NameHash: 3792051486, Flags: 49325), LayoutImmutable, Blittable]
-		public bool AllowDecrease { get { return m_AllowDecrease; } set { if (OnPropertyChanging("ChangeReadinessOrderEntityData." + nameof(AllowDecrease), this, m_AllowDecrease, value)) m_AllowDecrease = value; } } // 0x30 (48)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 231633466:
-					Pulse = (ReadinessLevel) Enum.ToObject(typeof(ReadinessLevel), p_Value);
-					break;
+		[ContainerField(40), JsonProperty(Order = 40)]
+		public ReadinessLevel Pulse { get; set; } = new();
 
-				case 1011407507:
-					Minimum = (ReadinessLevel) Enum.ToObject(typeof(ReadinessLevel), p_Value);
-					break;
+		[ContainerField(44), JsonProperty(Order = 44)]
+		public ReadinessLevel Minimum { get; set; } = new();
 
-				case 3792051486:
-					AllowDecrease = (bool) p_Value;
-					break;
+		[ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
+		public bool AllowDecrease { get; set; }
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 231633466:
-					return Pulse;
-
-				case 1011407507:
-					return Minimum;
-
-				case 3792051486:
-					return AllowDecrease;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 231633466:
-					return typeof(ChangeReadinessOrderEntityData).GetProperty(nameof(Pulse));
-
-				case 1011407507:
-					return typeof(ChangeReadinessOrderEntityData).GetProperty(nameof(Minimum));
-
-				case 3792051486:
-					return typeof(ChangeReadinessOrderEntityData).GetProperty(nameof(AllowDecrease));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

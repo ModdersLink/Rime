@@ -5,126 +5,38 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 41, Size: 24)]
-	public class NormalizeSettings : FrostbiteContainer
+	[ContainerType(4, 24)]
+	public class NormalizeSettings
 	{
-		[ContainerField(Name: "Maximum", Offset: 0, NameHash: 1313344397, Flags: 49469), LayoutImmutable, Blittable]
-		public float Maximum { get; set; } // 0x0 (0)
+		[ContainerField(0), LayoutImmutable, Blittable, JsonProperty(Order = 0)]
+		public float Maximum { get; set; }
 		
-		[ContainerField(Name: "Minimum", Offset: 4, NameHash: 1011407507, Flags: 49469), LayoutImmutable, Blittable]
-		public float Minimum { get; set; } // 0x4 (4)
+		[ContainerField(4), LayoutImmutable, Blittable, JsonProperty(Order = 4)]
+		public float Minimum { get; set; }
 		
-		[ContainerField(Name: "Velocity", Offset: 8, NameHash: 3860766482, Flags: 49469), LayoutImmutable, Blittable]
-		public float Velocity { get; set; } // 0x8 (8)
+		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
+		public float Velocity { get; set; }
 		
-		[ContainerField(Name: "Lower", Offset: 12, NameHash: 218180838, Flags: 49469), LayoutImmutable, Blittable]
-		public float Lower { get; set; } // 0xC (12)
+		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
+		public float Lower { get; set; }
 		
-		[ContainerField(Name: "Upper", Offset: 16, NameHash: 219190343, Flags: 49469), LayoutImmutable, Blittable]
-		public float Upper { get; set; } // 0x10 (16)
+		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		public float Upper { get; set; }
 		
-		[ContainerField(Name: "Normalize", Offset: 20, NameHash: 3221786848, Flags: 49325), LayoutImmutable, Blittable]
-		public bool Normalize { get; set; } // 0x14 (20)
+		[ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
+		public bool Normalize { get; set; }
 		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 1313344397:
-					Maximum = (float) p_Value;
-					break;
-
-				case 1011407507:
-					Minimum = (float) p_Value;
-					break;
-
-				case 3860766482:
-					Velocity = (float) p_Value;
-					break;
-
-				case 218180838:
-					Lower = (float) p_Value;
-					break;
-
-				case 219190343:
-					Upper = (float) p_Value;
-					break;
-
-				case 3221786848:
-					Normalize = (bool) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1313344397:
-					return Maximum;
-
-				case 1011407507:
-					return Minimum;
-
-				case 3860766482:
-					return Velocity;
-
-				case 218180838:
-					return Lower;
-
-				case 219190343:
-					return Upper;
-
-				case 3221786848:
-					return Normalize;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1313344397:
-					return typeof(NormalizeSettings).GetProperty(nameof(Maximum));
-
-				case 1011407507:
-					return typeof(NormalizeSettings).GetProperty(nameof(Minimum));
-
-				case 3860766482:
-					return typeof(NormalizeSettings).GetProperty(nameof(Velocity));
-
-				case 218180838:
-					return typeof(NormalizeSettings).GetProperty(nameof(Lower));
-
-				case 219190343:
-					return typeof(NormalizeSettings).GetProperty(nameof(Upper));
-
-				case 3221786848:
-					return typeof(NormalizeSettings).GetProperty(nameof(Normalize));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

@@ -5,87 +5,29 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 41, Size: 12)]
-	public class ServerInfoSetting : FrostbiteContainer
+	[ContainerType(4, 12)]
+	public class ServerInfoSetting
 	{
-		[ContainerField(Name: "Key", Offset: 0, NameHash: 193457490, Flags: 16509), LayoutImmutable]
-		public string Key { get; set; } // 0x0 (0)
+		[ContainerField(0), LayoutImmutable, JsonProperty(Order = 0)]
+		public string Key { get; set; } = string.Empty;
 		
-		[ContainerField(Name: "Name", Offset: 4, NameHash: 2088949890, Flags: 16509), LayoutImmutable]
-		public string Name { get; set; } // 0x4 (4)
+		[ContainerField(4), LayoutImmutable, JsonProperty(Order = 4)]
+		public string Name { get; set; } = string.Empty;
 		
-		[ContainerField(Name: "IsBool", Offset: 8, NameHash: 2816931793, Flags: 49325), LayoutImmutable, Blittable]
-		public bool IsBool { get; set; } // 0x8 (8)
+		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
+		public bool IsBool { get; set; }
 		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 193457490:
-					Key = (string) p_Value;
-					break;
-
-				case 2088949890:
-					Name = (string) p_Value;
-					break;
-
-				case 2816931793:
-					IsBool = (bool) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 193457490:
-					return Key;
-
-				case 2088949890:
-					return Name;
-
-				case 2816931793:
-					return IsBool;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 193457490:
-					return typeof(ServerInfoSetting).GetProperty(nameof(Key));
-
-				case 2088949890:
-					return typeof(ServerInfoSetting).GetProperty(nameof(Name));
-
-				case 2816931793:
-					return typeof(ServerInfoSetting).GetProperty(nameof(IsBool));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

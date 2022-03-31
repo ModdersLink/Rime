@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using RimeLib.Content.Frostbite;
 using RimeLib.Frostbite;
@@ -10,14 +11,15 @@ namespace RimeLib.Content.Mounting
     public interface IResourceObject : IReadableObject
     {
         ResourceType GetResourceType();
-        bool TryGetMeta(out byte[]? p_Meta);
+        bool TryGetMeta([NotNullWhen(true)] out byte[]? p_Meta);
     }
 
     public interface IChunkObject : IReadableObject
     {
-        bool TryGetMeta(out DbObject? p_Meta);
+        bool TryGetMeta([NotNullWhen(true)] out DbObject? p_Meta);
         uint GetRangeStart();
         uint GetLogicalOffset();
+        int? GetAssetNameHash();
     }
 
     public interface IObjectVariant : IReadableObject, IObjectWithHash
@@ -45,7 +47,7 @@ namespace RimeLib.Content.Mounting
 
     public interface IMountedObject : IMountedObject<IObjectVariant> {}
 
-    public interface IEngineMounter
+    public interface IEngineMounter : IEngineInterface
     {
         /// <summary>
         /// Mount the game at the specified path.
@@ -130,7 +132,7 @@ namespace RimeLib.Content.Mounting
         /// <param name="p_Path">The path to the resource.</param>
         /// <param name="p_Resource">The output resource object.</param>
         /// <returns>When the return value is `true` then the output will **not** be `null`. When it's `false` it **will** be `null`.</returns>
-        bool TryGetResource(string p_Path, out IMountedObject<IResourceVariant>? p_Resource);
+        bool TryGetResource(string p_Path, [NotNullWhen(true)] out IMountedObject<IResourceVariant>? p_Resource);
 
         /// <summary>
         /// Try to get a mounted chunk. The chunk will be provided in an output parameter.
@@ -138,7 +140,7 @@ namespace RimeLib.Content.Mounting
         /// <param name="p_GUID">The id of the chunk.</param>
         /// <param name="p_Chunk">The output chunk object.</param>
         /// <returns>When the return value is `true` then the output will **not** be `null`. When it's `false` it **will** be `null`.</returns>
-        bool TryGetChunk(GUID p_GUID, out IMountedObject<IChunkVariant>? p_Chunk);
+        bool TryGetChunk(GUID p_GUID, [NotNullWhen(true)] out IMountedObject<IChunkVariant>? p_Chunk);
 
         /// <summary>
         /// Try to get a mounted partition. The partition will be provided in an output parameter.
@@ -146,7 +148,7 @@ namespace RimeLib.Content.Mounting
         /// <param name="p_Path">The path to the partition.</param>
         /// <param name="p_Partition">The output partition object.</param>
         /// <returns>When the return value is `true` then the output will **not** be `null`. When it's `false` it **will** be `null`.</returns>
-        bool TryGetPartition(string p_Path, out IMountedObject? p_Partition);
+        bool TryGetPartition(string p_Path, [NotNullWhen(true)] out IMountedObject? p_Partition);
 
         /// <summary>
         /// Get all mounted resources and their different variants.
@@ -172,5 +174,14 @@ namespace RimeLib.Content.Mounting
         /// <param name="p_Superbundle">The name of the superbundle.</param>
         /// <returns>A list of bundle names.</returns>
         IEnumerable<string> GetBundlesInSuperbundle(string p_Superbundle);
+
+        /// <summary>
+        /// Mount a standalone superbundle that's not described in the game's manifest.
+        /// </summary>
+        /// <param name="p_Name">The name of the superbundle.</param>
+        /// <param name="p_Path">The full path to the superbundle file.</param>
+        /// <param name="p_AutoMount">Whether to automatically mount the contained bundles.</param>
+        /// <returns></returns>
+        Task MountStandaloneSuperbundle(string p_Name, string p_Path, bool p_AutoMount);
     }
 }

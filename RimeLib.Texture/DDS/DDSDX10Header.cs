@@ -1,9 +1,8 @@
 ﻿using RimeLib.Frostbite;
 using RimeLib.IO;
 using System;
-using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
-using System.Text;
 
 namespace RimeLib.Texture.DDS
 {
@@ -28,30 +27,30 @@ namespace RimeLib.Texture.DDS
 
     public class DDSDX10Header : IFbSerializable
     {
+        public DXGIFormat DxgiFormat { get; set; } = 0;
+        public DDSResoruceDimension ResourceDimension { get; set; } = 0;
+        public DDSMiscFlag1 MiscFlag { get; set; } = 0;
+        public uint ArraySize { get; set; } = 0;
+        public DDSMiscFlag2 MiscFlags2 { get; set; } = 0;
+
+        public const uint c_HeaderSize = 20;
         public DDSDX10Header()
         {
         }
 
         public DDSDX10Header(DXGIFormat p_Format, DDSResoruceDimension p_Dimension, DDSMiscFlag1 p_Misc1 = 0, uint p_ArraySize = 0, DDSMiscFlag2 p_Misc2 = 0)
         {
-            m_DxgiFormat = p_Format;
-            m_ResourceDimension = p_Dimension;
-            m_MiscFlag = p_Misc1;
-            m_ArraySize = p_ArraySize;
-            m_MiscFlags2 = p_Misc2;
+            DxgiFormat = p_Format;
+            ResourceDimension = p_Dimension;
+            MiscFlag = p_Misc1;
+            ArraySize = p_ArraySize;
+            MiscFlags2 = p_Misc2;
         }
 
         public DDSDX10Header(RimeReader p_Reader)
         {
             Deserialize(p_Reader);
         }
-
-        public DXGIFormat m_DxgiFormat = 0;
-        public DDSResoruceDimension m_ResourceDimension = 0;
-        public DDSMiscFlag1 m_MiscFlag = 0;
-        public uint m_ArraySize = 0;
-        public DDSMiscFlag2 m_MiscFlags2 = 0;
-
 
         #region Serializers
         /// <summary>
@@ -60,11 +59,11 @@ namespace RimeLib.Texture.DDS
         /// <param name="p_Reader">Reader opened to the position</param>
         public void Deserialize(RimeReader p_Reader)
         {
-            m_DxgiFormat = (DXGIFormat) p_Reader.ReadUInt32();
-            m_ResourceDimension = (DDSResoruceDimension) p_Reader.ReadUInt32();
-            m_MiscFlag = (DDSMiscFlag1) p_Reader.ReadUInt32();
-            m_ArraySize = p_Reader.ReadUInt32();
-            m_MiscFlags2 = (DDSMiscFlag2) p_Reader.ReadUInt32();
+            DxgiFormat = (DXGIFormat) p_Reader.ReadUInt32();
+            ResourceDimension = (DDSResoruceDimension) p_Reader.ReadUInt32();
+            MiscFlag = (DDSMiscFlag1) p_Reader.ReadUInt32();
+            ArraySize = p_Reader.ReadUInt32();
+            MiscFlags2 = (DDSMiscFlag2) p_Reader.ReadUInt32();
         }
 
 
@@ -75,11 +74,11 @@ namespace RimeLib.Texture.DDS
         /// <returns>True on success, false otherwise</returns>
         public bool Serialize(RimeWriter p_Writer)
         {
-            p_Writer.Write((uint) m_DxgiFormat);
-            p_Writer.Write((uint) m_ResourceDimension);
-            p_Writer.Write((uint) m_MiscFlag);
-            p_Writer.Write(m_ArraySize);
-            p_Writer.Write((uint) m_MiscFlags2);
+            p_Writer.Write((uint) DxgiFormat);
+            p_Writer.Write((uint) ResourceDimension);
+            p_Writer.Write((uint) MiscFlag);
+            p_Writer.Write(ArraySize);
+            p_Writer.Write((uint) MiscFlags2);
             return true;
         }
 
@@ -88,8 +87,9 @@ namespace RimeLib.Texture.DDS
         /// Serialize to a byte array
         /// </summary>
         /// <returns>byte[]</returns>
-        public bool Serialize(out byte[] p_Data)
+        public bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
         {
+            p_Data = null;
             var s_Result = false;
             using (var s_Stream = new MemoryStream())
             {

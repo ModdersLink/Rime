@@ -17,12 +17,13 @@
             </DataTemplate>
         </dock:DockingManager.DocumentHeaderTemplate>
         <dock:DockingManager.Resources>
-            <DataTemplate DataType="{x:Type vms:Vec2ViewModel}">
+            <!-- <DataTemplate DataType="{x:Type vms:Vec2ViewModel}">
                 <vms2:Vec2Control/>
             </DataTemplate>
             <DataTemplate DataType="{x:Type vms:Vec3ViewModel}">
                 <vms2:Vec3Control/>
             </DataTemplate>
+            -->
         </dock:DockingManager.Resources>
 
 

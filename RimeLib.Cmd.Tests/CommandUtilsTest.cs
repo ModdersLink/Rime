@@ -5,10 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RimeLib.Cmd.Contexts;
 using RimeLib.Content.Mounting;
 using RimeLib.Frostbite;
 using Xunit;
+using Assert = Xunit.Assert;
 
 namespace RimeLib.Cmd.Tests
 {
@@ -48,55 +50,55 @@ namespace RimeLib.Cmd.Tests
 
     public class CommandUtilsTest
     {
-        [TestMethod]
+        [Fact]
         public void TestParseArguments()
         {
-            Assert.AreEqual(
+            Assert.Equal(
                 CommandUtils.ParseArguments("one"),
                 new[] { "one" }
             );
 
-            Assert.AreEqual(
+            Assert.Equal(
                 CommandUtils.ParseArguments("one two"),
                 new[] { "one", "two" }
             );
 
-            Assert.AreEqual(
+            Assert.Equal(
                 CommandUtils.ParseArguments("one    two"),
                 new[] { "one", "two" }
             );
 
-            Assert.AreEqual(
+            Assert.Equal(
                 CommandUtils.ParseArguments("one \"two\""),
                 new[] { "one", "two" }
             );
 
-            Assert.AreEqual(
+            Assert.Equal(
                 CommandUtils.ParseArguments("one \"two\" \"three spaced\""),
                 new[] { "one", "two", "three spaced" }
             );
 
-            Assert.AreEqual(
+            Assert.Equal(
                 CommandUtils.ParseArguments("one \"two\" \"three \\\"spaced\\\"\""),
                 new[] { "one", "two", "three \"spaced\"" }
             );
 
-            Assert.AreEqual(
+            Assert.Equal(
                 CommandUtils.ParseArguments("one\"two\""),
                 new[] { "one", "two" }
             );
 
-            Assert.AreEqual(
+            Assert.Equal(
                 CommandUtils.ParseArguments("one\"two"),
                 new[] { "one", "two" }
             );
 
-            Assert.AreEqual(
+            Assert.Equal(
                 CommandUtils.ParseArguments("one\"two\"three"),
                 new[] { "one", "two", "three" }
             );
 
-            Assert.AreEqual(
+            Assert.Equal(
                 CommandUtils.ParseArguments("one t\\wo"),
                 new[] { "one", "t\\wo" }
             );
@@ -130,7 +132,7 @@ namespace RimeLib.Cmd.Tests
         [Fact]
         public void TestThing2()
         {
-            var s_Mounter = EngineMounterRegistry.Create(EngineType.Frostbite2_0);
+            var s_Mounter = EngineInterfaceRegistry.Create<IEngineMounter>(EngineType.Frostbite2_0);
             s_Mounter.Mount("B:\\Games\\Battlefield 3", true, EngineType.Frostbite2_0).Wait();
 
             Parallel.ForEach(s_Mounter.GetPartitions(), (p_Partition) =>
@@ -145,7 +147,7 @@ namespace RimeLib.Cmd.Tests
 
                 Debug.WriteLine(s_Path);
 
-                Directory.CreateDirectory(s_Dir);
+                Directory.CreateDirectory(s_Dir!);
                 using var s_File = File.Create(s_Path);
                 using var s_EbxReader = p_Partition.Value.FirstVariant.GetReader();
 

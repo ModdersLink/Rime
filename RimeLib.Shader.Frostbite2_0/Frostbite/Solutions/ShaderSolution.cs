@@ -2,6 +2,7 @@
 using RimeLib.IO;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
 namespace RimeLib.Shader.Frostbite2_0.Frostbite.Solutions
@@ -55,8 +56,10 @@ namespace RimeLib.Shader.Frostbite2_0.Frostbite.Solutions
             m_VertexConstantsIndex = p_Reader.ReadInt64();
             m_PixelConstantsIndex = p_Reader.ReadInt64();
         }
-        public bool Serialize(out byte[] p_Data)
+        
+        public bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
         {
+            p_Data = null;
             throw new System.NotImplementedException();
         }
 

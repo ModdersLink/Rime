@@ -5,74 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 41, Size: 8)]
-	public class VehicleParachuteBinding : FrostbiteContainer
+	[ContainerType(4, 8)]
+	public class VehicleParachuteBinding
 	{
-		[ContainerField(Name: "Enabled", Offset: 0, NameHash: 2662400, Flags: 41)]
-		public AntRef Enabled { get; set; } = new AntRef(); // 0x0 (0)
+		[ContainerField(0), JsonProperty(Order = 0)]
+		public AntRef Enabled { get; set; } = new();
 		
-		[ContainerField(Name: "VehicleType", Offset: 4, NameHash: 925900165, Flags: 41)]
-		public AntRef VehicleType { get; set; } = new AntRef(); // 0x4 (4)
+		[ContainerField(4), JsonProperty(Order = 4)]
+		public AntRef VehicleType { get; set; } = new();
 		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 2662400:
-					Enabled = (AntRef) p_Value;
-					break;
-
-				case 925900165:
-					VehicleType = (AntRef) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2662400:
-					return Enabled;
-
-				case 925900165:
-					return VehicleType;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2662400:
-					return typeof(VehicleParachuteBinding).GetProperty(nameof(Enabled));
-
-				case 925900165:
-					return typeof(VehicleParachuteBinding).GetProperty(nameof(VehicleType));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

@@ -5,133 +5,39 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 16,  Flags: 53, Size: 144)]
+	[ContainerType(16, 144)]
 	public class KillCounterEntityData : 
 		GameEntityData
 	{
-		protected KillWeight m_TeamKillWeight = new KillWeight();
-		[ContainerField(Name: "TeamKillWeight", Offset: 96, NameHash: 998126394, Flags: 41)]
-		public KillWeight TeamKillWeight { get { return m_TeamKillWeight; } set { if (OnPropertyChanging("KillCounterEntityData." + nameof(TeamKillWeight), this, m_TeamKillWeight, value)) m_TeamKillWeight = value; } } // 0x60 (96)
-		
-		protected TeamId m_TeamId = new TeamId();
-		[ContainerField(Name: "TeamId", Offset: 108, NameHash: 3220374101, Flags: 137)]
-		public TeamId TeamId { get { return m_TeamId; } set { if (OnPropertyChanging("KillCounterEntityData." + nameof(TeamId), this, m_TeamId, value)) m_TeamId = value; } } // 0x6C (108)
-		
-		protected KillWeight m_NeutralTeamWeight = new KillWeight();
-		[ContainerField(Name: "NeutralTeamWeight", Offset: 112, NameHash: 358454093, Flags: 41)]
-		public KillWeight NeutralTeamWeight { get { return m_NeutralTeamWeight; } set { if (OnPropertyChanging("KillCounterEntityData." + nameof(NeutralTeamWeight), this, m_NeutralTeamWeight, value)) m_NeutralTeamWeight = value; } } // 0x70 (112)
-		
-		protected float m_EnemyWeight = new float();
-		[ContainerField(Name: "EnemyWeight", Offset: 124, NameHash: 3888167615, Flags: 49469), LayoutImmutable, Blittable]
-		public float EnemyWeight { get { return m_EnemyWeight; } set { if (OnPropertyChanging("KillCounterEntityData." + nameof(EnemyWeight), this, m_EnemyWeight, value)) m_EnemyWeight = value; } } // 0x7C (124)
-		
-		protected uint m_MaxKillCount = new uint();
-		[ContainerField(Name: "MaxKillCount", Offset: 128, NameHash: 4105122832, Flags: 49421), LayoutImmutable, Blittable]
-		public uint MaxKillCount { get { return m_MaxKillCount; } set { if (OnPropertyChanging("KillCounterEntityData." + nameof(MaxKillCount), this, m_MaxKillCount, value)) m_MaxKillCount = value; } } // 0x80 (128)
-		
-		protected bool m_IgnoreAI = new bool();
-		[ContainerField(Name: "IgnoreAI", Offset: 132, NameHash: 3960373301, Flags: 49325), LayoutImmutable, Blittable]
-		public bool IgnoreAI { get { return m_IgnoreAI; } set { if (OnPropertyChanging("KillCounterEntityData." + nameof(IgnoreAI), this, m_IgnoreAI, value)) m_IgnoreAI = value; } } // 0x84 (132)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 998126394:
-					TeamKillWeight = (KillWeight) p_Value;
-					break;
+		[ContainerField(96), JsonProperty(Order = 96)]
+		public KillWeight TeamKillWeight { get; set; } = new();
 
-				case 3220374101:
-					TeamId = (TeamId) Enum.ToObject(typeof(TeamId), p_Value);
-					break;
+		[ContainerField(108), JsonProperty(Order = 108)]
+		public TeamId TeamId { get; set; } = new();
 
-				case 358454093:
-					NeutralTeamWeight = (KillWeight) p_Value;
-					break;
+		[ContainerField(112), JsonProperty(Order = 112)]
+		public KillWeight NeutralTeamWeight { get; set; } = new();
 
-				case 3888167615:
-					EnemyWeight = (float) p_Value;
-					break;
+		[ContainerField(124), LayoutImmutable, Blittable, JsonProperty(Order = 124)]
+		public float EnemyWeight { get; set; }
 
-				case 4105122832:
-					MaxKillCount = (uint) p_Value;
-					break;
+		[ContainerField(128), LayoutImmutable, Blittable, JsonProperty(Order = 128)]
+		public uint MaxKillCount { get; set; }
 
-				case 3960373301:
-					IgnoreAI = (bool) p_Value;
-					break;
+		[ContainerField(132), LayoutImmutable, Blittable, JsonProperty(Order = 132)]
+		public bool IgnoreAI { get; set; }
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 998126394:
-					return TeamKillWeight;
-
-				case 3220374101:
-					return TeamId;
-
-				case 358454093:
-					return NeutralTeamWeight;
-
-				case 3888167615:
-					return EnemyWeight;
-
-				case 4105122832:
-					return MaxKillCount;
-
-				case 3960373301:
-					return IgnoreAI;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 998126394:
-					return typeof(KillCounterEntityData).GetProperty(nameof(TeamKillWeight));
-
-				case 3220374101:
-					return typeof(KillCounterEntityData).GetProperty(nameof(TeamId));
-
-				case 358454093:
-					return typeof(KillCounterEntityData).GetProperty(nameof(NeutralTeamWeight));
-
-				case 3888167615:
-					return typeof(KillCounterEntityData).GetProperty(nameof(EnemyWeight));
-
-				case 4105122832:
-					return typeof(KillCounterEntityData).GetProperty(nameof(MaxKillCount));
-
-				case 3960373301:
-					return typeof(KillCounterEntityData).GetProperty(nameof(IgnoreAI));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

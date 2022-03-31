@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Text;
 using Newtonsoft.Json;
@@ -457,9 +458,9 @@ namespace RimeLib.Frostbite.Db
         /// Serializes this object element to a byte array
         /// </summary>
         /// <returns>byte array containing the serialized data</returns>
-        public bool Serialize(out byte[] p_Data)
+        public bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
         {
-            p_Data = new byte[0];
+            p_Data = null;
 
             using (var s_Writer = new RimeWriter(new MemoryStream()))
             {

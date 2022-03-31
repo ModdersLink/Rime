@@ -5,113 +5,35 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 1,  Flags: 41, Size: 5)]
-	public class WeaponMiscModifierSettings : FrostbiteContainer
+	[ContainerType(1, 5)]
+	public class WeaponMiscModifierSettings
 	{
-		[ContainerField(Name: "EnableBreathControl", Offset: 0, NameHash: 613505579, Flags: 49325), LayoutImmutable, Blittable]
-		public bool EnableBreathControl { get; set; } // 0x0 (0)
+		[ContainerField(0), LayoutImmutable, Blittable, JsonProperty(Order = 0)]
+		public bool EnableBreathControl { get; set; }
 		
-		[ContainerField(Name: "CanBeInSupportedShooting", Offset: 1, NameHash: 2187452328, Flags: 49325), LayoutImmutable, Blittable]
-		public bool CanBeInSupportedShooting { get; set; } // 0x1 (1)
+		[ContainerField(1), LayoutImmutable, Blittable, JsonProperty(Order = 1)]
+		public bool CanBeInSupportedShooting { get; set; }
 		
-		[ContainerField(Name: "UnZoomOnBoltAction", Offset: 2, NameHash: 1438634691, Flags: 49325), LayoutImmutable, Blittable]
-		public bool UnZoomOnBoltAction { get; set; } // 0x2 (2)
+		[ContainerField(2), LayoutImmutable, Blittable, JsonProperty(Order = 2)]
+		public bool UnZoomOnBoltAction { get; set; }
 		
-		[ContainerField(Name: "HoldBoltActionUntilZoomRelease", Offset: 3, NameHash: 3133940949, Flags: 49325), LayoutImmutable, Blittable]
-		public bool HoldBoltActionUntilZoomRelease { get; set; } // 0x3 (3)
+		[ContainerField(3), LayoutImmutable, Blittable, JsonProperty(Order = 3)]
+		public bool HoldBoltActionUntilZoomRelease { get; set; }
 		
-		[ContainerField(Name: "IsSilenced", Offset: 4, NameHash: 1644964768, Flags: 49325), LayoutImmutable, Blittable]
-		public bool IsSilenced { get; set; } // 0x4 (4)
+		[ContainerField(4), LayoutImmutable, Blittable, JsonProperty(Order = 4)]
+		public bool IsSilenced { get; set; }
 		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 613505579:
-					EnableBreathControl = (bool) p_Value;
-					break;
-
-				case 2187452328:
-					CanBeInSupportedShooting = (bool) p_Value;
-					break;
-
-				case 1438634691:
-					UnZoomOnBoltAction = (bool) p_Value;
-					break;
-
-				case 3133940949:
-					HoldBoltActionUntilZoomRelease = (bool) p_Value;
-					break;
-
-				case 1644964768:
-					IsSilenced = (bool) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 613505579:
-					return EnableBreathControl;
-
-				case 2187452328:
-					return CanBeInSupportedShooting;
-
-				case 1438634691:
-					return UnZoomOnBoltAction;
-
-				case 3133940949:
-					return HoldBoltActionUntilZoomRelease;
-
-				case 1644964768:
-					return IsSilenced;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 613505579:
-					return typeof(WeaponMiscModifierSettings).GetProperty(nameof(EnableBreathControl));
-
-				case 2187452328:
-					return typeof(WeaponMiscModifierSettings).GetProperty(nameof(CanBeInSupportedShooting));
-
-				case 1438634691:
-					return typeof(WeaponMiscModifierSettings).GetProperty(nameof(UnZoomOnBoltAction));
-
-				case 3133940949:
-					return typeof(WeaponMiscModifierSettings).GetProperty(nameof(HoldBoltActionUntilZoomRelease));
-
-				case 1644964768:
-					return typeof(WeaponMiscModifierSettings).GetProperty(nameof(IsSilenced));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

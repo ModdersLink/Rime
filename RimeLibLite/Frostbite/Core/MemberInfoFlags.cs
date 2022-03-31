@@ -1,4 +1,5 @@
-﻿using RimeLib.IO;
+﻿using System;
+using RimeLib.IO;
 
 namespace RimeLib.Frostbite.Core
 {
@@ -15,20 +16,6 @@ namespace RimeLib.Frostbite.Core
         Exposed = 0x2000,
         LayoutImmutable = 0x4000,
         Blittable = 0x8000,
-    };
-
-    public enum MemberTypeEnum
-    {
-        Field = 0x0,
-        TypeInfo = 0x1,
-    };
-
-    public enum TypeCategoryEnum
-    {
-        NotApplicable = 0x0,
-        Class = 0x1,
-        ValueType = 0x2,
-        PrimitiveType = 0x3,
     };
 
     /// <summary>
@@ -78,7 +65,7 @@ namespace RimeLib.Frostbite.Core
         /// <returns>Field type</returns>
         public FieldType GetFieldType()
         {
-            return (FieldType)((FlagBits >> 4) & 0x1F);
+            return (FieldType)((FlagBits >> (ushort) MemberInfoFlagsEnum.TypeCodeShift) & (ushort) MemberInfoFlagsEnum.TypeCodeMask);
         }
 
         /// <summary>
@@ -87,7 +74,7 @@ namespace RimeLib.Frostbite.Core
         /// <returns>Member type</returns>
         public MemberType GetMemberType()
         {
-            return (MemberType)(FlagBits & 3);
+            return (MemberType)(FlagBits & (ushort) MemberInfoFlagsEnum.MemberTypeMask);
         }
 
         /// <summary>
@@ -96,7 +83,108 @@ namespace RimeLib.Frostbite.Core
         /// <returns>Type category</returns>
         public TypeCategory GetTypeCategory()
         {
-            return (TypeCategory)((FlagBits >> 2) & 3);
+            return (TypeCategory)((FlagBits >> (ushort) MemberInfoFlagsEnum.TypeCategoryShift) & (ushort) MemberInfoFlagsEnum.TypeCategoryMask);
+        }
+
+        public void SetIsClass(bool p_IsField)
+        {
+            if (p_IsField)
+                FlagBits = (ushort)MemberType.Field;
+            else
+                FlagBits = (ushort)MemberType.TypeInfo;
+
+            FlagBits |= (ushort)TypeCategory.Class << (ushort)MemberInfoFlagsEnum.TypeCategoryShift;
+            FlagBits |= (ushort)FieldType.Class << (ushort)MemberInfoFlagsEnum.TypeCodeShift;
+        }
+
+        public void SetIsValueType(bool p_IsField)
+        {
+            if (p_IsField)
+                FlagBits = (ushort)MemberType.Field;
+            else
+                FlagBits = (ushort)MemberType.TypeInfo;
+
+            FlagBits |= (ushort)TypeCategory.ValueType << (ushort)MemberInfoFlagsEnum.TypeCategoryShift;
+            FlagBits |= (ushort)FieldType.ValueType << (ushort)MemberInfoFlagsEnum.TypeCodeShift;
+        }
+
+        public void SetIsPrimitive(bool p_IsField, Type p_PrimitiveType)
+        {
+            if (p_IsField)
+                FlagBits = (ushort)MemberType.Field;
+            else
+                FlagBits = (ushort)MemberType.TypeInfo;
+
+            if (p_PrimitiveType.IsEnum)
+            {
+                FlagBits |= (ushort)TypeCategory.ValueType << (ushort)MemberInfoFlagsEnum.TypeCategoryShift;
+                FlagBits |= (ushort)FieldType.Enum << (ushort)MemberInfoFlagsEnum.TypeCodeShift;
+                return;
+            }
+
+            FlagBits |= (ushort)TypeCategory.PrimitiveType << (ushort)MemberInfoFlagsEnum.TypeCategoryShift;
+
+            if (p_PrimitiveType == typeof(bool))
+                FlagBits |= (ushort)FieldType.Boolean << (ushort)MemberInfoFlagsEnum.TypeCodeShift;
+            else if (p_PrimitiveType == typeof(sbyte))
+                FlagBits |= (ushort)FieldType.Int8 << (ushort)MemberInfoFlagsEnum.TypeCodeShift;
+            else if (p_PrimitiveType == typeof(byte))
+                FlagBits |= (ushort)FieldType.UInt8 << (ushort)MemberInfoFlagsEnum.TypeCodeShift;
+            else if (p_PrimitiveType == typeof(short))
+                FlagBits |= (ushort)FieldType.Int16 << (ushort)MemberInfoFlagsEnum.TypeCodeShift;
+            else if (p_PrimitiveType == typeof(ushort))
+                FlagBits |= (ushort)FieldType.UInt16 << (ushort)MemberInfoFlagsEnum.TypeCodeShift;
+            else if (p_PrimitiveType == typeof(int))
+                FlagBits |= (ushort)FieldType.Int32 << (ushort)MemberInfoFlagsEnum.TypeCodeShift;
+            else if (p_PrimitiveType == typeof(uint))
+                FlagBits |= (ushort)FieldType.UInt32 << (ushort)MemberInfoFlagsEnum.TypeCodeShift;
+            else if (p_PrimitiveType == typeof(long))
+                FlagBits |= (ushort)FieldType.Int64 << (ushort)MemberInfoFlagsEnum.TypeCodeShift;
+            else if (p_PrimitiveType == typeof(ulong))
+                FlagBits |= (ushort)FieldType.UInt64 << (ushort)MemberInfoFlagsEnum.TypeCodeShift;
+            else if (p_PrimitiveType == typeof(float))
+                FlagBits |= (ushort)FieldType.Float32 << (ushort)MemberInfoFlagsEnum.TypeCodeShift;
+            else if (p_PrimitiveType == typeof(double))
+                FlagBits |= (ushort)FieldType.Float64 << (ushort)MemberInfoFlagsEnum.TypeCodeShift;
+            else if (p_PrimitiveType == typeof(string))
+                FlagBits |= (ushort)FieldType.CString << (ushort)MemberInfoFlagsEnum.TypeCodeShift;
+            else if (p_PrimitiveType == typeof(GUID))
+                FlagBits |= (ushort)FieldType.Guid << (ushort)MemberInfoFlagsEnum.TypeCodeShift;
+            else
+                throw new Exception($"Unsupported primitive type '{p_PrimitiveType}'.");
+        }
+
+        public void SetIsVoid()
+        {
+            FlagBits = (ushort)MemberType.Field;
+            FlagBits |= (ushort)TypeCategory.NotApplicable << (ushort)MemberInfoFlagsEnum.TypeCategoryShift;
+            FlagBits |= (ushort)FieldType.Void << (ushort)MemberInfoFlagsEnum.TypeCodeShift;
+        }
+
+        public void SetIsArray(bool p_IsField)
+        {
+            if (p_IsField)
+                FlagBits = (ushort)MemberType.Field;
+            else
+                FlagBits = (ushort)MemberType.TypeInfo;
+
+            FlagBits |= (ushort)TypeCategory.NotApplicable << (ushort)MemberInfoFlagsEnum.TypeCategoryShift;
+            FlagBits |= (ushort)FieldType.Array << (ushort)MemberInfoFlagsEnum.TypeCodeShift;
+        }
+
+        public void SetHomogenous()
+        {
+            FlagBits |= (ushort)MemberInfoFlagsEnum.Homogeneous;
+        }
+
+        public void SetLayoutImmutable()
+        {
+            FlagBits |= (ushort)MemberInfoFlagsEnum.LayoutImmutable;
+        }
+
+        public void SetBlittable()
+        {
+            FlagBits |= (ushort)MemberInfoFlagsEnum.Blittable;
         }
 
         /// <summary>
@@ -153,24 +241,9 @@ namespace RimeLib.Frostbite.Core
             return !Equals(left, right);
         }
 
-        public void Serialize(RimeWriter p_Writer)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public byte[] Serialize()
-        {
-            throw new System.NotImplementedException();
-        }
-
         public void Deserialize(RimeReader p_Reader)
         {
             FlagBits = p_Reader.ReadUInt16();
-        }
-
-        public void Deserialize(byte[] p_Data)
-        {
-            throw new System.NotImplementedException();
         }
     }
 }

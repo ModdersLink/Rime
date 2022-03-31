@@ -5,105 +5,33 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 28)]
+	[ContainerType(4, 28)]
 	public class LevelAudioObstructionAsset : 
 		Asset
 	{
-		protected List<AudioObstructionMaterialInfo> m_MaterialMap = new List<AudioObstructionMaterialInfo>();
-		[ContainerField(Name: "MaterialMap", Offset: 12, NameHash: 2868170514, Flags: 65)]
-		public List<AudioObstructionMaterialInfo> MaterialMap { get { return m_MaterialMap; } set { if (OnPropertyChanging("LevelAudioObstructionAsset." + nameof(MaterialMap), this, m_MaterialMap, value)) m_MaterialMap = value; } } // 0xC (12)
-		
-		protected float m_FrequencySlewRate = new float();
-		[ContainerField(Name: "FrequencySlewRate", Offset: 16, NameHash: 1368142094, Flags: 49469), LayoutImmutable, Blittable]
-		public float FrequencySlewRate { get { return m_FrequencySlewRate; } set { if (OnPropertyChanging("LevelAudioObstructionAsset." + nameof(FrequencySlewRate), this, m_FrequencySlewRate, value)) m_FrequencySlewRate = value; } } // 0x10 (16)
-		
-		protected float m_GainSlewRate = new float();
-		[ContainerField(Name: "GainSlewRate", Offset: 20, NameHash: 56498091, Flags: 49469), LayoutImmutable, Blittable]
-		public float GainSlewRate { get { return m_GainSlewRate; } set { if (OnPropertyChanging("LevelAudioObstructionAsset." + nameof(GainSlewRate), this, m_GainSlewRate, value)) m_GainSlewRate = value; } } // 0x14 (20)
-		
-		protected float m_MaxRaycastDistanceSquared = new float();
-		[ContainerField(Name: "MaxRaycastDistanceSquared", Offset: 24, NameHash: 1365527576, Flags: 49469), LayoutImmutable, Blittable]
-		public float MaxRaycastDistanceSquared { get { return m_MaxRaycastDistanceSquared; } set { if (OnPropertyChanging("LevelAudioObstructionAsset." + nameof(MaxRaycastDistanceSquared), this, m_MaxRaycastDistanceSquared, value)) m_MaxRaycastDistanceSquared = value; } } // 0x18 (24)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 2868170514:
-					MaterialMap = (List<AudioObstructionMaterialInfo>) p_Value;
-					break;
+		[ContainerField(12), JsonProperty(Order = 12)]
+		public List<AudioObstructionMaterialInfo> MaterialMap { get; set; } = new();
 
-				case 1368142094:
-					FrequencySlewRate = (float) p_Value;
-					break;
+		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		public float FrequencySlewRate { get; set; }
 
-				case 56498091:
-					GainSlewRate = (float) p_Value;
-					break;
+		[ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
+		public float GainSlewRate { get; set; }
 
-				case 1365527576:
-					MaxRaycastDistanceSquared = (float) p_Value;
-					break;
+		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
+		public float MaxRaycastDistanceSquared { get; set; }
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2868170514:
-					return MaterialMap;
-
-				case 1368142094:
-					return FrequencySlewRate;
-
-				case 56498091:
-					return GainSlewRate;
-
-				case 1365527576:
-					return MaxRaycastDistanceSquared;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2868170514:
-					return typeof(LevelAudioObstructionAsset).GetProperty(nameof(MaterialMap));
-
-				case 1368142094:
-					return typeof(LevelAudioObstructionAsset).GetProperty(nameof(FrequencySlewRate));
-
-				case 56498091:
-					return typeof(LevelAudioObstructionAsset).GetProperty(nameof(GainSlewRate));
-
-				case 1365527576:
-					return typeof(LevelAudioObstructionAsset).GetProperty(nameof(MaxRaycastDistanceSquared));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

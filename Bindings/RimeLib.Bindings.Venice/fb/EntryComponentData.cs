@@ -5,441 +5,105 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 16,  Flags: 53, Size: 192)]
+	[ContainerType(16, 192)]
 	public class EntryComponentData : 
 		ComponentData
 	{
-		protected Vec3 m_SoldierOffset = new Vec3();
-		[ContainerField(Name: "SoldierOffset", Offset: 96, NameHash: 1109239746, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 SoldierOffset { get { return m_SoldierOffset; } set { if (OnPropertyChanging("EntryComponentData." + nameof(SoldierOffset), this, m_SoldierOffset, value)) m_SoldierOffset = value; } } // 0x60 (96)
-		
-		protected CtrRef<GameAIEntryData> m_AIData = new CtrRef<GameAIEntryData>();
-		[ContainerField(Name: "AIData", Offset: 112, NameHash: 2529950045, Flags: 53)]
-		public CtrRef<GameAIEntryData> AIData { get { return m_AIData; } set { if (OnPropertyChanging("EntryComponentData." + nameof(AIData), this, m_AIData, value)) m_AIData = value; } } // 0x70 (112)
-		
-		protected EntryClass m_EntryClass = new EntryClass();
-		[ContainerField(Name: "EntryClass", Offset: 116, NameHash: 292493759, Flags: 137)]
-		public EntryClass EntryClass { get { return m_EntryClass; } set { if (OnPropertyChanging("EntryComponentData." + nameof(EntryClass), this, m_EntryClass, value)) m_EntryClass = value; } } // 0x74 (116)
-		
-		protected CtrRef<EntryInputActionMapsData> m_InputConceptDefinition = new CtrRef<EntryInputActionMapsData>();
-		[ContainerField(Name: "InputConceptDefinition", Offset: 120, NameHash: 1770668454, Flags: 53)]
-		public CtrRef<EntryInputActionMapsData> InputConceptDefinition { get { return m_InputConceptDefinition; } set { if (OnPropertyChanging("EntryComponentData." + nameof(InputConceptDefinition), this, m_InputConceptDefinition, value)) m_InputConceptDefinition = value; } } // 0x78 (120)
-		
-		protected CtrRef<InputActionMappingsData> m_InputMapping = new CtrRef<InputActionMappingsData>();
-		[ContainerField(Name: "InputMapping", Offset: 124, NameHash: 1744270687, Flags: 53)]
-		public CtrRef<InputActionMappingsData> InputMapping { get { return m_InputMapping; } set { if (OnPropertyChanging("EntryComponentData." + nameof(InputMapping), this, m_InputMapping, value)) m_InputMapping = value; } } // 0x7C (124)
-		
-		protected RefArray<InputCurveData> m_InputCurves = new RefArray<InputCurveData>();
-		[ContainerField(Name: "InputCurves", Offset: 128, NameHash: 1465820471, Flags: 65)]
-		public RefArray<InputCurveData> InputCurves { get { return m_InputCurves; } set { if (OnPropertyChanging("EntryComponentData." + nameof(InputCurves), this, m_InputCurves, value)) m_InputCurves = value; } } // 0x80 (128)
-		
-		protected EntryComponentHudData m_HudData = new EntryComponentHudData();
-		[ContainerField(Name: "HudData", Offset: 132, NameHash: 2639805868, Flags: 41)]
-		public EntryComponentHudData HudData { get { return m_HudData; } set { if (OnPropertyChanging("EntryComponentData." + nameof(HudData), this, m_HudData, value)) m_HudData = value; } } // 0x84 (132)
-		
-		protected int m_EntryOrderNumber = new int();
-		[ContainerField(Name: "EntryOrderNumber", Offset: 144, NameHash: 4225856860, Flags: 49405), LayoutImmutable, Blittable]
-		public int EntryOrderNumber { get { return m_EntryOrderNumber; } set { if (OnPropertyChanging("EntryComponentData." + nameof(EntryOrderNumber), this, m_EntryOrderNumber, value)) m_EntryOrderNumber = value; } } // 0x90 (144)
-		
-		protected float m_EnterImpulse = new float();
-		[ContainerField(Name: "EnterImpulse", Offset: 148, NameHash: 3008280342, Flags: 49469), LayoutImmutable, Blittable]
-		public float EnterImpulse { get { return m_EnterImpulse; } set { if (OnPropertyChanging("EntryComponentData." + nameof(EnterImpulse), this, m_EnterImpulse, value)) m_EnterImpulse = value; } } // 0x94 (148)
-		
-		protected float m_EntryRadius = new float();
-		[ContainerField(Name: "EntryRadius", Offset: 152, NameHash: 386452841, Flags: 49469), LayoutImmutable, Blittable]
-		public float EntryRadius { get { return m_EntryRadius; } set { if (OnPropertyChanging("EntryComponentData." + nameof(EntryRadius), this, m_EntryRadius, value)) m_EntryRadius = value; } } // 0x98 (152)
-		
-		protected EntryInputActionEnum m_TriggerEventOnKey = new EntryInputActionEnum();
-		[ContainerField(Name: "TriggerEventOnKey", Offset: 156, NameHash: 1329740711, Flags: 137)]
-		public EntryInputActionEnum TriggerEventOnKey { get { return m_TriggerEventOnKey; } set { if (OnPropertyChanging("EntryComponentData." + nameof(TriggerEventOnKey), this, m_TriggerEventOnKey, value)) m_TriggerEventOnKey = value; } } // 0x9C (156)
-		
-		protected EntrySpottingSettings m_EntrySpottingSettings = new EntrySpottingSettings();
-		[ContainerField(Name: "EntrySpottingSettings", Offset: 160, NameHash: 811356248, Flags: 137)]
-		public EntrySpottingSettings EntrySpottingSettings { get { return m_EntrySpottingSettings; } set { if (OnPropertyChanging("EntryComponentData." + nameof(EntrySpottingSettings), this, m_EntrySpottingSettings, value)) m_EntrySpottingSettings = value; } } // 0xA0 (160)
-		
-		protected PoseConstraintsData m_PoseConstraints = new PoseConstraintsData();
-		[ContainerField(Name: "PoseConstraints", Offset: 164, NameHash: 4147330298, Flags: 41)]
-		public PoseConstraintsData PoseConstraints { get { return m_PoseConstraints; } set { if (OnPropertyChanging("EntryComponentData." + nameof(PoseConstraints), this, m_PoseConstraints, value)) m_PoseConstraints = value; } } // 0xA4 (164)
-		
-		protected float m_SoldierTransitionInvisbleTime = new float();
-		[ContainerField(Name: "SoldierTransitionInvisbleTime", Offset: 168, NameHash: 1720869397, Flags: 49469), LayoutImmutable, Blittable]
-		public float SoldierTransitionInvisbleTime { get { return m_SoldierTransitionInvisbleTime; } set { if (OnPropertyChanging("EntryComponentData." + nameof(SoldierTransitionInvisbleTime), this, m_SoldierTransitionInvisbleTime, value)) m_SoldierTransitionInvisbleTime = value; } } // 0xA8 (168)
-		
-		protected int m_NumberOfStances = new int();
-		[ContainerField(Name: "NumberOfStances", Offset: 172, NameHash: 3289223154, Flags: 49405), LayoutImmutable, Blittable]
-		public int NumberOfStances { get { return m_NumberOfStances; } set { if (OnPropertyChanging("EntryComponentData." + nameof(NumberOfStances), this, m_NumberOfStances, value)) m_NumberOfStances = value; } } // 0xAC (172)
-		
-		protected CtrRef<EntryComponentSoundData> m_EntryComponentSound = new CtrRef<EntryComponentSoundData>();
-		[ContainerField(Name: "EntryComponentSound", Offset: 176, NameHash: 248283805, Flags: 53)]
-		public CtrRef<EntryComponentSoundData> EntryComponentSound { get { return m_EntryComponentSound; } set { if (OnPropertyChanging("EntryComponentData." + nameof(EntryComponentSound), this, m_EntryComponentSound, value)) m_EntryComponentSound = value; } } // 0xB0 (176)
-		
-		protected bool m_LockSoldierAimingToEntry = new bool();
-		[ContainerField(Name: "LockSoldierAimingToEntry", Offset: 180, NameHash: 506867918, Flags: 49325), LayoutImmutable, Blittable]
-		public bool LockSoldierAimingToEntry { get { return m_LockSoldierAimingToEntry; } set { if (OnPropertyChanging("EntryComponentData." + nameof(LockSoldierAimingToEntry), this, m_LockSoldierAimingToEntry, value)) m_LockSoldierAimingToEntry = value; } } // 0xB4 (180)
-		
-		protected bool m_IsAllowedToExitInAir = new bool();
-		[ContainerField(Name: "IsAllowedToExitInAir", Offset: 181, NameHash: 4064693665, Flags: 49325), LayoutImmutable, Blittable]
-		public bool IsAllowedToExitInAir { get { return m_IsAllowedToExitInAir; } set { if (OnPropertyChanging("EntryComponentData." + nameof(IsAllowedToExitInAir), this, m_IsAllowedToExitInAir, value)) m_IsAllowedToExitInAir = value; } } // 0xB5 (181)
-		
-		protected bool m_Show1pSoldierInEntry = new bool();
-		[ContainerField(Name: "Show1pSoldierInEntry", Offset: 182, NameHash: 1428104062, Flags: 49325), LayoutImmutable, Blittable]
-		public bool Show1pSoldierInEntry { get { return m_Show1pSoldierInEntry; } set { if (OnPropertyChanging("EntryComponentData." + nameof(Show1pSoldierInEntry), this, m_Show1pSoldierInEntry, value)) m_Show1pSoldierInEntry = value; } } // 0xB6 (182)
-		
-		protected bool m_StancesEnabled = new bool();
-		[ContainerField(Name: "StancesEnabled", Offset: 183, NameHash: 955154621, Flags: 49325), LayoutImmutable, Blittable]
-		public bool StancesEnabled { get { return m_StancesEnabled; } set { if (OnPropertyChanging("EntryComponentData." + nameof(StancesEnabled), this, m_StancesEnabled, value)) m_StancesEnabled = value; } } // 0xB7 (183)
-		
-		protected bool m_Show1pSoldierInEntryForPlayerOnly = new bool();
-		[ContainerField(Name: "Show1pSoldierInEntryForPlayerOnly", Offset: 184, NameHash: 1703931682, Flags: 49325), LayoutImmutable, Blittable]
-		public bool Show1pSoldierInEntryForPlayerOnly { get { return m_Show1pSoldierInEntryForPlayerOnly; } set { if (OnPropertyChanging("EntryComponentData." + nameof(Show1pSoldierInEntryForPlayerOnly), this, m_Show1pSoldierInEntryForPlayerOnly, value)) m_Show1pSoldierInEntryForPlayerOnly = value; } } // 0xB8 (184)
-		
-		protected bool m_HideSoldierForPassengers = new bool();
-		[ContainerField(Name: "HideSoldierForPassengers", Offset: 185, NameHash: 2768385101, Flags: 49325), LayoutImmutable, Blittable]
-		public bool HideSoldierForPassengers { get { return m_HideSoldierForPassengers; } set { if (OnPropertyChanging("EntryComponentData." + nameof(HideSoldierForPassengers), this, m_HideSoldierForPassengers, value)) m_HideSoldierForPassengers = value; } } // 0xB9 (185)
-		
-		protected bool m_Show3pSoldierWeaponInEntry = new bool();
-		[ContainerField(Name: "Show3pSoldierWeaponInEntry", Offset: 186, NameHash: 240179134, Flags: 49325), LayoutImmutable, Blittable]
-		public bool Show3pSoldierWeaponInEntry { get { return m_Show3pSoldierWeaponInEntry; } set { if (OnPropertyChanging("EntryComponentData." + nameof(Show3pSoldierWeaponInEntry), this, m_Show3pSoldierWeaponInEntry, value)) m_Show3pSoldierWeaponInEntry = value; } } // 0xBA (186)
-		
-		protected bool m_ShowSoldierGearInEntry = new bool();
-		[ContainerField(Name: "ShowSoldierGearInEntry", Offset: 187, NameHash: 1847936462, Flags: 49325), LayoutImmutable, Blittable]
-		public bool ShowSoldierGearInEntry { get { return m_ShowSoldierGearInEntry; } set { if (OnPropertyChanging("EntryComponentData." + nameof(ShowSoldierGearInEntry), this, m_ShowSoldierGearInEntry, value)) m_ShowSoldierGearInEntry = value; } } // 0xBB (187)
-		
-		protected bool m_IsShielded = new bool();
-		[ContainerField(Name: "IsShielded", Offset: 188, NameHash: 2971034625, Flags: 49325), LayoutImmutable, Blittable]
-		public bool IsShielded { get { return m_IsShielded; } set { if (OnPropertyChanging("EntryComponentData." + nameof(IsShielded), this, m_IsShielded, value)) m_IsShielded = value; } } // 0xBC (188)
-		
-		protected bool m_ForbiddenForHuman = new bool();
-		[ContainerField(Name: "ForbiddenForHuman", Offset: 189, NameHash: 606394362, Flags: 49325), LayoutImmutable, Blittable]
-		public bool ForbiddenForHuman { get { return m_ForbiddenForHuman; } set { if (OnPropertyChanging("EntryComponentData." + nameof(ForbiddenForHuman), this, m_ForbiddenForHuman, value)) m_ForbiddenForHuman = value; } } // 0xBD (189)
-		
-		protected bool m_ShowSoldierWeaponInEntry = new bool();
-		[ContainerField(Name: "ShowSoldierWeaponInEntry", Offset: 190, NameHash: 4236823389, Flags: 49325), LayoutImmutable, Blittable]
-		public bool ShowSoldierWeaponInEntry { get { return m_ShowSoldierWeaponInEntry; } set { if (OnPropertyChanging("EntryComponentData." + nameof(ShowSoldierWeaponInEntry), this, m_ShowSoldierWeaponInEntry, value)) m_ShowSoldierWeaponInEntry = value; } } // 0xBE (190)
-		
-		protected bool m_ShowSoldierInEntry = new bool();
-		[ContainerField(Name: "ShowSoldierInEntry", Offset: 191, NameHash: 2961492191, Flags: 49325), LayoutImmutable, Blittable]
-		public bool ShowSoldierInEntry { get { return m_ShowSoldierInEntry; } set { if (OnPropertyChanging("EntryComponentData." + nameof(ShowSoldierInEntry), this, m_ShowSoldierInEntry, value)) m_ShowSoldierInEntry = value; } } // 0xBF (191)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 1109239746:
-					SoldierOffset = (Vec3) p_Value;
-					break;
-
-				case 2529950045:
-					AIData = (CtrRef<GameAIEntryData>) p_Value;
-					break;
-
-				case 292493759:
-					EntryClass = (EntryClass) Enum.ToObject(typeof(EntryClass), p_Value);
-					break;
-
-				case 1770668454:
-					InputConceptDefinition = (CtrRef<EntryInputActionMapsData>) p_Value;
-					break;
-
-				case 1744270687:
-					InputMapping = (CtrRef<InputActionMappingsData>) p_Value;
-					break;
-
-				case 1465820471:
-					InputCurves = (RefArray<InputCurveData>) p_Value;
-					break;
-
-				case 2639805868:
-					HudData = (EntryComponentHudData) p_Value;
-					break;
-
-				case 4225856860:
-					EntryOrderNumber = (int) p_Value;
-					break;
-
-				case 3008280342:
-					EnterImpulse = (float) p_Value;
-					break;
-
-				case 386452841:
-					EntryRadius = (float) p_Value;
-					break;
-
-				case 1329740711:
-					TriggerEventOnKey = (EntryInputActionEnum) Enum.ToObject(typeof(EntryInputActionEnum), p_Value);
-					break;
-
-				case 811356248:
-					EntrySpottingSettings = (EntrySpottingSettings) Enum.ToObject(typeof(EntrySpottingSettings), p_Value);
-					break;
-
-				case 4147330298:
-					PoseConstraints = (PoseConstraintsData) p_Value;
-					break;
-
-				case 1720869397:
-					SoldierTransitionInvisbleTime = (float) p_Value;
-					break;
-
-				case 3289223154:
-					NumberOfStances = (int) p_Value;
-					break;
-
-				case 248283805:
-					EntryComponentSound = (CtrRef<EntryComponentSoundData>) p_Value;
-					break;
-
-				case 506867918:
-					LockSoldierAimingToEntry = (bool) p_Value;
-					break;
-
-				case 4064693665:
-					IsAllowedToExitInAir = (bool) p_Value;
-					break;
-
-				case 1428104062:
-					Show1pSoldierInEntry = (bool) p_Value;
-					break;
-
-				case 955154621:
-					StancesEnabled = (bool) p_Value;
-					break;
-
-				case 1703931682:
-					Show1pSoldierInEntryForPlayerOnly = (bool) p_Value;
-					break;
-
-				case 2768385101:
-					HideSoldierForPassengers = (bool) p_Value;
-					break;
-
-				case 240179134:
-					Show3pSoldierWeaponInEntry = (bool) p_Value;
-					break;
+		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 96)]
+		public Vec3 SoldierOffset { get; set; } = new();
 
-				case 1847936462:
-					ShowSoldierGearInEntry = (bool) p_Value;
-					break;
+		[ContainerField(112), JsonProperty(Order = 112)]
+		public CtrRef<GameAIEntryData> AIData { get; set; } = new();
 
-				case 2971034625:
-					IsShielded = (bool) p_Value;
-					break;
+		[ContainerField(116), JsonProperty(Order = 116)]
+		public EntryClass EntryClass { get; set; } = new();
 
-				case 606394362:
-					ForbiddenForHuman = (bool) p_Value;
-					break;
+		[ContainerField(120), JsonProperty(Order = 120)]
+		public CtrRef<EntryInputActionMapsData> InputConceptDefinition { get; set; } = new();
 
-				case 4236823389:
-					ShowSoldierWeaponInEntry = (bool) p_Value;
-					break;
+		[ContainerField(124), JsonProperty(Order = 124)]
+		public CtrRef<InputActionMappingsData> InputMapping { get; set; } = new();
 
-				case 2961492191:
-					ShowSoldierInEntry = (bool) p_Value;
-					break;
+		[ContainerField(128), JsonProperty(Order = 128)]
+		public RefArray<InputCurveData> InputCurves { get; set; } = new();
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1109239746:
-					return SoldierOffset;
+		[ContainerField(132), JsonProperty(Order = 132)]
+		public EntryComponentHudData HudData { get; set; } = new();
 
-				case 2529950045:
-					return AIData;
+		[ContainerField(144), LayoutImmutable, Blittable, JsonProperty(Order = 144)]
+		public int EntryOrderNumber { get; set; }
 
-				case 292493759:
-					return EntryClass;
+		[ContainerField(148), LayoutImmutable, Blittable, JsonProperty(Order = 148)]
+		public float EnterImpulse { get; set; }
 
-				case 1770668454:
-					return InputConceptDefinition;
+		[ContainerField(152), LayoutImmutable, Blittable, JsonProperty(Order = 152)]
+		public float EntryRadius { get; set; }
 
-				case 1744270687:
-					return InputMapping;
+		[ContainerField(156), JsonProperty(Order = 156)]
+		public EntryInputActionEnum TriggerEventOnKey { get; set; } = new();
 
-				case 1465820471:
-					return InputCurves;
+		[ContainerField(160), JsonProperty(Order = 160)]
+		public EntrySpottingSettings EntrySpottingSettings { get; set; } = new();
 
-				case 2639805868:
-					return HudData;
+		[ContainerField(164), JsonProperty(Order = 164)]
+		public PoseConstraintsData PoseConstraints { get; set; } = new();
 
-				case 4225856860:
-					return EntryOrderNumber;
+		[ContainerField(168), LayoutImmutable, Blittable, JsonProperty(Order = 168)]
+		public float SoldierTransitionInvisbleTime { get; set; }
 
-				case 3008280342:
-					return EnterImpulse;
+		[ContainerField(172), LayoutImmutable, Blittable, JsonProperty(Order = 172)]
+		public int NumberOfStances { get; set; }
 
-				case 386452841:
-					return EntryRadius;
+		[ContainerField(176), JsonProperty(Order = 176)]
+		public CtrRef<EntryComponentSoundData> EntryComponentSound { get; set; } = new();
 
-				case 1329740711:
-					return TriggerEventOnKey;
+		[ContainerField(180), LayoutImmutable, Blittable, JsonProperty(Order = 180)]
+		public bool LockSoldierAimingToEntry { get; set; }
 
-				case 811356248:
-					return EntrySpottingSettings;
+		[ContainerField(181), LayoutImmutable, Blittable, JsonProperty(Order = 181)]
+		public bool IsAllowedToExitInAir { get; set; }
 
-				case 4147330298:
-					return PoseConstraints;
+		[ContainerField(182), LayoutImmutable, Blittable, JsonProperty(Order = 182)]
+		public bool Show1pSoldierInEntry { get; set; }
 
-				case 1720869397:
-					return SoldierTransitionInvisbleTime;
+		[ContainerField(183), LayoutImmutable, Blittable, JsonProperty(Order = 183)]
+		public bool StancesEnabled { get; set; }
 
-				case 3289223154:
-					return NumberOfStances;
+		[ContainerField(184), LayoutImmutable, Blittable, JsonProperty(Order = 184)]
+		public bool Show1pSoldierInEntryForPlayerOnly { get; set; }
 
-				case 248283805:
-					return EntryComponentSound;
+		[ContainerField(185), LayoutImmutable, Blittable, JsonProperty(Order = 185)]
+		public bool HideSoldierForPassengers { get; set; }
 
-				case 506867918:
-					return LockSoldierAimingToEntry;
+		[ContainerField(186), LayoutImmutable, Blittable, JsonProperty(Order = 186)]
+		public bool Show3pSoldierWeaponInEntry { get; set; }
 
-				case 4064693665:
-					return IsAllowedToExitInAir;
+		[ContainerField(187), LayoutImmutable, Blittable, JsonProperty(Order = 187)]
+		public bool ShowSoldierGearInEntry { get; set; }
 
-				case 1428104062:
-					return Show1pSoldierInEntry;
+		[ContainerField(188), LayoutImmutable, Blittable, JsonProperty(Order = 188)]
+		public bool IsShielded { get; set; }
 
-				case 955154621:
-					return StancesEnabled;
+		[ContainerField(189), LayoutImmutable, Blittable, JsonProperty(Order = 189)]
+		public bool ForbiddenForHuman { get; set; }
 
-				case 1703931682:
-					return Show1pSoldierInEntryForPlayerOnly;
+		[ContainerField(190), LayoutImmutable, Blittable, JsonProperty(Order = 190)]
+		public bool ShowSoldierWeaponInEntry { get; set; }
 
-				case 2768385101:
-					return HideSoldierForPassengers;
+		[ContainerField(191), LayoutImmutable, Blittable, JsonProperty(Order = 191)]
+		public bool ShowSoldierInEntry { get; set; }
 
-				case 240179134:
-					return Show3pSoldierWeaponInEntry;
-
-				case 1847936462:
-					return ShowSoldierGearInEntry;
-
-				case 2971034625:
-					return IsShielded;
-
-				case 606394362:
-					return ForbiddenForHuman;
-
-				case 4236823389:
-					return ShowSoldierWeaponInEntry;
-
-				case 2961492191:
-					return ShowSoldierInEntry;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1109239746:
-					return typeof(EntryComponentData).GetProperty(nameof(SoldierOffset));
-
-				case 2529950045:
-					return typeof(EntryComponentData).GetProperty(nameof(AIData));
-
-				case 292493759:
-					return typeof(EntryComponentData).GetProperty(nameof(EntryClass));
-
-				case 1770668454:
-					return typeof(EntryComponentData).GetProperty(nameof(InputConceptDefinition));
-
-				case 1744270687:
-					return typeof(EntryComponentData).GetProperty(nameof(InputMapping));
-
-				case 1465820471:
-					return typeof(EntryComponentData).GetProperty(nameof(InputCurves));
-
-				case 2639805868:
-					return typeof(EntryComponentData).GetProperty(nameof(HudData));
-
-				case 4225856860:
-					return typeof(EntryComponentData).GetProperty(nameof(EntryOrderNumber));
-
-				case 3008280342:
-					return typeof(EntryComponentData).GetProperty(nameof(EnterImpulse));
-
-				case 386452841:
-					return typeof(EntryComponentData).GetProperty(nameof(EntryRadius));
-
-				case 1329740711:
-					return typeof(EntryComponentData).GetProperty(nameof(TriggerEventOnKey));
-
-				case 811356248:
-					return typeof(EntryComponentData).GetProperty(nameof(EntrySpottingSettings));
-
-				case 4147330298:
-					return typeof(EntryComponentData).GetProperty(nameof(PoseConstraints));
-
-				case 1720869397:
-					return typeof(EntryComponentData).GetProperty(nameof(SoldierTransitionInvisbleTime));
-
-				case 3289223154:
-					return typeof(EntryComponentData).GetProperty(nameof(NumberOfStances));
-
-				case 248283805:
-					return typeof(EntryComponentData).GetProperty(nameof(EntryComponentSound));
-
-				case 506867918:
-					return typeof(EntryComponentData).GetProperty(nameof(LockSoldierAimingToEntry));
-
-				case 4064693665:
-					return typeof(EntryComponentData).GetProperty(nameof(IsAllowedToExitInAir));
-
-				case 1428104062:
-					return typeof(EntryComponentData).GetProperty(nameof(Show1pSoldierInEntry));
-
-				case 955154621:
-					return typeof(EntryComponentData).GetProperty(nameof(StancesEnabled));
-
-				case 1703931682:
-					return typeof(EntryComponentData).GetProperty(nameof(Show1pSoldierInEntryForPlayerOnly));
-
-				case 2768385101:
-					return typeof(EntryComponentData).GetProperty(nameof(HideSoldierForPassengers));
-
-				case 240179134:
-					return typeof(EntryComponentData).GetProperty(nameof(Show3pSoldierWeaponInEntry));
-
-				case 1847936462:
-					return typeof(EntryComponentData).GetProperty(nameof(ShowSoldierGearInEntry));
-
-				case 2971034625:
-					return typeof(EntryComponentData).GetProperty(nameof(IsShielded));
-
-				case 606394362:
-					return typeof(EntryComponentData).GetProperty(nameof(ForbiddenForHuman));
-
-				case 4236823389:
-					return typeof(EntryComponentData).GetProperty(nameof(ShowSoldierWeaponInEntry));
-
-				case 2961492191:
-					return typeof(EntryComponentData).GetProperty(nameof(ShowSoldierInEntry));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

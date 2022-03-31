@@ -2,6 +2,7 @@
 using RimeLib.IO;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
 namespace Rimelib.Shader.Frostbite2_0.Frostbite.Functions
@@ -45,10 +46,13 @@ namespace Rimelib.Shader.Frostbite2_0.Frostbite.Functions
                 m_VectorCount = p_Reader.ReadUByte();
 
             }
-            public bool Serialize(out byte[] p_Data)
+            
+            public bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
             {
+                p_Data = null;
                 throw new System.NotImplementedException();
             }
+            
             public void Deserialize(byte[] p_Data)
             {
                 throw new System.NotImplementedException();
@@ -87,8 +91,9 @@ namespace Rimelib.Shader.Frostbite2_0.Frostbite.Functions
             return true;
         }
                              
-        public bool Serialize(out byte[] p_Data)
-        {                    
+        public bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
+        {
+            p_Data = null;
             throw new System.NotImplementedException();
         }
 

@@ -22,7 +22,7 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
             p_Writer.WriteLine();
 
             foreach (var s_Partition in s_Partitions)
-                Console.WriteLine($"- {s_Partition.Key}");
+                p_Writer.WriteLine($"- {s_Partition.Key}");
 
             return true;
         }

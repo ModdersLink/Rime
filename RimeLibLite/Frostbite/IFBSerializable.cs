@@ -1,4 +1,5 @@
-﻿using RimeLib.IO;
+﻿using System.Diagnostics.CodeAnalysis;
+using RimeLib.IO;
 
 namespace RimeLib.Frostbite
 {
@@ -18,7 +19,7 @@ namespace RimeLib.Frostbite
         /// Serialize to a byte array
         /// </summary>
         /// <returns>byte[]</returns>
-        bool Serialize(out byte[] p_Data);
+        bool Serialize([NotNullWhen(true)] out byte[]? p_Data);
 
         /// <summary>
         /// Deserialize from an open reader

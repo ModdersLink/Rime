@@ -5,133 +5,39 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 16,  Flags: 53, Size: 96)]
+	[ContainerType(16, 96)]
 	public class CoverEntityData : 
 		SpatialEntityData
 	{
-		protected float m_Width = new float();
-		[ContainerField(Name: "Width", Offset: 80, NameHash: 226981187, Flags: 49469), LayoutImmutable, Blittable]
-		public float Width { get { return m_Width; } set { if (OnPropertyChanging("CoverEntityData." + nameof(Width), this, m_Width, value)) m_Width = value; } } // 0x50 (80)
-		
-		protected CoverType m_CoverType = new CoverType();
-		[ContainerField(Name: "CoverType", Offset: 84, NameHash: 2741637520, Flags: 137)]
-		public CoverType CoverType { get { return m_CoverType; } set { if (OnPropertyChanging("CoverEntityData." + nameof(CoverType), this, m_CoverType, value)) m_CoverType = value; } } // 0x54 (84)
-		
-		protected List<CoverSlot> m_Slots = new List<CoverSlot>();
-		[ContainerField(Name: "Slots", Offset: 88, NameHash: 231607282, Flags: 65)]
-		public List<CoverSlot> Slots { get { return m_Slots; } set { if (OnPropertyChanging("CoverEntityData." + nameof(Slots), this, m_Slots, value)) m_Slots = value; } } // 0x58 (88)
-		
-		protected bool m_RightEdgeBlocked = new bool();
-		[ContainerField(Name: "RightEdgeBlocked", Offset: 92, NameHash: 1465616558, Flags: 49325), LayoutImmutable, Blittable]
-		public bool RightEdgeBlocked { get { return m_RightEdgeBlocked; } set { if (OnPropertyChanging("CoverEntityData." + nameof(RightEdgeBlocked), this, m_RightEdgeBlocked, value)) m_RightEdgeBlocked = value; } } // 0x5C (92)
-		
-		protected bool m_TopBlocked = new bool();
-		[ContainerField(Name: "TopBlocked", Offset: 93, NameHash: 121893062, Flags: 49325), LayoutImmutable, Blittable]
-		public bool TopBlocked { get { return m_TopBlocked; } set { if (OnPropertyChanging("CoverEntityData." + nameof(TopBlocked), this, m_TopBlocked, value)) m_TopBlocked = value; } } // 0x5D (93)
-		
-		protected bool m_LeftEdgeBlocked = new bool();
-		[ContainerField(Name: "LeftEdgeBlocked", Offset: 94, NameHash: 1700814261, Flags: 49325), LayoutImmutable, Blittable]
-		public bool LeftEdgeBlocked { get { return m_LeftEdgeBlocked; } set { if (OnPropertyChanging("CoverEntityData." + nameof(LeftEdgeBlocked), this, m_LeftEdgeBlocked, value)) m_LeftEdgeBlocked = value; } } // 0x5E (94)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 226981187:
-					Width = (float) p_Value;
-					break;
+		[ContainerField(80), LayoutImmutable, Blittable, JsonProperty(Order = 80)]
+		public float Width { get; set; }
 
-				case 2741637520:
-					CoverType = (CoverType) Enum.ToObject(typeof(CoverType), p_Value);
-					break;
+		[ContainerField(84), JsonProperty(Order = 84)]
+		public CoverType CoverType { get; set; } = new();
 
-				case 231607282:
-					Slots = (List<CoverSlot>) p_Value;
-					break;
+		[ContainerField(88), JsonProperty(Order = 88)]
+		public List<CoverSlot> Slots { get; set; } = new();
 
-				case 1465616558:
-					RightEdgeBlocked = (bool) p_Value;
-					break;
+		[ContainerField(92), LayoutImmutable, Blittable, JsonProperty(Order = 92)]
+		public bool RightEdgeBlocked { get; set; }
 
-				case 121893062:
-					TopBlocked = (bool) p_Value;
-					break;
+		[ContainerField(93), LayoutImmutable, Blittable, JsonProperty(Order = 93)]
+		public bool TopBlocked { get; set; }
 
-				case 1700814261:
-					LeftEdgeBlocked = (bool) p_Value;
-					break;
+		[ContainerField(94), LayoutImmutable, Blittable, JsonProperty(Order = 94)]
+		public bool LeftEdgeBlocked { get; set; }
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 226981187:
-					return Width;
-
-				case 2741637520:
-					return CoverType;
-
-				case 231607282:
-					return Slots;
-
-				case 1465616558:
-					return RightEdgeBlocked;
-
-				case 121893062:
-					return TopBlocked;
-
-				case 1700814261:
-					return LeftEdgeBlocked;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 226981187:
-					return typeof(CoverEntityData).GetProperty(nameof(Width));
-
-				case 2741637520:
-					return typeof(CoverEntityData).GetProperty(nameof(CoverType));
-
-				case 231607282:
-					return typeof(CoverEntityData).GetProperty(nameof(Slots));
-
-				case 1465616558:
-					return typeof(CoverEntityData).GetProperty(nameof(RightEdgeBlocked));
-
-				case 121893062:
-					return typeof(CoverEntityData).GetProperty(nameof(TopBlocked));
-
-				case 1700814261:
-					return typeof(CoverEntityData).GetProperty(nameof(LeftEdgeBlocked));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

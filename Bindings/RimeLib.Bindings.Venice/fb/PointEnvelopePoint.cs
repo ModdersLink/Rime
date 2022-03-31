@@ -5,74 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 41, Size: 8)]
-	public class PointEnvelopePoint : FrostbiteContainer
+	[ContainerType(4, 8)]
+	public class PointEnvelopePoint
 	{
-		[ContainerField(Name: "X", Offset: 0, NameHash: 177661, Flags: 49469), LayoutImmutable, Blittable]
-		public float X { get; set; } // 0x0 (0)
+		[ContainerField(0), LayoutImmutable, Blittable, JsonProperty(Order = 0)]
+		public float X { get; set; }
 		
-		[ContainerField(Name: "Y", Offset: 4, NameHash: 177660, Flags: 49469), LayoutImmutable, Blittable]
-		public float Y { get; set; } // 0x4 (4)
+		[ContainerField(4), LayoutImmutable, Blittable, JsonProperty(Order = 4)]
+		public float Y { get; set; }
 		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 177661:
-					X = (float) p_Value;
-					break;
-
-				case 177660:
-					Y = (float) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 177661:
-					return X;
-
-				case 177660:
-					return Y;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 177661:
-					return typeof(PointEnvelopePoint).GetProperty(nameof(X));
-
-				case 177660:
-					return typeof(PointEnvelopePoint).GetProperty(nameof(Y));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

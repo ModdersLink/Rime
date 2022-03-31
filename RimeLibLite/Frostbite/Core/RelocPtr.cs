@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using RimeLib.IO;
 
 namespace RimeLib.Frostbite.Core
@@ -28,13 +29,9 @@ namespace RimeLib.Frostbite.Core
             Object = DeserializeObject(p_Reader);
         }
 
-#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         public RelocPtr()
-#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         {
-#pragma warning disable CS8601 // Possible null reference assignment.
             Object = default;
-#pragma warning restore CS8601 // Possible null reference assignment.
             BaseAddress = 0;
         }
 
@@ -43,8 +40,9 @@ namespace RimeLib.Frostbite.Core
             throw new NotImplementedException();
         }
 
-        public bool Serialize(out byte[] p_Data)
+        public bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
         {
+            p_Data = null;
             throw new NotImplementedException();
         }
 
@@ -60,9 +58,7 @@ namespace RimeLib.Frostbite.Core
 
             if (BaseAddress == 0)
             {
-#pragma warning disable CS8603
                 return default(T);
-#pragma warning restore CS8603
             }
 
             // Save the offset
@@ -129,12 +125,8 @@ namespace RimeLib.Frostbite.Core
                             throw new NotImplementedException();
                         }
 
-#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
                         var s_Val = (IFbSerializable) Activator.CreateInstance(typeof(T), new object[] { });
-#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
                         s_Val.Deserialize(p_Reader);
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
 
                         return (T) s_Val;
 

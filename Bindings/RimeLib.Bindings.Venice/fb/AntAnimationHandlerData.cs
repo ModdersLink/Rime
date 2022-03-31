@@ -5,152 +5,44 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 41, Size: 48)]
-	public class AntAnimationHandlerData : FrostbiteContainer
+	[ContainerType(4, 48)]
+	public class AntAnimationHandlerData
 	{
-		[ContainerField(Name: "Animatable", Offset: 0, NameHash: 3208693873, Flags: 41)]
-		public AntAnimatableData Animatable { get; set; } = new AntAnimatableData(); // 0x0 (0)
+		[ContainerField(0), JsonProperty(Order = 0)]
+		public AntAnimatableData Animatable { get; set; } = new();
 		
-		[ContainerField(Name: "RootController", Offset: 20, NameHash: 3403232383, Flags: 41)]
-		public AntRef RootController { get; set; } = new AntRef(); // 0x14 (20)
+		[ContainerField(20), JsonProperty(Order = 20)]
+		public AntRef RootController { get; set; } = new();
 		
-		[ContainerField(Name: "LodBinding", Offset: 24, NameHash: 3718483171, Flags: 41)]
-		public LodBinding LodBinding { get; set; } = new LodBinding(); // 0x18 (24)
+		[ContainerField(24), JsonProperty(Order = 24)]
+		public LodBinding LodBinding { get; set; } = new();
 		
-		[ContainerField(Name: "AntPackageData", Offset: 36, NameHash: 1530906868, Flags: 65)]
-		public RefArray<AntPackageAsset> AntPackageData { get; set; } = new RefArray<AntPackageAsset>(); // 0x24 (36)
+		[ContainerField(36), JsonProperty(Order = 36)]
+		public RefArray<AntPackageAsset> AntPackageData { get; set; } = new();
 		
-		[ContainerField(Name: "BonesToMirror", Offset: 40, NameHash: 4237573170, Flags: 65)]
-		public List<GameplayBone> BonesToMirror { get; set; } = new List<GameplayBone>(); // 0x28 (40)
+		[ContainerField(40), JsonProperty(Order = 40)]
+		public List<GameplayBone> BonesToMirror { get; set; } = new();
 		
-		[ContainerField(Name: "ReportBackFromAnt", Offset: 44, NameHash: 3577562349, Flags: 49325), LayoutImmutable, Blittable]
-		public bool ReportBackFromAnt { get; set; } // 0x2C (44)
+		[ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
+		public bool ReportBackFromAnt { get; set; }
 		
-		[ContainerField(Name: "EnableMasterSlaveCopy", Offset: 45, NameHash: 4006836336, Flags: 49325), LayoutImmutable, Blittable]
-		public bool EnableMasterSlaveCopy { get; set; } // 0x2D (45)
+		[ContainerField(45), LayoutImmutable, Blittable, JsonProperty(Order = 45)]
+		public bool EnableMasterSlaveCopy { get; set; }
 		
-		[ContainerField(Name: "IsProp", Offset: 46, NameHash: 2816600898, Flags: 49325), LayoutImmutable, Blittable]
-		public bool IsProp { get; set; } // 0x2E (46)
+		[ContainerField(46), LayoutImmutable, Blittable, JsonProperty(Order = 46)]
+		public bool IsProp { get; set; }
 		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 3208693873:
-					Animatable = (AntAnimatableData) p_Value;
-					break;
-
-				case 3403232383:
-					RootController = (AntRef) p_Value;
-					break;
-
-				case 3718483171:
-					LodBinding = (LodBinding) p_Value;
-					break;
-
-				case 1530906868:
-					AntPackageData = (RefArray<AntPackageAsset>) p_Value;
-					break;
-
-				case 4237573170:
-					BonesToMirror = (List<GameplayBone>) p_Value;
-					break;
-
-				case 3577562349:
-					ReportBackFromAnt = (bool) p_Value;
-					break;
-
-				case 4006836336:
-					EnableMasterSlaveCopy = (bool) p_Value;
-					break;
-
-				case 2816600898:
-					IsProp = (bool) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3208693873:
-					return Animatable;
-
-				case 3403232383:
-					return RootController;
-
-				case 3718483171:
-					return LodBinding;
-
-				case 1530906868:
-					return AntPackageData;
-
-				case 4237573170:
-					return BonesToMirror;
-
-				case 3577562349:
-					return ReportBackFromAnt;
-
-				case 4006836336:
-					return EnableMasterSlaveCopy;
-
-				case 2816600898:
-					return IsProp;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3208693873:
-					return typeof(AntAnimationHandlerData).GetProperty(nameof(Animatable));
-
-				case 3403232383:
-					return typeof(AntAnimationHandlerData).GetProperty(nameof(RootController));
-
-				case 3718483171:
-					return typeof(AntAnimationHandlerData).GetProperty(nameof(LodBinding));
-
-				case 1530906868:
-					return typeof(AntAnimationHandlerData).GetProperty(nameof(AntPackageData));
-
-				case 4237573170:
-					return typeof(AntAnimationHandlerData).GetProperty(nameof(BonesToMirror));
-
-				case 3577562349:
-					return typeof(AntAnimationHandlerData).GetProperty(nameof(ReportBackFromAnt));
-
-				case 4006836336:
-					return typeof(AntAnimationHandlerData).GetProperty(nameof(EnableMasterSlaveCopy));
-
-				case 2816600898:
-					return typeof(AntAnimationHandlerData).GetProperty(nameof(IsProp));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

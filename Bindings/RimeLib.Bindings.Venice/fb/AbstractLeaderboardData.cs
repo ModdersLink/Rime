@@ -5,63 +5,24 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 12)]
+	[ContainerType(4, 12)]
 	public class AbstractLeaderboardData : 
 		DataContainer
 	{
-		protected string m_LeaderboardName = string.Empty;
-		[ContainerField(Name: "LeaderboardName", Offset: 8, NameHash: 2718976483, Flags: 16509), LayoutImmutable]
-		public string LeaderboardName { get { return m_LeaderboardName; } set { if (OnPropertyChanging("AbstractLeaderboardData." + nameof(LeaderboardName), this, m_LeaderboardName, value)) m_LeaderboardName = value; } } // 0x8 (8)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 2718976483:
-					LeaderboardName = (string) p_Value;
-					break;
+		[ContainerField(8), LayoutImmutable, JsonProperty(Order = 8)]
+		public string LeaderboardName { get; set; } = string.Empty;
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2718976483:
-					return LeaderboardName;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2718976483:
-					return typeof(AbstractLeaderboardData).GetProperty(nameof(LeaderboardName));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

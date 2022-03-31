@@ -5,63 +5,24 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 36)]
+	[ContainerType(4, 36)]
 	public class SoldierCustomizationAsset : 
 		CharacterCustomizationAsset
 	{
-		protected CtrRef<CustomizationTable> m_WeaponTable = new CtrRef<CustomizationTable>();
-		[ContainerField(Name: "WeaponTable", Offset: 32, NameHash: 731633497, Flags: 53)]
-		public CtrRef<CustomizationTable> WeaponTable { get { return m_WeaponTable; } set { if (OnPropertyChanging("SoldierCustomizationAsset." + nameof(WeaponTable), this, m_WeaponTable, value)) m_WeaponTable = value; } } // 0x20 (32)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 731633497:
-					WeaponTable = (CtrRef<CustomizationTable>) p_Value;
-					break;
+		[ContainerField(32), JsonProperty(Order = 32)]
+		public CtrRef<CustomizationTable> WeaponTable { get; set; } = new();
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 731633497:
-					return WeaponTable;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 731633497:
-					return typeof(SoldierCustomizationAsset).GetProperty(nameof(WeaponTable));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

@@ -5,245 +5,63 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 16,  Flags: 53, Size: 368)]
+	[ContainerType(16, 368)]
 	public class UILevelDescriptionComponent : 
 		LevelDescriptionComponent
 	{
-		protected string m_MPLoadingAssetPath = string.Empty;
-		[ContainerField(Name: "MPLoadingAssetPath", Offset: 8, NameHash: 2284244963, Flags: 16509), LayoutImmutable]
-		public string MPLoadingAssetPath { get { return m_MPLoadingAssetPath; } set { if (OnPropertyChanging("UILevelDescriptionComponent." + nameof(MPLoadingAssetPath), this, m_MPLoadingAssetPath, value)) m_MPLoadingAssetPath = value; } } // 0x8 (8)
-		
-		protected CtrRef<SoundAsset> m_LoadingMusic = new CtrRef<SoundAsset>();
-		[ContainerField(Name: "LoadingMusic", Offset: 12, NameHash: 918318562, Flags: 53)]
-		public CtrRef<SoundAsset> LoadingMusic { get { return m_LoadingMusic; } set { if (OnPropertyChanging("UILevelDescriptionComponent." + nameof(LoadingMusic), this, m_LoadingMusic, value)) m_LoadingMusic = value; } } // 0xC (12)
-		
-		protected string m_LoadingMusicPath = string.Empty;
-		[ContainerField(Name: "LoadingMusicPath", Offset: 16, NameHash: 4182834255, Flags: 16509), LayoutImmutable]
-		public string LoadingMusicPath { get { return m_LoadingMusicPath; } set { if (OnPropertyChanging("UILevelDescriptionComponent." + nameof(LoadingMusicPath), this, m_LoadingMusicPath, value)) m_LoadingMusicPath = value; } } // 0x10 (16)
-		
-		protected string m_LevelImagePath = string.Empty;
-		[ContainerField(Name: "LevelImagePath", Offset: 20, NameHash: 2627470009, Flags: 16509), LayoutImmutable]
-		public string LevelImagePath { get { return m_LevelImagePath; } set { if (OnPropertyChanging("UILevelDescriptionComponent." + nameof(LevelImagePath), this, m_LevelImagePath, value)) m_LevelImagePath = value; } } // 0x14 (20)
-		
-		protected string m_LoadingImagePath = string.Empty;
-		[ContainerField(Name: "LoadingImagePath", Offset: 24, NameHash: 2651193097, Flags: 16509), LayoutImmutable]
-		public string LoadingImagePath { get { return m_LoadingImagePath; } set { if (OnPropertyChanging("UILevelDescriptionComponent." + nameof(LoadingImagePath), this, m_LoadingImagePath, value)) m_LoadingImagePath = value; } } // 0x18 (24)
-		
-		protected string m_SPLoadingAssetPath = string.Empty;
-		[ContainerField(Name: "SPLoadingAssetPath", Offset: 28, NameHash: 1500941885, Flags: 16509), LayoutImmutable]
-		public string SPLoadingAssetPath { get { return m_SPLoadingAssetPath; } set { if (OnPropertyChanging("UILevelDescriptionComponent." + nameof(SPLoadingAssetPath), this, m_SPLoadingAssetPath, value)) m_SPLoadingAssetPath = value; } } // 0x1C (28)
-		
-		protected UIGPSPosition m_GPSPosition = new UIGPSPosition();
-		[ContainerField(Name: "GPSPosition", Offset: 32, NameHash: 3271355416, Flags: 41)]
-		public UIGPSPosition GPSPosition { get { return m_GPSPosition; } set { if (OnPropertyChanging("UILevelDescriptionComponent." + nameof(GPSPosition), this, m_GPSPosition, value)) m_GPSPosition = value; } } // 0x20 (32)
-		
-		protected CtrRef<GameTipAsset> m_HintAsset = new CtrRef<GameTipAsset>();
-		[ContainerField(Name: "HintAsset", Offset: 56, NameHash: 3476636846, Flags: 53)]
-		public CtrRef<GameTipAsset> HintAsset { get { return m_HintAsset; } set { if (OnPropertyChanging("UILevelDescriptionComponent." + nameof(HintAsset), this, m_HintAsset, value)) m_HintAsset = value; } } // 0x38 (56)
-		
-		protected RefArray<UICreditsAsset> m_CreditsAssets = new RefArray<UICreditsAsset>();
-		[ContainerField(Name: "CreditsAssets", Offset: 60, NameHash: 369483736, Flags: 65)]
-		public RefArray<UICreditsAsset> CreditsAssets { get { return m_CreditsAssets; } set { if (OnPropertyChanging("UILevelDescriptionComponent." + nameof(CreditsAssets), this, m_CreditsAssets, value)) m_CreditsAssets = value; } } // 0x3C (60)
-		
-		protected UIMinimapData m_MinimapData = new UIMinimapData();
-		[ContainerField(Name: "MinimapData", Offset: 64, NameHash: 1722414122, Flags: 41)]
-		public UIMinimapData MinimapData { get { return m_MinimapData; } set { if (OnPropertyChanging("UILevelDescriptionComponent." + nameof(MinimapData), this, m_MinimapData, value)) m_MinimapData = value; } } // 0x40 (64)
-		
-		protected UILevelStatData m_LevelCompledStatData = new UILevelStatData();
-		[ContainerField(Name: "LevelCompledStatData", Offset: 320, NameHash: 2252761805, Flags: 41)]
-		public UILevelStatData LevelCompledStatData { get { return m_LevelCompledStatData; } set { if (OnPropertyChanging("UILevelDescriptionComponent." + nameof(LevelCompledStatData), this, m_LevelCompledStatData, value)) m_LevelCompledStatData = value; } } // 0x140 (320)
-		
-		protected UILevelStatData m_LevelScoreStatData = new UILevelStatData();
-		[ContainerField(Name: "LevelScoreStatData", Offset: 336, NameHash: 1941326521, Flags: 41)]
-		public UILevelStatData LevelScoreStatData { get { return m_LevelScoreStatData; } set { if (OnPropertyChanging("UILevelDescriptionComponent." + nameof(LevelScoreStatData), this, m_LevelScoreStatData, value)) m_LevelScoreStatData = value; } } // 0x150 (336)
-		
-		protected int m_SortIndex = new int();
-		[ContainerField(Name: "SortIndex", Offset: 352, NameHash: 1347637313, Flags: 49405), LayoutImmutable, Blittable]
-		public int SortIndex { get { return m_SortIndex; } set { if (OnPropertyChanging("UILevelDescriptionComponent." + nameof(SortIndex), this, m_SortIndex, value)) m_SortIndex = value; } } // 0x160 (352)
-		
-		protected bool m_IsMenuLevel = new bool();
-		[ContainerField(Name: "IsMenuLevel", Offset: 356, NameHash: 2405916058, Flags: 49325), LayoutImmutable, Blittable]
-		public bool IsMenuLevel { get { return m_IsMenuLevel; } set { if (OnPropertyChanging("UILevelDescriptionComponent." + nameof(IsMenuLevel), this, m_IsMenuLevel, value)) m_IsMenuLevel = value; } } // 0x164 (356)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 2284244963:
-					MPLoadingAssetPath = (string) p_Value;
-					break;
+		[ContainerField(8), LayoutImmutable, JsonProperty(Order = 8)]
+		public string MPLoadingAssetPath { get; set; } = string.Empty;
 
-				case 918318562:
-					LoadingMusic = (CtrRef<SoundAsset>) p_Value;
-					break;
+		[ContainerField(12), JsonProperty(Order = 12)]
+		public CtrRef<SoundAsset> LoadingMusic { get; set; } = new();
 
-				case 4182834255:
-					LoadingMusicPath = (string) p_Value;
-					break;
+		[ContainerField(16), LayoutImmutable, JsonProperty(Order = 16)]
+		public string LoadingMusicPath { get; set; } = string.Empty;
 
-				case 2627470009:
-					LevelImagePath = (string) p_Value;
-					break;
+		[ContainerField(20), LayoutImmutable, JsonProperty(Order = 20)]
+		public string LevelImagePath { get; set; } = string.Empty;
 
-				case 2651193097:
-					LoadingImagePath = (string) p_Value;
-					break;
+		[ContainerField(24), LayoutImmutable, JsonProperty(Order = 24)]
+		public string LoadingImagePath { get; set; } = string.Empty;
 
-				case 1500941885:
-					SPLoadingAssetPath = (string) p_Value;
-					break;
+		[ContainerField(28), LayoutImmutable, JsonProperty(Order = 28)]
+		public string SPLoadingAssetPath { get; set; } = string.Empty;
 
-				case 3271355416:
-					GPSPosition = (UIGPSPosition) p_Value;
-					break;
+		[ContainerField(32), JsonProperty(Order = 32)]
+		public UIGPSPosition GPSPosition { get; set; } = new();
 
-				case 3476636846:
-					HintAsset = (CtrRef<GameTipAsset>) p_Value;
-					break;
+		[ContainerField(56), JsonProperty(Order = 56)]
+		public CtrRef<GameTipAsset> HintAsset { get; set; } = new();
 
-				case 369483736:
-					CreditsAssets = (RefArray<UICreditsAsset>) p_Value;
-					break;
+		[ContainerField(60), JsonProperty(Order = 60)]
+		public RefArray<UICreditsAsset> CreditsAssets { get; set; } = new();
 
-				case 1722414122:
-					MinimapData = (UIMinimapData) p_Value;
-					break;
+		[ContainerField(64), JsonProperty(Order = 64)]
+		public UIMinimapData MinimapData { get; set; } = new();
 
-				case 2252761805:
-					LevelCompledStatData = (UILevelStatData) p_Value;
-					break;
+		[ContainerField(320), JsonProperty(Order = 320)]
+		public UILevelStatData LevelCompledStatData { get; set; } = new();
 
-				case 1941326521:
-					LevelScoreStatData = (UILevelStatData) p_Value;
-					break;
+		[ContainerField(336), JsonProperty(Order = 336)]
+		public UILevelStatData LevelScoreStatData { get; set; } = new();
 
-				case 1347637313:
-					SortIndex = (int) p_Value;
-					break;
+		[ContainerField(352), LayoutImmutable, Blittable, JsonProperty(Order = 352)]
+		public int SortIndex { get; set; }
 
-				case 2405916058:
-					IsMenuLevel = (bool) p_Value;
-					break;
+		[ContainerField(356), LayoutImmutable, Blittable, JsonProperty(Order = 356)]
+		public bool IsMenuLevel { get; set; }
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2284244963:
-					return MPLoadingAssetPath;
-
-				case 918318562:
-					return LoadingMusic;
-
-				case 4182834255:
-					return LoadingMusicPath;
-
-				case 2627470009:
-					return LevelImagePath;
-
-				case 2651193097:
-					return LoadingImagePath;
-
-				case 1500941885:
-					return SPLoadingAssetPath;
-
-				case 3271355416:
-					return GPSPosition;
-
-				case 3476636846:
-					return HintAsset;
-
-				case 369483736:
-					return CreditsAssets;
-
-				case 1722414122:
-					return MinimapData;
-
-				case 2252761805:
-					return LevelCompledStatData;
-
-				case 1941326521:
-					return LevelScoreStatData;
-
-				case 1347637313:
-					return SortIndex;
-
-				case 2405916058:
-					return IsMenuLevel;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2284244963:
-					return typeof(UILevelDescriptionComponent).GetProperty(nameof(MPLoadingAssetPath));
-
-				case 918318562:
-					return typeof(UILevelDescriptionComponent).GetProperty(nameof(LoadingMusic));
-
-				case 4182834255:
-					return typeof(UILevelDescriptionComponent).GetProperty(nameof(LoadingMusicPath));
-
-				case 2627470009:
-					return typeof(UILevelDescriptionComponent).GetProperty(nameof(LevelImagePath));
-
-				case 2651193097:
-					return typeof(UILevelDescriptionComponent).GetProperty(nameof(LoadingImagePath));
-
-				case 1500941885:
-					return typeof(UILevelDescriptionComponent).GetProperty(nameof(SPLoadingAssetPath));
-
-				case 3271355416:
-					return typeof(UILevelDescriptionComponent).GetProperty(nameof(GPSPosition));
-
-				case 3476636846:
-					return typeof(UILevelDescriptionComponent).GetProperty(nameof(HintAsset));
-
-				case 369483736:
-					return typeof(UILevelDescriptionComponent).GetProperty(nameof(CreditsAssets));
-
-				case 1722414122:
-					return typeof(UILevelDescriptionComponent).GetProperty(nameof(MinimapData));
-
-				case 2252761805:
-					return typeof(UILevelDescriptionComponent).GetProperty(nameof(LevelCompledStatData));
-
-				case 1941326521:
-					return typeof(UILevelDescriptionComponent).GetProperty(nameof(LevelScoreStatData));
-
-				case 1347637313:
-					return typeof(UILevelDescriptionComponent).GetProperty(nameof(SortIndex));
-
-				case 2405916058:
-					return typeof(UILevelDescriptionComponent).GetProperty(nameof(IsMenuLevel));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

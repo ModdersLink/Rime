@@ -5,91 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 32)]
+	[ContainerType(4, 32)]
 	public class InstanceNode : 
 		UINodeData
 	{
-		protected CtrRef<UIGraphAsset> m_UIGraph = new CtrRef<UIGraphAsset>();
-		[ContainerField(Name: "UIGraph", Offset: 20, NameHash: 209526997, Flags: 53)]
-		public CtrRef<UIGraphAsset> UIGraph { get { return m_UIGraph; } set { if (OnPropertyChanging("InstanceNode." + nameof(UIGraph), this, m_UIGraph, value)) m_UIGraph = value; } } // 0x14 (20)
-		
-		protected RefArray<UINodePort> m_Inputs = new RefArray<UINodePort>();
-		[ContainerField(Name: "Inputs", Offset: 24, NameHash: 2784267136, Flags: 65)]
-		public RefArray<UINodePort> Inputs { get { return m_Inputs; } set { if (OnPropertyChanging("InstanceNode." + nameof(Inputs), this, m_Inputs, value)) m_Inputs = value; } } // 0x18 (24)
-		
-		protected RefArray<UINodePort> m_Outputs = new RefArray<UINodePort>();
-		[ContainerField(Name: "Outputs", Offset: 28, NameHash: 1070022089, Flags: 65)]
-		public RefArray<UINodePort> Outputs { get { return m_Outputs; } set { if (OnPropertyChanging("InstanceNode." + nameof(Outputs), this, m_Outputs, value)) m_Outputs = value; } } // 0x1C (28)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 209526997:
-					UIGraph = (CtrRef<UIGraphAsset>) p_Value;
-					break;
+		[ContainerField(20), JsonProperty(Order = 20)]
+		public CtrRef<UIGraphAsset> UIGraph { get; set; } = new();
 
-				case 2784267136:
-					Inputs = (RefArray<UINodePort>) p_Value;
-					break;
+		[ContainerField(24), JsonProperty(Order = 24)]
+		public RefArray<UINodePort> Inputs { get; set; } = new();
 
-				case 1070022089:
-					Outputs = (RefArray<UINodePort>) p_Value;
-					break;
+		[ContainerField(28), JsonProperty(Order = 28)]
+		public RefArray<UINodePort> Outputs { get; set; } = new();
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 209526997:
-					return UIGraph;
-
-				case 2784267136:
-					return Inputs;
-
-				case 1070022089:
-					return Outputs;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 209526997:
-					return typeof(InstanceNode).GetProperty(nameof(UIGraph));
-
-				case 2784267136:
-					return typeof(InstanceNode).GetProperty(nameof(Inputs));
-
-				case 1070022089:
-					return typeof(InstanceNode).GetProperty(nameof(Outputs));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

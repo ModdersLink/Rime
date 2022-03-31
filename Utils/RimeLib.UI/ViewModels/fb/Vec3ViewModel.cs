@@ -1,15 +1,16 @@
-﻿using RimeLib.Frostbite.Containers;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿// TODO: Fixme
+//using fb;
+//using System;
+//using System.Collections.Generic;
+//using System.Text;
 
-namespace RimeLib.UI.ViewModels.fb
-{
-    public class Vec3ViewModel : ObservableObject<Vec3>
-    {
-        public Vec3ViewModel()
-        {
-            Value = new Vec3();
-        }
-    }
-}
+//namespace RimeLib.UI.ViewModels.fb
+//{
+//    public class Vec3ViewModel : ObservableObject<Vec3>
+//    {
+//        public Vec3ViewModel()
+//        {
+//            Value = new Vec3();
+//        }
+//    }
+//}

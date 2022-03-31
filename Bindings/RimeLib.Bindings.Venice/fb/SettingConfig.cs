@@ -5,139 +5,41 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 41, Size: 28)]
-	public class SettingConfig : FrostbiteContainer
+	[ContainerType(4, 28)]
+	public class SettingConfig
 	{
-		[ContainerField(Name: "Key", Offset: 0, NameHash: 193457490, Flags: 16509), LayoutImmutable]
-		public string Key { get; set; } // 0x0 (0)
+		[ContainerField(0), LayoutImmutable, JsonProperty(Order = 0)]
+		public string Key { get; set; } = string.Empty;
 		
-		[ContainerField(Name: "NameSid", Offset: 4, NameHash: 3153745340, Flags: 16509), LayoutImmutable]
-		public string NameSid { get; set; } // 0x4 (4)
+		[ContainerField(4), LayoutImmutable, JsonProperty(Order = 4)]
+		public string NameSid { get; set; } = string.Empty;
 		
-		[ContainerField(Name: "DescSid", Offset: 8, NameHash: 4021143274, Flags: 16509), LayoutImmutable]
-		public string DescSid { get; set; } // 0x8 (8)
+		[ContainerField(8), LayoutImmutable, JsonProperty(Order = 8)]
+		public string DescSid { get; set; } = string.Empty;
 		
-		[ContainerField(Name: "Max", Offset: 12, NameHash: 193446865, Flags: 49421), LayoutImmutable, Blittable]
-		public uint Max { get; set; } // 0xC (12)
+		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
+		public uint Max { get; set; }
 		
-		[ContainerField(Name: "Default", Offset: 16, NameHash: 3998752238, Flags: 49421), LayoutImmutable, Blittable]
-		public uint Default { get; set; } // 0x10 (16)
+		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		public uint Default { get; set; }
 		
-		[ContainerField(Name: "Min", Offset: 20, NameHash: 193446607, Flags: 49421), LayoutImmutable, Blittable]
-		public uint Min { get; set; } // 0x14 (20)
+		[ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
+		public uint Min { get; set; }
 		
-		[ContainerField(Name: "Ranked", Offset: 24, NameHash: 3298743058, Flags: 49325), LayoutImmutable, Blittable]
-		public bool Ranked { get; set; } // 0x18 (24)
+		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
+		public bool Ranked { get; set; }
 		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 193457490:
-					Key = (string) p_Value;
-					break;
-
-				case 3153745340:
-					NameSid = (string) p_Value;
-					break;
-
-				case 4021143274:
-					DescSid = (string) p_Value;
-					break;
-
-				case 193446865:
-					Max = (uint) p_Value;
-					break;
-
-				case 3998752238:
-					Default = (uint) p_Value;
-					break;
-
-				case 193446607:
-					Min = (uint) p_Value;
-					break;
-
-				case 3298743058:
-					Ranked = (bool) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 193457490:
-					return Key;
-
-				case 3153745340:
-					return NameSid;
-
-				case 4021143274:
-					return DescSid;
-
-				case 193446865:
-					return Max;
-
-				case 3998752238:
-					return Default;
-
-				case 193446607:
-					return Min;
-
-				case 3298743058:
-					return Ranked;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 193457490:
-					return typeof(SettingConfig).GetProperty(nameof(Key));
-
-				case 3153745340:
-					return typeof(SettingConfig).GetProperty(nameof(NameSid));
-
-				case 4021143274:
-					return typeof(SettingConfig).GetProperty(nameof(DescSid));
-
-				case 193446865:
-					return typeof(SettingConfig).GetProperty(nameof(Max));
-
-				case 3998752238:
-					return typeof(SettingConfig).GetProperty(nameof(Default));
-
-				case 193446607:
-					return typeof(SettingConfig).GetProperty(nameof(Min));
-
-				case 3298743058:
-					return typeof(SettingConfig).GetProperty(nameof(Ranked));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

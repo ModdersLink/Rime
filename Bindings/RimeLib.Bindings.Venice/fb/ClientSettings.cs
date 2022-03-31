@@ -5,1015 +5,228 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 156)]
+	[ContainerType(4, 156)]
 	public class ClientSettings : 
 		SystemSettings
 	{
-		protected float m_LoadedTimeout = new float();
-		[ContainerField(Name: "LoadedTimeout", Offset: 12, NameHash: 1689787417, Flags: 49469), LayoutImmutable, Blittable]
-		public float LoadedTimeout { get { return m_LoadedTimeout; } set { if (OnPropertyChanging("ClientSettings." + nameof(LoadedTimeout), this, m_LoadedTimeout, value)) m_LoadedTimeout = value; } } // 0xC (12)
-		
-		protected uint m_OutgoingRate = new uint();
-		[ContainerField(Name: "OutgoingRate", Offset: 16, NameHash: 3079887233, Flags: 49421), LayoutImmutable, Blittable]
-		public uint OutgoingRate { get { return m_OutgoingRate; } set { if (OnPropertyChanging("ClientSettings." + nameof(OutgoingRate), this, m_OutgoingRate, value)) m_OutgoingRate = value; } } // 0x10 (16)
-		
-		protected float m_LoadingTimeout = new float();
-		[ContainerField(Name: "LoadingTimeout", Offset: 20, NameHash: 1203409176, Flags: 49469), LayoutImmutable, Blittable]
-		public float LoadingTimeout { get { return m_LoadingTimeout; } set { if (OnPropertyChanging("ClientSettings." + nameof(LoadingTimeout), this, m_LoadingTimeout, value)) m_LoadingTimeout = value; } } // 0x14 (20)
-		
-		protected float m_IncomingFrequency = new float();
-		[ContainerField(Name: "IncomingFrequency", Offset: 24, NameHash: 1185543623, Flags: 49469), LayoutImmutable, Blittable]
-		public float IncomingFrequency { get { return m_IncomingFrequency; } set { if (OnPropertyChanging("ClientSettings." + nameof(IncomingFrequency), this, m_IncomingFrequency, value)) m_IncomingFrequency = value; } } // 0x18 (24)
-		
-		protected uint m_IncomingRate = new uint();
-		[ContainerField(Name: "IncomingRate", Offset: 28, NameHash: 2958796769, Flags: 49421), LayoutImmutable, Blittable]
-		public uint IncomingRate { get { return m_IncomingRate; } set { if (OnPropertyChanging("ClientSettings." + nameof(IncomingRate), this, m_IncomingRate, value)) m_IncomingRate = value; } } // 0x1C (28)
-		
-		protected float m_DuplicationChance = new float();
-		[ContainerField(Name: "DuplicationChance", Offset: 32, NameHash: 4025157277, Flags: 49469), LayoutImmutable, Blittable]
-		public float DuplicationChance { get { return m_DuplicationChance; } set { if (OnPropertyChanging("ClientSettings." + nameof(DuplicationChance), this, m_DuplicationChance, value)) m_DuplicationChance = value; } } // 0x20 (32)
-		
-		protected uint m_Team = new uint();
-		[ContainerField(Name: "Team", Offset: 36, NameHash: 2089309528, Flags: 49421), LayoutImmutable, Blittable]
-		public uint Team { get { return m_Team; } set { if (OnPropertyChanging("ClientSettings." + nameof(Team), this, m_Team, value)) m_Team = value; } } // 0x24 (36)
-		
-		protected float m_MaxDropDuration = new float();
-		[ContainerField(Name: "MaxDropDuration", Offset: 40, NameHash: 3255041222, Flags: 49469), LayoutImmutable, Blittable]
-		public float MaxDropDuration { get { return m_MaxDropDuration; } set { if (OnPropertyChanging("ClientSettings." + nameof(MaxDropDuration), this, m_MaxDropDuration, value)) m_MaxDropDuration = value; } } // 0x28 (40)
-		
-		protected float m_ReorderingChance = new float();
-		[ContainerField(Name: "ReorderingChance", Offset: 44, NameHash: 3536539614, Flags: 49469), LayoutImmutable, Blittable]
-		public float ReorderingChance { get { return m_ReorderingChance; } set { if (OnPropertyChanging("ClientSettings." + nameof(ReorderingChance), this, m_ReorderingChance, value)) m_ReorderingChance = value; } } // 0x2C (44)
-		
-		protected float m_DropSpikeChance = new float();
-		[ContainerField(Name: "DropSpikeChance", Offset: 48, NameHash: 2554650602, Flags: 49469), LayoutImmutable, Blittable]
-		public float DropSpikeChance { get { return m_DropSpikeChance; } set { if (OnPropertyChanging("ClientSettings." + nameof(DropSpikeChance), this, m_DropSpikeChance, value)) m_DropSpikeChance = value; } } // 0x30 (48)
-		
-		protected float m_MinDropDuration = new float();
-		[ContainerField(Name: "MinDropDuration", Offset: 52, NameHash: 32856408, Flags: 49469), LayoutImmutable, Blittable]
-		public float MinDropDuration { get { return m_MinDropDuration; } set { if (OnPropertyChanging("ClientSettings." + nameof(MinDropDuration), this, m_MinDropDuration, value)) m_MinDropDuration = value; } } // 0x34 (52)
-		
-		protected float m_MaxIncomingLatency = new float();
-		[ContainerField(Name: "MaxIncomingLatency", Offset: 56, NameHash: 762506527, Flags: 49469), LayoutImmutable, Blittable]
-		public float MaxIncomingLatency { get { return m_MaxIncomingLatency; } set { if (OnPropertyChanging("ClientSettings." + nameof(MaxIncomingLatency), this, m_MaxIncomingLatency, value)) m_MaxIncomingLatency = value; } } // 0x38 (56)
-		
-		protected float m_PacketDrops = new float();
-		[ContainerField(Name: "PacketDrops", Offset: 60, NameHash: 2325561751, Flags: 49469), LayoutImmutable, Blittable]
-		public float PacketDrops { get { return m_PacketDrops; } set { if (OnPropertyChanging("ClientSettings." + nameof(PacketDrops), this, m_PacketDrops, value)) m_PacketDrops = value; } } // 0x3C (60)
-		
-		protected float m_MaxLatency = new float();
-		[ContainerField(Name: "MaxLatency", Offset: 64, NameHash: 92818329, Flags: 49469), LayoutImmutable, Blittable]
-		public float MaxLatency { get { return m_MaxLatency; } set { if (OnPropertyChanging("ClientSettings." + nameof(MaxLatency), this, m_MaxLatency, value)) m_MaxLatency = value; } } // 0x40 (64)
-		
-		protected float m_MinIncomingLatency = new float();
-		[ContainerField(Name: "MinIncomingLatency", Offset: 68, NameHash: 886818113, Flags: 49469), LayoutImmutable, Blittable]
-		public float MinIncomingLatency { get { return m_MinIncomingLatency; } set { if (OnPropertyChanging("ClientSettings." + nameof(MinIncomingLatency), this, m_MinIncomingLatency, value)) m_MinIncomingLatency = value; } } // 0x44 (68)
-		
-		protected float m_CorruptionChance = new float();
-		[ContainerField(Name: "CorruptionChance", Offset: 72, NameHash: 2028383634, Flags: 49469), LayoutImmutable, Blittable]
-		public float CorruptionChance { get { return m_CorruptionChance; } set { if (OnPropertyChanging("ClientSettings." + nameof(CorruptionChance), this, m_CorruptionChance, value)) m_CorruptionChance = value; } } // 0x48 (72)
-		
-		protected string m_ServerIp = string.Empty;
-		[ContainerField(Name: "ServerIp", Offset: 76, NameHash: 269843833, Flags: 16509), LayoutImmutable]
-		public string ServerIp { get { return m_ServerIp; } set { if (OnPropertyChanging("ClientSettings." + nameof(ServerIp), this, m_ServerIp, value)) m_ServerIp = value; } } // 0x4C (76)
-		
-		protected string m_ScreenshotSuffix = string.Empty;
-		[ContainerField(Name: "ScreenshotSuffix", Offset: 80, NameHash: 2399091550, Flags: 16509), LayoutImmutable]
-		public string ScreenshotSuffix { get { return m_ScreenshotSuffix; } set { if (OnPropertyChanging("ClientSettings." + nameof(ScreenshotSuffix), this, m_ScreenshotSuffix, value)) m_ScreenshotSuffix = value; } } // 0x50 (80)
-		
-		protected int m_SpawnPointIndex = new int();
-		[ContainerField(Name: "SpawnPointIndex", Offset: 84, NameHash: 2235435532, Flags: 49405), LayoutImmutable, Blittable]
-		public int SpawnPointIndex { get { return m_SpawnPointIndex; } set { if (OnPropertyChanging("ClientSettings." + nameof(SpawnPointIndex), this, m_SpawnPointIndex, value)) m_SpawnPointIndex = value; } } // 0x54 (84)
-		
-		protected float m_MinLatency = new float();
-		[ContainerField(Name: "MinLatency", Offset: 88, NameHash: 715003463, Flags: 49469), LayoutImmutable, Blittable]
-		public float MinLatency { get { return m_MinLatency; } set { if (OnPropertyChanging("ClientSettings." + nameof(MinLatency), this, m_MinLatency, value)) m_MinLatency = value; } } // 0x58 (88)
-		
-		protected string m_ScreenshotFilename = string.Empty;
-		[ContainerField(Name: "ScreenshotFilename", Offset: 92, NameHash: 3330296424, Flags: 16509), LayoutImmutable]
-		public string ScreenshotFilename { get { return m_ScreenshotFilename; } set { if (OnPropertyChanging("ClientSettings." + nameof(ScreenshotFilename), this, m_ScreenshotFilename, value)) m_ScreenshotFilename = value; } } // 0x5C (92)
-		
-		protected float m_IngameTimeout = new float();
-		[ContainerField(Name: "IngameTimeout", Offset: 96, NameHash: 178921847, Flags: 49469), LayoutImmutable, Blittable]
-		public float IngameTimeout { get { return m_IngameTimeout; } set { if (OnPropertyChanging("ClientSettings." + nameof(IngameTimeout), this, m_IngameTimeout, value)) m_IngameTimeout = value; } } // 0x60 (96)
-		
-		protected float m_AimScale = new float();
-		[ContainerField(Name: "AimScale", Offset: 100, NameHash: 2680888952, Flags: 49469), LayoutImmutable, Blittable]
-		public float AimScale { get { return m_AimScale; } set { if (OnPropertyChanging("ClientSettings." + nameof(AimScale), this, m_AimScale, value)) m_AimScale = value; } } // 0x64 (100)
-		
-		protected string m_SecondaryServerIp = string.Empty;
-		[ContainerField(Name: "SecondaryServerIp", Offset: 104, NameHash: 3819727747, Flags: 16509), LayoutImmutable]
-		public string SecondaryServerIp { get { return m_SecondaryServerIp; } set { if (OnPropertyChanging("ClientSettings." + nameof(SecondaryServerIp), this, m_SecondaryServerIp, value)) m_SecondaryServerIp = value; } } // 0x68 (104)
-		
-		protected bool m_SkipFastLevelLoad = new bool();
-		[ContainerField(Name: "SkipFastLevelLoad", Offset: 108, NameHash: 531296308, Flags: 49325), LayoutImmutable, Blittable]
-		public bool SkipFastLevelLoad { get { return m_SkipFastLevelLoad; } set { if (OnPropertyChanging("ClientSettings." + nameof(SkipFastLevelLoad), this, m_SkipFastLevelLoad, value)) m_SkipFastLevelLoad = value; } } // 0x6C (108)
-		
-		protected bool m_ScreenshotToFile = new bool();
-		[ContainerField(Name: "ScreenshotToFile", Offset: 109, NameHash: 2288081012, Flags: 49325), LayoutImmutable, Blittable]
-		public bool ScreenshotToFile { get { return m_ScreenshotToFile; } set { if (OnPropertyChanging("ClientSettings." + nameof(ScreenshotToFile), this, m_ScreenshotToFile, value)) m_ScreenshotToFile = value; } } // 0x6D (109)
-		
-		protected bool m_IgnoreClientFireRateMultiplier = new bool();
-		[ContainerField(Name: "IgnoreClientFireRateMultiplier", Offset: 110, NameHash: 3144762037, Flags: 49325), LayoutImmutable, Blittable]
-		public bool IgnoreClientFireRateMultiplier { get { return m_IgnoreClientFireRateMultiplier; } set { if (OnPropertyChanging("ClientSettings." + nameof(IgnoreClientFireRateMultiplier), this, m_IgnoreClientFireRateMultiplier, value)) m_IgnoreClientFireRateMultiplier = value; } } // 0x6E (110)
-		
-		protected bool m_InputEnable = new bool();
-		[ContainerField(Name: "InputEnable", Offset: 111, NameHash: 1570773874, Flags: 49325), LayoutImmutable, Blittable]
-		public bool InputEnable { get { return m_InputEnable; } set { if (OnPropertyChanging("ClientSettings." + nameof(InputEnable), this, m_InputEnable, value)) m_InputEnable = value; } } // 0x6F (111)
-		
-		protected bool m_LoadMenu = new bool();
-		[ContainerField(Name: "LoadMenu", Offset: 112, NameHash: 2201383312, Flags: 49325), LayoutImmutable, Blittable]
-		public bool LoadMenu { get { return m_LoadMenu; } set { if (OnPropertyChanging("ClientSettings." + nameof(LoadMenu), this, m_LoadMenu, value)) m_LoadMenu = value; } } // 0x70 (112)
-		
-		protected bool m_PauseGameOnStartUp = new bool();
-		[ContainerField(Name: "PauseGameOnStartUp", Offset: 113, NameHash: 1660343261, Flags: 49325), LayoutImmutable, Blittable]
-		public bool PauseGameOnStartUp { get { return m_PauseGameOnStartUp; } set { if (OnPropertyChanging("ClientSettings." + nameof(PauseGameOnStartUp), this, m_PauseGameOnStartUp, value)) m_PauseGameOnStartUp = value; } } // 0x71 (113)
-		
-		protected bool m_DebugMenuOnLThumb = new bool();
-		[ContainerField(Name: "DebugMenuOnLThumb", Offset: 114, NameHash: 3134005900, Flags: 49325), LayoutImmutable, Blittable]
-		public bool DebugMenuOnLThumb { get { return m_DebugMenuOnLThumb; } set { if (OnPropertyChanging("ClientSettings." + nameof(DebugMenuOnLThumb), this, m_DebugMenuOnLThumb, value)) m_DebugMenuOnLThumb = value; } } // 0x72 (114)
-		
-		protected bool m_InvertPitch = new bool();
-		[ContainerField(Name: "InvertPitch", Offset: 115, NameHash: 3593098353, Flags: 49325), LayoutImmutable, Blittable]
-		public bool InvertPitch { get { return m_InvertPitch; } set { if (OnPropertyChanging("ClientSettings." + nameof(InvertPitch), this, m_InvertPitch, value)) m_InvertPitch = value; } } // 0x73 (115)
-		
-		protected bool m_OccludersEnabled = new bool();
-		[ContainerField(Name: "OccludersEnabled", Offset: 116, NameHash: 109794326, Flags: 49325), LayoutImmutable, Blittable]
-		public bool OccludersEnabled { get { return m_OccludersEnabled; } set { if (OnPropertyChanging("ClientSettings." + nameof(OccludersEnabled), this, m_OccludersEnabled, value)) m_OccludersEnabled = value; } } // 0x74 (116)
-		
-		protected bool m_IsPresenceEnabled = new bool();
-		[ContainerField(Name: "IsPresenceEnabled", Offset: 117, NameHash: 343956131, Flags: 49325), LayoutImmutable, Blittable]
-		public bool IsPresenceEnabled { get { return m_IsPresenceEnabled; } set { if (OnPropertyChanging("ClientSettings." + nameof(IsPresenceEnabled), this, m_IsPresenceEnabled, value)) m_IsPresenceEnabled = value; } } // 0x75 (117)
-		
-		protected bool m_InvertFreeCamera = new bool();
-		[ContainerField(Name: "InvertFreeCamera", Offset: 118, NameHash: 962025594, Flags: 49325), LayoutImmutable, Blittable]
-		public bool InvertFreeCamera { get { return m_InvertFreeCamera; } set { if (OnPropertyChanging("ClientSettings." + nameof(InvertFreeCamera), this, m_InvertFreeCamera, value)) m_InvertFreeCamera = value; } } // 0x76 (118)
-		
-		protected bool m_Scheme2FlipY = new bool();
-		[ContainerField(Name: "Scheme2FlipY", Offset: 119, NameHash: 79057320, Flags: 49325), LayoutImmutable, Blittable]
-		public bool Scheme2FlipY { get { return m_Scheme2FlipY; } set { if (OnPropertyChanging("ClientSettings." + nameof(Scheme2FlipY), this, m_Scheme2FlipY, value)) m_Scheme2FlipY = value; } } // 0x77 (119)
-		
-		protected bool m_InvertYaw = new bool();
-		[ContainerField(Name: "InvertYaw", Offset: 120, NameHash: 1935838488, Flags: 49325), LayoutImmutable, Blittable]
-		public bool InvertYaw { get { return m_InvertYaw; } set { if (OnPropertyChanging("ClientSettings." + nameof(InvertYaw), this, m_InvertYaw, value)) m_InvertYaw = value; } } // 0x78 (120)
-		
-		protected bool m_LipSyncEnabled = new bool();
-		[ContainerField(Name: "LipSyncEnabled", Offset: 121, NameHash: 2236175698, Flags: 49325), LayoutImmutable, Blittable]
-		public bool LipSyncEnabled { get { return m_LipSyncEnabled; } set { if (OnPropertyChanging("ClientSettings." + nameof(LipSyncEnabled), this, m_LipSyncEnabled, value)) m_LipSyncEnabled = value; } } // 0x79 (121)
-		
-		protected bool m_IsInternetSimulationEnabled = new bool();
-		[ContainerField(Name: "IsInternetSimulationEnabled", Offset: 122, NameHash: 1270028082, Flags: 49325), LayoutImmutable, Blittable]
-		public bool IsInternetSimulationEnabled { get { return m_IsInternetSimulationEnabled; } set { if (OnPropertyChanging("ClientSettings." + nameof(IsInternetSimulationEnabled), this, m_IsInternetSimulationEnabled, value)) m_IsInternetSimulationEnabled = value; } } // 0x7A (122)
-		
-		protected bool m_OnDamageSpottingEnabled = new bool();
-		[ContainerField(Name: "OnDamageSpottingEnabled", Offset: 123, NameHash: 2052923782, Flags: 49325), LayoutImmutable, Blittable]
-		public bool OnDamageSpottingEnabled { get { return m_OnDamageSpottingEnabled; } set { if (OnPropertyChanging("ClientSettings." + nameof(OnDamageSpottingEnabled), this, m_OnDamageSpottingEnabled, value)) m_OnDamageSpottingEnabled = value; } } // 0x7B (123)
-		
-		protected bool m_EmittersEnabled = new bool();
-		[ContainerField(Name: "EmittersEnabled", Offset: 124, NameHash: 4002372997, Flags: 49325), LayoutImmutable, Blittable]
-		public bool EmittersEnabled { get { return m_EmittersEnabled; } set { if (OnPropertyChanging("ClientSettings." + nameof(EmittersEnabled), this, m_EmittersEnabled, value)) m_EmittersEnabled = value; } } // 0x7C (124)
-		
-		protected bool m_PadRumbleEnabled = new bool();
-		[ContainerField(Name: "PadRumbleEnabled", Offset: 125, NameHash: 166005908, Flags: 49325), LayoutImmutable, Blittable]
-		public bool PadRumbleEnabled { get { return m_PadRumbleEnabled; } set { if (OnPropertyChanging("ClientSettings." + nameof(PadRumbleEnabled), this, m_PadRumbleEnabled, value)) m_PadRumbleEnabled = value; } } // 0x7D (125)
-		
-		protected bool m_OvergrowthEnabled = new bool();
-		[ContainerField(Name: "OvergrowthEnabled", Offset: 126, NameHash: 686776479, Flags: 49325), LayoutImmutable, Blittable]
-		public bool OvergrowthEnabled { get { return m_OvergrowthEnabled; } set { if (OnPropertyChanging("ClientSettings." + nameof(OvergrowthEnabled), this, m_OvergrowthEnabled, value)) m_OvergrowthEnabled = value; } } // 0x7E (126)
-		
-		protected bool m_EffectsEnabled = new bool();
-		[ContainerField(Name: "EffectsEnabled", Offset: 127, NameHash: 1039031940, Flags: 49325), LayoutImmutable, Blittable]
-		public bool EffectsEnabled { get { return m_EffectsEnabled; } set { if (OnPropertyChanging("ClientSettings." + nameof(EffectsEnabled), this, m_EffectsEnabled, value)) m_EffectsEnabled = value; } } // 0x7F (127)
-		
-		protected bool m_TerrainEnabled = new bool();
-		[ContainerField(Name: "TerrainEnabled", Offset: 128, NameHash: 3348002903, Flags: 49325), LayoutImmutable, Blittable]
-		public bool TerrainEnabled { get { return m_TerrainEnabled; } set { if (OnPropertyChanging("ClientSettings." + nameof(TerrainEnabled), this, m_TerrainEnabled, value)) m_TerrainEnabled = value; } } // 0x80 (128)
-		
-		protected bool m_WaterPhysicsEnabled = new bool();
-		[ContainerField(Name: "WaterPhysicsEnabled", Offset: 129, NameHash: 4150371006, Flags: 49325), LayoutImmutable, Blittable]
-		public bool WaterPhysicsEnabled { get { return m_WaterPhysicsEnabled; } set { if (OnPropertyChanging("ClientSettings." + nameof(WaterPhysicsEnabled), this, m_WaterPhysicsEnabled, value)) m_WaterPhysicsEnabled = value; } } // 0x81 (129)
-		
-		protected bool m_VegetationEnabled = new bool();
-		[ContainerField(Name: "VegetationEnabled", Offset: 130, NameHash: 1260276984, Flags: 49325), LayoutImmutable, Blittable]
-		public bool VegetationEnabled { get { return m_VegetationEnabled; } set { if (OnPropertyChanging("ClientSettings." + nameof(VegetationEnabled), this, m_VegetationEnabled, value)) m_VegetationEnabled = value; } } // 0x82 (130)
-		
-		protected bool m_WorldRenderEnabled = new bool();
-		[ContainerField(Name: "WorldRenderEnabled", Offset: 131, NameHash: 1601841480, Flags: 49325), LayoutImmutable, Blittable]
-		public bool WorldRenderEnabled { get { return m_WorldRenderEnabled; } set { if (OnPropertyChanging("ClientSettings." + nameof(WorldRenderEnabled), this, m_WorldRenderEnabled, value)) m_WorldRenderEnabled = value; } } // 0x83 (131)
-		
-		protected bool m_RenderTags = new bool();
-		[ContainerField(Name: "RenderTags", Offset: 132, NameHash: 604878030, Flags: 49325), LayoutImmutable, Blittable]
-		public bool RenderTags { get { return m_RenderTags; } set { if (OnPropertyChanging("ClientSettings." + nameof(RenderTags), this, m_RenderTags, value)) m_RenderTags = value; } } // 0x84 (132)
-		
-		protected bool m_DebrisClusterEnabled = new bool();
-		[ContainerField(Name: "DebrisClusterEnabled", Offset: 133, NameHash: 3885754465, Flags: 49325), LayoutImmutable, Blittable]
-		public bool DebrisClusterEnabled { get { return m_DebrisClusterEnabled; } set { if (OnPropertyChanging("ClientSettings." + nameof(DebrisClusterEnabled), this, m_DebrisClusterEnabled, value)) m_DebrisClusterEnabled = value; } } // 0x85 (133)
-		
-		protected bool m_HavokVisualDebugger = new bool();
-		[ContainerField(Name: "HavokVisualDebugger", Offset: 134, NameHash: 1929453227, Flags: 49325), LayoutImmutable, Blittable]
-		public bool HavokVisualDebugger { get { return m_HavokVisualDebugger; } set { if (OnPropertyChanging("ClientSettings." + nameof(HavokVisualDebugger), this, m_HavokVisualDebugger, value)) m_HavokVisualDebugger = value; } } // 0x86 (134)
-		
-		protected bool m_HavokVDBShowsEffectsWorld = new bool();
-		[ContainerField(Name: "HavokVDBShowsEffectsWorld", Offset: 135, NameHash: 2962925720, Flags: 49325), LayoutImmutable, Blittable]
-		public bool HavokVDBShowsEffectsWorld { get { return m_HavokVDBShowsEffectsWorld; } set { if (OnPropertyChanging("ClientSettings." + nameof(HavokVDBShowsEffectsWorld), this, m_HavokVDBShowsEffectsWorld, value)) m_HavokVDBShowsEffectsWorld = value; } } // 0x87 (135)
-		
-		protected bool m_HavokCaptureToFile = new bool();
-		[ContainerField(Name: "HavokCaptureToFile", Offset: 136, NameHash: 199879943, Flags: 49325), LayoutImmutable, Blittable]
-		public bool HavokCaptureToFile { get { return m_HavokCaptureToFile; } set { if (OnPropertyChanging("ClientSettings." + nameof(HavokCaptureToFile), this, m_HavokCaptureToFile, value)) m_HavokCaptureToFile = value; } } // 0x88 (136)
-		
-		protected bool m_UseMouseAndKeyboardSystem = new bool();
-		[ContainerField(Name: "UseMouseAndKeyboardSystem", Offset: 137, NameHash: 1086358628, Flags: 49325), LayoutImmutable, Blittable]
-		public bool UseMouseAndKeyboardSystem { get { return m_UseMouseAndKeyboardSystem; } set { if (OnPropertyChanging("ClientSettings." + nameof(UseMouseAndKeyboardSystem), this, m_UseMouseAndKeyboardSystem, value)) m_UseMouseAndKeyboardSystem = value; } } // 0x89 (137)
-		
-		protected bool m_UseGlobalGamePadInput = new bool();
-		[ContainerField(Name: "UseGlobalGamePadInput", Offset: 138, NameHash: 2939773824, Flags: 49325), LayoutImmutable, Blittable]
-		public bool UseGlobalGamePadInput { get { return m_UseGlobalGamePadInput; } set { if (OnPropertyChanging("ClientSettings." + nameof(UseGlobalGamePadInput), this, m_UseGlobalGamePadInput, value)) m_UseGlobalGamePadInput = value; } } // 0x8A (138)
-		
-		protected bool m_ThreadedLoadingEnable = new bool();
-		[ContainerField(Name: "ThreadedLoadingEnable", Offset: 139, NameHash: 1104410157, Flags: 49325), LayoutImmutable, Blittable]
-		public bool ThreadedLoadingEnable { get { return m_ThreadedLoadingEnable; } set { if (OnPropertyChanging("ClientSettings." + nameof(ThreadedLoadingEnable), this, m_ThreadedLoadingEnable, value)) m_ThreadedLoadingEnable = value; } } // 0x8B (139)
-		
-		protected bool m_ShowBuildId = new bool();
-		[ContainerField(Name: "ShowBuildId", Offset: 140, NameHash: 3678869853, Flags: 49325), LayoutImmutable, Blittable]
-		public bool ShowBuildId { get { return m_ShowBuildId; } set { if (OnPropertyChanging("ClientSettings." + nameof(ShowBuildId), this, m_ShowBuildId, value)) m_ShowBuildId = value; } } // 0x8C (140)
-		
-		protected bool m_ExtractPersistenceInformation = new bool();
-		[ContainerField(Name: "ExtractPersistenceInformation", Offset: 141, NameHash: 2413057907, Flags: 49325), LayoutImmutable, Blittable]
-		public bool ExtractPersistenceInformation { get { return m_ExtractPersistenceInformation; } set { if (OnPropertyChanging("ClientSettings." + nameof(ExtractPersistenceInformation), this, m_ExtractPersistenceInformation, value)) m_ExtractPersistenceInformation = value; } } // 0x8D (141)
-		
-		protected bool m_EnableRestTool = new bool();
-		[ContainerField(Name: "EnableRestTool", Offset: 142, NameHash: 1964416300, Flags: 49325), LayoutImmutable, Blittable]
-		public bool EnableRestTool { get { return m_EnableRestTool; } set { if (OnPropertyChanging("ClientSettings." + nameof(EnableRestTool), this, m_EnableRestTool, value)) m_EnableRestTool = value; } } // 0x8E (142)
-		
-		protected bool m_LocalVehicleSimulationEnabled = new bool();
-		[ContainerField(Name: "LocalVehicleSimulationEnabled", Offset: 143, NameHash: 1639847270, Flags: 49325), LayoutImmutable, Blittable]
-		public bool LocalVehicleSimulationEnabled { get { return m_LocalVehicleSimulationEnabled; } set { if (OnPropertyChanging("ClientSettings." + nameof(LocalVehicleSimulationEnabled), this, m_LocalVehicleSimulationEnabled, value)) m_LocalVehicleSimulationEnabled = value; } } // 0x8F (143)
-		
-		protected bool m_AsyncClientBulletEntity = new bool();
-		[ContainerField(Name: "AsyncClientBulletEntity", Offset: 144, NameHash: 2407735079, Flags: 49325), LayoutImmutable, Blittable]
-		public bool AsyncClientBulletEntity { get { return m_AsyncClientBulletEntity; } set { if (OnPropertyChanging("ClientSettings." + nameof(AsyncClientBulletEntity), this, m_AsyncClientBulletEntity, value)) m_AsyncClientBulletEntity = value; } } // 0x90 (144)
-		
-		protected bool m_AutoUnspawnDynamicObjects = new bool();
-		[ContainerField(Name: "AutoUnspawnDynamicObjects", Offset: 145, NameHash: 854342937, Flags: 49325), LayoutImmutable, Blittable]
-		public bool AutoUnspawnDynamicObjects { get { return m_AutoUnspawnDynamicObjects; } set { if (OnPropertyChanging("ClientSettings." + nameof(AutoUnspawnDynamicObjects), this, m_AutoUnspawnDynamicObjects, value)) m_AutoUnspawnDynamicObjects = value; } } // 0x91 (145)
-		
-		protected bool m_VsyncEnable = new bool();
-		[ContainerField(Name: "VsyncEnable", Offset: 146, NameHash: 26434229, Flags: 49325), LayoutImmutable, Blittable]
-		public bool VsyncEnable { get { return m_VsyncEnable; } set { if (OnPropertyChanging("ClientSettings." + nameof(VsyncEnable), this, m_VsyncEnable, value)) m_VsyncEnable = value; } } // 0x92 (146)
-		
-		protected bool m_VisualFrameInterpolation = new bool();
-		[ContainerField(Name: "VisualFrameInterpolation", Offset: 147, NameHash: 400957222, Flags: 49325), LayoutImmutable, Blittable]
-		public bool VisualFrameInterpolation { get { return m_VisualFrameInterpolation; } set { if (OnPropertyChanging("ClientSettings." + nameof(VisualFrameInterpolation), this, m_VisualFrameInterpolation, value)) m_VisualFrameInterpolation = value; } } // 0x93 (147)
-		
-		protected bool m_InvertPadPcRightStick = new bool();
-		[ContainerField(Name: "InvertPadPcRightStick", Offset: 148, NameHash: 2944881719, Flags: 49325), LayoutImmutable, Blittable]
-		public bool InvertPadPcRightStick { get { return m_InvertPadPcRightStick; } set { if (OnPropertyChanging("ClientSettings." + nameof(InvertPadPcRightStick), this, m_InvertPadPcRightStick, value)) m_InvertPadPcRightStick = value; } } // 0x94 (148)
-		
-		protected bool m_Scheme0FlipY = new bool();
-		[ContainerField(Name: "Scheme0FlipY", Offset: 149, NameHash: 157467626, Flags: 49325), LayoutImmutable, Blittable]
-		public bool Scheme0FlipY { get { return m_Scheme0FlipY; } set { if (OnPropertyChanging("ClientSettings." + nameof(Scheme0FlipY), this, m_Scheme0FlipY, value)) m_Scheme0FlipY = value; } } // 0x95 (149)
-		
-		protected bool m_IsSpectator = new bool();
-		[ContainerField(Name: "IsSpectator", Offset: 150, NameHash: 1656349510, Flags: 49325), LayoutImmutable, Blittable]
-		public bool IsSpectator { get { return m_IsSpectator; } set { if (OnPropertyChanging("ClientSettings." + nameof(IsSpectator), this, m_IsSpectator, value)) m_IsSpectator = value; } } // 0x96 (150)
-		
-		protected bool m_Scheme1FlipY = new bool();
-		[ContainerField(Name: "Scheme1FlipY", Offset: 151, NameHash: 192070603, Flags: 49325), LayoutImmutable, Blittable]
-		public bool Scheme1FlipY { get { return m_Scheme1FlipY; } set { if (OnPropertyChanging("ClientSettings." + nameof(Scheme1FlipY), this, m_Scheme1FlipY, value)) m_Scheme1FlipY = value; } } // 0x97 (151)
-		
-		protected bool m_QuitGameOnServerDisconnect = new bool();
-		[ContainerField(Name: "QuitGameOnServerDisconnect", Offset: 152, NameHash: 491704118, Flags: 49325), LayoutImmutable, Blittable]
-		public bool QuitGameOnServerDisconnect { get { return m_QuitGameOnServerDisconnect; } set { if (OnPropertyChanging("ClientSettings." + nameof(QuitGameOnServerDisconnect), this, m_QuitGameOnServerDisconnect, value)) m_QuitGameOnServerDisconnect = value; } } // 0x98 (152)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 1689787417:
-					LoadedTimeout = (float) p_Value;
-					break;
-
-				case 3079887233:
-					OutgoingRate = (uint) p_Value;
-					break;
-
-				case 1203409176:
-					LoadingTimeout = (float) p_Value;
-					break;
-
-				case 1185543623:
-					IncomingFrequency = (float) p_Value;
-					break;
-
-				case 2958796769:
-					IncomingRate = (uint) p_Value;
-					break;
-
-				case 4025157277:
-					DuplicationChance = (float) p_Value;
-					break;
-
-				case 2089309528:
-					Team = (uint) p_Value;
-					break;
-
-				case 3255041222:
-					MaxDropDuration = (float) p_Value;
-					break;
-
-				case 3536539614:
-					ReorderingChance = (float) p_Value;
-					break;
-
-				case 2554650602:
-					DropSpikeChance = (float) p_Value;
-					break;
-
-				case 32856408:
-					MinDropDuration = (float) p_Value;
-					break;
-
-				case 762506527:
-					MaxIncomingLatency = (float) p_Value;
-					break;
-
-				case 2325561751:
-					PacketDrops = (float) p_Value;
-					break;
-
-				case 92818329:
-					MaxLatency = (float) p_Value;
-					break;
-
-				case 886818113:
-					MinIncomingLatency = (float) p_Value;
-					break;
-
-				case 2028383634:
-					CorruptionChance = (float) p_Value;
-					break;
-
-				case 269843833:
-					ServerIp = (string) p_Value;
-					break;
-
-				case 2399091550:
-					ScreenshotSuffix = (string) p_Value;
-					break;
-
-				case 2235435532:
-					SpawnPointIndex = (int) p_Value;
-					break;
-
-				case 715003463:
-					MinLatency = (float) p_Value;
-					break;
-
-				case 3330296424:
-					ScreenshotFilename = (string) p_Value;
-					break;
-
-				case 178921847:
-					IngameTimeout = (float) p_Value;
-					break;
-
-				case 2680888952:
-					AimScale = (float) p_Value;
-					break;
-
-				case 3819727747:
-					SecondaryServerIp = (string) p_Value;
-					break;
-
-				case 531296308:
-					SkipFastLevelLoad = (bool) p_Value;
-					break;
-
-				case 2288081012:
-					ScreenshotToFile = (bool) p_Value;
-					break;
-
-				case 3144762037:
-					IgnoreClientFireRateMultiplier = (bool) p_Value;
-					break;
-
-				case 1570773874:
-					InputEnable = (bool) p_Value;
-					break;
-
-				case 2201383312:
-					LoadMenu = (bool) p_Value;
-					break;
-
-				case 1660343261:
-					PauseGameOnStartUp = (bool) p_Value;
-					break;
-
-				case 3134005900:
-					DebugMenuOnLThumb = (bool) p_Value;
-					break;
-
-				case 3593098353:
-					InvertPitch = (bool) p_Value;
-					break;
-
-				case 109794326:
-					OccludersEnabled = (bool) p_Value;
-					break;
-
-				case 343956131:
-					IsPresenceEnabled = (bool) p_Value;
-					break;
-
-				case 962025594:
-					InvertFreeCamera = (bool) p_Value;
-					break;
-
-				case 79057320:
-					Scheme2FlipY = (bool) p_Value;
-					break;
-
-				case 1935838488:
-					InvertYaw = (bool) p_Value;
-					break;
-
-				case 2236175698:
-					LipSyncEnabled = (bool) p_Value;
-					break;
-
-				case 1270028082:
-					IsInternetSimulationEnabled = (bool) p_Value;
-					break;
-
-				case 2052923782:
-					OnDamageSpottingEnabled = (bool) p_Value;
-					break;
-
-				case 4002372997:
-					EmittersEnabled = (bool) p_Value;
-					break;
-
-				case 166005908:
-					PadRumbleEnabled = (bool) p_Value;
-					break;
-
-				case 686776479:
-					OvergrowthEnabled = (bool) p_Value;
-					break;
-
-				case 1039031940:
-					EffectsEnabled = (bool) p_Value;
-					break;
-
-				case 3348002903:
-					TerrainEnabled = (bool) p_Value;
-					break;
-
-				case 4150371006:
-					WaterPhysicsEnabled = (bool) p_Value;
-					break;
-
-				case 1260276984:
-					VegetationEnabled = (bool) p_Value;
-					break;
-
-				case 1601841480:
-					WorldRenderEnabled = (bool) p_Value;
-					break;
-
-				case 604878030:
-					RenderTags = (bool) p_Value;
-					break;
-
-				case 3885754465:
-					DebrisClusterEnabled = (bool) p_Value;
-					break;
-
-				case 1929453227:
-					HavokVisualDebugger = (bool) p_Value;
-					break;
-
-				case 2962925720:
-					HavokVDBShowsEffectsWorld = (bool) p_Value;
-					break;
-
-				case 199879943:
-					HavokCaptureToFile = (bool) p_Value;
-					break;
-
-				case 1086358628:
-					UseMouseAndKeyboardSystem = (bool) p_Value;
-					break;
-
-				case 2939773824:
-					UseGlobalGamePadInput = (bool) p_Value;
-					break;
-
-				case 1104410157:
-					ThreadedLoadingEnable = (bool) p_Value;
-					break;
-
-				case 3678869853:
-					ShowBuildId = (bool) p_Value;
-					break;
-
-				case 2413057907:
-					ExtractPersistenceInformation = (bool) p_Value;
-					break;
-
-				case 1964416300:
-					EnableRestTool = (bool) p_Value;
-					break;
-
-				case 1639847270:
-					LocalVehicleSimulationEnabled = (bool) p_Value;
-					break;
-
-				case 2407735079:
-					AsyncClientBulletEntity = (bool) p_Value;
-					break;
-
-				case 854342937:
-					AutoUnspawnDynamicObjects = (bool) p_Value;
-					break;
-
-				case 26434229:
-					VsyncEnable = (bool) p_Value;
-					break;
-
-				case 400957222:
-					VisualFrameInterpolation = (bool) p_Value;
-					break;
-
-				case 2944881719:
-					InvertPadPcRightStick = (bool) p_Value;
-					break;
-
-				case 157467626:
-					Scheme0FlipY = (bool) p_Value;
-					break;
-
-				case 1656349510:
-					IsSpectator = (bool) p_Value;
-					break;
-
-				case 192070603:
-					Scheme1FlipY = (bool) p_Value;
-					break;
-
-				case 491704118:
-					QuitGameOnServerDisconnect = (bool) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1689787417:
-					return LoadedTimeout;
-
-				case 3079887233:
-					return OutgoingRate;
-
-				case 1203409176:
-					return LoadingTimeout;
-
-				case 1185543623:
-					return IncomingFrequency;
-
-				case 2958796769:
-					return IncomingRate;
-
-				case 4025157277:
-					return DuplicationChance;
-
-				case 2089309528:
-					return Team;
-
-				case 3255041222:
-					return MaxDropDuration;
-
-				case 3536539614:
-					return ReorderingChance;
-
-				case 2554650602:
-					return DropSpikeChance;
-
-				case 32856408:
-					return MinDropDuration;
-
-				case 762506527:
-					return MaxIncomingLatency;
-
-				case 2325561751:
-					return PacketDrops;
-
-				case 92818329:
-					return MaxLatency;
-
-				case 886818113:
-					return MinIncomingLatency;
-
-				case 2028383634:
-					return CorruptionChance;
-
-				case 269843833:
-					return ServerIp;
-
-				case 2399091550:
-					return ScreenshotSuffix;
-
-				case 2235435532:
-					return SpawnPointIndex;
-
-				case 715003463:
-					return MinLatency;
-
-				case 3330296424:
-					return ScreenshotFilename;
-
-				case 178921847:
-					return IngameTimeout;
-
-				case 2680888952:
-					return AimScale;
-
-				case 3819727747:
-					return SecondaryServerIp;
-
-				case 531296308:
-					return SkipFastLevelLoad;
-
-				case 2288081012:
-					return ScreenshotToFile;
-
-				case 3144762037:
-					return IgnoreClientFireRateMultiplier;
-
-				case 1570773874:
-					return InputEnable;
-
-				case 2201383312:
-					return LoadMenu;
-
-				case 1660343261:
-					return PauseGameOnStartUp;
-
-				case 3134005900:
-					return DebugMenuOnLThumb;
-
-				case 3593098353:
-					return InvertPitch;
-
-				case 109794326:
-					return OccludersEnabled;
-
-				case 343956131:
-					return IsPresenceEnabled;
-
-				case 962025594:
-					return InvertFreeCamera;
-
-				case 79057320:
-					return Scheme2FlipY;
-
-				case 1935838488:
-					return InvertYaw;
-
-				case 2236175698:
-					return LipSyncEnabled;
-
-				case 1270028082:
-					return IsInternetSimulationEnabled;
-
-				case 2052923782:
-					return OnDamageSpottingEnabled;
-
-				case 4002372997:
-					return EmittersEnabled;
-
-				case 166005908:
-					return PadRumbleEnabled;
-
-				case 686776479:
-					return OvergrowthEnabled;
-
-				case 1039031940:
-					return EffectsEnabled;
-
-				case 3348002903:
-					return TerrainEnabled;
-
-				case 4150371006:
-					return WaterPhysicsEnabled;
-
-				case 1260276984:
-					return VegetationEnabled;
-
-				case 1601841480:
-					return WorldRenderEnabled;
-
-				case 604878030:
-					return RenderTags;
-
-				case 3885754465:
-					return DebrisClusterEnabled;
-
-				case 1929453227:
-					return HavokVisualDebugger;
-
-				case 2962925720:
-					return HavokVDBShowsEffectsWorld;
-
-				case 199879943:
-					return HavokCaptureToFile;
-
-				case 1086358628:
-					return UseMouseAndKeyboardSystem;
-
-				case 2939773824:
-					return UseGlobalGamePadInput;
-
-				case 1104410157:
-					return ThreadedLoadingEnable;
-
-				case 3678869853:
-					return ShowBuildId;
-
-				case 2413057907:
-					return ExtractPersistenceInformation;
-
-				case 1964416300:
-					return EnableRestTool;
-
-				case 1639847270:
-					return LocalVehicleSimulationEnabled;
-
-				case 2407735079:
-					return AsyncClientBulletEntity;
-
-				case 854342937:
-					return AutoUnspawnDynamicObjects;
-
-				case 26434229:
-					return VsyncEnable;
-
-				case 400957222:
-					return VisualFrameInterpolation;
-
-				case 2944881719:
-					return InvertPadPcRightStick;
-
-				case 157467626:
-					return Scheme0FlipY;
-
-				case 1656349510:
-					return IsSpectator;
-
-				case 192070603:
-					return Scheme1FlipY;
-
-				case 491704118:
-					return QuitGameOnServerDisconnect;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1689787417:
-					return typeof(ClientSettings).GetProperty(nameof(LoadedTimeout));
-
-				case 3079887233:
-					return typeof(ClientSettings).GetProperty(nameof(OutgoingRate));
-
-				case 1203409176:
-					return typeof(ClientSettings).GetProperty(nameof(LoadingTimeout));
-
-				case 1185543623:
-					return typeof(ClientSettings).GetProperty(nameof(IncomingFrequency));
-
-				case 2958796769:
-					return typeof(ClientSettings).GetProperty(nameof(IncomingRate));
-
-				case 4025157277:
-					return typeof(ClientSettings).GetProperty(nameof(DuplicationChance));
-
-				case 2089309528:
-					return typeof(ClientSettings).GetProperty(nameof(Team));
-
-				case 3255041222:
-					return typeof(ClientSettings).GetProperty(nameof(MaxDropDuration));
-
-				case 3536539614:
-					return typeof(ClientSettings).GetProperty(nameof(ReorderingChance));
-
-				case 2554650602:
-					return typeof(ClientSettings).GetProperty(nameof(DropSpikeChance));
-
-				case 32856408:
-					return typeof(ClientSettings).GetProperty(nameof(MinDropDuration));
-
-				case 762506527:
-					return typeof(ClientSettings).GetProperty(nameof(MaxIncomingLatency));
-
-				case 2325561751:
-					return typeof(ClientSettings).GetProperty(nameof(PacketDrops));
-
-				case 92818329:
-					return typeof(ClientSettings).GetProperty(nameof(MaxLatency));
-
-				case 886818113:
-					return typeof(ClientSettings).GetProperty(nameof(MinIncomingLatency));
-
-				case 2028383634:
-					return typeof(ClientSettings).GetProperty(nameof(CorruptionChance));
-
-				case 269843833:
-					return typeof(ClientSettings).GetProperty(nameof(ServerIp));
-
-				case 2399091550:
-					return typeof(ClientSettings).GetProperty(nameof(ScreenshotSuffix));
-
-				case 2235435532:
-					return typeof(ClientSettings).GetProperty(nameof(SpawnPointIndex));
-
-				case 715003463:
-					return typeof(ClientSettings).GetProperty(nameof(MinLatency));
-
-				case 3330296424:
-					return typeof(ClientSettings).GetProperty(nameof(ScreenshotFilename));
-
-				case 178921847:
-					return typeof(ClientSettings).GetProperty(nameof(IngameTimeout));
-
-				case 2680888952:
-					return typeof(ClientSettings).GetProperty(nameof(AimScale));
-
-				case 3819727747:
-					return typeof(ClientSettings).GetProperty(nameof(SecondaryServerIp));
-
-				case 531296308:
-					return typeof(ClientSettings).GetProperty(nameof(SkipFastLevelLoad));
-
-				case 2288081012:
-					return typeof(ClientSettings).GetProperty(nameof(ScreenshotToFile));
-
-				case 3144762037:
-					return typeof(ClientSettings).GetProperty(nameof(IgnoreClientFireRateMultiplier));
-
-				case 1570773874:
-					return typeof(ClientSettings).GetProperty(nameof(InputEnable));
-
-				case 2201383312:
-					return typeof(ClientSettings).GetProperty(nameof(LoadMenu));
-
-				case 1660343261:
-					return typeof(ClientSettings).GetProperty(nameof(PauseGameOnStartUp));
-
-				case 3134005900:
-					return typeof(ClientSettings).GetProperty(nameof(DebugMenuOnLThumb));
-
-				case 3593098353:
-					return typeof(ClientSettings).GetProperty(nameof(InvertPitch));
-
-				case 109794326:
-					return typeof(ClientSettings).GetProperty(nameof(OccludersEnabled));
-
-				case 343956131:
-					return typeof(ClientSettings).GetProperty(nameof(IsPresenceEnabled));
-
-				case 962025594:
-					return typeof(ClientSettings).GetProperty(nameof(InvertFreeCamera));
-
-				case 79057320:
-					return typeof(ClientSettings).GetProperty(nameof(Scheme2FlipY));
-
-				case 1935838488:
-					return typeof(ClientSettings).GetProperty(nameof(InvertYaw));
-
-				case 2236175698:
-					return typeof(ClientSettings).GetProperty(nameof(LipSyncEnabled));
-
-				case 1270028082:
-					return typeof(ClientSettings).GetProperty(nameof(IsInternetSimulationEnabled));
-
-				case 2052923782:
-					return typeof(ClientSettings).GetProperty(nameof(OnDamageSpottingEnabled));
-
-				case 4002372997:
-					return typeof(ClientSettings).GetProperty(nameof(EmittersEnabled));
-
-				case 166005908:
-					return typeof(ClientSettings).GetProperty(nameof(PadRumbleEnabled));
-
-				case 686776479:
-					return typeof(ClientSettings).GetProperty(nameof(OvergrowthEnabled));
-
-				case 1039031940:
-					return typeof(ClientSettings).GetProperty(nameof(EffectsEnabled));
-
-				case 3348002903:
-					return typeof(ClientSettings).GetProperty(nameof(TerrainEnabled));
-
-				case 4150371006:
-					return typeof(ClientSettings).GetProperty(nameof(WaterPhysicsEnabled));
-
-				case 1260276984:
-					return typeof(ClientSettings).GetProperty(nameof(VegetationEnabled));
-
-				case 1601841480:
-					return typeof(ClientSettings).GetProperty(nameof(WorldRenderEnabled));
-
-				case 604878030:
-					return typeof(ClientSettings).GetProperty(nameof(RenderTags));
-
-				case 3885754465:
-					return typeof(ClientSettings).GetProperty(nameof(DebrisClusterEnabled));
-
-				case 1929453227:
-					return typeof(ClientSettings).GetProperty(nameof(HavokVisualDebugger));
-
-				case 2962925720:
-					return typeof(ClientSettings).GetProperty(nameof(HavokVDBShowsEffectsWorld));
-
-				case 199879943:
-					return typeof(ClientSettings).GetProperty(nameof(HavokCaptureToFile));
-
-				case 1086358628:
-					return typeof(ClientSettings).GetProperty(nameof(UseMouseAndKeyboardSystem));
-
-				case 2939773824:
-					return typeof(ClientSettings).GetProperty(nameof(UseGlobalGamePadInput));
-
-				case 1104410157:
-					return typeof(ClientSettings).GetProperty(nameof(ThreadedLoadingEnable));
-
-				case 3678869853:
-					return typeof(ClientSettings).GetProperty(nameof(ShowBuildId));
-
-				case 2413057907:
-					return typeof(ClientSettings).GetProperty(nameof(ExtractPersistenceInformation));
-
-				case 1964416300:
-					return typeof(ClientSettings).GetProperty(nameof(EnableRestTool));
-
-				case 1639847270:
-					return typeof(ClientSettings).GetProperty(nameof(LocalVehicleSimulationEnabled));
-
-				case 2407735079:
-					return typeof(ClientSettings).GetProperty(nameof(AsyncClientBulletEntity));
-
-				case 854342937:
-					return typeof(ClientSettings).GetProperty(nameof(AutoUnspawnDynamicObjects));
-
-				case 26434229:
-					return typeof(ClientSettings).GetProperty(nameof(VsyncEnable));
-
-				case 400957222:
-					return typeof(ClientSettings).GetProperty(nameof(VisualFrameInterpolation));
-
-				case 2944881719:
-					return typeof(ClientSettings).GetProperty(nameof(InvertPadPcRightStick));
-
-				case 157467626:
-					return typeof(ClientSettings).GetProperty(nameof(Scheme0FlipY));
-
-				case 1656349510:
-					return typeof(ClientSettings).GetProperty(nameof(IsSpectator));
-
-				case 192070603:
-					return typeof(ClientSettings).GetProperty(nameof(Scheme1FlipY));
-
-				case 491704118:
-					return typeof(ClientSettings).GetProperty(nameof(QuitGameOnServerDisconnect));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
+		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
+		public float LoadedTimeout { get; set; }
+
+		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		public uint OutgoingRate { get; set; }
+
+		[ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
+		public float LoadingTimeout { get; set; }
+
+		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
+		public float IncomingFrequency { get; set; }
+
+		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
+		public uint IncomingRate { get; set; }
+
+		[ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
+		public float DuplicationChance { get; set; }
+
+		[ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
+		public uint Team { get; set; }
+
+		[ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
+		public float MaxDropDuration { get; set; }
+
+		[ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
+		public float ReorderingChance { get; set; }
+
+		[ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
+		public float DropSpikeChance { get; set; }
+
+		[ContainerField(52), LayoutImmutable, Blittable, JsonProperty(Order = 52)]
+		public float MinDropDuration { get; set; }
+
+		[ContainerField(56), LayoutImmutable, Blittable, JsonProperty(Order = 56)]
+		public float MaxIncomingLatency { get; set; }
+
+		[ContainerField(60), LayoutImmutable, Blittable, JsonProperty(Order = 60)]
+		public float PacketDrops { get; set; }
+
+		[ContainerField(64), LayoutImmutable, Blittable, JsonProperty(Order = 64)]
+		public float MaxLatency { get; set; }
+
+		[ContainerField(68), LayoutImmutable, Blittable, JsonProperty(Order = 68)]
+		public float MinIncomingLatency { get; set; }
+
+		[ContainerField(72), LayoutImmutable, Blittable, JsonProperty(Order = 72)]
+		public float CorruptionChance { get; set; }
+
+		[ContainerField(76), LayoutImmutable, JsonProperty(Order = 76)]
+		public string ServerIp { get; set; } = string.Empty;
+
+		[ContainerField(80), LayoutImmutable, JsonProperty(Order = 80)]
+		public string ScreenshotSuffix { get; set; } = string.Empty;
+
+		[ContainerField(84), LayoutImmutable, Blittable, JsonProperty(Order = 84)]
+		public int SpawnPointIndex { get; set; }
+
+		[ContainerField(88), LayoutImmutable, Blittable, JsonProperty(Order = 88)]
+		public float MinLatency { get; set; }
+
+		[ContainerField(92), LayoutImmutable, JsonProperty(Order = 92)]
+		public string ScreenshotFilename { get; set; } = string.Empty;
+
+		[ContainerField(96), LayoutImmutable, Blittable, JsonProperty(Order = 96)]
+		public float IngameTimeout { get; set; }
+
+		[ContainerField(100), LayoutImmutable, Blittable, JsonProperty(Order = 100)]
+		public float AimScale { get; set; }
+
+		[ContainerField(104), LayoutImmutable, JsonProperty(Order = 104)]
+		public string SecondaryServerIp { get; set; } = string.Empty;
+
+		[ContainerField(108), LayoutImmutable, Blittable, JsonProperty(Order = 108)]
+		public bool SkipFastLevelLoad { get; set; }
+
+		[ContainerField(109), LayoutImmutable, Blittable, JsonProperty(Order = 109)]
+		public bool ScreenshotToFile { get; set; }
+
+		[ContainerField(110), LayoutImmutable, Blittable, JsonProperty(Order = 110)]
+		public bool IgnoreClientFireRateMultiplier { get; set; }
+
+		[ContainerField(111), LayoutImmutable, Blittable, JsonProperty(Order = 111)]
+		public bool InputEnable { get; set; }
+
+		[ContainerField(112), LayoutImmutable, Blittable, JsonProperty(Order = 112)]
+		public bool LoadMenu { get; set; }
+
+		[ContainerField(113), LayoutImmutable, Blittable, JsonProperty(Order = 113)]
+		public bool PauseGameOnStartUp { get; set; }
+
+		[ContainerField(114), LayoutImmutable, Blittable, JsonProperty(Order = 114)]
+		public bool DebugMenuOnLThumb { get; set; }
+
+		[ContainerField(115), LayoutImmutable, Blittable, JsonProperty(Order = 115)]
+		public bool InvertPitch { get; set; }
+
+		[ContainerField(116), LayoutImmutable, Blittable, JsonProperty(Order = 116)]
+		public bool OccludersEnabled { get; set; }
+
+		[ContainerField(117), LayoutImmutable, Blittable, JsonProperty(Order = 117)]
+		public bool IsPresenceEnabled { get; set; }
+
+		[ContainerField(118), LayoutImmutable, Blittable, JsonProperty(Order = 118)]
+		public bool InvertFreeCamera { get; set; }
+
+		[ContainerField(119), LayoutImmutable, Blittable, JsonProperty(Order = 119)]
+		public bool Scheme2FlipY { get; set; }
+
+		[ContainerField(120), LayoutImmutable, Blittable, JsonProperty(Order = 120)]
+		public bool InvertYaw { get; set; }
+
+		[ContainerField(121), LayoutImmutable, Blittable, JsonProperty(Order = 121)]
+		public bool LipSyncEnabled { get; set; }
+
+		[ContainerField(122), LayoutImmutable, Blittable, JsonProperty(Order = 122)]
+		public bool IsInternetSimulationEnabled { get; set; }
+
+		[ContainerField(123), LayoutImmutable, Blittable, JsonProperty(Order = 123)]
+		public bool OnDamageSpottingEnabled { get; set; }
+
+		[ContainerField(124), LayoutImmutable, Blittable, JsonProperty(Order = 124)]
+		public bool EmittersEnabled { get; set; }
+
+		[ContainerField(125), LayoutImmutable, Blittable, JsonProperty(Order = 125)]
+		public bool PadRumbleEnabled { get; set; }
+
+		[ContainerField(126), LayoutImmutable, Blittable, JsonProperty(Order = 126)]
+		public bool OvergrowthEnabled { get; set; }
+
+		[ContainerField(127), LayoutImmutable, Blittable, JsonProperty(Order = 127)]
+		public bool EffectsEnabled { get; set; }
+
+		[ContainerField(128), LayoutImmutable, Blittable, JsonProperty(Order = 128)]
+		public bool TerrainEnabled { get; set; }
+
+		[ContainerField(129), LayoutImmutable, Blittable, JsonProperty(Order = 129)]
+		public bool WaterPhysicsEnabled { get; set; }
+
+		[ContainerField(130), LayoutImmutable, Blittable, JsonProperty(Order = 130)]
+		public bool VegetationEnabled { get; set; }
+
+		[ContainerField(131), LayoutImmutable, Blittable, JsonProperty(Order = 131)]
+		public bool WorldRenderEnabled { get; set; }
+
+		[ContainerField(132), LayoutImmutable, Blittable, JsonProperty(Order = 132)]
+		public bool RenderTags { get; set; }
+
+		[ContainerField(133), LayoutImmutable, Blittable, JsonProperty(Order = 133)]
+		public bool DebrisClusterEnabled { get; set; }
+
+		[ContainerField(134), LayoutImmutable, Blittable, JsonProperty(Order = 134)]
+		public bool HavokVisualDebugger { get; set; }
+
+		[ContainerField(135), LayoutImmutable, Blittable, JsonProperty(Order = 135)]
+		public bool HavokVDBShowsEffectsWorld { get; set; }
+
+		[ContainerField(136), LayoutImmutable, Blittable, JsonProperty(Order = 136)]
+		public bool HavokCaptureToFile { get; set; }
+
+		[ContainerField(137), LayoutImmutable, Blittable, JsonProperty(Order = 137)]
+		public bool UseMouseAndKeyboardSystem { get; set; }
+
+		[ContainerField(138), LayoutImmutable, Blittable, JsonProperty(Order = 138)]
+		public bool UseGlobalGamePadInput { get; set; }
+
+		[ContainerField(139), LayoutImmutable, Blittable, JsonProperty(Order = 139)]
+		public bool ThreadedLoadingEnable { get; set; }
+
+		[ContainerField(140), LayoutImmutable, Blittable, JsonProperty(Order = 140)]
+		public bool ShowBuildId { get; set; }
+
+		[ContainerField(141), LayoutImmutable, Blittable, JsonProperty(Order = 141)]
+		public bool ExtractPersistenceInformation { get; set; }
+
+		[ContainerField(142), LayoutImmutable, Blittable, JsonProperty(Order = 142)]
+		public bool EnableRestTool { get; set; }
+
+		[ContainerField(143), LayoutImmutable, Blittable, JsonProperty(Order = 143)]
+		public bool LocalVehicleSimulationEnabled { get; set; }
+
+		[ContainerField(144), LayoutImmutable, Blittable, JsonProperty(Order = 144)]
+		public bool AsyncClientBulletEntity { get; set; }
+
+		[ContainerField(145), LayoutImmutable, Blittable, JsonProperty(Order = 145)]
+		public bool AutoUnspawnDynamicObjects { get; set; }
+
+		[ContainerField(146), LayoutImmutable, Blittable, JsonProperty(Order = 146)]
+		public bool VsyncEnable { get; set; }
+
+		[ContainerField(147), LayoutImmutable, Blittable, JsonProperty(Order = 147)]
+		public bool VisualFrameInterpolation { get; set; }
+
+		[ContainerField(148), LayoutImmutable, Blittable, JsonProperty(Order = 148)]
+		public bool InvertPadPcRightStick { get; set; }
+
+		[ContainerField(149), LayoutImmutable, Blittable, JsonProperty(Order = 149)]
+		public bool Scheme0FlipY { get; set; }
+
+		[ContainerField(150), LayoutImmutable, Blittable, JsonProperty(Order = 150)]
+		public bool IsSpectator { get; set; }
+
+		[ContainerField(151), LayoutImmutable, Blittable, JsonProperty(Order = 151)]
+		public bool Scheme1FlipY { get; set; }
+
+		[ContainerField(152), LayoutImmutable, Blittable, JsonProperty(Order = 152)]
+		public bool QuitGameOnServerDisconnect { get; set; }
+
 	}
 }

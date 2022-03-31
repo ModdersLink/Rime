@@ -5,74 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 41, Size: 8)]
-	public class AntEventData : FrostbiteContainer
+	[ContainerType(4, 8)]
+	public class AntEventData
 	{
-		[ContainerField(Name: "TagId", Offset: 0, NameHash: 227597338, Flags: 49405), LayoutImmutable, Blittable]
-		public int TagId { get; set; } // 0x0 (0)
+		[ContainerField(0), LayoutImmutable, Blittable, JsonProperty(Order = 0)]
+		public int TagId { get; set; }
 		
-		[ContainerField(Name: "Event", Offset: 4, NameHash: 201427689, Flags: 41)]
-		public EventSpec Event { get; set; } = new EventSpec(); // 0x4 (4)
+		[ContainerField(4), JsonProperty(Order = 4)]
+		public EventSpec Event { get; set; } = new();
 		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 227597338:
-					TagId = (int) p_Value;
-					break;
-
-				case 201427689:
-					Event = (EventSpec) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 227597338:
-					return TagId;
-
-				case 201427689:
-					return Event;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 227597338:
-					return typeof(AntEventData).GetProperty(nameof(TagId));
-
-				case 201427689:
-					return typeof(AntEventData).GetProperty(nameof(Event));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

@@ -5,87 +5,29 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 41, Size: 16)]
-	public class GroundHeightData : FrostbiteContainer
+	[ContainerType(4, 16)]
+	public class GroundHeightData
 	{
-		[ContainerField(Name: "HeightSpan", Offset: 0, NameHash: 3361614390, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
-		public Vec2 HeightSpan { get; set; } = new Vec2(); // 0x0 (0)
+		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 0)]
+		public Vec2 HeightSpan { get; set; } = new();
 		
-		[ContainerField(Name: "WorldSize", Offset: 8, NameHash: 2492064770, Flags: 49469), LayoutImmutable, Blittable]
-		public float WorldSize { get; set; } // 0x8 (8)
+		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
+		public float WorldSize { get; set; }
 		
-		[ContainerField(Name: "Data", Offset: 12, NameHash: 2088730869, Flags: 65)]
-		public List<ushort> Data { get; set; } = new List<ushort>(); // 0xC (12)
+		[ContainerField(12), JsonProperty(Order = 12)]
+		public List<ushort> Data { get; set; } = new();
 		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 3361614390:
-					HeightSpan = (Vec2) p_Value;
-					break;
-
-				case 2492064770:
-					WorldSize = (float) p_Value;
-					break;
-
-				case 2088730869:
-					Data = (List<ushort>) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3361614390:
-					return HeightSpan;
-
-				case 2492064770:
-					return WorldSize;
-
-				case 2088730869:
-					return Data;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3361614390:
-					return typeof(GroundHeightData).GetProperty(nameof(HeightSpan));
-
-				case 2492064770:
-					return typeof(GroundHeightData).GetProperty(nameof(WorldSize));
-
-				case 2088730869:
-					return typeof(GroundHeightData).GetProperty(nameof(Data));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

@@ -5,91 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 32)]
+	[ContainerType(4, 32)]
 	public class MedicBagHealingSphereWeaponData : 
 		WeaponData
 	{
-		protected HealingSphereData m_Healer = new HealingSphereData();
-		[ContainerField(Name: "Healer", Offset: 16, NameHash: 3054336626, Flags: 41)]
-		public HealingSphereData Healer { get { return m_Healer; } set { if (OnPropertyChanging("MedicBagHealingSphereWeaponData." + nameof(Healer), this, m_Healer, value)) m_Healer = value; } } // 0x10 (16)
-		
-		protected float m_HealthPointsRefillSpeed = new float();
-		[ContainerField(Name: "HealthPointsRefillSpeed", Offset: 24, NameHash: 677121433, Flags: 49469), LayoutImmutable, Blittable]
-		public float HealthPointsRefillSpeed { get { return m_HealthPointsRefillSpeed; } set { if (OnPropertyChanging("MedicBagHealingSphereWeaponData." + nameof(HealthPointsRefillSpeed), this, m_HealthPointsRefillSpeed, value)) m_HealthPointsRefillSpeed = value; } } // 0x18 (24)
-		
-		protected float m_HealthPointsPerBag = new float();
-		[ContainerField(Name: "HealthPointsPerBag", Offset: 28, NameHash: 134333413, Flags: 49469), LayoutImmutable, Blittable]
-		public float HealthPointsPerBag { get { return m_HealthPointsPerBag; } set { if (OnPropertyChanging("MedicBagHealingSphereWeaponData." + nameof(HealthPointsPerBag), this, m_HealthPointsPerBag, value)) m_HealthPointsPerBag = value; } } // 0x1C (28)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 3054336626:
-					Healer = (HealingSphereData) p_Value;
-					break;
+		[ContainerField(16), JsonProperty(Order = 16)]
+		public HealingSphereData Healer { get; set; } = new();
 
-				case 677121433:
-					HealthPointsRefillSpeed = (float) p_Value;
-					break;
+		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
+		public float HealthPointsRefillSpeed { get; set; }
 
-				case 134333413:
-					HealthPointsPerBag = (float) p_Value;
-					break;
+		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
+		public float HealthPointsPerBag { get; set; }
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3054336626:
-					return Healer;
-
-				case 677121433:
-					return HealthPointsRefillSpeed;
-
-				case 134333413:
-					return HealthPointsPerBag;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3054336626:
-					return typeof(MedicBagHealingSphereWeaponData).GetProperty(nameof(Healer));
-
-				case 677121433:
-					return typeof(MedicBagHealingSphereWeaponData).GetProperty(nameof(HealthPointsRefillSpeed));
-
-				case 134333413:
-					return typeof(MedicBagHealingSphereWeaponData).GetProperty(nameof(HealthPointsPerBag));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

@@ -5,63 +5,24 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 36)]
+	[ContainerType(4, 36)]
 	public class PrefabBlueprint : 
 		Blueprint
 	{
-		protected RefArray<GameObjectData> m_Objects = new RefArray<GameObjectData>();
-		[ContainerField(Name: "Objects", Offset: 32, NameHash: 105488131, Flags: 65)]
-		public RefArray<GameObjectData> Objects { get { return m_Objects; } set { if (OnPropertyChanging("PrefabBlueprint." + nameof(Objects), this, m_Objects, value)) m_Objects = value; } } // 0x20 (32)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 105488131:
-					Objects = (RefArray<GameObjectData>) p_Value;
-					break;
+		[ContainerField(32), JsonProperty(Order = 32)]
+		public RefArray<GameObjectData> Objects { get; set; } = new();
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 105488131:
-					return Objects;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 105488131:
-					return typeof(PrefabBlueprint).GetProperty(nameof(Objects));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

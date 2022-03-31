@@ -22,7 +22,7 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
             p_Writer.WriteLine();
 
             foreach (var s_Chunk in s_Chunks)
-                Console.WriteLine($"- {s_Chunk.Key.ToString("D")}");
+                p_Writer.WriteLine($"- {s_Chunk.Key.ToString("D")}");
 
             return true;
         }

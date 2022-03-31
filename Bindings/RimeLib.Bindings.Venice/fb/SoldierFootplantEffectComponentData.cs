@@ -5,119 +5,36 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 16,  Flags: 53, Size: 128)]
+	[ContainerType(16, 128)]
 	public class SoldierFootplantEffectComponentData : 
 		ComponentData
 	{
-		protected CtrRef<MaterialContainerPair> m_FootMaterialPair = new CtrRef<MaterialContainerPair>();
-		[ContainerField(Name: "FootMaterialPair", Offset: 96, NameHash: 3867460534, Flags: 53)]
-		public CtrRef<MaterialContainerPair> FootMaterialPair { get { return m_FootMaterialPair; } set { if (OnPropertyChanging("SoldierFootplantEffectComponentData." + nameof(FootMaterialPair), this, m_FootMaterialPair, value)) m_FootMaterialPair = value; } } // 0x60 (96)
-		
-		protected float m_HeightOverGroundThreshold = new float();
-		[ContainerField(Name: "HeightOverGroundThreshold", Offset: 100, NameHash: 1421561158, Flags: 49469), LayoutImmutable, Blittable]
-		public float HeightOverGroundThreshold { get { return m_HeightOverGroundThreshold; } set { if (OnPropertyChanging("SoldierFootplantEffectComponentData." + nameof(HeightOverGroundThreshold), this, m_HeightOverGroundThreshold, value)) m_HeightOverGroundThreshold = value; } } // 0x64 (100)
-		
-		protected float m_FootVelocityThreshold = new float();
-		[ContainerField(Name: "FootVelocityThreshold", Offset: 104, NameHash: 4147690487, Flags: 49469), LayoutImmutable, Blittable]
-		public float FootVelocityThreshold { get { return m_FootVelocityThreshold; } set { if (OnPropertyChanging("SoldierFootplantEffectComponentData." + nameof(FootVelocityThreshold), this, m_FootVelocityThreshold, value)) m_FootVelocityThreshold = value; } } // 0x68 (104)
-		
-		protected float m_LodDistance = new float();
-		[ContainerField(Name: "LodDistance", Offset: 108, NameHash: 3054638721, Flags: 49469), LayoutImmutable, Blittable]
-		public float LodDistance { get { return m_LodDistance; } set { if (OnPropertyChanging("SoldierFootplantEffectComponentData." + nameof(LodDistance), this, m_LodDistance, value)) m_LodDistance = value; } } // 0x6C (108)
-		
-		protected bool m_FullFootplantingEnabled = new bool();
-		[ContainerField(Name: "FullFootplantingEnabled", Offset: 112, NameHash: 2514567430, Flags: 49325), LayoutImmutable, Blittable]
-		public bool FullFootplantingEnabled { get { return m_FullFootplantingEnabled; } set { if (OnPropertyChanging("SoldierFootplantEffectComponentData." + nameof(FullFootplantingEnabled), this, m_FullFootplantingEnabled, value)) m_FullFootplantingEnabled = value; } } // 0x70 (112)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 3867460534:
-					FootMaterialPair = (CtrRef<MaterialContainerPair>) p_Value;
-					break;
+		[ContainerField(96), JsonProperty(Order = 96)]
+		public CtrRef<MaterialContainerPair> FootMaterialPair { get; set; } = new();
 
-				case 1421561158:
-					HeightOverGroundThreshold = (float) p_Value;
-					break;
+		[ContainerField(100), LayoutImmutable, Blittable, JsonProperty(Order = 100)]
+		public float HeightOverGroundThreshold { get; set; }
 
-				case 4147690487:
-					FootVelocityThreshold = (float) p_Value;
-					break;
+		[ContainerField(104), LayoutImmutable, Blittable, JsonProperty(Order = 104)]
+		public float FootVelocityThreshold { get; set; }
 
-				case 3054638721:
-					LodDistance = (float) p_Value;
-					break;
+		[ContainerField(108), LayoutImmutable, Blittable, JsonProperty(Order = 108)]
+		public float LodDistance { get; set; }
 
-				case 2514567430:
-					FullFootplantingEnabled = (bool) p_Value;
-					break;
+		[ContainerField(112), LayoutImmutable, Blittable, JsonProperty(Order = 112)]
+		public bool FullFootplantingEnabled { get; set; }
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3867460534:
-					return FootMaterialPair;
-
-				case 1421561158:
-					return HeightOverGroundThreshold;
-
-				case 4147690487:
-					return FootVelocityThreshold;
-
-				case 3054638721:
-					return LodDistance;
-
-				case 2514567430:
-					return FullFootplantingEnabled;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3867460534:
-					return typeof(SoldierFootplantEffectComponentData).GetProperty(nameof(FootMaterialPair));
-
-				case 1421561158:
-					return typeof(SoldierFootplantEffectComponentData).GetProperty(nameof(HeightOverGroundThreshold));
-
-				case 4147690487:
-					return typeof(SoldierFootplantEffectComponentData).GetProperty(nameof(FootVelocityThreshold));
-
-				case 3054638721:
-					return typeof(SoldierFootplantEffectComponentData).GetProperty(nameof(LodDistance));
-
-				case 2514567430:
-					return typeof(SoldierFootplantEffectComponentData).GetProperty(nameof(FullFootplantingEnabled));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

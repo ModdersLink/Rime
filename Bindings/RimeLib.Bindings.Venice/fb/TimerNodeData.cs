@@ -5,133 +5,39 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 52)]
+	[ContainerType(4, 52)]
 	public class TimerNodeData : 
 		AudioGraphNodeData
 	{
-		protected AudioGraphNodePort m_Start = new AudioGraphNodePort();
-		[ContainerField(Name: "Start", Offset: 8, NameHash: 230748069, Flags: 41)]
-		public AudioGraphNodePort Start { get { return m_Start; } set { if (OnPropertyChanging("TimerNodeData." + nameof(Start), this, m_Start, value)) m_Start = value; } } // 0x8 (8)
-		
-		protected AudioGraphNodePort m_Stop = new AudioGraphNodePort();
-		[ContainerField(Name: "Stop", Offset: 16, NameHash: 2089401213, Flags: 41)]
-		public AudioGraphNodePort Stop { get { return m_Stop; } set { if (OnPropertyChanging("TimerNodeData." + nameof(Stop), this, m_Stop, value)) m_Stop = value; } } // 0x10 (16)
-		
-		protected AudioGraphNodePort m_Period = new AudioGraphNodePort();
-		[ContainerField(Name: "Period", Offset: 24, NameHash: 3366831232, Flags: 41)]
-		public AudioGraphNodePort Period { get { return m_Period; } set { if (OnPropertyChanging("TimerNodeData." + nameof(Period), this, m_Period, value)) m_Period = value; } } // 0x18 (24)
-		
-		protected AudioGraphNodePort m_Tick = new AudioGraphNodePort();
-		[ContainerField(Name: "Tick", Offset: 32, NameHash: 2089313808, Flags: 41)]
-		public AudioGraphNodePort Tick { get { return m_Tick; } set { if (OnPropertyChanging("TimerNodeData." + nameof(Tick), this, m_Tick, value)) m_Tick = value; } } // 0x20 (32)
-		
-		protected AudioGraphNodePort m_Progress = new AudioGraphNodePort();
-		[ContainerField(Name: "Progress", Offset: 40, NameHash: 3002510520, Flags: 41)]
-		public AudioGraphNodePort Progress { get { return m_Progress; } set { if (OnPropertyChanging("TimerNodeData." + nameof(Progress), this, m_Progress, value)) m_Progress = value; } } // 0x28 (40)
-		
-		protected TimerMode m_Mode = new TimerMode();
-		[ContainerField(Name: "Mode", Offset: 48, NameHash: 2088772358, Flags: 137)]
-		public TimerMode Mode { get { return m_Mode; } set { if (OnPropertyChanging("TimerNodeData." + nameof(Mode), this, m_Mode, value)) m_Mode = value; } } // 0x30 (48)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 230748069:
-					Start = (AudioGraphNodePort) p_Value;
-					break;
+		[ContainerField(8), JsonProperty(Order = 8)]
+		public AudioGraphNodePort Start { get; set; } = new();
 
-				case 2089401213:
-					Stop = (AudioGraphNodePort) p_Value;
-					break;
+		[ContainerField(16), JsonProperty(Order = 16)]
+		public AudioGraphNodePort Stop { get; set; } = new();
 
-				case 3366831232:
-					Period = (AudioGraphNodePort) p_Value;
-					break;
+		[ContainerField(24), JsonProperty(Order = 24)]
+		public AudioGraphNodePort Period { get; set; } = new();
 
-				case 2089313808:
-					Tick = (AudioGraphNodePort) p_Value;
-					break;
+		[ContainerField(32), JsonProperty(Order = 32)]
+		public AudioGraphNodePort Tick { get; set; } = new();
 
-				case 3002510520:
-					Progress = (AudioGraphNodePort) p_Value;
-					break;
+		[ContainerField(40), JsonProperty(Order = 40)]
+		public AudioGraphNodePort Progress { get; set; } = new();
 
-				case 2088772358:
-					Mode = (TimerMode) Enum.ToObject(typeof(TimerMode), p_Value);
-					break;
+		[ContainerField(48), JsonProperty(Order = 48)]
+		public TimerMode Mode { get; set; } = new();
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 230748069:
-					return Start;
-
-				case 2089401213:
-					return Stop;
-
-				case 3366831232:
-					return Period;
-
-				case 2089313808:
-					return Tick;
-
-				case 3002510520:
-					return Progress;
-
-				case 2088772358:
-					return Mode;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 230748069:
-					return typeof(TimerNodeData).GetProperty(nameof(Start));
-
-				case 2089401213:
-					return typeof(TimerNodeData).GetProperty(nameof(Stop));
-
-				case 3366831232:
-					return typeof(TimerNodeData).GetProperty(nameof(Period));
-
-				case 2089313808:
-					return typeof(TimerNodeData).GetProperty(nameof(Tick));
-
-				case 3002510520:
-					return typeof(TimerNodeData).GetProperty(nameof(Progress));
-
-				case 2088772358:
-					return typeof(TimerNodeData).GetProperty(nameof(Mode));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

@@ -5,651 +5,150 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 16,  Flags: 53, Size: 288)]
+	[ContainerType(16, 288)]
 	public class VehicleConfigData : 
 		DataContainer
 	{
-		protected Vec3 m_CenterOfMass = new Vec3();
-		[ContainerField(Name: "CenterOfMass", Offset: 16, NameHash: 361795531, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 CenterOfMass { get { return m_CenterOfMass; } set { if (OnPropertyChanging("VehicleConfigData." + nameof(CenterOfMass), this, m_CenterOfMass, value)) m_CenterOfMass = value; } } // 0x10 (16)
-		
-		protected Vec3 m_CenterOfMassHandlingOffset = new Vec3();
-		[ContainerField(Name: "CenterOfMassHandlingOffset", Offset: 32, NameHash: 168252105, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 CenterOfMassHandlingOffset { get { return m_CenterOfMassHandlingOffset; } set { if (OnPropertyChanging("VehicleConfigData." + nameof(CenterOfMassHandlingOffset), this, m_CenterOfMassHandlingOffset, value)) m_CenterOfMassHandlingOffset = value; } } // 0x20 (32)
-		
-		protected Vec3 m_InertiaModifier = new Vec3();
-		[ContainerField(Name: "InertiaModifier", Offset: 48, NameHash: 3532865534, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 InertiaModifier { get { return m_InertiaModifier; } set { if (OnPropertyChanging("VehicleConfigData." + nameof(InertiaModifier), this, m_InertiaModifier, value)) m_InertiaModifier = value; } } // 0x30 (48)
-		
-		protected CtrRef<AeroDynamicPhysicsData> m_AeroDynamicPhysics = new CtrRef<AeroDynamicPhysicsData>();
-		[ContainerField(Name: "AeroDynamicPhysics", Offset: 64, NameHash: 2399848130, Flags: 53)]
-		public CtrRef<AeroDynamicPhysicsData> AeroDynamicPhysics { get { return m_AeroDynamicPhysics; } set { if (OnPropertyChanging("VehicleConfigData." + nameof(AeroDynamicPhysics), this, m_AeroDynamicPhysics, value)) m_AeroDynamicPhysics = value; } } // 0x40 (64)
-		
-		protected CtrRef<VehicleParachuteData> m_ParachutePhysics = new CtrRef<VehicleParachuteData>();
-		[ContainerField(Name: "ParachutePhysics", Offset: 68, NameHash: 3076063843, Flags: 53)]
-		public CtrRef<VehicleParachuteData> ParachutePhysics { get { return m_ParachutePhysics; } set { if (OnPropertyChanging("VehicleConfigData." + nameof(ParachutePhysics), this, m_ParachutePhysics, value)) m_ParachutePhysics = value; } } // 0x44 (68)
-		
-		protected CtrRef<MotorbikeData> m_MotorbikePhysics = new CtrRef<MotorbikeData>();
-		[ContainerField(Name: "MotorbikePhysics", Offset: 72, NameHash: 3743341024, Flags: 53)]
-		public CtrRef<MotorbikeData> MotorbikePhysics { get { return m_MotorbikePhysics; } set { if (OnPropertyChanging("VehicleConfigData." + nameof(MotorbikePhysics), this, m_MotorbikePhysics, value)) m_MotorbikePhysics = value; } } // 0x48 (72)
-		
-		protected CtrRef<MotionDampingData> m_MotionDamping = new CtrRef<MotionDampingData>();
-		[ContainerField(Name: "MotionDamping", Offset: 76, NameHash: 1754408739, Flags: 53)]
-		public CtrRef<MotionDampingData> MotionDamping { get { return m_MotionDamping; } set { if (OnPropertyChanging("VehicleConfigData." + nameof(MotionDamping), this, m_MotionDamping, value)) m_MotionDamping = value; } } // 0x4C (76)
-		
-		protected VehicleInputData m_Input = new VehicleInputData();
-		[ContainerField(Name: "Input", Offset: 80, NameHash: 214522259, Flags: 41)]
-		public VehicleInputData Input { get { return m_Input; } set { if (OnPropertyChanging("VehicleConfigData." + nameof(Input), this, m_Input, value)) m_Input = value; } } // 0x50 (80)
-		
-		protected CtrRef<FloatPhysicsData> m_FloatPhysics = new CtrRef<FloatPhysicsData>();
-		[ContainerField(Name: "FloatPhysics", Offset: 160, NameHash: 2331402366, Flags: 53)]
-		public CtrRef<FloatPhysicsData> FloatPhysics { get { return m_FloatPhysics; } set { if (OnPropertyChanging("VehicleConfigData." + nameof(FloatPhysics), this, m_FloatPhysics, value)) m_FloatPhysics = value; } } // 0xA0 (160)
-		
-		protected CtrRef<StabilizerData> m_Stabilizer = new CtrRef<StabilizerData>();
-		[ContainerField(Name: "Stabilizer", Offset: 164, NameHash: 103642688, Flags: 53)]
-		public CtrRef<StabilizerData> Stabilizer { get { return m_Stabilizer; } set { if (OnPropertyChanging("VehicleConfigData." + nameof(Stabilizer), this, m_Stabilizer, value)) m_Stabilizer = value; } } // 0xA4 (164)
-		
-		protected List<StabilizerSettings> m_Stabilizers = new List<StabilizerSettings>();
-		[ContainerField(Name: "Stabilizers", Offset: 168, NameHash: 3420208691, Flags: 65)]
-		public List<StabilizerSettings> Stabilizers { get { return m_Stabilizers; } set { if (OnPropertyChanging("VehicleConfigData." + nameof(Stabilizers), this, m_Stabilizers, value)) m_Stabilizers = value; } } // 0xA8 (168)
-		
-		protected List<ConstantForceData> m_ConstantForce = new List<ConstantForceData>();
-		[ContainerField(Name: "ConstantForce", Offset: 172, NameHash: 292465510, Flags: 65)]
-		public List<ConstantForceData> ConstantForce { get { return m_ConstantForce; } set { if (OnPropertyChanging("VehicleConfigData." + nameof(ConstantForce), this, m_ConstantForce, value)) m_ConstantForce = value; } } // 0xAC (172)
-		
-		protected VehicleMode m_VehicleModeAtReset = new VehicleMode();
-		[ContainerField(Name: "VehicleModeAtReset", Offset: 176, NameHash: 2802222942, Flags: 137)]
-		public VehicleMode VehicleModeAtReset { get { return m_VehicleModeAtReset; } set { if (OnPropertyChanging("VehicleConfigData." + nameof(VehicleModeAtReset), this, m_VehicleModeAtReset, value)) m_VehicleModeAtReset = value; } } // 0xB0 (176)
-		
-		protected float m_BodyMass = new float();
-		[ContainerField(Name: "BodyMass", Offset: 180, NameHash: 1687717849, Flags: 49469), LayoutImmutable, Blittable]
-		public float BodyMass { get { return m_BodyMass; } set { if (OnPropertyChanging("VehicleConfigData." + nameof(BodyMass), this, m_BodyMass, value)) m_BodyMass = value; } } // 0xB4 (180)
-		
-		protected float m_GravityModifier = new float();
-		[ContainerField(Name: "GravityModifier", Offset: 184, NameHash: 1597941524, Flags: 49469), LayoutImmutable, Blittable]
-		public float GravityModifier { get { return m_GravityModifier; } set { if (OnPropertyChanging("VehicleConfigData." + nameof(GravityModifier), this, m_GravityModifier, value)) m_GravityModifier = value; } } // 0xB8 (184)
-		
-		protected float m_YawMin = new float();
-		[ContainerField(Name: "YawMin", Offset: 188, NameHash: 3424707936, Flags: 49469), LayoutImmutable, Blittable]
-		public float YawMin { get { return m_YawMin; } set { if (OnPropertyChanging("VehicleConfigData." + nameof(YawMin), this, m_YawMin, value)) m_YawMin = value; } } // 0xBC (188)
-		
-		protected float m_YawMax = new float();
-		[ContainerField(Name: "YawMax", Offset: 192, NameHash: 3424707710, Flags: 49469), LayoutImmutable, Blittable]
-		public float YawMax { get { return m_YawMax; } set { if (OnPropertyChanging("VehicleConfigData." + nameof(YawMax), this, m_YawMax, value)) m_YawMax = value; } } // 0xC0 (192)
-		
-		protected float m_DownForceBaseFactor = new float();
-		[ContainerField(Name: "DownForceBaseFactor", Offset: 196, NameHash: 3150497810, Flags: 49469), LayoutImmutable, Blittable]
-		public float DownForceBaseFactor { get { return m_DownForceBaseFactor; } set { if (OnPropertyChanging("VehicleConfigData." + nameof(DownForceBaseFactor), this, m_DownForceBaseFactor, value)) m_DownForceBaseFactor = value; } } // 0xC4 (196)
-		
-		protected float m_DownForceWheelFactor = new float();
-		[ContainerField(Name: "DownForceWheelFactor", Offset: 200, NameHash: 2362709428, Flags: 49469), LayoutImmutable, Blittable]
-		public float DownForceWheelFactor { get { return m_DownForceWheelFactor; } set { if (OnPropertyChanging("VehicleConfigData." + nameof(DownForceWheelFactor), this, m_DownForceWheelFactor, value)) m_DownForceWheelFactor = value; } } // 0xC8 (200)
-		
-		protected float m_VehicleModeChangeEnteringTime = new float();
-		[ContainerField(Name: "VehicleModeChangeEnteringTime", Offset: 204, NameHash: 2388855333, Flags: 49469), LayoutImmutable, Blittable]
-		public float VehicleModeChangeEnteringTime { get { return m_VehicleModeChangeEnteringTime; } set { if (OnPropertyChanging("VehicleConfigData." + nameof(VehicleModeChangeEnteringTime), this, m_VehicleModeChangeEnteringTime, value)) m_VehicleModeChangeEnteringTime = value; } } // 0xCC (204)
-		
-		protected float m_VehicleModeChangeStartingTime = new float();
-		[ContainerField(Name: "VehicleModeChangeStartingTime", Offset: 208, NameHash: 3960598669, Flags: 49469), LayoutImmutable, Blittable]
-		public float VehicleModeChangeStartingTime { get { return m_VehicleModeChangeStartingTime; } set { if (OnPropertyChanging("VehicleConfigData." + nameof(VehicleModeChangeStartingTime), this, m_VehicleModeChangeStartingTime, value)) m_VehicleModeChangeStartingTime = value; } } // 0xD0 (208)
-		
-		protected float m_VehicleModeChangeStoppingTime = new float();
-		[ContainerField(Name: "VehicleModeChangeStoppingTime", Offset: 212, NameHash: 1591712197, Flags: 49469), LayoutImmutable, Blittable]
-		public float VehicleModeChangeStoppingTime { get { return m_VehicleModeChangeStoppingTime; } set { if (OnPropertyChanging("VehicleConfigData." + nameof(VehicleModeChangeStoppingTime), this, m_VehicleModeChangeStoppingTime, value)) m_VehicleModeChangeStoppingTime = value; } } // 0xD4 (212)
-		
-		protected float m_VehicleModeChangeLeavingTime = new float();
-		[ContainerField(Name: "VehicleModeChangeLeavingTime", Offset: 216, NameHash: 2810866003, Flags: 49469), LayoutImmutable, Blittable]
-		public float VehicleModeChangeLeavingTime { get { return m_VehicleModeChangeLeavingTime; } set { if (OnPropertyChanging("VehicleConfigData." + nameof(VehicleModeChangeLeavingTime), this, m_VehicleModeChangeLeavingTime, value)) m_VehicleModeChangeLeavingTime = value; } } // 0xD8 (216)
-		
-		protected float m_StandStillLowSpeedTimeLimit = new float();
-		[ContainerField(Name: "StandStillLowSpeedTimeLimit", Offset: 220, NameHash: 1874961716, Flags: 49469), LayoutImmutable, Blittable]
-		public float StandStillLowSpeedTimeLimit { get { return m_StandStillLowSpeedTimeLimit; } set { if (OnPropertyChanging("VehicleConfigData." + nameof(StandStillLowSpeedTimeLimit), this, m_StandStillLowSpeedTimeLimit, value)) m_StandStillLowSpeedTimeLimit = value; } } // 0xDC (220)
-		
-		protected float m_StaticFrictionBreakCollisionMod = new float();
-		[ContainerField(Name: "StaticFrictionBreakCollisionMod", Offset: 224, NameHash: 2830214072, Flags: 49469), LayoutImmutable, Blittable]
-		public float StaticFrictionBreakCollisionMod { get { return m_StaticFrictionBreakCollisionMod; } set { if (OnPropertyChanging("VehicleConfigData." + nameof(StaticFrictionBreakCollisionMod), this, m_StaticFrictionBreakCollisionMod, value)) m_StaticFrictionBreakCollisionMod = value; } } // 0xE0 (224)
-		
-		protected float m_StaticFrictionBreakVelocityMod = new float();
-		[ContainerField(Name: "StaticFrictionBreakVelocityMod", Offset: 228, NameHash: 2340632433, Flags: 49469), LayoutImmutable, Blittable]
-		public float StaticFrictionBreakVelocityMod { get { return m_StaticFrictionBreakVelocityMod; } set { if (OnPropertyChanging("VehicleConfigData." + nameof(StaticFrictionBreakVelocityMod), this, m_StaticFrictionBreakVelocityMod, value)) m_StaticFrictionBreakVelocityMod = value; } } // 0xE4 (228)
-		
-		protected float m_CoefficientOfAirFriction = new float();
-		[ContainerField(Name: "CoefficientOfAirFriction", Offset: 232, NameHash: 2384886817, Flags: 49469), LayoutImmutable, Blittable]
-		public float CoefficientOfAirFriction { get { return m_CoefficientOfAirFriction; } set { if (OnPropertyChanging("VehicleConfigData." + nameof(CoefficientOfAirFriction), this, m_CoefficientOfAirFriction, value)) m_CoefficientOfAirFriction = value; } } // 0xE8 (232)
-		
-		protected float m_AirDensity = new float();
-		[ContainerField(Name: "AirDensity", Offset: 236, NameHash: 2185227687, Flags: 49469), LayoutImmutable, Blittable]
-		public float AirDensity { get { return m_AirDensity; } set { if (OnPropertyChanging("VehicleConfigData." + nameof(AirDensity), this, m_AirDensity, value)) m_AirDensity = value; } } // 0xEC (236)
-		
-		protected float m_AirDragArea = new float();
-		[ContainerField(Name: "AirDragArea", Offset: 240, NameHash: 711586744, Flags: 49469), LayoutImmutable, Blittable]
-		public float AirDragArea { get { return m_AirDragArea; } set { if (OnPropertyChanging("VehicleConfigData." + nameof(AirDragArea), this, m_AirDragArea, value)) m_AirDragArea = value; } } // 0xF0 (240)
-		
-		protected float m_WindResistanceBaseFactor = new float();
-		[ContainerField(Name: "WindResistanceBaseFactor", Offset: 244, NameHash: 2449706634, Flags: 49469), LayoutImmutable, Blittable]
-		public float WindResistanceBaseFactor { get { return m_WindResistanceBaseFactor; } set { if (OnPropertyChanging("VehicleConfigData." + nameof(WindResistanceBaseFactor), this, m_WindResistanceBaseFactor, value)) m_WindResistanceBaseFactor = value; } } // 0xF4 (244)
-		
-		protected float m_WindResistanceVelocityFactor = new float();
-		[ContainerField(Name: "WindResistanceVelocityFactor", Offset: 248, NameHash: 1925688264, Flags: 49469), LayoutImmutable, Blittable]
-		public float WindResistanceVelocityFactor { get { return m_WindResistanceVelocityFactor; } set { if (OnPropertyChanging("VehicleConfigData." + nameof(WindResistanceVelocityFactor), this, m_WindResistanceVelocityFactor, value)) m_WindResistanceVelocityFactor = value; } } // 0xF8 (248)
-		
-		protected float m_WindResistanceVelocityFactorMin = new float();
-		[ContainerField(Name: "WindResistanceVelocityFactorMin", Offset: 252, NameHash: 2945998498, Flags: 49469), LayoutImmutable, Blittable]
-		public float WindResistanceVelocityFactorMin { get { return m_WindResistanceVelocityFactorMin; } set { if (OnPropertyChanging("VehicleConfigData." + nameof(WindResistanceVelocityFactorMin), this, m_WindResistanceVelocityFactorMin, value)) m_WindResistanceVelocityFactorMin = value; } } // 0xFC (252)
-		
-		protected float m_WindResistanceVelocityFactorMax = new float();
-		[ContainerField(Name: "WindResistanceVelocityFactorMax", Offset: 256, NameHash: 2945998268, Flags: 49469), LayoutImmutable, Blittable]
-		public float WindResistanceVelocityFactorMax { get { return m_WindResistanceVelocityFactorMax; } set { if (OnPropertyChanging("VehicleConfigData." + nameof(WindResistanceVelocityFactorMax), this, m_WindResistanceVelocityFactorMax, value)) m_WindResistanceVelocityFactorMax = value; } } // 0x100 (256)
-		
-		protected AntiRollBars m_AntiRollBars = new AntiRollBars();
-		[ContainerField(Name: "AntiRollBars", Offset: 260, NameHash: 3162631432, Flags: 41)]
-		public AntiRollBars AntiRollBars { get { return m_AntiRollBars; } set { if (OnPropertyChanging("VehicleConfigData." + nameof(AntiRollBars), this, m_AntiRollBars, value)) m_AntiRollBars = value; } } // 0x104 (260)
-		
-		protected bool m_UseDownForceWheelFactor = new bool();
-		[ContainerField(Name: "UseDownForceWheelFactor", Offset: 268, NameHash: 1501599031, Flags: 49325), LayoutImmutable, Blittable]
-		public bool UseDownForceWheelFactor { get { return m_UseDownForceWheelFactor; } set { if (OnPropertyChanging("VehicleConfigData." + nameof(UseDownForceWheelFactor), this, m_UseDownForceWheelFactor, value)) m_UseDownForceWheelFactor = value; } } // 0x10C (268)
-		
-		protected bool m_UseGearbox = new bool();
-		[ContainerField(Name: "UseGearbox", Offset: 269, NameHash: 2279282370, Flags: 49325), LayoutImmutable, Blittable]
-		public bool UseGearbox { get { return m_UseGearbox; } set { if (OnPropertyChanging("VehicleConfigData." + nameof(UseGearbox), this, m_UseGearbox, value)) m_UseGearbox = value; } } // 0x10D (269)
-		
-		protected bool m_UseStandStillBrake = new bool();
-		[ContainerField(Name: "UseStandStillBrake", Offset: 270, NameHash: 1632443835, Flags: 49325), LayoutImmutable, Blittable]
-		public bool UseStandStillBrake { get { return m_UseStandStillBrake; } set { if (OnPropertyChanging("VehicleConfigData." + nameof(UseStandStillBrake), this, m_UseStandStillBrake, value)) m_UseStandStillBrake = value; } } // 0x10E (270)
-		
-		protected bool m_UseStandStillSleep = new bool();
-		[ContainerField(Name: "UseStandStillSleep", Offset: 271, NameHash: 1649809771, Flags: 49325), LayoutImmutable, Blittable]
-		public bool UseStandStillSleep { get { return m_UseStandStillSleep; } set { if (OnPropertyChanging("VehicleConfigData." + nameof(UseStandStillSleep), this, m_UseStandStillSleep, value)) m_UseStandStillSleep = value; } } // 0x10F (271)
-		
-		protected bool m_UseTurnAroundForce = new bool();
-		[ContainerField(Name: "UseTurnAroundForce", Offset: 272, NameHash: 3314651845, Flags: 49325), LayoutImmutable, Blittable]
-		public bool UseTurnAroundForce { get { return m_UseTurnAroundForce; } set { if (OnPropertyChanging("VehicleConfigData." + nameof(UseTurnAroundForce), this, m_UseTurnAroundForce, value)) m_UseTurnAroundForce = value; } } // 0x110 (272)
-		
-		protected bool m_UseMotorcycleControl = new bool();
-		[ContainerField(Name: "UseMotorcycleControl", Offset: 273, NameHash: 1123886874, Flags: 49325), LayoutImmutable, Blittable]
-		public bool UseMotorcycleControl { get { return m_UseMotorcycleControl; } set { if (OnPropertyChanging("VehicleConfigData." + nameof(UseMotorcycleControl), this, m_UseMotorcycleControl, value)) m_UseMotorcycleControl = value; } } // 0x111 (273)
-		
-		protected bool m_InvertPitchAllowed = new bool();
-		[ContainerField(Name: "InvertPitchAllowed", Offset: 274, NameHash: 2854376649, Flags: 49325), LayoutImmutable, Blittable]
-		public bool InvertPitchAllowed { get { return m_InvertPitchAllowed; } set { if (OnPropertyChanging("VehicleConfigData." + nameof(InvertPitchAllowed), this, m_InvertPitchAllowed, value)) m_InvertPitchAllowed = value; } } // 0x112 (274)
-		
-		protected bool m_UseWindResistance = new bool();
-		[ContainerField(Name: "UseWindResistance", Offset: 275, NameHash: 2549367409, Flags: 49325), LayoutImmutable, Blittable]
-		public bool UseWindResistance { get { return m_UseWindResistance; } set { if (OnPropertyChanging("VehicleConfigData." + nameof(UseWindResistance), this, m_UseWindResistance, value)) m_UseWindResistance = value; } } // 0x113 (275)
-		
-		protected bool m_UseDownForce = new bool();
-		[ContainerField(Name: "UseDownForce", Offset: 276, NameHash: 2101870921, Flags: 49325), LayoutImmutable, Blittable]
-		public bool UseDownForce { get { return m_UseDownForce; } set { if (OnPropertyChanging("VehicleConfigData." + nameof(UseDownForce), this, m_UseDownForce, value)) m_UseDownForce = value; } } // 0x114 (276)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 361795531:
-					CenterOfMass = (Vec3) p_Value;
-					break;
-
-				case 168252105:
-					CenterOfMassHandlingOffset = (Vec3) p_Value;
-					break;
-
-				case 3532865534:
-					InertiaModifier = (Vec3) p_Value;
-					break;
-
-				case 2399848130:
-					AeroDynamicPhysics = (CtrRef<AeroDynamicPhysicsData>) p_Value;
-					break;
-
-				case 3076063843:
-					ParachutePhysics = (CtrRef<VehicleParachuteData>) p_Value;
-					break;
-
-				case 3743341024:
-					MotorbikePhysics = (CtrRef<MotorbikeData>) p_Value;
-					break;
-
-				case 1754408739:
-					MotionDamping = (CtrRef<MotionDampingData>) p_Value;
-					break;
-
-				case 214522259:
-					Input = (VehicleInputData) p_Value;
-					break;
-
-				case 2331402366:
-					FloatPhysics = (CtrRef<FloatPhysicsData>) p_Value;
-					break;
-
-				case 103642688:
-					Stabilizer = (CtrRef<StabilizerData>) p_Value;
-					break;
-
-				case 3420208691:
-					Stabilizers = (List<StabilizerSettings>) p_Value;
-					break;
-
-				case 292465510:
-					ConstantForce = (List<ConstantForceData>) p_Value;
-					break;
-
-				case 2802222942:
-					VehicleModeAtReset = (VehicleMode) Enum.ToObject(typeof(VehicleMode), p_Value);
-					break;
-
-				case 1687717849:
-					BodyMass = (float) p_Value;
-					break;
-
-				case 1597941524:
-					GravityModifier = (float) p_Value;
-					break;
-
-				case 3424707936:
-					YawMin = (float) p_Value;
-					break;
-
-				case 3424707710:
-					YawMax = (float) p_Value;
-					break;
-
-				case 3150497810:
-					DownForceBaseFactor = (float) p_Value;
-					break;
-
-				case 2362709428:
-					DownForceWheelFactor = (float) p_Value;
-					break;
-
-				case 2388855333:
-					VehicleModeChangeEnteringTime = (float) p_Value;
-					break;
-
-				case 3960598669:
-					VehicleModeChangeStartingTime = (float) p_Value;
-					break;
-
-				case 1591712197:
-					VehicleModeChangeStoppingTime = (float) p_Value;
-					break;
-
-				case 2810866003:
-					VehicleModeChangeLeavingTime = (float) p_Value;
-					break;
-
-				case 1874961716:
-					StandStillLowSpeedTimeLimit = (float) p_Value;
-					break;
-
-				case 2830214072:
-					StaticFrictionBreakCollisionMod = (float) p_Value;
-					break;
-
-				case 2340632433:
-					StaticFrictionBreakVelocityMod = (float) p_Value;
-					break;
-
-				case 2384886817:
-					CoefficientOfAirFriction = (float) p_Value;
-					break;
-
-				case 2185227687:
-					AirDensity = (float) p_Value;
-					break;
-
-				case 711586744:
-					AirDragArea = (float) p_Value;
-					break;
-
-				case 2449706634:
-					WindResistanceBaseFactor = (float) p_Value;
-					break;
-
-				case 1925688264:
-					WindResistanceVelocityFactor = (float) p_Value;
-					break;
-
-				case 2945998498:
-					WindResistanceVelocityFactorMin = (float) p_Value;
-					break;
-
-				case 2945998268:
-					WindResistanceVelocityFactorMax = (float) p_Value;
-					break;
-
-				case 3162631432:
-					AntiRollBars = (AntiRollBars) p_Value;
-					break;
-
-				case 1501599031:
-					UseDownForceWheelFactor = (bool) p_Value;
-					break;
-
-				case 2279282370:
-					UseGearbox = (bool) p_Value;
-					break;
-
-				case 1632443835:
-					UseStandStillBrake = (bool) p_Value;
-					break;
-
-				case 1649809771:
-					UseStandStillSleep = (bool) p_Value;
-					break;
-
-				case 3314651845:
-					UseTurnAroundForce = (bool) p_Value;
-					break;
-
-				case 1123886874:
-					UseMotorcycleControl = (bool) p_Value;
-					break;
-
-				case 2854376649:
-					InvertPitchAllowed = (bool) p_Value;
-					break;
-
-				case 2549367409:
-					UseWindResistance = (bool) p_Value;
-					break;
-
-				case 2101870921:
-					UseDownForce = (bool) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 361795531:
-					return CenterOfMass;
-
-				case 168252105:
-					return CenterOfMassHandlingOffset;
-
-				case 3532865534:
-					return InertiaModifier;
-
-				case 2399848130:
-					return AeroDynamicPhysics;
-
-				case 3076063843:
-					return ParachutePhysics;
-
-				case 3743341024:
-					return MotorbikePhysics;
-
-				case 1754408739:
-					return MotionDamping;
-
-				case 214522259:
-					return Input;
-
-				case 2331402366:
-					return FloatPhysics;
-
-				case 103642688:
-					return Stabilizer;
-
-				case 3420208691:
-					return Stabilizers;
-
-				case 292465510:
-					return ConstantForce;
-
-				case 2802222942:
-					return VehicleModeAtReset;
-
-				case 1687717849:
-					return BodyMass;
-
-				case 1597941524:
-					return GravityModifier;
-
-				case 3424707936:
-					return YawMin;
-
-				case 3424707710:
-					return YawMax;
-
-				case 3150497810:
-					return DownForceBaseFactor;
-
-				case 2362709428:
-					return DownForceWheelFactor;
-
-				case 2388855333:
-					return VehicleModeChangeEnteringTime;
-
-				case 3960598669:
-					return VehicleModeChangeStartingTime;
-
-				case 1591712197:
-					return VehicleModeChangeStoppingTime;
-
-				case 2810866003:
-					return VehicleModeChangeLeavingTime;
-
-				case 1874961716:
-					return StandStillLowSpeedTimeLimit;
-
-				case 2830214072:
-					return StaticFrictionBreakCollisionMod;
-
-				case 2340632433:
-					return StaticFrictionBreakVelocityMod;
-
-				case 2384886817:
-					return CoefficientOfAirFriction;
-
-				case 2185227687:
-					return AirDensity;
-
-				case 711586744:
-					return AirDragArea;
-
-				case 2449706634:
-					return WindResistanceBaseFactor;
-
-				case 1925688264:
-					return WindResistanceVelocityFactor;
-
-				case 2945998498:
-					return WindResistanceVelocityFactorMin;
-
-				case 2945998268:
-					return WindResistanceVelocityFactorMax;
-
-				case 3162631432:
-					return AntiRollBars;
-
-				case 1501599031:
-					return UseDownForceWheelFactor;
-
-				case 2279282370:
-					return UseGearbox;
-
-				case 1632443835:
-					return UseStandStillBrake;
-
-				case 1649809771:
-					return UseStandStillSleep;
-
-				case 3314651845:
-					return UseTurnAroundForce;
-
-				case 1123886874:
-					return UseMotorcycleControl;
-
-				case 2854376649:
-					return InvertPitchAllowed;
-
-				case 2549367409:
-					return UseWindResistance;
-
-				case 2101870921:
-					return UseDownForce;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 361795531:
-					return typeof(VehicleConfigData).GetProperty(nameof(CenterOfMass));
-
-				case 168252105:
-					return typeof(VehicleConfigData).GetProperty(nameof(CenterOfMassHandlingOffset));
-
-				case 3532865534:
-					return typeof(VehicleConfigData).GetProperty(nameof(InertiaModifier));
-
-				case 2399848130:
-					return typeof(VehicleConfigData).GetProperty(nameof(AeroDynamicPhysics));
-
-				case 3076063843:
-					return typeof(VehicleConfigData).GetProperty(nameof(ParachutePhysics));
-
-				case 3743341024:
-					return typeof(VehicleConfigData).GetProperty(nameof(MotorbikePhysics));
-
-				case 1754408739:
-					return typeof(VehicleConfigData).GetProperty(nameof(MotionDamping));
-
-				case 214522259:
-					return typeof(VehicleConfigData).GetProperty(nameof(Input));
-
-				case 2331402366:
-					return typeof(VehicleConfigData).GetProperty(nameof(FloatPhysics));
-
-				case 103642688:
-					return typeof(VehicleConfigData).GetProperty(nameof(Stabilizer));
-
-				case 3420208691:
-					return typeof(VehicleConfigData).GetProperty(nameof(Stabilizers));
-
-				case 292465510:
-					return typeof(VehicleConfigData).GetProperty(nameof(ConstantForce));
-
-				case 2802222942:
-					return typeof(VehicleConfigData).GetProperty(nameof(VehicleModeAtReset));
-
-				case 1687717849:
-					return typeof(VehicleConfigData).GetProperty(nameof(BodyMass));
-
-				case 1597941524:
-					return typeof(VehicleConfigData).GetProperty(nameof(GravityModifier));
-
-				case 3424707936:
-					return typeof(VehicleConfigData).GetProperty(nameof(YawMin));
-
-				case 3424707710:
-					return typeof(VehicleConfigData).GetProperty(nameof(YawMax));
-
-				case 3150497810:
-					return typeof(VehicleConfigData).GetProperty(nameof(DownForceBaseFactor));
-
-				case 2362709428:
-					return typeof(VehicleConfigData).GetProperty(nameof(DownForceWheelFactor));
-
-				case 2388855333:
-					return typeof(VehicleConfigData).GetProperty(nameof(VehicleModeChangeEnteringTime));
-
-				case 3960598669:
-					return typeof(VehicleConfigData).GetProperty(nameof(VehicleModeChangeStartingTime));
-
-				case 1591712197:
-					return typeof(VehicleConfigData).GetProperty(nameof(VehicleModeChangeStoppingTime));
-
-				case 2810866003:
-					return typeof(VehicleConfigData).GetProperty(nameof(VehicleModeChangeLeavingTime));
-
-				case 1874961716:
-					return typeof(VehicleConfigData).GetProperty(nameof(StandStillLowSpeedTimeLimit));
-
-				case 2830214072:
-					return typeof(VehicleConfigData).GetProperty(nameof(StaticFrictionBreakCollisionMod));
-
-				case 2340632433:
-					return typeof(VehicleConfigData).GetProperty(nameof(StaticFrictionBreakVelocityMod));
-
-				case 2384886817:
-					return typeof(VehicleConfigData).GetProperty(nameof(CoefficientOfAirFriction));
-
-				case 2185227687:
-					return typeof(VehicleConfigData).GetProperty(nameof(AirDensity));
-
-				case 711586744:
-					return typeof(VehicleConfigData).GetProperty(nameof(AirDragArea));
-
-				case 2449706634:
-					return typeof(VehicleConfigData).GetProperty(nameof(WindResistanceBaseFactor));
-
-				case 1925688264:
-					return typeof(VehicleConfigData).GetProperty(nameof(WindResistanceVelocityFactor));
-
-				case 2945998498:
-					return typeof(VehicleConfigData).GetProperty(nameof(WindResistanceVelocityFactorMin));
-
-				case 2945998268:
-					return typeof(VehicleConfigData).GetProperty(nameof(WindResistanceVelocityFactorMax));
-
-				case 3162631432:
-					return typeof(VehicleConfigData).GetProperty(nameof(AntiRollBars));
-
-				case 1501599031:
-					return typeof(VehicleConfigData).GetProperty(nameof(UseDownForceWheelFactor));
-
-				case 2279282370:
-					return typeof(VehicleConfigData).GetProperty(nameof(UseGearbox));
-
-				case 1632443835:
-					return typeof(VehicleConfigData).GetProperty(nameof(UseStandStillBrake));
-
-				case 1649809771:
-					return typeof(VehicleConfigData).GetProperty(nameof(UseStandStillSleep));
-
-				case 3314651845:
-					return typeof(VehicleConfigData).GetProperty(nameof(UseTurnAroundForce));
-
-				case 1123886874:
-					return typeof(VehicleConfigData).GetProperty(nameof(UseMotorcycleControl));
-
-				case 2854376649:
-					return typeof(VehicleConfigData).GetProperty(nameof(InvertPitchAllowed));
-
-				case 2549367409:
-					return typeof(VehicleConfigData).GetProperty(nameof(UseWindResistance));
-
-				case 2101870921:
-					return typeof(VehicleConfigData).GetProperty(nameof(UseDownForce));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
+		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		public Vec3 CenterOfMass { get; set; } = new();
+
+		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 32)]
+		public Vec3 CenterOfMassHandlingOffset { get; set; } = new();
+
+		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 48)]
+		public Vec3 InertiaModifier { get; set; } = new();
+
+		[ContainerField(64), JsonProperty(Order = 64)]
+		public CtrRef<AeroDynamicPhysicsData> AeroDynamicPhysics { get; set; } = new();
+
+		[ContainerField(68), JsonProperty(Order = 68)]
+		public CtrRef<VehicleParachuteData> ParachutePhysics { get; set; } = new();
+
+		[ContainerField(72), JsonProperty(Order = 72)]
+		public CtrRef<MotorbikeData> MotorbikePhysics { get; set; } = new();
+
+		[ContainerField(76), JsonProperty(Order = 76)]
+		public CtrRef<MotionDampingData> MotionDamping { get; set; } = new();
+
+		[ContainerField(80), JsonProperty(Order = 80)]
+		public VehicleInputData Input { get; set; } = new();
+
+		[ContainerField(160), JsonProperty(Order = 160)]
+		public CtrRef<FloatPhysicsData> FloatPhysics { get; set; } = new();
+
+		[ContainerField(164), JsonProperty(Order = 164)]
+		public CtrRef<StabilizerData> Stabilizer { get; set; } = new();
+
+		[ContainerField(168), JsonProperty(Order = 168)]
+		public List<StabilizerSettings> Stabilizers { get; set; } = new();
+
+		[ContainerField(172), JsonProperty(Order = 172)]
+		public List<ConstantForceData> ConstantForce { get; set; } = new();
+
+		[ContainerField(176), JsonProperty(Order = 176)]
+		public VehicleMode VehicleModeAtReset { get; set; } = new();
+
+		[ContainerField(180), LayoutImmutable, Blittable, JsonProperty(Order = 180)]
+		public float BodyMass { get; set; }
+
+		[ContainerField(184), LayoutImmutable, Blittable, JsonProperty(Order = 184)]
+		public float GravityModifier { get; set; }
+
+		[ContainerField(188), LayoutImmutable, Blittable, JsonProperty(Order = 188)]
+		public float YawMin { get; set; }
+
+		[ContainerField(192), LayoutImmutable, Blittable, JsonProperty(Order = 192)]
+		public float YawMax { get; set; }
+
+		[ContainerField(196), LayoutImmutable, Blittable, JsonProperty(Order = 196)]
+		public float DownForceBaseFactor { get; set; }
+
+		[ContainerField(200), LayoutImmutable, Blittable, JsonProperty(Order = 200)]
+		public float DownForceWheelFactor { get; set; }
+
+		[ContainerField(204), LayoutImmutable, Blittable, JsonProperty(Order = 204)]
+		public float VehicleModeChangeEnteringTime { get; set; }
+
+		[ContainerField(208), LayoutImmutable, Blittable, JsonProperty(Order = 208)]
+		public float VehicleModeChangeStartingTime { get; set; }
+
+		[ContainerField(212), LayoutImmutable, Blittable, JsonProperty(Order = 212)]
+		public float VehicleModeChangeStoppingTime { get; set; }
+
+		[ContainerField(216), LayoutImmutable, Blittable, JsonProperty(Order = 216)]
+		public float VehicleModeChangeLeavingTime { get; set; }
+
+		[ContainerField(220), LayoutImmutable, Blittable, JsonProperty(Order = 220)]
+		public float StandStillLowSpeedTimeLimit { get; set; }
+
+		[ContainerField(224), LayoutImmutable, Blittable, JsonProperty(Order = 224)]
+		public float StaticFrictionBreakCollisionMod { get; set; }
+
+		[ContainerField(228), LayoutImmutable, Blittable, JsonProperty(Order = 228)]
+		public float StaticFrictionBreakVelocityMod { get; set; }
+
+		[ContainerField(232), LayoutImmutable, Blittable, JsonProperty(Order = 232)]
+		public float CoefficientOfAirFriction { get; set; }
+
+		[ContainerField(236), LayoutImmutable, Blittable, JsonProperty(Order = 236)]
+		public float AirDensity { get; set; }
+
+		[ContainerField(240), LayoutImmutable, Blittable, JsonProperty(Order = 240)]
+		public float AirDragArea { get; set; }
+
+		[ContainerField(244), LayoutImmutable, Blittable, JsonProperty(Order = 244)]
+		public float WindResistanceBaseFactor { get; set; }
+
+		[ContainerField(248), LayoutImmutable, Blittable, JsonProperty(Order = 248)]
+		public float WindResistanceVelocityFactor { get; set; }
+
+		[ContainerField(252), LayoutImmutable, Blittable, JsonProperty(Order = 252)]
+		public float WindResistanceVelocityFactorMin { get; set; }
+
+		[ContainerField(256), LayoutImmutable, Blittable, JsonProperty(Order = 256)]
+		public float WindResistanceVelocityFactorMax { get; set; }
+
+		[ContainerField(260), JsonProperty(Order = 260)]
+		public AntiRollBars AntiRollBars { get; set; } = new();
+
+		[ContainerField(268), LayoutImmutable, Blittable, JsonProperty(Order = 268)]
+		public bool UseDownForceWheelFactor { get; set; }
+
+		[ContainerField(269), LayoutImmutable, Blittable, JsonProperty(Order = 269)]
+		public bool UseGearbox { get; set; }
+
+		[ContainerField(270), LayoutImmutable, Blittable, JsonProperty(Order = 270)]
+		public bool UseStandStillBrake { get; set; }
+
+		[ContainerField(271), LayoutImmutable, Blittable, JsonProperty(Order = 271)]
+		public bool UseStandStillSleep { get; set; }
+
+		[ContainerField(272), LayoutImmutable, Blittable, JsonProperty(Order = 272)]
+		public bool UseTurnAroundForce { get; set; }
+
+		[ContainerField(273), LayoutImmutable, Blittable, JsonProperty(Order = 273)]
+		public bool UseMotorcycleControl { get; set; }
+
+		[ContainerField(274), LayoutImmutable, Blittable, JsonProperty(Order = 274)]
+		public bool InvertPitchAllowed { get; set; }
+
+		[ContainerField(275), LayoutImmutable, Blittable, JsonProperty(Order = 275)]
+		public bool UseWindResistance { get; set; }
+
+		[ContainerField(276), LayoutImmutable, Blittable, JsonProperty(Order = 276)]
+		public bool UseDownForce { get; set; }
+
 	}
 }

@@ -5,63 +5,24 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 32)]
+	[ContainerType(4, 32)]
 	public class UIManDownCompData : 
 		UIComponentData
 	{
-		protected float m_DelayManDownTextTime = new float();
-		[ContainerField(Name: "DelayManDownTextTime", Offset: 28, NameHash: 3590261480, Flags: 49469), LayoutImmutable, Blittable]
-		public float DelayManDownTextTime { get { return m_DelayManDownTextTime; } set { if (OnPropertyChanging("UIManDownCompData." + nameof(DelayManDownTextTime), this, m_DelayManDownTextTime, value)) m_DelayManDownTextTime = value; } } // 0x1C (28)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 3590261480:
-					DelayManDownTextTime = (float) p_Value;
-					break;
+		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
+		public float DelayManDownTextTime { get; set; }
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3590261480:
-					return DelayManDownTextTime;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3590261480:
-					return typeof(UIManDownCompData).GetProperty(nameof(DelayManDownTextTime));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

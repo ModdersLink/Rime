@@ -5,100 +5,32 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 41, Size: 16)]
-	public class FiringDispersionData : FrostbiteContainer
+	[ContainerType(4, 16)]
+	public class FiringDispersionData
 	{
-		[ContainerField(Name: "MinAngle", Offset: 0, NameHash: 3356124462, Flags: 49469), LayoutImmutable, Blittable]
-		public float MinAngle { get; set; } // 0x0 (0)
+		[ContainerField(0), LayoutImmutable, Blittable, JsonProperty(Order = 0)]
+		public float MinAngle { get; set; }
 		
-		[ContainerField(Name: "MaxAngle", Offset: 4, NameHash: 417488496, Flags: 49469), LayoutImmutable, Blittable]
-		public float MaxAngle { get; set; } // 0x4 (4)
+		[ContainerField(4), LayoutImmutable, Blittable, JsonProperty(Order = 4)]
+		public float MaxAngle { get; set; }
 		
-		[ContainerField(Name: "IncreasePerShot", Offset: 8, NameHash: 95639814, Flags: 49469), LayoutImmutable, Blittable]
-		public float IncreasePerShot { get; set; } // 0x8 (8)
+		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
+		public float IncreasePerShot { get; set; }
 		
-		[ContainerField(Name: "DecreasePerSecond", Offset: 12, NameHash: 3208554608, Flags: 49469), LayoutImmutable, Blittable]
-		public float DecreasePerSecond { get; set; } // 0xC (12)
+		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
+		public float DecreasePerSecond { get; set; }
 		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 3356124462:
-					MinAngle = (float) p_Value;
-					break;
-
-				case 417488496:
-					MaxAngle = (float) p_Value;
-					break;
-
-				case 95639814:
-					IncreasePerShot = (float) p_Value;
-					break;
-
-				case 3208554608:
-					DecreasePerSecond = (float) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3356124462:
-					return MinAngle;
-
-				case 417488496:
-					return MaxAngle;
-
-				case 95639814:
-					return IncreasePerShot;
-
-				case 3208554608:
-					return DecreasePerSecond;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3356124462:
-					return typeof(FiringDispersionData).GetProperty(nameof(MinAngle));
-
-				case 417488496:
-					return typeof(FiringDispersionData).GetProperty(nameof(MaxAngle));
-
-				case 95639814:
-					return typeof(FiringDispersionData).GetProperty(nameof(IncreasePerShot));
-
-				case 3208554608:
-					return typeof(FiringDispersionData).GetProperty(nameof(DecreasePerSecond));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

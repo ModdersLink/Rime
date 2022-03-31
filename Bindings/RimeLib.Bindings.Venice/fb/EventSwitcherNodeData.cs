@@ -5,77 +5,27 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 20)]
+	[ContainerType(4, 20)]
 	public class EventSwitcherNodeData : 
 		AudioGraphNodeData
 	{
-		protected RefArray<EventSwitcherEntry> m_Inputs = new RefArray<EventSwitcherEntry>();
-		[ContainerField(Name: "Inputs", Offset: 8, NameHash: 2784267136, Flags: 65)]
-		public RefArray<EventSwitcherEntry> Inputs { get { return m_Inputs; } set { if (OnPropertyChanging("EventSwitcherNodeData." + nameof(Inputs), this, m_Inputs, value)) m_Inputs = value; } } // 0x8 (8)
-		
-		protected AudioGraphNodePort m_Value = new AudioGraphNodePort();
-		[ContainerField(Name: "Value", Offset: 12, NameHash: 225375086, Flags: 41)]
-		public AudioGraphNodePort Value { get { return m_Value; } set { if (OnPropertyChanging("EventSwitcherNodeData." + nameof(Value), this, m_Value, value)) m_Value = value; } } // 0xC (12)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 2784267136:
-					Inputs = (RefArray<EventSwitcherEntry>) p_Value;
-					break;
+		[ContainerField(8), JsonProperty(Order = 8)]
+		public RefArray<EventSwitcherEntry> Inputs { get; set; } = new();
 
-				case 225375086:
-					Value = (AudioGraphNodePort) p_Value;
-					break;
+		[ContainerField(12), JsonProperty(Order = 12)]
+		public AudioGraphNodePort Value { get; set; } = new();
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2784267136:
-					return Inputs;
-
-				case 225375086:
-					return Value;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2784267136:
-					return typeof(EventSwitcherNodeData).GetProperty(nameof(Inputs));
-
-				case 225375086:
-					return typeof(EventSwitcherNodeData).GetProperty(nameof(Value));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

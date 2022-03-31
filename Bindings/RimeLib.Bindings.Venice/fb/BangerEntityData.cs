@@ -5,133 +5,39 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 16,  Flags: 53, Size: 144)]
+	[ContainerType(16, 144)]
 	public class BangerEntityData : 
 		DynamicGamePhysicsEntityData
 	{
-		protected List<float> m_Scales = new List<float>();
-		[ContainerField(Name: "Scales", Offset: 112, NameHash: 3335406670, Flags: 65)]
-		public List<float> Scales { get { return m_Scales; } set { if (OnPropertyChanging("BangerEntityData." + nameof(Scales), this, m_Scales, value)) m_Scales = value; } } // 0x70 (112)
-		
-		protected CtrRef<MeshAsset> m_Mesh = new CtrRef<MeshAsset>();
-		[ContainerField(Name: "Mesh", Offset: 116, NameHash: 2088783990, Flags: 53)]
-		public CtrRef<MeshAsset> Mesh { get { return m_Mesh; } set { if (OnPropertyChanging("BangerEntityData." + nameof(Mesh), this, m_Mesh, value)) m_Mesh = value; } } // 0x74 (116)
-		
-		protected CtrRef<ExplosionEntityData> m_Explosion = new CtrRef<ExplosionEntityData>();
-		[ContainerField(Name: "Explosion", Offset: 120, NameHash: 2222171184, Flags: 53)]
-		public CtrRef<ExplosionEntityData> Explosion { get { return m_Explosion; } set { if (OnPropertyChanging("BangerEntityData." + nameof(Explosion), this, m_Explosion, value)) m_Explosion = value; } } // 0x78 (120)
-		
-		protected float m_TimeToLive = new float();
-		[ContainerField(Name: "TimeToLive", Offset: 124, NameHash: 1571456733, Flags: 49469), LayoutImmutable, Blittable]
-		public float TimeToLive { get { return m_TimeToLive; } set { if (OnPropertyChanging("BangerEntityData." + nameof(TimeToLive), this, m_TimeToLive, value)) m_TimeToLive = value; } } // 0x7C (124)
-		
-		protected uint m_DestructiblePartCount = new uint();
-		[ContainerField(Name: "DestructiblePartCount", Offset: 128, NameHash: 539039685, Flags: 49421), LayoutImmutable, Blittable]
-		public uint DestructiblePartCount { get { return m_DestructiblePartCount; } set { if (OnPropertyChanging("BangerEntityData." + nameof(DestructiblePartCount), this, m_DestructiblePartCount, value)) m_DestructiblePartCount = value; } } // 0x80 (128)
-		
-		protected bool m_UseVariableNetworkFrequency = new bool();
-		[ContainerField(Name: "UseVariableNetworkFrequency", Offset: 132, NameHash: 1010950522, Flags: 49325), LayoutImmutable, Blittable]
-		public bool UseVariableNetworkFrequency { get { return m_UseVariableNetworkFrequency; } set { if (OnPropertyChanging("BangerEntityData." + nameof(UseVariableNetworkFrequency), this, m_UseVariableNetworkFrequency, value)) m_UseVariableNetworkFrequency = value; } } // 0x84 (132)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 3335406670:
-					Scales = (List<float>) p_Value;
-					break;
+		[ContainerField(112), JsonProperty(Order = 112)]
+		public List<float> Scales { get; set; } = new();
 
-				case 2088783990:
-					Mesh = (CtrRef<MeshAsset>) p_Value;
-					break;
+		[ContainerField(116), JsonProperty(Order = 116)]
+		public CtrRef<MeshAsset> Mesh { get; set; } = new();
 
-				case 2222171184:
-					Explosion = (CtrRef<ExplosionEntityData>) p_Value;
-					break;
+		[ContainerField(120), JsonProperty(Order = 120)]
+		public CtrRef<ExplosionEntityData> Explosion { get; set; } = new();
 
-				case 1571456733:
-					TimeToLive = (float) p_Value;
-					break;
+		[ContainerField(124), LayoutImmutable, Blittable, JsonProperty(Order = 124)]
+		public float TimeToLive { get; set; }
 
-				case 539039685:
-					DestructiblePartCount = (uint) p_Value;
-					break;
+		[ContainerField(128), LayoutImmutable, Blittable, JsonProperty(Order = 128)]
+		public uint DestructiblePartCount { get; set; }
 
-				case 1010950522:
-					UseVariableNetworkFrequency = (bool) p_Value;
-					break;
+		[ContainerField(132), LayoutImmutable, Blittable, JsonProperty(Order = 132)]
+		public bool UseVariableNetworkFrequency { get; set; }
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3335406670:
-					return Scales;
-
-				case 2088783990:
-					return Mesh;
-
-				case 2222171184:
-					return Explosion;
-
-				case 1571456733:
-					return TimeToLive;
-
-				case 539039685:
-					return DestructiblePartCount;
-
-				case 1010950522:
-					return UseVariableNetworkFrequency;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3335406670:
-					return typeof(BangerEntityData).GetProperty(nameof(Scales));
-
-				case 2088783990:
-					return typeof(BangerEntityData).GetProperty(nameof(Mesh));
-
-				case 2222171184:
-					return typeof(BangerEntityData).GetProperty(nameof(Explosion));
-
-				case 1571456733:
-					return typeof(BangerEntityData).GetProperty(nameof(TimeToLive));
-
-				case 539039685:
-					return typeof(BangerEntityData).GetProperty(nameof(DestructiblePartCount));
-
-				case 1010950522:
-					return typeof(BangerEntityData).GetProperty(nameof(UseVariableNetworkFrequency));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

@@ -5,100 +5,32 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 41, Size: 16)]
-	public class MessageInfo : FrostbiteContainer
+	[ContainerType(4, 16)]
+	public class MessageInfo
 	{
-		[ContainerField(Name: "RowTypeName", Offset: 0, NameHash: 3765661552, Flags: 16509), LayoutImmutable]
-		public string RowTypeName { get; set; } // 0x0 (0)
+		[ContainerField(0), LayoutImmutable, JsonProperty(Order = 0)]
+		public string RowTypeName { get; set; } = string.Empty;
 		
-		[ContainerField(Name: "MessageQueueSize", Offset: 4, NameHash: 1715514970, Flags: 49421), LayoutImmutable, Blittable]
-		public uint MessageQueueSize { get; set; } // 0x4 (4)
+		[ContainerField(4), LayoutImmutable, Blittable, JsonProperty(Order = 4)]
+		public uint MessageQueueSize { get; set; }
 		
-		[ContainerField(Name: "NormalMessageTime", Offset: 8, NameHash: 3672669416, Flags: 49469), LayoutImmutable, Blittable]
-		public float NormalMessageTime { get; set; } // 0x8 (8)
+		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
+		public float NormalMessageTime { get; set; }
 		
-		[ContainerField(Name: "ShortMessageTime", Offset: 12, NameHash: 4257687913, Flags: 49469), LayoutImmutable, Blittable]
-		public float ShortMessageTime { get; set; } // 0xC (12)
+		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
+		public float ShortMessageTime { get; set; }
 		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 3765661552:
-					RowTypeName = (string) p_Value;
-					break;
-
-				case 1715514970:
-					MessageQueueSize = (uint) p_Value;
-					break;
-
-				case 3672669416:
-					NormalMessageTime = (float) p_Value;
-					break;
-
-				case 4257687913:
-					ShortMessageTime = (float) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3765661552:
-					return RowTypeName;
-
-				case 1715514970:
-					return MessageQueueSize;
-
-				case 3672669416:
-					return NormalMessageTime;
-
-				case 4257687913:
-					return ShortMessageTime;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3765661552:
-					return typeof(MessageInfo).GetProperty(nameof(RowTypeName));
-
-				case 1715514970:
-					return typeof(MessageInfo).GetProperty(nameof(MessageQueueSize));
-
-				case 3672669416:
-					return typeof(MessageInfo).GetProperty(nameof(NormalMessageTime));
-
-				case 4257687913:
-					return typeof(MessageInfo).GetProperty(nameof(ShortMessageTime));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

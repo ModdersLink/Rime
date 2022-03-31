@@ -1034,9 +1034,7 @@ namespace RimeLib.Math
         /// <param name="formatProvider">An System.IFormatProvider that supplies culture-specific formatting information.</param>
         /// <returns>The string representation of the value of this instance as specified by format and provider.</returns>
         /// <exception cref="System.FormatException">format is invalid.</exception>
-#pragma warning disable CS8767 // Nullability of reference types in type of parameter doesn't match implicitly implemented member (possibly because of nullability attributes).
         public string ToString(string format, IFormatProvider? formatProvider)
-#pragma warning restore CS8767 // Nullability of reference types in type of parameter doesn't match implicitly implemented member (possibly because of nullability attributes).
         {
             return ((float)this).ToString(format, formatProvider);
         }

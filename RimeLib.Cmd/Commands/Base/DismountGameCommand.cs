@@ -17,7 +17,7 @@ namespace RimeLib.Cmd.Commands.Base
 
             if (!s_Context.TryGetMounterById(Id, out _))
             {
-                Console.WriteLine($"Could not find mounted game with id '{Id}'. Use the 'list_games' command to see all mounted games and their ids.");
+                p_Writer.WriteLine($"Could not find mounted game with id '{Id}'. Use the 'list_games' command to see all mounted games and their ids.");
                 return false;
             }
 

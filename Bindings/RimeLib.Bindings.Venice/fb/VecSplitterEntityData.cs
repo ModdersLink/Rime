@@ -5,91 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 16,  Flags: 53, Size: 64)]
+	[ContainerType(16, 64)]
 	public class VecSplitterEntityData : 
 		EntityData
 	{
-		protected Vec3 m_Vec3 = new Vec3();
-		[ContainerField(Name: "Vec3", Offset: 16, NameHash: 2089241862, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 Vec3 { get { return m_Vec3; } set { if (OnPropertyChanging("VecSplitterEntityData." + nameof(Vec3), this, m_Vec3, value)) m_Vec3 = value; } } // 0x10 (16)
-		
-		protected Vec4 m_Vec4 = new Vec4();
-		[ContainerField(Name: "Vec4", Offset: 32, NameHash: 2089241857, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
-		public Vec4 Vec4 { get { return m_Vec4; } set { if (OnPropertyChanging("VecSplitterEntityData." + nameof(Vec4), this, m_Vec4, value)) m_Vec4 = value; } } // 0x20 (32)
-		
-		protected Realm m_Realm = new Realm();
-		[ContainerField(Name: "Realm", Offset: 48, NameHash: 229961746, Flags: 137)]
-		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("VecSplitterEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0x30 (48)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 2089241862:
-					Vec3 = (Vec3) p_Value;
-					break;
+		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		public Vec3 Vec3 { get; set; } = new();
 
-				case 2089241857:
-					Vec4 = (Vec4) p_Value;
-					break;
+		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 32)]
+		public Vec4 Vec4 { get; set; } = new();
 
-				case 229961746:
-					Realm = (Realm) Enum.ToObject(typeof(Realm), p_Value);
-					break;
+		[ContainerField(48), JsonProperty(Order = 48)]
+		public Realm Realm { get; set; } = new();
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2089241862:
-					return Vec3;
-
-				case 2089241857:
-					return Vec4;
-
-				case 229961746:
-					return Realm;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2089241862:
-					return typeof(VecSplitterEntityData).GetProperty(nameof(Vec3));
-
-				case 2089241857:
-					return typeof(VecSplitterEntityData).GetProperty(nameof(Vec4));
-
-				case 229961746:
-					return typeof(VecSplitterEntityData).GetProperty(nameof(Realm));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

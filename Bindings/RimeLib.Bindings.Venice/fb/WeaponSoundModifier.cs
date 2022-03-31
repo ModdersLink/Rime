@@ -5,63 +5,24 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 12)]
+	[ContainerType(4, 12)]
 	public class WeaponSoundModifier : 
 		WeaponModifierBase
 	{
-		protected CtrRef<SoundAsset> m_Sound = new CtrRef<SoundAsset>();
-		[ContainerField(Name: "Sound", Offset: 8, NameHash: 231353798, Flags: 53)]
-		public CtrRef<SoundAsset> Sound { get { return m_Sound; } set { if (OnPropertyChanging("WeaponSoundModifier." + nameof(Sound), this, m_Sound, value)) m_Sound = value; } } // 0x8 (8)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 231353798:
-					Sound = (CtrRef<SoundAsset>) p_Value;
-					break;
+		[ContainerField(8), JsonProperty(Order = 8)]
+		public CtrRef<SoundAsset> Sound { get; set; } = new();
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 231353798:
-					return Sound;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 231353798:
-					return typeof(WeaponSoundModifier).GetProperty(nameof(Sound));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

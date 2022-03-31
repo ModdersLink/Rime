@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -125,9 +126,9 @@ namespace RimeLib.Frostbite.Core
         /// Serializes the hash to a byte array
         /// </summary>
         /// <returns>Byte array containing the sha1 hash</returns>
-        public bool Serialize(out byte[] p_Data)
+        public bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
         {
-            p_Data = new byte[0];
+            p_Data = null;
 
             using (var s_Writer = new RimeWriter(new MemoryStream()))
             {

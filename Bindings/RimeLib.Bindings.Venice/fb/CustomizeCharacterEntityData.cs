@@ -5,63 +5,24 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 20)]
+	[ContainerType(4, 20)]
 	public class CustomizeCharacterEntityData : 
 		CustomizeBaseEntityData
 	{
-		protected CtrRef<CustomizeCharacterData> m_CustomizeCharacterData = new CtrRef<CustomizeCharacterData>();
-		[ContainerField(Name: "CustomizeCharacterData", Offset: 16, NameHash: 3784213897, Flags: 53)]
-		public CtrRef<CustomizeCharacterData> CustomizeCharacterData { get { return m_CustomizeCharacterData; } set { if (OnPropertyChanging("CustomizeCharacterEntityData." + nameof(CustomizeCharacterData), this, m_CustomizeCharacterData, value)) m_CustomizeCharacterData = value; } } // 0x10 (16)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 3784213897:
-					CustomizeCharacterData = (CtrRef<CustomizeCharacterData>) p_Value;
-					break;
+		[ContainerField(16), JsonProperty(Order = 16)]
+		public CtrRef<CustomizeCharacterData> CustomizeCharacterData { get; set; } = new();
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3784213897:
-					return CustomizeCharacterData;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3784213897:
-					return typeof(CustomizeCharacterEntityData).GetProperty(nameof(CustomizeCharacterData));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

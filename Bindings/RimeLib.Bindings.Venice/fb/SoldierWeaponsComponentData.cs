@@ -5,245 +5,63 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 16,  Flags: 53, Size: 480)]
+	[ContainerType(16, 480)]
 	public class SoldierWeaponsComponentData : 
 		ComponentData
 	{
-		protected LinearTransform m_AimDir = new LinearTransform();
-		[ContainerField(Name: "AimDir", Offset: 96, NameHash: 2495031935, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
-		public LinearTransform AimDir { get { return m_AimDir; } set { if (OnPropertyChanging("SoldierWeaponsComponentData." + nameof(AimDir), this, m_AimDir, value)) m_AimDir = value; } } // 0x60 (96)
-		
-		protected CtrRef<SkeletonAsset> m_WeaponSkeleton = new CtrRef<SkeletonAsset>();
-		[ContainerField(Name: "WeaponSkeleton", Offset: 160, NameHash: 170547750, Flags: 53)]
-		public CtrRef<SkeletonAsset> WeaponSkeleton { get { return m_WeaponSkeleton; } set { if (OnPropertyChanging("SoldierWeaponsComponentData." + nameof(WeaponSkeleton), this, m_WeaponSkeleton, value)) m_WeaponSkeleton = value; } } // 0xA0 (160)
-		
-		protected int m_PrimaryWeaponId = new int();
-		[ContainerField(Name: "PrimaryWeaponId", Offset: 164, NameHash: 2577280838, Flags: 49405), LayoutImmutable, Blittable]
-		public int PrimaryWeaponId { get { return m_PrimaryWeaponId; } set { if (OnPropertyChanging("SoldierWeaponsComponentData." + nameof(PrimaryWeaponId), this, m_PrimaryWeaponId, value)) m_PrimaryWeaponId = value; } } // 0xA4 (164)
-		
-		protected AnimatedWeaponBinding m_AnimatedWeaponBinding = new AnimatedWeaponBinding();
-		[ContainerField(Name: "AnimatedWeaponBinding", Offset: 168, NameHash: 2545459481, Flags: 41)]
-		public AnimatedWeaponBinding AnimatedWeaponBinding { get { return m_AnimatedWeaponBinding; } set { if (OnPropertyChanging("SoldierWeaponsComponentData." + nameof(AnimatedWeaponBinding), this, m_AnimatedWeaponBinding, value)) m_AnimatedWeaponBinding = value; } } // 0xA8 (168)
-		
-		protected Animated1pOnlyWeaponBinding m_Animated1pOnlyWeaponBinding = new Animated1pOnlyWeaponBinding();
-		[ContainerField(Name: "Animated1pOnlyWeaponBinding", Offset: 424, NameHash: 2092774924, Flags: 41)]
-		public Animated1pOnlyWeaponBinding Animated1pOnlyWeaponBinding { get { return m_Animated1pOnlyWeaponBinding; } set { if (OnPropertyChanging("SoldierWeaponsComponentData." + nameof(Animated1pOnlyWeaponBinding), this, m_Animated1pOnlyWeaponBinding, value)) m_Animated1pOnlyWeaponBinding = value; } } // 0x1A8 (424)
-		
-		protected Animated3pOnlyWeaponBinding m_Animated3pOnlyWeaponBinding = new Animated3pOnlyWeaponBinding();
-		[ContainerField(Name: "Animated3pOnlyWeaponBinding", Offset: 440, NameHash: 2729217678, Flags: 41)]
-		public Animated3pOnlyWeaponBinding Animated3pOnlyWeaponBinding { get { return m_Animated3pOnlyWeaponBinding; } set { if (OnPropertyChanging("SoldierWeaponsComponentData." + nameof(Animated3pOnlyWeaponBinding), this, m_Animated3pOnlyWeaponBinding, value)) m_Animated3pOnlyWeaponBinding = value; } } // 0x1B8 (440)
-		
-		protected float m_LockTimeMultiplier = new float();
-		[ContainerField(Name: "LockTimeMultiplier", Offset: 448, NameHash: 1309101584, Flags: 49469), LayoutImmutable, Blittable]
-		public float LockTimeMultiplier { get { return m_LockTimeMultiplier; } set { if (OnPropertyChanging("SoldierWeaponsComponentData." + nameof(LockTimeMultiplier), this, m_LockTimeMultiplier, value)) m_LockTimeMultiplier = value; } } // 0x1C0 (448)
-		
-		protected int m_GrenadeIncrease = new int();
-		[ContainerField(Name: "GrenadeIncrease", Offset: 452, NameHash: 2234856031, Flags: 49405), LayoutImmutable, Blittable]
-		public int GrenadeIncrease { get { return m_GrenadeIncrease; } set { if (OnPropertyChanging("SoldierWeaponsComponentData." + nameof(GrenadeIncrease), this, m_GrenadeIncrease, value)) m_GrenadeIncrease = value; } } // 0x1C4 (452)
-		
-		protected float m_AmmoClipIncreaseMultiplier = new float();
-		[ContainerField(Name: "AmmoClipIncreaseMultiplier", Offset: 456, NameHash: 1503904946, Flags: 49469), LayoutImmutable, Blittable]
-		public float AmmoClipIncreaseMultiplier { get { return m_AmmoClipIncreaseMultiplier; } set { if (OnPropertyChanging("SoldierWeaponsComponentData." + nameof(AmmoClipIncreaseMultiplier), this, m_AmmoClipIncreaseMultiplier, value)) m_AmmoClipIncreaseMultiplier = value; } } // 0x1C8 (456)
-		
-		protected float m_ExplosiveIncreaseMultiplier = new float();
-		[ContainerField(Name: "ExplosiveIncreaseMultiplier", Offset: 460, NameHash: 1624823149, Flags: 49469), LayoutImmutable, Blittable]
-		public float ExplosiveIncreaseMultiplier { get { return m_ExplosiveIncreaseMultiplier; } set { if (OnPropertyChanging("SoldierWeaponsComponentData." + nameof(ExplosiveIncreaseMultiplier), this, m_ExplosiveIncreaseMultiplier, value)) m_ExplosiveIncreaseMultiplier = value; } } // 0x1CC (460)
-		
-		protected int m_UnderslungGrenadeIncrease = new int();
-		[ContainerField(Name: "UnderslungGrenadeIncrease", Offset: 464, NameHash: 4031664884, Flags: 49405), LayoutImmutable, Blittable]
-		public int UnderslungGrenadeIncrease { get { return m_UnderslungGrenadeIncrease; } set { if (OnPropertyChanging("SoldierWeaponsComponentData." + nameof(UnderslungGrenadeIncrease), this, m_UnderslungGrenadeIncrease, value)) m_UnderslungGrenadeIncrease = value; } } // 0x1D0 (464)
-		
-		protected bool m_UseExternalAimDir = new bool();
-		[ContainerField(Name: "UseExternalAimDir", Offset: 468, NameHash: 4048604289, Flags: 49325), LayoutImmutable, Blittable]
-		public bool UseExternalAimDir { get { return m_UseExternalAimDir; } set { if (OnPropertyChanging("SoldierWeaponsComponentData." + nameof(UseExternalAimDir), this, m_UseExternalAimDir, value)) m_UseExternalAimDir = value; } } // 0x1D4 (468)
-		
-		protected bool m_UnlimitedAmmo = new bool();
-		[ContainerField(Name: "UnlimitedAmmo", Offset: 469, NameHash: 348431844, Flags: 49325), LayoutImmutable, Blittable]
-		public bool UnlimitedAmmo { get { return m_UnlimitedAmmo; } set { if (OnPropertyChanging("SoldierWeaponsComponentData." + nameof(UnlimitedAmmo), this, m_UnlimitedAmmo, value)) m_UnlimitedAmmo = value; } } // 0x1D5 (469)
-		
-		protected bool m_UnlimitedMags = new bool();
-		[ContainerField(Name: "UnlimitedMags", Offset: 470, NameHash: 348292018, Flags: 49325), LayoutImmutable, Blittable]
-		public bool UnlimitedMags { get { return m_UnlimitedMags; } set { if (OnPropertyChanging("SoldierWeaponsComponentData." + nameof(UnlimitedMags), this, m_UnlimitedMags, value)) m_UnlimitedMags = value; } } // 0x1D6 (470)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 2495031935:
-					AimDir = (LinearTransform) p_Value;
-					break;
+		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 96)]
+		public LinearTransform AimDir { get; set; } = new();
 
-				case 170547750:
-					WeaponSkeleton = (CtrRef<SkeletonAsset>) p_Value;
-					break;
+		[ContainerField(160), JsonProperty(Order = 160)]
+		public CtrRef<SkeletonAsset> WeaponSkeleton { get; set; } = new();
 
-				case 2577280838:
-					PrimaryWeaponId = (int) p_Value;
-					break;
+		[ContainerField(164), LayoutImmutable, Blittable, JsonProperty(Order = 164)]
+		public int PrimaryWeaponId { get; set; }
 
-				case 2545459481:
-					AnimatedWeaponBinding = (AnimatedWeaponBinding) p_Value;
-					break;
+		[ContainerField(168), JsonProperty(Order = 168)]
+		public AnimatedWeaponBinding AnimatedWeaponBinding { get; set; } = new();
 
-				case 2092774924:
-					Animated1pOnlyWeaponBinding = (Animated1pOnlyWeaponBinding) p_Value;
-					break;
+		[ContainerField(424), JsonProperty(Order = 424)]
+		public Animated1pOnlyWeaponBinding Animated1pOnlyWeaponBinding { get; set; } = new();
 
-				case 2729217678:
-					Animated3pOnlyWeaponBinding = (Animated3pOnlyWeaponBinding) p_Value;
-					break;
+		[ContainerField(440), JsonProperty(Order = 440)]
+		public Animated3pOnlyWeaponBinding Animated3pOnlyWeaponBinding { get; set; } = new();
 
-				case 1309101584:
-					LockTimeMultiplier = (float) p_Value;
-					break;
+		[ContainerField(448), LayoutImmutable, Blittable, JsonProperty(Order = 448)]
+		public float LockTimeMultiplier { get; set; }
 
-				case 2234856031:
-					GrenadeIncrease = (int) p_Value;
-					break;
+		[ContainerField(452), LayoutImmutable, Blittable, JsonProperty(Order = 452)]
+		public int GrenadeIncrease { get; set; }
 
-				case 1503904946:
-					AmmoClipIncreaseMultiplier = (float) p_Value;
-					break;
+		[ContainerField(456), LayoutImmutable, Blittable, JsonProperty(Order = 456)]
+		public float AmmoClipIncreaseMultiplier { get; set; }
 
-				case 1624823149:
-					ExplosiveIncreaseMultiplier = (float) p_Value;
-					break;
+		[ContainerField(460), LayoutImmutable, Blittable, JsonProperty(Order = 460)]
+		public float ExplosiveIncreaseMultiplier { get; set; }
 
-				case 4031664884:
-					UnderslungGrenadeIncrease = (int) p_Value;
-					break;
+		[ContainerField(464), LayoutImmutable, Blittable, JsonProperty(Order = 464)]
+		public int UnderslungGrenadeIncrease { get; set; }
 
-				case 4048604289:
-					UseExternalAimDir = (bool) p_Value;
-					break;
+		[ContainerField(468), LayoutImmutable, Blittable, JsonProperty(Order = 468)]
+		public bool UseExternalAimDir { get; set; }
 
-				case 348431844:
-					UnlimitedAmmo = (bool) p_Value;
-					break;
+		[ContainerField(469), LayoutImmutable, Blittable, JsonProperty(Order = 469)]
+		public bool UnlimitedAmmo { get; set; }
 
-				case 348292018:
-					UnlimitedMags = (bool) p_Value;
-					break;
+		[ContainerField(470), LayoutImmutable, Blittable, JsonProperty(Order = 470)]
+		public bool UnlimitedMags { get; set; }
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2495031935:
-					return AimDir;
-
-				case 170547750:
-					return WeaponSkeleton;
-
-				case 2577280838:
-					return PrimaryWeaponId;
-
-				case 2545459481:
-					return AnimatedWeaponBinding;
-
-				case 2092774924:
-					return Animated1pOnlyWeaponBinding;
-
-				case 2729217678:
-					return Animated3pOnlyWeaponBinding;
-
-				case 1309101584:
-					return LockTimeMultiplier;
-
-				case 2234856031:
-					return GrenadeIncrease;
-
-				case 1503904946:
-					return AmmoClipIncreaseMultiplier;
-
-				case 1624823149:
-					return ExplosiveIncreaseMultiplier;
-
-				case 4031664884:
-					return UnderslungGrenadeIncrease;
-
-				case 4048604289:
-					return UseExternalAimDir;
-
-				case 348431844:
-					return UnlimitedAmmo;
-
-				case 348292018:
-					return UnlimitedMags;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2495031935:
-					return typeof(SoldierWeaponsComponentData).GetProperty(nameof(AimDir));
-
-				case 170547750:
-					return typeof(SoldierWeaponsComponentData).GetProperty(nameof(WeaponSkeleton));
-
-				case 2577280838:
-					return typeof(SoldierWeaponsComponentData).GetProperty(nameof(PrimaryWeaponId));
-
-				case 2545459481:
-					return typeof(SoldierWeaponsComponentData).GetProperty(nameof(AnimatedWeaponBinding));
-
-				case 2092774924:
-					return typeof(SoldierWeaponsComponentData).GetProperty(nameof(Animated1pOnlyWeaponBinding));
-
-				case 2729217678:
-					return typeof(SoldierWeaponsComponentData).GetProperty(nameof(Animated3pOnlyWeaponBinding));
-
-				case 1309101584:
-					return typeof(SoldierWeaponsComponentData).GetProperty(nameof(LockTimeMultiplier));
-
-				case 2234856031:
-					return typeof(SoldierWeaponsComponentData).GetProperty(nameof(GrenadeIncrease));
-
-				case 1503904946:
-					return typeof(SoldierWeaponsComponentData).GetProperty(nameof(AmmoClipIncreaseMultiplier));
-
-				case 1624823149:
-					return typeof(SoldierWeaponsComponentData).GetProperty(nameof(ExplosiveIncreaseMultiplier));
-
-				case 4031664884:
-					return typeof(SoldierWeaponsComponentData).GetProperty(nameof(UnderslungGrenadeIncrease));
-
-				case 4048604289:
-					return typeof(SoldierWeaponsComponentData).GetProperty(nameof(UseExternalAimDir));
-
-				case 348431844:
-					return typeof(SoldierWeaponsComponentData).GetProperty(nameof(UnlimitedAmmo));
-
-				case 348292018:
-					return typeof(SoldierWeaponsComponentData).GetProperty(nameof(UnlimitedMags));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

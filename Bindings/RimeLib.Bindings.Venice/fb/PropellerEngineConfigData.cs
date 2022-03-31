@@ -5,595 +5,138 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 16,  Flags: 53, Size: 256)]
+	[ContainerType(16, 256)]
 	public class PropellerEngineConfigData : 
 		EngineConfigData
 	{
-		protected Vec3 m_HorisontalForceOffset = new Vec3();
-		[ContainerField(Name: "HorisontalForceOffset", Offset: 96, NameHash: 3212041026, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
-		public Vec3 HorisontalForceOffset { get { return m_HorisontalForceOffset; } set { if (OnPropertyChanging("PropellerEngineConfigData." + nameof(HorisontalForceOffset), this, m_HorisontalForceOffset, value)) m_HorisontalForceOffset = value; } } // 0x60 (96)
-		
-		protected PropellerType m_PropellerType = new PropellerType();
-		[ContainerField(Name: "PropellerType", Offset: 112, NameHash: 1200379762, Flags: 137)]
-		public PropellerType PropellerType { get { return m_PropellerType; } set { if (OnPropertyChanging("PropellerEngineConfigData." + nameof(PropellerType), this, m_PropellerType, value)) m_PropellerType = value; } } // 0x70 (112)
-		
-		protected CtrRef<RotorParameters> m_RotorConfig = new CtrRef<RotorParameters>();
-		[ContainerField(Name: "RotorConfig", Offset: 116, NameHash: 468078427, Flags: 53)]
-		public CtrRef<RotorParameters> RotorConfig { get { return m_RotorConfig; } set { if (OnPropertyChanging("PropellerEngineConfigData." + nameof(RotorConfig), this, m_RotorConfig, value)) m_RotorConfig = value; } } // 0x74 (116)
-		
-		protected ForceMagnitudeInputType m_ForceMagnitudeInputType = new ForceMagnitudeInputType();
-		[ContainerField(Name: "ForceMagnitudeInputType", Offset: 120, NameHash: 3842564762, Flags: 137)]
-		public ForceMagnitudeInputType ForceMagnitudeInputType { get { return m_ForceMagnitudeInputType; } set { if (OnPropertyChanging("PropellerEngineConfigData." + nameof(ForceMagnitudeInputType), this, m_ForceMagnitudeInputType, value)) m_ForceMagnitudeInputType = value; } } // 0x78 (120)
-		
-		protected uint m_DirectionVectorIndex = new uint();
-		[ContainerField(Name: "DirectionVectorIndex", Offset: 124, NameHash: 3901228711, Flags: 49421), LayoutImmutable, Blittable]
-		public uint DirectionVectorIndex { get { return m_DirectionVectorIndex; } set { if (OnPropertyChanging("PropellerEngineConfigData." + nameof(DirectionVectorIndex), this, m_DirectionVectorIndex, value)) m_DirectionVectorIndex = value; } } // 0x7C (124)
-		
-		protected float m_ForceMagnitudeMultiplier = new float();
-		[ContainerField(Name: "ForceMagnitudeMultiplier", Offset: 128, NameHash: 3209574239, Flags: 49469), LayoutImmutable, Blittable]
-		public float ForceMagnitudeMultiplier { get { return m_ForceMagnitudeMultiplier; } set { if (OnPropertyChanging("PropellerEngineConfigData." + nameof(ForceMagnitudeMultiplier), this, m_ForceMagnitudeMultiplier, value)) m_ForceMagnitudeMultiplier = value; } } // 0x80 (128)
-		
-		protected float m_LiftForceSpringConstant = new float();
-		[ContainerField(Name: "LiftForceSpringConstant", Offset: 132, NameHash: 201216672, Flags: 49469), LayoutImmutable, Blittable]
-		public float LiftForceSpringConstant { get { return m_LiftForceSpringConstant; } set { if (OnPropertyChanging("PropellerEngineConfigData." + nameof(LiftForceSpringConstant), this, m_LiftForceSpringConstant, value)) m_LiftForceSpringConstant = value; } } // 0x84 (132)
-		
-		protected float m_LiftForceDampingConstant = new float();
-		[ContainerField(Name: "LiftForceDampingConstant", Offset: 136, NameHash: 3660889641, Flags: 49469), LayoutImmutable, Blittable]
-		public float LiftForceDampingConstant { get { return m_LiftForceDampingConstant; } set { if (OnPropertyChanging("PropellerEngineConfigData." + nameof(LiftForceDampingConstant), this, m_LiftForceDampingConstant, value)) m_LiftForceDampingConstant = value; } } // 0x88 (136)
-		
-		protected float m_CyclicInputScaleRoll = new float();
-		[ContainerField(Name: "CyclicInputScaleRoll", Offset: 140, NameHash: 3891841257, Flags: 49469), LayoutImmutable, Blittable]
-		public float CyclicInputScaleRoll { get { return m_CyclicInputScaleRoll; } set { if (OnPropertyChanging("PropellerEngineConfigData." + nameof(CyclicInputScaleRoll), this, m_CyclicInputScaleRoll, value)) m_CyclicInputScaleRoll = value; } } // 0x8C (140)
-		
-		protected float m_CyclicRollLiftMod = new float();
-		[ContainerField(Name: "CyclicRollLiftMod", Offset: 144, NameHash: 1157893238, Flags: 49469), LayoutImmutable, Blittable]
-		public float CyclicRollLiftMod { get { return m_CyclicRollLiftMod; } set { if (OnPropertyChanging("PropellerEngineConfigData." + nameof(CyclicRollLiftMod), this, m_CyclicRollLiftMod, value)) m_CyclicRollLiftMod = value; } } // 0x90 (144)
-		
-		protected float m_CyclicRollStrafeMod = new float();
-		[ContainerField(Name: "CyclicRollStrafeMod", Offset: 148, NameHash: 2784120854, Flags: 49469), LayoutImmutable, Blittable]
-		public float CyclicRollStrafeMod { get { return m_CyclicRollStrafeMod; } set { if (OnPropertyChanging("PropellerEngineConfigData." + nameof(CyclicRollStrafeMod), this, m_CyclicRollStrafeMod, value)) m_CyclicRollStrafeMod = value; } } // 0x94 (148)
-		
-		protected float m_CyclicInputScalePitch = new float();
-		[ContainerField(Name: "CyclicInputScalePitch", Offset: 152, NameHash: 3869827346, Flags: 49469), LayoutImmutable, Blittable]
-		public float CyclicInputScalePitch { get { return m_CyclicInputScalePitch; } set { if (OnPropertyChanging("PropellerEngineConfigData." + nameof(CyclicInputScalePitch), this, m_CyclicInputScalePitch, value)) m_CyclicInputScalePitch = value; } } // 0x98 (152)
-		
-		protected float m_CyclicPitchLiftMod = new float();
-		[ContainerField(Name: "CyclicPitchLiftMod", Offset: 156, NameHash: 908927597, Flags: 49469), LayoutImmutable, Blittable]
-		public float CyclicPitchLiftMod { get { return m_CyclicPitchLiftMod; } set { if (OnPropertyChanging("PropellerEngineConfigData." + nameof(CyclicPitchLiftMod), this, m_CyclicPitchLiftMod, value)) m_CyclicPitchLiftMod = value; } } // 0x9C (156)
-		
-		protected float m_CyclicPitchStrafeMod = new float();
-		[ContainerField(Name: "CyclicPitchStrafeMod", Offset: 160, NameHash: 1559244621, Flags: 49469), LayoutImmutable, Blittable]
-		public float CyclicPitchStrafeMod { get { return m_CyclicPitchStrafeMod; } set { if (OnPropertyChanging("PropellerEngineConfigData." + nameof(CyclicPitchStrafeMod), this, m_CyclicPitchStrafeMod, value)) m_CyclicPitchStrafeMod = value; } } // 0xA0 (160)
-		
-		protected float m_CyclicPitchStrafeBrakeMod = new float();
-		[ContainerField(Name: "CyclicPitchStrafeBrakeMod", Offset: 164, NameHash: 1510977458, Flags: 49469), LayoutImmutable, Blittable]
-		public float CyclicPitchStrafeBrakeMod { get { return m_CyclicPitchStrafeBrakeMod; } set { if (OnPropertyChanging("PropellerEngineConfigData." + nameof(CyclicPitchStrafeBrakeMod), this, m_CyclicPitchStrafeBrakeMod, value)) m_CyclicPitchStrafeBrakeMod = value; } } // 0xA4 (164)
-		
-		protected float m_CollectiveInputIdle = new float();
-		[ContainerField(Name: "CollectiveInputIdle", Offset: 168, NameHash: 3489057395, Flags: 49469), LayoutImmutable, Blittable]
-		public float CollectiveInputIdle { get { return m_CollectiveInputIdle; } set { if (OnPropertyChanging("PropellerEngineConfigData." + nameof(CollectiveInputIdle), this, m_CollectiveInputIdle, value)) m_CollectiveInputIdle = value; } } // 0xA8 (168)
-		
-		protected float m_CollectiveThrottleInputScale = new float();
-		[ContainerField(Name: "CollectiveThrottleInputScale", Offset: 172, NameHash: 2328068935, Flags: 49469), LayoutImmutable, Blittable]
-		public float CollectiveThrottleInputScale { get { return m_CollectiveThrottleInputScale; } set { if (OnPropertyChanging("PropellerEngineConfigData." + nameof(CollectiveThrottleInputScale), this, m_CollectiveThrottleInputScale, value)) m_CollectiveThrottleInputScale = value; } } // 0xAC (172)
-		
-		protected float m_CollectiveBrakeInputScale = new float();
-		[ContainerField(Name: "CollectiveBrakeInputScale", Offset: 176, NameHash: 3062684400, Flags: 49469), LayoutImmutable, Blittable]
-		public float CollectiveBrakeInputScale { get { return m_CollectiveBrakeInputScale; } set { if (OnPropertyChanging("PropellerEngineConfigData." + nameof(CollectiveBrakeInputScale), this, m_CollectiveBrakeInputScale, value)) m_CollectiveBrakeInputScale = value; } } // 0xB0 (176)
-		
-		protected float m_DefaultAngleOfAttack = new float();
-		[ContainerField(Name: "DefaultAngleOfAttack", Offset: 180, NameHash: 1125032846, Flags: 49469), LayoutImmutable, Blittable]
-		public float DefaultAngleOfAttack { get { return m_DefaultAngleOfAttack; } set { if (OnPropertyChanging("PropellerEngineConfigData." + nameof(DefaultAngleOfAttack), this, m_DefaultAngleOfAttack, value)) m_DefaultAngleOfAttack = value; } } // 0xB4 (180)
-		
-		protected float m_AttackAngleMod = new float();
-		[ContainerField(Name: "AttackAngleMod", Offset: 184, NameHash: 947227178, Flags: 49469), LayoutImmutable, Blittable]
-		public float AttackAngleMod { get { return m_AttackAngleMod; } set { if (OnPropertyChanging("PropellerEngineConfigData." + nameof(AttackAngleMod), this, m_AttackAngleMod, value)) m_AttackAngleMod = value; } } // 0xB8 (184)
-		
-		protected float m_StabilizerMod = new float();
-		[ContainerField(Name: "StabilizerMod", Offset: 188, NameHash: 870578278, Flags: 49469), LayoutImmutable, Blittable]
-		public float StabilizerMod { get { return m_StabilizerMod; } set { if (OnPropertyChanging("PropellerEngineConfigData." + nameof(StabilizerMod), this, m_StabilizerMod, value)) m_StabilizerMod = value; } } // 0xBC (188)
-		
-		protected float m_HorisontalMinEffectVelocity = new float();
-		[ContainerField(Name: "HorisontalMinEffectVelocity", Offset: 192, NameHash: 3650611512, Flags: 49469), LayoutImmutable, Blittable]
-		public float HorisontalMinEffectVelocity { get { return m_HorisontalMinEffectVelocity; } set { if (OnPropertyChanging("PropellerEngineConfigData." + nameof(HorisontalMinEffectVelocity), this, m_HorisontalMinEffectVelocity, value)) m_HorisontalMinEffectVelocity = value; } } // 0xC0 (192)
-		
-		protected float m_HorisontalMinEffectMod = new float();
-		[ContainerField(Name: "HorisontalMinEffectMod", Offset: 196, NameHash: 2678032425, Flags: 49469), LayoutImmutable, Blittable]
-		public float HorisontalMinEffectMod { get { return m_HorisontalMinEffectMod; } set { if (OnPropertyChanging("PropellerEngineConfigData." + nameof(HorisontalMinEffectMod), this, m_HorisontalMinEffectMod, value)) m_HorisontalMinEffectMod = value; } } // 0xC4 (196)
-		
-		protected float m_PitchStrength = new float();
-		[ContainerField(Name: "PitchStrength", Offset: 200, NameHash: 724430630, Flags: 49469), LayoutImmutable, Blittable]
-		public float PitchStrength { get { return m_PitchStrength; } set { if (OnPropertyChanging("PropellerEngineConfigData." + nameof(PitchStrength), this, m_PitchStrength, value)) m_PitchStrength = value; } } // 0xC8 (200)
-		
-		protected float m_PitchFromVel = new float();
-		[ContainerField(Name: "PitchFromVel", Offset: 204, NameHash: 3054994922, Flags: 49469), LayoutImmutable, Blittable]
-		public float PitchFromVel { get { return m_PitchFromVel; } set { if (OnPropertyChanging("PropellerEngineConfigData." + nameof(PitchFromVel), this, m_PitchFromVel, value)) m_PitchFromVel = value; } } // 0xCC (204)
-		
-		protected float m_GravityMod = new float();
-		[ContainerField(Name: "GravityMod", Offset: 208, NameHash: 3507401381, Flags: 49469), LayoutImmutable, Blittable]
-		public float GravityMod { get { return m_GravityMod; } set { if (OnPropertyChanging("PropellerEngineConfigData." + nameof(GravityMod), this, m_GravityMod, value)) m_GravityMod = value; } } // 0xD0 (208)
-		
-		protected float m_SPForwardStrength = new float();
-		[ContainerField(Name: "SPForwardStrength", Offset: 212, NameHash: 439958200, Flags: 49469), LayoutImmutable, Blittable]
-		public float SPForwardStrength { get { return m_SPForwardStrength; } set { if (OnPropertyChanging("PropellerEngineConfigData." + nameof(SPForwardStrength), this, m_SPForwardStrength, value)) m_SPForwardStrength = value; } } // 0xD4 (212)
-		
-		protected float m_SPSidewaysStrength = new float();
-		[ContainerField(Name: "SPSidewaysStrength", Offset: 216, NameHash: 3287536100, Flags: 49469), LayoutImmutable, Blittable]
-		public float SPSidewaysStrength { get { return m_SPSidewaysStrength; } set { if (OnPropertyChanging("PropellerEngineConfigData." + nameof(SPSidewaysStrength), this, m_SPSidewaysStrength, value)) m_SPSidewaysStrength = value; } } // 0xD8 (216)
-		
-		protected float m_SPVerticalStrength = new float();
-		[ContainerField(Name: "SPVerticalStrength", Offset: 220, NameHash: 3767334993, Flags: 49469), LayoutImmutable, Blittable]
-		public float SPVerticalStrength { get { return m_SPVerticalStrength; } set { if (OnPropertyChanging("PropellerEngineConfigData." + nameof(SPVerticalStrength), this, m_SPVerticalStrength, value)) m_SPVerticalStrength = value; } } // 0xDC (220)
-		
-		protected float m_VelocityFromPitch = new float();
-		[ContainerField(Name: "VelocityFromPitch", Offset: 224, NameHash: 2548692482, Flags: 49469), LayoutImmutable, Blittable]
-		public float VelocityFromPitch { get { return m_VelocityFromPitch; } set { if (OnPropertyChanging("PropellerEngineConfigData." + nameof(VelocityFromPitch), this, m_VelocityFromPitch, value)) m_VelocityFromPitch = value; } } // 0xE0 (224)
-		
-		protected float m_PitchLimit = new float();
-		[ContainerField(Name: "PitchLimit", Offset: 228, NameHash: 3055348630, Flags: 49469), LayoutImmutable, Blittable]
-		public float PitchLimit { get { return m_PitchLimit; } set { if (OnPropertyChanging("PropellerEngineConfigData." + nameof(PitchLimit), this, m_PitchLimit, value)) m_PitchLimit = value; } } // 0xE4 (228)
-		
-		protected float m_BankingStrength = new float();
-		[ContainerField(Name: "BankingStrength", Offset: 232, NameHash: 1620944870, Flags: 49469), LayoutImmutable, Blittable]
-		public float BankingStrength { get { return m_BankingStrength; } set { if (OnPropertyChanging("PropellerEngineConfigData." + nameof(BankingStrength), this, m_BankingStrength, value)) m_BankingStrength = value; } } // 0xE8 (232)
-		
-		protected float m_BankingLimit = new float();
-		[ContainerField(Name: "BankingLimit", Offset: 236, NameHash: 3461970646, Flags: 49469), LayoutImmutable, Blittable]
-		public float BankingLimit { get { return m_BankingLimit; } set { if (OnPropertyChanging("PropellerEngineConfigData." + nameof(BankingLimit), this, m_BankingLimit, value)) m_BankingLimit = value; } } // 0xEC (236)
-		
-		protected float m_RollStrength = new float();
-		[ContainerField(Name: "RollStrength", Offset: 240, NameHash: 3312814269, Flags: 49469), LayoutImmutable, Blittable]
-		public float RollStrength { get { return m_RollStrength; } set { if (OnPropertyChanging("PropellerEngineConfigData." + nameof(RollStrength), this, m_RollStrength, value)) m_RollStrength = value; } } // 0xF0 (240)
-		
-		protected float m_PitchUpWhenBankStrength = new float();
-		[ContainerField(Name: "PitchUpWhenBankStrength", Offset: 244, NameHash: 1714831281, Flags: 49469), LayoutImmutable, Blittable]
-		public float PitchUpWhenBankStrength { get { return m_PitchUpWhenBankStrength; } set { if (OnPropertyChanging("PropellerEngineConfigData." + nameof(PitchUpWhenBankStrength), this, m_PitchUpWhenBankStrength, value)) m_PitchUpWhenBankStrength = value; } } // 0xF4 (244)
-		
-		protected float m_PitchUpWhenBankLimit = new float();
-		[ContainerField(Name: "PitchUpWhenBankLimit", Offset: 248, NameHash: 1223555233, Flags: 49469), LayoutImmutable, Blittable]
-		public float PitchUpWhenBankLimit { get { return m_PitchUpWhenBankLimit; } set { if (OnPropertyChanging("PropellerEngineConfigData." + nameof(PitchUpWhenBankLimit), this, m_PitchUpWhenBankLimit, value)) m_PitchUpWhenBankLimit = value; } } // 0xF8 (248)
-		
-		protected bool m_SPDefault = new bool();
-		[ContainerField(Name: "SPDefault", Offset: 252, NameHash: 2087493101, Flags: 49325), LayoutImmutable, Blittable]
-		public bool SPDefault { get { return m_SPDefault; } set { if (OnPropertyChanging("PropellerEngineConfigData." + nameof(SPDefault), this, m_SPDefault, value)) m_SPDefault = value; } } // 0xFC (252)
-		
-		protected bool m_EnableNewHelicopter = new bool();
-		[ContainerField(Name: "EnableNewHelicopter", Offset: 253, NameHash: 4043707695, Flags: 49325), LayoutImmutable, Blittable]
-		public bool EnableNewHelicopter { get { return m_EnableNewHelicopter; } set { if (OnPropertyChanging("PropellerEngineConfigData." + nameof(EnableNewHelicopter), this, m_EnableNewHelicopter, value)) m_EnableNewHelicopter = value; } } // 0xFD (253)
-		
-		protected bool m_SPAllowed = new bool();
-		[ContainerField(Name: "SPAllowed", Offset: 254, NameHash: 1786637822, Flags: 49325), LayoutImmutable, Blittable]
-		public bool SPAllowed { get { return m_SPAllowed; } set { if (OnPropertyChanging("PropellerEngineConfigData." + nameof(SPAllowed), this, m_SPAllowed, value)) m_SPAllowed = value; } } // 0xFE (254)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 3212041026:
-					HorisontalForceOffset = (Vec3) p_Value;
-					break;
-
-				case 1200379762:
-					PropellerType = (PropellerType) Enum.ToObject(typeof(PropellerType), p_Value);
-					break;
-
-				case 468078427:
-					RotorConfig = (CtrRef<RotorParameters>) p_Value;
-					break;
-
-				case 3842564762:
-					ForceMagnitudeInputType = (ForceMagnitudeInputType) Enum.ToObject(typeof(ForceMagnitudeInputType), p_Value);
-					break;
-
-				case 3901228711:
-					DirectionVectorIndex = (uint) p_Value;
-					break;
-
-				case 3209574239:
-					ForceMagnitudeMultiplier = (float) p_Value;
-					break;
-
-				case 201216672:
-					LiftForceSpringConstant = (float) p_Value;
-					break;
-
-				case 3660889641:
-					LiftForceDampingConstant = (float) p_Value;
-					break;
-
-				case 3891841257:
-					CyclicInputScaleRoll = (float) p_Value;
-					break;
-
-				case 1157893238:
-					CyclicRollLiftMod = (float) p_Value;
-					break;
-
-				case 2784120854:
-					CyclicRollStrafeMod = (float) p_Value;
-					break;
-
-				case 3869827346:
-					CyclicInputScalePitch = (float) p_Value;
-					break;
-
-				case 908927597:
-					CyclicPitchLiftMod = (float) p_Value;
-					break;
-
-				case 1559244621:
-					CyclicPitchStrafeMod = (float) p_Value;
-					break;
-
-				case 1510977458:
-					CyclicPitchStrafeBrakeMod = (float) p_Value;
-					break;
-
-				case 3489057395:
-					CollectiveInputIdle = (float) p_Value;
-					break;
-
-				case 2328068935:
-					CollectiveThrottleInputScale = (float) p_Value;
-					break;
-
-				case 3062684400:
-					CollectiveBrakeInputScale = (float) p_Value;
-					break;
-
-				case 1125032846:
-					DefaultAngleOfAttack = (float) p_Value;
-					break;
-
-				case 947227178:
-					AttackAngleMod = (float) p_Value;
-					break;
-
-				case 870578278:
-					StabilizerMod = (float) p_Value;
-					break;
-
-				case 3650611512:
-					HorisontalMinEffectVelocity = (float) p_Value;
-					break;
-
-				case 2678032425:
-					HorisontalMinEffectMod = (float) p_Value;
-					break;
-
-				case 724430630:
-					PitchStrength = (float) p_Value;
-					break;
-
-				case 3054994922:
-					PitchFromVel = (float) p_Value;
-					break;
-
-				case 3507401381:
-					GravityMod = (float) p_Value;
-					break;
-
-				case 439958200:
-					SPForwardStrength = (float) p_Value;
-					break;
-
-				case 3287536100:
-					SPSidewaysStrength = (float) p_Value;
-					break;
-
-				case 3767334993:
-					SPVerticalStrength = (float) p_Value;
-					break;
-
-				case 2548692482:
-					VelocityFromPitch = (float) p_Value;
-					break;
-
-				case 3055348630:
-					PitchLimit = (float) p_Value;
-					break;
-
-				case 1620944870:
-					BankingStrength = (float) p_Value;
-					break;
-
-				case 3461970646:
-					BankingLimit = (float) p_Value;
-					break;
-
-				case 3312814269:
-					RollStrength = (float) p_Value;
-					break;
-
-				case 1714831281:
-					PitchUpWhenBankStrength = (float) p_Value;
-					break;
-
-				case 1223555233:
-					PitchUpWhenBankLimit = (float) p_Value;
-					break;
-
-				case 2087493101:
-					SPDefault = (bool) p_Value;
-					break;
-
-				case 4043707695:
-					EnableNewHelicopter = (bool) p_Value;
-					break;
-
-				case 1786637822:
-					SPAllowed = (bool) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3212041026:
-					return HorisontalForceOffset;
-
-				case 1200379762:
-					return PropellerType;
-
-				case 468078427:
-					return RotorConfig;
-
-				case 3842564762:
-					return ForceMagnitudeInputType;
-
-				case 3901228711:
-					return DirectionVectorIndex;
-
-				case 3209574239:
-					return ForceMagnitudeMultiplier;
-
-				case 201216672:
-					return LiftForceSpringConstant;
-
-				case 3660889641:
-					return LiftForceDampingConstant;
-
-				case 3891841257:
-					return CyclicInputScaleRoll;
-
-				case 1157893238:
-					return CyclicRollLiftMod;
-
-				case 2784120854:
-					return CyclicRollStrafeMod;
-
-				case 3869827346:
-					return CyclicInputScalePitch;
-
-				case 908927597:
-					return CyclicPitchLiftMod;
-
-				case 1559244621:
-					return CyclicPitchStrafeMod;
-
-				case 1510977458:
-					return CyclicPitchStrafeBrakeMod;
-
-				case 3489057395:
-					return CollectiveInputIdle;
-
-				case 2328068935:
-					return CollectiveThrottleInputScale;
-
-				case 3062684400:
-					return CollectiveBrakeInputScale;
-
-				case 1125032846:
-					return DefaultAngleOfAttack;
-
-				case 947227178:
-					return AttackAngleMod;
-
-				case 870578278:
-					return StabilizerMod;
-
-				case 3650611512:
-					return HorisontalMinEffectVelocity;
-
-				case 2678032425:
-					return HorisontalMinEffectMod;
-
-				case 724430630:
-					return PitchStrength;
-
-				case 3054994922:
-					return PitchFromVel;
-
-				case 3507401381:
-					return GravityMod;
-
-				case 439958200:
-					return SPForwardStrength;
-
-				case 3287536100:
-					return SPSidewaysStrength;
-
-				case 3767334993:
-					return SPVerticalStrength;
-
-				case 2548692482:
-					return VelocityFromPitch;
-
-				case 3055348630:
-					return PitchLimit;
-
-				case 1620944870:
-					return BankingStrength;
-
-				case 3461970646:
-					return BankingLimit;
-
-				case 3312814269:
-					return RollStrength;
-
-				case 1714831281:
-					return PitchUpWhenBankStrength;
-
-				case 1223555233:
-					return PitchUpWhenBankLimit;
-
-				case 2087493101:
-					return SPDefault;
-
-				case 4043707695:
-					return EnableNewHelicopter;
-
-				case 1786637822:
-					return SPAllowed;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3212041026:
-					return typeof(PropellerEngineConfigData).GetProperty(nameof(HorisontalForceOffset));
+		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 96)]
+		public Vec3 HorisontalForceOffset { get; set; } = new();
 
-				case 1200379762:
-					return typeof(PropellerEngineConfigData).GetProperty(nameof(PropellerType));
+		[ContainerField(112), JsonProperty(Order = 112)]
+		public PropellerType PropellerType { get; set; } = new();
 
-				case 468078427:
-					return typeof(PropellerEngineConfigData).GetProperty(nameof(RotorConfig));
+		[ContainerField(116), JsonProperty(Order = 116)]
+		public CtrRef<RotorParameters> RotorConfig { get; set; } = new();
 
-				case 3842564762:
-					return typeof(PropellerEngineConfigData).GetProperty(nameof(ForceMagnitudeInputType));
+		[ContainerField(120), JsonProperty(Order = 120)]
+		public ForceMagnitudeInputType ForceMagnitudeInputType { get; set; } = new();
 
-				case 3901228711:
-					return typeof(PropellerEngineConfigData).GetProperty(nameof(DirectionVectorIndex));
+		[ContainerField(124), LayoutImmutable, Blittable, JsonProperty(Order = 124)]
+		public uint DirectionVectorIndex { get; set; }
 
-				case 3209574239:
-					return typeof(PropellerEngineConfigData).GetProperty(nameof(ForceMagnitudeMultiplier));
+		[ContainerField(128), LayoutImmutable, Blittable, JsonProperty(Order = 128)]
+		public float ForceMagnitudeMultiplier { get; set; }
 
-				case 201216672:
-					return typeof(PropellerEngineConfigData).GetProperty(nameof(LiftForceSpringConstant));
+		[ContainerField(132), LayoutImmutable, Blittable, JsonProperty(Order = 132)]
+		public float LiftForceSpringConstant { get; set; }
 
-				case 3660889641:
-					return typeof(PropellerEngineConfigData).GetProperty(nameof(LiftForceDampingConstant));
+		[ContainerField(136), LayoutImmutable, Blittable, JsonProperty(Order = 136)]
+		public float LiftForceDampingConstant { get; set; }
 
-				case 3891841257:
-					return typeof(PropellerEngineConfigData).GetProperty(nameof(CyclicInputScaleRoll));
+		[ContainerField(140), LayoutImmutable, Blittable, JsonProperty(Order = 140)]
+		public float CyclicInputScaleRoll { get; set; }
 
-				case 1157893238:
-					return typeof(PropellerEngineConfigData).GetProperty(nameof(CyclicRollLiftMod));
+		[ContainerField(144), LayoutImmutable, Blittable, JsonProperty(Order = 144)]
+		public float CyclicRollLiftMod { get; set; }
 
-				case 2784120854:
-					return typeof(PropellerEngineConfigData).GetProperty(nameof(CyclicRollStrafeMod));
+		[ContainerField(148), LayoutImmutable, Blittable, JsonProperty(Order = 148)]
+		public float CyclicRollStrafeMod { get; set; }
 
-				case 3869827346:
-					return typeof(PropellerEngineConfigData).GetProperty(nameof(CyclicInputScalePitch));
+		[ContainerField(152), LayoutImmutable, Blittable, JsonProperty(Order = 152)]
+		public float CyclicInputScalePitch { get; set; }
 
-				case 908927597:
-					return typeof(PropellerEngineConfigData).GetProperty(nameof(CyclicPitchLiftMod));
+		[ContainerField(156), LayoutImmutable, Blittable, JsonProperty(Order = 156)]
+		public float CyclicPitchLiftMod { get; set; }
 
-				case 1559244621:
-					return typeof(PropellerEngineConfigData).GetProperty(nameof(CyclicPitchStrafeMod));
+		[ContainerField(160), LayoutImmutable, Blittable, JsonProperty(Order = 160)]
+		public float CyclicPitchStrafeMod { get; set; }
 
-				case 1510977458:
-					return typeof(PropellerEngineConfigData).GetProperty(nameof(CyclicPitchStrafeBrakeMod));
+		[ContainerField(164), LayoutImmutable, Blittable, JsonProperty(Order = 164)]
+		public float CyclicPitchStrafeBrakeMod { get; set; }
 
-				case 3489057395:
-					return typeof(PropellerEngineConfigData).GetProperty(nameof(CollectiveInputIdle));
+		[ContainerField(168), LayoutImmutable, Blittable, JsonProperty(Order = 168)]
+		public float CollectiveInputIdle { get; set; }
 
-				case 2328068935:
-					return typeof(PropellerEngineConfigData).GetProperty(nameof(CollectiveThrottleInputScale));
+		[ContainerField(172), LayoutImmutable, Blittable, JsonProperty(Order = 172)]
+		public float CollectiveThrottleInputScale { get; set; }
 
-				case 3062684400:
-					return typeof(PropellerEngineConfigData).GetProperty(nameof(CollectiveBrakeInputScale));
+		[ContainerField(176), LayoutImmutable, Blittable, JsonProperty(Order = 176)]
+		public float CollectiveBrakeInputScale { get; set; }
 
-				case 1125032846:
-					return typeof(PropellerEngineConfigData).GetProperty(nameof(DefaultAngleOfAttack));
+		[ContainerField(180), LayoutImmutable, Blittable, JsonProperty(Order = 180)]
+		public float DefaultAngleOfAttack { get; set; }
 
-				case 947227178:
-					return typeof(PropellerEngineConfigData).GetProperty(nameof(AttackAngleMod));
+		[ContainerField(184), LayoutImmutable, Blittable, JsonProperty(Order = 184)]
+		public float AttackAngleMod { get; set; }
 
-				case 870578278:
-					return typeof(PropellerEngineConfigData).GetProperty(nameof(StabilizerMod));
+		[ContainerField(188), LayoutImmutable, Blittable, JsonProperty(Order = 188)]
+		public float StabilizerMod { get; set; }
 
-				case 3650611512:
-					return typeof(PropellerEngineConfigData).GetProperty(nameof(HorisontalMinEffectVelocity));
+		[ContainerField(192), LayoutImmutable, Blittable, JsonProperty(Order = 192)]
+		public float HorisontalMinEffectVelocity { get; set; }
 
-				case 2678032425:
-					return typeof(PropellerEngineConfigData).GetProperty(nameof(HorisontalMinEffectMod));
+		[ContainerField(196), LayoutImmutable, Blittable, JsonProperty(Order = 196)]
+		public float HorisontalMinEffectMod { get; set; }
 
-				case 724430630:
-					return typeof(PropellerEngineConfigData).GetProperty(nameof(PitchStrength));
+		[ContainerField(200), LayoutImmutable, Blittable, JsonProperty(Order = 200)]
+		public float PitchStrength { get; set; }
 
-				case 3054994922:
-					return typeof(PropellerEngineConfigData).GetProperty(nameof(PitchFromVel));
+		[ContainerField(204), LayoutImmutable, Blittable, JsonProperty(Order = 204)]
+		public float PitchFromVel { get; set; }
 
-				case 3507401381:
-					return typeof(PropellerEngineConfigData).GetProperty(nameof(GravityMod));
+		[ContainerField(208), LayoutImmutable, Blittable, JsonProperty(Order = 208)]
+		public float GravityMod { get; set; }
 
-				case 439958200:
-					return typeof(PropellerEngineConfigData).GetProperty(nameof(SPForwardStrength));
+		[ContainerField(212), LayoutImmutable, Blittable, JsonProperty(Order = 212)]
+		public float SPForwardStrength { get; set; }
 
-				case 3287536100:
-					return typeof(PropellerEngineConfigData).GetProperty(nameof(SPSidewaysStrength));
+		[ContainerField(216), LayoutImmutable, Blittable, JsonProperty(Order = 216)]
+		public float SPSidewaysStrength { get; set; }
 
-				case 3767334993:
-					return typeof(PropellerEngineConfigData).GetProperty(nameof(SPVerticalStrength));
+		[ContainerField(220), LayoutImmutable, Blittable, JsonProperty(Order = 220)]
+		public float SPVerticalStrength { get; set; }
 
-				case 2548692482:
-					return typeof(PropellerEngineConfigData).GetProperty(nameof(VelocityFromPitch));
+		[ContainerField(224), LayoutImmutable, Blittable, JsonProperty(Order = 224)]
+		public float VelocityFromPitch { get; set; }
 
-				case 3055348630:
-					return typeof(PropellerEngineConfigData).GetProperty(nameof(PitchLimit));
+		[ContainerField(228), LayoutImmutable, Blittable, JsonProperty(Order = 228)]
+		public float PitchLimit { get; set; }
 
-				case 1620944870:
-					return typeof(PropellerEngineConfigData).GetProperty(nameof(BankingStrength));
+		[ContainerField(232), LayoutImmutable, Blittable, JsonProperty(Order = 232)]
+		public float BankingStrength { get; set; }
 
-				case 3461970646:
-					return typeof(PropellerEngineConfigData).GetProperty(nameof(BankingLimit));
+		[ContainerField(236), LayoutImmutable, Blittable, JsonProperty(Order = 236)]
+		public float BankingLimit { get; set; }
 
-				case 3312814269:
-					return typeof(PropellerEngineConfigData).GetProperty(nameof(RollStrength));
+		[ContainerField(240), LayoutImmutable, Blittable, JsonProperty(Order = 240)]
+		public float RollStrength { get; set; }
 
-				case 1714831281:
-					return typeof(PropellerEngineConfigData).GetProperty(nameof(PitchUpWhenBankStrength));
+		[ContainerField(244), LayoutImmutable, Blittable, JsonProperty(Order = 244)]
+		public float PitchUpWhenBankStrength { get; set; }
 
-				case 1223555233:
-					return typeof(PropellerEngineConfigData).GetProperty(nameof(PitchUpWhenBankLimit));
+		[ContainerField(248), LayoutImmutable, Blittable, JsonProperty(Order = 248)]
+		public float PitchUpWhenBankLimit { get; set; }
 
-				case 2087493101:
-					return typeof(PropellerEngineConfigData).GetProperty(nameof(SPDefault));
+		[ContainerField(252), LayoutImmutable, Blittable, JsonProperty(Order = 252)]
+		public bool SPDefault { get; set; }
 
-				case 4043707695:
-					return typeof(PropellerEngineConfigData).GetProperty(nameof(EnableNewHelicopter));
+		[ContainerField(253), LayoutImmutable, Blittable, JsonProperty(Order = 253)]
+		public bool EnableNewHelicopter { get; set; }
 
-				case 1786637822:
-					return typeof(PropellerEngineConfigData).GetProperty(nameof(SPAllowed));
+		[ContainerField(254), LayoutImmutable, Blittable, JsonProperty(Order = 254)]
+		public bool SPAllowed { get; set; }
 
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

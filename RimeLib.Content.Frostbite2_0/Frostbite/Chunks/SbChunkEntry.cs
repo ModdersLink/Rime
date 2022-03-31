@@ -24,7 +24,7 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Chunks
 
         public override RimeReader GetReader()
         {
-            var s_Endianness = ContainedSuperbundle.Toc.Layout.Cas ? Endianness.LittleEndian : Endianness.BigEndian;
+            var s_Endianness = (ContainedSuperbundle.Toc.Layout.Cas.HasValue && ContainedSuperbundle.Toc.Layout.Cas.Value) ? Endianness.LittleEndian : Endianness.BigEndian;
 
             RimeReader s_Reader;
 

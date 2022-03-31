@@ -96,7 +96,7 @@ namespace RimeLib.Cmd
             return s_Suggestions;
         }
 
-        public bool ProcessCommand(string p_Input, TextWriter p_Writer, out ExecutionContext? p_Context)
+        public bool ProcessCommand(string p_Input, TextWriter p_Writer, out ExecutionContext p_Context)
         {
             p_Context = this;
 
@@ -115,16 +115,12 @@ namespace RimeLib.Cmd
             }
 
             // Create an instance of this command.
-#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
-            var s_Command = (Command) Activator.CreateInstance(s_CommandType);
-#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
+            var s_Command = (Command) Activator.CreateInstance(s_CommandType)!;
 
             // Populate its arguments.
             try
             {
-#pragma warning disable CS8604 // Possible null reference argument.
                 CommandUtils.PopulateCommandArguments(s_Command, s_Arguments);
-#pragma warning restore CS8604 // Possible null reference argument.
             }
             catch (Exception s_Exception)
             {
@@ -164,9 +160,7 @@ namespace RimeLib.Cmd
                 try
                 {
                     var s_DescriptionAttr = s_Type.GetCustomAttribute<CommandDescriptionAttribute>();
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
-                    s_HelpText += " - " + s_DescriptionAttr.Description;
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
+                    s_HelpText += " - " + s_DescriptionAttr!.Description;
                 }
                 catch
                 {
@@ -228,9 +222,7 @@ namespace RimeLib.Cmd
                 var s_DescriptionAttr = p_CommandType.GetCustomAttribute<CommandDescriptionAttribute>();
 
                 s_HelpText += "\n\n";
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
-                s_HelpText += s_DescriptionAttr.Description;
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
+                s_HelpText += s_DescriptionAttr!.Description;
             }
             catch
             {

@@ -5,74 +5,26 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 41, Size: 8)]
-	public class MixGroupPropertyValue : FrostbiteContainer
+	[ContainerType(4, 8)]
+	public class MixGroupPropertyValue
 	{
-		[ContainerField(Name: "Property", Offset: 0, NameHash: 3010621090, Flags: 49421), LayoutImmutable, Blittable]
-		public uint Property { get; set; } // 0x0 (0)
+		[ContainerField(0), LayoutImmutable, Blittable, JsonProperty(Order = 0)]
+		public uint Property { get; set; }
 		
-		[ContainerField(Name: "Value", Offset: 4, NameHash: 225375086, Flags: 49469), LayoutImmutable, Blittable]
-		public float Value { get; set; } // 0x4 (4)
+		[ContainerField(4), LayoutImmutable, Blittable, JsonProperty(Order = 4)]
+		public float Value { get; set; }
 		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 3010621090:
-					Property = (uint) p_Value;
-					break;
-
-				case 225375086:
-					Value = (float) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3010621090:
-					return Property;
-
-				case 225375086:
-					return Value;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3010621090:
-					return typeof(MixGroupPropertyValue).GetProperty(nameof(Property));
-
-				case 225375086:
-					return typeof(MixGroupPropertyValue).GetProperty(nameof(Value));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

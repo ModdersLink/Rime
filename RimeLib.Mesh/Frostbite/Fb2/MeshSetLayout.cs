@@ -1,8 +1,10 @@
-﻿using System.IO;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
+using System.IO;
+using fb;
 using RimeLib.Frostbite;
 using RimeLib.Frostbite.Core;
 using RimeLib.IO;
-using RimeLib.Frostbite.Containers;
 
 namespace RimeLib.Mesh.Frostbite
 {
@@ -89,22 +91,26 @@ namespace RimeLib.Mesh.Frostbite
             p_Writer.Write(LodCount);
             p_Writer.Write(TotalSubsetCount);
 
-            BoundingBox.Serialize(p_Writer);
+            // TODO: Fix line belowe
+            throw new NotImplementedException();
+            //BoundingBox.Serialize(p_Writer);
 
-            // This should be 5 iterations
-            foreach (var s_Lod in Lods)
-                p_Writer.Write(s_Lod.BaseAddress);
+            // TODO: Uncomment out below once above is fixed
+            //// This should be 5 iterations
+            //foreach (var s_Lod in Lods)
+            //    p_Writer.Write(s_Lod.BaseAddress);
 
-            p_Writer.Write(Name.BaseAddress);
-            p_Writer.Write(ShortName.BaseAddress);
-            p_Writer.Write(NameHash);
-            p_Writer.Write(Padding);
+            //p_Writer.Write(Name.BaseAddress);
+            //p_Writer.Write(ShortName.BaseAddress);
+            //p_Writer.Write(NameHash);
+            //p_Writer.Write(Padding);
 
-            return true;
+            //return true;
         }
 
-        public bool Serialize(out byte[] p_Data)
+        public bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
         {
+            p_Data = null;
             throw new System.NotImplementedException();
         }
 
@@ -114,16 +120,18 @@ namespace RimeLib.Mesh.Frostbite
             Flags = (MeshLayoutFlags)p_Reader.ReadUInt32();
             LodCount = p_Reader.ReadUInt32();
             TotalSubsetCount = p_Reader.ReadUInt32();
-            BoundingBox = new AxisAlignedBox(p_Reader);
+            // TODO: Fix line below then uncomment everything below it
+            throw new NotImplementedException();
+            //BoundingBox = new AxisAlignedBox(p_Reader);
 
-            Lods = new RelocPtr<MeshLayout>[5];
-            for (var i = 0; i < 5; ++i)
-                Lods[i] = new RelocPtr<MeshLayout>(p_Reader);
+            //Lods = new RelocPtr<MeshLayout>[5];
+            //for (var i = 0; i < 5; ++i)
+            //    Lods[i] = new RelocPtr<MeshLayout>(p_Reader);
 
-            Name = new RelocPtr<string>(p_Reader);
-            ShortName = new RelocPtr<string>(p_Reader);
-            NameHash = p_Reader.ReadUInt32();
-            Padding = p_Reader.ReadUInt32();
+            //Name = new RelocPtr<string>(p_Reader);
+            //ShortName = new RelocPtr<string>(p_Reader);
+            //NameHash = p_Reader.ReadUInt32();
+            //Padding = p_Reader.ReadUInt32();
         }
 
         public void Deserialize(byte[] p_Data)

@@ -5,87 +5,29 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 41, Size: 12)]
-	public class MeshVariationInfo : FrostbiteContainer
+	[ContainerType(4, 12)]
+	public class MeshVariationInfo
 	{
-		[ContainerField(Name: "MeshAsset", Offset: 0, NameHash: 15738982, Flags: 53)]
-		public CtrRef<MeshAsset> MeshAsset { get; set; } = new CtrRef<MeshAsset>(); // 0x0 (0)
+		[ContainerField(0), JsonProperty(Order = 0)]
+		public CtrRef<MeshAsset> MeshAsset { get; set; } = new();
 		
-		[ContainerField(Name: "OrigMeshAsset", Offset: 4, NameHash: 4164356213, Flags: 53)]
-		public CtrRef<MeshAsset> OrigMeshAsset { get; set; } = new CtrRef<MeshAsset>(); // 0x4 (4)
+		[ContainerField(4), JsonProperty(Order = 4)]
+		public CtrRef<MeshAsset> OrigMeshAsset { get; set; } = new();
 		
-		[ContainerField(Name: "VariationAsset", Offset: 8, NameHash: 1781705092, Flags: 53)]
-		public CtrRef<ObjectVariation> VariationAsset { get; set; } = new CtrRef<ObjectVariation>(); // 0x8 (8)
+		[ContainerField(8), JsonProperty(Order = 8)]
+		public CtrRef<ObjectVariation> VariationAsset { get; set; } = new();
 		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 15738982:
-					MeshAsset = (CtrRef<MeshAsset>) p_Value;
-					break;
-
-				case 4164356213:
-					OrigMeshAsset = (CtrRef<MeshAsset>) p_Value;
-					break;
-
-				case 1781705092:
-					VariationAsset = (CtrRef<ObjectVariation>) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 15738982:
-					return MeshAsset;
-
-				case 4164356213:
-					return OrigMeshAsset;
-
-				case 1781705092:
-					return VariationAsset;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 15738982:
-					return typeof(MeshVariationInfo).GetProperty(nameof(MeshAsset));
-
-				case 4164356213:
-					return typeof(MeshVariationInfo).GetProperty(nameof(OrigMeshAsset));
-
-				case 1781705092:
-					return typeof(MeshVariationInfo).GetProperty(nameof(VariationAsset));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

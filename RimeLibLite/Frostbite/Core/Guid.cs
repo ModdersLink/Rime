@@ -1,37 +1,29 @@
 ﻿using System;
+using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Runtime.Serialization;
+using Newtonsoft.Json;
 using RimeLib.IO;
+using RimeLib.IO.Conversion;
+using RimeLib.Json;
 
 namespace RimeLib.Frostbite.Core
 {
     /// <summary>
     /// Implementation of fb::Guid
     /// </summary>
-    [Serializable]
-    public class GUID : ISerializable, IFbSerializable
+    [Serializable, JsonConverter(typeof(GuidJsonConverter)), TypeConverter(typeof(GuidTypeConverter))]
+    public class GUID : ISerializable, IFbSerializable, IComparable<GUID>
     {
         /// <summary>
         /// Internal size of the structure.
         /// </summary>
         public static int SizeOf => 16;
-
-        /// <summary>
-        /// Internal guid structure
-        /// </summary>
-        public Guid InternalGUID => m_Guid;
-
-        public static GUID Empty = new GUID();
+        
+        public static GUID Empty = Guid.Empty;
 
         private Guid m_Guid;
-
-        /// <summary>
-        /// Default constructor
-        /// </summary>
-        public GUID()
-        {
-            m_Guid = Guid.Empty;
-        }
 
         /// <summary>
         /// Constructor that reads a guid from an opened reader
@@ -118,10 +110,16 @@ namespace RimeLib.Frostbite.Core
         /// <param name="p_G1">First guid</param>
         /// <param name="p_G2">Second guid</param>
         /// <returns>True if equal, false otherwise</returns>
-		public static bool operator ==(GUID p_G1, GUID p_G2)
+		public static bool operator ==(GUID? p_G1, GUID? p_G2)
         {
             if (ReferenceEquals(p_G1, p_G2))
                 return true;
+
+            if (p_G1 is null && p_G2 is null)
+                return true;
+
+            if (p_G1 is null || p_G2 is null)
+                return false;
 
             return p_G1.m_Guid == p_G2.m_Guid;
         }
@@ -157,6 +155,15 @@ namespace RimeLib.Frostbite.Core
         public static bool operator !=(GUID p_G1, Guid p_G2)
         {
             return p_G1.m_Guid != p_G2;
+        }
+
+        public int CompareTo(GUID? p_Other)
+        {
+            if (p_Other == null)
+                return 1;
+
+            // ReSharper disable once StringCompareToIsCultureSpecific
+            return m_Guid.CompareTo(p_Other.m_Guid);
         }
 
         /// <summary>
@@ -208,8 +215,23 @@ namespace RimeLib.Frostbite.Core
         /// <returns>True on success, false otherwise</returns>
         public bool Serialize(RimeWriter p_Writer)
         {
-            // TODO: This is invalid due to endianness. ToByteArray() always encodes in little-endian.
-            p_Writer.Write(m_Guid.ToByteArray());
+            var s_LEData = m_Guid.ToByteArray();
+
+            if (p_Writer.Endianness == Endianness.LittleEndian)
+            {
+                p_Writer.Write(s_LEData);
+                return true;
+            }
+
+            // Writer is in big endian. We need to parse and write again (bleh).
+            using (var s_Reader = new RimeReader(new MemoryStream(s_LEData)))
+            {
+                p_Writer.Write(s_Reader.ReadInt32());
+                p_Writer.Write(s_Reader.ReadInt16());
+                p_Writer.Write(s_Reader.ReadInt16());
+                p_Writer.Write(s_Reader.ReadBytes(8));
+            }
+
             return true;
         }
 
@@ -217,9 +239,9 @@ namespace RimeLib.Frostbite.Core
         /// Serializes the guid to a byte array
         /// </summary>
         /// <returns>Byte array containing the data of this guid</returns>
-        public bool Serialize(out byte[] p_Data)
+        public bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
         {
-            p_Data = new byte[0];
+            p_Data = null;
 
             using (var s_Writer = new RimeWriter(new MemoryStream()))
             {

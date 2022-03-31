@@ -42,12 +42,17 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Sb
         public bool Serialize(RimeWriter p_Writer)
         {
             // Write the header and an empty signature.
-            p_Writer.Write((uint) 0x00CED100);
+            p_Writer.Write((uint) 0x01CED100);
             p_Writer.Write(new byte[292]);
 
             // Enable obfuscation.
             var s_XorTable = new byte[260];
             
+            // We fill this with 123 because that results in the obfuscation
+            // not taking place, leaving the data in the file as-is. This is
+            // primarily for readability purposes, so it's easier to look at
+            // the file in a hex editor or otherwise. It also has the added
+            // benefit of making files reproducible.
             for (var i = 0; i < s_XorTable.Length; ++i)
                 s_XorTable[i] = 123;
             

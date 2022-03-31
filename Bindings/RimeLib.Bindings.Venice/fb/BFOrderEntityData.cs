@@ -5,63 +5,24 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 40)]
+	[ContainerType(4, 40)]
 	public class BFOrderEntityData : 
 		OrderEntityData
 	{
-		protected bool m_ForbiddenToFire = new bool();
-		[ContainerField(Name: "ForbiddenToFire", Offset: 36, NameHash: 3995127293, Flags: 49325), LayoutImmutable, Blittable]
-		public bool ForbiddenToFire { get { return m_ForbiddenToFire; } set { if (OnPropertyChanging("BFOrderEntityData." + nameof(ForbiddenToFire), this, m_ForbiddenToFire, value)) m_ForbiddenToFire = value; } } // 0x24 (36)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 3995127293:
-					ForbiddenToFire = (bool) p_Value;
-					break;
+		[ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
+		public bool ForbiddenToFire { get; set; }
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3995127293:
-					return ForbiddenToFire;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3995127293:
-					return typeof(BFOrderEntityData).GetProperty(nameof(ForbiddenToFire));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

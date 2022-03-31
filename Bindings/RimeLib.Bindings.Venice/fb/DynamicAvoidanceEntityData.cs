@@ -5,147 +5,42 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 48)]
+	[ContainerType(4, 48)]
 	public class DynamicAvoidanceEntityData : 
 		EntityData
 	{
-		protected DynamicAvoidanceMode m_RepelOthers = new DynamicAvoidanceMode();
-		[ContainerField(Name: "RepelOthers", Offset: 12, NameHash: 2680634556, Flags: 137)]
-		public DynamicAvoidanceMode RepelOthers { get { return m_RepelOthers; } set { if (OnPropertyChanging("DynamicAvoidanceEntityData." + nameof(RepelOthers), this, m_RepelOthers, value)) m_RepelOthers = value; } } // 0xC (12)
-		
-		protected DynamicAvoidanceMode m_ReportPredictedCollision = new DynamicAvoidanceMode();
-		[ContainerField(Name: "ReportPredictedCollision", Offset: 16, NameHash: 690685961, Flags: 137)]
-		public DynamicAvoidanceMode ReportPredictedCollision { get { return m_ReportPredictedCollision; } set { if (OnPropertyChanging("DynamicAvoidanceEntityData." + nameof(ReportPredictedCollision), this, m_ReportPredictedCollision, value)) m_ReportPredictedCollision = value; } } // 0x10 (16)
-		
-		protected float m_CollisionRadius = new float();
-		[ContainerField(Name: "CollisionRadius", Offset: 20, NameHash: 1874505603, Flags: 49469), LayoutImmutable, Blittable]
-		public float CollisionRadius { get { return m_CollisionRadius; } set { if (OnPropertyChanging("DynamicAvoidanceEntityData." + nameof(CollisionRadius), this, m_CollisionRadius, value)) m_CollisionRadius = value; } } // 0x14 (20)
-		
-		protected Realm m_Realm = new Realm();
-		[ContainerField(Name: "Realm", Offset: 24, NameHash: 229961746, Flags: 137)]
-		public Realm Realm { get { return m_Realm; } set { if (OnPropertyChanging("DynamicAvoidanceEntityData." + nameof(Realm), this, m_Realm, value)) m_Realm = value; } } // 0x18 (24)
-		
-		protected AntDynamicAvoidanceBinding m_AntBinding = new AntDynamicAvoidanceBinding();
-		[ContainerField(Name: "AntBinding", Offset: 28, NameHash: 2293128415, Flags: 41)]
-		public AntDynamicAvoidanceBinding AntBinding { get { return m_AntBinding; } set { if (OnPropertyChanging("DynamicAvoidanceEntityData." + nameof(AntBinding), this, m_AntBinding, value)) m_AntBinding = value; } } // 0x1C (28)
-		
-		protected bool m_AffectedByRepellingForce = new bool();
-		[ContainerField(Name: "AffectedByRepellingForce", Offset: 44, NameHash: 2759712179, Flags: 49325), LayoutImmutable, Blittable]
-		public bool AffectedByRepellingForce { get { return m_AffectedByRepellingForce; } set { if (OnPropertyChanging("DynamicAvoidanceEntityData." + nameof(AffectedByRepellingForce), this, m_AffectedByRepellingForce, value)) m_AffectedByRepellingForce = value; } } // 0x2C (44)
-		
-		protected bool m_PredictedByOthers = new bool();
-		[ContainerField(Name: "PredictedByOthers", Offset: 45, NameHash: 1713837653, Flags: 49325), LayoutImmutable, Blittable]
-		public bool PredictedByOthers { get { return m_PredictedByOthers; } set { if (OnPropertyChanging("DynamicAvoidanceEntityData." + nameof(PredictedByOthers), this, m_PredictedByOthers, value)) m_PredictedByOthers = value; } } // 0x2D (45)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 2680634556:
-					RepelOthers = (DynamicAvoidanceMode) Enum.ToObject(typeof(DynamicAvoidanceMode), p_Value);
-					break;
+		[ContainerField(12), JsonProperty(Order = 12)]
+		public DynamicAvoidanceMode RepelOthers { get; set; } = new();
 
-				case 690685961:
-					ReportPredictedCollision = (DynamicAvoidanceMode) Enum.ToObject(typeof(DynamicAvoidanceMode), p_Value);
-					break;
+		[ContainerField(16), JsonProperty(Order = 16)]
+		public DynamicAvoidanceMode ReportPredictedCollision { get; set; } = new();
 
-				case 1874505603:
-					CollisionRadius = (float) p_Value;
-					break;
+		[ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
+		public float CollisionRadius { get; set; }
 
-				case 229961746:
-					Realm = (Realm) Enum.ToObject(typeof(Realm), p_Value);
-					break;
+		[ContainerField(24), JsonProperty(Order = 24)]
+		public Realm Realm { get; set; } = new();
 
-				case 2293128415:
-					AntBinding = (AntDynamicAvoidanceBinding) p_Value;
-					break;
+		[ContainerField(28), JsonProperty(Order = 28)]
+		public AntDynamicAvoidanceBinding AntBinding { get; set; } = new();
 
-				case 2759712179:
-					AffectedByRepellingForce = (bool) p_Value;
-					break;
+		[ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
+		public bool AffectedByRepellingForce { get; set; }
 
-				case 1713837653:
-					PredictedByOthers = (bool) p_Value;
-					break;
+		[ContainerField(45), LayoutImmutable, Blittable, JsonProperty(Order = 45)]
+		public bool PredictedByOthers { get; set; }
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2680634556:
-					return RepelOthers;
-
-				case 690685961:
-					return ReportPredictedCollision;
-
-				case 1874505603:
-					return CollisionRadius;
-
-				case 229961746:
-					return Realm;
-
-				case 2293128415:
-					return AntBinding;
-
-				case 2759712179:
-					return AffectedByRepellingForce;
-
-				case 1713837653:
-					return PredictedByOthers;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2680634556:
-					return typeof(DynamicAvoidanceEntityData).GetProperty(nameof(RepelOthers));
-
-				case 690685961:
-					return typeof(DynamicAvoidanceEntityData).GetProperty(nameof(ReportPredictedCollision));
-
-				case 1874505603:
-					return typeof(DynamicAvoidanceEntityData).GetProperty(nameof(CollisionRadius));
-
-				case 229961746:
-					return typeof(DynamicAvoidanceEntityData).GetProperty(nameof(Realm));
-
-				case 2293128415:
-					return typeof(DynamicAvoidanceEntityData).GetProperty(nameof(AntBinding));
-
-				case 2759712179:
-					return typeof(DynamicAvoidanceEntityData).GetProperty(nameof(AffectedByRepellingForce));
-
-				case 1713837653:
-					return typeof(DynamicAvoidanceEntityData).GetProperty(nameof(PredictedByOthers));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

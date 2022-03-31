@@ -1,6 +1,7 @@
 ﻿using RimeLib.Frostbite.Core;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using RimeLib.Extensions;
 using RimeLib.IO;
 
@@ -67,9 +68,10 @@ namespace RimeLib.Frostbite.Db
                     continue;
 
                 var s_Attribute = (DbObjectFieldAttribute) s_PropertyAttributes[0];
-#pragma warning disable CS8604 // Possible null reference argument.
-                s_Object.AddElement(ConvertObject(s_Property.GetValue(p_Object), s_Attribute.FieldName, s_Attribute.VariableLength));
-#pragma warning restore CS8604 // Possible null reference argument.
+                var s_Value = s_Property.GetValue(p_Object);
+                
+                if (s_Value != null)
+                    s_Object.AddElement(ConvertObject(s_Value, s_Attribute.FieldName, s_Attribute.VariableLength));
             }
 
             return s_Object;
@@ -135,7 +137,7 @@ namespace RimeLib.Frostbite.Db
 
             return s_ManagedObject;
         }
-
+        
         public static (T, DbObject) FromDbObjectReader<T>(RimeReader p_Reader) where T : DbObjectSerializable, new()
         {
             var s_DbObject = new DbObject(p_Reader);
@@ -146,12 +148,10 @@ namespace RimeLib.Frostbite.Db
             // Get the contained object.
             var s_Element = s_DbObject[0];
 
-            if (s_Element.Type != DbObjectType.Object)
-                throw new Exception("The parsed DbObject has a non-object contained element.");
-
-            var s_Object = (DbObject) s_Element.Value;
-
-            return (FromDbObject<T>(s_Object), s_Object);
+            if (s_Element.Type == DbObjectType.Object)
+                return (FromDbObject<T>((DbObject) s_DbObject[0].Value), s_DbObject);
+            
+            return (FromDbObject<T>(s_DbObject), s_DbObject);
         }
 
         public static (T, DbObject) FromDbObjectReader<T>(RimeReader p_Reader, long p_Length) where T : DbObjectSerializable, new()
@@ -242,9 +242,7 @@ namespace RimeLib.Frostbite.Db
                 EnsureElementType(p_Element, DbObjectType.Object);
 
                 // Call ConvertFrom with the property type as the generic parameter.
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
                 var s_Method = typeof(DbObjectConverter).GetMethod("FromDbObject").MakeGenericMethod(s_FieldType);
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
                 return s_Method.Invoke(null, new[] { p_Element.Value });
             }
 

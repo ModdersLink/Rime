@@ -5,91 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 16,  Flags: 53, Size: 96)]
+	[ContainerType(16, 96)]
 	public class GameEntityData : 
 		SpatialEntityData
 	{
-		protected RefArray<GameObjectData> m_Components = new RefArray<GameObjectData>();
-		[ContainerField(Name: "Components", Offset: 80, NameHash: 3391050425, Flags: 65)]
-		public RefArray<GameObjectData> Components { get { return m_Components; } set { if (OnPropertyChanging("GameEntityData." + nameof(Components), this, m_Components, value)) m_Components = value; } } // 0x50 (80)
-		
-		protected bool m_Enabled = new bool();
-		[ContainerField(Name: "Enabled", Offset: 84, NameHash: 2662400, Flags: 49325), LayoutImmutable, Blittable]
-		public bool Enabled { get { return m_Enabled; } set { if (OnPropertyChanging("GameEntityData." + nameof(Enabled), this, m_Enabled, value)) m_Enabled = value; } } // 0x54 (84)
-		
-		protected sbyte m_RuntimeComponentCount = new sbyte();
-		[ContainerField(Name: "RuntimeComponentCount", Offset: 85, NameHash: 3928419541, Flags: 49341), LayoutImmutable, Blittable]
-		public sbyte RuntimeComponentCount { get { return m_RuntimeComponentCount; } set { if (OnPropertyChanging("GameEntityData." + nameof(RuntimeComponentCount), this, m_RuntimeComponentCount, value)) m_RuntimeComponentCount = value; } } // 0x55 (85)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 3391050425:
-					Components = (RefArray<GameObjectData>) p_Value;
-					break;
+		[ContainerField(80), JsonProperty(Order = 80)]
+		public RefArray<GameObjectData> Components { get; set; } = new();
 
-				case 2662400:
-					Enabled = (bool) p_Value;
-					break;
+		[ContainerField(84), LayoutImmutable, Blittable, JsonProperty(Order = 84)]
+		public bool Enabled { get; set; }
 
-				case 3928419541:
-					RuntimeComponentCount = (sbyte) p_Value;
-					break;
+		[ContainerField(85), LayoutImmutable, Blittable, JsonProperty(Order = 85)]
+		public sbyte RuntimeComponentCount { get; set; }
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3391050425:
-					return Components;
-
-				case 2662400:
-					return Enabled;
-
-				case 3928419541:
-					return RuntimeComponentCount;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 3391050425:
-					return typeof(GameEntityData).GetProperty(nameof(Components));
-
-				case 2662400:
-					return typeof(GameEntityData).GetProperty(nameof(Enabled));
-
-				case 3928419541:
-					return typeof(GameEntityData).GetProperty(nameof(RuntimeComponentCount));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

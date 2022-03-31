@@ -1,11 +1,17 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using RimeLib.Cmd.Commands.BundleBuilding;
 using RimeLib.Content.Building;
 using RimeLib.Content.Frostbite;
 using RimeLib.Content.Mounting;
+using RimeLib.Extensions;
 using RimeLib.Frostbite;
 using RimeLib.Frostbite.Core;
+using RimeLib.Frostbite.Db;
+using RimeLib.IO;
+using RimeLib.Texture.Generation;
+using RimeLib.Utils;
 
 namespace RimeLib.Cmd.Contexts
 {
@@ -26,10 +32,86 @@ namespace RimeLib.Cmd.Contexts
                 return m_ResourceType;
             }
 
-            public bool TryGetMeta(out byte[]? p_Meta)
+            public bool TryGetMeta([NotNullWhen(true)] out byte[]? p_Meta)
             {
                 p_Meta = null;
                 return false;
+            }
+        }
+        
+        internal class ResourceMemoryReader : IResourceObject
+        {
+            private readonly ResourceType m_ResourceType;
+            private readonly byte[] m_Data;
+
+            public ResourceMemoryReader(byte[] p_Data, ResourceType p_ResourceType)
+            {
+                m_ResourceType = p_ResourceType;
+                m_Data = p_Data;
+            }
+
+            public ResourceType GetResourceType()
+            {
+                return m_ResourceType;
+            }
+
+            public bool TryGetMeta([NotNullWhen(true)] out byte[]? p_Meta)
+            {
+                p_Meta = null;
+                return false;
+            }
+
+            public RimeReader GetReader()
+            {
+                return new RimeReader(new MemoryStream(m_Data));
+            }
+
+            public long GetSize()
+            {
+                return m_Data.Length;
+            }
+        }
+        
+        internal class ChunkMemoryReader : IChunkObject
+        {
+            private readonly byte[] m_Data;
+            private readonly string m_AssetName;
+
+            public ChunkMemoryReader(byte[] p_Data, string p_AssetName)
+            {
+                m_Data = p_Data;
+                m_AssetName = p_AssetName;
+            }
+
+            public bool TryGetMeta([NotNullWhen(true)] out DbObject? p_Meta)
+            {
+                p_Meta = null;
+                return false;
+            }
+
+            public uint GetRangeStart()
+            {
+                return 0;
+            }
+
+            public uint GetLogicalOffset()
+            {
+                return 0;
+            }
+
+            public int? GetAssetNameHash()
+            {
+                return (int) FbUtils.HashQuick(m_AssetName);
+            }
+
+            public RimeReader GetReader()
+            {
+                return new RimeReader(new MemoryStream(m_Data));
+            }
+
+            public long GetSize()
+            {
+                return m_Data.Length;
             }
         }
 
@@ -53,6 +135,7 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<AddPartitionCommand>();
             RegisterCommand<RemovePartitionCommand>();
             RegisterCommand<ListPartitionsCommand>();
+            RegisterCommand<AddDdsTextureCommand>();
             RegisterCommand<BuildCommand>();
         }
 
@@ -80,9 +163,9 @@ namespace RimeLib.Cmd.Contexts
             return s_Text;
         }
 
-        internal void AddChunk(GUID p_Guid, FileInfo p_File)
+        internal void AddChunk(GUID p_Guid, FileInfo p_File, string p_AssetName)
         {
-            m_Builder.WithChunk(p_Guid, new SbBuildingContext.ChunkFileReader(p_File.FullName));
+            m_Builder.WithChunk(p_Guid, new SbBuildingContext.ChunkFileReader(p_File.FullName, p_AssetName));
         }
 
         internal void RemoveChunk(GUID p_Guid)
@@ -123,6 +206,37 @@ namespace RimeLib.Cmd.Contexts
         internal IReadOnlyDictionary<string, IReadableObject> GetPartitions()
         {
             return m_Builder.GetPartitions();
+        }
+
+        internal void AddDDSTexture(FileInfo p_File, string p_AssetName, string p_TextureGroup)
+        {
+            var s_TextureGenerator = EngineInterfaceRegistry.Create<ITextureGenerator>(((SbBuildingContext) Parent!).EngineType);
+
+            var s_ResourceMemoryStream = new MemoryStream();
+            using var s_ResourceWriter = new RimeWriter(s_ResourceMemoryStream);
+            
+            using var s_DDSReader = new RimeReader(File.OpenRead(p_File.FullName));
+            s_TextureGenerator.GenerateFromDDS(
+                s_DDSReader,
+                new TextureAttributes()
+                {
+                    Name = p_AssetName,
+                    TextureGroup = p_TextureGroup,
+                },
+                s_ResourceWriter,
+                out var s_Chunks
+            );
+
+            m_Builder.WithResource(
+                p_AssetName,
+                new ResourceMemoryReader(s_ResourceMemoryStream.ToArray(), s_TextureGenerator.GetTargetResourceType())
+            );
+
+            foreach (var (s_Id, s_ChunkStream) in s_Chunks)
+            {
+                m_Builder.WithChunk(s_Id, new ChunkMemoryReader(s_ChunkStream.ToArray(), p_AssetName));
+                s_ChunkStream.Dispose();
+            }
         }
 
         internal BundleDescriptor Build()

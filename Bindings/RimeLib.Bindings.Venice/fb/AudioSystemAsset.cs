@@ -5,245 +5,63 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 68)]
+	[ContainerType(4, 68)]
 	public class AudioSystemAsset : 
 		Asset
 	{
-		protected CtrRef<SoundMasterPatchAsset> m_MasterPatch = new CtrRef<SoundMasterPatchAsset>();
-		[ContainerField(Name: "MasterPatch", Offset: 12, NameHash: 1109008247, Flags: 53)]
-		public CtrRef<SoundMasterPatchAsset> MasterPatch { get { return m_MasterPatch; } set { if (OnPropertyChanging("AudioSystemAsset." + nameof(MasterPatch), this, m_MasterPatch, value)) m_MasterPatch = value; } } // 0xC (12)
-		
-		protected CtrRef<SoundWaveAsset> m_DefaultWave = new CtrRef<SoundWaveAsset>();
-		[ContainerField(Name: "DefaultWave", Offset: 16, NameHash: 2015103915, Flags: 53)]
-		public CtrRef<SoundWaveAsset> DefaultWave { get { return m_DefaultWave; } set { if (OnPropertyChanging("AudioSystemAsset." + nameof(DefaultWave), this, m_DefaultWave, value)) m_DefaultWave = value; } } // 0x10 (16)
-		
-		protected RefArray<StreamPoolAsset> m_StreamPools = new RefArray<StreamPoolAsset>();
-		[ContainerField(Name: "StreamPools", Offset: 20, NameHash: 1846268918, Flags: 65)]
-		public RefArray<StreamPoolAsset> StreamPools { get { return m_StreamPools; } set { if (OnPropertyChanging("AudioSystemAsset." + nameof(StreamPools), this, m_StreamPools, value)) m_StreamPools = value; } } // 0x14 (20)
-		
-		protected uint m_SampleRate = new uint();
-		[ContainerField(Name: "SampleRate", Offset: 24, NameHash: 604757697, Flags: 49421), LayoutImmutable, Blittable]
-		public uint SampleRate { get { return m_SampleRate; } set { if (OnPropertyChanging("AudioSystemAsset." + nameof(SampleRate), this, m_SampleRate, value)) m_SampleRate = value; } } // 0x18 (24)
-		
-		protected float m_SoundSpeed = new float();
-		[ContainerField(Name: "SoundSpeed", Offset: 28, NameHash: 124014113, Flags: 49469), LayoutImmutable, Blittable]
-		public float SoundSpeed { get { return m_SoundSpeed; } set { if (OnPropertyChanging("AudioSystemAsset." + nameof(SoundSpeed), this, m_SoundSpeed, value)) m_SoundSpeed = value; } } // 0x1C (28)
-		
-		protected float m_DopplerFactor = new float();
-		[ContainerField(Name: "DopplerFactor", Offset: 32, NameHash: 1757845912, Flags: 49469), LayoutImmutable, Blittable]
-		public float DopplerFactor { get { return m_DopplerFactor; } set { if (OnPropertyChanging("AudioSystemAsset." + nameof(DopplerFactor), this, m_DopplerFactor, value)) m_DopplerFactor = value; } } // 0x20 (32)
-		
-		protected CtrRef<SoundTestAsset> m_Tests = new CtrRef<SoundTestAsset>();
-		[ContainerField(Name: "Tests", Offset: 36, NameHash: 227718400, Flags: 53)]
-		public CtrRef<SoundTestAsset> Tests { get { return m_Tests; } set { if (OnPropertyChanging("AudioSystemAsset." + nameof(Tests), this, m_Tests, value)) m_Tests = value; } } // 0x24 (36)
-		
-		protected CtrRef<MixerSystemAsset> m_MixerSystem = new CtrRef<MixerSystemAsset>();
-		[ContainerField(Name: "MixerSystem", Offset: 40, NameHash: 1057148587, Flags: 53)]
-		public CtrRef<MixerSystemAsset> MixerSystem { get { return m_MixerSystem; } set { if (OnPropertyChanging("AudioSystemAsset." + nameof(MixerSystem), this, m_MixerSystem, value)) m_MixerSystem = value; } } // 0x28 (40)
-		
-		protected RefArray<AudioLanguage> m_Languages = new RefArray<AudioLanguage>();
-		[ContainerField(Name: "Languages", Offset: 44, NameHash: 3231948516, Flags: 65)]
-		public RefArray<AudioLanguage> Languages { get { return m_Languages; } set { if (OnPropertyChanging("AudioSystemAsset." + nameof(Languages), this, m_Languages, value)) m_Languages = value; } } // 0x2C (44)
-		
-		protected RefArray<AudioLanguageSetting> m_LanguageSettings = new RefArray<AudioLanguageSetting>();
-		[ContainerField(Name: "LanguageSettings", Offset: 48, NameHash: 689864818, Flags: 65)]
-		public RefArray<AudioLanguageSetting> LanguageSettings { get { return m_LanguageSettings; } set { if (OnPropertyChanging("AudioSystemAsset." + nameof(LanguageSettings), this, m_LanguageSettings, value)) m_LanguageSettings = value; } } // 0x30 (48)
-		
-		protected CtrRef<AudioLanguage> m_DefaultLanguage = new CtrRef<AudioLanguage>();
-		[ContainerField(Name: "DefaultLanguage", Offset: 52, NameHash: 1869348380, Flags: 53)]
-		public CtrRef<AudioLanguage> DefaultLanguage { get { return m_DefaultLanguage; } set { if (OnPropertyChanging("AudioSystemAsset." + nameof(DefaultLanguage), this, m_DefaultLanguage, value)) m_DefaultLanguage = value; } } // 0x34 (52)
-		
-		protected RefArray<SoundScopeData> m_Scopes = new RefArray<SoundScopeData>();
-		[ContainerField(Name: "Scopes", Offset: 56, NameHash: 3335461020, Flags: 65)]
-		public RefArray<SoundScopeData> Scopes { get { return m_Scopes; } set { if (OnPropertyChanging("AudioSystemAsset." + nameof(Scopes), this, m_Scopes, value)) m_Scopes = value; } } // 0x38 (56)
-		
-		protected RefArray<SoundScopeStrategyData> m_ScopeStrategies = new RefArray<SoundScopeStrategyData>();
-		[ContainerField(Name: "ScopeStrategies", Offset: 60, NameHash: 3410651026, Flags: 65)]
-		public RefArray<SoundScopeStrategyData> ScopeStrategies { get { return m_ScopeStrategies; } set { if (OnPropertyChanging("AudioSystemAsset." + nameof(ScopeStrategies), this, m_ScopeStrategies, value)) m_ScopeStrategies = value; } } // 0x3C (60)
-		
-		protected RefArray<SoundScopeSetupData> m_ScopeSetups = new RefArray<SoundScopeSetupData>();
-		[ContainerField(Name: "ScopeSetups", Offset: 64, NameHash: 341454043, Flags: 65)]
-		public RefArray<SoundScopeSetupData> ScopeSetups { get { return m_ScopeSetups; } set { if (OnPropertyChanging("AudioSystemAsset." + nameof(ScopeSetups), this, m_ScopeSetups, value)) m_ScopeSetups = value; } } // 0x40 (64)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 1109008247:
-					MasterPatch = (CtrRef<SoundMasterPatchAsset>) p_Value;
-					break;
+		[ContainerField(12), JsonProperty(Order = 12)]
+		public CtrRef<SoundMasterPatchAsset> MasterPatch { get; set; } = new();
 
-				case 2015103915:
-					DefaultWave = (CtrRef<SoundWaveAsset>) p_Value;
-					break;
+		[ContainerField(16), JsonProperty(Order = 16)]
+		public CtrRef<SoundWaveAsset> DefaultWave { get; set; } = new();
 
-				case 1846268918:
-					StreamPools = (RefArray<StreamPoolAsset>) p_Value;
-					break;
+		[ContainerField(20), JsonProperty(Order = 20)]
+		public RefArray<StreamPoolAsset> StreamPools { get; set; } = new();
 
-				case 604757697:
-					SampleRate = (uint) p_Value;
-					break;
+		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
+		public uint SampleRate { get; set; }
 
-				case 124014113:
-					SoundSpeed = (float) p_Value;
-					break;
+		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
+		public float SoundSpeed { get; set; }
 
-				case 1757845912:
-					DopplerFactor = (float) p_Value;
-					break;
+		[ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
+		public float DopplerFactor { get; set; }
 
-				case 227718400:
-					Tests = (CtrRef<SoundTestAsset>) p_Value;
-					break;
+		[ContainerField(36), JsonProperty(Order = 36)]
+		public CtrRef<SoundTestAsset> Tests { get; set; } = new();
 
-				case 1057148587:
-					MixerSystem = (CtrRef<MixerSystemAsset>) p_Value;
-					break;
+		[ContainerField(40), JsonProperty(Order = 40)]
+		public CtrRef<MixerSystemAsset> MixerSystem { get; set; } = new();
 
-				case 3231948516:
-					Languages = (RefArray<AudioLanguage>) p_Value;
-					break;
+		[ContainerField(44), JsonProperty(Order = 44)]
+		public RefArray<AudioLanguage> Languages { get; set; } = new();
 
-				case 689864818:
-					LanguageSettings = (RefArray<AudioLanguageSetting>) p_Value;
-					break;
+		[ContainerField(48), JsonProperty(Order = 48)]
+		public RefArray<AudioLanguageSetting> LanguageSettings { get; set; } = new();
 
-				case 1869348380:
-					DefaultLanguage = (CtrRef<AudioLanguage>) p_Value;
-					break;
+		[ContainerField(52), JsonProperty(Order = 52)]
+		public CtrRef<AudioLanguage> DefaultLanguage { get; set; } = new();
 
-				case 3335461020:
-					Scopes = (RefArray<SoundScopeData>) p_Value;
-					break;
+		[ContainerField(56), JsonProperty(Order = 56)]
+		public RefArray<SoundScopeData> Scopes { get; set; } = new();
 
-				case 3410651026:
-					ScopeStrategies = (RefArray<SoundScopeStrategyData>) p_Value;
-					break;
+		[ContainerField(60), JsonProperty(Order = 60)]
+		public RefArray<SoundScopeStrategyData> ScopeStrategies { get; set; } = new();
 
-				case 341454043:
-					ScopeSetups = (RefArray<SoundScopeSetupData>) p_Value;
-					break;
+		[ContainerField(64), JsonProperty(Order = 64)]
+		public RefArray<SoundScopeSetupData> ScopeSetups { get; set; } = new();
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1109008247:
-					return MasterPatch;
-
-				case 2015103915:
-					return DefaultWave;
-
-				case 1846268918:
-					return StreamPools;
-
-				case 604757697:
-					return SampleRate;
-
-				case 124014113:
-					return SoundSpeed;
-
-				case 1757845912:
-					return DopplerFactor;
-
-				case 227718400:
-					return Tests;
-
-				case 1057148587:
-					return MixerSystem;
-
-				case 3231948516:
-					return Languages;
-
-				case 689864818:
-					return LanguageSettings;
-
-				case 1869348380:
-					return DefaultLanguage;
-
-				case 3335461020:
-					return Scopes;
-
-				case 3410651026:
-					return ScopeStrategies;
-
-				case 341454043:
-					return ScopeSetups;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1109008247:
-					return typeof(AudioSystemAsset).GetProperty(nameof(MasterPatch));
-
-				case 2015103915:
-					return typeof(AudioSystemAsset).GetProperty(nameof(DefaultWave));
-
-				case 1846268918:
-					return typeof(AudioSystemAsset).GetProperty(nameof(StreamPools));
-
-				case 604757697:
-					return typeof(AudioSystemAsset).GetProperty(nameof(SampleRate));
-
-				case 124014113:
-					return typeof(AudioSystemAsset).GetProperty(nameof(SoundSpeed));
-
-				case 1757845912:
-					return typeof(AudioSystemAsset).GetProperty(nameof(DopplerFactor));
-
-				case 227718400:
-					return typeof(AudioSystemAsset).GetProperty(nameof(Tests));
-
-				case 1057148587:
-					return typeof(AudioSystemAsset).GetProperty(nameof(MixerSystem));
-
-				case 3231948516:
-					return typeof(AudioSystemAsset).GetProperty(nameof(Languages));
-
-				case 689864818:
-					return typeof(AudioSystemAsset).GetProperty(nameof(LanguageSettings));
-
-				case 1869348380:
-					return typeof(AudioSystemAsset).GetProperty(nameof(DefaultLanguage));
-
-				case 3335461020:
-					return typeof(AudioSystemAsset).GetProperty(nameof(Scopes));
-
-				case 3410651026:
-					return typeof(AudioSystemAsset).GetProperty(nameof(ScopeStrategies));
-
-				case 341454043:
-					return typeof(AudioSystemAsset).GetProperty(nameof(ScopeSetups));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

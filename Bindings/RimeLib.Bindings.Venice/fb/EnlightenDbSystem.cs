@@ -5,256 +5,68 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 16,  Flags: 41, Size: 192)]
-	public class EnlightenDbSystem : FrostbiteContainer
+	[ContainerType(16, 192)]
+	public class EnlightenDbSystem
 	{
-		[ContainerField(Name: "BoundingBox", Offset: 0, NameHash: 2648132290, Flags: 53289), Homogeneous, LayoutImmutable, Blittable]
-		public AxisAlignedBox BoundingBox { get; set; } = new AxisAlignedBox(); // 0x0 (0)
+		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 0)]
+		public AxisAlignedBox BoundingBox { get; set; } = new();
 		
-		[ContainerField(Name: "AtlasStartX", Offset: 32, NameHash: 2929172246, Flags: 49421), LayoutImmutable, Blittable]
-		public uint AtlasStartX { get; set; } // 0x20 (32)
+		[ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
+		public uint AtlasStartX { get; set; }
 		
-		[ContainerField(Name: "AtlasStartY", Offset: 36, NameHash: 2929172247, Flags: 49421), LayoutImmutable, Blittable]
-		public uint AtlasStartY { get; set; } // 0x24 (36)
+		[ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
+		public uint AtlasStartY { get; set; }
 		
-		[ContainerField(Name: "OutputWidth", Offset: 40, NameHash: 739018396, Flags: 49421), LayoutImmutable, Blittable]
-		public uint OutputWidth { get; set; } // 0x28 (40)
+		[ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
+		public uint OutputWidth { get; set; }
 		
-		[ContainerField(Name: "OutputHeight", Offset: 44, NameHash: 3054125413, Flags: 49421), LayoutImmutable, Blittable]
-		public uint OutputHeight { get; set; } // 0x2C (44)
+		[ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
+		public uint OutputHeight { get; set; }
 		
-		[ContainerField(Name: "PixelCount", Offset: 48, NameHash: 2412623662, Flags: 49421), LayoutImmutable, Blittable]
-		public uint PixelCount { get; set; } // 0x30 (48)
+		[ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
+		public uint PixelCount { get; set; }
 		
-		[ContainerField(Name: "PixelSize", Offset: 52, NameHash: 854589352, Flags: 49469), LayoutImmutable, Blittable]
-		public float PixelSize { get; set; } // 0x34 (52)
+		[ContainerField(52), LayoutImmutable, Blittable, JsonProperty(Order = 52)]
+		public float PixelSize { get; set; }
 		
-		[ContainerField(Name: "SystemId", Offset: 56, NameHash: 643121549, Flags: 49405), LayoutImmutable, Blittable]
-		public int SystemId { get; set; } // 0x38 (56)
+		[ContainerField(56), LayoutImmutable, Blittable, JsonProperty(Order = 56)]
+		public int SystemId { get; set; }
 		
-		[ContainerField(Name: "Instances", Offset: 60, NameHash: 3890087583, Flags: 65)]
-		public List<EnlightenDbInstance> Instances { get; set; } = new List<EnlightenDbInstance>(); // 0x3C (60)
+		[ContainerField(60), JsonProperty(Order = 60)]
+		public List<EnlightenDbInstance> Instances { get; set; } = new();
 		
-		[ContainerField(Name: "InputSystems", Offset: 64, NameHash: 3312183461, Flags: 65)]
-		public List<int> InputSystems { get; set; } = new List<int>(); // 0x40 (64)
+		[ContainerField(64), JsonProperty(Order = 64)]
+		public List<int> InputSystems { get; set; } = new();
 		
-		[ContainerField(Name: "SystemCache", Offset: 68, NameHash: 637498348, Flags: 41)]
-		public PrecomputeCache SystemCache { get; set; } = new PrecomputeCache(); // 0x44 (68)
+		[ContainerField(68), JsonProperty(Order = 68)]
+		public PrecomputeCache SystemCache { get; set; } = new();
 		
-		[ContainerField(Name: "ClusteringCache", Offset: 92, NameHash: 3343002403, Flags: 41)]
-		public PrecomputeCache ClusteringCache { get; set; } = new PrecomputeCache(); // 0x5C (92)
+		[ContainerField(92), JsonProperty(Order = 92)]
+		public PrecomputeCache ClusteringCache { get; set; } = new();
 		
-		[ContainerField(Name: "PreClusteringCache", Offset: 116, NameHash: 317514276, Flags: 41)]
-		public PrecomputeCache PreClusteringCache { get; set; } = new PrecomputeCache(); // 0x74 (116)
+		[ContainerField(116), JsonProperty(Order = 116)]
+		public PrecomputeCache PreClusteringCache { get; set; } = new();
 		
-		[ContainerField(Name: "LightTransportCache", Offset: 140, NameHash: 3540697556, Flags: 41)]
-		public PrecomputeCache LightTransportCache { get; set; } = new PrecomputeCache(); // 0x8C (140)
+		[ContainerField(140), JsonProperty(Order = 140)]
+		public PrecomputeCache LightTransportCache { get; set; } = new();
 		
-		[ContainerField(Name: "VisibilityCache", Offset: 164, NameHash: 717943567, Flags: 41)]
-		public PrecomputeCache VisibilityCache { get; set; } = new PrecomputeCache(); // 0xA4 (164)
+		[ContainerField(164), JsonProperty(Order = 164)]
+		public PrecomputeCache VisibilityCache { get; set; } = new();
 		
-		[ContainerField(Name: "TerrainSystem", Offset: 188, NameHash: 2277632311, Flags: 49325), LayoutImmutable, Blittable]
-		public bool TerrainSystem { get; set; } // 0xBC (188)
+		[ContainerField(188), LayoutImmutable, Blittable, JsonProperty(Order = 188)]
+		public bool TerrainSystem { get; set; }
 		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 2648132290:
-					BoundingBox = (AxisAlignedBox) p_Value;
-					break;
-
-				case 2929172246:
-					AtlasStartX = (uint) p_Value;
-					break;
-
-				case 2929172247:
-					AtlasStartY = (uint) p_Value;
-					break;
-
-				case 739018396:
-					OutputWidth = (uint) p_Value;
-					break;
-
-				case 3054125413:
-					OutputHeight = (uint) p_Value;
-					break;
-
-				case 2412623662:
-					PixelCount = (uint) p_Value;
-					break;
-
-				case 854589352:
-					PixelSize = (float) p_Value;
-					break;
-
-				case 643121549:
-					SystemId = (int) p_Value;
-					break;
-
-				case 3890087583:
-					Instances = (List<EnlightenDbInstance>) p_Value;
-					break;
-
-				case 3312183461:
-					InputSystems = (List<int>) p_Value;
-					break;
-
-				case 637498348:
-					SystemCache = (PrecomputeCache) p_Value;
-					break;
-
-				case 3343002403:
-					ClusteringCache = (PrecomputeCache) p_Value;
-					break;
-
-				case 317514276:
-					PreClusteringCache = (PrecomputeCache) p_Value;
-					break;
-
-				case 3540697556:
-					LightTransportCache = (PrecomputeCache) p_Value;
-					break;
-
-				case 717943567:
-					VisibilityCache = (PrecomputeCache) p_Value;
-					break;
-
-				case 2277632311:
-					TerrainSystem = (bool) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2648132290:
-					return BoundingBox;
-
-				case 2929172246:
-					return AtlasStartX;
-
-				case 2929172247:
-					return AtlasStartY;
-
-				case 739018396:
-					return OutputWidth;
-
-				case 3054125413:
-					return OutputHeight;
-
-				case 2412623662:
-					return PixelCount;
-
-				case 854589352:
-					return PixelSize;
-
-				case 643121549:
-					return SystemId;
-
-				case 3890087583:
-					return Instances;
-
-				case 3312183461:
-					return InputSystems;
-
-				case 637498348:
-					return SystemCache;
-
-				case 3343002403:
-					return ClusteringCache;
-
-				case 317514276:
-					return PreClusteringCache;
-
-				case 3540697556:
-					return LightTransportCache;
-
-				case 717943567:
-					return VisibilityCache;
-
-				case 2277632311:
-					return TerrainSystem;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2648132290:
-					return typeof(EnlightenDbSystem).GetProperty(nameof(BoundingBox));
-
-				case 2929172246:
-					return typeof(EnlightenDbSystem).GetProperty(nameof(AtlasStartX));
-
-				case 2929172247:
-					return typeof(EnlightenDbSystem).GetProperty(nameof(AtlasStartY));
-
-				case 739018396:
-					return typeof(EnlightenDbSystem).GetProperty(nameof(OutputWidth));
-
-				case 3054125413:
-					return typeof(EnlightenDbSystem).GetProperty(nameof(OutputHeight));
-
-				case 2412623662:
-					return typeof(EnlightenDbSystem).GetProperty(nameof(PixelCount));
-
-				case 854589352:
-					return typeof(EnlightenDbSystem).GetProperty(nameof(PixelSize));
-
-				case 643121549:
-					return typeof(EnlightenDbSystem).GetProperty(nameof(SystemId));
-
-				case 3890087583:
-					return typeof(EnlightenDbSystem).GetProperty(nameof(Instances));
-
-				case 3312183461:
-					return typeof(EnlightenDbSystem).GetProperty(nameof(InputSystems));
-
-				case 637498348:
-					return typeof(EnlightenDbSystem).GetProperty(nameof(SystemCache));
-
-				case 3343002403:
-					return typeof(EnlightenDbSystem).GetProperty(nameof(ClusteringCache));
-
-				case 317514276:
-					return typeof(EnlightenDbSystem).GetProperty(nameof(PreClusteringCache));
-
-				case 3540697556:
-					return typeof(EnlightenDbSystem).GetProperty(nameof(LightTransportCache));
-
-				case 717943567:
-					return typeof(EnlightenDbSystem).GetProperty(nameof(VisibilityCache));
-
-				case 2277632311:
-					return typeof(EnlightenDbSystem).GetProperty(nameof(TerrainSystem));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

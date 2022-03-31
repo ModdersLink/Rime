@@ -5,77 +5,27 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 20)]
+	[ContainerType(4, 20)]
 	public class BlueprintAndVariationPair : 
 		Asset
 	{
-		protected CtrRef<Asset> m_BaseAsset = new CtrRef<Asset>();
-		[ContainerField(Name: "BaseAsset", Offset: 12, NameHash: 1696234240, Flags: 53)]
-		public CtrRef<Asset> BaseAsset { get { return m_BaseAsset; } set { if (OnPropertyChanging("BlueprintAndVariationPair." + nameof(BaseAsset), this, m_BaseAsset, value)) m_BaseAsset = value; } } // 0xC (12)
-		
-		protected CtrRef<ObjectVariation> m_Variation = new CtrRef<ObjectVariation>();
-		[ContainerField(Name: "Variation", Offset: 16, NameHash: 2945980116, Flags: 53)]
-		public CtrRef<ObjectVariation> Variation { get { return m_Variation; } set { if (OnPropertyChanging("BlueprintAndVariationPair." + nameof(Variation), this, m_Variation, value)) m_Variation = value; } } // 0x10 (16)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 1696234240:
-					BaseAsset = (CtrRef<Asset>) p_Value;
-					break;
+		[ContainerField(12), JsonProperty(Order = 12)]
+		public CtrRef<Asset> BaseAsset { get; set; } = new();
 
-				case 2945980116:
-					Variation = (CtrRef<ObjectVariation>) p_Value;
-					break;
+		[ContainerField(16), JsonProperty(Order = 16)]
+		public CtrRef<ObjectVariation> Variation { get; set; } = new();
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1696234240:
-					return BaseAsset;
-
-				case 2945980116:
-					return Variation;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1696234240:
-					return typeof(BlueprintAndVariationPair).GetProperty(nameof(BaseAsset));
-
-				case 2945980116:
-					return typeof(BlueprintAndVariationPair).GetProperty(nameof(Variation));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

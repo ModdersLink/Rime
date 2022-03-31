@@ -58,20 +58,20 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Sb
         [DbObjectField("tag")]
         public GUID? Tag { get; set; }
 
-        [DbObjectField("name")]
-        public string? Name { get; set; }
-
-        [DbObjectField("cas", DefaultValue = false)]
-        public bool Cas { get; set; }
-
-        [DbObjectField("alwaysEmitSuperbundle")]
-        public bool? AlwaysEmitSuperbundle { get; set; }
-
         [DbObjectField("bundles")]
         public BundleInfo[] Bundles { get; set; } = new BundleInfo[0];
 
         [DbObjectField("chunks")]
         public ChunkInfo[] Chunks { get; set; } = new ChunkInfo[0];
+
+        [DbObjectField("name")]
+        public string? Name { get; set; }
+
+        [DbObjectField("cas", DefaultValue = false)]
+        public bool? Cas { get; set; }
+
+        [DbObjectField("alwaysEmitSuperbundle")]
+        public bool? AlwaysEmitSuperbundle { get; set; }
 
         public bool TryGetBundle(string p_Id, out BundleInfo? p_Bundle)
         {

@@ -5,87 +5,29 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 41, Size: 12)]
-	public class UICreditsPage : FrostbiteContainer
+	[ContainerType(4, 12)]
+	public class UICreditsPage
 	{
-		[ContainerField(Name: "Header1", Offset: 0, NameHash: 2009148299, Flags: 16509), LayoutImmutable]
-		public string Header1 { get; set; } // 0x0 (0)
+		[ContainerField(0), LayoutImmutable, JsonProperty(Order = 0)]
+		public string Header1 { get; set; } = string.Empty;
 		
-		[ContainerField(Name: "Header2", Offset: 4, NameHash: 2009148296, Flags: 16509), LayoutImmutable]
-		public string Header2 { get; set; } // 0x4 (4)
+		[ContainerField(4), LayoutImmutable, JsonProperty(Order = 4)]
+		public string Header2 { get; set; } = string.Empty;
 		
-		[ContainerField(Name: "Lines", Offset: 8, NameHash: 217831032, Flags: 65)]
-		public List<UICreditsLine> Lines { get; set; } = new List<UICreditsLine>(); // 0x8 (8)
+		[ContainerField(8), JsonProperty(Order = 8)]
+		public List<UICreditsLine> Lines { get; set; } = new();
 		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 2009148299:
-					Header1 = (string) p_Value;
-					break;
-
-				case 2009148296:
-					Header2 = (string) p_Value;
-					break;
-
-				case 217831032:
-					Lines = (List<UICreditsLine>) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2009148299:
-					return Header1;
-
-				case 2009148296:
-					return Header2;
-
-				case 217831032:
-					return Lines;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2009148299:
-					return typeof(UICreditsPage).GetProperty(nameof(Header1));
-
-				case 2009148296:
-					return typeof(UICreditsPage).GetProperty(nameof(Header2));
-
-				case 217831032:
-					return typeof(UICreditsPage).GetProperty(nameof(Lines));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

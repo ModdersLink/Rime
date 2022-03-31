@@ -2,6 +2,7 @@
 using RimeLib.IO;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 
@@ -30,14 +31,14 @@ namespace RimeLib.Shader.Frostbite2_0.Frostbite.ShaderConstants
         {
             throw new NotImplementedException();
 
-            p_Writer.Write(Encoding.ASCII.GetBytes(m_Name).Take(0x20).ToArray());
+            /*p_Writer.Write(Encoding.ASCII.GetBytes(m_Name).Take(0x20).ToArray());
 
             p_Writer.Write(m_Handle);
             p_Writer.Write(m_Index);
             p_Writer.Write(m_TextureType);
             p_Writer.Write(m_Required);
 
-            return true;
+            return true;*/
         }
         
         public void Deserialize(RimeReader p_Reader)
@@ -53,8 +54,9 @@ namespace RimeLib.Shader.Frostbite2_0.Frostbite.ShaderConstants
         }
 
 
-        public bool Serialize(out byte[] p_Data)
+        public bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
         {
+            p_Data = null;
             throw new System.NotImplementedException();
         }
 

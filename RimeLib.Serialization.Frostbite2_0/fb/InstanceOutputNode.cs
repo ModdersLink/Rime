@@ -1,0 +1,42 @@
+///////////////////////////////////////////////////////////////
+//                                                           //
+// This is an automatically generated file.                  //
+// Do *NOT* modify unless you really know what you're doing. //
+//                                                           //
+///////////////////////////////////////////////////////////////
+
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
+
+namespace fb
+{
+	[ContainerType(4, 32)]
+	public class InstanceOutputNode :
+		UINodeData
+	{
+		[ContainerField(20), JsonProperty(Order = 20)]
+		public CtrRef<UINodePort> In { get; set; } = new();
+
+		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
+		public int Id { get; set; }
+
+		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
+		public bool DestroyGraph { get; set; }
+
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(In));
+			p_Writer.Write(Id);
+			p_Writer.Write(DestroyGraph);
+			p_Writer.WriteNullBytes(3);
+		}
+	}
+}

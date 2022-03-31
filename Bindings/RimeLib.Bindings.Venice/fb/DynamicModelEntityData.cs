@@ -5,91 +5,30 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 16,  Flags: 53, Size: 128)]
+	[ContainerType(16, 128)]
 	public class DynamicModelEntityData : 
 		DynamicGamePhysicsEntityData
 	{
-		protected CtrRef<PartComponentData> m_Part = new CtrRef<PartComponentData>();
-		[ContainerField(Name: "Part", Offset: 112, NameHash: 2089448370, Flags: 53)]
-		public CtrRef<PartComponentData> Part { get { return m_Part; } set { if (OnPropertyChanging("DynamicModelEntityData." + nameof(Part), this, m_Part, value)) m_Part = value; } } // 0x70 (112)
-		
-		protected CtrRef<MeshAsset> m_Mesh = new CtrRef<MeshAsset>();
-		[ContainerField(Name: "Mesh", Offset: 116, NameHash: 2088783990, Flags: 53)]
-		public CtrRef<MeshAsset> Mesh { get { return m_Mesh; } set { if (OnPropertyChanging("DynamicModelEntityData." + nameof(Mesh), this, m_Mesh, value)) m_Mesh = value; } } // 0x74 (116)
-		
-		protected bool m_NoCollision = new bool();
-		[ContainerField(Name: "NoCollision", Offset: 120, NameHash: 3513186074, Flags: 49325), LayoutImmutable, Blittable]
-		public bool NoCollision { get { return m_NoCollision; } set { if (OnPropertyChanging("DynamicModelEntityData." + nameof(NoCollision), this, m_NoCollision, value)) m_NoCollision = value; } } // 0x78 (120)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 2089448370:
-					Part = (CtrRef<PartComponentData>) p_Value;
-					break;
+		[ContainerField(112), JsonProperty(Order = 112)]
+		public CtrRef<PartComponentData> Part { get; set; } = new();
 
-				case 2088783990:
-					Mesh = (CtrRef<MeshAsset>) p_Value;
-					break;
+		[ContainerField(116), JsonProperty(Order = 116)]
+		public CtrRef<MeshAsset> Mesh { get; set; } = new();
 
-				case 3513186074:
-					NoCollision = (bool) p_Value;
-					break;
+		[ContainerField(120), LayoutImmutable, Blittable, JsonProperty(Order = 120)]
+		public bool NoCollision { get; set; }
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2089448370:
-					return Part;
-
-				case 2088783990:
-					return Mesh;
-
-				case 3513186074:
-					return NoCollision;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2089448370:
-					return typeof(DynamicModelEntityData).GetProperty(nameof(Part));
-
-				case 2088783990:
-					return typeof(DynamicModelEntityData).GetProperty(nameof(Mesh));
-
-				case 3513186074:
-					return typeof(DynamicModelEntityData).GetProperty(nameof(NoCollision));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

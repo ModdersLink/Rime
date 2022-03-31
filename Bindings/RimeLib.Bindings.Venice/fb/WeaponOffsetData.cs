@@ -5,133 +5,39 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 32)]
+	[ContainerType(4, 32)]
 	public class WeaponOffsetData : 
 		DataContainer
 	{
-		protected float m_WeaponOffsetX = new float();
-		[ContainerField(Name: "WeaponOffsetX", Offset: 8, NameHash: 2991904818, Flags: 49469), LayoutImmutable, Blittable]
-		public float WeaponOffsetX { get { return m_WeaponOffsetX; } set { if (OnPropertyChanging("WeaponOffsetData." + nameof(WeaponOffsetX), this, m_WeaponOffsetX, value)) m_WeaponOffsetX = value; } } // 0x8 (8)
-		
-		protected float m_WeaponOffsetY = new float();
-		[ContainerField(Name: "WeaponOffsetY", Offset: 12, NameHash: 2991904819, Flags: 49469), LayoutImmutable, Blittable]
-		public float WeaponOffsetY { get { return m_WeaponOffsetY; } set { if (OnPropertyChanging("WeaponOffsetData." + nameof(WeaponOffsetY), this, m_WeaponOffsetY, value)) m_WeaponOffsetY = value; } } // 0xC (12)
-		
-		protected float m_WeaponOffsetZ = new float();
-		[ContainerField(Name: "WeaponOffsetZ", Offset: 16, NameHash: 2991904816, Flags: 49469), LayoutImmutable, Blittable]
-		public float WeaponOffsetZ { get { return m_WeaponOffsetZ; } set { if (OnPropertyChanging("WeaponOffsetData." + nameof(WeaponOffsetZ), this, m_WeaponOffsetZ, value)) m_WeaponOffsetZ = value; } } // 0x10 (16)
-		
-		protected float m_WeaponZoomedOffsetX = new float();
-		[ContainerField(Name: "WeaponZoomedOffsetX", Offset: 20, NameHash: 2753985860, Flags: 49469), LayoutImmutable, Blittable]
-		public float WeaponZoomedOffsetX { get { return m_WeaponZoomedOffsetX; } set { if (OnPropertyChanging("WeaponOffsetData." + nameof(WeaponZoomedOffsetX), this, m_WeaponZoomedOffsetX, value)) m_WeaponZoomedOffsetX = value; } } // 0x14 (20)
-		
-		protected float m_WeaponZoomedOffsetY = new float();
-		[ContainerField(Name: "WeaponZoomedOffsetY", Offset: 24, NameHash: 2753985861, Flags: 49469), LayoutImmutable, Blittable]
-		public float WeaponZoomedOffsetY { get { return m_WeaponZoomedOffsetY; } set { if (OnPropertyChanging("WeaponOffsetData." + nameof(WeaponZoomedOffsetY), this, m_WeaponZoomedOffsetY, value)) m_WeaponZoomedOffsetY = value; } } // 0x18 (24)
-		
-		protected float m_WeaponZoomedOffsetZ = new float();
-		[ContainerField(Name: "WeaponZoomedOffsetZ", Offset: 28, NameHash: 2753985862, Flags: 49469), LayoutImmutable, Blittable]
-		public float WeaponZoomedOffsetZ { get { return m_WeaponZoomedOffsetZ; } set { if (OnPropertyChanging("WeaponOffsetData." + nameof(WeaponZoomedOffsetZ), this, m_WeaponZoomedOffsetZ, value)) m_WeaponZoomedOffsetZ = value; } } // 0x1C (28)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 2991904818:
-					WeaponOffsetX = (float) p_Value;
-					break;
+		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
+		public float WeaponOffsetX { get; set; }
 
-				case 2991904819:
-					WeaponOffsetY = (float) p_Value;
-					break;
+		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
+		public float WeaponOffsetY { get; set; }
 
-				case 2991904816:
-					WeaponOffsetZ = (float) p_Value;
-					break;
+		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		public float WeaponOffsetZ { get; set; }
 
-				case 2753985860:
-					WeaponZoomedOffsetX = (float) p_Value;
-					break;
+		[ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
+		public float WeaponZoomedOffsetX { get; set; }
 
-				case 2753985861:
-					WeaponZoomedOffsetY = (float) p_Value;
-					break;
+		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
+		public float WeaponZoomedOffsetY { get; set; }
 
-				case 2753985862:
-					WeaponZoomedOffsetZ = (float) p_Value;
-					break;
+		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
+		public float WeaponZoomedOffsetZ { get; set; }
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2991904818:
-					return WeaponOffsetX;
-
-				case 2991904819:
-					return WeaponOffsetY;
-
-				case 2991904816:
-					return WeaponOffsetZ;
-
-				case 2753985860:
-					return WeaponZoomedOffsetX;
-
-				case 2753985861:
-					return WeaponZoomedOffsetY;
-
-				case 2753985862:
-					return WeaponZoomedOffsetZ;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2991904818:
-					return typeof(WeaponOffsetData).GetProperty(nameof(WeaponOffsetX));
-
-				case 2991904819:
-					return typeof(WeaponOffsetData).GetProperty(nameof(WeaponOffsetY));
-
-				case 2991904816:
-					return typeof(WeaponOffsetData).GetProperty(nameof(WeaponOffsetZ));
-
-				case 2753985860:
-					return typeof(WeaponOffsetData).GetProperty(nameof(WeaponZoomedOffsetX));
-
-				case 2753985861:
-					return typeof(WeaponOffsetData).GetProperty(nameof(WeaponZoomedOffsetY));
-
-				case 2753985862:
-					return typeof(WeaponOffsetData).GetProperty(nameof(WeaponZoomedOffsetZ));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

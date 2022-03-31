@@ -1,0 +1,50 @@
+///////////////////////////////////////////////////////////////
+//                                                           //
+// This is an automatically generated file.                  //
+// Do *NOT* modify unless you really know what you're doing. //
+//                                                           //
+///////////////////////////////////////////////////////////////
+
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
+
+namespace fb
+{
+	[ContainerType(4, 36)]
+	public class PowerToolWeaponData :
+		WeaponData
+	{
+		[ContainerField(16), JsonProperty(Order = 16)]
+		public CtrRef<SoundAsset> RepairSound { get; set; } = new();
+
+		[ContainerField(20), JsonProperty(Order = 20)]
+		public CtrRef<SoundAsset> RepairCompletedSound { get; set; } = new();
+
+		[ContainerField(24), JsonProperty(Order = 24)]
+		public CtrRef<SoundAsset> DamageSound { get; set; } = new();
+
+		[ContainerField(28), JsonProperty(Order = 28)]
+		public CtrRef<MaterialContainerPair> RepairMaterialPair { get; set; } = new();
+
+		[ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
+		public bool PlayFireEffectOnRepairOnly { get; set; }
+
+		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+		{
+			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.Write(p_EbxWriter.WriteImport(RepairSound));
+			p_Writer.Write(p_EbxWriter.WriteImport(RepairCompletedSound));
+			p_Writer.Write(p_EbxWriter.WriteImport(DamageSound));
+			p_Writer.Write(p_EbxWriter.WriteImport(RepairMaterialPair));
+			p_Writer.Write(PlayFireEffectOnRepairOnly);
+			p_Writer.WriteNullBytes(3);
+		}
+	}
+}

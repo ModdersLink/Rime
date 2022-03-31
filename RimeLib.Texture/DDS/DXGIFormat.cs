@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace RimeLib.Texture.DDS
+﻿namespace RimeLib.Texture.DDS
 {
     public enum DXGIFormat : uint
     {

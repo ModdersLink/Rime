@@ -5,105 +5,33 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 24)]
+	[ContainerType(4, 24)]
 	public class RichPresenceContext : 
 		DataContainer
 	{
-		protected string m_Name = string.Empty;
-		[ContainerField(Name: "Name", Offset: 8, NameHash: 2088949890, Flags: 16509), LayoutImmutable]
-		public string Name { get { return m_Name; } set { if (OnPropertyChanging("RichPresenceContext." + nameof(Name), this, m_Name, value)) m_Name = value; } } // 0x8 (8)
-		
-		protected RefArray<RichPresenceContextValue> m_Values = new RefArray<RichPresenceContextValue>();
-		[ContainerField(Name: "Values", Offset: 12, NameHash: 3142410589, Flags: 65)]
-		public RefArray<RichPresenceContextValue> Values { get { return m_Values; } set { if (OnPropertyChanging("RichPresenceContext." + nameof(Values), this, m_Values, value)) m_Values = value; } } // 0xC (12)
-		
-		protected CtrRef<RichPresenceContextValue> m_DefaultValue = new CtrRef<RichPresenceContextValue>();
-		[ContainerField(Name: "DefaultValue", Offset: 16, NameHash: 2066049125, Flags: 53)]
-		public CtrRef<RichPresenceContextValue> DefaultValue { get { return m_DefaultValue; } set { if (OnPropertyChanging("RichPresenceContext." + nameof(DefaultValue), this, m_DefaultValue, value)) m_DefaultValue = value; } } // 0x10 (16)
-		
-		protected sbyte m_Index = new sbyte();
-		[ContainerField(Name: "Index", Offset: 20, NameHash: 214509467, Flags: 49341), LayoutImmutable, Blittable]
-		public sbyte Index { get { return m_Index; } set { if (OnPropertyChanging("RichPresenceContext." + nameof(Index), this, m_Index, value)) m_Index = value; } } // 0x14 (20)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 2088949890:
-					Name = (string) p_Value;
-					break;
+		[ContainerField(8), LayoutImmutable, JsonProperty(Order = 8)]
+		public string Name { get; set; } = string.Empty;
 
-				case 3142410589:
-					Values = (RefArray<RichPresenceContextValue>) p_Value;
-					break;
+		[ContainerField(12), JsonProperty(Order = 12)]
+		public RefArray<RichPresenceContextValue> Values { get; set; } = new();
 
-				case 2066049125:
-					DefaultValue = (CtrRef<RichPresenceContextValue>) p_Value;
-					break;
+		[ContainerField(16), JsonProperty(Order = 16)]
+		public CtrRef<RichPresenceContextValue> DefaultValue { get; set; } = new();
 
-				case 214509467:
-					Index = (sbyte) p_Value;
-					break;
+		[ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
+		public sbyte Index { get; set; }
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2088949890:
-					return Name;
-
-				case 3142410589:
-					return Values;
-
-				case 2066049125:
-					return DefaultValue;
-
-				case 214509467:
-					return Index;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2088949890:
-					return typeof(RichPresenceContext).GetProperty(nameof(Name));
-
-				case 3142410589:
-					return typeof(RichPresenceContext).GetProperty(nameof(Values));
-
-				case 2066049125:
-					return typeof(RichPresenceContext).GetProperty(nameof(DefaultValue));
-
-				case 214509467:
-					return typeof(RichPresenceContext).GetProperty(nameof(Index));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

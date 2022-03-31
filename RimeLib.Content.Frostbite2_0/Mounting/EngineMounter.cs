@@ -2,10 +2,10 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using RimeLib.Attributes;
 using RimeLib.Content.Frostbite;
 using RimeLib.Content.Mounting;
 using RimeLib.Content.Frostbite2_0.Frostbite.Bundles;
@@ -22,7 +22,6 @@ using PackageManifest = RimeLib.Content.Frostbite2_0.Frostbite.PackageManifest;
 
 namespace RimeLib.Content.Frostbite2_0.Mounting
 {
-    [EngineSupport(EngineType.Frostbite2_0)]
     public class EngineMounter : IEngineMounter
     {
         protected string m_GamePath = "";
@@ -33,13 +32,13 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
         protected List<SuperbundleEntry> m_Superbundles = new List<SuperbundleEntry>();
         protected Catalog? m_Catalog;
 
-        protected ConcurrentDictionary<GUID, ChunkEntry> m_Chunks = new ConcurrentDictionary<GUID, ChunkEntry>();
-        protected ConcurrentDictionary<string, BundleManifest> m_Bundles = new ConcurrentDictionary<string, BundleManifest>();
-        protected ConcurrentDictionary<string, CasBundleEntry> m_CasBundles = new ConcurrentDictionary<string, CasBundleEntry>();
+        protected ConcurrentDictionary<GUID, ChunkEntry> m_Chunks = new();
+        protected ConcurrentDictionary<string, BundleManifest> m_Bundles = new();
+        protected ConcurrentDictionary<string, CasBundleEntry> m_CasBundles = new();
 
-        private readonly ConcurrentDictionary<string, MountedObject<IResourceVariant>> m_MountedResources = new ConcurrentDictionary<string, MountedObject<IResourceVariant>>();
-        private readonly ConcurrentDictionary<GUID, MountedObject<IChunkVariant>> m_MountedChunks = new ConcurrentDictionary<GUID, MountedObject<IChunkVariant>>();
-        private readonly ConcurrentDictionary<string, MountedObject> m_MountedPartitions = new ConcurrentDictionary<string, MountedObject>();
+        private readonly ConcurrentDictionary<string, MountedObject<IResourceVariant>> m_MountedResources = new();
+        private readonly ConcurrentDictionary<GUID, MountedObject<IChunkVariant>> m_MountedChunks = new();
+        private readonly ConcurrentDictionary<string, MountedObject> m_MountedPartitions = new();
 
         private readonly HashSet<string> m_MountedSuperbundles = new HashSet<string>();
         private readonly HashSet<string> m_MountedBundles = new HashSet<string>();
@@ -192,7 +191,7 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
             }
         }
 
-        public bool TryGetResource(string p_Path, out IMountedObject<IResourceVariant>? p_Resource)
+        public bool TryGetResource(string p_Path, [NotNullWhen(true)] out IMountedObject<IResourceVariant>? p_Resource)
         {
             if (m_MountedResources.TryGetValue(p_Path.ToLowerInvariant(), out var s_Resource))
             {
@@ -204,7 +203,7 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
             return false;
         }
 
-        public bool TryGetChunk(GUID p_GUID, out IMountedObject<IChunkVariant>? p_Chunk)
+        public bool TryGetChunk(GUID p_GUID, [NotNullWhen(true)] out IMountedObject<IChunkVariant>? p_Chunk)
         {
             if (m_MountedChunks.TryGetValue(p_GUID, out var s_Chunk))
             {
@@ -216,7 +215,7 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
             return false;
         }
 
-        public bool TryGetPartition(string p_Path, out IMountedObject? p_Partition)
+        public bool TryGetPartition(string p_Path, [NotNullWhen(true)] out IMountedObject? p_Partition)
         {
             if (m_MountedPartitions.TryGetValue(p_Path.ToLowerInvariant(), out var s_Partition))
             {
@@ -264,6 +263,37 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
             }
 
             return s_Bundles;
+        }
+
+        public async Task MountStandaloneSuperbundle(string p_Name, string p_Path, bool p_AutoMount)
+        {
+            if (string.IsNullOrWhiteSpace(p_Name))
+                throw new ArgumentException("Superbundle name cannot be empty.", nameof(p_Name));
+
+            if (!p_Path.EndsWith(".sb"))
+                throw new ArgumentException("Superbundle file must have a '.sb' extension.", nameof(p_Path));
+
+            if (!File.Exists(p_Path))
+                throw new ArgumentException("The specified superbundle file does not exist.", nameof(p_Path));
+
+            var s_TocPath = p_Path.Replace(".sb", ".toc");
+
+            if (!File.Exists(s_TocPath))
+                throw new Exception("Could not find corresponding toc file for superbundle.");
+
+            TableOfContents<SuperbundleLayout> s_Toc;
+
+            // Parse the superbundle layout.
+            using (var s_Reader = new RimeReader(File.Open(s_TocPath, FileMode.Open, FileAccess.Read, FileShare.Read)))
+                s_Toc = new TableOfContents<SuperbundleLayout>(s_Reader);
+
+            // Create a superbundle entry for this superbundle.
+            var s_SbEntry = new SuperbundleEntry(p_Name.ToLowerInvariant(), p_Path.Replace(".sb", ""), s_Toc);
+
+            // Add to the list of discovered superbundles.
+            m_Superbundles.Add(s_SbEntry);
+
+            await MountSuperbundle(p_Name, p_AutoMount);
         }
 
         protected string GetMainPackagePath()
@@ -537,7 +567,8 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
         protected void ParseBundles(SuperbundleEntry p_Superbundle, SuperbundleLayout p_Toc, SuperbundleLayout? p_PatchToc, bool p_AutoMount)
         {
             // Figure out which endianness our readers should have.
-            var s_Endianness = p_Toc.Cas ? Endianness.LittleEndian : Endianness.BigEndian;
+            var s_Cas = (p_Toc.Cas.HasValue && p_Toc.Cas.Value);
+            var s_Endianness = s_Cas ? Endianness.LittleEndian : Endianness.BigEndian;
 
             if (!File.Exists(p_Superbundle.Path + ".sb"))
                 return;
@@ -562,7 +593,7 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
                 // parse straight away!
                 if (p_PatchToc == null || !p_PatchToc.TryGetBundle(s_Bundle.Id, out var s_PatchBundle) || (s_PatchBundle!.Base.HasValue && s_PatchBundle.Base.Value))
                 {
-                    if (p_Toc.Cas)
+                    if (s_Cas)
                     {
                         ParseCasBundle(s_Reader, s_Bundle, p_Superbundle, p_AutoMount);
                         continue;
@@ -581,7 +612,7 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
                 }
 
                 // If this wasn't a delta entry then parse as we normally would.
-                if (p_Toc.Cas)
+                if (s_Cas)
                 {
                     ParseCasBundle(s_PatchReader!, s_PatchBundle, p_Superbundle, p_AutoMount);
                     continue;
@@ -605,7 +636,7 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
                     if (s_Bundle.Delta.HasValue && s_Bundle.Delta.Value)
                         throw new Exception($"Found a delta bundle ({s_Bundle.Id}) without a base bundle entry. This probably means you're missing some content.");
                     
-                    if (p_PatchToc.Cas)
+                    if (p_PatchToc.Cas.HasValue && p_PatchToc.Cas.Value)
                     {
                         ParseCasBundle(s_PatchReader!, s_Bundle, p_Superbundle, p_AutoMount);
                         continue;
@@ -744,6 +775,11 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
             }
 
             return true;
+        }
+
+        public EngineType[] GetSupportedEngines()
+        {
+            return new[] { EngineType.Frostbite2_0 };
         }
     }
 }

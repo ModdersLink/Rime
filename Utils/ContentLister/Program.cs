@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using CommandLine;
+using RimeLib;
 using RimeLib.Content.Mounting;
 using RimeLib.Frostbite;
 using Environment = System.Environment;
@@ -67,7 +68,7 @@ namespace Rime.Utils.ContentLister
 
         private static async void DumpFiles(Options p_Options)
         {
-            var s_Mounter = EngineMounterRegistry.Create(p_Options.EngineType);
+            var s_Mounter = EngineInterfaceRegistry.Create<IEngineMounter>(p_Options.EngineType);
 
             var s_MountSuperbundles = p_Options.MountSuperbundles.ToList();
             var s_MountBundles = p_Options.MountBundles.ToList();

@@ -5,113 +5,35 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 41, Size: 20)]
-	public class FloatOption : FrostbiteContainer
+	[ContainerType(4, 20)]
+	public class FloatOption
 	{
-		[ContainerField(Name: "Name", Offset: 0, NameHash: 2088949890, Flags: 16509), LayoutImmutable]
-		public string Name { get; set; } // 0x0 (0)
+		[ContainerField(0), LayoutImmutable, JsonProperty(Order = 0)]
+		public string Name { get; set; } = string.Empty;
 		
-		[ContainerField(Name: "Value", Offset: 4, NameHash: 225375086, Flags: 49469), LayoutImmutable, Blittable]
-		public float Value { get; set; } // 0x4 (4)
+		[ContainerField(4), LayoutImmutable, Blittable, JsonProperty(Order = 4)]
+		public float Value { get; set; }
 		
-		[ContainerField(Name: "Min", Offset: 8, NameHash: 193446607, Flags: 49469), LayoutImmutable, Blittable]
-		public float Min { get; set; } // 0x8 (8)
+		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
+		public float Min { get; set; }
 		
-		[ContainerField(Name: "Max", Offset: 12, NameHash: 193446865, Flags: 49469), LayoutImmutable, Blittable]
-		public float Max { get; set; } // 0xC (12)
+		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
+		public float Max { get; set; }
 		
-		[ContainerField(Name: "Step", Offset: 16, NameHash: 2089400887, Flags: 49469), LayoutImmutable, Blittable]
-		public float Step { get; set; } // 0x10 (16)
+		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		public float Step { get; set; }
 		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 2088949890:
-					Name = (string) p_Value;
-					break;
-
-				case 225375086:
-					Value = (float) p_Value;
-					break;
-
-				case 193446607:
-					Min = (float) p_Value;
-					break;
-
-				case 193446865:
-					Max = (float) p_Value;
-					break;
-
-				case 2089400887:
-					Step = (float) p_Value;
-					break;
-
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2088949890:
-					return Name;
-
-				case 225375086:
-					return Value;
-
-				case 193446607:
-					return Min;
-
-				case 193446865:
-					return Max;
-
-				case 2089400887:
-					return Step;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 2088949890:
-					return typeof(FloatOption).GetProperty(nameof(Name));
-
-				case 225375086:
-					return typeof(FloatOption).GetProperty(nameof(Value));
-
-				case 193446607:
-					return typeof(FloatOption).GetProperty(nameof(Min));
-
-				case 193446865:
-					return typeof(FloatOption).GetProperty(nameof(Max));
-
-				case 2089400887:
-					return typeof(FloatOption).GetProperty(nameof(Step));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }

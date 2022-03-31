@@ -5,77 +5,27 @@
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 using RimeLib.IO;
 using RimeLib.Frostbite.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Frostbite.Containers;
+using RimeLib.Serialization;
 using RimeLib.Serialization.Ebx;
 
 namespace fb
 {
-	[ContainerType(Alignment: 4,  Flags: 53, Size: 16)]
+	[ContainerType(4, 16)]
 	public class SoundTestTaskSpec : 
 		DataContainer
 	{
-		protected string m_Description = string.Empty;
-		[ContainerField(Name: "Description", Offset: 8, NameHash: 1636673251, Flags: 16509), LayoutImmutable]
-		public string Description { get { return m_Description; } set { if (OnPropertyChanging("SoundTestTaskSpec." + nameof(Description), this, m_Description, value)) m_Description = value; } } // 0x8 (8)
-		
-		protected float m_Duration = new float();
-		[ContainerField(Name: "Duration", Offset: 12, NameHash: 1828507227, Flags: 49469), LayoutImmutable, Blittable]
-		public float Duration { get { return m_Duration; } set { if (OnPropertyChanging("SoundTestTaskSpec." + nameof(Duration), this, m_Duration, value)) m_Duration = value; } } // 0xC (12)
-		
-		public override void Bind(FieldDescriptor p_Descriptor, object p_Value)
-		{
-			switch (p_Descriptor.NameHash)
-			{
-				case 1636673251:
-					Description = (string) p_Value;
-					break;
+		[ContainerField(8), LayoutImmutable, JsonProperty(Order = 8)]
+		public string Description { get; set; } = string.Empty;
 
-				case 1828507227:
-					Duration = (float) p_Value;
-					break;
+		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
+		public float Duration { get; set; }
 
-				default:
-					base.Bind(p_Descriptor, p_Value);
-					break;
-			}
-		}
-
-		public override object GetFieldValueByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1636673251:
-					return Description;
-
-				case 1828507227:
-					return Duration;
-
-				default:
-					return base.GetFieldValueByHash(p_Hash);
-			}
-		}
-
-		public override PropertyInfo GetFieldInfoByHash(uint p_Hash)
-		{
-			switch (p_Hash)
-			{
-				case 1636673251:
-					return typeof(SoundTestTaskSpec).GetProperty(nameof(Description));
-
-				case 1828507227:
-					return typeof(SoundTestTaskSpec).GetProperty(nameof(Duration));
-
-				default:
-					return base.GetFieldInfoByHash(p_Hash);
-			}
-		}
 	}
 }
