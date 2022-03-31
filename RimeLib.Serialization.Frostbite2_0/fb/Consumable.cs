@@ -13,7 +13,6 @@ using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
-using RimeLib.Serialization.Ebx;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
@@ -23,7 +22,7 @@ namespace fb
 		EbxSerializable
 	{
 		[ContainerField(0), LayoutImmutable, Blittable, JsonProperty(Order = 0)]
-		public GUID Instance { get; set; }
+		public GUID Instance { get; set; } = GUID.Empty;
 		
 		[ContainerField(16), JsonProperty(Order = 16)]
 		public ConsumableGroup Group { get; set; } = new();

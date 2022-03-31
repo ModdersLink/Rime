@@ -11,14 +11,15 @@ namespace RimeLib.Content.Mounting
     public interface IResourceObject : IReadableObject
     {
         ResourceType GetResourceType();
-        bool TryGetMeta(out byte[]? p_Meta);
+        bool TryGetMeta([NotNullWhen(true)] out byte[]? p_Meta);
     }
 
     public interface IChunkObject : IReadableObject
     {
-        bool TryGetMeta(out DbObject? p_Meta);
+        bool TryGetMeta([NotNullWhen(true)] out DbObject? p_Meta);
         uint GetRangeStart();
         uint GetLogicalOffset();
+        int? GetAssetNameHash();
     }
 
     public interface IObjectVariant : IReadableObject, IObjectWithHash

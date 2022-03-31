@@ -83,12 +83,13 @@ namespace RimeLib.Terrain.Frostbite2_0
 
         public HeightfieldTreeNode FindNode(QuadtreeNodeId p_ID)
         {
-            HeightfieldTreeNode s_Node;
-            FindNodeInternal(p_ID, RootNode, out s_Node);
+            if (!FindNodeInternal(p_ID, RootNode, out var s_Node))
+                throw new Exception($"Could not find node with id {p_ID}.");
+            
             return s_Node;
         }
 
-        private bool FindNodeInternal(QuadtreeNodeId p_ID, HeightfieldTreeNode p_Current, out HeightfieldTreeNode p_Result)
+        private bool FindNodeInternal(QuadtreeNodeId p_ID, HeightfieldTreeNode p_Current, [NotNullWhen(true)] out HeightfieldTreeNode? p_Result)
         {
             p_Result = null;
 

@@ -65,8 +65,8 @@ namespace RimeLib.Terrain.Frostbite3
 
             RasterTrees = new List<RasterTree>();
 
-            for (var i = 0; i < (int)RasterTree.RasterTreeTypes.RasterTreeTypeCount; ++i)
-                RasterTrees.Add(null);
+            /*for (var i = 0; i < (int)RasterTree.RasterTreeTypes.RasterTreeTypeCount; ++i)
+                RasterTrees.Add(null);*/
 
             for (; ; )
             {

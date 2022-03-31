@@ -13,7 +13,6 @@ using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
-using RimeLib.Serialization.Ebx;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
@@ -35,7 +34,7 @@ namespace fb
 		public float SentAverage { get; set; }
 
 		[ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
-		public GUID PerformanceLink { get; set; }
+		public GUID PerformanceLink { get; set; } = GUID.Empty;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

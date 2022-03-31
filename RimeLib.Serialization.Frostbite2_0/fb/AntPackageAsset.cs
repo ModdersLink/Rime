@@ -13,7 +13,6 @@ using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
-using RimeLib.Serialization.Ebx;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
@@ -32,7 +31,7 @@ namespace fb
 		public AntPackagingType PackagingType { get; set; } = new();
 
 		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
-		public GUID StreamingGuid { get; set; }
+		public GUID StreamingGuid { get; set; } = GUID.Empty;
 
 		[ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
 		public uint ChunkSize { get; set; }

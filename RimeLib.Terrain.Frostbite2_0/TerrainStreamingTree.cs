@@ -22,7 +22,7 @@ namespace RimeLib.Terrain.Frostbite2_0
             s_Node.ID = p_NodeId;
             s_Node.Lod0ChunkSize = p_Reader.ReadUInt32();
             s_Node.Lod0ChunkID = new GUID(p_Reader);
-            s_Node.TreeNode = (GetHeightfieldTree() as HeightfieldTree).FindNode(p_NodeId);
+            s_Node.TreeNode = (GetHeightfieldTree() as HeightfieldTree)!.FindNode(p_NodeId);
 
             var s_Lod1Enabled = p_Reader.ReadBool();
 
@@ -84,8 +84,8 @@ namespace RimeLib.Terrain.Frostbite2_0
 
             RasterTrees = new List<RasterTree>();
 
-            for (var i = 0; i < (int)RasterTree.RasterTreeTypes.RasterTreeTypeCount; ++i)
-                RasterTrees.Add(null);
+            /*for (var i = 0; i < (int)RasterTree.RasterTreeTypes.RasterTreeTypeCount; ++i)
+                RasterTrees.Add(null);*/
 
             for (; ; )
             {

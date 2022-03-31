@@ -58,9 +58,7 @@ namespace RimeLib.Serialization.Attributes
         /// </summary>
         public uint Offset { get; }
 
-        public string Name { get; }
-
-        public uint NameHash { get; }
+        public string Name { get; set; }
 
         /// <summary>
         /// Constructor taking a name and offset
@@ -71,7 +69,6 @@ namespace RimeLib.Serialization.Attributes
         {
             Offset = p_Offset;
             Name = p_Name;
-            NameHash = Frostbite.Utils.HashQuick(p_Name);
         }
     }
 

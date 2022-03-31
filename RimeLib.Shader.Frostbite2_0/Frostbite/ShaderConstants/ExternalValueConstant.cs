@@ -34,7 +34,7 @@ namespace RimeLib.Shader.Frostbite2_0.Frostbite.ShaderConstants
         public bool Serialize(RimeWriter p_Writer)
         {
             throw new NotImplementedException();
-            p_Writer.Write(Encoding.ASCII.GetBytes(m_Name).Take(0x20).ToArray());
+            /*p_Writer.Write(Encoding.ASCII.GetBytes(m_Name).Take(0x20).ToArray());
 
             p_Writer.Write(m_Handle);
             p_Writer.Write(m_Index);
@@ -49,7 +49,7 @@ namespace RimeLib.Shader.Frostbite2_0.Frostbite.ShaderConstants
             p_Writer.Write(m_DefaultValue.x);
             p_Writer.Write(m_DefaultValue.y);
             p_Writer.Write(m_DefaultValue.z);
-            p_Writer.Write(m_DefaultValue.w);
+            p_Writer.Write(m_DefaultValue.w);*/
         }
 
        

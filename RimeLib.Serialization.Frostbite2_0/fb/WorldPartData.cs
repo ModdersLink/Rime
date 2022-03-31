@@ -13,7 +13,6 @@ using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
-using RimeLib.Serialization.Ebx;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
@@ -23,7 +22,7 @@ namespace fb
 		SpatialPrefabBlueprint
 	{
 		[ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
-		public GUID HackToSolveRealTimeTweakingIssue { get; set; }
+		public GUID HackToSolveRealTimeTweakingIssue { get; set; } = GUID.Empty;
 
 		[ContainerField(52), LayoutImmutable, Blittable, JsonProperty(Order = 52)]
 		public bool UseDeferredEntityCreation { get; set; }

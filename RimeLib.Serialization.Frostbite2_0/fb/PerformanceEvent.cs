@@ -13,7 +13,6 @@ using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
-using RimeLib.Serialization.Ebx;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
@@ -53,7 +52,7 @@ namespace fb
 		public string PerformanceLocation { get; set; } = string.Empty;
 
 		[ContainerField(68), LayoutImmutable, Blittable, JsonProperty(Order = 68)]
-		public GUID PerformanceLink { get; set; }
+		public GUID PerformanceLink { get; set; } = GUID.Empty;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

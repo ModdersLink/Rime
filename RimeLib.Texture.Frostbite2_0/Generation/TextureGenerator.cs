@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using RimeLib.Content.Frostbite;
 using RimeLib.Frostbite;
 using RimeLib.Frostbite.Core;
 using RimeLib.IO;
@@ -42,6 +43,11 @@ public class TextureGenerator : ITextureGenerator
         {
             { s_DxTexture.StreamingChunkId, s_ChunkData },
         };
+    }
+
+    public ResourceType GetTargetResourceType()
+    {
+        return ResourceType.DxTexture;
     }
 
     private static TextureType TextureTypeFromDDSHeader(DDSHeader p_Header)

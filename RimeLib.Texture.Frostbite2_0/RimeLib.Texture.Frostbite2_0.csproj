@@ -1,19 +1,29 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<OutputType>Library</OutputType>
 		<TargetFramework>net6.0</TargetFramework>
-		<Platforms>x64</Platforms>
-		<ApplicationIcon />
+		<LangVersion>default</LangVersion>
 		<Nullable>enable</Nullable>
 		<OutputPath>$(SolutionDir)\bin\$(Configuration)</OutputPath>
-		<StartupObject />
-		<LangVersion>default</LangVersion>
+		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+		<Platforms>x64</Platforms>
 	</PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\RimeLib.Texture\RimeLib.Texture.csproj" />
-    <ProjectReference Include="..\RimeLibLite\RimeLibLite.csproj" />
-  </ItemGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+		<NoWarn />
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+		<WarningsAsErrors />
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+		<NoWarn />
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+		<WarningsAsErrors />
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\RimeLib.Texture\RimeLib.Texture.csproj" />
+		<ProjectReference Include="..\RimeLibLite\RimeLibLite.csproj" />
+	</ItemGroup>
 
 </Project>

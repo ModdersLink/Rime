@@ -13,7 +13,6 @@ using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
-using RimeLib.Serialization.Ebx;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
@@ -23,13 +22,13 @@ namespace fb
 		Asset
 	{
 		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
-		public GUID ChunkGuid { get; set; }
+		public GUID ChunkGuid { get; set; } = GUID.Empty;
 
 		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
 		public uint ChunkSize { get; set; }
 
 		[ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
-		public GUID SubtitleChunkGuid { get; set; }
+		public GUID SubtitleChunkGuid { get; set; } = GUID.Empty;
 
 		[ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
 		public uint SubtitleChunkSize { get; set; }

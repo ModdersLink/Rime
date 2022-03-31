@@ -13,7 +13,6 @@ using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
-using RimeLib.Serialization.Ebx;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
@@ -62,7 +61,7 @@ namespace fb
 		public List<ulong> InstanceAlbedos { get; set; } = new();
 		
 		[ContainerField(164), LayoutImmutable, Blittable, JsonProperty(Order = 164)]
-		public GUID CacheKey { get; set; }
+		public GUID CacheKey { get; set; } = GUID.Empty;
 		
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

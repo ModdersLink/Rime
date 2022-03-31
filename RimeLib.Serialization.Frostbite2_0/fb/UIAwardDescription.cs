@@ -13,7 +13,6 @@ using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
-using RimeLib.Serialization.Ebx;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
@@ -22,13 +21,13 @@ namespace fb
 	public class UIAwardDescription :
 		UIItemDescription
 	{
-		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
-		public bool IgnoreBuild { get; set; }
+		[ContainerField(16, Name = "IgnoreBuild"), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		public bool IgnoreBuild_ { get; set; }
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{
 			base.Serialize(p_Writer, p_EbxWriter);
-			p_Writer.Write(IgnoreBuild);
+			p_Writer.Write(IgnoreBuild_);
 			p_Writer.WriteNullBytes(3);
 		}
 	}

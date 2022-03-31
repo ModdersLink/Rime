@@ -13,7 +13,6 @@ using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
-using RimeLib.Serialization.Ebx;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
@@ -26,7 +25,7 @@ namespace fb
 		public List<StaticModelGroupMemberData> MemberDatas { get; set; } = new();
 
 		[ContainerField(116), LayoutImmutable, Blittable, JsonProperty(Order = 116)]
-		public GUID HackToSolveRealTimeTweakingIssue { get; set; }
+		public GUID HackToSolveRealTimeTweakingIssue { get; set; } = GUID.Empty;
 
 		[ContainerField(132), LayoutImmutable, Blittable, JsonProperty(Order = 132)]
 		public uint NetworkIdCount { get; set; }

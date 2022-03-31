@@ -13,7 +13,6 @@ using RimeLib.IO;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
-using RimeLib.Serialization.Ebx;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace fb
@@ -23,19 +22,19 @@ namespace fb
 		SocketObjectDataBase
 	{
 		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
-		public GUID Asset1pGuid { get; set; }
+		public GUID Asset1pGuid { get; set; } = GUID.Empty;
 
 		[ContainerField(24), JsonProperty(Order = 24)]
 		public List<GUID> Variation1pGuids { get; set; } = new();
 
 		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
-		public GUID Asset1pZoomGuid { get; set; }
+		public GUID Asset1pZoomGuid { get; set; } = GUID.Empty;
 
 		[ContainerField(44), JsonProperty(Order = 44)]
 		public List<GUID> Variation1pZoomGuids { get; set; } = new();
 
 		[ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
-		public GUID Asset3pGuid { get; set; }
+		public GUID Asset3pGuid { get; set; } = GUID.Empty;
 
 		[ContainerField(64), JsonProperty(Order = 64)]
 		public List<GUID> Variation3pGuids { get; set; } = new();

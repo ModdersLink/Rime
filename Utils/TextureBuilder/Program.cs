@@ -1,204 +1,105 @@
 ﻿using CommandLine;
-using fb;
-using RimeLib.Content.Building;
-using RimeLib.Content.Mounting;
 using RimeLib.Frostbite;
-using RimeLib.Frostbite.Core;
-using RimeLib.Frostbite.Db;
 using RimeLib.IO;
-using RimeLib.Serialization.Frostbite2_0.Ebx;
-using RimeLib.Texture.Frostbite2_0;
-using RimeLib.Utils;
-using System;
 using System.Reflection;
 using RimeLib;
 using RimeLib.Texture.Generation;
 
-namespace TextureExtractor // Note: actual namespace depends on the project name.
+namespace TextureExtractor;
+
+internal class Program
 {
-    internal class Program
+    public class Options
     {
-        internal class FileReader : IReadableObject
+        [Option('q', "quiet", Required = false, Default = false, HelpText = "Suppress console output")]
+        public bool Quiet { get; set; } = false;
+
+        [Option("sliceCount", Default = (short)1, Required = false, HelpText = "For Cube/2DArray textures set the slice count")]
+        public short SliceCount { get; set; } = (short)1;
+
+        [Option("textureName", Default = "", Required = false, HelpText = "Texture name (resource hash lookup)")]
+        public string TextureName { get; set; } = string.Empty;
+
+        [Option("textureGroup", Default = "Default", Required = false, HelpText = "Texture group name")]
+        public string TextureGroup { get; set; } = "Default";
+
+        [Option("mipMapBaseIndex", Default = (byte)1, Required = false, HelpText = "A mip map base index (Default: 0, Max: 14)")]
+        public byte MipMapBaseIndex { get; set; } = 1;
+
+        [Value(0, MetaName = "gamePath", Required = true, HelpText = "Path to game files")]
+        public string GamePath { get; set; } = string.Empty;
+
+        [Value(1, MetaName = "engineType", Required = true, HelpText = "The engine type of the game")]
+        public EngineType EngineType { get; set; }
+
+        [Value(2, MetaName = "inputImage", Required = true, HelpText = "Input *.dds image format")]
+        public string InputImage { get; set; } = string.Empty;
+    }
+
+    private static void LoadEngineAssemblies(Options p_Options)
+    {
+        Func<string, bool> s_Load = (p_Assembly) =>
         {
-            private readonly string m_Path;
-
-            public FileReader(string p_Path)
+            try
             {
-                m_Path = p_Path;
+                Assembly.Load(p_Assembly);
+                return true;
             }
-
-            public RimeReader GetReader()
+            catch
             {
-                var s_FileStream = File.Open(m_Path, FileMode.Open, FileAccess.Read);
-                return new RimeReader(s_FileStream);
-            }
+                if (!p_Options.Quiet)
+                    Console.WriteLine($"Failed to load supporting engine assembly ({p_Assembly}.dll). This means that the engine is not supported or that you are missing required files.");
 
-            public long GetSize()
-            {
-                return new FileInfo(m_Path).Length;
+                Environment.Exit(1);
             }
+            return false;
+        };
+
+
+        if (!p_Options.Quiet)
+            Console.WriteLine("Loading engine support assemblies.");
+
+        s_Load("RimeLib.Content." + p_Options.EngineType);
+        s_Load("RimeLib.Texture." + p_Options.EngineType);
+    }
+
+    static void Main(string[] p_Args)
+    {
+        Parser.Default.ParseArguments<Options>(p_Args).WithParsed(p_Options =>
+        {
+            LoadEngineAssemblies(p_Options);
+            BuildImageSuperbundle(p_Options);
+
+            Console.WriteLine("Textures successfully extracted. Press any key to exit...");
+            Console.ReadKey();
+        }).WithNotParsed(p_Err => { Environment.Exit(1); });
+    }
+
+    static async void BuildImageSuperbundle(Options p_Options)
+    {
+        if (!File.Exists(p_Options.InputImage))
+        {
+            Console.WriteLine($"ERR: Input image {p_Options.InputImage} not found.");
+            return;
         }
 
-        internal class StreamReader : IReadableObject
+        using var s_Reader = new RimeReader(new FileStream(p_Options.InputImage, FileMode.Open, FileAccess.Read));
+        using var s_HeaderWriter = new RimeWriter(new FileStream($"{p_Options.InputImage}.DxTexture", FileMode.Create));
+
+        var s_Attributes = new TextureAttributes()
         {
-            private readonly Stream m_Path;
-
-            public StreamReader(Stream p_Path)
-            {
-                m_Path = p_Path;
-            }
-
-            public RimeReader GetReader()
-            {
-                return new RimeReader(m_Path);
-            }
-
-            public long GetSize()
-            {
-                return m_Path.Length;
-            }
-        }
-
-        internal class ChunkStreamReader : StreamReader, IChunkObject
-        {
-            public ChunkStreamReader(Stream p_Path) :
-                base(p_Path)
-            {
-            }
-
-            public bool TryGetMeta(out DbObject? p_Meta)
-            {
-                p_Meta = null;
-                return false;
-            }
-
-            public uint GetRangeStart()
-            {
-                return 0;
-            }
-
-            public uint GetLogicalOffset()
-            {
-                return 0;
-            }
-        }
-
-        internal class ChunkFileReader : FileReader, IChunkObject
-        {
-            public ChunkFileReader(string p_Path) :
-                base(p_Path)
-            {
-            }
-
-            public bool TryGetMeta(out DbObject? p_Meta)
-            {
-                p_Meta = null;
-                return false;
-            }
-
-            public uint GetRangeStart()
-            {
-                return 0;
-            }
-
-            public uint GetLogicalOffset()
-            {
-                return 0;
-            }
-        }
-
-        public class Options
-        {
-            [Option('q', "quiet", Required = false, Default = false, HelpText = "Suppress console output")]
-            public bool Quiet { get; set; } = false;
-
-            [Option("sliceCount", Default = (short)1, Required = false, HelpText = "For Cube/2DArray textures set the slice count")]
-            public short SliceCount { get; set; } = (short)1;
-
-            [Option("textureName", Default = "", Required = false, HelpText = "Texture name (resource hash lookup)")]
-            public string TextureName { get; set; } = string.Empty;
-
-            [Option("textureGroup", Default = "Default", Required = false, HelpText = "Texture group name")]
-            public string TextureGroup { get; set; } = "Default";
-
-            [Option("mipMapBaseIndex", Default = (byte)1, Required = false, HelpText = "A mip map base index (Default: 0, Max: 14)")]
-            public byte MipMapBaseIndex { get; set; } = 1;
-
-            [Value(0, MetaName = "gamePath", Required = true, HelpText = "Path to game files")]
-            public string GamePath { get; set; } = string.Empty;
-
-            [Value(1, MetaName = "engineType", Required = true, HelpText = "The engine type of the game")]
-            public EngineType EngineType { get; set; }
-
-            [Value(2, MetaName = "inputImage", Required = true, HelpText = "Input *.dds image format")]
-            public string InputImage { get; set; } = string.Empty;
-        }
-
-        private static void LoadEngineAssemblies(Options p_Options)
-        {
-            Func<string, bool> s_Load = (p_Assembly) =>
-            {
-                try
-                {
-                    Assembly.Load(p_Assembly);
-                    return true;
-                }
-                catch
-                {
-                    if (!p_Options.Quiet)
-                        Console.WriteLine($"Failed to load supporting engine assembly ({p_Assembly}.dll). This means that the engine is not supported or that you are missing required files.");
-
-                    Environment.Exit(1);
-                }
-                return false;
-            };
-
-
-            if (!p_Options.Quiet)
-                Console.WriteLine("Loading engine support assemblies.");
-
-            s_Load("RimeLib.Content." + p_Options.EngineType);
-            s_Load("RimeLib.Texture." + p_Options.EngineType);
-        }
-
-        static void Main(string[] p_Args)
-        {
-            Parser.Default.ParseArguments<Options>(p_Args).WithParsed(p_Options =>
-            {
-                LoadEngineAssemblies(p_Options);
-                BuildImageSuperbundle(p_Options);
-
-                Console.WriteLine("Textures successfully extracted. Press any key to exit...");
-                Console.ReadKey();
-            }).WithNotParsed(p_Err => { Environment.Exit(1); });
-        }
-
-        static async void BuildImageSuperbundle(Options p_Options)
-        {
-            if (!File.Exists(p_Options.InputImage))
-            {
-                Console.WriteLine($"ERR: Input image {p_Options.InputImage} not found.");
-                return;
-            }
-
-            using var s_Reader = new RimeReader(new FileStream(p_Options.InputImage, FileMode.Open, FileAccess.Read));
-            using var s_HeaderWriter = new RimeWriter(new FileStream($"{p_Options.InputImage}.DxTexture", FileMode.Create));
-
-            var s_Attributes = new TextureAttributes()
-            {
-                Name = p_Options.TextureName,
-                TextureGroup = p_Options.TextureGroup,
-            };
+            Name = p_Options.TextureName,
+            TextureGroup = p_Options.TextureGroup,
+        };
                 
-            var s_Generator = EngineInterfaceRegistry.Create<ITextureGenerator>(p_Options.EngineType);
-            s_Generator.GenerateFromDDS(s_Reader, s_Attributes, s_HeaderWriter, out var s_Chunks);
+        var s_Generator = EngineInterfaceRegistry.Create<ITextureGenerator>(p_Options.EngineType);
+        s_Generator.GenerateFromDDS(s_Reader, s_Attributes, s_HeaderWriter, out var s_Chunks);
 
-            foreach (var (s_ChunkId, s_ChunkStream) in s_Chunks)
-            {
-                using var s_ChunkWriter = new FileStream($"{p_Options.InputImage}.{s_ChunkId}.chunk", FileMode.Create);
-                s_ChunkStream.CopyTo(s_ChunkWriter);
-                s_ChunkStream.Dispose();
-            }
+        foreach (var (s_ChunkId, s_ChunkStream) in s_Chunks)
+        {
+            using var s_ChunkWriter = new FileStream($"{p_Options.InputImage}.{s_ChunkId}.chunk", FileMode.Create);
+            s_ChunkStream.CopyTo(s_ChunkWriter);
+            s_ChunkStream.Dispose();
         }
     }
 }

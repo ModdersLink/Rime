@@ -31,14 +31,14 @@ namespace RimeLib.Shader.Frostbite2_0.Frostbite.ShaderConstants
         {
             throw new NotImplementedException();
 
-            p_Writer.Write(Encoding.ASCII.GetBytes(m_Name).Take(0x20).ToArray());
+            /*p_Writer.Write(Encoding.ASCII.GetBytes(m_Name).Take(0x20).ToArray());
 
             p_Writer.Write(m_Handle);
             p_Writer.Write(m_Index);
             p_Writer.Write(m_TextureType);
             p_Writer.Write(m_Required);
 
-            return true;
+            return true;*/
         }
         
         public void Deserialize(RimeReader p_Reader)
