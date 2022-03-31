@@ -22,7 +22,7 @@ namespace RimeLib.Cmd.Commands.SbBuilding
             p_Writer.WriteLine();
 
             foreach (var s_Bundle in s_Bundles)
-                Console.WriteLine($"- {s_Bundle.Key}");
+                p_Writer.WriteLine($"- {s_Bundle.Key}");
 
             return true;
         }
