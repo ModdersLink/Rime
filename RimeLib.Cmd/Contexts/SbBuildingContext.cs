@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using RimeLib.Cmd.Commands.SbBuilding;
 using RimeLib.Content.Building;
@@ -8,6 +8,7 @@ using RimeLib.Frostbite;
 using RimeLib.Frostbite.Core;
 using RimeLib.Frostbite.Db;
 using RimeLib.IO;
+using RimeLib.Utils;
 
 namespace RimeLib.Cmd.Contexts
 {
@@ -36,12 +37,15 @@ namespace RimeLib.Cmd.Contexts
 
         internal class ChunkFileReader : FileReader, IChunkObject
         {
-            public ChunkFileReader(string p_Path) :
+            private readonly string? m_AssetName;
+            
+            public ChunkFileReader(string p_Path, string? p_AssetName) :
                 base(p_Path)
             {
+                m_AssetName = p_AssetName;
             }
 
-            public bool TryGetMeta(out DbObject? p_Meta)
+            public bool TryGetMeta([NotNullWhen(true)] out DbObject? p_Meta)
             {
                 p_Meta = null;
                 return false;
@@ -56,9 +60,17 @@ namespace RimeLib.Cmd.Contexts
             {
                 return 0;
             }
+
+            public int? GetAssetNameHash()
+            {
+                if (m_AssetName == null)
+                    return null;
+                
+                return (int)FbUtils.HashQuick(m_AssetName);
+            }
         }
 
-        protected EngineType m_EngineType;
+        public EngineType EngineType;
         protected string m_OutPath;
         protected string m_SbName;
 
@@ -67,7 +79,7 @@ namespace RimeLib.Cmd.Contexts
         public SbBuildingContext(BaseContext p_Parent, EngineType p_EngineType, string p_OutPath, string p_SbName)
         {
             Parent = p_Parent;
-            m_EngineType = p_EngineType;
+            EngineType = p_EngineType;
             m_OutPath = p_OutPath;
             m_SbName = p_SbName;
 
@@ -109,9 +121,9 @@ namespace RimeLib.Cmd.Contexts
             return s_Text;
         }
 
-        internal void AddChunk(GUID p_Guid, FileInfo p_File)
+        internal void AddChunk(GUID p_Guid, FileInfo p_File, string? p_AssetName)
         {
-            m_Builder.WithChunk(p_Guid, new ChunkFileReader(p_File.FullName));
+            m_Builder.WithChunk(p_Guid, new ChunkFileReader(p_File.FullName, p_AssetName));
         }
 
         internal void RemoveChunk(GUID p_Guid)

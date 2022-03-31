@@ -6,12 +6,10 @@ using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 using RimeLib.Content.Building;
 using RimeLib.Content.Frostbite;
 using RimeLib.Content.Frostbite2_0.Frostbite.Bundles;
-using RimeLib.Content.Frostbite2_0.Frostbite.Chunks;
 using RimeLib.Frostbite;
 using RimeLib.Frostbite.Core;
 using RimeLib.Frostbite.Db;
 using RimeLib.IO;
-using RimeLib.IO.Conversion;
 
 namespace RimeLib.Content.Frostbite2_0.Building
 {
@@ -87,7 +85,7 @@ namespace RimeLib.Content.Frostbite2_0.Building
                 var s_Meta = new byte[16];
 
                 if (s_Resource.Value.TryGetMeta(out var s_ResourceMeta))
-                    s_Meta = s_ResourceMeta!;
+                    s_Meta = s_ResourceMeta;
 
                 if (s_Meta.Length != 16)
                     throw new Exception($"Expected metadata for resource '{s_Resource.Key}' to be 16 bytes but instead got {s_Meta.Length}.");
@@ -120,12 +118,25 @@ namespace RimeLib.Content.Frostbite2_0.Building
             var s_ChunkMeta = new DbObject();
             var s_ChunkMetaArray = new DbObject();
             
-            foreach (var s_Chunk in m_Descriptor.Chunks)
+            foreach (var (s_GUID, s_ChunkObject) in m_Descriptor.Chunks)
             {
-                if (!s_Chunk.Value.TryGetMeta(out var s_ChunkMetaEntry))
-                    throw new Exception($"Tried serializing chunk with ID '{s_Chunk.Key}' with no chunk meta.");
+                var s_AssetNameHash = s_ChunkObject.GetAssetNameHash();
+                
+                if (s_AssetNameHash == null)
+                    throw new Exception($"Tried serializing chunk with ID '{s_GUID}' with no asset name hash.");
+                
+                var s_MetaObject = new DbObject();
+                s_MetaObject.AddElement(new DbObjectElement("h32", s_AssetNameHash.Value));
+                
+                // Set metadata data.
+                var s_Meta = new DbObject();
 
-                s_ChunkMetaArray.AddElement(new DbObjectElement("", s_ChunkMetaEntry!, false));
+                if (s_ChunkObject.TryGetMeta(out var s_ChunkMetaEntry))
+                    s_Meta = s_ChunkMetaEntry;
+
+                s_MetaObject.AddElement(new DbObjectElement("meta", s_Meta, false));
+
+                s_ChunkMetaArray.AddElement(new DbObjectElement("", s_MetaObject, false));
             }
 
             s_ChunkMeta.AddElement(new DbObjectElement("chunkMeta", s_ChunkMetaArray, true));
@@ -206,30 +217,15 @@ namespace RimeLib.Content.Frostbite2_0.Building
 
                 if (s_ShouldCompress)
                 {
-                    // TODO: Support this properly for multiple segments.
-                    p_Writer.Write((uint) s_Resource.Value.GetSize());
-
-                    var s_CompressedSizeOffset = p_Writer.Position;
-                    p_Writer.Write((uint) 0);
-
-                    using (var s_CompressionStream = new DeflaterOutputStream(p_Writer, new Deflater(Deflater.DEFAULT_COMPRESSION), 4096))
-                    {
-                        s_CompressionStream.IsStreamOwner = false;
-                        s_ResourceReader.Seek(0, SeekOrigin.Begin);
-                        s_ResourceReader.CopyTo(s_CompressionStream);
-                    }
-
-                    var s_CompressedSize = (uint) (p_Writer.Position - s_CompressedSizeOffset - 4);
-
-                    p_Writer.Seek(s_CompressedSizeOffset, SeekOrigin.Begin);
-                    p_Writer.Write(s_CompressedSize);
-                    p_Writer.Seek(s_CompressedSize, SeekOrigin.Current);
+                    s_ResourceReader.Seek(0, SeekOrigin.Begin);
+                    var s_CompressedSize = WriteCompressed(p_Writer, s_ResourceReader);
 
                     // Go back and patch the entry sizes.
                     var s_CurrentOffset = p_Writer.Position;
 
+                    // 12 = EntryRecord size, 4 = offset to PayloadSize.
                     p_Writer.Seek(m_ResourceEntriesOffset + (12 * s_ResourceIndex) + 4, SeekOrigin.Begin);
-                    p_Writer.Write(s_CompressedSize + 8); // +8 for the zlib segment info
+                    p_Writer.Write(s_CompressedSize);
                     p_Writer.Seek(s_CurrentOffset, SeekOrigin.Begin);
                 }
                 else
@@ -248,49 +244,28 @@ namespace RimeLib.Content.Frostbite2_0.Building
                 p_Writer.Align(16);
                 
                 using var s_ChunkReader = s_Chunk.Value.GetReader();
-
-                Sha1 s_Hash;
+                using var s_HashWriter = new HashingRimeWriter(p_Writer, false);
                 
-                /*if (s_Chunk.Key.HasCompressionFlag())
+                if (s_Chunk.Key.HasCompressionFlag())
                 {
-                    p_Writer.Write((uint) s_Chunk.Value.GetSize());
-
-                    var s_CompressedSizeOffset = p_Writer.Position;
-                    p_Writer.Write((uint) 0);
-
-                    using (var s_CompressionStream = new DeflaterOutputStream(p_Writer, new Deflater(Deflater.DEFAULT_COMPRESSION), 4096))
-                    {
-                        s_CompressionStream.IsStreamOwner = false;
-                        using var s_HashWriter = new HashingRimeWriter(s_CompressionStream, Endianness.BigEndian, false);
-                        s_ChunkReader.CopyTo(s_HashWriter);
-                        s_Hash = s_HashWriter.GetHash();
-                    }
-
-                    var s_CompressedSize = (uint) (p_Writer.Position - s_CompressedSizeOffset - 4);
-
-                    p_Writer.Seek(s_CompressedSizeOffset, SeekOrigin.Begin);
-                    p_Writer.Write(s_CompressedSize);
-                    p_Writer.Seek(s_CompressedSize, SeekOrigin.Current);
+                    var s_CompressedSize = WriteCompressed(s_HashWriter, s_ChunkReader);
                     
                     // Go back and patch the entry sizes.
                     var s_CurrentOffset = p_Writer.Position;
-
                     var s_RangeStart = s_Chunk.Value.GetRangeStart();
                     
+                    // 28 = ChunkEntry size, 20 = Offset to RangeEnd.
                     p_Writer.Seek(m_ChunkEntriesOffset + (28 * s_ChunkIndex) + 20, SeekOrigin.Begin);
-                    p_Writer.Write(s_RangeStart + s_CompressedSize + 8); // +8 for the zlib segment info
+                    p_Writer.Write(s_RangeStart + s_CompressedSize);
                     p_Writer.Seek(s_CurrentOffset, SeekOrigin.Begin);
                 }
-                else*/
+                else
                 {
-                    using var s_HashWriter = new HashingRimeWriter(p_Writer, false);
                     s_ChunkReader.CopyTo(s_HashWriter);
-
-                    s_Hash = s_HashWriter.GetHash();
                 }
-
+                
+                var s_Hash = s_HashWriter.GetHash();
                 s_Hashes.Add(s_Hash);
-
                 s_Hash.Serialize(s_ChecksumWriter);
 
                 ++s_ChunkIndex;
@@ -326,6 +301,54 @@ namespace RimeLib.Content.Frostbite2_0.Building
             p_TextWriter.WriteNullTerminatedString(p_Name);
 
             s_EntryRecord.Serialize(p_ManifestWriter);
+        }
+
+        private uint WriteCompressed(RimeWriter p_Writer, Stream p_InputStream)
+        {
+            var s_CompressedSegments = new List<Tuple<byte[], uint>>();
+            
+            var s_LeftBytes = p_InputStream.Length;
+                
+            while (s_LeftBytes > 0)
+            {
+                // Compressed segments are at most 0x10000 (65536) bytes in size.
+                var s_BytesToCompress = (uint) System.Math.Min(0x10000, s_LeftBytes);
+                s_LeftBytes -= s_BytesToCompress;
+
+                var s_CompressionMemoryStream = new MemoryStream();
+                using (var s_CompressionStream = new DeflaterOutputStream(s_CompressionMemoryStream, new Deflater(Deflater.DEFAULT_COMPRESSION), 4096))
+                {
+                    var s_ByteBuffer = new byte[s_BytesToCompress];
+                    var s_BytesRead = p_InputStream.Read(s_ByteBuffer);
+
+                    if (s_BytesRead != s_BytesToCompress)
+                    {
+                        throw new Exception(
+                            $"An error occurred while reading the data of a texture chunk. Tried reading {s_BytesToCompress} bytes but read {s_BytesRead}."
+                        );
+                    }
+
+                    s_CompressionStream.Write(s_ByteBuffer);
+                    s_CompressionStream.Flush();
+
+                    s_CompressedSegments.Add(Tuple.Create(s_CompressionMemoryStream.ToArray(), s_BytesToCompress));
+                }
+            }
+            
+            // Now write the final compressed data.
+            uint s_TotalSize = 0;
+            
+            foreach (var (s_CompressedSegment, s_OriginalSize) in s_CompressedSegments)
+            {
+                p_Writer.Write(s_OriginalSize);
+                p_Writer.Write(s_CompressedSegment.Length);
+                p_Writer.Write(s_CompressedSegment);
+
+                s_TotalSize += 8;
+                s_TotalSize += (uint) s_CompressedSegment.Length;
+            }
+
+            return s_TotalSize;
         }
     }
 }

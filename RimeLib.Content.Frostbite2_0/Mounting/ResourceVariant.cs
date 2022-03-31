@@ -1,4 +1,5 @@
-﻿using RimeLib.Content.Frostbite;
+﻿using System.Diagnostics.CodeAnalysis;
+using RimeLib.Content.Frostbite;
 using RimeLib.Content.Mounting;
 
 namespace RimeLib.Content.Frostbite2_0.Mounting
@@ -20,7 +21,7 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
             return m_Type;
         }
 
-        public bool TryGetMeta(out byte[]? p_Meta)
+        public bool TryGetMeta([NotNullWhen(true)] out byte[]? p_Meta)
         {
             p_Meta = m_Meta;
             return m_Meta != null;
