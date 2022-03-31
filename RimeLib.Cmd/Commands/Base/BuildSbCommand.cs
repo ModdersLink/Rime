@@ -44,6 +44,12 @@ namespace RimeLib.Cmd.Commands.Base
                 p_Writer.WriteLine($"Failed to load supporting texture assembly for engine '{Engine}'. This means that the engine is not supported or that you are missing required files.");
                 return false;
             }
+            
+            if (!AssemblyUtils.LoadSupportAssembly(AssemblyType.Serialization, Engine))
+            {
+                p_Writer.WriteLine($"Failed to load supporting serialization assembly for engine '{Engine}'. This means that the engine is not supported or that you are missing required files.");
+                return false;
+            }
 
             // Create a new sb building context and replace our current one with it.
             p_Context = new SbBuildingContext((BaseContext) p_Context, Engine, OutputPath!.FullName, Name!);

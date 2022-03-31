@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Newtonsoft.Json;
 using RimeLib.Cmd.Commands.Game;
 using RimeLib.Content.Mounting;
 using RimeLib.Frostbite.Core;
 using RimeLib.IO;
+using RimeLib.Serialization;
 using RimeLib.Texture;
 
 namespace RimeLib.Cmd.Contexts
@@ -38,7 +40,8 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<DumpChunkCommand>();
             RegisterCommand<DumpResourceCommand>();
             RegisterCommand<DumpPartitionCommand>();
-            RegisterCommand<ConvertTextureCommand>();
+            RegisterCommand<DumpPartitionJsonCommand>();
+            RegisterCommand<DumpTextureCommand>();
         }
 
         public override string GetShortDescription()
@@ -92,7 +95,7 @@ namespace RimeLib.Cmd.Contexts
 
             // Here we look for the first chunk variant with logical offset 0.
             // That's because variants with non-0 offsets can be partial mips, etc.
-            using var s_Reader = s_Chunk!.Variants.First(p_Variant => p_Variant.GetLogicalOffset() == 0).GetReader();
+            using var s_Reader = s_Chunk.Variants.First(p_Variant => p_Variant.GetLogicalOffset() == 0).GetReader();
             using var s_FileStream = File.Create(p_Destination.FullName);
 
             s_Reader.CopyTo(s_FileStream);
@@ -114,13 +117,24 @@ namespace RimeLib.Cmd.Contexts
             if (!m_Mounter.TryGetPartition(p_Name, out var s_Partition))
                 throw new Exception($"Could not find partition with name '{p_Name}'.");
 
-            using var s_Reader = s_Partition!.FirstVariant.GetReader();
+            using var s_Reader = s_Partition.FirstVariant.GetReader();
             using var s_FileStream = File.Create(p_Destination.FullName);
 
             s_Reader.CopyTo(s_FileStream);
         }
 
-        internal void ConvertTexture(string p_Name, FileInfo p_Destination)
+        internal void DumpPartitionJson(string p_Name, FileInfo p_Destination, Formatting p_Formatting)
+        {
+            if (!m_Mounter.TryGetPartition(p_Name, out var s_PartitionObject))
+                throw new Exception($"Could not find partition with name '{p_Name}'.");
+
+            var s_Converter = EngineInterfaceRegistry.Create<IPartitionConverter>(m_Mounter.GetEngineType());
+
+            var s_Partition = s_Converter.FromPartitionObject(p_Name, s_PartitionObject.FirstVariant);
+            s_Partition.ToJsonFile(p_Destination.FullName, p_Formatting);
+        }
+
+        internal void DumpTexture(string p_Name, FileInfo p_Destination)
         {
             if (!m_Mounter.TryGetResource(p_Name, out var s_Resource))
                 throw new Exception($"Could not find resource with name '{p_Name}'.");

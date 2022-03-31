@@ -10,6 +10,7 @@ using RimeLib.Frostbite;
 using RimeLib.Frostbite.Core;
 using RimeLib.Frostbite.Db;
 using RimeLib.IO;
+using RimeLib.Serialization;
 using RimeLib.Texture.Generation;
 using RimeLib.Utils;
 
@@ -39,15 +40,13 @@ namespace RimeLib.Cmd.Contexts
             }
         }
         
-        internal class ResourceMemoryReader : IResourceObject
+        internal class ResourceMemoryReader : SbBuildingContext.MemoryReader, IResourceObject
         {
             private readonly ResourceType m_ResourceType;
-            private readonly byte[] m_Data;
 
-            public ResourceMemoryReader(byte[] p_Data, ResourceType p_ResourceType)
+            public ResourceMemoryReader(byte[] p_Data, ResourceType p_ResourceType) : base(p_Data)
             {
                 m_ResourceType = p_ResourceType;
-                m_Data = p_Data;
             }
 
             public ResourceType GetResourceType()
@@ -60,26 +59,14 @@ namespace RimeLib.Cmd.Contexts
                 p_Meta = null;
                 return false;
             }
-
-            public RimeReader GetReader()
-            {
-                return new RimeReader(new MemoryStream(m_Data));
-            }
-
-            public long GetSize()
-            {
-                return m_Data.Length;
-            }
         }
         
-        internal class ChunkMemoryReader : IChunkObject
+        internal class ChunkMemoryReader : SbBuildingContext.MemoryReader, IChunkObject
         {
-            private readonly byte[] m_Data;
             private readonly string m_AssetName;
 
-            public ChunkMemoryReader(byte[] p_Data, string p_AssetName)
+            public ChunkMemoryReader(byte[] p_Data, string p_AssetName) : base(p_Data)
             {
-                m_Data = p_Data;
                 m_AssetName = p_AssetName;
             }
 
@@ -103,16 +90,6 @@ namespace RimeLib.Cmd.Contexts
             {
                 return (int) FbUtils.HashQuick(m_AssetName);
             }
-
-            public RimeReader GetReader()
-            {
-                return new RimeReader(new MemoryStream(m_Data));
-            }
-
-            public long GetSize()
-            {
-                return m_Data.Length;
-            }
         }
 
         protected readonly string m_BundleName;
@@ -133,6 +110,7 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<RemoveResourceCommand>();
             RegisterCommand<ListResourcesCommand>();
             RegisterCommand<AddPartitionCommand>();
+            RegisterCommand<AddJsonPartitionCommand>();
             RegisterCommand<RemovePartitionCommand>();
             RegisterCommand<ListPartitionsCommand>();
             RegisterCommand<AddDdsTextureCommand>();
@@ -196,6 +174,21 @@ namespace RimeLib.Cmd.Contexts
         internal void AddPartition(string p_Name, FileInfo p_File)
         {
             m_Builder.WithPartition(p_Name, new SbBuildingContext.FileReader(p_File.FullName));
+        }
+
+        internal void AddJsonPartition(string p_Name, FileInfo p_File)
+        {
+            var s_Converter = EngineInterfaceRegistry.Create<IPartitionConverter>(((SbBuildingContext) Parent!).EngineType);
+            var s_Generator = EngineInterfaceRegistry.Create<IPartitionGenerator>(((SbBuildingContext) Parent!).EngineType);
+
+            using var s_JsonReader = p_File.OpenText();
+            var s_Partition = s_Converter.FromJsonStream(s_JsonReader);
+
+            var s_Stream = new MemoryStream();
+            using var s_Writer = new RimeWriter(s_Stream);
+            s_Generator.Generate(s_Partition, s_Writer);
+            
+            m_Builder.WithPartition(p_Name, new SbBuildingContext.MemoryReader(s_Stream.ToArray()));
         }
 
         internal void RemovePartition(string p_Name)

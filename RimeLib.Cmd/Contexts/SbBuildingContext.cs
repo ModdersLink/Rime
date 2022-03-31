@@ -34,6 +34,26 @@ namespace RimeLib.Cmd.Contexts
                 return new FileInfo(m_Path).Length;
             }
         }
+        
+        internal class MemoryReader : IReadableObject
+        {
+            private readonly byte[] m_Data;
+
+            public MemoryReader(byte[] p_Data)
+            {
+                m_Data = p_Data;
+            }
+
+            public RimeReader GetReader()
+            {
+                return new RimeReader(new MemoryStream(m_Data));
+            }
+
+            public long GetSize()
+            {
+                return m_Data.Length;
+            }
+        }
 
         internal class ChunkFileReader : FileReader, IChunkObject
         {
