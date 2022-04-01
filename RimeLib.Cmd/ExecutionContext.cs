@@ -96,7 +96,7 @@ namespace RimeLib.Cmd
             return s_Suggestions;
         }
 
-        public bool ProcessCommand(string p_Input, TextWriter p_Writer, out ExecutionContext p_Context)
+        public bool ProcessCommand(string p_Input, TextWriter p_Writer, out ExecutionContext? p_Context)
         {
             p_Context = this;
 

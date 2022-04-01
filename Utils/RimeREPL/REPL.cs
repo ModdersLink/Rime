@@ -24,6 +24,8 @@ namespace Rime.Utils.RimeREPL
 
         public void Process()
         {
+            Console.TreatControlCAsInput = true;
+            
             StartWriteLine();
 
             while (true)
@@ -67,6 +69,14 @@ namespace Rime.Utils.RimeREPL
 
                 case ConsoleKey.Enter:
                     return OnConfirmInput();
+                
+                case ConsoleKey.C:
+                    // Stop execution on Ctrl-C.
+                    if (s_Input.Modifiers.HasFlag(ConsoleModifiers.Control))
+                        return false;
+
+                    OnCharacterInput(s_Input.KeyChar);
+                    return true;
 
                 default:
                     OnCharacterInput(s_Input.KeyChar);
@@ -103,6 +113,12 @@ namespace Rime.Utils.RimeREPL
             Console.WriteLine("]");
         }
 
+        private bool CanPrintDirectly()
+        {
+            var s_AvailableLength = Console.WindowWidth - 4;
+            return m_Offset == m_CurrentBuffer.Length && m_CurrentBuffer.Length <= s_AvailableLength;
+        }
+
         private void RenderCommandLine()
         {
             Console.CursorLeft = 0;
@@ -113,7 +129,7 @@ namespace Rime.Utils.RimeREPL
             var s_DescriptionLength = Console.CursorLeft;
 
             // Write buffer.
-            var s_AvailableLength = Console.WindowWidth - s_DescriptionLength - 1;
+            var s_AvailableLength = Console.WindowWidth - s_DescriptionLength - 2;
 
             if (m_SuggestionIndex == -1)
             {
@@ -125,7 +141,7 @@ namespace Rime.Utils.RimeREPL
                     if (m_Offset >= s_AvailableLength)
                         s_StringToPrint = "…" + m_CurrentBuffer.Substring((m_Offset - s_AvailableLength) + 1, s_AvailableLength - 1);
                     else
-                        s_StringToPrint = m_CurrentBuffer.Substring(0, s_AvailableLength - 1) + "…";
+                        s_StringToPrint = m_CurrentBuffer[..(s_AvailableLength - 1)] + "…";
 
                     Console.Write(s_StringToPrint);
                 }
@@ -183,7 +199,7 @@ namespace Rime.Utils.RimeREPL
                 Console.Write(" ");
 
             // Set our cursor to the right spot.
-            Console.CursorLeft = Math.Min(s_DescriptionLength + m_Offset, Console.WindowWidth - 1);
+            Console.CursorLeft = Math.Min(s_DescriptionLength + m_Offset, Console.WindowWidth - 2);
         }
 
         private void OnHistoryPrevious()
@@ -323,7 +339,10 @@ namespace Rime.Utils.RimeREPL
             m_SuggestionIndex = -1;
             m_Suggestions.Clear();
 
-            RenderCommandLine();
+            if (CanPrintDirectly())
+                Console.Write(p_Char);
+            else
+                RenderCommandLine();
         }
 
         private bool OnConfirmInput()
