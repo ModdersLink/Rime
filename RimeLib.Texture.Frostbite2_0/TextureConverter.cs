@@ -21,7 +21,8 @@ public class TextureConverter : ITextureConverter
         if (p_Resource.GetResourceType() != ResourceType.DxTexture)
             throw new ArgumentException("This converter only supports DxTexture resources.", nameof(p_Resource));
 
-        var s_Header = new DxTexture(p_Resource.GetReader());
+        using var s_ResourceReader = p_Resource.GetReader();
+        var s_Header = new DxTexture(s_ResourceReader);
         
         // Try to find the chunk for this texture.
         if (!p_Mounter.TryGetChunk(s_Header.StreamingChunkId, out var s_Chunk))

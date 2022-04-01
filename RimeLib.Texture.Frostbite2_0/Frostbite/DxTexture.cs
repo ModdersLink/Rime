@@ -5,6 +5,7 @@ using System.Text;
 using RimeLib.Frostbite;
 using RimeLib.Frostbite.Core;
 using RimeLib.IO;
+using RimeLib.IO.Conversion;
 
 namespace RimeLib.Texture.Frostbite2_0.Frostbite;
 
@@ -44,6 +45,9 @@ public class DxTexture : IFbSerializable
 
     public bool Serialize(RimeWriter p_Writer)
     {
+        var s_PrevEndianness = p_Writer.Endianness;
+        p_Writer.Endianness = Endianness.LittleEndian;
+        
         p_Writer.Write(Version);
         p_Writer.Write((uint)Type);
         p_Writer.Write((uint)Format);
@@ -69,6 +73,8 @@ public class DxTexture : IFbSerializable
         if (s_TextureGroupData.Length < 16)
             p_Writer.WriteNullBytes(16 - (uint)s_TextureGroupData.Length);
 
+        p_Writer.Endianness = s_PrevEndianness;
+        
         return true;
     }
 
@@ -89,16 +95,19 @@ public class DxTexture : IFbSerializable
 
     public void Deserialize(RimeReader p_Reader)
     {
+        var s_PrevEndianness = p_Reader.Endianness;
+        p_Reader.Endianness = Endianness.LittleEndian;
+
         Version = p_Reader.ReadUInt32();
 
         if (Version != 10)
-            return;
+            throw new Exception($"Unsupported texture version '{Version}'. Expected '10'.");
 
         Type = (TextureType) p_Reader.ReadUInt32();
         Format = (TextureFormat) p_Reader.ReadUInt32();
 
         if (Format >= TextureFormat.TextureFormat_Unknown)
-            return;
+            throw new Exception($"Unsupported texture format '{Format}.");
 
         Flags = (TextureFlags) p_Reader.ReadUInt32();
         Width = p_Reader.ReadInt16();
@@ -117,6 +126,8 @@ public class DxTexture : IFbSerializable
         MipmapChainSize = p_Reader.ReadUInt32();
         ResourceNameHash = p_Reader.ReadUInt32();
         TextureGroup = Encoding.UTF8.GetString(p_Reader.ReadBytes(16));
+        
+        p_Reader.Endianness = s_PrevEndianness;
     }
 
     public void Deserialize(byte[] p_Data)

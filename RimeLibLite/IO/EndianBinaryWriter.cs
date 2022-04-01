@@ -32,12 +32,22 @@ namespace RimeLib.IO
         /// <summary>
         /// The bit converter used to write values to the stream
         /// </summary>
-        public EndianBitConverter BitConverter { get; }
+        public EndianBitConverter BitConverter { get; private set; }
 
         /// <summary>
         /// The endianness of the endian converter.
         /// </summary>
-        public Endianness Endianness => BitConverter.Endianness;
+        public Endianness Endianness
+        {
+	        get => BitConverter.Endianness;
+	        set
+	        {
+		        if (value == Endianness.BigEndian)
+			        BitConverter = EndianBitConverter.Big;
+		        else
+			        BitConverter = EndianBitConverter.Little;
+	        }
+        }
 
         /// <summary>
         /// Gets the underlying stream of the EndianBinaryWriter.
