@@ -262,3 +262,6 @@ __pycache__/
 launchSettings.json
 
 /ExternalLibs/**
+
+!/External/ImGui.NET.dll
+!/External/ImGui.NET.pdb
