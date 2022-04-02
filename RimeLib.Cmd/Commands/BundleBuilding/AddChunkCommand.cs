@@ -11,11 +11,11 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
         [CommandArgument(Description = "The GUID of the chunk.")]
         public GUID? Guid { get; set; }
 
-        [CommandArgument(Description = "The path to the file containing the chunk data.")]
-        public FileInfo? FilePath { get; set; }
-
         [CommandArgument(Description = "The name of the asset this chunk is for.")]
         public string? AssetName { get; set; }
+
+        [CommandArgument(Description = "The path to the file containing the chunk data.")]
+        public FileInfo? FilePath { get; set; }
 
         public override bool Execute(ref ExecutionContext p_Context, TextWriter p_Writer)
         {

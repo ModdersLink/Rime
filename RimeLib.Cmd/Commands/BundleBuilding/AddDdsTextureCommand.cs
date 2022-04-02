@@ -7,12 +7,12 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
     [CommandDescription("Generates a new texture resource and chunks from a DDS texture and adds it to this bundle.")]
     public class AddDdsTextureCommand : Command
     {
-        [CommandArgument(Description = "The path to the DDS texture.")]
-        public FileInfo? FilePath { get; set; }
-
         [CommandArgument(Description = "The name of the resource asset to create.")]
         public string? AssetName { get; set; }
         
+        [CommandArgument(Description = "The path to the DDS texture.")]
+        public FileInfo? FilePath { get; set; }
+
         [CommandArgument(Description = "The name of the texture group this texture belongs in. Defaults to 'Default'.", Optional = true)]
         public string? TextureGroup { get; set; }
 
