@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:avalonDock="https://github.com/Dirkster99/AvalonDock"
         xmlns:local="clr-namespace:Rime"
+        xmlns:core="clr-namespace:Rime.Controls.Core"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
@@ -45,6 +46,7 @@
                 <MenuItem Header="New floating window" />
             </MenuItem>
         </Menu>
+
         <DockingManager x:Name="DockManager"
                         Grid.Row="1"
                         AllowMixedOrientation="True"
@@ -54,6 +56,25 @@
             <DockingManager.Theme>
                 <MetroTheme />
             </DockingManager.Theme>
+            <LayoutRoot>
+                <LayoutPanel Orientation="Horizontal">
+                    <LayoutDocumentPaneGroup>
+                        <LayoutDocumentPane x:Name="LayoutDocumentPane">
+                            <LayoutDocument
+                                Title="Document 1"
+                                ContentId="document1"
+                            >
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+                                    <core:RimeRenderControl />
+                                </Grid>
+                            </LayoutDocument>
+                        </LayoutDocumentPane>
+                    </LayoutDocumentPaneGroup>
+                </LayoutPanel>
+            </LayoutRoot>
         </DockingManager>
     </Grid>
 </Window>

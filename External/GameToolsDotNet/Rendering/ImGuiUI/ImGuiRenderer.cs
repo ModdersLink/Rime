@@ -97,8 +97,8 @@ namespace GameToolsDotNet.Rendering.DirectX
             io.KeyMap[(int)ImGuiKey.Z] = 'Z';
 
             // Initialize fonts.
-            ImFontPtr font = io.Fonts.AddFontDefault();
-            bool result = io.Fonts.Build();
+            /*ImFontPtr font = io.Fonts.AddFontDefault();
+            bool result = io.Fonts.Build();*/
 
             // Create a vertex buffer for drawing.
             this.vertices = new ImDrawVert[this.vertexBufferSize];
@@ -112,10 +112,10 @@ namespace GameToolsDotNet.Rendering.DirectX
             string applicationPath = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
 
             // Compile the vertex and pixel shaders.
-            CompilationResult vertexByteCode = ShaderBytecode.CompileFromFile(applicationPath + "\\Shaders\\ImGuiShader.fx", "VS", "vs_4_0", ShaderFlags.None, EffectFlags.None);
+            CompilationResult vertexByteCode = ShaderBytecode.Compile(Properties.Resources.ImGuiShader_fx, "VS", "vs_4_0", ShaderFlags.None, EffectFlags.None);
             this.vertexShader = new VertexShader(manager.Device, vertexByteCode.Bytecode);
 
-            CompilationResult pixelByteCode = ShaderBytecode.CompileFromFile(applicationPath + "\\Shaders\\ImGuiShader.fx", "PS", "ps_4_0", ShaderFlags.None, EffectFlags.None);
+            CompilationResult pixelByteCode = ShaderBytecode.Compile(Properties.Resources.ImGuiShader_fx, "PS", "ps_4_0", ShaderFlags.None, EffectFlags.None);
             this.pixelShader = new PixelShader(manager.Device, pixelByteCode.Bytecode);
 
             // Setup the input layout for the vertex declaration.

@@ -74,10 +74,6 @@ namespace GameToolsDotNet.Rendering.DirectX
     public abstract class RenderManager
     {
         /// <summary>
-        /// Native handle for the UI component to draw to.
-        /// </summary>
-        public IntPtr OwnerHandle { get; private set; }
-        /// <summary>
         /// Size of the image to render.
         /// </summary>
         public Size ViewSize { get; set; }
@@ -217,11 +213,9 @@ namespace GameToolsDotNet.Rendering.DirectX
         /// </summary>
         public ImVector2 CameraWindowSize { get; set; }
 
-        public RenderManager(IntPtr formHandle, Size viewSize, RenderConfig configuration)
+        public RenderManager(RenderConfig configuration)
         {
             // Initialize fields.
-            this.OwnerHandle = formHandle;
-            this.ViewSize = viewSize;
             this.configuration = configuration;
 
             this.drawDistanceMin = this.configuration.DrawDistanceMinimum;
@@ -233,13 +227,15 @@ namespace GameToolsDotNet.Rendering.DirectX
 
         #region D3D Init
 
-        public bool InitializeGraphics()
+        public bool InitializeGraphics(IntPtr renderTargetHandle, IntPtr windowHandle, Size viewSize)
         {
+            ViewSize = viewSize;
+
             // Setup the swapchain description structure.
             SwapChainDescription desc = new SwapChainDescription();
             desc.BufferCount = 1;
             desc.ModeDescription = new ModeDescription(this.ViewSize.Width, this.ViewSize.Height, new Rational(60, 1), Format.R8G8B8A8_UNorm);
-            desc.OutputHandle = this.OwnerHandle;
+            desc.OutputHandle = renderTargetHandle;
             desc.SampleDescription = new SampleDescription(1, 0);
             desc.SwapEffect = SwapEffect.Discard;
             desc.Usage = Usage.RenderTargetOutput;
@@ -381,7 +377,7 @@ namespace GameToolsDotNet.Rendering.DirectX
             this.TransparencyBlendState = new BlendState(this.Device, blendDesc);
 
             // Initialize the input manager.
-            this.InputManager = new InputManager(this.OwnerHandle);
+            this.InputManager = new InputManager(windowHandle);
             if (this.InputManager.InitializeGraphics(this) == false)
             {
                 // Failed to initialize the input manager.
@@ -417,7 +413,7 @@ namespace GameToolsDotNet.Rendering.DirectX
             }
 
             // Load textures for UI components.
-            LoadTexture(Properties.Resources.CheckerBoard, out this.checkerboardTexture, out this.checkerboardTextureResource);
+            LoadTexture(Properties.Resources.CheckerBoard_dds, out this.checkerboardTexture, out this.checkerboardTextureResource);
 
             // Initialize game data.
             return InitializeGameData();

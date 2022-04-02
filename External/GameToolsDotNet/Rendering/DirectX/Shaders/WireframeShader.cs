@@ -43,10 +43,10 @@ namespace GameToolsDotNet.Rendering.DirectX.Shaders
             string appFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
             // Compile our vertex and pixel shaders.
-            ShaderBytecode vertexByteCode = ShaderBytecode.CompileFromFile(appFolder + "\\Shaders\\Wireframe.fx", "VShader", "vs_4_0", ShaderFlags.None, EffectFlags.None);
+            ShaderBytecode vertexByteCode = ShaderBytecode.Compile(Properties.Resources.Wireframe_fx, "VShader", "vs_4_0", ShaderFlags.None, EffectFlags.None);
             this.VertexShader = new VertexShader(manager.Device, vertexByteCode);
 
-            ShaderBytecode pixelByteCode = ShaderBytecode.CompileFromFile(appFolder + "\\Shaders\\Wireframe.fx", "PShader", "ps_4_0", ShaderFlags.None, EffectFlags.None);
+            ShaderBytecode pixelByteCode = ShaderBytecode.Compile(Properties.Resources.Wireframe_fx, "PShader", "ps_4_0", ShaderFlags.None, EffectFlags.None);
             this.PixelShader = new PixelShader(manager.Device, pixelByteCode);
 
             // Setup our vertex declaration and bind it to the inputs for the vertex shader.

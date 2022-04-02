@@ -19,7 +19,7 @@ namespace GameToolsDotNet.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -63,9 +63,119 @@ namespace GameToolsDotNet.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] CheckerBoard {
+        internal static byte[] CheckerBoard_dds {
             get {
-                object obj = ResourceManager.GetObject("CheckerBoard", resourceCulture);
+                object obj = ResourceManager.GetObject("CheckerBoard_dds", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] ImGuiShader_fx {
+            get {
+                object obj = ResourceManager.GetObject("ImGuiShader_fx", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] Wireframe_fx {
+            get {
+                object obj = ResourceManager.GetObject("Wireframe_fx", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] XfGlobal_fx {
+            get {
+                object obj = ResourceManager.GetObject("XfGlobal_fx", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] XfLevelMesh_ps {
+            get {
+                object obj = ResourceManager.GetObject("XfLevelMesh_ps", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] XfLevelMesh_vs {
+            get {
+                object obj = ResourceManager.GetObject("XfLevelMesh_vs", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] XfMaterial_fx {
+            get {
+                object obj = ResourceManager.GetObject("XfMaterial_fx", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] XfMaterialStandard_fx {
+            get {
+                object obj = ResourceManager.GetObject("XfMaterialStandard_fx", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] XfMesh4W_ps {
+            get {
+                object obj = ResourceManager.GetObject("XfMesh4W_ps", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] XfMesh4W_vs {
+            get {
+                object obj = ResourceManager.GetObject("XfMesh4W_vs", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] XfMesh8W_ps {
+            get {
+                object obj = ResourceManager.GetObject("XfMesh8W_ps", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] XfMesh8W_vs {
+            get {
+                object obj = ResourceManager.GetObject("XfMesh8W_vs", resourceCulture);
                 return ((byte[])(obj));
             }
         }

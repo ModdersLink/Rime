@@ -117,41 +117,4 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="CheckerBoard_dds" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\CheckerBoard.dds;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="ImGuiShader_fx" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Rendering\DirectX\Shaders\HLSL\ImGuiShader.fx;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="Wireframe_fx" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Rendering\DirectX\Shaders\HLSL\Wireframe.fx;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="XfGlobal_fx" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Rendering\DirectX\Shaders\HLSL\XfGlobal.fx;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="XfLevelMesh_ps" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Rendering\DirectX\Shaders\HLSL\XfLevelMesh.ps;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="XfLevelMesh_vs" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Rendering\DirectX\Shaders\HLSL\XfLevelMesh.vs;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="XfMaterial_fx" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Rendering\DirectX\Shaders\HLSL\XfMaterial.fx;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="XfMaterialStandard_fx" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Rendering\DirectX\Shaders\HLSL\XfMaterialStandard.fx;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="XfMesh4W_ps" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Rendering\DirectX\Shaders\HLSL\XfMesh4W.ps;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="XfMesh4W_vs" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Rendering\DirectX\Shaders\HLSL\XfMesh4W.vs;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="XfMesh8W_ps" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Rendering\DirectX\Shaders\HLSL\XfMesh8W.ps;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="XfMesh8W_vs" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Rendering\DirectX\Shaders\HLSL\XfMesh8W.vs;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
 </root>

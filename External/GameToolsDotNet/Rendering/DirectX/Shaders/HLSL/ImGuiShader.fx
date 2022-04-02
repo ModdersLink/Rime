@@ -1,4 +1,4 @@
-﻿const float4x4 ProjectionMatrix : register(c0);
+const float4x4 ProjectionMatrix : register(c0);
 
 struct VS_INPUT
 {

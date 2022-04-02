@@ -36,10 +36,10 @@ namespace GameToolsDotNet.Rendering.DirectX.Shaders
             string applicationPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
             // Compile our vertex and pixel shaders.
-            ShaderBytecode vertexByteCode = ShaderBytecode.FromFile(applicationPath + "\\Shaders\\XfLevelMesh.vs");
+            ShaderBytecode vertexByteCode = new ShaderBytecode(Properties.Resources.XfLevelMesh_vs);
             this.VertexShader = new VertexShader(manager.Device, vertexByteCode);
 
-            ShaderBytecode pixelByteCode = ShaderBytecode.FromFile(applicationPath + "\\Shaders\\XfLevelMesh.ps");
+            ShaderBytecode pixelByteCode = new ShaderBytecode(Properties.Resources.XfLevelMesh_ps);
             this.PixelShader = new PixelShader(manager.Device, pixelByteCode);
 
             // Setup the sampler states for the vertex shader.

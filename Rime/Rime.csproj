@@ -5,12 +5,17 @@
         <TargetFramework>net6.0-windows</TargetFramework>
         <Nullable>enable</Nullable>
         <UseWPF>true</UseWPF>
+	    <UseWindowsForms>true</UseWindowsForms>
         <LangVersion>default</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>
       <PackageReference Include="Dirkster.AvalonDock" Version="4.70.1" />
       <PackageReference Include="Dirkster.AvalonDock.Themes.Metro" Version="4.70.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\External\GameToolsDotNet\GameToolsDotNet.csproj" />
     </ItemGroup>
 
 </Project>
