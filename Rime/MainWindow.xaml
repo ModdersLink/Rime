@@ -1,0 +1,59 @@
+﻿<Window x:Class="Rime.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:avalonDock="https://github.com/Dirkster99/AvalonDock"
+        xmlns:local="clr-namespace:Rime"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Menu Grid.Row="0">
+            <MenuItem Header="Edit">
+                <MenuItem Command="Undo" />
+                <MenuItem Command="Redo" />
+                <Separator />
+                <MenuItem Command="Cut" />
+                <MenuItem Command="Copy" />
+                <MenuItem Command="Paste" />
+            </MenuItem>
+            <MenuItem Header="Layout">
+                <MenuItem Header="Save">
+                    <MenuItem Header="Layout_1" />
+                    <MenuItem Header="Layout_2" />
+                    <MenuItem Header="Layout_3" />
+                    <MenuItem Header="Layout_4" />
+                </MenuItem>
+                <MenuItem Header="Load">
+                    <MenuItem Header="Layout_1" />
+                    <MenuItem Header="Layout_2" />
+                    <MenuItem Header="Layout_3" />
+                    <MenuItem Header="Layout_4" />
+                </MenuItem>
+                <MenuItem Header="Dump To Console" />
+                <MenuItem Header="Unload Manager" />
+                <MenuItem Header="Load Manager" />
+                <MenuItem Header="Show header" />
+            </MenuItem>
+            <MenuItem Header="Tools">
+                <MenuItem Header="WinForms Window" />
+                <MenuItem Header="Tool Window1" />
+                <MenuItem Header="New floating window" />
+            </MenuItem>
+        </Menu>
+        <DockingManager x:Name="DockManager"
+                        Grid.Row="1"
+                        AllowMixedOrientation="True"
+                        AutoWindowSizeWhenOpened="True"
+                        IsVirtualizingAnchorable="True"
+                        IsVirtualizingDocument="True">
+            <DockingManager.Theme>
+                <MetroTheme />
+            </DockingManager.Theme>
+        </DockingManager>
+    </Grid>
+</Window>

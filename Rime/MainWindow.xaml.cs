@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -11,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace RimeLib.UI.Controls.Meta
+namespace Rime
 {
     /// <summary>
-    /// Interaction logic for Vec2Control.xaml
+    /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class Vec3Control : UserControl
+    public partial class MainWindow : Window
     {
-        public Vec3Control()
+        public MainWindow()
         {
             InitializeComponent();
         }

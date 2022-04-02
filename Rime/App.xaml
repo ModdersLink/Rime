@@ -1,9 +1,8 @@
-﻿<Application x:Class="RimeLib.UI.App"
+﻿<Application x:Class="Rime.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:RimeLib.UI"
+             xmlns:local="clr-namespace:Rime"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
     </Application.Resources>
 </Application>
