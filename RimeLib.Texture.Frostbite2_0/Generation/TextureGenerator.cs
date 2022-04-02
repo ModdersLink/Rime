@@ -29,7 +29,7 @@ public class TextureGenerator : ITextureGenerator
     {
         var s_DDSHeader = new DDSHeader(p_DDSReader);
 
-        var s_DxTexture = DxTextureFromDDS(s_DDSHeader, p_Attributes.Name, p_Attributes.TextureGroup, 0, 1);
+        var s_DxTexture = DxTextureFromDDS(s_DDSHeader, p_Attributes, 0, 1);
         s_DxTexture.Serialize(p_ResourceWriter);
         
         // The DDS reader should be at the start of the texture data now, since
@@ -114,13 +114,12 @@ public class TextureGenerator : ITextureGenerator
         throw new Exception($"Unsupported DDS FourCC code '{p_Header.PixelFormat.FourCC}'.");
     }
  
-    private static TextureFlags TextureFlagsFromDDSHeader(DDSHeader p_Header)
+    private static TextureFlags TextureFlagsFromDDSHeader(DDSHeader p_Header, TextureAttributes p_Attributes)
     {
         // Default to all textures being streamable
         var s_Flags = TextureFlags.Streaming;
-
-        // Add SRGB support
-        if (p_Header.Flags.HasFlag(DDSFlags.Srgb))
+        
+        if (p_Attributes.SrgbGamma)
             s_Flags |= TextureFlags.SrgbGamma;
 
         return s_Flags;
@@ -128,8 +127,7 @@ public class TextureGenerator : ITextureGenerator
     
     private static DxTexture DxTextureFromDDS(
         DDSHeader p_Header,
-        string p_Name = "",
-        string p_TextureGroup = "Default",
+        TextureAttributes p_Attributes,
         byte p_MipMapBaseIndex = 0,
         short p_SliceCount = 1
     )
@@ -153,7 +151,7 @@ public class TextureGenerator : ITextureGenerator
             // TODO: Make this user settable and handle accordingly
             Type = TextureTypeFromDDSHeader(p_Header),
             Format = TextureFormatFromDDSHeader(p_Header),
-            Flags = TextureFlagsFromDDSHeader(p_Header),
+            Flags = TextureFlagsFromDDSHeader(p_Header, p_Attributes),
             Width = (short)p_Header.Width,
             Height = (short)p_Header.Height,
             Depth = (short)p_Header.Depth,
@@ -164,8 +162,8 @@ public class TextureGenerator : ITextureGenerator
             StreamingChunkId = s_ChunkGuid,
             MipmapSizes = s_MipMapSizes,
             MipmapChainSize = (uint)s_MipMapSizes.Sum(x => x),
-            ResourceNameHash = (string.IsNullOrWhiteSpace(p_Name) ? 0 : FbUtils.HashQuick(p_Name)),
-            TextureGroup = p_TextureGroup
+            ResourceNameHash = (string.IsNullOrWhiteSpace(p_Attributes.Name) ? 0 : FbUtils.HashQuick(p_Attributes.Name)),
+            TextureGroup = p_Attributes.TextureGroup,
         };
     }
 }

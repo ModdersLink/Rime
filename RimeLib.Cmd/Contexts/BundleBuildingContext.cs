@@ -201,7 +201,7 @@ namespace RimeLib.Cmd.Contexts
             return m_Builder.GetPartitions();
         }
 
-        internal void AddDDSTexture(FileInfo p_File, string p_AssetName, string p_TextureGroup)
+        internal void AddDDSTexture(FileInfo p_File, TextureAttributes p_Attributes)
         {
             var s_TextureGenerator = EngineInterfaceRegistry.Create<ITextureGenerator>(((SbBuildingContext) Parent!).EngineType);
 
@@ -211,23 +211,19 @@ namespace RimeLib.Cmd.Contexts
             using var s_DDSReader = new RimeReader(File.OpenRead(p_File.FullName));
             s_TextureGenerator.GenerateFromDDS(
                 s_DDSReader,
-                new TextureAttributes()
-                {
-                    Name = p_AssetName,
-                    TextureGroup = p_TextureGroup,
-                },
+                p_Attributes,
                 s_ResourceWriter,
                 out var s_Chunks
             );
 
             m_Builder.WithResource(
-                p_AssetName,
+                p_Attributes.Name,
                 new ResourceMemoryReader(s_ResourceMemoryStream.ToArray(), s_TextureGenerator.GetTargetResourceType())
             );
 
             foreach (var (s_Id, s_ChunkStream) in s_Chunks)
             {
-                m_Builder.WithChunk(s_Id, new ChunkMemoryReader(s_ChunkStream.ToArray(), p_AssetName));
+                m_Builder.WithChunk(s_Id, new ChunkMemoryReader(s_ChunkStream.ToArray(), p_Attributes.Name));
                 s_ChunkStream.Dispose();
             }
         }

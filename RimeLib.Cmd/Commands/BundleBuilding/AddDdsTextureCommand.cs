@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using RimeLib.Cmd.Attributes;
 using RimeLib.Cmd.Contexts;
+using RimeLib.Texture.Generation;
 
 namespace RimeLib.Cmd.Commands.BundleBuilding
 {
@@ -16,6 +17,9 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
         [CommandArgument(Description = "The name of the texture group this texture belongs in. Defaults to 'Default'.", Optional = true)]
         public string? TextureGroup { get; set; }
 
+        [CommandArgument(Description = "Whether this texture should use sRGB gamma. Defaults to 'false'.", Optional = true)]
+        public bool SrgbGamma { get; set; } = false;
+
         public override bool Execute(ref ExecutionContext p_Context, TextWriter p_Writer)
         {
             if (!FilePath!.Exists)
@@ -24,7 +28,14 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                 return false;
             }
 
-            ((BundleBuildingContext) p_Context).AddDDSTexture(FilePath, AssetName!, TextureGroup ?? "Default");
+            var s_Attributes = new TextureAttributes()
+            {
+                Name = AssetName!,
+                TextureGroup = TextureGroup ?? "Default",
+                SrgbGamma = SrgbGamma,
+            };
+
+            ((BundleBuildingContext) p_Context).AddDDSTexture(FilePath, s_Attributes);
 
             return true;
         }
