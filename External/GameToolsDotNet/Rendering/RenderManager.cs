@@ -377,7 +377,7 @@ namespace GameToolsDotNet.Rendering.DirectX
             this.TransparencyBlendState = new BlendState(this.Device, blendDesc);
 
             // Initialize the input manager.
-            this.InputManager = new InputManager(windowHandle);
+            this.InputManager = new InputManager(windowHandle, renderTargetHandle);
             if (this.InputManager.InitializeGraphics(this) == false)
             {
                 // Failed to initialize the input manager.

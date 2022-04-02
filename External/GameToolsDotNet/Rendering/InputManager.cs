@@ -104,7 +104,8 @@ namespace GameToolsDotNet.Rendering.DirectX
         public byte[] GamepadTriggers { get; protected set; } = new byte[2];
 
         // Control handle we bind to for input focus.
-        IntPtr formHandle;
+        IntPtr windowHandle;
+        IntPtr renderTargetHandle;
 
         // Direct input HID devices.
         private DirectInput directInput = null;
@@ -118,10 +119,11 @@ namespace GameToolsDotNet.Rendering.DirectX
         /// Initializes a new InputManager instance using the form handle specified
         /// </summary>
         /// <param name="formHandle">Handle of a control or form to bind to for input focus</param>
-        public InputManager(IntPtr formHandle)
+        public InputManager(IntPtr windowHandle, IntPtr renderTargetHandle)
         {
             // Initialize fields.
-            this.formHandle = formHandle;
+            this.windowHandle = windowHandle;
+            this.renderTargetHandle = renderTargetHandle;
         }
 
         /// <summary>
@@ -163,7 +165,7 @@ namespace GameToolsDotNet.Rendering.DirectX
 
             // Initialize the mouse device.
             this.mouseDevice = new Mouse(this.directInput);
-            this.mouseDevice.SetCooperativeLevel(this.formHandle, CooperativeLevel.Foreground | CooperativeLevel.NonExclusive);
+            this.mouseDevice.SetCooperativeLevel(this.windowHandle, CooperativeLevel.Foreground | CooperativeLevel.NonExclusive);
 
             // Initialize the xbox game pad.
             this.gamepadDevice = new Controller(UserIndex.One);
@@ -217,7 +219,7 @@ namespace GameToolsDotNet.Rendering.DirectX
 
             // Update cursor position.
             GetCursorPos(ref this.mousePosition);
-            ScreenToClient(this.formHandle, ref this.mousePosition);
+            ScreenToClient(this.renderTargetHandle, ref this.mousePosition);
 
             // Update the mouse position and button state.
             this.MousePositionDelta[0] = mouseState.X;
