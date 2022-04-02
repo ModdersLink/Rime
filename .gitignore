@@ -265,3 +265,4 @@ launchSettings.json
 
 !/External/ImGui.NET.dll
 !/External/ImGui.NET.pdb
+/dist
