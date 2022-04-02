@@ -21,7 +21,6 @@ jobs:
 
     - name: Build
       run: |
-        dotnet build --configuration Release
         dotnet publish .\Utils\RimeREPL\RimeREPL.csproj -c Release -o ./dist -r win-x64 --self-contained true /p:UseAppHost=true
         dotnet publish .\RimeLib.Content.Frostbite2_0\RimeLib.Content.Frostbite2_0.csproj -c Release -o ./dist -r win-x64 --self-contained true /p:UseAppHost=true
         dotnet publish .\RimeLib.Texture.Frostbite2_0\RimeLib.Texture.Frostbite2_0.csproj -c Release -o ./dist -r win-x64 --self-contained true /p:UseAppHost=true
