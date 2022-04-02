@@ -13,10 +13,7 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
         
         [CommandArgument(Description = "The path to the DDS texture.")]
         public FileInfo? FilePath { get; set; }
-
-        [CommandArgument(Description = "The name of the texture group this texture belongs in. Defaults to 'Default'.", Optional = true)]
-        public string? TextureGroup { get; set; }
-
+        
         [CommandArgument(Description = "Whether this texture should use sRGB gamma. Defaults to 'false'.", Optional = true)]
         public bool SrgbGamma { get; set; } = false;
 
@@ -31,7 +28,7 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
             var s_Attributes = new TextureAttributes()
             {
                 Name = AssetName!,
-                TextureGroup = TextureGroup ?? "Default",
+                TextureGroup = "Default",
                 SrgbGamma = SrgbGamma,
             };
 
