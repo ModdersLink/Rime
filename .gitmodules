@@ -1,0 +1,3 @@
+[submodule "External/GameTools.Net"]
+	path = External/GameTools.Net
+	url = git@github.com:OrfeasZ/GameToolsDotNet.git

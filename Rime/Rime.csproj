@@ -15,7 +15,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\External\GameToolsDotNet\GameToolsDotNet.csproj" />
+      <ProjectReference Include="..\External\GameTools.Net\GameToolsDotNet\GameToolsDotNet.csproj" />
     </ItemGroup>
 
 </Project>
