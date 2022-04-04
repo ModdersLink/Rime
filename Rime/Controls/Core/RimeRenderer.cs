@@ -1,11 +1,14 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Forms;
 using System.Windows.Forms.Integration;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Threading;
 using Application = System.Windows.Application;
+using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using Size = System.Drawing.Size;
 using UserControl = System.Windows.Forms.UserControl;
 
@@ -24,6 +27,13 @@ namespace Rime.Controls.Core
 
                 Loaded += OnLoaded;
                 Unloaded += OnUnloaded;
+
+                Child.KeyPress += OnKeyPress;
+            }
+
+            private void OnKeyPress(object? p_Sender, KeyPressEventArgs p_Event)
+            {
+                m_RenderManager?.OnInputChar(p_Event.KeyChar);
             }
 
             private void OnLoaded(object p_Sender, RoutedEventArgs p_E)
