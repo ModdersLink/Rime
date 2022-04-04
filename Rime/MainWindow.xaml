@@ -68,7 +68,7 @@
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="*" />
                                     </Grid.RowDefinitions>
-                                    <core:RimeRenderControl />
+                                    <core:RimeRenderer  />
                                 </Grid>
                             </LayoutDocument>
                         </LayoutDocumentPane>
