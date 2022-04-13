@@ -11,11 +11,23 @@ namespace RimeLib.Texture.Frostbite2_0;
 
 public class TextureConverter : ITextureConverter
 {
+    /// <summary>
+    /// Gets the supported engine for this texture converter
+    /// </summary>
+    /// <returns>Engine types that this converter supports</returns>
     public EngineType[] GetSupportedEngines()
     {
         return new[] { EngineType.Frostbite2_0 };
     }
 
+    /// <summary>
+    /// Converts a texture resource from frostbite to DDS
+    /// </summary>
+    /// <param name="p_Resource">DxTexture resource object</param>
+    /// <param name="p_Mounter">Engine mounter</param>
+    /// <param name="p_OutputWriter">Output writing stream</param>
+    /// <exception cref="ArgumentException">Invalid DxTexture</exception>
+    /// <exception cref="Exception">Could not find chunk</exception>
     public void ConvertToDDS(IResourceObject p_Resource, IEngineMounter p_Mounter, RimeWriter p_OutputWriter)
     {
         if (p_Resource.GetResourceType() != ResourceType.DxTexture)
@@ -41,6 +53,11 @@ public class TextureConverter : ITextureConverter
         s_FullVariant.GetReader().CopyTo(p_OutputWriter);
     }
 
+    /// <summary>
+    /// Convert frostbite texture type to DDS caps
+    /// </summary>
+    /// <param name="p_Texture">DxTexture</param>
+    /// <returns></returns>
     private static DDSCaps CapsFromTexture(DxTexture p_Texture)
     {
         var s_Caps = DDSCaps.Texture;

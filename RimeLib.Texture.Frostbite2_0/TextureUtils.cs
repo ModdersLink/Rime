@@ -30,19 +30,7 @@ internal static class TextureUtils
         { TextureFormat.TextureFormat_L16_Uint, new DDSPixelFormat(DDSFormatFlags.Luminance, 16,  0xFFFF) }, //not sure about this one
         { TextureFormat.TextureFormat_L32, new DDSPixelFormat(DDSFormatFlags.Luminance, 32, 0xFFFFFFFF) },
         */
-        {
-            TextureFormat.TextureFormat_L8,
-            new DDSPixelFormat
-            {
-                Size = 32,
-                Flags = DDSFormatFlags.Rgb,
-                FourCC = 0,
-                RBitMask = 0x000000FF,
-                GBitMask = 0x00000000,
-                BBitMask = 0x00000000,
-                ABitMask = 0x00000000
-            }
-        },
+        { TextureFormat.TextureFormat_L8, new DDSPixelFormat("DX10") },
         {
             // TODO: Verify this is correct
             TextureFormat.TextureFormat_L16, new DDSPixelFormat { Size = 32, Flags = DDSFormatFlags.Rgb, RBitMask = 0x0000FFFF }
