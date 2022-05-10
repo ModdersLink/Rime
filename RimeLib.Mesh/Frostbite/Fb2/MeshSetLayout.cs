@@ -91,21 +91,26 @@ namespace RimeLib.Mesh.Frostbite
             p_Writer.Write(LodCount);
             p_Writer.Write(TotalSubsetCount);
 
-            // TODO: Fix line belowe
-            throw new NotImplementedException();
-            //BoundingBox.Serialize(p_Writer);
+            p_Writer.Write(BoundingBox.min.x);
+            p_Writer.Write(BoundingBox.min.y);
+            p_Writer.Write(BoundingBox.min.z);
+            p_Writer.Write((float)0);
 
-            // TODO: Uncomment out below once above is fixed
-            //// This should be 5 iterations
-            //foreach (var s_Lod in Lods)
-            //    p_Writer.Write(s_Lod.BaseAddress);
+            p_Writer.Write(BoundingBox.max.x);
+            p_Writer.Write(BoundingBox.max.y);
+            p_Writer.Write(BoundingBox.max.z);
+            p_Writer.Write((float)0);
 
-            //p_Writer.Write(Name.BaseAddress);
-            //p_Writer.Write(ShortName.BaseAddress);
-            //p_Writer.Write(NameHash);
-            //p_Writer.Write(Padding);
+            // This should be 5 iterations
+            foreach (var s_Lod in Lods)
+                p_Writer.Write(s_Lod.BaseAddress);
 
-            //return true;
+            p_Writer.Write(Name.BaseAddress);
+            p_Writer.Write(ShortName.BaseAddress);
+            p_Writer.Write(NameHash);
+            p_Writer.Write(Padding);
+
+            return true;
         }
 
         public bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
@@ -120,18 +125,37 @@ namespace RimeLib.Mesh.Frostbite
             Flags = (MeshLayoutFlags)p_Reader.ReadUInt32();
             LodCount = p_Reader.ReadUInt32();
             TotalSubsetCount = p_Reader.ReadUInt32();
-            // TODO: Fix line below then uncomment everything below it
-            throw new NotImplementedException();
-            //BoundingBox = new AxisAlignedBox(p_Reader);
 
-            //Lods = new RelocPtr<MeshLayout>[5];
-            //for (var i = 0; i < 5; ++i)
-            //    Lods[i] = new RelocPtr<MeshLayout>(p_Reader);
+            var s_MinVec = new Vec3
+            {
+                x = p_Reader.ReadSingle(),
+                y = p_Reader.ReadSingle(),
+                z = p_Reader.ReadSingle()
+            };
+            p_Reader.ReadSingle(); // Padding
 
-            //Name = new RelocPtr<string>(p_Reader);
-            //ShortName = new RelocPtr<string>(p_Reader);
-            //NameHash = p_Reader.ReadUInt32();
-            //Padding = p_Reader.ReadUInt32();
+            var s_MaxVec = new Vec3
+            {
+                x = p_Reader.ReadSingle(),
+                y = p_Reader.ReadSingle(),
+                z = p_Reader.ReadSingle()
+            };
+            p_Reader.ReadSingle(); // Padding
+
+            BoundingBox = new AxisAlignedBox
+            {
+                min = s_MinVec,
+                max = s_MaxVec
+            };
+
+            Lods = new RelocPtr<MeshLayout>[5];
+            for (var i = 0; i < 5; ++i)
+                Lods[i] = new RelocPtr<MeshLayout>(p_Reader);
+
+            Name = new RelocPtr<string>(p_Reader);
+            ShortName = new RelocPtr<string>(p_Reader);
+            NameHash = p_Reader.ReadUInt32();
+            Padding = p_Reader.ReadUInt32();
         }
 
         public void Deserialize(byte[] p_Data)

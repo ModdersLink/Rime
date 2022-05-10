@@ -16,9 +16,9 @@
             <RowDefinition Height="13"/>
         </Grid.RowDefinitions>
 
-        <TextBox Name="txtNumber" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" TextAlignment="Right" PreviewKeyDown="txtNumber_PreviewKeyDown" PreviewKeyUp="txtNumber_PreviewKeyUp" TextChanged="txtNumber_TextChanged"/>
-        <RepeatButton Name="btnUp" Grid.Column="1" Grid.Row="0" FontSize="8" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Click="btnUp_Click" Content="↑"/>
-        <RepeatButton Name="btnDown" Grid.Column="1" Grid.Row="1" FontSize="8" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Height="13" VerticalAlignment="Bottom" Click="btnDown_Click" Content="↓"/>
+        <TextBox Name="txtNumber" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" TextAlignment="Right"/>
+        <RepeatButton Name="btnUp" Grid.Column="1" Grid.Row="0" FontSize="8" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Content="↑"/>
+        <RepeatButton Name="btnDown" Grid.Column="1" Grid.Row="1" FontSize="8" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Height="13" VerticalAlignment="Bottom" Content="↓"/>
 
     </Grid>
 </UserControl>
