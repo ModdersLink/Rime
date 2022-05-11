@@ -11,6 +11,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using RimeLib;
+using RimeLib.Extensions;
 
 namespace ShaderInfo
 {
@@ -124,7 +125,8 @@ namespace ShaderInfo
 
             if (p_Options.ResourcePath != string.Empty)
             {
-                PrintShader(s_Mounter, p_Options.ResourcePath, p_Options);
+                using var s_Reader = new RimeReader(File.Open(p_Options.ResourcePath, FileMode.Open));
+                PrintShader(s_Reader);
             }
             else
             {
@@ -135,28 +137,18 @@ namespace ShaderInfo
                         s_Resource.Value.FirstVariant.GetResourceType() != ResourceType.IShaderDatabase)
                         continue;
 
-                    PrintShader(s_Mounter, s_Resource.Key, p_Options);
+                    using var s_Reader = s_Resource.Value.FirstVariant.GetReader();
+                    PrintShader(s_Reader);
                 }
             }
         }
 
-        private static void PrintShader(IEngineMounter p_Mounter, string p_Path, Options p_Options)
+        private static void PrintShader(RimeReader p_ResourceReader)
         {
-            if (!p_Mounter.TryGetResource(p_Path, out var s_ShaderObject))
-            {
-                if (!p_Options.Quiet)
-                    Console.WriteLine($"Error finding shader resoruce {p_Path}!");
-                return;
-            }
-
-
-            var s_RawReader = s_ShaderObject.FirstVariant.GetReader();
-
             // ZLib stream cant seek, doing it this way
-            var s_ShaderDbData = s_RawReader.ReadBytes((int) s_ShaderObject.FirstVariant.GetSize());
+            var s_ShaderDbData = p_ResourceReader.ToArray();
 
-
-            var s_ShaderWrapper = new ShaderDBWrapper(new RimeReader(new MemoryStream(s_ShaderDbData), RimeLib.IO.Conversion.Endianness.LittleEndian));
+            var s_ShaderWrapper = new ShaderDBWrapper(new RimeReader(new MemoryStream(s_ShaderDbData)));
 
 
             foreach (var s_ShaderDb in s_ShaderWrapper.m_Shaders)
