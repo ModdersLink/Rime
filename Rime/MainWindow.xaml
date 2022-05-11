@@ -7,7 +7,8 @@
         xmlns:local="clr-namespace:Rime"
         xmlns:core="clr-namespace:Rime.Controls.Core"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800"
+        Loaded="Window_Loaded">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -68,7 +69,7 @@
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="*" />
                                     </Grid.RowDefinitions>
-                                    <core:RimeRenderer  />
+                                    <core:RimeRenderer x:Name="Renderer"  />
                                 </Grid>
                             </LayoutDocument>
                         </LayoutDocumentPane>

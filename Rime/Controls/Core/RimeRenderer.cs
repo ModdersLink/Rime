@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
@@ -8,7 +7,6 @@ using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Threading;
 using Application = System.Windows.Application;
-using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using Size = System.Drawing.Size;
 using UserControl = System.Windows.Forms.UserControl;
 
@@ -18,6 +16,10 @@ namespace Rime.Controls.Core
     {
         private class RimeRenderHost : WindowsFormsHost
         {
+            public RimeRenderManager RenderManager => m_RenderManager;
+
+            public event EventHandler RendererStarted;
+
             private readonly RimeRenderManager m_RenderManager = new();
             private DispatcherOperation? m_ResizeOperation;
 
@@ -40,6 +42,8 @@ namespace Rime.Controls.Core
             {
                 var s_MainWindowHandle = new WindowInteropHelper(Application.Current.MainWindow).Handle;
                 m_RenderManager.InitializeGraphics(Child.Handle, s_MainWindowHandle, GetSize());
+
+                RendererStarted?.Invoke(p_Sender, EventArgs.Empty);
 
                 CompositionTarget.Rendering += OnRender;
             }
@@ -87,9 +91,15 @@ namespace Rime.Controls.Core
             }
         }
 
+        public RimeRenderManager RenderManager => ((RimeRenderHost) Content).RenderManager;
+
+        public event EventHandler RendererStarted;
+
         public RimeRenderer()
         {
             Content = new RimeRenderHost();
+            ((RimeRenderHost)Content).RendererStarted +=
+                (p_Sender, p_Args) => RendererStarted?.Invoke(p_Sender, p_Args);
         }
     }
 }
