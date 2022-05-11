@@ -3,6 +3,7 @@ using RimeLib.IO;
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using SharpDX.DXGI;
 
 namespace RimeLib.Texture.DDS
 {
@@ -27,7 +28,7 @@ namespace RimeLib.Texture.DDS
 
     public class DDSDX10Header : IFbSerializable
     {
-        public DXGIFormat DxgiFormat { get; set; } = 0;
+        public Format DxgiFormat { get; set; } = 0;
         public DDSResoruceDimension ResourceDimension { get; set; } = 0;
         public DDSMiscFlag1 MiscFlag { get; set; } = 0;
         public uint ArraySize { get; set; } = 0;
@@ -36,15 +37,6 @@ namespace RimeLib.Texture.DDS
         public const uint c_HeaderSize = 20;
         public DDSDX10Header()
         {
-        }
-
-        public DDSDX10Header(DXGIFormat p_Format, DDSResoruceDimension p_Dimension, DDSMiscFlag1 p_Misc1 = 0, uint p_ArraySize = 0, DDSMiscFlag2 p_Misc2 = 0)
-        {
-            DxgiFormat = p_Format;
-            ResourceDimension = p_Dimension;
-            MiscFlag = p_Misc1;
-            ArraySize = p_ArraySize;
-            MiscFlags2 = p_Misc2;
         }
 
         public DDSDX10Header(RimeReader p_Reader)
@@ -59,7 +51,7 @@ namespace RimeLib.Texture.DDS
         /// <param name="p_Reader">Reader opened to the position</param>
         public void Deserialize(RimeReader p_Reader)
         {
-            DxgiFormat = (DXGIFormat) p_Reader.ReadUInt32();
+            DxgiFormat = (Format) p_Reader.ReadUInt32();
             ResourceDimension = (DDSResoruceDimension) p_Reader.ReadUInt32();
             MiscFlag = (DDSMiscFlag1) p_Reader.ReadUInt32();
             ArraySize = p_Reader.ReadUInt32();

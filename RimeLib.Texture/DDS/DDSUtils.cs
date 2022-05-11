@@ -1,4 +1,5 @@
 ﻿using System;
+using SharpDX.DXGI;
 
 namespace RimeLib.Texture.DDS;
 
@@ -7,136 +8,148 @@ public static class DDSUtils
     /// <summary>
     /// Gets the Bits Per Pixel for the given format
     /// </summary>
-    private static long BitsPerPixel(DXGIFormat p_Format)
+    private static long BitsPerPixel(Format p_Format)
     {
         switch (p_Format)
         {
-            case DXGIFormat.R32G32B32A32_TYPELESS:
-            case DXGIFormat.R32G32B32A32_FLOAT:
-            case DXGIFormat.R32G32B32A32_UINT:
-            case DXGIFormat.R32G32B32A32_SINT:
+            case Format.R32G32B32A32_Typeless:
+            case Format.R32G32B32A32_Float:
+            case Format.R32G32B32A32_UInt:
+            case Format.R32G32B32A32_SInt:
                 return 128;
-            case DXGIFormat.R32G32B32_TYPELESS:
-            case DXGIFormat.R32G32B32_FLOAT:
-            case DXGIFormat.R32G32B32_UINT:
-            case DXGIFormat.R32G32B32_SINT:
+
+            case Format.R32G32B32_Typeless:
+            case Format.R32G32B32_Float:
+            case Format.R32G32B32_UInt:
+            case Format.R32G32B32_SInt:
                 return 96;
-            case DXGIFormat.R16G16B16A16_TYPELESS:
-            case DXGIFormat.R16G16B16A16_FLOAT:
-            case DXGIFormat.R16G16B16A16_UNORM:
-            case DXGIFormat.R16G16B16A16_UINT:
-            case DXGIFormat.R16G16B16A16_SNORM:
-            case DXGIFormat.R16G16B16A16_SINT:
-            case DXGIFormat.R32G32_TYPELESS:
-            case DXGIFormat.R32G32_FLOAT:
-            case DXGIFormat.R32G32_UINT:
-            case DXGIFormat.R32G32_SINT:
-            case DXGIFormat.R32G8X24_TYPELESS:
-            case DXGIFormat.D32_FLOAT_S8X24_UINT:
-            case DXGIFormat.R32_FLOAT_X8X24_TYPELESS:
-            case DXGIFormat.X32_TYPELESS_G8X24_UINT:
-            case DXGIFormat.Y416:
-            case DXGIFormat.Y210:
-            case DXGIFormat.Y216:
+
+            case Format.R16G16B16A16_Typeless:
+            case Format.R16G16B16A16_Float:
+            case Format.R16G16B16A16_UNorm:
+            case Format.R16G16B16A16_UInt:
+            case Format.R16G16B16A16_SNorm:
+            case Format.R16G16B16A16_SInt:
+            case Format.R32G32_Typeless:
+            case Format.R32G32_Float:
+            case Format.R32G32_UInt:
+            case Format.R32G32_SInt:
+            case Format.R32G8X24_Typeless:
+            case Format.D32_Float_S8X24_UInt:
+            case Format.R32_Float_X8X24_Typeless:
+            case Format.X32_Typeless_G8X24_UInt:
+            case Format.Y416:
+            case Format.Y210:
+            case Format.Y216:
                 return 64;
-            case DXGIFormat.R10G10B10A2_TYPELESS:
-            case DXGIFormat.R10G10B10A2_UNORM:
-            case DXGIFormat.R10G10B10A2_UINT:
-            case DXGIFormat.R11G11B10_FLOAT:
-            case DXGIFormat.R8G8B8A8_TYPELESS:
-            case DXGIFormat.R8G8B8A8_UNORM:
-            case DXGIFormat.R8G8B8A8_UNORM_SRGB:
-            case DXGIFormat.R8G8B8A8_UINT:
-            case DXGIFormat.R8G8B8A8_SNORM:
-            case DXGIFormat.R8G8B8A8_SINT:
-            case DXGIFormat.R16G16_TYPELESS:
-            case DXGIFormat.R16G16_FLOAT:
-            case DXGIFormat.R16G16_UNORM:
-            case DXGIFormat.R16G16_UINT:
-            case DXGIFormat.R16G16_SNORM:
-            case DXGIFormat.R16G16_SINT:
-            case DXGIFormat.R32_TYPELESS:
-            case DXGIFormat.D32_FLOAT:
-            case DXGIFormat.R32_FLOAT:
-            case DXGIFormat.R32_UINT:
-            case DXGIFormat.R32_SINT:
-            case DXGIFormat.R24G8_TYPELESS:
-            case DXGIFormat.D24_UNORM_S8_UINT:
-            case DXGIFormat.R24_UNORM_X8_TYPELESS:
-            case DXGIFormat.X24_TYPELESS_G8_UINT:
-            case DXGIFormat.R9G9B9E5_SHAREDEXP:
-            case DXGIFormat.R8G8_B8G8_UNORM:
-            case DXGIFormat.G8R8_G8B8_UNORM:
-            case DXGIFormat.B8G8R8A8_UNORM:
-            case DXGIFormat.B8G8R8X8_UNORM:
-            case DXGIFormat.R10G10B10_XR_BIAS_A2_UNORM:
-            case DXGIFormat.B8G8R8A8_TYPELESS:
-            case DXGIFormat.B8G8R8A8_UNORM_SRGB:
-            case DXGIFormat.B8G8R8X8_TYPELESS:
-            case DXGIFormat.B8G8R8X8_UNORM_SRGB:
-            case DXGIFormat.AYUV:
-            case DXGIFormat.Y410:
-            case DXGIFormat.YUY2:
+
+            case Format.R10G10B10A2_Typeless:
+            case Format.R10G10B10A2_UNorm:
+            case Format.R10G10B10A2_UInt:
+            case Format.R11G11B10_Float:
+            case Format.R8G8B8A8_Typeless:
+            case Format.R8G8B8A8_UNorm:
+            case Format.R8G8B8A8_UNorm_SRgb:
+            case Format.R8G8B8A8_UInt:
+            case Format.R8G8B8A8_SNorm:
+            case Format.R8G8B8A8_SInt:
+            case Format.R16G16_Typeless:
+            case Format.R16G16_Float:
+            case Format.R16G16_UNorm:
+            case Format.R16G16_UInt:
+            case Format.R16G16_SNorm:
+            case Format.R16G16_SInt:
+            case Format.R32_Typeless:
+            case Format.D32_Float:
+            case Format.R32_Float:
+            case Format.R32_UInt:
+            case Format.R32_SInt:
+            case Format.R24G8_Typeless:
+            case Format.D24_UNorm_S8_UInt:
+            case Format.R24_UNorm_X8_Typeless:
+            case Format.X24_Typeless_G8_UInt:
+            case Format.R9G9B9E5_Sharedexp:
+            case Format.R8G8_B8G8_UNorm:
+            case Format.G8R8_G8B8_UNorm:
+            case Format.B8G8R8A8_UNorm:
+            case Format.B8G8R8X8_UNorm:
+            case Format.R10G10B10_Xr_Bias_A2_UNorm:
+            case Format.B8G8R8A8_Typeless:
+            case Format.B8G8R8A8_UNorm_SRgb:
+            case Format.B8G8R8X8_Typeless:
+            case Format.B8G8R8X8_UNorm_SRgb:
+            case Format.AYUV:
+            case Format.Y410:
+            case Format.YUY2:
                 return 32;
-            case DXGIFormat.P010:
-            case DXGIFormat.P016:
+
+            case Format.P010:
+            case Format.P016:
                 return 24;
-            case DXGIFormat.R8G8_TYPELESS:
-            case DXGIFormat.R8G8_UNORM:
-            case DXGIFormat.R8G8_UINT:
-            case DXGIFormat.R8G8_SNORM:
-            case DXGIFormat.R8G8_SINT:
-            case DXGIFormat.R16_TYPELESS:
-            case DXGIFormat.R16_FLOAT:
-            case DXGIFormat.D16_UNORM:
-            case DXGIFormat.R16_UNORM:
-            case DXGIFormat.R16_UINT:
-            case DXGIFormat.R16_SNORM:
-            case DXGIFormat.R16_SINT:
-            case DXGIFormat.B5G6R5_UNORM:
-            case DXGIFormat.B5G5R5A1_UNORM:
-            case DXGIFormat.A8P8:
-            case DXGIFormat.B4G4R4A4_UNORM:
+
+            case Format.R8G8_Typeless:
+            case Format.R8G8_UNorm:
+            case Format.R8G8_UInt:
+            case Format.R8G8_SNorm:
+            case Format.R8G8_SInt:
+            case Format.R16_Typeless:
+            case Format.R16_Float:
+            case Format.D16_UNorm:
+            case Format.R16_UNorm:
+            case Format.R16_UInt:
+            case Format.R16_SNorm:
+            case Format.R16_SInt:
+            case Format.B5G6R5_UNorm:
+            case Format.B5G5R5A1_UNorm:
+            case Format.A8P8:
+            case Format.B4G4R4A4_UNorm:
                 return 16;
-            case DXGIFormat.NV12:
-            case DXGIFormat.OPAQUE_420:
-            case DXGIFormat.NV11:
+
+            case Format.NV12:
+            //case Format.420_OPAQUE:
+            case Format.Opaque420:
+            case Format.NV11:
                 return 12;
-            case DXGIFormat.R8_TYPELESS:
-            case DXGIFormat.R8_UNORM:
-            case DXGIFormat.R8_UINT:
-            case DXGIFormat.R8_SNORM:
-            case DXGIFormat.R8_SINT:
-            case DXGIFormat.A8_UNORM:
-            case DXGIFormat.AI44:
-            case DXGIFormat.IA44:
-            case DXGIFormat.P8:
+
+            case Format.R8_Typeless:
+            case Format.R8_UNorm:
+            case Format.R8_UInt:
+            case Format.R8_SNorm:
+            case Format.R8_SInt:
+            case Format.A8_UNorm:
+            case Format.AI44:
+            case Format.IA44:
+            case Format.P8:
                 return 8;
-            case DXGIFormat.R1_UNORM:
+
+            case Format.R1_UNorm:
                 return 1;
-            case DXGIFormat.BC1_TYPELESS:
-            case DXGIFormat.BC1_UNORM:
-            case DXGIFormat.BC1_UNORM_SRGB:
-            case DXGIFormat.BC4_TYPELESS:
-            case DXGIFormat.BC4_UNORM:
-            case DXGIFormat.BC4_SNORM:
+
+            case Format.BC1_Typeless:
+            case Format.BC1_UNorm:
+            case Format.BC1_UNorm_SRgb:
+            case Format.BC4_Typeless:
+            case Format.BC4_UNorm:
+            case Format.BC4_SNorm:
                 return 4;
-            case DXGIFormat.BC2_TYPELESS:
-            case DXGIFormat.BC2_UNORM:
-            case DXGIFormat.BC2_UNORM_SRGB:
-            case DXGIFormat.BC3_TYPELESS:
-            case DXGIFormat.BC3_UNORM:
-            case DXGIFormat.BC3_UNORM_SRGB:
-            case DXGIFormat.BC5_TYPELESS:
-            case DXGIFormat.BC5_UNORM:
-            case DXGIFormat.BC5_SNORM:
-            case DXGIFormat.BC6H_TYPELESS:
-            case DXGIFormat.BC6H_UF16:
-            case DXGIFormat.BC6H_SF16:
-            case DXGIFormat.BC7_TYPELESS:
-            case DXGIFormat.BC7_UNORM:
-            case DXGIFormat.BC7_UNORM_SRGB:
+
+            case Format.BC2_Typeless:
+            case Format.BC2_UNorm:
+            case Format.BC2_UNorm_SRgb:
+            case Format.BC3_Typeless:
+            case Format.BC3_UNorm:
+            case Format.BC3_UNorm_SRgb:
+            case Format.BC5_Typeless:
+            case Format.BC5_UNorm:
+            case Format.BC5_SNorm:
+            case Format.BC6H_Typeless:
+            case Format.BC6H_Uf16:
+            case Format.BC6H_Sf16:
+            case Format.BC7_Typeless:
+            case Format.BC7_UNorm:
+            case Format.BC7_UNorm_SRgb:
                 return 8;
+
             default:
                 return 0;
         }
@@ -161,7 +174,7 @@ public static class DDSUtils
     /// Computes Row and Slice Pitch
     /// </summary>
     public static void ComputePitch(
-        DXGIFormat p_Format,
+        Format p_Format,
         long p_Width,
         long p_Height,
         out long p_RowPitch,
@@ -171,12 +184,12 @@ public static class DDSUtils
     {
         switch (p_Format)
         {
-            case DXGIFormat.BC1_TYPELESS:
-            case DXGIFormat.BC1_UNORM:
-            case DXGIFormat.BC1_UNORM_SRGB:
-            case DXGIFormat.BC4_TYPELESS:
-            case DXGIFormat.BC4_UNORM:
-            case DXGIFormat.BC4_SNORM:
+            case Format.BC1_Typeless:
+            case Format.BC1_UNorm:
+            case Format.BC1_UNorm_SRgb:
+            case Format.BC4_Typeless:
+            case Format.BC4_UNorm:
+            case Format.BC4_SNorm:
             {
                 if (p_Flags.HasFlag(CPFLAGS.BADDXTNTAILS))
                 {
@@ -194,21 +207,21 @@ public static class DDSUtils
                 }
             }
                 break;
-            case DXGIFormat.BC2_TYPELESS:
-            case DXGIFormat.BC2_UNORM:
-            case DXGIFormat.BC2_UNORM_SRGB:
-            case DXGIFormat.BC3_TYPELESS:
-            case DXGIFormat.BC3_UNORM:
-            case DXGIFormat.BC3_UNORM_SRGB:
-            case DXGIFormat.BC5_TYPELESS:
-            case DXGIFormat.BC5_UNORM:
-            case DXGIFormat.BC5_SNORM:
-            case DXGIFormat.BC6H_TYPELESS:
-            case DXGIFormat.BC6H_UF16:
-            case DXGIFormat.BC6H_SF16:
-            case DXGIFormat.BC7_TYPELESS:
-            case DXGIFormat.BC7_UNORM:
-            case DXGIFormat.BC7_UNORM_SRGB:
+            case Format.BC2_Typeless:
+            case Format.BC2_UNorm:
+            case Format.BC2_UNorm_SRgb:
+            case Format.BC3_Typeless:
+            case Format.BC3_UNorm:
+            case Format.BC3_UNorm_SRgb:
+            case Format.BC5_Typeless:
+            case Format.BC5_UNorm:
+            case Format.BC5_SNorm:
+            case Format.BC6H_Typeless:
+            case Format.BC6H_Uf16:
+            case Format.BC6H_Sf16:
+            case Format.BC7_Typeless:
+            case Format.BC7_UNorm:
+            case Format.BC7_UNorm_SRgb:
             {
                 if (p_Flags.HasFlag(CPFLAGS.BADDXTNTAILS))
                 {
@@ -226,30 +239,30 @@ public static class DDSUtils
                 }
             }
                 break;
-            case DXGIFormat.R8G8_B8G8_UNORM:
-            case DXGIFormat.G8R8_G8B8_UNORM:
-            case DXGIFormat.YUY2:
+            case Format.R8G8_B8G8_UNorm:
+            case Format.G8R8_G8B8_UNorm:
+            case Format.YUY2:
                 p_RowPitch = ((p_Width + 1) >> 1) * 4;
                 p_SlicePitch = p_RowPitch * p_Height;
                 break;
-            case DXGIFormat.Y210:
-            case DXGIFormat.Y216:
+            case Format.Y210:
+            case Format.Y216:
                 p_RowPitch = ((p_Width + 1) >> 1) * 8;
                 p_SlicePitch = p_RowPitch * p_Height;
                 break;
 
-            case DXGIFormat.NV12:
-            case DXGIFormat.OPAQUE_420:
+            case Format.NV12:
+            case Format.Opaque420:
                 p_RowPitch = ((p_Width + 1) >> 1) * 2;
                 p_SlicePitch = p_RowPitch * (p_Height + ((p_Height + 1) >> 1));
                 break;
 
-            case DXGIFormat.P010:
-            case DXGIFormat.P016:
+            case Format.P010:
+            case Format.P016:
                 p_RowPitch = ((p_Width + 1) >> 1) * 4;
                 p_SlicePitch = p_RowPitch * (p_Height + ((p_Height + 1) >> 1));
                 break;
-            case DXGIFormat.NV11:
+            case Format.NV11:
                 p_RowPitch = ((p_Width + 3) >> 2) * 4;
                 p_SlicePitch = p_RowPitch * p_Height * 2;
                 break;
@@ -332,7 +345,7 @@ public static class DDSUtils
         if (p_Header.PixelFormat.FourCC != DDSUtils.MakeFourCC("DX10"))
             return false;
         
-        return p_Header.Dx10Header!.DxgiFormat is DXGIFormat.BC1_UNORM or DXGIFormat.BC1_UNORM_SRGB;
+        return p_Header.Dx10Header!.DxgiFormat is Format.BC1_UNorm or Format.BC1_UNorm_SRgb;
     }
 
     public static bool IsDXT3(DDSHeader p_Header)
@@ -343,7 +356,7 @@ public static class DDSUtils
         if (p_Header.PixelFormat.FourCC != DDSUtils.MakeFourCC("DX10"))
             return false;
         
-        return p_Header.Dx10Header!.DxgiFormat is DXGIFormat.BC2_UNORM_SRGB or DXGIFormat.BC2_UNORM;
+        return p_Header.Dx10Header!.DxgiFormat is Format.BC2_UNorm or Format.BC2_UNorm_SRgb;
     }
 
     public static bool IsDXT5(DDSHeader p_Header)
@@ -354,7 +367,7 @@ public static class DDSUtils
         if (p_Header.PixelFormat.FourCC != DDSUtils.MakeFourCC("DX10"))
             return false;
         
-        return p_Header.Dx10Header!.DxgiFormat is DXGIFormat.BC3_UNORM_SRGB or DXGIFormat.BC3_UNORM;
+        return p_Header.Dx10Header!.DxgiFormat is Format.BC3_UNorm or Format.BC3_UNorm_SRgb;
     }
 
     public static bool IsDXT5A(DDSHeader p_Header)
@@ -362,7 +375,7 @@ public static class DDSUtils
         if (p_Header.PixelFormat.FourCC != DDSUtils.MakeFourCC("DX10"))
             return false;
         
-        return p_Header.Dx10Header!.DxgiFormat is DXGIFormat.BC4_UNORM;
+        return p_Header.Dx10Header!.DxgiFormat is Format.BC4_UNorm;
     }
 
     public static bool IsDXN(DDSHeader p_Header)
@@ -370,7 +383,7 @@ public static class DDSUtils
         if (p_Header.PixelFormat.FourCC != DDSUtils.MakeFourCC("DX10"))
             return false;
         
-        return p_Header.Dx10Header!.DxgiFormat is DXGIFormat.BC5_UNORM;
+        return p_Header.Dx10Header!.DxgiFormat is Format.BC5_UNorm;
     }
 
     public static bool IsCompressed(DDSHeader p_Header)

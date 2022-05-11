@@ -10,6 +10,7 @@ using RimeLib.Texture.DDS;
 using RimeLib.Texture.Frostbite2_0.Frostbite;
 using RimeLib.Texture.Generation;
 using RimeLib.Utils;
+using SharpDX.DXGI;
 
 namespace RimeLib.Texture.Frostbite2_0.Generation;
 
@@ -82,31 +83,30 @@ public class TextureGenerator : ITextureGenerator
 
             return s_Dx10Header!.DxgiFormat switch
             {
-                DXGIFormat.BC1_UNORM or DXGIFormat.BC1_UNORM_SRGB => TextureFormat.TextureFormat_DXT1,
-                DXGIFormat.BC2_UNORM_SRGB or DXGIFormat.BC2_UNORM => TextureFormat.TextureFormat_DXT3,
-                DXGIFormat.BC3_UNORM_SRGB or DXGIFormat.BC3_UNORM => TextureFormat.TextureFormat_DXT5,
-                DXGIFormat.BC4_UNORM => TextureFormat.TextureFormat_DXT5A,
-                DXGIFormat.BC5_UNORM => TextureFormat.TextureFormat_DXN,
-                DXGIFormat.B5G6R5_UNORM => TextureFormat.TextureFormat_RGB565,
-                DXGIFormat.B5G5R5A1_UNORM => TextureFormat.TextureFormat_ARGB1555,
-                DXGIFormat.B4G4R4A4_UNORM => TextureFormat.TextureFormat_ARGB4444,
-                DXGIFormat.R8G8B8A8_UNORM_SRGB or DXGIFormat.R8G8B8A8_UNORM =>
+                Format.BC1_UNorm or Format.BC1_UNorm_SRgb => TextureFormat.TextureFormat_DXT1,
+                Format.BC2_UNorm_SRgb or Format.BC2_UNorm => TextureFormat.TextureFormat_DXT3,
+                Format.BC3_UNorm_SRgb or Format.BC3_UNorm => TextureFormat.TextureFormat_DXT5,
+                Format.BC4_UNorm => TextureFormat.TextureFormat_DXT5A,
+                Format.BC5_UNorm => TextureFormat.TextureFormat_DXN,
+                Format.B5G6R5_UNorm => TextureFormat.TextureFormat_RGB565,
+                Format.B5G5R5A1_UNorm => TextureFormat.TextureFormat_ARGB1555,
+                Format.B4G4R4A4_UNorm => TextureFormat.TextureFormat_ARGB4444,
+                Format.R8G8B8A8_UNorm_SRgb or Format.R8G8B8A8_UNorm =>
                     TextureFormat.TextureFormat_ARGB8888,
-                DXGIFormat.R8_UNORM => TextureFormat.TextureFormat_L8,
-                DXGIFormat.R16_UNORM => TextureFormat.TextureFormat_L16,
-                DXGIFormat.R16G16B16A16_UNORM => TextureFormat.TextureFormat_ABGR16,
-                DXGIFormat.R16G16B16A16_FLOAT => TextureFormat.TextureFormat_ABGR16F,
-                DXGIFormat.R32G32B32A32_FLOAT => TextureFormat.TextureFormat_ABGR32F,
-                DXGIFormat.R16_FLOAT => TextureFormat.TextureFormat_R16F,
-                DXGIFormat.D32_FLOAT => 
+                Format.R8_UNorm => TextureFormat.TextureFormat_L8,
+                Format.R16_UNorm => TextureFormat.TextureFormat_L16,
+                Format.R16G16B16A16_UNorm => TextureFormat.TextureFormat_ABGR16,
+                Format.R16G16B16A16_Float => TextureFormat.TextureFormat_ABGR16F,
+                Format.R32G32B32A32_Float => TextureFormat.TextureFormat_ABGR32F,
+                Format.R16_Float => TextureFormat.TextureFormat_R16F,
+                Format.D32_Float => 
                     TextureFormat.TextureFormat_R32F, // or TextureFormat_D32F, need to check ARGBFlagBits to determine?
-                DXGIFormat.R16G16_UNORM => TextureFormat.TextureFormat_GR16,
-                DXGIFormat.R16G16_FLOAT => TextureFormat.TextureFormat_GR16F,
-                DXGIFormat.D24_UNORM_S8_UINT => TextureFormat.TextureFormat_D24S8,
-                //DXGIFormat.D32_FLOAT => TextureFormat.TextureFormat_D32F,
-                DXGIFormat.R32G32B32A32_UINT => TextureFormat.TextureFormat_ABGR32,
-                DXGIFormat.R32G32_FLOAT => TextureFormat.TextureFormat_GR32F,
-                DXGIFormat.R10G10B10A2_UNORM => TextureFormat.TextureFormat_A2R10G10B10,
+                Format.R16G16_UNorm => TextureFormat.TextureFormat_GR16,
+                Format.R16G16_Float => TextureFormat.TextureFormat_GR16F,
+                Format.D24_UNorm_S8_UInt => TextureFormat.TextureFormat_D24S8,
+                Format.R32G32B32A32_UInt=> TextureFormat.TextureFormat_ABGR32,
+                Format.R32G32_Float => TextureFormat.TextureFormat_GR32F,
+                Format.R10G10B10A2_UNorm => TextureFormat.TextureFormat_A2R10G10B10,
                 _ => TextureFormat.TextureFormat_Unknown
             };
         }
