@@ -17,6 +17,15 @@
 
     <ItemGroup>
       <ProjectReference Include="..\External\GameTools.Net\GameToolsDotNet\GameToolsDotNet.csproj" />
+      <ProjectReference Include="..\RimeLib.Content\RimeLib.Content.csproj" />
+      <ProjectReference Include="..\RimeLib.Texture\RimeLib.Texture.csproj" />
+      <ProjectReference Include="..\RimeLibLite\RimeLibLite.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="ImGui.NET">
+        <HintPath>..\External\GameTools.Net\ImGui.NET.dll</HintPath>
+      </Reference>
     </ItemGroup>
 
 </Project>
