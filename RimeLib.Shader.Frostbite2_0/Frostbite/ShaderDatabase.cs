@@ -5,7 +5,10 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using fb;
+using RimeLib.Content.Mounting;
+using RimeLib.Frostbite;
 using RimeLib.Mesh.Frostbite;
+using RimeLib.Serialization;
 using RimeLib.Shader.Frostbite2_0.Frostbite.Functions;
 
 namespace RimeLib.Shader.Frostbite2_0.Frostbite;
@@ -13,13 +16,13 @@ namespace RimeLib.Shader.Frostbite2_0.Frostbite;
 public class ShaderDatabase
 {
     public ShaderRenderPath RenderPath { get; set; }
-    public Dictionary<uint, SurfaceShaderInfo> Shaders { get; set; } = new();
+    public Dictionary<string, SurfaceShaderInfo> Shaders { get; set; } = new();
 
     public ShaderDatabase()
     {
     }
 
-    public ShaderDatabase(RimeReader p_Reader)
+    public ShaderDatabase(RimeReader p_Reader, IEngineMounter p_Mounter)
     {
         var s_Version = p_Reader.ReadUInt32();
 
@@ -148,9 +151,17 @@ public class ShaderDatabase
         for (var i = 0; i < s_ShaderCount; i++)
         {
             var s_Key = p_Reader.ReadUInt32();
-            var s_Value = new SurfaceShaderInfo(p_Reader, s_Solutions);
+            
+            if (!p_Mounter.TryGetPartitionByHashLower(s_Key, out var s_PartitionObject))
+                throw new Exception($"Could not find partition for shader asset with hash '{s_Key}'. Is the appropriate content mounted?");
 
-            Shaders.Add(s_Key, s_Value);
+            var s_Converter = EngineInterfaceRegistry.Create<IPartitionConverter>(EngineType.Frostbite2_0);
+            var s_Partition = s_Converter.FromPartitionObject(s_PartitionObject.OriginalName, s_PartitionObject.FirstVariant);
+            
+            if (s_Partition.PrimaryInstance is not SurfaceShaderBaseAsset s_Asset)
+                throw new Exception($"Primary instance of shader asset partition '{s_Partition.Name}' is not a SurfaceShaderBaseAsset.");
+            
+            Shaders.Add(s_Asset.Name, new SurfaceShaderInfo(p_Reader, s_Solutions));
         }
     }
 }

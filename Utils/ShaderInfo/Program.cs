@@ -3,18 +3,15 @@ using RimeLib.Content.Frostbite;
 using RimeLib.Content.Mounting;
 using RimeLib.Frostbite;
 using RimeLib.IO;
-using RimeLib.Shader.Frostbite2_0.Frostbite;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using fb;
 using RimeLib;
 using RimeLib.Extensions;
-using RimeLib.Serialization;
+using RimeLib.Shader.Frostbite2_0.Frostbite;
 
 namespace ShaderInfo
 {
@@ -136,29 +133,13 @@ namespace ShaderInfo
                 if (!p_Options.Quiet)
                     Console.WriteLine($"Everything is now mounted! Starting content listing.");
 
-                var s_ShaderNames = new ConcurrentDictionary<uint, string>();
-                var s_Converter = EngineInterfaceRegistry.Create<IPartitionConverter>(s_Mounter.GetEngineType());
-                
-                Parallel.ForEach(s_Mounter.GetPartitions(), p_Pair =>
-                {
-                    var (s_Name, s_PartitionObject) = p_Pair;
-                    var s_Partition = s_Converter.FromPartitionObject(s_Name, s_PartitionObject.FirstVariant);
-
-                    if (s_Partition.PrimaryInstance is SurfaceShaderBaseAsset s_Asset)
-                    {
-                        s_ShaderNames.AddOrUpdate(Utils.HashQuickLowerCase(s_Asset.Name), s_Asset.Name, (_, _) => s_Asset.Name);
-                        //s_ShaderNames.Add(Utils.HashQuickLowerCase("win32/" + s_Asset.Name), s_Asset.Name);
-                        //s_ShaderNames.Add(Utils.HashQuick(s_Asset.Name), s_Asset.Name);
-                    }
-                });
-
                 if (!string.IsNullOrWhiteSpace(p_Options.ResourcePath))
                 {
                     if (!s_Mounter.TryGetResource(p_Options.ResourcePath, out var s_Resource))
                         throw new Exception("Could not find the specified resource.");
                     
                     using var s_Reader = s_Resource.FirstVariant.GetReader();
-                    PrintShader(s_Reader, s_ShaderNames);
+                    PrintShader(s_Reader, s_Mounter);
                 }
                 else
                 {
@@ -169,34 +150,21 @@ namespace ShaderInfo
                             return;
 
                         using var s_Reader = p_Resource.Value.FirstVariant.GetReader();
-                        PrintShader(s_Reader, s_ShaderNames);
+                        PrintShader(s_Reader, s_Mounter);
                     });
                 }
+                
+                Console.WriteLine("Done!");
             }
         }
 
-        private static void PrintShader(RimeReader p_ResourceReader, ConcurrentDictionary<uint, string> p_ShaderNames)
+        private static void PrintShader(RimeReader p_ResourceReader, IEngineMounter p_Mounter)
         {
             // ZLib stream cant seek, doing it this way
             var s_ShaderDbData = p_ResourceReader.ToArray();
 
             using var s_Reader = new RimeReader(new MemoryStream(s_ShaderDbData));
-            var s_Container = new ShaderDatabaseContainer(s_Reader);
-
-            foreach (var s_Database in s_Container.Databases)
-            {
-                foreach (var (s_Hash, s_Shader) in s_Database.Value.Shaders)
-                {
-                    if (p_ShaderNames.TryGetValue(s_Hash, out var s_Name))
-                    {
-                        //Console.WriteLine($"{s_Hash} => {s_Name}");
-                    }
-                    else
-                    {
-                        Console.WriteLine($"Could not find name for hash {s_Hash}.");
-                    }
-                }
-            }
+            var s_Container = new ShaderDatabaseContainer(s_Reader, p_Mounter);
         }
     }
 }
