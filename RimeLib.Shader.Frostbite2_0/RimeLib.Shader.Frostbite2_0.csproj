@@ -26,7 +26,9 @@
     </ItemGroup>
     
     <ItemGroup>
+        <ProjectReference Include="..\RimeLib.Mesh\RimeLib.Mesh.csproj" />
         <ProjectReference Include="..\RimeLib.Serialization.Frostbite2_0\RimeLib.Serialization.Frostbite2_0.csproj" />
+        <ProjectReference Include="..\RimeLib.Texture.Frostbite2_0\RimeLib.Texture.Frostbite2_0.csproj" />
         <ProjectReference Include="..\RimeLibLite\RimeLibLite.csproj" />
     </ItemGroup>
 

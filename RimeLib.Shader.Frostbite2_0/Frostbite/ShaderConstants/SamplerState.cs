@@ -1,57 +1,68 @@
 ﻿using RimeLib.Frostbite;
 using RimeLib.IO;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
-using System.Text;
+using SharpDX.Direct3D11;
 
-namespace RimeLib.Shader.Frostbite2_0.Frostbite.ShaderConstants
+namespace RimeLib.Shader.Frostbite2_0.Frostbite.ShaderConstants;
+
+public class SamplerState : IFbSerializable
 {
-    public class SamplerState : IFbSerializable
+    uint Index { get; set; }
+    SamplerStateDescription Desc { get; set; } = SamplerStateDescription.Default();
+
+
+    public SamplerState()
     {
-        uint m_Index = 0;
-        //D3D11_SAMPLER_DESC
 
+    }
 
-        public SamplerState()
-        {
+    public SamplerState(RimeReader p_Reader)
+    {
+        Deserialize(p_Reader);
+    }
 
-        }
-
-        public SamplerState(RimeReader p_Reader)
-        {
-            Deserialize(p_Reader);
-        }
-
-        public bool Serialize(RimeWriter p_Writer)
-        {
-            throw new System.NotImplementedException();
-        }
+    public bool Serialize(RimeWriter p_Writer)
+    {
+        throw new System.NotImplementedException();
+    }
 
         
 
-        public void Deserialize(RimeReader p_Reader)
-        {
-            m_Index = p_Reader.ReadUInt32();
+    public void Deserialize(RimeReader p_Reader)
+    {
+        Index = p_Reader.ReadUInt32();
 
-            p_Reader.Seek(0x34, SeekOrigin.Current); //D3D11_SAMPLER_DESC
+        var s_Desc = SamplerStateDescription.Default();
+        s_Desc.Filter = (Filter)p_Reader.ReadInt32();
+        s_Desc.AddressU = (TextureAddressMode)p_Reader.ReadInt32();
+        s_Desc.AddressV = (TextureAddressMode)p_Reader.ReadInt32();
+        s_Desc.AddressW = (TextureAddressMode)p_Reader.ReadInt32();
+        s_Desc.MipLodBias = p_Reader.ReadSingle();
+        s_Desc.MaximumAnisotropy = p_Reader.ReadInt32();
+        s_Desc.ComparisonFunction = (Comparison)p_Reader.ReadInt32();
+        s_Desc.BorderColor.R = p_Reader.ReadSingle();
+        s_Desc.BorderColor.G = p_Reader.ReadSingle();
+        s_Desc.BorderColor.B = p_Reader.ReadSingle();
+        s_Desc.BorderColor.A = p_Reader.ReadSingle();
+        s_Desc.MinimumLod = p_Reader.ReadSingle();
+        s_Desc.MaximumLod = p_Reader.ReadSingle();
 
-
-            //Padding
-            p_Reader.Seek(0x8, SeekOrigin.Current); 
-        }
-
-
-        public bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
-        {
-            p_Data = null;
-            throw new System.NotImplementedException();
-        }
-        public void Deserialize(byte[] p_Data)
-        {
-            throw new System.NotImplementedException();
-        }
-
+        Desc = s_Desc;
+            
+        //Padding
+        p_Reader.Seek(0x8, SeekOrigin.Current); 
     }
+
+
+    public bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
+    {
+        p_Data = null;
+        throw new System.NotImplementedException();
+    }
+    public void Deserialize(byte[] p_Data)
+    {
+        throw new System.NotImplementedException();
+    }
+
 }

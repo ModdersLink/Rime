@@ -2,134 +2,92 @@
 using RimeLib.Frostbite.Core;
 using RimeLib.IO;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Text;
+using SharpDX.Direct3D11;
+using SharpDX.DXGI;
 
-namespace RimeLib.Shader.Frostbite2_0.Frostbite.Shaders
+namespace RimeLib.Shader.Frostbite2_0.Frostbite.Shaders;
+
+public class VertexShaderPermutation : IFbSerializable
 {
-    public class VertexShaderPermutation : ShaderBase, IFbSerializable
+    public GUID Guid { get; set; } = GUID.Empty;
+    public byte[] ShaderBytecode { get; set; } = Array.Empty<byte>();
+        
+    // This is basically the same as taking the main HLSL and removing everything but the
+    // ISGN (Input Signature) section. Checksums and sizes and such also have to be updated
+    // obviously. Probably generated using D3DGetInputSignatureBlob.
+    public byte[] InputSignatureBytecode { get; set; } = Array.Empty<byte>();
+        
+    public uint ConstantsIndex { get; set; }
+    public uint ConstantFunctionIndex { get; set; }
+    public uint TextureFunctionIndex { get; set; }
+    
+    public InputElement[] Elements { get; set; } = Array.Empty<InputElement>();
+        
+    public uint InstructionCount { get; set; }
+
+    public VertexShaderPermutation()
     {
-        public class Element : IFbSerializable
-        {
-            public uint m_SemanticIndex = 0;
-            public uint m_DxgiFormat = 0; //DXGI_FORMAT
-            public uint m_InputSlot = 0;
-            public uint m_AlignedByteOffset = 0;
-            public uint m_InputSlotClass = 0; //D3D11_INPUT_CLASSIFICATION
-            public uint m_InstanceDataStepRate = 0;
-
-
-            public Element()
-            {
-
-            }
-
-            public Element(RimeReader p_Reader)
-            {
-                Deserialize(p_Reader);
-            }
-
-            public bool Serialize(RimeWriter p_Writer)
-            {
-                throw new NotImplementedException();
-            }
-
-            public void Deserialize(RimeReader p_Reader)
-            {
-                m_SemanticIndex = p_Reader.ReadUInt32();
-                m_DxgiFormat = p_Reader.ReadUInt32(); //DXGI_FORMAT
-                m_InputSlot = p_Reader.ReadUInt32();
-                m_AlignedByteOffset = p_Reader.ReadUInt32();
-                m_InputSlotClass = p_Reader.ReadUInt32(); //D3D11_INPUT_CLASSIFICATION
-                m_InstanceDataStepRate = p_Reader.ReadUInt32();
-
-            }
-            
-            public bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
-            {
-                p_Data = null;
-                throw new System.NotImplementedException();
-            }
-            
-            public void Deserialize(byte[] p_Data)
-            {
-                throw new System.NotImplementedException();
-            }
-        }
-
-        public uint m_ConstantsIndex = 0;
-        public uint m_ConstantFunctionIndex = 0;
-        public uint m_TextureFunctionIndex = 0;
-        public List<Element> m_Elements = new List<Element>();
-        public Element[] m_NamedElements = new Element[0];
-        public string[] m_SemanticNames = new string[0];
-
-        public VertexShaderPermutation()
-        {
-        }
-
-        public VertexShaderPermutation(RimeReader p_Reader)
-        {
-            Deserialize(p_Reader);
-        }
-
-        public bool Serialize(RimeWriter p_Writer)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void Deserialize(RimeReader p_Reader)
-        {
-            m_Guid = new GUID(p_Reader);
-
-            var s_DataSize = p_Reader.ReadUInt32();
-            m_ShaderData = p_Reader.ReadBytes((int)s_DataSize);
-
-            m_ConstantsIndex = p_Reader.ReadUInt32();
-            m_ConstantFunctionIndex = p_Reader.ReadUInt32();
-            m_TextureFunctionIndex = p_Reader.ReadUInt32();
-
-
-            //THIS IS SUPPOSED TO BE ELEMENTs, BUT HAS GARBAGE DATA
-            var s_ElementsSize = p_Reader.ReadUInt32();
-
-            var s_ElementStartPosition = p_Reader.Position;
-            using (var s_ElementsReader = new LimitedRimeReader(p_Reader, s_ElementsSize))
-            {
-                while (s_ElementsReader.Position < s_ElementsReader.Length)
-                    m_Elements.Add(new Element(s_ElementsReader));
-            }
-            //Not sure how limitedrimereader works in this case
-            p_Reader.Seek(s_ElementStartPosition + s_ElementsSize, System.IO.SeekOrigin.Begin);
-
-
-
-            var s_NamedElementsCount = p_Reader.ReadUInt32();
-
-            m_NamedElements = new Element[s_NamedElementsCount];
-            for ( var i=0; i < s_NamedElementsCount; i++)
-                m_NamedElements[i] = new Element(p_Reader);
-
-            var s_StringVectorCount = p_Reader.ReadUInt32();
-            
-            m_SemanticNames = new string[s_StringVectorCount];
-            for (var i = 0; i < s_StringVectorCount; i++)
-                m_SemanticNames[i] = p_Reader.ReadNullTerminatedString();
-
-            m_Metrics = p_Reader.ReadUInt32();
-        }
-
-        public bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
-        {
-            p_Data = null;
-            throw new System.NotImplementedException();
-        }
-
-        public void Deserialize(byte[] p_Data)
-        {
-            throw new System.NotImplementedException();
-        }
-
     }
+
+    public VertexShaderPermutation(RimeReader p_Reader)
+    {
+        Deserialize(p_Reader);
+    }
+
+    public bool Serialize(RimeWriter p_Writer)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void Deserialize(RimeReader p_Reader)
+    {
+        Guid = new GUID(p_Reader);
+
+        var s_DataSize = p_Reader.ReadUInt32();
+        ShaderBytecode = p_Reader.ReadBytes((int)s_DataSize);
+
+        ConstantsIndex = p_Reader.ReadUInt32();
+        ConstantFunctionIndex = p_Reader.ReadUInt32();
+        TextureFunctionIndex = p_Reader.ReadUInt32();
+
+        var s_BytecodeSize = p_Reader.ReadInt32();
+        InputSignatureBytecode = p_Reader.ReadBytes(s_BytecodeSize);
+            
+        var s_ElementCount = p_Reader.ReadUInt32();
+
+        Elements = new InputElement[s_ElementCount];
+            
+        for (var i = 0; i < s_ElementCount; ++i)
+        {
+            Elements[i].SemanticIndex = p_Reader.ReadInt32();
+            Elements[i].Format = (Format)p_Reader.ReadInt32();
+            Elements[i].Slot = p_Reader.ReadInt32();
+            Elements[i].AlignedByteOffset = p_Reader.ReadInt32();
+            Elements[i].Classification = (InputClassification)p_Reader.ReadInt32();
+            Elements[i].InstanceDataStepRate = p_Reader.ReadInt32();
+        }
+            
+        var s_ElementNamesCount = p_Reader.ReadUInt32();
+
+        if (s_ElementNamesCount != s_ElementCount)
+            throw new Exception($"Element names count does not match element count (expected {s_ElementCount} got {s_ElementNamesCount}. Is this shader database corrupted?");
+            
+        for (var i = 0; i < s_ElementNamesCount; i++)
+            Elements[i].SemanticName = p_Reader.ReadNullTerminatedString();
+
+        InstructionCount = p_Reader.ReadUInt32();
+    }
+
+    public bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
+    {
+        p_Data = null;
+        throw new System.NotImplementedException();
+    }
+
+    public void Deserialize(byte[] p_Data)
+    {
+        throw new System.NotImplementedException();
+    }
+
 }
