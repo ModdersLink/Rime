@@ -8,9 +8,9 @@ namespace RimeLib.Shader.Frostbite2_0.Frostbite.Solutions;
 
 public class ShaderSolutionState : IFbSerializable
 {
-    public uint SurfaceShaderNameHash { get; set; } = 0;
-    public uint VertexShaderFragmentNameHash { get; set; } = 0;
-    public uint GeometryDeclarationHash { get; set; } = 0;
+    public uint SurfaceShaderNameHash { get; set; }
+    public uint VertexShaderFragmentNameHash { get; set; }
+    public uint GeometryDeclarationHash { get; set; }
 
     public GeometryDeclarationDesc GeometryDeclarationDesc { get; set; } = default!;
 
@@ -20,17 +20,17 @@ public class ShaderSolutionState : IFbSerializable
     public ShaderInstancingMethod InstancingMethod { get; set; } = ShaderInstancingMethod.ShaderInstancingMethod_None;
     public ShaderObjectLighting ObjectLighting { get; set; } = ShaderObjectLighting.ShaderObjectLighting_None;
 
-    public byte ColorScale { get; set; } = 0;
-    public byte Technique { get; set; } = 0;
-    public byte BoolPermutation { get; set; } = 0;
+    public byte ColorScale { get; set; }
+    public byte Technique { get; set; }
+    public byte BoolPermutation { get; set; }
 
-    public byte Ps3ClipPlaneCount { get; set; } = 0;
-    public byte HeightfieldTessellation { get; set; } = 0;
+    public byte Ps3ClipPlaneCount { get; set; }
+    public byte HeightfieldTessellation { get; set; }
 
-    public bool OutdoorLightEnable { get; set; } = false;
+    public bool OutdoorLightEnable { get; set; }
     public ShaderShadowmapMethod OutdoorLightShadowmapMethod { get; set; } = ShaderShadowmapMethod.ShaderShadowmapMethod_None;
-    public ShaderShadowmapQuality OutdoorLightShadowmapQuality { get; set; } = ShaderShadowmapQuality.ShaderShadowmapQuality_Gaussian;
-    public bool OutdoorLightTransparencyShadowmapEnable { get; set; } = false;
+    public ShaderShadowmapQuality OutdoorLightShadowmapQuality { get; set; } = ShaderShadowmapQuality.ShaderShadowmapQuality_Pcf2x2;
+    public bool OutdoorLightTransparencyShadowmapEnable { get; set; }
 
     public ShaderSolutionState(
         string p_SurfaceShaderName, 

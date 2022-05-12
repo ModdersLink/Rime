@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using GameToolsDotNet.Rendering.DirectX;
 using ImGuiNET;
+using RimeLib;
 using RimeLib.Content.Mounting;
+using RimeLib.Frostbite;
 using RimeLib.Mesh.Frostbite;
 using RimeLib.Shader.Frostbite2_0.Frostbite;
+using RimeLib.Texture;
 using SharpDX;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
@@ -70,6 +74,7 @@ public class RimeRenderManager : RenderManager
     private MeshSetLayout? m_MeshSet;
     private SurfaceShaderInfo? m_Shader;
     private Buffer? m_IndexBuffer;
+    //private Buffer? m_VertexBuffer;
     private Buffer[] m_VertexBuffers = Array.Empty<Buffer>();
     private VertexBufferBinding[] m_VertexBufferBindings = Array.Empty<VertexBufferBinding>();
 
@@ -80,8 +85,14 @@ public class RimeRenderManager : RenderManager
     private SamplerState[][] m_PixelSamplers;
     private GeometryShader[] m_GeometryShaders;
 
+    private Tuple<byte, ShaderResourceView>[][] m_Textures;
+    
+    private DepthStencilState? m_DepthStencilState;
+
     public void DrawMesh(MeshSetLayout p_MeshSet, SurfaceShaderInfo p_Shader, IEngineMounter p_Mounter)
     {
+        var s_Converter = EngineInterfaceRegistry.Create<ITextureConverter>(EngineType.Frostbite2_0);
+
         var s_LodPtr = p_MeshSet.Lods.First();
         
         //foreach (var s_LodPtr in p_MeshSet.Lods)
@@ -96,6 +107,57 @@ public class RimeRenderManager : RenderManager
                 return;
 
             using var s_LodReader = s_Chunk.FirstVariant.GetReader();
+            
+            /*using var s_VertexStream = new DataStream(
+                (int)s_Lod.VertexDataSize,
+                true,
+                true
+            );
+
+            s_VertexStream.Write(s_LodReader.ReadBytes((int)s_Lod.VertexDataSize), 0, (int)s_Lod.VertexDataSize);
+            s_VertexStream.Seek(0, SeekOrigin.Begin);
+            
+            m_VertexBuffer = new Buffer(
+                Device,
+                s_VertexStream,
+                (int)s_Lod.VertexDataSize,
+                ResourceUsage.Immutable,
+                BindFlags.VertexBuffer,
+                CpuAccessFlags.None,
+                ResourceOptionFlags.None,
+                32
+            );*/
+
+            m_VertexBuffers = new Buffer[s_Lod.Subsets.Count];
+            m_VertexBufferBindings = new VertexBufferBinding[s_Lod.Subsets.Count];
+
+            for (var i = 0; i < s_Lod.Subsets.Get.Length; i++)
+            {
+                var s_Subset = s_Lod.Subsets.Get[i];
+                var s_VertexBufferSize = (int)(s_Subset.VertexCount * s_Subset.VertexStride);
+                
+                using var s_VertexStream = new DataStream(
+                    s_VertexBufferSize,
+                    true,
+                    true
+                );
+
+                s_VertexStream.Write(s_LodReader.ReadBytes(s_VertexBufferSize), 0, s_VertexBufferSize);
+                s_VertexStream.Seek(0, SeekOrigin.Begin);
+
+                m_VertexBuffers[i] = new Buffer(
+                    Device,
+                    s_VertexStream,
+                    s_VertexBufferSize,
+                    ResourceUsage.Default,
+                    BindFlags.VertexBuffer,
+                    CpuAccessFlags.None,
+                    ResourceOptionFlags.None,
+                    0
+                );
+
+                m_VertexBufferBindings[i] = new VertexBufferBinding(m_VertexBuffers[i], s_Subset.VertexStride, 0);
+            }
 
             if (s_Lod.IndexBufferFormat == IndexBufferFormat.IndexBufferFormat_16Bit)
             {
@@ -115,43 +177,14 @@ public class RimeRenderManager : RenderManager
                 
                 m_IndexBuffer = Buffer.Create(Device, BindFlags.IndexBuffer, s_Indices);
             }
-
-            m_VertexBuffers = new Buffer[s_Lod.Subsets.Count];
-            m_VertexBufferBindings = new VertexBufferBinding[s_Lod.Subsets.Count];
-
-            for (var i = 0; i < s_Lod.Subsets.Get.Length; i++)
-            {
-                var s_Subset = s_Lod.Subsets.Get[i];
-                var s_VertexBufferSize = (int)(s_Subset.VertexCount * s_Subset.VertexStride);
-                
-                using var s_VertexStream = new DataStream(
-                    s_VertexBufferSize,
-                    true,
-                    true
-                );
-
-                s_VertexStream.Write(s_LodReader.ReadBytes(s_VertexBufferSize), 0, s_VertexBufferSize);
-
-                m_VertexBuffers[i] = new Buffer(
-                    Device,
-                    s_VertexStream,
-                    s_VertexBufferSize,
-                    ResourceUsage.Default,
-                    BindFlags.VertexBuffer,
-                    CpuAccessFlags.None,
-                    ResourceOptionFlags.None,
-                    0
-                );
-
-                m_VertexBufferBindings[i] = new VertexBufferBinding(m_VertexBuffers[i], s_Subset.VertexStride, 0);
-            }
-
+            
             var s_VertexShaders = new List<VertexShader>();
             var s_InputLayouts = new List<InputLayout>();
             var s_VertexSamplers = new List<SamplerState[]>();
             var s_PixelShaders = new List<PixelShader>();
             var s_PixelSamplers = new List<SamplerState[]>();
             var s_GeometryShaders = new List<GeometryShader>();
+            var s_Textures = new List<Tuple<byte, ShaderResourceView>[]>();
             
             foreach (var s_Solution in p_Shader.Solutions)
             {
@@ -197,6 +230,19 @@ public class RimeRenderManager : RenderManager
                     }
                     
                     s_PixelSamplers.Add(s_Samplers.ToArray());
+
+                    var s_OwnTextures = new List<Tuple<byte, ShaderResourceView>>();
+
+                    foreach (var s_Texture in s_Solution.PixelConstants.Textures)
+                    {
+                        if (!p_Mounter.TryGetResource(s_Texture.Name, out var s_TextureResource))
+                            throw new Exception($"Could not find texture '{s_Texture.Name}' for shader.");
+
+                        var s_ResourceView = s_Converter.CreateTextureResourceView(s_TextureResource.FirstVariant, p_Mounter, Device);
+                        s_OwnTextures.Add(Tuple.Create(s_Texture.Index, s_ResourceView));
+                    }
+                    
+                    s_Textures.Add(s_OwnTextures.ToArray());
                 }
                 
                 if (s_Solution.GeometryPermutation != null)
@@ -213,10 +259,38 @@ public class RimeRenderManager : RenderManager
             m_PixelShaders = s_PixelShaders.ToArray();
             m_PixelSamplers = s_PixelSamplers.ToArray();
             m_GeometryShaders = s_GeometryShaders.ToArray();
+            m_Textures = s_Textures.ToArray();
         }
 
         m_Shader = p_Shader;
         m_MeshSet = p_MeshSet;
+
+        m_DepthStencilState = new DepthStencilState(
+            Device,
+            new DepthStencilStateDescription()
+            {
+                IsDepthEnabled = true,
+                DepthWriteMask = DepthWriteMask.All,
+                DepthComparison = Comparison.LessEqual,
+                IsStencilEnabled = true,
+                StencilReadMask = 240,
+                StencilWriteMask = 255,
+                FrontFace = new DepthStencilOperationDescription()
+                {
+                    FailOperation = StencilOperation.Keep,
+                    DepthFailOperation = StencilOperation.Keep,
+                    PassOperation = StencilOperation.Replace,
+                    Comparison = Comparison.GreaterEqual,
+                },
+                BackFace = new DepthStencilOperationDescription()
+                {
+                    FailOperation = StencilOperation.Keep,
+                    DepthFailOperation = StencilOperation.Keep,
+                    PassOperation = StencilOperation.Replace,
+                    Comparison = Comparison.GreaterEqual,
+                }
+            }
+        );
     }
 
     protected override void DrawFrameEarly(bool p_IsFocused)
@@ -233,8 +307,6 @@ public class RimeRenderManager : RenderManager
             ? Format.R16_UInt
             : Format.R32_UInt;
         
-        Device.ImmediateContext.InputAssembler.SetIndexBuffer(m_IndexBuffer, s_Format, 0);
-        
         // NOTE: For each solution create vertex shader, input elements,
         // use them to create an input layout and a pixel shader,
         // and to also create pixel samplers.
@@ -243,6 +315,25 @@ public class RimeRenderManager : RenderManager
         var s_PrevState = Device.ImmediateContext.Rasterizer.State;
 
         Device.ImmediateContext.InputAssembler.SetVertexBuffers(0, m_VertexBufferBindings);
+        Device.ImmediateContext.InputAssembler.SetIndexBuffer(m_IndexBuffer, s_Format, 0);
+        
+        Device.ImmediateContext.HullShader.Set(null);
+        Device.ImmediateContext.DomainShader.Set(null);
+        
+        Device.ImmediateContext.VertexShader.Set(m_VertexShaders[8]);
+        Device.ImmediateContext.VertexShader.SetSamplers(0, m_VertexSamplers[8]);
+        
+        Device.ImmediateContext.PixelShader.Set(m_PixelShaders[8]);
+        Device.ImmediateContext.PixelShader.SetSamplers(0, m_PixelSamplers[8]);
+        
+        Device.ImmediateContext.InputAssembler.InputLayout = m_InputLayouts[8];
+
+        foreach (var (s_Index, s_ResourceView) in m_Textures[8])
+            Device.ImmediateContext.PixelShader.SetShaderResources(s_Index, s_ResourceView);
+
+        //Device.ImmediateContext.OutputMerger.DepthStencilState = m_DepthStencilState;
+        
+        Device.ImmediateContext.DrawIndexed(1194, 0, 0);
         
         for (var i = 0; i < s_Lod.Subsets.Count; ++i)
         {

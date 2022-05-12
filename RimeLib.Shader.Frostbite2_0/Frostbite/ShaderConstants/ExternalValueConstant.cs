@@ -35,7 +35,7 @@ public class ExternalValueConstant : IFbSerializable
 
     public void Deserialize(RimeReader p_Reader)
     {
-        Name = Encoding.UTF8.GetString(p_Reader.ReadBytes(0x20));
+        Name = p_Reader.ReadFixedLengthString(0x20);
 
         Handle = p_Reader.ReadUInt32();
 

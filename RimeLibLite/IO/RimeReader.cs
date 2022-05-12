@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using System.Text;
 using RimeLib.IO.Conversion;
 
 namespace RimeLib.IO
@@ -52,6 +54,19 @@ namespace RimeLib.IO
                     s_ReturnString += s_TempChar;
 
             return s_ReturnString;
+        }
+
+        public string ReadFixedLengthString(int p_Length)
+        {
+            var s_Data = ReadBytes(p_Length);
+            
+            // Find null terminator.
+            var s_NullIdx = Array.IndexOf(s_Data, (byte) 0x00);
+
+            if (s_NullIdx == -1)
+                s_NullIdx = s_Data.Length;
+
+            return Encoding.UTF8.GetString(s_Data[..s_NullIdx]);
         }
 
         /// <summary>

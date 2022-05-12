@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
@@ -58,7 +59,7 @@ namespace Rime
 
             Renderer.RenderManager.SetTexture(s_Texture);
             
-            if (!s_Mounter.TryGetResource("xp2/objects/wallmodulesskybar/wallsskybar64_shelf_mesh", out var s_MeshResource))
+            if (!s_Mounter.TryGetResource("xp2/objects/flowerpot_02/flowerpot_02_Mesh", out var s_MeshResource))
                 return;
             
             if (!s_Mounter.TryGetResource("levels/xp2_skybar/xp2_skybar/shaderdb", out var s_ShaderDbResource))
@@ -75,7 +76,7 @@ namespace Rime
             var s_MeshSet = new MeshSetLayout(s_TempMeshReader);
 
             var s_Shader = s_ShaderDb.Databases[ShaderRenderPath.ShaderRenderPath_Dx11]
-                .Shaders["XP2/Objects/WallModulesSkybar/Stone_01"];
+                .Shaders["XP2/Objects/FlowerPot_01/FlowerPot_01_Shader"];
 
             Renderer.RenderManager.DrawMesh(s_MeshSet, s_Shader, s_Mounter);
         }

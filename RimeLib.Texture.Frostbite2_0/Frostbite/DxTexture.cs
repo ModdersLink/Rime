@@ -125,7 +125,7 @@ public class DxTexture : IFbSerializable
 
         MipmapChainSize = p_Reader.ReadUInt32();
         ResourceNameHash = p_Reader.ReadUInt32();
-        TextureGroup = Encoding.UTF8.GetString(p_Reader.ReadBytes(16));
+        TextureGroup = p_Reader.ReadFixedLengthString(16);
         
         p_Reader.Endianness = s_PrevEndianness;
     }

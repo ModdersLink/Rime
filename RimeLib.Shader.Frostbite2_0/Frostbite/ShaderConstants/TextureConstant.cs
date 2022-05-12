@@ -35,7 +35,7 @@ public class TextureConstant : IFbSerializable
 
         p_Reader.Seek(0x6, SeekOrigin.Current); 
 
-        Name = Encoding.UTF8.GetString(p_Reader.ReadBytes(0x80));
+        Name = p_Reader.ReadFixedLengthString(0x80);
 
         p_Reader.Seek(0x10, SeekOrigin.Current); //This is moved to the previous pad in newer shaderdbs
     }
