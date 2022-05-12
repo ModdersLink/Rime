@@ -2,7 +2,7 @@
   "profiles": {
     "ShaderInfo": {
       "commandName": "Project",
-      "commandLineArgs": "\"B:\\Games\\Battlefield 3\" Frostbite2_0"
+      "commandLineArgs": "\"B:\\Games\\Battlefield 3\" Frostbite2_0 -s \"levels/sp_new_york/sp_new_york/shaderdb\""
     }
   }
 }

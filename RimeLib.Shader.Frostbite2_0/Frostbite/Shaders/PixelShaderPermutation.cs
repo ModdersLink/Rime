@@ -8,7 +8,7 @@ namespace RimeLib.Shader.Frostbite2_0.Frostbite.Shaders;
 public class PixelShaderPermutation
 {
     public GUID Guid { get; set; } = GUID.Empty;
-    public byte[] ShaderData { get; set; } = Array.Empty<byte>();
+    public byte[] ShaderBytecode { get; set; } = Array.Empty<byte>();
 
     public ShaderConstant Constant { get; set; } = default!;
     public ShaderConstantFunctionData ConstantFunction { get; set; } = default!;
@@ -30,7 +30,7 @@ public class PixelShaderPermutation
         Guid = new GUID(p_Reader);
 
         var s_DataSize = p_Reader.ReadUInt32();
-        ShaderData = p_Reader.ReadBytes((int)s_DataSize);
+        ShaderBytecode = p_Reader.ReadBytes((int)s_DataSize);
 
         Constant = p_Constants[p_Reader.ReadUInt32()];
         ConstantFunction = p_ConstantFunctionData[p_Reader.ReadUInt32()];

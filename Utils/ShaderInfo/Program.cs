@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using RimeLib;
 using RimeLib.Extensions;
 using RimeLib.Shader.Frostbite2_0.Frostbite;
+using SharpDX.Direct3D11;
 
 namespace ShaderInfo
 {
@@ -165,6 +166,39 @@ namespace ShaderInfo
 
             using var s_Reader = new RimeReader(new MemoryStream(s_ShaderDbData));
             var s_Container = new ShaderDatabaseContainer(s_Reader, p_Mounter);
+
+            foreach (var (s_Path, s_Database) in s_Container.Databases)
+            {
+                foreach (var (s_Name, s_Shader) in s_Database.Shaders)
+                {
+                    foreach (var s_Solution in s_Shader.Solutions)
+                    {
+                        if (s_Solution.VertexPermutation != null)
+                        {
+                            File.WriteAllBytes(
+                                "B:\\RimePlayground\\shaders\\" + s_Solution.VertexPermutation.Guid + ".bin",
+                                s_Solution.VertexPermutation.ShaderBytecode
+                            );
+                        }
+                        
+                        if (s_Solution.PixelPermutation != null)
+                        {
+                            File.WriteAllBytes(
+                                "B:\\RimePlayground\\shaders\\" + s_Solution.PixelPermutation.Guid + ".bin",
+                                s_Solution.PixelPermutation.ShaderBytecode
+                            );
+                        }
+                        
+                        if (s_Solution.GeometryPermutation != null)
+                        {
+                            File.WriteAllBytes(
+                                "B:\\RimePlayground\\shaders\\" + s_Solution.GeometryPermutation.Guid + ".bin",
+                                s_Solution.GeometryPermutation.ShaderBytecode
+                            );
+                        }
+                    }
+                }
+            }
         }
     }
 }

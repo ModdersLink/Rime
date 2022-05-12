@@ -7,7 +7,7 @@ namespace RimeLib.Shader.Frostbite2_0.Frostbite.Shaders;
 public class GeometryShaderPermutation
 {
     public GUID Guid { get; set; } = GUID.Empty;
-    public byte[] ShaderData { get; set; } = Array.Empty<byte>();
+    public byte[] ShaderBytecode { get; set; } = Array.Empty<byte>();
     public uint InstructionCount { get; set; }
         
     public GeometryShaderPermutation()
@@ -19,7 +19,7 @@ public class GeometryShaderPermutation
         Guid = new GUID(p_Reader);
 
         var s_DataSize = p_Reader.ReadUInt32();
-        ShaderData = p_Reader.ReadBytes((int) s_DataSize);
+        ShaderBytecode = p_Reader.ReadBytes((int) s_DataSize);
 
         InstructionCount = p_Reader.ReadUInt32();
     }
