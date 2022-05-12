@@ -593,9 +593,8 @@ namespace MeshExtractor
 
                         var s_Dict = new Dictionary<VertexElementUsage, dynamic>();
 
-                        for (var s_ElementIndex = 0; s_ElementIndex < s_GeometryDesc.ElementCount; ++s_ElementIndex)
+                        foreach (var s_Element in s_GeometryDesc.Elements)
                         {
-                            var s_Element = s_GeometryDesc.Elements[s_ElementIndex];
                             s_VertexReader.Seek(s_Element.Offset, SeekOrigin.Begin);
 
                             // Iterate each element and check the format and set to the usage
@@ -1007,9 +1006,8 @@ namespace MeshExtractor
 
                         var s_Dict = new Dictionary<VertexElementUsage, dynamic>();
 
-                        for (var s_ElementIndex = 0; s_ElementIndex < s_GeometryDesc.ElementCount; ++s_ElementIndex)
+                        foreach (var s_Element in s_GeometryDesc.Elements)
                         {
-                            var s_Element = s_GeometryDesc.Elements[s_ElementIndex];
                             s_VertexReader.Seek(s_Element.Offset, SeekOrigin.Begin);
 
                             // Iterate each element and check the format and set to the usage

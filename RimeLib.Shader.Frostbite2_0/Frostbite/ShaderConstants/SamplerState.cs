@@ -8,8 +8,8 @@ namespace RimeLib.Shader.Frostbite2_0.Frostbite.ShaderConstants;
 
 public class SamplerState : IFbSerializable
 {
-    uint Index { get; set; }
-    SamplerStateDescription Desc { get; set; } = SamplerStateDescription.Default();
+    public uint Index { get; set; }
+    public SamplerStateDescription Desc { get; set; } = SamplerStateDescription.Default();
 
 
     public SamplerState()

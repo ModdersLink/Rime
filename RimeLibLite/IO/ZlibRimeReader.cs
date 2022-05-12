@@ -92,6 +92,12 @@ namespace RimeLib.IO
 
         public override long Seek(long p_Offset, SeekOrigin p_Origin)
         {
+            if (p_Origin == SeekOrigin.Current && p_Offset > 0)
+            {
+                ReadBytes((int) p_Offset);
+                return Position;
+            }
+            
             throw new NotSupportedException();
         }
 

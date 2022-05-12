@@ -62,10 +62,8 @@ namespace MeshExtractor
 
                 using var s_VertexReader = new RimeReader(new MemoryStream(p_VertexData[s_Index]));
 
-                for (var s_ElementIndex = 0; s_ElementIndex < s_GeometryDesc.ElementCount; ++s_ElementIndex)
+                foreach (var s_Element in s_GeometryDesc.Elements)
                 {
-                    var s_Element = s_GeometryDesc.Elements[s_ElementIndex];
-
                     s_VertexReader.Seek(s_Element.Offset, SeekOrigin.Begin);
 
                     switch (s_Element.Format)
