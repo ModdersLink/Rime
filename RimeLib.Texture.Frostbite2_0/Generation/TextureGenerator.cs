@@ -162,7 +162,7 @@ public class TextureGenerator : ITextureGenerator
             StreamingChunkId = s_ChunkGuid,
             MipmapSizes = s_MipMapSizes,
             MipmapChainSize = (uint)s_MipMapSizes.Sum(x => x),
-            ResourceNameHash = (string.IsNullOrWhiteSpace(p_Attributes.Name) ? 0 : FbUtils.HashQuick(p_Attributes.Name)),
+            ResourceNameHash = (string.IsNullOrWhiteSpace(p_Attributes.Name) ? 0 : RimeLib.Frostbite.Utils.HashQuick(p_Attributes.Name)),
             TextureGroup = p_Attributes.TextureGroup,
         };
     }

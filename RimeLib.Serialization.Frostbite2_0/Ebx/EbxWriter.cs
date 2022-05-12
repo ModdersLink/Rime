@@ -391,7 +391,7 @@ public class EbxWriter : IEbxWriter
         m_TypeStringWriter.Write(Encoding.UTF8.GetBytes(p_String));
         m_TypeStringWriter.WriteByte(0);
 
-        s_Hash = FbUtils.HashQuick(p_String);
+        s_Hash = Frostbite.Utils.HashQuick(p_String);
         m_TypeStringHashes.Add(p_String, s_Hash);
             
         return s_Hash;

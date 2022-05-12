@@ -3,19 +3,20 @@ using RimeLib.Frostbite;
 using RimeLib.IO;
 using System.Diagnostics.CodeAnalysis;
 using fb;
+using RimeLib.Shader.Frostbite2_0.Frostbite.Solutions;
 
 namespace RimeLib.Shader.Frostbite2_0.Frostbite;
 
-public class SurfaceShaderInfo : IFbSerializable
+public class SurfaceShaderInfo
 {
-
     public class StreamableTextureBase
     {
         public ShaderTextureCoordType CoordType { get; set; } = ShaderTextureCoordType.ShaderTextureCoordType_Unknown;
         public VertexElementUsage VertexUsage { get; set; } = VertexElementUsage.VertexElementUsage_Unknown;
         public float Factor { get; set; }
     }
-    public class StreamableTexture : StreamableTextureBase, IFbSerializable
+    
+    public class StreamableTexture : StreamableTextureBase
     {
         public string Name { get; set; } = string.Empty;
 
@@ -25,35 +26,15 @@ public class SurfaceShaderInfo : IFbSerializable
 
         public StreamableTexture(RimeReader p_Reader)
         {
-            Deserialize(p_Reader);
-        }
-
-        public bool Serialize(RimeWriter p_Writer)
-        {
-            throw new System.NotImplementedException();
-        }
-        public void Deserialize(RimeReader p_Reader)
-        {
             Name = p_Reader.ReadNullTerminatedString();
 
             CoordType = (ShaderTextureCoordType)p_Reader.ReadUInt32();
             VertexUsage = (VertexElementUsage)p_Reader.ReadUInt32();
             Factor = p_Reader.ReadSingle();
         }
-
-        public bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
-        {
-            p_Data = null;
-            throw new System.NotImplementedException();
-        }
-            
-        public void Deserialize(byte[] p_Data)
-        {
-            throw new System.NotImplementedException();
-        }
     }
 
-    public class StreamableExternalTexture : StreamableTextureBase, IFbSerializable
+    public class StreamableExternalTexture : StreamableTextureBase
     {
         public string ParameterName { get; set; } = string.Empty;
         public uint ParameterId { get; set; }
@@ -64,36 +45,14 @@ public class SurfaceShaderInfo : IFbSerializable
 
         public StreamableExternalTexture(RimeReader p_Reader)
         {
-            Deserialize(p_Reader);
-        }
-
-        public bool Serialize(RimeWriter p_Writer)
-        {
-            throw new System.NotImplementedException();
-        }
-        public void Deserialize(RimeReader p_Reader)
-        {
             ParameterName = p_Reader.ReadNullTerminatedString();
             ParameterId = p_Reader.ReadUInt32();
-
 
             CoordType = (ShaderTextureCoordType)p_Reader.ReadUInt32();
             VertexUsage = (VertexElementUsage)p_Reader.ReadUInt32();
             Factor = p_Reader.ReadSingle();
         }
-
-        public bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
-        {
-            p_Data = null;
-            throw new System.NotImplementedException();
-        }
-            
-        public void Deserialize(byte[] p_Data)
-        {
-            throw new System.NotImplementedException();
-        }
     }
-
 
     public SurfaceShaderType SurfaceShaderType { get; set; } = SurfaceShaderType.SurfaceShaderType_Opaque;
 
@@ -108,24 +67,13 @@ public class SurfaceShaderInfo : IFbSerializable
 
     public StreamableExternalTexture[] StreamableExternalTextures { get; set; } = Array.Empty<StreamableExternalTexture>();
 
-
-    public ushort[] SolutionIndices { get; set; } = Array.Empty<ushort>();
-
+    public ShaderSolution[] Solutions { get; set; } = Array.Empty<ShaderSolution>();
 
     public SurfaceShaderInfo()
     {
     }
 
-    public SurfaceShaderInfo(RimeReader p_Reader)
-    {
-        Deserialize(p_Reader);
-    }
-
-    public bool Serialize(RimeWriter p_Writer)
-    {
-        throw new System.NotImplementedException();
-    }
-    public void Deserialize(RimeReader p_Reader)
+    public SurfaceShaderInfo(RimeReader p_Reader, ShaderSolution[] p_Solutions)
     {
         SurfaceShaderType = (SurfaceShaderType)p_Reader.ReadUInt32();
 
@@ -148,19 +96,9 @@ public class SurfaceShaderInfo : IFbSerializable
             StreamableExternalTextures[i] = new StreamableExternalTexture(p_Reader);
 
         var s_SolutionCount = p_Reader.ReadUInt32();
-        SolutionIndices = new ushort[s_SolutionCount];
-        for (var i = 0; i < s_SolutionCount; i++)
-            SolutionIndices[i] = p_Reader.ReadUInt16();
-    }
-
-    public bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
-    {
-        p_Data = null;
-        throw new System.NotImplementedException();
-    }
+        Solutions = new ShaderSolution[s_SolutionCount];
         
-    public void Deserialize(byte[] p_Data)
-    {
-        throw new System.NotImplementedException();
+        for (var i = 0; i < s_SolutionCount; i++)
+            Solutions[i] = p_Solutions[p_Reader.ReadUInt16()];
     }
 }

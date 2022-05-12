@@ -22,7 +22,7 @@ public class TypeDescriptor
             m_Name = value;
 
             if (m_Name != null)
-                NameHash = FbUtils.HashQuick(m_Name);
+                NameHash = Frostbite.Utils.HashQuick(m_Name);
         }
     }
 

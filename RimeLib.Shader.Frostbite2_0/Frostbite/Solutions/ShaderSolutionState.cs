@@ -12,6 +12,8 @@ public class ShaderSolutionState : IFbSerializable
     public uint VertexShaderFragmentNameHash { get; set; } = 0;
     public uint GeometryDeclarationHash { get; set; } = 0;
 
+    public GeometryDeclarationDesc GeometryDeclarationDesc { get; set; } = default!;
+
     public ShaderRenderMode Mode { get; set; } = ShaderRenderMode.ShaderRenderMode_Default;
     public ShaderGeometrySpace GeometrySpace { get; set; } = ShaderGeometrySpace.ShaderGeometrySpace_Object;
     public ShaderSkinningMethod SkinningMethod { get; set; } = ShaderSkinningMethod.ShaderSkinningMethod_None;

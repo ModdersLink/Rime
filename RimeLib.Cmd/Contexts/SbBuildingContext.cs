@@ -86,7 +86,7 @@ namespace RimeLib.Cmd.Contexts
                 if (m_AssetName == null)
                     return null;
                 
-                return (int)FbUtils.HashQuick(m_AssetName);
+                return (int)Frostbite.Utils.HashQuick(m_AssetName);
             }
         }
 

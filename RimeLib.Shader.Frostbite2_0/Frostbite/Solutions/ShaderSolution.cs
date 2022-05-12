@@ -1,13 +1,12 @@
-﻿using RimeLib.Frostbite;
-using RimeLib.IO;
-using System.Diagnostics.CodeAnalysis;
+﻿using RimeLib.IO;
 using fb;
+using RimeLib.Shader.Frostbite2_0.Frostbite.Shaders;
 
 namespace RimeLib.Shader.Frostbite2_0.Frostbite.Solutions;
 
-public class ShaderSolution : IFbSerializable
+public class ShaderSolution
 {
-    public ulong StateHash { get; set; } = 0;
+    public ulong StateHash { get; set; }
     public ShaderSolutionState State { get; set; } = default!;
 
     public byte Flags { get; set; } // 1 = DoubleSided, 2 = GammaCorrection
@@ -15,28 +14,23 @@ public class ShaderSolution : IFbSerializable
     public SurfaceShaderType SurfaceType { get; set; } = SurfaceShaderType.SurfaceShaderType_Opaque;
     public ShaderBlendMode BlendMode { get; set; } = ShaderBlendMode.ShaderBlendMode_Lerp;
 
-    public long VertexPermutationIndex { get; set; } = -1;
-    public long PixelPermutationIndex { get; set; } = -1;
-    public long GeometryPermutationIndex { get; set; } = -1;
-
-    public long VertexConstantsIndex { get; set; } = -1;
-    public long PixelConstantsIndex { get; set; } = -1;
+    public VertexShaderPermutation? VertexPermutation { get; set; }
+    public PixelShaderPermutation? PixelPermutation { get; set; }
+    public GeometryShaderPermutation? GeometryPermutation { get; set; }
+    public ShaderConstant? VertexConstants { get; set; }
+    public ShaderConstant? PixelConstants { get; set; }
 
     public ShaderSolution()
     {
     }
 
-    public ShaderSolution(RimeReader p_Reader)
-    {
-        Deserialize(p_Reader);
-    }
-
-    public bool Serialize(RimeWriter p_Writer)
-    {
-        throw new System.NotImplementedException();
-    }
-      
-    public void Deserialize(RimeReader p_Reader)
+    public ShaderSolution(
+        RimeReader p_Reader,
+        VertexShaderPermutation[] p_VertexShaderPermutations,
+        PixelShaderPermutation[] p_PixelShaderPermutations,
+        GeometryShaderPermutation[] p_GeometryShaderPermutations,
+        ShaderConstant[] p_Constants
+    )
     {
         StateHash = p_Reader.ReadUInt64( );
 
@@ -47,23 +41,29 @@ public class ShaderSolution : IFbSerializable
 
         p_Reader.Seek(0xD, System.IO.SeekOrigin.Current);
 
-        VertexPermutationIndex = p_Reader.ReadInt64();
-        PixelPermutationIndex = p_Reader.ReadInt64();
-        GeometryPermutationIndex = p_Reader.ReadInt64();
-
-        VertexConstantsIndex = p_Reader.ReadInt64();
-        PixelConstantsIndex = p_Reader.ReadInt64();
-    }
+        var s_VertexPermutationIndex = p_Reader.ReadInt64();
         
-    public bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
-    {
-        p_Data = null;
-        throw new System.NotImplementedException();
-    }
+        if (s_VertexPermutationIndex != -1)
+            VertexPermutation = p_VertexShaderPermutations[s_VertexPermutationIndex];
 
-    public void Deserialize(byte[] p_Data)
-    {
-        throw new System.NotImplementedException();
-    }
+        var s_PixelPermutationIndex = p_Reader.ReadInt64();
+        
+        if (s_PixelPermutationIndex != -1)
+            PixelPermutation = p_PixelShaderPermutations[s_PixelPermutationIndex];
 
+        var s_GeometryPermutationIndex = p_Reader.ReadInt64();
+        
+        if (s_GeometryPermutationIndex != -1)
+            GeometryPermutation = p_GeometryShaderPermutations[s_GeometryPermutationIndex];
+
+        var s_VertexConstantsIndex = p_Reader.ReadInt64();
+        
+        if (s_VertexConstantsIndex != -1)
+            VertexConstants = p_Constants[s_VertexConstantsIndex];
+        
+        var s_PixelConstantsIndex = p_Reader.ReadInt64();
+
+        if (s_PixelConstantsIndex != -1)
+            PixelConstants = p_Constants[s_PixelConstantsIndex];
+    }
 }

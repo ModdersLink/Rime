@@ -4,11 +4,17 @@ using RimeLib.Shader.Frostbite2_0.Frostbite.ShaderConstants;
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using fb;
 
 namespace RimeLib.Shader.Frostbite2_0.Frostbite;
 
 public class ShaderConstant : IFbSerializable
 {
+    public ushort ConstantCount { get; set; }
+    public ushort ValueConstantsStart { get; set; }
+
+    public Vec4[] ValueConstants { get; set; } = Array.Empty<Vec4>();
+    
     public TextureConstant[] Textures { get; set; } = Array.Empty<TextureConstant>();
 
     public ExternalValueConstant[] ExternalValues { get; set; } = Array.Empty<ExternalValueConstant>();
@@ -43,24 +49,29 @@ public class ShaderConstant : IFbSerializable
         var s_ExternalTextureConstantOffset = p_Reader.ReadUInt64();
 
         var s_SamplerStatesOffset = p_Reader.ReadUInt64();
-
-
-
-        var s_ConstantCount = p_Reader.ReadUInt16();
-        var s_ValueConstantsStart = p_Reader.ReadUInt16();
-
+        
+        ConstantCount = p_Reader.ReadUInt16();
+        ValueConstantsStart = p_Reader.ReadUInt16();
 
         var s_ValueConstantCount = p_Reader.ReadUByte();
         var s_TextureConstantCount = p_Reader.ReadUByte();
         var s_ExternalValueConstantCount = p_Reader.ReadUByte();
         var s_ExternalTextureConstantCount = p_Reader.ReadUByte();
         var s_SamplerStateCount = p_Reader.ReadUByte();
-
-
+        
         if (s_ValueConstantCount > 0)
         {
-            //TODO: Valueconstants is just a list of vector4s
             p_Reader.Seek(s_StartPosition + (long) s_ValueConstantOffset, SeekOrigin.Begin);
+
+            ValueConstants = new Vec4[s_ValueConstantCount];
+
+            for (var i = 0; i < s_ValueConstantCount; ++i)
+            {
+                ValueConstants[i].x = p_Reader.ReadSingle();
+                ValueConstants[i].y = p_Reader.ReadSingle();
+                ValueConstants[i].z = p_Reader.ReadSingle();
+                ValueConstants[i].w = p_Reader.ReadSingle();
+            }
         }
 
         if (s_TextureConstantCount > 0)

@@ -83,7 +83,7 @@ public class EbxReader : IDisposable
         m_HashedTypeStrings = new Dictionary<uint, string>();
 
         foreach (var s_TypeString in m_TypeStrings)
-            m_HashedTypeStrings[FbUtils.HashQuick(s_TypeString)] = s_TypeString;
+            m_HashedTypeStrings[Frostbite.Utils.HashQuick(s_TypeString)] = s_TypeString;
 
         // Parse field descriptors.
         m_FieldDescriptors = new List<FieldDescriptor>((int)m_Header.FieldDescriptorCount);

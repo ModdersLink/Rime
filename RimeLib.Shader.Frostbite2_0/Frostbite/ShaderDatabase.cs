@@ -1,0 +1,186 @@
+﻿using RimeLib.Frostbite;
+using RimeLib.IO;
+using RimeLib.Shader.Frostbite2_0.Frostbite.Shaders;
+using RimeLib.Shader.Frostbite2_0.Frostbite.Solutions;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.IO;
+using fb;
+using RimeLib.Mesh.Frostbite;
+using RimeLib.Shader.Frostbite2_0.Frostbite.Functions;
+
+namespace RimeLib.Shader.Frostbite2_0.Frostbite;
+
+public class ShaderDatabase : IFbSerializable
+{
+    public ShaderRenderPath RenderPath { get; set; }
+    public Dictionary<uint, SurfaceShaderInfo> Shaders { get; set; } = new();
+
+    public ShaderDatabase()
+    {
+    }
+
+    public ShaderDatabase(RimeReader p_Reader)
+    {
+        Deserialize(p_Reader);
+    }
+
+    public bool Serialize(RimeWriter p_Writer)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void Deserialize(RimeReader p_Reader)
+    {
+        var s_Version = p_Reader.ReadUInt32();
+
+        if (s_Version != 182) //This shaderdb reader should also work for version 179
+            throw new Exception($"This shaderdb isnt up to date. {s_Version}");
+
+
+        RenderPath = (ShaderRenderPath)p_Reader.ReadUInt32();
+
+        //
+
+        var s_ConstantsCount = p_Reader.ReadUInt32();
+        var s_Constants = new ShaderConstant[s_ConstantsCount];
+
+        for (var i = 0; i < s_ConstantsCount; i++)
+        {
+            //Size object included in size...
+            var s_Size = p_Reader.ReadUInt32() - 4;
+
+            var s_CurrentPosition = p_Reader.Position;
+
+            using (var s_ConstantsReader = new LimitedRimeReader(p_Reader, s_Size))
+                s_Constants[i] = new ShaderConstant(s_ConstantsReader);
+
+            p_Reader.Seek(s_CurrentPosition + s_Size, SeekOrigin.Begin);
+        }
+
+        //
+
+        var s_ConstantFunctionsCount = p_Reader.ReadUInt32();
+        var s_ConstantFunctions = new ShaderConstantFunctionData[s_ConstantFunctionsCount];
+
+        for (var i = 0; i < s_ConstantFunctionsCount; i++)
+            s_ConstantFunctions[i] = new ShaderConstantFunctionData(p_Reader);
+
+        //
+
+        var s_TextureFunctionCount = p_Reader.ReadUInt32();
+        var s_TextureFunctions = new ShaderTextureFunctionData[s_TextureFunctionCount];
+
+        for (var i = 0; i < s_TextureFunctionCount; i++)
+            s_TextureFunctions[i] = new ShaderTextureFunctionData(p_Reader);
+
+        //
+
+        var s_VertexShaderPermutationsCount = p_Reader.ReadUInt32();
+        var s_VertexShaderPermutations = new VertexShaderPermutation[s_VertexShaderPermutationsCount];
+
+        for (var i = 0; i < s_VertexShaderPermutationsCount; i++)
+        {
+            s_VertexShaderPermutations[i] = new VertexShaderPermutation(
+                p_Reader,
+                s_Constants,
+                s_ConstantFunctions,
+                s_TextureFunctions
+            );
+        }
+
+        //
+        
+        var s_PixelShaderPermutationsCount = p_Reader.ReadUInt32();
+        var s_PixelShaderPermutations = new PixelShaderPermutation[s_PixelShaderPermutationsCount];
+
+        for (var i = 0; i < s_PixelShaderPermutationsCount; i++)
+        {
+            s_PixelShaderPermutations[i] = new PixelShaderPermutation(
+                p_Reader,
+                s_Constants,
+                s_ConstantFunctions,
+                s_TextureFunctions
+            );
+        }
+
+        //
+       
+        var s_GeometryShaderPermutationsCount = p_Reader.ReadUInt32();
+
+        var s_GeometryShaderPermutations = new GeometryShaderPermutation[s_GeometryShaderPermutationsCount];
+
+        for (var i = 0; i < s_GeometryShaderPermutationsCount; i++)
+            s_GeometryShaderPermutations[i] = new GeometryShaderPermutation(p_Reader);
+
+        //
+        
+        var s_SolutionCount = p_Reader.ReadUInt32();
+        var s_Solutions = new ShaderSolution[s_SolutionCount];
+
+        for (var i = 0; i < s_SolutionCount; i++)
+        {
+            s_Solutions[i] = new ShaderSolution(
+                p_Reader,
+                s_VertexShaderPermutations,
+                s_PixelShaderPermutations,
+                s_GeometryShaderPermutations,
+                s_Constants
+            );
+        }
+
+        //
+
+        var s_SolutionStateCount = p_Reader.ReadUInt32();
+        
+        if (s_SolutionStateCount != s_SolutionCount)
+            throw new Exception($"Solution state count doesn't match solution count (expected {s_SolutionCount} got {s_SolutionStateCount}). Is this shader database corrupted?");
+        
+        for (var i = 0; i < s_SolutionStateCount; i++)
+        {
+            var s_ShaderSolutionState = new ShaderSolutionState(p_Reader);
+
+            // HASH CHECK | Fletcher32
+            // this should be a hash check iirc, but index should also work
+            s_Solutions[i].State = s_ShaderSolutionState;
+        }
+
+        //
+        
+        var s_DeclarationCount = p_Reader.ReadUInt32();
+            
+        for (var i = 0; i < s_DeclarationCount; i++)
+        {
+            var s_Hash = p_Reader.ReadUInt32();
+            var s_Desc = new GeometryDeclarationDesc(p_Reader);
+
+            foreach (var s_Solution in s_Solutions)
+                if (s_Solution.State.GeometryDeclarationHash == s_Hash)
+                    s_Solution.State.GeometryDeclarationDesc = s_Desc;
+        }
+
+        //
+        
+        var s_ShaderCount = p_Reader.ReadUInt32();
+
+        for (var i = 0; i < s_ShaderCount; i++)
+        {
+            var s_Key = p_Reader.ReadUInt32();
+            var s_Value = new SurfaceShaderInfo(p_Reader, s_Solutions);
+
+            Shaders.Add(s_Key, s_Value);
+        }
+    }
+
+    public bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
+    {
+        p_Data = null;
+        throw new NotImplementedException();
+    }
+        
+    public void Deserialize(byte[] p_Data)
+    {
+        throw new NotImplementedException();
+    }
+}

@@ -88,7 +88,7 @@ namespace RimeLib.Cmd.Contexts
 
             public int? GetAssetNameHash()
             {
-                return (int) FbUtils.HashQuick(m_AssetName);
+                return (int) Frostbite.Utils.HashQuick(m_AssetName);
             }
         }
 

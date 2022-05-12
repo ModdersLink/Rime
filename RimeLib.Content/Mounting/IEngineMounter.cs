@@ -135,6 +135,14 @@ namespace RimeLib.Content.Mounting
         bool TryGetResource(string p_Path, [NotNullWhen(true)] out IMountedObject<IResourceVariant>? p_Resource);
 
         /// <summary>
+        /// Try to get a mounted resource. The resource will be provided in an output parameter.
+        /// </summary>
+        /// <param name="p_Hash">The fnv hash.</param>
+        /// <param name="p_Resource">The output resource object.</param>
+        /// <returns>When the return value is `true` then the output will **not** be `null`. When it's `false` it **will** be `null`.</returns>
+        bool TryGetResourceByHashLower(uint p_Hash, [NotNullWhen(true)] out IMountedObject<IResourceVariant>? p_Resource);
+
+        /// <summary>
         /// Try to get a mounted chunk. The chunk will be provided in an output parameter.
         /// </summary>
         /// <param name="p_GUID">The id of the chunk.</param>
@@ -149,6 +157,14 @@ namespace RimeLib.Content.Mounting
         /// <param name="p_Partition">The output partition object.</param>
         /// <returns>When the return value is `true` then the output will **not** be `null`. When it's `false` it **will** be `null`.</returns>
         bool TryGetPartition(string p_Path, [NotNullWhen(true)] out IMountedObject? p_Partition);
+
+        /// <summary>
+        /// Try to get a mounted partition. The partition will be provided in an output parameter.
+        /// </summary>
+        /// <param name="p_Path">The path to the partition.</param>
+        /// <param name="p_Partition">The output partition object.</param>
+        /// <returns>When the return value is `true` then the output will **not** be `null`. When it's `false` it **will** be `null`.</returns>
+        bool TryGetPartitionByHashLower(uint p_Hash, [NotNullWhen(true)] out IMountedObject? p_Partition);
 
         /// <summary>
         /// Get all mounted resources and their different variants.

@@ -37,8 +37,12 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
         protected ConcurrentDictionary<string, CasBundleEntry> m_CasBundles = new();
 
         private readonly ConcurrentDictionary<string, MountedObject<IResourceVariant>> m_MountedResources = new();
-        private readonly ConcurrentDictionary<GUID, MountedObject<IChunkVariant>> m_MountedChunks = new();
+        private readonly ConcurrentDictionary<uint, string> m_MountedResourceLowerNameHashes = new();
+        
         private readonly ConcurrentDictionary<string, MountedObject> m_MountedPartitions = new();
+        private readonly ConcurrentDictionary<uint, string> m_MountedPartitionsLowerNameHashes = new();
+        
+        private readonly ConcurrentDictionary<GUID, MountedObject<IChunkVariant>> m_MountedChunks = new();
 
         private readonly HashSet<string> m_MountedSuperbundles = new HashSet<string>();
         private readonly HashSet<string> m_MountedBundles = new HashSet<string>();
@@ -203,6 +207,15 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
             return false;
         }
 
+        public bool TryGetResourceByHashLower(uint p_Hash, [NotNullWhen(true)] out IMountedObject<IResourceVariant>? p_Resource)
+        {
+            if (m_MountedResourceLowerNameHashes.TryGetValue(p_Hash, out var s_Name))
+                return TryGetResource(s_Name, out p_Resource);
+
+            p_Resource = null;
+            return false;
+        }
+
         public bool TryGetChunk(GUID p_GUID, [NotNullWhen(true)] out IMountedObject<IChunkVariant>? p_Chunk)
         {
             if (m_MountedChunks.TryGetValue(p_GUID, out var s_Chunk))
@@ -223,6 +236,15 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
                 return true;
             }
             
+            p_Partition = null;
+            return false;
+        }
+
+        public bool TryGetPartitionByHashLower(uint p_Hash, [NotNullWhen(true)] out IMountedObject? p_Partition)
+        {
+            if (m_MountedPartitionsLowerNameHashes.TryGetValue(p_Hash, out var s_Name))
+                return TryGetPartition(s_Name, out p_Partition);
+
             p_Partition = null;
             return false;
         }
@@ -670,6 +692,12 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
                     p_MountedObject.AddVariant(s_Variant);
                     return p_MountedObject;
                 });
+
+                m_MountedResourceLowerNameHashes.AddOrUpdate(
+                    RimeLib.Frostbite.Utils.HashQuickLowerCase(s_Resource.Name),
+                    s_Resource.Name.ToLowerInvariant(),
+                    (_, _) => s_Resource.Name.ToLowerInvariant()
+                );
             }
 
             // Mount all chunks.
@@ -714,6 +742,12 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
                     p_MountedObject.AddVariant(s_Variant);
                     return p_MountedObject;
                 });
+
+                m_MountedPartitionsLowerNameHashes.AddOrUpdate(
+                    RimeLib.Frostbite.Utils.HashQuickLowerCase(s_Partition.Name),
+                    s_Partition.Name.ToLowerInvariant(),
+                    (_, _) => s_Partition.Name.ToLowerInvariant()
+                );
             }
 
             return true;
@@ -737,6 +771,12 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
                     p_MountedObject.AddVariant(s_Variant);
                     return p_MountedObject;
                 });
+
+                m_MountedResourceLowerNameHashes.AddOrUpdate(
+                    RimeLib.Frostbite.Utils.HashQuickLowerCase(s_Resource.Name),
+                    s_Resource.Name.ToLowerInvariant(),
+                    (_, _) => s_Resource.Name.ToLowerInvariant()
+                );
             }
 
             // Mount all chunks.
@@ -772,6 +812,12 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
                     p_MountedObject.AddVariant(s_Variant);
                     return p_MountedObject;
                 });
+
+                m_MountedPartitionsLowerNameHashes.AddOrUpdate(
+                    RimeLib.Frostbite.Utils.HashQuickLowerCase(s_Partition.Name),
+                    s_Partition.Name.ToLowerInvariant(),
+                    (_, _) => s_Partition.Name.ToLowerInvariant()
+                );
             }
 
             return true;

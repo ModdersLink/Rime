@@ -8,15 +8,15 @@ using fb;
 namespace RimeLib.Shader.Frostbite2_0.Frostbite;
 
 //This loads the actual binary, a shaderdb can have multiple graphics backends.
-public class ShaderDBWrapper : IFbSerializable
+public class ShaderDatabaseContainer : IFbSerializable
 {
-    public Dictionary<ShaderRenderPath, ShaderDB> Shaders { get; set; } = new();
+    public Dictionary<ShaderRenderPath, ShaderDatabase> Shaders { get; set; } = new();
 
-    public ShaderDBWrapper()
+    public ShaderDatabaseContainer()
     {
     }
 
-    public ShaderDBWrapper(RimeReader p_Reader)
+    public ShaderDatabaseContainer(RimeReader p_Reader)
     {
         Deserialize(p_Reader);
     }
@@ -40,7 +40,7 @@ public class ShaderDBWrapper : IFbSerializable
             var s_CurrentPosition = p_Reader.BaseStream.Position;
 
             using (var s_LimitedStream = new LimitedRimeReader(p_Reader, s_ShaderDbSize))
-                Shaders.Add((ShaderRenderPath) s_ShaderPath, new ShaderDB(s_LimitedStream));
+                Shaders.Add((ShaderRenderPath) s_ShaderPath, new ShaderDatabase(s_LimitedStream));
             //m_Shaders.Add(s_ShaderPath, new ShaderDB(p_Reader));
 
 
