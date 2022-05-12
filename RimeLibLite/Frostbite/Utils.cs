@@ -32,18 +32,7 @@
         /// <returns>unsigned integer hash of the string</returns>
         public static uint HashQuickLowerCase(string p_String)
         {
-            var s_Hash = c_FnvOffsetBasis;
-
-            for (int i = 0; i < p_String.Length; ++i)
-            {
-                uint s_Current = p_String[i];
-                var s_ConvertLower = ((p_String[i] - 'A') <= ('Z' - 'A'));
-
-                s_Current = s_Current + 32 * (s_ConvertLower ? 1 : (uint)0);
-                s_Hash = (s_Hash * c_FnvPrime) ^ s_Current;
-            }
-
-            return s_Hash;
+            return HashQuick(p_String.ToLowerInvariant());
         }
     }
 }
