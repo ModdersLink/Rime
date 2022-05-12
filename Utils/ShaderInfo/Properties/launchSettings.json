@@ -2,7 +2,7 @@
   "profiles": {
     "ShaderInfo": {
       "commandName": "Project",
-      "commandLineArgs": "\"B:\\Games\\Battlefield 3\" Frostbite2_0 -s \"B:\\RimePlayground\\shaders\\web_loading.IShaderDatabase\""
+      "commandLineArgs": "\"B:\\Games\\Battlefield 3\" Frostbite2_0"
     }
   }
 }

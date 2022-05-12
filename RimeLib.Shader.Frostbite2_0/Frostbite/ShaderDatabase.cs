@@ -1,10 +1,8 @@
-﻿using RimeLib.Frostbite;
-using RimeLib.IO;
+﻿using RimeLib.IO;
 using RimeLib.Shader.Frostbite2_0.Frostbite.Shaders;
 using RimeLib.Shader.Frostbite2_0.Frostbite.Solutions;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using fb;
 using RimeLib.Mesh.Frostbite;
@@ -12,7 +10,7 @@ using RimeLib.Shader.Frostbite2_0.Frostbite.Functions;
 
 namespace RimeLib.Shader.Frostbite2_0.Frostbite;
 
-public class ShaderDatabase : IFbSerializable
+public class ShaderDatabase
 {
     public ShaderRenderPath RenderPath { get; set; }
     public Dictionary<uint, SurfaceShaderInfo> Shaders { get; set; } = new();
@@ -23,21 +21,10 @@ public class ShaderDatabase : IFbSerializable
 
     public ShaderDatabase(RimeReader p_Reader)
     {
-        Deserialize(p_Reader);
-    }
-
-    public bool Serialize(RimeWriter p_Writer)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public void Deserialize(RimeReader p_Reader)
-    {
         var s_Version = p_Reader.ReadUInt32();
 
-        if (s_Version != 182) //This shaderdb reader should also work for version 179
-            throw new Exception($"This shaderdb isnt up to date. {s_Version}");
-
+        if (s_Version != 182)
+            throw new Exception($"Unsupported shader database version (expected 182 got {s_Version}).");
 
         RenderPath = (ShaderRenderPath)p_Reader.ReadUInt32();
 
@@ -138,13 +125,7 @@ public class ShaderDatabase : IFbSerializable
             throw new Exception($"Solution state count doesn't match solution count (expected {s_SolutionCount} got {s_SolutionStateCount}). Is this shader database corrupted?");
         
         for (var i = 0; i < s_SolutionStateCount; i++)
-        {
-            var s_ShaderSolutionState = new ShaderSolutionState(p_Reader);
-
-            // HASH CHECK | Fletcher32
-            // this should be a hash check iirc, but index should also work
-            s_Solutions[i].State = s_ShaderSolutionState;
-        }
+            s_Solutions[i].State = new ShaderSolutionState(p_Reader);
 
         //
         
@@ -171,16 +152,5 @@ public class ShaderDatabase : IFbSerializable
 
             Shaders.Add(s_Key, s_Value);
         }
-    }
-
-    public bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
-    {
-        p_Data = null;
-        throw new NotImplementedException();
-    }
-        
-    public void Deserialize(byte[] p_Data)
-    {
-        throw new NotImplementedException();
     }
 }
