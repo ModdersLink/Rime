@@ -44,6 +44,7 @@ namespace Rime
             var s_Mounter = EngineInterfaceRegistry.Create<IEngineMounter>(EngineType.Frostbite2_0);
 
             await s_Mounter.Mount("B:\\Games\\Battlefield 3", false, EngineType.Frostbite2_0);
+            await s_Mounter.MountSuperbundle("Win32/Globals", true);
             await s_Mounter.MountSuperbundle("Win32/Chunks0", true);
             await s_Mounter.MountSuperbundle("Win32/Chunks1", true);
             await s_Mounter.MountSuperbundle("Win32/Chunks2", true);
@@ -51,7 +52,14 @@ namespace Rime
             await s_Mounter.MountSuperbundle("Win32/Xp2Chunks", true);
             await s_Mounter.MountSuperbundle("Win32/Levels/XP2_Skybar/XP2_Skybar", true);
 
-            if (!s_Mounter.TryGetResource("weapons/xp2_knife_razorblade/knife_razorblade_d", out var s_TextureResource))
+            if (!s_Mounter.TryGetResource("Systems/ShaderProgramDb", out var s_ShaderProgramDb))
+                return;
+
+            using var s_ShaderProgramDbReader = s_ShaderProgramDb.FirstVariant.GetReader();
+
+            var s_Thing = new ShaderProgramDatabase(s_ShaderProgramDbReader);
+
+            if (!s_Mounter.TryGetResource("XP2/CommonTextures/MetalTile_01_M", out var s_TextureResource))
                 return;
 
             var s_Converter = EngineInterfaceRegistry.Create<ITextureConverter>(EngineType.Frostbite2_0);
