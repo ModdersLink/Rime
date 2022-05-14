@@ -52,12 +52,15 @@ namespace Rime
             await s_Mounter.MountSuperbundle("Win32/Xp2Chunks", true);
             await s_Mounter.MountSuperbundle("Win32/Levels/XP2_Skybar/XP2_Skybar", true);
 
-            if (!s_Mounter.TryGetResource("Systems/ShaderProgramDb", out var s_ShaderProgramDb))
+            if (!s_Mounter.TryGetResource("Systems/ShaderProgramDb", out var s_ShaderProgramDbRes))
                 return;
 
-            using var s_ShaderProgramDbReader = s_ShaderProgramDb.FirstVariant.GetReader();
+            using var s_ShaderProgramDbReader = s_ShaderProgramDbRes.FirstVariant.GetReader();
 
-            var s_Thing = new ShaderProgramDatabase(s_ShaderProgramDbReader);
+            var s_ShaderProgramDbCtr = new ShaderProgramDatabaseContainer(s_ShaderProgramDbReader);
+            
+            if (!s_ShaderProgramDbCtr.TryGetDatabase(ShaderRenderPath.ShaderRenderPath_Dx11, out var s_ShaderProgramDb))
+                return;
 
             if (!s_Mounter.TryGetResource("XP2/CommonTextures/MetalTile_01_M", out var s_TextureResource))
                 return;
@@ -86,7 +89,7 @@ namespace Rime
             var s_Shader = s_ShaderDb.Databases[ShaderRenderPath.ShaderRenderPath_Dx11]
                 .Shaders["XP2/Objects/FlowerPot_01/FlowerPot_01_Shader"];
 
-            Renderer.RenderManager.DrawMesh(s_MeshSet, s_Shader, s_Mounter);
+            Renderer.RenderManager.DrawMesh(s_MeshSet, s_Shader, s_Mounter, s_ShaderProgramDb);
         }
 
         private void Window_Loaded(object p_Sender, RoutedEventArgs p_Event)

@@ -127,7 +127,7 @@ public class RimeRenderManager : RenderManager
     private VertexGlobals m_VertexGlobals;
     private ViewConstants m_ViewConstants;
 
-    public void DrawMesh(MeshSetLayout p_MeshSet, SurfaceShaderInfo p_Shader, IEngineMounter p_Mounter)
+    public void DrawMesh(MeshSetLayout p_MeshSet, SurfaceShaderInfo p_Shader, IEngineMounter p_Mounter, ShaderProgramDatabase p_ShaderProgramDb)
     {
         var s_Converter = EngineInterfaceRegistry.Create<ITextureConverter>(EngineType.Frostbite2_0);
 

@@ -1,63 +1,96 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Collections.Generic;
 using fb;
-using RimeLib.IO;
-using RimeLib.IO.Conversion;
 using RimeLib.Mesh.Frostbite;
 
 namespace RimeLib.Shader.Frostbite2_0.Frostbite;
 
 public class ShaderProgramDatabase
 {
-    public ShaderProgramDatabase(RimeReader p_Reader)
+    public struct ProgramInfo
     {
-        var s_Endianness = p_Reader.Endianness;
-        p_Reader.Endianness = Endianness.LittleEndian;
-        
-        var s_PathCount = p_Reader.ReadUInt32();
+        public ushort[] PermutationCounts { get; set; }   
+        public ushort[] PermutationOffsets { get; set; }   
+    }
 
-        for (var i = 0; i < s_PathCount; ++i)
+    public struct Permutation
+    {
+        public uint Mask { get; set; }
+        public uint Index { get; set; }
+    }
+
+    public struct ShaderInfo
+    {
+        public byte[] Data { get; set; }
+        public GeometryDeclarationDesc? GeometryDeclarationDesc { get; set; }
+    }
+
+    public IEnumerable<Permutation> Permutations { get; set; } = Array.Empty<Permutation>();
+    
+    private readonly Dictionary<ShaderStageType, Dictionary<string, ShaderInfo>> m_Shaders = new();
+    private readonly ProgramInfo[] m_ProgramInfo = new ProgramInfo[(int)ShaderProgram.ShaderProgramCount];
+
+    public bool TryGetShader(ShaderStageType p_Stage, string p_Name, out ShaderInfo p_ShaderInfo)
+    {
+        lock (m_Shaders)
         {
-            var s_RenderPath = p_Reader.ReadInt32();
-            var s_Size = p_Reader.ReadInt32();
-
-            for (var s_Stage = ShaderStageType.ShaderStageType_Vertex;
-                 s_Stage < ShaderStageType.ShaderStageTypeCount;
-                 ++s_Stage)
+            if (!m_Shaders.TryGetValue(p_Stage, out var s_Shaders))
             {
-                var s_ShaderCount = p_Reader.ReadUInt32();
-                
-                Debug.WriteLine($"Found {s_ShaderCount} for stage {s_Stage}.");
-
-                for (var j = 0; j < s_ShaderCount; ++j)
-                {
-                    var s_Name = p_Reader.ReadNullTerminatedString();
-                    var s_ShaderSize = p_Reader.ReadInt32();
-                    
-                    Debug.WriteLine($"[{j} / {s_ShaderCount}] {s_Stage} shader '{s_Name}' with {s_ShaderSize} bytes.");
-
-                    var s_ShaderCode = p_Reader.ReadBytes(s_ShaderSize);
-
-                    if (s_Stage == ShaderStageType.ShaderStageType_Vertex)
-                    {
-                        var s_GeometryDeclaration = new GeometryDeclarationDesc(p_Reader);
-                    }
-                }
+                p_ShaderInfo = default;
+                return false;
             }
 
-            for (var j = 0; j < (int)ShaderProgram.ShaderProgramCount; ++j)
-            {
-                p_Reader.ReadBytes(24);
-            }
-
-            var s_PermutationCount = p_Reader.ReadUInt32();
-
-            for (var j = 0; j < s_PermutationCount; ++j)
-            {
-                var s_Mask = p_Reader.ReadUInt32();
-                var s_Index = p_Reader.ReadUInt32();
-            }
+            return s_Shaders.TryGetValue(p_Name, out p_ShaderInfo);
         }
-        
-        p_Reader.Endianness = s_Endianness;
+    }
+
+    public bool RemoveShader(ShaderStageType p_Stage, string p_Name)
+    {
+        lock (m_Shaders)
+        {
+            if (!m_Shaders.ContainsKey(p_Stage))
+                return false;
+            
+            return m_Shaders[p_Stage].Remove(p_Name);
+        }
+    }
+
+    public void AddOrUpdateShader(ShaderStageType p_Stage, string p_Name, ShaderInfo p_ShaderInfo)
+    {
+        lock (m_Shaders)
+        {
+            if (!m_Shaders.ContainsKey(p_Stage))
+                m_Shaders.Add(p_Stage, new Dictionary<string, ShaderInfo>());
+
+            m_Shaders[p_Stage][p_Name] = p_ShaderInfo;
+        }
+    }
+
+    public IEnumerable<string> GetShaderNames(ShaderStageType p_Stage)
+    {
+        lock (m_Shaders)
+        {
+            if (!m_Shaders.TryGetValue(p_Stage, out var s_Shaders))
+                return Array.Empty<string>();
+
+            return s_Shaders.Keys;
+        }
+    }
+
+    public ProgramInfo GetProgramInfo(ShaderProgram p_Program)
+    {
+        if (p_Program >= ShaderProgram.ShaderProgramCount)
+            throw new ArgumentOutOfRangeException(nameof(p_Program), "ShaderProgram parameter was not valid.");
+
+        return m_ProgramInfo[(int)p_Program];
+    }
+
+    public void SetProgramInfo(ShaderProgram p_Program, ProgramInfo p_Info)
+    {
+        if (p_Program >= ShaderProgram.ShaderProgramCount)
+            throw new ArgumentOutOfRangeException(nameof(p_Program), "ShaderProgram parameter was not valid.");
+
+        m_ProgramInfo[(int)p_Program] = p_Info;
     }
 }
+
