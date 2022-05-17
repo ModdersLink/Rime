@@ -1,6 +1,7 @@
 ﻿using RimeLib.IO;
 using fb;
 using RimeLib.Shader.Frostbite2_0.Frostbite.Shaders;
+using SharpDX.Direct3D11;
 
 namespace RimeLib.Shader.Frostbite2_0.Frostbite.Solutions;
 
@@ -65,5 +66,33 @@ public class ShaderSolution
 
         if (s_PixelConstantsIndex != -1)
             PixelConstants = p_Constants[s_PixelConstantsIndex];
+    }
+
+    public void GenerateD3DResources(Device p_Device)
+    {
+        /*if (VertexPermutation != null)
+        {
+            var s_Shader = new VertexShader(p_Device, VertexPermutation.ShaderBytecode);
+            var s_InputLayout = new InputLayout(
+                p_Device,
+                s_Solution.VertexPermutation.InputSignatureBytecode,
+                s_Solution.VertexPermutation.Elements
+            );
+
+            s_VertexShaders.Add(s_Shader);
+            s_InputLayouts.Add(s_InputLayout);
+        }
+
+        if (s_Solution.VertexConstants != null)
+        {
+            var s_Samplers = new List<SamplerState>();
+                    
+            foreach (var s_Sampler in s_Solution.VertexConstants.Samplers)
+            {
+                s_Samplers.Add(new SamplerState(p_Device, s_Sampler.Desc));
+            }
+                    
+            s_VertexSamplers.Add(s_Samplers.ToArray());
+        }*/
     }
 }
