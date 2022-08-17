@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Security.Policy;
 using FBCC.Containers;
 using FBCC.Managers;
@@ -12,6 +13,7 @@ namespace FBCC.Generators
         public string Name { get { return "fb"; } }
 
         private StringWriter m_Writer;
+        private StringWriter m_SourceWriter;
 
         private FrostbiteContainer m_Container;
 
@@ -27,13 +29,22 @@ namespace FBCC.Generators
             m_Container = p_Container;
 
             m_Writer = new StringWriter();
+            m_SourceWriter = new StringWriter();
 
             WriteDisclaimer();
             WriteHeader();
 
             m_Writer.Flush();
+            m_SourceWriter.Flush();
+            
             s_GeneratedFiles.Add(p_Container.Name + ".h", m_Writer.ToString());
+            
+            var s_Source = m_SourceWriter.ToString();
 
+            if (!string.IsNullOrWhiteSpace(s_Source))
+                s_GeneratedFiles.Add(p_Container.Name + ".cpp", s_Source);
+            
+            m_SourceWriter.Dispose();
             m_Writer.Dispose();
             m_Container = null;
 
@@ -59,8 +70,23 @@ namespace FBCC.Generators
             m_Writer.WriteLine();
 
             // Write the include for the TypeInfoManager and the builtin types.
-            m_Writer.WriteLine("#include \"BuiltinTypes.h\"");
-            m_Writer.WriteLine("#include \"TypeInfoManager.h\"");
+            if (m_Container.Definitions.Any(
+                    p_Def => p_Def.DefinitionType is ContainerDefinitionType.Class or ContainerDefinitionType.Struct
+                ))
+            {
+                m_Writer.WriteLine("#include \"BuiltinTypes.h\"");
+                m_Writer.WriteLine("#include \"TypeInfoManager.h\"");
+            }
+            else
+            {
+                m_Writer.WriteLine("#include <cstdint>");
+            }
+
+            if (m_Container.Definitions.Any(p_Def => p_Def.DefinitionType is ContainerDefinitionType.Struct))
+            {
+                m_Writer.WriteLine("#include \"CustomTypes.h\"");
+            }
+
             m_Writer.WriteLine();
 
             // Collect includes.
@@ -193,7 +219,7 @@ namespace FBCC.Generators
 
             // Write virtual TypeInfo getter.
 
-            m_Writer.WriteLine(m_Indent + "virtual ::fb::TypeInfo* getType() override {{ return (::fb::TypeInfo*) ::fb::TypeInfoManager::GetClassTypeInfo(\"{0}\"); }}", p_Class.Name);
+            m_Writer.WriteLine(m_Indent + "::fb::ClassInfo* getType() const override {{ return ::fb::TypeInfoManager::GetClassTypeInfo(\"{0}\"); }}", p_Class.Name);
             m_Writer.WriteLine();
 
             // Write the static instance creator.
@@ -258,37 +284,18 @@ namespace FBCC.Generators
             m_Writer.WriteLine(m_Indent + "};");
             m_Writer.WriteLine();
         }
-
-
+        
         private void WriteStruct(ContainerStruct p_Struct)
         {
+            m_SourceWriter.WriteLine("#include \"{0}.h\"", p_Struct.Name);
+            m_SourceWriter.WriteLine();
+            m_SourceWriter.WriteLine("FB_CUSTOM_TYPE_IMPL({0});", p_Struct.Name);
+            
             m_Writer.WriteLine(m_Indent + "struct alignas({0}) {1}", p_Struct.Alignment, p_Struct.Name);
 
             // Write struct body start.
             m_Writer.WriteLine(m_Indent + "{");
             m_Indent += "\t";
-
-            // Write the new/delete operators.
-            m_Writer.WriteLine(m_Indent + "void* operator new(size_t p_Size)");
-            m_Writer.WriteLine(m_Indent + "{");
-            m_Writer.WriteLine(m_Indent + "\treturn _aligned_malloc(p_Size, {0});", p_Struct.Alignment);
-            m_Writer.WriteLine(m_Indent + "}");
-            m_Writer.WriteLine();
-            m_Writer.WriteLine(m_Indent + "void operator delete(void* p_Pointer)");
-            m_Writer.WriteLine(m_Indent + "{");
-            m_Writer.WriteLine(m_Indent + "\t_aligned_free(p_Pointer);");
-            m_Writer.WriteLine(m_Indent + "}");
-            m_Writer.WriteLine();
-            m_Writer.WriteLine(m_Indent + "void* operator new(size_t p_Size, fb::MemoryArena& p_Arena)");
-            m_Writer.WriteLine(m_Indent + "{");
-            m_Writer.WriteLine(m_Indent + "\treturn fb::MemoryArena::alloc(&p_Arena, p_Size, {0});", p_Struct.Alignment);
-            m_Writer.WriteLine(m_Indent + "}");
-            m_Writer.WriteLine();
-            m_Writer.WriteLine(m_Indent + "void operator delete(void* p_Pointer, fb::MemoryArena& p_Arena)");
-            m_Writer.WriteLine(m_Indent + "{");
-            m_Writer.WriteLine(m_Indent + "\tfb::MemoryArena::free(&p_Arena, p_Pointer);");
-            m_Writer.WriteLine(m_Indent + "}");
-            m_Writer.WriteLine();
 
             // Write members.
             foreach (var s_Member in p_Struct.Members)
@@ -317,6 +324,14 @@ namespace FBCC.Generators
                 // Write the member name and offset.
                 m_Writer.WriteLine("{0}; // 0x{1:X} ({1})", s_Member.Name, s_Member.Offset);
             }
+            
+            // Write equality operator.
+            m_Writer.WriteLine();
+            m_Writer.WriteLine(m_Indent + "bool operator==(const {0}& p_Other) const = default;", p_Struct.Name);
+            
+            // Write custom typeinfo registrar.
+            m_Writer.WriteLine();
+            m_Writer.WriteLine(m_Indent + "FB_CUSTOM_TYPE({0});", p_Struct.Name);
 
             // Write struct body end.
             m_Indent = m_Indent.Substring(0, m_Indent.Length - 1);
@@ -394,7 +409,7 @@ namespace FBCC.Generators
                     return "uint8_t";
 
                 case ContainerMemberType.Container:
-                    return p_Member.ContainerType.ToString();
+                    return "::fb::" + p_Member.ContainerType.ToString();
 
                 default:
                     return null;

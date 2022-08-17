@@ -20,16 +20,16 @@ namespace FBCC
 #if DEBUG
             var s_Args = new List<string>()
             {
-                "--gen-rime",
-                @"--in=B:\Games\Battlefield 3\__fbc__\gen2",
-                @"--out=C:\Code\OrfeasZ\RimeLibLite\RimeLib.Serialization.Frostbite2_0",
-                //"--gen-bindings",
-                //"--gen-native",
-                //"--gen-vext-docs",
                 //"--arch-x64",
-                //@"--out=B:\Projects\Rime\Rime\Bindings\VeniceBindings",
+                @"--in=B:\Games\Battlefield 3\__fbc__\gen2",
+                //"--gen-rime",
+                //@"--out=C:\Code\OrfeasZ\RimeLibLite\RimeLib.Serialization.Frostbite2_0",
+                //"--gen-bindings",
+                //@"--out=C:\Code\EmulatorNexus\VeniceUnleashed\Components\VeniceEXT\Src",
+                "--gen-native",
+                @"--out=S:\Code\VU\venice-unleashed\Components\FrostbiteSDK\Src",
+                //"--gen-vext-docs",
                 //@"--out=B:\Games\Battlefield 3\__fbc__\doc",
-                //@"--out=B:\Projects\EmulatorNexus\VeniceUnleashed\Client\Components\VeniceEXT\Src",
             };
 
             //var s_Files = Directory.GetFiles(@"B:\Games\Battlefield 4\fbc\all\");
@@ -229,6 +229,16 @@ namespace FBCC
             {
                 try
                 {
+                    if (s_File.Key is "fb/DataContainer.h" or "fb/AxisAlignedBox.h" or "fb/LinearTransform.h"
+                        or "fb/Vec2.h" or "fb/Vec3.h" or "fb/Vec4.h" or "fb/BFServerSettings.h"
+                        or "fb/SyncedGameSettings.h" or "fb/LevelSetup.h" or "fb/WeaponModifier.h")
+                        continue;
+                    
+                    if (s_File.Key is "fb/LinearTransform.cpp"
+                        or "fb/BFServerSettings.cpp"
+                        or "fb/SyncedGameSettings.cpp" or "fb/LevelSetup.cpp")
+                        continue;
+                        
                     Console.WriteLine("Writing generated file '{0}'.", s_File.Key);
 
                     var s_FilePath = Path.Combine(s_BasePath, s_File.Key);
