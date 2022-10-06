@@ -81,6 +81,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameToolsDotNet.IO", "Exter
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameToolsDotNet.Bitmaps", "External\GameTools.Net\GameToolsDotNet.Bitmaps\GameToolsDotNet.Bitmaps.csproj", "{9AE9BBB1-7806-4B91-AE85-4EA1FF14AFF3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RimeLib.Havok", "RimeLib.Havok\RimeLib.Havok.csproj", "{FD5BE3AE-2E18-4522-8CAF-2916CBF217F3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RimeLib.Havok.Frostbite2_0", "RimeLib.Havok.Frostbite2_0\RimeLib.Havok.Frostbite2_0.csproj", "{FC370BDF-3E2D-4421-B8B6-185062AD2B50}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HavokTool", "Utils\HavokTool\HavokTool.csproj", "{F474AA17-2758-41BE-8AC1-90F3ED2880AC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -219,6 +225,15 @@ Global
 		{9AE9BBB1-7806-4B91-AE85-4EA1FF14AFF3}.Debug|x64.Build.0 = Debug|x64
 		{9AE9BBB1-7806-4B91-AE85-4EA1FF14AFF3}.Release|x64.ActiveCfg = Release|x64
 		{9AE9BBB1-7806-4B91-AE85-4EA1FF14AFF3}.Release|x64.Build.0 = Release|x64
+		{FD5BE3AE-2E18-4522-8CAF-2916CBF217F3}.Debug|x64.ActiveCfg = Debug|x64
+		{FD5BE3AE-2E18-4522-8CAF-2916CBF217F3}.Debug|x64.Build.0 = Debug|x64
+		{FD5BE3AE-2E18-4522-8CAF-2916CBF217F3}.Release|x64.ActiveCfg = Release|x64
+		{FC370BDF-3E2D-4421-B8B6-185062AD2B50}.Debug|x64.ActiveCfg = Debug|x64
+		{FC370BDF-3E2D-4421-B8B6-185062AD2B50}.Debug|x64.Build.0 = Debug|x64
+		{FC370BDF-3E2D-4421-B8B6-185062AD2B50}.Release|x64.ActiveCfg = Release|x64
+		{F474AA17-2758-41BE-8AC1-90F3ED2880AC}.Debug|x64.ActiveCfg = Debug|x64
+		{F474AA17-2758-41BE-8AC1-90F3ED2880AC}.Debug|x64.Build.0 = Debug|x64
+		{F474AA17-2758-41BE-8AC1-90F3ED2880AC}.Release|x64.ActiveCfg = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -238,6 +253,7 @@ Global
 		{004E5A54-FD9E-4CE8-9D84-D05AD0876BBE} = {1619AE0A-B038-4E4C-B486-C092697CD870}
 		{72AD08F6-5429-463A-9EF9-53912469BDBE} = {1619AE0A-B038-4E4C-B486-C092697CD870}
 		{9AE9BBB1-7806-4B91-AE85-4EA1FF14AFF3} = {1619AE0A-B038-4E4C-B486-C092697CD870}
+		{F474AA17-2758-41BE-8AC1-90F3ED2880AC} = {42E38905-976C-4506-98AE-DC35CA1A9925}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9D2A4DE6-648D-4971-AC81-A89F21154CD0}
