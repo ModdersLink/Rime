@@ -7,7 +7,7 @@ namespace RimeLib.Animation.Frostbite2_0.Frostbite;
 
 public class AnimTrackData : IFbSerializable
 {
-    public AnimKey[] AnimKeys { get; set; }
+    public AnimKey[]? AnimKeys { get; set; }
 
     public AnimTrackData()
     {
@@ -21,6 +21,9 @@ public class AnimTrackData : IFbSerializable
 
     public bool Serialize(RimeWriter p_Writer)
     {
+        if (AnimKeys == null)
+            return false;
+
         foreach (var s_AnimKey in AnimKeys)
         {
             s_AnimKey.Serialize(p_Writer);
@@ -46,7 +49,10 @@ public class AnimTrackData : IFbSerializable
 
     public void Deserialize(RimeReader p_Reader)
     {
-        for (var i = 0; i < p_Reader.Length; i++)
+        var s_AnimKeyEntries = p_Reader.Length / 24;
+        AnimKeys = new AnimKey[s_AnimKeyEntries];
+
+        for (var i = 0; i < s_AnimKeyEntries; i++)
             AnimKeys.SetValue(new AnimKey(p_Reader), i);
     }
 

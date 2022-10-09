@@ -81,9 +81,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameToolsDotNet.IO", "Exter
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameToolsDotNet.Bitmaps", "External\GameTools.Net\GameToolsDotNet.Bitmaps\GameToolsDotNet.Bitmaps.csproj", "{9AE9BBB1-7806-4B91-AE85-4EA1FF14AFF3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RimeLib.Animation", "RimeLib.Animation\RimeLib.Animation.csproj", "{77A9BD12-4F63-452F-B5C5-550CD9E127E2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RimeLib.Animation", "RimeLib.Animation\RimeLib.Animation.csproj", "{77A9BD12-4F63-452F-B5C5-550CD9E127E2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RimeLib.Animation.Frostbite2_0", "RimeLib.Animation.Frostbite2_0\RimeLib.Animation.Frostbite2_0.csproj", "{7F6354E3-B6B1-4689-A0AB-727C3E4F68FE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RimeLib.Animation.Frostbite2_0", "RimeLib.Animation.Frostbite2_0\RimeLib.Animation.Frostbite2_0.csproj", "{7F6354E3-B6B1-4689-A0AB-727C3E4F68FE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -359,16 +359,16 @@ Global
 		{9AE9BBB1-7806-4B91-AE85-4EA1FF14AFF3}.Release|x64.Build.0 = Release|x64
 		{77A9BD12-4F63-452F-B5C5-550CD9E127E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{77A9BD12-4F63-452F-B5C5-550CD9E127E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{77A9BD12-4F63-452F-B5C5-550CD9E127E2}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{77A9BD12-4F63-452F-B5C5-550CD9E127E2}.Debug|x64.Build.0 = Debug|Any CPU
+		{77A9BD12-4F63-452F-B5C5-550CD9E127E2}.Debug|x64.ActiveCfg = Debug|x64
+		{77A9BD12-4F63-452F-B5C5-550CD9E127E2}.Debug|x64.Build.0 = Debug|x64
 		{77A9BD12-4F63-452F-B5C5-550CD9E127E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{77A9BD12-4F63-452F-B5C5-550CD9E127E2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{77A9BD12-4F63-452F-B5C5-550CD9E127E2}.Release|x64.ActiveCfg = Release|Any CPU
 		{77A9BD12-4F63-452F-B5C5-550CD9E127E2}.Release|x64.Build.0 = Release|Any CPU
 		{7F6354E3-B6B1-4689-A0AB-727C3E4F68FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7F6354E3-B6B1-4689-A0AB-727C3E4F68FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7F6354E3-B6B1-4689-A0AB-727C3E4F68FE}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{7F6354E3-B6B1-4689-A0AB-727C3E4F68FE}.Debug|x64.Build.0 = Debug|Any CPU
+		{7F6354E3-B6B1-4689-A0AB-727C3E4F68FE}.Debug|x64.ActiveCfg = Debug|x64
+		{7F6354E3-B6B1-4689-A0AB-727C3E4F68FE}.Debug|x64.Build.0 = Debug|x64
 		{7F6354E3-B6B1-4689-A0AB-727C3E4F68FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7F6354E3-B6B1-4689-A0AB-727C3E4F68FE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7F6354E3-B6B1-4689-A0AB-727C3E4F68FE}.Release|x64.ActiveCfg = Release|Any CPU
