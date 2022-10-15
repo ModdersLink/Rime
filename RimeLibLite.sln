@@ -81,6 +81,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameToolsDotNet.IO", "Exter
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameToolsDotNet.Bitmaps", "External\GameTools.Net\GameToolsDotNet.Bitmaps\GameToolsDotNet.Bitmaps.csproj", "{9AE9BBB1-7806-4B91-AE85-4EA1FF14AFF3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RimeLib.Enlighten", "RimeLib.Enlighten\RimeLib.Enlighten.csproj", "{C262DE1D-DA32-4FD4-B032-EEE76A6625C0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RimeLib.Enlighten.Frostbite2_0", "RimeLib.Enlighten.Frostbite2_0\RimeLib.Enlighten.Frostbite2_0.csproj", "{1C204D03-F248-42F5-B01E-F8B649549870}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -219,6 +223,22 @@ Global
 		{9AE9BBB1-7806-4B91-AE85-4EA1FF14AFF3}.Debug|x64.Build.0 = Debug|x64
 		{9AE9BBB1-7806-4B91-AE85-4EA1FF14AFF3}.Release|x64.ActiveCfg = Release|x64
 		{9AE9BBB1-7806-4B91-AE85-4EA1FF14AFF3}.Release|x64.Build.0 = Release|x64
+		{C262DE1D-DA32-4FD4-B032-EEE76A6625C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C262DE1D-DA32-4FD4-B032-EEE76A6625C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C262DE1D-DA32-4FD4-B032-EEE76A6625C0}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C262DE1D-DA32-4FD4-B032-EEE76A6625C0}.Debug|x64.Build.0 = Debug|Any CPU
+		{C262DE1D-DA32-4FD4-B032-EEE76A6625C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C262DE1D-DA32-4FD4-B032-EEE76A6625C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C262DE1D-DA32-4FD4-B032-EEE76A6625C0}.Release|x64.ActiveCfg = Release|Any CPU
+		{C262DE1D-DA32-4FD4-B032-EEE76A6625C0}.Release|x64.Build.0 = Release|Any CPU
+		{1C204D03-F248-42F5-B01E-F8B649549870}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C204D03-F248-42F5-B01E-F8B649549870}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C204D03-F248-42F5-B01E-F8B649549870}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{1C204D03-F248-42F5-B01E-F8B649549870}.Debug|x64.Build.0 = Debug|Any CPU
+		{1C204D03-F248-42F5-B01E-F8B649549870}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C204D03-F248-42F5-B01E-F8B649549870}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C204D03-F248-42F5-B01E-F8B649549870}.Release|x64.ActiveCfg = Release|Any CPU
+		{1C204D03-F248-42F5-B01E-F8B649549870}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
