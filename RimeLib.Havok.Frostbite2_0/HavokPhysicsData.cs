@@ -7,7 +7,7 @@ using RimeLib.IO.Conversion;
 
 namespace RimeLib.Havok.Frostbite2_0;
 
-public class HavokPhysicsData : IFbSerializable
+public class HavokPhysicsData
 {
     public uint PartCount { get; set; }
     // public RelocArray<Vec3> PartTranslations { get; set; } = new RelocArray<Vec3>();
@@ -23,58 +23,18 @@ public class HavokPhysicsData : IFbSerializable
     public byte MaterialCountUsed { get; set; }
     public byte HighestMaterialIndex { get; set; }
     public ushort Padding { get; set; }
+    
+    public HkPackfileHeader HkPackfile { get; set; }
 
-    public HavokPhysicsData()
+    public HavokPhysicsData(
+        RimeReader p_Reader,
+        int p_ResourceHeaderSize,
+        int p_HavokDataSize32,
+        int p_HavokDataSize64,
+        int p_FixupTableSize
+    )
     {
-
-    }
-
-    /// <summary>
-    /// Loaded Constructor
-    /// This will read out the HavokPhysicsData structure at an opened stream where the position is at a HavokPhysicsData structure in the data
-    /// </summary>
-    /// <param name="p_Reader">Reference to an IceReader class</param>
-    public HavokPhysicsData(RimeReader p_Reader)
-    {
-        Deserialize(p_Reader);
-    }
-
-    public bool Serialize(RimeWriter p_Writer)
-    {
-        // TODO: Pending re-write of relocptr/array
-        throw new NotImplementedException();
-        //p_Writer.Write(PartCount);
-        //p_Writer.Write(PartTranslations.BaseAddress);
-        //p_Writer.Write(LocalAabbs.BaseAddress);
-        //p_Writer.Write(MaterialIndices.BaseAddress);
-        //p_Writer.Write(MaterialFlagsAndIndices.BaseAddress);
-        //p_Writer.Write(Scale);
-        //p_Writer.Write(MaterialCountUsed);
-        //p_Writer.Write(HighestMaterialIndex);
-        //p_Writer.Write(Padding);
-
-        //return true;
-    }
-
-    public bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
-    {
-        p_Data = null;
-
-        using (var s_Stream = new MemoryStream())
-        {
-            using var s_Writer = new RimeWriter(s_Stream);
-
-            if (!Serialize(s_Writer))
-                return false;
-
-            p_Data = s_Stream.ToArray();
-        }
-
-        return true;
-    }
-
-    public void Deserialize(RimeReader p_Reader)
-    {
+        var s_StartPos = p_Reader.Position;
         PartCount = p_Reader.ReadUInt32();
 
         // Manually parse this out until we can fix the hack
@@ -158,11 +118,18 @@ public class HavokPhysicsData : IFbSerializable
         MaterialCountUsed = p_Reader.ReadUByte();
         HighestMaterialIndex = p_Reader.ReadUByte();
         Padding = p_Reader.ReadUInt16();
-    }
 
-    public void Deserialize(byte[] p_Data)
-    {
-        using var s_Reader = new RimeReader(new MemoryStream(p_Data));
-        Deserialize(s_Reader);
+        p_Reader.Seek(
+            s_StartPos + p_ResourceHeaderSize + p_HavokDataSize32 + p_HavokDataSize64,
+            SeekOrigin.Begin
+        );
+
+        var s_FixupTable = p_Reader.ReadBytes(p_FixupTableSize);
+        using var s_FixupTableReader = new RimeReader(new MemoryStream(s_FixupTable));
+        
+        p_Reader.Seek(s_StartPos + p_ResourceHeaderSize, SeekOrigin.Begin);
+        using var s_Havok32Reader = new LimitedRimeReader(p_Reader, p_HavokDataSize32, false);
+
+        HkPackfile = new HkPackfileHeader(s_Havok32Reader, s_FixupTableReader);
     }
 }

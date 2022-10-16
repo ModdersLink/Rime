@@ -37,12 +37,14 @@ namespace EbxExtractor
             {
                 LoadContentAssembly(p_Options);
                 //LoadTextureAssembly(p_Options);
-                DumpFiles(p_Options);
+                DumpFiles(p_Options).Wait();
 
                 //Console.WriteLine("Audio content successfully extracted. Press any key to exit...");
                 //Console.ReadKey();
             }).WithNotParsed(p_Error =>
             {
+                foreach (var s_Error in p_Error)
+                    Console.WriteLine(s_Error.ToString());
                 System.Environment.Exit(1);
             });
             Console.WriteLine("Hello World!");
@@ -121,7 +123,7 @@ namespace EbxExtractor
             }
         }
 
-        private static async void DumpFiles(Options p_Options)
+        private static async Task DumpFiles(Options p_Options)
         {
             var s_Mounter = EngineInterfaceRegistry.Create<IEngineMounter>(p_Options.EngineType);
 
@@ -130,14 +132,13 @@ namespace EbxExtractor
 
             //await s_Mounter.MountStandaloneSuperbundle("Win32/VuTest", @"B:\Games\Battlefield 3\Update\Patch\Data\Win32\VuTest.sb", true);
             //await s_Mounter.MountStandaloneSuperbundle("Win32/Levels/XP5_001/XP5_001", @"B:\Games\Battlefield 3\Update\Xpack5\Data\Win32\Levels\XP5_001\XP5_001.sb", true);
-            await s_Mounter.Mount(p_Options.GamePath, true, EngineType.Frostbite2_0);
+            await s_Mounter.Mount(p_Options.GamePath, false, EngineType.Frostbite2_0);
             await s_Mounter.MountSuperbundle("Win32/Chunks0", true);
             await s_Mounter.MountSuperbundle("Win32/Chunks1", true);
             await s_Mounter.MountSuperbundle("Win32/Chunks2", true);
             await s_Mounter.MountSuperbundle("Win32/MpChunks", true);
-            await s_Mounter.MountSuperbundle("Win32/Xp2Chunks", true);
-            await s_Mounter.MountSuperbundle("Win32/Levels/XP2_Factory/XP2_Factory", true);
-            await s_Mounter.MountSuperbundle("Win32/Levels/XP5_001/XP5_001", true);
+            await s_Mounter.MountSuperbundle("Win32/Xp5Chunks", true);
+            await s_Mounter.MountSuperbundle("Win32/Levels/XP5_002/XP5_002", true);
 
             //if (s_Mounter.TryGetChunk(new GUID("313a4d6fe0dc10d7421fea9fdf78de4f"), out var chunk))
             //if (s_Mounter.TryGetChunk(new GUID("84F0888A-35AA-9B68-38E8-9957DD412EA5"), out var chunk))
@@ -150,15 +151,30 @@ namespace EbxExtractor
             //    s_ChunkReaderThing.CopyTo(s_TempThing2);
             //}
 
-            if (s_Mounter.TryGetResource("props/streetprops/concretebricksstack_01/concretebricksstack_01_damaged_physics_0_win32", out IMountedObject<IResourceVariant>? s_ResourceVariant))
+            if (s_Mounter.TryGetResource("levels/xp5_002/tdm/staticmodelgroup_physics_win32", out IMountedObject<IResourceVariant>? s_ResourceVariant))
             {
                 using var s_Reader = s_ResourceVariant.FirstVariant.GetReader();
 
+                if (!s_ResourceVariant.FirstVariant.TryGetMeta(out var s_CookieData))
+                    throw new Exception("Fuc kyou");
+
+                using var s_CookieReader = new RimeReader(new MemoryStream(s_CookieData));
+
+                var s_ResourceHeaderSize = s_CookieReader.ReadInt32();
+                var s_HavokDataSize32 = s_CookieReader.ReadInt32();
+                var s_HavokDataSize64 = s_CookieReader.ReadInt32();
+                var s_FixupTableSize = s_CookieReader.ReadInt32();
+                
                 var s_Data = s_Reader.ReadBytes((int)s_Reader.Length);
+                using var s_ResourceReader = new RimeReader(new MemoryStream(s_Data));
 
-                var s_HavokPhysicsData = new HavokPhysicsData();
-                s_HavokPhysicsData.Deserialize(s_Data);
-
+                var s_HavokPhysicsData = new HavokPhysicsData(
+                    s_ResourceReader,
+                    s_ResourceHeaderSize,
+                    s_HavokDataSize32,
+                    s_HavokDataSize64,
+                    s_FixupTableSize
+                );
             }
 
 
