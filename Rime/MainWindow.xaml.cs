@@ -32,7 +32,9 @@ namespace Rime
 
         private void OnRendererStarted(object? p_Sender, EventArgs p_E)
         {
-            MountAndSetup().Wait();
+            var s_Browser = new ObjectBrowser();
+            s_Browser.Show();
+            //MountAndSetup().Wait();
         }
 
         private async Task MountAndSetup()
@@ -43,7 +45,7 @@ namespace Rime
 
             var s_Mounter = EngineInterfaceRegistry.Create<IEngineMounter>(EngineType.Frostbite2_0);
 
-            await s_Mounter.Mount("B:\\Games\\Battlefield 3", false, EngineType.Frostbite2_0);
+            await s_Mounter.Mount("C:\\Games\\Battlefield 3", false, EngineType.Frostbite2_0);
             await s_Mounter.MountSuperbundle("Win32/Globals", true);
             await s_Mounter.MountSuperbundle("Win32/Chunks0", true);
             await s_Mounter.MountSuperbundle("Win32/Chunks1", true);
@@ -52,7 +54,7 @@ namespace Rime
             await s_Mounter.MountSuperbundle("Win32/Xp2Chunks", true);
             await s_Mounter.MountSuperbundle("Win32/Levels/XP2_Skybar/XP2_Skybar", true);
 
-            if (!s_Mounter.TryGetResource("Systems/ShaderProgramDb", out var s_ShaderProgramDbRes))
+            /*if (!s_Mounter.TryGetResource("Systems/ShaderProgramDb", out var s_ShaderProgramDbRes))
                 return;
 
             using var s_ShaderProgramDbReader = s_ShaderProgramDbRes.FirstVariant.GetReader();
@@ -89,7 +91,7 @@ namespace Rime
             var s_Shader = s_ShaderDb.Databases[ShaderRenderPath.ShaderRenderPath_Dx11]
                 .Shaders["XP2/Objects/FlowerPot_01/FlowerPot_01_Shader"];
 
-            Renderer.RenderManager.DrawMesh(s_MeshSet, s_Shader, s_Mounter, s_ShaderProgramDb);
+            Renderer.RenderManager.DrawMesh(s_MeshSet, s_Shader, s_Mounter, s_ShaderProgramDb);*/
         }
 
         private void Window_Loaded(object p_Sender, RoutedEventArgs p_Event)

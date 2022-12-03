@@ -14,8 +14,10 @@
   <ItemGroup>
     <ProjectReference Include="..\..\RimeLib.Content.Frostbite2_0\RimeLib.Content.Frostbite2_0.csproj" />
     <ProjectReference Include="..\..\RimeLib.Content\RimeLib.Content.csproj" />
+    <ProjectReference Include="..\..\RimeLib.Mesh\RimeLib.Mesh.csproj" />
     <ProjectReference Include="..\..\RimeLib.Serialization.Frostbite2_0\RimeLib.Serialization.Frostbite2_0.csproj" />
     <ProjectReference Include="..\..\RimeLib.Serialization\RimeLib.Serialization.csproj" />
+    <ProjectReference Include="..\..\RimeLib.Shader.Frostbite2_0\RimeLib.Shader.Frostbite2_0.csproj" />
     <ProjectReference Include="..\..\RimeLib.Texture.Frostbite2_0\RimeLib.Texture.Frostbite2_0.csproj" />
     <ProjectReference Include="..\..\RimeLib.Texture\RimeLib.Texture.csproj" />
     <ProjectReference Include="..\..\RimeLibLite\RimeLibLite.csproj" />

@@ -20,10 +20,7 @@ using System.Runtime.InteropServices;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
 using fb;
 using RimeLib;
-using VertexElementUsage = RimeLib.Mesh.Frostbite.VertexElementUsage;
-using VertexElementFormat = RimeLib.Mesh.Frostbite.VertexElementFormat;
 using MeshSubsetCategory = RimeLib.Mesh.Frostbite.Fb2.MeshSubsetCategory;
-using MeshType = RimeLib.Mesh.Frostbite.MeshType;
 using SharpGLTF.Transforms;
 using System.Text;
 

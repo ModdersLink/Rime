@@ -23,7 +23,6 @@ using SharpDX.Direct3D11;
 using SharpDX.DXGI;
 using SharpDX.Mathematics.Interop;
 using Buffer = SharpDX.Direct3D11.Buffer;
-using IndexBufferFormat = RimeLib.Mesh.Frostbite.IndexBufferFormat;
 using Resource = SharpDX.Direct3D11.Resource;
 using StencilOperation = SharpDX.Direct3D11.StencilOperation;
 using Vector2 = System.Numerics.Vector2;

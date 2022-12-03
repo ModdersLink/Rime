@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using fb;
 using RimeLib.Frostbite;
 using RimeLib.Frostbite.Core;
 using RimeLib.IO;
