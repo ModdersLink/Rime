@@ -10,7 +10,12 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <DataGrid x:Name="objectList"/>
-
+        <DataGrid x:Name="objectList">
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Dump" Click="MenuItem_OnClick" />
+                </ContextMenu>
+            </DataGrid.ContextMenu>
+        </DataGrid>
     </Grid>
 </Window>
