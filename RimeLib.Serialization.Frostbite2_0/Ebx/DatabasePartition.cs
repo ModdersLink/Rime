@@ -16,10 +16,10 @@ public class DatabasePartition : DatabasePartitionBase
     public SortedDictionary<GUID, DataContainer> InstanceMap { get; set; } = new();
 
     [JsonIgnore]
-    public override IEnumerable<object> Instances => InstanceMap.Values;
+    public override IEnumerable<DataContainerBase> Instances => InstanceMap.Values;
 
     [JsonIgnore]
-    public override object PrimaryInstance => InstanceMap[PrimaryInstanceGuid];
+    public override DataContainerBase PrimaryInstance => InstanceMap[PrimaryInstanceGuid];
         
     [JsonIgnore]
     public DataContainer PrimaryInstanceCtr => InstanceMap[PrimaryInstanceGuid];

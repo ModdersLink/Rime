@@ -18,6 +18,14 @@ namespace RimeLib.Frostbite.Core
         {
 
         }
+        
+        public Vector4(float x, float y, float z, float w)
+        {
+            X = x;
+            Y = y;
+            Z = z;
+            W = w;
+        }
 
         public Vector4(RimeReader p_Reader)
         {

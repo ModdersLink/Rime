@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using RimeLib.Content.Mounting;
 using RimeLib.Frostbite;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
 
@@ -11,10 +12,10 @@ public class PartitionConverter : IPartitionConverter
         return new[] { EngineType.Frostbite2_0 };
     }
 
-    public DatabasePartitionBase FromPartitionObject(string p_Name, IReadableObject p_Object)
+    public DatabasePartitionBase FromPartitionObject(string p_Name, IObjectVariant p_Object)
     {
         using var s_Reader = new EbxReader();
-        return s_Reader.ParsePartition(p_Name, p_Object.GetReader());
+        return s_Reader.ParsePartition(p_Name, p_Object);
     }
 
     public DatabasePartitionBase FromJsonString(string p_JsonString)

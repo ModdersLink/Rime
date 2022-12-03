@@ -134,7 +134,7 @@ namespace AudioExtractor
             //});
 
 #if !_SLOW_CODE
-            foreach (var s_PartitionPair in s_Partitions)
+            /*foreach (var s_PartitionPair in s_Partitions)
             {
                 var s_PartitionName = s_PartitionPair.Key;
 
@@ -200,7 +200,7 @@ namespace AudioExtractor
                         // void __thiscall rw::audio::core::Xas1Dec::DecodeChannel(rw::audio::core::Xas1Dec *this, char *pSrc, float *pDst)
                     }
                 }
-            }
+            }*/
 #endif
 
             throw new NotImplementedException();

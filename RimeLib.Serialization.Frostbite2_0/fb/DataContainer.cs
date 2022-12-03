@@ -19,8 +19,8 @@ namespace fb
 {
 	[ContainerType(4, 8)]
 	public abstract class DataContainer :
-		EbxSerializable
-	{
+        DataContainerBase
+{
 		[JsonProperty("$type", Order = -2)]
 		public string TypeName => GetType().Name;
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)

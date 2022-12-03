@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
+using RimeLib.Content.Mounting;
 using RimeLib.Frostbite.Core;
 
 namespace RimeLib.Serialization;
@@ -12,10 +13,12 @@ public abstract class DatabasePartitionBase
     public GUID PartitionGuid { get; set; } = GUID.Empty;
 
     [JsonIgnore]
-    public abstract IEnumerable<object> Instances { get; }
+    public abstract IEnumerable<DataContainerBase> Instances { get; }
     
     [JsonIgnore]
-    public abstract object PrimaryInstance { get; }
+    public abstract DataContainerBase PrimaryInstance { get; }
+
+    public IObjectVariant? AssociatedVariant { get; set; } = null;
 
     public abstract string ToJsonString(Formatting p_Formatting = Formatting.None);
     public abstract void ToJsonStream(TextWriter p_Writer, Formatting p_Formatting = Formatting.None);

@@ -179,7 +179,7 @@ namespace MeshExtractor
 
                 var s_Reader = new EbxReader();
 
-                var s_Partition = s_Reader.ParsePartition(s_PartitionName, s_PartitionReader);
+                /*var s_Partition = s_Reader.ParsePartition(s_PartitionName, s_PartitionReader);
                 if (s_Partition == null)
                     return;
 
@@ -222,7 +222,7 @@ namespace MeshExtractor
                     // MasterSkeletonAsset 7B0E0D54-7382-D1BA-7E73-2C418DA0D7F3 #primary instance
                     // MasterSkeleton animations/skeletons/venice1pske01/34256E97-1049-FC24-90D8-4D551517E3AC
 
-                }
+                }*/
             });
         }
 

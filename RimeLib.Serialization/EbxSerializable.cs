@@ -1,6 +1,6 @@
 ﻿using RimeLib.IO;
 
-namespace RimeLib.Serialization.Frostbite2_0.Ebx;
+namespace RimeLib.Serialization;
 
 public abstract class EbxSerializable
 {
