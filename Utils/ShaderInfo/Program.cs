@@ -176,7 +176,7 @@ namespace ShaderInfo
                         if (s_Solution.VertexPermutation != null)
                         {
                             File.WriteAllBytes(
-                                "B:\\RimePlayground\\shaders\\" + s_Solution.VertexPermutation.Guid + ".bin",
+                                "F:\\Rime\\shaders\\" + s_Solution.VertexPermutation.Guid + ".bin",
                                 s_Solution.VertexPermutation.ShaderBytecode
                             );
                         }
@@ -184,7 +184,7 @@ namespace ShaderInfo
                         if (s_Solution.PixelPermutation != null)
                         {
                             File.WriteAllBytes(
-                                "B:\\RimePlayground\\shaders\\" + s_Solution.PixelPermutation.Guid + ".bin",
+                                "F:\\Rime\\shaders\\" + s_Solution.PixelPermutation.Guid + ".bin",
                                 s_Solution.PixelPermutation.ShaderBytecode
                             );
                         }
@@ -192,7 +192,7 @@ namespace ShaderInfo
                         if (s_Solution.GeometryPermutation != null)
                         {
                             File.WriteAllBytes(
-                                "B:\\RimePlayground\\shaders\\" + s_Solution.GeometryPermutation.Guid + ".bin",
+                                "F:\\Rime\\shaders\\" + s_Solution.GeometryPermutation.Guid + ".bin",
                                 s_Solution.GeometryPermutation.ShaderBytecode
                             );
                         }

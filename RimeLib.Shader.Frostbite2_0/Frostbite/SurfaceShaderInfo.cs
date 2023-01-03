@@ -4,6 +4,7 @@ using RimeLib.IO;
 using System.Diagnostics.CodeAnalysis;
 using fb;
 using RimeLib.Shader.Frostbite2_0.Frostbite.Solutions;
+using System.Collections.Generic;
 
 namespace RimeLib.Shader.Frostbite2_0.Frostbite;
 
@@ -69,11 +70,16 @@ public class SurfaceShaderInfo
 
     public ShaderSolution[] Solutions { get; set; } = Array.Empty<ShaderSolution>();
 
+    public Dictionary<ulong, ShaderSolution> SolutionMap { get; } = new();
+
+
+    public uint NameHash { get; internal set; } = 0;
+
     public SurfaceShaderInfo()
     {
     }
 
-    public SurfaceShaderInfo(RimeReader p_Reader, ShaderSolution[] p_Solutions)
+    public SurfaceShaderInfo(RimeReader p_Reader, ShaderSolution[] p_Solutions, uint? p_NameHash = null)
     {
         SurfaceShaderType = (SurfaceShaderType)p_Reader.ReadUInt32();
 
@@ -97,8 +103,18 @@ public class SurfaceShaderInfo
 
         var s_SolutionCount = p_Reader.ReadUInt32();
         Solutions = new ShaderSolution[s_SolutionCount];
-        
+
         for (var i = 0; i < s_SolutionCount; i++)
-            Solutions[i] = p_Solutions[p_Reader.ReadUInt16()];
+        {
+            var s_Solution = p_Solutions[p_Reader.ReadUInt16()];
+
+            Solutions[i] = s_Solution;
+            SolutionMap.Add(s_Solution.StateHash, s_Solution);
+        }
+
+        if (p_NameHash != null)
+            NameHash = (uint) p_NameHash;
     }
+
+
 }

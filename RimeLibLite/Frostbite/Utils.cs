@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Linq;
 using RimeLib.IO;
 using RimeLib.IO.Conversion;
 
@@ -75,6 +76,21 @@ namespace RimeLib.Frostbite
             s_C1 = (s_C1 & 0xFFFF) + (s_C1 >> 16);
 
             return s_C0 << 16 | s_C1;
+        }
+
+        public static ulong Fletcher64(byte[] p_Data)
+        {
+            using var s_Reader = new RimeReader(new MemoryStream(p_Data), Endianness.BigEndian);
+
+            var s_Len = p_Data.Length / 2;
+
+            var s_DataPart1 = p_Data.Take(s_Len).ToArray();
+            var s_DataPart2 = p_Data.Skip(s_Len).Take(p_Data.Length - s_Len).ToArray();
+
+            var s_HashPart1 = (ulong)Fletcher32(s_DataPart1);
+            var s_HashPart2 = (ulong)Fletcher32(s_DataPart2);
+
+            return (s_HashPart2 << 32) | s_HashPart1;
         }
     }
 }

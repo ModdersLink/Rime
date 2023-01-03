@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using RimeLib.Frostbite.Db;
+using RimeLib.Frostbite.Fs;
 using RimeLib.IO;
 
 namespace RimeLib.Content.Frostbite2_0.Frostbite.Sb
@@ -11,7 +12,14 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Sb
 
         public TableOfContents(RimeReader p_Reader)
         {
-            var s_Magic = p_Reader.ReadUInt32();
+
+            var s_Obfuscation = new FileObfuscation(p_Reader, out var s_FixedReader);
+
+            // this should not always throw, as old toc files doesnt have header (bf3 beta/alpha)
+            if (!s_Obfuscation.HasHeader)
+                throw new Exception("Could not find valid header magic for ToC file.");
+            /*
+                var s_Magic = p_Reader.ReadUInt32();
 
             if (s_Magic == 0x00CED100 ||
                 s_Magic == 0x01CED100)
@@ -30,8 +38,9 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Sb
             {
                 throw new Exception("Could not find valid header magic for ToC file.");
             }
+            */
 
-            (Layout, _) = DbObjectConverter.FromDbObjectReader<T>(p_Reader);
+            (Layout, _) = DbObjectConverter.FromDbObjectReader<T>(s_FixedReader);
         }
 
         public TableOfContents(T p_Layout)
@@ -41,6 +50,16 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Sb
 
         public bool Serialize(RimeWriter p_Writer)
         {
+            var s_Obfuscation = new FileObfuscation();
+
+            if (!DbObjectConverter.ToDbObjectBytes(Layout, out var s_Data))
+                return false;
+
+            s_Obfuscation.Serialize(p_Writer, s_Data);
+
+            return true;
+
+            /*
             // Write the header and an empty signature.
             p_Writer.Write((uint) 0x01CED100);
             p_Writer.Write(new byte[292]);
@@ -60,6 +79,7 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Sb
 
             // Serialize the DbObject.
             return DbObjectConverter.ToDbObjectWriter(Layout, p_Writer);
+            */
         }
     }
 }
