@@ -26,7 +26,7 @@ namespace RimeLib.Animation
 
         public Animation(RimeReader p_Reader)
         {
-
+            Deserialize(p_Reader);
         }
 
         public bool Serialize(RimeWriter p_Writer)
@@ -41,7 +41,7 @@ namespace RimeLib.Animation
 
         public void Deserialize(RimeReader p_Reader)
         {
-            throw new System.NotImplementedException();
+            
         }
 
         public void Deserialize(byte[] p_Data)
