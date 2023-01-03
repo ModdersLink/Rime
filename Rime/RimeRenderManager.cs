@@ -247,7 +247,7 @@ public class RimeRenderManager : RenderManager
             var s_PixelSamplers = new List<SamplerState[]>();
             var s_GeometryShaders = new List<GeometryShader>();
             var s_Textures = new List<Tuple<byte, ShaderResourceView>[]>();
-            
+               
             foreach (var s_Solution in p_Shader.Solutions)
             {
                 if (s_Solution.VertexPermutation != null)

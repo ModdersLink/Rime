@@ -7,17 +7,17 @@ namespace RimeLib.IO
 {
     public class RimeReader : EndianBinaryReader
     {
-        public bool Obfuscated { get; internal set; }
+        // public bool Obfuscated { get; internal set; }
 
-        public byte[] XorTable { get; set; } = new byte[260];
-		
-        protected long m_ObfuscatedDataOffset;
+        //public byte[] XorTable { get; set; } = new byte[260];
+
+        //protected long m_ObfuscatedDataOffset;
 
         public RimeReader(Stream p_Stream, Endianness p_Endianness = Endianness.LittleEndian, bool p_ShouldDispose = true) :
             base(p_Endianness == Endianness.BigEndian ? (EndianBitConverter) EndianBitConverter.Big : EndianBitConverter.Little, p_Stream, p_ShouldDispose)
         {
         }
-        
+        /*
         /// <summary>
         /// Enables data de-obfuscation for the currently read stream.
         /// </summary>
@@ -39,6 +39,7 @@ namespace RimeLib.IO
             Obfuscated = false;
             m_ObfuscatedDataOffset = 0;
         }
+        */
 
         /// <summary>
         /// Reads out a null terminated string
@@ -218,10 +219,13 @@ namespace RimeLib.IO
             ReadBytes((int) s_Number);
         }
 
+        /*
         protected override int ReadInternal(byte[] p_Data, int p_Index, int p_Count)
         {
-            var s_CurrentOffset = BaseStream.Position + p_Index - m_ObfuscatedDataOffset;
             var s_ReadBytes = base.ReadInternal(p_Data, p_Index, p_Count);
+            
+            
+            var s_CurrentOffset = BaseStream.Position + p_Index - m_ObfuscatedDataOffset;
 
             if (!Obfuscated)
                 return s_ReadBytes;
@@ -231,5 +235,6 @@ namespace RimeLib.IO
 
             return s_ReadBytes;
         }
+        */
     }
 }

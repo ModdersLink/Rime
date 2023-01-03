@@ -1,5 +1,6 @@
 using Newtonsoft.Json;
 using RimeLib.Frostbite.Db;
+using RimeLib.Frostbite.Fs;
 using RimeLib.IO;
 using System;
 using System.IO;
@@ -13,6 +14,13 @@ namespace RimeLib.Tests
         {
             using var s_Reader = new RimeReader(File.OpenRead(p_Path));
 
+
+
+            var s_Obfuscation = new FileObfuscation(s_Reader, out var s_FixedReader);
+
+            if (!s_Obfuscation.HasHeader)
+                throw new Exception("Could not find valid header magic for ToC file.");
+            /*
             var s_Magic = s_Reader.ReadUInt32();
 
             if (s_Magic == 0x00CED100 ||
@@ -32,8 +40,9 @@ namespace RimeLib.Tests
             {
                 throw new Exception("Could not find valid header magic for ToC file.");
             }
+            */
 
-            var s_DbObject = new DbObject(s_Reader);
+            var s_DbObject = new DbObject(s_FixedReader);
 
             var s_Json = JsonConvert.SerializeObject(s_DbObject, Formatting.Indented);
 
@@ -47,6 +56,11 @@ namespace RimeLib.Tests
                 "C:\\Program Files (x86)\\Origin Games\\Battlefield 2042 Technical Playtest\\Data\\initfs_Win32";
             using var s_Reader = new RimeReader(File.OpenRead(s_Path));
 
+            var s_Obfuscation = new FileObfuscation(s_Reader, out var s_FixedReader);
+
+            if (!s_Obfuscation.HasHeader)
+                throw new Exception("Could not find valid header magic for initfs file.");
+            /*
             var s_Magic = s_Reader.ReadUInt32();
 
             if (s_Magic == 0x00CED100 ||
@@ -57,7 +71,8 @@ namespace RimeLib.Tests
                 var s_Signature = s_Reader.ReadBytes(292);
                 s_Reader.EnableDeobfuscation();
             }
-            
+            */
+
             var s_DecryptedData = s_Reader.ReadBytes((int) (s_Reader.BaseStream.Length - s_Reader.Position));
             File.WriteAllBytes(s_Path + ".dec", s_DecryptedData);
         }

@@ -2,7 +2,7 @@
   "profiles": {
     "TextureExtractor": {
       "commandName": "Project",
-      "commandLineArgs": "\"C:\\Program Files (x86)\\Origin Games\\Battlefield 3\" Frostbite2_0 ./textures -t *"
+      "commandLineArgs": "\"F:\\Program Files (x86)\\Origin Games\\Battlefield 3\" Frostbite2_0 \"F:\\bf3\\uniquetextures\" -t * -u -q"
     }
   }
 }

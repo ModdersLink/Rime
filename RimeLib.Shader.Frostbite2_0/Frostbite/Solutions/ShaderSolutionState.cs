@@ -3,6 +3,10 @@ using RimeLib.IO;
 using System.Diagnostics.CodeAnalysis;
 using fb;
 using RimeLib.Mesh.Frostbite;
+using System.IO;
+using RimeLib.Extensions;
+using System.Collections.Generic;
+using RimeLib.Shader.Frostbite2_0.Frostbite.Rendering;
 
 namespace RimeLib.Shader.Frostbite2_0.Frostbite.Solutions;
 
@@ -31,16 +35,167 @@ public class ShaderSolutionState : IFbSerializable
     public ShaderShadowmapMethod OutdoorLightShadowmapMethod { get; set; } = ShaderShadowmapMethod.ShaderShadowmapMethod_None;
     public ShaderShadowmapQuality OutdoorLightShadowmapQuality { get; set; } = ShaderShadowmapQuality.ShaderShadowmapQuality_Pcf2x2;
     public bool OutdoorLightTransparencyShadowmapEnable { get; set; }
+    public byte OutdoorLightMultisampleCount { get; set; }
 
+    public ulong Hash
+    {
+        get
+        {
+            using var s_Writer = new RimeWriter(new MemoryStream());
+            Serialize(s_Writer);
+            s_Writer.Seek(0, SeekOrigin.Begin);
+            return RimeLib.Frostbite.Utils.Fletcher64(s_Writer.ToArray());
+        }
+    }
+
+
+    //TODO: fb::VertexShaderFragment is an instance of a shader
+    //  - optional
+    //  - seems to be used for decals and emitters
+    //  - examples:
+    //      - "Systems/Emitter/EmitterVSF_PerVertexLighting"
+    //      - "Systems/Emitter/EmitterVSF_PerPixelLighting"
     public ShaderSolutionState(
-        string p_SurfaceShaderName, 
-        string p_VertexShaderFragmentName, 
-        GeometryDeclarationDesc p_GeometryDeclarationDesc
+        ShaderState? p_ShaderState,
+        //object p_DrawBlock,  //TODO: fb::ShaderDrawBlock
+
+        SurfaceShaderInfo p_Surface,
+        GeometryDeclarationDesc p_Geometry,
+
+        ShaderRenderMode p_Mode,
+        byte p_OutdoorLightMultisampleCount,
+        string? p_VertexShaderFragmentName = null 
+    
     )
     {
-        // TODO
-        // GeometryDeclarationHash = Fletcher-32 of GeometryDeclarationDesc
+        // To get this working properly a partial implimentation of the fb render stack seems useful. Specifically fb::ShaderRenderContext
+
+
+        // Theres 2 fb::ShaderState in StateStack. 
+        // 1. is baseShaderState | check fb::setDefaultShaderState
+        // 2. is state from draw block
+        // it prefers the 2nd one, but falls back to baseShaderState
+
+
+
+
+
+
+        // Is this some debug feature?
+        if (p_Mode == ShaderRenderMode.ShaderRenderMode_DebugOverdraw ||
+            p_Mode == ShaderRenderMode.ShaderRenderMode_DebugShaderCost)
+        {
+            p_Mode = ShaderRenderMode.ShaderRenderMode_Default;
+        }
+
+        if (p_Mode != ShaderRenderMode.ShaderRenderMode_DeferredShadingUnlit)
+            Mode = p_Mode;
+        else
+            Mode = ShaderRenderMode.ShaderRenderMode_Default;
+
+
+        // unsure if this geometry ptr is needed
+        this.GeometryDeclarationDesc = p_Geometry;
+        this.GeometryDeclarationHash = p_Geometry.Hash;
+
+        this.SurfaceShaderNameHash = p_Surface.NameHash;
+
+
+        //p_VertexShaderFragment.NameHash;
+        if (p_VertexShaderFragmentName != null)
+            VertexShaderFragmentNameHash = RimeLib.Frostbite.Utils.HashQuick(p_VertexShaderFragmentName);
+
+
+        if (p_ShaderState != null && 
+            p_ShaderState.StateFlags.HasFlag(ShaderStateType.ShaderStateType_GeometrySpace))
+            GeometrySpace = p_ShaderState.GeometrySpace;
+        else
+            GeometrySpace = ShaderState.c_DefaultState.GeometrySpace;
+
+
+        if (p_ShaderState != null &&
+            p_ShaderState.StateFlags.HasFlag(ShaderStateType.ShaderStateType_SkinningMethod))
+            SkinningMethod = p_ShaderState.SkinningMethod;
+        else
+            SkinningMethod = ShaderState.c_DefaultState.SkinningMethod;
+
+
+        if (p_ShaderState != null &&
+            p_ShaderState.StateFlags.HasFlag(ShaderStateType.ShaderStateType_Technique))
+            Technique = (byte)p_ShaderState.Technique;
+        else
+            Technique = (byte)ShaderState.c_DefaultState.Technique;
+
+        //if(p_DrawBlock.hasGeometry)
+        //    InstancingMethod = p_DrawBlock.Geometry.InstancingMethod;
+
+        //if (InstancingMethod == ShaderInstancingMethod.ShaderInstancingMethod_None && p_DrawBlock.instanceCount > 1)
+        //    InstancingMethod = ShaderInstancingMethod.ShaderInstancingMethod_DxBuffer;
+
+
+        if (p_Surface.BoolParameterCount > 0)
+        {
+            this.BoolPermutation = p_Surface.BoolParameterDefaultMask;
+
+            // TODO: get ShaderParameterBlocks from state stack
+            var s_ParameterBlocks = new List<object>();
+
+            for (var i=0; i < p_Surface.BoolParameterCount; i++ )
+            {
+                var s_Id = p_Surface.BoolParameterIds[i];
+                var s_Mask = (uint)1 << i;
+
+                
+                foreach (var s_Parameters in s_ParameterBlocks)
+                {
+                    //if(s_Parameters.BoolCount == 0)
+                    //  continue;
+
+                    //if(!s_Parameters.TryReadBool(s_Id, out var s_BoolValue))
+                    //  continue;
+
+                    bool s_BoolValue = false;
+
+                    if (s_BoolValue)
+                        BoolPermutation |= (byte) s_Mask;
+                    else
+                        BoolPermutation &= (byte) ~s_Mask;
+                }
+            }
+        }
+
+        if (p_Mode == ShaderRenderMode.ShaderRenderMode_Default ||
+            p_Mode == ShaderRenderMode.ShaderRenderMode_DeferredShadingUnlit)
+        {
+            //if (stateStack.outdoorLight)
+            //{
+            //    OutdoorLightEnable = true;
+            //    OutdoorLightShadowmapMethod = ShaderShadowmapMethod.ShaderShadowmapMethod_None;
+            //    OutdoorLightShadowmapQuality = ShaderShadowmapQuality.ShaderShadowmapQuality_Pcf2x2;
+            //    OutdoorLightTransparencyShadowmapEnable = false;
+            //}
+        }
+
+        if (p_Mode == ShaderRenderMode.ShaderRenderMode_DeferredShadingGBufferLayout0 || 
+            p_Mode == ShaderRenderMode.ShaderRenderMode_DeferredShadingGBufferLayout1 ||
+            (p_Mode == ShaderRenderMode.ShaderRenderMode_Default && p_Surface.SurfaceShaderType == SurfaceShaderType.SurfaceShaderType_Transparent))
+        {
+
+            //if (stateStack.lightProbes) 
+            //    ObjectLighting = ShaderObjectLighting.ShaderObjectLighting_LightProbe;
+            //else if (stateStack.lightMaps)
+            //    ObjectLighting = ShaderObjectLighting.ShaderObjectLighting_LightMap;
+        }
+
+        OutdoorLightMultisampleCount = 1;
+        if (p_Surface.SurfaceShaderType == SurfaceShaderType.SurfaceShaderType_OpaqueAlphaTest ||
+            p_Surface.SurfaceShaderType == SurfaceShaderType.SurfaceShaderType_OpaqueAlphaTestSimple)
+            OutdoorLightMultisampleCount = p_OutdoorLightMultisampleCount;
+
+        //if (stateStack.heightfieldTessellation)
+        //    HeightfieldTessellation = 1;
     }
+
 
     public ShaderSolutionState(RimeReader p_Reader)
     {
@@ -49,7 +204,36 @@ public class ShaderSolutionState : IFbSerializable
 
     public bool Serialize(RimeWriter p_Writer)
     {
-        throw new System.NotImplementedException();
+        p_Writer.Write(SurfaceShaderNameHash);
+        p_Writer.Write(VertexShaderFragmentNameHash);
+        p_Writer.Write(GeometryDeclarationHash);
+
+        //0x000C
+        p_Writer.Write((byte) Mode); 
+        p_Writer.Write((byte) GeometrySpace);
+        p_Writer.Write((byte) SkinningMethod);
+        p_Writer.Write((byte) InstancingMethod);
+        p_Writer.Write((byte) ObjectLighting);
+
+        //0x0011
+        p_Writer.Write(ColorScale);
+        p_Writer.Write(Technique);
+        p_Writer.Write(BoolPermutation);
+
+        //0x0014
+        p_Writer.Write(Ps3ClipPlaneCount);
+        p_Writer.Write(HeightfieldTessellation);
+
+        p_Writer.Write(OutdoorLightEnable);
+        p_Writer.Write((byte) OutdoorLightShadowmapMethod);
+        p_Writer.Write((byte) OutdoorLightShadowmapQuality);
+        p_Writer.Write(OutdoorLightTransparencyShadowmapEnable);
+        p_Writer.Write(OutdoorLightMultisampleCount);
+
+
+        p_Writer.Write(new byte[0x5]);
+
+        return true;
     }
 
     public void Deserialize(RimeReader p_Reader)
@@ -75,8 +259,9 @@ public class ShaderSolutionState : IFbSerializable
         OutdoorLightShadowmapMethod = (ShaderShadowmapMethod)p_Reader.ReadUByte();
         OutdoorLightShadowmapQuality = (ShaderShadowmapQuality)p_Reader.ReadUByte();
         OutdoorLightTransparencyShadowmapEnable = p_Reader.ReadBool();
+        OutdoorLightMultisampleCount = p_Reader.ReadUByte();
 
-        p_Reader.Seek(0x6, System.IO.SeekOrigin.Current);
+        p_Reader.Seek(0x5, SeekOrigin.Current);
     }
 
     public bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
@@ -89,5 +274,6 @@ public class ShaderSolutionState : IFbSerializable
     {
         throw new System.NotImplementedException();
     }
+
 
 }

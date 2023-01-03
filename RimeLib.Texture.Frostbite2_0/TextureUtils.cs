@@ -12,39 +12,35 @@ internal static class TextureUtils
         { TextureFormat.TextureFormat_DXT1, new DDSPixelFormat("DXT1") },
         { TextureFormat.TextureFormat_DXT3, new DDSPixelFormat("DXT3") },
         { TextureFormat.TextureFormat_DXT5, new DDSPixelFormat("DXT5") }, //ATI1
-        { TextureFormat.TextureFormat_DXT5A, new DDSPixelFormat("DX10") }, //ATI1N
+        { TextureFormat.TextureFormat_DXT5A, new DDSPixelFormat("DX10") }, //ATI1N <--- this one looks broken
         { TextureFormat.TextureFormat_DXN, new DDSPixelFormat("DX10") }, //BC5, ATI2
         { TextureFormat.TextureFormat_NormalDXN, new DDSPixelFormat("DX10") }, //ATI2
         { TextureFormat.TextureFormat_NormalDXT1, new DDSPixelFormat("DXT1") },
         { TextureFormat.TextureFormat_NormalDXT5, new DDSPixelFormat("DXT5") },
         { TextureFormat.TextureFormat_NormalDXT5RGA, new DDSPixelFormat("DX10") }, //Not sure about this one
 
-        { TextureFormat.TextureFormat_RGB565, new DDSPixelFormat(DDSFormatFlags.Rgb, 0, 0x0000f800, 0x000007e0, 0x0000001f) },
-        { TextureFormat.TextureFormat_RGB888, new DDSPixelFormat(DDSFormatFlags.Rgb, 0, 0x00ff0000, 0x0000ff00, 0x000000ff) },
-        { TextureFormat.TextureFormat_ARGB1555, new DDSPixelFormat(DDSFormatFlags.Rgba, 0, 0x00007c00, 0x000003e0, 0x0000001f, 0x00008000) },
-        { TextureFormat.TextureFormat_ARGB4444, new DDSPixelFormat(DDSFormatFlags.Rgba, 0, 0xF000, 0x0F00, 0x00F0, 0x000F) },
-        { TextureFormat.TextureFormat_ARGB8888, new DDSPixelFormat("DX10") },
+        { TextureFormat.TextureFormat_RGB565, new DDSPixelFormat(DDSFormatFlags.Rgb, 16, 0x0000f800, 0x000007e0, 0x0000001f) },
+        { TextureFormat.TextureFormat_RGB888, new DDSPixelFormat(DDSFormatFlags.Rgb, 24, 0x00ff0000, 0x0000ff00, 0x000000ff) },
+        { TextureFormat.TextureFormat_ARGB1555, new DDSPixelFormat(DDSFormatFlags.Rgba, 16, 0x00007c00, 0x000003e0, 0x0000001f, 0x00008000) },
+        { TextureFormat.TextureFormat_ARGB4444, new DDSPixelFormat(DDSFormatFlags.Rgba, 16, 0xF000, 0x0F00, 0x00F0, 0x000F) },
+        { TextureFormat.TextureFormat_ARGB8888, new DDSPixelFormat(DDSFormatFlags.Rgba, 32, 0xFF0000, 0xFF00, 0xFF, 0xFF000000 ) },
         /*
         { TextureFormat.TextureFormat_L8, new DDSPixelFormat(DDSFormatFlags.Luminance, 8, 0xFF) },
         { TextureFormat.TextureFormat_L16, new DDSPixelFormat("DX10") { Flags = DDSFormatFlags.FourCC } },
         { TextureFormat.TextureFormat_L16_Uint, new DDSPixelFormat(DDSFormatFlags.Luminance, 16,  0xFFFF) }, //not sure about this one
         { TextureFormat.TextureFormat_L32, new DDSPixelFormat(DDSFormatFlags.Luminance, 32, 0xFFFFFFFF) },
         */
-        { TextureFormat.TextureFormat_L8, new DDSPixelFormat("DX10") },
-        {
-            // TODO: Verify this is correct
-            TextureFormat.TextureFormat_L16, new DDSPixelFormat { Size = 32, Flags = DDSFormatFlags.Rgb, RBitMask = 0x0000FFFF }
-        },
-        {
-            TextureFormat.TextureFormat_R16F,
-            new DDSPixelFormat
-            {
-                Size = 32,
-                Flags = DDSFormatFlags.FourCC,
-                FourCC = 111,
-            }
-        },
-        { TextureFormat.TextureFormat_ABGR16F, new DDSPixelFormat { Size = 32, Flags = DDSFormatFlags.FourCC, FourCC = 113} },
+
+        // luminance textures have same pixel mask for all channels, shouldnt make any diffrence in data other than easier viewing.
+        // exporters like GIMP dds uses it for all channels i believe. Nvidia im not sure
+        { TextureFormat.TextureFormat_L8, new DDSPixelFormat(DDSFormatFlags.Luminance, 8, 0xFF, 0xFF, 0xFF) }, 
+        { TextureFormat.TextureFormat_L16, new DDSPixelFormat(DDSFormatFlags.Luminance, 16, 0xFFFF, 0xFFFF, 0xFFFF) },
+        //{ TextureFormat.TextureFormat_L16, new DDSPixelFormat("DX10") },
+
+        //{ TextureFormat.TextureFormat_R16F, new DDSPixelFormat { Size = 32, Flags = DDSFormatFlags.FourCC, FourCC = 111, } },
+        { TextureFormat.TextureFormat_R16F, new DDSPixelFormat("DX10") },
+        //{ TextureFormat.TextureFormat_ABGR16F, new DDSPixelFormat { Size = 32, Flags = DDSFormatFlags.FourCC, FourCC = 113} },
+        { TextureFormat.TextureFormat_ABGR16F, new DDSPixelFormat("DX10") },
         /*
 
         { TextureFormat.TextureFormat_Rg8, new DDSPixelFormat(DDSFormatFlags.Rgb, 0, 0xFF00, 0xFF) },
