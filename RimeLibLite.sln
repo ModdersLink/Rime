@@ -93,7 +93,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VisualTerrainInfo", "Utils\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RimeLib.Ant", "RimeLib.Ant\RimeLib.Ant.csproj", "{512A8E82-910E-432D-8377-4C80E7EAC024}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rimelib.Ant.Frostbite2_0", "Rimelib.Ant.Frostbite2_0\Rimelib.Ant.Frostbite2_0.csproj", "{AE249989-F01B-4C75-A9F9-C740B6AE4221}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RimeLib.Ant.Frostbite2_0", "Rimelib.Ant.Frostbite2_0\RimeLib.Ant.Frostbite2_0.csproj", "{AE249989-F01B-4C75-A9F9-C740B6AE4221}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AntLayoutDumper", "Utils\AntLayoutDumper\AntLayoutDumper.vcxproj", "{85A3C857-CA06-4316-BFC5-2C0BCB9BF0D7}"
 EndProject
