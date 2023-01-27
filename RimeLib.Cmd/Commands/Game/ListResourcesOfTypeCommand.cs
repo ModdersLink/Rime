@@ -5,9 +5,12 @@ using RimeLib.Cmd.Contexts;
 
 namespace RimeLib.Cmd.Commands.Game
 {
-    [CommandDescription("Lists all the mounted resources.")]
-    public class ListResourcesCommand : Command
+    [CommandDescription("Lists all the mounted resources of a given type.")]
+    public class ListResourcesOfTypeCommand : Command
     {
+        [CommandArgument(Description = "The resource type to list")]
+        public string? Type { get; set; }
+
         public override bool Execute(ref ExecutionContext p_Context, TextWriter p_Writer)
         {
             var s_Resources = ((GameContext) p_Context).GetMountedResourceVariations();
@@ -18,11 +21,12 @@ namespace RimeLib.Cmd.Commands.Game
                 return true;
             }
 
-            p_Writer.WriteLine("Mounted resources:");
+            p_Writer.WriteLine("Mounted resources of type " + Type + ":");
             p_Writer.WriteLine();
 
             foreach (var s_Resource in s_Resources)
-                p_Writer.WriteLine("- " + s_Resource.Key + " (" + s_Resource.Value.FirstVariant.GetResourceType() + ")");
+                if (s_Resource.Value.FirstVariant.GetResourceType().ToString() == Type)
+                    p_Writer.WriteLine("- " + s_Resource.Key);
 
             return true;
         }
