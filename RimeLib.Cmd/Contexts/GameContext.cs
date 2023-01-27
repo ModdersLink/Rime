@@ -33,6 +33,7 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<ListChunksCommand>();
             RegisterCommand<ListDuplicateChunksCommand>();
             RegisterCommand<ListResourcesCommand>();
+            RegisterCommand<ListResourcesOfTypeCommand>();
             RegisterCommand<ListPartitionsCommand>();
             RegisterCommand<ListBundleChunksCommand>();
             RegisterCommand<ListBundleResourcesCommand>();
