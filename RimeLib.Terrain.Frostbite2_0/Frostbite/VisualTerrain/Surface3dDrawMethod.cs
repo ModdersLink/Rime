@@ -1,24 +1,27 @@
-﻿using RimeLib.Frostbite;
-using RimeLib.IO;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using RimeLib.Frostbite;
+using RimeLib.IO;
 
 namespace RimeLib.Terrain.Frostbite2_0.Frostbite.VisualTerrain
 {
-    public class VisualTerrainLayer : IFbSerializable
+    public class Surface3dDrawMethod : IFbSerializable
     {
-        public bool VirtualTextureEnable { get; set; } = false;
+        public uint MaskedTerrainLayerIndexCount;
+        public byte[] MaskedTerrainLayerIndices { get; set; } = new byte[0];
 
-        public MeshScatteringType[] ScatteringTypes { get; set; } = new MeshScatteringType[0];
+        string ShaderName { get; set; } = string.Empty;
 
-        //TerrainLayerCombinationDrawDatabase
+        bool DestructionMaskEnable;
+        byte Level;
+        byte DrawDirectLayerCount;
 
-        public VisualTerrainLayer(RimeReader p_Reader)
+        public Surface3dDrawMethod(RimeReader p_Reader)
         {
             Deserialize(p_Reader);
         }
@@ -30,12 +33,14 @@ namespace RimeLib.Terrain.Frostbite2_0.Frostbite.VisualTerrain
 
         public void Deserialize(RimeReader p_Reader)
         {
-            VirtualTextureEnable = p_Reader.ReadBool();
+            MaskedTerrainLayerIndexCount = p_Reader.ReadUInt32();
+            for (var i = 0; i < MaskedTerrainLayerIndexCount; i++)
+                MaskedTerrainLayerIndices[i] = p_Reader.ReadUByte();
 
-            var s_MeshScatteringTypeCount = p_Reader.ReadUInt32();
-            ScatteringTypes = new MeshScatteringType[s_MeshScatteringTypeCount];
-            for (var i=0; i < s_MeshScatteringTypeCount; i++)
-                ScatteringTypes[i] = new MeshScatteringType(p_Reader);
+            ShaderName = p_Reader.ReadNullTerminatedString();
+            DestructionMaskEnable = p_Reader.ReadBool();
+            Level = p_Reader.ReadUByte();
+            DrawDirectLayerCount = p_Reader.ReadUByte();
         }
 
         public bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
