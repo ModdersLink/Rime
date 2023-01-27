@@ -2,7 +2,6 @@
 using RimeLib.IO;
 using RimeLib.IO.Conversion;
 using RimeLib.Serialization.Attributes;
-using RimeLib.Utils;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,6 +9,7 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using fb;
+using RimeLib.Content.Mounting;
 
 namespace RimeLib.Serialization.Frostbite2_0.Ebx;
 
@@ -28,23 +28,23 @@ public class EbxReader : IDisposable
 
     private DatabasePartition m_Partition = new();
 
-    public DatabasePartition ParsePartition(string p_Name, RimeReader p_Reader)
+    public DatabasePartition ParsePartition(string p_Name, IObjectVariant p_Variant)
     {
-        if (p_Reader == null)
-            throw new InvalidDataException("Data is invalid for ebx.");
+        using var s_Reader = p_Variant.GetReader();
 
         m_Partition = new DatabasePartition
         {
-            Name = p_Name
+            Name = p_Name,
+            AssociatedVariant = p_Variant,
         };
 
-        var s_Magic = p_Reader.ReadBytes(4);
-        p_Reader.Seek(-4, SeekOrigin.Current);
+        var s_Magic = s_Reader.ReadBytes(4);
+        s_Reader.Seek(-4, SeekOrigin.Current);
 
         if (IsLittleEndian(s_Magic))
-            m_Reader = new RimeReader(p_Reader, Endianness.LittleEndian, false);
+            m_Reader = new RimeReader(s_Reader, Endianness.LittleEndian, false);
         else if (IsBigEndian(s_Magic))
-            m_Reader = new RimeReader(p_Reader, Endianness.BigEndian, false);
+            m_Reader = new RimeReader(s_Reader, Endianness.BigEndian, false);
         else
             throw new Exception("The supplied file has an invalid magic header.");
 
@@ -168,7 +168,9 @@ public class EbxReader : IDisposable
                     //Console.WriteLine($"Expected size of {s_ContainerType} of {s_ContainerAttribute.AlignedSize} bytes does not match in-file size of {s_Descriptor.Size} bytes. Probably means the game was updated but the data was not.");
                 }
 
-                var s_Instance = Activator.CreateInstance(s_ContainerType)!;
+                var s_Instance = (DataContainerBase) Activator.CreateInstance(s_ContainerType)!;
+                s_Instance.InstanceId = new DataContainerId.Guid(s_Guid);
+                s_Instance.Partition = m_Partition;
 
                 using var s_LimitedReader = new LimitedRimeReader(m_Reader, s_Descriptor.Size, false);
                 ParseTypeInstance(s_LimitedReader, s_Descriptor, s_Instance, s_ContainerType);
@@ -425,7 +427,7 @@ public class EbxReader : IDisposable
         {
             p_Index &= 0x7FFFFFFF;
             var s_Import = m_ImportEntries[(int)p_Index];
-            return new CtrRefBase(s_Import.PartitionGuid, s_Import.InstanceGuid);
+            return new CtrRefBase(s_Import.PartitionGuid, new DataContainerId.Guid(s_Import.InstanceGuid));
         }
 
         // Null reference.
@@ -441,7 +443,7 @@ public class EbxReader : IDisposable
             );
         }
 
-        return new CtrRefBase(m_Header.PartitionGuid, m_InternalInstanceGuids[(int) s_ActualIndex]);
+        return new CtrRefBase(m_Header.PartitionGuid, new DataContainerId.Guid(m_InternalInstanceGuids[(int) s_ActualIndex]));
     }
 
     public string GetStringAtOffset(uint p_Offset)

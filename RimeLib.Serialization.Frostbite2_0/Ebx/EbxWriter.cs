@@ -402,17 +402,22 @@ public class EbxWriter : IEbxWriter
         if (p_CtrRef.IsNull())
             return 0;
 
+        if (p_CtrRef.InstanceId is not DataContainerId.Guid s_InstanceId)
+        {
+            throw new Exception($"This version of the Frostbite engine does not support index-based DataContainer ids.");
+        }
+
         if (p_CtrRef.PartitionGuid == m_Partition.PartitionGuid)
         {
-            if (m_InternalInstanceGuids.TryGetValue(p_CtrRef.InstanceGuid, out var s_Index))
+            if (m_InternalInstanceGuids.TryGetValue(s_InstanceId.Id, out var s_Index))
                 return s_Index + 1;
 
-            throw new Exception($"Found internal reference to instance '{p_CtrRef.InstanceGuid}', but this instance doesn't exist in this partition.");
+            throw new Exception($"Found internal reference to instance '{p_CtrRef.InstanceId}', but this instance doesn't exist in this partition.");
         }
 
         // See if we already have an entry for this import.
         var s_ImportIndex = m_ImportEntries.FindIndex(
-            (p_Entry) => p_Entry.InstanceGuid == p_CtrRef.InstanceGuid &&
+            (p_Entry) => p_Entry.InstanceGuid == s_InstanceId.Id &&
                          p_Entry.PartitionGuid == p_CtrRef.PartitionGuid
         );
 
@@ -423,7 +428,7 @@ public class EbxWriter : IEbxWriter
 
             m_ImportEntries.Add(new ImportEntry()
             {
-                InstanceGuid = p_CtrRef.InstanceGuid,
+                InstanceGuid = s_InstanceId.Id,
                 PartitionGuid = p_CtrRef.PartitionGuid,
             });
         }

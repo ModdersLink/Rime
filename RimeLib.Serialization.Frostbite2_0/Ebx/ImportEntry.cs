@@ -18,12 +18,6 @@ public class ImportEntry
         InstanceGuid = new GUID(p_Reader);
     }
 
-    public ImportEntry(CtrRefBase p_CtrRef)
-    {
-        PartitionGuid = p_CtrRef.PartitionGuid;
-        InstanceGuid = p_CtrRef.InstanceGuid;
-    }
-
     public ImportEntry()
     {
         PartitionGuid = GUID.Empty;

@@ -126,9 +126,17 @@ public class ShaderDatabase
         
         if (s_SolutionStateCount != s_SolutionCount)
             throw new Exception($"Solution state count doesn't match solution count (expected {s_SolutionCount} got {s_SolutionStateCount}). Is this shader database corrupted?");
-        
+
+
         for (var i = 0; i < s_SolutionStateCount; i++)
-            s_Solutions[i].State = new ShaderSolutionState(p_Reader);
+        {
+            var s_SolutionState = new ShaderSolutionState(p_Reader);
+
+            if (s_Solutions[i].StateHash != s_SolutionState.Hash)
+                throw new Exception($"Solution state hash doesnt match solution hash. (expected 0x{s_Solutions[i].StateHash:X016} got 0x{s_SolutionState.Hash:X016}). Is this shader database corrupted?");
+
+            s_Solutions[i].State = s_SolutionState;
+        }
 
         //
         
@@ -161,7 +169,7 @@ public class ShaderDatabase
             if (s_Partition.PrimaryInstance is not SurfaceShaderBaseAsset s_Asset)
                 throw new Exception($"Primary instance of shader asset partition '{s_Partition.Name}' is not a SurfaceShaderBaseAsset.");
             
-            Shaders.Add(s_Asset.Name, new SurfaceShaderInfo(p_Reader, s_Solutions));
+            Shaders.Add(s_Asset.Name, new SurfaceShaderInfo(p_Reader, s_Solutions, RimeLib.Frostbite.Utils.HashQuick(s_Asset.Name)));
         }
     }
 }

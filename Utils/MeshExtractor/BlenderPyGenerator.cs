@@ -7,8 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using VertexElementFormat = RimeLib.Mesh.Frostbite.VertexElementFormat;
-using VertexElementUsage = RimeLib.Mesh.Frostbite.VertexElementUsage;
 
 namespace MeshExtractor
 {

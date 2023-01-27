@@ -11,6 +11,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using RimeLib;
+using RimeLib.Texture.Frostbite2_0.Frostbite;
 
 namespace TextureExtractor
 {
@@ -26,6 +27,10 @@ namespace TextureExtractor
 
             [Option('q', "quiet", Required = false, Default = false, HelpText = "Suppress console output.")]
             public bool Quiet { get; set; } = false;
+
+            [Option('u', "unique", Required = false, Default = false, HelpText = "Dump a unique texture of each type")]
+            public bool Unique { get; set; } = false;
+
 
             [Value(0, MetaName = "gamePath", Required = true, HelpText = "The path of the game to be whose content you want to extract.")]
             public string GamePath { get; set; } = "";
@@ -120,17 +125,65 @@ namespace TextureExtractor
             // Dump everything!
             if (!p_Options.Quiet)
                 Console.WriteLine($"Everything is now mounted! Starting content extraction.");
-            
+
+            DumpTexture(s_Mounter, "levels/coop_002/lighting/coop_002_endstatic_irradiancelumatexture", p_Options);
+
             // Multi-texture export
             if (p_Options.TexturePaths.FirstOrDefault() == "*")
             {
+                var s_FoundTypes = new HashSet<TextureFormat>();
+
                 // Get all of the resources
                 var s_Resources = s_Mounter.GetResources();
                 Parallel.ForEach(s_Resources, (p_Pair) =>
                 {
                     var s_Name = p_Pair.Key;
                     var s_Resource = p_Pair.Value;
-                    
+
+                    if (true)
+                    {
+                        if (s_Resource.FirstVariant.GetResourceType() != ResourceType.DxTexture)
+                            return;
+
+                        using var s_ResourceReader = s_Resource.FirstVariant.GetReader();
+                        var s_Header = new DxTexture(s_ResourceReader);
+
+                        if (s_Header.Format != TextureFormat.TextureFormat_DXT5A)
+                            return;
+
+                        DumpTexture(s_Mounter, s_Name, p_Options);
+                        return;
+                    }
+
+
+                    if (p_Options.Unique)
+                    {
+                        if (s_Resource.FirstVariant.GetResourceType() != ResourceType.DxTexture)
+                            return;
+
+                        using var s_ResourceReader = s_Resource.FirstVariant.GetReader();
+                        var s_Header = new DxTexture(s_ResourceReader);
+
+                        bool s_HasFoundTexture = false;
+                        lock (s_FoundTypes)
+                        {
+                            s_HasFoundTexture = s_FoundTypes.Contains(s_Header.Format);
+
+                            if (!s_HasFoundTexture)
+                                s_FoundTypes.Add(s_Header.Format);
+                        }
+
+                        if (s_HasFoundTexture)
+                            return;
+
+                        Console.WriteLine($"Texture [{s_Name}] of type [{s_Header.Format}]");
+
+                        DumpTexture(s_Mounter, s_Name, p_Options);
+
+                        return;
+                    }
+
+
                     switch (s_Resource.FirstVariant.GetResourceType())
                     {
                         case ResourceType.DxTexture:

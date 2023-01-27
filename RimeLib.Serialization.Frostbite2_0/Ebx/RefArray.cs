@@ -3,7 +3,7 @@
 namespace RimeLib.Serialization.Frostbite2_0.Ebx;
 
 public class RefArray<T> : List<CtrRef<T>>
-    where T : class
+    where T : DataContainerBase
 {
     public void AddRef(CtrRefBase p_Ref)
     {

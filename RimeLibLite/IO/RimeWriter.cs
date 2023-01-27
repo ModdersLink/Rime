@@ -7,17 +7,20 @@ namespace RimeLib.IO
 {
     public class RimeWriter : EndianBinaryWriter
     {
+        /*
         public bool Obfuscated { get; internal set; }
 
         public byte[] XorTable { get; set; } = new byte[260];
 		
         protected long m_ObfuscatedDataOffset;
+        */
 
         public RimeWriter(Stream p_Stream, Endianness p_Endianness = Endianness.LittleEndian, bool p_ShouldDispose = true)
             : base(p_Endianness == Endianness.BigEndian ? (EndianBitConverter) EndianBitConverter.Big : EndianBitConverter.Little, p_Stream, p_ShouldDispose)
         {
         }
 
+        /*
         public void EnableObfuscation(byte[] p_XorTable)
         {
             // Make sure the XOR Table is the right size.
@@ -38,6 +41,7 @@ namespace RimeLib.IO
             Obfuscated = false;
             m_ObfuscatedDataOffset = 0;
         }
+        */
 
         public void WriteNullTerminatedString(string p_Value)
         {
@@ -103,6 +107,7 @@ namespace RimeLib.IO
                 WriteByte(p_Padding);
         }
 
+        /*
         protected override void WriteInternal(byte[] p_Value, int p_Offset, int p_Count)
         {
             // If we're writing in obfuscated mode we need to do some trickery.
@@ -124,6 +129,7 @@ namespace RimeLib.IO
 
             base.WriteInternal(p_Value, p_Offset, p_Count);
         }
+        */
 
         public void WriteNullBytes(uint p_NumberOfBytes)
         {

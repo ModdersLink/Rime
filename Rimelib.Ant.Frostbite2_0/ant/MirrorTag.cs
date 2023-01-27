@@ -1,0 +1,27 @@
+///////////////////////////////////////////////////////////////
+//                                                           //
+// This is an automatically generated file.                  //
+// As type schemas dont contain full information, modifying  //
+// can be done to fix information thats wrong or missing.    //
+//                                                           //
+///////////////////////////////////////////////////////////////
+
+using System.Collections.Generic;
+using RimeLib.Ant.EA.Attributes;
+using RimeLib.Ant.EA.Types;
+
+namespace ant
+{
+
+	[AntBinding(0x194085bb)]
+	public class MirrorTag
+		: AntObject
+	{
+		[AntField(0)]
+		public int Toggle { get; set; }
+
+		[AntField(1)]
+		public float Time { get; set; }
+
+	}
+}

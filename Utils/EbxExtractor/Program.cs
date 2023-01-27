@@ -1,15 +1,26 @@
 ﻿using CommandLine;
 using RimeLib.Frostbite;
 using System;
-using System.Diagnostics.CodeAnalysis;
+using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
+using System.Linq;
+using System.Threading.Tasks;
+using fb;
+using IceBloc.Export;
+using IceBloc.InternalFormats;
 using RimeLib;
 using RimeLib.Content.Frostbite;
 using RimeLib.Content.Mounting;
+using RimeLib.Extensions;
 using RimeLib.Frostbite.Core;
 using RimeLib.IO;
 using RimeLib.IO.Conversion;
+using RimeLib.Mesh.Frostbite;
+using RimeLib.Serialization;
+using RimeLib.Shader.Frostbite2_0.Frostbite;
+using RimeLib.Texture;
+using RimeLib.Utils;
+using VertexElementUsage = fb.VertexElementUsage;
 
 namespace EbxExtractor
 {
@@ -17,160 +28,256 @@ namespace EbxExtractor
     {
         internal class Options
         {
-            [Option('q', "quiet", Required = false, Default = false, HelpText = "Suppress console output.")]
-            public bool Quiet { get; set; } = false;
 
             [Value(0, MetaName = "gamePath", Required = true, HelpText = "The path of the game to be whose content you want to extract.")]
             public string GamePath { get; set; } = "";
 
             [Value(1, MetaName = "engineType", Required = true, HelpText = "The engine type of the game.")]
             public EngineType EngineType { get; set; }
-
-            [Value(2, MetaName = "outPath", Required = true, HelpText = "The output directory where the extracted files will be put into.")]
-            public string OutputPath { get; set; } = "";
         }
 
         static void Main(string[] p_Args)
         {
             Parser.Default.ParseArguments<Options>(p_Args).WithParsed(p_Options =>
             {
-                LoadContentAssembly(p_Options);
-                LoadTextureAssembly(p_Options);
-                DumpFiles(p_Options);
-
-                //Console.WriteLine("Audio content successfully extracted. Press any key to exit...");
-                //Console.ReadKey();
+                if (!AssemblyUtils.LoadSupportAssembly(AssemblyType.Content, p_Options.EngineType) ||
+                    !AssemblyUtils.LoadSupportAssembly(AssemblyType.Serialization, p_Options.EngineType) ||
+                    !AssemblyUtils.LoadSupportAssembly(AssemblyType.Texture, p_Options.EngineType))
+                {
+                    Console.WriteLine("Could not load support assemblies.");
+                    return;
+                }
+                
+                DumpFiles(p_Options).Wait();
             }).WithNotParsed(p_Error =>
             {
                 System.Environment.Exit(1);
             });
+            
             Console.WriteLine("Hello World!");
         }
-
-        private static void LoadContentAssembly(Options p_Options)
-        {
-            var s_AssemblyName = "RimeLib.Content." + p_Options.EngineType;
-
-            try
-            {
-                if (!p_Options.Quiet)
-                    Console.WriteLine("Loading engine content support assembly.");
-
-                Assembly.Load(s_AssemblyName);
-            }
-            catch
-            {
-                if (!p_Options.Quiet)
-                    Console.WriteLine($"Failed to load supporting engine assembly ({s_AssemblyName}.dll). This means that the engine is not supported or that you are missing required files.");
-
-                System.Environment.Exit(1);
-            }
-        }
         
-        private static void LoadTextureAssembly(Options p_Options)
+        public static List<InternalMesh> ConvertToInternal(MeshSetLayout p_MeshSet, IEngineMounter p_Mounter)
         {
-            var s_AssemblyName = "RimeLib.Texture." + p_Options.EngineType;
+            List<InternalMesh> meshList = new();
 
-            try
+            // For each LOD.
+            for (var i = 0; i < p_MeshSet.LodCount; i++)
             {
-                if (!p_Options.Quiet)
-                    Console.WriteLine("Loading engine content support assembly.");
+                var s_LodPtr = p_MeshSet.Lods[i];
+                var s_Lod = s_LodPtr.Object;
+                var s_LodChunkId = s_Lod.DataChunkId;
 
-                Assembly.Load(s_AssemblyName);
-            }
-            catch
-            {
-                if (!p_Options.Quiet)
-                    Console.WriteLine($"Failed to load supporting engine assembly ({s_AssemblyName}.dll). This means that the engine is not supported or that you are missing required files.");
+                if (!p_Mounter.TryGetChunk(s_LodChunkId, out var s_Chunk))
+                    return new();
 
-                System.Environment.Exit(1);
+                using var s_TempLodReader = s_Chunk.FirstVariant.GetReader();
+                var s_LodData = s_TempLodReader.ToArray();
+                using var s_LodReader = new RimeReader(new MemoryStream(s_LodData));
+                s_LodReader.Endianness = Endianness.LittleEndian;
+
+                // For each MeshSubset.
+                for (var j = 0; j < s_Lod.Subsets.Get.Length; j++)
+                {
+                    var sub = s_Lod.Subsets.Get[j];
+                    InternalMesh mesh = new();
+
+                    mesh.Name = sub.MaterialName.Object + "_LOD" + i;
+                    mesh.IsSkinned = false; // TODO
+
+                    var indexStartOffset = s_Lod.VertexDataSize;
+
+                    // Start reading vertices.
+                    s_LodReader.Seek(sub.VertexOffset, SeekOrigin.Begin);
+
+                    for (int k = 0; k < sub.VertexCount; k++)
+                    {
+                        Vertex vert = new();
+
+                        var posElement =
+                            sub.GeometryDeclarationDesc.GetByUsage(VertexElementUsage.VertexElementUsage_Pos);
+                        var norElement =
+                            sub.GeometryDeclarationDesc.GetByUsage(VertexElementUsage.VertexElementUsage_Normal);
+                        var uv0Element =
+                            sub.GeometryDeclarationDesc.GetByUsage(VertexElementUsage.VertexElementUsage_TexCoord0);
+
+                        var position = posElement.Read(s_LodReader, sub.VertexStride);
+                        var normals = norElement == null
+                            ? new Vector4()
+                            : norElement.Read(s_LodReader, sub.VertexStride);
+                        var texcoord = uv0Element == null
+                            ? new Vector4()
+                            : uv0Element.Read(s_LodReader, sub.VertexStride);
+
+                        // We're done reading the current vertex, move up the stream.
+                        s_LodReader.Seek(sub.VertexStride, SeekOrigin.Current);
+
+                        vert.PositionX = position.X;
+                        vert.PositionY = position.Y;
+                        vert.PositionZ = position.Z;
+                        vert.NormalX = normals.X;
+                        vert.NormalY = normals.Y;
+                        vert.NormalZ = normals.Z;
+                        vert.TexCoordX = texcoord.X;
+                        vert.TexCoordY = 1.0f - texcoord.Y;
+
+                        mesh.Vertices.Add(vert);
+                    }
+
+                    // Read face indices.
+                    s_LodReader.Seek(indexStartOffset + (sub.StartIndex * 2), SeekOrigin.Begin);
+
+                    for (int k = 0; k < sub.PrimitiveCount; k++)
+                    {
+                        int a = s_LodReader.ReadUInt16();
+                        int b = s_LodReader.ReadUInt16();
+                        int c = s_LodReader.ReadUInt16();
+
+                        mesh.Faces.Add((a, b, c));
+                    }
+
+                    meshList.Add(mesh);
+                }
             }
+
+            return meshList;
         }
-        
-        internal class ResourceStreamReader : IResourceObject
+
+        public static HashSet<VertexElementUsage> GetUniqueUsages(MeshSetLayout p_MeshSet)
         {
-            private readonly ResourceType m_ResourceType;
-            private Stream m_Stream;
+            HashSet<VertexElementUsage> meshList = new();
 
-            public ResourceStreamReader(Stream p_Stream, ResourceType p_ResourceType)
+            // For each LOD.
+            for (var i = 0; i < p_MeshSet.LodCount; i++)
             {
-                m_ResourceType = p_ResourceType;
-                m_Stream = p_Stream;
+                var s_LodPtr = p_MeshSet.Lods[i];
+                var s_Lod = s_LodPtr.Object;
+
+                // For each MeshSubset.
+                for (var j = 0; j < s_Lod.Subsets.Get.Length; j++)
+                {
+                    var sub = s_Lod.Subsets.Get[j];
+
+                    for (int k = 0; k < sub.VertexCount; k++)
+                    {
+                        foreach (var s_Element in sub.GeometryDeclarationDesc.Elements)
+                        {
+                            meshList.Add(s_Element.Usage);
+                        }
+                    }
+
+                }
             }
 
-            public ResourceType GetResourceType()
-            {
-                return m_ResourceType;
-            }
-
-            public bool TryGetMeta([NotNullWhen(true)] out byte[]? p_Meta)
-            {
-                p_Meta = null;
-                return false;
-            }
-
-            public RimeReader GetReader()
-            {
-                return new RimeReader(m_Stream, Endianness.LittleEndian, false);
-            }
-
-            public long GetSize()
-            {
-                return m_Stream.Length;
-            }
+            return meshList;
         }
 
-        private static async void DumpFiles(Options p_Options)
+
+        private static async Task DumpFiles(Options p_Options)
         {
             var s_Mounter = EngineInterfaceRegistry.Create<IEngineMounter>(p_Options.EngineType);
             
-            if (!p_Options.Quiet)
-                Console.WriteLine($"Mounting game with engine '{p_Options.EngineType}' at path '{p_Options.GamePath}'. Please wait, this could take a while.");
+            Console.WriteLine($"Mounting game with engine '{p_Options.EngineType}' at path '{p_Options.GamePath}'. Please wait, this could take a while.");
 
-            //await s_Mounter.MountStandaloneSuperbundle("Win32/VuTest", @"B:\Games\Battlefield 3\Update\Patch\Data\Win32\VuTest.sb", true);
-            //await s_Mounter.MountStandaloneSuperbundle("Win32/Levels/XP5_001/XP5_001", @"B:\Games\Battlefield 3\Update\Xpack5\Data\Win32\Levels\XP5_001\XP5_001.sb", true);
-            //await s_Mounter.Mount(p_Options.GamePath, true, EngineType.Frostbite2_0);
-            //await s_Mounter.MountSuperbundle("Win32/Chunks0", true);
-            //await s_Mounter.MountSuperbundle("Win32/Chunks1", true);
-            //await s_Mounter.MountSuperbundle("Win32/Chunks2", true);
-            //await s_Mounter.MountSuperbundle("Win32/MpChunks", true);
-            //await s_Mounter.MountSuperbundle("Win32/Xp2Chunks", true);
-            //await s_Mounter.MountSuperbundle("Win32/Levels/XP2_Factory/XP2_Factory", true);
+            await s_Mounter.Mount(p_Options.GamePath, true, s_Mounter.GetEngineType());
+            /*await s_Mounter.MountSuperbundle("win32/levels/xp5_001/xp5_001", true);
+            await s_Mounter.MountSuperbundle("Win32/Chunks0", true);
+            await s_Mounter.MountSuperbundle("Win32/Chunks1", true);
+            await s_Mounter.MountSuperbundle("Win32/Chunks2", true);
+            await s_Mounter.MountSuperbundle("Win32/MpChunks", true);
+            await s_Mounter.MountSuperbundle("Win32/Xp5Chunks", true);*/
 
-            //if (s_Mounter.TryGetChunk(new GUID("313a4d6fe0dc10d7421fea9fdf78de4f"), out var chunk))
-            if (s_Mounter.TryGetChunk(new GUID("84F0888A-35AA-9B68-38E8-9957DD412EA5"), out var chunk))
-            //if (s_Mounter.TryGetChunk(new GUID("478e7037-4abf-451a-928a-d6b5cb684d2b"), out var chunk))
+            var s_MeshName = "xp2/objects/wallmodulespalace_01/floorpalace_09_mesh";
+            var s_TextureName = "Architecture/TexturesShared/MarbleDarkFloor01";
+            var s_TextureVariants = new[] { "d", "n" };
+
+            var s_ShaderName = "Systems/ShaderProgramDb";
+
+            if (!s_Mounter.TryGetResource(s_ShaderName, out var s_ShaderResource))
+                return;
+            
+            using var s_ShaderProgramDbReader = s_ShaderResource.FirstVariant.GetReader();
+            var s_ShaderProgramDbCtr = new ShaderProgramDatabaseContainer(s_ShaderProgramDbReader);
+            
+            if (!s_ShaderProgramDbCtr.TryGetDatabase(ShaderRenderPath.ShaderRenderPath_Dx11, out var s_ShaderProgramDb))
+                return;
+
+            var s_ShortName = s_MeshName.Split("/").Last();
+            
+            if (!s_Mounter.TryGetResource(s_MeshName,
+                    out var s_Resource))
+                return;
+
+            if (!s_Mounter.TryGetPartition("Animations/Skeletons/VeniceAntSke01", out var s_SkeletonPartitionObj))
+                return;
+
+            var s_Converter = EngineInterfaceRegistry.Create<IPartitionConverter>(s_Mounter.GetEngineType());
+            var s_SkeletonPartition = s_Converter.FromPartitionObject("Animations/Skeletons/VeniceAntSke01", s_SkeletonPartitionObj.FirstVariant);
+            var s_Asset = s_SkeletonPartition.PrimaryInstance as SkeletonAsset;
+            
+            using var s_MeshReader = s_Resource.FirstVariant.GetReader();
+            var s_MeshData = s_MeshReader.ToArray();
+            using var s_TempMeshReader = new RimeReader(new MemoryStream(s_MeshData));
+            var s_MeshSet = new MeshSetLayout(s_TempMeshReader);
+
+            var s_ConvertedMeshes = ConvertToInternal(s_MeshSet, s_Mounter);
+            for (int i = 0; i < s_ConvertedMeshes.Count; ++i)
             {
-                chunk.FirstVariant.GetSize();
-
-                using var s_TempThing2 = File.OpenWrite(@"B:\ebx-test\post-comp-chunk.bin");
-                using var s_ChunkReaderThing = chunk.FirstVariant.GetReader();
-                s_ChunkReaderThing.CopyTo(s_TempThing2);
+                ModelExporterOBJ.Export(s_ConvertedMeshes[i], $@"C:\Users\Orfeas\home\scratch\rime-shit\{s_ShortName}-{i}");
             }
 
-            Console.WriteLine("DId shit");
+            var s_TextureConverter = EngineInterfaceRegistry.Create<ITextureConverter>(p_Options.EngineType);
 
-            /*var s_Partitions = s_Mounter.GetPartitions();
-            
-            //foreach (var s_PartitionPair in s_Partitions)
-            Parallel.ForEach(s_Partitions, (p_Pair) => 
+            foreach (var s_Variant in s_TextureVariants)
             {
-                var s_PartitionName = p_Pair.Key;
-                var s_PartitionObject = p_Pair.Value;
+                if (!s_Mounter.TryGetResource($"{s_TextureName}_{s_Variant}", out var s_TextureResource))
+                    return;
 
-                using var s_PartitionReader = s_PartitionObject.FirstVariant.GetReader();
+                using var s_TextureWriter =
+                    new RimeWriter(File.Create($@"C:\Users\Orfeas\home\scratch\rime-shit\{s_ShortName}-{s_Variant}.dds"));
+                s_TextureConverter.ConvertToDDS(s_TextureResource.FirstVariant, s_Mounter, s_TextureWriter);
+
+            }
+         
+            Console.WriteLine($"{s_Asset} {s_MeshSet}");
+        }
+        
+        private static async Task GetUsages(Options p_Options)
+        {
+            var s_Mounter = EngineInterfaceRegistry.Create<IEngineMounter>(p_Options.EngineType);
+            
+            Console.WriteLine($"Mounting game with engine '{p_Options.EngineType}' at path '{p_Options.GamePath}'. Please wait, this could take a while.");
+
+            await s_Mounter.Mount(p_Options.GamePath, true, s_Mounter.GetEngineType());
+
+            var s_Usages = new HashSet<VertexElementUsage>();
+
+            Parallel.ForEach(s_Mounter.GetResources(), (kvp) =>
+            {
+                var s_Resource = kvp.Value;
                 
-                using var s_EbxReader = new EbxReader();
-                var s_Partition = s_EbxReader.ParsePartition(s_PartitionName, s_PartitionReader);
+                if (s_Resource.FirstVariant.GetResourceType() != ResourceType.MeshSet)
+                    return;
+
+                using var s_MeshReader = s_Resource.FirstVariant.GetReader();
+                var s_MeshData = s_MeshReader.ToArray();
+                using var s_TempMeshReader = new RimeReader(new MemoryStream(s_MeshData));
+                var s_MeshSet = new MeshSetLayout(s_TempMeshReader);
+
+                var s_UsagesForThis = GetUniqueUsages(s_MeshSet);
+
+                if (s_UsagesForThis.Contains(VertexElementUsage.VertexElementUsage_RadiosityTexCoord))
+                {
+                    Console.WriteLine($"Some mesh: {kvp.Key}");
+                }
                 
-                var s_TargetPath = Path.Join(@"B:\ebx-dump2", s_PartitionName + ".json");
-                var s_TargetDir = Path.GetDirectoryName(s_TargetPath);
-
-                if (!Directory.Exists(s_TargetDir))
-                    Directory.CreateDirectory(s_TargetDir);
-
-                s_Partition.ToJsonFile(s_TargetPath, Formatting.Indented);
-            });*/
+                lock (s_Usages)
+                {
+                    s_Usages.UnionWith(s_UsagesForThis);
+                }
+            });
+            
+            Console.WriteLine($"Whatever {s_Usages}");
         }
     }
 }

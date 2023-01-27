@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Runtime.InteropServices;
+using fb;
 using RimeLib.Extensions;
 using RimeLib.Frostbite;
+using RimeLib.Frostbite.Core;
 using RimeLib.IO;
 
 namespace RimeLib.Mesh.Frostbite;
@@ -112,6 +115,52 @@ public class GeometryDeclarationDesc : IFbSerializable
         public Element(RimeReader p_Reader)
         {
             Deserialize(p_Reader);
+        }
+        
+        public Vector4 Read(RimeReader r, int vertexStride)
+        {
+            long currentPosition = r.BaseStream.Position;
+
+            var buffer = r.ReadBytes(vertexStride);
+            var data = buffer[Offset..];
+
+            var result = new Vector4();
+
+            switch (Format)
+            {
+                case VertexElementFormat.VertexElementFormat_Half2:
+                    {
+                        var casted = MemoryMarshal.Cast<byte, Half>(data);
+                        r.BaseStream.Position = currentPosition;
+                        return new((float)casted[0], (float)casted[1], 0.0f, 0.0f);
+                    }
+                case VertexElementFormat.VertexElementFormat_Half3:
+                    {
+                        var casted = MemoryMarshal.Cast<byte, Half>(data);
+                        r.BaseStream.Position = currentPosition;
+                        return new((float)casted[0], (float)casted[1], (float)casted[2], 0.0f);
+                    }
+                case VertexElementFormat.VertexElementFormat_Half4:
+                    {
+                        var casted = MemoryMarshal.Cast<byte, Half>(data);
+                        r.BaseStream.Position = currentPosition;
+                        return new((float)casted[0], (float)casted[1], (float)casted[2], (float)casted[3]);
+                    }
+                case VertexElementFormat.VertexElementFormat_Byte4:
+                    {
+                        var casted = MemoryMarshal.Cast<byte, byte>(data);
+                        r.BaseStream.Position = currentPosition;
+                        return new(casted[0], casted[1], casted[2], casted[3]);
+                    }
+                case VertexElementFormat.VertexElementFormat_Byte4N:
+                    {
+                        var casted = MemoryMarshal.Cast<byte, byte>(data);
+                        r.BaseStream.Position = currentPosition;
+                        return new(casted[0] / 255.0f, casted[1] / 255.0f, casted[2] / 255.0f, casted[3] / 255.0f);
+                    }
+            }
+            r.BaseStream.Position = currentPosition;
+            return result;
         }
 
         public bool Serialize(RimeWriter p_Writer)
@@ -234,5 +283,15 @@ public class GeometryDeclarationDesc : IFbSerializable
     public void Deserialize(byte[] p_Data)
     {
         throw new System.NotImplementedException();
+    }
+    public Element? GetByUsage(VertexElementUsage usage)
+    {
+        for (int i = 0; i < Elements.Count; i++)
+        {
+            if (Elements[i].Usage == usage)
+                return Elements[i];
+        }
+
+        return null;
     }
 }

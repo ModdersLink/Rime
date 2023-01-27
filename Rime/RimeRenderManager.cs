@@ -23,7 +23,6 @@ using SharpDX.Direct3D11;
 using SharpDX.DXGI;
 using SharpDX.Mathematics.Interop;
 using Buffer = SharpDX.Direct3D11.Buffer;
-using IndexBufferFormat = RimeLib.Mesh.Frostbite.IndexBufferFormat;
 using Resource = SharpDX.Direct3D11.Resource;
 using StencilOperation = SharpDX.Direct3D11.StencilOperation;
 using Vector2 = System.Numerics.Vector2;
@@ -248,7 +247,7 @@ public class RimeRenderManager : RenderManager
             var s_PixelSamplers = new List<SamplerState[]>();
             var s_GeometryShaders = new List<GeometryShader>();
             var s_Textures = new List<Tuple<byte, ShaderResourceView>[]>();
-            
+               
             foreach (var s_Solution in p_Shader.Solutions)
             {
                 if (s_Solution.VertexPermutation != null)

@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.IO;
 using RimeLib.Frostbite.Core;
+using RimeLib.Frostbite.Fs;
 using RimeLib.IO;
 
 namespace RimeLib.Content.Frostbite2_0.Frostbite.Cas
@@ -43,6 +44,12 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Cas
         /// <param name="p_Reader">Reader opened to the position of the catalog header</param>
         protected void ParseHeader(RimeReader p_Reader)
         {
+            var s_Reader = p_Reader;
+
+            // read FileObfuscation, and use the output stream
+            new FileObfuscation(s_Reader, out var s_FixedReader);
+
+            /*
             var s_Magic = p_Reader.ReadUInt32();
 
             switch (s_Magic)
@@ -57,16 +64,17 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Cas
                     p_Reader.Seek(-4, SeekOrigin.Current);
                     break;
             }
+            */
 
-            var s_NyanNyan01 = p_Reader.ReadUInt64();
-            var s_NyanNyan02 = p_Reader.ReadUInt64();
+            var s_NyanNyan01 = s_FixedReader.ReadUInt64();
+            var s_NyanNyan02 = s_FixedReader.ReadUInt64();
 
             // NyanNyanNyanNyan
             if (s_NyanNyan01 != 0x6E61794E6E61794E ||
                 s_NyanNyan02 != 0x6E61794E6E61794E)
                 throw new Exception("The provided file is not a valid catalog file.");
 
-            ParseEntries(p_Reader);
+            ParseEntries(s_FixedReader);
         }
 
         /// <summary>
