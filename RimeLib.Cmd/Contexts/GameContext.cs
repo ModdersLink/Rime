@@ -181,5 +181,10 @@ namespace RimeLib.Cmd.Contexts
         {
             return m_Mounter.GetChunks();
         }
+
+        internal IReadOnlyDictionary<string, IMountedObject<IResourceVariant>> GetMountedResourceVariations()
+        {
+            return m_Mounter.GetResources();
+        }
     }
 }
