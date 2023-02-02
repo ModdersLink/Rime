@@ -10,9 +10,9 @@ namespace RimeLib.Enlighten.Frostbite2_0;
 public class LightMapInstance : IFbSerializable
 {
     public GUID Guid { get; set; }
-    public LinearTransform? Transform { get; set; }
-    public Vec4? UVTransform { get; set; }
-    public Vec2? UVTranslation { get; set; }
+    public LinearTransform Transform { get; set; } = new LinearTransform();
+    public Vec4 UVTransform { get; set; } = new Vec4();
+    public Vec2 UVTranslation { get; set; } = new Vec2();
 
     public LightMapInstance()
     {

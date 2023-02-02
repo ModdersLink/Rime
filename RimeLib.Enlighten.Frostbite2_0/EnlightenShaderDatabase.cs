@@ -10,7 +10,7 @@ namespace RimeLib.Enlighten.Frostbite2_0;
 public class EnlightenShaderDatabase : IFbSerializable
 {
     public uint MaterialCount;
-    EnlightenMaterial[] Materials = new EnlightenMaterial[0];
+    public List<EnlightenMaterial> Materials { get; set; } = new List<EnlightenMaterial>();
 
     public EnlightenShaderDatabase()
     {

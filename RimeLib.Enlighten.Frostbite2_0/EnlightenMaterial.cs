@@ -9,7 +9,7 @@ namespace RimeLib.Enlighten.Frostbite2_0;
 
 public class EnlightenMaterial : IFbSerializable
 {
-    public Vec3? Color { get; set; }
+    public Vec3 Color { get; set; } = new Vec3();
     public GUID Guid { get; set; }
     public ulong ShaderId { get; set; }
     public bool Emissive { get; set; }

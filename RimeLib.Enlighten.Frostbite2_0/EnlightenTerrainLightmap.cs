@@ -9,9 +9,9 @@ namespace RimeLib.Enlighten.Frostbite2_0;
 
 public class EnlightenTerrainLightmap : IFbSerializable
 {
-    public AxisAlignedBox? WorldBoundingBox { get; set; }
-    public Vec4? UVTransform { get; set; }
-    public Vec2? UVTranslation { get; set; }
+    public AxisAlignedBox WorldBoundingBox { get; set; } = new AxisAlignedBox();
+    public Vec4 UVTransform { get; set; } = new Vec4();
+    public Vec2 UVTranslation { get; set; } = new Vec2();
 
     public EnlightenTerrainLightmap()
     {

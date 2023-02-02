@@ -16,16 +16,16 @@ public class EnlightenDatabase : IFbSerializable
     public uint OutputAtlasHeight;
 
     public uint SystemNameCount;
-    public string[] SystemNames = string.Empty[0];
+    public List<string> SystemNames { get; set; } = new List<string>();
 
     public uint TerrainLightMapCount;
-    EnlightenTerrainLightmap[] TerrainLightMaps = new EnlightenTerrainLightmap[0];
+    public List<EnlightenTerrainLightmap> TerrainLightMaps { get; set; } = new List<EnlightenTerrainLightmap>();
 
     public uint LightMapInstanceCount;
-    LightMapInstance[] LightMapInstances = new LightMapInstance[0];
+    public List<LightMapInstance> LightMapInstances { get; set; } = new List<LightMapInstance>();
 
     public uint ProbeSetNamesCount;
-    public string[] ProbeSetNames = string.Empty[0];
+    public List<string> ProbeSetNames { get; set; } = new List<string>();
 
     public uint ProbeCount;
 
