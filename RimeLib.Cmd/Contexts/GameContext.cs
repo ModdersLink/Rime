@@ -9,6 +9,7 @@ using RimeLib.Frostbite.Core;
 using RimeLib.IO;
 using RimeLib.Serialization;
 using RimeLib.Texture;
+using RimeLib.Mesh;
 
 namespace RimeLib.Cmd.Contexts
 {
@@ -43,6 +44,7 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<DumpPartitionCommand>();
             RegisterCommand<DumpPartitionJsonCommand>();
             RegisterCommand<DumpTextureCommand>();
+            RegisterCommand<DumpMeshCommand>();
         }
 
         public override string GetShortDescription()
@@ -146,6 +148,28 @@ namespace RimeLib.Cmd.Contexts
             using var s_Writer = new RimeWriter(s_FileStream);
 
             s_Converter.ConvertToDDS(s_Resource.FirstVariant!, m_Mounter, s_Writer);
+        }
+
+        internal void DumpMesh(string p_Name, FileInfo p_Destination, DumpMeshCommand.ExportType p_ExportType)
+        {
+            var s_ShortName = p_Name.Split('/').Last();
+
+            if (!m_Mounter.TryGetResource(p_Name, out var s_Resource))
+                throw new Exception($"Could not find resource with name '{p_Name}'");
+
+            var s_Converter = EngineInterfaceRegistry.Create<IMeshConverter>(m_Mounter.GetEngineType());
+
+            using var s_FileStream = File.Create(p_Destination.FullName);
+            using var s_Writer = new RimeWriter(s_FileStream);
+
+            switch (p_ExportType)
+            {
+                case DumpMeshCommand.ExportType.Obj:
+                    s_Converter.ConvertToObj(s_Resource.FirstVariant, m_Mounter, s_Writer);
+                    break;
+                default:
+                    throw new Exception("Invalid export type.");
+            }
         }
 
         internal IEnumerable<GUID> GetBundleChunks(string p_Bundle)
