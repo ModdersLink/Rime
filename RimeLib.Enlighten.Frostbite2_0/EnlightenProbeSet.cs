@@ -13,7 +13,7 @@ public class EnlightenProbeSet : IFbSerializable
     public LinearTransform InverseTransform { get; set; } = new LinearTransform();
     public AxisAlignedBox BoundingBox { get; set; } = new AxisAlignedBox();
     public float BlendDistance { get; set; }
-    public uint[] Dim { get; set; } = new Dim[3];
+    public uint[] Dim { get; set; } = new uint[3];
     public uint Priority { get; set; }
     public uint ProbeCount { get; set; }
     public uint GlobalOffset { get; set; }
