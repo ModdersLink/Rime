@@ -72,12 +72,12 @@ public class EnlightenDatabase : IFbSerializable
             SystemNames[i] = p_Reader.ReadNullTerminatedString();
 
         TerrainLightMapCount = p_Reader.ReadUInt32();
-        TerrainLightMaps = new EnlightenTerrainLightmap[TerrainLightMapCount];
+        TerrainLightMaps = new List<EnlightenTerrainLightmap>((int)TerrainLightMapCount);
         for (var i = 0; i < TerrainLightMapCount; i++)
             TerrainLightMaps[i] = new EnlightenTerrainLightmap(p_Reader);
 
         LightMapInstanceCount = p_Reader.ReadUInt32();
-        LightMapInstances = new LightMapInstance[LightMapInstanceCount];
+        LightMapInstances = new List<LightMapInstance>((int)LightMapInstanceCount);
         for (var i = 0; i < LightMapInstanceCount; i++)
             LightMapInstances[i] = new LightMapInstance(p_Reader);
 
